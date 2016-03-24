@@ -4,27 +4,27 @@
 <context>
     <name>BioStruct3DSubsetEditor</name>
     <message>
-        <location filename="../src/ui/BioStruct3DSubsetEditor.ui" line="14"/>
+        <location filename="../src/BioStruct3DSubsetEditor.ui" line="14"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/ui/BioStruct3DSubsetEditor.ui" line="20"/>
+        <location filename="../src/BioStruct3DSubsetEditor.ui" line="20"/>
         <source>Structure</source>
         <translation>Structure</translation>
     </message>
     <message>
-        <location filename="../src/ui/BioStruct3DSubsetEditor.ui" line="37"/>
+        <location filename="../src/BioStruct3DSubsetEditor.ui" line="37"/>
         <source>Chain</source>
         <translation>Chain</translation>
     </message>
     <message>
-        <location filename="../src/ui/BioStruct3DSubsetEditor.ui" line="54"/>
+        <location filename="../src/BioStruct3DSubsetEditor.ui" line="54"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
     <message>
-        <location filename="../src/ui/BioStruct3DSubsetEditor.ui" line="64"/>
+        <location filename="../src/BioStruct3DSubsetEditor.ui" line="64"/>
         <source>Model</source>
         <translation>Model</translation>
     </message>
@@ -95,7 +95,7 @@
 <context>
     <name>SelectModelsDialog</name>
     <message>
-        <location filename="../src/ui/SelectModelsDialog.ui" line="14"/>
+        <location filename="../src/SelectModelsDialog.ui" line="14"/>
         <source>Select Models</source>
         <translation>Select Models</translation>
     </message>
@@ -103,57 +103,57 @@
 <context>
     <name>SettingsDialog</name>
     <message>
-        <location filename="../src/ui/SettingsDialog.ui" line="35"/>
+        <location filename="../src/SettingsDialog.ui" line="35"/>
         <source>Anaglyph view</source>
         <translation>Anaglyph view</translation>
     </message>
     <message>
-        <location filename="../src/ui/SettingsDialog.ui" line="49"/>
+        <location filename="../src/SettingsDialog.ui" line="49"/>
         <source>Eyes shift</source>
         <translation>Eyes shift</translation>
     </message>
     <message>
-        <location filename="../src/ui/SettingsDialog.ui" line="20"/>
+        <location filename="../src/SettingsDialog.ui" line="20"/>
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
     <message>
-        <location filename="../src/ui/SettingsDialog.ui" line="279"/>
+        <location filename="../src/SettingsDialog.ui" line="279"/>
         <source>Set background color...</source>
         <translation>Set background color...</translation>
     </message>
     <message>
-        <location filename="../src/ui/SettingsDialog.ui" line="292"/>
+        <location filename="../src/SettingsDialog.ui" line="292"/>
         <source>Set selection color...</source>
         <translation>Set selection color...</translation>
     </message>
     <message>
-        <location filename="../src/ui/SettingsDialog.ui" line="301"/>
+        <location filename="../src/SettingsDialog.ui" line="301"/>
         <source>Detail level</source>
         <translation>Detail level</translation>
     </message>
     <message>
-        <location filename="../src/ui/SettingsDialog.ui" line="325"/>
+        <location filename="../src/SettingsDialog.ui" line="325"/>
         <source>Unselected regions shading</source>
         <translation>Unselected regions shading</translation>
     </message>
     <message>
-        <location filename="../src/ui/SettingsDialog.ui" line="96"/>
+        <location filename="../src/SettingsDialog.ui" line="96"/>
         <source>Glasses colors</source>
         <translation>Glasses colors</translation>
     </message>
     <message>
-        <location filename="../src/ui/SettingsDialog.ui" line="125"/>
+        <location filename="../src/SettingsDialog.ui" line="125"/>
         <source>Left</source>
         <translation>Left</translation>
     </message>
     <message>
-        <location filename="../src/ui/SettingsDialog.ui" line="135"/>
+        <location filename="../src/SettingsDialog.ui" line="135"/>
         <source>Right</source>
         <translation>Right</translation>
     </message>
     <message>
-        <location filename="../src/ui/SettingsDialog.ui" line="254"/>
+        <location filename="../src/SettingsDialog.ui" line="254"/>
         <source>Swap colors</source>
         <translation>Swap colors</translation>
     </message>
@@ -161,22 +161,22 @@
 <context>
     <name>StructuralAlignmentDialog</name>
     <message>
-        <location filename="../src/ui/StructuralAlignmentDialog.ui" line="14"/>
+        <location filename="../src/StructuralAlignmentDialog.ui" line="14"/>
         <source>Structural Alignment</source>
         <translation>Structural Alignment</translation>
     </message>
     <message>
-        <location filename="../src/ui/StructuralAlignmentDialog.ui" line="20"/>
+        <location filename="../src/StructuralAlignmentDialog.ui" line="20"/>
         <source>Algorithm</source>
         <translation>Algorithm</translation>
     </message>
     <message>
-        <location filename="../src/ui/StructuralAlignmentDialog.ui" line="45"/>
+        <location filename="../src/StructuralAlignmentDialog.ui" line="45"/>
         <source>Reference</source>
         <translation>Reference</translation>
     </message>
     <message>
-        <location filename="../src/ui/StructuralAlignmentDialog.ui" line="61"/>
+        <location filename="../src/StructuralAlignmentDialog.ui" line="61"/>
         <source>Mobile</source>
         <translation>Mobile</translation>
     </message>

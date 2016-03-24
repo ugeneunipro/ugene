@@ -21,10 +21,10 @@ HEADERS += src/QueryDesignerPlugin.h \
            src/library/QDFindPolyRegionsActor.h \
            src/library/QDGcContentActor.h
 
-FORMS += src/ui/AddConstraintDialog.ui \
-         src/ui/QueryEditorWidget.ui \
-         src/ui/RunQueryDialog.ui \
-         src/ui/QDDialog.ui
+FORMS += src/AddConstraintDialog.ui \
+         src/QueryEditorWidget.ui \
+         src/RunQueryDialog.ui \
+         src/QDDialog.ui
 
 SOURCES += src/QueryDesignerPlugin.cpp \
            src/QueryViewController.cpp \

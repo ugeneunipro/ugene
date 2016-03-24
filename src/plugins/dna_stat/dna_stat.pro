@@ -6,8 +6,8 @@ HEADERS += src/DistanceMatrixMSAProfileDialog.h \
            src/DNAStatPlugin.h \
            src/DNAStatProfileTask.h \
            src/DNAStatsWindow.h
-FORMS += src/ui/DistanceMatrixMSAProfileDialog.ui \
-         src/ui/DNAStatMSAProfileDialog.ui
+FORMS += src/DistanceMatrixMSAProfileDialog.ui \
+         src/DNAStatMSAProfileDialog.ui
 SOURCES += src/DistanceMatrixMSAProfileDialog.cpp \
            src/DNAStatMSAProfileDialog.cpp \
            src/DNAStatPlugin.cpp \

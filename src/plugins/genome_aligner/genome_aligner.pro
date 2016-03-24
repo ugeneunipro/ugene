@@ -20,9 +20,9 @@ HEADERS += src/BuildSArraySettingsWidget.h \
            src/WriteAlignedReadsSubTask.h \
            src/DataBunch.h
 
-FORMS += src/ui/BuildSuffixArraySettings.ui \
-         src/ui/GenomeAlignerSettings.ui \
-         src/ui/GenomeAlignerSettingsWidget.ui
+FORMS += src/BuildSuffixArraySettings.ui \
+         src/GenomeAlignerSettings.ui \
+         src/GenomeAlignerSettingsWidget.ui
 SOURCES += src/BuildSArraySettingsWidget.cpp \
            src/GenomeAlignerCMDLineTask.cpp \
            src/GenomeAlignerFindTask.cpp \

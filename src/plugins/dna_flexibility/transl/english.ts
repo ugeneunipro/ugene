@@ -4,52 +4,52 @@
 <context>
     <name>DNAFlexDialog</name>
     <message>
-        <location filename="../src/ui/DNAFlexDialog.ui" line="26"/>
+        <location filename="../src/DNAFlexDialog.ui" line="26"/>
         <source>DNA Flexibility</source>
         <translation>DNA Flexibility</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAFlexDialog.ui" line="32"/>
+        <location filename="../src/DNAFlexDialog.ui" line="32"/>
         <source>The DNA Flexibility plugin allows searching for high DNA flexibility regions.</source>
         <translation>The DNA Flexibility plugin allows searching for high DNA flexibility regions.</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAFlexDialog.ui" line="42"/>
+        <location filename="../src/DNAFlexDialog.ui" line="42"/>
         <source>Search Settings</source>
         <translation>Search Settings</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAFlexDialog.ui" line="48"/>
+        <location filename="../src/DNAFlexDialog.ui" line="48"/>
         <source>High DNA Flexibility Regions Settings</source>
         <translation>High DNA Flexibility Regions Settings</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAFlexDialog.ui" line="56"/>
+        <location filename="../src/DNAFlexDialog.ui" line="56"/>
         <source>Window size</source>
         <translation>Window size</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAFlexDialog.ui" line="79"/>
+        <location filename="../src/DNAFlexDialog.ui" line="79"/>
         <source>Window step</source>
         <translation>Window step</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAFlexDialog.ui" line="99"/>
+        <location filename="../src/DNAFlexDialog.ui" line="99"/>
         <source>Threshold</source>
         <translation>Threshold</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAFlexDialog.ui" line="150"/>
+        <location filename="../src/DNAFlexDialog.ui" line="150"/>
         <source>Remember Settings</source>
         <translation>Remember Settings</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAFlexDialog.ui" line="157"/>
+        <location filename="../src/DNAFlexDialog.ui" line="157"/>
         <source>Restore Defaults</source>
         <translation>Restore Defaults</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAFlexDialog.ui" line="185"/>
+        <location filename="../src/DNAFlexDialog.ui" line="185"/>
         <source>Output</source>
         <translation>Output</translation>
     </message>

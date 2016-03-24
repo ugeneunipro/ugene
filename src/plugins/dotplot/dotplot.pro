@@ -11,9 +11,9 @@ HEADERS += src/DotPlotClasses.h \
            src/DotPlotTasks.h \
            src/DotPlotWidget.h
 
-FORMS +=   src/ui/DotPlotDialog.ui \
-           src/ui/DotPlotFilterDialog.ui \
-           src/ui/DotPlotFilesDialog.ui
+FORMS +=   src/DotPlotDialog.ui \
+           src/DotPlotFilterDialog.ui \
+           src/DotPlotFilesDialog.ui
 
 SOURCES += src/DotPlotClasses.cpp \
            src/DotPlotDialog.cpp \

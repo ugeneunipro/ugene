@@ -28,17 +28,17 @@ HEADERS += src/CSVColumnConfiguration.h \
            src/ImportAnnotationsFromCSVTask.h \
            src/ImportQualityScoresTask.h \
            src/ImportQualityScoresWorker.h
-FORMS += src/ui/BaseContentDialog.ui \
-         src/ui/CSVColumnConfigurationDialog.ui \
-         src/ui/DNASequenceGeneratorDialog.ui \
-         src/ui/ExportBlastResultDialog.ui \
-         src/ui/ExportChromatogramDialog.ui \
-         src/ui/ExportMSA2MSADialog.ui \
-         src/ui/ExportMSA2SequencesDialog.ui \
-         src/ui/ExportSequences2MSADialog.ui \
-         src/ui/ExportSequencesDialog.ui \
-         src/ui/GetSequenceByIdDialog.ui \
-         src/ui/ImportAnnotationsFromCSVDialog.ui
+FORMS += src/BaseContentDialog.ui \
+         src/CSVColumnConfigurationDialog.ui \
+         src/DNASequenceGeneratorDialog.ui \
+         src/ExportBlastResultDialog.ui \
+         src/ExportChromatogramDialog.ui \
+         src/ExportMSA2MSADialog.ui \
+         src/ExportMSA2SequencesDialog.ui \
+         src/ExportSequences2MSADialog.ui \
+         src/ExportSequencesDialog.ui \
+         src/GetSequenceByIdDialog.ui \
+         src/ImportAnnotationsFromCSVDialog.ui
 SOURCES += src/CSVColumnConfigurationDialog.cpp \
            src/DNAExportPlugin.cpp \
            src/DNAExportPluginTests.cpp \

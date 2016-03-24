@@ -10,7 +10,7 @@ HEADERS += src/RemoteBLASTPlugin.h \
 			src/RemoteBLASTWorker.h \
 			src/DBRequestFactory.h \
                         src/BlastQuery.h
-FORMS += src/ui/RemoteBLASTDialog.ui
+FORMS += src/RemoteBLASTDialog.ui
 SOURCES += src/RemoteBLASTPlugin.cpp \
 			src/RemoteBLASTPluginTests.cpp \
 			src/RemoteBLASTTask.cpp \

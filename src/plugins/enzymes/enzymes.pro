@@ -14,13 +14,13 @@ HEADERS += src/CloningUtilTasks.h \
            src/FindEnzymesAlgorithm.h \
            src/FindEnzymesDialog.h \
            src/FindEnzymesTask.h
-FORMS += src/ui/ConstructMoleculeDialog.ui \
-         src/ui/CreateFragmentDialog.ui \
-         src/ui/DigestSequenceDialog.ui \
-         src/ui/EditFragmentDialog.ui \
-         src/ui/EnzymesSelectorDialog.ui \
-         src/ui/EnzymesSelectorWidget.ui \
-         src/ui/FindEnzymesDialog.ui
+FORMS += src/ConstructMoleculeDialog.ui \
+         src/CreateFragmentDialog.ui \
+         src/DigestSequenceDialog.ui \
+         src/EditFragmentDialog.ui \
+         src/EnzymesSelectorDialog.ui \
+         src/EnzymesSelectorWidget.ui \
+         src/FindEnzymesDialog.ui
 SOURCES += src/CloningUtilTasks.cpp \
            src/ConstructMoleculeDialog.cpp \
            src/CreateFragmentDialog.cpp \

@@ -34,7 +34,7 @@ RESOURCES += smith_waterman.qrc
 TRANSLATIONS += transl/english.ts transl/russian.ts
 
 FORMS += \
-    src/ui/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui
+    src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui
 
 
 
