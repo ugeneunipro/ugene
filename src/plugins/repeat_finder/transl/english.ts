@@ -4,136 +4,136 @@
 <context>
     <name>FindRepeatsDialog</name>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="17"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="17"/>
         <source>Find Repeats</source>
         <translation>Find Repeats</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="87"/>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="239"/>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="299"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="87"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="239"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="299"/>
         <source>bp</source>
         <translation>bp</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="115"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="115"/>
         <source>Heuristic based selection of repeat length so the number of repeats in the sequence will not exceed 1000</source>
         <translation>Heuristic based selection of repeat length so the number of repeats in the sequence will not exceed 1000</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="118"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="118"/>
         <source>1k</source>
         <translation>1k</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="163"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="163"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="185"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="185"/>
         <source>Resets repeats identity to 100%</source>
         <translation>Resets repeats identity to 100%</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="188"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="188"/>
         <source>100</source>
         <translation>100</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="211"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="211"/>
         <source>Minimum distance between repeats</source>
         <translation>Minimum distance between repeats</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="258"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="258"/>
         <source>Maximum distance between repeats</source>
         <translation>Maximum distance between repeats</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="350"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="350"/>
         <source>Advanced</source>
         <translation>Advanced</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="356"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="356"/>
         <source>Advanced parameters</source>
         <translation>Advanced parameters</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="362"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="362"/>
         <source>Custom algorithm</source>
         <translation>Custom algorithm</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="389"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="389"/>
         <source>Search only for repeats that lie inside of an annotated region</source>
         <translation>Search only for repeats that lie inside of an annotated region</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="431"/>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="480"/>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="529"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="431"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="480"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="529"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="438"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="438"/>
         <source>Search only for repeats that have an annotated region inside</source>
         <translation>Search only for repeats that have an annotated region inside</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="487"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="487"/>
         <source>Filter repeats that have an annotated region inside</source>
         <translation>Filter repeats that have an annotated region inside</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="536"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="536"/>
         <source>Search for inverted repeats</source>
         <translation>Search for inverted repeats</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="321"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="321"/>
         <source>Region to process</source>
         <translation>Region to process</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="31"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="31"/>
         <source>Base</source>
         <translation>Base</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="37"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="37"/>
         <source>Repeat finder parameters</source>
         <translation>Repeat finder parameters</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="49"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="49"/>
         <source>Number of bases in a sliding window that is moved along the sequence</source>
         <translation>Number of bases in a sliding window that is moved along the sequence</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="52"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="52"/>
         <source>Window size</source>
         <translation>Window size</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="125"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="125"/>
         <source>How similar the two windows of the sequence</source>
         <translation>How similar the two windows of the sequence</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="128"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="128"/>
         <source>Minimum indentity per window</source>
         <translation>Minimum indentity per window</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="596"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="596"/>
         <source>Nested repeats filter algorithm</source>
         <translation>Nested repeats filter algorithm</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindRepeatsDialog.ui" line="556"/>
+        <location filename="../src/FindRepeatsDialog.ui" line="556"/>
         <source>Exclude tandems areas</source>
         <translation>Exclude tandems areas</translation>
     </message>
@@ -141,78 +141,78 @@
 <context>
     <name>FindTandemsDialog</name>
     <message>
-        <location filename="../src/ui/FindTandemsDialog.ui" line="49"/>
+        <location filename="../src/FindTandemsDialog.ui" line="49"/>
         <source>Tandem preset</source>
         <translation>Tandem preset</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindTandemsDialog.ui" line="94"/>
+        <location filename="../src/FindTandemsDialog.ui" line="94"/>
         <source>Min period</source>
         <translation>Min period</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindTandemsDialog.ui" line="114"/>
-        <location filename="../src/ui/FindTandemsDialog.ui" line="147"/>
+        <location filename="../src/FindTandemsDialog.ui" line="114"/>
+        <location filename="../src/FindTandemsDialog.ui" line="147"/>
         <source> n</source>
         <translation> n</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindTandemsDialog.ui" line="127"/>
+        <location filename="../src/FindTandemsDialog.ui" line="127"/>
         <source>Max period</source>
         <translation>Max period</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindTandemsDialog.ui" line="195"/>
+        <location filename="../src/FindTandemsDialog.ui" line="195"/>
         <source>Advanced</source>
         <translation>Advanced</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindTandemsDialog.ui" line="201"/>
+        <location filename="../src/FindTandemsDialog.ui" line="201"/>
         <source>Advanced parameters</source>
         <translation>Advanced parameters</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindTandemsDialog.ui" line="283"/>
+        <location filename="../src/FindTandemsDialog.ui" line="283"/>
         <source>Algorithm</source>
         <translation>Algorithm</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindTandemsDialog.ui" line="240"/>
+        <location filename="../src/FindTandemsDialog.ui" line="240"/>
         <source>Minimum tandem size</source>
         <translation>Minimum tandem size</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindTandemsDialog.ui" line="303"/>
+        <location filename="../src/FindTandemsDialog.ui" line="303"/>
         <source>Minimum repeat count</source>
         <translation>Minimum repeat count</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindTandemsDialog.ui" line="220"/>
+        <location filename="../src/FindTandemsDialog.ui" line="220"/>
         <source>x</source>
         <translation>x</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindTandemsDialog.ui" line="233"/>
+        <location filename="../src/FindTandemsDialog.ui" line="233"/>
         <source>Show overlapped tandems</source>
         <translation>Show overlapped tandems</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindTandemsDialog.ui" line="166"/>
+        <location filename="../src/FindTandemsDialog.ui" line="166"/>
         <source>Region to process</source>
         <translation>Region to process</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindTandemsDialog.ui" line="17"/>
+        <location filename="../src/FindTandemsDialog.ui" line="17"/>
         <source>Find Tandems</source>
         <translation>Find Tandems</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindTandemsDialog.ui" line="31"/>
+        <location filename="../src/FindTandemsDialog.ui" line="31"/>
         <source>Base</source>
         <translation>Base</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindTandemsDialog.ui" line="37"/>
+        <location filename="../src/FindTandemsDialog.ui" line="37"/>
         <source>Tandem finder parameters</source>
         <translation>Tandem finder parameters</translation>
     </message>

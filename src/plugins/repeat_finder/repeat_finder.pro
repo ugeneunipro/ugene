@@ -19,7 +19,7 @@ HEADERS += src/FindRepeatsDialog.h \
            src/RepeatQuery.h \
            src/RepeatTest.h \
            src/TandemQuery.h
-FORMS += src/ui/FindRepeatsDialog.ui src/ui/FindTandemsDialog.ui
+FORMS += src/FindRepeatsDialog.ui src/FindTandemsDialog.ui
 SOURCES += src/FindRepeatsDialog.cpp \
            src/FindRepeatsTask.cpp \
            src/FindTandemsDialog.cpp \

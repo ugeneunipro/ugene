@@ -227,9 +227,9 @@ void SWAlgorithmTask::prepare() {
 #endif
     }
     else if(SW_opencl == algType) {
+#ifdef SW2_BUILD_WITH_OPENCL
         openClGpu = AppContext::getOpenCLGpuRegistry()->acquireAnyReadyGpu();
         assert(openClGpu);
-#ifdef SW2_BUILD_WITH_OPENCL
         const SequenceWalkerConfig & config = t->getConfig();
         const quint64 needMemBytes = SmithWatermanAlgorithmOPENCL::estimateNeededGpuMemory(
             sWatermanConfig.pSm, sWatermanConfig.ptrn, sWatermanConfig.sqnc.left(config.chunkSize * config.nThreads));
@@ -412,7 +412,9 @@ Task::ReportResult SWAlgorithmTask::report() {
     if( SW_cuda == algType ) {
         cudaGpu->setAcquired(false);
     } else if(SW_opencl == algType) {
+#ifdef SW2_BUILD_WITH_OPENCL
         openClGpu->setAcquired(false);
+#endif
     }
 
     SmithWatermanResultListener* rl = sWatermanConfig.resultListener;
@@ -816,9 +818,9 @@ void PairwiseAlignmentSmithWatermanTask::prepare() {
 #endif
     }
     else if(SW_opencl == algType) {
+#ifdef SW2_BUILD_WITH_OPENCL
         openClGpu = AppContext::getOpenCLGpuRegistry()->acquireAnyReadyGpu();
         assert(openClGpu);
-#ifdef SW2_BUILD_WITH_OPENCL
         const SequenceWalkerConfig & config = t->getConfig();
         const quint64 needMemBytes = SmithWatermanAlgorithmOPENCL::estimateNeededGpuMemory(
             settings->sMatrix, *ptrn, sqnc->left(config.chunkSize * config.nThreads));
@@ -852,7 +854,9 @@ Task::ReportResult PairwiseAlignmentSmithWatermanTask::report() {
     if( SW_cuda == algType ) {
         cudaGpu->setAcquired(false);
     } else if(SW_opencl == algType) {
+#ifdef SW2_BUILD_WITH_OPENCL
         openClGpu->setAcquired(false);
+#endif
     }
 
     assert(settings->resultListener != NULL);

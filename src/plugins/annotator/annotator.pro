@@ -10,8 +10,8 @@ HEADERS += src/AnnotatorPlugin.h \
            src/CustomPatternAnnotationTask.h \
            src/GeneByGeneReportTask.h \
            src/GeneByGeneReportWorker.h
-FORMS += src/ui/CustomAutoAnnotationDialog.ui \
-         src/ui/FindAnnotationCollocationsDialog.ui
+FORMS += src/CustomAutoAnnotationDialog.ui \
+         src/FindAnnotationCollocationsDialog.ui
 SOURCES += src/AnnotatorPlugin.cpp \
            src/AnnotatorTests.cpp \
            src/CollocationsDialogController.cpp \

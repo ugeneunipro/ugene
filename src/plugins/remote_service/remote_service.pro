@@ -14,7 +14,7 @@ HEADERS += src/Base64File.h \
            src/WebTransportProtocol.h \
            src/base64/cdecode.h \
            src/base64/cencode.h
-FORMS += src/ui/RemoteServiceSupportUI.ui src/ui/TaskStatisticsDialog.ui
+FORMS += src/RemoteServiceSupportUI.ui src/TaskStatisticsDialog.ui
 SOURCES += src/Base64File.cpp \
            src/BufferedDataReader.cpp \
            src/RemoteServiceMachine.cpp \

@@ -4,93 +4,93 @@
 <context>
     <name>DotPlotDialog</name>
     <message>
-        <location filename="../src/ui/DotPlotDialog.ui" line="17"/>
+        <location filename="../src/DotPlotDialog.ui" line="17"/>
         <source>DotPlot</source>
         <translation>DotPlot</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotDialog.ui" line="30"/>
+        <location filename="../src/DotPlotDialog.ui" line="30"/>
         <source>Dotplot parameters</source>
         <translation>Dotplot parameters</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotDialog.ui" line="52"/>
+        <location filename="../src/DotPlotDialog.ui" line="52"/>
         <source>Custom algorithm</source>
         <translation>Custom algorithm</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotDialog.ui" line="99"/>
+        <location filename="../src/DotPlotDialog.ui" line="99"/>
         <source>X axis sequence</source>
         <translation>X axis sequence</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotDialog.ui" line="112"/>
+        <location filename="../src/DotPlotDialog.ui" line="112"/>
         <source>Minimum repeat length</source>
         <translation>Minimum repeat length</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotDialog.ui" line="119"/>
+        <location filename="../src/DotPlotDialog.ui" line="119"/>
         <source>Y axis sequence</source>
         <translation>Y axis sequence</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotDialog.ui" line="126"/>
+        <location filename="../src/DotPlotDialog.ui" line="126"/>
         <source>Repeats  identity</source>
         <translation>Repeats  identity</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotDialog.ui" line="151"/>
+        <location filename="../src/DotPlotDialog.ui" line="151"/>
         <source>bp</source>
         <translation>bp</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotDialog.ui" line="179"/>
+        <location filename="../src/DotPlotDialog.ui" line="179"/>
         <source>Heuristic based selection of repeat length so the number of repeats in the sequence will not exceed 1000</source>
         <translation>Heuristic based selection of repeat length so the number of repeats in the sequence will not exceed 1000</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotDialog.ui" line="182"/>
+        <location filename="../src/DotPlotDialog.ui" line="182"/>
         <source>1k</source>
         <translation>1k</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotDialog.ui" line="207"/>
+        <location filename="../src/DotPlotDialog.ui" line="207"/>
         <source>%</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotDialog.ui" line="229"/>
+        <location filename="../src/DotPlotDialog.ui" line="229"/>
         <source>Resets repeats identity to 100%</source>
         <translation>Resets repeats identity to 100%</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotDialog.ui" line="232"/>
+        <location filename="../src/DotPlotDialog.ui" line="232"/>
         <source>100</source>
         <translation>100</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotDialog.ui" line="287"/>
+        <location filename="../src/DotPlotDialog.ui" line="287"/>
         <source>Search inverted repeats</source>
         <translation>Search for inverted repeats</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotDialog.ui" line="294"/>
+        <location filename="../src/DotPlotDialog.ui" line="294"/>
         <source>Search direct repeats</source>
         <translation>Search for direct repeats</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotDialog.ui" line="333"/>
-        <location filename="../src/ui/DotPlotDialog.ui" line="340"/>
+        <location filename="../src/DotPlotDialog.ui" line="333"/>
+        <location filename="../src/DotPlotDialog.ui" line="340"/>
         <source>default</source>
         <translation>default</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotDialog.ui" line="365"/>
+        <location filename="../src/DotPlotDialog.ui" line="365"/>
         <source>Click to load a sequence from the file system. The sequence will be added to the combo boxes when it is loaded to the project</source>
         <translation>Click to load a sequence from the file system. The sequence will be added to the combo boxes when it is loaded to the project</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotDialog.ui" line="368"/>
+        <location filename="../src/DotPlotDialog.ui" line="368"/>
         <source>Load Sequence</source>
         <translation>Load Sequence</translation>
     </message>
@@ -98,40 +98,40 @@
 <context>
     <name>DotPlotFilesDialog</name>
     <message>
-        <location filename="../src/ui/DotPlotFilesDialog.ui" line="38"/>
-        <location filename="../src/ui/DotPlotFilesDialog.ui" line="72"/>
+        <location filename="../src/DotPlotFilesDialog.ui" line="38"/>
+        <location filename="../src/DotPlotFilesDialog.ui" line="72"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilesDialog.ui" line="23"/>
+        <location filename="../src/DotPlotFilesDialog.ui" line="23"/>
         <source>Build Dotplot from Sequences</source>
         <translation>Build Dotplot from Sequences</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilesDialog.ui" line="55"/>
+        <location filename="../src/DotPlotFilesDialog.ui" line="55"/>
         <source>File with first sequence</source>
         <translation>File with first sequence</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilesDialog.ui" line="45"/>
-        <location filename="../src/ui/DotPlotFilesDialog.ui" line="96"/>
+        <location filename="../src/DotPlotFilesDialog.ui" line="45"/>
+        <location filename="../src/DotPlotFilesDialog.ui" line="96"/>
         <source>Join all sequences found in the file</source>
         <translation>Join all sequences found in the file</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilesDialog.ui" line="62"/>
-        <location filename="../src/ui/DotPlotFilesDialog.ui" line="130"/>
+        <location filename="../src/DotPlotFilesDialog.ui" line="62"/>
+        <location filename="../src/DotPlotFilesDialog.ui" line="130"/>
         <source>Gap size:</source>
         <translation>Gap size:</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilesDialog.ui" line="79"/>
+        <location filename="../src/DotPlotFilesDialog.ui" line="79"/>
         <source>Compare sequence against itself</source>
         <translation>Compare sequence against itself</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilesDialog.ui" line="103"/>
+        <location filename="../src/DotPlotFilesDialog.ui" line="103"/>
         <source>File with second sequence</source>
         <translation>File with second sequence</translation>
     </message>
@@ -139,92 +139,92 @@
 <context>
     <name>DotPlotFilterDialog</name>
     <message>
-        <location filename="../src/ui/DotPlotFilterDialog.ui" line="17"/>
+        <location filename="../src/DotPlotFilterDialog.ui" line="17"/>
         <source>DotPlot</source>
         <translation>DotPlot</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilterDialog.ui" line="30"/>
+        <location filename="../src/DotPlotFilterDialog.ui" line="30"/>
         <source>Dotplot parameters</source>
         <translation>Dotplot parameters</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilterDialog.ui" line="42"/>
+        <location filename="../src/DotPlotFilterDialog.ui" line="42"/>
         <source>No filtration applied</source>
         <translation>No filtration applied</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilterDialog.ui" line="45"/>
+        <location filename="../src/DotPlotFilterDialog.ui" line="45"/>
         <source>No Filtration</source>
         <translation>No Filtration</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilterDialog.ui" line="55"/>
+        <location filename="../src/DotPlotFilterDialog.ui" line="55"/>
         <source>Show results that intersect the features</source>
         <translation>Show results that intersect the features</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilterDialog.ui" line="58"/>
+        <location filename="../src/DotPlotFilterDialog.ui" line="58"/>
         <source>Features Intersection</source>
         <translation>Features Intersection</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilterDialog.ui" line="65"/>
+        <location filename="../src/DotPlotFilterDialog.ui" line="65"/>
         <source>Intersection Parameters</source>
         <translation>Intersection Parameters</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilterDialog.ui" line="72"/>
+        <location filename="../src/DotPlotFilterDialog.ui" line="72"/>
         <source>Feature Name</source>
         <translation>Feature Name</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilterDialog.ui" line="80"/>
+        <location filename="../src/DotPlotFilterDialog.ui" line="80"/>
         <source>Select all names</source>
         <translation>Select all names</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilterDialog.ui" line="83"/>
+        <location filename="../src/DotPlotFilterDialog.ui" line="83"/>
         <source>Select All</source>
         <translation>Select All</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilterDialog.ui" line="90"/>
+        <location filename="../src/DotPlotFilterDialog.ui" line="90"/>
         <source>Invert the current selection</source>
         <translation>Invert the current selection</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilterDialog.ui" line="93"/>
+        <location filename="../src/DotPlotFilterDialog.ui" line="93"/>
         <source>Invert Selection</source>
         <translation>Invert Selection</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilterDialog.ui" line="100"/>
+        <location filename="../src/DotPlotFilterDialog.ui" line="100"/>
         <source>Clear the current selection</source>
         <translation>Clear the current selection</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilterDialog.ui" line="103"/>
+        <location filename="../src/DotPlotFilterDialog.ui" line="103"/>
         <source>Clear Selection</source>
         <translation>Clear Selection</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilterDialog.ui" line="110"/>
+        <location filename="../src/DotPlotFilterDialog.ui" line="110"/>
         <source>Select names of the features to intersection</source>
         <translation>Select names of the features to intersection</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilterDialog.ui" line="113"/>
+        <location filename="../src/DotPlotFilterDialog.ui" line="113"/>
         <source>Features Selection</source>
         <translation>Features Selection</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilterDialog.ui" line="139"/>
+        <location filename="../src/DotPlotFilterDialog.ui" line="139"/>
         <source>Select only different names</source>
         <translation>Select only different names</translation>
     </message>
     <message>
-        <location filename="../src/ui/DotPlotFilterDialog.ui" line="142"/>
+        <location filename="../src/DotPlotFilterDialog.ui" line="142"/>
         <source>Different Only</source>
         <translation>Different Only</translation>
     </message>

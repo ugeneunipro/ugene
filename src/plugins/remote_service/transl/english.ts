@@ -17,42 +17,42 @@
 <context>
     <name>RemoteServiceSupportUI</name>
     <message>
-        <location filename="../src/ui/RemoteServiceSupportUI.ui" line="14"/>
+        <location filename="../src/RemoteServiceSupportUI.ui" line="14"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/ui/RemoteServiceSupportUI.ui" line="20"/>
+        <location filename="../src/RemoteServiceSupportUI.ui" line="20"/>
         <source>URL:</source>
         <translation>URL:</translation>
     </message>
     <message>
-        <location filename="../src/ui/RemoteServiceSupportUI.ui" line="30"/>
+        <location filename="../src/RemoteServiceSupportUI.ui" line="30"/>
         <source>Account information</source>
         <translation>Account information</translation>
     </message>
     <message>
-        <location filename="../src/ui/RemoteServiceSupportUI.ui" line="36"/>
+        <location filename="../src/RemoteServiceSupportUI.ui" line="36"/>
         <source>Existing account</source>
         <translation>Existing account</translation>
     </message>
     <message>
-        <location filename="../src/ui/RemoteServiceSupportUI.ui" line="64"/>
+        <location filename="../src/RemoteServiceSupportUI.ui" line="64"/>
         <source>User name:</source>
         <translation>User name:</translation>
     </message>
     <message>
-        <location filename="../src/ui/RemoteServiceSupportUI.ui" line="87"/>
+        <location filename="../src/RemoteServiceSupportUI.ui" line="87"/>
         <source>Password</source>
         <translation>Password</translation>
     </message>
     <message>
-        <location filename="../src/ui/RemoteServiceSupportUI.ui" line="113"/>
+        <location filename="../src/RemoteServiceSupportUI.ui" line="113"/>
         <source>Remember me</source>
         <translation>Remember me</translation>
     </message>
     <message>
-        <location filename="../src/ui/RemoteServiceSupportUI.ui" line="154"/>
+        <location filename="../src/RemoteServiceSupportUI.ui" line="154"/>
         <source>Guest account</source>
         <translation>Guest account</translation>
     </message>
@@ -60,52 +60,52 @@
 <context>
     <name>RemoteTasksDialog</name>
     <message>
-        <location filename="../src/ui/TaskStatisticsDialog.ui" line="14"/>
+        <location filename="../src/TaskStatisticsDialog.ui" line="14"/>
         <source>User Remote Tasks</source>
         <translation>User Remote Tasks</translation>
     </message>
     <message>
-        <location filename="../src/ui/TaskStatisticsDialog.ui" line="22"/>
+        <location filename="../src/TaskStatisticsDialog.ui" line="22"/>
         <source>Remote service URL:</source>
         <translation>Remote service URL:</translation>
     </message>
     <message>
-        <location filename="../src/ui/TaskStatisticsDialog.ui" line="29"/>
+        <location filename="../src/TaskStatisticsDialog.ui" line="29"/>
         <source>&lt;unknown&gt;</source>
         <translation>&lt;unknown&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/TaskStatisticsDialog.ui" line="52"/>
+        <location filename="../src/TaskStatisticsDialog.ui" line="52"/>
         <source>Task ID</source>
         <translation>Task ID</translation>
     </message>
     <message>
-        <location filename="../src/ui/TaskStatisticsDialog.ui" line="57"/>
+        <location filename="../src/TaskStatisticsDialog.ui" line="57"/>
         <source>Submitted</source>
         <translation>Submitted</translation>
     </message>
     <message>
-        <location filename="../src/ui/TaskStatisticsDialog.ui" line="62"/>
+        <location filename="../src/TaskStatisticsDialog.ui" line="62"/>
         <source>State</source>
         <translation>State</translation>
     </message>
     <message>
-        <location filename="../src/ui/TaskStatisticsDialog.ui" line="67"/>
+        <location filename="../src/TaskStatisticsDialog.ui" line="67"/>
         <source>Result</source>
         <translation>Result</translation>
     </message>
     <message>
-        <location filename="../src/ui/TaskStatisticsDialog.ui" line="77"/>
+        <location filename="../src/TaskStatisticsDialog.ui" line="77"/>
         <source>Refresh</source>
         <translation>Refresh</translation>
     </message>
     <message>
-        <location filename="../src/ui/TaskStatisticsDialog.ui" line="84"/>
+        <location filename="../src/TaskStatisticsDialog.ui" line="84"/>
         <source>Fetch data</source>
         <translation>Fetch data</translation>
     </message>
     <message>
-        <location filename="../src/ui/TaskStatisticsDialog.ui" line="94"/>
+        <location filename="../src/TaskStatisticsDialog.ui" line="94"/>
         <source>Remove task data</source>
         <translation>Remove task data</translation>
     </message>

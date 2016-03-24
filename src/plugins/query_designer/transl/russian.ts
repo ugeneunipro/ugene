@@ -4,27 +4,27 @@
 <context>
     <name>AddConstraintDialog</name>
     <message>
-        <location filename="../src/ui/AddConstraintDialog.ui" line="14"/>
+        <location filename="../src/AddConstraintDialog.ui" line="14"/>
         <source>Add Constraint</source>
         <translation>Добавить расстояние</translation>
     </message>
     <message>
-        <location filename="../src/ui/AddConstraintDialog.ui" line="30"/>
+        <location filename="../src/AddConstraintDialog.ui" line="30"/>
         <source>From</source>
         <translation>От</translation>
     </message>
     <message>
-        <location filename="../src/ui/AddConstraintDialog.ui" line="43"/>
+        <location filename="../src/AddConstraintDialog.ui" line="43"/>
         <source>To</source>
         <translation>До</translation>
     </message>
     <message>
-        <location filename="../src/ui/AddConstraintDialog.ui" line="84"/>
+        <location filename="../src/AddConstraintDialog.ui" line="84"/>
         <source>Min</source>
         <translation>Минимальное</translation>
     </message>
     <message>
-        <location filename="../src/ui/AddConstraintDialog.ui" line="97"/>
+        <location filename="../src/AddConstraintDialog.ui" line="97"/>
         <source>Max</source>
         <translation>Максимальное</translation>
     </message>
@@ -32,22 +32,22 @@
 <context>
     <name>QDDialog</name>
     <message>
-        <location filename="../src/ui/QDDialog.ui" line="14"/>
+        <location filename="../src/QDDialog.ui" line="14"/>
         <source>Analyze with Query Schema</source>
         <translation>Поиск сигналов с помощью дизайнера запросов</translation>
     </message>
     <message>
-        <location filename="../src/ui/QDDialog.ui" line="22"/>
+        <location filename="../src/QDDialog.ui" line="22"/>
         <source>File with query</source>
         <translation>Файл схемы запроса</translation>
     </message>
     <message>
-        <location filename="../src/ui/QDDialog.ui" line="36"/>
+        <location filename="../src/QDDialog.ui" line="36"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/QDDialog.ui" line="54"/>
+        <location filename="../src/QDDialog.ui" line="54"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -110,24 +110,24 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QueryEditorWidget</name>
     <message>
-        <location filename="../src/ui/QueryEditorWidget.ui" line="14"/>
+        <location filename="../src/QueryEditorWidget.ui" line="14"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ui/QueryEditorWidget.ui" line="35"/>
+        <location filename="../src/QueryEditorWidget.ui" line="35"/>
         <source>Property Editor</source>
         <translation>Редактор настроек</translation>
     </message>
     <message>
-        <location filename="../src/ui/QueryEditorWidget.ui" line="49"/>
-        <location filename="../src/ui/QueryEditorWidget.ui" line="78"/>
-        <location filename="../src/ui/QueryEditorWidget.ui" line="88"/>
+        <location filename="../src/QueryEditorWidget.ui" line="49"/>
+        <location filename="../src/QueryEditorWidget.ui" line="78"/>
+        <location filename="../src/QueryEditorWidget.ui" line="88"/>
         <source>TextLabel</source>
         <translation>TextLabel</translation>
     </message>
     <message>
-        <location filename="../src/ui/QueryEditorWidget.ui" line="152"/>
+        <location filename="../src/QueryEditorWidget.ui" line="152"/>
         <source>Parameters</source>
         <translation>Параметры</translation>
     </message>
@@ -135,28 +135,28 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>RunQueryDlg</name>
     <message>
-        <location filename="../src/ui/RunQueryDialog.ui" line="26"/>
+        <location filename="../src/RunQueryDialog.ui" line="26"/>
         <source>Run Schema</source>
         <translation>Запуск схемы</translation>
     </message>
     <message>
-        <location filename="../src/ui/RunQueryDialog.ui" line="45"/>
+        <location filename="../src/RunQueryDialog.ui" line="45"/>
         <source>Load sequence</source>
         <translation>Последовательность</translation>
     </message>
     <message>
-        <location filename="../src/ui/RunQueryDialog.ui" line="58"/>
+        <location filename="../src/RunQueryDialog.ui" line="58"/>
         <source>Save results to</source>
         <translation>Сохранить результаты в</translation>
     </message>
     <message>
-        <location filename="../src/ui/RunQueryDialog.ui" line="83"/>
-        <location filename="../src/ui/RunQueryDialog.ui" line="90"/>
+        <location filename="../src/RunQueryDialog.ui" line="83"/>
+        <location filename="../src/RunQueryDialog.ui" line="90"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/RunQueryDialog.ui" line="122"/>
+        <location filename="../src/RunQueryDialog.ui" line="122"/>
         <source>Add to project</source>
         <translation>Добавить к проекту</translation>
     </message>

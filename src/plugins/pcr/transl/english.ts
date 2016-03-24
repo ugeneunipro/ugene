@@ -4,17 +4,17 @@
 <context>
     <name>EditPrimerDialog</name>
     <message>
-        <location filename="../src/ui/EditPrimerDialog.ui" line="14"/>
+        <location filename="../src/EditPrimerDialog.ui" line="14"/>
         <source>Create New Primer</source>
         <translation>Create New Primer</translation>
     </message>
     <message>
-        <location filename="../src/ui/EditPrimerDialog.ui" line="29"/>
+        <location filename="../src/EditPrimerDialog.ui" line="29"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../src/ui/EditPrimerDialog.ui" line="36"/>
+        <location filename="../src/EditPrimerDialog.ui" line="36"/>
         <source>New Primer</source>
         <translation>New Primer</translation>
     </message>
@@ -22,43 +22,43 @@
 <context>
     <name>ExportPrimersDialog</name>
     <message>
-        <location filename="../src/ui/ExportPrimersDialog.ui" line="20"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="20"/>
         <source>Export Primers</source>
         <translation>Export Primers</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExportPrimersDialog.ui" line="31"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="31"/>
         <source>Export to:</source>
         <translation>Export to:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExportPrimersDialog.ui" line="59"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="59"/>
         <source>Format:</source>
         <translation>Format:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExportPrimersDialog.ui" line="76"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="76"/>
         <source>File path:</source>
         <translation>File path:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExportPrimersDialog.ui" line="88"/>
-        <location filename="../src/ui/ExportPrimersDialog.ui" line="153"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="88"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="153"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExportPrimersDialog.ui" line="109"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="109"/>
         <source>Database:</source>
         <translation>Database:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExportPrimersDialog.ui" line="116"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="116"/>
         <source>Destination folder:</source>
         <translation>Destination folder:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExportPrimersDialog.ui" line="135"/>
+        <location filename="../src/export/ExportPrimersDialog.ui" line="135"/>
         <source>Connect</source>
         <translation>Connect</translation>
     </message>
@@ -74,43 +74,43 @@
 <context>
     <name>ImportPrimersDialog</name>
     <message>
-        <location filename="../src/ui/ImportPrimersDialog.ui" line="20"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="20"/>
         <source>Import Primers</source>
         <translation>Import Primers</translation>
     </message>
     <message>
-        <location filename="../src/ui/ImportPrimersDialog.ui" line="31"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="31"/>
         <source>Import from:</source>
         <translation>Import from:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ImportPrimersDialog.ui" line="57"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="57"/>
         <source>Connect to database</source>
         <translation>Connect to database</translation>
     </message>
     <message>
-        <location filename="../src/ui/ImportPrimersDialog.ui" line="75"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="75"/>
         <source>Files:</source>
         <translation>Files:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ImportPrimersDialog.ui" line="100"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="100"/>
         <source>Add file(s)</source>
         <translation>Add file(s)</translation>
     </message>
     <message>
-        <location filename="../src/ui/ImportPrimersDialog.ui" line="107"/>
-        <location filename="../src/ui/ImportPrimersDialog.ui" line="173"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="107"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="173"/>
         <source>Remove</source>
         <translation>Remove</translation>
     </message>
     <message>
-        <location filename="../src/ui/ImportPrimersDialog.ui" line="141"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="141"/>
         <source>Objects:</source>
         <translation>Objects:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ImportPrimersDialog.ui" line="166"/>
+        <location filename="../src/import/ImportPrimersDialog.ui" line="166"/>
         <source>Add object(s)</source>
         <translation>Add object(s)</translation>
     </message>
@@ -118,63 +118,63 @@
 <context>
     <name>InSilicoPcrOptionPanelWidget</name>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="14"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="14"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="121"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="121"/>
         <source>Maximum product</source>
         <translation>Maximum product</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="105"/>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="137"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="105"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="137"/>
         <source> bp</source>
         <translation> bp</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="89"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="89"/>
         <source>3&apos; perfect match</source>
         <translation>3&apos; perfect match</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="153"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="153"/>
         <source>Extract annotations</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="174"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="174"/>
         <source>&lt;a href=&quot;details&quot;&gt;Show primers details&lt;/a&gt;</source>
         <translation>&lt;a href=&quot;details&quot;&gt;Show primers details&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="235"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="235"/>
         <source>Find product(s)</source>
         <translation>Find product(s)</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="330"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="330"/>
         <source>Region</source>
         <translation>Region</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="335"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="335"/>
         <source>Length</source>
         <translation>Length</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="340"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="340"/>
         <source>Ta</source>
         <translation>Ta</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="369"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="369"/>
         <source>Extract product(s)</source>
         <translation>Extract product(s)</translation>
     </message>
     <message>
-        <location filename="../src/ui/InSilicoPcrOptionPanelWidget.ui" line="383"/>
+        <location filename="../src/InSilicoPcrOptionPanelWidget.ui" line="383"/>
         <source>Info: choose a nucleic sequence for running In Silico PCR</source>
         <translation>Info: choose a nucleic sequence for running In Silico PCR</translation>
     </message>
@@ -182,27 +182,27 @@
 <context>
     <name>PrimerGroupBox</name>
     <message>
-        <location filename="../src/ui/PrimerGroupBox.ui" line="14"/>
+        <location filename="../src/PrimerGroupBox.ui" line="14"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/ui/PrimerGroupBox.ui" line="69"/>
+        <location filename="../src/PrimerGroupBox.ui" line="69"/>
         <source>Reverse-complement sequence</source>
         <translation>Reverse-complement sequence</translation>
     </message>
     <message>
-        <location filename="../src/ui/PrimerGroupBox.ui" line="98"/>
+        <location filename="../src/PrimerGroupBox.ui" line="98"/>
         <source>Choose a primer from the primer library</source>
         <translation>Choose a primer from the primer library</translation>
     </message>
     <message>
-        <location filename="../src/ui/PrimerGroupBox.ui" line="125"/>
+        <location filename="../src/PrimerGroupBox.ui" line="125"/>
         <source>Mismatches</source>
         <translation>Mismatches</translation>
     </message>
     <message>
-        <location filename="../src/ui/PrimerGroupBox.ui" line="132"/>
+        <location filename="../src/PrimerGroupBox.ui" line="132"/>
         <source> bp</source>
         <translation> bp</translation>
     </message>
@@ -210,7 +210,7 @@
 <context>
     <name>PrimerLibrarySelector</name>
     <message>
-        <location filename="../src/ui/PrimerLibrarySelector.ui" line="14"/>
+        <location filename="../src/PrimerLibrarySelector.ui" line="14"/>
         <source>Choose Primer</source>
         <translation>Choose Primer</translation>
     </message>
@@ -218,7 +218,7 @@
 <context>
     <name>PrimerLibraryWidget</name>
     <message>
-        <location filename="../src/ui/PrimerLibraryWidget.ui" line="14"/>
+        <location filename="../src/PrimerLibraryWidget.ui" line="14"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
@@ -226,7 +226,7 @@
 <context>
     <name>PrimersDetailsDialog</name>
     <message>
-        <location filename="../src/ui/PrimersDetailsDialog.ui" line="14"/>
+        <location filename="../src/PrimersDetailsDialog.ui" line="14"/>
         <source>Primers Details</source>
         <translation>Primers Details</translation>
     </message>

@@ -4,97 +4,97 @@
 <context>
     <name>CircularViewSettingsWidget</name>
     <message>
-        <location filename="../src/ui/CircularViewSettingsWidget.ui" line="20"/>
+        <location filename="../src/CircularViewSettingsWidget.ui" line="20"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/ui/CircularViewSettingsWidget.ui" line="38"/>
+        <location filename="../src/CircularViewSettingsWidget.ui" line="38"/>
         <source>Show title</source>
         <translation>Show title</translation>
     </message>
     <message>
-        <location filename="../src/ui/CircularViewSettingsWidget.ui" line="48"/>
+        <location filename="../src/CircularViewSettingsWidget.ui" line="48"/>
         <source>Show length</source>
         <translation>Show length</translation>
     </message>
     <message>
-        <location filename="../src/ui/CircularViewSettingsWidget.ui" line="64"/>
+        <location filename="../src/CircularViewSettingsWidget.ui" line="64"/>
         <source>Font</source>
         <translation>Font</translation>
     </message>
     <message>
-        <location filename="../src/ui/CircularViewSettingsWidget.ui" line="84"/>
+        <location filename="../src/CircularViewSettingsWidget.ui" line="84"/>
         <source>Size</source>
         <translation>Size</translation>
     </message>
     <message>
-        <location filename="../src/ui/CircularViewSettingsWidget.ui" line="104"/>
+        <location filename="../src/CircularViewSettingsWidget.ui" line="104"/>
         <source>Attribute</source>
         <translation>Attribute</translation>
     </message>
     <message>
-        <location filename="../src/ui/CircularViewSettingsWidget.ui" line="150"/>
+        <location filename="../src/CircularViewSettingsWidget.ui" line="150"/>
         <source>Bold</source>
         <translation>Bold</translation>
     </message>
     <message>
-        <location filename="../src/ui/CircularViewSettingsWidget.ui" line="153"/>
+        <location filename="../src/CircularViewSettingsWidget.ui" line="153"/>
         <source>B</source>
         <translation>B</translation>
     </message>
     <message>
-        <location filename="../src/ui/CircularViewSettingsWidget.ui" line="193"/>
+        <location filename="../src/CircularViewSettingsWidget.ui" line="193"/>
         <source>Inside</source>
         <translation>Inside</translation>
     </message>
     <message>
-        <location filename="../src/ui/CircularViewSettingsWidget.ui" line="198"/>
+        <location filename="../src/CircularViewSettingsWidget.ui" line="198"/>
         <source>Outside</source>
         <translation>Outside</translation>
     </message>
     <message>
-        <location filename="../src/ui/CircularViewSettingsWidget.ui" line="203"/>
+        <location filename="../src/CircularViewSettingsWidget.ui" line="203"/>
         <source>Inside/Outside</source>
         <translation>Inside/Outside</translation>
     </message>
     <message>
-        <location filename="../src/ui/CircularViewSettingsWidget.ui" line="208"/>
+        <location filename="../src/CircularViewSettingsWidget.ui" line="208"/>
         <source>None</source>
         <translation>None</translation>
     </message>
     <message>
-        <location filename="../src/ui/CircularViewSettingsWidget.ui" line="292"/>
+        <location filename="../src/CircularViewSettingsWidget.ui" line="292"/>
         <source>Label font size</source>
         <translation>Label font size</translation>
     </message>
     <message>
-        <location filename="../src/ui/CircularViewSettingsWidget.ui" line="270"/>
+        <location filename="../src/CircularViewSettingsWidget.ui" line="270"/>
         <source>Show ruler line</source>
         <translation>Show ruler line</translation>
     </message>
     <message>
-        <location filename="../src/ui/CircularViewSettingsWidget.ui" line="222"/>
+        <location filename="../src/CircularViewSettingsWidget.ui" line="222"/>
         <source>Font size</source>
         <translation>Font size</translation>
     </message>
     <message>
-        <location filename="../src/ui/CircularViewSettingsWidget.ui" line="254"/>
+        <location filename="../src/CircularViewSettingsWidget.ui" line="254"/>
         <source>Label position</source>
         <translation>Label position</translation>
     </message>
     <message>
-        <location filename="../src/ui/CircularViewSettingsWidget.ui" line="280"/>
+        <location filename="../src/CircularViewSettingsWidget.ui" line="280"/>
         <source>Show coordinates</source>
         <translation>Show coordinates</translation>
     </message>
     <message>
-        <location filename="../src/ui/CircularViewSettingsWidget.ui" line="335"/>
+        <location filename="../src/CircularViewSettingsWidget.ui" line="335"/>
         <source>There are no displayed Circular Views, so settings are hidden.</source>
         <translation>There are no displayed Circular Views, so settings are hidden.</translation>
     </message>
     <message>
-        <location filename="../src/ui/CircularViewSettingsWidget.ui" line="363"/>
+        <location filename="../src/CircularViewSettingsWidget.ui" line="363"/>
         <source>Open Circular View(s)</source>
         <translation>Open Circular View(s)</translation>
     </message>
@@ -126,17 +126,17 @@
 <context>
     <name>SetSequenceOriginDialog</name>
     <message>
-        <location filename="../src/ui/SetSequenceOriginDialog.ui" line="32"/>
+        <location filename="../src/SetSequenceOriginDialog.ui" line="32"/>
         <source>Set sequence origin</source>
         <translation>Set sequence origin</translation>
     </message>
     <message>
-        <location filename="../src/ui/SetSequenceOriginDialog.ui" line="40"/>
+        <location filename="../src/SetSequenceOriginDialog.ui" line="40"/>
         <source>New origin:</source>
         <translation>New origin:</translation>
     </message>
     <message>
-        <location filename="../src/ui/SetSequenceOriginDialog.ui" line="47"/>
+        <location filename="../src/SetSequenceOriginDialog.ui" line="47"/>
         <source>New sequence origin point. All annotations will be shifted relative to new origin point.</source>
         <translation>New sequence origin point. All annotations will be shifted relative to new origin point.</translation>
     </message>

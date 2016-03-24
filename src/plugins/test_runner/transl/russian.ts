@@ -4,12 +4,12 @@
 <context>
     <name>ExcludeReasonDialog</name>
     <message>
-        <location filename="../src/ui/ExcludeReasonDialog.ui" line="20"/>
+        <location filename="../src/ExcludeReasonDialog.ui" line="20"/>
         <source>exclude reason</source>
         <translation>Exclude reason</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExcludeReasonDialog.ui" line="35"/>
+        <location filename="../src/ExcludeReasonDialog.ui" line="35"/>
         <source>Set exclude reason</source>
         <translation>Set exclude reason</translation>
     </message>
@@ -28,12 +28,12 @@
 <context>
     <name>Reporter</name>
     <message>
-        <location filename="../src/ui/Reporter.ui" line="13"/>
+        <location filename="../src/Reporter.ui" line="13"/>
         <source>utf_reporter_title</source>
         <translation>Reports</translation>
     </message>
     <message>
-        <location filename="../src/ui/Reporter.ui" line="27"/>
+        <location filename="../src/Reporter.ui" line="27"/>
         <source>about:blank</source>
         <translation>about:blank</translation>
     </message>
@@ -41,27 +41,27 @@
 <context>
     <name>TestView</name>
     <message>
-        <location filename="../src/ui/TestView.ui" line="14"/>
+        <location filename="../src/TestView.ui" line="14"/>
         <source>utf_view_title</source>
         <translation>Test runner</translation>
     </message>
     <message>
-        <location filename="../src/ui/TestView.ui" line="28"/>
+        <location filename="../src/TestView.ui" line="28"/>
         <source>testColumn</source>
         <translation>Tests</translation>
     </message>
     <message>
-        <location filename="../src/ui/TestView.ui" line="33"/>
+        <location filename="../src/TestView.ui" line="33"/>
         <source>stateColumn</source>
         <translation>State</translation>
     </message>
     <message>
-        <location filename="../src/ui/TestView.ui" line="56"/>
+        <location filename="../src/TestView.ui" line="56"/>
         <source>info_label</source>
         <translation>Info</translation>
     </message>
     <message>
-        <location filename="../src/ui/TestView.ui" line="94"/>
+        <location filename="../src/TestView.ui" line="94"/>
         <source>Save test</source>
         <translation>Save test</translation>
     </message>

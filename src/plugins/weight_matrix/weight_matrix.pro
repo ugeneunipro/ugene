@@ -15,12 +15,12 @@ HEADERS += src/WeightMatrixPlugin.h \
            src/WeightMatrixWorkers.h \
            src/WMQuery.h
 
-FORMS += src/ui/PWMBuildDialog.ui \
-         src/ui/PWMSearchDialog.ui \
-         src/ui/SearchJASPARDatabase.ui \
-         src/ui/ViewMatrixDialog.ui \
-		 src/ui/MatrixAndLogoWidget.ui \
-         src/ui/SetDefaultParametersDialog.ui
+FORMS += src/PWMBuildDialog.ui \
+         src/PWMSearchDialog.ui \
+         src/SearchJASPARDatabase.ui \
+         src/ViewMatrixDialog.ui \
+		 src/MatrixAndLogoWidget.ui \
+         src/SetDefaultParametersDialog.ui
 
 SOURCES += src/WeightMatrixPlugin.cpp \
            src/PWMBuildDialogController.cpp \

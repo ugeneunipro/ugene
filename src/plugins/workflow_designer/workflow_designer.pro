@@ -97,19 +97,19 @@ HEADERS += src/ActorCfgFilterProxyModel.h \
            src/util/SaveSchemaImageUtils.h \
            src/util/WorkerNameValidator.h \
            src/util/WriteSequenceValidator.h
-FORMS += src/ui/ChooseItemDialog.ui \
-           src/ui/CreateScriptBlockDialog.ui \
-           src/ui/DashboardsManagerDialog.ui \
-           src/ui/ExternalProcessWorkerDialog.ui \
-           src/ui/GalaxyConfigConfigurationDialog.ui \
-           src/ui/ImportSchemaDialog.ui \
-           src/ui/PaletteWidget.ui \
-           src/ui/PortAliasesConfigurationDialog.ui \
-           src/ui/SchemaAliasesConfigurationDialog.ui \
-           src/ui/StartupDialog.ui \
-           src/ui/WorkflowEditorWidget.ui \
-           src/ui/WorkflowMetaDialog.ui \
-           src/ui/WorkflowSettingsWidget.ui
+FORMS += src/ChooseItemDialog.ui \
+           src/CreateScriptBlockDialog.ui \
+           src/DashboardsManagerDialog.ui \
+           src/library/ExternalProcessWorkerDialog.ui \
+           src/GalaxyConfigConfigurationDialog.ui \
+           src/ImportSchemaDialog.ui \
+           src/PaletteWidget.ui \
+           src/PortAliasesConfigurationDialog.ui \
+           src/SchemaAliasesConfigurationDialog.ui \
+           src/StartupDialog.ui \
+           src/WorkflowEditorWidget.ui \
+           src/WorkflowMetaDialog.ui \
+           src/WorkflowSettingsWidget.ui
 SOURCES += src/ActorCfgFilterProxyModel.cpp \
            src/ActorCfgModel.cpp \
            src/BreakpointManagerView.cpp \

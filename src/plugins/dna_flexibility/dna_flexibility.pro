@@ -11,7 +11,7 @@ HEADERS += src/DNAFlexDialog.h \
            src/HighFlexSettings.h \
            src/HighFlexResult.h
 
-FORMS += src/ui/DNAFlexDialog.ui
+FORMS += src/DNAFlexDialog.ui
 
 SOURCES += src/DNAFlexDialog.cpp \
            src/DNAFlexGraph.cpp \

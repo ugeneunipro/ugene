@@ -4,12 +4,12 @@
 <context>
     <name>BuildSuffixArraySettings</name>
     <message>
-        <location filename="../src/ui/BuildSuffixArraySettings.ui" line="29"/>
+        <location filename="../src/BuildSuffixArraySettings.ui" line="29"/>
         <source>Reference fragmentation</source>
         <translation>Разбиение референса</translation>
     </message>
     <message>
-        <location filename="../src/ui/BuildSuffixArraySettings.ui" line="43"/>
+        <location filename="../src/BuildSuffixArraySettings.ui" line="43"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -26,12 +26,12 @@ p, li { white-space: pre-wrap; }
              количество памяти, используемое для выравнивания.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/BuildSuffixArraySettings.ui" line="103"/>
+        <location filename="../src/BuildSuffixArraySettings.ui" line="103"/>
         <source>Total memory usage:</source>
         <translation>Использование памяти:</translation>
     </message>
     <message>
-        <location filename="../src/ui/BuildSuffixArraySettings.ui" line="130"/>
+        <location filename="../src/BuildSuffixArraySettings.ui" line="130"/>
         <source>System memory size:</source>
         <translation>Доступно памяти:</translation>
     </message>
@@ -39,64 +39,64 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>GenomeAlignerSettings</name>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="14"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="14"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="36"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="36"/>
         <source>Chech this box if mismatches between the reference sequence and the reads are allowed.</source>
         <translation>Отметьте этот чекбокс если допускается несоответствие с референсной последовательностью.</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="39"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="39"/>
         <source>Mismatches allowed</source>
         <translation>Допустимо несоответствий</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="53"/>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="79"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="53"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="79"/>
         <source>Select the number of mismatched nucleotides allowed.</source>
         <translation>Задайте допустимое число несоответствий.</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="92"/>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="118"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="92"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="118"/>
         <source>Select the percentage of mismatches allowed. Note, that absolute number of mismatches can vary for different reads.</source>
         <translation>Задайте допустимое число несоответствий в процентах.</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="56"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="56"/>
         <source>Mismatches number</source>
         <translation>Число несоответствий</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="30"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="30"/>
         <source>Common parameters</source>
         <translation>Общие параметры</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="95"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="95"/>
         <source>Percentage of mismatches</source>
         <translation>Доля несоответствий</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="148"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="148"/>
         <source>Set short reads aligning options.</source>
         <translation>Установите настройки выравнивания.</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="171"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="171"/>
         <source>Use both the read and its reverse complement during aligning.</source>
         <translation>Использовать риды и обратно-комплементарные риды в процессе выравнивания.</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="174"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="174"/>
         <source>Align reverse complement reads</source>
         <translation>Выровнять обратно-комплементарные риды</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="184"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="184"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -109,68 +109,68 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Только отчет о лучших выравнивания (с точки зрения несоответствия).&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="191"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="191"/>
         <source>Use &quot;best&quot;-mode during the alignment</source>
         <translation>Использовать &quot;best&quot; режим в процессе выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="246"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="246"/>
         <source>Use an openCL-enabled GPU during the aligning.</source>
         <translation>Использовать доступные openCL GPU в процессе выравнивания.</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="249"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="249"/>
         <source>Use GPU-optimization</source>
         <translation>Использовать GPU оптимизацию</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="275"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="275"/>
         <source>Advanced parameters</source>
         <translation>Дополнительные параметры</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="281"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="281"/>
         <source>Maximum memory for short reads</source>
         <translation>Максимум требуемой памяти</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="331"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="331"/>
         <source>Total memory usage:</source>
         <translation>Использовано памяти:</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="374"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="374"/>
         <source>System memory size:</source>
         <translation>Доступно памяти:</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="416"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="416"/>
         <source>Index parameters</source>
         <translation>Параметры для индекса</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="422"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="422"/>
         <source>Reference fragmentation</source>
         <translation>Разбиение референса</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="482"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="482"/>
         <source>Index memory usage size:</source>
         <translation>Использование памяти для индекса:</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="545"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="545"/>
         <source>Directory for index files:</source>
         <translation>Директория для индексных файлов:</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="201"/>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="227"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="201"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="227"/>
         <source>Omit reads with qualities lower than the specified value. Reads that have no qualities are not omited.</source>
         <translation>Пропустить риды с качеством ниже указанного значения. Риды, которые не имеют оценки качества не пропускаются.</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="289"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="289"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -185,7 +185,7 @@ p, li { white-space: pre-wrap; }
                  &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="430"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="430"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -202,27 +202,27 @@ p, li { white-space: pre-wrap; }
              количество памяти, используемое для выравнивания.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="513"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="513"/>
         <source>You can choose a temporary directory for saving index files for the reference that will be built during the alignment. If you need to run this algorithm one more time with the same reference and with the same reference fragmentation parameter, you can use this prebuilt index that will be located in the temporary directory.</source>
         <translation>Вы можете задать временную директорию для сохранения индексных файлов для референса, которые будут построены в процессе выравнивания. Если необходимо запустить этот алгоритм снова с той же референсной последовательностью и с тем же параметром разбиения, вы можете использовать этот индексный файл, который будет сохранен во временной директории.</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="535"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="535"/>
         <source>Specify an index to build during execution of the selected short reads aligning algorithm. If this option is selected, the value is &lt;b&gt;required&lt;/b&gt;.</source>
         <translation>Укажите индексный файл для выравнивания выбранным алгоритмом. Если опция выбрана, то значение &lt;b&gt;обязательно&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="528"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="528"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="151"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="151"/>
         <source>Align options</source>
         <translation>Настройки выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettings.ui" line="204"/>
+        <location filename="../src/GenomeAlignerSettings.ui" line="204"/>
         <source>Omit reads with qualities lower than</source>
         <translation>Пропустить риды с качеством менее чем</translation>
     </message>
@@ -230,17 +230,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>GenomeAlignerSettingsWidget</name>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettingsWidget.ui" line="14"/>
+        <location filename="../src/GenomeAlignerSettingsWidget.ui" line="14"/>
         <source>Genome aligner settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettingsWidget.ui" line="20"/>
+        <location filename="../src/GenomeAlignerSettingsWidget.ui" line="20"/>
         <source>Directories</source>
         <translation>Директории</translation>
     </message>
     <message>
-        <location filename="../src/ui/GenomeAlignerSettingsWidget.ui" line="26"/>
+        <location filename="../src/GenomeAlignerSettingsWidget.ui" line="26"/>
         <source>Directory for built indexes</source>
         <translation>Директория для сохранения индекса</translation>
     </message>

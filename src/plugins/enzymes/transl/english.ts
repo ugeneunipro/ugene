@@ -4,147 +4,147 @@
 <context>
     <name>ConstructMoleculeDialog</name>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="20"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="20"/>
         <source>Construct Molecule</source>
         <translation>Construct Molecule</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="33"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="33"/>
         <source>Construction</source>
         <translation>Construction</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="42"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="42"/>
         <source>Available fragments:</source>
         <translation>Available fragments:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="57"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="57"/>
         <source>Fragments available from active project</source>
         <translation>Fragments available from active project</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="64"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="64"/>
         <source>Add selected fragments to new molecule contents</source>
         <translation>Add selected fragments to new molecule contents</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="67"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="67"/>
         <source>Add</source>
         <translation>Add</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="87"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="87"/>
         <source>From Project</source>
         <translation>From Project</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="94"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="94"/>
         <source>Add all available fragments to molecule contets</source>
         <translation>Add all available fragments to molecule contets</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="97"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="97"/>
         <source>Add All</source>
         <translation>Add All</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="106"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="106"/>
         <source>New molecule contents:</source>
         <translation>New molecule contents:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="119"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="119"/>
         <source>New molecule contents</source>
         <translation>New molecule contents</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="123"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="123"/>
         <source>5&apos;</source>
         <translation>5&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="128"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="128"/>
         <source>Fragment</source>
         <translation>Fragment</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="133"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="133"/>
         <source>3&apos;</source>
         <translation>3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="138"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="138"/>
         <source>Inverted</source>
         <translation>Inverted</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="161"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="161"/>
         <source>Move selected fragment up</source>
         <translation>Move selected fragment up</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="164"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="164"/>
         <source>Up</source>
         <translation>Up</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="171"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="171"/>
         <source>Move selected fragment down</source>
         <translation>Move selected fragment down</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="174"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="174"/>
         <source>Down</source>
         <translation>Down</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="181"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="181"/>
         <source>Remove selected fragment from new molecule</source>
         <translation>Remove selected fragment from new molecule</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="184"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="184"/>
         <source>Remove</source>
         <translation>Remove</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="198"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="198"/>
         <source>Clear molecule contents</source>
         <translation>Clear molecule contents</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="201"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="201"/>
         <source>Clear All</source>
         <translation>Clear All</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="223"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="223"/>
         <source>Annotate fragments in new molecule</source>
         <translation>Annotate fragments in new molecule</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="242"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="242"/>
         <source>Force &quot;blunt&quot; and omit all overhangs</source>
         <translation>Force &quot;blunt&quot; and omit all overhangs</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="258"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="258"/>
         <source>Make circular</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="236"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="236"/>
         <source>Setting this option checked will result in ignoring overhangs while constructing new molecule.</source>
         <translation>Setting this option checked will result in ignoring overhangs while constructing new molecule.</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="191"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="191"/>
         <source>Edit</source>
         <translation>Edit</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="255"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="255"/>
         <source>Circulirize result molecule</source>
         <translation>Circulirize result molecule</translation>
     </message>
@@ -153,27 +153,27 @@
         <translation type="vanished">Make circlurar</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="266"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="266"/>
         <source>Output</source>
         <translation>Output</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="274"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="274"/>
         <source>Path to file:</source>
         <translation>Path to file:</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="284"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="284"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="296"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="296"/>
         <source>Open view for new molecule</source>
         <translation>Open view for new molecule</translation>
     </message>
     <message>
-        <location filename="../src/ui/ConstructMoleculeDialog.ui" line="309"/>
+        <location filename="../src/ConstructMoleculeDialog.ui" line="309"/>
         <source>Save immediately</source>
         <translation>Save immediately</translation>
     </message>
@@ -181,39 +181,39 @@
 <context>
     <name>CreateFragmentDialog</name>
     <message>
-        <location filename="../src/ui/CreateFragmentDialog.ui" line="14"/>
+        <location filename="../src/CreateFragmentDialog.ui" line="14"/>
         <source>Create DNA Fragment</source>
         <translation>Create DNA Fragment</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateFragmentDialog.ui" line="24"/>
+        <location filename="../src/CreateFragmentDialog.ui" line="24"/>
         <source>Fragment Options</source>
         <translation>Fragment Options</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateFragmentDialog.ui" line="35"/>
+        <location filename="../src/CreateFragmentDialog.ui" line="35"/>
         <source>Include Left Overhang</source>
         <translation>Include Left Overhang</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateFragmentDialog.ui" line="49"/>
-        <location filename="../src/ui/CreateFragmentDialog.ui" line="95"/>
+        <location filename="../src/CreateFragmentDialog.ui" line="49"/>
+        <location filename="../src/CreateFragmentDialog.ui" line="95"/>
         <source>Direct</source>
         <translation>Direct</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateFragmentDialog.ui" line="59"/>
-        <location filename="../src/ui/CreateFragmentDialog.ui" line="105"/>
+        <location filename="../src/CreateFragmentDialog.ui" line="59"/>
+        <location filename="../src/CreateFragmentDialog.ui" line="105"/>
         <source>Reverse-complement</source>
         <translation>Reverse-complement</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateFragmentDialog.ui" line="81"/>
+        <location filename="../src/CreateFragmentDialog.ui" line="81"/>
         <source>Include Right Overhang</source>
         <translation>Include Right Overhang</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateFragmentDialog.ui" line="143"/>
+        <location filename="../src/CreateFragmentDialog.ui" line="143"/>
         <source>Output</source>
         <translation>Output</translation>
     </message>
@@ -221,100 +221,100 @@
 <context>
     <name>DigestSequenceDialog</name>
     <message>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="20"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="20"/>
         <source>Digest Sequence into Fragments</source>
         <translation>Digest Sequence into Fragments</translation>
     </message>
     <message>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="30"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="30"/>
         <source>Restriction Sites</source>
         <translation>Restriction Sites</translation>
     </message>
     <message>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="38"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="38"/>
         <source>Target Sequence:</source>
         <translation>Target Sequence:</translation>
     </message>
     <message>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="54"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="54"/>
         <source>&lt;sequence name&gt;</source>
         <translation>&lt;sequence name&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="65"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="65"/>
         <source>Available enzymes:</source>
         <translation>Available enzymes:</translation>
     </message>
     <message>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="78"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="78"/>
         <source>Selected enzymes:</source>
         <translation>Selected enzymes:</translation>
     </message>
     <message>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="91"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="91"/>
         <source>Add --&gt;</source>
         <translation>Add --&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="101"/>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="168"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="101"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="168"/>
         <source>Remove</source>
         <translation>Remove</translation>
     </message>
     <message>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="108"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="108"/>
         <source>Clear
  Selection </source>
         <translation>Clear
  Selection</translation>
     </message>
     <message>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="129"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="129"/>
         <source>Add All --&gt;</source>
         <translation>Add All --&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="139"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="139"/>
         <source>Conserved Annotations</source>
         <translation>Conserved Annotations</translation>
     </message>
     <message>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="145"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="145"/>
         <source>List of conserved annotations:</source>
         <translation>List of conserved annotations:</translation>
     </message>
     <message>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="152"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="152"/>
         <source>Conserved annotations can not be &quot;distrupted&quot; when cutting occurs</source>
         <translation>Conserved annotations can not be &quot;distrupted&quot; when cutting occurs</translation>
     </message>
     <message>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="161"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="161"/>
         <source>Add</source>
         <translation>Add</translation>
     </message>
     <message>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="175"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="175"/>
         <source>Remove All</source>
         <translation>Remove All</translation>
     </message>
     <message>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="211"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="211"/>
         <source>Output</source>
         <translation>Output</translation>
     </message>
     <message>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="244"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="244"/>
         <source>Use this option to treat the molecule as circular</source>
         <translation>Use this option to treat the molecule as circular</translation>
     </message>
     <message>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="247"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="247"/>
         <source>Circular molecule</source>
         <translation>Circular molecule</translation>
     </message>
     <message>
-        <location filename="../src/ui/DigestSequenceDialog.ui" line="254"/>
+        <location filename="../src/DigestSequenceDialog.ui" line="254"/>
         <source>&lt;hint label&gt;</source>
         <translation>&lt;hint label&gt;</translation>
     </message>
@@ -322,64 +322,64 @@
 <context>
     <name>EditFragmentDialog</name>
     <message>
-        <location filename="../src/ui/EditFragmentDialog.ui" line="20"/>
+        <location filename="../src/EditFragmentDialog.ui" line="20"/>
         <source>Edit Molecule Fragment</source>
         <translation>Edit Molecule Fragment</translation>
     </message>
     <message>
-        <location filename="../src/ui/EditFragmentDialog.ui" line="43"/>
-        <location filename="../src/ui/EditFragmentDialog.ui" line="135"/>
+        <location filename="../src/EditFragmentDialog.ui" line="43"/>
+        <location filename="../src/EditFragmentDialog.ui" line="135"/>
         <source>Overhang</source>
         <translation>Overhang</translation>
     </message>
     <message>
-        <location filename="../src/ui/EditFragmentDialog.ui" line="63"/>
-        <location filename="../src/ui/EditFragmentDialog.ui" line="155"/>
+        <location filename="../src/EditFragmentDialog.ui" line="63"/>
+        <location filename="../src/EditFragmentDialog.ui" line="155"/>
         <source>Custom overhang</source>
         <translation>Custom overhang</translation>
     </message>
     <message>
-        <location filename="../src/ui/EditFragmentDialog.ui" line="34"/>
-        <location filename="../src/ui/EditFragmentDialog.ui" line="129"/>
+        <location filename="../src/EditFragmentDialog.ui" line="34"/>
+        <location filename="../src/EditFragmentDialog.ui" line="129"/>
         <source>Type</source>
         <translation>Type</translation>
     </message>
     <message>
-        <location filename="../src/ui/EditFragmentDialog.ui" line="77"/>
-        <location filename="../src/ui/EditFragmentDialog.ui" line="169"/>
+        <location filename="../src/EditFragmentDialog.ui" line="77"/>
+        <location filename="../src/EditFragmentDialog.ui" line="169"/>
         <source>5&apos;-3&apos;</source>
         <translation>5&apos;-3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ui/EditFragmentDialog.ui" line="94"/>
-        <location filename="../src/ui/EditFragmentDialog.ui" line="186"/>
+        <location filename="../src/EditFragmentDialog.ui" line="94"/>
+        <location filename="../src/EditFragmentDialog.ui" line="186"/>
         <source>3&apos;-5&apos;</source>
         <translation>3&apos;-5&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ui/EditFragmentDialog.ui" line="123"/>
+        <location filename="../src/EditFragmentDialog.ui" line="123"/>
         <source>Right End</source>
         <translation>Right End</translation>
     </message>
     <message>
-        <location filename="../src/ui/EditFragmentDialog.ui" line="220"/>
+        <location filename="../src/EditFragmentDialog.ui" line="220"/>
         <source>Preview:</source>
         <translation>Preview:</translation>
     </message>
     <message>
-        <location filename="../src/ui/EditFragmentDialog.ui" line="110"/>
-        <location filename="../src/ui/EditFragmentDialog.ui" line="205"/>
+        <location filename="../src/EditFragmentDialog.ui" line="110"/>
+        <location filename="../src/EditFragmentDialog.ui" line="205"/>
         <source>Reset</source>
         <translation>Reset</translation>
     </message>
     <message>
-        <location filename="../src/ui/EditFragmentDialog.ui" line="28"/>
+        <location filename="../src/EditFragmentDialog.ui" line="28"/>
         <source>Left End</source>
         <translation>Left End</translation>
     </message>
     <message>
-        <location filename="../src/ui/EditFragmentDialog.ui" line="53"/>
-        <location filename="../src/ui/EditFragmentDialog.ui" line="145"/>
+        <location filename="../src/EditFragmentDialog.ui" line="53"/>
+        <location filename="../src/EditFragmentDialog.ui" line="145"/>
         <source>Blunt</source>
         <translation>Blunt</translation>
     </message>
@@ -387,7 +387,7 @@
 <context>
     <name>EnzymesSelectorDialog</name>
     <message>
-        <location filename="../src/ui/EnzymesSelectorDialog.ui" line="20"/>
+        <location filename="../src/EnzymesSelectorDialog.ui" line="20"/>
         <source>Select Enzymes</source>
         <translation>Select Enzymes</translation>
     </message>
@@ -395,87 +395,87 @@
 <context>
     <name>EnzymesSelectorWidget</name>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="20"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="20"/>
         <source>Select enzymes</source>
         <translation>Select enzymes</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="36"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="36"/>
         <source>Filter by name:</source>
         <translation>Filter by name:</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="81"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="81"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="86"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="86"/>
         <source>Accession</source>
         <translation>Accession</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="91"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="91"/>
         <source>Type</source>
         <translation>Type</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="96"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="96"/>
         <source>Sequence</source>
         <translation>Sequence</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="101"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="101"/>
         <source>Organizm / Details</source>
         <translation>Organizm / Details</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="110"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="110"/>
         <source>Selected enzymes:</source>
         <translation>Selected enzymes:</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="154"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="154"/>
         <source>Load enzymes database</source>
         <translation>Load enzymes database</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="157"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="157"/>
         <source>Open enzymes </source>
         <translation>Open enzymes </translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="167"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="167"/>
         <source>Export enzymes</source>
         <translation>Export enzymes</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="164"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="164"/>
         <source>Export current selection as new database</source>
         <translation>Export current selection as new database</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="181"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="181"/>
         <source>Select all enzymes in database</source>
         <translation>Select all enzymes in database</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="221"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="221"/>
         <source>Hint: selection file should contain enzymes&apos; names separtated by whitespaces or commas</source>
         <translation>Hint: selection file should contain enzymes&apos; names separtated by whitespaces or commas</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="231"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="231"/>
         <source>Save selected enzymes list to a text file</source>
         <translation>Save selected enzymes list to a text file</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="184"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="184"/>
         <source>Select All</source>
         <translation>Select All</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="126"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="126"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -488,47 +488,47 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="191"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="191"/>
         <source>Empty selection</source>
         <translation>Empty selection</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="194"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="194"/>
         <source>Select None</source>
         <translation>Select None</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="201"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="201"/>
         <source>Select enzymes by length of recognition sequence</source>
         <translation>Select enzymes by length of recognition sequence</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="204"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="204"/>
         <source>Select by length</source>
         <translation>Select by length</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="211"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="211"/>
         <source>Invert current selection</source>
         <translation>Invert current selection</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="214"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="214"/>
         <source>Invert selection</source>
         <translation>Invert selection</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="224"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="224"/>
         <source>Load selection</source>
         <translation>Load selection</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="234"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="234"/>
         <source>Save selection</source>
         <translation>Save selection</translation>
     </message>
     <message>
-        <location filename="../src/ui/EnzymesSelectorWidget.ui" line="248"/>
+        <location filename="../src/EnzymesSelectorWidget.ui" line="248"/>
         <source>REBASE Info</source>
         <translation>REBASE Info</translation>
     </message>
@@ -536,42 +536,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>FindEnzymesDialog</name>
     <message>
-        <location filename="../src/ui/FindEnzymesDialog.ui" line="17"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="17"/>
         <source>Find Restriction Sites</source>
         <translation>Find Restriction Sites</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindEnzymesDialog.ui" line="33"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="33"/>
         <source>Include only enzymes that cut from &apos;Minimum Hits&apos; to &apos;Maximum Hits&apos; times</source>
         <translation>Include only enzymes that cut from &apos;Minimum Hits&apos; to &apos;Maximum Hits&apos; times</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindEnzymesDialog.ui" line="36"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="36"/>
         <source>Filter by number of results:</source>
         <translation>Filter by number of results:</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindEnzymesDialog.ui" line="54"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="54"/>
         <source>Minimum hits:</source>
         <translation>Minimum hits:</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindEnzymesDialog.ui" line="89"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="89"/>
         <source>Maximum hits:</source>
         <translation>Maximum hits:</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindEnzymesDialog.ui" line="118"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="118"/>
         <source>Enzymes must not cut in the following region</source>
         <translation>Enzymes must not cut in the following region</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindEnzymesDialog.ui" line="121"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="121"/>
         <source>Exclude region:</source>
         <translation>Exclude region:</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindEnzymesDialog.ui" line="141"/>
+        <location filename="../src/FindEnzymesDialog.ui" line="141"/>
         <source>&lt;status label&gt;</source>
         <translation>&lt;status label&gt;</translation>
     </message>

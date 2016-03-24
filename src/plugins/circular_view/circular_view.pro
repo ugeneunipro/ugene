@@ -11,8 +11,8 @@ HEADERS += src/CircularItems.h \
            src/RestrictionMapWidget.h \
            src/SetSequenceOriginDialog.h \
            src/ShiftSequenceStartTask.h
-FORMS +=   src/ui/CircularViewSettingsWidget.ui \
-           src/ui/SetSequenceOriginDialog.ui
+FORMS +=   src/CircularViewSettingsWidget.ui \
+           src/SetSequenceOriginDialog.ui
 SOURCES += src/CircularItems.cpp \
            src/CircularView.cpp \
            src/CircularViewImageExportTask.cpp \

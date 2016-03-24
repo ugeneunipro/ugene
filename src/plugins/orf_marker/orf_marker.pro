@@ -7,7 +7,7 @@ HEADERS += src/ORFDialog.h \
            src/ORFMarkerTests.h \
            src/ORFQuery.h \
            src/ORFWorker.h
-FORMS += src/ui/ORFDialogUI.ui
+FORMS += src/ORFDialogUI.ui
 SOURCES += src/ORFDialog.cpp \
            src/ORFMarkerPlugin.cpp \
            src/ORFMarkerTask.cpp \

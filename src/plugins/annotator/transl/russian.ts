@@ -4,47 +4,47 @@
 <context>
     <name>CustomAutoAnnotationDialog</name>
     <message>
-        <location filename="../src/ui/CustomAutoAnnotationDialog.ui" line="14"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="14"/>
         <source>Plasmid Auto Annotations</source>
         <translation>Поиск плазмид</translation>
     </message>
     <message>
-        <location filename="../src/ui/CustomAutoAnnotationDialog.ui" line="20"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="20"/>
         <source>Selected features</source>
         <translation>Выбранные аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ui/CustomAutoAnnotationDialog.ui" line="26"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="26"/>
         <source>Promoter</source>
         <translation>Promoter</translation>
     </message>
     <message>
-        <location filename="../src/ui/CustomAutoAnnotationDialog.ui" line="33"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="33"/>
         <source>Origin</source>
         <translation>Origin</translation>
     </message>
     <message>
-        <location filename="../src/ui/CustomAutoAnnotationDialog.ui" line="40"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="40"/>
         <source>Terminator</source>
         <translation>Terminator</translation>
     </message>
     <message>
-        <location filename="../src/ui/CustomAutoAnnotationDialog.ui" line="47"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="47"/>
         <source>Primer</source>
         <translation>Primer</translation>
     </message>
     <message>
-        <location filename="../src/ui/CustomAutoAnnotationDialog.ui" line="54"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="54"/>
         <source>Gene</source>
         <translation>Gene</translation>
     </message>
     <message>
-        <location filename="../src/ui/CustomAutoAnnotationDialog.ui" line="61"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="61"/>
         <source>Other features</source>
         <translation>Другие аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ui/CustomAutoAnnotationDialog.ui" line="68"/>
+        <location filename="../src/CustomAutoAnnotationDialog.ui" line="68"/>
         <source>Regulatory</source>
         <translation>Regulatory</translation>
     </message>
@@ -52,57 +52,57 @@
 <context>
     <name>FindAnnotationCollocationsDialog</name>
     <message>
-        <location filename="../src/ui/FindAnnotationCollocationsDialog.ui" line="58"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="58"/>
         <source>1</source>
         <translation>1</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindAnnotationCollocationsDialog.ui" line="63"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="63"/>
         <source>2</source>
         <translation>2</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindAnnotationCollocationsDialog.ui" line="96"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="96"/>
         <source>Region size:</source>
         <translation>Размер региона:</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindAnnotationCollocationsDialog.ui" line="20"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="20"/>
         <source>Find Groups of Annotated Regions</source>
         <translation>Поиск сгруппированных аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindAnnotationCollocationsDialog.ui" line="158"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="158"/>
         <source>Save regions as annotations</source>
         <translation>Сохранить регионы как аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindAnnotationCollocationsDialog.ui" line="165"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="165"/>
         <source>Clear results</source>
         <translation>Сбросить результаты</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindAnnotationCollocationsDialog.ui" line="176"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="176"/>
         <source>Result strand</source>
         <translation>Расположение результатов</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindAnnotationCollocationsDialog.ui" line="182"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="182"/>
         <source>Direct</source>
         <translation>Прямая</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindAnnotationCollocationsDialog.ui" line="189"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="189"/>
         <source>Complement</source>
         <translation>Комплементарная</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindAnnotationCollocationsDialog.ui" line="196"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="196"/>
         <source>Both</source>
         <translation>Обе</translation>
     </message>
     <message>
-        <location filename="../src/ui/FindAnnotationCollocationsDialog.ui" line="219"/>
+        <location filename="../src/FindAnnotationCollocationsDialog.ui" line="219"/>
         <source>Annotation must fit into region</source>
         <translation>Аннотация должна содержаться в регионе</translation>
     </message>

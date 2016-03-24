@@ -4,12 +4,12 @@
 <context>
     <name>ChooseItemDialog</name>
     <message>
-        <location filename="../src/ui/ChooseItemDialog.ui" line="14"/>
+        <location filename="../src/ChooseItemDialog.ui" line="14"/>
         <source>Choose task type</source>
         <translation>Choose task type</translation>
     </message>
     <message>
-        <location filename="../src/ui/ChooseItemDialog.ui" line="20"/>
+        <location filename="../src/ChooseItemDialog.ui" line="20"/>
         <source>Add a task of the following type:</source>
         <translation>Add a task of the following type:</translation>
     </message>
@@ -17,22 +17,22 @@
 <context>
     <name>CreateExternalProcessWorkerDialog</name>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="14"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="14"/>
         <source>Create Element with Command Line Tool</source>
         <translation>Create Element with Command Line Tool</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="49"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="49"/>
         <source>Element description</source>
         <translation>Element description</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="65"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="65"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="77"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="77"/>
         <source>Description</source>
         <translation>Description</translation>
     </message>
@@ -65,7 +65,7 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:12pt;&quot;&gt;Input and output data for external tool. Name is  a command line parameter for input/output data in external tool. Set data type and format in which external tool reads/writes input/output data. You also can set description for workflow designer. Each input data will be represented as port in workflow designer. Each output data will be represented as slot of single slot.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="36"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="36"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -76,8 +76,8 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="84"/>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="349"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="84"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="349"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -86,7 +86,7 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="105"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="105"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -95,34 +95,34 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="116"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="116"/>
         <source>Input data</source>
         <translation>Input data</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="151"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="151"/>
         <source>Add input</source>
         <translation>Add input</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="158"/>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="209"/>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="281"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="158"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="209"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="281"/>
         <source>Delete</source>
         <translation>Delete</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="167"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="167"/>
         <source>Output data</source>
         <translation>Output data</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="202"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="202"/>
         <source>Add output</source>
         <translation>Add output</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="228"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="228"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -155,17 +155,17 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:12pt;&quot;&gt;Execution string and element&apos;s description. To substitute input, output data or parameter, use it&apos;s name with prefix $ in execution string. You can set parameterized description for new element(description that appears not in property editor but on element itself). In parameterized description you also can use parameters  substitution with prefix $.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="239"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="239"/>
         <source>Parameters</source>
         <translation>Parameters</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="274"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="274"/>
         <source>Add attribute</source>
         <translation>Add attribute</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="300"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="300"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -174,17 +174,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="311"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="311"/>
         <source>Command line template</source>
         <translation>Command line template</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="330"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="330"/>
         <source>Execution string</source>
         <translation>Execution string</translation>
     </message>
     <message>
-        <location filename="../src/ui/ExternalProcessWorkerDialog.ui" line="342"/>
+        <location filename="../src/library/ExternalProcessWorkerDialog.ui" line="342"/>
         <source>Parameterized description</source>
         <translation>Parameterized description</translation>
     </message>
@@ -192,27 +192,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>CreateScriptBlockDialog</name>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="14"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="14"/>
         <source>Create Element with Script</source>
         <translation>Create Element with Script</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="22"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="22"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="29"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="29"/>
         <source>ScriptBlock</source>
         <translation>ScriptBlock</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="38"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="38"/>
         <source>Description</source>
         <translation>Description</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="45"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="45"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -225,62 +225,62 @@ p, li { white-space: pre-wrap; }
 &lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt;&quot;&gt;Evaluates user&apos;s script&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="58"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="58"/>
         <source>Input Port</source>
         <translation>Input Port</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="65"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="65"/>
         <source>Add input slot</source>
         <translation>Add input slot</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="72"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="72"/>
         <source>Delete input slot</source>
         <translation>Delete input slot</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="79"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="79"/>
         <source>Output Port</source>
         <translation>Output Port</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="86"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="86"/>
         <source>Add output slot</source>
         <translation>Add output slot</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="93"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="93"/>
         <source>Delete output slot</source>
         <translation>Delete output slot</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="110"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="110"/>
         <source>Attributes</source>
         <translation>Attributes</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="117"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="117"/>
         <source>Add Attribute</source>
         <translation>Add Attribute</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="124"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="124"/>
         <source>Delete Attribute</source>
         <translation>Delete Attribute</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="149"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="149"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="164"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="164"/>
         <source>Error occured while saving new actor. Can&apos;t write to current directory. Choose another directory for store user&apos;s elements</source>
         <translation>Error occured while saving new actor. Can&apos;t write to current directory. Choose another directory for store user&apos;s elements</translation>
     </message>
     <message>
-        <location filename="../src/ui/CreateScriptBlockDialog.ui" line="182"/>
+        <location filename="../src/CreateScriptBlockDialog.ui" line="182"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -288,32 +288,32 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DashboardsManagerDialog</name>
     <message>
-        <location filename="../src/ui/DashboardsManagerDialog.ui" line="14"/>
+        <location filename="../src/DashboardsManagerDialog.ui" line="14"/>
         <source>Dashboards Manager</source>
         <translation>Dashboards Manager</translation>
     </message>
     <message>
-        <location filename="../src/ui/DashboardsManagerDialog.ui" line="20"/>
+        <location filename="../src/DashboardsManagerDialog.ui" line="20"/>
         <source>Check dashboards to show:</source>
         <translation>Check dashboards to show:</translation>
     </message>
     <message>
-        <location filename="../src/ui/DashboardsManagerDialog.ui" line="60"/>
+        <location filename="../src/DashboardsManagerDialog.ui" line="60"/>
         <source>Check selected</source>
         <translation>Check selected</translation>
     </message>
     <message>
-        <location filename="../src/ui/DashboardsManagerDialog.ui" line="67"/>
+        <location filename="../src/DashboardsManagerDialog.ui" line="67"/>
         <source>Uncheck selected</source>
         <translation>Uncheck selected</translation>
     </message>
     <message>
-        <location filename="../src/ui/DashboardsManagerDialog.ui" line="74"/>
+        <location filename="../src/DashboardsManagerDialog.ui" line="74"/>
         <source>Remove selected</source>
         <translation>Remove selected</translation>
     </message>
     <message>
-        <location filename="../src/ui/DashboardsManagerDialog.ui" line="81"/>
+        <location filename="../src/DashboardsManagerDialog.ui" line="81"/>
         <source>Select all</source>
         <translation>Select all</translation>
     </message>
@@ -321,39 +321,39 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>GalaxyConfigConfigurationDialog</name>
     <message>
-        <location filename="../src/ui/GalaxyConfigConfigurationDialog.ui" line="14"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="14"/>
         <source>Create Galaxy config</source>
         <translation>Create Galaxy config</translation>
     </message>
     <message>
-        <location filename="../src/ui/GalaxyConfigConfigurationDialog.ui" line="54"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="54"/>
         <source>Cancel</source>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../src/ui/GalaxyConfigConfigurationDialog.ui" line="67"/>
-        <location filename="../src/ui/GalaxyConfigConfigurationDialog.ui" line="164"/>
-        <location filename="../src/ui/GalaxyConfigConfigurationDialog.ui" line="177"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="67"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="164"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="177"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/GalaxyConfigConfigurationDialog.ui" line="80"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="80"/>
         <source>UGENE directory</source>
         <translation>UGENE directory</translation>
     </message>
     <message>
-        <location filename="../src/ui/GalaxyConfigConfigurationDialog.ui" line="93"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="93"/>
         <source>Destination directory</source>
         <translation>Destination directory</translation>
     </message>
     <message>
-        <location filename="../src/ui/GalaxyConfigConfigurationDialog.ui" line="106"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="106"/>
         <source>Galaxy directory</source>
         <translation>Galaxy directory</translation>
     </message>
     <message>
-        <location filename="../src/ui/GalaxyConfigConfigurationDialog.ui" line="119"/>
+        <location filename="../src/GalaxyConfigConfigurationDialog.ui" line="119"/>
         <source>Create</source>
         <translation>Create</translation>
     </message>
@@ -361,12 +361,12 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>ImportSchemaDialog</name>
     <message>
-        <location filename="../src/ui/ImportSchemaDialog.ui" line="14"/>
+        <location filename="../src/ImportSchemaDialog.ui" line="14"/>
         <source>Import Workflow to Element</source>
         <translation>Import Workflow to Element</translation>
     </message>
     <message>
-        <location filename="../src/ui/ImportSchemaDialog.ui" line="22"/>
+        <location filename="../src/ImportSchemaDialog.ui" line="22"/>
         <source>Input new element name:</source>
         <translation>Input new element name:</translation>
     </message>
@@ -374,7 +374,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PaletteWidget</name>
     <message>
-        <location filename="../src/ui/PaletteWidget.ui" line="14"/>
+        <location filename="../src/PaletteWidget.ui" line="14"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
@@ -382,42 +382,42 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>PortAliasesConfigurationDialog</name>
     <message>
-        <location filename="../src/ui/PortAliasesConfigurationDialog.ui" line="17"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="17"/>
         <source>Configure Port and Slot Aliases</source>
         <translation>Configure Port and Slot Aliases</translation>
     </message>
     <message>
-        <location filename="../src/ui/PortAliasesConfigurationDialog.ui" line="37"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="37"/>
         <source>Workflow ports</source>
         <translation>Workflow ports</translation>
     </message>
     <message>
-        <location filename="../src/ui/PortAliasesConfigurationDialog.ui" line="72"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="72"/>
         <source>Available slot</source>
         <translation>Available slot</translation>
     </message>
     <message>
-        <location filename="../src/ui/PortAliasesConfigurationDialog.ui" line="77"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="77"/>
         <source>Slot alias</source>
         <translation>Slot alias</translation>
     </message>
     <message>
-        <location filename="../src/ui/PortAliasesConfigurationDialog.ui" line="86"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="86"/>
         <source>Port alias</source>
         <translation>Port alias</translation>
     </message>
     <message>
-        <location filename="../src/ui/PortAliasesConfigurationDialog.ui" line="95"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="95"/>
         <source>Port type:</source>
         <translation>Port type:</translation>
     </message>
     <message>
-        <location filename="../src/ui/PortAliasesConfigurationDialog.ui" line="109"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="109"/>
         <source>Port alias:</source>
         <translation>Port alias:</translation>
     </message>
     <message>
-        <location filename="../src/ui/PortAliasesConfigurationDialog.ui" line="119"/>
+        <location filename="../src/PortAliasesConfigurationDialog.ui" line="119"/>
         <source>Port description:</source>
         <translation>Port description:</translation>
     </message>
@@ -648,27 +648,27 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>SchemaAliasesConfigurationDialog</name>
     <message>
-        <location filename="../src/ui/SchemaAliasesConfigurationDialog.ui" line="34"/>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="34"/>
         <source>Workflow elements</source>
         <translation>Workflow elements</translation>
     </message>
     <message>
-        <location filename="../src/ui/SchemaAliasesConfigurationDialog.ui" line="17"/>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="17"/>
         <source>Configure Parameter Aliases</source>
         <translation>Configure Parameter Aliases</translation>
     </message>
     <message>
-        <location filename="../src/ui/SchemaAliasesConfigurationDialog.ui" line="69"/>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="69"/>
         <source>Schema parameter</source>
         <translation>Schema parameter</translation>
     </message>
     <message>
-        <location filename="../src/ui/SchemaAliasesConfigurationDialog.ui" line="74"/>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="74"/>
         <source>Parameter alias</source>
         <translation>Parameter alias</translation>
     </message>
     <message>
-        <location filename="../src/ui/SchemaAliasesConfigurationDialog.ui" line="79"/>
+        <location filename="../src/SchemaAliasesConfigurationDialog.ui" line="79"/>
         <source>Help message</source>
         <translation>Help message</translation>
     </message>
@@ -676,17 +676,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>StartupDialog</name>
     <message>
-        <location filename="../src/ui/StartupDialog.ui" line="14"/>
+        <location filename="../src/StartupDialog.ui" line="14"/>
         <source>Choose Output Directory</source>
         <translation>Choose Output Directory</translation>
     </message>
     <message>
-        <location filename="../src/ui/StartupDialog.ui" line="20"/>
+        <location filename="../src/StartupDialog.ui" line="20"/>
         <source>Output Directory</source>
         <translation>Output Directory</translation>
     </message>
     <message>
-        <location filename="../src/ui/StartupDialog.ui" line="33"/>
+        <location filename="../src/StartupDialog.ui" line="33"/>
         <source>Note: you can change this option in the UGENE Application Settings
 (Settings &gt; Preferences &gt; Workflow Designer)</source>
         <translation>Note: you can change this option in the UGENE Application Settings
@@ -6468,32 +6468,32 @@ Do you want to save changes?</translation>
 <context>
     <name>WorkflowEditorWidget</name>
     <message>
-        <location filename="../src/ui/WorkflowEditorWidget.ui" line="14"/>
+        <location filename="../src/WorkflowEditorWidget.ui" line="14"/>
         <source>Form</source>
         <translation>Form</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowEditorWidget.ui" line="65"/>
+        <location filename="../src/WorkflowEditorWidget.ui" line="65"/>
         <source>Property Editor</source>
         <translation>Property Editor</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowEditorWidget.ui" line="97"/>
+        <location filename="../src/WorkflowEditorWidget.ui" line="97"/>
         <source>TextLabel</source>
         <translation>TextLabel</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowEditorWidget.ui" line="179"/>
+        <location filename="../src/WorkflowEditorWidget.ui" line="179"/>
         <source>Parameters</source>
         <translation>Parameters</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowEditorWidget.ui" line="273"/>
+        <location filename="../src/WorkflowEditorWidget.ui" line="273"/>
         <source>Input data</source>
         <translation>Input data</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowEditorWidget.ui" line="320"/>
+        <location filename="../src/WorkflowEditorWidget.ui" line="320"/>
         <source>Output data</source>
         <translation>Output data</translation>
     </message>
@@ -6501,27 +6501,27 @@ Do you want to save changes?</translation>
 <context>
     <name>WorkflowMetaDialog</name>
     <message>
-        <location filename="../src/ui/WorkflowMetaDialog.ui" line="20"/>
+        <location filename="../src/WorkflowMetaDialog.ui" line="20"/>
         <source>Workflow Properties</source>
         <translation>Workflow Properties</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowMetaDialog.ui" line="28"/>
+        <location filename="../src/WorkflowMetaDialog.ui" line="28"/>
         <source>Location</source>
         <translation>Location</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowMetaDialog.ui" line="38"/>
+        <location filename="../src/WorkflowMetaDialog.ui" line="38"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowMetaDialog.ui" line="45"/>
+        <location filename="../src/WorkflowMetaDialog.ui" line="45"/>
         <source>Name</source>
         <translation>Name</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowMetaDialog.ui" line="55"/>
+        <location filename="../src/WorkflowMetaDialog.ui" line="55"/>
         <source>Comment</source>
         <translation>Comment</translation>
     </message>
@@ -6529,77 +6529,77 @@ Do you want to save changes?</translation>
 <context>
     <name>WorkflowSettingsWidget</name>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="14"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="14"/>
         <source>Resource settings</source>
         <translation>Resource settings</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="20"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="20"/>
         <source>Scene appearance</source>
         <translation>Scene appearance</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="42"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="42"/>
         <source>Element style</source>
         <translation>Element style</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="56"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="56"/>
         <source>Element font</source>
         <translation>Element font</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="70"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="70"/>
         <source>Element background color</source>
         <translation>Element background color</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="105"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="105"/>
         <source>Enable debugger</source>
         <translation>Enable debugger</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="124"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="124"/>
         <source>Use directory for output files</source>
         <translation>Use directory for output files</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="145"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="145"/>
         <source>Directory for custom elements with scripts</source>
         <translation>Directory for custom elements with scripts</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="166"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="166"/>
         <source>Directory for custom elements with command line tools</source>
         <translation>Directory for custom elements with command line tools</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="187"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="187"/>
         <source>Directory for included schema elements</source>
         <translation>Directory for included schema elements</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="33"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="33"/>
         <source>Snap to grid</source>
         <translation>Snap to grid</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="26"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="26"/>
         <source>Show grid</source>
         <translation>Show grid</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="92"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="92"/>
         <source>Runtime settings</source>
         <translation>Runtime settings</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="98"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="98"/>
         <source>Track running progress</source>
         <translation>Track running progress</translation>
     </message>
     <message>
-        <location filename="../src/ui/WorkflowSettingsWidget.ui" line="118"/>
+        <location filename="../src/WorkflowSettingsWidget.ui" line="118"/>
         <source>Directories</source>
         <translation>Directories</translation>
     </message>

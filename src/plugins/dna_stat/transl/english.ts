@@ -4,67 +4,67 @@
 <context>
     <name>DNAStatMSAProfileDialog</name>
     <message>
-        <location filename="../src/ui/DNAStatMSAProfileDialog.ui" line="14"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui" line="14"/>
         <source>Generate Alignment Profile</source>
         <translation>Generate Alignment Profile</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAStatMSAProfileDialog.ui" line="20"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui" line="20"/>
         <source>Profile mode</source>
         <translation>Profile mode</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAStatMSAProfileDialog.ui" line="26"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui" line="26"/>
         <source>Counts</source>
         <translation>Counts</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAStatMSAProfileDialog.ui" line="36"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui" line="36"/>
         <source>Percents</source>
         <translation>Percents</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAStatMSAProfileDialog.ui" line="46"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui" line="46"/>
         <source>Custom options</source>
         <translation>Custom options</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAStatMSAProfileDialog.ui" line="52"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui" line="52"/>
         <source>Show scores for gaps</source>
         <translation>Show scores for gaps</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAStatMSAProfileDialog.ui" line="59"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui" line="59"/>
         <source>Show scores for symbols not used in alignment</source>
         <translation>Show scores for symbols not used in alignment</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAStatMSAProfileDialog.ui" line="66"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui" line="66"/>
         <source>Skip gaps in consensus position increments</source>
         <translation>Skip gaps in consensus position increments</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAStatMSAProfileDialog.ui" line="76"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui" line="76"/>
         <source>Save profile to file</source>
         <translation>Save profile to file</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAStatMSAProfileDialog.ui" line="88"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui" line="88"/>
         <source>File</source>
         <translation>File</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAStatMSAProfileDialog.ui" line="98"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui" line="98"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAStatMSAProfileDialog.ui" line="105"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui" line="105"/>
         <source>Hypertext  (.HTML)</source>
         <translation>Hypertext  (.HTML)</translation>
     </message>
     <message>
-        <location filename="../src/ui/DNAStatMSAProfileDialog.ui" line="115"/>
+        <location filename="../src/DNAStatMSAProfileDialog.ui" line="115"/>
         <source>Comma separated ( .CSV)</source>
         <translation>Comma separated ( .CSV)</translation>
     </message>
@@ -72,62 +72,62 @@
 <context>
     <name>DistanceMatrixMSAProfileDialog</name>
     <message>
-        <location filename="../src/ui/DistanceMatrixMSAProfileDialog.ui" line="14"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="14"/>
         <source>Generate Distance Matrix</source>
         <translation>Generate Distance Matrix</translation>
     </message>
     <message>
-        <location filename="../src/ui/DistanceMatrixMSAProfileDialog.ui" line="22"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="22"/>
         <source>Distance algorithm</source>
         <translation>Distance algorithm</translation>
     </message>
     <message>
-        <location filename="../src/ui/DistanceMatrixMSAProfileDialog.ui" line="34"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="34"/>
         <source>Profile mode</source>
         <translation>Profile mode</translation>
     </message>
     <message>
-        <location filename="../src/ui/DistanceMatrixMSAProfileDialog.ui" line="40"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="40"/>
         <source>Counts</source>
         <translation>Counts</translation>
     </message>
     <message>
-        <location filename="../src/ui/DistanceMatrixMSAProfileDialog.ui" line="50"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="50"/>
         <source>Percents</source>
         <translation>Percents</translation>
     </message>
     <message>
-        <location filename="../src/ui/DistanceMatrixMSAProfileDialog.ui" line="57"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="57"/>
         <source>Exclude gaps</source>
         <translation>Exclude gaps</translation>
     </message>
     <message>
-        <location filename="../src/ui/DistanceMatrixMSAProfileDialog.ui" line="67"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="67"/>
         <source>Show group statistics of multiple alignment</source>
         <translation>Show group statistics of multiple alignment</translation>
     </message>
     <message>
-        <location filename="../src/ui/DistanceMatrixMSAProfileDialog.ui" line="77"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="77"/>
         <source>Save profile to file</source>
         <translation>Save profile to file</translation>
     </message>
     <message>
-        <location filename="../src/ui/DistanceMatrixMSAProfileDialog.ui" line="89"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="89"/>
         <source>File</source>
         <translation>File</translation>
     </message>
     <message>
-        <location filename="../src/ui/DistanceMatrixMSAProfileDialog.ui" line="99"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="99"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/DistanceMatrixMSAProfileDialog.ui" line="106"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="106"/>
         <source>Hypertext  (.HTML)</source>
         <translation>Hypertext  (.HTML)</translation>
     </message>
     <message>
-        <location filename="../src/ui/DistanceMatrixMSAProfileDialog.ui" line="116"/>
+        <location filename="../src/DistanceMatrixMSAProfileDialog.ui" line="116"/>
         <source>Comma separated ( .CSV)</source>
         <translation>Comma separated ( .CSV)</translation>
     </message>

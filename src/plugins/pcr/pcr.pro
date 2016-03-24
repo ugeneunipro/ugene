@@ -33,14 +33,14 @@ HEADERS += src/EditPrimerDialog.h \
            src/import/ImportPrimersFromFolderTask.h \
            src/import/ImportPrimersMultiTask.h \
 
-FORMS += src/ui/EditPrimerDialog.ui \
-         src/ui/ExportPrimersDialog.ui \
-         src/ui/ImportPrimersDialog.ui \
-         src/ui/InSilicoPcrOptionPanelWidget.ui \
-         src/ui/PrimerGroupBox.ui \
-         src/ui/PrimerLibrarySelector.ui \
-         src/ui/PrimerLibraryWidget.ui \
-         src/ui/PrimersDetailsDialog.ui
+FORMS += src/EditPrimerDialog.ui \
+         src/export/ExportPrimersDialog.ui \
+         src/import/ImportPrimersDialog.ui \
+         src/InSilicoPcrOptionPanelWidget.ui \
+         src/PrimerGroupBox.ui \
+         src/PrimerLibrarySelector.ui \
+         src/PrimerLibraryWidget.ui \
+         src/PrimersDetailsDialog.ui
 
 SOURCES += src/EditPrimerDialog.cpp \
            src/ExtractProductTask.cpp \

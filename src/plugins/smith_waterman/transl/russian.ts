@@ -4,32 +4,32 @@
 <context>
     <name>PairwiseAlignmentSmithWatermanOptionsPanelMainWidget</name>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="14"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="14"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="29"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="29"/>
         <source>Algorithm version:</source>
         <translation>Версия алгоритма:</translation>
     </message>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="39"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="39"/>
         <source>Scoring matrix:</source>
         <translation>Матрица:</translation>
     </message>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="62"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="62"/>
         <source>Gap penalty</source>
         <translation>Штраф за пробел</translation>
     </message>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="77"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="77"/>
         <source>Open:</source>
         <translation>Открыть:</translation>
     </message>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="84"/>
+        <location filename="../src/PairwiseAlignmentSmithWatermanOptionsPanelMainWidget.ui" line="84"/>
         <source>Extension:</source>
         <translation>Расширение:</translation>
     </message>
