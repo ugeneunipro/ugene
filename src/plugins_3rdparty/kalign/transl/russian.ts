@@ -4,54 +4,54 @@
 <context>
     <name>KalignDialog</name>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="32"/>
+        <location filename="../src/KalignDialog.ui" line="32"/>
         <source>Align with Kalign</source>
         <translation>Выравнивание с помощью Kalign</translation>
     </message>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="54"/>
+        <location filename="../src/KalignDialog.ui" line="54"/>
         <source>Input file</source>
         <translation>Входной файл</translation>
     </message>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="64"/>
-        <location filename="../src/ui/KalignDialog.ui" line="81"/>
+        <location filename="../src/KalignDialog.ui" line="64"/>
+        <location filename="../src/KalignDialog.ui" line="81"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="71"/>
-        <location filename="../src/ui/KalignDialog.ui" line="307"/>
+        <location filename="../src/KalignDialog.ui" line="71"/>
+        <location filename="../src/KalignDialog.ui" line="307"/>
         <source>Output file</source>
         <translation>Выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="99"/>
+        <location filename="../src/KalignDialog.ui" line="99"/>
         <source>Advanced options</source>
         <translation>Дополнительные опции</translation>
     </message>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="114"/>
+        <location filename="../src/KalignDialog.ui" line="114"/>
         <source>Gap open penalty</source>
         <translation>Штраф за открытие пробела</translation>
     </message>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="160"/>
+        <location filename="../src/KalignDialog.ui" line="160"/>
         <source>Gap extension penalty</source>
         <translation>Штраф за промежуточный пробел</translation>
     </message>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="206"/>
+        <location filename="../src/KalignDialog.ui" line="206"/>
         <source>Terminal gap penalty</source>
         <translation>Штраф за закрытие пробела</translation>
     </message>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="252"/>
+        <location filename="../src/KalignDialog.ui" line="252"/>
         <source>Bonus score</source>
         <translation>Бонусные очки</translation>
     </message>
     <message>
-        <location filename="../src/ui/KalignDialog.ui" line="295"/>
+        <location filename="../src/KalignDialog.ui" line="295"/>
         <source>Translate to amino when aligning</source>
         <translation>Транслировать в амины в процессе выравнивания</translation>
     </message>
@@ -59,27 +59,27 @@
 <context>
     <name>PairwiseAlignmentHirschbergOptionsPanelMainWidget</name>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="14"/>
+        <location filename="../src/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="14"/>
         <source>Form</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="37"/>
+        <location filename="../src/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="37"/>
         <source>Gap open penalty</source>
         <translation>Штраф за открытие пробела</translation>
     </message>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="57"/>
+        <location filename="../src/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="57"/>
         <source>Gap extension penalty</source>
         <translation>Штраф за промежуточный пробел</translation>
     </message>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="77"/>
+        <location filename="../src/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="77"/>
         <source>Terminate gap penalty</source>
         <translation>Штраф за закрытие пробела</translation>
     </message>
     <message>
-        <location filename="../src/ui/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="97"/>
+        <location filename="../src/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui" line="97"/>
         <source>Bonus score</source>
         <translation>Бонусные очки</translation>
     </message>

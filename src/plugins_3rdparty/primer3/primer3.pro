@@ -13,7 +13,7 @@ HEADERS += src/Primer3Dialog.h \
            src/primer3_core/primer3.h \
            src/primer3_core/primer3_main.h \
     src/FindExonRegionsTask.h
-FORMS += src/ui/Primer3Dialog.ui
+FORMS += src/Primer3Dialog.ui
 SOURCES += src/Primer3Dialog.cpp \
            src/Primer3Plugin.cpp \
            src/Primer3TaskSettings.cpp \

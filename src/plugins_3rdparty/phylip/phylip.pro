@@ -15,7 +15,7 @@ HEADERS += src/SeqBootAdapter.h \
            src/phylip.h \
            src/protdist.h \
            src/seq.h
-FORMS += src/ui/NeighborJoinWidget.ui
+FORMS += src/NeighborJoinWidget.ui
 SOURCES += src/SeqBootAdapter.cpp \
            src/cons.cpp \
            src/seqboot.cpp \

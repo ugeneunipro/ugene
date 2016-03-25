@@ -14,7 +14,7 @@ HEADERS += src/DIPropertiesSitecon.h \
            src/SiteconSearchTask.h \
            src/SiteconWorkers.h \
            src/SiteconQuery.h
-FORMS += src/ui/SiteconBuildDialog.ui src/ui/SiteconSearchDialog.ui
+FORMS += src/SiteconBuildDialog.ui src/SiteconSearchDialog.ui
 SOURCES += src/DIPropertiesSitecon.cpp \
            src/DIPropertiesTests.cpp \
            src/SiteconAlgorithm.cpp \

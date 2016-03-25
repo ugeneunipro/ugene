@@ -20,7 +20,7 @@
  */
 
 #include "Primer3Tests.h"
-#include "primer3.h"
+#include "primer3_core/primer3.h"
 
 namespace U2{
 

@@ -30,7 +30,7 @@
 #include "Primer3TaskSettings.h"
 #include "FindExonRegionsTask.h"
 
-#include "primer3.h"
+#include "primer3_core/primer3.h"
 
 struct primers_t;
 

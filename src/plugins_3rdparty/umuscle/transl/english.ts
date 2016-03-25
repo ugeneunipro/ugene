@@ -4,88 +4,88 @@
 <context>
     <name>MuscleAlignmentDialog</name>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="20"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="20"/>
         <source>Align with MUSCLE</source>
         <translation>Align with MUSCLE</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="36"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="36"/>
         <source>Input file</source>
         <translation>Input file</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="46"/>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="63"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="46"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="63"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="53"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="53"/>
         <source>Output file</source>
         <translation>Output file</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="83"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="83"/>
         <source>Mode</source>
         <translation>Mode</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="95"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="95"/>
         <source>Mode details:</source>
         <translation>Mode details:</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="115"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="115"/>
         <source>Advanced options</source>
         <translation>Advanced options</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="138"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="138"/>
         <source>Max iterations</source>
         <translation>Max iterations</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="181"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="181"/>
         <source>Max time (minutes)</source>
         <translation>Max time (minutes)</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="225"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="225"/>
         <source>Translating alignment to amino allows to avoid errors of inserting gaps within codon boundaries.</source>
         <translation>Translating alignment to amino allows to avoid errors of inserting gaps within codon boundaries.</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="228"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="228"/>
         <source>Translate to amino when aligning</source>
         <translation>Translate to amino when aligning</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="240"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="240"/>
         <source>Translation table:</source>
         <translation>Translation table:</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="261"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="261"/>
         <source>Region to align</source>
         <translation>Region to align</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="351"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="351"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="269"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="269"/>
         <source>Whole alignment</source>
         <translation>Whole alignment</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="284"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="284"/>
         <source>Column range</source>
         <translation>Column range</translation>
     </message>
     <message>
-        <location filename="../src/ui/MuscleAlignDialog.ui" line="123"/>
+        <location filename="../src/MuscleAlignDialog.ui" line="123"/>
         <source>Do not re-arrange sequences (-stable)</source>
         <translation>Do not re-arrange sequences (-stable)</translation>
     </message>

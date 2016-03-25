@@ -49,7 +49,7 @@ HEADERS += src/MuscleAdapter.h \
            src/muscle/types.h \
            src/muscle/unixio.h \
            src/umuscle_tests/umuscleTests.h
-FORMS += src/ui/MuscleAlignDialog.ui
+FORMS += src/MuscleAlignDialog.ui
 SOURCES += src/MuscleAdapter.cpp \
            src/MuscleAlignDialogController.cpp \
            src/MuscleParallel.cpp \

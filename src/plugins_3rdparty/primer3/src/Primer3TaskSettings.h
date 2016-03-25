@@ -30,7 +30,7 @@
 #include <QtCore/QPair>
 #include <U2Core/U2Region.h>
 #include <U2Core/U2Range.h>
-#include "primer3.h"
+#include "primer3_core/primer3.h"
 
 namespace U2 {
 

@@ -21,7 +21,7 @@
 
 #include <cstring>
 #include <cstdlib>
-#include "boulder_input.h"
+#include "primer3_core/boulder_input.h"
 #include "Primer3TaskSettings.h"
 
 namespace U2 {

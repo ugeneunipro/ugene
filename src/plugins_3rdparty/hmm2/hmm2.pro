@@ -25,9 +25,9 @@ HEADERS += src/HMMIO.h \
            src/u_search/uhmmsearch_sse.h \
            src/u_spu/hmmer_spu.h \
            src/u_tests/uhmmerTests.h
-FORMS += src/u_build/ui/HMMBuildDialog.ui \
-         src/u_calibrate/ui/HMMCalibrateDialog.ui \
-         src/u_search/ui/HMMSearchDialog.ui
+FORMS += src/u_build/HMMBuildDialog.ui \
+         src/u_calibrate/HMMCalibrateDialog.ui \
+         src/u_search/HMMSearchDialog.ui
 SOURCES += src/HMMIO.cpp \
            src/HMMIOWorker.cpp \
            src/TaskLocalStorage.cpp \

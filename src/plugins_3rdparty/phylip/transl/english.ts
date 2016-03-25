@@ -27,62 +27,62 @@
 <context>
     <name>NeighborJoinWidget</name>
     <message>
-        <location filename="../src/ui/NeighborJoinWidget.ui" line="51"/>
+        <location filename="../src/NeighborJoinWidget.ui" line="51"/>
         <source>Distance Matrix</source>
         <translation type="unfinished">Distance Matrix</translation>
     </message>
     <message>
-        <location filename="../src/ui/NeighborJoinWidget.ui" line="68"/>
+        <location filename="../src/NeighborJoinWidget.ui" line="68"/>
         <source>Distance matrix model</source>
         <translation type="unfinished">Distance matrix model</translation>
     </message>
     <message>
-        <location filename="../src/ui/NeighborJoinWidget.ui" line="88"/>
+        <location filename="../src/NeighborJoinWidget.ui" line="88"/>
         <source>Coefficient of variation of substitution rate among sites</source>
         <translation type="unfinished">Coefficient of variation of substitution rate among sites</translation>
     </message>
     <message>
-        <location filename="../src/ui/NeighborJoinWidget.ui" line="117"/>
+        <location filename="../src/NeighborJoinWidget.ui" line="117"/>
         <source>Gamma distributed rates across sites</source>
         <translation type="unfinished">Gamma distributed rates across sites</translation>
     </message>
     <message>
-        <location filename="../src/ui/NeighborJoinWidget.ui" line="131"/>
+        <location filename="../src/NeighborJoinWidget.ui" line="131"/>
         <source>Transition/transversion ratio</source>
         <translation type="unfinished">Transition/transversion ratio</translation>
     </message>
     <message>
-        <location filename="../src/ui/NeighborJoinWidget.ui" line="176"/>
+        <location filename="../src/NeighborJoinWidget.ui" line="176"/>
         <source>Bootstrapping and Consensus Tree</source>
         <translation type="unfinished">Bootstrapping and Consensus Tree</translation>
     </message>
     <message>
-        <location filename="../src/ui/NeighborJoinWidget.ui" line="185"/>
+        <location filename="../src/NeighborJoinWidget.ui" line="185"/>
         <source>Enable bootstrapping</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/ui/NeighborJoinWidget.ui" line="218"/>
+        <location filename="../src/NeighborJoinWidget.ui" line="218"/>
         <source>Number of replicates</source>
         <translation type="unfinished">Number of replicates</translation>
     </message>
     <message>
-        <location filename="../src/ui/NeighborJoinWidget.ui" line="245"/>
+        <location filename="../src/NeighborJoinWidget.ui" line="245"/>
         <source>Seed (must be odd)</source>
         <translation type="unfinished">Seed (must be odd)</translation>
     </message>
     <message>
-        <location filename="../src/ui/NeighborJoinWidget.ui" line="272"/>
+        <location filename="../src/NeighborJoinWidget.ui" line="272"/>
         <source>Consensus type</source>
         <translation type="unfinished">Consensus type</translation>
     </message>
     <message>
-        <location filename="../src/ui/NeighborJoinWidget.ui" line="289"/>
+        <location filename="../src/NeighborJoinWidget.ui" line="289"/>
         <source>Fraction</source>
         <translation type="unfinished">Fraction</translation>
     </message>
     <message>
-        <location filename="../src/ui/NeighborJoinWidget.ui" line="331"/>
+        <location filename="../src/NeighborJoinWidget.ui" line="331"/>
         <source>Display Options</source>
         <translation type="unfinished"></translation>
     </message>

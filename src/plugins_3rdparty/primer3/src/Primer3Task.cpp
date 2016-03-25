@@ -30,8 +30,8 @@
 #include <U2Core/U1AnnotationUtils.h>
 
 #include "Primer3Task.h"
-#include "boulder_input.h"
-#include "primer3_main.h"
+#include "primer3_core/boulder_input.h"
+#include "primer3_core/primer3_main.h"
 
 namespace U2 {
 

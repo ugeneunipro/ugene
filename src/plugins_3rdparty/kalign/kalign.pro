@@ -17,7 +17,6 @@ HEADERS += src/KalignAdapter.h \
            src/kalign2/kalign2_feature.h \
            src/kalign2/kalign2_hirschberg.h \
            src/kalign2/kalign2_hirschberg_dna.h \
-           src/kalign2/kalign2_hirschberg_large.h \
            src/kalign2/kalign2_input.h \
            src/kalign2/kalign2_output.h \
            src/kalign2/kalign2_profile_alignment.h \ 
@@ -25,8 +24,8 @@ HEADERS += src/KalignAdapter.h \
     src/PairwiseAlignmentHirschbergGUIExtensionFactory.h \
     src/PairwiseAlignmentHirschbergTask.h
 
-FORMS += src/ui/KalignDialog.ui \
-    src/ui/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui
+FORMS += src/KalignDialog.ui \
+    src/PairwiseAlignmentHirschbergOptionsPanelMainWidget.ui
 
 SOURCES += src/KalignAdapter.cpp \
            src/KalignDialogController.cpp \
