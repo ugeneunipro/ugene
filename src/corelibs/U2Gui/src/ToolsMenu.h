@@ -53,6 +53,7 @@ public:
     static const QString NGS_INDEX;
     static const QString NGS_RAW_DNA;
     static const QString NGS_CALL_VARIANTS;
+    static const QString NGS_CALL_VARIANTS_AND_EFFECT;
     static const QString NGS_VARIANT_EFFECT;
     static const QString NGS_RAW_RNA;
     static const QString NGS_RNA;
