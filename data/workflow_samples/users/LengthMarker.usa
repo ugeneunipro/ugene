@@ -1,0 +1,14 @@
+<!DOCTYPE GB2WORKFLOW>
+<Actor>
+ <Input-port>
+  <In-Slots Slot="seq"/>
+ </Input-port>
+ <Output-port>
+  <Out-Slots Slot="string"/>
+ </Output-port>
+ <Attributes>
+  <Attribute Name="SequenceLength" Type="number"/>
+ </Attributes>
+ <Element-name Name="LengthMarker"/>
+ <Element-description Description="Identifies an input seaquence as long or short"/>
+</Actor>
