@@ -45,6 +45,7 @@ const QString ToolsMenu::NGS_MAP = "NGS_MAP";
 const QString ToolsMenu::NGS_INDEX = "NGS_INDEX";
 const QString ToolsMenu::NGS_RAW_DNA = "NGS_RAW_DNA";
 const QString ToolsMenu::NGS_CALL_VARIANTS = "NGS_CALL_VARIANTS";
+const QString ToolsMenu::NGS_CALL_VARIANTS_AND_EFFECT = "NGS_CALL_VARIANTS_AND_EFFECT";
 const QString ToolsMenu::NGS_VARIANT_EFFECT = "NGS_VARIANT_EFFECT";
 const QString ToolsMenu::NGS_RAW_RNA = "NGS_RAW_RNA";
 const QString ToolsMenu::NGS_RNA = "NGS_RNA";
@@ -126,6 +127,7 @@ void ToolsMenu::init() {
         subMenuAction[NGS_MENU] << LINE;
         subMenuAction[NGS_MENU] << NGS_RAW_DNA;
         subMenuAction[NGS_MENU] << NGS_CALL_VARIANTS;
+        subMenuAction[NGS_MENU] << NGS_CALL_VARIANTS_AND_EFFECT;
         subMenuAction[NGS_MENU] << NGS_VARIANT_EFFECT;
         subMenuAction[NGS_MENU] << LINE;
         subMenuAction[NGS_MENU] << NGS_RAW_RNA;
