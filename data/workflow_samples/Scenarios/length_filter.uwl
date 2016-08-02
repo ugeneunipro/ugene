@@ -1,0 +1,130 @@
+#@UGENE_WORKFLOW
+#Using this workflow you can filter input sequences with length >= than a specified minumum length. The results will be written to a file in the FASTA format.
+
+include "LengthMarker.usa" as "Script-LengthMarker"
+
+workflow "Filter long sequences"{
+
+    read-sequence {
+        type:read-sequence;
+        name:"Read Sequence";
+        url-in {
+            dataset:"Dataset 1";
+        }
+    }
+    filter-by-values {
+        type:filter-by-values;
+        name:Filter;
+        text:long;
+    }
+    Script-LengthMarker {
+        type:Script-LengthMarker;
+        name:"Length Marker";
+        script {
+var seqObject = new Sequence(in_sequence);
+if (seqObject.length() < SequenceLength) {
+    out_text = 'short';
+} else {
+    out_text = 'long';
+};
+        };
+        SequenceLength:10000;
+    }
+    write-sequence {
+        type:write-sequence;
+        name:"Write Long Sequences";
+    }
+
+    .actor-bindings {
+        filter-by-values.filtered-data->write-sequence.in-sequence
+        read-sequence.out-sequence->Script-LengthMarker.in
+        Script-LengthMarker.out->filter-by-values.in-data
+    }
+
+    Script-LengthMarker.text->filter-by-values.in-data.text
+    read-sequence.sequence->Script-LengthMarker.in.sequence
+    read-sequence.sequence->write-sequence.in-sequence.sequence {
+        path-through:filter-by-values;
+    }
+
+    .meta {
+        visual {
+            Script-LengthMarker {
+                pos:"-630 -480";
+                style:simple;
+                bg-color-simple:"0 128 128 64";
+                in.angle:180;
+                out.angle:360;
+            }
+            filter-by-values {
+                pos:"-465 -480";
+                style:ext;
+                bg-color-ext:"0 129 94 64";
+                filtered-data.angle:360;
+                in-data.angle:180;
+            }
+            read-sequence {
+                pos:"-825 -480";
+                style:ext;
+                bg-color-ext:"255 170 127 64";
+                out-sequence.angle:360;
+            }
+            write-sequence {
+                pos:"-210 -480";
+                style:ext;
+                bg-color-ext:"170 170 0 64";
+                in-sequence.angle:180;
+            }
+            Script-LengthMarker.out->filter-by-values.in-data {
+                text-pos:"-40.5 -37";
+            }
+            filter-by-values.filtered-data->write-sequence.in-sequence {
+                text-pos:"-39 -36";
+            }
+            read-sequence.out-sequence->Script-LengthMarker.in {
+                text-pos:"-30.5 -39";
+            }
+        }
+        wizard {
+            name:"Filter short sequences";
+            page {
+                id:1;
+                next:2;
+                title:"Input sequence(s)";
+                parameters-area {
+                    read-sequence.url-in {
+                        type:datasets;
+                    }
+                }
+            }
+            page {
+                id:2;
+                next:3;
+                title:Filtering;
+                parameters-area {
+                    group {
+                        title:"Sequence Length Threshold";
+                        label-size:150;
+                        Script-LengthMarker.SequenceLength {
+                            label:"Minimum length";
+                        }
+                    }
+                }
+            }
+            page {
+                id:3;
+                title:"Output data";
+                parameters-area {
+                    group {
+                        title:"Output data";
+                        label-size:120;
+                        write-sequence.url-out {
+                            label:"Result file";
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
