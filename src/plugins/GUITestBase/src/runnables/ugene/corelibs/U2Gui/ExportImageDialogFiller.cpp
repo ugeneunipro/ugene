@@ -278,14 +278,6 @@ void ImageExportFormFiller::commonScenario() {
     QWidget* dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
-    QCheckBox* export_msa_simple_overview = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "export_msa_simple_overview", dialog));
-    GT_CHECK(export_msa_simple_overview, "export_msa_simple_overview is NULL");
-    GTCheckBox::setChecked(os, export_msa_simple_overview, parameters.simpleOverviewChecked);
-
-    QCheckBox* export_msa_graph_overview = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "export_msa_graph_overview", dialog));
-    GT_CHECK(export_msa_graph_overview, "export_msa_graph_overview is NULL");
-    GTCheckBox::setChecked(os, export_msa_graph_overview, parameters.graphOverviewChecked);
-
     QLineEdit* fileNameEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "fileNameEdit", dialog));
     GT_CHECK(fileNameEdit, "fileNameEdit is NULL");
     GTLineEdit::setText(os, fileNameEdit, QDir::toNativeSeparators(parameters.fileName));

@@ -37,6 +37,7 @@ static const QString ASSEMBLY_TYPE_ID("assembly");
 static const QString STRING_TYPE_ID("string");
 static const QString STRING_LIST_TYPE_ID("string-list");
 static const QString BOOL_TYPE_ID("bool");
+static const QString MAP_TYPE_ID("map");
 static const QString NUM_TYPE_ID("number");
 static const QString URL_DATASETS_TYPE_ID("url-datasets");
 static const QString ANY_TYPE_ID("void");
@@ -147,6 +148,19 @@ DataTypePtr BaseTypes::BOOL_TYPE() {
     return dtr->getById(BOOL_TYPE_ID);
 }
 
+DataTypePtr BaseTypes::MAP_TYPE() {
+    DataTypeRegistry* dtr = WorkflowEnv::getDataTypeRegistry();
+    assert(dtr);
+    static bool startup = true;
+    if (startup) {
+        QMap<Descriptor, DataTypePtr> map;
+        map.insert(Descriptor("A map of datatypes"), BaseTypes::STRING_TYPE());
+        dtr->registerEntry(DataTypePtr(new MapDataType(MAP_TYPE_ID, map)));
+        startup = false;
+    }
+    return dtr->getById(MAP_TYPE_ID);
+}
+
 DataTypePtr BaseTypes::NUM_TYPE() {
     DataTypeRegistry* dtr = WorkflowEnv::getDataTypeRegistry();
     assert(dtr);
@@ -232,6 +246,27 @@ static void setIfNotNull( bool * to, bool val ) {
 QVariant StringTypeValueFactory::getValueFromString( const QString & str, bool * ok ) const {
     setIfNotNull( ok, true );
     return qVariantFromValue( str );
+}
+
+/****************************************
+* StringListTypeValueFactory
+****************************************/
+QVariant StringListTypeValueFactory::getValueFromString(const QString &str, bool *ok) const {
+    setIfNotNull(ok, true);
+    return QVariant::fromValue<QStringList>(StrPackUtils::unpackStringList(str, StrPackUtils::SingleQuotes));
+}
+
+/****************************************
+* MapTypeValueFactory
+****************************************/
+QVariant MapTypeValueFactory::getValueFromString(const QString &str, bool *ok) const {
+    setIfNotNull(ok, true);
+    StrStrMap map = StrPackUtils::unpackMap(str, StrPackUtils::SingleQuotes);
+    QVariantMap variantMap;
+    foreach (const QString& key, map.keys()) {
+        variantMap.insert(key, map.value(key));
+    }
+    return variantMap;
 }
 
 /****************************************

@@ -63,6 +63,8 @@ ActorPrototypeRegistry * WorkflowEnvImpl::initProtoRegistry() {
 DataTypeValueFactoryRegistry * WorkflowEnvImpl::initDataTypeValueFactoryRegistry() {
     DataTypeValueFactoryRegistry *ret = new DataTypeValueFactoryRegistry();
     ret->registerEntry( new StringTypeValueFactory() );
+    ret->registerEntry( new StringListTypeValueFactory() );
+    ret->registerEntry( new MapTypeValueFactory() );
     ret->registerEntry( new BoolTypeValueFactory() );
     ret->registerEntry( new NumTypeValueFactory() );
     ret->registerEntry( new UrlTypeValueFactory() );

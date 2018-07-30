@@ -1,0 +1,62 @@
+#@UGENE_WORKFLOW
+
+workflow "NGS reads classification" {
+    .meta {
+        wizard {
+            auto-run: true;
+            has-run-button: false;
+            has-defaults-button: false;
+            name: "Configure NGS Reads Classification Workflow";
+            finish-label: "Setup";
+            result {
+                NGS/ngs_classification/ngs_classification_serial/ngs_classification_serial_single.uwl: "workflow_type.serial reads.se";
+                NGS/ngs_classification/ngs_classification_serial/ngs_classification_serial_paired.uwl: "workflow_type.serial reads.pe";
+                NGS/ngs_classification/ngs_classification_parallel/ngs_classification_parallel_single.uwl: "workflow_type.parallel reads.se";
+                NGS/ngs_classification/ngs_classification_parallel/ngs_classification_parallel_paired.uwl: "workflow_type.parallel reads.pe";
+                NGS/ngs_classification/ngs_classification_de_novo/ngs_classification_de_novo_single.uwl: "workflow_type.de_novo reads.se";
+                NGS/ngs_classification/ngs_classification_de_novo/ngs_classification_de_novo_paired.uwl: "workflow_type.de_novo reads.pe";
+            }
+            page {
+                id: 1;
+                title: "NGS reads classification"
+                parameters-area {
+                    group {
+                        title:"Workflow type"
+                        radio {
+                            id: workflow_type
+                            value {
+                                id: serial;
+                                label: "Serial reads classification";
+                                tooltip:"Improve reads quality with Trimmomatic, consequently classify them with Kraken, CLARK and in case of single-end reads with DIAMOND.";
+                            }
+                            value {
+                                id: parallel;
+                                label: "Parallel reads classification";
+                                tooltip:"Improve reads quality with Trimmomatic, classify them with Kraken, CLARK and in case of single-end reads with DIAMOND. Join the classification output with WEVOTE.";
+                            }
+                            value {
+                                id: de_novo;
+                                label: "Reads de novo assembly and contigs classification"
+                                tooltip:"Assemble reads de novo with SPAdes, classify the assembled contigs with Kraken.";
+                            }
+                        }
+                    }
+                    group {
+                        title:"Sequencing reads"
+                        radio {
+                            id: reads
+                            value {
+                                id: se;
+                                label: "Single-end"
+                            }
+                            value {
+                                id: pe;
+                                label: "Paired-end"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

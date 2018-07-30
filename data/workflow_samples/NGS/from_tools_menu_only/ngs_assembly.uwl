@@ -1,0 +1,49 @@
+#@UGENE_WORKFLOW
+
+workflow "De novo assembly with SPAdes" {
+    .meta {
+        wizard {
+            auto-run: true;
+            has-run-button: false;
+            has-defaults-button: false;
+            name: "Configure De Novo Assembly Workflow";
+            finish-label: "Setup";
+            result {
+                NGS/ngs_assembly_illumina_pe.uwl: "sample_workflow.illumina_pe";
+                NGS/ngs_assembly_illumina_se.uwl: "sample_workflow.illumina_se";
+                NGS/ngs_assembly_illumina_pe_nanopore.uwl: "sample_workflow.illumina_pe_nanopore";
+            }
+            page {
+                id: 1;
+                title: "De novo assembly with SPAdes"
+                parameters-area {
+                    label {
+                        text:"In general, SPAdes needs at least one library of the following types:<ul><li>Illumina paired-end/high-quality mate-pairs/unpaired reads</li><li>IonTorrent paired-end/high-quality mate-pairs/unpaired reads</li><li>PacBio CCS reads</li></ul>Additionally, one can provide PacBio CLR, Oxford Nanopore, Sanger reads or contigs.";
+                        background-color:"rgb(225,225,225)";
+                    }
+                    group {
+                        title:"Use a sample workflows or create a custom one from it"
+                        radio {
+                            id: sample_workflow
+                            value {
+                                id: illumina_pe;
+                                label: "Illumina PE reads";
+                                tooltip:"Improve Illumina paired-end reads quality with Trimmomatic, assemble them with SPAdes.";
+                            }
+                            value {
+                                id: illumina_se;
+                                label: "Illumina SE reads";
+                                tooltip:"Improve Illumina unpaired (single-end) reads quality with Trimmomatic, assemble them with SPAdes.";
+                            }
+                            value {
+                                id: illumina_pe_nanopore;
+                                label: "Illumina PE and Nanopore reads"
+                                tooltip:"Assemble de novo Illumina paired-end and Oxford Nanopore reads.";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -57,7 +57,8 @@ public:
 class U2CORE_EXPORT IOAdapter : public QObject {
     Q_OBJECT
 public:
-    IOAdapter(IOAdapterFactory* f, QObject* o = NULL) : QObject(o), factory(f){}
+    IOAdapter(IOAdapterFactory* f, QObject* o = NULL) : QObject(o), formatMode(BinaryMode), factory(f) {}
+
     virtual ~IOAdapter(){}
 
     IOAdapterId getAdapterId() const {return factory->getAdapterId();}
@@ -79,6 +80,14 @@ public:
         Term_Include,   // include all terminators into result
         Term_Skip       // do not include terminators to the result, but skip to after last terminator
     };
+
+    enum FormatMode {
+        TextMode,    //Format is represented by text
+        BinaryMode   //Format is represented by binary data
+    };
+
+    //if format is represented by text (not by binary data) you need to call this func
+    virtual void setFormatMode(FormatMode mode) { formatMode = mode; }
 
     //return 0 if at the end of file, -1 if error
     virtual qint64 readUntil(char* buff, qint64 maxSize, const QBitArray& readTerminators,
@@ -118,6 +127,11 @@ public:
 
     /* Returns a human-readable description of the last device error that occurred */
     virtual QString errorString() const = 0;
+
+protected:
+    static void cutByteOrderMarks(char* data, qint64& length);
+
+    FormatMode formatMode;
 
 private:
     IOAdapterFactory* factory;

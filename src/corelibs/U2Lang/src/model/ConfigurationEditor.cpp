@@ -109,6 +109,8 @@ void PropertyDelegate::setSchemaConfig(SchemaConfig *value) {
 }
 
 const QString DelegateTags::PLACEHOLDER_TEXT = "placeholder_text";
+const QString DelegateTags::FILTER = "filter";
+const QString DelegateTags::FORMAT = "format";
 
 DelegateTags::DelegateTags(QObject *parent)
 : QObject(parent)

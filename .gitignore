@@ -29,6 +29,12 @@ Makefile.Debug
 .qmake.stash
 *.xcodeproj/
 
+# Windows generated files
+*.obj
+**/Win32/Debug/*
+ugene.VC.db
+ugene.VC.VC.opendb
+
 # Generated ugene shell launcher
 /ugene
 
@@ -44,3 +50,9 @@ ugene.pro.user
 
 # CLion build dir
 cmake-build-*
+
+# Qt generated
+**/GeneratedFiles/*
+
+# NGS taxonomy and databases
+data/ngs_classification

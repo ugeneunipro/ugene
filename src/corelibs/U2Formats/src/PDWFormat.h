@@ -26,6 +26,8 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
+#include "TextDocumentFormat.h"
+
 namespace U2 {
 
 class IOAdapter;
@@ -33,7 +35,7 @@ class Annotation;
 class AnnotationTableObject;
 class U2SequenceObject;
 
-class U2FORMATS_EXPORT PDWFormat : public DocumentFormat {
+class U2FORMATS_EXPORT PDWFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
                                     PDWFormat(QObject *p);
@@ -42,11 +44,11 @@ public:
 
     virtual const QString &         getFormatName() const { return formatName; }
 
-    virtual FormatCheckResult       checkRawData(const QByteArray &rawData,
+protected:
+    virtual FormatCheckResult       checkRawTextData(const QByteArray &rawData,
                                         const GUrl & = GUrl()) const;
 
-protected:
-    virtual Document *              loadDocument(IOAdapter *io, const U2DbiRef &dbiRef,
+    virtual Document *              loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef,
                                         const QVariantMap &fs, U2OpStatus &os);
 
 private:

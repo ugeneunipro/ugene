@@ -33,14 +33,19 @@ void AttributeRelation::updateDelegateTags(const QVariant & /*influencingValue*/
 
 }
 
-VisibilityRelation::VisibilityRelation(const QString &relatedAttrId, const QVariantList &_visibilityValues)
-: AttributeRelation(relatedAttrId), visibilityValues(_visibilityValues)
+VisibilityRelation::VisibilityRelation(const QString &relatedAttrId, const QVariantList &_visibilityValues,
+                                       bool invertVisibilityRules)
+    : AttributeRelation(relatedAttrId),
+      visibilityValues(_visibilityValues),
+      invertAffectResult(invertVisibilityRules)
 {
 
 }
 
-VisibilityRelation::VisibilityRelation(const QString &relatedAttrId, const QVariant &visibilityValue)
-: AttributeRelation(relatedAttrId)
+VisibilityRelation::VisibilityRelation(const QString &relatedAttrId, const QVariant &visibilityValue,
+                                       bool invertVisibilityRules)
+    : AttributeRelation(relatedAttrId),
+      invertAffectResult(invertVisibilityRules)
 {
     visibilityValues << visibilityValue;
 }
@@ -48,11 +53,15 @@ VisibilityRelation::VisibilityRelation(const QString &relatedAttrId, const QVari
 QVariant VisibilityRelation::getAffectResult(const QVariant &influencingValue, const QVariant &,
     DelegateTags *, DelegateTags *) const {
     foreach (const QVariant &v, visibilityValues) {
-        if (v == influencingValue) {
+        if ((v == influencingValue) != invertAffectResult) {
             return true;
         }
     }
     return false;
+}
+
+VisibilityRelation *VisibilityRelation::clone() const {
+    return new VisibilityRelation(*this);
 }
 
 QVariant FileExtensionRelation::getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue,
@@ -138,11 +147,15 @@ void FileExtensionRelation::updateDelegateTags(const QVariant &influencingValue,
     }
 }
 
+FileExtensionRelation *FileExtensionRelation::clone() const {
+    return new FileExtensionRelation(*this);
+}
+
 QVariant ValuesRelation::getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue,
                                          DelegateTags * /*infTags*/, DelegateTags *depTags) const {
     updateDelegateTags(influencingValue, depTags);
     QVariantMap items = dependencies.value(influencingValue.toString()).toMap();
-    if (items != QVariant()) {
+    if (!items.isEmpty()) {
         return items.value(items.keys().first());
     }
     return dependentValue;
@@ -150,9 +163,13 @@ QVariant ValuesRelation::getAffectResult(const QVariant &influencingValue, const
 
 void ValuesRelation::updateDelegateTags(const QVariant &influencingValue, DelegateTags *dependentTags) const {
     QVariantMap items = dependencies.value(influencingValue.toString()).toMap();
-    if (items != QVariant()) {
+    if (!items.isEmpty()) {
         dependentTags->set("AvailableValues", items);
     }
+}
+
+ValuesRelation *ValuesRelation::clone() const {
+    return new ValuesRelation(*this);
 }
 
 } // U2

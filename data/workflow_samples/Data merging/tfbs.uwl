@@ -65,8 +65,6 @@ workflow "Search for tfbs"{
     .meta {
         visual {
             read-sequence {
-                description:"<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.0//EN' 'http://www.w3.org/TR/REC-html40/strict.dtd'> <html><head><meta name='qrichtext' content='1' /><style type='text/css'> p, li { white-space: pre-wrap; } </style></head><body style=' font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;'> <p align='center' style=' margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;'><span style=' font-weight:600;'>Read Sequence</span></p> <hr /> <p style=' margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;'>Reads sequence(s) from <a href='param:url-in'><span style=' text-decoration: underline; color:#ff0000;'>unset</span></a>.</p></body></html>";
-                tooltip:"Reads sequences and annotations if any from local or remote files.";
                 pos:"-892 -468";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
@@ -74,8 +72,6 @@ workflow "Search for tfbs"{
                 out-sequence.angle:357.083;
             }
             write-sequence {
-                description:"<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.0//EN' 'http://www.w3.org/TR/REC-html40/strict.dtd'> <html><head><meta name='qrichtext' content='1' /><style type='text/css'> p, li { white-space: pre-wrap; } </style></head><body style=' font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;'> <p align='center' style=' margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;'><span style=' font-weight:600;'>Write Sequence</span></p> <hr /> <p style=' margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;'>Save all sequences from <span style=' text-decoration: underline;'>Read Sequence</span> to <a href='param:url-out'><span style=' text-decoration: underline; color:#ff0000;'>unset</span></a>.</p></body></html>";
-                tooltip:"Writes all supplied sequences to file(s) in selected format.";
                 pos:"-159.25 -474";
                 style:ext;
                 bg-color-ext:"0 128 128 64";

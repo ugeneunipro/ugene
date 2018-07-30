@@ -185,7 +185,8 @@ void ExportImageDialog::init() {
     ui->hintLabel->setStyleSheet(style);
     ui->hintLabel->hide();
 
-    initSaveController();
+    QString defaultFormat = "PNG";
+    initSaveController(defaultFormat);
 
     if (scalingPolicy == NoScaling) {
         ui->imageSizeSettingsContainer->hide();
@@ -213,15 +214,16 @@ void ExportImageDialog::init() {
     } else {
         ui->settingsLayout->addWidget(settingsWidget);
     }
+    sl_onFormatsBoxItemChanged(defaultFormat);
 }
 
-void ExportImageDialog::initSaveController() {
+void ExportImageDialog::initSaveController(const QString& defaultFormat) {
     LastUsedDirHelper dirHelper(IMAGE_DIR, GUrlUtils::getDefaultDataPath());
 
     SaveDocumentControllerConfig config;
     config.defaultDomain = IMAGE_DIR;
     config.defaultFileName = dirHelper.dir + "/" + GUrlUtils::fixFileName(origFilename);
-    config.defaultFormatId = "PNG";
+    config.defaultFormatId = defaultFormat;
     config.fileDialogButton = ui->browseFileButton;
     config.fileNameEdit = ui->fileNameEdit;
     config.formatCombo = ui->formatsBox;

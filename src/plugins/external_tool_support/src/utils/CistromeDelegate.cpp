@@ -79,7 +79,7 @@ void CistromeComboBoxWithUrlsDelegate::updateDataPath(const QString &dataPathNam
     SAFE_POINT(dpr, "U2DataPathRegistry is NULL", );
 
     U2DataPath* oldDp = dpr->getDataPathByName(dataPathName);
-    U2DataPath* newDp = new U2DataPath(dataPathName, dirPath, folders);
+    U2DataPath* newDp = new U2DataPath(dataPathName, dirPath, "", U2DataPath::CutFileExtension | (folders ? U2DataPath::AddOnlyFolders : U2DataPath::None));
     if (newDp->isValid() &&
             (!oldDp || *oldDp != *newDp)) {
         if (oldDp) {

@@ -1,0 +1,48 @@
+#@UGENE_WORKFLOW
+#The workflow takes FASTQ files with metagenomic NGS reads as input and process them as follows:
+# * Improve reads quality with Trimmomatic
+# * Provide FastQC reads quality reports
+# * Classification:
+#   - Classify the pre-processed reads with Kraken.
+#   - Classify these reads with CLARK.
+#   - Classify these reads with DIAMOND (in case of SE reads).
+#   - Ensemble the classification output into a CSV file.
+#   - Improve classification with WEVOTE.
+#   - Provide general classification reports
+
+workflow "Parallel NGS reads classification" {
+    .meta {
+        wizard {
+            auto-run: true;
+            has-run-button: false;
+            has-defaults-button: false;
+            name: "Configure Parallel NGS Reads Classification";
+            finish-label: "Setup";
+            result {
+                NGS/ngs_classification/ngs_classification_parallel/ngs_classification_parallel_single.uwl: pipeline.single;
+                NGS/ngs_classification/ngs_classification_parallel/ngs_classification_parallel_paired.uwl: pipeline.paired;
+            }
+            page {
+                id: 1;
+                title: "General settings";
+                parameters-area {
+                    group {
+                        title:"Sequencing reads";
+                        radio {
+                            id: pipeline;
+                            value {
+                                id: single;
+                                label: "Single-end";
+                            }
+                            value {
+                                id: paired;
+                                label: "Paired-end";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}

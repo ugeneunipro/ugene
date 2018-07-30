@@ -39,19 +39,6 @@ namespace Workflow {
 /*******************************
  * IntegralBusPort
  *******************************/
-static void filterAmbiguousSlots(QList<Descriptor>& keys, const QMap<Descriptor, DataTypePtr>& map, StrStrMap& result) {
-    foreach(const Descriptor &slot, map.keys()) {
-        DataTypePtr val = map[slot];
-        const QList<Descriptor> lst = IntegralBusUtils::getSlotsByType(map, slot, val);
-        if (lst.size() != 1) {
-            foreach(Descriptor d, lst) {
-                result.insert(d.getId(), "");
-                keys.removeOne(d);
-            }
-        }
-    }
-}
-
 static Actor* getLinkedActor(ActorId id, Port* output, QList<Actor*> visitedActors) {
     if (visitedActors.contains(output->owner())) {
         return NULL;
@@ -295,6 +282,16 @@ void IntegralBusPort::replaceActor(Actor *oldActor, Actor *newActor, const QList
     setParameter(PATHS_ATTR_ID, qVariantFromValue<SlotPathMap>(pathMap));
 }
 
+void IntegralBusPort::setVisibleSlot(const QString& slotId, const bool isVisible) {
+    PortDescriptor::setVisibleSlot(slotId, isVisible);
+
+    if (isVisible) {
+        restoreBusMapKey(slotId);
+    } else {
+        removeBusMapKey(slotId);
+    }
+}
+
 void IntegralBusPort::copyInput(IntegralBusPort *port, const PortMapping &mapping) {
     CHECK(isInput(), );
     CHECK(port->isInput(), );
@@ -341,6 +338,28 @@ void IntegralBusPort::setBusMapValue(const QString & slotId, const QString & val
     setParameter(BUS_MAP_ATTR_ID, qVariantFromValue<StrStrMap>(busMap));
 }
 
+void IntegralBusPort::removeBusMapKey(const QString& slotId) {
+    CHECK(!removedBusMap.contains(slotId), );
+
+    StrStrMap attributeBusMap = getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
+    CHECK(attributeBusMap.contains(slotId), );
+
+    removedBusMap.insert(slotId, attributeBusMap[slotId]);
+    attributeBusMap.remove(slotId);
+    setParameter(BUS_MAP_ATTR_ID, QVariant::fromValue<StrStrMap>(attributeBusMap));
+}
+
+void IntegralBusPort::restoreBusMapKey(const QString& slotId) {
+    StrStrMap attributeBusMap = getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
+    CHECK(!attributeBusMap.contains(slotId), );
+
+    CHECK(removedBusMap.contains(slotId), );
+
+    attributeBusMap.insert(slotId, removedBusMap[slotId]);
+    removedBusMap.remove(slotId);
+    setParameter(BUS_MAP_ATTR_ID, QVariant::fromValue<StrStrMap>(attributeBusMap));
+}
+
 void IntegralBusPort::setupBusMap() {
     if( !isInput() || getWidth() != 1 ) {
         return;
@@ -352,7 +371,6 @@ void IntegralBusPort::setupBusMap() {
     DataTypePtr from = bindings.uniqueKeys().first()->getType();
     QList<Descriptor> keys = to->getAllDescriptors();
     StrStrMap busMap = getParameter(IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributeValueWithoutScript<StrStrMap>();
-    filterAmbiguousSlots(keys, to->getDatatypesMap(), busMap);
     foreach(const Descriptor & key, keys) {
         // FIXME: hack for not binding 'Location' slot
         // 'Location' slot should NOT be binded for any writers to avoid writing to source of data

@@ -100,7 +100,7 @@ PairAlign::PairAlign(MSAEditor* _msa)
     initLayout();
     initSaveController();
     initParameters();
-    
+
     U2WidgetStateStorage::restoreWidgetState(savableTab);
 
     connectSignals();

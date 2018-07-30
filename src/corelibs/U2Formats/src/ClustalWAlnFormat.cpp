@@ -54,7 +54,7 @@ namespace U2 {
 
 const QByteArray ClustalWAlnFormat::CLUSTAL_HEADER = "CLUSTAL";
 
-ClustalWAlnFormat::ClustalWAlnFormat(QObject* p) : DocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList("aln"))
+ClustalWAlnFormat::ClustalWAlnFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList("aln"))
 {
     formatName = tr("CLUSTALW");
     formatDescription = tr("Clustalw is a format for storing multiple sequence alignments");
@@ -191,7 +191,7 @@ void ClustalWAlnFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObjec
     objects.append(obj);
 }
 
-Document* ClustalWAlnFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
+Document* ClustalWAlnFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
     QList<GObject*> objects;
     load(io, dbiRef, objects, fs, os);
     CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
@@ -310,7 +310,7 @@ void ClustalWAlnFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus& os
     CHECK_EXT(!os.isCoR(), os.setError(L10N::errorWritingFile(d->getURL())), );
 }
 
-FormatCheckResult ClustalWAlnFormat::checkRawData(const QByteArray& data, const GUrl&) const {
+FormatCheckResult ClustalWAlnFormat::checkRawTextData(const QByteArray& data, const GUrl&) const {
     if (TextUtils::contains(TextUtils::BINARY, data.constData(), data.size())) {
         return FormatDetection_NotMatched;
     }

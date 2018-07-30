@@ -48,7 +48,7 @@ namespace U2 {
 static const int PROGRESS_UPDATE_STEP = 1000;
 
 FastqFormat::FastqFormat(QObject* p)
-    : DocumentFormat(p, DocumentFormatFlags_SW | DocumentFormatFlag_LockedIfNotCreatedByUGENE, QStringList("fastq")), fn(tr("FASTQ"))
+    : TextDocumentFormat(p, DocumentFormatFlags_SW | DocumentFormatFlag_LockedIfNotCreatedByUGENE, QStringList() << "fastq" << "fq"), fn(tr("FASTQ"))
 {
     supportedObjectTypes+=GObjectTypes::SEQUENCE;
     formatDescription  = tr("FASTQ format is a text-based format for storing both a biological sequence (usually nucleotide sequence) "
@@ -65,7 +65,7 @@ FastqFormat::FastqFormat(QObject* p)
 #define STATE_SEQ               47
 #define STATE_QUALITY           48
 
-FormatCheckResult FastqFormat::checkRawData(const QByteArray& rawData, const GUrl&) const {
+FormatCheckResult FastqFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
     const char* data = rawData.constData();
     int size = rawData.size();
 
@@ -406,7 +406,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints
     }
 }
 
-Document* FastqFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& _hints, U2OpStatus& os) {
+Document* FastqFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& _hints, U2OpStatus& os) {
     CHECK_EXT(io != NULL && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), NULL);
     QVariantMap hints = _hints;
     QList<GObject*> objects;
@@ -533,7 +533,7 @@ void FastqFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObje
     CHECK_OP(os, );
 }
 
-DNASequence *FastqFormat::loadSequence(IOAdapter* io, U2OpStatus& os) {
+DNASequence *FastqFormat::loadTextSequence(IOAdapter* io, U2OpStatus& os) {
     CHECK_EXT((io != NULL) && (io->isOpen() == true), os.setError(L10N::badArgument("IO adapter")), NULL);
     U2OpStatus2Log logOs;
     QByteArray readBuff;

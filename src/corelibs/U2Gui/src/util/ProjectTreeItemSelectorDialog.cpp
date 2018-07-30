@@ -24,6 +24,7 @@
 #include <QSpacerItem>
 #include <QTreeView>
 #include <QVBoxLayout>
+#include <QAction>
 
 #include <U2Core/DocumentModel.h>
 #include <U2Core/U2SafePoints.h>

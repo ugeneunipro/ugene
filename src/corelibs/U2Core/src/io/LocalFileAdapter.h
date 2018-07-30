@@ -63,11 +63,11 @@ class U2CORE_EXPORT LocalFileAdapter: public IOAdapter {
     Q_OBJECT
 public:
     LocalFileAdapter(LocalFileAdapterFactory* f, QObject* o = NULL, bool bufferOptimization = false);
-    ~LocalFileAdapter() {if (isOpen()) close();}
+    ~LocalFileAdapter();
 
     virtual bool open(const GUrl& url, IOAdapterMode m);
 
-    virtual bool isOpen() const {return f!=NULL;}
+    virtual bool isOpen() const;
 
     virtual void close();
 
@@ -78,6 +78,7 @@ public:
     virtual bool skip(qint64 nBytes);
 
     virtual qint64 left() const;
+
     virtual int getProgress() const;
 
     virtual qint64 bytesRead() const;

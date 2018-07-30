@@ -140,6 +140,7 @@ void BedGraphToBigWigFactory::init() {
         Descriptor genomeAttrDesc(BedGraphToBigWigWorker::GENOME, BedGraphToBigWigWorker::tr("Genome"),
             BedGraphToBigWigWorker::tr("File with genome length."));
 
+
         a << new Attribute(outDir, BaseTypes::NUM_TYPE(), false, QVariant(FileAndDirectoryUtils::WORKFLOW_INTERNAL));
         Attribute* customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(BedGraphToBigWigWorker::OUT_MODE_ID, FileAndDirectoryUtils::CUSTOM));
@@ -161,7 +162,6 @@ void BedGraphToBigWigFactory::init() {
         a << new Attribute( blockSize, BaseTypes::NUM_TYPE(), false, QVariant(256));
         a << new Attribute( itemsPerSlot, BaseTypes::NUM_TYPE(), false, QVariant(1024));
         a << new Attribute( unc, BaseTypes::BOOL_TYPE(), false, QVariant(false));
-
     }
 
     QMap<QString, PropertyDelegate*> delegates;
@@ -187,7 +187,6 @@ void BedGraphToBigWigFactory::init() {
             vm = dataPath->getDataItemsVariantMap();
         }
         delegates[BedGraphToBigWigWorker::GENOME] = new ComboBoxWithUrlsDelegate(vm);
-
     }
 
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);

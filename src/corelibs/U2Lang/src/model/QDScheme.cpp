@@ -42,7 +42,7 @@ const int QDActor::DEFAULT_MAX_RESULT_LENGTH(10000);
 QDActor::QDActor(QDActorPrototype const* _proto) : scheme(NULL), proto(_proto), strand(QDStrand_Both), simmetric(false) {
     cfg = new QDActorParameters;
     foreach(Attribute* a, proto->getParameters()) {
-        cfg->addParameter(a->getId(), new Attribute(*a));
+        cfg->addParameter(a->getId(), a->clone());
     }
     ConfigurationEditor* ed = proto->getEditor();
 

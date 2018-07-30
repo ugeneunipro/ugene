@@ -27,6 +27,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/U2Region.h>
 
+#include "TextDocumentFormat.h"
 
 namespace U2 {
 
@@ -102,7 +103,7 @@ enum FpkmTrackingLineFieldsIndeces {FPKM_TRACKING_ID_INDEX = 0, FPKM_CLASS_CODE_
  * Description of the format from the Cufflinks manual was used:
  * http://cufflinks.cbcb.umd.edu/manual.html#fpkm_tracking_format
  */
-class U2FORMATS_EXPORT FpkmTrackingFormat : public DocumentFormat
+class U2FORMATS_EXPORT FpkmTrackingFormat : public TextDocumentFormat
 {
     Q_OBJECT
 
@@ -115,10 +116,10 @@ public:
 
     virtual void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os);
 
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
-
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os);
 
     QList<SharedAnnotationData> parseDocument(IOAdapter* io, QString& seqName, QString annotName, U2OpStatus& os);
 

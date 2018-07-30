@@ -129,7 +129,9 @@ void BwaWorkerFactory::init() {
 
     QList<Attribute*> attrs;
     QMap<QString, PropertyDelegate*> delegates;
-    addCommonAttributes(attrs, delegates);
+    addCommonAttributes(attrs, delegates,
+                        BwaWorker::tr("BWA index folder"),
+                        BwaWorker::tr("BWA index basename"));
     {
          Descriptor useMissProb(USE_MISS_PROB ,
              BwaWorker::tr("Use missing prob"),
@@ -279,15 +281,21 @@ void BwaWorkerFactory::init() {
     }
 
     Descriptor protoDesc(BwaWorkerFactory::ACTOR_ID,
-        BwaWorker::tr("Align Reads with BWA"),
-        BwaWorker::tr("Performs alignment of short reads with BWA."));
+        BwaWorker::tr("Map Reads with BWA"),
+        BwaWorker::tr("Burrows-Wheeler Alignment (BWA) is a program for mapping short DNA sequence reads"
+                      " to a long reference sequence. This element runs \"BWA-backtrack\" algorithm"
+                      " of the program. The algorithm is designed for Illumina sequence reads up to 100bp."
+                      "<br/><br/>Provide URL(s) to FASTA or FASTQ file(s) with NGS reads to the input"
+                      " port of the element, set up the reference sequence in the parameters."
+                      " The result is saved to the specified SAM file, URL to the file is passed"
+                      " to the output port."));
 
     ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, getPortDescriptors(), attrs);
     proto->setPrompter(new ShortReadsAlignerPrompter());
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPortValidator(IN_PORT_DESCR, new ShortReadsAlignerSlotsValidator());
     proto->addExternalTool(ET_BWA);
-    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_ALIGN_SHORT_READS(), proto);
+    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new BwaWorkerFactory());
 }
 

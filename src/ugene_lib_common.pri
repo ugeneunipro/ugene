@@ -39,3 +39,8 @@ win32 {
     QMAKE_CXXFLAGS_WARN_ON = -W3
     QMAKE_CFLAGS_WARN_ON = -W3
 }
+
+macx {
+    QMAKE_RPATHDIR += @executable_path
+    QMAKE_LFLAGS_SONAME = -Wl,-dylib_install_name,@rpath/
+}

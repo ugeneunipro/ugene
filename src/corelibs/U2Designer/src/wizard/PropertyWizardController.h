@@ -46,11 +46,14 @@ public:
     virtual QWidget * createGUI(U2OpStatus &os) = 0;
 
     void updateGUI(const QVariant &newValue);
+    void updateVisibility(bool);
 
     DelegateTags * tags() const;
+    AttributeWidget* attributeWidget() const {return widget;}
 
 signals:
     void si_updateGUI(const QVariant &newValue);
+    void si_updateVisibility(bool);
 
 protected:
     Actor *actor;

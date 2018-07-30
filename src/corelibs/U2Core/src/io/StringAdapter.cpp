@@ -71,6 +71,9 @@ void StringAdapter::close() {
 qint64 StringAdapter::readBlock(char * data, qint64 maxSize) {
     qint64 size = qMin<qint64>((buffer.length() - pos), maxSize);
     memcpy(data, buffer.constData() + pos, size);
+    if (formatMode == TextMode) {
+        cutByteOrderMarks(data, size);
+    }
     pos += size;
     return size;
 }

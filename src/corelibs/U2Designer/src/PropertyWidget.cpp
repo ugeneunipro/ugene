@@ -67,7 +67,9 @@ void DefaultPropertyWidget::setValue(const QVariant &value) {
 }
 
 void DefaultPropertyWidget::setRequired() {
-    lineEdit->setPlaceholderText(L10N::required());
+    if (lineEdit->placeholderText().isEmpty()) {
+        lineEdit->setPlaceholderText(L10N::required());
+    }
 }
 
 void DefaultPropertyWidget::sl_valueChanged(const QString &value) {
@@ -123,6 +125,7 @@ DoubleSpinBoxWidget::DoubleSpinBoxWidget(const QVariantMap &spinProperties, QWid
 : PropertyWidget(parent)
 {
     spinBox = new QDoubleSpinBox(this);
+    spinBox->setMinimumWidth(1);
     WorkflowUtils::setQObjectProperties(*spinBox, spinProperties);
     addMainWidget(spinBox);
 
@@ -145,14 +148,14 @@ void DoubleSpinBoxWidget::sl_valueChanged(double value) {
 /************************************************************************/
 /* ComboBoxWidget */
 /************************************************************************/
-ComboBoxWidget::ComboBoxWidget(const QVariantMap &items, QWidget *parent)
+ComboBoxWidget::ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent)
 : PropertyWidget(parent)
 {
     comboBox = new QComboBox(this);
     addMainWidget(comboBox);
 
-    foreach (const QString &key, items.keys()) {
-        comboBox->addItem(key, items[key]);
+    foreach (const ComboItem p, items) {
+        comboBox->addItem(p.first, p.second);
     }
     connect(comboBox, SIGNAL(activated(const QString &)),
         this, SIGNAL(valueChanged(const QString &)));
@@ -175,9 +178,9 @@ void ComboBoxWidget::sl_valueChanged(int) {
 }
 
 ComboBoxWidget * ComboBoxWidget::createBooleanWidget(QWidget *parent) {
-    QVariantMap values;
-    values[ComboBoxWidget::tr("False")] = false;
-    values[ComboBoxWidget::tr("True")] = true;
+    QList<ComboItem> values;
+    values.append(qMakePair(ComboBoxWidget::tr("False"), false));
+    values.append(qMakePair(ComboBoxWidget::tr("True"), true));
     return new ComboBoxWidget(values, parent);
 }
 
@@ -536,7 +539,9 @@ void URLWidget::setValue(const QVariant &value) {
 }
 
 void URLWidget::setRequired() {
-    urlLine->setPlaceholderText(L10N::required());
+    if (urlLine->placeholderText().isEmpty()) {
+        urlLine->setPlaceholderText(L10N::required());
+    }
 }
 
 void URLWidget::activate() {

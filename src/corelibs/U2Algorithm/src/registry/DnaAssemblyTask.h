@@ -46,7 +46,6 @@ public:
     MateOrder order;
     ShortReadSet(const GUrl& _url) : url(_url), type(SingleEndReads), order(UpstreamMate) {}
     ShortReadSet(const GUrl& _url, LibraryType t, MateOrder m) : url(_url), type(t), order(m) {}
-
 };
 
 class U2ALGORITHM_EXPORT DnaAssemblyToRefTaskSettings {
@@ -60,8 +59,10 @@ public:
     QList<GUrl> getShortReadUrls() const;
 
 public:
+    QString indexDir;       // if prebuiltIndex is true
+    QString indexBasename;  // if prebuiltIndex is true
     QList<ShortReadSet> shortReadSets;
-    GUrl refSeqUrl;
+    GUrl refSeqUrl;         // if prebuiltIndex is false
     GUrl resultFileName;
     QString indexFileName;
     QString algName;
@@ -73,6 +74,9 @@ public:
     bool samOutput;
     QString tmpDirPath;
     bool cleanTmpDir;
+
+    static const QString INDEX;
+    static const QString SEQUENCE;
 
 private:
     QMap<QString, QVariant> customSettings;
@@ -112,7 +116,6 @@ public: \
     Factory() { } \
     DnaAssemblyToReferenceTask* createTaskInstance(const DnaAssemblyToRefTaskSettings& s, bool justBuildIndex = false) { return new c(s, justBuildIndex); } \
 };
-
 } // U2
 
 

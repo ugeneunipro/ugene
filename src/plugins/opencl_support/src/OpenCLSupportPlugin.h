@@ -47,6 +47,7 @@ private:
     OpenCLSupportError obtainGpusInfo( QString & err );
     void loadGpusSettings();
     void registerAvailableGpus();
+    void unregisterAvailableGpus();
     bool hasOPENCLError(cl_int err, QString& errMessage);
 
 //    static QString getCudaErrorString( CUresult code );

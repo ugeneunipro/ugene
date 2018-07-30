@@ -675,7 +675,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024) {
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, "150000..199950,1..50000"));
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-	GTGlobals::sleep(200);
+    GTGlobals::sleep(200);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE" << "primer3_action"));
     Primer3DialogFiller::Primer3Settings settings;
@@ -1031,7 +1031,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_2){
     CHECK_SET_ERR(clipboardtext.endsWith("GTCTTTCATT"), "Unexpected reverse complement end: " + clipboardtext.right(10));
 
 //    Check joined annotations
-    GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 2970, 0, true);
+    GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 2, true);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY
                                                       << "action_copy_annotation_sequence"));
@@ -1060,7 +1060,7 @@ GUI_TEST_CLASS_DEFINITION(test_0031_3){
     CHECK_SET_ERR(clipboardtext.endsWith("GTCTTTCATT"), "Unexpected reverse complement end: " + clipboardtext.right(10));
 
 //    Check joined annotations
-    GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 2970, 0, true);
+    GTUtilsAnnotationsTreeView::clickItem(os, "CDS", 2, true);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY
                                                       << "action_copy_annotation_sequence"));

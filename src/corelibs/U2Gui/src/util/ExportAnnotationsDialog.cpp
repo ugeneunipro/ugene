@@ -51,7 +51,7 @@ ExportAnnotationsDialog::ExportAnnotationsDialog( const QString &filename, QWidg
     initSaveController(filename);
     sl_formatChanged(saveController->getFormatIdToSave());
     window()->resize(window()->width(), 0);
-    
+
 }
 
 ExportAnnotationsDialog::~ExportAnnotationsDialog( ) {
@@ -81,7 +81,7 @@ void ExportAnnotationsDialog::initSaveController(const QString &filename) {
 
     connect(saveController, SIGNAL(si_formatChanged(const QString &)), SLOT(sl_formatChanged(const QString &)));
     connect(ui->addToProjectCheck, SIGNAL(clicked(bool)), SLOT(sl_addToProjectStateChanged(bool)));
-    
+
 }
 
 QString ExportAnnotationsDialog::filePath() const {

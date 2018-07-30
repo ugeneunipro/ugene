@@ -537,15 +537,12 @@ void FindPatternWidget::sl_onRegionOptionChanged(int index)
 }
 
 
-void highlightBackground(QWidget* widget)
-{
-    widget->setStyleSheet(
-        "background-color: " + L10N::errorColorTextFieldStr() + ";");
+void highlightBackground(QWidget* widget) {
+    widget->setStyleSheet("background-color: " + L10N::errorColorTextFieldStr() + ";");
 }
 
 
-void doNotHighlightBackground(QWidget* widget)
-{
+void doNotHighlightBackground(QWidget* widget) {
     widget->setStyleSheet("background-color: white;");
 }
 
@@ -691,7 +688,6 @@ void FindPatternWidget::showHideMessage( bool show, MessageFlag messageFlag, con
 
     if (!messageFlags.isEmpty()) {
 
-
 #ifndef Q_OS_MAC
         const QString lineBreakShortcut = "Ctrl+Enter";
 #else
@@ -799,8 +795,12 @@ void FindPatternWidget::showHideMessage( bool show, MessageFlag messageFlag, con
     }
     else {
         lblErrorMessage->setText("");
+    }
+    bool hasNoErrors = messageFlags.isEmpty() || (messageFlags.size() == 1 && messageFlags.contains(UseMultiplePatternsTip));
+    if (hasNoErrors) {
         doNotHighlightBackground(textPattern);
     }
+
 }
 
 void FindPatternWidget::sl_onSearchPatternChanged()

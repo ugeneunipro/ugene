@@ -195,7 +195,7 @@ ActorPrototype *IncludedProtoFactoryImpl::_getSchemaActorProto(Schema *schema, c
                 Attribute *origAttr = proc->getParameter(attrId);
                 Descriptor attrDesc(paramAliases.value(attrId), paramAliases.value(attrId), origAttr->getDocumentation());
 
-                attrs << new Attribute(attrDesc, origAttr->getAttributeType(), origAttr->isRequiredAttribute(), origAttr->getAttributePureValue());
+                attrs << new Attribute(attrDesc, origAttr->getAttributeType(), origAttr->getFlags(), origAttr->getAttributePureValue());
                 PropertyDelegate *d = ed->getDelegate(attrId);
                 if (NULL != d) {
                     delegateMap[attrDesc.getId()] = d->clone();

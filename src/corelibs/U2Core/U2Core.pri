@@ -50,15 +50,3 @@ unix {
     target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
     INSTALLS += target
 }
-
-unix_not_mac(){
-    exists( /usr/lib/libproc.so* ) {
-      LIBS += -lproc
-    }else{
-        exists( /usr/local/lib/libproc.so* ){
-          LIBS += -lproc
-        }else{
-          LIBS += -lprocps
-        }
-    }
-}

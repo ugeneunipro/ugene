@@ -29,6 +29,7 @@ namespace WorkflowSerialize {
 const QString Constants::BLOCK_START           = "{";
 const QString Constants::BLOCK_END             = "}";
 const QString Constants::SERVICE_SYM           = "#";
+const QString Constants::SINGLE_QUOTE          = "'";
 const QString Constants::QUOTE                 = "\"";
 const QString Constants::NEW_LINE              = "\n";
 const QString Constants::UNKNOWN_ERROR         = QObject::tr("Error: unknown exception caught");

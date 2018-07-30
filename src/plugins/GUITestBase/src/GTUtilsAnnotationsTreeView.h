@@ -64,6 +64,7 @@ public:
     static QString getQualifierValue(HI::GUITestOpStatus &os, const QString &qualifierName, QTreeWidgetItem *parentItem);
     static QString getQualifierValue(HI::GUITestOpStatus &os, const QString &qualName, const QString &parentName);
     static QList<U2Region> getAnnotatedRegions(HI::GUITestOpStatus &os);
+    static QList<U2Region> getSelectedAnnotatedRegions(HI::GUITestOpStatus &os);
     static QString getAnnotationRegionString(HI::GUITestOpStatus &os, const QString &annotationName);
     static QString getAnnotationType(HI::GUITestOpStatus &os, const QString &annotationName);
 

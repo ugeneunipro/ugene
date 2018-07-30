@@ -35,11 +35,11 @@ class U2FORMATS_EXPORT VectorNtiSequenceFormat : public GenbankPlainTextFormat {
 public:
     VectorNtiSequenceFormat(QObject* parent);
 
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
-
     virtual void storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject *> > &objectsMap, U2OpStatus &os);
 
 private:
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+
     QList<StrPair> processCommentKeys(QMultiMap<QString, QVariant> &tags);
     void createCommentAnnotation(const QStringList &comments, int sequenceLength, AnnotationTableObject *annTable) const;
     U2Qualifier createQualifier(const QString &qualifierName, const QString &qualifierValue, bool containsDoubleQuotes) const;

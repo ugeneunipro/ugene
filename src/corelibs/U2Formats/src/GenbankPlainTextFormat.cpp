@@ -52,7 +52,7 @@ GenbankPlainTextFormat::GenbankPlainTextFormat(QObject* p)
     fPrefix = "  ";
 }
 
-FormatCheckResult GenbankPlainTextFormat::checkRawData(const QByteArray& rawData, const GUrl&) const {
+FormatCheckResult GenbankPlainTextFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
     //TODO: improve handling
     const char* data = rawData.constData();
     int size = rawData.size();
@@ -532,6 +532,7 @@ bool GenbankPlainTextFormat::checkCircularity(const GUrl& filePath, U2OpStatus& 
     SAFE_POINT_EXT( factory != NULL, os.setError(tr("IOAdapterFactory is NULL")), false);
     IOAdapter* io = factory->createIOAdapter();
     SAFE_POINT_EXT( io != NULL, os.setError(tr("IOAdapter is NULL")), false);
+    io->setFormatMode(IOAdapter::TextMode);
     bool ok = io->open(filePath, IOAdapterMode_Read);
     CHECK_EXT( ok, os.setError(L10N::errorOpeningFileRead(filePath)), false);
 

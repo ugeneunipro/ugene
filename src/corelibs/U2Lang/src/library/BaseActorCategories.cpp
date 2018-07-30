@@ -59,8 +59,8 @@ const Descriptor BaseActorCategories::CATEGORY_NGS_BASIC() {
     return Descriptor("ngs_base", tr("NGS: Basic Functions"), "");
 }
 
-const Descriptor BaseActorCategories::CATEGORY_NGS_ALIGN_SHORT_READS() {
-    return Descriptor("ngs_align", tr("NGS: Align Short Reads"), "");
+const Descriptor BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS() {
+    return Descriptor("ngs_align", tr("NGS: Map/Assemble Reads"), "");
 }
 
 const Descriptor BaseActorCategories::CATEGORY_RNA_SEQ() {

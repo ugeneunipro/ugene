@@ -22,6 +22,7 @@
 #ifndef _U2_INTEGRAL_BUS_UTILS_H_
 #define _U2_INTEGRAL_BUS_UTILS_H_
 
+#include <U2Lang/ActorModel.h>
 #include <U2Lang/Datatype.h>
 
 namespace U2 {
@@ -41,23 +42,33 @@ public:
     static QList<Descriptor> getSlotsByType(const QMap<Descriptor, DataTypePtr> &busMap, const Descriptor &slot, const DataTypePtr &type);
 };
 
-class CandidatesSplitter {
+class U2LANG_EXPORT CandidatesSplitter {
 public:
+    CandidatesSplitter(const QString &id);
     virtual ~CandidatesSplitter();
 
     virtual bool canSplit(const Descriptor &toDesc, DataTypePtr toDatatype) = 0;
     virtual IntegralBusUtils::SplitResult splitCandidates(const QList<Descriptor> &candidates);
 
+    const QString &getId() const;
+
 protected:
     virtual bool isMain(const QString &candidateSlotId) = 0;
+
+private:
+    const QString id;
 };
 
-class CandidatesSplitterRegistry {
+class U2LANG_EXPORT CandidatesSplitterRegistry {
 public:
     ~CandidatesSplitterRegistry();
     static CandidatesSplitterRegistry * instance();
 
     CandidatesSplitter * findSplitter(const Descriptor &toDesc, DataTypePtr toDatatype);
+    CandidatesSplitter * findSplitter(const QString &id);
+
+    void registerSplitter(CandidatesSplitter *splitter);
+    void unregisterSplitter(const QString &id);
 
 private:
     static CandidatesSplitterRegistry *_instance;

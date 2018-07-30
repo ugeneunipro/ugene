@@ -144,13 +144,13 @@ static void createRows(IOAdapter* io, char* buff, const int sequnenceNum, const 
     }
 }
 
-AprFormat::AprFormat(QObject* p) : DocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_CannotBeCreated), QStringList("apr")) {
+AprFormat::AprFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_CannotBeCreated), QStringList("apr")) {
     formatName = tr("Vector NTI/AlignX");
     formatDescription = tr("Vector NTI/AlignX is a Vector NTI format for multiple alignment");
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
-FormatCheckResult AprFormat::checkRawData(const QByteArray& rawData, const GUrl&) const {
+FormatCheckResult AprFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
     if (TextUtils::contains(TextUtils::BINARY, rawData.constData(), rawData.size())) {
         return FormatDetection_NotMatched;
     }
@@ -170,7 +170,7 @@ QString AprFormat::getRadioButtonText() const {
     return tr("Open in read-only mode");
 }
 
-Document* AprFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
+Document* AprFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
     QList <GObject*> objs;
     load(io, dbiRef, objs, fs, os);
 

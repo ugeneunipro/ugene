@@ -47,7 +47,7 @@ namespace U2{
 
 const int GFFFormat::LOCAL_READ_BUFFER_SIZE = 32768;
 
-GFFFormat::GFFFormat(QObject* p):DocumentFormat(p, DocumentFormatFlag_SupportWriting, QStringList("gff")){
+GFFFormat::GFFFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlag_SupportWriting, QStringList("gff")){
     formatName = tr("GFF");
     formatDescription = tr("GFF is a format used for storing features and annotations");
     supportedObjectTypes+=GObjectTypes::ANNOTATION_TABLE;
@@ -55,7 +55,7 @@ GFFFormat::GFFFormat(QObject* p):DocumentFormat(p, DocumentFormatFlag_SupportWri
 }
 
 
-Document* GFFFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& _fs, U2OpStatus& os) {
+Document* GFFFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& _fs, U2OpStatus& os) {
     CHECK_EXT(io != NULL && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), NULL);
     QVariantMap fs = _fs;
     QList<GObject*> objects;
@@ -495,7 +495,7 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     }
 }
 
-FormatCheckResult GFFFormat::checkRawData(const QByteArray& rawData, const GUrl&) const {
+FormatCheckResult GFFFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
     const char* data = rawData.constData();
     int size = rawData.size();
     int n = TextUtils::skip(TextUtils::WHITES, data, size);

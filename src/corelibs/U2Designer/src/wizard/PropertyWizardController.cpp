@@ -55,6 +55,11 @@ void PropertyWizardController::updateGUI(const QVariant &newValue) {
     emit si_updateGUI(newValue);
 }
 
+void PropertyWizardController::updateVisibility(bool newValue) {
+    emit si_updateVisibility(newValue);
+}
+
+
 DelegateTags * PropertyWizardController::tags() const {
     return _tags;
 }
@@ -132,6 +137,7 @@ QWidget * DefaultPropertyController::createGUI(U2OpStatus &os) {
     if (attribute()->isRequiredAttribute()) {
         propWidget->setRequired();
     }
+    connect(this, SIGNAL(si_updateVisibility(bool)), result, SLOT(setVisible(bool)));
 
     result->setToolTip("<html>" + attribute()->getDocumentation() + "</html>");
     return result;

@@ -32,6 +32,9 @@
 #include <QSvgGenerator>
 #include <QVBoxLayout>
 #include <QtMath>
+#include <QBuffer>
+#include <QFileInfo>
+#include <QTextStream>
 
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 
@@ -1127,19 +1130,46 @@ void TreeViewerUI::sl_exportTriggered() {
     QString fileName = phyObject->getDocument()->getName();
     QString format = "SVG - Scalable Vector Graphics (*.svg)";
     TreeViewerUtils::saveImageDialog(format, fileName, format);
-    if (!fileName.isEmpty()) {
-        QRect rect = scene()->sceneRect().toRect();
-        rect.moveTo(0, 0);
-        QSvgGenerator generator;
-        generator.setFileName(fileName);
-        generator.setSize(rect.size());
-        generator.setViewBox(rect);
-
-        QPainter painter;
-        painter.begin(&generator);
-        paint(painter);
-        painter.end();
+    if (fileName.isEmpty()) {
+        return;
     }
+
+    QFileInfo dir(QFileInfo(fileName).absolutePath());
+    if (!dir.exists() || !dir.isWritable()) {
+        QMessageBox::critical(this, tr("Error"), tr("Selected dir is read only: %1").arg(dir.absoluteFilePath()));
+        return;
+    }
+
+    QRect rect = scene()->sceneRect().toRect();
+    rect.moveTo(0, 0);
+
+    QBuffer qbuffer;
+    qbuffer.open(QBuffer::ReadWrite);
+
+    QSvgGenerator generator;
+    generator.setOutputDevice(&qbuffer);
+    generator.setSize(rect.size());
+    generator.setViewBox(rect);
+
+    QPainter painter;
+    painter.begin(&generator);
+    paint(painter);
+    painter.end();
+
+    qbuffer.seek(0); // move pointer to the buffer's start
+    QString svgText(qbuffer.readAll());
+
+    if (svgText.isEmpty()) {
+        QMessageBox::critical(this, tr("Error"), tr("Failed to generate SVG image."));
+        return;
+    }
+
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadWrite)) {
+        QMessageBox::critical(this, tr("Error"), tr("Failed to open file for writing: %1").arg(fileName));
+    }
+    QTextStream stream(&file);
+    stream << svgText << endl;
 }
 
 void TreeViewerUI::sl_contTriggered(bool on) {

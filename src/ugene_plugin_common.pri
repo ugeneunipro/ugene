@@ -35,3 +35,7 @@ unix {
     target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR
     INSTALLS += target
 }
+
+macx {
+    QMAKE_RPATHDIR += @executable_path/$${UGENE_RELATIVE_DESTDIR}
+}

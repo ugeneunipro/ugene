@@ -73,7 +73,7 @@ add-library ugenedb
 add-library breakpad
 if [ "$1" == "-test" ]
    then
-      add-library humimit
+      add-library QSpec
 fi
 
 echo Copying plugins
@@ -86,7 +86,9 @@ PLUGIN_LIST="annotator \
             browser_support \
             chroma_view \
             circular_view \
+            clark_support \
             dbi_bam \
+            diamond_support \
             dna_export \
             dna_flexibility \
             dna_graphpack \
@@ -98,7 +100,9 @@ PLUGIN_LIST="annotator \
             gor4 \
             hmm2 \
             kalign \
+            kraken_support \
             linkdata_support \
+            ngs_reads_classification \
             opencl_support \
             orf_marker \
             pcr \
@@ -114,6 +118,7 @@ PLUGIN_LIST="annotator \
             umuscle \
             variants \
             weight_matrix \
+            wevote_support \
             workflow_designer"
 
 if [ "$1" == "-test" ]

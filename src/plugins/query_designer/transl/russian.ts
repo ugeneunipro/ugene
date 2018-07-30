@@ -763,7 +763,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDRulerItem</name>
     <message>
-        <location filename="../src/QueryViewItems.cpp" line="1229"/>
+        <location filename="../src/QueryViewItems.cpp" line="1227"/>
         <source>N/A</source>
         <translation>N/A</translation>
     </message>
@@ -843,7 +843,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QueryDesignerPlugin</name>
     <message>
-        <location filename="../src/QDDocumentFormat.h" line="80"/>
+        <location filename="../src/QDDocumentFormat.h" line="83"/>
         <location filename="../src/QueryDesignerPlugin.cpp" line="56"/>
         <source>Query Designer</source>
         <translation>Дизайнер запросов</translation>

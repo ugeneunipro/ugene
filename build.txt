@@ -4,13 +4,11 @@ Prerequisites
 
 Make sure the Qt (>= 5.2.1 and < 5.6) development libraries are installed:
 
-* Ubuntu 16.04: `sudo apt-get install qt5-default qttools5-dev-tools qtscript5-dev libqt5svg5-dev libqt5webkit5-dev libprocps4-dev`
-* Ubuntu 14.04: `sudo apt-get install qt5-default qttools5-dev-tools qtscript5-dev libqt5svg5-dev libqt5webkit5-dev libprocps3-dev`
+* Ubuntu >=14.04: `sudo apt-get install qt5-default qttools5-dev-tools qtscript5-dev libqt5svg5-dev libqt5webkit5-dev`
 * Ubuntu 12.04: 1. Download and install Qt 5.5.1: www.qt.io/download-open-source/
                 2. Set the system variable: export PATH=$PATH:~/Qt5.5.1/5.5/gcc_64/bin
-                3. `sudo apt-get install g++ libgl1-mesa-dev libproc-dev libglu1-mesa-dev`
-                4. `sudo ln -s /usr/lib/libproc.so /usr/lib/libprocps.so`
-* Fedora:       `sudo yum install qt5-qtscript-devel qt5-qtbase-devel qt5-qtsvg-devel qt5-linguist qt5-qtwebkit-devel gcc-c++ redhat-rpm-config procps-ng-devel mesa-libGLU-devel`
+                3. `sudo apt-get install g++ libgl1-mesa-dev libglu1-mesa-dev`
+* Fedora:       `sudo yum install qt5-qtscript-devel qt5-qtbase-devel qt5-qtsvg-devel qt5-linguist qt5-qtwebkit-devel gcc-c++ redhat-rpm-config mesa-libGLU-devel`
 * Arch Linux:   `sudo pacman -S qt`
 * Mac OS X: download from Qt official site (http://www.qt.io/download/)
 * Windows: download from Qt official site (http://www.qt.io/download/)

@@ -66,6 +66,9 @@ public:
     static void setWidgetWarning(QWidget *widget, bool value);
 
     static void showMessage(QWidget *widgetToPaintOn, QPainter& painter, const QString& message);
+
+    static const QColor WARNING_COLOR;
+    static const QColor OK_COLOR;
 };
 
 }   // namespace U2

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>572</width>
-    <height>426</height>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -164,7 +164,7 @@ p, li { white-space: pre-wrap; }
          <bool>false</bool>
         </property>
         <property name="text">
-         <string>Align reads to reference sequence</string>
+         <string>Map reads to a reference sequence</string>
         </property>
        </widget>
       </item>

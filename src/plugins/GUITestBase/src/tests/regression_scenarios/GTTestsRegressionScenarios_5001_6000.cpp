@@ -41,6 +41,7 @@
 #include <U2View/MSAEditorTreeViewer.h>
 #include <U2View/MaGraphOverview.h>
 
+#include "api/GTMSAEditorStatusWidget.h"
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -101,6 +102,8 @@
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
+#include <primitives/GTRadioButton.h>
+
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
@@ -115,6 +118,7 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
@@ -135,6 +139,7 @@
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
+#include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
 
 namespace U2 {
 
@@ -282,7 +287,7 @@ GUI_TEST_CLASS_DEFINITION(test_5018) {
 
 GUI_TEST_CLASS_DEFINITION(test_5027_1) {
     //1. Open preferences and set memory limit per task 500000MB
-    //2. Open WD and compose next scheme "File list" -> "SnpEff annotation and filtration"
+    //2. Open WD and compose next scheme "Read File URL(s)" -> "SnpEff annotation and filtration"
     //3. Run schema.
     //Expected state : there is problem on dashboard "A problem occurred during allocating memory for running SnpEff."
     class MemorySetter : public CustomScenario {
@@ -327,7 +332,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_5027_2) {
     //1. Open preferences and set memory limit per task 512MB
-    //2. Open WD and compose next scheme "File list" -> "SnpEff annotation and filtration"
+    //2. Open WD and compose next scheme "Read File URL(s)" -> "SnpEff annotation and filtration"
     //3. Run schema.
     //Expected state : there is problem on dashboard "There is not enough memory to complete the SnpEff execution."
     class MemorySetter : public CustomScenario {
@@ -658,7 +663,7 @@ GUI_TEST_CLASS_DEFINITION(test_5211) {
     GTKeyboardUtils::copy(os);
 
 //    4. Press the next key sequence:
-//        ﻿Windows and Linux: Shift+Ins
+//        Windows and Linux: Shift+Ins
 //        macOS: Meta+Y
 #ifndef Q_OS_MAC
     GTKeyboardUtils::paste(os);
@@ -681,7 +686,7 @@ GUI_TEST_CLASS_DEFINITION(test_5211) {
                   .arg(expectedDocumentsCount).arg(documentsCount));
 
 //    5. Press the next key sequence:
-//        ﻿Windows and Linux: Ctrl+V
+//        Windows and Linux: Ctrl+V
 //        macOS: Cmd+V
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);     // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
 
@@ -780,6 +785,50 @@ GUI_TEST_CLASS_DEFINITION(test_5227) {
     GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!lt.hasError(), "There is error in the log");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5231) {
+
+    //1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Run Smith-waterman search using:
+        class Scenario : public CustomScenario {
+            void run(HI::GUITestOpStatus &os) {
+                QWidget *dialog = QApplication::activeModalWidget();
+                CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+    //pattern: "ATCGAT"; note that pattern length is 6.
+                GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit *>(os, "teditPattern", dialog), "K*KTPPVGGKLA*VTP");
+
+                GTRadioButton::click(os, "radioTranslation", dialog);
+
+                //2.1 Choose Classic algorithm
+                QComboBox * comboRealization = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "comboRealization", dialog));
+                const int swRealizationIndex = comboRealization->findText("Classic 2");
+                GTComboBox::setCurrentIndex(os, comboRealization, swRealizationIndex);
+
+                GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget", dialog), 1);
+                //3. Open tab "Input and output"
+                GTTabWidget::setCurrentIndex(os, GTWidget::findExactWidget<QTabWidget *>(os, "tabWidget", dialog), 1);
+
+                //4. Chose in the combobox "Multiple alignment"
+                GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "resultViewVariants", dialog), "Multiple alignment");
+
+                GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+            }
+        };
+
+        GTUtilsDialog::waitForDialog(os, new SmithWatermanDialogFiller(os, new Scenario));
+        GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Find pattern [Smith-Waterman]...", GTGlobals::UseMouse);
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+
+        GTUtilsProjectTreeView::doubleClickItem(os, "P1_NC_1.aln");
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+
+        const bool isAlphabetAmino = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getAlphabet()->isAmino();
+        CHECK_SET_ERR(isAlphabetAmino, "Alphabet is not amino");
+
 }
 
 
@@ -1003,7 +1052,7 @@ GUI_TEST_CLASS_DEFINITION(test_5335) {
 
 GUI_TEST_CLASS_DEFINITION(test_5346) {
     // 1. Open WD
-    // 2. Create the workflow: File List - FastQC Quality Control
+    // 2. Create the workflow: Read File URL(s) - FastQC Quality Control
     // 3. Set empty input file
     // Expected state: there is an error "The input file is empty"
     GTLogTracer l;
@@ -1012,7 +1061,7 @@ GUI_TEST_CLASS_DEFINITION(test_5346) {
 
     QString emptyFile = sandBoxDir + "test_5346_empty";
     GTFile::create(os, emptyFile);
-    WorkflowProcessItem* fileList = GTUtilsWorkflowDesigner::addElement(os, "File List");
+    WorkflowProcessItem* fileList = GTUtilsWorkflowDesigner::addElement(os, "Read File URL(s)");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, emptyFile);
 
     WorkflowProcessItem* fastqc = GTUtilsWorkflowDesigner::addElement(os, "FastQC Quality Control");
@@ -1762,6 +1811,27 @@ GUI_TEST_CLASS_DEFINITION(test_5520_2) {
     GTUtilsDialog::waitForDialog(os, new BlastAllSupportDialogFiller(os, new Scenario()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Analyze" << "Query with local BLAST+...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5550) {
+//    1. Open "_common_data/fasta/empty.fa".
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/empty.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: there are next values on the statusbar: "Ln - / 0  Col - / 0  Pos - / -".
+    const QString rowNumberString = GTMSAEditorStatusWidget::getRowNumberString(os);
+    const QString rowsCountString = GTMSAEditorStatusWidget::getRowsCountString(os);
+    const QString columnNumberString = GTMSAEditorStatusWidget::getColumnNumberString(os);
+    const QString columnsCountString = GTMSAEditorStatusWidget::getColumnsCountString(os);
+    const QString sequenceUngappedPositionString = GTMSAEditorStatusWidget::getSequenceUngappedPositionString(os);
+    const QString sequenceUngappedLengthString = GTMSAEditorStatusWidget::getSequenceUngappedLengthString(os);
+
+    CHECK_SET_ERR("-" == rowNumberString, QString("An incorrect row number label: expected '%1', got '%2'").arg("-").arg(rowNumberString));
+    CHECK_SET_ERR("0" == rowsCountString, QString("An incorrect rows count label: expected '%1', got '%2'").arg("-").arg(rowsCountString));
+    CHECK_SET_ERR("-" == columnNumberString, QString("An incorrect column number label: expected '%1', got '%2'").arg("-").arg(columnNumberString));
+    CHECK_SET_ERR("0" == columnsCountString, QString("An incorrect columns count label: expected '%1', got '%2'").arg("-").arg(columnsCountString));
+    CHECK_SET_ERR("-" == sequenceUngappedPositionString, QString("An incorrect sequence ungapped position label: expected '%1', got '%2'").arg("-").arg(sequenceUngappedPositionString));
+    CHECK_SET_ERR("-" == sequenceUngappedLengthString, QString("An incorrect sequence ungapped length label: expected '%1', got '%2'").arg("-").arg(sequenceUngappedLengthString));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5562_1) {
@@ -3019,6 +3089,34 @@ GUI_TEST_CLASS_DEFINITION(test_5747) {
     GTGlobals::sleep(500);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5750) {
+//    1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Rename the first sequence to '1'.
+    GTUtilsMSAEditorSequenceArea::renameSequence(os, "Phaneroptera_falcata", "1");
+
+//    3. Export the alignment object to MSF format.
+    GTLogTracer logTracer;
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export/Import" << "Export object..."));
+    GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, sandBoxDir, "test_5750.msf", ExportDocumentDialogFiller::MSF, false, true));
+    GTUtilsProjectTreeView::callContextMenu(os, "COI", "COI.aln");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the exported file is opened in UGENE. The first sequence is named "1".
+    GTUtilsLog::check(os, logTracer);
+
+    const QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(!names.isEmpty(), "Names list is empty");
+
+    const QString expectedName = "1";
+    CHECK_SET_ERR(expectedName == names[0], QString("The first sequecne name is incorrect: expected '%1', got '%2'")
+            .arg(expectedName).arg(names[0]));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5751) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
@@ -3715,6 +3813,31 @@ GUI_TEST_CLASS_DEFINITION(test_5773) {
 
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5775) {
+
+    // 1. Open "data/samples/FASTQ/eas.fastq".
+    // Expected state: the "Sequence Reading Options" dialog has appeared.
+    // Select the "Merge sequences into a single sequence to show in sequence viewer" option. Accept the dialog.
+    GTUtilsProject::openMultiSequenceFileAsMergedSequence(os, dataDir + "samples/FASTQ/eas.fastq");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Open the "Search in Sequence" options panel tab.
+    // Check the "Load patterns from file" option, select "data/samples/FASTQ/eas.fastq" as the file with patterns.
+    // Expected state: the search task is launched automatically. After it is finished, there are 3 results.
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+
+    GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(os, true);
+    GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox*>(os, "chbUsePatternNames"), true);
+
+    GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern(os);
+
+    GTUtilsOptionPanelSequenceView::enterPatternFromFile(os, dataDir + "samples/FASTQ/", "eas.fastq");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 1/3"), "Results string not match");
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5786_1) {
 //    1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
@@ -4162,6 +4285,24 @@ GUI_TEST_CLASS_DEFINITION(test_5833) {
     CHECK_SET_ERR("11878" == referenceLengthString, QString("Unexepected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
     CHECK_SET_ERR("440" == readPositionString, QString("Unexepected read position label: expected '%1', got '%2'").arg("440").arg(readPositionString));
     CHECK_SET_ERR("1174" == readLengthString, QString("Unexepected read length label: expected '%1', got '%2'").arg("1174").arg(readLengthString));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5837) {
+    //    1. open document samples/CLUSTALW/COI.aln
+        GTUtilsProject::openFiles(os, dataDir + "samples/CLUSTALW/COI.aln");
+    //    2. Select first sequence
+        GTUtilsMSAEditorSequenceArea::click(os,QPoint(0,0));
+        GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<MSAE_MENU_EXPORT<<"Save sequence",GTGlobals::UseKey));
+        Runnable* r = new ExportSelectedSequenceFromAlignment(os,testDir + "_common_data/scenarios/sandbox/",ExportSelectedSequenceFromAlignment::Ugene_db,true);
+        GTUtilsDialog::waitForDialog(os, r);
+
+        GTMenu::showContextMenu(os,GTUtilsMdi::activeWindow(os));
+        GTGlobals::sleep();
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+
+        GTUtilsProjectTreeView::click(os, "Phaneroptera_falcata.ugenedb");
+        GTKeyboardDriver::keyClick( Qt::Key_Delete);
+        GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5840) {
@@ -4616,8 +4757,8 @@ GUI_TEST_CLASS_DEFINITION(test_5950) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5972_1) {
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);   
-    
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
     //1. Open file _common_data/regression/5972/5972_1.uwl
     GTUtilsWorkflowDesigner::loadWorkflow(os, testDir + "_common_data/regression/5972/5972_1.uwl");
     GTUtilsTaskTreeView::waitTaskFinished(os);

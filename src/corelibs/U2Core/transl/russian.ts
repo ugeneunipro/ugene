@@ -4,52 +4,52 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="525"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="537"/>
         <source>This is not ESearch result!</source>
         <translation>Это не является результатом ESearch!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="570"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="582"/>
         <source>This is not a ESummary result!</source>
         <translation>Это не является результатом ESummary!</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="653"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="665"/>
         <source>Use Ensembl ID. For example: %1 or %2</source>
         <translation>Используйте Ensembl ID. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="654"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="666"/>
         <source>Use Genbank DNA accession number. For example: %1 or %2</source>
         <translation>Используйте Genbank DNA Accession Number. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="655"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="667"/>
         <source>Use Genbank protein accession number. For example: %1</source>
         <translation>Используйте Genbank Protein Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="656"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="668"/>
         <source>Use PDB molecule four-letter identifier. For example: %1 or %2</source>
         <translation>Используйте 4-х символьный идентификатор PDB. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="657"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="669"/>
         <source>Use SWISS-PROT accession number. For example: %1 or %2</source>
         <translation>Используйте SWISS-PROT Accession Number. Например: %1 или %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="658"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="670"/>
         <source>Use UniProtKB/Swiss-Prot accession number. For example: %1</source>
         <translation>Используйте UniProtKB/Swiss-Prot Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="659"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="671"/>
         <source>Use UniProtKB/TrEMBL accession number. For example: %1</source>
         <translation>Используйте UniProtKB/TrEMBL Accession Number. Например: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="688"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="700"/>
         <source>Use %1 unique identifier.</source>
         <translation>Исплользуйте уникальный идентификатор %1.</translation>
     </message>
@@ -84,17 +84,17 @@
         <translation>Неверный тип базы: %1</translation>
     </message>
     <message>
-        <location filename="../src/gobjects/GObjectUtils.cpp" line="430"/>
+        <location filename="../src/gobjects/GObjectUtils.cpp" line="440"/>
         <source>Unsupported object type: %1</source>
         <translation>Неподдерживаемый тип объекта: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="421"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="503"/>
         <source>Unable to detect sequence alphabet. Probably, this is because some of merged sequences are empty.</source>
         <translation>Невозможно определить алфавит последовательности. Возможно это вызвано тем, что некоторые из последовательностей являются пустыми.</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="576"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="658"/>
         <source>Invalid number of symbols: %1</source>
         <translation>Неверное число символов: %1</translation>
     </message>
@@ -504,42 +504,42 @@
         <translation>Any region of sequence that functions in the regulation of transcription or translation</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="175"/>
+        <location filename="../src/util/GenbankFeatures.cpp" line="176"/>
         <source>Genes</source>
         <translation>Гены</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="190"/>
+        <location filename="../src/util/GenbankFeatures.cpp" line="191"/>
         <source>Signals</source>
         <translation>Сигналы</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="211"/>
+        <location filename="../src/util/GenbankFeatures.cpp" line="212"/>
         <source>Binding</source>
         <translation>Связывание</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="217"/>
+        <location filename="../src/util/GenbankFeatures.cpp" line="218"/>
         <source>Variation</source>
         <translation>Вариация</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="226"/>
+        <location filename="../src/util/GenbankFeatures.cpp" line="227"/>
         <source>Repeats</source>
         <translation>Повторы</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="233"/>
+        <location filename="../src/util/GenbankFeatures.cpp" line="234"/>
         <source>RNA</source>
         <translation>РНК</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="243"/>
+        <location filename="../src/util/GenbankFeatures.cpp" line="244"/>
         <source>Misc</source>
         <translation>Разное</translation>
     </message>
     <message>
-        <location filename="../src/util/GenbankFeatures.cpp" line="263"/>
+        <location filename="../src/util/GenbankFeatures.cpp" line="264"/>
         <source>Spans</source>
         <translation>Диапазоны</translation>
     </message>
@@ -635,22 +635,22 @@
 <context>
     <name>U2::AppResourcePool</name>
     <message>
-        <location filename="../src/globals/AppResources.cpp" line="56"/>
+        <location filename="../src/globals/AppResources.cpp" line="88"/>
         <source>Threads</source>
         <translation>Потоки</translation>
     </message>
     <message>
-        <location filename="../src/globals/AppResources.cpp" line="67"/>
+        <location filename="../src/globals/AppResources.cpp" line="99"/>
         <source>Memory</source>
         <translation>Память</translation>
     </message>
     <message>
-        <location filename="../src/globals/AppResources.cpp" line="67"/>
+        <location filename="../src/globals/AppResources.cpp" line="99"/>
         <source>Mb</source>
         <translation>Mb</translation>
     </message>
     <message>
-        <location filename="../src/globals/AppResources.cpp" line="70"/>
+        <location filename="../src/globals/AppResources.cpp" line="102"/>
         <source>Project</source>
         <translation>Проект</translation>
     </message>
@@ -658,7 +658,7 @@
 <context>
     <name>U2::AutoAnnotationsSupport</name>
     <message>
-        <location filename="../src/globals/AutoAnnotationsSupport.cpp" line="112"/>
+        <location filename="../src/globals/AutoAnnotationsSupport.cpp" line="110"/>
         <source>Auto-annotations [%1 | %2]</source>
         <translation>Автоаннотации [%1 | %2]</translation>
     </message>
@@ -666,7 +666,7 @@
 <context>
     <name>U2::AutoAnnotationsUpdateTask</name>
     <message>
-        <location filename="../src/globals/AutoAnnotationsSupport.cpp" line="305"/>
+        <location filename="../src/globals/AutoAnnotationsSupport.cpp" line="303"/>
         <source>Empty auto-annotation object</source>
         <translation>Объект автоаннотации пуст</translation>
     </message>
@@ -989,214 +989,252 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Расширенный амино</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="270"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="269"/>
         <source>Complement for standard DNA</source>
         <translation>Комплeментарная трансляция к стандартному ДНК алфавиту</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="288"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="287"/>
         <source>Complement for standard RNA</source>
         <translation>Комплeментарная трансляция к стандартному РНК алфавиту</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="316"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="315"/>
         <source>Complement for extended DNA</source>
         <translation>Комплeментарная траснсляция для расширенного алфавита ДНК</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="345"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="344"/>
         <source>Complement for extended RNA</source>
         <translation>Комплeментарная трансляция к расширенному РНК алфавиту</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="359"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="358"/>
         <source>1. The Standard Genetic Code</source>
         <translation>1. Стандартный генетический код</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="369"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="368"/>
         <source>2. The Vertebrate Mitochondrial Code</source>
         <translation>2. Митохондриальный код позвоночных</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="379"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="378"/>
         <source>3. The Yeast Mitochondrial Code</source>
         <translation>3. Митохондриальный код дрожжей</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="389"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="388"/>
         <source>4. The Mold, Protozoan, and Coelenterate Mitochondria and the Mycoplasma Code</source>
-        <translation>4. Код Mold, протозойных, и кишечнополостных митохондрий и Mycoplasma
-</translation>
+        <translation>4. Код Mold, протозойных, и кишечнополостных митохондрий и Mycoplasma</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="399"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="398"/>
         <source>5. The Invertebrate Mitochondrial Code</source>
         <translation>5. Митохондриальный код беспозвоночных</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="409"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="408"/>
         <source>6. The Ciliate, Dasycladacean and Hexamita Nuclear Code</source>
         <translation>6. Митохондриальный код инфузорий, Dasycladacean и Hexamita</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="419"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="418"/>
         <source>9. The Echinoderm and Flatworm Mitochondrial Code</source>
         <translation>9. Митохондриальный код иглокожих и плоских червей</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="429"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="428"/>
         <source>10. The Euplotid Nuclear Code</source>
         <translation>10. Ядерный код Euplotid</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="439"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="438"/>
         <source>11. The Bacterial and Plant Plastid Code</source>
         <translation>11. Код пластид бактерий и растений</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="449"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="448"/>
         <source>12. The Alternative Yeast Nuclear Code</source>
-        <translation>12. Альтернативный ядерный код дрожжей
-</translation>
+        <translation>12. Альтернативный ядерный код дрожжей</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="459"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="458"/>
         <source>13. The Ascidian Mitochondrial Code</source>
         <translation>13. Митохондриальный код асцидии</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="469"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="468"/>
         <source>14. The Alternative Flatworm Mitochondrial Code</source>
         <translation>14. Альтернативный митохондриальный код плоских червей</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="479"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="478"/>
         <source>15. Blepharisma Nuclear Code</source>
         <translation>15. Ядерный код блефаризмы</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="490"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="489"/>
         <source>16. Chlorophycean Mitochondrial Code</source>
         <translation>16. Митохондриальный код водоросли Chlorophycean</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="500"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="499"/>
         <source>21. Trematode Mitochondrial Code</source>
         <translation>21. Митохондриальный код трематоды</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="510"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="509"/>
         <source>22. Scenedesmus obliquus Mitochondrial Code</source>
         <translation>22. Митохондриальный код водоросли Scenedesmus obliquus</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="521"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="520"/>
         <source>23. Thraustochytrium Mitochondrial Code</source>
         <translation>23. Митохондриальный код Thraustochytrium</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="572"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="530"/>
+        <source>24. Pterobranchia Mitochondrial Code</source>
+        <translation>24. Митохондриальный код перистожаберных</translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="540"/>
+        <source>25. Candidate Division SR1 and Gracilibacteria Code</source>
+        <translation>25. Candidate Division SR1 and Gracilibacteria Code</translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="550"/>
+        <source>26. Pachysolen tannophilus Nuclear Code</source>
+        <translation>26. Pachysolen tannophilus Nuclear Code</translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="560"/>
+        <source>27. Karyorelict Nuclear</source>
+        <translation>27. Karyorelict Nuclear</translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="570"/>
+        <source>28. Condylostoma Nuclear</source>
+        <translation>28. Condylostoma Nuclear</translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="580"/>
+        <source>29. Mesodinium Nuclear</source>
+        <translation>29. Mesodinium Nuclear</translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="590"/>
+        <source>30. Peritrich Nuclear</source>
+        <translation>30. Peritrich Nuclear</translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="600"/>
+        <source>31. Blastocrithidia Nuclear</source>
+        <translation>31. Blastocrithidia Nuclear</translation>
+    </message>
+    <message>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="651"/>
         <source>Alanine</source>
         <translation>Аланин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="573"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="652"/>
         <source>Cysteine</source>
         <translation>Цистеин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="574"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="653"/>
         <source>Aspartic acid</source>
         <translation>Аспарагиновая кислота</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="575"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="654"/>
         <source>Glutamic acid</source>
         <translation>Глутаминовая кислота</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="576"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="655"/>
         <source>Phenylalanine</source>
         <translation>Фенилаланин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="577"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="656"/>
         <source>Glycine</source>
         <translation>Глицин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="578"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="657"/>
         <source>Histidine</source>
         <translation>Гистидин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="579"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="658"/>
         <source>Isoleucine</source>
         <translation>Изолейцин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="580"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="659"/>
         <source>Lysine</source>
         <translation>Лизин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="581"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="660"/>
         <source>Leucine</source>
         <translation>Лейцин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="582"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="661"/>
         <source>Methionine</source>
         <translation>Метионин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="583"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="662"/>
         <source>Asparagine</source>
         <translation>Аспарагин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="584"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="663"/>
         <source>Proline</source>
         <translation>Пролин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="585"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="664"/>
         <source>Glutamine</source>
         <translation>Глютамин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="586"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="665"/>
         <source>Arginine</source>
         <translation>Аргинин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="587"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="666"/>
         <source>Serine</source>
         <translation>Серин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="588"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="667"/>
         <source>Threonine</source>
         <translation>Треонин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="589"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="668"/>
         <source>Valine</source>
         <translation>Валин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="590"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="669"/>
         <source>Tryptophan</source>
         <translation>Триптофан</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="591"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="670"/>
         <source>Tyrosine</source>
         <translation>Тирозин</translation>
     </message>
     <message>
-        <location filename="../src/datatype/BaseTranslations.cpp" line="592"/>
+        <location filename="../src/datatype/BaseTranslations.cpp" line="671"/>
         <source>Stop codon</source>
         <translation>Стоп-кодон</translation>
     </message>
@@ -1388,47 +1426,47 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::ExternalToolSupportUtils</name>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="350"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="363"/>
         <source>Can not remove temporary folder: path is empty.</source>
         <translation>Невозможно удалить временную папку: пустой путь.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="356"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="369"/>
         <source>Can not remove files from temporary folder.</source>
         <translation>Невозможно удалить файлы из временной папку.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="361"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="374"/>
         <source>Can not remove folder for temporary files.</source>
         <translation>Невозможно удалить папку для временных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="374"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="387"/>
         <source>Can not create folder for temporary files: %1</source>
         <translation>Невозможно создать папку для временных файлов: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="405"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="418"/>
         <source>Can&apos;t run an executable file &quot;%1&quot; as it is. Try to run it as a cmd line command: &quot;%2&quot;</source>
         <translation>Невозможно запустить исполняемый файл &quot;%1&quot;. Попробуйте запустить его из командной строки: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="421"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="434"/>
         <source>Undefined tool: &apos;%1&apos;</source>
         <translation>Неопределенный инструмент: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="425"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="438"/>
         <source>Path for &apos;%1&apos; tool not set</source>
         <translation>Путь до инструмента &apos;%1&apos; не установлен</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="469"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="484"/>
         <source>Working folder is &quot;%1&quot;</source>
         <translation>Рабочая папка &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="478"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="493"/>
         <source>Launching %1 tool: %2 %3</source>
         <translation>Запуск инструмента %1: %2 %3</translation>
     </message>
@@ -1623,7 +1661,7 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::GzippedLocalFileAdapterFactory</name>
     <message>
-        <location filename="../src/io/LocalFileAdapter.cpp" line="40"/>
+        <location filename="../src/io/LocalFileAdapter.cpp" line="41"/>
         <source>GZIP file</source>
         <translation>Локальный GZIP адаптер</translation>
     </message>
@@ -1726,7 +1764,7 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/tasks/shared_db/ImportFileToDatabaseTask.cpp" line="74"/>
         <source>Unrecognized url: </source>
-        <translation>Ссылка не распознается:</translation>
+        <translation>Ссылка не распознается: </translation>
     </message>
 </context>
 <context>
@@ -1905,73 +1943,78 @@ The session database file is removed after closing of UGENE.</source>
         <translation>&apos;%1&apos; это не папка</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="58"/>
+        <location filename="../src/globals/L10n.h" line="56"/>
+        <source>Avoid characters in the &apos;%1&apos; parameter that do not correspond to the operating system locale settings.</source>
+        <translation>Избегайте символов в параметре &apos;%1&apos; которые не соответствуют настройкам локадизации операционной системы.</translation>
+    </message>
+    <message>
+        <location filename="../src/globals/L10n.h" line="59"/>
         <source>&apos;%1&apos; does not match database object URL format</source>
         <translation>&apos;%1&apos; не соответствует формату пути объекта базы данных</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="59"/>
+        <location filename="../src/globals/L10n.h" line="60"/>
         <source>&apos;%1&apos; does not match database folder URL format</source>
         <translation>&apos;%1&apos; не соответствует формату пути папки базы данных</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="60"/>
+        <location filename="../src/globals/L10n.h" line="61"/>
         <source>Unable to connect to the database &apos;%1&apos;. Check your connection settings in File -&gt; Connect to shared database</source>
         <translation>Невозможно подключиться к базе данных &apos;%1&apos;. Проверьте настройки соединения в настройках Файл -&gt; Подключение к удаленной базе данных</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="62"/>
+        <location filename="../src/globals/L10n.h" line="63"/>
         <source>Unable to find the object &apos;%1&apos; in the database &apos;%2&apos;</source>
         <translation>Невозможно найти объект &apos;%1&apos; в базе данных &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="65"/>
+        <location filename="../src/globals/L10n.h" line="66"/>
         <source>Unable to find the folder &apos;%1&apos; with the specified path in the database &apos;%2&apos;</source>
         <translation>Невозможно найти папку &apos;%1&apos; по указанному пути в базе данных &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="67"/>
+        <location filename="../src/globals/L10n.h" line="68"/>
         <source>You do not have write permissions to the database &apos;%1&apos;</source>
         <translation>У вас нет прав на запись в базу данных &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="69"/>
+        <location filename="../src/globals/L10n.h" line="70"/>
         <source>Invalid file format. Expected file format: %1,  File: %2</source>
         <translation>Неверный формат файла. Ожидаемый формат: %1, Файл: %2</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="70"/>
+        <location filename="../src/globals/L10n.h" line="71"/>
         <source>Invalid file format! File: %1</source>
         <translation>Неверный формат файла: %1</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="74"/>
+        <location filename="../src/globals/L10n.h" line="75"/>
         <source>Can&apos;t save image to file %1, format %2</source>
         <translation>Не могу сохранить изображение в файл %1 формата %2</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="76"/>
+        <location filename="../src/globals/L10n.h" line="77"/>
         <source>Document not found: %1</source>
         <translation>Документ не найден: %1</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="77"/>
+        <location filename="../src/globals/L10n.h" line="78"/>
         <source> bp</source>
         <translatorcomment>пара остатков</translatorcomment>
         <translation> п.о</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="103"/>
+        <location filename="../src/globals/L10n.h" line="104"/>
         <source>Direct</source>
         <translation>Прямая</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="104"/>
+        <location filename="../src/globals/L10n.h" line="105"/>
         <source>Reverse-complementary</source>
         <translation>Обратно-комплементарная</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="106"/>
+        <location filename="../src/globals/L10n.h" line="107"/>
         <source>Required</source>
         <translation>Требуемый</translation>
     </message>
@@ -1990,7 +2033,7 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::LoadDataFromEntrezTask</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="424"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="433"/>
         <source>Sequence with ID=%1 is not found.</source>
         <translation>Последовательность с идентификатором=%1 не найдена.</translation>
     </message>
@@ -2062,12 +2105,12 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::LoadRemoteDocumentTask</name>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="212"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="214"/>
         <source>Undefined database: &apos;%1&apos;</source>
         <translation>Неопределенная база данных: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="264"/>
+        <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="266"/>
         <source>Cannot find %1 in %2 database</source>
         <translation>Невозможно найти %1 в базе данных %2</translation>
     </message>
@@ -2113,7 +2156,7 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::LocalFileAdapterFactory</name>
     <message>
-        <location filename="../src/io/LocalFileAdapter.cpp" line="31"/>
+        <location filename="../src/io/LocalFileAdapter.cpp" line="32"/>
         <source>Local file</source>
         <translation>Локальный адаптер</translation>
     </message>
@@ -2278,22 +2321,22 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::RelocateDocumentTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="358"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="363"/>
         <source>Relocate document %1 -&gt; %2</source>
         <translation>Перемещение документа %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="365"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="370"/>
         <source>No active project found</source>
         <translation>Нет проекта</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="369"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="374"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="378"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="383"/>
         <source>Only unloaded objects can be relocated</source>
         <translation>Можно перемещать только выгруженные документы</translation>
     </message>
@@ -2351,22 +2394,22 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::SaveCopyAndAddToProjectTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="318"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="323"/>
         <source>Save a copy %1</source>
         <translation>Сохранение копии %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="336"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="341"/>
         <source>No active project found</source>
         <translation>Нет проекта</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="337"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="342"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="341"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="346"/>
         <source>Document is already added to the project %1</source>
         <translation>Документ уже добавлен в проект: %1</translation>
     </message>
@@ -2397,35 +2440,36 @@ The session database file is removed after closing of UGENE.</source>
         <location filename="../src/tasks/SaveDocumentTask.cpp" line="100"/>
         <source>Saving document %1
 </source>
-        <translation>Сохранение документа: %1</translation>
+        <translation>Сохранение документа: %1
+</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="121"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="126"/>
         <source>Can&apos;t create tmp file</source>
         <translation>Невозможно создать временный файл</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="126"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="131"/>
         <source>Can&apos;t copy file to tmp file while trying to save document by append</source>
         <translation>Невозможно скопировать скопировать файл во временный файл при попытке сохранения файла при добавлении</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="143"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="148"/>
         <source>Can&apos;t remove original file to place tmp file instead</source>
         <translation>Невозможно удалить оригинальный файл чтобы заменить его временным</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="146"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="151"/>
         <source>Can&apos;t rename saved tmp file to original file</source>
         <translation>Невозможно переименовать сохраненный временный файл в оригинальный</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="183"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="188"/>
         <source>Document &apos;%1&apos; can&apos;t be unloaded: </source>
         <translation>Документ &apos;%1&apos; не может быть выгружен: </translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="183"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="188"/>
         <source>unexpected error</source>
         <translation>неожиданная ошибка</translation>
     </message>
@@ -2433,34 +2477,34 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::SaveMultipleDocuments</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="201"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="206"/>
         <source>Save multiple documents</source>
         <translation>Сохранение нескольких документов</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="213"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="218"/>
         <source>Question?</source>
         <translation>Вопрос?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="214"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="219"/>
         <source>Save document: %1</source>
         <translation>Сохранить документ: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="274"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="279"/>
         <source>You have no permission to write to &apos;%1&apos; file.
 UGENE contains unsaved modifications.</source>
         <translation>У вас недостаточно прав для записи в &apos;%1&apos; файл.
 UGENE содержит несохраненные изменения.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="275"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="280"/>
         <source>Do you want to save changes to another file?</source>
         <translation>Хотите сохранить изменения в другой файл?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="296"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="301"/>
         <source>Save as</source>
         <translation>Сохранить как</translation>
     </message>
@@ -2684,19 +2728,19 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::U2SequenceUtils</name>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="55"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="56"/>
         <source>Alphabet is not found!</source>
         <translation>Алфавит не найден!</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="102"/>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="118"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="103"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="119"/>
         <source>Invalid sequence DBI</source>
         <translation>Invalid sequence DBI</translation>
     </message>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="386"/>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="565"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="468"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="647"/>
         <source>Failed to derive sequence alphabet!</source>
         <translation>Не удалось распознать алфавит!</translation>
     </message>
@@ -2712,7 +2756,7 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::VFSAdapterFactory</name>
     <message>
-        <location filename="../src/io/VFSAdapter.cpp" line="32"/>
+        <location filename="../src/io/VFSAdapter.cpp" line="33"/>
         <source>Memory buffer</source>
         <translation>Буфер в памяти</translation>
     </message>
@@ -2720,7 +2764,7 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2SequenceImporter</name>
     <message>
-        <location filename="../src/util/U2SequenceUtils.cpp" line="307"/>
+        <location filename="../src/util/U2SequenceUtils.cpp" line="389"/>
         <source>Sequence was not imported. Probably, this is because the sequence is empty.</source>
         <translation>Последовательность не была импортирована. Возможно это произошло из-за того, что последовательность является пустой.</translation>
     </message>

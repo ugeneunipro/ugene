@@ -89,7 +89,7 @@ const QString FpkmTrackingFormat::COVERAGE_COLUMN = "coverage";
 
 
 FpkmTrackingFormat::FpkmTrackingFormat(QObject* parent)
-    : DocumentFormat(parent, DocumentFormatFlag_SupportWriting, QStringList("fpkm_tracking"))
+    : TextDocumentFormat(parent, DocumentFormatFlag_SupportWriting, QStringList("fpkm_tracking"))
 {
     formatDescription = tr("The FPKM (fragments per kilobase of exon model per million mapped fragments)"
         " Tracking Format is a native Cufflinks format to output estimated expression values.");
@@ -98,7 +98,7 @@ FpkmTrackingFormat::FpkmTrackingFormat(QObject* parent)
 }
 
 
-Document* FpkmTrackingFormat::loadDocument(IOAdapter* io, const U2DbiRef&  dbiRef, const QVariantMap& hints, U2OpStatus& os)
+Document* FpkmTrackingFormat::loadTextDocument(IOAdapter* io, const U2DbiRef&  dbiRef, const QVariantMap& hints, U2OpStatus& os)
 {
     CHECK_EXT(io != NULL && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), NULL);
     QList<GObject*> objects;
@@ -416,7 +416,7 @@ FpkmTrackingLineData FpkmTrackingFormat::parseAndValidateLine(QString line, QStr
     return parsedData;
 }
 
-FormatCheckResult FpkmTrackingFormat::checkRawData(const QByteArray& rawData, const GUrl& /* = GUrl */) const
+FormatCheckResult FpkmTrackingFormat::checkRawTextData(const QByteArray& rawData, const GUrl& /* = GUrl */) const
 {
     const char* data = rawData.constData();
     int size = rawData.size();

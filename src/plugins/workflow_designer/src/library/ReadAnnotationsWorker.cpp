@@ -135,8 +135,8 @@ ReadAnnotationsProto::ReadAnnotationsProto()
     setCompatibleDbObjectTypes(QSet<GObjectType>() << GObjectTypes::ANNOTATION_TABLE);
 
     setDisplayName(ReadAnnotationsWorker::tr("Read Annotations"));
-    setDocumentation(ReadAnnotationsWorker::tr("Reads annotations from files. All annotation file formats supported by UGENE are allowed as input to this element."));
-
+    setDocumentation(ReadAnnotationsWorker::tr("Input one or several files with annotations: a file may also contain a sequence (e.g. GenBank format)"
+                                               " or contain annotations only (e.g. GTF format). The element outputs message(s) with the annotations data."));
     { // ports description
         QMap<Descriptor, DataTypePtr> outTypeMap;
         outTypeMap[BaseSlots::ANNOTATION_TABLE_SLOT()] = BaseTypes::ANNOTATION_TABLE_TYPE();

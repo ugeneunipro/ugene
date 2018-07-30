@@ -51,7 +51,7 @@ namespace U2 {
 QHash<QByteArray,int> PDBFormat::atomNumMap = createAtomNumMap();
 QHash<QByteArray, char> PDBFormat::acronymNameMap;
 
-PDBFormat::PDBFormat(QObject* p) : DocumentFormat(p, DocumentFormatFlag(0), QStringList("pdb"))
+PDBFormat::PDBFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlag(0), QStringList("pdb"))
 {
     formatName = tr("PDB");
     formatDescription = tr("The Protein Data Bank (PDB) format provides a standard representation for macromolecular structure data derived from X-ray diffraction and NMR studies.");
@@ -63,7 +63,7 @@ PDBFormat::PDBFormat(QObject* p) : DocumentFormat(p, DocumentFormatFlag(0), QStr
     supportedObjectTypes+=GObjectTypes::ANNOTATION_TABLE;
 }
 
-FormatCheckResult PDBFormat::checkRawData(const QByteArray& rawData, const GUrl&) const {
+FormatCheckResult PDBFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
     static QList< const char* > tags;
     tags << "HEADER" << "ATOM" << "MODEL" << "REMARK" << "OBSLTE"
          << "TITLE" << "SPLIT" << "CAVEAT" << "COMPND" << "SOURCE"
@@ -86,7 +86,7 @@ FormatCheckResult PDBFormat::checkRawData(const QByteArray& rawData, const GUrl&
 }
 
 
-Document* PDBFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os){
+Document* PDBFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os){
     GUrl url = io->getURL();
     ioLog.trace("Start PDB parsing: " +url.getURLString());
 

@@ -58,7 +58,7 @@ DotPlotImageExportController::DotPlotImageExportController(DotPlotWidget *wgt)
       dotplotWidget(wgt)
 {
     SAFE_POINT( dotplotWidget != NULL, tr("Dotplot widget is NULL"), );
-    shortDescription = tr("DotPlot");
+    shortDescription = tr("Dotplot");
     initSettingsWidget();
 }
 

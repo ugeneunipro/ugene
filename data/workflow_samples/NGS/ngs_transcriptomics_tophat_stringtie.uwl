@@ -1,0 +1,330 @@
+#@UGENE_WORKFLOW
+#The workflow takes FASTQ files with paired-end RNA-Seq reads and process them as follows:
+# * Improve reads quality with Trimmomatic
+# * Provide FastQC quality repoorts
+# * Map improved reads to a reference sequence with TopHat
+# * Assemble transcripts and generate gene abundance output with StringTie
+# * Produce a common gene abundance report (one for several input samples)
+
+
+
+workflow "RNA-Seq analysis with TopHat and StringTie"{
+
+    get-pe-reads-list {
+        type:get-pe-reads-list;
+        name:"Read NGS PE Reads";
+        url1 {
+            dataset:"Dataset 1";
+        }
+        url2 {
+            dataset:"Dataset 1";
+        }
+    }
+    tophat {
+        type:tophat;
+        name:TopHat;
+        out-dir:tophat_out;
+        reference-input-type:Sequence;
+    }
+    trimmomatic {
+        type:trimmomatic;
+        name:Trimmomatic;
+        input-data:paired-end;
+    }
+    stringtie {
+        type:stringtie;
+        name:"String Tie";
+        gene-abundance-output:true;
+    }
+    fastqc-before1 {
+        type:fastqc;
+        name:"FastQC Before 1";
+    }
+    fastqc-before2 {
+        type:fastqc;
+        name:"FastQC Before 2";
+    }
+    fastqc-after1 {
+        type:fastqc;
+        name:"FastQC After 1";
+    }
+    fastqc-after2 {
+        type:fastqc;
+        name:"FastQC After 2";
+    }
+    stringtie-gene-abundance-report {
+        type:stringtie-gene-abundance-report;
+        name:"String Tie Report";
+    }
+
+    .actor-bindings {
+        get-pe-reads-list.out->trimmomatic.in
+        get-pe-reads-list.out->fastqc-before1.in-file
+        get-pe-reads-list.out->fastqc-before2.in-file
+        stringtie.out->stringtie-gene-abundance-report.in
+        tophat.out-assembly->stringtie.in
+        trimmomatic.out->tophat.in-sequence
+        trimmomatic.out->fastqc-after1.in-file
+        trimmomatic.out->fastqc-after2.in-file
+    }
+
+    trimmomatic.reads-url1->tophat.in-sequence.in-url
+    trimmomatic.reads-url2->tophat.in-sequence.paired-url
+    get-pe-reads-list.reads-url1->trimmomatic.in.reads-url1
+    get-pe-reads-list.reads-url1->trimmomatic.in.reads-url2
+    tophat.hits-url->stringtie.in.url
+    get-pe-reads-list.reads-url1->fastqc-before1.in-file.url
+    get-pe-reads-list.reads-url2->fastqc-before2.in-file.url
+    trimmomatic.reads-url1->fastqc-after1.in-file.url
+    trimmomatic.reads-url2->fastqc-after2.in-file.url
+    stringtie.out-gene-abundance->stringtie-gene-abundance-report.in.url
+
+    .meta {
+        visual {
+            fastqc-before1 {
+                pos:"-540 -630";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:235.84;
+            }
+            fastqc-before2 {
+                pos:"-540 -315";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:129.806;
+            }
+            fastqc-after1 {
+                pos:"-315 -630";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:222.797;
+            }
+            fastqc-after2 {
+                pos:"-315 -315";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:132.709;
+            }
+            get-pe-reads-list {
+                pos:"-660 -480";
+                style:simple;
+                bg-color-simple:"23 106 239 255";
+                out.angle:360;
+            }
+            stringtie-gene-abundance-report {
+                pos:"206 -479";
+                style:simple;
+                bg-color-simple:"86 126 194 255";
+                in.angle:180;
+            }
+            stringtie {
+                pos:"-30 -480";
+                style:simple;
+                bg-color-simple:"224 74 90 255";
+                in.angle:180;
+                out.angle:360;
+            }
+            tophat {
+                pos:"-255 -480";
+                style:simple;
+                bg-color-simple:"0 128 0 255";
+                in-sequence.angle:180;
+                out-assembly.angle:360;
+            }
+            trimmomatic {
+                pos:"-465 -480";
+                style:simple;
+                bg-color-simple:"127 127 127 255";
+                in.angle:180;
+                out.angle:360;
+            }
+            get-pe-reads-list.out->fastqc-before2.in-file {
+                text-pos:"-43.3359 16";
+            }
+            get-pe-reads-list.out->fastqc-before1.in-file {
+                text-pos:"-24.3359 -27";
+            }
+            get-pe-reads-list.out->trimmomatic.in {
+                text-pos:"-40.3359 -10";
+            }
+            stringtie.out->stringtie-gene-abundance-report.in {
+                text-pos:"-43 -21";
+            }
+            tophat.out-assembly->stringtie.in {
+                text-pos:"-43 -20";
+            }
+            trimmomatic.out->fastqc-after1.in-file {
+                text-pos:"-50 -31";
+            }
+            trimmomatic.out->fastqc-after2.in-file {
+                text-pos:"-60 0";
+            }
+            trimmomatic.out->tophat.in-sequence {
+                text-pos:"-45 -18";
+            }
+        }
+        wizard {
+            name:"RNA-Seq Analysis with TopHat and StringTie";
+            page {
+                id:1;
+                next:2;
+                title:"Input data";
+                parameters-area {
+                    group {
+                        title:"RNA-seq paired-end reads";
+                        paired-reads-datasets {
+                            get-pe-reads-list.url1{
+                                label:"FASTQ file(s) 1";
+                            }
+                            get-pe-reads-list.url2 {
+                                label:"FASTQ file(s) 2";
+                            }
+                        }
+                    }
+                }
+            }
+            page {
+                id:2;
+                next:3;
+                title:"Trimmomatic settings";
+                parameters-area {
+                    group {
+                        title:"Improve reads quality";
+                        label-size:120;
+                        trimmomatic.trimming-steps {
+                        }
+                        trimmomatic.generate-log {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        trimmomatic.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:3;
+                next:4;
+                title:"TopHat settings";
+                parameters-area {
+                    group {
+                        title:"Reference data";
+                        label-size:180;
+                        tophat.reference {
+                        }
+                        tophat.known-transcript {
+                        }
+                    }
+                    group {
+                        title:"Mapping settings";
+                        label-size:180;
+                        type:hideable;
+                        tophat.library-type {
+                        }
+                        tophat.read-mismatches {
+                        }
+                        tophat.mate-inner-distance {
+                        }
+                        tophat.mate-standard-deviation {
+                        }
+                        tophat.min-anchor-length {
+                        }
+                        tophat.splice-mismatches {
+                        }
+                        tophat.max-multihits {
+                        }
+                        tophat.raw-junctions {
+                        }
+                        tophat.no-novel-junctions {
+                        }
+                    }
+                }
+            }
+            page {
+                id:4;
+                next:5;
+                title:"StringTie settings";
+                parameters-area {
+                    group {
+                        title:"Reference data";
+                        label-size:230;
+                        stringtie.reference-annotations {
+                        }
+                    }
+                    group {
+                        title:"Transcripts assembly settings";
+                        label-size:230;
+                        type:hideable;
+                        stringtie.reads-orientation {
+                        }
+                        stringtie.min-transcript-length {
+                        }
+                        stringtie.min-anchor-length {
+                        }
+                        stringtie.min-junction-coverage {
+                        }
+                        stringtie.trim-transcripts {
+                        }
+                        stringtie.min-coverage {
+                        }
+                        stringtie.min-locus-gap {
+                        }
+                        stringtie.multi-hit-fraction {
+                        }
+                        stringtie.skip-sequences {
+                        }
+                        stringtie.ref-only-abundance {
+                        }
+                        stringtie.multi-mapping-correction {
+                        }
+                        stringtie.verbose-log {
+                        }
+                        stringtie.label {
+                        }
+                        stringtie.covered-transcripts-output {
+                        }
+                   }
+                   group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        stringtie.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:5;
+                title:"Output data";
+                parameters-area {
+                    group {
+                        title:"TopHat output"
+                        label-size:230;
+                        tophat.out-dir {
+                        }
+                    }
+                    group {
+                        title:"StringTie output"
+                        label-size:230;
+                        stringtie.transcripts-output-url {
+                        }
+                        stringtie.gene-abundance-output-url {
+                        }
+                        stringtie.covered-transcripts-output-url {
+                        }
+                    }
+                    group {
+                        title:"Common gene abundance report"
+                        label-size:230;
+                        stringtie-gene-abundance-report.output-url {
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

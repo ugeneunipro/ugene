@@ -1,0 +1,149 @@
+#@UGENE_WORKFLOW
+#The workflow takes FASTQ files with paired-end Illumina reads and FASTQ file(s) with Oxford Nanopore reads and assembles these data de novo with SPAdes.
+
+
+
+workflow "De novo assemble Illumina PE and Nanopore reads"{
+
+    get-pe-reads-list {
+        type:get-pe-reads-list;
+        name:"Read Illumina PE Reads";
+        url1 {
+            dataset:"Dataset 1";
+        }
+        url2 {
+            dataset:"Dataset 1";
+        }
+    }
+    spades {
+        type:spades-id;
+        name:"Assemble Reads with SPAdes";
+        input-data:"'in-data'='fr:single reads';'in-oxford-nanopore-reads'='';'platform-id'=''";
+    }
+    get-file-list {
+        type:get-file-list;
+        name:"Read Nanopore Reads";
+        url-in {
+            dataset:"Dataset 1";
+        }
+    }
+
+    .actor-bindings {
+        get-file-list.out-url->spades.in-oxford-nanopore-reads
+        get-pe-reads-list.out->spades.in-data
+    }
+
+    get-pe-reads-list.reads-url2->spades.in-data.readspairedurl
+    get-pe-reads-list.reads-url1->spades.in-data.readsurl
+    get-file-list.url->spades.in-oxford-nanopore-reads.readsurl-7
+
+    .meta {
+        visual {
+            get-file-list {
+                pos:"-853 -442";
+                style:ext;
+                bg-color-ext:"24 102 175 64";
+                bounds:"-30 -30 99.25 72";
+                out-url.angle:360;
+            }
+            get-pe-reads-list {
+                pos:"-855 -614";
+                style:ext;
+                bg-color-ext:"23 106 239 64";
+                out.angle:360;
+            }
+            spades {
+                pos:"-473 -545";
+                style:ext;
+                bg-color-ext:"168 50 117 64";
+                bounds:"-30 -30 112.25 88";
+                in-data.angle:192.529;
+                in-high-quality-mate-pairs.angle:122;
+                in-mate-pairs.angle:138;
+                in-oxford-nanopore-reads.angle:238.092;
+                in-pac-bio-ccs-reads.angle:170;
+                in-pac-bio-clr-reads.angle:186;
+                in-sanger-reads.angle:202;
+                in-trusted-contigs.angle:218;
+                in-unpaired-reads.angle:234;
+                in-untrusted-contigs.angle:250;
+                out-data.angle:355.956;
+            }
+            get-file-list.out-url->spades.in-oxford-nanopore-reads {
+                text-pos:"-39.4844 -27";
+            }
+            get-pe-reads-list.out->spades.in-data {
+                text-pos:"-37.3359 -27";
+            }
+        }
+        wizard {
+            name:"Illumina PE Reads De Novo Assembly Wizard";
+            page {
+                id:1;
+                next:2;
+                title:"Input data: Illumina reads";
+                parameters-area {
+                    group {
+                        paired-reads-datasets {
+                            get-pe-reads-list.url1 {
+                            }
+                            get-pe-reads-list.url2 {
+                            }
+                        }
+                    }
+                }
+            }
+            page {
+                id:2;
+                next:3;
+                title:"Input data: Nanopore reads";
+                parameters-area {
+                    group {
+                        get-file-list.url-in {
+                            type:datasets;
+                        }
+                    }
+                }
+            }
+            page {
+                id:3;
+                next:4;
+                title:"SPAdes settings";
+                parameters-area {
+                    group {
+                        title:"Reads de novo assembly";
+                        label-size:180;
+                        spades.dataset-type {
+                        }
+                        spades.running-mode {
+                        }
+                        spades.k-mer {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        spades.memlimit {
+                        }
+                        spades.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:4;
+                title:"Output data";
+                parameters-area {
+                    group {
+                        title:"De novo assembly output";
+                        label-size:180;
+                        spades.output-dir {
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

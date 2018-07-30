@@ -51,7 +51,7 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, AnnotatedDNAView* currentADV, int 
                              ADVSequenceObjectContext *sequenceX, ADVSequenceObjectContext *sequenceY,
                              bool dir, bool inv, const QColor &dColor, const QColor &iColor, bool hideLoadSequences)
 : QDialog(parent), xSeq(sequenceX), ySeq(sequenceY), adv(currentADV), directColor(dColor), invertedColor(iColor)
-,openSequenceTask(NULL), curURL("")
+,openSequenceTask(NULL)
 {
     setupUi(this);
 
@@ -71,36 +71,6 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, AnnotatedDNAView* currentADV, int 
     algoCombo->addItem(tr("Suffix index"), RFAlgorithm_Suffix);
     algoCombo->addItem(tr("Diagonals"), RFAlgorithm_Diagonal);
 
-    int xSeqIndex = -1, ySeqIndex = -1, curIndex = 0;
-
-    //sequences in the project
-    QList<GObject*> allSequences  = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
-    foreach (GObject* obj, allSequences) {
-        U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
-        QString name = seqObj->getGObjectName();
-
-        xAxisCombo->addItem(name);
-        yAxisCombo->addItem(name);
-
-        if (sequenceX && (sequenceX->getSequenceGObject() == seqObj)) {
-            xSeqIndex = curIndex;
-        }
-        if (sequenceY && (sequenceY->getSequenceGObject() == seqObj)) {
-            ySeqIndex = curIndex;
-        }
-        curIndex++;
-        sequences << seqObj;
-    }
-
-    if (xSeqIndex >= 0) {
-        xAxisCombo->setCurrentIndex(xSeqIndex);
-    }
-    if (ySeqIndex >= 0) {
-        yAxisCombo->setCurrentIndex(ySeqIndex);
-    } else if (sequences.size() > 1) {    // choose the second sequence for Y axis by default
-        yAxisCombo->setCurrentIndex(1);
-    }
-
     minLenBox->setValue(minLen);
     identityBox->setValue(identity);
 
@@ -118,20 +88,85 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, AnnotatedDNAView* currentADV, int 
 
     connect(loadSequenceButton, SIGNAL(clicked()), SLOT(sl_loadSequenceButton()));
 
+    // listen to project modification to update list of available sequence objects.
+    Project* project = AppContext::getProject();
+    connect(project, SIGNAL(si_documentAdded(Document*)), SLOT(sl_documentAddedOrRemoved()));
+    connect(project, SIGNAL(si_documentRemoved(Document*)), SLOT(sl_documentAddedOrRemoved()));
+    reconnectAllProjectDocuments();
+    updateSequenceSelectors();
+
     if(hideLoadSequences){
         loadSequenceButton->hide();
     }
+}
 
+void DotPlotDialog::reconnectAllProjectDocuments() {
+    Project* project = AppContext::getProject();
+    foreach (Document* d, project->getDocuments()) {
+        d->disconnect(this);
+        connect(d, SIGNAL(si_objectAdded(GObject*)), SLOT(sl_objectAddedOrRemoved()));
+        connect(d, SIGNAL(si_objectRemoved(GObject*)), SLOT(sl_objectAddedOrRemoved()));
+        connect(d, SIGNAL(si_loadedStateChanged()), SLOT(sl_loadedStateChanged()));
+    }
+}
+
+void DotPlotDialog::updateSequenceSelectors() {
+    xAxisCombo->clear();
+    yAxisCombo->clear();
+
+    int xSeqIndex = -1, ySeqIndex = -1, curIndex = 0;
+
+    //sequences in the project
+    QList<GObject*> sequenceObjects  = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
+    foreach (GObject* obj, sequenceObjects) {
+        U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
+        QString name = seqObj->getGObjectName();
+
+        xAxisCombo->addItem(name);
+        yAxisCombo->addItem(name);
+
+        if (xSeq && (xSeq->getSequenceGObject() == seqObj)) {
+            xSeqIndex = curIndex;
+        }
+        if (ySeq && (ySeq->getSequenceGObject() == seqObj)) {
+            ySeqIndex = curIndex;
+        }
+        curIndex++;
+    }
+
+    if (xSeqIndex >= 0) {
+        xAxisCombo->setCurrentIndex(xSeqIndex);
+    }
+    if (ySeqIndex >= 0) {
+        yAxisCombo->setCurrentIndex(ySeqIndex);
+    } else if (sequenceObjects.size() > 1) {    // choose the second sequence for Y axis by default
+        yAxisCombo->setCurrentIndex(1);
+    }
+}
+
+void DotPlotDialog::sl_documentAddedOrRemoved() {
+    reconnectAllProjectDocuments();
+    updateSequenceSelectors();
+}
+
+void DotPlotDialog::sl_objectAddedOrRemoved() {
+    updateSequenceSelectors();
+}
+
+void DotPlotDialog::sl_loadedStateChanged() {
+    updateSequenceSelectors();
 }
 
 void DotPlotDialog::accept() {
     int xIdx = xAxisCombo->currentIndex();
     int yIdx = yAxisCombo->currentIndex();
-    SAFE_POINT(xIdx >= 0 && xIdx < sequences.length(), QString("DotPlotDialog: index is out of range: %1").arg(xIdx),);
-    SAFE_POINT(yIdx >= 0 && yIdx < sequences.length(), QString("DotPlotDialog: index is out of range: %1").arg(yIdx),);
 
-    U2SequenceObject* objX = sequences[xIdx];
-    U2SequenceObject* objY = sequences[yIdx];
+    QList<GObject*> sequenceObjects  = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
+    SAFE_POINT(xIdx >= 0 && xIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(xIdx),);
+    SAFE_POINT(yIdx >= 0 && yIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(yIdx),);
+
+    U2SequenceObject* objX = qobject_cast<U2SequenceObject*>(sequenceObjects[xIdx]);
+    U2SequenceObject* objY = qobject_cast<U2SequenceObject*>(sequenceObjects[yIdx]);
 
     if (!isObjectInADV(objX)) {
         adv->addObject(objX);
@@ -158,8 +193,12 @@ void DotPlotDialog::sl_minLenHeuristics() {
     int xIdx = xAxisCombo->currentIndex();
     int yIdx = yAxisCombo->currentIndex();
 
-    U2SequenceObject *objX = sequences.at(xIdx);
-    U2SequenceObject *objY = sequences.at(yIdx);
+    QList<GObject*> sequenceObjects  = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
+    SAFE_POINT(xIdx >= 0 && xIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(xIdx),);
+    SAFE_POINT(yIdx >= 0 && yIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(yIdx),);
+
+    U2SequenceObject* objX = qobject_cast<U2SequenceObject*>(sequenceObjects[xIdx]);
+    U2SequenceObject* objY = qobject_cast<U2SequenceObject*>(sequenceObjects[yIdx]);
 
     qint64 xSeqLen = objX->getSequenceLength();
     qint64 ySeqLen = objY->getSequenceLength();
@@ -266,7 +305,6 @@ void DotPlotDialog::sl_loadSequenceButton(){
         if(openSequenceTask == NULL){
             return;
         }
-        curURL = lod.url;
         tasks->addSubTask(openSequenceTask);
 
         connect( AppContext::getTaskScheduler(), SIGNAL( si_stateChanged(Task*) ), SLOT( sl_loadTaskStateChanged(Task*) ) );
@@ -278,51 +316,12 @@ void DotPlotDialog::sl_loadSequenceButton(){
 
 void DotPlotDialog::sl_loadTaskStateChanged(Task* t){
     DotPlotLoadDocumentsTask *loadTask = qobject_cast<DotPlotLoadDocumentsTask*>(t);
-    if (!loadTask || !loadTask->isFinished()) {
-            if(t->isFinished()){
-                if(curURL == ""){
-                    return;
-                }
-                GUrl URL(curURL);
-                Project *project = AppContext::getProject();
-                SAFE_POINT(project, "project is NULL", );
-                Document *doc = project->findDocumentByURL(URL);
-                if (!doc || !doc->isLoaded()) {
-                    return;
-                }
-                QList<GObject*> docObjects  = doc->getObjects();
-                foreach (GObject* obj, docObjects) {
-                    U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
-                    if (seqObj != NULL){
-                        QString name = seqObj->getGObjectName();
-                        xAxisCombo->addItem(name);
-                        yAxisCombo->addItem(name);
-                        sequences << seqObj;
-                    }
-                }
-                curURL = "";
-            }
-            return;
+    if (loadTask == NULL) {
+        return;
     }
-
-
     if (loadTask->getStateInfo().hasError()) {
         QMessageBox::critical(this, tr("Error"), tr("Error opening files"));
         return;
-    }
-
-    QList <Document *> docs = loadTask->getDocuments();
-    foreach (Document* doc, docs) {
-        QList<GObject*> docObjects  = doc->getObjects();
-        foreach (GObject* obj, docObjects) {
-            U2SequenceObject* seqObj = qobject_cast<U2SequenceObject*>(obj);
-            if (seqObj != NULL){
-                QString name = seqObj->getGObjectName();
-                xAxisCombo->addItem(name);
-                yAxisCombo->addItem(name);
-                sequences << seqObj;
-            }
-        }
     }
 }
 

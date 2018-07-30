@@ -23,6 +23,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/IOAdapter.h>
+#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/Timer.h>
 
 #include "StreamSequenceReader.h"
@@ -75,11 +76,19 @@ bool StreamSequenceReader::hasNext() {
     return true;
 }
 
+bool StreamSequenceReader::init(const QStringList &urls) {
+    QList<GUrl> gUrls;
+    foreach (const QString &url, urls) {
+        gUrls << url;
+    }
+    return init(gUrls);
+}
+
 bool StreamSequenceReader::init( const QList<GUrl>& urls ) {
     foreach (const GUrl& url, urls) {
         QList<FormatDetectionResult> detectedFormats = DocumentUtils::detectFormat(url);
         if (detectedFormats.isEmpty()) {
-            taskInfo.setError(QString("File %1 unsupported format.").arg(url.getURLString()));
+            taskInfo.setError(tr("File %1 unsupported format.").arg(url.getURLString()));
             break;
         }
         ReaderContext ctx;
@@ -87,7 +96,7 @@ bool StreamSequenceReader::init( const QList<GUrl>& urls ) {
         if ( ctx.format->getFlags().testFlag(DocumentFormatFlag_SupportStreaming) == false  ) {
             break;
         }
-        IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+        IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
         IOAdapter* io = factory->createIOAdapter();
         if (!io->open(url, IOAdapterMode_Read)) {
             break;
@@ -97,7 +106,7 @@ bool StreamSequenceReader::init( const QList<GUrl>& urls ) {
     }
 
     if (readers.isEmpty()) {
-        taskInfo.setError("Unsupported file format or short reads list is empty");
+        taskInfo.setError(tr("Unsupported file format or short reads list is empty"));
         return false;
     } else {
         currentReaderIndex = 0;
@@ -105,6 +114,24 @@ bool StreamSequenceReader::init( const QList<GUrl>& urls ) {
     }
 
 
+}
+
+const IOAdapter *StreamSequenceReader::getIO() const
+{
+    if (currentReaderIndex < readers.count()) {
+        ReaderContext ctx = readers.at(currentReaderIndex);
+        return ctx.io;
+    }
+    return NULL;
+}
+
+DocumentFormat *StreamSequenceReader::getFormat() const
+{
+    if (currentReaderIndex < readers.count()) {
+        ReaderContext ctx = readers.at(currentReaderIndex);
+        return ctx.format;
+    }
+    return NULL;
 }
 
 QString StreamSequenceReader::getErrorMessage() {
@@ -131,6 +158,5 @@ StreamSequenceReader::~StreamSequenceReader() {
         readers[i].io = NULL;
     }
 }
-
 
 } //namespace

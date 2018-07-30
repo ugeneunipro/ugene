@@ -42,6 +42,7 @@
 #include <QAction>
 #include <QHeaderView>
 #include <QKeyEvent>
+#include <QScrollArea>
 
 #define MAIN_SPLITTER "main.splitter"
 #define TAB_SPLITTER "tab.splitter"
@@ -71,12 +72,25 @@ WorkflowEditor::WorkflowEditor(WorkflowView *p)
     editorBox->setStyleSheet(style);
 #endif
 
-    inputPortWidget << table2;
-    outputPortWidget << table3;
+    QVBoxLayout *inputScrollAreaContainerLayout = new QVBoxLayout();
+    inputScrollAreaContainerLayout->setContentsMargins(0, 0, 0, 0);
+    inputScrollAreaContainerLayout->setSpacing(0);
+    inputScrollAreaContainerLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+    inputScrollAreaContainer->setLayout(inputScrollAreaContainerLayout);
+
     inputPortBox->setEnabled(false);
-    outputPortBox->setEnabled(false);
     inputPortBox->setVisible(true);
+    connect(inputPortBox, SIGNAL(toggled(bool)), SLOT(sl_changeVisibleInput(bool)));
+
+    QVBoxLayout *outputScrollAreaContainerLayout = new QVBoxLayout();
+    outputScrollAreaContainerLayout->setContentsMargins(0, 0, 0, 0);
+    outputScrollAreaContainerLayout->setSpacing(0);
+    outputScrollAreaContainerLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+    outputScrollAreaContainer->setLayout(outputScrollAreaContainerLayout);
+
+    outputPortBox->setEnabled(false);
     outputPortBox->setVisible(true);
+    connect(outputPortBox, SIGNAL(toggled(bool)), SLOT(sl_changeVisibleOutput(bool)));
 
     caption->setMinimumHeight(nameEdit->sizeHint().height());
 
@@ -114,6 +128,16 @@ void WorkflowEditor::setEditable(bool editable) {
     foreach(QWidget* w, outputPortWidget) { w->setDisabled(!editable); }
 }
 
+void WorkflowEditor::sl_updatePortTable() {
+    Actor* a = qobject_cast<Actor*>(sender());
+    CHECK(a != NULL, );
+
+    removePortTable(inputPortWidget);
+    removePortTable(outputPortWidget);
+    createInputPortTable(a);
+    createOutputPortTable(a);
+}
+
 void WorkflowEditor::sl_resizeSplitter(bool b) {
     QWidget *w = qobject_cast<QWidget*>(sender());
     int ind = splitter->indexOf(w);
@@ -147,6 +171,73 @@ void WorkflowEditor::changeSizes(QWidget *w, int h) {
         sizes[splitter->indexOf(propDoc)] -= h/2;
         sizes[splitter->indexOf(doc)] -= h/2;
         splitter->setSizes(sizes);
+    }
+}
+
+void WorkflowEditor::removePortTable(QList<QWidget *> &portWidgets) {
+    qDeleteAll(portWidgets);
+    portWidgets.clear();
+}
+
+void WorkflowEditor::createInputPortTable(Actor* a) {
+    const QList<Port *> enabledPorts = a->getEnabledInputPorts();
+
+    if (!enabledPorts.isEmpty()) {
+        inputPortBox->setEnabled(true);
+        inputPortBox->setVisible(true);
+        inputHeight = 0;
+        foreach (Port *p, enabledPorts) {
+            BusPortEditor* ed = new BusPortEditor(qobject_cast<IntegralBusPort *>(p));
+            ed->setParent(p);
+            p->setEditor(ed);
+            QWidget *w = ed->getWidget();
+            inputScrollAreaContainer->layout()->addWidget(w);
+            if (!ed->isEmpty()) {
+                inputHeight += ed->getOptimalHeight();
+            }
+
+            connect(ed, SIGNAL(si_showDoc(const QString&)), SLOT(sl_showDoc(const QString&)));
+            inputPortWidget << w;
+        }
+
+        if (inputPortBox->isChecked()) {
+            changeSizes(inputPortBox, inputHeight);
+        }
+    } else {
+        inputPortBox->setEnabled(false);
+        inputPortBox->setVisible(false);
+        inputPortBox->resize(0, 0);
+    }
+}
+
+void WorkflowEditor::createOutputPortTable(Actor* a) {
+    const QList<Port *> enabledPorts = a->getEnabledOutputPorts();
+
+    if (!enabledPorts.isEmpty()) {
+        outputPortBox->setEnabled(true);
+        outputPortBox->setVisible(true);
+        outputHeight = 0;
+        foreach (Port *p, enabledPorts) {
+            BusPortEditor* ed = new BusPortEditor(qobject_cast<IntegralBusPort *>(p));
+            ed->setParent(p);
+            p->setEditor(ed);
+            QWidget *w = ed->getWidget();
+            outputScrollAreaContainer->layout()->addWidget(w);
+            if (!ed->isEmpty()) {
+                outputHeight += ed->getOptimalHeight();
+            }
+
+            connect(ed, SIGNAL(si_showDoc(const QString&)), SLOT(sl_showDoc(const QString&)));
+            outputPortWidget << w;
+        }
+
+        if (outputPortBox->isChecked()) {
+            changeSizes(outputPortBox, outputHeight);
+        }
+    } else {
+        outputPortBox->setEnabled(false);
+        outputPortBox->setVisible(false);
+        outputPortBox->resize(0, 0);
     }
 }
 
@@ -205,6 +296,9 @@ void WorkflowEditor::reset() {
     paramBox->setTitle(tr("Parameters"));
     setDescriptor(NULL);
     edit(NULL);
+    if (NULL != actor) {
+        disconnect(actor, SIGNAL(si_modified()), this, SLOT(sl_updatePortTable()));
+    }
     actor = NULL;
     actorModel->setActor(NULL);
     propDoc->setText("");
@@ -267,6 +361,7 @@ void WorkflowEditor::commit() {
 void WorkflowEditor::editActor(Actor* a) {
     reset();
     actor = a;
+    connect(actor, SIGNAL(si_modified()), SLOT(sl_updatePortTable()));
     if (a) {
         caption->setText(tr("Element name:"));
         nameEdit->setText(a->getLabel());
@@ -277,66 +372,8 @@ void WorkflowEditor::editActor(Actor* a) {
             specialParameters->editActor(a);
         }
 
-        if(!a->getInputPorts().isEmpty()) {
-            inputPortBox->setVisible(false);
-            inputHeight = 0;
-            foreach(Port *p, a->getInputPorts()) {
-                BusPortEditor* ed = new BusPortEditor(qobject_cast<IntegralBusPort*>(p));
-                ed->setParent(p);
-                p->setEditor(ed);
-                QWidget *w = ed->getWidget();
-                inputLayout->addWidget(w);
-                bool visible = ed && !ed->isEmpty();
-                if (visible) {
-                    inputHeight += ed->getOptimalHeight();
-                    w->setVisible(inputPortBox->isChecked());
-                    inputPortBox->setEnabled(true);
-                    inputPortBox->setVisible(true);
-                }
-
-                connect(ed, SIGNAL(si_showDoc(const QString&)), SLOT(sl_showDoc(const QString&)));
-                inputPortWidget << w;
-            }
-            connect(inputPortBox, SIGNAL(toggled(bool)), SLOT(sl_changeVisibleInput(bool)));
-
-            if(inputPortBox->isChecked()) {
-                changeSizes(inputPortBox, inputHeight);
-            }
-        } else {
-            inputPortBox->setEnabled(false);
-            inputPortBox->setVisible(false);
-            inputPortBox->resize(0,0);
-        }
-
-        if(!a->getOutputPorts().isEmpty()) {
-            outputPortBox->setVisible(false);
-            outputHeight = 0;
-            foreach(Port *p, a->getOutputPorts()) {
-                BusPortEditor* ed = new BusPortEditor(qobject_cast<IntegralBusPort*>(p));
-                ed->setParent(p);
-                p->setEditor(ed);
-                QWidget *w = ed->getWidget();
-                outputLayout->addWidget(w);
-                bool visible = ed && !ed->isEmpty();
-                if (visible) {
-                    outputHeight += ed->getOptimalHeight();
-                    w->setVisible(outputPortBox->isChecked());
-                    outputPortBox->setEnabled(true);
-                    outputPortBox->setVisible(true);
-                }
-
-                connect(ed, SIGNAL(si_showDoc(const QString&)), SLOT(sl_showDoc(const QString&)));
-                outputPortWidget << w;
-            }
-            connect(outputPortBox, SIGNAL(toggled(bool)), SLOT(sl_changeVisibleOutput(bool)));
-            if(outputPortBox->isChecked()) {
-                changeSizes(outputPortBox, outputHeight);
-            }
-        } else {
-            outputPortBox->setEnabled(false);
-            outputPortBox->setVisible(false);
-            outputPortBox->resize(0,0);
-        }
+        createInputPortTable(a);
+        createOutputPortTable(a);
         paramHeight = table->rowHeight(0) * (table->model()->rowCount() + 3);
         if (NULL != specialParameters && specialParameters->isVisible()) {
             paramHeight += specialParameters->contentHeight();
@@ -349,38 +386,22 @@ void WorkflowEditor::editActor(Actor* a) {
 }
 
 void WorkflowEditor::sl_changeVisibleInput(bool isChecked) {
-    if(inputPortWidget.isEmpty()) {
-        return;
-    }
-    foreach(QWidget *w, inputPortWidget)  {
-        w->setVisible(isChecked);
-    }
-    if(!isChecked) {
-        int ind = splitter->indexOf(inputPortBox);
-        QList<int> sizes = splitter->sizes();
-        splitter->setStretchFactor(ind, 0);
-        //splitterSizes[0] += splitterSizes[ind];
-        sizes[ind] = 0;
-        splitter->setSizes(sizes);
+    CHECK(!inputPortWidget.isEmpty(), );
+    inputScrollArea->setVisible(isChecked);
+    if (!isChecked) {
+        inputPortBox->resize(0, 0);
+        changeSizes(inputPortBox, 0);
     } else {
         changeSizes(inputPortBox, inputHeight);
     }
 }
 
 void WorkflowEditor::sl_changeVisibleOutput(bool isChecked) {
-    if(outputPortWidget.isEmpty()) {
-        return;
-    }
-    foreach(QWidget *w, outputPortWidget)  {
-        w->setVisible(isChecked);
-    }
-    if(!isChecked) {
-        int ind = splitter->indexOf(outputPortBox);
-        QList<int> sizes = splitter->sizes();
-        splitter->setStretchFactor(ind, 0);
-        //splitterSizes[0] += splitterSizes[ind];
-        sizes[ind] = 0;
-        splitter->setSizes(sizes);
+    CHECK(!outputPortWidget.isEmpty(), );
+    outputScrollArea->setVisible(isChecked);
+    if (!isChecked) {
+        outputPortBox->resize(0, 0);
+        changeSizes(outputPortBox, 0);
     } else {
         changeSizes(outputPortBox, outputHeight);
     }
@@ -448,21 +469,8 @@ void WorkflowEditor::edit(Configuration* cfg) {
         customWidget->disconnect();
         delete customWidget;
     }
-    foreach(QWidget *w, inputPortWidget) {
-        w->hide();
-        inputLayout->removeWidget(w);
-        //w = NULL;
-        w->disconnect();
-    }
-    inputPortWidget.clear();
-
-    foreach(QWidget *w, outputPortWidget) {
-        w->hide();
-        inputLayout->removeWidget(w);
-        //w = NULL;
-        w->disconnect();
-    }
-    outputPortWidget.clear();
+    removePortTable(inputPortWidget);
+    removePortTable(outputPortWidget);
 
     subject = cfg;
     custom = cfg ? cfg->getEditor() : NULL;

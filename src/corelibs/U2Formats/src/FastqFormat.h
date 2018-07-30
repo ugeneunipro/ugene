@@ -22,16 +22,19 @@
 #ifndef _U2_FASTQ_FORMAT_H_
 #define _U2_FASTQ_FORMAT_H_
 
+#include <QStringList>
+
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
-#include <QStringList>
+
+#include "TextDocumentFormat.h"
 
 namespace U2 {
 
 class IOAdapter;
 class DNASequence;
 
-class U2FORMATS_EXPORT FastqFormat : public DocumentFormat {
+class U2FORMATS_EXPORT FastqFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     FastqFormat(QObject* p);
@@ -40,11 +43,7 @@ public:
 
     virtual const QString& getFormatName() const {return fn;}
 
-    virtual DNASequence *loadSequence( IOAdapter* io, U2OpStatus& os);
-
     virtual void storeDocument( Document* d, IOAdapter* io, U2OpStatus& os );
-
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
     virtual bool isStreamingSupport() {return true;}
 
@@ -53,7 +52,11 @@ public:
     static void writeEntry(const QString &seqName, const DNASequence &seq, IOAdapter *io, const QString &errorMessage, U2OpStatus &os, bool cutLines = true);
 
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+
+    virtual DNASequence *loadTextSequence(IOAdapter* io, U2OpStatus& os);
+
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
 private:
     QString fn;

@@ -687,7 +687,7 @@ bool WorkflowUtils::validateSchemaForIncluding(const Schema &s, QString &error) 
         const QMap<QString, QString> &paramAliases = actor->getParamAliases();
         foreach (const QString &attrName, actor->getParameters().keys()) {
             Attribute *attr = actor->getParameters().value(attrName);
-            if (attr->isRequiredAttribute()) {
+            if (attr->isRequiredAttribute() && !attr->canBeEmpty()) {
                 if (!paramAliases.contains(attr->getId())) {
                     QVariant val = attr->getAttributeValueWithoutScript<QVariant>();
                     if (val.isNull()) {

@@ -74,7 +74,7 @@ BlastAllSupportRunDialog::BlastAllSupportRunDialog(ADVSequenceObjectContext* seq
     int lastRow = settingsGridLayout->rowCount();
     regionSelector = new RegionSelector(this, seqCtx->getSequenceLength(), false, seqCtx->getSequenceSelection());
     settingsGridLayout->addWidget(regionSelector, lastRow, 0, 1, 3);
-    
+
     okButton = buttonBox->button(QDialogButtonBox::Ok);
     cancelButton = buttonBox->button(QDialogButtonBox::Cancel);
 

@@ -48,7 +48,7 @@ VectorNtiSequenceFormat::VectorNtiSequenceFormat(QObject* parent)
     fileExtensions << "gb" << "gp";
 }
 
-FormatCheckResult VectorNtiSequenceFormat::checkRawData(const QByteArray &rawData, const GUrl &) const {
+FormatCheckResult VectorNtiSequenceFormat::checkRawTextData(const QByteArray &rawData, const GUrl &) const {
     const char* data = rawData.constData();
     int size = rawData.size();
     bool textOnly = !TextUtils::contains(TextUtils::BINARY, data, size);

@@ -65,18 +65,28 @@ public:
 
 class FastaFormat;
 
-class U2FORMATS_EXPORT StreamShortReadWriter
-{
-    FastaFormat* fastaFormat;
-    IOAdapter* io;
-    GUrl ouputPath;
+class U2FORMATS_EXPORT StreamShortReadWriter {
 public:
     StreamShortReadWriter();
+    virtual ~StreamShortReadWriter();
+
     bool init(const GUrl& url);
     bool writeNextSequence(const DNASequence& seq);
     bool writeNextSequence(const U2SequenceObject *seq);
     const GUrl& getOutputPath() { return ouputPath; }
     void close();
+
+protected:
+    IOAdapter* io;
+
+private:
+    FastaFormat* fastaFormat;
+    GUrl ouputPath;
+};
+
+class U2FORMATS_EXPORT StreamGzippedShortReadWriter : public StreamShortReadWriter {
+public:
+    StreamGzippedShortReadWriter();
 };
 
 

@@ -50,7 +50,7 @@ HIWebElement GTUtilsStartPage::getButton(HI::GUITestOpStatus &os, Buttons button
     case CreateSequence:
         return GTWebView::findElement(os, getStartPage(os), "Create Sequence", "DIV");
     case CreateWorkflow:
-        return GTWebView::findElement(os, getStartPage(os), "Create Workflow", "DIV");
+        return GTWebView::findElement(os, getStartPage(os), "Run or Create Workflow", "DIV");
     case QuickStartGuide:
          // You do not need this button
         GT_CHECK_RESULT(false, "Not implemented", QWebElement());

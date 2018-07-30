@@ -87,6 +87,7 @@ public:
                              DelegateTags *depTags) const;
     void updateDelegateTags(const QVariant &influencingValue, DelegateTags *dependentTags) const;
     RelationType getType() const;
+    ExtractAssemblyCoverageFileExtensionRelation *clone() const;
 };
 
 }   // namespace LocalWorkflow

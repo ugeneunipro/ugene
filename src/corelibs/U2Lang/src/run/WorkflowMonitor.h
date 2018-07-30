@@ -22,6 +22,8 @@
 #ifndef _U2_WORKFLOWMONITOR_H_
 #define _U2_WORKFLOWMONITOR_H_
 
+#include <QTextStream>
+
 #include <U2Core/global.h>
 #include <U2Core/Task.h>
 #include <U2Core/ExternalToolRunTask.h>
@@ -182,9 +184,7 @@ public:
 
 class U2LANG_EXPORT WDListener: public ExternalToolListener{
 public:
-    WDListener(WorkflowMonitor* _monitor, const QString& _actorName, int _runNumber)
-        : monitor(_monitor), actorName(_actorName), runNumber(_runNumber){}
-    ~WDListener(){}
+    WDListener(WorkflowMonitor* _monitor, const QString& _actorName, int _runNumber);
 
     void addNewLogMessage(const QString& message, int messageType);
 
@@ -192,13 +192,24 @@ public:
 
     int getRunNumber() const {return runNumber;}
 
+    static QString getStandardOutputLogFileUrl(const QString &actorName, int runNumber);
+    static QString getStandardErrorLogFileUrl(const QString &actorName, int runNumber);
+
 private:
+    void writeToFile(int messageType, const QString& message);
+    static void writeToFile(QTextStream &logStream, const QString& message);
+
     WorkflowMonitor* monitor;
     QString actorName;
     int runNumber;
+
+    QFile outputLogFile;
+    QFile errorLogFile;
+    QTextStream outputLogStream;
+    QTextStream errorLogStream;
+    bool outputHasMessages;
+    bool errorHasMessages;
 };
-
-
 
 } // Workflow
 } // U2

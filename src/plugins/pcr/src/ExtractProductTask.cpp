@@ -96,8 +96,16 @@ DNASequence ExtractProductTask::extractTargetSequence() {
     CHECK_OP(stateInfo, result);
     if (product.region.endPos() > sequence.length) {
         U2Region tail(0, product.region.endPos() % sequence.length);
-        result.seq += sequenceDbi->getSequenceData(settings.sequenceRef.entityId, tail, stateInfo);
-        CHECK_OP(stateInfo, result);
+        const int ledgeSize = product.forwardPrimerLedge.size() + product.reversePrimerLedge.size();
+        if (tail.length == ledgeSize) {
+            result.seq = result.seq.insert(0, product.forwardPrimerLedge);
+            result.seq = result.seq.insert(result.seq.size(), DNASequenceUtils::reverseComplement(product.reversePrimerLedge));
+            sequence.length += ledgeSize;
+            wholeSequenceLength = sequence.length;
+        } else {
+            result.seq += sequenceDbi->getSequenceData(settings.sequenceRef.entityId, tail, stateInfo);
+            CHECK_OP(stateInfo, result);
+        }
     }
 
     result.setName(getProductName(sequence.visualName, sequence.length, product.region));
@@ -172,6 +180,9 @@ void ExtractProductTask::addProductAnnotations(AnnotationTableObject *targetObje
 
     foreach (Annotation *ann, anns) {
         SharedAnnotationData data = ann->getData();
+        for (int i = 0; i < data->location->regions.size(); i++) {
+            data->location->regions[i].startPos += product.forwardPrimerLedge.size();
+        }
         bool cropped = prepareCircularRegions(begin, end, wholeSequenceLength, data->location->regions);
         cropped |= crop(product.region, data->location->regions);
         U2Region::shift(-product.region.startPos, data->location->regions);

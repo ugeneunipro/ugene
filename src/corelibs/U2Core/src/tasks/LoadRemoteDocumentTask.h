@@ -207,6 +207,8 @@ private slots:
     void sl_cancelCheck();
 
 private:
+    void runRequest(const QUrl& requestUrl);
+
     QNetworkReply* searchReply;     // TODO: I think, it is unsed variable. Check if you can remove it.
     QNetworkReply* downloadReply;
     QXmlSimpleReader xmlReader;
@@ -229,6 +231,8 @@ private slots:
     void sl_replyFinished(QNetworkReply* reply);
 
 private:
+    void runRequest(const QUrl& requestUrl);
+
     QNetworkReply* queryReply;
     QXmlDefaultHandler* resultHandler;
     QXmlSimpleReader xmlReader;

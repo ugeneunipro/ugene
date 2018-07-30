@@ -28,6 +28,8 @@
 
 namespace U2{
 
+const QString HelpButton::INVALID_VALUE = "invalid";
+
 HelpButton::HelpButton(QObject *parent, QDialogButtonBox *b, const QString& _pageId) 
 : QObject(parent), pageId(_pageId), dialogBox(b)
 {

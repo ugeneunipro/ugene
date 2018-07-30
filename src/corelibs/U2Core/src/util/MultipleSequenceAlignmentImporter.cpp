@@ -56,9 +56,9 @@ MultipleSequenceAlignmentObject * MultipleSequenceAlignmentImporter::createAlign
     // MSA object and info
     U2DataId msaId = createEmptyMsaObject(con, folder, al->getName(), al->getAlphabet(), os);
     CHECK_OP(os, NULL);
-    
+
     objs.objects << msaId;
-    
+
     importMsaInfo(con, msaId, al->getInfo(), os);
     CHECK_OP(os, NULL);
 
@@ -82,7 +82,7 @@ MultipleSequenceAlignmentObject * MultipleSequenceAlignmentImporter::createAlign
     QList<U2MsaRow> rows = importRows(con, al, msaId, sequences, gapModel, os);
     CHECK_OP(os, NULL);
     SAFE_POINT_EXT(rows.size() == al->getNumRows(), os.setError(QObject::tr("Unexpected error on MSA rows import")), NULL);
-    
+
     if (!rows.isEmpty()) {
         // if the imported alignment is not empty -> set it length to the max(len, orig-len).
         // this way we preserve trailing gaps removed by the importRows call.

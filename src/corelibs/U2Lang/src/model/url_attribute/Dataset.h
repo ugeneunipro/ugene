@@ -45,13 +45,18 @@ public:
     QList<URLContainer*> & getUrls();
 
     bool contains(const QString &url) const;
+    void clear();
 
     static QList<Dataset> getDefaultDatasetList();
+
+    Dataset &operator =(const Dataset &other);
 
 public:
     static const QString DEFAULT_NAME;
 
 private:
+    void copy(const Dataset &other);
+
     QString name;
     QList<URLContainer*> urls;
 };

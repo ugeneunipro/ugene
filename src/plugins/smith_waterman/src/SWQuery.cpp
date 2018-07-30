@@ -53,7 +53,7 @@ void SWAlgoEditor::populate() {
         return;
     }
     foreach(const QString& n, algoLst) {
-        items.insert(n,n);
+        comboItems.append(qMakePair(n,n));
     }
 
     algAttr->setAttributeValue(algoLst.first());

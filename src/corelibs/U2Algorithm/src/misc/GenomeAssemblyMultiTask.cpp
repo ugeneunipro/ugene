@@ -25,6 +25,7 @@
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/ProjectModel.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Algorithm/DnaAssemblyAlgRegistry.h>
 
@@ -90,27 +91,30 @@ QList<Task*> GenomeAssemblyMultiTask::onSubTaskFinished( Task* subTask ) {
 }
 
 
+U2::GenomeAssemblyTask* GenomeAssemblyMultiTask::getAssemblyTask() const {
+    return assemblyTask;
+}
+
 QString GenomeAssemblyMultiTask::generateReport() const {
     QString res;
     if (hasError()) {
-        return QString("Assembly task finished with error: %1").arg(getError());
+        return tr("Assembly task finished with error: %1").arg(getError());
     }
+    CHECK(assemblyTask != NULL, tr("Assembly task wasn't set"));
 
     if (assemblyTask->hasResult()) {
-        res = QString("Assembly was finished successfully");
+        res = tr("Assembly was finished successfully");
     } else {
-        res = QString("Assembly failed.");
+        res = tr("Assembly failed.");
     }
     return res;
 }
 
-QString GenomeAssemblyMultiTask::getResultUrl() const{
+QString GenomeAssemblyMultiTask::getResultUrl() const {
     if(assemblyTask && assemblyTask->isFinished() && !assemblyTask->hasError()){
         return assemblyTask->getResultUrl();
     }
     return "";
 }
-
-
 
 } // namespace

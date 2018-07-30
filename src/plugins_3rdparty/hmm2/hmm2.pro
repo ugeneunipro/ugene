@@ -74,4 +74,4 @@ SOURCES += src/HMMIO.cpp \
            src/u_spu/hmmercell_spu.c \
            src/u_tests/uhmmerTests.cpp
 RESOURCES += hmm2.qrc
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

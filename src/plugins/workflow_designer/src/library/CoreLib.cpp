@@ -68,6 +68,7 @@
 #include "FindWorker.h"
 #include "GenericReadActor.h"
 #include "GetFileListWorker.h"
+#include "GetReadListWorker.h"
 #include "GroupWorker.h"
 #include "ImportAnnotationsWorker.h"
 #include "MSA2SequenceWorker.h"
@@ -148,7 +149,9 @@ void CoreLib::init() {
         DataTypePtr fastaTypeSet(new MapDataType(Descriptor(FASTA_TYPESET_ID), m));
 
         QList<PortDescriptor*> p; QList<Attribute*> a;
-        Descriptor acd(CoreLibConstants::WRITE_FASTA_PROTO_ID, tr("Write FASTA"), tr("Writes all supplied sequences to file(s) in FASTA format."));
+        Descriptor acd(CoreLibConstants::WRITE_FASTA_PROTO_ID, tr("Write FASTA"),
+                       tr("The element gets message(s) with sequence data"
+                          " and saves the data to the specified file(s) in FASTA format."));
         Descriptor pd(BasePorts::IN_SEQ_PORT_ID(), tr("Sequence"), tr("A sequence along with FASTA header line."));
         p << new PortDescriptor(pd, fastaTypeSet, true);
         a << new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
@@ -169,7 +172,7 @@ void CoreLib::init() {
         QList<PortDescriptor*> p; QList<Attribute*> a;
         a << new Attribute(BaseAttributes::READ_BY_LINES_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, false);
 
-        Descriptor acd(CoreLibConstants::READ_TEXT_PROTO_ID, tr("Read Plain Text"), tr("Reads text from local or remote files. All text file formats supported by UGENE are allowed as input to this element."));
+        Descriptor acd(CoreLibConstants::READ_TEXT_PROTO_ID, tr("Read Plain Text"), tr("Input one or several text files. The element outputs text message(s), read from the file(s)."));
         p << new PortDescriptor(Descriptor(BasePorts::OUT_TEXT_PORT_ID(), tr("Plain text"), ""), dtl, false, true);
         ReadDocActorProto* proto = new ReadDocActorProto(BaseDocumentFormats::PLAIN_TEXT, acd, p, a);
         proto->setCompatibleDbObjectTypes(QSet<GObjectType>() << GObjectTypes::TEXT);
@@ -189,7 +192,9 @@ void CoreLib::init() {
         DataTypePtr dtl(new MapDataType(Descriptor("in.text"), m));
 
         QList<PortDescriptor*> p; QList<Attribute*> a;
-        Descriptor acd(CoreLibConstants::WRITE_TEXT_PROTO_ID, tr("Write Plain Text"), tr("Write strings to a file."));
+        Descriptor acd(CoreLibConstants::WRITE_TEXT_PROTO_ID, tr("Write Plain Text"),
+                       tr("The element gets message(s) with text data and saved the data"
+                          " to the specified text file(s)."));
         Descriptor pd(BasePorts::IN_TEXT_PORT_ID(), tr("Plain text"), tr("Plain text"));
         p << new PortDescriptor(pd, dtl, true);
         Attribute *accumulateObjsAttr = new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
@@ -210,7 +215,9 @@ void CoreLib::init() {
         if( !supportedFormats.isEmpty() ) {
             DocumentFormatId format = supportedFormats.contains( BaseDocumentFormats::CLUSTAL_ALN ) ? BaseDocumentFormats::CLUSTAL_ALN : supportedFormats.first();
             QList<PortDescriptor*> p; QList<Attribute*> a;
-            Descriptor acd(CoreLibConstants::WRITE_MSA_PROTO_ID, tr("Write Alignment"), tr("Writes all supplied alignments to file(s) in selected format."));
+            Descriptor acd(CoreLibConstants::WRITE_MSA_PROTO_ID, tr("Write Alignment"),
+                           tr("The element gets message(s) with alignment data and saves the data to the specified file(s)"
+                              " in one of the multiple sequence alignment formats, supported by UGENE (ClustalW, FASTA, etc.)."));
             Descriptor pd(BasePorts::IN_MSA_PORT_ID(), tr("Multiple sequence alignment"), tr("Multiple sequence alignment"));
             p << new PortDescriptor(pd, writeMAType, true);
             Attribute *docFormatAttr = new Attribute(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), false, format);
@@ -246,7 +253,11 @@ void CoreLib::init() {
             DataTypePtr typeSet( new MapDataType(Descriptor(SEQ_TYPESET_ID), typeMap));
 
             QList<PortDescriptor*> p; QList<Attribute*> a;
-            Descriptor acd(CoreLibConstants::WRITE_SEQ_PROTO_ID, tr("Write Sequence"), tr("Writes all supplied sequences to file(s) in selected format."));
+            Descriptor acd(CoreLibConstants::WRITE_SEQ_PROTO_ID, tr("Write Sequence"),
+                           tr("The elements gets message(s) with sequence data and, optionally,"
+                              " associated annotations data and saves the data"
+                              " to the specified file(s) in one of the appropriate formats"
+                              " (GenBank, FASTA, etc.)."));
             Descriptor pd(BasePorts::IN_SEQ_PORT_ID(), tr("Sequence"), tr("Sequence"));
             p << new PortDescriptor(pd, typeSet, true);
             Attribute *accumulateAttr = new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
@@ -301,6 +312,7 @@ void CoreLib::init() {
     FilterBamWorkerFactory::init();
     FindWorkerFactory::init();
     GetFileListWorkerFactory::init();
+    GetReadsListWorkerFactory::init();
     GroupWorkerFactory::init();
     ImportAnnotationsWorkerFactory::init();
     MarkSequenceWorkerFactory::init();
@@ -326,6 +338,9 @@ void CoreLib::init() {
 
     initUsersWorkers();
     initExternalToolsWorkers();
+
+    CandidatesSplitterRegistry::instance()->registerSplitter(new LocalWorkflow::SeReadsListSplitter());
+    CandidatesSplitterRegistry::instance()->registerSplitter(new LocalWorkflow::PeReadsListSplitter());
 }
 
 void CoreLib::initUsersWorkers() {
@@ -435,6 +450,10 @@ void CoreLib::initIncludedWorkers() {
     }
 }
 
+void CoreLib::cleanup() {
+    CandidatesSplitterRegistry::instance()->unregisterSplitter(LocalWorkflow::SeReadsListSplitter::ID);
+    CandidatesSplitterRegistry::instance()->unregisterSplitter(LocalWorkflow::PeReadsListSplitter::ID);
+}
 
 } // Workflow namespace
 } // U2 namespace

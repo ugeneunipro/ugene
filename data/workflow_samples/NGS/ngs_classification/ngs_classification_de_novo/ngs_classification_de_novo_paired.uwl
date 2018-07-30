@@ -1,0 +1,283 @@
+#@UGENE_WORKFLOW
+
+
+
+workflow "PE reads assembly and classification"{
+
+    fastqc-before-1 {
+        type:fastqc;
+        name:"FastQC Before 1";
+    }
+    fastqc-after-1 {
+        type:fastqc;
+        name:"FastQC After 1";
+    }
+    kraken-classify {
+        type:kraken-classify;
+        name:Kraken;
+    }
+    spades {
+        type:spades-id;
+        name:SPAdes;
+        output-dir:spades_out;
+    }
+    get-pe-reads-list {
+        type:get-pe-reads-list;
+        name:"Read NGS PE Reads";
+        url1 {
+            dataset:"Dataset 1";
+        }
+        url2 {
+            dataset:"Dataset 1";
+        }
+    }
+    fastqc-before-2 {
+        type:fastqc;
+        name:"FastQC Before 2";
+    }
+    fastqc-after-2 {
+        type:fastqc;
+        name:"FastQC After 2";
+    }
+    classification-report {
+        type:classification-report;
+        name:Report;
+    }
+    trimmomatic {
+        type:trimmomatic;
+        name:Trimmomatic;
+        input-data:paired-end;
+    }
+
+    .actor-bindings {
+        kraken-classify.out->classification-report.in
+        spades.out-data->kraken-classify.in
+        get-pe-reads-list.out->fastqc-before-1.in-file
+        get-pe-reads-list.out->fastqc-before-2.in-file
+        get-pe-reads-list.out->trimmomatic.in
+        trimmomatic.out->fastqc-after-1.in-file
+        trimmomatic.out->fastqc-after-2.in-file
+        trimmomatic.out->spades.in-data
+    }
+
+    get-pe-reads-list.reads-url1->fastqc-before-1.in-file.url
+    trimmomatic.reads-url1->fastqc-after-1.in-file.url
+    spades.contigs-out->kraken-classify.in.reads-url1
+    trimmomatic.reads-url2->spades.in-data.readspairedurl
+    trimmomatic.reads-url1->spades.in-data.readsurl
+    get-pe-reads-list.reads-url2->fastqc-before-2.in-file.url
+    trimmomatic.reads-url2->fastqc-after-2.in-file.url
+    kraken-classify.tax-data->classification-report.in.tax-data
+    get-pe-reads-list.reads-url1->trimmomatic.in.reads-url1
+    get-pe-reads-list.reads-url1->trimmomatic.in.reads-url2
+
+    .meta {
+        visual {
+            classification-report {
+                pos:"-345 -90";
+                style:simple;
+                bg-color-simple:"141 126 194 255";
+                in.angle:90;
+            }
+            fastqc-after-1 {
+                pos:"-375 -585";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:205.821;
+            }
+            fastqc-after-2 {
+                pos:"-585 -360";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:78.0239;
+            }
+            fastqc-before-1 {
+                pos:"-585 -690";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:227.203;
+            }
+            fastqc-before-2 {
+                pos:"-765 -450";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:85.7636;
+            }
+            get-pe-reads-list {
+                pos:"-765 -600";
+                style:simple;
+                bg-color-simple:"23 106 239 255";
+                out.angle:360;
+            }
+            kraken-classify {
+                pos:"-345 -240";
+                style:simple;
+                bg-color-simple:"0 145 0 255";
+                in.angle:90;
+                out.angle:268.977;
+            }
+            spades {
+                pos:"-345 -390";
+                style:simple;
+                bg-color-simple:"168 50 117 255";
+                in-data.angle:152.021;
+                in-high-quality-mate-pairs.angle:122;
+                in-mate-pairs.angle:138;
+                in-oxford-nanopore-reads.angle:154;
+                in-pac-bio-ccs-reads.angle:170;
+                in-pac-bio-clr-reads.angle:186;
+                in-sanger-reads.angle:202;
+                in-trusted-contigs.angle:218;
+                in-unpaired-reads.angle:234;
+                in-untrusted-contigs.angle:250;
+                out-data.angle:272.49;
+            }
+            trimmomatic {
+                pos:"-585 -525";
+                style:simple;
+                bg-color-simple:"127 127 127 255";
+                in.angle:140.389;
+                out.angle:331.504;
+            }
+            get-pe-reads-list.out->fastqc-before-1.in-file {
+                text-pos:"-43.3359 -18";
+            }
+            get-pe-reads-list.out->fastqc-before-2.in-file {
+                text-pos:"-77.3359 16";
+            }
+            get-pe-reads-list.out->trimmomatic.in {
+                text-pos:"-47.3359 -11";
+            }
+            kraken-classify.out->classification-report.in {
+                text-pos:"-22 -20";
+            }
+            spades.out-data->kraken-classify.in {
+                text-pos:"-22.3359 -13";
+            }
+            trimmomatic.out->fastqc-after-1.in-file {
+                text-pos:"-40 -28";
+            }
+            trimmomatic.out->fastqc-after-2.in-file {
+                text-pos:"-63 -12";
+            }
+            trimmomatic.out->spades.in-data {
+                text-pos:"-17 -16";
+            }
+        }
+        wizard {
+            name:"PE Reads Assembly and Classification Wizard";
+            page {
+                id:1;
+                next:2;
+                title:"Input data";
+                parameters-area {
+                    group {
+                        title:"Paired-end reads";
+                        label-size:120;
+                        get-pe-reads-list.url1 {
+                            label:"FASTQ file(s) 1";
+                        }
+                        get-pe-reads-list.url2 {
+                            label:"FASTQ file(s) 2";
+                        }
+                    }
+                }
+            }
+            page {
+                id:2;
+                next:3;
+                title:"Trimmomatic settings";
+                parameters-area {
+                    group {
+                        title:"Improve reads quality";
+                        label-size:120;
+                        trimmomatic.trimming-steps {
+                        }
+                        trimmomatic.generate-log {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        trimmomatic.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:3;
+                next:4;
+                title:"SPAdes settings";
+                parameters-area {
+                    group {
+                        title:"Reads de novo assembly";
+                        label-size:180;
+                        spades.dataset-type {
+                        }
+                        spades.running-mode {
+                        }
+                        spades.k-mer {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        spades.memlimit {
+                        }
+                        spades.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:4;
+                next:5;
+                title:"Kraken settings";
+                parameters-area {
+                    group {
+                        title:Classification;
+                        label-size:180;
+                        kraken-classify.database {
+                        }
+                        kraken-classify.quick-operation {
+                        }
+                        kraken-classify.min-hits {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        kraken-classify.preload {
+                        }
+                        kraken-classify.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:5;
+                title:"Output data";
+                parameters-area {
+                    group {
+                        title:"Classification output";
+                        label-size:180;
+                        kraken-classify.output-url {
+                            label:"Kraken output file";
+                        }
+                    }
+                    group {
+                        title:"Classification reports";
+                        label-size:180;
+                        classification-report.output-url {
+                            label:"Report for Kraken classification";
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

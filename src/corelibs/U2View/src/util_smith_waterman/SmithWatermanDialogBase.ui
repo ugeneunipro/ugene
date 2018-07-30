@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>765</width>
-    <height>448</height>
+    <width>795</width>
+    <height>481</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -74,6 +74,9 @@
          </property>
          <property name="tabStopWidth">
           <number>0</number>
+         </property>
+         <property name="acceptRichText">
+          <bool>false</bool>
          </property>
         </widget>
        </item>

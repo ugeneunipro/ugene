@@ -59,7 +59,7 @@ BedtoolsSupport::BedtoolsSupport(const QString& name, const QString& path) : Ext
 
     U2DataPathRegistry* dpr = AppContext::getDataPathRegistry();
     if (dpr){
-        U2DataPath* dp = new U2DataPath(GENOMES_DATA_NAME, QString(PATH_PREFIX_DATA)+QString(":")+GENOMES_DIR_NAME, false);
+        U2DataPath* dp = new U2DataPath(GENOMES_DATA_NAME, QString(PATH_PREFIX_DATA) + ":" + GENOMES_DIR_NAME, "", U2DataPath::CutFileExtension);
         dpr->registerEntry(dp);
     }
 }

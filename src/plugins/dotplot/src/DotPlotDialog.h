@@ -31,6 +31,7 @@ namespace U2 {
 
 class ADVSequenceObjectContext;
 class GObject;
+class Document;
 class AnnotatedDNAView;
 class U2SequenceObject;
 
@@ -73,8 +74,14 @@ protected slots:
 
     void sl_loadTaskStateChanged(Task* t);
 
+    void sl_documentAddedOrRemoved();
+    void sl_objectAddedOrRemoved();
+    void sl_loadedStateChanged();
+
 private:
-    QList<U2SequenceObject*>   sequences;
+    void reconnectAllProjectDocuments();
+    void updateSequenceSelectors();
+
     ADVSequenceObjectContext    *xSeq, *ySeq;
     AnnotatedDNAView*           adv;
 
@@ -86,7 +93,6 @@ private:
     GObject* getGObjectByName(const QString& gObjectName);
 
     Task* openSequenceTask;
-    QString curURL;
 };
 
 } //namespace

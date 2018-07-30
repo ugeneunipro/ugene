@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MaxInfoSettingsWidget</class>
+ <widget class="QWidget" name="MaxInfoSettingsWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>199</width>
+    <height>58</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QLabel" name="lblTargetLength">
+     <property name="toolTip">
+      <string>The read length which is likely to allow the location of the read within the target sequence. Extremely short reads, which can be placed into many different locations, provide little value. Typically, the length would be in the order of 40 bases, however, the value also depends on the size and complexity of the target sequence.</string>
+     </property>
+     <property name="text">
+      <string>Target length</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QSpinBox" name="sbTargetLength">
+     <property name="toolTip">
+      <string>The read length which is likely to allow the location of the read within the target sequence. Extremely short reads, which can be placed into many different locations, provide little value. Typically, the length would be in the order of 40 bases, however, the value also depends on the size and complexity of the target sequence.</string>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+     <property name="maximum">
+      <number>2147483647</number>
+     </property>
+     <property name="value">
+      <number>40</number>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="lblStrictness">
+     <property name="toolTip">
+      <string>The balance between preserving as much read length as possible vs. removal of incorrect bases. A low value of this parameter (&lt;0.2) favours longer reads, while a high value (&gt;0.8) favours read correctness.</string>
+     </property>
+     <property name="text">
+      <string>Strictness</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QDoubleSpinBox" name="dsbStrictness">
+     <property name="toolTip">
+      <string>The balance between preserving as much read length as possible vs. removal of incorrect bases. A low value of this parameter (&lt;0.2) favours longer reads, while a high value (&gt;0.8) favours read correctness.</string>
+     </property>
+     <property name="minimum">
+      <double>0.010000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>0.990000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>0.100000000000000</double>
+     </property>
+     <property name="value">
+      <double>0.500000000000000</double>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

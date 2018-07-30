@@ -25,9 +25,11 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
+#include "TextDocumentFormat.h"
+
 namespace U2 {
 
-class U2FORMATS_EXPORT NewickFormat : public DocumentFormat {
+class U2FORMATS_EXPORT NewickFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     NewickFormat(QObject* p);
@@ -38,10 +40,10 @@ public:
 
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
-
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
 private:
     QString formatName;

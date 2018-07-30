@@ -28,7 +28,7 @@ InSilicoPcrWorkflowTask::InSilicoPcrWorkflowTask(const InSilicoPcrTaskSettings &
 {
     pcrTask = new InSilicoPcrTask(pcrSettings);
     addSubTask(pcrTask);
-    pcrTask->setSubtaskProgressWeight(0.7);
+    pcrTask->setSubtaskProgressWeight((float)0.7);
 }
 
 QList<Task*> InSilicoPcrWorkflowTask::onSubTaskFinished(Task *subTask) {

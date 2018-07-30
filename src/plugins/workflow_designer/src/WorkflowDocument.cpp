@@ -78,7 +78,7 @@ GObject* WorkflowGObject::clone(const U2DbiRef&, U2OpStatus&, const QVariantMap 
 /// Workflow document format
 
 WorkflowDocFormat::WorkflowDocFormat(QObject* p)
-: DocumentFormat(p, DocumentFormatFlags_W1, QStringList(WorkflowUtils::WD_FILE_EXTENSIONS) << WorkflowUtils::WD_XML_FORMAT_EXTENSION),
+: TextDocumentFormat(p, DocumentFormatFlags_W1, QStringList(WorkflowUtils::WD_FILE_EXTENSIONS) << WorkflowUtils::WD_XML_FORMAT_EXTENSION),
   formatName(tr("Workflow")) {
     supportedObjectTypes += WorkflowGObject::TYPE;
     formatDescription = tr("WorkflowDoc is a format used for creating/editing/storing/retrieving"
@@ -94,7 +94,7 @@ Document* WorkflowDocFormat::createNewLoadedDocument(IOAdapterFactory* io, const
 
 #define BUFF_SIZE 1024
 
-Document* WorkflowDocFormat::loadDocument(IOAdapter* io, const U2DbiRef& targetDb, const QVariantMap& hints, U2OpStatus& os) {
+Document* WorkflowDocFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& targetDb, const QVariantMap& hints, U2OpStatus& os) {
     QByteArray  rawData;
     QByteArray block(BUFF_SIZE, '\0');
     int blockLen = 0;
@@ -137,7 +137,7 @@ void WorkflowDocFormat::storeDocument( Document* d, IOAdapter* io, U2OpStatus& )
     wo->setSceneRawData(rawData);
 }
 
-FormatCheckResult WorkflowDocFormat::checkRawData(const QByteArray& data, const GUrl&) const {
+FormatCheckResult WorkflowDocFormat::checkRawTextData(const QByteArray& data, const GUrl&) const {
     LoadWorkflowTask::FileFormat format = LoadWorkflowTask::detectFormat(data);
     bool ok  = format == LoadWorkflowTask::HR || format == LoadWorkflowTask::XML;
     return ok ? FormatDetection_Matched  : FormatDetection_NotMatched;

@@ -492,6 +492,23 @@ void GUrlUtils::validateLocalFileUrl(const GUrl &url, U2OpStatus &os, const QStr
     }
 }
 
+QString GUrlUtils::getPairedFastqFilesBaseName(const QString &sourceFileUrl, bool truncate) {
+    static const QStringList pairedSuffixes = QStringList() << "-R1" << "-R2"
+                                                            << "_1" << "_2"
+                                                            << "_R1_001" << "_R2_001"
+                                                            << "_R1" << "_R2";
+    QString baseName = QFileInfo(sourceFileUrl).completeBaseName();
+    if (truncate) {
+        foreach (const QString &suffix, pairedSuffixes) {
+            if (baseName.endsWith(suffix)) {
+                baseName.chop(suffix.length());
+                break;
+            }
+        }
+    }
+    return baseName;
+}
+
 QString GUrlUtils::fixFileName(const QString &fileName) {
     QString result = fileName;
     result.replace(QRegExp("[^0-9a-zA-Z._\\-]"), "_");

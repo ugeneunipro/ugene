@@ -61,6 +61,7 @@ HEADERS += src/ActorCfgFilterProxyModel.h \
            src/library/GenericReadActor.h \
            src/library/GenericReadWorker.h \
            src/library/GetFileListWorker.h \
+           src/library/GetReadListWorker.h \
            src/library/GroupWorker.h \
            src/library/ImportAnnotationsWorker.h \
            src/library/IncludedProtoFactoryImpl.h \
@@ -177,6 +178,7 @@ SOURCES += src/ActorCfgFilterProxyModel.cpp \
            src/library/GenericReadActor.cpp \
            src/library/GenericReadWorker.cpp \
            src/library/GetFileListWorker.cpp \
+           src/library/GetReadListWorker.cpp \
            src/library/GroupWorker.cpp \
            src/library/ImportAnnotationsWorker.cpp \
            src/library/IncludedProtoFactoryImpl.cpp \

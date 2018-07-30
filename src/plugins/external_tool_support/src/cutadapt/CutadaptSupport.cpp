@@ -48,7 +48,7 @@ CutadaptSupport::CutadaptSupport(const QString& name, const QString& path)
 
     U2DataPathRegistry* dpr = AppContext::getDataPathRegistry();
     if (dpr != NULL){
-        U2DataPath* dp = new U2DataPath(ADAPTERS_DATA_NAME, QString(PATH_PREFIX_DATA)+QString(":")+ADAPTERS_DIR_NAME, false);
+        U2DataPath* dp = new U2DataPath(ADAPTERS_DATA_NAME, QString(PATH_PREFIX_DATA) + ":" + ADAPTERS_DIR_NAME, "", U2DataPath::CutFileExtension);
         dpr->registerEntry(dp);
     }
 

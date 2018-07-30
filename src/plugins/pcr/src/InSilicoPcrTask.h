@@ -48,9 +48,10 @@ public:
     static const qint64 MAX_SEQUENCE_LENGTH;
 };
 
-class InSilicoPcrProduct {
-public:
+struct InSilicoPcrProduct {
     InSilicoPcrProduct();
+
+    bool isValid() const;
 
     /* Region within the original sequence */
     U2Region region;
@@ -64,6 +65,10 @@ public:
     int forwardPrimerMatchLength;
     /* The length of found primer region within the original sequence */
     int reversePrimerMatchLength;
+    /**/
+    QByteArray forwardPrimerLedge;
+    /**/
+    QByteArray reversePrimerLedge;
 };
 
 class InSilicoPcrTask : public Task {
@@ -80,21 +85,25 @@ public:
     const InSilicoPcrTaskSettings & getSettings() const;
 
 private:
-    class PrimerBind {
-    public:
+    struct  PrimerBind {
+        PrimerBind();
+
         QByteArray primer;
         uint mismatches;
         U2Region region;
+        int ledge;
     };
     PrimerBind getPrimerBind(const FindAlgorithmResult &forward, const FindAlgorithmResult &reverse, U2Strand::Direction direction) const;
 
-    qint64 getProductSize(const U2Region &left, const U2Region &right) const;
+    qint64 getProductSize(const PrimerBind& leftBind, const PrimerBind& rightBind) const;
     FindAlgorithmTaskSettings getFindPatternSettings(U2Strand::Direction direction);
     bool isCorrectProductSize(qint64 productSize, qint64 minPrimerSize) const;
     bool filter(const PrimerBind &leftBind, const PrimerBind &rightBind, qint64 productSize) const;
-    bool checkPerfectMatch(const U2Region &region, QByteArray primer, U2Strand::Direction direction) const;
+    bool checkPerfectMatch(const PrimerBind &bind, U2Strand::Direction direction) const;
     QByteArray getSequence(const U2Region &region, U2Strand::Direction direction) const;
-    InSilicoPcrProduct createResult(const U2Region &leftPrimer, const U2Region &product, const U2Region &rightPrimer, U2Strand::Direction direction) const;
+    InSilicoPcrProduct createResult(const PrimerBind &leftPrimer, const U2Region &product, const PrimerBind &rightPrimer, U2Strand::Direction direction) const;
+    bool updateSequenceByPrimers(const PrimerBind &leftPrimer, const PrimerBind &rightPrimer, QByteArray& productSequence) const;
+    void updateSequenceByPrimer(const PrimerBind &primer, QByteArray& productSequence) const;
 
 private:
     InSilicoPcrTaskSettings settings;

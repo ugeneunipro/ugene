@@ -77,7 +77,7 @@ private slots:
 
 private:
     void init();
-    void initSaveController();
+    void initSaveController(const QString& defaultFormat);
     void setSizeControlsEnabled(bool enabled);
     QStringList getFormats();
     QStringList getRasterFormats();

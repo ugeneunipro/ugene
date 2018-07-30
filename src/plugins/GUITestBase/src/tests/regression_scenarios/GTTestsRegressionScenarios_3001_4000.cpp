@@ -542,6 +542,7 @@ GUI_TEST_CLASS_DEFINITION(test_3085_1) {
 
     //Expected state: file was updated, the sequence view with annotations is opened and updated.
     QWidget *reloaded1Sv = GTUtilsMdi::activeWindow(os);
+    GTGlobals::sleep(1000);
     CHECK_SET_ERR(sv != reloaded1Sv, "File is not reloaded 1");
 
     //4. Change the annotations file outside UGENE (e.g. change annotation region).
@@ -570,7 +571,7 @@ GUI_TEST_CLASS_DEFINITION(test_3085_2) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     QFile(sandBoxDir + "murine_3085_2.gb").rename(sandBoxDir + "murine_3085_2_1.gb");
     QFile(testDir + "_common_data/regression/3085/test_1.gb").copy(sandBoxDir + "murine_3085_2.gb");
-    GTGlobals::sleep(5000);
+    GTGlobals::sleep(10000);
 
     //Expected state: document reloaded without errors/warnings.
     CHECK_SET_ERR(!l.hasError(), "Errors in log");
@@ -1464,9 +1465,9 @@ GUI_TEST_CLASS_DEFINITION(test_3223){
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3226) {
-    //1. Create a workflow with a 'File List' element.
+    //1. Create a workflow with a 'Read File URL(s)' element.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "File list");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read File URL(s)");
 
     ////2. Setup alias 'in' for input path.
     QMap<QPoint*, QString> map;
@@ -1475,8 +1476,8 @@ GUI_TEST_CLASS_DEFINITION(test_3226) {
     GTUtilsDialog::waitForDialog(os, new AliasesDialogFiller(os, map));
     GTWidget::click(os, GTAction::button(os, "Set parameter aliases"));
 
-    ////3. Copy and paste the 'File list' element.
-    GTUtilsWorkflowDesigner::click(os, "File List");
+    ////3. Copy and paste the 'Read File URL(s)' element.
+    GTUtilsWorkflowDesigner::click(os, "Read File URL(s)");
     //GTKeyboardUtils::copy(os);
     GTWidget::click(os, GTAction::button(os, "Copy action"));
     GTKeyboardUtils::paste(os);
@@ -1500,8 +1501,8 @@ GUI_TEST_CLASS_DEFINITION(test_3226) {
 GUI_TEST_CLASS_DEFINITION(test_3229){
 //    1. Create the "read sequence -> write sequence" workflow.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
-    WorkflowProcessItem* write = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence");
+    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
+    WorkflowProcessItem* write = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence", true);
     GTUtilsWorkflowDesigner::connect(os, read, write);
 //    2. Set input a single file human_T1
     GTUtilsWorkflowDesigner::click(os, read);
@@ -1931,7 +1932,6 @@ GUI_TEST_CLASS_DEFINITION(test_3287) {
     CHECK_OP(os, );
 
     ImageExportFormFiller::Parameters params;
-    params.graphOverviewChecked = false;
     params.fileName = testDir + "_common_data/scenarios/sandbox/test_3287.bmp";
     params.format = "BMP";
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export as image"));
@@ -3619,7 +3619,7 @@ GUI_TEST_CLASS_DEFINITION(test_3556) {
 
     const QPoint pos = GTMouseDriver::getMousePosition();
     GTMouseDriver::moveTo(QPoint(pos.x(), pos.y() - 10));
- 
+
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "set_seq_as_reference"));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -3828,7 +3828,7 @@ GUI_TEST_CLASS_DEFINITION(test_3589) {
     GTLogTracer l;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Assembly");
+    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read NGS Reads Assembly");
     CHECK_SET_ERR(read != NULL, "Added workflow element is NULL");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dirPath + "chrM.sam");
 
@@ -4556,7 +4556,7 @@ GUI_TEST_CLASS_DEFINITION(test_3697){
     GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os, "Ok"));
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsWorkflowDesigner::addElement(os, "Read Alignment");
-    GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
+    GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
     GTUtilsWorkflowDesigner::click(os, "Read Alignment");
     GTUtilsWorkflowDesigner::click(os, "Read Sequence");
 
@@ -5719,11 +5719,11 @@ GUI_TEST_CLASS_DEFINITION(test_3901) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "group", "feature", "join(50..60,20..30,80..90)"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Add" << "New annotation...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-	GTGlobals::sleep();
+    GTGlobals::sleep();
 
     //4. Click to the arrow (80..90).
     GTUtilsSequenceView::clickAnnotationDet(os, "feature", 80, 0, true);
-	GTGlobals::sleep(200);
+    GTGlobals::sleep(200);
     //Expected state: the arrow's region is selected.
     ADVSingleSequenceWidget *w=(ADVSingleSequenceWidget*)GTWidget::findWidget(os,"ADV_single_sequence_widget_0");
     QVector<U2Region> selection = w->getSequenceSelection()->getSelectedRegions();
@@ -5933,7 +5933,7 @@ GUI_TEST_CLASS_DEFINITION(test_3938) {
     GTUtilsWorkflowDesigner::addInputFile(os, "Input Variations File", testDir + "_common_data/vcf/valid.vcf");
 
     GTUtilsWorkflowDesigner::click(os, "Annotate and Predict Effects with SnpEff");
-    GTUtilsDialog::waitForDialog(os, new SnpEffDatabaseDialogFiller(os, "hg19"));
+    GTUtilsDialog::waitForDialog(os, new SnpEffDatabaseDialogFiller(os, "ebola_zaire"));
     GTUtilsWorkflowDesigner::setParameter(os, "Genome", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);

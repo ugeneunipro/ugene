@@ -1,0 +1,372 @@
+#@UGENE_WORKFLOW
+
+
+
+workflow "Serial classification for SE reads"{
+
+    get-se-reads-list {
+        type:get-se-reads-list;
+        name:"Read NGS SE Reads";
+        url1 {
+            dataset:"Dataset 1";
+        }
+    }
+    fastqc-before {
+        type:fastqc;
+        name:"FastQC Before";
+    }
+    fastqc-after {
+        type:fastqc;
+        name:"FastQC After";
+    }
+    kraken-classify {
+        type:kraken-classify;
+        name:Kraken;
+    }
+    classification-filter-1 {
+        type:classification-filter;
+        name:"Filter by Classification 1";
+    }
+    clark-classify {
+        type:clark-classify;
+        name:CLARK;
+    }
+    classification-filter-2 {
+        type:classification-filter;
+        name:"Filter by Classification 2";
+    }
+    diamond-classify {
+        type:diamond-classify;
+        name:DIAMOND;
+    }
+    classification-report-1 {
+        type:classification-report;
+        name:"Report 1";
+    }
+    classification-report-2 {
+        type:classification-report;
+        name:"Report 2";
+    }
+    classification-report-3 {
+        type:classification-report;
+        name:"Report 3";
+    }
+    trimmomatic {
+        type:trimmomatic;
+        name:Trimmomatic;
+    }
+
+    .actor-bindings {
+        get-se-reads-list.out->fastqc-before.in-file
+        get-se-reads-list.out->trimmomatic.in
+        diamond-classify.out->classification-report-3.in
+        clark-classify.out->classification-filter-2.in
+        clark-classify.out->classification-report-2.in
+        classification-filter-2.out->diamond-classify.in
+        trimmomatic.out->fastqc-after.in-file
+        trimmomatic.out->kraken-classify.in
+        classification-filter-1.out->clark-classify.in
+        kraken-classify.out->classification-filter-1.in
+        kraken-classify.out->classification-report-1.in
+    }
+
+    get-se-reads-list.reads-url1->fastqc-before.in-file.url
+    get-se-reads-list.reads-url1->fastqc-after.in-file.url
+    trimmomatic.reads-url1->kraken-classify.in.reads-url1
+    trimmomatic.reads-url1->classification-filter-1.in.reads-url1
+    kraken-classify.tax-data->classification-filter-1.in.tax-data
+    classification-filter-1.reads-url1->clark-classify.in.reads-url1
+    classification-filter-1.reads-url1->classification-filter-2.in.reads-url1
+    clark-classify.tax-data->classification-filter-2.in.tax-data
+    classification-filter-2.reads-url1->diamond-classify.in.reads-url1
+    kraken-classify.tax-data->classification-report-1.in.tax-data
+    clark-classify.tax-data->classification-report-2.in.tax-data
+    diamond-classify.tax-data->classification-report-3.in.tax-data
+    get-se-reads-list.reads-url1->trimmomatic.in.reads-url1
+
+    .meta {
+        visual {
+            clark-classify {
+                pos:"-165 -210";
+                style:simple;
+                bg-color-simple:"0 145 0 255";
+                in.angle:91.9749;
+                out.angle:181.591;
+            }
+            classification-filter-1 {
+                pos:"-165 -375";
+                style:simple;
+                bg-color-simple:"0 128 128 255";
+                in.angle:88.8309;
+                out.angle:270;
+            }
+            classification-filter-2 {
+                pos:"-465 -210";
+                style:simple;
+                bg-color-simple:"0 128 128 255";
+                in.angle:358.264;
+                out.angle:183.366;
+            }
+            classification-report-1 {
+                pos:"-15 -450";
+                style:simple;
+                bg-color-simple:"141 126 194 255";
+                in.angle:144.689;
+            }
+            classification-report-2 {
+                pos:"-195 -30";
+                style:simple;
+                bg-color-simple:"141 126 194 255";
+                in.angle:91.5911;
+            }
+            classification-report-3 {
+                pos:"-735 -45";
+                style:simple;
+                bg-color-simple:"141 126 194 255";
+                in.angle:91.8476;
+            }
+            diamond-classify {
+                pos:"-735 -210";
+                style:simple;
+                bg-color-simple:"0 145 0 255";
+                in.angle:358.452;
+                out.angle:274.667;
+            }
+            fastqc-after {
+                pos:"-315 -645";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:237.653;
+            }
+            fastqc-before {
+                pos:"-585 -645";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:216.529;
+            }
+            get-se-reads-list {
+                pos:"-735 -540";
+                style:simple;
+                bg-color-simple:"23 106 239 255";
+                out.angle:360;
+            }
+            kraken-classify {
+                pos:"-165 -540";
+                style:simple;
+                bg-color-simple:"0 145 0 255";
+                in.angle:184.086;
+                out.angle:268.977;
+            }
+            trimmomatic {
+                pos:"-465 -540";
+                style:simple;
+                bg-color-simple:"127 127 127 255";
+                in.angle:180;
+                out.angle:360;
+            }
+            clark-classify.out->classification-filter-2.in {
+                text-pos:"-39 4";
+            }
+            clark-classify.out->classification-report-2.in {
+                text-pos:"-34 -5";
+            }
+            classification-filter-1.out->clark-classify.in {
+                text-pos:"-59 -22";
+            }
+            classification-filter-2.out->diamond-classify.in {
+                text-pos:"-46 4";
+            }
+            diamond-classify.out->classification-report-3.in {
+                text-pos:"-25 -23";
+            }
+            get-se-reads-list.out->fastqc-before.in-file {
+                text-pos:"-50.3359 -30";
+            }
+            get-se-reads-list.out->trimmomatic.in {
+                text-pos:"-34.3359 -28";
+            }
+            kraken-classify.out->classification-filter-1.in {
+                text-pos:"-58 -16";
+            }
+            kraken-classify.out->classification-report-1.in {
+                text-pos:"-24 -36";
+            }
+            trimmomatic.out->fastqc-after.in-file {
+                text-pos:"-72 -45";
+            }
+            trimmomatic.out->kraken-classify.in {
+                text-pos:"-32 -43";
+            }
+        }
+        wizard {
+            name:"SE Reads Serial Classification Wizard";
+            page {
+                id:1;
+                next:2;
+                title:"Input data";
+                parameters-area {
+                    group {
+                        title:"Single-end reads";
+                        label-size:120;
+                        get-se-reads-list.url1 {
+                            label:"FASTQ file(s)";
+                        }
+                    }
+                }
+            }
+            page {
+                id:2;
+                next:3;
+                title:"Trimmomatic settings";
+                parameters-area {
+                    group {
+                        title:"Improve reads quality";
+                        label-size:120;
+                        trimmomatic.trimming-steps {
+                        }
+                        trimmomatic.generate-log {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        trimmomatic.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:3;
+                next:4;
+                title:"Kraken settings";
+                parameters-area {
+                    group {
+                        title:Classification;
+                        label-size:180;
+                        kraken-classify.database {
+                        }
+                        kraken-classify.quick-operation {
+                        }
+                        kraken-classify.min-hits {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        kraken-classify.preload {
+                        }
+                        kraken-classify.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:4;
+                next:5;
+                title:"CLARK settings";
+                parameters-area {
+                    group {
+                        title:Classification;
+                        label-size:180;
+                        clark-classify.database {
+                        }
+                        clark-classify.k-length {
+                        }
+                        clark-classify.k-min-freq {
+                        }
+                        clark-classify.mode {
+                        }
+                        clark-classify.extend-out {
+                        }
+                        clark-classify.factor {
+                        }
+                        clark-classify.gap {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        clark-classify.preload {
+                        }
+                        clark-classify.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:5;
+                next:6;
+                title:"DIAMOND settings";
+                parameters-area {
+                    group {
+                        title:Classification;
+                        label-size:180;
+                        diamond-classify.database {
+                        }
+                        diamond-classify.genetic-code {
+                        }
+                        diamond-classify.sensitive-mode {
+                        }
+                        diamond-classify.frame-shift {
+                        }
+                        diamond-classify.e-value {
+                        }
+                        diamond-classify.matrix {
+                        }
+                        diamond-classify.gap-open {
+                        }
+                        diamond-classify.gap-extend {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        diamond-classify.block-size {
+                        }
+                        diamond-classify.index-chunks {
+                        }
+                        diamond-classify.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:6;
+                title:"Output data";
+                parameters-area {
+                    group {
+                        title:"Classification output";
+                        label-size:180;
+                        kraken-classify.output-url {
+                            label:"Kraken output file";
+                        }
+                        clark-classify.output-url {
+                            label:"CLARK output file";
+                        }
+                        diamond-classify.output-url {
+                            label:"DIAMOND output file";
+                        }
+                    }
+                    group {
+                        title:"Classification reports";
+                        label-size:180;
+                        classification-report-1.output-url {
+                            label:"Report for Kraken classification";
+                        }
+                        classification-report-2.output-url {
+                            label:"Report for CLARK classification";
+                        }
+                        classification-report-3.output-url {
+                            label:"Report for DIAMOND classification";
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

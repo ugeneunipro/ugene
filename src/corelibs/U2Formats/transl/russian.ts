@@ -108,24 +108,29 @@
 <context>
     <name>U2::ABIFormat</name>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="50"/>
+        <location filename="../src/ABIFormat.cpp" line="52"/>
         <source>ABIF</source>
         <translation>ABIF</translation>
     </message>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="51"/>
+        <location filename="../src/ABIFormat.cpp" line="53"/>
         <source>A chromatogram file format</source>
         <translation>Формат типа хромотограмма</translation>
     </message>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="90"/>
+        <location filename="../src/ABIFormat.cpp" line="92"/>
         <source>Not a valid ABIF file: %1</source>
         <translation>Некорректный ABIF файл: %1</translation>
     </message>
     <message>
-        <location filename="../src/ABIFormat.cpp" line="118"/>
+        <location filename="../src/ABIFormat.cpp" line="120"/>
         <source>Failed to load sequence from ABI file %1</source>
         <translation>Невозможно загрузить последоватлеьность из ABI файла %1</translation>
+    </message>
+    <message>
+        <location filename="../src/ABIFormat.cpp" line="451"/>
+        <source>Undefined sequence alphabet</source>
+        <translation>Неизвестный алфавит</translation>
     </message>
 </context>
 <context>
@@ -141,22 +146,22 @@
         <translation>Строка слишком длинная</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="381"/>
+        <location filename="../src/ace/AceFormat.cpp" line="378"/>
         <source>A name is not match with AF names</source>
         <translation>Имя не совпадает с именами AF</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="424"/>
+        <location filename="../src/ace/AceFormat.cpp" line="420"/>
         <source>First line is not an ace header</source>
         <translation>Первая строка не является заголовком ACE</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="429"/>
+        <location filename="../src/ace/AceFormat.cpp" line="425"/>
         <source>No contig count tag in the header line</source>
         <translation>Отсутствует тег числа контигов в строке заголовка</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="443"/>
+        <location filename="../src/ace/AceFormat.cpp" line="439"/>
         <source>Must be CO keyword</source>
         <translation>Ожидается ключевое слово CO</translation>
     </message>
@@ -166,13 +171,13 @@
         <translation>Неожиданный конец файла</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="457"/>
+        <location filename="../src/ace/AceFormat.cpp" line="453"/>
         <source>There is no note about reads count</source>
         <translation>Отсуствтует информация о числе считываний</translation>
     </message>
     <message>
         <location filename="../src/ace/AceFormat.cpp" line="228"/>
-        <location filename="../src/ace/AceFormat.cpp" line="281"/>
+        <location filename="../src/ace/AceFormat.cpp" line="278"/>
         <source>There is no AF note</source>
         <translation>Отсутствует</translation>
     </message>
@@ -183,7 +188,7 @@
     </message>
     <message>
         <location filename="../src/ace/AceFormat.cpp" line="232"/>
-        <location filename="../src/ace/AceFormat.cpp" line="301"/>
+        <location filename="../src/ace/AceFormat.cpp" line="298"/>
         <source>A name is duplicated</source>
         <translation>Повторные вхождения имени</translation>
     </message>
@@ -203,49 +208,49 @@
         <translation>Плохие данные в консенсусе</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="288"/>
-        <location filename="../src/ace/AceFormat.cpp" line="294"/>
+        <location filename="../src/ace/AceFormat.cpp" line="285"/>
+        <location filename="../src/ace/AceFormat.cpp" line="291"/>
         <source>Bad AF note</source>
         <translation>Плохое примечание AF</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="331"/>
+        <location filename="../src/ace/AceFormat.cpp" line="328"/>
         <source>There is no read note</source>
         <translation>Отсутствует</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="339"/>
+        <location filename="../src/ace/AceFormat.cpp" line="336"/>
         <source>No sequence</source>
         <translation>Нет последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="350"/>
+        <location filename="../src/ace/AceFormat.cpp" line="347"/>
         <source>QA keyword hasn&apos;t been found</source>
         <translation>Ключевое слово QA не было найдено</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="358"/>
-        <location filename="../src/ace/AceFormat.cpp" line="364"/>
+        <location filename="../src/ace/AceFormat.cpp" line="355"/>
+        <location filename="../src/ace/AceFormat.cpp" line="361"/>
         <source>QA error no clear range</source>
         <translation>Ошибка QA нет четкого региона</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="370"/>
+        <location filename="../src/ace/AceFormat.cpp" line="367"/>
         <source>QA error bad range</source>
         <translation>Ошибка QA: плохой регион</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="376"/>
+        <location filename="../src/ace/AceFormat.cpp" line="373"/>
         <source>Bad sequence data</source>
         <translation>Некорректные данные в последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="508"/>
+        <location filename="../src/ace/AceFormat.cpp" line="504"/>
         <source>Alphabet unknown</source>
         <translation>Неизвестный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceFormat.cpp" line="534"/>
+        <location filename="../src/ace/AceFormat.cpp" line="530"/>
         <source>File doesn&apos;t contain any msa objects</source>
         <translation>Файл не содержит msa объектов</translation>
     </message>
@@ -258,12 +263,12 @@
         <translation>MMDB</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.h" line="147"/>
+        <location filename="../src/ASNFormat.h" line="149"/>
         <source>read error occurred</source>
         <translation>Ошибка чтения</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.h" line="155"/>
+        <location filename="../src/ASNFormat.h" line="157"/>
         <source>biostruct3d obj loading error: %1</source>
         <translation>Ошибка загрузки трехмерной структуры: %1</translation>
     </message>
@@ -302,12 +307,12 @@
 <context>
     <name>U2::AbstractVariationFormat</name>
     <message>
-        <location filename="../src/AbstractVariationFormat.cpp" line="65"/>
+        <location filename="../src/AbstractVariationFormat.cpp" line="66"/>
         <source>SNP formats are used to store single-nucleotide polymorphism data</source>
         <translation>SNP форматы используются для сохранения полиморфизма однонуклеотидных данных</translation>
     </message>
     <message>
-        <location filename="../src/AbstractVariationFormat.cpp" line="140"/>
+        <location filename="../src/AbstractVariationFormat.cpp" line="141"/>
         <source>Line %1: There are too few columns in this line. The line was skipped.</source>
         <translation>Строка %1: Слишком мало столбцов в этой строке. Строка была проигнорирована.</translation>
     </message>
@@ -366,37 +371,37 @@
         <translation>Attemt to find any number in the string failed</translation>
     </message>
     <message>
-        <location filename="../src/apr/AprFormat.cpp" line="139"/>
+        <location filename="../src/apr/AprFormat.cpp" line="148"/>
         <source>Vector NTI/AlignX</source>
         <translation>Vector NTI/AlignX</translation>
     </message>
     <message>
-        <location filename="../src/apr/AprFormat.cpp" line="140"/>
+        <location filename="../src/apr/AprFormat.cpp" line="149"/>
         <source>Vector NTI/AlignX is a Vector NTI format for multiple alignment</source>
         <translation>Vector NTI/AlignX это Vector NTI формат для множественных выравниваний</translation>
     </message>
     <message>
-        <location filename="../src/apr/AprFormat.cpp" line="161"/>
+        <location filename="../src/apr/AprFormat.cpp" line="170"/>
         <source>Open in read-only mode</source>
         <translation>Открыть только для чтения</translation>
     </message>
     <message>
-        <location filename="../src/apr/AprFormat.cpp" line="171"/>
+        <location filename="../src/apr/AprFormat.cpp" line="180"/>
         <source>File doesn&apos;t contain any msa objects</source>
         <translation>Файл не содержит msa объектов</translation>
     </message>
     <message>
-        <location filename="../src/apr/AprFormat.cpp" line="193"/>
+        <location filename="../src/apr/AprFormat.cpp" line="202"/>
         <source>Illegal header line</source>
         <translation>Неправильная строка заголовка</translation>
     </message>
     <message>
-        <location filename="../src/apr/AprFormat.cpp" line="209"/>
+        <location filename="../src/apr/AprFormat.cpp" line="218"/>
         <source>Sequences not found</source>
         <translation>Последовательности не найдены</translation>
     </message>
     <message>
-        <location filename="../src/apr/AprFormat.cpp" line="217"/>
+        <location filename="../src/apr/AprFormat.cpp" line="226"/>
         <source>Alphabet is unknown</source>
         <translation>Неизвестный алфавит</translation>
     </message>
@@ -484,107 +489,107 @@
         <translation>File &quot;%1&quot; contains too many annotation tables to be displayed. However, you can process these data using pipelines built with Workflow Designer.</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="902"/>
+        <location filename="../src/BedFormat.cpp" line="900"/>
         <source>BED parsing error: incorrect format of the &apos;track&apos; header line!</source>
         <translation>BED parsing error: incorrect format of the &apos;track&apos; header line!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="687"/>
+        <location filename="../src/BedFormat.cpp" line="685"/>
         <source>BED parsing error: unexpected number of fields in the first annotations line!</source>
         <translation>BED parsing error: unexpected number of fields in the first annotations line!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="729"/>
+        <location filename="../src/BedFormat.cpp" line="727"/>
         <source>The file does not contain valid annotations!</source>
         <translation>Файл не содержит корректных аннотаций!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="976"/>
+        <location filename="../src/BedFormat.cpp" line="974"/>
         <source>BED parsing error: incorrect number of fields at line %1!</source>
         <translation>BED parsing error: incorrect number of fields at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="980"/>
+        <location filename="../src/BedFormat.cpp" line="978"/>
         <source>BED parsing error: a field at line %1 is empty!</source>
         <translation>BED parsing error: a field at line %1 is empty!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="984"/>
+        <location filename="../src/BedFormat.cpp" line="982"/>
         <source>BED parsing error: incorrect coordinates at line %1!</source>
         <translation>BED parsing error: incorrect coordinates at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="988"/>
+        <location filename="../src/BedFormat.cpp" line="986"/>
         <source>BED parsing error: incorrect score value &apos;%1&apos; at line %2!</source>
         <translation>BED parsing error: incorrect score value &apos;%1&apos; at line %2!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="993"/>
+        <location filename="../src/BedFormat.cpp" line="991"/>
         <source>BED parsing error: incorrect strand value &apos;%1&apos; at line %2!</source>
         <translation>BED parsing error: incorrect strand value &apos;%1&apos; at line %2!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="998"/>
+        <location filename="../src/BedFormat.cpp" line="996"/>
         <source>BED parsing error: incorrect thick coordinates at line %1!</source>
         <translation>BED parsing error: incorrect thick coordinates at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="1002"/>
+        <location filename="../src/BedFormat.cpp" line="1000"/>
         <source>BED parsing error: incorrect itemRgb value &apos;%1&apos; at line %2!</source>
         <translation>BED parsing error: incorrect itemRgb value &apos;%1&apos; at line %2!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="1007"/>
+        <location filename="../src/BedFormat.cpp" line="1005"/>
         <source>BED parsing error: incorrect value of the block parameters at line %1!</source>
         <translation>BED parsing error: incorrect value of the block parameters at line %1!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="427"/>
+        <location filename="../src/BedFormat.cpp" line="425"/>
         <source>Starting BED saving: &apos;%1&apos;</source>
         <translation>Сохранение BED: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="438"/>
+        <location filename="../src/BedFormat.cpp" line="436"/>
         <source>Can not convert GObject to AnnotationTableObject</source>
         <translation>Can not convert GObject to AnnotationTableObject</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="452"/>
+        <location filename="../src/BedFormat.cpp" line="450"/>
         <source>Can not detect chromosome name. &apos;Chr&apos; name will be used.</source>
         <translation>Can not detect chromosome name. &apos;Chr&apos; name will be used.</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="469"/>
+        <location filename="../src/BedFormat.cpp" line="467"/>
         <source>You are trying to save joined annotation to BED format! The joining will be lost</source>
         <translation>Вы пытаетесь сохранить связанные аннотации в BED формат! Соединения будут потеряны</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="533"/>
+        <location filename="../src/BedFormat.cpp" line="531"/>
         <source>BED saving error: incorrect thick coordinates in the first annotation!</source>
         <translation>BED saving error: incorrect thick coordinates in the first annotation!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="547"/>
+        <location filename="../src/BedFormat.cpp" line="545"/>
         <source>BED saving error: incorrect block fields in the first annotation!</source>
         <translation>BED saving error: incorrect block fields in the first annotation!</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="556"/>
+        <location filename="../src/BedFormat.cpp" line="554"/>
         <source>BED saving: detected %1 fields per line for file &apos;%2&apos;</source>
         <translation>BED saving: detected %1 fields per line for file &apos;%2&apos;</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="563"/>
+        <location filename="../src/BedFormat.cpp" line="561"/>
         <source>BED saving error: an annotation is expected to have &apos;%1&apos; qualifier, but it is absent! Skipping the annotation.</source>
         <translation>BED saving error: an annotation is expected to have &apos;%1&apos; qualifier, but it is absent! Skipping the annotation.</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="623"/>
+        <location filename="../src/BedFormat.cpp" line="621"/>
         <source>BED saving error: an annotation is expected to have the block qualifiers! Skipping the annotation.</source>
         <translation>BED saving error: an annotation is expected to have the block qualifiers! Skipping the annotation.</translation>
     </message>
     <message>
-        <location filename="../src/BedFormat.cpp" line="646"/>
+        <location filename="../src/BedFormat.cpp" line="644"/>
         <source>Finished BED saving: &apos;%1&apos;</source>
         <translation>Сохранение BED закончено: &apos;%1&apos;</translation>
     </message>
@@ -904,9 +909,8 @@
 <context>
     <name>U2::DocumentFormatUtils</name>
     <message>
-        <location filename="../src/DocumentFormatUtils.cpp" line="232"/>
         <source>Undefined sequence alphabet</source>
-        <translation>Неизвестный алфавит</translation>
+        <translation type="vanished">Неизвестный алфавит</translation>
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="135"/>
@@ -925,7 +929,7 @@
     </message>
     <message>
         <location filename="../src/ace/AceImportUtils.cpp" line="211"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="465"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="463"/>
         <source>Unexpected end of file</source>
         <translation>Неожиданный конец файла</translation>
     </message>
@@ -985,85 +989,85 @@
         <translation>Не указано имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="355"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="353"/>
         <source>Invalid AF tag</source>
         <translation>Invalid AF tag</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="372"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="370"/>
         <source>A name is duplicated: %1</source>
         <translation>Повторные вхождения имени: %1</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="378"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="376"/>
         <source>Not all reads were found</source>
         <translation>Не все риды были найдены</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="387"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="391"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="423"/>
-        <location filename="../src/ace/AceImportUtils.cpp" line="435"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="385"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="389"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="421"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="433"/>
         <source>Bad AF note</source>
         <translation>Плохое примечание AF</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="461"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="459"/>
         <source>There is no read note</source>
         <translation>Отсутствует</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="474"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="472"/>
         <source>Invalid RD part</source>
         <translation>Неверная часть RD</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="475"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="473"/>
         <source>Can&apos;t find the RD tag</source>
         <translation>Can&apos;t find the RD tag</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="484"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="482"/>
         <source>QA keyword hasn&apos;t been found</source>
         <translation>Ключевое слово QA не было найдено</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="493"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="491"/>
         <source>QA error bad range</source>
         <translation>Ошибка QA: плохой регион</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="496"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="494"/>
         <source>Unexpected symbols in sequence data</source>
         <translation>Неоижданные символы в последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="498"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="496"/>
         <source>A name is not match with AF names</source>
         <translation>Имя не совпадает с именами AF</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="505"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="503"/>
         <source>Can&apos;t find clear range start in current line</source>
         <translation>Невозможно найти начало диапазона в текущей строке</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="506"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="504"/>
         <source>Clear range start is invalid</source>
         <translation>Неверное начало диапазона</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="513"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="511"/>
         <source>Can&apos;t find clear range end in current line</source>
         <translation>Невозможно найти конец диапазона в текущей строке</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="514"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="512"/>
         <source>Clear range end is invalid</source>
         <translation>Неверный конец диапазона</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImportUtils.cpp" line="538"/>
+        <location filename="../src/ace/AceImportUtils.cpp" line="536"/>
         <source>There is no next element</source>
         <translation>Отсутствует следующий элемент</translation>
     </message>
@@ -1119,12 +1123,12 @@
         <translation>Ошибка слияния: обнаружена таблица аннотаций без соотв последовательности</translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="470"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="471"/>
         <source>The file contains an incorrect data that describes a qualifier value. </source>
         <translation>Файл содержит некорректные данные, которые описываются value. </translation>
     </message>
     <message>
-        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="471"/>
+        <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="472"/>
         <source>The value cannot contain a single quote character. The qualifier is &apos;%1&apos;</source>
         <translation>Значение не может содержать одиночные кавычки. Квалификатор &apos;%1&apos;</translation>
     </message>
@@ -1234,7 +1238,8 @@
         <location filename="../src/FastaFormat.cpp" line="279"/>
         <source>Skipped sequences: %1.
 </source>
-        <translation>Пропущены последовательности: %1.</translation>
+        <translation>Пропущены последовательности: %1.
+</translation>
     </message>
     <message>
         <location filename="../src/FastaFormat.cpp" line="280"/>
@@ -1544,15 +1549,14 @@
         <translation>File &quot;%1&quot; contains too many annotation tables to be displayed. However, you can process these data using pipelines built with Workflow Designer.</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="629"/>
-        <location filename="../src/GTFFormat.cpp" line="634"/>
+        <location filename="../src/GTFFormat.cpp" line="628"/>
+        <location filename="../src/GTFFormat.cpp" line="633"/>
         <source>Can&apos;t save an annotation to a GTF file - the annotation doesn&apos;t have the &apos;%1&apos; qualifier!</source>
         <translation>Can&apos;t save an annotation to a GTF file - the annotation doesn&apos;t have the &apos;%1&apos; qualifier!</translation>
     </message>
     <message>
-        <location filename="../src/GTFFormat.cpp" line="653"/>
         <source>GTF saving error: one or more errors occurred while saving a file, see TRACE log for details!</source>
-        <translation>GTF saving error: one or more errors occurred while saving a file, see TRACE log for details!</translation>
+        <translation type="vanished">GTF saving error: one or more errors occurred while saving a file, see TRACE log for details!</translation>
     </message>
 </context>
 <context>
@@ -1636,14 +1640,14 @@
     <name>U2::GenbankPlainTextFormat</name>
     <message>
         <location filename="../src/GenbankPlainTextFormat.cpp" line="399"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="632"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="637"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="643"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="790"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="819"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="826"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="833"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="843"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="633"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="638"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="644"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="791"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="820"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="827"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="834"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="844"/>
         <source>Error writing document</source>
         <translation>Ошибка записи</translation>
     </message>
@@ -1692,7 +1696,7 @@
         <translation>IOAdapter is NULL</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="802"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="803"/>
         <source>Invalid annotation table!</source>
         <translation>Invalid annotation table!</translation>
     </message>
@@ -1811,27 +1815,31 @@
         <translation>MSF формат используется для множественных выравниваний. Файлы включают имя последовательности и последовательность, которая выровнена с другими последовательностями в файле.</translation>
     </message>
     <message>
-        <location filename="../src/MSFFormat.cpp" line="125"/>
+        <location filename="../src/MSFFormat.cpp" line="135"/>
         <source>Incorrect format</source>
         <translation>Неверный формат</translation>
     </message>
     <message>
-        <location filename="../src/MSFFormat.cpp" line="144"/>
+        <location filename="../src/MSFFormat.cpp" line="156"/>
         <source>Unexpected end of file</source>
         <translation>Неожиданный конец файла</translation>
     </message>
     <message>
-        <location filename="../src/MSFFormat.cpp" line="171"/>
+        <location filename="../src/MSFFormat.cpp" line="192"/>
+        <source>File check sum is incorrect: expected value: %1, current value %2</source>
+        <translation>Контрольная сумма некорректна: ожидается значение %1, текущее значение %2</translation>
+    </message>
+    <message>
         <source>Check sum test failed</source>
-        <translation>Проверка контрольной суммы не удалась</translation>
+        <translation type="vanished">Проверка контрольной суммы не удалась</translation>
     </message>
     <message>
-        <location filename="../src/MSFFormat.cpp" line="216"/>
+        <location filename="../src/MSFFormat.cpp" line="266"/>
         <source>Unexpected check sum in the row number %1, name: %2; expected value: %3, current value %4</source>
-        <translation type="unfinished"></translation>
+        <translation>Некорректная контрольная сумма в ряду %1, имя: %2; ожидается значение: %3, текущее значение %4</translation>
     </message>
     <message>
-        <location filename="../src/MSFFormat.cpp" line="223"/>
+        <location filename="../src/MSFFormat.cpp" line="273"/>
         <source>Alphabet unknown</source>
         <translation>Неизвестный алфавит</translation>
     </message>
@@ -1959,20 +1967,20 @@
         <translation>Nexus формат файла для множественных выравниваний и филогенетических деревьев</translation>
     </message>
     <message>
-        <location filename="../src/NEXUSFormat.cpp" line="693"/>
+        <location filename="../src/NEXUSFormat.cpp" line="692"/>
         <source>#NEXUS header missing</source>
-        <translation>Отсутствует заголовок #NEXUS </translation>
+        <translation>Отсутствует заголовок #NEXUS</translation>
     </message>
 </context>
 <context>
     <name>U2::NewickFormat</name>
     <message>
-        <location filename="../src/NewickFormat.cpp" line="41"/>
+        <location filename="../src/NewickFormat.cpp" line="40"/>
         <source>Newick Standard</source>
         <translation>Стандарт Newick</translation>
     </message>
     <message>
-        <location filename="../src/NewickFormat.cpp" line="42"/>
+        <location filename="../src/NewickFormat.cpp" line="41"/>
         <source>Newick is a simple format used to write out trees in a text file</source>
         <translation>Newick iэто формат используемый для записи деревьев в текстовый файл</translation>
     </message>
@@ -1980,37 +1988,37 @@
 <context>
     <name>U2::PDBFormat</name>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="189"/>
+        <location filename="../src/PDBFormat.cpp" line="195"/>
         <source>Line is too long</source>
         <translation>Слишком длинная строка</translation>
     </message>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="56"/>
+        <location filename="../src/PDBFormat.cpp" line="57"/>
         <source>The Protein Data Bank (PDB) format provides a standard representation for macromolecular structure data derived from X-ray diffraction and NMR studies.</source>
         <translation>The Protein Data Bank (PDB) формат обеспечивает стандартное представление для данных высокомолекулярных структур, полученных из рентгеновской дифракции и исследований ЯМР.</translation>
     </message>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="251"/>
+        <location filename="../src/PDBFormat.cpp" line="257"/>
         <source>Some mandatory records are absent</source>
         <translation>Некоторые обязательные записи отсутствуют</translation>
     </message>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="395"/>
+        <location filename="../src/PDBFormat.cpp" line="401"/>
         <source>PDB warning: unknown residue name: %1</source>
         <translation>PDB предупреждение: неизвестное имя остатка: %1</translation>
     </message>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="485"/>
+        <location filename="../src/PDBFormat.cpp" line="491"/>
         <source>Invalid secondary structure record</source>
         <translation>Неверная запись вторичной структуры</translation>
     </message>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="522"/>
+        <location filename="../src/PDBFormat.cpp" line="528"/>
         <source>Invalid SEQRES: less then 24 charachters</source>
         <translation>Неверный SEQRES: меньше чем 24 символа</translation>
     </message>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="55"/>
+        <location filename="../src/PDBFormat.cpp" line="56"/>
         <source>PDB</source>
         <translation>PDB</translation>
     </message>
@@ -2153,17 +2161,17 @@
 <context>
     <name>U2::RawDNASequenceFormat</name>
     <message>
-        <location filename="../src/RawDNASequenceFormat.cpp" line="46"/>
+        <location filename="../src/RawDNASequenceFormat.cpp" line="45"/>
         <source>Raw sequence</source>
         <translation>Произвольная последовательность</translation>
     </message>
     <message>
-        <location filename="../src/RawDNASequenceFormat.cpp" line="49"/>
+        <location filename="../src/RawDNASequenceFormat.cpp" line="48"/>
         <source>Raw sequence file - a whole content of the file is treated either as a single/multiple nucleotide or peptide sequence(s). UGENE will remove all non-alphabetic chars from the result sequence. By default the characters in the file are considered a single sequence.</source>
         <translation>Сырой файл последовательности - все содержимое файла рассматривается как один нуклеотид или пептидная последовательность. UGENE удалит все символы не принадлежащие алфавиту из результирующей последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/RawDNASequenceFormat.cpp" line="132"/>
+        <location filename="../src/RawDNASequenceFormat.cpp" line="131"/>
         <source>Sequence is empty</source>
         <translation>Последовательность пуста</translation>
     </message>
@@ -2189,22 +2197,22 @@
 <context>
     <name>U2::SCFFormat</name>
     <message>
-        <location filename="../src/SCFFormat.cpp" line="48"/>
+        <location filename="../src/SCFFormat.cpp" line="49"/>
         <source>SCF</source>
         <translation>SCF</translation>
     </message>
     <message>
-        <location filename="../src/SCFFormat.cpp" line="49"/>
+        <location filename="../src/SCFFormat.cpp" line="50"/>
         <source>It is Standard Chromatogram Format</source>
         <translation>Это стандартный формат хроматограмм</translation>
     </message>
     <message>
-        <location filename="../src/SCFFormat.cpp" line="68"/>
+        <location filename="../src/SCFFormat.cpp" line="69"/>
         <source>Failed to parse SCF file: %1</source>
         <translation>Failed to parse SCF file: %1</translation>
     </message>
     <message>
-        <location filename="../src/SCFFormat.cpp" line="1237"/>
+        <location filename="../src/SCFFormat.cpp" line="1240"/>
         <source>Failed to load sequence from SCF file %1</source>
         <translation>Невозможно загрузить последовательность из SCF файла %1</translation>
     </message>
@@ -2273,6 +2281,19 @@
     </message>
 </context>
 <context>
+    <name>U2::StreamSequenceReader</name>
+    <message>
+        <location filename="../src/StreamSequenceReader.cpp" line="91"/>
+        <source>File %1 unsupported format.</source>
+        <translation>File %1 unsupported format.</translation>
+    </message>
+    <message>
+        <location filename="../src/StreamSequenceReader.cpp" line="109"/>
+        <source>Unsupported file format or short reads list is empty</source>
+        <translation>Unsupported file format or short reads list is empty</translation>
+    </message>
+</context>
+<context>
     <name>U2::SwissProtPlainTextFormat</name>
     <message>
         <location filename="../src/SwissProtPlainTextFormat.cpp" line="45"/>
@@ -2328,6 +2349,14 @@
         <location filename="../src/SwissProtPlainTextFormat.cpp" line="291"/>
         <source>Invalid format of feature table</source>
         <translation>Таблица аннотаций повреждена</translation>
+    </message>
+</context>
+<context>
+    <name>U2::TabulatedFormatReader</name>
+    <message>
+        <location filename="../src/util/TabulatedFormatReader.cpp" line="36"/>
+        <source>IO adapter is not opened</source>
+        <translation>IO adapter is not opened</translation>
     </message>
 </context>
 <context>

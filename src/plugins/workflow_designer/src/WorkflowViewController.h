@@ -145,7 +145,6 @@ class WorkflowView : public MWMDIWindow, public SchemaConfig {
 
 public:
     static WorkflowView * openWD(WorkflowGObject *go);
-    static void openSample(const SampleAction &action);
     ~WorkflowView();
 
     WorkflowEditor* getPropertyEditor() const { return propertyEditor; }

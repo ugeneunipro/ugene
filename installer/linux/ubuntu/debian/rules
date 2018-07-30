@@ -7,150 +7,160 @@ UPSTREAM_VERSION=$(shell uscan --dehs | sed -n 's/.*<upstream-version>\(.*\)<\/u
 UPSTREAM_FOLDER=$(UPSTREAM_NAME)-$(UPSTREAM_VERSION)
 
 get-orig-source:
-	uscan --force-download --no-symlink
-	tar -xzf ../$(UPSTREAM_NAME)-$(UPSTREAM_VERSION).tar.gz  
-	rm -rf $(UPSTREAM_FOLDER)/installer/linux 
-	rm -rf $(UPSTREAM_FOLDER)/installer/macosx 
-	rm -rf $(UPSTREAM_FOLDER)/installer/windows 
-	rm -rf $(UPSTREAM_FOLDER)/src/libs_3rdparty/zlib
-	GZIP="-9" tar -czf ../$(UPSTREAM_NAME)_$(UPSTREAM_VERSION)+repack.orig.tar.gz $(UPSTREAM_FOLDER) 
-	rm -rf $(UPSTREAM_FOLDER) 
+    uscan --force-download --no-symlink
+    tar -xzf ../$(UPSTREAM_NAME)-$(UPSTREAM_VERSION).tar.gz
+    rm -rf $(UPSTREAM_FOLDER)/installer/linux
+    rm -rf $(UPSTREAM_FOLDER)/installer/macosx
+    rm -rf $(UPSTREAM_FOLDER)/installer/windows
+    rm -rf $(UPSTREAM_FOLDER)/src/libs_3rdparty/zlib
+    GZIP="-9" tar -czf ../$(UPSTREAM_NAME)_$(UPSTREAM_VERSION)+repack.orig.tar.gz $(UPSTREAM_FOLDER)
+    rm -rf $(UPSTREAM_FOLDER)
 
 
 build: build-arch build-indep
 
 build-arch: build-arch-stamp
 build-arch-stamp:
-	qmake -r UGENE_EXCLUDE_LIST_ENABLED=1 UGENE_USE_BUNDLED_ZLIB=1 DEFINES+='UGENE_VERSION_SUFFIX=\\\"-ppa\\\"'
-	$(MAKE) -j 8	
-	touch $@
+    qmake -r UGENE_EXCLUDE_LIST_ENABLED=1 UGENE_USE_BUNDLED_ZLIB=1 DEFINES+='UGENE_VERSION_SUFFIX=\\\"-ppa\\\"'
+    $(MAKE) -j 8
+    touch $@
 
 build-indep: build-indep-stamp
 build-indep-stamp:
-	touch $@
+    touch $@
 
 clean: 
-	dh_testdir
-	dh_testroot
-	rm -f build-arch-stamp build-indep-stamp
-	[ ! -f Makefile ] || $(MAKE) distclean
-	dh_clean
+    dh_testdir
+    dh_testroot
+    rm -f build-arch-stamp build-indep-stamp
+    [ ! -f Makefile ] || $(MAKE) distclean
+    dh_clean
 
 install: install-indep install-arch
 install-indep:
-	dh_testdir
-	dh_testroot
-	dh_clean -k -i
-	dh_install -i data /usr/share/ugene
+    dh_testdir
+    dh_testroot
+    dh_clean -k -i
+    dh_install -i data /usr/share/ugene
 
 install-arch:
-	dh_testdir
-	dh_testroot
-	dh_clean -k -s
-	dh_installdirs -s
+    dh_testdir
+    dh_testroot
+    dh_clean -k -s
+    dh_installdirs -s
 ##Create ugene package
-	$(MAKE) INSTALL_ROOT=$$(pwd)/debian/ugene install
-	rm -rf debian/ugene/usr/share/ugene
-	rm debian/ugene/usr/lib/ugene/plugins/psipred.plugin
-	rm debian/ugene/usr/lib/ugene/plugins/psipred.license
-	rm debian/ugene/usr/lib/ugene/plugins/libpsipred.so
+    $(MAKE) INSTALL_ROOT=$$(pwd)/debian/ugene install
+    rm -rf debian/ugene/usr/share/ugene
+    rm debian/ugene/usr/lib/ugene/plugins/psipred.plugin
+    rm debian/ugene/usr/lib/ugene/plugins/psipred.license
+    rm debian/ugene/usr/lib/ugene/plugins/libpsipred.so
 ##Create ugene-non-free package
-	$(MAKE) INSTALL_ROOT=$$(pwd)/debian/ugene-non-free sub-src-plugins_3rdparty-psipred-install_subtargets install_plugins
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/annotator.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/annotator.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/ball.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/ball.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/biostruct3d_view.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/biostruct3d_view.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/browser_support.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/browser_support.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/chroma_view.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/chroma_view.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/circular_view.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/circular_view.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/dbi_bam.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/dbi_bam.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/dna_export.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/dna_export.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/dna_flexibility.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/dna_flexibility.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/dna_graphpack.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/dna_graphpack.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/dna_stat.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/dna_stat.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/dotplot.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/dotplot.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/enzymes.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/enzymes.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/external_tool_support.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/external_tool_support.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/genome_aligner.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/genome_aligner.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/gor4.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/gor4.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/hmm2.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/hmm2.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/hmm3.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/hmm3.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/kalign.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/kalign.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/linkdata_support.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/linkdata_support.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/opencl_support.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/opencl_support.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/orf_marker.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/orf_marker.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/pcr.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/pcr.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/phylip.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/phylip.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/primer3.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/primer3.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/ptools.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/ptools.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/query_designer.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/query_designer.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/remote_blast.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/remote_blast.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/remote_service.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/remote_service.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/repeat_finder.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/repeat_finder.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/sitecon.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/sitecon.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/smith_waterman.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/smith_waterman.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/umuscle.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/umuscle.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/variants.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/variants.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/weight_matrix.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/weight_matrix.plugin
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/workflow_designer.license
-	rm debian/ugene-non-free/usr/lib/ugene/plugins/workflow_designer.plugin
+    $(MAKE) INSTALL_ROOT=$$(pwd)/debian/ugene-non-free sub-src-plugins_3rdparty-psipred-install_subtargets install_plugins
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/annotator.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/annotator.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/ball.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/ball.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/biostruct3d_view.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/biostruct3d_view.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/browser_support.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/browser_support.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/chroma_view.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/chroma_view.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/circular_view.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/circular_view.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/clark_support.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/clark_support.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/dbi_bam.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/dbi_bam.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/diamond_support.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/diamond_support.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/dna_export.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/dna_export.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/dna_flexibility.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/dna_flexibility.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/dna_graphpack.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/dna_graphpack.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/dna_stat.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/dna_stat.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/dotplot.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/dotplot.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/enzymes.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/enzymes.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/external_tool_support.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/external_tool_support.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/genome_aligner.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/genome_aligner.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/gor4.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/gor4.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/hmm2.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/hmm2.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/hmm3.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/hmm3.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/kalign.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/kalign.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/kraken_support.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/kraken_support.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/linkdata_support.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/linkdata_support.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/ngs_reads_classification.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/ngs_reads_classification.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/opencl_support.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/opencl_support.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/orf_marker.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/orf_marker.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/pcr.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/pcr.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/phylip.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/phylip.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/primer3.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/primer3.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/ptools.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/ptools.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/query_designer.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/query_designer.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/remote_blast.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/remote_blast.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/remote_service.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/remote_service.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/repeat_finder.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/repeat_finder.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/sitecon.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/sitecon.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/smith_waterman.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/smith_waterman.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/umuscle.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/umuscle.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/variants.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/variants.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/weight_matrix.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/weight_matrix.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/wevote_support.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/wevote_support.plugin
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/workflow_designer.license
+    rm debian/ugene-non-free/usr/lib/ugene/plugins/workflow_designer.plugin
 
-	rm -rf debian/ugene-non-free/usr/share/ugene
+    rm -rf debian/ugene-non-free/usr/share/ugene
 
 
 binary-common:
-	dh_testdir
-	dh_testroot
-	dh_installchangelogs debian/changelog
-	dh_installdocs
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	export LD_LIBRARY_PATH=$$(pwd)/debian/ugene/usr/lib/ugene:$$(pwd)/debian/ugene/usr/lib64/ugene && dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
+    dh_testdir
+    dh_testroot
+    dh_installchangelogs debian/changelog
+    dh_installdocs
+    dh_strip
+    dh_compress
+    dh_fixperms
+    dh_installdeb
+    export LD_LIBRARY_PATH=$$(pwd)/debian/ugene/usr/lib/ugene:$$(pwd)/debian/ugene/usr/lib64/ugene && dh_shlibdeps
+    dh_gencontrol
+    dh_md5sums
+    dh_builddeb
 
 binary-indep: build-indep install-indep
-	$(MAKE) -f debian/rules DH_OPTIONS=-i binary-common
+    $(MAKE) -f debian/rules DH_OPTIONS=-i binary-common
 
 binary-arch: build-arch install-arch
-	$(MAKE) -f debian/rules DH_OPTIONS=-s binary-common
+    $(MAKE) -f debian/rules DH_OPTIONS=-s binary-common
 
 binary: binary-arch binary-indep
 .PHONY: build clean binary-indep binary-arch binary install install-indep install-arch

@@ -35,7 +35,6 @@
 #include <unistd.h> //for sysconf(3)
 #endif
 #if defined(Q_OS_LINUX)
-#include <proc/readproc.h>
 #include <fstream>
 #endif
 
@@ -269,9 +268,14 @@ bool AppResourcePool::isSSE2Enabled() {
 
 void AppResourcePool::registerResource(AppResource* r) {
     SAFE_POINT(NULL != r,"",);
-    SAFE_POINT(!resources.contains(r->getResourceId()), QString("Duplicate resource: ").arg(r->getResourceId()),);
+    SAFE_POINT(!resources.contains(r->getResourceId()), QString("Duplicate resource: %1").arg(r->getResourceId()),);
 
     resources[r->getResourceId()] = r;
+}
+
+void AppResourcePool::unregisterResource(int id) {
+    CHECK(resources.contains(id), );
+    delete resources.take(id);
 }
 
 AppResource* AppResourcePool::getResource(int id) const {

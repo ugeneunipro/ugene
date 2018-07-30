@@ -40,9 +40,9 @@ ElementSelectorController::~ElementSelectorController() {
 }
 
 QWidget * ElementSelectorController::createGUI(U2OpStatus & /*os*/) {
-    QVariantMap values;
+    QList<ComboItem> values;
     foreach (const SelectorValue &value, widget->getValues()) {
-        values[value.getName()] = value.getValue();
+        values.append(qMakePair(value.getName(), value.getValue()));
     }
     ComboBoxWidget *cb = new ComboBoxWidget(values);
     connect(cb, SIGNAL(si_valueChanged(const QVariant &)), SLOT(sl_valueChanged(const QVariant &)));

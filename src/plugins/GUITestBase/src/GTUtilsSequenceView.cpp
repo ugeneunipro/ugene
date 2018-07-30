@@ -48,6 +48,7 @@
 #include <U2View/ADVSingleSequenceWidget.h>
 #include <U2View/DetView.h>
 #include <U2View/DetViewRenderer.h>
+#include <U2View/DetViewSequenceEditor.h>
 #include <U2View/GSequenceGraphView.h>
 #include <U2View/GSequenceLineViewAnnotated.h>
 #include <U2View/Overview.h>
@@ -497,7 +498,9 @@ void GTUtilsSequenceView::clickAnnotationPan(HI::GUITestOpStatus &os, QString na
     QList<Annotation*> anns;
     foreach(const AnnotationTableObject *ao, context->getAnnotationObjects(true)) {
         foreach(Annotation *a, ao->getAnnotations()) {
-            if (a->getLocation().data()->regions.first().startPos == startpos - 1 && a->getName() == name){
+            const int sp = a->getLocation().data()->regions.first().startPos;
+            const QString annName = a->getName();
+            if (sp == startpos - 1 && annName == name){
                 anns << a;
             }
         }
@@ -574,29 +577,135 @@ QColor GTUtilsSequenceView::getGraphColor(HI::GUITestOpStatus & /*os*/, GSequenc
 #define GT_METHOD_NAME "enableEditingMode"
 void GTUtilsSequenceView::enableEditingMode(GUITestOpStatus &os, bool enable, int sequenceNumber) {
     DetView *detView = getDetViewByNumber(os, sequenceNumber);
+    CHECK_SET_ERR(NULL != detView, "DetView is NULL");
+
     QToolButton *editButton = qobject_cast<QToolButton *>(GTToolbar::getWidgetForActionTooltip(os, GTWidget::findExactWidget<QToolBar *>(os, "", detView), "Edit sequence"));
     CHECK_SET_ERR(NULL != editButton, "'Edit sequence' button is NULL");
     if (editButton->isChecked() != enable) {
-        GTWidget::click(os, editButton);
+        if (editButton->isVisible()) {
+            GTWidget::click(os, editButton);
+        } else {
+            const QPoint gp = detView->mapToGlobal(QPoint(10, detView->rect().height() - 5));
+            GTMouseDriver::moveTo(gp);
+            GTMouseDriver::click();
+            GTGlobals::sleep(500);
+            GTKeyboardDriver::keyClick(Qt::Key_Up);
+            GTGlobals::sleep(200);
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+            GTGlobals::sleep(200);
+        }
     }
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setCursor"
-void GTUtilsSequenceView::setCursor(GUITestOpStatus &os, qint64 position) {
-    // Scrolling to make the position visible is not implemented
+void GTUtilsSequenceView::setCursor(GUITestOpStatus &os, qint64 position, bool clickOnDirectLine, bool doubleClick) {
     // Multiline view is no supported correctly
 
     DetView *detView = getDetViewByNumber(os, 0);
     CHECK_SET_ERR(NULL != detView, "DetView is NULL");
 
-    SAFE_POINT_EXT(detView->getVisibleRange().contains(position), os.setError("scrolling is not implemented"), );
-    const int coord = detView->getDetViewRenderArea()->getRenderer()->posToXCoord(position, detView->getRenderArea()->size(), detView->getVisibleRange());
-    GTMouseDriver::moveTo(detView->getRenderArea()->mapToGlobal(QPoint(coord, 40)));    // TODO: replace the hardcoded value with method in renderer
-    GTMouseDriver::click();
+    DetViewRenderArea* renderArea = detView->getDetViewRenderArea();
+    CHECK_SET_ERR(NULL != renderArea, "DetViewRenderArea is NULL");
+
+    DetViewRenderer* renderer = renderArea->getRenderer();
+    CHECK_SET_ERR(NULL != renderer, "DetViewRenderer is NULL");
+
+    U2Region visibleRange = detView->getVisibleRange();
+    if (!visibleRange.contains(position)) {
+        GTUtilsSequenceView::goToPosition(os, position);
+        GTGlobals::sleep();
+        visibleRange = detView->getVisibleRange();
+    }
+    SAFE_POINT_EXT(visibleRange.contains(position), os.setError("Position is out of visible range"), );
+
+    const double scale = renderer->getCurrentScale();
+    const int coord = renderer->posToXCoord(position, renderArea->size(), visibleRange) + (int)(scale / 2);
+
+    const bool wrapMode = detView->isWrapMode();
+    if (!wrapMode) {
+        GTMouseDriver::moveTo(renderArea->mapToGlobal(QPoint(coord, 40)));    // TODO: replace the hardcoded value with method in renderer
+    } else {
+        GTUtilsSequenceView::goToPosition(os, position);
+        GTGlobals::sleep();
+
+        const int symbolsPerLine = renderArea->getSymbolsPerLine();
+        const int linesCount = renderArea->getLinesCount();
+        visibleRange = GTUtilsSequenceView::getVisibleRange(os);
+        int linesBeforePos = -1;
+        for (int i = 0; i < linesCount; i++) {
+            const U2Region line(visibleRange.startPos + i * symbolsPerLine, symbolsPerLine);
+            if (line.contains(position)) {
+                linesBeforePos = i;
+                break;
+            }
+        }
+        SAFE_POINT_EXT(linesBeforePos != -1, os.setError("Position not found"), );
+
+        const int shiftsCount = renderArea->getShiftsCount();
+        int middleShift = (int)(shiftsCount / 2) + 1;     //TODO: this calculation might consider the case then complementary is turned off or translations are drawn
+        if (clickOnDirectLine) {
+            middleShift--;
+        }
+
+        const int shiftHeight = renderArea->getShiftHeight();
+        const int lineToClick = linesBeforePos * shiftsCount + middleShift;
+
+        const int yPos = (lineToClick * shiftHeight) - (shiftHeight / 2);
+
+        GTMouseDriver::moveTo(renderArea->mapToGlobal(QPoint(coord, yPos)));
+    }
+    if (doubleClick) {
+        GTMouseDriver::doubleClick();
+    } else {
+        GTMouseDriver::click();
+    }
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getCursor"
+qint64 GTUtilsSequenceView::getCursor(HI::GUITestOpStatus &os) {
+    DetView *detView = getDetViewByNumber(os, 0);
+    GT_CHECK_RESULT(NULL != detView, "DetView is NULL", -1);
+
+    DetViewSequenceEditor* dwSequenceEditor = detView->getEditor();
+    GT_CHECK_RESULT(dwSequenceEditor != NULL, "DetViewSequenceEditor is NULL", -1);
+
+    const bool isEditMode = detView->isEditMode();
+    GT_CHECK_RESULT(isEditMode, "Edit mode is disabled", -1);
+
+    const qint64 result = dwSequenceEditor->getCursorPosition();
+
+    return result;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getRegionAsString"
+QString GTUtilsSequenceView::getRegionAsString(HI::GUITestOpStatus &os, const U2Region& region) {
+    GTUtilsSequenceView::selectSequenceRegion(os, region.startPos, region.endPos() - 1);
+    GTGlobals::sleep();
+
+    GTKeyboardUtils::copy(os);
+
+    const QString result = GTClipboard::text(os);
+
+    return result;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickOnDetView"
+void GTUtilsSequenceView::clickOnDetView(HI::GUITestOpStatus &os) {
+    MainWindow* mw = AppContext::getMainWindow();
+    GT_CHECK(mw != NULL, "MainWindow == NULL");
+
+    MWMDIWindow *mdiWindow = mw->getMDIManager()->getActiveWindow();
+    GT_CHECK(mdiWindow != NULL, "MDI window == NULL");
+
+    GTMouseDriver::moveTo(mdiWindow->mapToGlobal(mdiWindow->rect().center()));
+    GTMouseDriver::click();
+
+    GTGlobals::sleep(500);
+}
 #undef MIN_ANNOTATION_WIDTH
 
 #undef GT_CLASS_NAME

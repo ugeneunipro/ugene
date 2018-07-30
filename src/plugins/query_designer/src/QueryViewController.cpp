@@ -24,6 +24,7 @@
 #include <QSplitter>
 #include <QTabWidget>
 #include <QToolBar>
+#include <QActionGroup>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>

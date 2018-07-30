@@ -37,7 +37,7 @@ public:
     static const Descriptor CATEGORY_ALIGNMENT();
     static const Descriptor CATEGORY_ASSEMBLY();
     static const Descriptor CATEGORY_NGS_BASIC();
-    static const Descriptor CATEGORY_NGS_ALIGN_SHORT_READS();
+    static const Descriptor CATEGORY_NGS_MAP_ASSEMBLE_READS();
     static const Descriptor CATEGORY_RNA_SEQ();
     static const Descriptor CATEGORY_VARIATION_ANALYSIS();
     static const Descriptor CATEGORY_TRANSCRIPTION();

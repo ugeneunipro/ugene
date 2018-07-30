@@ -23,8 +23,11 @@
 #define _U2_QD_DOC_FORMAT_H_
 
 #include <U2Core/DocumentModel.h>
-#include <U2Gui/ObjectViewModel.h>
 #include <U2Core/GObject.h>
+
+#include <U2Formats/TextDocumentFormat.h>
+
+#include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/ObjectViewTasks.h>
 
 #include "QueryDesignerPlugin.h"
@@ -32,7 +35,7 @@
 
 namespace U2 {
 
-class QDDocFormat : public DocumentFormat {
+class QDDocFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     QDDocFormat(QObject* p);
@@ -46,10 +49,10 @@ public:
 
     virtual void storeDocument( Document* d, IOAdapter* io, U2OpStatus& os);
 
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
-
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& targetDb, const QVariantMap& hints, U2OpStatus& os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& targetDb, const QVariantMap& hints, U2OpStatus& os);
 
 private:
     QString formatName;

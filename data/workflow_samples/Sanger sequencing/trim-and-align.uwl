@@ -21,7 +21,6 @@ workflow "Trim and map Sanger reads"{
         type:SequenceQualityTrim;
         name:"Sequence Quality Trimmer";
         both-ends:true;
-        out-mode:1;
     }
     read-sequence {
         type:read-sequence;

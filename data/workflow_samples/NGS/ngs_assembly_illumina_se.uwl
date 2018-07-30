@@ -1,0 +1,182 @@
+#@UGENE_WORKFLOW
+#The workflow takes FASTQ files with single-end Illumina reads as input and process them as follows:
+#* Improve reads quality with Trimmomatic
+#* Provide FastQC quality reports
+#* De novo assemble reads with SPAdes
+
+
+
+workflow "De novo assemble Illumina SE reads"{
+
+    trimmomatic {
+        type:trimmomatic;
+        name:"Improve Reads with Trimmomatic";
+    }
+    spades {
+        type:spades-id;
+        name:"Assemble Reads with SPAdes";
+        input-data:"'in-unpaired-reads'='';'platform-id'=''";
+    }
+    fastqc-before {
+        type:fastqc;
+        name:"FastQC Before";
+    }
+    fastqc-after {
+        type:fastqc;
+        name:"FastQC After";
+    }
+    get-se-reads-list {
+        type:get-se-reads-list;
+        name:"Read Illumina SE Reads";
+        url1 {
+            dataset:"Dataset 1";
+        }
+    }
+
+    .actor-bindings {
+        get-se-reads-list.out->trimmomatic.in
+        get-se-reads-list.out->fastqc-before.in-file
+        trimmomatic.out->fastqc-after.in-file
+        trimmomatic.out->spades.in-unpaired-reads
+    }
+
+    get-se-reads-list.reads-url1->trimmomatic.in.reads-url1
+    trimmomatic.reads-url1->spades.in-unpaired-reads.readsurl-4
+    get-se-reads-list.reads-url1->fastqc-before.in-file.url
+    trimmomatic.reads-url1->fastqc-after.in-file.url
+
+    .meta {
+        visual {
+            fastqc-after {
+                pos:"-289 -793";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:234.904;
+            }
+            fastqc-before {
+                pos:"-681 -792";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:237.653;
+            }
+            get-se-reads-list {
+                pos:"-871 -615";
+                style:ext;
+                bg-color-ext:"24 102 175 64";
+                out.angle:360;
+            }
+            spades {
+                pos:"-142 -617";
+                style:ext;
+                bg-color-ext:"168 50 117 64";
+                bounds:"-30 -30 112.25 80";
+                in-data.angle:183.468;
+                in-high-quality-mate-pairs.angle:122;
+                in-mate-pairs.angle:138;
+                in-oxford-nanopore-reads.angle:154;
+                in-pac-bio-ccs-reads.angle:170;
+                in-pac-bio-clr-reads.angle:186;
+                in-sanger-reads.angle:202;
+                in-trusted-contigs.angle:218;
+                in-unpaired-reads.angle:186.116;
+                in-untrusted-contigs.angle:250;
+                out-data.angle:355.956;
+            }
+            trimmomatic {
+                pos:"-539 -614";
+                style:ext;
+                bg-color-ext:"127 127 127 64";
+                in.angle:180;
+                out.angle:360;
+            }
+            get-se-reads-list.out->fastqc-before.in-file {
+                text-pos:"-37.3359 -27";
+            }
+            get-se-reads-list.out->trimmomatic.in {
+                text-pos:"-37.3359 -27";
+            }
+            trimmomatic.out->fastqc-after.in-file {
+                text-pos:"-45 -43";
+            }
+            trimmomatic.out->spades.in-unpaired-reads {
+                text-pos:"-45 -43";
+            }
+        }
+        wizard {
+            name:"Illumina SE Reads De Novo Assembly Wizard";
+            page {
+                id:1;
+                next:2;
+                title:"Input data: Illumina single-end reads";
+                parameters-area {
+                    group {
+                        get-se-reads-list.url1 {
+                            type:datasets;
+                        }
+                    }
+                }
+            }
+            page {
+                id:2;
+                next:3;
+                title:"Trimmomatic settings";
+                parameters-area {
+                    group {
+                        title:"Improve reads quality";
+                        label-size:120;
+                        trimmomatic.trimming-steps {
+                        }
+                        trimmomatic.generate-log {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        trimmomatic.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:3;
+                next:4;
+                title:"SPAdes settings";
+                parameters-area {
+                    group {
+                        title:"Reads de novo assembly";
+                        label-size:180;
+                        spades.dataset-type {
+                        }
+                        spades.running-mode {
+                        }
+                        spades.k-mer {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        spades.memlimit {
+                        }
+                        spades.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:4;
+                title:"Output data";
+                parameters-area {
+                    group {
+                        title:"De novo assembly output";
+                        label-size:180;
+                        spades.output-dir {
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

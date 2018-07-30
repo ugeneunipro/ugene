@@ -425,6 +425,10 @@ QString ExtractMSAConsensusWorkerPrompter::composeRichDoc() {
     return ExtractMSAConsensusSequenceWorker::tr("Extracts the consensus sequence from the incoming alignment(s) using the %1 algorithm.").arg(link);
 }
 
+SpinBoxDelegatePropertyRelation *SpinBoxDelegatePropertyRelation::clone() const {
+    return new SpinBoxDelegatePropertyRelation(*this);
+}
+
 QVariant SpinBoxDelegatePropertyRelation::getAffectResult( const QVariant &influencingValue, const QVariant &dependentValue, DelegateTags * /*infTags*/, DelegateTags *depTags ) const {
     CHECK(depTags != NULL, dependentValue);
     updateDelegateTags(influencingValue, depTags);

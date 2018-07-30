@@ -120,12 +120,12 @@ void ORFWorkerFactory::init() {
     delegates[LEN_ATTR] = new SpinBoxDelegate(lenMap);
     delegates[BaseAttributes::STRAND_ATTRIBUTE().getId()] = new ComboBoxDelegate(BaseAttributes::STRAND_ATTRIBUTE_VALUES_MAP());
 
-    QVariantMap idMap;
+    QList<ComboItem> idMap;
     QList<DNATranslation*> TTs = AppContext::getDNATranslationRegistry()->
         lookupTranslation(AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()),
         DNATranslationType_NUCL_2_AMINO);
     foreach(DNATranslation* tt, TTs) {
-        idMap[tt->getTranslationName()] = tt->getTranslationId();
+        idMap.append(qMakePair(tt->getTranslationName(), tt->getTranslationId()));
     }
     delegates[ID_ATTR] = new ComboBoxDelegate(idMap);
 

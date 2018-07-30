@@ -25,6 +25,9 @@
 #include "WorkflowDesignerPlugin.h"
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObject.h>
+
+#include <U2Formats/TextDocumentFormat.h>
+
 #include <U2Gui/ObjectViewModel.h>
 #include <U2Gui/ObjectViewTasks.h>
 
@@ -36,7 +39,7 @@ namespace U2 {
 
 class WorkflowView;
 
-class WorkflowDocFormat : public DocumentFormat {
+class WorkflowDocFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     WorkflowDocFormat(QObject* p);
@@ -50,10 +53,10 @@ public:
 
     virtual void storeDocument( Document* d, IOAdapter* io, U2OpStatus& os);
 
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& url = GUrl()) const;
-
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& targetDb, const QVariantMap& hints, U2OpStatus& os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& url = GUrl()) const;
+
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& targetDb, const QVariantMap& hints, U2OpStatus& os);
 
 private:
     QString formatName;

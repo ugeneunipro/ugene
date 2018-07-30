@@ -14,42 +14,42 @@
         <translation>Модуль &quot;ДНК гибкость&quot; позволяет искать в ДНК районы повышенной гибкости.</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="42"/>
+        <location filename="../src/DNAFlexDialog.ui" line="51"/>
         <source>Search Settings</source>
         <translation>Параметры поиска</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="48"/>
+        <location filename="../src/DNAFlexDialog.ui" line="63"/>
         <source>High DNA Flexibility Regions Settings</source>
         <translation>Параметры районов повышенной гибкости</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="56"/>
+        <location filename="../src/DNAFlexDialog.ui" line="71"/>
         <source>Window size</source>
         <translation>Размер окна</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="79"/>
+        <location filename="../src/DNAFlexDialog.ui" line="94"/>
         <source>Window step</source>
         <translation>Шаг</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="99"/>
+        <location filename="../src/DNAFlexDialog.ui" line="114"/>
         <source>Threshold</source>
         <translation>Пороговая величина</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="150"/>
+        <location filename="../src/DNAFlexDialog.ui" line="140"/>
         <source>Remember Settings</source>
         <translation>Запомнить настройки</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="157"/>
+        <location filename="../src/DNAFlexDialog.ui" line="147"/>
         <source>Restore Defaults</source>
         <translation>Настройки по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.ui" line="185"/>
+        <location filename="../src/DNAFlexDialog.ui" line="160"/>
         <source>Output</source>
         <translation>Выходные параметры</translation>
     </message>
@@ -85,13 +85,13 @@
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.cpp" line="97"/>
-        <location filename="../src/DNAFlexDialog.cpp" line="102"/>
+        <location filename="../src/DNAFlexDialog.cpp" line="100"/>
+        <location filename="../src/DNAFlexDialog.cpp" line="105"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexDialog.cpp" line="102"/>
+        <location filename="../src/DNAFlexDialog.cpp" line="105"/>
         <source>Cannot create an annotation object. Please check settings</source>
         <translation>Невозможно создать аннотацию. Проверьте настройки</translation>
     </message>
@@ -117,17 +117,17 @@
         <translation>Позволяет искать в ДНК районы высокой флексибильности.</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexGraphAlgorithm.cpp" line="74"/>
+        <location filename="../src/DNAFlexGraphAlgorithm.cpp" line="73"/>
         <source>UGENE ran out of memory during the DNA flexibility calculating. The 32-bit UGENE version has a restriction on its memory consumption. Try using the 64-bit version instead.</source>
         <translation>UGENE ran out of memory during the DNA flexibility calculating. The 32-bit UGENE version has a restriction on its memory consumption. Try using the 64-bit version instead.</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexGraphAlgorithm.cpp" line="77"/>
+        <location filename="../src/DNAFlexGraphAlgorithm.cpp" line="76"/>
         <source>Out of memory during the DNA flexibility calculating.</source>
         <translation>Out of memory during the DNA flexibility calculating.</translation>
     </message>
     <message>
-        <location filename="../src/DNAFlexGraphAlgorithm.cpp" line="80"/>
+        <location filename="../src/DNAFlexGraphAlgorithm.cpp" line="79"/>
         <source>Internal error occurred during the DNA flexibility calculating.</source>
         <translation>Internal error occurred during the DNA flexibility calculating.</translation>
     </message>

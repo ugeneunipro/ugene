@@ -70,14 +70,19 @@ public slots:
 private:
     void addInfoToWidget(const LogEntry &entry);
     bool isSameNode(const LogEntry& prev, const LogEntry& cur) const;
+    void warnUser(LogEntry &entry);
 
     int lastEntryIndex;
     QMap <QString, int> taskCount;
     const ExternalToolsWidgetController* ctrl;
 
+    bool isUserWarned;
+
     static const QString LINE_BREAK;
     static const QString BACK_SLASH;
     static const QString SINGLE_QUOTE;
+
+    static const int LOG_LIMIT;    // UGENE-6160: dashboard hangs if there are too many messages, limit them.
 };
 
 } // namespace U2

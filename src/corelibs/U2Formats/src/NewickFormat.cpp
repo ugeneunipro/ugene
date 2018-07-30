@@ -35,8 +35,7 @@ namespace U2 {
 /* TRANSLATOR U2::IOAdapter */
 /* TRANSLATOR U2::NewickFormat */
 
-NewickFormat::NewickFormat(QObject* p) : DocumentFormat(p, DocumentFormatFlags_W1)
-{
+NewickFormat::NewickFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlags_W1) {
     fileExtensions << "nwk" << "newick" << "nh" << "ph";
     formatName = tr("Newick Standard");
     formatDescription = tr("Newick is a simple format used to write out trees in a text file");
@@ -48,7 +47,7 @@ NewickFormat::NewickFormat(QObject* p) : DocumentFormat(p, DocumentFormatFlags_W
 
 static QList<GObject*> parseTrees(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap &fs, U2OpStatus& si);
 
-Document* NewickFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os){
+Document* NewickFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os){
     QList<GObject*> objects = parseTrees(io, dbiRef, fs, os);
     CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
     Document* d = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs);
@@ -68,7 +67,7 @@ void NewickFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus& os) {
     }
 }
 
-FormatCheckResult NewickFormat::checkRawData(const QByteArray& rawData, const GUrl&) const {
+FormatCheckResult NewickFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
     const char* data = rawData.constData();
     int size = rawData.size();
     bool containsBinary = TextUtils::contains(TextUtils::BINARY, data, size);

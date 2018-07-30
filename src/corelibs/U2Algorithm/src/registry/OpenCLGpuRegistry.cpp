@@ -26,6 +26,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "OpenCLGpuRegistry.h"
 
@@ -42,6 +43,11 @@ OpenCLGpuRegistry::~OpenCLGpuRegistry() {
 void OpenCLGpuRegistry::registerOpenCLGpu( OpenCLGpuModel * gpu ) {
     assert( !gpus.contains(gpu->getId()) );
     gpus.insert( gpu->getId(), gpu );
+}
+
+void OpenCLGpuRegistry::unregisterOpenCLGpu(OpenCLGpuModel * gpu) {
+    CHECK(gpus.contains(gpu->getId()), );
+    delete gpus.take(gpu->getId());
 }
 
 OpenCLGpuModel * OpenCLGpuRegistry::getGpuById( OpenCLGpuId id ) const {

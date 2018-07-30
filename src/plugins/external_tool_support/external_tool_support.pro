@@ -138,7 +138,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/peak2gene/Peak2GeneSupport.h \
            src/peak2gene/Peak2GeneTask.h \
            src/peak2gene/Peak2GeneWorker.h \
-           src/peak2gene/TabulatedFormatReader.h \
            src/perl/PerlSupport.h \
            src/phyml/PhyMLDialogWidget.h \
            src/phyml/PhyMLSupport.h \
@@ -160,12 +159,21 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/snpeff/SnpEffSupport.h \
            src/snpeff/SnpEffTask.h \
            src/snpeff/SnpEffWorker.h \
+           src/spades/SpadesDelegate.h \
+           src/spades/SpadesPortRelationDescriptor.h \
+           src/spades/SpadesSettingsWidget.h \
            src/spades/SpadesSupport.h \
            src/spades/SpadesTask.h \
-           src/spades/SpadesSettingsWidget.h \
            src/spades/SpadesWorker.h \
            src/spidey/SpideySupport.h \
            src/spidey/SpideySupportTask.h \
+           src/stringtie/StringtieGeneAbundanceReportPrompter.h \
+           src/stringtie/StringtieGeneAbundanceReportTask.h \
+           src/stringtie/StringtieGeneAbundanceReportWorker.h \
+           src/stringtie/StringtieGeneAbundanceReportWorkerFactory.h \
+           src/stringtie/StringTieSupport.h \
+           src/stringtie/StringTieTask.h \
+           src/stringtie/StringTieWorker.h \
            src/tcoffee/TCoffeeSupport.h \
            src/tcoffee/TCoffeeSupportRunDialog.h \
            src/tcoffee/TCoffeeSupportTask.h \
@@ -174,6 +182,29 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/tophat/TopHatSupport.h \
            src/tophat/TopHatSupportTask.h \
            src/tophat/TopHatWorker.h \
+           src/trimmomatic/TrimmomaticDelegate.h \
+           src/trimmomatic/TrimmomaticLogParser.h \
+           src/trimmomatic/TrimmomaticPrompter.h \
+           src/trimmomatic/TrimmomaticStep.h \
+           src/trimmomatic/TrimmomaticSupport.h \
+           src/trimmomatic/TrimmomaticTask.h \
+           src/trimmomatic/TrimmomaticWorker.h \
+           src/trimmomatic/TrimmomaticWorkerFactory.h \
+           src/trimmomatic/steps/AvgQualStep.h \
+           src/trimmomatic/steps/CropStep.h \
+           src/trimmomatic/steps/HeadCropStep.h \
+           src/trimmomatic/steps/IlluminaClipStep.h \
+           src/trimmomatic/steps/LeadingStep.h \
+           src/trimmomatic/steps/MaxInfoStep.h \
+           src/trimmomatic/steps/MinLenStep.h \
+           src/trimmomatic/steps/SlidingWindowStep.h \
+           src/trimmomatic/steps/ToPhred33Step.h \
+           src/trimmomatic/steps/ToPhred64Step.h \
+           src/trimmomatic/steps/TrailingStep.h \
+           src/trimmomatic/util/LengthSettingsWidget.h \
+           src/trimmomatic/util/LineEditHighlighter.h \
+           src/trimmomatic/util/NoSettingsWidget.h \
+           src/trimmomatic/util/QualitySettingsWidget.h \
            src/utils/AlignMsaAction.h \
            src/utils/BaseShortReadsAlignerWorker.h \
            src/utils/BlastDBSelectorWidgetController.h \
@@ -211,9 +242,17 @@ FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/mafft/MAFFTSupportRunDialog.ui \
          src/mrbayes/MrBayesDialog.ui \
          src/phyml/PhyMLDialog.ui \
-         src/tcoffee/TCoffeeSupportRunDialog.ui \
          src/snpeff/SnpEffDatabaseDialog.ui \
+         src/spades/SpadesInputData.ui \
          src/spades/SpadesSettings.ui \
+         src/tcoffee/TCoffeeSupportRunDialog.ui \
+         src/trimmomatic/TrimmomaticPropertyDialog.ui \
+         src/trimmomatic/steps/IlluminaClipAdditionalSettingsDialog.ui \
+         src/trimmomatic/steps/IlluminaClipSettingsWidget.ui \
+         src/trimmomatic/steps/MaxInfoSettingsWidget.ui \
+         src/trimmomatic/steps/SlidingWindowSettingsWidget.ui \
+         src/trimmomatic/util/LengthSettingsWidget.ui \
+         src/trimmomatic/util/QualitySettingsWidget.ui \
          src/utils/BlastAllSupportDialog.ui \
          src/utils/BlastDBSelectorWidget.ui
 
@@ -352,7 +391,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/peak2gene/Peak2GeneSupport.cpp \
            src/peak2gene/Peak2GeneTask.cpp \
            src/peak2gene/Peak2GeneWorker.cpp \
-           src/peak2gene/TabulatedFormatReader.cpp \
            src/perl/PerlSupport.cpp \
            src/phyml/PhyMLDialogWidget.cpp \
            src/phyml/PhyMLSupport.cpp \
@@ -374,12 +412,21 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/snpeff/SnpEffSupport.cpp \
            src/snpeff/SnpEffTask.cpp \
            src/snpeff/SnpEffWorker.cpp \
+           src/spades/SpadesDelegate.cpp \
+           src/spades/SpadesPortRelationDescriptor.cpp \
+           src/spades/SpadesSettingsWidget.cpp \
            src/spades/SpadesSupport.cpp \
            src/spades/SpadesTask.cpp \
-           src/spades/SpadesSettingsWidget.cpp \
            src/spades/SpadesWorker.cpp \
            src/spidey/SpideySupport.cpp \
            src/spidey/SpideySupportTask.cpp \
+           src/stringtie/StringtieGeneAbundanceReportPrompter.cpp \
+           src/stringtie/StringtieGeneAbundanceReportTask.cpp \
+           src/stringtie/StringtieGeneAbundanceReportWorker.cpp \
+           src/stringtie/StringtieGeneAbundanceReportWorkerFactory.cpp \
+           src/stringtie/StringTieSupport.cpp \
+           src/stringtie/StringTieTask.cpp \
+           src/stringtie/StringTieWorker.cpp \
            src/tcoffee/TCoffeeSupport.cpp \
            src/tcoffee/TCoffeeSupportRunDialog.cpp \
            src/tcoffee/TCoffeeSupportTask.cpp \
@@ -388,6 +435,29 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/tophat/TopHatSupport.cpp \
            src/tophat/TopHatSupportTask.cpp \
            src/tophat/TopHatWorker.cpp \
+           src/trimmomatic/TrimmomaticDelegate.cpp \
+           src/trimmomatic/TrimmomaticLogParser.cpp \
+           src/trimmomatic/TrimmomaticPrompter.cpp \
+           src/trimmomatic/TrimmomaticStep.cpp \
+           src/trimmomatic/TrimmomaticSupport.cpp \
+           src/trimmomatic/TrimmomaticTask.cpp \
+           src/trimmomatic/TrimmomaticWorker.cpp \
+           src/trimmomatic/TrimmomaticWorkerFactory.cpp \
+           src/trimmomatic/steps/AvgQualStep.cpp \
+           src/trimmomatic/steps/CropStep.cpp \
+           src/trimmomatic/steps/HeadCropStep.cpp \
+           src/trimmomatic/steps/IlluminaClipStep.cpp \
+           src/trimmomatic/steps/LeadingStep.cpp \
+           src/trimmomatic/steps/MaxInfoStep.cpp \
+           src/trimmomatic/steps/MinLenStep.cpp \
+           src/trimmomatic/steps/SlidingWindowStep.cpp \
+           src/trimmomatic/steps/ToPhred33Step.cpp \
+           src/trimmomatic/steps/ToPhred64Step.cpp \
+           src/trimmomatic/steps/TrailingStep.cpp \
+           src/trimmomatic/util/LengthSettingsWidget.cpp \
+           src/trimmomatic/util/LineEditHighlighter.cpp \
+           src/trimmomatic/util/NoSettingsWidget.cpp \
+           src/trimmomatic/util/QualitySettingsWidget.cpp \
            src/utils/AlignMsaAction.cpp \
            src/utils/BlastDBSelectorWidgetController.cpp \
            src/utils/BaseShortReadsAlignerWorker.cpp \

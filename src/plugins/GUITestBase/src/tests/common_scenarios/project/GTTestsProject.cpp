@@ -52,6 +52,7 @@
 #include "system/GTFile.h"
 #include "utils/GTUtilsApp.h"
 #include "utils/GTUtilsToolTip.h"
+#include <utils/GTKeyboardUtils.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
@@ -1170,12 +1171,8 @@ GUI_TEST_CLASS_DEFINITION(test_0070) {
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 2);
     GTClipboard::setText(os, ">human_T1\r\nACGTACGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\r\n");
 
-    QAction* editMode = GTAction::findActionByText(os, "Edit sequence");
-    CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
-    GTWidget::click(os, GTAction::button(os, editMode));
-
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList()<<ADV_MENU_COPY<< "Paste sequence",GTGlobals::UseMouse));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os,"ADV_single_sequence_widget_0"));
+    GTUtilsSequenceView::enableEditingMode(os, true);
+    GTKeyboardUtils::paste(os);
     GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     int len = GTUtilsSequenceView::getLengthOfSequence(os);

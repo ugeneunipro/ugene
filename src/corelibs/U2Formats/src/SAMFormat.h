@@ -25,12 +25,14 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
+#include "TextDocumentFormat.h"
+
 namespace U2 {
 
 class IOAdapter;
 class DNASequence;
 
-class U2FORMATS_EXPORT  SAMFormat : public DocumentFormat {
+class U2FORMATS_EXPORT  SAMFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     SAMFormat(QObject* p = NULL);
@@ -42,8 +44,6 @@ public:
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);
-
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
     bool storeHeader(IOAdapter* io, const QVector<QByteArray> &names, const QVector<int> &lengths, bool coordinateSorted);
 
@@ -63,7 +63,9 @@ public:
     };
 
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
 private:
 

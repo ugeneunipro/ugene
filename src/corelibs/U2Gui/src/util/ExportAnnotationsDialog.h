@@ -60,7 +60,7 @@ private:
     SaveDocumentController *        saveController;
     Ui_ExportAnnotationsDialog *    ui;
     bool                            lastAddToProjectState;
-    
+
 };
 
 } // namespace U2

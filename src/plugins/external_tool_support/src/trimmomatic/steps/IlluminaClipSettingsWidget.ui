@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>IlluminaClipSettingsWidget</class>
+ <widget class="QWidget" name="IlluminaClipSettingsWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>292</width>
+    <height>201</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_4">
+   <property name="sizeConstraint">
+    <enum>QLayout::SetMinAndMaxSize</enum>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMinAndMaxSize</enum>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="toolTip">
+        <string>A FASTA file with the adapter sequences. Files for TruSeq2 (GAII machines), TruSeq3 (HiSeq and MiSeq machines) and Nextera kits for SE and PE reads are now available by default. The naming of the various sequences within the specified file determines how they are used.</string>
+       </property>
+       <property name="text">
+        <string>Adapter sequences</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetMinAndMaxSize</enum>
+       </property>
+       <item>
+        <widget class="QLineEdit" name="fileName">
+         <property name="toolTip">
+          <string>A FASTA file with the adapter sequences. Files for TruSeq2 (GAII machines), TruSeq3 (HiSeq and MiSeq machines) and Nextera kits for SE and PE reads are now available by default. The naming of the various sequences within the specified file determines how they are used.</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="tbBrowse">
+         <property name="toolTip">
+          <string>A FASTA file with the adapter sequences. Files for TruSeq2 (GAII machines), TruSeq3 (HiSeq and MiSeq machines) and Nextera kits for SE and PE reads are now available by default. The naming of the various sequences within the specified file determines how they are used.</string>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QGridLayout" name="gridLayout">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMinAndMaxSize</enum>
+     </property>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="toolTip">
+        <string>The maximum mismatch count in short sections which will still allow a full match to be performed.</string>
+       </property>
+       <property name="text">
+        <string>Seed mismatches</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QSpinBox" name="mismatches">
+       <property name="toolTip">
+        <string>The maximum mismatch count in short sections which will still allow a full match to be performed.</string>
+       </property>
+       <property name="maximum">
+        <number>2147483647</number>
+       </property>
+       <property name="value">
+        <number>2</number>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="toolTip">
+        <string>A threshold for simple alignment mode. Values between 7 and 15 are recommended. A perfect match of a 12 base sequence will score just over 7, while 25 bases are needed to score 15.</string>
+       </property>
+       <property name="text">
+        <string>Palindrome clip threshold</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QSpinBox" name="palindromeThreshold">
+       <property name="toolTip">
+        <string>A threshold for simple alignment mode. Values between 7 and 15 are recommended. A perfect match of a 12 base sequence will score just over 7, while 25 bases are needed to score 15.</string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>2147483647</number>
+       </property>
+       <property name="singleStep">
+        <number>1</number>
+       </property>
+       <property name="value">
+        <number>30</number>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_4">
+       <property name="toolTip">
+        <string>A threshold for palindrome alignment mode. For palindromic matches, a longer alignment is possible. Therefore the threshold can be in the range of 30. Even though this threshold is very high (requiring a match of almost 50 bases) Trimmomatic is still able to identify very, very short adapter fragments.</string>
+       </property>
+       <property name="text">
+        <string>Simple clip threshold</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QSpinBox" name="simpleThreshold">
+       <property name="toolTip">
+        <string>A threshold for palindrome alignment mode. For palindromic matches, a longer alignment is possible. Therefore the threshold can be in the range of 30. Even though this threshold is very high (requiring a match of almost 50 bases) Trimmomatic is still able to identify very, very short adapter fragments.</string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>2147483647</number>
+       </property>
+       <property name="value">
+        <number>10</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMinAndMaxSize</enum>
+     </property>
+     <item>
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>178</width>
+         <height>25</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="minimumSize">
+        <size>
+         <width>80</width>
+         <height>30</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Optional...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -609,27 +609,30 @@ BwaTask::BwaTask(const DnaAssemblyToRefTaskSettings &settings, bool justBuildInd
 }
 
 void BwaTask::prepare() {
-    if(!justBuildIndex) {
-        setUpIndexBuilding(indexSuffixes);
-    }
-
     QString indexFileName = settings.indexFileName;
-    if(indexFileName.isEmpty()) {
-        indexFileName = settings.refSeqUrl.getURLString();
-    }
-    if(!settings.prebuiltIndex) {
+
+    if (!settings.prebuiltIndex) {
+        if (!justBuildIndex) {
+            setUpIndexBuilding(indexSuffixes);
+        }
+        if (indexFileName.isEmpty()) {
+            indexFileName = settings.refSeqUrl.getURLString();
+        }
         buildIndexTask = new BwaBuildIndexTask(settings.refSeqUrl.getURLString(), indexFileName, settings);
         buildIndexTask->addListeners(QList <ExternalToolListener*>() << getListener(0));
     }
+
     int upStreamCount = 0;
     int downStreamCount = 0;
     foreach(const ShortReadSet& srSet, settings.shortReadSets) {
         if (srSet.order == ShortReadSet::DownstreamMate) {
             downStreamCount++;
-        } else {
+        }
+        else {
             upStreamCount++;
         }
     }
+
     if(!justBuildIndex) {
         if (settings.getCustomValue(OPTION_SW_ALIGNMENT, false) == true) {
             if(settings.shortReadSets.size() > 1) {
@@ -638,7 +641,8 @@ void BwaTask::prepare() {
             }
             alignTask = new BwaSwAlignTask(indexFileName, settings);
             alignTask->addListeners(QList <ExternalToolListener*>() << getListener(1));
-        } else  if (settings.getCustomValue(OPTION_MEM_ALIGNMENT, false) == true) {
+        }
+        else  if (settings.getCustomValue(OPTION_MEM_ALIGNMENT, false) == true) {
             if (downStreamCount != upStreamCount && settings.pairedReads) {
                 setError(tr("Please, provide same number of files with downstream and upstream reads."));
                 return;
@@ -646,17 +650,20 @@ void BwaTask::prepare() {
 
             alignTask = new BwaMemAlignTask(indexFileName, settings);
             alignTask->addListeners(QList <ExternalToolListener*>() << getListener(1));
-        }else{
+        }
+        else{
             alignTask = new BwaAlignTask(indexFileName, settings.shortReadSets, settings.resultFileName.getURLString(), settings);
             alignTask->addListeners(QList <ExternalToolListener*>() << getListener(1));
         }
     }
 
-    if(!settings.prebuiltIndex) {
+    if (!settings.prebuiltIndex) {
         addSubTask(buildIndexTask);
-    } else if(!justBuildIndex) {
+    }
+    else if(!justBuildIndex) {
         addSubTask(alignTask);
-    } else {
+    }
+    else {
         assert(false);
     }
 }

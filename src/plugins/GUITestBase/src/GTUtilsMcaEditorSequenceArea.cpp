@@ -100,7 +100,7 @@ int GTUtilsMcaEditorSequenceArea::getRowHeight(GUITestOpStatus &os, int rowNumbe
 void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QPoint &globalMaPosition) {
     McaEditorSequenceArea *mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea *>(os, "mca_editor_sequence_area", GTUtilsMdi::activeWindow(os));
     GT_CHECK(NULL != mcaSeqArea, "MCA Editor sequence area is not found");
-    GT_CHECK(mcaSeqArea->isInRange(globalMaPosition), 
+    GT_CHECK(mcaSeqArea->isInRange(globalMaPosition),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
              .arg(globalMaPosition.x()).arg(globalMaPosition.y())
              .arg(mcaSeqArea->getEditor()->getAlignmentLen()).arg(mcaSeqArea->getNumDisplayableSequences()));
@@ -121,11 +121,11 @@ void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QP
 void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const QPoint &position) {
     McaEditorSequenceArea *mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea *>(os, "mca_editor_sequence_area", GTUtilsMdi::activeWindow(os));
     GT_CHECK(NULL != mcaSeqArea, "MSA Editor sequence area is not found");
-    GT_CHECK(mcaSeqArea->isInRange(position), 
+    GT_CHECK(mcaSeqArea->isInRange(position),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
              .arg(position.x()).arg(position.y())
              .arg(mcaSeqArea->getEditor()->getAlignmentLen()).arg(mcaSeqArea->getNumDisplayableSequences()));
-    
+
     CHECK(!mcaSeqArea->isVisible(position, false), );
 
     if (GTUtilsProjectTreeView::isVisible(os)){
@@ -331,11 +331,11 @@ void GTUtilsMcaEditorSequenceArea::clickToReferencePosition(GUITestOpStatus &os,
     QPoint selectedPoint(num, 2);
     McaEditorSequenceArea *mcaSeqArea = GTWidget::findExactWidget<McaEditorSequenceArea *>(os, "mca_editor_sequence_area", GTUtilsMdi::activeWindow(os));
     GT_CHECK(NULL != mcaSeqArea, "MCA Editor sequence area is not found");
-    GT_CHECK(mcaSeqArea->isInRange(selectedPoint), 
+    GT_CHECK(mcaSeqArea->isInRange(selectedPoint),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
              .arg(selectedPoint.x()).arg(selectedPoint.y())
              .arg(mcaSeqArea->getEditor()->getAlignmentLen()).arg(mcaSeqArea->getNumDisplayableSequences()));
-    
+
 
     scrollToPosition(os, selectedPoint);
 

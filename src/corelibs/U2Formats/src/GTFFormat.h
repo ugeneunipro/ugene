@@ -27,6 +27,8 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/U2Region.h>
 
+#include "TextDocumentFormat.h"
+
 namespace U2 {
 
 /** Validates a line from a GTF file */
@@ -37,7 +39,6 @@ public:
 
     void setFlagIncorrectNumberOfFields() { incorrectNumberOfFields = true; }
     void setFlagEmptyField() { emptyField = true; }
-    void setFlagIncorrectFeatureField() { incorrectFeatureField = true; }
     void setFlagIncorrectCoordinates() { incorrectCoordinates = true; }
     void setFlagIncorrectScore() { incorrectScore = true; }
     void setFlagIncorrectStrand() { incorrectStrand = true; }
@@ -51,7 +52,6 @@ public:
     bool isFileInvalid() {
         return incorrectNumberOfFields ||
             emptyField ||
-            incorrectFeatureField ||
             incorrectCoordinates ||
             incorrectScore ||
             incorrectStrand ||
@@ -63,7 +63,6 @@ public:
 
     bool isIncorrectNumberOfFields() { return incorrectNumberOfFields; }
     bool isEmptyField() { return emptyField; }
-    bool isIncorrectFeatureField() { return incorrectFeatureField; }
     bool isIncorrectCoordinates() { return incorrectCoordinates; }
     bool isIncorrectScore() { return incorrectScore; }
     bool isIncorrectStrand() { return incorrectStrand; }
@@ -75,7 +74,6 @@ public:
 private:
     bool incorrectNumberOfFields; // There should be 9 fields
     bool emptyField; // Each field shouldn't be empty or shouldn't consist of white spaces
-    bool incorrectFeatureField; // The list of possible values is limited according to the spec
     bool incorrectCoordinates; // Start and end should be integer, start should be <= end
     bool incorrectScore; // Should be float, or integer, or a dot('.'), i.e. empty
     bool incorrectStrand; // Should be '+', '-', or '.'
@@ -113,8 +111,7 @@ class IOAdapter;
  * The following GTF specification was used: http://mblab.wustl.edu/GTF22.html
  * Unlike GFF, we assume that there is no embedded sequence in a GTF file, only annotations (not joined)
  */
-class U2FORMATS_EXPORT GTFFormat : public DocumentFormat
-{
+class U2FORMATS_EXPORT GTFFormat : public TextDocumentFormat {
     Q_OBJECT
 
 public:
@@ -126,10 +123,10 @@ public:
 
     virtual void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os);
 
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
-
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os);
 
 private:
     GTFLineData parseAndValidateLine(QString line, GTFLineValidateFlags& status) const;
@@ -155,13 +152,6 @@ private:
     static const QString FRAME_QUALIFIER_NAME;
     static const QString GENE_ID_QUALIFIER_NAME;
     static const QString TRANSCRIPT_ID_QUALIFIER_NAME;
-
-    /**
-     * The list of possible values for the "feature" field in a GTF file
-     * Values "transcript" and "missing_data" were added because they are
-     * used in the Cufflinks output. Other values are from the GTF spec.
-     */
-    QList<QString> GTF_FEATURE_FIELD_VALUES;
 };
 
 

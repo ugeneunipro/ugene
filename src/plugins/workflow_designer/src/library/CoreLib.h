@@ -35,6 +35,7 @@ public:
     static void initUsersWorkers();
     static void initExternalToolsWorkers();
     static void initIncludedWorkers();
+    static void cleanup();
 };
 
 } // Workflow namespace

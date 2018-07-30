@@ -22,13 +22,15 @@
         <location filename="../src/CredentialsAskerCli.cpp" line="91"/>
         <source>Connect to the &apos;%1&apos; ...
 </source>
-        <translation>Подключение к &apos;%1&apos; ...</translation>
+        <translation>Подключение к &apos;%1&apos; ...
+</translation>
     </message>
     <message>
         <location filename="../src/CredentialsAskerCli.cpp" line="92"/>
         <source>You are going to log in as &apos;%1&apos;.
 </source>
-        <translation>Вы собираетесь войти как &apos;%1&apos;.</translation>
+        <translation>Вы собираетесь войти как &apos;%1&apos;.
+</translation>
     </message>
     <message>
         <location filename="../src/CredentialsAskerCli.cpp" line="93"/>
@@ -64,22 +66,22 @@
         <translation>Ошибка загрузки модуля: %1, строка %2</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="451"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="452"/>
         <source>Settings is NULL</source>
         <translation>Settings is NULL</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="490"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="507"/>
         <source>Plugin loading error: %1. Verification failed.</source>
         <translation>Plugin loading error: %1. Verification failed.</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="513"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="527"/>
         <source>Plugin initialization routine was not found: %1</source>
         <translation>Не найдена входная функция библиотеки модуля: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="519"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="533"/>
         <source>Plugin initialization failed: %1</source>
         <translation>Ошибка инициализации модуля: %1</translation>
     </message>
@@ -291,12 +293,12 @@ By default, loglevel=&quot;ERROR&quot;.</source>
         <translation>Invalid depends token: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginDescriptor.cpp" line="257"/>
+        <location filename="../src/PluginDescriptor.cpp" line="263"/>
         <source>Plugin circular dependency detected: %1 &lt;-&gt; %2</source>
         <translation>Обнаружен модуль циркулярной зависимости: %1 &lt;-&gt; %2</translation>
     </message>
     <message>
-        <location filename="../src/PluginDescriptor.cpp" line="341"/>
+        <location filename="../src/PluginDescriptor.cpp" line="352"/>
         <source>Can&apos;t satisfy dependencies for %1 !</source>
         <translation>Can&apos;t satisfy dependencies for %1 !</translation>
     </message>
@@ -462,7 +464,7 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::VerifyPluginTask</name>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="548"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="560"/>
         <source>Verify plugin task: %1</source>
         <translation>Задача верификации модуля: %1</translation>
     </message>

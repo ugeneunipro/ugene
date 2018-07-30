@@ -30,4 +30,4 @@ SOURCES += src/DIPropertiesSitecon.cpp \
            src/SiteconSearchWorker.cpp \
            src/SiteconQuery.cpp
 RESOURCES += sitecon.qrc
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

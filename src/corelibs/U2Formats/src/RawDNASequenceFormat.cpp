@@ -41,8 +41,7 @@ namespace U2 {
 /* TRANSLATOR U2::RawDNASequenceFormat */
 /* TRANSLATOR U2::IOAdapter */
 
-RawDNASequenceFormat::RawDNASequenceFormat(QObject* p) : DocumentFormat(p, DocumentFormatFlags_W1)
-{
+RawDNASequenceFormat::RawDNASequenceFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlags_W1) {
     formatName = tr("Raw sequence");
     fileExtensions << "seq" << "txt";
     supportedObjectTypes+=GObjectTypes::SEQUENCE;
@@ -136,7 +135,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef,  QList<GObject*>& object
     }
 }
 
-Document* RawDNASequenceFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
+Document* RawDNASequenceFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
     QList<GObject*> objects;
     load(io, dbiRef, objects, fs, os);
     CHECK_OP(os, NULL);
@@ -144,7 +143,7 @@ Document* RawDNASequenceFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiR
     return doc;
 }
 
-FormatCheckResult RawDNASequenceFormat::checkRawData(const QByteArray& rawData, const GUrl&) const {
+FormatCheckResult RawDNASequenceFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
     const char* data = rawData.constData();
     int size = rawData.size();
     if (QRegExp("[a-zA-Z\r\n\\*-]*").exactMatch(rawData)) {

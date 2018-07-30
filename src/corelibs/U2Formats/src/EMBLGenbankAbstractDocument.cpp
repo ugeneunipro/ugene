@@ -60,7 +60,7 @@ const QString EMBLGenbankAbstractDocument::SEQ_LEN_WARNING_MESSAGE = QCoreApplic
 
 EMBLGenbankAbstractDocument::EMBLGenbankAbstractDocument(const DocumentFormatId& _id, const QString& _formatName, int mls,
                                                          DocumentFormatFlags flags, QObject* p)
-: DocumentFormat(p, flags), id(_id), formatName(_formatName), maxAnnotationLineLen(mls), savedInUgene(false)
+: TextDocumentFormat(p, flags), id(_id), formatName(_formatName), maxAnnotationLineLen(mls), savedInUgene(false)
 {
     supportedObjectTypes+=GObjectTypes::ANNOTATION_TABLE;
     supportedObjectTypes+=GObjectTypes::SEQUENCE;
@@ -70,7 +70,7 @@ EMBLGenbankAbstractDocument::EMBLGenbankAbstractDocument(const DocumentFormatId&
 //////////////////////////////////////////////////////////////////////////
 // loading
 
-Document* EMBLGenbankAbstractDocument::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& _fs, U2OpStatus& os) {
+Document* EMBLGenbankAbstractDocument::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& _fs, U2OpStatus& os) {
     QVariantMap fs = _fs;
     QList<GObject*> objects;
     QString writeLockReason;
@@ -95,6 +95,7 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef& dbiRef, IOAdapter* io, QL
     Q_UNUSED(opBlock);
     writeLockReason.clear();
 
+    io->setFormatMode(IOAdapter::TextMode);
     //get settings
     int gapSize = qBound(-1, DocumentFormatUtils::getMergeGap(fs), 1000*1000);
     bool merge = gapSize!=-1;
@@ -294,7 +295,7 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef& dbiRef, IOAdapter* io, QL
     U1AnnotationUtils::addAnnotations(objects, seqImporter.getCaseAnnotations(), sequenceRef, mergedAnnotationsPtr, fs);
 }
 
-DNASequence* EMBLGenbankAbstractDocument::loadSequence(IOAdapter* io, U2OpStatus& os) {
+DNASequence* EMBLGenbankAbstractDocument::loadTextSequence(IOAdapter* io, U2OpStatus& os) {
     QSet<QString> usedNames;
 
     QByteArray sequenceData;
@@ -405,6 +406,7 @@ static int numQuotesInLine(char* cbuff, int len){
 //TODO: make it IO active -> read util the end. Otherwise qualifier is limited in size by maxSize
 int EMBLGenbankAbstractDocument::readMultilineQualifier(IOAdapter* io, char* cbuff, int maxSize, bool _prevLineHasMaxSize, int lenFirstLine,
                                                         U2OpStatus& os) {
+    io->setFormatMode(IOAdapter::TextMode);
     int len = 0;
     bool lineOk = true;
     static const int MAX_LINE = 256;
@@ -570,8 +572,7 @@ AnnotationProcessStatus processParsingResult(const U2Location &location, Genbank
 }
 
 SharedAnnotationData EMBLGenbankAbstractDocument::readAnnotation(IOAdapter* io, char* cbuff, int len,
-                                                                 int READ_BUFF_SIZE, U2OpStatus& si, int offset, int seqLen)
-{
+                                                                 int READ_BUFF_SIZE, U2OpStatus& si, int offset, int seqLen) {
     AnnotationData* a = new AnnotationData();
     SharedAnnotationData f(a);
     QString key = QString::fromLatin1(cbuff+5, 15).trimmed();

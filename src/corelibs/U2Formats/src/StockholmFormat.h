@@ -27,11 +27,13 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
+#include "TextDocumentFormat.h"
+
 namespace U2 {
 
 class IOAdapter;
 
-class U2FORMATS_EXPORT StockholmFormat : public DocumentFormat {
+class U2FORMATS_EXPORT StockholmFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     static const QByteArray FILE_ANNOTATION_ID;
@@ -60,8 +62,6 @@ public:
 
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
-    virtual FormatCheckResult checkRawData(const QByteArray& data, const GUrl& = GUrl()) const;
-
     virtual bool isObjectOpSupported( const Document* d , DocumentFormat::DocObjectOp op, GObjectType t ) const;
 
     //exceptions
@@ -80,7 +80,9 @@ public:
     };
 
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& data, const GUrl& = GUrl()) const;
+
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
 }; // StockholmFormat
 

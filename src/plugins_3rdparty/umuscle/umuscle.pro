@@ -212,4 +212,4 @@ SOURCES += src/MuscleAdapter.cpp \
            src/muscle/writescorefile.cpp \
            src/umuscle_tests/umuscleTests.cpp
 RESOURCES += umuscle.qrc
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

@@ -38,17 +38,11 @@ Dataset::Dataset() {
 }
 
 Dataset::Dataset(const Dataset &other) {
-    name = other.name;
-    foreach (URLContainer *url, other.urls) {
-        urls << url->clone();
-    }
+    copy(other);
 }
 
 Dataset::~Dataset() {
-    foreach (URLContainer *url, urls) {
-        delete url;
-    }
-    urls.clear();
+    clear();
 }
 
 const QString & Dataset::getName() const {
@@ -81,6 +75,22 @@ QList<Dataset> Dataset::getDefaultDatasetList() {
     return QList<Dataset>() << Dataset();
 }
 
+Dataset &Dataset::operator =(const Dataset &other) {
+    if (this == &other) {
+        return *this;
+    }
+    copy(other);
+    return *this;
+}
+
+void Dataset::copy(const Dataset &other) {
+    clear();
+    name = other.name;
+    foreach (URLContainer *url, other.urls) {
+        urls << url->clone();
+    }
+}
+
 bool Dataset::contains(const QString &url) const {
     foreach (URLContainer *cont, urls) {
         if (cont->getUrl() == url) {
@@ -88,6 +98,11 @@ bool Dataset::contains(const QString &url) const {
         }
     }
     return false;
+}
+
+void Dataset::clear() {
+    qDeleteAll(urls);
+    urls.clear();
 }
 
 /************************************************************************/

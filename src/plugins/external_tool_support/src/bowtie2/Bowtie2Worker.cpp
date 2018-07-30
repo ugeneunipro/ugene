@@ -106,7 +106,9 @@ void Bowtie2Worker::setGenomeIndex(DnaAssemblyToRefTaskSettings& settings){
 void Bowtie2WorkerFactory::init() {
     QList<Attribute*> attrs;
     QMap<QString, PropertyDelegate*> delegates;
-    addCommonAttributes(attrs, delegates);
+    addCommonAttributes(attrs, delegates,
+                        Bowtie2Worker::tr("Bowtie index folder"),
+                        Bowtie2Worker::tr("Bowtie index basename"));
      {
          Descriptor mode(MODE ,
              Bowtie2Worker::tr("Mode"),
@@ -217,15 +219,23 @@ void Bowtie2WorkerFactory::init() {
     }
 
     Descriptor protoDesc(Bowtie2WorkerFactory::ACTOR_ID,
-        Bowtie2Worker::tr("Align Reads with Bowtie2"),
-        Bowtie2Worker::tr("Performs alignment of short reads with Bowtie2."));
+        Bowtie2Worker::tr("Map Reads with Bowtie2"),
+        Bowtie2Worker::tr("Bowtie2  is a program for mapping short DNA sequence reads to a long reference sequence."
+                          " In addition to to the Burrows-Wheeler transform, Bowtie2 uses an FM-index (similar to"
+                          " a suffix array) to keep its memory footprint small."
+                          "<br/><br/>Bowtie2 is more suited to finding longer, gapped alignments than the first version"
+                          " Bowtie, it supports ambiguous characters in the reference (e.g. 'N'), etc."
+                          "<br/><br/>Provide URL(s) to FASTA or FASTQ file(s) with NGS reads to the input"
+                          " port of the element, set up the reference sequence in the parameters."
+                          " The result is saved to the specified SAM file, URL to the file is passed"
+                          " to the output port."));
 
     ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, getPortDescriptors(), attrs);
     proto->setPrompter(new ShortReadsAlignerPrompter());
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPortValidator(IN_PORT_DESCR, new ShortReadsAlignerSlotsValidator());
     proto->addExternalTool(ET_BOWTIE2_ALIGN);
-    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_ALIGN_SHORT_READS(), proto);
+    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new Bowtie2WorkerFactory());
 }
 

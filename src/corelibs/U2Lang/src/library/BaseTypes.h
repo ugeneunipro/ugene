@@ -41,6 +41,7 @@ public:
     static DataTypePtr STRING_TYPE();
     static DataTypePtr STRING_LIST_TYPE();
     static DataTypePtr BOOL_TYPE();
+    static DataTypePtr MAP_TYPE();
     static DataTypePtr NUM_TYPE();
     static DataTypePtr URL_DATASETS_TYPE();
     static DataTypePtr ANY_TYPE();
@@ -59,6 +60,26 @@ public:
     virtual QString getId() const { return BaseTypes::STRING_TYPE()->getId(); }
 
 }; // StringTypeValueFactory
+
+/**
+* DatatypeValueFactory realization for string list type
+*/
+class StringListTypeValueFactory : public DataTypeValueFactory {
+public:
+    virtual QVariant getValueFromString( const QString & str, bool * ok = NULL  ) const;
+    virtual QString getId() const { return BaseTypes::STRING_LIST_TYPE()->getId(); }
+
+}; // StringListTypeValueFactory
+
+/**
+* DatatypeValueFactory realization for map type
+*/
+class MapTypeValueFactory : public DataTypeValueFactory {
+public:
+    virtual QVariant getValueFromString( const QString & str, bool * ok = NULL  ) const;
+    virtual QString getId() const { return BaseTypes::MAP_TYPE()->getId(); }
+
+}; // StringListTypeValueFactory
 
 /**
 * DatatypeValueFactory realization for bool type

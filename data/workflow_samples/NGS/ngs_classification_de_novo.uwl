@@ -1,0 +1,47 @@
+#@UGENE_WORKFLOW
+#The workflow takes FASTQ files with metagenomic NGS reads as input and process them as follows:
+# * Improve reads quality with Trimmomatic
+# * Provide FastQC reads quality reports
+# * De novo assembly:
+#   - Assemble the reads into scaffolds with SPAdes.
+# * Classification:
+#   - Classify the assembled scaffolds with Kraken.
+# * Provide general classification report
+
+
+workflow "De novo assembly and contigs classification" {
+    .meta {
+        wizard {
+            auto-run: true;
+            has-run-button: false;
+            has-defaults-button: false;
+            name: "Configure De Novo Assembly and Classification";
+            finish-label: "Setup";
+            result {
+                NGS/ngs_classification/ngs_classification_de_novo/ngs_classification_de_novo_single.uwl: pipeline.single;
+                NGS/ngs_classification/ngs_classification_de_novo/ngs_classification_de_novo_paired.uwl: pipeline.paired;
+            }
+            page {
+                id: 1;
+                title: "General settings";
+                parameters-area {
+                    group {
+                        title:"Sequencing reads";
+                        radio {
+                            id: pipeline;
+                            value {
+                                id: single;
+                                label: "Single-end";
+                            }
+                            value {
+                                id: paired;
+                                label: "Paired-end";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+}

@@ -50,6 +50,7 @@ SUBDIRS += \
           src/plugins_3rdparty/kalign \
           src/plugins_3rdparty/ptools \
           src/plugins_3rdparty/variants \
+          src/plugins/ngs_reads_classification \
           src/plugins/CoreTests \
           src/plugins/GUITestBase \
           src/plugins/annotator \
@@ -58,7 +59,9 @@ SUBDIRS += \
           src/plugins/browser_support \
           src/plugins/chroma_view \
           src/plugins/circular_view \
+          src/plugins/clark_support \
           src/plugins/dbi_bam \
+          src/plugins/diamond_support \
           src/plugins/dna_export \
           src/plugins/dna_flexibility \
           src/plugins/dna_graphpack \
@@ -67,6 +70,7 @@ SUBDIRS += \
           src/plugins/enzymes \
           src/plugins/external_tool_support \
           src/plugins/genome_aligner \
+          src/plugins/kraken_support \
           src/plugins/linkdata_support \
           src/plugins/orf_marker \
           src/plugins/pcr \
@@ -77,6 +81,7 @@ SUBDIRS += \
           src/plugins/smith_waterman \
           src/plugins/test_runner \
           src/plugins/weight_matrix \
+          src/plugins/wevote_support \
           src/plugins/workflow_designer
 
 use_cuda() {
@@ -100,8 +105,8 @@ exclude_list_enabled() {
 if(exists( ./src/libs_3rdparty/QSpec/QSpec.pro ):!exclude_list_enabled()) {
     message( "QSpec exists, enable GUI testing..." )
     !exists( ./src/libs_3rdparty/QSpec/custom.pri) {
-        unix: system( cp ./installer/_common_data/humimit_custom.pri ./src/libs_3rdparty/QSpec/custom.pri )
-        win32: system (copy /B installer\_common_data\humimit_custom.pri src\libs_3rdparty\QSpec\custom.pri)
+        unix: system( cp ./installer/_common_data/QSpec_custom.pri ./src/libs_3rdparty/QSpec/custom.pri )
+        win32: system (copy /B installer\_common_data\QSpec_custom.pri src\libs_3rdparty\QSpec\custom.pri)
     }
 }
 !exists( ./src/libs_3rdparty/QSpec/QSpec.pro ){
@@ -149,7 +154,7 @@ system($$[QT_INSTALL_BINS]/lrelease-qt5 -version > $$UGENE_DEV_NULL 2> $$UGENE_D
 
 #foreach 'language'
 for( i, UGENE_TRANSL_IDX ) {
-    UGENE_TRANSLATIONS = 
+    UGENE_TRANSLATIONS =
 
     curTranslFile = $$member( UGENE_TRANSL_FILES, $$i )
     curTranslTag  = $$member( UGENE_TRANSL_TAG, $$i )
@@ -188,7 +193,7 @@ unix {
     transl.files = ./src/_release/transl_en.qm
     transl.files += ./src/_release/transl_ru.qm
     transl.path = $$UGENE_INSTALL_DIR
-    
+
     plugins.files = ./src/_release/plugins/*
     plugins.path = $$UGENE_INSTALL_DIR/plugins
 
@@ -216,4 +221,4 @@ unix {
 
     INSTALLS += binscript ugene_starter transl plugins scripts data desktop pixmaps mime icons manual
 }
- 
+

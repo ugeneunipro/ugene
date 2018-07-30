@@ -29,11 +29,13 @@
 #include <QComboBox>
 #include <QCoreApplication>
 #include <QDialog>
+#include <QAction>
 #include <QHBoxLayout>
 #include <QKeyEvent>
 #include <QLineEdit>
 #include <QListWidget>
 #include <QModelIndex>
+#include <QPair>
 #include <QPointer>
 #include <QPushButton>
 #include <QSpinBox>
@@ -70,40 +72,53 @@ private:
     DelegateEditor& operator = (const DelegateEditor&);
 }; // DelegateEditor
 
+/**
+ * filter - a file filter string in the format for QFileDialog.
+ * type - the domain name for the LastUsedDirHelper
+ * multi - allow to select several files. Ignored, if isPath is true.
+ * isPath - if it is true, allows to select only existing directory. Otherwise, files can be selected (existing or not).
+ * saveFile - if it is true, allows to select file to save. File can be existing or not. Ignored, if isPath or multi is true.
+ * format - the format ID. It is used only if saveFile is true. The selected file will have an appropriate extension.
+ * noFilesMode - user can select files, but the directory will be commited as the selected item. It is not possible to select the directory in this mode, isPath is ignored.
+ */
 class U2DESIGNER_EXPORT URLDelegate : public PropertyDelegate {
     Q_OBJECT
 public:
+    enum Option {
+        None = 0,
+        AllowSelectSeveralFiles = 1 << 0,            // allows to select several files. Ignored, if AllowSelectOnlyExistingDir is set.
+        AllowSelectOnlyExistingDir = 1 << 1,         // allows to select only existing directory. Otherwise, files can be selected (existing or not).
+        SelectFileToSave = 1 << 2,                   // allows to select file to save. File can be existing or not. Ignored, if AllowSelectOnlyExistingDir or AllowSelectSeveralFiles is set.
+        SelectParentDirInsteadSelectedFile = 1 << 3, // user can select files, but the directory will be commited as the selected item. It is not possible to select the directory in this mode, AllowSelectOnlyExistingDir flag is ignored.
+        DoNotUseWorkflowOutputFolder = 1 << 4        // do not offer to save file to thw workflow output folder, show the default save dialog. Only if SelectFileToSave flag is set.
+    };
+    Q_DECLARE_FLAGS(Options, Option)
+
+    URLDelegate(const QString& filter, const QString &type, const Options &options, QObject *parent = 0, const QString &format = "");
+    URLDelegate(const DelegateTags& tags, const QString &type, const Options &options, QObject *parent = 0);
     URLDelegate(const QString& filter, const QString& type, bool multi = false, bool isPath = false, bool saveFile = true, QObject *parent = 0, const QString &format = "", bool noFilesMode = false);
     URLDelegate(const DelegateTags& tags, const QString& type, bool multi = false, bool isPath = false, bool saveFile = true, QObject *parent = 0, bool noFilesMode = false);
 
     QVariant getDisplayValue(const QVariant &v) const;
 
-    virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
-        const QModelIndex &index) const;
-    virtual PropertyWidget * createWizardWidget(U2OpStatus &os, QWidget *parent) const;
+    virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    virtual PropertyWidget *createWizardWidget(U2OpStatus &os, QWidget *parent) const;
 
     virtual void setEditorData(QWidget *editor, const QModelIndex &index) const;
-    virtual void setModelData(QWidget *editor, QAbstractItemModel *model,
-        const QModelIndex &index) const;
+    virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
 
-    virtual PropertyDelegate *clone() {
-        return new URLDelegate(*tags(), lastDirType, multi, isPath, saveFile, parent(), noFilesMode);
-    }
+    virtual PropertyDelegate *clone();
     virtual Type type() const;
 
 private slots:
     void sl_commit();
 
-public:
-    QString lastDirType;
-    bool    multi;
-    bool    isPath;
-    bool    saveFile; // sets when you need only 1 file for reading (is set with multi=false)
-    QString text;
-    bool noFilesMode;
-
 private:
     URLWidget * createWidget(QWidget *parent) const;
+
+    QString lastDirType;
+    Options options;
+    QString text;
 };
 
 class U2DESIGNER_EXPORT SpinBoxDelegate : public PropertyDelegate {
@@ -173,7 +188,8 @@ private:
 class U2DESIGNER_EXPORT ComboBoxDelegate : public PropertyDelegate {
     Q_OBJECT
 public:
-    ComboBoxDelegate(const QVariantMap& items, QObject *parent = 0);    // items: visible name -> value
+    ComboBoxDelegate(const QVariantMap& comboItems, QObject *parent = 0);    // items: visible name -> value
+    ComboBoxDelegate(const QList<ComboItem>& comboItems, QObject *parent = 0);    // items: visible name -> value
     virtual ~ComboBoxDelegate() {}
 
       QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
@@ -186,11 +202,13 @@ public:
       QVariant getDisplayValue(const QVariant&) const;
 
       virtual PropertyDelegate *clone() {
-          return new ComboBoxDelegate(items, parent());
+          return new ComboBoxDelegate(comboItems, parent());
       }
 
       void getItems( QVariantMap &items ) const;
-      QVariantMap getItems() const;
+
+protected:
+      QVariantMap getAvailableItems() const;
 
 signals:
     void si_valueChanged( const QString & newVal ) const;
@@ -199,7 +217,7 @@ private slots:
     void sl_commit();
 
 protected:
-    QVariantMap items;
+    QList<ComboItem> comboItems;
 };
 
 class U2DESIGNER_EXPORT ComboBoxEditableDelegate : public PropertyDelegate {
@@ -334,7 +352,7 @@ public:
     virtual ~FileModeDelegate() {}
 
     virtual PropertyDelegate *clone() {
-        return new FileModeDelegate(3 == items.size(), parent());
+        return new FileModeDelegate(3 == comboItems.size(), parent());
     }
 };
 
@@ -510,4 +528,7 @@ public:
 }; // CharacterDelegate
 
 }//namespace U2
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(U2::URLDelegate::Options)
+
 #endif

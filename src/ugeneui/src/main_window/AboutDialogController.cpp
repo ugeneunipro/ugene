@@ -27,6 +27,7 @@
 #include <U2Core/Settings.h>
 
 #include <QPainter>
+#include <QAction>
 #include <QBrush>
 #include <QStyle>
 #include <QHBoxLayout>
@@ -47,7 +48,7 @@ AboutDialogController::AboutDialogController(QAction* visitWebAction, QWidget *p
     frame->setLayout(l);
     tWidget = NULL;
     installAWidget();
-    connect(web_page_button, SIGNAL(clicked()), visitWebAction,  SLOT(trigger()));
+    connect(web_page_button, SIGNAL(clicked(bool)), visitWebAction,  SLOT(trigger()));
     
 #ifdef Q_OS_WIN
     setWindowFlags(windowFlags() | Qt::MSWindowsFixedSizeDialogHint);

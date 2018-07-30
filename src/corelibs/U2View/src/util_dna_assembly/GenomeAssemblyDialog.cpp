@@ -298,9 +298,9 @@ QList<AssemblyReads> GenomeAssemblyDialog::getReads() {
             read.libName = libraryComboBox->currentText();
 
             if (i < numLeftReads){
-                read.left = leftReadsTable->topLevelItem(i)->data(0, Qt::UserRole).toString();
+                read.left << leftReadsTable->topLevelItem(i)->data(0, Qt::UserRole).toString();
                 if(i < numRightReads){
-                    read.right = rightReadsTable->topLevelItem(i)->data(0, Qt::UserRole).toString();
+                    read.right << rightReadsTable->topLevelItem(i)->data(0, Qt::UserRole).toString();
                 }
                 result.append(read);
             }

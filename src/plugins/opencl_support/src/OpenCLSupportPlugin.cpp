@@ -89,6 +89,8 @@ OpenCLSupportPlugin::OpenCLSupportPlugin() : Plugin(tr("OpenCL Support"),
 OpenCLSupportPlugin::~OpenCLSupportPlugin() {
     OpenCLGpuRegistry* registry = AppContext::getOpenCLGpuRegistry();
     CHECK(NULL != registry, );
+    unregisterAvailableGpus();
+    AppResourcePool::instance()->unregisterResource(RESOURCE_OPENCL_GPU);
     registry->setOpenCLHelper(NULL);
 }
 
@@ -280,6 +282,12 @@ bool OpenCLSupportPlugin::hasOPENCLError(cl_int errCode, QString& errMessage) {
 void OpenCLSupportPlugin::registerAvailableGpus() {
     foreach( OpenCLGpuModel * m, gpus ) {
         AppContext::getOpenCLGpuRegistry()->registerOpenCLGpu(m);
+    }
+}
+
+void OpenCLSupportPlugin::unregisterAvailableGpus() {
+    foreach(OpenCLGpuModel * m, gpus) {
+        AppContext::getOpenCLGpuRegistry()->unregisterOpenCLGpu(m);
     }
 }
 

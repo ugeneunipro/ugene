@@ -29,61 +29,72 @@
 
 namespace U2 {
 
-//class to access data that different tools might need e.g. data bases, samples, test files, ...
-//registers data name and path to data
-//it will analyze the path storing all the data in the map data_file_name -> data_full_path where data_file_name is a name of a file
-
+/**
+ * class to access data that different tools might need e.g. data bases, samples, test files, ...
+ * registers data name and path to data
+ * it will analyze the path storing all the data in the map data_file_name -> data_full_path where data_file_name is a name of a file
+ */
 class U2CORE_EXPORT U2DataPath : public QObject {
     Q_OBJECT
 public:
-    U2DataPath(const QString& name, const QString& path, bool folders = false, bool recurcive = false, const QString& descr = "");
+    enum Option {
+        None = 0,
+        AddOnlyFolders = 1 << 0,
+        AddRecursively = 1 << 1,
+        CutFileExtension = 1 << 2,
+        AddTopLevelFolder = 1 << 3
+    };
+    Q_DECLARE_FLAGS(Options, Option)
 
-    const QString&      getName()  const { return name; }
-    const QString&      getPath()  const { return path; }
-    const QString&      getDescription()  const { return description; }
-    const QMap<QString, QString>& getDataItems() const{return dataItems;}
-    QList<QString> getDataNames() const {return dataItems.keys();}
-    bool                isValid()  const{return valid;}
-    bool                isFolders() const {return folders;}
+    U2DataPath(const QString &name, const QString &path, const QString &descr = "", Options options = None);
 
-    QVariantMap         getDataItemsVariantMap() const;
-    QString             getPathByName(const QString& name) const; //first name found is returned. if your items have similar names use getDataItems()
+    const QString &getName()  const;
+    const QString &getPath()  const;
+    const QString &getDescription()  const;
 
-    bool operator ==(const U2DataPath& other) const { return (name == other.name) && (folders == other.folders); }
-    bool operator !=(const U2DataPath& other) const { return !(*this == other); }
+    const QMap<QString, QString> &getDataItems() const;
+    QList<QString> getDataNames() const;
 
-protected:
+    bool isValid()  const;
+    bool isFolders() const;
+
+    QVariantMap getDataItemsVariantMap() const;
+    QString getPathByName(const QString &name) const; //first name found is returned. if your items have similar names use getDataItems()
+
+    bool operator ==(const U2DataPath &other) const;
+    bool operator !=(const U2DataPath &other) const;
+
+private:
+    void init();
+    void fillDataItems(const QDir &dir, bool recursive);
+    QString chopExtention(QString name);
+
     QString                 name;
     QString                 path;
     QString                 description;
     QMap<QString, QString>  dataItems; //data_file_name -> data_full_path
+    Options                 options;
     bool                    valid;
-    bool                    folders;
-private:
-    void init(bool recurcive);
-    void fillDataItems(const QDir& dir, bool recurcive);
-    QString chopExtention(QString name);
-
-
-}; // U2DataPath
-
+};
 
 class U2CORE_EXPORT U2DataPathRegistry : public QObject {
     Q_OBJECT
 public:
     ~U2DataPathRegistry();
 
-    U2DataPath* getDataPathByName(const QString& name);
+    U2DataPath *getDataPathByName(const QString &name);
 
-    bool registerEntry(U2DataPath* dp);
-    void unregisterEntry(const QString& name);
+    bool registerEntry(U2DataPath *dp);
+    void unregisterEntry(const QString &name);
 
-    QList<U2DataPath*> getAllEntries() const;
+    QList<U2DataPath *> getAllEntries() const;
 
-protected:
-    QMap<QString, U2DataPath*>      registry;
+private:
+    QMap<QString, U2DataPath *> registry;
+};
 
-}; // U2DataPathRegistry
+}   // namespace U2
 
-} //namespace
+Q_DECLARE_OPERATORS_FOR_FLAGS(U2::U2DataPath::Options)
+
 #endif // _U2_DATA_PATH_REGISTRY_H

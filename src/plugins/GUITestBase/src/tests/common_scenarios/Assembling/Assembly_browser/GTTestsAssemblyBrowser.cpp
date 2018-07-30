@@ -983,7 +983,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035){
 GUI_TEST_CLASS_DEFINITION(test_0036){
     //1. Open assembly
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
-	GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
     //Check these hotkeys: up, down, left, right, +, -, pageup, pagedown
     GTUtilsAssemblyBrowser::zoomToReads(os);
 

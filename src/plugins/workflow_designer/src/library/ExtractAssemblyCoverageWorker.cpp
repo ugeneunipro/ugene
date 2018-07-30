@@ -316,5 +316,9 @@ RelationType ExtractAssemblyCoverageFileExtensionRelation::getType() const {
     return FILE_EXTENSION;
 }
 
+ExtractAssemblyCoverageFileExtensionRelation *ExtractAssemblyCoverageFileExtensionRelation::clone() const {
+    return new ExtractAssemblyCoverageFileExtensionRelation(*this);
+}
+
 }   // namespace LocalWorkflow
 }   // namespace U2

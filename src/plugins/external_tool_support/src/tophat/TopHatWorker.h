@@ -51,6 +51,7 @@ public:
     bool isCurrent(const QString &dataset);
     void replaceCurrent(const QString &dataset);
     QString getCurrentSample() const;
+    const QString &getCurrentDataset() const;
 
 private:
     bool groupByDatasets;
@@ -109,6 +110,8 @@ public:
 
     static const QString OUT_DIR;
     static const QString SAMPLES_MAP;
+    static const QString REFERENCE_INPUT_TYPE;
+    static const QString REFERENCE_GENOME;
     static const QString BOWTIE_INDEX_DIR;
     static const QString BOWTIE_INDEX_BASENAME;
     static const QString REF_SEQ;
@@ -155,9 +158,11 @@ private:
 class BowtieFilesRelation : public AttributeRelation {
 public:
     BowtieFilesRelation(const QString &indexNameAttrId);
+
     QVariant getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue,
         DelegateTags *infTags, DelegateTags *depTags) const;
     RelationType getType() const;
+    BowtieFilesRelation *clone() const;
 
     static QString getBowtie1IndexName(const QString &dir, const QString &fileName);
     static QString getBowtie2IndexName(const QString &dir, const QString &fileName);
@@ -166,9 +171,11 @@ public:
 class BowtieVersionRelation : public AttributeRelation {
 public:
     BowtieVersionRelation(const QString &bwtVersionAttrId);
+
     QVariant getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue,
         DelegateTags *infTags, DelegateTags *depTags) const;
     RelationType getType() const;
+    BowtieVersionRelation *clone() const;
 };
 
 } // namespace LocalWorkflow

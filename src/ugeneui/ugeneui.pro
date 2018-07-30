@@ -104,6 +104,5 @@ SOURCES += src/Main.cpp \
            src/welcome_page/WelcomePageMdi.cpp \
            src/welcome_page/WelcomePageWidget.cpp
 RESOURCES += ugeneui.qrc
-TRANSLATIONS += transl/english.ts \
-                transl/russian.ts
+TRANSLATIONS += transl/russian.ts
 

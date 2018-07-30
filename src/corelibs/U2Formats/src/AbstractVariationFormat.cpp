@@ -58,7 +58,7 @@ QList<U2Variant> splitVariants(const U2Variant& v, const QList<QString>& altAlle
 
 
 AbstractVariationFormat::AbstractVariationFormat(QObject *p, const QStringList &fileExts, bool _isSupportHeader)
-    : DocumentFormat(p, DocumentFormatFlags_SW, fileExts),
+    : TextDocumentFormat(p, DocumentFormatFlags_SW, fileExts),
       isSupportHeader(_isSupportHeader),
       maxColumnNumber(0)
 {
@@ -96,7 +96,7 @@ void addStringAttribute(U2OpStatus &os, U2Dbi *dbi, const U2VariantTrack &varian
 
 #define CHR_PREFIX "chr"
 
-Document *AbstractVariationFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
+Document *AbstractVariationFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
     DbiConnection con(dbiRef, os);
     SAFE_POINT_OP(os, NULL);
     U2Dbi *dbi = con.dbi;
@@ -268,7 +268,7 @@ Document *AbstractVariationFormat::loadDocument(IOAdapter *io, const U2DbiRef &d
     return doc;
 }
 
-FormatCheckResult AbstractVariationFormat::checkRawData(const QByteArray &dataPrefix, const GUrl &) const {
+FormatCheckResult AbstractVariationFormat::checkRawTextData(const QByteArray &dataPrefix, const GUrl &) const {
     QStringList lines = QString(dataPrefix).split("\n");
     int idx = 0;
     int mismatchesNumber = 0;

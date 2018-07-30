@@ -19,39 +19,48 @@
  * MA 02110-1301, USA.
  */
 
-#include "DataPathRegistry.h"
+#include <QFile>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>
+#include <U2Core/U2SafePoints.h>
 
-#include <QFile>
+#include "DataPathRegistry.h"
 
 namespace U2 {
 
 ////////////////////////////////////////
 //U2DataPath
-U2DataPath::U2DataPath(const QString& _name, const QString& _path, bool _folders, bool _recurcive, const QString& _descr)
-: name(_name)
-, path(_path)
-, description (_descr)
-, valid(false)
-, folders(_folders)
+U2DataPath::U2DataPath(const QString& _name, const QString& _path, const QString& _descr, Options _options)
+    : name(_name),
+      path(_path),
+      description (_descr),
+      options(_options),
+      valid(false)
 {
-    init(_recurcive);
+    init();
 }
 
-QString U2DataPath::getPathByName(const QString& name) const{
+QString U2DataPath::getPathByName(const QString &name) const{
     QString res = "";
 
-    if (dataItems.contains(name)){
+    if (dataItems.contains(name)) {
         res = dataItems.value(name, "");
     }
 
     return res;
 }
 
-void U2DataPath::init(bool recurcive){
-    if(path.isEmpty() || !QFile::exists(path)){
+bool U2DataPath::operator ==(const U2DataPath &other) const {
+    return (name == other.name) && (options == other.options);
+}
+
+bool U2DataPath::operator !=(const U2DataPath &other) const {
+    return !(*this == other);
+}
+
+void U2DataPath::init() {
+    if (path.isEmpty() || !QFile::exists(path)) {
         valid = false;
         return;
     }
@@ -60,11 +69,14 @@ void U2DataPath::init(bool recurcive){
     QString filePath = fi.absoluteFilePath();
     path = filePath;
 
-    if (fi.isDir()){
-        fillDataItems(fi.absoluteFilePath(), recurcive);
+    if (fi.isDir()) {
+        if (options.testFlag(AddTopLevelFolder)) {
+            dataItems.insertMulti(fi.fileName(), filePath);
+        }
+        fillDataItems(fi.absoluteFilePath(), options.testFlag(AddRecursively));
 
-    }else if (fi.isFile()){
-        if (!folders){
+    } else if (fi.isFile()) {
+        if (!options.testFlag(AddOnlyFolders)) {
             QString fileName = chopExtention(fi.fileName());
             dataItems.insertMulti(fileName, filePath);
         }
@@ -73,42 +85,72 @@ void U2DataPath::init(bool recurcive){
     valid = true;
 }
 
-void U2DataPath::fillDataItems( const QDir& dir, bool recurcive ){
+void U2DataPath::fillDataItems(const QDir &dir, bool recursive) {
     QFileInfoList infoList = dir.entryInfoList( QDir::Dirs | QDir::NoDotAndDotDot | QDir::Files);
 
-    foreach(QFileInfo fi, infoList){
-        if(fi.isFile()){
-            if (!folders){
+    foreach (const QFileInfo &fi, infoList) {
+        if (fi.isFile()) {
+            if (!options.testFlag(AddOnlyFolders)) {
                 QString fileName = chopExtention(fi.fileName());
                 QString filePath = fi.absoluteFilePath();
 
                 dataItems.insertMulti(fileName, filePath);
             }
-        }else if (fi.isDir()){
-            if (folders){
+        } else if (fi.isDir()) {
+            if (options.testFlag(AddOnlyFolders)) {
                 QString fileName = fi.fileName();
                 QString filePath = fi.absoluteFilePath();
 
                 dataItems.insertMulti(fileName, filePath);
             }
-            if(recurcive){
-                fillDataItems(fi.absoluteFilePath(), recurcive);
+
+            if (recursive) {
+                fillDataItems(fi.absoluteFilePath(), recursive);
             }
         }
     }
 }
-QVariantMap U2DataPath::getDataItemsVariantMap() const{
+
+const QString &U2DataPath::getName() const {
+    return name;
+}
+
+const QString &U2DataPath::getPath() const {
+    return path;
+}
+
+const QString &U2DataPath::getDescription() const {
+    return description;
+}
+
+const QMap<QString, QString> &U2DataPath::getDataItems() const {
+    return dataItems;
+}
+
+QList<QString> U2DataPath::getDataNames() const {
+    return dataItems.keys();
+}
+
+bool U2DataPath::isValid() const {
+    return valid;
+}
+
+bool U2DataPath::isFolders() const {
+    return options.testFlag(AddOnlyFolders);
+}
+
+QVariantMap U2DataPath::getDataItemsVariantMap() const {
     QVariantMap vm;
 
-    const QList<QString>& keys = dataItems.keys();
-    foreach(const QString& key, keys){
+    foreach (const QString &key, dataItems.keys()) {
         vm.insert(key, dataItems[key]);
     }
 
     return vm;
 }
 
-QString U2DataPath::chopExtention( QString name ){
+QString U2DataPath::chopExtention(QString name) {
+    CHECK(options.testFlag(CutFileExtension), name);
     if (name.endsWith(".gz")) {
         name.chop(3);
     }
@@ -126,12 +168,11 @@ U2DataPathRegistry::~U2DataPathRegistry() {
     qDeleteAll(registry.values());
 }
 
-U2DataPath* U2DataPathRegistry::getDataPathByName(const QString& name)
-{
+U2DataPath *U2DataPathRegistry::getDataPathByName(const QString& name) {
     return registry.value(name, NULL);
 }
 
-bool U2DataPathRegistry::registerEntry(U2DataPath *dp){
+bool U2DataPathRegistry::registerEntry(U2DataPath *dp) {
     if (registry.contains(dp->getName()) || !dp->isValid()) {
         return false;
     } else {
@@ -140,11 +181,11 @@ bool U2DataPathRegistry::registerEntry(U2DataPath *dp){
     return true;
 }
 
-void U2DataPathRegistry::unregisterEntry(const QString &name){
+void U2DataPathRegistry::unregisterEntry(const QString &name) {
     delete registry.take(name);
 }
 
-QList<U2DataPath*> U2DataPathRegistry::getAllEntries() const{
+QList<U2DataPath *> U2DataPathRegistry::getAllEntries() const {
     return registry.values();
 }
 }//namespace

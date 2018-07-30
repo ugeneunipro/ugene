@@ -27,21 +27,23 @@
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/DNASequenceObject.h>
 
+#include "../TextDocumentFormat.h"
+
 namespace U2 {
 
 class IOAdapter;
 
-class U2FORMATS_EXPORT ACEFormat : public DocumentFormat {
+class U2FORMATS_EXPORT ACEFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     ACEFormat(QObject* p);
 
     virtual DocumentFormatId getFormatId() const { return BaseDocumentFormats::ACE; }
     virtual const QString& getFormatName() const { return formatName; }
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
 private:
     QString formatName;

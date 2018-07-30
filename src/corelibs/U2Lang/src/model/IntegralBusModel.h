@@ -78,6 +78,7 @@ public:
     virtual void remap(const QMap<ActorId, ActorId>&);
     virtual void updateBindings(const QMap<ActorId, ActorId> &actorsMapping);
     virtual void replaceActor(Actor *oldActor, Actor *newActor, const QList<PortMapping> &mappings);
+    virtual void setVisibleSlot(const QString& slotId, const bool isVisible);
 
     // used when loading schema
     void setBusMapValue(const QString & slotId, const QString & value);
@@ -92,8 +93,13 @@ protected:
     mutable bool recursing;
 
 private:
+    void removeBusMapKey(const QString& slotId);
+    void restoreBusMapKey(const QString& slotId);
     StrStrMap getBusMap() const;
     SlotPathMap getPathsMap() const;
+
+    // links with invisible slots
+    StrStrMap removedBusMap;
 }; // IntegralBusPort
 
 /**

@@ -126,6 +126,9 @@ public:
 
     /** Source SAM file url - SAM_TO_BAM - destination BAM file url */
     static const QString SAM_TO_BAM;
+
+    /** Source custom file url - CUSTOM_FILE_TO_FILE_ROLE - destination custom file url */
+    static const QString CUSTOM_FILE_TO_FILE;
 }; // StorageRoles
 
 } // U2

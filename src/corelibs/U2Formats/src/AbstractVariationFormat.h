@@ -25,9 +25,11 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/VariantTrackObject.h>
 
+#include "TextDocumentFormat.h"
+
 namespace U2 {
 
-class U2FORMATS_EXPORT AbstractVariationFormat : public DocumentFormat {
+class U2FORMATS_EXPORT AbstractVariationFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     enum ColumnRole {
@@ -59,7 +61,6 @@ public:
     AbstractVariationFormat(QObject *p, const QStringList &fileExts, bool _isSupportHeader = false);
 
     virtual const QString &getFormatName() const {return formatName;}
-    virtual FormatCheckResult checkRawData(const QByteArray &dataPrefix, const GUrl &url) const;
     virtual void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);
     virtual void storeHeader(GObject *obj, IOAdapter *io, U2OpStatus &os);
@@ -73,7 +74,8 @@ protected:
 
     PositionIndexing indexing;
 
-    virtual Document *loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray &dataPrefix, const GUrl &url) const;
+    virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
     virtual bool checkFormatByColumnCount(int columnCount) const = 0;
 
     static const QString META_INFO_START;

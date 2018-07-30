@@ -22,6 +22,8 @@
 #ifndef _U2_DOCUMENT_PROVIDER_SELECTOR_CONTROLLER_H_
 #define _U2_DOCUMENT_PROVIDER_SELECTOR_CONTROLLER_H_
 
+#include <QButtonGroup>
+
 #include <U2Core/DocumentUtils.h>
 
 #include "ui_DocumentProviderSelectorDialog.h"

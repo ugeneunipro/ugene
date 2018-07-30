@@ -22,6 +22,8 @@
 #ifndef _U2_COREAPI_ID_REGISTRY_H_
 #define _U2_COREAPI_ID_REGISTRY_H_
 
+#include <QMap>
+
 namespace U2 {
 
 /*************************************
@@ -29,16 +31,16 @@ namespace U2 {
  *************************************/
 template <class T> class IdRegistry {
 public:
-    virtual T* getById(const QString& id) {return registry.value(id);}
+    virtual T* getById(const QString& id) {return registry.value(id, NULL);}
     virtual bool registerEntry(T* t) {
         if (registry.contains(t->getId())) {
             return false;
         } else {
             registry.insert(t->getId(), t);
             return true;
-        } 
+        }
     }
-    virtual T* unregisterEntry(const QString& id) {return registry.take(id);}
+    virtual T* unregisterEntry(const QString& id) {return registry.contains(id) ? registry.take(id) : NULL;}
     virtual ~IdRegistry() { qDeleteAll(registry.values());}
 
     virtual QList<T*> getAllEntries() const {return registry.values();}
@@ -46,7 +48,7 @@ public:
 
 protected:
     QMap<QString, T*> registry;
-    
+
 }; // IdRegistry
 
 } // U2

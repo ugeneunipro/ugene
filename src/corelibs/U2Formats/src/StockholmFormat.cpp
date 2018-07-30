@@ -673,14 +673,14 @@ static void save( IOAdapter* io, const MultipleSequenceAlignment& msa, QString n
 }
 
 namespace U2 {
-StockholmFormat::StockholmFormat( QObject *obj ) : DocumentFormat( obj , DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject | DocumentFormatFlag_LockedIfNotCreatedByUGENE, QStringList() << "sto") {
+StockholmFormat::StockholmFormat( QObject *obj ) : TextDocumentFormat( obj , DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject | DocumentFormatFlag_LockedIfNotCreatedByUGENE, QStringList() << "sto") {
     format_name = tr( "Stockholm" );
     formatDescription = tr("A multiple sequence alignments file format");
     supportedObjectTypes+=GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
 
-Document* StockholmFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os){
+Document* StockholmFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os){
     CHECK_EXT(io != NULL && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), NULL);
     QList<GObject*> objects;
     try {
@@ -717,7 +717,7 @@ void StockholmFormat::storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os
     }
 }
 
-FormatCheckResult StockholmFormat::checkRawData(const QByteArray& data, const GUrl&) const {
+FormatCheckResult StockholmFormat::checkRawTextData(const QByteArray& data, const GUrl&) const {
     bool headerIsOK = checkHeader( data.constData(), data.size());
     return headerIsOK ? FormatDetection_VeryHighSimilarity : FormatDetection_NotMatched;
 }

@@ -12,7 +12,6 @@ Source0: http://ugene.net/downloads/%{name}-%{version}.tar.gz
 
 BuildRequires: desktop-file-utils
 BuildRequires: mesa-libGLU-devel
-BuildRequires: procps-devel
 BuildRequires: qt5-qtbase-devel qt5-qtbase-private-devel
 BuildRequires: qt5-qtbase-mysql
 BuildRequires: qt5-qtmultimedia-devel

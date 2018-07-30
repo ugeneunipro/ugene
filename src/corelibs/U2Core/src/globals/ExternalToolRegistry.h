@@ -79,6 +79,7 @@ public:
     const QString&      getToolKitName()  const { return toolKitName; }
     const StrStrMap&    getErrorDescriptions()  const { return errorDescriptions; }
     const StrStrMap&    getAdditionalInfo() const;
+    virtual QStringList getAdditionalPaths() const;
 
     virtual void        getAdditionalParameters(const QString& output) { Q_UNUSED(output) }
 
@@ -201,6 +202,9 @@ public:
     bool registerEntry(ExternalTool* t);
     void unregisterEntry(const QString& id);
 
+    void setToolkitDescription(const QString& toolkit, const QString& desc) {toolkits[toolkit] = desc;}
+    QString getToolkitDescription(const QString& toolkit) const {return toolkits[toolkit];}
+
     QList<ExternalTool*> getAllEntries() const;
     QList< QList<ExternalTool*> > getAllEntriesSortedByToolKits() const;
 
@@ -210,6 +214,7 @@ public:
 protected:
     QList<ExternalTool*>            registryOrder;
     QMap<QString, ExternalTool*>    registry;
+    QMap<QString, QString>          toolkits;
     QString                         temporaryDirectory;
     ExternalToolManager*            manager;
 

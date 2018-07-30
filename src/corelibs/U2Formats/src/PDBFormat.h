@@ -22,10 +22,13 @@
 #ifndef _U2_PDB_FORMAT_H_
 #define _U2_PDB_FORMAT_H_
 
+#include <QSharedDataPointer>
+
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/BioStruct3D.h>
-#include <QSharedDataPointer>
+
+#include "TextDocumentFormat.h"
 
 namespace U2 {
 
@@ -36,15 +39,13 @@ class AtomData;
 typedef QSharedDataPointer<AtomData> SharedAtom;
 
 
-class U2FORMATS_EXPORT  PDBFormat : public DocumentFormat {
+class U2FORMATS_EXPORT  PDBFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     PDBFormat(QObject* p);
     virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::PLAIN_PDB;}
     virtual const QString& getFormatName() const {return formatName;}
 
-
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
     static int getElementNumberByName(const QByteArray& elementName);
     static char getAcronymByName(const QByteArray& name);
     static QHash<QByteArray, int> createAtomNumMap();
@@ -52,7 +53,8 @@ public:
     static Document* createDocumentFromBioStruct3D(const U2DbiRef& dbi, BioStruct3D &bioStruct, DocumentFormat* format, IOAdapterFactory* iof, const GUrl& url, U2OpStatus& ti, const QVariantMap& fs );
 
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
 private:
 

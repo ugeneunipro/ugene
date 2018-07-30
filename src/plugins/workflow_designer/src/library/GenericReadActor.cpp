@@ -84,7 +84,9 @@ GenericSeqActorProto::GenericSeqActorProto() : GenericReadDocProto(CoreLibConsta
     setCompatibleDbObjectTypes(QSet<GObjectType>() << GObjectTypes::SEQUENCE);
 
     setDisplayName(U2::Workflow::CoreLib::tr("Read Sequence"));
-    desc = U2::Workflow::CoreLib::tr("Reads sequences and annotations if any from local or remote files. All sequence file formats supported by UGENE (e.g. GenBank, FASTA) are allowed as input to this element.");
+    desc = U2::Workflow::CoreLib::tr("Input one or several files with nucleotide or protein sequences."
+                                     " A file may also contain annotations. Any format, supported by UGENE, is allowed (GenBank, FASTA, etc.)."
+                                     " The element outputs message(s) with the sequence and annotations data.");
     QMap<Descriptor, DataTypePtr> m;
     m[BaseSlots::URL_SLOT()] = BaseTypes::STRING_TYPE();
     m[BaseSlots::DATASET_SLOT()] = BaseTypes::STRING_TYPE();
@@ -144,8 +146,8 @@ GenericMAActorProto::GenericMAActorProto() : GenericReadDocProto(CoreLibConstant
     setCompatibleDbObjectTypes(QSet<GObjectType>() << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
 
     setDisplayName(U2::Workflow::CoreLib::tr("Read Alignment"));
-    desc = U2::Workflow::CoreLib::tr("Reads multiple sequence alignments (MSAs) from local or remote files. All MSA file formats supported by UGENE are allowed as input to this element."
-        "<p>Besides recognized alignment formats, it supports aligning from a set of sequences in a corresponding file (e.g. FASTA or Genbank).");
+    desc = U2::Workflow::CoreLib::tr("Input one or several files in one of the multiple sequence alignment formats, supported by UGENE (ClustalW, FASTA, etc.)."
+                " The element outputs message(s) with the alignment data.");
 
     QMap<Descriptor, DataTypePtr> m;
     m[BaseSlots::URL_SLOT()] = BaseTypes::STRING_TYPE();

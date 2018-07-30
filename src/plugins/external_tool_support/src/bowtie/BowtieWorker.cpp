@@ -115,7 +115,9 @@ void BowtieWorker::setGenomeIndex(DnaAssemblyToRefTaskSettings& settings){
 void BowtieWorkerFactory::init() {
     QList<Attribute*> attrs;
     QMap<QString, PropertyDelegate*> delegates;
-    addCommonAttributes(attrs, delegates);
+    addCommonAttributes(attrs, delegates,
+                        BowtieWorker::tr("Bowtie index folder"),
+                        BowtieWorker::tr("Bowtie index basename"));
     {
          static const QString MISMATCHES_TYPE = "mismatches_type";
          static const QString N_MISMATCHES = "n-mismatches";
@@ -135,7 +137,7 @@ void BowtieWorkerFactory::init() {
          static const QString THREADS = "threads";
 
          Descriptor mismatchesType(MISMATCHES_TYPE ,
-             BowtieWorker::tr("Mode:"),
+             BowtieWorker::tr("Mode"),
              BowtieWorker::tr("When the -n option is specified (which is the default), bowtie determines which alignments \
                               are valid according to the following policy, which is similar to Maq's default policy. \
                               In -v mode, alignments may have no more than V mismatches, where V may be a number from 0 \
@@ -245,15 +247,21 @@ void BowtieWorkerFactory::init() {
     }
 
     Descriptor protoDesc(BowtieWorkerFactory::ACTOR_ID,
-        BowtieWorker::tr("Align Reads with Bowtie"),
-        BowtieWorker::tr("Performs alignment of short reads with Bowtie."));
+        BowtieWorker::tr("Map Reads with Bowtie"),
+        BowtieWorker::tr("Bowtie is a program for mapping short DNA sequence reads to a long reference sequence."
+                         " It uses Burrows-Wheeler techniques extended with quality-aware backtracking"
+                         " algorithm that permits mismatches."
+                         "<br/><br/>Provide URL(s) to FASTA or FASTQ file(s) with NGS reads to the input"
+                         " port of the element, set up the reference sequence in the parameters."
+                         " The result is saved to the specified SAM file, URL to the file is passed"
+                         " to the output port."));
 
     ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, getPortDescriptors(), attrs);
     proto->setPrompter(new ShortReadsAlignerPrompter());
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPortValidator(IN_PORT_DESCR, new ShortReadsAlignerSlotsValidator);
     proto->addExternalTool(ET_BOWTIE);
-    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_ALIGN_SHORT_READS(), proto);
+    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new BowtieWorkerFactory());
 }
 

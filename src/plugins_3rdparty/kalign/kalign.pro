@@ -59,4 +59,4 @@ SOURCES += src/KalignAdapter.cpp \
     src/PairwiseAlignmentHirschbergTask.cpp
 
 RESOURCES += kalign.qrc
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

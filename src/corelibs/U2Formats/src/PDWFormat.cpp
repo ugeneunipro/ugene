@@ -52,7 +52,7 @@ namespace U2 {
 #define PDW_CIRCULAR_TAG    "IScircular"
 
 PDWFormat::PDWFormat(QObject* p)
-: DocumentFormat(p, DocumentFormatFlag(DocumentFormatFlag_LockedIfNotCreatedByUGENE), QStringList()<<"pdw")
+: TextDocumentFormat(p, DocumentFormatFlag(DocumentFormatFlag_LockedIfNotCreatedByUGENE), QStringList()<<"pdw")
 {
     formatName = tr("pDRAW");
     formatDescription = tr("pDRAW is a sequence file format used by pDRAW software");
@@ -60,7 +60,7 @@ PDWFormat::PDWFormat(QObject* p)
     supportedObjectTypes+=GObjectTypes::ANNOTATION_TABLE;
 }
 
-FormatCheckResult PDWFormat::checkRawData(const QByteArray& rawData, const GUrl&) const {
+FormatCheckResult PDWFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
     const char* data = rawData.constData();
     int size = rawData.size();
     if (!rawData.startsWith(PDW_FORMAT_TAG)) {
@@ -154,7 +154,7 @@ void PDWFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& f
     CHECK_EXT(!objects.isEmpty(), os.setError(Document::tr("Document is empty.")),);
 }
 
-Document * PDWFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
+Document * PDWFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
     U2SequenceObject* seqObj = NULL;
     AnnotationTableObject *annObj = NULL;
     CHECK_EXT(NULL != io && io->isOpen(), os.setError(L10N::badArgument("IO adapter")),

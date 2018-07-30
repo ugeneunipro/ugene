@@ -17,7 +17,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>DotPlot</string>
+   <string>Compare sequences using Dotplot</string>
   </property>
   <property name="windowIcon">
    <iconset>

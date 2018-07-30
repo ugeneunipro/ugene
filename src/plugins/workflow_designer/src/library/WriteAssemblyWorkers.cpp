@@ -159,8 +159,9 @@ void WriteAssemblyWorkerFactory::init() {
         WriteBAMWorker::tr("Assembly"),
         WriteBAMWorker::tr("Assembly"));
     Descriptor protoDesc(WriteAssemblyWorkerFactory::ACTOR_ID,
-        WriteBAMWorker::tr("Write Assembly"),
-        WriteBAMWorker::tr("Writes all supplied assemblies to file(s) in selected format."));
+        WriteBAMWorker::tr("Write NGS Reads Assembly"),
+        WriteBAMWorker::tr("The element gets message(s) with assembled reads data and saves the data"
+                           " to the specified file(s) in one of the appropriate formats (SAM, BAM, or UGENEDB)."));
 
     QList<PortDescriptor*> portDescs;
     {

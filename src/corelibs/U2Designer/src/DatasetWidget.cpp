@@ -42,13 +42,18 @@
 #include <U2Lang/SharedDbUrlUtils.h>
 
 #include "DatasetWidget.h"
+#include "ui_DatasetWidget.h"
 
 namespace U2 {
 
 URLListWidget::URLListWidget(URLListController *_ctrl)
-    : QWidget(), ctrl(_ctrl), connectToDbDialog(new SharedConnectionsDialog(this)), waitingForDbToConnect(false)
+    : QWidget(),
+      ui(new Ui_DatasetWidget),
+      ctrl(_ctrl),
+      connectToDbDialog(new SharedConnectionsDialog(this)),
+      waitingForDbToConnect(false)
 {
-    setupUi(this);
+    ui->setupUi(this);
     popup = new OptionsPopup(this);
 
     reset();
@@ -59,45 +64,49 @@ URLListWidget::URLListWidget(URLListController *_ctrl)
     QIcon upIcon = QIcon(QString(":U2Designer/images/up.png"));
     QIcon downIcon = QIcon(QString(":U2Designer/images/down.png"));
 
-    addFileButton->setIcon(fileIcon);
-    addDirButton->setIcon(dirIcon);
-    addFromDbButton->setIcon(dbIcon);
-    deleteButton->setIcon(deleteIcon);
-    upButton->setIcon(upIcon);
-    downButton->setIcon(downIcon);
+    ui->addFileButton->setIcon(fileIcon);
+    ui->addDirButton->setIcon(dirIcon);
+    ui->addFromDbButton->setIcon(dbIcon);
+    ui->deleteButton->setIcon(deleteIcon);
+    ui->upButton->setIcon(upIcon);
+    ui->downButton->setIcon(downIcon);
 
-    connect(addFileButton, SIGNAL(clicked()), SLOT(sl_addFileButton()));
-    connect(addDirButton, SIGNAL(clicked()), SLOT(sl_addDirButton()));
-    connect(addFromDbButton, SIGNAL(clicked()), SLOT(sl_addFromDbButton()));
-    connect(downButton, SIGNAL(clicked()), SLOT(sl_downButton()));
-    connect(upButton, SIGNAL(clicked()), SLOT(sl_upButton()));
-    connect(deleteButton, SIGNAL(clicked()), SLOT(sl_deleteButton()));
+    connect(ui->addFileButton, SIGNAL(clicked()), SLOT(sl_addFileButton()));
+    connect(ui->addDirButton, SIGNAL(clicked()), SLOT(sl_addDirButton()));
+    connect(ui->addFromDbButton, SIGNAL(clicked()), SLOT(sl_addFromDbButton()));
+    connect(ui->downButton, SIGNAL(clicked()), SLOT(sl_downButton()));
+    connect(ui->upButton, SIGNAL(clicked()), SLOT(sl_upButton()));
+    connect(ui->deleteButton, SIGNAL(clicked()), SLOT(sl_deleteButton()));
     connect(connectToDbDialog.data(), SIGNAL(si_connectionCompleted()), SLOT(sl_sharedDbConnected()));
 
-    connect(itemsArea, SIGNAL(itemSelectionChanged()), SLOT(sl_itemChecked()));
+    connect(ui->itemsArea, SIGNAL(itemSelectionChanged()), SLOT(sl_itemChecked()));
 
     if (!readingFromDbIsSupported()) {
-        addFromDbButton->hide();
+        ui->addFromDbButton->hide();
     }
 
-    QAction *deleteAction = new QAction(itemsArea);
+    QAction *deleteAction = new QAction(ui->itemsArea);
     deleteAction->setShortcut(QKeySequence::Delete);
     deleteAction->setShortcutContext(Qt::WidgetShortcut);
     connect(deleteAction, SIGNAL(triggered()), SLOT(sl_deleteButton()));
-    itemsArea->addAction(deleteAction);
+    ui->itemsArea->addAction(deleteAction);
 
-    QAction *selectAction = new QAction(itemsArea);
+    QAction *selectAction = new QAction(ui->itemsArea);
     selectAction->setShortcut(QKeySequence::SelectAll);
     selectAction->setShortcutContext(Qt::WidgetShortcut);
     connect(selectAction, SIGNAL(triggered()), SLOT(sl_selectAll()));
-    itemsArea->addAction(selectAction);
+    ui->itemsArea->addAction(selectAction);
 
-    itemsArea->installEventFilter(this);
+    ui->itemsArea->installEventFilter(this);
+}
+
+URLListWidget::~URLListWidget() {
+    delete ui;
 }
 
 void URLListWidget::addUrlItem(UrlItem *urlItem) {
-    urlItem->setParent(itemsArea);
-    itemsArea->addItem(urlItem);
+    urlItem->setParent(ui->itemsArea);
+    ui->itemsArea->addItem(urlItem);
     connect(urlItem, SIGNAL(si_dataChanged()), SLOT(sl_dataChanged()));
 }
 
@@ -191,19 +200,19 @@ void URLListWidget::addUrl(const QString &url) {
 
 void URLListWidget::sl_itemChecked() {
     reset();
-    if (itemsArea->selectedItems().size() > 0) {
-        deleteButton->setEnabled(true);
-        bool firstSelected = itemsArea->item(0)->isSelected();
-        bool lastSelected = itemsArea->item(itemsArea->count() - 1)->isSelected();
-        upButton->setEnabled(!firstSelected);
-        downButton->setEnabled(!lastSelected);
+    if (ui->itemsArea->selectedItems().size() > 0) {
+        ui->deleteButton->setEnabled(true);
+        bool firstSelected = ui->itemsArea->item(0)->isSelected();
+        bool lastSelected = ui->itemsArea->item(ui->itemsArea->count() - 1)->isSelected();
+        ui->upButton->setEnabled(!firstSelected);
+        ui->downButton->setEnabled(!lastSelected);
     }
 }
 
 void URLListWidget::reset() {
-    deleteButton->setEnabled(false);
-    upButton->setEnabled(false);
-    downButton->setEnabled(false);
+    ui->deleteButton->setEnabled(false);
+    ui->upButton->setEnabled(false);
+    ui->downButton->setEnabled(false);
     popup->hideOptions();
 }
 
@@ -212,42 +221,42 @@ bool URLListWidget::readingFromDbIsSupported() const {
 }
 
 void URLListWidget::sl_downButton() {
-    CHECK(itemsArea->selectedItems().size() > 0, );
+    CHECK(ui->itemsArea->selectedItems().size() > 0, );
 
-    for (int pos=itemsArea->count() - 2; pos >= 0; pos--) { // without last item
-        if (itemsArea->item(pos)->isSelected()) {
-            QListWidgetItem *item = itemsArea->takeItem(pos);
-            itemsArea->insertItem(pos+1, item);
+    for (int pos = ui->itemsArea->count() - 2; pos >= 0; pos--) { // without last item
+        if (ui->itemsArea->item(pos)->isSelected()) {
+            QListWidgetItem *item = ui->itemsArea->takeItem(pos);
+            ui->itemsArea->insertItem(pos + 1, item);
             item->setSelected(true);
-            ctrl->replaceUrl(pos, pos+1);
+            ctrl->replaceUrl(pos, pos + 1);
         }
     }
 }
 
 void URLListWidget::sl_upButton() {
-    CHECK(itemsArea->selectedItems().size() > 0, );
+    CHECK(ui->itemsArea->selectedItems().size() > 0, );
 
-    for (int pos=1; pos < itemsArea->count(); pos++) { // without first item
-        if (itemsArea->item(pos)->isSelected()) {
-            QListWidgetItem *item = itemsArea->takeItem(pos);
-            itemsArea->insertItem(pos-1, item);
+    for (int pos = 1; pos < ui->itemsArea->count(); pos++) { // without first item
+        if (ui->itemsArea->item(pos)->isSelected()) {
+            QListWidgetItem *item = ui->itemsArea->takeItem(pos);
+            ui->itemsArea->insertItem(pos - 1, item);
             item->setSelected(true);
-            ctrl->replaceUrl(pos, pos-1);
+            ctrl->replaceUrl(pos, pos - 1);
         }
     }
 }
 
 void URLListWidget::sl_deleteButton() {
-    foreach (QListWidgetItem *item, itemsArea->selectedItems()) {
-        int pos = itemsArea->row(item);
+    foreach (QListWidgetItem *item, ui->itemsArea->selectedItems()) {
+        int pos = ui->itemsArea->row(item);
         ctrl->deleteUrl(pos);
-        delete itemsArea->takeItem(pos);
+        delete ui->itemsArea->takeItem(pos);
     }
 }
 
 void URLListWidget::sl_selectAll() {
-    for (int i=0; i<itemsArea->count(); i++) {
-        itemsArea->item(i)->setSelected(true);
+    for (int i = 0; i < ui->itemsArea->count(); i++) {
+        ui->itemsArea->item(i)->setSelected(true);
     }
 }
 
@@ -256,12 +265,12 @@ void URLListWidget::sl_dataChanged() {
 }
 
 bool URLListWidget::eventFilter(QObject *obj, QEvent *event) {
-    CHECK(itemsArea == obj, false);
+    CHECK(ui->itemsArea == obj, false);
     if (event->type() == QEvent::ContextMenu) {
-        CHECK(1 == itemsArea->selectedItems().size(), false);
+        CHECK(1 == ui->itemsArea->selectedItems().size(), false);
 
         QContextMenuEvent *e = static_cast<QContextMenuEvent *>(event);
-        QListWidgetItem *item = itemsArea->itemAt(e->pos());
+        QListWidgetItem *item = ui->itemsArea->itemAt(e->pos());
         CHECK(NULL != item, false);
         CHECK(item->isSelected(), false);
 
@@ -270,7 +279,7 @@ bool URLListWidget::eventFilter(QObject *obj, QEvent *event) {
 
         QWidget *options = urlItem->getOptionsWidget();
         if (NULL != options) {
-            popup->showOptions(options, itemsArea->mapToGlobal(e->pos()));
+            popup->showOptions(options, ui->itemsArea->mapToGlobal(e->pos()));
         }
         return true;
     }

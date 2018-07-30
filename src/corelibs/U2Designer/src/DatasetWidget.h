@@ -29,19 +29,19 @@
 
 #include "UrlItem.h"
 
-#include "ui_DatasetWidget.h"
-
 class QVBoxLayout;
+class Ui_DatasetWidget;
 
 namespace U2 {
 
 class OptionsPopup;
 class URLListController;
 
-class URLListWidget : public QWidget, public Ui_DatasetWidget {
+class U2DESIGNER_EXPORT URLListWidget : public QWidget {
     Q_OBJECT
 public:
     URLListWidget(URLListController *ctrl);
+    ~URLListWidget();
 
     void addUrlItem(UrlItem *urlItem);
 
@@ -66,6 +66,7 @@ private:
     bool readingFromDbIsSupported() const;
 
 private:
+    Ui_DatasetWidget *ui;
     URLListController *ctrl;
     OptionsPopup *popup;
     QObjectScopedPointer<SharedConnectionsDialog> connectToDbDialog;

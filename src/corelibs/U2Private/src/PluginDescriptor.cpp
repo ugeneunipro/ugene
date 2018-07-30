@@ -192,7 +192,7 @@ PluginDesc PluginDescriptorHelper::readPluginDescriptor(const QString& descUrl, 
         QString dependsText = dn.toElement().text();
         QStringList dependsTokes = dependsText.split(QChar(';'), QString::SkipEmptyParts);
         foreach (const QString& token, dependsTokes) {
-            QStringList plugAndVersion = token.split(QChar(','), QString::KeepEmptyParts);
+            QStringList plugAndVersion = token.split(QChar(':'), QString::KeepEmptyParts);
             if (plugAndVersion.size()!=2) {
                 error = tr("Invalid depends token: %1").arg(token);
                 return failResult;
@@ -207,6 +207,12 @@ PluginDesc PluginDescriptorHelper::readPluginDescriptor(const QString& descUrl, 
     return result;
 }
 
+
+PluginDesc::PluginDesc()
+    : mode(PluginMode_Malformed)
+{
+
+}
 
 bool PluginDesc::operator == (const PluginDesc& pd) const  {
     return id == pd.id
@@ -257,7 +263,7 @@ static void findParentNodes(DepNode* node, const PluginDesc& desc, QString & err
             err = PluginDescriptorHelper::tr("Plugin circular dependency detected: %1 <-> %2").arg(desc.id).arg(node->desc.id);
             return;
         }
-        findParentNodes(node, desc, err, result);
+        findParentNodes(childNode, desc, err, result);
     }
     foreach(const DependsInfo& di, desc.dependsList) {
         if ( di.id == node->desc.id && di.version <= node->desc.pluginVersion ) {
@@ -307,9 +313,13 @@ QList<PluginDesc> PluginDescriptorHelper::orderPlugins(const QList<PluginDesc>& 
     rootNode->root = true;
     allNodes.qlist.append(rootNode);
 
-    bool changed = false;
     QList<PluginDesc> queue = unordered;
+
+    int iterations = 0;
+    int maxIterations = queue.size();
+
     do  {
+        maxIterations = queue.size();
         PluginDesc desc = queue.takeFirst();
         QList<DepNode*> nodes;
         int nDeps = desc.dependsList.size();
@@ -324,18 +334,19 @@ QList<PluginDesc> PluginDescriptorHelper::orderPlugins(const QList<PluginDesc>& 
         }
         if (nDeps == 0 || nodes.size() == nDeps) {
             DepNode* descNode = new DepNode();
-            allNodes.qlist.append(descNode);
             descNode->desc = desc;
+            allNodes.qlist.append(descNode);
             // now add this node as a child to all nodes it depends on
             foreach(DepNode* node, nodes) {
                 node->childNodes.append(descNode);
                 descNode->parentNodes.append(node);
             }
-            changed = true;
+            iterations = 0;
             continue;
         }
         queue.append(desc);
-    } while (changed && !queue.isEmpty());
+        iterations++;
+    } while (!queue.isEmpty() && iterations <= maxIterations);
 
     if (!queue.isEmpty()) {
         err = tr("Can't satisfy dependencies for %1 !").arg(queue.first().id);

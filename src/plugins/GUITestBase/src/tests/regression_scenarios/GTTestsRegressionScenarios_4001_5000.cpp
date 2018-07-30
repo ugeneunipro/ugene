@@ -727,10 +727,11 @@ GUI_TEST_CLASS_DEFINITION(test_4072) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/fungal - all.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(500);
+    GTGlobals::sleep(1000);
     hNameScroll = GTWidget::findWidget(os, "horizontal_names_scroll");
-    CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area");
-    CHECK_SET_ERR(hNameScroll->isVisible(), "Scroll bar at the botton of name list area is not visible");
+    CHECK_SET_ERR(hNameScroll != NULL, "No scroll bar at the bottom of name list area for fungal-all.aln");
+    CHECK_SET_ERR(hNameScroll->isVisible(), "Scroll bar at the bottom of name list area is not visible for fungal-all.aln");
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4084) {
@@ -2054,7 +2055,7 @@ GUI_TEST_CLASS_DEFINITION(test_4221) {
 //    1. Use main menu
 //    {tools->NGS data analysis->Map reads to reference}
 //    2.Fill the dialog:
-//    Alignment method: BWA
+//    Mapping tool: BWA
 //    Index algorithm: is
 //    Select any valid input data
 //    Press start
@@ -2210,11 +2211,11 @@ GUI_TEST_CLASS_DEFINITION(test_4266) {
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
-    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
+    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence", true);
     CHECK_SET_ERR( read != NULL, "Failed to add an element");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/fasta/Gene.fa");
 
-    WorkflowProcessItem* write = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence");
+    WorkflowProcessItem* write = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence", true);
     CHECK_SET_ERR( write != NULL, "Failed to add an element");
     GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir(sandBoxDir).absolutePath() + "/test_4266.fa", GTUtilsWorkflowDesigner::textValue);
 
@@ -2320,10 +2321,10 @@ GUI_TEST_CLASS_DEFINITION(test_4284){
 
 GUI_TEST_CLASS_DEFINITION(test_4295) {
 /* 1. Open Workflow Designer
- * 2. Add elements Read File List and Write Plain Text
+ * 2. Add elements Read File URL(s) and Write Plain Text
  * 3. Set as input file human_T1.fa
  * 3. Add "Element with CMD" _common_data/scenarios/_regression/4295/test_4295.etc
- * 4. Connect elements Read File List > Element with CMD > Write Plain Text
+ * 4. Connect elements Read File URL(s) > Element with CMD > Write Plain Text
  * 5. Run workflow
  * Expected state: no errors in log
  */
@@ -2334,7 +2335,7 @@ GUI_TEST_CLASS_DEFINITION(test_4295) {
     // start test
     GTLogTracer logTracer;
 
-    GTUtilsWorkflowDesigner::addElement(os, "File List");
+    GTUtilsWorkflowDesigner::addElement(os, "Read File URL(s)");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTGlobals::sleep(200);
 
@@ -2349,14 +2350,14 @@ GUI_TEST_CLASS_DEFINITION(test_4295) {
     GTGlobals::sleep(200);
     WorkflowProcessItem *cmdlineWorker = GTUtilsWorkflowDesigner::getWorker(os, "test_4295");
 
-    GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "File List"), cmdlineWorker);
+    GTUtilsWorkflowDesigner::connect(os, GTUtilsWorkflowDesigner::getWorker(os, "Read File URL(s)"), cmdlineWorker);
     GTGlobals::sleep(200);
     GTUtilsWorkflowDesigner::connect(os, cmdlineWorker, GTUtilsWorkflowDesigner::getWorker(os, "Write Plain Text"));
     GTGlobals::sleep(200);
     GTUtilsWorkflowDesigner::click(os, "test_4295");
     GTGlobals::sleep(200);
     QTableWidget* table = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-    GTUtilsWorkflowDesigner::setTableValue(os, "Plain text", "Source URL (by File List)", GTUtilsWorkflowDesigner::comboValue, table);
+    GTUtilsWorkflowDesigner::setTableValue(os, "Plain text", "Source URL (by Read File URL(s))", GTUtilsWorkflowDesigner::comboValue, table);
     GTUtilsWorkflowDesigner::click(os, "test_4295");
 
     class OkClicker : public Filler {
@@ -2744,6 +2745,46 @@ GUI_TEST_CLASS_DEFINITION(test_4352) {
     //Expected state: UGENE does not crash.
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4356) {
+    
+    class Test_4356 : public Filler {
+    public:
+        Test_4356(HI::GUITestOpStatus& os)
+            : Filler(os, "DotPlotDialog") {}
+        virtual void run() {
+            QWidget* dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank", "murine.gb"));
+            GTWidget::click(os, dialog->findChild<QPushButton*>("loadSequenceButton"));
+            GTGlobals::sleep();
+
+            QDialogButtonBox* box = qobject_cast<QDialogButtonBox*>(GTWidget::findWidget(os, "buttonBox", dialog));
+            QPushButton* button =  box->button(QDialogButtonBox::Ok);
+            CHECK_SET_ERR(button !=NULL, "Ok button is NULL");
+            GTWidget::click(os, button);
+
+        }
+    };
+
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    GTUtilsDocument::unloadDocument(os, "murine.gb", true);
+    
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new Test_4356(os));
+    GTWidget::click(os, GTWidget::findWidget(os, "build_dotplot_action_widget"));
+    GTGlobals::sleep(1000);
+    
+    Document *doc = GTUtilsDocument::getDocument(os, "murine.gb");
+    CHECK_SET_ERR(NULL != doc, "Document is NULL");
+    CHECK_SET_ERR(doc->isLoaded(), "Document is unexpectedly unloaded");
+}
+
+
 GUI_TEST_CLASS_DEFINITION(test_4359) {
 /* 1. Open human_T1
  * 2. Open Primer3 dialog
@@ -2953,14 +2994,14 @@ GUI_TEST_CLASS_DEFINITION(test_4386_2) {
 GUI_TEST_CLASS_DEFINITION(test_4391) {
     GTLogTracer logTracer;
 
-//    1. Create workflow { File List -> Cut Adapter }.
+//    1. Create workflow { Read File URL(s) -> Cut Adapter }.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    WorkflowProcessItem *fileList = GTUtilsWorkflowDesigner::addElement(os, "File List");
+    WorkflowProcessItem *fileList = GTUtilsWorkflowDesigner::addElement(os, "Read File URL(s)");
     WorkflowProcessItem *cutAdapter = GTUtilsWorkflowDesigner::addElement(os, "Cut Adapter");
     GTUtilsWorkflowDesigner::connect(os, fileList, cutAdapter);
 
 //    2. Set "_common_data/fastq/illumina.fastq" as input.
-    GTUtilsWorkflowDesigner::addInputFile(os, "File List", testDir + "_common_data/fastq/illumina.fastq");
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read File URL(s)", testDir + "_common_data/fastq/illumina.fastq");
 
 //    3. Run the workflow.
     GTUtilsWorkflowDesigner::runWorkflow(os);
@@ -3301,6 +3342,53 @@ GUI_TEST_CLASS_DEFINITION(test_4515) {
     CHECK_SET_ERR(GTUtilsOptionPanelSequenceView::checkResultsText(os, "Results: 0/0"), "Results string not match");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4523) {
+//    1. Open "data/samples/FASTA/human_T1.fa".
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    2. Open "data/samples/FASTQ/eas.fastq".
+    GTUtilsProject::openMultiSequenceFileAsSequences(os, dataDir + "samples/FASTQ/eas.fastq");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    3. Call context menu on the "human_T1.fa" document, select {Add -> Add object to document...} menu item. Add any sequence object.
+    GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "eas.fastq", "EAS54_6_R1_2_1_413_324"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__ADD_MENU << ACTION_PROJECT__ADD_OBJECT));
+    GTUtilsProjectTreeView::callContextMenu(os, "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: "human_T1.fa" document contains two sequence objects.
+    QModelIndex oldIndex = GTUtilsProjectTreeView::findIndex(os, QStringList() << "human_T1.fa" << "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    QModelIndex addedIndex = GTUtilsProjectTreeView::findIndex(os, QStringList() << "human_T1.fa" << "EAS54_6_R1_2_1_413_324");
+
+//    4. Rename both objects in "human_T1.fa" document to "123".
+    GTUtilsProjectTreeView::rename(os, addedIndex, "123");
+    GTGlobals::sleep(500);
+
+    GTUtilsProjectTreeView::rename(os, oldIndex, "123");
+    GTGlobals::sleep(500);
+
+//    Expected state: "human_T1.fa" document contains two sequence objects with the same names.
+    // Ok, I'm sure in the renaming method, skip this check
+
+//    5. Open the second object.
+    GTUtilsProjectTreeView::doubleClickItem(os, addedIndex);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the second object is opened. The second object is highlighted in the Project view.
+    GTUtilsSequenceView::checkSequence(os, "CCCTTCTTGTCTTCAGCGTTTCTCC");
+
+//    6. Open the first object.
+    GTUtilsProjectTreeView::doubleClickItem(os, oldIndex);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected state: the first object is opened. The first object is highlighted in the Project view.
+    const QString sequenceBeginning = GTUtilsSequenceView::getBeginOfSequenceAsString(os, 25);
+    const QString expectedSequenceBeginning = "TTGTCAGATTCACCAAAGTTGAAAT";
+    CHECK_SET_ERR(expectedSequenceBeginning == sequenceBeginning,
+                  QString("The sequence first 25 bases are incorrect: expected '%1', got '%2'")
+                  .arg(expectedSequenceBeginning).arg(sequenceBeginning));
+}
 
 GUI_TEST_CLASS_DEFINITION(test_4524) {
     // Open "data/samples/CLUSTALW/COI.aln".
@@ -3595,6 +3683,29 @@ GUI_TEST_CLASS_DEFINITION(test_4588_2) {
     GTMouseDriver::click(Qt::RightButton);
 }
 
+
+GUI_TEST_CLASS_DEFINITION(test_4589) {
+
+    // 1. Open "data/samples/Genbank/murine.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Open "data/samples/Genbank/sars.gb".
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/sars.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 3. Call context menu on the "sars.gb" document and select {Add -> Add object to document} menu item.
+    GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "murine.gb", "NC_001363 features"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__ADD_MENU << ACTION_PROJECT__ADD_OBJECT));
+    GTUtilsProjectTreeView::callContextMenu(os, "sars.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsProjectTreeView::findIndex(os, QStringList() << "sars.gb" << "NC_001363 features");
+    GTUtilsProjectTreeView::findIndex(os, QStringList() << "sars.gb" << "NC_004718 features");
+
+}
+
+
 GUI_TEST_CLASS_DEFINITION(test_4591) {
 
     //1. Open a circular sequence of length N.
@@ -3706,7 +3817,7 @@ GUI_TEST_CLASS_DEFINITION(test_4606) {
     GTWidget::click(os, createElement);
     GTGlobals::sleep();
 
-    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence");
+    WorkflowProcessItem* read = GTUtilsWorkflowDesigner::addElement(os, "Read Sequence",true);
     CHECK_SET_ERR(read != NULL, "Failed to add an element");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/FASTA/human_T1.fa");
 
@@ -3797,10 +3908,6 @@ GUI_TEST_CLASS_DEFINITION(test_4624) {
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "extended_dna.ace.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view" << "Open new view: Assembly Browser" ));
-    GTUtilsProjectTreeView::click(os, "extended_dna.ace.ugenedb", Qt::RightButton);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
     QList<ExportCoverageDialogFiller::Action> actions;
 
     //2. Export coverage with bases quantity info
@@ -3810,8 +3917,7 @@ GUI_TEST_CLASS_DEFINITION(test_4624) {
     actions << ExportCoverageDialogFiller::Action(ExportCoverageDialogFiller::ClickOk, QVariant());
 
     GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
-    GTUtilsAssemblyBrowser::callExportCoverageDialog(os, GTUtilsAssemblyBrowser::Overview);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsAssemblyBrowser::callExportCoverageDialog(os);
 
     //3. Check the coverage
     QString templateCoverage = getFileContent(testDir + "_common_data/scenarios/_regression/4624/4624.txt");
@@ -5624,15 +5730,16 @@ GUI_TEST_CLASS_DEFINITION(test_4886) {
 
 GUI_TEST_CLASS_DEFINITION(test_4908) {
     //1. Open s file with multiple sequences
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::selectSequenceRegion(os, 1, 199950);
+    GTKeyboardUtils::copy(os);
+
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "seq5.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "seq2.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    QAction* editMode = GTAction::findActionByText(os, "Edit sequence", GTUtilsSequenceView::getSeqWidgetByNumber(os));
-    CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
-    GTWidget::click(os, GTAction::button(os, editMode));
 
     GTUtilsProjectTreeView::click(os, "SEQUENCE_WITH_A_ENTRY_2", Qt::LeftButton);
 
@@ -5643,18 +5750,19 @@ GUI_TEST_CLASS_DEFINITION(test_4908) {
 
     GTGlobals::sleep();
 
-    //2. Select the first sequence and add data to the clipboard
-    ADVSingleSequenceWidget *firstSeqWidget = GTUtilsSequenceView::getSeqWidgetByNumber(os, 0);
-    GTWidget::click(os, firstSeqWidget);
-    GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsSequenceView::enableEditingMode(os, true, 0);
+    GTUtilsSequenceView::enableEditingMode(os, true, 1);
+    GTGlobals::sleep();
 
-    GTKeyboardDriver::keyClick( 'v', Qt::ControlModifier);
+    //2. Select the first sequence and add data to the clipboard
+    DetView *firstSeqWidget = GTUtilsSequenceView::getDetViewByNumber(os, 0);
+    GTWidget::click(os, firstSeqWidget);
+    GTKeyboardUtils::paste(os);
 
     //3. While the data is been pasted, select the second sequence
-    ADVSingleSequenceWidget *secondSeqWidget = GTUtilsSequenceView::getSeqWidgetByNumber(os, 1);
+    DetView *secondSeqWidget = GTUtilsSequenceView::getDetViewByNumber(os, 1);
     GTWidget::click(os, secondSeqWidget);
-    GTGlobals::sleep();
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(5000);
 
     //4. Check if the data is pasted to the first sequence
     int len = GTUtilsSequenceView::getSequenceAsString(os, 0).length();

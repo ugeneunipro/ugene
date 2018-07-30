@@ -45,7 +45,7 @@ workflow "Processing of raw ChIP-Seq single-end reads"{
     }
     bwamem-id {
         type:bwamem-id;
-        name:"Align Reads with BWA MEM";
+        name:"Map Reads with BWA-MEM";
         output-dir:output;
     }
     files-conversion {
@@ -107,20 +107,20 @@ workflow "Processing of raw ChIP-Seq single-end reads"{
     }
 
     .actor-bindings {
-        merge-bam.out-file->filter-bam.in-file
-        rmdup-bam.out-file->Sort-bam.in-file
-        CASAVAFilter.out-file->CutAdaptFastq.in-file
-        CutAdaptFastq.out-file->QualityTrim.in-file
         get-file-list.out-url->CASAVAFilter.in-file
         get-file-list.out-url->fastqc.in-file
-        Sort-bam-1.out-file->rmdup-bam.in-file
-        files-conversion.out-file->merge-bam.in-file
         Sort-bam.out-file->files-conversion-1.in-file
         Sort-bam.out-file->fastqc-1-1.in-file
-        bwamem-id.out-data->files-conversion.in-file
+        rmdup-bam.out-file->Sort-bam.in-file
         QualityTrim.out-file->bwamem-id.in-data
         QualityTrim.out-file->fastqc-1.in-file
+        CutAdaptFastq.out-file->QualityTrim.in-file
         filter-bam.out-file->Sort-bam-1.in-file
+        CASAVAFilter.out-file->CutAdaptFastq.in-file
+        merge-bam.out-file->filter-bam.in-file
+        bwamem-id.out-data->files-conversion.in-file
+        Sort-bam-1.out-file->rmdup-bam.in-file
+        files-conversion.out-file->merge-bam.in-file
     }
 
     get-file-list.url->CASAVAFilter.in-file.url
@@ -215,7 +215,7 @@ workflow "Processing of raw ChIP-Seq single-end reads"{
                 out-file.angle:2.38594;
             }
             bwamem-id {
-                pos:"-90 -480";
+                pos:"-18 -491";
                 style:ext;
                 bg-color-ext:"0 128 0 64";
                 bounds:"-30 -30 105 92";
@@ -242,7 +242,7 @@ workflow "Processing of raw ChIP-Seq single-end reads"{
                 in-file.angle:133.531;
             }
             files-conversion {
-                pos:"-45 -255";
+                pos:"30 -256";
                 style:simple;
                 bg-color-simple:"84 84 84 255";
                 in-file.angle:88.2643;
@@ -256,7 +256,7 @@ workflow "Processing of raw ChIP-Seq single-end reads"{
                 out-file.angle:360;
             }
             filter-bam {
-                pos:"-585 -300";
+                pos:"-585 -291";
                 style:ext;
                 bg-color-ext:"194 0 0 64";
                 in-file.angle:346.95;

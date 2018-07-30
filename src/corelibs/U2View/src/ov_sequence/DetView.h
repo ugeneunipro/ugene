@@ -134,7 +134,7 @@ private:
     void updateSelectedTranslations(const SequenceObjectContext::TranslationState& state);
 };
 
-class DetViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {
+class U2VIEW_EXPORT DetViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {
 public:
     DetViewRenderArea(DetView* d);
     ~DetViewRenderArea();

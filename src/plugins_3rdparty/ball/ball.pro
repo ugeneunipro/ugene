@@ -118,4 +118,4 @@ HEADERS += src/BallPlugin.h \
 OTHER_FILES += src/include/BALL/COMMON/logStream.iC \
     src/include/BALL/DATATYPE/string.iC
 INCLUDEPATH += src/include
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

@@ -31,4 +31,6 @@ unix {
 macx {
     LIBS += -framework CoreServices
     DEFINES += __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__=1050
+    QMAKE_RPATHDIR += @executable_path
+    QMAKE_LFLAGS_SONAME = -Wl,-dylib_install_name,@rpath/
 }

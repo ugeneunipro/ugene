@@ -299,8 +299,12 @@ void RemoteDBFetcherFactory::init()
     dr->registerEntry(outType);
 
     Descriptor desc(ACTOR_ID,
-                    RemoteDBFetcherWorker::tr("Read from Remote Database"),
-                    RemoteDBFetcherWorker::tr("Reads sequences and annotations if any from a remote database."));
+                    RemoteDBFetcherWorker::tr("Read Sequence from Remote Database"),
+                    RemoteDBFetcherWorker::tr("Download sequence(s) with the specified ID(s) from one of remote databases:"
+                                              " NCBI, Ensembl, PDB, etc. The sequences are downloaded with the associated"
+                                              " annotations in a file format, specific for the selected database."
+                                              " The element outputs message(s) with the sequence and annotations data."
+                                              "<br/><br/>Make sure the Internet connection is active."));
 
     QList<PortDescriptor*> pds;
     {

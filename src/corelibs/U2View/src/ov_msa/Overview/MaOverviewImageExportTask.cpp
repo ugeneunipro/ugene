@@ -119,7 +119,7 @@ void MaOverviewImageExportController::initSettingsWidget() {
     layout->addWidget(exportSimpleOverview);
     layout->addWidget(exportGraphOverview);
 
-    if (!simpleOverview->isValid()) {
+    if (!simpleOverview->isValid() || !simpleOverview->isVisible()) {
         exportSimpleOverview->setDisabled(true);
     } else {
         exportSimpleOverview->setChecked(true);

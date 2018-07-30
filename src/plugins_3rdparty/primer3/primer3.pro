@@ -27,4 +27,4 @@ SOURCES += src/Primer3Dialog.cpp \
            src/primer3_core/primer3_main.c \
     src/FindExonRegionsTask.cpp
 RESOURCES += primer3.qrc
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

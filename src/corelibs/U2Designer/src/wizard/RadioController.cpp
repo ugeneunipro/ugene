@@ -43,6 +43,9 @@ QWidget * RadioController::createGUI(U2OpStatus &/*os*/) {
     QWidget *result = new QWidget();
     QVBoxLayout *l = new QVBoxLayout(result);
     l->setMargin(0);
+#if defined(Q_OS_LINUX)
+    l->setSpacing(0);
+#endif
 
     QButtonGroup *group = new QButtonGroup(result);
     connect(group, SIGNAL(buttonClicked(QAbstractButton *)), SLOT(sl_buttonClicked(QAbstractButton *)));

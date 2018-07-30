@@ -39,7 +39,7 @@ public:
 
     virtual bool open(const GUrl& url, IOAdapterMode m_ );
 
-    virtual bool isOpen() const {return io->isOpen();}
+    virtual bool isOpen() const;
 
     virtual void close();
 
@@ -49,9 +49,9 @@ public:
 
     virtual bool skip(qint64 nBytes);
 
-    virtual qint64 left() const {return -1;}
+    virtual qint64 left() const;
 
-    virtual int getProgress() const {return io->getProgress();}
+    virtual int getProgress() const;
 
     virtual qint64 bytesRead() const;
 

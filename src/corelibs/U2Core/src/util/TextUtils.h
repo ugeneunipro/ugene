@@ -23,12 +23,15 @@
 #define _U2_TEXT_UTILS_H_
 
 #include <U2Core/global.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <assert.h>
 
 #include <QBitArray>
 #include <QSet>
-#include <QVector>
 #include <QStringList>
-#include <assert.h>
+#include <QTextStream>
+#include <QVector>
 
 namespace U2 {
 
@@ -93,6 +96,10 @@ public:
     static QString variate(const QString& prefix, const QString& sep, const QSet<QString>& filter, bool mustHaveSuffix = false, int startSeed = 0);
 
     inline static void charBounds(const char* data, int dataSize, char& minChar, char& maxChar);
+
+    static QByteArray cutByteOrderMarks(const QByteArray& data);
+
+    static qint64 cutByteOrderMarks(char* data, qint64 buffLen = -1);
 
     //todo: move this method to another class
     inline static QByteArray selectIdx256(const QBitArray& map, bool sign);

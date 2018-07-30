@@ -48,9 +48,44 @@ namespace U2 {
 #define PAIR_TYPE_MATE                 "mate"
 #define PAIR_TYPE_MATE_HQ              "high-quality mate"
 
+#define SINGLE_UNPAIRED                "in-unpaired-reads"
+#define SINGLE_CSS                     "in-pac-bio-ccs-reads"
+#define SINGLE_CLR                     "in-pac-bio-clr-reads"
+#define SINGLE_NANOPORE                "in-oxford-nanopore-reads"
+#define SINGLE_SANGER                  "in-sanger-reads"
+#define SINGLE_TRUSTED                 "in-trusted-contigs"
+#define SINGLE_UNTRUSTED               "in-untrusted-contigs"
+
+#define LIB_PAIR_TYPE_DEFAULT          "paired-end"
+#define LIB_PAIR_TYPE_MATE             "mate-pairs"
+#define LIB_PAIR_TYPE_MATE_HQ          "hq-mate-pairs"
+
+#define LIB_SINGLE_UNPAIRED            "single"
+#define LIB_SINGLE_CSS                 "single"
+#define LIB_SINGLE_CLR                 "pacbio"
+#define LIB_SINGLE_NANOPORE            "nanopore"
+#define LIB_SINGLE_SANGER              "sanger"
+#define LIB_SINGLE_TRUSTED             "trusted-contigs"
+#define LIB_SINGLE_UNTRUSTED           "untrusted-contigs"
+
+#define PAIR_DEFAULT                   "in-data"
+#define PAIR_MATE                      "in-mate-pairs"
+#define PAIR_HQ_MATE                   "in-high-quality-mate-pairs"
+
 #define ORIENTATION_FR                 "fr"
 #define ORIENTATION_RF                 "rf"
 #define ORIENTATION_FF                 "ff"
+
+#define PLATFORM_ILLUMINA              "Illumina"
+#define PLATFORM_IONTORRENT            "--iontorrent"
+
+#define ALIAS_SINGLE                   "Separate reads"
+#define ALIAS_INTERLACED               "Interlaced reads"
+
+#define TYPE_SINGLE                    "single reads"
+#define TYPE_INTERLACED                "interlaced reads"
+
+#define PLATFORM_ION_TORRENT           "Ion Torrent"
 
 class GenomeAssemblyAlgorithmMainWidget;
 
@@ -78,22 +113,29 @@ public:
 
 class U2ALGORITHM_EXPORT AssemblyReads {
 public:
-    AssemblyReads(const GUrl& left = GUrl(), const GUrl& right = GUrl(), const QString& libNumber = QString("1"), const QString& libType = PAIR_TYPE_DEFAULT, const QString& orientation = ORIENTATION_FR, const QString& libName = LIBRARY_SINGLE)
-        :
-         left(left)
+    AssemblyReads(const QList<GUrl>& left = QList<GUrl>(),
+                  const QList<GUrl>& right = QList<GUrl>(),
+                  const QString& libNumber = QString("1"),
+                  const QString& libType = PAIR_TYPE_DEFAULT,
+                  const QString& orientation = ORIENTATION_FR,
+                  const QString& libName = LIBRARY_SINGLE,
+                  const QString& readType = TYPE_SINGLE)
+        :left(left)
         ,right(right)
         ,libNumber(libNumber)
         ,libType(libType)
         ,orientation(orientation)
         ,libName(libName)
+        ,readType(readType)
         {}
 
-        GUrl left;
-        GUrl right;
-        QString libNumber;
-        QString libType;
-        QString orientation;
-        QString libName;
+        QList<GUrl> left;
+        QList<GUrl> right;
+        QString     libNumber;
+        QString     libType;
+        QString     orientation;
+        QString     libName;
+        QString     readType;
 };
 
 class U2ALGORITHM_EXPORT GenomeAssemblyTaskSettings {

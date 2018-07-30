@@ -22,6 +22,8 @@
 #ifndef _U2_HMMER_SEARCH_DIALOG_H_
 #define _U2_HMMER_SEARCH_DIALOG_H_
 
+#include <QButtonGroup>
+
 #include <U2Gui/CreateAnnotationWidgetController.h>
 
 #include "HmmerSearchTask.h"

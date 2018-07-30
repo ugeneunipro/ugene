@@ -184,7 +184,6 @@ Task *BaseShortReadsAlignerWorker::tick() {
 }
 
 void BaseShortReadsAlignerWorker::cleanup() {
-
 }
 
 bool BaseShortReadsAlignerWorker::isReady() const {
@@ -289,36 +288,61 @@ int BaseShortReadsAlignerWorkerFactory::getThreadsCount(){
     return threads;
 }
 
-void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& attrs, QMap<QString, PropertyDelegate*>& delegates) {
+void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& attrs, QMap<QString, PropertyDelegate*>& delegates,
+                                                             const QString &descrIndexFolder, const QString &descrIndexBasename) {
     {
-        Descriptor outDir(OUTPUT_DIR,
-            BaseShortReadsAlignerWorker::tr("Output folder"),
-            BaseShortReadsAlignerWorker::tr("Folder to save output files."));
+        Descriptor referenceInputType(REFERENCE_INPUT_TYPE,
+            BaseShortReadsAlignerWorker::tr("Reference input type"),
+            BaseShortReadsAlignerWorker::tr("Select \"Sequence\" to input a reference genome as a sequence file. "
+            "<br/>Note that any sequence file format, supported by UGENE, is allowed (FASTA, GenBank, etc.). "
+            "<br/>The index will be generated automatically in this case. "
+            "<br/>Select \"Index\" to input already generated index files, specific for the tool."));
 
         Descriptor refGenome(REFERENCE_GENOME,
             BaseShortReadsAlignerWorker::tr("Reference genome"),
             BaseShortReadsAlignerWorker::tr("Path to indexed reference genome."));
+
+        Descriptor indexDir(INDEX_DIR,
+            descrIndexFolder,
+            BaseShortReadsAlignerWorker::tr("The folder with the index for the reference sequence."));
+
+        Descriptor indexBasename(INDEX_BASENAME,
+            descrIndexBasename,
+            BaseShortReadsAlignerWorker::tr("The basename of the index for the reference sequence."));
+
+        Descriptor outName(OUTPUT_NAME,
+            BaseShortReadsAlignerWorker::tr("Output file name"),
+            BaseShortReadsAlignerWorker::tr("Base name of the output file. 'out.sam' by default"));
+
+        Descriptor outDir(OUTPUT_DIR,
+            BaseShortReadsAlignerWorker::tr("Output folder"),
+            BaseShortReadsAlignerWorker::tr("Folder to save output files."));
 
         Descriptor library(LIBRARY,
             BaseShortReadsAlignerWorker::tr("Library"),
             BaseShortReadsAlignerWorker::tr("Is this library mate-paired?"));
 
         Descriptor filter(FILTER_UNPAIRED,
-                          BaseShortReadsAlignerWorker::tr("Filter unpaired reads"),
-                          BaseShortReadsAlignerWorker::tr("Should the reads be checked for incomplete pairs?"));
+            BaseShortReadsAlignerWorker::tr("Filter unpaired reads"),
+            BaseShortReadsAlignerWorker::tr("Should the reads be checked for incomplete pairs?"));
 
-        Descriptor outName(OUTPUT_NAME,
-            BaseShortReadsAlignerWorker::tr("Output file name"),
-            BaseShortReadsAlignerWorker::tr("Base name of the output file. 'out.sam' by default"));
-
+        attrs << new Attribute(referenceInputType, BaseTypes::STRING_TYPE(), true, QVariant(DnaAssemblyToRefTaskSettings::SEQUENCE));
+        Attribute* attrRefGenom = new Attribute(refGenome, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+        attrRefGenom->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, DnaAssemblyToRefTaskSettings::SEQUENCE));
+        attrs << attrRefGenom;
+        Attribute* attrIndexDir = new Attribute(indexDir, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+        attrIndexDir->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, DnaAssemblyToRefTaskSettings::INDEX));
+        attrs << attrIndexDir;
+        Attribute* attrIndexBasename = new Attribute(indexBasename, BaseTypes::STRING_TYPE(), Attribute::Required | Attribute::NeedValidateEncoding, QVariant(""));
+        attrIndexBasename->addRelation(new VisibilityRelation(REFERENCE_INPUT_TYPE, DnaAssemblyToRefTaskSettings::INDEX));
+        attrs << attrIndexBasename;
         attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), true, QVariant(""));
-        attrs << new Attribute(refGenome, BaseTypes::STRING_TYPE(), true, QVariant(""));
         attrs << new Attribute(outName, BaseTypes::STRING_TYPE(), true, QVariant(BASE_OUTFILE));
 
         Attribute* libraryAttr = new Attribute(library, BaseTypes::STRING_TYPE(), false, QVariant("Single-end"));
         QVariantList visibilityValues;
         visibilityValues << QVariant("Paired-end");
-        libraryAttr->addPortRelation(PortRelationDescriptor(IN_PORT_DESCR_PAIRED, visibilityValues));
+        libraryAttr->addPortRelation(new PortRelationDescriptor(IN_PORT_DESCR_PAIRED, visibilityValues));
         attrs << libraryAttr;
 
         Attribute* filterAttr = new Attribute(filter, BaseTypes::BOOL_TYPE(), false, true);
@@ -327,8 +351,15 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute*>& 
     }
 
     {
-        delegates[OUTPUT_DIR] = new URLDelegate("", "", false, true);
+        QVariantMap rip;
+        rip[BaseShortReadsAlignerWorker::tr("Sequence")] = DnaAssemblyToRefTaskSettings::SEQUENCE;
+        rip[BaseShortReadsAlignerWorker::tr("Index")] = DnaAssemblyToRefTaskSettings::INDEX;
+        delegates[REFERENCE_INPUT_TYPE] = new ComboBoxDelegate(rip);
+
         delegates[REFERENCE_GENOME] = new URLDelegate("", "", false, false, false);
+        delegates[INDEX_DIR] = new URLDelegate("", "", false, true, false, NULL, "", true);
+
+        delegates[OUTPUT_DIR] = new URLDelegate("", "", false, true);
 
         QVariantMap libMap;
         libMap["Single-end"] = "Single-end";
@@ -403,14 +434,19 @@ QString ShortReadsAlignerPrompter::composeRichDoc() {
         QString pairedReadsUrl = pairedReadsProducer ? pairedReadsProducer->getLabel() : unsetStr;
         res.append(tr("Aligns upstream oriented reads from <u>%1</u> and downstream oriented reads from <u>%2</u> ").arg(readsUrl).arg(pairedReadsUrl));
     } else {
-        res.append(tr("Aligns reads from <u>%1</u> ").arg(readsUrl));
+        res.append(tr("Maps input reads from <u>%1</u> ").arg(readsUrl));
     }
 
-    QString genome = getHyperlink(REFERENCE_GENOME, getURL(REFERENCE_GENOME));
-    res.append(tr(" to reference genome <u>%1</u>.").arg(genome));
+    QVariant inputType = getParameter(REFERENCE_INPUT_TYPE);
+    if (inputType == DnaAssemblyToRefTaskSettings::INDEX) {
+        QString baseName = getHyperlink(INDEX_BASENAME, getURL(INDEX_BASENAME));
+        res.append(tr(" to reference sequence with index <u>%1</u>.").arg(baseName));
+    } else {
+        QString genome = getHyperlink(REFERENCE_GENOME, getURL(REFERENCE_GENOME));
+        res.append(tr(" to reference sequence <u>%1</u>.").arg(genome));
+    }
 
     return res;
 }
-
 } //LocalWorkflow
 } //U2

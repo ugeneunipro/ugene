@@ -252,9 +252,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     GTUtilsAnnotationsTreeView::getItemCenter(os, "B");
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "qu") != NULL, "Item qu not found in tree widget");
     }
 
@@ -282,15 +280,11 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     GTUtilsAnnotationsTreeView::getItemCenter(os, "C");
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "qual1"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "qu") != NULL, "Item qu not found in tree widget");
-
     GTGlobals::sleep();
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "qu1") != NULL, "Item qu not found in tree widget");
-
-    }
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "qu1") != NULL, "Item qu1 not found in tree widget");
+}
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/project/", "proj2.uprj");

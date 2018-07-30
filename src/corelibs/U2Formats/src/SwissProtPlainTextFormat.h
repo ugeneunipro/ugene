@@ -31,9 +31,8 @@ class U2FORMATS_EXPORT SwissProtPlainTextFormat : public EMBLGenbankAbstractDocu
 public:
     SwissProtPlainTextFormat(QObject* p);
 
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
-
 protected:
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
     bool readIdLine(ParserState*);
     bool readEntry(ParserState*, U2SequenceImporter&,int& seqSize,int& fullSeqSize,bool merge, int gapSize,U2OpStatus&);

@@ -21,10 +21,12 @@
 
 #include "GenomeAssemblyRegistry.h"
 
+#include <U2Core/U2SafePoints.h>
+
 namespace U2 {
 
 GenomeAssemblyTask::GenomeAssemblyTask( const GenomeAssemblyTaskSettings& s, TaskFlags _flags)
-    : Task("GenomeAssemblyTask", _flags), settings(s), resultUrl("˚"){
+    : Task("GenomeAssemblyTask", _flags), settings(s), resultUrl(""){
 }
 
 QString GenomeAssemblyTask::getResultUrl() const{
@@ -137,7 +139,9 @@ bool GenomeAssemblyUtils::isLibraryPaired(const QString& libName){
 }
 
 bool GenomeAssemblyUtils::hasRightReads(const QString& libName){
-    if (libName == LIBRARY_PAIRED){
+    if (libName == PAIR_DEFAULT ||
+        libName == PAIR_MATE ||
+        libName == PAIR_HQ_MATE) {
         return true;
     }
     return false;
@@ -164,7 +168,6 @@ QString GenomeAssemblyUtils::getYamlLibraryName(const QString &libName, const QS
 
     return result;
 }
-
 
 } //namespace
 

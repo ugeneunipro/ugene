@@ -25,9 +25,11 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
+#include "TextDocumentFormat.h"
+
 namespace U2 {
 
-class U2FORMATS_EXPORT PlainTextFormat : public DocumentFormat {
+class U2FORMATS_EXPORT PlainTextFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     PlainTextFormat(QObject* p);
@@ -38,11 +40,11 @@ public:
 
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
-
     static void storeRawData(const QByteArray& data, U2OpStatus& ts, IOAdapter* io);
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
 private:
     QString formatName;

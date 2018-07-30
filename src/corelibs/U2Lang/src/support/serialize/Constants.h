@@ -34,6 +34,7 @@ public:
     static const QString BLOCK_START;
     static const QString BLOCK_END;
     static const QString SERVICE_SYM;
+    static const QString SINGLE_QUOTE;
     static const QString QUOTE;
     static const QString NEW_LINE;
     static const QString UNKNOWN_ERROR;

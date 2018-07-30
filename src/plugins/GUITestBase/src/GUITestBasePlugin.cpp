@@ -74,6 +74,7 @@
 #include "tests/common_scenarios/repeat_finder/GTTestsRepeatFinder.h"
 #include "tests/common_scenarios/sanger/GTTestsSanger.h"
 #include "tests/common_scenarios/sequence_edit/GTTestsSequenceEdit.h"
+#include "tests/common_scenarios/sequence_edit/GTTestsSequenceEditMode.h"
 #include "tests/common_scenarios/sequence_selection/GTTestsSequenceSelection.h"
 #include "tests/common_scenarios/sequence_view/GTTestsSequenceView.h"
 #include "tests/common_scenarios/shared_database/GTTestsSharedDatabase.h"
@@ -880,7 +881,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3266);
     REGISTER_TEST(GUITest_regression_scenarios::test_3270);
     REGISTER_TEST(GUITest_regression_scenarios::test_3274);
-    REGISTER_TEST(GUITest_regression_scenarios::test_3276);
+    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3276, "Obsolete, should be replaced by UGENE-6104");
     REGISTER_TEST(GUITest_regression_scenarios::test_3277);
     REGISTER_TEST(GUITest_regression_scenarios::test_3279);
     REGISTER_TEST(GUITest_regression_scenarios::test_3283);
@@ -1138,6 +1139,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4334);
     REGISTER_TEST(GUITest_regression_scenarios::test_4345);
     REGISTER_TEST(GUITest_regression_scenarios::test_4352);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4356);
     REGISTER_TEST(GUITest_regression_scenarios::test_4359);
     REGISTER_TEST(GUITest_regression_scenarios::test_4368);
     REGISTER_TEST(GUITest_regression_scenarios::test_4373);
@@ -1159,6 +1161,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4505);
     REGISTER_TEST(GUITest_regression_scenarios::test_4508);
     REGISTER_TEST(GUITest_regression_scenarios::test_4515);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4523);
     REGISTER_TEST(GUITest_regression_scenarios::test_4524);
     REGISTER_TEST(GUITest_regression_scenarios::test_4536);
     REGISTER_TEST(GUITest_regression_scenarios::test_4537);
@@ -1171,6 +1174,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4588);
     REGISTER_TEST(GUITest_regression_scenarios::test_4588_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4588_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4589);
     REGISTER_TEST(GUITest_regression_scenarios::test_4591);
     REGISTER_TEST(GUITest_regression_scenarios::test_4591_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4591_2);
@@ -1296,6 +1300,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5216);
     REGISTER_TEST(GUITest_regression_scenarios::test_5220);
     REGISTER_TEST(GUITest_regression_scenarios::test_5227);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5231);
     REGISTER_TEST(GUITest_regression_scenarios::test_5246);
     REGISTER_TEST(GUITest_regression_scenarios::test_5249);
     REGISTER_TEST(GUITest_regression_scenarios::test_5252);
@@ -1329,6 +1334,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5517);
     REGISTER_TEST(GUITest_regression_scenarios::test_5520_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_5520_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5550);
     REGISTER_TEST(GUITest_regression_scenarios::test_5562_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_5562_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5562_3);
@@ -1356,6 +1362,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5718);
     REGISTER_TEST(GUITest_regression_scenarios::test_5739);
     REGISTER_TEST(GUITest_regression_scenarios::test_5747);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5750);
     REGISTER_TEST(GUITest_regression_scenarios::test_5751);
     REGISTER_TEST(GUITest_regression_scenarios::test_5752);
     REGISTER_TEST(GUITest_regression_scenarios::test_5753);
@@ -1367,6 +1374,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5769_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5770);
     REGISTER_TEST(GUITest_regression_scenarios::test_5773);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5775);
     REGISTER_TEST(GUITest_regression_scenarios::test_5786_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_5786_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5786_3);
@@ -1384,6 +1392,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_5818_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_5832);
     REGISTER_TEST(GUITest_regression_scenarios::test_5833);
+    REGISTER_TEST(GUITest_regression_scenarios::test_5837);
     REGISTER_TEST(GUITest_regression_scenarios::test_5840);
     REGISTER_TEST(GUITest_regression_scenarios::test_5847);
     REGISTER_TEST(GUITest_regression_scenarios::test_5849);
@@ -1403,10 +1412,21 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_regression_scenarios::test_6031);
     REGISTER_TEST(GUITest_regression_scenarios::test_6033);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6038);
     REGISTER_TEST(GUITest_regression_scenarios::test_6043);
     REGISTER_TEST(GUITest_regression_scenarios::test_6047);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6058_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6058_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6062);
     REGISTER_TEST(GUITest_regression_scenarios::test_6066);
     REGISTER_TEST(GUITest_regression_scenarios::test_6071);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6078);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6083);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6087);
+
+    REGISTER_TEST(GUITest_regression_scenarios::test_6102);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6118);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6136);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -1662,6 +1682,22 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0015_2_neg);
     REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0016_1);
     REGISTER_TEST(GUITest_common_scenarios_sequence_edit::test_0016_2);
+
+    //////////////////////////////////////////////////////////////////////////
+    // Common scenarios/sequence edit mode/
+    //////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit_mode::without_anns_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit_mode::without_anns_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit_mode::without_anns_test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit_mode::without_anns_test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit_mode::with_anns_test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit_mode::with_anns_test_0002);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit_mode::with_anns_test_0003);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit_mode::with_anns_test_0004);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit_mode::with_anns_test_0005);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit_mode::with_anns_test_0006);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit_mode::with_anns_test_0007);
+    REGISTER_TEST(GUITest_common_scenarios_sequence_edit_mode::with_anns_test_0008);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/sequence selection/

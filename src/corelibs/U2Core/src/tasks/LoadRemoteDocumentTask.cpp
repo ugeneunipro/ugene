@@ -408,21 +408,14 @@ void LoadDataFromEntrezTask::run( )
     stateInfo.progress = 0;
     ioLog.trace( "Load data from Entrez started..." );
 
-    ioLog.trace( "Downloading file..." );
     // Step one: download the file
     QString traceFetchUrl = QString( EntrezUtils::NCBI_EFETCH_URL ).arg( db ).arg( accNumber ).arg( format );
 
     createLoopAndNetworkManager(traceFetchUrl);
 
-    ioLog.trace( traceFetchUrl );
+    ioLog.details(tr("Downloading file %1").arg(traceFetchUrl));
     QUrl requestUrl(EntrezUtils::NCBI_EFETCH_URL.arg(db).arg(accNumber).arg(format));
-    downloadReply = networkManager->get( QNetworkRequest( requestUrl ) );
-    connect( downloadReply, SIGNAL( error( QNetworkReply::NetworkError ) ),
-        this, SLOT( sl_onError( QNetworkReply::NetworkError ) ) );
-    connect( downloadReply, SIGNAL(uploadProgress( qint64, qint64 ) ),
-        this, SLOT( sl_uploadProgress( qint64, qint64 ) ) );
-
-    QTimer::singleShot(100, this, SLOT(sl_cancelCheck()));
+    runRequest(requestUrl);
     loop->exec( );
 
     if ( !isCanceled( ) ) {
@@ -444,6 +437,16 @@ void LoadDataFromEntrezTask::run( )
     }
 }
 
+void LoadDataFromEntrezTask::runRequest(const QUrl& requestUrl) {
+    downloadReply = networkManager->get(QNetworkRequest(requestUrl));
+    connect(downloadReply, SIGNAL(error(QNetworkReply::NetworkError)),
+        this, SLOT(sl_onError(QNetworkReply::NetworkError)));
+    connect(downloadReply, SIGNAL(uploadProgress(qint64, qint64)),
+        this, SLOT(sl_uploadProgress(qint64, qint64)));
+
+    QTimer::singleShot(100, this, SLOT(sl_cancelCheck()));
+}
+
 void LoadDataFromEntrezTask::sl_cancelCheck() {
     if (isCanceled()) {
         if (loop->isRunning()) {
@@ -461,14 +464,21 @@ void LoadDataFromEntrezTask::sl_replyFinished( QNetworkReply* reply )
         return;
     }
     if ( reply == searchReply ) {
+        QString locationHeaderValue = reply->header(QNetworkRequest::LocationHeader).toString();
+        if (!locationHeaderValue.isEmpty()) {
+            QUrl redirectedUrl(locationHeaderValue);
+            coreLog.details(tr("Redirecting to %1").arg(locationHeaderValue));
+            runRequest(redirectedUrl);
+            return;
+        }
         QXmlInputSource source(reply);
         ESearchResultHandler* handler = new ESearchResultHandler;
         xmlReader.setContentHandler(handler);
         xmlReader.setErrorHandler(handler);
         bool ok = xmlReader.parse(source);
-        if ( !ok ) {
-            assert( false );
-            stateInfo.setError( "Parsing eSearch result failed" );
+        if (!ok) {
+            assert(false);
+            stateInfo.setError("Parsing eSearch result failed");
         }
         delete handler;
     }
@@ -494,10 +504,7 @@ void EntrezQueryTask::run( )
     createLoopAndNetworkManager(query);
 
     QUrl request( query );
-    ioLog.trace( QString( "Sending request: %1" ).arg( query ) );
-    queryReply = networkManager->get( QNetworkRequest( request ) );
-    connect( queryReply, SIGNAL( error( QNetworkReply::NetworkError ) ), this,
-        SLOT( sl_onError( QNetworkReply::NetworkError ) ) );
+    runRequest(request);
 
     loop->exec( );
     if ( !isCanceled( ) ) {
@@ -517,6 +524,14 @@ void EntrezQueryTask::sl_replyFinished( QNetworkReply* reply )
         loop->exit();
         return;
     }
+    QString locationHeaderValue = reply->header(QNetworkRequest::LocationHeader).toString();
+    if (!locationHeaderValue.isEmpty()) {
+        QUrl redirectedUrl(reply->url());
+        redirectedUrl.setUrl(reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toString());
+        coreLog.details(tr("Redirecting to %1").arg(redirectedUrl.url()));
+        runRequest(redirectedUrl);
+        return;
+    }
     QXmlInputSource source(reply);
     xmlReader.setContentHandler(resultHandler);
     xmlReader.setErrorHandler(resultHandler);
@@ -525,6 +540,13 @@ void EntrezQueryTask::sl_replyFinished( QNetworkReply* reply )
         stateInfo.setError("Parsing Entrez query result failed");
     }
     loop->exit();
+}
+
+void EntrezQueryTask::runRequest(const QUrl& requestUrl) {
+    ioLog.trace(QString("Sending request: %1").arg(query));
+    queryReply = networkManager->get(QNetworkRequest(requestUrl));
+    connect(queryReply, SIGNAL(error(QNetworkReply::NetworkError)), this,
+        SLOT(sl_onError(QNetworkReply::NetworkError)));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -662,7 +684,7 @@ RemoteDBRegistry::RemoteDBRegistry() {
         }
     }
 
-    hints.insert(ENSEMBL, QObject::tr("Use Ensembl ID. For example: %1 or %2").arg(makeIDLink("ENSG00000258664")).arg(makeIDLink("ENSG00000146463")));
+    hints.insert(ENSEMBL, QObject::tr("Use Ensembl ID. For example: %1 or %2").arg(makeIDLink("ENSG00000205571")).arg(makeIDLink("ENSG00000146463")));
     hints.insert(GENBANK_DNA, QObject::tr("Use Genbank DNA accession number. For example: %1 or %2").arg(makeIDLink("NC_001363")).arg(makeIDLink("D11266")));
     hints.insert(GENBANK_PROTEIN, QObject::tr("Use Genbank protein accession number. For example: %1").arg(makeIDLink("AAA59172.1")));
     hints.insert(PDB, QObject::tr("Use PDB molecule four-letter identifier. For example: %1 or %2").arg(makeIDLink("3INS")).arg(makeIDLink("1CRN")));

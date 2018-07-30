@@ -23,6 +23,7 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QRadioButton>
+#include <QButtonGroup>
 #include <QToolButton>
 
 #include <U2Core/AppContext.h>

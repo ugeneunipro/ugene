@@ -36,6 +36,7 @@ using namespace HI;
             GFF,
             Genbank,
             MEGA,
+            MSF,
             NWK,
             TEXT,
             UGENEDB,

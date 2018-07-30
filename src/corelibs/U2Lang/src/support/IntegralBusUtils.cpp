@@ -132,9 +132,13 @@ QList<Descriptor> IntegralBusUtils::getSlotsByType(const QMap<Descriptor, DataTy
 /************************************************************************/
 class DefaultSplitter : public CandidatesSplitter {
 public:
+    DefaultSplitter() : CandidatesSplitter(ID) {}
+
     bool canSplit(const Descriptor & /*toDesc*/, DataTypePtr /*toDatatype*/) {
         return true;
     }
+
+    static const QString ID;
 
 protected:
     bool isMain(const QString & /*candidateSlotId*/) {
@@ -142,11 +146,17 @@ protected:
     }
 };
 
+const QString DefaultSplitter::ID = "default";
+
 class TextSplitter : public CandidatesSplitter {
 public:
+    TextSplitter() : CandidatesSplitter(ID) {}
+
     bool canSplit(const Descriptor & /*toDesc*/, DataTypePtr toDatatype) {
         return (BaseTypes::STRING_TYPE() == toDatatype);
     }
+
+    static const QString ID;
 
 protected:
     bool isMain(const QString &candidateSlotId) {
@@ -154,12 +164,17 @@ protected:
             && BaseSlots::DATASET_SLOT().getId() != candidateSlotId);
     }
 };
+const QString TextSplitter::ID = "text";
 
 class DatasetsSplitter : public CandidatesSplitter {
 public:
+    DatasetsSplitter() : CandidatesSplitter(ID) {}
+
     bool canSplit(const Descriptor &toDesc, DataTypePtr toDatatype) {
         return ((BaseTypes::STRING_TYPE() == toDatatype) && isDatasetSlot(toDesc));
     }
+
+    static const QString ID;
 
 protected:
     bool isMain(const QString &candidateSlotId) {
@@ -167,11 +182,17 @@ protected:
     }
 };
 
+const QString DatasetsSplitter::ID = "datasets";
+
 class UrlSplitter : public CandidatesSplitter {
 public:
+    UrlSplitter() : CandidatesSplitter(ID) {}
+
     bool canSplit(const Descriptor &toDesc, DataTypePtr toDatatype) {
         return ((BaseTypes::STRING_TYPE() == toDatatype) && isUrlSlot(toDesc));
     }
+
+    static const QString ID;
 
 protected:
     bool isMain(const QString &candidateSlotId) {
@@ -179,9 +200,17 @@ protected:
     }
 };
 
+const QString UrlSplitter::ID = "url";
+
 /************************************************************************/
 /* CandidatesSplitter */
 /************************************************************************/
+CandidatesSplitter::CandidatesSplitter(const QString &_id)
+    : id(_id)
+{
+
+}
+
 CandidatesSplitter::~CandidatesSplitter() {
 
 }
@@ -198,6 +227,10 @@ IntegralBusUtils::SplitResult CandidatesSplitter::splitCandidates(const QList<De
         }
     }
     return r;
+}
+
+const QString &CandidatesSplitter::getId() const {
+    return id;
 }
 
 /************************************************************************/
@@ -218,6 +251,28 @@ CandidatesSplitter * CandidatesSplitterRegistry::findSplitter(const Descriptor &
         }
     }
     return NULL;
+}
+
+CandidatesSplitter *CandidatesSplitterRegistry::findSplitter(const QString &id) {
+    foreach (CandidatesSplitter *splitter, splitters) {
+        if (id == splitter->getId()) {
+            return splitter;
+        }
+    }
+    return NULL;
+}
+
+void CandidatesSplitterRegistry::registerSplitter(CandidatesSplitter *splitter) {
+    if (!splitters.contains(splitter)) {
+        splitters.prepend(splitter);
+    }
+}
+
+void CandidatesSplitterRegistry::unregisterSplitter(const QString &id) {
+    CandidatesSplitter *splitter = findSplitter(id);
+    CHECK(NULL != splitter, );
+    splitters.removeAll(splitter);
+    delete splitter;
 }
 
 CandidatesSplitterRegistry::CandidatesSplitterRegistry() {

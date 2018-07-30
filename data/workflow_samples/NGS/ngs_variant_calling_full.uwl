@@ -1,0 +1,414 @@
+#@UGENE_WORKFLOW
+#Call variants for an input assembly and a reference sequence using SAMtools mpileup and bcftool.
+#Predict effects of the found variants using SnpEff.
+
+
+
+workflow "Variant calling and effects prediction"{
+
+    read-assembly {
+        type:get-file-list;
+        name:"Read Assembly (BAM/SAM)";
+        url-in {
+            dataset:Dataset;
+        }
+    }
+    read-sequence {
+        type:get-file-list;
+        name:"Read Sequence";
+        url-in {
+            dataset:Dataset;
+        }
+    }
+    call_variants {
+        type:call_variants;
+        name:"Call Variants";
+        max-dep:100;
+        reference-source:port;
+        variants-url:variants.vcf;
+    }
+    files-conversion-1 {
+        type:files-conversion;
+        name:"To FASTA";
+        document-format:fasta;
+    }
+    files-conversion-2 {
+        type:files-conversion;
+        name:"To BAM";
+        document-format:bam;
+    }
+    rename-chromosome-in-variation {
+        type:rename-chromosome-in-variation;
+        name:"Chr Notation";
+        prefix-replace-with:chr;
+        prefixes-to-replace:"NC_00000;NC_0000";
+    }
+    seff {
+        type:seff;
+        name:"Annotate and Predict Effects with SnpEff";
+    }
+    convert-snpeff-variations-to-annotations {
+        type:convert-snpeff-variations-to-annotations;
+        name:"To Annotations";
+    }
+
+    .actor-bindings {
+        call_variants.out-variations->rename-chromosome-in-variation.in-file
+        files-conversion-2.out-file->call_variants.in-assembly
+        read-sequence.out-url->files-conversion-1.in-file
+        files-conversion-1.out-file->call_variants.in-sequence
+        seff.out-file->convert-snpeff-variations-to-annotations.in-variations-url
+        read-assembly.out-url->files-conversion-2.in-file
+        rename-chromosome-in-variation.out-file->seff.in-file
+    }
+
+    read-assembly.dataset->call_variants.in-assembly.dataset
+    files-conversion-2.url->call_variants.in-assembly.url
+    files-conversion-1.url->call_variants.in-sequence.url
+    read-sequence.url->files-conversion-1.in-file.url
+    read-assembly.url->files-conversion-2.in-file.url
+    call_variants.url->rename-chromosome-in-variation.in-file.url
+    rename-chromosome-in-variation.url->seff.in-file.url
+    seff.url->convert-snpeff-variations-to-annotations.in-variations-url.url
+
+    .meta {
+        parameter-aliases {
+            read-assembly.url-in {
+                alias:assembly_in;
+            }
+            read-sequence.url-in {
+                alias:seq_in;
+            }
+            call_variants.acgt_only {
+                alias:a_c_g_t;
+            }
+            call_variants.bcf_bed {
+                alias:bcf_bed;
+            }
+            call_variants.bed {
+                alias:bed_pos_list_file;
+            }
+            call_variants.disable_baq {
+                alias:BAQ;
+            }
+            call_variants.keepalt {
+                alias:retain_all_pos_alt;
+            }
+            call_variants.max_depth {
+                alias:max_reads_num;
+            }
+            call_variants.no_indel {
+                alias:no_indels;
+            }
+            call_variants.ptype {
+                alias:allele_freq_spect;
+            }
+            call_variants.theta {
+                alias:theta;
+            }
+            call_variants.variants-url {
+                alias:out_file;
+            }
+        }
+        visual {
+            call_variants {
+                pos:"-465 -510";
+                style:ext;
+                bg-color-ext:"0 129 94 64";
+                bounds:"-30 -30 123.125 72";
+                in-assembly.angle:176.73;
+                in-sequence.angle:235.098;
+                out-variations.angle:351.674;
+            }
+            convert-snpeff-variations-to-annotations {
+                pos:"-450 -285";
+                style:simple;
+                bg-color-simple:"234 223 240 255";
+                in-variations-url.angle:3.25195;
+            }
+            files-conversion-1 {
+                pos:"-615 -450";
+                style:simple;
+                bg-color-simple:"84 84 84 255";
+                in-file.angle:196.858;
+                out-file.angle:6.5198;
+            }
+            files-conversion-2 {
+                pos:"-615 -555";
+                style:simple;
+                bg-color-simple:"84 84 84 255";
+                in-file.angle:170.538;
+                out-file.angle:334.799;
+            }
+            read-assembly {
+                pos:"-870 -600";
+                style:ext;
+                bg-color-ext:"24 102 175 64";
+                bounds:"-30 -30 111.375 66";
+                out-url.angle:360;
+            }
+            read-sequence {
+                pos:"-885 -435";
+                style:ext;
+                bg-color-ext:"24 102 175 64";
+                bounds:"-30 -30 110.25 62";
+                out-url.angle:349.061;
+            }
+            rename-chromosome-in-variation {
+                pos:"-210 -495";
+                style:simple;
+                bg-color-simple:"232 227 230 255";
+                in-file.angle:180;
+                out-file.angle:270.785;
+            }
+            seff {
+                pos:"-270 -285";
+                style:ext;
+                bg-color-ext:"0 129 94 64";
+                in-file.angle:28.6105;
+                out-file.angle:181.848;
+            }
+            call_variants.out-variations->rename-chromosome-in-variation.in-file {
+                text-pos:"-45 -43";
+            }
+            files-conversion-1.out-file->call_variants.in-sequence {
+                text-pos:"-19 -31";
+            }
+            files-conversion-2.out-file->call_variants.in-assembly {
+                text-pos:"-12 -24";
+            }
+            read-assembly.out-url->files-conversion-2.in-file {
+                text-pos:"-37 -11";
+            }
+            read-sequence.out-url->files-conversion-1.in-file {
+                text-pos:"-31 -21";
+            }
+            rename-chromosome-in-variation.out-file->seff.in-file {
+                text-pos:"-45 -43";
+            }
+            seff.out-file->convert-snpeff-variations-to-annotations.in-variations-url {
+                text-pos:"-45 -43";
+            }
+        }
+        wizard {
+            auto-run: true;
+            name:"Call Variants Wizard";
+            page {
+                id:1;
+                next:2;
+                title:"Input reference sequence and assembly";
+                parameters-area {
+                    group {
+                        title:"Input files";
+                        lineedit-and-dataset {
+                            read-sequence.url-in {
+                                label:"Reference sequence file";
+                            }
+                            read-assembly.url-in {
+                                label:"BAM/SAM file";
+                            }
+                        }
+                    }
+                }
+            }
+            page {
+                id:2;
+                next:3;
+                title:"SAMtools <i>mpileup</i> parameters";
+                parameters-area {
+                    group {
+                        title:Parameters;
+                        label-size:200;
+                        call_variants.use_orphan {
+                        }
+                        call_variants.disable_baq {
+                        }
+                        call_variants.capq_thres {
+                        }
+                        call_variants.max_depth {
+                        }
+                        call_variants.ext_baq {
+                        }
+                        call_variants.bed {
+                        }
+                        call_variants.reg {
+                        }
+                        call_variants.min_mq {
+                        }
+                        call_variants.min_baseq {
+                        }
+                    }
+                    group {
+                        title:Additional;
+                        label-size:200;
+                        type:hideable;
+                        call_variants.illumina13-encoding {
+                        }
+                        call_variants.extQ {
+                        }
+                        call_variants.tandemQ {
+                        }
+                        call_variants.no_indel {
+                        }
+                        call_variants.max_indel_depth {
+                        }
+                        call_variants.openQ {
+                        }
+                        call_variants.pl_list {
+                        }
+                    }
+                }
+            }
+            page {
+                id:3;
+                next:4;
+                title:"SAMtools <i>bcftools view</i> parameters";
+                parameters-area {
+                    group {
+                        title:Parameters;
+                        label-size:200;
+                        call_variants.keepalt {
+                        }
+                        call_variants.fix_pl {
+                        }
+                        call_variants.no_geno {
+                        }
+                        call_variants.acgt_only {
+                        }
+                        call_variants.bcf_bed {
+                        }
+                        call_variants.qcall {
+                        }
+                        call_variants.samples {
+                        }
+                        call_variants.min_smpl_frac {
+                        }
+                        call_variants.call_gt {
+                        }
+                    }
+                    group {
+                        title:Additional;
+                        label-size:200;
+                        type:hideable;
+                        call_variants.indel_frac {
+                        }
+                        call_variants.pref {
+                        }
+                        call_variants.ptype {
+                        }
+                        call_variants.theta {
+                        }
+                        call_variants.ccall {
+                        }
+                        call_variants.n1 {
+                        }
+                        call_variants.n_perm {
+                        }
+                        call_variants.min_perm_p {
+                        }
+                    }
+                }
+            }
+            page {
+                id:4;
+                next:5;
+                title:"SAMtools <i>vcfutils varFilter</i> parameters";
+                parameters-area {
+                    group {
+                        title:Parameters;
+                        label-size:200;
+                        call_variants.print-filtered {
+                        }
+                        call_variants.min-qual {
+                        }
+                        call_variants.min-dep {
+                        }
+                        call_variants.max-dep {
+                        }
+                        call_variants.min-alt-bases {
+                        }
+                        call_variants.gap-size {
+                        }
+                        call_variants.window {
+                        }
+                    }
+                    group {
+                        title:Additional;
+                        label-size:200;
+                        type:hideable;
+                        call_variants.min-strand {
+                        }
+                        call_variants.min-baseQ {
+                        }
+                        call_variants.min-mapQ {
+                        }
+                        call_variants.min-end-distance {
+                        }
+                        call_variants.min-hwe {
+                        }
+                    }
+                }
+            }
+            page {
+                id:5;
+                next:6;
+                title:"Change chromosome notation for variations";
+                parameters-area {
+                    group {
+                        title:Parameters;
+                        label-size:150;
+                        rename-chromosome-in-variation.prefixes-to-replace {
+                        }
+                        rename-chromosome-in-variation.prefix-replace-with {
+                        }
+                    }
+                }
+            }
+            page {
+                id:6;
+                next:7;
+                title:"SnpEff parameters";
+                parameters-area {
+                    group {
+                        title:Parameters;
+                        label-size:200;
+                        seff.genome {
+                        }
+                    }
+                    group {
+                        title:Additional;
+                        label-size:200;
+                        type:hideable;
+                        seff.canon {
+                        }
+                        seff.hgvs {
+                        }
+                        seff.lof {
+                        }
+                        seff.motif {
+                        }
+                        seff.updown-length {
+                        }
+                    }
+                }
+            }
+            page {
+                id:7;
+                title:"Output files";
+                parameters-area {
+                    group {
+                        title:"Output variants";
+                        label-size:110;
+                        call_variants.variants-url {
+                            label:"Output VCF file"
+                        }
+                        convert-snpeff-variations-to-annotations.url-out {
+                            label:"Output GenBank file"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

@@ -436,7 +436,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0003) {
     selection = GTUtilsSequenceView::getSelection(os);
     CHECK_SET_ERR(selection.size() == 1, QString("Incorrect size of selected regions, expectd: 1, current: %1").arg(selection.size()));
     sel = selection.first();
-    CHECK_SET_ERR(sel == U2Region(2658, 311), QString("Unexpected selected region, expected^ start 2658, length 311, current: start %1 length %2").arg(sel.startPos).arg(sel.length));
+    CHECK_SET_ERR(sel == U2Region(2658, 311), QString("Unexpected selected region, expected: start 2658, length 311, current: start %1 length %2").arg(sel.startPos).arg(sel.length));
 
     //    The first and the second CDS annotations are selected(but not their regions).
     QList<QTreeWidgetItem*> items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");
@@ -454,7 +454,7 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0003) {
     selection = GTUtilsSequenceView::getSelection(os);
     CHECK_SET_ERR(selection.size() == 1, QString("Incorrect size of selected regions, expectd: 1, current: %1").arg(selection.size()));
     sel = selection.first();
-    CHECK_SET_ERR(sel == U2Region(1041, 2832), QString("Unexpected selected region, expected^ start 2658, length 311, current: start %1 length %2").arg(sel.startPos).arg(sel.length));
+    CHECK_SET_ERR(sel == U2Region(1041, 2372), QString("Unexpected selected region, expected: start 1041, length 2372, current: start %1 length %2").arg(sel.startPos).arg(sel.length));
 
     //    The first and the second CDS annotations are selected.
     items = GTUtilsAnnotationsTreeView::findItems(os, "CDS");

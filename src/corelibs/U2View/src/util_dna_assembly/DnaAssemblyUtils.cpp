@@ -70,12 +70,6 @@ DnaAssemblySupport::DnaAssemblySupport()
     connect( convertAssemblyToSamAction, SIGNAL( triggered() ), SLOT( sl_showConvertToSamDialog() ) );
     ToolsMenu::addAction(ToolsMenu::NGS_MENU, convertAssemblyToSamAction);
 
-    QAction* genomeAssemblyAction = new QAction( tr("Reads de novo assembly (with SPAdes)..."), this );
-    genomeAssemblyAction->setObjectName(ToolsMenu::NGS_DENOVO);
-    genomeAssemblyAction->setIcon(QIcon(":core/images/align.png"));
-    connect( genomeAssemblyAction, SIGNAL( triggered() ), SLOT( sl_showGenomeAssemblyDialog() ) );
-    ToolsMenu::addAction(ToolsMenu::NGS_MENU, genomeAssemblyAction);
-
     QAction* dnaAssemblyAction = new QAction(tr("Map reads to reference..."), this );
     dnaAssemblyAction->setObjectName(ToolsMenu::NGS_MAP);
     dnaAssemblyAction->setIcon(QIcon(":core/images/align.png"));

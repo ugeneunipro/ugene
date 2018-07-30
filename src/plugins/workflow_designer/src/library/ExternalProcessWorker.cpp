@@ -578,7 +578,7 @@ void LaunchExternalToolTask::run() {
     if(execString.contains(">")) {
         QString output = execString.split(">").last();
         output = output.trimmed();
-        if(output.at(0) == '\"') {
+        if (output.startsWith('\"')) {
             output = output.mid(1, output.length() - 2);
         }
         execString = execString.split(">").first();

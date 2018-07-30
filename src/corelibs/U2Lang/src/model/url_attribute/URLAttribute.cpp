@@ -76,17 +76,8 @@ bool URLAttribute::isDefaultValue() const {
     return false;
 }
 
-Attribute * URLAttribute::clone() {
-    URLAttribute *cloned = new URLAttribute(*this, type, required);
-    QList<Dataset> sets = value.value< QList<Dataset> >();
-    QList<Dataset> clonedSets;
-    foreach (const Dataset &dSet, sets) {
-        clonedSets << dSet;
-    }
-    cloned->value = qVariantFromValue< QList<Dataset> >(clonedSets);
-    cloned->scriptData = AttributeScript(scriptData);
-    cloned->setCompatibleObjectTypes(compatibleObjectTypes);
-    return cloned;
+URLAttribute *URLAttribute::clone() {
+    return new URLAttribute(*this);
 }
 
 QList<Dataset> & URLAttribute::getDatasets() {
@@ -99,6 +90,19 @@ void URLAttribute::updateValue() {
         res << dSet;
     }
     value = qVariantFromValue< QList<Dataset> >(res);
+}
+
+URLAttribute::URLAttribute(const URLAttribute &other)
+    : Attribute(other)
+{
+    copy(other);
+}
+
+URLAttribute &URLAttribute::operator=(const URLAttribute &other) {
+    CHECK(this != &other, *this);
+    Attribute::operator =(other);
+    copy(other);
+    return *this;
 }
 
 QStringList URLAttribute::emptyDatasetNames(bool &hasUrl) {
@@ -114,8 +118,13 @@ QStringList URLAttribute::emptyDatasetNames(bool &hasUrl) {
     return emptySets;
 }
 
+void URLAttribute::copy(const URLAttribute &other) {
+    sets = other.sets;
+    compatibleObjectTypes = other.compatibleObjectTypes;
+}
+
 bool URLAttribute::validate(ProblemList &problemList) {
-    if (!isRequiredAttribute()) {
+    if (!isRequiredAttribute() || canBeEmpty()) {
         return true;
     }
     if (sets.isEmpty()) {

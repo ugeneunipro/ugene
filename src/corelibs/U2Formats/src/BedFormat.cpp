@@ -100,14 +100,14 @@ namespace {
 }
 
 BedFormat::BedFormat(QObject* p)
-    : DocumentFormat(p, DocumentFormatFlag_SupportWriting, QStringList("bed"))
+    : TextDocumentFormat(p, DocumentFormatFlag_SupportWriting, QStringList("bed"))
 {
     formatDescription = tr("The BED (Browser Extensible Data) format was developed by UCSC for displaying transcript structures in the genome browser.");
     supportedObjectTypes+=GObjectTypes::ANNOTATION_TABLE;
 }
 
 
-Document* BedFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os)
+Document* BedFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os)
 {
     CHECK_EXT(io != NULL && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), NULL);
     QList<GObject*> objects;
@@ -271,7 +271,7 @@ bool validateBlocks(const QString& blockCountStr, const QString& blockSizesStr, 
 }
 
 
-FormatCheckResult BedFormat::checkRawData(const QByteArray& rawData, const GUrl& /* = GUrl */) const
+FormatCheckResult BedFormat::checkRawTextData(const QByteArray& rawData, const GUrl& /* = GUrl */) const
 {
     const char* data = rawData.constData();
     int size = rawData.size();

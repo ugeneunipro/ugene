@@ -114,7 +114,9 @@ void WriteVariationWorkerFactory::init() {
             WriteVariationWorker::tr("Variation track"));
         Descriptor protoDesc(WriteVariationWorkerFactory::ACTOR_ID,
             WriteVariationWorker::tr("Write Variations"),
-            WriteVariationWorker::tr("Writes all supplied variations to file(s) in selected format."));
+            WriteVariationWorker::tr("The element gets message(s) with variations data and saves the data"
+                                     " to the specified file(s) in one of the appropriate formats"
+                                     " (e.g. VCF)."));
 
         QList<PortDescriptor*> portDescs;
         {

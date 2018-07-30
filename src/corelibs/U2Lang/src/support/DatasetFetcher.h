@@ -34,8 +34,10 @@ public:
 
     bool hasFullDataset() const;
     bool isDone() const;
+    const QString &getDatasetName() const;  // it is valid before takeFullDataset call
     QList<Message> takeFullDataset();
     void processInputMessage();
+    QString getPortId() const;
 
 private:
     QString getDatasetName(const Message &message) const;

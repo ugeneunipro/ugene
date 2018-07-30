@@ -141,86 +141,125 @@
 <context>
     <name>FindTandemsDialog</name>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="49"/>
         <source>Tandem preset</source>
-        <translation>Предустановки тандемов</translation>
+        <translation type="vanished">Предустановки тандемов</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="94"/>
         <source>Min period</source>
-        <translation>Мин период</translation>
+        <translation type="vanished">Мин период</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="114"/>
-        <location filename="../src/FindTandemsDialog.ui" line="147"/>
+        <location filename="../src/FindTandemsDialog.ui" line="248"/>
+        <location filename="../src/FindTandemsDialog.ui" line="267"/>
         <source> n</source>
         <translation> н</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="127"/>
         <source>Max period</source>
-        <translation>Макс период</translation>
+        <translation type="vanished">Макс период</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="208"/>
         <source>Advanced</source>
-        <translation>Дополнительные настройки</translation>
+        <translation type="vanished">Дополнительные настройки</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="214"/>
         <source>Advanced parameters</source>
-        <translation>Дополнительные параметры</translation>
+        <translation type="vanished">Дополнительные параметры</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="299"/>
+        <location filename="../src/FindTandemsDialog.ui" line="62"/>
         <source>Algorithm</source>
         <translation>Алгоритм</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="256"/>
         <source>Minimum tandem size</source>
-        <translation>Минимальный размер тандема</translation>
+        <translation type="vanished">Минимальный размер тандема</translation>
+    </message>
+    <message>
+        <source>Find Tandems</source>
+        <translation type="vanished">Поиск тандемов</translation>
+    </message>
+    <message>
+        <source>Minimum repeat count</source>
+        <translation type="vanished">Минимальное число повторений</translation>
     </message>
     <message>
         <location filename="../src/FindTandemsDialog.ui" line="17"/>
-        <source>Find Tandems</source>
-        <translation>Поиск тандемов</translation>
+        <source>Find Tandem Repeats</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="319"/>
-        <source>Minimum repeat count</source>
-        <translation>Минимальное число повторений</translation>
+        <location filename="../src/FindTandemsDialog.ui" line="31"/>
+        <source>General</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="233"/>
+        <location filename="../src/FindTandemsDialog.ui" line="37"/>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/FindTandemsDialog.ui" line="55"/>
+        <source>Preset settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/FindTandemsDialog.ui" line="69"/>
+        <source>Min length of repeated sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/FindTandemsDialog.ui" line="76"/>
+        <source>Max length of repeated sequence</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/FindTandemsDialog.ui" line="83"/>
+        <source>Min length of tandem repeat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/FindTandemsDialog.ui" line="90"/>
+        <source>Min number of repeats</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/FindTandemsDialog.ui" line="308"/>
         <source>x</source>
         <translation>x</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="249"/>
+        <location filename="../src/FindTandemsDialog.ui" line="328"/>
         <source>Show overlapped tandems</source>
         <translation>Показать перекрывающиеся тандемы</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="166"/>
+        <location filename="../src/FindTandemsDialog.ui" line="340"/>
+        <source>Search in</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/FindTandemsDialog.ui" line="366"/>
+        <source>Output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Region to process</source>
-        <translation>Регион поиска</translation>
+        <translation type="vanished">Регион поиска</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="31"/>
         <source>Base</source>
-        <translation>Основные настройки</translation>
+        <translation type="vanished">Основные настройки</translation>
     </message>
     <message>
-        <location filename="../src/FindTandemsDialog.ui" line="37"/>
         <source>Tandem finder parameters</source>
-        <translation>Параметры поиска тандемов</translation>
+        <translation type="vanished">Параметры поиска тандемов</translation>
     </message>
 </context>
 <context>
     <name>U2::ExactSizedTandemFinder</name>
     <message>
-        <location filename="../src/RF_SArray_TandemFinder.cpp" line="260"/>
+        <location filename="../src/RF_SArray_TandemFinder.cpp" line="261"/>
         <source>Find %1-period tandems</source>
         <translation>Поиск %1-периодных тандемов</translation>
     </message>
@@ -454,7 +493,7 @@
 <context>
     <name>U2::LargeSizedTandemFinder</name>
     <message>
-        <location filename="../src/RF_SArray_TandemFinder.cpp" line="434"/>
+        <location filename="../src/RF_SArray_TandemFinder.cpp" line="435"/>
         <source>Find big-period tandems</source>
         <translation>Поиск тандемов с большим периодом</translation>
     </message>
@@ -957,8 +996,12 @@
     </message>
     <message>
         <location filename="../src/RepeatFinderPlugin.cpp" line="104"/>
+        <source>Find tandem repeats...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Find tandems...</source>
-        <translation>Поиск тандемных повторов...</translation>
+        <translation type="vanished">Поиск тандемных повторов...</translation>
     </message>
 </context>
 <context>
@@ -981,13 +1024,13 @@
 <context>
     <name>U2::TandemFinder</name>
     <message>
-        <location filename="../src/RF_SArray_TandemFinder.cpp" line="144"/>
+        <location filename="../src/RF_SArray_TandemFinder.cpp" line="145"/>
         <source>Find tandems finished %1</source>
         <translation>Поиск тандемов завершен %1</translation>
     </message>
     <message>
-        <location filename="../src/RF_SArray_TandemFinder.cpp" line="115"/>
-        <location filename="../src/RF_SArray_TandemFinder.cpp" line="140"/>
+        <location filename="../src/RF_SArray_TandemFinder.cpp" line="116"/>
+        <location filename="../src/RF_SArray_TandemFinder.cpp" line="141"/>
         <source>Find tandems</source>
         <translation>Поиск тандемов</translation>
     </message>

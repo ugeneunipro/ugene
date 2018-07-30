@@ -54,14 +54,13 @@ public:
     static const QString NGS_SCAFFOLD;
     static const QString NGS_RAW_DNA;
     static const QString NGS_CALL_VARIANTS;
-    static const QString NGS_CALL_VARIANTS_AND_EFFECT;
     static const QString NGS_VARIANT_EFFECT;
     static const QString NGS_RAW_RNA;
     static const QString NGS_RNA;
     static const QString NGS_TRANSCRIPT;
     static const QString NGS_RAW_CHIP;
     static const QString NGS_CHIP;
-    static const QString NGS_CHIP_COVERAGE;
+    static const QString NGS_CLASSIFICATION;
     static const QString NGS_COVERAGE;
     static const QString NGS_CONSENSUS;
     static const QString NGS_CONVERT_SAM;

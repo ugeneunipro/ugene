@@ -2,6 +2,15 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru">
 <context>
+    <name>PairedReadsPortValidator</name>
+    <message>
+        <location filename="../src/model/PairedReadsPortValidator.cpp" line="39"/>
+        <location filename="../src/model/PairedReadsPortValidator.cpp" line="45"/>
+        <source>The mandatory &quot;%1&quot; slot is not connected.</source>
+        <translation>Обязательный слот &quot;%1&quot; не соединён.</translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <location filename="../src/model/QDConstraint.cpp" line="34"/>
@@ -415,7 +424,7 @@
         <translation>Actor &apos;%1&apos; does not have this parameter: %2</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="328"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="341"/>
         <source>Additional</source>
         <translation>Additional</translation>
     </message>
@@ -678,22 +687,22 @@
 <context>
     <name>U2::DescriptorListEditorDelegate</name>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="387"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="400"/>
         <source>&lt;empty&gt;</source>
         <translation>&lt;пустой&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="387"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="400"/>
         <source>Default value</source>
         <translation>Значение по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="391"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="404"/>
         <source>&lt;List of values&gt;</source>
         <translation>&lt;Список значений&gt;</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="391"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="404"/>
         <source>List of values</source>
         <translation>Список значений</translation>
     </message>
@@ -867,27 +876,27 @@
         <translation>Grouper out slot: empty in-slot</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1681"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="1687"/>
         <source>Error: element name in the workflow file contains spaces</source>
         <translation>Error: element name in the workflow file contains spaces</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2043"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2049"/>
         <source>%1 actor has not marker attribute</source>
         <translation>%1 actor has not marker attribute</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2067"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2073"/>
         <source>Name attribute is not set for the marker</source>
         <translation>Name attribute is not set for the marker</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2070"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2076"/>
         <source>Type attribute is not set for %1 marker</source>
         <translation>Type attribute is not set for %1 marker</translation>
     </message>
     <message>
-        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2079"/>
+        <location filename="../src/support/serialize/HRSchemaSerializer.cpp" line="2085"/>
         <source>Qualifier name attribute is not set for %1 marker</source>
         <translation>Qualifier name attribute is not set for %1 marker</translation>
     </message>
@@ -1196,17 +1205,17 @@
 <context>
     <name>U2::MapDatatypeEditor</name>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="76"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="87"/>
         <source>Slots</source>
         <translation>Слоты</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="76"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="87"/>
         <source>Data source</source>
         <translation>Источник данных</translation>
     </message>
     <message>
-        <location filename="../src/support/MapDatatypeEditor.cpp" line="167"/>
+        <location filename="../src/support/MapDatatypeEditor.cpp" line="180"/>
         <source>The input slot &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;is bound to&lt;br&gt;the bus slot &lt;b&gt;%2&lt;/b&gt;</source>
         <translation>Входной слот &lt;b&gt;%1&lt;/b&gt;&lt;br&gt;привязан к&lt;br&gt;слоту шины &lt;b&gt;%2&lt;/b&gt;</translation>
     </message>
@@ -1504,9 +1513,8 @@
         <translation>NGS: основные функции</translation>
     </message>
     <message>
-        <location filename="../src/library/BaseActorCategories.cpp" line="63"/>
         <source>NGS: Align Short Reads</source>
-        <translation>NGS: выравнивание коротких прочтений</translation>
+        <translation type="vanished">NGS: выравнивание коротких прочтений</translation>
     </message>
     <message>
         <location filename="../src/library/BaseActorCategories.cpp" line="67"/>
@@ -1527,6 +1535,11 @@
         <location filename="../src/library/BaseActorCategories.cpp" line="75"/>
         <source>Transcription Factor Binding Sites</source>
         <translation>Сайты связывания транскрипционных факторов</translation>
+    </message>
+    <message>
+        <location filename="../src/library/BaseActorCategories.cpp" line="63"/>
+        <source>NGS: Map/Assemble Reads</source>
+        <translation>NGS: выравнивание коротких ридов</translation>
     </message>
     <message>
         <location filename="../src/library/BaseActorCategories.cpp" line="79"/>
@@ -1796,19 +1809,19 @@
 <context>
     <name>U2::Workflow::IntegralBusPort</name>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="434"/>
-        <location filename="../src/model/IntegralBusModel.cpp" line="468"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="452"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="486"/>
         <source>No input data supplied</source>
         <translation>Не обеспечен входными данными</translation>
     </message>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="482"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="500"/>
         <source>Empty input slot: %1</source>
         <translation>Пустой входной слот: %1</translation>
     </message>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="485"/>
-        <location filename="../src/model/IntegralBusModel.cpp" line="499"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="503"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="517"/>
         <source>Bad slot binding: %1 to %2</source>
         <translation>Неправильная привязка слота: %1 к %2</translation>
     </message>
@@ -2032,12 +2045,12 @@
 <context>
     <name>U2::WorkflowUtils</name>
     <message>
-        <location filename="../src/model/Attribute.cpp" line="166"/>
+        <location filename="../src/model/Attribute.cpp" line="234"/>
         <source>Required parameter is not set: %1</source>
         <translation>Не указан обязательный параметр &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/model/IntegralBusModel.cpp" line="547"/>
+        <location filename="../src/model/IntegralBusModel.cpp" line="565"/>
         <source>Either parameter &apos;%1&apos; or input slot &apos;%2&apos; must be set</source>
         <translation>Необходимо указать значение для параметра &quot;%1&quot; либо связать входной слот &quot;%2&quot;</translation>
     </message>
@@ -2127,17 +2140,17 @@
         <translation>Wrong samples map string</translation>
     </message>
     <message>
-        <location filename="../src/model/url_attribute/URLAttribute.cpp" line="122"/>
+        <location filename="../src/model/url_attribute/URLAttribute.cpp" line="131"/>
         <source>Required parameter has no datasets specified: %1</source>
         <translation>Required parameter has no datasets specified: %1</translation>
     </message>
     <message>
-        <location filename="../src/model/url_attribute/URLAttribute.cpp" line="129"/>
+        <location filename="../src/model/url_attribute/URLAttribute.cpp" line="138"/>
         <source>Required parameter has no input urls specified: %1</source>
         <translation>Required parameter has no input urls specified: %1</translation>
     </message>
     <message>
-        <location filename="../src/model/url_attribute/URLAttribute.cpp" line="134"/>
+        <location filename="../src/model/url_attribute/URLAttribute.cpp" line="143"/>
         <source>Required parameter %1 has empty dataset: %2</source>
         <translation>Required parameter %1 has empty dataset: %2</translation>
     </message>

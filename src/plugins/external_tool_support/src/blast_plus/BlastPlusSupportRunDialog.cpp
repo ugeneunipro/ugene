@@ -83,11 +83,11 @@ BlastPlusSupportRunDialog::BlastPlusSupportRunDialog(ADVSequenceObjectContext* s
     ca_m.sequenceLen = dnaso->getSequenceLength();
     ca_c = new CreateAnnotationWidgetController(ca_m, this);
     annotationWidgetLayout->addWidget(ca_c->getWidget());
-    
+
     int lastRow = settingsGridLayout->rowCount();
     regionSelector = new RegionSelector(this, seqCtx->getSequenceLength(), false, seqCtx->getSequenceSelection());
     settingsGridLayout->addWidget(regionSelector, lastRow, 0, 1, 3);
-    
+
     //programName->removeItem(3);//cuda-blastp
     if(dnaso->getAlphabet()->getType() == DNAAlphabet_AMINO){
         programName->removeItem(0);//blastn

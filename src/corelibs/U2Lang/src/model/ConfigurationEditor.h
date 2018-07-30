@@ -162,7 +162,9 @@ public:
 
     DelegateTags &operator =(const DelegateTags &other);
 
-    static const QString PLACEHOLDER_TEXT;
+    static const QString PLACEHOLDER_TEXT;      // placeholder (like in QLineEdit)
+    static const QString FILTER;                // file filter (like in QFileDialog)
+    static const QString FORMAT;                // document format ID
 
 private:
     QVariantMap tags;

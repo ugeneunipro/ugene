@@ -317,6 +317,7 @@ Task::ReportResult WorkflowIterationRunTask::report() {
         if (!scheduler->isDone()) {
             if(!hasError() && !isCanceled()) {
                 setError(tr("No workers are ready, while not all workers are done. Workflow is broken?"));
+                algoLog.error(stateInfo.getError());
             }
         }
     }

@@ -44,7 +44,7 @@ public:
 
 public:
     WorkflowDesignerPlugin ();
-    //~WorkflowDesignerPlugin ();
+    ~WorkflowDesignerPlugin ();
 private:
     void registerCMDLineHelp();
     void registerWorkflowTasks();

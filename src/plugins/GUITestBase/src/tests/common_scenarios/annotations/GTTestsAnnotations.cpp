@@ -762,7 +762,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_3) {
     GTUtilsDocument::removeDocument(os, "ann_test_0010_3_19.gb");
     GTGlobals::sleep();
 
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
+    // GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
     GTFileDialog::openFile(os, sandBoxDir, "ann_export_test_0010_3.gtf");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141619 features"), "No GXL_141619 features object!");
@@ -1015,7 +1015,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
     GTUtilsDocument::removeDocument(os, "scaffold_90.gff");
     GTGlobals::sleep();
 
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
+    // GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
     GTFileDialog::openFile(os, sandBoxDir, "ann_export_test_0012_3.gtf");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "NC_004718 features"), "Object not found");

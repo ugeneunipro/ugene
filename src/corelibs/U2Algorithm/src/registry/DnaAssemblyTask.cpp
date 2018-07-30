@@ -30,16 +30,22 @@
 
 namespace U2 {
 
+const QString DnaAssemblyToRefTaskSettings::INDEX = "Index";
+const QString DnaAssemblyToRefTaskSettings::SEQUENCE = "Sequence";
+
 DnaAssemblyToReferenceTask::DnaAssemblyToReferenceTask(const DnaAssemblyToRefTaskSettings &settings, TaskFlags flags, bool justBuildIndex)
     : ExternalToolSupportTask(tr("Align short reads"), flags),
       settings(settings),
       justBuildIndex(justBuildIndex),
       hasResults(false)
 {
-
 }
 
 void DnaAssemblyToReferenceTask::setUpIndexBuilding(const QStringList &indexSuffixes) {
+    if (settings.prebuiltIndex) {
+        return;
+    }
+
     if (isIndexUrl(settings.refSeqUrl.getURLString(), indexSuffixes)) {
         settings.prebuiltIndex = true;
         settings.refSeqUrl = getBaseUrl(settings.refSeqUrl.getURLString(), indexSuffixes);
@@ -129,4 +135,3 @@ void DnaAssemblyToRefTaskSettings::setCustomSettings(const QMap<QString, QVarian
     customSettings = settings;
 }
 } // U2
-

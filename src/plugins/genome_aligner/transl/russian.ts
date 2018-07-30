@@ -686,13 +686,21 @@ Press &quot;Cancel&quot; to change this parameter or the index folder.</source>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="202"/>
-        <source>Aligns reads from &lt;u&gt;%1&lt;/u&gt; </source>
-        <translation>Выровненные риды из &lt;u&gt;%1&lt;/u&gt; </translation>
+        <source>Maps reads from &lt;u&gt;%1&lt;/u&gt; </source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="203"/>
+        <source> to reference sequence &lt;u&gt;%1&lt;/u&gt;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aligns reads from &lt;u&gt;%1&lt;/u&gt; </source>
+        <translation type="vanished">Выровненные риды из &lt;u&gt;%1&lt;/u&gt; </translation>
+    </message>
+    <message>
         <source> to reference genome &lt;u&gt;%1&lt;/u&gt;.</source>
-        <translation> на референсную последовательность &lt;u&gt;%1&lt;/u&gt;.</translation>
+        <translation type="vanished"> на референсную последовательность &lt;u&gt;%1&lt;/u&gt;.</translation>
     </message>
 </context>
 <context>
@@ -850,8 +858,17 @@ Press &quot;Cancel&quot; to change this parameter or the index folder.</source>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="350"/>
+        <source>Map Reads with UGENE Genome Aligner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/GenomeAlignerWorker.cpp" line="351"/>
+        <source>Genome Aligner is a program for mapping short DNA sequence reads to a long reference sequence, developed by the UGENE team.&lt;br/&gt;&lt;br/&gt;Provide URL(s) to FASTA or FASTQ file(s) with NGS reads to the input port of the element, set up the reference sequence in the parameters. The result is saved to the specified SAM file, URL to the file is passed to the output port.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Align Reads with UGENE Genome Aligner</source>
-        <translation>Выравнивание с помощью модуля сборки контигов UGENE</translation>
+        <translation type="vanished">Выравнивание с помощью модуля сборки контигов UGENE</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="329"/>
@@ -864,9 +881,8 @@ Press &quot;Cancel&quot; to change this parameter or the index folder.</source>
         <translation>&lt;html&gt;&lt;body&gt;Использовать GPU-вычисления в процессе выравнивания. Эта опция требует наличие устройства OpenCL GPU.&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerWorker.cpp" line="351"/>
         <source>Unique UGENE algorithm for aligning short reads to reference genome</source>
-        <translation>Уникальный алгоритм UGENE для сборки контигов из считываемых последовательностей по референсному геному</translation>
+        <translation type="vanished">Уникальный алгоритм UGENE для сборки контигов из считываемых последовательностей по референсному геному</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="95"/>

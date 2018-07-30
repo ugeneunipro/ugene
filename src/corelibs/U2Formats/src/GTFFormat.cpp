@@ -45,7 +45,6 @@ namespace U2 {
 GTFLineValidateFlags::GTFLineValidateFlags()
     : incorrectNumberOfFields(false),
       emptyField(false),
-      incorrectFeatureField(false),
       incorrectCoordinates(false),
       incorrectScore(false),
       incorrectStrand(false),
@@ -70,7 +69,7 @@ FormatDetectionScore GTFLineValidateFlags::getFormatDetectionScore()
         return FormatDetection_LowSimilarity;
     }
 
-    if (incorrectFeatureField || incorrectFormatOfAttributes) {
+    if (incorrectFormatOfAttributes) {
         return FormatDetection_HighSimilarity;
     }
 
@@ -97,19 +96,15 @@ const QString GTFFormat::TRANSCRIPT_ID_QUALIFIER_NAME = "transcript_id";
 
 
 GTFFormat::GTFFormat(QObject* parent)
-    : DocumentFormat(parent, DocumentFormatFlag_SupportWriting, QStringList("gtf"))
+    : TextDocumentFormat(parent, DocumentFormatFlag_SupportWriting, QStringList("gtf"))
 {
     formatDescription = tr("The Gene transfer format (GTF) is a file format used to hold"
         " information about gene structure.");
 
     supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;
-
-    GTF_FEATURE_FIELD_VALUES << "CDS" << "start_codon" << "stop_codon"
-        << "5UTR" << "3UTR" << "inter" << "inter_CNS" << "intron_CNS"
-        << "exon" << "transcript" << "missing_data";
 }
 
-Document* GTFFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os)
+Document* GTFFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& hints, U2OpStatus& os)
 {
     CHECK_EXT(io != NULL && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), NULL);
     QList<GObject*> objects;
@@ -173,11 +168,6 @@ QMap<QString, QList<SharedAnnotationData> > GTFFormat::parseDocument(IOAdapter *
         // all details are written to the trace log.
         if (validationStatus.isFileInvalid()) {
             fileIsValid = false;
-        }
-
-        // Verify the feature field
-        if (validationStatus.isIncorrectFeatureField()) {
-            ioLog.trace(tr("GTF parsing error: unexpected value of the \"feature\" value \"%1\" at line %2!").arg(gtfLineData.feature).arg(lineNumber));
         }
 
         // Create the annotation
@@ -319,7 +309,7 @@ void GTFFormat::load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &d
     }
 }
 
-FormatCheckResult GTFFormat::checkRawData(const QByteArray &rawData, const GUrl &) const {
+FormatCheckResult GTFFormat::checkRawTextData(const QByteArray &rawData, const GUrl &) const {
     const char* data = rawData.constData();
     int size = rawData.size();
 
@@ -501,12 +491,6 @@ GTFLineData GTFFormat::parseAndValidateLine(QString line, GTFLineValidateFlags& 
     parsedData.strand = fields[GTF_STRAND_INDEX];
     parsedData.frame = fields[GTF_FRAME_INDEX];
     parsedData.attributes = parsedAttrValues;
-
-
-    // Feature
-    if (!GTF_FEATURE_FIELD_VALUES.contains(parsedData.feature)) {
-        status.setFlagIncorrectFeatureField();
-    }
 
 
     // Score: can be either an integer, a float number, or a dot (".")

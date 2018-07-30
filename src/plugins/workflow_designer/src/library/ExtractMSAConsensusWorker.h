@@ -133,7 +133,9 @@ protected:
 class SpinBoxDelegatePropertyRelation : public AttributeRelation {
 public:
     SpinBoxDelegatePropertyRelation(const QString &relatedAttrId): AttributeRelation(relatedAttrId){}
+
     virtual RelationType getType() const {return PROPERTY_CHANGER;}
+    SpinBoxDelegatePropertyRelation *clone() const;
 
     virtual QVariant getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue,
         DelegateTags *infTags, DelegateTags *depTags) const;

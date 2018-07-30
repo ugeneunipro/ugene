@@ -55,6 +55,7 @@ path(_path), name(_name), useMethod(method), format(_format), compressFile(compr
     comboBoxItems[GFF] = "GFF";
     comboBoxItems[Genbank] = "GenBank";
     comboBoxItems[MEGA] = "Mega";
+    comboBoxItems[MSF] = "MSF";
     comboBoxItems[NWK] = "Newick Standard";
     comboBoxItems[TEXT] = "Plain text";
     comboBoxItems[UGENEDB] = "UGENE Database";

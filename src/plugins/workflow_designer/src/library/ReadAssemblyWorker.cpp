@@ -119,8 +119,10 @@ ReadAssemblyProto::ReadAssemblyProto()
 {
     setCompatibleDbObjectTypes(QSet<GObjectType>() << GObjectTypes::ASSEMBLY);
 
-    setDisplayName(ReadAssemblyWorker::tr("Read Assembly"));
-    setDocumentation(ReadAssemblyWorker::tr("Reads assembly from files. All assembly file formats supported by UGENE are allowed as input to this element."));
+    setDisplayName(ReadAssemblyWorker::tr("Read NGS Reads Assembly"));
+    setDocumentation(ReadAssemblyWorker::tr("Input one or several files with assembled NGS reads in SAM, BAM, or UGENEDB format."
+                                            " The element outputs message(s) with the assembled reads data."
+                                            "<br/><br/>Note that some tools require URL(s) of the files as input, not the assembled reads data."));
 
     { // ports description
         QMap<Descriptor, DataTypePtr> outTypeMap;

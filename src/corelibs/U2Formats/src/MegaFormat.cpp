@@ -49,13 +49,13 @@ const char MegaFormat::MEGA_INDEL='-';
 const char MegaFormat::MEGA_START_COMMENT='!';
 const char MegaFormat::MEGA_END_COMMENT=';';
 
-MegaFormat::MegaFormat(QObject* p) : DocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList("meg")) {
+MegaFormat::MegaFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList("meg")) {
     formatName = tr("Mega");
     formatDescription = tr("Mega is a file format of native MEGA program");
     supportedObjectTypes+=GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
 
-Document* MegaFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os){
+Document* MegaFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os){
     QList<GObject*> objs;
     load(io, dbiRef, objs, fs, os);
     CHECK_OP_EXT(os, qDeleteAll(objs), NULL);
@@ -80,7 +80,7 @@ void MegaFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus& os) {
     CHECK_EXT(!os.isCoR(), os.setError(L10N::errorWritingFile(d->getURL())), );
 }
 
-FormatCheckResult MegaFormat::checkRawData(const QByteArray& rawData, const GUrl&) const {
+FormatCheckResult MegaFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
     QByteArray line=rawData.trimmed();
 
     if (!line.startsWith(MEGA_SEPARATOR)) {

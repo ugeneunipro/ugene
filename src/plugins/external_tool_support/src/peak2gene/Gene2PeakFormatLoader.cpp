@@ -24,8 +24,9 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/L10n.h>
 
+#include <U2Formats/TabulatedFormatReader.h>
+
 #include "Gene2PeakFormatLoader.h"
-#include "TabulatedFormatReader.h"
 
 namespace U2 {
 

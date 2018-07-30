@@ -22,6 +22,8 @@
 #ifndef _U2_REPEAT_QUERY_H_
 #define _U2_REPEAT_QUERY_H_
 
+#include <QAction>
+
 #include "FindRepeatsTask.h"
 
 #include "U2Lang/QDScheme.h"

@@ -25,11 +25,13 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
+#include "TextDocumentFormat.h"
+
 namespace U2 {
 
 class IOAdapter;
 
-class U2FORMATS_EXPORT FastaFormat : public DocumentFormat {
+class U2FORMATS_EXPORT FastaFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     FastaFormat(QObject* p);
@@ -38,14 +40,10 @@ public:
 
     virtual const QString& getFormatName() const {return formatName;}
 
-    virtual DNASequence *loadSequence( IOAdapter* io, U2OpStatus& os);
-
     void storeSequence(const DNASequence& sequence, IOAdapter* io, U2OpStatus& os);
     void storeSequence(const U2SequenceObject *sequence, IOAdapter *io, U2OpStatus &os);
 
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
-
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
     //name-sequence list
     static QList <QPair<QString, QString> > getSequencesAndNamesFromUserInput(const QString &userInput, U2OpStatus &os);
@@ -58,7 +56,9 @@ public:
     static const char FASTA_COMMENT_START_SYMBOL;
 
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+    virtual DNASequence *loadTextSequence(IOAdapter* io, U2OpStatus& os);
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
 private:
 

@@ -25,11 +25,14 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
+
+#include "TextDocumentFormat.h"
+
 namespace U2 {
 
 class IOAdapter;
 
-class U2FORMATS_EXPORT MSFFormat : public DocumentFormat {
+class U2FORMATS_EXPORT MSFFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
 
@@ -43,10 +46,10 @@ public:
 
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);
 
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
-
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
 private:
     void save(IOAdapter* io, Document* doc, U2OpStatus& ti);

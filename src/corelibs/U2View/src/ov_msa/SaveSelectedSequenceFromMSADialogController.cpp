@@ -193,7 +193,7 @@ void SaveDocumentInFolderController::initFormatComboBox() {
         QString formatId = formatsInfo.getIdByName(formatName);
         conf.formatCombo->addItem(formatName, formatId);
     }
-    
+
     if (currentFormat.isEmpty()) {
         currentFormat = conf.formatCombo->itemText(0);
     }

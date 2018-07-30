@@ -29,6 +29,19 @@ namespace U2 {
 class U2CORE_EXPORT FileStorageUtils {
 public:
     /**
+     * Finds the destination file by @srcUrl and @role.
+     * Checks hash for both destination and source files.
+     * If hashes are ok then returns the destination file.
+     */
+    static QString getFileToFileInfo(const QString &srcUrl, const QString &role, FileStorage::WorkflowProcess &process);
+
+    /**
+     * Adds info about file to file relation to the storage.
+     * Creates hash for both destination and source files.
+     */
+    static void addFileToFileInfo(const FileStorage::FileInfo &fileToFileInfo, FileStorage::WorkflowProcess &process);
+
+    /**
      * Returns the url to the sorted BAM file for the source @bamUrl.
      * If this BAM file is not in the file storage then returns empty string.
      */

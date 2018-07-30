@@ -43,7 +43,7 @@ namespace U2 {
 
 // PhylipFormat
 PhylipFormat::PhylipFormat(QObject *p)
-    : DocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject,
+    : TextDocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject,
                      QStringList() << "phy" << "ph"){
     formatDescription = tr("PHYLIP multiple alignment format for phylogenetic applications.");
     supportedObjectTypes+=GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
@@ -97,7 +97,7 @@ void PhylipFormat::removeSpaces(QByteArray &data) const {
     }
 }
 
-Document* PhylipFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
+Document* PhylipFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
     SAFE_POINT(io != NULL, "IO adapter is NULL!", NULL);
     QList<GObject*> objects;
     objects.append( load(io, dbiRef, fs, os) );
@@ -163,7 +163,7 @@ void PhylipSequentialFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, Q
     }
 }
 
-FormatCheckResult PhylipSequentialFormat::checkRawData(const QByteArray &rawData, const GUrl &) const {
+FormatCheckResult PhylipSequentialFormat::checkRawTextData(const QByteArray &rawData, const GUrl &) const {
     if (TextUtils::contains(TextUtils::BINARY, rawData.constData(), rawData.size())) {
         return FormatDetection_NotMatched;
     }
@@ -294,7 +294,7 @@ void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
     }
 }
 
-FormatCheckResult PhylipInterleavedFormat::checkRawData(const QByteArray &rawData, const GUrl &) const {
+FormatCheckResult PhylipInterleavedFormat::checkRawTextData(const QByteArray &rawData, const GUrl &) const {
     if (TextUtils::contains(TextUtils::BINARY, rawData.constData(), rawData.size())) {
         return FormatDetection_NotMatched;
     }

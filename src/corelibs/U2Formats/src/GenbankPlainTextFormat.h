@@ -35,8 +35,6 @@ public:
 
     virtual void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os);
 
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
-
     virtual bool isStreamingSupport();
 
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);
@@ -44,6 +42,8 @@ public:
     static bool checkCircularity(const GUrl& filePath, U2OpStatus& os);
 
 protected:
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+
     typedef QPair<QString, QString> StrPair;
 
     static bool readIdLine(ParserState*);

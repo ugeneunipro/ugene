@@ -99,7 +99,7 @@
         <translation>Service to support UGENE embedded testing</translation>
     </message>
     <message>
-        <location filename="../src/TestRunnerPlugin.cpp" line="292"/>
+        <location filename="../src/TestRunnerPlugin.cpp" line="293"/>
         <source>Error reading test suite from %1. Error: %2</source>
         <translation>Error reading test suite from %1. Error: %2</translation>
     </message>

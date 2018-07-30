@@ -66,6 +66,7 @@ public slots:
     void reset();
     void commit();
     void sendModified();
+    void sl_updatePortTable();
     void sl_resizeSplitter(bool);
 
 private slots:
@@ -81,8 +82,10 @@ private slots:
 
 private:
     void changeSizes(QWidget *w, int h);
+    static void removePortTable(QList<QWidget *> &portWidgets);
+    void createInputPortTable(Actor* a);
+    void createOutputPortTable(Actor* a);
 
-private:
     SpecialParametersPanel *specialParameters;
     WorkflowView* owner;
     ConfigurationEditor* custom;

@@ -426,7 +426,7 @@ void AddPluginTask::prepare() {
 
     //check that plugin we depends on is already loaded
     foreach (const DependsInfo& di, desc.dependsList) {
-        PluginRef* ref = ps->findRefById(desc.id);
+        PluginRef* ref = ps->findRefById(di.id);
         if (ref == NULL) {
             stateInfo.setError(  tr("Plugin %1 depends on %2 which is not loaded").arg(desc.id).arg(di.id) );
             return;
@@ -444,6 +444,7 @@ void AddPluginTask::prepare() {
 
     if (!loadOk) {
         stateInfo.setError(  tr("Plugin loading error: %1, Error string %2").arg(libUrl).arg(lib->errorString()) );
+        coreLog.error(stateInfo.getError());
         return;
     }
 
@@ -470,12 +471,28 @@ void AddPluginTask::prepare() {
 Task::ReportResult AddPluginTask::report() {
     CHECK_OP(stateInfo, ReportResult_Finished);
 
+    if (verifyPlugin()) {
+        return ReportResult_Finished;
+    }
+
+    Settings* settings = AppContext::getSettings();
+    settings->sync();
+    QString skipFile = settings->getValue(settings->toVersionKey(SKIP_LIST_SETTINGS)+ desc.id, QString()).toString();
+    if (skipFile == desc.descriptorUrl.getURLString()) {
+        return ReportResult_Finished;
+    }
+
+    instantiatePlugin();
+    return ReportResult_Finished;
+}
+
+bool AddPluginTask::verifyPlugin() {
     // verify plugin
     PLUG_VERIFY_FUNC verify_func = PLUG_VERIFY_FUNC(lib->resolve(U2_PLUGIN_VERIFY_NAME));
     if (verify_func && verificationMode) {
         if (!verify_func()) {
             // verification mode is exclusively for crash check!
-            FAIL("Plugin is not verified!", ReportResult_Finished);
+            FAIL("Plugin is not verified!", true);
         }
     }
 
@@ -492,56 +509,51 @@ Task::ReportResult AddPluginTask::report() {
             MainWindow* mw = AppContext::getMainWindow();
             CHECK(mw != NULL, ReportResult_Finished);
             mw->addNotification(message, Warning_Not);
-            return ReportResult_Finished;
+            return true;
         } else {
-            QString skipFile = settings->getValue(settings->toVersionKey(SKIP_LIST_SETTINGS)+ desc.id, QString()).toString();
+            QString skipFile = settings->getValue(settings->toVersionKey(SKIP_LIST_SETTINGS) + desc.id, QString()).toString();
             if (skipFile == desc.descriptorUrl.getURLString()) {
-                settings->remove(settings->toVersionKey(SKIP_LIST_SETTINGS)+ desc.id);
+                settings->remove(settings->toVersionKey(SKIP_LIST_SETTINGS) + desc.id);
             }
         }
     }
+    return false;
+}
 
-    settings->sync();
-    QString skipFile = settings->getValue(settings->toVersionKey(SKIP_LIST_SETTINGS)+ desc.id, QString()).toString();
-    if (skipFile == desc.descriptorUrl.getURLString()) {
-        return ReportResult_Finished;
-    }
-
-    //instantiate plugin
+void AddPluginTask::instantiatePlugin() {
     PLUG_INIT_FUNC init_fn = PLUG_INIT_FUNC(lib->resolve(U2_PLUGIN_INIT_FUNC_NAME));
+    QString libUrl = desc.libraryUrl.getURLString();
     if (!init_fn) {
-        stateInfo.setError(  tr("Plugin initialization routine was not found: %1").arg(libUrl) );
-        return ReportResult_Finished;
+        stateInfo.setError(tr("Plugin initialization routine was not found: %1").arg(libUrl));
+        return;
     }
 
     Plugin* p = init_fn();
     if (p == NULL) {
-        stateInfo.setError(  tr("Plugin initialization failed: %1").arg(libUrl) );
-        return ReportResult_Finished;
+        stateInfo.setError(tr("Plugin initialization failed: %1").arg(libUrl));
+        return;
     }
 
     p->setId(desc.id);
     p->setLicensePath(desc.licenseUrl.getURLString());
 
-    if (!p->isFree()){
+    if (!p->isFree()) {
         QString versionAppendix = Version::buildDate;
-        if (!Version::appVersion().isDevVersion){
+        if (!Version::appVersion().isDevVersion) {
             versionAppendix.clear();
-        }else{
+        } else {
             versionAppendix.replace(" ", ".");
             versionAppendix.append("-");
         }
         Settings* settings = AppContext::getSettings();
         QString pluginAcceptedLicenseSettingsDir = settings->toVersionKey(PLUGINS_ACCEPTED_LICENSE_LIST);
-        if(settings->getValue(pluginAcceptedLicenseSettingsDir + versionAppendix + desc.id + "license",false).toBool()){
+        if (settings->getValue(pluginAcceptedLicenseSettingsDir + versionAppendix + desc.id + "license", false).toBool()) {
             p->acceptLicense();
         }
     }
 
     PluginRef* ref = new PluginRef(p, lib.take(), desc);
     ps->registerPlugin(ref);
-
-    return ReportResult_Finished;
 }
 
 VerifyPluginTask::VerifyPluginTask(PluginSupportImpl* ps, const PluginDesc& desc)

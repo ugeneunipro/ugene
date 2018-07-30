@@ -188,6 +188,9 @@ QGroupBox::indicator:checked {
           <property name="spacing">
            <number>0</number>
           </property>
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinAndMaxSize</enum>
+          </property>
           <property name="leftMargin">
            <number>0</number>
           </property>
@@ -288,6 +291,9 @@ QGroupBox::indicator:checked {
           <property name="spacing">
            <number>0</number>
           </property>
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinAndMaxSize</enum>
+          </property>
           <property name="leftMargin">
            <number>0</number>
           </property>
@@ -301,13 +307,20 @@ QGroupBox::indicator:checked {
            <number>0</number>
           </property>
           <item>
-           <widget class="QTableView" name="table2">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>2</verstretch>
-             </sizepolicy>
+           <widget class="QScrollArea" name="inputScrollArea">
+            <property name="widgetResizable">
+             <bool>true</bool>
             </property>
+            <widget class="QWidget" name="inputScrollAreaContainer">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>288</width>
+               <height>69</height>
+              </rect>
+             </property>
+            </widget>
            </widget>
           </item>
          </layout>
@@ -335,6 +348,9 @@ QGroupBox::indicator:checked {
           <property name="spacing">
            <number>0</number>
           </property>
+          <property name="sizeConstraint">
+           <enum>QLayout::SetMinAndMaxSize</enum>
+          </property>
           <property name="leftMargin">
            <number>0</number>
           </property>
@@ -348,13 +364,20 @@ QGroupBox::indicator:checked {
            <number>0</number>
           </property>
           <item>
-           <widget class="QTableView" name="table3">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
+           <widget class="QScrollArea" name="outputScrollArea">
+            <property name="widgetResizable">
+             <bool>true</bool>
             </property>
+            <widget class="QWidget" name="outputScrollAreaContainer">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>288</width>
+               <height>69</height>
+              </rect>
+             </property>
+            </widget>
            </widget>
           </item>
          </layout>

@@ -19,11 +19,12 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/AppContext.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Formats/FastaFormat.h>
 
@@ -74,8 +75,12 @@ StreamShortReadWriter::StreamShortReadWriter() {
     io = iof->createIOAdapter();
 }
 
+StreamShortReadWriter::~StreamShortReadWriter() {
+    close();
+    delete io;
+}
 
-bool StreamShortReadWriter::init( const GUrl& url ) {
+bool StreamShortReadWriter::init(const GUrl& url) {
     ouputPath = url;
     bool res = io->open(url, IOAdapterMode_Write);
     return res;
@@ -96,7 +101,18 @@ bool StreamShortReadWriter::writeNextSequence(const U2SequenceObject *seq) {
 }
 
 void StreamShortReadWriter::close() {
+    CHECK(io->isOpen(), );
     io->close();
+}
+
+StreamGzippedShortReadWriter::StreamGzippedShortReadWriter()
+    : StreamShortReadWriter()
+{
+    delete io;
+    io = NULL;
+
+    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::GZIPPED_LOCAL_FILE);
+    io = iof->createIOAdapter();
 }
 
 } //namespace

@@ -269,7 +269,7 @@ void MultiplexerWorkerFactory::init() {
         portDescs << new PortDescriptor(inputDesc2, emptyTypeSet, true);
 
         // output port
-        Descriptor outputDesc(OUTPUT_PORT, MultiplexerWorker::tr("Multiplexed output"),
+        Descriptor outputDesc(OUTPUT_PORT, MultiplexerWorker::tr("Multiplexed Output"),
             MultiplexerWorker::tr("The port outputs multiplexed messages."));
         portDescs << new PortDescriptor(outputDesc, emptyTypeSet, false, true);
     }

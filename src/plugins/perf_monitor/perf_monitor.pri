@@ -5,4 +5,3 @@ PLUGIN_NAME=Performance monitor
 PLUGIN_VENDOR=Unipro
 PLUGIN_MODE=ui
 include( ../../ugene_plugin_common.pri )
-#unix_not_mac() : LIBS += -lprocps

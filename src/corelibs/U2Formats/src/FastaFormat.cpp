@@ -52,7 +52,7 @@ const char FastaFormat::FASTA_HEADER_START_SYMBOL = '>';
 const char FastaFormat::FASTA_COMMENT_START_SYMBOL = ';';
 
 FastaFormat::FastaFormat(QObject* p)
-: DocumentFormat(p, DocumentFormatFlags_SW, QStringList()<<"fa"<<"mpfa"<<"fna"<<"fsa"<<"fas"<<"fasta"<<"sef"<<"seq"<<"seqs")
+: TextDocumentFormat(p, DocumentFormatFlags_SW, QStringList()<<"fa"<<"mpfa"<<"fna"<<"fsa"<<"fas"<<"fasta"<<"sef"<<"seq"<<"seqs")
 {
     formatName = tr("FASTA");
     supportedObjectTypes+=GObjectTypes::SEQUENCE;
@@ -103,7 +103,7 @@ static QVariantMap analyzeRawData(const QByteArray& data) {
     return res;
 }
 
-FormatCheckResult FastaFormat::checkRawData(const QByteArray& rawData, const GUrl&) const {
+FormatCheckResult FastaFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
     const char* data = rawData.constData();
     int size = rawData.size();
 
@@ -298,7 +298,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, Q
 }
 
 
-Document* FastaFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
+Document* FastaFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
     CHECK_EXT(io!=NULL && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), NULL);
 
     QList<GObject*> objects;
@@ -385,7 +385,7 @@ void FastaFormat::storeEntry( IOAdapter *io, const QMap<GObjectType, QList<GObje
     saveSequence(io, seq, os);
 }
 
-DNASequence *FastaFormat::loadSequence(IOAdapter* io, U2OpStatus& os) {
+DNASequence *FastaFormat::loadTextSequence(IOAdapter* io, U2OpStatus& os) {
     try {
         MemoryLocker l(os);
         CHECK_OP(os, NULL);

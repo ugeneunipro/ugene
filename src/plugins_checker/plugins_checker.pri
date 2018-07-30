@@ -51,9 +51,8 @@ win32 {
 
 macx {
     RC_FILE = images/plugins_checker_mac.icns
+    QMAKE_RPATHDIR += @executable_path
 }
-
-
 
 unix {
     target.path = $$UGENE_INSTALL_DIR/$$UGENE_RELATIVE_DESTDIR

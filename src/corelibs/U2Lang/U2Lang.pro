@@ -33,6 +33,7 @@ HEADERS += src/library/BaseActorCategories.h \
            src/model/Marker.h \
            src/model/MarkerAttribute.h \
            src/model/MessageMetadata.h \
+           src/model/PairedReadsPortValidator.h \
            src/model/Peer.h \
            src/model/Port.h \
            src/model/PortRelation.h \
@@ -44,6 +45,7 @@ HEADERS += src/library/BaseActorCategories.h \
            src/model/Schema.h \
            src/model/SchemaActorsRegistry.h \
            src/model/SchemaConfig.h \
+           src/model/SlotRelation.h \
            src/model/WorkflowContext.h \
            src/model/WorkflowEnv.h \
            src/model/WorkflowManager.h \
@@ -148,7 +150,9 @@ SOURCES += src/library/BaseActorCategories.cpp \
            src/model/Marker.cpp \
            src/model/MarkerAttribute.cpp \
            src/model/MessageMetadata.cpp \
+           src/model/PairedReadsPortValidator.cpp \
            src/model/Port.cpp \
+           src/model/PortRelation.cpp \
            src/model/QDConstraint.cpp \
            src/model/QDScheme.cpp \
            src/model/QueryDesignerRegistry.cpp \

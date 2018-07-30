@@ -39,7 +39,7 @@ static const QString CHROMOSOME("chromosome");
 static const QString UNKNOWN_CHR("unknown");
 
 DifferentialFormat::DifferentialFormat(QObject *parent)
-: DocumentFormat(parent, DocumentFormatFlags_W1, QStringList()<<"diff")
+: TextDocumentFormat(parent, DocumentFormatFlags_W1, QStringList()<<"diff")
 {
     formatName = tr("Differential");
     supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;
@@ -79,7 +79,7 @@ QString DifferentialFormat::getAnnotationName() const {
     return "differential";
 }
 
-FormatCheckResult DifferentialFormat::checkRawData(const QByteArray &rawData,
+FormatCheckResult DifferentialFormat::checkRawTextData(const QByteArray &rawData,
     const GUrl &) const {
     QStringList lines = QString(rawData).split("\n", QString::SkipEmptyParts);
     CHECK(lines.size() > 0, FormatDetection_NotMatched);
@@ -185,7 +185,7 @@ QList<SharedAnnotationData> DifferentialFormat::parseAnnotations(const ColumnDat
     return anns;
 }
 
-Document * DifferentialFormat::loadDocument(IOAdapter *io, const U2DbiRef &targetDb, const QVariantMap &hints, U2OpStatus &os) {
+Document * DifferentialFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &targetDb, const QVariantMap &hints, U2OpStatus &os) {
     DbiOperationsBlock opBlock(targetDb, os);
     CHECK_OP(os, NULL);
     Q_UNUSED(opBlock);

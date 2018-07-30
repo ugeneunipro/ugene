@@ -4,9 +4,13 @@
 <context>
     <name>DotPlotDialog</name>
     <message>
-        <location filename="../src/DotPlotDialog.ui" line="20"/>
         <source>DotPlot</source>
-        <translation>DotPlot</translation>
+        <translation type="vanished">DotPlot</translation>
+    </message>
+    <message>
+        <location filename="../src/DotPlotDialog.ui" line="20"/>
+        <source>Compare sequences using Dotplot</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/DotPlotDialog.ui" line="33"/>
@@ -257,17 +261,17 @@
         <translation>Диагональный</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="252"/>
+        <location filename="../src/DotPlotDialog.cpp" line="286"/>
         <source>Open file</source>
         <translation>Открыть файл</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="310"/>
+        <location filename="../src/DotPlotDialog.cpp" line="318"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotDialog.cpp" line="310"/>
+        <location filename="../src/DotPlotDialog.cpp" line="318"/>
         <source>Error opening files</source>
         <translation>Ошибка открытия файлов</translation>
     </message>
@@ -330,22 +334,22 @@
 <context>
     <name>U2::DotPlotFilterDialog</name>
     <message>
-        <location filename="../src/DotPlotFilterDialog.cpp" line="51"/>
+        <location filename="../src/DotPlotFilterDialog.cpp" line="52"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.cpp" line="52"/>
+        <location filename="../src/DotPlotFilterDialog.cpp" line="53"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.cpp" line="145"/>
+        <location filename="../src/DotPlotFilterDialog.cpp" line="146"/>
         <source>Feature names</source>
         <translation>Имена аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotFilterDialog.cpp" line="145"/>
+        <location filename="../src/DotPlotFilterDialog.cpp" line="146"/>
         <source>No feature names have been selected. In that case dotplot will be empty. Note, If the feature names list is empty your sequences don&apos;t have annotations. Select some feature names or choose another filtration method</source>
         <translation>Имена аннотаций не были выбраны. В этом случае dotplot будет пустым. Если список аннотаций пустой, то ваши последовательности не содержат аннотации. Выберете несколько имен аннотаций или другой метод фильтрации</translation>
     </message>
@@ -366,9 +370,13 @@
         <translation>Dotplot widget is NULL</translation>
     </message>
     <message>
-        <location filename="../src/DotPlotImageExportTask.cpp" line="61"/>
         <source>DotPlot</source>
-        <translation>DotPlot</translation>
+        <translation type="vanished">DotPlot</translation>
+    </message>
+    <message>
+        <location filename="../src/DotPlotImageExportTask.cpp" line="61"/>
+        <source>Dotplot</source>
+        <translation type="unfinished">Dotplot</translation>
     </message>
     <message>
         <location filename="../src/DotPlotImageExportTask.cpp" line="78"/>

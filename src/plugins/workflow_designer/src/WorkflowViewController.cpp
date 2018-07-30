@@ -299,29 +299,6 @@ WorkflowView * WorkflowView::openWD(WorkflowGObject *go) {
     return NULL;
 }
 
-void WorkflowView::openSample(const SampleAction &action) {
-    WorkflowView *wd = openWD(NULL);
-    CHECK(NULL != wd, );
-    int slashPos = action.samplePath.indexOf("/");
-    CHECK(-1 != slashPos, );
-    const QString category = action.samplePath.left(slashPos);
-    const QString id = action.samplePath.mid(slashPos + 1);
-
-    switch (action.mode) {
-        case SampleAction::Select:
-            wd->tabs->setCurrentIndex(SamplesTab);
-            wd->samples->activateSample(category, id);
-            break;
-        case SampleAction::Load:
-            wd->samples->loadSample(category, id);
-            break;
-        case SampleAction::OpenWizard:
-            wd->samples->loadSample(category, id);
-            wd->sl_showWizard();
-            break;
-    }
-}
-
 WorkflowView::WorkflowView(WorkflowGObject* go)
 : MWMDIWindow(tr("Workflow Designer")), running(false), sceneRecreation(false), go(go), currentProto(NULL), currentActor(NULL),
 pasteCount(0), debugInfo(new WorkflowDebugStatus(this)), debugActions()
@@ -1447,7 +1424,7 @@ bool WorkflowView::sl_validate(bool notify) {
             tr("Please fix issues listed in the error list (located under workflow)."));
     } else {
         if (notify) {
-            QString message = tr("Workflow is valid.\n");
+            QString message = tr("Workflow is valid. \n");
             if (lst.isEmpty()) {
                 message += tr("Well done!");
             } else {
@@ -1847,7 +1824,7 @@ void WorkflowView::sl_selectPrototype(Workflow::ActorPrototype* p, bool putToSce
         if (putToScene) {
             addProcess(currentActor, scene->getLastMousePressPoint());
         } else {
-            propertyEditor->setDescriptor(p, tr("Drag the palette element to the scene or just click on the scene to add the element."));
+            propertyEditor->setDescriptor(p, tr("Drag an element to the scene to add it to the workflow."));
             scene->views().at(0)->setCursor(Qt::CrossCursor);
         }
     }
@@ -2154,7 +2131,7 @@ void WorkflowView::loadWizardResult(const QString &result) {
     WorkflowUtils::schemaFromFile(url, schema, &meta, os);
     recreateScene();
     sl_onSceneLoaded();
-    if (!schema->getWizards().isEmpty()) {
+    if (!schema->getWizards().isEmpty() && !schema->getWizards().first()->isAutoRun()) {
         runWizard(schema->getWizards().first());
     }
 }
@@ -2745,6 +2722,7 @@ void WorkflowScene::sl_reset() {
 
 void WorkflowScene::setModified(bool b) {
     modified = b;
+    update();
 }
 
 void WorkflowScene::setModified() {

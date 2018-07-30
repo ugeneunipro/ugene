@@ -37,13 +37,13 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gor.cpp" line="236"/>
+        <location filename="../src/gor.cpp" line="237"/>
         <source>protein: %1 residue: %2
 Invalid amino acid type or secondary structure state : ==&gt;%3&lt;==</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../src/gor.cpp" line="551"/>
+        <location filename="../src/gor.cpp" line="553"/>
         <source>Error invalid value of np= %1</source>
         <translation></translation>
     </message>

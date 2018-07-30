@@ -23,6 +23,7 @@
 
 #include <QMessageBox>
 #include <QPushButton>
+#include <QButtonGroup>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>

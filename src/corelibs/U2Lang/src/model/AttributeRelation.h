@@ -44,6 +44,7 @@ class U2LANG_EXPORT AttributeRelation {
 public:
     AttributeRelation(const QString &relatedAttrId)
         : relatedAttrId(relatedAttrId) {}
+    virtual ~AttributeRelation() {}
 
     /**
      * Updates tags of delegates
@@ -60,7 +61,7 @@ public:
      */
     virtual bool valueChangingRelation() const {return true;}
 
-    virtual ~AttributeRelation() {}
+    virtual AttributeRelation *clone() const = 0;
 
 protected:
     QString relatedAttrId;
@@ -71,16 +72,19 @@ protected:
  */
 class U2LANG_EXPORT VisibilityRelation : public AttributeRelation {
 public:
-    VisibilityRelation(const QString &relatedAttrId, const QVariantList &visibilityValues);
-    VisibilityRelation(const QString &relatedAttrId, const QVariant &visibilityValue);
+    VisibilityRelation(const QString &relatedAttrId, const QVariantList &visibilityValues, bool invertVisibilityRules = false);
+    VisibilityRelation(const QString &relatedAttrId, const QVariant &visibilityValue, bool invertVisibilityRules = false);
 
     virtual QVariant getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue,
         DelegateTags *infTags, DelegateTags *depTags) const;
     virtual RelationType getType() const {return VISIBILITY;}
     virtual bool valueChangingRelation() const {return false;}
 
+    VisibilityRelation *clone() const;
+
 private:
-    QVariantList visibilityValues;
+    QVariantList    visibilityValues;
+    bool            invertAffectResult;
 };
 
 /**
@@ -95,6 +99,8 @@ public:
         DelegateTags *infTags, DelegateTags *depTags) const;
     virtual void updateDelegateTags(const QVariant &influencingValue, DelegateTags *dependentTags) const;
     virtual RelationType getType() const {return FILE_EXTENSION;}
+
+    FileExtensionRelation *clone() const;
 };
 
 /**
@@ -109,6 +115,9 @@ public:
     virtual QVariant getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue,
         DelegateTags *infTags, DelegateTags *depTags) const;
     virtual void updateDelegateTags(const QVariant &influencingValue, DelegateTags *dependentTags) const;
+
+    ValuesRelation *clone() const;
+
 private:
     QVariantMap dependencies;
 };

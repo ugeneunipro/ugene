@@ -87,7 +87,7 @@ bool SAMFormat::validateField(int num, QByteArray &field, U2OpStatus *ti) {
     return true;
 }
 
-SAMFormat::SAMFormat( QObject* p ): DocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting | DocumentFormatFlag_CannotBeCompressed), QStringList()<< "sam")
+SAMFormat::SAMFormat( QObject* p ): TextDocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting | DocumentFormatFlag_CannotBeCompressed), QStringList()<< "sam")
 {
     formatName = tr("SAM");
     formatDescription = tr("The Sequence Alignment/Map (SAM) format is a generic alignment format for"
@@ -97,7 +97,7 @@ SAMFormat::SAMFormat( QObject* p ): DocumentFormat(p, DocumentFormatFlags(Docume
     formatFlags |= DocumentFormatFlag_Hidden;
 }
 
-FormatCheckResult SAMFormat::checkRawData( const QByteArray& rawData, const GUrl&) const {
+FormatCheckResult SAMFormat::checkRawTextData( const QByteArray& rawData, const GUrl&) const {
     if (skipDetection) {
         return FormatDetection_NotMatched;
     }
@@ -168,7 +168,7 @@ FormatCheckResult SAMFormat::checkRawData( const QByteArray& rawData, const GUrl
 //    }
 //}
 
-Document* SAMFormat::loadDocument(IOAdapter* /* io */, const U2DbiRef& /* dbiRef */, const QVariantMap& /* _fs */, U2OpStatus& /* os */) {
+Document* SAMFormat::loadTextDocument(IOAdapter* /* io */, const U2DbiRef& /* dbiRef */, const QVariantMap& /* _fs */, U2OpStatus& /* os */) {
     FAIL("Not implemented", NULL);
 
     //CHECK_EXT(io != NULL   && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), NULL);
@@ -421,6 +421,7 @@ bool SAMFormat::getSectionTags( QByteArray &line, const QByteArray &sectionName,
 bool SAMFormat::storeHeader(IOAdapter* io, const QVector<QByteArray> &names, const QVector<int> &lengths, bool coordinateSorted) {
     assert(names.size() > 0);
     assert(names.size() == lengths.size());
+    io->setFormatMode(IOAdapter::TextMode);
     static const QByteArray TAB = "\t";
     QByteArray block;
     block.append(SECTION_HEADER).append(TAB).append(TAG_VERSION).append(":").append(VERSION);
@@ -457,6 +458,7 @@ bool SAMFormat::storeAlignedRead(int offset, const DNASequence& read, IOAdapter*
     if( NULL == io || !io->isOpen() ) {
         return false;
     }
+    io->setFormatMode(IOAdapter::TextMode);
 
     if (first) {
         QByteArray block;

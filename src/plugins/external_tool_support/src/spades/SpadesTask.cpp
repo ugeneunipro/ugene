@@ -31,11 +31,9 @@
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/FileAndDirectoryUtils.h>
 
-
-
 #include "SpadesSupport.h"
 #include "SpadesTask.h"
-
+#include "SpadesWorker.h"
 
 namespace U2 {
 // SpadesTask
@@ -43,6 +41,7 @@ namespace U2 {
 const QString SpadesTask::OPTION_DATASET_TYPE = "dataset-type";
 const QString SpadesTask::OPTION_RUNNING_MODE = "running-mode";
 const QString SpadesTask::OPTION_K_MER = "k-mer";
+const QString SpadesTask::OPTION_INPUT_DATA = "input-data";
 const QString SpadesTask::OPTION_THREADS = "threads";
 const QString SpadesTask::OPTION_MEMLIMIT = "memlimit";
 const QString SpadesTask::YAML_FILE_NAME = "datasets.yaml";
@@ -68,15 +67,21 @@ void SpadesTask::prepare() {
 
     QStringList arguments;
 
-    if(settings.getCustomValue(SpadesTask::OPTION_DATASET_TYPE, "Multi Cell").toString() == "Single Cell"){
+    if (settings.getCustomValue(SpadesTask::OPTION_DATASET_TYPE, LocalWorkflow::SpadesWorker::DATASET_TYPE_STANDARD_ISOLATE).toString() == LocalWorkflow::SpadesWorker::DATASET_TYPE_MDA_SINGLE_CELL) {
         arguments.append("--sc");
     }
 
-    QString runningMode = settings.getCustomValue(SpadesTask::OPTION_RUNNING_MODE, "Error Correction and Assembly").toString();
-    if(runningMode == "Assembly only"){
+    QString runningMode = settings.getCustomValue(SpadesTask::OPTION_RUNNING_MODE, LocalWorkflow::SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_AND_ASSEMBLY).toString();
+    if (runningMode == LocalWorkflow::SpadesWorker::RUNNING_MODE_ASSEMBLY_ONLY) {
         arguments.append("--only-assembler");
-    }else if(runningMode == "Error correction only"){
+    } else if (runningMode == LocalWorkflow::SpadesWorker::RUNNING_MODE_ERROR_CORRECTION_ONLY) {
         arguments.append("--only-error-correction");
+    }
+
+    QVariantMap inputDataDialogSettings = settings.getCustomValue(SpadesTask::OPTION_INPUT_DATA, QVariantMap()).toMap();
+    QString sequencingPlatform = inputDataDialogSettings.value(LocalWorkflow::SpadesWorkerFactory::SEQUENCING_PLATFORM_ID, QString()).toString();
+    if (sequencingPlatform == PLATFORM_IONTORRENT) {
+        arguments.append(sequencingPlatform);
     }
 
     arguments.append("--dataset");
@@ -88,8 +93,8 @@ void SpadesTask::prepare() {
     arguments.append("-m");
     arguments.append(settings.getCustomValue(SpadesTask::OPTION_MEMLIMIT, "250").toString());
 
-    QString k = settings.getCustomValue(SpadesTask::OPTION_K_MER, "auto").toString();
-    if(k != "auto"){
+    QString k = settings.getCustomValue(SpadesTask::OPTION_K_MER, LocalWorkflow::SpadesWorker::K_MER_AUTO).toString();
+    if (k != LocalWorkflow::SpadesWorker::K_MER_AUTO) {
         arguments.append("-k");
         arguments.append(k);
     }
@@ -111,21 +116,34 @@ Task::ReportResult SpadesTask::report() {
     CHECK(!hasError(), ReportResult_Finished);
     CHECK(!isCanceled(), ReportResult_Finished);
 
-    QString res = settings.outDir.getURLString() + QDir::separator() + SpadesTask::SCAFFOLDS_NAME;
+    QString res = settings.outDir.getURLString() + "/" + SpadesTask::SCAFFOLDS_NAME;
     if(!FileAndDirectoryUtils::isFileEmpty(res)){
         resultUrl = res;
     }else{
-        stateInfo.setError(QString("File %1 has not been found in output folder %2").arg(SpadesTask::SCAFFOLDS_NAME).arg(settings.outDir.getURLString()));
+        stateInfo.setError(tr("File %1 has not been found in output folder %2").arg(SpadesTask::SCAFFOLDS_NAME).arg(settings.outDir.getURLString()));
+    }
+
+    QString contigs = settings.outDir.getURLString() + "/" + SpadesTask::CONTIGS_NAME;
+    if (!FileAndDirectoryUtils::isFileEmpty(res)) {
+        contigsUrl = contigs;
+    } else {
+        stateInfo.setError(tr("File %1 has not been found in output folder %2").arg(SpadesTask::CONTIGS_NAME).arg(settings.outDir.getURLString()));
     }
 
 
     return ReportResult_Finished;
 }
 
+QString SpadesTask::getScaffoldsUrl() const {
+    return resultUrl;
+}
+
+QString SpadesTask::getContigsUrl() const {
+    return contigsUrl;
+}
+
 QList<Task *> SpadesTask::onSubTaskFinished(Task * /*subTask*/) {
-
     QList<Task *> result;
-
     return result;
 }
 
@@ -139,22 +157,27 @@ void SpadesTask::writeYamlReads(){
     res.append("[\n");
     foreach (const AssemblyReads& r , settings.reads){
         res.append("{\n");
-        res.append(QString("orientation: \"%1\",\n").arg(r.orientation));
-        res.append(QString("type: \"%1\",\n").arg(GenomeAssemblyUtils::getYamlLibraryName(r.libName, r.libType)));
-        if(!GenomeAssemblyUtils::hasRightReads(r.libName)){
-            if(r.libName == LIBRARY_PAIRED_UNPAIRED || r.libName == LIBRARY_PAIRED_INTERLACED){
-                res.append("interlaced reads: [\n");
-            }else{
-                res.append("single reads: [\n");
+        if (LocalWorkflow::SpadesWorkerFactory::IN_PORT_PAIRED_ID_LIST.contains(r.libName)) {
+            res.append(QString("orientation: \"%1\",\n").arg(r.orientation));
+        }
+        res.append(QString("type: \"%1\",\n").arg(r.libName));
+        if(!GenomeAssemblyUtils::hasRightReads(r.libName)) {
+            res.append(QString("%1: [\n").arg(r.readType));
+
+            foreach(const GUrl& url, r.left) {
+                res.append(QString("\"%1\",\n").arg(url.getURLString()));
             }
-            res.append(QString("\"%1\",\n").arg(r.left.getURLString()));
             res.append("]\n");
         }else{
             res.append("left reads: [\n");
-            res.append(QString("\"%1\",\n").arg(r.left.getURLString()));
+            foreach(const GUrl& url, r.left) {
+                res.append(QString("\"%1\",\n").arg(url.getURLString()));
+            }
             res.append("],\n");
             res.append("right reads: [\n");
-            res.append(QString("\"%1\",\n").arg(r.right.getURLString()));
+            foreach(const GUrl& url, r.right) {
+                res.append(QString("\"%1\",\n").arg(url.getURLString()));
+            }
             res.append("],\n");
         }
         res.append("},\n");

@@ -90,7 +90,7 @@ GUI_TEST_CLASS_DEFINITION( test_0002 ) {
 GUI_TEST_CLASS_DEFINITION( test_0003 ) {
 //     1. Click the menu Tools -> Align to reference -> Align short reads.
 //     2. Fill in the dialog:
-//     {Alignment method} BWA
+//     {Mapping tool} BWA
 //     {Reference sequence} _common_data/e_coli/NC_008253.fa
 //     {Short reads} _common_data/bam/scerevisiae.bam.bai
     GTLogTracer l;

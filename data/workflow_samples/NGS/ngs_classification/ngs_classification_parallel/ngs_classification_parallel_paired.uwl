@@ -1,0 +1,353 @@
+#@UGENE_WORKFLOW
+
+
+
+workflow "Parallel classification for PE reads"{
+
+    get-pe-reads-list {
+        type:get-pe-reads-list;
+        name:"Read NGS PE Reads";
+        url1 {
+            dataset:"Dataset 1";
+        }
+        url2 {
+            dataset:"Dataset 1";
+        }
+    }
+    fastqc-before-1 {
+        type:fastqc;
+        name:"FastQC Before 1";
+    }
+    kraken-classify {
+        type:kraken-classify;
+        name:Kraken;
+        input-data:paired-end;
+    }
+    clark-classify {
+        type:clark-classify;
+        name:CLARK;
+        sequencing-reads:paired-end;
+    }
+    fastqc-before-2 {
+        type:fastqc;
+        name:"FastQC Before 2";
+    }
+    fastqc-after-1 {
+        type:fastqc;
+        name:"FastQC After 1";
+    }
+    fastqc-after-2 {
+        type:fastqc;
+        name:"FastQC After 2";
+    }
+    ensemble-classification {
+        type:ensemble-classification;
+        name:Ensemble;
+    }
+    wevote-classify {
+        type:wevote-classify;
+        name:WEVOTE;
+    }
+    classification-report {
+        type:classification-report;
+        name:Report;
+    }
+    trimmomatic {
+        type:trimmomatic;
+        name:Trimmomatic;
+        input-data:paired-end;
+    }
+
+    .actor-bindings {
+        wevote-classify.out->classification-report.in
+        trimmomatic.out->fastqc-after-1.in-file
+        trimmomatic.out->fastqc-after-2.in-file
+        trimmomatic.out->kraken-classify.in
+        trimmomatic.out->clark-classify.in
+        kraken-classify.out->ensemble-classification.tax-data1
+        clark-classify.out->ensemble-classification.tax-data2
+        ensemble-classification.out->wevote-classify.in
+        get-pe-reads-list.out->fastqc-before-1.in-file
+        get-pe-reads-list.out->fastqc-before-2.in-file
+        get-pe-reads-list.out->trimmomatic.in
+    }
+
+    get-pe-reads-list.reads-url1->fastqc-before-1.in-file.url
+    trimmomatic.reads-url1->kraken-classify.in.reads-url1
+    trimmomatic.reads-url2->kraken-classify.in.reads-url2
+    trimmomatic.reads-url1->clark-classify.in.reads-url1
+    trimmomatic.reads-url2->clark-classify.in.reads-url2
+    get-pe-reads-list.reads-url2->fastqc-before-2.in-file.url
+    trimmomatic.reads-url1->fastqc-after-1.in-file.url
+    trimmomatic.reads-url2->fastqc-after-2.in-file.url
+    kraken-classify.tax-data->ensemble-classification.tax-data1.in
+    clark-classify.tax-data->ensemble-classification.tax-data2.in
+    ensemble-classification.url->wevote-classify.in.url
+    wevote-classify.tax-data->classification-report.in.tax-data
+    get-pe-reads-list.reads-url1->trimmomatic.in.reads-url1
+    get-pe-reads-list.reads-url2->trimmomatic.in.reads-url2
+
+    .meta {
+        visual {
+            clark-classify {
+                pos:"-255 -435";
+                style:simple;
+                bg-color-simple:"0 145 0 255";
+                in.angle:99.7276;
+                out.angle:291.541;
+            }
+            classification-report {
+                pos:"-600 -285";
+                style:simple;
+                bg-color-simple:"141 126 194 255";
+                in.angle:345.964;
+            }
+            ensemble-classification {
+                pos:"-165 -285";
+                style:simple;
+                bg-color-simple:"102 102 102 255";
+                out.angle:186.911;
+                tax-data1.angle:53.427;
+                tax-data2.angle:128.66;
+                tax-data3.angle:225;
+            }
+            fastqc-after-1 {
+                pos:"-165 -705";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:236.31;
+            }
+            fastqc-after-2 {
+                pos:"-60 -705";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:212.471;
+            }
+            fastqc-before-1 {
+                pos:"-480 -705";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:233.842;
+            }
+            fastqc-before-2 {
+                pos:"-375 -705";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:227.911;
+            }
+            get-pe-reads-list {
+                pos:"-600 -585";
+                style:simple;
+                bg-color-simple:"23 106 239 255";
+                out.angle:1.50744;
+            }
+            kraken-classify {
+                pos:"-105 -435";
+                style:simple;
+                bg-color-simple:"0 145 0 255";
+                in.angle:90;
+                out.angle:244.179;
+            }
+            trimmomatic {
+                pos:"-330 -585";
+                style:simple;
+                bg-color-simple:"127 127 127 255";
+                in.angle:180;
+                out.angle:360;
+            }
+            wevote-classify {
+                pos:"-375 -285";
+                style:simple;
+                bg-color-simple:"0 106 0 255";
+                in.angle:349.046;
+                out.angle:187.696;
+            }
+            clark-classify.out->ensemble-classification.tax-data2 {
+                text-pos:"-58 -21";
+            }
+            ensemble-classification.out->wevote-classify.in {
+                text-pos:"-44 3";
+            }
+            get-pe-reads-list.out->fastqc-before-1.in-file {
+                text-pos:"-47.3359 -28";
+            }
+            get-pe-reads-list.out->fastqc-before-2.in-file {
+                text-pos:"-0.3359 -26";
+            }
+            get-pe-reads-list.out->trimmomatic.in {
+                text-pos:"-33.3359 6";
+            }
+            kraken-classify.out->ensemble-classification.tax-data1 {
+                text-pos:"-30 -22";
+            }
+            trimmomatic.out->clark-classify.in {
+                text-pos:"-51 4";
+            }
+            trimmomatic.out->fastqc-after-1.in-file {
+                text-pos:"-69 -40";
+            }
+            trimmomatic.out->fastqc-after-2.in-file {
+                text-pos:"26 -37";
+            }
+            trimmomatic.out->kraken-classify.in {
+                text-pos:"-3 7";
+            }
+            wevote-classify.out->classification-report.in {
+                text-pos:"-48 4";
+            }
+        }
+        wizard {
+            name:"PE Reads Parallel Classification Wizard";
+            page {
+                id:1;
+                next:2;
+                title:"Input data";
+                parameters-area {
+                    group {
+                        title:"Paired-end reads";
+                        label-size:120;
+                        get-pe-reads-list.url1 {
+                            label:"FASTQ file(s) 1";
+                        }
+                        get-pe-reads-list.url2 {
+                            label:"FASTQ file(s) 2";
+                        }
+                    }
+                }
+            }
+            page {
+                id:2;
+                next:3;
+                title:"Trimmomatic settings";
+                parameters-area {
+                    group {
+                        title:"Improve reads quality";
+                        label-size:120;
+                        trimmomatic.trimming-steps {
+                        }
+                        trimmomatic.generate-log {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        trimmomatic.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:3;
+                next:4;
+                title:"Kraken settings";
+                parameters-area {
+                    group {
+                        title:Classification;
+                        label-size:180;
+                        kraken-classify.database {
+                        }
+                        kraken-classify.quick-operation {
+                        }
+                        kraken-classify.min-hits {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        kraken-classify.preload {
+                        }
+                        kraken-classify.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:4;
+                next:5;
+                title:"CLARK settings";
+                parameters-area {
+                    group {
+                        title:Classification;
+                        label-size:180;
+                        clark-classify.database {
+                        }
+                        clark-classify.k-length {
+                        }
+                        clark-classify.k-min-freq {
+                        }
+                        clark-classify.mode {
+                        }
+                        clark-classify.extend-out {
+                        }
+                        clark-classify.factor {
+                        }
+                        clark-classify.gap {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        clark-classify.preload {
+                        }
+                        clark-classify.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:5;
+                next:6;
+                title:"WEVOTE settings";
+                parameters-area {
+                    group {
+                        title:Classification;
+                        label-size:180;
+                        wevote-classify.penalty {
+                        }
+                        wevote-classify.number-of-agreed-tools {
+                        }
+                        wevote-classify.score-threshold {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        wevote-classify.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:6;
+                title:"Output data";
+                parameters-area {
+                    group {
+                        title:"Classification output";
+                        label-size:180;
+                        kraken-classify.output-url {
+                            label:"Kraken output file";
+                        }
+                        clark-classify.output-url {
+                            label:"CLARK output file";
+                        }
+                        wevote-classify.output-url {
+                            label:"WEVOTE output file";
+                        }
+                    }
+                    group {
+                        title:"Classification reports";
+                        label-size:180;
+                        classification-report.output-url {
+                            label:"Report for WEVOTE classification";
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

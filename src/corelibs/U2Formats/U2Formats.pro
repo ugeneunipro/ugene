@@ -42,6 +42,7 @@ HEADERS += src/ABIFormat.h \
            src/StreamSequenceReader.h \
            src/StreamSequenceWriter.h \
            src/SwissProtPlainTextFormat.h \
+           src/TextDocumentFormat.h \
            src/VCF4VariationFormat.h \
            src/VectorNtiSequenceFormat.h \
            src/ace/AceFormat.h \
@@ -106,7 +107,8 @@ HEADERS += src/ABIFormat.h \
            src/util/AssemblyAdapter.h \
            src/util/AssemblyPackAlgorithm.h \
            src/util/PairedFastqComparator.h \
-           src/util/SnpeffInfoParser.h
+           src/util/SnpeffInfoParser.h \
+           src/util/TabulatedFormatReader.h
 
 SOURCES += src/ABIFormat.cpp \
            src/AbstractVariationFormat.cpp \
@@ -147,6 +149,7 @@ SOURCES += src/ABIFormat.cpp \
            src/StreamSequenceReader.cpp \
            src/StreamSequenceWriter.cpp \
            src/SwissProtPlainTextFormat.cpp \
+           src/TextDocumentFormat.cpp \
            src/VCF4VariationFormat.cpp \
            src/VectorNtiSequenceFormat.cpp \
            src/ace/AceFormat.cpp \
@@ -210,7 +213,8 @@ SOURCES += src/ABIFormat.cpp \
            src/tasks/MysqlUpgradeTask.cpp \
            src/util/AssemblyPackAlgorithm.cpp \
            src/util/PairedFastqComparator.cpp \
-           src/util/SnpeffInfoParser.cpp
+           src/util/SnpeffInfoParser.cpp \
+           src/util/TabulatedFormatReader.cpp
 
 RESOURCES += U2Formats.qrc
 TRANSLATIONS += transl/russian.ts

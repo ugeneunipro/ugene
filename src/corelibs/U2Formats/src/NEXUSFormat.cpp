@@ -45,7 +45,7 @@ namespace U2
 {
 
 NEXUSFormat::NEXUSFormat(QObject *p) :
-        DocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList()<<"nex"<<"nxs")      // disable streaming for now
+        TextDocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList()<<"nex"<<"nxs")      // disable streaming for now
 {
     formatName = tr("NEXUS");
     formatDescription = tr("Nexus is a multiple alignment and phylogenetic trees file format");
@@ -706,7 +706,7 @@ QList<GObject*> NEXUSFormat::loadObjects(IOAdapter *io, const U2DbiRef& dbiRef, 
     return objects;
 }
 
-Document* NEXUSFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os){
+Document* NEXUSFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os){
     assert(io && "IO must exist");
 
     QList<GObject*> objects = loadObjects(io, dbiRef, fs, os);
@@ -905,7 +905,7 @@ void NEXUSFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus& os) {
     storeObjects(objects, simpleNames, io, os);
 }
 
-FormatCheckResult NEXUSFormat::checkRawData(const QByteArray &rawData, const GUrl&) const {
+FormatCheckResult NEXUSFormat::checkRawTextData(const QByteArray &rawData, const GUrl&) const {
     if (rawData.startsWith("#NEXUS")) {
         return FormatDetection_VeryHighSimilarity;
     }

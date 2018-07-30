@@ -48,17 +48,25 @@ public:
     virtual QMap<QString,QString> getBindingsMap();
     int getOptimalHeight();
 
-protected slots:
-    void sl_showDoc();
 signals:
     void si_showDoc(const QString&);
+
+protected slots:
+    void sl_showDoc();
+
+private slots:
+    void sl_widgetDestroyed();
+
 protected:
     bool isInfoMode() const {return from == to;}
     virtual QWidget* createGUI(DataTypePtr from, DataTypePtr to);
+    virtual QString getTitle() const {return "";}
+
 protected:
     Configuration* cfg;
     const QString propertyName;
     DataTypePtr from, to;
+    QWidget* mainWidget;
     QTableWidget* table;
     QTextEdit* doc;
 
@@ -81,12 +89,13 @@ public:
 
 protected:
     virtual QWidget* createGUI(DataTypePtr from, DataTypePtr to);
+    QString getTitle() const;
+
     Workflow::IntegralBusPort* port;
+
 private slots:
     void handleDataChanged(const QModelIndex & topLeft, const QModelIndex & bottomRight);
-
 }; // BusPortEditor
-
 
 class U2LANG_EXPORT DescriptorListEditorDelegate : public QItemDelegate
 {

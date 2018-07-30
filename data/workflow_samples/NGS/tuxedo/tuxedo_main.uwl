@@ -6,7 +6,7 @@ workflow "Main Tuxedo: single-end reads"{
 
     tophat {
         type:tophat;
-        name:"Find Splice Junctions with TopHat";
+        name:"Map RNA-Seq Reads with TopHat";
         out-dir:tools_output;
     }
     cufflinks {
@@ -47,12 +47,12 @@ workflow "Main Tuxedo: single-end reads"{
     }
 
     .actor-bindings {
-        read-sequence.out-url->files-conversion.in-file
+        files-conversion.out-file->tophat.in-sequence
+        cuffmerge.out-annotations->cuffdiff.in-annotations
         tophat.out-assembly->cufflinks.in-assembly
         tophat.out-assembly->cuffdiff.in-assembly
+        read-sequence.out-url->files-conversion.in-file
         cufflinks.out-annotations->cuffmerge.in-annotations
-        cuffmerge.out-annotations->cuffdiff.in-annotations
-        files-conversion.out-file->tophat.in-sequence
     }
 
     read-sequence.dataset->tophat.in-sequence.dataset
@@ -103,7 +103,7 @@ workflow "Main Tuxedo: single-end reads"{
         }
         visual {
             cuffdiff {
-                pos:"-832 -581";
+                pos:"-825 -570";
                 style:ext;
                 bg-color-ext:"128 0 0 64";
                 bounds:"-30 -30 119.25 94";
@@ -111,7 +111,7 @@ workflow "Main Tuxedo: single-end reads"{
                 in-assembly.angle:25.887;
             }
             cufflinks {
-                pos:"-608 -581";
+                pos:"-600 -570";
                 style:ext;
                 bg-color-ext:"128 128 0 64";
                 bounds:"-30 -30 120.875 73";
@@ -119,7 +119,7 @@ workflow "Main Tuxedo: single-end reads"{
                 out-annotations.angle:307.117;
             }
             cuffmerge {
-                pos:"-603 -383";
+                pos:"-585 -375";
                 style:ext;
                 bg-color-ext:"112 34 0 64";
                 bounds:"-30 -30 118.625 59";
@@ -127,21 +127,21 @@ workflow "Main Tuxedo: single-end reads"{
                 out-annotations.angle:180;
             }
             files-conversion {
-                pos:"-744 -772";
+                pos:"-735 -765";
                 style:simple;
                 bg-color-simple:"84 84 84 255";
                 in-file.angle:180;
                 out-file.angle:360;
             }
             read-sequence {
-                pos:"-959 -773";
+                pos:"-945 -765";
                 style:ext;
                 bg-color-ext:"24 102 175 64";
                 bounds:"-30 -30 73.25 70";
                 out-url.angle:360;
             }
             tophat {
-                pos:"-604 -774";
+                pos:"-585 -765";
                 style:ext;
                 bg-color-ext:"0 128 0 64";
                 bounds:"-30 -30 120.75 78";
@@ -200,7 +200,6 @@ function tophatTime(reads, idx) {
         }
         wizard {
             name:"Tuxedo Wizard";
-            help-page-id:16122721;
             page {
                 id:1;
                 next:2;

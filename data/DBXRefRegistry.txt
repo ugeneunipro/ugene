@@ -60,7 +60,7 @@ dictyBase|http://dictybase.org/db/cgi-bin/gene_page.pl?primary_id=%1||Dictyostel
 
 EcoGene|http://ecogene.org/geneInfo.php?eg_id=%1||Database of Escherichia coli Sequence and Function
 
-ENSEMBL|http://beta.rest.ensembl.org/sequence/id/%1?content-type=text/x-fasta|http://beta.rest.ensembl.org/sequence/id/%1?content-type=text/x-fasta|Database of automatically annotated genomic data
+ENSEMBL|https://rest.ensembl.org/sequence/id/%1?content-type=text/x-fasta|https://rest.ensembl.org/sequence/id/%1?content-type=text/x-fasta|Database of automatically annotated genomic data
 
 EnsemblGenomes|http://ensemblgenomes.org/search/eg/%1||Extending Ensembl across taxonomic space
 
@@ -208,7 +208,7 @@ SRPDB|||Signal Recognition Particle Database
 
 SubtiList|||Bacillus subtilis genome sequencing project
 
-SWISS-PROT|http://www.uniprot.org/uniprot/%1|http://www.uniprot.org/uniprot/%1.txt|The Universal Protein Resource (UniProt) is a comprehensive resource for protein sequence and annotation data.
+SWISS-PROT|https://www.uniprot.org/uniprot/%1|https://www.uniprot.org/uniprot/%1.txt||The Universal Protein Resource (UniProt) is a comprehensive resource for protein sequence and annotation data.
 
 TAIR|||Arabidopsis IR
 
@@ -220,9 +220,9 @@ TubercuList|http://tuberculist.epfl.ch/quicksearch.php?gene+name=%1||TubercuList
 
 UNILIB|||Unified Library Database, a library-level view of the EST and SAGE libraries present in dbEST, UniGene and SAGEmap
 
-UniProtKB/Swiss-Prot|http://www.uniprot.org/uniprot/%1|http://www.uniprot.org/uniprot/%1.txt|section of the UniProt Knowledgebase, containing annotated records
+UniProtKB/Swiss-Prot|https://www.uniprot.org/uniprot/%1|https://www.uniprot.org/uniprot/%1.txt|section of the UniProt Knowledgebase, containing annotated records
 
-UniProtKB/TrEMBL|http://www.uniprot.org/uniprot/%1|http://www.uniprot.org/uniprot/%1.txt|section of the UniProt Knowledgebase, containing computationally analysed records waiting for full manual annotation
+UniProtKB/TrEMBL|https://www.uniprot.org/uniprot/%1|https://www.uniprot.org/uniprot/%1.txt|section of the UniProt Knowledgebase, containing computationally analysed records waiting for full manual annotation
 
 UniSTS|https://www.ncbi.nlm.nih.gov/genome/sts/sts.cgi?uid=%1||NCBI UniSTS is a comprehensive database of sequence tagged sites (STSs) derived from STS-based maps and other experiments.
 

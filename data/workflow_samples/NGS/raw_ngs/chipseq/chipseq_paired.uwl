@@ -45,7 +45,7 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
     }
     bwamem-id {
         type:bwamem-id;
-        name:"Align Reads with BWA MEM";
+        name:"Map Reads with BWA-MEM";
         library:Paired-end;
         output-dir:output;
     }
@@ -141,26 +141,26 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
     }
 
     .actor-bindings {
-        get-file-list.out-url->CASAVAFilter.in-file
-        get-file-list.out-url->fastqc.in-file
-        CASAVAFilter-1.out-file->CutAdaptFastq-1.in-file
+        CutAdaptFastq-1.out-file->QualityTrim-1.in-file
         QualityTrim.out-file->bwamem-id.in-data
         QualityTrim.out-file->fastqc-2.in-file
-        CutAdaptFastq-1.out-file->QualityTrim-1.in-file
+        merge-bam.out-file->filter-bam.in-file
+        CASAVAFilter.out-file->CutAdaptFastq.in-file
+        filter-bam.out-file->Sort-bam-1.in-file
+        get-file-list.out-url->CASAVAFilter.in-file
+        get-file-list.out-url->fastqc.in-file
+        Sort-bam-1.out-file->rmdup-bam.in-file
+        rmdup-bam.out-file->Sort-bam.in-file
         Sort-bam.out-file->files-conversion-1.in-file
         Sort-bam.out-file->fastqc-1-1.in-file
-        rmdup-bam.out-file->Sort-bam.in-file
-        filter-bam.out-file->Sort-bam-1.in-file
-        Sort-bam-1.out-file->rmdup-bam.in-file
-        merge-bam.out-file->filter-bam.in-file
+        CutAdaptFastq.out-file->QualityTrim.in-file
         QualityTrim-1.out-file->bwamem-id.in-data-paired
         QualityTrim-1.out-file->fastqc-2-1.in-file
+        CASAVAFilter-1.out-file->CutAdaptFastq-1.in-file
+        bwamem-id.out-data->files-conversion.in-file
         files-conversion.out-file->merge-bam.in-file
-        CASAVAFilter.out-file->CutAdaptFastq.in-file
         get-file-list-1.out-url->CASAVAFilter-1.in-file
         get-file-list-1.out-url->fastqc-1.in-file
-        CutAdaptFastq.out-file->QualityTrim.in-file
-        bwamem-id.out-data->files-conversion.in-file
     }
 
     get-file-list.url->CASAVAFilter.in-file.url
@@ -487,7 +487,7 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
                     group {
                         title:"Reads filtration";
                         label-size:120;
-                            QualityTrim.qual-id {
+                        QualityTrim.qual-id {
                             label:"Base quality";
                         }
                         QualityTrim.len-id {
@@ -507,8 +507,8 @@ workflow "Processing of raw ChIP-Seq paired-end reads"{
                         }
                     }
                     group {
-                    title:"Read pairs filtration";
-                    label-size:120;
+                        title:"Read pairs filtration";
+                        label-size:120;
                         QualityTrim-1.qual-id {
                             label:"Base quality";
                         }

@@ -24,6 +24,7 @@
 #include <QLabel>
 #include <QTextEdit>
 #include <QTreeWidget>
+#include <QTableWidget>
 
 #include <drivers/GTKeyboardDriver.h>
 #include <primitives/GTCheckBox.h>
@@ -213,6 +214,19 @@ void GTUtilsOptionPanelSequenceView::setForwardPrimer(HI::GUITestOpStatus &os, c
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "setForwardPrimerMismatches"
+void GTUtilsOptionPanelSequenceView::setForwardPrimerMismatches(HI::GUITestOpStatus &os, const int mismatches) {
+    openTab(os, InSilicoPcr);
+    QWidget *primerContainer = GTWidget::findWidget(os, "forwardPrimerBox");
+    GT_CHECK(NULL != primerContainer, "Forward primer container widget is NULL");
+
+    QSpinBox* mismatchesSpinBox = GTWidget::findExactWidget<QSpinBox*>(os, "mismatchesSpinBox", primerContainer);
+    GT_CHECK(NULL != primerContainer, "Forward primer mismatches SpinBox is NULL");
+
+    GTSpinBox::setValue(os, mismatchesSpinBox, mismatches, GTGlobals::UseKey);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "setReversePrimer"
 void GTUtilsOptionPanelSequenceView::setReversePrimer(HI::GUITestOpStatus &os, const QString &primer) {
     openTab(os, InSilicoPcr);
@@ -222,11 +236,55 @@ void GTUtilsOptionPanelSequenceView::setReversePrimer(HI::GUITestOpStatus &os, c
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "setReversePrimerMismatches"
+void GTUtilsOptionPanelSequenceView::setReversePrimerMismatches(HI::GUITestOpStatus &os, const int mismatches) {
+    openTab(os, InSilicoPcr);
+    QWidget *primerContainer = GTWidget::findWidget(os, "reversePrimerBox");
+    GT_CHECK(NULL != primerContainer, "Reverse primer container widget is NULL");
+
+    QSpinBox* mismatchesSpinBox = GTWidget::findExactWidget<QSpinBox*>(os, "mismatchesSpinBox", primerContainer);
+    GT_CHECK(NULL != primerContainer, "Reverse primer mismatches SpinBox is NULL");
+
+    GTSpinBox::setValue(os, mismatchesSpinBox, mismatches, GTGlobals::UseKey);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "productsCount"
+int GTUtilsOptionPanelSequenceView::productsCount(HI::GUITestOpStatus &os) {
+    openTab(os, InSilicoPcr);
+    QTableWidget *tableWidget = qobject_cast<QTableWidget*>(GTWidget::findWidget(os, "productsTable"));
+    GT_CHECK_RESULT(NULL != tableWidget, "In Silico PCR Products Table is not found", -1);
+
+    return  tableWidget->rowCount();
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "showPrimersDetails"
 void GTUtilsOptionPanelSequenceView::showPrimersDetails(HI::GUITestOpStatus &os) {
     openTab(os, InSilicoPcr);
     QWidget *label = GTWidget::findWidget(os, "detailsLinkLabel");
     GTWidget::click(os, GTWidget::findWidget(os, "detailsLinkLabel"), Qt::LeftButton, QPoint(20, label->geometry().height()/2));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "pressFindProducts"
+void GTUtilsOptionPanelSequenceView::pressFindProducts(HI::GUITestOpStatus &os) {
+    openTab(os, InSilicoPcr);
+    QPushButton *findProducts = qobject_cast<QPushButton*>(GTWidget::findWidget(os, "findProductButton"));
+    GT_CHECK(NULL != findProducts, "Find Product(s) buttons is not found");
+
+    GTWidget::click(os, findProducts);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "pressExtractProduct"
+void GTUtilsOptionPanelSequenceView::pressExtractProduct(HI::GUITestOpStatus &os) {
+    openTab(os, InSilicoPcr);
+    QPushButton *extractProduct = qobject_cast<QPushButton*>(GTWidget::findWidget(os, "extractProductButton"));
+    GT_CHECK(NULL != extractProduct, "Extract Product buttons is not found");
+    GT_CHECK(extractProduct->isEnabled(), "Extract Product buttons is unexpectably disabled");
+
+    GTWidget::click(os, extractProduct);
 }
 #undef GT_METHOD_NAME
 

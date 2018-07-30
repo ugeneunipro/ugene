@@ -26,12 +26,20 @@ use_cuda() {
     LIBS += -L$$UGENE_CUDA_LIB_DIR -lcudart
     INCLUDEPATH += $$UGENE_CUDA_INC_DIR
 
-    CONFIG(debug, debug|release) {
-        SW2_NVCC_LIBS_TYPE_FLAG = -MDd
+    win32 {
+        CONFIG(debug, debug|release) {
+            SW2_NVCC_LIBS_TYPE_FLAG = -MDd
+        }
+
+        CONFIG(release, debug|release) {
+            SW2_NVCC_LIBS_TYPE_FLAG = -MD
+        }
+        XCOMPILER_OPT = "-Xcompiler -Zi,$${SW2_NVCC_LIBS_TYPE_FLAG}"
+        XLINKER_OPT = "-Xlinker /DEBUG"
     }
 
-    CONFIG(release, debug|release) {
-        SW2_NVCC_LIBS_TYPE_FLAG = -MD
+    !win32 {
+        COMPILER_OPT_EXT = "--compiler-options -fPIC"
     }
 
     CONFIG(x64) {
@@ -40,7 +48,7 @@ use_cuda() {
         SW2_NVCC_ARCH_FLAG = -m 32
     }
 
-    SW2_NVCC_FLAGS = $${SW2_NVCC_ARCH_FLAG} -g -G -Xcompiler "-Zi,$${SW2_NVCC_LIBS_TYPE_FLAG}" -Xlinker "/DEBUG"
+    SW2_NVCC_FLAGS = $${SW2_NVCC_ARCH_FLAG} -g -G "$${XCOMPILER_OPT}" "$${XLINKER_OPT}"
 
     win32 {
         #libcmt conflicts with msvcrt
@@ -62,10 +70,11 @@ use_cuda() {
     nvzz.input = SW2_CUDA_FILES
     nvzz.output = $$OBJECTS_DIR/${QMAKE_FILE_BASE}$$QMAKE_EXT_OBJ
     nvzz.name = CUDA compiler
-    nvzz.commands = $$UGENE_NVCC $$SW2_NVCC_FLAGS -c -I$$UGENE_CUDA_INC_DIR $$SW2_CUDA_INCLUDEPATH \
+    nvzz.commands = $$UGENE_NVCC $$SW2_NVCC_FLAGS -I$$UGENE_CUDA_INC_DIR $$SW2_CUDA_INCLUDEPATH \
                     -L$$UGENE_CUDA_LIB_DIR $$SW2_CUDA_LIBS \
-                    -o ${QMAKE_FILE_OUT} \
-                    ${QMAKE_FILE_IN}
+                    -c $${COMPILER_OPT_EXT} ${QMAKE_FILE_IN} \
+                    -o ${QMAKE_FILE_OUT}
+
     QMAKE_EXTRA_COMPILERS += nvzz
 
     DEFINES += SW2_BUILD_WITH_CUDA

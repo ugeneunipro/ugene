@@ -24,6 +24,7 @@
 
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/TextUtils.h>
 
 namespace U2 {
 
@@ -60,6 +61,11 @@ LocalFileAdapter::LocalFileAdapter(LocalFileAdapterFactory* factory, QObject* o,
     currentPos = 0;
 }
 
+LocalFileAdapter::~LocalFileAdapter() {
+    if (isOpen()) {
+        close();
+    }
+}
 
 bool LocalFileAdapter::open(const GUrl& url, IOAdapterMode m) {
     SAFE_POINT(!isOpen(), "Adapter is already opened!", false);
@@ -85,6 +91,10 @@ bool LocalFileAdapter::open(const GUrl& url, IOAdapterMode m) {
     return true;
 }
 
+bool LocalFileAdapter::isOpen() const {
+    return f != NULL;
+}
+
 void LocalFileAdapter::close() {
     SAFE_POINT(isOpen(), "Adapter is not opened!",);
     f->close();
@@ -101,6 +111,9 @@ qint64 LocalFileAdapter::readBlock(char* data, qint64 size) {
         while (l < size) {
             if (currentPos == bufLen) {
                 bufLen = f->read(bufData, BUF_SIZE);
+                if (formatMode == TextMode) {
+                    bufLen = TextUtils::cutByteOrderMarks(bufData, bufLen);
+                }
                 if (bufLen == -1){
                     //error
                     return -1;
@@ -117,6 +130,9 @@ qint64 LocalFileAdapter::readBlock(char* data, qint64 size) {
         }
     } else {
         l = f->read(data, size);
+        if (formatMode == TextMode) {
+            l = TextUtils::cutByteOrderMarks(bufData, l);
+        }
     }
     return l;
 }

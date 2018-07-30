@@ -115,7 +115,7 @@ void ExportHighligtingDialogController::lockKeepGaps(){
 void ExportHighligtingDialogController::sl_regionChanged(){
     bool validRange = ui->endLineEdit->value() - ui->startLineEdit->value() >= 0;
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(validRange);
-    
+
     if (validRange) {
         ui->startLineEdit->setStyleSheet("QSpinBox {}");
         ui->endLineEdit->setStyleSheet("QSpinBox {}");

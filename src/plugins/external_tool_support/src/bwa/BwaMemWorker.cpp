@@ -114,11 +114,26 @@ QString BwaMemWorker::getBaseSubdir() const {
 }
 
 void BwaMemWorker::setGenomeIndex(DnaAssemblyToRefTaskSettings& settings) {
-    settings.refSeqUrl = getValue<QString>(REFERENCE_GENOME);
-    settings.prebuiltIndex = DnaAssemblyToReferenceTask::isIndexUrl(settings.refSeqUrl.getURLString(), BwaTask::indexSuffixes);
+    QString referenceInputType = getValue<QString>(REFERENCE_INPUT_TYPE);
+    if (referenceInputType == DnaAssemblyToRefTaskSettings::INDEX) {
+        settings.prebuiltIndex = true;
+        settings.indexDir = getValue<QString>(INDEX_DIR);
+        settings.indexBasename = getValue<QString>(INDEX_BASENAME);
 
-    if (!settings.prebuiltIndex) {
-        settings.indexFileName = QDir(settings.refSeqUrl.dirPath()).filePath(settings.refSeqUrl.baseFileName());
+        QString baseUrl = QDir(settings.indexDir).filePath(settings.indexBasename);
+        settings.refSeqUrl = baseUrl;
+        settings.indexFileName = baseUrl;
+    } else {
+        settings.refSeqUrl = getValue<QString>(REFERENCE_GENOME);
+        settings.prebuiltIndex = DnaAssemblyToReferenceTask::isIndexUrl(settings.refSeqUrl.getURLString(), BwaTask::indexSuffixes);
+        if (settings.prebuiltIndex) {
+            settings.indexDir = settings.refSeqUrl.dirPath();
+            settings.indexBasename = settings.refSeqUrl.baseFileName();
+        } else {
+            settings.indexDir = "";
+            settings.indexBasename = "";
+            settings.indexFileName = QDir(settings.refSeqUrl.dirPath()).filePath(settings.refSeqUrl.baseFileName());
+        }
     }
 }
 
@@ -133,7 +148,9 @@ void BwaMemWorkerFactory::init() {
     QList<Attribute*> attrs;
     QMap<QString, PropertyDelegate*> delegates;
 
-    addCommonAttributes(attrs, delegates);
+    addCommonAttributes(attrs, delegates,
+                        BwaMemWorker::tr("BWA index folder"),
+                        BwaMemWorker::tr("BWA index basename"));
     {
         Descriptor threads(THREADS,
             BwaMemWorker::tr("Number of threads"),
@@ -255,22 +272,26 @@ void BwaMemWorkerFactory::init() {
     }
 
     Descriptor protoDesc(BwaMemWorkerFactory::ACTOR_ID,
-        BwaMemWorker::tr("Align Reads with BWA MEM"),
-        BwaMemWorker::tr("Performs alignment of short reads with BWA MEM."));
+        BwaMemWorker::tr("Map Reads with BWA-MEM"),
+        BwaMemWorker::tr("Burrows-Wheeler Alignment (BWA) is a program for mapping short DNA sequence reads"
+                         " to a long reference sequence. This element runs \"BWA-MEM\" algorithm"
+                         " of the program. The algorithm is designed for sequence reads from 70bp to 1Mbp."
+                         "<br/><br/>Provide URL(s) to FASTA or FASTQ file(s) with NGS reads to the input"
+                         " port of the element, set up the reference sequence in the parameters."
+                         " The result is saved to the specified SAM file, URL to the file is passed"
+                         " to the output port."));
 
     ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, getPortDescriptors(), attrs);
     proto->setPrompter(new ShortReadsAlignerPrompter());
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPortValidator(IN_PORT_DESCR, new ShortReadsAlignerSlotsValidator());
     proto->addExternalTool(ET_BWA);
-    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_ALIGN_SHORT_READS(), proto);
+    WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new BwaMemWorkerFactory());
 }
 
 Worker *BwaMemWorkerFactory::createWorker(Actor *a) {
     return new BwaMemWorker(a);
 }
-
 } // LocalWorkflow
 } // U2
-

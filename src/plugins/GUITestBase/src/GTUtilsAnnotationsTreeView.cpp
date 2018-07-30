@@ -151,6 +151,26 @@ QList<U2Region> GTUtilsAnnotationsTreeView::getAnnotatedRegions(HI::GUITestOpSta
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getSelectedAnnotatedRegions"
+QList<U2Region> GTUtilsAnnotationsTreeView::getSelectedAnnotatedRegions(HI::GUITestOpStatus &os) {
+    QList<U2Region> res;
+
+    QTreeWidget *treeWidget = getTreeWidget(os);
+    GT_CHECK_RESULT(treeWidget != NULL, "Tree widget is NULL", res);
+
+    QList<QTreeWidgetItem*> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
+    foreach(QTreeWidgetItem* item, treeItems) {
+        AVAnnotationItem* annotationItem = dynamic_cast<AVAnnotationItem*>(item);
+        CHECK_OPERATION(annotationItem != NULL, continue);
+        CHECK_CONTINUE(annotationItem->isSelected());
+
+        Annotation *ann = annotationItem->annotation;
+        res.append(ann->getRegions().toList());
+    }
+    return res;
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getAnnotationRegionString"
 QString GTUtilsAnnotationsTreeView::getAnnotationRegionString(HI::GUITestOpStatus &os, const QString &annotationName) {
     QTreeWidgetItem * annotationItem = findItem(os, annotationName);

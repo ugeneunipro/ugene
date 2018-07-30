@@ -31,6 +31,7 @@
 #include <QVBoxLayout>
 #include <QTextEdit>
 #include <QToolButton>
+#include <QScrollBar>
 #include <QStandardItemModel>
 
 #include <U2Lang/IntegralBus.h>
@@ -72,6 +73,34 @@ QWidget* MapDatatypeEditor::getWidget() {
     return createGUI(from, to);
 }
 
+namespace {
+
+int getMinimumHeight(QTableWidget *table) {
+    int totalHeight = 2;        // a magic number to make vertical scrollbar not visible on Linux
+
+    // Rows height
+    int count = table->verticalHeader()->count();
+    for (int i = 0; i < count; ++i) {
+        if (!table->verticalHeader()->isSectionHidden(i)) {
+            totalHeight += table->verticalHeader()->sectionSize(i);
+        }
+    }
+
+    // Check for scrollbar visibility
+    if (table->horizontalScrollBar()->isVisible()) {
+         totalHeight += table->horizontalScrollBar()->height();
+    }
+
+    // Check for header visibility
+    if (!table->horizontalHeader()->isHidden()) {
+         totalHeight += table->horizontalHeader()->height();
+    }
+
+    return totalHeight;
+}
+
+}
+
 QWidget* MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
     if(!from || !to || !from->isMap() || !to->isMap()) {
         assert(false);
@@ -94,9 +123,7 @@ QWidget* MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
     QSizePolicy sizePolicy5(QSizePolicy::Expanding, QSizePolicy::Expanding);
     sizePolicy5.setHorizontalStretch(0);
     sizePolicy5.setVerticalStretch(2);
-    sizePolicy5.setHeightForWidth(table->sizePolicy().hasHeightForWidth());
     table->setSizePolicy(sizePolicy5);
-    table->setBaseSize(QSize(0, 100));
     table->setEditTriggers(QAbstractItemView::CurrentChanged|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked);
     table->setAlternatingRowColors(true);
     table->setSelectionMode(QAbstractItemView::SingleSelection);
@@ -104,7 +131,7 @@ QWidget* MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
     table->setShowGrid(false);
     table->setCornerButtonEnabled(false);
 
-    int height = QFontMetrics(QFont()).height() + 6;
+    int rowHeight = QFontMetrics(QFont()).height() + 6;
     const QList<Descriptor>& keys = to->getAllDescriptors();
     QMap<QString, QString> bindingsMap = getBindingsMap();
     table->setRowCount(keys.size());
@@ -120,7 +147,7 @@ QWidget* MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
         keyItem->setFlags(Qt::ItemIsSelectable);
         table->setItem(i, KEY_COLUMN, keyItem);
 
-        table->setRowHeight(i, height);
+        table->setRowHeight(i, rowHeight);
         if (infoMode) {
             continue;
         }
@@ -143,22 +170,35 @@ QWidget* MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
         table->setItem(i, VALUE_COLUMN, valueItem);
     }
 
-    QWidget* widget = new QWidget();
+    table->setMinimumHeight(getMinimumHeight(table));
+    table->sortItems(KEY_COLUMN);
+
+    mainWidget = new QWidget();
     QSizePolicy sizePolicy1(QSizePolicy::Ignored, QSizePolicy::Preferred);
     sizePolicy1.setHorizontalStretch(0);
     sizePolicy1.setVerticalStretch(0);
-    sizePolicy1.setHeightForWidth(widget->sizePolicy().hasHeightForWidth());
-    widget->setSizePolicy(sizePolicy1);
+    mainWidget->setSizePolicy(sizePolicy1);
+    connect(mainWidget, SIGNAL(destroyed(QObject *)), SLOT(sl_widgetDestroyed()));
 
-    QVBoxLayout* verticalLayout = new QVBoxLayout(widget);
+    QVBoxLayout* verticalLayout = new QVBoxLayout(mainWidget);
+    verticalLayout->setSizeConstraint(QLayout::SetMinimumSize);
     verticalLayout->setSpacing(0);
     verticalLayout->setMargin(0);
+
+    const QString title = getTitle();
+    if (!title.isEmpty()) {
+        QLabel *titleLabel = new QLabel(title);
+        titleLabel->setContentsMargins(0, 4, 0, 0);
+        titleLabel->setAlignment(Qt::AlignHCenter);
+        verticalLayout->addWidget(titleLabel);
+    }
+
     verticalLayout->addWidget(table);
     //verticalLayout->addWidget(doc = new QTextEdit(widget));
     //doc->setEnabled(false);
     connect(table, SIGNAL(itemSelectionChanged()), SLOT(sl_showDoc()));
 
-    return widget;
+    return mainWidget;
 }
 
 QMap<QString, QString> MapDatatypeEditor::getBindingsMap() {
@@ -167,11 +207,7 @@ QMap<QString, QString> MapDatatypeEditor::getBindingsMap() {
 }
 
 int MapDatatypeEditor::getOptimalHeight() {
-    if(table) {
-        return table->rowHeight(0) * (table->model()->rowCount() + 1);
-    } else {
-        return 0;
-    }
+    return NULL != table ? table->minimumHeight() : 0;
 }
 
 static QString formatDoc(const Descriptor& s, const Descriptor& d) {
@@ -199,6 +235,11 @@ void MapDatatypeEditor::sl_showDoc() {
     }
 
     emit si_showDoc(text);
+}
+
+void MapDatatypeEditor::sl_widgetDestroyed() {
+    mainWidget = NULL;
+    table = NULL;
 }
 
 void MapDatatypeEditor::commit() {
@@ -237,6 +278,10 @@ QWidget* BusPortEditor::createGUI(DataTypePtr from, DataTypePtr to) {
     }
     connect(port, SIGNAL(si_enabledChanged(bool)), w, SLOT(setVisible(bool)));
     return w;
+}
+
+QString BusPortEditor::getTitle() const {
+    return port->getDisplayName();
 }
 
 void BusPortEditor::handleDataChanged(const QModelIndex & topLeft, const QModelIndex & bottomRight) {

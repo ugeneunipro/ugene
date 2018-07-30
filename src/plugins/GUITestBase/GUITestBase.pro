@@ -237,6 +237,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/repeat_finder/GTTestsRepeatFinder.h \
             src/tests/common_scenarios/sanger/GTTestsSanger.h \
             src/tests/common_scenarios/sequence_edit/GTTestsSequenceEdit.h \
+            src/tests/common_scenarios/sequence_edit/GTTestsSequenceEditMode.h \
             src/tests/common_scenarios/sequence_selection/GTTestsSequenceSelection.h \
             src/tests/common_scenarios/sequence_view/GTTestsSequenceView.h \
             src/tests/common_scenarios/shared_database/GTTestsSharedDatabase.h \
@@ -496,6 +497,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/repeat_finder/GTTestsRepeatFinder.cpp \
             src/tests/common_scenarios/sanger/GTTestsSanger.cpp \
             src/tests/common_scenarios/sequence_edit/GTTestsSequenceEdit.cpp \
+            src/tests/common_scenarios/sequence_edit/GTTestsSequenceEditMode.cpp \
             src/tests/common_scenarios/sequence_selection/GTTestsSequenceSelection.cpp \
             src/tests/common_scenarios/sequence_view/GTTestsSequenceView.cpp \
             src/tests/common_scenarios/shared_database/GTTestsSharedDatabase.cpp \

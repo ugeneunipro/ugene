@@ -1222,10 +1222,10 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0005_1){
     CHECK_SET_ERR(line1->text() == "seq7_1", QString("wrong text in line edit1: %1").arg(line1->text()));
     CHECK_SET_ERR(line2->text() == "seq7", QString("wrong text in line edit2: %1").arg(line2->text()));
 //    4. Remove sequenses
-    GTWidget::click(os, GTUtilsOptionPanelMsa::getDeleteButton(os, 1));		
+    GTWidget::click(os, GTUtilsOptionPanelMsa::getDeleteButton(os, 1));
     GTWidget::click(os, GTUtilsOptionPanelMsa::getDeleteButton(os, 2));
-	GTWidget::click(os, GTUtilsOptionPanelMsa::getDeleteButton(os, 1));
-	
+    GTWidget::click(os, GTUtilsOptionPanelMsa::getDeleteButton(os, 1));
+
 //    Expected state: sequences removed
     CHECK_SET_ERR(line1->text().isEmpty(), QString("wrong text in line edit1: %1").arg(line1->text()));
     CHECK_SET_ERR(line2->text().isEmpty(), QString("wrong text in line edit2: %1").arg(line2->text()));

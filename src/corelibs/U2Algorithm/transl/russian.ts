@@ -58,17 +58,17 @@
         <translation>Пробелы:</translation>
     </message>
     <message>
-        <location filename="../src/misc/BinaryFindOpenCL.cpp" line="70"/>
+        <location filename="../src/misc/BinaryFindOpenCL.cpp" line="71"/>
         <source>clear OpenCL resources</source>
         <translation>очистка OpenCL ресурсов</translation>
     </message>
     <message>
-        <location filename="../src/misc/BinaryFindOpenCL.cpp" line="173"/>
+        <location filename="../src/misc/BinaryFindOpenCL.cpp" line="174"/>
         <source>GPU memory usage: %1 Mb</source>
         <translation>Использование памяти: %1 Mb</translation>
     </message>
     <message>
-        <location filename="../src/misc/BinaryFindOpenCL.cpp" line="188"/>
+        <location filename="../src/misc/BinaryFindOpenCL.cpp" line="189"/>
         <source>Device&apos;s preferred work group size multiple is %1</source>
         <translation>Предпочтительный размер рабочей группы кратен %1</translation>
     </message>
@@ -239,7 +239,7 @@
         <translation>Загрузить паттерн из файла</translation>
     </message>
     <message>
-        <location filename="../src/misc/FindAlgorithmTask.cpp" line="129"/>
+        <location filename="../src/misc/FindAlgorithmTask.cpp" line="120"/>
         <source>Detecting format error for file %1</source>
         <translation>Ошибка распознавания формата для файла %1</translation>
     </message>
@@ -311,12 +311,12 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::MSADistanceAlgorithmFactoryHamming</name>
     <message>
-        <location filename="../src/util_msa_distance/MSADistanceAlgorithmHamming.cpp" line="36"/>
+        <location filename="../src/util_msa_distance/MSADistanceAlgorithmHamming.cpp" line="35"/>
         <source>Based on Hamming distance between two sequences</source>
         <translation>На основании расстояния Хэмминга между двумя последовательностями</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_distance/MSADistanceAlgorithmHamming.cpp" line="40"/>
+        <location filename="../src/util_msa_distance/MSADistanceAlgorithmHamming.cpp" line="39"/>
         <source>Hamming dissimilarity</source>
         <translation>Расхождение Хэмминга</translation>
     </message>
@@ -358,12 +358,12 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::MaConsensusAlgorithmFactorySimpleExtended</name>
     <message>
-        <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="198"/>
+        <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="202"/>
         <source>The algorithm selects the best character from the extended DNA alphabet. Only bases with frequences which are greater than a threshold value are taken into account.</source>
         <translation>Алгоритм выбирает лучший символ из расширенного ДНК алфавита. Учитываются только символы с частотой, превышающей пороговое значение.</translation>
     </message>
     <message>
-        <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="203"/>
+        <location filename="../src/util_msa_consensus/MaConsensusAlgorithmSimpleExtended.cpp" line="207"/>
         <source>Simple extended</source>
         <translation>Простой с расширенным алфавитом</translation>
     </message>
@@ -374,17 +374,6 @@ For every column selects the most rare symbol in the whole alignment with percen
         <location filename="../src/molecular_geometry/MolecularSurface.cpp" line="126"/>
         <source>Molecular surface calculation</source>
         <translation>Вычисление молекулярной поверхности</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MsaColorSchemeFactory</name>
-    <message>
-        <source>Nucleotide</source>
-        <translation type="vanished">Нуклеотидная</translation>
-    </message>
-    <message>
-        <source>Amino</source>
-        <translation type="vanished">Аминокислотная</translation>
     </message>
 </context>
 <context>
@@ -456,17 +445,6 @@ For every column selects the most rare symbol in the whole alignment with percen
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="600"/>
         <source>Clustal X</source>
         <translation>Clustal X</translation>
-    </message>
-</context>
-<context>
-    <name>U2::MsaHighlightingSchemeFactory</name>
-    <message>
-        <source>Nucleotide</source>
-        <translation type="vanished">Нуклеотидная</translation>
-    </message>
-    <message>
-        <source>Amino</source>
-        <translation type="vanished">Аминокислотная</translation>
     </message>
 </context>
 <context>
@@ -618,12 +596,12 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::SmithWatermanReportCallbackAnnotImpl</name>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="67"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="68"/>
         <source>Annotation object not found.</source>
         <translation>Не найдена таблица аннотаций.</translation>
     </message>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="71"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="72"/>
         <source>Annotation table is read-only</source>
         <translation>Запрещена запись в таблицу аннотаций</translation>
     </message>
@@ -631,56 +609,56 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::SmithWatermanReportCallbackMAImpl</name>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="205"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="208"/>
         <source>SmithWatermanReportCallback failed to create new MA document</source>
         <translation>SmithWatermanReportCallback не может создать новый MA документ</translation>
     </message>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="215"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="226"/>
         <source>Failed to add a reference subsequence row.</source>
         <translation>Неудачная попытка добавления строки реверенсной подпоследовательности.</translation>
     </message>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="219"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="230"/>
         <source>Failed to add a pattern subsequence row.</source>
         <translation>Неудачная попытка добавления строки подпоследовательности.</translation>
     </message>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="222"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="306"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="233"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="317"/>
         <source>Failed to create an alignment.</source>
         <translation>Неудачная попытка создания выравнивания.</translation>
     </message>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="251"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="326"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="262"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="337"/>
         <source>Smith-Waterman pairwise alignment: no results</source>
         <translation>Парное выравнивание Smith-Waterman: нет результатов</translation>
     </message>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="258"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="332"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="269"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="343"/>
         <source>Sequences aren&apos;t stored in the source msa dbi</source>
         <translation>Последовательности не хранятся в источнике msa dbi</translation>
     </message>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="272"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="283"/>
         <source>SmithWatermanReportCallback failed to create new MA document.</source>
         <translation>SmithWatermanReportCallback не может создать новый MA документ.</translation>
     </message>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="278"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="280"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="342"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="344"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="289"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="291"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="353"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="355"/>
         <source>Failed to get the sequence object.</source>
         <translation>Неудачная попытка получения объекта последовательности.</translation>
     </message>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="294"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="296"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="358"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="361"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="305"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="307"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="369"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="372"/>
         <source>Failed to get the sequence data.</source>
         <translation>Неудачная попытка получения данных последовательности.</translation>
     </message>
@@ -689,13 +667,13 @@ For every column selects the most rare symbol in the whole alignment with percen
         <translation type="vanished">Неудачная попытка добавления строки в результирующее выравнивание.</translation>
     </message>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="370"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="381"/>
         <source>Failed to get msa from dbi</source>
         <translation>Неудачная попытка получения msa из dbi</translation>
     </message>
     <message>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="394"/>
-        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="396"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="405"/>
+        <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="407"/>
         <source>Failed to update row gap model</source>
         <translation>Неудачная попытка обновить модель пробелов строк</translation>
     </message>

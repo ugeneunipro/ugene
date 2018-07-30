@@ -519,6 +519,86 @@ void DNAAlphabetRegistryImpl::initBaseTranslations() {
         DNATranslationID(23),
         tr("23. Thraustochytrium Mitochondrial Code"));
 
+    //24. Pterobranchia Mitochondrial Code (transl_table=24)
+    reg4tables(
+        "FFLLSSSSYY**CCWWLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSSKVVVVAAAADDEEGGGG",
+        "---M------**-------M---------------M---------------M------------",
+        "TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG",
+        "TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG",
+        "TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG",
+        DNATranslationID(24),
+        tr("24. Pterobranchia Mitochondrial Code"));
+
+    //25. Candidate Division SR1 and Gracilibacteria Code (transl_table=25)
+    reg4tables(
+        "FFLLSSSSYY**CCGWLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
+        "---M------**-----------------------M---------------M------------",
+        "TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG",
+        "TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG",
+        "TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG",
+        DNATranslationID(25),
+        tr("25. Candidate Division SR1 and Gracilibacteria Code"));
+
+    //26. Pachysolen tannophilus Nuclear Code (transl_table=26)
+    reg4tables(
+        "FFLLSSSSYY**CC*WLLLAPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
+        "----------**--*----M---------------M----------------------------",
+        "TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG",
+        "TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG",
+        "TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG",
+        DNATranslationID(26),
+        tr("26. Pachysolen tannophilus Nuclear Code"));
+
+    //27. Karyorelict Nuclear (transl_table=27)
+    reg4tables(
+        "FFLLSSSSYYQQCCWWLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
+        "--------------*--------------------M----------------------------",
+        "TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG",
+        "TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG",
+        "TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG",
+        DNATranslationID(27),
+        tr("27. Karyorelict Nuclear"));
+
+    //28. Condylostoma Nuclear (transl_table=28)
+    reg4tables(
+        "FFLLSSSSYYQQCCWWLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
+        "----------**--*--------------------M----------------------------",
+        "TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG",
+        "TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG",
+        "TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG",
+        DNATranslationID(28),
+        tr("28. Condylostoma Nuclear"));
+
+    //29. Mesodinium Nuclear (transl_table=29)
+    reg4tables(
+        "FFLLSSSSYYYYCC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
+        "--------------*--------------------M----------------------------",
+        "TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG",
+        "TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG",
+        "TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG",
+        DNATranslationID(29),
+        tr("29. Mesodinium Nuclear"));
+
+    //30. Peritrich Nuclear (transl_table=30)
+    reg4tables(
+        "FFLLSSSSYYEECC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
+        "--------------*--------------------M----------------------------",
+        "TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG",
+        "TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG",
+        "TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG",
+        DNATranslationID(30),
+        tr("30. Peritrich Nuclear"));
+
+    //31. Blastocrithidia Nuclear (transl_table=31)
+    reg4tables(
+        "FFLLSSSSYYEECCWWLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG",
+        "----------**-----------------------M----------------------------",
+        "TTTTTTTTTTTTTTTTCCCCCCCCCCCCCCCCAAAAAAAAAAAAAAAAGGGGGGGGGGGGGGGG",
+        "TTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGGTTTTCCCCAAAAGGGG",
+        "TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG",
+        DNATranslationID(30),
+        tr("31. Blastocrithidia Nuclear"));
+
     char amino[65], n1[65], n2[65], n3[65];
     int prob[64];
 

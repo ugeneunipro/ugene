@@ -174,7 +174,9 @@ add-plugin biostruct3d_view
 add-plugin browser_support
 add-plugin chroma_view
 add-plugin circular_view
+add-plugin clark_support
 add-plugin dbi_bam
+add-plugin diamond_support
 add-plugin dna_export
 add-plugin dna_flexibility
 add-plugin dna_graphpack
@@ -186,7 +188,9 @@ add-plugin genome_aligner
 add-plugin gor4
 add-plugin hmm2
 add-plugin kalign
+add-plugin kraken_support
 add-plugin linkdata_support
+add-plugin ngs_reads_classification
 add-plugin orf_marker
 add-plugin opencl_support
 add-plugin pcr
@@ -200,9 +204,10 @@ add-plugin repeat_finder
 add-plugin sitecon
 add-plugin smith_waterman
 add-plugin umuscle
-add-plugin workflow_designer
-add-plugin weight_matrix
 add-plugin variants
+add-plugin weight_matrix
+add-plugin wevote_support
+add-plugin workflow_designer
 
 if [ "$1" == "-test" ]; then
   add-plugin test_runner

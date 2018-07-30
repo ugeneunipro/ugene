@@ -1959,57 +1959,57 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/Primer3Query.cpp" line="172"/>
+        <location filename="../src/Primer3Query.cpp" line="171"/>
         <source>Primer</source>
         <translation>Праймер</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Query.cpp" line="173"/>
+        <location filename="../src/Primer3Query.cpp" line="172"/>
         <source>PCR primer design</source>
         <translation>Конструкция PCR праймера</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Query.cpp" line="175"/>
+        <location filename="../src/Primer3Query.cpp" line="174"/>
         <source>Excluded regions</source>
         <translation>Исключенные регионы</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Query.cpp" line="176"/>
+        <location filename="../src/Primer3Query.cpp" line="175"/>
         <source>Targets</source>
         <translation>Целевые регионы</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Query.cpp" line="177"/>
+        <location filename="../src/Primer3Query.cpp" line="176"/>
         <source>Product size ranges</source>
         <translation>Диапазоны размера продукта</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Query.cpp" line="178"/>
+        <location filename="../src/Primer3Query.cpp" line="177"/>
         <source>Number to return</source>
         <translation>Результатов не более</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Query.cpp" line="180"/>
+        <location filename="../src/Primer3Query.cpp" line="179"/>
         <source>Max repeat mispriming</source>
         <translation>Максимальный повтор ошибочного праймирования</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Query.cpp" line="181"/>
+        <location filename="../src/Primer3Query.cpp" line="180"/>
         <source>Max template mispriming</source>
         <translation>Максимальный шаблон ошибочного праймирования</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Query.cpp" line="182"/>
+        <location filename="../src/Primer3Query.cpp" line="181"/>
         <source>Max 3&apos; stability</source>
         <translation>Максимальная 3&apos; стабильность</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Query.cpp" line="183"/>
+        <location filename="../src/Primer3Query.cpp" line="182"/>
         <source>Pair max repeat mispriming</source>
         <translation>Парный максимальный повтор ошибочного праймирования</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Query.cpp" line="184"/>
+        <location filename="../src/Primer3Query.cpp" line="183"/>
         <source>Pair max template mispriming</source>
         <translation>Парный максимальный шаблон ошибочного праймирования</translation>
     </message>
@@ -2301,17 +2301,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QDPrimerActor</name>
     <message>
-        <location filename="../src/Primer3Query.cpp" line="73"/>
+        <location filename="../src/Primer3Query.cpp" line="72"/>
         <source>%1 invalid input. Excluded regions.</source>
         <translation>%1 invalid input. Excluded regions.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Query.cpp" line="82"/>
+        <location filename="../src/Primer3Query.cpp" line="81"/>
         <source>%1 invalid input. Targets.</source>
         <translation>%1 invalid input. Targets.</translation>
     </message>
     <message>
-        <location filename="../src/Primer3Query.cpp" line="91"/>
+        <location filename="../src/Primer3Query.cpp" line="90"/>
         <source>%1 invalid input. Product size ranges.</source>
         <translation>%1 invalid input. Product size ranges.</translation>
     </message>

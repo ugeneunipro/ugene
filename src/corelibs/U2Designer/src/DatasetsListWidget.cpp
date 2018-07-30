@@ -23,6 +23,8 @@
 #include <QMenu>
 #include <QMessageBox>
 #include <QResizeEvent>
+#include <QToolButton>
+#include <QVBoxLayout>
 
 #include <U2Core/Counter.h>
 #include <U2Core/U2OpStatusUtils.h>

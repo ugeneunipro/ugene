@@ -46,7 +46,7 @@ const QString ACEFormat::AS = "AS";
 const QString ACEFormat::AF = "AF";
 const QString ACEFormat::BQ = "BQ";
 
-ACEFormat::ACEFormat(QObject* p) : DocumentFormat(p, DocumentFormatFlags(0), QStringList("ace")) {
+ACEFormat::ACEFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlags(0), QStringList("ace")) {
     formatName = tr("ACE");
     formatDescription = tr("ACE is a format used for storing information about genomic confgurations");
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
@@ -511,7 +511,7 @@ void ACEFormat::load(IOAdapter *io, const U2DbiRef& dbiRef, QList<GObject*> &obj
     }
 }
 
-FormatCheckResult ACEFormat::checkRawData(const QByteArray& rawData, const GUrl&) const {
+FormatCheckResult ACEFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
     static const char* formatTag = "AS";
 
     if (!rawData.startsWith(formatTag)) {
@@ -520,7 +520,7 @@ FormatCheckResult ACEFormat::checkRawData(const QByteArray& rawData, const GUrl&
     return FormatDetection_AverageSimilarity;
 }
 
-Document* ACEFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
+Document* ACEFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os) {
     QList <GObject*> objs;
     load(io, dbiRef, objs, fs, os);
 

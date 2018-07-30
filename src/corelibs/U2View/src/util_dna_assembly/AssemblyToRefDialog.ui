@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Align Sequencing Reads</string>
+   <string>Map NGS Reads to Reference</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="sizeConstraint">
@@ -31,7 +31,7 @@
         <string>Select a method to align short reads.</string>
        </property>
        <property name="text">
-        <string>Alignment method</string>
+        <string>Mapping tool</string>
        </property>
       </widget>
      </item>

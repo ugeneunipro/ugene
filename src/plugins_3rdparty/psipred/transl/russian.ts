@@ -15,7 +15,7 @@
 <context>
     <name>U2::PsipredPlugin</name>
     <message>
-        <location filename="../src/PsipredPlugin.cpp" line="57"/>
+        <location filename="../src/PsipredPlugin.cpp" line="58"/>
         <source>PsiPred protein secondary structure prediction</source>
         <translation>Предсказание вторичной структуры протеинов PsiPred</translation>
     </message>

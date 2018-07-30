@@ -47,6 +47,10 @@ bool DatasetFetcher::isDone() const {
     return datasetMessages.isEmpty() && !port->hasMessage() && port->isEnded();
 }
 
+const QString &DatasetFetcher::getDatasetName() const {
+    return datasetName;
+}
+
 QList<Message> DatasetFetcher::takeFullDataset() {
     SAFE_POINT(hasFullDataset(), L10N::internalError("Unexpected method call"), datasetMessages);
     QList<Message> result = datasetMessages;
@@ -66,6 +70,10 @@ void DatasetFetcher::processInputMessage() {
     if (!datasetMessages.isEmpty() && !port->hasMessage() && port->isEnded()) {
         fullDataset = true;
     }
+}
+
+QString DatasetFetcher::getPortId() const {
+    return port->getPortId();
 }
 
 QString DatasetFetcher::getDatasetName(const Message &message) const {
@@ -97,6 +105,7 @@ void DatasetFetcher::cleanup() {
     datasetInitialized = false;
     fullDataset = false;
     datasetMessages.clear();
+    datasetName.clear();
 }
 
 } //LocalWorkflow

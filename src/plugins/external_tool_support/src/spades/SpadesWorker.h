@@ -24,6 +24,7 @@
 
 #include <U2Core/U2OpStatus.h>
 
+#include <U2Lang/DatasetFetcher.h>
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
 
@@ -37,12 +38,27 @@ class SpadesWorker : public BaseWorker {
 public:
     SpadesWorker(Actor *p);
 
+    static const QString DATASET_TYPE_STANDARD_ISOLATE;
+    static const QString DATASET_TYPE_MDA_SINGLE_CELL;
+
+    static const QString RUNNING_MODE_ERROR_CORRECTION_AND_ASSEMBLY;
+    static const QString RUNNING_MODE_ASSEMBLY_ONLY;
+    static const QString RUNNING_MODE_ERROR_CORRECTION_ONLY;
+
+    static const QString K_MER_AUTO;
+
     virtual void init();
     virtual Task *tick();
     virtual void cleanup();
+    virtual bool isReady() const;
 
 private:
-    IntegralBus *inChannel;
+    bool processInputMessagesAndCheckReady();
+    int getReadsUrlSlotIdIndex(const QString& portId, bool& isPaired) const;
+    void trySetDone(U2OpStatus &os);
+
+    QList<DatasetFetcher> readsFetchers;
+    QList<IntegralBus*> inChannels;
     IntegralBus *output;
 
 private:
@@ -53,12 +69,41 @@ private slots:
 }; // SpadesWorker
 
 class SpadesWorkerFactory : public DomainFactory {
+    Q_DECLARE_TR_FUNCTIONS(SpadesWorkerFactory)
 public:
-    static const QString ACTOR_ID;
-
     SpadesWorkerFactory() : DomainFactory(ACTOR_ID) {}
     static void init();
     virtual Worker *createWorker(Actor *a);
+
+    static const QString ACTOR_ID;
+
+    static const QStringList READS_URL_SLOT_ID_LIST;
+    static const QStringList READS_PAIRED_URL_SLOT_ID_LIST;
+
+    static const QStringList IN_TYPE_ID_LIST;
+
+    static const QString OUT_TYPE_ID;
+
+    static const QString SCAFFOLD_OUT_SLOT_ID;
+    static const QString CONTIGS_URL_OUT_SLOT_ID;
+
+    static const QString SEQUENCING_PLATFORM_ID;
+
+    static const QStringList IN_PORT_ID_LIST;
+    static const QStringList IN_PORT_PAIRED_ID_LIST;
+
+    static const QString MAP_TYPE_ID;
+
+    static const QString OUT_PORT_DESCR;
+
+    static const QString OUTPUT_DIR;
+
+    static const QString BASE_SPADES_SUBDIR;
+
+    static const QString getPortNameById(const QString& portId);
+
+    static const QString getYamlLibraryNameByPortId(const QString& portId);
+
 }; // SpadesWorkerFactory
 
 class SpadesPrompter : public PrompterBase<SpadesPrompter> {

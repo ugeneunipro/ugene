@@ -34,4 +34,4 @@ SOURCES += src/SeqBootAdapter.cpp \
            src/phylip.cpp \
            src/protdist.cpp \
            src/seq.cpp
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

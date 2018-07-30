@@ -273,6 +273,8 @@ public:
     static bool isSSE2Enabled();
 
     void registerResource(AppResource* r);
+    void unregisterResource(int id);
+
     AppResource* getResource(int id) const;
 
     static AppResourcePool* instance();

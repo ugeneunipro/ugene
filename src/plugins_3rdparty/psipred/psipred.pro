@@ -15,4 +15,4 @@ SOURCES += src/PsipredAlgTask.cpp \
            src/sspred_hmulti.cpp \
            src/sspred_utils.cpp
 RESOURCES += psipred.qrc
-TRANSLATIONS += transl/english.ts transl/russian.ts
+TRANSLATIONS += transl/russian.ts

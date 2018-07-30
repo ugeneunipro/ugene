@@ -23,7 +23,7 @@
 #define _U2_FIND_REPEATS_DIALOG_H_
 
 #include <ui_FindRepeatsDialog.h>
-
+#include <QAction>
 #include <U2Core/U2Region.h>
 
 #include "FindRepeatsTask.h"

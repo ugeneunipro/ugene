@@ -66,7 +66,8 @@ void InSilicoPcrProductsTable::setCurrentProducts(const QList<InSilicoPcrProduct
     foreach(const InSilicoPcrProduct &product, currentProducts) {
         qint64 startPos = product.region.startPos + 1;
         qint64 endPos = product.region.endPos();
-        if (endPos > seqLength) {
+        const int ledge = product.forwardPrimerLedge.size() + product.reversePrimerLedge.size();
+        if (endPos > seqLength && endPos != seqLength + ledge) {
             endPos = endPos % seqLength;
         }
 
@@ -111,7 +112,9 @@ QVector<U2Region> InSilicoPcrProductsTable::getSelection() const {
     QList<InSilicoPcrProduct> products = getSelectedProducts();
     CHECK(1 == products.size(), result);
 
-    U2Region region = products.first().region;
+    const InSilicoPcrProduct& product = products.first();
+    U2Region region = product.region;
+    region.length -= (product.forwardPrimerLedge.size() + product.reversePrimerLedge.size());
 
     qint64 maxLength = sequenceContext->getSequenceLength();
     if (region.endPos() <= maxLength) {

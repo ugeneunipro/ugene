@@ -208,16 +208,18 @@ QString SmithWatermanReportCallbackMAImpl::planFor_SequenceView_Search(const QLi
         CHECK_OP(stateInfo, tr("SmithWatermanReportCallback failed to create new MA document"));
 
         QByteArray curResultRefSubseq = refSequenceData.mid(pairAlignSeqs.refSubseq.startPos, pairAlignSeqs.refSubseq.length);
+        const DNAAlphabet* msaAlphabet = alphabet;
         if (aminoTT != NULL) {
             int buflen = curResultRefSubseq.length() / 3;
             QByteArray buf(buflen, '\0');
             aminoTT->translate(curResultRefSubseq.constData(), curResultRefSubseq.length(), buf.data(), buflen);
             curResultRefSubseq = buf;
+            msaAlphabet = aminoTT->getDstAlphabet();
         }
         QByteArray curResultPtrnSubseq = ptrnSequenceData.mid(pairAlignSeqs.ptrnSubseq.startPos, pairAlignSeqs.ptrnSubseq.length);
         alignSequences(curResultRefSubseq, curResultPtrnSubseq, pairAlignSeqs.pairAlignment);
 
-        MultipleSequenceAlignment msa(newFileName, alphabet);
+        MultipleSequenceAlignment msa(newFileName, msaAlphabet);
 
         expansionInfo.curProcessingSubseq = &pairAlignSeqs.refSubseq;
         msa->addRow(tagsRegistry->parseStringWithTags(refSubseqTemplate, expansionInfo), curResultRefSubseq);

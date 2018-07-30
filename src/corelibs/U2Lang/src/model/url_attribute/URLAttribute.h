@@ -36,7 +36,7 @@ public:
     virtual const QVariant & getDefaultPureValue() const;
     virtual bool isDefaultValue() const;
     virtual bool isEmpty() const;
-    virtual Attribute * clone();
+    virtual URLAttribute *clone();
     virtual bool validate(ProblemList &problemList);
 
     virtual const QSet<GObjectType> & getCompatibleObjectTypes() const;
@@ -46,11 +46,14 @@ public:
     void updateValue();
 
 private:
+    URLAttribute(const URLAttribute &other);
+    URLAttribute &operator=(const URLAttribute &other);
+
+    QStringList emptyDatasetNames(bool &hasUrls);
+    void copy(const URLAttribute &other);
+
     QList<Dataset> sets;
     QSet<GObjectType> compatibleObjectTypes;
-
-private:
-    QStringList emptyDatasetNames(bool &hasUrls);
 };
 
 } // U2

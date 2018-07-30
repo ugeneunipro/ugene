@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SlidingWindowSettingsWidget</class>
+ <widget class="QWidget" name="SlidingWindowSettingsWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>237</width>
+    <height>55</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QLabel" name="lblWindowSize">
+     <property name="toolTip">
+      <string>The number of bases to average across.</string>
+     </property>
+     <property name="text">
+      <string>Window size</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLineEdit" name="leWindowSize">
+     <property name="toolTip">
+      <string>The number of bases to average across.</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="lblQualityThreshold">
+     <property name="toolTip">
+      <string>The average quality required.</string>
+     </property>
+     <property name="text">
+      <string>Quality threshold</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QSpinBox" name="sbQualityThreshold">
+     <property name="toolTip">
+      <string>The average quality required.</string>
+     </property>
+     <property name="minimum">
+      <number>1</number>
+     </property>
+     <property name="maximum">
+      <number>2147483647</number>
+     </property>
+     <property name="value">
+      <number>20</number>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

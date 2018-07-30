@@ -164,7 +164,7 @@ void URLLineEdit::sl_onBrowseWithAdding() {
 void URLLineEdit::browse(bool addFiles) {
     QString FileFilter;
     if (NULL != parent) {
-        FileFilter = DelegateTags::getString(parent->tags(), "filter");
+        FileFilter = DelegateTags::getString(parent->tags(), DelegateTags::FILTER);
     }
     LastUsedDirHelper lod(type);
     QString lastDir = lod.dir;
@@ -184,7 +184,7 @@ void URLLineEdit::browse(bool addFiles) {
     if(isPath || multi){
         QStringList lst;
         if (isPath) {
-            QString dir = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder"), lastDir);
+            QString dir = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder"), lastDir, QFileDialog::Options());
             lst << dir;
         } else {
             lst = U2FileDialog::getOpenFileNames(NULL, tr("Select file(s)"), lastDir, FileFilter);
@@ -238,7 +238,7 @@ void URLLineEdit::keyPressEvent(QKeyEvent *event) {
 void URLLineEdit::checkExtension(QString &name) {
     QString fileFormat;
     if (NULL != parent) {
-        fileFormat = DelegateTags::getString(parent->tags(), "format");
+        fileFormat = DelegateTags::getString(parent->tags(), DelegateTags::FORMAT);
     }
     DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(fileFormat);
     if (NULL != format && !name.isEmpty()) {

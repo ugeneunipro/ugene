@@ -120,6 +120,12 @@ void GTUtilsWorkflowDesigner::saveWorkflowAs(HI::GUITestOpStatus &os, const QStr
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "validateWorkflow"
+void GTUtilsWorkflowDesigner::validateWorkflow(GUITestOpStatus &os) {
+    GTWidget::click(os, GTAction::button(os, "Validate workflow"));
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "runWorkflow"
 void GTUtilsWorkflowDesigner::runWorkflow(HI::GUITestOpStatus &os) {
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
@@ -982,6 +988,21 @@ QTableWidget* GTUtilsWorkflowDesigner::getInputPortsTable(HI::GUITestOpStatus &o
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getOutputPortsTable"
+QTableWidget *GTUtilsWorkflowDesigner::getOutputPortsTable(GUITestOpStatus &os, int index) {
+    QWidget *outputPortBox = GTWidget::findWidget(os, "outputPortBox");
+    QList<QTableWidget *> tables= outputPortBox->findChildren<QTableWidget *>();
+    foreach (QTableWidget *w, tables) {
+        if (!w->isVisible()){
+            tables.removeOne(w);
+        }
+    }
+    int number = tables.count();
+    GT_CHECK_RESULT(index < number, QString("there are %1 visables tables for output ports").arg(number), NULL);
+    return tables[index];
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getAllParameters"
 QStringList GTUtilsWorkflowDesigner::getAllParameters(HI::GUITestOpStatus &os){
     QStringList result;
@@ -1163,10 +1184,24 @@ int GTUtilsWorkflowDesigner::checkErrorList(HI::GUITestOpStatus &os, QString err
     QListWidget* w = qobject_cast<QListWidget*>(GTWidget::findWidget(os,"infoList"));
     GT_CHECK_RESULT(w, "ErrorList widget not found", 0);
 
-
     QList<QListWidgetItem *> list =  w->findItems(error,Qt::MatchContains);
     return list.size();
 }
 #undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getErrors"
+QStringList GTUtilsWorkflowDesigner::getErrors(GUITestOpStatus &os) {
+    QListWidget *w = GTWidget::findExactWidget<QListWidget *>(os, "infoList");
+    GT_CHECK_RESULT(w, "ErrorList widget not found", QStringList());
+
+    QStringList errors;
+    for (int i = 0; i < w->count(); i++) {
+        errors << w->item(i)->text();
+    }
+    return errors;
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
+
 } // namespace

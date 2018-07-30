@@ -147,8 +147,9 @@ private:
 /************************************************************************/
 /* Controller */
 /************************************************************************/
-DatasetsController::DatasetsController(const QSet<GObjectType> &compatibleObjTypes)
-    : compatibleObjTypes(compatibleObjTypes)
+DatasetsController::DatasetsController(const QSet<GObjectType> &compatibleObjTypes, QObject *parent)
+    : QObject(parent),
+      compatibleObjTypes(compatibleObjTypes)
 {
 
 }

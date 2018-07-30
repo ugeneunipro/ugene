@@ -237,7 +237,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 GUI_TEST_CLASS_DEFINITION(test_0010) {
 //    Test worker's GUI
 
-//    1. Open WD, set "Read from Remote Database" element to the scene, select it.
+//    1. Open WD, set "Read Sequence rom Remote Database" element to the scene, select it.
 //    Expected state:
 //        Database: required, "NCBI GenBank (DNA sequence)";
 //        Read resource ID(s) from source: required, "List of IDs";
@@ -250,8 +250,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 //        Resource ID(s): invisible;
 //        File with resource IDs: required, visible.
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read from Remote Database");
-    GTUtilsWorkflowDesigner::click(os, "Read from Remote Database");
+    GTUtilsWorkflowDesigner::addAlgorithm(os, "Read Sequence from Remote Database");
+    GTUtilsWorkflowDesigner::click(os, "Read Sequence from Remote Database");
 
     const QString database = GTUtilsWorkflowDesigner::getParameter(os, "Database");
     const QString source = GTUtilsWorkflowDesigner::getParameter(os, "Read resource ID(s) from source");

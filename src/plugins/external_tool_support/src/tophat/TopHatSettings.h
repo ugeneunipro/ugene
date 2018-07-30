@@ -37,6 +37,8 @@ class TopHatInputData {
 public:
     TopHatInputData();
 
+    int size() const;
+
     bool paired;
     bool fromFiles;
     QStringList urls;
@@ -85,14 +87,20 @@ public:
 
     TopHatInputData     data;
 
+    QString             referenceInputType;
+    QString             referenceGenome;
+    QString             buildIndexPathAndBasename;
+
 public:
     void cleanupReads();
     Workflow::WorkflowContext * workflowContext() const;
     Workflow::DbiDataStorage * storage() const;
 
     static uint getThreadsCount();
-};
 
+    static const QString INDEX;
+    static const QString SEQUENCE;
+};
 }
 
 #endif

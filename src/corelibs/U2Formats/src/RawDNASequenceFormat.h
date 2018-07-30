@@ -25,9 +25,11 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
+#include "TextDocumentFormat.h"
+
 namespace U2 {
 
-class U2FORMATS_EXPORT RawDNASequenceFormat : public DocumentFormat {
+class U2FORMATS_EXPORT RawDNASequenceFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     RawDNASequenceFormat(QObject* p);
@@ -38,14 +40,14 @@ public:
 
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
-
     virtual bool isStreamingSupport() {return true;}
 
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);
 
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
 private:
     QString formatName;

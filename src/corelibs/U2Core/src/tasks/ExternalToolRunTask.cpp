@@ -174,7 +174,7 @@ QList<long> ExternalToolRunTask::getChildPidsRecursive(long parentPid) {
     QList<long> res;
 
     QProcess p;
-    p.start("ps", QStringList() << QString("-axo pid,ppid").arg(parentPid));
+    p.start("ps", QStringList() << "-axo pid,ppid");
     p.waitForFinished();
     const QStringList lines = QString(p.readAllStandardOutput()).split('\n');
     p.close();
@@ -267,7 +267,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadLog(){
         QString line = QString::fromLocal8Bit(logData.constData(), numberReadChars);
         logParser->parseOutput(line);
         if(NULL != listener) {
-            listener->addNewLogMessage(line, OUTPUT_LOG);
+            listener->addNewLogMessage(line, ExternalToolListener::OUTPUT_LOG);
         }
         numberReadChars = process->read(logData.data(), logData.size());
     }
@@ -287,7 +287,7 @@ void ExternalToolRunTaskHelper::sl_onReadyToReadErrLog(){
         QString line = QString::fromLocal8Bit(logData.constData(), numberReadChars);
         logParser->parseErrOutput(line);
         if(NULL != listener) {
-            listener->addNewLogMessage(line, ERROR_LOG);
+            listener->addNewLogMessage(line, ExternalToolListener::ERROR_LOG);
         }
         numberReadChars = process->read(logData.data(), logData.size());
     }
@@ -310,30 +310,43 @@ ExternalToolLogParser::ExternalToolLogParser() {
     lastErrLine="";
     lastError="";
 }
-void ExternalToolLogParser::parseOutput(const QString& partOfLog){
-    lastPartOfLog=partOfLog.split(QChar('\n'));
-    lastPartOfLog.first()=lastLine+lastPartOfLog.first();
-    lastLine=lastPartOfLog.takeLast();
-    foreach(QString buf, lastPartOfLog){
-        if(buf.contains("error",Qt::CaseInsensitive)){
-            setLastError(buf);
-        }else{
-            ioLog.trace(buf);
-        }
+
+void ExternalToolLogParser::parseOutput(const QString &partOfLog){
+    lastPartOfLog = partOfLog.split(QChar('\n'));
+    lastPartOfLog.first() = lastLine+lastPartOfLog.first();
+    lastLine = lastPartOfLog.takeLast();
+    foreach (const QString &buf, lastPartOfLog) {
+        processLine(buf);
     }
 }
 
-void ExternalToolLogParser::parseErrOutput(const QString& partOfLog){
-    lastPartOfLog=partOfLog.split(QChar('\n'));
-    lastPartOfLog.first()=lastErrLine+lastPartOfLog.first();
-    lastErrLine=lastPartOfLog.takeLast();
-    foreach(const QString& buf, lastPartOfLog){
-        if(buf.contains("error",Qt::CaseInsensitive)){
-            setLastError(buf);
-        }else{
-            ioLog.trace(buf);
-        }
+void ExternalToolLogParser::parseErrOutput(const QString &partOfLog){
+    lastPartOfLog = partOfLog.split(QChar('\n'));
+    lastPartOfLog.first() = lastErrLine+lastPartOfLog.first();
+    lastErrLine = lastPartOfLog.takeLast();
+    foreach(const QString &buf, lastPartOfLog) {
+        processErrLine(buf);
     }
+}
+
+void ExternalToolLogParser::processLine(const QString &line) {
+    if (isError(line)) {
+        setLastError(line);
+    } else {
+        ioLog.trace(line);
+    }
+}
+
+void ExternalToolLogParser::processErrLine(const QString &line) {
+    if (isError(line)) {
+        setLastError(line);
+    } else {
+        ioLog.trace(line);
+    }
+}
+
+bool ExternalToolLogParser::isError(const QString &line) const {
+    return line.contains("error", Qt::CaseInsensitive);
 }
 
 void ExternalToolLogParser::setLastError(const QString &value) {
@@ -456,7 +469,9 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString &toolName, con
 #endif
 
     QProcessEnvironment processEnvironment = QProcessEnvironment::systemEnvironment();
-    QString path = additionalPaths.join(pathVariableSeparator) + pathVariableSeparator + processEnvironment.value("PATH");
+    QString path = additionalPaths.join(pathVariableSeparator) + pathVariableSeparator +
+                   tool->getAdditionalPaths().join(pathVariableSeparator) + pathVariableSeparator +
+                   processEnvironment.value("PATH");
     if (!additionalPaths.isEmpty()) {
         algoLog.trace(QString("PATH environment variable: '%1'").arg(path));
     }
@@ -479,11 +494,11 @@ ProcessRun ExternalToolSupportUtils::prepareProcess(const QString &toolName, con
 
     if(NULL != listener) {
         listener->setToolName(toolName);
-        listener->addNewLogMessage(listenerProgramMessage, PROGRAM_PATH);
+        listener->addNewLogMessage(listenerProgramMessage, ExternalToolListener::PROGRAM_PATH);
         QString argumentsLine = ExternalToolSupportUtils::prepareArgumentsForCmdLine(arguments);
         argumentsLine.replace(" -", "\n-");
 
-        listener->addNewLogMessage(argumentsLine, ARGUMENTS);
+        listener->addNewLogMessage(argumentsLine, ExternalToolListener::ARGUMENTS);
     }
     return result;
 }

@@ -152,12 +152,12 @@
 <context>
     <name>U2::KalignGObjectRunFromSchemaTask</name>
     <message>
-        <location filename="../src/KalignTask.cpp" line="257"/>
+        <location filename="../src/KalignTask.cpp" line="261"/>
         <source>Workflow wrapper &apos;%1&apos;</source>
         <translation>Workflow wrapper &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/KalignTask.cpp" line="267"/>
+        <location filename="../src/KalignTask.cpp" line="271"/>
         <source>KAlign align &apos;%1&apos;</source>
         <translation>Выравнивание с помощью Kalign &apos;%1&apos;</translation>
     </message>
@@ -165,7 +165,7 @@
 <context>
     <name>U2::KalignGObjectTask</name>
     <message>
-        <location filename="../src/KalignTask.cpp" line="148"/>
+        <location filename="../src/KalignTask.cpp" line="152"/>
         <source>KALIGN align &apos;%1&apos;</source>
         <translation>Выравнивание с помощью Kalign &apos;%1&apos;</translation>
     </message>

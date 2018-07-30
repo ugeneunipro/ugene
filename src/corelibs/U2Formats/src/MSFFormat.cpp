@@ -60,7 +60,7 @@ const int MSFFormat::CHARS_IN_WORD = 10;
 
 //TODO: recheck if it does support streaming! Fix isObjectOpSupported if not!
 
-MSFFormat::MSFFormat(QObject* p) : DocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList("msf")) {
+MSFFormat::MSFFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList("msf")) {
     formatName = tr("MSF");
     supportedObjectTypes+=GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     formatDescription = tr("MSF format is used to store multiple aligned sequences. Files include the sequence name and the sequence itself, which is usually aligned with other sequences in the file.");
@@ -279,7 +279,7 @@ void MSFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     objects.append(obj);
 }
 
-Document* MSFFormat::loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os){
+Document* MSFFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os){
     QList<GObject*> objs;
     load(io, dbiRef, objs, fs, os);
 
@@ -461,7 +461,7 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject
 }
 
 
-FormatCheckResult MSFFormat::checkRawData(const QByteArray& rawData, const GUrl&) const {
+FormatCheckResult MSFFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
     const char* data = rawData.constData();
     int size = rawData.size();
 

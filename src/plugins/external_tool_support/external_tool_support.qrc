@@ -29,5 +29,8 @@
         <file>images/R.png</file>
         <file>images/R_warn.png</file>
         <file>images/hmmer.png</file>
+        <file>images/add.png</file>
+        <file>images/down.png</file>
+        <file>images/up.png</file>
     </qresource>
 </RCC>

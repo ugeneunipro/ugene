@@ -1,0 +1,374 @@
+#@UGENE_WORKFLOW
+
+
+
+workflow "Parallel classification for SE reads"{
+
+    get-se-reads-list {
+        type:get-se-reads-list;
+        name:"Read NGS SE Reads";
+        url1 {
+            dataset:"Dataset 1";
+        }
+    }
+    fastqc-before {
+        type:fastqc;
+        name:"FastQC Before";
+    }
+    fastqc-after {
+        type:fastqc;
+        name:"FastQC After";
+    }
+    kraken-classify {
+        type:kraken-classify;
+        name:Kraken;
+    }
+    clark-classify {
+        type:clark-classify;
+        name:CLARK;
+    }
+    diamond-classify {
+        type:diamond-classify;
+        name:DIAMOND;
+    }
+    ensemble-classification {
+        type:ensemble-classification;
+        name:Ensemble;
+        number-tools:3;
+    }
+    wevote-classify {
+        type:wevote-classify;
+        name:WEVOTE;
+    }
+    classification-report {
+        type:classification-report;
+        name:Report;
+    }
+    trimmomatic {
+        type:trimmomatic;
+        name:Trimmomatic;
+    }
+
+    .actor-bindings {
+        clark-classify.out->ensemble-classification.tax-data2
+        kraken-classify.out->ensemble-classification.tax-data1
+        get-se-reads-list.out->fastqc-before.in-file
+        get-se-reads-list.out->trimmomatic.in
+        diamond-classify.out->ensemble-classification.tax-data3
+        ensemble-classification.out->wevote-classify.in
+        wevote-classify.out->classification-report.in
+        trimmomatic.out->fastqc-after.in-file
+        trimmomatic.out->diamond-classify.in
+        trimmomatic.out->clark-classify.in
+        trimmomatic.out->kraken-classify.in
+    }
+
+    get-se-reads-list.reads-url1->fastqc-before.in-file.url
+    trimmomatic.reads-url1->fastqc-after.in-file.url
+    trimmomatic.reads-url1->kraken-classify.in.reads-url1
+    trimmomatic.reads-url1->clark-classify.in.reads-url1
+    trimmomatic.reads-url1->diamond-classify.in.reads-url1
+    kraken-classify.tax-data->ensemble-classification.tax-data1.in
+    clark-classify.tax-data->ensemble-classification.tax-data2.in
+    diamond-classify.tax-data->ensemble-classification.tax-data3.in
+    ensemble-classification.url->wevote-classify.in.url
+    wevote-classify.tax-data->classification-report.in.tax-data
+    get-se-reads-list.reads-url1->trimmomatic.in.reads-url1
+
+    .meta {
+        visual {
+            clark-classify {
+                pos:"-360 -405";
+                style:simple;
+                bg-color-simple:"0 145 0 255";
+                in.angle:95.5275;
+                out.angle:272.862;
+            }
+            classification-report {
+                pos:"45 -225";
+                style:simple;
+                bg-color-simple:"141 126 194 255";
+                in.angle:180;
+            }
+            diamond-classify {
+                pos:"-495 -405";
+                style:simple;
+                bg-color-simple:"0 145 0 255";
+                in.angle:57.0948;
+                out.angle:288.925;
+            }
+            ensemble-classification {
+                pos:"-330 -225";
+                style:simple;
+                bg-color-simple:"102 102 102 255";
+                out.angle:356.1;
+                tax-data1.angle:67.5206;
+                tax-data2.angle:108.435;
+                tax-data3.angle:153.435;
+            }
+            fastqc-after {
+                pos:"-255 -705";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:225;
+            }
+            fastqc-before {
+                pos:"-585 -705";
+                style:simple;
+                bg-color-simple:"81 120 78 255";
+                in-file.angle:216.87;
+            }
+            get-se-reads-list {
+                pos:"-720 -600";
+                style:simple;
+                bg-color-simple:"23 106 239 255";
+                out.angle:360;
+            }
+            kraken-classify {
+                pos:"-240 -405";
+                style:simple;
+                bg-color-simple:"0 145 0 255";
+                in.angle:90;
+                out.angle:247.964;
+            }
+            trimmomatic {
+                pos:"-435 -600";
+                style:simple;
+                bg-color-simple:"127 127 127 255";
+                in.angle:180;
+                out.angle:320.464;
+            }
+            wevote-classify {
+                pos:"-120 -225";
+                style:simple;
+                bg-color-simple:"0 106 0 255";
+                in.angle:180;
+                out.angle:360;
+            }
+            clark-classify.out->ensemble-classification.tax-data2 {
+                text-pos:"-44 -28";
+            }
+            diamond-classify.out->ensemble-classification.tax-data3 {
+                text-pos:"-81 -28";
+            }
+            ensemble-classification.out->wevote-classify.in {
+                text-pos:"-45 -43";
+            }
+            get-se-reads-list.out->fastqc-before.in-file {
+                text-pos:"-47.3359 -20";
+            }
+            get-se-reads-list.out->trimmomatic.in {
+                text-pos:"-37.3359 -27";
+            }
+            kraken-classify.out->ensemble-classification.tax-data1 {
+                text-pos:"-2 -33";
+            }
+            trimmomatic.out->clark-classify.in {
+                text-pos:"-46 11";
+            }
+            trimmomatic.out->diamond-classify.in {
+                text-pos:"-87 10";
+            }
+            trimmomatic.out->fastqc-after.in-file {
+                text-pos:"-45 -43";
+            }
+            trimmomatic.out->kraken-classify.in {
+                text-pos:"20 2";
+            }
+            wevote-classify.out->classification-report.in {
+                text-pos:"-45 -43";
+            }
+        }
+        wizard {
+            name:"SE Reads Parallel Classification Wizard";
+            page {
+                id:1;
+                next:2;
+                title:"Input data";
+                parameters-area {
+                    group {
+                        title:"Single-end reads";
+                        label-size:120;
+                        get-se-reads-list.url1 {
+                            label:"FASTQ file(s)";
+                        }
+                    }
+                }
+            }
+            page {
+                id:2;
+                next:3;
+                title:"Trimmomatic settings";
+                parameters-area {
+                    group {
+                        title:"Improve reads quality";
+                        label-size:120;
+                        trimmomatic.trimming-steps {
+                        }
+                        trimmomatic.generate-log {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        trimmomatic.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:3;
+                next:4;
+                title:"Kraken settings";
+                parameters-area {
+                    group {
+                        title:Classification;
+                        label-size:180;
+                        kraken-classify.database {
+                        }
+                        kraken-classify.quick-operation {
+                        }
+                        kraken-classify.min-hits {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        kraken-classify.preload {
+                        }
+                        kraken-classify.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:4;
+                next:5;
+                title:"CLARK settings";
+                parameters-area {
+                    group {
+                        title:Classification;
+                        label-size:180;
+                        clark-classify.database {
+                        }
+                        clark-classify.k-length {
+                        }
+                        clark-classify.k-min-freq {
+                        }
+                        clark-classify.mode {
+                        }
+                        clark-classify.extend-out {
+                        }
+                        clark-classify.factor {
+                        }
+                        clark-classify.gap {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        clark-classify.preload {
+                        }
+                        clark-classify.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:5;
+                next:6;
+                title:"DIAMOND settings";
+                parameters-area {
+                    group {
+                        title:Classification;
+                        label-size:180;
+                        diamond-classify.database {
+                        }
+                        diamond-classify.genetic-code {
+                        }
+                        diamond-classify.sensitive-mode {
+                        }
+                        diamond-classify.frame-shift {
+                        }
+                        diamond-classify.e-value {
+                        }
+                        diamond-classify.matrix {
+                        }
+                        diamond-classify.gap-open {
+                        }
+                        diamond-classify.gap-extend {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        diamond-classify.block-size {
+                        }
+                        diamond-classify.index-chunks {
+                        }
+                        diamond-classify.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:6;
+                next:7;
+                title:"WEVOTE settings";
+                parameters-area {
+                    group {
+                        title:Classification;
+                        label-size:180;
+                        wevote-classify.penalty {
+                        }
+                        wevote-classify.number-of-agreed-tools {
+                        }
+                        wevote-classify.score-threshold {
+                        }
+                    }
+                    group {
+                        title:"Memory usage and efficiency";
+                        label-size:180;
+                        type:hideable;
+                        wevote-classify.threads {
+                        }
+                    }
+                }
+            }
+            page {
+                id:7;
+                title:"Output data";
+                parameters-area {
+                    group {
+                        title:"Classification output";
+                        label-size:180;
+                        kraken-classify.output-url {
+                            label:"Kraken output file";
+                        }
+                        clark-classify.output-url {
+                            label:"CLARK output file";
+                        }
+                        diamond-classify.output-url {
+                            label:"DIAMOND output file";
+                        }
+                        wevote-classify.output-url {
+                            label:"WEVOTE output file";
+                        }
+                    }
+                    group {
+                        title:"Classification reports";
+                        label-size:180;
+                        classification-report.output-url {
+                            label:"Report for WEVOTE classification";
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

@@ -39,6 +39,8 @@ class QStandardItemModel;
 
 namespace U2 {
 
+typedef QPair<QString, QVariant> ComboItem;
+
 /************************************************************************/
 /* DefaultPropertyWidget */
 /************************************************************************/
@@ -106,7 +108,7 @@ private slots:
 class ComboBoxWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    ComboBoxWidget(const QVariantMap &items, QWidget *parent = NULL);
+    ComboBoxWidget(const QList<ComboItem> &items, QWidget *parent = NULL);
     virtual QVariant value();
     virtual void setValue(const QVariant &value);
 

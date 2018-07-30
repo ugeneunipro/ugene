@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/FileAndDirectoryUtils.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -45,7 +47,7 @@ WorkerLogInfo::~WorkerLogInfo() {
 const QString WorkflowMonitor::WORKFLOW_FILE_NAME("workflow.uwl");
 
 WorkflowMonitor::WorkflowMonitor(WorkflowAbstractIterationRunner *_task, Schema *_schema)
-: QObject(), schema(_schema), task(_task), saveSchema(false), started(false)
+: QObject(_task), schema(_schema), task(_task), saveSchema(false), started(false)
 {
     foreach (Actor *p, schema->getProcesses()) {
         procMap[p->getId()] = p;
@@ -379,11 +381,65 @@ const bool Registrator::isMetaRegistered = registerMeta();
 /************************************************************************/
 /* WDListener */
 /************************************************************************/
+WDListener::WDListener(WorkflowMonitor *_monitor, const QString &_actorName, int _runNumber)
+    : monitor(_monitor),
+      actorName(_actorName),
+      runNumber(_runNumber),
+      outputHasMessages(false),
+      errorHasMessages(false)
+{
+    const QString logsDir = monitor->outputDir() + "logs";
+    FileAndDirectoryUtils::createWorkingDir("", FileAndDirectoryUtils::CUSTOM, logsDir, "");
+
+    outputLogFile.setFileName(GUrlUtils::rollFileName(logsDir + "/" + getStandardOutputLogFileUrl(actorName, runNumber), "_"));
+    outputLogFile.open(QIODevice::WriteOnly);
+    outputLogStream.setDevice(&outputLogFile);
+
+    errorLogFile.setFileName(GUrlUtils::rollFileName(logsDir + "/" + getStandardErrorLogFileUrl(actorName, runNumber), "_"));
+    errorLogFile.open(QIODevice::WriteOnly);
+    errorLogStream.setDevice(&errorLogFile);
+}
+
 void WDListener::addNewLogMessage(const QString& message, int messageType) {
     if (NULL != logProcessor) {
         logProcessor->processLogMessage(message);
     }
+    writeToFile(messageType, message);
     monitor->onLogChanged(this, messageType, message);
+}
+
+QString WDListener::getStandardOutputLogFileUrl(const QString &actorName, int runNumber) {
+    return actorName + "_" + QString::number(runNumber) + "_standard_output_log.txt";
+}
+
+QString WDListener::getStandardErrorLogFileUrl(const QString &actorName, int runNumber) {
+    return actorName + "_" + QString::number(runNumber) + "_error_output_log.txt";
+}
+
+void WDListener::writeToFile(int messageType, const QString &message) {
+    switch (messageType) {
+    case OUTPUT_LOG:
+        writeToFile(outputLogStream, message);
+        if (!outputHasMessages) {
+            outputLogStream.flush();
+            outputHasMessages = true;
+        }
+        break;
+    case ERROR_LOG:
+        writeToFile(errorLogStream, message);
+        if (!errorHasMessages) {
+            errorLogStream.flush();
+            errorHasMessages = true;
+        }
+        break;
+    default:
+        ; // Do not write to file
+    }
+}
+
+void WDListener::writeToFile(QTextStream &logStream, const QString& message) {
+    CHECK(logStream.device()->isOpen(), );
+    logStream << message;
 }
 
 } // Workflow

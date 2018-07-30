@@ -22,6 +22,7 @@
 #include "VFSAdapter.h"
 
 #include <U2Core/AppContext.h>
+#include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/VirtualFileSystem.h>
 
@@ -88,6 +89,9 @@ void VFSAdapter::close() {
 
 qint64 VFSAdapter::readBlock(char* data, qint64 size) {
     qint64 l = buffer->read(data, size);
+    if (formatMode == TextMode) {
+        l = TextUtils::cutByteOrderMarks(data, l);
+    }
     return l;
 }
 

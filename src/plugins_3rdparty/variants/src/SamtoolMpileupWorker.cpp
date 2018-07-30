@@ -396,7 +396,7 @@ void CallVariantsWorkerFactory::init() {
     Attribute* refLocationAttr = new Attribute(refLocation, BaseTypes::STRING_TYPE(), false, QVariant(REF_SOURCE_FILE));
     QVariantList refPortVisibilityValues;
     refPortVisibilityValues << QVariant(REF_SOURCE_PORT);
-    refLocationAttr->addPortRelation(PortRelationDescriptor( BasePorts::IN_SEQ_PORT_ID(), refPortVisibilityValues));
+    refLocationAttr->addPortRelation(new PortRelationDescriptor( BasePorts::IN_SEQ_PORT_ID(), refPortVisibilityValues));
     attributes << refLocationAttr;
 
     attributes << new Attribute(illumina13Encoding, BaseTypes::BOOL_TYPE(), false, QVariant(false));

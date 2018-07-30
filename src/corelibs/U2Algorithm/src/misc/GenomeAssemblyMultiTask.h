@@ -41,6 +41,7 @@ public:
     QString getResultUrl() const;
     QList<Task*> onSubTaskFinished(Task* subTask);
     const GenomeAssemblyTaskSettings& getSettings() const {return settings;}
+    GenomeAssemblyTask* getAssemblyTask() const;
 private:
     GenomeAssemblyTaskSettings settings;
     GenomeAssemblyTask* assemblyTask;

@@ -26,9 +26,11 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 
+#include "TextDocumentFormat.h"
+
 namespace U2 {
 
-class U2FORMATS_EXPORT MegaFormat : public DocumentFormat {
+class U2FORMATS_EXPORT MegaFormat : public TextDocumentFormat {
 Q_OBJECT
 public:
     MegaFormat(QObject* p);
@@ -37,9 +39,9 @@ public:
     virtual const QString& getFormatName() const { return formatName; }
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &ti);
-    virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 protected:
-    virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
+    virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
+    virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
 private:
     QString formatName;

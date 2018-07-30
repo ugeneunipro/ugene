@@ -38,16 +38,16 @@ class BlastPlusSupportRunDialog : public BlastRunCommonDialog {
     Q_OBJECT
 public:
     BlastPlusSupportRunDialog(ADVSequenceObjectContext* seqCtx, QString &lastDBPath, QString &lastDBName, QWidget *parent);
-    
+
     U2Region getSelectedRegion() const;
-    
+
 protected slots:
     virtual void sl_runQuery();
     virtual void sl_lineEditChanged();
 
 private:
     bool checkToolPath();
-    
+
     U2SequenceObject*  dnaso;
     QString &lastDBPath;
     QString &lastDBName;

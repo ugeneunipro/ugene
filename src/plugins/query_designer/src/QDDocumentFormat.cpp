@@ -48,7 +48,7 @@ const DocumentFormatId QDDocFormat::FORMAT_ID = "QueryDocFormat";
 //Format
 //////////////////////////////////////////////////////////////////////////
 QDDocFormat::QDDocFormat(QObject* p)
-: DocumentFormat(p, DocumentFormatFlags_W1, QStringList(QUERY_SCHEME_EXTENSION)),
+: TextDocumentFormat(p, DocumentFormatFlags_W1, QStringList(QUERY_SCHEME_EXTENSION)),
 formatName(tr("Query Schema")) {
     formatDescription = tr("QDDoc is a format used for creating/editing/storing/retrieving"
         "query schema with the text file");
@@ -63,7 +63,7 @@ Document* QDDocFormat::createNewLoadedDocument(IOAdapterFactory* io, const GUrl 
 }
 
 #define BUFF_SIZE 1024
-Document* QDDocFormat::loadDocument(IOAdapter* io, const U2DbiRef& targetDb, const QVariantMap& hints, U2OpStatus& os) {
+Document* QDDocFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& targetDb, const QVariantMap& hints, U2OpStatus& os) {
     QByteArray  rawData;
     QByteArray block(BUFF_SIZE, '\0');
     int blockLen = 0;
@@ -102,7 +102,7 @@ void QDDocFormat::storeDocument(Document* d, IOAdapter* io, U2OpStatus& ) {
     wo->setSceneRawData(rawData);
 }
 
-FormatCheckResult QDDocFormat::checkRawData( const QByteArray& rawData, const GUrl&) const {
+FormatCheckResult QDDocFormat::checkRawTextData( const QByteArray& rawData, const GUrl&) const {
     const QString& data = rawData;
     if(QDDocument::isHeaderLine(data.trimmed())) {
         return FormatDetection_Matched;

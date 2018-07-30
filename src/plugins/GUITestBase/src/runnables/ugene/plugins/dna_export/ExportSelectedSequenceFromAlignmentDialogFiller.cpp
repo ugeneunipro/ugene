@@ -49,6 +49,7 @@ ExportSelectedSequenceFromAlignment::ExportSelectedSequenceFromAlignment(HI::GUI
     comboBoxItems[GFF] = "GFF";
     comboBoxItems[Genbank] = "GenBank";
     comboBoxItems[Swiss_Prot] = "Swiss_Prot";
+    comboBoxItems[Ugene_db] = "UGENE Database";
 
 }
 

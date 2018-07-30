@@ -63,6 +63,7 @@ public:
     static void saveWorkflow(HI::GUITestOpStatus &os);
     static void saveWorkflowAs(HI::GUITestOpStatus &os, const QString &fileUrl, const QString &workflowName);
 
+    static void validateWorkflow(HI::GUITestOpStatus &os);
     static void runWorkflow(HI::GUITestOpStatus &os);
     static void returnToWorkflow(HI::GUITestOpStatus &os);
 
@@ -144,6 +145,7 @@ public:
     static QStringList getAllParameters(HI::GUITestOpStatus& os);
 
     static QTableWidget* getInputPortsTable(HI::GUITestOpStatus &os, int index);
+    static QTableWidget* getOutputPortsTable(HI::GUITestOpStatus &os, int index);
 
     //gets oneparameter worker parameter
     static QString getParameter(HI::GUITestOpStatus& os, QString parameter, bool exactMatch = false);
@@ -157,6 +159,7 @@ public:
 
     //returns number of items in error list which contain "error"
     static int checkErrorList(HI::GUITestOpStatus &os, QString error);
+    static QStringList getErrors(HI::GUITestOpStatus &os);
 
     static int getItemLeft(HI::GUITestOpStatus &os, QString itemName);
     static int getItemRight(HI::GUITestOpStatus &os, QString itemName);

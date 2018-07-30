@@ -62,6 +62,8 @@ void ExternalToolsWidgetController::sl_timerShouts() {
     emit si_update();
 }
 
+const int ExternalToolsWidget::LOG_LIMIT = 100;
+
 const QString ExternalToolsWidget::ID = "external tools";
 const QString ExternalToolsWidget::LINE_BREAK("break_line");
 const QString ExternalToolsWidget::SINGLE_QUOTE("s_quote");
@@ -71,7 +73,8 @@ ExternalToolsWidget::ExternalToolsWidget(const QWebElement &_container,
                                          Dashboard *parent,
                                          const ExternalToolsWidgetController *_ctrl) :
     DashboardWidget(_container, ID, parent),
-    ctrl(_ctrl)
+    ctrl(_ctrl),
+    isUserWarned(false)
 {
     SAFE_POINT(NULL != ctrl, "Controller is NULL", );
 
@@ -80,11 +83,16 @@ ExternalToolsWidget::ExternalToolsWidget(const QWebElement &_container,
 
     container.evaluateJavaScript("lwInitConteiner(this, 'params_tab_id_0')");
 
+    lastEntryIndex = 0;
     foreach (LogEntry entry, ctrl->getLog()) {
+        if (lastEntryIndex >= LOG_LIMIT) {
+            warnUser(entry);
+            lastEntryIndex = ctrl->getLog().size() - 1;
+            break;
+        }
         addInfoToWidget(entry);
+        lastEntryIndex++;
     }
-
-    lastEntryIndex = ctrl->getLogSize() - 1;
 }
 
 void ExternalToolsWidget::sl_onLogUpdate() {
@@ -97,21 +105,29 @@ void ExternalToolsWidget::sl_onLogUpdate() {
     for (; lastEntryIndex < lastLogIndex; lastEntryIndex++) {
         LogEntry curEntry = ctrl->getEntry(lastEntryIndex + 1);
         if (isSameNode(curEntry, entry) &&
-                entry.logType != PROGRAM_PATH &&
-                entry.logType != ARGUMENTS) {
+                entry.logType != ExternalToolListener::PROGRAM_PATH &&
+                entry.logType != ExternalToolListener::ARGUMENTS) {
             // accumulate
             entry.lastLine += curEntry.lastLine;
         } else {
             // node changed, commit
+            if (lastEntryIndex >= LOG_LIMIT) {
+                warnUser(entry);
+            }
             addInfoToWidget(entry);
             entry = curEntry;
         }
     }
 
+    if (lastEntryIndex >= LOG_LIMIT) {
+        warnUser(entry);
+    }
     addInfoToWidget(entry);
 }
 
 void ExternalToolsWidget::addInfoToWidget(const LogEntry &entry) {
+    CHECK(!isUserWarned, );
+
     const QString tabId = "log_tab_id_" + entry.actorName;
     const QString runId = entry.toolName + " run " + QString::number(entry.runNumber);
     const QString mapId = tabId + "_" + runId;
@@ -132,25 +148,25 @@ void ExternalToolsWidget::addInfoToWidget(const LogEntry &entry) {
     addLogFunc += "'" + tabId + "', ";
 
     switch(entry.logType) {
-    case ERROR_LOG:
+    case ExternalToolListener::ERROR_LOG:
         addLogFunc += "'" + lastPartOfLog + "', ";
         addLogFunc += "'0', ";
         addLogFunc += "'error')";
         container.evaluateJavaScript(addLogFunc);
         break;
-    case OUTPUT_LOG:
+    case ExternalToolListener::OUTPUT_LOG:
         addLogFunc += "'" + lastPartOfLog + "', ";
         addLogFunc += "'0', ";
         addLogFunc += "'output')";
         container.evaluateJavaScript(addLogFunc);
         break;
-    case PROGRAM_PATH:
+    case ExternalToolListener::PROGRAM_PATH:
         addLogFunc += "'" + lastPartOfLog + "', ";
         addLogFunc += "'" + QString::number(++taskCount[mapId]) + "', ";
         addLogFunc += "'program')";
         container.evaluateJavaScript(addLogFunc);
         break;
-    case ARGUMENTS:
+    case ExternalToolListener::ARGUMENTS:
         addLogFunc += "'" + lastPartOfLog + "', ";
         addLogFunc += "'" + QString::number(taskCount[mapId]) + "', ";
         addLogFunc += "'arguments')";
@@ -164,6 +180,37 @@ bool ExternalToolsWidget::isSameNode(const LogEntry& prev, const LogEntry& cur) 
             prev.logType == cur.logType &&
             prev.runNumber == cur.runNumber &&
             prev.toolName == cur.toolName;
+}
+
+namespace {
+
+bool logFileContainsMessages(const QString &fileUrl) {
+    return QFileInfo(fileUrl).exists() && QFile(fileUrl).size() != 0;
+}
+
+}
+
+void ExternalToolsWidget::warnUser(LogEntry &entry) {
+    CHECK(!isUserWarned, );
+
+    const QString logDirUrl = dashboard->monitor()->outputDir() + "logs";
+    QString logFileUrl = logDirUrl + "/" + WDListener::getStandardErrorLogFileUrl(entry.actorName, entry.runNumber);
+    if (!logFileContainsMessages(logFileUrl)) {
+        logFileUrl = logDirUrl + "/" + WDListener::getStandardOutputLogFileUrl(entry.actorName, entry.runNumber);
+        if (!logFileContainsMessages(logFileUrl)) {
+            logFileUrl = "";
+        }
+    }
+
+    if (!logFileUrl.isEmpty()) {
+        entry.lastLine = tr("\n\nThe external tools output is too large and can't be visualized on the dashboard. Find full output in file \"%1\".").arg(logFileUrl);
+    } else {
+        entry.lastLine = tr("\n\nThe external tools output is too large and can't be visualized on the dashboard.");
+    }
+
+    addInfoToWidget(entry);
+
+    isUserWarned = true;
 }
 
 } // namespace U2

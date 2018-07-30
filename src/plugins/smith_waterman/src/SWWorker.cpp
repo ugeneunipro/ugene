@@ -89,7 +89,7 @@ void SWAlgoEditor::populate() {
         return;
     }
     foreach(const QString& n, algoLst) {
-        items.insert(n,n);
+        comboItems.append(qMakePair(n,n));
     }
     QList<Attribute*> lst = proto->getAttributes();
     foreach(Attribute* a, lst) {

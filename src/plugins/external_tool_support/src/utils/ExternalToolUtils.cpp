@@ -93,7 +93,7 @@ void ExternalToolUtils::addCistromeDataPath(const QString& dataName, const QStri
     CHECK(NULL != dpr, );
 
     const QString dataPath = AppContext::getSettings()->getValue(CISTROME_DATA_DIR).toString() + QDir::separator() + dirName;
-    U2DataPath* dp = new U2DataPath(dataName, dataPath, entriesAreFolders);
+    U2DataPath* dp = new U2DataPath(dataName, dataPath, "", U2DataPath::CutFileExtension | (entriesAreFolders ? U2DataPath::AddOnlyFolders : U2DataPath::None));
     bool ok = dpr->registerEntry(dp);
     if (!ok) {
         delete dp;

@@ -59,7 +59,7 @@ MSAConsensusAlgorithm::MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory* _fact
 
 }
 
-MSAConsensusAlgorithm::MSAConsensusAlgorithm(const MSAConsensusAlgorithm &algorithm) 
+MSAConsensusAlgorithm::MSAConsensusAlgorithm(const MSAConsensusAlgorithm &algorithm)
     : QObject(algorithm.parent()), factory(algorithm.factory),
     threshold(algorithm.threshold),
     ignoreTrailingAndLeadingGaps(algorithm.ignoreTrailingAndLeadingGaps) {

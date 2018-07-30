@@ -24,6 +24,8 @@
 
 #include "ui_AddConstraintDialog.h"
 
+#include <QActionGroup>
+
 #include <U2Lang/QDConstraint.h>
 
 #include <U2Gui/MainWindow.h>

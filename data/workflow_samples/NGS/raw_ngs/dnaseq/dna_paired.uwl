@@ -44,7 +44,7 @@ workflow "Processing of raw DNA-Seq paired-end reads"{
     }
     bwamem-id {
         type:bwamem-id;
-        name:"Align Reads with BWA MEM";
+        name:"Map Reads with BWA-MEM";
         library:Paired-end;
         output-dir:ouput;
     }
@@ -134,25 +134,25 @@ workflow "Processing of raw DNA-Seq paired-end reads"{
     }
 
     .actor-bindings {
+        CutAdaptFastq-1.out-file->QualityTrim-1.in-file
+        CASAVAFilter-1.out-file->CutAdaptFastq-1.in-file
         get-file-list-1.out-url->CASAVAFilter-1.in-file
         get-file-list-1.out-url->fastqc-1.in-file
-        CutAdaptFastq.out-file->QualityTrim.in-file
-        filter-bam.out-file->Sort-bam-1.in-file
-        files-conversion.out-file->merge-bam.in-file
-        CASAVAFilter.out-file->CutAdaptFastq.in-file
-        Sort-bam-1.out-file->rmdup-bam.in-file
-        QualityTrim-1.out-file->bwamem-id.in-data-paired
-        QualityTrim-1.out-file->fastqc-1-2.in-file
-        Sort-bam.out-file->fastqc-1-1-1.in-file
         merge-bam.out-file->filter-bam.in-file
         bwamem-id.out-data->files-conversion.in-file
+        filter-bam.out-file->Sort-bam-1.in-file
+        QualityTrim-1.out-file->bwamem-id.in-data-paired
+        QualityTrim-1.out-file->fastqc-1-2.in-file
+        Sort-bam-1.out-file->rmdup-bam.in-file
+        Sort-bam.out-file->fastqc-1-1-1.in-file
+        CutAdaptFastq.out-file->QualityTrim.in-file
+        files-conversion.out-file->merge-bam.in-file
+        rmdup-bam.out-file->Sort-bam.in-file
         QualityTrim.out-file->bwamem-id.in-data
         QualityTrim.out-file->fastqc-1-1.in-file
-        CASAVAFilter-1.out-file->CutAdaptFastq-1.in-file
         get-file-list.out-url->CASAVAFilter.in-file
         get-file-list.out-url->fastqc.in-file
-        rmdup-bam.out-file->Sort-bam.in-file
-        CutAdaptFastq-1.out-file->QualityTrim-1.in-file
+        CASAVAFilter.out-file->CutAdaptFastq.in-file
     }
 
     get-file-list.url->CASAVAFilter.in-file.url
@@ -243,7 +243,7 @@ workflow "Processing of raw DNA-Seq paired-end reads"{
         }
         visual {
             CASAVAFilter {
-                pos:"-915 -750";
+                pos:"-900 -735";
                 style:ext;
                 bg-color-ext:"194 0 0 64";
                 bounds:"-30 -30 123.875 80";
@@ -251,7 +251,7 @@ workflow "Processing of raw DNA-Seq paired-end reads"{
                 out-file.angle:360;
             }
             CASAVAFilter-1 {
-                pos:"-915 -585";
+                pos:"-900 -570";
                 style:ext;
                 bg-color-ext:"194 0 0 64";
                 bounds:"-30 -30 122.875 82";
@@ -259,49 +259,49 @@ workflow "Processing of raw DNA-Seq paired-end reads"{
                 out-file.angle:360;
             }
             CutAdaptFastq {
-                pos:"-645 -750";
+                pos:"-630 -735";
                 style:ext;
                 bg-color-ext:"236 177 178 64";
                 in-file.angle:180;
                 out-file.angle:360;
             }
             CutAdaptFastq-1 {
-                pos:"-645 -585";
+                pos:"-630 -570";
                 style:ext;
                 bg-color-ext:"236 177 178 64";
                 in-file.angle:180;
                 out-file.angle:360;
             }
             QualityTrim {
-                pos:"-360 -750";
+                pos:"-345 -735";
                 style:ext;
                 bg-color-ext:"204 68 102 64";
                 in-file.angle:180;
                 out-file.angle:360;
             }
             QualityTrim-1 {
-                pos:"-360 -585";
+                pos:"-345 -570";
                 style:ext;
                 bg-color-ext:"204 68 102 64";
                 in-file.angle:180;
                 out-file.angle:360;
             }
             Sort-bam {
-                pos:"-75 -180";
+                pos:"-60 -165";
                 style:simple;
                 bg-color-simple:"84 84 84 255";
                 in-file.angle:180;
                 out-file.angle:360;
             }
             Sort-bam-1 {
-                pos:"-435 -180";
+                pos:"-420 -165";
                 style:simple;
                 bg-color-simple:"84 84 84 255";
                 in-file.angle:90;
                 out-file.angle:360;
             }
             bwamem-id {
-                pos:"0 -690";
+                pos:"0 -675";
                 style:ext;
                 bg-color-ext:"0 128 0 64";
                 bounds:"-30 -30 108 135";
@@ -310,41 +310,41 @@ workflow "Processing of raw DNA-Seq paired-end reads"{
                 out-data.angle:287.162;
             }
             fastqc {
-                pos:"-855 -930";
+                pos:"-840 -915";
                 style:simple;
                 in-file.angle:180;
             }
             fastqc-1 {
-                pos:"-870 -405";
+                pos:"-855 -390";
                 style:simple;
                 in-file.angle:180;
             }
             fastqc-1-1 {
-                pos:"-90 -900";
+                pos:"-75 -885";
                 style:simple;
                 bg-color-simple:"0 128 128 255";
                 in-file.angle:232.815;
             }
             fastqc-1-1-1 {
-                pos:"105 -180";
+                pos:"105 -165";
                 style:simple;
                 bg-color-simple:"0 128 128 255";
                 in-file.angle:178.636;
             }
             fastqc-1-2 {
-                pos:"-90 -465";
+                pos:"-75 -450";
                 style:simple;
                 in-file.angle:138.18;
             }
             files-conversion {
-                pos:"0 -360";
+                pos:"0 -345";
                 style:simple;
                 bg-color-simple:"84 84 84 255";
                 in-file.angle:83.2902;
                 out-file.angle:176.186;
             }
             filter-bam {
-                pos:"-480 -390";
+                pos:"-465 -375";
                 style:ext;
                 bg-color-ext:"194 0 0 64";
                 bounds:"-30 -30 121.875 79";
@@ -352,28 +352,28 @@ workflow "Processing of raw DNA-Seq paired-end reads"{
                 out-file.angle:298.996;
             }
             get-file-list {
-                pos:"-1155 -750";
+                pos:"-1140 -735";
                 style:ext;
                 bg-color-ext:"24 102 175 64";
                 bounds:"-30 -30 63 87";
                 out-url.angle:360;
             }
             get-file-list-1 {
-                pos:"-1155 -585";
+                pos:"-1140 -570";
                 style:ext;
                 bg-color-ext:"24 102 175 64";
                 bounds:"-30 -30 61 92";
                 out-url.angle:360;
             }
             merge-bam {
-                pos:"-165 -360";
+                pos:"-150 -345";
                 style:simple;
                 bg-color-simple:"78 151 184 255";
                 in-file.angle:1.7357;
                 out-file.angle:180;
             }
             rmdup-bam {
-                pos:"-255 -180";
+                pos:"-240 -165";
                 style:simple;
                 bg-color-simple:"218 98 98 255";
                 in-file.angle:180;
@@ -462,8 +462,8 @@ workflow "Processing of raw DNA-Seq paired-end reads"{
                 title:Pre-processing;
                 parameters-area {
                     group {
-                        label-size:120;
                         title:"Reads filtration";
+                        label-size:120;
                         QualityTrim.qual-id {
                             label:"Base quality";
                         }
@@ -484,8 +484,8 @@ workflow "Processing of raw DNA-Seq paired-end reads"{
                         }
                     }
                     group {
-                        label-size:120;
                         title:"Read pairs filtration";
+                        label-size:120;
                         QualityTrim-1.qual-id {
                             label:"Base quality";
                         }
