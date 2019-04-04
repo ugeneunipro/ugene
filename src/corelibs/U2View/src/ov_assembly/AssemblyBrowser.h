@@ -188,6 +188,8 @@ private:
     void loadReferenceFromFile();
     void showReferenceLoadingError(const QList<GObject*> &sequenceObjects, const QString &url) const;
     void setReference(const Document *doc);
+    void addAnnotationView(U2SequenceObject* seqObj);
+    void addAnnotationTableObjectToView(AnnotationTableObject* annTableObj);
 
 private:
     AssemblyBrowserUi * ui;
@@ -240,6 +242,7 @@ class AssemblyConsensusArea;
 class AssemblyCoverageGraph;
 class AssemblyRuler;
 class AssemblyReadsArea;
+class AssemblyVariantsArea;
 class AssemblyAnnotationsArea;
 
 class U2VIEW_EXPORT AssemblyBrowserUi : public QWidget {
@@ -255,20 +258,22 @@ public:
     inline AssemblyRuler * getRuler() const {return ruler;}
     inline AssemblyReferenceArea * getReferenceArea() const {return referenceArea;}
     inline AssemblyConsensusArea * getConsensusArea() const {return consensusArea;}
+    inline AssemblyVariantsArea * getVariantsArea() const {return variantsArea;}
     inline AssemblyAnnotationsArea * getAnnotationsArea() const {return annotationsArea;}
     inline bool isCorrectView() const {return !nothingToVisualize;}
 
     QColor getCoverageColor(double grayCoeff);
 
 private:
-    AssemblyBrowser * browser;
-    ZoomableAssemblyOverview * zoomableOverview;
-    AssemblyReferenceArea * referenceArea;
-    AssemblyConsensusArea * consensusArea;
-    AssemblyCoverageGraph * coverageGraph;
-    AssemblyRuler * ruler;
-    AssemblyReadsArea * readsArea;
-    AssemblyAnnotationsArea * annotationsArea;
+    AssemblyBrowser*          browser;
+    ZoomableAssemblyOverview* zoomableOverview;
+    AssemblyReferenceArea*    referenceArea;
+    AssemblyConsensusArea*    consensusArea;
+    AssemblyCoverageGraph*    coverageGraph;
+    AssemblyRuler*            ruler;
+    AssemblyReadsArea*        readsArea;
+    AssemblyVariantsArea*     variantsArea;
+    AssemblyAnnotationsArea*  annotationsArea;
     bool nothingToVisualize;
 };
 

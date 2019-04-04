@@ -19,29 +19,20 @@
  * MA 02110-1301, USA.
  */
 
-#include <QPainter>
-#include <QVBoxLayout>
-
-#include "AssemblyBrowser.h"
-#include "AssemblyVariantRow.h"
-
-#include "AssemblyAnnotationsArea.h"
+#include "../AssemblyBrowser.h"
+#include "AssemblyAnnotationsAreaRenderer.h"
 
 namespace U2 {
 
-AssemblyAnnotationsArea::AssemblyAnnotationsArea(AssemblyBrowserUi *ui)
-: QWidget(ui)
-{
-    this->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Maximum);
-    variantRowManager = new AssemblyVariantRowManager(ui);
-    QVBoxLayout *vLayout = new QVBoxLayout(this);
-    this->setLayout(vLayout);
-    vLayout->setMargin(0);
-    vLayout->setSpacing(0);
-}
+AssemblyAnnotationsAreaRenderer::AssemblyAnnotationsAreaRenderer
+                (PanView *panView,
+                SequenceObjectContext* ctx,
+                AssemblyBrowser* _browser)
+                                : PanViewRenderer(panView, ctx),
+                                  browser(_browser) {}
 
-AssemblyAnnotationsArea::~AssemblyAnnotationsArea() {
-    delete variantRowManager;
+double AssemblyAnnotationsAreaRenderer::getCurrentScale() const {
+    return browser->getCellWidth();
 }
 
 } // U2

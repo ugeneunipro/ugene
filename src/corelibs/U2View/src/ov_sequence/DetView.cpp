@@ -761,7 +761,7 @@ void DetView::setupGeneticCodeMenu() {
     button->setObjectName("AminoToolbarButton");
 }
 
-int DetView::getVerticalScrollBarPosition() {
+int DetView::getVerticalScrollBarPosition() const {
     if (!isWrapMode()) {
         return verticalScrollBar->sliderPosition();
     }

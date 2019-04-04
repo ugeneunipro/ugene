@@ -135,6 +135,7 @@ protected:
     void focusOutEvent(QFocusEvent* fe);
     void keyPressEvent(QKeyEvent *e);
     virtual void onVisibleRangeChanged(bool signal = true);
+    virtual int getHorizontalScrollBarPosition() const;
 
 public slots:
     void sl_centerPosition(int pos) {setCenterPos(pos);}

@@ -68,7 +68,7 @@ public:
 
     void setDisabledDetViewActions(bool t);
 
-    int getVerticalScrollBarPosition();
+    int getVerticalScrollBarPosition() const;
     int getShift() const;
     void setSelectedTranslations();
 

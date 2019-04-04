@@ -209,9 +209,10 @@ void PanViewRenderer::drawSequence(QPainter &p, const QSize &canvasSize, const U
     CHECK(isSequenceCharsVisible(), );
 
     p.setPen(Qt::black);
-    double halfCharByScale = getCurrentScale() / 2;
+    double scale = getCurrentScale();
+    double halfCharByScale = scale / 2;
     float halfCharByFont;
-    if (getCurrentScale() >= commonMetrics.charWidth) {
+    if (scale >= commonMetrics.charWidth) {
         p.setFont(commonMetrics.sequenceFont);
         halfCharByFont = commonMetrics.charWidth / 2.0f;
     } else {

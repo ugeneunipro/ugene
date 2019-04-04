@@ -298,7 +298,7 @@ void GSequenceLineView::keyPressEvent(QKeyEvent *e) {
 
 void GSequenceLineView::setBorderCursor(const QPoint &p) {
     const QPoint areaPoint = toRenderAreaPoint(p);
-    const int sliderPos = scrollBar->isVisible() ? scrollBar->sliderPosition() : 0;
+    const int sliderPos = getHorizontalScrollBarPosition();
     const double scale = renderArea->getCurrentScale();
     const QPoint point(areaPoint.x() + (sliderPos * scale), areaPoint.y());
 
@@ -414,6 +414,9 @@ bool GSequenceLineView::eventFilter(QObject *object, QEvent *event) {
     return false;
 }
 
+int GSequenceLineView::getHorizontalScrollBarPosition() const {
+    return scrollBar->isVisible() ? scrollBar->sliderPosition() : 0;
+}
 
 void GSequenceLineView::setFrameView(GSequenceLineView* _frameView) {
     SAFE_POINT((frameView == NULL) != (_frameView==NULL), "Failed to set frame view!",);

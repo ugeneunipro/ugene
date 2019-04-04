@@ -152,6 +152,8 @@ protected:
 protected slots:
     virtual void sl_sequenceChanged();
     virtual void sl_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications);
+    void sl_toggleMainRulerVisibility(bool visible);
+    void sl_toggleCustomRulersVisibility(bool visible);
 
 private slots:
     void sl_zoomInAction();
@@ -166,8 +168,6 @@ private slots:
     virtual void sl_onDNASelectionChanged(LRegionsSelection* s, const QVector<U2Region>& added, const QVector<U2Region>& removed);
     virtual void sl_onAnnotationSettingsChanged(const QStringList& changedSettings);
 
-    void sl_toggleMainRulerVisibility(bool visible);
-    void sl_toggleCustomRulersVisibility(bool visible);
     void sl_updateRows();
 
 signals:
