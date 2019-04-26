@@ -19,27 +19,35 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/U2SafePoints.h>
+#ifndef _U2_ASSEMBLY_ANNOTATIONS_TREE_ITEM_H_
+#define _U2_ASSEMBLY_ANNOTATIONS_TREE_ITEM_H_
 
-#include "../AssemblyBrowser.h"
-#include "AssemblyAnnotationsRenderArea.h"
+#include <QList>
+#include <QVariant>
 
 namespace U2 {
 
-AssemblyAnnotationsRenderArea::AssemblyAnnotationsRenderArea
-            (AssemblyBrowserUi *_ui, PanView *d, PanViewRenderer *renderer)
-                              : PanViewRenderArea(d, renderer),
-                                ui(_ui) {}
+class AssemblyAnnotationsTreeItem {
+public:
+    AssemblyAnnotationsTreeItem(const QVariantList data, AssemblyAnnotationsTreeItem* parent = nullptr);
+    ~AssemblyAnnotationsTreeItem();
 
-void AssemblyAnnotationsRenderArea::paintEvent(QPaintEvent *e) {
-    AssemblyBrowser* browser = ui->getWindow();
-    SAFE_POINT(nullptr != browser, tr("Assembly Browser is missed"), );
+    AssemblyAnnotationsTreeItem* getChild(const int row) const;
+    AssemblyAnnotationsTreeItem* takeChild(const int row);
+    AssemblyAnnotationsTreeItem* getParent() const;
 
-    if (browser->areCellsVisible()) {
-        PanViewRenderArea::paintEvent(e);
-    } else  {
-        cachedView->fill(Qt::transparent);
-    }
+    QVariant getData(int column) const;
+
+    int childrenCount() const;
+    int columnCount() const;
+    int getRowNum() const;
+
+private:
+    AssemblyAnnotationsTreeItem* parent;
+    QList<AssemblyAnnotationsTreeItem*> children;
+    QVariantList data;
+};
+
 }
 
-} // U2
+#endif
