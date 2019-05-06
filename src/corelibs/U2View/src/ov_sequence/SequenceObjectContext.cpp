@@ -260,6 +260,12 @@ StatisticsCache<DinucleotidesOccurrence> *SequenceObjectContext::getDinucleotide
     return &dinucleotidesOccurrenceCache;
 }
 
+void SequenceObjectContext::clearAllSelections() {
+    getAnnotationsSelection()->clear();
+    selection->clear();
+    emit si_clearSelectedAnnotationRegions();
+}
+
 void SequenceObjectContext::sl_onAnnotationRelationChange() {
     AnnotationTableObject* obj = qobject_cast<AnnotationTableObject*>(sender());
     SAFE_POINT(obj != NULL, tr("Incorrect signal sender!"),);

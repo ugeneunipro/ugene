@@ -192,7 +192,7 @@ private:
     void setReference(const Document *doc);
     void addAnnotationView(U2SequenceObject* seqObj);
     void addAnnotationTableObjectToView(AnnotationTableObject* annTableObj);
-    void connectContextWithAnnotationTreeModel(SequenceObjectContext* ctx);
+    void addContextToModel(U2SequenceObject* so);
 
 private:
     AssemblyBrowserUi * ui;
@@ -247,6 +247,7 @@ class AssemblyRuler;
 class AssemblyReadsArea;
 class AssemblyVariantsArea;
 class AssemblyAnnotationsArea;
+class AssemblyAnnotationsTreeView;
 
 class U2VIEW_EXPORT AssemblyBrowserUi : public QWidget {
     Q_OBJECT
@@ -263,22 +264,22 @@ public:
     inline AssemblyConsensusArea * getConsensusArea() const {return consensusArea;}
     inline AssemblyVariantsArea * getVariantsArea() const {return variantsArea;}
     inline AssemblyAnnotationsArea * getAnnotationsArea() const {return annotationsArea;}
-    inline QTreeView * getAnnotationsTreeView() const { return annotationsTreeView; }
+    inline AssemblyAnnotationsTreeView * getAnnotationsTreeView() const { return annotationsTreeView; }
     inline bool isCorrectView() const {return !nothingToVisualize;}
 
     QColor getCoverageColor(double grayCoeff);
 
 private:
-    AssemblyBrowser*          browser;
-    ZoomableAssemblyOverview* zoomableOverview;
-    AssemblyReferenceArea*    referenceArea;
-    AssemblyConsensusArea*    consensusArea;
-    AssemblyCoverageGraph*    coverageGraph;
-    AssemblyRuler*            ruler;
-    AssemblyReadsArea*        readsArea;
-    AssemblyVariantsArea*     variantsArea;
-    AssemblyAnnotationsArea*  annotationsArea;
-    QTreeView*                annotationsTreeView;
+    AssemblyBrowser*             browser;
+    ZoomableAssemblyOverview*    zoomableOverview;
+    AssemblyReferenceArea*       referenceArea;
+    AssemblyConsensusArea*       consensusArea;
+    AssemblyCoverageGraph*       coverageGraph;
+    AssemblyRuler*               ruler;
+    AssemblyReadsArea*           readsArea;
+    AssemblyVariantsArea*        variantsArea;
+    AssemblyAnnotationsArea*     annotationsArea;
+    AssemblyAnnotationsTreeView* annotationsTreeView;
     bool nothingToVisualize;
 };
 

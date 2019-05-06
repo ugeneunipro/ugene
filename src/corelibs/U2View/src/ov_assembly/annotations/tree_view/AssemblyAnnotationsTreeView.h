@@ -19,45 +19,40 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _ASSEMBLY_ANNOTATIONS_AREA_WIDGET_
-#define _ASSEMBLY_ANNOTATIONS_AREA_WIDGET_
+#ifndef _U2_ASSEMBLY_ANNOTATIONS_TREE_VIEW_H_
+#define _U2_ASSEMBLY_ANNOTATIONS_TREE_VIEW_H_
 
-#include <U2View/PanView.h>
+#include <QObject>
+#include <QTreeView>
 
 namespace U2 {
 
-class AssemblyBrowser;
-class AssemblyBrowserUi;
+class Annotation;
+class AnnotationSelection;
+class AssemblyAnnotationsTreeViewModel;
 
-class AssemblyAnnotationsAreaWidget : public PanView {
-    Q_OBJECT
+class AssemblyAnnotationsTreeView : public QTreeView {
+Q_OBJECT
 public:
-    AssemblyAnnotationsAreaWidget(AssemblyBrowser* browser, AssemblyBrowserUi *ui, SequenceObjectContext* ctx);
+    AssemblyAnnotationsTreeView(QWidget *parent = nullptr);
 
 protected:
-    void mouseDoubleClickEvent(QMouseEvent* me) override;
-    void mouseMoveEvent(QMouseEvent *e) override;
     void keyPressEvent(QKeyEvent *e) override;
-
-    void clearAllSelections() const override;
-    int getHorizontalScrollBarPosition() const override;
-    void proceedAnnotationSelection(AnnotationSelectionData* asd) const override;
-
-signals:
-    void si_mouseMovedToPos(const QPoint&);
+    void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected) override;
 
 private slots:
-    void sl_zoomPerformed();
-    void sl_offsetsChanged();
+    void sl_onAnnotationSelectionChanged(AnnotationSelection *as,
+                                         const QList<Annotation *>& added,
+                                         const QList<Annotation *>& removed);
+    void sl_clearSelectedAnnotations();
 
 private:
-    void connectSlots() const;
-    void updateVisibleRange();
+    AssemblyAnnotationsTreeViewModel* getModel() const;
+    void expandList(const QModelIndexList& indexList);
 
-    AssemblyBrowser* browser;
-    AssemblyBrowserUi* browserUi;
+    bool selectionChangedFromOutside;
 };
 
-} // U2
+}
 
-#endif // _ASSEMBLY_ANNOTATIONS_AREA_WIDGET_
+#endif
