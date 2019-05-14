@@ -10,6 +10,8 @@ HEADERS += src/LicenseDialog.h \
            src/ov_assembly/annotations/AssemblyAnnotationsAreaWidget.h \
            src/ov_assembly/annotations/AssemblyAnnotationsRenderArea.h \
            src/ov_assembly/annotations/AssemblyAnnotationsRenderAreaFactory.h \
+           src/ov_assembly/annotations/tree_view/AssemblyAnnotationsTreeItem.h \
+           src/ov_assembly/annotations/tree_view/AssemblyAnnotationsTreeViewModel.h \
            src/ov_assembly/AssemblyBrowser.h \
            src/ov_assembly/AssemblyBrowserFactory.h \
            src/ov_assembly/AssemblyBrowserSettings.h \
@@ -284,6 +286,8 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_assembly/annotations/AssemblyAnnotationsAreaWidget.cpp \
            src/ov_assembly/annotations/AssemblyAnnotationsRenderArea.cpp \
            src/ov_assembly/annotations/AssemblyAnnotationsRenderAreaFactory.cpp \
+           src/ov_assembly/annotations/tree_view/AssemblyAnnotationsTreeItem.cpp \
+           src/ov_assembly/annotations/tree_view/AssemblyAnnotationsTreeViewModel.cpp \
            src/ov_assembly/AssemblyBrowser.cpp \
            src/ov_assembly/AssemblyBrowserFactory.cpp \
            src/ov_assembly/AssemblyBrowserSettings.cpp \

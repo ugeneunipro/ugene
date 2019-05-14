@@ -28,6 +28,7 @@
 #include <QMessageBox>
 #include <QPainter>
 #include <QScrollBar>
+#include <QSplitter>
 #include <QToolBar>
 #include <QToolButton>
 #include <QVBoxLayout>
@@ -74,6 +75,7 @@
 #include <U2View/SequenceObjectContext.h>
 
 #include "annotations/AssemblyAnnotationsArea.h"
+#include "annotations/tree_view/AssemblyAnnotationsTreeViewModel.h"
 #include "AssemblyBrowser.h"
 #include "AssemblyBrowserFactory.h"
 #include "AssemblyBrowserSettings.h"
@@ -136,8 +138,10 @@ void AssemblyBrowser::sl_referenceChanged() {
     removeReferenceSequence();
 
     U2SequenceObject *so = model->getRefObj();
-    if (so != NULL) {
-        model->setSequenceObjectContext(new SequenceObjectContext(so, nullptr));
+    if (so != nullptr) {
+        SequenceObjectContext* seqCtx = new SequenceObjectContext(so, nullptr);
+        model->setSequenceObjectContext(seqCtx);
+        connectContextWithAnnotationTreeModel(seqCtx);
         addObjectToView(so);
     }
     setReferenceAction->setEnabled(!model->isLoadingReference());
@@ -1086,6 +1090,21 @@ void AssemblyBrowser::addAnnotationTableObjectToView(AnnotationTableObject* annT
     addObjectToView(annTableObj);
 }
 
+void AssemblyBrowser::connectContextWithAnnotationTreeModel(SequenceObjectContext* ctx) {
+    CHECK(nullptr != ui, );
+
+    QTreeView* annTreeView = ui->getAnnotationsTreeView();
+    SAFE_POINT(nullptr != annTreeView, "Assembly Annotation Tree View is missed", );
+
+    QAbstractItemModel* annTreeViewModel = annTreeView->model();
+    SAFE_POINT(nullptr != annTreeViewModel, "Assembly Annotation Tree View Model is missed", );
+
+    connect(ctx, SIGNAL(si_annotationObjectAdded(AnnotationTableObject*)),
+            annTreeViewModel, SLOT(sl_annotationObjectAdded(AnnotationTableObject*)));
+    connect(ctx, SIGNAL(si_annotationObjectRemoved(AnnotationTableObject*)),
+            annTreeViewModel, SLOT(sl_annotationObjectRemoved(AnnotationTableObject*)));
+}
+
 void AssemblyBrowser::sl_setReference() {
     const ProjectView *projectView = AppContext::getProjectView();
     SAFE_POINT(NULL != projectView, L10N::nullPointerError("ProjectView"), );
@@ -1153,6 +1172,7 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser * browser_)
                                                       readsArea(nullptr),
                                                       variantsArea(nullptr),
                                                       annotationsArea(nullptr),
+                                                      annotationsTreeView(nullptr),
                                                       nothingToVisualize(true) {
     U2OpStatusImpl os;
     if(browser->getModel()->hasReads(os)) { // has mapped reads -> show rich visualization
@@ -1169,12 +1189,15 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser * browser_)
         readsArea  = new AssemblyReadsArea(this, readsHBar, readsVBar);
         variantsArea = new AssemblyVariantsArea(this);
         annotationsArea = new AssemblyAnnotationsArea(this);
+        annotationsTreeView = new QTreeView(this);
+        AssemblyAnnotationsTreeViewModel* annotationsTreeViewModel = new AssemblyAnnotationsTreeViewModel(this);
+        annotationsTreeView->setModel(annotationsTreeViewModel);
 
-        QVBoxLayout *mainLayout = new QVBoxLayout();
-        mainLayout->setMargin(0);
-        mainLayout->setSpacing(2);
-        mainLayout->addWidget(zoomableOverview);
-        mainLayout->addWidget(annotationsArea);
+        QVBoxLayout *mainVerticalLayout = new QVBoxLayout();
+        mainVerticalLayout->setMargin(0);
+        mainVerticalLayout->setSpacing(2);
+        mainVerticalLayout->addWidget(zoomableOverview);
+        mainVerticalLayout->addWidget(annotationsArea);
 
         QGridLayout * readsLayout = new QGridLayout();
         readsLayout->setMargin(0);
@@ -1192,8 +1215,20 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser * browser_)
 
         QWidget * readsLayoutWidget = new QWidget;
         readsLayoutWidget->setLayout(readsLayout);
-        mainLayout->addWidget(readsLayoutWidget);
-        mainLayout->addWidget(readsHBar);
+        mainVerticalLayout->addWidget(readsLayoutWidget);
+        mainVerticalLayout->addWidget(readsHBar);
+
+        QWidget* mainLayoutContainer = new QWidget(this);
+        mainLayoutContainer->setLayout(mainVerticalLayout);
+
+        QSplitter* assemblySplitter = new QSplitter(this);
+        assemblySplitter->addWidget(annotationsTreeView);
+        assemblySplitter->addWidget(mainLayoutContainer);
+        int annTreeViewWidth = width() / 6;
+        assemblySplitter->setSizes(QList<int>() << annTreeViewWidth << width() - annTreeViewWidth);
+
+        QVBoxLayout* mainLayout = new QVBoxLayout();
+        mainLayout->addWidget(assemblySplitter);
 
         OPWidgetFactoryRegistry* opWidgetFactoryRegistry = AppContext::getOPWidgetFactoryRegistry();
         OptionsPanel * optionsPanel = browser->getOptionsPanel();
