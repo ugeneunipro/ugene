@@ -68,10 +68,10 @@ void SequenceWithChromatogramAreaRenderer::drawReferenceSelection(QPainter &pain
     SAFE_POINT(editor != NULL, "McaEditor is NULL", );
     DNASequenceSelection* selection = editor->getReferenceContext()->getSequenceSelection();
     SAFE_POINT(selection != NULL, "DNASequenceSelection is NULL", );
-    SAFE_POINT(selection->regions.size() <= 1, "Unexpected multiselection",);
-    CHECK(!selection->regions.isEmpty(), );
+    SAFE_POINT(selection->getSelectedRegions().size() <= 1, "Unexpected multiselection",);
+    CHECK(!selection->getSelectedRegions().isEmpty(), );
 
-    U2Region region = selection->regions.first();
+    U2Region region = selection->getSelectedRegions().first();
     const U2Region xRange = ui->getBaseWidthController()->getBasesScreenRange(region);
 
     painter.save();

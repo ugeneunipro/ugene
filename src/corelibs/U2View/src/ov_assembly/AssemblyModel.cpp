@@ -48,9 +48,9 @@
 #include <U2Core/U2SqlHelpers.h>
 #include <U2Core/VariantTrackObject.h>
 
-#include <U2View/SequenceObjectContext.h>
-
 #include <U2Gui/ObjectViewTasks.h>
+
+#include <U2View/SequenceObjectContext.h>
 
 #include "AssemblyBrowser.h"
 #include "AssemblyModel.h"

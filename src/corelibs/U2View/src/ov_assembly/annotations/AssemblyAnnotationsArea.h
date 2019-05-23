@@ -32,12 +32,11 @@ class AssemblyAnnotationsAreaWidget;
 class AssemblyBrowserUi;
 class SequenceObjectContext;
 
-
 class AssemblyAnnotationsArea : public QWidget {
     Q_OBJECT
 public:
     AssemblyAnnotationsArea(AssemblyBrowserUi* ui);
-    ~AssemblyAnnotationsArea();
+    ~AssemblyAnnotationsArea() override;
 
 signals:
     void si_mouseMovedToPos(const QPoint& p);
