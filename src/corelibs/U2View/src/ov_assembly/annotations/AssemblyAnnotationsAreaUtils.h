@@ -22,6 +22,7 @@
 #ifndef _ASSEMBLY_ANNOTATIONS_AREA_UTILS_
 #define _ASSEMBLY_ANNOTATIONS_AREA_UTILS_
 
+#include <QApplication>
 #include <QItemSelection>
 #include <QItemSelectionModel>
 #include <QList>

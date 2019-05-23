@@ -114,6 +114,9 @@ void AssemblyAnnotationsAreaWidget::proceedAnnotationSelection(AnnotationSelecti
     case QItemSelectionModel::NoUpdate:
         //possible, but nothing we need to do
         break;
+    default:
+        FAIL("Unexpected result", );
+        break;
     }
 
     as->changeSelection(toSelect, toDeselect);

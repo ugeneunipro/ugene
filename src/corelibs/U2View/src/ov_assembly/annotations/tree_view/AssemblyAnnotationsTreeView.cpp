@@ -68,6 +68,8 @@ void AssemblyAnnotationsTreeView::selectionChanged(const QItemSelection &selecte
 void AssemblyAnnotationsTreeView::sl_onAnnotationSelectionChanged(AnnotationSelection *as,
                                                                   const QList<Annotation *>& added,
                                                                   const QList<Annotation *>& removed) {
+    Q_UNUSED(as);
+
     AssemblyAnnotationsTreeViewModel* treeViewModel = getModel();
     CHECK(nullptr != treeViewModel, );
 

@@ -26,7 +26,7 @@
 namespace U2 {
 
 AssemblyAnnotationsTreeItem::AssemblyAnnotationsTreeItem(const QVariantList _data,
-                    AssemblyAnnotationsTreeItem* _parent) : data(_data), parent(_parent) {
+                    AssemblyAnnotationsTreeItem* _parent) : parent(_parent), data(_data) {
     if (nullptr != parent) {
         parent->children.append(this);
     }
