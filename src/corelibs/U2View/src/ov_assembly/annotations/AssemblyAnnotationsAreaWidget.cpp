@@ -49,8 +49,9 @@ AssemblyAnnotationsAreaWidget::AssemblyAnnotationsAreaWidget
     GCOUNTER(c2, t2, "AssemblyReadsArea::annotationWigetWasCreaated");
 
     setLocalToolbarVisible(false);
-    sl_toggleMainRulerVisibility(false);
-    sl_toggleCustomRulersVisibility(false);
+    settings->setShowMainRuler(false);
+    settings->setShowCustomRulers(false);
+    settings->setShowMainRuler(false);
     scrollBar->hide();
     connectSlots();
     updateVisibleRange();
