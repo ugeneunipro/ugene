@@ -1093,6 +1093,7 @@ void AssemblyBrowser::addAnnotationTableObjectToView(AnnotationTableObject* annT
 void AssemblyBrowser::addContextToModel(U2SequenceObject* so) {
     SequenceObjectContext* ctx = new SequenceObjectContext(so, nullptr);
     model->setSequenceObjectContext(ctx);
+    CHECK(nullptr != ui, );
 
     AssemblyAnnotationsTreeView* annTreeView = ui->getAnnotationsTreeView();
     SAFE_POINT(nullptr != annTreeView, "Assembly Annotation Tree View is missed", );
