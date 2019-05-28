@@ -52,7 +52,7 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectC
     setObjectName("mca_editor_reference_area");
     singleBaseSelection = true;
     setLocalToolbarVisible(false);
-    settings->showMainRuler = false;
+    settings->setShowMainRuler(false);
 
     scrollBar->hide();
     rowBar->hide();
