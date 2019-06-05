@@ -51,7 +51,7 @@ AssemblyAnnotationsAreaWidget::AssemblyAnnotationsAreaWidget
     setLocalToolbarVisible(false);
     settings->setShowMainRuler(false);
     settings->setShowCustomRulers(false);
-    settings->setShowMainRuler(false);
+    settings->setShowSequence(false);
     scrollBar->hide();
     connectSlots();
     updateVisibleRange();
