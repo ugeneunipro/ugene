@@ -778,7 +778,7 @@ void FindPatternWidget::showHideMessage( bool show, MessageFlag messageFlag, con
     }
     bool hasNoErrors = messageFlags.isEmpty() || (messageFlags.size() == 1 && messageFlags.contains(UseMultiplePatternsTip));
     if (hasNoErrors) {
-        GUIUtils::setWidgetWarning(textPattern, true);
+        GUIUtils::setWidgetWarning(textPattern, false);
     }
 
 }
