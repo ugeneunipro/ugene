@@ -55,6 +55,8 @@
 
 #include <U2Core/HttpFileAdapter.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2View/DetView.h>
 
 #include "GTTestsRegressionScenarios_6001_7000.h"
@@ -2949,7 +2951,7 @@ GUI_TEST_CLASS_DEFINITION(test_6544){
     // 5. Expected/current result: the search field background is red.
     QTextEdit* editPatterns = GTWidget::findExactWidget<QTextEdit*>(os, "textPattern");
     QString style0 = editPatterns->styleSheet();
-    CHECK_SET_ERR(style0 == "background-color: rgb(255, 152, 142);", "unexpected styleSheet: " + style0);
+    CHECK_SET_ERR(style0 == "background-color: " + GUIUtils::WARNING_COLOR.name() + ";", "unexpected styleSheet: " + style0);
 
     // 6. Make the "Search with ambiguous bases" option checked.
 
@@ -2958,7 +2960,7 @@ GUI_TEST_CLASS_DEFINITION(test_6544){
 
     // 7. Expected result: the search field should have white background.
     QString style1 = editPatterns->styleSheet();
-    CHECK_SET_ERR(style1 == "background-color: white;", "unexpected styleSheet: " + style1);
+    CHECK_SET_ERR(style1 == "background-color: " + GUIUtils::OK_COLOR.name() + ";", "unexpected styleSheet: " + style1);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6546){

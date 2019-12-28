@@ -61,6 +61,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/ToolsMenu.h>
 
 #include <U2View/ADVConstants.h>
@@ -6145,7 +6146,7 @@ GUI_TEST_CLASS_DEFINITION(test_4996) {
 
     QTextEdit* editPatterns = GTWidget::findExactWidget<QTextEdit*>(os, "textPattern");
     QString style0 = editPatterns->styleSheet();
-    CHECK_SET_ERR(style0 == "background-color: rgb(255, 152, 142);", "unexpected styleSheet: " + style0);
+    CHECK_SET_ERR(style0 == "background-color: " + GUIUtils::WARNING_COLOR.name() + ";", "unexpected styleSheet: " + style0);
 
     //Remove entered pattern, enter a valid pattern:
     //.
@@ -6153,11 +6154,11 @@ GUI_TEST_CLASS_DEFINITION(test_4996) {
     QWidget *textPattern1 = GTWidget::findWidget(os, "textPattern");
     GTWidget::click(os, textPattern1);
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
-    GTKeyboardDriver::keyClick( '.');
+    GTKeyboardDriver::keyClick('.');
     GTGlobals::sleep();
 
     QString style1 = editPatterns->styleSheet();
-    CHECK_SET_ERR(style1 == "background-color: white;", "unexpected styleSheet: " + style1);
+    CHECK_SET_ERR(style1 == "background-color: " + GUIUtils::OK_COLOR.name() + ";", "unexpected styleSheet: " + style1);
 }
 
 } // namespace GUITest_regression_scenarios
