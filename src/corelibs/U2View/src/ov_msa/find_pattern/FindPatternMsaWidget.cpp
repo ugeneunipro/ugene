@@ -212,14 +212,18 @@ void FindPatternMsaWidget::showCurrentResultAndStopProgress(const int current, c
 }
 
 FindPatternMsaWidget::ResultIterator::ResultIterator()
-    : results(QMap<int, QList<U2Region> > ()), totalResultsCounter(0), globalPos(0) {}
+    : msaEditor(nullptr), totalResultsCounter(0), globalPos(0) {}
 
-FindPatternMsaWidget::ResultIterator::ResultIterator(const QMap<int, QList<U2Region> >& results_)
-    : results(results_), totalResultsCounter(0), globalPos(1), rowsIt(results.constBegin()), regionsIt(rowsIt->constBegin())
+FindPatternMsaWidget::ResultIterator::ResultIterator(const QMap<int, QList<U2Region> >& results_, MSAEditor* msaEditor_)
+    : searchResults(results_), msaEditor(msaEditor_), totalResultsCounter(0), globalPos(1)
 {
-    foreach(int key, results.keys()) {
-        totalResultsCounter += results[key].size();
+    initSortedResults();
+    foreach(int key, searchResults.keys()) {
+        totalResultsCounter += searchResults[key].size();
     }
+    sortedVisibleRowsIt = sortedResults.constBegin();
+    msaRowsIt = sortedVisibleRowsIt->constBegin();
+    regionsIt = msaRowsIt->constBegin();
 }
 
 U2::U2Region FindPatternMsaWidget::ResultIterator::currentResult() const {
@@ -234,20 +238,22 @@ int FindPatternMsaWidget::ResultIterator::getTotalCount() const {
     return totalResultsCounter;
 }
 
-int FindPatternMsaWidget::ResultIterator::getRow() const {
-    return rowsIt.key();
+int FindPatternMsaWidget::ResultIterator::getMsaRow() const {
+    return msaRowsIt.key();
 }
 
 void FindPatternMsaWidget::ResultIterator::goBegin() {
     globalPos = 1;
-    rowsIt = results.constBegin();
-    regionsIt = rowsIt->constBegin();
+    sortedVisibleRowsIt = sortedResults.constBegin();
+    msaRowsIt = sortedVisibleRowsIt->constBegin();
+    regionsIt = msaRowsIt->constBegin();
 }
 
 void FindPatternMsaWidget::ResultIterator::goEnd() {
     globalPos = totalResultsCounter;
-    rowsIt = results.constEnd() - 1;
-    regionsIt = rowsIt->constEnd() - 1;
+    sortedVisibleRowsIt = sortedResults.constEnd() - 1;
+    msaRowsIt = sortedVisibleRowsIt->constEnd() - 1;
+    regionsIt = msaRowsIt->constEnd() - 1;
 }
 
 void FindPatternMsaWidget::ResultIterator::goNextResult() {
@@ -255,9 +261,13 @@ void FindPatternMsaWidget::ResultIterator::goNextResult() {
     regionsIt++;
     if (globalPos == totalResultsCounter + 1) {
         goBegin();
-    } else if(regionsIt == rowsIt->constEnd()){
-        rowsIt++;
-        regionsIt = rowsIt->constBegin();
+    } else if(regionsIt == msaRowsIt->constEnd()){
+        msaRowsIt++;
+        if (msaRowsIt == sortedVisibleRowsIt->constEnd()) {
+            sortedVisibleRowsIt++;
+            msaRowsIt = sortedVisibleRowsIt->constBegin();
+        }
+        regionsIt = msaRowsIt->constBegin();
     }
 }
 
@@ -265,12 +275,58 @@ void FindPatternMsaWidget::ResultIterator::goPrevResult() {
     globalPos--;
     if (globalPos == 0) {
         goEnd();
-        return;
-    } else if (regionsIt == rowsIt->constBegin()) {
-        rowsIt--;
-        regionsIt = rowsIt->constEnd();
+    } else if (regionsIt == msaRowsIt->constBegin()) {
+        msaRowsIt--;
+        if (msaRowsIt == sortedVisibleRowsIt->constBegin()) {
+            sortedVisibleRowsIt--;
+            msaRowsIt = sortedVisibleRowsIt->constEnd();
+        }
+        regionsIt = msaRowsIt->constBegin();
     }
     regionsIt--;
+}
+
+void FindPatternMsaWidget::ResultIterator::collapseModelChanged() {
+    if (msaEditor == nullptr || regionsIt == nullptr) {
+        return;
+    }
+    //uncollapse group with current row
+    if (uncollapseGroupIfNotVisible()) {
+        return;
+    }
+    QList<U2Region>::const_iterator rewindHere(regionsIt);
+    initSortedResults();
+    //rewind to current result
+    goBegin();
+    while (rewindHere != regionsIt) {
+        goNextResult();
+    }
+}
+
+void FindPatternMsaWidget::ResultIterator::initSortedResults() {
+    sortedResults.clear();
+    MaCollapseModel* model = msaEditor->getUI()->getCollapseModel();
+    foreach(int key, searchResults.keys()) {
+        sortedResults[model->getViewRowIndexByMaRowIndex(key)][key] = searchResults[key];
+    }
+    foreach(int key, sortedResults.keys()) {
+        QMap<int, QList<U2Region> > m = sortedResults[key];
+        coreLog.error("VisibleRow == " + QString::number(key));
+        foreach(int key2, m.keys()) {
+            coreLog.error("__________MsaRow == " + QString::number(key2));
+        }        
+    }
+    coreLog.error("====================================");
+}
+
+bool FindPatternMsaWidget::ResultIterator::uncollapseGroupIfNotVisible() {
+    MaCollapseModel* model = msaEditor->getUI()->getCollapseModel();
+    int viewRowIndex = model->getViewRowIndexByMaRowIndex(getMsaRow(), true);
+    if (viewRowIndex == -1) {
+        model->toggle(model->getViewRowIndexByMaRowIndex(getMsaRow(), false), false);
+        return true;
+    }
+    return false;
 }
 
 void FindPatternMsaWidget::initLayout() {
@@ -381,6 +437,8 @@ void FindPatternMsaWidget::initMaxResultLenContainer() {
     layoutRegExpLen->addLayout(layoutUseMaxResultLen);
     layoutRegExpLen->addWidget(boxMaxResultLen);
     layoutAlgorithmSettings->addWidget(useMaxResultLenContainer);
+
+    connect(msaEditor->getUI()->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_collapseModelChanged()));
 }
 
 
@@ -400,6 +458,7 @@ void FindPatternMsaWidget::connectSlots()
     connect(prevPushButton, SIGNAL(clicked()), SLOT(sl_prevButtonClicked()));
     connect(nextPushButton, SIGNAL(clicked()), SLOT(sl_nextButtonClicked()));
     connect(spinMatch, SIGNAL(valueChanged(int)), SLOT(sl_activateNewSearch()));
+    //connect(msaEditor->getUI()->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_activateNewSearch()));
 }
 
 void FindPatternMsaWidget::sl_onAlgorithmChanged(int index)
@@ -926,7 +985,7 @@ void FindPatternMsaWidget::sl_findPatternTaskStateChanged() {
             nextPushButton->setDisabled(true);
             prevPushButton->setDisabled(true);
         } else {
-            resultIterator = ResultIterator(findPatternResults);
+            resultIterator = ResultIterator(findPatternResults, msaEditor);
             //qSort(findPatternResults.begin(), findPatternResults.end(), compareByRegionStartPos);
             showCurrentResultAndStopProgress(resultIterator.getGlobalPos(), resultIterator.getTotalCount());
             nextPushButton->setEnabled(true);
@@ -1036,23 +1095,19 @@ void FindPatternMsaWidget::validateCheckBoxSize(QCheckBox* checkBox, int require
     checkBox->setText(text);
 }
 
+void FindPatternMsaWidget::sortResultsByVisibleOrder() {
+    MaCollapseModel* model = msaEditor->getUI()->getCollapseModel();
+//     foreach() {
+//         model->getViewRowIndexByMaRowIndex();
+//     }
+}
+
 void FindPatternMsaWidget::sl_toggleExtendedAlphabet() {
     verifyPatternAlphabet();
     sl_activateNewSearch(true);
 }
 
 void FindPatternMsaWidget::sl_activateNewSearch(bool forcedSearch){
-    /*
-    if(loadFromFileGroupBox->isChecked()) {
-        stopCurrentSearchTask();
-        if(filePathLineEdit->text().isEmpty()){
-            return;
-        }
-        LoadPatternsFileTask *loadTask = new LoadPatternsFileTask(filePathLineEdit->text());
-        connect(loadTask, SIGNAL(si_stateChanged()), SLOT(sl_loadPatternTaskStateChanged()));
-        AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
-    } else {
-    */
     QList<NamePattern> newPatterns = updateNamePatterns();
     if(isSearchPatternsDifferent(newPatterns) || forcedSearch){
         patternList.clear();
@@ -1091,12 +1146,18 @@ void FindPatternMsaWidget::sl_nextButtonClicked() {
 }
 
 void FindPatternMsaWidget::showCurrentResult() const {
+    MaCollapseModel* model = msaEditor->getUI()->getCollapseModel();
+    int viewRowIndex = model->getViewRowIndexByMaRowIndex(resultIterator.getMsaRow(), true);
+    if (viewRowIndex == -1) {
+        viewRowIndex = model->getViewRowIndexByMaRowIndex(resultIterator.getMsaRow(), false);
+        model->toggle(viewRowIndex, false);
+    }
+    viewRowIndex = model->getViewRowIndexByMaRowIndex(resultIterator.getMsaRow(), true);
+    const U2Region& currentRegion = resultIterator.currentResult();
+    MaEditorSelection sel(QPoint(currentRegion.startPos, viewRowIndex), currentRegion.length, 1);
     resultLabel->setText(tr("Results: %1/%2").arg(QString::number(resultIterator.getGlobalPos())).arg(QString::number(resultIterator.getTotalCount())));
     CHECK(resultIterator.getTotalCount() >= resultIterator.getGlobalPos(), );
     MaEditorSequenceArea* seqArea = msaEditor->getUI()->getSequenceArea();
-
-    const U2Region& currentRegion = resultIterator.currentResult();
-    MaEditorSelection sel(QPoint(currentRegion.startPos, resultIterator.getRow()), currentRegion.length, 1);
     seqArea->setSelection(sel);
     seqArea->centerPos(sel.topLeft());
 }
@@ -1111,6 +1172,10 @@ void FindPatternMsaWidget::sl_onShiftEnterPressed(){
     if(prevPushButton->isEnabled()){
         prevPushButton->click();
     }
+}
+
+void FindPatternMsaWidget::sl_collapseModelChanged() {
+    resultIterator.collapseModelChanged();
 }
 
 bool FindPatternMsaWidget::isSearchPatternsDifferent(const QList<NamePattern> &newPatterns) const {

@@ -69,29 +69,39 @@ private slots:
 
     void sl_onEnterPressed();
     void sl_onShiftEnterPressed();
+    void sl_collapseModelChanged();
 
 private:
     class ResultIterator {
     public:
         ResultIterator();
-        ResultIterator(const QMap<int, QList<U2Region> >& results);
+        ResultIterator(const QMap<int, QList<U2Region> >& results, MSAEditor* msaEditor);
 
         U2Region currentResult() const;
         int getGlobalPos() const;
         int getTotalCount() const;
-        int getRow() const;
+        int getMsaRow() const;
         void goBegin();
         void goEnd();
         void goNextResult();
         void goPrevResult();
+        void collapseModelChanged();
 
     private:
-        QMap<int, QList<U2Region> > results;
+        void initSortedResults();
+        //true - uncollapsed, false - it was visible
+        bool uncollapseGroupIfNotVisible();
+
+        //visible index, msa rowid, regions for current msa index
+        QMap<int, QList<U2Region> > searchResults;
+        QMap<int, QMap<int, QList<U2Region> > > sortedResults;
+        MSAEditor* msaEditor;
 
         int totalResultsCounter;
         int globalPos; //1-based position
 
-        QMap<int, QList<U2Region> >::const_iterator rowsIt;
+        QMap<int, QMap<int, QList<U2Region> > >::const_iterator sortedVisibleRowsIt;
+        QMap<int, QList<U2Region> >::const_iterator msaRowsIt;
         QList<U2Region>::const_iterator regionsIt;
     };
 
@@ -153,6 +163,8 @@ private:
     void updatePatternText(int previousAlgorithm);
 
     void validateCheckBoxSize(QCheckBox* checkBox, int requiredWidth);
+
+    void sortResultsByVisibleOrder();
 
     MSAEditor* msaEditor;
     bool isAmino;
