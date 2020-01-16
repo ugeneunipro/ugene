@@ -468,7 +468,7 @@ void FindPatternMsaWidget::sl_onRegionValueEdited() {
             GUIUtils::setWidgetWarning(editEnd, true);
             regionIsCorrect = false;
         }
-        if (value2 - value1 < 1) {
+        if (value2 - value1 < 0) {
             GUIUtils::setWidgetWarning(editEnd, true);
             regionIsCorrect = false;
         }
@@ -972,7 +972,7 @@ bool FindPatternMsaWidget::checkPatternRegion( const QString& pattern ){
 void FindPatternMsaWidget::sl_onSelectedRegionChanged(const MaEditorSelection& current, const MaEditorSelection& prev) {
     if(!msaEditor->getUI()->getSequenceArea()->getSelection().isEmpty()){
         QRect selection = msaEditor->getSelectionRect();
-        U2Region firstReg = U2Region(selection.topLeft().rx(), selection.topRight().rx() - selection.topLeft().rx());
+        U2Region firstReg = U2Region(selection.topLeft().rx(), selection.width());
         editStart->setText(QString::number(firstReg.startPos + 1));
         editEnd->setText(QString::number(firstReg.endPos()));
     } else {
