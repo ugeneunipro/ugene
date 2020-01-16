@@ -226,13 +226,10 @@ const QColor GUIUtils::OK_COLOR = QColor(255,255,255);
 
 void GUIUtils::setWidgetWarning(QWidget *widget, bool value) {
     QColor color = value ? WARNING_COLOR : OK_COLOR;
-    if (!(QString::fromLatin1(widget->metaObject()->className()) == "QTextEdit")) {
-        QPalette p = widget->palette();
-        p.setColor(QPalette::Active, QPalette::Base, color);
-        widget->setPalette(p);
-    } else {
-        widget->setStyleSheet("background-color: " + color.name() +";");
-    }
+    widget->setStyleSheet("background: rgb(" +
+        QString::number(color.red()) + "," +
+        QString::number(color.green()) + "," +
+        QString::number(color.blue()) + ");");
 }
 
 void GUIUtils::showMessage(QWidget *widgetToPaintOn, QPainter& painter, const QString& message) {

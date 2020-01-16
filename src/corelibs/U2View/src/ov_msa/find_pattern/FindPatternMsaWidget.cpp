@@ -327,9 +327,9 @@ void FindPatternMsaWidget::initAlgorithmLayout()
 
 void FindPatternMsaWidget::initRegionSelection()
 {
-    boxRegion->addItem(FindPatternMsaWidget::tr("Whole sequence"), RegionSelectionIndex_WholeSequence);
-    boxRegion->addItem(FindPatternMsaWidget::tr("Custom region"), RegionSelectionIndex_CustomRegion);
-    boxRegion->addItem(FindPatternMsaWidget::tr("Selected region"), RegionSelectionIndex_CurrentSelectedRegion);
+    boxRegion->addItem(FindPatternMsaWidget::tr("Whole alignment"), RegionSelectionIndex_WholeSequence);
+    boxRegion->addItem(FindPatternMsaWidget::tr("Custom columns region"), RegionSelectionIndex_CustomRegion);
+    boxRegion->addItem(FindPatternMsaWidget::tr("Selected columns region"), RegionSelectionIndex_CurrentSelectedRegion);
     setRegionToWholeSequence();
 
     editStart->setValidator(new QIntValidator(1, msaEditor->getAlignmentLen(), editStart));

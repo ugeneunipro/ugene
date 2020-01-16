@@ -23,6 +23,8 @@
 
 #include <U2Core/U2SafePoints.h>
 
+#include <U2gui/HelpButton.h>
+
 #include <U2View/AnnotatedDNAView.h>
 
 #include "FindPatternMsaWidget.h"
@@ -32,7 +34,7 @@ namespace U2 {
 
 const QString FindPatternMsaWidgetFactory::GROUP_ID = "OP_MSA_FIND_PATTERN";
 const QString FindPatternMsaWidgetFactory::GROUP_ICON_STR = ":core/images/find_dialog.png";
-const QString FindPatternMsaWidgetFactory::GROUP_DOC_PAGE = "666";
+const QString FindPatternMsaWidgetFactory::GROUP_DOC_PAGE = HelpButton::INVALID_VALUE;
 
 FindPatternMsaWidgetFactory::FindPatternMsaWidgetFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;
