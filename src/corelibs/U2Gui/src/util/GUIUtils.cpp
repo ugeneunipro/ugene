@@ -226,10 +226,7 @@ const QColor GUIUtils::OK_COLOR = QColor(255,255,255);
 
 void GUIUtils::setWidgetWarning(QWidget *widget, bool value) {
     QColor color = value ? WARNING_COLOR : OK_COLOR;
-    widget->setStyleSheet("background: rgb(" +
-        QString::number(color.red()) + "," +
-        QString::number(color.green()) + "," +
-        QString::number(color.blue()) + ");");
+    widget->setStyleSheet("background: " + color.name());
 }
 
 void GUIUtils::showMessage(QWidget *widgetToPaintOn, QPainter& painter, const QString& message) {
