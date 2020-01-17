@@ -50,6 +50,7 @@ void FindPatternMsaTask::createSearchTaskForCurrentSequence() {
     FindAlgorithmTaskSettings algoSettings;
     algoSettings.searchIsCircular = false;
     algoSettings.strand = FindAlgorithmStrand_Direct;
+    //TODO: UGENE-6675
     algoSettings.maxResult2Find = FindAlgorithmSettings::MAX_RESULT_TO_FIND_UNLIMITED;
     algoSettings.useAmbiguousBases = false;
     algoSettings.patternSettings = settings.findSettings.patternSettings;
@@ -75,7 +76,7 @@ QList<Task*> FindPatternMsaTask::onSubTaskFinished(Task* subTask) {
 
     if (subTask == searchInSingleSequenceTask) {
         getResultFromTask();
-        if (currentSequenceIndex < settings.msaObj->getNumRows() && totalResultsCounter <= settings.findSettings.maxResult2Find) {
+        if (currentSequenceIndex < settings.msaObj->getNumRows() && totalResultsCounter < settings.findSettings.maxResult2Find) {
             createSearchTaskForCurrentSequence();
             result.append(searchInSingleSequenceTask);
         }
