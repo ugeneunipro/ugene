@@ -23,7 +23,7 @@
 
 #include <U2Core/U2SafePoints.h>
 
-#include <U2gui/HelpButton.h>
+#include <U2Gui/HelpButton.h>
 
 #include <U2View/AnnotatedDNAView.h>
 
