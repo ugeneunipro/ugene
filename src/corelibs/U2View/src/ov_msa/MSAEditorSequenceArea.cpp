@@ -798,6 +798,7 @@ void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {
 
     updateSelection();
     ui->getScrollController()->updateVerticalScrollBar();
+    emit si_collapsingModeChanged();
 }
 
 void MSAEditorSequenceArea::sl_updateCollapsingMode() {

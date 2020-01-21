@@ -276,31 +276,24 @@ void FindPatternMsaWidget::ResultIterator::goPrevResult() {
     if (globalPos == 0) {
         goEnd();
     } else if (regionsIt == msaRowsIt->constBegin()) {
-        msaRowsIt--;
         if (msaRowsIt == sortedVisibleRowsIt->constBegin()) {
             sortedVisibleRowsIt--;
             msaRowsIt = sortedVisibleRowsIt->constEnd();
         }
-        regionsIt = msaRowsIt->constBegin();
+        msaRowsIt--;
+        regionsIt = msaRowsIt->constEnd() - 1;
+    } else {
+        regionsIt--;
     }
-    regionsIt--;
 }
 
 void FindPatternMsaWidget::ResultIterator::collapseModelChanged() {
     if (msaEditor == nullptr || regionsIt == nullptr) {
         return;
     }
-    //uncollapse group with current row
-    if (uncollapseGroupIfNotVisible()) {
-        return;
-    }
     QList<U2Region>::const_iterator rewindHere(regionsIt);
     initSortedResults();
-    //rewind to current result
     goBegin();
-    while (rewindHere != regionsIt) {
-        goNextResult();
-    }
 }
 
 void FindPatternMsaWidget::ResultIterator::initSortedResults() {
@@ -309,14 +302,6 @@ void FindPatternMsaWidget::ResultIterator::initSortedResults() {
     foreach(int key, searchResults.keys()) {
         sortedResults[model->getViewRowIndexByMaRowIndex(key)][key] = searchResults[key];
     }
-    foreach(int key, sortedResults.keys()) {
-        QMap<int, QList<U2Region> > m = sortedResults[key];
-        coreLog.error("VisibleRow == " + QString::number(key));
-        foreach(int key2, m.keys()) {
-            coreLog.error("__________MsaRow == " + QString::number(key2));
-        }        
-    }
-    coreLog.error("====================================");
 }
 
 bool FindPatternMsaWidget::ResultIterator::uncollapseGroupIfNotVisible() {
@@ -438,7 +423,7 @@ void FindPatternMsaWidget::initMaxResultLenContainer() {
     layoutRegExpLen->addWidget(boxMaxResultLen);
     layoutAlgorithmSettings->addWidget(useMaxResultLenContainer);
 
-    connect(msaEditor->getUI()->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_collapseModelChanged()));
+    connect(msaEditor->getUI()->getSequenceArea(), SIGNAL(si_collapsingModeChanged()), SLOT(sl_collapseModelChanged()));
 }
 
 
@@ -1176,6 +1161,7 @@ void FindPatternMsaWidget::sl_onShiftEnterPressed(){
 
 void FindPatternMsaWidget::sl_collapseModelChanged() {
     resultIterator.collapseModelChanged();
+    showCurrentResult();
 }
 
 bool FindPatternMsaWidget::isSearchPatternsDifferent(const QList<NamePattern> &newPatterns) const {

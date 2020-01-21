@@ -204,6 +204,7 @@ signals:
     void si_startMaChanging();
     void si_stopMaChanging(bool msaUpdated);
     void si_copyFormattedChanging(bool enabled);
+    void si_collapsingModeChanged();
 
 protected:
     void resizeEvent(QResizeEvent *event);
