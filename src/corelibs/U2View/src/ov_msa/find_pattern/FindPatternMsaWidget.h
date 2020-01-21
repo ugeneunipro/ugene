@@ -89,8 +89,6 @@ private:
 
     private:
         void initSortedResults();
-        //true - uncollapsed, false - it was visible
-        bool uncollapseGroupIfNotVisible();
 
         //visible index, msa rowid, regions for current msa index
         QMap<int, QList<U2Region> > searchResults;
@@ -163,8 +161,6 @@ private:
     void updatePatternText(int previousAlgorithm);
 
     void validateCheckBoxSize(QCheckBox* checkBox, int requiredWidth);
-
-    void sortResultsByVisibleOrder();
 
     MSAEditor* msaEditor;
     bool isAmino;

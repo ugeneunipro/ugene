@@ -304,16 +304,6 @@ void FindPatternMsaWidget::ResultIterator::initSortedResults() {
     }
 }
 
-bool FindPatternMsaWidget::ResultIterator::uncollapseGroupIfNotVisible() {
-    MaCollapseModel* model = msaEditor->getUI()->getCollapseModel();
-    int viewRowIndex = model->getViewRowIndexByMaRowIndex(getMsaRow(), true);
-    if (viewRowIndex == -1) {
-        model->toggle(model->getViewRowIndexByMaRowIndex(getMsaRow(), false), false);
-        return true;
-    }
-    return false;
-}
-
 void FindPatternMsaWidget::initLayout() {
     lblErrorMessage->setStyleSheet("font: bold;");
     lblErrorMessage->setText("");
@@ -443,7 +433,6 @@ void FindPatternMsaWidget::connectSlots()
     connect(prevPushButton, SIGNAL(clicked()), SLOT(sl_prevButtonClicked()));
     connect(nextPushButton, SIGNAL(clicked()), SLOT(sl_nextButtonClicked()));
     connect(spinMatch, SIGNAL(valueChanged(int)), SLOT(sl_activateNewSearch()));
-    //connect(msaEditor->getUI()->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_activateNewSearch()));
 }
 
 void FindPatternMsaWidget::sl_onAlgorithmChanged(int index)
@@ -971,7 +960,6 @@ void FindPatternMsaWidget::sl_findPatternTaskStateChanged() {
             prevPushButton->setDisabled(true);
         } else {
             resultIterator = ResultIterator(findPatternResults, msaEditor);
-            //qSort(findPatternResults.begin(), findPatternResults.end(), compareByRegionStartPos);
             showCurrentResultAndStopProgress(resultIterator.getGlobalPos(), resultIterator.getTotalCount());
             nextPushButton->setEnabled(true);
             prevPushButton->setEnabled(true);
@@ -1078,13 +1066,6 @@ void FindPatternMsaWidget::validateCheckBoxSize(QCheckBox* checkBox, int require
         }
     }
     checkBox->setText(text);
-}
-
-void FindPatternMsaWidget::sortResultsByVisibleOrder() {
-    MaCollapseModel* model = msaEditor->getUI()->getCollapseModel();
-//     foreach() {
-//         model->getViewRowIndexByMaRowIndex();
-//     }
 }
 
 void FindPatternMsaWidget::sl_toggleExtendedAlphabet() {
