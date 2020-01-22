@@ -143,7 +143,11 @@ U2Region MsaRowUtils::getUngappedRegion(const U2MsaRowGapModel& gaps, const U2Re
             shiftStartPos = selection.startPos - gap.offset;
             decreaseLength += gap.offset + gap.gap - selection.startPos;
         } else if (gap.offset < selection.endPos() && gap.offset >= selection.startPos) {
-            decreaseLength += gap.gap;
+            if (gap.endPos() >= selection.endPos()) {
+                decreaseLength += selection.endPos() - gap.offset;
+            } else {
+                decreaseLength += gap.gap;
+            }
         } else if (gap.offset <= selection.startPos && gap.offset + gap.gap >= selection.endPos()) {
             return U2Region(0, 0);
         } else {
