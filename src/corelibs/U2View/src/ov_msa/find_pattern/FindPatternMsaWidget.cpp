@@ -291,7 +291,6 @@ void FindPatternMsaWidget::ResultIterator::collapseModelChanged() {
     if (msaEditor == nullptr || regionsIt == nullptr) {
         return;
     }
-    QList<U2Region>::const_iterator rewindHere(regionsIt);
     initSortedResults();
     goBegin();
 }

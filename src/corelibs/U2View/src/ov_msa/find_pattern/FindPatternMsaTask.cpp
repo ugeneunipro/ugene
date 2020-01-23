@@ -55,6 +55,7 @@ void FindPatternMsaTask::createSearchTaskForCurrentSequence() {
     algoSettings.maxRegExpResultLength = settings.findSettings.maxRegExpResultLength;
     algoSettings.patternSettings = settings.findSettings.patternSettings;
     algoSettings.sequenceAlphabet = settings.msaObj->getAlphabet();
+    algoSettings.searchIsCircular = false;
     QByteArray seq = settings.msaObj->getRow(currentSequenceIndex)->getUngappedSequence().constSequence();
     FindAlgorithmTaskSettings currentSettings = algoSettings;
     currentSettings.sequence = seq;
