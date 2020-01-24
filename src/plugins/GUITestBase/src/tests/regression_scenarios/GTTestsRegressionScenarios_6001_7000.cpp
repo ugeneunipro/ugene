@@ -3890,7 +3890,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_7) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6636) {
-    // 1. Open "test/general/_common_data/sanger/COI_and_short.aln".
+    // 1. Open "_common_data/clustal/COI_and_short.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI_and_short.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
