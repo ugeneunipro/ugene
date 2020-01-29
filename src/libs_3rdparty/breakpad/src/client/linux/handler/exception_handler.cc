@@ -109,7 +109,6 @@ namespace {
   // A wrapper for the tgkill syscall: send a signal to a specific thread.
   int tgkill(pid_t tgid, pid_t tid, int sig) {
     return syscall(__NR_tgkill, tgid, tid, sig);
-    return 0;
   }
 }
 
