@@ -33,10 +33,8 @@ namespace U2 {
 #define EXPECTED_RESULTS_SIZE "resultsSize"
 #define EXPECTED_REGIONS_IN_RESULTS "expectedRegionsInResults"
 
-GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
+void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
-
-    forceUseUgeneAligner = false;
 
     inputObjectName = el.attribute(IN_OBJECT_NAME_ATTR);
     if (inputObjectName.isEmpty()) {
@@ -50,7 +48,7 @@ GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
         return;
     }
 
-    foreach(QString & pattern, patterns) {
+    foreach(const QString & pattern, patterns) {
         settings.patterns.append(QPair<QString, QString>("", pattern));
     }
 
@@ -115,7 +113,7 @@ GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
 
     QString expected = el.attribute(EXPECTED_REGIONS_IN_RESULTS);
     if (!expected.isEmpty()) {
-        QStringList expectedList = expected.split(QRegExp("\\,"));    //may be QRegExp("\\,")
+        QStringList expectedList = expected.split(QRegExp("\\,"));
         foreach (QString region, expectedList) {
             QStringList bounds = region.split(QRegExp("\\.."));
             if (bounds.size() != 2) {
@@ -135,6 +133,55 @@ GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
 }
 
 void GTest_FindPatternMsa::prepare() {
+    doc = getContext<Document>(this, inputObjectName);
+    if (doc == NULL) {
+        stateInfo.setError(QString("context not found %1").arg(inputObjectName));
+        return;
+    }
+
+    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    if (list.size() == 0) {
+        stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
+        return;
+    }
+
+    GObject *obj = list.first();
+    if (obj == NULL) {
+        stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
+        return;
+    }
+    assert(obj != NULL);
+    msaObj = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
+    if (msaObj == NULL) {
+        stateInfo.setError(QString("error can't cast to multiple alignment from GObject"));
+        return;
+    }
+
+    settings.msaObj = msaObj;
+    findPatternTask = new FindPatternMsaTask(settings);
+}
+
+Task::ReportResult GTest_FindPatternMsa::report() {
+    if (!findPatternTask->hasError()) {
+        QMap<int, QList<U2::U2Region>> results = findPatternTask->getResults();
+        if (results.size() != expectedResultsSize) {
+            stateInfo.setError(QString("Expected and Actual lists of results are different: %1 %2").arg(expectedResultsSize).arg(findPatternTask->getResults().size()));
+            return ReportResult_Finished;
+        }
+        foreach (const U2Region &region, regionsToCheck) {
+            if (results.contains(region)) {
+                stateInfo.setError(QString("One of the expected regions: %1 not present in search results.").arg(region.toString()));
+                return ReportResult_Finished;
+            }
+        }
+    }
+    return ReportResult_Finished;
+}
+
+QList<XMLTestFactory *> FindPatternMsaTests::createTestFactories() {
+    QList<XMLTestFactory *> res;
+    res.append(GTest_FindPatternMsa::createFactory());
+    return res;
 }
 
 }

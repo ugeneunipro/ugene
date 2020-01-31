@@ -13,6 +13,7 @@ HEADERS += src/AnnotationTableObjectTest.h \
            src/EditAlignmentTests.h \
            src/EditSequenceTests.h \
            src/FindAlgorithmTests.h \
+		   src/FindPatternMsaTaskTest.h \
            src/FormatDetectionTests.h \
            src/GUrlTests.h \
            src/LoadRemoteDocumentTests.h \
@@ -41,6 +42,7 @@ SOURCES += src/AnnotationTableObjectTest.cpp \
            src/EditAlignmentTests.cpp \
            src/EditSequenceTests.cpp \
            src/FindAlgorithmTests.cpp \
+		   src/FindPatternMsaTaskTest.cpp \
            src/FormatDetectionTests.cpp \
            src/GUrlTests.cpp \
            src/LoadRemoteDocumentTests.cpp \

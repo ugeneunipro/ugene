@@ -51,7 +51,6 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/ExportHighlightedDialogController.h \
            src/ov_msa/ExportSequencesTask.h \
            src/ov_msa/find_pattern/FindPatternMsaTask.h \
-           src/ov_msa/find_pattern/FindPatternMsaTaskTest.h \
            src/ov_msa/find_pattern/FindPatternMsaWidget.h \
            src/ov_msa/find_pattern/FindPatternMsaWidgetFactory.h \
            src/ov_msa/find_pattern/FindPatternMsaWidgetSavableTab.h \
@@ -193,7 +192,6 @@ HEADERS += src/LicenseDialog.h \
            src/ov_sequence/annot_highlight/AnnotHighlightWidgetFactory.h \
            src/ov_sequence/codon_table/CodonTable.h \
            src/ov_sequence/find_pattern/FindPatternTask.h \
-           src/ov_sequence/find_pattern/FindPatternTaskTest.h \
            src/ov_sequence/find_pattern/FindPatternWidget.h \
            src/ov_sequence/find_pattern/FindPatternWidgetFactory.h \
            src/ov_sequence/find_pattern/FindPatternWidgetSavableTab.h \

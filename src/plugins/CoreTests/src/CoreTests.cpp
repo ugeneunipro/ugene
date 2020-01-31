@@ -40,6 +40,7 @@
 #include "EditAlignmentTests.h"
 #include "EditSequenceTests.h"
 #include "FindAlgorithmTests.h"
+#include "FindPatternMsaTaskTest.h"
 #include "FormatDetectionTests.h"
 #include "GUrlTests.h"
 #include "LoadRemoteDocumentTests.h"
@@ -163,6 +164,8 @@ void CoreTests::registerFactories() {
     registerFactory<UtilTestActions>(xmlTestFormat);
 
     registerFactory<RealignTests>(xmlTestFormat);
+
+    registerFactory<FindPatternMsaTests>(xmlTestFormat);
 }
 
 }//namespace

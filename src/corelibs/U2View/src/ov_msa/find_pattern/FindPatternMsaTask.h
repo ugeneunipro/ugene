@@ -24,7 +24,7 @@
 
 #include <U2Core/U2Region.h>
 
-#include "ov_sequence/find_pattern/FindPatternTask.h"
+#include <U2View/FindPatternTask.h>
 
 namespace U2 {
 

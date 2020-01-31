@@ -29,7 +29,7 @@
 
 #include <U2Test/XMLTestUtils.h>
 
-#include "FindPatternMsaTask.h"
+#include <U2View/FindPatternMsaTask.h>
 
 namespace U2 {
 
@@ -38,7 +38,7 @@ class MultipleSequenceAlignmentObject;
 class GTest_FindPatternMsa : public XmlTest {
     Q_OBJECT
 public:
-    SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_FindPatternMsa, "findPatternMsa");
+    SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_FindPatternMsa, "find-pattern-msa");
 
     void prepare();
     Task::ReportResult report();
