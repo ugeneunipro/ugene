@@ -24,6 +24,7 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
+
 #include <U2View/RealignSequencesInAlignmentTask.h>
 
 namespace U2 {

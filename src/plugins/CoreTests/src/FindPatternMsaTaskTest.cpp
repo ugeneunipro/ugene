@@ -21,14 +21,18 @@
 
 #include "FindPatternMsaTaskTest.h"
 
+#include <U2Core/DocumentModel.h>
+#include <U2Core/GObjectTypes.h>
+#include <U2Core/MultipleSequenceAlignmentObject.h>
+
 namespace U2 {
 
-#define IN_OBJECT_NAME_ATTR "in"
+#define IN_OBJECT_NAME "in"
 #define PATTERNS "patterns"
 #define REMOVE_OVERLAPS "removeOverlaps"
 #define MATCH_VALUE "matchValue"
 #define MAX_RESULTS_TO_FIND "maxResultsToFind"
-#define MAX_RESULT_REGEXP_LENGTH "maxResultRegExpLength";
+#define MAX_RESULT_REGEXP_LENGTH "maxResultRegExpLength"
 #define ALGORITHM "algorithm"
 #define EXPECTED_RESULTS_SIZE "resultsSize"
 #define EXPECTED_REGIONS_IN_RESULTS "expectedRegionsInResults"
@@ -36,9 +40,9 @@ namespace U2 {
 void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
-    inputObjectName = el.attribute(IN_OBJECT_NAME_ATTR);
+    inputObjectName = el.attribute(IN_OBJECT_NAME);
     if (inputObjectName.isEmpty()) {
-        failMissingValue(IN_OBJECT_NAME_ATTR);
+        failMissingValue(IN_OBJECT_NAME);
         return;
     }
 
@@ -62,7 +66,7 @@ void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
     tmp = el.attribute(MATCH_VALUE);
     if (!tmp.isEmpty()) {
         bool ok = false;
-        int value = tmp.toInt(ok);
+        int value = tmp.toInt(&ok);
         if (ok) {
             settings.matchValue = value;
         }
@@ -71,7 +75,7 @@ void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
     tmp = el.attribute(MAX_RESULTS_TO_FIND);
     if (!tmp.isEmpty()) {
         bool ok = false;
-        int value = tmp.toInt(ok);
+        int value = tmp.toInt(&ok);
         if (ok) {
             settings.findSettings.maxResult2Find = value;
         }
@@ -80,7 +84,7 @@ void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
     tmp = el.attribute(MAX_RESULT_REGEXP_LENGTH);
     if (!tmp.isEmpty()) {
         bool ok = false;
-        int value = tmp.toInt(ok);
+        int value = tmp.toInt(&ok);
         if (ok) {
             settings.findSettings.maxResult2Find = value;
         }
@@ -105,11 +109,17 @@ void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
     }
 
     tmp = el.attribute(EXPECTED_RESULTS_SIZE).toLower();
-    if (tmp.isEmpty()) {
-        failMissingValue(EXPECTED_RESULTS_SIZE);
-        return;
+    if (!tmp.isEmpty()) {
+        bool ok = false;
+        int value = tmp.toInt(&ok);
+        if (ok) {
+            expectedResultsSize = value;
+        } else {
+            wrongValue(ALGORITHM);
+        }
+    } else {
+        wrongValue(ALGORITHM);
     }
-    expectedResultsSize = tmp;
 
     QString expected = el.attribute(EXPECTED_REGIONS_IN_RESULTS);
     if (!expected.isEmpty()) {
@@ -168,12 +178,14 @@ Task::ReportResult GTest_FindPatternMsa::report() {
             stateInfo.setError(QString("Expected and Actual lists of results are different: %1 %2").arg(expectedResultsSize).arg(findPatternTask->getResults().size()));
             return ReportResult_Finished;
         }
-        foreach (const U2Region &region, regionsToCheck) {
+        //foreach (const U2Region &region, regionsToCheck) {
+            /*
             if (results.contains(region)) {
                 stateInfo.setError(QString("One of the expected regions: %1 not present in search results.").arg(region.toString()));
                 return ReportResult_Finished;
             }
-        }
+            */
+        //}
     }
     return ReportResult_Finished;
 }
