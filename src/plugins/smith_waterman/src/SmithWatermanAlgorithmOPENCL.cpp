@@ -114,7 +114,7 @@ int SmithWatermanAlgorithmOPENCL::calcOverlap(int queryLength) {
 //number of parts of the sequence which we divide
 int SmithWatermanAlgorithmOPENCL::calcPartsNumber(int searchLen, int overlapLength) {
     if(0 == MAX_BLOCKS_NUMBER) {
-        MAX_BLOCKS_NUMBER = AppContext::getOpenCLGpuRegistry()->getAnyEnabledGpu()->getMaxComputeUnits();
+        MAX_BLOCKS_NUMBER = AppContext::getOpenCLGpuRegistry()->getEnabledGpu()->getMaxComputeUnits();
     }
 
     int partsNumber = (searchLen + overlapLength - 1) / overlapLength;
@@ -177,7 +177,7 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix& sm, const QByteArray & 
     cl_int err = CL_SUCCESS;
 
     cl_uint clNumDevices = 1;
-    cl_device_id deviceId = (cl_device_id) AppContext::getOpenCLGpuRegistry()->getAnyEnabledGpu()->getId();
+    cl_device_id deviceId = (cl_device_id) AppContext::getOpenCLGpuRegistry()->getEnabledGpu()->getId();
 
     const OpenCLHelper* openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
     SAFE_POINT(NULL != openCLHelper, "OpenCL support plugin does not loaded", );

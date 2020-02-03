@@ -59,7 +59,7 @@ BinaryFindOpenCL::BinaryFindOpenCL(const NumberType *_haystack,
     buf_needlesArray = 0;
     buf_windowSizesArray = 0;
 
-    device = AppContext::getOpenCLGpuRegistry()->getAnyEnabledGpu();
+    device = AppContext::getOpenCLGpuRegistry()->getEnabledGpu();
     deviceId = (cl_device_id) device->getId();
     clContext = (cl_context) device->getContext();
 

@@ -364,7 +364,7 @@ void GenomeAlignerWorkerFactory::init() {
                                     <p>Set <b>\"0\"</b> to switch off this option.</p></body></html>"));
 
 #ifdef OPENCL_SUPPORT
-        openclEnabled = !AppContext::getOpenCLGpuRegistry()->getEnabledGpus().empty();
+        openclEnabled = AppContext::getOpenCLGpuRegistry()->getEnabledGpu() != nullptr;
 #endif
         if(openclEnabled) {
             Descriptor gpu(GPU_ATTR, GenomeAlignerWorker::tr("Use GPU-optimization"),

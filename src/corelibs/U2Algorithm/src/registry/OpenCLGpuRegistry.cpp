@@ -36,7 +36,6 @@ OpenCLGpuRegistry::OpenCLGpuRegistry() : openCLHelper(NULL){
 }
 
 OpenCLGpuRegistry::~OpenCLGpuRegistry() {
-    saveGpusSettings();
     qDeleteAll( gpus.values() );
 }
 
@@ -58,41 +57,40 @@ QList<OpenCLGpuModel *> OpenCLGpuRegistry::getRegisteredGpus() const {
     return gpus.values();
 }
 
-QList<OpenCLGpuModel *> OpenCLGpuRegistry::getEnabledGpus() const {
+OpenCLGpuModel* OpenCLGpuRegistry::getEnabledGpu() const {
     QList<OpenCLGpuModel*> registeredGpus = getRegisteredGpus();
 
-    QList<OpenCLGpuModel*> enabledGpus;
+    OpenCLGpuModel *enabledGpu = nullptr;
     foreach (OpenCLGpuModel* m, registeredGpus) {
         if (m && m->isEnabled()) {
-            enabledGpus.append(m);
+            enabledGpu = m;
+            break;
         }
     }
 
-    return enabledGpus;
+    return enabledGpu;
 }
 
-OpenCLGpuModel * OpenCLGpuRegistry::getAnyEnabledGpu() const {
-    QHash<OpenCLGpuId, OpenCLGpuModel*>::const_iterator it = std::find_if( gpus.begin(), gpus.end(), std::mem_fun(&OpenCLGpuModel::isEnabled) );
-    if( gpus.end() != it ) {
-        return *it;
-    }
-    return 0;
-}
+OpenCLGpuModel *OpenCLGpuRegistry::acquireEnabledGpuIfReady() {
+    OpenCLGpuModel *model = nullptr;
+    foreach(OpenCLGpuModel * gpuModel, gpus.values()) {
+        CHECK_CONTINUE(gpuModel->isEnabled());
+        CHECK_BREAK(gpuModel->isReady());
 
-OpenCLGpuModel * OpenCLGpuRegistry::acquireAnyReadyGpu() {
-    QHash<OpenCLGpuId, OpenCLGpuModel*>::iterator it = std::find_if( gpus.begin(), gpus.end(), std::mem_fun(&OpenCLGpuModel::isReady) );
-    if( gpus.end() != it ) {
-        (*it)->setAcquired(true);
-        return *it;
+        gpuModel->setAcquired(true);
+        model = gpuModel;
     }
-    return 0;
+
+    return model;
 }
 
 void OpenCLGpuRegistry::saveGpusSettings() const {
-    Settings * s = AppContext::getSettings();
-    foreach( OpenCLGpuModel * m, gpus ) {
-        QString key = OPENCL_GPU_REGISTRY_SETTINGS_GPU_SPECIFIC + QString::number(m->getId()) + OPENCL_GPU_SETTINGS_ENABLED;
-        s->setValue( key, QVariant::fromValue(m->isEnabled()) );
+    Settings* s = AppContext::getSettings();
+    foreach(OpenCLGpuModel *m, gpus) {
+        CHECK_CONTINUE(m->isEnabled());
+
+        s->setValue(OPENCL_GPU_REGISTRY_SETTINGS_GPU_ENABLED, QVariant(m->getName()));
+        break;
     }
 }
 

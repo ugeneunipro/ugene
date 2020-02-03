@@ -57,6 +57,8 @@ private:
     OpenCLHelper            openCLHelper;
 
     OpenCLSupportError      err;
+
+    const static char *RESOURCE_OPENCL_GPU_NAME;
 };
 
 }

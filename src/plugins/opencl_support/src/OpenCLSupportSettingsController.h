@@ -24,7 +24,7 @@
 
 #include <QVector>
 #include <QLabel>
-#include <QCheckBox>
+#include <QRadioButton>
 
 #include <U2Gui/AppSettingsGUI.h>
 
@@ -53,8 +53,12 @@ private:
 class OpenCLSupportSettingsPageState : public AppSettingsGUIPageState {
     Q_OBJECT
 public:
-    OpenCLSupportSettingsPageState( int num_gpus );
-    QVector<bool> enabledGpus;
+    OpenCLSupportSettingsPageState(const QString name);
+
+    QString getEnabledGpuName() const;
+
+private:
+    QString enabledGpuName;
 };
 
 class OpenCLSupportSettingsPageWidget : public AppSettingsGUIPageWidget {
@@ -68,7 +72,7 @@ public:
 
     QString onlyMsg;
 
-    QList<QCheckBox *> gpuEnableChecks;
+    QList<QRadioButton*> gpuRadioButtons;
 };
 
 } //namespace

@@ -77,7 +77,7 @@ void GTest_BinaryFindOpenCL::init(XMLTestFormat *tf, const QDomElement& el){
 }
 
 void GTest_BinaryFindOpenCL::prepare() {
-    if (AppContext::getOpenCLGpuRegistry()->getAnyEnabledGpu() == 0) {
+    if (nullptr == AppContext::getOpenCLGpuRegistry()->getEnabledGpu()) {
         stateInfo.setError(QString("No enabled gpu's found"));
     } else {
         BinaryFindOpenCL bf(numbers.constData(), numbers.size(), findNumbers.constData(), findNumbers.size(), windowSizes.constData());

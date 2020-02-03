@@ -228,8 +228,9 @@ void SWAlgorithmTask::prepare() {
     }
     else if(SW_opencl == algType) {
 #ifdef SW2_BUILD_WITH_OPENCL
-        openClGpu = AppContext::getOpenCLGpuRegistry()->acquireAnyReadyGpu();
-        assert(openClGpu);
+        openClGpu = AppContext::getOpenCLGpuRegistry()->acquireEnabledGpuIfReady();
+        SAFE_POINT(nullptr != openClGpu, "GPU isn't ready, abort.", );
+
         const SequenceWalkerConfig & config = t->getConfig();
         const quint64 needMemBytes = SmithWatermanAlgorithmOPENCL::estimateNeededGpuMemory(
             sWatermanConfig.pSm, sWatermanConfig.ptrn, sWatermanConfig.sqnc.left(config.chunkSize * config.nThreads));
@@ -819,8 +820,9 @@ void PairwiseAlignmentSmithWatermanTask::prepare() {
     }
     else if(SW_opencl == algType) {
 #ifdef SW2_BUILD_WITH_OPENCL
-        openClGpu = AppContext::getOpenCLGpuRegistry()->acquireAnyReadyGpu();
-        assert(openClGpu);
+        openClGpu = AppContext::getOpenCLGpuRegistry()->acquireEnabledGpuIfReady();
+        SAFE_POINT(nullptr != openClGpu, "GPU isn't ready, abort.", );
+
         const SequenceWalkerConfig & config = t->getConfig();
         const quint64 needMemBytes = SmithWatermanAlgorithmOPENCL::estimateNeededGpuMemory(
             settings->sMatrix, *ptrn, sqnc->left(config.chunkSize * config.nThreads));
