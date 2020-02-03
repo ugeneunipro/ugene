@@ -28,6 +28,7 @@
 namespace U2 {
 
 #define IN_OBJECT_NAME "in"
+#define SEARCH_REGION "searchRegion"
 #define PATTERNS "patterns"
 #define REMOVE_OVERLAPS "removeOverlaps"
 #define MATCH_VALUE "matchValue"
@@ -39,6 +40,10 @@ namespace U2 {
 
 void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
+
+    settings.findSettings.maxRegExpResultLength = 10000;
+    settings.matchValue = 100;
+    settings.findSettings.maxResult2Find = 100000;
 
     inputObjectName = el.attribute(IN_OBJECT_NAME);
     if (inputObjectName.isEmpty()) {
@@ -86,7 +91,7 @@ void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
         bool ok = false;
         int value = tmp.toInt(&ok);
         if (ok) {
-            settings.findSettings.maxResult2Find = value;
+            settings.findSettings.maxRegExpResultLength = value;
         }
     }
 
@@ -96,6 +101,22 @@ void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
         return;
     }
 
+    tmp = el.attribute(SEARCH_REGION);
+    QStringList bounds = tmp.split(QRegExp("\\.."));
+    if (bounds.size() != 2) {
+        stateInfo.setError(QString("wrong value for %1").arg(SEARCH_REGION));
+        return;
+    }
+    bool startOk, finishOk;
+    int start = bounds.first().toInt(&startOk), finish = bounds.last().toInt(&finishOk);
+    if (!startOk || !finishOk) {
+        stateInfo.setError(QString("wrong value for %1").arg(SEARCH_REGION));
+        return;
+    }
+    start--;
+    settings.findSettings.searchRegion = U2Region(start, finish - start);
+
+    tmp = el.attribute(ALGORITHM);
     if (tmp == "exact") {
         settings.findSettings.patternSettings = FindAlgorithmPatternSettings_Exact;
     } else if (tmp == "insdel") {
@@ -169,23 +190,33 @@ void GTest_FindPatternMsa::prepare() {
 
     settings.msaObj = msaObj;
     findPatternTask = new FindPatternMsaTask(settings);
+    addSubTask(findPatternTask);
 }
 
 Task::ReportResult GTest_FindPatternMsa::report() {
     if (!findPatternTask->hasError()) {
         QMap<int, QList<U2::U2Region>> results = findPatternTask->getResults();
-        if (results.size() != expectedResultsSize) {
+        int resultsCounter = 0;
+        foreach (int key, results.keys()) {
+            resultsCounter += results[key].size();
+        }
+        if (resultsCounter != expectedResultsSize) {
             stateInfo.setError(QString("Expected and Actual lists of results are different: %1 %2").arg(expectedResultsSize).arg(findPatternTask->getResults().size()));
             return ReportResult_Finished;
         }
-        //foreach (const U2Region &region, regionsToCheck) {
-            /*
-            if (results.contains(region)) {
-                stateInfo.setError(QString("One of the expected regions: %1 not present in search results.").arg(region.toString()));
-                return ReportResult_Finished;
+        foreach (int key, results.keys()) {
+            foreach(const U2Region &region, results[key]) {
+                if (regionsToCheck.contains(region)) {
+                    regionsToCheck.removeOne(region);
+                }
+                if (regionsToCheck.isEmpty()) {
+                    break;
+                }
             }
-            */
-        //}
+        }
+        if (!regionsToCheck.isEmpty()) {
+            stateInfo.setError("Not all listed regions present in result");
+        }
     }
     return ReportResult_Finished;
 }

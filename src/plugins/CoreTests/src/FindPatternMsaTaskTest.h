@@ -42,7 +42,7 @@ public:
 
     void prepare();
     Task::ReportResult report();
-    void cleanup();
+    //void cleanup();
 
 private:
     QString inputObjectName;

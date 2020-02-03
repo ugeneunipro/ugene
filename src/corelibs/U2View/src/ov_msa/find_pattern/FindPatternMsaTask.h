@@ -31,7 +31,7 @@ namespace U2 {
 class MultipleSequenceAlignmentObject;
 class FindPatternListTask;
 
-struct FindPatternMsaSettings {
+struct U2VIEW_EXPORT FindPatternMsaSettings {
     FindPatternMsaSettings();
 
     MultipleSequenceAlignmentObject* msaObj;
@@ -41,7 +41,7 @@ struct FindPatternMsaSettings {
     FindAlgorithmSettings findSettings;
 };
 
-class FindPatternMsaTask : public Task {
+class U2VIEW_EXPORT FindPatternMsaTask : public Task {
 public:
     FindPatternMsaTask(const FindPatternMsaSettings& settings);
 

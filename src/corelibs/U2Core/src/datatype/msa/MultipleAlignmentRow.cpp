@@ -91,6 +91,9 @@ U2Region MultipleAlignmentRowData::getCoreRegion() const {
 }
 
 U2Region MultipleAlignmentRowData::getUngappedRegion(const U2Region& selection) const {
+    if (selection == U2Region(0,0)) {
+        return selection;
+    }
     U2Region noTrailingGapsRegion(selection);
 
     if (noTrailingGapsRegion.endPos() > getRowLengthWithoutTrailing()) {
