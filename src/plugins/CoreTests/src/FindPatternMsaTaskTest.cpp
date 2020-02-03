@@ -42,7 +42,6 @@ void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
     settings.findSettings.maxRegExpResultLength = 10000;
-    settings.matchValue = 100;
     settings.findSettings.maxResult2Find = 100000;
 
     inputObjectName = el.attribute(IN_OBJECT_NAME);
