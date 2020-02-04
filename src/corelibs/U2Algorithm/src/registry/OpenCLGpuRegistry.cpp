@@ -53,6 +53,18 @@ OpenCLGpuModel * OpenCLGpuRegistry::getGpuById( OpenCLGpuId id ) const {
     return gpus.value( id, 0 );
 }
 
+OpenCLGpuModel *OpenCLGpuRegistry::getGpuByName(const QString &name) const {
+    OpenCLGpuModel *gpu = nullptr;
+    foreach (OpenCLGpuModel *m, gpus.values()) {
+        CHECK_CONTINUE(m->getName() == name);
+
+        gpu = m;
+        break;
+    }
+
+    return gpu;
+}
+
 QList<OpenCLGpuModel *> OpenCLGpuRegistry::getRegisteredGpus() const {
     return gpus.values();
 }
@@ -69,6 +81,13 @@ OpenCLGpuModel* OpenCLGpuRegistry::getEnabledGpu() const {
     }
 
     return enabledGpu;
+}
+
+QString OpenCLGpuRegistry::getEnabledGpuName() const {
+    OpenCLGpuModel * enabledGpu = getEnabledGpu();
+    CHECK(nullptr != enabledGpu, QString());
+
+    return enabledGpu->getName();
 }
 
 OpenCLGpuModel *OpenCLGpuRegistry::acquireEnabledGpuIfReady() {

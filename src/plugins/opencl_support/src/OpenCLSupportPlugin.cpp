@@ -293,19 +293,18 @@ void OpenCLSupportPlugin::unregisterAvailableGpus() {
 }
 
 void OpenCLSupportPlugin::loadGpusSettings() {
-    Settings* s = AppContext::getSettings();
-    QString enabledGpu = s->getValue(OPENCL_GPU_REGISTRY_SETTINGS_GPU_ENABLED, QVariant()).toString();
-    CHECK_EXT(!enabledGpu.isEmpty(), gpus.first()->setEnabled(true), );
-    
-    bool enabledGpuWasFound = false;
-    foreach(OpenCLGpuModel* m, gpus) {
-        CHECK_CONTINUE(m->getName() == enabledGpu);
+    CHECK(!gpus.isEmpty(), );
 
-        m->setEnabled(true);
-        enabledGpuWasFound = true;
-        break;
-    }
-    if (!enabledGpuWasFound) {
+    Settings* s = AppContext::getSettings();
+    QString enabledGpuName = s->getValue(OPENCL_GPU_REGISTRY_SETTINGS_GPU_ENABLED, QVariant()).toString();
+    CHECK_EXT(!enabledGpuName.isEmpty(), gpus.first()->setEnabled(true), );
+
+    OpenCLGpuModel *enabledGpu = AppContext::getOpenCLGpuRegistry()->getGpuByName(enabledGpuName);
+    if (nullptr != enabledGpu) {
+        SAFE_POINT(gpus.contains(enabledGpu), "The GPU is absent", );
+
+        enabledGpu->setEnabled(true);
+    } else {
         gpus.first()->setEnabled(true);
     }
 }

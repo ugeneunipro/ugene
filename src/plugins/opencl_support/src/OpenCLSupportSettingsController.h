@@ -53,9 +53,9 @@ private:
 class OpenCLSupportSettingsPageState : public AppSettingsGUIPageState {
     Q_OBJECT
 public:
-    OpenCLSupportSettingsPageState(const QString name);
+    OpenCLSupportSettingsPageState(const QString& name);
 
-    QString getEnabledGpuName() const;
+    const QString &getEnabledGpuName() const;
 
 private:
     QString enabledGpuName;
@@ -67,12 +67,12 @@ public:
     OpenCLSupportSettingsPageWidget( const QString & _msg, OpenCLSupportSettingsPageController * ctrl );
 
     virtual void setState( AppSettingsGUIPageState * state );
-
     virtual AppSettingsGUIPageState* getState( QString & err ) const;
 
+private:
     QString onlyMsg;
+    QMap<QString, QRadioButton*> gpuRadioButtons;
 
-    QList<QRadioButton*> gpuRadioButtons;
 };
 
 } //namespace

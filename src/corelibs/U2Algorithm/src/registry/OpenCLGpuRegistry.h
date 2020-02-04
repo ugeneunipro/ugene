@@ -104,8 +104,10 @@ public:
     void registerOpenCLGpu( OpenCLGpuModel * gpu );
     void unregisterOpenCLGpu( OpenCLGpuModel * gpu);
     OpenCLGpuModel * getGpuById( OpenCLGpuId id ) const;
+    OpenCLGpuModel *getGpuByName(const QString &name) const;
     QList<OpenCLGpuModel*> getRegisteredGpus() const;
     OpenCLGpuModel* getEnabledGpu() const;
+    QString getEnabledGpuName() const;
 
     OpenCLGpuModel * acquireEnabledGpuIfReady();
 

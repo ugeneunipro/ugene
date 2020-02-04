@@ -21,6 +21,7 @@
 
 #include "OpenCLSupportSettingsController.h"
 
+#include <QButtonGroup>
 #include <QLabel>
 #include <QLayout>
 
@@ -36,16 +37,7 @@ OpenCLSupportSettingsPageController::OpenCLSupportSettingsPageController(const Q
 }
 
 AppSettingsGUIPageState *OpenCLSupportSettingsPageController::getSavedState() {
-    QList<OpenCLGpuModel *> registeredGpus = AppContext::getOpenCLGpuRegistry()->getRegisteredGpus();
-    QString nameOfEnabledGpu;
-    foreach (OpenCLGpuModel *gpu, registeredGpus) {
-        CHECK_CONTINUE(gpu->isEnabled());
-
-        nameOfEnabledGpu = gpu->getName();
-        break;
-    }
-
-    return new OpenCLSupportSettingsPageState(nameOfEnabledGpu);
+    return new OpenCLSupportSettingsPageState(AppContext::getOpenCLGpuRegistry()->getEnabledGpuName());
 }
 
 void OpenCLSupportSettingsPageController::saveState(AppSettingsGUIPageState *_s) {
@@ -82,11 +74,11 @@ AppSettingsGUIPageWidget *OpenCLSupportSettingsPageController::createWidget(AppS
 
 const QString OpenCLSupportSettingsPageController::helpPageId = QString("24742346");
 
-OpenCLSupportSettingsPageState::OpenCLSupportSettingsPageState(const QString name)
+OpenCLSupportSettingsPageState::OpenCLSupportSettingsPageState(const QString& name)
     : enabledGpuName(name) {
 }
 
-QString OpenCLSupportSettingsPageState::getEnabledGpuName() const {
+const QString &OpenCLSupportSettingsPageState::getEnabledGpuName() const {
     return enabledGpuName;
 }
 
@@ -99,7 +91,7 @@ const static char *noGpusDiscoveredText = "No OpenCL-enabled GPU detected.";
 OpenCLSupportSettingsPageWidget::OpenCLSupportSettingsPageWidget(const QString &_msg, OpenCLSupportSettingsPageController * /*ctrl*/)
     : onlyMsg(_msg) {
 
-        if (!onlyMsg.isEmpty()) {
+    if (!onlyMsg.isEmpty()) {
         //just display the centered warning message
         QHBoxLayout *hLayout = new QHBoxLayout(this);
         QLabel *msgLabel = new QLabel(onlyMsg, this);
@@ -119,6 +111,7 @@ OpenCLSupportSettingsPageWidget::OpenCLSupportSettingsPageWidget(const QString &
 
         vLayout->addWidget(gpusDiscoveredLabel);
 
+        QButtonGroup* buttonGroup = new QButtonGroup(this);
         foreach (OpenCLGpuModel *m, gpus) {
             vLayout->setAlignment(Qt::AlignLeft | Qt::AlignTop);
             QHBoxLayout *hLayout = new QHBoxLayout(this);
@@ -126,11 +119,13 @@ OpenCLSupportSettingsPageWidget::OpenCLSupportSettingsPageWidget(const QString &
             QString gpuText = m->getName() + " " + QString::number(m->getGlobalMemorySizeBytes() / (1024 * 1024)) + " Mb";
             QRadioButton *rb = new QRadioButton(gpuText, this);
             rb->setChecked(m->isEnabled());
-
-            gpuRadioButtons.push_back(rb);
+            gpuRadioButtons.insert(m->getName(), rb);
+            buttonGroup->addButton(rb);
             hLayout->addWidget(rb);
             vLayout->addLayout(hLayout);
         }
+        buttonGroup->setExclusive(true);
+
         setLayout(vLayout);
     }
 }
@@ -140,34 +135,34 @@ void OpenCLSupportSettingsPageWidget::setState(AppSettingsGUIPageState *_state) 
 
     OpenCLSupportSettingsPageState *state = qobject_cast<OpenCLSupportSettingsPageState *>(_state);
     SAFE_POINT(nullptr != state, "OpenCLSupportSettingsPageState isn't found", );
-    
+
     const QString enbledGpuName = state->getEnabledGpuName();
     bool checkedRadioButtonwasFound = false;
-    foreach(QRadioButton * rb, gpuRadioButtons) {
+    foreach (QRadioButton *rb, gpuRadioButtons.values()) {
         if (rb->text().startsWith(enbledGpuName)) {
             rb->setChecked(true);
             checkedRadioButtonwasFound = true;
-        } else {
-            rb->setChecked(false);
+            break;
         }
     }
     if (!checkedRadioButtonwasFound) {
-        gpuRadioButtons.first()->setChecked(true);
+        gpuRadioButtons.values().first()->setChecked(true);
     }
 }
 
 AppSettingsGUIPageState *OpenCLSupportSettingsPageWidget::getState(QString & /*err*/) const {
-    CHECK(!gpuRadioButtons.isEmpty(), nullptr);
+    CHECK(!gpuRadioButtons.isEmpty(), new OpenCLSupportSettingsPageState(QString()));
 
     QString enabledGpuName;
-    foreach (QRadioButton *rb, gpuRadioButtons) {
+    foreach (QRadioButton *rb, gpuRadioButtons.values()) {
         CHECK_CONTINUE(rb->isChecked());
 
-        enabledGpuName = rb->text();
+        enabledGpuName = gpuRadioButtons.key(rb);
         break;
     }
 
     return new OpenCLSupportSettingsPageState(enabledGpuName);
 }
+
 
 }    // namespace U2
