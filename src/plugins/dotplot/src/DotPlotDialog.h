@@ -78,6 +78,8 @@ protected slots:
     void sl_objectAddedOrRemoved();
     void sl_loadedStateChanged();
 
+    void sl_sequenceSelectorIndexChanged();
+
 private:
     void reconnectAllProjectDocuments();
     void updateSequenceSelectors();

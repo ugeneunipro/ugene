@@ -137,8 +137,8 @@ void RFAlgorithmBase::addToResults(const QVector<RFResult>& results) {
 }
 
 void RFAlgorithmBase::prepare() {
-    if (WINDOW_SIZE >= qMin(SIZE_X, SIZE_Y)) {
-        stateInfo.setError(tr("Repeat length is too large: %1, sequence size: %2").arg(WINDOW_SIZE).arg(qMin(SIZE_X, SIZE_Y)) + 1);
+    if (WINDOW_SIZE > qMin(SIZE_X, SIZE_Y)) {
+        stateInfo.setError(tr("Repeat length is too large: %1, sequence size: %2").arg(WINDOW_SIZE).arg(qMin(SIZE_X, SIZE_Y)));
         return;
     }
     if (reflective && reportReflected) {
