@@ -74,6 +74,9 @@ void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
         int value = tmp.toInt(&ok);
         if (ok) {
             settings.matchValue = value;
+        } else {
+            wrongValue(MATCH_VALUE);
+            return;
         }
     }
 
@@ -83,6 +86,9 @@ void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
         int value = tmp.toInt(&ok);
         if (ok) {
             settings.findSettings.maxResult2Find = value;
+        } else {
+            wrongValue(MAX_RESULTS_TO_FIND);
+            return;
         }
     }
     
@@ -92,6 +98,9 @@ void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
         int value = tmp.toInt(&ok);
         if (ok) {
             settings.findSettings.maxRegExpResultLength = value;
+        } else {
+            wrongValue(MAX_RESULT_REGEXP_LENGTH);
+            return;
         }
     }
 
@@ -117,6 +126,11 @@ void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
     settings.findSettings.searchRegion = U2Region(start, finish - start);
 
     tmp = el.attribute(ALGORITHM);
+    if (tmp.isEmpty()) {
+        failMissingValue(ALGORITHM);
+        return;
+    }
+
     if (tmp == "exact") {
         settings.findSettings.patternSettings = FindAlgorithmPatternSettings_Exact;
     } else if (tmp == "insdel") {
@@ -127,6 +141,7 @@ void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
         settings.findSettings.patternSettings = FindAlgorithmPatternSettings_Subst;
     } else {
         wrongValue(ALGORITHM);
+        return;
     }
 
     tmp = el.attribute(EXPECTED_RESULTS_SIZE).toLower();
@@ -136,10 +151,11 @@ void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
         if (ok) {
             expectedResultsSize = value;
         } else {
-            wrongValue(ALGORITHM);
+            wrongValue(EXPECTED_RESULTS_SIZE);
         }
     } else {
-        wrongValue(ALGORITHM);
+        failMissingValue(EXPECTED_RESULTS_SIZE);
+        return;
     }
 
     QString expected = el.attribute(EXPECTED_REGIONS_IN_RESULTS);

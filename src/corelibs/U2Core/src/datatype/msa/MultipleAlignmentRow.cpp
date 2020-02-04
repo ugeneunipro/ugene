@@ -90,11 +90,11 @@ U2Region MultipleAlignmentRowData::getCoreRegion() const {
     return U2Region(getCoreStart(), getCoreLength());
 }
 
-U2Region MultipleAlignmentRowData::getUngappedRegion(const U2Region& selection) const {
-    if (selection == U2Region(0,0)) {
-        return selection;
+U2Region MultipleAlignmentRowData::getUngappedRegion(const U2Region& gappedRegion) const {
+    if (gappedRegion == U2Region(0, 0)) {
+        return gappedRegion;
     }
-    U2Region noTrailingGapsRegion(selection);
+    U2Region noTrailingGapsRegion(gappedRegion);
 
     if (noTrailingGapsRegion.endPos() > getRowLengthWithoutTrailing()) {
         noTrailingGapsRegion.length = getRowLengthWithoutTrailing() - noTrailingGapsRegion.startPos;

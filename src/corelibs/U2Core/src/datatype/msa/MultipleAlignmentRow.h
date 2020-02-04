@@ -99,7 +99,7 @@ public:
     bool isTrailingOrLeadingGap(qint64 position) const;
 
     U2Region getCoreRegion() const;
-    U2Region getUngappedRegion(const U2Region& selection) const;
+    U2Region getUngappedRegion(const U2Region& gappedRegion) const;
     DNASequence getUngappedSequence() const;
 
     virtual ~MultipleAlignmentRowData();
