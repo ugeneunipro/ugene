@@ -29,7 +29,7 @@ namespace U2 {
 FindPatternMsaSettings::FindPatternMsaSettings()
     : msaObj(nullptr),
     removeOverlaps(false),
-    matchValue(0) {
+    matchValue(100) {
 
 }
 
