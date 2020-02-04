@@ -129,7 +129,6 @@ void GTest_FindPatternMsa::init(XMLTestFormat *tf, const QDomElement &el) {
         failMissingValue(ALGORITHM);
         return;
     }
-
     if (tmp == "exact") {
         settings.findSettings.patternSettings = FindAlgorithmPatternSettings_Exact;
     } else if (tmp == "insdel") {
