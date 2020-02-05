@@ -48,7 +48,7 @@ void OpenCLSupportSettingsPageController::saveState(AppSettingsGUIPageState *_s)
     const QString enabledGpu = s->getEnabledGpuName();
     bool enabledGpuWasFound = false;
     foreach (OpenCLGpuModel *gpu, registeredGpus) {
-        if (enabledGpu.startsWith(gpu->getName())) {
+        if (enabledGpu == gpu->getName()) {
             gpu->setEnabled(true);
             enabledGpuWasFound = true;
         } else {
@@ -137,15 +137,9 @@ void OpenCLSupportSettingsPageWidget::setState(AppSettingsGUIPageState *_state) 
     SAFE_POINT(nullptr != state, "OpenCLSupportSettingsPageState isn't found", );
 
     const QString enbledGpuName = state->getEnabledGpuName();
-    bool checkedRadioButtonwasFound = false;
-    foreach (QRadioButton *rb, gpuRadioButtons.values()) {
-        if (rb->text().startsWith(enbledGpuName)) {
-            rb->setChecked(true);
-            checkedRadioButtonwasFound = true;
-            break;
-        }
-    }
-    if (!checkedRadioButtonwasFound) {
+    if (gpuRadioButtons.keys().contains(enbledGpuName)) {
+        gpuRadioButtons.value(enbledGpuName)->setChecked(true);
+    } else {
         gpuRadioButtons.values().first()->setChecked(true);
     }
 }
