@@ -166,6 +166,8 @@ void DotPlotDialog::sl_sequenceSelectorIndexChanged() {
     int yIdx = yAxisCombo->currentIndex();
     
     QList<GObject *> sequenceObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
+    SAFE_POINT(xIdx >= 0 && xIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(xIdx), );
+    SAFE_POINT(yIdx >= 0 && yIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(yIdx), );
     
     U2SequenceObject *objX = qobject_cast<U2SequenceObject *>(sequenceObjects[xIdx]);
     U2SequenceObject *objY = qobject_cast<U2SequenceObject *>(sequenceObjects[yIdx]);
