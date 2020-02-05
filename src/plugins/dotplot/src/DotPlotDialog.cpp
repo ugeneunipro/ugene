@@ -180,6 +180,11 @@ void DotPlotDialog::sl_sequenceSelectorIndexChanged() {
         invertedColorButton->setDisabled(false);
         invertedDefaultColorButton->setDisabled(false);
     }
+    int defaultWindow = qMin(objX->getSequenceLength(), objY->getSequenceLength());
+    defaultWindow = defaultWindow < 100 ? defaultWindow : 100;
+    if (minLenBox->value() > defaultWindow) {
+        minLenBox->setValue(defaultWindow);
+    }
 }
 
 void DotPlotDialog::accept() {
@@ -319,8 +324,6 @@ void DotPlotDialog::sl_loadSequenceButton(){
             tasks->addSubTask( AppContext::getProjectLoader()->createNewProjectTask() );
         }
 
-        //DotPlotLoadDocumentsTask *t = new DotPlotLoadDocumentsTask(lod.url, -1, NULL, -1, false);
-        //tasks->addSubTask(t);
         QVariantMap hints;
         hints[ProjectLoaderHint_LoadWithoutView] = false;
         hints[ProjectLoaderHint_LoadUnloadedDocument] = true;
