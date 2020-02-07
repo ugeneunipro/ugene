@@ -32,8 +32,6 @@ class FormatDBSupport : public ExternalTool {
 public:
     FormatDBSupport(const QString& id, const QString& name, const QString& path = "");
 
-    static const QString ET_FORMATDB;
-    static const QString ET_FORMATDB_ID;
     static const QString ET_MAKEBLASTDB;
     static const QString ET_MAKEBLASTDB_ID;
     static const QString ET_GPU_MAKEBLASTDB;

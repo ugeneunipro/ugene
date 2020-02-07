@@ -38,9 +38,9 @@ public:
 private slots:
     void sl_addToProjectViewMenu(QMenu&);
 
-    void sl_runFormatDBOnSelection();
+    void sl_runMakeBlastDbOnSelection();
+
 private:
-    ExternalToolSupportAction* formatDBOnSelectionAction;
     ExternalToolSupportAction* makeBLASTDBOnSelectionAction;
 };
 }//namespace

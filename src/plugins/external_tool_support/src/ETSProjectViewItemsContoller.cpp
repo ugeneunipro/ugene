@@ -49,11 +49,8 @@
 namespace U2 {
 
 ETSProjectViewItemsContoller::ETSProjectViewItemsContoller(QObject* p) : QObject(p) {
-    formatDBOnSelectionAction = new ExternalToolSupportAction(tr("FormatDB..."), this, QStringList(FormatDBSupport::ET_FORMATDB_ID));
     makeBLASTDBOnSelectionAction = new ExternalToolSupportAction(tr("BLAST+ make DB..."), this, QStringList(FormatDBSupport::ET_MAKEBLASTDB_ID));
-    formatDBOnSelectionAction->setObjectName(FormatDBSupport::ET_FORMATDB_ID);
-    connect(formatDBOnSelectionAction,SIGNAL(triggered()), SLOT(sl_runFormatDBOnSelection()));
-    connect(makeBLASTDBOnSelectionAction,SIGNAL(triggered()), SLOT(sl_runFormatDBOnSelection()));
+    connect(makeBLASTDBOnSelectionAction,SIGNAL(triggered()), SLOT(sl_runMakeBlastDbOnSelection()));
 
     ProjectView* pv = AppContext::getProjectView();
     assert(pv!=NULL);
@@ -79,26 +76,19 @@ void ETSProjectViewItemsContoller::sl_addToProjectViewMenu(QMenu& m) {
         QMenu* subMenu = m.addMenu(tr("BLAST"));
         subMenu->menuAction()->setObjectName(ACTION_BLAST_SUBMENU);
         subMenu->setIcon(QIcon(":external_tool_support/images/ncbi.png"));
-        subMenu->addAction(formatDBOnSelectionAction);
         subMenu->addAction(makeBLASTDBOnSelectionAction);
     }
 }
 
-void ETSProjectViewItemsContoller::sl_runFormatDBOnSelection(){
+void ETSProjectViewItemsContoller::sl_runMakeBlastDbOnSelection(){
     ExternalToolSupportAction* s = qobject_cast<ExternalToolSupportAction*>(sender());
     assert(s != NULL);
-    assert((s->getToolIds().contains(FormatDBSupport::ET_FORMATDB_ID))||(s->getToolIds().contains(FormatDBSupport::ET_MAKEBLASTDB_ID)));
     //Check that formatDB and temporary folder path defined
     if (AppContext::getExternalToolRegistry()->getById(s->getToolIds().at(0))->getPath().isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         QString toolName = AppContext::getExternalToolRegistry()->getById(s->getToolIds().at(0))->getName();
-        if(s->getToolIds().at(0) == FormatDBSupport::ET_FORMATDB_ID){
-            msgBox->setWindowTitle("BLAST " + toolName);
-            msgBox->setText(tr("Path for BLAST %1 tool not selected.").arg(toolName));
-        }else{
-            msgBox->setWindowTitle("BLAST+ "+s->getToolIds().at(0));
-            msgBox->setText(tr("Path for BLAST+ %1 tool not selected.").arg(toolName));
-        }
+        msgBox->setWindowTitle("BLAST+ "+s->getToolIds().at(0));
+        msgBox->setText(tr("Path for BLAST+ %1 tool not selected.").arg(toolName));
         msgBox->setInformativeText(tr("Do you want to select it now?"));
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);

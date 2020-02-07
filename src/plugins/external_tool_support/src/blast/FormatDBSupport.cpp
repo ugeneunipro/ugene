@@ -44,8 +44,6 @@
 
 namespace U2 {
 
-const QString FormatDBSupport::ET_FORMATDB = "FormatDB";
-const QString FormatDBSupport::ET_FORMATDB_ID = "USUPP_FORMAT_DB";
 const QString FormatDBSupport::ET_MAKEBLASTDB = "MakeBLASTDB";
 const QString FormatDBSupport::ET_MAKEBLASTDB_ID = "USUPP_MAKE_BLAST_DB";
 const QString FormatDBSupport::ET_GPU_MAKEBLASTDB = "GPU-MakeBLASTDB";
@@ -59,24 +57,8 @@ FormatDBSupport::FormatDBSupport(const QString& id, const QString& name, const Q
         grayIcon = QIcon(":external_tool_support/images/ncbi_gray.png");
         warnIcon = QIcon(":external_tool_support/images/ncbi_warn.png");
     }
-    assert((id == ET_FORMATDB_ID)||(id == ET_MAKEBLASTDB_ID)||(id == ET_GPU_MAKEBLASTDB_ID));
-    if(id == ET_FORMATDB_ID){
-#ifdef Q_OS_WIN
-    executableFileName="formatdb.exe";
-#else
-    #if defined(Q_OS_UNIX)
-    executableFileName="formatdb";
-    #endif
-#endif
-    validationArguments<<"--help";
-    validMessage="formatdb";
-    description=tr("The <i>formatdb</i> formats protein or"
-        " nucleotide source databases before these databases"
-        " can be searched by <i>blastall</i>.");
-
-    versionRegExp=QRegExp("formatdb (\\d+\\.\\d+\\.\\d+)");
-    toolKitName="BLAST";
-    } else if(id == ET_MAKEBLASTDB_ID) {
+    assert((id == ET_MAKEBLASTDB_ID)||(id == ET_GPU_MAKEBLASTDB_ID));
+    if(id == ET_MAKEBLASTDB_ID) {
 #ifdef Q_OS_WIN
     executableFileName="makeblastdb.exe";
 #else
@@ -113,13 +95,8 @@ void FormatDBSupport::sl_runWithExtFileSpecify(){
     //Check that formatDB or makeblastdb and tempory folder path defined
     if (path.isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        if(id == ET_FORMATDB_ID) {
-            msgBox->setWindowTitle("BLAST "+name);
-            msgBox->setText(tr("Path for BLAST %1 tool not selected.").arg(name));
-        } else {
-            msgBox->setWindowTitle("BLAST+ "+name);
-            msgBox->setText(tr("Path for BLAST+ %1 tool not selected.").arg(name));
-        }
+        msgBox->setWindowTitle("BLAST+ "+name);
+        msgBox->setText(tr("Path for BLAST+ %1 tool not selected.").arg(name));
         msgBox->setInformativeText(tr("Do you want to select it now?"));
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);

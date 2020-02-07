@@ -25,20 +25,20 @@ workflow "Gene-by-gene approach for characterization of genomes"{
         type:genebygene-report-id;
         name:"Gene-by-gene approach report";
     }
-    blast {
-        type:blast;
-        name:"Local BLAST Search";
+    blast-plus {
+        type:blast-plus;
+        name:"Local BLAST+ Search";
     }
-
 
     .actor-bindings {
-        read-sequence.out-sequence->blast.in-sequence
-        blast.out-annotations->genebygene-report-id.in-data
+        read-sequence.out-sequence->blast-plus.in-sequence
+        blast-plus.out-annotations->genebygene-report-id.in-data
     }
 
-    blast.annotations->genebygene-report-id.in-data.gene-ann
+    blast-plus.annotations->genebygene-report-id.in-data.gene-ann
+    read-sequence.annotations->genebygene-report-id.in-data.gene-ann
     read-sequence.sequence->genebygene-report-id.in-data.gene-seq
-    read-sequence.sequence->blast.in-sequence.sequence
+    read-sequence.sequence->blast-plus.in-sequence.sequence
 
     .meta {
         parameter-aliases {
@@ -62,71 +62,31 @@ workflow "Gene-by-gene approach for characterization of genomes"{
                 alias:out;
                 description:"Output report file";
             }
-            blast.blast-output {
-                alias:blast-out;
-                description:"Location of BLAST output file";
-            }
-            blast.blast-type {
-                alias:search-type;
-                description:"Type of BLAST searches (using 'blastn' by default)";
-            }
-            blast.db-name {
-                alias:db-name;
-                description:"Name of BLAST DB";
-            }
-            blast.db-path {
-                alias:blast-path;
-                description:"Path to BLAST DB";
-            }
-            blast.e-val {
-                alias:expected-value;
-                description:"This setting specifies the statistical significance threshold for reporting matches against database sequences (using '10.0' by default)";
-            }
-            blast.gapped-aln {
-                alias:gapped-aln;
-                description:"Perform gapped alignment (using 'use' by default)";
-            }
-            blast.result-name {
-                alias:blast-name;
-                description:"Name for annotations (using 'blast_result' by default)";
-            }
-            blast.temp-dir {
-                alias:tmpdir;
-                description:"Directory for temporary files (using UGENE temporary directory by default)";
-            }
-            blast.tool-path {
-                alias:toolpath;
-                description:"External tool path (using the path specified in UGENE by default)";
-            }
-            blast.type-output {
-                alias:out-type;
-                description:"Type of BLAST output file (using 'XML (-m 7)' by default)";
-            }
         }
         visual {
-            blast {
-                pos:"-645 -555";
+            blast-plus {
+                pos:"-570 -540";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 in-sequence.angle:180;
                 out-annotations.angle:360;
             }
             genebygene-report-id {
-                pos:"-330 -555";
+                pos:"-315 -540";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 in-data.angle:180;
             }
             read-sequence {
-                pos:"-825 -555";
+                pos:"-810 -540";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 out-sequence.angle:360;
             }
-            blast.out-annotations->genebygene-report-id.in-data {
+            blast-plus.out-annotations->genebygene-report-id.in-data {
                 text-pos:"-33 -24";
             }
-            read-sequence.out-sequence->blast.in-sequence {
+            read-sequence.out-sequence->blast-plus.in-sequence {
                 text-pos:"-27.5 -24";
             }
         }

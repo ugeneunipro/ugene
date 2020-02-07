@@ -168,33 +168,19 @@ void FormatDBSupportTask::createFormatDbTask() {
     SAFE_POINT_EXT(formatDBTask == NULL, setError(tr("Trying to initialize Format DB task second time")), );
 
     QStringList arguments;
-    assert((toolId == FormatDBSupport::ET_FORMATDB_ID)||(toolId == FormatDBSupport::ET_MAKEBLASTDB_ID));
-    if(toolId == FormatDBSupport::ET_FORMATDB_ID) {
-        for (int i = 0; i < inputFastaFiles.length(); i++){
-            if (inputFastaFiles[i].contains(" ")) {
-                stateInfo.setError(tr("Input files paths contain space characters."));
-                return;
-            }
-        }
-        arguments <<"-i"<< inputFastaFiles.join(" ");
-        arguments <<"-l"<< settings.outputPath + "formatDB.log";
-        arguments <<"-n"<< settings.outputPath;
-        arguments <<"-p"<< (settings.isInputAmino ? "T" : "F");
-        externalToolLog = settings.outputPath + "formatDB.log";
-    } else if (toolId == FormatDBSupport::ET_MAKEBLASTDB_ID) {
-        for (int i = 0; i < inputFastaFiles.length(); i++){
-            inputFastaFiles[i] = "\"" + inputFastaFiles[i] + "\"";
-        }
-        arguments << "-in" << inputFastaFiles.join(" ");
-        arguments <<"-logfile"<< settings.outputPath + "MakeBLASTDB.log";
-        externalToolLog = settings.outputPath + "MakeBLASTDB.log";
-        if(settings.outputPath.contains(" ")){
-            stateInfo.setError(tr("Output database path contain space characters."));
-            return;
-        }
-        arguments <<"-out"<< settings.outputPath;
-        arguments <<"-dbtype"<< (settings.isInputAmino ? "prot" : "nucl");
+    assert(toolId == FormatDBSupport::ET_MAKEBLASTDB_ID);
+    for (int i = 0; i < inputFastaFiles.length(); i++){
+        inputFastaFiles[i] = "\"" + inputFastaFiles[i] + "\"";
     }
+    arguments << "-in" << inputFastaFiles.join(" ");
+    arguments <<"-logfile"<< settings.outputPath + "MakeBLASTDB.log";
+    externalToolLog = settings.outputPath + "MakeBLASTDB.log";
+    if(settings.outputPath.contains(" ")){
+        stateInfo.setError(tr("Output database path contain space characters."));
+        return;
+    }
+    arguments <<"-out"<< settings.outputPath;
+    arguments <<"-dbtype"<< (settings.isInputAmino ? "prot" : "nucl");
 
     formatDBTask = new ExternalToolRunTask(toolId, arguments, new ExternalToolLogParser());
     formatDBTask->setSubtaskProgressWeight(95);

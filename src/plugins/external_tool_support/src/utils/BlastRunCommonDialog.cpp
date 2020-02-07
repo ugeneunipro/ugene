@@ -37,7 +37,6 @@
 #include <U2Gui/CreateAnnotationWidgetController.h>
 #include <U2Gui/HelpButton.h>
 
-#include "blast/BlastAllWorker.h"
 #include "blast_plus/BlastPlusWorker.h"
 
 #include "BlastRunCommonDialog.h"
@@ -60,11 +59,6 @@ BlastRunCommonDialog::BlastRunCommonDialog(QWidget *parent, BlastType blastType,
 
     QString hitsToolTip;
     switch (blastType) {
-        case BlastAll:
-            hitsLabel->setText(BlastAllWorkerFactory::getHitsName() + ":");
-            hitsToolTip = BlastAllWorkerFactory::getHitsDescription();
-            numberOfHitsSpinBox->setValue(100); // recommended -K value
-            break;
         case BlastPlus:
             hitsLabel->setText(BlastPlusWorkerFactory::getHitsName() + ":");
             hitsToolTip = BlastPlusWorkerFactory::getHitsDescription();

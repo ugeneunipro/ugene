@@ -115,34 +115,18 @@ void FormatDBSupportRunDialog::sl_onBrowseDatabasePath(){
 void FormatDBSupportRunDialog::sl_lineEditChanged(){
     bool hasSpacesInInputFiles=false;
     bool hasSpacesInOutputDBPath=false;
-    if(name == FormatDBSupport::ET_FORMATDB){
-        if(inputFilesRadioButton->isChecked()){
-            bool warning = inputFilesLineEdit->text().contains(' ');
-            QString tooltip = warning ? tr("Input files paths contain space characters.") : "";
-            GUIUtils::setWidgetWarning(inputFilesLineEdit, warning);
-            inputFilesLineEdit->setToolTip(tooltip);
-            hasSpacesInInputFiles |= warning;
-        }else{
-            bool warning = inputDirLineEdit->text().contains(' ');
-            QString tooltip = warning ? tr("Input files paths contain space characters.") : "";
-            GUIUtils::setWidgetWarning(inputDirLineEdit, warning);
-            inputDirLineEdit->setToolTip(tooltip);
-            hasSpacesInInputFiles |= warning;
-        }
-    }
-    if(name == FormatDBSupport::ET_MAKEBLASTDB) {
-        bool pathWarning = databasePathLineEdit->text().contains(' ');
-        QString pathTooltip = pathWarning ? tr("Output database path contain space characters.") : "";
-        GUIUtils::setWidgetWarning(databasePathLineEdit, pathWarning);
-        databasePathLineEdit->setToolTip(pathTooltip);
+    bool pathWarning = databasePathLineEdit->text().contains(' ');
+    QString pathTooltip = pathWarning ? tr("Output database path contain space characters.") : "";
+    GUIUtils::setWidgetWarning(databasePathLineEdit, pathWarning);
+    databasePathLineEdit->setToolTip(pathTooltip);
 
-        bool nameWarning = baseNamelineEdit->text().contains(' ');
-        QString nameTooltip = nameWarning ? tr("Output database path contain space characters.") : "";
-        GUIUtils::setWidgetWarning(baseNamelineEdit, nameWarning);
-        baseNamelineEdit->setToolTip(nameTooltip);
+    bool nameWarning = baseNamelineEdit->text().contains(' ');
+    QString nameTooltip = nameWarning ? tr("Output database path contain space characters.") : "";
+    GUIUtils::setWidgetWarning(baseNamelineEdit, nameWarning);
+    baseNamelineEdit->setToolTip(nameTooltip);
 
-        hasSpacesInOutputDBPath = pathWarning || nameWarning;
-    }
+    hasSpacesInOutputDBPath = pathWarning || nameWarning;
+
     bool isFilledInputFilesOrDirLineEdit =
             (!inputFilesLineEdit->text().isEmpty() && inputFilesRadioButton->isChecked()) ||
             (!inputDirLineEdit->text().isEmpty() && inputDirRadioButton->isChecked());

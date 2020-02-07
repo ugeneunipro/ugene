@@ -63,8 +63,6 @@
 #include "bedtools/BedtoolsSupport.h"
 #include "bigWigTools/BedGraphToBigWigWorker.h"
 #include "bigWigTools/BigWigSupport.h"
-#include "blast/BlastAllSupport.h"
-#include "blast/BlastAllWorker.h"
 #include "blast/FormatDBSupport.h"
 #include "blast_plus/AlignToReferenceBlastWorker.h"
 #include "blast_plus/BlastDBCmdSupport.h"
@@ -315,18 +313,11 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, tCoffeeAction);
     }
 
-    //FormatDB
-    FormatDBSupport* formatDBTool = new FormatDBSupport(FormatDBSupport::ET_FORMATDB_ID, FormatDBSupport::ET_FORMATDB);
-    etRegistry->registerEntry(formatDBTool);
-
     //MakeBLASTDB from BLAST+
     FormatDBSupport* makeBLASTDBTool = new FormatDBSupport(FormatDBSupport::ET_MAKEBLASTDB_ID, FormatDBSupport::ET_MAKEBLASTDB);
     etRegistry->registerEntry(makeBLASTDBTool);
 
     //BlastAll
-    BlastAllSupport* blastallTool = new BlastAllSupport(BlastAllSupport::ET_BLASTALL_ID, BlastAllSupport::ET_BLASTALL);
-    etRegistry->registerEntry(blastallTool);
-
     BlastPlusSupport* blastNPlusTool = new BlastPlusSupport(BlastPlusSupport::ET_BLASTN_ID, BlastPlusSupport::ET_BLASTN);
     etRegistry->registerEntry(blastNPlusTool);
     BlastPlusSupport* blastPPlusTool = new BlastPlusSupport(BlastPlusSupport::ET_BLASTP_ID, BlastPlusSupport::ET_BLASTP);
@@ -500,24 +491,12 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
         etRegistry->setToolkitDescription("Cistrome", tr("<i>Cistrome</i> is a UGENE version of Cistrome pipeline which also includes some tools useful for ChIP-seq analysis"
                 "This pipeline is aimed to provide the following analysis steps: peak calling and annotating, motif search and gene ontology."));
 
-        ExternalToolSupportAction* formatDBAction= new ExternalToolSupportAction(tr("BLAST make database..."), this, QStringList(FormatDBSupport::ET_FORMATDB_ID));
-        formatDBAction->setObjectName(ToolsMenu::BLAST_DB);
-        connect(formatDBAction, SIGNAL(triggered()), formatDBTool, SLOT(sl_runWithExtFileSpecify()));
-
         ExternalToolSupportAction* makeBLASTDBAction= new ExternalToolSupportAction(tr("BLAST+ make database..."), this, QStringList(FormatDBSupport::ET_MAKEBLASTDB_ID));
         makeBLASTDBAction->setObjectName(ToolsMenu::BLAST_DBP);
         connect(makeBLASTDBAction, SIGNAL(triggered()), makeBLASTDBTool, SLOT(sl_runWithExtFileSpecify()));
 
-        BlastAllSupportContext *blastAllViewContext = new BlastAllSupportContext(this);
-        blastAllViewContext->setParent(this);
-        blastAllViewContext->init();
-
-        ExternalToolSupportAction* blastallAction= new ExternalToolSupportAction(tr("BLAST search..."), this, QStringList(BlastAllSupport::ET_BLASTALL_ID));
-        blastallAction->setObjectName(ToolsMenu::BLAST_SEARCH);
-        connect(blastallAction, SIGNAL(triggered()), blastallTool, SLOT(sl_runWithExtFileSpecify()));
-
         ExternalToolSupportAction* alignToRefBlastAction = new ExternalToolSupportAction(tr("Map reads to reference..."),
-                                                                                         this, QStringList() << FormatDBSupport::ET_FORMATDB_ID << BlastAllSupport::ET_BLASTALL_ID);
+                                                                                         this, QStringList() << FormatDBSupport::ET_MAKEBLASTDB_ID << BlastPlusSupport::ET_BLASTN_ID);
         alignToRefBlastAction->setObjectName(ToolsMenu::SANGER_ALIGN);
         connect(alignToRefBlastAction, SIGNAL(triggered(bool)), blastNPlusTool, SLOT(sl_runAlign()));
 
@@ -535,9 +514,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
         connect(blastPlusCmdAction, SIGNAL(triggered()), blastDbCmdSupport, SLOT(sl_runWithExtFileSpecify()));
 
         //Add to menu NCBI Toolkit
-        ToolsMenu::addAction(ToolsMenu::BLAST_MENU, formatDBAction);
         ToolsMenu::addAction(ToolsMenu::BLAST_MENU, makeBLASTDBAction);
-        ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastallAction);
         ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastPlusAction);
         ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastPlusCmdAction);
 
@@ -704,7 +681,6 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::MAFFTWorkerFactory::init();
 
     LocalWorkflow::AlignToReferenceBlastWorkerFactory::init();
-    LocalWorkflow::BlastAllWorkerFactory::init();
     LocalWorkflow::BlastPlusWorkerFactory::init();
 
     LocalWorkflow::TCoffeeWorkerFactory::init();
