@@ -56,7 +56,7 @@
 #include "RPSBlastSupportTask.h"
 #include "TBlastNPlusSupportTask.h"
 #include "TBlastXPlusSupportTask.h"
-#include "blast/FormatDBSupport.h"
+#include "blast_plus/FormatDBSupport.h"
 #include "utils/ExternalToolSupportAction.h"
 #include "utils/ExternalToolUtils.h"
 

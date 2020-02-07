@@ -34,8 +34,8 @@
 #include <U2Lang/DbiDataStorage.h>
 
 #include "FormatDBSubTask.h"
-#include "blast/FormatDBSupport.h"
-#include "blast/FormatDBSupportTask.h"
+#include "blast_plus/FormatDBSupport.h"
+#include "blast_plus/FormatDBSupportTask.h"
 
 namespace U2 {
 namespace Workflow {

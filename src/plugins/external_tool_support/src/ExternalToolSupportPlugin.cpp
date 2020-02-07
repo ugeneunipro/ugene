@@ -63,7 +63,7 @@
 #include "bedtools/BedtoolsSupport.h"
 #include "bigWigTools/BedGraphToBigWigWorker.h"
 #include "bigWigTools/BigWigSupport.h"
-#include "blast/FormatDBSupport.h"
+#include "blast_plus/FormatDBSupport.h"
 #include "blast_plus/AlignToReferenceBlastWorker.h"
 #include "blast_plus/BlastDBCmdSupport.h"
 #include "blast_plus/BlastPlusSupport.h"

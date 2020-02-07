@@ -17,10 +17,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/bigWigTools/BigWigSupport.h \
            src/bigWigTools/BedGraphToBigWigTask.h \
            src/bigWigTools/BedGraphToBigWigWorker.h \
-           src/blast/FormatDBSupport.h \
-           src/blast/FormatDBSupportRunDialog.h \
-           src/blast/FormatDBSupportTask.h \
-           src/blast/PrepareInputFastaFilesTask.h \
            src/blast_plus/AlignToReferenceBlastDialog.h \
            src/blast_plus/AlignToReferenceBlastWorker.h \
            src/blast_plus/BlastDBCmdDialog.h \
@@ -33,6 +29,10 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/blast_plus/BlastPlusWorker.h \
            src/blast_plus/BlastPPlusSupportTask.h \
            src/blast_plus/BlastXPlusSupportTask.h \
+           src/blast_plus/FormatDBSupport.h \
+           src/blast_plus/FormatDBSupportRunDialog.h \
+           src/blast_plus/FormatDBSupportTask.h \
+           src/blast_plus/PrepareInputFastaFilesTask.h \
            src/blast_plus/RPSBlastSupportTask.h \
            src/blast_plus/TBlastNPlusSupportTask.h \
            src/blast_plus/TBlastXPlusSupportTask.h \
@@ -228,9 +228,9 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/vcfutils/VcfutilsSupport.h
 
 FORMS += src/ETSSettingsWidget.ui \
-         src/blast/FormatDBSupportRunDialog.ui \
          src/blast_plus/AlignToReferenceBlastDialog.ui \
          src/blast_plus/BlastDBCmdDialog.ui \
+         src/blast_plus/FormatDBSupportRunDialog.ui \
          src/bowtie/BowtieBuildSettings.ui \
          src/bowtie/BowtieSettings.ui \
          src/bowtie2/Bowtie2Settings.ui \
@@ -277,10 +277,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/bigWigTools/BigWigSupport.cpp \
            src/bigWigTools/BedGraphToBigWigTask.cpp \
            src/bigWigTools/BedGraphToBigWigWorker.cpp \
-           src/blast/FormatDBSupport.cpp \
-           src/blast/FormatDBSupportRunDialog.cpp \
-           src/blast/FormatDBSupportTask.cpp \
-           src/blast/PrepareInputFastaFilesTask.cpp \
            src/blast_plus/AlignToReferenceBlastDialog.cpp \
            src/blast_plus/AlignToReferenceBlastWorker.cpp \
            src/blast_plus/BlastDBCmdDialog.cpp \
@@ -293,6 +289,10 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/blast_plus/BlastPlusWorker.cpp \
            src/blast_plus/BlastPPlusSupportTask.cpp \
            src/blast_plus/BlastXPlusSupportTask.cpp \
+           src/blast_plus/FormatDBSupport.cpp \
+           src/blast_plus/FormatDBSupportRunDialog.cpp \
+           src/blast_plus/FormatDBSupportTask.cpp \
+           src/blast_plus/PrepareInputFastaFilesTask.cpp \
            src/blast_plus/RPSBlastSupportTask.cpp \
            src/blast_plus/TBlastNPlusSupportTask.cpp \
            src/blast_plus/TBlastXPlusSupportTask.cpp \

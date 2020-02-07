@@ -42,9 +42,9 @@
 #include "ETSProjectViewItemsContoller.h"
 #include "ExternalToolSupportSettings.h"
 #include "ExternalToolSupportSettingsController.h"
-#include "blast/FormatDBSupport.h"
-#include "blast/FormatDBSupportRunDialog.h"
-#include "blast/FormatDBSupportTask.h"
+#include "blast_plus/FormatDBSupport.h"
+#include "blast_plus/FormatDBSupportRunDialog.h"
+#include "blast_plus/FormatDBSupportTask.h"
 
 namespace U2 {
 

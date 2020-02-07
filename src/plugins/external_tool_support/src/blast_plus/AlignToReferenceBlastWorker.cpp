@@ -47,7 +47,7 @@
 #include "align_worker_subtasks/ComposeResultSubTask.h"
 #include "align_worker_subtasks/FormatDBSubTask.h"
 #include "align_worker_subtasks/PrepareReferenceSequenceTask.h"
-#include "blast/FormatDBSupport.h"
+#include "FormatDBSupport.h"
 #include "blast_plus/BlastPlusSupport.h"
 
 namespace U2 {
