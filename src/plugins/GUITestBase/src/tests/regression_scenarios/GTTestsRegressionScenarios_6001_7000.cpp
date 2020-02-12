@@ -4036,6 +4036,23 @@ GUI_TEST_CLASS_DEFINITION(test_6659) {
     CHECK_SET_ERR(numSelectedSequences == 13, "There is no selection in MSA, but expected");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6689) {
+    //UTEST-42
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsMsaEditor::clickSequence(os, 0);
+
+    QRect rowNameRect = GTUtilsMsaEditor::getSequenceNameRect(os, 0);
+    QRect destinationRowNameRect = GTUtilsMsaEditor::getSequenceNameRect(os, 16);
+    GTMouseDriver::dragAndDrop(rowNameRect.center(), destinationRowNameRect.center());
+    
+    QAbstractButton *undo = GTAction::button(os, "msa_action_undo");
+    CHECK_SET_ERR(undo->isEnabled(), "Undo button should be enabled");
+    GTWidget::click(os, undo);
+    CHECK_SET_ERR(!undo->isEnabled(), "Undo button should be disabled");
+}
+
 } // namespace GUITest_regression_scenarios
 
 } // namespace U2
