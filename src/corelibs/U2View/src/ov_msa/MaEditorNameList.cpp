@@ -52,10 +52,11 @@ namespace U2 {
 #define CHILDREN_OFFSET 8
 
 MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
-        : labels(NULL),
-          ui(_ui),
-          nhBar(_nhBar),
-          editor(_ui->getEditor()) {
+    : labels(NULL),
+      ui(_ui),
+      nhBar(_nhBar),
+      editor(_ui->getEditor()),
+      changeTracker(nullptr) {
     setObjectName("msa_editor_name_list");
     setFocusPolicy(Qt::WheelFocus);
     cachedView = new QPixmap();
@@ -84,6 +85,7 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
         connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)),
             SLOT(sl_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)));
         connect(editor->getMaObject(), SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
+        changeTracker = new MsaEditorUserModStepController(editor->getMaObject()->getEntityRef());
     }
 
     connect(this,   SIGNAL(si_startMaChanging()),
@@ -352,6 +354,8 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
         return;
     }
 
+    U2OpStatus2Log os;
+    changeTracker->startTracking(os);
     emit si_startMaChanging();
     mousePressPoint = e->pos();
     MaCollapseModel* collapseModel = ui->getCollapseModel();
