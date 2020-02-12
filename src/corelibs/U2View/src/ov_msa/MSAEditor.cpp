@@ -330,9 +330,6 @@ void MSAEditor::sl_hideTreeOP() {
     GroupHeaderImageWidget* header = opWidget->findHeaderWidgetByGroupId("OP_MSA_TREES_WIDGET");
     QWidget* groupWidget = opWidget->findOptionsWidgetByGroupId("OP_MSA_TREES_WIDGET");
     bool openAddTreeGroup = (NULL != groupWidget);
-    if(openAddTreeGroup) {
-        //header->changeState();
-    }
 
     header->hide();
 

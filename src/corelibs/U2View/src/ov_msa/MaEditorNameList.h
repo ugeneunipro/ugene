@@ -30,6 +30,7 @@
 #include <U2Core/U2Region.h>
 
 #include "MaCollapseModel.h"
+#include "MsaEditorUserModStepController.h"
 #include "PhyTrees/MSAEditorTreeViewer.h"
 
 namespace U2 {
@@ -162,6 +163,8 @@ protected:
     QAction*            copyCurrentSequenceAction;
     QAction*            removeSequenceAction;
     QPixmap*            cachedView;
+
+    MsaEditorUserModStepController *changeTracker;
 
     static const int CROSS_SIZE = 9;
     static const int CHILDREN_OFFSET = 8;
