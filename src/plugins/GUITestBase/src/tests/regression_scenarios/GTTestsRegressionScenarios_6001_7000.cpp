@@ -4106,6 +4106,7 @@ GUI_TEST_CLASS_DEFINITION(test_6692) {
                   "2 Mecopoda_elongata_Ishigaki_J is not collapsed");
 
 }
+
 GUI_TEST_CLASS_DEFINITION(test_6692_1) {
 
     // 1. Open "_common_data/sanger/alignment.ugenedb".
@@ -4129,6 +4130,7 @@ GUI_TEST_CLASS_DEFINITION(test_6692_1) {
     CHECK_SET_ERR(GTUtilsMcaEditorSequenceArea::isChromatogramShown(os, QString("SZYD_Cas9_CR51")),
                    "Required sequence is collapsed");
 }
+
 GUI_TEST_CLASS_DEFINITION(test_6697) {
 
     // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
@@ -4152,6 +4154,23 @@ GUI_TEST_CLASS_DEFINITION(test_6697) {
     // 5. Expected state: the new first column is selected.
     GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0,0), QPoint(0,9), "G\nG\nG\nG\nG\nG\nG\nG\n-\nG");
 
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6689) {
+    //UTEST-42
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsMsaEditor::clickSequence(os, 0);
+
+    QRect rowNameRect = GTUtilsMsaEditor::getSequenceNameRect(os, 0);
+    QRect destinationRowNameRect = GTUtilsMsaEditor::getSequenceNameRect(os, 16);
+    GTMouseDriver::dragAndDrop(rowNameRect.center(), destinationRowNameRect.center());
+    
+    QAbstractButton *undo = GTAction::button(os, "msa_action_undo");
+    CHECK_SET_ERR(undo->isEnabled(), "Undo button should be enabled");
+    GTWidget::click(os, undo);
+    CHECK_SET_ERR(!undo->isEnabled(), "Undo button should be disabled");
 }
 
 } // namespace GUITest_regression_scenarios
