@@ -118,6 +118,7 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
 
 MaEditorNameList::~MaEditorNameList() {
     delete cachedView;
+    delete changeTracker;
 }
 
 QSize MaEditorNameList::getCanvasSize(const QList<int> &seqIdx) const {
@@ -517,6 +518,7 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
     rubberBand->hide();
     dragging = false;
     emit si_stopMaChanging(false);
+    changeTracker->finishTracking();
     scrollController->stopSmoothScrolling();
 
     QWidget::mouseReleaseEvent(e);
