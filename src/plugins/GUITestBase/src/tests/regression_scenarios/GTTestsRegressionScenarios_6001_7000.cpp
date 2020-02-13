@@ -3983,6 +3983,27 @@ GUI_TEST_CLASS_DEFINITION(test_6636) {
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6649) {
+    //UTEST-43
+    GTFileDialog::openFile(os, testDir + "_common_data/cmdline/pcr/pET-24.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
+    GTUtilsPcr::setPrimer(os, U2Strand::Direct, "GCTCTCCCTTATGCGACTCC");
+    GTUtilsPcr::setPrimer(os, U2Strand::Complementary, "GCGTCCCATTCGCCAATCC");
+
+    GTWidget::click(os, GTWidget::findWidget(os, "findProductButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(1 == GTUtilsPcr::productsCount(os), "Wrong results count");
+
+    QComboBox *annsComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "annsComboBox"));
+    GTComboBox::setCurrentIndex(os, annsComboBox, 1);
+    GTWidget::click(os, GTWidget::findWidget(os, "extractProductButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    int length = GTUtilsSequenceView::getLengthOfSequence(os);
+    CHECK_SET_ERR(length == 642, QString("Sequence length mismatch. Expected: %1. Actual: %2").arg(642).arg(length));
+}
 
 GUI_TEST_CLASS_DEFINITION(test_6654) {
     // 1. Open "COI.aln" sample alignment.
