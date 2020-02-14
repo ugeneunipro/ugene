@@ -142,7 +142,8 @@ U2Location ShiftSequenceStartTask::shiftLocation(const U2Location& location, int
         if (newLocation->regions.size() > joinIdx + 1) {
             const U2Region& r1 = newLocation->regions[joinIdx];
             const U2Region& r2 = newLocation->regions[joinIdx + 1];
-            assert (r1.endPos() == r2.startPos);
+            assert((r1.endPos() == r2.startPos) 
+                || (r1.endPos() == seqLength && r2.startPos == 0));
             U2Region joined(r1.startPos, r1.length + r2.length);
             newLocation->regions.replace(joinIdx, joined);
             newLocation->regions.remove(joinIdx + 1);
