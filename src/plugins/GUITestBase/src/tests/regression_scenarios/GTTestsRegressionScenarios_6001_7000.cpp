@@ -58,6 +58,7 @@
 
 #include <U2Gui/GUIUtils.h>
 
+#include <U2View/ADVConstants.h>
 #include <U2View/DetView.h>
 
 #include "GTTestsRegressionScenarios_6001_7000.h"
@@ -102,6 +103,7 @@
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/SetSequenceOriginDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
@@ -4151,7 +4153,22 @@ GUI_TEST_CLASS_DEFINITION(test_6697) {
 
     // 5. Expected state: the new first column is selected.
     GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0,0), QPoint(0,9), "G\nG\nG\nG\nG\nG\nG\nG\n-\nG");
+}
 
+GUI_TEST_CLASS_DEFINITION(test_6701) {
+    //UTEST-29
+    GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "pBR322.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new SetSequenceOriginDialogFiller(os, 3692));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << "Set new sequence origin"));
+    GTWidget::click(os, GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0"), Qt::RightButton);
+    GTGlobals::sleep();
+
+    GTUtilsDialog::waitForDialog(os, new SetSequenceOriginDialogFiller(os, 3692));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EDIT << "Set new sequence origin"));
+    GTWidget::click(os, GTWidget::findWidget(os, "CV_ADV_single_sequence_widget_0"), Qt::RightButton);
+    GTGlobals::sleep();
 }
 
 } // namespace GUITest_regression_scenarios
