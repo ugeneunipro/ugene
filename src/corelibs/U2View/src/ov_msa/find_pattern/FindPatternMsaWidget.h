@@ -62,7 +62,7 @@ private slots:
     void sl_onMsaModified();
 
     void sl_onSelectedRegionChanged(const MaEditorSelection& current, const MaEditorSelection& prev);
-    void sl_activateNewSearch(bool forcedSearch = true);
+    void sl_activateNewSearch(bool forcedSearch = true, bool activatedByOutsideChanges = false);
     void sl_toggleExtendedAlphabet();
     void sl_prevButtonClicked();
     void sl_nextButtonClicked();
@@ -202,6 +202,7 @@ private:
     QStringList patternList;
     QStringList nameList;
     QMovie *progressMovie;
+    bool setSelectionToFirstValuebleResult;
 
     FindPatternMsaWidgetSavableTab savableWidget;
 };
