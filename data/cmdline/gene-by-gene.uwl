@@ -74,7 +74,7 @@ workflow "Gene-by-gene approach for characterization of genomes"{
             }
             blast-plus.comp-based-stats {
                 alias:cbs;
-                description:"Composition-based statistics";
+                description:"Composition-based statistics (using 'd' by default)";
             }
             blast-plus.db-name {
                 alias:db-name;
@@ -96,9 +96,13 @@ workflow "Gene-by-gene approach for characterization of genomes"{
                 alias:gapped-aln;
                 description:"Perform gapped alignment (using 'use' by default)";
             }
+            blast-plus.match-scores {
+                alias:match;
+                description:"Reward and penalty for matching and mismatching bases (using 1 -3 by default)";
+            }
             blast-plus.max-hits {
                 alias:culling;
-                description:"If the query range of a hit is enveloped by that of at least this many higher-scoring hits, delete the hit";
+                description:"If the query range of a hit is enveloped by that of at least this many higher-scoring hits, delete the hit (using 0 by default)";
             }
             blast-plus.result-name {
                 alias:blast-name;
@@ -119,20 +123,20 @@ workflow "Gene-by-gene approach for characterization of genomes"{
         }
         visual {
             blast-plus {
-                pos:"-555 -525";
+                pos:"-540 -510";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 in-sequence.angle:180;
                 out-annotations.angle:360;
             }
             genebygene-report-id {
-                pos:"-300 -525";
+                pos:"-285 -510";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 in-data.angle:180;
             }
             read-sequence {
-                pos:"-795 -525";
+                pos:"-780 -510";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 out-sequence.angle:360;
