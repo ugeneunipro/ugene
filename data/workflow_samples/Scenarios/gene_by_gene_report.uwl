@@ -88,7 +88,7 @@ workflow "Gene-by-gene approach for characterization of genomes"{
                 text-pos:"-27.5 -24";
             }
         }
-wizard {
+        wizard {
             name:"Gene-by-gene approach for characterization of genomes Wizard";
             help-page-id:16122701;
             auto-run: true;

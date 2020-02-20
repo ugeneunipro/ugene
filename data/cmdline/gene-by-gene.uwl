@@ -28,6 +28,8 @@ workflow "Gene-by-gene approach for characterization of genomes"{
     blast-plus {
         type:blast-plus;
         name:"Local BLAST+ Search";
+        blast-type:blastp;
+        gap-costs:"0 2";
     }
 
     .actor-bindings {
@@ -62,23 +64,75 @@ workflow "Gene-by-gene approach for characterization of genomes"{
                 alias:out;
                 description:"Output report file";
             }
+            blast-plus.blast-output {
+                alias:blast-out;
+                description:"Location of BLAST output file";
+            }
+            blast-plus.blast-type {
+                alias:search-type;
+                description:"Type of BLAST searches (using 'blastn' by default)";
+            }
+            blast-plus.comp-based-stats {
+                alias:cbs;
+                description:"Composition-based statistics";
+            }
+            blast-plus.db-name {
+                alias:db-name;
+                description:"Name of BLAST DB";
+            }
+            blast-plus.db-path {
+                alias:db-path;
+                description:"Path of BLAST DB";
+            }
+            blast-plus.e-val {
+                alias:expected-value;
+                description:"This setting specifies the statistical significance threshold for reporting matches against database sequences (using '10.0' by default)";
+            }
+            blast-plus.gap-costs {
+                alias:gap-costs;
+                description:"Cost to create and extend a gap in alignment";
+            }
+            blast-plus.gapped-aln {
+                alias:gapped-aln;
+                description:"Perform gapped alignment (using 'use' by default)";
+            }
+            blast-plus.max-hits {
+                alias:culling;
+                description:"If the query range of a hit is enveloped by that of at least this many higher-scoring hits, delete the hit";
+            }
+            blast-plus.result-name {
+                alias:blast-name;
+                description:"Name for annotations (using 'blast_result' by default)";
+            }
+            blast-plus.temp-dir {
+                alias:tmpdir;
+                description:"Directory for temporary files (using UGENE temporary directory by default)";
+            }
+            blast-plus.tool-path {
+                alias:toolpath;
+                description:"External tool path (using the path specified in UGENE by default)";
+            }
+            blast-plus.type-output {
+                alias:out-type;
+                description:"Type of BLAST output file (using 'XML (-outfmt 7)' by default)";
+            }
         }
         visual {
             blast-plus {
-                pos:"-570 -540";
+                pos:"-555 -525";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 in-sequence.angle:180;
                 out-annotations.angle:360;
             }
             genebygene-report-id {
-                pos:"-315 -540";
+                pos:"-300 -525";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 in-data.angle:180;
             }
             read-sequence {
-                pos:"-810 -540";
+                pos:"-795 -525";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 out-sequence.angle:360;

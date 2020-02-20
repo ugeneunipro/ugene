@@ -92,7 +92,7 @@ FormatDBSupport::FormatDBSupport(const QString& id, const QString& name, const Q
 }
 
 void FormatDBSupport::sl_runWithExtFileSpecify(){
-    //Check that formatDB or makeblastdb and tempory folder path defined
+    //Check that makeblastdb and temporary folder path defined
     if (path.isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle("BLAST+ "+name);
