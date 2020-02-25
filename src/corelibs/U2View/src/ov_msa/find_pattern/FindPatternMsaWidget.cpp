@@ -974,7 +974,6 @@ void FindPatternMsaWidget::sl_findPatternTaskStateChanged() {
             checkState();
             correctSearchInCombo();
             if (setSelectionToFirstValuebleResult) {
-                setSelectionToFirstValuebleResult = true;
                 sl_nextButtonClicked();
             }
         }
