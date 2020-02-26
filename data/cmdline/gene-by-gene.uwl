@@ -78,11 +78,11 @@ workflow "Gene-by-gene approach for characterization of genomes"{
             }
             blast-plus.db-name {
                 alias:db-name;
-                description:"Name of BLAST DB";
+                description:"Name of BLAST+ DB";
             }
             blast-plus.db-path {
                 alias:db-path;
-                description:"Path of BLAST DB";
+                description:"Path of BLAST+ DB";
             }
             blast-plus.e-val {
                 alias:expected-value;
@@ -118,7 +118,7 @@ workflow "Gene-by-gene approach for characterization of genomes"{
             }
             blast-plus.type-output {
                 alias:out-type;
-                description:"Type of BLAST output file (using 'XML (-outfmt 7)' by default)";
+                description:"Type of BLAST output file (using 'XML (-outfmt 5)' by default)";
             }
         }
         visual {
