@@ -161,8 +161,10 @@ InSilicoPcrTask::PrimerBind InSilicoPcrTask::getPrimerBind(const FindAlgorithmRe
         const qint64 reverseRegionEndPos = reverse.region.endPos();
         const qint64 sequenceSize = settings.sequence.size();
         if (reverseRegionEndPos > sequenceSize) {
-            result.region = U2Region(reverse.region.startPos, sequenceSize - reverse.region.startPos);
-            if (!settings.isCircular) {
+            if (settings.isCircular) {
+                result.region = U2Region(reverse.region.startPos, qAbs(sequenceSize - reverse.region.startPos));
+            } else {
+                result.region = U2Region(reverse.region.startPos, sequenceSize);
                 result.region.length -= reverse.region.startPos;
             }
             result.ledge = reverseRegionEndPos - sequenceSize;
