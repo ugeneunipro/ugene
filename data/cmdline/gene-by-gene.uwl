@@ -1,12 +1,12 @@
 #@UGENE_WORKFLOW
 #Suppose you have genomes and you want to characterize them. One of the ways to do that is to build a table of what genes are in each genome and what are not there.
 #
-#1. Create a local BLAST db of your genome sequence/contigs. One db per one genome.
+#1. Create a local BLAST+ db of your genome sequence/contigs. One db per one genome.
 #2. Create a file with sequences of genes you what to explore. This file will be the input file for the scheme
-#3. Setup location and name of BLAST db you created for the first genome.
-#4. Setup output files: report location and output file with annotated (with BLAST) sequence. You might want to delete the "Write Sequence" element if you do not need output sequences.
+#3. Setup location and name of BLAST+ db you created for the first genome.
+#4. Setup output files: report location and output file with annotated (with BLAST+) sequence. You might want to delete the "Write Sequence" element if you do not need output sequences.
 #5. Run the scheme
-#5*. Run the scheme on the same input and output files changing BLAST db for each genome that you have.
+#5*. Run the scheme on the same input and output files changing BLAST+ db for each genome that you have.
 #
 #As the result you will get the report file. With "Yes" and "No" field. "Yes" answer means that the gene is in the genome. "No" answer MIGHT mean that there is no gene in the genome. It is a good idea to analyze all the "No" sequences using annotated files. Just open a file and find a sequence with a name of a gene that has "No" result.
 
@@ -58,7 +58,7 @@ workflow "Gene-by-gene approach for characterization of genomes"{
             }
             genebygene-report-id.identity {
                 alias:ident;
-                description:"Identity between gene sequence length and annotation length in per cent. BLAST identity (if specified) is checked after (using '90.0' percents by default)";
+                description:"Identity between gene sequence length and annotation length in per cent. BLAST+ identity (if specified) is checked after (using '90.0' percents by default)";
             }
             genebygene-report-id.output-file {
                 alias:out;
@@ -66,11 +66,11 @@ workflow "Gene-by-gene approach for characterization of genomes"{
             }
             blast-plus.blast-output {
                 alias:blast-out;
-                description:"Location of BLAST output file";
+                description:"Location of BLAST+ output file";
             }
             blast-plus.blast-type {
                 alias:search-type;
-                description:"Type of BLAST searches (using 'blastn' by default)";
+                description:"Type of BLAST+ searches (using 'blastn' by default)";
             }
             blast-plus.comp-based-stats {
                 alias:cbs;
@@ -118,7 +118,7 @@ workflow "Gene-by-gene approach for characterization of genomes"{
             }
             blast-plus.type-output {
                 alias:out-type;
-                description:"Type of BLAST output file (using 'XML (-outfmt 5)' by default)";
+                description:"Type of BLAST+ output file (using 'XML (-outfmt 5)' by default)";
             }
         }
         visual {
