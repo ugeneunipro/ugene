@@ -56,7 +56,8 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt* _ui, QScrollBar* _nhBar)
       ui(_ui),
       nhBar(_nhBar),
       editor(_ui->getEditor()),
-      changeTracker(nullptr) {
+      changeTracker(nullptr),
+      maVersionBeforeMousePress(-1) {
     setObjectName("msa_editor_name_list");
     setFocusPolicy(Qt::WheelFocus);
     cachedView = new QPixmap();
@@ -356,7 +357,9 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
     }
 
     U2OpStatus2Log os;
+    maVersionBeforeMousePress = editor->getMaObject()->getModificationVersion();
     changeTracker->startTracking(os);
+    editor->getMaObject()->saveState();
     emit si_startMaChanging();
     mousePressPoint = e->pos();
     MaCollapseModel* collapseModel = ui->getCollapseModel();
@@ -517,8 +520,10 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
     }
     rubberBand->hide();
     dragging = false;
-    emit si_stopMaChanging(false);
     changeTracker->finishTracking();
+    editor->getMaObject()->releaseState();
+    emit si_stopMaChanging(maVersionBeforeMousePress != editor->getMaObject()->getModificationVersion());
+    maVersionBeforeMousePress = -1;
     scrollController->stopSmoothScrolling();
 
     QWidget::mouseReleaseEvent(e);
