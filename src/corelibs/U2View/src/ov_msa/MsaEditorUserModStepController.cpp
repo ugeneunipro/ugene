@@ -44,13 +44,11 @@ void MsaEditorUserModStepController::startTracking( U2OpStatus &os )
         os.setError( "Another action changing alignment is being performed now" );
         return;
     }
-    coreLog.details("startTracking()");
     msaChangeTracker = new U2UseCommonUserModStep( msaEntityRef, os );
 }
 
 void MsaEditorUserModStepController::finishTracking( )
 {
-    coreLog.details("finishTracking()");
     delete msaChangeTracker;
     msaChangeTracker = NULL;
 }
