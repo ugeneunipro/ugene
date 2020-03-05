@@ -44,6 +44,11 @@ void OpenCLSupportSettingsPageController::saveState(AppSettingsGUIPageState *_s)
     QList<OpenCLGpuModel *> registeredGpus = AppContext::getOpenCLGpuRegistry()->getRegisteredGpus();
     OpenCLSupportSettingsPageState *s = qobject_cast<OpenCLSupportSettingsPageState *>(_s);
 
+	// check gpu count
+	if (registeredGpus.count() <= 0) {
+		return;
+	}
+
     //saving state of enabled/disabled GPUs into registry
     const QString enabledGpu = s->getEnabledGpuName();
     bool enabledGpuWasFound = false;
