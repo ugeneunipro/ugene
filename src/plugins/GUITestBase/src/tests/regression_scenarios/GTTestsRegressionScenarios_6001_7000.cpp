@@ -4214,6 +4214,19 @@ GUI_TEST_CLASS_DEFINITION(test_6659) {
     CHECK_SET_ERR(numSelectedSequences == 13, "There is no selection in MSA, but expected");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6667_2) {
+    // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    //2. Open "Search in Alignment" options panel tab.
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Search);
+
+    //3. Click to the "Switch on/off collapsing" on the toolbar.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6676_1) {
 //    1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
