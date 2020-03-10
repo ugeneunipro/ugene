@@ -204,12 +204,25 @@ QStringList SchemeSimilarityUtils::getNonSpaceStatementsFromScheme( const QStrin
     QStringList statements = schemeContent.mid( schemeDescStartPos,
         schemeDescEndPos - schemeDescStartPos ).split( Constants::NEW_LINE,
         QString::SkipEmptyParts );
+    //DEBUG
+    coreLog.info("statements 1");
+    foreach(QString el, statements) {
+        coreLog.info(el);
+    }
+    coreLog.info("=================");
     for ( int i = 0; i < statements.length( ); ++i ) {
         statements[i] = statements[i].trimmed( );
+        coreLog.info("statements[i] " + statements[i]);
         if ( statements[i].isEmpty( ) ) {
             statements.removeAt( i );
         }
     }
+    coreLog.info("=================");
+    coreLog.info("statements 2");
+    foreach (QString el, statements) {
+        coreLog.details(el);
+    }
+    coreLog.info("=================");
     return statements;
 }
 
