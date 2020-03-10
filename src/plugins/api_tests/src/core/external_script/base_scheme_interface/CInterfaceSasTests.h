@@ -44,7 +44,6 @@ DECLARE_TEST( CInterfaceSasTests, find_repeats_sas );
 DECLARE_TEST( CInterfaceSasTests, hmm2_build_sas );
 DECLARE_TEST( CInterfaceSasTests, import_phred_qualities_sas );
 DECLARE_TEST( CInterfaceSasTests, join_sequences_into_alignment_sas );
-DECLARE_TEST( CInterfaceSasTests, local_blast_search_sas );
 DECLARE_TEST( CInterfaceSasTests, local_blast_plus_search_sas );
 DECLARE_TEST( CInterfaceSasTests, merge_annotations_sas );
 DECLARE_TEST( CInterfaceSasTests, merge_assemblies_with_cuffmerge_sas );
@@ -75,7 +74,6 @@ DECLARE_METATYPE( CInterfaceSasTests, find_repeats_sas )
 DECLARE_METATYPE( CInterfaceSasTests, hmm2_build_sas )
 DECLARE_METATYPE( CInterfaceSasTests, import_phred_qualities_sas )
 DECLARE_METATYPE( CInterfaceSasTests, join_sequences_into_alignment_sas )
-DECLARE_METATYPE( CInterfaceSasTests, local_blast_search_sas )
 DECLARE_METATYPE( CInterfaceSasTests, local_blast_plus_search_sas )
 DECLARE_METATYPE( CInterfaceSasTests, merge_annotations_sas )
 DECLARE_METATYPE( CInterfaceSasTests, merge_assemblies_with_cuffmerge_sas )

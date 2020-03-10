@@ -47,7 +47,6 @@ workflow "Gene-by-gene approach for characterization of genomes"{
     read-sequence.annotations->write-sequence.in-sequence.annotations
     read-sequence.sequence->write-sequence.in-sequence.sequence
     blast-plus.annotations->genebygene-report-id.in-data.gene-ann
-    read-sequence.annotations->genebygene-report-id.in-data.gene-ann
     read-sequence.sequence->genebygene-report-id.in-data.gene-seq
     read-sequence.sequence->blast-plus.in-sequence.sequence
 
