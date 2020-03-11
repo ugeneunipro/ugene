@@ -119,6 +119,9 @@ public:
     static void setCheckedRemoveOverlappedResults(HI::GUITestOpStatus &os, bool checkedState = true);
     static bool checkResultsText(HI::GUITestOpStatus &os, QString expectedText);
 
+    static void clickNext(HI::GUITestOpStatus &os);
+    static void clickPrev(HI::GUITestOpStatus &os);
+
 private:
     static QWidget* getWidget(HI::GUITestOpStatus &os, const QString& widgetName, int number);
 

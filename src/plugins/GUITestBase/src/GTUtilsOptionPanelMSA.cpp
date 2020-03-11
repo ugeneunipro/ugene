@@ -478,6 +478,24 @@ bool GTUtilsOptionPanelMsa::checkResultsText(HI::GUITestOpStatus &os, QString ex
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "clickNext"
+
+void GTUtilsOptionPanelMsa::clickNext(HI::GUITestOpStatus &os) {
+    QPushButton *next = qobject_cast<QPushButton *>(GTWidget::findWidget(os, "nextPushButton"));
+    GTWidget::click(os, next);
+}
+
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickPrev"
+
+void GTUtilsOptionPanelMsa::clickPrev(HI::GUITestOpStatus &os) {
+    QPushButton *prev = qobject_cast<QPushButton *>(GTWidget::findWidget(os, "prevPushButton"));
+    GTWidget::click(os, prev);
+}
+
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "getSeqLineEdit"
 QLineEdit* GTUtilsOptionPanelMsa::getSeqLineEdit(HI::GUITestOpStatus &os, int number){
     QLineEdit* result = qobject_cast<QLineEdit*>(getWidget(os, "sequenceLineEdit", number));

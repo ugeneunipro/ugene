@@ -3949,7 +3949,7 @@ GUI_TEST_CLASS_DEFINITION(test_6640) {
     GTGlobals::sleep();
 
     // 3. Expected state: No any selection
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect( 0, 0, 0, 0));
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 0, 0));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6640_1) {
@@ -3966,7 +3966,7 @@ GUI_TEST_CLASS_DEFINITION(test_6640_1) {
     GTGlobals::sleep();
 
     // 4. Expected state: No any selected sequence
-    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect( 0, 0, 0, 0));
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 0, 0));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6640_2) {
@@ -3995,7 +3995,6 @@ GUI_TEST_CLASS_DEFINITION(test_6640_3) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6640_4) {
-
     // 1. Open "_common_data/sanger/alignment.ugenedb".
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
@@ -4054,7 +4053,6 @@ GUI_TEST_CLASS_DEFINITION(test_6640_6) {
     // 4. Expected state: No any selected read, selected column only
     QStringList name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
     CHECK_SET_ERR(name.size() == 0, QString("1. Unexpected selection! Expected selection size == 4, actual selection size == %1").arg(QString::number(name.size())));
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6649) {
@@ -4109,7 +4107,6 @@ GUI_TEST_CLASS_DEFINITION(test_6652) {
 
     // 4. Expected result: only the clicked cell is selected.
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(9, 5, 1, 1));
-
 }
 GUI_TEST_CLASS_DEFINITION(test_6652_1) {
     // 1. Open "data/samples/CLUSTALW/COI.aln".
@@ -4121,7 +4118,7 @@ GUI_TEST_CLASS_DEFINITION(test_6652_1) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(7, 3), QPoint(12, 7));
 
     // 3. Move the mouse cursor inside the region, push the mouse left button down, drag the mouse cursor to the right.
-    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
 
     const QString selection1 = GTClipboard::text(os);
@@ -4214,7 +4211,14 @@ GUI_TEST_CLASS_DEFINITION(test_6659) {
     CHECK_SET_ERR(numSelectedSequences == 13, "There is no selection in MSA, but expected");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_6667_2) {
+QString qRectToString(const QRect &rect) {
+    return QString::number(rect.topLeft().x()) + ", " +
+           QString::number(rect.topLeft().y()) + ", " +
+           QString::number(rect.bottomRight().x()) + ", " +
+           QString::number(rect.bottomRight().y());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6667_1) {
     // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4225,23 +4229,50 @@ GUI_TEST_CLASS_DEFINITION(test_6667_2) {
 
     //3. Click to the "Switch on/off collapsing" on the toolbar.
     GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    //4. Enter the following pattern: "TAAGACTTCT".
+    GTUtilsOptionPanelMsa::enterPattern(os, "TTATT");
+
+    //5. Wait for the search task finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QRect expectedSelection(7, 2, 5, 1);
+    QRect actualSelection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(expectedSelection == actualSelection, QString("Incorrect selection after the pattern search. Expected: %1, actual %2")
+        .arg(qRectToString(expectedSelection)).arg(qRectToString(actualSelection)));
+
+    //6. Click "next" button
+    GTUtilsOptionPanelMsa::clickNext(os);
+
+    expectedSelection = QRect(4, 4, 5, 1);
+    actualSelection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(expectedSelection == actualSelection, QString("Incorrect selection after the pattern search. Expected: %1, actual %2")
+        .arg(qRectToString(expectedSelection)).arg(qRectToString(actualSelection)));
+    
+    //7. Click "next" button
+    GTUtilsOptionPanelMsa::clickNext(os);
+    
+    expectedSelection = QRect(4, 5, 5, 1);
+    actualSelection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
+    CHECK_SET_ERR(expectedSelection == actualSelection, QString("Incorrect selection after the pattern search. Expected: %1, actual %2")
+        .arg(qRectToString(expectedSelection)).arg(qRectToString(actualSelection)));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6676_1) {
-//    1. Open "data/samples/CLUSTALW/COI.aln".
+    //    1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-//    2. Open "Search in Alignment" options panel tab.
+    //    2. Open "Search in Alignment" options panel tab.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Search);
 
-//    3. Enter the following pattern: "TAAGACTTCT".
+    //    3. Enter the following pattern: "TAAGACTTCT".
     GTUtilsOptionPanelMsa::enterPattern(os, "TAAGACTTCT");
 
-//    4. Wait for the search task finish.
+    //    4. Wait for the search task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-//    Expected state: there is 1 result: the first 10 bases of the first row are found, the result is selected.
+    //    Expected state: there is 1 result: the first 10 bases of the first row are found, the result is selected.
     QRect expectedSelection(0, 0, 10, 1);
     QRect actualSelection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(expectedSelection == actualSelection, QString("Incorrect selection after the pattern search"));
@@ -4249,18 +4280,18 @@ GUI_TEST_CLASS_DEFINITION(test_6676_1) {
     const bool resultsTextMatch = GTUtilsOptionPanelMsa::checkResultsText(os, "Results: 1/1");
     CHECK_SET_ERR(resultsTextMatch, QString("Incorrect count of the pattern search results"));
 
-//    5. Ensure that focus is set to the pattern input widget.
+    //    5. Ensure that focus is set to the pattern input widget.
     GTWidget::click(os, GTWidget::findWidget(os, "textPattern"));
 
-//    6. Set cursor in the pattern input widget before the last symbol.
+    //    6. Set cursor in the pattern input widget before the last symbol.
     GTKeyboardDriver::keyClick(Qt::Key_End);
     GTKeyboardDriver::keyClick(Qt::Key_Left);
 
-//    7. Click Delete key.
+    //    7. Click Delete key.
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-//    Expected state: the pattern is "TAAGACTTC". The alignment is not modified. The first 9 bases of the first row are selected.
+    //    Expected state: the pattern is "TAAGACTTC". The alignment is not modified. The first 9 bases of the first row are selected.
     const QString expectedPattern = "TAAGACTTC";
     const QString actualPattern = GTUtilsOptionPanelMsa::getPattern(os);
     CHECK_SET_ERR(expectedPattern == actualPattern, QString("Incorrect pattern: expected '%1', got '%2'").arg(expectedPattern).arg(actualPattern));
@@ -4273,25 +4304,25 @@ GUI_TEST_CLASS_DEFINITION(test_6676_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6676_2) {
-//    1. Open "data/samples/CLUSTALW/COI.aln".
+    //    1. Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-//    2. Open "General" options panel tab.
+    //    2. Open "General" options panel tab.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
-//    3. Enter the following reference sequence name: "TAAGACTTCT".
+    //    3. Enter the following reference sequence name: "TAAGACTTCT".
     QLineEdit *sequenceLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "sequenceLineEdit");
     GTWidget::click(os, sequenceLineEdit);
     GTKeyboardDriver::keySequence("TAAGACTTCT");
 
-//    4. Click Left key on the keyboard.
+    //    4. Click Left key on the keyboard.
     GTKeyboardDriver::keyClick(Qt::Key_Left);
 
-//    5. Click Delete key.
+    //    5. Click Delete key.
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-//    Expected state: the reference sequence name "TAAGACTTC". The alignment is not modified.
+    //    Expected state: the reference sequence name "TAAGACTTC". The alignment is not modified.
     const QString expectedText = "TAAGACTTC";
     const QString actualText = sequenceLineEdit->text();
     CHECK_SET_ERR(expectedText == actualText, QString("Incorrect sequence name: expected '%1', got '%2'").arg(expectedText).arg(actualText));
@@ -4709,9 +4740,8 @@ GUI_TEST_CLASS_DEFINITION(test_6692_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6692_2) {
-
     // 1. Open "_common_data/scenarios/msa/ma.aln".
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
     QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
@@ -4730,7 +4760,7 @@ GUI_TEST_CLASS_DEFINITION(test_6692_2) {
 
     // 5. Select "Conocephalus_discolor" and "Conocephalus_sp." sequence.
 
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0,10), QPoint(11,11));
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 10), QPoint(11, 11));
 
     // 6. Press the Delete key on the keyboard.
 
@@ -4743,12 +4773,11 @@ GUI_TEST_CLASS_DEFINITION(test_6692_2) {
                   "2 Mecopoda_elongata_Ishigaki_J is not collapsed");
 
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Conocephalus_percaudata")),
-                   "Required sequence is removed");
+                  "Required sequence is removed");
 }
 GUI_TEST_CLASS_DEFINITION(test_6692_3) {
-
     // 1. Open "_common_data/scenarios/msa/ma.aln".
-    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/" , "ma.aln");
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
     QStringList originalNames = GTUtilsMSAEditorSequenceArea::getNameList(os);
@@ -4771,7 +4800,7 @@ GUI_TEST_CLASS_DEFINITION(test_6692_3) {
     // 6. Expected result: "Conocephalus_discolor" sequence is removed. There are two collapsed groups: "Conocephalus_sp." and "Mecopoda_elongata_Ishigaki_J". The "Conocephalus_sp." group has one internal sequence "Conocephalus_percaudata" in it, the group is opened. The "Mecopoda_elongata_Ishigaki_J" is collapsed.
     GTUtilsMsaEditor::toggleCollapsingGroup(os, "Conocephalus_sp.");
     CHECK_SET_ERR(!GTUtilsMSAEditorSequenceArea::isSequenceVisible(os, QString("Conocephalus_discolor")),
-                   "Required sequence is not removed");
+                  "Required sequence is not removed");
     CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Conocephalus_percaudata"),
                   "1 Conocephalus_percaudata is not collapsed");
     CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Mecopoda_elongata__Sumatra_"),
@@ -4876,7 +4905,6 @@ GUI_TEST_CLASS_DEFINITION(test_6706) {
     bool eq = GTFile::equals(os, url);
 
     CHECK_SET_ERR(eq, "file should be equal to the clipboard");
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6707) {
@@ -4933,7 +4961,7 @@ GUI_TEST_CLASS_DEFINITION(test_6718) {
     GTGlobals::sleep();
 
     QString name;
-    foreach(const QString &doc, GTUtilsProjectTreeView::getDocuments(os).keys()) {
+    foreach (const QString &doc, GTUtilsProjectTreeView::getDocuments(os).keys()) {
         CHECK_CONTINUE(doc.startsWith("clipboard"));
 
         name = doc;
@@ -4941,7 +4969,8 @@ GUI_TEST_CLASS_DEFINITION(test_6718) {
     }
 
     //Expected: the file as the same as _common_data/scenarios/_regression/6718/6718.aln
-    QString url = QDir(GUrlUtils::getDefaultDataPath() + "\\" + name).absolutePath();;
+    QString url = QDir(GUrlUtils::getDefaultDataPath() + "\\" + name).absolutePath();
+    ;
     QString pattern = testDir + "_common_data/scenarios/_regression/6718/6718.aln";
     bool eq = GTFile::equals(os, url, pattern);
 
@@ -4949,7 +4978,6 @@ GUI_TEST_CLASS_DEFINITION(test_6718) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6710) {
-
     // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4976,10 +5004,8 @@ GUI_TEST_CLASS_DEFINITION(test_6710) {
 
     // 8. Expected result: two rows are selected: "Conocephalus_sp." and "Conocephalus_percaudata".
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 5, 1, 2));
-
 }
 GUI_TEST_CLASS_DEFINITION(test_6714) {
-
     // 1. Open "_common_data/sanger/alignment.ugenedb".
     const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
@@ -4996,7 +5022,6 @@ GUI_TEST_CLASS_DEFINITION(test_6714) {
     QStringList name = GTUtilsMcaEditorSequenceArea::getSelectedRowsNames(os);
     CHECK_SET_ERR(name.size() == 1, QString("1. Unexpected selection! Expected selection size == 1, actual selection size == %1").arg(QString::number(name.size())));
     CHECK_SET_ERR(name[0] == "SZYD_Cas9_CR51", QString("Unexpected selected read, expected: SZYD_Cas9_CR51, current: %1").arg(name[0]));
-
 }
 
 }    // namespace GUITest_regression_scenarios
