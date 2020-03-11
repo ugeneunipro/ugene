@@ -4211,7 +4211,7 @@ GUI_TEST_CLASS_DEFINITION(test_6659) {
     CHECK_SET_ERR(numSelectedSequences == 13, "There is no selection in MSA, but expected");
 }
 
-QString qRectToString(const QRect &rect) {
+static QString qRectToString(const QRect &rect) {
     return QString::number(rect.topLeft().x()) + ", " +
            QString::number(rect.topLeft().y()) + ", " +
            QString::number(rect.bottomRight().x()) + ", " +
@@ -4230,7 +4230,7 @@ GUI_TEST_CLASS_DEFINITION(test_6667_1) {
     //3. Click to the "Switch on/off collapsing" on the toolbar.
     GTUtilsMsaEditor::toggleCollapsingMode(os);
 
-    //4. Enter the following pattern: "TAAGACTTCT".
+    //4. Enter the following pattern: "TTATT".
     GTUtilsOptionPanelMsa::enterPattern(os, "TTATT");
 
     //5. Wait for the search task finish.
