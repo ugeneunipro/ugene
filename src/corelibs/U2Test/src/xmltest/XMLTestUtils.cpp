@@ -59,6 +59,36 @@ void XmlTest::checkBooleanAttribute(const QDomElement &element, const QString &a
     checkAttribute(element, attribute, QStringList( { TRUE_VALUE, FALSE_VALUE } ), isNecessary);
 }
 
+int XmlTest::getInt(const QDomElement &element, const QString &attribute) {
+    checkNecessaryAttributeExistence(element, attribute);
+    CHECK_OP(stateInfo, 0);
+
+    bool success = false;
+    const int result = element.attribute(attribute).toInt(&success);
+    CHECK_EXT(success, wrongValue(attribute), 0);
+    return result;
+}
+
+qint64 XmlTest::getInt64(const QDomElement &element, const QString &attribute) {
+    checkNecessaryAttributeExistence(element, attribute);
+    CHECK_OP(stateInfo, 0);
+
+    bool success = false;
+    const qint64 result = element.attribute(attribute).toLongLong(&success);
+    CHECK_EXT(success, wrongValue(attribute), 0);
+    return result;
+}
+
+double XmlTest::getDouble(const QDomElement &element, const QString &attribute) {
+    checkNecessaryAttributeExistence(element, attribute);
+    CHECK_OP(stateInfo, 0);
+
+    bool success = false;
+    const double result = element.attribute(attribute).toDouble(&success);
+    CHECK_EXT(success, wrongValue(attribute), 0);
+    return result;
+}
+
 const QString XMLTestUtils::TMP_DATA_DIR_PREFIX  = "!tmp_data_dir!";
 const QString XMLTestUtils::COMMON_DATA_DIR_PREFIX = "!common_data_dir!";
 const QString XMLTestUtils::LOCAL_DATA_DIR_PREFIX = "!input!";

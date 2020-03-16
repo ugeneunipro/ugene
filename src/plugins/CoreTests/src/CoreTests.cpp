@@ -36,6 +36,7 @@
 #include "DNASequenceObjectTests.h"
 #include "DNATranslationImplTests.h"
 #include "DnaAssemblyTests.h"
+#include "DnaStatisticsTests.h"
 #include "DocumentModelTests.h"
 #include "EditAlignmentTests.h"
 #include "EditSequenceTests.h"
@@ -169,6 +170,8 @@ void CoreTests::registerFactories() {
     registerFactory<FindPatternMsaTests>(xmlTestFormat);
 
     registerFactory<AnnotationUtilsTests>(xmlTestFormat);
+
+    registerFactory<DnaStatisticsTests>(xmlTestFormat);
 }
 
 }//namespace

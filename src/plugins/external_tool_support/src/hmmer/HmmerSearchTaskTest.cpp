@@ -410,7 +410,7 @@ UHMM3SearchResult GTest_UHMM3SearchCompare::getSearchResultFromOutput(const QStr
                 fullSeqRes.isReported = false;
                 break;
             } else {
-                fullSeqRes.eval = getDouble(getNextToken(tokens));
+                fullSeqRes.eval = U2::getDouble(getNextToken(tokens));
                 fullSeqRes.score = getFloat(getNextToken(tokens));
                 fullSeqRes.bias = getFloat(getNextToken(tokens));
                 /* skip best domain res. we will check it later */

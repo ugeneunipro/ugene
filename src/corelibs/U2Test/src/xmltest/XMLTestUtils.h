@@ -70,6 +70,9 @@ public:
     void checkNecessaryAttributeExistence(const QDomElement &element, const QString &attribute);
     void checkAttribute(const QDomElement &element, const QString &attribute, const QStringList &acceptableValues, bool isNecessary);
     void checkBooleanAttribute(const QDomElement &element, const QString &attribute, bool isNecessary);
+    int getInt(const QDomElement &element, const QString &attribute);
+    qint64 getInt64(const QDomElement &element, const QString &attribute);
+    double getDouble(const QDomElement &element, const QString &attribute);
 
     static const QString TRUE_VALUE;
     static const QString FALSE_VALUE;

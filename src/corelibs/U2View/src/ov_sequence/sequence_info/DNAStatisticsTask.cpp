@@ -41,15 +41,18 @@ DNAStatistics::DNAStatistics() {
 void DNAStatistics::clear() {
     length = 0;
     gcContent = 0;
+    meltingTemp = 0;
+
     ssMolecularWeight = 0;
-    dsMolecularWeight = 0;
     ssExtinctionCoefficient = 0;
+    ssOd260AmountOfSubstance = 0;
+    ssOd260Mass = 0;
+
+    dsMolecularWeight = 0;
     dsExtinctionCoefficient = 0;
-    meltingTm = 0;
-    dsNmoleOD260 = 0;
-    ssNmoleOD260 = 0;
-    dsMgOD260 = 0;
-    ssMgOD260 = 0;
+    dsOd260AmountOfSubstance = 0;
+    dsOd260Mass = 0;
+
     isoelectricPoint = 0;
 }
 
@@ -145,6 +148,28 @@ static QMap<char, QByteArray> createRnaAlphabetResolutionMap() {
     return res;
 }
 
+static void fillMapWithAvarageValues(QVector<QVector<int>> &map, const QMap<char, QByteArray> &alphabetResolutionMap) {
+    foreach (const char i, alphabetResolutionMap.keys()) {
+        foreach (const char j, alphabetResolutionMap.keys()) {
+            if (0 == map[i][j]) {
+                // Unambiguous nucleotide pairs are already registered
+                // If at least one nucleotide in pair is ambiguous, then the pair value should be an avarage value of all possible variants.
+                int value = 0;
+                for (int k = 0; k < alphabetResolutionMap[i].length(); ++k) {
+                    for (int m = 0; m < alphabetResolutionMap[j].length(); ++m) {
+                        char char1 = alphabetResolutionMap[i][k];
+                        char char2 = alphabetResolutionMap[j][m];
+                        value += map[char1][char2];
+                    }
+                }
+                const int count = alphabetResolutionMap[i].length() * alphabetResolutionMap[j].length();
+                value /= count;
+                map[i][j] = value;
+            }
+        }
+    }
+}
+
 static MononucleotidesExtinctionCoefficientsMap createDnaMononucleotidesExtinctionCoefficients() {
     MononucleotidesExtinctionCoefficientsMap res(MAP_SIZE, 0);
     res['A'] = 15400;
@@ -177,27 +202,7 @@ static DinucleotidesExtinctionCoefficientsMap createDnaDinucleotidesExtinctionCo
     res['T']['G'] = 19000;
     res['T']['T'] = 16800;
 
-    const QMap<char, QByteArray> alphabetChars = createDnaAlphabetResolutionMap();
-
-    foreach (const char i, alphabetChars.keys()) {
-        foreach (const char j, alphabetChars.keys()) {
-            if (0 == res[i][j]) {
-                // Unambiguous nucleotide pairs are already registered
-                // If at least one nucleotide in pair is ambiguous, then the pair value should be an avarage value of all possible variants.
-                int value = 0;
-                for (int k = 0; k < alphabetChars[i].length(); ++k) {
-                    for (int m = 0; m < alphabetChars[j].length(); ++m) {
-                        char char1 = alphabetChars[i][k];
-                        char char2 = alphabetChars[j][m];
-                        value += res[char1][char2];
-                    }
-                }
-                const int count = alphabetChars[i].length() * alphabetChars[j].length();
-                value /= count;
-                res[i][j] = value;
-            }
-        }
-    }
+    fillMapWithAvarageValues(res, createDnaAlphabetResolutionMap());
 
     return res;
 }
@@ -234,27 +239,7 @@ static DinucleotidesExtinctionCoefficientsMap createRnaDinucleotidesExtinctionCo
     res['U']['G'] = 20000;
     res['U']['U'] = 19600;
 
-    const QMap<char, QByteArray> alphabetChars = createRnaAlphabetResolutionMap();
-
-    foreach (const char i, alphabetChars.keys()) {
-        foreach (const char j, alphabetChars.keys()) {
-            if (0 == res[i][j]) {
-                // Unambiguous nucleotide pairs are already registered
-                // If at least one nucleotide in pair is ambiguous, then the pair value should be an avarage value of all possible variants.
-                int value = 0;
-                for (int k = 0; k < alphabetChars[i].length(); ++k) {
-                    for (int m = 0; m < alphabetChars[j].length(); ++m) {
-                        char char1 = alphabetChars[i][k];
-                        char char2 = alphabetChars[j][m];
-                        value += res[char1][char2];
-                    }
-                }
-                const int count = alphabetChars[i].length() * alphabetChars[j].length();
-                value /= count;
-                res[i][j] = value;
-            }
-        }
-    }
+    fillMapWithAvarageValues(res, createRnaAlphabetResolutionMap());
 
     return res;
 }
@@ -332,18 +317,18 @@ static QVector<double> createGcRatioMap() {
     return res;
 }
 
-const QVector<double> DNAStatisticsTask::dnaMolecularWeightMap = createDnaMolecularWeightMap();
-const QVector<double> DNAStatisticsTask::rnaMolecularWeightMap = createRnaMolecularWeightMap();
+const QVector<double> DNAStatisticsTask::DNA_MOLECULAR_WEIGHT_MAP = createDnaMolecularWeightMap();
+const QVector<double> DNAStatisticsTask::RNA_MOLECULAR_WEIGHT_MAP = createRnaMolecularWeightMap();
 
-const QVector<int> DNAStatisticsTask::dnaMononucleotidesExtinctionCoefficients = createDnaMononucleotidesExtinctionCoefficients();
-const QVector<QVector<int>> DNAStatisticsTask::dnaDinucleotidesExtinctionCoefficients = createDnaDinucleotidesExtinctionCoefficients();
-const QVector<int> DNAStatisticsTask::rnaMononucleotidesExtinctionCoefficients = createRnaMononucleotidesExtinctionCoefficients();
-const QVector<QVector<int>> DNAStatisticsTask::rnaDinucleotidesExtinctionCoefficients = createRnaDinucleotidesExtinctionCoefficients();
+const QVector<int> DNAStatisticsTask::DNA_MONONUCLEOTIDES_EXTINCTION_COEFFICIENTS = createDnaMononucleotidesExtinctionCoefficients();
+const QVector<QVector<int>> DNAStatisticsTask::DNA_DINUCLEOTIDES_EXTINCTION_COEFFICIENTS = createDnaDinucleotidesExtinctionCoefficients();
+const QVector<int> DNAStatisticsTask::RNA_MONONUCLEOTIDES_EXTINCTION_COEFFICIENTS = createRnaMononucleotidesExtinctionCoefficients();
+const QVector<QVector<int>> DNAStatisticsTask::RNA_DINUCLEOTIDES_EXTINCTION_COEFFICIENTS = createRnaDinucleotidesExtinctionCoefficients();
 
-QVector<double> DNAStatisticsTask::pMWMap = createProteinMWMap();
-QVector<double> DNAStatisticsTask::pKaMap = createPKAMap();
-QVector<int> DNAStatisticsTask::pChargeMap = createChargeMap();
-QVector<double> DNAStatisticsTask::gcRatioMap = createGcRatioMap();
+const QVector<double> DNAStatisticsTask::PROTEIN_MOLECULAR_WEIGHT_MAP = createProteinMWMap();
+const QVector<double> DNAStatisticsTask::pKaMap = createPKAMap();
+const QVector<int> DNAStatisticsTask::PROTEIN_CHARGES_MAP = createChargeMap();
+const QVector<double> DNAStatisticsTask::GC_RATIO_MAP = createGcRatioMap();
 
 DNAStatisticsTask::DNAStatisticsTask(const DNAAlphabet* alphabet,
                                      const U2EntityRef seqRef,
@@ -436,7 +421,7 @@ void DNAStatisticsTask::computeStats() {
     if (alphabet->isNucleic()) {
         //  gcContent = ((nG + nC + nS + 0.5*nM + 0.5*nK + 0.5*nR + 0.5*nY + (2/3)*nB + (1/3)*nD + (1/3)*nH + (2/3)*nV + 0.5*nN) / n ) * 100%
         for (int i = 0, n = charactersCount.size(); i < n; ++i) {
-            result.gcContent += charactersCount[i] * gcRatioMap[i];
+            result.gcContent += charactersCount[i] * GC_RATIO_MAP[i];
         }
         result.gcContent = 100.0 * result.gcContent / ungappedLength;
 
@@ -444,9 +429,9 @@ void DNAStatisticsTask::computeStats() {
         // Source: http://www.basic.northwestern.edu/biotools/oligocalc.html
         const QVector<double> *molecularWeightMap = nullptr;
         if (alphabet->isRNA()) {
-            molecularWeightMap = &rnaMolecularWeightMap;
+            molecularWeightMap = &RNA_MOLECULAR_WEIGHT_MAP;
         } else if (alphabet->isDNA()) {
-            molecularWeightMap = &dnaMolecularWeightMap;
+            molecularWeightMap = &DNA_MOLECULAR_WEIGHT_MAP;
         }
         SAFE_POINT_EXT(nullptr != molecularWeightMap, os.setError("An unknown alphabet"), );
 
@@ -464,11 +449,11 @@ void DNAStatisticsTask::computeStats() {
         const MononucleotidesExtinctionCoefficientsMap *mononucleotideExtinctionCoefficientsMap = nullptr;
         const DinucleotidesExtinctionCoefficientsMap *dinucleotideExtinctionCoefficientsMap = nullptr;
         if (alphabet->isRNA()) {
-            mononucleotideExtinctionCoefficientsMap = &rnaMononucleotidesExtinctionCoefficients;
-            dinucleotideExtinctionCoefficientsMap = &rnaDinucleotidesExtinctionCoefficients;
+            mononucleotideExtinctionCoefficientsMap = &RNA_MONONUCLEOTIDES_EXTINCTION_COEFFICIENTS;
+            dinucleotideExtinctionCoefficientsMap = &RNA_DINUCLEOTIDES_EXTINCTION_COEFFICIENTS;
         } else if (alphabet->isDNA()) {
-            mononucleotideExtinctionCoefficientsMap = &dnaMononucleotidesExtinctionCoefficients;
-            dinucleotideExtinctionCoefficientsMap = &dnaDinucleotidesExtinctionCoefficients;
+            mononucleotideExtinctionCoefficientsMap = &DNA_MONONUCLEOTIDES_EXTINCTION_COEFFICIENTS;
+            dinucleotideExtinctionCoefficientsMap = &DNA_DINUCLEOTIDES_EXTINCTION_COEFFICIENTS;
         }
         SAFE_POINT_EXT(nullptr != mononucleotideExtinctionCoefficientsMap, os.setError("An unknown alphabet"), );
         SAFE_POINT_EXT(nullptr != dinucleotideExtinctionCoefficientsMap, os.setError("An unknown alphabet"), );
@@ -498,27 +483,27 @@ void DNAStatisticsTask::computeStats() {
         const qint64 nG = charactersCount['G'];
         const qint64 nT = charactersCount['T'];
         if (totalLength < 15) {
-            result.meltingTm = (nA + nT) * 2 + (nG + nC) * 4;
+            result.meltingTemp = (nA + nT) * 2 + (nG + nC) * 4;
         } else if (nA + nT + nG + nC != 0) {
-            result.meltingTm = 64.9 + 41 * (nG + nC - 16.4) / static_cast<double>(nA + nT + nG + nC);
+            result.meltingTemp = 64.9 + 41 * (nG + nC - 16.4) / static_cast<double>(nA + nT + nG + nC);
         }
 
         // Calculating nmole/OD260
         if (result.ssExtinctionCoefficient != 0) {
-            result.ssNmoleOD260 = 1000000.0 / result.ssExtinctionCoefficient;
+            result.ssOd260AmountOfSubstance = 1000000.0 / result.ssExtinctionCoefficient;
         }
 
         if (result.dsExtinctionCoefficient != 0) {
-            result.dsNmoleOD260 = 1000000.0 / result.dsExtinctionCoefficient;
+            result.dsOd260AmountOfSubstance = 1000000.0 / result.dsExtinctionCoefficient;
         }
 
         // Calculating μg/OD260
-        result.ssMgOD260 = result.ssNmoleOD260 * result.ssMolecularWeight * 0.001;
-        result.dsMgOD260 = result.dsNmoleOD260 * result.dsMolecularWeight * 0.001;
+        result.ssOd260Mass = result.ssOd260AmountOfSubstance * result.ssMolecularWeight * 0.001;
+        result.dsOd260Mass = result.dsOd260AmountOfSubstance * result.dsMolecularWeight * 0.001;
     } else if (alphabet->isAmino()) {
         // Calculating molecular weight
         for (int i = 0, n = charactersCount.size(); i < n; ++i) {
-            result.ssMolecularWeight += charactersCount[i] * pMWMap.value(i);
+            result.ssMolecularWeight += charactersCount[i] * PROTEIN_MOLECULAR_WEIGHT_MAP.value(i);
         }
         static const double MWH2O = 18.0;
         result.ssMolecularWeight -= (totalLength - 1) * MWH2O;
@@ -576,7 +561,7 @@ double DNAStatisticsTask::calcChargeState(const QVector<qint64>& countMap, doubl
             break;
         }
         double pKa = pKaMap[i];
-        double charge = pChargeMap[i];
+        double charge = PROTEIN_CHARGES_MAP[i];
         chargeState += countMap[i] * charge / (1 + pow(10.0, charge * (pH - pKa)));
     }
     return chargeState;

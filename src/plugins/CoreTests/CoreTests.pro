@@ -10,6 +10,7 @@ HEADERS += src/AnnotationTableObjectTest.h \
            src/DnaAssemblyTests.h \
            src/DNASequenceObjectTests.h \
            src/DNATranslationImplTests.h \
+           src/DnaStatisticsTests.h \
            src/DocumentModelTests.h \
            src/EditAlignmentTests.h \
            src/EditSequenceTests.h \
@@ -40,6 +41,7 @@ SOURCES += src/AnnotationTableObjectTest.cpp \
            src/DNASequenceObjectTests.cpp \
            src/DNATranslationImplTests.cpp \
            src/DnaAssemblyTests.cpp \
+           src/DnaStatisticsTests.cpp \
            src/DocumentModelTests.cpp \
            src/EditAlignmentTests.cpp \
            src/EditSequenceTests.cpp \
