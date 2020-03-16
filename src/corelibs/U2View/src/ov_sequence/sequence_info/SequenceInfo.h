@@ -112,6 +112,7 @@ private:
 
     int getAvailableSpace(DNAAlphabetType alphabetType) const;
 
+    QString formBoldTableRow(const QString& caption, const QString &value, int availableSpace) const;
     QString formTableRow(const QString& caption, const QString &value, int availableSpace) const;
 
     StatisticsCache<DNAStatistics> *getCommonStatisticsCache() const;
@@ -140,17 +141,22 @@ private:
     static const int COMMON_STATISTICS_TABLE_CELLSPACING;
     static const QString CAPTION_SEQ_REGION_LENGTH;
 
+    static const QString CAPTION_SUFFIX_DS_DNA;
+    static const QString CAPTION_SUFFIX_SS_DNA;
+    static const QString CAPTION_SUFFIX_DS_RNA;
+    static const QString CAPTION_SUFFIX_SS_RNA;
+
     //nucl
     static const QString CAPTION_SEQ_GC_CONTENT;
-    static const QString CAPTION_SEQ_MOLAR_WEIGHT;
-    static const QString CAPTION_SEQ_MOLAR_EXT_COEF;
-    static const QString CAPTION_SEQ_MELTING_TM;
+    static const QString CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT;
+    static const QString CAPTION_SEQ_EXTINCTION_COEFFICIENT;
+    static const QString CAPTION_SEQ_MELTING_TEMPERATURE;
 
     static const QString CAPTION_SEQ_NMOLE_OD;
     static const QString CAPTION_SEQ_MG_OD;
 
     //amino
-    static const QString CAPTION_SEQ_MOLECULAR_WEIGHT;
+    static const QString CAPTION_SEQ_AMINO_MOLECULAR_WEIGHT;
     static const QString CAPTION_SEQ_ISOELECTIC_POINT;
 
     static const QString CHAR_OCCUR_GROUP_ID;

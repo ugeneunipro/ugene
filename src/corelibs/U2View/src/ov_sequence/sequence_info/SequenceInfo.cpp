@@ -43,17 +43,22 @@ namespace U2 {
 const int SequenceInfo::COMMON_STATISTICS_TABLE_CELLSPACING = 5;
 const QString SequenceInfo::CAPTION_SEQ_REGION_LENGTH = "Length: ";
 
+const QString SequenceInfo::CAPTION_SUFFIX_DS_DNA = "dsDNA:";
+const QString SequenceInfo::CAPTION_SUFFIX_SS_DNA = "ssDNA:";
+const QString SequenceInfo::CAPTION_SUFFIX_DS_RNA = "dsRNA:";
+const QString SequenceInfo::CAPTION_SUFFIX_SS_RNA = "ssRNA:";
+
 //nucl
 const QString SequenceInfo::CAPTION_SEQ_GC_CONTENT = "GC Content: ";
-const QString SequenceInfo::CAPTION_SEQ_MOLAR_WEIGHT = "Molar Weight: ";
-const QString SequenceInfo::CAPTION_SEQ_MOLAR_EXT_COEF = "Molar Ext. Coef: ";
-const QString SequenceInfo::CAPTION_SEQ_MELTING_TM = "Melting TM: ";
+const QString SequenceInfo::CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT = "Molecular weight: ";
+const QString SequenceInfo::CAPTION_SEQ_EXTINCTION_COEFFICIENT = "Extinction coefficient: ";
+const QString SequenceInfo::CAPTION_SEQ_MELTING_TEMPERATURE = "Melting temperature: ";
 
-const QString SequenceInfo::CAPTION_SEQ_NMOLE_OD = "nmole/OD<sub>260</sub> : ";
-const QString SequenceInfo::CAPTION_SEQ_MG_OD = QChar(0x3BC) + QString("g/OD<sub>260</sub> : "); // 0x3BC - greek 'mu'
+const QString SequenceInfo::CAPTION_SEQ_NMOLE_OD = "nmole/OD<sub>260</sub>: ";
+const QString SequenceInfo::CAPTION_SEQ_MG_OD = QChar(0x3BC) + QString("g/OD<sub>260</sub>: "); // 0x3BC - greek 'mu'
 
 //amino
-const QString SequenceInfo::CAPTION_SEQ_MOLECULAR_WEIGHT = "Molecular Weight: ";
+const QString SequenceInfo::CAPTION_SEQ_AMINO_MOLECULAR_WEIGHT = "Molecular Weight: ";
 const QString SequenceInfo::CAPTION_SEQ_ISOELECTIC_POINT = "Isoelectic Point: ";
 
 const QString SequenceInfo::CHAR_OCCUR_GROUP_ID = "char_occur_group";
@@ -211,24 +216,40 @@ void SequenceInfo::updateCommonStatisticsData(const DNAStatistics &commonStatist
     CHECK(wgt != NULL, );
     ADVSequenceObjectContext *ctx = wgt->getActiveSequenceContext();
     SAFE_POINT(ctx != NULL, tr("Sequence context is NULL"), );
-    SAFE_POINT(ctx->getAlphabet() != NULL, tr("Sequence alphabet is NULL"), );
 
-    int availableSpace = getAvailableSpace(ctx->getAlphabet()->getType());
+    const DNAAlphabet *alphabet = ctx->getAlphabet();
+    SAFE_POINT(alphabet != NULL, tr("Sequence alphabet is NULL"), );
+
+    int availableSpace = getAvailableSpace(alphabet->getType());
 
     const bool isValid = dnaStatisticsTaskRunner.isIdle();
 
     QString statsInfo = QString("<table cellspacing=%1>").arg(COMMON_STATISTICS_TABLE_CELLSPACING);
-    statsInfo += formTableRow(CAPTION_SEQ_REGION_LENGTH, getValue(getFormattedLongNumber(commonStatistics.length), isValid), availableSpace);
-    if (ctx->getAlphabet()->isNucleic()) {
-        statsInfo += formTableRow(CAPTION_SEQ_GC_CONTENT, getValue(QString::number(commonStatistics.gcContent, 'f', 2) + "%", isValid), availableSpace);
-        statsInfo += formTableRow(CAPTION_SEQ_MOLAR_WEIGHT, getValue(QString::number(commonStatistics.molarWeight, 'f', 2) + " Da", isValid), availableSpace);
-        statsInfo += formTableRow(CAPTION_SEQ_MOLAR_EXT_COEF, getValue(QString::number(commonStatistics.molarExtCoef) + " I/mol", isValid), availableSpace);
-        statsInfo += formTableRow(CAPTION_SEQ_MELTING_TM, getValue(QString::number(commonStatistics.meltingTm, 'f', 2) + " C", isValid), availableSpace);
 
-        statsInfo += formTableRow(CAPTION_SEQ_NMOLE_OD, getValue(QString::number(commonStatistics.nmoleOD260, 'f', 2), isValid), availableSpace);
-        statsInfo += formTableRow(CAPTION_SEQ_MG_OD, getValue(QString::number(commonStatistics.mgOD260, 'f', 2), isValid), availableSpace);
-    } else if (ctx->getAlphabet()->isAmino()) {
-        statsInfo += formTableRow(CAPTION_SEQ_MOLECULAR_WEIGHT, getValue(QString::number(commonStatistics.molecularWeight, 'f', 2), isValid), availableSpace);
+    const QString lengthSuffix = alphabet->isNucleic() ? tr("nt") : alphabet->isAmino() ? tr("aa") : QString();
+    statsInfo += formTableRow(CAPTION_SEQ_REGION_LENGTH, getValue(getFormattedLongNumber(commonStatistics.length) + lengthSuffix, isValid), availableSpace);
+
+    if (alphabet->isNucleic()) {
+        statsInfo += formTableRow(CAPTION_SEQ_GC_CONTENT, getValue(QString::number(commonStatistics.gcContent, 'f', 2) + "%", isValid), availableSpace);
+        statsInfo += formTableRow(CAPTION_SEQ_MELTING_TEMPERATURE, getValue(QString::number(commonStatistics.meltingTm, 'f', 2) + " &#176;C", isValid), availableSpace);
+
+        const QString ssCaption = alphabet->isRNA() ? CAPTION_SUFFIX_SS_RNA : CAPTION_SUFFIX_SS_DNA;
+        statsInfo += QString("<tr><td colspan=2><b>") + tr("%1").arg(ssCaption) + "</b></td></tr>";
+
+        statsInfo += formTableRow(QString("&nbsp;").repeated(4) + CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT, getValue(QString::number(commonStatistics.ssMolecularWeight, 'f', 2) + tr(" Da"), isValid), availableSpace);
+        statsInfo += formTableRow(QString("&nbsp;").repeated(4) + CAPTION_SEQ_EXTINCTION_COEFFICIENT, getValue(QString::number(commonStatistics.ssExtinctionCoefficient) + tr(" I/(mol * cm)"), isValid), availableSpace);
+        statsInfo += formTableRow(QString("&nbsp;").repeated(4) + CAPTION_SEQ_NMOLE_OD, getValue(QString::number(commonStatistics.ssNmoleOD260, 'f', 2), isValid), availableSpace);
+        statsInfo += formTableRow(QString("&nbsp;").repeated(4) + CAPTION_SEQ_MG_OD, getValue(QString::number(commonStatistics.ssMgOD260, 'f', 2), isValid), availableSpace);
+
+        const QString dsCaption = alphabet->isRNA() ? CAPTION_SUFFIX_DS_RNA : CAPTION_SUFFIX_DS_DNA;
+        statsInfo += QString("<tr><td colspan=2><b>") + tr("%1").arg(dsCaption) + "</b></td></tr>";
+
+        statsInfo += formTableRow(QString("&nbsp;").repeated(4) + CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT, getValue(QString::number(commonStatistics.dsMolecularWeight, 'f', 2) + tr(" Da"), isValid), availableSpace);
+        statsInfo += formTableRow(QString("&nbsp;").repeated(4) + CAPTION_SEQ_EXTINCTION_COEFFICIENT, getValue(QString::number(commonStatistics.dsExtinctionCoefficient) + tr(" l/mol"), isValid), availableSpace);
+        statsInfo += formTableRow(QString("&nbsp;").repeated(4) + CAPTION_SEQ_NMOLE_OD, getValue(QString::number(commonStatistics.dsNmoleOD260, 'f', 2), isValid), availableSpace);
+        statsInfo += formTableRow(QString("&nbsp;").repeated(4) + CAPTION_SEQ_MG_OD, getValue(QString::number(commonStatistics.dsMgOD260, 'f', 2), isValid), availableSpace);
+    } else if (alphabet->isAmino()) {
+        statsInfo += formTableRow(CAPTION_SEQ_AMINO_MOLECULAR_WEIGHT, getValue(QString::number(commonStatistics.ssMolecularWeight, 'f', 2), isValid), availableSpace);
         statsInfo += formTableRow(CAPTION_SEQ_ISOELECTIC_POINT, getValue(QString::number(commonStatistics.isoelectricPoint, 'f', 2), isValid), availableSpace);
     }
 
@@ -448,16 +469,16 @@ int SequenceInfo::getAvailableSpace(DNAAlphabetType alphabetType) const {
     case DNAAlphabet_NUCL:
         captions << CAPTION_SEQ_REGION_LENGTH
                  << CAPTION_SEQ_GC_CONTENT
-                 << CAPTION_SEQ_MOLAR_WEIGHT
-                 << CAPTION_SEQ_MOLAR_EXT_COEF
-                 << CAPTION_SEQ_MELTING_TM;
+                 << CAPTION_SEQ_MELTING_TEMPERATURE
+                 << QString("    ") + CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT
+                 << QString("    ") + CAPTION_SEQ_EXTINCTION_COEFFICIENT;
 // Two captions are ignored because of HTML tags within them
 //                 << CAPTION_SEQ_NMOLE_OD
 //                 << CAPTION_SEQ_MG_OD;
         break;
     case DNAAlphabet_AMINO:
         captions << CAPTION_SEQ_REGION_LENGTH
-                 << CAPTION_SEQ_MOLECULAR_WEIGHT
+                 << CAPTION_SEQ_AMINO_MOLECULAR_WEIGHT
                  << CAPTION_SEQ_ISOELECTIC_POINT;
         break;
     default:
@@ -465,9 +486,7 @@ int SequenceInfo::getAvailableSpace(DNAAlphabetType alphabetType) const {
         break;
     }
 
-    QFont font = statisticLabel->font();
-    font.setBold(true);
-    QFontMetrics fontMetrics(font);
+    QFontMetrics fontMetrics(statisticLabel->font());
 
     int availableSize = INT_MAX;
     foreach (const QString &caption, captions) {
@@ -496,11 +515,21 @@ void SequenceInfo::sl_updateStatData() {
     updateCommonStatisticsData(getCommonStatisticsCache()->getStatistics());
 }
 
-QString SequenceInfo::formTableRow(const QString& caption, const QString &value, int availableSpace) const {
+QString SequenceInfo::formBoldTableRow(const QString& caption, const QString &value, int availableSpace) const {
     QString result;
 
     QFontMetrics metrics = statisticLabel->fontMetrics();
     result = "<tr><td><b>" + tr("%1").arg(caption) + "</b></td><td>"
+            + metrics.elidedText(value, Qt::ElideRight, availableSpace)
+            + "</td></tr>";
+    return result;
+}
+
+QString SequenceInfo::formTableRow(const QString& caption, const QString &value, int availableSpace) const {
+    QString result;
+
+    QFontMetrics metrics = statisticLabel->fontMetrics();
+    result = "<tr><td>" + tr("%1").arg(caption) + "</td><td>"
             + metrics.elidedText(value, Qt::ElideRight, availableSpace)
             + "</td></tr>";
     return result;

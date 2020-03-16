@@ -106,8 +106,10 @@ DNASequence DNASequenceUtils::reverse(const DNASequence& dnaSequence) {
     return newDnaSequence;
 }
 
-QByteArray DNASequenceUtils::complement(const QByteArray &sequence) {
-    const DNAAlphabet *alphabet = U2AlphabetUtils::findBestAlphabet(sequence.data(), sequence.length());
+QByteArray DNASequenceUtils::complement(const QByteArray &sequence, const DNAAlphabet *alphabet) {
+    if (nullptr == alphabet) {
+        alphabet = U2AlphabetUtils::findBestAlphabet(sequence.data(), sequence.length());
+    }
     SAFE_POINT(NULL != alphabet, L10N::nullPointerError("DNA Alphabet"), "");
 
     DNATranslation *translator = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
@@ -120,13 +122,13 @@ QByteArray DNASequenceUtils::complement(const QByteArray &sequence) {
 
 DNASequence DNASequenceUtils::complement(const DNASequence& dnaSequence) {
     DNASequence newDnaSequence(dnaSequence);
-    newDnaSequence.seq = DNASequenceUtils::complement(dnaSequence.seq);
+    newDnaSequence.seq = DNASequenceUtils::complement(dnaSequence.seq, dnaSequence.alphabet);
 
     return newDnaSequence;
 }
 
-QByteArray DNASequenceUtils::reverseComplement(const QByteArray &sequence) {
-    return reverse(complement(sequence));
+QByteArray DNASequenceUtils::reverseComplement(const QByteArray &sequence, const DNAAlphabet *alphabet) {
+    return reverse(complement(sequence, alphabet));
 }
 
 DNASequence DNASequenceUtils::reverseComplement(const DNASequence& dnaSequence) {

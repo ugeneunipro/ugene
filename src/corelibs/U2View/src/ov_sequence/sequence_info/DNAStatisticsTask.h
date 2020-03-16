@@ -30,44 +30,60 @@
 
 namespace U2 {
 
+using MononucleotidesExtinctionCoefficientsMap = QVector<int>;
+using DinucleotidesExtinctionCoefficientsMap = QVector<QVector<int>>;
+
 class DNAAlphabet;
 class U2SequenceDbi;
 
 struct DNAStatistics {
     DNAStatistics();
+
     qint64 length;
     double gcContent;
-    double molarWeight;
-    qint64 molarExtCoef;
+    double ssMolecularWeight;         // both for nucleotide and amino-acid sequences
+    double dsMolecularWeight;         // only for nucleotide sequences
+    qint64 ssExtinctionCoefficient;
+    qint64 dsExtinctionCoefficient;
     double meltingTm;
-
-    double nmoleOD260;
-    double mgOD260;
-
-    double molecularWeight;
-    double isoelectricPoint;
+    double dsNmoleOD260;
+    double ssNmoleOD260;
+    double dsMgOD260;
+    double ssMgOD260;
+    double isoelectricPoint;        // only for amino-acid sequences
 
     void clear();
 };
 
-class U2VIEW_EXPORT DNAStatisticsTask : public BackgroundTask< DNAStatistics > {
+class U2VIEW_EXPORT DNAStatisticsTask : public BackgroundTask<DNAStatistics> {
     Q_OBJECT
 public:
     DNAStatisticsTask(const DNAAlphabet* alphabet, const U2EntityRef seqRef, const QVector<U2Region>& regions);
-    virtual void run();
+
 private:
+    void run() override;
+
     const DNAAlphabet*          alphabet;
     U2EntityRef                 seqRef;
     QVector<U2Region>           regions;
 
-    qint64 nA;
-    qint64 nC;
-    qint64 nG;
-    qint64 nT;
+    QVector<qint64> charactersCount;
+    QVector<qint64> rcCharactersCount;
+    QVector<QVector<qint64>> dinucleotidesCount;
+    QVector<QVector<qint64>> rcDinucleotidesCount;
+
+    static const QVector<double> dnaMolecularWeightMap;    // DNA nucleotides molecular weights
+    static const QVector<double> rnaMolecularWeightMap;    // RNA nucleotides molecular weights
+
+    static const MononucleotidesExtinctionCoefficientsMap dnaMononucleotidesExtinctionCoefficients;
+    static const DinucleotidesExtinctionCoefficientsMap dnaDinucleotidesExtinctionCoefficients;
+    static const MononucleotidesExtinctionCoefficientsMap rnaMononucleotidesExtinctionCoefficients;
+    static const DinucleotidesExtinctionCoefficientsMap rnaDinucleotidesExtinctionCoefficients;
 
     static QVector<double> pMWMap; // protein molecular weight
     static QVector<double> pKaMap; // pKa values
     static QVector<int> pChargeMap; // protein charges
+    static QVector<double> gcRatioMap;  // how much contribution the character makes to the GC content
 
     void computeStats();
     double calcPi(U2SequenceDbi* sequenceDbi);

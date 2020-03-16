@@ -65,13 +65,13 @@ public:
     static DNASequence reverse(const DNASequence& sequence);
 
     /** Returns the complement sequence */
-    static QByteArray complement(const QByteArray &sequence);
+    static QByteArray complement(const QByteArray &sequence, const DNAAlphabet *alphabet = nullptr);
 
     /** Returns the complement DNASequence */
     static DNASequence complement(const DNASequence& sequence);
 
     /** Returns the reverse-complement sequence */
-    static QByteArray reverseComplement(const QByteArray &sequence);
+    static QByteArray reverseComplement(const QByteArray &sequence, const DNAAlphabet *alphabet = nullptr);
 
     /** Returns the reverse-complement DNASequence */
     static DNASequence reverseComplement(const DNASequence& sequence);
