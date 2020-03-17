@@ -2988,6 +2988,41 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
     CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' button is unexpectably enabled");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6541_4) {
+    //  1. Open "COI_SHORT_21x88.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "fungal - all.aln");
+    QAbstractButton *alignButton = GTAction::button(os, "Align sequence(s) to this alignment");
+    QAbstractButton *realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
+    QAbstractButton *undoButton = GTAction::button(os, "msa_action_undo");
+
+    // Select 1 sequences in the alignment.
+    // Expected result : the "Realign sequence(s) to other sequences" button is enabled.
+    GTUtilsMsaEditor::selectRows(os, 18, 18);
+    CHECK_SET_ERR(realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably disabled");
+
+    // Click "Align sequence(s) to this alignment".
+    // Expected result : the "Realign sequence(s) to other sequences" button is disabled.
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/alignment/align_sequence_to_an_alignment/TUB.msf"));
+    GTWidget::click(os, alignButton);
+    GTWidget::click(os, realignButton);
+    GTWidget::click(os, realignButton);
+    CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably enabled");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
+    GTWidget::click(os, undoButton);
+
+    // Click "Realign sequence(s) to other sequences".
+    // Expected result : the "Realign sequence(s) to other sequences" button is disabled.
+    GTUtilsMsaEditor::selectRows(os, 18, 18);
+    GTWidget::click(os, realignButton);
+    GTWidget::click(os, realignButton);
+    GTWidget::click(os, realignButton);
+    CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably enabled");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
+    GTWidget::click(os, undoButton);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6544) {
     // 1. Open a DNA sequence in the SV.
     GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
