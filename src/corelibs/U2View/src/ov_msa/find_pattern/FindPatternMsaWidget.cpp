@@ -1153,6 +1153,9 @@ void FindPatternMsaWidget::sl_onShiftEnterPressed(){
 }
 
 void FindPatternMsaWidget::sl_collapseModelChanged() {
+    if (resultIterator.getGlobalPos() == 0) {
+        return;
+    }
     resultIterator.collapseModelChanged();
     showCurrentResult();
 }
