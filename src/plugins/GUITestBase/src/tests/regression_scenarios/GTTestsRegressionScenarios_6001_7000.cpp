@@ -3004,8 +3004,6 @@ GUI_TEST_CLASS_DEFINITION(test_6541_4) {
     // Expected result : the "Realign sequence(s) to other sequences" button is disabled.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/alignment/align_sequence_to_an_alignment/TUB.msf"));
     GTWidget::click(os, alignButton);
-    GTWidget::click(os, realignButton);
-    GTWidget::click(os, realignButton);
     CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably enabled");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
@@ -3014,8 +3012,6 @@ GUI_TEST_CLASS_DEFINITION(test_6541_4) {
     // Click "Realign sequence(s) to other sequences".
     // Expected result : the "Realign sequence(s) to other sequences" button is disabled.
     GTUtilsMsaEditor::selectRows(os, 18, 18);
-    GTWidget::click(os, realignButton);
-    GTWidget::click(os, realignButton);
     GTWidget::click(os, realignButton);
     CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably enabled");
     GTUtilsTaskTreeView::waitTaskFinished(os);
