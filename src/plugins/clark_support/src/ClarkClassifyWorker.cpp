@@ -560,8 +560,9 @@ void ClarkLogParser::setLastError(const QString &errorKey) {
 
 QMap<QString, QString> ClarkLogParser::initWellKnownErrors() {
     QMap<QString, QString> result;
-    result.insert("std::bad_alloc", QCoreApplication::translate("ClarkLogParser", "There is not enough memory (RAM) to execute CLARK."));
-    result.insert("Process crashed", QCoreApplication::translate("ClarkLogParser", "CLARK process crashed. It might happened because there is not enough memory (RAM) to complete the CLARK execution."));
+    result.insert("std::bad_alloc", "There is not enough memory (RAM) to execute CLARK.");
+    result.insert("Process crashed", "CLARK process crashed. It might happened because there is not enough memory (RAM) to complete the CLARK execution.");
+
 
     return result;
 }
