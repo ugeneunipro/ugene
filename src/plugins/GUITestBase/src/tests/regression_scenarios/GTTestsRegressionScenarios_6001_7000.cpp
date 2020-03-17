@@ -3014,8 +3014,6 @@ GUI_TEST_CLASS_DEFINITION(test_6541_4) {
     GTUtilsMsaEditor::selectRows(os, 18, 18);
     GTWidget::click(os, realignButton);
     CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably enabled");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6544) {
