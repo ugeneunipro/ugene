@@ -2989,7 +2989,7 @@ GUI_TEST_CLASS_DEFINITION(test_6541_3) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6541_4) {
-    //  1. Open "COI_SHORT_21x88.aln".
+    // Open "_common_data/clustal/fungal - all.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "fungal - all.aln");
     QAbstractButton *alignButton = GTAction::button(os, "Align sequence(s) to this alignment");
     QAbstractButton *realignButton = GTAction::button(os, "Realign sequence(s) to other sequences");
@@ -3016,7 +3016,6 @@ GUI_TEST_CLASS_DEFINITION(test_6541_4) {
     CHECK_SET_ERR(!realignButton->isEnabled(), "'Realign sequence(s) to other sequences' is unexpectably enabled");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(undoButton->isEnabled(), "'Undo' button is unexpectably disabled");
-    GTWidget::click(os, undoButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6544) {
