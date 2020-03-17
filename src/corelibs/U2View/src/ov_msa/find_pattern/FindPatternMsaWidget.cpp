@@ -1153,11 +1153,10 @@ void FindPatternMsaWidget::sl_onShiftEnterPressed(){
 }
 
 void FindPatternMsaWidget::sl_collapseModelChanged() {
-    if (resultIterator.getGlobalPos() == 0) {
-        return;
+    if (resultIterator.getTotalCount() != 0) {
+        resultIterator.collapseModelChanged();
+        showCurrentResult();
     }
-    resultIterator.collapseModelChanged();
-    showCurrentResult();
 }
 
 bool FindPatternMsaWidget::isSearchPatternsDifferent(const QList<NamePattern> &newPatterns) const {
