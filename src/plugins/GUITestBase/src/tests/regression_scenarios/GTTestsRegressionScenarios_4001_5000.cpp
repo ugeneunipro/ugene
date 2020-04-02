@@ -26,7 +26,6 @@
 #include <QMainWindow>
 #include <QPlainTextEdit>
 #include <QTableView>
-#include <QWebElement>
 #include <QTextStream>
 #include <QDebug>
 

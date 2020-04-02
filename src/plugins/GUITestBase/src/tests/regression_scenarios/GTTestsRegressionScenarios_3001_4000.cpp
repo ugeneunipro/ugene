@@ -30,9 +30,6 @@
 #include <QPushButton>
 #include <QTableWidget>
 #include <QThreadPool>
-#include <QWebElement>
-#include <QWebFrame>
-#include <QWebView>
 #include <QWizard>
 #include <QTextStream>
 

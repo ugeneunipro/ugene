@@ -5,7 +5,13 @@ PLUGIN_NAME=GUI Test Base
 PLUGIN_VENDOR=Unipro
 include( ../../ugene_plugin_common.pri )
 
-QT += testlib webkitwidgets
+QT += testlib
+useWebKit() {
+    QT += webkitwidgets
+} else {
+    QT += webenginewidgets
+}
+
 
 INCLUDEPATH += ../../corelibs/U2View/_tmp/ ../../libs_3rdparty/QSpec/src
 LIBS += -lQSpec$$D

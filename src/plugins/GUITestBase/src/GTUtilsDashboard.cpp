@@ -21,9 +21,6 @@
 
 #include <QRegularExpression>
 #include <QTabWidget>
-#include <QWebElement>
-#include <QWebFrame>
-#include <QWebView>
 
 #include <GTUtilsMdi.h>
 #include <primitives/GTTabWidget.h>
@@ -99,8 +96,8 @@ const QString GTUtilsDashboard::TITLE = "title";
 const QString GTUtilsDashboard::COLLAPSED_NODE_TITLE = "Expand this branch";
 const QString GTUtilsDashboard::ON_CLICK = "onclick";
 
-QWebView* GTUtilsDashboard::getDashboard(HI::GUITestOpStatus &os) {
-    return qobject_cast<QWebView *>(getTabWidget(os)->currentWidget());
+WebView* GTUtilsDashboard::getDashboard(HI::GUITestOpStatus &os) {
+    return qobject_cast<WebView *>(getTabWidget(os)->currentWidget());
 }
 
 QTabWidget* GTUtilsDashboard::getTabWidget(HI::GUITestOpStatus &os){
@@ -290,8 +287,7 @@ void GTUtilsDashboard::clickCopyButton(GUITestOpStatus &os, const QString &toolR
 
 #define GT_METHOD_NAME "isNodeVisible"
 bool GTUtilsDashboard::isNodeVisible(GUITestOpStatus &os, const QString &nodeId) {
-    const HIWebElement nodeSpanElement = getNodeSpan(os, nodeId);
-    return nodeSpanElement.geometry().isValid();
+    return getNodeSpan(os, nodeId).isVisible();
 }
 #undef GT_METHOD_NAME
 

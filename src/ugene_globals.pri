@@ -336,6 +336,6 @@ defineTest(useWebKit) {
     return(false)
 }
 
-if (exclude_list_enabled() | !useWebKit()) {
+if (exclude_list_enabled()) {
     DEFINES += HI_EXCLUDED
 }

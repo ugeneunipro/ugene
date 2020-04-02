@@ -7,7 +7,14 @@ QMAKE_PROJECT_NAME = QSpec
 TEMPLATE = lib
 CONFIG += thread debug_and_release warn_off qt dll
 INCLUDEPATH += src _tmp
-QT += testlib webkitwidgets
+QT += testlib
+
+useWebKit() {
+    QT += webkitwidgets
+} else {
+    QT += webenginewidgets
+}
+
 
 DEFINES += BUILDING_QSPEC_DLL
 DEFINES += QT_DLL

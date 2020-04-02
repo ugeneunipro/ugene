@@ -1653,7 +1653,7 @@ GUI_TEST_CLASS_DEFINITION(test_6240) {
     GTGlobals::sleep();
 
     //Expected: The dashboard appears
-    QWebView *dashboard = GTUtilsDashboard::getDashboard(os);
+    QWidget *dashboard = GTUtilsDashboard::getDashboard(os);
     CHECK_SET_ERR(dashboard != NULL, "Dashboard isn't found");
 }
 

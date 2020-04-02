@@ -114,12 +114,8 @@ if (useWebKit()) {
 
 GUI_TESTING_ENABLED = 0
 if (exists(./src/libs_3rdparty/QSpec/QSpec.pro): !exclude_list_enabled()) {
-    if (!useWebKit()) {
-        message ("QT WebEngine is used, GUI testing is disabled")
-    } else {
-        message( "GUI testing is enabled" )
-        GUI_TESTING_ENABLED = 1
-    }
+    message( "GUI testing is enabled" )
+    GUI_TESTING_ENABLED = 1
 }
 
 !equals(GUI_TESTING_ENABLED, 1) {

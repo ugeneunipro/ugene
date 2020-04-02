@@ -224,6 +224,13 @@ void setWorkflowOutputDir(GUITestOpStatus &os, const QString &path) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
 }
 
+QString getQuotedString(const QString& string) {
+    if (string.contains(QRegularExpression("\\s"))) {
+        return "\"" + string + "\"";
+    }
+    return string;
+}
+
 }
 
 GUI_TEST_CLASS_DEFINITION(misc_test_0001) {
@@ -1116,7 +1123,8 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0003) {
 
     const QString clustaloRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(os, clustaloRunCommandNodeId, 0);
     nodeText = GTUtilsDashboard::getNodeText(os, clustaloRunCommandContentNodeId);
-    const QString expectedNodeTextPart = QString("\"%1\" ").arg(toolPath);
+
+    const QString expectedNodeTextPart = getQuotedString(toolPath) + " ";
     CHECK_SET_ERR(nodeText.startsWith(expectedNodeTextPart),
                   QString("Tool run command doesn't start with the following expected part: '%1'. Full command: '%2'")
                   .arg(expectedNodeTextPart).arg(nodeText));
@@ -1248,7 +1256,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0005) {
 
     const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(os, cutadaptRunCommandNodeId, 0);
     nodeText = GTUtilsDashboard::getNodeText(os, cutadaptRunCommandContentNodeId);
-    const QString expectedNodeTextPart = QString("\"%1\" ").arg(pythonToolPath);
+    const QString expectedNodeTextPart = getQuotedString(pythonToolPath) + " ";
     CHECK_SET_ERR(nodeText.startsWith(expectedNodeTextPart),
                   QString("Tool run command doesn't start with the following expected part: '%1'. Full command: '%2'")
                   .arg(expectedNodeTextPart).arg(nodeText));
@@ -1308,7 +1316,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0006) {
 
     const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(os, cutadaptRunCommandNodeId, 0);
     nodeText = GTUtilsDashboard::getNodeText(os, cutadaptRunCommandContentNodeId);
-    const QString expectedNodeTextPart = QString("\"%1\" ").arg(cutadaptToolPath);
+    const QString expectedNodeTextPart = getQuotedString(cutadaptToolPath) + " ";
     CHECK_SET_ERR(nodeText.contains(expectedNodeTextPart),
                   QString("Tool run command doesn't contain the following expected part: '%1'. Full command: '%2'")
                   .arg(expectedNodeTextPart).arg(nodeText));
@@ -1383,7 +1391,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0007) {
 
     const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(os, cutadaptRunCommandNodeId, 0);
     nodeText = GTUtilsDashboard::getNodeText(os, cutadaptRunCommandContentNodeId);
-    const QString expectedNodeTextPart = QString("\"%1\" \"%2\" ").arg(pythonToolPath).arg(cutadaptToolPath);
+    const QString expectedNodeTextPart = getQuotedString(pythonToolPath) + " " + getQuotedString(cutadaptToolPath) + " ";
     CHECK_SET_ERR(nodeText.startsWith(expectedNodeTextPart),
                   QString("Tool run command doesn't start with the following expected part: '%1'. Full command: '%2'")
                   .arg(expectedNodeTextPart).arg(nodeText));

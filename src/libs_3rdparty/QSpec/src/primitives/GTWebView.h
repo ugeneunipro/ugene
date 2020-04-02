@@ -22,17 +22,36 @@
 #ifndef GTWEBVIEW_H
 #define GTWEBVIEW_H
 
+#ifdef UGENE_WEB_KIT
+#include <QWebPage>
+#include <WebView>
+#else
+#include <QWebEnginePage>
+#include <QWebEngineView>
+#endif
+
 #include "GTGlobals.h"
 
-#include <QWebView>
-#include <QWebElement>
+#ifdef UGENE_WEB_KIT
+typedef class QWebView WebView;
+typedef class QWebPage WebPage;
+#else
+typedef class QWebEngineView WebView;
+typedef class QWebEnginePage WebPage;
+#endif
 
 namespace HI {
 
 class HI_EXPORT HIWebElement{
 public:
     HIWebElement();
-    HIWebElement(const QWebElement& el);
+    HIWebElement(const QRect &rect,
+                 const QString &text,
+                 const QString &xml,
+                 const QString &tag,
+                 const QString &idAttribute,
+                 const QMap<QString, QString> &attributesMap,
+                 const bool isVisible);
 
     const QRect &geometry() const;
     const QString &toInnerXml() const;
@@ -41,35 +60,37 @@ public:
     const QString &id() const;
     const QMap<QString, QString> &attributes() const;
     QString attribute(const QString &name, const QString &defaultValue = QString()) const;
+    bool isVisible() const;
 
-private:
+protected:
     QRect rect;
     QString text;
     QString xml;
     QString tag;
     QString idAttribute;
     QMap<QString, QString> attributesMap;
+    bool visible;
 };
 
-class HI_EXPORT GTWebView{
+class HI_EXPORT GTWebView {
 public:
-    static HIWebElement findElement(GUITestOpStatus &os, QWebView *view, const QString &text, const QString &tag = "*", bool exactMatch = false);
-    static HIWebElement findElementById(GUITestOpStatus &os, QWebView *view, const QString &id, const QString &tag = "*");
-    static QList<HIWebElement> findElementsById(GUITestOpStatus &os, QWebView *view, const QString &id, const QString &tag = "*", const HIWebElement &parentElement = HIWebElement());
+    static HIWebElement findElement(GUITestOpStatus &os, WebView *view, const QString &text, const QString &tag = "*", bool exactMatch = false);
+    static HIWebElement findElementById(GUITestOpStatus &os, WebView *view, const QString &id, const QString &tag = "*");
+    static QList<HIWebElement> findElementsById(GUITestOpStatus &os, WebView *view, const QString &id, const QString &tag = "*", const HIWebElement &parentElement = HIWebElement());
 
     // Selectors: https://www.w3.org/TR/selectors/
-    static HIWebElement findElementBySelector(GUITestOpStatus &os, QWebView *view, const QString &selector, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
-    static QList<HIWebElement> findElementsBySelector(GUITestOpStatus &os, QWebView *view, const QString &selector, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+    static HIWebElement findElementBySelector(GUITestOpStatus &os, WebView *view, const QString &selector, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+    static QList<HIWebElement> findElementsBySelector(GUITestOpStatus &os, WebView *view, const QString &selector, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 
-    static void checkElement(GUITestOpStatus &os, QWebView *view, QString text, QString tag = "*", bool exists = true, bool exactMatch = false);
-    static bool doesElementExist(GUITestOpStatus &os, QWebView *view, const QString &text, const QString &tag = "*", bool exactMatch = false);
+    static void checkElement(GUITestOpStatus &os, WebView *view, QString text, QString tag = "*", bool exists = true, bool exactMatch = false);
+    static bool doesElementExist(GUITestOpStatus &os, WebView *view, const QString &text, const QString &tag = "*", bool exactMatch = false);
 
-    static void click(GUITestOpStatus &os, QWebView *view, HIWebElement el, Qt::MouseButton button = Qt::LeftButton);
-    static void selectElementText(GUITestOpStatus &os, QWebView *view, HIWebElement el);
-    static HIWebElement findTreeElement(GUITestOpStatus &os, QWebView *view, QString text);
-    static HIWebElement findContextMenuElement(GUITestOpStatus &os, QWebView *view, QString text);
+    static void click(GUITestOpStatus &os, WebView *view, HIWebElement el, Qt::MouseButton button = Qt::LeftButton);
+    static void selectElementText(GUITestOpStatus &os, WebView *view, HIWebElement el);
+    static HIWebElement findTreeElement(GUITestOpStatus &os, WebView *view, QString text);
+    static HIWebElement findContextMenuElement(GUITestOpStatus &os, WebView *view, QString text);
 
-    static void traceAllWebElements(GUITestOpStatus &os, QWebView *view);
+    static void traceAllWebElements(GUITestOpStatus &os, WebView *view);
 };
 
 }
