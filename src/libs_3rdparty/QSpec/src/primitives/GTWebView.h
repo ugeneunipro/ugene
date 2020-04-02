@@ -62,7 +62,7 @@ public:
     QString attribute(const QString &name, const QString &defaultValue = QString()) const;
     bool isVisible() const;
 
-protected:
+private:
     QRect rect;
     QString text;
     QString xml;
