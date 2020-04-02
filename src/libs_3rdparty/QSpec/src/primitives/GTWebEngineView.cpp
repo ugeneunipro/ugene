@@ -26,17 +26,6 @@
 #include "utils/GTThread.h"
 
 namespace HI {
-namespace {
-
-bool compare(const QString &s1, const QString &s2, bool exactMatch) {
-    if (exactMatch) {
-        return s1 == s2;
-    } else {
-        return s1.contains(s2);
-    }
-}
-
-}
 
 void SynchronizedCall::run(QWebEngineView *view, const QString &scriptSource, const std::function<void(QVariant)> &resultCallback) {
     SynchronizedCall instance;
@@ -47,7 +36,6 @@ void SynchronizedCall::run(QWebEngineView *view, const QString &scriptSource, co
     };
     view->page()->runJavaScript(scriptSource, innerCallback);
     instance.eventLoop.exec();
-    int ggg = 0;
 }
 
 #define GT_CLASS_NAME "GTWebEngineView"
@@ -62,42 +50,6 @@ const QString GTWebEngineView::TAG = "tag";
 const QString GTWebEngineView::ID = "id";
 const QString GTWebEngineView::ATTRIBUTES_MAP = "attributes_map";
 const QString GTWebEngineView::VISIBLE = "visible";
-
-#define GT_METHOD_NAME "findElement"
-HIWebElement GTWebEngineView::findElement(GUITestOpStatus &os, QWebEngineView *view, const QString &text, const QString &tag, bool exactMatch) {
-    foreach (const HIWebElement &element, findElementsBySelector(os, view, tag, GTGlobals::FindOptions())) {
-        if (compare(element.toPlainText(), text, exactMatch)) {
-            return element;
-        }
-    }
-
-    GT_CHECK_RESULT(false, QString("element with text '%1' and tag '%2' not found").arg(text).arg(tag), HIWebElement());
-    return HIWebElement();
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "findElementById"
-HIWebElement GTWebEngineView::findElementById(GUITestOpStatus &os, QWebEngineView *view, const QString &id, const QString &tag) {
-    const QString selector = id.isEmpty() ? tag : QString("%1 [id='%2']").arg(tag).arg(id);
-    return findElementBySelector(os, view, selector, GTGlobals::FindOptions());
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "findElementsById"
-QList<HIWebElement> GTWebEngineView::findElementsById(GUITestOpStatus &os, QWebEngineView *view, const QString &id, const QString &tag, const HIWebElement &parentElement) {
-    const QString parentQuery = parentElement.tagName().isEmpty() ? "" : parentElement.tagName() + (id.isEmpty() ? ""  : "[id=" + parentElement.id() + "]") + " ";
-    const QString elementQuery = tag + (id.isEmpty() ? ""  : "[id=" + id + "]");
-    return findElementsBySelector(os, view, parentQuery + elementQuery, GTGlobals::FindOptions());
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "findElementBySelector"
-HIWebElement GTWebEngineView::findElementBySelector(GUITestOpStatus &os, QWebEngineView *view, const QString &selector, const GTGlobals::FindOptions &options) {
-    const QList<HIWebElement> elements = findElementsBySelector(os, view, selector, options);
-    GT_CHECK_RESULT(!options.failIfNotFound || !elements.isEmpty(), QString("There are no elements that match selector '%1'").arg(selector), HIWebElement());
-    return elements.first();
-}
-#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findElementsBySelector"
 QList<HIWebElement> GTWebEngineView::findElementsBySelector(GUITestOpStatus &os, QWebEngineView *view, const QString &selector, const GTGlobals::FindOptions &options) {
@@ -169,9 +121,9 @@ QList<HIWebElement> GTWebEngineView::findElementsBySelector(GUITestOpStatus &os,
     QList<HIWebElement> filteredElements;
     if (options.searchInHidden) {
         filteredElements = elements;
-    } else{
-        foreach(const HIWebElement & element, elements) {
-            if (0 < element.geometry().width()) {
+    } else {
+        foreach(const HIWebElement &element, elements) {
+            if (element.isVisible()) {
                 filteredElements << element;
             }
         }
@@ -181,46 +133,6 @@ QList<HIWebElement> GTWebEngineView::findElementsBySelector(GUITestOpStatus &os,
     return filteredElements;
 }
 #undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "checkElement"
-void GTWebEngineView::checkElement(GUITestOpStatus &os, QWebEngineView *view, QString text, QString tag, bool exists, bool exactMatch){
-    const bool found = doesElementExist(os, view, text, tag, exactMatch);
-    if (exists) {
-        GT_CHECK(found, "element with text " + text + " and tag " + tag + " not found");
-    } else {
-        GT_CHECK(!found, "element with text " + text + " and tag " + tag + " unexpectedly found");
-    }
-}
-#undef GT_METHOD_NAME
-
-#define GT_METHOD_NAME "doesElementExist"
-bool GTWebEngineView::doesElementExist(GUITestOpStatus &os, QWebEngineView *view, const QString &text, const QString &tag, bool exactMatch) {
-    GTGlobals::FindOptions options;
-    options.failIfNotFound = false;
-    foreach (const HIWebElement &element, findElementsBySelector(os, view, tag, options)) {
-        if (compare(element.toPlainText(), text, exactMatch)) {
-            return true;
-        }
-    }
-    return false;
-}
-#undef GT_METHOD_NAME
-
-HIWebElement GTWebEngineView::findTreeElement(GUITestOpStatus &os, QWebEngineView *view, QString text) {
-    return findElement(os, view, text, "SPAN");
-}
-
-HIWebElement GTWebEngineView::findContextMenuElement(GUITestOpStatus &os, QWebEngineView *view, QString text ){
-    return findElement(os, view, text, "LI");
-}
-
-void GTWebEngineView::traceAllWebElements(GUITestOpStatus &os, QWebEngineView *view) {
-    GTGlobals::FindOptions options;
-    options.failIfNotFound = false;
-    foreach (const HIWebElement &element, findElementsBySelector(os, view, "*", options)) {
-        qDebug("GT_DEBUG_MESSAGE tag: '%s'; text: '%s'; width: %d", qPrintable(element.tagName()), qPrintable(element.toPlainText()), element.geometry().width());
-    }
-}
 
 HIWebElement GTWebEngineView::toHiWebElement(const QMap<QString, QVariant> &map) {
     QMap<QString, QString> attributesMap;

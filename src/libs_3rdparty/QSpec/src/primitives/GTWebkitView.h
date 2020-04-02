@@ -32,28 +32,13 @@ namespace HI {
 
 class HI_EXPORT GTWebkitView {
 public:
-    static HIWebElement findElement(GUITestOpStatus &os, QWebView *view, const QString &text, const QString &tag = "*", bool exactMatch = false);
-    static HIWebElement findElementById(GUITestOpStatus &os, QWebView *view, const QString &id, const QString &tag = "*");
-    static QList<HIWebElement> findElementsById(GUITestOpStatus &os, QWebView *view, const QString &id, const QString &tag = "*", const HIWebElement &parentElement = HIWebElement());
-
-    // Selectors: https://www.w3.org/TR/selectors/
-    static HIWebElement findElementBySelector(GUITestOpStatus &os, QWebView *view, const QString &selector, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
     static QList<HIWebElement> findElementsBySelector(GUITestOpStatus &os, QWebView *view, const QString &selector, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
-
-    static void checkElement(GUITestOpStatus &os, QWebView *view, QString text, QString tag = "*", bool exists = true, bool exactMatch = false);
-    static bool doesElementExist(GUITestOpStatus &os, QWebView *view, const QString &text, const QString &tag = "*", bool exactMatch = false);
-
-    static HIWebElement findTreeElement(GUITestOpStatus &os, QWebView *view, QString text);
-    static HIWebElement findContextMenuElement(GUITestOpStatus &os, QWebView *view, QString text);
-
-    static void traceAllWebElements(GUITestOpStatus &os, QWebView *view);
 
 private:
     static HIWebElement toHiWebEleent(const QWebElement &element);
 };
 
 typedef class GTWebkitView GTWebViewPrivate;
-
 
 }
 
