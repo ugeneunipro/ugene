@@ -76,8 +76,6 @@
 #include <U2View/SequenceObjectContext.h>
 
 #include "annotations/AssemblyAnnotationsArea.h"
-#include "annotations/tree_view/AssemblyAnnotationsTreeView.h"
-#include "annotations/tree_view/AssemblyAnnotationsTreeViewModel.h"
 #include "AssemblyBrowser.h"
 #include "AssemblyBrowserFactory.h"
 #include "AssemblyBrowserSettings.h"
@@ -1094,32 +1092,6 @@ void AssemblyBrowser::addContextToModel(U2SequenceObject* so) {
     SequenceObjectContext* ctx = new SequenceObjectContext(so, nullptr);
     model->setSequenceObjectContext(ctx);
     CHECK(nullptr != ui, );
-
-    AssemblyAnnotationsTreeView* annTreeView = ui->getAnnotationsTreeView();
-    SAFE_POINT(nullptr != annTreeView, "Assembly Annotation Tree View is missed", );
-
-    connect(ctx->getAnnotationsSelection(),
-            SIGNAL(si_selectionChanged(AnnotationSelection*,
-                                       const QList<Annotation*>&,
-                                       const QList<Annotation*>&)),
-            annTreeView,
-            SLOT(sl_onAnnotationSelectionChanged(AnnotationSelection*,
-                                                 const QList<Annotation*>&,
-                                                 const QList<Annotation*>&)));
-
-    connect(ctx, SIGNAL(si_clearSelectedAnnotationRegions()),
-            annTreeView, SLOT(sl_clearSelectedAnnotations()));
-
-    QAbstractItemModel* annTreeViewModel = annTreeView->model();
-    SAFE_POINT(nullptr != annTreeViewModel, "Assembly Annotation Tree View Model is missed", );
-
-    connect(ctx, SIGNAL(si_annotationObjectAdded(AnnotationTableObject*)),
-            annTreeViewModel, SLOT(sl_annotationObjectAdded(AnnotationTableObject*)));
-    connect(ctx, SIGNAL(si_annotationObjectRemoved(AnnotationTableObject*)),
-            annTreeViewModel, SLOT(sl_annotationObjectRemoved(AnnotationTableObject*)));
-
-    connect(model.data(), SIGNAL(si_contextChanged(SequenceObjectContext*)),
-            annTreeViewModel, SLOT(sl_contextChanged(SequenceObjectContext*)));
 }
 
 void AssemblyBrowser::sl_setReference() {
@@ -1189,7 +1161,6 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser * browser_)
                                                       readsArea(nullptr),
                                                       variantsArea(nullptr),
                                                       annotationsArea(nullptr),
-                                                      annotationsTreeView(nullptr),
                                                       nothingToVisualize(true) {
     U2OpStatusImpl os;
     if(browser->getModel()->hasReads(os)) { // has mapped reads -> show rich visualization
@@ -1206,7 +1177,6 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser * browser_)
         readsArea  = new AssemblyReadsArea(this, readsHBar, readsVBar);
         variantsArea = new AssemblyVariantsArea(this);
         annotationsArea = new AssemblyAnnotationsArea(this);
-        annotationsTreeView = new AssemblyAnnotationsTreeView(this);
 
         QVBoxLayout *mainVerticalLayout = new QVBoxLayout();
         mainVerticalLayout->setMargin(0);
@@ -1237,7 +1207,6 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser * browser_)
         mainLayoutContainer->setLayout(mainVerticalLayout);
 
         QSplitter* assemblySplitter = new QSplitter(this);
-        assemblySplitter->addWidget(annotationsTreeView);
         assemblySplitter->addWidget(mainLayoutContainer);
         int annTreeViewWidth = width() / 6;
         assemblySplitter->setSizes(QList<int>() << annTreeViewWidth << width() - annTreeViewWidth);
@@ -1275,11 +1244,7 @@ AssemblyBrowserUi::AssemblyBrowserUi(AssemblyBrowser * browser_)
         connect(browser->getModel().data(), SIGNAL(si_referenceChanged()), consensusArea, SLOT(sl_redraw()));
         connect(zoomableOverview, SIGNAL(si_coverageReady()), readsArea, SLOT(sl_redraw()));
         connect(referenceArea, SIGNAL(si_unassociateReference()), browser, SLOT(sl_unassociateReference()));
-        connect(browser->getModel().data(), SIGNAL(si_contextChanged(SequenceObjectContext*)),
-                annotationsTreeView->model(), SLOT(sl_contextChanged(SequenceObjectContext*)));
-    }
-    // do not how to show them
-    else {
+    } else { // do not how to show them
         QVBoxLayout * mainLayout = new QVBoxLayout();
         QString msg = tr("Assembly has no mapped reads. Nothing to visualize.");
         QLabel * infoLabel = new QLabel(QString("<table align=\"center\"><tr><td>%1</td></tr></table>").arg(msg), this);

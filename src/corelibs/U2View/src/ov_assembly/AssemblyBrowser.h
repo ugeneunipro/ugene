@@ -247,7 +247,6 @@ class AssemblyRuler;
 class AssemblyReadsArea;
 class AssemblyVariantsArea;
 class AssemblyAnnotationsArea;
-class AssemblyAnnotationsTreeView;
 
 class U2VIEW_EXPORT AssemblyBrowserUi : public QWidget {
     Q_OBJECT
@@ -264,7 +263,6 @@ public:
     inline AssemblyConsensusArea * getConsensusArea() const {return consensusArea;}
     inline AssemblyVariantsArea * getVariantsArea() const {return variantsArea;}
     inline AssemblyAnnotationsArea * getAnnotationsArea() const {return annotationsArea;}
-    inline AssemblyAnnotationsTreeView * getAnnotationsTreeView() const { return annotationsTreeView; }
     inline bool isCorrectView() const {return !nothingToVisualize;}
 
     QColor getCoverageColor(double grayCoeff);
@@ -279,7 +277,6 @@ private:
     AssemblyReadsArea*           readsArea;
     AssemblyVariantsArea*        variantsArea;
     AssemblyAnnotationsArea*     annotationsArea;
-    AssemblyAnnotationsTreeView* annotationsTreeView;
     bool nothingToVisualize;
 };
 

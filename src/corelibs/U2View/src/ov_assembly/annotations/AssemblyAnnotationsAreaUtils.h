@@ -31,14 +31,12 @@ namespace U2 {
 
 class Annotation;
 class AnnotationTableObject;
-class AssemblyAnnotationsTreeViewModel;
 class U2Qualifier;
 
 class AssemblyAnnotationsAreaUtils {
 public:
     static QItemSelection getSelectionFromIndexList(const QModelIndexList& inedexList);
-    static QItemSelection rowSelection(AssemblyAnnotationsTreeViewModel* treeViewModel,
-                                       const QModelIndex& rowIndex);
+
     static QVariantList getTableObjData(AnnotationTableObject* obj);
     static QVariantList getAnnotationData(Annotation* ann);
     static QVariantList getQualifierData(const U2Qualifier& qualifier);
