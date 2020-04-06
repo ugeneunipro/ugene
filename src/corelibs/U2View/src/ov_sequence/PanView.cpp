@@ -50,50 +50,43 @@
 
 namespace U2 {
 
-/**********************/
-/*PanViewLinesSettings*/
-/**********************/
-
 PanViewLinesSettings::PanViewLinesSettings()
     : numLines(0),
       rowLinesOffset(0),
       showMainRuler(true),
-      showCustomRulers(true),
-      showSequence(true) {
+      showCustomRulers(true) {
 }
 
 int PanViewLinesSettings::getRowLine(int i) const {
-    int firstRowLine = getFirstRowLine();
-    int line = firstRowLine - i + rowLinesOffset;
-    if (line < 0 || line > firstRowLine) {
+    int line = getFirstRowLine() - i + rowLinesOffset;
+    if (line < 0 || line > getFirstRowLine()) {
         return -1;
     }
     return line;
 }
 
 int PanViewLinesSettings::getSelectionLine() const {
-    SAFE_POINT_EXT(showSequence, "Trying to get sequence line, but it's not visible", -1);
     return numLines - 1;
 }
 
 int PanViewLinesSettings::getRulerLine() const {
     SAFE_POINT(showMainRuler, "Trying to get ruler line, but it's not visible", -1);
-    return numLines - 1 - (showSequence ? 1 : 0);
+    return numLines - 2;
 }
 
 int PanViewLinesSettings::getCustomRulerLine(int n) const {
     SAFE_POINT(showCustomRulers, "Trying to get custom ruler line, but it's not visible", -1);
     SAFE_POINT(n >= 0 && n < customRulers.count(), "Invalid number of custom ruler", -1);
 
-    return numLines - 1 - (showSequence ? 1 : 0) - (showMainRuler ? 1 : 0) - n;
+    return numLines - (showMainRuler ? 3 : 2) - n;
 }
 
 int PanViewLinesSettings::getFirstRowLine() const {
-    return numLines - 1 - (showSequence ? 1 : 0) - (showMainRuler ? 1 : 0) - (showCustomRulers ? customRulers.count() : 0);
+    return numLines - 2 - (showMainRuler ? 1 : 0) - (showCustomRulers ? customRulers.count() : 0 );
 }
 
 int PanViewLinesSettings::getAdditionalLines() const {
-    return (showSequence ? 1 : 0) + (showMainRuler ? 1 : 0) + (showCustomRulers ? customRulers.size() : 0);
+    return 1 + (showMainRuler ? 1 : 0) + (showCustomRulers ? customRulers.size() : 0);
 }
 
 int PanViewLinesSettings::getNumVisibleRows() const {
@@ -103,62 +96,6 @@ int PanViewLinesSettings::getNumVisibleRows() const {
 bool PanViewLinesSettings::isRowVisible(int row) const {
     return getRowLine(row) >= 0;
 }
-
-int PanViewLinesSettings::getNumLines() const {
-    return numLines;
-}
-
-void PanViewLinesSettings::setNumLines(int _numLines) {
-    numLines = _numLines;
-}
-
-int PanViewLinesSettings::getRowLinesOffset() const {
-    return rowLinesOffset;
-}
-
-void PanViewLinesSettings::setRowLinesOffset(int _rowLinesOffset) {
-    rowLinesOffset = _rowLinesOffset;
-}
-
-bool PanViewLinesSettings::isMainRulerShown() const {
-    return showMainRuler;
-}
-
-void PanViewLinesSettings::setShowMainRuler(bool show) {
-    showMainRuler = show;
-}
-
-bool PanViewLinesSettings::isCustomRulersShown() const {
-    return showCustomRulers;
-}
-
-void PanViewLinesSettings::setShowCustomRulers(bool show) {
-    showCustomRulers = show;
-}
-
-bool PanViewLinesSettings::isSequenceShown() const {
-    return showSequence;
-}
-
-void PanViewLinesSettings::setShowSequence(bool show) {
-    showSequence = show;
-}
-
-QList<RulerInfo>& PanViewLinesSettings::getCustomRulers() {
-    return customRulers;
-}
-
-const QList<RulerInfo>& PanViewLinesSettings::getCustomRulers() const {
-    return customRulers;
-}
-
-void PanViewLinesSettings::appendCustomRuler(const RulerInfo& r) {
-    customRulers.append(r);
-}
-
-/**********************/
-/*PanView*/
-/**********************/
 
 PanView::ZoomUseObject::ZoomUseObject()
 : usingZoom(false), panView(NULL) {}
@@ -239,14 +176,14 @@ PanView::PanView(QWidget* p, SequenceObjectContext* ctx, const PanViewRenderArea
     toggleMainRulerAction = new QAction(tr("Show Main Ruler"), this);
     toggleMainRulerAction->setObjectName("Show Main Ruler");
     toggleMainRulerAction->setCheckable(true);
-    toggleMainRulerAction->setChecked(settings->isMainRulerShown());
+    toggleMainRulerAction->setChecked(settings->showMainRuler);
     connect(toggleMainRulerAction, SIGNAL(triggered(bool)), SLOT(sl_toggleMainRulerVisibility(bool)));
 
     toggleCustomRulersAction = new QAction(tr("Show Custom Rulers"), this);
     toggleCustomRulersAction->setObjectName("Show Custom Rulers");
     toggleCustomRulersAction->setCheckable(true);
-    toggleCustomRulersAction->setChecked(settings->isCustomRulersShown());
-    toggleCustomRulersAction->setEnabled(!settings->getCustomRulers().isEmpty());
+    toggleCustomRulersAction->setChecked(settings->showCustomRulers);
+    toggleCustomRulersAction->setEnabled(!settings->customRulers.isEmpty());
     connect(toggleCustomRulersAction, SIGNAL(triggered(bool)), SLOT(sl_toggleCustomRulersVisibility(bool)));
 
     addActionToLocalToolbar(zoomInAction);
@@ -266,9 +203,9 @@ PanView::PanView(QWidget* p, SequenceObjectContext* ctx, const PanViewRenderArea
     updateActions();
     updateRowBar();
 
-    settings->setNumLines(qMin(MAX_VISIBLE_ROWS_ON_START, rowsManager->getNumRows() + settings->getAdditionalLines()));
+    settings->numLines = qMin(MAX_VISIBLE_ROWS_ON_START, rowsManager->getNumRows() + settings->getAdditionalLines());
 
-    resize(width(), getRenderArea()->getRowLineHeight() * settings->getNumLines() );
+    resize(width(), getRenderArea()->getRowLineHeight() * settings->numLines );
 
     pack();
 }
@@ -329,7 +266,7 @@ int  PanView::calculateNumRowBarSteps() const {
 }
 
 void PanView::setNumVisibleRows(int rowNum) {
-    settings->setNumLines(qMin( rowNum, rowsManager->getNumRows() + settings->getAdditionalLines()));
+    settings->numLines = qMin( rowNum, rowsManager->getNumRows() + settings->getAdditionalLines());
 
     addUpdateFlags(GSLV_UF_ViewResized);
     update();
@@ -349,8 +286,8 @@ void PanView::updateRowBar() {
     rowBar->setMaximum(0);
     rowBar->setSingleStep(1);
     rowBar->setPageStep(visibleRows - 1);
-    int rowsOffset = qMin(maxSteps, settings->getRowLinesOffset());
-    settings->setRowLinesOffset(rowsOffset);
+    int rowsOffset = qMin(maxSteps, settings->rowLinesOffset);
+    settings->rowLinesOffset = rowsOffset;
     rowBar->setSliderPosition( - rowsOffset);
     rowBar->setEnabled(maxSteps > 0);
 
@@ -358,7 +295,7 @@ void PanView::updateRowBar() {
 }
 
 void PanView::sl_onRowBarMoved(int v) {
-    settings->setRowLinesOffset(-v); // '-' because of inverted appearance
+    settings->rowLinesOffset = - v; // '-' because of inverted appearance
     addUpdateFlags(GSLV_UF_NeedCompleteRedraw);
     update();
 }
@@ -530,7 +467,7 @@ void PanView::ensureVisible(Annotation *a, int locationIdx) {
 
 void PanView::centerRow(int row) {
     int targetFirstRowLine = qMax(0, row - settings->getNumVisibleRows() / 2);
-    int rowOnTheFirstLine = settings->getRowLinesOffset();
+    int rowOnTheFirstLine = settings->rowLinesOffset;
     if (targetFirstRowLine == rowOnTheFirstLine) {
         return;
     }
@@ -558,12 +495,12 @@ PanViewRenderArea* PanView::getRenderArea() const {
 }
 
 QList<RulerInfo> PanView::getCustomRulers() const {
-    return settings->getCustomRulers();
+    return settings->customRulers;
 }
 
 void PanView::addCustomRuler(const RulerInfo& r) {
-    settings->appendCustomRuler(r);
-    if (settings->isCustomRulersShown()) {
+    settings->customRulers.append(r);
+    if (settings->showCustomRulers) {
         addUpdateFlags(GSLV_UF_NeedCompleteRedraw);
         update();
     }
@@ -571,15 +508,14 @@ void PanView::addCustomRuler(const RulerInfo& r) {
 }
 
 void PanView::removeCustomRuler(const QString& name) {
-    QList<RulerInfo>& customRulers = settings->getCustomRulers();
-    for (int i = 0, n = customRulers.count(); i < n; i++) {
-        if (customRulers[i].name == name) {
-            customRulers.removeAt(i);
+    for (int i=0, n = settings->customRulers.count(); i < n; i++) {
+        if (settings->customRulers[i].name == name) {
+            settings->customRulers.removeAt(i);
             break;
         }
     }
-    toggleCustomRulersAction->setEnabled(!customRulers.isEmpty());
-    if (settings->isCustomRulersShown()) {
+    toggleCustomRulersAction->setEnabled(!settings->customRulers.isEmpty());
+    if (settings->showCustomRulers) {
         addUpdateFlags(GSLV_UF_NeedCompleteRedraw);
         update();
     }
@@ -587,9 +523,8 @@ void PanView::removeCustomRuler(const QString& name) {
 
 void PanView::removeAllCustomRulers() {
     toggleCustomRulersAction->setEnabled(false);
-    QList<RulerInfo>& customRulers = settings->getCustomRulers();
-    if (!customRulers.isEmpty()) {
-        customRulers.clear();
+    if (!settings->customRulers.isEmpty()) {
+        settings->customRulers.clear();
 
         addUpdateFlags(GSLV_UF_NeedCompleteRedraw);
         update();
@@ -597,18 +532,19 @@ void PanView::removeAllCustomRulers() {
 }
 
 void PanView::sl_toggleMainRulerVisibility(bool visible) {
-    settings->setShowMainRuler(visible);
+    settings->showMainRuler = visible;
 
     addUpdateFlags(GSLV_UF_NeedCompleteRedraw);
     update();
 }
 
 void PanView::sl_toggleCustomRulersVisibility(bool visible) {
-    settings->setShowCustomRulers(visible);
+    settings->showCustomRulers = visible;
 
     addUpdateFlags(GSLV_UF_NeedCompleteRedraw);
     update();
 }
+
 
 void PanView::setSyncOffset(int o) {
     if (o == syncOffset) {

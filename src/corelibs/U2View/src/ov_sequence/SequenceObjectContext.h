@@ -106,7 +106,6 @@ public:
     StatisticsCache<DNAStatistics> *getCommonStatisticsCache();
     StatisticsCache<CharactersOccurrence> *getCharactersOccurrenceCache();
     StatisticsCache<DinucleotidesOccurrence> *getDinucleotidesOccurrenceCache();
-    void clearAllSelections();
 
 private slots:
     void sl_setAminoTranslation();

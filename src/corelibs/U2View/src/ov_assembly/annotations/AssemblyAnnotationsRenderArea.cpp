@@ -21,7 +21,7 @@
 
 #include <U2Core/U2SafePoints.h>
 
-#include "../AssemblyBrowser.h"
+#include "..\AssemblyBrowser.h"
 #include "AssemblyAnnotationsRenderArea.h"
 
 namespace U2 {

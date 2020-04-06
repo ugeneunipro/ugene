@@ -70,32 +70,11 @@ public:
 
     bool isRowVisible(int row) const;
 
-    int getNumLines() const;
-    void setNumLines(int numLines);
-
-    int getRowLinesOffset() const;
-    void setRowLinesOffset(int rowLinesOffset);
-
-    bool isMainRulerShown() const;
-    void setShowMainRuler(bool show);
-
-    bool isCustomRulersShown() const;
-    void setShowCustomRulers(bool show);
-
-    bool isSequenceShown() const;
-    void setShowSequence(bool show);
-
-    QList<RulerInfo>& getCustomRulers();
-    const QList<RulerInfo>& getCustomRulers() const;
-    void appendCustomRuler(const RulerInfo& r);
-
-private:
     int                 numLines;       // number of visible lines
     int                 rowLinesOffset; // row number on the first row line
 
     bool                showMainRuler;
     bool                showCustomRulers;
-    bool                showSequence;
     QList<RulerInfo>    customRulers;
 };
 

@@ -51,7 +51,7 @@ public:
 signals:
     void si_selectionChanged(LRegionsSelection* thiz, const QVector<U2Region>& added, const QVector<U2Region>& removed);
 
-private:
+public:
     QVector<U2Region> regions;
 };
 

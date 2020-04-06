@@ -35,13 +35,9 @@ public:
     AssemblyAnnotationsAreaWidget(AssemblyBrowser* browser, AssemblyBrowserUi *ui, SequenceObjectContext* ctx);
 
 protected:
-    void mouseDoubleClickEvent(QMouseEvent* me) override;
     void mouseMoveEvent(QMouseEvent *e) override;
-    void keyPressEvent(QKeyEvent *e) override;
 
-    void clearAllSelections() const override;
     int getHorizontalScrollBarPosition() const override;
-    void proceedAnnotationSelection(AnnotationSelectionData* asd) const override;
 
 signals:
     void si_mouseMovedToPos(const QPoint&);

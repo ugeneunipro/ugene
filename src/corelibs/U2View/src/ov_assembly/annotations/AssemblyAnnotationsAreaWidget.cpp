@@ -19,18 +19,12 @@
  * MA 02110-1301, USA.
  */
 
-#include <QApplication>
-
 #include <U2Core/Counter.h>
-#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GScrollBar.h>
 
-#include <U2View/SequenceObjectContext.h>
-
 #include "../AssemblyBrowser.h"
 #include "AssemblyAnnotationsArea.h"
-#include "AssemblyAnnotationsAreaUtils.h"
 #include "AssemblyAnnotationsAreaWidget.h"
 #include "AssemblyAnnotationsRenderAreaFactory.h"
 
@@ -49,78 +43,21 @@ AssemblyAnnotationsAreaWidget::AssemblyAnnotationsAreaWidget
     GCOUNTER(c2, t2, "AssemblyReadsArea::annotationWigetWasCreaated");
 
     setLocalToolbarVisible(false);
-    settings->setShowMainRuler(false);
-    settings->setShowCustomRulers(false);
-    settings->setShowSequence(false);
+    sl_toggleMainRulerVisibility(false);
+    sl_toggleCustomRulersVisibility(false);
     scrollBar->hide();
     connectSlots();
     updateVisibleRange();
     update();
 }
 
-void AssemblyAnnotationsAreaWidget::mouseDoubleClickEvent(QMouseEvent* me) {
-    mousePressEvent(me);
-}
-
 void AssemblyAnnotationsAreaWidget::mouseMoveEvent(QMouseEvent *e) {
     emit si_mouseMovedToPos(e->pos());
-    isSelectionResizing = false;
     PanView::mouseMoveEvent(e);
-}
-
-void AssemblyAnnotationsAreaWidget::keyPressEvent(QKeyEvent *e) {
-    int key = e->key();
-    bool accepted = false;
-    switch (key) {
-    case Qt::Key_Escape:
-        GSequenceLineViewAnnotated::clearAllSelections();
-        accepted = true;
-        break;
-    }
-
-    if (accepted) {
-        e->accept();
-    } else {
-        PanView::keyPressEvent(e);
-    }
-}
-
-
-void AssemblyAnnotationsAreaWidget::clearAllSelections() const {
-    //do nothing
 }
 
 int AssemblyAnnotationsAreaWidget::getHorizontalScrollBarPosition() const {
     return scrollBar->sliderPosition();
-}
-
-void AssemblyAnnotationsAreaWidget::proceedAnnotationSelection(AnnotationSelectionData* asd) const {
-    AnnotationSelection* as = ctx->getAnnotationsSelection();
-    SAFE_POINT(nullptr != as, "Annotation Selection is missed", );
-
-    Annotation* clickedAnnotation = asd->annotation;
-    const QList<Annotation*> selectedAnnotations = as->getSelectedAnnotations();
-    QItemSelectionModel::SelectionFlag clickedAnnotationFlag = QItemSelectionModel::NoUpdate;
-    QList<Annotation*> toDeselect;
-    AssemblyAnnotationsAreaUtils::collectSelectionInfo<Annotation*>(clickedAnnotation, selectedAnnotations, clickedAnnotationFlag, toDeselect);
-
-    QList<Annotation*> toSelect;
-    switch (clickedAnnotationFlag) {
-    case QItemSelectionModel::Select:
-        toSelect << clickedAnnotation;
-        break;
-    case QItemSelectionModel::Deselect:
-        toDeselect << clickedAnnotation;
-        break;
-    case QItemSelectionModel::NoUpdate:
-        //possible, but nothing we need to do
-        break;
-    default:
-        FAIL("Unexpected result", );
-        break;
-    }
-
-    as->changeSelection(toSelect, toDeselect);
 }
 
 void AssemblyAnnotationsAreaWidget::sl_zoomPerformed() {

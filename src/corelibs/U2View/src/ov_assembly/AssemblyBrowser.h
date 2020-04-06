@@ -24,11 +24,9 @@
 
 #include <assert.h>
 
+#include <QSharedPointer>
 #include <QByteArray>
 #include <QListIterator>
-#include <QSharedPointer>
-#include <QTreeView>
-
 #include <U2Core/U2Dbi.h>
 #include <U2Core/U2Assembly.h>
 #include <U2Core/AssemblyObject.h>
@@ -192,7 +190,6 @@ private:
     void setReference(const Document *doc);
     void addAnnotationView(U2SequenceObject* seqObj);
     void addAnnotationTableObjectToView(AnnotationTableObject* annTableObj);
-    void addContextToModel(U2SequenceObject* so);
 
 private:
     AssemblyBrowserUi * ui;
@@ -247,7 +244,6 @@ class AssemblyRuler;
 class AssemblyReadsArea;
 class AssemblyVariantsArea;
 class AssemblyAnnotationsArea;
-class AssemblyAnnotationsTreeView;
 
 class U2VIEW_EXPORT AssemblyBrowserUi : public QWidget {
     Q_OBJECT
@@ -264,22 +260,20 @@ public:
     inline AssemblyConsensusArea * getConsensusArea() const {return consensusArea;}
     inline AssemblyVariantsArea * getVariantsArea() const {return variantsArea;}
     inline AssemblyAnnotationsArea * getAnnotationsArea() const {return annotationsArea;}
-    inline AssemblyAnnotationsTreeView * getAnnotationsTreeView() const { return annotationsTreeView; }
     inline bool isCorrectView() const {return !nothingToVisualize;}
 
     QColor getCoverageColor(double grayCoeff);
 
 private:
-    AssemblyBrowser*             browser;
-    ZoomableAssemblyOverview*    zoomableOverview;
-    AssemblyReferenceArea*       referenceArea;
-    AssemblyConsensusArea*       consensusArea;
-    AssemblyCoverageGraph*       coverageGraph;
-    AssemblyRuler*               ruler;
-    AssemblyReadsArea*           readsArea;
-    AssemblyVariantsArea*        variantsArea;
-    AssemblyAnnotationsArea*     annotationsArea;
-    AssemblyAnnotationsTreeView* annotationsTreeView;
+    AssemblyBrowser*          browser;
+    ZoomableAssemblyOverview* zoomableOverview;
+    AssemblyReferenceArea*    referenceArea;
+    AssemblyConsensusArea*    consensusArea;
+    AssemblyCoverageGraph*    coverageGraph;
+    AssemblyRuler*            ruler;
+    AssemblyReadsArea*        readsArea;
+    AssemblyVariantsArea*     variantsArea;
+    AssemblyAnnotationsArea*  annotationsArea;
     bool nothingToVisualize;
 };
 

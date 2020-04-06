@@ -75,8 +75,6 @@ public:
 
     const QList<AnnotationSelectionData> &  getSelection() const;
 
-    const QList<Annotation*>                getSelectedAnnotations() const;
-
     const AnnotationSelectionData *         getAnnotationData(Annotation *a) const;
     /**
      * Adds annotation to selection.
@@ -87,8 +85,6 @@ public:
     void                                    addToSelection(Annotation *a, int locationIdx = -1);
 
     void                                    removeFromSelection(Annotation *a, int locationIdx = -1);
-
-    void                                    changeSelection(QList<Annotation*> selected, QList<Annotation*> deselected);
 
     bool                                    isEmpty() const;
 
@@ -111,14 +107,6 @@ signals:
     void si_selectionChanged(AnnotationSelection *thiz, const QList<Annotation *> &added, const QList<Annotation *> &removed);
 
 private:
-    enum class SelectionMode {
-        Nothing,
-        Location,
-        Annotation
-    };
-
-    SelectionMode getSelectionMode(Annotation *a, const int locationIdx, int& asdIndex) const;
-    SelectionMode getDeselectionMode(Annotation *a, const int locationIdx, int& asdIndex) const;
     QList<AnnotationSelectionData> selection;
 };
 
