@@ -106,6 +106,8 @@ public:
 
     virtual QString addObject(GObject* o);
 
+    void checkAndAddObjectToOtherViews(GObject *o);
+
     void saveWidgetState();
 
     ADVSequenceObjectContext* getSequenceContext(AnnotationTableObject *obj) const;
