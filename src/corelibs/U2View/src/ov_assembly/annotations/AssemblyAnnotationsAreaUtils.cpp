@@ -26,7 +26,6 @@
 #include <U2Core/U1AnnotationUtils.h>
 
 #include "AssemblyAnnotationsAreaUtils.h"
-#include "tree_view/AssemblyAnnotationsTreeViewModel.h"
 
 namespace U2 {
 
@@ -38,21 +37,6 @@ QItemSelection AssemblyAnnotationsAreaUtils::getSelectionFromIndexList(const QMo
 
     return selection;
 }
-
-QItemSelection AssemblyAnnotationsAreaUtils::rowSelection(AssemblyAnnotationsTreeViewModel* treeViewModel,
-                                                          const QModelIndex& rowIndex) {
-    int rowNum = rowIndex.row();
-    QModelIndex rowIndexParent = rowIndex.parent();
-    QModelIndex firstColumnIndex = treeViewModel->index(rowNum,
-                                                        0,
-                                                        rowIndexParent);
-    QModelIndex lastColumnIndex = treeViewModel->index(rowNum,
-                                                       treeViewModel->columnCount() - 1,
-                                                       rowIndexParent);
-
-    return QItemSelection (firstColumnIndex, lastColumnIndex);
-}
-
 
 QVariantList AssemblyAnnotationsAreaUtils::getTableObjData(AnnotationTableObject* obj) {
     const QString annTableObjName = obj->getGObjectName();
