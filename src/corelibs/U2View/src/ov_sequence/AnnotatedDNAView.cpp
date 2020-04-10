@@ -914,7 +914,6 @@ QString AnnotatedDNAView::addObject(GObject *o) {
     } else if (o->getGObjectType() == GObjectTypes::ANNOTATION_TABLE) {
         AnnotationTableObject *ao = qobject_cast<AnnotationTableObject *>(o);
         SAFE_POINT(NULL != ao, "Invalid annotation table!", QString::null);
-        checkAndAddObjectToOtherViews(o);
         annotations.append(ao);
         foreach (ADVSequenceObjectContext *sc, rCtx) {
             sc->addAnnotationObject(ao);
@@ -922,36 +921,6 @@ QString AnnotatedDNAView::addObject(GObject *o) {
         emit si_annotationObjectAdded(ao);
     }
     return "";
-}
-
-void AnnotatedDNAView::checkAndAddObjectToOtherViews(GObject *o) {
-    QList<ADVSequenceObjectContext *> rCtx = findRelatedSequenceContexts(o);
-    MWMDIManager *mdiManager = AppContext::getMainWindow()->getMDIManager();
-    foreach (MWMDIWindow *w, mdiManager->getWindows()) {
-        GObjectViewWindow *gobjWindow = qobject_cast<GObjectViewWindow *>(w);
-        if (gobjWindow == nullptr) {
-            continue;
-        }
-        AnnotatedDNAView *annotatedDnaView = qobject_cast<AnnotatedDNAView *>(gobjWindow->getObjectView());
-        if (annotatedDnaView == nullptr || annotatedDnaView == this) {
-            continue;
-        }
-        bool contains = false;
-        foreach (ADVSequenceObjectContext *ctx, annotatedDnaView->findRelatedSequenceContexts(o)) {
-            foreach (ADVSequenceObjectContext *ctx2, rCtx) {
-                if (ctx->getSequenceObject() == ctx2->getSequenceObject()) {
-                    contains = true;
-                    break;
-                }
-            }
-            if (contains) {
-                break;
-            }
-        }
-        if (contains) {
-            annotatedDnaView->addObject(o);
-        }
-    }
 }
 
 QList<ADVSequenceObjectContext *> AnnotatedDNAView::findRelatedSequenceContexts(GObject *obj) const {
