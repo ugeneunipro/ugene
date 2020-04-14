@@ -155,9 +155,13 @@ namespace {
 void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const ConvertOption &options, U2OpStatus &os ) {
     const QByteArray samFileName = samUrl.getURLString().toLocal8Bit();
     const QByteArray bamFileName = bamUrl.getURLString().toLocal8Bit();
+    const char* sam_path = samUrl.getURLStringAnsi();
+    const char* bam_path = bamUrl.getURLStringAnsi();
 
     QByteArray sourceName = (options.samToBam)? samFileName : bamFileName;
     QByteArray targetName = (options.samToBam)? bamFileName : samFileName;
+    const char* source_path = (options.samToBam) ? sam_path : bam_path;
+    const char* target_path = (options.samToBam) ? bam_path : sam_path;
 
     samfile_t *in = NULL;
     samfile_t *out = NULL;
@@ -171,7 +175,7 @@ void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const C
             SAMTOOL_CHECK(NULL != aux, faiError(options.referenceUrl.toLocal8Bit()), );
         }
 
-        in = samopen(sourceName.constData(), readMode, aux);
+        in = samopen(source_path, readMode, aux);
         SAMTOOL_CHECK(NULL != in, openFileError(sourceName), );
         SAMTOOL_CHECK(NULL != in->header, headerError(sourceName), );
         if (options.samToBam && (0 == in->header->n_targets)) {
@@ -184,7 +188,7 @@ void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const C
         }
 
         QByteArray writeMode = ( options.samToBam ) ? "wb" : "wh";
-        out = samopen(targetName.constData(), writeMode, in->header);
+        out = samopen(target_path, writeMode, in->header);
         SAMTOOL_CHECK(NULL != out, openFileError(targetName), );
     }
     // convert files
@@ -599,6 +603,7 @@ void BAMUtils::writeObjects(const QList<GObject*> &objects, const GUrl &urlStr, 
 
     QByteArray url = urlStr.getURLString().toLocal8Bit();
     CHECK_EXT(!url.isEmpty(), os.setError("Empty file url"), );
+    const char* url_path = urlStr.getURLStringAnsi();
 
     QByteArray openMode("w");
     if (BaseDocumentFormats::BAM == formatId) {
@@ -617,9 +622,9 @@ void BAMUtils::writeObjects(const QList<GObject*> &objects, const GUrl &urlStr, 
         return;
     }
 
-    samfile_t *out = samopen(url.constData(), openMode.constData(), header);
+    samfile_t *out = samopen(url_path, openMode.constData(), header);
     bam_header_destroy(header);
-    CHECK_EXT(NULL != out, os.setError(QString("Can not open file for writing: %1").arg(url.constData())), );
+    CHECK_EXT(NULL != out, os.setError(QString("Can not open file for writing: %1").arg(url_path)), );
 
     writeObjectsWithSamtools(out, objects, os, desiredRegion);
     samclose(out);

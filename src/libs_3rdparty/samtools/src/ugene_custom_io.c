@@ -1,4 +1,4 @@
-﻿#include <io.h>
+#include <io.h>
 #include <stdio.h>
 #include <windows.h>
 
@@ -50,7 +50,7 @@ FILE* ugene_custom_fopen(const char *filename, const char* mode) {
     int wchars_num = MultiByteToWideChar(CP_THREAD_ACP, 0, filename, -1, NULL, 0);
     wchar_t* w_filename = malloc(sizeof(wchar_t) * wchars_num);
     MultiByteToWideChar(CP_THREAD_ACP, 0, filename, -1, w_filename, wchars_num);
-    
+
     wchars_num = MultiByteToWideChar(CP_THREAD_ACP, 0, mode, -1, NULL, 0);
     wchar_t* w_mode = malloc(sizeof(wchar_t) * wchars_num);
     MultiByteToWideChar(CP_THREAD_ACP, 0, mode, -1, w_mode, wchars_num);

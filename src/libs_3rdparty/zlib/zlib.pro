@@ -10,7 +10,8 @@ HEADERS += src/crc32.h \
            src/trees.h \
            src/zconf.h \
            src/zlib.h \
-           src/zutil.h
+           src/zutil.h \
+           src/ugene_custom_io.h
 SOURCES += src/adler32.c \
            src/compress.c \
            src/crc32.c \
@@ -23,4 +24,5 @@ SOURCES += src/adler32.c \
            src/minigzip.c \
            src/trees.c \
            src/uncompr.c \
-           src/zutil.c
+           src/zutil.c \
+           src/ugene_custom_io.c
