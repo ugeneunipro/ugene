@@ -277,7 +277,7 @@ void SequenceObjectContext::sl_onAnnotationRelationChange() {
     SAFE_POINT(obj != NULL, tr("Incorrect signal sender!"),);
 
     if (!obj->hasObjectRelation(seqObj, ObjectRole_Sequence)) {
-        disconnect(obj, SIGNAL(si_relationChanged()), this, SLOT(sl_onAnnotationRelationChange()));
+        disconnect(obj, SIGNAL(si_relationChanged(const QList<GObjectRelation> &)), this, SLOT(sl_onAnnotationRelationChange()));
     }
 }
 
@@ -356,7 +356,7 @@ void SequenceObjectContext::addSequenceWidget(ADVSequenceWidget* w) {
 void SequenceObjectContext::addAnnotationObject(AnnotationTableObject *obj) {
     SAFE_POINT(!annotations.contains(obj), "Unexpected annotation table!",);
     SAFE_POINT(obj->hasObjectRelation(seqObj, ObjectRole_Sequence), "Annotation table relates to unexpected sequence!",);
-    connect(obj, SIGNAL(si_relationChanged()), SLOT(sl_onAnnotationRelationChange()));
+    connect(obj, SIGNAL(si_relationChanged(const QList<GObjectRelation> &)), SLOT(sl_onAnnotationRelationChange()));
     annotations.insert(obj);
     emit si_annotationObjectAdded(obj);
     if (clarifyAminoTT) {

@@ -149,9 +149,10 @@ void GObject::fetchPermanentGObjectRelations(QList<GObjectRelation> &res) const 
 
 void GObject::setObjectRelations(const QList<GObjectRelation>& list) {
     QList<GObjectRelation> internalCopy = list;
+    QList<GObjectRelation> oldRelations = getObjectRelations();
     setRelationsInDb(internalCopy);
     hints->set(GObjectHint_RelatedObjects, QVariant::fromValue<QList<GObjectRelation> >(internalCopy));
-    emit si_relationChanged();
+    emit si_relationChanged(oldRelations);
 }
 
 void GObject::setRelationsInDb(QList<GObjectRelation>& list) const {
@@ -287,6 +288,10 @@ StateLock *GObject::getGObjectModLock(GObjectModLock type) const {
     return modLocks.value(type, NULL);
 }
 
+void GObject::relatedObjectRelationChanged() {
+    emit si_relatedObjectRelationChanged();
+}
+
 bool GObject::objectLessThan(GObject *first, GObject *second) {
     return QString::compare(first->getGObjectName(), second->getGObjectName(), Qt::CaseInsensitive) < 0;
 }
@@ -318,7 +323,6 @@ void GObject::removeRelations(const QString& removedDocUrl) {
     if (changed) {
         setObjectRelations(rels);
     }
-
 }
 
 void GObject::updateDocInRelations(const QString& oldDocUrl, const QString& newDocUrl) {

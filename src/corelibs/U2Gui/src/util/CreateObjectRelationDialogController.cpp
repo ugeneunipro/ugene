@@ -38,8 +38,7 @@ namespace U2 {
 
 CreateObjectRelationDialogController::CreateObjectRelationDialogController(GObject* _assObj,
     const QList<GObject*>& _objects, GObjectRelationRole _role, bool rd, const QString& relationHint, QWidget* p)
-    : QDialog(p), selectedObject(NULL), assObj(_assObj), objects(_objects), role(_role), removeDuplicates(rd)
-{
+    : QDialog(p), selectedObject(NULL), assObj(_assObj), objects(_objects), role(_role), removeDuplicates(rd), relationIsSet(false) {
     assert(!objects.isEmpty());
     assert(assObj!=NULL);
     ui = new Ui_CreateObjectRelationDialog;
@@ -80,6 +79,7 @@ void CreateObjectRelationDialogController::accept() {
             }
         }
         assObj->addObjectRelation(selObj, role);
+        relationIsSet = true;
     }
 
     selectedObject = selObj;
