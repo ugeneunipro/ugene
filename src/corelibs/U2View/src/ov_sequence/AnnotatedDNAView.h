@@ -215,6 +215,7 @@ private slots:
     void sl_selectionChanged();
     void sl_aminoTranslationChanged();
     void sl_updatePasteAction();
+    void sl_relatedObjectRelationChanged();
 
     virtual void sl_onDocumentAdded(Document*);
     virtual void sl_onDocumentLoadedStateChanged();

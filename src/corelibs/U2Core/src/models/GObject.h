@@ -117,11 +117,14 @@ public:
 
     StateLock* getGObjectModLock(GObjectModLock type) const;
 
+    void relatedObjectRelationChanged();
+
     static bool objectLessThan(GObject *first, GObject *second);
 
 signals:
     void si_nameChanged(const QString& oldName);
-    void si_relationChanged();
+    void si_relationChanged(const QList<GObjectRelation>& previousRelations);
+    void si_relatedObjectRelationChanged();
 
 protected:
     void setGObjectNameNotDbi(const QString &newName);

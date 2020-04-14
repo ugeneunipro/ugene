@@ -49,7 +49,7 @@ void ADVSequenceObjectContext::sl_onAnnotationRelationChange() {
     SAFE_POINT(obj != NULL, tr("Incorrect signal sender!"), );
 
     if (!obj->hasObjectRelation(seqObj, ObjectRole_Sequence)) {
-        disconnect(obj, SIGNAL(si_relationChanged()), this, SLOT(sl_onAnnotationRelationChange()));
+        disconnect(obj, SIGNAL(si_relationChanged(const QList<GObjectRelation> &)), this, SLOT(sl_onAnnotationRelationChange()));
         view->removeObject(obj);
     }
 }

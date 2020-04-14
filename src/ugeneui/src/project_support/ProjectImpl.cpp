@@ -204,6 +204,7 @@ void ProjectImpl::removeGObjectViewState(GObjectViewState* s) {
 
 void ProjectImpl::sl_onObjectAdded(GObject* obj) {
     connect(obj, SIGNAL(si_nameChanged(const QString&)), SLOT(sl_onObjectRenamed(const QString&)));
+    connect(obj, SIGNAL(si_relationChanged(const QList<GObjectRelation> &)), SLOT(sl_onObjectRelationChanged(const QList<GObjectRelation> &)));
     if (!obj->getGHints()->get(GObjectHint_InProjectId).isValid()) {
         obj->getGHints()->set(GObjectHint_InProjectId, genNextObjectId());
     }
@@ -212,6 +213,24 @@ void ProjectImpl::sl_onObjectAdded(GObject* obj) {
 void ProjectImpl::sl_onObjectRemoved(GObject* obj) {
     obj->disconnect(this);
     obj->getGHints()->remove(GObjectHint_InProjectId);
+}
+
+void ProjectImpl::sl_onObjectRelationChanged(const QList<GObjectRelation> &previousRelations) {
+    GObject *obj = qobject_cast<GObject *>(sender());
+    CHECK(obj != nullptr)
+    QSet<GObjectRelation> relationsSet = obj->getObjectRelations().toSet();
+    relationsSet.unite(previousRelations.toSet());
+    QList<GObject *> allObjs;
+    foreach (Document *d, getDocuments()) {
+        allObjs << d->getObjects();
+    }
+    foreach(GObject *obj, allObjs) {
+        foreach(const GObjectRelation & rel, relationsSet) {
+            if (obj->getEntityRef() == rel.ref.entityRef) {
+                obj->relatedObjectRelationChanged();
+            }
+        }
+    }
 }
 
 QString ProjectImpl::genNextObjectId() {

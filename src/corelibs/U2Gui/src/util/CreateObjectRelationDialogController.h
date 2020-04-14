@@ -45,6 +45,7 @@ public:
     QList<GObject*>     objects;
     GObjectRelationRole role;
     bool                removeDuplicates;
+    bool relationIsSet;
 
 public slots:
     virtual void accept();
