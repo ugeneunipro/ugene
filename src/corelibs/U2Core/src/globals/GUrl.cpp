@@ -25,6 +25,10 @@
 #include "GUrl.h"
 #include "U2SafePoints.h"
 
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
+
 namespace U2 {
 
 static QString makeFilePathCanonical(const QString& originalUrl) {
@@ -141,6 +145,26 @@ bool GUrl::operator ==(const GUrl& url) const {
 
 bool GUrl::operator !=(const GUrl& url) const {
     return !(*this == url);
+}
+
+// The function converts url string to multibyte form
+// default code page is CP_THREAD_ACP
+const char* GUrl::getURLStringAnsi(int codePage) const {
+#ifdef Q_OS_WIN
+    std::wstring wPath = getURLString().toStdWString();
+    codePage = codePage < 0 ? CP_THREAD_ACP : codePage;
+
+    DWORD buffSize = WideCharToMultiByte(codePage, 0, wPath.c_str(), -1, NULL, 0, NULL, NULL);
+    if (!buffSize)
+        return NULL;
+    
+    char * buffer = new char[buffSize];
+    if (!WideCharToMultiByte(codePage, 0, wPath.c_str(), -1, buffer, buffSize, NULL, NULL))
+        return NULL;
+    return (buffer);
+#else
+    return getURLString().toLocal8Bit().constData();
+#endif // Q_OS_WIN
 }
 
 static QString path(const GUrl* url) {

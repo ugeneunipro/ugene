@@ -7,6 +7,7 @@
 #include "sam.h"
 #include "faidx.h"
 #include "kstring.h"
+#include "ugene_custom_io.h"
 
 static inline int printw(int c, FILE *fp)
 {
@@ -415,7 +416,7 @@ static int read_file_list(const char *file_list,int *n,char **argv[])
     int len, nfiles;
     char **files;
 
-    FILE *fh = fopen(file_list,"r");
+    FILE *fh = ugene_custom_fopen(file_list,"r");
     if ( !fh )
     {
         fprintf(stderr,"%s: %s\n", file_list,strerror(errno));
@@ -535,7 +536,7 @@ int bam_mpileup(int argc, char *argv[], UGENE_mpileup_settings* settings, const 
 				FILE *fp_rg;
 				char buf[1024];
 				mplp.rghash = bcf_str2id_init();
-				if ((fp_rg = fopen(optarg, "r")) == 0)
+				if ((fp_rg = ugene_custom_fopen(optarg, "r")) == 0)
 					fprintf(stderr, "(%s) Fail to open file %s. Continue anyway.\n", __func__, optarg);
 				while (!feof(fp_rg) && fscanf(fp_rg, "%s", buf) > 0) // this is not a good style, but forgive me...
 					bcf_str2id_add(mplp.rghash, strdup(buf));

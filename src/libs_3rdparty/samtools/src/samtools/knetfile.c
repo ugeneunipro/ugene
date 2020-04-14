@@ -44,6 +44,7 @@
 #endif
 
 #include "knetfile.h"
+#include "ugene_custom_io.h"
 
 /* In winsock.h, the type of a socket is SOCKET, which is: "typedef
  * u_int SOCKET". An invalid SOCKET is: "(SOCKET)(~0)", or signed
@@ -474,7 +475,7 @@ knetFile *knet_open(const char *fn, const char *mode)
 		/* In windows, O_BINARY is necessary. In Linux/Mac, O_BINARY may
 		 * be undefined on some systems, although it is defined on my
 		 * Mac and the Linux I have tested on. */
-		int fd = open(fn, O_RDONLY | O_BINARY);
+		int fd = ugene_custom_open(fn, O_RDONLY | O_BINARY);
 #else		
 		int fd = open(fn, O_RDONLY);
 #endif

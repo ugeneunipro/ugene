@@ -218,7 +218,7 @@ bgzf_open(const char* __restrict path, const char* __restrict mode)
 #ifdef _WIN32
 		oflag |= O_BINARY;
 #endif
-		fd = open(path, oflag);
+		fd = ugene_custom_open(path, oflag);
 		if (fd == -1) return 0;
         fp = open_read(fd);
 #endif
@@ -227,7 +227,7 @@ bgzf_open(const char* __restrict path, const char* __restrict mode)
 #ifdef _WIN32
 		oflag |= O_BINARY;
 #endif
-		fd = open(path, oflag, 0666);
+		fd = ugene_custom_open2(path, oflag, 0666);
 		if (fd == -1) return 0;
 		{ // set compress_level
 			int i;

@@ -52,7 +52,6 @@ enum GUrlType {
     GUrl_Network    // an abstract network url (e.g. shared database url)
 };
 
-
 class U2CORE_EXPORT GUrl {
 
 public:
@@ -72,6 +71,10 @@ public:
     bool operator !=(const GUrl& url) const;
 
     const QString& getURLString() const {return urlString;}
+
+    // The function converts url string to multibyte form
+    // default code page is CP_THREAD_ACP
+    const char* getURLStringAnsi(int codePage = -1) const;
 
     GUrlType getType() const {return type;}
 

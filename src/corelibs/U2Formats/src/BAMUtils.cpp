@@ -235,23 +235,23 @@ static bool isSorted(const QString &headerText) {
 }
 
 bool BAMUtils::isSortedBam(const GUrl &bamUrl, U2OpStatus &os) {
-    const QByteArray &bamFileName = bamUrl.getURLString().toLocal8Bit();
+    const char* path = bamUrl.getURLStringAnsi();
 
     bamFile bamHandler = NULL;
     bam_header_t *header = NULL;
     QString error;
     bool result = false;
 
-    bamHandler = bam_open(bamFileName.constData(), "r");
+    bamHandler = bam_open(path, "r");
     if (NULL != bamHandler) {
         header = bam_header_read(bamHandler);
         if (NULL != header) {
             result = isSorted(header->text);
         } else {
-            error = QString("Can't read header from file '%1'").arg(bamFileName.constData());
+            error = QString("Can't read header from file '%1'").arg(bamUrl.getURLString());
         }
     } else {
-        error = QString("Can't open file '%1'").arg(bamFileName.constData());
+        error = QString("Can't open file '%1'").arg(bamUrl.getURLString());
     }
 
     // deallocate resources
@@ -400,9 +400,7 @@ GUrl BAMUtils::rmdupBam(const QString &bamUrl, const QString &rmdupBamTargetUrl,
 }
 
 bool BAMUtils::hasValidBamIndex(const GUrl &bamUrl) {
-    const QByteArray bamFileName = bamUrl.getURLString().toLocal8Bit();
-
-    bam_index_t *index = bam_index_load(bamFileName.constData());
+    bam_index_t *index = bam_index_load(bamUrl.getURLStringAnsi());
 
     if (NULL == index) {
         return false;
@@ -450,7 +448,7 @@ void BAMUtils::createBamIndex(const GUrl &bamUrl, U2OpStatus &os) {
 
     coreLog.details(BAMUtils::tr("Build index for bam file: \"%1\"").arg(QString::fromLocal8Bit(bamFileName)));
 
-    int error = bam_index_build(bamFileName.constData());
+    int error = bam_index_build(bamUrl.getURLStringAnsi());
     if (-1 == error) {
         os.setError("Can't build the index");
     }
