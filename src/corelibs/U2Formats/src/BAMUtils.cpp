@@ -155,13 +155,13 @@ namespace {
 void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const ConvertOption &options, U2OpStatus &os ) {
     const QByteArray samFileName = samUrl.getURLString().toLocal8Bit();
     const QByteArray bamFileName = bamUrl.getURLString().toLocal8Bit();
-    const char* sam_path = samUrl.getURLStringAnsi();
-    const char* bam_path = bamUrl.getURLStringAnsi();
+    const char* samPath = samUrl.getURLStringAnsi();
+    const char* bamPath = bamUrl.getURLStringAnsi();
 
     QByteArray sourceName = (options.samToBam)? samFileName : bamFileName;
     QByteArray targetName = (options.samToBam)? bamFileName : samFileName;
-    const char* source_path = (options.samToBam) ? sam_path : bam_path;
-    const char* target_path = (options.samToBam) ? bam_path : sam_path;
+    const char* source_path = (options.samToBam) ? samPath : bamPath;
+    const char* target_path = (options.samToBam) ? bamPath : samPath;
 
     samfile_t *in = NULL;
     samfile_t *out = NULL;
@@ -603,7 +603,7 @@ void BAMUtils::writeObjects(const QList<GObject*> &objects, const GUrl &urlStr, 
 
     QByteArray url = urlStr.getURLString().toLocal8Bit();
     CHECK_EXT(!url.isEmpty(), os.setError("Empty file url"), );
-    const char* url_path = urlStr.getURLStringAnsi();
+    const char* urlPath = urlStr.getURLStringAnsi();
 
     QByteArray openMode("w");
     if (BaseDocumentFormats::BAM == formatId) {
@@ -622,9 +622,9 @@ void BAMUtils::writeObjects(const QList<GObject*> &objects, const GUrl &urlStr, 
         return;
     }
 
-    samfile_t *out = samopen(url_path, openMode.constData(), header);
+    samfile_t *out = samopen(urlPath, openMode.constData(), header);
     bam_header_destroy(header);
-    CHECK_EXT(NULL != out, os.setError(QString("Can not open file for writing: %1").arg(url_path)), );
+    CHECK_EXT(NULL != out, os.setError(QString("Can not open file for writing: %1").arg(urlPath)), );
 
     writeObjectsWithSamtools(out, objects, os, desiredRegion);
     samclose(out);

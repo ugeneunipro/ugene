@@ -1,6 +1,8 @@
 #include <io.h>
 #include <stdio.h>
+#ifdef _WIN32
 #include <windows.h>
+#endif
 
 #include "ugene_custom_io.h"
 

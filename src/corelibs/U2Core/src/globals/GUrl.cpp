@@ -156,11 +156,11 @@ const char* GUrl::getURLStringAnsi(int codePage) const {
 
     DWORD buffSize = WideCharToMultiByte(codePage, 0, wPath.c_str(), -1, NULL, 0, NULL, NULL);
     if (!buffSize)
-        return NULL;
+        return nullptr;
     
     char * buffer = new char[buffSize];
     if (!WideCharToMultiByte(codePage, 0, wPath.c_str(), -1, buffer, buffSize, NULL, NULL))
-        return NULL;
+        return nullptr;
     return (buffer);
 #else
     return getURLString().toLocal8Bit().constData();
