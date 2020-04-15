@@ -118,6 +118,7 @@
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
+#include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 
 namespace U2 {
 
@@ -5553,6 +5554,38 @@ GUI_TEST_CLASS_DEFINITION(test_6718) {
     CHECK_SET_ERR(eq, "file should be equal to the clipboard");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6730) {
+    // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+
+    // 2. Switch on the collapsing mode.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // 3. Select the first column and press the Delete key 6 times.
+    GTUtilsMSAEditorSequenceArea::selectColumnInConsensus(os, 0);
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep();
+
+    // 4. Expected result: the whole column is selected.
+    QString expectedSelection = "T\nA\n-\n-\nA\nT\nA";
+    GTKeyboardDriver::keyClick( 'c', Qt::ControlModifier);
+    GTGlobals::sleep(500);
+    QString clipboardText = GTClipboard::text(os);
+    CHECK_SET_ERR(clipboardText == expectedSelection, QString("unexpected selection:\n%1").arg(clipboardText));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6734) {
     //1. Open "_common_data/scenarios/msa/ma.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma.aln");
@@ -5618,6 +5651,26 @@ GUI_TEST_CLASS_DEFINITION(test_6740) {
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(4, 3));
 
     GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(4, 3), QPoint(4, 3), "T");
+
+}
+GUI_TEST_CLASS_DEFINITION(test_6751) {
+
+    // 1. Open "COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 2. Click twice on the "Consensus:" sign above the Name List area.
+    GTWidget::click(os, GTWidget::findWidget(os, "consensusLabel"));
+    GTWidget::click(os, GTWidget::findWidget(os, "consensusLabel"));
+
+    // 3. Select "Align" -> "Align with MUSCLE..." and click on the "Align" button.
+
+    GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default, true, true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseMouse));
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
+    GTGlobals::sleep();
+
+    // Expected result: the alignment process has passed successfully.
 
 }
 GUI_TEST_CLASS_DEFINITION(test_6752) {

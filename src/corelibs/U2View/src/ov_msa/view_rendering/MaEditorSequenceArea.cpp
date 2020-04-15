@@ -74,8 +74,8 @@ MaEditorSequenceArea::MaEditorSequenceArea(MaEditorWgt *ui, GScrollBar *hb, GScr
       editModeAnimationTimer(this),
       prevPressedButton(Qt::NoButton),
       maVersionBeforeShifting(-1),
-      useDotsAction(NULL),
       replaceCharacterAction(NULL),
+      useDotsAction(NULL),
       changeTracker(editor->getMaObject()->getEntityRef())
 {
     rubberBand = new QRubberBand(QRubberBand::Rectangle, this);
@@ -596,84 +596,6 @@ void MaEditorSequenceArea::drawVisibleContent(QPainter& painter) {
 bool MaEditorSequenceArea::drawContent(QPainter& painter, const U2Region& columns, const QList<int>& maRows, int xStart, int yStart) {
     // SANGER_TODO: optimize
     return renderer->drawContent(painter, columns, maRows, xStart, yStart);
-}
-
-QString MaEditorSequenceArea::exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose) {
-    CHECK(getEditor() != NULL, QString());
-    CHECK(qobject_cast<MSAEditor*>(editor) != NULL, QString());
-    SAFE_POINT(editor->getReferenceRowId() != U2MsaRow::INVALID_ROW_ID, "Export highlighting is not supported without a reference", QString());
-    QStringList result;
-
-    MultipleAlignmentObject* maObj = editor->getMaObject();
-    assert(maObj!=NULL);
-
-    const MultipleAlignment msa = maObj->getMultipleAlignment();
-
-    U2OpStatusImpl os;
-    const int refSeq = getEditor()->getMaObject()->getMultipleAlignment()->getRowIndexByRowId(editor->getReferenceRowId(), os);
-    SAFE_POINT_OP(os, QString());
-    MultipleAlignmentRow row = msa->getRow(refSeq);
-
-    QString header;
-    header.append("Position\t");
-    QString refSeqName = editor->getReferenceRowName();
-    header.append(refSeqName);
-    header.append("\t");
-    foreach(QString name, maObj->getMultipleAlignment()->getRowNames()){
-        if(name != refSeqName){
-            header.append(name);
-            header.append("\t");
-        }
-    }
-    header.remove(header.length()-1,1);
-    result.append(header);
-
-    int posInResult = startingIndex;
-
-    for (int pos = startPos-1; pos < endPos; pos++) {
-        QString rowStr;
-        rowStr.append(QString("%1").arg(posInResult));
-        rowStr.append(QString("\t") + QString(msa->charAt(refSeq, pos)) + QString("\t"));
-        bool informative = false;
-        for (int seq = 0; seq < msa->getNumRows(); seq++) {  //FIXME possible problems when sequences have moved in view
-            if (seq == refSeq) continue;
-            char c = msa->charAt(seq, pos);
-
-            const char refChar = row->charAt(pos);
-            if (refChar == '-' && !keepGaps) {
-                continue;
-            }
-
-            QColor unused;
-            bool highlight = false;
-            highlightingScheme->setUseDots(useDotsAction->isChecked());
-            highlightingScheme->process(refChar, c, unused, highlight, pos, seq);
-
-            if (highlight) {
-                rowStr.append(c);
-                informative = true;
-            } else {
-                if (dots) {
-                    rowStr.append(".");
-                } else {
-                    rowStr.append(" ");
-                }
-            }
-            rowStr.append("\t");
-        }
-        if(informative){
-            header.remove(rowStr.length() - 1, 1);
-            result.append(rowStr);
-        }
-        posInResult++;
-    }
-
-    if (!transpose){
-        QStringList transposedRows = TextUtils::transposeCSVRows(result, "\t");
-        return transposedRows.join("\n");
-    }
-
-    return result.join("\n");
 }
 
 MsaColorScheme * MaEditorSequenceArea::getCurrentColorScheme() const {

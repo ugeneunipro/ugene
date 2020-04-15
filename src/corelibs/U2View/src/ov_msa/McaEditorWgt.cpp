@@ -40,7 +40,6 @@
 #include "McaEditorStatusBar.h"
 #include "McaEditorWgt.h"
 #include "McaReferenceCharController.h"
-#include "MaCollapseModel.h"
 #include "MSAEditorOffsetsView.h"
 #include "helpers/McaRowHeightController.h"
 #include "ov_sequence/SequenceObjectContext.h"
@@ -114,22 +113,13 @@ McaReferenceCharController* McaEditorWgt::getRefCharController() const {
     return refCharController;
 }
 
-QAction *McaEditorWgt::getClearSelectionAction() const {
-    return clearSelectionAction;
-}
-
-QAction* McaEditorWgt::getToogleColumnsAction() const {
+QAction* McaEditorWgt::getToggleColumnsAction() const {
     SAFE_POINT(offsetsView != NULL, "Offset controller is NULL", NULL);
     return offsetsView->getToggleColumnsViewAction();
 }
 
 void McaEditorWgt::initActions() {
     MaEditorWgt::initActions();
-
-    clearSelectionAction = new QAction(tr("Clear selection"), this);
-    clearSelectionAction->setShortcut(Qt::Key_Escape);
-    connect(clearSelectionAction, SIGNAL(triggered()), SIGNAL(si_clearSelection()));
-    addAction(clearSelectionAction);
 
     delSelectionAction->setText(tr("Remove character/gap"));
 }

@@ -65,13 +65,11 @@
 #include <U2Gui/ProjectTreeController.h>
 #include <U2Gui/ProjectTreeItemSelectorDialog.h>
 
-#include "ColorSchemaSettingsController.h"
 #include "CreateSubalignmentDialogController.h"
 #include "ExportSequencesTask.h"
 #include "MaEditorNameList.h"
 #include "MSAEditor.h"
 #include "MSAEditorSequenceArea.h"
-#include "Highlighting/MsaSchemesMenuBuilder.h"
 
 #include "Clipboard/SubalignmentToClipboardTask.h"
 #include "helpers/ScrollController.h"
@@ -310,10 +308,6 @@ void MSAEditorSequenceArea::sl_buildContextMenu(GObjectView*, QMenu* m) {
     m->setObjectName("msa sequence area context menu");
 }
 
-void MSAEditorSequenceArea::sl_showCustomSettings(){
-    AppContext::getAppSettingsGUI()->showSettingsDialog(ColorSchemaSettingsPageId);
-}
-
 void MSAEditorSequenceArea::initRenderer() {
     renderer = new SequenceAreaRenderer(ui, this);
 }
@@ -356,44 +350,6 @@ void MSAEditorSequenceArea::buildMenu(QMenu* m) {
     QMenu* viewMenu = GUIUtils::findSubMenu(m, MSAE_MENU_VIEW);
     SAFE_POINT(viewMenu != NULL, "viewMenu", );
     viewMenu->addAction(sortByNameAction);
-
-    QMenu* colorsSchemeMenu = new QMenu(tr("Colors"), NULL);
-    colorsSchemeMenu->menuAction()->setObjectName("Colors");
-    colorsSchemeMenu->setIcon(QIcon(":core/images/color_wheel.png"));
-    foreach(QAction* a, colorSchemeMenuActions) {
-        MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(a, colorsSchemeMenu);
-    }
-    colorsSchemeMenu->addSeparator();
-
-    QMenu* customColorSchemaMenu = new QMenu(tr("Custom schemes"), colorsSchemeMenu);
-    customColorSchemaMenu->menuAction()->setObjectName("Custom schemes");
-
-    foreach(QAction* a, customColorSchemeMenuActions) {
-        MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(a, customColorSchemaMenu);
-    }
-
-    if (!customColorSchemeMenuActions.isEmpty()){
-        customColorSchemaMenu->addSeparator();
-    }
-
-    lookMSASchemesSettingsAction = new QAction(tr("Create new color scheme"), this);
-    lookMSASchemesSettingsAction->setObjectName("Create new color scheme");
-    connect(lookMSASchemesSettingsAction, SIGNAL(triggered()), SLOT(sl_showCustomSettings()));
-    customColorSchemaMenu->addAction(lookMSASchemesSettingsAction);
-
-    colorsSchemeMenu->addMenu(customColorSchemaMenu);
-    m->insertMenu(GUIUtils::findAction(m->actions(), MSAE_MENU_EDIT), colorsSchemeMenu);
-
-    QMenu* highlightSchemeMenu = new QMenu(tr("Highlighting"), NULL);
-
-    highlightSchemeMenu->menuAction()->setObjectName("Highlighting");
-
-    foreach(QAction* a, highlightingSchemeMenuActions) {
-        MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(a, highlightSchemeMenu);
-    }
-    highlightSchemeMenu->addSeparator();
-    highlightSchemeMenu->addAction(useDotsAction);
-    m->insertMenu(GUIUtils::findAction(m->actions(), MSAE_MENU_EDIT), highlightSchemeMenu);
 }
 
 void MSAEditorSequenceArea::sl_fontChanged(QFont font) {
@@ -937,10 +893,10 @@ void MSAEditorSequenceArea::sl_setCollapsingRegions(const QList<QStringList>& co
     }
 }
 
-ExportHighligtningTask::ExportHighligtningTask(ExportHighligtingDialogController *dialog, MaEditorSequenceArea *msaese_)
+ExportHighligtningTask::ExportHighligtningTask(ExportHighligtingDialogController *dialog, MaEditor* maEditor)
     : Task(tr("Export highlighting"), TaskFlags_FOSCOE | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled)
 {
-    msaese = msaese_;
+    msaEditor = qobject_cast<MSAEditor*>(maEditor);
     startPos = dialog->startPos;
     endPos = dialog->endPos;
     startingIndex = dialog->startingIndex;
@@ -951,8 +907,7 @@ ExportHighligtningTask::ExportHighligtningTask(ExportHighligtingDialogController
 }
 
 void ExportHighligtningTask::run(){
-    QString exportedData = msaese->exportHighlighting(startPos, endPos, startingIndex, keepGaps, dots, transpose);
-
+    QString exportedData = exportHighlighting(startPos, endPos, startingIndex, keepGaps, dots, transpose);
     QFile resultFile(url.getURLString());
     CHECK_EXT(resultFile.open(QFile::WriteOnly | QFile::Truncate), url.getURLString(),);
     QTextStream contentWriter(&resultFile);
@@ -969,6 +924,85 @@ QString ExportHighligtningTask::generateReport() const {
         res += "<b>" + tr("Export highlighting finished successfully") + "</b><br><b>" + tr("Result file:") + "</b> " + url.getURLString();
     }
     return res;
+}
+
+QString ExportHighligtningTask::exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose) {
+    CHECK(msaEditor != NULL, QString());
+    SAFE_POINT(msaEditor->getReferenceRowId() != U2MsaRow::INVALID_ROW_ID, "Export highlighting is not supported without a reference", QString());
+    QStringList result;
+
+    MultipleAlignmentObject* maObj = msaEditor->getMaObject();
+    assert(maObj!=NULL);
+
+    const MultipleAlignment msa = maObj->getMultipleAlignment();
+
+    U2OpStatusImpl os;
+    int refSeq = msa->getRowIndexByRowId(msaEditor->getReferenceRowId(), os);
+    SAFE_POINT_OP(os, QString());
+    MultipleAlignmentRow row = msa->getRow(refSeq);
+
+    QString header;
+    header.append("Position\t");
+    QString refSeqName = msaEditor->getReferenceRowName();
+    header.append(refSeqName);
+    header.append("\t");
+            foreach(QString name, maObj->getMultipleAlignment()->getRowNames()){
+            if(name != refSeqName){
+                header.append(name);
+                header.append("\t");
+            }
+        }
+    header.remove(header.length()-1,1);
+    result.append(header);
+
+    int posInResult = startingIndex;
+
+    for (int pos = startPos-1; pos < endPos; pos++) {
+        QString rowStr;
+        rowStr.append(QString("%1").arg(posInResult));
+        rowStr.append(QString("\t") + QString(msa->charAt(refSeq, pos)) + QString("\t"));
+        bool informative = false;
+        for (int seq = 0; seq < msa->getNumRows(); seq++) {  //FIXME possible problems when sequences have moved in view
+            if (seq == refSeq) continue;
+            char c = msa->charAt(seq, pos);
+
+            const char refChar = row->charAt(pos);
+            if (refChar == '-' && !keepGaps) {
+                continue;
+            }
+
+            QColor unused;
+            bool highlight = false;
+            MSAEditorSequenceArea* sequenceArea = msaEditor->getUI()->getSequenceArea();
+            MsaHighlightingScheme* scheme = sequenceArea->getCurrentHighlightingScheme();
+            scheme->setUseDots(sequenceArea->getUseDotsCheckedState());
+            scheme->process(refChar, c, unused, highlight, pos, seq);
+
+            if (highlight) {
+                rowStr.append(c);
+                informative = true;
+            } else {
+                if (dots) {
+                    rowStr.append(".");
+                } else {
+                    rowStr.append(" ");
+                }
+            }
+            rowStr.append("\t");
+        }
+        if(informative){
+            header.remove(rowStr.length() - 1, 1);
+            result.append(rowStr);
+        }
+        posInResult++;
+    }
+
+    if (!transpose){
+        QStringList transposedRows = TextUtils::transposeCSVRows(result, "\t");
+        return transposedRows.join("\n");
+    }
+
+    return result.join("\n");
 }
 
 }//namespace

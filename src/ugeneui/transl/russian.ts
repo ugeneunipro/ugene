@@ -2441,7 +2441,7 @@ Would you like to download and install it?</source>
     <message>
         <location filename="../src/app_settings/user_apps_settings/UserApplicationsSettingsWidget.ui" line="51"/>
         <source>Appearance</source>
-        <translation>Стиль</translation>
+        <translation>Внешний вид</translation>
     </message>
 </context>
 </TS>

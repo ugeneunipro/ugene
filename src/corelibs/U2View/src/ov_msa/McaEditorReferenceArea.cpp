@@ -118,7 +118,7 @@ void McaEditorReferenceArea::mousePressEvent(QMouseEvent* e) {
         const bool isShiftPressed = km.testFlag(Qt::ShiftModifier);
         if (!isShiftPressed) {
             firstPressedSelectionPosition = -1;
-            emit ui->si_clearSelection();
+            emit editor->si_clearSelection();
         }
     } else {
         PanView::mousePressEvent(e);

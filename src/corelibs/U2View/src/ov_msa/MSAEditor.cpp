@@ -40,6 +40,7 @@
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/ProjectView.h>
 #include <U2View/FindPatternMsaWidgetFactory.h>
+#include <U2View/ColorSchemaSettingsController.h>
 
 #include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
 #include "MSAEditor.h"
@@ -50,6 +51,8 @@
 #include "RealignSequencesInAlignment/RealignSequencesInAlignmentTask.h"
 #include "view_rendering/MaEditorConsensusArea.h"
 #include "view_rendering/MaEditorSequenceArea.h"
+#include "MSAEditorOffsetsView.h"
+#include "Highlighting/MsaSchemesMenuBuilder.h"
 
 namespace U2 {
 
@@ -78,6 +81,10 @@ MSAEditor::MSAEditor(const QString& viewName, MultipleSequenceAlignmentObject* o
     if (maObject->getAlphabet() != NULL) {
         pairwiseAlignmentWidgetsSettings->customSettings.insert("alphabet", maObject->getAlphabet()->getId());
     }
+
+    openCustomSettingsAction = new QAction(tr("Create new color scheme"), this);
+    openCustomSettingsAction->setObjectName("Create new color scheme");
+    connect(openCustomSettingsAction, SIGNAL(triggered()), SLOT(sl_showCustomSettings()));
 
     updateActions();
 }
@@ -142,6 +149,8 @@ void MSAEditor::buildStaticToolbar(QToolBar* tb) {
 }
 
 void MSAEditor::buildStaticMenu(QMenu* m) {
+    addAppearanceMenu(m);
+
     addNavigationMenu(m);
 
     addLoadMenu(m);
@@ -153,7 +162,7 @@ void MSAEditor::buildStaticMenu(QMenu* m) {
     addTreeMenu(m);
     addStatisticsMenu(m);
 
-    addViewMenu(m);
+    addSortMenu(m);
     addExportMenu(m);
 
     addAdvancedMenu(m);
@@ -168,6 +177,72 @@ void MSAEditor::addExportMenu(QMenu* m) {
     QMenu* em = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
     SAFE_POINT(em != NULL, "Export menu not found", );
     em->addAction(saveScreenshotAction);
+}
+
+void MSAEditor::addAppearanceMenu(QMenu* m) {
+    QMenu* appearanceMenu = m->addMenu(tr("Appearance"));
+    appearanceMenu->setObjectName(MSAE_MENU_APPEARANCE);
+
+    appearanceMenu->addAction(showOverviewAction);
+    auto offsetsController = ui->getOffsetsViewController();
+    if (offsetsController != NULL) {
+        appearanceMenu->addAction(offsetsController->getToggleColumnsViewAction());
+    }
+    appearanceMenu->addSeparator();
+    appearanceMenu->addAction(zoomInAction);
+    appearanceMenu->addAction(zoomOutAction);
+    appearanceMenu->addAction(zoomToSelectionAction);
+    appearanceMenu->addAction(resetZoomAction);
+    appearanceMenu->addSeparator();
+
+    addColorsMenu(appearanceMenu);
+    addHighlightingMenu(appearanceMenu);
+    appearanceMenu->addSeparator();
+
+    appearanceMenu->addAction(changeFontAction);
+    appearanceMenu->addSeparator();
+    appearanceMenu->addAction(clearSelectionAction);
+}
+
+void MSAEditor::addColorsMenu(QMenu* m) {
+    QMenu* colorsSchemeMenu = m->addMenu(tr("Colors"));
+    colorsSchemeMenu->menuAction()->setObjectName("Colors");
+    colorsSchemeMenu->setIcon(QIcon(":core/images/color_wheel.png"));
+    auto sequenceArea = ui->getSequenceArea();
+    foreach(QAction* a, sequenceArea->colorSchemeMenuActions) {
+        MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(a, colorsSchemeMenu);
+    }
+    colorsSchemeMenu->addSeparator();
+
+    QMenu* customColorSchemaMenu = new QMenu(tr("Custom schemes"), colorsSchemeMenu);
+    customColorSchemaMenu->menuAction()->setObjectName("Custom schemes");
+
+    foreach(QAction* a, sequenceArea->customColorSchemeMenuActions) {
+        MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(a, customColorSchemaMenu);
+    }
+
+    if (!sequenceArea->customColorSchemeMenuActions.isEmpty()) {
+        customColorSchemaMenu->addSeparator();
+    }
+
+    customColorSchemaMenu->addAction(openCustomSettingsAction);
+
+    colorsSchemeMenu->addMenu(customColorSchemaMenu);
+    m->insertMenu(GUIUtils::findAction(m->actions(), MSAE_MENU_EDIT), colorsSchemeMenu);
+}
+
+void MSAEditor::addHighlightingMenu(QMenu* m) {
+    QMenu* highlightSchemeMenu = new QMenu(tr("Highlighting"), NULL);
+
+    highlightSchemeMenu->menuAction()->setObjectName("Highlighting");
+
+    auto sequenceArea= ui->getSequenceArea();
+    foreach(QAction* a, sequenceArea->highlightingSchemeMenuActions) {
+        MsaSchemesMenuBuilder::addActionOrTextSeparatorToMenu(a, highlightSchemeMenu);
+    }
+    highlightSchemeMenu->addSeparator();
+    highlightSchemeMenu->addAction(sequenceArea->useDotsAction);
+    m->insertMenu(GUIUtils::findAction(m->actions(), MSAE_MENU_EDIT), highlightSchemeMenu);
 }
 
 void MSAEditor::addNavigationMenu(QMenu* m) {
@@ -272,6 +347,7 @@ QWidget* MSAEditor::createWidget() {
 void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     QMenu m;
 
+    addAppearanceMenu(&m);
     addNavigationMenu(&m);
     addLoadMenu(&m);
     addCopyMenu(&m);
@@ -279,7 +355,7 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     addAlignMenu(&m);
     addTreeMenu(&m);
     addStatisticsMenu(&m);
-    addViewMenu(&m);
+    addSortMenu(&m);
     addExportMenu(&m);
     addAdvancedMenu(&m);
 
@@ -412,7 +488,7 @@ void MSAEditor::sl_align(){
     addAlignMenu(&m);
     addTreeMenu(&m);
     addStatisticsMenu(&m);
-    addViewMenu(&m);
+    addSortMenu(&m);
     addExportMenu(&m);
     addAdvancedMenu(&m);
 
@@ -566,5 +642,10 @@ char MSAEditor::getReferenceCharAt(int pos) const {
 
     return maObject->getMultipleAlignment()->charAt(refSeq, pos);
 }
+
+void MSAEditor::sl_showCustomSettings(){
+    AppContext::getAppSettingsGUI()->showSettingsDialog(ColorSchemaSettingsPageId);
+}
+
 
 }   // namespace U2

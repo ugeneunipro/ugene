@@ -43,6 +43,7 @@
 #include "ov_sequence/SequenceObjectContext.h"
 #include "Overview/MaEditorOverviewArea.h"
 #include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
+#include "MSAEditorOffsetsView.h"
 
 namespace U2 {
 
@@ -262,54 +263,77 @@ void McaEditor::addAppearanceMenu(QMenu *menu) {
     QMenu* appearanceMenu = menu->addMenu(tr("Appearance"));
     appearanceMenu->menuAction()->setObjectName(MCAE_MENU_APPEARANCE);
 
+    auto ui = getUI();
+    auto sequenceArea = ui->getSequenceArea();
+    auto offsetsController = ui->getOffsetsViewController();
+
     appearanceMenu->addAction(showChromatogramsAction);
-    appearanceMenu->addMenu(getUI()->getSequenceArea()->getTraceActionsMenu());
+    appearanceMenu->addMenu(sequenceArea->getTraceActionsMenu());
     appearanceMenu->addAction(showOverviewAction);
-    appearanceMenu->addAction(getUI()->getToogleColumnsAction());
+    if (offsetsController != NULL) {
+        appearanceMenu->addAction(offsetsController->getToggleColumnsViewAction());
+    }
+    appearanceMenu->addAction(ui->getToggleColumnsAction());
     appearanceMenu->addSeparator();
+
     appearanceMenu->addAction(zoomInAction);
     appearanceMenu->addAction(zoomOutAction);
     appearanceMenu->addAction(resetZoomAction);
     appearanceMenu->addSeparator();
-    appearanceMenu->addAction(getUI()->getSequenceArea()->getIncreasePeaksHeightAction());
-    appearanceMenu->addAction(getUI()->getSequenceArea()->getDecreasePeaksHeightAction());
+
+    appearanceMenu->addAction(sequenceArea->getIncreasePeaksHeightAction());
+    appearanceMenu->addAction(sequenceArea->getDecreasePeaksHeightAction());
     appearanceMenu->addSeparator();
+
     appearanceMenu->addAction(changeFontAction);
     appearanceMenu->addSeparator();
-    appearanceMenu->addAction(getUI()->getClearSelectionAction());
+
+    appearanceMenu->addAction(clearSelectionAction);
 }
 
 void McaEditor::addNavigationMenu(QMenu *menu) {
     QMenu *navigationMenu = menu->addMenu(tr("Navigation"));
     navigationMenu->menuAction()->setObjectName(MCAE_MENU_NAVIGATION);
 
-    navigationMenu->addAction(getUI()->getSequenceArea()->getAmbiguousCharactersController()->getPreviousAction());
-    navigationMenu->addAction(getUI()->getSequenceArea()->getAmbiguousCharactersController()->getNextAction());
+    auto ui = getUI();
+    auto ambiguousCharactersController = ui->getSequenceArea()->getAmbiguousCharactersController();
+    navigationMenu->addAction(ambiguousCharactersController->getPreviousAction());
+    navigationMenu->addAction(ambiguousCharactersController->getNextAction());
     navigationMenu->addSeparator();
-    navigationMenu->addAction(getUI()->getConsensusArea()->getMismatchController()->getPrevMismatchAction());
-    navigationMenu->addAction(getUI()->getConsensusArea()->getMismatchController()->getNextMismatchAction());
+
+    auto mismatchController = ui->getConsensusArea()->getMismatchController();
+    navigationMenu->addAction(mismatchController->getPrevMismatchAction());
+    navigationMenu->addAction(mismatchController->getNextMismatchAction());
 }
 
 void McaEditor::addEditMenu(QMenu* menu) {
     QMenu* editMenu = menu->addMenu(tr("Edit"));
     editMenu->menuAction()->setObjectName(MCAE_MENU_EDIT);
 
-    editMenu->addAction(getUI()->getSequenceArea()->getInsertAction());
-    editMenu->addAction(getUI()->getSequenceArea()->getReplaceCharacterAction());
-    editMenu->addAction(getUI()->getDelSelectionAction());
+    auto ui = getUI();
+    auto sequenceArea = ui->getSequenceArea();
+
+    editMenu->addAction(sequenceArea->getInsertAction());
+    editMenu->addAction(sequenceArea->getReplaceCharacterAction());
+    editMenu->addAction(ui->getDelSelectionAction());
     editMenu->addSeparator();
-    editMenu->addAction(getUI()->getSequenceArea()->getInsertGapAction());
-    editMenu->addAction(getUI()->getSequenceArea()->getRemoveGapBeforeSelectionAction());
-    editMenu->addAction(getUI()->getSequenceArea()->getRemoveColumnsOfGapsAction());
+
+    editMenu->addAction(sequenceArea->getInsertGapAction());
+    editMenu->addAction(sequenceArea->getRemoveGapBeforeSelectionAction());
+    editMenu->addAction(sequenceArea->getRemoveColumnsOfGapsAction());
     editMenu->addSeparator();
-    editMenu->addAction(getUI()->getSequenceArea()->getTrimLeftEndAction());
-    editMenu->addAction(getUI()->getSequenceArea()->getTrimRightEndAction());
+
+    editMenu->addAction(sequenceArea->getTrimLeftEndAction());
+    editMenu->addAction(sequenceArea->getTrimRightEndAction());
     editMenu->addSeparator();
-    editMenu->addAction(getUI()->getEditorNameList()->getEditSequenceNameAction());
-    editMenu->addAction(getUI()->getEditorNameList()->getRemoveSequenceAction());
+
+    auto editorNameList = ui->getEditorNameList();
+    editMenu->addAction(editorNameList->getEditSequenceNameAction());
+    editMenu->addAction(editorNameList->getRemoveSequenceAction());
     editMenu->addSeparator();
-    editMenu->addAction(getUI()->getUndoAction());
-    editMenu->addAction(getUI()->getRedoAction());
+
+    editMenu->addAction(ui->getUndoAction());
+    editMenu->addAction(ui->getRedoAction());
 }
 
 }   // namespace U2

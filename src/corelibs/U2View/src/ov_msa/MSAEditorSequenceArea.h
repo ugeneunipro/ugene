@@ -121,9 +121,6 @@ public:
 
     bool hasAminoAlphabet();
 
-public:
-    QString exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
-
 protected:
     void focusOutEvent(QFocusEvent* fe);
     void focusInEvent(QFocusEvent* fe);
@@ -159,8 +156,6 @@ private slots:
 
     void sl_modelChanged();
 
-    void sl_showCustomSettings();
-
     void sl_resetCollapsibleModel();
     void sl_setCollapsingRegions(const QList<QStringList>&);
     void sl_fontChanged(QFont font);
@@ -191,18 +186,19 @@ private:
     QAction*        reverseComplementAction;
     QAction*        reverseAction;
     QAction*        complementAction;
-    QAction*        lookMSASchemesSettingsAction;
 };
 
 // SANGER_TODO: move to EditorTasks?
 class U2VIEW_EXPORT ExportHighligtningTask : public Task {
     Q_OBJECT
 public:
-    ExportHighligtningTask(ExportHighligtingDialogController *dialog, MaEditorSequenceArea *msaese_);
+    ExportHighligtningTask(ExportHighligtingDialogController *dialog, MaEditor *editor);
 
     void run();
     QString generateReport() const;
     Task::ReportResult report();
+
+    QString exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
 
 private:
     int startPos;
@@ -212,7 +208,7 @@ private:
     bool dots;
     bool transpose;
     GUrl url;
-    MaEditorSequenceArea *msaese;
+    MSAEditor *msaEditor;
 };
 
 }//namespace

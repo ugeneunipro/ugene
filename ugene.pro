@@ -97,3 +97,31 @@ exclude_list_enabled() {
 without_non_free() {
     SUBDIRS -= src/plugins_3rdparty/psipred
 }
+
+#foreach 'language'
+for( i, UGENE_TRANSL_IDX ) {
+    UGENE_TRANSLATIONS =
+
+    curTranslFile = $$member( UGENE_TRANSL_FILES, $$i )
+    curTranslTag  = $$member( UGENE_TRANSL_TAG, $$i )
+
+    #foreach project folder
+    for( prj_dir, SUBDIRS ) {
+        #look for file and add it to translation list if it exists
+        translFile = $$prj_dir/$$UGENE_TRANSL_DIR/$$curTranslFile   # 'project/transl/english.ts' etc.
+        exists( $$translFile ) {
+            UGENE_TRANSLATIONS += $$translFile
+#            system( $$UGENE_LUPDATE $$translFile ) FIXME
+        }
+    }
+    !isEmpty(UGENE_LRELEASE) {
+        for( targetDir, UGENE_TRANSL_QM_TARGET_DIR ) {
+            targetQmFile = $$targetDir/transl_$$curTranslTag            # 'transl_en.qm' etc.
+            targetQmFile = $$join( targetQmFile, , , .qm )              # special workaround for adding suffix started with '.'
+            message( Generating traslations for language: $$curTranslTag )
+            system( $$UGENE_LRELEASE $$UGENE_TRANSLATIONS -qm $$targetQmFile > $$UGENE_DEV_NULL )
+        }
+    } else {
+        message( Cannot generate translations: no lrelease binary found )
+    }
+}

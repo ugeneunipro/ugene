@@ -144,6 +144,8 @@ public:
     /** Sets new cursor position. Emits si_cursorPositionChanged() signal. */
     void setCursorPosition(const QPoint& cursorPosition);
 
+    QAction *getClearSelectionAction() const;
+
 signals:
     void si_fontChanged(const QFont& f);
     void si_zoomOperationPerformed(bool resizeModeChanged);
@@ -152,6 +154,7 @@ signals:
     void si_completeUpdate();
     void si_updateActions();
     void si_cursorPositionChanged(const QPoint& cursorPosition);
+    void si_clearSelection();
 
 protected slots:
     virtual void sl_onContextMenuRequested(const QPoint & pos) = 0;
@@ -180,9 +183,9 @@ protected:
     void updateResizeMode();
 
     void addCopyMenu(QMenu* m);
-    void addEditMenu(QMenu* m);
+    virtual void addEditMenu(QMenu* m);
     virtual void addExportMenu(QMenu* m);
-    void addViewMenu(QMenu* m);
+    void addSortMenu(QMenu* m);
     void addLoadMenu(QMenu* m);
     void addAlignMenu(QMenu* m); // SANGER_TODO: should the align menu exist in MCA?
 
@@ -207,16 +210,18 @@ protected:
     /** Current cursor position: 'x' is offset in alignment (0...len) and 'y' is a sequence index in the aligment. */
     QPoint cursorPosition;
 
-    QAction*          saveAlignmentAction;
-    QAction*          saveAlignmentAsAction;
-    QAction*          zoomInAction;
-    QAction*          zoomOutAction;
-    QAction*          zoomToSelectionAction;
-    QAction*          showOverviewAction;
-    QAction*          changeFontAction;
-    QAction*          resetZoomAction;
-    QAction*          saveScreenshotAction;
-    QAction*          exportHighlightedAction;
+    QAction* saveAlignmentAction;
+    QAction* saveAlignmentAsAction;
+    QAction* zoomInAction;
+    QAction* zoomOutAction;
+    QAction* zoomToSelectionAction;
+    QAction* showOverviewAction;
+    QAction* changeFontAction;
+    QAction* resetZoomAction;
+    QAction* saveScreenshotAction;
+    QAction* exportHighlightedAction;
+    QAction* clearSelectionAction;
+
 };
 
 } // namespace

@@ -135,8 +135,6 @@ public:
 
     bool drawContent(QPainter& painter, const U2Region& columns, const QList<int>& maRows, int xStart, int yStart);
 
-    QString exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
-
     MsaColorScheme *getCurrentColorScheme() const;
     MsaHighlightingScheme *getCurrentHighlightingScheme() const;
     bool getUseDotsCheckedState() const;
@@ -339,15 +337,18 @@ protected:
     bool                isCtrlPressed;
     qint64              lengthOnMousePress;
 
-    QAction*            useDotsAction;
-
-    QList<QAction*>     colorSchemeMenuActions;
-    QList<QAction*>    customColorSchemeMenuActions;
-    QList<QAction*>    highlightingSchemeMenuActions;
 
     QAction*            replaceCharacterAction;
     QAction*            fillWithGapsinsSymAction;
 
+public:
+    QAction*            useDotsAction;
+
+    QList<QAction*>     colorSchemeMenuActions;
+    QList<QAction*>     customColorSchemeMenuActions;
+    QList<QAction*>     highlightingSchemeMenuActions;
+
+protected:
     // The member is intended for tracking MSA changes (handling U2UseCommonUserModStep objects)
     // that does not fit into one method, e.g. shifting MSA region with mouse.
     // If the changing action fits within one method it's recommended using

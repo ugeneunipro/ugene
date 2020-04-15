@@ -44,11 +44,7 @@ public:
     McaEditorSequenceArea* getSequenceArea() const;
     McaReferenceCharController* getRefCharController() const;
 
-    QAction *getClearSelectionAction() const;
-    QAction *getToogleColumnsAction() const;
-
-signals:
-    void si_clearSelection();
+    QAction *getToggleColumnsAction() const;
 
 protected:
     void initActions();
@@ -61,8 +57,6 @@ protected:
 private:
     McaEditorReferenceArea*     refArea;
     McaReferenceCharController* refCharController;
-
-    QAction *clearSelectionAction;
 };
 
 }   // namespace U2

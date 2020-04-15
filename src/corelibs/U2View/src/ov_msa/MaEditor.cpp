@@ -61,7 +61,8 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
       zoomFactor(0),
       cachedColumnWidth(0),
       cursorPosition(QPoint(0, 0)),
-      exportHighlightedAction(NULL)
+      exportHighlightedAction(NULL),
+      clearSelectionAction(NULL)
 {
     maObject = qobject_cast<MultipleAlignmentObject*>(obj);
     objects.append(maObject);
@@ -114,6 +115,7 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(this, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_resetColumnWidthCache()));
     connect(this, SIGNAL(si_fontChanged(QFont)), SLOT(sl_resetColumnWidthCache()));
+
 }
 
 QVariantMap MaEditor::saveState() {
@@ -340,7 +342,7 @@ void MaEditor::sl_exportHighlighted(){
     CHECK(!d.isNull(), );
 
     if (d->result() == QDialog::Accepted){
-        AppContext::getTaskScheduler()->registerTopLevelTask(new ExportHighligtningTask(d.data(), ui->getSequenceArea()));
+        AppContext::getTaskScheduler()->registerTopLevelTask(new ExportHighligtningTask(d.data(), this));
     }
 }
 
@@ -360,6 +362,13 @@ void MaEditor::initActions() {
     showOverviewAction->setChecked(true);
     connect(showOverviewAction, SIGNAL(triggered()), ui->getOverviewArea(), SLOT(sl_show()));
     ui->addAction(showOverviewAction);
+
+    clearSelectionAction = new QAction(tr("Clear selection"), this);
+    clearSelectionAction->setShortcut(Qt::Key_Escape);
+    connect(clearSelectionAction, SIGNAL(triggered()), SIGNAL(si_clearSelection()));
+    ui->addAction(clearSelectionAction);
+
+    connect(this, SIGNAL(si_clearSelection()), ui->getSequenceArea(), SLOT(sl_cancelSelection()));
 }
 
 void MaEditor::initZoom() {
@@ -410,12 +419,9 @@ void MaEditor::addExportMenu(QMenu* m) {
     }
 }
 
-void MaEditor::addViewMenu(QMenu* m) {
-    QMenu* em = m->addMenu(tr("View"));
+void MaEditor::addSortMenu(QMenu* m) {
+    QMenu* em = m->addMenu(tr("Sort"));
     em->menuAction()->setObjectName(MSAE_MENU_VIEW);
-    if (ui->getOffsetsViewController() != NULL) {
-        em->addAction(ui->getOffsetsViewController()->getToggleColumnsViewAction());
-    }
 }
 
 void MaEditor::addLoadMenu( QMenu* m ) {
@@ -487,6 +493,10 @@ void MaEditor::setCursorPosition(const QPoint &newCursorPosition) {
 
 QList<qint64> MaEditor::getMaRowIds() const {
     return maObject->getMultipleAlignment()->getRowsIds();
+}
+
+QAction *MaEditor::getClearSelectionAction() const {
+    return clearSelectionAction;
 }
 
 } // namespace

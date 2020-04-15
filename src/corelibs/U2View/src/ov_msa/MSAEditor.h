@@ -110,6 +110,7 @@ protected slots:
     void sl_hideTreeOP();
     void sl_rowsRemoved(const QList<qint64> &rowIds);
     void sl_updateRealignAction();
+    void sl_showCustomSettings();
 
 protected:
     QWidget* createWidget();
@@ -120,6 +121,9 @@ protected:
 
 private:
     void addExportMenu(QMenu* m);
+    void addAppearanceMenu(QMenu* m);
+    void addColorsMenu(QMenu* m);
+    void addHighlightingMenu(QMenu* m);
     void addNavigationMenu(QMenu* m);
     void addTreeMenu(QMenu* m);
     void addAdvancedMenu(QMenu* m);
@@ -139,6 +143,7 @@ private:
     QAction* unsetReferenceSequenceAction;
     QAction* gotoAction;
     QAction* searchInSequencesAction;
+    QAction* openCustomSettingsAction;
 
     PairwiseAlignmentWidgetsSettings* pairwiseAlignmentWidgetsSettings;
     MSAEditorTreeManager           treeManager;

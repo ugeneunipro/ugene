@@ -429,7 +429,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004)
     CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
 
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
+                                                      << "action_go_to_position"));
 
     GTMenu::showContextMenu(os, mdiWindow);
     GTGlobals::sleep();
@@ -455,7 +456,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1)
     CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
 
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
+                                                      <<"action_go_to_position"));
 
     GTMenu::showContextMenu(os, mdiWindow);
     GTGlobals::sleep();
@@ -481,7 +483,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2)
     CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
 
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
+                                                      << "action_go_to_position"));
 
     GTMenu::showContextMenu(os, mdiWindow);
     GTGlobals::sleep();
@@ -636,10 +639,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     CHECK_SET_ERR(line->text() == "Seq 4 / 10", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col 8 / 14", "Column is " + column->text());
 }
-
-
-
-
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
     //1. Open document _common_data\scenarios\msa\ma2_gapped.aln
@@ -842,7 +841,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
 //     3. Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 300));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
+                                                      << "action_go_to_position"));
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
     GTMenu::showContextMenu(os, mdiWindow);
@@ -855,7 +855,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
 //     5. Scroll msa to the end.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 550));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
+                                                      << "action_go_to_position"));
 
     GTMenu::showContextMenu(os, mdiWindow);
     GTGlobals::sleep(500);
@@ -908,7 +909,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {  //CHANGES: default names used
 
 //     3. Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 300));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
+                                                      << "action_go_to_position"));
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
     GTMenu::showContextMenu(os, mdiWindow);
@@ -921,7 +923,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {  //CHANGES: default names used
 
 //     5. Scroll msa to the end.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 550));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
+                                                      << "action_go_to_position"));
 
     GTMenu::showContextMenu(os, mdiWindow);
     GTGlobals::sleep(500);
@@ -975,7 +978,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
 
 //     3. Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 200));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
+                                                      << "action_go_to_position"));
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
     GTMenu::showContextMenu(os, mdiWindow);
@@ -988,7 +992,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
 
 //     5. Scroll msa to the end.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 510));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
+                                                      << "action_go_to_position"));
 
     GTMenu::showContextMenu(os, mdiWindow);
     GTGlobals::sleep(500);
@@ -1034,7 +1039,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008_3) {
 
 //     3. Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 600));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
+                                                      << "action_go_to_position"));
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
     GTMenu::showContextMenu(os, mdiWindow);
@@ -1047,7 +1053,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008_3) {
 
 //     5. Scroll msa to the end.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 1000));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
+                                                      << "action_go_to_position"));
 
     GTMenu::showContextMenu(os, mdiWindow);
     GTGlobals::sleep(500);
