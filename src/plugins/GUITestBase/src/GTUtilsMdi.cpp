@@ -264,7 +264,7 @@ void GTUtilsMdi::activateWindow(HI::GUITestOpStatus &os, const QString &windowNa
     MainWindow* mw = AppContext::getMainWindow();
     GT_CHECK(mw != NULL, "MainWindow == NULL");
 
-    CHECK(!activeWindowTitle(os).contains(windowName), );
+    CHECK(!(activeWindowTitle(os) == windowName), );
 
     GTGlobals::FindOptions options;
     options.matchPolicy = Qt::MatchContains;

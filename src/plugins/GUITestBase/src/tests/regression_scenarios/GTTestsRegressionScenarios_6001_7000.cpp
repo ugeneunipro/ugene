@@ -5690,6 +5690,31 @@ GUI_TEST_CLASS_DEFINITION(test_6752) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
 }
+GUI_TEST_CLASS_DEFINITION(test_6760) {
+    //1. Open /data/samples/fasta/human_T1.fa
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open additional object in another sequence view
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view" << "Open new view: Sequence View", GTGlobals::UseMouse));
+    GTUtilsProjectTreeView::callContextMenu(os, "human_T1.fa");
+
+    //3. Open /data/samples/gff/5prime_utr_intron_A20.gff
+    GTFileDialog::openFile(os, dataDir + "samples/GFF/5prime_utr_intron_A20.gff");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //4. Drag and drop first annotation from gff file to sequence view of human_T1
+    //5. On question "Found annotations that are out of sequence range, continue?" answer "Yes"
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
+    GTUtilsAnnotationsTreeView::addAnnotationsTableFromProject(os, "Ca20Chr1 features");
+    GTGlobals::sleep();
+    //6. Switch to another view
+    GTUtilsMdi::activateWindow(os, "human_T1 [s] human_T1 (UCSC April 2002 chr7:115977709-117855134)");
+    GTGlobals::sleep();
+    //Expected result: here is annotation in another sequence view
+    GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "5_prime_UTR_intron"));
+}
+
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2
