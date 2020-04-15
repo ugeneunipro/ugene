@@ -791,10 +791,12 @@ void AnnotatedDNAView::sl_relatedObjectRelationChanged() {
     CHECK(o != nullptr, );
     QList<AnnotationTableObject *> currentAnnotations = getAnnotationObjects(false);
     QList<GObject *> allObjs;
-    foreach (Document *d, AppContext::getProject()->getDocuments()) {
-        allObjs << d->getObjects();
-    }
     QList<GObject *> objectsToAdd;
+
+    foreach (Document *d, AppContext::getProject()->getDocuments()) {
+        allObjs << GObjectUtils::findObjectsRelatedToObjectByRole(o, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, d->getObjects(), UnloadedObjectFilter::UOF_LoadedOnly);
+    }
+
     foreach (GObject *obj, allObjs) {
         foreach (const GObjectRelation &rel, obj->findRelatedObjectsByRole(ObjectRole_Sequence)) {
             if (rel.ref.entityRef == o->getEntityRef() && !currentAnnotations.contains(qobject_cast<AnnotationTableObject*>(obj))) {
@@ -802,10 +804,11 @@ void AnnotatedDNAView::sl_relatedObjectRelationChanged() {
             }
         }
     }
+
     foreach(GObject* obj, objectsToAdd) {
         QString error = addObject(obj);
         if (!error.isEmpty()) {
-            QMessageBox::critical(NULL, tr("Error!"), error);
+            coreLog.error(error);
         }
     }
 }
@@ -887,9 +890,9 @@ QString AnnotatedDNAView::tryAddObject(GObject* o) {
                 tr("Select sequence to associate annotations with:"));
             d->exec();
             CHECK(!d.isNull(), "");
-
+            bool objectAlreadyAdded = d->relationIsSet;
             rCtx = findRelatedSequenceContexts(o);
-            if (rCtx.isEmpty() || d->relationIsSet) {
+            if (rCtx.isEmpty() || objectAlreadyAdded) {
                 return "";
             }
         }
