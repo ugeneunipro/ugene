@@ -892,6 +892,12 @@ bool FindPatternWidget::verifyPatternAlphabet()
     bool result = alphabetIsOk;
 
     if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
+        int cursorPosition = textPattern->textCursor().position();
+        QString reText = textPattern->toPlainText().toLocal8Bit().toUpper();
+        textPattern->setText(reText);
+        QTextCursor cursor = textPattern->textCursor();
+        cursor.setPosition(cursorPosition);
+        textPattern->setTextCursor(cursor);
         QRegExp regExp(textPattern->toPlainText());
         if (regExp.isValid()) {
             showHideMessage(false, PatternWrongRegExp);
