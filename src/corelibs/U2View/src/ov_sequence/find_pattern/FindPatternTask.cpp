@@ -162,7 +162,7 @@ void FindPatternListTask::prepare() {
             continue;
         }
         FindAlgorithmTaskSettings subTaskSettings = settings;
-        subTaskSettings.pattern = pattern.second.toLocal8Bit().toUpper();
+        subTaskSettings.pattern = pattern.second.toUtf8();
         subTaskSettings.maxErr = getMaxError( subTaskSettings.pattern );
         subTaskSettings.name = pattern.first;
         subTaskSettings.countTask = false;

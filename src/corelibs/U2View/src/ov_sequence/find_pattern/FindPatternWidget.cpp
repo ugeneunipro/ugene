@@ -892,18 +892,22 @@ bool FindPatternWidget::verifyPatternAlphabet()
     bool result = alphabetIsOk;
 
     if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
-        int cursorPosition = textPattern->textCursor().position();
-        QString reText = textPattern->toPlainText().toLocal8Bit().toUpper();
-        textPattern->setText(reText);
-        QTextCursor cursor = textPattern->textCursor();
-        cursor.setPosition(cursorPosition);
-        textPattern->setTextCursor(cursor);
-        QRegExp regExp(textPattern->toPlainText());
-        if (regExp.isValid()) {
-            showHideMessage(false, PatternWrongRegExp);
-        } else {
+        QString reText = textPattern->toPlainText();
+        
+        // Check that all symbols are ascii
+        if (reText.contains(QRegularExpression(QStringLiteral("[^\\x{0000}-\\x{007F}]")))) {
             showHideMessage(true, PatternWrongRegExp);
             result = false;
+        }
+        else {
+            QRegExp regExp(reText.toUtf8());
+            if (regExp.isValid()) {
+                showHideMessage(false, PatternWrongRegExp);
+            }
+            else {
+                showHideMessage(true, PatternWrongRegExp);
+                result = false;
+            }
         }
     } else {
         showHideMessage(false, PatternWrongRegExp);
