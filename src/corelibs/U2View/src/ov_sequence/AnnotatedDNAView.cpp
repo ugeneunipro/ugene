@@ -790,18 +790,13 @@ void AnnotatedDNAView::sl_relatedObjectRelationChanged() {
     GObject *o = qobject_cast<GObject *>(sender());
     CHECK(o != nullptr, );
     QList<AnnotationTableObject *> currentAnnotations = getAnnotationObjects(false);
-    QList<GObject *> allObjs;
     QList<GObject *> objectsToAdd;
-
-    foreach (Document *d, AppContext::getProject()->getDocuments()) {
-        allObjs << GObjectUtils::findObjectsRelatedToObjectByRole(o, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, d->getObjects(), UnloadedObjectFilter::UOF_LoadedOnly);
-    }
+    QList<GObject *> allObjs = GObjectUtils::findObjectsRelatedToObjectByRole(o, GObjectTypes::ANNOTATION_TABLE, ObjectRole_Sequence, 
+        GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::ANNOTATION_TABLE), UnloadedObjectFilter::UOF_LoadedOnly);
 
     foreach (GObject *obj, allObjs) {
-        foreach (const GObjectRelation &rel, obj->findRelatedObjectsByRole(ObjectRole_Sequence)) {
-            if (rel.ref.entityRef == o->getEntityRef() && !currentAnnotations.contains(qobject_cast<AnnotationTableObject*>(obj))) {
-                objectsToAdd << obj;
-            }
+        if (!currentAnnotations.contains(qobject_cast<AnnotationTableObject *>(obj))) {
+            objectsToAdd << obj;
         }
     }
 
