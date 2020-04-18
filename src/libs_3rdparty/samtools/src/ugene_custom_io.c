@@ -33,7 +33,7 @@ int ugene_custom_open(const char *filename, int oflag) {
 // The conversion is with CP_THREAD_ACP by default
 int ugene_custom_open2(const char *filename, int oflag, int pflag) {
 #ifndef _WIN32
-    return open(filename, oflag);
+    return open(filename, oflag, pflag);
 #else
     int wchars_num = MultiByteToWideChar(CP_THREAD_ACP, 0, filename, -1, NULL, 0);
     wchar_t* w_filename = malloc(sizeof(wchar_t) * wchars_num);
