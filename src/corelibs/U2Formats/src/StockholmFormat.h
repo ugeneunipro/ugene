@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,19 +46,8 @@ public:
     static const QByteArray COLUMN_ANNOTATION_RF;
     static const QByteArray UNI_ANNOTATION_MARK;
 
-private:
-    QString format_name;
-
 public:
     StockholmFormat( QObject* obj );
-
-    virtual DocumentFormatId getFormatId() const {
-        return BaseDocumentFormats::STOCKHOLM;
-    }
-
-    virtual const QString& getFormatName() const {
-        return format_name;
-    }
 
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 

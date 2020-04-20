@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -192,7 +192,7 @@ void AnnotHighlightWidget::selectNextAnnotation(bool isForward) const {
 
     if (isAnnRegionValid) {
         as->clear();
-        as->addToSelection(annRegion.annotation, annRegion.regionIdx);
+        as->add(annRegion.annotation);
     }
     return;
 }
@@ -245,10 +245,10 @@ bool AnnotHighlightWidget::findNextUnselectedAnnotatedRegion(AnnotatedRegion &an
     CHECK(!as->isEmpty(), false);
 
     // detect the most right/left start position in selection
-    const QList<AnnotationSelectionData> selectionData = as->getSelection();
+    const QList<Annotation*> selectionData = as->getAnnotations();
     int start = -1;
-    foreach (AnnotationSelectionData selectionItem, selectionData) {
-        foreach (U2Region region, selectionItem.getSelectedRegions()) {
+    foreach (Annotation* selectionItem, selectionData) {
+        foreach (U2Region region, selectionItem->getRegions()) {
             if (start == -1) {
                 start = region.startPos;
             } else {
@@ -263,7 +263,7 @@ bool AnnotHighlightWidget::findNextUnselectedAnnotatedRegion(AnnotatedRegion &an
     // find the next unselected
     for (int i = 0; i < regionsAtTheSamePosition.size(); i++) {
         int idx = fromTheBeginning ? regionsAtTheSamePosition.size() - 1 - i : i;
-        if (as->contains(regionsAtTheSamePosition[idx].annotation, regionsAtTheSamePosition[idx].regionIdx)) {
+        if (as->contains(regionsAtTheSamePosition[idx].annotation)) {
             idx += (fromTheBeginning ? 1 : -1);
             if (idx < 0 || idx == regionsAtTheSamePosition.size()) {
                 break;
@@ -304,9 +304,8 @@ void AnnotHighlightWidget::sl_onAnnotationSelectionChanged() {
         prevAnnotationButton->setDisabled(false);
 
         // find first or last annotation region
-        foreach (AnnotationSelectionData selData, as->getSelection()) {
-            Annotation *a = selData.annotation;
-            foreach (U2Region region, selData.getSelectedRegions()) {
+        foreach (Annotation* a, as->getAnnotations()) {
+            foreach (U2Region region, a->getRegions()) {
                 if (isFirstAnnotatedRegion(a, region, false)) {
                     nextAnnotationButton->setDisabled(true);
                 }

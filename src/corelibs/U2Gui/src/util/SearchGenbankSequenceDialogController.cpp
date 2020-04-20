@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,7 +44,7 @@ SearchGenbankSequenceDialogController::SearchGenbankSequenceDialogController(QWi
 {
     ui = new Ui_SearchGenbankSequenceDialog();
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "23330963");
+    new HelpButton(this, ui->buttonBox, "24748742");
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Download"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Close"));
@@ -147,8 +147,8 @@ QList<EntrezSummary> SearchGenbankSequenceDialogController::getSummaryResults() 
         SAFE_POINT(NULL != summaryResultHandler, L10N::nullPointerError("summary results handler"), results);
         results << summaryResultHandler->getResults();
     } else if (NULL != multiTask) {
-        foreach (Task *subtask, multiTask->getSubtasks()) {
-            EntrezQueryTask *summarySubtask = qobject_cast<EntrezQueryTask *>(subtask);
+        foreach (const QPointer<Task> &subtask, multiTask->getSubtasks()) {
+            EntrezQueryTask *summarySubtask = qobject_cast<EntrezQueryTask *>(subtask.data());
             SAFE_POINT(NULL != summarySubtask, L10N::internalError(tr("an unexpected subtask")), results);
             const ESummaryResultHandler *resultHandler = dynamic_cast<const ESummaryResultHandler *>(summarySubtask->getResultHandler());
             SAFE_POINT(NULL != resultHandler, L10N::nullPointerError("ESummaryResultHandler"), results);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -229,7 +229,7 @@ QRect GTUtilsMcaEditor::getReadNameRect(GUITestOpStatus &os, int rowNumber) {
     McaEditorNameList *nameList = getNameListArea(os);
     GT_CHECK_RESULT(NULL != nameList, "McaEditorNameList not found", QRect());
 
-    const U2Region rowScreenRange = getEditorUi(os)->getRowHeightController()->getRowScreenRangeByNumber(rowNumber);
+    const U2Region rowScreenRange = getEditorUi(os)->getRowHeightController()->getScreenYRegionByViewRowIndex(rowNumber);
     return QRect(nameList->mapToGlobal(QPoint(0, rowScreenRange.startPos)), nameList->mapToGlobal(QPoint(nameList->width(), rowScreenRange.endPos())));
 }
 #undef GT_METHOD_NAME
@@ -243,7 +243,7 @@ void GTUtilsMcaEditor::scrollToRead(GUITestOpStatus &os, const QString &readName
 #define GT_METHOD_NAME "scrollToRead"
 void GTUtilsMcaEditor::scrollToRead(GUITestOpStatus &os, int readNumber) {
     McaEditorWgt *mcaEditorWgt = getEditorUi(os);
-    const U2Region rowRange = mcaEditorWgt->getRowHeightController()->getRowGlobalRangeByNumber(readNumber);
+    const U2Region rowRange = mcaEditorWgt->getRowHeightController()->getGlobalYRegionByViewRowIndex(readNumber);
     CHECK(!U2Region(mcaEditorWgt->getScrollController()->getScreenPosition().y(), getNameListArea(os)->height()).contains(rowRange), );
     GTScrollBar::moveSliderWithMouseToValue(os, getVerticalScrollBar(os), rowRange.center() - mcaEditorWgt->getSequenceArea()->height() / 2);
 }

@@ -10,6 +10,7 @@ LIBS += -L../../$$out_dir()
 LIBS += -lU2Core$$D
 DESTDIR = ../../$$out_dir()
 TARGET = qscore$$D
+QMAKE_PROJECT_NAME = qscore
 
 !debug_and_release|build_pass {
 
@@ -40,9 +41,13 @@ win32 {
     LIBS += psapi.lib
 }
 
-macx {
-    QMAKE_RPATHDIR += @executable_path/
-    QMAKE_LFLAGS_SONAME = -Wl,-dylib_install_name,@rpath/
+unix: {
+    macx: {
+        QMAKE_RPATHDIR += @executable_path/
+        QMAKE_LFLAGS_SONAME = -Wl,-dylib_install_name,@rpath/
+    } else {
+        QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
+    }
 }
 
 #unix {

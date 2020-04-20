@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,45 +24,46 @@
 namespace U2 {
 
 BlastTaskSettings::BlastTaskSettings() {
-    offsInGlobalSeq=0;
-    aobj=NULL;
-    alphabet=NULL;
-    isNucleotideSeq=false;
-    numberOfHits=0;
-    isDefaultMatrix=true;
-    isDefautScores=true;
-    isDefaultCosts=true;
-    isGappedAlignment=true;
-    isDefaultThreshold=true;
-    isSequenceCircular=false;
+    offsInGlobalSeq = 0;
+    aobj = NULL;
+    alphabet = NULL;
+    isNucleotideSeq = false;
+    numberOfHits = 0;
+    isDefaultMatrix = true;
+    isDefautScores = true;
+    isDefaultCosts = true;
+    isGappedAlignment = true;
+    isDefaultThreshold = true;
+    isSequenceCircular = false;
     reset();
 }
 
 void BlastTaskSettings::reset() {
-    programName="";
-    databaseNameAndPath="";
-    expectValue=10.0;
-    megablast=false;
-    wordSize=11;
-    gapOpenCost=0;
-    gapExtendCost=0;
-    mismatchPenalty=0;
-    matchReward=0;
-    matrix="";
-    queryFile="";
-    outputType=0;
-    outputResFile="";
-    numberOfProcessors=1;
-    needCreateAnnotations=true;
-    filter="";
-    isGappedAlignment=true;
-    xDropoffGA=0;
-    xDropoffUnGA=0;
-    xDropoffFGA=0;
-    windowSize=0;
-    threshold=0;
-    isDefaultThreshold=true;
-    isSequenceCircular=false;
+    programName = "";
+    databaseNameAndPath = "";
+    expectValue = 10.0;
+    megablast = false;
+    wordSize = 11;
+    gapOpenCost = 0;
+    gapExtendCost = 0;
+    mismatchPenalty = 0;
+    matchReward = 0;
+    matrix = "";
+    queryFile = "";
+    outputType = 0;
+    outputResFile = "";
+    numberOfProcessors = 1;
+    needCreateAnnotations = true;
+    strandSource = QueryFrame;
+    filter = "";
+    isGappedAlignment = true;
+    xDropoffGA = 0;
+    xDropoffUnGA = 0;
+    xDropoffFGA = 0;
+    windowSize = 0;
+    threshold = 0;
+    isDefaultThreshold = true;
+    isSequenceCircular = false;
     directStrand = TriState_Unknown;
     querySequenceObject = NULL;
 }

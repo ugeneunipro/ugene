@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -161,12 +161,12 @@ Peak2GeneSettings Peak2GeneWorker::createPeak2GeneSettings(U2OpStatus &os) {
 /* Peak2GeneComboBoxWithUrlsDelegate */
 /************************************************************************/
 void Peak2GeneComboBoxWithUrlsDelegate::updateUgeneSettings() {
-    updateDataPath(getDataPathName(), REFGENE_DIR_NAME);
-    updateDataPath(ENTREZ_TRANSLATION_DATA_NAME, TRANSLATIONS_DIR_NAME);
+    updateDataPath(getDataPathName(), Peak2GeneSupport::REFGENE_DIR_NAME);
+    updateDataPath(Peak2GeneSupport::ENTREZ_TRANSLATION_DATA_NAME, Peak2GeneSupport::TRANSLATIONS_DIR_NAME);
 }
 
 QString Peak2GeneComboBoxWithUrlsDelegate::getDataPathName() {
-    return REF_GENES_DATA_NAME;
+    return Peak2GeneSupport::REF_GENES_DATA_NAME;
 }
 
 QString Peak2GeneComboBoxWithUrlsDelegate::getAttributeName() {
@@ -184,7 +184,7 @@ void Peak2GeneWorkerFactory::init() {
     U2DataPath* dataPath = NULL;
     U2DataPathRegistry* dpr =  AppContext::getDataPathRegistry();
     if (dpr){
-        U2DataPath* dp = dpr->getDataPathByName(REF_GENES_DATA_NAME);
+        U2DataPath* dp = dpr->getDataPathByName(Peak2GeneSupport::REF_GENES_DATA_NAME);
         if (dp && dp->isValid()){
             dataPath = dp;
         }
@@ -310,7 +310,7 @@ void Peak2GeneWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
     proto->setPrompter(new Peak2GenePrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->addExternalTool(ET_PEAK2GENE);
+    proto->addExternalTool(Peak2GeneSupport::ET_PEAK2GENE_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_CHIP_SEQ(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new Peak2GeneWorkerFactory());
 }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,16 +33,14 @@ class U2SequenceObject;
 class ShiftSequenceStartTask : public Task {
     Q_OBJECT
 public:
-    ShiftSequenceStartTask( U2SequenceObject *_seqObj, int newSeqStart);
+    /** Shifts circular sequence start position to 'shift' symbols forward. */
+    ShiftSequenceStartTask(U2SequenceObject* sequenceObject, qint64 newSequenceStartPosition);
 
     virtual Task::ReportResult report();
 
 private:
-    void fixAnnotations(int shiftSize);
-    static U2Location shiftLocation(const U2Location& location, int seqStart, int seqLength);
-    U2SequenceObject*   seqObj;
-    QList<Document*> docs;
-    int seqStart;
+    U2SequenceObject* sequenceObject;
+    qint64 newSequenceStartPosition;
 };
 
 

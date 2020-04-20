@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,8 +38,10 @@
 namespace U2 {
 
 SnpEffDatabaseListModel* SnpEffSupport::databaseModel = new SnpEffDatabaseListModel();
+const QString SnpEffSupport::ET_SNPEFF = "SnpEff";
+const QString SnpEffSupport::ET_SNPEFF_ID = "USUPP_SNPEFF";
 
-SnpEffSupport::SnpEffSupport(const QString& name, const QString& path) : ExternalTool(name, path)
+SnpEffSupport::SnpEffSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -56,13 +58,13 @@ SnpEffSupport::SnpEffSupport(const QString& name, const QString& path) : Externa
     validationArguments << "-h";
     toolKitName = "SnpEff";
 
-    toolRunnerProgramm = ET_JAVA;
-    dependencies << ET_JAVA;
+    toolRunnerProgram = JavaSupport::ET_JAVA_ID;
+    dependencies << JavaSupport::ET_JAVA_ID;
 
     connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_validationStatusChanged(bool)));
 }
 
-const QStringList SnpEffSupport::getToolRunnerAdditionalOptions() {
+QStringList SnpEffSupport::getToolRunnerAdditionalOptions() const {
     QStringList result;
     AppResourcePool* s = AppContext::getAppSettings()->getAppResourcePool();
     CHECK(s != NULL, result);
@@ -70,7 +72,7 @@ const QStringList SnpEffSupport::getToolRunnerAdditionalOptions() {
     int memSize = s->getMaxMemorySizeInMB();
 #if (defined(Q_OS_WIN) || defined(Q_OS_LINUX))
     ExternalToolRegistry* etRegistry = AppContext::getExternalToolRegistry();
-    JavaSupport* java =  qobject_cast<JavaSupport*>(etRegistry->getByName(ET_JAVA));
+    JavaSupport* java =  qobject_cast<JavaSupport*>(etRegistry->getById(JavaSupport::ET_JAVA_ID));
     CHECK(java != NULL, result);
     if (java->getArchitecture() == JavaSupport::x32) {
         memSize = memSize > 1212 ? 1212 : memSize;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -59,7 +59,7 @@ CAP3SupportTask::CAP3SupportTask(const CAP3SupportTaskSettings& _settings) :
 
 
 void CAP3SupportTask::prepare(){
-    tmpDirUrl = ExternalToolSupportUtils::createTmpDir(CAP3_TMP_DIR, stateInfo);
+    tmpDirUrl = ExternalToolSupportUtils::createTmpDir(CAP3Support::CAP3_TMP_DIR, stateInfo);
     CHECK_OP(stateInfo, );
 
     prepareDataForCAP3Task = new PrepareInputForCAP3Task(settings.inputFiles, tmpDirUrl);
@@ -85,19 +85,19 @@ QList<Task*> CAP3SupportTask::onSubTaskFinished(Task* subTask) {
 
         QStringList arguments = settings.getArgumentsList();
         arguments.prepend( inputUrl.getURLString() );
-        cap3Task = new ExternalToolRunTask(ET_CAP3, arguments, new CAP3LogParser());
+        cap3Task = new ExternalToolRunTask(CAP3Support::ET_CAP3_ID, arguments, new CAP3LogParser());
         setListenerForTask(cap3Task);
         cap3Task->setSubtaskProgressWeight(95);
         res.append(cap3Task);
     }
     else if (subTask == cap3Task) {
         if (!QFile::exists(tmpOutputUrl)) {
-            if(AppContext::getExternalToolRegistry()->getByName(ET_CAP3)->isValid()){
+            if(AppContext::getExternalToolRegistry()->getById(CAP3Support::ET_CAP3_ID)->isValid()){
                 stateInfo.setError(tr("Output file not found"));
             }else{
                 stateInfo.setError(tr("Output file not found. May be %1 tool path '%2' not valid?")
-                                   .arg(AppContext::getExternalToolRegistry()->getByName(ET_CAP3)->getName())
-                                   .arg(AppContext::getExternalToolRegistry()->getByName(ET_CAP3)->getPath()));
+                                   .arg(AppContext::getExternalToolRegistry()->getById(CAP3Support::ET_CAP3_ID)->getName())
+                                   .arg(AppContext::getExternalToolRegistry()->getById(CAP3Support::ET_CAP3_ID)->getPath()));
             }
             return res;
         }

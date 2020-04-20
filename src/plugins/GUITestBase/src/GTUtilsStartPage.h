@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,8 +26,7 @@
 #include "GTGlobals.h"
 #include <primitives/GTWebView.h>
 
-class QWebView;
-class QWebElement;
+#include <U2Gui/U2WebView.h>
 
 namespace U2 {
 using namespace HI;
@@ -37,7 +36,7 @@ class GTUtilsStartPage
 public:
     enum Buttons{OpenFile, CreateSequence, CreateWorkflow, QuickStartGuide};
     static void openStartPage(HI::GUITestOpStatus &os);
-    static QWebView* getStartPage(HI::GUITestOpStatus &os);
+    static U2WebView* getStartPage(HI::GUITestOpStatus &os);
     static HIWebElement getButton(HI::GUITestOpStatus &os, Buttons button);
     static void clickButton(HI::GUITestOpStatus &os, Buttons button);
     static void clickResentDocument(HI::GUITestOpStatus &os, QString text);

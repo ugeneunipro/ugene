@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,11 +22,10 @@
 #ifndef _U2_GENE_BY_GENE_REPORT_TASK_H_
 #define _U2_GENE_BY_GENE_REPORT_TASK_H_
 
-#include <U2Core/Task.h>
-#include <U2Core/U2Region.h>
-#include <U2Core/DNASequence.h>
 #include <U2Core/AnnotationData.h>
+#include <U2Core/DNASequence.h>
 #include <U2Core/IOAdapter.h>
+#include <U2Core/Task.h>
 
 namespace U2 {
 
@@ -36,14 +35,15 @@ class GeneByGeneReportSettings{
 public:
     GeneByGeneReportSettings();
 
-    static QStringList getAvailableFileHandlingOptions();
-    static QString getDefaultFileHandlingOption();
-
 public:
     QString     outFile;
     QString     existingFile;
     float       identity;
     QString     annName;
+
+    static const QString MERGE_EXISTING;
+    static const QString OVERWRITE_EXISTING;
+    static const QString RENAME_EXISTING;
 
 private:
     void initDefaults();
@@ -53,9 +53,16 @@ private:
 //Algorithm
 class GeneByGeneCompareResult{
 public:
-    GeneByGeneCompareResult();
+    GeneByGeneCompareResult()
+        :identical(false)
+        ,identityString(IDENTICAL_NO)
+    {}
+
     bool        identical;
     QString     identityString;
+
+    static const QString IDENTICAL_YES;
+    static const QString IDENTICAL_NO;
 };
 
 class GeneByGeneComparator{

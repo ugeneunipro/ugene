@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -459,7 +459,7 @@ void GTest_PDBFormatStressTest::init(XMLTestFormat *tf, const QDomElement& el) {
 Task::ReportResult GTest_PDBFormatStressTest::report()
 {
 
-    foreach (Task* task, getSubtasks()) {
+    foreach (const QPointer<Task> &task, getSubtasks()) {
         if (task->hasError()) {
             stateInfo.setError(stateInfo.getError()+fileNames.value(task) + "(" + task->getError() + ");   ");
         }
@@ -523,7 +523,7 @@ void GTest_ASNFormatStressTest::init(XMLTestFormat *tf, const QDomElement& el) {
 Task::ReportResult GTest_ASNFormatStressTest::report()
 {
 
-    foreach (Task* task, getSubtasks()) {
+    foreach (const QPointer<Task> &task, getSubtasks()) {
         if (task->hasError()) {
             stateInfo.setError(stateInfo.getError()+fileNames.value(task) + "(" + task->getError() + ");   ");
         }

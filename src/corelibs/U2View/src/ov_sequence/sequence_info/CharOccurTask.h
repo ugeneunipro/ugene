@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,7 +52,7 @@ typedef QList<CharOccurResult> CharactersOccurrence;
 class U2VIEW_EXPORT CharOccurTask : public BackgroundTask< QList<CharOccurResult> >
 {
 public:
-    CharOccurTask(const DNAAlphabet* alphabet, U2EntityRef seqRef, U2Region region);
+    CharOccurTask(const DNAAlphabet* alphabet, U2EntityRef seqRef, const QVector<U2Region>& regions);
 
     /**
      * Calculates the characters occurrence (in a different thread).
@@ -63,7 +63,7 @@ public:
 private:
     const DNAAlphabet* alphabet;
     U2EntityRef seqRef;
-    U2Region region;
+    QVector<U2Region> regions;
 
     // A region to analyze at a time
     static const qint64 REGION_TO_ANALAYZE = 1000000;

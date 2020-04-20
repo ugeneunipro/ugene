@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -496,7 +496,7 @@ URLDelegate::URLDelegate(const DelegateTags &_tags, const QString &type, const O
     *tags() = _tags;
 }
 
-URLDelegate::URLDelegate(const QString& filter, const QString& type, bool multi, bool isPath, bool saveFile, QObject *parent, const QString &format, bool noFilesMode)
+URLDelegate::URLDelegate(const QString& filter, const QString& type, bool multi, bool isPath, bool saveFile, QObject *parent, const QString &format, bool noFilesMode, bool doNotUseWorkflowOutputFolder)
     : PropertyDelegate(parent), lastDirType(type)
 {
     tags()->set(DelegateTags::FILTER, filter);
@@ -506,9 +506,10 @@ URLDelegate::URLDelegate(const QString& filter, const QString& type, bool multi,
     options |= isPath ? AllowSelectOnlyExistingDir : None;
     options |= saveFile ? SelectFileToSave : None;
     options |= noFilesMode ? SelectParentDirInsteadSelectedFile : None;
+    options |= doNotUseWorkflowOutputFolder ? DoNotUseWorkflowOutputFolder : None;
 }
 
-URLDelegate::URLDelegate(const DelegateTags &_tags, const QString &type, bool multi, bool isPath, bool saveFile, QObject *parent, bool noFilesMode) :
+URLDelegate::URLDelegate(const DelegateTags &_tags, const QString &type, bool multi, bool isPath, bool saveFile, QObject *parent, bool noFilesMode, bool doNotUseWorkflowOutputFolder) :
     PropertyDelegate(parent),
     lastDirType(type)
 {
@@ -518,6 +519,7 @@ URLDelegate::URLDelegate(const DelegateTags &_tags, const QString &type, bool mu
     options |= isPath ? AllowSelectOnlyExistingDir : None;
     options |= saveFile ? SelectFileToSave : None;
     options |= noFilesMode ? SelectParentDirInsteadSelectedFile : None;
+    options |= doNotUseWorkflowOutputFolder ? DoNotUseWorkflowOutputFolder : None;
 }
 
 QVariant URLDelegate::getDisplayValue(const QVariant &v) const {
@@ -542,7 +544,7 @@ URLWidget *URLDelegate::createWidget(QWidget *parent) const {
                                tags(),
                                parent);
     }
-    if (options.testFlag(SelectFileToSave) && !options.testFlag(DoNotUseWorkflowOutputFolder)) {
+    if (!options.testFlag(DoNotUseWorkflowOutputFolder)) {
         result->setSchemaConfig(schemaConfig);
     }
     return result;
@@ -619,20 +621,20 @@ FileModeDelegate::FileModeDelegate(bool appendSupported, QObject *parent)
 /********************************
  * SchemaRunModeDelegate
  ********************************/
-const QString SchemaRunModeDelegate::THIS_COMPUTER_STR      = SchemaRunModeDelegate::tr( "This computer" );
-const QString SchemaRunModeDelegate::REMOTE_COMPUTER_STR    = SchemaRunModeDelegate::tr( "Remote computer" );
-
 SchemaRunModeDelegate::SchemaRunModeDelegate( QObject * parent )
 : ComboBoxDelegate( QVariantMap(), parent ) {
-    comboItems.append(qMakePair( THIS_COMPUTER_STR, true ));
-    comboItems.append(qMakePair( REMOTE_COMPUTER_STR, false ));
+    thisComputerOption = SchemaRunModeDelegate::tr( "This computer" );
+    remoteComputerOption = SchemaRunModeDelegate::tr( "Remote computer" );
+
+    comboItems.append(qMakePair(thisComputerOption, true ));
+    comboItems.append(qMakePair(remoteComputerOption, false ));
 
     connect( this, SIGNAL( si_valueChanged( const QString & ) ), this,
         SLOT( sl_valueChanged( const QString & ) ) );
 }
 
 void SchemaRunModeDelegate::sl_valueChanged( const QString & val ) {
-    emit si_showOpenFileButton( THIS_COMPUTER_STR == val );
+    emit si_showOpenFileButton( thisComputerOption == val );
 }
 
 
@@ -922,29 +924,75 @@ void StringSelectorDelegate::setModelData(QWidget *, QAbstractItemModel *model, 
  * CharacterDelegate
  ********************************/
 PropertyWidget * CharacterDelegate::createWizardWidget(U2OpStatus & /*os*/, QWidget *parent) const {
-    return new DefaultPropertyWidget(1, parent);
+    return new IgnoreUpDownPropertyWidget(1, parent);
 }
 
 QWidget * CharacterDelegate::createEditor(QWidget *parent,
                                    const QStyleOptionViewItem &/* option */,
                                    const QModelIndex &/* index */) const
 {
-    return new DefaultPropertyWidget(1, parent);
+    return new IgnoreUpDownPropertyWidget(1, parent);
 }
 
 void CharacterDelegate::setEditorData(QWidget *editor,
                                 const QModelIndex &index) const
 {
     QVariant val = index.model()->data(index, ConfigurationEditor::ItemValueRole);
-    DefaultPropertyWidget *lineEdit = dynamic_cast<DefaultPropertyWidget*>(editor);
+    IgnoreUpDownPropertyWidget *lineEdit = dynamic_cast<IgnoreUpDownPropertyWidget*>(editor);
     lineEdit->setValue(val);
 }
 
 void CharacterDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
                                const QModelIndex &index) const
 {
-    DefaultPropertyWidget *lineEdit = dynamic_cast<DefaultPropertyWidget*>(editor);
+    IgnoreUpDownPropertyWidget *lineEdit = dynamic_cast<IgnoreUpDownPropertyWidget*>(editor);
     model->setData(index, lineEdit->value().toString(), ConfigurationEditor::ItemValueRole);
 }
 
-}//namespace U2
+LineEditWithValidatorDelegate::LineEditWithValidatorDelegate(const QRegularExpression &_regExp, QObject *_parent)
+    : PropertyDelegate(_parent),
+      regExp(_regExp)
+{
+
+}
+
+QWidget *LineEditWithValidatorDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem & /*option*/, const QModelIndex & /*index*/) const {
+    QScopedPointer<IgnoreUpDownPropertyWidget> editor(new IgnoreUpDownPropertyWidget(NO_LIMIT, parent));
+    QLineEdit *lineEdit = editor->findChild<QLineEdit *>("mainWidget");
+    SAFE_POINT(nullptr != lineEdit, "Line edit is nullptr", nullptr);
+
+    lineEdit->setValidator(new QRegularExpressionValidator(regExp, lineEdit));
+    connect(editor.data(), SIGNAL(si_valueChanged(const QVariant &)), SLOT(sl_valueChanged()));
+    return editor.take();
+}
+
+void LineEditWithValidatorDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
+    QVariant val = index.model()->data(index, ConfigurationEditor::ItemValueRole);
+    IgnoreUpDownPropertyWidget *lineEdit = qobject_cast<IgnoreUpDownPropertyWidget *>(editor);
+    lineEdit->setValue(val);
+}
+
+void LineEditWithValidatorDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const {
+    IgnoreUpDownPropertyWidget *lineEdit = qobject_cast<IgnoreUpDownPropertyWidget *>(editor);
+    model->setData(index, lineEdit->value().toString(), ConfigurationEditor::ItemValueRole);
+}
+
+LineEditWithValidatorDelegate *LineEditWithValidatorDelegate::clone() {
+    return new LineEditWithValidatorDelegate(regExp, parent());
+}
+
+void LineEditWithValidatorDelegate::sl_valueChanged() {
+    IgnoreUpDownPropertyWidget* editor = qobject_cast<IgnoreUpDownPropertyWidget *>(sender());
+    CHECK(editor != NULL, );
+
+    QLineEdit* lineEdit = editor->findChild<QLineEdit*>("mainWidget");
+    SAFE_POINT(nullptr != lineEdit, "Line edit is nullptr", );
+
+    const int cursorPos = lineEdit->cursorPosition();
+
+    emit commitData(editor);
+
+    lineEdit->setCursorPosition(cursorPos);
+}
+
+}   // namespace U2

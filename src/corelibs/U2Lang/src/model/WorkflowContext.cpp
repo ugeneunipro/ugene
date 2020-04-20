@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,6 +28,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppFileStorage.h>
 #include <U2Core/CMDLineRegistry.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -188,12 +189,21 @@ bool WorkflowContext::initWorkingDir() {
 /************************************************************************/
 /* WorkflowContextCMDLine */
 /************************************************************************/
+
+const QString WorkflowContextCMDLine::WORKING_DIR = "working-dir";
+
 QString WorkflowContextCMDLine::getOutputDirectory(U2OpStatus &os) {
     // 1. Detect folder
     QString root;
+
+    CMDLineRegistry* cmdlineReg = AppContext::getCMDLineRegistry();
+    assert(cmdlineReg != nullptr);
+
     if (useOutputDir()) {
         root = WorkflowSettings::getWorkflowOutputDirectory();
-    } else {
+    } else if (cmdlineReg != nullptr && cmdlineReg->hasParameter(WORKING_DIR)) {
+        root = FileAndDirectoryUtils::getAbsolutePath(cmdlineReg->getParameterValue(WORKING_DIR));
+    } else{
         root = QProcess().workingDirectory();
     }
 

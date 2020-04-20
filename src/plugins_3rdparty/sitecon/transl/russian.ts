@@ -2,14 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
-    <name>QObject</name>
-    <message>
-        <location filename="../src/SiteconIOWorkers.cpp" line="69"/>
-        <source>Sitecon model</source>
-        <translation>Профайл SITECON</translation>
-    </message>
-</context>
-<context>
     <name>SiteconBuildDialog</name>
     <message>
         <location filename="../src/SiteconBuildDialog.ui" line="22"/>
@@ -669,10 +661,6 @@
 <context>
     <name>U2::SiteconADVContext</name>
     <message>
-        <source>Search TFBS with SITECON...</source>
-        <translation type="vanished">Поиск сайтов связывания ТФ с помощью SITECON...</translation>
-    </message>
-    <message>
         <location filename="../src/SiteconPlugin.cpp" line="118"/>
         <source>Find TFBS with SITECON...</source>
         <translation>Поиск сайтов связывания ТФ с помощью SITECON...</translation>
@@ -745,7 +733,7 @@
     <message>
         <location filename="../src/SiteconBuildDialogController.cpp" line="168"/>
         <source>Sitecon models</source>
-        <translation type="unfinished">Профайлы SITECON</translation>
+        <translation>Профайлы SITECON</translation>
     </message>
     <message>
         <location filename="../src/SiteconBuildDialogController.cpp" line="75"/>

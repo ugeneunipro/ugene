@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,10 +36,6 @@ class U2FORMATS_EXPORT  SAMFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     SAMFormat(QObject* p = NULL);
-
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::SAM;}
-
-    virtual const QString& getFormatName() const {return formatName;}
 
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
@@ -105,9 +101,7 @@ private:
     static const TAG_READ_GROUP_DESCRIPTION = "DS";
     static const TAG_READ_GROUP_PLATFORM = "PU";
     */
-
-    QString formatName;
-    bool skipDetection;
+bool skipDetection;
 
 };
 

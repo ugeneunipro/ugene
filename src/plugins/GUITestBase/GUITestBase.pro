@@ -402,7 +402,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
 #   Runnables / UGENE / plugins / workflow_designer
             src/runnables/ugene/plugins/workflow_designer/AliasesDialogFiller.cpp \
             src/runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.cpp \
-            src/runnables/ugene/plugins/workflow_designer/CreateElementWithCommandLineFiller.cpp \
+            src/runnables/ugene/plugins/workflow_designer/CreateElementWithCommandLineToolFiller.cpp \
             src/runnables/ugene/plugins/workflow_designer/CreateElementWithScriptDialogFiller.cpp \
             src/runnables/ugene/plugins/workflow_designer/DashboardsManagerDialogFiller.cpp \
             src/runnables/ugene/plugins/workflow_designer/DatasetNameEditDialogFiller.cpp \

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,7 +21,7 @@
 
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AnnotationTableObject.h>
-#include <U2Core/L10n.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/LabelClickTransmitter.h>
@@ -105,7 +105,7 @@ void AnnotHighlightSettingsWidget::sl_onEditQualifiersChanged(const QString& inp
 
 void AnnotHighlightSettingsWidget::setIncorrectState()
 {
-    editQualifiers->setStyleSheet("background-color: " + L10N::errorColorTextFieldStr() + ";");
+    editQualifiers->setStyleSheet("background-color: " + Theme::errorColorTextFieldStr() + ";");
 }
 
 

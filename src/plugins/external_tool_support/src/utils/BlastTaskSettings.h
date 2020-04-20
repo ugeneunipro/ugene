@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -88,6 +88,11 @@ blastall 2.2.21 not included arguments:
 
 class BlastTaskSettings {
 public:
+    enum StrandSource {
+        HitFrame,
+        QueryFrame
+    };
+
     BlastTaskSettings();
     void reset();
 
@@ -137,6 +142,7 @@ public:
     const DNAAlphabet*    alphabet;
     //settings for annotations
     bool                    needCreateAnnotations;
+    StrandSource            strandSource;
     AnnotationTableObject *   aobj;
     QString                 groupName;
     QString                 annDescription;

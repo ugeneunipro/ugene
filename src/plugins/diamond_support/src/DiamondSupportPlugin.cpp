@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@ DiamondSupportPlugin::DiamondSupportPlugin()
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(NULL != etRegistry, );
 
-    etRegistry->registerEntry(new DiamondSupport(DiamondSupport::TOOL_NAME));
+    etRegistry->registerEntry(new DiamondSupport(DiamondSupport::TOOL_ID, DiamondSupport::TOOL_NAME));
 
     LocalWorkflow::DiamondBuildWorkerFactory::init();
     LocalWorkflow::DiamondClassifyWorkerFactory::init();
@@ -54,7 +54,7 @@ DiamondSupportPlugin::DiamondSupportPlugin()
 DiamondSupportPlugin::~DiamondSupportPlugin() {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(NULL != etRegistry, );
-    etRegistry->unregisterEntry(DiamondSupport::TOOL_NAME);
+    etRegistry->unregisterEntry(DiamondSupport::TOOL_ID);
 }
 
 }   // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,6 @@
 
 #include <QSharedPointer>
 
-#include <U2Algorithm/SArrayBasedFindTask.h>
 #include <U2Algorithm/SArrayIndex.h>
 
 #include <U2Core/AnnotationData.h>
@@ -38,6 +37,17 @@ class AnnotationTableObject;
 
 #define PLASMID_FEATURES_GROUP_NAME "plasmid_features"
 #define FILTERED_FEATURE_LIST "filter_feature_list"
+
+class PlasmidFeatureTypes {
+public:
+    static const QString GENE;
+    static const QString FEATURE;
+    static const QString ORIGIN;
+    static const QString PRIMER;
+    static const QString PROMOTER;
+    static const QString REGULATORY;
+    static const QString TERMINATOR;
+};
 
 struct FeaturePattern {
     QString name;

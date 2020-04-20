@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -79,11 +79,14 @@ protected:
 
 private:
     void connectAnnotationTableObject(AnnotationTableObject *object);
+    void setGraphActionVisible(const bool setVisible);
 
     PanView*        panView;
     DetView*        detView;
     QPoint          mousePosToSlider;
     ADVSingleSequenceWidget* seqWidget;
+
+    static const QString ANNOTATION_GRAPH_STATE;
 
     friend class OverviewRenderArea;
 };
@@ -98,9 +101,12 @@ public:
 
     int getAnnotationDensity(int pos) const;
 
-    bool    showGraph;
+    void setGraphVisibility(const bool isVisible);
+    bool isGraphVisible() const;
+
 protected:
     void drawAll(QPaintDevice* pd);
+
 private:
     void drawRuler(QPainter& p);
     void drawSelection(QPainter& p);
@@ -114,6 +120,7 @@ private:
     QRectF          detSlider;
     QBrush          gradientMaskBrush;
     QVector<int>    annotationsOnPos;
+    bool            graphVisible;
 };
 
 }//namespace

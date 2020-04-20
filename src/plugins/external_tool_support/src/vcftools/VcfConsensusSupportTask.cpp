@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@ void VcfConsensusSupportTask::prepare() {
     SAFE_POINT_EXT(AppContext::getAppSettings() != NULL, setError(tr("AppSettings is NULL")), );
     const UserAppsSettings* userAS = AppContext::getAppSettings()->getUserAppsSettings();
     SAFE_POINT_EXT(userAS != NULL, setError(tr("UserAppsSettings is NULL")), );
-    QString tmpDirPath( userAS->getCurrentProcessTemporaryDirPath(VCF_CONSENSUS_TMP_DIR) );
+    QString tmpDirPath( userAS->getCurrentProcessTemporaryDirPath(VcfConsensusSupport::VCF_CONSENSUS_TMP_DIR) );
     SAFE_POINT_EXT(!tmpDirPath.isEmpty(), setError(tr("Temporary folder is not set!")), );
     GUrl tmp( tmpDirPath + "/" + inputVcf.fileName() + ".gz");
 
@@ -82,15 +82,15 @@ QList<Task*> VcfConsensusSupportTask::onSubTaskFinished(Task *subTask) {
     ExternalToolRegistry* extToolReg = AppContext::getExternalToolRegistry();
     SAFE_POINT_EXT(extToolReg, setError(tr("ExternalToolRegistry is NULL")), res);
 
-    ExternalTool *vcfToolsET = extToolReg->getByName(ET_VCF_CONSENSUS);
-    ExternalTool *tabixET = extToolReg->getByName(ET_TABIX);
+    ExternalTool *vcfToolsET = extToolReg->getById(VcfConsensusSupport::ET_VCF_CONSENSUS_ID);
+    ExternalTool *tabixET = extToolReg->getById(TabixSupport::ET_TABIX_ID);
     SAFE_POINT_EXT(vcfToolsET, setError(tr("There is no VcfConsensus external tool registered")), res);
     SAFE_POINT_EXT(tabixET, setError(tr("There is no Tabix external tool registered")), res);
 
     QMap <QString, QString> envVariables;
     envVariables["PERL5LIB"] = getPath(vcfToolsET);
 
-    vcfTask = new ExternalToolRunTask(ET_VCF_CONSENSUS, QStringList() << tabixTask->getOutputBgzf().getURLString(),
+    vcfTask = new ExternalToolRunTask(VcfConsensusSupport::ET_VCF_CONSENSUS_ID, QStringList() << tabixTask->getOutputBgzf().getURLString(),
         new ExternalToolLogParser(), "", QStringList() << getPath(tabixET));
     vcfTask->setStandartInputFile( inputFA.getURLString() );
     vcfTask->setStandartOutputFile( output.getURLString() );

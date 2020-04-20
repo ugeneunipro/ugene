@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 
 namespace U2 {
 
-#define ColorSchemaSettingsPageId "ColorSchemaSettings"
+const QString ColorSchemaSettingsPageId = "ColorSchemaSettings";
 
 
 class U2VIEW_EXPORT ColorSchemaSettingsPageController : public AppSettingsGUIPageController {
@@ -46,9 +46,8 @@ public:
 
 signals:
     void si_customSettingsChanged();
-
 private:
-    const QString helpPageId;
+    static const QString helpPageId;
 };
 
 

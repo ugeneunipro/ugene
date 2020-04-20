@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,13 +22,11 @@
 #include "ChromaViewPlugin.h"
 #include "ChromatogramView.h"
 
+#include <U2Core/DNAChromatogramObject.h>
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObject.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/DNAChromatogramObject.h>
-#include <U2Core/DocumentSelection.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/MainWindow.h>
@@ -39,9 +37,6 @@
 #include <U2View/ADVSequenceObjectContext.h>
 
 #include <U2Gui/GUIUtils.h>
-
-#include <QMessageBox>
-#include <QMenu>
 
 namespace U2 {
 
@@ -99,9 +94,6 @@ void ChromaViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget* w) {
     connect(action, SIGNAL(triggered()), SLOT(sl_showChromatogram()));
 
     sw->addADVSequenceWidgetActionToViewsToolbar(action);
-
-    // if chromatogram is enabled detailed sequence view is hidden
-    sw->setDetViewCollapsed(true);
 
     action->trigger();
 }

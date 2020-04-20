@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,7 +38,8 @@ public:
         PairwiseAlignment,
         TreeSettings,
         ExportConsensus,
-        Statistics
+        Statistics,
+        Search
     };
 
     enum AddRefMethod {
@@ -49,6 +50,18 @@ public:
     enum ThresholdComparison {
         LessOrEqual,
         GreaterOrEqual
+    };
+
+    enum class CopyFormat {
+        Fasta,
+        CLUSTALW,
+        Stocholm,
+        MSF,
+        NEXUS,
+        Mega,
+        PHYLIP_Interleaved,
+        PHYLIP_Sequential,
+        Rich_text
     };
 
     static const QMap<Tabs, QString> tabsNames;
@@ -67,8 +80,9 @@ public:
     static QString getReference(HI::GUITestOpStatus &os);
     static int getLength(HI::GUITestOpStatus &os);
     static int getHeight(HI::GUITestOpStatus &os);
+    static void copySelection(HI::GUITestOpStatus &os, const CopyFormat format = CopyFormat::CLUSTALW);
 
-    static void setColorScheme(HI::GUITestOpStatus &os, const QString &colorSchemeName);
+    static void setColorScheme(HI::GUITestOpStatus &os, const QString &colorSchemeName, GTGlobals::UseMethod method = GTGlobals::UseKeyBoard);
     static QString getColorScheme(HI::GUITestOpStatus &os);
 
     static void setHighlightingScheme(HI::GUITestOpStatus &os, const QString &highlightingSchemeName);
@@ -96,6 +110,17 @@ public:
 
     static void setExportConsensusOutputFormat(HI::GUITestOpStatus &os, const QString &format);
     static QString getExportConsensusOutputFormat(HI::GUITestOpStatus &os);
+
+    // functions for accessing "Find pattern" options elements
+    static void enterPattern(HI::GUITestOpStatus &os, QString pattern, bool useCopyPaste = false);
+    static QString getPattern(HI::GUITestOpStatus &os);
+    static void setAlgorithm(HI::GUITestOpStatus &os, QString algorithm);
+    static void setMatchPercentage(HI::GUITestOpStatus &os, int percentage);
+    static void setCheckedRemoveOverlappedResults(HI::GUITestOpStatus &os, bool checkedState = true);
+    static bool checkResultsText(HI::GUITestOpStatus &os, QString expectedText);
+
+    static void clickNext(HI::GUITestOpStatus &os);
+    static void clickPrev(HI::GUITestOpStatus &os);
 
 private:
     static QWidget* getWidget(HI::GUITestOpStatus &os, const QString& widgetName, int number);

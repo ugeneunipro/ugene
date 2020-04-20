@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@ QList<Task *> DiamondBuildTask::onSubTaskFinished(Task *subTask) {
     CHECK_OP(stateInfo, newSubTasks);
 
     if (genomesPreparationTask == subTask) {
-        ExternalToolRunTask *buildTask = new ExternalToolRunTask(DiamondSupport::TOOL_NAME, getArguments(genomesPreparationTask->getPreparedGenomesFileUrl()), new ExternalToolLogParser);
+        ExternalToolRunTask *buildTask = new ExternalToolRunTask(DiamondSupport::TOOL_ID, getArguments(genomesPreparationTask->getPreparedGenomesFileUrl()), new ExternalToolLogParser);
         setListenerForTask(buildTask);
         newSubTasks << buildTask;
     }

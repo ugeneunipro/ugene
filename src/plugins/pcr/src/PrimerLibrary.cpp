@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -62,7 +62,7 @@ PrimerLibrary * PrimerLibrary::getInstance(U2OpStatus &os) {
     // open DBI connection
     const QString path = settings->getFileStorageDir() + "/" + libraryName;
 
-    U2DbiRef dbiRef(DEFAULT_DBI_ID, path.toLocal8Bit());
+    U2DbiRef dbiRef(DEFAULT_DBI_ID, path);
     QHash<QString, QString> properties;
     properties[U2DbiOptions::U2_DBI_LOCKING_MODE] = "normal";
 

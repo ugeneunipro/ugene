@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,27 +28,25 @@
 
 namespace U2 {
 
-#define COLOR_SCHEME_AMINO_KEYWORD "AMINO"
-#define COLOR_SCHEME_NUCL_KEYWORD "NUCL"
-#define COLOR_SCHEME_NUCL_DEFAULT_KEYWORD "NUCL_DEFAULT"
-#define COLOR_SCHEME_NUCL_EXTENDED_KEYWORD "NUCL_EXTENDED"
-#define COLOR_SCHEME_NAME_FILTERS ".csmsa"
-
 class U2ALGORITHM_EXPORT ColorSchemeUtils {
 public:
     static bool getSchemaColors(ColorSchemeData &customScheme);
-
     static QList<ColorSchemeData> getSchemas();
-
     static QString getColorsDir();
-
-    static void getDefaultUgeneColors(DNAAlphabetType type, QMap<char, QColor> &alphColors);
-
+    static void getDefaultUgeneColors(DNAAlphabetType type, QMap<char, QColor>& alphColors);
     static QMap<char, QColor> getDefaultSchemaColors(DNAAlphabetType type, bool defaultAlpType);
-
     static void setColorsDir(const QString &colorsDir);
-
     static void fillEmptyColorScheme(QVector<QColor> &colorsPerChar);
+
+    static const QString COLOR_SCHEME_AMINO_KEYWORD;
+    static const QString COLOR_SCHEME_NUCL_KEYWORD;
+    static const QString COLOR_SCHEME_NUCL_DEFAULT_KEYWORD;
+    static const QString COLOR_SCHEME_NUCL_EXTENDED_KEYWORD;
+
+    static const QString COLOR_SCHEME_NAME_FILTERS;
+    static const QString COLOR_SCHEME_SETTINGS_ROOT;
+    static const QString COLOR_SCHEME_SETTINGS_SUB_DIRECTORY;
+    static const QString COLOR_SCHEME_COLOR_SCHEMA_DIR;
 };
 
 }   // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -89,7 +89,7 @@ namespace U2 {
 /* TRANSLATOR U2::ProjectTreeController */
 
 const QString ProjectViewImpl::SETTINGS_ROOT("projecview/");
-const char *NOTIFICATION_TITLE = "File Modification Detected";
+static const char *NOTIFICATION_TITLE = "File Modification Detected";
 
 #define UPDATER_TIMEOUT 3000
 
@@ -373,7 +373,7 @@ void DocumentUpdater::sl_updateTaskStateChanged() {
 
 void DocumentUpdater::excludeDocumentsInTasks(const QList<Task*>& tasks, QList<Document*>& documents) {
     foreach(Task* task, tasks) {
-        excludeDocumentsInTasks(task->getSubtasks(), documents);
+        excludeDocumentsInTasks(task->getPureSubtasks(), documents);
         SaveDocumentTask* saveTask = qobject_cast<SaveDocumentTask*>(task);
         if (saveTask) {
             documents.removeAll(saveTask->getDocument());

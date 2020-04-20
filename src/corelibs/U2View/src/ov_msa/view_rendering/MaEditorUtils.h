@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -88,7 +88,7 @@ class MaLabelWidget : public MaUtilsWidget {
     Q_OBJECT
 public:
     // SANGER_TODO: rename the class and reconsider the usage of it and its parent
-    MaLabelWidget(MaEditorWgt* _ui, QWidget* heightWidget, const QString & _t, Qt::Alignment _a);
+    MaLabelWidget(MaEditorWgt* ui, QWidget* heightWidget, const QString & text, Qt::Alignment alignment, bool proxyMouseEventsToNameList = true);
 
 protected:
     void paintEvent(QPaintEvent *e);
@@ -97,7 +97,10 @@ protected:
     void mouseMoveEvent(QMouseEvent *e);
 
 private:
+    void sendEventToNameList(QMouseEvent* e) const;
+
     QLabel* label;
+    bool proxyMouseEventsToNameList;
 };
 
 } // namespace

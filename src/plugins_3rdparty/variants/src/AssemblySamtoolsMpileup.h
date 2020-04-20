@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -111,6 +111,11 @@ private:
 
 private:
     CallVariantsTaskSettings settings;
+
+    // The following constants are taken from the appropriate files in external_tool_support plugin
+    static const QString SAMTOOLS_ID;
+    static const QString BCFTOOLS_ID;
+    static const QString VCFUTILS_ID;
 };
 
 class CallVariantsTask : public ExternalToolSupportTask {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ QWidget *ProxyDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem
     //if (owner->custom)
     QWidget* editor;
     {
-        QItemDelegate* itemDelegate = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
+        PropertyDelegate* itemDelegate = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
         if (itemDelegate) {
             connect(itemDelegate, SIGNAL(commitData(QWidget*)), SIGNAL(commitData(QWidget*)));
             editor = itemDelegate->createEditor(parent, option, index);
@@ -47,7 +47,7 @@ QWidget *ProxyDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem
 void ProxyDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
     //if (owner->custom)
     {
-        QItemDelegate* itemDelegate = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
+        PropertyDelegate* itemDelegate = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
         if (itemDelegate) {
             itemDelegate->setEditorData(editor, index);
             return;

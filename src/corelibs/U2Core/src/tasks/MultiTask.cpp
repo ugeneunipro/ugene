@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,8 +28,7 @@
 namespace U2 {
 
 MultiTask::MultiTask(const QString &name, const QList<Task *> &taskz, bool withLock, TaskFlags f)
-    : Task(name, f), tasks(taskz)
-{
+    : Task(name, f), l(nullptr), tasks(taskz) {
     setMaxParallelSubtasks(1);
     SAFE_POINT(!taskz.empty(), "No tasks provided to multitask", );
 
@@ -40,8 +39,6 @@ MultiTask::MultiTask(const QString &name, const QList<Task *> &taskz, bool withL
         SAFE_POINT(AppContext::getProject() != NULL, "MultiTask::no project", );
         l = new StateLock(getTaskName(), StateLockFlag_LiveLock);
         AppContext::getProject()->lockState(l);
-    } else {
-        l = NULL;
     }
 }
 
@@ -51,10 +48,10 @@ QList<Task *> MultiTask::getTasks() const {
 
 Task::ReportResult MultiTask::report() {
     Project *p = AppContext::getProject();
-    if (l != NULL && p != NULL) {
+    if (l != nullptr && p != nullptr) {
         p->unlockState(l);
         delete l;
-        l = NULL;
+        l = nullptr;
     }
     foreach(Task* t, tasks) {
         CHECK_CONTINUE(t->isConcatenateChildrenErrors());

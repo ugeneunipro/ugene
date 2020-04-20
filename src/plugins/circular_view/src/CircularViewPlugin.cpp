@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,19 +22,12 @@
 #include <limits>
 
 #include <QMessageBox>
-#include <QMenu>
-#include <QApplication>
 
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
-#include <U2Core/DocumentModel.h>
-#include <U2Core/DocumentSelection.h>
-#include <U2Core/GObject.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Core/QObjectScopedPointer.h>
 
@@ -42,7 +35,6 @@
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/ADVSingleSequenceWidget.h>
 #include <U2View/ADVUtils.h>
-#include <U2View/AnnotatedDNAView.h>
 
 #include "CircularView.h"
 #include "CircularViewPlugin.h"

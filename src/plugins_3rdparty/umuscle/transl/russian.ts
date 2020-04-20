@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/ProfileToProfileWorker.cpp" line="122"/>
         <source>Align profile to profile with MUSCLE</source>
-        <translation type="unfinished"></translation>
+        <translation>Выравнивание при помощи MUSCLE</translation>
     </message>
 </context>
 <context>
@@ -342,7 +342,7 @@
     <message>
         <location filename="../src/MuscleTask.cpp" line="274"/>
         <source>A problem occurred during aligning profile to profile with MUSCLE. The original alignment is no more available.</source>
-        <translation type="unfinished"></translation>
+        <translation>A problem occurred during aligning profile to profile with MUSCLE. The original alignment is no more available.</translation>
     </message>
     <message>
         <location filename="../src/MuscleTask.cpp" line="307"/>
@@ -520,11 +520,7 @@
     <message>
         <location filename="../src/MuscleTask.cpp" line="414"/>
         <source>MultipleSequenceAlignment object has been changed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MAlignment object has been changed</source>
-        <translation type="vanished">Объект множественного выравнивания был изменен</translation>
+        <translation>MultipleSequenceAlignment object has been changed</translation>
     </message>
 </context>
 <context>
@@ -567,7 +563,7 @@
     <message>
         <location filename="../src/MuscleParallel.cpp" line="57"/>
         <source>There is not enough memory to align these sequences with MUSCLE.</source>
-        <translation type="unfinished"></translation>
+        <translation>There is not enough memory to align these sequences with MUSCLE.</translation>
     </message>
 </context>
 <context>
@@ -636,11 +632,7 @@
     <message>
         <location filename="../src/MuscleTask.cpp" line="109"/>
         <source>Stopping MUSCLE task, because of error in MultipleSequenceAlignment::mid function</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stopping MUSCLE task, because of error in MAlignment::mid function</source>
-        <translation type="vanished">Stopping MUSCLE task, because of error in MAlignment::mid function</translation>
+        <translation>Stopping MUSCLE task, because of error in MultipleSequenceAlignment::mid function</translation>
     </message>
     <message>
         <location filename="../src/MuscleTask.cpp" line="128"/>
@@ -704,7 +696,7 @@
     <message>
         <location filename="../src/MuscleParallel.cpp" line="597"/>
         <source>Can&apos;t allocate enough memory to perform aligning, try to use 64bit UGENE version</source>
-        <translation type="unfinished"></translation>
+        <translation>Can&apos;t allocate enough memory to perform aligning, try to use 64bit UGENE version</translation>
     </message>
 </context>
 <context>
@@ -730,7 +722,7 @@
     <message>
         <location filename="../src/MuscleParallel.cpp" line="654"/>
         <source>Can&apos;t allocate enough memory to perform aligning, try to use 64bit UGENE version</source>
-        <translation type="unfinished"></translation>
+        <translation>Can&apos;t allocate enough memory to perform aligning, try to use 64bit UGENE version</translation>
     </message>
 </context>
 </TS>

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -112,7 +112,7 @@ void MAFFTWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new MAFFTPrompter());
     proto->setIconPath(":external_tool_support/images/cmdline.png");
-    proto->addExternalTool(ET_MAFFT, EXT_TOOL_PATH);
+    proto->addExternalTool(MAFFTSupport::ET_MAFFT_ID, EXT_TOOL_PATH);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -157,7 +157,7 @@ Task* MAFFTWorker::tick() {
         cfg.maxNumberIterRefinement=actor->getParameter(NUM_ITER)->getAttributeValue<int>(context);
         QString path=actor->getParameter(EXT_TOOL_PATH)->getAttributeValue<QString>(context);
         if(QString::compare(path, "default", Qt::CaseInsensitive) != 0){
-            AppContext::getExternalToolRegistry()->getByName(ET_MAFFT)->setPath(path);
+            AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->setPath(path);
         }
         path=actor->getParameter(TMP_DIR_PATH)->getAttributeValue<QString>(context);
         if(QString::compare(path, "default", Qt::CaseInsensitive) != 0){

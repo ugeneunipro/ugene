@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -131,11 +131,11 @@ QList<Task*> SeqPosTask::onSubTaskFinished(Task* subTask) {
     if (treatTask == subTask) {
             QStringList args = settings.getArguments(treatDoc->getURLString());
 
-            ExternalTool* rTool = AppContext::getExternalToolRegistry()->getByName(ET_R);
+            ExternalTool* rTool = AppContext::getExternalToolRegistry()->getById(RSupport::ET_R_ID);
             SAFE_POINT(NULL != rTool, "R script tool wasn't found in the registry", result);
             const QString rDir = QFileInfo(rTool->getPath()).dir().absolutePath();
 
-            etTask = new ExternalToolRunTask(ET_SEQPOS, args, new ExternalToolLogParser(), getSettings().outDir, QStringList() << rDir);
+            etTask = new ExternalToolRunTask(SeqPosSupport::ET_SEQPOS_ID, args, new ExternalToolLogParser(), getSettings().outDir, QStringList() << rDir);
             setListenerForTask(etTask);
             result << etTask;
     }

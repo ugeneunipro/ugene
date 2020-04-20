@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,6 +65,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     // 5. Type to the project filter field "coi"
     GTUtilsProjectTreeView::filterProject(os, "coi");
+    GTGlobals::sleep();
 
     // Expected: There are items under the "Object name" item. They contain both "coi" in any case and either of document names "COI.aln"
     // or "ugene_gui_test" and don't contain "human_T1.fa"

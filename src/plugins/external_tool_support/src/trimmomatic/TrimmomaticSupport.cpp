@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,8 +40,11 @@
 
 namespace U2 {
 
-TrimmomaticSupport::TrimmomaticSupport(const QString &name, const QString &path)
-    : ExternalTool(name, path)
+const QString TrimmomaticSupport::ET_TRIMMOMATIC = "Trimmomatic";
+const QString TrimmomaticSupport::ET_TRIMMOMATIC_ID = "USUPP_TRIMMOMATIC";
+
+TrimmomaticSupport::TrimmomaticSupport(const QString& id, const QString &name, const QString &path)
+    : ExternalTool(id, name, path)
 {
     toolKitName = "Trimmomatic";
     description = tr("<i>Trimmomatic</i> is a flexible read trimming tool for Illumina NGS data.");
@@ -50,8 +53,8 @@ TrimmomaticSupport::TrimmomaticSupport(const QString &name, const QString &path)
     validationArguments << "-h";
     validMessage = "PE \\[-version\\] \\[-threads <threads>\\] \\[-phred33|-phred64\\] \\[-trimlog <trimLogFile>\\]";
 
-    toolRunnerProgramm = ET_JAVA;
-    dependencies << ET_JAVA;
+    toolRunnerProgram = JavaSupport::ET_JAVA_ID;
+    dependencies << JavaSupport::ET_JAVA_ID;
 
     initTrimmomaticSteps();
 }

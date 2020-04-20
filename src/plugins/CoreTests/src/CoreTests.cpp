@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,10 +36,12 @@
 #include "DNASequenceObjectTests.h"
 #include "DNATranslationImplTests.h"
 #include "DnaAssemblyTests.h"
+#include "DnaStatisticsTests.h"
 #include "DocumentModelTests.h"
 #include "EditAlignmentTests.h"
 #include "EditSequenceTests.h"
 #include "FindAlgorithmTests.h"
+#include "FindPatternMsaTaskTest.h"
 #include "FormatDetectionTests.h"
 #include "GUrlTests.h"
 #include "LoadRemoteDocumentTests.h"
@@ -47,9 +49,11 @@
 #include "MsaObjectTests.h"
 #include "PWMatrixTests.h"
 #include "PhyTreeObjectTests.h"
+#include "RealignSequencesInAlignmentTaskTest.h"
 #include "SMatrixTests.h"
 #include "SecStructPredictTests.h"
 #include "SequenceWalkerTests.h"
+#include "AnnotationUtilsTests.h"
 #include "TaskTests.h"
 #include "TextObjectTests.h"
 #include "UtilTestActions.h"
@@ -160,6 +164,14 @@ void CoreTests::registerFactories() {
 
     // Some utility actions to use them in tests
     registerFactory<UtilTestActions>(xmlTestFormat);
+
+    registerFactory<RealignTests>(xmlTestFormat);
+
+    registerFactory<FindPatternMsaTests>(xmlTestFormat);
+
+    registerFactory<AnnotationUtilsTests>(xmlTestFormat);
+
+    registerFactory<DnaStatisticsTests>(xmlTestFormat);
 }
 
 }//namespace

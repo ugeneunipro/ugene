@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -92,8 +92,8 @@ inline bool isValidFile(const QString &link, const qint64 &processStartTime) {
 
 QList<WorkerState> WorkflowRunTask::getState( Actor* actor) {
     QList<WorkerState> ret;
-    foreach(Task* t, getSubtasks()) {
-        WorkflowIterationRunTask* rt = qobject_cast<WorkflowIterationRunTask*>(t);
+    foreach(const QPointer<Task> &t, getSubtasks()) {
+        WorkflowIterationRunTask* rt = qobject_cast<WorkflowIterationRunTask*>(t.data());
         ret << rt->getState(actor->getId());
     }
     return ret;
@@ -101,8 +101,8 @@ QList<WorkerState> WorkflowRunTask::getState( Actor* actor) {
 
 int WorkflowRunTask::getMsgNum(const Link* l) {
     int ret = 0;
-    foreach(Task* t, getSubtasks()) {
-        WorkflowIterationRunTask* rt = qobject_cast<WorkflowIterationRunTask*>(t);
+    foreach(const QPointer<Task> &t, getSubtasks()) {
+        WorkflowIterationRunTask* rt = qobject_cast<WorkflowIterationRunTask*>(t.data());
         ret += rt->getMsgNum(l);
     }
     return ret;
@@ -110,8 +110,8 @@ int WorkflowRunTask::getMsgNum(const Link* l) {
 
 int WorkflowRunTask::getMsgPassed(const Link* l) {
     int ret = 0;
-    foreach(Task* t, getSubtasks()) {
-        ret += qobject_cast<WorkflowIterationRunTask*>(t)->getMsgPassed(l);
+    foreach(const QPointer<Task> &t, getSubtasks()) {
+        ret += qobject_cast<WorkflowIterationRunTask*>(t.data())->getMsgPassed(l);
     }
     return ret;
 }

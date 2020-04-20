@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -104,13 +104,13 @@ public:
     bool isViewCollapsed() const;
     void updateViewButtonState();
 
-    void setPanViewCollapsed(bool v);
+    void setPanViewCollapsed(bool collapsed);
     bool isPanViewCollapsed() const;
 
-    void setDetViewCollapsed(bool v);
+    void setDetViewCollapsed(bool collapsed);
     bool isDetViewCollapsed() const;
 
-    void setOverviewCollapsed(bool v);
+    void setOverviewCollapsed(bool collapsed);
     bool isOverviewCollapsed() const;
 
     virtual void updateState(const QVariantMap& m);
@@ -139,10 +139,10 @@ signals:
 protected slots:
     void sl_onViewDestroyed(QObject*);
 
-    void sl_toggleView();
-    void sl_togglePanView();
-    void sl_toggleDetView();
-    void sl_toggleOverview();
+    void sl_toggleAllSubViews();
+    void sl_togglePanView(bool checked);
+    void sl_toggleDetView(bool checked);
+    void sl_toggleOverview(bool checked);
     void sl_onSelectRange();
     void sl_onSelectInRange();
     void sl_onSelectOutRange();
@@ -206,6 +206,11 @@ private:
     QList<QString> * buttonTabOrederedNames;
 
     PanView::ZoomUseObject zoomUseObject;
+
+    static const QString SEQUENCE_SETTINGS;
+    static const QString DET_VIEW_COLLAPSED;
+    static const QString ZOOM_VIEW_COLLAPSED;
+    static const QString OVERVIEW_COLLAPSED;
 
     friend class ADVSingleSequenceHeaderWidget;
 };

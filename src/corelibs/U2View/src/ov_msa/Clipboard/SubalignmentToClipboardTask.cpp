@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,7 +47,7 @@
 #include <U2Core/UserApplicationsSettings.h>
 
 #include "SubalignmentToClipboardTask.h"
-#include "ov_msa/MSACollapsibleModel.h"
+#include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MSAEditorSequenceArea.h"
 
 namespace U2{
@@ -78,15 +78,15 @@ U2Region MsaClipboardDataTaskFactory::getWindowBySelection(const QRect &selectio
 }
 
 QStringList MsaClipboardDataTaskFactory::getNamesBySelection(MaEditor *context, const QRect &selection){
+    MaCollapseModel* m = context->getUI()->getCollapseModel();
+    int startMaRowIndex = m->getMaRowIndexByViewRowIndex(selection.y());
+    int endMaRowIndex = m->getMaRowIndexByViewRowIndex(selection.y() + selection.height() - 1);
+    const MultipleAlignment &ma = context->getMaObject()->getMultipleAlignment();
     QStringList names;
-    MSACollapsibleItemModel* m = context->getUI()->getCollapseModel();
-    U2Region sel(m->mapToRow(selection.y()), m->mapToRow(selection.y() + selection.height()) - m->mapToRow(selection.y()));
-    MultipleAlignmentObject* msaObj = context->getMaObject();
-    for (int i = sel.startPos; i < sel.endPos(); ++i) {
-        if (m->rowToMap(i, true) < 0) {
-            continue;
+    for (int maRowIndex = startMaRowIndex; maRowIndex <= endMaRowIndex; ++maRowIndex) {
+        if (m->getViewRowIndexByMaRowIndex(maRowIndex, true) >= 0) {
+            names.append(ma->getRow(maRowIndex)->getName());
         }
-        names.append(msaObj->getMultipleAlignment()->getRow(i)->getName());
     }
     return names;
 }
@@ -208,7 +208,7 @@ void RichTextMsaClipboardTask::run(){
         for (int pos = window.startPos; pos < window.endPos(); pos++){
             char c = row->charAt(pos);
             bool highlight = false;
-            QColor color = colorScheme->getColor(seq, pos, c);
+            QColor color = colorScheme->getBackgroundColor(seq, pos, c);
             if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) { //schemes which applied without reference
                 const char refChar = '\n';
                 highlightingScheme->process(refChar, c, color, highlight, pos, seq);

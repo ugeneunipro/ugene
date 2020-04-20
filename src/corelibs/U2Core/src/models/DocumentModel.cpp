@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,18 +47,23 @@
 
 namespace U2 {
 
-const QString DocumentFormat::CREATED_NOT_BY_UGENE(QObject::tr("The document is created not by UGENE"));
-const QString DocumentFormat::MERGED_SEQ_LOCK(QObject::tr("Document sequences were merged"));
 const QString DocumentFormat::DBI_REF_HINT("dbi_alias");
 const QString DocumentFormat::DBI_FOLDER_HINT("dbi_folder");
 const QString DocumentFormat::DEEP_COPY_OBJECT("deep_copy_object");
+const QString DocumentFormat::STRONG_FORMAT_ACCORDANCE("strong_format_accordance");
 const QString DocumentMimeData::MIME_TYPE("application/x-ugene-document-mime");
 
 const int DocumentFormat::READ_BUFF_SIZE = 4194304; //4Mb optimal buffer size for reading from network drives
 
+DocumentFormat::DocumentFormat(QObject* p, const DocumentFormatId& _id, DocumentFormatFlags _flags, const QStringList& fileExts) : QObject(p),
+id(_id),
+formatFlags(_flags),
+fileExtensions(fileExts)
+{}
+
 Document* DocumentFormat::createNewLoadedDocument(IOAdapterFactory* iof, const GUrl& url,
     U2OpStatus& os, const QVariantMap& hints) {
-    const U2DbiRef tmpDbiRef = fetchDbiRef(hints, os);
+    U2DbiRef tmpDbiRef = fetchDbiRef(hints, os);
     CHECK_OP(os, NULL);
 
     Document* doc = new Document(this, iof, url, tmpDbiRef, QList<UnloadedObjectInfo>(),
@@ -89,7 +94,7 @@ Document* DocumentFormat::loadDocument(IOAdapterFactory* iof, const GUrl& url, c
 
     Document* res = NULL;
 
-    const U2DbiRef dbiRef = fetchDbiRef(hints, os);
+    U2DbiRef dbiRef = fetchDbiRef(hints, os);
     CHECK_OP(os, NULL);
 
     if (dbiRef.isValid()) {
@@ -120,12 +125,12 @@ DNASequence* DocumentFormat::loadSequence(IOAdapter*, U2OpStatus& os) {
 
 void DocumentFormat::storeDocument(Document*, IOAdapter*, U2OpStatus& os) {
     assert(0);
-    os.setError(tr("Writing is not supported for this format (%1). Feel free to send a feature request though.").arg(getFormatName()));
+    os.setError(tr("Writing is not supported for this format (%1). Feel free to send a feature request though.").arg(formatName));
 }
 
 void DocumentFormat::storeDocument(Document* doc, U2OpStatus& os, IOAdapterFactory* iof, const GUrl& newDocURL) {
     SAFE_POINT_EXT(formatFlags.testFlag(DocumentFormatFlag_SupportWriting),
-        os.setError(tr("Writing is not supported for this format (%1). Feel free to send a feature request though.").arg(getFormatName())), );
+        os.setError(tr("Writing is not supported for this format (%1). Feel free to send a feature request though.").arg(formatName)), );
 
     assert(doc->getDocumentModLock(DocumentModLock_FORMAT_AS_INSTANCE) == NULL);
     if (iof == NULL) {
@@ -162,7 +167,7 @@ bool DocumentFormat::checkConstraints(const DocumentFormatConstraints& c) const 
         return false; // filtered by exclude flags
     }
 
-    if (c.formatsToExclude.contains(getFormatId())) {
+    if (c.formatsToExclude.contains(id)) {
         return false; // format is explicetely excluded
     }
 

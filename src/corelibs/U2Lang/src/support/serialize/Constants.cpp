@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,6 +56,8 @@ const QString Constants::ITERATION_ID          = "id";
 const QString Constants::PARAM_ALIASES_START   = "parameter-aliases";
 const QString Constants::PORT_ALIASES_START    = "port-aliases";
 const QString Constants::PATH_THROUGH          = "path-through";
+const QString Constants::TRUE                  = "true";
+const QString Constants::FALSE                 = "false";
 
 // -------------- backward compatibility --------------
     const QString Constants::ALIASES_HELP_START    = "help";
@@ -74,6 +76,7 @@ const QString Constants::ATTRIBUTES_START      = ".attributes";
 const QString Constants::TYPE_PORT             = "type";
 const QString Constants::FORMAT_PORT           = "format";
 const QString Constants::CMDLINE               = "cmdline";
+const QString Constants::DEFAULT_VALUE         = "default-value";
 const QString Constants::DESCRIPTION           = "description";
 const QString Constants::PROMPTER              = "templatedescription";
 const QString Constants::COMMA                 = ",";
@@ -104,6 +107,11 @@ const QString Constants::ESTIMATIONS           = "estimations";
 const QString Constants::VALIDATOR             = ".validator";
 const QString Constants::V_TYPE                = "type";
 const QString Constants::V_SCRIPT              = "script";
+const QString Constants::USE_INTEGRATED_TOOL   = "use-integrated-tool";
+const QString Constants::CUSTOM_TOOL_PATH      = "custom-tool-path";
+const QString Constants::INTEGRATED_TOOL_ID    = "integrated-tool-id";
+const QString Constants::ADD_TO_DASHBOARD      = "add-to-dashboard";
+const QString Constants::OPEN_WITH_UGENE       = "open-with-ugene";
 
 } // WorkflowSerialize
 } // U2

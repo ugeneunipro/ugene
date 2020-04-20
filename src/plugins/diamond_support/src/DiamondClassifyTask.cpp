@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -111,7 +111,7 @@ void DiamondClassifyTask::run() {
 }
 
 void DiamondClassifyTask::prepare() {
-    ExternalToolRunTask *classifyTask = new ExternalToolRunTask(DiamondSupport::TOOL_NAME, getArguments(), new ExternalToolLogParser());
+    ExternalToolRunTask *classifyTask = new ExternalToolRunTask(DiamondSupport::TOOL_ID, getArguments(), new ExternalToolLogParser());
     setListenerForTask(classifyTask);
     addSubTask(classifyTask);
 }

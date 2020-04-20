@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -60,21 +60,21 @@ Worker *DiamondBuildWorkerFactory::createWorker(Actor *actor) {
 void DiamondBuildWorkerFactory::init() {
     QList<PortDescriptor *> ports;
     {
-        const Descriptor outSlotDesc(BaseSlots::URL_SLOT().getId(), DiamondBuildPrompter::tr("Output URL"), DiamondBuildPrompter::tr("Output URL."));
+        Descriptor outSlotDesc(BaseSlots::URL_SLOT().getId(), DiamondBuildPrompter::tr("Output URL"), DiamondBuildPrompter::tr("Output URL."));
 
         QMap<Descriptor, DataTypePtr> outType;
         outType[outSlotDesc] = BaseTypes::STRING_TYPE();
 
-        const Descriptor outPortDesc(OUTPUT_PORT_ID, DiamondBuildPrompter::tr("Output DIAMOND database"), DiamondBuildPrompter::tr("URL to the DIAMOND database file."));
+        Descriptor outPortDesc(OUTPUT_PORT_ID, DiamondBuildPrompter::tr("Output DIAMOND database"), DiamondBuildPrompter::tr("URL to the DIAMOND database file."));
         ports << new PortDescriptor(outPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-out", outType)), false /*input*/, true /*multi*/);
     }
 
     QList<Attribute *> attributes;
     {
-        const Descriptor databaseDesc(DATABASE_ATTR_ID, DiamondBuildPrompter::tr("Database"),
+        Descriptor databaseDesc(DATABASE_ATTR_ID, DiamondBuildPrompter::tr("Database"),
                                                DiamondBuildPrompter::tr("A name of the binary DIAMOND database file that should be created."));
 
-        const Descriptor genomicLibraryDesc(GENOMIC_LIBRARY_ATTR_ID, DiamondBuildPrompter::tr("Genomic library"),
+        Descriptor genomicLibraryDesc(GENOMIC_LIBRARY_ATTR_ID, DiamondBuildPrompter::tr("Genomic library"),
                                             DiamondBuildPrompter::tr("Genomes that should be used to build the database."));
 
         Attribute *databaseAttribute = new Attribute(databaseDesc, BaseTypes::STRING_TYPE(), true);
@@ -86,7 +86,7 @@ void DiamondBuildWorkerFactory::init() {
 
     QMap<QString, PropertyDelegate *> delegates;
     {
-        const URLDelegate::Options options = URLDelegate::SelectFileToSave | URLDelegate::DoNotUseWorkflowOutputFolder;
+        URLDelegate::Options options = URLDelegate::SelectFileToSave | URLDelegate::DoNotUseWorkflowOutputFolder;
         DelegateTags tags;
         tags.set(DelegateTags::FILTER, DialogUtils::prepareFileFilter("DIAMOND database", QStringList("dmnd"), false, QStringList()));
         delegates[DATABASE_ATTR_ID] = new URLDelegate(tags, "diamond/database", options);
@@ -94,13 +94,13 @@ void DiamondBuildWorkerFactory::init() {
         delegates[GENOMIC_LIBRARY_ATTR_ID] = new GenomicLibraryDelegate();
     }
 
-    const Descriptor desc(ACTOR_ID, DiamondBuildPrompter::tr("Build DIAMOND Database"),
+    Descriptor desc(ACTOR_ID, DiamondBuildPrompter::tr("Build DIAMOND Database"),
                           DiamondBuildPrompter::tr("Build a DIAMOND formatted database from a FASTA input file."));
 
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new DiamondBuildPrompter(NULL));
-    proto->addExternalTool(DiamondSupport::TOOL_NAME);
+    proto->addExternalTool(DiamondSupport::TOOL_ID);
     proto->setValidator(new DiamondBuildValidator());
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
 

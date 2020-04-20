@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or * modify it under the terms of the GNU General Public License
@@ -52,7 +52,7 @@ void Bowtie2BuildIndexTask::prepare() {
     arguments.append(referencePath);
     arguments.append(indexPath);
 
-    ExternalToolRunTask *task = new ExternalToolRunTask(ET_BOWTIE2_BUILD, arguments, new ExternalToolLogParser());
+    ExternalToolRunTask *task = new ExternalToolRunTask(Bowtie2Support::ET_BOWTIE2_BUILD_ID, arguments, new ExternalToolLogParser());
     setListenerForTask(task);
     addSubTask(task);
 }
@@ -196,7 +196,7 @@ void Bowtie2AlignTask::prepare() {
     arguments.append("-S");
     arguments.append(settings.resultFileName.getURLString());
 
-    ExternalToolRunTask *task = new ExternalToolRunTask(ET_BOWTIE2_ALIGN, arguments, new ExternalToolLogParser());
+    ExternalToolRunTask *task = new ExternalToolRunTask(Bowtie2Support::ET_BOWTIE2_ALIGN_ID, arguments, new ExternalToolLogParser());
     setListenerForTask(task);
     addSubTask(task);
 }

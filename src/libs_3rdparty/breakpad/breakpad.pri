@@ -3,13 +3,13 @@ include( ../../ugene_globals.pri )
 TEMPLATE = lib
 CONFIG += thread debug_and_release warn_off
 INCLUDEPATH += src
-TARGET = breakpad
+TARGET = breakpad$$D
 DESTDIR = ../../$$out_dir()
+QMAKE_PROJECT_NAME = breakpad
 QT -= gui
 
 !debug_and_release|build_pass {
     CONFIG(debug, debug|release) {
-        TARGET = breakpadd
         DEFINES += _DEBUG
         CONFIG += console
         OBJECTS_DIR = _tmp/obj/debug
@@ -24,6 +24,7 @@ QT -= gui
 unix {
     target.path = $$UGENE_INSTALL_DIR/
     INSTALLS += target
+    !macx: QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
 }
 
 macx {
@@ -34,5 +35,5 @@ macx {
 }
 
 win32 {
-	LIBS += psapi.lib
+    LIBS += psapi.lib
 }

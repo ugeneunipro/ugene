@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -96,11 +96,12 @@ public:
     AlignToReferenceBlastWorker(Actor *a);
 
 protected:
-    Task * createPrepareTask(U2OpStatus &os) const;
-    void onPrepared(Task *task, U2OpStatus &os);
-    Task * createTask(const QList<Message> &messages) const;
-    QVariantMap getResult(Task *task, U2OpStatus &os) const;
-    MessageMetadata generateMetadata(const QString &datasetName) const;
+    Task * createPrepareTask(U2OpStatus &os) const override;
+    void onPrepared(Task *task, U2OpStatus &os) override;
+
+    Task * createTask(const QList<Message> &messages) const override;
+    QVariantMap getResult(Task *task, U2OpStatus &os) const override;
+    MessageMetadata generateMetadata(const QString &datasetName) const override;
 
 private:
     QString getReadName(const Message &message) const;

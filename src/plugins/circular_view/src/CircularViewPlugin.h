@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,11 +23,9 @@
 #define _U2_CIRCULAR_VIEW_PLUGIN_H_
 
 #include <U2Core/PluginModel.h>
-#include <U2Core/AppContext.h>
 #include <U2Gui/ObjectViewModel.h>
 
 #include <QMap>
-#include <QSet>
 #include <QAction>
 
 #include <U2View/ADVSequenceWidget.h>

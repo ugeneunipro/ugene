@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,13 +43,13 @@ GObject* QDGObject::clone(const U2DbiRef& , U2OpStatus& , const QVariantMap &hin
     return copy;
 }
 
-const DocumentFormatId QDDocFormat::FORMAT_ID = "QueryDocFormat";
+;
 
 //Format
 //////////////////////////////////////////////////////////////////////////
 QDDocFormat::QDDocFormat(QObject* p)
-: TextDocumentFormat(p, DocumentFormatFlags_W1, QStringList(QUERY_SCHEME_EXTENSION)),
-formatName(tr("Query Schema")) {
+: TextDocumentFormat(p, DocumentFormatId("QueryDocFormat"), DocumentFormatFlags_W1, QStringList(QUERY_SCHEME_EXTENSION)) {
+    formatName = tr("Query Schema");
     formatDescription = tr("QDDoc is a format used for creating/editing/storing/retrieving"
         "query schema with the text file");
     supportedObjectTypes += QDGObject::TYPE;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,8 +65,8 @@ DataTypePtr HMMLib::HMM_PROFILE_TYPE() {
     return dtr->getById(HMM_PROFILE_TYPE_ID);
 }
 
-const Descriptor HMMLib::HMM2_SLOT("hmm2-profile", QObject::tr("HMM Profile"), "");
 
+const Descriptor HMMLib::HMM2_SLOT() {return Descriptor(HMM2_SLOT_ID, QObject::tr("HMM Profile"), "");}
 const Descriptor HMMLib::HMM_CATEGORY() {return Descriptor("hmmer", tr("HMMER2 Tools"), "");}
 
 HMMIOProto::HMMIOProto(const Descriptor& _desc, const QList<PortDescriptor*>& _ports, const QList<Attribute*>& _attrs ) 
@@ -134,7 +134,7 @@ void HMMIOWorkerFactory::init() {
 
          QMap<Descriptor, DataTypePtr> m;
          m[ud] = BaseTypes::STRING_TYPE();
-         m[HMMLib::HMM2_SLOT] = HMMLib::HMM_PROFILE_TYPE();
+         m[HMMLib::HMM2_SLOT()] = HMMLib::HMM_PROFILE_TYPE();
          DataTypePtr t(new MapDataType(Descriptor("write.hmm.content"), m));
         
          QList<PortDescriptor*> p; QList<Attribute*> a;
@@ -150,7 +150,7 @@ void HMMIOWorkerFactory::init() {
 
          QList<PortDescriptor*> p; QList<Attribute*> a;
          QMap<Descriptor, DataTypePtr> outM;
-         outM[HMMLib::HMM2_SLOT] = HMMLib::HMM_PROFILE_TYPE();
+         outM[HMMLib::HMM2_SLOT()] = HMMLib::HMM_PROFILE_TYPE();
          p << new PortDescriptor(od, DataTypePtr(new MapDataType("hmm.read.out", outM)), false /*output*/, true);
          
          Descriptor desc(HMMReader::ACTOR, HMMLib::tr("Read HMM2 Profile"), HMMLib::tr("Reads HMM profiles from file(s). The files can be local or Internet URLs."));
@@ -170,7 +170,7 @@ QString HMMReadPrompter::composeRichDoc() {
 
 QString HMMWritePrompter::composeRichDoc() {
     IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(HMM_IN_PORT_ID));
-    Actor* producer = input->getProducer(HMMLib::HMM2_SLOT.getId());
+    Actor* producer = input->getProducer(HMM2_SLOT_ID);
     QString unsetStr = "<font color='red'>"+tr("unset")+"</font>";
     QString producerStr = producer ? producer->getLabel() : unsetStr;
     QString url = getScreenedURL(input, BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BaseSlots::URL_SLOT().getId()); 
@@ -250,7 +250,7 @@ Task* HMMWriter::tick() {
         fileMode = actor->getParameter(BaseAttributes::FILE_MODE_ATTRIBUTE().getId())->getAttributeValue<uint>(context);
         QVariantMap data = inputMessage.getData().toMap();
         
-        plan7_s* hmm = data.value(HMMLib::HMM2_SLOT.getId()).value<plan7_s*>();
+        plan7_s* hmm = data.value(HMM2_SLOT_ID).value<plan7_s*>();
         QString anUrl = url;
         if (anUrl.isEmpty()) {
             anUrl = data.value(BaseSlots::URL_SLOT().getId()).toString();

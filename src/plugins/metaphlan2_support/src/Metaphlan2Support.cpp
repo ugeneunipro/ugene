@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,16 +27,17 @@
 
 namespace U2 {
 
+const QString Metaphlan2Support::TOOL_ID = "USUPP_METAPHLAN2";
 const QString Metaphlan2Support::TOOL_NAME = "MetaPhlAn2";
 const QString Metaphlan2Support::UTIL_SCRIPT = "utils/read_fastx.py";
 
 //These constants are taken from the 'external_tool_support' project
-const QString Metaphlan2Support::ET_BOWTIE_2_ALIGNER = "Bowtie 2 aligner";
-const QString Metaphlan2Support::ET_PYTHON = "python";
-const QString Metaphlan2Support::ET_PYTHON_BIO = "Bio";
-const QString Metaphlan2Support::ET_PYTHON_NUMPY = "numpy";
+const QString Metaphlan2Support::ET_BOWTIE_2_ALIGNER_ID = "USUPP_BOWTIE2";
+const QString Metaphlan2Support::ET_PYTHON_ID = "USUPP_PYTHON2";
+const QString Metaphlan2Support::ET_PYTHON_BIO_ID = "BIO";
+const QString Metaphlan2Support::ET_PYTHON_NUMPY_ID = "NUMPY";
 
-Metaphlan2Support::Metaphlan2Support(const QString& name, const QString& path) : ExternalTool(name, path) {
+Metaphlan2Support::Metaphlan2Support(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path) {
     validationArguments << "--version";
 
     toolKitName = TOOL_NAME;
@@ -44,8 +45,8 @@ Metaphlan2Support::Metaphlan2Support(const QString& name, const QString& path) :
 
     executableFileName = "metaphlan2.py";
 
-    toolRunnerProgramm = ET_PYTHON;
-    dependencies << ET_PYTHON << ET_PYTHON_BIO << ET_PYTHON_NUMPY << ET_BOWTIE_2_ALIGNER;
+    toolRunnerProgram = ET_PYTHON_ID;
+    dependencies << ET_PYTHON_ID << ET_PYTHON_BIO_ID << ET_PYTHON_NUMPY_ID << ET_BOWTIE_2_ALIGNER_ID;
 
     validMessage = "MetaPhlAn version ";
     versionRegExp = QRegExp("MetaPhlAn version (\\d+\\.\\d+(\\.\\d+)?(\\-[a-zA-Z]*)?)");

@@ -11,6 +11,10 @@ macx : CONFIG -=plugin
 DEFINES+= QT_DLL
 QT += script
 INCLUDEPATH += src _tmp ../../include
+
+# Visual Studio project file name
+QMAKE_PROJECT_NAME=$${MODULE_ID}
+
 MODULE_ID=$$join(MODULE_ID, "", "", $$D)
 TARGET = $${MODULE_ID}
 CONFDIR=$$out_dir()
@@ -38,7 +42,11 @@ win32 {
     QMAKE_CFLAGS_WARN_ON = -W3
 }
 
-macx {
-    QMAKE_RPATHDIR += @executable_path/
-    QMAKE_LFLAGS_SONAME = -Wl,-dylib_install_name,@rpath/
+unix: {
+    macx: {
+        QMAKE_RPATHDIR += @executable_path/
+        QMAKE_LFLAGS_SONAME = -Wl,-dylib_install_name,@rpath/
+    } else {
+        QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
+    }
 }

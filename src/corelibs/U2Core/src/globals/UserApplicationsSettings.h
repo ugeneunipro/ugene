@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,6 +56,10 @@ public:
     // specify dir for downloaded files
     QString getDownloadDirPath() const;
     void setDownloadDirPath(const QString& newPath) const;
+
+    // storage dir for custom external tool config files
+    QString getCustomToolsConfigsDirPath() const;
+    void setCustomToolsConfigsDirPath(const QString& newPath) const;
 
     // recently downloaded file names
     QStringList getRecentlyDownloadedFileNames() const;

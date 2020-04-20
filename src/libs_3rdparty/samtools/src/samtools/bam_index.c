@@ -7,6 +7,7 @@
 #ifdef _USE_KNETFILE
 #include "knetfile.h"
 #endif
+#include "ugene_custom_io.h"
 
 /*!
   @header
@@ -395,12 +396,12 @@ bam_index_t *bam_index_load_local(const char *_fn)
 	} else fn = strdup(_fn);
 	fnidx = (char*)calloc(strlen(fn) + 5, 1);
 	strcpy(fnidx, fn); strcat(fnidx, ".bai");
-	fp = fopen(fnidx, "rb");
+	fp = ugene_custom_fopen(fnidx, "rb");
     if (fp == 0 && strlen(fn) > 3) { // try "{base}.bai"
         if (!strcmp(fn + strlen(fn) - 3, "bam")) {
 			strcpy(fnidx, fn);
 			fnidx[strlen(fn)-1] = 'i';
-			fp = fopen(fnidx, "rb");
+			fp = ugene_custom_fopen(fnidx, "rb");
 		}
 	}
 	free(fnidx); free(fn);
@@ -430,7 +431,7 @@ static void download_from_remote(const char *url)
 		fprintf(stderr, "[download_from_remote] fail to open remote file.\n");
 		return;
 	}
-	if ((fp = fopen(fn, "wb")) == 0) {
+	if ((fp = ugene_custom_fopen(fn, "wb")) == 0) {
 		fprintf(stderr, "[download_from_remote] fail to create file in the working directory.\n");
 		knet_close(fp_remote);
 		return;
@@ -484,7 +485,7 @@ int bam_index_build2(const char *fn, const char *_fnidx)
 		fnidx = (char*)calloc(strlen(fn) + 5, 1);
 		strcpy(fnidx, fn); strcat(fnidx, ".bai");
 	} else fnidx = strdup(_fnidx);
-	fpidx = fopen(fnidx, "wb");
+	fpidx = ugene_custom_fopen(fnidx, "wb");
 	if (fpidx == 0) {
 		fprintf(stderr, "[bam_index_build2] fail to create the index file.\n");
 		free(fnidx);

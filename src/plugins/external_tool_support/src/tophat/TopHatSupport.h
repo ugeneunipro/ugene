@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,18 +24,16 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define ET_TOPHAT    "TopHat"
-#define TOPHAT_TMP_DIR      "tophat"
-
-
 namespace U2 {
 
-class TopHatSupport : public ExternalTool
-{
+class TopHatSupport : public ExternalTool {
     Q_OBJECT
-
 public:
-    TopHatSupport(const QString& name, const QString& path = "");
+    TopHatSupport(const QString& id, const QString& name, const QString& path = "");
+
+    static const QString ET_TOPHAT;
+    static const QString ET_TOPHAT_ID;
+    static const QString TOPHAT_TMP_DIR;
 };
 
 

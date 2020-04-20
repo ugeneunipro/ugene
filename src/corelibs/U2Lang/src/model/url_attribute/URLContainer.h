@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -138,6 +138,8 @@ private:
 ////////////////////////////////////////////////////////////////////////////////
 class U2LANG_EXPORT URLContainerVisitor {
 public:
+    virtual ~URLContainerVisitor();
+
     virtual void visit(FileUrlContainer *) = 0;
     virtual void visit(DirUrlContainer *) = 0;
     virtual void visit(DbObjUrlContainer *) = 0;

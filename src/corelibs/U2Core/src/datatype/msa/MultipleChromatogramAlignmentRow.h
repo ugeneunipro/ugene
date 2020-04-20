@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -197,11 +197,13 @@ public:
     bool isRowContentEqual(const MultipleChromatogramAlignmentRow &row) const;
     bool isRowContentEqual(const MultipleChromatogramAlignmentRowData &rowData) const;
 
+    bool isDefault() const override;
+
     /** Compares 2 rows. Rows are equal if their contents and names are equal. */
     bool operator!=(const MultipleChromatogramAlignmentRowData &mcaRowData) const;
-    bool operator!=(const MultipleAlignmentRowData &maRowData) const;
+    bool operator!=(const MultipleAlignmentRowData &maRowData) const override;
     bool operator==(const MultipleChromatogramAlignmentRowData &mcaRowData) const;
-    bool operator==(const MultipleAlignmentRowData &maRowData) const;
+    bool operator==(const MultipleAlignmentRowData &maRowData) const override;
 
     /**
      * Crops the row -> keeps only specified region in the row.
@@ -322,12 +324,25 @@ inline int MultipleChromatogramAlignmentRowData::getGapsLength() const {
     return MsaRowUtils::getGapsLength(gaps);
 }
 
-inline bool	operator!=(const MultipleChromatogramAlignmentRow &ptr1, const MultipleChromatogramAlignmentRow &ptr2) { return *ptr1 != *ptr2; }
-inline bool	operator!=(const MultipleChromatogramAlignmentRow &ptr1, const MultipleChromatogramAlignmentRowData *ptr2) { return *ptr1 != *ptr2; }
-inline bool	operator!=(const MultipleChromatogramAlignmentRowData *ptr1, const MultipleChromatogramAlignmentRow &ptr2) { return *ptr1 != *ptr2; }
-inline bool	operator==(const MultipleChromatogramAlignmentRow &ptr1, const MultipleChromatogramAlignmentRow &ptr2) { return *ptr1 == *ptr2; }
-inline bool	operator==(const MultipleChromatogramAlignmentRow &ptr1, const MultipleChromatogramAlignmentRowData *ptr2) { return *ptr1 == *ptr2; }
-inline bool	operator==(const MultipleChromatogramAlignmentRowData *ptr1, const MultipleChromatogramAlignmentRow &ptr2) { return *ptr1 == *ptr2; }
+inline bool	operator==(const MultipleChromatogramAlignmentRow &ptr1, const MultipleChromatogramAlignmentRow &ptr2) {
+    return *ptr1 == *ptr2;
+}
+inline bool	operator==(const MultipleChromatogramAlignmentRow &ptr1, const MultipleChromatogramAlignmentRowData *ptr2) {
+    return nullptr == ptr2 ? ptr1->isDefault() : (*ptr1 == *ptr2);
+}
+inline bool	operator==(const MultipleChromatogramAlignmentRowData *ptr1, const MultipleChromatogramAlignmentRow &ptr2) {
+    return nullptr == ptr1 ? ptr2->isDefault() : (*ptr1 == *ptr2);
+}
+inline bool operator!=(const MultipleChromatogramAlignmentRow &ptr1, const MultipleChromatogramAlignmentRow &ptr2) {
+    return !(ptr1 == ptr2);
+}
+inline bool operator!=(const MultipleChromatogramAlignmentRow &ptr1, const MultipleChromatogramAlignmentRowData *ptr2) {
+    return !(ptr1 == ptr2);
+}
+inline bool operator!=(const MultipleChromatogramAlignmentRowData *ptr1, const MultipleChromatogramAlignmentRow &ptr2) {
+    return !(ptr1 == ptr2);
+}
+
 
 }   // namespace U2
 

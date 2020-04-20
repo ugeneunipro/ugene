@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -93,7 +93,7 @@ ExternalToolRunTask* TBlastXPlusSupportTask::createBlastPlusTask(){
     algoLog.trace("TBlastX+ arguments: "+arguments.join(" "));
     QString workingDirectory=QFileInfo(url).absolutePath();
 
-    ExternalToolRunTask* runTask = new ExternalToolRunTask(ET_TBLASTX, arguments, new ExternalToolLogParser(), workingDirectory);
+    ExternalToolRunTask* runTask = new ExternalToolRunTask(BlastPlusSupport::ET_TBLASTX_ID, arguments, new ExternalToolLogParser(), workingDirectory);
     setListenerForTask(runTask);
     return runTask;
 }

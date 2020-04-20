@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -75,6 +75,7 @@ private slots:
     void handleDataChanged(const QModelIndex & topLeft, const QModelIndex & bottomRight);
     void editingLabelFinished();
     void sl_showPropDoc();
+    void sl_changeVisibleParameters(bool);
     void sl_changeVisibleInput(bool);
     void sl_changeVisibleOutput(bool);
     void sl_showDoc(const QString&);

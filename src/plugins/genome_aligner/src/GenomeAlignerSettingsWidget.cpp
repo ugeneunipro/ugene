@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,7 +52,7 @@ GenomeAlignerSettingsWidget::GenomeAlignerSettingsWidget(QWidget* parent) : DnaA
 
     buildIndexFileButton->toggle();
 #ifdef OPENCL_SUPPORT
-    if (AppContext::getOpenCLGpuRegistry()->getEnabledGpus().empty()) {
+    if (AppContext::getOpenCLGpuRegistry()->getEnabledGpu() == nullptr) {
 #endif
         gpuBox->setEnabled(false);
 #ifdef OPENCL_SUPPORT

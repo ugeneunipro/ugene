@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,17 +24,16 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define ET_SAMTOOLS_EXT "SAMtools"
-
-
 namespace U2 {
 
-class SamToolsExtToolSupport : public ExternalTool
-{
+class SamToolsExtToolSupport : public ExternalTool {
     Q_OBJECT
 
 public:
-    SamToolsExtToolSupport(const QString& name, const QString& path = "");
+    SamToolsExtToolSupport(const QString& id, const QString& name, const QString& path = "");
+
+    static const QString ET_SAMTOOLS_EXT;
+    static const QString ET_SAMTOOLS_EXT_ID;
 };
 
 } // namespace

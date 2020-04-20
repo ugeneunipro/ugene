@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -433,7 +433,7 @@ void ClassificationFilterTask::run()
 
     algoLog.trace(QString("Going to filter file: %1").arg(readsUrl));
 
-    dir = GUrlUtils::createDirectory(cfg.workingDir + "filter", "_", stateInfo);
+    dir = GUrlUtils::createDirectory(cfg.workingDir + "Filter", "_", stateInfo);
     CHECK_OP(stateInfo, );
 
     while(reader.hasNext()) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,7 @@ public:
     virtual ~ActorPrototypeRegistry();
 
     // standard registry
-    void registerProto(const Descriptor& group, ActorPrototype* proto);
+    bool registerProto(const Descriptor& group, ActorPrototype* proto);
     ActorPrototype* unregisterProto(const QString& id);
     const QMap<Descriptor, QList<ActorPrototype*> >& getProtos() const {return groups;}
     ActorPrototype* getProto(const QString& id) const;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -64,16 +64,32 @@ private:
 
 
 class FastQCParser : public ExternalToolLogParser {
+    Q_OBJECT
 public:
-    FastQCParser();
+    FastQCParser(const QString& inputFile);
 
-    void parseOutput(const QString& partOfLog);
-    void parseErrOutput(const QString& partOfLog);
-    int getProgress();
+    int getProgress() override;
+
+protected:
+    void processErrLine(const QString &line) override;
+    void setLastError(const QString &value) override;
 
 private:
+    enum ErrorType {
+        Common,
+        Multiline
+    };
+
+    bool isCommonError(const QString& err) const;
+    bool isMultiLineError(const QString& err);
+
+    static const QMap<ErrorType, QString> initWellKnownErrors();
+
     QString lastErrLine;
+    QString inputFile;
     int progress;
+
+    static const QMap<ErrorType, QString> WELL_KNOWN_ERRORS;
 };
 
 }//namespace

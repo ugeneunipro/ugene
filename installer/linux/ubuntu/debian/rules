@@ -62,8 +62,6 @@ install-arch:
     rm debian/ugene-non-free/usr/lib/ugene/plugins/ball.plugin
     rm debian/ugene-non-free/usr/lib/ugene/plugins/biostruct3d_view.license
     rm debian/ugene-non-free/usr/lib/ugene/plugins/biostruct3d_view.plugin
-    rm debian/ugene-non-free/usr/lib/ugene/plugins/browser_support.license
-    rm debian/ugene-non-free/usr/lib/ugene/plugins/browser_support.plugin
     rm debian/ugene-non-free/usr/lib/ugene/plugins/chroma_view.license
     rm debian/ugene-non-free/usr/lib/ugene/plugins/chroma_view.plugin
     rm debian/ugene-non-free/usr/lib/ugene/plugins/circular_view.license

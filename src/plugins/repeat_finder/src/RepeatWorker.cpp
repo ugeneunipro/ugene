@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,17 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Core/AppContext.h>
-#include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNASequence.h>
-#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/FailTask.h>
-#include <U2Core/GObjectReference.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/U2SafePoints.h>
 
 #include <U2Designer/DelegateEditors.h>
 
@@ -38,11 +32,8 @@
 #include <U2Lang/BasePorts.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
-#include <U2Lang/CoreLibConstants.h>
-#include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/WorkflowEnv.h>
 
-#include "FindRepeatsDialog.h"
 #include "RepeatWorker.h"
 
 namespace U2 {
@@ -66,8 +57,21 @@ static const QString USE_MIN_DISTANCE_ATTR("use-mindistance");
 
 const QString RepeatWorkerFactory::ACTOR_ID("repeats-search");
 
+FindRepeatsTaskSettings RepeatWorkerFactory::defaultSettings() {
+    FindRepeatsTaskSettings res;
+    res.minLen = 5;
+    res.setIdentity(100);
+    res.minDist = 0;
+    res.maxDist = 5000;
+    res.inverted = false;
+    res.excludeTandems = false;
+    res.filter = DisjointRepeats;
+    return res;
+}
+
 void RepeatWorkerFactory::init() {
-    QList<PortDescriptor*> p; QList<Attribute*> a;
+    QList<PortDescriptor*> p;
+    QList<Attribute*> a;
 
     {
         Descriptor id(BasePorts::IN_SEQ_PORT_ID(), RepeatWorker::tr("Input sequences"),
@@ -93,41 +97,32 @@ void RepeatWorkerFactory::init() {
         Descriptor thd(THREADS_ATTR, RepeatWorker::tr("Parallel threads"), RepeatWorker::tr("Number of parallel threads used for the task."));
         Descriptor tan(TANMEDS_ATTR, RepeatWorker::tr("Exclude tandems"), RepeatWorker::tr("Exclude tandems areas before find repeat task is run."));
         Descriptor umaxd(USE_MAX_DISTANCE_ATTR, RepeatWorker::tr("Apply 'Max distance' attribute"), RepeatWorker::tr("Apply 'Max distance' attribute."));
-        Descriptor umind(USE_MIN_DISTANCE_ATTR, RepeatWorker::tr("Apply 'Min distance' attribute"), RepeatWorker::tr("Apply 'Max distance' attribute."));
+        Descriptor umind(USE_MIN_DISTANCE_ATTR, RepeatWorker::tr("Apply 'Min distance' attribute"), RepeatWorker::tr("Apply 'Min distance' attribute."));
 
-        FindRepeatsTaskSettings cfg = FindRepeatsDialog::defaultSettings();
+        FindRepeatsTaskSettings cfg = RepeatWorkerFactory::defaultSettings();
         Attribute *aa;
         a << new Attribute(nd, BaseTypes::STRING_TYPE(), true, "repeat_unit");
-        aa = new Attribute(ld, BaseTypes::NUM_TYPE(), false);
-        aa->setAttributeValue(cfg.minLen);
+        aa = new Attribute(ld, BaseTypes::NUM_TYPE(), false, cfg.minLen);
         a << aa;
-        aa = new Attribute(idd, BaseTypes::NUM_TYPE(), false);
-        aa->setAttributeValue(cfg.getIdentity());
+        aa = new Attribute(idd, BaseTypes::NUM_TYPE(), false, cfg.getIdentity());
         a << aa;
         a << new Attribute(umind, BaseTypes::BOOL_TYPE(), false, true);
-        aa = new Attribute(mid, BaseTypes::NUM_TYPE(), false);
-        aa->setAttributeValue(cfg.minDist);
+        aa = new Attribute(mid, BaseTypes::NUM_TYPE(), false, cfg.minDist);
         aa->addRelation(new VisibilityRelation(USE_MIN_DISTANCE_ATTR, true));
         a << aa;
         a << new Attribute(umaxd, BaseTypes::BOOL_TYPE(), false, true);
-        aa = new Attribute(mad, BaseTypes::NUM_TYPE(), false);
-        aa->setAttributeValue(cfg.maxDist);
+        aa = new Attribute(mad, BaseTypes::NUM_TYPE(), false, cfg.maxDist);
         aa->addRelation(new VisibilityRelation(USE_MAX_DISTANCE_ATTR, true));
         a << aa;
-        aa = new Attribute(ind, BaseTypes::BOOL_TYPE(), false);
-        aa->setAttributeValue(cfg.inverted);
+        aa = new Attribute(ind, BaseTypes::BOOL_TYPE(), false, cfg.inverted);
         a << aa;
-        aa = new Attribute(nsd, BaseTypes::NUM_TYPE(), false);
-        aa->setAttributeValue(cfg.filter);
+        aa = new Attribute(nsd, BaseTypes::NUM_TYPE(), false, cfg.filter);
         a << aa;
-        aa = new Attribute(ald, BaseTypes::NUM_TYPE(), false);
-        aa->setAttributeValue(cfg.algo);
+        aa = new Attribute(ald, BaseTypes::NUM_TYPE(), false, cfg.algo);
         a << aa;
-        aa = new Attribute(thd, BaseTypes::NUM_TYPE(), false);
-        aa->setAttributeValue(cfg.nThreads);
+        aa = new Attribute(thd, BaseTypes::NUM_TYPE(), false, cfg.nThreads);
         a << aa;
-        aa = new Attribute(tan, BaseTypes::BOOL_TYPE(), false);
-        aa->setAttributeValue(cfg.excludeTandems);
+        aa = new Attribute(tan, BaseTypes::BOOL_TYPE(), false, cfg.excludeTandems);
         a << aa;
     }
 
@@ -138,36 +133,47 @@ void RepeatWorkerFactory::init() {
     QMap<QString, PropertyDelegate*> delegates;
     delegates[USE_MIN_DISTANCE_ATTR] = new ComboBoxWithBoolsDelegate();
     delegates[USE_MAX_DISTANCE_ATTR] = new ComboBoxWithBoolsDelegate();
-    {
-        QVariantMap m; m["minimum"] = 0; m["maximum"] = INT_MAX; m["suffix"] = L10N::suffixBp();
-        delegates[MIN_DIST_ATTR] = new SpinBoxDelegate(m);
-        m["specialValueText"] = RepeatWorker::tr("Any");
-        delegates[MAX_DIST_ATTR] = new SpinBoxDelegate(m);
-        m["minimum"] = 2;
-        delegates[LEN_ATTR] = new SpinBoxDelegate(m);
-    }
-    {
-        QVariantMap m; m["minimum"] = 50; m["maximum"] = 100; m["suffix"] = "%";
-        delegates[IDENTITY_ATTR] = new SpinBoxDelegate(m);
-    }
-    {
-        QVariantMap m; m["specialValueText"] = "Auto";
-        delegates[THREADS_ATTR] = new SpinBoxDelegate(m);
-    }
-    {
-        QVariantMap m;
-        m["Auto"] = RFAlgorithm_Auto;
-        m["Diagonals"] = RFAlgorithm_Diagonal;
-        m["Suffix index"] = RFAlgorithm_Suffix;
-        delegates[ALGO_ATTR] = new ComboBoxDelegate(m);
-    }
-    {
-        QVariantMap m;
-        m["Disjoint repeats"] = DisjointRepeats;
-        m["No filtering"] = NoFiltering;
-        m["Unique repeats"] = UniqueRepeats;
-        delegates[NESTED_ATTR] = new ComboBoxDelegate(m);
-    }
+
+    QVariantMap minDistProperties;
+    minDistProperties["minimum"] = 0;
+    minDistProperties["maximum"] = INT_MAX;
+    minDistProperties["suffix"] = L10N::suffixBp();
+    delegates[MIN_DIST_ATTR] = new SpinBoxDelegate(minDistProperties);
+
+    QVariantMap maxDistProperties;
+    maxDistProperties["minimum"] = 0;
+    maxDistProperties["maximum"] = INT_MAX;
+    maxDistProperties["suffix"] = L10N::suffixBp();
+    delegates[MAX_DIST_ATTR] = new SpinBoxDelegate(maxDistProperties);
+
+    QVariantMap lengthProperties;
+    lengthProperties["minimum"] = 2;
+    lengthProperties["maximum"] = INT_MAX;
+    lengthProperties["suffix"] = L10N::suffixBp();
+    lengthProperties["specialValueText"] = RepeatWorker::tr("Any");
+    delegates[LEN_ATTR] = new SpinBoxDelegate(lengthProperties);
+
+    QVariantMap identityProperties;
+    identityProperties["minimum"] = 50;
+    identityProperties["maximum"] = 100;
+    identityProperties["suffix"] = "%";
+    delegates[IDENTITY_ATTR] = new SpinBoxDelegate(identityProperties);
+
+    QVariantMap threadProperties;
+    threadProperties["specialValueText"] = "Auto";
+    delegates[THREADS_ATTR] = new SpinBoxDelegate(threadProperties);
+
+    QVariantMap algoProperties;
+    algoProperties["Auto"] = RFAlgorithm_Auto;
+    algoProperties["Diagonals"] = RFAlgorithm_Diagonal;
+    algoProperties["Suffix index"] = RFAlgorithm_Suffix;
+    delegates[ALGO_ATTR] = new ComboBoxDelegate(algoProperties);
+
+    QVariantMap nestedProperties;
+    nestedProperties["Disjoint repeats"] = DisjointRepeats;
+    nestedProperties["No filtering"] = NoFiltering;
+    nestedProperties["Unique repeats"] = UniqueRepeats;
+    delegates[NESTED_ATTR] = new ComboBoxDelegate(nestedProperties);
 
     proto->setPrompter(new RepeatPrompter());
     proto->setEditor(new DelegateEditor(delegates));

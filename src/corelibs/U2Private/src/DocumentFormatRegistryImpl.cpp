@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -64,6 +64,10 @@
 #include "DocumentFormatRegistryImpl.h"
 
 namespace U2 {
+
+DocumentFormatRegistryImpl::~DocumentFormatRegistryImpl() {
+    qDeleteAll(formats);
+}
 
 bool DocumentFormatRegistryImpl::registerFormat(DocumentFormat* f) {
     SAFE_POINT(getFormatById(f->getFormatId()) == NULL, "Existing format", false);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,7 +23,7 @@
 #include <QVBoxLayout>
 
 #include <U2Core/FormatUtils.h>
-#include <U2Core/L10n.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -93,7 +93,7 @@ void CoveredRegionsLabel::setAdditionalText(QString prefix_, QString postfix_) {
 }
 
 void CoveredRegionsLabel::sl_updateContent() {
-    QString text = "<style>a:link { color: " + L10N::linkColorLabelStr() + " }</style>";
+    QString text = "<style>a:link { color: " + Theme::linkColorLabelStr() + " }</style>";
     text += prefix;
 
     QList<CoveredRegion> coveredRegions = browser->getCoveredRegions();
@@ -131,7 +131,7 @@ void CoveredRegionsLabel::sl_updateContent() {
 ////////////////////////////////////
 const QString AssemblyNavigationWidgetFactory::GROUP_ID = "OP_ASS_NAVIGATION";
 const QString AssemblyNavigationWidgetFactory::GROUP_ICON_STR = ":core/images/goto.png";
-const QString AssemblyNavigationWidgetFactory::GROUP_DOC_PAGE = "23331132";
+const QString AssemblyNavigationWidgetFactory::GROUP_DOC_PAGE = "24748911";
 
 AssemblyNavigationWidgetFactory::AssemblyNavigationWidgetFactory() {
     objectViewOfWidget = ObjViewType_AssemblyBrowser;

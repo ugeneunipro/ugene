@@ -5,33 +5,33 @@
     <name>ClarkBuildValidator</name>
     <message>
         <source>Taxonomy classification data from NCBI data are not available.</source>
-        <translation type="unfinished"></translation>
+        <translation>Данные классификации таксономии из данных NCBI не доступны.</translation>
     </message>
     <message>
         <source>Taxonomy classification data from NCBI are not full: file &apos;%1&apos; is missing.</source>
-        <translation type="unfinished"></translation>
+        <translation>Данные классификации таксономии из данных NCBI неполные: файл &apos;%1&apos; отсутствует.</translation>
     </message>
 </context>
 <context>
     <name>ClarkClassifyValidator</name>
     <message>
         <source>The database folder doesn&apos;t exist: %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Папки с базой данных не существует: %1.</translation>
     </message>
     <message>
         <source>The mandatory database file doesn&apos;t exist: %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Обязательный файл базы данных не существует:%1.</translation>
     </message>
     <message>
         <source>Reference database for these CLARK settings is not available. RefSeq data are required to build it.</source>
-        <translation type="unfinished"></translation>
+        <translation>Референсная база данных для настроек CLARK не существует. Данные RefSeq необходимы для ее построения.</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>CLARK external tool support</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Внешний инструмент CLARK</translation>
     </message>
     <message>
         <source>The plugin supports CLARK: fast, accurate and versatile sequence classification system (http://clark.cs.ucr.edu)</source>
@@ -49,11 +49,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>One of the classifiers from the CLARK framework. This tool is created for workstations with limited memory (i.e., “l” for light), it provides precise classification on small metagenomes.&lt;br&gt;&lt;br&gt;Note that a UGENE-customized version of the tool is required.</source>
+        <source>Used to set up metagenomic database for CLARK.&lt;br&gt;&lt;br&gt;Note that a UGENE-customized version of the tool is required.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Used to set up metagenomic database for CLARK.&lt;br&gt;&lt;br&gt;Note that a UGENE-customized version of the tool is required.</source>
+        <source>One of the classifiers from the CLARK framework. This tool is created for workstations with limited memory (i.e., “l” for light), it provides precise classification on small metagenomes.&lt;br&gt;&lt;br&gt;Note that a UGENE-customized version of the tool is required.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -144,6 +144,14 @@ NCBI taxonomy data are used to map the accession number found in each reference 
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Built Clark database</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Taxonomy classification data from NCBI are not available.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Species</source>
         <translation type="unfinished"></translation>
     </message>
@@ -165,14 +173,6 @@ NCBI taxonomy data are used to map the accession number found in each reference 
     </message>
     <message>
         <source>Phylum</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Built Clark database</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Taxonomy classification data from NCBI are not available.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -323,10 +323,6 @@ See also the &quot;Input data&quot; parameter of the element.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&quot;Gap&quot; or number of non-overlapping k-mers to pass when creating the database (-п).&lt;br&gt;&lt;br&gt;Increase the value if it is required to reduce the RAM usage. Note that this will degrade the sensitivity.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Extended output</source>
         <translation type="unfinished"></translation>
     </message>
@@ -359,14 +355,6 @@ See also the &quot;Input data&quot; parameter of the element.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>SE reads or contigs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PE reads</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unrecognized mode of execution, expected any of: 0 (full), 1 (default), 2 (express) or 3 (spectrum)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -374,15 +362,16 @@ See also the &quot;Input data&quot; parameter of the element.</source>
         <source>There were %1 input reads, %2 reads were classified.</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>U2::LocalWorkflow::ClarkLogParser</name>
     <message>
-        <source>There is not enough memory (RAM) to execute CLARK.</source>
+        <source>&quot;Gap&quot; or number of non-overlapping k-mers to pass when creating the database (-п).&lt;br&gt;&lt;br&gt;Increase the value if it is required to reduce the RAM usage. Note that this will degrade the sensitivity.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>CLARK process crashed. It might happened because there is not enough memory (RAM) to complete the CLARK execution.</source>
+        <source>SE reads or contigs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PE reads</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

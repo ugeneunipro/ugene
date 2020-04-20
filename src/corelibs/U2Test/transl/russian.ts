@@ -151,20 +151,16 @@
         <source>Can&apos;t connect external tool manager signal</source>
         <translation>Can&apos;t connect external tool manager signal</translation>
     </message>
-    <message>
-        <source>GUI testing</source>
-        <translation type="vanished">GUI testing</translation>
-    </message>
 </context>
 <context>
     <name>U2::LoadTestTask</name>
     <message>
-        <location filename="../src/TestRunnerTask.cpp" line="197"/>
+        <location filename="../src/TestRunnerTask.cpp" line="201"/>
         <source>TestLoader for %1</source>
         <translation>TestLoader for %1</translation>
     </message>
     <message>
-        <location filename="../src/TestRunnerTask.cpp" line="205"/>
+        <location filename="../src/TestRunnerTask.cpp" line="209"/>
         <source>Cannot open file: %1</source>
         <translation>Не могу открыть файл: &quot;%1&quot;</translation>
     </message>

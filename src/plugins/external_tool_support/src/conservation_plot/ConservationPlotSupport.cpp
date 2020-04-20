@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,8 +29,13 @@
 
 namespace U2 {
 
-ConservationPlotSupport::ConservationPlotSupport(const QString &name)
-: ExternalTool(name)
+const QString ConservationPlotSupport::ET_CONSERVATION_PLOT = "conservation_plot";
+const QString ConservationPlotSupport::ET_CONSERVATION_PLOT_ID = "USUPP_CONSERVATION_PLOT";
+const QString ConservationPlotSupport::CONSERVATION_DIR_NAME = "phastCons";
+const QString ConservationPlotSupport::CONSERVATION_DATA_NAME = "conservation_data";
+
+ConservationPlotSupport::ConservationPlotSupport(const QString& id, const QString &name)
+: ExternalTool(id, name, "")
 {
     initialize();
 }
@@ -47,9 +52,9 @@ void ConservationPlotSupport::initialize() {
 
     executableFileName = "conservation_plot.py";
 
-    toolRunnerProgramm = ET_PYTHON;
-    dependencies << ET_PYTHON
-                 << ET_R;
+    toolRunnerProgram = PythonSupport::ET_PYTHON_ID;
+    dependencies << PythonSupport::ET_PYTHON_ID
+                 << RSupport::ET_R_ID;
 
     validMessage = "conservation_plot.py ";
     validationArguments << "--version";

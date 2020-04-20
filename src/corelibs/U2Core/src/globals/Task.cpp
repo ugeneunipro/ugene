@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -85,9 +85,14 @@ void Task::cancel() {
     stateInfo.cancelFlag = true;
 }
 
-QList<Task*> Task::getSubtasks() const {
+const QList<QPointer<Task> > &Task::getSubtasks() const {
+    return subtasks;
+}
+
+QList<Task *> Task::getPureSubtasks() const {
     QList<Task*> subtasksPointers;
-    foreach(QPointer<Task> subtask, subtasks) {
+    subtasksPointers.reserve(subtasks.size());
+    foreach(const QPointer<Task> &subtask, subtasks) {
         subtasksPointers << subtask.data();
     }
     return subtasksPointers;
@@ -106,8 +111,8 @@ void Task::addSubTask(Task* sub) {
 
 void Task::cleanup()    {
     assert(isFinished());
-    foreach(Task* sub, getSubtasks()) {
-        CHECK_CONTINUE(sub != nullptr);
+    foreach(const QPointer<Task> &sub, getSubtasks()) {
+        CHECK_CONTINUE(!sub.isNull());
 
         sub->cleanup();
     }
@@ -118,16 +123,16 @@ bool Task::propagateSubtaskError() {
         return true;
     }
     Task* badChild = getSubtaskWithErrors();
-    if (badChild) {
-        stateInfo.setError(stateInfo.getError() + badChild->getError());
+    if (nullptr != badChild) {
+        stateInfo.setError(badChild->getError());
     }
     return stateInfo.hasError();
 }
 
 Task* Task::getSubtaskWithErrors() const  {
-    foreach(Task* sub, getSubtasks()) {
+    foreach(const QPointer<Task> &sub, getSubtasks()) {
         if (sub->hasError()) {
-            return sub;
+            return sub.data();
         }
     }
     return NULL;

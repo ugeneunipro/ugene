@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,8 +25,6 @@
 #include <U2Core/ExternalToolRegistry.h>
 #include "utils/ExternalToolSupportAction.h"
 
-#define ET_BLASTDBCMD "BlastDBCmd"
-
 namespace U2 {
 
 class BlastDbCmdSupport : public ExternalTool {
@@ -34,6 +32,8 @@ class BlastDbCmdSupport : public ExternalTool {
 public:
     BlastDbCmdSupport(const QString& path = "");
 
+    static const QString ET_BLASTDBCMD;
+    static const QString ET_BLASTDBCMD_ID;
 public slots:
     void sl_runWithExtFileSpecify();
 };

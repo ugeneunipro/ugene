@@ -2,29 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
-    <name>DistMatrixModel</name>
-    <message>
-        <source>Distance Matrix</source>
-        <translation type="vanished">Матрица расстояний</translation>
-    </message>
-    <message>
-        <source>Distance matrix model</source>
-        <translation type="vanished">Модель для подсчета матрицы</translation>
-    </message>
-    <message>
-        <source>Gamma distributed rates across sites</source>
-        <translation type="vanished">Гамма-распределение скорости замен</translation>
-    </message>
-    <message>
-        <source>Coefficient of variation of substitution rate among sites</source>
-        <translation type="vanished">Коэффициент вариации скорости замен</translation>
-    </message>
-    <message>
-        <source>Transition/transversion ratio</source>
-        <translation type="vanished">Отношение транзиций к трансверсиям</translation>
-    </message>
-</context>
-<context>
     <name>NeighborJoinWidget</name>
     <message>
         <location filename="../src/NeighborJoinWidget.ui" line="51"/>
@@ -88,38 +65,6 @@
     </message>
 </context>
 <context>
-    <name>SeqBootModel</name>
-    <message>
-        <source>Bootstrapping and Consensus Tree</source>
-        <translation type="vanished">Бутстреп-анализ и консенсусное дерево</translation>
-    </message>
-    <message>
-        <source>Number of replicates</source>
-        <translation type="vanished">Количество репликаций</translation>
-    </message>
-    <message>
-        <source>Seed (must be odd)</source>
-        <translation type="vanished">Затравка (должна быть нечетной)</translation>
-    </message>
-    <message>
-        <source>Consensus type</source>
-        <translation type="vanished">Тип консенсуса</translation>
-    </message>
-    <message>
-        <source>Fraction</source>
-        <translation type="vanished">Доля</translation>
-    </message>
-</context>
-<context>
-    <name>U2::DistMatrixModelWidget</name>
-    <message>
-        <source>Probably, for that alignment there is no enough memory to run PHYLIP dnadist module.The module will require more than %1 MB in the estimation.
-It could cause an error. Do you want to continue?</source>
-        <translation type="vanished">Возможно, для этого выравнивания недостаточно памяти для запуска модуля PHYLIP.Это, по предварительной оценке, потребует больше, чем%1 Мб памяти.
-Это может привести к ошибке. Вы хотите продолжить?</translation>
-    </message>
-</context>
-<context>
     <name>U2::NeighborJoinWidget</name>
     <message>
         <location filename="../src/NeighborJoinWidget.cpp" line="147"/>
@@ -166,13 +111,6 @@ It could cause an error. Do you want to continue?</source>
         <location filename="../src/PhylipTask.cpp" line="33"/>
         <source>PHYLIP task</source>
         <translation>PHYLIP task</translation>
-    </message>
-</context>
-<context>
-    <name>U2::SeqBootModelWidget</name>
-    <message>
-        <source>Seed must be odd</source>
-        <translation type="vanished">Затравка должна быть нечетной</translation>
     </message>
 </context>
 </TS>

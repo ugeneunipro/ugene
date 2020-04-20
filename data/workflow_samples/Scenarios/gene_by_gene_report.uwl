@@ -32,59 +32,58 @@ workflow "Gene-by-gene approach for characterization of genomes"{
         name:"Gene-by-gene approach report";
         output-file:report.txt;
     }
-    blast {
-        type:blast;
-        name:"Local BLAST Search";
+    blast-plus {
+        type:blast-plus;
+        name:"Local BLAST+ Search";
     }
-
 
     .actor-bindings {
-        read-sequence.out-sequence->blast.in-sequence
-        blast.out-annotations->genebygene-report-id.in-data
-        blast.out-annotations->write-sequence.in-sequence
+        read-sequence.out-sequence->blast-plus.in-sequence
+        blast-plus.out-annotations->genebygene-report-id.in-data
+        blast-plus.out-annotations->write-sequence.in-sequence
     }
 
-    blast.annotations->write-sequence.in-sequence.annotations
+    blast-plus.annotations->write-sequence.in-sequence.annotations
     read-sequence.annotations->write-sequence.in-sequence.annotations
     read-sequence.sequence->write-sequence.in-sequence.sequence
-    blast.annotations->genebygene-report-id.in-data.gene-ann
+    blast-plus.annotations->genebygene-report-id.in-data.gene-ann
     read-sequence.sequence->genebygene-report-id.in-data.gene-seq
-    read-sequence.sequence->blast.in-sequence.sequence
+    read-sequence.sequence->blast-plus.in-sequence.sequence
 
     .meta {
         visual {
-            blast {
-                pos:"-662 -571";
+            blast-plus {
+                pos:"-615 -555";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 in-sequence.angle:180;
                 out-annotations.angle:360;
             }
             genebygene-report-id {
-                pos:"-349 -570";
+                pos:"-330 -555";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 in-data.angle:180;
             }
             read-sequence {
-                pos:"-840 -571";
+                pos:"-825 -555";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 out-sequence.angle:360;
             }
             write-sequence {
-                pos:"-349 -270";
+                pos:"-330 -255";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 in-sequence.angle:180;
             }
-            blast.out-annotations->genebygene-report-id.in-data {
+            blast-plus.out-annotations->genebygene-report-id.in-data {
                 text-pos:"-33 -24";
             }
-            blast.out-annotations->write-sequence.in-sequence {
+            blast-plus.out-annotations->write-sequence.in-sequence {
                 text-pos:"-33 -24";
             }
-            read-sequence.out-sequence->blast.in-sequence {
+            read-sequence.out-sequence->blast-plus.in-sequence {
                 text-pos:"-27.5 -24";
             }
         }
@@ -105,39 +104,39 @@ workflow "Gene-by-gene approach for characterization of genomes"{
             page {
                 id:2;
                 next:3;
-                title:"BLAST search";
+                title:"BLAST+ search";
                 parameters-area {
                     group {
-                        title:"Local BLAST search parameters";
+                        title:"Local BLAST+ search parameters";
                         label-size:120;
-                        blast.blast-type {
+                        blast-plus.blast-type {
                         }
-                        blast.db-path {
+                        blast-plus.db-path {
                         }
-                        blast.db-name {
+                        blast-plus.db-name {
                         }
-                        blast.e-val {
+                        blast-plus.e-val {
                         }
-                        blast.result-name {
+                        blast-plus.result-name {
                         }
-                        blast.gapped-aln {
+                        blast-plus.gapped-aln {
                         }
-                        blast.tool-path {
+                        blast-plus.tool-path {
                         }
-                        blast.blast-output {
+                        blast-plus.blast-output {
                         }
-                        blast.type-output {
+                        blast-plus.type-output {
                         }
                     }
                     group {
                         title:"Additional";
                         label-size:120;
                         type:hideable;
-                        blast.temp-dir {
+                        blast-plus.temp-dir {
                         }
-                        blast.gap-costs {
+                        blast-plus.gap-costs {
                         }
-                        blast.match-scores {
+                        blast-plus.match-scores {
                         }
                     }
                 }

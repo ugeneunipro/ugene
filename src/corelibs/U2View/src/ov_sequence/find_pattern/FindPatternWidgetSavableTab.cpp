@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,7 +46,7 @@ void FindPatternWidgetSavableTab::setChildValue(const QString &childId, const QV
         int intVal = value.toInt(&ok);
         FindPatternWidget *parentWidget = qobject_cast<FindPatternWidget*>(wrappedWidget);
         SAFE_POINT(parentWidget != NULL, "Wrong casting", )
-        int sequenceLength = parentWidget->getTargetSequnceLength();
+        int sequenceLength = parentWidget->getTargetSequenceLength();
         SAFE_POINT(ok, "Invalid conversion to int", );
         CHECK(regionWidgetIds.size() == 2, );
         if(intVal > sequenceLength){

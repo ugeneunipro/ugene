@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -139,9 +139,9 @@ private:
 
     bool                         automaticUpdating;
 
-    static const QString DataIsOutdatedMessage;
-    static const QString DataIsValidMessage;
-    static const QString DataIsBeingUpdatedMessage;
+    QString DataIsOutdatedMessage;
+    QString DataIsValidMessage;
+    QString DataIsBeingUpdatedMessage;
 };
 } //namespace
 

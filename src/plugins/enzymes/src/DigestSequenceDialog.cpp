@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,9 +28,9 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/Settings.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -59,7 +59,7 @@ DigestSequenceDialog::DigestSequenceDialog(ADVSequenceObjectContext* ctx, QWidge
     : QDialog(p),seqCtx(ctx), timer(NULL), animationCounter(0)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "23331180");
+    new HelpButton(this, buttonBox, "24748959");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -255,7 +255,7 @@ void DigestSequenceDialog::updateAvailableEnzymeWidget()
     bool empty = availableEnzymes.isEmpty();
     setUiEnabled(!empty);
     if (empty) {
-        QString style = "QLabel { color: " + L10N::infoHintColor().name() + "; font: bold; }";
+        QString style = "QLabel { color: " + Theme::infoHintColor().name() + "; font: bold; }";
         hintLabel->setStyleSheet(style);
         hintLabel->setText(HINT_MESSAGE);
     }

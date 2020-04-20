@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,8 +21,6 @@
 
 #ifndef _U2_ANNOTATION_GROUP_TESTS_H_
 #define _U2_ANNOTATION_GROUP_TESTS_H_
-
-#include <core/dbi/DbiTest.h>
 
 #include <unittest.h>
 

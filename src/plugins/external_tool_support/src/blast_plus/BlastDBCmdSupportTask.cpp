@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,8 +47,8 @@ BlastDBCmdSupportTask::BlastDBCmdSupportTask(const BlastDBCmdSupportTaskSettings
         Task("Run NCBI BlastDBCmd task", TaskFlags_NR_FOSCOE),settings(_settings)
 {
     GCOUNTER( cvar, tvar, "BlastDBCmdSupportTask" );
-    blastDBCmdTask=NULL;
-    toolName = ET_BLASTDBCMD;
+    blastDBCmdTask = nullptr;
+    toolId = BlastDbCmdSupport::ET_BLASTDBCMD_ID;
 }
 
 void BlastDBCmdSupportTask::prepare(){
@@ -61,7 +61,7 @@ void BlastDBCmdSupportTask::prepare(){
     arguments << "-logfile" << settings.outputPath+".BlastDBCmd.log";
     arguments << "-out" << settings.outputPath;
 
-    blastDBCmdTask = new ExternalToolRunTask(toolName, arguments, new ExternalToolLogParser());
+    blastDBCmdTask = new ExternalToolRunTask(toolId, arguments, new ExternalToolLogParser());
     blastDBCmdTask->setSubtaskProgressWeight(95);
     addSubTask(blastDBCmdTask);
 }

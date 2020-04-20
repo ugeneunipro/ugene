@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,6 +32,7 @@ SetSequenceOriginDialog::SetSequenceOriginDialog(ADVSequenceWidget* parent ) : Q
     setupUi(this);
     seqOriginBox->setMinimum(1);
     seqOriginBox->setMaximum(seqContext->getSequenceLength());
+    seqOriginBox->selectAll(); // allow user to start typing or copy-paste without cleaning default '1' first.
     const QVector<U2Region>& selectedRegions = seqContext->getSequenceSelection()->getSelectedRegions();
 
     if (selectedRegions.size() > 0) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,10 +28,10 @@
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/FormatUtils.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
+#include <U2Core/Theme.h>
 #include <U2Core/TmpDirChecker.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -57,7 +57,7 @@ ConvertToSQLiteDialog::ConvertToSQLiteDialog(const GUrl& _sourceUrl, BAMInfo& _b
       sourceUrl(_sourceUrl),
       bamInfo(_bamInfo) {
     ui.setupUi(this);
-    new HelpButton(this, ui.buttonBox, "23331107");
+    new HelpButton(this, ui.buttonBox, "24748886");
     ui.buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Import"));
     ui.buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -68,7 +68,7 @@ ConvertToSQLiteDialog::ConvertToSQLiteDialog(const GUrl& _sourceUrl, BAMInfo& _b
     }
     this->setObjectName("Import BAM File");
 
-    const QString warningMessageStyleSheet( "color: " + L10N::successColorLabelStr( )
+    const QString warningMessageStyleSheet( "color: " + Theme::successColorLabelStr()
         + "; font: bold;" );
     ui.indexNotAvailableLabel->setStyleSheet( warningMessageStyleSheet );
     ui.referenceWarningLabel->setStyleSheet( warningMessageStyleSheet );

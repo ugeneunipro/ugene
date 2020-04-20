@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,9 +37,8 @@ namespace U2 {
 
 DbiDocumentFormat::DbiDocumentFormat(const U2DbiFactoryId& _id, const DocumentFormatId& _formatId,
     const QString& _formatName, const QStringList& exts, DocumentFormatFlags flags, QObject* p)
-    : DocumentFormat(p, flags, exts) {
+    : DocumentFormat(p, _formatId, flags, exts) {
     id = _id;
-    formatId = _formatId;
     formatName = _formatName;
     formatDescription = tr("ugenedb is a internal UGENE database file format");
     supportedObjectTypes += GObjectTypes::ASSEMBLY;

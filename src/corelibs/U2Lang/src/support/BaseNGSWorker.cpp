@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -223,15 +223,15 @@ void BaseNGSTask::run(){
     finishStep();
 }
 
-ExternalToolRunTask *BaseNGSTask::getExternalToolTask(const QString &toolName, ExternalToolLogParser *customParser) {
+ExternalToolRunTask *BaseNGSTask::getExternalToolTask(const QString &toolId, ExternalToolLogParser *customParser) {
     const QStringList args = getParameters(stateInfo);
     CHECK_OP(stateInfo, NULL);
 
     ExternalToolRunTask* etTask = NULL;
     if (customParser == NULL) {
-        etTask = new ExternalToolRunTask(toolName, args, new BaseNGSParser(), settings.outDir);
+        etTask = new ExternalToolRunTask(toolId, args, new BaseNGSParser(), settings.outDir);
     } else {
-        etTask = new ExternalToolRunTask(toolName, args, customParser, settings.outDir);
+        etTask = new ExternalToolRunTask(toolId, args, customParser, settings.outDir);
     }
 
     etTask->setStandartOutputFile(settings.outDir + settings.outName);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,6 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AutoAnnotationsSupport.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/ClipboardController.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
@@ -52,7 +51,6 @@
 #include <U2Core/U2SequenceUtils.h>
 
 #include <U2Gui/CreateObjectRelationDialogController.h>
-#include <U2Gui/DialogUtils.h>
 #include <U2Gui/EditSequenceDialogController.h>
 #include <U2Gui/EditSettingsDialog.h>
 #include <U2Gui/GUIUtils.h>
@@ -92,6 +90,7 @@ AnnotatedDNAView::AnnotatedDNAView(const QString& viewName, const QList<U2Sequen
 : GObjectView(AnnotatedDNAViewFactory::ID, viewName)
 {
     timerId = 0;
+    hadExpandableSequenceWidgetsLastResize = false;
 
     annotationSelection = new AnnotationSelection(this);
     annotationGroupSelection = new AnnotationGroupSelection(this);
@@ -220,6 +219,9 @@ QWidget* AnnotatedDNAView::createWidget() {
     annotationsView = new AnnotationsTreeView(this);
     annotationsView->setParent(mainSplitter);
     annotationsView->setObjectName("annotations_tree_view");
+    connect(annotationsView, SIGNAL(si_setCopyQualifierActionStatus(bool, QString)), clipb, SLOT(sl_setCopyQualifierActionStatus(bool, QString)));
+    connect(clipb->getCopyQualifierAction(), SIGNAL(triggered()), annotationsView, SLOT(sl_onCopyQualifierValue()));
+
     for (int i = 0; i < seqContexts.size(); ++i) {
         ADVSequenceObjectContext* seqCtx = seqContexts[i];
         ADVSingleSequenceWidget* block = new ADVSingleSequenceWidget(seqCtx, this);
@@ -325,21 +327,18 @@ void AnnotatedDNAView::updateScrollAreaHeight() {
         return;
     }
 
-    int maxH = 0;
+    int newScrollAreaMaxHeight = 0;
     foreach(ADVSequenceWidget* v, seqViews) {
-        maxH += v->maximumHeight();
+        int widgetMaxHeight = v->maximumHeight();
+        if (widgetMaxHeight == QWIDGETSIZE_MAX) {
+            scrollArea->setMaximumHeight(QWIDGETSIZE_MAX);
+            return;
+        }
+        newScrollAreaMaxHeight += v->maximumHeight();
     }
-
-    if (scrollArea->size().height() >= maxH) {
-        scrollArea->setMaximumHeight(maxH + 2); // magic '+2' is for the borders, without it unneccessary scroll bar will appear
-
-        QList<int> mainSplitterSizes = mainSplitter->sizes();
-        int idx = mainSplitter->indexOf(scrollArea);
-        SAFE_POINT(0 <= idx  && idx < mainSplitterSizes.size(), "Invalid position of the widget in the splitter",);
-        mainSplitterSizes[ mainSplitter->indexOf(scrollArea) ] = maxH;
-        mainSplitter->setSizes(mainSplitterSizes);
-    } else {
-        scrollArea->setMaximumHeight(QWIDGETSIZE_MAX);
+    newScrollAreaMaxHeight += 2;  // magic '+2' is for the borders, without it unneccessary scroll bar will appear
+    if (newScrollAreaMaxHeight <= scrollArea->height()) {
+        scrollArea->setMaximumHeight(newScrollAreaMaxHeight);
     }
 }
 
@@ -377,6 +376,27 @@ bool AnnotatedDNAView::eventFilter(QObject* o, QEvent* e) {
             QMouseEvent* event = dynamic_cast<QMouseEvent*>(e);
             if (event->buttons() == Qt::LeftButton) {
                 finishSeqWidgetMove();
+            }
+        }
+        // try to restore mainSplitter state on sequence views fixed <-> expandable state transition. Usually this happens when user toggles sequence views.
+        if (e->type() == QEvent::Resize) {
+            bool hasExpandableSequenceWidgetsNow = false; // expandable state: any of the sequence view widgets has unlimited height.
+            foreach (const ADVSequenceWidget* w, getSequenceWidgets()){
+                if (w->maximumHeight() == QWIDGETSIZE_MAX) {
+                    hasExpandableSequenceWidgetsNow = true;
+                    break;
+                }
+            }
+            if (hasExpandableSequenceWidgetsNow != hadExpandableSequenceWidgetsLastResize) { // transition from fixed <-> expandable state
+                if (hasExpandableSequenceWidgetsNow) { // try restore state from the saved sizes if possible.
+                    if (savedMainSplitterSizes.size() > 0 && savedMainSplitterSizes.size() == mainSplitter->sizes().size()) {
+                        mainSplitter->setSizes(savedMainSplitterSizes);
+                    }
+                }
+                hadExpandableSequenceWidgetsLastResize = hasExpandableSequenceWidgetsNow;
+            }
+            if (hasExpandableSequenceWidgetsNow) { // update saved sizes for a future use.
+                savedMainSplitterSizes = mainSplitter->sizes();
             }
         }
         return false;
@@ -481,7 +501,10 @@ void AnnotatedDNAView::buildStaticToolbar(QToolBar* tb) {
     tb->addAction(clipb->getCopyTranslationAction());
     tb->addAction(clipb->getCopyComplementTranslationAction());
     tb->addAction(clipb->getCopyAnnotationSequenceAction());
+    tb->addAction(clipb->getCopyComplementAnnotationSequenceAction());
     tb->addAction(clipb->getCopyAnnotationSequenceTranslationAction());
+    tb->addAction(clipb->getCopyComplementAnnotationSequenceTranslationAction());
+    tb->addAction(clipb->getCopyQualifierAction());
     tb->addAction(clipb->getPasteSequenceAction());
     tb->addSeparator();
 
@@ -593,7 +616,7 @@ void AnnotatedDNAView::addEditMenu(QMenu* m) {
     };
     rm->menuAction()->setObjectName(ADV_MENU_EDIT);
 
-    if (annotationSelection->getSelection().size() == 1 && annotationsView->editAction->isEnabled()) {
+    if (annotationSelection->getAnnotations().size() == 1 && annotationsView->editAction->isEnabled()) {
         rm->addAction(annotationsView->editAction);
     }
 
@@ -779,8 +802,8 @@ void AnnotatedDNAView::sl_onContextMenuRequested() {
     addRemoveMenu(&m);
     m.addSeparator()->setObjectName(ADV_MENU_SECTION2_SEP);
 
-    if (annotationSelection->getSelection().size() == 1) {
-        Annotation *a = annotationSelection->getSelection().first().annotation;
+    if (annotationSelection->getAnnotations().size() == 1) {
+        Annotation *a = annotationSelection->getAnnotations().first();
         const SharedAnnotationData &aData = a->getData();
         AnnotationSettingsRegistry *registry = AppContext::getAnnotationsSettingsRegistry();
         AnnotationSettings *as = registry->getAnnotationSettings(aData);
@@ -818,7 +841,7 @@ void AnnotatedDNAView::sl_toggleHL() {
     if (annotationSelection->isEmpty()) {
         return;
     }
-    const Annotation *a = annotationSelection->getSelection().first().annotation;
+    const Annotation *a = annotationSelection->getAnnotations().first();
     AnnotationSettingsRegistry *registry = AppContext::getAnnotationsSettingsRegistry();
     AnnotationSettings *as = registry->getAnnotationSettings(a->getData());
     as->visible = !as->visible;
@@ -925,7 +948,7 @@ void AnnotatedDNAView::sl_onShowPosSelectorRequest() {
 
     QObjectScopedPointer<QDialog> dlg = new QDialog(getWidget());
     dlg->setModal(true);
-    dlg->setWindowTitle(tr("Go To"));
+    dlg->setWindowTitle(tr("Go to Position"));
 
     PositionSelector *ps = new PositionSelector(dlg.data(), 1, seqCtx->getSequenceLength(), true);
     connect(ps, SIGNAL(si_positionChanged(int)), SLOT(sl_onPosChangeRequest(int)));
@@ -1035,8 +1058,8 @@ void AnnotatedDNAView::cancelAutoAnnotationUpdates(AutoAnnotationObject* aa, boo
                 aaUpdateTask->cancel();
                 if(removeTaskExist){
                     *removeTaskExist = false;
-                    foreach(Task* subTask, aaUpdateTask->getSubtasks()){
-                        RemoveAnnotationsTask* rTask = qobject_cast<RemoveAnnotationsTask*> (subTask);
+                    foreach(const QPointer<Task> &subTask, aaUpdateTask->getSubtasks()){
+                        RemoveAnnotationsTask* rTask = qobject_cast<RemoveAnnotationsTask*> (subTask.data());
                         if(rTask && !rTask->isFinished()){*removeTaskExist = true;}
                     }
                 }

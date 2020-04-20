@@ -6,7 +6,6 @@ DEFINES+=U2_DISTRIBUTION_INFO=$${U2_DISTRIBUTION_INFO}
 DEFINES+=UGENE_VERSION=$${UGENE_VERSION}
 DEFINES+=UGENE_VER_MAJOR=$${UGENE_VER_MAJOR}
 DEFINES+=UGENE_VER_MINOR=$${UGENE_VER_MINOR}
-DEFINES+=UGENE_VER_PATCH=$${UGENE_VER_PATCH}
 
 CONFIG += c++11
 
@@ -75,13 +74,11 @@ isEmpty( UGENE_INSTALL_DIR )     : UGENE_INSTALL_DIR     = $$INSTALL_LIBDIR/ugen
 isEmpty( UGENE_INSTALL_BINDIR )  : UGENE_INSTALL_BINDIR  = $$INSTALL_BINDIR
 isEmpty( UGENE_INSTALL_MAN )     : UGENE_INSTALL_MAN     = $$INSTALL_MANDIR/man1
 
-CONFIG(x64) {
+CONFIG(x86) {
+    DEFINES += UGENE_X86
+} else {
     DEFINES += UGENE_X86_64
     win32 : QMAKE_LFLAGS *= /MACHINE:X64
-} else:CONFIG(ppc) {
-    DEFINES += UGENE_PPC
-} else {
-    DEFINES += UGENE_X86
 }
 
 macx : DEFINES += RUN_WORKFLOW_IN_THREADS
@@ -168,16 +165,10 @@ use_bundled_zlib() {
     DEFINES+=UGENE_USE_BUNDLED_ZLIB
 }
 
-# A function to add SQLite library to the list of libraries
+# A function to add zlib library to the list of libraries
 defineReplace(add_z_lib) {
     use_bundled_zlib() {
-        !debug_and_release|build_pass {
-            CONFIG(debug, debug|release) {
-                RES = -lzlibd
-            } else {
-                RES = -lzlib
-            }
-        }
+        RES = -lzlib$$D
     } else {
         RES = -lz
     }
@@ -200,13 +191,7 @@ use_bundled_sqlite() {
 # A function to add SQLite library to the list of libraries
 defineReplace(add_sqlite_lib) {
     use_bundled_sqlite() {
-        !debug_and_release|build_pass {
-            CONFIG(debug, debug|release) {
-                RES = -lugenedbd
-            } else {
-                RES = -lugenedb
-            }
-        }
+        RES = -lugenedb$$D
     } else {
         RES = -lsqlite3
     }
@@ -351,6 +336,6 @@ defineTest(useWebKit) {
     return(false)
 }
 
-if (exclude_list_enabled() | !exists( ./libs_3rdparty/QSpec/QSpec.pro ) | !useWebKit()) {
+if (exclude_list_enabled()) {
     DEFINES += HI_EXCLUDED
 }

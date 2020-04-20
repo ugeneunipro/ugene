@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,6 +27,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/Settings.h>
+#include <U2Core/Theme.h>
 
 #include <U2View/SequenceObjectContext.h>
 
@@ -75,13 +76,10 @@ void SequenceWithChromatogramAreaRenderer::drawReferenceSelection(QPainter &pain
     const U2Region xRange = ui->getBaseWidthController()->getBasesScreenRange(region);
 
     painter.save();
-    // SANGER_TODO: color can be const -- for consensus and here
-    QColor color(Qt::lightGray);
-    color = color.lighter(115);
-    color.setAlpha(127);
+
     painter.fillRect(xRange.startPos, 0,
                xRange.length, seqAreaWgt->height(),
-               color);
+               Theme::selectionBackgroundColor());
     painter.restore();
 }
 
@@ -94,13 +92,13 @@ void SequenceWithChromatogramAreaRenderer::drawNameListSelection(QPainter &paint
     SAFE_POINT(nameList != NULL, "MaEditorNameList is NULL", );
     U2Region selection = nameList->getSelection();
     CHECK(!selection.isEmpty(), );
-    U2Region selectionPxl = ui->getRowHeightController()->getRowsScreenRangeByNumbers(selection);
+    U2Region selectionPxl = ui->getRowHeightController()->getScreenYRegionByViewRowsRegion(selection);
     painter.save();
-    // SANGER_TODO: color can be const -- for consensus and here
-    QColor color(Qt::lightGray);
-    color = color.lighter(115);
-    color.setAlpha(127);
-    painter.fillRect(0, selectionPxl.startPos, seqAreaWgt->width(), selectionPxl.length, color);
+
+    painter.fillRect(0, selectionPxl.startPos,
+                     seqAreaWgt->width(), selectionPxl.length,
+                     Theme::selectionBackgroundColor());
+
     painter.restore();
 }
 
@@ -131,7 +129,7 @@ int SequenceWithChromatogramAreaRenderer::drawRow(QPainter &painter, const Multi
 
     SAFE_POINT(getSeqArea() != NULL, "seqAreaWgt is NULL", -1);
     const int width = getSeqArea()->width();
-    const int seqRowHeight = editor->getUI()->getRowHeightController()->getSequenceHeight();
+    const int seqRowHeight = editor->getUI()->getRowHeightController()->getSingleRowHeight();
     if (editor->isChromVisible(rowIndex)) {
         painter.save();
         painter.translate(0, yStart + seqRowHeight);

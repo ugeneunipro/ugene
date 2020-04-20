@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -99,7 +99,7 @@ void PVRowsManager::addAnnotation(Annotation *a) {
 
     if (rowByName.contains(name)) {
         foreach (PVRowData *row, rowByName[name]) {
-            if (row->fitToRow(location) || isRestrictionSite) {
+            if (row->fitToRow(location)) {
                 row->annotations.append(a);
                 rowByAnnotation[a] = row;
                 if (name != data->name) {

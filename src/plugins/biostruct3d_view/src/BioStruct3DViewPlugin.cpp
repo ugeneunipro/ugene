@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -79,6 +79,7 @@ extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
 }
 
 extern "C" Q_DECL_EXPORT bool U2_PLUGIN_VERIFY_FUNC() {
+    BioStruct3DGLWidget::checkShaderPrograms();
     BioStruct3DGLWidget::tryGL();
     return true;
 }
@@ -93,8 +94,10 @@ BioStruct3DViewPlugin::BioStruct3DViewPlugin()
     : Plugin(tr("3D Structure Viewer"), tr("Visualizes 3D structures of biological molecules."))
 {
     // Init plugin view context
-    viewContext = new BioStruct3DViewContext(this);
-    viewContext->init();
+    if (BioStruct3DGLWidget::checkShaderPrograms()) {
+        viewContext = new BioStruct3DViewContext(this);
+        viewContext->init();
+    }
 }
 
 BioStruct3DViewPlugin::~BioStruct3DViewPlugin()

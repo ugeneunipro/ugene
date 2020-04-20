@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -102,11 +102,10 @@ void SequenceViewAnnotatedRenderer::drawAnnotations(QPainter &p, const QSize &ca
 
 void SequenceViewAnnotatedRenderer::drawAnnotationSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, const AnnotationDisplaySettings& displaySettings) {
     const AnnotationSelection *annSelection = ctx->getAnnotationsSelection();
-    foreach (const AnnotationSelectionData &asd, annSelection->getSelection()) {
-        AnnotationTableObject *o = asd.annotation->getGObject();
+    foreach (Annotation* annotation, annSelection->getAnnotations()) {
+        AnnotationTableObject *o = annotation->getGObject();
         if (ctx->getAnnotationObjects(true).contains(o)) {
-
-            drawAnnotation(p, canvasSize, visibleRange, asd.annotation, displaySettings, U2Region(), true);
+            drawAnnotation(p, canvasSize, visibleRange, annotation, displaySettings, U2Region(), true);
         }
     }
 }

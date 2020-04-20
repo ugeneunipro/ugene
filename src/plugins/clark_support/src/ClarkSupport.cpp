@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,21 @@
 
 namespace U2 {
 
-ClarkSupport::ClarkSupport(const QString& name, const QString& path) : ExternalTool(name, path)
+const QString ClarkSupport::CLARK_GROUP = "CLARK";
+const QString ClarkSupport::ET_CLARK = "CLARK";
+const QString ClarkSupport::ET_CLARK_ID = "USUPP_CLARK";
+const QString ClarkSupport::ET_CLARK_L = "CLARK-l";
+const QString ClarkSupport::ET_CLARK_L_ID = "USUPP_CLARK_L";
+const QString ClarkSupport::ET_CLARK_BUILD_SCRIPT = "builddb.sh";
+const QString ClarkSupport::ET_CLARK_BUILD_SCRIPT_ID = "USUPP_CLARK_BUILD_DB";
+const QString ClarkSupport::ET_CLARK_GET_ACCSSN_TAX_ID = "getAccssnTaxID";
+const QString ClarkSupport::ET_CLARK_GET_ACCSSN_TAX_ID_ID = "USUPP_CLARK_GET_ACCSSN_TAX_ID";
+const QString ClarkSupport::ET_CLARK_GET_TARGETS_DEF = "getTargetsDef";
+const QString ClarkSupport::ET_CLARK_GET_TARGETS_DEF_ID = "USUPP_CLARK_GET_TARGETS_DEF";
+const QString ClarkSupport::ET_CLARK_GET_FILES_TO_TAX_NODES = "getfilesToTaxNodes";
+const QString ClarkSupport::ET_CLARK_GET_FILES_TO_TAX_NODES_ID = "USUPP_CLARK_GET_FILES_TO_TAX_NODES";
+
+ClarkSupport::ClarkSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -63,37 +77,31 @@ ClarkSupport::ClarkSupport(const QString& name, const QString& path) : ExternalT
                           "Note that a UGENE-customized version of the tool is required.");
     }
 
-    if (name == ET_CLARK_buildScript) {
+    if (name == ET_CLARK_BUILD_SCRIPT) {
         validMessage = name;
     }
-
-    connect(this, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_toolValidationStatusChanged(bool)));
 }
 
 void ClarkSupport::registerTools(ExternalToolRegistry *etRegistry)
 {
-    etRegistry->registerEntry(new ClarkSupport(ET_CLARK));
-    etRegistry->registerEntry(new ClarkSupport(ET_CLARK_L));
-    etRegistry->registerEntry(new ClarkSupport(ET_CLARK_getAccssnTaxID));
-    etRegistry->registerEntry(new ClarkSupport(ET_CLARK_getfilesToTaxNodes));
-    etRegistry->registerEntry(new ClarkSupport(ET_CLARK_getTargetsDef));
-    etRegistry->registerEntry(new ClarkSupport(ET_CLARK_buildScript));
+    etRegistry->registerEntry(new ClarkSupport(ET_CLARK_ID, ET_CLARK, ""));
+    etRegistry->registerEntry(new ClarkSupport(ET_CLARK_L_ID, ET_CLARK_L, ""));
+    etRegistry->registerEntry(new ClarkSupport(ET_CLARK_GET_ACCSSN_TAX_ID_ID, ET_CLARK_GET_ACCSSN_TAX_ID, ""));
+    etRegistry->registerEntry(new ClarkSupport(ET_CLARK_GET_FILES_TO_TAX_NODES_ID, ET_CLARK_GET_FILES_TO_TAX_NODES, ""));
+    etRegistry->registerEntry(new ClarkSupport(ET_CLARK_GET_TARGETS_DEF_ID, ET_CLARK_GET_TARGETS_DEF, ""));
+    etRegistry->registerEntry(new ClarkSupport(ET_CLARK_BUILD_SCRIPT_ID, ET_CLARK_BUILD_SCRIPT, ""));
     etRegistry->setToolkitDescription(CLARK_GROUP, tr("CLARK (CLAssifier based on Reduced K-mers) is a tool for supervised sequence classification "
         "based on discriminative k-mers. UGENE provides the GUI for CLARK and CLARK-l variants of the CLARK framework "
                                                       "for solving the problem of the assignment of metagenomic reads to known genomes."));
 }
 
 void ClarkSupport::unregisterTools(ExternalToolRegistry *etRegistry) {
-    etRegistry->unregisterEntry(ET_CLARK);
-    etRegistry->unregisterEntry(ET_CLARK_L);
-    etRegistry->unregisterEntry(ET_CLARK_getAccssnTaxID);
-    etRegistry->unregisterEntry(ET_CLARK_getfilesToTaxNodes);
-    etRegistry->unregisterEntry(ET_CLARK_getTargetsDef);
-    etRegistry->unregisterEntry(ET_CLARK_buildScript);
-}
-
-void ClarkSupport::sl_toolValidationStatusChanged(bool) {
-    ScriptingTool::onPathChanged(this);
+    etRegistry->unregisterEntry(ET_CLARK_ID);
+    etRegistry->unregisterEntry(ET_CLARK_L_ID);
+    etRegistry->unregisterEntry(ET_CLARK_GET_ACCSSN_TAX_ID_ID);
+    etRegistry->unregisterEntry(ET_CLARK_GET_FILES_TO_TAX_NODES_ID);
+    etRegistry->unregisterEntry(ET_CLARK_GET_TARGETS_DEF_ID);
+    etRegistry->unregisterEntry(ET_CLARK_BUILD_SCRIPT_ID);
 }
 
 

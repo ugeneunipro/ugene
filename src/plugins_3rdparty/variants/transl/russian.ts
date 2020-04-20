@@ -4,22 +4,22 @@
 <context>
     <name>U2::LocalWorkflow::CallVariantsPrompter</name>
     <message>
-        <location filename="../src/SamtoolMpileupWorker.cpp" line="690"/>
+        <location filename="../src/SamtoolMpileupWorker.cpp" line="691"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/SamtoolMpileupWorker.cpp" line="698"/>
+        <location filename="../src/SamtoolMpileupWorker.cpp" line="699"/>
         <source>For reference sequence from &lt;u&gt;%1&lt;/u&gt;,</source>
         <translation>Для референсной последовательности из &lt;u&gt;%1&lt;/u&gt;,</translation>
     </message>
     <message>
-        <location filename="../src/SamtoolMpileupWorker.cpp" line="701"/>
+        <location filename="../src/SamtoolMpileupWorker.cpp" line="702"/>
         <source>with assembly data provided by &lt;u&gt;%1&lt;/u&gt;</source>
         <translation>с данными сборки, произведенными &lt;u&gt;%1&lt;/u&gt;</translation>
     </message>
     <message>
-        <location filename="../src/SamtoolMpileupWorker.cpp" line="703"/>
+        <location filename="../src/SamtoolMpileupWorker.cpp" line="704"/>
         <source>%1 call variants %2.</source>
         <translation>%1 вызов вариантов %2.</translation>
     </message>
@@ -132,22 +132,22 @@
     <message>
         <location filename="../src/SamtoolMpileupWorker.cpp" line="190"/>
         <source>Use reference from</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать референс из</translation>
     </message>
     <message>
         <location filename="../src/SamtoolMpileupWorker.cpp" line="191"/>
         <source>&lt;p&gt;Specify &quot;File&quot; to set a single reference sequence for all input NGS assemblies. The reference should be set in the &quot;Reference&quot; parameter.&lt;/p&gt;&lt;p&gt;Specify &quot;Input port&quot; to be able to set different references for difference NGS assemblies. The references should be input via the &quot;Input sequences&quot; port (e.g. use datasets in the &quot;Read Sequence&quot; element).&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Укажите &quot;Файл&quot; с референсной последовательностью для всех входных NGS сборок. Референсная последовательность будет установлена в параметр &quot;Референс&quot;.&lt;/p&gt;&lt;p&gt;Укажите &quot;Входной порт&quot; чтобы иметь возможность указать разные референсные последовательности для разных NGS сборок. Референсные последовательности будут передаваться через входной порт &quot;Входные последовательности&quot; (датасет в элементе &quot;Чтение последовательности&quot;).&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/SamtoolMpileupWorker.cpp" line="197"/>
         <source>Reference</source>
-        <translation type="unfinished"></translation>
+        <translation>Референс</translation>
     </message>
     <message>
         <location filename="../src/SamtoolMpileupWorker.cpp" line="198"/>
         <source>&lt;p&gt;Specify a file with the reference sequence.&lt;/p&gt;&lt;p&gt;The sequence will be used as reference for all datasets with NGS assemblies.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Укажите файл с референсной последовательностью.&lt;/p&gt;&lt;p&gt;Последовательность будет использована в качестве референса для всех входных NGS сборок.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/SamtoolMpileupWorker.cpp" line="202"/>
@@ -450,10 +450,6 @@
         <translation>включить поиск вариаций в парах или трио образцов. Для работы с трио необходимо также применить опцию -s для настройки входящих в трио образцов и порядка их сортировки. В файле, переданном опции -s, первому образцу должны соответствовать данные для ребенка, второму - для отца, третьему - для матери. Корректными значениями этого параметра являются &apos;pair&apos;, &apos;trioauto&apos;, &apos;trioxd&apos; и &apos;trioxs&apos;, где &apos;pair&apos; позволяет найти различия между двумя образцами, а &apos;trioxd&apos; или &apos;trioxs&apos; указывает на то, что на вход поданы данные для X - хромосомы за вычетом псевдоаутосомного участка, а ребенок женского (мужского) пола. Соответствует опции bcftools view -T.</translation>
     </message>
     <message>
-        <source>Enable pair/trio calling. For trio calling, option -s is usually needed to be applied to configure the trio members and their ordering. In the file supplied to the option -s, the first sample must be the child, the second the father and the third the mother. The valid values of STR are &apos;ÂpairÂ&apos;, &apos;ÂtrioautoÂ&apos;, &apos;ÂtrioxdÂ&apos; and &apos;ÂtrioxsÂ&apos;, where &apos;ÂpairÂ&apos; calls differences between two input samples, and &apos;ÂtrioxdÂ&apos; (&apos;ÂtrioxsÂ&apos;)specifies that the input is from the X chromosome non-PAR regions and the child is a female (male) (bcf view)(-T).</source>
-        <translation type="vanished">Позволен двойной/тройной вызов (-T).</translation>
-    </message>
-    <message>
         <location filename="../src/SamtoolMpileupWorker.cpp" line="337"/>
         <source>N group-1 samples</source>
         <translation>Число образцов в группе 1</translation>
@@ -606,35 +602,35 @@
     <message>
         <location filename="../src/SamtoolMpileupWorker.cpp" line="658"/>
         <source>Input port</source>
-        <translation type="unfinished"></translation>
+        <translation>Входной порт</translation>
     </message>
     <message>
         <location filename="../src/SamtoolMpileupWorker.cpp" line="659"/>
         <source>File</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../src/SamtoolMpileupWorker.cpp" line="842"/>
+        <location filename="../src/SamtoolMpileupWorker.cpp" line="843"/>
         <source>Assembly URL slot is empty. Please, specify the URL slot</source>
         <translation>Assembly URL slot is empty. Please, specify the URL slot</translation>
     </message>
     <message>
-        <location filename="../src/SamtoolMpileupWorker.cpp" line="867"/>
+        <location filename="../src/SamtoolMpileupWorker.cpp" line="868"/>
         <source>Ref sequence URL slot is empty. Please, specify the URL slot</source>
         <translation>Ref sequence URL slot is empty. Please, specify the URL slot</translation>
     </message>
     <message>
-        <location filename="../src/SamtoolMpileupWorker.cpp" line="946"/>
+        <location filename="../src/SamtoolMpileupWorker.cpp" line="947"/>
         <source>Not enough references</source>
         <translation>Not enough references</translation>
     </message>
     <message>
-        <location filename="../src/SamtoolMpileupWorker.cpp" line="951"/>
+        <location filename="../src/SamtoolMpileupWorker.cpp" line="952"/>
         <source>The dataset slot is not binded, only the first reference sequence against all assemblies was processed.</source>
         <translation>The dataset slot is not binded, only the first reference sequence against all assemblies was processed.</translation>
     </message>
     <message>
-        <location filename="../src/SamtoolMpileupWorker.cpp" line="954"/>
+        <location filename="../src/SamtoolMpileupWorker.cpp" line="955"/>
         <source>Not enough assemblies</source>
         <translation>Not enough assemblies</translation>
     </message>
@@ -642,42 +638,42 @@
 <context>
     <name>U2::LocalWorkflow::SamtoolsMpileupTask</name>
     <message>
-        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="162"/>
+        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="167"/>
         <source>Samtool mpileup for %1 </source>
         <translation>Samtool mpileup для %1 </translation>
     </message>
     <message>
-        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="169"/>
+        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="174"/>
         <source>No reference sequence URL to do pileup</source>
         <translation>No reference sequence URL to do pileup</translation>
     </message>
     <message>
-        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="174"/>
+        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="179"/>
         <source>No assembly URL to do pileup</source>
         <translation>No assembly URL to do pileup</translation>
     </message>
     <message>
-        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="180"/>
+        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="185"/>
         <source>There is an assembly with an empty path</source>
         <translation>There is an assembly with an empty path</translation>
     </message>
     <message>
-        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="189"/>
+        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="194"/>
         <source>Can not create the folder: </source>
         <translation>Can not create the folder: </translation>
     </message>
     <message>
-        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="244"/>
+        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="249"/>
         <source>Can not run %1 tool</source>
         <translation>Can not run %1 tool</translation>
     </message>
     <message>
-        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="250"/>
+        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="255"/>
         <source>%1 tool exited with code %2</source>
         <translation>%1 tool exited with code %2</translation>
     </message>
     <message>
-        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="252"/>
+        <location filename="../src/AssemblySamtoolsMpileup.cpp" line="257"/>
         <source>Tool %1 finished successfully</source>
         <translation>Tool %1 finished successfully</translation>
     </message>

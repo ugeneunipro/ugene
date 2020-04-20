@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,7 +49,6 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, G
     initRenderer();
 
     setObjectName("mca_editor_sequence_area");
-    connect(ui, SIGNAL(si_clearSelection()), SLOT(sl_cancelSelection()));
 
     // TEST - remove the variable after fix
     editingEnabled = true;
@@ -189,19 +188,16 @@ QAction *McaEditorSequenceArea::getTrimRightEndAction() const {
     return trimRightEndAction;
 }
 
-void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel, bool newHighlightSelection) {
-    if (sel.height() > 1 || sel.width() > 1) {
-        // ignore multi-selection
-        return;
-    }
-
-    if (getEditor()->getMaObject()->getMca()->isTrailingOrLeadingGap(sel.y(), sel.x())) {
-        // clear selection
+void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel) {
+    // Its only possible to select 1 character (width = 1) or multiple rows with no character (width = 0).
+    CHECK((sel.width() == 1 && sel.height() == 1) || sel.width() == 0,);
+    if (sel.width() == 1 && getEditor()->getMaObject()->getMca()->isTrailingOrLeadingGap(sel.y(), sel.x())) {
+        // clear selection if gap is clicked
         emit si_clearReferenceSelection();
-        MaEditorSequenceArea::setSelection(MaEditorSelection(), newHighlightSelection);
+        MaEditorSequenceArea::setSelection(MaEditorSelection());
         return;
     }
-    MaEditorSequenceArea::setSelection(sel, newHighlightSelection);
+    MaEditorSequenceArea::setSelection(sel);
 }
 
 void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
@@ -215,8 +211,8 @@ void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
     int nextRowToSelect = selection.y() + dy;
     if (dy != 0) {
         bool noRowAvailabe = true;
-        for ( ; nextRowToSelect >= 0 && nextRowToSelect < ui->getCollapseModel()->getDisplayableRowsCount(); nextRowToSelect += dy) {
-            if (!mca->isTrailingOrLeadingGap(ui->getCollapseModel()->mapToRow(nextRowToSelect), selection.x() + dx)) {
+        for ( ; nextRowToSelect >= 0 && nextRowToSelect < ui->getCollapseModel()->getViewRowCount(); nextRowToSelect += dy) {
+            if (!mca->isTrailingOrLeadingGap(ui->getCollapseModel()->getMaRowIndexByViewRowIndex(nextRowToSelect), selection.x() + dx)) {
                 noRowAvailabe  = false;
                 break;
             }
@@ -227,6 +223,8 @@ void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
     QPoint newSelectedPoint(selection.x() + dx, nextRowToSelect);
     MaEditorSelection newSelection(newSelectedPoint, selection.width(), selection.height());
     setSelection(newSelection);
+    const QPoint& cursorPosition = editor->getCursorPosition();
+    editor->setCursorPosition(QPoint(cursorPosition.x() + dx, nextRowToSelect));
     ui->getScrollController()->scrollToMovedSelection(dx, dy);
 }
 
@@ -300,7 +298,6 @@ void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView * /*v*/, QToolBar 
 void McaEditorSequenceArea::sl_addInsertion() {
     maMode = InsertCharMode;
     editModeAnimationTimer.start(500);
-    highlightCurrentSelection();
     sl_updateActions();
 }
 
@@ -336,9 +333,9 @@ void McaEditorSequenceArea::sl_updateActions() {
 
     const bool readOnly = maObj->isStateLocked();
     const bool canEditAlignment = !readOnly && !isAlignmentEmpty();
-    const bool canEditSelectedArea = canEditAlignment && !selection.isNull();
+    const bool canEditSelectedArea = canEditAlignment && !selection.isEmpty();
     const bool isEditing = (maMode != ViewMode);
-    const bool isSingleSymbolSelected = (selection.getRect().size() == QSize(1, 1));
+    const bool isSingleSymbolSelected = (selection.width() == 1 && selection.height() == 1);
     const bool hasGapBeforeSelection = (!selection.isEmpty() && selection.x() > 0 && maObj->getMultipleAlignment()->isGap(selection.y(), selection.x() - 1));
 
     ui->getDelSelectionAction()->setEnabled(canEditSelectedArea);
@@ -352,8 +349,10 @@ void McaEditorSequenceArea::sl_updateActions() {
 
 void McaEditorSequenceArea::trimRowEnd(MultipleChromatogramAlignmentObject::TrimEdge edge) {
     MultipleChromatogramAlignmentObject* mcaObj = getEditor()->getMaObject();
-    U2Region reg = getSelectedRows();
-    SAFE_POINT(!reg.isEmpty() && reg.length == 1, "Incorrect selection", )
+    QList<int> maRows = getSelectedMaRowIndexes();
+    SAFE_POINT(!maRows.isEmpty() && maRows.size() == 1, "Incorrect selection", )
+    int maRowIndex = maRows[0];
+
     U2OpStatus2Log os;
     U2UseCommonUserModStep userModStep(mcaObj->getEntityRef(), os);
     Q_UNUSED(userModStep);
@@ -362,9 +361,8 @@ void McaEditorSequenceArea::trimRowEnd(MultipleChromatogramAlignmentObject::Trim
     SAFE_POINT(!getSelection().isEmpty(), "selection is empty", );
     int currentPos = getSelection().x();
 
-    mcaObj->trimRow(reg.startPos, currentPos, os, edge);
+    mcaObj->trimRow(maRowIndex, currentPos, os, edge);
     CHECK_OP(os, );
-
 }
 
 void McaEditorSequenceArea::updateTrimActions(bool isEnabled) {
@@ -372,10 +370,10 @@ void McaEditorSequenceArea::updateTrimActions(bool isEnabled) {
     trimRightEndAction->setEnabled(isEnabled);
 
     CHECK(isEnabled, );
-    CHECK(!getSelection().isEmpty(), );
+    int maRowIndex = getTopSelectedMaRow();
+    CHECK(maRowIndex >= 0,);
 
-    U2Region reg = getSelectedRows();
-    MultipleAlignmentRow row = editor->getMaObject()->getRow(reg.startPos);
+    MultipleAlignmentRow row = editor->getMaObject()->getRow(maRowIndex);
     int start = row->getCoreStart();
     int end = row->getCoreEnd();
     int currentSelection = getSelection().x();
@@ -416,7 +414,7 @@ QAction* McaEditorSequenceArea::createToggleTraceAction(const QString& actionNam
 void McaEditorSequenceArea::insertChar(char newCharacter) {
     CHECK(maMode == InsertCharMode, );
     CHECK(getEditor() != NULL, );
-    CHECK(!selection.isNull(), );
+    CHECK(!selection.isEmpty(), );
 
     assert(isInRange(selection.topLeft()));
     assert(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)));
@@ -463,6 +461,23 @@ const QString &McaEditorSequenceArea::getInacceptableCharacterErrorMessage() con
 
 McaEditorWgt *McaEditorSequenceArea::getMcaEditorWgt() const {
     return qobject_cast<McaEditorWgt *>(ui);
+}
+
+void McaEditorSequenceArea::updateCollapseModel(const MaModificationInfo& modInfo) {
+    if (!modInfo.rowListChanged) {
+        return;
+    }
+    MultipleAlignmentObject* maObject = getEditor()->getMaObject();
+    MaCollapseModel* collapseModel = ui->getCollapseModel();
+    QSet<int> expandedGroupIndexes;
+    for (int i = 0, n = collapseModel->getGroupCount(); i < n; i++) {
+        const MaCollapsibleGroup* group = collapseModel->getCollapsibleGroup(i);
+        if (!group->isCollapsed) {
+            qint64 rowId = group->maRowIds[0];
+            expandedGroupIndexes << maObject->getRowPosById(rowId);
+        }
+    }
+    collapseModel->reset(getEditor()->getMaRowIds(), expandedGroupIndexes);
 }
 
 } // namespace

@@ -84,7 +84,6 @@ copy %U_ROOT%\data\manuals\*.pdf %OUTPUT_DIR%\data\manuals\
 REM copy libs
 call %INSTALL_DIR%\copy_lib.cmd ugenedb
 call %INSTALL_DIR%\copy_lib.cmd breakpad
-call %INSTALL_DIR%\copy_lib.cmd humimit
 call %INSTALL_DIR%\copy_lib.cmd U2Algorithm
 call %INSTALL_DIR%\copy_lib.cmd U2Core
 call %INSTALL_DIR%\copy_lib.cmd U2Designer
@@ -100,7 +99,6 @@ REM copy plugins
 call %INSTALL_DIR%\copy_plugin.cmd annotator
 call %INSTALL_DIR%\copy_plugin.cmd ball
 call %INSTALL_DIR%\copy_plugin.cmd biostruct3d_view
-call %INSTALL_DIR%\copy_plugin.cmd browser_support
 call %INSTALL_DIR%\copy_plugin.cmd chroma_view
 call %INSTALL_DIR%\copy_plugin.cmd circular_view
 call %INSTALL_DIR%\copy_plugin.cmd clark_support

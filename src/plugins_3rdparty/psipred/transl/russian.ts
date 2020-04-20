@@ -2,17 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
-    <name>SecStructPredictTask</name>
-    <message>
-        <source>psipred: sequence is too long, max seq size is 10000</source>
-        <translation type="vanished">Sequence is too long: maximum allowed length is 10000</translation>
-    </message>
-    <message>
-        <source>psipred: sequence is too short, min seq size is 5</source>
-        <translation type="vanished">Sequence is too short: minimum allowed length is 5</translation>
-    </message>
-</context>
-<context>
     <name>U2::PsipredPlugin</name>
     <message>
         <location filename="../src/PsipredPlugin.cpp" line="58"/>

@@ -21,6 +21,9 @@
 
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
+#include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
+#include <primitives/GTMainWindow.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTToolbar.h>
@@ -32,6 +35,7 @@
 #include <QApplication>
 #include <QDir>
 #include <QFileInfo>
+#include <QMdiArea>
 #include <QTemporaryDir>
 
 #include <U2Core/AppContext.h>
@@ -42,6 +46,7 @@
 #include "GTUtilsDashboard.h"
 #include "GTUtilsExternalTools.h"
 #include "GTUtilsLog.h"
+#include "GTUtilsMdi.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
@@ -217,6 +222,13 @@ private:
 void setWorkflowOutputDir(GUITestOpStatus &os, const QString &path) {
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new SetWorkflowOutputDirScenario(path)));
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...");
+}
+
+QString getQuotedString(const QString& string) {
+    if (string.contains(QRegularExpression("\\s"))) {
+        return "\"" + string + "\"";
+    }
+    return string;
 }
 
 }
@@ -1111,7 +1123,8 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0003) {
 
     const QString clustaloRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(os, clustaloRunCommandNodeId, 0);
     nodeText = GTUtilsDashboard::getNodeText(os, clustaloRunCommandContentNodeId);
-    const QString expectedNodeTextPart = QString("\"%1\" ").arg(toolPath);
+
+    const QString expectedNodeTextPart = getQuotedString(toolPath) + " ";
     CHECK_SET_ERR(nodeText.startsWith(expectedNodeTextPart),
                   QString("Tool run command doesn't start with the following expected part: '%1'. Full command: '%2'")
                   .arg(expectedNodeTextPart).arg(nodeText));
@@ -1243,7 +1256,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0005) {
 
     const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(os, cutadaptRunCommandNodeId, 0);
     nodeText = GTUtilsDashboard::getNodeText(os, cutadaptRunCommandContentNodeId);
-    const QString expectedNodeTextPart = QString("\"%1\" ").arg(pythonToolPath);
+    const QString expectedNodeTextPart = getQuotedString(pythonToolPath) + " ";
     CHECK_SET_ERR(nodeText.startsWith(expectedNodeTextPart),
                   QString("Tool run command doesn't start with the following expected part: '%1'. Full command: '%2'")
                   .arg(expectedNodeTextPart).arg(nodeText));
@@ -1303,7 +1316,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0006) {
 
     const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(os, cutadaptRunCommandNodeId, 0);
     nodeText = GTUtilsDashboard::getNodeText(os, cutadaptRunCommandContentNodeId);
-    const QString expectedNodeTextPart = QString("\"%1\" ").arg(cutadaptToolPath);
+    const QString expectedNodeTextPart = getQuotedString(cutadaptToolPath) + " ";
     CHECK_SET_ERR(nodeText.contains(expectedNodeTextPart),
                   QString("Tool run command doesn't contain the following expected part: '%1'. Full command: '%2'")
                   .arg(expectedNodeTextPart).arg(nodeText));
@@ -1378,7 +1391,7 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0007) {
 
     const QString cutadaptRunCommandContentNodeId = GTUtilsDashboard::getChildNodeId(os, cutadaptRunCommandNodeId, 0);
     nodeText = GTUtilsDashboard::getNodeText(os, cutadaptRunCommandContentNodeId);
-    const QString expectedNodeTextPart = QString("\"%1\" \"%2\" ").arg(pythonToolPath).arg(cutadaptToolPath);
+    const QString expectedNodeTextPart = getQuotedString(pythonToolPath) + " " + getQuotedString(cutadaptToolPath) + " ";
     CHECK_SET_ERR(nodeText.startsWith(expectedNodeTextPart),
                   QString("Tool run command doesn't start with the following expected part: '%1'. Full command: '%2'")
                   .arg(expectedNodeTextPart).arg(nodeText));
@@ -2344,10 +2357,10 @@ GUI_TEST_CLASS_DEFINITION(tool_launch_nodes_test_0017) {
 
 GUI_TEST_CLASS_DEFINITION(view_opening_test_0001) {
 //    1. Set "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output" as workflow output folder in the "Application Settings".
-    const QString originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output";
-    const QString testWorkflowOutputDir = sandBoxDir + "empty_workflow_output";
-    GTFile::copyDir(os, originalWorkflowOutputDir, testWorkflowOutputDir);
-    setWorkflowOutputDir(os, testWorkflowOutputDir);
+    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output";
+    const QFileInfo testWorkflowOutputDir = sandBoxDir + "empty_workflow_output";
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
 
 //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2377,10 +2390,10 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0001) {
 
 GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
 //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards" as workflow output folder in the "Application Settings".
-    const QString originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards";
-    const QString testWorkflowOutputDir = sandBoxDir + "two_visible_dashboards";
-    GTFile::copyDir(os, originalWorkflowOutputDir, testWorkflowOutputDir);
-    setWorkflowOutputDir(os, testWorkflowOutputDir);
+    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards";
+    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_dashboards";
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
 
 //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2501,10 +2514,10 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
 
 GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
 //    1. Set "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible" as workflow output folder in the "Application Settings".
-    const QString originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible";
-    const QString testWorkflowOutputDir = sandBoxDir + "one_visible_one_invisible";
-    GTFile::copyDir(os, originalWorkflowOutputDir, testWorkflowOutputDir);
-    setWorkflowOutputDir(os, testWorkflowOutputDir);
+    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible";
+    const QFileInfo testWorkflowOutputDir = sandBoxDir + "one_visible_one_invisible";
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
 
 //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2625,10 +2638,10 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
 
 GUI_TEST_CLASS_DEFINITION(view_opening_test_0004) {
 //    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards" as workflow output folder in the "Application Settings".
-    const QString originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards";
-    const QString testWorkflowOutputDir = sandBoxDir + "two_invisible_dashboards";
-    GTFile::copyDir(os, originalWorkflowOutputDir, testWorkflowOutputDir);
-    setWorkflowOutputDir(os, testWorkflowOutputDir);
+    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards";
+    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_invisible_dashboards";
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
 
 //    2. Wait for scan task finish.
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2687,6 +2700,1967 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0004) {
 
     GTGlobals::sleep();
 }
+
+GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
+//    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
+    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
+    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+
+//    2. Wait for scan task finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    3. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    int tabIndex1 = GTUtilsMdi::getCurrentTab(os);
+
+//    4. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    int tabIndex2 = GTUtilsMdi::getCurrentTab(os);
+
+//    5. Click to the "Go to Dashboards" button on the toolbar.
+    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
+                                                     "Show dashboard"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+    GTWidget::click(os, viewSwitchButton);
+
+//    6. Set "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output" as workflow output folder in the "Application Settings".
+    const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output";
+    const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "empty_workflow_output";
+    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
+
+//    7. Wait for scan task finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected result:
+//        - The Workflow Designer switches to the scene view mode.
+//        - There is no scene/dashboards switch button on the toolbar.
+//        - The "Dashboards manager" button on the toolbar is active.
+    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+    QWidget *viewSwitchButton2 = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
+    CHECK_SET_ERR(nullptr == viewSwitchButton2 ||
+                  !viewSwitchButton2->isVisible(), "'Go to Dashboards' is visible");
+
+//    8. Click to the "Dashboards manager" button on the toolbar.
+//    Expected result: the "Dashboards Manager" dialog appears. It contains the following text: "You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."
+//    9. Close the messagebox.
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."));
+    GTWidget::click(os, dashboardsManagerButton);
+
+//    10. Switch to another Workflow Designer.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex1)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(os, tabIndex1);
+
+//    Expected result:
+//      - The Workflow Designer is in the scene view mode.
+//      - There is no scene/dashboards switch button on the toolbar.
+//      - The "Dashboards manager" button on the toolbar is active.
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+    viewSwitchButton2 = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
+    CHECK_SET_ERR(nullptr == viewSwitchButton2 ||
+                  !viewSwitchButton2->isVisible(), "'Go to Dashboards' is visible");
+
+//    11. Click to the "Dashboards manager" button on the toolbar.
+//    Expected result: a messagebox appears. It contains the following text: "You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."
+//    12. Close the messagebox.
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."));
+    GTWidget::click(os, dashboardsManagerButton);
+
+    GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
+//    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
+    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
+    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+
+//    2. Wait for scan task finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    3. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    int tabIndex1 = GTUtilsMdi::getCurrentTab(os);
+
+//    4. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    int tabIndex2 = GTUtilsMdi::getCurrentTab(os);
+
+//    5. Click to the "Go to Dashboards" button on the toolbar.
+    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
+                                                     "Show dashboard"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+    GTWidget::click(os, viewSwitchButton);
+
+//    6. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards" as workflow output folder in the "Application Settings".
+    const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards";
+    const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "two_visible_dashboards";
+    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
+
+//    7. Wait for scan task finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected result:
+//    - The Workflow Designer is in the dashboards view mode.
+//    - There are two tabs with dashboards. Their names are "Extract consensus as sequence 1" and "Extract consensus as sequence 2".
+//    - The "Extract consensus as sequence 2" dashboard is active.
+//    - The dashboard is correctly displayed.
+//    - The "Dashboards manager" button on the toolbar is active.
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+
+    QString expectedButtonText = "To Workflow Designer";
+    QString actualButtonText = viewSwitchButton->text();
+    CHECK_SET_ERR(expectedButtonText == actualButtonText,
+                  QString("View switch button has an unexpected text: expected '%1', got '%2'")
+                  .arg(expectedButtonText).arg(actualButtonText));
+
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
+    QTabWidget *dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+
+    const int expectedTabsCount = 2;
+    const int actualTabsCount = dashboardsView->count();
+    CHECK_SET_ERR(expectedTabsCount == actualTabsCount,
+                  QString("There is an incorrect count of tabs in the Dashboard View: expected %1, got %2")
+                  .arg(expectedTabsCount).arg(actualTabsCount));
+
+    const int expectedActiveTabIndex = 1;
+    const int actualActiveTabIndex = dashboardsView->currentIndex();
+    CHECK_SET_ERR(expectedActiveTabIndex == actualActiveTabIndex,
+                  QString("There is an incorrect active tab: expected index is %1, actual index is %2")
+                  .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
+
+    const QString expectedTabName = "Extract consensus as sequence 2";
+    const QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    CHECK_SET_ERR(expectedTabName == actualTabName,
+                  QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
+                  .arg(expectedTabName).arg(actualTabName));
+
+    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
+
+    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+//    8. Click to the "Dashboards manager" button on the toolbar.
+//    Expected result: the "Dashboards Manager" dialog appears. It contains two items, both of them are checked. Their names are "Extract consensus as sequence 1" and "Extract consensus as sequence 2".
+//    9. Close the messagebox.
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
+
+            const QList<QPair<QString, bool> > expectedDashboardsState( { qMakePair(QString("Extract consensus as sequence 1"), true),
+                                                                          qMakePair(QString("Extract consensus as sequence 2"), true) } );
+            const QList<QPair<QString, bool> > actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
+
+            CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
+                          QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")
+                          .arg(expectedDashboardsState.size()).arg(actualDashboardsState.size()));
+
+            for (int i = 0; i < expectedDashboardsState.size(); ++i) {
+                const QString expectedDashboardName = expectedDashboardsState[i].first;
+                const QString actualDashboardName = actualDashboardsState[i].first;
+                CHECK_SET_ERR(expectedDashboardName == actualDashboardName,
+                              QString("Dashboard number %1 has an unexpected name: expected '%2', got '%3'")
+                              .arg(i).arg(expectedDashboardName).arg(actualDashboardName));
+
+                const bool expectedDashboardState = expectedDashboardsState[i].second;
+                const bool actualDashboardState = actualDashboardsState[i].second;
+                CHECK_SET_ERR(expectedDashboardState == actualDashboardState,
+                              QString("Dashboard number %1 has an unexpected state: it should be %2, but it is '%3'")
+                              .arg(i).arg(expectedDashboardState ? "visible" : "invisible").arg(actualDashboardState ? "visible" : "invisible"));
+            }
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
+    GTWidget::click(os, dashboardsManagerButton);
+
+//    10. Switch to another Workflow Designer.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex1)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(os, tabIndex1);
+
+//    Expected result:
+//      - The Workflow Designer is in the scene view mode.
+//      - The "Dashboards manager" button on the toolbar is active.
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+    QWidget *viewSwitchButton2 = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show dashboard");
+    CHECK_SET_ERR(nullptr != viewSwitchButton2 &&
+                  viewSwitchButton2->isVisible(), "'Go to Dashboards' is invisible");
+
+//    11. Click to the "Dashboards manager" button on the toolbar.
+//    12. Cancel the dialog
+//    Expected result:
+//    - There are two tabs with dashboards. Their names are "Extract consensus as sequence 1" and "Extract consensus as sequence 2".
+//    - The "Extract consensus as sequence 2" dashboard is active.
+//    - The dashboard is correctly displayed.
+    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
+    GTWidget::click(os, dashboardsManagerButton);
+
+//    13. Click to the "Go to Dashboards" button on the toolbar.
+//    Expected result:
+//    - There are two tabs with dashboards. Their names are "Extract consensus as sequence 1" and "Extract consensus as sequence 2".
+//    - The "Extract consensus as sequence 2" dashboard is active.
+//    - The dashboard is correctly displayed.
+    viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
+                                                     "Show dashboard"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+    GTWidget::click(os, viewSwitchButton);
+
+    dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+
+    const int expectedTabsCount2 = 2;
+    const int actualTabsCount2 = dashboardsView->count();
+    CHECK_SET_ERR(expectedTabsCount2 == actualTabsCount2,
+                  QString("There is an incorrect count of tabs in the Dashboard View: expected %1, got %2")
+                  .arg(expectedTabsCount2).arg(actualTabsCount2));
+
+    const int expectedActiveTabIndex2 = 1;
+    const int actualActiveTabIndex2 = dashboardsView->currentIndex();
+    CHECK_SET_ERR(expectedActiveTabIndex2 == actualActiveTabIndex2,
+                  QString("There is an incorrect active tab: expected index is %1, actual index is %2")
+                  .arg(expectedActiveTabIndex2).arg(actualActiveTabIndex2));
+
+    const QString expectedTabName2 = "Extract consensus as sequence 2";
+    const QString actualTabName2 = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex2);
+    CHECK_SET_ERR(expectedTabName2 == actualTabName2,
+                  QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
+                  .arg(expectedTabName2).arg(actualTabName2));
+
+    const QStringList outputFiles2 = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles2.isEmpty(), "Active dashboard is not displayed properly");
+
+    GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
+//    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
+    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
+    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+
+//    2. Wait for scan task finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    3. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    int tabIndex1 = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    4. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    int tabIndex2 = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    5. Click to the "Go to Dashboards" button on the toolbar.
+    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
+                                                     "Show dashboard"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+    GTWidget::click(os, viewSwitchButton);
+
+//    6. Set "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible" as workflow output folder in the "Application Settings".
+    const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible";
+    const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "one_visible_one_invisible";
+    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
+
+//    7. Wait for scan task finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected result:
+//    - The Workflow Designer is in the dashboards view mode.
+//    - There is one tab with a dashboard. Its name is "Extract consensus as sequence 2".
+//    - The "Extract consensus as sequence 2" dashboard is active.
+//    - The dashboard is correctly displayed.
+//    - The "Dashboards manager" button on the toolbar is active.
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+
+    QString expectedButtonText = "To Workflow Designer";
+    QString actualButtonText = viewSwitchButton->text();
+    CHECK_SET_ERR(expectedButtonText == actualButtonText,
+                  QString("View switch button has an unexpected text: expected '%1', got '%2'")
+                  .arg(expectedButtonText).arg(actualButtonText));
+
+    QTabWidget *dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+
+    const int expectedTabsCount = 1;
+    const int actualTabsCount = dashboardsView->count();
+    CHECK_SET_ERR(expectedTabsCount == actualTabsCount,
+                  QString("There is an incorrect count of tabs in the Dashboard View: expected %1, got %2")
+                  .arg(expectedTabsCount).arg(actualTabsCount));
+
+    const int expectedActiveTabIndex = 0;
+    const int actualActiveTabIndex = dashboardsView->currentIndex();
+    CHECK_SET_ERR(expectedActiveTabIndex == actualActiveTabIndex,
+                  QString("There is an incorrect active tab: expected index is %1, actual index is %2")
+                  .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
+
+    const QString expectedTabName = "Extract consensus as sequence 2";
+    const QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    CHECK_SET_ERR(expectedTabName == actualTabName,
+                  QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
+                  .arg(expectedTabName).arg(actualTabName));
+
+    const QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
+
+    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+//    8. Click to the "Dashboards manager" button on the toolbar.
+//    Expected result: the "Dashboards Manager" dialog appears. It contains two items, both of them are checked. Their names are "Extract consensus as sequence 1" and "Extract consensus as sequence 2".
+//    9. Close the messagebox.
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
+
+            const QList<QPair<QString, bool> > expectedDashboardsState( { qMakePair(QString("Extract consensus as sequence 1"), false),
+                                                                          qMakePair(QString("Extract consensus as sequence 2"), true) } );
+            const QList<QPair<QString, bool> > actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
+
+            CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
+                          QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")
+                          .arg(expectedDashboardsState.size()).arg(actualDashboardsState.size()));
+
+            for (int i = 0; i < expectedDashboardsState.size(); ++i) {
+                const QString expectedDashboardName = expectedDashboardsState[i].first;
+                const QString actualDashboardName = actualDashboardsState[i].first;
+                CHECK_SET_ERR(expectedDashboardName == actualDashboardName,
+                              QString("Dashboard number %1 has an unexpected name: expected '%2', got '%3'")
+                              .arg(i).arg(expectedDashboardName).arg(actualDashboardName));
+
+                const bool expectedDashboardState = expectedDashboardsState[i].second;
+                const bool actualDashboardState = actualDashboardsState[i].second;
+                CHECK_SET_ERR(expectedDashboardState == actualDashboardState,
+                              QString("Dashboard number %1 has an unexpected state: it should be %2, but it is '%3'")
+                              .arg(i).arg(expectedDashboardState ? "visible" : "invisible").arg(actualDashboardState ? "visible" : "invisible"));
+            }
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
+    GTWidget::click(os, dashboardsManagerButton);
+
+//    10. Switch to another Workflow Designer.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex1)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(os, tabIndex1);
+
+//    Expected result:
+//      - The Workflow Designer is in the scene view mode.
+//      - The "Dashboards manager" button on the toolbar is active.
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+//    11. Click to the "Dashboards manager" button on the toolbar.
+//    12. Cancel the dialog
+//    Expected result:
+//    - There are two tabs with dashboards. Their names are "Extract consensus as sequence 1" and "Extract consensus as sequence 2".
+//    - The "Extract consensus as sequence 2" dashboard is active.
+//    - The dashboard is correctly displayed.
+    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
+    GTWidget::click(os, dashboardsManagerButton);
+
+//    13. Click to the "Go to Dashboards" button on the toolbar.
+//    Expected result:
+//    - There is one tab with a dashboard. Its name is "Extract consensus as sequence 2".
+//    - The "Extract consensus as sequence 2" dashboard is active.
+//    - The dashboard is correctly displayed.
+    viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
+                                                     "Show dashboard"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+    GTWidget::click(os, viewSwitchButton);
+
+    dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+
+    const int expectedTabsCount2 = 1;
+    const int actualTabsCount2 = dashboardsView->count();
+    CHECK_SET_ERR(expectedTabsCount2 == actualTabsCount2,
+                  QString("There is an incorrect count of tabs in the Dashboard View: expected %1, got %2")
+                  .arg(expectedTabsCount2).arg(actualTabsCount2));
+
+    const int expectedActiveTabIndex2 = 0;
+    const int actualActiveTabIndex2 = dashboardsView->currentIndex();
+    CHECK_SET_ERR(expectedActiveTabIndex2 == actualActiveTabIndex2,
+                  QString("There is an incorrect active tab: expected index is %1, actual index is %2")
+                  .arg(expectedActiveTabIndex2).arg(actualActiveTabIndex2));
+
+    const QString expectedTabName2 = "Extract consensus as sequence 2";
+    const QString actualTabName2 = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex2);
+    CHECK_SET_ERR(expectedTabName2 == actualTabName2,
+                  QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
+                  .arg(expectedTabName2).arg(actualTabName2));
+
+    const QStringList outputFiles2 = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles2.isEmpty(), "Active dashboard is not displayed properly");
+
+    GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
+//    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
+    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
+    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+
+//    2. Wait for scan task finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    3. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    int tabIndex1 = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    4. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    int tabIndex2 = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    5. Click to the "Go to Dashboards" button on the toolbar.
+    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
+                                                     "Show dashboard"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+    GTWidget::click(os, viewSwitchButton);
+
+//    6. Set "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards" as workflow output folder in the "Application Settings".
+    const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards";
+    const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "two_invisible_dashboards";
+    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
+
+//    7. Wait for scan task finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    Expected result:
+//    - The Workflow Designer is in the scene view mode.
+//    - There is no scene/dashboards switch button on the toolbar.
+//    - The "Dashboards manager" button on the toolbar is active.
+    CHECK_SET_ERR(!viewSwitchButton->isVisible(), "View switch button is unexpectedly visible");
+
+    QTabWidget *dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+
+    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+//    8. Click to the "Dashboards manager" button on the toolbar.
+//    Expected result: the "Dashboards Manager" dialog appears. It contains two items, both of them are unchecked. Their names are "Extract consensus as sequence 1" and "Extract consensus as sequence 2".
+//    9. Close the messagebox.
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
+
+            const QList<QPair<QString, bool> > expectedDashboardsState( { qMakePair(QString("Extract consensus as sequence 1"), false),
+                                                                          qMakePair(QString("Extract consensus as sequence 2"), false) } );
+            const QList<QPair<QString, bool> > actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
+
+            CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
+                          QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")
+                          .arg(expectedDashboardsState.size()).arg(actualDashboardsState.size()));
+
+            for (int i = 0; i < expectedDashboardsState.size(); ++i) {
+                const QString expectedDashboardName = expectedDashboardsState[i].first;
+                const QString actualDashboardName = actualDashboardsState[i].first;
+                CHECK_SET_ERR(expectedDashboardName == actualDashboardName,
+                              QString("Dashboard number %1 has an unexpected name: expected '%2', got '%3'")
+                              .arg(i).arg(expectedDashboardName).arg(actualDashboardName));
+
+                const bool expectedDashboardState = expectedDashboardsState[i].second;
+                const bool actualDashboardState = actualDashboardsState[i].second;
+                CHECK_SET_ERR(expectedDashboardState == actualDashboardState,
+                              QString("Dashboard number %1 has an unexpected state: it should be %2, but it is '%3'")
+                              .arg(i).arg(expectedDashboardState ? "visible" : "invisible").arg(actualDashboardState ? "visible" : "invisible"));
+            }
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
+    GTWidget::click(os, dashboardsManagerButton);
+
+//    10. Switch to another Workflow Designer.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex1)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(os, tabIndex1);
+
+//    Expected result:
+//      - The Workflow Designer is in the scene view mode.
+//      - There is no scene/dashboards switch button on the toolbar.
+//      - The "Dashboards manager" button on the toolbar is active.
+    viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
+                                                     "Show dashboard"));
+    CHECK_SET_ERR(nullptr == viewSwitchButton
+                  || !viewSwitchButton->isVisible(), "View switch button is unexpectedly visible");
+
+    QTabWidget *dashboardsView2 = GTUtilsDashboard::getTabWidget(os);
+    CHECK_SET_ERR(nullptr != dashboardsView2, "Dashboards view is nullptr");
+
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+//    11. Click to the "Dashboards manager" button on the toolbar.
+//    12. Cancel the dialog
+//    Expected result:
+//    Expected result: the "Dashboards Manager" dialog appears. It contains two items, both of them are unchecked. Their names are "Extract consensus as sequence 1" and "Extract consensus as sequence 2".
+    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
+    GTWidget::click(os, dashboardsManagerButton);
+
+    GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005_1) {
+//    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
+    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
+    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+
+//    2. Wait for scan task finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    3. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    int tabIndex1 = GTUtilsMdi::getCurrentTab(os);
+
+//    4. Open "Align sequence with MUSCLE" sample.
+    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+
+//    5. Cancel the wizard.
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+//    6. Click to the "Read alignment" element.
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::click();
+
+//    7. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/200_sequences.aln");
+
+//    8. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    int tabIndex2 = GTUtilsMdi::getCurrentTab(os);
+
+//    9. Open "Align sequence with MUSCLE" sample.
+    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+
+//    10. Cancel the wizard.
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+//    11. Click to the "Read alignment" element.
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::click();
+
+//    12. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/200_sequences.aln");
+
+//    13. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    int tabIndex3 = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    14. Click to the "Go to Dashboards" button on the toolbar.
+    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
+                                                     "Show dashboard"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+    GTWidget::click(os, viewSwitchButton);
+
+//    15. Switch to first Workflow Designer.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex1)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(os, tabIndex1);
+
+//    16. Launch the workflow. Do not wait for the task finish.
+    coreLog.info("Try to start workflow #1");
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    coreLog.info("It seems that workflow was started");
+
+//    17. Switch to the second Workflow Designer.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex2)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex2)));
+    GTUtilsMdi::clickTab(os, tabIndex2);
+
+//    18. Launch the workflow. Do not wait for the task finish.
+    coreLog.info("Try to start workflow #2");
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    coreLog.info("It seems that workflow was started");
+
+    GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
+//    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
+    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
+    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+
+//    2. Wait for scan task finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    3. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    int tabIndex1 = GTUtilsMdi::getCurrentTab(os);
+
+//    4. Open "Align sequence with MUSCLE" sample.
+    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+
+//    5. Cancel the wizard.
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+//    6. Click to the "Read alignment" element.
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::click();
+
+//    7. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/200_sequences.aln");
+
+//    8. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    int tabIndex2 = GTUtilsMdi::getCurrentTab(os);
+
+//    9. Open "Align sequence with MUSCLE" sample.
+    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+
+//    10. Cancel the wizard.
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+//    11. Click to the "Read alignment" element.
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::click();
+
+//    12. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/200_sequences.aln");
+
+//    13. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    int tabIndex3 = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    14. Click to the "Go to Dashboards" button on the toolbar.
+    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
+                                                     "Show dashboard"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+    GTWidget::click(os, viewSwitchButton);
+
+//    15. Switch to first Workflow Designer.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex1)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(os, tabIndex1);
+
+//    16. Launch the workflow. Do not wait for the task finish.
+    coreLog.info("Try to start workflow #1");
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    coreLog.info("It seems that workflow was started");
+
+//    17. Switch to the second Workflow Designer.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex2)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex2)));
+    GTUtilsMdi::clickTab(os, tabIndex2);
+
+//    18. Launch the workflow. Do not wait for the task finish.
+    coreLog.info("Try to start workflow #2");
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    coreLog.info("It seems that workflow was started");
+
+//    19. Set "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output" as workflow output folder in the "Application Settings".
+    const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/empty_workflow_output";
+    const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "empty_workflow_output";
+    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
+
+//    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
+//        Expected result:
+//          - The Workflow Designer is in the dashboards view mode.
+//          - There are two dashboard tabs. Their names are "Align sequence with MUSCLE 2" and "Align sequence with MUSCLE 1".
+//          - The "Align sequence with MUSCLE 2" dashboard is active.
+//          - The "Dashboards manager" button on the toolbar is active.
+    GTUtilsTaskTreeView::waitTaskFinished(os, 600000);
+
+    viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os,
+                                                                           MWTOOLBAR_ACTIVEMDI),
+                                                     "Show workflow"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+
+    QString expectedButtonText = "To Workflow Designer";
+    QString actualButtonText = viewSwitchButton->text();
+    CHECK_SET_ERR(expectedButtonText == actualButtonText,
+                  QString("View switch button has an unexpected text: expected '%1', got '%2'")
+                  .arg(expectedButtonText).arg(actualButtonText));
+
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
+    QTabWidget *dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+
+    int expectedTabsCount = 2;
+    int actualTabsCount = dashboardsView->count();
+    CHECK_SET_ERR(expectedTabsCount == actualTabsCount,
+                  QString("There is an incorrect count of tabs in the Dashboard View: expected %1, got %2")
+                  .arg(expectedTabsCount).arg(actualTabsCount));
+
+    int expectedActiveTabIndex = 0;
+    int actualActiveTabIndex = dashboardsView->currentIndex();
+    CHECK_SET_ERR(expectedActiveTabIndex == actualActiveTabIndex,
+                  QString("There is an incorrect active tab: expected index is %1, actual index is %2")
+                  .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
+
+    QString expectedTabName = "Align sequences with MUSCLE 2";
+    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    CHECK_SET_ERR(expectedTabName == actualTabName,
+                  QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
+                  .arg(expectedTabName).arg(actualTabName));
+
+    QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
+
+    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+//    21. Click to the "Dashboards manager" button on the toolbar.
+//    Expected result: the "Dashboards Manager" dialog appears. It contains two items, both of them are checked. Their names are "Align sequence with MUSCLE 1" and "Align sequence with MUSCLE 2".
+//    22. Cancel the dialog
+    class Scenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
+
+            const QList<QPair<QString, bool> > expectedDashboardsState( { qMakePair(QString("Align sequences with MUSCLE 1"), true),
+                                                                          qMakePair(QString("Align sequences with MUSCLE 2"), true) } );
+            const QList<QPair<QString, bool> > actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
+
+            CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
+                          QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")
+                          .arg(expectedDashboardsState.size()).arg(actualDashboardsState.size()));
+
+            for (int i = 0; i < expectedDashboardsState.size(); ++i) {
+                const QString expectedDashboardName = expectedDashboardsState[i].first;
+                const QString actualDashboardName = actualDashboardsState[i].first;
+                CHECK_SET_ERR(expectedDashboardName == actualDashboardName,
+                              QString("Dashboard number %1 has an unexpected name: expected '%2', got '%3'")
+                              .arg(i).arg(expectedDashboardName).arg(actualDashboardName));
+
+                const bool expectedDashboardState = expectedDashboardsState[i].second;
+                const bool actualDashboardState = actualDashboardsState[i].second;
+                CHECK_SET_ERR(expectedDashboardState == actualDashboardState,
+                              QString("Dashboard number %1 has an unexpected state: it should be %2, but it is '%3'")
+                              .arg(i).arg(expectedDashboardState ? "visible" : "invisible").arg(actualDashboardState ? "visible" : "invisible"));
+            }
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
+    GTWidget::click(os, dashboardsManagerButton);
+
+//    23. Switch to the first Workflow Designer.
+//    Expected result:
+//     - The Workflow Designer is in the dashboards view mode.
+//     - There are two dashboard tabs. Their names are "Align sequence with MUSCLE 1" and "Align sequence with MUSCLE 2".
+//     - The "Align sequence with MUSCLE 1" dashboard is active.
+//     - The "Dashboards manager" button on the toolbar is active.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex1)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(os, tabIndex1);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os,
+                                                                           MWTOOLBAR_ACTIVEMDI),
+                                                     "Show workflow"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+
+    expectedButtonText = "To Workflow Designer";
+    actualButtonText = viewSwitchButton->text();
+    CHECK_SET_ERR(expectedButtonText == actualButtonText,
+                  QString("View switch button has an unexpected text: expected '%1', got '%2'")
+                  .arg(expectedButtonText).arg(actualButtonText));
+
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
+    dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+
+    expectedTabsCount = 2;
+    actualTabsCount = dashboardsView->count();
+    CHECK_SET_ERR(expectedTabsCount == actualTabsCount,
+                  QString("There is an incorrect count of tabs in the Dashboard View: expected %1, got %2")
+                  .arg(expectedTabsCount).arg(actualTabsCount));
+
+    expectedActiveTabIndex = 0;
+    actualActiveTabIndex = dashboardsView->currentIndex();
+    CHECK_SET_ERR(expectedActiveTabIndex == actualActiveTabIndex,
+                  QString("There is an incorrect active tab: expected index is %1, actual index is %2")
+                  .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
+
+    expectedTabName = "Align sequences with MUSCLE 1";
+    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    CHECK_SET_ERR(expectedTabName == actualTabName,
+                  QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
+                  .arg(expectedTabName).arg(actualTabName));
+
+    outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
+
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+//    24. Click to the "Dashboards manager" button on the toolbar.
+//    Expected result:
+//     - the "Dashboards Manager" dialog appears.
+//       It contains two items, both of them are checked.
+//       Their names are "Align sequence with MUSCLE 1" and "Align sequence with MUSCLE 2".
+//    25. Cancel the dialog
+    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
+    GTWidget::click(os, dashboardsManagerButton);
+
+//    26. Switch to the third Workflow Designer.
+//    Expected result:
+//     - The Workflow Designer is in the scene view mode.
+//     - The "Dashboards manager" button on the toolbar is active.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex3)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex3)));
+    GTUtilsMdi::clickTab(os, tabIndex3);
+
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+    viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
+                                                     "Show dashboard"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton &&
+                  viewSwitchButton->isVisible(), "'Go to Dashboards' is invisible");
+
+//    27. Click to the "Dashboards manager" button on the toolbar.
+//    Expected result:
+//     - the "Dashboards Manager" dialog appears.
+//     - It contains two items, both of them are checked.
+//     - Their names are "Align sequence with MUSCLE 1" and "Align sequence with MUSCLE 2".
+//    28. Cancel the dialog.
+    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
+    GTWidget::click(os, dashboardsManagerButton);
+
+//    29. Click to the "Go to Dashboards" button on the toolbar.
+//    Expected result:
+//     - There are two dashboard tabs.
+//       Their names are "Align sequence with MUSCLE 1" and "Align sequence with MUSCLE 2" (warning: two last tabs can be swapped,
+//       it depends on the task finish order, it is a correct situation).
+//     - The first dashboard is active.
+    viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
+                                                     "Show dashboard"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+    GTWidget::click(os, viewSwitchButton);
+
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
+    dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+
+    expectedTabsCount = 2;
+    actualTabsCount = dashboardsView->count();
+    CHECK_SET_ERR(expectedTabsCount == actualTabsCount,
+                  QString("There is an incorrect count of tabs in the Dashboard View: expected %1, got %2")
+                  .arg(expectedTabsCount).arg(actualTabsCount));
+
+    expectedActiveTabIndex = 0;
+    actualActiveTabIndex = dashboardsView->currentIndex();
+    CHECK_SET_ERR(expectedActiveTabIndex == actualActiveTabIndex,
+                  QString("There is an incorrect active tab: expected index is %1, actual index is %2")
+                  .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
+
+    expectedTabName = "Align sequences with MUSCLE 1";
+    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    CHECK_SET_ERR(expectedTabName == actualTabName,
+                  QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
+                  .arg(expectedTabName).arg(actualTabName));
+
+    GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
+//    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
+    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
+    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+
+//    2. Wait for scan task finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    3. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    int tabIndex1 = GTUtilsMdi::getCurrentTab(os);
+
+//    4. Open "Align sequence with MUSCLE" sample.
+    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+
+//    5. Cancel the wizard.
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+//    6. Click to the "Read alignment" element.
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::click();
+
+//    7. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/200_sequences.aln");
+
+//    8. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    int tabIndex2 = GTUtilsMdi::getCurrentTab(os);
+
+//    9. Open "Align sequence with MUSCLE" sample.
+    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+
+//    10. Cancel the wizard.
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+//    11. Click to the "Read alignment" element.
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::click();
+
+//    12. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/200_sequences.aln");
+
+//    13. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    int tabIndex3 = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    14. Click to the "Go to Dashboards" button on the toolbar.
+    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
+                                                     "Show dashboard"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+    GTWidget::click(os, viewSwitchButton);
+
+//    15. Switch to first Workflow Designer.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex1)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(os, tabIndex1);
+
+//    16. Launch the workflow. Do not wait for the task finish.
+    coreLog.info("Try to start workflow #1");
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    coreLog.info("It seems that workflow was started");
+
+//    17. Switch to the second Workflow Designer.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex2)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex2)));
+    GTUtilsMdi::clickTab(os, tabIndex2);
+
+//    18. Launch the workflow. Do not wait for the task finish.
+    coreLog.info("Try to start workflow #2");
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    coreLog.info("It seems that workflow was started");
+
+//    19. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards" as workflow output folder in the "Application Settings".
+    const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_dashboards";
+    const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "two_visible_dashboards";
+    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
+
+//    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
+//        Expected result:
+//          - The Workflow Designer is in the dashboards view mode.
+//          - There are 4 dashboard tabs.
+//            Their names are "Align sequence with MUSCLE 2",
+//                            "Extract consensus as sequence 1",
+//                            "Extract consensus as sequence 2",
+//                            "Align sequence with MUSCLE 1".
+//          - The "Align sequence with MUSCLE 2" dashboard is active.
+//          - The "Dashboards manager" button on the toolbar is active.
+    GTUtilsTaskTreeView::waitTaskFinished(os, 600000);
+
+    viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os,
+                                                                           MWTOOLBAR_ACTIVEMDI),
+                                                     "Show workflow"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+
+    QString expectedButtonText = "To Workflow Designer";
+    QString actualButtonText = viewSwitchButton->text();
+    CHECK_SET_ERR(expectedButtonText == actualButtonText,
+                  QString("View switch button has an unexpected text: expected '%1', got '%2'")
+                  .arg(expectedButtonText).arg(actualButtonText));
+
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
+    QTabWidget *dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+
+    int expectedTabsCount = 4;
+    int actualTabsCount = dashboardsView->count();
+    CHECK_SET_ERR(expectedTabsCount == actualTabsCount,
+                  QString("There is an incorrect count of tabs in the Dashboard View: expected %1, got %2")
+                  .arg(expectedTabsCount).arg(actualTabsCount));
+
+    int expectedActiveTabIndex = 0;
+    int actualActiveTabIndex = dashboardsView->currentIndex();
+    CHECK_SET_ERR(expectedActiveTabIndex == actualActiveTabIndex,
+                  QString("There is an incorrect active tab: expected index is %1, actual index is %2")
+                  .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
+
+    QString expectedTabName = "Align sequences with MUSCLE 2";
+    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    CHECK_SET_ERR(expectedTabName == actualTabName,
+                  QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
+                  .arg(expectedTabName).arg(actualTabName));
+
+    QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
+
+    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+//    21. Click to the "Dashboards manager" button on the toolbar.
+//    Expected result: the "Dashboards Manager" dialog appears. It contains four items, all of them are checked. Their names are "Extract consensus as sequence 1", "Extract consensus as sequence 2", "Align sequence with MUSCLE 1", "Align sequence with MUSCLE 2".
+//    22. Cancel the dialog
+    class Scenario : public CustomScenario {
+    public:
+        static bool sorting(const QPair<QString, bool>& e1, const QPair<QString, bool>& e2) {
+            if (e1.first < e2.first) return true;
+            return false;
+        }
+
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
+
+            QList<QPair<QString, bool> > expectedDashboardsState({
+                                                                           qMakePair(QString("Align sequences with MUSCLE 1"), true),
+                                                                           qMakePair(QString("Align sequences with MUSCLE 2"), true),
+                                                                           qMakePair(QString("Extract consensus as sequence 1"), true),
+                                                                           qMakePair(QString("Extract consensus as sequence 2"), true)
+                                                                       });
+            qSort(expectedDashboardsState.begin(), expectedDashboardsState.end(), sorting);
+
+            QList<QPair<QString, bool> > actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
+            qSort(actualDashboardsState.begin(), actualDashboardsState.end(), sorting);
+
+            CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
+                          QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")
+                          .arg(expectedDashboardsState.size()).arg(actualDashboardsState.size()));
+
+            for (int i = 0; i < expectedDashboardsState.size(); ++i) {
+                const QString expectedDashboardName = expectedDashboardsState[i].first;
+                const QString actualDashboardName = actualDashboardsState[i].first;
+                CHECK_SET_ERR(expectedDashboardName == actualDashboardName,
+                              QString("Dashboard number %1 has an unexpected name: expected '%2', got '%3'")
+                              .arg(i).arg(expectedDashboardName).arg(actualDashboardName));
+
+                const bool expectedDashboardState = expectedDashboardsState[i].second;
+                const bool actualDashboardState = actualDashboardsState[i].second;
+                CHECK_SET_ERR(expectedDashboardState == actualDashboardState,
+                              QString("Dashboard number %1 has an unexpected state: it should be %2, but it is '%3'")
+                              .arg(i).arg(expectedDashboardState ? "visible" : "invisible").arg(actualDashboardState ? "visible" : "invisible"));
+            }
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
+    GTWidget::click(os, dashboardsManagerButton);
+
+//    23. Switch to the first Workflow Designer.
+//    Expected result:
+//     - The Workflow Designer is in the dashboards view mode.
+//     - There are four dashboard tabs. Their names are "Align sequence with MUSCLE 1", "Extract consensus as sequence 1", "Extract consensus as sequence 2", "Align sequence with MUSCLE 2".
+//     - The "Align sequence with MUSCLE 1" dashboard is active.
+//     - The "Dashboards manager" button on the toolbar is active.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex1)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(os, tabIndex1);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os,
+                                                                           MWTOOLBAR_ACTIVEMDI),
+                                                     "Show workflow"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+
+    expectedButtonText = "To Workflow Designer";
+    actualButtonText = viewSwitchButton->text();
+    CHECK_SET_ERR(expectedButtonText == actualButtonText,
+                  QString("View switch button has an unexpected text: expected '%1', got '%2'")
+                  .arg(expectedButtonText).arg(actualButtonText));
+
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
+    dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+
+    expectedTabsCount = 4;
+    actualTabsCount = dashboardsView->count();
+    CHECK_SET_ERR(expectedTabsCount == actualTabsCount,
+                  QString("There is an incorrect count of tabs in the Dashboard View: expected %1, got %2")
+                  .arg(expectedTabsCount).arg(actualTabsCount));
+
+    expectedActiveTabIndex = 0;
+    actualActiveTabIndex = dashboardsView->currentIndex();
+    CHECK_SET_ERR(expectedActiveTabIndex == actualActiveTabIndex,
+                  QString("There is an incorrect active tab: expected index is %1, actual index is %2")
+                  .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
+
+    expectedTabName = "Align sequences with MUSCLE 1";
+    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    CHECK_SET_ERR(expectedTabName == actualTabName,
+                  QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
+                  .arg(expectedTabName).arg(actualTabName));
+
+    outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
+
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+//    24. Click to the "Dashboards manager" button on the toolbar.
+//    Expected result:
+//     - the "Dashboards Manager" dialog appears.
+//       It contains 4 items, all of them are checked.
+//       Their names are "Extract consensus as sequence 1", "Extract consensus as sequence 2", "Align sequence with MUSCLE 1", "Align sequence with MUSCLE 2".
+//    25. Cancel the dialog
+    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
+    GTWidget::click(os, dashboardsManagerButton);
+
+//    26. Switch to the third Workflow Designer.
+//    Expected result:
+//     - The Workflow Designer is in the dashboard view mode.
+//     - The "Dashboards manager" button on the toolbar is active.
+//     - There are four dashboard tabs. Their names are "Extract consensus as sequence 1", "Extract consensus as sequence 2", "Align sequence with MUSCLE 1", "Align sequence with MUSCLE 2" (warning: two last tabs can be swapped, it depends on the task finish order, it is a correct situation).
+//     - The "Extract consensus as sequence 2" dashboard is active.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex3)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex3)));
+    GTUtilsMdi::clickTab(os, tabIndex3);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show workflow"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+
+    expectedButtonText = "To Workflow Designer";
+    actualButtonText = viewSwitchButton->text();
+    CHECK_SET_ERR(expectedButtonText == actualButtonText,
+                  QString("View switch button has an unexpected text: expected '%1', got '%2'")
+                  .arg(expectedButtonText).arg(actualButtonText));
+
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
+    dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+
+    expectedTabsCount = 4;
+    actualTabsCount = dashboardsView->count();
+    CHECK_SET_ERR(expectedTabsCount == actualTabsCount,
+                  QString("There is an incorrect count of tabs in the Dashboard View: expected %1, got %2")
+                  .arg(expectedTabsCount).arg(actualTabsCount));
+
+    actualActiveTabIndex = dashboardsView->currentIndex();
+    CHECK_SET_ERR(actualActiveTabIndex >=0 && actualActiveTabIndex < expectedTabsCount,
+                  QString("There is an incorrect active tab: expected index is %1, actual index is %2")
+                  .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
+
+    expectedTabName = "Extract consensus as sequence 2";
+    actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
+    CHECK_SET_ERR(expectedTabName == actualTabName,
+                  QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
+                  .arg(expectedTabName).arg(actualTabName));
+
+    outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
+
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+//    27. Click to the "Dashboards manager" button on the toolbar.
+//    Expected result:
+//     - the "Dashboards Manager" dialog appears.
+//     - It contains two items, both of them are checked.
+//     - Their names are "Align sequence with MUSCLE 1" and "Align sequence with MUSCLE 2".
+//    28. Cancel the dialog.
+    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
+    GTWidget::click(os, dashboardsManagerButton);
+
+
+    GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
+//    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
+    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
+    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+
+//    2. Wait for scan task finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    3. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    int tabIndex1 = GTUtilsMdi::getCurrentTab(os);
+
+//    4. Open "Align sequence with MUSCLE" sample.
+    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+
+//    5. Cancel the wizard.
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+//    6. Click to the "Read alignment" element.
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::click();
+
+//    7. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/200_sequences.aln");
+
+//    8. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    int tabIndex2 = GTUtilsMdi::getCurrentTab(os);
+
+//    9. Open "Align sequence with MUSCLE" sample.
+    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+
+//    10. Cancel the wizard.
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+//    11. Click to the "Read alignment" element.
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::click();
+
+//    12. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/200_sequences.aln");
+
+//    13. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    int tabIndex3 = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    14. Click to the "Go to Dashboards" button on the toolbar.
+    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
+                                                     "Show dashboard"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+    GTWidget::click(os, viewSwitchButton);
+
+//    15. Switch to first Workflow Designer.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex1)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(os, tabIndex1);
+
+//    16. Launch the workflow. Do not wait for the task finish.
+    coreLog.info("Try to start workflow #1");
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    coreLog.info("It seems that workflow was started");
+
+//    17. Switch to the second Workflow Designer.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex2)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex2)));
+    GTUtilsMdi::clickTab(os, tabIndex2);
+
+//    18. Launch the workflow. Do not wait for the task finish.
+    coreLog.info("Try to start workflow #2");
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    coreLog.info("It seems that workflow was started");
+
+//    19. Set "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible" as workflow output folder in the "Application Settings".
+    const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/one_visible_one_invisible";
+    const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "one_visible_one_invisible";
+    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
+
+//    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
+//        Expected result:
+//          - The Workflow Designer is in the dashboards view mode.
+//          - There are 3 dashboard tabs.
+//            Their names are "Align sequence with MUSCLE 2",
+//                            "Extract consensus as sequence 2",
+//                            "Align sequence with MUSCLE 1".
+//          - The "Align sequence with MUSCLE 2" dashboard is active.
+//          - The "Dashboards manager" button on the toolbar is active.
+    GTUtilsTaskTreeView::waitTaskFinished(os, 600000);
+
+    viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os,
+                                                                           MWTOOLBAR_ACTIVEMDI),
+                                                     "Show workflow"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+
+    QString expectedButtonText = "To Workflow Designer";
+    QString actualButtonText = viewSwitchButton->text();
+    CHECK_SET_ERR(expectedButtonText == actualButtonText,
+                  QString("View switch button has an unexpected text: expected '%1', got '%2'")
+                  .arg(expectedButtonText).arg(actualButtonText));
+
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
+    QTabWidget *dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+
+    int expectedTabsCount = 3;
+    int actualTabsCount = dashboardsView->count();
+    CHECK_SET_ERR(expectedTabsCount == actualTabsCount,
+                  QString("There is an incorrect count of tabs in the Dashboard View: expected %1, got %2")
+                  .arg(expectedTabsCount).arg(actualTabsCount));
+
+    int expectedActiveTabIndex = 0;
+    int actualActiveTabIndex = dashboardsView->currentIndex();
+    CHECK_SET_ERR(expectedActiveTabIndex == actualActiveTabIndex,
+                  QString("There is an incorrect active tab: expected index is %1, actual index is %2")
+                  .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
+
+    QString expectedTabName = "Align sequences with MUSCLE 2";
+    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    CHECK_SET_ERR(expectedTabName == actualTabName,
+                  QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
+                  .arg(expectedTabName).arg(actualTabName));
+
+    QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
+
+    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+//    21. Click to the "Dashboards manager" button on the toolbar.
+//    Expected result: the "Dashboards Manager" dialog appears. It contains 3 items, not all of them are checked. Their names are "Extract consensus as sequence 1", "Extract consensus as sequence 2", "Align sequence with MUSCLE 1", "Align sequence with MUSCLE 2".
+//    22. Cancel the dialog
+    class Scenario : public CustomScenario {
+    public:
+        static bool sorting(const QPair<QString, bool>& e1, const QPair<QString, bool>& e2) {
+            if (e1.first < e2.first) return true;
+            return false;
+        }
+
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
+
+            QList<QPair<QString, bool> > expectedDashboardsState({
+                                                                           qMakePair(QString("Align sequences with MUSCLE 1"), true),
+                                                                           qMakePair(QString("Align sequences with MUSCLE 2"), true),
+                                                                           qMakePair(QString("Extract consensus as sequence 1"), false),
+                                                                           qMakePair(QString("Extract consensus as sequence 2"), true)
+                                                                       });
+            qSort(expectedDashboardsState.begin(), expectedDashboardsState.end(), sorting);
+
+            QList<QPair<QString, bool> > actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
+            qSort(actualDashboardsState.begin(), actualDashboardsState.end(), sorting);
+
+            CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
+                          QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")
+                          .arg(expectedDashboardsState.size()).arg(actualDashboardsState.size()));
+
+            for (int i = 0; i < expectedDashboardsState.size(); ++i) {
+                const QString expectedDashboardName = expectedDashboardsState[i].first;
+                const QString actualDashboardName = actualDashboardsState[i].first;
+                CHECK_SET_ERR(expectedDashboardName == actualDashboardName,
+                              QString("Dashboard number %1 has an unexpected name: expected '%2', got '%3'")
+                              .arg(i).arg(expectedDashboardName).arg(actualDashboardName));
+
+                const bool expectedDashboardState = expectedDashboardsState[i].second;
+                const bool actualDashboardState = actualDashboardsState[i].second;
+                CHECK_SET_ERR(expectedDashboardState == actualDashboardState,
+                              QString("Dashboard number %1 has an unexpected state: it should be %2, but it is '%3'")
+                              .arg(i).arg(expectedDashboardState ? "visible" : "invisible").arg(actualDashboardState ? "visible" : "invisible"));
+            }
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
+    GTWidget::click(os, dashboardsManagerButton);
+
+//    23. Switch to the first Workflow Designer.
+//    Expected result:
+//     - The Workflow Designer is in the dashboards view mode.
+//     - There are 3 dashboard tabs. Their names are "Align sequence with MUSCLE 1", "Extract consensus as sequence 2", "Align sequence with MUSCLE 2".
+//     - The "Align sequence with MUSCLE 1" dashboard is active.
+//     - The "Dashboards manager" button on the toolbar is active.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex1)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(os, tabIndex1);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os,
+                                                                           MWTOOLBAR_ACTIVEMDI),
+                                                     "Show workflow"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+
+    expectedButtonText = "To Workflow Designer";
+    actualButtonText = viewSwitchButton->text();
+    CHECK_SET_ERR(expectedButtonText == actualButtonText,
+                  QString("View switch button has an unexpected text: expected '%1', got '%2'")
+                  .arg(expectedButtonText).arg(actualButtonText));
+
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
+    dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+
+    expectedTabsCount = 3;
+    actualTabsCount = dashboardsView->count();
+    CHECK_SET_ERR(expectedTabsCount == actualTabsCount,
+                  QString("There is an incorrect count of tabs in the Dashboard View: expected %1, got %2")
+                  .arg(expectedTabsCount).arg(actualTabsCount));
+
+    expectedActiveTabIndex = 0;
+    actualActiveTabIndex = dashboardsView->currentIndex();
+    CHECK_SET_ERR(expectedActiveTabIndex == actualActiveTabIndex,
+                  QString("There is an incorrect active tab: expected index is %1, actual index is %2")
+                  .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
+
+    expectedTabName = "Align sequences with MUSCLE 1";
+    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    CHECK_SET_ERR(expectedTabName == actualTabName,
+                  QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
+                  .arg(expectedTabName).arg(actualTabName));
+
+    outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
+
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+//    24. Click to the "Dashboards manager" button on the toolbar.
+//    Expected result:
+//     - the "Dashboards Manager" dialog appears.
+//       It contains 4 items, all of them are checked.
+//       Their names are "Extract consensus as sequence 1", "Extract consensus as sequence 2", "Align sequence with MUSCLE 1", "Align sequence with MUSCLE 2".
+//    25. Cancel the dialog
+    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
+    GTWidget::click(os, dashboardsManagerButton);
+
+//    26. Switch to the third Workflow Designer.
+//    Expected result:
+//     - The Workflow Designer is in the dashboard view mode.
+//     - The "Dashboards manager" button on the toolbar is active.
+//     - There are 3 dashboard tabs. Their names are "Extract consensus as sequence 2", "Align sequence with MUSCLE 1", "Align sequence with MUSCLE 2" (warning: two last tabs can be swapped, it depends on the task finish order, it is a correct situation).
+//     - The "Extract consensus as sequence 2" dashboard is active.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex3)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex3)));
+    GTUtilsMdi::clickTab(os, tabIndex3);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Show workflow"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+
+    expectedButtonText = "To Workflow Designer";
+    actualButtonText = viewSwitchButton->text();
+    CHECK_SET_ERR(expectedButtonText == actualButtonText,
+                  QString("View switch button has an unexpected text: expected '%1', got '%2'")
+                  .arg(expectedButtonText).arg(actualButtonText));
+
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
+    dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+
+    expectedTabsCount = 3;
+    actualTabsCount = dashboardsView->count();
+    CHECK_SET_ERR(expectedTabsCount == actualTabsCount,
+                  QString("There is an incorrect count of tabs in the Dashboard View: expected %1, got %2")
+                  .arg(expectedTabsCount).arg(actualTabsCount));
+
+    actualActiveTabIndex = dashboardsView->currentIndex();
+    CHECK_SET_ERR(actualActiveTabIndex >=0 && actualActiveTabIndex < expectedTabsCount,
+                  QString("There is an incorrect active tab: expected index is %1, actual index is %2")
+                  .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
+
+    expectedTabName = "Extract consensus as sequence 2";
+    actualTabName = GTUtilsDashboard::getDashboardName(os, actualActiveTabIndex);
+    CHECK_SET_ERR(expectedTabName == actualTabName,
+                  QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
+                  .arg(expectedTabName).arg(actualTabName));
+
+    outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
+
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+//    27. Click to the "Dashboards manager" button on the toolbar.
+//    Expected result:
+//     - the "Dashboards Manager" dialog appears.
+//     - It contains 4 items, not all of them are checked.
+//     - Their names are "Extract consensus as sequence 1", "Extract consensus as sequence 2", "Align sequence with MUSCLE 1" and "Align sequence with MUSCLE 2".
+//    28. Cancel the dialog.
+    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
+    GTWidget::click(os, dashboardsManagerButton);
+
+
+    GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
+//    1. Set "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible" as workflow output folder in the "Application Settings".
+    const QFileInfo originalWorkflowOutputDir = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_visible_two_invisible";
+    const QFileInfo testWorkflowOutputDir = sandBoxDir + "two_visible_two_invisible";
+    GTFile::copyDir(os, originalWorkflowOutputDir.absoluteFilePath(), testWorkflowOutputDir.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir.absoluteFilePath());
+
+//    2. Wait for scan task finish.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    3. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    int tabIndex1 = GTUtilsMdi::getCurrentTab(os);
+
+//    4. Open "Align sequence with MUSCLE" sample.
+    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+
+//    5. Cancel the wizard.
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+//    6. Click to the "Read alignment" element.
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::click();
+
+//    7. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/200_sequences.aln");
+
+//    8. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    int tabIndex2 = GTUtilsMdi::getCurrentTab(os);
+
+//    9. Open "Align sequence with MUSCLE" sample.
+    GTUtilsWorkflowDesigner::addSample(os, "Align sequences with MUSCLE", GTUtilsMdi::activeWindow(os));
+
+//    10. Cancel the wizard.
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+//    11. Click to the "Read alignment" element.
+    GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
+    GTMouseDriver::click();
+
+//    12. Add "_common_data/clustal/200_sequences.aln" file to "Dataset 1" dataset.
+    GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/200_sequences.aln");
+
+//    13. Open Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    int tabIndex3 = GTUtilsMdi::getCurrentTab(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+//    14. Click to the "Go to Dashboards" button on the toolbar.
+    QAbstractButton *viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
+                                                     "Show dashboard"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+    GTWidget::click(os, viewSwitchButton);
+
+//    15. Switch to first Workflow Designer.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex1)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(os, tabIndex1);
+
+//    16. Launch the workflow. Do not wait for the task finish.
+    coreLog.info("Try to start workflow #1");
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    coreLog.info("It seems that workflow was started");
+
+//    17. Switch to the second Workflow Designer.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex2)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex2)));
+    GTUtilsMdi::clickTab(os, tabIndex2);
+
+//    18. Launch the workflow. Do not wait for the task finish.
+    coreLog.info("Try to start workflow #2");
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+    coreLog.info("It seems that workflow was started");
+
+//    19. Set "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards" as workflow output folder in the "Application Settings".
+    const QFileInfo originalWorkflowOutputDir2 = testDir + "_common_data/workflow/dashboard/workflow_outputs/two_invisible_dashboards";
+    const QFileInfo testWorkflowOutputDir2 = sandBoxDir + "two_invisible_dashboards";
+    GTFile::copyDir(os, originalWorkflowOutputDir2.absoluteFilePath(), testWorkflowOutputDir2.absoluteFilePath());
+    setWorkflowOutputDir(os, testWorkflowOutputDir2.absoluteFilePath());
+
+//    20. Wait for all tasks finish. The scan task is supposed to finish before align tasks.
+//        Expected result:
+//          - The Workflow Designer is in the dashboards view mode.
+//          - There are 2 dashboard tabs.
+//            Their names are "Align sequence with MUSCLE 2",
+//                            "Align sequence with MUSCLE 1".
+//          - The "Align sequence with MUSCLE 2" dashboard is active.
+//          - The "Dashboards manager" button on the toolbar is active.
+    GTUtilsTaskTreeView::waitTaskFinished(os, 600000);
+
+    viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os,
+                                                                           MWTOOLBAR_ACTIVEMDI),
+                                                     "Show workflow"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+
+    QString expectedButtonText = "To Workflow Designer";
+    QString actualButtonText = viewSwitchButton->text();
+    CHECK_SET_ERR(expectedButtonText == actualButtonText,
+                  QString("View switch button has an unexpected text: expected '%1', got '%2'")
+                  .arg(expectedButtonText).arg(actualButtonText));
+
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
+    QTabWidget *dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+
+    int expectedTabsCount = 2;
+    int actualTabsCount = dashboardsView->count();
+    CHECK_SET_ERR(expectedTabsCount == actualTabsCount,
+                  QString("There is an incorrect count of tabs in the Dashboard View: expected %1, got %2")
+                  .arg(expectedTabsCount).arg(actualTabsCount));
+
+    int expectedActiveTabIndex = 0;
+    int actualActiveTabIndex = dashboardsView->currentIndex();
+    CHECK_SET_ERR(expectedActiveTabIndex == actualActiveTabIndex,
+                  QString("There is an incorrect active tab: expected index is %1, actual index is %2")
+                  .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
+
+    QString expectedTabName = "Align sequences with MUSCLE 2";
+    QString actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    CHECK_SET_ERR(expectedTabName == actualTabName,
+                  QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
+                  .arg(expectedTabName).arg(actualTabName));
+
+    QStringList outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
+
+    QWidget *dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+//    21. Click to the "Dashboards manager" button on the toolbar.
+//    Expected result: the "Dashboards Manager" dialog appears. It contains four items, not all of them are checked. Their names are "Extract consensus as sequence 1", "Extract consensus as sequence 2", "Align sequence with MUSCLE 1", "Align sequence with MUSCLE 2".
+//    22. Cancel the dialog
+    class Scenario : public CustomScenario {
+    public:
+        static bool sorting(const QPair<QString, bool>& e1, const QPair<QString, bool>& e2) {
+            if (e1.first < e2.first) return true;
+            return false;
+        }
+
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
+
+            QList<QPair<QString, bool> > expectedDashboardsState({
+                                                                           qMakePair(QString("Align sequences with MUSCLE 1"), true),
+                                                                           qMakePair(QString("Align sequences with MUSCLE 2"), true),
+                                                                           qMakePair(QString("Extract consensus as sequence 1"), false),
+                                                                           qMakePair(QString("Extract consensus as sequence 2"), false)
+                                                                       });
+            qSort(expectedDashboardsState.begin(), expectedDashboardsState.end(), sorting);
+
+            QList<QPair<QString, bool> > actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
+            qSort(actualDashboardsState.begin(), actualDashboardsState.end(), sorting);
+
+            CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
+                          QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")
+                          .arg(expectedDashboardsState.size()).arg(actualDashboardsState.size()));
+
+            for (int i = 0; i < expectedDashboardsState.size(); ++i) {
+                const QString expectedDashboardName = expectedDashboardsState[i].first;
+                const QString actualDashboardName = actualDashboardsState[i].first;
+                CHECK_SET_ERR(expectedDashboardName == actualDashboardName,
+                              QString("Dashboard number %1 has an unexpected name: expected '%2', got '%3'")
+                              .arg(i).arg(expectedDashboardName).arg(actualDashboardName));
+
+                const bool expectedDashboardState = expectedDashboardsState[i].second;
+                const bool actualDashboardState = actualDashboardsState[i].second;
+                CHECK_SET_ERR(expectedDashboardState == actualDashboardState,
+                              QString("Dashboard number %1 has an unexpected state: it should be %2, but it is '%3'")
+                              .arg(i).arg(expectedDashboardState ? "visible" : "invisible").arg(actualDashboardState ? "visible" : "invisible"));
+            }
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
+    GTWidget::click(os, dashboardsManagerButton);
+
+//    23. Switch to the first Workflow Designer.
+//    Expected result:
+//     - The Workflow Designer is in the dashboards view mode.
+//     - There are 2 dashboard tabs. Their names are "Extract consensus as sequence 2", "Align sequence with MUSCLE 2".
+//     - The "Align sequence with MUSCLE 1" dashboard is active.
+//     - The "Dashboards manager" button on the toolbar is active.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex1)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex1)));
+    GTUtilsMdi::clickTab(os, tabIndex1);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os,
+                                                                           MWTOOLBAR_ACTIVEMDI),
+                                                     "Show workflow"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'To Workflow Designer' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+
+    expectedButtonText = "To Workflow Designer";
+    actualButtonText = viewSwitchButton->text();
+    CHECK_SET_ERR(expectedButtonText == actualButtonText,
+                  QString("View switch button has an unexpected text: expected '%1', got '%2'")
+                  .arg(expectedButtonText).arg(actualButtonText));
+
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
+    dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+
+    expectedTabsCount = 2;
+    actualTabsCount = dashboardsView->count();
+    CHECK_SET_ERR(expectedTabsCount == actualTabsCount,
+                  QString("There is an incorrect count of tabs in the Dashboard View: expected %1, got %2")
+                  .arg(expectedTabsCount).arg(actualTabsCount));
+
+    expectedActiveTabIndex = 0;
+    actualActiveTabIndex = dashboardsView->currentIndex();
+    CHECK_SET_ERR(expectedActiveTabIndex == actualActiveTabIndex,
+                  QString("There is an incorrect active tab: expected index is %1, actual index is %2")
+                  .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
+
+    expectedTabName = "Align sequences with MUSCLE 1";
+    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    CHECK_SET_ERR(expectedTabName == actualTabName,
+                  QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
+                  .arg(expectedTabName).arg(actualTabName));
+
+    outputFiles = GTUtilsDashboard::getOutputFiles(os);
+    CHECK_SET_ERR(!outputFiles.isEmpty(), "Active dashboard is not displayed properly");
+
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+//    24. Click to the "Dashboards manager" button on the toolbar.
+//    Expected result:
+//     - the "Dashboards Manager" dialog appears.
+//       It contains 4 items, not all of them are checked.
+//       Their names are "Extract consensus as sequence 1", "Extract consensus as sequence 2", "Align sequence with MUSCLE 1", "Align sequence with MUSCLE 2".
+//    25. Cancel the dialog
+    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
+    GTWidget::click(os, dashboardsManagerButton);
+
+//    26. Switch to the third Workflow Designer.
+//    Expected result:
+//     - The Workflow Designer is in the scene view mode.
+//     - The "Dashboards manager" button on the toolbar is active.
+    coreLog.info(QString("Try to switch to tab %1(%2)")
+                 .arg(tabIndex3)
+                 .arg(GTUtilsMdi::getTabBar(os)->tabText(tabIndex3)));
+    GTUtilsMdi::clickTab(os, tabIndex3);
+
+    dashboardsManagerButton = GTToolbar::getWidgetForActionTooltip(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Dashboards manager");
+    CHECK_SET_ERR(nullptr != dashboardsManagerButton, "'Dashboards manager' is nullptr");
+    CHECK_SET_ERR(dashboardsManagerButton->isEnabled(), "'Dashboards manager' button is unexpectedly disabled");
+
+    viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
+                                                     "Show dashboard"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton &&
+                  viewSwitchButton->isVisible(), "'Go to Dashboards' is invisible");
+
+//    27. Click to the "Dashboards manager" button on the toolbar.
+//    Expected result:
+//     - the "Dashboards Manager" dialog appears. It contains four items. Their names are "Extract consensus as sequence 1", "Extract consensus as sequence 2", "Align sequence with MUSCLE 1", "Align sequence with MUSCLE 2".
+//     - "Extract consensus as sequence 1" and "Extract consensus as sequence 2" are unchecked, all other are checked.
+//    28. Cancel the dialog.
+    GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
+    GTWidget::click(os, dashboardsManagerButton);
+
+//    29. Click to the "Go to Dashboards" button on the toolbar.
+//    Expected result:
+//     - There are two dashboard tabs. Their names are "Align sequence with MUSCLE 1", "Align sequence with MUSCLE 2" (warning: two last tabs can be swapped, it depends on the task finish order, it is a correct situation).
+//     - The first dashboard is active.
+    viewSwitchButton = qobject_cast<QAbstractButton *>(
+                GTToolbar::getWidgetForActionTooltip(os,
+                                                     GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI),
+                                                     "Show dashboard"));
+    CHECK_SET_ERR(nullptr != viewSwitchButton, "'Go to Dashboards' is nullptr");
+    CHECK_SET_ERR(viewSwitchButton->isVisible(), "View switch button is unexpectedly invisible");
+    CHECK_SET_ERR(viewSwitchButton->isEnabled(), "View switch button is unexpectedly disabled");
+    GTWidget::click(os, viewSwitchButton);
+
+    coreLog.info("Trying get GTUtilsDashboard::getTabWidget(os)");
+    dashboardsView = GTUtilsDashboard::getTabWidget(os);
+    CHECK_SET_ERR(nullptr != dashboardsView, "Dashboards view is nullptr");
+    coreLog.info("Successfully got GTUtilsDashboard::getTabWidget(os)");
+
+    expectedTabsCount = 2;
+    actualTabsCount = dashboardsView->count();
+    CHECK_SET_ERR(expectedTabsCount == actualTabsCount,
+                  QString("There is an incorrect count of tabs in the Dashboard View: expected %1, got %2")
+                  .arg(expectedTabsCount).arg(actualTabsCount));
+
+    expectedActiveTabIndex = 0;
+    actualActiveTabIndex = dashboardsView->currentIndex();
+    CHECK_SET_ERR(expectedActiveTabIndex == actualActiveTabIndex,
+                  QString("There is an incorrect active tab: expected index is %1, actual index is %2")
+                  .arg(expectedActiveTabIndex).arg(actualActiveTabIndex));
+
+    expectedTabName = "Align sequences with MUSCLE 1";
+    actualTabName = GTUtilsDashboard::getDashboardName(os, expectedActiveTabIndex);
+    CHECK_SET_ERR(expectedTabName == actualTabName,
+                  QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
+                  .arg(expectedTabName).arg(actualTabName));
+
+    GTGlobals::sleep();
+}
+
 
 }   // namespace GUITest_common_scenarios_workflow_dashboard
 

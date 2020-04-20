@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -58,7 +58,7 @@ GUITestRunner::GUITestRunner(UGUITestBase* _guiTestBase, QWidget *parent) :
         if (!suites.isEmpty()){
             if (suites.size() == 1){
                 list.append(t->getName());
-                list.append("Not runned");
+                list.append("Not run");
                 suites.first()->addChild(new QTreeWidgetItem(list));
             }
         }else{
@@ -67,7 +67,7 @@ GUITestRunner::GUITestRunner(UGUITestBase* _guiTestBase, QWidget *parent) :
             QList<QTreeWidgetItem*> suites = tree->findItems(suiteName, Qt::MatchExactly);
             list.removeFirst();
             list.append(t->getName());
-            list.append("Not runned");
+            list.append("Not run");
             suites.first()->addChild(new QTreeWidgetItem(list));
         }
     }

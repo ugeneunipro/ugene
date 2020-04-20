@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,8 +25,8 @@
 #include "GTGlobals.h"
 #include <primitives/GTWebView.h>
 
-class QWebView;
-class QWebElement;
+#include <U2Gui/U2WebView.h>
+
 class QTabWidget;
 
 namespace U2 {
@@ -34,7 +34,7 @@ namespace U2 {
 class GTUtilsDashboard {
 public:
     enum Tabs{Overview, Input, ExternalTools};
-    static QWebView* getDashboard(HI::GUITestOpStatus &os);
+    static WebView* getDashboard(HI::GUITestOpStatus &os);
     static QTabWidget* getTabWidget(HI::GUITestOpStatus &os);
 
     static const QString getDashboardName(HI::GUITestOpStatus &os, int dashboardNumber);

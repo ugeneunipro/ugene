@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -294,15 +294,15 @@ Task* BlastPlusWorker::tick() {
         QString path = actor->getParameter(BLASTPLUS_EXT_TOOL_PATH)->getAttributeValue<QString>(context);
         if(QString::compare(path, "default", Qt::CaseInsensitive) != 0){
             if(cfg.programName == "blastn"){
-                AppContext::getExternalToolRegistry()->getByName(ET_BLASTN)->setPath(path);
+                AppContext::getExternalToolRegistry()->getById(BlastPlusSupport::ET_TBLASTN_ID)->setPath(path);
             }else if(cfg.programName == "blastp"){
-                AppContext::getExternalToolRegistry()->getByName(ET_BLASTP)->setPath(path);
+                AppContext::getExternalToolRegistry()->getById(BlastPlusSupport::ET_BLASTP_ID)->setPath(path);
             }else if(cfg.programName == "blastx"){
-                AppContext::getExternalToolRegistry()->getByName(ET_BLASTX)->setPath(path);
+                AppContext::getExternalToolRegistry()->getById(BlastPlusSupport::ET_BLASTX_ID)->setPath(path);
             }else if(cfg.programName == "tblastn"){
-                AppContext::getExternalToolRegistry()->getByName(ET_TBLASTN)->setPath(path);
+                AppContext::getExternalToolRegistry()->getById(BlastPlusSupport::ET_TBLASTN_ID)->setPath(path);
             }else if(cfg.programName == "tblastx"){
-                AppContext::getExternalToolRegistry()->getByName(ET_TBLASTX)->setPath(path);
+                AppContext::getExternalToolRegistry()->getById(BlastPlusSupport::ET_TBLASTX)->setPath(path);
             }
         }
         path = actor->getParameter(BLASTPLUS_TMP_DIR_PATH)->getAttributeValue<QString>(context);
@@ -441,8 +441,8 @@ bool ToolsValidator::validate(const Actor *actor, NotificationsList &notificatio
 }
 
 ExternalTool * ToolsValidator::getTool(const QString &program) const {
-    QString toolId = BlastPlusSupportCommonTask::toolNameByProgram(program);
-    return AppContext::getExternalToolRegistry()->getByName(toolId);
+    QString toolId = BlastPlusSupportCommonTask::toolIdByProgram(program);
+    return AppContext::getExternalToolRegistry()->getById(toolId);
 }
 
 } //namespace LocalWorkflow

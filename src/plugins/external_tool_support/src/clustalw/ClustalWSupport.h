@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,17 +26,17 @@
 #include <U2View/MSAEditor.h>
 #include "utils/ExternalToolSupportAction.h"
 
-#define ET_CLUSTAL "ClustalW"
-#define CLUSTAL_TMP_DIR "clustal"
-
 namespace U2 {
 
 class ClustalWSupport : public ExternalTool {
     Q_OBJECT
 public:
-    ClustalWSupport(const QString& name, const QString& path = "");
+    ClustalWSupport(const QString& id, const QString& name, const QString& path = "");
     GObjectViewWindowContext* getViewContext(){ return viewCtx; }
 
+    static const QString ET_CLUSTAL;
+    static const QString ET_CLUSTAL_ID;
+    static const QString CLUSTAL_TMP_DIR;
 public slots:
     void sl_runWithExtFileSpecify();
 private:

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -109,9 +109,9 @@ void CuffmergeSupportTask::run() {
 
 void CuffmergeSupportTask::setupWorkingDirPath() {
     if (0 == QString::compare(settings.workingDir, "default", Qt::CaseInsensitive)) {
-        workingDir = ExternalToolSupportUtils::createTmpDir(CUFFMERGE_TMP_DIR, stateInfo);
+        workingDir = ExternalToolSupportUtils::createTmpDir(CufflinksSupport::CUFFMERGE_TMP_DIR, stateInfo);
     } else {
-        workingDir = ExternalToolSupportUtils::createTmpDir(settings.workingDir, CUFFMERGE_TMP_DIR, stateInfo);
+        workingDir = ExternalToolSupportUtils::createTmpDir(settings.workingDir, CufflinksSupport::CUFFMERGE_TMP_DIR, stateInfo);
     }
 }
 
@@ -171,8 +171,8 @@ Task * CuffmergeSupportTask::createCuffmergeTask() {
     {
         ExternalToolRegistry *registry = AppContext::getExternalToolRegistry();
 
-        ExternalTool *cm =registry->getByName(ET_CUFFMERGE);
-        ExternalTool *cc =registry->getByName(ET_CUFFCOMPARE);
+        ExternalTool *cm =registry->getById(CufflinksSupport::ET_CUFFMERGE_ID);
+        ExternalTool *cc =registry->getById(CufflinksSupport::ET_CUFFCOMPARE_ID);
         QFileInfo cmInfo(cm->getPath());
         QFileInfo ccInfo(cc->getPath());
 
@@ -180,7 +180,7 @@ Task * CuffmergeSupportTask::createCuffmergeTask() {
         addPaths << ccInfo.dir().absolutePath();
     }
 
-    mergeTask = new ExternalToolRunTask(ET_CUFFMERGE, args, new ExternalToolLogParser(), workingDir, addPaths);
+    mergeTask = new ExternalToolRunTask(CufflinksSupport::ET_CUFFMERGE_ID, args, new ExternalToolLogParser(), workingDir, addPaths);
     setListenerForTask(mergeTask);
     return mergeTask;
 }
@@ -189,7 +189,7 @@ LoadDocumentTask *CuffmergeSupportTask::createLoadResultDocumentTask(const QStri
     const QString filePath = settings.outDir + "/" + fileName;
 
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    SAFE_POINT_EXT(NULL != iof, setError(tr("An internal error occurred during getting annotations from a %1 output file!").arg(ET_CUFFMERGE)), NULL);
+    SAFE_POINT_EXT(NULL != iof, setError(tr("An internal error occurred during getting annotations from a %1 output file!").arg(CufflinksSupport::ET_CUFFMERGE)), NULL);
 
     QVariantMap hints;
     hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(settings.storage->getDbiRef());

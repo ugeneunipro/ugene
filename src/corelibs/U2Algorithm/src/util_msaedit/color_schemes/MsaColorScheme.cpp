@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,6 +25,7 @@
 #include <U2Core/MultipleSequenceAlignment.h>
 #include <U2Core/U2SafePoints.h>
 
+#include "percentage_idententity/colored/MsaColorSchemePercentageIdententityColoredFactory.h"
 #include "ColorSchemeUtils.h"
 #include "MsaColorScheme.h"
 #include "MsaColorSchemeClustalX.h"
@@ -32,36 +33,45 @@
 #include "MsaColorSchemePercentageIdentity.h"
 #include "MsaColorSchemePercentageIdententityGrayscale.h"
 #include "MsaColorSchemeStatic.h"
+#include "MsaColorSchemeWeakSimilarities.h"
 
 namespace U2 {
 
-const QString MsaColorScheme::EMPTY                 = "COLOR_SCHEME_EMPTY";
+const QString MsaColorScheme::EMPTY                       = "COLOR_SCHEME_EMPTY";
 
-const QString MsaColorScheme::UGENE_NUCL            = "COLOR_SCHEME_UGENE_NUCL";
-const QString MsaColorScheme::UGENE_SANGER_NUCL     = "COLOR_SCHEME_UGENE_SANGER_NUCL";
-const QString MsaColorScheme::JALVIEW_NUCL          = "COLOR_SCHEME_JALVIEW_NUCL";
-const QString MsaColorScheme::IDENTPERC_NUCL        = "COLOR_SCHEME_IDENTPERC_NUCL";
-const QString MsaColorScheme::IDENTPERC_NUCL_GRAY   = "COLOR_SCHEME_IDENTPERC_NUCL_GRAY";
-const QString MsaColorScheme::CUSTOM_NUCL           = "COLOR_SCHEME_CUSTOM_NUCL";
+const QString MsaColorScheme::UGENE_NUCL                  = "COLOR_SCHEME_UGENE_NUCL";
+const QString MsaColorScheme::UGENE_SANGER_NUCL           = "COLOR_SCHEME_UGENE_SANGER_NUCL";
+const QString MsaColorScheme::JALVIEW_NUCL                = "COLOR_SCHEME_JALVIEW_NUCL";
+const QString MsaColorScheme::IDENTPERC_NUCL              = "COLOR_SCHEME_IDENTPERC_NUCL";
+const QString MsaColorScheme::IDENTPERC_NUCL_COLORED      = "COLOR_SCHEME_IDENTPERC_NUCL_COLORED";
+const QString MsaColorScheme::IDENTPERC_NUCL_GRAY         = "COLOR_SCHEME_IDENTPERC_NUCL_GRAY";
+const QString MsaColorScheme::CUSTOM_NUCL                 = "COLOR_SCHEME_CUSTOM_NUCL";
+const QString MsaColorScheme::WEAK_SIMILARITIES_NUCL      = "COLOR_SCHEME_WEAK_SIMILARITIES_NUCL";
 
-const QString MsaColorScheme::UGENE_AMINO           = "COLOR_SCHEME_UGENE_AMINO";
-const QString MsaColorScheme::ZAPPO_AMINO           = "COLOR_SCHEME_ZAPPO_AMINO";
-const QString MsaColorScheme::TAILOR_AMINO          = "COLOR_SCHEME_TAILOR_AMINO";
-const QString MsaColorScheme::HYDRO_AMINO           = "COLOR_SCHEME_HYDRO_AMINO";
-const QString MsaColorScheme::HELIX_AMINO           = "COLOR_SCHEME_HELIX_AMINO";
-const QString MsaColorScheme::STRAND_AMINO          = "COLOR_SCHEME_STRAND_AMINO";
-const QString MsaColorScheme::TURN_AMINO            = "COLOR_SCHEME_TURN_AMINO";
-const QString MsaColorScheme::BURIED_AMINO          = "COLOR_SCHEME_BURIED_AMINO";
-const QString MsaColorScheme::IDENTPERC_AMINO       = "COLOR_SCHEME_IDENTPERC_AMINO";
-const QString MsaColorScheme::IDENTPERC_AMINO_GRAY  = "COLOR_SCHEME_IDENTPERC_AMINO_GRAY";
-const QString MsaColorScheme::CLUSTALX_AMINO        = "COLOR_SCHEME_CLUSTALX_AMINO";
-const QString MsaColorScheme::CUSTOM_AMINO          = "COLOR_SCHEME_CUSTOM_AMINO";
+const QString MsaColorScheme::UGENE_AMINO                 = "COLOR_SCHEME_UGENE_AMINO";
+const QString MsaColorScheme::ZAPPO_AMINO                 = "COLOR_SCHEME_ZAPPO_AMINO";
+const QString MsaColorScheme::TAILOR_AMINO                = "COLOR_SCHEME_TAILOR_AMINO";
+const QString MsaColorScheme::HYDRO_AMINO                 = "COLOR_SCHEME_HYDRO_AMINO";
+const QString MsaColorScheme::HELIX_AMINO                 = "COLOR_SCHEME_HELIX_AMINO";
+const QString MsaColorScheme::STRAND_AMINO                = "COLOR_SCHEME_STRAND_AMINO";
+const QString MsaColorScheme::TURN_AMINO                  = "COLOR_SCHEME_TURN_AMINO";
+const QString MsaColorScheme::BURIED_AMINO                = "COLOR_SCHEME_BURIED_AMINO";
+const QString MsaColorScheme::IDENTPERC_AMINO             = "COLOR_SCHEME_IDENTPERC_AMINO";
+const QString MsaColorScheme::IDENTPERC_AMINO_GRAY        = "COLOR_SCHEME_IDENTPERC_AMINO_GRAY";
+const QString MsaColorScheme::CLUSTALX_AMINO              = "COLOR_SCHEME_CLUSTALX_AMINO";
+const QString MsaColorScheme::CUSTOM_AMINO                = "COLOR_SCHEME_CUSTOM_AMINO";
+
+const QString MsaColorScheme::THRESHOLD_PARAMETER_NAME    = "threshold";
 
 MsaColorScheme::MsaColorScheme(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj)
     : QObject(parent),
       factory(factory),
       maObj(maObj) {
 
+}
+
+void MsaColorScheme::applySettings(const QVariantMap& settings) {
+    Q_UNUSED(settings);
 }
 
 const MsaColorSchemeFactory * MsaColorScheme::getFactory() const {
@@ -72,8 +82,8 @@ MsaColorSchemeFactory::MsaColorSchemeFactory(QObject *parent, const QString &id,
     : QObject(parent),
       id(id),
       name(name),
-      supportedAlphabets(supportedAlphabets){
-}
+      supportedAlphabets(supportedAlphabets),
+      needThreshold(false) {}
 
 const QString & MsaColorSchemeFactory::getId() const {
     return id;
@@ -89,6 +99,10 @@ bool MsaColorSchemeFactory::isAlphabetTypeSupported(const DNAAlphabetType& alpha
 
 const AlphabetFlags MsaColorSchemeFactory::getSupportedAlphabets() const {
     return supportedAlphabets;
+}
+
+bool MsaColorSchemeFactory::isThresholdNeeded() const {
+    return needThreshold;
 }
 
 MsaColorSchemeRegistry::MsaColorSchemeRegistry() {
@@ -556,8 +570,11 @@ void MsaColorSchemeRegistry::initBuiltInSchemes() {
     addJalviewNucleotide(colorsPerChar);
     addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::JALVIEW_NUCL, tr("Jalview"), DNAAlphabet_NUCL | DNAAlphabet_RAW, colorsPerChar));
 
-    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdentityFactory(this, MsaColorScheme::IDENTPERC_NUCL, tr("Percentage Identity"), DNAAlphabet_NUCL | DNAAlphabet_RAW));
-    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdententityGrayscaleFactory(this, MsaColorScheme::IDENTPERC_NUCL_GRAY, tr("Percentage Identity (gray)"), DNAAlphabet_NUCL | DNAAlphabet_RAW));
+    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdentityFactory(this, MsaColorScheme::IDENTPERC_NUCL, tr("Percentage identity"), DNAAlphabet_NUCL | DNAAlphabet_RAW));
+    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdententityColoredFactory(this, MsaColorScheme::IDENTPERC_NUCL_COLORED, tr("Percentage identity (colored)"), DNAAlphabet_NUCL | DNAAlphabet_RAW));
+    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdententityGrayscaleFactory(this, MsaColorScheme::IDENTPERC_NUCL_GRAY, tr("Percentage identity (gray)"), DNAAlphabet_NUCL | DNAAlphabet_RAW));
+    
+    addMsaColorSchemeFactory(new MsaColorSchemeWeakSimilaritiesFactory(this, MsaColorScheme::WEAK_SIMILARITIES_NUCL, tr("Weak similarities"), DNAAlphabet_NUCL));
 
     //amino
     ColorSchemeUtils::fillEmptyColorScheme(colorsPerChar);
@@ -594,8 +611,8 @@ void MsaColorSchemeRegistry::initBuiltInSchemes() {
     addBuriedAmino(colorsPerChar);
     addMsaColorSchemeFactory(new MsaColorSchemeStaticFactory(this, MsaColorScheme::BURIED_AMINO, tr("Buried index"), DNAAlphabet_AMINO | DNAAlphabet_RAW, colorsPerChar));
 
-    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdentityFactory(this, MsaColorScheme::IDENTPERC_AMINO, tr("Percentage Identity"), DNAAlphabet_AMINO | DNAAlphabet_RAW));
-    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdententityGrayscaleFactory(this, MsaColorScheme::IDENTPERC_AMINO_GRAY, tr("Percentage Identity (gray)"), DNAAlphabet_AMINO | DNAAlphabet_RAW));
+    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdentityFactory(this, MsaColorScheme::IDENTPERC_AMINO, tr("Percentage identity"), DNAAlphabet_AMINO | DNAAlphabet_RAW));
+    addMsaColorSchemeFactory(new MsaColorSchemePercentageIdententityGrayscaleFactory(this, MsaColorScheme::IDENTPERC_AMINO_GRAY, tr("Percentage identity (gray)"), DNAAlphabet_AMINO | DNAAlphabet_RAW));
 
     addMsaColorSchemeFactory(new MsaColorSchemeClustalXFactory(this, MsaColorScheme::CLUSTALX_AMINO, tr("Clustal X"), DNAAlphabet_AMINO | DNAAlphabet_RAW));
 }

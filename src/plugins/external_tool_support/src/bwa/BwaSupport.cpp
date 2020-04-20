@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,10 +25,13 @@
 
 namespace U2 {
 
+const QString BwaSupport::ET_BWA = "BWA";
+const QString BwaSupport::ET_BWA_ID = "USUPP_BWA";
+
 // BwaSupport
 
-BwaSupport::BwaSupport(const QString &name, const QString &path):
-    ExternalTool(name, path)
+BwaSupport::BwaSupport(const QString& id, const QString& name, const QString &path):
+    ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");

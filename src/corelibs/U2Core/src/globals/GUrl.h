@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,7 +52,6 @@ enum GUrlType {
     GUrl_Network    // an abstract network url (e.g. shared database url)
 };
 
-
 class U2CORE_EXPORT GUrl {
 
 public:
@@ -72,6 +71,10 @@ public:
     bool operator !=(const GUrl& url) const;
 
     const QString& getURLString() const {return urlString;}
+
+    // The function converts url string to multibyte form
+    // default code page is CP_THREAD_ACP
+    const char* getURLStringAnsi(int codePage = -1) const;
 
     GUrlType getType() const {return type;}
 

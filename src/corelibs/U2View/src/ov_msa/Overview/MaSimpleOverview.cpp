@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -151,7 +151,7 @@ void MaSimpleOverview::drawOverview(QPainter &p) {
     U2OpStatusImpl os;
     for (int seq = 0; seq < editor->getNumSequences(); seq++) {
         for (int pos = 0; pos < editor->getAlignmentLen(); pos++) {
-            U2Region yRange = ui->getRowHeightController()->getRowGlobalRange(seq);
+            U2Region yRange = ui->getRowHeightController()->getGlobalYRegionByMaRowIndex(seq);
             U2Region xRange = ui->getBaseWidthController()->getBaseGlobalRange(pos);
 
             QRect rect;
@@ -160,7 +160,7 @@ void MaSimpleOverview::drawOverview(QPainter &p) {
             rect.setWidth(qRound(xRange.length / stepX));
             rect.setHeight(qRound(yRange.length / stepY));
 
-            QColor color = sequenceArea->getCurrentColorScheme()->getColor(seq, pos, mAlignmentObj->charAt(seq, pos));
+            QColor color = sequenceArea->getCurrentColorScheme()->getBackgroundColor(seq, pos, mAlignmentObj->charAt(seq, pos));
             if (MaHighlightingOverviewCalculationTask::isGapScheme(highlightingSchemeId)) {
                 color = Qt::gray;
             }
@@ -232,7 +232,7 @@ void MaSimpleOverview::recalculateSelection() {
     const MaEditorSelection& selection = sequenceArea->getSelection();
 
     const U2Region selectionBasesRegion = ui->getBaseWidthController()->getBasesGlobalRange(selection.x(), selection.width());
-    const U2Region selectionRowsRegion = ui->getRowHeightController()->getRowsGlobalRange(selection.y(), selection.height());
+    const U2Region selectionRowsRegion = ui->getRowHeightController()->getGlobalYRegionByViewRowsRegion(selection.getYRegion());
 
     cachedSelection.setX(qRound(selectionBasesRegion.startPos / stepX));
     cachedSelection.setY(qRound(selectionRowsRegion.startPos / stepY));

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -69,7 +69,7 @@ Task::ReportResult ADVCreateAnnotationsTask::report() {
             AnnotationSelection *annSelection = ctx->getAnnotationsSelection();
             CHECK(annSelection != NULL, ReportResult_Finished);
             foreach (Annotation *a, t->getResultAnnotations()) {
-                annSelection->addToSelection(a);
+                    annSelection->add(a);
             }
         }
     }

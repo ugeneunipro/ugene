@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -95,7 +95,13 @@ void BaseOneOneWorker::sl_taskFinished() {
 void BaseOneOneWorker::sl_prepared() {
     Task *task = dynamic_cast<Task*>(sender());
     CHECK(NULL != task, );
-    CHECK(task->isFinished() && !task->isCanceled() && !task->hasError(), );
+    CHECK(task->isFinished(), );
+    if (task->isCanceled() || task->hasError()) {
+        output->setEnded();
+        setDone();
+        return;
+    }
+
     U2OpStatusImpl os;
     onPrepared(task, os);
     if (os.hasError()) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,8 +43,8 @@ KrakenSupportPlugin::KrakenSupportPlugin()
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(NULL != etRegistry, );
 
-    etRegistry->registerEntry(new KrakenSupport(KrakenSupport::BUILD_TOOL));
-    etRegistry->registerEntry(new KrakenSupport(KrakenSupport::CLASSIFY_TOOL));
+    etRegistry->registerEntry(new KrakenSupport(KrakenSupport::BUILD_TOOL_ID, KrakenSupport::BUILD_TOOL));
+    etRegistry->registerEntry(new KrakenSupport(KrakenSupport::CLASSIFY_TOOL_ID, KrakenSupport::CLASSIFY_TOOL));
     etRegistry->setToolkitDescription(KrakenSupport::GROUP_NAME, tr("Kraken is a taxonomic sequence classifier that assigns taxonomic labels to short DNA reads."));
 
     LocalWorkflow::KrakenBuildWorkerFactory::init();
@@ -54,8 +54,8 @@ KrakenSupportPlugin::KrakenSupportPlugin()
 KrakenSupportPlugin::~KrakenSupportPlugin() {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(NULL != etRegistry, );
-    etRegistry->unregisterEntry(KrakenSupport::BUILD_TOOL);
-    etRegistry->unregisterEntry(KrakenSupport::CLASSIFY_TOOL);
+    etRegistry->unregisterEntry(KrakenSupport::BUILD_TOOL_ID);
+    etRegistry->unregisterEntry(KrakenSupport::CLASSIFY_TOOL_ID);
 }
 
 }   // namespace U2

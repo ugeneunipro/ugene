@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,6 +56,9 @@ Actor::Actor(const ActorId &actorId, ActorPrototype* proto, AttributeScript * _s
     }
     setupVariablesForPort(condition, true);
     setupVariablesForAttribute(condition);
+
+    connect(proto, SIGNAL(si_nameChanged()), SLOT(sl_labelChanged()));
+    connect(proto, SIGNAL(si_descriptionChanged()), SIGNAL(si_descriptionChanged()));
 }
 
 Actor::Actor(const Actor&) : QObject(), Configuration(), Peer() {
@@ -67,6 +70,10 @@ Actor::~Actor() {
     delete doc;
     delete script;
     delete condition;
+}
+
+void Actor::sl_labelChanged() {
+    setLabel(proto->getDisplayName());
 }
 
 void Actor::setupVariablesForPort(AttributeScript *_script, bool inputOnly) {

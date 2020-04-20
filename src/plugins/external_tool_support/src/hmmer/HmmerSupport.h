@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,12 +34,14 @@ class U2SequenceObject;
 class HmmerSupport : public ExternalTool {
     Q_OBJECT
 public:
-    HmmerSupport(const QString &name);
+    HmmerSupport(const QString& id, const QString &name);
 
     static const QString BUILD_TOOL;
+    static const QString BUILD_TOOL_ID;
     static const QString SEARCH_TOOL;
+    static const QString SEARCH_TOOL_ID;
     static const QString PHMMER_TOOL;
-
+    static const QString PHMMER_TOOL_ID;
 private slots:
     void sl_buildProfile();
     void sl_search();
@@ -50,7 +52,7 @@ private:
     void initSearch();
     void initPhmmer();
 
-    bool isToolSet(const QString &name) const;
+    bool isToolSet(const QString &id) const;
 };
 
 class HmmerMsaEditorContext : public GObjectViewWindowContext {

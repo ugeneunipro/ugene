@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,7 +46,7 @@
 
 namespace U2 {
 
-ASNFormat::ASNFormat( QObject* p ) : DocumentFormat(p, DocumentFormatFlag(0), QStringList() << "prt") {
+ASNFormat::ASNFormat( QObject* p ) : DocumentFormat(p, BaseDocumentFormats::PLAIN_ASN, DocumentFormatFlag(0), QStringList() << "prt") {
     formatName = tr("MMDB");
     formatDescription = tr("ASN is a format used my the Molecular Modeling Database (MMDB)");
     supportedObjectTypes+=GObjectTypes::BIOSTRUCTURE_3D;

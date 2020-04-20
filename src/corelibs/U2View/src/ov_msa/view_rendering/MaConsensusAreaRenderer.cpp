@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -233,7 +233,7 @@ void MaConsensusAreaRenderer::drawConsensusChar(QPainter &painter, const Consens
     }
 
     if (settings.highlightMismatches && charData.isMismatch) {
-        color = settings.colorScheme->getColor(0, 0, charData.consensusChar);
+        color = settings.colorScheme->getBackgroundColor(0, 0, charData.consensusChar);
         if (!color.isValid()) {
             color = DEFAULT_MISMATCH_COLOR;
         }
@@ -353,7 +353,7 @@ int MaConsensusAreaRenderer::getYRangeLength(MaEditorConsElement element) const 
     case MSAEditorConsElement_HISTOGRAM:
         return 50;
     case MSAEditorConsElement_CONSENSUS_TEXT:
-        return ui->getRowHeightController()->getSequenceHeight();
+        return ui->getRowHeightController()->getSingleRowHeight();
     case MSAEditorConsElement_RULER: {
         QFontMetrics fm(area->getDrawSettings().getRulerFont());
         return fm.height() + 2 * MaEditorConsensusAreaSettings::RULER_NOTCH_SIZE + 4;

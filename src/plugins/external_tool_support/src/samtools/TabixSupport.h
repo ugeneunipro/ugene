@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,15 +24,15 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define ET_TABIX "Tabix"
-
-
 namespace U2 {
 
 class TabixSupport : public ExternalTool {
     Q_OBJECT
 public:
-    TabixSupport(const QString& name, const QString& path = "");
+    TabixSupport(const QString& id, const QString& name, const QString& path = "");
+
+    static const QString ET_TABIX;
+    static const QString ET_TABIX_ID;
 };
 
 } // namespace

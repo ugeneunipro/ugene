@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -102,7 +102,7 @@ void CAP3WorkerFactory::init() {
         true /* input */);
 
     // Description of the element
-    QString cap3Description = AppContext::getExternalToolRegistry()->getByName(ET_CAP3)->getDescription();
+    QString cap3Description = AppContext::getExternalToolRegistry()->getById(CAP3Support::ET_CAP3_ID)->getDescription();
     Descriptor desc(ACTOR_ID, CAP3Worker::tr("Assembly Sequences with CAP3"), cap3Description);
 
     // Define parameters of the element
@@ -357,7 +357,7 @@ void CAP3WorkerFactory::init() {
     // Init and register the actor prototype
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new CAP3Prompter());
-    proto->addExternalTool(ET_CAP3, CAP3_EXT_TOOL_PATH);
+    proto->addExternalTool(CAP3Support::ET_CAP3_ID, CAP3_EXT_TOOL_PATH);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ASSEMBLY(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -415,7 +415,7 @@ void CAP3Worker::initPaths() {
 
     QString extToolPath = actor->getParameter(CAP3_EXT_TOOL_PATH)->getAttributeValue<QString>(context);
     if (QString::compare(extToolPath, "default", Qt::CaseInsensitive) != 0) {
-        AppContext::getExternalToolRegistry()->getByName(ET_CAP3)->setPath(extToolPath);
+        AppContext::getExternalToolRegistry()->getById(CAP3Support::ET_CAP3_ID)->setPath(extToolPath);
     }
 }
 

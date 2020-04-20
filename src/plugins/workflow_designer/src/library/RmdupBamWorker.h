@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -99,6 +99,8 @@ private:
 private:
     BamRmdupSetting settings;
     QString resultUrl;
+
+    static const QString SAMTOOLS_ID;       // this constant is taken from the appropriate file in external_tool_support plugin
 };
 
 

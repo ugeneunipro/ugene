@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -158,7 +158,7 @@ void GTest_PhyML::prepare() {
     assert( obj != NULL);
 
 
-    settings.algorithmId = PhyMLSupport::PhyMlRegistryId;
+    settings.algorithm = PhyMLSupport::PHYML;
 
     task = new PhyTreeGeneratorLauncherTask(input->getMultipleAlignment(), settings);
     addSubTask(task);

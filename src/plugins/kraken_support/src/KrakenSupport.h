@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,26 +26,22 @@
 
 namespace U2 {
 
-#define ET_KRAKEN_CLASSIFY KrakenSupport::CLASSIFY_TOOL
-#define ET_KRAKEN_BUILD KrakenSupport::BUILD_TOOL
-#define ET_KRAKEN_TRANSLATE KrakenSupport::TRANSLATE_TOOL
-
 class KrakenSupport : public ExternalTool {
     Q_OBJECT
 public:
-    KrakenSupport(const QString &name);
+    KrakenSupport(const QString& id, const QString &name);
 
     QStringList getAdditionalPaths() const;
 
     static const QString GROUP_NAME;
     static const QString BUILD_TOOL;
+    static const QString BUILD_TOOL_ID;
     static const QString CLASSIFY_TOOL;
-    static const QString TRANSLATE_TOOL;
+    static const QString CLASSIFY_TOOL_ID;
 
 private:
     void initBuild();
     void initClassify();
-    void initTranslate();
 };
 
 }   // namespace U2

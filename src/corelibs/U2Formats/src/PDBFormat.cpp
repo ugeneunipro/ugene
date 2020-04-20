@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@ namespace U2 {
 QHash<QByteArray,int> PDBFormat::atomNumMap = createAtomNumMap();
 QHash<QByteArray, char> PDBFormat::acronymNameMap;
 
-PDBFormat::PDBFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlag(0), QStringList("pdb"))
+PDBFormat::PDBFormat(QObject* p) : TextDocumentFormat(p, BaseDocumentFormats::PLAIN_PDB, DocumentFormatFlag(0), QStringList("pdb"))
 {
     formatName = tr("PDB");
     formatDescription = tr("The Protein Data Bank (PDB) format provides a standard representation for macromolecular structure data derived from X-ray diffraction and NMR studies.");
@@ -64,13 +64,13 @@ PDBFormat::PDBFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlag(0), 
 }
 
 FormatCheckResult PDBFormat::checkRawTextData(const QByteArray& rawData, const GUrl&) const {
-    static QList< const char* > tags;
-    tags << "HEADER" << "ATOM" << "MODEL" << "REMARK" << "OBSLTE"
-         << "TITLE" << "SPLIT" << "CAVEAT" << "COMPND" << "SOURCE"
-         << "KEYWDS" << "EXPDTA" << "AUTHOR" << "REVDAT" << "SPRSDE" << "JRNL";
+    static QList<QByteArray> tags = QList<QByteArray>()
+        << "HEADER" << "ATOM" << "MODEL" << "REMARK" << "OBSLTE"
+        << "TITLE" << "SPLIT" << "CAVEAT" << "COMPND" << "SOURCE"
+        << "KEYWDS" << "EXPDTA" << "AUTHOR" << "REVDAT" << "SPRSDE" << "JRNL";
 
     bool ok = false;
-    foreach (const char* tag, tags) {
+    foreach (const QByteArray &tag, tags) {
         if (rawData.startsWith(tag)) {
             ok = true;
             break;

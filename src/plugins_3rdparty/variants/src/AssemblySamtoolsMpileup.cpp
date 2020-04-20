@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -158,6 +158,11 @@ QString CallVariantsTask::tmpFilePath(const QString &baseName, const QString &ex
 /************************************************************************/
 /* SamtoolsMpileupTask */
 /************************************************************************/
+
+const QString SamtoolsMpileupTask::SAMTOOLS_ID = "USUPP_SAMTOOLS";
+const QString SamtoolsMpileupTask::BCFTOOLS_ID = "USUPP_BCFTOOLS";
+const QString SamtoolsMpileupTask::VCFUTILS_ID = "USUPP_VCFUTILS";
+
 SamtoolsMpileupTask::SamtoolsMpileupTask(const CallVariantsTaskSettings &_settings)
 :ExternalToolSupportTask(tr("Samtool mpileup for %1 ").arg(_settings.refSeqUrl), TaskFlags(TaskFlag_None)),settings(_settings)
 {
@@ -192,21 +197,21 @@ void SamtoolsMpileupTask::prepare(){
 }
 
 void SamtoolsMpileupTask::run() {
-    ProcessRun samtools = ExternalToolSupportUtils::prepareProcess("SAMtools", settings.getMpiliupArgs(), "", QStringList(), stateInfo, getListener(0));
+    ProcessRun samtools = ExternalToolSupportUtils::prepareProcess(SAMTOOLS_ID, settings.getMpiliupArgs(), "", QStringList(), stateInfo, getListener(0));
     CHECK_OP(stateInfo, );
     QScopedPointer<QProcess> sp(samtools.process);
     ExternalToolLogParser sLogParser;
     ExternalToolRunTaskHelper sHelper(samtools.process, &sLogParser, stateInfo);
     setListenerForHelper(&sHelper, 0);
 
-    ProcessRun bcftools = ExternalToolSupportUtils::prepareProcess("BCFtools", settings.getBcfViewArgs(), "", QStringList(), stateInfo, getListener(1));
+    ProcessRun bcftools = ExternalToolSupportUtils::prepareProcess(BCFTOOLS_ID, settings.getBcfViewArgs(), "", QStringList(), stateInfo, getListener(1));
     CHECK_OP(stateInfo, );
     QScopedPointer<QProcess> bp(bcftools.process);
     ExternalToolLogParser bLogParser;
     ExternalToolRunTaskHelper bHelper(bcftools.process, &bLogParser, stateInfo);
     setListenerForHelper(&bHelper, 1);
 
-    ProcessRun vcfutils = ExternalToolSupportUtils::prepareProcess("vcfutils", settings.getVarFilterArgs(), "", QStringList(), stateInfo, getListener(2));
+    ProcessRun vcfutils = ExternalToolSupportUtils::prepareProcess(VCFUTILS_ID, settings.getVarFilterArgs(), "", QStringList(), stateInfo, getListener(2));
     CHECK_OP(stateInfo, );
     QScopedPointer<QProcess> vp(vcfutils.process);
     ExternalToolLogParser vLogParser;

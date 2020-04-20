@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@ GUITestThread::GUITestThread(HI::GUITest *test, Logger &log, bool _needCleanup) 
     test(test),
     log(log),
     needCleanup(_needCleanup),
-    testResult("Not runned")
+    testResult("Not run")
 {
     SAFE_POINT(NULL != test, "GUITest is NULL", );
 }

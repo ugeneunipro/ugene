@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,7 +47,7 @@
 #include "align_worker_subtasks/ComposeResultSubTask.h"
 #include "align_worker_subtasks/FormatDBSubTask.h"
 #include "align_worker_subtasks/PrepareReferenceSequenceTask.h"
-#include "blast/FormatDBSupport.h"
+#include "FormatDBSupport.h"
 #include "blast_plus/BlastPlusSupport.h"
 
 namespace U2 {
@@ -92,6 +92,9 @@ void AlignToReferenceBlastWorkerFactory::init() {
         QMap<Descriptor, DataTypePtr> outType;
         outType[BaseSlots::DNA_SEQUENCE_SLOT()] = BaseTypes::DNA_SEQUENCE_TYPE();
         outType[BaseSlots::ANNOTATION_TABLE_SLOT()] = BaseTypes::ANNOTATION_TABLE_TYPE();
+        outType[Descriptor(BaseSlots::URL_SLOT().getId(),
+                           AlignToReferenceBlastPrompter::tr("Multiple Chromatogram Alignment URL"),
+                           AlignToReferenceBlastPrompter::tr("Location of a result file with a Multiple Chromatogram Alignment."))] = BaseTypes::STRING_TYPE();
 
         ports << new PortDescriptor(inDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)), true /*input*/);
         ports << new PortDescriptor(outDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-out", outType)), false /*input*/, true /*multi*/);
@@ -137,8 +140,8 @@ void AlignToReferenceBlastWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new AlignToReferenceBlastPrompter(NULL));
-    proto->addExternalTool(ET_BLASTN);
-    proto->addExternalTool(ET_MAKEBLASTDB);
+    proto->addExternalTool(BlastPlusSupport::ET_BLASTN_ID);
+    proto->addExternalTool(FormatDBSupport::ET_MAKEBLASTDB_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_ALIGNMENT(), proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -233,6 +236,9 @@ QVariantMap AlignToReferenceBlastWorker::getResult(Task *task, U2OpStatus &os) c
     QVariantMap result;
     result[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(reference);
     result[BaseSlots::ANNOTATION_TABLE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(alignTask->getAnnotations());
+    if (QFileInfo(resultUrl).exists()) {
+        result[BaseSlots::URL_SLOT().getId()] = resultUrl;
+    }
     return result;
 }
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -132,7 +132,7 @@ QList<Task*> Peak2GeneTask::onSubTaskFinished(Task* subTask) {
     if (treatTask == subTask) {
             QStringList args = settings.getArguments(treatDoc->getURLString());
 
-            etTask = new ExternalToolRunTask(ET_PEAK2GENE, args, new ExternalToolLogParser(), workingDir);
+            etTask = new ExternalToolRunTask(Peak2GeneSupport::ET_PEAK2GENE_ID, args, new ExternalToolLogParser(), workingDir);
             setListenerForTask(etTask);
             result << etTask;
     }

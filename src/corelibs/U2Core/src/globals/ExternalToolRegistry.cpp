@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include <QRegularExpression>
+
 #include "ExternalToolRegistry.h"
 
 #include <U2Core/AppContext.h>
@@ -27,6 +29,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Core/Log.h>
+
 namespace U2 {
 
 ////////////////////////////////////////
@@ -35,13 +38,16 @@ const QString ExternalToolValidation::DEFAULT_DESCR_KEY = "DEFAULT_DESCR";
 
 ////////////////////////////////////////
 //ExternalTool
-ExternalTool::ExternalTool(QString _name, QString _path)
-    : name(_name),
+ExternalTool::ExternalTool(QString _id, QString _name, QString _path)
+    : id(_id),
+      name(_name),
       path(_path),
       isValidTool(false),
       toolKitName(_name),
       muted(false),
-      isModuleTool(false)
+      isModuleTool(false),
+      isCustomTool(false),
+    isRunnerTool(false)
 {
     if (NULL != AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -50,7 +56,72 @@ ExternalTool::ExternalTool(QString _name, QString _path)
     }
 }
 
-ExternalTool::~ExternalTool() {
+const QString &ExternalTool::getId() const {
+    return id;
+}
+
+const QString &ExternalTool::getName() const {
+    return name;
+}
+
+const QString &ExternalTool::getPath() const {
+    return path;
+}
+
+const QIcon &ExternalTool::getIcon() const {
+    return icon;
+}
+
+const QIcon &ExternalTool::getGrayIcon() const {
+    return grayIcon;
+}
+
+const QIcon &ExternalTool::getWarnIcon() const {
+    return warnIcon;
+}
+
+const QString &ExternalTool::getDescription() const {
+    return description;
+}
+
+const QString &ExternalTool::getToolRunnerProgramId() const {
+    return toolRunnerProgram;
+}
+
+QStringList ExternalTool::getToolRunnerAdditionalOptions() const {
+    return QStringList();
+}
+
+const QString &ExternalTool::getExecutableFileName() const {
+    return executableFileName;
+}
+
+const QStringList &ExternalTool::getValidationArguments() const {
+    return validationArguments;
+}
+
+const QString &ExternalTool::getValidMessage() const {
+    return validMessage;
+}
+
+const QString &ExternalTool::getVersion() const {
+    return version;
+}
+
+const QString &ExternalTool::getPredefinedVersion() const {
+    return predefinedVersion;
+}
+
+const QRegExp &ExternalTool::getVersionRegExp() const {
+    return versionRegExp;
+}
+
+const QString &ExternalTool::getToolKitName() const {
+    return toolKitName;
+}
+
+const StrStrMap &ExternalTool::getErrorDescriptions() const {
+    return errorDescriptions;
 }
 
 const StrStrMap &ExternalTool::getAdditionalInfo() const {
@@ -61,31 +132,29 @@ QStringList ExternalTool::getAdditionalPaths() const {
     return QStringList();
 }
 
-void ExternalTool::setPath(const QString& _path) {
-    if (path!=_path) {
-        path=_path;
-        emit si_pathChanged();
-    }
-}
-void ExternalTool::setValid(bool _isValid){
-    isValidTool=_isValid;
-    emit si_toolValidationStatusChanged(isValidTool);
-}
-void ExternalTool::setVersion(const QString& _version) {
-    version=_version;
+QStringList ExternalTool::getRunParameters() const {
+    return QStringList();
 }
 
-void ExternalTool::setAdditionalInfo(const StrStrMap &newAdditionalInfo) {
-    additionalInfo = newAdditionalInfo;
+void ExternalTool::extractAdditionalParameters(const QString & /*output*/) {
+    // do nothing
+}
+
+void ExternalTool::performAdditionalChecks(const QString& /*toolPath*/) {
+    // do nothing
 }
 
 ExternalToolValidation ExternalTool::getToolValidation() {
-    ExternalToolValidation result(toolRunnerProgramm, executableFileName, validationArguments, validMessage, errorDescriptions);
+    ExternalToolValidation result(toolRunnerProgram, executableFileName, validationArguments, validMessage, errorDescriptions);
     return result;
 }
 
-void ExternalTool::performAdditionalChecks(const QString& toolPath) {
-    Q_UNUSED(toolPath);
+const QList<ExternalToolValidation> &ExternalTool::getToolAdditionalValidations() const {
+    return additionalValidators;
+}
+
+const QStringList &ExternalTool::getDependencies() const {
+    return dependencies;
 }
 
 const QString& ExternalTool::getAdditionalErrorMessage() const {
@@ -100,6 +169,30 @@ bool ExternalTool::hasAdditionalErrorMessage() const {
     return !additionalErrorMesage.isEmpty();
 }
 
+void ExternalTool::setPath(const QString& _path) {
+    if (path != _path) {
+        path = _path;
+        emit si_pathChanged();
+    }
+}
+
+void ExternalTool::setValid(bool _isValid) {
+    isValidTool = _isValid;
+    emit si_toolValidationStatusChanged(isValidTool);
+}
+
+void ExternalTool::setVersion(const QString& _version) {
+    version = _version;
+}
+
+void ExternalTool::setAdditionalInfo(const StrStrMap &newAdditionalInfo) {
+    additionalInfo = newAdditionalInfo;
+}
+
+bool ExternalTool::isValid() const {
+    return isValidTool;
+}
+
 bool ExternalTool::isMuted() const {
 #ifdef UGENE_NGS
     // Tool cannot be muted in the NGS pack
@@ -109,14 +202,26 @@ bool ExternalTool::isMuted() const {
 #endif
 }
 
-////////////////////////////////////////
-//ExternalToolValidationListener
-ExternalToolValidationListener::ExternalToolValidationListener(const QString& toolName) {
-    toolNames << toolName;
+bool ExternalTool::isModule() const {
+    return isModuleTool;
 }
 
-ExternalToolValidationListener::ExternalToolValidationListener(const QStringList& _toolNames) {
-    toolNames = _toolNames;
+bool ExternalTool::isCustom() const {
+    return isCustomTool;
+}
+
+bool ExternalTool::isRunner() const {
+    return isRunnerTool;
+}
+
+////////////////////////////////////////
+//ExternalToolValidationListener
+ExternalToolValidationListener::ExternalToolValidationListener(const QString& toolId) {
+    toolIds << toolId;
+}
+
+ExternalToolValidationListener::ExternalToolValidationListener(const QStringList& _toolIds) {
+    toolIds = _toolIds;
 }
 
 void ExternalToolValidationListener::sl_validationTaskStateChanged() {
@@ -138,26 +243,59 @@ ExternalToolRegistry::~ExternalToolRegistry() {
     qDeleteAll(registry.values());
 }
 
-ExternalTool* ExternalToolRegistry::getByName(const QString& id)
-{
+ExternalTool* ExternalToolRegistry::getByName(const QString& name) const {
+    ExternalTool* result = nullptr;
+    foreach(ExternalTool* tool, registry.values()) {
+        CHECK_CONTINUE(tool->getName() == name);
+
+        result = tool;
+        break;
+    }
+
+    return result;
+}
+
+ExternalTool* ExternalToolRegistry::getById(const QString& id) const {
     return registry.value(id, NULL);
 }
 
-bool ExternalToolRegistry::registerEntry(ExternalTool *t){
-    if (registry.contains(t->getName())) {
+QString ExternalToolRegistry::getToolNameById(const QString& id) const {
+    ExternalTool* et = getById(id);
+    CHECK(nullptr != et, QString());
+
+    return et->getName();
+}
+
+namespace {
+bool containsCaseInsensitive(const QList<QString>& values, const QString& value) {
+    bool result = false;
+    foreach(const QString& v, values) {
+        CHECK_CONTINUE(QString::compare(v, value, Qt::CaseInsensitive) == 0);
+        result = true;
+        break;
+    };
+    return result;
+}
+}
+
+bool ExternalToolRegistry::registerEntry(ExternalTool *t) {
+    if (containsCaseInsensitive(registry.keys(), t->getId())) {
         return false;
     } else {
         registryOrder.append(t);
-        registry.insert(t->getName(), t);
+        registry.insert(t->getId(), t);
+        emit si_toolAdded(t->getId());
         return true;
     }
 }
 
 void ExternalToolRegistry::unregisterEntry(const QString &id){
-    ExternalTool* et = registry.take(id);
-    if(et!=NULL){
+    CHECK(registry.contains(id), );
+    emit si_toolIsAboutToBeRemoved(id);
+    ExternalTool *et = registry.take(id);
+    if (nullptr != et) {
         int idx = registryOrder.indexOf(et);
-        if (idx!=-1){
+        if (-1 != idx){
             registryOrder.removeAt(idx);
         }
 

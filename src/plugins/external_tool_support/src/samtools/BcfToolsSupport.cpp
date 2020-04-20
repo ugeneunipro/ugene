@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,8 +25,11 @@
 
 namespace U2 {
 
-BcfToolsSupport::BcfToolsSupport(const QString &name)
-: ExternalTool(name)
+const QString BcfToolsSupport::ET_BCFTOOLS = "BCFtools";
+const QString BcfToolsSupport::ET_BCFTOOLS_ID = "USUPP_BCFTOOLS";
+
+BcfToolsSupport::BcfToolsSupport(const QString& id, const QString &name)
+: ExternalTool(id, name, "")
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");

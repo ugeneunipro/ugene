@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -137,7 +137,7 @@ QString BlastPlusSupportCommonTask::getAcceptableTempDir() const {
         QTime::currentTime().toString("hh.mm.ss.zzz") + "_" +
         QString::number(QCoreApplication::applicationPid()) + "/";
 
-    QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(BLASTPLUS_TMP_DIR);
+    QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(BlastPlusSupport::BLASTPLUS_TMP_DIR);
     if (!GUrlUtils::containSpaces(tmpDirPath)) {
         return tmpDirPath + "/" + tmpDirName;
     }
@@ -162,13 +162,13 @@ QList<Task*> BlastPlusSupportCommonTask::onSubTaskFinished(Task* subTask) {
     else if(subTask==blastPlusTask){
         if(settings.outputType == 5 || settings.outputType == 6){
             if(!QFileInfo(settings.outputOriginalFile).exists()){
-                QString curToolName = toolNameByProgram(settings.programName);
-                if(AppContext::getExternalToolRegistry()->getByName(curToolName)->isValid()){
+                QString curToolId = toolIdByProgram(settings.programName);
+                if(AppContext::getExternalToolRegistry()->getById(curToolId)->isValid()){
                     stateInfo.setError(tr("Output file not found"));
                 }else{
                     stateInfo.setError(tr("Output file not found. May be %1 tool path '%2' not valid?")
-                                       .arg(AppContext::getExternalToolRegistry()->getByName(curToolName)->getName())
-                                       .arg(AppContext::getExternalToolRegistry()->getByName(curToolName)->getPath()));
+                                       .arg(AppContext::getExternalToolRegistry()->getById(curToolId)->getName())
+                                       .arg(AppContext::getExternalToolRegistry()->getById(curToolId)->getPath()));
                 }
                 return res;
             }
@@ -439,12 +439,25 @@ void BlastPlusSupportCommonTask::parseXMLHsp(const QDomNode &xml,const QString &
         ad->qualifiers.push_back(U2Qualifier("hit-to", elem.text()));
     }
 
-    elem = xml.lastChildElement("Hsp_query-frame");
+    QString strandTag;
+    switch (settings.strandSource) {
+    case BlastTaskSettings::HitFrame:
+        strandTag = "Hsp_hit-frame";
+        break;
+    case BlastTaskSettings::QueryFrame:
+        strandTag = "Hsp_query-frame";
+        break;
+    default:
+        SAFE_POINT_EXT(false, stateInfo.setError(tr("Unknown strand source setting")), );
+        break;
+    }
+    elem = xml.lastChildElement(strandTag);
     int frame = elem.text().toInt(&isOk);
-    if(!isOk) {
-        stateInfo.setError(tr("Can't get location"));
+    if (!isOk) {
+        stateInfo.setError(tr("Can't get location. %1[%2]").arg(strandTag).arg(elem.text()));
         return;
     }
+
     QString frame_txt = (frame < 0) ? "complement" : "direct";
     ad->qualifiers.push_back(U2Qualifier("source_frame", frame_txt));
     ad->setStrand(frame < 0 ? U2Strand::Complementary: U2Strand::Direct);
@@ -630,20 +643,20 @@ QString BlastPlusSupportMultiTask::generateReport() const {
     return res;
 }
 
-QString BlastPlusSupportCommonTask::toolNameByProgram(const QString &program) {
+QString BlastPlusSupportCommonTask::toolIdByProgram(const QString &program) {
     QString result;
     if("blastn" == program){
-        result = ET_BLASTN;
+        result = BlastPlusSupport::ET_BLASTN_ID;
     } else if ("blastp" == program){
-        result = ET_BLASTP;
+        result = BlastPlusSupport::ET_BLASTP_ID;
     } else if ("blastx" == program){
-        result = ET_BLASTX;
+        result = BlastPlusSupport::ET_BLASTX_ID;
     } else if ("tblastn" == program){
-        result = ET_TBLASTN;
+        result = BlastPlusSupport::ET_TBLASTN_ID;
     } else if ("tblastx" == program){
-        result = ET_TBLASTX;
+        result = BlastPlusSupport::ET_TBLASTX_ID;
     } else if ("rpsblast" == program) {
-        result = ET_RPSBLAST;
+        result = BlastPlusSupport::ET_RPSBLAST_ID;
     }
     return result;
 }

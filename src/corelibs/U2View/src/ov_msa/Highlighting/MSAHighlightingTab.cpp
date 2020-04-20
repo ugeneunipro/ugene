@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@
 
 #include <QCheckBox>
 #include <QComboBox>
+#include <QDoubleSpinBox>
 #include <QLabel>
 #include <QRadioButton>
 #include <QStandardItemModel>
@@ -73,8 +74,33 @@ QWidget* MSAHighlightingTab::createColorGroup() {
     colorSchemeController->getComboBox()->setObjectName("colorScheme");
     colorSchemeController->getComboBox()->setSizeAdjustPolicy(QComboBox::AdjustToMinimumContentsLength);
 
-    layout->addSpacing(TITLE_SPACING);
+    colorThresholdLabel = new QLabel(tr("Threshold"));
+
+    colorThresholdSlider = new QSlider(Qt::Horizontal, this);
+    colorThresholdSlider->setMinimum(1);
+    colorThresholdSlider->setMaximum(999);
+    colorThresholdSlider->setValue(500);
+    colorThresholdSlider->setObjectName("colorThresholdSlider");
+
+    colorSpinBox = new QDoubleSpinBox();
+    colorSpinBox->setMinimum(0.1);
+    colorSpinBox->setMaximum(99.9);
+    colorSpinBox->setSingleStep(0.1);
+    colorSpinBox->setValue(50.0);
+    colorSpinBox->setDecimals(1);
+    colorSpinBox->setObjectName("colorSpinBox");
+
+    QHBoxLayout* horizontalLayout = new QHBoxLayout();
+    horizontalLayout->addWidget(colorThresholdSlider);
+    horizontalLayout->addWidget(colorSpinBox);
+    horizontalLayout->setSpacing(10);
+
     layout->addWidget(colorSchemeController->getComboBox());
+    layout->addSpacing(TITLE_SPACING);
+    layout->addSpacing(TITLE_SPACING);
+    layout->addWidget(colorThresholdLabel);
+    layout->addLayout(horizontalLayout);
+
     layout->addSpacing(ITEMS_SPACING);
 
     return group;
@@ -113,20 +139,20 @@ QWidget* MSAHighlightingTab::createHighlightingGroup() {
     thresholdMoreRb->setObjectName("thresholdMoreRb");
     thresholdLessRb->setObjectName("thresholdLessRb");
 
-    thresholdSlider = new QSlider(Qt::Horizontal, this);
-    thresholdSlider->setMinimum(0);
-    thresholdSlider->setMaximum(100);
-    thresholdSlider->setValue(50);
-    thresholdSlider->setTickPosition(QSlider::TicksRight);
-    thresholdSlider->setObjectName("thresholdSlider");
+    highlightingThresholdSlider = new QSlider(Qt::Horizontal, this);
+    highlightingThresholdSlider->setMinimum(0);
+    highlightingThresholdSlider->setMaximum(100);
+    highlightingThresholdSlider->setValue(50);
+    highlightingThresholdSlider->setTickPosition(QSlider::TicksRight);
+    highlightingThresholdSlider->setObjectName("thresholdSlider");
 
-    thresholdLabel = new QLabel(tr("Threshold: %1%").arg(thresholdSlider->value()), this);
+    thresholdLabel = new QLabel(tr("Threshold: %1%").arg(highlightingThresholdSlider->value()), this);
 
     layout->setSpacing(ITEMS_SPACING);
     layout->addSpacing(TITLE_SPACING);
     layout->addWidget(highlightingSchemeController->getComboBox());
     layout->addWidget(thresholdLabel);
-    layout->addWidget(thresholdSlider);
+    layout->addWidget(highlightingThresholdSlider);
     layout->addWidget(lessMoreLabel);
     layout->addWidget(thresholdLessRb);
     layout->addWidget(thresholdMoreRb);
@@ -157,9 +183,11 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
     seqArea = msa->getUI()->getSequenceArea();
 
     savableTab.disableSavingForWidgets(QStringList()
-                                       << thresholdSlider->objectName()
+                                       << highlightingThresholdSlider->objectName()
                                        << highlightingSchemeController->getComboBox()->objectName()
-                                       << colorSchemeController->getComboBox()->objectName());
+                                       << colorSchemeController->getComboBox()->objectName()
+                                       << colorThresholdSlider->objectName()
+                                       << colorSpinBox->objectName());
     U2WidgetStateStorage::restoreWidgetState(savableTab);
 
     sl_sync();
@@ -177,8 +205,14 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor* m)
     connect(m->getMaObject(), SIGNAL(si_alphabetChanged(MaModificationInfo, const DNAAlphabet *)), SLOT(sl_refreshSchemes()));
 
     connect(highlightingSchemeController->getComboBox(), SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_updateHint()));
+    connect(colorSchemeController->getComboBox(), SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_updateColorSchemeWidgets()));
     connect(exportHighlightning, SIGNAL(clicked()), SLOT(sl_exportHighlightningClicked()));
-    connect(thresholdSlider, SIGNAL(valueChanged(int)), SLOT(sl_highlightingParametersChanged()));
+
+    connect(colorThresholdSlider, SIGNAL(valueChanged(int)), SLOT(sl_colorParametersChanged()));
+    connect(colorSpinBox, SIGNAL(valueChanged(double)), SLOT(sl_colorParametersChanged()));
+    connect(this, SIGNAL(si_colorSchemeChanged()), seqArea, SLOT(sl_completeRedraw()));
+
+    connect(highlightingThresholdSlider, SIGNAL(valueChanged(int)), SLOT(sl_highlightingParametersChanged()));
     connect(thresholdMoreRb, SIGNAL(toggled(bool)), SLOT(sl_highlightingParametersChanged()));
     connect(thresholdLessRb, SIGNAL(toggled(bool)), SLOT(sl_highlightingParametersChanged()));
 
@@ -208,6 +242,7 @@ void MSAHighlightingTab::sl_sync() {
     useDots->blockSignals(false);
 
     sl_updateHint();
+    sl_updateColorSchemeWidgets();
 }
 
 void MSAHighlightingTab::sl_updateHint() {
@@ -217,14 +252,14 @@ void MSAHighlightingTab::sl_updateHint() {
     QVariantMap highlightingSettings;
     if(s->getFactory()->isNeedThreshold()){
         thresholdLabel->show();
-        thresholdSlider->show();
+        highlightingThresholdSlider->show();
         thresholdLessRb->show();
         thresholdMoreRb->show();
         lessMoreLabel->show();
         bool ok = false;
         int thresholdValue = s->getSettings().value(MsaHighlightingScheme::THRESHOLD_PARAMETER_NAME).toInt(&ok);
         assert(ok);
-        thresholdSlider->setValue(thresholdValue);
+        highlightingThresholdSlider->setValue(thresholdValue);
         bool lessThenThreshold = s->getSettings().value(MsaHighlightingScheme::LESS_THAN_THRESHOLD_PARAMETER_NAME, thresholdLessRb->isChecked()).toBool();
         thresholdLessRb->setChecked(lessThenThreshold);
         thresholdMoreRb->setChecked(!lessThenThreshold);
@@ -232,7 +267,7 @@ void MSAHighlightingTab::sl_updateHint() {
         highlightingSettings.insert(MsaHighlightingScheme::LESS_THAN_THRESHOLD_PARAMETER_NAME, lessThenThreshold);
     }else{
         thresholdLabel->hide();
-        thresholdSlider->hide();
+        highlightingThresholdSlider->hide();
         thresholdLessRb->hide();
         thresholdMoreRb->hide();
         lessMoreLabel->hide();
@@ -260,15 +295,57 @@ void MSAHighlightingTab::sl_updateHint() {
     s->applySettings(highlightingSettings);
 }
 
+void MSAHighlightingTab::sl_updateColorSchemeWidgets() {
+    MsaColorScheme* currentColorScheme = seqArea->getCurrentColorScheme();
+    SAFE_POINT(currentColorScheme != NULL, "Current Color Scheme is NULL!", );
+
+    const MsaColorSchemeFactory* factory = currentColorScheme->getFactory();
+    SAFE_POINT(factory != NULL, "Current Color Scheme factory is NULL!", );
+
+    if (factory->isThresholdNeeded()) {
+        colorThresholdLabel->show();
+        colorThresholdSlider->show();
+        colorSpinBox->show();
+    } else {
+        colorThresholdLabel->hide();
+        colorThresholdSlider->hide();
+        colorSpinBox->hide();
+    }
+}
+
 void MSAHighlightingTab::sl_exportHighlightningClicked(){
     msa->exportHighlighted();
 }
 
+void MSAHighlightingTab::sl_colorParametersChanged() {
+    QSignalBlocker thresholdBlocker(colorThresholdSlider);
+    Q_UNUSED(thresholdBlocker);
+    QSignalBlocker spinBoxBlocker(colorSpinBox);
+    Q_UNUSED(spinBoxBlocker);
+
+    double thresholdValue = colorSpinBox->value();
+    if (sender() == colorThresholdSlider) {
+        int sliderValue = colorThresholdSlider->value();
+        thresholdValue = double(sliderValue) / 10;
+        colorSpinBox->setValue(thresholdValue);
+    } else if (sender() == colorSpinBox) {
+        int sliderNewValue = int(thresholdValue * 10);
+        colorThresholdSlider->setValue(sliderNewValue);
+    }
+    MsaColorScheme* currentColorScheme = seqArea->getCurrentColorScheme();
+    SAFE_POINT(currentColorScheme != NULL, "Current Color Scheme is NULL!", );
+
+    QVariantMap settings;
+    settings.insert(MsaColorScheme::THRESHOLD_PARAMETER_NAME, thresholdValue);
+    currentColorScheme->applySettings(settings);
+    emit si_colorSchemeChanged();
+}
+
 void MSAHighlightingTab::sl_highlightingParametersChanged() {
     QVariantMap highlightingSettings;
-    thresholdLabel->setText(tr("Threshold: %1%").arg(thresholdSlider->value()));
+    thresholdLabel->setText(tr("Threshold: %1%").arg(highlightingThresholdSlider->value()));
     MsaHighlightingScheme *s = seqArea->getCurrentHighlightingScheme();
-    highlightingSettings.insert(MsaHighlightingScheme::THRESHOLD_PARAMETER_NAME, thresholdSlider->value());
+    highlightingSettings.insert(MsaHighlightingScheme::THRESHOLD_PARAMETER_NAME, highlightingThresholdSlider->value());
     highlightingSettings.insert(MsaHighlightingScheme::LESS_THAN_THRESHOLD_PARAMETER_NAME, thresholdLessRb->isChecked());
     s->applySettings(highlightingSettings);
     seqArea->sl_changeColorSchemeOutside(colorSchemeController->getComboBox()->currentData().toString());

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -120,8 +120,6 @@ private:
     SimpleFormatsInfo               formatsInfo;
     QString                         currentFormat;
     bool                            overwritingConfirmed;
-
-    static const QString HOME_DIR_IDENTIFIER;
 };
 
 }   // namespace U2

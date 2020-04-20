@@ -94,35 +94,6 @@ int AssemblyAnnotationsAreaWidget::getHorizontalScrollBarPosition() const {
     return scrollBar->sliderPosition();
 }
 
-void AssemblyAnnotationsAreaWidget::proceedAnnotationSelection(AnnotationSelectionData* asd) const {
-    AnnotationSelection* as = ctx->getAnnotationsSelection();
-    SAFE_POINT(nullptr != as, "Annotation Selection is missed", );
-
-    Annotation* clickedAnnotation = asd->annotation;
-    const QList<Annotation*> selectedAnnotations = as->getSelectedAnnotations();
-    QItemSelectionModel::SelectionFlag clickedAnnotationFlag = QItemSelectionModel::NoUpdate;
-    QList<Annotation*> toDeselect;
-    AssemblyAnnotationsAreaUtils::collectSelectionInfo<Annotation*>(clickedAnnotation, selectedAnnotations, clickedAnnotationFlag, toDeselect);
-
-    QList<Annotation*> toSelect;
-    switch (clickedAnnotationFlag) {
-    case QItemSelectionModel::Select:
-        toSelect << clickedAnnotation;
-        break;
-    case QItemSelectionModel::Deselect:
-        toDeselect << clickedAnnotation;
-        break;
-    case QItemSelectionModel::NoUpdate:
-        //possible, but nothing we need to do
-        break;
-    default:
-        FAIL("Unexpected result", );
-        break;
-    }
-
-    as->changeSelection(toSelect, toDeselect);
-}
-
 void AssemblyAnnotationsAreaWidget::sl_zoomPerformed() {
     updateVisibleRange();
     update();

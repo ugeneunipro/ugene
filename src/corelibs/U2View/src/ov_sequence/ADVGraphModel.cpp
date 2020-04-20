@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -175,13 +175,14 @@ int GSequenceGraphUtils::getNumSteps(const U2Region& range, int w, int s) {
 //////////////////////////////////////////////////////////////////////////
 //drawer
 
-const QString GSequenceGraphDrawer::DEFAULT_COLOR(QObject::tr("Default color"));
 const float GSequenceGraphDrawer::UNKNOWN_VAL = -1000; // todo: use numeric limits and test all platforms
 
 GSequenceGraphDrawer::GSequenceGraphDrawer(GSequenceGraphView* v, const GSequenceGraphWindowData& wd,
                                            QMap<QString,QColor> colors)
 : QObject(v), view(v), lineColors(colors), globalMin(0), globalMax(0), wdata(wd)
 {
+    DEFAULT_COLOR = tr("Default color");
+
     connect(v, SIGNAL(si_labelAdded(const QSharedPointer<GSequenceGraphData>&, GraphLabel*, const QRect&)),
             this, SLOT(sl_labelAdded(const QSharedPointer<GSequenceGraphData>&, GraphLabel*, const QRect&)));
     connect(v, SIGNAL(si_labelMoved(const QSharedPointer<GSequenceGraphData>&, GraphLabel*, const QRect&)),

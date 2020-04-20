@@ -2,7 +2,7 @@
 Prerequisites
 ===================================
 
-Make sure the Qt (>= 5.2.1 and < 5.6) development libraries are installed:
+Make sure the Qt (>= 5.3.2) development libraries are installed:
 
 * Ubuntu >=14.04: `sudo apt-get install qt5-default qttools5-dev-tools qtscript5-dev libqt5svg5-dev libqt5webkit5-dev`
 * Ubuntu 12.04: 1. Download and install Qt 5.5.1: www.qt.io/download-open-source/
@@ -81,4 +81,6 @@ Build with OpenCL
 
 Notes:
 1) UGENE_CELL flag in ugene_globals should be uncommented when building on Cell BE platform
-
+2) UGENE will be built for x86_64 arch by default, add CONFIG+=x86 to the qmake command to build 32-bit version of UGENE.
+    E.g. for Windows: 
+    qmake -r -tp vc CONFIG+=x86 ugene.pro

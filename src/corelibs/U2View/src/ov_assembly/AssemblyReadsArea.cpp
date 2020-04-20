@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,6 +42,7 @@
 #include <U2Core/MultiTask.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/SaveDocumentTask.h>
+#include <U2Core/Theme.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2AssemblyReadIterator.h>
 #include <U2Core/U2AssemblyUtils.h>
@@ -354,7 +355,7 @@ void AssemblyReadsArea::showWelcomeScreen() {
     GTIMER(c1, t1, "AssemblyReadsArea::showWelcomeScreen");
 
     cachedReads.clear();
-    QString prefix = tr("<a href=\"%1\" style=\"color: %2\">Zoom in to see the reads</a>").arg(ZOOM_LINK).arg(L10N::linkColorLabelStr());
+    QString prefix = tr("<a href=\"%1\" style=\"color: %2\">Zoom in to see the reads</a>").arg(ZOOM_LINK).arg(Theme::linkColorLabelStr());
 
     QList<CoveredRegion> coveredRegions = browser->getCoveredRegions();
     if(!browser->areCoveredRegionsReady()) {

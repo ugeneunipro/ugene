@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,13 +54,13 @@ QSize GroupedComboBoxDelegate::sizeHint(const QStyleOptionViewItem &option, cons
     return QItemDelegate::sizeHint( option, index );
 }
 
-void GroupedComboBoxDelegate::addParentItem(QStandardItemModel * model, const QString& text) {
+void GroupedComboBoxDelegate::addParentItem(QStandardItemModel * model, const QString& text, bool setItalic, bool setBold) {
     QStandardItem* item = new QStandardItem(text);
-    item->setFlags(item->flags() & ~(Qt::ItemIsEnabled | Qt::ItemIsSelectable));
     item->setData("parent", Qt::AccessibleDescriptionRole);
+    item->setFlags(item->flags() & ~(Qt::ItemIsEnabled | Qt::ItemIsSelectable));
     QFont font = item->font();
-    font.setBold( true );
-    font.setItalic(true);
+    font.setItalic(setItalic);
+    font.setBold(setBold);
     item->setFont(font);
     model->appendRow(item);
 }
@@ -69,6 +69,13 @@ void GroupedComboBoxDelegate::addChildItem(QStandardItemModel * model, const QSt
     QStandardItem* item = new QStandardItem(text + QString(4, QChar(' ')));
     item->setData(data, Qt::UserRole);
     item->setData("child", Qt::AccessibleDescriptionRole);
+    model->appendRow(item);
+}
+
+void GroupedComboBoxDelegate::addUngroupedItem(QStandardItemModel* model, const QString& text, const QVariant& data) {
+    QStandardItem* item = new QStandardItem(text);
+    item->setData(data, Qt::UserRole);
+    item->setData("ungrouped", Qt::AccessibleDescriptionRole);
     model->appendRow(item);
 }
 

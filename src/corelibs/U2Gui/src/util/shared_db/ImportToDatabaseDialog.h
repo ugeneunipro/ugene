@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -115,9 +115,9 @@ private:
     QMap<QTreeWidgetItem*, Document*> treeItem2Document;
     QMap<QTreeWidgetItem*, GObject*> treeItem2Object;
 
-    static const QString DIR_HELPER_NAME;
-    static const QString FILES_AND_FOLDERS;
-    static const QString OBJECTS_AND_DOCUMENTS;
+    QString DIR_HELPER_NAME;
+    QString FILES_AND_FOLDERS;
+    QString OBJECTS_AND_DOCUMENTS;
 
     static const int COLUMN_ITEM_TEXT = 0;
     static const int COLUMN_FOLDER = 1;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -233,6 +233,7 @@ void Dashboard::registerDashboard() const {
     dashboardInfo.name = name;
     const bool registered = AppContext::getDashboardInfoRegistry()->registerEntry(dashboardInfo);
     Q_ASSERT(registered);
+    Q_UNUSED(registered);
 }
 
 void Dashboard::updateDashboard() const {

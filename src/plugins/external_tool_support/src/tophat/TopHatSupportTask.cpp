@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -77,7 +77,7 @@ QString TopHatSupportTask::setupTmpDir() {
         QString::number(QCoreApplication::applicationPid()) + "/";
 
     QString topHatTmpDirName =
-        AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(TOPHAT_TMP_DIR);
+        AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(TopHatSupport::TOPHAT_TMP_DIR);
 
     // Create the tmp dir
     QDir tmpDir(topHatTmpDirName + "/" + tmpDirName);
@@ -253,7 +253,7 @@ ExternalToolRunTask * TopHatSupportTask::runTophat() {
 
     // Add Bowtie, samtools an python to the PATH environment variable
     QStringList additionalPaths;
-    ExternalTool *pythonTool = AppContext::getExternalToolRegistry()->getByName(ET_PYTHON);
+    ExternalTool *pythonTool = AppContext::getExternalToolRegistry()->getById(PythonSupport::ET_PYTHON_ID);
     if (NULL != pythonTool) {
         additionalPaths << QFileInfo(pythonTool->getPath()).dir().absolutePath();
     }
@@ -261,7 +261,7 @@ ExternalToolRunTask * TopHatSupportTask::runTophat() {
     additionalPaths << QFileInfo(settings.bowtiePath).dir().absolutePath();
     additionalPaths << QFileInfo(settings.samtoolsPath).dir().absolutePath();
 
-    ExternalToolRunTask* runTask = new ExternalToolRunTask(ET_TOPHAT,
+    ExternalToolRunTask* runTask = new ExternalToolRunTask(TopHatSupport::ET_TOPHAT_ID,
         arguments,
         new ExternalToolLogParser(),
         workingDirectory,

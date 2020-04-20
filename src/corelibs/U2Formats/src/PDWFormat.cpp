@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,7 +52,7 @@ namespace U2 {
 #define PDW_CIRCULAR_TAG    "IScircular"
 
 PDWFormat::PDWFormat(QObject* p)
-: TextDocumentFormat(p, DocumentFormatFlag(DocumentFormatFlag_LockedIfNotCreatedByUGENE), QStringList()<<"pdw")
+: TextDocumentFormat(p, BaseDocumentFormats::PDW, DocumentFormatFlag(DocumentFormatFlag_LockedIfNotCreatedByUGENE), QStringList()<<"pdw")
 {
     formatName = tr("pDRAW");
     formatDescription = tr("pDRAW is a sequence file format used by pDRAW software");
@@ -167,7 +167,7 @@ Document * PDWFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, co
 
     CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
 
-    QString lockReason(DocumentFormat::CREATED_NOT_BY_UGENE);
+    QString lockReason = QObject::tr("The document is not created by UGENE");
     Document *doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs,
         lockReason);
 

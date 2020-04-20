@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,10 +39,6 @@ class U2FORMATS_EXPORT FastqFormat : public TextDocumentFormat {
 public:
     FastqFormat(QObject* p);
 
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::FASTQ;}
-
-    virtual const QString& getFormatName() const {return fn;}
-
     virtual void storeDocument( Document* d, IOAdapter* io, U2OpStatus& os );
 
     virtual bool isStreamingSupport() {return true;}
@@ -57,9 +53,6 @@ protected:
     virtual DNASequence *loadTextSequence(IOAdapter* io, U2OpStatus& os);
 
     virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
-
-private:
-    QString fn;
 };
 
 }//namespace

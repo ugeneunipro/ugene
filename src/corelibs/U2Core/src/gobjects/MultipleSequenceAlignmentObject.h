@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,7 +39,8 @@ public:
     const MultipleSequenceAlignment getMsaCopy() const;
 
     /** GObject methods */
-    virtual GObject * clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
+    //Actually this method doesn't exactly clone MSA database rows, row ID will be generated for each copied row again
+    virtual MultipleSequenceAlignmentObject* clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints = QVariantMap()) const;
 
     /** Const getters */
     char charAt(int seqNum, qint64 position) const;
@@ -65,6 +66,10 @@ public:
 
     void deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount = -1);
 
+    void insertGap(const U2Region& rows, int pos, int nGaps);
+
+    void insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps);
+
 private:
     void loadAlignment(U2OpStatus &os);
     void updateCachedRows(U2OpStatus &os, const QList<qint64> &rowIds);
@@ -73,7 +78,7 @@ private:
     void removeRowPrivate(U2OpStatus &os, const U2EntityRef &msaRef, qint64 rowId);
     void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows,
                              int startPos, int nBases);
-    void insertGap(const U2Region &rows, int pos, int nGaps);
+
 };
 
 }   // namespace U2

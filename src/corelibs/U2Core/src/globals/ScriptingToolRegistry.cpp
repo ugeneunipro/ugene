@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,22 +29,22 @@ namespace U2 {
 
 ////////////////////////////////////////
 //ScriptingTool
-ScriptingTool::ScriptingTool(QString _name, QString _path, const QStringList& _runParams) : name(_name), path(_path), runParams(_runParams) {
-}
+ScriptingTool::ScriptingTool(const QString& _id, const QString& _name, const QString& _path, const QStringList& _runParams)
+                            : id(_id), name(_name), path(_path), runParams(_runParams) {}
 
 void ScriptingTool::onPathChanged(ExternalTool *tool, const QStringList& runParams) {
     ScriptingToolRegistry* reg = AppContext::getScriptingToolRegistry();
     CHECK(NULL != reg, );
 
     if (tool->isValid()){
-        if (NULL != reg->getByName(tool->getName())){
-            reg->unregisterEntry(tool->getName());
+        if (NULL != reg->getById(tool->getId())){
+            reg->unregisterEntry(tool->getId());
         }
         if (!tool->getPath().isEmpty()){
-            reg->registerEntry(new ScriptingTool(tool->getName(), tool->getPath(), runParams));
+            reg->registerEntry(new ScriptingTool(tool->getId(), tool->getName(), tool->getPath(), runParams));
         }
     } else {
-        reg->unregisterEntry(tool->getName());
+        reg->unregisterEntry(tool->getId());
     }
 }
 
@@ -54,15 +54,15 @@ ScriptingToolRegistry::~ScriptingToolRegistry() {
     qDeleteAll(registry.values());
 }
 
-ScriptingTool* ScriptingToolRegistry::getByName(const QString& id){
+ScriptingTool* ScriptingToolRegistry::getById(const QString& id){
     return registry.value(id, NULL);
 }
 
 bool ScriptingToolRegistry::registerEntry(ScriptingTool *t){
-    if (registry.contains(t->getName())) {
+    if (registry.contains(t->getId())) {
         return false;
     } else {
-        registry.insert(t->getName(), t);
+        registry.insert(t->getId(), t);
         return true;
     }
 }
@@ -73,6 +73,10 @@ void ScriptingToolRegistry::unregisterEntry(const QString &id){
 
 QList<ScriptingTool*> ScriptingToolRegistry::getAllEntries() const{
     return registry.values();
+}
+
+QStringList ScriptingToolRegistry::getAllNames() const {
+    return registry.keys();
 }
 
 }//namespace

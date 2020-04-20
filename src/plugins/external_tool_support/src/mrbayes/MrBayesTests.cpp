@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -121,7 +121,7 @@ void GTest_MrBayes::prepare() {
     assert( obj != NULL);
 
     CreatePhyTreeSettings settings;
-    settings.algorithmId = ET_MRBAYES;
+    settings.algorithm = MrBayesSupport::ET_MRBAYES;
     settings.mb_ngen = 1000;
     settings.mrBayesSettingsScript = QString("Begin MrBayes;\n"
         "lset Nst=2 rates=gamma ngammacat=4;\n"

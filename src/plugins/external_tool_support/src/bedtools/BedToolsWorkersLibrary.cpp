@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -84,7 +84,7 @@ void SlopbedWorkerFactory::init() {
     U2DataPath* dataPath = NULL;
     U2DataPathRegistry* dpr =  AppContext::getDataPathRegistry();
     if (dpr){
-        U2DataPath* dp = dpr->getDataPathByName(GENOMES_DATA_NAME);
+        U2DataPath* dp = dpr->getDataPathByName(BedtoolsSupport::GENOMES_DATA_NAME);
         if (dp && dp->isValid()){
             dataPath = dp;
         }
@@ -202,7 +202,7 @@ void SlopbedWorkerFactory::init() {
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new SlopbedPrompter());
-    proto->addExternalTool(ET_BEDTOOLS);
+    proto->addExternalTool(BedtoolsSupport::ET_BEDTOOLS_ID);
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -270,7 +270,7 @@ SlopbedTask::SlopbedTask(const BaseNGSSetting &settings)
 }
 
 void SlopbedTask::prepareStep(){
-    Task* etTask = getExternalToolTask(ET_BEDTOOLS);
+    Task* etTask = getExternalToolTask(BedtoolsSupport::ET_BEDTOOLS_ID);
     CHECK(etTask != NULL, );
 
     addSubTask(etTask);
@@ -472,7 +472,7 @@ void GenomecovWorkerFactory::init() {
     U2DataPath* dataPath = NULL;
     U2DataPathRegistry* dpr =  AppContext::getDataPathRegistry();
     if (dpr){
-        U2DataPath* dp = dpr->getDataPathByName(GENOMES_DATA_NAME);
+        U2DataPath* dp = dpr->getDataPathByName(BedtoolsSupport::GENOMES_DATA_NAME);
         if (dp && dp->isValid()){
             dataPath = dp;
         }
@@ -616,7 +616,7 @@ void GenomecovWorkerFactory::init() {
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new GenomecovPrompter());
-    proto->addExternalTool(ET_BEDTOOLS);
+    proto->addExternalTool(BedtoolsSupport::ET_BEDTOOLS_ID);
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -690,7 +690,7 @@ GenomecovTask::GenomecovTask(const BaseNGSSetting &settings)
 }
 
 void GenomecovTask::prepareStep(){
-    Task* etTask = getExternalToolTask(ET_BEDTOOLS);
+    Task* etTask = getExternalToolTask(BedtoolsSupport::ET_BEDTOOLS_ID);
     CHECK(etTask != NULL, );
 
     addSubTask(etTask);
@@ -982,7 +982,7 @@ void BedtoolsIntersectWorkerFactory::init() {
     ActorPrototype * proto = new IntegralBusActorPrototype( desc, portDescs, attribs );
     proto->setPrompter( new BedtoolsIntersectPrompter() );
     proto->setEditor(new DelegateEditor(delegates));
-    proto->addExternalTool(ET_BEDTOOLS);
+    proto->addExternalTool(BedtoolsSupport::ET_BEDTOOLS_ID);
 
     WorkflowEnv::getProtoRegistry()->registerProto( BaseActorCategories::CATEGORY_BASIC(), proto );
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById( LocalDomainFactory::ID );

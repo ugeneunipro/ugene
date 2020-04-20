@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,7 +49,10 @@ public:
     MsaColorScheme(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj);
 
     //Get color for symbol "c" on position [seq, pos]. Variable "c" has been added for optimization.
-    virtual QColor getColor(int seq, int pos, char c) const = 0;
+    virtual QColor getBackgroundColor(int seq, int pos, char c) const = 0;
+    virtual QColor getFontColor(int seq, int pos, char c) const = 0;
+
+    virtual void applySettings(const QVariantMap& settings);
 
     const MsaColorSchemeFactory * getFactory() const;
 
@@ -59,8 +62,10 @@ public:
     static const QString UGENE_SANGER_NUCL;
     static const QString JALVIEW_NUCL;
     static const QString IDENTPERC_NUCL;
+    static const QString IDENTPERC_NUCL_COLORED;
     static const QString IDENTPERC_NUCL_GRAY;
     static const QString CUSTOM_NUCL;
+    static const QString WEAK_SIMILARITIES_NUCL;
 
     static const QString UGENE_AMINO;
     static const QString ZAPPO_AMINO;
@@ -74,6 +79,8 @@ public:
     static const QString IDENTPERC_AMINO_GRAY;
     static const QString CLUSTALX_AMINO;
     static const QString CUSTOM_AMINO;
+
+    static const QString THRESHOLD_PARAMETER_NAME;
 
 protected:
     const MsaColorSchemeFactory *   factory;
@@ -91,13 +98,16 @@ public:
 
     bool isAlphabetTypeSupported(const DNAAlphabetType& alphabetType) const;
     const AlphabetFlags getSupportedAlphabets() const;
+    bool isThresholdNeeded() const;
+
 signals:
     void si_factoryChanged();
 
 protected:
     QString         id;
     QString         name;
-    AlphabetFlags supportedAlphabets;
+    AlphabetFlags   supportedAlphabets;
+    bool            needThreshold;
 };
 
 class U2ALGORITHM_EXPORT MsaColorSchemeRegistry : public QObject {

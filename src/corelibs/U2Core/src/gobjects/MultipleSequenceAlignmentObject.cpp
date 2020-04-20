@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@ const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsaCopy() co
     return getMsa()->getExplicitCopy();
 }
 
-GObject * MultipleSequenceAlignmentObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
+MultipleSequenceAlignmentObject* MultipleSequenceAlignmentObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
     Q_UNUSED(opBlock);
     CHECK_OP(os, NULL);
@@ -117,8 +117,12 @@ void MultipleSequenceAlignmentObject::updateGapModel(const QList<MultipleSequenc
     updateGapModel(os, newGapModel);
 }
 
-void MultipleSequenceAlignmentObject::insertGap(const U2Region &rows, int pos, int nGaps) {
+void MultipleSequenceAlignmentObject::insertGap(const U2Region& rows, int pos, int nGaps) {
     MultipleAlignmentObject::insertGap(rows, pos, nGaps, false);
+}
+
+void MultipleSequenceAlignmentObject::insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps) {
+    MultipleAlignmentObject::insertGapByRowIndexList(rowIndexes, pos, nGaps, false);
 }
 
 void MultipleSequenceAlignmentObject::crop(const U2Region &window, const QSet<QString> &rowNames) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -201,7 +201,6 @@ void Metaphlan2WorkerFactory::init() {
                                            tr("Bowtie2 output file"),
                                            tr("The file for saving the output of BowTie2 (--bowtie2out). "
                                                                   "In case of PE reads one file is created per each pair of files."));
-
         Descriptor outputUrlDescriptor(OUTPUT_URL,
                                        tr("Output file"),
                                        tr("MetaPhlAn2 output depends on the \"Analysis type\" parameter. "
@@ -357,11 +356,7 @@ void Metaphlan2WorkerFactory::init() {
                                                           ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new Metaphlan2Prompter(nullptr));
-    proto->addExternalTool(Metaphlan2Support::TOOL_NAME);
-    proto->addExternalTool(Metaphlan2Support::ET_PYTHON);
-    proto->addExternalTool(Metaphlan2Support::ET_PYTHON_BIO);
-    proto->addExternalTool(Metaphlan2Support::ET_PYTHON_NUMPY);
-    proto->addExternalTool(Metaphlan2Support::ET_BOWTIE_2_ALIGNER);
+    proto->addExternalTool(Metaphlan2Support::TOOL_ID);
     proto->setPortValidator(INPUT_PORT_ID, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));
     proto->setValidator(new Metaphlan2Validator());
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);

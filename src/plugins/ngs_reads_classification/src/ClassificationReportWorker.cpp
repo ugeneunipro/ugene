@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -217,7 +217,7 @@ Task * ClassificationReportWorker::tick() {
             QString reportFilePrefix = getReportFilePrefix(message);
             outputFileUrl = FileAndDirectoryUtils::createWorkingDir(context->workingDir(),
                                     FileAndDirectoryUtils::WORKFLOW_INTERNAL_CUSTOM,
-                                    "classification_report/",
+                                    "Classification_Report/",
                                     context->workingDir());
             if (!reportFilePrefix.isEmpty()) {
                 outputFileUrl += reportFilePrefix + "_";

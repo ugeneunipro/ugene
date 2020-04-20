@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 
 #include <QVector>
 #include <QLabel>
-#include <QCheckBox>
+#include <QRadioButton>
 
 #include <U2Gui/AppSettingsGUI.h>
 
@@ -53,8 +53,12 @@ private:
 class OpenCLSupportSettingsPageState : public AppSettingsGUIPageState {
     Q_OBJECT
 public:
-    OpenCLSupportSettingsPageState( int num_gpus );
-    QVector<bool> enabledGpus;
+    OpenCLSupportSettingsPageState(const QString& name);
+
+    const QString &getEnabledGpuName() const;
+
+private:
+    QString enabledGpuName;
 };
 
 class OpenCLSupportSettingsPageWidget : public AppSettingsGUIPageWidget {
@@ -63,12 +67,12 @@ public:
     OpenCLSupportSettingsPageWidget( const QString & _msg, OpenCLSupportSettingsPageController * ctrl );
 
     virtual void setState( AppSettingsGUIPageState * state );
-
     virtual AppSettingsGUIPageState* getState( QString & err ) const;
 
+private:
     QString onlyMsg;
+    QMap<QString, QRadioButton*> gpuRadioButtons;
 
-    QList<QCheckBox *> gpuEnableChecks;
 };
 
 } //namespace

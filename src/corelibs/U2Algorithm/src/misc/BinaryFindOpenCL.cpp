@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -59,7 +59,7 @@ BinaryFindOpenCL::BinaryFindOpenCL(const NumberType *_haystack,
     buf_needlesArray = 0;
     buf_windowSizesArray = 0;
 
-    device = AppContext::getOpenCLGpuRegistry()->getAnyEnabledGpu();
+    device = AppContext::getOpenCLGpuRegistry()->getEnabledGpu();
     deviceId = (cl_device_id) device->getId();
     clContext = (cl_context) device->getContext();
 

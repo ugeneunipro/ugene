@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,8 +29,12 @@
 #include <QLineEdit>
 
 namespace U2 {
+
+class ShowHideSubgroupWidget;
+
 #define ExternalToolSupportSettingsPageId QString("ets")
 struct ExternalToolInfo {
+    QString id;
     QString name;
     QString path;
     QString description;
@@ -47,7 +51,8 @@ public:
     AppSettingsGUIPageState* getSavedState();
     void saveState(AppSettingsGUIPageState* s);
     AppSettingsGUIPageWidget* createWidget(AppSettingsGUIPageState* state);
-    const QString& getHelpPageId() const { return helpPageId; };
+    const QString& getHelpPageId() const;
+
 private:
     static const QString helpPageId;
 };
@@ -55,26 +60,37 @@ private:
 class ExternalToolSupportSettingsPageState : public AppSettingsGUIPageState {
     Q_OBJECT
 public:
-    QList<ExternalTool*>    externalTools;
+    ExternalToolSupportSettingsPageState(const QList<ExternalTool*>& ets);
+
+    QList<ExternalTool*> getExternalTools() const;
+
+private:
+    QList<ExternalTool *> externalTools;
 };
 
 class ExternalToolSupportSettingsPageWidget : public AppSettingsGUIPageWidget, public Ui_ETSSettingsWidget {
     Q_OBJECT
 public:
     ExternalToolSupportSettingsPageWidget(ExternalToolSupportSettingsPageController* ctrl);
+    ~ExternalToolSupportSettingsPageWidget() override;
 
-    virtual void setState(AppSettingsGUIPageState* state);
+    virtual void setState(AppSettingsGUIPageState* state) override;
 
-    virtual AppSettingsGUIPageState* getState(QString& err) const;
+    virtual AppSettingsGUIPageState* getState(QString& err) const override;
 
 private:
     QWidget* createPathEditor(QWidget *parent, const QString& path) const;
-    QTreeWidgetItem* insertChild(QTreeWidgetItem* rootItem, const QString& name, int pos, bool isModule = false);
-    ExternalTool* isMasterWithModules(const QList<ExternalTool*>& toolsList) const;
+    QTreeWidgetItem *findToolkitItem(QTreeWidget *treeWidget, const QString &toolkitName);
+    QTreeWidgetItem *createToolkitItem(QTreeWidget *treeWidget, const QString &toolkitName, const QIcon &icon);
+    QTreeWidgetItem* insertChild(QTreeWidgetItem* rootItem, const QString& id, int pos, bool isModule = false);
+    static ExternalTool* isMasterWithModules(const QList<ExternalTool*>& toolsList);
     void setToolState(ExternalTool* tool);
     QString getToolStateDescription(ExternalTool* tool) const;
+    void resetDescription();
     void setDescription(ExternalTool* tool);
     QString warn(const QString& text) const;
+    bool eventFilter(QObject *watched, QEvent *event) override;
+    void saveShowHideSubgroupsState() const;
 
 private slots:
     void sl_toolPathChanged();
@@ -86,16 +102,27 @@ private slots:
     void sl_toolValidationStatusChanged(bool isValid);
     void sl_validationComplete();
     void sl_onClickLink(const QUrl& url);
+    void sl_importCustomToolButtonClicked();
+    void sl_deleteCustomToolButtonClicked();
+    void sl_externalToolAdded(const QString &id);
+    void sl_externalToolIsAboutToBeRemoved(const QString &id);
 
 private:
     QMap<QString, ExternalToolInfo> externalToolsInfo;
-    QMap<QString, QTreeWidgetItem*> externalToolsItems;
+    QMap<QString, QTreeWidgetItem *> externalToolsItems;
     QString getToolLink(const QString &toolName) const;
     mutable int buttonsWidth;
+    QString defaultDescriptionText;
+    ShowHideSubgroupWidget* supportedToolsShowHideWidget;
+    ShowHideSubgroupWidget* customToolsShowHideWidget;
+    ShowHideSubgroupWidget* infoShowHideWidget;
 
     static const QString INSTALLED;
     static const QString NOT_INSTALLED;
     static const QString ET_DOWNLOAD_INFO;
+    static const QString SUPPORTED_ID;
+    static const QString CUSTOM_ID;
+    static const QString INFORMATION_ID;
 };
 
 class PathLineEdit : public QLineEdit {
@@ -104,11 +131,16 @@ public:
     PathLineEdit(const QString& filter, const QString& type, bool multi, QWidget *parent)
         : QLineEdit(parent), FileFilter(filter), type(type), multi(multi) {}
 
+signals:
+    void si_focusIn();
+
 private slots:
     void sl_onBrowse();
     void sl_clear();
 
 private:
+    void focusInEvent(QFocusEvent *event) override;
+
     QString FileFilter;
     QString type;
     bool    multi;

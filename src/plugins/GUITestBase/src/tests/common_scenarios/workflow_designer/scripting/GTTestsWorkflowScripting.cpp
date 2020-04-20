@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -79,8 +79,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTGlobals::sleep(500);
 
     GTUtilsDialog::waitForDialog(os, new CreateElementWithScriptDialogFiller(os, "wd_scripting_test_0001"));
-    GTWidget::click(os, GTAction::button(os, "createScriptAction"));
-
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Create element with script...", GTGlobals::UseMouse);
 //    4. Select created worker. Press toolbar button "Edit script text".
 //    Expected state: Script editor dialog appears.
 
@@ -91,7 +90,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTMouseDriver::click();
 
     GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogSyntaxChecker(os, "#$%not a script asdasd321 123", "Script syntax check failed!"));
-    GTWidget::click(os, GTAction::button(os, "editScriptAction"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit script of the element...", GTGlobals::UseMouse);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
@@ -156,14 +155,14 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTGlobals::sleep(500);
 
     GTUtilsDialog::waitForDialog(os, new CreateElementWithScriptDialogFiller(os, "workflow_scripting_test_0004"));
-    GTWidget::click(os, GTAction::button(os, "createScriptAction"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Create element with script...", GTGlobals::UseMouse);
 
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os,"workflow_scripting_test_0004"));
     GTMouseDriver::click();
 
     const QString scriptText = "if(size(in_seq) >= 10000) {out_seq = in_seq;}";
     GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogFiller(os, "", scriptText));
-    GTWidget::click(os, GTAction::button(os, "editScriptAction"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit script of the element...", GTGlobals::UseMouse);
 
     WorkflowProcessItem *script = GTUtilsWorkflowDesigner::getWorker(os, "workflow_scripting_test_0004");
     QString text = script->getProcess()->getScript()->getScriptText();

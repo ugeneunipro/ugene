@@ -7,11 +7,9 @@ echo Source: $SOURCE_DIR
 
 VERSION_MAJOR=`cat ${SOURCE_DIR}/src/ugene_version.pri | grep 'UGENE_VER_MAJOR=' | awk -F'=' '{print $2}'`
 VERSION_MINOR=`cat ${SOURCE_DIR}/src/ugene_version.pri | grep 'UGENE_VER_MINOR=' | awk -F'=' '{print $2}'`
-VERSION_PATCH=`cat ${SOURCE_DIR}/src/ugene_version.pri | grep 'UGENE_VER_PATCH=' | awk -F'=' '{print $2}'`
 UGENE_VERSION=`cat ${SOURCE_DIR}/src/ugene_version.pri | grep UGENE_VERSION | awk -F'=' '{print $2}' | \
                sed -e 's/$${UGENE_VER_MAJOR}/'"$VERSION_MAJOR"'/g' \
-                   -e 's/$${UGENE_VER_MINOR}/'"$VERSION_MINOR"'/g' \
-                   -e 's/$${UGENE_VER_PATCH}/'"$VERSION_PATCH"'/g'`
+                   -e 's/$${UGENE_VER_MINOR}/'"$VERSION_MINOR"'/g'`
 
 ARCHITECTURE=`uname -m`
 BUILD_DIR=./release_bundle
@@ -46,6 +44,8 @@ mkdir "${TARGET_EXE_DIR}/plugins"
 
 echo copying icons
 cp ${SOURCE_DIR}/src/ugeneui/images/ugene-doc.icns "$TARGET_APP_DIR/Contents/Resources"
+cp ${SOURCE_DIR}/src/ugeneui/images/ugeneui.icns "$TARGET_APP_DIR/Contents/Resources"
+cp ${SOURCE_DIR}/installer/macosx/Info.plist "$TARGET_APP_DIR/Contents"
 
 echo copying translations
 cp $RELEASE_DIR/transl_*.qm "$TARGET_EXE_DIR"
@@ -96,7 +96,6 @@ echo Copying plugins
 PLUGIN_LIST="annotator \
             ball \
             biostruct3d_view \
-            browser_support \
             chroma_view \
             circular_view \
             clark_support \

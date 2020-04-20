@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,6 +26,9 @@
 #include <QImageWriter>
 #include <QMessageBox>
 #include <QMouseEvent>
+#include <QOffscreenSurface>
+#include <QOpenGLContext>
+#include <QOpenGLShaderProgram>
 #include <QTime>
 
 #include <U2Algorithm/MolecularSurfaceFactoryRegistry.h>
@@ -75,10 +78,29 @@ namespace U2 {
 
 int BioStruct3DGLWidget::widgetCount = 0;
 
+bool BioStruct3DGLWidget::checkShaderPrograms() {
+    QOffscreenSurface surf;
+    surf.create();
+
+    QOpenGLContext ctx;
+    ctx.create();
+    ctx.makeCurrent(&surf);
+
+    bool opgl = QOpenGLShaderProgram::hasOpenGLShaderPrograms(&ctx);
+    if (!opgl) {
+        coreLog.error(tr("The \"3D Structure Viewer\" was disabled, because shader programs written in the OpenGL Shading Language (GLSL) are not supported on this system. "
+                         "Please try to update drivers and reset the UGENE settings to default in the \"Application Settings\" dialog."));
+    }
+
+    return opgl;
+}
+
 void BioStruct3DGLWidget::tryGL() {
     volatile QOpenGLWidget wgt;
     Q_UNUSED(wgt);
 }
+
+const double BioStruct3DGLWidget::MINIMUM_ACCEPTABLE_VERSION = 2.0f;
 
 static QColor DEFAULT_BACKGROUND_COLOR = Qt::black;
 static QColor DEFAULT_SELECTION_COLOR = Qt::yellow;

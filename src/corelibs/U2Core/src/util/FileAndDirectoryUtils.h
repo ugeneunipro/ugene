@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -43,11 +43,14 @@ public:
     static QString detectFormat(const QString &url);
     static bool isFileEmpty(const QString& url);
     static void dumpStringToFile(QFile *f, QString &str); //Be aware: string will be cleared after dumping
+    static QString getAbsolutePath(const QString& filePath);
+
 
 private:
     static QString getFormatId(const FormatDetectionResult &r);
 
-    static int minLengthToWrite;
+    static int MIN_LENGTH_TO_WRITE;
+    static const QString HOME_DIR_IDENTIFIER;
 };
 
 } // U2

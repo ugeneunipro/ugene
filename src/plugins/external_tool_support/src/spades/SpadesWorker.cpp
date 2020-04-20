@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -376,7 +376,7 @@ void SpadesWorker::sl_taskFinished() {
 GenomeAssemblyTaskSettings SpadesWorker::getSettings(U2OpStatus &os) {
     GenomeAssemblyTaskSettings settings;
 
-    settings.algName = ET_SPADES;
+    settings.algName = SpadesSupport::ET_SPADES;
     settings.openView = false;
     QString outDir = getValue<QString>(SpadesWorkerFactory::OUTPUT_DIR);
     if (outDir.isEmpty()) {
@@ -590,7 +590,7 @@ void SpadesWorkerFactory::init() {
     for (int i = 0; i < IN_PORT_PAIRED_ID_LIST.size(); i++) {
         proto->setPortValidator(IN_PORT_PAIRED_ID_LIST[i], new PairedReadsPortValidator(READS_URL_SLOT_ID_LIST[i], READS_PAIRED_URL_SLOT_ID_LIST[i]));
     }
-    proto->addExternalTool(ET_SPADES);
+    proto->addExternalTool(SpadesSupport::ET_SPADES_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_MAP_ASSEMBLE_READS(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new SpadesWorkerFactory());
 }

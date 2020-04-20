@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,6 +30,7 @@
 namespace U2 {
 
 class PrepareSequenceObjectsTask : public Task {
+    Q_OBJECT
 public:
     PrepareSequenceObjectsTask(const MultipleSequenceAlignment& msa, const QSet<qint64>& rowIds, bool trimGaps);
 
@@ -44,6 +45,7 @@ private:
 };
 
 class ExportSequencesTask : public Task {
+    Q_OBJECT
 public:
     ExportSequencesTask(const MultipleSequenceAlignment& msa, const QSet<qint64>& rowIds, bool trimGaps, bool addToProjectFlag,
         const QString& dirUrl, const DocumentFormatId& format, const QString& extension, const QString& customFileName = QString());

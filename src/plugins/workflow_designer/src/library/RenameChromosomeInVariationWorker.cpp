@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -138,7 +138,7 @@ void RenameChomosomeInVariationWorkerFactory::init() {
         p << new PortDescriptor(inD, DataTypePtr(new MapDataType("renameChr.input-url", inM)), true);
 
         QMap<Descriptor, DataTypePtr> outM;
-        const Descriptor outSlotDescriptor("url", RenameChomosomeInVariationWorker::tr("Produced URL"), RenameChomosomeInVariationWorker::tr("Location of a corresponding produced file."));
+        Descriptor outSlotDescriptor("url", RenameChomosomeInVariationWorker::tr("Produced URL"), RenameChomosomeInVariationWorker::tr("Location of a corresponding produced file."));
         outM[outSlotDescriptor] = BaseTypes::STRING_TYPE();
         p << new PortDescriptor(outD, DataTypePtr(new MapDataType("renameChr.output-url", outM)), false, true);
     }

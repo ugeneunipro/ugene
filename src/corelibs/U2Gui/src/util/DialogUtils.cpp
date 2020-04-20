@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -62,14 +62,15 @@ QString DialogUtils::prepareDocumentsFileFilterByObjType(const GObjectType& t, b
     return FormatUtils::prepareDocumentsFileFilterByObjType(t, any);
 }
 
-void DialogUtils::setWizardMinimumSize(QWizard *wizard) {
-    QSize bestSize;
+void DialogUtils::setWizardMinimumSize(QWizard *wizard, const QSize &minimumSize) {
+    QSize bestSize = minimumSize;
     foreach (int pageId, wizard->pageIds()) {
         QWizardPage *page = wizard->page(pageId);
         page->adjustSize();
         bestSize = bestSize.expandedTo(page->size());
     }
     wizard->setMinimumSize(bestSize);
+    wizard->adjustSize();
 }
 
 

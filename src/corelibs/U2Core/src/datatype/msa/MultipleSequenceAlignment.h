@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -97,10 +97,13 @@ public:
     bool simplify();
 
     /**
-     * Sorts rows by similarity making identical rows sequential.
-     * Returns 'true' if the rows were resorted, and 'false' otherwise.
+     * Sorts rows by similarity making identical rows sequential. Sets MSA rows to the sorted rows.
+     * Returns 'true' if the rows were resorted and MSA is changed, and 'false' otherwise.
      */
     bool sortRowsBySimilarity(QVector<U2Region> &united);
+
+    /** Returns rows sorted by similarity. Does not update MSA. */
+    QList<MultipleSequenceAlignmentRow> getRowsSortedBySimilarity(QVector<U2Region> &united) const;
 
     /** Returns row of the alignment */
     inline MultipleSequenceAlignmentRow getMsaRow(int row);

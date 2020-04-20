@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -69,7 +69,7 @@ owner(owner), threadNum(tn), nThreads(totalThreads), dataX(owner->seqX), dataY(o
         quint64 areaS2 = quint64(getDiagLen(medDiag2)) * qAbs(owner->END_DIAG) / totalThreads;
         areaS = areaS1 + areaS2;
     }
-    assert(areaS > 0);
+    areaS = areaS == 0 ? 1 : areaS;
     currentS = 0;
     tpm = Task::Progress_Manual;
 }

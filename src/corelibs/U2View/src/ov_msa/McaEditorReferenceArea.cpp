@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -118,7 +118,7 @@ void McaEditorReferenceArea::mousePressEvent(QMouseEvent* e) {
         const bool isShiftPressed = km.testFlag(Qt::ShiftModifier);
         if (!isShiftPressed) {
             firstPressedSelectionPosition = -1;
-            emit ui->si_clearSelection();
+            emit editor->si_clearSelection();
         }
     } else {
         PanView::mousePressEvent(e);

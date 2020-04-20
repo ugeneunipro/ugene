@@ -181,7 +181,7 @@
 <context>
     <name>U2::BestPositionFindTask</name>
     <message>
-        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="120"/>
+        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="154"/>
         <source>Best position find task</source>
         <translation>Best position find task</translation>
     </message>
@@ -233,22 +233,22 @@
     <message>
         <location filename="../src/misc/GenomeAssemblyMultiTask.cpp" line="101"/>
         <source>Assembly task finished with error: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Assembly task finished with error: %1</translation>
     </message>
     <message>
         <location filename="../src/misc/GenomeAssemblyMultiTask.cpp" line="103"/>
         <source>Assembly task wasn&apos;t set</source>
-        <translation type="unfinished"></translation>
+        <translation>Assembly task wasn&apos;t set</translation>
     </message>
     <message>
         <location filename="../src/misc/GenomeAssemblyMultiTask.cpp" line="106"/>
         <source>Assembly was finished successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Assembly was finished successfully</translation>
     </message>
     <message>
         <location filename="../src/misc/GenomeAssemblyMultiTask.cpp" line="108"/>
         <source>Assembly failed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Assembly failed.</translation>
     </message>
 </context>
 <context>
@@ -399,70 +399,80 @@ For every column selects the most rare symbol in the whole alignment with percen
 <context>
     <name>U2::MsaColorSchemeRegistry</name>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="545"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="559"/>
         <source>No colors</source>
         <translation>Без цвета</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="553"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="567"/>
         <source>UGENE Sanger</source>
         <translatorcomment>UGENE Sanger</translatorcomment>
         <translation>UGENE Sanger</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="557"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="571"/>
         <source>Jalview</source>
         <translation>Раскраска Jalview</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="559"/>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="597"/>
-        <source>Percentage Identity</source>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="573"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="614"/>
+        <source>Percentage identity</source>
         <translation>По процентному соотношению</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="560"/>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="598"/>
-        <source>Percentage Identity (gray)</source>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="574"/>
+        <source>Percentage identity (colored)</source>
+        <translation>По процентному соотношению (цветное)</translation>
+    </message>
+    <message>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="575"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="615"/>
+        <source>Percentage identity (gray)</source>
         <translation>По процентному соотношению (серый)</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="571"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="577"/>
+        <source>Weak similarities</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="588"/>
         <source>Zappo</source>
         <translation>Zappo</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="575"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="592"/>
         <source>Tailor</source>
         <translation>Tailor</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="579"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="596"/>
         <source>Hydrophobicity</source>
         <translation>Гидрофобность</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="583"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="600"/>
         <source>Helix propensity</source>
         <translation>Склонность к спиральности</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="587"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="604"/>
         <source>Strand propensity</source>
         <translation>Склонность к линейности</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="591"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="608"/>
         <source>Turn propensity</source>
         <translation>Склонность к сворачиванию</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="595"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="612"/>
         <source>Buried index</source>
         <translation>Индекс</translation>
     </message>
     <message>
-        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="600"/>
+        <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="617"/>
         <source>Clustal X</source>
         <translation>Clustal X</translation>
     </message>
@@ -612,6 +622,11 @@ For every column selects the most rare symbol in the whole alignment with percen
         <source>Align sequences to an existing alignment by UGENE started</source>
         <translation>Align sequences to an existing alignment by UGENE started</translation>
     </message>
+    <message>
+        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="136"/>
+        <source>The following sequence(s) were not aligned as they do not contain meaningful characters: &quot;%1&quot;.</source>
+        <translation>Следующие последовательности не были выровнены потому что не содержат символов, имеющих значение: &quot;%1&quot;.</translation>
+    </message>
 </context>
 <context>
     <name>U2::SmithWatermanReportCallbackAnnotImpl</name>
@@ -681,10 +696,6 @@ For every column selects the most rare symbol in the whole alignment with percen
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="372"/>
         <source>Failed to get the sequence data.</source>
         <translation>Неудачная попытка получения данных последовательности.</translation>
-    </message>
-    <message>
-        <source>Failed to add row to result msa.</source>
-        <translation type="vanished">Неудачная попытка добавления строки в результирующее выравнивание.</translation>
     </message>
     <message>
         <location filename="../src/smith_waterman/SmithWatermanReportCallback.cpp" line="381"/>

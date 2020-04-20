@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,11 +39,13 @@ namespace U2 {
 
 const QString ExternalToolUtils::CISTROME_DATA_DIR = "CISTROME_DATA_DIR";
 
-void ExternalToolUtils::checkExtToolsPath(const QStringList &names) {
+void ExternalToolUtils::checkExtToolsPath(const QStringList &ids) {
     QStringList missingTools;
-    foreach (QString name, names) {
-        if (AppContext::getExternalToolRegistry()->getByName(name)->getPath().isEmpty()) {
-            missingTools << name;
+    foreach (const QString &id, ids) {
+        ExternalTool *tool = AppContext::getExternalToolRegistry()->getById(id);
+        SAFE_POINT(nullptr != tool, QString("External tool with ID '%1' not found in the registry").arg(id), );
+        if (tool->getPath().isEmpty()) {
+            missingTools << tool->getName();
         }
     }
     if (!missingTools.isEmpty()){

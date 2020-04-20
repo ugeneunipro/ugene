@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include "faidx.h"
 #include "sam.h"
+#include "ugene_custom_io.h"
 
 #define TYPE_BAM  1
 #define TYPE_READ 2
@@ -86,7 +87,7 @@ samfile_t *samopen(const char *fn, const char *mode, const void *aux)
 			bam_header_write(fp->x.bam, fp->header);
 		} else { // text
 			// open file
-			fp->x.tamw = strcmp(fn, "-")? fopen(fn, "w") : stdout;
+			fp->x.tamw = strcmp(fn, "-") ? ugene_custom_fopen(fn, "w") : stdout;
 			if (fp->x.tamr == 0) goto open_err_ret;
 			if (strchr(mode, 'X')) fp->type |= BAM_OFSTR<<2;
 			else if (strchr(mode, 'x')) fp->type |= BAM_OFHEX<<2;

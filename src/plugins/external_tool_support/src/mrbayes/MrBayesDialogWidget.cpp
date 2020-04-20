@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -170,7 +170,7 @@ int MrBayesWidget::getRandomSeed(){
 bool MrBayesWidget::checkSettings(QString &messsage, const CreatePhyTreeSettings &settings) {
     //Check that MrBayes and tempory folder path defined
     ExternalToolRegistry* reg = AppContext::getExternalToolRegistry();
-    ExternalTool* mb= reg->getByName(ET_MRBAYES);
+    ExternalTool* mb= reg->getById(MrBayesSupport::ET_MRBAYES_ID);
     assert(mb);
     const QString& path = mb->getPath();
     const QString& name = mb->getName();

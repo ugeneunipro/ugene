@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -58,15 +58,13 @@ public:
         NoSplit
     };
 
-    AbstractVariationFormat(QObject *p, const QStringList &fileExts, bool _isSupportHeader = false);
+    AbstractVariationFormat(QObject *p, const DocumentFormatId& id, const QStringList &fileExts, bool _isSupportHeader = false);
 
-    virtual const QString &getFormatName() const {return formatName;}
     virtual void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);
     virtual void storeHeader(GObject *obj, IOAdapter *io, U2OpStatus &os);
 
 protected:
-    QString formatName;
     bool isSupportHeader;
 
     QMap<int,ColumnRole> columnRoles;

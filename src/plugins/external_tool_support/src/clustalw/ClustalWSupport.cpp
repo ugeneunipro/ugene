@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,7 +47,11 @@
 
 namespace U2 {
 
-ClustalWSupport::ClustalWSupport(const QString& name, const QString& path) : ExternalTool(name, path)
+const QString ClustalWSupport::ET_CLUSTAL = "ClustalW";
+const QString ClustalWSupport::ET_CLUSTAL_ID = "USUPP_CLUSTALW";
+const QString ClustalWSupport::CLUSTAL_TMP_DIR = "clustal";
+
+ClustalWSupport::ClustalWSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         viewCtx = new ClustalWSupportContext(this);
@@ -129,7 +133,7 @@ void ClustalWSupportContext::initViewContext(GObjectView* view) {
     bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
 
-    AlignMsaAction *alignAction = new AlignMsaAction(this, ET_CLUSTAL, view, tr("Align with ClustalW..."), 2000);
+    AlignMsaAction *alignAction = new AlignMsaAction(this, ClustalWSupport::ET_CLUSTAL_ID, view, tr("Align with ClustalW..."), 2000);
     alignAction->setObjectName("Align with ClustalW");
 
     addViewAction(alignAction);
@@ -151,10 +155,10 @@ void ClustalWSupportContext::buildMenu(GObjectView* view, QMenu* m) {
 
 void ClustalWSupportContext::sl_align_with_ClustalW() {
     //Check that Clustal and tempory folder path defined
-    if (AppContext::getExternalToolRegistry()->getByName(ET_CLUSTAL)->getPath().isEmpty()){
+    if (AppContext::getExternalToolRegistry()->getById(ClustalWSupport::ET_CLUSTAL_ID)->getPath().isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle(ET_CLUSTAL);
-        msgBox->setText(tr("Path for %1 tool not selected.").arg(ET_CLUSTAL));
+        msgBox->setWindowTitle(ClustalWSupport::ET_CLUSTAL);
+        msgBox->setText(tr("Path for %1 tool not selected.").arg(ClustalWSupport::ET_CLUSTAL));
         msgBox->setInformativeText(tr("Do you want to select it now?"));
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);
@@ -173,7 +177,7 @@ void ClustalWSupportContext::sl_align_with_ClustalW() {
                break;
          }
     }
-    if (AppContext::getExternalToolRegistry()->getByName(ET_CLUSTAL)->getPath().isEmpty()){
+    if (AppContext::getExternalToolRegistry()->getById(ClustalWSupport::ET_CLUSTAL_ID)->getPath().isEmpty()){
         return;
     }
     U2OpStatus2Log os(LogLevel_DETAILS);

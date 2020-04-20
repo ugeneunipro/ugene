@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -59,7 +59,7 @@ void BamBedConversionTask::prepare(){
     args << "-i";
     args << sourceURL.getURLString();
 
-    ExternalToolRunTask* etTask = new ExternalToolRunTask(ET_BEDTOOLS, args, new ExternalToolLogParser(), workingDir);
+    ExternalToolRunTask* etTask = new ExternalToolRunTask(BedtoolsSupport::ET_BEDTOOLS_ID, args, new ExternalToolLogParser(), workingDir);
     etTask->setStandartOutputFile(targetUrl);
     addSubTask(etTask);
 }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ MetaphlanSupportPlugin::MetaphlanSupportPlugin()
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(nullptr != etRegistry, );
 
-    etRegistry->registerEntry(new Metaphlan2Support(Metaphlan2Support::TOOL_NAME));
+    etRegistry->registerEntry(new Metaphlan2Support(Metaphlan2Support::TOOL_ID, Metaphlan2Support::TOOL_NAME));
 
     LocalWorkflow::Metaphlan2WorkerFactory::init();
 }
@@ -50,7 +50,7 @@ MetaphlanSupportPlugin::~MetaphlanSupportPlugin() {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(nullptr != etRegistry, );
 
-    etRegistry->unregisterEntry(Metaphlan2Support::TOOL_NAME);
+    etRegistry->unregisterEntry(Metaphlan2Support::TOOL_ID);
 }
 
 

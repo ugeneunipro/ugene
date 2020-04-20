@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,166 +19,167 @@
  * MA 02110-1301, USA.
  */
 
+#include "U2Core/U2SafePoints.h"
+
 #include "RowHeightController.h"
 #include "ScrollController.h"
 #include "ov_msa/MaEditor.h"
-#include "ov_msa/MSACollapsibleModel.h"
+#include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/view_rendering/MaEditorWgt.h"
 
 namespace U2 {
 
-RowHeightController::RowHeightController(MaEditorWgt *maEditorWgt)
-    : QObject(maEditorWgt),
-      ui(maEditorWgt)
-{
+RowHeightController::RowHeightController(MaEditorWgt* maEditorWgt)
+        : QObject(maEditorWgt),
+          ui(maEditorWgt) {
 
 }
 
-int RowHeightController::getRowScreenOffset(int rowIndex) const {
-    return getRowScreenRange(rowIndex).startPos;
-}
-
-int RowHeightController::getRowScreenOffsetByNumber(int rowNumber) const {
-    return getRowScreenOffset(ui->getCollapseModel()->mapToRow(rowNumber));
-}
-
-int RowHeightController::getRowScreenCenterByNumber(int rowNumber) const {
-    return getRowScreenOffsetByNumber(rowNumber) + getRowHeightByNumber(rowNumber) / 2;
-}
-
-int RowHeightController::getRowGlobalOffset(int rowIndex) const {
-    int rowOffset = 0;
-    for (int i = 0; i < rowIndex; i++) {
-        rowOffset += getRowHeight(i);
+int RowHeightController::getGlobalYPositionByMaRowIndex(int maRowIndex) const {
+    const MaCollapseModel* collapseModel = ui->getCollapseModel();
+    int viewRowIndex = collapseModel->getViewRowIndexByMaRowIndex(maRowIndex);
+    int offset = 0;
+    for (int viewRow = 0; viewRow < viewRowIndex; viewRow++) {
+        int maRow = collapseModel->getMaRowIndexByViewRowIndex(viewRow);
+        offset += getRowHeightByMaIndex(maRow);
     }
-    return rowOffset;
+    return offset;
 }
 
-int RowHeightController::getRowGlobalOffset(int rowIndex, const QList<int> &rowIndexes) const {
-    int rowOffset = 0;
-    foreach (const int currentIndex, rowIndexes) {
-        if (currentIndex != rowIndex) {
-            rowOffset += getRowHeight(currentIndex);
-        } else {
-            return rowOffset;
+int RowHeightController::getGlobalYPositionByMaRowIndex(int maRowIndex, const QList<int>& maRowIndexes) const {
+    int offset = 0;
+            foreach (int currentIndex, maRowIndexes) {
+            if (currentIndex == maRowIndex) {
+                return offset;
+            }
+            offset += getRowHeightByMaIndex(currentIndex);
         }
-    }
     FAIL(false, 0);
 }
 
-int RowHeightController::getFirstVisibleRowGlobalOffset(bool countClipped) const {
-    return getRowGlobalOffset(ui->getScrollController()->getFirstVisibleRowIndex(countClipped));
+int RowHeightController::getGlobalYPositionOfTheFirstVisibleRow(bool countClipped) const {
+    return getGlobalYPositionByMaRowIndex(ui->getScrollController()->getFirstVisibleMaRowIndex(countClipped));
 }
 
-int RowHeightController::getFirstVisibleRowScreenOffset(bool countClipped) const {
-    const int firstVisibleRowGlobalOffset = getFirstVisibleRowGlobalOffset(countClipped);
-    return firstVisibleRowGlobalOffset - ui->getScrollController()->getScreenPosition().y();
+int RowHeightController::getScreenYPositionOfTheFirstVisibleRow(bool countClipped) const {
+    const int globalYPositionOfTheFirstVisibleRow = getGlobalYPositionOfTheFirstVisibleRow(countClipped);
+    return globalYPositionOfTheFirstVisibleRow - ui->getScrollController()->getScreenPosition().y();
 }
 
-int RowHeightController::getRowHeightByNumber(int rowNumber) const {
-    return getRowHeight(ui->getCollapseModel()->mapToRow(rowNumber));
+int RowHeightController::getRowHeightByViewRowIndex(int viewRowIndex) const {
+    int maRowIndex = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
+    return getRowHeightByMaIndex(maRowIndex);
 }
 
-int RowHeightController::getRowsHeight(const QList<int> &rowIndexes) const {
-    int rowsHeight = 0;
-    foreach (int rowIndex, rowIndexes) {
-        rowsHeight += getRowHeight(rowIndex);
-    }
-    return rowsHeight;
+int RowHeightController::getSumOfRowHeightsByMaIndexes(const QList<int>& maRowIndexes) const {
+    int sumHeight = 0;
+            foreach (int maRowIndex, maRowIndexes) {
+            sumHeight += getRowHeightByMaIndex(maRowIndex);
+        }
+    return sumHeight;
 }
 
 int RowHeightController::getTotalAlignmentHeight() const {
-    return static_cast<int>(getRowsGlobalRange(0, ui->getCollapseModel()->getDisplayableRowsCount()).length);
+    int viewRowCount = ui->getCollapseModel()->getViewRowCount();
+    U2Region globalYRegion = getGlobalYRegionByViewRowsRegion(U2Region(0, viewRowCount));
+    return static_cast<int>(globalYRegion.length);
 }
 
-int RowHeightController::getSequenceHeight() const {
+int RowHeightController::getSingleRowHeight() const {
     const int fontHeight = QFontMetrics(ui->getEditor()->getFont(), ui).height();
     const float zoomMult = ui->getEditor()->zoomMult;
     return qRound(fontHeight * zoomMult);
 }
 
-int RowHeightController::globalYPositionToRowIndex(int y) const {
-    return ui->getCollapseModel()->mapToRow(globalYPositionToRowNumber(y));
+int RowHeightController::getMaRowIndexByGlobalYPosition(int y) const {
+    int viewRowIndex = getViewRowIndexByGlobalYPosition(y);
+    return ui->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
 }
 
-int RowHeightController::globalYPositionToRowNumber(int y) const {
-    const int getDisplayableRowsCount = ui->getCollapseModel()->getDisplayableRowsCount();
+int RowHeightController::getViewRowIndexByGlobalYPosition(int y) const {
+    const int viewRowCount = ui->getCollapseModel()->getViewRowCount();
     int accumulatedHeight = 0;
-    for (int i = 0; i < getDisplayableRowsCount; i++) {
-        const int rowHeight = getRowHeightByNumber(i);
+    for (int viewRowIndex = 0; viewRowIndex < viewRowCount; viewRowIndex++) {
+        const int rowHeight = getRowHeightByViewRowIndex(viewRowIndex);
         if (accumulatedHeight + rowHeight <= y) {
             accumulatedHeight += rowHeight;
         } else {
-            return i;
+            return viewRowIndex;
         }
     }
     return -1;
 }
 
-int RowHeightController::screenYPositionToRowIndex(int y) const {
-    return globalYPositionToRowIndex(y + ui->getScrollController()->getScreenPosition().y());
+int RowHeightController::getViewRowIndexByScreenYPosition(int y) const {
+    return getViewRowIndexByGlobalYPosition(y + ui->getScrollController()->getScreenPosition().y());
 }
 
-int RowHeightController::screenYPositionToRowNumber(int y) const {
-    return globalYPositionToRowNumber(y + ui->getScrollController()->getScreenPosition().y());
+U2Region RowHeightController::getGlobalYRegionByMaRowIndex(int maRowIndex) const {
+    int globalYPosition = getGlobalYPositionByMaRowIndex(maRowIndex);
+    int rowHeight = getRowHeightByMaIndex(maRowIndex);
+    return U2Region(globalYPosition, rowHeight);
 }
 
-U2Region RowHeightController::getRowGlobalRange(int rowIndex) const {
-    return U2Region(getRowGlobalOffset(rowIndex), getRowHeight(rowIndex));
+U2Region RowHeightController::getGlobalYRegionByMaRowIndex(int maRowIndex, const QList<int>& maRowIndexes) const {
+    int globalYPosition = getGlobalYPositionByMaRowIndex(maRowIndex, maRowIndexes);
+    int rowHeight = getRowHeightByMaIndex(maRowIndex);
+    return U2Region(globalYPosition, rowHeight);
 }
 
-U2Region RowHeightController::getRowGlobalRange(int rowIndex, const QList<int> &rowIndexes) const {
-    return U2Region(getRowGlobalOffset(rowIndex, rowIndexes), getRowHeight(rowIndex));
-}
+// The OUT_OF_RANGE_OFFSET used to build safe coordinates out of the view.
+// We can't use 0 offset, because the value will overlap with the first or the last row.
+//
+// GUI tests notice: GUI tests call RowHeightController to compute initial mouse positioning for overflows.
+//  In this case the offset must be big enough to skip rubber band.
+#define OUT_OF_RANGE_OFFSET 5
 
-U2Region RowHeightController::getRowGlobalRangeByNumber(int rowNumber) const {
-    return getRowGlobalRange(ui->getCollapseModel()->mapToRow(rowNumber));
-}
-
-U2Region RowHeightController::getRowsGlobalRange(int startRowNumber, int count) const {
-    QList<int> rowIndexes;
-    for (int i = startRowNumber; i < startRowNumber + count; i++) {
-        rowIndexes << ui->getCollapseModel()->mapToRow(i);
+U2Region RowHeightController::getGlobalYRegionByViewRowIndex(int viewRowIndex) const {
+    if (ui->getCollapseModel()->getViewRowCount() == 0) { // empty alignment.
+        return U2Region(- OUT_OF_RANGE_OFFSET, 0);
     }
-    return getRowsGlobalRange(rowIndexes);
-}
-
-U2Region RowHeightController::getRowsGlobalRange(const QList<int> &rowIndexes) const {
-    CHECK(!rowIndexes.isEmpty(), U2Region());
-    int length = 0;
-    foreach (const int rowIndex, rowIndexes) {
-        length += getRowHeight(rowIndex);
+    MaCollapseModel* collapseModel = ui->getCollapseModel();
+    int viewRowCount = collapseModel->getViewRowCount();
+    // Return an empty region after the view for viewRowIndexes > maxRows
+    // and a region before the view for viewRowIndex < 0. Use OUT_OF_RANGE_OFFSET for the out of range regions.
+    if (viewRowIndex < 0) {
+        U2Region startOfView = getGlobalYRegionByViewRowIndex(0);
+        return U2Region(startOfView.startPos - OUT_OF_RANGE_OFFSET, 0);
+    } else if (viewRowIndex >= viewRowCount) {
+        U2Region endOfView = getGlobalYRegionByViewRowIndex(viewRowCount - 1);
+        return U2Region(endOfView.endPos() + OUT_OF_RANGE_OFFSET, 0);
     }
-    return U2Region(getRowGlobalRange(rowIndexes.first()).startPos, length);
+    int maRow = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
+    return getGlobalYRegionByMaRowIndex(maRow);
 }
 
-U2Region RowHeightController::getRowScreenRange(int rowIndex) const {
-    return getRowScreenRange(rowIndex, ui->getScrollController()->getScreenPosition().y());
+U2Region RowHeightController::getGlobalYRegionByViewRowsRegion(const U2Region& viewRowsRegion) const {
+    U2Region startPosRegion = getGlobalYRegionByViewRowIndex(viewRowsRegion.startPos);
+    U2Region endPosRegion = getGlobalYRegionByViewRowIndex(viewRowsRegion.endPos() - 1);
+    return U2Region::containingRegion(startPosRegion, endPosRegion);
 }
 
-U2Region RowHeightController::getRowScreenRange(int rowIndex, const QList<int> &rowIndexes, int screenYOrigin) const {
-    const U2Region rowGlobalRange = getRowGlobalRange(rowIndex, rowIndexes);
-    return U2Region(rowGlobalRange.startPos - screenYOrigin, rowGlobalRange.length);
+U2Region RowHeightController::getScreenYRegionByViewRowsRegion(const U2Region& viewRowsRegion) const {
+    U2Region startPosRegion = getScreenYRegionByViewRowIndex(viewRowsRegion.startPos);
+    U2Region endPosRegion = getScreenYRegionByViewRowIndex(viewRowsRegion.endPos() - 1);
+    return U2Region::containingRegion(startPosRegion, endPosRegion);
 }
 
-U2Region RowHeightController::getRowScreenRange(int rowIndex, int screenYOrigin) const {
-    const U2Region rowRange = getRowGlobalRange(rowIndex);
+U2Region RowHeightController::getScreenYRegionByMaRowIndex(int maRowIndex) const {
+    return getScreenYRegionByMaRowIndex(maRowIndex, ui->getScrollController()->getScreenPosition().y());
+}
+
+U2Region RowHeightController::getScreenYRegionByMaRowIndex(int maRowIndex, int screenYOrigin) const {
+    U2Region rowRange = getGlobalYRegionByMaRowIndex(maRowIndex);
     return U2Region(rowRange.startPos - screenYOrigin, rowRange.length);
 }
 
-U2Region RowHeightController::getRowScreenRangeByNumber(int rowNumber) const {
-    const int screenYOrigin = ui->getScrollController()->getScreenPosition().y();
-    return getRowScreenRange(ui->getCollapseModel()->mapToRow(rowNumber), screenYOrigin);
+U2Region RowHeightController::mapGlobalToScreen(const U2Region& globalRegion) const {
+    int screenYOrigin = ui->getScrollController()->getScreenPosition().y();
+    return U2Region(globalRegion.startPos - screenYOrigin, globalRegion.length);
 }
 
-U2Region RowHeightController::getRowScreenRangeByNumber(int rowNumber, int screenYOrigin) const {
-    return getRowScreenRange(ui->getCollapseModel()->mapToRow(rowNumber), screenYOrigin);
-}
-
-U2Region RowHeightController::getRowsScreenRangeByNumbers(const U2Region &rowsNumbers) const {
-    const QList<int> rowsIndexes = ui->getCollapseModel()->numbersToIndexes(rowsNumbers);
-    const U2Region rowsGlobalRange = getRowsGlobalRange(rowsIndexes);
-    return U2Region(rowsGlobalRange.startPos - ui->getScrollController()->getScreenPosition().y(), rowsGlobalRange.length);
+U2Region RowHeightController::getScreenYRegionByViewRowIndex(int viewRowIndex) const {
+    return mapGlobalToScreen(getGlobalYRegionByViewRowIndex(viewRowIndex));
 }
 
 }   // namespace U2

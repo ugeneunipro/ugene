@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,19 +25,19 @@
 #include <U2Core/ExternalToolRegistry.h>
 #include "utils/ExternalToolSupportAction.h"
 
-#define ET_SPIDEY "Spidey"
-#define SPIDEY_TMP_DIR   "spidey"
-
 namespace U2 {
 
 class SpideySupport : public ExternalTool {
     Q_OBJECT
 public:
-    SpideySupport(const QString& name, const QString& path = "");
+    SpideySupport(const QString& id, const QString& name, const QString& path = "");
     GObjectViewWindowContext* getViewContext(){ return viewCtx; }
+
+    static const QString ET_SPIDEY;
+    static const QString ET_SPIDEY_ID;
+    static const QString SPIDEY_TMP_DIR;
 private slots:
     void sl_validationStatusChanged(bool newStatus);
-
 private:
     GObjectViewWindowContext* viewCtx;
 };

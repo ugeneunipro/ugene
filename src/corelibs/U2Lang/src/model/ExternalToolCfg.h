@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef ExternalToolCfg_h__
-#define ExternalToolCfg_h__
+#ifndef _U2_EXTERNAL_TOOL_CONFIG_H_
+#define _U2_EXTERNAL_TOOL_CONFIG_H_
 
-#include <U2Lang/Datatype.h>
 #include <U2Lang/ConfigurationEditor.h>
 
 #include <QString>
@@ -35,6 +34,7 @@ namespace U2 {
 
 class U2LANG_EXPORT DataConfig {
 public:
+    QString attributeId;
     QString attrName;
     QString type;
     QString format;
@@ -50,66 +50,87 @@ public:
 
     bool operator ==(const DataConfig &other) const;
 
-    static DocumentFormatId StringValue;
-    static DocumentFormatId OutputFileUrl;
+    static const DocumentFormatId STRING_VALUE;
+    static const DocumentFormatId OUTPUT_FILE_URL;
 };
 
 class U2LANG_EXPORT AttributeConfig {
 public:
+    enum Flag {
+        None,
+        AddToDashboard,         // only for output URLs
+        OpenWithUgene           // only for file URLs that are added to a dashboard
+    };
+    Q_DECLARE_FLAGS(Flags, Flag)
+
+    AttributeConfig();
+
+    QString attributeId;
     QString attrName;
     QString type;
+    QString defaultValue;
     QString description;
-    //PropertyDelegate *delegate;
+    Flags flags;
 
+    static const QString NUMBER_DEPRECATED_TYPE;
+    static const QString URL_DEPRECATED_TYPE;
+
+    static const QString BOOLEAN_TYPE;
+    static const QString STRING_TYPE;
+    static const QString INTEGER_TYPE;
+    static const QString DOUBLE_TYPE;
+    static const QString INPUT_FILE_URL_TYPE;
+    static const QString OUTPUT_FILE_URL_TYPE;
+    static const QString INPUT_FOLDER_URL_TYPE;
+    static const QString OUTPUT_FOLDER_URL_TYPE;
+
+    void fixTypes();
+    bool isOutputUrl() const;
+    bool isFile() const;
+    bool isFolder() const;
     bool operator ==(const AttributeConfig &other) const;
 };
 
 class U2LANG_EXPORT ExternalProcessConfig {
 public:
+    ExternalProcessConfig();
+
     QList<DataConfig> inputs;
     QList<DataConfig> outputs;
     QList<AttributeConfig> attrs;
     QString cmdLine;
+    QString id;
     QString name;
     QString description;
     QString templateDescription;
     QString filePath;
+    bool useIntegratedTool;
+    QString customToolPath;
+    QString integratedToolId;
 
     bool operator ==(const ExternalProcessConfig &other) const;
+    bool operator !=(const ExternalProcessConfig &other) const;
 };
-
 
 class U2LANG_EXPORT ExternalToolCfgRegistry: public QObject {
     Q_OBJECT
 public:
-    ExternalToolCfgRegistry(QObject *p = NULL): QObject(p) {}
-    bool registerExternalTool(ExternalProcessConfig *cfg) {
-        if(configs.contains(cfg->name)) {
-            return false;
-        } else {
-            configs.insert(cfg->name, cfg);
-            return true;
-        }
-    }
-    ExternalProcessConfig *getConfigByName(const QString& name) const {
-        if(configs.contains(name)) {
-            return configs.value(name);
-        } else {
-            return NULL;
-        }
-    }
-    void unregisterConfig(const QString &name) {
-        configs.remove(name);
-    }
-    QList<ExternalProcessConfig*> getConfigs() const {
-        return configs.values();
-    }
+    ExternalToolCfgRegistry(QObject *parent = nullptr);
+
+    bool registerExternalTool(ExternalProcessConfig *cfg);
+    void unregisterConfig(const QString &id);
+
+    ExternalProcessConfig *getConfigById(const QString& id) const;
+    QList<ExternalProcessConfig *> getConfigs() const;
 
 private:
-    QMap<QString, ExternalProcessConfig*> configs;
-
+    QMap<QString, ExternalProcessConfig *> configs;
 };
 
 }
 
-#endif // ExternalToolCfg_h__
+Q_DECLARE_METATYPE(U2::AttributeConfig)
+Q_DECLARE_METATYPE(U2::DataConfig)
+Q_DECLARE_OPERATORS_FOR_FLAGS(U2::AttributeConfig::Flags)
+
+#endif // _U2_EXTERNAL_TOOL_CONFIG_H_

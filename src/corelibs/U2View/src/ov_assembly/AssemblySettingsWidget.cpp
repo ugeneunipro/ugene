@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -230,7 +230,7 @@ QWidget * AssemblySettingsWidget::createRulerSettings() {
 ////////////////////////////////////
 const QString AssemblySettingsWidgetFactory::GROUP_ID = "OP_ASS_SETTINGS";
 const QString AssemblySettingsWidgetFactory::GROUP_ICON_STR = ":core/images/settings2.png";
-const QString AssemblySettingsWidgetFactory::GROUP_DOC_PAGE = "23331133";
+const QString AssemblySettingsWidgetFactory::GROUP_DOC_PAGE = "24748912";
 
 
 AssemblySettingsWidgetFactory::AssemblySettingsWidgetFactory()

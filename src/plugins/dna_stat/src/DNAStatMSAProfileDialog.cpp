@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QTextBrowser>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
@@ -45,12 +46,12 @@ namespace U2 {
 const QString DNAStatMSAProfileDialog::HTML = "html";
 const QString DNAStatMSAProfileDialog::CSV = "csv";
 
-DNAStatMSAProfileDialog::DNAStatMSAProfileDialog(QWidget* p, MSAEditor* _c)
-    : QDialog(p),
-      ctx(_c),
-      saveController(NULL) {
+DNAStatMSAProfileDialog::DNAStatMSAProfileDialog(QWidget *p, MSAEditor *_c)
+        : QDialog(p),
+          ctx(_c),
+          saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "23331104");
+    new HelpButton(this, buttonBox, "24748883");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     initSaveController();
@@ -69,7 +70,7 @@ void DNAStatMSAProfileDialog::sl_formatChanged(const QString &newFormat) {
 }
 
 void DNAStatMSAProfileDialog::initSaveController() {
-    MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
+    MultipleSequenceAlignmentObject *msaObj = ctx->getMaObject();
     if (msaObj == NULL) {
         return;
     }
@@ -92,14 +93,16 @@ void DNAStatMSAProfileDialog::initSaveController() {
 
     saveController = new SaveDocumentController(config, formats, this);
 
-    connect(saveController, SIGNAL(si_formatChanged(const QString &)), SLOT(sl_formatChanged(const QString &)));
+    connect(saveController, SIGNAL(si_formatChanged(
+                                           const QString &)), SLOT(sl_formatChanged(
+                                                                           const QString &)));
     connect(htmlRB, SIGNAL(toggled(bool)), SLOT(sl_formatSelected()));
     connect(csvRB, SIGNAL(toggled(bool)), SLOT(sl_formatSelected()));
 }
 
 void DNAStatMSAProfileDialog::accept() {
     DNAStatMSAProfileTaskSettings s;
-    MultipleSequenceAlignmentObject* msaObj = ctx->getMaObject();
+    MultipleSequenceAlignmentObject *msaObj = ctx->getMaObject();
     if (msaObj == NULL) {
         return;
     }
@@ -125,9 +128,9 @@ void DNAStatMSAProfileDialog::accept() {
 
 //////////////////////////////////////////////////////////////////////////
 // task
-DNAStatMSAProfileTask::DNAStatMSAProfileTask(const DNAStatMSAProfileTaskSettings& _s)
-: Task(tr("Generate alignment profile"), TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled), s(_s)
-{
+DNAStatMSAProfileTask::DNAStatMSAProfileTask(const DNAStatMSAProfileTaskSettings &_s)
+        : Task(tr("Generate alignment profile"),
+               TaskFlags(TaskFlag_ReportingIsSupported) | TaskFlag_ReportingIsEnabled), s(_s) {
     setVerboseLogMode(true);
 }
 
@@ -144,6 +147,7 @@ void DNAStatMSAProfileTask::run() {
 
     QFile *f = NULL;
     if (s.outFormat == DNAStatMSAProfileOutputFormat_Show || s.outFormat == DNAStatMSAProfileOutputFormat_HTML) {
+        bool forIntervalViewer = s.outFormat == DNAStatMSAProfileOutputFormat_Show;
         if (s.outFormat == DNAStatMSAProfileOutputFormat_HTML) {
             f = new QFile(s.outURL);
             if (!f->open(QIODevice::Truncate | QIODevice::WriteOnly)) {
@@ -154,48 +158,62 @@ void DNAStatMSAProfileTask::run() {
         int maxVal = s.usePercents ? 100 : s.ma->getNumRows();
         QString colors[] = {"#ff5555", "#ff9c00", "#60ff00", "#a1d1e5", "#dddddd"};
 
+        // Using subset of the supported HTML features: https://doc.qt.io/qt-5/richtext-html-subset.html
         try {
+            resultText = "<!DOCTYPE html>\n<html>\n<head>\n";
+
             //setup style
-            resultText = "<STYLE TYPE=\"text/css\"><!-- \n";
-            resultText += "table.tbl   {\n border-width: 1px;\n border-style: solid;\n border-spacing: 0;\n border-collapse: collapse;\n}\n";
-            resultText += "table.tbl td{\n max-width: 200px;\n min-width: 20px;\n text-align: center;\n border-width: 1px;\n ";
-            resultText += "border-style: solid;\n padding: 0 10px;\n}\n";
-            resultText += "--></STYLE>\n";
+            resultText += "<style>\n";
+            resultText += ".tbl {border-width: 1px; border-style: solid; border-color: #777777;}\n";
+            resultText += ".tbl td {text-align: center; padding: 0 10px; white-space: nowrap;}\n";
+            if (!forIntervalViewer) {
+                resultText += ".tbl {border-spacing: 0; border-collapse: collapse;}\n";
+                resultText += ".tbl td {border: 1px solid #777777;}\n";
+            }
+            resultText += "</style>\n";
+
+            resultText += "</head>\n<body>\n";
 
             //header
             resultText += "<h2>" + tr("Multiple Sequence Alignment Grid Profile") + "</h2><br>\n";
 
             resultText += "<table>\n";
-            resultText += "<tr><td><b>" + tr("Alignment file:") + "</b></td><td>" + s.profileURL + "@" + s.profileName + "</td></tr>\n";
-            resultText += "<tr><td><b>" + tr("Table content:") + "</b></td><td>" + (s.usePercents ? tr("symbol percents") : tr("symbol counts")) + "</td></tr>\n";
+            resultText += "<tr><td><b>" + tr("Alignment file:") + "</b></td><td>" + s.profileURL + "@" + s.profileName +
+                          "</td></tr>\n";
+            resultText += "<tr><td><b>" + tr("Table content:") + "</b></td><td>" +
+                          (s.usePercents ? tr("symbol percents") : tr("symbol counts")) + "</td></tr>\n";
             resultText += "</table>\n";
             resultText += "<br><br>\n";
 
-            resultText += "<table class=tbl>";
+            if (forIntervalViewer) {
+                // Use of -1 for the cellspacing hides cell's border and makes
+                // the border style compatible with a standard CSS 'border-collapse: collapse' mode.
+                resultText += "<table class=tbl cellspacing=-1 cellpadding=0>";
+            } else {
+                resultText += "<table class=tbl>";
+            }
 
             //consensus numbers line
             resultText += "<tr><td></td>";
             int pos = 1;
             for (int i = 0; i < columns.size(); i++) {
-                ColumnStat& cs = columns[i];
+                const ColumnStat &cs = columns[i];
                 QString posStr;
                 bool nums = s.countGapsInConsensusNumbering || cs.consChar != U2Msa::GAP_CHAR;
                 posStr = nums ? QString::number(pos++) : QString("&nbsp;");
-                //            while(posStr.length() < maxLenLen) {posStr = (nums ? "0" : "&nbsp;") + posStr;}
-                resultText += "<td width=20>" + posStr + "</td>";
+                resultText += "<td>" + posStr + "</td>";
                 FileAndDirectoryUtils::dumpStringToFile(f, resultText);
             }
             resultText += "</tr>\n";
 
-            //consensus chars line
-
+            // consensus line
             resultText += "<tr><td> Consensus </td>";
             for (int i = 0; i < columns.size(); i++) {
-                ColumnStat& cs = columns[i];
+                ColumnStat &cs = columns[i];
                 resultText += "<td><b>" + QString(cs.consChar) + "</b></td>";
             }
             resultText += "</tr>\n";
-            //out char freqs
+            // base frequency
             QByteArray aChars = s.ma->getAlphabet()->getAlphabetChars();
             for (int i = 0; i < aChars.size(); i++) {
                 char c = aChars[i];
@@ -209,7 +227,7 @@ void DNAStatMSAProfileTask::run() {
                 resultText += "<tr>";
                 resultText += "<td> " + QString(c) + "</td>";
                 for (int j = 0; j < columns.size(); j++) {
-                    ColumnStat& cs = columns[j];
+                    ColumnStat &cs = columns[j];
                     int val = cs.charFreqs[idx];
                     QString colorStr;
                     int hotness = qRound(100 * double(val) / maxVal);
@@ -233,13 +251,14 @@ void DNAStatMSAProfileTask::run() {
 
             //legend:
             resultText += "<br><br>\n";
-            resultText += "<table><tr><td><b>" + tr("Legend:") + "&nbsp;&nbsp;</b>\n";
+            resultText += "<table cellspacing=7 cellpadding=2><tr><td><b>" + tr("Legend:") + "&nbsp;&nbsp;</b>\n";
             resultText += "<td bgcolor=" + colors[4] + ">10%</td>\n";
             resultText += "<td bgcolor=" + colors[3] + ">25%</td>\n";
             resultText += "<td bgcolor=" + colors[2] + ">50%</td>\n";
             resultText += "<td bgcolor=" + colors[1] + ">70%</td>\n";
             resultText += "<td bgcolor=" + colors[0] + ">90%</td>\n";
             resultText += "</tr></table><br>\n";
+            resultText += "</body>\n<html>\n";
         } catch (std::bad_alloc &e) {
             Q_UNUSED(e);
             verticalColumnNames.clear();
@@ -249,7 +268,8 @@ void DNAStatMSAProfileTask::run() {
             unusedChars.clear();
             resultText.clear();
             if (s.outFormat == DNAStatMSAProfileOutputFormat_Show) {
-                setError(tr("There is not enough memory to show this grid profile in UGENE. You can save it to an HTML file and open it with a web browser."));
+                setError(
+                        tr("There is not enough memory to show this grid profile in UGENE. You can save it to an HTML file and open it with a web browser."));
             } else {
                 setError(tr("There is not enough memory to generate this grid profile in UGENE."));
             }
@@ -274,7 +294,7 @@ void DNAStatMSAProfileTask::run() {
             int idx = char2index[c];
             resultText += QString(c);
             for (int j = 0; j < columns.size(); j++) {
-                ColumnStat& cs = columns[j];
+                ColumnStat &cs = columns[j];
                 resultText += "," + QString::number(cs.charFreqs[idx]);
                 FileAndDirectoryUtils::dumpStringToFile(f, resultText);
             }
@@ -288,6 +308,7 @@ void DNAStatMSAProfileTask::run() {
         delete f;
     }
 }
+
 QString DNAStatMSAProfileTask::generateReport() const {
     if (hasError()) {
         return tr("Task was finished with an error: %1").arg(getError());
@@ -297,7 +318,8 @@ QString DNAStatMSAProfileTask::generateReport() const {
     }
     QString res;
     res += "<br>";
-    res += tr("Grid profile for %1: <a href='%2'>%2</a>").arg(s.profileName).arg(QDir::toNativeSeparators(s.outURL)) + "<br>";
+    res += tr("Grid profile for %1: <a href='%2'>%2</a>").arg(s.profileName).arg(QDir::toNativeSeparators(s.outURL)) +
+           "<br>";
     return res;
 }
 
@@ -305,14 +327,18 @@ bool DNAStatMSAProfileTask::isReportingEnabled() const {
     return !hasError() && !isCanceled() && s.outFormat != DNAStatMSAProfileOutputFormat_Show;
 }
 
-
 Task::ReportResult DNAStatMSAProfileTask::report() {
     if (hasError() || isCanceled() || s.outFormat != DNAStatMSAProfileOutputFormat_Show) {
         return Task::ReportResult_Finished;
     }
     assert(!resultText.isEmpty());
-    QString title = s.profileName.isEmpty() ? tr("Alignment profile") : tr("Alignment profile for %1").arg(s.profileName);
-    WebWindow* w = new WebWindow(title, resultText);
+    QString title = s.profileName.isEmpty() ? tr("Alignment profile") : tr("Alignment profile for %1").arg(
+            s.profileName);
+
+    WebWindow *w = new WebWindow(title, resultText);
+    // Qt 5.4 has a bug and does not process 'white-space: nowrap' correctly. Enforcing it using rich text styles.
+    w->textBrowser->setWordWrapMode(QTextOption::NoWrap);
+
     w->setWindowIcon(QIcon(":core/images/chart_bar.png"));
     AppContext::getMainWindow()->getMDIManager()->addMDIWindow(w);
     return Task::ReportResult_Finished;
@@ -333,10 +359,10 @@ void DNAStatMSAProfileTask::computeStats() {
     consenusChars.resize(s.ma->getLength());
     for (int pos = 0; pos < s.ma->getLength(); pos++) {
         int topCharCount = 0;
-        ColumnStat& cs = columns[pos];
+        ColumnStat &cs = columns[pos];
         cs.charFreqs.resize(aChars.size());
         cs.consChar = U2Msa::GAP_CHAR;
-        for (int i = 0; i< s.ma->getNumRows(); i++) {
+        for (int i = 0; i < s.ma->getNumRows(); i++) {
             char c = s.ma->getMsaRow(i)->charAt(pos);
             unusedChars.remove(c);
             int idx = char2index.value(c);
@@ -353,8 +379,8 @@ void DNAStatMSAProfileTask::computeStats() {
     if (s.usePercents) {
         int charsInColumn = s.ma->getNumRows();
         for (int pos = 0; pos < s.ma->getLength(); pos++) {
-            ColumnStat& cs = columns[pos];
-            for (int i=0; i < aChars.size(); i++) {
+            ColumnStat &cs = columns[pos];
+            for (int i = 0; i < aChars.size(); i++) {
                 char c = aChars[i];
                 int idx = char2index.value(c);
                 cs.charFreqs[idx] = qRound(100.0 * cs.charFreqs[idx] / charsInColumn);

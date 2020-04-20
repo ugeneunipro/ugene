@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -61,6 +61,8 @@ public:
     static const QString PARAM_ALIASES_START;
     static const QString PORT_ALIASES_START;
     static const QString PATH_THROUGH;
+    static const QString TRUE;
+    static const QString FALSE;
 
     // -------------- backward compatibility --------------
     static const QString ALIASES_HELP_START;
@@ -79,6 +81,7 @@ public:
     static const QString TYPE_PORT;
     static const QString FORMAT_PORT;
     static const QString CMDLINE;
+    static const QString DEFAULT_VALUE;
     static const QString DESCRIPTION;
     static const QString PROMPTER;
     static const QString COMMA;
@@ -109,6 +112,11 @@ public:
     static const QString VALIDATOR;
     static const QString V_TYPE;
     static const QString V_SCRIPT;
+    static const QString USE_INTEGRATED_TOOL;
+    static const QString CUSTOM_TOOL_PATH;
+    static const QString INTEGRATED_TOOL_ID;
+    static const QString ADD_TO_DASHBOARD;
+    static const QString OPEN_WITH_UGENE;
 };
 
 } // WorkflowSerialize

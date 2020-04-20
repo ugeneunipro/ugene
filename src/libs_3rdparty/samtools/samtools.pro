@@ -2,6 +2,7 @@ include(samtools.pri)
 
 # Input
 HEADERS += src/SamtoolsAdapter.h \
+           src/ugene_custom_io.h \
            src/samtools/bam.h \
            src/samtools/bam2bcf.h \
            src/samtools/bam_endian.h \
@@ -28,6 +29,7 @@ win32 : HEADERS += src/samtools/win32/getopt.h \
                    src/samtools/win32/unistd.h \
                    src/samtools/win32/msvc_compat.h
 SOURCES += src/SamtoolsAdapter.cpp \
+           src/ugene_custom_io.c \
            src/samtools/bam.c \
            src/samtools/bam2bcf.c \
            src/samtools/bam2bcf_indel.c \

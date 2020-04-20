@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -185,11 +185,10 @@ signals:
     void si_sequenceWidgetRemoved(ADVSequenceWidget* w);
 
     void si_focusChanged(ADVSequenceWidget *from, ADVSequenceWidget *to);
-
     /** Emitted when a part was added to a sequence, or it was removed or replaced */
     void si_sequenceModified(ADVSequenceObjectContext*);
-
     void si_onClose(AnnotatedDNAView* v);
+    void si_proxyCopyQualifierActionTriggered();
 
 public slots:
     void sl_onPosChangeRequest(int pos);
@@ -288,6 +287,11 @@ private:
     ADVSequenceWidget*          replacedSeqWidget;     // not NULL when any sequence widget is dragging to the new place.
 
     int                         timerId;
+
+    // Used to detect 'expandable sequences' <-> 'fixed sequences' transition event for the mainSplitter.
+    bool hadExpandableSequenceWidgetsLastResize;
+    // Used to restore mainSplitter state on 'fixed sequences'-> 'expandable sequences' transition.
+    QList<int> savedMainSplitterSizes;
 };
 
 } // namespace U2

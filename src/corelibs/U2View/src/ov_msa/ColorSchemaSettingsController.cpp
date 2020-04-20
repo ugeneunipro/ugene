@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -43,27 +43,12 @@
 
 namespace U2 {
 
-enum DefaultStrategy{
-    DefaultStrategy_Void,
-    DefaultStrategy_UgeneColors
-};
-
-static void clearColorsDir() {
-    QString path = ColorSchemeUtils::getColorsDir();
-    QDir dir(path);
-    dir.setNameFilters(QStringList() << "*.*");
-    dir.setFilter(QDir::Files);
-    foreach(QString dirFile, dir.entryList())
-    {
-        dir.remove(dirFile);
-    }
-}
-
 static void setSchemaColors(const ColorSchemeData& customSchema){
     QString dirPath = ColorSchemeUtils::getColorsDir();
+
     QDir dir(dirPath);
     if(!dir.exists()){
-        dir.mkpath(dirPath);
+        dir.mkpath(".");
     }
 
     IOAdapterFactory* factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
@@ -71,10 +56,10 @@ static void setSchemaColors(const ColorSchemeData& customSchema){
     QScopedPointer<IOAdapter> io(factory->createIOAdapter());
 
     const QMap<char, QColor> & alphColors = customSchema.alpColors;
-    QString file  = customSchema.name + COLOR_SCHEME_NAME_FILTERS;
+    const QString& file  = customSchema.name + ColorSchemeUtils::COLOR_SCHEME_NAME_FILTERS;
     bool defaultType = customSchema.defaultAlpType;
 
-    QString keyword(customSchema.type == DNAAlphabet_AMINO ? COLOR_SCHEME_AMINO_KEYWORD : (defaultType ? COLOR_SCHEME_NUCL_DEFAULT_KEYWORD : COLOR_SCHEME_NUCL_EXTENDED_KEYWORD));
+    QString keyword(customSchema.type == DNAAlphabet_AMINO ? ColorSchemeUtils::COLOR_SCHEME_AMINO_KEYWORD : (defaultType ? ColorSchemeUtils::COLOR_SCHEME_NUCL_DEFAULT_KEYWORD : ColorSchemeUtils::COLOR_SCHEME_NUCL_EXTENDED_KEYWORD));
 
     io->open(dir.filePath(file), IOAdapterMode_Write);
     // write header
@@ -92,10 +77,11 @@ static void setSchemaColors(const ColorSchemeData& customSchema){
 }
 
 
+const QString ColorSchemaSettingsPageController::helpPageId = QString("24748740");
+
 ColorSchemaSettingsPageController::ColorSchemaSettingsPageController(MsaColorSchemeRegistry* mcsr, QObject* p)
-        : AppSettingsGUIPageController(tr("Alignment Color Scheme"), ColorSchemaSettingsPageId, p),
-          helpPageId("23330961") {
-    connect(this, SIGNAL(si_customSettingsChanged()), mcsr, SLOT(sl_onCustomSettingsChanged()));
+: AppSettingsGUIPageController(tr("Alignment Color Scheme"), ColorSchemaSettingsPageId, p) {
+       connect(this, SIGNAL(si_customSettingsChanged()), mcsr, SLOT(sl_onCustomSettingsChanged()));
 }
 
 
@@ -111,8 +97,11 @@ void ColorSchemaSettingsPageController::saveState(AppSettingsGUIPageState* s) {
     ColorSchemaSettingsPageState* state = qobject_cast<ColorSchemaSettingsPageState*>(s);
 
     ColorSchemeUtils::setColorsDir(state->colorsDir);
-    clearColorsDir();
-    foreach(const ColorSchemeData& schema, state->customSchemas){
+    QDir dir(ColorSchemeUtils::getColorsDir());
+    foreach (const ColorSchemeData &schema, state->removedCustomSchemas) {
+        dir.remove(schema.name + ColorSchemeUtils::COLOR_SCHEME_NAME_FILTERS);
+    }
+    foreach (const ColorSchemeData &schema, state->customSchemas) {
         setSchemaColors(schema);
     }
     emit si_customSettingsChanged();

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -550,7 +550,7 @@ void StringTieWorkerFactory::init() {
 
 
     // Description of the element
-    const Descriptor desc(ACTOR_ID, StringTieWorker::tr("Assemble Transcripts with StringTie"),
+    Descriptor desc(ACTOR_ID, StringTieWorker::tr("Assemble Transcripts with StringTie"),
                     StringTieWorker::tr("StringTie is a fast and highly efficient assembler of RNA-Seq alignments into potential transcripts. "
                                         "It uses a novel network flow algorithm as well as an optional de novo assembly step to assemble "
                                         "and quantitate full-length transcripts representing multiple splice variants for each gene locus."));
@@ -561,7 +561,7 @@ void StringTieWorkerFactory::init() {
     // Init and register the actor prototype
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new StringTiePrompter());
-    proto->addExternalTool(ET_STRINGTIE, "STRINGTIE_EXT_TOOL_PATH");
+    proto->addExternalTool(StringTieSupport::ET_STRINGTIE_ID, "STRINGTIE_EXT_TOOL_PATH");
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_RNA_SEQ(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -151,13 +151,13 @@ bool CredentialsAskerCli::askWithFixedLogin(const QString &resourceUrl) const {
     SAFE_POINT(!AppContext::isGUIMode(), "Unexpected application run mode", false);
 
     QString userName;
-    const QString shortDbiUrl = U2DbiUtils::full2shortDbiUrl(resourceUrl, userName);
+    QString shortDbiUrl = U2DbiUtils::full2shortDbiUrl(resourceUrl, userName);
 
     printString(QObject::tr("Connect to the '%1' ...\n").arg(shortDbiUrl));
     printString(QObject::tr("You are going to log in as '%1'.\n").arg(userName));
 
-    const QString pwd = askPwd();
-    const bool isRemembered = askYesNoQuestion(QObject::tr("Would you like UGENE to remember the password?"));
+    QString pwd = askPwd();
+    bool isRemembered = askYesNoQuestion(QObject::tr("Would you like UGENE to remember the password?"));
 
     saveCredentials(resourceUrl, pwd, isRemembered);
     return true;
@@ -167,11 +167,11 @@ bool CredentialsAskerCli::askWithModifiableLogin(QString &resourceUrl) const {
     SAFE_POINT(!AppContext::isGUIMode(), "Unexpected application run mode", false);
 
     QString userName;
-    const QString shortDbiUrl = U2DbiUtils::full2shortDbiUrl(resourceUrl, userName);
+    QString shortDbiUrl = U2DbiUtils::full2shortDbiUrl(resourceUrl, userName);
 
     printString(QObject::tr("Connect to the '%1' ...\n").arg(shortDbiUrl));
     printString(QObject::tr("You are going to log in as '%1'.\n").arg(userName));
-    const bool logAsAnotherUser = askYesNoQuestion(QObject::tr("Would you like to log in as another user?"));
+    bool logAsAnotherUser = askYesNoQuestion(QObject::tr("Would you like to log in as another user?"));
 
     if (logAsAnotherUser) {
         do {
@@ -181,8 +181,8 @@ bool CredentialsAskerCli::askWithModifiableLogin(QString &resourceUrl) const {
         printString(NEW_LINE_STR);
     }
 
-    const QString pwd = askPwd();
-    const bool isRemembered = askYesNoQuestion(QObject::tr("Would you like UGENE to remember the password?"));
+    QString pwd = askPwd();
+    bool isRemembered = askYesNoQuestion(QObject::tr("Would you like UGENE to remember the password?"));
 
     resourceUrl = U2DbiUtils::createFullDbiUrl(userName, shortDbiUrl);
     saveCredentials(resourceUrl, pwd, isRemembered);

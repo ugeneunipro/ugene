@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,6 @@
 #include "BedtoolsSupport.h"
 #include "BedtoolsSupportTask.h"
 
-
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DataPathRegistry.h>
@@ -33,8 +32,12 @@
 
 namespace U2 {
 
+const QString BedtoolsSupport::ET_BEDTOOLS = "bedtools";
+const QString BedtoolsSupport::ET_BEDTOOLS_ID = "USUPP_BEDTOOLS";
+const QString BedtoolsSupport::GENOMES_DIR_NAME = "genome_lengths";
+const QString BedtoolsSupport::GENOMES_DATA_NAME = "Genome files";
 
-BedtoolsSupport::BedtoolsSupport(const QString& name, const QString& path) : ExternalTool(name, path)
+BedtoolsSupport::BedtoolsSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");

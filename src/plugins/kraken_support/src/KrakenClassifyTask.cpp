@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,7 +65,7 @@ const LocalWorkflow::TaxonomyClassificationResult & KrakenClassifyTask::getParse
 }
 
 void KrakenClassifyTask::prepare() {
-    classifyTask = new ExternalToolRunTask(KrakenSupport::CLASSIFY_TOOL, getArguments(), new KrakenClassifyLogParser());
+    classifyTask = new ExternalToolRunTask(KrakenSupport::CLASSIFY_TOOL_ID, getArguments(), new KrakenClassifyLogParser());
     setListenerForTask(classifyTask);
     addSubTask(classifyTask);
 }

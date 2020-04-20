@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -142,12 +142,16 @@ void MaUtilsWidget::paintEvent(QPaintEvent *) {
 /************************************************************************/
 /* MaLabelWidget */
 /************************************************************************/
-MaLabelWidget::MaLabelWidget(MaEditorWgt* ui, QWidget* heightWidget, const QString & t, Qt::Alignment a)
-    : MaUtilsWidget(ui, heightWidget) {
-    label = new QLabel(t, this);
-    label->setAlignment(a);
+MaLabelWidget::MaLabelWidget(MaEditorWgt* ui, QWidget* heightWidget, const QString& text,
+                             Qt::Alignment alignment, bool proxyMouseEventsToNameList)
+    : MaUtilsWidget(ui, heightWidget), proxyMouseEventsToNameList(proxyMouseEventsToNameList) {
+    label = new QLabel(text, this);
+    label->setAlignment(alignment);
     label->setTextFormat(Qt::RichText);
     label->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+
+    // Disable text interaction: all mouse events from QLabel will be delivered to this widget.
+    label->setTextInteractionFlags(Qt::NoTextInteraction);
 
     QVBoxLayout* layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -160,21 +164,29 @@ void MaLabelWidget::paintEvent(QPaintEvent * e) {
     label->setFont(getMsaEditorFont());
 }
 
-void MaLabelWidget::mousePressEvent( QMouseEvent * e ) {
-    ui->getSequenceArea()->sl_cancelSelection();
-    QMouseEvent eventForNameListArea(e->type(), QPoint(e->x(), 0), e->globalPos(), e->button(), e->buttons(), e->modifiers());
-    QApplication::instance()->notify((QObject*)ui->getEditorNameList(), &eventForNameListArea);
+void MaLabelWidget::mousePressEvent(QMouseEvent* e) {
+    if (proxyMouseEventsToNameList) {
+        QMouseEvent proxyEvent(e->type(), QPoint(e->x(), 0), e->globalPos(), e->button(), e->buttons(), e->modifiers());
+        sendEventToNameList(&proxyEvent);
+    }
 }
 
-void MaLabelWidget::mouseReleaseEvent( QMouseEvent * e ) {
-    QMouseEvent eventForNameListArea(e->type(), QPoint(e->x(), qMax(e->y() - height(), 0)), e->globalPos(), e->button(), e->buttons(), e->modifiers());
-    QApplication::instance()->notify((QObject*)ui->getEditorNameList(), &eventForNameListArea);
+void MaLabelWidget::mouseReleaseEvent(QMouseEvent* e) {
+    if (proxyMouseEventsToNameList) {
+        QMouseEvent proxyEvent(e->type(), QPoint(e->x(), qMax(e->y() - height(), 0)), e->globalPos(), e->button(), e->buttons(), e->modifiers());
+        sendEventToNameList(&proxyEvent);
+    }
 }
 
-void MaLabelWidget::mouseMoveEvent( QMouseEvent * e ) {
-    QMouseEvent eventForSequenceArea(e->type(), QPoint(e->x(), e->y() - height()), e->globalPos(), e->button(), e->buttons(), e->modifiers());
-    QApplication::instance()->notify((QObject*)ui->getEditorNameList(), &eventForSequenceArea);
+void MaLabelWidget::mouseMoveEvent(QMouseEvent* e) {
+    if (proxyMouseEventsToNameList) {
+        QMouseEvent proxyEvent(e->type(), QPoint(e->x(), e->y() - height()), e->globalPos(), e->button(), e->buttons(), e->modifiers());
+        sendEventToNameList(&proxyEvent);
+    }
 }
 
+void MaLabelWidget::sendEventToNameList(QMouseEvent* e) const {
+    QApplication::instance()->notify((QObject*) ui->getEditorNameList(), e);
+}
 
 } // namespace

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -71,7 +71,6 @@ static Logger teamcityLog(ULOG_CAT_TEAMCITY);
 TestViewController::TestViewController(TestRunnerService* s, bool _cmd) : MWMDIWindow(tr("Test runner")), service(s), cmd(_cmd)
 {
     task=NULL;
-    reporterForm=NULL;
     setupUi(this);
     tree->setContextMenuPolicy(Qt::CustomContextMenu);
     tree->setColumnWidth(0, AppContext::getSettings()->getValue(SETTINGS_ROOT + "treeColWidth", 400).toInt());
@@ -248,15 +247,6 @@ TVTSItem* TestViewController::getFolder(TVItem* element,const QString* firstDirN
     return NULL;
 }
 
-void TestViewController::killAllChildForms(){
-
-    if(reporterForm!=NULL){
-        AppContext::getMainWindow()->getMDIManager()->closeMDIWindow((MWMDIWindow*) reporterForm);
-        //reporterForm = NULL;
-        assert(reporterForm == NULL);
-    }
-    return;
-}
 //<-----------------------------------------------------------------------------------
 void TestViewController::addTestSuite(GTestSuite* ts) {
     TVTSItem* tsi = new TVTSItem(ts);
@@ -927,11 +917,10 @@ void TestViewController::sl_taskStateChanged(Task* t) {
             } else {
                 repDir = "test_report.html";
             }
-            reporterForm = new TestViewReporter(this,tree,time);
-            reporterForm->saveAs(repDir,reporterForm->getReportText());
+            QString htmlReport = TestViewReporter::generateHtmlReport(tree, time);
+            TestViewReporter::saveReport(repDir, htmlReport);
         }
         AppContext::getTaskScheduler()->cancelAllTasks();
-        //AppContext::getMainWindow()->getQMainWindow()->close();
         exit(0);
     }
 }
@@ -989,16 +978,8 @@ void TestViewController::sl_setEnvAction() {
 
 }
 
-void TestViewController::sl_report(){
-//create report form
-
-    if (reporterForm!=NULL){
-        AppContext::getMainWindow()->getMDIManager()->closeMDIWindow((MWMDIWindow*) reporterForm);
-        assert(reporterForm == NULL);
-    }
-    reporterForm= new TestViewReporter(this,tree,time);
-    AppContext::getMainWindow()->getMDIManager()->addMDIWindow(reporterForm);
-    AppContext::getMainWindow()->getMDIManager()->activateWindow(reporterForm);
+void TestViewController::sl_report() {
+    TestViewReporter::saveReportToFileAndOpenBrowser(tree, time);
 }
 
 void TestViewController::sl_treeDoubleClicked(QTreeWidgetItem* i, int col) {

@@ -1,6 +1,6 @@
 /**009
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -79,35 +79,6 @@ namespace U2 {
 namespace GUITest_common_scenarios_workflow_designer {
 using namespace HI;
 
-GUI_TEST_CLASS_DEFINITION(test_0002){
-    GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
-    //1. Start UGENE. Open workflow schema file from data\cmdline\pfm-build.uws
-    GTFileDialog::openFile(os,dataDir + "cmdline/","pwm-build.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
-//  Expected state: workflow schema opened in Workflow designer
-//    2. Change item style (Minimal - Extended - Minimal - Extended)
-    QGraphicsView* sceneView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os,"sceneView"));
-    CHECK_SET_ERR(sceneView,"scene not found");
-    QList<QGraphicsItem *> items = sceneView->items();
-    QList<QPointF> posList;
-
-    foreach(QGraphicsItem* item,items){
-        posList.append(item->pos());
-    }
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<"Minimal"));
-    GTWidget::click(os, GTWidget::findWidget(os,"Element style"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<"Extended"));
-    GTWidget::click(os, GTWidget::findWidget(os,"Element style"));
-//  Expected state: all arrows in schema still unbroken
-    items = sceneView->items();
-    foreach(QGraphicsItem* item,items){
-        QPointF p = posList.takeFirst();
-        CHECK_SET_ERR(p==item->pos(),QString("some item changed position from %1, %2 to %3, %4")
-                      .arg(p.x()).arg(p.y()).arg(item->pos().x()).arg(item->pos().y()));
-    }
-
-}
 
 GUI_TEST_CLASS_DEFINITION(test_0002_1){
     GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));

@@ -302,13 +302,9 @@
     <message>
         <location filename="../src/KalignWorker.cpp" line="83"/>
         <source>Aligns multiple sequence alignments (MSAs) supplied with Kalign.&lt;p&gt;Kalign is a fast and accurate multiple sequence alignment tool. The original version of the tool can be found on &lt;a href=&quot;http://msa-&gt;sbc.su.se&quot;&gt;http://msa-&gt;sbc.su.se&lt;/a&gt;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Aligns multiple sequence alignments (MSAs) supplied with Kalign.&lt;p&gt;Kalign is a fast and accurate multiple sequence alignment tool. The original version of the tool can be found on &lt;a href=&quot;http://msa.sbc.su.se&quot;&gt;http://msa.sbc.su.se&lt;/a&gt;.</source>
-        <translation type="vanished">Для каждого множественного выравнивания (МВ) применяет Kalign.
+        <translation>Для каждого множественного выравнивания (МВ) применяет Kalign.
 &lt;p&gt;Kalign это быстрый и точный алгоритм множественного выравнивания последовательности. 
-Здесь &lt;a href=&quot;http://msa.sbc.su.se&quot;&gt;http://msa.sbc.su.se&lt;/a&gt; находится оригинальная версия.       </translation>
+Здесь &lt;a href=&quot;http://msa.sbc.su.se&quot;&gt;http://msa.sbc.su.se&lt;/a&gt; находится оригинальная версия.</translation>
     </message>
     <message>
         <location filename="../src/KalignWorker.cpp" line="159"/>

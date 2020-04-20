@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,17 +26,17 @@
 
 namespace U2 {
 
-#define ET_PEAK2GENE "peak2gene"
-#define REFGENE_DIR_NAME "refGene"
-#define REF_GENES_DATA_NAME "Gene annotation table"
-#define TRANSLATIONS_DIR_NAME "geneIdTranslations"
-#define ENTREZ_TRANSLATION_DATA_NAME "Entrez ID translations"
-
 class Peak2GeneSupport : public ExternalTool {
     Q_OBJECT
 public:
-    Peak2GeneSupport(const QString &name);
+    Peak2GeneSupport(const QString& id, const QString &name);
 
+    static const QString ET_PEAK2GENE;
+    static const QString ET_PEAK2GENE_ID;
+    static const QString REFGENE_DIR_NAME;
+    static const QString REF_GENES_DATA_NAME;
+    static const QString TRANSLATIONS_DIR_NAME;
+    static const QString ENTREZ_TRANSLATION_DATA_NAME;
 private:
     void initialize();
 };

@@ -1,4 +1,5 @@
 MODULE_ID=$${PLUGIN_ID}
+
 include (ugene_lib_common.pri)
 
 # This file is common for all UGENE plugins
@@ -35,6 +36,10 @@ unix {
     INSTALLS += target
 }
 
-macx {
-    QMAKE_RPATHDIR += @executable_path/plugins/
+unix: {
+    macx: {
+        QMAKE_RPATHDIR += @executable_path/plugins/
+    } else {
+        QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN/plugins\'"
+    }
 }

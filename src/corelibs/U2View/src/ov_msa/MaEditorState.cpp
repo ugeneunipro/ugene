@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -113,7 +113,7 @@ QVariantMap MaEditorState::saveState(MaEditor* v) {
     SAFE_POINT(scrollController != NULL, "ScrollController is NULL", QVariantMap());
 
     int firstBase = scrollController->getFirstVisibleBase();
-    int firstSeq = scrollController->getFirstVisibleRowIndex();
+    int firstSeq = scrollController->getFirstVisibleMaRowIndex();
 
     ss.setFirstPos(firstBase);
     ss.setFirstSeq(firstSeq);

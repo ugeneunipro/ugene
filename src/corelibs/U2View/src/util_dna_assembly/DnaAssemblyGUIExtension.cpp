@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -80,10 +80,10 @@ bool DnaAssemblyAlgorithmMainWidget::requiredToolsAreOk() const {
     QStringList missedExtTools;
     ExternalToolRegistry *extToolRegistry = AppContext::getExternalToolRegistry();
     SAFE_POINT(NULL != extToolRegistry, L10N::nullPointerError("External tool subsystem"), false);
-    foreach (const QString &toolName, requiredExtToolNames) {
-        ExternalTool *tool = extToolRegistry->getByName(toolName);
+    foreach (const QString &toolId, requiredExtToolIds) {
+        ExternalTool *tool = extToolRegistry->getById(toolId);
         if (NULL == tool || tool->getPath().isEmpty()) {
-            missedExtTools.append(toolName);
+            missedExtTools.append(extToolRegistry->getToolNameById(toolId));
         }
     }
 

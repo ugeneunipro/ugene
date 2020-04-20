@@ -6,131 +6,79 @@
     <message>
         <location filename="../src/HttpRequestBLAST.cpp" line="34"/>
         <source>Cannot open the IO adapter</source>
-        <translation type="unfinished">Неудалось открыть адаптер</translation>
+        <translation>Не удалось открыть адаптер</translation>
     </message>
     <message>
         <location filename="../src/HttpRequestBLAST.cpp" line="53"/>
         <source>Cannot load a page. %1</source>
-        <translation type="unfinished">Не удалось загрузить страницу. %1</translation>
+        <translation>Не удалось загрузить страницу. %1</translation>
     </message>
     <message>
         <location filename="../src/HttpRequestBLAST.cpp" line="70"/>
         <location filename="../src/HttpRequestBLAST.cpp" line="124"/>
         <source>The response is empty</source>
-        <translation type="unfinished">Пустой ответ</translation>
+        <translation>Пустой ответ</translation>
     </message>
     <message>
         <location filename="../src/HttpRequestBLAST.cpp" line="84"/>
         <source>Nucleotide FASTA provided for protein sequence</source>
-        <translation type="unfinished"></translation>
+        <translation>Nucleotide FASTA provided for protein sequence</translation>
     </message>
     <message>
         <location filename="../src/HttpRequestBLAST.cpp" line="92"/>
         <source>Cannot get the request ID</source>
-        <translation type="unfinished">Не удалось получить ID для поиска</translation>
+        <translation>Не удалось получить ID для поиска</translation>
     </message>
     <message>
         <location filename="../src/HttpRequestBLAST.cpp" line="100"/>
         <source>Cannot get the waiting time</source>
-        <translation type="unfinished">Не удалось получить время ожидания</translation>
+        <translation>Не удалось получить время ожидания</translation>
     </message>
     <message>
         <location filename="../src/HttpRequestBLAST.cpp" line="140"/>
         <source>Database couldn&apos;t prepare the response. You can increase timeout and perform search again.</source>
-        <translation type="unfinished">База данных не готова для запроса. Вы можете увеличить таймаут и запустить снова.</translation>
+        <translation>База данных не готова для запроса. Вы можете увеличить таймаут и запустить снова.</translation>
     </message>
     <message>
         <location filename="../src/HttpRequestBLAST.cpp" line="145"/>
         <source>NCBI BLAST web server returned &quot;CPU usage limit was exceeded&quot; error. Probably, the query sequence is too large.</source>
-        <translation type="unfinished"></translation>
+        <translation>NCBI BLAST web server returned &quot;CPU usage limit was exceeded&quot; error. Probably, the query sequence is too large.</translation>
     </message>
     <message>
         <location filename="../src/HttpRequestBLAST.cpp" line="162"/>
         <source>Cannot read the response</source>
-        <translation type="unfinished">Не удалось прочитать ответ</translation>
+        <translation>Не удалось прочитать ответ</translation>
     </message>
     <message>
         <location filename="../src/HttpRequestBLAST.cpp" line="228"/>
         <location filename="../src/HttpRequestBLAST.cpp" line="235"/>
         <location filename="../src/HttpRequestBLAST.cpp" line="252"/>
         <source>Cannot get the location</source>
-        <translation type="unfinished">Не удалось получитьь локацию</translation>
+        <translation>Не удалось получитьь локацию</translation>
     </message>
     <message>
         <location filename="../src/HttpRequestBLAST.cpp" line="262"/>
         <source>Cannot get the identity</source>
-        <translation type="unfinished">Не удалось получить идентификатор последовательности</translation>
+        <translation>Не удалось получить идентификатор последовательности</translation>
     </message>
     <message>
         <location filename="../src/HttpRequestBLAST.cpp" line="269"/>
         <source>Cannot evaluate the gaps</source>
-        <translation type="unfinished">Не удалось вычислить пробелы</translation>
+        <translation>Не удалось вычислить пробелы</translation>
     </message>
     <message>
         <location filename="../src/HttpRequestBLAST.cpp" line="276"/>
         <source>Cannot get the alignment length</source>
-        <translation type="unfinished">Не удалось получить длину выравнивания</translation>
+        <translation>Не удалось получить длину выравнивания</translation>
     </message>
     <message>
         <location filename="../src/HttpRequestBLAST.cpp" line="289"/>
         <source>Cannot evaluate the location</source>
-        <translation type="unfinished">Не удалось вычислить локацию</translation>
+        <translation>Не удалось вычислить локацию</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
-    <message>
-        <source>Cannot open the IO adapter</source>
-        <translation type="vanished">Неудалось открыть адаптер</translation>
-    </message>
-    <message>
-        <source>Cannot get the request ID</source>
-        <translation type="vanished">Не удалось получить ID для поиска</translation>
-    </message>
-    <message>
-        <source>Cannot get the waiting time</source>
-        <translation type="vanished">Не удалось получить время ожидания</translation>
-    </message>
-    <message>
-        <source>The response is empty</source>
-        <translation type="vanished">Пустой ответ</translation>
-    </message>
-    <message>
-        <source>Cannot load a page. %1</source>
-        <translation type="vanished">Не удалось загрузить страницу. %1</translation>
-    </message>
-    <message>
-        <source>Database couldn&apos;t prepare the response. You can increase timeout and perform search again.</source>
-        <translation type="vanished">База данных не готова для запроса. Вы можете увеличить таймаут и запустить снова.</translation>
-    </message>
-    <message>
-        <source>CPU usage limit in BLAST was exceeded, probably query sequence is too large</source>
-        <translation type="vanished">Был превышен предел использования CPU в BLAST, вероятно, последовательность слишком большая</translation>
-    </message>
-    <message>
-        <source>Cannot read the response</source>
-        <translation type="vanished">Не удалось прочитать ответ</translation>
-    </message>
-    <message>
-        <source>Cannot get the location</source>
-        <translation type="vanished">Не удалось получитьь локацию</translation>
-    </message>
-    <message>
-        <source>Cannot get the identity</source>
-        <translation type="vanished">Не удалось получить идентификатор последовательности</translation>
-    </message>
-    <message>
-        <source>Cannot evaluate the gaps</source>
-        <translation type="vanished">Не удалось вычислить пробелы</translation>
-    </message>
-    <message>
-        <source>Cannot get the alignment length</source>
-        <translation type="vanished">Не удалось получить длину выравнивания</translation>
-    </message>
-    <message>
-        <source>Cannot evaluate the location</source>
-        <translation type="vanished">Не удалось вычислить локацию</translation>
-    </message>
     <message>
         <location filename="../src/RemoteBLASTWorker.cpp" line="106"/>
         <source>Incorrect list of Blastn databases</source>
@@ -273,18 +221,6 @@
         <location filename="../src/RemoteBLASTDialog.ui" line="310"/>
         <source>The database description:</source>
         <translation>Описание базы данных:</translation>
-    </message>
-    <message>
-        <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="vanished">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;Lucida Grande&apos;; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:&apos;MS Shell Dlg 2&apos;; font-size:8pt;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/RemoteBLASTDialog.ui" line="376"/>
@@ -925,7 +861,12 @@ p, li { white-space: pre-wrap; }
         <translation>Поиск в базе данных NCBI с помощью BLAST...</translation>
     </message>
     <message>
-        <location filename="../src/RemoteBLASTPlugin.cpp" line="138"/>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="141"/>
+        <source>Selected region is too large!</source>
+        <translation>Выбранный регион слишком большой!</translation>
+    </message>
+    <message>
+        <location filename="../src/RemoteBLASTPlugin.cpp" line="155"/>
         <source>Sequence objects is NULL</source>
         <translation>Sequence objects is NULL</translation>
     </message>

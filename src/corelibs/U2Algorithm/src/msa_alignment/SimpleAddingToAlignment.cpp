@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -75,37 +75,71 @@ Task::ReportResult SimpleAddToAlignmentTask::report() {
     CHECK_OP(stateInfo, ReportResult_Finished);
     U2MsaDbi *dbi = modStep.getDbi()->getMsaDbi();
     int posInMsa = inputMsa->getNumRows();
+    bool hasDbiUpdates = false;
 
-
-    dbi->updateMsaAlphabet(settings.msaRef.entityId, settings.alphabet, stateInfo);
+    U2AlphabetId currentAlphabetId = dbi->getMsaAlphabet(settings.msaRef.entityId, stateInfo);
     CHECK_OP(stateInfo, ReportResult_Finished);
+
+    if (currentAlphabetId != settings.alphabet) {
+        hasDbiUpdates = true;
+        dbi->updateMsaAlphabet(settings.msaRef.entityId, settings.alphabet, stateInfo);
+        CHECK_OP(stateInfo, ReportResult_Finished);
+    }
     QListIterator<QString> namesIterator(settings.addedSequencesNames);
 
     const QList<qint64> rowsIds = inputMsa->getRowsIds();
     const U2MsaListGapModel msaGapModel = inputMsa->getGapModel();
     for (int i = 0; i < inputMsa->getNumRows(); i++) {
+        U2MsaRow row = dbi->getRow(settings.msaRef.entityId, rowsIds[i], stateInfo);
+        CHECK_OP(stateInfo, ReportResult_Finished);
+        U2MsaRowGapModel modelToChop(msaGapModel[i]);
+        MsaRowUtils::chopGapModel(modelToChop, row.length);
+        CHECK_CONTINUE(modelToChop != row.gaps);
+
+        hasDbiUpdates = true;
         MaDbiUtils::updateRowGapModel(settings.msaRef, rowsIds[i], msaGapModel[i], stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);
     }
 
+    QStringList unalignedSequences;
     foreach(const U2EntityRef& sequence, settings.addedSequencesRefs) {
         QString seqName = namesIterator.peekNext();
         U2SequenceObject seqObject(seqName, sequence);
         U2MsaRow row = MSAUtils::copyRowFromSequence(&seqObject, settings.msaRef.dbiRef, stateInfo);
         CHECK_OP(stateInfo, ReportResult_Finished);
-        dbi->addRow(settings.msaRef.entityId, posInMsa, row, stateInfo);
-        CHECK_OP(stateInfo, ReportResult_Finished);
-        posInMsa++;
 
-        if(sequencePositions.contains(seqName) && sequencePositions[seqName] > 0) {
-            QList<U2MsaGap> gapModel;
-            gapModel << U2MsaGap(0, sequencePositions[seqName]);
-            dbi->updateGapModel(settings.msaRef.entityId, row.rowId, gapModel, stateInfo);
+        if (row.length != 0) {
+            hasDbiUpdates = true;
+            dbi->addRow(settings.msaRef.entityId, posInMsa, row, stateInfo);
+            CHECK_OP(stateInfo, ReportResult_Finished);
+            posInMsa++;
+
+            if (sequencePositions.contains(seqName) && sequencePositions[seqName] > 0) {
+                QList<U2MsaGap> gapModel;
+                gapModel << U2MsaGap(0, sequencePositions[seqName]);
+                U2MsaRow msaRow = dbi->getRow(settings.msaRef.entityId, row.rowId, stateInfo);
+                CHECK_OP(stateInfo, ReportResult_Finished);
+
+                if (msaRow.gaps != gapModel) {
+                    hasDbiUpdates = true;
+                    dbi->updateGapModel(settings.msaRef.entityId, msaRow.rowId, gapModel, stateInfo);
+                    CHECK_OP(stateInfo, ReportResult_Finished);
+                }
+            }
+        } else {
+            unalignedSequences << seqName;
         }
         namesIterator.next();
     }
 
-    MsaDbiUtils::trim(settings.msaRef, stateInfo);
+    if (!unalignedSequences.isEmpty()) {
+        stateInfo.addWarning(tr("The following sequence(s) were not aligned as they do not contain meaningful characters: \"%1\".")
+                                .arg(unalignedSequences.join("\", \"")));
+    }
+
+    if (hasDbiUpdates) {
+        MsaDbiUtils::trim(settings.msaRef, stateInfo);
+    }
     CHECK_OP(stateInfo, ReportResult_Finished);
 
     return ReportResult_Finished;
@@ -123,6 +157,7 @@ BestPositionFindTask::BestPositionFindTask(const MultipleSequenceAlignment& alig
 void BestPositionFindTask::run() {
     U2SequenceObject dnaSeq("sequence", sequenceRef);
     QByteArray sequence = dnaSeq.getWholeSequenceData(stateInfo);
+    sequence.replace(U2Msa::GAP_CHAR, "");
     CHECK_OP(stateInfo, );
 
     if(sequence.isEmpty()) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,6 +30,8 @@
 
 #include <U2Gui/HelpButton.h>
 
+#include <U2View/AnnotationsTreeView.h>
+
 #include "SearchQualifierDialog.h"
 #include "ui_SearchQualifierDialog.h"
 
@@ -44,7 +46,7 @@ SearchQualifierDialog::SearchQualifierDialog(QWidget* p, AnnotationsTreeView *tr
     indexOfPrevResult(-1)
 {
      ui->setupUi(this);
-     new HelpButton(this, ui->buttonBox, "23331014");
+     new HelpButton(this, ui->buttonBox, "24748793");
      ui->buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Select all"));
      ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Next"));
      ui->buttonBox->button(QDialogButtonBox::Close)->setText(tr("Close"));

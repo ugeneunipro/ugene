@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,6 +32,7 @@
 
 namespace U2 {
 using namespace Workflow;
+class ExternalProcessConfig;
 class NameFilterLayout;
 class WorkflowView;
 class WorkflowScene;
@@ -44,19 +45,22 @@ class WorkflowPalette : public QWidget, Ui_PaletteWidget
 public:
     static const QString MIME_TYPE;
 
-    WorkflowPalette(ActorPrototypeRegistry* reg, QWidget *parent = 0);
+    WorkflowPalette(ActorPrototypeRegistry* reg, SchemaConfig* schemaConfig, QWidget *parent = 0);
     QMenu * createMenu(const QString &name);
     void createMenu(QMenu *menu);
 
     QVariant saveState() const;
     void restoreState(const QVariant&);
 
+    QString createPrototype();
+    bool editPrototype(ActorPrototype *proto);
+
 public slots:
     void resetSelection();
 
 signals:
     void processSelected(Workflow::ActorPrototype*, bool);
-    void si_protoDeleted(const QString &);
+    void si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *proto);
     void si_protoChanged();
     void si_protoListModified();
 private:
@@ -70,12 +74,15 @@ class WorkflowPaletteElements : public QTreeWidget {
 
 public:
 
-    WorkflowPaletteElements(ActorPrototypeRegistry* reg, QWidget *parent = 0);
+    WorkflowPaletteElements(ActorPrototypeRegistry* reg, SchemaConfig* schemaConfig, QWidget *parent = 0);
     QMenu * createMenu(const QString &name);
     void createMenu(QMenu *menu);
 
     QVariant saveState() const;
     void restoreState(const QVariant&);
+
+    QString createPrototype();
+    bool editPrototype(ActorPrototype *proto);
 
 public slots:
     void resetSelection();
@@ -83,13 +90,14 @@ public slots:
 
 signals:
     void processSelected(Workflow::ActorPrototype*, bool putToScene);
-    void si_protoDeleted(const QString &);
+    void si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *proto);
     void si_protoChanged();
     void si_protoListModified();
 
 protected:
     void contextMenuEvent(QContextMenuEvent *e);
-    void mouseMoveEvent ( QMouseEvent * event );
+
+    void mouseMoveEvent(QMouseEvent* event);
     void mousePressEvent ( QMouseEvent * event );
     void leaveEvent ( QEvent * event );
 
@@ -99,13 +107,20 @@ private slots:
     void rebuild();
     void editElement();
     bool removeElement();
+    void sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *proto);
 
 private:
     QTreeWidgetItem* createItemWidget(QAction* a);
     QAction* createItemAction(Workflow::ActorPrototype* item);
+    QAction *getActionByProto(Workflow::ActorPrototype *proto) const;
     void setContent(ActorPrototypeRegistry*);
     void sortTree();
     QVariant changeState(const QVariant& v);
+    void removePrototype(Workflow::ActorPrototype *proto);
+    bool editPrototypeWithoutElementRemoving(Workflow::ActorPrototype* proto, ExternalProcessConfig* newConfig);
+    void replaceConfigFiles(Workflow::ActorPrototype* proto, ExternalProcessConfig* newConfig);
+    void replaceOldConfigWithNewConfig(ExternalProcessConfig* oldConfig, ExternalProcessConfig* newConfig);
+    bool isExclusivePrototypeUsage(ActorPrototype* proto) const;
 
 private:
     QMap<QString,QList<QAction*> > categoryMap;
@@ -118,6 +133,7 @@ private:
 
     ActorPrototypeRegistry *protoRegistry;
     QVariantMap expandState;
+    SchemaConfig* schemaConfig;
 
     friend class PaletteDelegate;
 };

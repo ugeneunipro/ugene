@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -197,10 +197,10 @@ void ClarkBuildWorkerFactory::init() {
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new ClarkBuildPrompter());
-    proto->addExternalTool(ET_CLARK_getAccssnTaxID);
-    proto->addExternalTool(ET_CLARK_getfilesToTaxNodes);
-    proto->addExternalTool(ET_CLARK_getTargetsDef);
-    proto->addExternalTool(ET_CLARK_buildScript);
+    proto->addExternalTool(ClarkSupport::ET_CLARK_GET_ACCSSN_TAX_ID_ID);
+    proto->addExternalTool(ClarkSupport::ET_CLARK_GET_FILES_TO_TAX_NODES_ID);
+    proto->addExternalTool(ClarkSupport::ET_CLARK_GET_TARGETS_DEF_ID);
+    proto->addExternalTool(ClarkSupport::ET_CLARK_BUILD_SCRIPT_ID);
     proto->setValidator(new ClarkBuildValidator());
 
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
@@ -326,8 +326,8 @@ void ClarkBuildTask::prepare() {
         CHECK_OP(stateInfo, );
     }
 
-  QString toolName = ET_CLARK_buildScript;
-  QScopedPointer<ExternalToolRunTask> task(new ExternalToolRunTask(toolName, getArguments(), new ClarkBuildLogParser()));
+  QString toolId = ClarkSupport::ET_CLARK_BUILD_SCRIPT_ID;
+  QScopedPointer<ExternalToolRunTask> task(new ExternalToolRunTask(toolId, getArguments(), new ClarkBuildLogParser()));
   CHECK_OP(stateInfo, );
   setListenerForTask(task.data());
   addSubTask(task.take());

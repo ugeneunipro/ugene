@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #define _U2_GT_CREATE_ELEMENT_WITH_COMMAND_LINE_TOOL_FILLER_H_
 
 #include <QApplication>
+#include <QMessageBox>
 #include <QTableView>
 
 #include <drivers/GTKeyboardDriver.h>
@@ -42,40 +43,82 @@ public:
     template <typename DataType>
     class Data {
     public:
-        Data(QString name, DataType type, QString desc = QString())
-            : name(name),
+        Data(QString _displayName, DataType type, QString desc = QString(), QString _argumentName = QString())
+            : displayName(_displayName),
+              argumentName(_argumentName),
               type(type),
               description(desc) {}
-        QString name;
+        QString displayName;
+        QString argumentName;
         DataType type;
         QString description;
     };
 
-    enum InOutType {
-        MultipleAlignment,
-        Sequence,
-        SequenceWithAnnotations,
-        SetOfAnnotations,
-        DataString
+    enum class CommandLineToolType {
+        ExecutablePath,
+        IntegratedExternalTool
     };
-    typedef QPair<InOutType, QString> InOutDataType;        // type / read as
+
+    enum class ColumnName {
+        DisplayName = 0,
+        ArgumentName,
+        Type,
+        Value,
+        Description
+    };
+
+    enum InOutType {
+        Alignment,
+        AnnotatedSequence,
+        Annotations,
+        Sequence,
+        String
+    };
+    typedef QPair<InOutType, QString> InOutDataType;        // type / argument value
     typedef Data<InOutDataType> InOutData;
 
     enum ParameterType {
         Boolean,
-        Number,
+        Integer,
+        Double,
         ParameterString,
-        URL
+        InputFileUrl,
+        InputFolderUrl,
+        OutputFileUrl,
+        OutputFolderUrl
     };
-    typedef Data<ParameterType> Parameter;
+    typedef QPair<ParameterType, QString> ParameterDataType;        // type / default value
+    typedef Data<ParameterDataType> ParameterData;
 
     struct ElementWithCommandLineSettings {
-        QString             elementName;
-        QList<InOutData>         input;
-        QList<InOutData>         output;
-        QList<Parameter>    parameters;
-        QString             executionString;
-        QString             parameterizedDescription;
+        ElementWithCommandLineSettings() : tooltype(CommandLineToolType::IntegratedExternalTool),
+                                           commandDialogButtonTitle("Continue"),
+                                           summaryDialogButton(QMessageBox::Yes) {}
+
+        //1th page
+        QString                         elementName;
+        CommandLineToolType             tooltype;
+        QString                         tool;
+
+        //2th page
+        QList<InOutData>                input;
+
+        //3th page
+        QList<ParameterData>            parameters;
+
+        //4th page
+        QList<InOutData>                output;
+
+        //5th page
+        QString                         command;
+        QString                         commandDialogButtonTitle;
+
+        //6th page
+        QString                         description;
+        QString                         prompter;
+
+        //7th page
+        QMessageBox::Button             summaryDialogButton;
     };
 
 public:
@@ -86,18 +129,29 @@ public:
 private:
     QString dataTypeToString(const InOutType &type) const;
     QString dataTypeToString(const ParameterType &type) const;
+    QString formatToArgumentValue(const QString& format) const;
 
+    void processStringType(QTableView* table, int row, const ColumnName columnName, const QString& value);
     void processDataType(QTableView *table, int row, const InOutDataType &type);
-    void processDataType(QTableView *table, int row, const ParameterType &type);
+    void processDataType(QTableView *table, int row, const ParameterDataType &type);
+
+    bool processFirstPage(QWidget* dialog, QString& errorMessage);
+    bool processSecondPage(QWidget* dialog, QString& errorMessage);
+    bool processThirdPage(QWidget* dialog, QString& errorMessage);
+    bool processFourthPage(QWidget* dialog, QString& errorMessage);
+    bool processFifthPage(QWidget* dialog, QString& errorMessage);
+    bool processSixthPage(QWidget* dialog, QString& errorMessage);
+    bool processSeventhPage(QWidget* dialog, QString& errorMessage);
 
     template <typename DataType>
     void setType(QTableView *table, int row, const DataType &type) {
-        GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 1, row));
+        GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, static_cast<int>(ColumnName::Type), row));
         GTMouseDriver::doubleClick();
         GTThread::waitForMainThread();
 
         QComboBox* box = qobject_cast<QComboBox*>(QApplication::focusWidget());
-        GTComboBox::setIndexWithText(os, box, dataTypeToString(type));
+        QString dataType = dataTypeToString(type);
+        GTComboBox::setIndexWithText(os, box, dataType);
 #ifdef Q_OS_WIN
         GTKeyboardDriver::keyClick( Qt::Key_Enter);
 #endif
@@ -112,22 +166,18 @@ private:
 
         foreach (const Data<DataType> &rowData, rowItems) {
             GTWidget::click(os, addRowButton);
-            table->scrollTo(model->index(row, 0));
+            table->scrollTo(model->index(row, static_cast<int>(ColumnName::DisplayName)));
 
-            GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 0, row));
-            GTMouseDriver::click();
+            processStringType(table, row, ColumnName::DisplayName, rowData.displayName);
 
-            GTKeyboardDriver::keySequence(rowData.name);
-            GTKeyboardDriver::keyClick( Qt::Key_Enter);
+            if (!rowData.argumentName.isEmpty()) {
+                processStringType(table, row, ColumnName::ArgumentName, rowData.argumentName);
+            }
 
             processDataType(table, row, rowData.type);
 
-            GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, model->columnCount() - 1, row));
-            GTMouseDriver::click();
-
             if (!rowData.description.isEmpty()) {
-                GTKeyboardDriver::keySequence(rowData.description);
-                GTKeyboardDriver::keyClick( Qt::Key_Enter);
+                processStringType(table, row, ColumnName::Description, rowData.description);
             }
             row++;
         }

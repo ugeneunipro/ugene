@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -364,7 +364,7 @@ void GenomeAlignerWorkerFactory::init() {
                                     <p>Set <b>\"0\"</b> to switch off this option.</p></body></html>"));
 
 #ifdef OPENCL_SUPPORT
-        openclEnabled = !AppContext::getOpenCLGpuRegistry()->getEnabledGpus().empty();
+        openclEnabled = AppContext::getOpenCLGpuRegistry()->getEnabledGpu() != nullptr;
 #endif
         if(openclEnabled) {
             Descriptor gpu(GPU_ATTR, GenomeAlignerWorker::tr("Use GPU-optimization"),

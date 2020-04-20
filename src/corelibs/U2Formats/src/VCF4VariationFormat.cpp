@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 namespace U2 {
 
 VCF4VariationFormat::VCF4VariationFormat(QObject *p)
-: AbstractVariationFormat(p, QStringList()<<"vcf", true)
+: AbstractVariationFormat(p, BaseDocumentFormats::VCF4, QStringList()<<"vcf", true)
 {
     formatName = QString("VCFv4");
 

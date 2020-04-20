@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -59,7 +59,7 @@ const int ClustalWAlnFormat::MAX_NAME_LEN = 150;
 const int ClustalWAlnFormat::MAX_SEQ_LEN = 70;
 const int ClustalWAlnFormat::SEQ_ALIGNMENT = 5;
 
-ClustalWAlnFormat::ClustalWAlnFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList("aln"))
+ClustalWAlnFormat::ClustalWAlnFormat(QObject* p) : TextDocumentFormat(p, BaseDocumentFormats::CLUSTAL_ALN, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList("aln"))
 {
     formatName = tr("CLUSTALW");
     formatDescription = tr("Clustalw is a format for storing multiple sequence alignments");

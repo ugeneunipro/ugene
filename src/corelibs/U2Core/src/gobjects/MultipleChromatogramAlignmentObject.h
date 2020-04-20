@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -63,6 +63,10 @@ public:
     // inserts column of gaps with newChar at rowIndex row
     void insertCharacter(int rowIndex, int pos, char newChar);
 
+    void insertGap(const U2Region& rows, int pos, int nGaps);
+
+    void insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps);
+
     void deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount = -1);
 
     void trimRow(const int rowIndex, int currentPos, U2OpStatus& os, TrimEdge edge);
@@ -77,7 +81,7 @@ private:
     void removeRowPrivate(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 rowId);
     void removeRegionPrivate(U2OpStatus &os, const U2EntityRef &maRef, const QList<qint64> &rows,
         int startPos, int nBases);
-    virtual void insertGap(const U2Region &rows, int pos, int nGaps);
+
     QList<U2Region> getColumnsWithGaps(int requiredGapsCount) const;
     U2MsaRowGapModel getReferenceGapModel() const;
 

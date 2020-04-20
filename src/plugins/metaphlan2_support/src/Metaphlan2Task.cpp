@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -140,7 +140,7 @@ QStringList Metaphlan2ClassifyTask::getArguments() {
 
 
 void Metaphlan2ClassifyTask::prepareClassifyTask() {
-    classifyTask = new ExternalToolRunTask(Metaphlan2Support::TOOL_NAME,
+    classifyTask = new ExternalToolRunTask(Metaphlan2Support::TOOL_ID,
                                             getArguments(),
                                             new Metaphlan2LogParser(),
                                             QString(),

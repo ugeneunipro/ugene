@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@
 
 #include "DeleteGapsDialog.h"
 #include "ExportHighlightedDialogController.h"
-#include "MSACollapsibleModel.h"
+#include "MaCollapseModel.h"
 #include "MsaEditorUserModStepController.h"
 #include "SaveSelectedSequenceFromMSADialogController.h"
 
@@ -119,16 +119,7 @@ public:
 
     MSAEditor *getEditor() const;
 
-    QStringList getAvailableHighlightingSchemes() const;
-
     bool hasAminoAlphabet();
-
-private:
-    // emulating cursor mode with
-    void moveCursor(int dx, int dy);
-
-public:
-    QString exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
 
 protected:
     void focusOutEvent(QFocusEvent* fe);
@@ -165,8 +156,6 @@ private slots:
 
     void sl_modelChanged();
 
-    void sl_showCustomSettings();
-
     void sl_resetCollapsibleModel();
     void sl_setCollapsingRegions(const QList<QStringList>&);
     void sl_fontChanged(QFont font);
@@ -182,12 +171,11 @@ private:
 
     void reverseComplementModification(ModificationType& type);
 
-    void updateCollapsedGroups(const MaModificationInfo& modInfo);
+    void updateCollapseModel(const MaModificationInfo& modInfo) override;
 
-    QAction*        copySelectionAction;
     QAction*        delColAction;
     QAction*        removeAllGapsAction;
-    QAction*        gotoAction;
+
     QAction*        createSubaligniment;
     QAction*        saveSequence;
     QAction*        addSeqFromFileAction;
@@ -198,18 +186,19 @@ private:
     QAction*        reverseComplementAction;
     QAction*        reverseAction;
     QAction*        complementAction;
-    QAction*        lookMSASchemesSettingsAction;
 };
 
 // SANGER_TODO: move to EditorTasks?
 class U2VIEW_EXPORT ExportHighligtningTask : public Task {
     Q_OBJECT
 public:
-    ExportHighligtningTask(ExportHighligtingDialogController *dialog, MaEditorSequenceArea *msaese_);
+    ExportHighligtningTask(ExportHighligtingDialogController *dialog, MaEditor *editor);
 
     void run();
     QString generateReport() const;
     Task::ReportResult report();
+
+    QString exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose);
 
 private:
     int startPos;
@@ -219,7 +208,7 @@ private:
     bool dots;
     bool transpose;
     GUrl url;
-    MaEditorSequenceArea *msaese;
+    MSAEditor *msaEditor;
 };
 
 }//namespace

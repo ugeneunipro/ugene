@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -70,6 +70,14 @@ int MultipleAlignmentRowData::getUngappedPosition(int pos) const {
     return MsaRowUtils::getUngappedPosition(gaps, sequence.length(), pos);
 }
 
+DNASequence MultipleAlignmentRowData::getUngappedSequence() const {
+    return sequence;
+}
+
+U2Region MultipleAlignmentRowData::getGapped(const U2Region& region) {
+    return MsaRowUtils::getGappedRegion(gaps, region);
+}
+
 bool MultipleAlignmentRowData::isTrailingOrLeadingGap(qint64 position) const {
     CHECK(isGap(position), false);
     if (position < getCoreStart() || position > getCoreEnd() - 1) {
@@ -80,6 +88,18 @@ bool MultipleAlignmentRowData::isTrailingOrLeadingGap(qint64 position) const {
 
 U2Region MultipleAlignmentRowData::getCoreRegion() const {
     return U2Region(getCoreStart(), getCoreLength());
+}
+
+U2Region MultipleAlignmentRowData::getUngappedRegion(const U2Region& gappedRegion) const {
+    if (gappedRegion == U2Region(0, 0)) {
+        return gappedRegion;
+    }
+    U2Region noTrailingGapsRegion(gappedRegion);
+
+    if (noTrailingGapsRegion.endPos() > getRowLengthWithoutTrailing()) {
+        noTrailingGapsRegion.length = getRowLengthWithoutTrailing() - noTrailingGapsRegion.startPos;
+    }
+    return MsaRowUtils::getUngappedRegion(gaps, noTrailingGapsRegion);
 }
 
 MultipleAlignmentRowData::~MultipleAlignmentRowData() {

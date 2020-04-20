@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,7 +52,7 @@ const char FastaFormat::FASTA_HEADER_START_SYMBOL = '>';
 const char FastaFormat::FASTA_COMMENT_START_SYMBOL = ';';
 
 FastaFormat::FastaFormat(QObject* p)
-: TextDocumentFormat(p, DocumentFormatFlags_SW, QStringList()<<"fa"<<"mpfa"<<"fna"<<"fsa"<<"fas"<<"fasta"<<"sef"<<"seq"<<"seqs")
+: TextDocumentFormat(p, BaseDocumentFormats::FASTA, DocumentFormatFlags_SW, QStringList()<<"fa"<<"mpfa"<<"fna"<<"fsa"<<"fas"<<"fasta"<<"sef"<<"seq"<<"seqs")
 {
     formatName = tr("FASTA");
     supportedObjectTypes+=GObjectTypes::SEQUENCE;
@@ -272,7 +272,11 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, Q
         }
         sequenceStart += sequenceLen;
         sequenceNumber++;
-        ioLog.trace(QString("Sequence #%1 is processed").arg(sequenceNumber));
+        ioLog.trace(FastaFormat::tr("Sequence #%1 is processed").arg(sequenceNumber));
+    }
+
+    if (fs.value(DocumentFormat::STRONG_FORMAT_ACCORDANCE, QVariant(false)).toBool() && !emptySeqNames.isEmpty()) {
+        os.setError(FastaFormat::tr("The file format is invalid."));
     }
 
     CHECK_OP_EXT(os, qDeleteAll(objects); objects.clear(), );
@@ -282,9 +286,9 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, Q
 
     if (!emptySeqNames.isEmpty()) {
         QString warningMessage;
-        warningMessage.append(FastaFormat::tr("Loaded sequences: %1.\n").arg(sequenceNumber));
-        warningMessage.append(FastaFormat::tr("Skipped sequences: %1.\n").arg(emptySeqNames.size()));
-        warningMessage.append(FastaFormat::tr("The following sequences are empty:\n%1").arg(emptySeqNames.join(",\n")));
+        warningMessage.append(FastaFormat::tr("Loaded sequences: %1. \n").arg(sequenceNumber));
+        warningMessage.append(FastaFormat::tr("Skipped sequences: %1. \n").arg(emptySeqNames.size()));
+        warningMessage.append(FastaFormat::tr("The following sequences are empty: \n%1").arg(emptySeqNames.join(", \n")));
         os.addWarning(warningMessage);
     }
 
@@ -300,7 +304,7 @@ static void load(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, Q
     objects << new U2SequenceObject(seq.visualName, U2EntityRef(dbiRef, seq.id));
     objects << DocumentFormatUtils::addAnnotationsForMergedU2Sequence( sequenceRef, dbiRef, headers, mergedMapping, fs );
     if (headers.size() > 1) {
-        writeLockReason = DocumentFormat::MERGED_SEQ_LOCK;
+        writeLockReason = QObject::tr("Document sequences were merged");
     }
 }
 

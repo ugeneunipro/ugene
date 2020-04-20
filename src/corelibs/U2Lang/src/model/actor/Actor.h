@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -116,6 +116,7 @@ public:
 signals:
     void si_labelChanged();
     void si_modified();
+    void si_descriptionChanged();
 
 protected:
     friend class ActorPrototype;
@@ -149,6 +150,9 @@ protected:
     // an actor could be a subactor of some another
     ActorId owner;
     QList<ValidatorDesc> customValidators;
+
+private slots:
+    void sl_labelChanged();
 
 private:
     // setups variables for script

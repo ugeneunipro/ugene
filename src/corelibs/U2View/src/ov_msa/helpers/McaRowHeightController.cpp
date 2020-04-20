@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,11 +31,11 @@ McaRowHeightController::McaRowHeightController(McaEditorWgt *mcaEditorWgt)
 
 }
 
-int McaRowHeightController::getRowHeight(int rowIndex) const {
+int McaRowHeightController::getRowHeightByMaIndex(int maRowIndex) const {
     const int fontHeight = QFontMetrics(ui->getEditor()->getFont(), ui).height();
 
     int rowHeigth = fontHeight;
-    if (!ui->getCollapseModel()->isItemCollapsed(rowIndex)) {
+    if (!ui->getCollapseModel()->isGroupWithMaRowIndexCollapsed(maRowIndex)) {
         rowHeigth += SequenceWithChromatogramAreaRenderer::CHROMATOGRAM_MAX_HEIGHT;
     }
     rowHeigth = qRound(rowHeigth * ui->getEditor()->zoomMult);

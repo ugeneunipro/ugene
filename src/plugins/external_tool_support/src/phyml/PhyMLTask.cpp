@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -102,7 +102,7 @@ PhyMLSupportTask::PhyMLSupportTask(const MultipleSequenceAlignment& ma, const Cr
 void PhyMLSupportTask::prepare(){
     //Add new subdir for temporary files
 
-    tmpDirUrl = ExternalToolSupportUtils::createTmpDir(PhyMLSupport::PhyMlTempDir, stateInfo);
+    tmpDirUrl = ExternalToolSupportUtils::createTmpDir(PhyMLSupport::PHYML_TEMP_DIR, stateInfo);
     CHECK_OP(stateInfo, );
 
     prepareDataTask = new PhyMLPrepareDataForCalculation(inputMA, settings, tmpDirUrl);
@@ -133,7 +133,7 @@ QList<Task*> PhyMLSupportTask::onSubTaskFinished(Task* subTask){
         arguments << tmpPhylipFile;
         arguments << "--no_memory_check";
         arguments << settings.extToolArguments;
-        phyMlTask = new ExternalToolRunTask(PhyMLSupport::PhyMlRegistryId, arguments, new PhyMLLogParser(this, sequencesNumber));
+        phyMlTask = new ExternalToolRunTask(PhyMLSupport::PHYML_ID, arguments, new PhyMLLogParser(this, sequencesNumber));
         phyMlTask->setSubtaskProgressWeight(95);
         res.append(phyMlTask);
     }else if(subTask == phyMlTask){

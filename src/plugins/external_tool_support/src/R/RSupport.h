@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,38 +23,25 @@
 #define _U2_R_SUPPORT_H_
 
 #include <U2Core/ExternalToolRegistry.h>
-#include "utils/ExternalToolSupportAction.h"
 
-#define ET_R "Rscript"
-#define ET_R_GOSTATS "GOstats"
-#define ET_R_GO_DB "GO.db"
-#define ET_R_HGU133A_DB "hgu133a.db"
-#define ET_R_HGU133B_DB "hgu133b.db"
-#define ET_R_HGU1333PLUS2_DB "hgu133plus2.db"
-#define ET_R_HGU95AV2_DB "hgu95av2.db"
-#define ET_R_MOUSE430A2_DB "mouse430a2.db"
-#define ET_R_CELEGANS_DB "celegans.db"
-#define ET_R_DROSOPHILA2_DB "drosophila2.db"
-#define ET_R_ORG_HS_EG_DB "org.Hs.eg.db"
-#define ET_R_ORG_MM_EG_DB "org.Mm.eg.db"
-#define ET_R_ORG_CE_EG_DB "org.Ce.eg.db"
-#define ET_R_ORG_DM_EG_DB "org.Dm.eg.db"
-#define ET_R_SEQLOGO "seqLogo"
+#include "RunnerTool.h"
+#include "utils/ExternalToolSupportAction.h"
 
 namespace U2 {
 
-class RSupport : public ExternalTool {
+class RSupport : public RunnerTool {
     Q_OBJECT
 public:
-    RSupport(const QString& name, const QString& path = "");
-private slots:
-    void sl_toolValidationStatusChanged(bool isValid);
+    RSupport(const QString& id, const QString& name, const QString& path = "");
+
+    static const QString ET_R;
+    static const QString ET_R_ID;
 };
 
 class RModuleSupport : public ExternalToolModule {
     Q_OBJECT
 public:
-    RModuleSupport(const QString& name);
+    RModuleSupport(const QString& id, const QString& name);
 protected:
     QString getScript() const;
 };
@@ -62,85 +49,127 @@ protected:
 class RModuleGostatsSupport : public RModuleSupport {
     Q_OBJECT
 public:
-    RModuleGostatsSupport(const QString& name);
+    RModuleGostatsSupport(const QString& id, const QString& name);
+
+    static const QString ET_R_GOSTATS;
+    static const QString ET_R_GOSTATS_ID;
 };
 
 class RModuleGodbSupport : public RModuleSupport {
     Q_OBJECT
 public:
-    RModuleGodbSupport(const QString& name);
+    RModuleGodbSupport(const QString& id, const QString& name);
+
+    static const QString ET_R_GO_DB;
+    static const QString ET_R_GO_DB_ID;
 };
 
 class RModuleHgu133adbSupport : public RModuleSupport {
     Q_OBJECT
 public:
-    RModuleHgu133adbSupport(const QString& name);
+    RModuleHgu133adbSupport(const QString& id, const QString& name);
+
+    static const QString ET_R_HGU133A_DB;
+    static const QString ET_R_HGU133A_DB_ID;
 };
 
 class RModuleHgu133bdbSupport : public RModuleSupport {
     Q_OBJECT
 public:
-    RModuleHgu133bdbSupport(const QString& name);
+    RModuleHgu133bdbSupport(const QString& id, const QString& name);
+
+    static const QString ET_R_HGU133B_DB;
+    static const QString ET_R_HGU133B_DB_ID;
 };
 
 class RModuleHgu133plus2dbSupport : public RModuleSupport {
     Q_OBJECT
 public:
-    RModuleHgu133plus2dbSupport(const QString& name);
+    RModuleHgu133plus2dbSupport(const QString& id, const QString& name);
+
+    static const QString ET_R_HGU1333PLUS2_DB;
+    static const QString ET_R_HGU1333PLUS2_DB_ID;
 };
 
 class RModuleHgu95av2dbSupport : public RModuleSupport {
     Q_OBJECT
 public:
-    RModuleHgu95av2dbSupport(const QString& name);
+    RModuleHgu95av2dbSupport(const QString& id, const QString& name);
+
+    static const QString ET_R_HGU95AV2_DB;
+    static const QString ET_R_HGU95AV2_DB_ID;
 };
 
 class RModuleMouse430a2dbSupport : public RModuleSupport {
     Q_OBJECT
 public:
-    RModuleMouse430a2dbSupport(const QString& name);
+    RModuleMouse430a2dbSupport(const QString& id, const QString& name);
+
+    static const QString ET_R_MOUSE430A2_DB;
+    static const QString ET_R_MOUSE430A2_DB_ID;
 };
 
 class RModuleCelegansdbSupport : public RModuleSupport {
     Q_OBJECT
 public:
-    RModuleCelegansdbSupport(const QString& name);
+    RModuleCelegansdbSupport(const QString& id, const QString& name);
+
+    static const QString ET_R_CELEGANS_DB;
+    static const QString ET_R_CELEGANS_DB_ID;
 };
 
 class RModuleDrosophila2dbSupport : public RModuleSupport {
     Q_OBJECT
 public:
-    RModuleDrosophila2dbSupport(const QString& name);
+    RModuleDrosophila2dbSupport(const QString& id, const QString& name);
+
+    static const QString ET_R_DROSOPHILA2_DB;
+    static const QString ET_R_DROSOPHILA2_DB_ID;
 };
 
 class RModuleOrghsegdbSupport : public RModuleSupport {
     Q_OBJECT
 public:
-    RModuleOrghsegdbSupport(const QString& name);
+    RModuleOrghsegdbSupport(const QString& id, const QString& name);
+
+    static const QString ET_R_ORG_HS_EG_DB;
+    static const QString ET_R_ORG_HS_EG_DB_ID;
 };
 
 class RModuleOrgmmegdbSupport : public RModuleSupport {
     Q_OBJECT
 public:
-    RModuleOrgmmegdbSupport(const QString& name);
+    RModuleOrgmmegdbSupport(const QString& id, const QString& name);
+
+    static const QString ET_R_ORG_MM_EG_DB;
+    static const QString ET_R_ORG_MM_EG_DB_ID;
 };
 
 class RModuleOrgceegdbSupport : public RModuleSupport {
     Q_OBJECT
 public:
-    RModuleOrgceegdbSupport(const QString& name);
+    RModuleOrgceegdbSupport(const QString& id, const QString& name);
+
+    static const QString ET_R_ORG_CE_EG_DB;
+    static const QString ET_R_ORG_CE_EG_DB_ID;
 };
 
 class RModuleOrgdmegdbSupport : public RModuleSupport {
     Q_OBJECT
 public:
-    RModuleOrgdmegdbSupport(const QString& name);
+    RModuleOrgdmegdbSupport(const QString& id, const QString& name);
+
+    static const QString ET_R_ORG_DM_EG_DB;
+    static const QString ET_R_ORG_DM_EG_DB_ID;
 };
 
 class RModuleSeqlogoSupport : public RModuleSupport {
     Q_OBJECT
 public:
-    RModuleSeqlogoSupport(const QString& name);
+    RModuleSeqlogoSupport(const QString& id, const QString& name);
+
+    static const QString ET_R_SEQLOGO;
+    static const QString ET_R_SEQLOGO_ID;
 };
 
 }   // namespace

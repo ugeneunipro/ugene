@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,16 +26,17 @@
 #include <U2View/MSAEditor.h>
 #include "utils/ExternalToolSupportAction.h"
 
-#define ET_CAP3 "CAP3"
-#define CAP3_TMP_DIR    "cap3"
 namespace U2 {
 
 class CAP3Support : public ExternalTool {
     Q_OBJECT
 public:
-    CAP3Support(const QString& name, const QString& path = "");
+    CAP3Support(const QString& id, const QString& name, const QString& path = "");
     GObjectViewWindowContext* getViewContext(){ return viewCtx; }
 
+    static const QString ET_CAP3;
+    static const QString ET_CAP3_ID;
+    static const QString CAP3_TMP_DIR;
 public slots:
     void sl_runWithExtFileSpecify();
 private:

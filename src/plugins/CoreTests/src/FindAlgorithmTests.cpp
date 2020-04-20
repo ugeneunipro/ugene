@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -152,7 +152,7 @@ void GTest_FindAlgorithmTest::init(XMLTestFormat *tf, const QDomElement& el){
     }
     else if(buf == "regexp"){
         settings.patternSettings = FindAlgorithmPatternSettings_RegExp;
-        settings.maxRegExpResult =  el.attribute(MAXLEN_ATTR).toInt(&ok);
+        settings.maxRegExpResultLength =  el.attribute(MAXLEN_ATTR).toInt(&ok);
         if(!ok){
             stateInfo.setError(GTest::tr("value incorrect for %1").arg(MAXLEN_ATTR));
             return;

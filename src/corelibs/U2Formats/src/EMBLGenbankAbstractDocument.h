@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,10 +44,6 @@ public:
     EMBLGenbankAbstractDocument(const DocumentFormatId& id, const QString& formatName,
                                 int maxLineSize, DocumentFormatFlags flags, QObject* p);
 
-    virtual DocumentFormatId getFormatId() const {return id;}
-
-    virtual const QString& getFormatName() const {return formatName;}
-
     static const QString UGENE_MARK;
     static const QString DEFAULT_OBJ_NAME;
     static const QString LOCUS_TAG_CIRCULAR;
@@ -82,8 +78,6 @@ protected:
     virtual U2Qualifier createQualifier(const QString &qualifierName, const QString &qualifierValue, bool containsDoubleQuotes) const;
     virtual bool breakQualifierOnSpaceOnly(const QString &qualifierName) const;
 
-    DocumentFormatId id;
-    QString     formatName;
     QByteArray  fPrefix;
     QByteArray  sequenceStartPrefix;
     int         maxAnnotationLineLen;

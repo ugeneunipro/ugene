@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,8 +31,8 @@ class MSAEditor;
 class AlignMsaAction : public ExternalToolSupportAction {
     Q_OBJECT
 public:
-    AlignMsaAction(QObject *parent, const QString &toolName, GObjectView *view, const QString &text, int order) :
-        ExternalToolSupportAction(parent, view, text, order, QStringList(toolName)) {}
+    AlignMsaAction(QObject *parent, const QString &toolId, GObjectView *view, const QString &text, int order) :
+        ExternalToolSupportAction(parent, view, text, order, QStringList(toolId)) {}
 
     MSAEditor* getMsaEditor() const;
 

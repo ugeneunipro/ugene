@@ -64,12 +64,12 @@
         <translation>Загруженные последовательности имеют разные алфавиты. Поэтому создано несколько объектов типа последовательность для каждого алфавита. Все последовательности одного объекта имеют одинаковый афлфавит и последовательности из разных объектов имеют разные алфавиты.</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="598"/>
+        <location filename="../src/datatype/Annotation.cpp" line="638"/>
         <source>Sequence</source>
         <translation>Последовательность</translation>
     </message>
     <message>
-        <location filename="../src/datatype/Annotation.cpp" line="604"/>
+        <location filename="../src/datatype/Annotation.cpp" line="643"/>
         <source>Translation</source>
         <translation>Трансляция</translation>
     </message>
@@ -97,21 +97,6 @@
         <location filename="../src/util/U2SequenceUtils.cpp" line="647"/>
         <source>Invalid number of symbols: %1</source>
         <translation>Неверное число символов: %1</translation>
-    </message>
-    <message>
-        <location filename="../src/models/DocumentModel.cpp" line="50"/>
-        <source>The document is created not by UGENE</source>
-        <translation>Документ создан не в UGENE</translation>
-    </message>
-    <message>
-        <location filename="../src/models/DocumentModel.cpp" line="51"/>
-        <source>Document sequences were merged</source>
-        <translation>Последовательности из документа были соединены</translation>
-    </message>
-    <message>
-        <location filename="../src/dbi/U2DbiUtils.cpp" line="46"/>
-        <source>UGENE public database</source>
-        <translation>Публичная база данных UGENE</translation>
     </message>
     <message>
         <location filename="../src/util/GenbankFeatures.cpp" line="75"/>
@@ -574,7 +559,7 @@
     <message>
         <location filename="../src/util/StrPackUtils.cpp" line="69"/>
         <source>QVariant value can&apos;t be converted to string</source>
-        <translation type="unfinished"></translation>
+        <translation>QVariant value can&apos;t be converted to string</translation>
     </message>
 </context>
 <context>
@@ -582,7 +567,7 @@
     <message>
         <location filename="../src/util/TextUtils.cpp" line="191"/>
         <source>The text file can&apos;t be read. Check the file encoding and make sure the file is not corrupted.</source>
-        <translation type="unfinished"></translation>
+        <translation>The text file can&apos;t be read. Check the file encoding and make sure the file is not corrupted.</translation>
     </message>
 </context>
 <context>
@@ -628,22 +613,22 @@
 <context>
     <name>U2::AddSequenceObjectsToAlignmentTask</name>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="58"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="59"/>
         <source>Object is empty.</source>
         <translation>Объект пуст.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="63"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="64"/>
         <source>Object is locked for modifications.</source>
         <translation>Объект заблокирован для редактирования.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="170"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="177"/>
         <source>Some sequences have wrong alphabet: </source>
         <translation>Некоторые последовательности имеют неправильный алфавит: </translation>
     </message>
     <message>
-        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="173"/>
+        <location filename="../src/tasks/AddSequencesToAlignmentTask.cpp" line="180"/>
         <source> and others</source>
         <translation> и другие</translation>
     </message>
@@ -703,49 +688,49 @@
 <context>
     <name>U2::CMDLineCoreOptions</name>
     <message>
-        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="60"/>
+        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="64"/>
         <source>Shows help information.</source>
         <translation>Показывает справочную информацию.</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="67"/>
+        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="71"/>
         <source>Loads UGENE configuration.</source>
         <translation>Загружает конфигурацию UGENE.</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="68"/>
+        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="72"/>
         <source>Loads configuration from the specified .ini file. By default the UGENE.ini file is used.</source>
         <translation>Загружает конфигурацию из указанного .ini файла. По умолчанию используется UGENE.ini файл.</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="69"/>
-        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="81"/>
-        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="90"/>
+        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="73"/>
+        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="85"/>
+        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="94"/>
         <source>&lt;path_to_file&gt;</source>
         <translation>&lt;path_to_file&gt;</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="73"/>
+        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="77"/>
         <source>Specifies the language to use.</source>
         <translation>Устанавливает используемый язык.</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="74"/>
+        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="78"/>
         <source>Specifies the language to use. The following values are available: CS, EN, RU, ZH.</source>
         <translation>Устанавливает используемый язык. Следующие значения доступны: CS, EN, RU, ZH.</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="75"/>
+        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="79"/>
         <source>&lt;language_code&gt;</source>
         <translation>&lt;language_code&gt;</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="85"/>
+        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="89"/>
         <source>Path to the session database file</source>
         <translation>Путь до сессионного файла базы</translation>
     </message>
     <message>
-        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="86"/>
+        <location filename="../src/cmdline/CMDLineCoreOptions.cpp" line="90"/>
         <source>Session database is stored in the temporary file that is created for every UGENE run.
 But it can be supplied with the command line argument.
 If the supplied file does not exist it will be created.
@@ -1322,12 +1307,12 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::DbiDocumentFormat</name>
     <message>
-        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="44"/>
+        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="43"/>
         <source>ugenedb is a internal UGENE database file format</source>
         <translation>ugenedb это внутренний формат файла базы данных UGENE</translation>
     </message>
     <message>
-        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="159"/>
+        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="158"/>
         <source>Invalid destination database reference</source>
         <translation>Неверное расположение референса базы</translation>
     </message>
@@ -1351,27 +1336,27 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::Document</name>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="558"/>
+        <location filename="../src/models/DocumentModel.cpp" line="563"/>
         <source>Document is not loaded</source>
         <translation>Документ не загружен</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="571"/>
+        <location filename="../src/models/DocumentModel.cpp" line="576"/>
         <source>IO adapter does not support write operation</source>
         <translation>Адаптер ввода/вывода не поддерживает запись</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="577"/>
+        <location filename="../src/models/DocumentModel.cpp" line="582"/>
         <source>No write support for document format</source>
         <translation>Запись для данного формата не поддерживается</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="647"/>
+        <location filename="../src/models/DocumentModel.cpp" line="652"/>
         <source>Locked by user</source>
         <translation>Заблокирован пользователем</translation>
     </message>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="671"/>
+        <location filename="../src/models/DocumentModel.cpp" line="676"/>
         <source>Lock is NULL</source>
         <translation>Lock is NULL</translation>
     </message>
@@ -1379,8 +1364,8 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::DocumentFormat</name>
     <message>
-        <location filename="../src/models/DocumentModel.cpp" line="123"/>
         <location filename="../src/models/DocumentModel.cpp" line="128"/>
+        <location filename="../src/models/DocumentModel.cpp" line="133"/>
         <source>Writing is not supported for this format (%1). Feel free to send a feature request though.</source>
         <translation>Запись в этот формат (%1) сейчас не поддерживается. Пожалуйста, сделайте запрос разработчикам.</translation>
     </message>
@@ -1411,43 +1396,48 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="510"/>
         <source>Redirecting to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Redirecting to %1</translation>
     </message>
 </context>
 <context>
     <name>U2::ExternalToolRunTask</name>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="55"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="56"/>
         <source> tool</source>
         <translation> tool</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="110"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="67"/>
+        <source>External tool is absent</source>
+        <translation>Внешний иструмент отсутствует</translation>
+    </message>
+    <message>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="114"/>
         <source>Can not run %1 tool.</source>
         <translation>Невозможно запустить %1 инструмент.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="112"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="116"/>
         <source>Can not run %1 tool. May be tool path &apos;%2&apos; not valid?</source>
         <translation>Невозможно запустить %1 инструмент. Возможно путь до инструмента &apos;%2&apos; указан неверно?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="121"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="125"/>
         <source>Tool %1 is cancelled</source>
         <translation>Tool %1 is cancelled</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="133"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="137"/>
         <source>%1 tool exited with the following error: %2 (Code: %3)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 tool exited with the following error: %2 (Code: %3)</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="144"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="148"/>
         <source>%1 tool exited with code %2</source>
         <translation>%1 инструмент завершил работу с кодом %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="146"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="150"/>
         <source>Tool %1 finished successfully</source>
         <translation>Инструмент %1 завершил работу корректно</translation>
     </message>
@@ -1455,53 +1445,49 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::ExternalToolSupportUtils</name>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="327"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="336"/>
         <source>Can not remove temporary folder: path is empty.</source>
         <translation>Невозможно удалить временную папку: пустой путь.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="333"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="342"/>
         <source>Can not remove files from temporary folder.</source>
         <translation>Невозможно удалить файлы из временной папку.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="338"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="347"/>
         <source>Can not remove folder for temporary files.</source>
         <translation>Невозможно удалить папку для временных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="351"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="360"/>
         <source>Can not create folder for temporary files: %1</source>
         <translation>Невозможно создать папку для временных файлов: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="382"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="391"/>
         <source>Can&apos;t run an executable file &quot;%1&quot; as it is. Try to run it as a cmd line command: &quot;%2&quot;</source>
         <translation>Невозможно запустить исполняемый файл &quot;%1&quot;. Попробуйте запустить его из командной строки: &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="398"/>
-        <source>Undefined tool: &apos;%1&apos;</source>
-        <translation>Неопределенный инструмент: &apos;%1&apos;</translation>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="406"/>
+        <source>A tool with the ID %1 is absent</source>
+        <translation>Инструмент %1 отсутствует</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="402"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="410"/>
         <source>Path for &apos;%1&apos; tool not set</source>
         <translation>Путь до инструмента &apos;%1&apos; не установлен</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="446"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="454"/>
         <source>Working folder is &quot;%1&quot;</source>
         <translation>Рабочая папка &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="452"/>
+        <location filename="../src/tasks/ExternalToolRunTask.cpp" line="460"/>
         <source>Launching %1 tool: %2</source>
-        <translation type="unfinished">Запуск инструмента %1: %2 {1 ?}</translation>
-    </message>
-    <message>
-        <source>Launching %1 tool: %2 %3</source>
-        <translation type="vanished">Запуск инструмента %1: %2 %3</translation>
+        <translation>Запуск инструмента %1: %2 {1 ?}</translation>
     </message>
 </context>
 <context>
@@ -1709,12 +1695,12 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/io/HttpFileAdapter.cpp" line="125"/>
         <source>Downloading from %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Downloading from %1</translation>
     </message>
     <message>
         <location filename="../src/io/HttpFileAdapter.cpp" line="327"/>
         <source>Redirecting to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Redirecting to %1</translation>
     </message>
 </context>
 <context>
@@ -2047,17 +2033,17 @@ The session database file is removed after closing of UGENE.</source>
         <translation> п.о</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="104"/>
+        <location filename="../src/globals/L10n.h" line="82"/>
         <source>Direct</source>
         <translation>Прямая</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="105"/>
+        <location filename="../src/globals/L10n.h" line="83"/>
         <source>Reverse-complementary</source>
         <translation>Обратно-комплементарная</translation>
     </message>
     <message>
-        <location filename="../src/globals/L10n.h" line="107"/>
+        <location filename="../src/globals/L10n.h" line="85"/>
         <source>Required</source>
         <translation>Требуемый</translation>
     </message>
@@ -2078,7 +2064,7 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="400"/>
         <source>Downloading file %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Downloading file %1</translation>
     </message>
     <message>
         <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="410"/>
@@ -2088,7 +2074,7 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/tasks/LoadRemoteDocumentTask.cpp" line="453"/>
         <source>Redirecting to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Redirecting to %1</translation>
     </message>
 </context>
 <context>
@@ -2217,28 +2203,18 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::MSAUtils</name>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="180"/>
-        <source>Alphabets of the alignment and the sequence cannot be derived</source>
-        <translation>Алфавиты выравнивания и последовательности не могут быть получены</translation>
-    </message>
-    <message>
-        <location filename="../src/util/MSAUtils.cpp" line="188"/>
-        <source>Sequences have different alphabets.</source>
-        <translation>Алфавиты последовательностей не совпадают.</translation>
-    </message>
-    <message>
-        <location filename="../src/util/MSAUtils.cpp" line="236"/>
-        <location filename="../src/util/MSAUtils.cpp" line="241"/>
+        <location filename="../src/util/MSAUtils.cpp" line="277"/>
+        <location filename="../src/util/MSAUtils.cpp" line="282"/>
         <source>Alignment is empty!</source>
         <translation>Выравнивание пусто!</translation>
     </message>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="247"/>
+        <location filename="../src/util/MSAUtils.cpp" line="288"/>
         <source>Sequences in alignment have different sizes!</source>
         <translation>Последовательности в выравнивании имеют разный размер!</translation>
     </message>
     <message>
-        <location filename="../src/util/MSAUtils.cpp" line="355"/>
+        <location filename="../src/util/MSAUtils.cpp" line="396"/>
         <source>Can&apos;t find a row in an alignment!</source>
         <translation>Невозможно найти строку в выравнивании!</translation>
     </message>
@@ -2251,7 +2227,7 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Невозможно переименовать выравнивание, т.к. имя пустое!</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="194"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="205"/>
         <source>Can&apos;t rename a row to an empty name!</source>
         <translation>Не удалось переименовать строку, т.к. имя пустое!</translation>
     </message>
@@ -2307,27 +2283,15 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::MsaDbiUtils</name>
     <message>
-        <source>Can&apos;t rename an alignment to an empty name!</source>
-        <translation type="vanished">Невозможно переименовать выравнивание, т.к. имя пустое!</translation>
-    </message>
-    <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="914"/>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="921"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="925"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="932"/>
         <source>Failed to insert gaps into an alignment!</source>
         <translation>Не удалось вставить пробелы в выравнивание!</translation>
     </message>
     <message>
-        <location filename="../src/util/MsaDbiUtils.cpp" line="1089"/>
+        <location filename="../src/util/MsaDbiUtils.cpp" line="1100"/>
         <source>Failed to crop an alignment!</source>
         <translation>Не удалось обрезать выравнивание!</translation>
-    </message>
-    <message>
-        <source>Failed to add a row to an alignment!</source>
-        <translation type="obsolete">Не удалось добавить строку в выравнивание!</translation>
-    </message>
-    <message>
-        <source>Can&apos;t rename a row to an empty name!</source>
-        <translation type="vanished">Не удалось переименовать строку, т.к. имя пустое!</translation>
     </message>
 </context>
 <context>
@@ -2492,7 +2456,7 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/tasks/SaveDocumentTask.cpp" line="85"/>
         <source>Document was removed</source>
-        <translation type="unfinished">Документ был удалён</translation>
+        <translation>Документ был удалён</translation>
     </message>
     <message>
         <location filename="../src/tasks/SaveDocumentTask.cpp" line="97"/>
@@ -2694,38 +2658,38 @@ UGENE содержит несохраненные изменения.</translati
         <translation>Ошибка связывания значения NULL! Запрос: &apos;%1&apos;, idx: %2</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="304"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="303"/>
         <source>Error binding text value! Query: &apos;%1&apos;, idx: %2, value: &apos;%3&apos;</source>
         <translation>Ошибка связывания текстового значения! Запрос: &apos;%1&apos;, idx: %2, значение: &apos;%3&apos;</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="316"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="315"/>
         <source>Error binding int32 value! Query: &apos;%1&apos;, idx: %2, value: %3</source>
         <translation>Ошибка связывания int32 значения! Запрос: &apos;%1&apos;, idx: %2, значение: %3</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="328"/>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="340"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="327"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="339"/>
         <source>Error binding int64 value! Query: &apos;%1&apos;, idx: %2, value: %3</source>
         <translation>Ошибка связывания int64 значения! Запрос: &apos;%1&apos;, idx: %2, значение: %3</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="353"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="352"/>
         <source>Error binding boolean value! Query: &apos;%1&apos;, idx: %2, value: %3</source>
         <translation>Ошибка связывания логического значения! Запрос: &apos;%1&apos;, idx: %2, значение: %3</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="370"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="369"/>
         <source>Error binding blob value! Query: &apos;%1&apos;, idx: %2, size: %3</source>
         <translation>Ошибка связывания значения blob! Запрос: &apos;%1&apos;, idx: %2, размер: %3</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="382"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="381"/>
         <source>Error binding blob value! Query: &apos;%1&apos;, idx: %2</source>
         <translation>Ошибка связывания значения blob! Запрос: &apos;%1&apos;, idx: %2</translation>
     </message>
     <message>
-        <location filename="../src/dbi/U2SqlHelpers.cpp" line="395"/>
+        <location filename="../src/dbi/U2SqlHelpers.cpp" line="394"/>
         <source>Unexpected row count! Query: &apos;%1&apos;, rows: %2</source>
         <translation>Значение неожиданной строки! Запрос &apos;%1&apos;, строки: %2</translation>
     </message>
@@ -2806,7 +2770,7 @@ UGENE содержит несохраненные изменения.</translati
 <context>
     <name>U2::UserAppsSettings</name>
     <message>
-        <location filename="../src/globals/UserApplicationsSettings.cpp" line="71"/>
+        <location filename="../src/globals/UserApplicationsSettings.cpp" line="72"/>
         <source>Cleaning temp dir: %1</source>
         <translation>Очистка временной папки: %1</translation>
     </message>

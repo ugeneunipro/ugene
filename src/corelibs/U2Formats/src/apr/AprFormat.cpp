@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -62,8 +62,8 @@ static QString getLine(IOAdapter* io, char* buff, const QString& pattern, U2OpSt
             line = QString();
             finishedReading = true;
         }
-        QString bufferString(buff);
-        QTextStream bufferStream(&bufferString);
+        QByteArray buffQB(buff);
+        QTextStream bufferStream(buffQB);
         line = bufferStream.readLine();
         if (line.contains(pattern)) {
             finishedReading = true;
@@ -145,7 +145,7 @@ static void createRows(IOAdapter* io, char* buff, const int sequnenceNum, const 
     }
 }
 
-AprFormat::AprFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_CannotBeCreated), QStringList("apr")) {
+AprFormat::AprFormat(QObject* p) : TextDocumentFormat(p, BaseDocumentFormats::VECTOR_NTI_ALIGNX, DocumentFormatFlags(DocumentFormatFlag_CannotBeCreated), QStringList("apr")) {
     formatName = tr("Vector NTI/AlignX");
     formatDescription = tr("Vector NTI/AlignX is a Vector NTI format for multiple alignment");
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;

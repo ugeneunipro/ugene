@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,24 +45,24 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt
       ui(new Ui_ExportHighlightedDialog())
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "23331064");
+    new HelpButton(this, ui->buttonBox, "24748843");
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     CHECK(AppContext::getAppSettings(), );
     CHECK(AppContext::getAppSettings()->getUserAppsSettings(), );
-    CHECK(msaui->getEditor(), );
-    CHECK(msaui->getEditor()->getMaObject(), );
+    const MaEditor* editor = msaui->getEditor();
+    CHECK(editor, );
 
     initSaveController();
 
-    int alignLength = msaui->getEditor()->getMaObject()->getLength();
-    QRect selection = msaui->getSequenceArea()->getSelection().getRect();
+    int alignLength = editor->getAlignmentLen();
+    const MaEditorSelection& selection = editor->getSelection();
 
     int startPos = -1;
     int endPos = -1;
-    if (selection.isNull() || selection.width() == 1) {
+    if (selection.isEmpty() || selection.width() == 1) {
         startPos = 1;
         endPos = alignLength;
     } else {

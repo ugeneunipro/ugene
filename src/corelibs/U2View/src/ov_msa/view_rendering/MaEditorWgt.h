@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@ namespace U2 {
 class BaseWidthController;
 class DrawHelper;
 class GScrollBar;
-class MSACollapsibleItemModel;
+class MaCollapseModel;
 class MaEditorConsensusArea;
 class MSAEditorOffsetsViewController;
 class MaEditorStatusBar;
@@ -60,7 +60,8 @@ public:
 
     QWidget* createHeaderLabelWidget(const QString& text = QString(),
                                      Qt::Alignment ali = Qt::AlignCenter,
-                                     QWidget* heightTarget = NULL);
+                                     QWidget* heightTarget = NULL,
+                                     bool proxyMouseEventsToNameList = true);
 
     MaEditor*                       getEditor() const { return editor; }
     MaEditorSequenceArea*           getSequenceArea() const { return seqArea; }
@@ -81,13 +82,21 @@ public:
     QAction* getCopyFormattedSelectionAction() const { return copyFormattedSelectionAction; }
     QAction* getPasteAction() const { return pasteAction; }
 
-    // SANGER_TODO: should be muted in case of chromatogram (crutch!)
-    // the best is to store it in the MCA widget, of course
+    /* Returns if collapsible mode is enabled or not.
+     *
+     * Note: the collapsible model is used regardless if collapsible mode is enabled or not,
+     * but have different features: in the collapsible mode the model can contains group of multiple sequences
+     * or reordered rows.
+     */
     bool isCollapsibleMode() const { return collapsibleMode; }
     void setCollapsibleMode(bool collapse) { collapsibleMode = collapse; }
-    MSACollapsibleItemModel* getCollapseModel() const { return collapseModel; }
+    MaCollapseModel* getCollapseModel() const { return collapseModel; }
+
+    /* If 'true' and collapse group has only 1 row it will have expand/collapse control. */
+    bool isCollapsingOfSingleRowGroupsEnabled() const { return enableCollapsingOfSingleRowGroups; }
 
     QWidget* getHeaderWidget() const { return seqAreaHeader; }
+    MsaUndoRedoFramework* getUndoRedoFramework() { return undoFWK; }
 
 signals:
     void si_startMaChanging();
@@ -130,8 +139,9 @@ protected:
 
     MsaUndoRedoFramework*           undoFWK;
 
-    MSACollapsibleItemModel*        collapseModel;
+    MaCollapseModel*                collapseModel;
     bool                            collapsibleMode;
+    bool                            enableCollapsingOfSingleRowGroups;
     ScrollController *              scrollController;
     BaseWidthController *           baseWidthController;
     RowHeightController *           rowHeightController;

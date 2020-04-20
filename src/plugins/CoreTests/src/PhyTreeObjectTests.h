@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ class GTest_CalculateTreeFromAligment : public XmlTest {
     PhyTreeGeneratorLauncherTask* task;
     QString objContextName;
     QString treeObjContextName;
-    QString algName;
+    QString algId;
 };
 
 class GTest_CheckPhyNodeHasSibling : public XmlTest {

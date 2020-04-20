@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,14 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-
 #include <U2Core/AppContext.h>
 #include <U2Core/ProjectModel.h>
-#include <U2Core/Log.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/GObject.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/U2SequenceUtils.h>
@@ -36,126 +32,67 @@
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/GObjectRelationRoles.h>
-#include <U2Core/GObjectUtils.h>
 #include <U2Core/U1AnnotationUtils.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "ShiftSequenceStartTask.h"
 
 namespace U2 {
 
-ShiftSequenceStartTask::ShiftSequenceStartTask(U2SequenceObject *_seqObj, int _shiftSize)
-
-:Task(tr("ShiftSequenceStartTask"), TaskFlag_NoRun), seqObj(_seqObj),seqStart(_shiftSize)
-{
+ShiftSequenceStartTask::ShiftSequenceStartTask(U2SequenceObject* sequenceObject, qint64 newSequenceStartPosition)
+        : Task(tr("ShiftSequenceStartTask"), TaskFlag_NoRun), sequenceObject(sequenceObject), newSequenceStartPosition(newSequenceStartPosition) {
     GCOUNTER(cvar, tvar, "ShiftSequenceStartTask");
 }
 
 Task::ReportResult ShiftSequenceStartTask::report(){
 
-    if (seqStart == 0) {
-        setError("New sequence origin is the same as the old one");
+    if (newSequenceStartPosition == 0) {
+        setError(tr("New sequence origin is the same as the old one"));
         return ReportResult_Finished;
     }
 
-    CHECK(abs(seqStart) < seqObj->getSequenceLength(), ReportResult_Finished);
+    qint64 sequenceLength = sequenceObject->getSequenceLength();
+    if (newSequenceStartPosition < 0 || newSequenceStartPosition >= sequenceLength) {
+        setError(tr("Sequence start position is out of range"));
+        return ReportResult_Finished;
+    }
 
-    Document* curDoc = seqObj->getDocument();
-    CHECK_EXT(!curDoc->isStateLocked(), setError(tr("Document is locked")), ReportResult_Finished);
+    Document* documentWithSequence = sequenceObject->getDocument();
+    CHECK_EXT(!documentWithSequence->isStateLocked(), setError(tr("Document is locked")), ReportResult_Finished);
 
-    DNASequence dna = seqObj->getWholeSequence(stateInfo);
+    DNASequence dnaSequence = sequenceObject->getWholeSequence(stateInfo);
     CHECK_OP(stateInfo, ReportResult_Finished);
+    dnaSequence.seq = dnaSequence.seq.mid(newSequenceStartPosition) + dnaSequence.seq.mid(0, newSequenceStartPosition);
+    sequenceObject->setWholeSequence(dnaSequence);
 
-    dna.seq = dna.seq.mid(seqStart) + dna.seq.mid(0, seqStart);
-    seqObj->setWholeSequence(dna);
-
-
+    QList<Document*> documentsToUpdate;
     Project *p = AppContext::getProject();
     if (p != NULL){
         if (p->isStateLocked()){
             return ReportResult_CallMeAgain;
         }
-        docs = p->getDocuments();
+        documentsToUpdate = p->getDocuments();
     }
 
-
-    if (!docs.contains(curDoc)){
-        docs.append(curDoc);
+    if (!documentsToUpdate.contains(documentWithSequence)){
+        documentsToUpdate.append(documentWithSequence);
     }
 
-    fixAnnotations(seqStart);
-
-    return ReportResult_Finished;
-}
-
-void ShiftSequenceStartTask::fixAnnotations(int shiftSize) {
-    foreach (Document *d, docs) {
-        QList<GObject *> annotationTablesList = d->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-        foreach (GObject *table, annotationTablesList) {
-            AnnotationTableObject *ato = qobject_cast<AnnotationTableObject *>(table);
-            if (ato->hasObjectRelation(seqObj, ObjectRole_Sequence)){
-                foreach (Annotation *an, ato->getAnnotations()) {
-                    const U2Location& location = an->getLocation();
-                    U2Location newLocation = shiftLocation(location, shiftSize, seqObj->getSequenceLength());
-                    an->setLocation(newLocation);
+    foreach (Document* document, documentsToUpdate) {
+        QList<GObject*> annotationTablesList = document->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
+        foreach (GObject* object, annotationTablesList) {
+            AnnotationTableObject* annotationTableObject = qobject_cast<AnnotationTableObject*>(object);
+            if (annotationTableObject->hasObjectRelation(sequenceObject, ObjectRole_Sequence)){
+                foreach (Annotation* annotation, annotationTableObject->getAnnotations()) {
+                    const U2Location& location = annotation->getLocation();
+                    U2Location newLocation = U1AnnotationUtils::shiftLocation(location, -newSequenceStartPosition, sequenceLength);
+                    annotation->setLocation(newLocation);
                 }
             }
         }
     }
+
+    return ReportResult_Finished;
 }
 
-U2Location ShiftSequenceStartTask::shiftLocation(const U2Location& location, int shiftSize, int seqLength) {
-
-    U2Location newLocation(location);
-    newLocation->regions.clear();
-
-    int joinIdx = -1;
-
-    int numRegions = location->regions.size();
-    for(int i = 0; i < numRegions; ++i) {
-        const U2Region& r = location->regions[i];
-        if (r.endPos() == seqLength && (i + 1 < numRegions)) {
-            const U2Region& r2 = location->regions[i+1];
-            if (r2.startPos == 0) {
-                joinIdx = i;
-            }
-        }
-
-        U2Region newRegion(r.startPos - shiftSize, r.length);
-        if (newRegion.endPos() <= 0) {
-            newRegion.startPos += seqLength;
-        } else if (newRegion.startPos < 0) {
-            int additionStartPos = newRegion.startPos + seqLength;
-            int additionLength = seqLength - additionStartPos;
-            U2Region newRegionAddition(additionStartPos, additionLength);
-            newLocation->regions.append(newRegionAddition);
-            newRegion.startPos = 0;
-            newRegion.length = r.length - additionLength;
-            newLocation->op = U2LocationOperator_Join;
-        }
-        newLocation->regions.append(newRegion);
-    }
-
-
-    if (joinIdx != -1) {
-        if (newLocation->regions.size() > joinIdx + 1) {
-            const U2Region& r1 = newLocation->regions[joinIdx];
-            const U2Region& r2 = newLocation->regions[joinIdx + 1];
-            assert (r1.endPos() == r2.startPos);
-            U2Region joined(r1.startPos, r1.length + r2.length);
-            newLocation->regions.replace(joinIdx, joined);
-            newLocation->regions.remove(joinIdx + 1);
-
-        }
-    }
-
-
-
-    return newLocation;
-}
-
-
-
-
-}//ns
+} //ns

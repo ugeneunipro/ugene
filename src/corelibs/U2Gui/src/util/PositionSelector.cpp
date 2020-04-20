@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,9 +25,9 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QToolButton>
-#include <QVBoxLayout>
 
 #include <U2Gui/U2LongLongValidator.h>
+#include <U2Gui/HelpButton.h>
 
 #include "PositionSelector.h"
 
@@ -48,17 +48,16 @@ PositionSelector::PositionSelector(QWidget* p, qint64 s, qint64 e, bool fixedSiz
 }
 
 void PositionSelector::init(bool fixedSize) {
-    int w = qMax(((int)log10((double)rangeEnd))*10, 70);
     posEdit = new QLineEdit(this);
     posEdit->setObjectName("go_to_pos_line_edit");
     posEdit->setValidator(new U2LongLongValidator(rangeStart, rangeEnd, posEdit));
     if (fixedSize) {
+        int w = qMax(((int)log10((double)rangeEnd))*10, 70);
         posEdit->setFixedWidth(w);
     } else {
-        posEdit->setMinimumWidth(qMax(120, w));
+        posEdit->setMinimumWidth(120);
     }
-    posEdit->setAlignment(Qt::AlignRight);
-    posEdit->setToolTip("Enter position here");
+    posEdit->setToolTip(tr("Enter position"));
     connect(posEdit, SIGNAL(returnPressed()), SLOT(sl_onReturnPressed()));
 
     QHBoxLayout* l = new QHBoxLayout(this);
@@ -80,10 +79,10 @@ void PositionSelector::init(bool fixedSize) {
     l->addWidget(posEdit);
 }
 
-PositionSelector::PositionSelector(QDialog* d, qint64 s, qint64 e, bool _a)
-: QWidget(d), rangeStart(s), rangeEnd(e), posEdit(NULL), autoclose(_a), dialog(d) 
+PositionSelector::PositionSelector(QDialog* dialog, qint64 rangeStart, qint64 rangeEnd, bool _a)
+: QWidget(dialog), rangeStart(rangeStart), rangeEnd(rangeEnd), posEdit(NULL), autoclose(_a), dialog(dialog)
 {
-    init(true);
+    init(false);
 
     QPushButton* okButton = new QPushButton(this);
     okButton->setText(tr("Go!"));
@@ -94,22 +93,28 @@ PositionSelector::PositionSelector(QDialog* d, qint64 s, qint64 e, bool _a)
     QPushButton* cancelButton = new QPushButton(this);
     cancelButton->setText(tr("Cancel"));
     cancelButton->setObjectName("cancelButton");
-    connect(cancelButton, SIGNAL(clicked()), d, SLOT(reject()));
+    connect(cancelButton, SIGNAL(clicked()), dialog, SLOT(reject()));
+
+    QPushButton* helpButton = new QPushButton(this);
+    helpButton->setText(tr("Help"));
+    helpButton->setObjectName("helpButton");
+    new HelpButton(dialog, helpButton, "24748755");
 
     QHBoxLayout* l3 = new QHBoxLayout();
     l3->setMargin(0);
     l3->addStretch();
     l3->addWidget(okButton);
     l3->addWidget(cancelButton);
+    l3->addWidget(helpButton);
 
-    assert(dialog!=NULL);
     QVBoxLayout* l2 = new QVBoxLayout();
     l2->addWidget(this);
     l2->addStretch();
     l2->addLayout(l3);
 
     dialog->setLayout(l2);
-    dialog->resize(l2->minimumSize());
+    dialog->setMinimumWidth(200);
+    dialog->setMaximumWidth(400);
 
     //todo: add checkbox to handle 'autoclose' state
 }
@@ -121,23 +126,14 @@ void PositionSelector::updateRange(qint64 _rangeStart, qint64 _rangeEnd) {
     rangeStart = _rangeStart;
     rangeEnd = _rangeEnd;
 
+    const QValidator* oldValidator = posEdit->validator();
     posEdit->setValidator(new U2LongLongValidator(_rangeStart, _rangeEnd, posEdit));
+    delete oldValidator;
 
-    int width = qMax(((int)log10((double)_rangeEnd))*10, 70);
-    if (posEdit->maximumWidth() == posEdit->minimumWidth()) {
-        posEdit->setFixedWidth(width);
-    } else {
-        posEdit->setMinimumWidth(qMax(120, width));
-    }
-
-    const QValidator *oldValidator = posEdit->validator();
-    posEdit->setValidator(new U2LongLongValidator(_rangeStart, _rangeEnd, posEdit));
     // force the validation
-    const QString position = posEdit->text();
+    QString position = posEdit->text();
     posEdit->clear();
     posEdit->insert(position);
-
-    delete oldValidator;
 }
 
 

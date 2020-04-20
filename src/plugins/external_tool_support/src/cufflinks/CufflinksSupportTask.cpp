@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -75,7 +75,7 @@ QString CufflinksSupportTask::initTmpDir() {
         QString::number(QCoreApplication::applicationPid())+"/";
 
     QString cufflinksTmpDirName =
-        AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(CUFFLINKS_TMP_DIR);
+        AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(CufflinksSupport::CUFFLINKS_TMP_DIR);
 
     QDir tmpDir(cufflinksTmpDirName + "/" + tmpDirName);
 
@@ -168,7 +168,7 @@ ExternalToolRunTask * CufflinksSupportTask::runCufflinks() {
     arguments << settings.url;
 
     // Create the Cufflinks task
-    ExternalToolRunTask* runTask = new ExternalToolRunTask(ET_CUFFLINKS,
+    ExternalToolRunTask* runTask = new ExternalToolRunTask(CufflinksSupport::ET_CUFFLINKS_ID,
         arguments,
         new ExternalToolLogParser(),
         workingDirectory);
@@ -232,7 +232,7 @@ void CufflinksSupportTask::initLoadIsoformAnnotationsTask(const QString &fileNam
     const QString filePath = settings.outDir + "/" + fileName;
 
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    SAFE_POINT_EXT(NULL != iof, setError(tr("An internal error occurred during getting annotations from a %1 output file!").arg(ET_CUFFLINKS)), );
+    SAFE_POINT_EXT(NULL != iof, setError(tr("An internal error occurred during getting annotations from a %1 output file!").arg(CufflinksSupport::ET_CUFFLINKS)), );
 
     QVariantMap hints;
     hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue(settings.storage->getDbiRef());

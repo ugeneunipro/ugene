@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -93,7 +93,10 @@ class BioStruct3DGLWidget : public QOpenGLWidget
     static int widgetCount;
 public:
     // Used in PluginChecker to detect whether the GL is available
+    static bool checkShaderPrograms();
     static void tryGL();
+
+    static const double MINIMUM_ACCEPTABLE_VERSION;
 
 public:
     /*!

@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -24,6 +24,7 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
+#include <U2Core/FailTask.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
@@ -357,6 +358,8 @@ Task * InSilicoPcrWorker::createTask(const Message &message, U2OpStatus &os) {
         tasks << pcrTask;
     }
     sequences << seqId;
+    CHECK(!tasks.isEmpty(), new FailTask(tr("Primers specified in \"%1\" are too long.").arg(QFileInfo(getValue<QString>(PRIMERS_ATTR_ID)).fileName())));
+
     return new MultiTask(tr("Multiple In Silico PCR"), tasks);
 }
 

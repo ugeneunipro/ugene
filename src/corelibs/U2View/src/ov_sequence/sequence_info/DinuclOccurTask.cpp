@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,6 @@
 #include "DinuclOccurTask.h"
 
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNASequenceObject.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2Region.h>
@@ -34,18 +33,21 @@ namespace U2 {
 
 DinuclOccurTask::DinuclOccurTask(const DNAAlphabet* _alphabet,
                                  const U2EntityRef _seqRef,
-                                 U2Region _region)
+                                 const QVector<U2Region>& regions)
     : BackgroundTask< QMap<QByteArray, qint64> >(
-    "Calculating dinculeotides occurrence",
+    "Calculating dinucleotides occurrence",
     TaskFlag_None),
       alphabet(_alphabet),
       seqRef(_seqRef),
-      region(_region)
+      regions(regions)
 {
     tpm = Progress_Manual;
     stateInfo.setProgress(0);
 }
 
+
+#define DI_NUCL_CODE(n1, n2) ((quint16((quint32)n1)<<8) + n2)
+#define GAP = '-';
 
 void DinuclOccurTask::run()
 {
@@ -62,121 +64,56 @@ void DinuclOccurTask::run()
     QByteArray alphabetChars = alphabet->getAlphabetChars();
     SAFE_POINT(!alphabetChars.isEmpty(), "There are no characters in the alphabet!",);
 
-    QMap<QByteArray, qint64> dinuclOccurrence;
-
-    // Initializing
-    foreach (char firstChar, alphabetChars) {
-        foreach (char secondChar, alphabetChars) {
-            if (('-' != firstChar) && ('-' != secondChar)) {
-                QByteArray dinucl;
-                dinucl.append(firstChar);
-                dinucl.append(secondChar);
-
-                dinuclOccurrence[dinucl] = 0;
-            }
-        }
-    }
-
-    int seqLength = sequenceDbi->getSequenceObject(seqRef.entityId, os).length;
+    qint64 seqLength = sequenceDbi->getSequenceObject(seqRef.entityId, os).length;
     CHECK_OP(os, );
 
     if (seqLength < 2) {
         return;
     }
 
-    // If there are no 'N' characters in the sequence,
-    // then corresponding dinucleotides wouldn't be shown
-    bool thereAreNChars = false;
-
-
-    // If the input region length is more than REGION_TO_ANALAYZE,
-    // divide the analysis into iterations
-    int iterNum = 0;
-    qint64 wholeRegionLength = region.length;
-    do
-    {
-        U2Region iterRegion;
-
-        if (wholeRegionLength <= REGION_TO_ANALAYZE) {
-            iterRegion = U2Region(region.startPos + iterNum * REGION_TO_ANALAYZE, wholeRegionLength);
-            wholeRegionLength = 0;
-        } else {
-            iterRegion = U2Region(region.startPos + iterNum * REGION_TO_ANALAYZE, REGION_TO_ANALAYZE);
-            wholeRegionLength -= REGION_TO_ANALAYZE;
-        }
-
-        // If this is not the first iteration, then we should take into account
-        // the overlapped dinucleotide (i.e. the dinucleotide located on the border of two chunks)
-        if (iterNum > 0) {
-            iterRegion = U2Region(iterRegion.startPos - 1, iterRegion.length + 1);
-        }
-
-        // Get the selected region and verify that the data has been correctly read
-        QByteArray sequence = sequenceDbi->getSequenceData(seqRef.entityId, iterRegion, os);
-
-        if (os.hasError() || sequence.isEmpty()) {
-            taskLog.details("Skipping calculation of the dinucleotides occurrence.");
-            break;
-        }
-
-
-        const char* sequenceData = sequence.constData();
-
-        // Verify the first character in the region
-        char zeroChar  = sequenceData[0];
-        if ('N' == zeroChar) {
-            thereAreNChars = true;
-        }
-        SAFE_POINT(alphabetChars.contains(zeroChar),
-            QString("Unexpected characters has been detected in the sequence: {%1}").arg(zeroChar),);
-
-        // Calculating the values
-        for (int i = 0, n = sequence.size(); i < n - 1; ++i) {
-
-            char firstChar = sequence[i];
-            char secondChar = sequence[i + 1];
-            SAFE_POINT(alphabetChars.contains(secondChar),
-                QString("Unexpected characters has been detected in the sequence: {%1}").arg(secondChar),);
-
-            QByteArray currentDinucleotide;
-            currentDinucleotide.append(firstChar);
-            currentDinucleotide.append(secondChar);
-
-            dinuclOccurrence[currentDinucleotide]++;
-
-            if ('N' == secondChar) {
-                thereAreNChars = true;
+    QVector<quint64> dinuclOccurrence(256 * 256, 0);
+    qint64 totalLength = U2Region::sumLength(regions);
+    qint64 processedLength = 0;
+    foreach (const U2Region& region, regions) {
+        QList<U2Region> blocks = U2Region::split(region, REGION_TO_ANALAYZE);
+        foreach(const U2Region& block, blocks) {
+            // Get the selected region and verify that the data has been correctly read
+            QByteArray sequence = sequenceDbi->getSequenceData(seqRef.entityId, block, os);
+            if (os.hasError() || sequence.isEmpty()) {
+                taskLog.details("Skipping calculation of the dinucleotides occurrence.");
+                break;
             }
-        }
 
-        // Update the task progress
-        stateInfo.setProgress((region.length - wholeRegionLength) * 100 / region.length);
-        CHECK_OP(stateInfo,);
+            // Calculating the values
+            for (int i = 0, n = sequence.size(); i < n - 1; ++i) {
+                char firstChar = sequence[i];
+                char secondChar = sequence[i + 1];
+                SAFE_POINT(alphabetChars.contains(secondChar),
+                           QString("Unexpected characters has been detected in the sequence: {%1}").arg(secondChar),);
 
-        iterNum++;
+                dinuclOccurrence[DI_NUCL_CODE(firstChar, secondChar)]++;
+            }
 
-    } while (wholeRegionLength != 0);
-
-    // Remove dinucleotides containing 'N' characters if they are all equal to 0
-    if (!thereAreNChars) {
-        foreach (char character, alphabetChars) {
-            QByteArray charNIsLeft;
-            charNIsLeft.append('N');
-            charNIsLeft.append(character);
-
-            dinuclOccurrence.remove(charNIsLeft);
-
-            QByteArray charNIsRight;
-            charNIsRight.append(character);
-            charNIsRight.append('N');
-
-            dinuclOccurrence.remove(charNIsRight);
+            // Update the task progress
+            processedLength+=block.length;
+            stateInfo.setProgress(processedLength* 100 / totalLength);
+            CHECK_OP(stateInfo,);
         }
     }
 
-    result = dinuclOccurrence;
+    // Convert to the result
+    foreach (char firstChar, alphabetChars) {
+        foreach (char secondChar, alphabetChars) {
+            qint64 count = (qint64) dinuclOccurrence[DI_NUCL_CODE(firstChar, secondChar)];
+            if (count == 0) {
+                continue;
+            }
+            QByteArray dinucl;
+            dinucl.append(firstChar);
+            dinucl.append(secondChar);
+            result[dinucl] = count;
+        }
+    }
 }
-
-
 
 } // namespace

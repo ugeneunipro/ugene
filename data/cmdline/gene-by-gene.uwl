@@ -1,12 +1,12 @@
 #@UGENE_WORKFLOW
 #Suppose you have genomes and you want to characterize them. One of the ways to do that is to build a table of what genes are in each genome and what are not there.
 #
-#1. Create a local BLAST db of your genome sequence/contigs. One db per one genome.
+#1. Create a local BLAST+ db of your genome sequence/contigs. One db per one genome.
 #2. Create a file with sequences of genes you what to explore. This file will be the input file for the scheme
-#3. Setup location and name of BLAST db you created for the first genome.
-#4. Setup output files: report location and output file with annotated (with BLAST) sequence. You might want to delete the "Write Sequence" element if you do not need output sequences.
+#3. Setup location and name of BLAST+ db you created for the first genome.
+#4. Setup output files: report location and output file with annotated (with BLAST+) sequence. You might want to delete the "Write Sequence" element if you do not need output sequences.
 #5. Run the scheme
-#5*. Run the scheme on the same input and output files changing BLAST db for each genome that you have.
+#5*. Run the scheme on the same input and output files changing BLAST+ db for each genome that you have.
 #
 #As the result you will get the report file. With "Yes" and "No" field. "Yes" answer means that the gene is in the genome. "No" answer MIGHT mean that there is no gene in the genome. It is a good idea to analyze all the "No" sequences using annotated files. Just open a file and find a sequence with a name of a gene that has "No" result.
 
@@ -25,20 +25,21 @@ workflow "Gene-by-gene approach for characterization of genomes"{
         type:genebygene-report-id;
         name:"Gene-by-gene approach report";
     }
-    blast {
-        type:blast;
-        name:"Local BLAST Search";
+    blast-plus {
+        type:blast-plus;
+        name:"Local BLAST+ Search";
+        blast-type:blastp;
+        gap-costs:"0 2";
     }
-
 
     .actor-bindings {
-        read-sequence.out-sequence->blast.in-sequence
-        blast.out-annotations->genebygene-report-id.in-data
+        read-sequence.out-sequence->blast-plus.in-sequence
+        blast-plus.out-annotations->genebygene-report-id.in-data
     }
 
-    blast.annotations->genebygene-report-id.in-data.gene-ann
+    blast-plus.annotations->genebygene-report-id.in-data.gene-ann
     read-sequence.sequence->genebygene-report-id.in-data.gene-seq
-    read-sequence.sequence->blast.in-sequence.sequence
+    read-sequence.sequence->blast-plus.in-sequence.sequence
 
     .meta {
         parameter-aliases {
@@ -56,77 +57,93 @@ workflow "Gene-by-gene approach for characterization of genomes"{
             }
             genebygene-report-id.identity {
                 alias:ident;
-                description:"Identity between gene sequence length and annotation length in per cent. BLAST identity (if specified) is checked after (using '90.0' percents by default)";
+                description:"Identity between gene sequence length and annotation length in per cent. BLAST+ identity (if specified) is checked after (using '90.0' percents by default)";
             }
             genebygene-report-id.output-file {
                 alias:out;
                 description:"Output report file";
             }
-            blast.blast-output {
+            blast-plus.blast-output {
                 alias:blast-out;
-                description:"Location of BLAST output file";
+                description:"Location of BLAST+ output file";
             }
-            blast.blast-type {
+            blast-plus.blast-type {
                 alias:search-type;
-                description:"Type of BLAST searches (using 'blastn' by default)";
+                description:"Type of BLAST+ searches (using 'blastn' by default)";
             }
-            blast.db-name {
+            blast-plus.comp-based-stats {
+                alias:cbs;
+                description:"Composition-based statistics (using 'd' by default)";
+            }
+            blast-plus.db-name {
                 alias:db-name;
-                description:"Name of BLAST DB";
+                description:"Name of BLAST+ DB";
             }
-            blast.db-path {
-                alias:blast-path;
-                description:"Path to BLAST DB";
+            blast-plus.db-path {
+                alias:db-path;
+                description:"Path of BLAST+ DB";
             }
-            blast.e-val {
+            blast-plus.e-val {
                 alias:expected-value;
                 description:"This setting specifies the statistical significance threshold for reporting matches against database sequences (using '10.0' by default)";
             }
-            blast.gapped-aln {
+            blast-plus.gap-costs {
+                alias:gap-costs;
+                description:"Cost to create and extend a gap in alignment";
+            }
+            blast-plus.gapped-aln {
                 alias:gapped-aln;
                 description:"Perform gapped alignment (using 'use' by default)";
             }
-            blast.result-name {
+            blast-plus.match-scores {
+                alias:match;
+                description:"Reward and penalty for matching and mismatching bases (using 1 -3 by default)";
+            }
+            blast-plus.max-hits {
+                alias:culling;
+                description:"If the query range of a hit is enveloped by that of at least this many higher-scoring hits, delete the hit (using 0 by default)";
+            }
+            blast-plus.result-name {
                 alias:blast-name;
                 description:"Name for annotations (using 'blast_result' by default)";
             }
-            blast.temp-dir {
+            blast-plus.temp-dir {
                 alias:tmpdir;
                 description:"Directory for temporary files (using UGENE temporary directory by default)";
             }
-            blast.tool-path {
+            blast-plus.tool-path {
                 alias:toolpath;
                 description:"External tool path (using the path specified in UGENE by default)";
             }
-            blast.type-output {
+            blast-plus.type-output {
                 alias:out-type;
-                description:"Type of BLAST output file (using 'XML (-m 7)' by default)";
+                description:"Type of BLAST+ output file (using 'XML (-outfmt 5)' by default)";
             }
         }
         visual {
-            blast {
-                pos:"-645 -555";
+            blast-plus {
+                pos:"-540 -510";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 in-sequence.angle:180;
                 out-annotations.angle:360;
             }
             genebygene-report-id {
-                pos:"-330 -555";
+                pos:"-285 -510";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 in-data.angle:180;
             }
             read-sequence {
-                pos:"-825 -555";
+                pos:"-780 -510";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 out-sequence.angle:360;
             }
-            blast.out-annotations->genebygene-report-id.in-data {
+            blast-plus.out-annotations->genebygene-report-id.in-data {
                 text-pos:"-33 -24";
             }
-            read-sequence.out-sequence->blast.in-sequence {
+            read-sequence.out-sequence->blast-plus.in-sequence {
                 text-pos:"-27.5 -24";
             }
         }

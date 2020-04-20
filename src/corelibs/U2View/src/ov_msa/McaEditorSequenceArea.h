@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,7 +55,7 @@ public:
     const ChromatogramViewSettings&  getSettings() const { return settings; }
     bool getShowQA() const {return showQVAction->isChecked(); }
 
-    void setSelection(const MaEditorSelection& sel, bool newHighlightSelection = false);
+    void setSelection(const MaEditorSelection& sel);
 
     void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
@@ -97,6 +97,8 @@ private slots:
 private:
     void initRenderer();
     void drawBackground(QPainter &p);
+
+    void updateCollapseModel(const MaModificationInfo& modInfo) override;
 
     void getColorAndHighlightingIds(QString &csid, QString &hsid);
 

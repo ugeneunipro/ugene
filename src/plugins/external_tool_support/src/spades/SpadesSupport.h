@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,12 +26,13 @@
 
 namespace U2 {
 
-#define ET_SPADES "SPAdes"
-
 class SpadesSupport : public ExternalTool {
     Q_OBJECT
 public:
-    SpadesSupport(const QString &name, const QString &path = "");
+    SpadesSupport(const QString& id, const QString &name, const QString &path = "");
+
+    static const QString ET_SPADES;
+    static const QString ET_SPADES_ID;
 };
 
 } // namespace U2

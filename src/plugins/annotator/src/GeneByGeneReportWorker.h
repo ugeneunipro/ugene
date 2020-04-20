@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,6 @@
 #ifndef _U2_GENEBYGENEREPORT_WORKER_H_
 #define _U2_GENEBYGENEREPORT_WORKER_H_
 
-#include <U2Core/U2OpStatus.h>
 #include <U2Core/AnnotationData.h>
 
 #include <U2Lang/LocalDomain.h>
@@ -57,7 +56,9 @@ private slots:
 
 class GeneByGeneReportWorkerFactory : public DomainFactory {
 public:
-    GeneByGeneReportWorkerFactory() : DomainFactory("genebygene-report-id") {}
+    static const QString ACTOR_ID;
+
+    GeneByGeneReportWorkerFactory() : DomainFactory(ACTOR_ID) {}
     static void init();
     virtual Worker *createWorker(Actor *a);
 }; // GeneByGeneReportWorkerFactory

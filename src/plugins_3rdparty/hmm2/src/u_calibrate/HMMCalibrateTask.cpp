@@ -179,7 +179,11 @@ QList<Task*> HMMCalibrateToFileTask::onSubTaskFinished(Task* subTask) {
     }
     if (subTask == readTask) {
         hmm = readTask->getHMM();
-        assert(hmm!=NULL);
+        if (hmm == nullptr) {
+            assert(false);
+            stateInfo.setError(tr("HMMReadTask didn't generate \"hmm\" object, stop."));
+            return res;
+        }
         if (settings.nThreads == 1) {
             calibrateTask = new HMMCalibrateTask(hmm, settings);
         } else {

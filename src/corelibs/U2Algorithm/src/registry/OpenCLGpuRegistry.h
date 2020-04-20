@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,7 @@
 
 #ifdef OPENCL_SUPPORT
 
-#include <QHash>
+#include <QMap>
 
 #include <U2Algorithm/OpenCLHelper.h>
 #include <U2Core/global.h>
@@ -35,16 +35,13 @@ namespace U2 {
 typedef long OpenCLGpuId;
 typedef long OpenCLGpuContext;
 
-#define OPENCL_GPU_REGISTRY_SETTINGS "/opencl_gpu_registry"
-//stores settings for concrete GPU. The key for appending - textual representation of OpenCLGpuId
-#define OPENCL_GPU_REGISTRY_SETTINGS_GPU_SPECIFIC "/opencl_gpu_registry/gpu_specific"
-#define OPENCL_GPU_SETTINGS_ENABLED "/enabled"
+#define OPENCL_GPU_REGISTRY_SETTINGS_GPU_ENABLED "/opencl_gpu_registry/enabled_gpu"
 
 class U2ALGORITHM_EXPORT OpenCLGpuModel {
 public:
     OpenCLGpuModel( const QString & _name,
-                    const OpenCLGpuContext & _context,
-                    const OpenCLGpuId & _id,
+                    const cl_context & _context,
+                    const cl_device_id & _id,
                     quint64 _platformId,
                     quint64 _globalMemorySizeBytes,
                     quint64 _maxAllocateMemorySizeBytes,
@@ -52,7 +49,7 @@ public:
                     quint32 _maxComputeUnits,
                     size_t _maxWorkGroupSize,
                     quint32 _maxClockFrequency,
-                    bool _enabled  = true) :
+                    bool _enabled = false) :
       name(_name),
       context(_context),
       id(_id),
@@ -67,8 +64,8 @@ public:
       acquired(false) {};
 
     QString getName() const {return name;}
-    OpenCLGpuId getId() const {return id;}
-    OpenCLGpuContext getContext() const {return context;}
+    cl_device_id getId() const {return id;}
+    cl_context getContext() const {return context;}
     quint64 getGlobalMemorySizeBytes() const {return globalMemorySizeBytes;}
     quint64 getMaxAllocateMemorySizeBytes() const {return maxAllocateMemorySizeBytes;}
     quint64 getLocalMemorySizeBytes() const {return localMemorySizeBytes;}
@@ -86,8 +83,8 @@ public:
     bool isReady() {return !isAcquired() && isEnabled(); }
 private:
     QString name;
-    OpenCLGpuContext context; // There should be one context for each device, no need to recreate context billion times TODO: releasing
-    OpenCLGpuId id;
+    cl_context context; // There should be one context for each device, no need to recreate context billion times TODO: releasing
+    cl_device_id id;
     quint64 platformId;
     quint64 globalMemorySizeBytes;
     quint64 maxAllocateMemorySizeBytes;
@@ -106,13 +103,13 @@ public:
 
     void registerOpenCLGpu( OpenCLGpuModel * gpu );
     void unregisterOpenCLGpu( OpenCLGpuModel * gpu);
-    OpenCLGpuModel * getGpuById( OpenCLGpuId id ) const;
+    OpenCLGpuModel * getGpuById(cl_device_id id ) const;
+    OpenCLGpuModel *getGpuByName(const QString &name) const;
     QList<OpenCLGpuModel*> getRegisteredGpus() const;
-    QList<OpenCLGpuModel*> getEnabledGpus() const;
+    OpenCLGpuModel* getEnabledGpu() const;
+    QString getEnabledGpuName() const;
 
-    OpenCLGpuModel * getAnyEnabledGpu() const;
-
-    OpenCLGpuModel * acquireAnyReadyGpu();
+    OpenCLGpuModel * acquireEnabledGpuIfReady();
 
     bool empty() const { return gpus.empty(); }
 
@@ -120,9 +117,10 @@ public:
 
     const OpenCLHelper* getOpenCLHelper() const {return openCLHelper;}
 
-private:
     void saveGpusSettings() const;
-    QHash< OpenCLGpuId, OpenCLGpuModel * > gpus;
+
+private:
+    QHash<cl_device_id, OpenCLGpuModel *> gpus;
     OpenCLHelper* openCLHelper;
 };
 

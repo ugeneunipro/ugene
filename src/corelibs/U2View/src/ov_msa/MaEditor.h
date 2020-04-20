@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,6 +29,8 @@ namespace U2 {
 #define MSAE_SETTINGS_ROOT QString("msaeditor/")
 #define MCAE_SETTINGS_ROOT QString("mcaeditor/")
 
+#define MSAE_MENU_APPEARANCE    "MSAE_MENU_APPEARANCE"
+#define MSAE_MENU_NAVIGATION    "MSAE_MENU_NAVIGATION"
 #define MSAE_MENU_COPY          "MSAE_MENU_COPY"
 #define MSAE_MENU_EDIT          "MSAE_MENU_EDIT"
 #define MSAE_MENU_EXPORT        "MSAE_MENU_EXPORT"
@@ -57,6 +59,7 @@ namespace U2 {
 
 class MaEditorWgt;
 class MultipleAlignmentObject;
+class MaEditorSelection;
 
 class SNPSettings {
 public:
@@ -87,6 +90,8 @@ public:
 
     virtual MultipleAlignmentObject* getMaObject() const { return maObject; }
 
+    QList<qint64> getMaRowIds() const;
+
     virtual MaEditorWgt* getUI() const { return ui; }
 
     virtual OptionsPanel* getOptionsPanel() { return optionsPanel; }
@@ -101,7 +106,14 @@ public:
 
     bool isAlignmentEmpty() const;
 
-    const QRect& getCurrentSelection() const;
+    /* Returns current selection. */
+    const MaEditorSelection& getSelection() const;
+
+    /*
+     * Shortcut for getSelection().toRect().
+     * Note: this method is useful because we have no "MaEditorSelection" type available outside of the U2View today.
+     */
+    QRect getSelectionRect() const;
 
     virtual int getRowContentIndent(int rowId) const;
     int getSequenceRowHeight() const; // SANGER_TODO: order the methods
@@ -126,6 +138,14 @@ public:
 
     void exportHighlighted(){ sl_exportHighlighted(); }
 
+    /** Returns current cursor position. */
+    const QPoint& getCursorPosition() const;
+
+    /** Sets new cursor position. Emits si_cursorPositionChanged() signal. */
+    void setCursorPosition(const QPoint& cursorPosition);
+
+    QAction *getClearSelectionAction() const;
+
 signals:
     void si_fontChanged(const QFont& f);
     void si_zoomOperationPerformed(bool resizeModeChanged);
@@ -133,6 +153,8 @@ signals:
     void si_sizeChanged(int newHeight, bool isMinimumSize, bool isMaximumSize);
     void si_completeUpdate();
     void si_updateActions();
+    void si_cursorPositionChanged(const QPoint& cursorPosition);
+    void si_clearSelection();
 
 protected slots:
     virtual void sl_onContextMenuRequested(const QPoint & pos) = 0;
@@ -161,9 +183,9 @@ protected:
     void updateResizeMode();
 
     void addCopyMenu(QMenu* m);
-    void addEditMenu(QMenu* m);
+    virtual void addEditMenu(QMenu* m);
     virtual void addExportMenu(QMenu* m);
-    void addViewMenu(QMenu* m);
+    void addSortMenu(QMenu* m);
     void addLoadMenu(QMenu* m);
     void addAlignMenu(QMenu* m); // SANGER_TODO: should the align menu exist in MCA?
 
@@ -185,16 +207,21 @@ protected:
     double      fontPixelToPointSize;
     mutable int cachedColumnWidth;
 
-    QAction*          saveAlignmentAction;
-    QAction*          saveAlignmentAsAction;
-    QAction*          zoomInAction;
-    QAction*          zoomOutAction;
-    QAction*          zoomToSelectionAction;
-    QAction*          showOverviewAction;
-    QAction*          changeFontAction;
-    QAction*          resetZoomAction;
-    QAction*          saveScreenshotAction;
-    QAction*          exportHighlightedAction;
+    /** Current cursor position: 'x' is offset in alignment (0...len) and 'y' is a sequence index in the aligment. */
+    QPoint cursorPosition;
+
+    QAction* saveAlignmentAction;
+    QAction* saveAlignmentAsAction;
+    QAction* zoomInAction;
+    QAction* zoomOutAction;
+    QAction* zoomToSelectionAction;
+    QAction* showOverviewAction;
+    QAction* changeFontAction;
+    QAction* resetZoomAction;
+    QAction* saveScreenshotAction;
+    QAction* exportHighlightedAction;
+    QAction* clearSelectionAction;
+
 };
 
 } // namespace

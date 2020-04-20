@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -222,11 +222,13 @@ const DNAAlphabet* U2AlphabetUtils::findBestAlphabet(const char* seq, qint64 len
     return NULL;
 }
 
+// Note: never returns NULL.
 const DNAAlphabet* U2AlphabetUtils::deriveCommonAlphabet(const DNAAlphabet* al1, const DNAAlphabet* al2) {
-    if (al1  == al2) {
+    SAFE_POINT(al1 != NULL && al2 != NULL, "Alphabet is NULL", NULL);
+
+    if (al1 == al2) {
         return al1;
     }
-    SAFE_POINT(al1 != NULL && al2 != NULL, "Alphabet is NULL", NULL);
     const DNAAlphabet *raw = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::RAW());
     if (al1->getId() == BaseDNAAlphabetIds::RAW() || al2->getId() == BaseDNAAlphabetIds::RAW()) {
         return raw;
@@ -246,9 +248,20 @@ const DNAAlphabet* U2AlphabetUtils::deriveCommonAlphabet(const DNAAlphabet* al1,
     }
 }
 
-
 const DNAAlphabet* U2AlphabetUtils::getById(const QString& id) {
     return AppContext::getDNAAlphabetRegistry()->findById(id);
+}
+
+const U2::DNAAlphabet* U2AlphabetUtils::getExtendedAlphabet(const DNAAlphabet* al) {
+    if (al->getId() == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT()) {
+        return AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_RNA_EXTENDED());
+    } else if (al->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()) {
+        return AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
+    } else if (al->getId() == BaseDNAAlphabetIds::AMINO_DEFAULT()) {
+        return AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::AMINO_EXTENDED());
+    } else {
+        return al;
+    }
 }
 
 } //namespace

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,14 +26,13 @@
 
 namespace U2 {
 
-#define ET_DIAMOND DiamondSupport::DIAMOND_TOOL
-
 class DiamondSupport : public ExternalTool {
     Q_OBJECT
 public:
-    DiamondSupport(const QString &name);
+    DiamondSupport(const QString& id, const QString &name);
 
     static const QString TOOL_NAME;
+    static const QString TOOL_ID;
 };
 
 }   // namespace U2

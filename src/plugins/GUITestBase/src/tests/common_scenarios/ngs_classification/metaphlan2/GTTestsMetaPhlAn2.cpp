@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,6 +26,8 @@
 #include <QFileInfo>
 #include <QTableWidget>
 #include <QTreeWidget>
+
+#include <base_dialogs/MessageBoxFiller.h>
 
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
@@ -390,6 +392,42 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...", GTGlobals::UseMouse);
 
     CHECK_SET_ERR(!os.hasError(), os.getError());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0008) {
+    // 1. Open the "External Tools" page in the "Application Settings" dialog.
+    // 2. Provide a valid MetaPhlAn2 executable, remove python executable.
+    // 3. Apply settings.
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus& os) {
+            QWidget* dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
+
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
+
+            AppSettingsDialogFiller::setExternalToolPath(os, ET_PYTHON, "/invalid_path/");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings" << "Preferences...", GTGlobals::UseMouse);
+
+    // 4. Open the Workflow Designer.
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    // 5. Add "Classify Sequences with MetaPhlAn2" workflow element.
+    GTUtilsWorkflowDesigner::addElement(os, "Classify Sequences with MetaPhlAn2");
+
+    // Expected result : there are no errors about "python"and it's modules. There is a warning about "MetaPhlAn2" tool.
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsWorkflowDesigner::validateWorkflow(os);
+    QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
+    QString error("Classify Sequences with MetaPhlAn2: External tool \"MetaPhlAn2\" is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected");
+    CHECK_SET_ERR(errors.contains(error), "The expected error is absent");
+    const int expectedErrorCount = 2;
+    CHECK_SET_ERR(expectedErrorCount == errors.size(), QString("There are too many errors: expected %1, got %2").arg(expectedErrorCount).arg(errors.size()));
 }
 
 } // namespace GUITest_common_scenarios_mg_metaphlan2_external_tool

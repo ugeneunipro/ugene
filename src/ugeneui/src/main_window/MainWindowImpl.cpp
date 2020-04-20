@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -278,14 +278,6 @@ void MainWindowImpl::createActions() {
     openManualAction = new QAction(tr("Open UGENE User Manual"), this);
     openManualAction->setObjectName("Open UGENE User Manual");
     connect(openManualAction, SIGNAL(triggered()),SLOT(sl_openManualAction()));
-
-    openWDManualAction = new QAction(tr("Open Workflow Designer Manual"), this);
-    openWDManualAction->setObjectName("Open Workflow Designer Manual");
-    connect(openWDManualAction, SIGNAL(triggered()),SLOT(sl_openWDManualAction()));
-
-    openQDManualAction = new QAction(tr("Open Query Designer Manual"), this);
-    openQDManualAction->setObjectName("Open Query Designer Manual");
-    connect(openQDManualAction, SIGNAL(triggered()),SLOT(sl_openQDManualAction()));
 
     welcomePageAction = new QAction(tr("Open Start Page"), this);
     welcomePageAction->setObjectName("welcome_page");

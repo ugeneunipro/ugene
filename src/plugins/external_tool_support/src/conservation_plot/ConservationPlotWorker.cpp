@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -150,11 +150,11 @@ U2::ConservationPlotSettings ConservationPlotWorker::createConservationPlotSetti
 /* ConservationPlotComboBoxWithUrlsDelegate */
 /************************************************************************/
 void ConservationPlotComboBoxWithUrlsDelegate::updateUgeneSettings() {
-    updateDataPath(getDataPathName(), CONSERVATION_DIR_NAME, true);
+    updateDataPath(getDataPathName(), ConservationPlotSupport::CONSERVATION_DIR_NAME, true);
 }
 
 QString ConservationPlotComboBoxWithUrlsDelegate::getDataPathName() {
-    return CONSERVATION_DATA_NAME;
+    return ConservationPlotSupport::CONSERVATION_DATA_NAME;
 }
 
 QString ConservationPlotComboBoxWithUrlsDelegate::getAttributeName() {
@@ -171,7 +171,7 @@ void ConservationPlotWorkerFactory::init() {
     U2DataPath* dataPath = NULL;
     U2DataPathRegistry* dpr =  AppContext::getDataPathRegistry();
     if (dpr){
-        U2DataPath* dp = dpr->getDataPathByName(CONSERVATION_DATA_NAME);
+        U2DataPath* dp = dpr->getDataPathByName(ConservationPlotSupport::CONSERVATION_DATA_NAME);
         if (dp && dp->isValid()){
             dataPath = dp;
         }
@@ -268,7 +268,7 @@ void ConservationPlotWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
     proto->setPrompter(new ConservationPlotPrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->addExternalTool(ET_CONSERVATION_PLOT);
+    proto->addExternalTool(ConservationPlotSupport::ET_CONSERVATION_PLOT_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_CHIP_SEQ(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new ConservationPlotWorkerFactory());
 }

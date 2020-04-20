@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ const QString TrimmomaticTaskSettings::SINGLE_END = "single-end";
 const QString TrimmomaticTaskSettings::PAIRED_END = "paired-end";
 
 TrimmomaticTaskSettings::TrimmomaticTaskSettings()
-    : readsArePaired(false),
+    : pairedReadsInput(false),
       generateLog(false),
       numberOfThreads(1)
 {
@@ -46,7 +46,7 @@ TrimmomaticTask::TrimmomaticTask(const TrimmomaticTaskSettings &settings)
 {
     GCOUNTER(cvar, tvar, "TrimmomaticTask");
 
-    if (settings.readsArePaired) {
+    if (settings.pairedReadsInput) {
         SAFE_POINT_EXT(!settings.pairedOutputUrl1.isEmpty() && !settings.pairedOutputUrl2.isEmpty() &&
                       !settings.unpairedOutputUrl1.isEmpty() && !settings.unpairedOutputUrl2.isEmpty(),
                       setError("At least one of the four output files is not set!"), );
@@ -58,7 +58,7 @@ TrimmomaticTask::TrimmomaticTask(const TrimmomaticTaskSettings &settings)
 }
 
 void TrimmomaticTask::prepare() {
-    trimmomaticToolRunTask = new ExternalToolRunTask(ET_TRIMMOMATIC, getArguments(), new TrimmomaticLogParser(), settings.workingDirectory);
+    trimmomaticToolRunTask = new ExternalToolRunTask(TrimmomaticSupport::ET_TRIMMOMATIC_ID, getArguments(), new TrimmomaticLogParser(), settings.workingDirectory);
     setListenerForTask(trimmomaticToolRunTask);
     addSubTask(trimmomaticToolRunTask);
 }
@@ -66,7 +66,7 @@ void TrimmomaticTask::prepare() {
 QStringList TrimmomaticTask::getArguments() {
     QStringList arguments;
 
-    if (!settings.readsArePaired) {
+    if (!settings.pairedReadsInput) {
         arguments << "SE";
     } else {
         arguments << "PE";
@@ -79,7 +79,7 @@ QStringList TrimmomaticTask::getArguments() {
         GUrlUtils::prepareFileLocation(settings.logUrl, stateInfo);
     }
 
-    if (!settings.readsArePaired) {
+    if (!settings.pairedReadsInput) {
         arguments << settings.inputUrl1;
         arguments << settings.seOutputUrl;
         GUrlUtils::prepareFileLocation(settings.seOutputUrl, stateInfo);
@@ -102,6 +102,10 @@ QStringList TrimmomaticTask::getArguments() {
     }
 
     return arguments;
+}
+
+const QString &TrimmomaticTask::getInputUrl1() const {
+    return settings.inputUrl1;
 }
 
 const QString &TrimmomaticTask::getSeOutputUrl() const {

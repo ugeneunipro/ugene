@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,6 +31,7 @@
 #include <U2Core/Settings.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ExportDocumentDialogController.h>
 #include <U2Gui/ExportObjectUtils.h>
@@ -44,7 +45,6 @@
 #include "MaEditorState.h"
 #include "MaEditorTasks.h"
 #include "helpers/ScrollController.h"
-#include "view_rendering/MaEditorWgt.h"
 
 namespace U2 {
 
@@ -60,7 +60,9 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
       resizeMode(ResizeMode_FontAndContent),
       zoomFactor(0),
       cachedColumnWidth(0),
-      exportHighlightedAction(NULL)
+      cursorPosition(QPoint(0, 0)),
+      exportHighlightedAction(NULL),
+      clearSelectionAction(NULL)
 {
     maObject = qobject_cast<MultipleAlignmentObject*>(obj);
     objects.append(maObject);
@@ -113,6 +115,7 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
     connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_lockedStateChanged()));
     connect(this, SIGNAL(si_zoomOperationPerformed(bool)), SLOT(sl_resetColumnWidthCache()));
     connect(this, SIGNAL(si_fontChanged(QFont)), SLOT(sl_resetColumnWidthCache()));
+
 }
 
 QVariantMap MaEditor::saveState() {
@@ -135,8 +138,12 @@ bool MaEditor::isAlignmentEmpty() const {
     return getAlignmentLen() == 0 || getNumSequences() == 0;
 }
 
-const QRect& MaEditor::getCurrentSelection() const {
-    return ui->getSequenceArea()->getSelection().getRect();
+const MaEditorSelection& MaEditor::getSelection() const {
+    return ui->getSequenceArea()->getSelection();
+}
+
+QRect MaEditor::getSelectionRect() const {
+    return getSelection().toRect();
 }
 
 int MaEditor::getRowContentIndent(int) const {
@@ -194,9 +201,9 @@ void MaEditor::updateReference(){
 }
 
 void MaEditor::resetCollapsibleModel() {
-    MSACollapsibleItemModel *collapsibleModel = ui->getCollapseModel();
+    MaCollapseModel *collapsibleModel = ui->getCollapseModel();
     SAFE_POINT(NULL != collapsibleModel, "NULL collapsible model!", );
-    collapsibleModel->reset();
+    collapsibleModel->reset(getMaRowIds());
 }
 
 void MaEditor::sl_zoomIn() {
@@ -249,7 +256,7 @@ void MaEditor::sl_zoomToSelection()
     ResizeMode oldMode = resizeMode;
     int seqAreaWidth =  ui->getSequenceArea()->width();
     MaEditorSelection selection = ui->getSequenceArea()->getSelection();
-    if (selection.isNull()) {
+    if (selection.isEmpty()) {
         return;
     }
     int selectionWidth = selection.width();
@@ -272,7 +279,7 @@ void MaEditor::sl_zoomToSelection()
         resizeMode = ResizeMode_OnlyContent;
     }
     ui->getScrollController()->setFirstVisibleBase(selection.x());
-    ui->getScrollController()->setFirstVisibleRowByNumber(selection.y());
+    ui->getScrollController()->setFirstVisibleViewRow(selection.y());
 
     updateActions();
 
@@ -335,7 +342,7 @@ void MaEditor::sl_exportHighlighted(){
     CHECK(!d.isNull(), );
 
     if (d->result() == QDialog::Accepted){
-        AppContext::getTaskScheduler()->registerTopLevelTask(new ExportHighligtningTask(d.data(), ui->getSequenceArea()));
+        AppContext::getTaskScheduler()->registerTopLevelTask(new ExportHighligtningTask(d.data(), this));
     }
 }
 
@@ -355,6 +362,13 @@ void MaEditor::initActions() {
     showOverviewAction->setChecked(true);
     connect(showOverviewAction, SIGNAL(triggered()), ui->getOverviewArea(), SLOT(sl_show()));
     ui->addAction(showOverviewAction);
+
+    clearSelectionAction = new QAction(tr("Clear selection"), this);
+    clearSelectionAction->setShortcut(Qt::Key_Escape);
+    connect(clearSelectionAction, SIGNAL(triggered()), SIGNAL(si_clearSelection()));
+    ui->addAction(clearSelectionAction);
+
+    connect(this, SIGNAL(si_clearSelection()), ui->getSequenceArea(), SLOT(sl_cancelSelection()));
 }
 
 void MaEditor::initZoom() {
@@ -405,12 +419,9 @@ void MaEditor::addExportMenu(QMenu* m) {
     }
 }
 
-void MaEditor::addViewMenu(QMenu* m) {
-    QMenu* em = m->addMenu(tr("View"));
+void MaEditor::addSortMenu(QMenu* m) {
+    QMenu* em = m->addMenu(tr("Sort"));
     em->menuAction()->setObjectName(MSAE_MENU_VIEW);
-    if (ui->getOffsetsViewController() != NULL) {
-        em->addAction(ui->getOffsetsViewController()->getToggleColumnsViewAction());
-    }
 }
 
 void MaEditor::addLoadMenu( QMenu* m ) {
@@ -437,6 +448,7 @@ void MaEditor::setFont(const QFont& f) {
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_SIZE, f.pointSize());
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_ITALIC, f.italic());
     s->setValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_BOLD, f.bold());
+    widget->update();
 }
 
 void MaEditor::calcFontPixelToPointSizeCoef() {
@@ -447,7 +459,7 @@ void MaEditor::calcFontPixelToPointSizeCoef() {
 void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) {
     if (ui->getSequenceArea()->isPosInRange(firstPos)) {
         ui->getScrollController()->setFirstVisibleBase(firstPos);
-        ui->getScrollController()->setFirstVisibleRowByIndex(firstSeq);
+        ui->getScrollController()->setFirstVisibleMaRow(firstSeq);
     }
 }
 
@@ -465,6 +477,26 @@ void MaEditor::updateActions() {
     zoomToSelectionAction->setEnabled( font.pointSize() < MOBJECT_MAX_FONT_SIZE);
     changeFontAction->setEnabled( resizeMode == ResizeMode_FontAndContent);
     emit si_updateActions();
+}
+
+const QPoint& MaEditor::getCursorPosition() const {
+    return cursorPosition;
+}
+
+void MaEditor::setCursorPosition(const QPoint &newCursorPosition) {
+    CHECK(cursorPosition != newCursorPosition,);
+    int x = newCursorPosition.x(), y = newCursorPosition.y();
+    CHECK(x >= 0 && y >= 0 && x < getAlignmentLen() && y < getNumSequences(),);
+    cursorPosition = newCursorPosition;
+    emit si_cursorPositionChanged(cursorPosition);
+}
+
+QList<qint64> MaEditor::getMaRowIds() const {
+    return maObject->getMultipleAlignment()->getRowsIds();
+}
+
+QAction *MaEditor::getClearSelectionAction() const {
+    return clearSelectionAction;
 }
 
 } // namespace

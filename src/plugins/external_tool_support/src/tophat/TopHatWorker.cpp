@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -517,8 +517,8 @@ void TopHatWorkerFactory::init()
     proto->setValidator(new BowtieToolsValidator());
 
     { // external tools
-        proto->addExternalTool(ET_SAMTOOLS_EXT, SAMTOOLS_TOOL_PATH);
-        proto->addExternalTool(ET_TOPHAT, EXT_TOOL_PATH);
+        proto->addExternalTool(SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID, SAMTOOLS_TOOL_PATH);
+        proto->addExternalTool(TopHatSupport::ET_TOPHAT_ID, EXT_TOOL_PATH);
     }
 
     WorkflowEnv::getProtoRegistry()->registerProto(
@@ -662,13 +662,13 @@ void TopHatWorker::initSettings() {
     QString bowtieExtToolPath = getValue<QString>(TopHatWorkerFactory::BOWTIE_TOOL_PATH);
     if (0 != bowtieVersionVal) {
         settings.useBowtie1 = true;
-        settings.bowtiePath = WorkflowUtils::updateExternalToolPath(ET_BOWTIE, bowtieExtToolPath);
+        settings.bowtiePath = WorkflowUtils::updateExternalToolPath(BowtieSupport::ET_BOWTIE_ID, bowtieExtToolPath);
     } else {
-        settings.bowtiePath = WorkflowUtils::updateExternalToolPath(ET_BOWTIE2_ALIGN, bowtieExtToolPath);
+        settings.bowtiePath = WorkflowUtils::updateExternalToolPath(Bowtie2Support::ET_BOWTIE2_ALIGN_ID, bowtieExtToolPath);
     }
 
     QString samtools = getValue<QString>(TopHatWorkerFactory::SAMTOOLS_TOOL_PATH);
-    settings.samtoolsPath = WorkflowUtils::updateExternalToolPath(ET_SAMTOOLS_EXT, samtools);
+    settings.samtoolsPath = WorkflowUtils::updateExternalToolPath(SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID, samtools);
 }
 
 void TopHatWorker::initPathes() {
@@ -679,7 +679,7 @@ void TopHatWorker::initPathes() {
 
     QString extToolPath = actor->getParameter(TopHatWorkerFactory::EXT_TOOL_PATH)->getAttributeValue<QString>(context);
     if (QString::compare(extToolPath, "default", Qt::CaseInsensitive) != 0) {
-        AppContext::getExternalToolRegistry()->getByName(ET_TOPHAT)->setPath(extToolPath);
+        AppContext::getExternalToolRegistry()->getById(TopHatSupport::ET_TOPHAT_ID)->setPath(extToolPath);
     }
 }
 
@@ -808,17 +808,17 @@ bool BowtieToolsValidator::validateBowtie(const Actor *actor, NotificationsList 
     {
         int version = getValue<int>( actor, TopHatWorkerFactory::BOWTIE_VERSION );
         if ( 1 == version ) {
-            bowTieTool = AppContext::getExternalToolRegistry( )->getByName( ET_BOWTIE );
+            bowTieTool = AppContext::getExternalToolRegistry( )->getById(BowtieSupport::ET_BOWTIE_ID);
             SAFE_POINT( NULL != bowTieTool, "NULL bowtie tool", false );
-            ExternalTool *topHatTool = AppContext::getExternalToolRegistry()->getByName( ET_TOPHAT );
+            ExternalTool *topHatTool = AppContext::getExternalToolRegistry()->getById(TopHatSupport::ET_TOPHAT_ID);
             SAFE_POINT( NULL != topHatTool, "NULL tophat tool", false );
 
             Version bowtieVersion = Version::parseVersion(bowTieTool->getVersion( ));
             Version topHatVersion = Version::parseVersion(topHatTool->getVersion( ));
 
             if ( topHatVersion.text.isEmpty( ) || bowtieVersion.text.isEmpty( ) ) {
-                const QString toolName = topHatVersion.text.isEmpty( ) ? "TopHat" : "Bowtie";
-                const QString message = QObject::tr( "%1 tool's version is undefined, "
+                QString toolName = topHatVersion.text.isEmpty( ) ? "TopHat" : "Bowtie";
+                QString message = QObject::tr( "%1 tool's version is undefined, "
                     "this may cause some compatibility issues" ).arg( toolName );
 
                 WorkflowNotification warning( message, actor->getLabel( ), WorkflowNotification::U2_WARNING );
@@ -827,7 +827,7 @@ bool BowtieToolsValidator::validateBowtie(const Actor *actor, NotificationsList 
             } else if ( !( Version::parseVersion("0.12.9") > bowtieVersion && Version::parseVersion("2.0.8") >= topHatVersion )
                  && !( Version::parseVersion("0.12.9") <= bowtieVersion && Version::parseVersion("2.0.8b") <= topHatVersion ) )
             {
-                const QString message = QObject::tr( "Bowtie and TopHat tools have incompatible "
+                QString message = QObject::tr( "Bowtie and TopHat tools have incompatible "
                     "versions. Your TopHat's version is %1, Bowtie's one is %2. The following are "
                     "considered to be compatible: Bowtie < \"0.12.9\" and TopHat <= \"2.0.8\" or "
                     "Bowtie >= \"0.12.9\" and TopHat >= \"2.0.8.b\"" ).arg( topHatVersion.text,
@@ -838,7 +838,7 @@ bool BowtieToolsValidator::validateBowtie(const Actor *actor, NotificationsList 
                 return false;
             }
         } else {
-            bowTieTool = AppContext::getExternalToolRegistry( )->getByName( ET_BOWTIE2_ALIGN );
+            bowTieTool = AppContext::getExternalToolRegistry( )->getById(Bowtie2Support::ET_BOWTIE2_ALIGN_ID);
         }
         SAFE_POINT( NULL != bowTieTool, "NULL bowtie tool", false );
     }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -113,7 +113,7 @@ void AppSettingsDialogFiller::setExternalToolPath(HI::GUITestOpStatus &os, const
 
     openTab(os, ExternalTools);
 
-    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "treeWidget", dialog);
+    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     bool set = false;
     foreach (QTreeWidgetItem* item, listOfItems) {
@@ -138,7 +138,7 @@ void AppSettingsDialogFiller::setExternalToolPath(HI::GUITestOpStatus &os, const
 
     openTab(os, ExternalTools);
 
-    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "treeWidget", dialog);
+    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     bool set = false;
     foreach(QTreeWidgetItem* item, listOfItems) {
@@ -172,7 +172,7 @@ QString AppSettingsDialogFiller::getExternalToolPath(HI::GUITestOpStatus &os, co
 
     openTab(os, ExternalTools);
 
-    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "treeWidget", dialog);
+    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
 
     foreach (QTreeWidgetItem* item, listOfItems){
@@ -193,7 +193,7 @@ bool AppSettingsDialogFiller::isExternalToolValid(HI::GUITestOpStatus &os, const
 
     openTab(os, ExternalTools);
 
-    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "treeWidget", dialog);
+    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     foreach (QTreeWidgetItem* item, listOfItems){
         if(item->text(0) == toolName){
@@ -214,7 +214,7 @@ void AppSettingsDialogFiller::clearToolPath(HI::GUITestOpStatus &os, const QStri
 
     openTab(os, ExternalTools);
 
-    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "treeWidget", dialog);
+    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     foreach (QTreeWidgetItem* item, listOfItems){
         if(item->text(0) == toolName){
@@ -303,7 +303,7 @@ void AppSettingsDialogFiller::clickOnTool(HI::GUITestOpStatus &os, const QString
 
     openTab(os, ExternalTools);
 
-    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "treeWidget", dialog);
+    QTreeWidget* treeWidget = GTWidget::findExactWidget<QTreeWidget*>(os, "twIntegratedTools", dialog);
     QList<QTreeWidgetItem*> listOfItems = treeWidget->findItems("", Qt::MatchContains | Qt::MatchRecursive);
     foreach(QTreeWidgetItem* item, listOfItems){
         if (item->text(0) == toolName){

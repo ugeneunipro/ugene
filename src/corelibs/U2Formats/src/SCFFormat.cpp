@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,7 +45,7 @@
 
 namespace U2 {
 
-SCFFormat::SCFFormat(QObject* p) : DocumentFormat(p, DocumentFormatFlag_SupportStreaming, QStringList("scf")) {
+SCFFormat::SCFFormat(QObject* p) : DocumentFormat(p, BaseDocumentFormats::SCF, DocumentFormatFlag_SupportStreaming, QStringList("scf")) {
     formatName = tr("SCF");
     formatDescription = tr ("It is Standard Chromatogram Format");
     supportedObjectTypes+=GObjectTypes::SEQUENCE;

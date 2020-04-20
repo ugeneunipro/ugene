@@ -3,12 +3,6 @@ include(../../ugene_globals.pri)
 
 QT += testlib
 
-useWebKit() {
-    QT += webkitwidgets
-} else {
-    QT += webenginewidgets
-}
-
 PLUGIN_ID=test_runner
 PLUGIN_NAME=Test runner
 PLUGIN_VENDOR=Unipro

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,7 +38,7 @@
 namespace U2 {
 
 DatabaseConnectionFormat::DatabaseConnectionFormat(QObject *p) :
-    DocumentFormat(p,
+    DocumentFormat(p, BaseDocumentFormats::DATABASE_CONNECTION,
                    DocumentFormatFlags(DocumentFormatFlag_NoPack)
                    | DocumentFormatFlag_NoFullMemoryLoad
                    | DocumentFormatFlag_Hidden
@@ -63,10 +63,6 @@ DatabaseConnectionFormat::DatabaseConnectionFormat(QObject *p) :
                          << GObjectTypes::PHYLOGENETIC_TREE
                          << GObjectTypes::BIOSTRUCTURE_3D
                          << GObjectTypes::ASSEMBLY;
-}
-
-DocumentFormatId DatabaseConnectionFormat::getFormatId() const {
-    return BaseDocumentFormats::DATABASE_CONNECTION;
 }
 
 const QString& DatabaseConnectionFormat::getFormatName() const {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineUtils.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
@@ -125,10 +126,11 @@ void WorkflowSettings::setUserDirectory(const QString &newDir) {
     Settings *s = AppContext::getSettings();
     QString defaultPath = QDir::searchPaths( PATH_PREFIX_DATA ).first() + "/workflow_samples/" + "users/";
     QString path = s->getValue(DIR, defaultPath, true).toString();
+    QString newFixedDir = GUrlUtils::getSlashEndedPath(QDir::fromNativeSeparators(newDir));
 
-    AppContext::getSettings()->setValue(DIR, newDir, true);
+    AppContext::getSettings()->setValue(DIR, newFixedDir, true);
 
-    if(path != newDir) {
+    if(path != newFixedDir) {
         QDir dir(path);
         if(!dir.exists()) {
             return;
@@ -136,7 +138,7 @@ void WorkflowSettings::setUserDirectory(const QString &newDir) {
         dir.setNameFilters(QStringList() << "*.usa");
         QFileInfoList fileList = dir.entryInfoList();
         foreach(const QFileInfo &fileInfo, fileList) {
-            QString newFileUrl = newDir + fileInfo.fileName();
+            QString newFileUrl = newFixedDir + fileInfo.fileName();
             QFile::copy(fileInfo.filePath(), newFileUrl);
         }
     }
@@ -148,8 +150,8 @@ bool WorkflowSettings::isOutputDirectorySet() {
 }
 
 void WorkflowSettings::setWorkflowOutputDirectory(const QString &newDir) {
-    Settings *s = AppContext::getSettings();
-    s->setValue(WORKFLOW_OUTPUT_PATH, newDir);
+    QString newFixedDir = GUrlUtils::getSlashEndedPath(QDir::fromNativeSeparators(newDir));
+    AppContext::getSettings()->setValue(WORKFLOW_OUTPUT_PATH, newFixedDir);
 }
 
 const QString WorkflowSettings::getWorkflowOutputDirectory() {
@@ -174,10 +176,11 @@ void WorkflowSettings::setExternalToolDirectory(const QString &newDir) {
     QString defaultPath = url.dirPath();
     defaultPath += "/ExternalToolConfig/";
     QString path = s->getValue(EXTERNAL_TOOL_WORKER_PATH, defaultPath, true).toString();
+    QString newFixedDir = GUrlUtils::getSlashEndedPath(QDir::fromNativeSeparators(newDir));
 
-    s->setValue(EXTERNAL_TOOL_WORKER_PATH, newDir, true);
+    s->setValue(EXTERNAL_TOOL_WORKER_PATH, newFixedDir, true);
 
-    if(path != newDir) {
+    if(path != newFixedDir) {
         QDir dir(path);
         if(!dir.exists()) {
             return;
@@ -185,7 +188,7 @@ void WorkflowSettings::setExternalToolDirectory(const QString &newDir) {
         dir.setNameFilters(QStringList() << "*.etc");
         QFileInfoList fileList = dir.entryInfoList();
         foreach(const QFileInfo &fileInfo, fileList) {
-            QString newFileUrl = newDir + fileInfo.fileName();
+            QString newFileUrl = newFixedDir + fileInfo.fileName();
             QFile::copy(fileInfo.filePath(), newFileUrl);
         }
     }
@@ -256,7 +259,8 @@ QString WorkflowSettings::getCmdlineUgenePath() {
 }
 
 void WorkflowSettings::setIncludedElementsDirectory(const QString &newDir) {
-    AppContext::getSettings()->setValue(INCLUDED_WORKER_PATH, newDir, true);
+    QString newFixedDir = GUrlUtils::getSlashEndedPath(QDir::fromNativeSeparators(newDir));
+    AppContext::getSettings()->setValue(INCLUDED_WORKER_PATH, newFixedDir, true);
 }
 
 const QString WorkflowSettings::getIncludedElementsDirectory() {

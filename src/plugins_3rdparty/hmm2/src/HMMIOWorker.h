@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,11 +30,13 @@
 namespace U2 {
 namespace LocalWorkflow {
 
+#define HMM2_SLOT_ID QString("hmm2-profile")
+
 class HMMLib : public QObject {
     Q_OBJECT
 public:
     static const Descriptor HMM_CATEGORY();
-    static const Descriptor HMM2_SLOT;
+    static const Descriptor HMM2_SLOT();
     static DataTypePtr HMM_PROFILE_TYPE();
     static const QString HMM_PROFILE_TYPE_ID;
     static void init();

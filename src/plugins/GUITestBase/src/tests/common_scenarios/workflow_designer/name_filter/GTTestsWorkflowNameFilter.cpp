@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,7 +50,8 @@ GUI_TEST_CLASS_DEFINITION( test_0001 ) {
     //GTWidget::click(os, GTWidget::findWidget(os, "samples"));
 
     // 3. Click the "Name filter" line edit.
-    QLineEdit *nameFilter = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameFilterLineEdit"));
+    QWidget *parent = GTWidget::findWidget(os, "palette");
+    QLineEdit *nameFilter = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameFilterLineEdit", parent));
     CHECK(nameFilter, );
     //hack. GTLineEdit can not set focus on widget. Don't know why
     GTWidget::click(os, nameFilter);
@@ -146,7 +147,8 @@ GUI_TEST_CLASS_DEFINITION( test_0003 ) {
     GTTabWidget::setCurrentIndex(os,tabs,1);
 
     // 3. Click the "Name filter" line edit.
-    QLineEdit *nameFilter = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameFilterLineEdit"));
+    QWidget *parent = GTWidget::findWidget(os, "palette");
+    QLineEdit *nameFilter = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameFilterLineEdit", parent));
     CHECK(nameFilter, );
 
     // 4. Write "NGS".

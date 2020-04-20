@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,8 +29,13 @@
 
 namespace U2 {
 
-CEASSupport::CEASSupport(const QString &name)
-: ExternalTool(name)
+const QString CEASSupport::ET_CEAS = "CEAS Tools";
+const QString CEASSupport::ET_CEAS_ID = "USUPP_CEAS";
+const QString CEASSupport::REFGENE_DIR_NAME = "refGene";
+const QString CEASSupport::REF_GENES_DATA_NAME = "Gene annotation table";
+
+CEASSupport::CEASSupport(const QString &id, const QString& name, const QString& path)
+: ExternalTool(id, name, path)
 {
     initialize();
 }
@@ -52,9 +57,9 @@ void CEASSupport::initialize() {
 
     executableFileName = "ceas.py";
 
-    toolRunnerProgramm = ET_PYTHON;
-    dependencies << ET_PYTHON
-                 << ET_R;
+    toolRunnerProgram = PythonSupport::ET_PYTHON_ID;
+    dependencies << PythonSupport::ET_PYTHON_ID
+                 << RSupport::ET_R_ID;
 
     validMessage = "ceas.py -- 0.9.9.7 \\(package version 1.0.2\\)";
     validationArguments << "--version";

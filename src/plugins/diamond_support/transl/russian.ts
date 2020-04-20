@@ -262,10 +262,6 @@ The input files may contain single-end reads, contigs, or &quot;left&quot; reads
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Block size in billions of sequence letters to be processed at a time (--block-size). This is the main parameter for controlling the program’s memory usage. Bigger numbers will increase the use of memory and temporary disk space, but also improve performance. The program can be expected to use roughly six times this number of memory (in GB).</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Index chunks</source>
         <translation type="unfinished"></translation>
     </message>
@@ -315,6 +311,10 @@ The input files may contain single-end reads, contigs, or &quot;left&quot; reads
     </message>
     <message>
         <source>In general, DIAMOND is a sequence aligner for protein and translated DNA searches similar to the NCBI BLAST software tools. However, it provides a speedup of BLAST ranging up to x20,000.&lt;br&gt;&lt;br&gt;Using this workflow element one can use DIAMOND for taxonomic classification of short DNA reads and longer sequences such as contigs. The lowest common ancestor (LCA) algorithm is used for the classification.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Block size in billions of sequence letters to be processed at a time (--block-size). This is the main parameter for controlling the program’s memory usage. Bigger numbers will increase the use of memory and temporary disk space, but also improve performance. The program can be expected to use roughly six times this number of memory (in GB).</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

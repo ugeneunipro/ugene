@@ -2,29 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
-    <name>QObject</name>
-    <message>
-        <location filename="../src/GorIVAlgTask.cpp" line="34"/>
-        <source>GORIV</source>
-        <translation>GORIV</translation>
-    </message>
-</context>
-<context>
-    <name>SecStructPredictTask</name>
-    <message>
-        <source>seq database not found</source>
-        <translation type="vanished">Sequence database not found</translation>
-    </message>
-    <message>
-        <source>observed structures database not found</source>
-        <translation type="vanished">observed structures database not found</translation>
-    </message>
-    <message>
-        <source>sequence is too long, max seq size is 10000</source>
-        <translation type="vanished">Too long input sequence: maximum allowed length is 10000</translation>
-    </message>
-</context>
-<context>
     <name>U2::GorIVAlgTask</name>
     <message>
         <location filename="../src/gor.cpp" line="151"/>

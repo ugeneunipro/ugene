@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #define _U2_TEXT_UTILS_H_
 
 #include <U2Core/global.h>
+#include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <assert.h>
@@ -33,6 +34,7 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QVector>
+#include <QWidget>
 
 namespace U2 {
 

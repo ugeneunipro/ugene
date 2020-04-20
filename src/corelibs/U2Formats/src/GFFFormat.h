@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,10 +36,6 @@ class U2FORMATS_EXPORT  GFFFormat : public TextDocumentFormat {
 public:
     GFFFormat(QObject* p);
 
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::GFF;}
-
-    virtual const QString& getFormatName() const {return formatName;}
-
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
 protected:
@@ -53,8 +49,6 @@ private:
     static QString extractSeqObjectName( QString &fastaHeaderName, const QStringList &words, QSet<QString> &names, bool &isNameModified);
 
     QStringList parseLine(const QString& line) const;
-
-    QString formatName;
 
     static const int LOCAL_READ_BUFFER_SIZE;
 };

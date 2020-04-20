@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,10 +20,10 @@
  */
 
 #include <U2Core/AppContext.h>
-#include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/UdrSchema.h>
 #include <U2Core/UdrSchemaRegistry.h>
 #include <U2Core/UdrRecord.h>
+#include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "UdrSchemaUnitTests.h"
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -199,14 +199,14 @@ void MSAEditorOffsetsViewWidget::drawAll(QPainter& painter) {
     int rbw = fm.width(']');
     int pos = showStartPos ? ui->getScrollController()->getFirstVisibleBase(true) : ui->getScrollController()->getLastVisibleBase(seqArea->width(), true);
 
-    QList<int> visibleRows = ui->getDrawHelper()->getVisibleRowsIndexes(height());
+    QList<int> visibleRows = ui->getDrawHelper()->getVisibleMaRowIndexes(height());
 
     const MultipleAlignment alignment = editor->getMaObject()->getMultipleAlignment();
     U2OpStatusImpl os;
     const int refSeq = alignment->getRowIndexByRowId(editor->getReferenceRowId(), os);
 
     foreach (const int rowNumber, visibleRows) {
-        const U2Region yRange = ui->getRowHeightController()->getRowScreenRange(rowNumber);
+        const U2Region yRange = ui->getRowHeightController()->getScreenYRegionByMaRowIndex(rowNumber);
         int offs = getBaseCounts(rowNumber, pos, !showStartPos);
         int seqSize = getBaseCounts(rowNumber, alignmentLength - 1, true);
         QString offset = offs + 1 > seqSize ? QString::number(seqSize) : QString::number(offs + 1);

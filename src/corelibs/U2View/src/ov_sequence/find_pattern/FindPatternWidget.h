@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -89,7 +89,7 @@ class FindPatternWidget : public QWidget, private Ui_FindPatternForm
     Q_OBJECT
 public:
     FindPatternWidget(AnnotatedDNAView*);
-    int getTargetSequnceLength() const;
+    int getTargetSequenceLength() const;
 
 private slots:
     void sl_onAlgorithmChanged(int);
@@ -102,7 +102,7 @@ private slots:
     void sl_onFileSelectorClicked();
     void sl_onFileSelectorToggled(bool on);
     void sl_loadPatternTaskStateChanged();
-    void sl_findPatrernTaskStateChanged();
+    void sl_findPatternTaskStateChanged();
 
     /** Another sequence has been selected */
     void sl_onFocusChanged(ADVSequenceWidget*, ADVSequenceWidget*);
@@ -115,6 +115,7 @@ private slots:
     void sl_onAnotationNameEdited();
 
     void sl_activateNewSearch(bool forcedSearch = true);
+    void sl_toggleExtendedAlphabet();
     void sl_getAnnotationsButtonClicked();
     void sl_prevButtonClicked();
     void sl_nextButtonClicked();
@@ -220,6 +221,14 @@ private:
 
     static const int DEFAULT_RESULTS_NUM_LIMIT;
     static const int DEFAULT_REGEXP_RESULT_LENGTH_LIMIT;
+
+    static const QString NEW_LINE_SYMBOL;
+    static const QString STYLESHEET_COLOR_DEFINITION;
+    static const QString STYLESHEET_DEFINITIONS_SEPARATOR;
+
+    static const int REG_EXP_MIN_RESULT_LEN;
+    static const int REG_EXP_MAX_RESULT_LEN;
+    static const int REG_EXP_MAX_RESULT_SINGLE_STEP;
 
     QList<SharedAnnotationData> findPatternResults;
     int iterPos;

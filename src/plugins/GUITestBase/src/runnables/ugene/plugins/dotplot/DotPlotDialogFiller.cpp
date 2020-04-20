@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,6 +32,15 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::DotPlotFiller"
 #define GT_METHOD_NAME "commonScenario"
+
+DotPlotFiller::DotPlotFiller(HI::GUITestOpStatus &_os, CustomScenario *customScenario) : 
+    Filler(_os, "DotPlotDialog", customScenario), 
+    minLen(100), 
+    identity(0), 
+    invertedRepeats(false), 
+    but1kpressed(false) {
+}
+
 void DotPlotFiller::commonScenario() {
 
     QWidget* dialog = QApplication::activeModalWidget();

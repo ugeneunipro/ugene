@@ -5,13 +5,12 @@ CONFIG +=thread debug_and_release staticlib
 DEFINES+= _CRT_SECURE_NO_WARNINGS
 INCLUDEPATH += src
 
-TARGET = zlib
+TARGET = zlib$$D
 DESTDIR = ../../$$out_dir()
 
 !debug_and_release|build_pass {
 
     CONFIG(debug, debug|release) {
-        TARGET = zlibd
         DEFINES+=_DEBUG
         CONFIG +=console
         OBJECTS_DIR=_tmp/obj/debug
@@ -40,9 +39,13 @@ win32-msvc2015 {
 	DEFINES += _XKEYCHECK_H
 }
 
-macx {
-    QMAKE_RPATHDIR += @executable_path/
-    QMAKE_LFLAGS_SONAME = -Wl,-dylib_install_name,@rpath/
+unix: {
+    macx: {
+        QMAKE_RPATHDIR += @executable_path/
+        QMAKE_LFLAGS_SONAME = -Wl,-dylib_install_name,@rpath/
+    } else {
+        QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
+    }
 }
 
 #unix {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,8 +42,8 @@
 namespace U2 {
 
 // PhylipFormat
-PhylipFormat::PhylipFormat(QObject *p)
-    : TextDocumentFormat(p, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject,
+PhylipFormat::PhylipFormat(QObject *p, const DocumentFormatId& id)
+    : TextDocumentFormat(p, id, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject,
                      QStringList() << "phy" << "ph"){
     formatDescription = tr("PHYLIP multiple alignment format for phylogenetic applications.");
     supportedObjectTypes+=GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
@@ -116,7 +116,7 @@ const QBitArray& LINE_BREAKS = TextUtils::LINE_BREAKS;
 
 // PhylipSequentialFormat
 PhylipSequentialFormat::PhylipSequentialFormat(QObject *p)
-    : PhylipFormat(p) {
+    : PhylipFormat(p, BaseDocumentFormats::PHYLIP_SEQUENTIAL) {
     formatName = tr("PHYLIP Sequential");
 }
 
@@ -238,7 +238,7 @@ MultipleSequenceAlignment PhylipSequentialFormat::parse(IOAdapter *io, U2OpStatu
 
 // PhylipInterleavedFormat
 PhylipInterleavedFormat::PhylipInterleavedFormat(QObject *p)
-    :PhylipFormat(p) {
+    :PhylipFormat(p, BaseDocumentFormats::PHYLIP_INTERLEAVED) {
     formatName = tr("PHYLIP Interleaved");
 }
 

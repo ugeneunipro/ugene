@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -57,6 +57,8 @@ private:
     OpenCLHelper            openCLHelper;
 
     OpenCLSupportError      err;
+
+    const static char *RESOURCE_OPENCL_GPU_NAME;
 };
 
 }

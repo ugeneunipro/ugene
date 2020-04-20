@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -261,7 +261,7 @@ const QString IlluminaClipAdditionalSettingsDialog::KEEP_BOTH_READS = "keepBothR
 IlluminaClipAdditionalSettingsDialog::IlluminaClipAdditionalSettingsDialog(const QVariantMap &widgetState, QWidget* parent) : QDialog(parent) {
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "23331522");
+    new HelpButton(this, buttonBox, "28967214");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Apply"));
 

@@ -56,6 +56,10 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/ExportConsensus/MaExportConsensusWidget.h \
            src/ov_msa/ExportHighlightedDialogController.h \
            src/ov_msa/ExportSequencesTask.h \
+           src/ov_msa/find_pattern/FindPatternMsaTask.h \
+           src/ov_msa/find_pattern/FindPatternMsaWidget.h \
+           src/ov_msa/find_pattern/FindPatternMsaWidgetFactory.h \
+           src/ov_msa/find_pattern/FindPatternMsaWidgetSavableTab.h \
            src/ov_msa/General/MaConsensusModeWidget.h \
            src/ov_msa/General/McaGeneralTab.h \
            src/ov_msa/General/McaGeneralTabFactory.h \
@@ -83,7 +87,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/McaEditorStatusBar.h \
            src/ov_msa/McaEditorWgt.h \
            src/ov_msa/McaReferenceCharController.h \
-           src/ov_msa/MSACollapsibleModel.h \
+           src/ov_msa/MaCollapseModel.h \
            src/ov_msa/MSAEditor.h \
            src/ov_msa/MSAEditorConsensusArea.h \
            src/ov_msa/MSAEditorConsensusCache.h \
@@ -120,6 +124,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/PhyTrees/MSAEditorTreeManager.h \
            src/ov_msa/PhyTrees/MsaEditorTreeTabArea.h \
            src/ov_msa/PhyTrees/MSAEditorTreeViewer.h \
+           src/ov_msa/RealignSequencesInAlignment/RealignSequencesInAlignmentTask.h \
            src/ov_msa/SaveSelectedSequenceFromMSADialogController.h \
            src/ov_msa/SeqStatistics/SeqStatisticsWidget.h \
            src/ov_msa/SeqStatistics/SeqStatisticsWidgetFactory.h \
@@ -246,6 +251,7 @@ FORMS += src/ov_assembly/ExportConsensusDialog.ui \
          src/ov_msa/DeleteGapsDialog.ui \
          src/ov_msa/ExportConsensus/ExportConsensusWidget.ui \
          src/ov_msa/ExportHighlightedDialog.ui \
+         src/ov_msa/find_pattern/FindPatternMsaForm.ui \
          src/ov_msa/General/GeneralTabOptionsPanelWidget.ui \
          src/ov_msa/General/MaConsensusModeWidget.ui \
          src/ov_msa/General/McaGeneralTabOptionsPanelWidget.ui \
@@ -331,6 +337,10 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/ExportConsensus/MaExportConsensusWidget.cpp \
            src/ov_msa/ExportHighlightedDialogController.cpp \
            src/ov_msa/ExportSequencesTask.cpp \
+           src/ov_msa/find_pattern/FindPatternMsaTask.cpp \
+           src/ov_msa/find_pattern/FindPatternMsaWidget.cpp \
+           src/ov_msa/find_pattern/FindPatternMsaWidgetFactory.cpp \
+           src/ov_msa/find_pattern/FindPatternMsaWidgetSavableTab.cpp \
            src/ov_msa/General/MaConsensusModeWidget.cpp \
            src/ov_msa/General/McaGeneralTab.cpp \
            src/ov_msa/General/McaGeneralTabFactory.cpp \
@@ -357,7 +367,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/McaEditorStatusBar.cpp \
            src/ov_msa/McaEditorWgt.cpp \
            src/ov_msa/McaReferenceCharController.cpp \
-           src/ov_msa/MSACollapsibleModel.cpp \
+           src/ov_msa/MaCollapseModel.cpp \
            src/ov_msa/MSAEditor.cpp \
            src/ov_msa/MSAEditorConsensusArea.cpp \
            src/ov_msa/MSAEditorConsensusCache.cpp \
@@ -395,6 +405,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/PhyTrees/MSAEditorTreeManager.cpp \
            src/ov_msa/PhyTrees/MsaEditorTreeTabArea.cpp \
            src/ov_msa/PhyTrees/MSAEditorTreeViewer.cpp \
+           src/ov_msa/RealignSequencesInAlignment/RealignSequencesInAlignmentTask.cpp \
            src/ov_msa/SaveSelectedSequenceFromMSADialogController.cpp \
            src/ov_msa/SeqStatistics/SeqStatisticsWidget.cpp \
            src/ov_msa/SeqStatistics/SeqStatisticsWidgetFactory.cpp \

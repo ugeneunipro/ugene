@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -64,6 +64,8 @@ public:
      * Parameter 'rowId' must contain a valid row ID in the database.
      */
     static void updateRowGapModel(const U2EntityRef& maRef, qint64 rowId, const QList<U2MsaGap>& gaps, U2OpStatus& os);
+
+    static QList<qint64> getRowsOrder(const U2EntityRef& meRef, U2OpStatus& os);
 
     /**
      * Updates positions of the rows in the database according to the order in the list.

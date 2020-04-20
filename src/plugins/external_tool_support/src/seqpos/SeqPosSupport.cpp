@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,8 +29,13 @@
 
 namespace U2 {
 
-SeqPosSupport::SeqPosSupport(const QString &name)
-: ExternalTool(name)
+const QString SeqPosSupport::ET_SEQPOS = "seqpos";
+const QString SeqPosSupport::ET_SEQPOS_ID = "USUPP_SEQPOS";
+const QString SeqPosSupport::ASSEMBLY_DIR_NAME = "genomes";
+const QString SeqPosSupport::ASSEMBLY_DIR = "Assembly dir";
+
+SeqPosSupport::SeqPosSupport(const QString& id, const QString &name)
+: ExternalTool(id, name, "")
 {
     initialize();
 }
@@ -47,12 +52,12 @@ void SeqPosSupport::initialize() {
 
     executableFileName = "MDSeqPos.py";
 
-    toolRunnerProgramm = ET_PYTHON;
-    dependencies << ET_PYTHON
-                 << ET_PYTHON_DJANGO
-                 << ET_PYTHON_NUMPY
-                 << ET_R
-                 << ET_R_SEQLOGO;
+    toolRunnerProgram = PythonSupport::ET_PYTHON_ID;
+    dependencies << PythonSupport::ET_PYTHON_ID
+                 << PythonModuleDjangoSupport::ET_PYTHON_DJANGO_ID
+                 << PythonModuleNumpySupport::ET_PYTHON_NUMPY_ID
+                 << RSupport::ET_R_ID
+                 << RModuleSeqlogoSupport::ET_R_SEQLOGO_ID;
 
     validMessage = "mdseqpos \\(official trunk\\):";
     validationArguments << "-v";

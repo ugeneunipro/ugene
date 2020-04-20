@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -224,7 +224,8 @@ public:
     bool isCanceled() const {return stateInfo.cancelFlag;}
 
     // Returns subtasks of the task. Task must prepare it's subtask on prepare() call and can't change them latter.
-    QList<Task*> getSubtasks() const;
+    const QList<QPointer<Task> > &getSubtasks() const;
+    QList<Task *> getPureSubtasks() const;
 
     QString getTaskName() const {return taskName;}
 
@@ -419,6 +420,7 @@ public:
 
 signals:
     void si_noTasksInScheduler();
+    void si_ugeneIsReadyToWork();
 
 protected:
 

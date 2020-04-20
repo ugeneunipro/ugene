@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,8 +56,6 @@ public:
             incorrectScore ||
             incorrectStrand ||
             incorrectFrame ||
-            noGeneIdAttribute ||
-            noTranscriptIdAttribute ||
             incorrectFormatOfAttributes;
     }
 
@@ -117,10 +115,6 @@ class U2FORMATS_EXPORT GTFFormat : public TextDocumentFormat {
 public:
     GTFFormat(QObject* parent);
 
-    virtual DocumentFormatId getFormatId() const { return BaseDocumentFormats::GTF; }
-
-    virtual const QString& getFormatName() const { return FORMAT_NAME; }
-
     virtual void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os);
 
 protected:
@@ -138,8 +132,6 @@ private:
     QMap<QString, QList<SharedAnnotationData> > parseDocument(IOAdapter* io, U2OpStatus& os);
 
     void load(IOAdapter* io, QList<GObject*>& objects, const U2DbiRef& dbiRef, const QVariantMap &hints, U2OpStatus& os);
-
-    static const QString FORMAT_NAME;
 
     static const int FIELDS_COUNT_IN_EACH_LINE;
     static const QString NO_VALUE_STR;

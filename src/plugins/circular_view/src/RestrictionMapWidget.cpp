@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -161,7 +161,7 @@ void RestrctionMapWidget::sl_onAnnotationsRemoved(const QList<Annotation *> &ann
         EnzymeFolderItem* folderItem = findEnzymeFolderByName(a->getName());
         if (folderItem) {
             AnnotationSelection* sel = ctx->getAnnotationsSelection();
-            sel->removeFromSelection(a);
+            sel->remove(a);
             folderItem->removeEnzymeItem(a);
         }
     }
@@ -190,7 +190,7 @@ void RestrctionMapWidget::sl_itemSelectionChanged()
             EnzymeItem* enzItem = static_cast<EnzymeItem*>(item);
             AnnotationSelection* sel = ctx->getAnnotationsSelection();
             sel->clear();
-            sel->addToSelection(enzItem->getEnzymeAnnotation());
+            sel->add(enzItem->getEnzymeAnnotation());
         }
     }
 
@@ -226,7 +226,7 @@ void RestrctionMapWidget::sl_onAnnotationsInGroupRemoved(const QList<Annotation 
             EnzymeFolderItem* folderItem = findEnzymeFolderByName(a->getName());
             if (folderItem) {
                 AnnotationSelection* sel = ctx->getAnnotationsSelection();
-                sel->removeFromSelection(a);
+                sel->remove(a);
                 folderItem->removeEnzymeItem(a);
             }
         }

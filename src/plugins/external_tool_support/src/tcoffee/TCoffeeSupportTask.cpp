@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -118,7 +118,7 @@ void TCoffeeSupportTask::prepare(){
                          QDate::currentDate().toString("dd.MM.yyyy")+"_"+
                          QTime::currentTime().toString("hh.mm.ss.zzz")+"_"+
                          QString::number(QCoreApplication::applicationPid())+"/";
-    QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(TCOFFEE_TMP_DIR) + "/" + tmpDirName;
+    QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(TCoffeeSupport::TCOFFEE_TMP_DIR) + "/" + tmpDirName;
     url = tmpDirPath + "tmp.fa";
     ioLog.details(tr("Saving data to temporary file '%1'").arg(url));
 
@@ -172,18 +172,18 @@ QList<Task*> TCoffeeSupportTask::onSubTaskFinished(Task* subTask) {
         }
         arguments <<"-outfile"<<outputUrl;
         arguments <<"-newtree"<<outputDNDUrl;
-        tCoffeeTask = new ExternalToolRunTask(ET_TCOFFEE, arguments, new TCoffeeLogParser(), "", QStringList(), "t_coffee.orig.exe");
+        tCoffeeTask = new ExternalToolRunTask(TCoffeeSupport::ET_TCOFFEE_ID, arguments, new TCoffeeLogParser(), "", QStringList(), "t_coffee.orig.exe");
         setListenerForTask(tCoffeeTask);
         tCoffeeTask->setSubtaskProgressWeight(95);
         res.append(tCoffeeTask);
     }else if(subTask==tCoffeeTask){
         if(!QFileInfo(outputUrl).exists()){
-            if(AppContext::getExternalToolRegistry()->getByName(ET_TCOFFEE)->isValid()){
+            if(AppContext::getExternalToolRegistry()->getById(TCoffeeSupport::ET_TCOFFEE_ID)->isValid()){
                 stateInfo.setError(tr("Output file %1 not found").arg(outputUrl));
             }else{
                 stateInfo.setError(tr("Output file %3 not found. May be %1 tool path '%2' not valid?")
-                                   .arg(AppContext::getExternalToolRegistry()->getByName(ET_TCOFFEE)->getName())
-                                   .arg(AppContext::getExternalToolRegistry()->getByName(ET_TCOFFEE)->getPath())
+                                   .arg(AppContext::getExternalToolRegistry()->getById(TCoffeeSupport::ET_TCOFFEE_ID)->getName())
+                                   .arg(AppContext::getExternalToolRegistry()->getById(TCoffeeSupport::ET_TCOFFEE_ID)->getPath())
                                    .arg(outputUrl));
             }
             emit si_stateChanged();

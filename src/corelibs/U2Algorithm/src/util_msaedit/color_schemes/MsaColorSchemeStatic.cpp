@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,8 +30,19 @@ MsaColorSchemeStatic::MsaColorSchemeStatic(QObject *parent, const MsaColorScheme
 
 }
 
-QColor MsaColorSchemeStatic::getColor(int /*seq*/, int /*pos*/, char c) const {
+QColor MsaColorSchemeStatic::getBackgroundColor(int seq, int pos, char c) const {
+    Q_UNUSED(seq);
+    Q_UNUSED(pos);
+
     return colorsPerChar[(quint8)c];
+}
+
+QColor MsaColorSchemeStatic::getFontColor(int seq, int pos, char c) const {
+    Q_UNUSED(seq);
+    Q_UNUSED(pos);
+    Q_UNUSED(c);
+
+    return QColor();
 }
 
 MsaColorSchemeStaticFactory::MsaColorSchemeStaticFactory(QObject *parent, const QString &id, const QString &name, const AlphabetFlags &supportedAlphabets, const QVector<QColor> &colorsPerChar)

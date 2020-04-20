@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -84,7 +84,7 @@ void BedGraphToBigWigTask::prepare(){
     const QStringList args = getParameters(stateInfo);
     CHECK_OP(stateInfo, );
 
-    ExternalToolRunTask* etTask = new ExternalToolRunTask(ET_BIGWIG, args, new BedGraphToBigWigParser(), settings.outDir);
+    ExternalToolRunTask* etTask = new ExternalToolRunTask(BigWigSupport::ET_BIGWIG_ID, args, new BedGraphToBigWigParser(), settings.outDir);
     setListenerForTask(etTask);
     addSubTask(etTask);
 }

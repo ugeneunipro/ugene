@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,19 +34,11 @@
 
 namespace U2 {
 
-#define PLASMID_FEATURE "Feature"
-#define PLASMID_GENE "Gene"
-#define PLASMID_ORIGIN "Origin"
-#define PLASMID_PRIMER "Primer"
-#define PLASMID_PROMOTER "Promoter"
-#define PLASMID_REGULATORY "Regulatory"
-#define PLASMID_TERMINATOR "Terminator"
-
 CustomAutoAnnotationDialog::CustomAutoAnnotationDialog(ADVSequenceObjectContext* ctx)
  : QDialog(ctx->getAnnotatedDNAView()->getWidget()), seqCtx(ctx)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "23331238");
+    new HelpButton(this, buttonBox, "24749017");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Annotate"));
 
     loadSettings();
@@ -56,13 +48,13 @@ void CustomAutoAnnotationDialog::loadSettings() {
 
     QStringList filteredFeatures = AppContext::getSettings()->getValue(FILTERED_FEATURE_LIST, QStringList() ).toStringList();
 
-    featureBox->setChecked( !filteredFeatures.contains(PLASMID_FEATURE));
-    genesBox->setChecked( !filteredFeatures.contains(PLASMID_GENE));
-    originBox->setChecked( !filteredFeatures.contains(PLASMID_ORIGIN));
-    primerBox->setChecked( !filteredFeatures.contains(PLASMID_PRIMER));
-    promotersBox->setChecked( !filteredFeatures.contains(PLASMID_PROMOTER));
-    regulatoryBox->setChecked( !filteredFeatures.contains(PLASMID_REGULATORY));
-    terminatorBox->setChecked( !filteredFeatures.contains(PLASMID_TERMINATOR));
+    featureBox->setChecked( !filteredFeatures.contains(PlasmidFeatureTypes::FEATURE));
+    genesBox->setChecked( !filteredFeatures.contains(PlasmidFeatureTypes::GENE));
+    originBox->setChecked( !filteredFeatures.contains(PlasmidFeatureTypes::ORIGIN));
+    primerBox->setChecked( !filteredFeatures.contains(PlasmidFeatureTypes::PRIMER));
+    promotersBox->setChecked( !filteredFeatures.contains(PlasmidFeatureTypes::PROMOTER));
+    regulatoryBox->setChecked( !filteredFeatures.contains(PlasmidFeatureTypes::REGULATORY));
+    terminatorBox->setChecked( !filteredFeatures.contains(PlasmidFeatureTypes::TERMINATOR));
 }
 
 void CustomAutoAnnotationDialog::saveSettings() {
@@ -70,25 +62,25 @@ void CustomAutoAnnotationDialog::saveSettings() {
     QStringList filteredFeatures;
 
     if (!featureBox->isChecked()) {
-        filteredFeatures.append(PLASMID_FEATURE);
+        filteredFeatures.append(PlasmidFeatureTypes::FEATURE);
     }
     if (!genesBox->isChecked()) {
-        filteredFeatures.append(PLASMID_GENE);
+        filteredFeatures.append(PlasmidFeatureTypes::GENE);
     }
     if (!originBox->isChecked()) {
-        filteredFeatures.append(PLASMID_ORIGIN);
+        filteredFeatures.append(PlasmidFeatureTypes::ORIGIN);
     }
     if (!primerBox->isChecked()) {
-        filteredFeatures.append(PLASMID_PRIMER);
+        filteredFeatures.append(PlasmidFeatureTypes::PRIMER);
     }
     if (!promotersBox->isChecked()) {
-        filteredFeatures.append(PLASMID_PROMOTER);
+        filteredFeatures.append(PlasmidFeatureTypes::PROMOTER);
     }
     if (!regulatoryBox->isChecked()) {
-        filteredFeatures.append(PLASMID_REGULATORY);
+        filteredFeatures.append(PlasmidFeatureTypes::REGULATORY);
     }
     if (!terminatorBox->isChecked()) {
-        filteredFeatures.append(PLASMID_TERMINATOR);
+        filteredFeatures.append(PlasmidFeatureTypes::TERMINATOR);
     }
 
     AppContext::getSettings()->setValue(FILTERED_FEATURE_LIST, filteredFeatures );

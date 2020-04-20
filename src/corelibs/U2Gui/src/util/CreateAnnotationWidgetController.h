@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -150,7 +150,7 @@ private:
     CreateAnnotationWidget *    w;
     SaveDocumentController *    saveController;
     
-    static const QString GROUP_NAME_AUTO;
+    QString GROUP_NAME_AUTO;
     static const QString DESCRIPTION_QUALIFIER_KEY;
     static const QString SETTINGS_LASTDIR;
 };

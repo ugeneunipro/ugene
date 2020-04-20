@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -81,8 +81,6 @@ FormatDetectionScore BEDLineValidateFlags::getFormatDetectionScore()
 //-------------------------------------------------------------------
 //  BedFormat
 //-------------------------------------------------------------------
-const QString BedFormat::FORMAT_NAME = QObject::tr("BED");
-
 //Names of supported qualifier names
 namespace {
     const QString TRACK_NAME_QUALIFIER_NAME = "track_name";
@@ -100,10 +98,11 @@ namespace {
 }
 
 BedFormat::BedFormat(QObject* p)
-    : TextDocumentFormat(p, DocumentFormatFlag_SupportWriting, QStringList("bed"))
+    : TextDocumentFormat(p, BaseDocumentFormats::BED, DocumentFormatFlag_SupportWriting, QStringList("bed"))
 {
+    formatName = tr("BED");
     formatDescription = tr("The BED (Browser Extensible Data) format was developed by UCSC for displaying transcript structures in the genome browser.");
-    supportedObjectTypes+=GObjectTypes::ANNOTATION_TABLE;
+    supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;
 }
 
 

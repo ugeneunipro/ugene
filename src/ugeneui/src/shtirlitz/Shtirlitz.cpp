@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,6 +42,7 @@
 
 #include <U2Gui/MainWindow.h>
 #include <U2Core/QObjectScopedPointer.h>
+#include <QtCore/QFile>
 
 #include "Shtirlitz.h"
 #include "StatisticalReportController.h"
@@ -79,6 +80,20 @@ QUuid Shtirlitz::getUniqueUgeneId() {
     return uniqueUgeneId;
 }
 
+static QString getWhatsNewHtml() {
+    QString activeLanguage = AppContext::getSettings()->getValue("UGENE_CURR_TRANSL", "en").toString().toLower();
+    if (activeLanguage != "en" && activeLanguage != "ru") {
+        activeLanguage = "en"; // We do not have other variants of "Whats New?" file today.
+    }
+    QFile htmlFile(":/ugene/html/version_news_" + activeLanguage + ".html");
+    if (!htmlFile.open(QFile::ReadOnly | QFile::Text)) {
+        return "";
+    }
+    QTextStream in(&htmlFile);
+    in.setCodec("UTF-8");
+    return in.readAll();
+}
+
 //Report about system is sent on the first launch of UGENE.
 //Statistical reports are sent once per DAYS_BETWEEN_REPORTS.
 QList<Task*> Shtirlitz::wakeup() {
@@ -98,19 +113,19 @@ QList<Task*> Shtirlitz::wakeup() {
         s->setValue(minorVersionFirstLaunchKey, QVariant(true));
     }
     getUniqueUgeneId();
-    
+
     // Do nothing if Shtirlitz was disabled
      if (QProcess::systemEnvironment().contains(ENV_UGENE_DEV)) {
          return result;
      }
- 
+
     // Check if this version of UGENE is launched for the first time 
     // and user did not enabled stats before -> ask to enable
     // Do not ask to enable it twice for different versions!
     if(minorVersionFirstLaunch) {
         MainWindow *mainWindow = AppContext::getMainWindow();
         CHECK(NULL != mainWindow, result);
-        QObjectScopedPointer<StatisticalReportController> dialog = new StatisticalReportController("qrc:///ugene/html/version_news.html", mainWindow->getQMainWindow());
+        QObjectScopedPointer<StatisticalReportController> dialog = new StatisticalReportController(getWhatsNewHtml(), mainWindow->getQMainWindow());
         dialog->exec();
         CHECK(!dialog.isNull(), result);
 
@@ -122,7 +137,7 @@ QList<Task*> Shtirlitz::wakeup() {
         coreLog.details( ShtirlitzTask::tr("Shtirlitz is sending the first-time report") );
         result << sendSystemReport();
         //Leave a mark that the first-time report was sent
-    } 
+    }
 
     // Check if previous report was sent more than a week ago
     if(!allVersionsFirstLaunch && AppContext::getAppSettings()->getUserAppsSettings()->isStatisticsCollectionEnabled()) {
@@ -212,7 +227,7 @@ QString Shtirlitz::formSystemReport() {
     QString osName;
     QString osVersion;
     getOsNameAndVersion( osName, osVersion );
-    
+
     QString systemReport;
     systemReport += "SYSTEM REPORT:\n";
     systemReport += "ID: " + getUniqueUgeneId().toString() + "\n";
@@ -231,7 +246,7 @@ void Shtirlitz::getOsNameAndVersion( QString & name, QString & version ) {
 #if defined(Q_OS_WIN)
     name = "Windows";
     version = QString::number(QSysInfo::WindowsVersion);
-#elif defined(Q_OS_MAC) 
+#elif defined(Q_OS_MAC)
     name = "Mac";
     version = QString::number(QSysInfo::MacintoshVersion);
 #elif defined(Q_OS_LINUX)
@@ -250,13 +265,13 @@ void Shtirlitz::getOsNameAndVersion( QString & name, QString & version ) {
 
 void Shtirlitz::getFirstLaunchInfo(bool& allVersions, bool& minorVersions) {
     Settings* settings = AppContext::getSettings();
-    
+
     QString allVersionsKey = SETTINGS_NOT_FIRST_LAUNCH;
     QString minorVersionsKey = settings->toMinorVersionKey(SETTINGS_NOT_FIRST_LAUNCH);
 
     QVariant launchedAllQvar = settings->getValue(allVersionsKey);
     QVariant launchedThisMajorQvar = settings->getValue(minorVersionsKey);
-    
+
     allVersions = (!launchedAllQvar.isValid())  || launchedAllQvar.isNull();
     minorVersions = (!launchedThisMajorQvar.isValid()) || launchedThisMajorQvar.isNull();
 }
@@ -280,7 +295,7 @@ void ShtirlitzTask::run() {
     NetworkConfiguration * nc = AppContext::getAppSettings()->getNetworkConfiguration();
     bool isProxy = nc->isProxyUsed( QNetworkProxy::HttpProxy );
     bool isException = nc->getExceptionsList().contains( QUrl(DESTINATION_URL_KEEPER_SRV).host() );
-    
+
     if (isProxy && !isException) {
         http.setProxy(nc->getProxy(QNetworkProxy::HttpProxy));
     }
@@ -294,7 +309,7 @@ void ShtirlitzTask::run() {
     if( reportsPath.isEmpty() ) {
         stateInfo.setError( tr("Cannot resolve destination path for statistical reports") );
         return;
-    } 
+    }
     if( QNetworkReply::NoError != http.error() ) {
         stateInfo.setError( tr("Network error while resolving destination URL: ") + http.errorString() );
         return;

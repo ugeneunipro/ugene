@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,12 +56,43 @@ void XmlTest::checkAttribute(const QDomElement &element, const QString &attribut
 }
 
 void XmlTest::checkBooleanAttribute(const QDomElement &element, const QString &attribute, bool isNecessary) {
-    checkAttribute(element, attribute, { TRUE_VALUE, FALSE_VALUE }, isNecessary);
+    checkAttribute(element, attribute, QStringList( { TRUE_VALUE, FALSE_VALUE } ), isNecessary);
+}
+
+int XmlTest::getInt(const QDomElement &element, const QString &attribute) {
+    checkNecessaryAttributeExistence(element, attribute);
+    CHECK_OP(stateInfo, 0);
+
+    bool success = false;
+    const int result = element.attribute(attribute).toInt(&success);
+    CHECK_EXT(success, wrongValue(attribute), 0);
+    return result;
+}
+
+qint64 XmlTest::getInt64(const QDomElement &element, const QString &attribute) {
+    checkNecessaryAttributeExistence(element, attribute);
+    CHECK_OP(stateInfo, 0);
+
+    bool success = false;
+    const qint64 result = element.attribute(attribute).toLongLong(&success);
+    CHECK_EXT(success, wrongValue(attribute), 0);
+    return result;
+}
+
+double XmlTest::getDouble(const QDomElement &element, const QString &attribute) {
+    checkNecessaryAttributeExistence(element, attribute);
+    CHECK_OP(stateInfo, 0);
+
+    bool success = false;
+    const double result = element.attribute(attribute).toDouble(&success);
+    CHECK_EXT(success, wrongValue(attribute), 0);
+    return result;
 }
 
 const QString XMLTestUtils::TMP_DATA_DIR_PREFIX  = "!tmp_data_dir!";
 const QString XMLTestUtils::COMMON_DATA_DIR_PREFIX = "!common_data_dir!";
 const QString XMLTestUtils::LOCAL_DATA_DIR_PREFIX = "!input!";
+const QString XMLTestUtils::SAMPLE_DATA_DIR_PREFIX = "!sample_data_dir!";
 const QString XMLTestUtils::WORKFLOW_SAMPLES_DIR_PREFIX = "!workflow_samples!";
 const QString XMLTestUtils::WORKFLOW_OUTPUT_DIR_PREFIX = "!workflow_output!";
 const QString XMLTestUtils::EXPECTED_OUTPUT_DIR_PREFIX = "!expected!";

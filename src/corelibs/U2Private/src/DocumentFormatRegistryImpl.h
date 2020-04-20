@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,25 +31,26 @@ class U2PRIVATE_EXPORT DocumentFormatRegistryImpl  : public DocumentFormatRegist
     Q_OBJECT
 public:
     DocumentFormatRegistryImpl(QObject* p = NULL) : DocumentFormatRegistry(p) {init();}
+    ~DocumentFormatRegistryImpl() override;
 
-    virtual bool registerFormat(DocumentFormat* dfs);
+    virtual bool registerFormat(DocumentFormat* dfs) override;
 
-    virtual bool unregisterFormat(DocumentFormat* dfs);
+    virtual bool unregisterFormat(DocumentFormat* dfs) override;
 
-    virtual QList<DocumentFormatId> getRegisteredFormats() const;
+    virtual QList<DocumentFormatId> getRegisteredFormats() const override;
 
-    virtual DocumentFormat* getFormatById(DocumentFormatId id) const;
+    virtual DocumentFormat* getFormatById(DocumentFormatId id) const override;
 
-    virtual DocumentFormat* selectFormatByFileExtension(const QString& fileExt) const;
+    virtual DocumentFormat* selectFormatByFileExtension(const QString& fileExt) const override;
 
-    virtual QList<DocumentFormatId> selectFormats(const DocumentFormatConstraints& c) const;
+    virtual QList<DocumentFormatId> selectFormats(const DocumentFormatConstraints& c) const override;
 
-    virtual DocumentImportersRegistry* getImportSupport() {return &importSupport;}
+    virtual DocumentImportersRegistry* getImportSupport() override {return &importSupport;}
 
 private:
     void init();
 
-    QList<DocumentFormat*>      formats;
+    QList<QPointer<DocumentFormat> > formats;
     DocumentImportersRegistry   importSupport;
 };
 

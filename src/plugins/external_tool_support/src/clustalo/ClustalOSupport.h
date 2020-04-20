@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,17 +28,17 @@
 
 #include "utils/AlignMsaAction.h"
 
-#define ET_CLUSTALO "ClustalO"
-#define CLUSTALO_TMP_DIR "clustalo"
-
 namespace U2 {
 
 class ClustalOSupport : public ExternalTool {
     Q_OBJECT
 public:
-    ClustalOSupport(const QString& name, const QString& path = "");
+    ClustalOSupport(const QString& id, const QString& name, const QString& path = "");
     GObjectViewWindowContext* getViewContext(){ return viewCtx; }
 
+    static const QString ET_CLUSTALO;
+    static const QString ET_CLUSTALO_ID;
+    static const QString CLUSTALO_TMP_DIR;
 public slots:
     void sl_runWithExtFileSpecify();
 private:

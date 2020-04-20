@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -182,6 +182,10 @@ void MultipleChromatogramAlignmentObject::replaceCharacter(int startPos, int row
 
 void MultipleChromatogramAlignmentObject::insertGap(const U2Region &rows, int pos, int nGaps) {
     MultipleAlignmentObject::insertGap(rows, pos, nGaps, true);
+}
+
+void MultipleChromatogramAlignmentObject::insertGapByRowIndexList(const QList<int>& rowIndexes, int pos, int nGaps) {
+    MultipleAlignmentObject::insertGapByRowIndexList(rowIndexes, pos, nGaps, true);
 }
 
 QList<U2Region> MultipleChromatogramAlignmentObject::getColumnsWithGaps(int requiredGapsCount) const {

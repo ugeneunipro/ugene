@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@ class GScrollBar;
 class MaEditor;
 class MaEditorSelection;
 class MaEditorWgt;
-class MSACollapsibleItemModel;
+class MaCollapseModel;
 
 class U2VIEW_EXPORT ScrollController : public QObject {
     Q_OBJECT
@@ -44,30 +44,29 @@ public:
     };
     Q_DECLARE_FLAGS(Directions, Direction)
 
-    ScrollController(MaEditor *maEditor, MaEditorWgt *ui, MSACollapsibleItemModel *collapsibleModel);
+    ScrollController(MaEditor *maEditor, MaEditorWgt *ui, MaCollapseModel *collapsibleModel);
 
     void init(GScrollBar *hScrollBar, GScrollBar *vScrollBar);
 
     QPoint getScreenPosition() const;       // in pixels
     QPoint getGlobalMousePosition(const QPoint& mousePos) const;
 
-    void updateHorizontalScrollBar();
     void updateVerticalScrollBar();
 
-    void scrollToRowByNumber(int rowNumber, int widgetHeight);
+    void scrollToViewRow(int viewRowIndex, int widgetHeight);
     void scrollToBase(int baseNumber, int widgetWidth);
     void scrollToPoint(const QPoint &maPoint, const QSize &screenSize);
 
     void centerBase(int baseNumber, int widgetWidth);
-    void centerRow(int rowNumber, int widgetHeight);
+    void centerViewRow(int viewRowIndex, int widgetHeight);
     void centerPoint(const QPoint &maPoint, const QSize &widgetSize);
 
     void setHScrollbarValue(int value);
     void setVScrollbarValue(int value);
 
     void setFirstVisibleBase(int firstVisibleBase);
-    void setFirstVisibleRowByNumber(int firstVisibleRowNumber);
-    void setFirstVisibleRowByIndex(int firstVisibleRowIndex);
+    void setFirstVisibleViewRow(int viewRowIndex);
+    void setFirstVisibleMaRow(int maRowIndex);
 
     void scrollSmoothly(const Directions &directions);
     void stopSmoothScrolling();
@@ -81,12 +80,17 @@ public:
 
     int getFirstVisibleBase(bool countClipped = false) const;
     int getLastVisibleBase(int widgetWidth, bool countClipped = false) const;
-    int getFirstVisibleRowIndex(bool countClipped = false) const;
-    int getFirstVisibleRowNumber(bool countClipped = false) const;
-    int getLastVisibleRowIndex(int widgetHeight, bool countClipped = false) const;
-    int getLastVisibleRowNumber(int widgetHeight, bool countClipped = false) const;
+    int getFirstVisibleMaRowIndex(bool countClipped = false) const;
+    int getFirstVisibleViewRowIndex(bool countClipped = false) const;
+    int getLastVisibleViewRowIndex(int widgetHeight, bool countClipped = false) const;
 
-    QPoint getMaPointByScreenPoint(const QPoint &point) const;    // can be out of MA boundaries
+
+    /*
+     * Maps screen coordinates into QPoint(row, column).
+     * Returns QPoint(-1, -1) if geom. position can't be mapped to any base and reportOverflow is false.
+     * If reportOverflow is true and one of the coordinates has overflow, returns rowCount/columnsCount for it.
+     */
+    QPoint getViewPosByScreenPoint(const QPoint& point, bool reportOverflow = true) const;
 
     GScrollBar *getHorizontalScrollBar() const;
     GScrollBar *getVerticalScrollBar() const;
@@ -116,12 +120,12 @@ private:
 
     MaEditor *maEditor;
     MaEditorWgt *ui;
-    MSACollapsibleItemModel *collapsibleModel;
+    MaCollapseModel *collapsibleModel;
     GScrollBar *hScrollBar;
     GScrollBar *vScrollBar;
 
-    int savedFirstVisibleRowIndex;
-    int savedFirstVisibleRowAdditionalOffset;
+    int savedFirstVisibleMaRow;
+    int savedFirstVisibleMaRowOffset;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(ScrollController::Directions)

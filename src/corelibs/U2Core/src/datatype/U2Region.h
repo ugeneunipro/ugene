@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -161,6 +161,12 @@ public:
 
     /** shifts regions by offset pos: startPos = startPos + offset */
     static void shift(qint64 offset, QVector<U2Region>& regions);
+
+    /** Splits region into the set of regions of the given block size. */
+    static QList<U2Region> split(const U2Region& region, qint64 blockSize);
+
+    /** Returns sum of region lengths. */
+    static qint64 sumLength(const QVector<U2Region>& regions);
 
 private:
     static bool registerMeta;

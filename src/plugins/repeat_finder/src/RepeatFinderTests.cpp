@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -256,7 +256,7 @@ void GTest_FindSingleSequenceRepeatsTask::run() {
     qSort(expectedResults);
 
     //check all subtasks
-    FindRepeatsTask* sub = qobject_cast<FindRepeatsTask*>(getSubtasks()[0]);
+    FindRepeatsTask* sub = qobject_cast<FindRepeatsTask*>(getSubtasks()[0].data());
     QVector<RFResult> calcResults = sub->getResults();
     if (expectedResults.size()!=calcResults.size()) {
         stateInfo.setError(QString("Results count not matched, num = %1, expected = %2, alg = %3")
@@ -367,7 +367,7 @@ void GTest_FindTandemRepeatsTask::run() {
     }
 
     //check all subtasks
-    TandemFinder* sub = qobject_cast<TandemFinder*>(this->getSubtasks()[0]);
+    TandemFinder* sub = qobject_cast<TandemFinder*>(this->getSubtasks()[0].data());
     QList<Tandem> calcResults = sub->getResults();
     if (expectedResults.size()!=calcResults.size()) {
         QString results("First results are:\n");
@@ -516,7 +516,7 @@ void GTest_FindRealTandemRepeatsTask::run() {
     qSort(expectedResults);
 
     //check all subtasks
-    TandemFinder* sub = qobject_cast<TandemFinder*>(this->getSubtasks()[0]);
+    TandemFinder* sub = qobject_cast<TandemFinder*>(this->getSubtasks()[0].data());
     QList<Tandem> calcResults = sub->getResults();
     QMutableListIterator<Tandem> cIt(calcResults);
     QMutableListIterator<Tandem> eIt(expectedResults);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@ struct TrimmomaticTaskSettings {
 
     QString inputUrl1;
     QString inputUrl2;
-    bool readsArePaired;
+    bool pairedReadsInput;
     QStringList trimmingSteps;
     QString seOutputUrl;
     QString pairedOutputUrl1;
@@ -52,6 +52,7 @@ class TrimmomaticTask : public ExternalToolSupportTask {
 public:
     TrimmomaticTask(const TrimmomaticTaskSettings &settings);
 
+    const QString &getInputUrl1() const;
     const QString &getSeOutputUrl() const;
     const QString &getPairedOutputUrl1() const;
     const QString &getPairedOutputUrl2() const;

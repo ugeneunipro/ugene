@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -125,7 +125,7 @@ void ClustalWSupportTask::prepare(){
                          QDate::currentDate().toString("dd.MM.yyyy")+"_"+
                          QTime::currentTime().toString("hh.mm.ss.zzz")+"_"+
                          QString::number(QCoreApplication::applicationPid())+"/";
-    QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(CLUSTAL_TMP_DIR) + "/" + tmpDirName;
+    QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(ClustalWSupport::CLUSTAL_TMP_DIR) + "/" + tmpDirName;
     url= tmpDirPath + "tmp.aln";
     ioLog.details(tr("Saving data to temporary file '%1'").arg(url));
 
@@ -194,18 +194,18 @@ QList<Task*> ClustalWSupportTask::onSubTaskFinished(Task* subTask) {
         if(settings.noPGaps) arguments<<"-NOPGAP";
         if(settings.noHGaps) arguments<<"-NOHGAP";
         arguments << "-OUTFILE="+outputUrl;
-        clustalWTask = new ExternalToolRunTask(ET_CLUSTAL, arguments, new ClustalWLogParser(inputMsa->getNumRows()));
+        clustalWTask = new ExternalToolRunTask(ClustalWSupport::ET_CLUSTAL_ID, arguments, new ClustalWLogParser(inputMsa->getNumRows()));
         setListenerForTask(clustalWTask);
         clustalWTask->setSubtaskProgressWeight(95);
         res.append(clustalWTask);
     }else if(subTask==clustalWTask){
         if(!QFileInfo(outputUrl).exists()){
-            if(AppContext::getExternalToolRegistry()->getByName(ET_CLUSTAL)->isValid()){
+            if(AppContext::getExternalToolRegistry()->getById(ClustalWSupport::ET_CLUSTAL_ID)->isValid()){
                 stateInfo.setError(tr("Output file %1 not found").arg(outputUrl));
             }else{
                 stateInfo.setError(tr("Output file %3 not found. May be %1 tool path '%2' not valid?")
-                                   .arg(AppContext::getExternalToolRegistry()->getByName(ET_CLUSTAL)->getName())
-                                   .arg(AppContext::getExternalToolRegistry()->getByName(ET_CLUSTAL)->getPath())
+                                   .arg(AppContext::getExternalToolRegistry()->getById(ClustalWSupport::ET_CLUSTAL_ID)->getName())
+                                   .arg(AppContext::getExternalToolRegistry()->getById(ClustalWSupport::ET_CLUSTAL_ID)->getPath())
                                    .arg(outputUrl));
             }
             emit si_stateChanged();

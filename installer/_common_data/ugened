@@ -29,8 +29,6 @@ if [ "${dirname%$tmp}" != "/" ]; then
     dirname=$PWD/$dirname
 fi
 
-LD_LIBRARY_PATH=$dirname
-export LD_LIBRARY_PATH
 
 # check compatibility OS and UGENE (32-bit or 64-bit)
 system_i686=false

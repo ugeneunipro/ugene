@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -106,7 +106,7 @@ void KrakenClassifyWorkerFactory::init() {
                                                                "In case of SE reads or contigs use the \"Input URL 1\" slot only.\n\n"
                                                                "In case of PE reads input \"left\" reads to \"Input URL 1\", \"right\" reads to \"Input URL 2\".\n\n"
                                                                "See also the \"Input data\" parameter of the element."));
-        const Descriptor outPortDesc(OUTPUT_PORT_ID, KrakenClassifyPrompter::tr("Kraken Classification"), KrakenClassifyPrompter::tr("A map of sequence names with the associated taxonomy IDs, classified by Kraken."));
+        Descriptor outPortDesc(OUTPUT_PORT_ID, KrakenClassifyPrompter::tr("Kraken Classification"), KrakenClassifyPrompter::tr("A map of sequence names with the associated taxonomy IDs, classified by Kraken."));
 
         ports << new PortDescriptor(inPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-in", inType)), true /*input*/);
         ports << new PortDescriptor(outPortDesc, DataTypePtr(new MapDataType(ACTOR_ID + "-out", outType)), false /*input*/, true /*multi*/);
@@ -114,35 +114,35 @@ void KrakenClassifyWorkerFactory::init() {
 
     QList<Attribute *> attributes;
     {
-        const Descriptor inputDataDesc(INPUT_DATA_ATTR_ID, KrakenClassifyPrompter::tr("Input data"),
+        Descriptor inputDataDesc(INPUT_DATA_ATTR_ID, KrakenClassifyPrompter::tr("Input data"),
                                              KrakenClassifyPrompter::tr("To classify single-end (SE) reads or contigs, received by reads de novo assembly, set this parameter to \"SE reads or contigs\".<br><br>"
                                                                         "To classify paired-end (PE) reads, set the value to \"PE reads\".<br><br>"
                                                                         "One or two slots of the input port are used depending on the value of the parameter. Pass URL(s) to data to these slots.<br><br>"
                                                                         "The input files should be in FASTA or FASTQ formats."));
 
-        const Descriptor databaseDesc(DATABASE_ATTR_ID, KrakenClassifyPrompter::tr("Database"),
+        Descriptor databaseDesc(DATABASE_ATTR_ID, KrakenClassifyPrompter::tr("Database"),
                                       KrakenClassifyPrompter::tr("A path to the folder with the Kraken database files."));
 
-        const Descriptor outputUrlDesc(OUTPUT_URL_ATTR_ID, KrakenClassifyPrompter::tr("Output file"),
+        Descriptor outputUrlDesc(OUTPUT_URL_ATTR_ID, KrakenClassifyPrompter::tr("Output file"),
                                        KrakenClassifyPrompter::tr("Specify the output file name."));
 
-        const Descriptor quickOperationDesc(QUICK_OPERATION_ATTR_ID, KrakenClassifyPrompter::tr("Quick operation"),
+        Descriptor quickOperationDesc(QUICK_OPERATION_ATTR_ID, KrakenClassifyPrompter::tr("Quick operation"),
                                             KrakenClassifyPrompter::tr("Stop classification of an input read after the certain number of hits.<br><br>"
                                                                        "The value can be specified in the \"Minimum number of hits\" parameter."));
 
-        const Descriptor minHitsDesc(MIN_HITS_NUMBER_ATTR_ID, KrakenClassifyPrompter::tr("Minimum number of hits"),
+        Descriptor minHitsDesc(MIN_HITS_NUMBER_ATTR_ID, KrakenClassifyPrompter::tr("Minimum number of hits"),
                                      KrakenClassifyPrompter::tr("The number of hits that are required to declare an input sequence classified.<br><br>"
                                                                 "This can be especially useful with custom databases when testing to see if sequences either do or do not belong to a particular genome."));
 
-        const Descriptor threadsDesc(THREADS_NUMBER_ATTR_ID, KrakenClassifyPrompter::tr("Number of threads"),
+        Descriptor threadsDesc(THREADS_NUMBER_ATTR_ID, KrakenClassifyPrompter::tr("Number of threads"),
                                      KrakenClassifyPrompter::tr("Use multiple threads (--threads)."));
 
-        const Descriptor preloadDatabaseDesc(PRELOAD_DATABASE_ATTR_ID, KrakenClassifyPrompter::tr("Load database into memory"),
+        Descriptor preloadDatabaseDesc(PRELOAD_DATABASE_ATTR_ID, KrakenClassifyPrompter::tr("Load database into memory"),
                                              KrakenClassifyPrompter::tr("Load the Kraken database into RAM (--preload).<br><br>"
                                                                         "This can be useful to improve the speed. The database size should be less than the RAM size.<br><br>"
                                                                         "The other option to improve the speed is to store the database on ramdisk. Set this parameter to \"False\" in this case."));
 
-        const Descriptor classifyToolDesc(NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_ID,
+        Descriptor classifyToolDesc(NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_ID,
                                           WORKFLOW_CLASSIFY_TOOL_KRAKEN,
                                           "Classify tool. Hidden attribute");
 
@@ -205,13 +205,13 @@ void KrakenClassifyWorkerFactory::init() {
         delegates[PRELOAD_DATABASE_ATTR_ID] = new ComboBoxWithBoolsDelegate();
     }
 
-    const Descriptor desc(ACTOR_ID, KrakenClassifyPrompter::tr("Classify Sequences with Kraken"),
+    Descriptor desc(ACTOR_ID, KrakenClassifyPrompter::tr("Classify Sequences with Kraken"),
                           KrakenClassifyPrompter::tr("Kraken is a taxonomic sequence classifier that assigns taxonomic labels to short DNA reads. "
                                                      "It does this by examining the k-mers within a read and querying a database with those."));
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new KrakenClassifyPrompter(NULL));
-    proto->addExternalTool(KrakenSupport::CLASSIFY_TOOL);
+    proto->addExternalTool(KrakenSupport::CLASSIFY_TOOL_ID);
     proto->setValidator(new KrakenClassifyValidator());
     proto->setPortValidator(INPUT_PORT_ID, new PairedReadsPortValidator(INPUT_SLOT, PAIRED_INPUT_SLOT));
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);

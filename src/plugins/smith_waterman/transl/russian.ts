@@ -73,22 +73,22 @@
         <translation>Kernel::setArg(%1) failed</translation>
     </message>
     <message>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="423"/>
+        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="426"/>
         <source>OPENCL: Running CL program</source>
         <translation>OPENCL: Running CL program</translation>
     </message>
     <message>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="605"/>
+        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="608"/>
         <source>FINISH SmithWatermanAlgorithmOPENCL::launch</source>
         <translation>FINISH SmithWatermanAlgorithmOPENCL::launch</translation>
     </message>
     <message>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="609"/>
+        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="612"/>
         <source>Starting cleanup OpenCL resources</source>
         <translation>Starting cleanup OpenCL resources</translation>
     </message>
     <message>
-        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="678"/>
+        <location filename="../src/SmithWatermanAlgorithmOPENCL.cpp" line="681"/>
         <source>Finish cleanup OpenCL resources</source>
         <translation>Finish cleanup OpenCL resources</translation>
     </message>
@@ -383,27 +383,27 @@
 <context>
     <name>U2::PairwiseAlignmentSmithWatermanTask</name>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="561"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="562"/>
         <source>Substitution matrix is empty</source>
         <translation>Substitution matrix is empty</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="774"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="775"/>
         <source>Smith Waterman2 SequenceWalker</source>
         <translation>Smith Waterman2 SequenceWalker</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="803"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="804"/>
         <source>Not enough memory on CUDA-enabled device. The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4</source>
         <translation>Not enough memory on CUDA-enabled device. The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="809"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="810"/>
         <source>The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on CUDA device</source>
         <translation>The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on CUDA device</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="866"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="868"/>
         <source>%1 results found</source>
         <translation>%1 results found</translation>
     </message>
@@ -605,7 +605,7 @@
         <translation>The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on CUDA device</translation>
     </message>
     <message>
-        <location filename="../src/SWAlgorithmTask.cpp" line="424"/>
+        <location filename="../src/SWAlgorithmTask.cpp" line="425"/>
         <source>%1 results found</source>
         <translation>%1 results found</translation>
     </message>

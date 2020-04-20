@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,6 +48,7 @@ class IOAdapter;
 */
 
 class U2FORMATS_EXPORT StreamSequenceReader : public QObject {
+    Q_OBJECT
     struct ReaderContext {
         ReaderContext() : io(NULL), format(NULL) {}
         IOAdapter* io;

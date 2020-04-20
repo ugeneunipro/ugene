@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -837,7 +837,8 @@ void MSAEditorTreeViewerUI::sl_onVisibleRangeChanged(QStringList visibleSeqs, in
 
 void MSAEditorTreeViewerUI::sl_onBranchCollapsed(GraphicsRectangularBranchItem* branch) {
     TreeViewerUI::sl_onBranchCollapsed(branch);
-    emit si_collapseModelChangedInTree(MSAEditorTreeViewerUtils::getCollapsedGroups(rectRoot));
+    QList<QStringList> collapsedGroups = MSAEditorTreeViewerUtils::getCollapsedGroups(rectRoot);
+    emit si_collapseModelChangedInTree(collapsedGroups);
 }
 
 

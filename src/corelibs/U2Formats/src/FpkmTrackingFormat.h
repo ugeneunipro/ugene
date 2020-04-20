@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -110,10 +110,6 @@ class U2FORMATS_EXPORT FpkmTrackingFormat : public TextDocumentFormat
 public:
     FpkmTrackingFormat(QObject* parent);
 
-    virtual DocumentFormatId getFormatId() const { return BaseDocumentFormats::FPKM_TRACKING_FORMAT; }
-
-    virtual const QString& getFormatName() const { return FORMAT_NAME; }
-
     virtual void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os);
 
 protected:
@@ -128,10 +124,7 @@ protected:
 private:
     FpkmTrackingLineData parseAndValidateLine(QString line, QStringList columns, FpkmTrackingLineValidateFlags& status) const;
 
-    static const QString FORMAT_NAME;
-
     static const QString NO_VALUE_STR;
-
     static const QString TRACKING_ID_COLUMN;
     static const QString CLASS_CODE_COLUMN;
     static const QString NEAREST_REF_ID_COLUMN;

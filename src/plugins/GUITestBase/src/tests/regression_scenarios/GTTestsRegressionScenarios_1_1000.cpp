@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,9 +29,6 @@
 #include <QProgressBar>
 #include <QPushButton>
 #include <QTableWidget>
-#include <QWebElement>
-#include <QWebFrame>
-#include <QWebView>
 #include <QWizard>
 #include <QTextStream>
 
@@ -1381,7 +1378,7 @@ GUI_TEST_CLASS_DEFINITION(test_0768) {
     }
 
     GTUtilsDialog::waitForDialog(os, new CreateElementWithScriptDialogFiller(os, "test_0768"));
-    GTWidget::click(os, GTAction::button(os, "createScriptAction"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Create element with script...", GTGlobals::UseMouse);
 
     //    4. Select created worker. Press toolbar button "Edit script text".
     //    Expected state: Script editor dialog appears.
@@ -1393,7 +1390,7 @@ GUI_TEST_CLASS_DEFINITION(test_0768) {
     GTMouseDriver::click();
 
     GTUtilsDialog::waitForDialog(os, new ScriptEditorDialogSyntaxChecker(os, "xyz", "Syntax is OK!"));
-    GTWidget::click(os, GTAction::button(os, "editScriptAction"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Edit script of the element...", GTGlobals::UseMouse);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0774) {
@@ -1690,7 +1687,7 @@ GUI_TEST_CLASS_DEFINITION(test_0807) {
     //4. Click this menu item.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit configuration"));
 
-    //Expected state: the last page of the "Create Element with Command Line Tool" dialog appeared.
+    //Expected state: the last page of the "Create Element with External Tool" dialog appeared.
     class Scenario1 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
@@ -1730,7 +1727,7 @@ GUI_TEST_CLASS_DEFINITION(test_0807) {
 
             //Expected state: message box with notification about structure changes appears. Thre buttons presented: {Reset}, {No}, {Yes}.
             //7. Click {Reset} button.
-            //Expected state: "Create Element with Command Line Tool" dialog not closed. Changes from point 7 are reset.
+            //Expected state: "Create Element with External Tool" dialog not closed. Changes from point 7 are reset.
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, reset ? QMessageBox::Reset : QMessageBox::Yes));
             GTWidget::click(os, GTWidget::findButtonByText(os, "Finish"));
             if (reset) {
@@ -1775,7 +1772,7 @@ GUI_TEST_CLASS_DEFINITION(test_0808) {
 
 GUI_TEST_CLASS_DEFINITION(test_0812) {
     // 1. Create a "seq.txt" file in <some_path> location.
-    // 2. Click "Create element with command line tool".
+    // 2. Click "Create element with external tool".
     // 3. Input a name.
     // 4. Specify a slot.
     // 5. There is no need to add a parameter.
@@ -1786,6 +1783,7 @@ GUI_TEST_CLASS_DEFINITION(test_0812) {
     // 4. Verify whether the file has been copied.
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
     settings.elementName = "Element_0812";
 
@@ -1796,9 +1794,9 @@ GUI_TEST_CLASS_DEFINITION(test_0812) {
     input << CreateElementWithCommandLineToolFiller::InOutData("in1",
         inOutDataType);
     settings.input = input;
-    settings.executionString = "copy _common_data/scenarios/_regression/812/seq.txt _common_data/scenarios/_regression/812/seq2.txt";
+    settings.command = "copy _common_data/scenarios/_regression/812/seq.txt _common_data/scenarios/_regression/812/seq2.txt";
 
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Continue"));
+    //GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Continue"));
 
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
     QAbstractButton *createElement = GTAction::button(os, "createElementWithCommandLineTool");
@@ -1864,42 +1862,6 @@ GUI_TEST_CLASS_DEFINITION(test_0814) {
     CHECK_SET_ERR(GTFile::check(os, QDir(sandBoxDir).absolutePath() + "test_0814_log") == true, "Log file not found");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0818) {
-//    1) Open WD, Click "create element with command line tool"
-//    2) Fill in the "Name" lineedit with a name containing space symbol
-//    Expected state:
-//        Status - text is red
-//        Next button is disabled
-
-    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-
-    class SpaceNameFiller: public Filler {
-    public:
-        SpaceNameFiller(HI::GUITestOpStatus& _os) : Filler(_os, "CreateExternalProcessWorkerDialog"){}
-        virtual void run() {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(NULL != w, );
-
-            QLineEdit* nameEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "nameLineEdit", w));
-            CHECK_SET_ERR(nameEdit != NULL, "nameLineEdit not found");
-            GTLineEdit::setText(os, nameEdit, "External tool element");
-            GTGlobals::sleep();
-
-            QWidget* nextButton = GTWidget::findWidget(os, "__qt__passive_wizardbutton1", w);
-            CHECK_SET_ERR(nextButton != NULL, "Next button not found");
-            CHECK_SET_ERR(!nextButton->isEnabled(), "Next button is enabled");
-            GTGlobals::sleep();
-
-            GTWidget::click(os, GTWidget::findButtonByText(os, "Cancel"));
-        }
-    };
-
-
-    GTUtilsDialog::waitForDialog(os, new SpaceNameFiller(os));
-    QAbstractButton *createElement = GTAction::button(os, "createElementWithCommandLineTool");
-    GTWidget::click(os, createElement);
-    GTGlobals::sleep();
-}
 GUI_TEST_CLASS_DEFINITION(test_0821) {
     // 1. Open files samples/genbank/sars.gb and samples/genbank/murine.gb in merge mode
     // Expected state: annotations in both files has right coordinates
@@ -2174,15 +2136,16 @@ GUI_TEST_CLASS_DEFINITION(test_0842) {
     }
 
     const QStringList groupNames = GTUtilsWorkflowDesigner::getPaletteGroupNames(os);
-    const int customElementsCount = groupNames.contains("Custom Elements with CMD Tools") ?
-                GTUtilsWorkflowDesigner::getPaletteGroupEntries(os, "Custom Elements with CMD Tools").size() : 0;
+    const int customElementsCount = groupNames.contains("Custom Elements with External Tools") ?
+                GTUtilsWorkflowDesigner::getPaletteGroupEntries(os, "Custom Elements with External Tools").size() : 0;
 
     CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
     settings.elementName = "test";
     settings.input << CreateElementWithCommandLineToolFiller::InOutData("in", CreateElementWithCommandLineToolFiller::InOutDataType(CreateElementWithCommandLineToolFiller::Sequence, "FASTA"));
-    settings.executionString = "<My tool> $in";
+    settings.command = "<My tool> $in";
+    //GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Continue"));
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with command line tool");
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Create element with external tool");
 
 //    2) Right click at this worker on the palette -> Edit.
 //    3) Set a new name for the worker ("test1", for example).
@@ -2190,24 +2153,24 @@ GUI_TEST_CLASS_DEFINITION(test_0842) {
 //    5) "Remove this element?" -> Cancel.
     settings.elementName = "test1";
     settings.input.clear();
+    //GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes, "You have changed the structure of the element"));
+        //GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Continue", "You don't use listed parameters in template string"));
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Edit"));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes, "You have changed the structure of the element"));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Cancel, "Remove this element?", "Remove element"));
 
     GTUtilsWorkflowDesigner::setCurrentTab(os, GTUtilsWorkflowDesigner::algoriths);
     GTUtilsWorkflowDesigner::clickOnPalette(os, "test", Qt::RightButton);
     GTGlobals::sleep(5000);//added to ensure that crash is not here or to fix this crash
 
-//    Expected state: There are two custom workers on the palette now (test and test1).
-    const QList<QTreeWidgetItem *> customElements = GTUtilsWorkflowDesigner::getPaletteGroupEntries(os, "Custom Elements with CMD Tools");
-    CHECK_SET_ERR(customElementsCount + 2 == customElements.size(), QString("Unexpected custom elements count: expect %1, got %2")
-                  .arg(customElementsCount + 2).arg(customElements.size()));
+//    Expected state: There are no custom workers on the palette now
+    const QList<QTreeWidgetItem *> customElements = GTUtilsWorkflowDesigner::getPaletteGroupEntries(os, "Custom Elements with External Tools");
+    CHECK_SET_ERR(customElementsCount + 1 == customElements.size(), QString("Unexpected custom elements count: expect %1, got %2")
+                  .arg(customElementsCount + 1).arg(customElements.size()));
 
 //    6) Click at the test worker on the palette
 //    Expected state: UGENE not crashes.
-    GTUtilsWorkflowDesigner::clickOnPalette(os, "test");
+    GTUtilsWorkflowDesigner::clickOnPalette(os, "test1");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0844) {
@@ -2430,7 +2393,7 @@ GUI_TEST_CLASS_DEFINITION(test_0868){
 
 //    2. Zoom to any covered
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
-    for (int i = 0; i < 24; i++){
+    for (int i = 0; i < 25; i++){
         GTKeyboardDriver::keyClick( '=', Qt::ShiftModifier);
         GTGlobals::sleep(100);
     }
@@ -2439,8 +2402,9 @@ GUI_TEST_CLASS_DEFINITION(test_0868){
     GTUtilsBookmarksTreeView::addBookmark(os, GTUtilsMdi::activeWindow(os)->objectName(), "bookmark");
     GTGlobals::sleep();
     GTMouseDriver::moveTo(GTUtilsBookmarksTreeView::getItemCenter(os, "bookmark"));
-    GTMouseDriver::doubleClick();
     GTGlobals::sleep();
+    GTMouseDriver::doubleClick();
+    GTGlobals::sleep(1000);
 
     QWidget* assembly_reads_area = GTWidget::findWidget(os, "assembly_reads_area");
     QPixmap pixmap = GTWidget::getPixmap(os, assembly_reads_area);
@@ -2617,6 +2581,11 @@ GUI_TEST_CLASS_DEFINITION(test_0888) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0889) {
+    //64-bit OS supported only
+#ifdef Q_OS_WIN32
+    return;
+#endif
+
 //  1) Open RNA.fa
 //  2) Use context menu on sequence {Align->Align sequence to mRNA}
 //  3) Select any item
@@ -2649,6 +2618,7 @@ GUI_TEST_CLASS_DEFINITION(test_0889) {
 
 GUI_TEST_CLASS_DEFINITION(test_0896) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::removeCmdlineWorkerFromPalette(os, "SAMtools");
 
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/896/_input", "SAMtools.etc");
     GTGlobals::sleep();
@@ -2664,31 +2634,23 @@ GUI_TEST_CLASS_DEFINITION(test_0896) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QString outputFile = QDir(sandBoxDir).absolutePath() + "/test_0896out.bam";
+    CreateElementWithCommandLineToolFiller::ElementWithCommandLineSettings settings;
+    settings.tool = "SAMtools";
+    settings.command = "%USUPP_SAMTOOLS% view -b -S -o '" + QDir(sandBoxDir).absolutePath() + "/test_0896out.bam' $sam";
+    GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, settings));
 
-    class OkClicker : public Filler {
-    public:
-        OkClicker(HI::GUITestOpStatus& _os) : Filler(_os, "CreateExternalProcessWorkerDialog"){}
-        virtual void run() {
-            QWidget *w = QApplication::activeWindow();
-            CHECK(NULL != w, );
-
-            ExternalTool *samtools = AppContext::getExternalToolRegistry()->getByName("SAMtools");
-            QLineEdit *ed = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "templateLineEdit", w));
-            GTLineEdit::setText(os, ed, "'" + samtools->getPath() + "' view -b -S -o '" + QDir(sandBoxDir).absolutePath() + "/test_0896out.bam' $sam", false, true);
-
-            QAbstractButton *button = GTWidget::findButtonByText(os, "Finish");
-            CHECK(NULL != button, );
-            GTWidget::click(os, button);
-        }
-    };
-
-    GTUtilsDialog::waitForDialog(os, new OkClicker(os));
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "SAMtools"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "editConfiguration"));
     GTMouseDriver::click();
     GTMouseDriver::click(Qt::RightButton);
     GTGlobals::sleep();
+
+    WorkflowProcessItem* samtools = GTUtilsWorkflowDesigner::addElement(os, "SAMtools", true);
+    WorkflowProcessItem* fileList = GTUtilsWorkflowDesigner::getWorker(os, "File List");
+    GTUtilsWorkflowDesigner::connect(os, fileList, samtools);
+    GTUtilsWorkflowDesigner::click(os, samtools);
+    QTableWidget* table = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
+    GTUtilsWorkflowDesigner::setTableValue(os, "Plain text", "Source URL (by File List)", GTUtilsWorkflowDesigner::comboValue, table);
 
     GTUtilsWorkflowDesigner::click(os, "File List");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/bowtie/pattern/e_coli_1000.sam");
@@ -2767,7 +2729,7 @@ GUI_TEST_CLASS_DEFINITION(test_0908) {
 
     GTUtilsWorkflowDesigner::removeCmdlineWorkerFromPalette(os, "test_0908");
 
-    //2) Click "Create element with command line tool"
+    //2) Click "Create element with external tool"
     //3) input name "test"
     //4) input data : "in1" and "in2" of FASTA
     //5) output data : "out1" of FASTA
@@ -2960,10 +2922,10 @@ GUI_TEST_CLASS_DEFINITION(test_0938) {
     GTGlobals::sleep();
     GTWidget::click(os, GTWidget::findWidget(os, "OP_ASS_NAVIGATION"));
     GTGlobals::sleep();
-
-    CHECK_SET_ERR(GTWidget::findWidget(os, "go_to_pos_line_edit") != NULL, "go_to_pos_line_edit not found");
-    CHECK_SET_ERR(GTWidget::findWidget(os, "Go!") != NULL, "Go! button not found");
-    CHECK_SET_ERR(GTWidget::findWidget(os, "COVERED") != NULL, "Covered regions widget not found");
+    QWidget *parent = GTWidget::findWidget(os, "OP_OPTIONS_WIDGET");
+    CHECK_SET_ERR(GTWidget::findWidget(os, "go_to_pos_line_edit", parent) != NULL, "go_to_pos_line_edit not found");
+    CHECK_SET_ERR(GTWidget::findWidget(os, "Go!", parent) != NULL, "Go! button not found");
+    CHECK_SET_ERR(GTWidget::findWidget(os, "COVERED", parent) != NULL, "Covered regions widget not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0940) {

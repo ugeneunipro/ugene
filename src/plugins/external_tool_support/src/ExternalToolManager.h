@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,6 +32,7 @@
 namespace U2 {
 
 class ExternalToolsValidateTask;
+class Task;
 
 /**
   * Manager can sort an external tools list by their dependencies,
@@ -42,41 +43,44 @@ class ExternalToolManagerImpl : public ExternalToolManager {
     Q_OBJECT
 public:
     ExternalToolManagerImpl();
-    virtual ~ExternalToolManagerImpl();
 
     virtual void start();
     virtual void stop();
 
-    virtual void check(const QString& toolName, const QString& toolPath, ExternalToolValidationListener* listener);
-    virtual void check(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener);
+    virtual void check(const QString& toolId, const QString& toolPath, ExternalToolValidationListener* listener);
+    virtual void check(const QStringList& toolId, const StrStrMap& toolPaths, ExternalToolValidationListener* listener);
 
-    virtual void validate(const QString& toolName, ExternalToolValidationListener* listener = nullptr);
-    virtual void validate(const QString& toolName, const QString& path, ExternalToolValidationListener* listener = nullptr);
-    virtual void validate(const QStringList& toolNames, ExternalToolValidationListener* listener = nullptr);
-    virtual void validate(const QStringList& toolNames, const StrStrMap& toolPaths, ExternalToolValidationListener* listener = nullptr);
+    virtual void validate(const QString& toolId, ExternalToolValidationListener* listener = nullptr);
+    virtual void validate(const QString& toolId, const QString& path, ExternalToolValidationListener* listener = nullptr);
+    virtual void validate(const QStringList& toolIds, ExternalToolValidationListener* listener = nullptr);
+    virtual void validate(const QStringList& toolIds, const StrStrMap& toolPaths, ExternalToolValidationListener* listener = nullptr);
 
-    virtual bool isValid(const QString& toolName) const;
-    virtual ExternalToolState getToolState(const QString& toolName) const;
+    virtual bool isValid(const QString& toolIds) const;
+    virtual ExternalToolState getToolState(const QString& toolId) const;
 
 signals:
-    void si_validationComplete(const QStringList& toolNames, QObject* receiver = nullptr, const char* slot = nullptr);
+    void si_validationComplete(const QStringList& toolIds, QObject* receiver = nullptr, const char* slot = nullptr);
 
-    private slots:
+private slots:
     void sl_checkTaskStateChanged();
     void sl_validationTaskStateChanged();
     void sl_searchTaskStateChanged();
     void sl_toolValidationStatusChanged(bool isValid);
     void sl_pluginsLoaded();
+    void sl_customToolsLoaded(Task *loadTask);
+    void sl_customToolImported(const QString &toolId);
+    void sl_customToolRemoved(const QString &toolId);
 
 private:
     void innerStart();
     void checkStartupTasksState();
     QString addTool(ExternalTool* tool);
-    bool dependenciesAreOk(const QString& toolName);
+    bool dependenciesAreOk(const QString& toolId);
     void validateTools(const StrStrMap& toolPaths = StrStrMap(), ExternalToolValidationListener* listener = nullptr);
+    void loadCustomTools();
     void searchTools();
-    void setToolPath(const QString& toolName, const QString& toolPath);
-    void setToolValid(const QString& toolName, bool isValid);
+    void setToolPath(const QString& toolId, const QString& toolPath);
+    void setToolValid(const QString& toolId, bool isValid);
 
     ExternalToolRegistry* etRegistry;
     QList<QString> validateList;

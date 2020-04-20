@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -185,12 +185,14 @@ private:
     QList<TaskInfo*>        priorityQueue;
     QList<TaskInfo*>        tasksWithNewSubtasks;
     QList<Task*>            newTasks;
+    QList<Task*>            loadingTasks;
     QStringList             stateNames;
     QMap<quint64, Qt::HANDLE>    threadIds;
 
     AppResourcePool*        resourcePool;
     AppResource*            threadsResource;
     bool                    stateChangesObserved;
+    bool                    stateIsLoaded;
     SleepPreventer*         sleepPreventer;
 };
 

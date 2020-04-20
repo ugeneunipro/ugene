@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,7 +55,7 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, AnnotatedDNAView* currentADV, int 
 {
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "23331042");
+    new HelpButton(this, buttonBox, "24748821");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -94,6 +94,10 @@ DotPlotDialog::DotPlotDialog(QWidget *parent, AnnotatedDNAView* currentADV, int 
     connect(project, SIGNAL(si_documentRemoved(Document*)), SLOT(sl_documentAddedOrRemoved()));
     reconnectAllProjectDocuments();
     updateSequenceSelectors();
+
+    connect(xAxisCombo, SIGNAL(currentIndexChanged(int)), SLOT(sl_sequenceSelectorIndexChanged()));
+    connect(yAxisCombo, SIGNAL(currentIndexChanged(int)), SLOT(sl_sequenceSelectorIndexChanged()));
+    sl_sequenceSelectorIndexChanged();
 
     if(hideLoadSequences){
         loadSequenceButton->hide();
@@ -155,6 +159,32 @@ void DotPlotDialog::sl_objectAddedOrRemoved() {
 
 void DotPlotDialog::sl_loadedStateChanged() {
     updateSequenceSelectors();
+}
+
+void DotPlotDialog::sl_sequenceSelectorIndexChanged() {
+    int xIdx = xAxisCombo->currentIndex();
+    int yIdx = yAxisCombo->currentIndex();
+    
+    QList<GObject *> sequenceObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
+    SAFE_POINT(xIdx >= 0 && xIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(xIdx), );
+    SAFE_POINT(yIdx >= 0 && yIdx < sequenceObjects.length(), QString("DotPlotDialog: index is out of range: %1").arg(yIdx), );
+    
+    U2SequenceObject *objX = qobject_cast<U2SequenceObject *>(sequenceObjects[xIdx]);
+    U2SequenceObject *objY = qobject_cast<U2SequenceObject *>(sequenceObjects[yIdx]);
+    if (!objX->getAlphabet()->isNucleic() || !objY->getAlphabet()->isNucleic()) {
+        invertedCheckBox->setDisabled(true);
+        invertedColorButton->setDisabled(true);
+        invertedDefaultColorButton->setDisabled(true);
+    } else {
+        invertedCheckBox->setDisabled(false);
+        invertedColorButton->setDisabled(false);
+        invertedDefaultColorButton->setDisabled(false);
+    }
+    int defaultWindow = qMin(objX->getSequenceLength(), objY->getSequenceLength());
+    defaultWindow = defaultWindow < 100 ? defaultWindow : 100;
+    if (minLenBox->value() > defaultWindow) {
+        minLenBox->setValue(defaultWindow);
+    }
 }
 
 void DotPlotDialog::accept() {
@@ -236,13 +266,11 @@ bool DotPlotDialog::isDirect() const {
 }
 
 bool DotPlotDialog::isInverted() const {
-
-    return invertedCheckBox->isChecked();
+    return invertedCheckBox->isChecked() && invertedCheckBox->isEnabled();
 }
 
 void DotPlotDialog::sl_directInvertedCheckBox() {
-
-    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(directCheckBox->isChecked() || invertedCheckBox->isChecked());
+    buttonBox->button(QDialogButtonBox::Ok)->setEnabled(isDirect() || isInverted());
 }
 
 static const QString COLOR_STYLE("QPushButton { background-color: %1 }");
@@ -296,8 +324,6 @@ void DotPlotDialog::sl_loadSequenceButton(){
             tasks->addSubTask( AppContext::getProjectLoader()->createNewProjectTask() );
         }
 
-        //DotPlotLoadDocumentsTask *t = new DotPlotLoadDocumentsTask(lod.url, -1, NULL, -1, false);
-        //tasks->addSubTask(t);
         QVariantMap hints;
         hints[ProjectLoaderHint_LoadWithoutView] = false;
         hints[ProjectLoaderHint_LoadUnloadedDocument] = true;

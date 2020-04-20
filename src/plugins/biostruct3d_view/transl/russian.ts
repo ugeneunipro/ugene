@@ -62,7 +62,6 @@
         <translation>Выпуклая структура</translation>
     </message>
     <message>
-        <location filename="../src/BallAndStickGLRenderer.cpp" line="37"/>
         <location filename="../src/deprecated/BallAndStickGLRenderer.cpp" line="38"/>
         <source>Ball-and-Stick</source>
         <translation>Шаростержневая модель</translation>
@@ -199,91 +198,96 @@
 <context>
     <name>U2::BioStruct3DGLWidget</name>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="766"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="788"/>
         <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="771"/>
         <source>Spin</source>
         <translation>Вращение</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="755"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="777"/>
         <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="760"/>
         <source>Off</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="762"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="784"/>
         <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="767"/>
         <source>Models..</source>
         <translation>Модели..</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="785"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="807"/>
         <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="790"/>
         <source>Align With...</source>
         <translation>Выровнять с...</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="806"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="828"/>
         <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="811"/>
         <source>Molecular Surface Render Style</source>
         <translation>Стиль отрисовки поверхности</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="810"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="832"/>
         <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="815"/>
         <source>Molecular Surface</source>
         <translation>Молекулярная поверхность</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="583"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="605"/>
         <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="588"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="583"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="91"/>
+        <source>The &quot;3D Structure Viewer&quot; was disabled, because shader programs written in the OpenGL Shading Language (GLSL) are not supported on this system. Please try to update drivers and reset the UGENE settings to default in the &quot;Application Settings&quot; dialog.</source>
+        <translation>The &quot;3D Structure Viewer&quot; was disabled, because shader programs written in the OpenGL Shading Language (GLSL) are not supported on this system. Please try to update drivers and reset the UGENE settings to default in the &quot;Application Settings&quot; dialog.</translation>
+    </message>
+    <message>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="605"/>
         <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="588"/>
         <source>Unable to open file %1 for writing</source>
         <translation>Невозможно открыть файл %1 для записи</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="770"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="792"/>
         <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="775"/>
         <source>Settings...</source>
         <translation>Настройки...</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="773"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="795"/>
         <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="778"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="776"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="798"/>
         <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="781"/>
         <source>Export Image...</source>
         <translation>Экспортировать изображение...</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="789"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="811"/>
         <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="794"/>
         <source>Reset</source>
         <translation>Сбросить</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="796"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="818"/>
         <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="801"/>
         <source>Render Style</source>
         <translation>Стиль отрисовки</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="801"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="823"/>
         <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="806"/>
         <source>Coloring Scheme</source>
         <translation>Цветовая схема</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DGLWidget.cpp" line="835"/>
+        <location filename="../src/BioStruct3DGLWidget.cpp" line="857"/>
         <location filename="../src/deprecated/BioStruct3DGLWidget.cpp" line="840"/>
         <source>Structural Alignment</source>
         <translation>Структурное выравнивание</translation>
@@ -345,16 +349,9 @@
     </message>
 </context>
 <context>
-    <name>U2::BioStruct3DSubsetEditor</name>
-    <message>
-        <source>All chains</source>
-        <translation type="vanished">Все цепи</translation>
-    </message>
-</context>
-<context>
     <name>U2::BioStruct3DViewContext</name>
     <message>
-        <location filename="../src/BioStruct3DViewPlugin.cpp" line="189"/>
+        <location filename="../src/BioStruct3DViewPlugin.cpp" line="192"/>
         <location filename="../src/deprecated/BioStruct3DViewPlugin.cpp" line="189"/>
         <source>Close 3D Structure Viewer</source>
         <translation>Закрыть визуализатор 3D структур</translation>
@@ -363,7 +360,7 @@
 <context>
     <name>U2::BioStruct3DViewPlugin</name>
     <message>
-        <location filename="../src/BioStruct3DViewPlugin.cpp" line="87"/>
+        <location filename="../src/BioStruct3DViewPlugin.cpp" line="88"/>
         <location filename="../src/deprecated/BioStruct3DViewPlugin.cpp" line="87"/>
         <source>Unfortunately, your system does not have OpenGL Support.
 The 3D Structure Viewer is not available.
@@ -373,13 +370,13 @@ The 3D Structure Viewer is not available.
 You may try to upgrade your system by updating the video card driver.</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DViewPlugin.cpp" line="93"/>
+        <location filename="../src/BioStruct3DViewPlugin.cpp" line="94"/>
         <location filename="../src/deprecated/BioStruct3DViewPlugin.cpp" line="93"/>
         <source>3D Structure Viewer</source>
         <translation>Визуализатор 3D структур</translation>
     </message>
     <message>
-        <location filename="../src/BioStruct3DViewPlugin.cpp" line="93"/>
+        <location filename="../src/BioStruct3DViewPlugin.cpp" line="94"/>
         <location filename="../src/deprecated/BioStruct3DViewPlugin.cpp" line="93"/>
         <source>Visualizes 3D structures of biological molecules.</source>
         <translation>Визуализирует 3D структуры биологических молекул.</translation>

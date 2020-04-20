@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -153,7 +153,9 @@ private:
 
 class CfgListModel: public QAbstractListModel {
 public:
-    CfgListModel(QObject *obj = NULL): QAbstractListModel(obj) {
+    // Hint for row height. We use non-default row to make combo-boxes fit.
+    int itemHeight;
+    CfgListModel(int rowHeightHint, QObject *obj = NULL): QAbstractListModel(obj), itemHeight(rowHeightHint) {
         items.append(new CfgListItem(DelegateForPort));
     }
 
@@ -201,6 +203,8 @@ public:
             case Qt::EditRole:
             case ConfigurationEditor::ItemValueRole:
                 return item->getDataType();
+            case Qt::SizeHintRole:
+                return QSize(0, itemHeight);
             default:
                 return QVariant();
         }
@@ -291,7 +295,7 @@ public:
             case Qt::EditRole:
             case ConfigurationEditor::ItemValueRole:
                 if(col == 1) return item->getDataType();
-                else return QVariant();
+                else return item->getName();
             default:
                 return QVariant();
         }
@@ -359,13 +363,15 @@ private:
 
 CreateScriptElementDialog::CreateScriptElementDialog(QWidget *p, ActorPrototype* proto): QDialog(p), editing(false) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "23331372");
+    new HelpButton(this, buttonBox, "28967031");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    inputList->setModel(new CfgListModel());
+    // make list rows have the same size as buttons -> this must be enought to fit combo-boxes
+    int comboboxHeightHint = addInputButton->sizeHint().height();
+    inputList->setModel(new CfgListModel(comboboxHeightHint, this));
     inputList->setItemDelegate(new ProxyDelegate());
-    outputList->setModel(new CfgListModel());
+    outputList->setModel(new CfgListModel(comboboxHeightHint, this));
     outputList->setItemDelegate(new ProxyDelegate());
 
     attributeTable->setModel(new CfgTableModel());
@@ -388,8 +394,9 @@ CreateScriptElementDialog::CreateScriptElementDialog(QWidget *p, ActorPrototype*
     connect(cancelButton, SIGNAL(clicked()), SLOT(sl_cancelClicked()));
 
     attributeTable->horizontalHeader()->setStretchLastSection(true);
+    attributeTable->verticalHeader()->hide();
 
-    nameEdit->setValidator(new WorkerNameValidator(this));
+    nameEdit->setValidator(new DeprecatedWorkerNameValidator(this));
 
     if(proto) {
         fillFields(proto);

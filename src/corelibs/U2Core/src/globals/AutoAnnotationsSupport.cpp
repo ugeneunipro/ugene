@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -104,7 +104,7 @@ AutoAnnotationObject::AutoAnnotationObject(U2SequenceObject *obj, DNATranslation
     : QObject(parent), dnaObj(obj), aminoTT(aminoTT) {
     QVariantMap hints;
     hints.insert(AUTO_ANNOTATION_HINT, true);
-    const QString tableName = AutoAnnotationsSupport::tr("Auto-annotations [%1 | %2]")
+    QString tableName = AutoAnnotationsSupport::tr("Auto-annotations [%1 | %2]")
         .arg(obj->getDocument()->getName()).arg(obj->getGObjectName());
 
     U2OpStatusImpl os;

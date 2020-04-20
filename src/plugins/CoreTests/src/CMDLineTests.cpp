@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,6 +38,7 @@ namespace U2 {
 
 #define COMMON_DATA_DIR_ENV_ID "COMMON_DATA_DIR"
 #define LOCAL_DATA_DIR_ENV_ID "LOCAL_DATA_DIR"
+#define SAMPLE_DATA_DIR_ENV_ID "SAMPLE_DATA_DIR"
 #define WORKFLOW_SAMPLES_ENV_ID "WORKFLOW_SAMPLES_DIR"
 #define WORKFLOW_OUTPUT_ENV_ID "WORKFLOW_OUTPUT_DIR"
 #define TEMP_DATA_DIR_ENV_ID   "TEMP_DATA_DIR"
@@ -173,6 +174,9 @@ QString GTest_RunCMDLine::getVal( const QString & val ) {
     }
     if (val.startsWith(XMLTestUtils::LOCAL_DATA_DIR_PREFIX)) {
         return splitVal(val, XMLTestUtils::LOCAL_DATA_DIR_PREFIX, env->getVar(LOCAL_DATA_DIR_ENV_ID), false);
+    }
+    if (val.startsWith(XMLTestUtils::SAMPLE_DATA_DIR_PREFIX)) {
+        return splitVal(val, XMLTestUtils::SAMPLE_DATA_DIR_PREFIX, env->getVar(SAMPLE_DATA_DIR_ENV_ID), false);
     }
     if (val.startsWith(XMLTestUtils::WORKFLOW_SAMPLES_DIR_PREFIX)) {
         return splitVal(val, XMLTestUtils::WORKFLOW_SAMPLES_DIR_PREFIX, env->getVar(WORKFLOW_SAMPLES_ENV_ID), false);

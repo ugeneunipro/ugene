@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -83,11 +83,11 @@ void ConductGOTask::prepare() {
     copyFile(settings.treatUrl, workingDir + "/" + QFileInfo(settings.treatUrl).fileName());
     settings.treatUrl = workingDir + "/" + QFileInfo(settings.treatUrl).fileName();
 
-    ExternalTool* rTool = AppContext::getExternalToolRegistry()->getByName(ET_R);
+    ExternalTool* rTool = AppContext::getExternalToolRegistry()->getById(RSupport::ET_R_ID);
     SAFE_POINT_EXT(NULL != rTool, setError("R script tool wasn't found in the registry"), );
     const QString rDir = QFileInfo(rTool->getPath()).dir().absolutePath();
 
-    etTask = new ExternalToolRunTask(ET_GO_ANALYSIS, settings.getArguments(), new ExternalToolLogParser(), getSettings().outDir, QStringList() << rDir);
+    etTask = new ExternalToolRunTask(ConductGOSupport::ET_GO_ANALYSIS_ID, settings.getArguments(), new ExternalToolLogParser(), getSettings().outDir, QStringList() << rDir);
     setListenerForTask(etTask);
     addSubTask(etTask);
 }

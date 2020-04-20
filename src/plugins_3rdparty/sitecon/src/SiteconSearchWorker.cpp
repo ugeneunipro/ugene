@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -269,8 +269,8 @@ void SiteconSearchWorker::sl_taskFinished(Task *t) {
     if (t->isCanceled()) {
         return;
     }
-    foreach (Task* sub, t->getSubtasks()) {
-        SiteconSearchTask *sst = qobject_cast<SiteconSearchTask *>(sub);
+    foreach (const QPointer<Task> &sub, t->getSubtasks()) {
+        SiteconSearchTask *sst = qobject_cast<SiteconSearchTask *>(sub.data());
         res += SiteconSearchResult::toTable(sst->takeResults(), resultName);
         sst->cleanup();
     }

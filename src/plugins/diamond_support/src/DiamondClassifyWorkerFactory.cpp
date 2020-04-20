@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -112,25 +112,25 @@ void DiamondClassifyWorkerFactory::init() {
 
     QList<Attribute *> attributes;
     {
-        const Descriptor databaseDesc(DATABASE_ATTR_ID, DiamondClassifyPrompter::tr("Database"),
+        Descriptor databaseDesc(DATABASE_ATTR_ID, DiamondClassifyPrompter::tr("Database"),
                                       DiamondClassifyPrompter::tr("Input a binary DIAMOND database file."));
 
-        const Descriptor code(GENCODE_ATTR_ID, DiamondClassifyPrompter::tr("Genetic code"), DiamondClassifyPrompter::tr("Genetic code used for translation of query sequences (--query-gencode)."));
-        const Descriptor sense(SENSITIVE_ATTR_ID, DiamondClassifyPrompter::tr("Sensitive mode"), DiamondClassifyPrompter::tr("The sensitive modes (--sensitive, --more-sensitive) are generally recommended for aligning longer sequences. The default mode is mainly designed for short read alignment, i.e. finding significant matches of >50 bits on 30-40aa fragments."));
-        const Descriptor topAlignmentsPercentage(TOP_ALIGNMENTS_PERCENTAGE_ATTR_ID,
+        Descriptor code(GENCODE_ATTR_ID, DiamondClassifyPrompter::tr("Genetic code"), DiamondClassifyPrompter::tr("Genetic code used for translation of query sequences (--query-gencode)."));
+        Descriptor sense(SENSITIVE_ATTR_ID, DiamondClassifyPrompter::tr("Sensitive mode"), DiamondClassifyPrompter::tr("The sensitive modes (--sensitive, --more-sensitive) are generally recommended for aligning longer sequences. The default mode is mainly designed for short read alignment, i.e. finding significant matches of >50 bits on 30-40aa fragments."));
+        Descriptor topAlignmentsPercentage(TOP_ALIGNMENTS_PERCENTAGE_ATTR_ID,
                                                  DiamondClassifyPrompter::tr("Top alignments percentage"),
                                                  DiamondClassifyPrompter::tr("DIAMOND uses the lowest common ancestor (LCA) algorithm for taxonomy classification of the input sequences. This parameter specifies what alignments should be taken into account during the calculations (--top)."
                                                                              "<br><br>"
                                                                              "For example, the default value \"10\" means to take top 10% of the best hits (i.e. sort all query/subject-alignments by score, take top 10% of the alignments with the best score, calculate the lowest common ancestor for them)."));
-        const Descriptor fshift(FSHIFT_ATTR_ID, DiamondClassifyPrompter::tr("Frameshift"), DiamondClassifyPrompter::tr("Penalty for frameshift in DNA-vs-protein alignments. Values around 15 are reasonable for this parameter. Enabling this feature will have the aligner tolerate missing bases in DNA sequences and is most recommended for long, error-prone sequences like MinION reads."));
-        const Descriptor evalue(EVALUE_ATTR_ID, DiamondClassifyPrompter::tr("Expected value"), DiamondClassifyPrompter::tr("Maximum expected value to report an alignment (--evalue/-e)."));
-        const Descriptor matrix(MATRIX_ATTR_ID, DiamondClassifyPrompter::tr("Matrix"), DiamondClassifyPrompter::tr("Scoring matrix (--matrix)."));
-        const Descriptor gapopen(GO_PEN_ATTR_ID, DiamondClassifyPrompter::tr("Gap open penalty"), DiamondClassifyPrompter::tr("Gap open penalty (--gapopen)."));
-        const Descriptor gapextend(GE_PEN_ATTR_ID, DiamondClassifyPrompter::tr("Gap extension penalty"), DiamondClassifyPrompter::tr("Gap extension penalty (--gapextend)."));
-        const Descriptor threads(THREADS_ATTR_ID, DiamondClassifyPrompter::tr("Number of threads"), DiamondClassifyPrompter::tr("Number of CPU threads (--treads)."));
-        const Descriptor bsize(BSIZE_ATTR_ID, DiamondClassifyPrompter::tr("Block size"), DiamondClassifyPrompter::tr("Block size in billions of sequence letters to be processed at a time (--block-size). This is the main parameter for controlling the program’s memory usage. Bigger numbers will increase the use of memory and temporary disk space, but also improve performance. The program can be expected to use roughly six times this number of memory (in GB)."));
-        const Descriptor chunks(CHUNKS_ATTR_ID, DiamondClassifyPrompter::tr("Index chunks"), DiamondClassifyPrompter::tr("The number of chunks for processing the seed index (--index-chunks). This option can be additionally used to tune the performance. It is recommended to set this to 1 on a high memory server, which will increase performance and memory usage, but not the usage of temporary disk space."));
-        const Descriptor outputUrlDesc(OUTPUT_URL_ATTR_ID, DiamondClassifyPrompter::tr("Output file"),
+        Descriptor fshift(FSHIFT_ATTR_ID, DiamondClassifyPrompter::tr("Frameshift"), DiamondClassifyPrompter::tr("Penalty for frameshift in DNA-vs-protein alignments. Values around 15 are reasonable for this parameter. Enabling this feature will have the aligner tolerate missing bases in DNA sequences and is most recommended for long, error-prone sequences like MinION reads."));
+        Descriptor evalue(EVALUE_ATTR_ID, DiamondClassifyPrompter::tr("Expected value"), DiamondClassifyPrompter::tr("Maximum expected value to report an alignment (--evalue/-e)."));
+        Descriptor matrix(MATRIX_ATTR_ID, DiamondClassifyPrompter::tr("Matrix"), DiamondClassifyPrompter::tr("Scoring matrix (--matrix)."));
+        Descriptor gapopen(GO_PEN_ATTR_ID, DiamondClassifyPrompter::tr("Gap open penalty"), DiamondClassifyPrompter::tr("Gap open penalty (--gapopen)."));
+        Descriptor gapextend(GE_PEN_ATTR_ID, DiamondClassifyPrompter::tr("Gap extension penalty"), DiamondClassifyPrompter::tr("Gap extension penalty (--gapextend)."));
+        Descriptor threads(THREADS_ATTR_ID, DiamondClassifyPrompter::tr("Number of threads"), DiamondClassifyPrompter::tr("Number of CPU threads (--treads)."));
+        Descriptor bsize(BSIZE_ATTR_ID, DiamondClassifyPrompter::tr("Block size"), DiamondClassifyPrompter::tr("Block size in billions of sequence letters to be processed at a time (--block-size). This is the main parameter for controlling the program’s memory usage. Bigger numbers will increase the use of memory and temporary disk space, but also improve performance. The program can be expected to use roughly six times this number of memory (in GB)."));
+        Descriptor chunks(CHUNKS_ATTR_ID, DiamondClassifyPrompter::tr("Index chunks"), DiamondClassifyPrompter::tr("The number of chunks for processing the seed index (--index-chunks). This option can be additionally used to tune the performance. It is recommended to set this to 1 on a high memory server, which will increase performance and memory usage, but not the usage of temporary disk space."));
+        Descriptor outputUrlDesc(OUTPUT_URL_ATTR_ID, DiamondClassifyPrompter::tr("Output file"),
                                        DiamondClassifyPrompter::tr("Specify the output file name."
                                                                    "<br><br>"
                                                                    "The output file is a tab-delimited file with the following fields:"
@@ -140,7 +140,7 @@ void DiamondClassifyWorkerFactory::init() {
                                                                    "<li>E-value of the best alignment with a known taxonomy ID found for the query (0 if unclassified)</li>"
                                                                    "</ul>"));
 
-        const Descriptor classifyToolDesc(NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_ID,
+        Descriptor classifyToolDesc(NgsReadsClassificationPlugin::WORKFLOW_CLASSIFY_TOOL_ID,
                                           WORKFLOW_CLASSIFY_TOOL_DIAMOND,
                                           "Classify tool. Hidden attribute");
 
@@ -293,7 +293,7 @@ void DiamondClassifyWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new DiamondClassifyPrompter(NULL));
-    proto->addExternalTool(DiamondSupport::TOOL_NAME);
+    proto->addExternalTool(DiamondSupport::TOOL_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
 
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

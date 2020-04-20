@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,16 +39,16 @@ namespace U2 {
 class ExternalToolSearchTask : public Task {
     Q_OBJECT
 public:
-    ExternalToolSearchTask(const QString& toolName);
+    ExternalToolSearchTask(const QString& toolId);
 
     virtual void run();
-    QString getToolName() const { return toolName; }
+    QString getToolId() const { return toolId; }
     QStringList getPaths() const { return toolPaths; }
 
 private:
     QString getExeName(ExternalTool *tool);
 
-    QString toolName;
+    QString toolId;
     QStringList toolPaths;
 
     static const QString TOOLS;

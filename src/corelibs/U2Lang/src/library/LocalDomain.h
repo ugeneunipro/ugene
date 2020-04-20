@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -82,7 +82,7 @@ public:
     // in case of the schema's pause
     Task *tick(bool &canResultBeCanceled);
 
-    QList<ExternalToolListener*> createLogListeners(int listenersNumber = 1);
+    QList<ExternalToolListener*> createLogListeners(int listenersNumber = 1) const;
 private:
     // bind values from input ports to script vars.
     // This function is called before 'get' data from channel -> to set up parameters for scripting

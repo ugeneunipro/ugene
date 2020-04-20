@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,13 +38,14 @@ public:
     MaEditorSelection(const QPoint& topLeft, const QPoint& bottomRight);
     MaEditorSelection(const QPoint& topLeft, int width, int height);
 
-    bool isNull() const;
+    /* Returns true if the selection contains no bases or gaps: have width or height <= 0. */
     bool isEmpty() const;
 
     QPoint topLeft() const;
     QPoint bottomRight() const;
 
-    const QRect& getRect() const;
+    /** Returns rect under select. This rect is always value. For the empty selection returns Rect(0, 0, 0, 0); */
+    QRect toRect() const;
 
     int x() const;
     int y() const;

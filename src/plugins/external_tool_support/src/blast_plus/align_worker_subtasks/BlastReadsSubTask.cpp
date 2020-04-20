@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -264,6 +264,7 @@ BlastNPlusSupportTask *BlastAndSwReadTask::getBlastTask() {
 
     settings.outputResFile = GUrlUtils::prepareTmpFileLocation(blastResultDir, "read_sequence", "gb", stateInfo);
     settings.outputType = 5;
+    settings.strandSource = BlastTaskSettings::HitFrame;
 
     return new BlastNPlusSupportTask(settings);
 }
@@ -332,7 +333,9 @@ void BlastAndSwReadTask::createAlignment(const U2Region& refRegion) {
 
     if (readShift != 0) {
         alignment->addRow(readObject->getSequenceName(),
-                         complement ? DNASequenceUtils::reverseComplement(readData) : readData, U2MsaRowGapModel() << U2MsaGap(0, readShift), stateInfo);
+                          complement ? DNASequenceUtils::reverseComplement(readData) : readData,
+                          U2MsaRowGapModel() << U2MsaGap(0, readShift),
+                          stateInfo);
     } else {
         alignment->addRow(readObject->getSequenceName(), complement ? DNASequenceUtils::reverseComplement(readData) : readData);
     }

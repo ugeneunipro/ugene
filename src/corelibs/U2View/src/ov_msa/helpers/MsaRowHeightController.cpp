@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,7 +20,7 @@
  */
 
 #include "MsaRowHeightController.h"
-#include "ov_msa/MSACollapsibleModel.h"
+#include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MSAEditor.h"
 #include "ov_msa/view_rendering/MaEditorWgt.h"
 
@@ -29,12 +29,11 @@ namespace U2 {
 MsaRowHeightController::MsaRowHeightController(MsaEditorWgt *msaEditortWgt) :
     RowHeightController(msaEditortWgt)
 {
-
 }
 
-int MsaRowHeightController::getRowHeight(int rowIndex) const {
-    const bool isVisible = ui->getCollapseModel()->isRowVisible(rowIndex);
-    return isVisible ? getSequenceHeight() : 0;
+int MsaRowHeightController::getRowHeightByMaIndex(int maRowIndex) const {
+    bool isVisible = ui->getCollapseModel()->getViewRowIndexByMaRowIndex(maRowIndex) >= 0;
+    return isVisible ? getSingleRowHeight() : 0;
 }
 
 }   // namespace U2

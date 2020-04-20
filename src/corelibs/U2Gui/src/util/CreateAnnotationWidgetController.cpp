@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -94,7 +94,6 @@ AnnotationTableObject * CreateAnnotationModel::getAnnotationObject() const {
     return aobj;
 }
 
-const QString CreateAnnotationWidgetController::GROUP_NAME_AUTO = QObject::tr("<auto>");
 const QString CreateAnnotationWidgetController::DESCRIPTION_QUALIFIER_KEY = "note";
 const QString CreateAnnotationWidgetController::SETTINGS_LASTDIR = "create_annotation/last_dir";
 
@@ -105,6 +104,8 @@ CreateAnnotationWidgetController::CreateAnnotationWidgetController(const CreateA
     model(m),
     saveController(NULL)
 {
+    GROUP_NAME_AUTO = tr("<auto>");
+    
     this->setObjectName("CreateAnnotationWidgetController");
     assert(AppContext::getProject()!=NULL);
     assert(model.sequenceObjectRef.isValid());

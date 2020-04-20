@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,7 +47,7 @@ public:
     QueryProcCfgDelegate(QueryEditor* parent) : QItemDelegate(parent) {}
 
     QWidget* createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const {
-        QItemDelegate* d = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
+        PropertyDelegate* d = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
         if (d) {
             connect(d, SIGNAL(commitData(QWidget*)), SIGNAL(commitData(QWidget*)));
             return d->createEditor(parent, option, index);
@@ -56,7 +56,7 @@ public:
     }
 
     void setEditorData(QWidget *editor, const QModelIndex &index) const {
-        QItemDelegate* d = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
+        PropertyDelegate* d = index.model()->data(index, DelegateRole).value<PropertyDelegate*>();
         if (d) {
             d->setEditorData(editor, index);
             return;

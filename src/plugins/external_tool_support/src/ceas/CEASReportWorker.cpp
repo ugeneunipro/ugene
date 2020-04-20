@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -183,11 +183,11 @@ CEASSettings CEASReportWorker::createCEASSettings(U2OpStatus &/*os*/) {
 /* CeasComboBoxWithUrlsDelegate */
 /************************************************************************/
 void CeasComboBoxWithUrlsDelegate::updateUgeneSettings() {
-    updateDataPath(getDataPathName(), REFGENE_DIR_NAME);
+    updateDataPath(getDataPathName(), CEASSupport::REFGENE_DIR_NAME);
 }
 
 QString CeasComboBoxWithUrlsDelegate::getDataPathName() {
-    return REF_GENES_DATA_NAME;
+    return CEASSupport::REF_GENES_DATA_NAME;
 }
 
 QString CeasComboBoxWithUrlsDelegate::getAttributeName() {
@@ -203,7 +203,7 @@ void CEASReportWorkerFactory::init() {
     U2DataPath* dataPath = NULL;
     U2DataPathRegistry* dpr =  AppContext::getDataPathRegistry();
     if (dpr){
-        U2DataPath* dp = dpr->getDataPathByName(REF_GENES_DATA_NAME);
+        U2DataPath* dp = dpr->getDataPathByName(CEASSupport::REF_GENES_DATA_NAME);
         if (dp && dp->isValid()){
             dataPath = dp;
         }
@@ -359,7 +359,7 @@ void CEASReportWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
     proto->setPrompter(new CEASReportPrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->addExternalTool(ET_CEAS);
+    proto->addExternalTool(CEASSupport::ET_CEAS_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_CHIP_SEQ(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new CEASReportWorkerFactory());
 }

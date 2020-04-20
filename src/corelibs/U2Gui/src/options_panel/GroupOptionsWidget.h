@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,7 +54,7 @@ private:
     QVBoxLayout*        mainLayout;
 
     static const int TITLE_HEIGHT = 30;
-    static const int MIN_WIDGET_WIDTH = 240;
+    static const int MIN_WIDGET_WIDTH = 300;
     static const int MAX_WIDGET_WIDTH = 500;
 };
 

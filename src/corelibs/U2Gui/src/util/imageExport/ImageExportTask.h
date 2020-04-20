@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -58,15 +58,13 @@ public:
 class U2GUI_EXPORT ImageExportTask : public Task {
     Q_OBJECT
 public:
-    ImageExportTask(const ImageExportTaskSettings &settings)
-        : Task(tr("Image export task"), TaskFlag_RunInMainThread),
-          settings(settings) {}
+    ImageExportTask(const ImageExportTaskSettings &settings);
     virtual void run() = 0;
     ReportResult report();
 protected:
     ImageExportTaskSettings settings;
-    static const QString WRONG_FORMAT_MESSAGE;
-    static const QString EXPORT_FAIL_MESSAGE;
+    QString WRONG_FORMAT_MESSAGE;
+    QString EXPORT_FAIL_MESSAGE;
 };
 
 enum ExportImageFormatFlag {

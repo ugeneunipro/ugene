@@ -127,12 +127,12 @@ Section "Build"
     # Remove old install
     RMDir /r "$INSTDIR\plugins"
     Delete "$INSTDIR\ugene.exe"
+    Delete "$INSTDIR\ugenecl.exe"
 
     !insertmacro AddExecutable ugeneui
     !insertmacro AddExecutable ugenecl
     !insertmacro AddExecutable ugenem
     !insertmacro AddExecutable plugins_checker
-    Rename ugenecl.exe ugene.exe
 
     !insertmacro AddLibrary U2Algorithm
     !insertmacro AddLibrary U2Core
@@ -201,7 +201,6 @@ Section "Build"
     !insertmacro AddPlugin annotator
     !insertmacro AddPlugin ball
     !insertmacro AddPlugin biostruct3d_view
-    !insertmacro AddPlugin browser_support
     !insertmacro AddPlugin chroma_view
     !insertmacro AddPlugin circular_view
     !insertmacro AddPlugin clark_support

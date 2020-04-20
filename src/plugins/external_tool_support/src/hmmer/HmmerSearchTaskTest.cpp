@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -410,7 +410,7 @@ UHMM3SearchResult GTest_UHMM3SearchCompare::getSearchResultFromOutput(const QStr
                 fullSeqRes.isReported = false;
                 break;
             } else {
-                fullSeqRes.eval = getDouble(getNextToken(tokens));
+                fullSeqRes.eval = U2::getDouble(getNextToken(tokens));
                 fullSeqRes.score = getFloat(getNextToken(tokens));
                 fullSeqRes.bias = getFloat(getNextToken(tokens));
                 /* skip best domain res. we will check it later */

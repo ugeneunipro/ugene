@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,15 +24,16 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define ET_VCF_CONSENSUS "vcf-consensus"
-#define VCF_CONSENSUS_TMP_DIR "vcf-consensus"
-
 namespace U2 {
 
 class VcfConsensusSupport : public ExternalTool {
     Q_OBJECT
 public:
-    VcfConsensusSupport(const QString& name, const QString& path = "");
+    VcfConsensusSupport(const QString& id, const QString& name, const QString& path = "");
+
+    static const QString ET_VCF_CONSENSUS;
+    static const QString ET_VCF_CONSENSUS_ID;
+    static const QString VCF_CONSENSUS_TMP_DIR;
 };
 
 } // namespace U2

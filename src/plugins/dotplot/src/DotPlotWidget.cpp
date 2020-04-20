@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -429,8 +429,8 @@ void DotPlotWidget::cancelRepeatFinderTask() {
     MultiTask *mTask = qobject_cast<MultiTask*>(dotPlotTask);
     if (mTask) {
         mTask->cancel();
-        foreach(Task *t, mTask->getSubtasks()) {
-            factory->setRFResultsListener(t, NULL);
+        foreach(const QPointer<Task> &t, mTask->getSubtasks()) {
+            factory->setRFResultsListener(t.data(), NULL);
         }
     }
 }

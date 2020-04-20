@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,15 +38,15 @@ public:
     StatisticsCache();
 
     const T &getStatistics() const;
-    void setStatistics(const T &statistics, const U2Region &region);
+    void setStatistics(const T &statistics, const QVector<U2Region>& regions);
 
-    bool isValid(const U2Region &region) const;
+    bool isValid(const QVector<U2Region>& regionsToMatch) const;
 
     void sl_invalidate();
 
 private:
     T statistics;
-    U2Region calculationRegion;
+    QVector<U2Region> regions;
     bool valid;
 };
 
@@ -63,15 +63,15 @@ const T &StatisticsCache<T>::getStatistics() const {
 }
 
 template<class T>
-void StatisticsCache<T>::setStatistics(const T &newStatistics, const U2Region &newRegion) {
+void StatisticsCache<T>::setStatistics(const T &newStatistics, const QVector<U2Region>& newRegions) {
     statistics = newStatistics;
-    calculationRegion = newRegion;
+    regions = newRegions;
     valid = true;
 }
 
 template<class T>
-bool StatisticsCache<T>::isValid(const U2Region &region) const {
-    return region == calculationRegion && valid;
+bool StatisticsCache<T>::isValid(const QVector<U2Region>& regionsToMatch) const {
+    return regions == regionsToMatch && valid;
 }
 
 template<class T>

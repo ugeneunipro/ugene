@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -260,6 +260,8 @@ void MaEditorConsensusArea::setupFontAndHeight() {
     consensusSettings.font = ui->getEditor()->getFont();
     consensusSettings.setRulerFont(ui->getEditor()->getFont());
     setFixedHeight(renderer->getHeight());
+    completeRedraw = true;
+    update();
 }
 
 void MaEditorConsensusArea::sl_zoomOperationPerformed( bool resizeModeChanged ) {
@@ -388,7 +390,7 @@ void MaEditorConsensusArea::mousePressEvent(QMouseEvent *e) {
         selecting = true;
         int lastPos = curPos;
         curPos = qBound(0, ui->getBaseWidthController()->screenXPositionToColumn(e->x()), ui->getEditor()->getAlignmentLen() - 1);
-        const int selectionHeight = ui->getSequenceArea()->getNumDisplayableSequences();
+        const int selectionHeight = ui->getSequenceArea()->getViewRowCount();
         // select current column
         if ((Qt::ShiftModifier == e->modifiers()) && (lastPos != -1)) {
             MaEditorSelection selection(qMin(lastPos, curPos), 0, abs(curPos - lastPos) + 1, selectionHeight);
@@ -432,7 +434,7 @@ void MaEditorConsensusArea::updateSelection(int newPos) {
     CHECK(newPos != curPos, );
     CHECK(newPos != -1, );
 
-    int height = ui->getSequenceArea()->getNumDisplayableSequences();
+    int height = ui->getSequenceArea()->getViewRowCount();
     int startPos = qMin(curPos, newPos);
     int width = qAbs(newPos - curPos) + 1;
     MaEditorSelection selection(startPos, 0, width, height);

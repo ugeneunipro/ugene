@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -108,7 +108,7 @@ void MSAExportContext::sl_exportNucleicMsaToAmino() {
     GUrl msaUrl = editor->getMaObject()->getDocument()->getURL();
     QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(msaUrl, editor->getMaObject()->getGObjectName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
 
-    QObjectScopedPointer<ExportMSA2MSADialog> d = new ExportMSA2MSADialog(defaultUrl, BaseDocumentFormats::CLUSTAL_ALN, editor->getCurrentSelection().height() < 1, AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ExportMSA2MSADialog> d = new ExportMSA2MSADialog(defaultUrl, BaseDocumentFormats::CLUSTAL_ALN, editor->getSelectionRect().height() < 1, AppContext::getMainWindow()->getQMainWindow());
     d->setWindowTitle(tr("Export Amino Translation"));
     const int rc = d->exec();
     CHECK(!d.isNull(), );
@@ -120,8 +120,8 @@ void MSAExportContext::sl_exportNucleicMsaToAmino() {
     QList<DNATranslation*> trans;
     trans << AppContext::getDNATranslationRegistry()->lookupTranslation(d->translationTable);
 
-    int offset = d->exportWholeAlignment ? 0 : editor->getCurrentSelection().top();
-    int len = d->exportWholeAlignment ? ma->getNumRows() : editor->getCurrentSelection().height();
+    int offset = d->exportWholeAlignment ? 0 : editor->getSelectionRect().top();
+    int len = d->exportWholeAlignment ? ma->getNumRows() : editor->getSelectionRect().height();
 
     Task* t = ExportUtils::wrapExportTask(new ExportMSA2MSATask(ma, offset, len, d->file, trans, d->formatId), d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);

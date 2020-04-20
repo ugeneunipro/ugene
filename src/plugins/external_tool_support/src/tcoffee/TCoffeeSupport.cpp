@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,7 +46,11 @@
 
 namespace U2 {
 
-TCoffeeSupport::TCoffeeSupport(const QString& name, const QString& path) : ExternalTool(name, path)
+const QString TCoffeeSupport::ET_TCOFFEE = "T-Coffee";
+const QString TCoffeeSupport::ET_TCOFFEE_ID = "USUPP_T_COFFEE";
+const QString TCoffeeSupport::TCOFFEE_TMP_DIR = "tcoffee";
+
+TCoffeeSupport::TCoffeeSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         viewCtx = new TCoffeeSupportContext(this);
@@ -129,7 +133,7 @@ void TCoffeeSupportContext::initViewContext(GObjectView* view) {
     bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
 
-    AlignMsaAction* alignAction = new AlignMsaAction(this, ET_TCOFFEE, view, tr("Align with T-Coffee..."), 2000);
+    AlignMsaAction* alignAction = new AlignMsaAction(this, TCoffeeSupport::ET_TCOFFEE_ID, view, tr("Align with T-Coffee..."), 2000);
     alignAction->setObjectName("Align with T-Coffee");
 
     addViewAction(alignAction);
@@ -151,10 +155,10 @@ void TCoffeeSupportContext::buildMenu(GObjectView* view, QMenu* m) {
 
 void TCoffeeSupportContext::sl_align_with_TCoffee() {
     //Check that T-Coffee and temporary folder path defined
-    if (AppContext::getExternalToolRegistry()->getByName(ET_TCOFFEE)->getPath().isEmpty()){
+    if (AppContext::getExternalToolRegistry()->getById(TCoffeeSupport::ET_TCOFFEE_ID)->getPath().isEmpty()){
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle(ET_TCOFFEE);
-        msgBox->setText(tr("Path for %1 tool not selected.").arg(ET_TCOFFEE));
+        msgBox->setWindowTitle(TCoffeeSupport::ET_TCOFFEE);
+        msgBox->setText(tr("Path for %1 tool not selected.").arg(TCoffeeSupport::ET_TCOFFEE));
         msgBox->setInformativeText(tr("Do you want to select it now?"));
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);
@@ -173,7 +177,7 @@ void TCoffeeSupportContext::sl_align_with_TCoffee() {
                break;
          }
     }
-    if (AppContext::getExternalToolRegistry()->getByName(ET_TCOFFEE)->getPath().isEmpty()){
+    if (AppContext::getExternalToolRegistry()->getById(TCoffeeSupport::ET_TCOFFEE_ID)->getPath().isEmpty()){
         return;
     }
     U2OpStatus2Log os(LogLevel_DETAILS);

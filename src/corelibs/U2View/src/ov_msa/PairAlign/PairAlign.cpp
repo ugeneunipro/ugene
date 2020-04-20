@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,9 +38,9 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Task.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U2Alphabet.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2Msa.h>
@@ -123,8 +123,8 @@ bool PairAlign::isValidSequenceId(qint64 sequenceId) const {
 }
 
 void PairAlign::initParameters() {
-    if (msa->getCurrentSelection().height() == 2) {
-        int selectionPos = msa->getCurrentSelection().y();
+    if (msa->getSelection().height() == 2) {
+        int selectionPos = msa->getSelection().y();
         qint64 firstRowId = msa->getRowByLineNumber(selectionPos)->getRowId();
         firstSeqSelectorWC->setSequenceId(firstRowId);
         qint64 secondRowId = msa->getRowByLineNumber(selectionPos + 1)->getRowId();
@@ -168,7 +168,7 @@ void PairAlign::initParameters() {
     sl_algorithmSelected(pairwiseAlignmentWidgetsSettings->algorithmName);
 
     lblMessage->setStyleSheet(
-        "color: " + L10N::errorColorLabelStr() + ";"
+        "color: " + Theme::errorColorLabelStr() + ";"
         "font: bold;"
         "padding-top: 15px;");
 

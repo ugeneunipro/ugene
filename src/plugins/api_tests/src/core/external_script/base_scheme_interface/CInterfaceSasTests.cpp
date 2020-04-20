@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -407,25 +407,6 @@ IMPLEMENT_TEST( CInterfaceSasTests, join_sequences_into_alignment_sas ) {
     releaseScheme( scheme );
 }
 
-IMPLEMENT_TEST( CInterfaceSasTests, local_blast_search_sas ) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas( L"blast", NULL, NULL, &scheme );
-    CHECK_U2_ERROR( error );
-    QString readerName;
-    error = getActorDisplayName( "read-sequence", readerName );
-    CHECK_U2_ERROR( error );
-    gauto_array<wchar_t> wReaderName( toDisposableWString( readerName ) );
-    error = setSchemeElementAttribute( scheme, wReaderName.get( ), L"url-in.dataset",
-        L"Dataset 1" );
-    CHECK_U2_ERROR( error );
-
-    U2OpStatusImpl stateInfo;
-    SchemeSimilarityUtils::checkSchemesSimilarity( scheme,
-        PROPER_WD_SCHEMES_PATH + "local_blast_search.uwl", stateInfo );
-    CHECK_NO_ERROR( stateInfo );
-
-    releaseScheme( scheme );
-}
 IMPLEMENT_TEST( CInterfaceSasTests, local_blast_plus_search_sas ) {
     SchemeHandle scheme = NULL;
     U2ErrorType error = createSas( L"blast-plus", NULL, NULL, &scheme );

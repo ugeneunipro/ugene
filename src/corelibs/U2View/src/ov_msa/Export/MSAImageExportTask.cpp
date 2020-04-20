@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -225,7 +225,8 @@ void MSAImageExportToSvgTask::run() {
     const int width = msaSettings.includeSeqNames * namesWidth +
             editor->getColumnWidth() * (msaSettings.exportAll ? editor->getAlignmentLen() : msaSettings.region.length);
     const int height = msaSettings.includeConsensus * consensusHeight +
-            (msaSettings.exportAll ? ui->getRowHeightController()->getTotalAlignmentHeight() : ui->getRowHeightController()->getRowsHeight(msaSettings.seqIdx));
+            (msaSettings.exportAll ? ui->getRowHeightController()->getTotalAlignmentHeight() : ui->getRowHeightController()->getSumOfRowHeightsByMaIndexes(
+                    msaSettings.seqIdx));
     SAFE_POINT_EXT(qMax(width, height) < IMAGE_SIZE_LIMIT, setError(tr("The image size is too big.") + EXPORT_FAIL_MESSAGE.arg(settings.fileName)), );
 
     generator.setSize(QSize(width, height));
@@ -304,7 +305,7 @@ void MSAImageExportController::initSettingsWidget() {
 
     SAFE_POINT( ui->getSequenceArea() != NULL, tr("MSA sequence area is NULL"), );
     MaEditorSelection selection = ui->getSequenceArea()->getSelection();
-    CHECK( !selection.isNull(), );
+    CHECK( !selection.isEmpty(), );
     msaSettings.region = U2Region( selection.x(), selection.width());
     msaSettings.seqIdx.clear();
     if (!ui->isCollapsibleMode()) {
@@ -312,10 +313,10 @@ void MSAImageExportController::initSettingsWidget() {
             msaSettings.seqIdx.append( i );
         }
     } else {
-        MSACollapsibleItemModel* model = ui->getCollapseModel();
+        MaCollapseModel* model = ui->getCollapseModel();
         SAFE_POINT(model != NULL, tr("MSA Collapsible Model is NULL"), );
         for (qint64 i = selection.y(); i < selection.height() + selection.y(); i++) {
-                msaSettings.seqIdx.append(model->mapToRow(i));
+                msaSettings.seqIdx.append(model->getMaRowIndexByViewRowIndex(i));
         }
     }
 }
@@ -367,7 +368,8 @@ bool MSAImageExportController::fitsInLimits() const {
     MaEditor* editor = ui->getEditor();
     SAFE_POINT(editor != NULL, L10N::nullPointerError("MSAEditor"), false);
     qint64 imageWidth = (msaSettings.exportAll ? editor->getAlignmentLen() : msaSettings.region.length) * editor->getColumnWidth();
-    qint64 imageHeight = msaSettings.exportAll ? ui->getRowHeightController()->getTotalAlignmentHeight() : ui->getRowHeightController()->getRowsHeight(msaSettings.seqIdx);
+    qint64 imageHeight = msaSettings.exportAll ? ui->getRowHeightController()->getTotalAlignmentHeight() : ui->getRowHeightController()->getSumOfRowHeightsByMaIndexes(
+            msaSettings.seqIdx);
     if (imageWidth > IMAGE_SIZE_LIMIT || imageHeight > IMAGE_SIZE_LIMIT) {
         return false;
     }
@@ -396,11 +398,11 @@ void MSAImageExportController::updateSeqIdx() const {
 
     CHECK(ui->isCollapsibleMode(), );
 
-    MSACollapsibleItemModel* model = ui->getCollapseModel();
+    MaCollapseModel* model = ui->getCollapseModel();
     SAFE_POINT(model != NULL, tr("MSA Collapsible Model is NULL"), );
     msaSettings.seqIdx.clear();
     for (qint64 i = 0; i < ui->getEditor()->getNumSequences(); i++) {
-        if (model->rowToMap(i, true) != -1) {
+        if (model->getViewRowIndexByMaRowIndex(i, true) != -1) {
             msaSettings.seqIdx.append(i);
         }
     }

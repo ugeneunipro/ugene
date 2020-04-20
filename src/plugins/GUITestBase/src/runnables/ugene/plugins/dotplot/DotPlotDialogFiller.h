@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,6 +30,7 @@ using namespace HI;
     class DotPlotFiller : public Filler {
     public:
         DotPlotFiller(HI::GUITestOpStatus &_os, int _minLen=100, int _identity = 0, bool _invertedRepeats = false, bool _but1kpressed=false) : Filler(_os, "DotPlotDialog"), minLen(_minLen), identity(_identity), invertedRepeats(_invertedRepeats), but1kpressed(_but1kpressed) {}
+        DotPlotFiller(HI::GUITestOpStatus &_os, CustomScenario *customScenario);
         virtual void commonScenario();
     private:
         int minLen, identity;

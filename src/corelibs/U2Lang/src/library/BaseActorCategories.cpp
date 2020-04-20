@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -80,7 +80,7 @@ const Descriptor BaseActorCategories::CATEGORY_SCRIPT() {
 }
 
 const Descriptor BaseActorCategories::CATEGORY_EXTERNAL() {
-    return Descriptor("ex", tr("Custom Elements with CMD Tools"),"");
+    return Descriptor("ex", tr("Custom Elements with External Tools"),"");
 }
 
 const Descriptor BaseActorCategories::CATEGORY_DATAFLOW() {

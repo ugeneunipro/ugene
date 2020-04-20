@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ namespace U2 {
 /* TRANSLATOR U2::RawDNASequenceFormat */
 /* TRANSLATOR U2::IOAdapter */
 
-RawDNASequenceFormat::RawDNASequenceFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlags_W1) {
+RawDNASequenceFormat::RawDNASequenceFormat(QObject* p) : TextDocumentFormat(p, BaseDocumentFormats::RAW_DNA_SEQUENCE, DocumentFormatFlags_W1) {
     formatName = tr("Raw sequence");
     fileExtensions << "seq" << "txt";
     supportedObjectTypes+=GObjectTypes::SEQUENCE;

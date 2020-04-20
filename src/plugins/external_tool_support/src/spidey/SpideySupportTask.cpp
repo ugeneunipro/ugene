@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,7 +49,7 @@ SpideyAlignmentTask::SpideyAlignmentTask(const SplicedAlignmentTaskConfig &setti
 
 void SpideyAlignmentTask::prepare() {
     //Add new subdir for temporary files
-    tmpDirUrl = ExternalToolSupportUtils::createTmpDir(SPIDEY_TMP_DIR, stateInfo);
+    tmpDirUrl = ExternalToolSupportUtils::createTmpDir(SpideySupport::SPIDEY_TMP_DIR, stateInfo);
     CHECK_OP(stateInfo,);
 
     prepareDataForSpideyTask =
@@ -74,15 +74,15 @@ QList<Task *> SpideyAlignmentTask::onSubTaskFinished(Task *subTask) {
         tmpOutputUrl = prepareDataForSpideyTask->getResultPath();
         const QStringList &arguments = prepareDataForSpideyTask->getArgumentsList();
 
-        spideyTask = new ExternalToolRunTask(ET_SPIDEY, arguments, new SpideyLogParser());
+        spideyTask = new ExternalToolRunTask(SpideySupport::ET_SPIDEY_ID, arguments, new SpideyLogParser());
         spideyTask->setSubtaskProgressWeight(95);
         res.append(spideyTask);
     } else if (subTask == spideyTask) {
         if (!QFile::exists(tmpOutputUrl)) {
-            if (AppContext::getExternalToolRegistry()->getByName(ET_SPIDEY)->isValid()) {
+            if (AppContext::getExternalToolRegistry()->getById(SpideySupport::ET_SPIDEY_ID)->isValid()) {
                 stateInfo.setError(tr("Output file not found"));
             } else {
-                ExternalTool *spideyTool = AppContext::getExternalToolRegistry()->getByName(ET_SPIDEY);
+                ExternalTool *spideyTool = AppContext::getExternalToolRegistry()->getById(SpideySupport::ET_SPIDEY_ID);
                 SAFE_POINT(NULL != spideyTool, "Invalid Spidey tool!", res);
                 stateInfo.setError(
                     tr("Output file not found. May be %1 tool path '%2' not valid?")

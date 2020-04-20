@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@ namespace U2 {
 
 class MaEditorWgt;
 class MaEditorSelection;
-class MSACollapsibleItemModel;
+class MaCollapseModel;
 class ScrollController;
 
 class U2VIEW_EXPORT DrawHelper {
@@ -36,19 +36,17 @@ public:
     DrawHelper(MaEditorWgt *maEditorWgt);
 
     U2Region getVisibleBases(int widgetWidth, bool countFirstClippedBase = true, bool countLastClippedBase = true) const;
-    U2Region getVisibleRowsNumbers(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
-    QList<int> getVisibleRowsIndexes(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
-    QVector<U2Region> getGroupedVisibleRowsIndexes(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
+    U2Region getVisibleViewRowsRegion(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
+    QList<int> getVisibleMaRowIndexes(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
 
     int getVisibleBasesCount(int widgetWidth, bool countFirstClippedBase = true, bool countLastClippedBase = true) const;
-    int getVisibleRowsCount(int widgetHeight, bool countFirstClippedRow = true, bool countLastClippedRow = true) const;
 
     QRect getSelectionScreenRect(const MaEditorSelection &selection) const;
 
 private:
     MaEditorWgt *ui;
     ScrollController *scrollController;
-    MSACollapsibleItemModel *collapsibleModel;
+    MaCollapseModel *collapsibleModel;
 };
 
 }   // namespace U2

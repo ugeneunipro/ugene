@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@
 #include "MaAmbiguousCharactersController.h"
 #include "ScrollController.h"
 #include "ov_msa/MaEditor.h"
-#include "ov_msa/MSACollapsibleModel.h"
+#include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/view_rendering/MaEditorSequenceArea.h"
 #include "ov_msa/view_rendering/MaEditorWgt.h"
 
@@ -108,7 +108,7 @@ QPoint MaAmbiguousCharactersController::getStartPosition() const {
     }
 
     return QPoint(maEditorWgt->getScrollController()->getFirstVisibleBase(),
-                  maEditorWgt->getScrollController()->getFirstVisibleRowIndex());
+                  maEditorWgt->getScrollController()->getFirstVisibleMaRowIndex());
 }
 
 namespace {
@@ -145,7 +145,7 @@ void MaAmbiguousCharactersController::prepareIterator(NavigationDirection direct
     if (NULL == cachedIterator) {
         cachedIterator.reset(new MaIterator(maEditor->getMaObject()->getMultipleAlignment(),
                                             direction,
-                                            maEditorWgt->getCollapseModel()->getDisplayableRowsIndexes()));
+                                            maEditorWgt->getCollapseModel()->getMaRowsIndexesWithViewRowIndexes()));
         cachedIterator->setCircular(true);
         cachedIterator->setIterateInCoreRegionsOnly(true);
     }

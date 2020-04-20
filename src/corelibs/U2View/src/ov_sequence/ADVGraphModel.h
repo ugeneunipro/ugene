@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -118,7 +118,6 @@ public:
 
     static bool isUnknownValue(float value) {return qFuzzyCompare(value, UNKNOWN_VAL);}
 
-    static const QString DEFAULT_COLOR;
     static const float UNKNOWN_VAL;
 
 signals:
@@ -154,6 +153,9 @@ protected:
     GSequenceGraphWindowData        wdata;
     GSequenceGraphMinMaxCutOffData  commdata;
     BackgroundTaskRunner<PairVector> calculationTaskRunner;
+
+private:
+    QString DEFAULT_COLOR;
 };
 
 

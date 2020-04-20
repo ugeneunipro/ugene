@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -77,7 +77,7 @@ void GTest_BinaryFindOpenCL::init(XMLTestFormat *tf, const QDomElement& el){
 }
 
 void GTest_BinaryFindOpenCL::prepare() {
-    if (AppContext::getOpenCLGpuRegistry()->getAnyEnabledGpu() == 0) {
+    if (nullptr == AppContext::getOpenCLGpuRegistry()->getEnabledGpu()) {
         stateInfo.setError(QString("No enabled gpu's found"));
     } else {
         BinaryFindOpenCL bf(numbers.constData(), numbers.size(), findNumbers.constData(), findNumbers.size(), windowSizes.constData());

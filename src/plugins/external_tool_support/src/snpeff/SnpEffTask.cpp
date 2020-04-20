@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -149,7 +149,7 @@ void SnpEffTask::prepare(){
     const QStringList args = getParameters(stateInfo);
     CHECK_OP(stateInfo, );
 
-    ExternalToolRunTask* etTask = new ExternalToolRunTask(ET_SNPEFF, args, new SnpEffParser(settings.genome), settings.outDir, QStringList(), QString(), true);
+    ExternalToolRunTask* etTask = new ExternalToolRunTask(SnpEffSupport::ET_SNPEFF_ID, args, new SnpEffParser(settings.genome), settings.outDir, QStringList(), QString(), true);
     setListenerForTask(etTask);
     etTask->setStandartOutputFile( getResFileUrl() );
     addSubTask(etTask);
@@ -186,15 +186,15 @@ QString SnpEffTask::getDataPath() const{
     CHECK(NULL != AppContext::getAppSettings(), QString());
     CHECK(NULL != AppContext::getAppSettings()->getUserAppsSettings(), QString());
     CHECK(NULL != AppContext::getExternalToolRegistry(), QString());
-    CHECK(NULL != AppContext::getExternalToolRegistry()->getByName(ET_SNPEFF), QString());
+    CHECK(NULL != AppContext::getExternalToolRegistry()->getById(SnpEffSupport::ET_SNPEFF_ID), QString());
 
     // The next part is for VEME conferention
     // It is done instead of UGENE-5318 resolving
     // Remove it after 1.24 version release
     if (settings.genome == "NC_002549") {
-        return QFileInfo(AppContext::getExternalToolRegistry()->getByName(ET_SNPEFF)->getPath()).dir().absolutePath() + "/data";
+        return QFileInfo(AppContext::getExternalToolRegistry()->getById(SnpEffSupport::ET_SNPEFF_ID)->getPath()).dir().absolutePath() + "/data";
     }
-    return AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath() + "/" + "snpeff_data_" + AppContext::getExternalToolRegistry()->getByName(ET_SNPEFF)->getVersion();
+    return AppContext::getAppSettings()->getUserAppsSettings()->getDownloadDirPath() + "/" + "snpeff_data_" + AppContext::getExternalToolRegistry()->getById(SnpEffSupport::ET_SNPEFF_ID)->getVersion();
 }
 
 QStringList SnpEffTask::getParameters(U2OpStatus & os) const{

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -84,8 +84,6 @@ public:
     //Return alignment row that is displayed on target line in MSAEditor
     const MultipleSequenceAlignmentRow getRowByLineNumber(int lineNumber) const;
 
-    void copyRowFromSequence(U2SequenceObject *seqObj, U2OpStatus &os);
-
     PairwiseAlignmentWidgetsSettings* getPairwiseAlignmentWidgetsSettings() const { return pairwiseAlignmentWidgetsSettings; }
 
     MSAEditorTreeManager* getTreeManager() {return &treeManager;}
@@ -102,6 +100,8 @@ protected slots:
     void sl_buildTree();
     void sl_align();
     void sl_addToAlignment();
+    void sl_searchInSequences();
+    void sl_realignSomeSequences();
     void sl_setSeqAsReference();
     void sl_unsetReferenceSeq();
 
@@ -109,6 +109,8 @@ protected slots:
     void sl_showTreeOP();
     void sl_hideTreeOP();
     void sl_rowsRemoved(const QList<qint64> &rowIds);
+    void sl_updateRealignAction();
+    void sl_showCustomSettings();
 
 protected:
     QWidget* createWidget();
@@ -119,6 +121,10 @@ protected:
 
 private:
     void addExportMenu(QMenu* m);
+    void addAppearanceMenu(QMenu* m);
+    void addColorsMenu(QMenu* m);
+    void addHighlightingMenu(QMenu* m);
+    void addNavigationMenu(QMenu* m);
     void addTreeMenu(QMenu* m);
     void addAdvancedMenu(QMenu* m);
     void addStatisticsMenu(QMenu* m);
@@ -129,11 +135,15 @@ private:
     void alignSequencesFromObjectsToAlignment(const QList<GObject*>& objects);
     void alignSequencesFromFilesToAlignment();
 
-    QAction*          buildTreeAction;
-    QAction*          alignAction;
-    QAction*          alignSequencesToAlignmentAction;
-    QAction*          setAsReferenceSequenceAction;
-    QAction*          unsetReferenceSequenceAction;
+    QAction* buildTreeAction;
+    QAction* alignAction;
+    QAction* alignSequencesToAlignmentAction;
+    QAction* realignSomeSequenceAction;
+    QAction* setAsReferenceSequenceAction;
+    QAction* unsetReferenceSequenceAction;
+    QAction* gotoAction;
+    QAction* searchInSequencesAction;
+    QAction* openCustomSettingsAction;
 
     PairwiseAlignmentWidgetsSettings* pairwiseAlignmentWidgetsSettings;
     MSAEditorTreeManager           treeManager;

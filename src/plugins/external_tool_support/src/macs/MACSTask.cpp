@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -95,7 +95,7 @@ void MACSTask::prepare() {
 
     QStringList args = settings.getArguments(treatUrl.getURLString(), conUrl.isEmpty() ? "" : conUrl.getURLString());
 
-    etTask = new ExternalToolRunTask(ET_MACS, args, new MACSLogParser(), getSettings().outDir);
+    etTask = new ExternalToolRunTask(MACSSupport::ET_MACS_ID, args, new MACSLogParser(), getSettings().outDir);
     setListenerForTask(etTask);
     addSubTask(etTask);
 }

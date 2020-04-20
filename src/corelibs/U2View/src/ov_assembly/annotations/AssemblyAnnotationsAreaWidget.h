@@ -41,8 +41,6 @@ protected:
 
     void clearAllSelections() const override;
     int getHorizontalScrollBarPosition() const override;
-    void proceedAnnotationSelection(AnnotationSelectionData* asd) const override;
-
 signals:
     void si_mouseMovedToPos(const QPoint&);
 

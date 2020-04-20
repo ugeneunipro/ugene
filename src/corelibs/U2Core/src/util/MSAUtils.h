@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,16 +37,19 @@ public:
 
     static int getPatternSimilarityIgnoreGaps(const MultipleSequenceAlignmentRow& row, int startPos, const QByteArray& pattern, int &alternateLen);
 
-    static MultipleSequenceAlignment seq2ma(const QList<GObject*>& dnas, U2OpStatus& os, bool useGenbankHeader = false);
+    static MultipleSequenceAlignment seq2ma(const QList<GObject*>& dnas, U2OpStatus& os, bool useGenbankHeader = false, bool recheckAlphabetFromDataIfRaw = false);
 
-    static MultipleSequenceAlignment seq2ma(const QList<DNASequence>& dnas, U2OpStatus& os);
+    static MultipleSequenceAlignment seq2ma(const QList<DNASequence>& dnas, U2OpStatus& os, bool recheckAlphabetFromDataIfRaw = false);
 
     static QList<DNASequence> ma2seq(const MultipleSequenceAlignment& ma, bool trimGaps);
 
     static QList<DNASequence> ma2seq(const MultipleSequenceAlignment& ma, bool trimGaps, const QSet<qint64>& rowIds);
 
-    // sets alphabet if no alignment alphabet was set; checks is the new alphabet equal old alphabet, otherwise sets error
-    static void updateAlignmentAlphabet(MultipleSequenceAlignment& ma, const DNAAlphabet* a, U2OpStatus& os);
+    // Returns common alphabet for the sequences in the list. Returns RAW is the list is empty.
+    static const DNAAlphabet* deriveCommonAlphabet(const QList<DNASequence>& sequenceList, bool recheckAlphabetFromDataIfRaw);
+    static const DNAAlphabet* deriveCommonAlphabet(const QList<U2SequenceObject*>& sequenceList, bool recheckAlphabetFromDataIfRaw, U2OpStatus& os);
+    // Returns common alphabet for all in the list. Returns RAW is the list is empty.
+    static const DNAAlphabet* deriveCommonAlphabet(const QList<const DNAAlphabet*>& alphabetList);
 
     // Returns row index or -1 if name is not present
     static int getRowIndexByName(const MultipleSequenceAlignment &ma, const QString& name);
@@ -54,8 +57,8 @@ public:
     //checks that alignment is not empty and all packed sequence parts has equal length
     static bool checkPackedModelSymmetry(const MultipleSequenceAlignment& ali, U2OpStatus& ti);
 
-    static MultipleSequenceAlignmentObject * seqDocs2msaObj(QList<Document*> doc, const QVariantMap& hints, U2OpStatus& os);
-    static MultipleSequenceAlignmentObject * seqObjs2msaObj(const QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os, bool shallowCopy = false);
+    static MultipleSequenceAlignmentObject * seqDocs2msaObj(QList<Document*> doc, const QVariantMap& hints, U2OpStatus& os, bool recheckAlphabetFromDataIfRaw = false);
+    static MultipleSequenceAlignmentObject * seqObjs2msaObj(const QList<GObject*>& objects, const QVariantMap& hints, U2OpStatus& os, bool shallowCopy = false, bool recheckAlphabetFromDataIfRaw = false);
 
     /**
      * Compares rows in the 'origMsa' and 'newMsa' by names of the sequences.

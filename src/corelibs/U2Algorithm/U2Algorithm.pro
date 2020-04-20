@@ -83,6 +83,9 @@ HEADERS += src/misc/BinaryFindOpenCL.h \
            src/util_msa_distance/MSADistanceAlgorithmRegistry.h \
            src/util_msaedit/CreateSubalignmentTask.h \
            src/util_msaedit/MsaUtilTasks.h \
+           src/util_msaedit/color_schemes/percentage_idententity/colored/ColumnCharsCounter.h \
+           src/util_msaedit/color_schemes/percentage_idententity/colored/MsaColorSchemePercentageIdententityColored.h \
+           src/util_msaedit/color_schemes/percentage_idententity/colored/MsaColorSchemePercentageIdententityColoredFactory.h \
            src/util_msaedit/color_schemes/ColorSchemeUtils.h \
            src/util_msaedit/color_schemes/MsaColorScheme.h \
            src/util_msaedit/color_schemes/MsaColorSchemeClustalX.h \
@@ -90,6 +93,7 @@ HEADERS += src/misc/BinaryFindOpenCL.h \
            src/util_msaedit/color_schemes/MsaColorSchemePercentageIdententityGrayscale.h \
            src/util_msaedit/color_schemes/MsaColorSchemePercentageIdentity.h \
            src/util_msaedit/color_schemes/MsaColorSchemeStatic.h \
+           src/util_msaedit/color_schemes/MsaColorSchemeWeakSimilarities.h \
            src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.h \
            src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeAgreements.h \
            src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeConservation.h \
@@ -183,6 +187,9 @@ SOURCES += src/misc/BinaryFindOpenCL.cpp \
            src/util_msa_distance/MSADistanceAlgorithmRegistry.cpp \
            src/util_msaedit/CreateSubalignmentTask.cpp \
            src/util_msaedit/MsaUtilTasks.cpp \
+           src/util_msaedit/color_schemes/percentage_idententity/colored/ColumnCharsCounter.cpp \
+           src/util_msaedit/color_schemes/percentage_idententity/colored/MsaColorSchemePercentageIdententityColored.cpp \
+           src/util_msaedit/color_schemes/percentage_idententity/colored/MsaColorSchemePercentageIdententityColoredFactory.cpp \
            src/util_msaedit/color_schemes/ColorSchemeUtils.cpp \
            src/util_msaedit/color_schemes/MsaColorScheme.cpp \
            src/util_msaedit/color_schemes/MsaColorSchemeClustalX.cpp \
@@ -190,6 +197,7 @@ SOURCES += src/misc/BinaryFindOpenCL.cpp \
            src/util_msaedit/color_schemes/MsaColorSchemePercentageIdententityGrayscale.cpp \
            src/util_msaedit/color_schemes/MsaColorSchemePercentageIdentity.cpp \
            src/util_msaedit/color_schemes/MsaColorSchemeStatic.cpp \
+           src/util_msaedit/color_schemes/MsaColorSchemeWeakSimilarities.cpp \
            src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp \
            src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeAgreements.cpp \
            src/util_msaedit/highlighting_schemes/MsaHighlightingSchemeConservation.cpp \

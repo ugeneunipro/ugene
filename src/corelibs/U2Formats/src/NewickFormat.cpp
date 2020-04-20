@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ namespace U2 {
 /* TRANSLATOR U2::IOAdapter */
 /* TRANSLATOR U2::NewickFormat */
 
-NewickFormat::NewickFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlags_W1) {
+NewickFormat::NewickFormat(QObject* p) : TextDocumentFormat(p, BaseDocumentFormats::NEWICK, DocumentFormatFlags_W1) {
     fileExtensions << "nwk" << "newick" << "nh" << "ph";
     formatName = tr("Newick Standard");
     formatDescription = tr("Newick is a simple format used to write out trees in a text file");

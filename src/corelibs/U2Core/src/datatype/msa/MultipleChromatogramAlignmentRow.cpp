@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -397,6 +397,10 @@ bool MultipleChromatogramAlignmentRowData::isRowContentEqual(const MultipleChrom
     return false;
 }
 
+bool MultipleChromatogramAlignmentRowData::isDefault() const {
+    return *this == MultipleChromatogramAlignmentRowData();
+}
+
 bool MultipleChromatogramAlignmentRowData::operator!=(const MultipleChromatogramAlignmentRowData &mcaRowData) const {
     return !(*this == mcaRowData);
 }
@@ -541,14 +545,14 @@ McaRowMemoryData MultipleChromatogramAlignmentRowData::getRowMemoryData() const 
 }
 
 void MultipleChromatogramAlignmentRowData::reverse() {
-    sequence.seq = DNASequenceUtils::reverse(sequence.seq);
+    sequence = DNASequenceUtils::reverse(sequence);
     chromatogram = ChromatogramUtils::reverse(chromatogram);
     gaps = MsaRowUtils::reverseGapModel(gaps, getRowLengthWithoutTrailing());
     MultipleAlignmentRowInfo::setReversed(additionalInfo, !isReversed());
 }
 
 void MultipleChromatogramAlignmentRowData::complement() {
-    sequence.seq = DNASequenceUtils::complement(sequence.seq);
+    sequence = DNASequenceUtils::complement(sequence);
     chromatogram = ChromatogramUtils::complement(chromatogram);
     MultipleAlignmentRowInfo::setComplemented(additionalInfo, !isComplemented());
 }

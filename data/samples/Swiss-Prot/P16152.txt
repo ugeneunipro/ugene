@@ -1,258 +1,268 @@
 ID   CBR1_HUMAN              Reviewed;         277 AA.
-AC   P16152; B2RBZ7; Q3LHW8;
+AC   P16152; B2RBZ7; B4DFK7; Q3LHW8;
 DT   01-APR-1990, integrated into UniProtKB/Swiss-Prot.
 DT   23-JAN-2007, sequence version 3.
-DT   05-APR-2011, entry version 130.
+DT   11-DEC-2019, entry version 212.
 DE   RecName: Full=Carbonyl reductase [NADPH] 1;
 DE            EC=1.1.1.184;
-DE   AltName: Full=15-hydroxyprostaglandin dehydrogenase [NADP+];
+DE   AltName: Full=15-hydroxyprostaglandin dehydrogenase [NADP(+)];
 DE            EC=1.1.1.197;
 DE   AltName: Full=NADPH-dependent carbonyl reductase 1;
 DE   AltName: Full=Prostaglandin 9-ketoreductase;
 DE   AltName: Full=Prostaglandin-E(2) 9-reductase;
 DE            EC=1.1.1.189;
-GN   Name=CBR1; Synonyms=CBR, CRN;
+DE   AltName: Full=Short chain dehydrogenase/reductase family 21C member 1;
+GN   Name=CBR1; Synonyms=CBR, CRN, SDR21C1;
 OS   Homo sapiens (Human).
-OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
-OC   Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
-OC   Catarrhini; Hominidae; Homo.
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia;
+OC   Eutheria; Euarchontoglires; Primates; Haplorrhini; Catarrhini; Hominidae;
+OC   Homo.
 OX   NCBI_TaxID=9606;
 RN   [1]
-RP   NUCLEOTIDE SEQUENCE [MRNA], AND PARTIAL PROTEIN SEQUENCE.
+RP   NUCLEOTIDE SEQUENCE [MRNA] (ISOFORM 1), AND PARTIAL PROTEIN SEQUENCE.
 RC   TISSUE=Placenta;
-RX   MEDLINE=89034082; PubMed=3141401;
-RA   Wermuth B., Bohren K.M., Heinemann G., von Wartburg J.-P.,
-RA   Gabbay K.H.;
-RT   "Human carbonyl reductase. Nucleotide sequence analysis of a cDNA and
-RT   amino acid sequence of the encoded protein.";
+RX   PubMed=3141401;
+RA   Wermuth B., Bohren K.M., Heinemann G., von Wartburg J.-P., Gabbay K.H.;
+RT   "Human carbonyl reductase. Nucleotide sequence analysis of a cDNA and amino
+RT   acid sequence of the encoded protein.";
 RL   J. Biol. Chem. 263:16185-16188(1988).
 RN   [2]
-RP   NUCLEOTIDE SEQUENCE [MRNA], AND PARTIAL PROTEIN SEQUENCE.
+RP   NUCLEOTIDE SEQUENCE [MRNA] (ISOFORM 1), AND PARTIAL PROTEIN SEQUENCE.
 RC   TISSUE=Mammary gland;
-RX   MEDLINE=90212644; PubMed=2182121; DOI=10.1016/0167-4781(90)90050-C;
-RA   Forrest G.L., Akman S., Krutzik S., Paxton R.J., Sparkes R.S.,
-RA   Doroshow J., Felsted R.L., Mohandas T., Bachur N.R.;
-RT   "Induction of a human carbonyl reductase gene located on chromosome
-RT   21.";
+RX   PubMed=2182121; DOI=10.1016/0167-4781(90)90050-c;
+RA   Forrest G.L., Akman S., Krutzik S., Paxton R.J., Sparkes R.S., Doroshow J.,
+RA   Felsted R.L., Mohandas T., Bachur N.R.;
+RT   "Induction of a human carbonyl reductase gene located on chromosome 21.";
 RL   Biochim. Biophys. Acta 1048:149-155(1990).
 RN   [3]
-RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA].
-RX   MEDLINE=92017676; PubMed=1921984;
+RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA] (ISOFORM 1).
+RX   PubMed=1921984;
 RA   Forrest G.L., Akman S., Doroshow J., Rivera H., Kaplan W.D.;
-RT   "Genomic sequence and expression of a cloned human carbonyl reductase
-RT   gene with daunorubicin reductase activity.";
+RT   "Genomic sequence and expression of a cloned human carbonyl reductase gene
+RT   with daunorubicin reductase activity.";
 RL   Mol. Pharmacol. 40:502-507(1991).
 RN   [4]
-RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA].
-RX   MEDLINE=98414514; PubMed=9740676; DOI=10.1006/geno.1998.5380;
-RA   Watanabe K., Sugawara C., Ono A., Fukuzumi Y., Itakura S.,
-RA   Yamazaki M., Tashiro H., Osoegawa K., Soeda E., Nomura T.;
+RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA] (ISOFORM 1).
+RX   PubMed=9740676; DOI=10.1006/geno.1998.5380;
+RA   Watanabe K., Sugawara C., Ono A., Fukuzumi Y., Itakura S., Yamazaki M.,
+RA   Tashiro H., Osoegawa K., Soeda E., Nomura T.;
 RT   "Mapping of a novel human carbonyl reductase, CBR3, and ribosomal
 RT   pseudogenes to human chromosome 21q22.2.";
 RL   Genomics 52:95-100(1998).
 RN   [5]
-RP   NUCLEOTIDE SEQUENCE [MRNA].
+RP   NUCLEOTIDE SEQUENCE [MRNA] (ISOFORM 1).
 RC   TISSUE=Fetal brain;
 RA   Terada T., Mizobuchi H.;
 RT   "Human fetal brain carbonyl reductases.";
 RL   Submitted (OCT-2003) to the EMBL/GenBank/DDBJ databases.
 RN   [6]
-RP   NUCLEOTIDE SEQUENCE [LARGE SCALE MRNA].
+RP   NUCLEOTIDE SEQUENCE [LARGE SCALE MRNA] (ISOFORM 1).
 RA   Kalnine N., Chen X., Rolfs A., Halleck A., Hines L., Eisenstein S.,
 RA   Koundinya M., Raphael J., Moreira D., Kelley T., LaBaer J., Lin Y.,
 RA   Phelan M., Farmer A.;
-RT   "Cloning of human full-length CDSs in BD Creator(TM) system donor
-RT   vector.";
+RT   "Cloning of human full-length CDSs in BD Creator(TM) system donor vector.";
 RL   Submitted (OCT-2004) to the EMBL/GenBank/DDBJ databases.
 RN   [7]
-RP   NUCLEOTIDE SEQUENCE [LARGE SCALE MRNA].
-RA   Halleck A., Ebert L., Mkoundinya M., Schick M., Eisenstein S.,
-RA   Neubert P., Kstrang K., Schatten R., Shen B., Henze S., Mar W.,
-RA   Korn B., Zuo D., Hu Y., LaBaer J.;
+RP   NUCLEOTIDE SEQUENCE [LARGE SCALE MRNA] (ISOFORM 1).
+RA   Halleck A., Ebert L., Mkoundinya M., Schick M., Eisenstein S., Neubert P.,
+RA   Kstrang K., Schatten R., Shen B., Henze S., Mar W., Korn B., Zuo D., Hu Y.,
+RA   LaBaer J.;
 RT   "Cloning of human full open reading frames in Gateway(TM) system entry
 RT   vector (pDONR201).";
 RL   Submitted (JUN-2004) to the EMBL/GenBank/DDBJ databases.
 RN   [8]
-RP   NUCLEOTIDE SEQUENCE [LARGE SCALE MRNA].
+RP   NUCLEOTIDE SEQUENCE [LARGE SCALE MRNA] (ISOFORMS 1 AND 2).
 RC   TISSUE=Hippocampus;
 RX   PubMed=14702039; DOI=10.1038/ng1285;
 RA   Ota T., Suzuki Y., Nishikawa T., Otsuki T., Sugiyama T., Irie R.,
 RA   Wakamatsu A., Hayashi K., Sato H., Nagai K., Kimura K., Makita H.,
 RA   Sekine M., Obayashi M., Nishi T., Shibahara T., Tanaka T., Ishii S.,
 RA   Yamamoto J., Saito K., Kawai Y., Isono Y., Nakamura Y., Nagahari K.,
-RA   Murakami K., Yasuda T., Iwayanagi T., Wagatsuma M., Shiratori A.,
-RA   Sudo H., Hosoiri T., Kaku Y., Kodaira H., Kondo H., Sugawara M.,
-RA   Takahashi M., Kanda K., Yokoi T., Furuya T., Kikkawa E., Omura Y.,
-RA   Abe K., Kamihara K., Katsuta N., Sato K., Tanikawa M., Yamazaki M.,
-RA   Ninomiya K., Ishibashi T., Yamashita H., Murakawa K., Fujimori K.,
-RA   Tanai H., Kimata M., Watanabe M., Hiraoka S., Chiba Y., Ishida S.,
-RA   Ono Y., Takiguchi S., Watanabe S., Yosida M., Hotuta T., Kusano J.,
-RA   Kanehori K., Takahashi-Fujii A., Hara H., Tanase T.-O., Nomura Y.,
-RA   Togiya S., Komai F., Hara R., Takeuchi K., Arita M., Imose N.,
-RA   Musashino K., Yuuki H., Oshima A., Sasaki N., Aotsuka S.,
-RA   Yoshikawa Y., Matsunawa H., Ichihara T., Shiohata N., Sano S.,
+RA   Murakami K., Yasuda T., Iwayanagi T., Wagatsuma M., Shiratori A., Sudo H.,
+RA   Hosoiri T., Kaku Y., Kodaira H., Kondo H., Sugawara M., Takahashi M.,
+RA   Kanda K., Yokoi T., Furuya T., Kikkawa E., Omura Y., Abe K., Kamihara K.,
+RA   Katsuta N., Sato K., Tanikawa M., Yamazaki M., Ninomiya K., Ishibashi T.,
+RA   Yamashita H., Murakawa K., Fujimori K., Tanai H., Kimata M., Watanabe M.,
+RA   Hiraoka S., Chiba Y., Ishida S., Ono Y., Takiguchi S., Watanabe S.,
+RA   Yosida M., Hotuta T., Kusano J., Kanehori K., Takahashi-Fujii A., Hara H.,
+RA   Tanase T.-O., Nomura Y., Togiya S., Komai F., Hara R., Takeuchi K.,
+RA   Arita M., Imose N., Musashino K., Yuuki H., Oshima A., Sasaki N.,
+RA   Aotsuka S., Yoshikawa Y., Matsunawa H., Ichihara T., Shiohata N., Sano S.,
 RA   Moriya S., Momiyama H., Satoh N., Takami S., Terashima Y., Suzuki O.,
 RA   Nakagawa S., Senoh A., Mizoguchi H., Goto Y., Shimizu F., Wakebe H.,
 RA   Hishigaki H., Watanabe T., Sugiyama A., Takemoto M., Kawakami B.,
-RA   Yamazaki M., Watanabe K., Kumagai A., Itakura S., Fukuzumi Y.,
-RA   Fujimori Y., Komiyama M., Tashiro H., Tanigami A., Fujiwara T.,
-RA   Ono T., Yamada K., Fujii Y., Ozaki K., Hirao M., Ohmori Y.,
-RA   Kawabata A., Hikiji T., Kobatake N., Inagaki H., Ikema Y., Okamoto S.,
-RA   Okitani R., Kawakami T., Noguchi S., Itoh T., Shigeta K., Senba T.,
-RA   Matsumura K., Nakajima Y., Mizuno T., Morinaga M., Sasaki M.,
-RA   Togashi T., Oyama M., Hata H., Watanabe M., Komatsu T.,
-RA   Mizushima-Sugano J., Satoh T., Shirai Y., Takahashi Y., Nakagawa K.,
-RA   Okumura K., Nagase T., Nomura N., Kikuchi H., Masuho Y., Yamashita R.,
-RA   Nakai K., Yada T., Nakamura Y., Ohara O., Isogai T., Sugano S.;
+RA   Yamazaki M., Watanabe K., Kumagai A., Itakura S., Fukuzumi Y., Fujimori Y.,
+RA   Komiyama M., Tashiro H., Tanigami A., Fujiwara T., Ono T., Yamada K.,
+RA   Fujii Y., Ozaki K., Hirao M., Ohmori Y., Kawabata A., Hikiji T.,
+RA   Kobatake N., Inagaki H., Ikema Y., Okamoto S., Okitani R., Kawakami T.,
+RA   Noguchi S., Itoh T., Shigeta K., Senba T., Matsumura K., Nakajima Y.,
+RA   Mizuno T., Morinaga M., Sasaki M., Togashi T., Oyama M., Hata H.,
+RA   Watanabe M., Komatsu T., Mizushima-Sugano J., Satoh T., Shirai Y.,
+RA   Takahashi Y., Nakagawa K., Okumura K., Nagase T., Nomura N., Kikuchi H.,
+RA   Masuho Y., Yamashita R., Nakai K., Yada T., Nakamura Y., Ohara O.,
+RA   Isogai T., Sugano S.;
 RT   "Complete sequencing and characterization of 21,243 full-length human
 RT   cDNAs.";
 RL   Nat. Genet. 36:40-45(2004).
 RN   [9]
-RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA], AND VARIANT SER-131.
+RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA] (ISOFORM 1), AND VARIANT SER-131.
 RG   SeattleSNPs variation discovery resource;
 RL   Submitted (NOV-2006) to the EMBL/GenBank/DDBJ databases.
 RN   [10]
 RP   NUCLEOTIDE SEQUENCE [LARGE SCALE GENOMIC DNA].
-RX   MEDLINE=20289799; PubMed=10830953; DOI=10.1038/35012518;
-RA   Hattori M., Fujiyama A., Taylor T.D., Watanabe H., Yada T.,
-RA   Park H.-S., Toyoda A., Ishii K., Totoki Y., Choi D.-K., Groner Y.,
-RA   Soeda E., Ohki M., Takagi T., Sakaki Y., Taudien S., Blechschmidt K.,
-RA   Polley A., Menzel U., Delabar J., Kumpf K., Lehmann R., Patterson D.,
-RA   Reichwald K., Rump A., Schillhabel M., Schudy A., Zimmermann W.,
-RA   Rosenthal A., Kudoh J., Shibuya K., Kawasaki K., Asakawa S.,
-RA   Shintani A., Sasaki T., Nagamine K., Mitsuyama S., Antonarakis S.E.,
-RA   Minoshima S., Shimizu N., Nordsiek G., Hornischer K., Brandt P.,
-RA   Scharfe M., Schoen O., Desario A., Reichelt J., Kauer G., Bloecker H.,
-RA   Ramser J., Beck A., Klages S., Hennig S., Riesselmann L., Dagand E.,
-RA   Wehrmeyer S., Borzym K., Gardiner K., Nizetic D., Francis F.,
-RA   Lehrach H., Reinhardt R., Yaspo M.-L.;
+RX   PubMed=10830953; DOI=10.1038/35012518;
+RA   Hattori M., Fujiyama A., Taylor T.D., Watanabe H., Yada T., Park H.-S.,
+RA   Toyoda A., Ishii K., Totoki Y., Choi D.-K., Groner Y., Soeda E., Ohki M.,
+RA   Takagi T., Sakaki Y., Taudien S., Blechschmidt K., Polley A., Menzel U.,
+RA   Delabar J., Kumpf K., Lehmann R., Patterson D., Reichwald K., Rump A.,
+RA   Schillhabel M., Schudy A., Zimmermann W., Rosenthal A., Kudoh J.,
+RA   Shibuya K., Kawasaki K., Asakawa S., Shintani A., Sasaki T., Nagamine K.,
+RA   Mitsuyama S., Antonarakis S.E., Minoshima S., Shimizu N., Nordsiek G.,
+RA   Hornischer K., Brandt P., Scharfe M., Schoen O., Desario A., Reichelt J.,
+RA   Kauer G., Bloecker H., Ramser J., Beck A., Klages S., Hennig S.,
+RA   Riesselmann L., Dagand E., Wehrmeyer S., Borzym K., Gardiner K.,
+RA   Nizetic D., Francis F., Lehrach H., Reinhardt R., Yaspo M.-L.;
 RT   "The DNA sequence of human chromosome 21.";
 RL   Nature 405:311-319(2000).
 RN   [11]
 RP   NUCLEOTIDE SEQUENCE [LARGE SCALE GENOMIC DNA].
-RA   Mural R.J., Istrail S., Sutton G.G., Florea L., Halpern A.L.,
-RA   Mobarry C.M., Lippert R., Walenz B., Shatkay H., Dew I., Miller J.R.,
-RA   Flanigan M.J., Edwards N.J., Bolanos R., Fasulo D., Halldorsson B.V.,
-RA   Hannenhalli S., Turner R., Yooseph S., Lu F., Nusskern D.R.,
-RA   Shue B.C., Zheng X.H., Zhong F., Delcher A.L., Huson D.H.,
-RA   Kravitz S.A., Mouchard L., Reinert K., Remington K.A., Clark A.G.,
-RA   Waterman M.S., Eichler E.E., Adams M.D., Hunkapiller M.W., Myers E.W.,
-RA   Venter J.C.;
+RA   Mural R.J., Istrail S., Sutton G.G., Florea L., Halpern A.L., Mobarry C.M.,
+RA   Lippert R., Walenz B., Shatkay H., Dew I., Miller J.R., Flanigan M.J.,
+RA   Edwards N.J., Bolanos R., Fasulo D., Halldorsson B.V., Hannenhalli S.,
+RA   Turner R., Yooseph S., Lu F., Nusskern D.R., Shue B.C., Zheng X.H.,
+RA   Zhong F., Delcher A.L., Huson D.H., Kravitz S.A., Mouchard L., Reinert K.,
+RA   Remington K.A., Clark A.G., Waterman M.S., Eichler E.E., Adams M.D.,
+RA   Hunkapiller M.W., Myers E.W., Venter J.C.;
 RL   Submitted (SEP-2005) to the EMBL/GenBank/DDBJ databases.
 RN   [12]
-RP   NUCLEOTIDE SEQUENCE [LARGE SCALE MRNA].
+RP   NUCLEOTIDE SEQUENCE [LARGE SCALE MRNA] (ISOFORM 1).
 RC   TISSUE=Skin;
 RX   PubMed=15489334; DOI=10.1101/gr.2596504;
 RG   The MGC Project Team;
-RT   "The status, quality, and expansion of the NIH full-length cDNA
-RT   project: the Mammalian Gene Collection (MGC).";
+RT   "The status, quality, and expansion of the NIH full-length cDNA project:
+RT   the Mammalian Gene Collection (MGC).";
 RL   Genome Res. 14:2121-2127(2004).
 RN   [13]
-RP   PARTIAL PROTEIN SEQUENCE, AND N6-1-CARBOXYETHYLATION AT LYS-239.
-RX   MEDLINE=93133816; PubMed=8421682; DOI=10.1073/pnas.90.2.502;
+RP   PARTIAL PROTEIN SEQUENCE, AND POST-TRANSLATIONAL MODIFICATION AT LYS-239.
+RX   PubMed=8421682; DOI=10.1073/pnas.90.2.502;
 RA   Krook M., Ghosh D., Stroemberg R., Carlquist M., Joernvall H.;
 RT   "Carboxyethyllysine in a protein: native carbonyl reductase/NADP(+)-
 RT   dependent prostaglandin dehydrogenase.";
 RL   Proc. Natl. Acad. Sci. U.S.A. 90:502-506(1993).
 RN   [14]
-RP   PHOSPHORYLATION [LARGE SCALE ANALYSIS] AT TYR-194, AND MASS
-RP   SPECTROMETRY.
-RC   TISSUE=Lung carcinoma;
-RX   PubMed=18083107; DOI=10.1016/j.cell.2007.11.025;
-RA   Rikova K., Guo A., Zeng Q., Possemato A., Yu J., Haack H., Nardone J.,
-RA   Lee K., Reeves C., Li Y., Hu Y., Tan Z., Stokes M., Sullivan L.,
-RA   Mitchell J., Wetzel R., Macneill J., Ren J.M., Yuan J.,
-RA   Bakalarski C.E., Villen J., Kornhauser J.M., Smith B., Li D., Zhou X.,
-RA   Gygi S.P., Gu T.-L., Polakiewicz R.D., Rush J., Comb M.J.;
-RT   "Global survey of phosphotyrosine signaling identifies oncogenic
-RT   kinases in lung cancer.";
-RL   Cell 131:1190-1203(2007).
-RN   [15]
-RP   ENZYME REGULATION, AND FUNCTION.
+RP   ACTIVITY REGULATION, AND FUNCTION.
 RX   PubMed=18449627; DOI=10.1007/s11095-008-9592-5;
 RA   Gonzalez-Covarrubias V., Kalabus J.L., Blanco J.G.;
 RT   "Inhibition of polymorphic human carbonyl reductase 1 (CBR1) by the
 RT   cardioprotectant flavonoid 7-monohydroxyethyl rutoside (monoHER).";
 RL   Pharm. Res. 25:1730-1734(2008).
+RN   [15]
+RP   ACETYLATION [LARGE SCALE ANALYSIS] AT SER-2, CLEAVAGE OF INITIATOR
+RP   METHIONINE [LARGE SCALE ANALYSIS], AND IDENTIFICATION BY MASS SPECTROMETRY
+RP   [LARGE SCALE ANALYSIS].
+RX   PubMed=19413330; DOI=10.1021/ac9004309;
+RA   Gauci S., Helbig A.O., Slijper M., Krijgsveld J., Heck A.J., Mohammed S.;
+RT   "Lys-N and trypsin cover complementary parts of the phosphoproteome in a
+RT   refined SCX-based approach.";
+RL   Anal. Chem. 81:4493-4501(2009).
 RN   [16]
 RP   IDENTIFICATION BY MASS SPECTROMETRY [LARGE SCALE ANALYSIS].
 RX   PubMed=21269460; DOI=10.1186/1752-0509-5-17;
-RA   Burkard T.R., Planyavsky M., Kaupe I., Breitwieser F.P.,
-RA   Buerckstuemmer T., Bennett K.L., Superti-Furga G., Colinge J.;
+RA   Burkard T.R., Planyavsky M., Kaupe I., Breitwieser F.P., Buerckstuemmer T.,
+RA   Bennett K.L., Superti-Furga G., Colinge J.;
 RT   "Initial characterization of the human central proteome.";
 RL   BMC Syst. Biol. 5:17-17(2011).
 RN   [17]
 RP   X-RAY CRYSTALLOGRAPHY (1.24 ANGSTROMS) OF 2-276 IN COMPLEX WITH THE
-RP   SYNTHETIC INHIBITOR HYDROXY-PP AND NADP, MASS SPECTROMETRY, PARTIAL
-RP   PROTEIN SEQUENCE, AND FUNCTION.
+RP   SYNTHETIC INHIBITOR HYDROXY-PP AND NADP, IDENTIFICATION BY MASS
+RP   SPECTROMETRY, PARTIAL PROTEIN SEQUENCE, AND FUNCTION.
 RX   PubMed=15799708; DOI=10.1371/journal.pbio.0030128;
-RA   Tanaka M., Bateman R., Rauh D., Vaisberg E., Ramachandani S.,
-RA   Zhang C., Hansen K.C., Burlingame A.L., Trautman J.K., Shokat K.M.,
-RA   Adams C.L.;
+RA   Tanaka M., Bateman R., Rauh D., Vaisberg E., Ramachandani S., Zhang C.,
+RA   Hansen K.C., Burlingame A.L., Trautman J.K., Shokat K.M., Adams C.L.;
 RT   "An unbiased cell morphology-based screen for new, biologically active
 RT   small molecules.";
 RL   PLoS Biol. 3:E128-E128(2005).
 RN   [18]
-RP   X-RAY CRYSTALLOGRAPHY (1.54 ANGSTROMS) OF 2-277 IN COMPLEX WITH NADP
-RP   AND FORMALDEHYDE-GLUTATHIONE ADDUCT, AND FUNCTION.
+RP   X-RAY CRYSTALLOGRAPHY (1.54 ANGSTROMS) OF 2-277 IN COMPLEX WITH NADP AND
+RP   FORMALDEHYDE-GLUTATHIONE ADDUCT, AND FUNCTION.
 RX   PubMed=17912391; DOI=10.1039/b707602a;
 RA   Bateman R., Rauh D., Shokat K.M.;
-RT   "Glutathione traps formaldehyde by formation of a
-RT   bicyclo[4.4.1]undecane adduct.";
+RT   "Glutathione traps formaldehyde by formation of a bicyclo[4.4.1]undecane
+RT   adduct.";
 RL   Org. Biomol. Chem. 5:3363-3367(2007).
 RN   [19]
 RP   X-RAY CRYSTALLOGRAPHY (1.77 ANGSTROMS) OF 2-277 IN COMPLEX WITH NADP,
 RP   SUBSTRATE ANALOGS, FUNCTION, AND BIOPHYSICOCHEMICAL PROPERTIES.
-RX   PubMed=18826943; DOI=10.1074/jbc.M807125200;
+RX   PubMed=18826943; DOI=10.1074/jbc.m807125200;
 RA   Bateman R.L., Rauh D., Tavshanjian B., Shokat K.M.;
 RT   "Human carbonyl reductase 1 is an S-nitrosoglutathione reductase.";
 RL   J. Biol. Chem. 283:35756-35762(2008).
 RN   [20]
 RP   VARIANT ILE-88, CHARACTERIZATION OF VARIANT ILE-88, BIOPHYSICOCHEMICAL
-RP   PROPERTIES, AND ENZYME REGULATION.
+RP   PROPERTIES, AND ACTIVITY REGULATION.
 RX   PubMed=17344335; DOI=10.1124/dmd.107.014779;
-RA   Gonzalez-Covarrubias V., Ghosh D., Lakhman S.S., Pendyala L.,
-RA   Blanco J.G.;
+RA   Gonzalez-Covarrubias V., Ghosh D., Lakhman S.S., Pendyala L., Blanco J.G.;
 RT   "A functional genetic polymorphism on human carbonyl reductase 1 (CBR1
 RT   V88I) impacts on catalytic activity and NADPH binding affinity.";
 RL   Drug Metab. Dispos. 35:973-980(2007).
-CC   -!- FUNCTION: NADPH-dependent reductase with broad substrate
-CC       specificity. Catalyzes the reduction of a wide variety of carbonyl
-CC       compounds including quinones, prostaglandins, menadione, plus
-CC       various xenobiotics. Catalyzes the reduction of the antitumor
-CC       anthracyclines doxorubicin and daunorubicin to the cardiotoxic
-CC       compounds doxorubicinol and daunorubicinol. Can convert
-CC       prostaglandin E2 to prostaglandin F2-alpha. Can bind glutathione,
-CC       which explains its higher affinity for glutathione-conjugated
-CC       substrates. Catalyzes the reduction of S-nitrosoglutathione.
-CC   -!- CATALYTIC ACTIVITY: R-CHOH-R' + NADP(+) = R-CO-R' + NADPH.
-CC   -!- CATALYTIC ACTIVITY: (5Z,13E)-(15S)-9-alpha,11-alpha,15-
-CC       trihydroxyprosta-5,13-dienoate + NADP(+) = (5Z,13E)-(15S)-11-
-CC       alpha,15-dihydroxy-9-oxoprosta-5,13-dienoate + NADPH.
-CC   -!- CATALYTIC ACTIVITY: (13E)-(15S)-11-alpha,15-dihydroxy-9-oxoprost-
-CC       13-enoate + NADP(+) = (13E)-11-alpha-hydroxy-9,15-dioxoprost-13-
-CC       enoate + NADPH.
-CC   -!- ENZYME REGULATION: Inhibited by quercetin, rutenin and its
-CC       derivatives.
+CC   -!- FUNCTION: NADPH-dependent reductase with broad substrate specificity.
+CC       Catalyzes the reduction of a wide variety of carbonyl compounds
+CC       including quinones, prostaglandins, menadione, plus various
+CC       xenobiotics. Catalyzes the reduction of the antitumor anthracyclines
+CC       doxorubicin and daunorubicin to the cardiotoxic compounds doxorubicinol
+CC       and daunorubicinol. Can convert prostaglandin E2 to prostaglandin F2-
+CC       alpha. Can bind glutathione, which explains its higher affinity for
+CC       glutathione-conjugated substrates. Catalyzes the reduction of S-
+CC       nitrosoglutathione. {ECO:0000269|PubMed:15799708,
+CC       ECO:0000269|PubMed:17912391, ECO:0000269|PubMed:18449627,
+CC       ECO:0000269|PubMed:18826943}.
+CC   -!- CATALYTIC ACTIVITY:
+CC       Reaction=a secondary alcohol + NADP(+) = a ketone + H(+) + NADPH;
+CC         Xref=Rhea:RHEA:19257, ChEBI:CHEBI:15378, ChEBI:CHEBI:17087,
+CC         ChEBI:CHEBI:35681, ChEBI:CHEBI:57783, ChEBI:CHEBI:58349;
+CC         EC=1.1.1.184;
+CC   -!- CATALYTIC ACTIVITY:
+CC       Reaction=NADP(+) + prostaglandin F2alpha = H(+) + NADPH + prostaglandin
+CC         E2; Xref=Rhea:RHEA:24508, ChEBI:CHEBI:15378, ChEBI:CHEBI:57404,
+CC         ChEBI:CHEBI:57783, ChEBI:CHEBI:58349, ChEBI:CHEBI:606564;
+CC         EC=1.1.1.189;
+CC   -!- CATALYTIC ACTIVITY:
+CC       Reaction=NADP(+) + prostaglandin E1 = 15-oxo-prostaglandin E1 + H(+) +
+CC         NADPH; Xref=Rhea:RHEA:11636, ChEBI:CHEBI:15378, ChEBI:CHEBI:57397,
+CC         ChEBI:CHEBI:57401, ChEBI:CHEBI:57783, ChEBI:CHEBI:58349;
+CC         EC=1.1.1.197;
+CC   -!- ACTIVITY REGULATION: Inhibited by quercetin, rutenin and its
+CC       derivatives. {ECO:0000269|PubMed:17344335,
+CC       ECO:0000269|PubMed:18449627}.
 CC   -!- BIOPHYSICOCHEMICAL PROPERTIES:
 CC       Kinetic parameters:
-CC         KM=30 uM for S-nitrosoglutathione;
-CC         KM=22 uM for menadione;
-CC         KM=309 uM for prostaglandin E2;
-CC         KM=173 uM for daunorubicin;
-CC         KM=247 uM for NADPH;
-CC   -!- SUBUNIT: Monomer.
-CC   -!- INTERACTION:
-CC       P23508:MCC; NbExp=1; IntAct=EBI-351348, EBI-307531;
+CC         KM=30 uM for S-nitrosoglutathione {ECO:0000269|PubMed:17344335,
+CC         ECO:0000269|PubMed:18826943};
+CC         KM=22 uM for menadione {ECO:0000269|PubMed:17344335,
+CC         ECO:0000269|PubMed:18826943};
+CC         KM=309 uM for prostaglandin E2 {ECO:0000269|PubMed:17344335,
+CC         ECO:0000269|PubMed:18826943};
+CC         KM=173 uM for daunorubicin {ECO:0000269|PubMed:17344335,
+CC         ECO:0000269|PubMed:18826943};
+CC         KM=247 uM for NADPH {ECO:0000269|PubMed:17344335,
+CC         ECO:0000269|PubMed:18826943};
+CC   -!- SUBUNIT: Monomer. {ECO:0000269|PubMed:15799708,
+CC       ECO:0000269|PubMed:17912391, ECO:0000269|PubMed:18826943}.
 CC   -!- SUBCELLULAR LOCATION: Cytoplasm.
-CC   -!- SIMILARITY: Belongs to the short-chain dehydrogenases/reductases
-CC       (SDR) family.
+CC   -!- ALTERNATIVE PRODUCTS:
+CC       Event=Alternative splicing; Named isoforms=2;
+CC       Name=1;
+CC         IsoId=P16152-1; Sequence=Displayed;
+CC       Name=2;
+CC         IsoId=P16152-2; Sequence=VSP_054796, VSP_054797;
+CC   -!- SIMILARITY: Belongs to the short-chain dehydrogenases/reductases (SDR)
+CC       family. {ECO:0000305}.
 CC   -!- WEB RESOURCE: Name=SeattleSNPs;
 CC       URL="http://pga.gs.washington.edu/data/cbr1/";
-CC   -----------------------------------------------------------------------
-CC   Copyrighted by the UniProt Consortium, see http://www.uniprot.org/terms
-CC   Distributed under the Creative Commons Attribution-NoDerivs License
-CC   -----------------------------------------------------------------------
+CC   ---------------------------------------------------------------------------
+CC   Copyrighted by the UniProt Consortium, see https://www.uniprot.org/terms
+CC   Distributed under the Creative Commons Attribution (CC BY 4.0) License
+CC   ---------------------------------------------------------------------------
 DR   EMBL; J04056; AAA52070.1; -; mRNA.
 DR   EMBL; M62420; AAA17881.1; -; Genomic_DNA.
 DR   EMBL; AB003151; BAA33498.1; -; Genomic_DNA.
@@ -260,133 +270,250 @@ DR   EMBL; AP000688; BAA89424.1; -; Genomic_DNA.
 DR   EMBL; AB124848; BAE45940.1; -; mRNA.
 DR   EMBL; BT019843; AAV38646.1; -; mRNA.
 DR   EMBL; CR541708; CAG46509.1; -; mRNA.
+DR   EMBL; AK294142; BAG57468.1; -; mRNA.
 DR   EMBL; AK314879; BAG37394.1; -; mRNA.
 DR   EMBL; EF141836; ABK97430.1; -; Genomic_DNA.
 DR   EMBL; AP001724; BAA95508.1; -; Genomic_DNA.
+DR   EMBL; CH471079; EAX09754.1; -; Genomic_DNA.
 DR   EMBL; CH471079; EAX09755.1; -; Genomic_DNA.
 DR   EMBL; BC002511; AAH02511.1; -; mRNA.
 DR   EMBL; BC015640; AAH15640.1; -; mRNA.
-DR   IPI; IPI00295386; -.
+DR   CCDS; CCDS13641.1; -. [P16152-1]
+DR   CCDS; CCDS68202.1; -. [P16152-2]
 DR   PIR; A61271; RDHUCB.
-DR   RefSeq; NP_001748.1; NM_001757.2.
-DR   UniGene; Hs.606200; -.
-DR   UniGene; Hs.88778; -.
-DR   PDB; 1WMA; X-ray; 1.24 A; A=2-276.
+DR   RefSeq; NP_001273718.1; NM_001286789.1. [P16152-2]
+DR   RefSeq; NP_001748.1; NM_001757.3. [P16152-1]
+DR   PDB; 1WMA; X-ray; 1.24 A; A=2-277.
 DR   PDB; 2PFG; X-ray; 1.54 A; A=2-277.
 DR   PDB; 3BHI; X-ray; 2.27 A; A=2-277.
 DR   PDB; 3BHJ; X-ray; 1.77 A; A=2-277.
 DR   PDB; 3BHM; X-ray; 1.80 A; A=2-277.
+DR   PDB; 4Z3D; X-ray; 1.80 A; A/B/C/D=2-277.
 DR   PDBsum; 1WMA; -.
 DR   PDBsum; 2PFG; -.
 DR   PDBsum; 3BHI; -.
 DR   PDBsum; 3BHJ; -.
 DR   PDBsum; 3BHM; -.
-DR   ProteinModelPortal; P16152; -.
-DR   SMR; P16152; 3-277.
-DR   IntAct; P16152; 17.
-DR   MINT; MINT-1418935; -.
-DR   STRING; P16152; -.
-DR   PhosphoSite; P16152; -.
+DR   PDBsum; 4Z3D; -.
+DR   SMR; P16152; -.
+DR   BioGrid; 107319; 47.
+DR   DIP; DIP-33136N; -.
+DR   IntAct; P16152; 33.
+DR   MINT; P16152; -.
+DR   STRING; 9606.ENSP00000290349; -.
+DR   BindingDB; P16152; -.
+DR   ChEMBL; CHEMBL5586; -.
+DR   DrugBank; DB03556; 2-(2-{2-[2-(2-{2-[2-(2-Ethoxy-Ethoxy)-Ethoxy]-Ethoxy}-Ethoxy)-Ethoxy]-Ethoxy}-Ethoxy)-Ethanol, Polyethyleneglycol Peg400.
+DR   DrugBank; DB04463; 3-(4-Amino-1-Tert-Butyl-1h-Pyrazolo[3,4-D]Pyrimidin-3-Yl)Phenol.
+DR   DrugBank; DB00414; Acetohexamide.
+DR   DrugBank; DB06263; Amrubicin.
+DR   DrugBank; DB11672; Curcumin.
+DR   DrugBank; DB14635; Curcumin sulfate.
+DR   DrugBank; DB12161; Deutetrabenazine.
+DR   DrugBank; DB00997; Doxorubicin.
+DR   DrugBank; DB00502; Haloperidol.
+DR   DrugBank; DB03394; Heptaethylene glycol.
+DR   DrugBank; DB01046; Lubiprostone.
+DR   DrugBank; DB04216; Quercetin.
+DR   DrugBank; DB02709; Resveratrol.
+DR   DrugBank; DB01698; Rutin.
+DR   DrugBank; DB05197; Sofalcone.
+DR   DrugBank; DB04844; Tetrabenazine.
+DR   DrugCentral; P16152; -.
+DR   GuidetoPHARMACOLOGY; 1383; -.
+DR   iPTMnet; P16152; -.
+DR   PhosphoSitePlus; P16152; -.
+DR   SwissPalm; P16152; -.
+DR   BioMuta; CBR1; -.
+DR   DMDM; 118519; -.
 DR   REPRODUCTION-2DPAGE; IPI00295386; -.
 DR   UCD-2DPAGE; P16152; -.
+DR   CPTAC; CPTAC-329; -.
+DR   CPTAC; CPTAC-330; -.
+DR   EPD; P16152; -.
+DR   jPOST; P16152; -.
+DR   MassIVE; P16152; -.
+DR   MaxQB; P16152; -.
+DR   PaxDb; P16152; -.
 DR   PeptideAtlas; P16152; -.
 DR   PRIDE; P16152; -.
-DR   Ensembl; ENST00000290349; ENSP00000290349; ENSG00000159228.
+DR   ProteomicsDB; 4051; -.
+DR   ProteomicsDB; 53298; -. [P16152-1]
+DR   TopDownProteomics; P16152-1; -. [P16152-1]
+DR   DNASU; 873; -.
+DR   Ensembl; ENST00000290349; ENSP00000290349; ENSG00000159228. [P16152-1]
+DR   Ensembl; ENST00000530908; ENSP00000434613; ENSG00000159228. [P16152-2]
 DR   GeneID; 873; -.
 DR   KEGG; hsa:873; -.
-DR   UCSC; uc002yvb.1; human.
+DR   UCSC; uc002yvb.3; human. [P16152-1]
 DR   CTD; 873; -.
-DR   GeneCards; GC21P022920; -.
-DR   H-InvDB; HIX0016099; -.
+DR   DisGeNET; 873; -.
+DR   EuPathDB; HostDB:ENSG00000159228.12; -.
+DR   GeneCards; CBR1; -.
 DR   HGNC; HGNC:1548; CBR1.
 DR   HPA; HPA018433; -.
 DR   MIM; 114830; gene.
 DR   neXtProt; NX_P16152; -.
+DR   OpenTargets; ENSG00000159228; -.
 DR   PharmGKB; PA26121; -.
-DR   eggNOG; prNOG15925; -.
+DR   eggNOG; KOG1208; Eukaryota.
+DR   eggNOG; COG1028; LUCA.
 DR   GeneTree; ENSGT00510000046499; -.
-DR   HOGENOM; HBG750976; -.
-DR   HOVERGEN; HBG001909; -.
 DR   InParanoid; P16152; -.
-DR   OMA; NTAYGVT; -.
-DR   OrthoDB; EOG4BP1CB; -.
+DR   KO; K00079; -.
+DR   OMA; IRVTNAM; -.
+DR   OrthoDB; 1259665at2759; -.
 DR   PhylomeDB; P16152; -.
-DR   BRENDA; 1.1.1.184; 247.
-DR   BRENDA; 1.1.1.189; 247.
-DR   BRENDA; 1.1.1.197; 247.
-DR   DrugBank; DB00414; Acetohexamide.
-DR   DrugBank; DB01046; Lubiprostone.
-DR   NextBio; 3634; -.
-DR   ArrayExpress; P16152; -.
-DR   Bgee; P16152; -.
-DR   CleanEx; HS_CBR1; -.
-DR   Genevestigator; P16152; -.
-DR   GermOnline; ENSG00000159228; Homo sapiens.
-DR   GO; GO:0005737; C:cytoplasm; IEA:UniProtKB-SubCell.
-DR   GO; GO:0047021; F:15-hydroxyprostaglandin dehydrogenase (NADP+) activity; IEA:EC.
+DR   TreeFam; TF329359; -.
+DR   BRENDA; 1.1.1.184; 2681.
+DR   Reactome; R-HSA-2162123; Synthesis of Prostaglandins (PG) and Thromboxanes (TX).
+DR   SABIO-RK; P16152; -.
+DR   ChiTaRS; CBR1; human.
+DR   EvolutionaryTrace; P16152; -.
+DR   GeneWiki; CBR1; -.
+DR   GenomeRNAi; 873; -.
+DR   Pharos; P16152; Tchem.
+DR   PRO; PR:P16152; -.
+DR   Proteomes; UP000005640; Chromosome 21.
+DR   RNAct; P16152; protein.
+DR   Bgee; ENSG00000159228; Expressed in 227 organ(s), highest expression level in duodenum.
+DR   ExpressionAtlas; P16152; baseline and differential.
+DR   Genevisible; P16152; HS.
+DR   GO; GO:0005829; C:cytosol; TAS:Reactome.
+DR   GO; GO:0070062; C:extracellular exosome; HDA:UniProtKB.
+DR   GO; GO:1903561; C:extracellular vesicle; HDA:UniProtKB.
+DR   GO; GO:0047021; F:15-hydroxyprostaglandin dehydrogenase (NADP+) activity; IEA:UniProtKB-EC.
 DR   GO; GO:0004090; F:carbonyl reductase (NADPH) activity; IDA:UniProtKB.
-DR   GO; GO:0050221; F:prostaglandin-E2 9-reductase activity; IEA:EC.
-DR   GO; GO:0005515; F:protein binding; IPI:IntAct.
+DR   GO; GO:0016655; F:oxidoreductase activity, acting on NAD(P)H, quinone or similar compound as acceptor; IDA:UniProtKB.
+DR   GO; GO:0050221; F:prostaglandin-E2 9-reductase activity; TAS:Reactome.
+DR   GO; GO:0019371; P:cyclooxygenase pathway; TAS:Reactome.
 DR   GO; GO:0017144; P:drug metabolic process; IDA:UniProtKB.
-DR   GO; GO:0055114; P:oxidation-reduction process; IEA:UniProtKB-KW.
+DR   GO; GO:0030855; P:epithelial cell differentiation; IEP:UniProtKB.
+DR   GO; GO:0055114; P:oxidation-reduction process; IDA:UniProtKB.
 DR   GO; GO:0042373; P:vitamin K metabolic process; IDA:UniProtKB.
-DR   InterPro; IPR002198; DH_sc/Rdtase_SDR.
-DR   InterPro; IPR002347; Glc/ribitol_DH.
-DR   InterPro; IPR016040; NAD(P)-bd_dom.
+DR   InterPro; IPR036291; NAD(P)-bd_dom_sf.
 DR   InterPro; IPR020904; Sc_DH/Rdtase_CS.
-DR   Gene3D; G3DSA:3.40.50.720; NAD(P)-bd; 1.
+DR   InterPro; IPR002347; SDR_fam.
 DR   Pfam; PF00106; adh_short; 1.
 DR   PRINTS; PR00081; GDHRDH.
 DR   PRINTS; PR00080; SDRFAMILY.
+DR   SUPFAM; SSF51735; SSF51735; 1.
 DR   PROSITE; PS00061; ADH_SHORT; 1.
 PE   1: Evidence at protein level;
-KW   3D-structure; Acetylation; Complete proteome; Cytoplasm;
+KW   3D-structure; Acetylation; Alternative splicing; Cytoplasm;
 KW   Direct protein sequencing; NADP; Oxidoreductase; Phosphoprotein;
-KW   Polymorphism.
-FT   INIT_MET      1      1       Removed.
-FT   CHAIN         2    277       Carbonyl reductase [NADPH] 1.
-FT                                /FTId=PRO_0000054602.
-FT   NP_BIND      10     34       NADP.
-FT   NP_BIND      63     64       NADP.
-FT   NP_BIND     194    198       NADP.
-FT   NP_BIND     231    233       NADP.
-FT   REGION       95     97       Glutathione binding.
-FT   REGION      193    194       Glutathione binding.
-FT   ACT_SITE    194    194       Proton acceptor.
-FT   BINDING      90     90       NADP; via carbonyl oxygen.
-FT   BINDING     106    106       Glutathione.
-FT   BINDING     140    140       Substrate.
-FT   MOD_RES       2      2       N-acetylserine.
-FT   MOD_RES     194    194       Phosphotyrosine.
-FT   MOD_RES     239    239       N6-1-carboxyethyl lysine.
-FT   VARIANT      88     88       V -> I (reduced affinity for NADPH and
-FT                                reduced activity towards daunorubicin and
-FT                                prostaglandin E2; dbSNP:rs1143663).
-FT                                /FTId=VAR_059053.
-FT   VARIANT     131    131       P -> S (in dbSNP:rs41557318).
-FT                                /FTId=VAR_031706.
-FT   STRAND        7     12
-FT   HELIX        16     28
-FT   STRAND       29     39
-FT   HELIX        40     52
-FT   STRAND       58     61
-FT   HELIX        67     81
-FT   STRAND       82     89
-FT   HELIX       103    114
-FT   HELIX       116    125
-FT   HELIX       126    128
-FT   STRAND      129    138
-FT   HELIX       141    148
-FT   HELIX       152    159
-FT   HELIX       165    180
-FT   TURN        184    188
-FT   HELIX       193    215
-FT   STRAND      222    227
-FT   TURN        234    236
-FT   HELIX       244    247
-FT   HELIX       249    255
-FT   STRAND      268    270
-FT   STRAND      273    275
+KW   Polymorphism; Reference proteome.
+FT   INIT_MET        1
+FT                   /note="Removed"
+FT                   /evidence="ECO:0000244|PubMed:19413330"
+FT   CHAIN           2..277
+FT                   /note="Carbonyl reductase [NADPH] 1"
+FT                   /id="PRO_0000054602"
+FT   NP_BIND         10..34
+FT                   /note="NADP"
+FT                   /evidence="ECO:0000269|PubMed:15799708,
+FT                   ECO:0000269|PubMed:17912391, ECO:0000269|PubMed:18826943"
+FT   NP_BIND         63..64
+FT                   /note="NADP"
+FT                   /evidence="ECO:0000269|PubMed:15799708,
+FT                   ECO:0000269|PubMed:17912391, ECO:0000269|PubMed:18826943"
+FT   NP_BIND         194..198
+FT                   /note="NADP"
+FT                   /evidence="ECO:0000269|PubMed:15799708,
+FT                   ECO:0000269|PubMed:17912391, ECO:0000269|PubMed:18826943"
+FT   NP_BIND         231..233
+FT                   /note="NADP"
+FT                   /evidence="ECO:0000269|PubMed:15799708,
+FT                   ECO:0000269|PubMed:17912391, ECO:0000269|PubMed:18826943"
+FT   REGION          95..97
+FT                   /note="Glutathione binding"
+FT   REGION          193..194
+FT                   /note="Glutathione binding"
+FT   ACT_SITE        194
+FT                   /note="Proton acceptor"
+FT   BINDING         90
+FT                   /note="NADP; via carbonyl oxygen"
+FT                   /evidence="ECO:0000269|PubMed:15799708,
+FT                   ECO:0000269|PubMed:17912391, ECO:0000269|PubMed:18826943"
+FT   BINDING         106
+FT                   /note="Glutathione"
+FT   BINDING         140
+FT                   /note="Substrate"
+FT   MOD_RES         2
+FT                   /note="N-acetylserine"
+FT                   /evidence="ECO:0000244|PubMed:19413330"
+FT   MOD_RES         2
+FT                   /note="Phosphoserine"
+FT                   /evidence="ECO:0000250|UniProtKB:P47727"
+FT   MOD_RES         30
+FT                   /note="Phosphoserine"
+FT                   /evidence="ECO:0000250|UniProtKB:P48758"
+FT   MOD_RES         239
+FT                   /note="N6-1-carboxyethyl lysine"
+FT                   /evidence="ECO:0000269|PubMed:8421682"
+FT   VAR_SEQ         133..173
+FT                   /note="GRVVNVSSIMSVRALKSCSPELQQKFRSETITEEELVGLMN -> ASCVLSA
+FT                   WSCLSQNPSGGKSKPLAWFTEMSIICRCLTLGPF (in isoform 2)"
+FT                   /evidence="ECO:0000303|PubMed:14702039"
+FT                   /id="VSP_054796"
+FT   VAR_SEQ         174..277
+FT                   /note="Missing (in isoform 2)"
+FT                   /evidence="ECO:0000303|PubMed:14702039"
+FT                   /id="VSP_054797"
+FT   VARIANT         88
+FT                   /note="V -> I (reduced affinity for NADPH and reduced
+FT                   activity towards daunorubicin and prostaglandin E2;
+FT                   dbSNP:rs1143663)"
+FT                   /evidence="ECO:0000269|PubMed:17344335"
+FT                   /id="VAR_059053"
+FT   VARIANT         131
+FT                   /note="P -> S (in dbSNP:rs41557318)"
+FT                   /evidence="ECO:0000269|Ref.9"
+FT                   /id="VAR_031706"
+FT   STRAND          7..12
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   HELIX           16..28
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   STRAND          29..39
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   HELIX           40..52
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   STRAND          58..61
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   HELIX           67..81
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   STRAND          82..89
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   HELIX           103..114
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   HELIX           116..125
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   HELIX           126..128
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   STRAND          129..138
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   HELIX           141..148
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   HELIX           152..159
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   HELIX           165..180
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   TURN            184..188
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   HELIX           193..215
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   STRAND          222..227
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   TURN            234..236
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   HELIX           244..247
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   HELIX           249..255
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   STRAND          268..270
+FT                   /evidence="ECO:0000244|PDB:1WMA"
+FT   STRAND          273..275
+FT                   /evidence="ECO:0000244|PDB:1WMA"
 SQ   SEQUENCE   277 AA;  30375 MW;  51A5A495EB4F4EC3 CRC64;
      MSSGIHVALV TGGNKGIGLA IVRDLCRLFS GDVVLTARDV TRGQAAVQQL QAEGLSPRFH
      QLDIDDLQSI RALRDFLRKE YGGLDVLVNN AGIAFKVADP TPFHIQAEVT MKTNFFGTRD

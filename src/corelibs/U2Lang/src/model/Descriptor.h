@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,8 +48,8 @@ public:
     QString getDisplayName() const;
     QString getDocumentation() const;
     void setId(const QString& i);
-    void setDisplayName(const QString& n);
-    void setDocumentation(const QString& d);
+    virtual void setDisplayName(const QString& n);
+    virtual void setDocumentation(const QString& d);
 
     // descriptors with equal id's are equal
     inline bool operator==(const Descriptor& d) const { return id == d.id; }

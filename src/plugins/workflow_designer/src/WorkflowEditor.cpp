@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -68,7 +68,7 @@ WorkflowEditor::WorkflowEditor(WorkflowView *p)
     specialParameters->hide();
 
 #ifdef Q_OS_MAC
-    QString style("QGroupBox::title {margin-top: 1px; margin-left: 15px;}");
+    QString style("QGroupBox::title {margin-bottom: 9px;}");
     editorBox->setStyleSheet(style);
 #endif
 
@@ -92,7 +92,7 @@ WorkflowEditor::WorkflowEditor(WorkflowView *p)
     outputPortBox->setVisible(true);
     connect(outputPortBox, SIGNAL(toggled(bool)), SLOT(sl_changeVisibleOutput(bool)));
 
-    caption->setMinimumHeight(nameEdit->sizeHint().height());
+    connect(paramBox, SIGNAL(toggled(bool)), SLOT(sl_changeVisibleParameters(bool)));
 
     actorModel = new ActorCfgModel(this, owner);
     proxyModel = new ActorCfgFilterProxyModel(this);
@@ -400,6 +400,17 @@ void WorkflowEditor::editActor(Actor* a) {
     }
 }
 
+void WorkflowEditor::sl_changeVisibleParameters(bool isChecked) {
+    this->tableSplitter->setVisible(isChecked);
+    if (!isChecked) {
+        paramBox->resize(0, 0);
+        changeSizes(paramBox, 0);
+    } else {
+        changeSizes(paramBox, paramHeight);
+    }
+    this->paramBox->adjustSize();
+}
+
 void WorkflowEditor::sl_changeVisibleInput(bool isChecked) {
     CHECK(!inputPortWidget.isEmpty(), );
     inputScrollArea->setVisible(isChecked);
@@ -493,7 +504,6 @@ void WorkflowEditor::edit(Configuration* cfg) {
 
     if(customWidget) {
         connect(paramBox, SIGNAL(toggled(bool)), customWidget, SLOT(setVisible(bool)));
-        connect(paramBox, SIGNAL(toggled(bool)), SLOT(sl_resizeSplitter(bool)));
     }
 
     if (subject && !customWidget) {
@@ -501,8 +511,6 @@ void WorkflowEditor::edit(Configuration* cfg) {
         actorModel->setActor(actor);
         updateEditingData();
         tableSplitter->setVisible(paramBox->isChecked());
-        connect(paramBox, SIGNAL(toggled(bool)), tableSplitter, SLOT(setVisible(bool)));
-        connect(paramBox, SIGNAL(toggled(bool)), SLOT(sl_resizeSplitter(bool)));
     } else {
         tableSplitter->hide();
         if (customWidget) {

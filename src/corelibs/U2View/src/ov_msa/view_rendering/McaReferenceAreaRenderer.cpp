@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -83,7 +83,7 @@ void McaReferenceAreaRenderer::drawSequence(QPainter &p, const QSize &/*canvasSi
 
         const char c = sequenceRegion[(int)(position - region.startPos)];
         QRect charRect(baseXRange.startPos, 0, baseXRange.length + 1, commonMetrics.lineHeight);
-        const QColor color = scheme->getColor(0, 0, c);
+        const QColor color = scheme->getBackgroundColor(0, 0, c);
         if (color.isValid()) {
             p.fillRect(charRect, color);
         }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -101,7 +101,7 @@ MrBayesSupportTask::MrBayesSupportTask(const MultipleSequenceAlignment& _ma, con
 void MrBayesSupportTask::prepare(){
     //Add new subdir for temporary files
 
-    tmpDirUrl = ExternalToolSupportUtils::createTmpDir(MRBAYES_TMP_DIR, stateInfo);
+    tmpDirUrl = ExternalToolSupportUtils::createTmpDir(MrBayesSupport::MRBAYES_TMP_DIR, stateInfo);
     CHECK_OP(stateInfo, );
 
     prepareDataTask = new MrBayesPrepareDataForCalculation(inputMA, settings, tmpDirUrl);
@@ -129,7 +129,7 @@ QList<Task*> MrBayesSupportTask::onSubTaskFinished(Task* subTask){
         tmpNexusFile = prepareDataTask->getInputFileUrl();
         QStringList arguments;
         arguments << tmpNexusFile;
-        mrBayesTask = new ExternalToolRunTask(ET_MRBAYES, arguments, new MrBayesLogParser(settings.mb_ngen));
+        mrBayesTask = new ExternalToolRunTask(MrBayesSupport::ET_MRBAYES_ID, arguments, new MrBayesLogParser(settings.mb_ngen));
         mrBayesTask->setSubtaskProgressWeight(95);
         res.append(mrBayesTask);
     }else if(subTask == mrBayesTask){

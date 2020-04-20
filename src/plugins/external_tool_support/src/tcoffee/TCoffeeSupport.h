@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,16 +26,17 @@
 #include <U2View/MSAEditor.h>
 #include "utils/ExternalToolSupportAction.h"
 
-#define ET_TCOFFEE   "T-Coffee"
-#define TCOFFEE_TMP_DIR     "tcoffee"
-
 namespace U2 {
 
 class TCoffeeSupport : public ExternalTool {
     Q_OBJECT
 public:
-    TCoffeeSupport(const QString& name, const QString& path = "");
+    TCoffeeSupport(const QString& id, const QString& name, const QString& path = "");
     GObjectViewWindowContext* getViewContext(){ return viewCtx; }
+
+    static const QString ET_TCOFFEE;
+    static const QString ET_TCOFFEE_ID;
+    static const QString TCOFFEE_TMP_DIR;
 public slots:
     void sl_runWithExtFileSpecify();
 private:

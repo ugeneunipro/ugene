@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -3210,7 +3210,8 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
     CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible  for murine_1");
 
 //    8. Select "Create new table" option. Check if destination table widgets are enabled or disabled.
-    GTWidget::click(os, GTWidget::findWidget(os, "rbCreateNewTable"));
+    //GTWidget::click(os, GTWidget::findWidget(os, "rbCreateNewTable"));
+    GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton*>(os, "rbCreateNewTable"));
     GTGlobals::sleep();
 
 //    Expected state:

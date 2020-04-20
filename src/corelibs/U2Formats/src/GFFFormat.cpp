@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,7 +47,7 @@ namespace U2{
 
 const int GFFFormat::LOCAL_READ_BUFFER_SIZE = 32768;
 
-GFFFormat::GFFFormat(QObject* p) : TextDocumentFormat(p, DocumentFormatFlag_SupportWriting, QStringList("gff")){
+GFFFormat::GFFFormat(QObject* p) : TextDocumentFormat(p, BaseDocumentFormats::GFF, DocumentFormatFlag_SupportWriting, QStringList("gff")){
     formatName = tr("GFF");
     formatDescription = tr("GFF is a format used for storing features and annotations");
     supportedObjectTypes+=GObjectTypes::ANNOTATION_TABLE;
@@ -254,7 +254,7 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     const QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
     QMap<QString, AnnotationData *> joinedAnnotations;
-    QMap<AnnotationData *, QString> annotationGroups;
+    QMap<QString, QList<AnnotationData *> > annotationGroups;
     QMap<AnnotationData *, AnnotationTableObject *> annotationTables;
     bool fastaSectionStarts = false;
     bool anyNamelessSequence = false;
@@ -450,8 +450,7 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
                     os.setError(tr("Parsing error: incorrect strand patameter at line %1. Strand can be '+','-' or '.'").arg(lineNumber));
                     return;
                 }
-
-                annotationGroups.insert(ad, groupName);
+                annotationGroups[groupName].append(ad);
                 annotationTables.insert(ad, ato);
             } else {
                 delete ad;
@@ -463,9 +462,13 @@ void GFFFormat::load(IOAdapter* io, const U2DbiRef& dbiRef, QList<GObject*>& obj
     }
 
     // add annotation data to annotation table
-    foreach (AnnotationData *ann, annotationGroups.keys()) {
-        SAFE_POINT(annotationGroups.contains(ann) && annotationTables.contains(ann), "Unexpected annotation!", );
-        annotationTables[ann]->addAnnotations(QList<SharedAnnotationData>() << SharedAnnotationData(ann), annotationGroups[ann]);
+    foreach(const QString& key, annotationGroups.keys()) {
+        QList<AnnotationData *> data = annotationGroups.value(key);
+        foreach(AnnotationData* ann, data) {
+            SAFE_POINT(data.contains(ann) && annotationTables.contains(ann), "Unexpected annotation!", );
+
+            annotationTables[ann]->addAnnotations(QList<SharedAnnotationData>() << SharedAnnotationData(ann), key);
+        }
     }
 
     //handling last fasta sequence

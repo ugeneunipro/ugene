@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,6 +22,7 @@
 #ifndef _U2_CREATE_FRAGMENT_DIALOG_H_
 #define _U2_CREATE_FRAGMENT_DIALOG_H_
 
+#include <QSet>
 #include "DNAFragment.h"
 #include <U2Gui/RegionSelector.h>
 #include <ui_CreateFragmentDialog.h>

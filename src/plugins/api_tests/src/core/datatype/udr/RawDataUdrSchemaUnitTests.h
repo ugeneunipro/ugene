@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,11 +22,9 @@
 #ifndef _U2_RAW_DATA_UDR_SCHEMA_UNIT_TESTS_H_
 #define _U2_RAW_DATA_UDR_SCHEMA_UNIT_TESTS_H_
 
-#include "core/dbi/DbiTest.h"
-
-#include <U2Core/U2RawData.h>
-
 #include <unittest.h>
+
+#include "core/dbi/DbiTest.h"
 
 namespace U2 {
 

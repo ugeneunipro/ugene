@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,8 +35,10 @@
 
 namespace U2 {
 
+const QString FastQCSupport::ET_FASTQC = "FastQC";
+const QString FastQCSupport::ET_FASTQC_ID = "USUPP_FASTQC";
 
-FastQCSupport::FastQCSupport(const QString& name, const QString& path) : ExternalTool(name, path)
+FastQCSupport::FastQCSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -52,9 +54,9 @@ FastQCSupport::FastQCSupport(const QString& name, const QString& path) : Externa
     versionRegExp = QRegExp("FastQC v(\\d+.\\d+.\\d+)");
     toolKitName = "FastQC";
 
-    toolRunnerProgramm = ET_PERL;
-    dependencies << ET_JAVA;
-    dependencies << ET_PERL;
+    toolRunnerProgram = PerlSupport::ET_PERL_ID;
+    dependencies << JavaSupport::ET_JAVA_ID;
+    dependencies << PerlSupport::ET_PERL_ID;
 
     ExternalTool *java = getJava();
     CHECK(NULL != java, );
@@ -75,7 +77,7 @@ void FastQCSupport::sl_javaPathChanged() {
 ExternalTool * FastQCSupport::getJava() {
     ExternalToolRegistry *registry = AppContext::getExternalToolRegistry();
     SAFE_POINT(NULL != registry, L10N::nullPointerError("External tool registry"), NULL);
-    ExternalTool *java = registry->getByName(ET_JAVA);
+    ExternalTool *java = registry->getById(JavaSupport::ET_JAVA_ID);
     SAFE_POINT(NULL != java, L10N::nullPointerError("Java tool"), NULL);
     return java;
 }

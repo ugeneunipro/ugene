@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #define _U2_GT_UTILS_MDI_H_
 
 #include <QPoint>
+#include <QTabBar>
 
 #include "GTGlobals.h"
 #include "primitives/GTMenuBar.h"
@@ -52,6 +53,10 @@ public:
     static void waitWindowOpened(HI::GUITestOpStatus &os, const QString &windowNamePart, qint64 timeout = 180000);
 
     static bool isTabbedLayout(HI::GUITestOpStatus &os);
+
+    static QTabBar* getTabBar(HI::GUITestOpStatus &os);
+    static int      getCurrentTab(HI::GUITestOpStatus &os);
+    static void     clickTab(HI::GUITestOpStatus &os, int tabIndex);
 };
 
 } // namespace

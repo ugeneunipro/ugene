@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,20 +24,21 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define ET_BOWTIE2_ALIGN "Bowtie 2 aligner"
-#define ET_BOWTIE2_BUILD "Bowtie 2 build indexer"
-#define ET_BOWTIE2_INSPECT "Bowtie 2 index inspector"
-
-#define BOWTIE2_TMP_DIR "bowtie2"
-
 namespace U2 {
 
-class Bowtie2Support : public ExternalTool
-{
+class Bowtie2Support : public ExternalTool {
     Q_OBJECT
-
 public:
-    Bowtie2Support(const QString& name, const QString& path = "");
+    Bowtie2Support(const QString& id, const QString& name, const QString& path = "");
+
+    static const QString ET_BOWTIE2_ALIGN;
+    static const QString ET_BOWTIE2_ALIGN_ID;
+    static const QString ET_BOWTIE2_BUILD;
+    static const QString ET_BOWTIE2_BUILD_ID;
+    static const QString ET_BOWTIE2_INSPECT;
+    static const QString ET_BOWTIE2_INSPECT_ID;
+
+    static const QString BOWTIE2_TMP_DIR;
 };
 
 } // namespace U2

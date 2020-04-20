@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,8 +22,10 @@
 #include <U2Designer/DelegateEditors.h>
 
 #include <U2Lang/Aliasing.h>
+#include <U2Core/AppContext.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BaseTypes.h>
+#include <U2Core/ExternalToolRegistry.h>
 #include <U2Lang/HRSchemaSerializer.h>
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowEnv.h>
@@ -32,6 +34,9 @@
 #include "library/SchemaWorker.h"
 #include "library/ScriptWorker.h"
 
+#include "util/CustomWorkerUtils.h"
+
+#include "CmdlineBasedWorkerValidator.h"
 #include "IncludedProtoFactoryImpl.h"
 
 
@@ -115,11 +120,11 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
             map[WorkflowUtils::getSlotDescOfDatatype(dtr->getById(dcfg.type))] = dtr->getById(dcfg.type);
         }
 
-        DataTypePtr input( new MapDataType(Descriptor(INPUT_PORT_TYPE + dcfg.attrName), map) );
+        DataTypePtr input( new MapDataType(Descriptor(INPUT_PORT_TYPE + dcfg.attributeId), map) );
         DataTypeRegistry * dr = WorkflowEnv::getDataTypeRegistry();
         assert(dr);
         dr->registerEntry( input );
-        portDescs << new PortDescriptor(Descriptor(dcfg.attrName, dcfg.attrName, dcfg.description), input, true);
+        portDescs << new PortDescriptor(Descriptor(dcfg.attributeId, dcfg.attrName, dcfg.description), input, true);
     }
 
     QMap<Descriptor, DataTypePtr> map;
@@ -133,41 +138,61 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
         }
     }
     if(!map.isEmpty()) {
-        DataTypePtr outSet( new MapDataType(Descriptor(OUTPUT_PORT_TYPE + cfg->name), map) );
+        DataTypePtr outSet( new MapDataType(Descriptor(OUTPUT_PORT_TYPE + cfg->id), map) );
         DataTypeRegistry * dr = WorkflowEnv::getDataTypeRegistry();
         assert(dr);
         dr->registerEntry( outSet );
-        Descriptor outDesc( OUT_PORT_ID, LocalWorkflow::ExternalProcessWorker::tr("output data"), LocalWorkflow::ExternalProcessWorker::tr("output data") );
+        Descriptor outDesc( OUT_PORT_ID, LocalWorkflow::ExternalProcessWorker::tr("Output data"), LocalWorkflow::ExternalProcessWorker::tr("Output data") );
         portDescs << new PortDescriptor( outDesc, outSet, false, true );
     }
 
-    Descriptor desc( cfg->name, cfg->name, cfg->description.isEmpty() ? cfg->name : cfg->description );
+    Descriptor desc( cfg->id, cfg->name, cfg->description.isEmpty() ? cfg->name : cfg->description );
 
     QList<Attribute*> attribs;
     QMap<QString, PropertyDelegate*> delegates;
     foreach(const AttributeConfig& acfg, cfg->attrs) {
-        //PropertyDelegate *delegate = NULL;
         DataTypePtr type;
         QString descr = acfg.description.isEmpty() ? acfg.type : acfg.description;
-        if(acfg.type == "URL") {
+        if (acfg.type == AttributeConfig::INPUT_FILE_URL_TYPE) {
             type = BaseTypes::STRING_TYPE();
-            delegates[acfg.attrName] = new URLDelegate("All Files(*.*)","");
-            attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, descr), type);
-        } else if(acfg.type == "String") {
+            delegates[acfg.attributeId] = new URLDelegate("", "", false, false, false, nullptr, "", false, true);
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
+        } else if (acfg.type == AttributeConfig::OUTPUT_FILE_URL_TYPE) {
             type = BaseTypes::STRING_TYPE();
-            attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, descr), type);
-        } else if(acfg.type == "Number") {
-            type = BaseTypes::NUM_TYPE();
-            attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, descr), type);
-        } else if(acfg.type == "Boolean") {
+            delegates[acfg.attributeId] = new URLDelegate("", "", false, false, true, nullptr, "", false, false);
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
+        } else if (acfg.type == AttributeConfig::INPUT_FOLDER_URL_TYPE) {
+            type = BaseTypes::STRING_TYPE();
+            delegates[acfg.attributeId] = new URLDelegate("", "", false, true, false, nullptr, "", false, true);
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
+        } else if (acfg.type == AttributeConfig::OUTPUT_FOLDER_URL_TYPE) {
+            type = BaseTypes::STRING_TYPE();
+            delegates[acfg.attributeId] = new URLDelegate("", "", false, true, true, nullptr, "", false, false);
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
+        } else if (acfg.type == AttributeConfig::STRING_TYPE) {
+            type = BaseTypes::STRING_TYPE();
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
+        } else if (acfg.type == AttributeConfig::BOOLEAN_TYPE) {
             type = BaseTypes::BOOL_TYPE();
-            attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, descr), type, false, QVariant(false));
+            delegates[acfg.attributeId] = new ComboBoxWithBoolsDelegate();
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, (acfg.defaultValue == "true" ? QVariant(true) : QVariant(false)));
+        } else if (acfg.type == AttributeConfig::INTEGER_TYPE) {
+            type = BaseTypes::NUM_TYPE();
+            QVariantMap integerValues;
+            integerValues["minimum"] = QVariant(std::numeric_limits<int>::min());
+            integerValues["maximum"] = QVariant(std::numeric_limits<int>::max());
+            delegates[acfg.attributeId] = new SpinBoxDelegate(integerValues);
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
+        } else if (acfg.type == AttributeConfig::DOUBLE_TYPE) {
+            type = BaseTypes::NUM_TYPE();
+            QVariantMap doubleValues;
+            doubleValues["singleStep"] = 0.1;
+            doubleValues["minimum"] = QVariant(std::numeric_limits<double>::lowest());
+            doubleValues["maximum"] = QVariant(std::numeric_limits<double>::max());
+            doubleValues["decimals"] = 6;
+            delegates[acfg.attributeId] = new DoubleSpinBoxDelegate(doubleValues);
+            attribs << new Attribute(Descriptor(acfg.attributeId, acfg.attrName, descr), type, Attribute::None, acfg.defaultValue);
         }
-
-        //attribs << new Attribute(Descriptor(acfg.attrName, acfg.attrName, acfg.type), type);
-        /*if(delegate) {
-            delegates[acfg.attrName] = acfg.delegate;
-        }*/
     }
 
     ActorPrototype * proto = new IntegralBusActorPrototype( desc, portDescs, attribs );
@@ -177,6 +202,12 @@ ActorPrototype *IncludedProtoFactoryImpl::_getExternalToolProto(ExternalProcessC
 
     proto->setPrompter( new LocalWorkflow::ExternalProcessWorkerPrompter() );
     proto->setNonStandard(cfg->filePath);
+    proto->setValidator(new CmdlineBasedWorkerValidator());
+
+    QStringList commandIdList = CustomWorkerUtils::getToolIdsFromCommand(cfg->cmdLine);
+    foreach(const QString& id, commandIdList) {
+        proto->addExternalTool(id);
+    }
 
     return proto;
 }
@@ -231,15 +262,35 @@ ActorPrototype *IncludedProtoFactoryImpl::_getSchemaActorProto(Schema *schema, c
     return proto;
 }
 
-void IncludedProtoFactoryImpl::_registerExternalToolWorker(ExternalProcessConfig *cfg) {
+bool IncludedProtoFactoryImpl::_registerExternalToolWorker(ExternalProcessConfig *cfg) {
+    const bool configRegistered = WorkflowEnv::getExternalCfgRegistry()->registerExternalTool(cfg);
+    CHECK(configRegistered, false);
+
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalWorkflow::LocalDomainFactory::ID);
-    WorkflowEnv::getExternalCfgRegistry()->registerExternalTool(cfg);
-    localDomain->registerEntry( new LocalWorkflow::ExternalProcessWorkerFactory(cfg->name) );
+    QScopedPointer<LocalWorkflow::ExternalProcessWorkerFactory> factory(new LocalWorkflow::ExternalProcessWorkerFactory(cfg->id));
+    const bool factoryRegistered = localDomain->registerEntry(factory.data());
+    CHECK_EXT(factoryRegistered, WorkflowEnv::getExternalCfgRegistry()->unregisterConfig(cfg->id), false);
+    factory.take();
+
+    return true;
 }
 
 void IncludedProtoFactoryImpl::_registerScriptWorker(const QString &actorName) {
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalWorkflow::LocalDomainFactory::ID);
     localDomain->registerEntry(new LocalWorkflow::ScriptWorkerFactory(actorName));
+}
+
+ExternalProcessConfig* IncludedProtoFactoryImpl::_getExternalToolWorker(const QString& id) {
+    return WorkflowEnv::getExternalCfgRegistry()->getConfigById(id);
+}
+
+ExternalProcessConfig *IncludedProtoFactoryImpl::_unregisterExternalToolWorker(const QString &id) {
+    DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalWorkflow::LocalDomainFactory::ID);
+    delete localDomain->unregisterEntry(id);
+
+    ExternalProcessConfig *config = WorkflowEnv::getExternalCfgRegistry()->getConfigById(id);
+    WorkflowEnv::getExternalCfgRegistry()->unregisterConfig(id);
+    return config;
 }
 
 Descriptor IncludedProtoFactoryImpl::generateUniqueSlotDescriptor(

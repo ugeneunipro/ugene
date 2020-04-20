@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -47,7 +47,7 @@
 
 namespace U2 {
 
-ABIFormat::ABIFormat(QObject* p) : DocumentFormat(p, DocumentFormatFlag_SupportStreaming, QStringList() << "ab1" << "abi" << "abif")
+ABIFormat::ABIFormat(QObject* p) : DocumentFormat(p, BaseDocumentFormats::ABIF, DocumentFormatFlag_SupportStreaming, QStringList() << "ab1" << "abi" << "abif")
 {
     formatName = tr("ABIF");
     formatDescription = tr("A chromatogram file format");

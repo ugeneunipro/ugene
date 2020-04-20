@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,10 +21,8 @@
 
 #include <QRegularExpression>
 #include <QTabWidget>
-#include <QWebElement>
-#include <QWebFrame>
-#include <QWebView>
 
+#include <GTUtilsMdi.h>
 #include <primitives/GTTabWidget.h>
 #include <primitives/GTWebView.h>
 #include <primitives/GTWidget.h>
@@ -98,12 +96,12 @@ const QString GTUtilsDashboard::TITLE = "title";
 const QString GTUtilsDashboard::COLLAPSED_NODE_TITLE = "Expand this branch";
 const QString GTUtilsDashboard::ON_CLICK = "onclick";
 
-QWebView* GTUtilsDashboard::getDashboard(HI::GUITestOpStatus &os) {
-    return qobject_cast<QWebView *>(getTabWidget(os)->currentWidget());
+WebView* GTUtilsDashboard::getDashboard(HI::GUITestOpStatus &os) {
+    return qobject_cast<WebView *>(getTabWidget(os)->currentWidget());
 }
 
 QTabWidget* GTUtilsDashboard::getTabWidget(HI::GUITestOpStatus &os){
-    return GTWidget::findExactWidget<QTabWidget *>(os, "WorkflowTabView");
+    return GTWidget::findExactWidget<QTabWidget *>(os, "WorkflowTabView", GTUtilsMdi::activeWindow(os));
 }
 
 const QString GTUtilsDashboard::getDashboardName(GUITestOpStatus &os, int dashboardNumber) {
@@ -112,7 +110,7 @@ const QString GTUtilsDashboard::getDashboardName(GUITestOpStatus &os, int dashbo
 
 QStringList GTUtilsDashboard::getOutputFiles(HI::GUITestOpStatus &os) {
     const QString selector = "div#outputWidget button.btn.full-width.long-text";
-    const QList<HIWebElement> outputFilesButtons = GTWebView::findElementsBySelector(os, getDashboard(os), selector);
+    const QList<HIWebElement> outputFilesButtons = GTWebView::findElementsBySelector(os, getDashboard(os), selector, GTGlobals::FindOptions(false));
     QStringList outputFilesNames;
     foreach (const HIWebElement &outputFilesButton, outputFilesButtons) {
         const QString outputFileName = outputFilesButton.toPlainText();
@@ -289,8 +287,7 @@ void GTUtilsDashboard::clickCopyButton(GUITestOpStatus &os, const QString &toolR
 
 #define GT_METHOD_NAME "isNodeVisible"
 bool GTUtilsDashboard::isNodeVisible(GUITestOpStatus &os, const QString &nodeId) {
-    const HIWebElement nodeSpanElement = getNodeSpan(os, nodeId);
-    return nodeSpanElement.geometry().isValid();
+    return getNodeSpan(os, nodeId).isVisible();
 }
 #undef GT_METHOD_NAME
 

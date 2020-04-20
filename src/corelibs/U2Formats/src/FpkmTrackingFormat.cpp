@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -73,10 +73,8 @@ FormatDetectionScore FpkmTrackingLineValidateFlags::getFormatDetectionScore()
 //-------------------------------------------------------------------
 //  FPKMTrackingFormat
 //-------------------------------------------------------------------
-const QString FpkmTrackingFormat::FORMAT_NAME = QObject::tr("FPKM Tracking Format");
 
 const QString FpkmTrackingFormat::NO_VALUE_STR = "-";
-
 const QString FpkmTrackingFormat::TRACKING_ID_COLUMN = "tracking_id";
 const QString FpkmTrackingFormat::CLASS_CODE_COLUMN = "class_code";
 const QString FpkmTrackingFormat::NEAREST_REF_ID_COLUMN = "nearest_ref_id";
@@ -89,8 +87,9 @@ const QString FpkmTrackingFormat::COVERAGE_COLUMN = "coverage";
 
 
 FpkmTrackingFormat::FpkmTrackingFormat(QObject* parent)
-    : TextDocumentFormat(parent, DocumentFormatFlag_SupportWriting, QStringList("fpkm_tracking"))
+    : TextDocumentFormat(parent, BaseDocumentFormats::FPKM_TRACKING_FORMAT, DocumentFormatFlag_SupportWriting, QStringList("fpkm_tracking"))
 {
+    formatName = tr("FPKM Tracking Format");
     formatDescription = tr("The FPKM (fragments per kilobase of exon model per million mapped fragments)"
         " Tracking Format is a native Cufflinks format to output estimated expression values.");
 

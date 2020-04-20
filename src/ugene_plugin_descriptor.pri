@@ -62,7 +62,7 @@ macx:  PLATFORM_NAME="macx"
 
 !contains(QMAKE_HOST.arch, x86_64) : PLATFORM_ARCH=32
 contains (QMAKE_HOST.arch, x86_64) : PLATFORM_ARCH=64
-CONFIG(x64) {
+    contains(DEFINES, UGENE_X86_64) {
     PLATFORM_ARCH=64
 }
 

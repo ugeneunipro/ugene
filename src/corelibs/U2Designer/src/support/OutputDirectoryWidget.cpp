@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,18 +36,16 @@
 
 namespace U2 {
 
-const QString OutputDirectoryWidget::INFO = QObject::tr(
-    "The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer."
-    " A separate subdirectory of the folder is created for each run of a workflow."
-    "\n\nSet up the folder:"
-    );
-
 OutputDirectoryWidget::OutputDirectoryWidget(QWidget *parent, bool commitOnHide)
 : QWidget(parent), commitOnHide(commitOnHide)
 {
     QVBoxLayout *l = new QVBoxLayout(this);
     l->setContentsMargins(3, 3, 3, 3);
-    label = new QLabel(INFO, this);
+    label = new QLabel(tr(
+                           "The Workflow Output Folder is a common folder that is used to store all output files in the Workflow Designer."
+                           " A separate subdirectory of the folder is created for each run of a workflow."
+                           "\n\nSet up the folder:"
+                           ), this);
     label->setAlignment(Qt::AlignJustify | Qt::AlignVCenter);
     label->setWordWrap(true);
     label->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);

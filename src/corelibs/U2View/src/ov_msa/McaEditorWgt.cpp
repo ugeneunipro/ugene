@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,6 @@
 #include "McaEditorStatusBar.h"
 #include "McaEditorWgt.h"
 #include "McaReferenceCharController.h"
-#include "MSACollapsibleModel.h"
 #include "MSAEditorOffsetsView.h"
 #include "helpers/McaRowHeightController.h"
 #include "ov_sequence/SequenceObjectContext.h"
@@ -75,19 +74,15 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     nameAreaLayout->insertWidget(0, refName);
     nameAreaLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
 
-    QVector<U2Region> itemRegions;
-    for (int i = 0; i < editor->getNumSequences(); i++) {
-        itemRegions << U2Region(i, 1);
-    }
+    // MCA editor has "always ON" collapsible mode.
+    collapsibleMode = true;
+    enableCollapsingOfSingleRowGroups = true;
+    collapseModel->reset(editor->getMaRowIds());
 
-    collapseModel->setTrivialGroupsPolicy(MSACollapsibleItemModel::Allow);
-    collapseModel->reset(itemRegions);
     Settings* s = AppContext::getSettings();
     SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
     bool showChromatograms = s->getValue(editor->getSettingsRoot() + MCAE_SETTINGS_SHOW_CHROMATOGRAMS, true).toBool();
     collapseModel->collapseAll(!showChromatograms);
-    collapseModel->setFakeCollapsibleModel(true);
-    collapsibleMode = true;
     GRUNTIME_NAMED_CONDITION_COUNTER(cvar, tvar, showChromatograms, "'Show chromatograms' is checked on the view opening", editor->getFactoryId());
     GRUNTIME_NAMED_CONDITION_COUNTER(ccvar, ttvar, !showChromatograms, "'Show chromatograms' is unchecked on the view opening", editor->getFactoryId());
 
@@ -96,23 +91,6 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     seqAreaHeaderLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
     seqAreaHeader->setStyleSheet("background-color: white;");
     connect(mcaConsArea->getMismatchController(), SIGNAL(si_selectMismatch(int)), refArea, SLOT(sl_selectMismatch(int)));
-    MultipleChromatogramAlignmentObject* mcaObj = editor->getMaObject();
-    connect(mcaObj, SIGNAL(si_alignmentChanged(const MultipleAlignment&, const MaModificationInfo&)), SLOT(sl_alignmentChanged()));
-}
-
-void McaEditorWgt::sl_alignmentChanged() {
-    int size = editor->getNumSequences();
-    int collapseSize = collapseModel->getItemSize();
-    if (size > collapseSize) {
-        QVector<U2Region> itemRegions;
-        for (int i = 0; i < size; i++) {
-            itemRegions << U2Region(i, 1);
-        }
-        collapseModel->reset(itemRegions);
-        McaEditor* mcaEditor = getEditor();
-        bool isButtonChecked = mcaEditor->isChromatogramButtonChecked();
-        collapseModel->collapseAll(!isButtonChecked);
-    }
 }
 
 McaEditor *McaEditorWgt::getEditor() const {
@@ -135,22 +113,13 @@ McaReferenceCharController* McaEditorWgt::getRefCharController() const {
     return refCharController;
 }
 
-QAction *McaEditorWgt::getClearSelectionAction() const {
-    return clearSelectionAction;
-}
-
-QAction* McaEditorWgt::getToogleColumnsAction() const {
+QAction* McaEditorWgt::getToggleColumnsAction() const {
     SAFE_POINT(offsetsView != NULL, "Offset controller is NULL", NULL);
     return offsetsView->getToggleColumnsViewAction();
 }
 
 void McaEditorWgt::initActions() {
     MaEditorWgt::initActions();
-
-    clearSelectionAction = new QAction(tr("Clear selection"), this);
-    clearSelectionAction->setShortcut(Qt::Key_Escape);
-    connect(clearSelectionAction, SIGNAL(triggered()), SIGNAL(si_clearSelection()));
-    addAction(clearSelectionAction);
 
     delSelectionAction->setText(tr("Remove character/gap"));
 }

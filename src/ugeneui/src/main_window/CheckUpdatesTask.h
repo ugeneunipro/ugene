@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,8 +25,8 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
 #include <U2Core/Version.h>
+#include <QMessageBox>
 
-class QMessageBox;
 class QPushButton;
 
 namespace U2 {
@@ -49,6 +49,7 @@ private:
 };
 
 class UpdateMessage : public QObject {
+    Q_OBJECT
 public:
     UpdateMessage(const QString &newVersion);
     CheckUpdatesTask::Answer getAnswer() const;
@@ -60,6 +61,7 @@ private:
 };
 
 class VersionMessage : public QObject {
+    Q_OBJECT
 public:
     VersionMessage(const Version &newVersion);
     CheckUpdatesTask::Answer getAnswer() const;

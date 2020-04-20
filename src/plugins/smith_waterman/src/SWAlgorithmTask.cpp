@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -228,8 +228,9 @@ void SWAlgorithmTask::prepare() {
     }
     else if(SW_opencl == algType) {
 #ifdef SW2_BUILD_WITH_OPENCL
-        openClGpu = AppContext::getOpenCLGpuRegistry()->acquireAnyReadyGpu();
-        assert(openClGpu);
+        openClGpu = AppContext::getOpenCLGpuRegistry()->acquireEnabledGpuIfReady();
+        SAFE_POINT(nullptr != openClGpu, "GPU isn't ready, abort.", );
+
         const SequenceWalkerConfig & config = t->getConfig();
         const quint64 needMemBytes = SmithWatermanAlgorithmOPENCL::estimateNeededGpuMemory(
             sWatermanConfig.pSm, sWatermanConfig.ptrn, sWatermanConfig.sqnc.left(config.chunkSize * config.nThreads));
@@ -238,7 +239,7 @@ void SWAlgorithmTask::prepare() {
         if(gpuMemBytes < needMemBytes) {
             stateInfo.setError(QString("Not enough memory on OpenCL-enabled device. "
                 "The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4").
-                arg(QString::number(needMemBytes), QString::number(gpuMemBytes), QString::number(openClGpu->getId()), QString(openClGpu->getName())));
+                arg(QString::number(needMemBytes), QString::number(gpuMemBytes), QString::number((qlonglong)openClGpu->getId()), QString(openClGpu->getName())));
             return;
         } else {
             algoLog.details(QString("The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on OpenCL device").
@@ -819,8 +820,9 @@ void PairwiseAlignmentSmithWatermanTask::prepare() {
     }
     else if(SW_opencl == algType) {
 #ifdef SW2_BUILD_WITH_OPENCL
-        openClGpu = AppContext::getOpenCLGpuRegistry()->acquireAnyReadyGpu();
-        assert(openClGpu);
+        openClGpu = AppContext::getOpenCLGpuRegistry()->acquireEnabledGpuIfReady();
+        SAFE_POINT(nullptr != openClGpu, "GPU isn't ready, abort.", );
+
         const SequenceWalkerConfig & config = t->getConfig();
         const quint64 needMemBytes = SmithWatermanAlgorithmOPENCL::estimateNeededGpuMemory(
             settings->sMatrix, *ptrn, sqnc->left(config.chunkSize * config.nThreads));
@@ -829,7 +831,7 @@ void PairwiseAlignmentSmithWatermanTask::prepare() {
         if(gpuMemBytes < needMemBytes) {
             stateInfo.setError(QString("Not enough memory on OpenCL-enabled device. "
                 "The space required is %1 bytes, but only %2 bytes are available. Device id: %3, device name: %4").
-                arg(QString::number(needMemBytes), QString::number(gpuMemBytes), QString::number(openClGpu->getId()), QString(openClGpu->getName())));
+                arg(QString::number(needMemBytes), QString::number(gpuMemBytes), QString::number((qlonglong)openClGpu->getId()), QString(openClGpu->getName())));
             return;
         } else {
             algoLog.details(QString("The Smith-Waterman search allocates ~%1 bytes (%2 Mb) on OpenCL device").

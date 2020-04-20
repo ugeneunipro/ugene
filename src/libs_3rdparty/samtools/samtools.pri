@@ -11,6 +11,7 @@ LIBS += -L../../$$out_dir()
 LIBS += $$add_z_lib()
 DESTDIR = ../../$$out_dir()
 TARGET = samtools$$D
+QMAKE_PROJECT_NAME = samtools
 
 macx {
     DEFINES+="_CURSES_LIB=1"
@@ -37,8 +38,6 @@ macx {
 win32 {
     QMAKE_CXXFLAGS_WARN_ON = -W3
     QMAKE_CFLAGS_WARN_ON = -W3
-
-    QMAKE_MSVC_PROJECT_NAME=lib_3rd_samtools
 }
 
 win32-msvc2013 {
@@ -51,9 +50,13 @@ win32 {
     }
 }
 
-macx {
-    QMAKE_RPATHDIR += @executable_path/
-    QMAKE_LFLAGS_SONAME = -Wl,-dylib_install_name,@rpath/
+unix: {
+    macx: {
+        QMAKE_RPATHDIR += @executable_path/
+        QMAKE_LFLAGS_SONAME = -Wl,-dylib_install_name,@rpath/
+    } else {
+        QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
+    }
 }
 
 linux-g++ {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,16 +28,16 @@
 
 namespace U2 {
 
-ExternalToolSupportAction::ExternalToolSupportAction(QObject* p, GObjectView* v, const QString& _text, int order, const QStringList& _toolNames)
+ExternalToolSupportAction::ExternalToolSupportAction(QObject* p, GObjectView* v, const QString& _text, int order, const QStringList& _toolIds)
     : GObjectViewAction(p,v,_text,order),
-      toolNames(_toolNames) {
+      toolIds(_toolIds) {
     bool isAnyToolConfigured = checkTools(true);
     setState(isAnyToolConfigured);
 }
 
-ExternalToolSupportAction::ExternalToolSupportAction(const QString& _text, QObject* p, const QStringList& _toolNames)
+ExternalToolSupportAction::ExternalToolSupportAction(const QString& _text, QObject* p, const QStringList& _toolIds)
     : GObjectViewAction(p, NULL, _text),
-      toolNames(_toolNames) {
+      toolIds(_toolIds) {
     bool isAnyToolConfigured = checkTools(true);
     setState(isAnyToolConfigured);
 }
@@ -49,11 +49,11 @@ void ExternalToolSupportAction::sl_pathChanged() {
 
 bool ExternalToolSupportAction::checkTools(bool connectSignals) {
     bool result = false;
-    foreach (QString toolName, toolNames) {
-        if (!AppContext::getExternalToolRegistry()->getByName(toolName)->getPath().isEmpty()) {
+    foreach (QString toolId, toolIds) {
+        if (!AppContext::getExternalToolRegistry()->getById(toolId)->getPath().isEmpty()) {
             result = true;
         }
-        ExternalTool* exTool=AppContext::getExternalToolRegistry()->getByName(toolName);
+        ExternalTool* exTool=AppContext::getExternalToolRegistry()->getById(toolId);
         if (connectSignals == true) {
             connect(exTool, SIGNAL(si_pathChanged()), SLOT(sl_pathChanged()));
             connect(exTool, SIGNAL(si_toolValidationStatusChanged(bool)), SLOT(sl_toolStateChanged(bool)));
@@ -73,13 +73,13 @@ void ExternalToolSupportAction::setState(bool isAnyToolConfigured) {
     if (!isAnyToolConfigured ||
             (AppContext::getAppSettings()->getUserAppsSettings()->getUserTemporaryDirPath().isEmpty())) {
         isConfiguredToolFont.setItalic(true);
-        setIcon(AppContext::getExternalToolRegistry()->getByName(toolNames.at(0))->getGrayIcon());
+        setIcon(AppContext::getExternalToolRegistry()->getById(toolIds.at(0))->getGrayIcon());
     } else {
         isConfiguredToolFont.setItalic(false);
-        if (AppContext::getExternalToolRegistry()->getByName(toolNames.at(0))->isValid()) {
-            setIcon(AppContext::getExternalToolRegistry()->getByName(toolNames.at(0))->getIcon());
+        if (AppContext::getExternalToolRegistry()->getById(toolIds.at(0))->isValid()) {
+            setIcon(AppContext::getExternalToolRegistry()->getById(toolIds.at(0))->getIcon());
         } else {
-            setIcon(AppContext::getExternalToolRegistry()->getByName(toolNames.at(0))->getWarnIcon());
+            setIcon(AppContext::getExternalToolRegistry()->getById(toolIds.at(0))->getWarnIcon());
         }
     }
 

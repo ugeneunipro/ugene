@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -171,11 +171,11 @@ Task* CEASSupportTask::createETTask(){
     settings.getCeasSettings().setWigFile(settings.getWigData());
     QStringList args = settings.getCeasSettings().getArgumentList();
 
-    ExternalTool* rTool = AppContext::getExternalToolRegistry()->getByName(ET_R);
+    ExternalTool* rTool = AppContext::getExternalToolRegistry()->getById(RSupport::ET_R_ID);
     SAFE_POINT(NULL != rTool, "R script tool wasn't found in the registry", new FailTask("R script tool wasn't found in the registry"));
     const QString rDir = QFileInfo(rTool->getPath()).dir().absolutePath();
 
-    ExternalToolRunTask* runTask = new ExternalToolRunTask(ET_CEAS, args, new CEASLogParser(), workingDir, QStringList() << rDir);
+    ExternalToolRunTask* runTask = new ExternalToolRunTask(CEASSupport::ET_CEAS_ID, args, new CEASLogParser(), workingDir, QStringList() << rDir);
     setListenerForTask(runTask);
     res = runTask;
 

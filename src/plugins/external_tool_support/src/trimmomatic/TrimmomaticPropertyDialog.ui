@@ -56,7 +56,7 @@
               </size>
              </property>
              <property name="movement">
-              <enum>QListView::Free</enum>
+              <enum>QListView::Static</enum>
              </property>
             </widget>
            </item>

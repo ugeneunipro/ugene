@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,12 +26,12 @@
 
 namespace U2 {
 
-#define ET_WEVOTE WevoteSupport::TOOL_NAME
-
 class WevoteSupport : public ExternalTool {
+    Q_OBJECT
 public:
     WevoteSupport();
 
+    static const QString TOOL_ID;
     static const QString TOOL_NAME;
 };
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,12 +45,8 @@ MaEditorSelection::MaEditorSelection(const QPoint& topLeft, int width, int heigh
 
 }
 
-bool MaEditorSelection::isNull() const {
-    return selArea.isNull();
-}
-
 bool MaEditorSelection::isEmpty() const {
-    return selArea.isEmpty();
+    return selArea.width() <= 0 || selArea.height() <= 0;
 }
 
 QPoint MaEditorSelection::topLeft() const {
@@ -61,8 +57,8 @@ QPoint MaEditorSelection::bottomRight() const {
     return selArea.bottomRight();
 }
 
-const QRect& MaEditorSelection::getRect() const {
-    return selArea;
+QRect MaEditorSelection::toRect() const {
+    return isEmpty() ? QRect(0, 0, 0, 0) : selArea;
 }
 
 int MaEditorSelection::x() const {

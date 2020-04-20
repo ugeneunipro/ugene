@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -71,6 +71,9 @@ public:
     void                            setLocation(const U2Location &location);
 
     QVector<U2Region>               getRegions() const;
+
+    qint64                          getRegionsLen() const;
+
     /**
      * Replaces existing annotation region(s) with supplied @regions
      */

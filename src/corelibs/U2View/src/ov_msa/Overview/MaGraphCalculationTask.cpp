@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -225,7 +225,7 @@ bool MaHighlightingOverviewCalculationTask::isCellHighlighted(const MultipleAlig
     if (seq == refSeq || isEmptyScheme(schemeId) ||
             ((refSeq == U2MsaRow::INVALID_ROW_ID) && !isGapScheme(schemeId) &&
             !highlightingScheme->getFactory()->isRefFree())) {
-        if (colorScheme->getColor(seq, pos, ma->charAt(seq, pos)) != QColor()) {
+        if (colorScheme->getBackgroundColor(seq, pos, ma->charAt(seq, pos)) != QColor()) {
             return true;
         }
     }

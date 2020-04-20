@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -86,16 +86,16 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 //    Expected state: background for symbols must be:
 //    A - yellow    G - blue    T - red    C - green    gap - no backround
     //check A
-    checkColor(os,QPoint(0, 1), "#fcff92",5);
+    checkColor(os, QPoint(0, 1), "#fdff6a", 5);
 
     //check G
-    checkColor(os,QPoint(2, 2), "#4eade1");
+    checkColor(os,QPoint(2, 2), "#2aa1e1");
 
     //check T
-    checkColor(os,QPoint(0, 2), "#ff99b1",5);
+    checkColor(os,QPoint(0, 2), "#ff7195",5);
 
     //check C
-    checkColor(os,QPoint(4, 0), "#70f970");
+    checkColor(os,QPoint(4, 0), "#49f949");
 
     //check gap
     checkColor(os,QPoint(4, 2), "#ffffff",0,5);
@@ -138,16 +138,16 @@ GUI_TEST_CLASS_DEFINITION(test_0003){
 //Expected state: background for symbols must be:
 //A - green G - red T - blue  C - orange gap - no backround
     //check A
-    checkColor(os,QPoint(0, 1), "#64f73f",5);
+    checkColor(os, QPoint(0, 1), "#48f718", 5);
 
     //check G
-    checkColor(os,QPoint(2, 2), "#eb413c");
+    checkColor(os,QPoint(2, 2), "#eb1a17");
 
     //check T
-    checkColor(os,QPoint(0, 2), "#3c88ee",5);
+    checkColor(os,QPoint(0, 2), "#1674ee",5);
 
     //check C
-    checkColor(os,QPoint(4, 0), "#ffb340");
+    checkColor(os,QPoint(4, 0), "#ffa318");
 
     //check gap
     checkColor(os,QPoint(4, 2), "#ffffff",0,5);
@@ -161,7 +161,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004){
 //    Expected state: Background of the symbol  with the highest number of matches in the column is painted over.
 //    Intensity of colour depends on the frequency of appearance in the column.
     QWidget* seq=GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<"Colors"<<"Percentage Identity"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<"Colors"<<"Percentage identity"));
     GTMenu::showContextMenu(os,seq);
 //    Symbols and columns at the descending order
 //    1. A,G,T at 2,3,9
@@ -170,20 +170,20 @@ GUI_TEST_CLASS_DEFINITION(test_0004){
 //    4. A,C,A,T,A,T,A at 1,4,7,8,11,12,14
 
 //    columns without colored symbols 5,13
-    checkColor(os,QPoint(0, 1), "#ccccff",5);//chech1
-    checkColor(os,QPoint(1, 1), "#6464ff",5);//chech2
-    checkColor(os,QPoint(2, 1), "#6464ff");//chech3
-    checkColor(os,QPoint(3, 1), "#ccccff");//chech4
+    checkColor(os,QPoint(0, 1), "#a4a4ff",5);//chech1
+    checkColor(os,QPoint(1, 1), "#3c3cff",5);//chech2
+    checkColor(os,QPoint(2, 1), "#3c3cff");//chech3
+    checkColor(os,QPoint(3, 1), "#a4a4ff");//chech4
     checkColor(os,QPoint(4, 1), "#ffffff",5);//chech5
-    checkColor(os,QPoint(5, 1), "#9999ff",5);//chech6
-    checkColor(os,QPoint(6, 1), "#ccccff",5);//chech7
-    checkColor(os,QPoint(7, 2), "#ccccff",5);//chech8
-    checkColor(os,QPoint(8, 2), "#6464ff",5);//chech9
-    checkColor(os,QPoint(9, 2), "#9999ff",5);//chech10
-    checkColor(os,QPoint(10, 1), "#ccccff",5);//chech11
-    checkColor(os,QPoint(11, 2), "#ccccff",5);//chech12
+    checkColor(os,QPoint(5, 1), "#7171ff",5);//chech6
+    checkColor(os,QPoint(6, 1), "#a4a4ff",5);//chech7
+    checkColor(os,QPoint(7, 2), "#a4a4ff",5);//chech8
+    checkColor(os,QPoint(8, 2), "#3c3cff",5);//chech9
+    checkColor(os,QPoint(9, 2), "#7171ff",5);//chech10
+    checkColor(os,QPoint(10, 1), "#a4a4ff",5);//chech11
+    checkColor(os,QPoint(11, 2), "#a4a4ff",5);//chech12
     checkColor(os,QPoint(12, 2), "#ffffff",5);//chech13
-    checkColor(os,QPoint(13, 2), "#ccccff",5);//chech14
+    checkColor(os,QPoint(13, 2), "#a4a4ff",5);//chech14
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {

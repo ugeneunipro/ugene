@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,8 +32,9 @@ using namespace HI;
 
 #define GT_CLASS_NAME "GTBaseCompleter"
 #define GT_METHOD_NAME "click"
-void GTBaseCompleter::click(HI::GUITestOpStatus &os, QTreeWidget* tree, const QString &seqName){
-    GT_CHECK(tree != NULL, "tree widget is NULL");
+void GTBaseCompleter::click(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor, const QString &seqName) {
+    QTreeWidget *tree = getCompleter(os, widgetCompleterFor);
+    GT_CHECK(tree != nullptr, "tree widget is NULL");
     QTreeWidgetItem* item = GTTreeWidget::findItem(os, tree, seqName);
     GT_CHECK(item != NULL, "item not found");
     tree->scrollToItem(item);
@@ -46,10 +47,8 @@ void GTBaseCompleter::click(HI::GUITestOpStatus &os, QTreeWidget* tree, const QS
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getNames"
-QStringList GTBaseCompleter::getNames(HI::GUITestOpStatus &os, QTreeWidget *tree){
-    if(tree == NULL){
-        tree = getCompleter(os);
-    }
+QStringList GTBaseCompleter::getNames(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor) {
+    QTreeWidget *tree = getCompleter(os, widgetCompleterFor);
     GT_CHECK_RESULT(tree != NULL, "tree widget is NULL", QStringList());
     QStringList result;
     QList<QTreeWidgetItem*> items = GTTreeWidget::getItems(tree->invisibleRootItem());
@@ -60,20 +59,20 @@ QStringList GTBaseCompleter::getNames(HI::GUITestOpStatus &os, QTreeWidget *tree
 }
 #undef GT_METHOD_NAME
 
-bool GTBaseCompleter::isEmpty(HI::GUITestOpStatus &os, QTreeWidget *tree){
-    if(tree == NULL){
-        tree = getCompleter(os);
-    }
-    QStringList items = getNames(os, tree);
+#define GT_METHOD_NAME "isEmpty"
+bool GTBaseCompleter::isEmpty(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor) {
+    QTreeWidget *tree = getCompleter(os, widgetCompleterFor);
+    GT_CHECK_RESULT(tree != NULL, "tree widget is NULL", true);
+    QStringList items = getNames(os, widgetCompleterFor);
     bool result = (items.count() == 1) && (items.at(0) == "");
     return result;
 }
+#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getCompleter"
-QTreeWidget* GTBaseCompleter::getCompleter(HI::GUITestOpStatus &os){
-    QWidget* sequenceLineEdit = GTWidget::findWidget(os, "sequenceLineEdit");
-    GT_CHECK_RESULT(sequenceLineEdit != NULL, "sequenceLineEdit not found", NULL);
-    QTreeWidget* completer = sequenceLineEdit->findChild<QTreeWidget*>();
+QTreeWidget* GTBaseCompleter::getCompleter(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor) {
+    GT_CHECK_RESULT(widgetCompleterFor != NULL, "Widget associated with completer not found", NULL);
+    QTreeWidget* completer = widgetCompleterFor->findChild<QTreeWidget*>();
     GT_CHECK_RESULT(completer != NULL, "auto completer widget not found", NULL);
     return completer;
 }

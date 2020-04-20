@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,10 +27,11 @@
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 namespace U2 {
 
-const QString PhyMLSupport::PhyMlRegistryId("PhyML Maximum Likelihood");
-const QString PhyMLSupport::PhyMlTempDir("phyml");
+const QString PhyMLSupport::PHYML("PhyML Maximum Likelihood");
+const QString PhyMLSupport::PHYML_ID("USUPP_PHYML");
+const QString PhyMLSupport::PHYML_TEMP_DIR("phyml");
 
-PhyMLSupport::PhyMLSupport(const QString& name) : ExternalTool(name)
+PhyMLSupport::PhyMLSupport(const QString& id, const QString& name) : ExternalTool(id, name, "")
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -52,7 +53,7 @@ PhyMLSupport::PhyMLSupport(const QString& name) : ExternalTool(name)
 
     //register the method
     PhyTreeGeneratorRegistry* registry = AppContext::getPhyTreeGeneratorRegistry();
-    registry->registerPhyTreeGenerator(new PhyMLAdapter(), PhyMLSupport::PhyMlRegistryId);
+    registry->registerPhyTreeGenerator(new PhyMLAdapter(), PhyMLSupport::PHYML);
 }
 
 ////////////////////////////////////////

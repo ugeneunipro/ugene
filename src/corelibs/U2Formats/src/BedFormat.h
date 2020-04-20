@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -102,10 +102,6 @@ class U2FORMATS_EXPORT BedFormat : public TextDocumentFormat {
 public:
     BedFormat(QObject* parent);
 
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::BED;}
-
-    virtual const QString& getFormatName() const {return FORMAT_NAME;}
-
     virtual void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os);
 
     /** Gets annotation data from a BED file, but doesn't create an annotation table */
@@ -122,8 +118,6 @@ protected:
 
 private:
     void load(IOAdapter* io, QList<GObject*>& objects, const U2DbiRef& dbiRef, U2OpStatus& os, const QVariantMap& fs = QVariantMap());
-
-    static const QString FORMAT_NAME;
 };
 
 class BedFormatParser {

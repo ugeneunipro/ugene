@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,7 +25,8 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/L10n.h>
+#include <U2Core/Theme.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
@@ -99,6 +100,8 @@ void ExportImageDialog::accept() {
         return;
     }
 
+    U2OpStatusImpl os;
+    GUrlUtils::prepareFileLocation(filename, os);
     if (!GUrlUtils::canWriteFile(filename)) {
         QMessageBox::warning(this, tr(DIALOG_ACCEPT_ERROR_TITLE), tr("The image file cannot be created. No write permissions."));
         return;
@@ -150,28 +153,28 @@ void ExportImageDialog::init() {
 
     switch (source) {
     case WD:
-        new HelpButton(this, ui->buttonBox, "23331364");
+        new HelpButton(this, ui->buttonBox, "28966993");
         break;
     case CircularView:
-        new HelpButton(this, ui->buttonBox, "23331017");
+        new HelpButton(this, ui->buttonBox, "24748796");
         break;
     case MSA:
-        new HelpButton(this, ui->buttonBox, "23331090");
+        new HelpButton(this, ui->buttonBox, "24748869");
         break;
     case SequenceView:
-        new HelpButton(this, ui->buttonBox, "23330978");
+        new HelpButton(this, ui->buttonBox, "24748757");
         break;
     case AssemblyView:
-        new HelpButton(this, ui->buttonBox, "23331127");
+        new HelpButton(this, ui->buttonBox, "24748906");
         break;
     case PHYTreeView:
-        new HelpButton(this, ui->buttonBox, "23331155");
+        new HelpButton(this, ui->buttonBox, "24748934");
         break;
     case DotPlot:
-        new HelpButton(this, ui->buttonBox, "23331048");
+        new HelpButton(this, ui->buttonBox, "24748827");
         break;
     case MolView:
-        new HelpButton(this, ui->buttonBox, "23331031");
+        new HelpButton(this, ui->buttonBox, "24748810");
         break;
     default:
         FAIL("Can't find help Id",);
@@ -181,7 +184,7 @@ void ExportImageDialog::init() {
     ui->dpiWidget->setVisible(source == DotPlot);
 
     // set tip color
-    QString style = "QLabel { color: " + L10N::errorColorLabelStr() + "; font: bold;}";
+    QString style = "QLabel { color: " + Theme::errorColorLabelStr() + "; font: bold;}";
     ui->hintLabel->setStyleSheet(style);
     ui->hintLabel->hide();
 

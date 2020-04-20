@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,9 +41,6 @@ class U2FORMATS_EXPORT DifferentialFormat : public TextDocumentFormat {
 public:
     DifferentialFormat(QObject *parent);
 
-    DocumentFormatId getFormatId() const;
-    const QString & getFormatName() const;
-
     void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
 
 protected:
@@ -64,8 +61,6 @@ private:
     static QString createValue(const SharedAnnotationData &data, const ColumnDataParser::Column &column, U2OpStatus &os);
 
 private:
-    QString formatName;
-
     static const int BUFFER_SIZE;
 };
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,45 +33,43 @@ class U2VIEW_EXPORT RowHeightController : public QObject{
 public:
     RowHeightController(MaEditorWgt *ui);
 
-    int getRowScreenOffset(int rowIndex) const;
-    int getRowScreenOffsetByNumber(int rowNumber) const;
+    int getGlobalYPositionByMaRowIndex(int maRowIndex) const;
+    int getGlobalYPositionByMaRowIndex(int maRowIndex, const QList<int> &maRowIndexes) const;
 
-    int getRowScreenCenterByNumber(int rowNumber) const;
+    int getMaRowIndexByGlobalYPosition(int y) const;
+    int getViewRowIndexByGlobalYPosition(int y) const;
 
-    int getRowGlobalOffset(int rowIndex) const;
-    int getRowGlobalOffset(int rowIndex, const QList<int> &rowIndexes) const;
+    int getViewRowIndexByScreenYPosition(int y) const;
 
-    int getFirstVisibleRowGlobalOffset(bool countClipped) const;
-    int getFirstVisibleRowScreenOffset(bool countClipped) const;
+    int getGlobalYPositionOfTheFirstVisibleRow(bool countClipped) const;
+    int getScreenYPositionOfTheFirstVisibleRow(bool countClipped) const;
 
-    virtual int getRowHeight(int rowIndex) const = 0;
-    int getRowHeightByNumber(int rowNumber) const;
-    int getRowsHeight(const QList<int> &rowIndexes) const;
+    virtual int getRowHeightByMaIndex(int maRowIndex) const = 0;
+    int getRowHeightByViewRowIndex(int viewRowIndex) const;
+    int getSumOfRowHeightsByMaIndexes(const QList<int> &maRowIndexes) const;
 
-    U2Region getRowGlobalRange(int rowIndex) const;
-    U2Region getRowGlobalRange(int rowIndex, const QList<int> &rowIndexes) const;
-    U2Region getRowGlobalRangeByNumber(int rowNumber) const;
+    U2Region getGlobalYRegionByMaRowIndex(int maRowIndex) const;
+    U2Region getGlobalYRegionByMaRowIndex(int maRowIndex, const QList<int> &maRowIndexes) const;
+    U2Region getGlobalYRegionByViewRowIndex(int viewRowIndex) const;
 
-    U2Region getRowsGlobalRange(int startRowNumber, int count) const;
-    U2Region getRowsGlobalRange(const QList<int> &rowIndexes) const;
+    U2Region getGlobalYRegionByViewRowsRegion(const U2Region& viewRowsRegion) const;
+    U2Region getScreenYRegionByViewRowsRegion(const U2Region& viewRowsRegion) const;
 
-    U2Region getRowScreenRange(int rowIndex) const;
-    U2Region getRowScreenRange(int rowIndex, const QList<int> &rowIndexes, int screenYOrigin) const;
-    U2Region getRowScreenRange(int rowIndex, int screenYOrigin) const;
-    U2Region getRowScreenRangeByNumber(int rowNumber) const;
-    U2Region getRowScreenRangeByNumber(int rowNumber, int screenYOrigin) const;
+    U2Region getScreenYRegionByMaRowIndex(int maRowIndex) const;
 
-    U2Region getRowsScreenRangeByNumbers(const U2Region &rowsNumbers) const;
+    U2Region getScreenYRegionByMaRowIndex(int maRowIndex, int screenYOrigin) const;
 
+    U2Region getScreenYRegionByViewRowIndex(int viewRowIndex) const;
+
+    /* Returns sum of heights of the all view rows. */
     int getTotalAlignmentHeight() const;
-    int getSequenceHeight() const;
 
-    int globalYPositionToRowIndex(int y) const;
-    int globalYPositionToRowNumber(int y) const;
-    int screenYPositionToRowIndex(int y) const;
-    int screenYPositionToRowNumber(int y) const;
+    /* Returns height of the single row in the alignment. */
+    int getSingleRowHeight() const;
 
 protected:
+    U2Region mapGlobalToScreen(const U2Region& globalRegion) const;
+
     MaEditorWgt *ui;
 };
 

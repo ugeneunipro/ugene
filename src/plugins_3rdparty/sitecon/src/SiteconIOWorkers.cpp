@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -66,7 +66,7 @@ DataTypePtr const SiteconWorkerFactory::SITECON_MODEL_TYPE() {
     return dtr->getById(SITECON_MODEL_TYPE_ID);
 }
 
-const Descriptor SiteconWorkerFactory::SITECON_SLOT("sitecon-model", QObject::tr("Sitecon model"), "");
+const Descriptor SiteconWorkerFactory::SITECON_SLOT("sitecon-model", "Sitecon model", "");
 
 const Descriptor SiteconWorkerFactory::SITECON_CATEGORY() {return Descriptor("hsitecon", SiteconIO::tr("SITECON"), "");}
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -113,7 +113,7 @@ void MAFFTSupportTask::prepare(){
                          QDate::currentDate().toString("dd.MM.yyyy")+"_"+
                          QTime::currentTime().toString("hh.mm.ss.zzz")+"_"+
                          QString::number(QCoreApplication::applicationPid())+"/";
-    QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(MAFFT_TMP_DIR) + "/" + tmpDirName;
+    QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(MAFFTSupport::MAFFT_TMP_DIR) + "/" + tmpDirName;
     url= tmpDirPath + "tmp.fa";
     ioLog.details(tr("Saving data to temporary file '%1'").arg(url));
 
@@ -141,13 +141,13 @@ QList<Task*> MAFFTSupportTask::onSubTaskFinished(Task* subTask) {
     QList<Task*> res;
     if(subTask->hasError()) {
         if(subTask==loadTmpDocumentTask){
-            if(AppContext::getExternalToolRegistry()->getByName(ET_MAFFT)->isValid()){
+            if(AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->isValid()){
                 stateInfo.setError(tr("Can not open output file: ")+subTask->getError());
             }else{
                 stateInfo.setError(tr("Can not open output file: ")+subTask->getError()
                                    +tr(" May be %1 tool path '%2' not valid?")
-                                   .arg(AppContext::getExternalToolRegistry()->getByName(ET_MAFFT)->getName())
-                                   .arg(AppContext::getExternalToolRegistry()->getByName(ET_MAFFT)->getPath()));
+                                   .arg(AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->getName())
+                                   .arg(AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->getPath()));
             }
 
         }else{
@@ -173,7 +173,7 @@ QList<Task*> MAFFTSupportTask::onSubTaskFinished(Task* subTask) {
         arguments <<url;
         logParser = new MAFFTLogParser(inputMsa->getNumRows(), settings.maxNumberIterRefinement, outputUrl);
         connect(logParser, SIGNAL(si_progressUndefined()), SLOT(sl_progressUndefined()));
-        mAFFTTask = new ExternalToolRunTask(ET_MAFFT, arguments, logParser);
+        mAFFTTask = new ExternalToolRunTask(MAFFTSupport::ET_MAFFT_ID, arguments, logParser);
         setListenerForTask(mAFFTTask);
         mAFFTTask->setSubtaskProgressWeight(95);
         res.append(mAFFTTask);
@@ -181,12 +181,12 @@ QList<Task*> MAFFTSupportTask::onSubTaskFinished(Task* subTask) {
         assert(logParser);
         logParser->cleanup();
         if (!QFileInfo(outputUrl).exists()) {
-            if (AppContext::getExternalToolRegistry()->getByName(ET_MAFFT)->isValid()){
+            if (AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->isValid()){
                 stateInfo.setError(tr("Output file '%1' not found").arg(outputUrl));
             } else {
                 stateInfo.setError(tr("Output file '%3' not found. May be %1 tool path '%2' not valid?")
-                                   .arg(AppContext::getExternalToolRegistry()->getByName(ET_MAFFT)->getName())
-                                   .arg(AppContext::getExternalToolRegistry()->getByName(ET_MAFFT)->getPath())
+                                   .arg(AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->getName())
+                                   .arg(AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->getPath())
                                    .arg(outputUrl));
             }
             emit si_stateChanged();

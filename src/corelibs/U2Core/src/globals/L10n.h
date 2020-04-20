@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -77,28 +77,6 @@ public:
     static QString errorDocumentNotFound(const GUrl& url) { return tr("Document not found: %1").arg(url.getURLString());}
     static QString suffixBp() { return tr(" bp");}
 
-    static QString errorColorTextFieldStr() { return "rgb(255, 152, 142)"; }
-    static QString errorColorLabelStr() { return "rgb(166, 57, 46)"; }
-    static QString errorColorLabelHtmlStr() { return "#A6392E"; }   // the same as errorColorLabelStr()
-
-    static QString warningColorLabelHtmlStr() { return "#FF8B19"; }
-
-    static QColor infoHintColor() { return QColor("green"); }
-    static QString infoColorLabelHtmlStr() { return "#218F20"; }
-    static QString infoHintStyleSheet() { return QString("color: %1; font: bold").arg(infoHintColor().name()); }
-
-    static QColor successColor() { return QColor("green"); }
-    static QString successColorLabelHtmlStr() { return successColor().name(); }
-    static QString successColorLabelStr() { return QString("rgb(%1, %2, %3)").arg(successColor().red()).arg(successColor().green()).arg(successColor().blue()); }
-
-    static QString linkColorLabelStr() {
-#ifdef Q_OS_MAC
-        return "gray";
-#else
-        return "palette(shadow)";
-#endif
-    }
-
     static QString defaultStr() { return "default"; } // It is used in WD, do not translate this without testing
 
     static QString directStrandStr() { return tr("Direct"); }
@@ -107,6 +85,6 @@ public:
     static QString required() { return tr("Required"); }
 };
 
-}//ns
+} // namespace U2
 
 #endif

@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -37,9 +37,9 @@ public:
 
 protected:
     // BaseOneOneWorker
-    Task * processNextInputMessage();
-    Task * onInputEnded();
-    QList<Message> fetchResult(Task *task, U2OpStatus &os);
+    Task * processNextInputMessage() override;
+    Task * onInputEnded() override;
+    QList<Message> fetchResult(Task *task, U2OpStatus &os) override;
 
     virtual Task * createTask(const QList<Message> &messages) const = 0;
     virtual QVariantMap getResult(Task *task, U2OpStatus &os) const = 0;

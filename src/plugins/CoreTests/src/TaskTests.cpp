@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -226,6 +226,7 @@ void GTest_TaskAddSubtaskTest::init(U2::XMLTestFormat *tf, const QDomElement &el
         return;
     }
 }
+
 Task::ReportResult GTest_TaskAddSubtaskTest::report() {
     Task *task= getContext<Task>(this, taskContextName);
     if(task==NULL) {
@@ -240,7 +241,7 @@ Task::ReportResult GTest_TaskAddSubtaskTest::report() {
     }
     task->addSubTask(subtask);
 
-    if(!task->getSubtasks().contains(subtask)) {
+    if(!task->getPureSubtasks().contains(subtask)) {
         stateInfo.setError(QString("subtask not add"));
         return ReportResult_Finished;
     }

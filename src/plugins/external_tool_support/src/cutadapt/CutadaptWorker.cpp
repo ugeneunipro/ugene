@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -86,7 +86,7 @@ void CutAdaptFastqWorkerFactory::init() {
     U2DataPath* dataPath = NULL;
     U2DataPathRegistry* dpr =  AppContext::getDataPathRegistry();
     if (dpr){
-        U2DataPath* dp = dpr->getDataPathByName(ADAPTERS_DATA_NAME);
+        U2DataPath* dp = dpr->getDataPathByName(CutadaptSupport::ADAPTERS_DATA_NAME);
         if (dp && dp->isValid()){
             dataPath = dp;
         }
@@ -192,7 +192,7 @@ void CutAdaptFastqWorkerFactory::init() {
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     proto->setEditor(new DelegateEditor(delegates));
     proto->setPrompter(new CutAdaptFastqPrompter());
-    proto->addExternalTool(ET_CUTADAPT);
+    proto->addExternalTool(CutadaptSupport::ET_CUTADAPT_ID);
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_NGS_BASIC(), proto);
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
@@ -247,7 +247,7 @@ void CutAdaptFastqTask::prepareStep(){
             algoLog.error(tr("Can not copy the result file to: %1").arg(settings.outDir + settings.outName));
         }
     }else{
-        ExternalToolRunTask* etTask = getExternalToolTask(ET_CUTADAPT, new CutAdaptParser());
+        ExternalToolRunTask* etTask = getExternalToolTask(CutadaptSupport::ET_CUTADAPT_ID, new CutAdaptParser());
         CHECK(etTask != NULL, );
 
         addSubTask(etTask);

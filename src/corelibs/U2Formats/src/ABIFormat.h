@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,10 +37,6 @@ class U2FORMATS_EXPORT  ABIFormat : public DocumentFormat {
 public:
     ABIFormat(QObject* p);
 
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::ABIF;}
-
-    virtual const QString& getFormatName() const {return formatName;}
-
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
 protected:
@@ -52,7 +48,6 @@ protected:
 private:
     Document* parseABI(const U2DbiRef& dbiRef, SeekableBuf*, IOAdapter* io, const QVariantMap& fs, U2OpStatus& os);
     bool loadABIObjects(SeekableBuf* fp, DNASequence& seq, DNAChromatogram& cd);
-    QString formatName;
 };
 
 }//namespace

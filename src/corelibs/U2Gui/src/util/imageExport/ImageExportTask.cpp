@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,8 +56,11 @@ bool ImageExportTaskSettings::isPDFFormat() const {
     return (PS_FORMAT == format || PDF_FORMAT == format);
 }
 
-const QString ImageExportTask::WRONG_FORMAT_MESSAGE = QObject::tr("Format %1 is not supported by %2.");
-const QString ImageExportTask::EXPORT_FAIL_MESSAGE = QObject::tr("Failed to export image to %1.");
+ImageExportTask::ImageExportTask(const ImageExportTaskSettings &settings)
+    : Task(tr("Image export task"), TaskFlag_RunInMainThread), settings(settings) {
+    WRONG_FORMAT_MESSAGE = tr("Format %1 is not supported by %2.");
+    EXPORT_FAIL_MESSAGE = tr("Failed to export image to %1.");
+}
 
 Task::ReportResult ImageExportTask::report() {
     ioLog.info(tr("Done!"));

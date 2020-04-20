@@ -3,6 +3,7 @@
         <file>images/create_new_project.png</file>
         <file>images/about.png</file>
         <file>images/ugene_16.png</file>
+        <file>images/originals/ugene_128.png</file>
         <file>images/window_tile.png</file>
         <file>images/window_cascade.png</file>
         <file>images/window_prev.png</file>
@@ -56,9 +57,7 @@
         <file>images/welcome_page/welcome_btn_help.png</file>
         <file>images/welcome_page/welcome_btn_open.png</file>
         <file>images/welcome_page/welcome_btn_workflow.png</file>
-        <file>html/welcome_page.css</file>
-        <file>html/welcome_page.html</file>
-        <file>html/version_news.html</file>
-        <file>javascript/WelcomePage.js</file>
+        <file>html/version_news_en.html</file>
+        <file>html/version_news_ru.html</file>
     </qresource>
 </RCC>

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,16 +29,17 @@ namespace U2 {
 class Metaphlan2Support : public ExternalTool {
     Q_OBJECT
 public:
-    Metaphlan2Support(const QString& name, const QString& path = "");
+    Metaphlan2Support(const QString& id, const QString& name, const QString& path = "");
     void performAdditionalChecks(const QString& toolPath);
 
     static const QString TOOL_NAME;
+    static const QString TOOL_ID;
     static const QString UTIL_SCRIPT;
 
-    static const QString ET_BOWTIE_2_ALIGNER;
-    static const QString ET_PYTHON;
-    static const QString ET_PYTHON_BIO;
-    static const QString ET_PYTHON_NUMPY;
+    static const QString ET_BOWTIE_2_ALIGNER_ID;
+    static const QString ET_PYTHON_ID;
+    static const QString ET_PYTHON_BIO_ID;
+    static const QString ET_PYTHON_NUMPY_ID;
 };
 
 }//namespace

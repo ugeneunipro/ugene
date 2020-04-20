@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,7 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-const QString KrakenClassifyWorker::KRAKEN_DIR = "kraken";
+const QString KrakenClassifyWorker::KRAKEN_DIR = "Kraken";
 
 KrakenClassifyWorker::KrakenClassifyWorker(Actor *actor)
     : BaseWorker(actor, false),

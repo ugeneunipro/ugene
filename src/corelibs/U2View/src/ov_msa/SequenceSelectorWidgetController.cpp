@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include "SequenceSelectorWidgetController.h"
+#include "./view_rendering/MaEditorSelection.h"
 
 const int CURSOR_START_POSITION = 0;
 
@@ -132,7 +133,7 @@ void SequenceSelectorWidgetController::sl_addSeqClicked() {
         return;
     }
 
-    const MultipleSequenceAlignmentRow selectedRow = msa->getRowByLineNumber(msa->getCurrentSelection().y());
+    const MultipleSequenceAlignmentRow selectedRow = msa->getRowByLineNumber(msa->getSelection().y());
     setSequenceId(selectedRow->getRowId());
     emit si_selectionChanged();
 }

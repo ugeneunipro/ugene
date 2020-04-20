@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,8 +19,8 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_WORKERNAMEVALIDATOR_H_
-#define _U2_WORKERNAMEVALIDATOR_H_
+#ifndef _U2_WORKER_NAME_VALIDATOR_H_
+#define _U2_WORKER_NAME_VALIDATOR_H_
 
 #include <QValidator>
 
@@ -29,13 +29,14 @@ namespace U2 {
 /**
  * The class for validating worker names:
  * only English names.
+ * The class is deprecated. Use QRegularExpressionValidator with regexps from WorkflowEntityValidator class.
  */
-class WorkerNameValidator : public QValidator {
+class DeprecatedWorkerNameValidator : public QValidator {
 public:
-    WorkerNameValidator(QObject *parent = NULL);
-    State validate(QString &input, int &pos) const;
+    DeprecatedWorkerNameValidator(QObject *parent = nullptr);
+    State validate(QString &input, int &pos) const override;
 };
 
 } // U2
 
-#endif // _U2_WORKERNAMEVALIDATOR_H_
+#endif // _U2_WORKER_NAME_VALIDATOR_H_

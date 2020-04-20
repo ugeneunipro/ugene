@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,12 +19,11 @@
  * MA 02110-1301, USA.
  */
 
-#include <QDomDocument>
-#include <QPrinter>
-#include <QLabel>
 #include <QCheckBox>
 #include <QComboBox>
-#include <QVBoxLayout>
+#include <QDomDocument>
+#include <QLabel>
+#include <QPrinter>
 #include <QSvgGenerator>
 
 #include <U2Core/U2SafePoints.h>

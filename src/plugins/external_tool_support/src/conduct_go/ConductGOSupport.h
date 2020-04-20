@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,13 +26,13 @@
 
 namespace U2 {
 
-#define ET_GO_ANALYSIS "go_analysis"
-
 class ConductGOSupport : public ExternalTool {
     Q_OBJECT
 public:
-    ConductGOSupport(const QString &name);
+    ConductGOSupport(const QString& id, const QString &name);
 
+    static const QString ET_GO_ANALYSIS;
+    static const QString ET_GO_ANALYSIS_ID;
 private:
     void initialize();
 };

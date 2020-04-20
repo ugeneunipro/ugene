@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -262,10 +262,22 @@ void Tokenizer::tokenizeLine(const QString & l, QTextStream & s) {
     QString curToken;
     bool finishAtQuote = false;
     while(!stream.atEnd()) {
-        QChar ch; stream >> ch;
+        QChar ch;
+        stream >> ch;
         if( stream.atEnd() && finishAtQuote && ch != Constants::QUOTE.at(0) ) {
-            line = s.readLine();
-            stream.setString(&line);
+            do {
+                curToken.append(ch);
+                if (stream.atEnd() && finishAtQuote) {
+                    curToken.append('\n');
+                }
+                line = s.readLine();
+                if (line.isEmpty()) {
+                    ch = '\n';
+                } else {
+                    stream.setString(&line);
+                }
+            } while (line.isEmpty() && !s.atEnd());
+            stream >> ch;
         }
         if(ch.isSpace() || ch == Constants::SEMICOLON.at(0)) {
             if(!finishAtQuote) {

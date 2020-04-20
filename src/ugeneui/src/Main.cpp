@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -74,6 +74,7 @@
 #include <U2Core/DataBaseRegistry.h>
 #include <U2Core/DataPathRegistry.h>
 #include <U2Core/ExternalToolRegistry.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/LoadRemoteDocumentTask.h>
@@ -129,6 +130,7 @@
 #include <U2View/AssemblySettingsWidget.h>
 #include <U2View/ColorSchemaSettingsController.h>
 #include <U2View/DnaAssemblyUtils.h>
+#include <U2View/FindPatternMsaWidgetFactory.h>
 #include <U2View/FindPatternWidgetFactory.h>
 #include <U2View/McaGeneralTabFactory.h>
 #include <U2View/MaExportConsensusTabFactory.h>
@@ -305,6 +307,7 @@ static void initOptionsPanels() {
     MSAGeneralTabFactory *msaGeneralTabFactory = new MSAGeneralTabFactory();
     QString msaGeneralId = msaGeneralTabFactory->getOPGroupParameters().getGroupId();
     opWidgetFactoryRegistry->registerFactory(msaGeneralTabFactory);
+    opWidgetFactoryRegistry->registerFactory(new FindPatternMsaWidgetFactory());
 
     MSAHighlightingFactory *msaHighlightingFactory = new MSAHighlightingFactory();
     QString msaHighlightingId = msaHighlightingFactory->getOPGroupParameters().getGroupId();
@@ -420,6 +423,11 @@ int main(int argc, char **argv)
     //QApplication app(argc, argv);
     GApplication app(argc, argv);
 
+#ifdef Q_OS_LINUX
+    QPixmap pixmap(":/ugene/images/originals/ugene_128.png");
+    app.setWindowIcon(pixmap);
+#endif
+
     QMainWindow window;
     SplashScreen *splashScreen = new SplashScreen(&window);
     splashScreen->adjustSize();
@@ -467,6 +475,21 @@ int main(int argc, char **argv)
 
     UserAppsSettings* userAppSettings = AppContext::getAppSettings()->getUserAppsSettings();
 
+    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::DOWNLOAD_DIR)) {
+        userAppSettings->setDownloadDirPath(FileAndDirectoryUtils::getAbsolutePath(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::DOWNLOAD_DIR)));
+    }
+    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::CUSTOM_TOOLS_CONFIG_DIR)) {
+        userAppSettings->setCustomToolsConfigsDirPath(FileAndDirectoryUtils::getAbsolutePath(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::CUSTOM_TOOLS_CONFIG_DIR)));
+    }
+    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::TMP_DIR)) {
+        userAppSettings->setUserTemporaryDirPath(FileAndDirectoryUtils::getAbsolutePath(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::TMP_DIR)));
+    }
+    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::DEFAULT_DATA_DIR)) {
+        userAppSettings->setDefaultDataDirPath(FileAndDirectoryUtils::getAbsolutePath(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::DEFAULT_DATA_DIR)));
+    }
+    if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::FILE_STORAGE_DIR)) {
+        userAppSettings->setFileStorageDir(FileAndDirectoryUtils::getAbsolutePath(cmdLineRegistry->getParameterValue(CMDLineCoreOptions::FILE_STORAGE_DIR)));
+    }
 
     bool trOK = false;
     QTranslator translator;
@@ -833,11 +856,11 @@ int main(int argc, char **argv)
     coreLog.info( QObject::tr( "UGENE version: %1 %2-bit").arg( v.text ).arg( Version::appArchitecture ) );
     coreLog.info( QObject::tr( "UGENE distribution: %1").arg( v.distributionInfo ));
 
-    QObject::connect(ts, SIGNAL(si_noTasksInScheduler()), splashScreen, SLOT(sl_close()));
-    QObject::connect(ts, SIGNAL(si_noTasksInScheduler()), mw, SLOT(sl_show()));
+    QObject::connect(ts, SIGNAL(si_ugeneIsReadyToWork()), splashScreen, SLOT(sl_close()));
+    QObject::connect(ts, SIGNAL(si_ugeneIsReadyToWork()), mw, SLOT(sl_show()));
 
     WelcomePageMdiController *wpc = new WelcomePageMdiController();
-    QObject::connect(ts, SIGNAL(si_noTasksInScheduler()), wpc, SLOT(sl_showPage()));
+    QObject::connect(ts, SIGNAL(si_ugeneIsReadyToWork()), wpc, SLOT(sl_showPage()));
     QObject::connect(mw, SIGNAL(si_showWelcomePage()), wpc, SLOT(sl_showPage()));
     QObject::connect(pli, SIGNAL(si_recentListChanged()), wpc, SLOT(sl_onRecentChanged()));
 

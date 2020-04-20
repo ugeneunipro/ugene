@@ -38,7 +38,6 @@ HEADERS += src/app_settings/AppSettingsDialogController.h \
            src/task_view/TaskStatusBar.h \
            src/task_view/TaskViewController.h \
            src/update/UgeneUpdater.h \
-           src/welcome_page/WelcomePageJsAgent.h \
            src/welcome_page/WelcomePageMdi.h \
            src/welcome_page/WelcomePageMdiController.h \
            src/welcome_page/WelcomePageWidget.h
@@ -101,7 +100,6 @@ SOURCES += src/Main.cpp \
            src/task_view/TaskStatusBar.cpp \
            src/task_view/TaskViewController.cpp \
            src/update/UgeneUpdater.cpp \
-           src/welcome_page/WelcomePageJsAgent.cpp \
            src/welcome_page/WelcomePageMdi.cpp \
            src/welcome_page/WelcomePageMdiController.cpp \
            src/welcome_page/WelcomePageWidget.cpp

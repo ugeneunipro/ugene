@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,17 +19,16 @@
  * MA 02110-1301, USA.
  */
 
-#include "RepeatQuery.h"
-#include "FindRepeatsDialog.h"
-
+#include <U2Core/FailTask.h>
 #include <U2Core/L10n.h>
-#include <U2Core/DNASequenceObject.h>
 #include <U2Core/TaskSignalMapper.h>
-#include "U2Core/FailTask.h"
-
-#include <U2Lang/QDConstraint.h>
-#include <U2Lang/BaseTypes.h>
 #include <U2Designer/DelegateEditors.h>
+#include <U2Lang/BaseTypes.h>
+#include <U2Lang/QDConstraint.h>
+
+#include "FindRepeatsDialog.h"
+#include "RepeatQuery.h"
+#include "RepeatWorker.h"
 
 namespace U2 {
 
@@ -299,7 +298,7 @@ QDRepeatActorPrototype::QDRepeatActorPrototype() {
     Descriptor mld(MAX_LEN_ATTR, QDRepeatActor::tr("Max length"), QDRepeatActor::tr("Maximum length of repeats."));
     Descriptor tan(TANMEDS_ATTR, QDRepeatActor::tr("Exclude tandems"), QDRepeatActor::tr("Exclude tandems areas before find repeat task is run."));
 
-    FindRepeatsTaskSettings stngs = FindRepeatsDialog::defaultSettings();
+    FindRepeatsTaskSettings stngs = LocalWorkflow::RepeatWorkerFactory::defaultSettings();
 
     attributes << new Attribute(ld, BaseTypes::NUM_TYPE(), true, stngs.minLen);
     attributes << new Attribute(idd, BaseTypes::NUM_TYPE(), false, stngs.getIdentity());
@@ -312,16 +311,29 @@ QDRepeatActorPrototype::QDRepeatActorPrototype() {
 
     QMap<QString, PropertyDelegate*> delegates;
     {
-        QVariantMap m; m["minimum"] = 2; m["maximum"] = INT_MAX; m["suffix"] = L10N::suffixBp();
+        QVariantMap m;
+        m["minimum"] = 2;
+        m["maximum"] = INT_MAX;
+        m["suffix"] = L10N::suffixBp();
         delegates[LEN_ATTR] = new SpinBoxDelegate(m);
+    }
+    {
+        QVariantMap m;
+        m["minimum"] = 0;
+        m["maximum"] = INT_MAX;
+        m["suffix"] = L10N::suffixBp();
         delegates[MAX_LEN_ATTR] = new SpinBoxDelegate(m);
     }
     {
-        QVariantMap m; m["minimum"] = 50; m["maximum"] = 100; m["suffix"] = "%";
+        QVariantMap m;
+        m["minimum"] = 50;
+        m["maximum"] = 100;
+        m["suffix"] = "%";
         delegates[IDENTITY_ATTR] = new SpinBoxDelegate(m);
     }
     {
-        QVariantMap m; m["specialValueText"] = "Auto";
+        QVariantMap m;
+        m["specialValueText"] = "Auto";
         delegates[THREADS_ATTR] = new SpinBoxDelegate(m);
     }
     {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,7 +24,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ShowHideSubgroupWidget.h>
@@ -53,6 +52,8 @@ MSAGeneralTab::MSAGeneralTab(MSAEditor* _msa)
 
     initializeParameters();
     connectSignals();
+
+    copyButton->setEnabled(msa->getUI()->getCopyFormattedSelectionAction()->isEnabled());
 
     U2WidgetStateStorage::restoreWidgetState(savableTab);
 
@@ -103,7 +104,6 @@ void MSAGeneralTab::connectSignals() {
     //in
     connect(msa->getUI()->getSequenceArea(), SIGNAL(si_copyFormattedChanging(bool)),
             SLOT(sl_copyFormatStatusChanged(bool)));
-
 }
 
 void MSAGeneralTab::initializeParameters() {
@@ -131,15 +131,18 @@ void MSAGeneralTab::initializeParameters() {
     //RTF
     copyType->addItem(QIcon(), "Rich text (HTML)", "RTF");
 
-    QString currentCopyFormattedID = msa->getUI()->getSequenceArea()->getCopyFormatedAlgorithmId();
+    QString currentCopyFormattedID = msa->getUI()->getSequenceArea()->getCopyFormattedAlgorithmId();
     copyType->setCurrentIndex(copyType->findData(currentCopyFormattedID));
 
+    //in
+    connect(msa->getUI()->getSequenceArea(), SIGNAL(si_copyFormattedChanging(bool)),
+            SLOT(sl_copyFormatStatusChanged(bool)));
 }
 
 void MSAGeneralTab::updateState() {
     consensusModeWidget->updateState();
 
-    copyButton->setEnabled(!msa->getUI()->getSequenceArea()->getSelection().isNull());
+    copyButton->setEnabled(!msa->getUI()->getSequenceArea()->getSelection().isEmpty());
 }
 
 }   // namespace

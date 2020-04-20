@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -679,7 +679,9 @@ void MultiTablePackAlgorithmAdapter::migrate(MTASingleTableAdapter* newA, const 
                 insertIds.reset(false);
                 insertIds.bindInt64(1, d.readId);
                 insertIds.bindInt32(2, d.newProw);
+#ifdef _DEBUG
                 assert(newProwRegion.contains(d.newProw));
+#endif
                 insertIds.execute();
                 if (os.hasError()) {
                     break;

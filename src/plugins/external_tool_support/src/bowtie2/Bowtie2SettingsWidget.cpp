@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,7 +50,7 @@ Bowtie2SettingsWidget::Bowtie2SettingsWidget(QWidget *parent):
     indexSuffixes << Bowtie2Task::indexSuffixes;
     indexSuffixes << Bowtie2Task::largeIndexSuffixes;
 
-    requiredExtToolNames << ET_BOWTIE2_ALIGN << ET_BOWTIE2_BUILD;
+    requiredExtToolIds << Bowtie2Support::ET_BOWTIE2_ALIGN_ID << Bowtie2Support::ET_BOWTIE2_BUILD_ID;
 }
 
 QMap<QString,QVariant> Bowtie2SettingsWidget::getDnaAssemblyCustomSettings() const {

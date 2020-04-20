@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ ImportPrimersMultiTask::ImportPrimersMultiTask(const QList<Task *> &importSubtas
 
 QString ImportPrimersMultiTask::generateReport() const {
     QString report = "<hr><br>";
-    foreach (Task *subtask, getSubtasks()) {
+    foreach (const QPointer<Task> &subtask, getSubtasks()) {
         report += subtask->generateReport() + "<br>";
     }
     return report;

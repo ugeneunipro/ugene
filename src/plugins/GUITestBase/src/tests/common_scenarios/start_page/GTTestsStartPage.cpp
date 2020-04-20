@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,6 +28,7 @@
 #include "primitives/GTMenu.h"
 #include <drivers/GTKeyboardDriver.h>
 #include <primitives/GTWebView.h>
+#include <primitives/GTWidget.h>
 
 #include <base_dialogs/DefaultDialogFiller.h>
 #include "primitives/PopupChooser.h"
@@ -46,7 +47,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001){
 //    Press "Open file(s)" button on start page
     GTLogTracer l;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
-    GTUtilsStartPage::clickButton(os, GTUtilsStartPage::OpenFile);
+    GTWidget::click(os, GTWidget::findWidget(os, "openFilesButton"));
 //    Expected state: File dialog is opened.
     GTGlobals::sleep(500);
     bool hasWindowsWarning = l.checkMessage("ShellExecute '#' failed");
@@ -59,7 +60,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002){
 //    Start UGENE
 //    Press "Create workflow button" button on start page
     GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
-    GTUtilsStartPage::clickButton(os, GTUtilsStartPage::CreateWorkflow);
+    GTWidget::click(os, GTWidget::findWidget(os, "createWorkflowButton"));
     GTGlobals::sleep(500);
 //    Expected state: WD opened.
     GTUtilsMdi::waitWindowOpened(os, "Workflow Designer - New workflow", 20000);
@@ -69,8 +70,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003){
 //    Start UGENE
 //    Press "Create sequence" button
     GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "CreateDocumentFromTextDialog",QDialogButtonBox::Cancel));
-    GTUtilsStartPage::clickButton(os, GTUtilsStartPage::CreateSequence);
-//    Expected: Create document from text dialog appeared
+    GTWidget::click(os, GTWidget::findWidget(os, "createSequenceButton"));
+    //    Expected: Create document from text dialog appeared
     GTGlobals::sleep(500);
 }
 

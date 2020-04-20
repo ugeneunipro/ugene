@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,24 +50,11 @@ MWMDIManager * WelcomePageMdiController::getMdiManager() {
     return result;
 }
 
-void WelcomePageMdiController::sl_onPageLoaded() {
-    CHECK(NULL != welcomePage, );
-
-    MWMDIManager *mdiManager = getMdiManager();
-    CHECK(NULL != mdiManager, );
-
-    if (!mdiManager->getWindows().contains(welcomePage)) {
-        sl_onRecentChanged();
-        mdiManager->addMDIWindow(welcomePage);
-    }
-}
-
 void WelcomePageMdiController::sl_showPage() {
-    disconnect(AppContext::getTaskScheduler(), SIGNAL(si_noTasksInScheduler()), this, SLOT(sl_showPage()));
     MWMDIManager *mdiManager = getMdiManager();
-    CHECK(NULL != mdiManager, );
+    CHECK(mdiManager != nullptr, );
 
-    if (NULL != welcomePage) {
+    if (welcomePage != nullptr) {
         if (mdiManager->getWindows().contains(welcomePage)) {
             mdiManager->activateWindow(welcomePage);
         } // else: it means that the page has already been called but it is loading now
@@ -75,9 +62,8 @@ void WelcomePageMdiController::sl_showPage() {
     }
 
     welcomePage = new WelcomePageMdi(tr("Start Page"), this);
-    if (welcomePage->isLoaded()) { // it is for the case of synchronous page loading
-        sl_onPageLoaded();
-    }
+    mdiManager->addMDIWindow(welcomePage);
+    sl_onRecentChanged();
 }
 
 void WelcomePageMdiController::sl_onMdiClose(MWMDIWindow *mdi) {
@@ -86,7 +72,7 @@ void WelcomePageMdiController::sl_onMdiClose(MWMDIWindow *mdi) {
 }
 
 void WelcomePageMdiController::sl_onRecentChanged() {
-    CHECK(NULL != welcomePage, );
+    CHECK(welcomePage != nullptr, );
     QStringList recentProjects = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME, QStringList(), true).toStringList();
     QStringList recentFiles = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_ITEMS_SETTINGS_NAME, QStringList(), true).toStringList();
     welcomePage->updateRecent(recentProjects, recentFiles);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,23 +23,32 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QSpinBox>
+#include <QTextEdit>
 #include <QToolButton>
 #include <QTreeWidget>
 
 #include <drivers/GTKeyboardDriver.h>
+
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
+#include <primitives/GTSpinBox.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSlider.h>
+#include <primitives/GTTextEdit.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
+
+#include <system/GTClipboard.h>
+
 #include <utils/GTThread.h>
 
 #include <U2Core/U2IdTypes.h>
 
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsOptionPanelMSA.h"
+#include "GTUtilsTaskTreeView.h"
 #include "api/GTBaseCompleter.h"
 
 namespace U2 {
@@ -53,6 +62,7 @@ QMap<GTUtilsOptionPanelMsa::Tabs, QString> GTUtilsOptionPanelMsa::initNames() {
     result.insert(TreeSettings, "OP_MSA_ADD_TREE_WIDGET");
     result.insert(ExportConsensus, "OP_EXPORT_CONSENSUS");
     result.insert(Statistics, "OP_SEQ_STATISTICS_WIDGET");
+    result.insert(Search, "OP_MSA_FIND_PATTERN_WIDGET");
     return result;
 }
 
@@ -64,6 +74,7 @@ QMap<GTUtilsOptionPanelMsa::Tabs, QString> GTUtilsOptionPanelMsa::initInnerWidge
     result.insert(TreeSettings, "AddTreeWidget");
     result.insert(ExportConsensus, "ExportConsensusWidget");
     result.insert(Statistics, "SequenceStatisticsOptionsPanelTab");
+    result.insert(Search, "FindPatternMsaWidget");
     return result;
 }
 const QMap<GTUtilsOptionPanelMsa::Tabs, QString> GTUtilsOptionPanelMsa::tabsNames = initNames();
@@ -122,9 +133,7 @@ void GTUtilsOptionPanelMsa::addReference(HI::GUITestOpStatus &os, QString seqNam
         GTWidget::click(os, sequenceLineEdit);
         GTKeyboardDriver::keyClick(seqName.at(0).toLatin1());
         GTGlobals::sleep(200);
-        QTreeWidget* completer = sequenceLineEdit->findChild<QTreeWidget*>();
-        GT_CHECK(completer != NULL, "auto completer widget not found");
-        GTBaseCompleter::click(os, completer, seqName);
+        GTBaseCompleter::click(os, sequenceLineEdit, seqName);
         break;
     }
     GTThread::waitForMainThread();
@@ -168,10 +177,59 @@ int GTUtilsOptionPanelMsa::getHeight(HI::GUITestOpStatus &os){
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "copySelection"
+void GTUtilsOptionPanelMsa::copySelection(HI::GUITestOpStatus &os, const CopyFormat format) {
+    openTab(os, General);
+    QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
+    GT_CHECK_RESULT(copyType != nullptr, "copyType not found", );
+
+    QString stringFirmat;
+    switch (format) {
+    case CopyFormat::Fasta:
+        stringFirmat = "Fasta";
+        break;
+    case CopyFormat::CLUSTALW:
+        stringFirmat = "CLUSTALW";
+        break;
+    case CopyFormat::Stocholm:
+        stringFirmat = "Stocholm";
+        break;
+    case CopyFormat::MSF:
+        stringFirmat = "MSF";
+        break;
+    case CopyFormat::NEXUS:
+        stringFirmat = "NEXUS";
+        break;
+    case CopyFormat::Mega:
+        stringFirmat = "Mega";
+        break;
+    case CopyFormat::PHYLIP_Interleaved:
+        stringFirmat = "PHYLIP Interleaved";
+        break;
+    case CopyFormat::PHYLIP_Sequential:
+        stringFirmat = "PHYLIP Sequential";
+        break;
+    case CopyFormat::Rich_text:
+        stringFirmat = "Rich text (HTML)";
+        break;
+
+    default:
+        GT_CHECK_RESULT(false, "Unexpected format", );
+        break;
+    }
+    GTComboBox::setIndexWithText(os, copyType, stringFirmat);
+
+    QToolButton *copyButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "copyButton"));
+    GT_CHECK_RESULT(copyButton != nullptr, "copyType not found", );
+
+    GTWidget::click(os, copyButton);
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "setColorScheme"
-void GTUtilsOptionPanelMsa::setColorScheme(HI::GUITestOpStatus &os, const QString &colorSchemeName) {
+void GTUtilsOptionPanelMsa::setColorScheme(HI::GUITestOpStatus &os, const QString &colorSchemeName, GTGlobals::UseMethod method) {
     openTab(os, Highlighting);
-    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "colorScheme"), colorSchemeName);
+    GTComboBox::setIndexWithText(os, GTWidget::findExactWidget<QComboBox *>(os, "colorScheme"), colorSchemeName, true, method);
 }
 #undef GT_METHOD_NAME
 
@@ -228,9 +286,7 @@ void GTUtilsOptionPanelMsa::addSeqToPA(HI::GUITestOpStatus &os, QString seqName,
         GTWidget::click(os, sequenceLineEdit);
         GTKeyboardDriver::keyClick( seqName.at(0).toLatin1());
         GTGlobals::sleep(200);
-        QTreeWidget* completer = sequenceLineEdit->findChild<QTreeWidget*>();
-        GT_CHECK(completer != NULL, "auto completer widget not found");
-        GTBaseCompleter::click(os, completer, seqName);
+        GTBaseCompleter::click(os, sequenceLineEdit, seqName);
         break;
     }
 }
@@ -353,6 +409,91 @@ void GTUtilsOptionPanelMsa::setExportConsensusOutputFormat(GUITestOpStatus &os, 
 QString GTUtilsOptionPanelMsa::getExportConsensusOutputFormat(GUITestOpStatus &os) {
     return GTComboBox::getCurrentText(os, "formatCb");
 }
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "enterPattern"
+void GTUtilsOptionPanelMsa::enterPattern(HI::GUITestOpStatus &os, QString pattern, bool useCopyPaste /*= false*/) {
+    QTextEdit *patternEdit = qobject_cast<QTextEdit *>(GTWidget::findWidget(os, "textPattern"));
+    GTWidget::click(os, patternEdit);
+
+    GTTextEdit::clear(os, patternEdit);
+    if (useCopyPaste) {
+        GTClipboard::setText(os, pattern);
+        GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    } else {
+        GTTextEdit::setText(os, patternEdit, pattern);
+    }
+
+    GTGlobals::sleep(3000);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getPattern"
+QString GTUtilsOptionPanelMsa::getPattern(GUITestOpStatus &os) {
+    QTextEdit *patternEdit = GTWidget::findExactWidget<QTextEdit *>(os, "textPattern");
+    GT_CHECK_RESULT(nullptr != patternEdit, "textPattern widget is nullptr", "");
+    return patternEdit->toPlainText();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setAlgorithm"
+void GTUtilsOptionPanelMsa::setAlgorithm(HI::GUITestOpStatus &os, QString algorithm) {
+    QComboBox *algoBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxAlgorithm"));
+    GT_CHECK(algoBox != NULL, "algoBox is NULL");
+
+    if (!algoBox->isVisible()) {
+        GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
+    }
+    GTComboBox::setIndexWithText(os, algoBox, algorithm);
+    GTGlobals::sleep(2500);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setMatchPercentage"
+void GTUtilsOptionPanelMsa::setMatchPercentage(HI::GUITestOpStatus &os, int percentage) {
+    QSpinBox *spinMatchBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "spinBoxMatch"));
+
+    GTSpinBox::setValue(os, spinMatchBox, percentage, GTGlobals::UseKeyBoard);
+    GTGlobals::sleep(2500);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "setCheckedRemoveOverlappedResults"
+void GTUtilsOptionPanelMsa::setCheckedRemoveOverlappedResults(HI::GUITestOpStatus &os, bool setChecked) {
+    QCheckBox *overlapsBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "removeOverlapsBox"));
+    GT_CHECK(overlapsBox != NULL, "overlapsBox is NULL");
+
+    if (!overlapsBox->isVisible()) {
+        GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Other settings"));
+    }
+    GTCheckBox::setChecked(os, "removeOverlapsBox", setChecked);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkResultsText"
+bool GTUtilsOptionPanelMsa::checkResultsText(HI::GUITestOpStatus &os, QString expectedText) {
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QLabel *label = qobject_cast<QLabel *>(GTWidget::findWidget(os, "resultLabel"));
+    return label->text() == expectedText;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickNext"
+
+void GTUtilsOptionPanelMsa::clickNext(HI::GUITestOpStatus &os) {
+    QPushButton *next = qobject_cast<QPushButton *>(GTWidget::findWidget(os, "nextPushButton"));
+    GTWidget::click(os, next);
+}
+
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickPrev"
+
+void GTUtilsOptionPanelMsa::clickPrev(HI::GUITestOpStatus &os) {
+    QPushButton *prev = qobject_cast<QPushButton *>(GTWidget::findWidget(os, "prevPushButton"));
+    GTWidget::click(os, prev);
+}
+
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSeqLineEdit"

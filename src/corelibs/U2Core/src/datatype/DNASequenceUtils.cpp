@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -98,8 +98,18 @@ QByteArray DNASequenceUtils::reverse(const QByteArray &sequence) {
     return result;
 }
 
-QByteArray DNASequenceUtils::complement(const QByteArray &sequence) {
-    const DNAAlphabet *alphabet = U2AlphabetUtils::findBestAlphabet(sequence.data(), sequence.length());
+DNASequence DNASequenceUtils::reverse(const DNASequence& dnaSequence) {
+    DNASequence newDnaSequence(dnaSequence);
+    newDnaSequence.seq = DNASequenceUtils::reverse(dnaSequence.seq);
+    newDnaSequence.quality = DNAQuality(DNASequenceUtils::reverse(dnaSequence.quality.qualCodes), dnaSequence.quality.type);
+
+    return newDnaSequence;
+}
+
+QByteArray DNASequenceUtils::complement(const QByteArray &sequence, const DNAAlphabet *alphabet) {
+    if (nullptr == alphabet) {
+        alphabet = U2AlphabetUtils::findBestAlphabet(sequence.data(), sequence.length());
+    }
     SAFE_POINT(NULL != alphabet, L10N::nullPointerError("DNA Alphabet"), "");
 
     DNATranslation *translator = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(alphabet);
@@ -110,8 +120,19 @@ QByteArray DNASequenceUtils::complement(const QByteArray &sequence) {
     return result;
 }
 
-QByteArray DNASequenceUtils::reverseComplement(const QByteArray &sequence) {
-    return reverse(complement(sequence));
+DNASequence DNASequenceUtils::complement(const DNASequence& dnaSequence) {
+    DNASequence newDnaSequence(dnaSequence);
+    newDnaSequence.seq = DNASequenceUtils::complement(dnaSequence.seq, dnaSequence.alphabet);
+
+    return newDnaSequence;
+}
+
+QByteArray DNASequenceUtils::reverseComplement(const QByteArray &sequence, const DNAAlphabet *alphabet) {
+    return reverse(complement(sequence, alphabet));
+}
+
+DNASequence DNASequenceUtils::reverseComplement(const DNASequence& dnaSequence) {
+    return reverse(complement(dnaSequence));
 }
 
 void DNASequenceUtils::crop(DNASequence &sequence, int startPos, int length) {

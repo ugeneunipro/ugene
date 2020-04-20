@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -157,8 +157,8 @@ void VcfConsensusWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attrs);
     proto->setPrompter(new VcfConsensusPrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->addExternalTool(ET_VCF_CONSENSUS);
-    proto->addExternalTool(ET_TABIX);
+    proto->addExternalTool(VcfConsensusSupport::ET_VCF_CONSENSUS_ID);
+    proto->addExternalTool(TabixSupport::ET_TABIX_ID);
 
 
     SAFE_POINT(WorkflowEnv::getProtoRegistry() != NULL, "Workflow proto registry is NULL", );

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -113,7 +113,7 @@ void ClustalOSupportTask::prepare(){
                          QDate::currentDate().toString("dd.MM.yyyy")+"_"+
                          QTime::currentTime().toString("hh.mm.ss.zzz")+"_"+
                          QString::number(QCoreApplication::applicationPid())+"/";
-    QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(CLUSTALO_TMP_DIR) + "/" + tmpDirName;
+    QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(ClustalOSupport::CLUSTALO_TMP_DIR) + "/" + tmpDirName;
     url= tmpDirPath + "tmp.aln";
     ioLog.details(tr("Saving data to temporary file '%1'").arg(url));
 
@@ -168,19 +168,19 @@ QList<Task*> ClustalOSupportTask::onSubTaskFinished(Task* subTask) {
         }
         arguments <<"--threads="+QString::number(settings.numberOfProcessors);
 
-        clustalOTask = new ExternalToolRunTask(ET_CLUSTALO, arguments, new ClustalOLogParser());
+        clustalOTask = new ExternalToolRunTask(ClustalOSupport::ET_CLUSTALO_ID, arguments, new ClustalOLogParser());
         setListenerForTask(clustalOTask);
         clustalOTask->setSubtaskProgressWeight(95);
         res.append(clustalOTask);
     }
     else if(subTask == clustalOTask){
         if(!QFileInfo(outputUrl).exists()){
-            if(AppContext::getExternalToolRegistry()->getByName(ET_CLUSTALO)->isValid()){
+            if(AppContext::getExternalToolRegistry()->getById(ClustalOSupport::ET_CLUSTALO_ID)->isValid()){
                 stateInfo.setError(tr("Output file %1 not found").arg(outputUrl));
             }else{
                 stateInfo.setError(tr("Output file %3 not found. May be %1 tool path '%2' not valid?")
-                                   .arg(AppContext::getExternalToolRegistry()->getByName(ET_CLUSTALO)->getName())
-                                   .arg(AppContext::getExternalToolRegistry()->getByName(ET_CLUSTALO)->getPath())
+                                   .arg(AppContext::getExternalToolRegistry()->getById(ClustalOSupport::ET_CLUSTALO_ID)->getName())
+                                   .arg(AppContext::getExternalToolRegistry()->getById(ClustalOSupport::ET_CLUSTALO_ID)->getPath())
                                    .arg(outputUrl));
             }
             emit si_stateChanged();

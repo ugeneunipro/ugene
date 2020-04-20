@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -71,10 +71,6 @@ const QString FindWorkerFactory::ACTOR_ID("search");
 
 const QString PATTERN_DELIMITER(";");
 
-static const Descriptor pd(PATTERN_ATTR, QObject::tr("Pattern(s)"), QObject::tr("Semicolon-separated list of patterns to search for."));
-
-static const Descriptor pf(PATTERN_FILE_ATTR, QObject::tr("Pattern file"), QObject::tr("Load pattern from file in any sequence format or in newline-delimited format."));
-
 /************************************************************************/
 /* FindPatternsValidator */
 /************************************************************************/
@@ -84,7 +80,7 @@ public:
         bool hasPattern = isPatternSet(cfg) || isPatternFileSet(cfg) || isPatternSlotBinded(cfg);
         if (!hasPattern) {
             notificationList << WorkflowNotification(QObject::tr("Patterns are not set. Set the '%1' or '%2' parameter or bind the input text slot")
-                .arg(pd.getDisplayName()).arg(pf.getDisplayName()));
+                .arg(FindWorker::tr("Pattern(s)")).arg(FindWorker::tr("Pattern file")));
         }
         return hasPattern;
     }
@@ -173,6 +169,14 @@ void FindWorkerFactory::init() {
             FindWorker::tr("Qualifier name for pattern name"),
             FindWorker::tr("Name of qualifier in result annotations which is containing "
             "a pattern name."));
+
+        Descriptor pd(PATTERN_ATTR,
+                      FindWorker::tr("Pattern(s)"),
+                      FindWorker::tr("Semicolon-separated list of patterns to search for."));
+
+        Descriptor pf(PATTERN_FILE_ATTR,
+                      FindWorker::tr("Pattern file"),
+                      FindWorker::tr("Load pattern from file in any sequence format or in newline-delimited format."));
 
         a << new Attribute(nd, BaseTypes::STRING_TYPE(), true, "misc_feature");
         a << new Attribute(pd, BaseTypes::STRING_TYPE(), false);
@@ -547,8 +551,8 @@ void FindAllRegionsTask::prepare() {
 
 QList<FindAlgorithmResult> FindAllRegionsTask::getResult() {
     QList<FindAlgorithmResult> lst;
-    foreach(Task* t, getSubtasks()) {
-        FindAlgorithmTask* ft = qobject_cast<FindAlgorithmTask*>(t);
+    foreach(const QPointer<Task> &t, getSubtasks()) {
+        FindAlgorithmTask* ft = qobject_cast<FindAlgorithmTask*>(t.data());
         lst += ft->popResults();
     }
     return lst;

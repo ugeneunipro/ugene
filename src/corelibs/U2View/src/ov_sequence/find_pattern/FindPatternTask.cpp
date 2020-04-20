@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -162,7 +162,7 @@ void FindPatternListTask::prepare() {
             continue;
         }
         FindAlgorithmTaskSettings subTaskSettings = settings;
-        subTaskSettings.pattern = pattern.second.toLocal8Bit().toUpper();
+        subTaskSettings.pattern = pattern.second.toUtf8();
         subTaskSettings.maxErr = getMaxError( subTaskSettings.pattern );
         subTaskSettings.name = pattern.first;
         subTaskSettings.countTask = false;

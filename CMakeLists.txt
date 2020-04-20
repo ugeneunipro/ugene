@@ -10,10 +10,9 @@ project(ugene)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(UGENE_VERSION 1.32.0-dev)
-set(UGENE_VER_MAJOR 1)
-set(UGENE_VER_MINOR 32)
-set(UGENE_VER_PATCH 0)
+set(UGENE_VERSION 33.0-dev)
+set(UGENE_VER_MAJOR 33)
+set(UGENE_VER_MINOR 0)
 
 set(UGENE_MIN_VERSION_SQLITE 1.25.0)
 set(UGENE_MIN_VERSION_MYSQL 1.25.0)
@@ -22,7 +21,6 @@ add_definitions(
         -DUGENE_VERSION=${UGENE_VERSION}
         -DUGENE_VER_MAJOR=${UGENE_VER_MAJOR}
         -DUGENE_VER_MINOR=${UGENE_VER_MINOR}
-        -DUGENE_VER_PATCH=${UGENE_VER_PATCH}
 
         -DUGENE_USE_BUNDLED_ZLIB
         -DUGENE_USE_BUNDLED_SQLITE
@@ -30,6 +28,14 @@ add_definitions(
 
         -DQT_FATAL_ASSERT
 )
+
+set (CMAKE_CXX_STANDARD 11)
+
+# Set a default build type for single-configuration
+# CMake generators if no build type is set.
+if(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif(NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
@@ -59,7 +65,6 @@ add_subdirectory(src/ugenecl)
 add_subdirectory(src/plugins/annotator)
 add_subdirectory(src/plugins/api_tests)
 add_subdirectory(src/plugins/biostruct3d_view)
-add_subdirectory(src/plugins/browser_support)
 add_subdirectory(src/plugins/chroma_view)
 add_subdirectory(src/plugins/circular_view)
 add_subdirectory(src/plugins/CoreTests)
@@ -72,7 +77,7 @@ add_subdirectory(src/plugins/dotplot)
 add_subdirectory(src/plugins/enzymes)
 add_subdirectory(src/plugins/external_tool_support)
 add_subdirectory(src/plugins/genome_aligner)
-# never tried: add_subdirectory(src/plugins/GUITestBase)
+add_subdirectory(src/plugins/GUITestBase)
 add_subdirectory(src/plugins/linkdata_support)
 add_subdirectory(src/plugins/orf_marker)
 add_subdirectory(src/plugins/pcr)

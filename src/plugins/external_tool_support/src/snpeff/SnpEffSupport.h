@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,8 +24,6 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define ET_SNPEFF "SnpEff"
-
 namespace U2 {
 
 class SnpEffDatabaseListModel;
@@ -33,12 +31,13 @@ class SnpEffDatabaseListModel;
 class SnpEffSupport : public ExternalTool {
     Q_OBJECT
 public:
-    SnpEffSupport(const QString& name, const QString& path = "");
+    SnpEffSupport(const QString& id, const QString& name, const QString& path = "");
 
-    const QStringList getToolRunnerAdditionalOptions();
+    QStringList getToolRunnerAdditionalOptions() const;
 
     static SnpEffDatabaseListModel* databaseModel;
-
+    static const QString ET_SNPEFF;
+    static const QString ET_SNPEFF_ID;
 private slots:
     void sl_validationStatusChanged(bool isValid);
     void sl_databaseListIsReady();

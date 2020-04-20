@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,10 +56,9 @@ void ADVGlobalAction::updateState() {
 }
 
 
-QString ADVSelectionUtils::getSequenceIdsFromSelection(const QList<AnnotationSelectionData> &selection, bool localBase) {
+QString ADVSelectionUtils::getSequenceIdsFromSelection(const QList<Annotation*> &selection, bool localBase) {
     QStringList genbankID ;
-    foreach (const AnnotationSelectionData &sel, selection) {
-        const Annotation *ann = sel.annotation;
+    foreach (const Annotation* ann, selection) {
         QString tmp = ann->findFirstQualifierValue("id");
         if (!tmp.isEmpty()) {
             if (!localBase) {

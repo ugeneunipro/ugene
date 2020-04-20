@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -122,7 +122,6 @@ class U2LANG_EXPORT DomainFactory : public IdRegistry<DomainFactory>, public Des
 public:
     DomainFactory(const Descriptor& d) : Descriptor(d) {}
     DomainFactory(const QString& id) : Descriptor(id) {}
-    DomainFactory(const char* id) : Descriptor(QString(id)) {}
     virtual ~DomainFactory(){}
 
     // computational tasks domain

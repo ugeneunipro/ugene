@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -155,9 +155,13 @@ namespace {
 void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const ConvertOption &options, U2OpStatus &os ) {
     const QByteArray samFileName = samUrl.getURLString().toLocal8Bit();
     const QByteArray bamFileName = bamUrl.getURLString().toLocal8Bit();
+    const char* samPath = samUrl.getURLStringAnsi();
+    const char* bamPath = bamUrl.getURLStringAnsi();
 
     QByteArray sourceName = (options.samToBam)? samFileName : bamFileName;
     QByteArray targetName = (options.samToBam)? bamFileName : samFileName;
+    const char* source_path = (options.samToBam) ? samPath : bamPath;
+    const char* target_path = (options.samToBam) ? bamPath : samPath;
 
     samfile_t *in = NULL;
     samfile_t *out = NULL;
@@ -171,7 +175,7 @@ void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const C
             SAMTOOL_CHECK(NULL != aux, faiError(options.referenceUrl.toLocal8Bit()), );
         }
 
-        in = samopen(sourceName.constData(), readMode, aux);
+        in = samopen(source_path, readMode, aux);
         SAMTOOL_CHECK(NULL != in, openFileError(sourceName), );
         SAMTOOL_CHECK(NULL != in->header, headerError(sourceName), );
         if (options.samToBam && (0 == in->header->n_targets)) {
@@ -184,7 +188,7 @@ void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const C
         }
 
         QByteArray writeMode = ( options.samToBam ) ? "wb" : "wh";
-        out = samopen(targetName.constData(), writeMode, in->header);
+        out = samopen(target_path, writeMode, in->header);
         SAMTOOL_CHECK(NULL != out, openFileError(targetName), );
     }
     // convert files
@@ -235,23 +239,23 @@ static bool isSorted(const QString &headerText) {
 }
 
 bool BAMUtils::isSortedBam(const GUrl &bamUrl, U2OpStatus &os) {
-    const QByteArray &bamFileName = bamUrl.getURLString().toLocal8Bit();
+    const char* path = bamUrl.getURLStringAnsi();
 
     bamFile bamHandler = NULL;
     bam_header_t *header = NULL;
     QString error;
     bool result = false;
 
-    bamHandler = bam_open(bamFileName.constData(), "r");
+    bamHandler = bam_open(path, "r");
     if (NULL != bamHandler) {
         header = bam_header_read(bamHandler);
         if (NULL != header) {
             result = isSorted(header->text);
         } else {
-            error = QString("Can't read header from file '%1'").arg(bamFileName.constData());
+            error = QString("Can't read header from file '%1'").arg(bamUrl.getURLString());
         }
     } else {
-        error = QString("Can't open file '%1'").arg(bamFileName.constData());
+        error = QString("Can't open file '%1'").arg(bamUrl.getURLString());
     }
 
     // deallocate resources
@@ -400,9 +404,7 @@ GUrl BAMUtils::rmdupBam(const QString &bamUrl, const QString &rmdupBamTargetUrl,
 }
 
 bool BAMUtils::hasValidBamIndex(const GUrl &bamUrl) {
-    const QByteArray bamFileName = bamUrl.getURLString().toLocal8Bit();
-
-    bam_index_t *index = bam_index_load(bamFileName.constData());
+    bam_index_t *index = bam_index_load(bamUrl.getURLStringAnsi());
 
     if (NULL == index) {
         return false;
@@ -450,7 +452,7 @@ void BAMUtils::createBamIndex(const GUrl &bamUrl, U2OpStatus &os) {
 
     coreLog.details(BAMUtils::tr("Build index for bam file: \"%1\"").arg(QString::fromLocal8Bit(bamFileName)));
 
-    int error = bam_index_build(bamFileName.constData());
+    int error = bam_index_build(bamUrl.getURLStringAnsi());
     if (-1 == error) {
         os.setError("Can't build the index");
     }
@@ -601,6 +603,7 @@ void BAMUtils::writeObjects(const QList<GObject*> &objects, const GUrl &urlStr, 
 
     QByteArray url = urlStr.getURLString().toLocal8Bit();
     CHECK_EXT(!url.isEmpty(), os.setError("Empty file url"), );
+    const char* urlPath = urlStr.getURLStringAnsi();
 
     QByteArray openMode("w");
     if (BaseDocumentFormats::BAM == formatId) {
@@ -619,9 +622,9 @@ void BAMUtils::writeObjects(const QList<GObject*> &objects, const GUrl &urlStr, 
         return;
     }
 
-    samfile_t *out = samopen(url.constData(), openMode.constData(), header);
+    samfile_t *out = samopen(urlPath, openMode.constData(), header);
     bam_header_destroy(header);
-    CHECK_EXT(NULL != out, os.setError(QString("Can not open file for writing: %1").arg(url.constData())), );
+    CHECK_EXT(NULL != out, os.setError(QString("Can not open file for writing: %1").arg(urlPath)), );
 
     writeObjectsWithSamtools(out, objects, os, desiredRegion);
     samclose(out);

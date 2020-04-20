@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -104,7 +104,7 @@ protected:
     /**
      * Don't delete customParser, it will be deleted automatically.
      */
-    virtual ExternalToolRunTask* getExternalToolTask (const QString& toolName, ExternalToolLogParser *customParser = NULL);
+    virtual ExternalToolRunTask* getExternalToolTask (const QString& toolId, ExternalToolLogParser *customParser = NULL);
     virtual QStringList getParameters(U2OpStatus& os) = 0;
 
 protected:

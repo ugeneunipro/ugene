@@ -7,8 +7,7 @@ HEADERS += resource.h \
            src/TestViewController.h \
            src/TestViewReporter.h \
            src/ExcludeReasonDialog.h
-FORMS += src/Reporter.ui \
-         src/TestView.ui \
+FORMS += src/TestView.ui \
          src/ExcludeReasonDialog.ui
 SOURCES += src/GTestScriptWrapper.cpp \
            src/TestRunnerPlugin.cpp \

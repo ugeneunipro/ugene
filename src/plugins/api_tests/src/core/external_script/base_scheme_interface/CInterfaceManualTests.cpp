@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,6 +20,8 @@
  */
 
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
+
 #include "SchemeSimilarityUtils.h"
 
 #include "CInterfaceManualTests.h"
@@ -1452,7 +1454,7 @@ IMPLEMENT_TEST( CInterfaceManualTests, gene_by_gene_report ) {
     error = addElementToScheme( scheme, L"genebygene-report-id", MAX_ELEMENT_NAME_LENGTH,
         geneByGeneReportId );
     CHECK_U2_ERROR( error );
-    error = addElementToScheme( scheme, L"blast", MAX_ELEMENT_NAME_LENGTH, blast );
+    error = addElementToScheme( scheme, L"blast-plus", MAX_ELEMENT_NAME_LENGTH, blast );
     CHECK_U2_ERROR( error );
     error = addElementToScheme( scheme, L"write-sequence", MAX_ELEMENT_NAME_LENGTH, writeSequence );
     CHECK_U2_ERROR( error );

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -83,22 +83,22 @@ void KrakenBuildTask::prepare() {
         CHECK_OP(stateInfo, );
 
         foreach (const QString &additionalGenome, settings.additionalGenomesUrls) {
-            ExternalToolRunTask *addToLibraryTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getAddToLibraryArguments(additionalGenome), new ExternalToolLogParser());
+            ExternalToolRunTask *addToLibraryTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL_ID, getAddToLibraryArguments(additionalGenome), new ExternalToolLogParser());
             setListenerForTask(addToLibraryTask, listenerNumber++);
             newSubTasks << addToLibraryTask;
         }
 
-        ExternalToolRunTask *buildTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getBuildArguments(), new ExternalToolLogParser());
+        ExternalToolRunTask *buildTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL_ID, getBuildArguments(), new ExternalToolLogParser());
         setListenerForTask(buildTask, listenerNumber++);
         newSubTasks << buildTask;
 
         if (settings.clean) {
-            ExternalToolRunTask *cleanTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getCleanArguments(), new ExternalToolLogParser());
+            ExternalToolRunTask *cleanTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL_ID, getCleanArguments(), new ExternalToolLogParser());
             setListenerForTask(cleanTask, listenerNumber++);
             newSubTasks << cleanTask;
         }
     } else if (settings.mode == KrakenBuildTaskSettings::SHRINK) {
-        ExternalToolRunTask *shrinkTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL, getShrinkArguments(), new ExternalToolLogParser());
+        ExternalToolRunTask *shrinkTask = new ExternalToolRunTask(KrakenSupport::BUILD_TOOL_ID, getShrinkArguments(), new ExternalToolLogParser());
         setListenerForTask(shrinkTask);
         newSubTasks << shrinkTask;
     } else {

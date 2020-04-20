@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,7 +44,6 @@ class AnnotationGroup;
 class AnnotationGroupSelection;
 class AnnotationModification;
 class AnnotationSelection;
-class AnnotationSelectionData;
 class AnnotationTableObject;
 class AVAnnotationItem;
 class AVGroupItem;
@@ -142,14 +141,30 @@ private slots:
     void sl_itemExpanded(QTreeWidgetItem *);
 
     void sl_sortTree();
-    void sl_annotationClicked(AnnotationSelectionData* aad);
-    void sl_annotationDoubleClicked(AnnotationSelectionData* asd);
+    void sl_annotationClicked(Annotation* annotation);
+
+    /*
+     * Called when annotation activated by some external action.
+     * Makes the annotation current and adds it into selection.
+     */
+    void sl_annotationActivated(Annotation* annotation, int regionIndex);
+
+    /*
+     * Called when annotation is double clicked anywhere in the view.
+     * 'regionIndex' indicates which region was clicked.
+     * A special '-1' value is supported when region is undefined or all regions should be processed.
+     */
+    void sl_annotationDoubleClicked(Annotation *annotation, int regionIndex);
+
     void sl_clearSelectedAnnotations();
     void sl_sequenceAdded(ADVSequenceObjectContext* advContext);
     void sl_sequenceRemoved(ADVSequenceObjectContext* advContext);
 
 protected:
     bool eventFilter(QObject *o, QEvent *e);
+
+signals:
+    void si_setCopyQualifierActionStatus(bool isEnabled, QString text);
 
 private:
     void editItem(AVItem *i);
@@ -179,7 +194,8 @@ private:
     QList<AVAnnotationItem *> findAnnotationItems(const AVGroupItem *gi) const;
     void removeGroupAnnotationsFromCache(const AVGroupItem *groupItem);
 
-    void onSequenceAdded(ADVSequenceObjectContext* advContext);
+    void connectSequenceObjectContext(ADVSequenceObjectContext* advContext);
+    void disconnectSequenceObjectContext(ADVSequenceObjectContext* advContext);
 
     void connectAnnotationSelection();
     void connectAnnotationGroupSelection();
@@ -192,8 +208,9 @@ private:
     void finishDragAndDrop(Qt::DropAction dndAction);
 
     void annotationClicked(AVAnnotationItem* item, QMap<AVAnnotationItem*, QList<U2Region> > selectedAnnotations, const QList<U2Region>& selectedRegions = QList<U2Region>());
-    void annotationDoubleClicked(AVAnnotationItem* item, const QList<U2Region>& selectedRegions, const int numOfClickedRegion = -1);
+    void annotationDoubleClicked(AVAnnotationItem* item, const QList<U2Region>& selectedRegions);
     void clearSelectedNotAnnotations();
+    void emitAnnotationActivated(Annotation *annotation);
 
     AnnotationsTreeWidget* tree;
 
@@ -201,7 +218,6 @@ private:
     QAction*            addAnnotationObjectAction;
     QAction*            removeObjectsFromViewAction;
     QAction*            removeAnnsAndQsAction;
-    QAction*            copyQualifierAction;
     QAction*            copyQualifierURLAction;
     QAction*            toggleQualifierColumnAction;
     QAction*            removeColumnByHeaderClickAction;
@@ -223,7 +239,6 @@ private:
     QIcon               removeColumnIcon;
     QTimer              sortTimer;
     QPoint              dragStartPos;
-    QMenu*              highlightAutoAnnotationsMenu;
     QMap<AVAnnotationItem*, QList<U2Region> > selectedAnnotation;
     // drag&drop related data
     bool                isDragging;

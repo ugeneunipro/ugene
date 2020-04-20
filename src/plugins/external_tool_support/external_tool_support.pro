@@ -8,6 +8,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/ExternalToolSupportSettings.h \
            src/ExternalToolSupportSettingsController.h \
            src/RnaSeqCommon.h \
+           src/RunnerTool.h \
            src/TaskLocalStorage.h \
            src/bedtools/BedtoolsIntersectTask.h \
            src/bedtools/BedToolsWorkersLibrary.h \
@@ -16,14 +17,6 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/bigWigTools/BigWigSupport.h \
            src/bigWigTools/BedGraphToBigWigTask.h \
            src/bigWigTools/BedGraphToBigWigWorker.h \
-           src/blast/BlastAllSupport.h \
-           src/blast/BlastAllSupportRunDialog.h \
-           src/blast/BlastAllSupportTask.h \
-           src/blast/BlastAllWorker.h \
-           src/blast/FormatDBSupport.h \
-           src/blast/FormatDBSupportRunDialog.h \
-           src/blast/FormatDBSupportTask.h \
-           src/blast/PrepareInputFastaFilesTask.h \
            src/blast_plus/AlignToReferenceBlastDialog.h \
            src/blast_plus/AlignToReferenceBlastWorker.h \
            src/blast_plus/BlastDBCmdDialog.h \
@@ -36,6 +29,10 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/blast_plus/BlastPlusWorker.h \
            src/blast_plus/BlastPPlusSupportTask.h \
            src/blast_plus/BlastXPlusSupportTask.h \
+           src/blast_plus/FormatDBSupport.h \
+           src/blast_plus/FormatDBSupportRunDialog.h \
+           src/blast_plus/FormatDBSupportTask.h \
+           src/blast_plus/PrepareInputFastaFilesTask.h \
            src/blast_plus/RPSBlastSupportTask.h \
            src/blast_plus/TBlastNPlusSupportTask.h \
            src/blast_plus/TBlastXPlusSupportTask.h \
@@ -94,6 +91,11 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/cufflinks/CuffmergeWorker.h \
            src/cufflinks/GffreadSupportTask.h \
            src/cufflinks/GffreadWorker.h \
+           src/custom_tools/CustomToolConfigParser.h \
+           src/custom_tools/ImportCustomToolsTask.h \
+           src/custom_tools/ImportExternalToolDialog.h \
+           src/custom_tools/LoadCustomExternalToolsTask.h \
+           src/custom_tools/RegisterCustomToolTask.h \
            src/cutadapt/CutadaptSupport.h \
            src/cutadapt/CutadaptWorker.h \
            src/fastqc/FastqcSupport.h \
@@ -166,7 +168,7 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/spades/SpadesSlotRelationDescriptor.h \
            src/spades/SpadesSupport.h \
            src/spades/SpadesTask.h \
-		   src/spades/SpadesTaskTest.h \
+           src/spades/SpadesTaskTest.h \
            src/spades/SpadesWorker.h \
            src/spidey/SpideySupport.h \
            src/spidey/SpideySupportTask.h \
@@ -225,9 +227,10 @@ HEADERS += src/ETSProjectViewItemsContoller.h \
            src/vcftools/VcfConsensusWorker.h \
            src/vcfutils/VcfutilsSupport.h
 
-FORMS += src/blast/FormatDBSupportRunDialog.ui \
+FORMS += src/ETSSettingsWidget.ui \
          src/blast_plus/AlignToReferenceBlastDialog.ui \
          src/blast_plus/BlastDBCmdDialog.ui \
+         src/blast_plus/FormatDBSupportRunDialog.ui \
          src/bowtie/BowtieBuildSettings.ui \
          src/bowtie/BowtieSettings.ui \
          src/bowtie2/Bowtie2Settings.ui \
@@ -238,7 +241,7 @@ FORMS += src/blast/FormatDBSupportRunDialog.ui \
          src/cap3/CAP3SupportDialog.ui \
          src/clustalo/ClustalOSupportRunDialog.ui \
          src/clustalw/ClustalWSupportRunDialog.ui \
-         src/ETSSettingsWidget.ui \
+         src/custom_tools/ImportExternalToolDialog.ui \
          src/hmmer/HmmerBuildDialog.ui \
          src/hmmer/HmmerSearchDialog.ui \
          src/hmmer/PhmmerSearchDialog.ui \
@@ -265,6 +268,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/ExternalToolSupportSettings.cpp \
            src/ExternalToolSupportSettingsController.cpp \
            src/RnaSeqCommon.cpp \
+           src/RunnerTool.cpp \
            src/TaskLocalStorage.cpp \
            src/bedtools/BedtoolsIntersectTask.cpp \
            src/bedtools/BedToolsWorkersLibrary.cpp \
@@ -273,14 +277,6 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/bigWigTools/BigWigSupport.cpp \
            src/bigWigTools/BedGraphToBigWigTask.cpp \
            src/bigWigTools/BedGraphToBigWigWorker.cpp \
-           src/blast/BlastAllSupport.cpp \
-           src/blast/BlastAllSupportRunDialog.cpp \
-           src/blast/BlastAllSupportTask.cpp \
-           src/blast/BlastAllWorker.cpp \
-           src/blast/FormatDBSupport.cpp \
-           src/blast/FormatDBSupportRunDialog.cpp \
-           src/blast/FormatDBSupportTask.cpp \
-           src/blast/PrepareInputFastaFilesTask.cpp \
            src/blast_plus/AlignToReferenceBlastDialog.cpp \
            src/blast_plus/AlignToReferenceBlastWorker.cpp \
            src/blast_plus/BlastDBCmdDialog.cpp \
@@ -293,6 +289,10 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/blast_plus/BlastPlusWorker.cpp \
            src/blast_plus/BlastPPlusSupportTask.cpp \
            src/blast_plus/BlastXPlusSupportTask.cpp \
+           src/blast_plus/FormatDBSupport.cpp \
+           src/blast_plus/FormatDBSupportRunDialog.cpp \
+           src/blast_plus/FormatDBSupportTask.cpp \
+           src/blast_plus/PrepareInputFastaFilesTask.cpp \
            src/blast_plus/RPSBlastSupportTask.cpp \
            src/blast_plus/TBlastNPlusSupportTask.cpp \
            src/blast_plus/TBlastXPlusSupportTask.cpp \
@@ -351,6 +351,11 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/cufflinks/CuffmergeWorker.cpp \
            src/cufflinks/GffreadSupportTask.cpp \
            src/cufflinks/GffreadWorker.cpp \
+           src/custom_tools/CustomToolConfigParser.cpp \
+           src/custom_tools/ImportCustomToolsTask.cpp \
+           src/custom_tools/ImportExternalToolDialog.cpp \
+           src/custom_tools/LoadCustomExternalToolsTask.cpp \
+           src/custom_tools/RegisterCustomToolTask.cpp \
            src/cutadapt/CutadaptSupport.cpp \
            src/cutadapt/CutadaptWorker.cpp \
            src/fastqc/FastqcSupport.cpp \
@@ -422,7 +427,7 @@ SOURCES += src/ETSProjectViewItemsContoller.cpp \
            src/spades/SpadesSlotRelationDescriptor.cpp \
            src/spades/SpadesSupport.cpp \
            src/spades/SpadesTask.cpp \
-		   src/spades/SpadesTaskTest.cpp \
+           src/spades/SpadesTaskTest.cpp \
            src/spades/SpadesWorker.cpp \
            src/spidey/SpideySupport.cpp \
            src/spidey/SpideySupportTask.cpp \

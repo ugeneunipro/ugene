@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,7 +54,7 @@ void MsaEditorNameList::buildMenu(QMenu *menu) {
     SAFE_POINT(copyMenu != NULL, "copyMenu not found", );
     copyMenu->addAction(copyCurrentSequenceAction);
 
-    copyCurrentSequenceAction->setDisabled(getSelectedRow() == -1);
+    copyCurrentSequenceAction->setDisabled(getSelectedMaRow() == -1);
     editMenu->insertAction(editMenu->actions().first(), editSequenceNameAction);
 }
 

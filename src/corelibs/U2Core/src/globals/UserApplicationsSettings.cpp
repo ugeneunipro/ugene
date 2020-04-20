@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,6 +46,7 @@ namespace U2 {
 #define SAVE_PROJECT_STATE QString("save_project")
 #define VISUAL_STYLE    QString("style")
 #define DOWNLOAD_DIR    QString("download_file")
+#define CUSTOM_EXTERNAL_TOOL_CONFIGS_DIR    QString("custom_external_tool_configs_dir")
 #define RECENTLY_DOWNLOADED QString("recently_downloaded")
 #define TEMPORARY_DIR QString("temporary_dir")
 #define DATA_DIR QString("data_dir")
@@ -123,13 +124,7 @@ void UserAppsSettings::setResetSettings(bool b) {
 }
 
 QString UserAppsSettings::getVisualStyle() const {
-#ifdef Q_OS_LINUX
-    // Use a nice looking 'Fusion' style by default (used by QtCreator's UI Designer on Linux).
-    // GTK2 style which is selected by default on Linux looks ugly (groupboxes, etc...)
-    QString defaultStyle = "Fusion";
-#else
     QString defaultStyle = QApplication::style()->objectName();
-#endif
 
 #ifdef Q_OS_WIN
 #define DEFAULT_STYLE_NAME ".NET"
@@ -154,6 +149,32 @@ QString UserAppsSettings::getDownloadDirPath() const {
 
 void UserAppsSettings::setDownloadDirPath(const QString& newPath) const {
     AppContext::getSettings()->setValue(SETTINGS_ROOT + DOWNLOAD_DIR, newPath);
+}
+
+QString UserAppsSettings::getCustomToolsConfigsDirPath() const {
+    const QString defaultDir = GUrl(AppContext::getSettings()->fileName()).dirPath() + "/CustomExternalToolConfig";
+    return AppContext::getSettings()->getValue(SETTINGS_ROOT + CUSTOM_EXTERNAL_TOOL_CONFIGS_DIR, defaultDir).toString();
+}
+
+void UserAppsSettings::setCustomToolsConfigsDirPath(const QString &newPath) const {
+    const QString oldPath = getCustomToolsConfigsDirPath();
+
+    Settings *s = AppContext::getSettings();
+    s->setValue(SETTINGS_ROOT + CUSTOM_EXTERNAL_TOOL_CONFIGS_DIR, newPath);
+
+    if(oldPath != newPath) {
+        QDir dir(oldPath);
+        if (!dir.exists()) {
+            return;
+        }
+
+        dir.setNameFilters(QStringList() << "*.xml");
+        QFileInfoList fileList = dir.entryInfoList();
+        foreach (const QFileInfo &fileInfo, fileList) {
+            const QString newFileUrl = newPath + "/" + fileInfo.fileName();
+            QFile::copy(fileInfo.filePath(), newFileUrl);
+        }
+    }
 }
 
 QStringList UserAppsSettings::getRecentlyDownloadedFileNames() const {

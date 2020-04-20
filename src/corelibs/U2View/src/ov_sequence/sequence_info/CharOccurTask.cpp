@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,6 @@
 #include "CharOccurTask.h"
 
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/DNASequenceObject.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2Region.h>
@@ -43,13 +42,13 @@ CharOccurResult::CharOccurResult(char _charInSequence, qint64 _numberOfOccurrenc
 
 CharOccurTask::CharOccurTask(const DNAAlphabet* _alphabet,
                              U2EntityRef _seqRef,
-                             U2Region _region)
+                             const QVector<U2Region>& regions)
     : BackgroundTask< QList<CharOccurResult> >(
     "Calculating characters occurrence",
     TaskFlag_None),
       alphabet(_alphabet),
       seqRef(_seqRef),
-      region(_region)
+      regions(regions)
 {
     tpm = Progress_Manual;
     stateInfo.setProgress(0);
@@ -71,85 +70,49 @@ void CharOccurTask::run()
     QByteArray alphabetChars = alphabet->getAlphabetChars();
     SAFE_POINT(!alphabetChars.isEmpty(), "There are no characters in the alphabet!",);
 
-    QMap<char, qint64> charactersOccurrence;
+    QVector<quint64> charactersOccurrence(256, 0);
+    qint64 totalLength = U2Region::sumLength(regions);
+    qint64 processedLength = 0;
+    foreach(const U2Region& region, regions) {
+        QList<U2Region> blocks = U2Region::split(region, REGION_TO_ANALAYZE);
+        foreach(const U2Region& block, blocks) {
+            // Get the selected region and verify that the data has been correctly read
+            QByteArray sequence = sequenceDbi->getSequenceData(seqRef.entityId, block, os);
+            if (os.hasError() || sequence.isEmpty()) {
+                taskLog.details("Skipping calculation of the characters occurrence.");
+                break;
+            }
 
-    // Initializing
-    foreach (char character, alphabetChars) {
-        if ('-' != character) { // skip all gaps
-            charactersOccurrence[character] = 0;
-        }
-    }
+            // Calculating the values
+            const char* sequenceData = sequence.constData();
+            for (int i = 0, n = sequence.size(); i < n; i++) {
+                char c = sequenceData[i];
+                charactersOccurrence[c]++;
+            }
 
-    // If the input region length is more than REGION_TO_ANALAYZE,
-    // divide the analysis into iterations
-    int iterNum = 0;
-    qint64 wholeRegionLength = region.length;
-    do
-    {
-        U2Region iterRegion;
-
-        if (wholeRegionLength <= REGION_TO_ANALAYZE) {
-            iterRegion = U2Region(region.startPos + iterNum * REGION_TO_ANALAYZE, wholeRegionLength);
-            wholeRegionLength = 0;
-        } else {
-            iterRegion = U2Region(region.startPos + iterNum * REGION_TO_ANALAYZE, REGION_TO_ANALAYZE);
-            wholeRegionLength -= REGION_TO_ANALAYZE;
-        }
-
-        // Get the selected region and verify that the data has been correctly read
-        QByteArray sequence = sequenceDbi->getSequenceData(seqRef.entityId, iterRegion, os);
-        if (os.hasError() || sequence.isEmpty()) {
-            taskLog.details("Skipping calculation of the characters occurrence.");
-            break;
-        }
-
-        // Calculating the values
-        const char* sequenceData = sequence.constData();
-        for (int i = 0, n = sequence.size(); i < n; i++) {
-            char character = sequenceData[i];
-            SAFE_POINT(alphabetChars.contains(character),
-                QString("Unexpected characters has been detected in the sequence: {%1}").arg(character),);
-
-            charactersOccurrence[character]++;
-        }
-
-        // Update the task progress
-        stateInfo.setProgress((region.length - wholeRegionLength) * 100 / region.length);
-        CHECK_OP(stateInfo, );
-
-        iterNum++;
-    } while (wholeRegionLength != 0);
-
-
-    // If it is a standard alphabet and there are no 'N' characters in the sequence,
-    // then do not output them ('N' = 0)
-    QString alphabetId = alphabet->getId();
-
-    if ((alphabetId == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()) ||
-        (alphabetId == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT()))
-    {
-        if (charactersOccurrence['N'] == 0) {
-            charactersOccurrence.remove('N');
+            // Update the task progress
+            processedLength += block.length;
+            stateInfo.setProgress(processedLength * 100 / totalLength);
+            CHECK_OP(stateInfo,);
         }
     }
 
     // Calculate the percentage and format the result
     QList<CharOccurResult> calculatedResults;
-    QMap<char, qint64>::const_iterator i = charactersOccurrence.constBegin();
-    while (i != charactersOccurrence.constEnd()) {
-        char charInSequence = i.key();
-        qint64 numberOfOccur = i.value();
-        double percentageOfOccur = numberOfOccur * 100.0 / region.length;
-        CharOccurResult calcResult =
-            CharOccurResult(charInSequence, numberOfOccur, percentageOfOccur);
+    for (int i = 0; i < charactersOccurrence.length(); i++) {
+        char c = (char) i;
+        qint64 numberOfOccur = charactersOccurrence[i];
+        if (numberOfOccur == 0) {
+            continue;
+        }
+        SAFE_POINT(alphabetChars.contains(c),
+                   QString("Unexpected characters has been detected in the sequence: {%1}").arg(c),);
+        double percentageOfOccur = numberOfOccur * 100.0 / totalLength;
+        CharOccurResult calcResult(c, numberOfOccur, percentageOfOccur);
         calculatedResults.append(calcResult);
-
-        ++i;
     }
 
     result = calculatedResults;
 }
-
-
 
 } // namespace

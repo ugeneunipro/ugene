@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QKeyEvent>
 #include <QLayout>
 #include <QListView>
 #include <QMessageBox>
@@ -45,35 +46,73 @@
 namespace U2 {
 
 /************************************************************************/
-/* DefaultPropertyWidget */
+/* AbstractDefaultPropertyWidget */
 /************************************************************************/
-DefaultPropertyWidget::DefaultPropertyWidget(int maxLength, QWidget *parent)
-: PropertyWidget(parent)
-{
-    lineEdit = new QLineEdit(this);
-    if (maxLength >= 0) {
-        lineEdit->setMaxLength(maxLength);
-    }
-    addMainWidget(lineEdit);
-    connect(lineEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_valueChanged(const QString &)));
-}
+BaseDefaultPropertyWidget::BaseDefaultPropertyWidget(int maxLength, QWidget *parent)
+    : PropertyWidget(parent) {}
 
-QVariant DefaultPropertyWidget::value() {
+QVariant BaseDefaultPropertyWidget::value() {
     return lineEdit->text();
 }
 
-void DefaultPropertyWidget::setValue(const QVariant &value) {
+void BaseDefaultPropertyWidget::setValue(const QVariant &value) {
     lineEdit->setText(value.toString());
 }
 
-void DefaultPropertyWidget::setRequired() {
+void BaseDefaultPropertyWidget::setRequired() {
     if (lineEdit->placeholderText().isEmpty()) {
         lineEdit->setPlaceholderText(L10N::required());
     }
 }
 
-void DefaultPropertyWidget::sl_valueChanged(const QString &value) {
+void BaseDefaultPropertyWidget::sl_valueChanged(const QString &value) {
     emit si_valueChanged(value);
+}
+
+void BaseDefaultPropertyWidget::configureLineEdit(const int maxLength) {
+    if (maxLength >= 0) {
+        lineEdit->setMaxLength(maxLength);
+    }
+    addMainWidget(lineEdit);
+    connect(lineEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_valueChanged(const QString&)));
+}
+
+/************************************************************************/
+/* DefaultPropertyWidget */
+/************************************************************************/
+
+DefaultPropertyWidget::DefaultPropertyWidget(int maxLength, QWidget* parent)
+    : BaseDefaultPropertyWidget(maxLength, parent)
+{
+    lineEdit = new QLineEdit(this);
+    configureLineEdit(maxLength);
+}
+
+/************************************************************************/
+/* IgnoreUpDownPropertyWidget */
+/************************************************************************/
+
+IgnoreUpDownPropertyWidget::IgnoreUpDownPropertyWidget(int maxLength, QWidget* parent)
+    : BaseDefaultPropertyWidget(maxLength, parent)
+{
+    lineEdit = new LineEditIgnoreUpDown(this);
+    configureLineEdit(maxLength);
+}
+
+/************************************************************************/
+/* LineEditIgnoreUpDown */
+/************************************************************************/
+
+LineEditIgnoreUpDown::LineEditIgnoreUpDown(QWidget* parent)
+    : QLineEdit(parent) {}
+
+void LineEditIgnoreUpDown::keyPressEvent(QKeyEvent* e) {
+    if ((e->key() == Qt::Key_Up) || (e->key() == Qt::Key_Down)) {
+        e->ignore();
+        return;
+    }
+
+    QLineEdit::keyPressEvent(e);
 }
 
 /************************************************************************/
@@ -555,7 +594,6 @@ void URLWidget::sl_browse() {
         urlLine->sl_onBrowse();
         return;
     }
-
     RunFileSystem *rfs = getRFS();
     if (NULL == rfs) {
         urlLine->sl_onBrowse();

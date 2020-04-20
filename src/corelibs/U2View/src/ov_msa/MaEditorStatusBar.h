@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@ class MultipleAlignmentObject;
 class MaEditorSequenceArea;
 class MaEditorSelection;
 
-class MaEditorStatusBar : public QWidget {
+class MaEditorStatusBar : public QFrame {
     Q_OBJECT
 protected:
     class TwoArgPatternLabel : public QLabel {
@@ -71,6 +71,7 @@ protected:
     virtual void updatePositionLabel();
     void updateColumnLabel();
     void updateSelectionLabel();
+    void setStatusBarStyle();
 
 protected:
     MultipleAlignmentObject*    aliObj;

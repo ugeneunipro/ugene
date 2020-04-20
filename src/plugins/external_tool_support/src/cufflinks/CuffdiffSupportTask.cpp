@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -97,9 +97,9 @@ void CuffdiffSupportTask::prepare() {
 
 void CuffdiffSupportTask::setupWorkingDir() {
     if (0 == QString::compare(settings.workingDir, "default", Qt::CaseInsensitive)) {
-        workingDir = ExternalToolSupportUtils::createTmpDir(CUFFDIFF_TMP_DIR, stateInfo);
+        workingDir = ExternalToolSupportUtils::createTmpDir(CufflinksSupport::CUFFDIFF_TMP_DIR, stateInfo);
     } else {
-        workingDir = ExternalToolSupportUtils::createTmpDir(settings.workingDir, CUFFDIFF_TMP_DIR, stateInfo);
+        workingDir = ExternalToolSupportUtils::createTmpDir(settings.workingDir, CufflinksSupport::CUFFDIFF_TMP_DIR, stateInfo);
     }
 }
 
@@ -179,7 +179,7 @@ Task * CuffdiffSupportTask::createCuffdiffTask() {
     arguments << prepareAssemblyUrlsArgs(settings.groupBySamples, settings.assemblyUrls);
 
     // create task
-    diffTask = new ExternalToolRunTask(ET_CUFFDIFF,
+    diffTask = new ExternalToolRunTask(CufflinksSupport::ET_CUFFDIFF_ID,
         arguments,
         new LogParser(),
         workingDir);

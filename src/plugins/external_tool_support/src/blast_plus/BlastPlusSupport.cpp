@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,13 +56,29 @@
 #include "RPSBlastSupportTask.h"
 #include "TBlastNPlusSupportTask.h"
 #include "TBlastXPlusSupportTask.h"
-#include "blast/FormatDBSupport.h"
+#include "blast_plus/FormatDBSupport.h"
 #include "utils/ExternalToolSupportAction.h"
 #include "utils/ExternalToolUtils.h"
 
 namespace U2 {
 
-BlastPlusSupport::BlastPlusSupport(const QString& name, const QString& path) : ExternalTool(name, path)
+const QString BlastPlusSupport::ET_BLASTN = "BlastN";
+const QString BlastPlusSupport::ET_BLASTN_ID = "USUPP_BLASTN";
+const QString BlastPlusSupport::ET_BLASTP = "BlastP";
+const QString BlastPlusSupport::ET_BLASTP_ID = "USUPP_BLASTP";
+const QString BlastPlusSupport::ET_GPU_BLASTP = "GPU-BlastP";
+const QString BlastPlusSupport::ET_GPU_BLASTP_ID = "UGENE_GPU_BLASTP";
+const QString BlastPlusSupport::ET_BLASTX = "BlastX";
+const QString BlastPlusSupport::ET_BLASTX_ID = "USUPP_BLASTX";
+const QString BlastPlusSupport::ET_TBLASTN = "TBlastN";
+const QString BlastPlusSupport::ET_TBLASTN_ID = "USUPP_TBLASTN";
+const QString BlastPlusSupport::ET_TBLASTX = "TBlastX";
+const QString BlastPlusSupport::ET_TBLASTX_ID = "USUPP_TBLASTX";
+const QString BlastPlusSupport::ET_RPSBLAST = "RPSBlast";
+const QString BlastPlusSupport::ET_RPSBLAST_ID = "USUPP_RPS_BLAST";
+const QString BlastPlusSupport::BLASTPLUS_TMP_DIR = "blast_plus";
+
+BlastPlusSupport::BlastPlusSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/ncbi.png");
@@ -71,7 +87,7 @@ BlastPlusSupport::BlastPlusSupport(const QString& name, const QString& path) : E
     }
     validationArguments<<"-h";
 
-    if(name == ET_BLASTN){
+    if(id == ET_BLASTN_ID) {
 #ifdef Q_OS_WIN
     executableFileName="blastn.exe";
 #else
@@ -83,7 +99,7 @@ BlastPlusSupport::BlastPlusSupport(const QString& name, const QString& path) : E
     description="The <i>blastn</i> tool searches a nucleotide database \
                 using a nucleotide query.";
     versionRegExp=QRegExp("Nucleotide-Nucleotide BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
-    }else if(name == ET_BLASTP){
+    }else if(id == ET_BLASTP_ID) {
 #ifdef Q_OS_WIN
     executableFileName="blastp.exe";
 #else
@@ -96,7 +112,7 @@ BlastPlusSupport::BlastPlusSupport(const QString& name, const QString& path) : E
                 using a protein query.";
     versionRegExp=QRegExp("Protein-Protein BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
 // https://ugene.net/tracker/browse/UGENE-945
-//     }else if(name == GPU_BLASTP_TOOL_NAME){
+//     }else if(name == GPU_BLASTP_TOOL_NAME) {
 // #ifdef Q_OS_WIN
 //     executableFileName="blastp.exe";
 // #else
@@ -107,7 +123,7 @@ BlastPlusSupport::BlastPlusSupport(const QString& name, const QString& path) : E
 //     validMessage="[-gpu boolean]";
 //     description="The <i>blastp</i> tool searches a protein database using a protein query.";
 //     versionRegExp=QRegExp("Protein-Protein BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
-    }else if(name == ET_BLASTX){
+    }else if(id == ET_BLASTX_ID) {
 #ifdef Q_OS_WIN
     executableFileName="blastx.exe";
 #else
@@ -119,7 +135,7 @@ BlastPlusSupport::BlastPlusSupport(const QString& name, const QString& path) : E
     description="The <i>blastx</i> tool searches a protein database \
                 using a translated nucleotide query.";
     versionRegExp=QRegExp("Translated Query-Protein Subject BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
-    }else if(name == ET_TBLASTN){
+    }else if(id == ET_TBLASTN_ID) {
 #ifdef Q_OS_WIN
     executableFileName="tblastn.exe";
 #else
@@ -131,7 +147,7 @@ BlastPlusSupport::BlastPlusSupport(const QString& name, const QString& path) : E
     description="The <i>tblastn</i> compares a protein query against \
                 a translated nucleotide database";
     versionRegExp=QRegExp("Protein Query-Translated Subject BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
-    }else if(name == ET_TBLASTX){
+    }else if(id == ET_TBLASTX_ID) {
 #ifdef Q_OS_WIN
     executableFileName="tblastx.exe";
 #else
@@ -145,7 +161,7 @@ BlastPlusSupport::BlastPlusSupport(const QString& name, const QString& path) : E
                 against the six-frame translations of a nucleotide \
                 sequence database.";
     versionRegExp=QRegExp("Translated Query-Translated Subject BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
-    }else if(name == ET_RPSBLAST) {
+    }else if(id == ET_RPSBLAST_ID) {
 #ifdef Q_OS_WIN
     executableFileName="rpsblast.exe";
 #else
@@ -157,7 +173,7 @@ BlastPlusSupport::BlastPlusSupport(const QString& name, const QString& path) : E
     description="";
     versionRegExp=QRegExp("Reverse Position Specific BLAST (\\d+\\.\\d+\\.\\d+\\+?)");
     }
-    if(name == ET_GPU_BLASTP) {
+    if(id == ET_GPU_BLASTP_ID) {
         toolKitName="GPU-BLAST+";
     } else {
         toolKitName="BLAST+";
@@ -166,17 +182,17 @@ BlastPlusSupport::BlastPlusSupport(const QString& name, const QString& path) : E
     lastDBPath="";
 }
 
-void BlastPlusSupport::sl_runWithExtFileSpecify(){
+void BlastPlusSupport::sl_runWithExtFileSpecify() {
     //Check that blastal and tempory folder path defined
     QStringList toolList;
-    toolList << ET_BLASTN << ET_BLASTP << ET_BLASTX << ET_TBLASTN << ET_TBLASTX << ET_RPSBLAST;
+    toolList << ET_BLASTN_ID << ET_BLASTP_ID << ET_BLASTX_ID << ET_TBLASTN_ID << ET_TBLASTX_ID << ET_RPSBLAST_ID;
     bool isOneOfToolConfigured=false;
-    foreach(QString toolName, toolList){
-        if(!AppContext::getExternalToolRegistry()->getByName(toolName)->getPath().isEmpty()){
+    foreach(QString id, toolList) {
+        if(!AppContext::getExternalToolRegistry()->getById(id)->getPath().isEmpty()) {
             isOneOfToolConfigured=true;
         }
     }
-    if (!isOneOfToolConfigured){
+    if (!isOneOfToolConfigured) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle("BLAST+ Search");
         msgBox->setText(tr("Path for BLAST+ tools not selected."));
@@ -198,12 +214,12 @@ void BlastPlusSupport::sl_runWithExtFileSpecify(){
                break;
          }
         bool isOneOfToolConfigured=false;
-        foreach(QString toolName, toolList){
-            if(!AppContext::getExternalToolRegistry()->getByName(toolName)->getPath().isEmpty()){
+        foreach(QString id, toolList) {
+            if(!AppContext::getExternalToolRegistry()->getById(id)->getPath().isEmpty()) {
                 isOneOfToolConfigured=true;
             }
         }
-        if (!isOneOfToolConfigured){
+        if (!isOneOfToolConfigured) {
             return;
         }
     }
@@ -216,7 +232,7 @@ void BlastPlusSupport::sl_runWithExtFileSpecify(){
     blastPlusRunDialog->exec();
     CHECK(!blastPlusRunDialog.isNull(), );
 
-    if(blastPlusRunDialog->result() != QDialog::Accepted){
+    if(blastPlusRunDialog->result() != QDialog::Accepted) {
         return;
     }
     QList<BlastTaskSettings> settingsList = blastPlusRunDialog->getSettingsList();
@@ -225,10 +241,10 @@ void BlastPlusSupport::sl_runWithExtFileSpecify(){
 }
 
 void BlastPlusSupport::sl_runAlign() {
-    ExternalToolUtils::checkExtToolsPath(QStringList() << ET_BLASTN << ET_MAKEBLASTDB);
+    ExternalToolUtils::checkExtToolsPath(QStringList() << ET_BLASTN_ID << FormatDBSupport::ET_MAKEBLASTDB_ID);
 
-    if (AppContext::getExternalToolRegistry()->getByName(ET_BLASTN)->getPath().isEmpty()
-            || AppContext::getExternalToolRegistry()->getByName(ET_MAKEBLASTDB)->getPath().isEmpty()){
+    if (AppContext::getExternalToolRegistry()->getById(ET_BLASTN_ID)->getPath().isEmpty()
+            || AppContext::getExternalToolRegistry()->getById(FormatDBSupport::ET_MAKEBLASTDB_ID)->getPath().isEmpty()) {
         return;
     }
 
@@ -248,14 +264,13 @@ void BlastPlusSupport::sl_runAlign() {
 #define BLAST_ANNOTATION_NAME "blast result"
 
 BlastPlusSupportContext::BlastPlusSupportContext(QObject* p) : GObjectViewWindowContext(p, ANNOTATED_DNA_VIEW_FACTORY_ID) {
-    toolList << ET_BLASTN << ET_BLASTP << ET_BLASTX << ET_TBLASTN << ET_TBLASTX << ET_RPSBLAST;
+    toolIdList << BlastPlusSupport::ET_BLASTN_ID << BlastPlusSupport::ET_BLASTP_ID << BlastPlusSupport::ET_BLASTX_ID << BlastPlusSupport::ET_TBLASTN_ID << BlastPlusSupport::ET_TBLASTX_ID << BlastPlusSupport::ET_RPSBLAST_ID;
     lastDBName="";
     lastDBPath="";
 
     fetchSequenceByIdAction = new QAction(tr("Fetch sequences by 'id'"), this);
     fetchSequenceByIdAction->setObjectName("fetchSequenceById");
     connect(fetchSequenceByIdAction, SIGNAL(triggered()), SLOT(sl_fetchSequenceById()));
-
 }
 
 void BlastPlusSupportContext::initViewContext(GObjectView* view) {
@@ -263,7 +278,7 @@ void BlastPlusSupportContext::initViewContext(GObjectView* view) {
     assert(av!=NULL);
     Q_UNUSED(av);
 
-    ExternalToolSupportAction* queryAction = new ExternalToolSupportAction(this, view, tr("Query with local BLAST+..."), 2000, toolList);
+    ExternalToolSupportAction* queryAction = new ExternalToolSupportAction(this, view, tr("Query with local BLAST+..."), 2000, toolIdList);
     queryAction->setObjectName("query_with_blast+");
 
     addViewAction(queryAction);
@@ -292,14 +307,14 @@ void BlastPlusSupportContext::buildMenu(GObjectView* view, QMenu* m) {
     bool isBlastResult = false, isShowId = false;
 
     QString name;
-    if (!dnaView->getAnnotationsSelection()->getSelection().isEmpty()) {
-        name = dnaView->getAnnotationsSelection()->getSelection().first().annotation->getName();
+    if (!dnaView->getAnnotationsSelection()->getAnnotations().isEmpty()) {
+        name = dnaView->getAnnotationsSelection()->getAnnotations().first()->getName();
     }
-    selectedId = ADVSelectionUtils::getSequenceIdsFromSelection(dnaView->getAnnotationsSelection()->getSelection(), true);
+    selectedId = ADVSelectionUtils::getSequenceIdsFromSelection(dnaView->getAnnotationsSelection()->getAnnotations(), true);
     isShowId = !selectedId.isEmpty();
 
-    foreach(const AnnotationSelectionData &sel, dnaView->getAnnotationsSelection()->getSelection()) {
-        if(name != sel.annotation->getName()) {
+    foreach(const Annotation* annotation, dnaView->getAnnotationsSelection()->getAnnotations()) {
+        if(name != annotation->getName()) {
             name = "";
         }
         isBlastResult = name == BLAST_ANNOTATION_NAME;
@@ -313,7 +328,7 @@ void BlastPlusSupportContext::buildMenu(GObjectView* view, QMenu* m) {
         SAFE_POINT(exportMenu != NULL, "exportMenu", );
         m->insertMenu(exportMenu->menuAction(), fetchMenu);
         fetchSequenceByIdAction->setText(tr("Fetch sequences by 'id' %1").arg(name));
-        bool emptyToolPath = AppContext::getExternalToolRegistry()->getByName(ET_BLASTDBCMD)->getPath().isEmpty();
+        bool emptyToolPath = AppContext::getExternalToolRegistry()->getById(BlastDbCmdSupport::ET_BLASTDBCMD_ID)->getPath().isEmpty();
         setActionFontItalic(fetchSequenceByIdAction, emptyToolPath);
         fetchMenu->addAction(fetchSequenceByIdAction);
     }
@@ -322,12 +337,12 @@ void BlastPlusSupportContext::buildMenu(GObjectView* view, QMenu* m) {
 void BlastPlusSupportContext::sl_showDialog() {
     //Check that any of BLAST+ tools and tempory folder path defined
     bool isOneOfToolConfigured=false;
-    foreach(QString toolName, toolList){
-        if(!AppContext::getExternalToolRegistry()->getByName(toolName)->getPath().isEmpty()){
+    foreach(QString id, toolIdList) {
+        if(!AppContext::getExternalToolRegistry()->getById(id)->getPath().isEmpty()) {
             isOneOfToolConfigured=true;
         }
     }
-    if (!isOneOfToolConfigured){
+    if (!isOneOfToolConfigured) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
         msgBox->setWindowTitle("BLAST+ Search");
         msgBox->setText(tr("Path for BLAST+ tools not selected."));
@@ -349,12 +364,12 @@ void BlastPlusSupportContext::sl_showDialog() {
                break;
          }
         bool isOneOfToolConfigured=false;
-        foreach(QString toolName, toolList){
-            if(!AppContext::getExternalToolRegistry()->getByName(toolName)->getPath().isEmpty()){
+        foreach(QString id, toolIdList) {
+            if(!AppContext::getExternalToolRegistry()->getById(id)->getPath().isEmpty()) {
                 isOneOfToolConfigured=true;
             }
         }
-        if (!isOneOfToolConfigured){
+        if (!isOneOfToolConfigured) {
             return;
         }
     }
@@ -383,17 +398,17 @@ void BlastPlusSupportContext::sl_showDialog() {
         settings.isSequenceCircular = seqCtx->getSequenceObject()->isCircular();
         settings.querySequenceObject = seqCtx->getSequenceObject();
         Task * t=NULL;
-        if (settings.programName == "blastn"){
+        if (settings.programName == "blastn") {
             t = new BlastNPlusSupportTask(settings);
-        } else if(settings.programName == "blastp" || settings.programName == "gpu-blastp"){
+        } else if(settings.programName == "blastp" || settings.programName == "gpu-blastp") {
             t = new BlastPPlusSupportTask(settings);
-        } else if(settings.programName == "blastx"){
+        } else if(settings.programName == "blastx") {
             t = new BlastXPlusSupportTask(settings);
-        } else if(settings.programName == "tblastn"){
+        } else if(settings.programName == "tblastn") {
             t = new TBlastNPlusSupportTask(settings);
-        } else if(settings.programName == "tblastx"){
+        } else if(settings.programName == "tblastx") {
             t = new TBlastXPlusSupportTask(settings);
-        } else if(settings.programName == "rpsblast"){
+        } else if(settings.programName == "rpsblast") {
             t = new RPSBlastSupportTask(settings);
         }
         assert(t);
@@ -403,10 +418,10 @@ void BlastPlusSupportContext::sl_showDialog() {
 
 void BlastPlusSupportContext::sl_fetchSequenceById()
 {
-    if (AppContext::getExternalToolRegistry()->getByName(ET_BLASTDBCMD)->getPath().isEmpty()){
+    if (AppContext::getExternalToolRegistry()->getById(BlastDbCmdSupport::ET_BLASTDBCMD_ID)->getPath().isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle("BLAST+ " + QString(ET_BLASTDBCMD));
-        msgBox->setText(tr("Path for BLAST+ %1 tool not selected.").arg(ET_BLASTDBCMD));
+        msgBox->setWindowTitle("BLAST+ " + QString(BlastDbCmdSupport::ET_BLASTDBCMD));
+        msgBox->setText(tr("Path for BLAST+ %1 tool not selected.").arg(BlastDbCmdSupport::ET_BLASTDBCMD));
         msgBox->setInformativeText(tr("Do you want to select it now?"));
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);
@@ -432,7 +447,7 @@ void BlastPlusSupportContext::sl_fetchSequenceById()
     blastDBCmdDialog->exec();
     CHECK(!blastDBCmdDialog.isNull(), );
 
-    if (blastDBCmdDialog->result() != QDialog::Accepted){
+    if (blastDBCmdDialog->result() != QDialog::Accepted) {
         return;
     }
 

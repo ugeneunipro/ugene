@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,7 +48,7 @@ public:
     static int getNumberExternalTools();
     static void setNumberExternalTools(int value);
 
-    static bool getExternalTools();
+    static void loadExternalTools();
     static void setExternalTools();
 
     static void checkTemporaryDir(U2OpStatus& os);

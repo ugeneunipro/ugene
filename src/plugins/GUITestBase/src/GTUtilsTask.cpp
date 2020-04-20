@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -57,11 +57,11 @@ Task* GTUtilsTask::getSubTaskByName(HI::GUITestOpStatus &os, QString taskName, G
 #define GT_METHOD_NAME "getSubTaskByName"
 Task* GTUtilsTask::getSubTaskByName(HI::GUITestOpStatus &os, Task *parent, QString taskName, GTGlobals::FindOptions options){
     Task* result;
-    foreach (Task* t, parent->getSubtasks()) {
+    foreach (const QPointer<Task> &t, parent->getSubtasks()) {
         if(t->getTaskName() == taskName){
-            return t;
+            return t.data();
         }else{
-            result = getSubTaskByName(os, t, taskName, false);
+            result = getSubTaskByName(os, t.data(), taskName, false);
         }
     }
 

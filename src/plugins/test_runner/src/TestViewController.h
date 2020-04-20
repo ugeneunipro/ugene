@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,9 +49,6 @@ public:
 
     virtual void setupMDIToolbar(QToolBar* tb);
     virtual void setupViewMenu(QMenu* n);
-
-    void killAllChildForms();
-    void reporterFormClosedOutside(){reporterForm=NULL;}
 
 private slots:
 
@@ -127,7 +124,6 @@ private:
     QAction* saveSelectedSuitesAction;
 
     TestRunnerTask* task;
-    TestViewReporter* reporterForm;
     QTime startRunTime;
     QTime endRunTime;
     int time;

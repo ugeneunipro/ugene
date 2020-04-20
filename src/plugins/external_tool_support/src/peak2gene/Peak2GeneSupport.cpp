@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,8 +28,15 @@
 
 namespace U2 {
 
-Peak2GeneSupport::Peak2GeneSupport(const QString &name)
-: ExternalTool(name)
+const QString Peak2GeneSupport::ET_PEAK2GENE = "peak2gene";
+const QString Peak2GeneSupport::ET_PEAK2GENE_ID = "USUPP_PEAK2GENE";
+const QString Peak2GeneSupport::REFGENE_DIR_NAME = "refGene";
+const QString Peak2GeneSupport::REF_GENES_DATA_NAME = "Gene annotation table";
+const QString Peak2GeneSupport::TRANSLATIONS_DIR_NAME = "geneIdTranslations";
+const QString Peak2GeneSupport::ENTREZ_TRANSLATION_DATA_NAME = "Entrez ID translations";
+
+Peak2GeneSupport::Peak2GeneSupport(const QString& id, const QString &name)
+: ExternalTool(id, name, "")
 {
     initialize();
 }
@@ -46,8 +53,8 @@ void Peak2GeneSupport::initialize() {
 
     executableFileName = "peak2gene.py";
 
-    toolRunnerProgramm = ET_PYTHON;
-    dependencies << ET_PYTHON;
+    toolRunnerProgram = PythonSupport::ET_PYTHON_ID;
+    dependencies << PythonSupport::ET_PYTHON_ID;
 
     validMessage = "peak2gene.py v";
     validationArguments << "--version";

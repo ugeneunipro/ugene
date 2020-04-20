@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -78,7 +78,7 @@ void BedtoolsIntersectTask::prepare() {
     }
 
     const QStringList args = getParameters();
-    ExternalToolRunTask* etTask = new ExternalToolRunTask(ET_BEDTOOLS, args, new BedtoolsIntersectLogParser(settings.out));
+    ExternalToolRunTask* etTask = new ExternalToolRunTask(BedtoolsSupport::ET_BEDTOOLS_ID, args, new BedtoolsIntersectLogParser(settings.out));
     setListenerForTask(etTask);
     addSubTask(etTask);
 }

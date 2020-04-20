@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,6 +65,7 @@ WorkflowProcessItem::WorkflowProcessItem(Actor* prc) : process(prc), hasBreakpoi
     currentStyle = getStyleByIdSafe(WorkflowSettings::defaultStyle());
     currentStyle->setVisible(true);
     createPorts();
+    connect(prc, SIGNAL(si_descriptionChanged()), SLOT(sl_descriptionChanged()));
 }
 
 WorkflowProcessItem::~WorkflowProcessItem()
@@ -140,6 +141,10 @@ void WorkflowProcessItem::sl_update() {
         pit->adaptOwnerShape();
     }
     update();
+}
+
+void WorkflowProcessItem::sl_descriptionChanged() {
+    setToolTip(process->getProto()->getDocumentation());
 }
 
 void WorkflowProcessItem::setStyle(StyleId s) {
@@ -573,13 +578,8 @@ void WorkflowPortItem::adaptOwnerShape() {
 void WorkflowPortItem::setOrientation(qreal angle) {
     qreal oldOrientation = orientation;
     orientation = angle;
-    bool snap2grid = WorkflowSettings::snap2Grid();
+
     if (ItemStyles::SIMPLE == currentStyle) {
-        // common algorithm works fine as well,
-        // but gives visible distortions when snapping to grid
-        if (snap2grid) {
-            angle = round(angle, ANGLE_STEP);
-        }
         angle = -angle;
         qreal x = R * qCos(angle * 2 * M_PI / 360);
         qreal y = R * qSin(angle * 2 * M_PI / 360);
@@ -592,7 +592,6 @@ void WorkflowPortItem::setOrientation(qreal angle) {
         QRectF rec = owner->boundingRect();
         QPolygonF pol(owner->shape().toFillPolygon());
         qreal radius = qMax(rec.width(), rec.height()) * 2;
-        //log.debug(QString("radius=%1 pol=%2").arg(radius).arg(pol.count()));
         QLineF centerLine(0,0,radius, 0);
         assert(pol.containsPoint(centerLine.p1(), Qt::WindingFill));
         assert(!pol.containsPoint(centerLine.p2(), Qt::WindingFill));
@@ -609,31 +608,13 @@ void WorkflowPortItem::setOrientation(qreal angle) {
             }
             p1 = p2;
         }
-        if (snap2grid && polyLine.p1().x() == polyLine.p2().x()) {
-            //vertical line, snap intersectPoint to grid
-            qreal v = round(intersectPoint.y(), GRID_STEP);
-            qreal min = qMin(polyLine.p1().y(), polyLine.p2().y());
-            qreal max = qMax(polyLine.p1().y(), polyLine.p2().y());
-            intersectPoint.setY(qBound(min, v, max));
-        }
-        if (snap2grid && polyLine.p1().y() == polyLine.p2().y()) {
-            //horizontal line, do the same
-            qreal v = round(intersectPoint.x(), GRID_STEP);
-            qreal min = qMin(polyLine.p1().x(), polyLine.p2().x());
-            qreal max = qMax(polyLine.p1().x(), polyLine.p2().x());
-            intersectPoint.setX(qBound(min, v, max));
-        }
 
         setTransform(QTransform::fromTranslate(intersectPoint.x(), intersectPoint.y()), true);
-        //qreal polyAngle = polyLine.angle();
         qreal norm = polyLine.normalVector().angle();
         qreal df = qAbs(norm - angle);
         if (df > 90 && df < 270) {
             norm += 180;
         }
-        //log.info(QString("centerLine=[%1,%2]->[%3,%4]").arg(centerLine.p1().x()).arg(centerLine.p1().y()).arg(centerLine.p2().x()).arg(centerLine.p2().y()));
-        //log.info(QString("polyLine=[%1,%2]->[%3,%4]").arg(polyLine.p1().x()).arg(polyLine.p1().y()).arg(polyLine.p2().x()).arg(polyLine.p2().y()));
-        //log.info(QString("a=%1 pa=%2 pn=%3 n=%4 df=%5").arg(angle).arg(polyAngle).arg(polyLine.normalVector().angle()).arg(norm).arg(df));
         setRotation(-norm);
     }
     if (oldOrientation != orientation) {

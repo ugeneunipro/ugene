@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,17 +24,17 @@
 
 #include <U2Core/ExternalToolRegistry.h>
 
-#define ET_BIGWIG "bigwig"
-#define GENOMES_DIR_NAME "genome_lengths"
-#define GENOMES_DATA_NAME "Genome files"
-
 namespace U2 {
 
 class BigWigSupport : public ExternalTool {
     Q_OBJECT
 public:
-    BigWigSupport(const QString& name, const QString& path = "");
+    BigWigSupport(const QString& id, const QString& name, const QString& path = "");
 
+    static const QString ET_BIGWIG;
+    static const QString ET_BIGWIG_ID;
+    static const QString GENOMES_DATA_NAME;
+    static const QString GENOMES_DIR_NAME;
 };
 
 }//namespace

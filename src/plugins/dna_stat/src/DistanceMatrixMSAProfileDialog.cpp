@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,6 +24,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QTextBrowser>
 
 #include <U2Algorithm/MSADistanceAlgorithm.h>
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
@@ -56,7 +57,7 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget* p, MSAEd
       ctx(_c),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "23331105");
+    new HelpButton(this, buttonBox, "24748884");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Generate"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -193,11 +194,12 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
             QString colors[] = { "#ff5555", "#ff9c00", "#60ff00", "#a1d1e5", "#dddddd" };
 
             //setup style
-            resultText = "<STYLE TYPE=\"text/css\"><!-- \n";
-            resultText += "table.tbl   {\n border-width: 1px;\n border-style: solid;\n border-spacing: 0;\n border-collapse: collapse;\n}\n";
-            resultText += "table.tbl td{\n max-width: 400px;\n min-width: 20px;\n text-align: center;\n border-width: 1px;\n ";
-            resultText += "border-style: solid;\n \n padding: 0 10px;\n}\n";
-            resultText += "--></STYLE>\n";
+            resultText = "<!DOCTYPE html>\n<html>\n<head>\n";
+            resultText += "<style>\n";
+            resultText += ".tbl {border-width: 1px; border-style: solid; border-spacing: 0; border-collapse: collapse;}\n";
+            resultText += ".tbl td {max-width: 400px; min-width: 20px; text-align: center; border-width: 1px; border-style: solid; padding: 0 10px;}\n";
+            resultText += "</style>\n";
+            resultText += "</head>\n<body>\n";
 
             //header
             resultText += "<h2>" + tr("Multiple Sequence Alignment Distance Matrix") + "</h2><br>\n";
@@ -220,7 +222,7 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
 
             resultText += "<br><br>\n";
 
-            if (true == s.showGroupStatistic) {
+            if (s.showGroupStatistic) {
                 resultText += "<tr><td><b>" + tr("Group statistics of multiple alignment") + "</td></tr>\n";
                 resultText += "<table>\n";
                 QVector<U2Region> unitedRows;
@@ -270,6 +272,7 @@ QList<Task*> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task* subTask) {
                 }
                 resultText += "</tr></table><br>\n";
             }
+            resultText += "</body>\n<html>\n";
         } else {
             f = new QFile(s.outURL);
             if (!f->open(QIODevice::Truncate | QIODevice::WriteOnly)) {
@@ -320,7 +323,15 @@ void DistanceMatrixMSAProfileTask::createDistanceTable(MSADistanceAlgorithm* alg
         return;
     }
 
-    resultText += "<table class=tbl>\n";
+    bool forIntervalViewer = s.outFormat == DistanceMatrixMSAProfileOutputFormat_Show;
+    if (forIntervalViewer) {
+        // Use of -1 for the cellspacing hides cell's border and makes
+        // the border style compatible with a standard CSS 'border-collapse: collapse' mode.
+        resultText += "<table class=tbl cellspacing=-1 cellpadding=0>\n";
+    } else {
+        resultText += "<table class=tbl>\n";
+    }
+
     resultText += "<tr><td></td>";
     for (int i=0; i < rows.size(); i++) {
         QString name = rows.at(i)->getName();
@@ -380,6 +391,10 @@ Task::ReportResult DistanceMatrixMSAProfileTask::report() {
     assert(!resultText.isEmpty());
     QString title = s.profileName.isEmpty() ? tr("Distance matrix") : tr("Distance matrix for %1").arg(s.profileName);
     WebWindow* w = new WebWindow(title, resultText);
+
+    // Qt 5.4 has a bug and does not process 'white-space: nowrap' correctly. Enforcing it using rich text styles.
+    w->textBrowser->setWordWrapMode(QTextOption::NoWrap);
+
     w->setWindowIcon(QIcon(":core/images/chart_bar.png"));
     AppContext::getMainWindow()->getMDIManager()->addMDIWindow(w);
     return Task::ReportResult_Finished;

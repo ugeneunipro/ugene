@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -53,9 +53,6 @@ public:
     static const QString WORK_ON_DISK_ATTR_ID;
     static const QString JELLYFISH_HASH_SIZE_ATTR_ID;
     static const QString THREADS_NUMBER_ATTR_ID;
-
-    static const QString BUILD_MODE_TEXT;
-    static const QString SHRINK_MODE_TEXT;
 };
 
 }   // namespace LocalWorkflow

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -61,7 +61,8 @@ const QString EMBLGenbankAbstractDocument::SEQ_LEN_WARNING_MESSAGE = QCoreApplic
 
 EMBLGenbankAbstractDocument::EMBLGenbankAbstractDocument(const DocumentFormatId& _id, const QString& _formatName, int mls,
     DocumentFormatFlags flags, QObject* p)
-    : TextDocumentFormat(p, flags), id(_id), formatName(_formatName), maxAnnotationLineLen(mls), savedInUgene(false) {
+    : TextDocumentFormat(p, _id, flags),  maxAnnotationLineLen(mls), savedInUgene(false) {
+    formatName = _formatName;
     supportedObjectTypes += GObjectTypes::ANNOTATION_TABLE;
     supportedObjectTypes += GObjectTypes::SEQUENCE;
 }
@@ -265,11 +266,10 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef& dbiRef, IOAdapter* io, QL
     CHECK_EXT(!objects.isEmpty() || merge, os.setError(Document::tr("Document is empty.")), );
     SAFE_POINT(contigs.size() == mergedMapping.size(), "contigs <-> regions mapping failed!", );
 
-    if (merge) {
-        writeLockReason = DocumentFormat::MERGED_SEQ_LOCK;
-    } else {
+    if (!merge) {
         return;
     }
+    writeLockReason = QObject::tr("Document sequences were merged");
 
     U2Sequence u2seq = seqImporter.finalizeSequenceAndValidate(os);
     dbiObjects.objects << u2seq.id;

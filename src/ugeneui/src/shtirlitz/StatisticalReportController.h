@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,27 +23,33 @@
 #define _U2_STATISTICAL_REPORT_CONTROLLER_H_
 
 #include <U2Gui/U2WebView.h>
+#include <QtWidgets/QTextBrowser>
 
 #include "ui_StatisticalReport.h"
 
 namespace U2 {
 
-class SimpleWebViewBasedWidgetController;
+/* HTML browser that autoresizes itself to fit HTML content with no scroll bars. */
+class ContentSizeHtmlViewer: public QTextBrowser {
+    Q_OBJECT
+public:
+    ContentSizeHtmlViewer(QWidget* parent, const QString& html);
+    virtual QSize sizeHint();
+
+public slots:
+    void sl_updateSize();
+};
 
 class StatisticalReportController : public QDialog, public Ui_StatisticalReport {
     Q_OBJECT
 public:
-    StatisticalReportController(const QString &newHtmlFilepath, QWidget *parent);
+    StatisticalReportController(const QString &htmlContent, QWidget *parent);
     bool isInfoSharingAccepted() const;
+    void resizeEvent( QResizeEvent* event );
 public slots:
     void accept();
-
-private slots:
-    void sl_pageReady();
-
 private:
-    U2WebView*   htmlView;
-    SimpleWebViewBasedWidgetController *htmlViewController;
+    ContentSizeHtmlViewer* htmlView;
 };
 
 }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -166,7 +166,7 @@ void ComposeResultSubTask::createAlignmentAndAnnotations() {
         DNAChromatogram readChromatogram = getReadChromatogram(i);
         CHECK_OP(stateInfo, );
 
-        result->addRow(subTask->getReadName(), readChromatogram, readSeq.seq);
+        result->addRow(subTask->getReadName(), readChromatogram, readSeq, U2MsaRowGapModel(), stateInfo);
         CHECK_OP(stateInfo, );
 
         if (subTask->isComplement()) {

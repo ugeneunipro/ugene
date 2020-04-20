@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,7 +49,7 @@ public:
 
     virtual ExternalToolRunTask* createBlastPlusTask() = 0;
 
-    static QString toolNameByProgram(const QString &program);
+    static QString toolIdByProgram(const QString &program);
 
 protected:
     BlastTaskSettings               settings;

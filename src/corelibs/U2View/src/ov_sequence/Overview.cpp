@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,6 +30,7 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceSelection.h>
+#include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GraphUtils.h>
@@ -40,6 +41,8 @@
 
 
 namespace U2 {
+
+const QString Overview::ANNOTATION_GRAPH_STATE = "sequenceViewSettings/annotationGraphState";
 
 Overview::Overview(ADVSingleSequenceWidget *p, ADVSequenceObjectContext *ctx)
     : GSequenceLineView(p, ctx),
@@ -55,6 +58,7 @@ Overview::Overview(ADVSingleSequenceWidget *p, ADVSequenceObjectContext *ctx)
     detView = p->getDetView();
 
     QAction* densityGraphAction = new QAction( QIcon(":core/images/sum.png"), "", this);
+    densityGraphAction->setObjectName("density_graph_action");
     densityGraphAction->setCheckable(true);
     densityGraphAction->setToolTip(tr("Toggle annotation density graph"));
     addActionToLocalToolbar(densityGraphAction);
@@ -71,6 +75,9 @@ Overview::Overview(ADVSingleSequenceWidget *p, ADVSequenceObjectContext *ctx)
         SLOT(sl_onAnnotationSettingsChanged(const QStringList &)));
 
     sl_visibleRangeChanged();
+    bool graphState = AppContext::getSettings()->getValue(ANNOTATION_GRAPH_STATE, QVariant(false)).toBool();
+    setGraphActionVisible(graphState);
+    densityGraphAction->setChecked(graphState);
     pack();
 }
 
@@ -140,9 +147,9 @@ void Overview::pack() {
 
 void Overview::sl_graphActionTriggered() {
     OverviewRenderArea* ra = qobject_cast<OverviewRenderArea*>(renderArea);
-    ra->showGraph = !ra->showGraph;
-    addUpdateFlags(GSLV_UF_NeedCompleteRedraw);
-    update();
+    SAFE_POINT(nullptr != ra, "OverviewRenderArea is nullptr", );
+
+    setGraphActionVisible(!ra->isGraphVisible());
 }
 
 void Overview::sl_visibleRangeChanged() {
@@ -351,7 +358,7 @@ QString Overview::createToolTip(QHelpEvent *he) {
     if(delta!=0) {
         tip+=".."+QString::number(pos+delta);
     }
-    if(ra->showGraph) {
+    if (ra->isGraphVisible()) {
         int density = ra->getAnnotationDensity(pos);
         for (int i=pos;i<=pos+delta;++i) {
             int nextPosDensity = ra->getAnnotationDensity(i);
@@ -382,6 +389,17 @@ void Overview::connectAnnotationTableObject(AnnotationTableObject *object) {
             SLOT(sl_annotationsModified(const QList<AnnotationModification> &)));
 }
 
+void Overview::setGraphActionVisible(const bool setVisible) {
+    OverviewRenderArea* ra = qobject_cast<OverviewRenderArea*>(renderArea);
+    SAFE_POINT(nullptr != ra, "OverviewRenderArea is nullptr", );
+    CHECK(ra->isGraphVisible() != setVisible, );
+
+    AppContext::getSettings()->setValue(ANNOTATION_GRAPH_STATE, QVariant(setVisible));
+    ra->setGraphVisibility(setVisible);
+    addUpdateFlags(GSLV_UF_NeedCompleteRedraw);
+    update();
+}
+
 //////////////////////////////////////////////////////////////////////////
 /// GlobalViewRenderArea
 #define ANNOTATION_GRAPH_HEIGHT 9
@@ -402,7 +420,7 @@ OverviewRenderArea::OverviewRenderArea(Overview *p)  : GSequenceLineViewRenderAr
     gradient.setColorAt(0.70, QColor( 0,   0,   0,   0));
     gradient.setColorAt(1.00, QColor( 0,   0,   0,  70));
     gradientMaskBrush = QBrush(gradient);
-    showGraph=false;
+    graphVisible = false;
 }
 
 const QRectF OverviewRenderArea::getPanSlider() const {
@@ -419,6 +437,14 @@ int OverviewRenderArea::getAnnotationDensity (int pos) const {
         return 0;
     }
     return annotationsOnPos.at(pos-1);
+}
+
+void OverviewRenderArea::setGraphVisibility(const bool isVisible) {
+    graphVisible = isVisible;
+}
+
+bool OverviewRenderArea::isGraphVisible() const {
+    return graphVisible;
 }
 
 void OverviewRenderArea::setAnnotationsOnPos() {
@@ -455,7 +481,7 @@ void OverviewRenderArea::drawAll(QPaintDevice *pd) {
     if(completeRedraw) {
         QPainter pCached(cachedView);
         pCached.fillRect(0, 0, pd->width(), pd->height(), Qt::white);
-        if(showGraph) {
+        if (graphVisible) {
             setAnnotationsOnPos();
             drawGraph(pCached);
         }
@@ -471,7 +497,7 @@ void OverviewRenderArea::drawAll(QPaintDevice *pd) {
 
     int panSliderHeight = pd->height()-PEN_WIDTH;
     int panSliderTop=0;
-    if(showGraph) {
+    if (graphVisible) {
         panSliderHeight-=ANNOTATION_GRAPH_HEIGHT;
         panSliderTop+=ANNOTATION_GRAPH_HEIGHT;
     }
@@ -536,7 +562,7 @@ void OverviewRenderArea::drawRuler(QPainter &p) {
         firstLastWidth--; // make the end of the ruler visible
     }
     GraphUtils::RulerConfig c;
-    if(showGraph) {
+    if (graphVisible) {
         c.singleSideNotches=true;
     }
     c.notchSize = RULER_NOTCH_SIZE;

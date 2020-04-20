@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -157,15 +157,6 @@ int MultipleAlignmentData::getNumRows() const {
     return rows.size();
 }
 
-U2MsaMapGapModel MultipleAlignmentData::getMapGapModel() const {
-    U2MsaMapGapModel mapGapModel;
-    U2MsaListGapModel listGapModel = getGapModel();
-    for (int i = 0; i < rows.size(); i++) {
-        mapGapModel[rows[i]->getRowId()] = listGapModel[i];
-    }
-    return mapGapModel;
-}
-
 U2MsaListGapModel MultipleAlignmentData::getGapModel() const {
     U2MsaListGapModel gapModel;
     const int length = getLength();
@@ -213,7 +204,7 @@ const MultipleAlignmentRow & MultipleAlignmentData::getRow(int rowIndex) const {
     static MultipleAlignmentRow emptyRow = getEmptyRow();
     int rowsCount = rows.count();
     SAFE_POINT(0 != rowsCount, "No rows", emptyRow);
-    SAFE_POINT(rowIndex >= 0 && (rowIndex < rowsCount), "Internal error: unexpected row index was passed to MAlignmnet::getRow", emptyRow);
+    SAFE_POINT(rowIndex >= 0 && (rowIndex < rowsCount), "Internal error: unexpected row index was passed to MAlignment::getRow", emptyRow);
     return rows[rowIndex];
 }
 
@@ -235,6 +226,15 @@ QList<qint64> MultipleAlignmentData::getRowsIds() const {
     QList<qint64> rowIds;
     foreach (const MultipleAlignmentRow &row, rows) {
         rowIds.append(row->getRowId());
+    }
+    return rowIds;
+}
+
+QList<qint64> MultipleAlignmentData::getRowIdsByRowIndexes(const QList<int>& rowIndexes) const {
+    QList<qint64> rowIds;
+    foreach (int rowIndex, rowIndexes) {
+        bool isValidRowIndex = rowIndex >= 0 && rowIndex < rows.size();
+        rowIds.append(isValidRowIndex ? rows[rowIndex]->getRowId() : -1);
     }
     return rowIds;
 }

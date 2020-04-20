@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,6 +24,10 @@
 
 #include "GUrl.h"
 #include "U2SafePoints.h"
+
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
 
 namespace U2 {
 
@@ -141,6 +145,26 @@ bool GUrl::operator ==(const GUrl& url) const {
 
 bool GUrl::operator !=(const GUrl& url) const {
     return !(*this == url);
+}
+
+// The function converts url string to multibyte form
+// default code page is CP_THREAD_ACP
+const char* GUrl::getURLStringAnsi(int codePage) const {
+#ifdef Q_OS_WIN
+    std::wstring wPath = getURLString().toStdWString();
+    codePage = codePage < 0 ? CP_THREAD_ACP : codePage;
+
+    DWORD buffSize = WideCharToMultiByte(codePage, 0, wPath.c_str(), -1, NULL, 0, NULL, NULL);
+    if (!buffSize)
+        return nullptr;
+    
+    char * buffer = new char[buffSize];
+    if (!WideCharToMultiByte(codePage, 0, wPath.c_str(), -1, buffer, buffSize, NULL, NULL))
+        return nullptr;
+    return (buffer);
+#else
+    return getURLString().toLocal8Bit().constData();
+#endif // Q_OS_WIN
 }
 
 static QString path(const GUrl* url) {

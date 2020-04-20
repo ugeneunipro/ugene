@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -756,7 +756,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026) {
     settings.start = 560;
     settings.end = 180;
     GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
-    GTWidget::click(os, wgt, Qt::RightButton);
+    GTWidget::click(os, GTWidget::findWidget(os, "det_view_Primers_DNA"), Qt::RightButton);
 
     GTGlobals::sleep();
 
@@ -1696,7 +1696,7 @@ GUI_TEST_CLASS_DEFINITION(test_0051){
 
     GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, 255, 0, 0));
     GTUtilsAnnotHighlightingTreeView::click(os, "CDS");
-    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(60, 0));
+    GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(90, 0));
     GTMouseDriver::click();
     GTGlobals::sleep(1000);
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,7 +37,6 @@
 #include <U2Gui/CreateAnnotationWidgetController.h>
 #include <U2Gui/HelpButton.h>
 
-#include "blast/BlastAllWorker.h"
 #include "blast_plus/BlastPlusWorker.h"
 
 #include "BlastRunCommonDialog.h"
@@ -53,18 +52,13 @@ BlastRunCommonDialog::BlastRunCommonDialog(QWidget *parent, BlastType blastType,
 : QDialog(parent), ca_c(NULL), useCompValues(useCompValues), compValues(compValues)
 {
     setupUi(this);
-    new HelpButton(this, buttonBox, "23331233");
+    new HelpButton(this, buttonBox, "24749012");
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Restore to default"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     QString hitsToolTip;
     switch (blastType) {
-        case BlastAll:
-            hitsLabel->setText(BlastAllWorkerFactory::getHitsName() + ":");
-            hitsToolTip = BlastAllWorkerFactory::getHitsDescription();
-            numberOfHitsSpinBox->setValue(100); // recommended -K value
-            break;
         case BlastPlus:
             hitsLabel->setText(BlastPlusWorkerFactory::getHitsName() + ":");
             hitsToolTip = BlastPlusWorkerFactory::getHitsDescription();

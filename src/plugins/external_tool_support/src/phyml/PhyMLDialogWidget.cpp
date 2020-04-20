@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -293,7 +293,7 @@ bool PhyMlWidget::checkSettings(QString &message, const CreatePhyTreeSettings &s
 
     //Check that PhyMl and tempory folder path defined
     ExternalToolRegistry* reg = AppContext::getExternalToolRegistry();
-    ExternalTool* phyml = reg->getByName(PhyMLSupport::PhyMlRegistryId);
+    ExternalTool* phyml = reg->getById(PhyMLSupport::PHYML_ID);
     SAFE_POINT(NULL != phyml, "External tool PHyML is not registered", false);
 
     const QString& path = phyml->getPath();

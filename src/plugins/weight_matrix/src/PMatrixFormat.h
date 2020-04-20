@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,19 +37,10 @@ class PFMatrixFormat : public DocumentFormat {
 public:
     PFMatrixFormat(QObject* p);
 
-    static const DocumentFormatId FORMAT_ID;
-
-    virtual DocumentFormatId getFormatId() const {return FORMAT_ID;}
-
-    virtual const QString& getFormatName() const {return formatName;}
-
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
 protected:
     virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
-
-private:
-    QString formatName;
 };
 
 class PFMatrixViewFactory : public GObjectViewFactory {
@@ -76,19 +67,10 @@ class PWMatrixFormat : public DocumentFormat {
 public:
     PWMatrixFormat(QObject* p);
 
-    static const DocumentFormatId FORMAT_ID;
-
-    virtual DocumentFormatId getFormatId() const {return FORMAT_ID;}
-
-    virtual const QString& getFormatName() const {return formatName;}
-
     virtual FormatCheckResult checkRawData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
 protected:
     virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
-
-private:
-    QString formatName;
 };
 
 class PWMatrixViewFactory : public GObjectViewFactory {

@@ -4,36 +4,39 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/CredentialsAskerCli.cpp" line="87"/>
+        <location filename="../src/CredentialsAskerCli.cpp" line="126"/>
         <source>Enter password: </source>
         <translation>Пароль: </translation>
     </message>
     <message>
-        <location filename="../src/CredentialsAskerCli.cpp" line="88"/>
+        <location filename="../src/CredentialsAskerCli.cpp" line="178"/>
         <source>Enter user name: </source>
         <translation>Имя пользователя: </translation>
     </message>
     <message>
-        <location filename="../src/CredentialsAskerCli.cpp" line="90"/>
+        <location filename="../src/CredentialsAskerCli.cpp" line="160"/>
+        <location filename="../src/CredentialsAskerCli.cpp" line="185"/>
         <source>Would you like UGENE to remember the password?</source>
         <translation>Запомнить пароль?</translation>
     </message>
     <message>
-        <location filename="../src/CredentialsAskerCli.cpp" line="91"/>
+        <location filename="../src/CredentialsAskerCli.cpp" line="156"/>
+        <location filename="../src/CredentialsAskerCli.cpp" line="172"/>
         <source>Connect to the &apos;%1&apos; ...
 </source>
         <translation>Подключение к &apos;%1&apos; ...
 </translation>
     </message>
     <message>
-        <location filename="../src/CredentialsAskerCli.cpp" line="92"/>
+        <location filename="../src/CredentialsAskerCli.cpp" line="157"/>
+        <location filename="../src/CredentialsAskerCli.cpp" line="173"/>
         <source>You are going to log in as &apos;%1&apos;.
 </source>
         <translation>Вы собираетесь войти как &apos;%1&apos;.
 </translation>
     </message>
     <message>
-        <location filename="../src/CredentialsAskerCli.cpp" line="93"/>
+        <location filename="../src/CredentialsAskerCli.cpp" line="174"/>
         <source>Would you like to log in as another user?</source>
         <translation>Хотите войти под другим пользователем?</translation>
     </message>
@@ -177,7 +180,7 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::DocumentFormatRegistryImpl</name>
     <message>
-        <location filename="../src/DocumentFormatRegistryImpl.cpp" line="233"/>
+        <location filename="../src/DocumentFormatRegistryImpl.cpp" line="237"/>
         <source>UGENE Database</source>
         <translation>База данных UGENE</translation>
     </message>
@@ -216,10 +219,6 @@ By default, loglevel=&quot;ERROR&quot;.</source>
         <location filename="../src/PluginSupportImpl.cpp" line="81"/>
         <source>Loading start up plugins</source>
         <translation>Загрузка подключаемых модулей</translation>
-    </message>
-    <message>
-        <source>Problem occurred loading the OpenCL driver. Please try to update drivers if                                    you&apos;re going to make calculations on your video card. For details see this page:                                    &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</source>
-        <translation type="vanished">Problem occurred loading the OpenCL driver. Please try to update drivers if                                    you&apos;re going to make calculations on your video card. For details see this page:                                    &lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/PluginSupportImpl.cpp" line="113"/>
@@ -330,120 +329,120 @@ By default, loglevel=&quot;ERROR&quot;.</source>
     <name>U2::TaskSchedulerImpl</name>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="82"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="681"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="693"/>
         <source>New</source>
         <translation>Новая</translation>
     </message>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="82"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="683"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="695"/>
         <source>Prepared</source>
         <translation>Инициализирована</translation>
     </message>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="82"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="685"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="697"/>
         <source>Running</source>
         <translation>Выполняется</translation>
     </message>
     <message>
         <location filename="../src/TaskSchedulerImpl.cpp" line="82"/>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="687"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="699"/>
         <source>Finished</source>
         <translation>Завершена</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="101"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="102"/>
         <source>Canceling task: %1</source>
         <translation>Отменяется задача &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="118"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="119"/>
         <source>There is not enough memory to finish the task.</source>
         <translation>There is not enough memory to finish the task.</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="140"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="141"/>
         <source>Subtask {%1} is failed: %2</source>
         <translation>Подзадача {%1} завершена с ошибкой: %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="379"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="380"/>
         <source>Waiting for resource &apos;%1&apos;, count: %2</source>
         <translation>Ожидание ресурса &quot;%1&quot;, требуется: %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="402"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="403"/>
         <source>Not enough resources for the task, resource name: &apos;%1&apos; max: %2%3 requested: %4%5</source>
         <translation>Не достаточно ресурсов для выполнения задачи: &apos;%1&apos; макс: %2%3	запрошено: %4%5</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="410"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="411"/>
         <source>Waiting for resource &apos;%1&apos;, count: %2%3</source>
         <translation>Ожидание ресурса &quot;%1&quot;, требуется: %2%3</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="543"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="544"/>
         <source>Registering new task: %1</source>
         <translation>Добавлена задача &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="690"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="702"/>
         <source>Invalid name</source>
         <translation>Неизвестное состояние</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="914"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="926"/>
         <source>Deleting task: %1</source>
         <translation>Удаляется задача &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="764"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="776"/>
         <source>Promoting task {%1} to &apos;%2&apos;</source>
         <translation>Задача {%1} %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="132"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="133"/>
         <source>Subtask {%1} is canceled %2</source>
         <translation>Подзадача {%1} отменена %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="394"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="395"/>
         <source>No required resources for the task, resource id: &apos;%1&apos;</source>
         <translation>No required resources for the task, resource id: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="395"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="396"/>
         <source>Unable to run test because required resource not found</source>
         <translation>Unable to run test because required resource not found</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="605"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="610"/>
         <source>Unregistering task: %1</source>
         <translation>Незарегистрированная задача: %1</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="766"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="778"/>
         <source>Promoting task {%1} to &apos;%2&apos;, error &apos;%3&apos;</source>
         <translation>Задача {%1} %2; ошибка: %3</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="776"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="788"/>
         <source>Starting {%1} task</source>
         <translation>Старт задачи {%1}</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="804"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="816"/>
         <source>Task {%1} finished with error: %2</source>
         <translation>Задача {%1} завершена с ошибкой: %2</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="808"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="820"/>
         <source>Task {%1} canceled</source>
         <translation>Отменяется задача {%1}</translation>
     </message>
     <message>
-        <location filename="../src/TaskSchedulerImpl.cpp" line="811"/>
+        <location filename="../src/TaskSchedulerImpl.cpp" line="823"/>
         <source>Task {%1} finished</source>
         <translation>Задача {%1} завершена</translation>
     </message>

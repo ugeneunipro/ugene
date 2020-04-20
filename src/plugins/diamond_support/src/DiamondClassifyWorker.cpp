@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,7 +38,7 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-const QString DiamondClassifyWorker::DIAMOND_DIR = "diamond";
+const QString DiamondClassifyWorker::DIAMOND_DIR = "DIAMOND";
 
 DiamondClassifyWorker::DiamondClassifyWorker(Actor *actor)
     : BaseWorker(actor, false),

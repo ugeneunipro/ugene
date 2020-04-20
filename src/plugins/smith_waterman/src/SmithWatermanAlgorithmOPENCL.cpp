@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -114,7 +114,7 @@ int SmithWatermanAlgorithmOPENCL::calcOverlap(int queryLength) {
 //number of parts of the sequence which we divide
 int SmithWatermanAlgorithmOPENCL::calcPartsNumber(int searchLen, int overlapLength) {
     if(0 == MAX_BLOCKS_NUMBER) {
-        MAX_BLOCKS_NUMBER = AppContext::getOpenCLGpuRegistry()->getAnyEnabledGpu()->getMaxComputeUnits();
+        MAX_BLOCKS_NUMBER = AppContext::getOpenCLGpuRegistry()->getEnabledGpu()->getMaxComputeUnits();
     }
 
     int partsNumber = (searchLen + overlapLength - 1) / overlapLength;
@@ -177,7 +177,7 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix& sm, const QByteArray & 
     cl_int err = CL_SUCCESS;
 
     cl_uint clNumDevices = 1;
-    cl_device_id deviceId = (cl_device_id) AppContext::getOpenCLGpuRegistry()->getAnyEnabledGpu()->getId();
+    cl_device_id deviceId = (cl_device_id) AppContext::getOpenCLGpuRegistry()->getEnabledGpu()->getId();
 
     const OpenCLHelper* openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
     SAFE_POINT(NULL != openCLHelper, "OpenCL support plugin does not loaded", );
@@ -418,6 +418,9 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix& sm, const QByteArray & 
     //************end: set arguments****************
 
     clCommandQueue = openCLHelper->clCreateCommandQueue_p(clContext, deviceId, CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, &err);
+    if (CL_INVALID_QUEUE_PROPERTIES == err) {//device doesn't support the CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE property, so let's try to run without it
+        clCommandQueue = openCLHelper->clCreateCommandQueue_p(clContext, deviceId, NULL, &err);
+    }
     if (hasOPENCLError(err, "cl::CommandQueue() failed ")) return;
 
     coreLog.details(QObject::tr("OPENCL: Running CL program"));

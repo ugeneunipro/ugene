@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@ WevoteSupportPlugin::WevoteSupportPlugin()
 WevoteSupportPlugin::~WevoteSupportPlugin() {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     CHECK(NULL != etRegistry, );
-    etRegistry->unregisterEntry(WevoteSupport::TOOL_NAME);
+    etRegistry->unregisterEntry(WevoteSupport::TOOL_ID);
 }
 
 }   // namespace U2

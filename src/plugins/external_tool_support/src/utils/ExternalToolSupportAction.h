@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,10 +30,10 @@ namespace U2 {
 class ExternalToolSupportAction : public GObjectViewAction {
     Q_OBJECT
 public:
-    ExternalToolSupportAction(QObject* p, GObjectView* v, const QString& _text, int order, const QStringList& _toolNames);
-    ExternalToolSupportAction(const QString& text, QObject* p, const QStringList& _toolNames);
+    ExternalToolSupportAction(QObject* p, GObjectView* v, const QString& _text, int order, const QStringList& _toolIds);
+    ExternalToolSupportAction(const QString& text, QObject* p, const QStringList& _toolIds);
 
-    const QStringList getToolNames() const {return toolNames;}
+    const QStringList getToolIds() const {return toolIds;}
 
 private slots:
     void sl_pathChanged();
@@ -43,7 +43,7 @@ private:
     bool checkTools(bool connectSignals = false);
     void setState(bool isAnyToolConfigured);
 
-    QStringList toolNames;
+    QStringList toolIds;
 };
 
 }//namespace

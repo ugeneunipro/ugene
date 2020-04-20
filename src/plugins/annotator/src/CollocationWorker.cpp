@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,25 +21,18 @@
 
 #include <QScopedPointer>
 
-#include <U2Lang/IntegralBusModel.h>
-#include <U2Lang/WorkflowEnv.h>
-#include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Core/DNATranslation.h>
+#include <U2Core/Log.h>
 #include <U2Core/QVariantUtils.h>
+
+#include <U2Designer/DelegateEditors.h>
+
+#include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseTypes.h>
 #include <U2Lang/BaseSlots.h>
 #include <U2Lang/BasePorts.h>
 #include <U2Lang/BaseActorCategories.h>
-#include <U2Designer/DelegateEditors.h>
-#include <U2Lang/CoreLibConstants.h>
-
-#include <U2Core/AnnotationTableObject.h>
-#include <U2Core/DNASequence.h>
-#include <U2Core/DNASequenceObject.h>
-#include <U2Core/DNATranslation.h>
-#include <U2Core/DNAAlphabet.h>
-#include <U2Core/AppContext.h>
-#include <U2Core/Log.h>
-#include <U2Core/U2SafePoints.h>
+#include <U2Lang/WorkflowEnv.h>
 
 #include "CollocationsSearchAlgorithm.h"
 #include "CollocationsDialogController.h"
@@ -50,15 +43,20 @@
 namespace U2 {
 namespace LocalWorkflow {
 
-#define NAME_ATTR "result-name"
-#define ANN_ATTR "annotations"
-#define LEN_ATTR "region-size"
-#define FIT_ATTR "must-fit"
-#define TYPE_ATTR "result-type"
-#define INC_BOUNDARY_ATTR "include-boundary"
+static const QString NAME_ATTR("result-name");
+static const QString ANN_ATTR("annotations");
+static const QString LEN_ATTR("region-size");
+static const QString FIT_ATTR("must-fit");
+static const QString TYPE_ATTR("result-type");
+static const QString INC_BOUNDARY_ATTR("include-boundary");
 
-#define COPY_TYPE_ATTR "copy";
-#define NEW_TYPE_ATTR "annotate"
+static const QString COPY_TYPE_ATTR("copy");
+static const QString NEW_TYPE_ATTR("annotate");
+
+const QString SEQ_SLOT = BaseSlots::DNA_SEQUENCE_SLOT().getId();
+const QString FEATURE_TABLE_SLOT = BaseSlots::ANNOTATION_TABLE_SLOT().getId();
+
+const QString CollocationWorkerFactory::ACTOR_ID("collocated-annotation-search");
 
 class CollocationValidator : public ConfigurationValidator {
 public:
@@ -108,7 +106,7 @@ void CollocationWorkerFactory::init() {
         Descriptor id(INC_BOUNDARY_ATTR, CollocationWorker::tr("Include boundaries"),
             CollocationWorker::tr("Include most left and most right boundary annotations regions into result or exclude them."));
         Attribute *nameAttr = new Attribute(nd, BaseTypes::STRING_TYPE(), true, QVariant("misc_feature"));
-        Attribute *typeAttr = new Attribute(td, BaseTypes::STRING_TYPE(), false, QVariant(NEW_TYPE_ATTR));
+        Attribute *typeAttr = new Attribute(td, BaseTypes::STRING_TYPE(), false, NEW_TYPE_ATTR);
         Attribute *boundAttr = new Attribute(id, BaseTypes::BOOL_TYPE(), false, true);
         a << typeAttr;
         a << nameAttr;
@@ -121,8 +119,7 @@ void CollocationWorkerFactory::init() {
         boundAttr->addRelation(new VisibilityRelation(TYPE_ATTR, NEW_TYPE_ATTR));
     }
 
-    CollocationWorkerFactory* factory = new CollocationWorkerFactory();
-    Descriptor desc(factory->getId(), CollocationWorker::tr("Collocation Search"),
+    Descriptor desc(ACTOR_ID, CollocationWorker::tr("Collocation Search"),
         CollocationWorker::tr("Finds groups of specified annotations in each supplied set of annotations, stores found regions as annotations."));
     ActorPrototype* proto = new IntegralBusActorPrototype(desc, p, a);
     QMap<QString, PropertyDelegate*> delegates;
@@ -144,14 +141,14 @@ void CollocationWorkerFactory::init() {
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_BASIC(), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
-    localDomain->registerEntry(factory);
+    localDomain->registerEntry(new CollocationWorkerFactory());
 }
 
 QString CollocationPrompter::composeRichDoc() {
     IntegralBusPort* input = qobject_cast<IntegralBusPort*>(target->getPort(BasePorts::IN_SEQ_PORT_ID()));
-    Actor* seqProducer = input->getProducer(BaseSlots::DNA_SEQUENCE_SLOT().getId());
+    Actor* seqProducer = input->getProducer(SEQ_SLOT);
     QString seqName = seqProducer ? tr(" sequence from <u>%1</u>").arg(seqProducer->getLabel()) : "";
-    QString annName = getProducers(BasePorts::IN_SEQ_PORT_ID(), BaseSlots::ANNOTATION_TABLE_SLOT().getId());
+    QString annName = getProducers(BasePorts::IN_SEQ_PORT_ID(), FEATURE_TABLE_SLOT);
     if (!annName.isEmpty()) {
         annName = tr(" set of annotations from <u>%1</u>").arg(annName);
     }
@@ -219,12 +216,12 @@ Task* CollocationWorker::tick() {
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
         CHECK(NULL != seqObj.data(), NULL);
 
-        const QList<SharedAnnotationData> atl = StorageUtils::getAnnotationTable(context->getDataStorage(), qm.value(BaseSlots::ANNOTATION_TABLE_SLOT().getId()));
+        const QList<SharedAnnotationData> atl = StorageUtils::getAnnotationTable(context->getDataStorage(), qm.value(FEATURE_TABLE_SLOT));
 
         qint64 seqLength = seqObj->getSequenceLength();
         if ((0 != seqLength) && !atl.isEmpty()) {
             cfg.searchRegion.length = seqLength;
-            bool keepSourceAnns = resultType == COPY_TYPE_ATTR;
+            bool keepSourceAnns = (COPY_TYPE_ATTR == resultType);
             Task* t = new CollocationSearchTask(atl, names, cfg, keepSourceAnns);
             connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
             return t;

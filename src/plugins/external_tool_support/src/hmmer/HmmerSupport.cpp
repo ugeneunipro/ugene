@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,11 +49,14 @@
 namespace U2 {
 
 const QString HmmerSupport::BUILD_TOOL = "HMMER build";
+const QString HmmerSupport::BUILD_TOOL_ID = "USUPP_HMMBUILD";
 const QString HmmerSupport::SEARCH_TOOL = "HMMER search";
+const QString HmmerSupport::SEARCH_TOOL_ID = "USUPP_HMMSEARCH";
 const QString HmmerSupport::PHMMER_TOOL = "PHMMER search";
+const QString HmmerSupport::PHMMER_TOOL_ID = "USUPP_PHMMER";
 
-HmmerSupport::HmmerSupport(const QString &name)
-    : ExternalTool(name)
+HmmerSupport::HmmerSupport(const QString& id, const QString &name)
+    : ExternalTool(id, name, "")
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -64,15 +67,15 @@ HmmerSupport::HmmerSupport(const QString &name)
     toolKitName = "HMMER";
     versionRegExp = QRegExp("HMMER (\\d+.\\d+.\\d+\\w?)");
 
-    if (name == BUILD_TOOL) {
+    if (id == BUILD_TOOL_ID) {
         initBuild();
     }
 
-    if (name == SEARCH_TOOL) {
+    if (id == SEARCH_TOOL_ID) {
         initSearch();
     }
 
-    if (name == PHMMER_TOOL) {
+    if (id == PHMMER_TOOL_ID) {
         initPhmmer();
     }
 }

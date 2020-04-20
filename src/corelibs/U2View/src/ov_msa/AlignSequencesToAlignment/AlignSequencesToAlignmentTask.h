@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -91,7 +91,7 @@ public:
     const SequenceObjectsExtractor& getExtractor() const;
 
 private:
-    const DNAAlphabet* msaAlphabet;
+    const DNAAlphabet*          msaAlphabet;
     QStringList                 urls;
 
     SequenceObjectsExtractor    extractor;
@@ -104,7 +104,7 @@ private:
 class AlignSequencesToAlignmentTask : public Task {
     Q_OBJECT
 public:
-    AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject* obj, const SequenceObjectsExtractor& extractor);
+    AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject* obj, const SequenceObjectsExtractor& extractor, bool forceUseUgeneNativeAligner = false);
     void prepare();
     ReportResult report();
 private:
@@ -124,13 +124,17 @@ private:
 class LoadSequencesAndAlignToAlignmentTask : public Task {
     Q_OBJECT
 public:
-    LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QStringList& urls);
+    LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject* obj, const QStringList& urls, bool forceUseUgeneNativeAligner = false);
 
-    QList<Task*> onSubTaskFinished(Task* subTask);
+    void prepare() override;
+    QList<Task*> onSubTaskFinished(Task* subTask) override;
+    bool propagateSubtaskError() override;
+
 private:
     QStringList                 urls;
     QPointer<MultipleSequenceAlignmentObject>  maObj;
     LoadSequencesTask*  loadSequencesTask;
+    bool forceUseUgeneNativeAligner;
 };
 
 }// namespace

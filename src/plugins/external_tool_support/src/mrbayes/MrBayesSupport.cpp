@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,7 +38,11 @@
 
 namespace U2 {
 
-MrBayesSupport::MrBayesSupport(const QString& name, const QString& path) : ExternalTool(name, path)
+const QString MrBayesSupport::ET_MRBAYES = "MrBayes";
+const QString MrBayesSupport::ET_MRBAYES_ID = "USUPP_MRBAYES";
+const QString MrBayesSupport::MRBAYES_TMP_DIR ="mrbayes";
+
+MrBayesSupport::MrBayesSupport(const QString& id, const QString& name, const QString& path) : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/mrbayes.png");

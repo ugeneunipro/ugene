@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -90,7 +90,7 @@ void HmmerBuildWorkerFactory::init() {
     proto->setEditor(new DelegateEditor(delegates));
     proto->setIconPath(":/external_tool_support/images/hmmer.png");
     proto->setPrompter(new HmmerBuildPrompter());
-    proto->addExternalTool(HmmerSupport::BUILD_TOOL);
+    proto->addExternalTool(HmmerSupport::BUILD_TOOL_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(Descriptor("hmmer3", HmmerBuildWorker::tr("HMMER3 Tools"), ""), proto);
 
     DomainFactory* localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -114,7 +114,7 @@ void SplashScreenWidget::getTask(){
         Task* topLevelTask = tasks.at(0);
         task = topLevelTask->getTaskName();
 
-        QList<Task*> subtasks = topLevelTask->getSubtasks();
+        QList<QPointer<Task> > subtasks = topLevelTask->getSubtasks();
         if(subtasks.size() > 0){
             task = subtasks.at(0)->getTaskName();
         }
@@ -160,7 +160,11 @@ void SplashScreenWidget::drawInfo(){
     font.setPixelSize(VERSION_HEIGHT_PX);
     p.setFont( font );
     p.setPen(QColor(0, 46, 59));
-    QString text = tr("Version ") + version + tr(" is loading");
+    QString versionSign = version.right(version.indexOf(".")).toInt() == 0 ? version.left(version.indexOf(".")) : version;
+    if (version.contains("-dev")) {
+        versionSign += "-dev";
+    }
+    QString text = tr("Version ") + versionSign + tr(" is loading");
     for (int i = 0; i < dots_number; i++) {
         text.append(".");
     }

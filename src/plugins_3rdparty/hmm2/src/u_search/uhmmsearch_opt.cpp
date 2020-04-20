@@ -16,8 +16,6 @@
 #define ALIGNED(ptr, base) ( (unsigned char*) ( (((quintptr)(ptr))+((base)-1)) &~((base-1)) ) )
 #define ALIGNED_16(ptr)    ( ALIGNED(ptr, 16) )
 
-//static U2::Logger hmm_log( U2::UHMMSearch::tr("UHMMER log") );
-
 namespace {
 //returns aligned pointer.
 unsigned char * DigitizeSequenceHP( const unsigned char * seq, int L, const unsigned char * mem, int align_base )

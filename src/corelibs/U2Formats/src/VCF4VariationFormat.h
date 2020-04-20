@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,8 +31,6 @@ class U2FORMATS_EXPORT VCF4VariationFormat : public AbstractVariationFormat {
     Q_OBJECT
 public:
     VCF4VariationFormat(QObject *p);
-
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::VCF4;}
 
 protected:
     virtual bool checkFormatByColumnCount(int columnCount) const;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -166,7 +166,7 @@ QList<Task*> MafftAddToAlignmentTask::onSubTaskFinished(Task* subTask) {
         QString outputUrl = resultFilePath + ".out.fa";
 
         logParser = new MAFFTLogParser(inputMsa->getNumRows(), 1, outputUrl);
-        mafftTask = new ExternalToolRunTask(ET_MAFFT, arguments, logParser);
+        mafftTask = new ExternalToolRunTask(MAFFTSupport::ET_MAFFT_ID, arguments, logParser);
         mafftTask->setStandartOutputFile(resultFilePath);
         mafftTask->setSubtaskProgressWeight(65);
         subTasks.append(mafftTask);
@@ -174,12 +174,12 @@ QList<Task*> MafftAddToAlignmentTask::onSubTaskFinished(Task* subTask) {
         SAFE_POINT(logParser != NULL, "logParser is null", subTasks);
         logParser->cleanup();
         if (!QFileInfo(resultFilePath).exists()) {
-            if (AppContext::getExternalToolRegistry()->getByName(ET_MAFFT)->isValid()){
+            if (AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->isValid()){
                 stateInfo.setError(tr("Output file '%1' not found").arg(resultFilePath));
             } else {
                 stateInfo.setError(tr("Output file '%3' not found. May be %1 tool path '%2' not valid?")
-                    .arg(AppContext::getExternalToolRegistry()->getByName(ET_MAFFT)->getName())
-                    .arg(AppContext::getExternalToolRegistry()->getByName(ET_MAFFT)->getPath())
+                    .arg(AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->getName())
+                    .arg(AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->getPath())
                     .arg(resultFilePath));
             }
             return subTasks;
@@ -210,21 +210,30 @@ void MafftAddToAlignmentTask::run() {
 
     int posInMsa = 0;
     int objectsCount = tmpDoc->getObjects().count();
+    bool hasDbiUpdates = false;
 
-    dbi->updateMsaAlphabet(settings.msaRef.entityId, settings.alphabet, stateInfo);
+    U2AlphabetId currentAlphabet = dbi->getMsaAlphabet(settings.msaRef.entityId, stateInfo);
     CHECK_OP(stateInfo, );
+
+    if (currentAlphabet != settings.alphabet) {
+        hasDbiUpdates = true;
+        dbi->updateMsaAlphabet(settings.msaRef.entityId, settings.alphabet, stateInfo);
+        CHECK_OP(stateInfo, );
+    }
     QMap<QString, qint64> uniqueNamesToIds;
     foreach (const MultipleSequenceAlignmentRow& refRow, inputMsa->getMsaRows()) {
         uniqueNamesToIds[refRow->getName()] = refRow->getRowId();
     }
 
     bool additionalModificationPerformed = false;
+    QStringList unalignedSequences;
     foreach(GObject* object, tmpDoc->getObjects()) {
         if (hasError() || isCanceled()) {
             return;
         }
         stateInfo.setProgress(70 + 30 * posInMsa / objectsCount);
         U2SequenceObject* sequenceObject = qobject_cast<U2SequenceObject*>(object);
+        bool rowWasAdded = true;
         if (!rowNames.contains(sequenceObject->getSequenceName())) {
             //inserting new rows
             sequenceObject->setGObjectName(uniqueIdsToNames[sequenceObject->getGObjectName()]);
@@ -232,6 +241,7 @@ void MafftAddToAlignmentTask::run() {
 
             U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
 
+            rowWasAdded = row.length != 0;
             if (row.length - MsaRowUtils::getGapsLength(row.gaps) <= UNBREAKABLE_SEQUENCE_LENGTH_LIMIT) {
                 if (MsaRowUtils::hasLeadingGaps(row.gaps)) {
                     row.gaps = row.gaps.mid(0, 1);
@@ -241,30 +251,52 @@ void MafftAddToAlignmentTask::run() {
                 additionalModificationPerformed = true;
             }
 
-            dbi->addRow(settings.msaRef.entityId, posInMsa, row, stateInfo);
-            CHECK_OP(stateInfo, );
+            if (rowWasAdded) {
+                hasDbiUpdates = true;
+                dbi->addRow(settings.msaRef.entityId, posInMsa, row, stateInfo);
+                CHECK_OP(stateInfo, );
+            } else {
+                unalignedSequences << object->getGObjectName();
+            }
         } else {
             //maybe need add leading gaps to original rows
             U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, settings.msaRef.dbiRef, stateInfo);
             qint64 rowId = uniqueNamesToIds.value(sequenceObject->getSequenceName(), -1);
-            if (rowId == -1){
+            if (rowId == -1) {
                 stateInfo.setError(tr("Row for updating doesn't found"));
                 CHECK_OP(stateInfo, );
             }
 
-            dbi->updateGapModel(settings.msaRef.entityId, rowId, row.gaps, stateInfo);
+            U2MsaRow currentRow = dbi->getRow(settings.msaRef.entityId, rowId, stateInfo);
             CHECK_OP(stateInfo, );
+            U2MsaRowGapModel modelToChop(currentRow.gaps);
+            MsaRowUtils::chopGapModel(modelToChop, row.length);
+
+            if (modelToChop != row.gaps) {
+                hasDbiUpdates = true;
+                dbi->updateGapModel(settings.msaRef.entityId, rowId, row.gaps, stateInfo);
+                CHECK_OP(stateInfo, );
+            }
         }
 
         if (additionalModificationPerformed) {
             algoLog.info(tr("Additional enhancement of short sequences alignment performed"));
         }
 
-        posInMsa++;
+        if (rowWasAdded) {
+            posInMsa++;
+        }
     }
 
-    MsaDbiUtils::trim(settings.msaRef, stateInfo);
-    CHECK_OP(stateInfo, );
+    if (!unalignedSequences.isEmpty()) {
+        stateInfo.addWarning(tr("The following sequence(s) were not aligned as they do not contain meaningful characters: \"%1\".")
+                                .arg(unalignedSequences.join("\", \"")));
+    }
+
+    if (hasDbiUpdates) {
+        MsaDbiUtils::trim(settings.msaRef, stateInfo);
+        CHECK_OP(stateInfo, );
+    }
 
     if (hasError()) {
         return;
@@ -301,7 +333,7 @@ AlignmentAlgorithm(AddToAlignment, BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_T
 }
 
 bool MafftAddToAligmnentAlgorithm::isAlgorithmAvailable() const {
-    return AppContext::getExternalToolRegistry()->getByName("MAFFT")->isValid();
+    return AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->isValid();
 }
 
 }

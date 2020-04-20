@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -673,10 +673,11 @@ void CallVariantsWorkerFactory::init() {
 
     proto->setPortValidator(BasePorts::IN_ASSEMBLY_PORT_ID(), new EmptySlotValidator(BaseSlots::URL_SLOT().getId()));
     proto->setPortValidator(BasePorts::IN_SEQ_PORT_ID(), new EmptySlotValidator(BaseSlots::URL_SLOT().getId()));
-    proto->addExternalTool("SAMtools");
-    proto->addExternalTool("BCFtools");
-    proto->addExternalTool("perl");
-    proto->addExternalTool("vcfutils");
+    //no way to include tool support files, so ids passed to functions manually
+    proto->addExternalTool("USUPP_SAMTOOLS");//SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID
+    proto->addExternalTool("USUPP_BCFTOOLS");//BcfToolsSupport::ET_BCFTOOLS_ID
+    proto->addExternalTool("USUPP_PERL");//PerlSupport::ET_PERL_ID
+    proto->addExternalTool("USUPP_VCF_CONSENSUS");//VcfConsensusSupport::ET_VCF_CONSENSUS_ID
 
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_VARIATION_ANALYSIS(), proto);
 

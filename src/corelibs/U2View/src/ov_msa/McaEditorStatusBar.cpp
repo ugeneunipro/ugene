@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -46,6 +46,7 @@ McaEditorStatusBar::McaEditorStatusBar(MultipleAlignmentObject* mobj,
       nameList(nameList)
 {
     setObjectName("mca_editor_status_bar");
+    setStatusBarStyle();
 
     colomnLabel->setPatterns(tr("RefPos %1 / %2"),
                              tr("Reference position %1 of %2"));

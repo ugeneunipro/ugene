@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,8 +28,9 @@
 #include <U2Core/DNASequence.h>
 #include <U2Core/GUrl.h>
 
-namespace U2 {
+using RegionsPair = QPair<U2::U2Region, U2::U2Region>;
 
+namespace U2 {
 class DNAAlphabet;
 class Document;
 class AnnotationTableObject;
@@ -43,9 +44,10 @@ public:
     AnnotatedRegion();
     AnnotatedRegion(Annotation *annotation, int regionIdx);
     AnnotatedRegion(const AnnotatedRegion &annRegion);
+
 public:
-    Annotation * annotation;
-    int          regionIdx;
+    Annotation *annotation;
+    int regionIdx;
 };
 
 /**
@@ -53,7 +55,6 @@ public:
  */
 class U2CORE_EXPORT U1AnnotationUtils {
 public:
-
     enum AnnotationStrategyForResize {
         AnnotationStrategyForResize_Resize = 0,
         AnnotationStrategyForResize_Remove = 1,
@@ -67,8 +68,7 @@ public:
      * The returned list contains set of regions. Each set is per 1 annotation.
      * If specified strategy is 'remove', removes all locations which intersect the modified region or fall inside it.
      */
-    static QList<QVector<U2Region> > fixLocationsForReplacedRegion(const U2Region &region2Remove, qint64 region2InsertLength,
-        const QVector<U2Region> &originalLoc, AnnotationStrategyForResize s);
+    static QList<QVector<U2Region>> fixLocationsForReplacedRegion(const U2Region &region2Remove, qint64 region2InsertLength, const QVector<U2Region> &originalLoc, AnnotationStrategyForResize s);
     /**
      * Returns translation frame[0,1,2] the region is placed on
      */
@@ -83,15 +83,13 @@ public:
      * If an annotation is placed from some symbol till the end of the sequence
      * then @isUnfinishedRegion == true and @unfinishedRegion keep this unfinished region
      */
-    static QList<SharedAnnotationData> getCaseAnnotations(const char *data, int dataLen, int globalOffset, bool &isUnfinishedRegion,
-        U2Region &unfinishedRegion, bool isLowerCaseSearching);
+    static QList<SharedAnnotationData> getCaseAnnotations(const char *data, int dataLen, int globalOffset, bool &isUnfinishedRegion, U2Region &unfinishedRegion, bool isLowerCaseSearching);
 
     static QList<SharedAnnotationData> finalizeUnfinishedRegion(bool isUnfinishedRegion, U2Region &unfinishedRegion, bool isLowerCaseSearching);
     /**
      * If @annotationsObject is NULL then it creates a new annotation object
      */
-    static void addAnnotations(QList<GObject *> &objects, const QList<SharedAnnotationData> &annList, const GObjectReference &sequenceRef,
-        AnnotationTableObject *annotationsObject , const QVariantMap &hints);
+    static void addAnnotations(QList<GObject *> &objects, const QList<SharedAnnotationData> &annList, const GObjectReference &sequenceRef, AnnotationTableObject *annotationsObject, const QVariantMap &hints);
 
     static QList<U2Region> getRelatedLowerCaseRegions(const U2SequenceObject *so, const QList<GObject *> &anns);
 
@@ -100,13 +98,18 @@ public:
     * Return true if the "Annotation Selection Data" argument contains two selected regions and two location IDs,
     * And if one of these regions has start point equals to zero, and another one has end pos equals to sequence length
     */
-    static bool isAnnotationAroundJunctionPoint(AnnotationSelectionData* asd, const qint64 sequenceLength);
+    static bool isAnnotationContainsJunctionPoint(const Annotation *annotation, const qint64 sequenceLength);
+    static bool isAnnotationContainsJunctionPoint(const QList<RegionsPair> &mergedRegions);
+    static QList<RegionsPair> mergeAnnotatiedRegionsAroundJunctionPoint(const QVector<U2Region> &regions, const qint64 sequenceLength);
 
-    static char * applyLowerCaseRegions(char *seq, qint64 first, qint64 len, qint64 globalOffset, const QList<U2Region> &regs);
+    static char *applyLowerCaseRegions(char *seq, qint64 first, qint64 len, qint64 globalOffset, const QList<U2Region> &regs);
 
     static QString guessAminoTranslation(AnnotationTableObject *ao, const DNAAlphabet *al);
 
-    static QList<AnnotatedRegion> getAnnotatedRegionsByStartPos(QList<AnnotationTableObject*> annotationObjects, qint64 startPos);
+    static QList<AnnotatedRegion> getAnnotatedRegionsByStartPos(QList<AnnotationTableObject *> annotationObjects, qint64 startPos);
+
+    /** Shifts annotation around the circular sequence and returns new location. */
+    static U2Location shiftLocation(const U2Location &location, qint64 shift, qint64 sequenceLength);
 
     /**
      * Adds or replaces "/note" qualifier if description is not empty.
@@ -127,37 +130,32 @@ public:
 
 class U2CORE_EXPORT FixAnnotationsUtils {
 public:
-    static QMap<Annotation *, QList<QPair<QString, QString> > > fixAnnotations(U2OpStatus* os, U2SequenceObject *seqObj, const U2Region &regionToReplace, const DNASequence &sequence2Insert,
-                                                                               bool recalculateQualifiers = false,
-                                                                               U1AnnotationUtils::AnnotationStrategyForResize str = U1AnnotationUtils::AnnotationStrategyForResize_Resize,
-                                                                               QList<Document *> docs = QList<Document*>());
+    static QMap<Annotation *, QList<QPair<QString, QString>>> fixAnnotations(U2OpStatus *os, U2SequenceObject *seqObj, const U2Region &regionToReplace, const DNASequence &sequence2Insert, bool recalculateQualifiers = false, U1AnnotationUtils::AnnotationStrategyForResize str = U1AnnotationUtils::AnnotationStrategyForResize_Resize, QList<Document *> docs = QList<Document *>());
 
 private:
-    FixAnnotationsUtils(U2OpStatus* os, U2SequenceObject *seqObj, const U2Region &regionToReplace, const DNASequence &sequence2Insert,
-                        bool recalculateQualifiers = false,
-                        U1AnnotationUtils::AnnotationStrategyForResize str = U1AnnotationUtils::AnnotationStrategyForResize_Resize,
-                        QList<Document *> docs = QList<Document*>());
+    FixAnnotationsUtils(U2OpStatus *os, U2SequenceObject *seqObj, const U2Region &regionToReplace, const DNASequence &sequence2Insert, bool recalculateQualifiers = false, U1AnnotationUtils::AnnotationStrategyForResize str = U1AnnotationUtils::AnnotationStrategyForResize_Resize, QList<Document *> docs = QList<Document *>());
     void fixAnnotations();
 
-    QMap<QString, QList<SharedAnnotationData> > fixAnnotation(Annotation *an, bool &annIsRemoved);
+    QMap<QString, QList<SharedAnnotationData>> fixAnnotation(Annotation *an, bool &annIsRemoved);
     void fixAnnotationQualifiers(Annotation *an);
     void fixTranslationQualifier(SharedAnnotationData &ad);
     void fixTranslationQualifier(Annotation *an);
     U2Qualifier getFixedTranslationQualifier(const SharedAnnotationData &ad);
     bool isRegionValid(const U2Region &region) const;
-private:
-    bool                                                    recalculateQualifiers;
-    U1AnnotationUtils::AnnotationStrategyForResize          strat;
-    QList<Document *>                                       docs;
-    U2SequenceObject *                                      seqObj;
-    U2Region                                                regionToReplace;
-    DNASequence                                             sequence2Insert;
-    QMap<Annotation *, QList<QPair<QString, QString> > >    annotationForReport;
 
-    U2OpStatus* stateInfo;
+private:
+    bool recalculateQualifiers;
+    U1AnnotationUtils::AnnotationStrategyForResize strat;
+    QList<Document *> docs;
+    U2SequenceObject *seqObj;
+    U2Region regionToReplace;
+    DNASequence sequence2Insert;
+    QMap<Annotation *, QList<QPair<QString, QString>>> annotationForReport;
+
+    U2OpStatus *stateInfo;
 };
 
-} // namespace U2
+}    // namespace U2
 
 Q_DECLARE_METATYPE(U2::U1AnnotationUtils::AnnotationStrategyForResize)
 

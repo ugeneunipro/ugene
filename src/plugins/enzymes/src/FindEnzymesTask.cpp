@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -145,15 +145,15 @@ void FindEnzymesTask::onResult(int pos, const SEnzymeData& enzyme, const U2Stran
 
 QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QString& enzymeId) const {
     QList<SharedAnnotationData> res;
-
+    if (hasError() || isCanceled()) {
+        return res;
+    }
     QString cutStr;
     QString dbxrefStr;
-    bool found = true;
     foreach (const FindEnzymesAlgResult &r, results) {
         if (r.enzyme->id != enzymeId) {
             continue;
         }
-        found = true;
         if (!r.enzyme->accession.isEmpty()) {
             QString accession = r.enzyme->accession;
             if (accession.startsWith("RB")) {
@@ -170,9 +170,6 @@ QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QStri
             }
         }
         break;
-    }
-    if (!found) {
-        return res;
     }
 
     foreach (const FindEnzymesAlgResult &r, results) {

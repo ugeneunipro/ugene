@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,6 +22,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QMetaMethod>
 
 #include <U2Gui/WebViewController.h>
 
@@ -41,7 +42,7 @@ DashboardPageController::DashboardPageController(Dashboard *_dashboard)
     if (NULL != monitor) {
         connect(monitor, SIGNAL(si_progressChanged(int)), SLOT(sl_progressChanged(int)));
         connect(monitor, SIGNAL(si_taskStateChanged(Monitor::TaskState)), SLOT(sl_taskStateChanged(Monitor::TaskState)));
-        connect(monitor, SIGNAL(si_newNotification(WorkflowNotification, int)), SLOT(sl_newNotification(WorkflowNotification, int)));
+        connect(monitor, SIGNAL(si_newNotification(WorkflowNotification, int)), SLOT(sl_newNotification(WorkflowNotification, int)), Qt::UniqueConnection);
         connect(monitor, SIGNAL(si_workerInfoChanged(const QString &, const Monitor::WorkerInfo &)),
                 SLOT(sl_workerInfoChanged(const QString &, const Monitor::WorkerInfo &)));
         connect(monitor, SIGNAL(si_updateProducers()), SLOT(sl_workerStatsUpdate()));
@@ -67,10 +68,6 @@ void DashboardPageController::sl_pageIsAboutToBeInitialized() {
 }
 
 void DashboardPageController::sl_pageInitialized() {
-    if (NULL != monitor) {
-        connect(monitor, SIGNAL(si_newNotification(WorkflowNotification, int)), SLOT(sl_newNotification(WorkflowNotification, int)));
-    }
-
     initData();
     SimpleWebViewBasedWidgetController::sl_pageInitialized();
 }
@@ -240,6 +237,7 @@ QString DashboardPageController::serializeFileInfo(const Monitor::FileInfo &info
     infoJS["actor"] = monitor->actorName(info.actor);
     infoJS["url"] = info.url;
     infoJS["openBySystem"] = info.openBySystem;
+    infoJS["isDir"] = info.isDir;
     QJsonDocument doc(infoJS);
     return QString(doc.toJson(QJsonDocument::Compact));
 }

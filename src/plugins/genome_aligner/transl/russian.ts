@@ -174,10 +174,6 @@ p, li { white-space: pre-wrap; }
         <translation>Директория для индексных файлов:</translation>
     </message>
     <message>
-        <source>Folder for index files:</source>
-        <translation type="vanished">Папка для индексных файлов:</translation>
-    </message>
-    <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="201"/>
         <location filename="../src/GenomeAlignerSettings.ui" line="227"/>
         <source>Omit reads with qualities lower than the specified value. Reads that have no qualities are not omited.</source>
@@ -216,10 +212,6 @@ p, li { white-space: pre-wrap; }
              количество памяти, используемое для выравнивания.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <source>You can choose a temporary folder for saving index files for the reference that will be built during the alignment. If you need to run this algorithm one more time with the same reference and with the same reference fragmentation parameter, you can use this prebuilt index that will be located in the temporary folder.</source>
-        <translation type="vanished">Вы можете задать временную папку для сохранения индексных файлов для референса, которые будут построены в процессе выравнивания. Если необходимо запустить этот алгоритм снова с той же референсной последовательностью и с тем же параметром разбиения, вы можете использовать этот индексный файл, который будет сохранен во временной папки.</translation>
-    </message>
-    <message>
         <location filename="../src/GenomeAlignerSettings.ui" line="535"/>
         <source>Specify an index to build during execution of the selected short reads aligning algorithm. If this option is selected, the value is &lt;b&gt;required&lt;/b&gt;.</source>
         <translation>Укажите индексный файл для выравнивания выбранным алгоритмом. Если опция выбрана, то значение &lt;b&gt;обязательно&lt;/b&gt;.</translation>
@@ -246,14 +238,6 @@ p, li { white-space: pre-wrap; }
         <location filename="../src/GenomeAlignerSettingsWidget.ui" line="14"/>
         <source>Genome aligner settings</source>
         <translation>Настройки</translation>
-    </message>
-    <message>
-        <source>Folders</source>
-        <translation type="vanished">Папки</translation>
-    </message>
-    <message>
-        <source>Folder for built indexes</source>
-        <translation type="vanished">Папка для сохранения индекса</translation>
     </message>
 </context>
 <context>
@@ -687,25 +671,17 @@ Press &quot;Cancel&quot; to change this parameter or the index folder.</source>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="219"/>
         <source>Maps input reads from &lt;u&gt;%1&lt;/u&gt; </source>
-        <translation type="unfinished"></translation>
+        <translation>Выровнять входные риды из &lt;u&gt;%1&lt;/u&gt; </translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="224"/>
         <source> to reference sequence with index &lt;u&gt;%1&lt;/u&gt;.</source>
-        <translation type="unfinished"></translation>
+        <translation>на референсную последовательность с индексом &lt;u&gt;%1&lt;/u&gt;.</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="227"/>
         <source> to reference sequence &lt;u&gt;%1&lt;/u&gt;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Aligns reads from &lt;u&gt;%1&lt;/u&gt; </source>
-        <translation type="vanished">Выровненные риды из &lt;u&gt;%1&lt;/u&gt; </translation>
-    </message>
-    <message>
-        <source> to reference genome &lt;u&gt;%1&lt;/u&gt;.</source>
-        <translation type="vanished"> на референсную последовательность &lt;u&gt;%1&lt;/u&gt;.</translation>
+        <translation>на референсную последовательность &lt;u&gt;%1&lt;/u&gt;.</translation>
     </message>
 </context>
 <context>
@@ -798,12 +774,12 @@ Press &quot;Cancel&quot; to change this parameter or the index folder.</source>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="327"/>
         <source>Reference input type</source>
-        <translation type="unfinished"></translation>
+        <translation>Тип референса</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="328"/>
         <source>Select &quot;Sequence&quot; to input a reference genome as a sequence file. &lt;br/&gt;Note that any sequence file format, supported by UGENE, is allowed (FASTA, GenBank, etc.). &lt;br/&gt;The index will be generated automatically in this case. &lt;br/&gt;Select &quot;Index&quot; to input already generated index files, specific for the tool.</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите &quot;Последовательность&quot; чтобы ввести референсный геном как файл. &lt;br/&gt;Любой формат файла, который поддерживается UGENE допустим (FASTA, GenBank, и т.д.). &lt;br/&gt;Индекс будет сгенерирован автоматически. &lt;br/&gt;Выберите &quot;Индекс&quot; чтобы ввести уже готовый файл с индексом.</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="334"/>
@@ -818,22 +794,22 @@ Press &quot;Cancel&quot; to change this parameter or the index folder.</source>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="338"/>
         <source>Genome Aligner index folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Папка для индекса</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="339"/>
         <source>The folder with the index for the reference sequence.</source>
-        <translation type="unfinished"></translation>
+        <translation>Папка с индексом для референсной последоавтельности.</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="342"/>
         <source>Genome Aligner index basename</source>
-        <translation type="unfinished"></translation>
+        <translation>Базовое название индекса</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="343"/>
         <source>The basename of the index for the reference sequence.</source>
-        <translation type="unfinished"></translation>
+        <translation>Базовое имя индекса для референсной последовательности.</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="347"/>
@@ -894,26 +870,22 @@ Press &quot;Cancel&quot; to change this parameter or the index folder.</source>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="401"/>
         <source>Map Reads with UGENE Genome Aligner</source>
-        <translation type="unfinished"></translation>
+        <translation>Выравнивание с помощью модуля сборки контигов UGENE</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="402"/>
         <source>Genome Aligner is a program for mapping short DNA sequence reads to a long reference sequence, developed by the UGENE team.&lt;br/&gt;&lt;br/&gt;Provide URL(s) to FASTA or FASTQ file(s) with NGS reads to the input port of the element, set up the reference sequence in the parameters. The result is saved to the specified SAM file, URL to the file is passed to the output port.</source>
-        <translation type="unfinished"></translation>
+        <translation>Уникальный алгоритм UGENE для сборки контигов из считываемых последовательностей по референсному геному.</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="414"/>
         <source>Sequence</source>
-        <translation type="unfinished"></translation>
+        <translation>Последовательность</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="415"/>
         <source>Index</source>
-        <translation type="unfinished">Индекс</translation>
-    </message>
-    <message>
-        <source>Align Reads with UGENE Genome Aligner</source>
-        <translation type="vanished">Выравнивание с помощью модуля сборки контигов UGENE</translation>
+        <translation>Индекс</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="370"/>
@@ -924,10 +896,6 @@ Press &quot;Cancel&quot; to change this parameter or the index folder.</source>
         <location filename="../src/GenomeAlignerWorker.cpp" line="371"/>
         <source>&lt;html&gt;&lt;body&gt;Use GPU-calculatings while aligning reads. This option requires OpenCL-enable GPU-device.&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;body&gt;Использовать GPU-вычисления в процессе выравнивания. Эта опция требует наличие устройства OpenCL GPU.&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <source>Unique UGENE algorithm for aligning short reads to reference genome</source>
-        <translation type="vanished">Уникальный алгоритм UGENE для сборки контигов из считываемых последовательностей по референсному геному</translation>
     </message>
     <message>
         <location filename="../src/GenomeAlignerWorker.cpp" line="98"/>

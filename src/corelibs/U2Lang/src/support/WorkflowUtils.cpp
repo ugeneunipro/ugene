@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,16 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include <QScopedPointer>
-#include <QDir>
-#include <QUrl>
 #include <QListWidgetItem>
 
-#include <U2Lang/BaseTypes.h>
 #include <U2Lang/CoreLibConstants.h>
-#include <U2Lang/Dataset.h>
-#include <U2Lang/Datatype.h>
-#include <U2Lang/Descriptor.h>
 #include <U2Lang/IntegralBusModel.h>
 #include <U2Lang/IntegralBusType.h>
 #include <U2Lang/HRSchemaSerializer.h>
@@ -44,19 +37,14 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/CredentialsAsker.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/ExternalToolRunTask.h>
 #include <U2Core/Folder.h>
 #include <U2Core/GObject.h>
-#include <U2Core/IOAdapter.h>
 #include <U2Core/L10n.h>
-#include <U2Core/MultipleSequenceAlignment.h>
-#include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/PasswordStorage.h>
-#include <U2Core/QVariantUtils.h>
 #include <U2Core/Settings.h>
 #include <U2Core/StringAdapter.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -79,19 +67,20 @@ QStringList WorkflowUtils::initExtensions() {
 }
 
 QString WorkflowUtils::getRichDoc(const Descriptor& d) {
+    QString result = QString();
     if(d.getDisplayName().isEmpty()) {
-        if(d.getDocumentation().isEmpty()) {
-            return QString();
-        } else {
-            return QString("%1").arg(d.getDocumentation());
+        if(!d.getDocumentation().isEmpty()) {
+            result = QString("%1").arg(d.getDocumentation());
         }
     } else {
         if(d.getDocumentation().isEmpty()) {
-            return QString("<b>%1</b>").arg(d.getDisplayName());
+            result = QString("<b>%1</b>").arg(d.getDisplayName());
         } else {
-            return QString("<b>%1</b>: %2").arg(d.getDisplayName()).arg(d.getDocumentation());
+            result = QString("<b>%1</b>: %2").arg(d.getDisplayName()).arg(d.getDocumentation());
         }
     }
+    result.replace("\n", "<br>");
+    return result;
 }
 
 QString WorkflowUtils::getDropUrl(QList<DocumentFormat*>& fs, const QMimeData* md) {
@@ -179,8 +168,14 @@ bool validateExternalTools(Actor *a, NotificationsList &infoList) {
     StrStrMap tools = a->getProto()->getExternalTools();
     foreach (const QString &toolId, tools.keys()) {
         Attribute *attr = a->getParameter(tools[toolId]);
-        ExternalTool *tool = AppContext::getExternalToolRegistry()->getByName(toolId);
-        SAFE_POINT(NULL != tool, "NULL tool", false);
+        ExternalTool *tool = AppContext::getExternalToolRegistry()->getById(toolId);
+        if (nullptr == tool) {
+            good = false;
+            infoList << WorkflowNotification(WorkflowUtils::externalToolIsAbsentError(toolId),
+                                             a->getId(),
+                                             WorkflowNotification::U2_ERROR);
+            continue;
+        }
 
         bool fromAttr = (NULL != attr) && !attr->isDefaultValue();
         bool valid = fromAttr ? !attr->isEmpty() : !tool->getPath().isEmpty();
@@ -190,9 +185,16 @@ bool validateExternalTools(Actor *a, NotificationsList &infoList) {
                                 a->getId(),
                                 WorkflowNotification::U2_ERROR);
         } else if (!fromAttr && !tool->isValid()) {
-            infoList << WorkflowNotification(WorkflowUtils::externalToolInvalidError(tool->getName()),
-                                a->getId(),
-                                WorkflowNotification::U2_WARNING);
+            if (tool->isCustom()) {
+                infoList << WorkflowNotification(WorkflowUtils::customExternalToolInvalidError(tool->getName(), a->getLabel()),
+                    a->getProto()->getId(),
+                    WorkflowNotification::U2_ERROR);
+                good = false;
+            } else {
+                infoList << WorkflowNotification(WorkflowUtils::externalToolInvalidError(tool->getName()),
+                    a->getProto()->getId(),
+                    WorkflowNotification::U2_WARNING);
+            }
         }
     }
     return good;
@@ -378,14 +380,16 @@ QStringList WorkflowUtils::findMatchingTypesAsStringList(DataTypePtr set, DataTy
     return candidatesAsStringList(descList);
 }
 
-const Descriptor EMPTY_VALUES_DESC("", QObject::tr("<empty>"), QObject::tr("Default value"));
+Descriptor newEmptyValuesDesc() {
+    return Descriptor("", QObject::tr("<empty>"), QObject::tr("Default value"));
+}
 
 QList<Descriptor> WorkflowUtils::findMatchingCandidates(DataTypePtr from, DataTypePtr elementDatatype) {
     QList<Descriptor> candidates = findMatchingTypes(from, elementDatatype);
     if (elementDatatype->isList()) {
         candidates += findMatchingTypes(from, elementDatatype->getDatatypeByDescriptor());
     } else {
-        candidates.append(EMPTY_VALUES_DESC);
+        candidates.append(newEmptyValuesDesc());
     }
     return candidates;
 }
@@ -402,11 +406,11 @@ Descriptor WorkflowUtils::getCurrentMatchingDescriptor(const QList<Descriptor> &
         if (!currentVal.isEmpty()) {
             return Descriptor(currentVal, tr("<List of values>"), tr("List of values"));
         } else {
-            return EMPTY_VALUES_DESC;
+            return newEmptyValuesDesc();
         }
     } else {
         int idx = bindings.contains(key.getId()) ? candidates.indexOf(bindings.value(key.getId())) : 0;
-        return idx >= 0 ? candidates.at(idx) : EMPTY_VALUES_DESC;
+        return idx >= 0 ? candidates.at(idx) : newEmptyValuesDesc();
     }
 }
 
@@ -582,6 +586,12 @@ QString WorkflowUtils::getParamIdFromHref(const QString& href) {
             break;
         }
     }
+    return id;
+}
+
+QString WorkflowUtils::generateIdFromName(const QString &name) {
+    QString id = name;
+    id.replace(QRegularExpression("\\s"), "-").replace(WorkflowEntityValidator::INACCEPTABLE_SYMBOLS_IN_ID, "_");
     return id;
 }
 
@@ -866,11 +876,11 @@ QString WorkflowUtils::createUniqueString(const QString &str, const QString &sep
     return result;
 }
 
-QString WorkflowUtils::updateExternalToolPath(const QString &toolName, const QString &path) {
+QString WorkflowUtils::updateExternalToolPath(const QString &id, const QString &path) {
     ExternalToolRegistry *registry = AppContext::getExternalToolRegistry();
     SAFE_POINT(NULL != registry, "NULL external tool registry", "");
-    ExternalTool *tool = registry->getByName(toolName);
-    SAFE_POINT(NULL != tool, QString("Unknown tool: %1").arg(toolName), "");
+    ExternalTool *tool = registry->getById(id);
+    SAFE_POINT(NULL != tool, QString("Unknown tool: %1").arg(id), "");
 
     if (QString::compare(path, "default", Qt::CaseInsensitive) != 0) {
         tool->setPath(path);
@@ -878,14 +888,18 @@ QString WorkflowUtils::updateExternalToolPath(const QString &toolName, const QSt
     return tool->getPath();
 }
 
-QString WorkflowUtils::getExternalToolPath(const QString &toolName) {
+QString WorkflowUtils::getExternalToolPath(const QString &toolId) {
     ExternalToolRegistry *registry = AppContext::getExternalToolRegistry();
     SAFE_POINT(NULL != registry, "NULL external tool registry", "");
 
-    ExternalTool *tool = registry->getByName(toolName);
-    SAFE_POINT(NULL != tool, QString("Unknown tool: %1").arg(toolName), "");
+    ExternalTool *tool = registry->getById(toolId);
+    SAFE_POINT(NULL != tool, QString("Unknown tool (id): %1").arg(toolId), "");
 
     return tool->getPath();
+}
+
+QString WorkflowUtils::externalToolIsAbsentError(const QString& toolName) {
+    return tr("Specified variable \"%%1%\" does not exist, please check the command again.").arg(toolName);
 }
 
 QString WorkflowUtils::externalToolError(const QString &toolName) {
@@ -894,6 +908,10 @@ QString WorkflowUtils::externalToolError(const QString &toolName) {
 
 QString WorkflowUtils::externalToolInvalidError(const QString &toolName) {
     return tr("External tool \"%1\" is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected").arg(toolName);
+}
+
+QString WorkflowUtils::customExternalToolInvalidError(const QString& toolName, const QString& elementName) {
+    return tr("Custom tool \"%1\", specified for the \"%2\" element, didn't pass validation.").arg(toolName).arg(elementName);
 }
 
 void WorkflowUtils::schemaFromFile(const QString &url, Schema *schema, Metadata *meta, U2OpStatus &os) {
@@ -1325,6 +1343,14 @@ QList<TophatSample> WorkflowUtils::unpackSamples(const QString &samplesStr, U2Op
     }
     return result;
 }
+
+const QString WorkflowEntityValidator::NAME_INACCEPTABLE_SYMBOLS_TEMPLATE = "=\\\"";
+const QString WorkflowEntityValidator::ID_ACCEPTABLE_SYMBOLS_TEMPLATE = "a-zA-Z0-9\\-_";
+
+const QRegularExpression WorkflowEntityValidator::ACCEPTABLE_NAME("[^" + NAME_INACCEPTABLE_SYMBOLS_TEMPLATE + "]*");
+const QRegularExpression WorkflowEntityValidator::INACCEPTABLE_SYMBOL_IN_NAME("[" + NAME_INACCEPTABLE_SYMBOLS_TEMPLATE + "]");
+const QRegularExpression WorkflowEntityValidator::ACCEPTABLE_ID("[" + ID_ACCEPTABLE_SYMBOLS_TEMPLATE + "]*");
+const QRegularExpression WorkflowEntityValidator::INACCEPTABLE_SYMBOLS_IN_ID("[^" + ID_ACCEPTABLE_SYMBOLS_TEMPLATE + "]");
 
 /*****************************
  * PrompterBaseImpl

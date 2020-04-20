@@ -1,0 +1,1 @@
+#include "../../corelibs/U2View/src/ov_msa/find_pattern/FindPatternMsaTask.h"

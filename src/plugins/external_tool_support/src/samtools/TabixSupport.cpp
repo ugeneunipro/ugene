@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,8 +26,11 @@
 
 namespace U2 {
 
-TabixSupport::TabixSupport(const QString &name, const QString &path)
-    : ExternalTool(name, path)
+const QString TabixSupport::ET_TABIX = "Tabix";
+const QString TabixSupport::ET_TABIX_ID = "USUPP_TABIX";
+
+TabixSupport::TabixSupport(const QString& id, const QString &name, const QString &path)
+    : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow() != NULL) {
         icon = QIcon(":external_tool_support/images/cmdline.png");

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -53,7 +53,7 @@ StringTieTask::StringTieTask(const StringTieTaskSettings& settings)
 }
 
 void StringTieTask::prepare() {
-    stringTieTask = new ExternalToolRunTask(ET_STRINGTIE, getArguments(), new ExternalToolLogParser());
+    stringTieTask = new ExternalToolRunTask(StringTieSupport::ET_STRINGTIE_ID, getArguments(), new ExternalToolLogParser());
     setListenerForTask(stringTieTask);
     addSubTask(stringTieTask);
 }

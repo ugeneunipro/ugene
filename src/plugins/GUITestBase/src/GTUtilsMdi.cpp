@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -159,9 +159,11 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus &os) {
         void run(HI::GUITestOpStatus &os) {
             const QList<QMdiSubWindow *> mdiWindows = AppContext::getMainWindow()->getQMainWindow()->findChildren<QMdiSubWindow *>();
             foreach (QMdiSubWindow *mdiWindow, mdiWindows) {
-                GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
+                MessageBoxDialogFiller *filler = new MessageBoxDialogFiller(os, QMessageBox::Discard);
+                GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, filler);
                 mdiWindow->close();
                 GTGlobals::sleep(100);
+                GTUtilsDialog::removeRunnable(filler);
             }
         }
     };
@@ -324,6 +326,42 @@ bool GTUtilsMdi::isAnyPartOfWindowVisible(HI::GUITestOpStatus &os, const QString
     QWidget *window = findWindow(os, windowName, options);
     CHECK(NULL != window, false);
     return isWidgetPartVisible(window);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getTabBar"
+QTabBar* GTUtilsMdi::getTabBar(HI::GUITestOpStatus &os) {
+    MainWindow* mainWindow = AppContext::getMainWindow();
+    GT_CHECK_RESULT(mainWindow != nullptr, "MainWindow == nullptr", NULL);
+
+    QMdiArea *mdiArea = GTWidget::findExactWidget<QMdiArea *>(os, "MDI_Area", mainWindow->getQMainWindow());
+    GT_CHECK_RESULT(mdiArea != nullptr, "mdiArea == nullptr", NULL);
+
+    QTabBar *tabBar = mdiArea->findChild<QTabBar *>("", Qt::FindDirectChildrenOnly);
+    GT_CHECK_RESULT(tabBar != nullptr, "MDI tabbar not found", NULL);
+
+    return tabBar;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getTabBar"
+int GTUtilsMdi::getCurrentTab(HI::GUITestOpStatus &os) {
+    QTabBar* tabBar = getTabBar(os);
+    GT_CHECK_RESULT(tabBar != NULL, "tabBar == NULL", -1);
+
+    return tabBar->currentIndex();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "clickTab"
+void GTUtilsMdi::clickTab(HI::GUITestOpStatus &os, int tabIndex) {
+    QTabBar* tabBar = getTabBar(os);
+    GT_CHECK_RESULT(tabBar != NULL, "tabBar == NULL", );
+
+    coreLog.info(QString("Try to click tab %1(%2)").arg(tabIndex).arg(tabBar->tabText(tabIndex)));
+    QPoint tabCenter = tabBar->mapToGlobal(tabBar->tabRect(tabIndex).center());
+    GTMouseDriver::moveTo(tabCenter);
+    GTMouseDriver::click();
 }
 #undef GT_METHOD_NAME
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,8 +25,8 @@
 #include <QStyleFactory>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/L10n.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Algorithm/MSADistanceAlgorithmRegistry.h>
@@ -331,7 +331,7 @@ void TreeOptionsWidget::updateButtonColor(QPushButton* button, const QColor& new
 }
 
 void TreeOptionsWidget::updateShowFontOpLabel(QString newText) {
-    newText = QString("<a href=\"%1\" style=\"color: %2\">").arg(SHOW_FONT_OPTIONS_LINK).arg(L10N::linkColorLabelStr())
+    newText = QString("<a href=\"%1\" style=\"color: %2\">").arg(SHOW_FONT_OPTIONS_LINK).arg(Theme::linkColorLabelStr())
         + newText
         + QString("</a>");
 
@@ -340,7 +340,7 @@ void TreeOptionsWidget::updateShowFontOpLabel(QString newText) {
 }
 
 void TreeOptionsWidget::updateShowPenOpLabel(QString newText) {
-    newText = QString("<a href=\"%1\" style=\"color: %2\">").arg(SHOW_PEN_OPTIONS_LINK).arg(L10N::linkColorLabelStr())
+    newText = QString("<a href=\"%1\" style=\"color: %2\">").arg(SHOW_PEN_OPTIONS_LINK).arg(Theme::linkColorLabelStr())
         + newText
         + QString("</a>");
 

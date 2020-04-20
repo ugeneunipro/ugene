@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,51 +19,39 @@
  * MA 02110-1301, USA.
  */
 
-#include <QAbstractItemModel>
-#include <QAction>
-#include <QApplication>
-#include <QButtonGroup>
-#include <QContextMenuEvent>
-#include <QDir>
 #include <QDrag>
-#include <QHeaderView>
-#include <QItemDelegate>
 #include <QMenu>
 #include <QMessageBox>
-#include <QPainter>
-#include <QStyle>
-#include <QToolBox>
-#include <QToolButton>
-#include <QTreeView>
 
-#include <U2Core/AppContext.h>
-#include <U2Core/Log.h>
 #include <U2Core/QObjectScopedPointer.h>
-#include <U2Core/Settings.h>
-#include <U2Core/U2SafePoints.h>
 
 #include <U2Lang/ActorPrototypeRegistry.h>
 #include <U2Lang/BaseActorCategories.h>
-#include <U2Lang/WorkflowEnv.h>
+#include <U2Lang/IncludedProtoFactory.h>
+#include <U2Lang/QueryDesignerRegistry.h>
+#include <U2Lang/WorkflowContext.h>
 #include <U2Lang/WorkflowSettings.h>
 
 #include "CreateScriptWorker.h"
 #include "WorkflowPalette.h"
 #include "WorkflowSamples.h"
-#include "library/CreateExternalProcessDialog.h"
+#include "WorkflowViewController.h"
 #include "library/ExternalProcessWorker.h"
+#include "library/IncludedProtoFactoryImpl.h"
 #include "library/ScriptWorker.h"
+#include "library/create_cmdline_based_worker/CreateCmdlineBasedWorkerWizard.h"
+#include "util/CustomWorkerUtils.h"
 
 namespace U2 {
 
 const QString WorkflowPalette::MIME_TYPE("application/x-ugene-workflow-id");
 
-WorkflowPalette::WorkflowPalette(ActorPrototypeRegistry* reg, QWidget *parent)
+WorkflowPalette::WorkflowPalette(ActorPrototypeRegistry* reg, SchemaConfig* schemaConfig, QWidget *parent)
 : QWidget(parent)
 {
     setupUi(this);
     nameFilter = new NameFilterLayout(NULL);
-    elementsList = new WorkflowPaletteElements(reg, this);
+    elementsList = new WorkflowPaletteElements(reg, schemaConfig, this);
     setFocusPolicy(Qt::NoFocus);
     setMouseTracking(true);
 
@@ -72,7 +60,7 @@ WorkflowPalette::WorkflowPalette(ActorPrototypeRegistry* reg, QWidget *parent)
     vl->addWidget(elementsList);
 
     connect(elementsList, SIGNAL(processSelected(Workflow::ActorPrototype*, bool)), SIGNAL(processSelected(Workflow::ActorPrototype*, bool)));
-    connect(elementsList, SIGNAL(si_protoDeleted(const QString &)), SIGNAL(si_protoDeleted(const QString &)));
+    connect(elementsList, SIGNAL(si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)), SIGNAL(si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)));
     connect(elementsList, SIGNAL(si_protoChanged()), SIGNAL(si_protoChanged()));
     connect(elementsList, SIGNAL(si_protoListModified()), SIGNAL(si_protoListModified()));
 
@@ -99,6 +87,14 @@ QVariant WorkflowPalette::saveState() const {
 
 void WorkflowPalette::restoreState(const QVariant& v) {
     elementsList->restoreState(v);
+}
+
+QString WorkflowPalette::createPrototype() {
+    return elementsList->createPrototype();
+}
+
+bool WorkflowPalette::editPrototype(ActorPrototype *proto) {
+    return elementsList->editPrototype(proto);
 }
 
 class PaletteDelegate: public QItemDelegate {
@@ -205,8 +201,8 @@ QSize PaletteDelegate::sizeHint(const QStyleOptionViewItem &opt, const QModelInd
 /************************************************************************/
 /* WorkflowPaletteElements */
 /************************************************************************/
-WorkflowPaletteElements::WorkflowPaletteElements(ActorPrototypeRegistry* reg, QWidget *parent)
-: QTreeWidget(parent), overItem(NULL), currentAction(NULL), protoRegistry(reg)
+WorkflowPaletteElements::WorkflowPaletteElements(ActorPrototypeRegistry* reg, SchemaConfig* _schemaConfig, QWidget *parent)
+: QTreeWidget(parent), overItem(NULL), currentAction(NULL), protoRegistry(reg), schemaConfig(_schemaConfig)
 {
     setFocusPolicy(Qt::NoFocus);
     setSelectionMode(QAbstractItemView::NoSelection);
@@ -221,6 +217,7 @@ WorkflowPaletteElements::WorkflowPaletteElements(ActorPrototypeRegistry* reg, QW
     //setTextElideMode (Qt::ElideMiddle);
     setContent(reg);
     connect(reg, SIGNAL(si_registryModified()), SLOT(rebuild()));
+    connect(this, SIGNAL(si_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)), SLOT(sl_prototypeIsAboutToBeRemoved(Workflow::ActorPrototype *)));
     this->setObjectName("WorkflowPaletteElements");
 }
 
@@ -284,6 +281,7 @@ void WorkflowPaletteElements::createMenu(QMenu *menu) {
 void WorkflowPaletteElements::setContent(ActorPrototypeRegistry* reg) {
     QMapIterator<Descriptor, QList<ActorPrototype*> > it(reg->getProtos());
     categoryMap.clear();
+    actionMap.clear();
     while (it.hasNext()) {
         it.next();
         QTreeWidgetItem* category = NULL;
@@ -333,6 +331,7 @@ void WorkflowPaletteElements::rebuild() {
 
     if (reg) {
         QVariant saved = saveState();
+        overItem = nullptr;
         clear();
         setContent(reg);
         QVariant changed = changeState(saved);
@@ -421,6 +420,15 @@ QAction* WorkflowPaletteElements::createItemAction(ActorPrototype* item) {
     return a;
 }
 
+QAction *WorkflowPaletteElements::getActionByProto(Workflow::ActorPrototype *proto) const {
+    foreach (QAction *action, actionMap.keys()) {
+        if (proto == action->data().value<ActorPrototype *>()) {
+            return action;
+        }
+    }
+    return nullptr;
+}
+
 void WorkflowPaletteElements::resetSelection() {
     if (currentAction) {
         currentAction->setChecked(false);
@@ -450,6 +458,59 @@ void WorkflowPaletteElements::restoreState(const QVariant& v) {
             }
         }
     }
+}
+
+QString WorkflowPaletteElements::createPrototype() {
+    QObjectScopedPointer<CreateCmdlineBasedWorkerWizard> dlg = new CreateCmdlineBasedWorkerWizard(schemaConfig,  this);
+    dlg->exec();
+    CHECK(!dlg.isNull(), QString());
+
+    if (dlg->result() == QDialog::Accepted) {
+        QScopedPointer<ExternalProcessConfig> cfg(dlg->takeConfig());
+        CreateCmdlineBasedWorkerWizard::saveConfig(cfg.data());
+        if (LocalWorkflow::ExternalProcessWorkerFactory::init(cfg.data())) {
+            const QString id = cfg->id;
+            cfg.take();
+            return id;
+        }
+    }
+    return QString();
+}
+
+bool WorkflowPaletteElements::editPrototype(ActorPrototype *proto) {
+    if (!isExclusivePrototypeUsage(proto)) {
+        QMessageBox::warning(this,
+            tr("Unable to Edit Element"),
+            tr("The element with external tool is used in other Workflow Designer window(s). "
+            "Please remove these instances to be able to edit the element configuration."),
+            QMessageBox::Ok);
+        return false;
+    }
+    ExternalProcessConfig *oldCfg = WorkflowEnv::getExternalCfgRegistry()->getConfigById(proto->getId());
+    QObjectScopedPointer<CreateCmdlineBasedWorkerWizard> dlg = new CreateCmdlineBasedWorkerWizard(schemaConfig, oldCfg, this);
+    dlg->exec();
+    CHECK(!dlg.isNull(), false);
+
+    bool result = false;
+    if (dlg->result() == QDialog::Accepted) {
+        QScopedPointer<ExternalProcessConfig> newCfg(dlg->takeConfig());
+
+        if (CreateCmdlineBasedWorkerWizard::isRequiredToRemoveElementFromScene(oldCfg, newCfg.data())) {
+            removePrototype(proto);
+            CreateCmdlineBasedWorkerWizard::saveConfig(newCfg.data());
+            if (LocalWorkflow::ExternalProcessWorkerFactory::init(newCfg.data())) {
+                newCfg.take();
+                result = true;
+            }
+        } else {
+            result = editPrototypeWithoutElementRemoving(proto, newCfg.take());
+        }
+    }
+    if (result) {
+        emit si_protoChanged();
+    }
+
+    return result;
 }
 
 void WorkflowPaletteElements::handleItemAction() {
@@ -485,11 +546,11 @@ void WorkflowPaletteElements::sl_selectProcess(bool checked) {
 
 void WorkflowPaletteElements::editElement() {
     ActorPrototype *proto = currentAction->data().value<ActorPrototype *>();
-    QString oldName = proto->getDisplayName();
     ActorPrototypeRegistry *reg = WorkflowEnv::getProtoRegistry();
     QMap<Descriptor, QList<ActorPrototype*> > categories = reg->getProtos();
 
     if(categories.value(BaseActorCategories::CATEGORY_SCRIPT()).contains(proto)) {
+        QString oldName = proto->getDisplayName();
         QObjectScopedPointer<CreateScriptElementDialog> dlg = new CreateScriptElementDialog(this, proto);
         dlg->exec();
         CHECK(!dlg.isNull(), );
@@ -507,40 +568,13 @@ void WorkflowPaletteElements::editElement() {
             if(oldName != name) {
                 removeElement();
             } else {
-                QString id = proto->getId();
-                emit si_protoDeleted(id);
+                emit si_prototypeIsAboutToBeRemoved(proto);
                 reg->unregisterProto(proto->getId());
             }
             LocalWorkflow::ScriptWorkerFactory::init(input, output, attrs, name, desc, dlg->getActorFilePath());
         }
     } else { //External process category
-        ExternalProcessConfig *oldCfg = WorkflowEnv::getExternalCfgRegistry()->getConfigByName(proto->getId());
-        ExternalProcessConfig *cfg = new ExternalProcessConfig(*oldCfg);
-        QObjectScopedPointer<CreateExternalProcessDialog> dlg = new CreateExternalProcessDialog(this, cfg, false);
-        dlg->exec();
-        CHECK(!dlg.isNull(), );
-
-        if (dlg->result() == QDialog::Accepted) {
-            cfg = dlg->config();
-
-            bool deleted = true;
-            if (!(*oldCfg == *cfg)) {
-                if(oldName != cfg->name) {
-                    deleted = removeElement();
-                } else {
-                    emit si_protoDeleted(proto->getId());
-                    reg->unregisterProto(proto->getId());
-                    delete proto;
-                }
-
-                LocalWorkflow::ExternalProcessWorkerFactory::init(cfg);
-            }
-            if (deleted) {
-                WorkflowEnv::getExternalCfgRegistry()->unregisterConfig(oldName);
-            }
-            WorkflowEnv::getExternalCfgRegistry()->registerExternalTool(cfg);
-            emit si_protoChanged();
-        }
+            editPrototype(proto);
     }
 }
 
@@ -554,38 +588,26 @@ bool WorkflowPaletteElements::removeElement() {
     msg->exec();
     CHECK(!msg.isNull(), false);
 
-    if(msg->result() == QMessageBox::Cancel) {
+    if (msg->result() == QMessageBox::Cancel) {
         return false;
     }
 
-    ActorPrototype *proto = currentAction->data().value<ActorPrototype *>();
-
-    QString path = WorkflowSettings::getUserDirectory();
-
-    QString fileName = path + proto->getDisplayName() + ".usa"; //use constant
-    if(!QFile::exists(fileName)) {
-        fileName = WorkflowSettings::getExternalToolDirectory() + proto->getDisplayName() + ".etc";
-    }
-    QFile::setPermissions(fileName, QFile::ReadOwner | QFile::WriteOwner);
-    if(!QFile::remove(fileName)) {
-        uiLog.error(tr("Can't remove element %1").arg(proto->getDisplayName()));
-        return true;
-    }
-
-    // remove proto from categoryMap
-    QMap<QString, QList<QAction*> >::iterator i = categoryMap.begin();
-    for(; i != categoryMap.end(); i++) {
-        i->removeAll(currentAction);
-    }
-
-    // unresister prototype
-    QString id = proto->getId();
-    emit si_protoDeleted(id);
-    ActorPrototypeRegistry *reg = WorkflowEnv::getProtoRegistry();
-    assert(reg);
-    reg->unregisterProto(id);
-    WorkflowEnv::getExternalCfgRegistry()->unregisterConfig(id);
+    removePrototype(currentAction->data().value<ActorPrototype *>());
     return true;
+}
+
+void WorkflowPaletteElements::sl_prototypeIsAboutToBeRemoved(ActorPrototype *proto) {
+    QAction *action = getActionByProto(proto);
+
+    for (auto &actionsList : categoryMap) {
+        actionsList.removeAll(action);
+    }
+
+    if (currentAction == action) {
+        resetSelection();
+    }
+
+    actionMap.remove(action);
 }
 
 void WorkflowPaletteElements::contextMenuEvent(QContextMenuEvent *e)
@@ -689,6 +711,83 @@ QVariant WorkflowPaletteElements::changeState(const QVariant& savedState){
         m.insert(it->data(0, Qt::UserRole).toString(), expanded);
     }
     return m;
+}
+
+void WorkflowPaletteElements::removePrototype(ActorPrototype *proto) {
+    if (!isExclusivePrototypeUsage(proto)) {
+        QMessageBox::warning(this,
+            tr("Unable to Remove Element"),
+            tr("The element with external tool is used in other Workflow Designer window(s). "
+                "Please remove these instances to be able to remove the element configuration."),
+            QMessageBox::Yes);
+        return;
+    }
+    emit si_prototypeIsAboutToBeRemoved(proto);
+
+    if (!QFile::remove(proto->getFilePath())) {
+        uiLog.error(tr("Can't remove element '%1'").arg(proto->getDisplayName()));
+    }
+
+    delete IncludedProtoFactory::unregisterExternalToolWorker(proto->getId());
+    delete WorkflowEnv::getProtoRegistry()->unregisterProto(proto->getId());
+}
+
+bool WorkflowPaletteElements::editPrototypeWithoutElementRemoving(Workflow::ActorPrototype* proto, ExternalProcessConfig* newConfig) {
+    replaceConfigFiles(proto, newConfig);
+
+    ExternalProcessConfig* currentConfig = IncludedProtoFactory::getExternalToolWorker(proto->getId());
+    SAFE_POINT(nullptr != currentConfig, "ExternalProcessConfig is absent", false);
+
+    replaceOldConfigWithNewConfig(currentConfig, newConfig);
+
+    proto->setDisplayName(currentConfig->name);
+    proto->setDocumentation(currentConfig->description);
+
+    QStringList commandIdList = CustomWorkerUtils::getToolIdsFromCommand(currentConfig->cmdLine);
+    proto->clearExternalTools();
+    foreach(const QString & id, commandIdList) {
+        proto->addExternalTool(id);
+    }
+
+    rebuild();
+
+    return true;
+}
+
+void WorkflowPaletteElements::replaceConfigFiles(Workflow::ActorPrototype* proto, ExternalProcessConfig* newConfig) {
+    if (!QFile::remove(proto->getFilePath())) {
+        uiLog.error(tr("Can't remove element '%1'").arg(proto->getDisplayName()));
+    }
+    CreateCmdlineBasedWorkerWizard::saveConfig(newConfig);
+    proto->setNonStandard(newConfig->filePath);
+}
+
+void WorkflowPaletteElements::replaceOldConfigWithNewConfig(ExternalProcessConfig* oldConfig, ExternalProcessConfig* newConfig) {
+    oldConfig->cmdLine = newConfig->cmdLine;
+    oldConfig->name = newConfig->name;
+    oldConfig->description = newConfig->description;
+    oldConfig->templateDescription = newConfig->templateDescription;
+    oldConfig->filePath = newConfig->filePath;
+    oldConfig->useIntegratedTool = newConfig->useIntegratedTool;
+    oldConfig->customToolPath = newConfig->customToolPath;
+    oldConfig->integratedToolId = newConfig->integratedToolId;
+}
+
+bool WorkflowPaletteElements::isExclusivePrototypeUsage(ActorPrototype* proto) const {
+    WorkflowView* wv = dynamic_cast<WorkflowView*>(schemaConfig);
+    CHECK(wv != nullptr, false);
+    int actorWithCurrentProtoCounter = 0;
+    for (auto actor : wv->getSchema()->getProcesses()) {
+        if (actor->getProto() == proto) {
+            actorWithCurrentProtoCounter++;
+        }
+    }
+    Actor* currentActor = wv->getActor();
+    if (currentActor != nullptr && currentActor->getProto() == proto) {
+        actorWithCurrentProtoCounter++;
+    }
+    bool result = actorWithCurrentProtoCounter == proto->getUsageCounter();
+    return result;
 }
 
 void WorkflowPaletteElements::sl_nameFilterChanged(const QString &filter) {

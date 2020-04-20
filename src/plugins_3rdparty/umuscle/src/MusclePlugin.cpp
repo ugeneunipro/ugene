@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -180,7 +180,7 @@ void MuscleMSAEditorContext::sl_align() {
     MSAEditor* ed = action->getMSAEditor();
     MultipleSequenceAlignmentObject* obj = ed->getMaObject();
 
-    const QRect selection = action->getMSAEditor()->getCurrentSelection();
+    const QRect selection = action->getMSAEditor()->getSelectionRect();
     MuscleTaskSettings s;
     if (!selection.isNull() ) {
         int width = selection.width();

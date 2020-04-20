@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,16 +26,17 @@
 #include <U2View/MSAEditor.h>
 #include "utils/ExternalToolSupportAction.h"
 
-#define ET_MAFFT "MAFFT"
-#define MAFFT_TMP_DIR   "mafft"
-
 namespace U2 {
 
 class MAFFTSupport : public ExternalTool {
     Q_OBJECT
 public:
-    MAFFTSupport(const QString& name, const QString& path = "");
+    MAFFTSupport(const QString& id, const QString& name, const QString& path = "");
     GObjectViewWindowContext* getViewContext(){ return viewCtx; }
+
+    static const QString ET_MAFFT;
+    static const QString ET_MAFFT_ID;
+    static const QString MAFFT_TMP_DIR;
 public slots:
     void sl_runWithExtFileSpecify();
 private:

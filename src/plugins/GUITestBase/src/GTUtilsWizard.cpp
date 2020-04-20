@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,6 +49,7 @@ QMap<QString, GTUtilsWizard::WizardButton> GTUtilsWizard::initButtonMap(){
    result.insert("Cancel", Cancel);
    result.insert("Defaults", Defaults);
    result.insert("Setup", Setup);
+   result.insert("Finish", Finish);
    return result;
 }
 const QMap<QString, GTUtilsWizard::WizardButton> GTUtilsWizard::buttonMap = GTUtilsWizard::initButtonMap();

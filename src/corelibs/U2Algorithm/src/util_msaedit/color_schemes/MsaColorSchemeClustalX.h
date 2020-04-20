@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,7 +35,8 @@ class U2ALGORITHM_EXPORT MsaColorSchemeClustalX : public MsaColorScheme {
 public:
     MsaColorSchemeClustalX(QObject *parent, const MsaColorSchemeFactory *factory, MultipleAlignmentObject *maObj);
 
-    QColor getColor(int seq, int pos, char c) const;
+    QColor getBackgroundColor(int seq, int pos, char c) const override;
+    QColor getFontColor(int seq, int pos, char c) const override;
 
 private slots:
     void sl_alignmentChanged();

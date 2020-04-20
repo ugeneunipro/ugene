@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -25,12 +25,20 @@
 #include <U2Core/global.h>
 #include <U2Gui/MainWindow.h>
 
+class QTextBrowser;
+
 namespace U2 {
 
+/**
+ * A window with a simple HTML content.
+ * Note: HTML support is limited to the features supported by QTextBrowser component.
+ * https://doc.qt.io/qt-5/richtext-html-subset.html
+ */
 class U2VIEW_EXPORT WebWindow : public MWMDIWindow {
     Q_OBJECT
 public:
-    WebWindow(const QString& title, const QString& content);
+    WebWindow(const QString& title, const QString& htmlContent);
+    QTextBrowser* textBrowser;
 };
 
 }//namespace

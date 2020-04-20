@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -77,7 +77,8 @@ QStringList GTUtilsMcaEditorSequenceArea::getVisibleNames(GUITestOpStatus &os) {
     McaEditorNameList *nameListArea = GTUtilsMcaEditor::getNameListArea(os);
     CHECK_SET_ERR_RESULT(NULL != nameListArea, "Mca Editor name list area is NULL", QStringList());
 
-    const QList<int> visibleRowsIndexes = editor->getUI()->getDrawHelper()->getVisibleRowsIndexes(nameListArea->height());
+    const QList<int> visibleRowsIndexes = editor->getUI()->getDrawHelper()->getVisibleMaRowIndexes(
+            nameListArea->height());
 
     QStringList visibleRowNames;
     foreach(const int rowIndex, visibleRowsIndexes) {
@@ -92,7 +93,7 @@ int GTUtilsMcaEditorSequenceArea::getRowHeight(GUITestOpStatus &os, int rowNumbe
     QWidget* activeWindow = GTUtilsMdi::activeWindow(os);
     GT_CHECK_RESULT(activeWindow != NULL, "active mdi window is NULL", 0);
     McaEditorWgt* ui = GTUtilsMdi::activeWindow(os)->findChild<McaEditorWgt*>();
-    return ui->getRowHeightController()->getRowHeightByNumber(rowNumber);
+    return ui->getRowHeightController()->getRowHeightByViewRowIndex(rowNumber);
 }
 #undef GT_METHOD_NAME
 
@@ -103,13 +104,13 @@ void GTUtilsMcaEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QP
     GT_CHECK(mcaSeqArea->isInRange(globalMaPosition),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
              .arg(globalMaPosition.x()).arg(globalMaPosition.y())
-             .arg(mcaSeqArea->getEditor()->getAlignmentLen()).arg(mcaSeqArea->getNumDisplayableSequences()));
+             .arg(mcaSeqArea->getEditor()->getAlignmentLen()).arg(mcaSeqArea->getViewRowCount()));
 
     scrollToPosition(os, globalMaPosition);
     GTGlobals::sleep();
 
     const QPoint positionCenter(mcaSeqArea->getEditor()->getUI()->getBaseWidthController()->getBaseScreenCenter(globalMaPosition.x()),
-        mcaSeqArea->getEditor()->getUI()->getRowHeightController()->getRowScreenRangeByNumber(globalMaPosition.y()).center());
+        mcaSeqArea->getEditor()->getUI()->getRowHeightController()->getScreenYRegionByViewRowIndex(globalMaPosition.y()).center());
     GT_CHECK(mcaSeqArea->rect().contains(positionCenter, false), "Position is not visible");
 
     GTMouseDriver::moveTo(mcaSeqArea->mapToGlobal(positionCenter));
@@ -124,7 +125,7 @@ void GTUtilsMcaEditorSequenceArea::scrollToPosition(GUITestOpStatus &os, const Q
     GT_CHECK(mcaSeqArea->isInRange(position),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
              .arg(position.x()).arg(position.y())
-             .arg(mcaSeqArea->getEditor()->getAlignmentLen()).arg(mcaSeqArea->getNumDisplayableSequences()));
+             .arg(mcaSeqArea->getEditor()->getAlignmentLen()).arg(mcaSeqArea->getViewRowCount()));
 
     CHECK(!mcaSeqArea->isVisible(position, false), );
 
@@ -159,10 +160,12 @@ void GTUtilsMcaEditorSequenceArea::clickCollapseTriangle(GUITestOpStatus &os, QS
     McaEditorSequenceArea *mcaEditArea = qobject_cast<McaEditorSequenceArea*>(GTWidget::findWidget(os, "mca_editor_sequence_area"));
     GT_CHECK(mcaEditArea != NULL, "McaEditorSequenceArea not found");
 
-    int rowNum = getVisibleNames(os).indexOf(rowName);
-    GT_CHECK(rowNum != -1, "sequence not found in nameList");
+    int viewRowIndex = getVisibleNames(os).indexOf(rowName);
+    GT_CHECK(viewRowIndex != -1, "sequence not found in nameList");
     QWidget* nameList = GTWidget::findWidget(os, "mca_editor_name_list");
-    int yPos = mcaEditArea->getEditor()->getUI()->getRowHeightController()->getRowScreenCenterByNumber(rowNum);
+    RowHeightController *rowHeightController = mcaEditArea->getEditor()->getUI()->getRowHeightController();
+    int yPos = rowHeightController->getScreenYRegionByViewRowIndex(viewRowIndex).startPos
+               + rowHeightController->getRowHeightByViewRowIndex(viewRowIndex) / 2;
     if (showChromatogram) {
         yPos -= 65;
     }
@@ -179,7 +182,7 @@ bool GTUtilsMcaEditorSequenceArea::isChromatogramShown(GUITestOpStatus &os, QStr
     GT_CHECK_RESULT(mcaEditArea != NULL, "McaEditorSequenceArea not found", false);
     int rowNum = GTUtilsMcaEditor::getReadsNames(os).indexOf(rowName);
     GT_CHECK_RESULT(rowNum != -1, "sequence not found in nameList", false);
-    int rowHeight = mcaEditArea->getEditor()->getUI()->getRowHeightController()->getRowHeight(rowNum);
+    int rowHeight = mcaEditArea->getEditor()->getUI()->getRowHeightController()->getRowHeightByViewRowIndex(rowNum);
     bool isCollapsed = rowHeight > 100;
     return isCollapsed;
 }
@@ -224,7 +227,7 @@ QPoint GTUtilsMcaEditorSequenceArea::convertCoordinates(GUITestOpStatus &os, con
     GT_CHECK_RESULT(mcaEditArea != NULL, "McaEditorSequenceArea not found", QPoint());
 
     const int posX = static_cast<int>(mcaEditArea->getEditor()->getUI()->getBaseWidthController()->getBaseGlobalRange(p.x()).center());
-    const int posY = static_cast<int>(mcaEditArea->getEditor()->getUI()->getRowHeightController()->getRowGlobalRangeByNumber(p.y()).center());
+    const int posY = static_cast<int>(mcaEditArea->getEditor()->getUI()->getRowHeightController()->getGlobalYRegionByViewRowIndex(p.y()).center());
     return mcaEditArea->mapToGlobal(QPoint(posX, posY));
 }
 #undef GT_METHOD_NAME
@@ -322,7 +325,7 @@ QRect GTUtilsMcaEditorSequenceArea::getSelectedRect(GUITestOpStatus &os) {
     McaEditorSequenceArea *mcaEditArea = qobject_cast<McaEditorSequenceArea*>(GTWidget::findWidget(os, "mca_editor_sequence_area"));
     GT_CHECK_RESULT(mcaEditArea != NULL, "McaEditorSequenceArea not found", QRect());
 
-    return mcaEditArea->getSelection().getRect();
+    return mcaEditArea->getSelection().toRect();
 }
 #undef GT_METHOD_NAME
 
@@ -334,7 +337,7 @@ void GTUtilsMcaEditorSequenceArea::clickToReferencePosition(GUITestOpStatus &os,
     GT_CHECK(mcaSeqArea->isInRange(selectedPoint),
              QString("Position is out of range: [%1, %2], range: [%3, %4]")
              .arg(selectedPoint.x()).arg(selectedPoint.y())
-             .arg(mcaSeqArea->getEditor()->getAlignmentLen()).arg(mcaSeqArea->getNumDisplayableSequences()));
+             .arg(mcaSeqArea->getEditor()->getAlignmentLen()).arg(mcaSeqArea->getViewRowCount()));
 
 
     scrollToPosition(os, selectedPoint);

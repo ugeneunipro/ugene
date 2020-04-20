@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -96,8 +96,10 @@ namespace {
 
     QStringList generateCandidates(const QString &prefix) {
         QStringList res;
+#ifndef Q_OS_WIN
         res << generateCandidatesWithExt(prefix + "/" + "ugene");
         res << generateCandidatesWithExt(prefix + "/" + "ugened");
+#endif // !Q_OS_WIN
         res << generateCandidatesWithExt(prefix + "/" + "ugenecl");
         res << generateCandidatesWithExt(prefix + "/" + "ugenecld");
         return res;

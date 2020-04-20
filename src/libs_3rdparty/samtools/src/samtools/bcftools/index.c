@@ -7,6 +7,7 @@
 #ifdef _USE_KNETFILE
 #include "knetfile.h"
 #endif
+#include "ugene_custom_io.h"
 
 #define TAD_LIDX_SHIFT 13
 
@@ -185,7 +186,7 @@ static void download_from_remote(const char *url)
 		fprintf(stderr, "[download_from_remote] fail to open remote file.\n");
 		return;
 	}
-	if ((fp = fopen(fn, "w")) == 0) {
+	if ((fp = ugene_custom_fopen(fn, "w")) == 0) {
 		fprintf(stderr, "[download_from_remote] fail to create file in the working directory.\n");
 		knet_close(fp_remote);
 		return;

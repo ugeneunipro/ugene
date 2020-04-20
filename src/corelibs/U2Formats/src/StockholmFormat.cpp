@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -723,8 +723,8 @@ static void save( IOAdapter* io, const MultipleSequenceAlignment& msa, QString n
 }
 
 namespace U2 {
-StockholmFormat::StockholmFormat( QObject *obj ) : TextDocumentFormat( obj , DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject | DocumentFormatFlag_LockedIfNotCreatedByUGENE, QStringList() << "sto") {
-    format_name = tr( "Stockholm" );
+StockholmFormat::StockholmFormat( QObject *obj ) : TextDocumentFormat(obj, BaseDocumentFormats::STOCKHOLM, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject | DocumentFormatFlag_LockedIfNotCreatedByUGENE, QStringList() << "sto") {
+    formatName = tr("Stockholm");
     formatDescription = tr("A multiple sequence alignments file format");
     supportedObjectTypes+=GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
 }
@@ -738,7 +738,7 @@ Document* StockholmFormat::loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRe
         QString lockReason;
         load( io, dbiRef, objects, fs, os, uniFile);
         if ( !uniFile ) {
-            lockReason = DocumentFormat::CREATED_NOT_BY_UGENE;
+            lockReason = QObject::tr("The document is not created by UGENE");
         }
         return new Document( this, io->getFactory(), io->getURL(), dbiRef, objects, fs, lockReason );
     }

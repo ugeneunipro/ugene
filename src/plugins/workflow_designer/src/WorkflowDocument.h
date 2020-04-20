@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,9 +45,6 @@ public:
     WorkflowDocFormat(QObject* p);
 
     static const DocumentFormatId FORMAT_ID;
-    virtual DocumentFormatId getFormatId() const {return FORMAT_ID;}
-
-    virtual const QString& getFormatName() const {return formatName;}
 
     virtual Document* createNewLoadedDocument(IOAdapterFactory* io, const GUrl& url, U2OpStatus& os, const QVariantMap& fs = QVariantMap());
 
@@ -57,9 +54,6 @@ protected:
     virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& url = GUrl()) const;
 
     virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& targetDb, const QVariantMap& hints, U2OpStatus& os);
-
-private:
-    QString formatName;
 };
 
 class WorkflowGObject : public GObject {

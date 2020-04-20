@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,11 +30,17 @@
 
 #include "ColorSchemeUtils.h"
 
-#define COLOR_SCHEME_SETTINGS_ROOT "/color_schema_settings/"
-#define COLOR_SCHEME_SETTINGS_SUB_DIRECTORY "MSA_schemes"
-#define COLOR_SCHEME_COLOR_SCHEMA_DIR "colors_scheme_dir"
-
 namespace U2 {
+
+const QString ColorSchemeUtils::COLOR_SCHEME_AMINO_KEYWORD = "AMINO";
+const QString ColorSchemeUtils::COLOR_SCHEME_NUCL_KEYWORD = "NUCL";
+const QString ColorSchemeUtils::COLOR_SCHEME_NUCL_DEFAULT_KEYWORD = "NUCL_DEFAULT";
+const QString ColorSchemeUtils::COLOR_SCHEME_NUCL_EXTENDED_KEYWORD = "NUCL_EXTENDED";
+
+const QString ColorSchemeUtils::COLOR_SCHEME_NAME_FILTERS = ".csmsa";
+const QString ColorSchemeUtils::COLOR_SCHEME_SETTINGS_ROOT = "/color_schema_settings/";
+const QString ColorSchemeUtils::COLOR_SCHEME_SETTINGS_SUB_DIRECTORY = "MSA_schemes";
+const QString ColorSchemeUtils::COLOR_SCHEME_COLOR_SCHEMA_DIR = "colors_scheme_dir";
 
 namespace {
 
@@ -106,7 +112,7 @@ bool ColorSchemeUtils::getSchemaColors(ColorSchemeData &customScheme) {
             type = DNAAlphabet_NUCL;
             if (line == COLOR_SCHEME_NUCL_DEFAULT_KEYWORD) {
                 defaultAlpType = true;
-            } else if (line == COLOR_SCHEME_NUCL_EXTENDED_KEYWORD) {
+            } else if(line == COLOR_SCHEME_NUCL_EXTENDED_KEYWORD) {
                 defaultAlpType = false;
             } else {
                 coreLog.info(QString("%1: mode of nucleic alphabet of scheme not defined, use default mode").arg(customScheme.name));
@@ -179,8 +185,7 @@ QString ColorSchemeUtils::getColorsDir() {
     QString settingsFile = AppContext::getSettings()->fileName();
     QString settingsDir = QDir(QFileInfo(settingsFile).absolutePath()).filePath(COLOR_SCHEME_SETTINGS_SUB_DIRECTORY);
 
-    QString key = QString(COLOR_SCHEME_SETTINGS_ROOT) + COLOR_SCHEME_COLOR_SCHEMA_DIR;
-    QString res = AppContext::getSettings()->getValue(key, settingsDir, true).toString();
+    QString res = AppContext::getSettings()->getValue(COLOR_SCHEME_SETTINGS_ROOT + COLOR_SCHEME_COLOR_SCHEMA_DIR, settingsDir, true).toString();
 
     return res;
 }
@@ -251,9 +256,14 @@ QMap<char, QColor> ColorSchemeUtils::getDefaultSchemaColors(DNAAlphabetType type
 void ColorSchemeUtils::setColorsDir(const QString &colorsDir) {
     QString settingsFile = AppContext::getSettings()->fileName();
     QString settingsDir = QFileInfo(settingsFile).absolutePath();
-    if (settingsDir != colorsDir) {
-        QString key = QString(COLOR_SCHEME_SETTINGS_ROOT) + COLOR_SCHEME_COLOR_SCHEMA_DIR;
-        AppContext::getSettings()->setValue(key, colorsDir, true);
+    QString finalColorDir = colorsDir;
+    QFileInfo info(colorsDir);
+    if (!info.isDir()) {
+        finalColorDir = info.dir().absolutePath();
+        coreLog.trace(QString("%1: the file location was trimmed to the file directory.").arg(colorsDir));
+    }
+    if (settingsDir != finalColorDir) {
+        AppContext::getSettings()->setValue(COLOR_SCHEME_SETTINGS_ROOT + COLOR_SCHEME_COLOR_SCHEMA_DIR, finalColorDir, true);
     }
 }
 

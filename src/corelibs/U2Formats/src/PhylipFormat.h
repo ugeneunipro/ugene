@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ namespace U2 {
 class U2FORMATS_EXPORT PhylipFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
-    PhylipFormat(QObject *p);
+    PhylipFormat(QObject *p, const DocumentFormatId& id);
     virtual void storeDocument(Document* d, IOAdapter* io, U2OpStatus& os);
 
 protected:
@@ -44,16 +44,12 @@ protected:
     virtual Document* loadTextDocument(IOAdapter* io, const U2DbiRef& dbiRef, const QVariantMap& fs, U2OpStatus& os);
 
     virtual MultipleSequenceAlignment parse(IOAdapter* io, U2OpStatus &os) const = 0;
-
-    QString formatName;
 };
 
 class U2FORMATS_EXPORT PhylipSequentialFormat : public PhylipFormat {
     Q_OBJECT
 public:
     PhylipSequentialFormat(QObject* p);
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::PHYLIP_SEQUENTIAL;}
-    virtual const QString& getFormatName() const {return formatName;}
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);
 
 protected:
@@ -66,8 +62,6 @@ class U2FORMATS_EXPORT PhylipInterleavedFormat : public PhylipFormat {
     Q_OBJECT
 public:
     PhylipInterleavedFormat(QObject* p);
-    virtual DocumentFormatId getFormatId() const {return BaseDocumentFormats::PHYLIP_INTERLEAVED;}
-    virtual const QString& getFormatName() const {return formatName;}
     virtual void storeEntry(IOAdapter *io, const QMap< GObjectType, QList<GObject*> > &objectsMap, U2OpStatus &os);
 
 protected:

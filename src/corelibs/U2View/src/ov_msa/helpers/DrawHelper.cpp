@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,11 +19,13 @@
  * MA 02110-1301, USA.
  */
 
+#include "U2Core/U2SafePoints.h"
+
 #include "BaseWidthController.h"
 #include "DrawHelper.h"
 #include "RowHeightController.h"
 #include "ScrollController.h"
-#include "ov_msa/MSACollapsibleModel.h"
+#include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/view_rendering/MaEditorSelection.h"
 #include "ov_msa/view_rendering/MaEditorWgt.h"
 
@@ -43,49 +45,29 @@ U2Region DrawHelper::getVisibleBases(int widgetWidth, bool countFirstClippedBase
     return U2Region(firstVisibleBase, lastVisibleBase - firstVisibleBase + 1);
 }
 
-U2Region DrawHelper::getVisibleRowsNumbers(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
-    const int firstVisibleRowNumber = scrollController->getFirstVisibleRowNumber(countFirstClippedRow);
-    const int lastVisibleRowNumber= scrollController->getLastVisibleRowNumber(widgetHeight, countLastClippedRow);
+U2Region DrawHelper::getVisibleViewRowsRegion(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
+    const int firstVisibleRowNumber = scrollController->getFirstVisibleViewRowIndex(countFirstClippedRow);
+    const int lastVisibleRowNumber= scrollController->getLastVisibleViewRowIndex(widgetHeight, countLastClippedRow);
     return U2Region(firstVisibleRowNumber, lastVisibleRowNumber - firstVisibleRowNumber + 1);
 }
 
-QList<int> DrawHelper::getVisibleRowsIndexes(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
-    QVector<U2Region> groupedRowsIndexes = getGroupedVisibleRowsIndexes(widgetHeight, countFirstClippedRow, countLastClippedRow);
-    QList<int> rowsIndexes;
-    foreach (const U2Region &group, groupedRowsIndexes) {
-        for (qint64 rowIndex = group.startPos; rowIndex < group.endPos(); rowIndex++) {
-            rowsIndexes << static_cast<int>(rowIndex);
-        }
-    }
-    return rowsIndexes;
-}
-
-QVector<U2Region> DrawHelper::getGroupedVisibleRowsIndexes(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
-    const int firstVisibleRowNumber = scrollController->getFirstVisibleRowNumber(countFirstClippedRow);
-    const int lastVisibleRowNumber = scrollController->getLastVisibleRowNumber(widgetHeight, countLastClippedRow);
-    QVector<U2Region> groupedRowsIndexes;
-    collapsibleModel->getVisibleRows(firstVisibleRowNumber, lastVisibleRowNumber, groupedRowsIndexes);
-    return groupedRowsIndexes;
+QList<int> DrawHelper::getVisibleMaRowIndexes(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
+    int firstVisibleViewRow = scrollController->getFirstVisibleViewRowIndex(countFirstClippedRow);
+    int lastVisibleViewRow = scrollController->getLastVisibleViewRowIndex(widgetHeight, countLastClippedRow);
+    U2Region viewRowsRegion(firstVisibleViewRow, lastVisibleViewRow - firstVisibleViewRow + 1);
+    return collapsibleModel->getMaRowIndexesByViewRowIndexes(viewRowsRegion);
 }
 
 int DrawHelper::getVisibleBasesCount(int widgetWidth, bool countFirstClippedBase, bool countLastClippedBase) const {
     return getVisibleBases(widgetWidth, countFirstClippedBase,countLastClippedBase).length;
 }
 
-int DrawHelper::getVisibleRowsCount(int widgetHeight, bool countFirstClippedRow, bool countLastClippedRow) const {
-    return getVisibleRowsIndexes(widgetHeight, countFirstClippedRow,countLastClippedRow).length();
-}
-
 QRect DrawHelper::getSelectionScreenRect(const MaEditorSelection &selection) const {
-    CHECK(!selection.getRect().isEmpty(), QRect());
+    CHECK(!selection.isEmpty(), QRect());
 
-    const U2Region xRange = ui->getBaseWidthController()->getBasesScreenRange(selection.getXRegion());
-    CHECK(!xRange.isEmpty(), QRect());
-
-    const U2Region yRange = ui->getRowHeightController()->getRowsScreenRangeByNumbers(selection.getYRegion());
-    CHECK(!yRange.isEmpty(), QRect());
-
-    return QRect(xRange.startPos, yRange.startPos, xRange.length - 1, yRange.length - 1);
+    U2Region xRange = ui->getBaseWidthController()->getBasesScreenRange(selection.getXRegion());
+    U2Region yRange = ui->getRowHeightController()->getScreenYRegionByViewRowsRegion(selection.getYRegion());
+    return QRect(xRange.startPos, yRange.startPos, xRange.length, yRange.length);
 }
 
 }   // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -297,9 +297,12 @@ void GSequenceGraphView::onVisibleRangeChanged(bool signal) {
     if(signal) {
         foreach (const QSharedPointer<GSequenceGraphData> graph, graphs) {
             emit si_frameRangeChanged(graph, static_cast<GSequenceGraphViewRA*>(renderArea)->getGraphRect());
-            float pos = static_cast<double>(graph->graphLabels.getMovingLabel().getCoord().x()) / renderArea->getCurrentScale() + getVisibleRange().startPos;
-            graph->graphLabels.getMovingLabel().setPosition(pos);
-            emit si_labelMoved(graph, &(graph->graphLabels.getMovingLabel()), static_cast<GSequenceGraphViewRA*>(renderArea)->getGraphRect());
+            GraphLabel& cursorLabel = graph->graphLabels.getMovingLabel();
+            if (!cursorLabel.isHidden()) { // do not move cursor label if it was hidden for some reason (widget is not focused, etc...)
+                float pos = static_cast<double>(cursorLabel.getCoord().x()) / renderArea->getCurrentScale() + getVisibleRange().startPos;
+                cursorLabel.setPosition(pos);
+                emit si_labelMoved(graph, &cursorLabel, static_cast<GSequenceGraphViewRA*>(renderArea)->getGraphRect());
+            }
         }
     }
     GSequenceLineView::onVisibleRangeChanged(signal);

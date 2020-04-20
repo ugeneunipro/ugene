@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -192,8 +192,8 @@ QString CrashHandler::generateReport(const QString &exceptionType, int maxReport
             }
             QString progress = QString::number(t->getStateInfo().progress);
             taskList.append(t->getTaskName() + "\t" + state + "\t" + progress  + "\n");
-            foreach(Task *tt, t->getSubtasks()) {
-                getSubTasks(tt, taskList, 1);
+            foreach(const QPointer<Task> &tt, t->getSubtasks()) {
+                getSubTasks(tt.data(), taskList, 1);
             }
         }
     }
@@ -245,8 +245,8 @@ void CrashHandler::getSubTasks(Task *t, QString& list, int lvl) {
         }
         QString progress = QString::number(t->getStateInfo().progress);
         list.append(prefix + t->getTaskName() + "\t" + state + "\t" + progress  + "\n");
-        foreach(Task *tt, t->getSubtasks()) {
-            getSubTasks(tt, list, lvl + 1);
+        foreach(const QPointer<Task> &tt, t->getSubtasks()) {
+            getSubTasks(tt.data(), list, lvl + 1);
         }
     }
 }

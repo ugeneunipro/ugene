@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,7 +36,6 @@ OpenCLGpuRegistry::OpenCLGpuRegistry() : openCLHelper(NULL){
 }
 
 OpenCLGpuRegistry::~OpenCLGpuRegistry() {
-    saveGpusSettings();
     qDeleteAll( gpus.values() );
 }
 
@@ -50,49 +49,67 @@ void OpenCLGpuRegistry::unregisterOpenCLGpu(OpenCLGpuModel * gpu) {
     delete gpus.take(gpu->getId());
 }
 
-OpenCLGpuModel * OpenCLGpuRegistry::getGpuById( OpenCLGpuId id ) const {
+OpenCLGpuModel * OpenCLGpuRegistry::getGpuById(cl_device_id id ) const {
     return gpus.value( id, 0 );
+}
+
+OpenCLGpuModel *OpenCLGpuRegistry::getGpuByName(const QString &name) const {
+    OpenCLGpuModel *gpu = nullptr;
+    foreach (OpenCLGpuModel *m, gpus.values()) {
+        CHECK_CONTINUE(m->getName() == name);
+
+        gpu = m;
+        break;
+    }
+
+    return gpu;
 }
 
 QList<OpenCLGpuModel *> OpenCLGpuRegistry::getRegisteredGpus() const {
     return gpus.values();
 }
 
-QList<OpenCLGpuModel *> OpenCLGpuRegistry::getEnabledGpus() const {
+OpenCLGpuModel* OpenCLGpuRegistry::getEnabledGpu() const {
     QList<OpenCLGpuModel*> registeredGpus = getRegisteredGpus();
 
-    QList<OpenCLGpuModel*> enabledGpus;
+    OpenCLGpuModel *enabledGpu = nullptr;
     foreach (OpenCLGpuModel* m, registeredGpus) {
         if (m && m->isEnabled()) {
-            enabledGpus.append(m);
+            enabledGpu = m;
+            break;
         }
     }
 
-    return enabledGpus;
+    return enabledGpu;
 }
 
-OpenCLGpuModel * OpenCLGpuRegistry::getAnyEnabledGpu() const {
-    QHash<OpenCLGpuId, OpenCLGpuModel*>::const_iterator it = std::find_if( gpus.begin(), gpus.end(), std::mem_fun(&OpenCLGpuModel::isEnabled) );
-    if( gpus.end() != it ) {
-        return *it;
-    }
-    return 0;
+QString OpenCLGpuRegistry::getEnabledGpuName() const {
+    OpenCLGpuModel * enabledGpu = getEnabledGpu();
+    CHECK(nullptr != enabledGpu, QString());
+
+    return enabledGpu->getName();
 }
 
-OpenCLGpuModel * OpenCLGpuRegistry::acquireAnyReadyGpu() {
-    QHash<OpenCLGpuId, OpenCLGpuModel*>::iterator it = std::find_if( gpus.begin(), gpus.end(), std::mem_fun(&OpenCLGpuModel::isReady) );
-    if( gpus.end() != it ) {
-        (*it)->setAcquired(true);
-        return *it;
+OpenCLGpuModel *OpenCLGpuRegistry::acquireEnabledGpuIfReady() {
+    OpenCLGpuModel *model = nullptr;
+    foreach(OpenCLGpuModel * gpuModel, gpus.values()) {
+        CHECK_CONTINUE(gpuModel->isEnabled());
+        CHECK_BREAK(gpuModel->isReady());
+
+        gpuModel->setAcquired(true);
+        model = gpuModel;
     }
-    return 0;
+
+    return model;
 }
 
 void OpenCLGpuRegistry::saveGpusSettings() const {
-    Settings * s = AppContext::getSettings();
-    foreach( OpenCLGpuModel * m, gpus ) {
-        QString key = OPENCL_GPU_REGISTRY_SETTINGS_GPU_SPECIFIC + QString::number(m->getId()) + OPENCL_GPU_SETTINGS_ENABLED;
-        s->setValue( key, QVariant::fromValue(m->isEnabled()) );
+    Settings* s = AppContext::getSettings();
+    foreach(OpenCLGpuModel *m, gpus) {
+        CHECK_CONTINUE(m->isEnabled());
+
+        s->setValue(OPENCL_GPU_REGISTRY_SETTINGS_GPU_ENABLED, QVariant(m->getName()));
+        break;
     }
 }
 

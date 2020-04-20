@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,7 +52,7 @@ public:
     /**
      * Don't delete logParser, it will be deleted automatically.
      */
-    ExternalToolRunTask(const QString& toolName, const QStringList& arguments, ExternalToolLogParser* logParser,
+    ExternalToolRunTask(const QString& toolId, const QStringList& arguments, ExternalToolLogParser* logParser,
         const QString& workingDirectory = "", const QStringList& additionalPaths = QStringList(),
         const QString &additionalProcessToKill = QString(), bool parseOutputFile = false);
     ~ExternalToolRunTask();
@@ -73,6 +73,7 @@ private:
 
     QStringList             arguments;
     ExternalToolLogParser*  logParser;
+    const QString           toolId;
     QString                 toolName;
     QString                 workingDirectory;
     QString                 inputFile;
@@ -106,7 +107,6 @@ private:
 /** Part of ExternalToolRunTask that belongs to task run  thread -> get signals from that thread directly */
 class U2CORE_EXPORT ExternalToolRunTaskHelper : public QObject {
     Q_OBJECT
-
 public:
     ExternalToolRunTaskHelper(ExternalToolRunTask* t);
     ExternalToolRunTaskHelper(QProcess *process, ExternalToolLogParser *logParser, U2OpStatus &os);
@@ -117,12 +117,15 @@ public slots:
     void sl_onReadyToReadLog();
     void sl_onReadyToReadErrLog();
 
+protected:
+    virtual void processErrorToLog();
+
 private:
     QMutex logMutex;
-    QProcess *process;
-    ExternalToolLogParser *logParser;
-    U2OpStatus &os;
-    QByteArray              logData;
+    U2OpStatus& os;
+    ExternalToolLogParser* logParser;
+    QProcess* process;
+    QByteArray logData;
     ExternalToolListener* listener;
 };
 
@@ -139,6 +142,7 @@ public:
     static bool startExternalProcess(QProcess *process, const QString &program, const QStringList &arguments);
     static ProcessRun prepareProcess(const QString &toolName, const QStringList &arguments, const QString &workingDirectory, const QStringList &additionalPaths, U2OpStatus &os, ExternalToolListener* listener);
     static QString prepareArgumentsForCmdLine(const QStringList &arguments);
+    static QStringList splitCmdLineArguments(const QString &execString);
     static QVariantMap getScoresGapDependencyMap();
 };
 
@@ -146,7 +150,7 @@ public:
 class U2CORE_EXPORT ExternalToolLogParser : public QObject {
     Q_OBJECT
 public:
-    ExternalToolLogParser();
+    ExternalToolLogParser(bool writeErrorsToLog = true);
     virtual int getProgress(){ return progress; }
     virtual void parseOutput(const QString& partOfLog);
     virtual void parseErrOutput(const QString& partOfLog);
@@ -167,6 +171,8 @@ private:
     QString     lastLine;
     /* Last line printed to stderr */
     QString     lastErrLine;
+    /* The error will be written to log if true. Default - true */
+    bool        writeErrorsToLog;
 
 protected:
     QStringList lastPartOfLog;

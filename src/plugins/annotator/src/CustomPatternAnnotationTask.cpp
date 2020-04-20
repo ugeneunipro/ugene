@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,15 +21,16 @@
 
 #include <QFile>
 
+#include <U2Algorithm/SArrayBasedFindTask.h>
+
+#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
+#include <U2Core/CreateAnnotationTask.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNATranslation.h>
-#include <U2Core/AnnotationTableObject.h>
-#include <U2Core/CreateAnnotationTask.h>
-#include <U2Algorithm/SArrayIndex.h>
-#include <U2Core/TextUtils.h>
 #include <U2Core/Settings.h>
+#include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "CustomPatternAnnotationTask.h"
@@ -38,6 +39,15 @@ namespace U2 {
 
 //////////////////////////////////////////////////////////////////////////
 // CustomPatternAnnotationTask
+
+const QString PlasmidFeatureTypes::FEATURE("Feature");
+const QString PlasmidFeatureTypes::GENE("Gene");
+const QString PlasmidFeatureTypes::ORIGIN("Origin");
+const QString PlasmidFeatureTypes::PRIMER("Primer");
+const QString PlasmidFeatureTypes::PROMOTER("Promoter");
+const QString PlasmidFeatureTypes::REGULATORY("Regulatory");
+const QString PlasmidFeatureTypes::TERMINATOR("Terminator");
+
 CustomPatternAnnotationTask::CustomPatternAnnotationTask(AnnotationTableObject* aObj, const U2::U2EntityRef &entityRef,
                                                          const SharedFeatureStore &store, const QStringList& filteredFeatureTypes)
     : Task(tr("Custom pattern annotation"), TaskFlags_NR_FOSCOE), dnaObj("ref", entityRef), aTableObj(aObj),

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -198,11 +198,11 @@ void SeqPosComboBoxWithChecksWidget::checkHint() {
 /* SeqPosComboBoxWithUrlsDelegate */
 /************************************************************************/
 void SeqPosComboBoxWithUrlsDelegate::updateUgeneSettings() {
-    updateDataPath(getDataPathName(), ASSEMBLY_DIR_NAME, true);
+    updateDataPath(getDataPathName(), SeqPosSupport::ASSEMBLY_DIR_NAME, true);
 }
 
 QString SeqPosComboBoxWithUrlsDelegate::getDataPathName() {
-    return ASSEMBLY_DIR;
+    return SeqPosSupport::ASSEMBLY_DIR;
 }
 
 QString SeqPosComboBoxWithUrlsDelegate::getAttributeName() {
@@ -219,7 +219,7 @@ void SeqPosWorkerFactory::init() {
     U2DataPath* dataPath = NULL;
     U2DataPathRegistry* dpr =  AppContext::getDataPathRegistry();
     if (dpr){
-        U2DataPath* dp = dpr->getDataPathByName(ASSEMBLY_DIR);
+        U2DataPath* dp = dpr->getDataPathByName(SeqPosSupport::ASSEMBLY_DIR);
         if (dp && dp->isValid()){
             dataPath = dp;
         }
@@ -333,7 +333,7 @@ void SeqPosWorkerFactory::init() {
     ActorPrototype *proto = new IntegralBusActorPrototype(protoDesc, portDescs, attrs);
     proto->setPrompter(new SeqPosPrompter());
     proto->setEditor(new DelegateEditor(delegates));
-    proto->addExternalTool(ET_SEQPOS);
+    proto->addExternalTool(SeqPosSupport::ET_SEQPOS_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_CHIP_SEQ(), proto);
     WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID)->registerEntry(new SeqPosWorkerFactory());
 }

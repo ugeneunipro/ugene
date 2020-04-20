@@ -2,44 +2,185 @@ ID   D0VTW9_9INFA            Unreviewed;       470 AA.
 AC   D0VTW9;
 DT   15-DEC-2009, integrated into UniProtKB/TrEMBL.
 DT   15-DEC-2009, sequence version 1.
-DT   08-MAR-2011, entry version 8.
-DE   SubName: Full=Neuraminidase;
-GN   Name=NA;
+DT   11-DEC-2019, entry version 54.
+DE   RecName: Full=Neuraminidase {ECO:0000256|HAMAP-Rule:MF_04071, ECO:0000256|RuleBase:RU361252, ECO:0000256|SAAS:SAAS00397549};
+DE            EC=3.2.1.18 {ECO:0000256|HAMAP-Rule:MF_04071, ECO:0000256|RuleBase:RU361252, ECO:0000256|SAAS:SAAS00397416};
+GN   Name=NA {ECO:0000256|HAMAP-Rule:MF_04071, ECO:0000256|RuleBase:RU361252,
+GN   ECO:0000313|EMBL:ACY01449.1};
 OS   Influenza A virus (A/Esfahan/708/2008(H1N1)).
-OC   Viruses; ssRNA negative-strand viruses; Orthomyxoviridae;
-OC   Influenzavirus A.
-OX   NCBI_TaxID=684568;
-RN   [1]
+OC   Viruses; Riboviria; Negarnaviricota; Polyploviricotina; Insthoviricetes;
+OC   Articulavirales; Orthomyxoviridae; Alphainfluenzavirus.
+OX   NCBI_TaxID=684568 {ECO:0000313|EMBL:ACY01449.1};
+RN   [1] {ECO:0000313|EMBL:ACY01449.1}
 RP   NUCLEOTIDE SEQUENCE.
-RC   STRAIN=A/Esfahan/708/2008;
+RC   STRAIN=A/Esfahan/708/2008 {ECO:0000313|EMBL:ACY01449.1};
 RA   Shafiei Jandaghi N.Z., Mokhtari Azad T.;
-RT   "Molecular characterization and phylogenetic analysis of Iranian
-RT   seasonal H1N1 influenza viruses from 2005 to 2009 and pandemic H1N1
-RT   compared with their corresponding vaccine strains.";
+RT   "Molecular characterization and phylogenetic analysis of Iranian seasonal
+RT   H1N1 influenza viruses from 2005 to 2009 and pandemic H1N1 compared with
+RT   their corresponding vaccine strains.";
 RL   Submitted (OCT-2009) to the EMBL/GenBank/DDBJ databases.
-CC   -!- CATALYTIC ACTIVITY: Hydrolysis of alpha-(2->3)-, alpha-(2->6)-,
-CC       alpha-(2->8)- glycosidic linkages of terminal sialic acid residues
-CC       in oligosaccharides, glycoproteins, glycolipids, colominic acid
-CC       and synthetic substrates.
-CC   -!- SUBUNIT: Homotetramer (By similarity).
-CC   -----------------------------------------------------------------------
-CC   Copyrighted by the UniProt Consortium, see http://www.uniprot.org/terms
-CC   Distributed under the Creative Commons Attribution-NoDerivs License
-CC   -----------------------------------------------------------------------
+CC   -!- FUNCTION: Catalyzes the removal of terminal sialic acid residues from
+CC       viral and cellular glycoconjugates. Cleaves off the terminal sialic
+CC       acids on the glycosylated HA during virus budding to facilitate virus
+CC       release. Additionally helps virus spread through the circulation by
+CC       further removing sialic acids from the cell surface. These cleavages
+CC       prevent self-aggregation and ensure the efficient spread of the progeny
+CC       virus from cell to cell. Otherwise, infection would be limited to one
+CC       round of replication. Described as a receptor-destroying enzyme because
+CC       it cleaves a terminal sialic acid from the cellular receptors. May
+CC       facilitate viral invasion of the upper airways by cleaving the sialic
+CC       acid moities on the mucin of the airway epithelial cells. Likely to
+CC       plays a role in the budding process through its association with lipid
+CC       rafts during intracellular transport. May additionally display a raft-
+CC       association independent effect on budding. Plays a role in the
+CC       determination of host range restriction on replication and virulence.
+CC       Sialidase activity in late endosome/lysosome traffic seems to enhance
+CC       virus replication. {ECO:0000256|HAMAP-Rule:MF_04071}.
+CC   -!- CATALYTIC ACTIVITY:
+CC       Reaction=Hydrolysis of alpha-(2->3)-, alpha-(2->6)-, alpha-
+CC         (2->8)- glycosidic linkages of terminal sialic acid residues in
+CC         oligosaccharides, glycoproteins, glycolipids, colominic acid and
+CC         synthetic substrates.; EC=3.2.1.18; Evidence={ECO:0000256|HAMAP-
+CC         Rule:MF_04071, ECO:0000256|RuleBase:RU361252,
+CC         ECO:0000256|SAAS:SAAS01126145};
+CC   -!- COFACTOR:
+CC       Name=Ca(2+); Xref=ChEBI:CHEBI:29108;
+CC         Evidence={ECO:0000256|HAMAP-Rule:MF_04071,
+CC         ECO:0000256|RuleBase:RU361252, ECO:0000256|SAAS:SAAS00612833};
+CC   -!- ACTIVITY REGULATION: Inhibited by the neuraminidase inhibitors
+CC       zanamivir (Relenza) and oseltamivir (Tamiflu). These drugs interfere
+CC       with the release of progeny virus from infected cells and are effective
+CC       against all influenza strains. Resistance to neuraminidase inhibitors
+CC       is quite rare. {ECO:0000256|HAMAP-Rule:MF_04071,
+CC       ECO:0000256|SAAS:SAAS01070481}.
+CC   -!- SUBUNIT: Homotetramer. {ECO:0000256|HAMAP-Rule:MF_04071,
+CC       ECO:0000256|RuleBase:RU361252, ECO:0000256|SAAS:SAAS00397177}.
+CC   -!- SUBCELLULAR LOCATION: Host apical cell membrane {ECO:0000256|HAMAP-
+CC       Rule:MF_04071, ECO:0000256|SAAS:SAAS00582107}; Single-pass type II
+CC       membrane protein {ECO:0000256|HAMAP-Rule:MF_04071,
+CC       ECO:0000256|SAAS:SAAS00582107}. Virion membrane {ECO:0000256|HAMAP-
+CC       Rule:MF_04071}. Note=Preferentially accumulates at the apical plasma
+CC       membrane in infected polarized epithelial cells, which is the virus
+CC       assembly site. Uses lipid rafts for cell surface transport and apical
+CC       sorting. In the virion, forms a mushroom-shaped spike on the surface of
+CC       the membrane. {ECO:0000256|HAMAP-Rule:MF_04071}.
+CC   -!- DOMAIN: Intact N-terminus is essential for virion morphogenesis.
+CC       Possess two apical sorting signals, one in the ectodomain, which is
+CC       likely to be a glycan, and the other in the transmembrane domain. The
+CC       transmembrane domain also plays a role in lipid raft association.
+CC       {ECO:0000256|HAMAP-Rule:MF_04071}.
+CC   -!- PTM: N-glycosylated. {ECO:0000256|HAMAP-Rule:MF_04071,
+CC       ECO:0000256|RuleBase:RU361252}.
+CC   -!- SIMILARITY: Belongs to the glycosyl hydrolase 34 family.
+CC       {ECO:0000256|HAMAP-Rule:MF_04071, ECO:0000256|RuleBase:RU361252,
+CC       ECO:0000256|SAAS:SAAS00582269}.
+CC   -!- CAUTION: Lacks conserved residue(s) required for the propagation of
+CC       feature annotation. {ECO:0000256|HAMAP-Rule:MF_04071}.
+CC   ---------------------------------------------------------------------------
+CC   Copyrighted by the UniProt Consortium, see https://www.uniprot.org/terms
+CC   Distributed under the Creative Commons Attribution (CC BY 4.0) License
+CC   ---------------------------------------------------------------------------
 DR   EMBL; GU112240; ACY01449.1; -; Viral_cRNA.
-DR   GO; GO:0020002; C:host cell plasma membrane; IEA:UniProtKB-KW.
-DR   GO; GO:0016021; C:integral to membrane; IEA:UniProtKB-KW.
-DR   GO; GO:0019012; C:virion; IEA:UniProtKB-KW.
-DR   GO; GO:0004308; F:exo-alpha-sialidase activity; IEA:InterPro.
-DR   GO; GO:0005975; P:carbohydrate metabolic process; IEA:InterPro.
+DR   CAZy; GH34; Glycoside Hydrolase Family 34.
+DR   GO; GO:0020002; C:host cell plasma membrane; IEA:UniProtKB-SubCell.
+DR   GO; GO:0016021; C:integral component of membrane; IEA:UniProtKB-UniRule.
+DR   GO; GO:0055036; C:virion membrane; IEA:UniProtKB-SubCell.
+DR   GO; GO:0052794; F:exo-alpha-(2->3)-sialidase activity; IEA:UniProtKB-UniRule.
+DR   GO; GO:0052795; F:exo-alpha-(2->6)-sialidase activity; IEA:UniProtKB-UniRule.
+DR   GO; GO:0052796; F:exo-alpha-(2->8)-sialidase activity; IEA:UniProtKB-UniRule.
+DR   GO; GO:0046872; F:metal ion binding; IEA:UniProtKB-UniRule.
+DR   GO; GO:0005975; P:carbohydrate metabolic process; IEA:UniProtKB-UniRule.
+DR   GO; GO:0046761; P:viral budding from plasma membrane; IEA:UniProtKB-UniRule.
+DR   CDD; cd15483; Influenza_NA; 1.
+DR   HAMAP; MF_04071; INFV_NRAM; 1.
 DR   InterPro; IPR001860; Glyco_hydro_34.
-DR   InterPro; IPR011040; Neuraminidase.
-DR   Gene3D; G3DSA:2.120.10.10; Neuraminidase; 1.
+DR   InterPro; IPR033654; Sialidase_Influenza_A/B.
+DR   InterPro; IPR036278; Sialidase_sf.
 DR   Pfam; PF00064; Neur; 1.
-DR   SUPFAM; SSF50939; Sialidase; 1.
+DR   SUPFAM; SSF50939; SSF50939; 1.
 PE   3: Inferred from homology;
-KW   Glycosidase; Host cell membrane; Host membrane; Hydrolase; Membrane;
-KW   Transmembrane; Transmembrane helix; Virion.
+KW   Calcium {ECO:0000256|HAMAP-Rule:MF_04071, ECO:0000256|RuleBase:RU361252,
+KW   ECO:0000256|SAAS:SAAS00474703};
+KW   Disulfide bond {ECO:0000256|HAMAP-Rule:MF_04071,
+KW   ECO:0000256|SAAS:SAAS00474860};
+KW   Glycoprotein {ECO:0000256|HAMAP-Rule:MF_04071,
+KW   ECO:0000256|RuleBase:RU361252};
+KW   Glycosidase {ECO:0000256|HAMAP-Rule:MF_04071,
+KW   ECO:0000256|RuleBase:RU361252, ECO:0000256|SAAS:SAAS00474810};
+KW   Host cell membrane {ECO:0000256|HAMAP-Rule:MF_04071,
+KW   ECO:0000256|RuleBase:RU361252, ECO:0000256|SAAS:SAAS00474912};
+KW   Host membrane {ECO:0000256|HAMAP-Rule:MF_04071,
+KW   ECO:0000256|RuleBase:RU361252, ECO:0000256|SAAS:SAAS00474912};
+KW   Hydrolase {ECO:0000256|HAMAP-Rule:MF_04071, ECO:0000256|RuleBase:RU361252,
+KW   ECO:0000256|SAAS:SAAS00474810};
+KW   Membrane {ECO:0000256|HAMAP-Rule:MF_04071, ECO:0000256|RuleBase:RU361252,
+KW   ECO:0000256|SAAS:SAAS00474912, ECO:0000256|SAAS:SAAS00475130};
+KW   Metal-binding {ECO:0000256|HAMAP-Rule:MF_04071,
+KW   ECO:0000256|RuleBase:RU361252, ECO:0000256|SAAS:SAAS00474602};
+KW   Signal-anchor {ECO:0000256|HAMAP-Rule:MF_04071};
+KW   Transmembrane {ECO:0000256|HAMAP-Rule:MF_04071,
+KW   ECO:0000256|SAAS:SAAS00475130};
+KW   Transmembrane helix {ECO:0000256|HAMAP-Rule:MF_04071,
+KW   ECO:0000256|SAAS:SAAS00475130};
+KW   Virion {ECO:0000256|HAMAP-Rule:MF_04071, ECO:0000256|RuleBase:RU361252,
+KW   ECO:0000256|SAAS:SAAS00475258}.
+FT   TRANSMEM        7..34
+FT                   /note="Helical"
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   REGION          11..33
+FT                   /note="Involved in apical transport and lipid raft
+FT                   association"
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   REGION          91..470
+FT                   /note="Head of neuraminidase"
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   REGION          277..278
+FT                   /note="Substrate binding"
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   ACT_SITE        151
+FT                   /note="Proton donor/acceptor"
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   ACT_SITE        402
+FT                   /note="Nucleophile"
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   METAL           294
+FT                   /note="Calcium; via carbonyl oxygen"
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   METAL           298
+FT                   /note="Calcium; via carbonyl oxygen"
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   METAL           324
+FT                   /note="Calcium"
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   METAL           344
+FT                   /note="Calcium; via carbonyl oxygen"
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   BINDING         118
+FT                   /note="Substrate"
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   BINDING         152
+FT                   /note="Substrate"
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   BINDING         293
+FT                   /note="Substrate"
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   BINDING         368
+FT                   /note="Substrate"
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   DISULFID        92..417
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   DISULFID        124..129
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   DISULFID        184..231
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   DISULFID        233..238
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   DISULFID        279..292
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   DISULFID        281..290
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
+FT   DISULFID        318..335
+FT                   /evidence="ECO:0000256|HAMAP-Rule:MF_04071"
 SQ   SEQUENCE   470 AA;  51702 MW;  A0DE4674A26046FD CRC64;
      MNPNQKIITI GSISIAIGII SLMLQIGNII SIWASHSIQT GSQNNTGICN QRIITYENST
      WVNHTYVNIN NTNVVAGEDK TSVTLAGNSS LCSISGWAIY TKDNSIRIGS KGDVFVIREP

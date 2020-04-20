@@ -330,7 +330,7 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/HMMIOWorker.cpp" line="68"/>
+        <location filename="../src/HMMIOWorker.cpp" line="69"/>
         <source>HMM Profile</source>
         <translation>Профайл HMM</translation>
     </message>
@@ -457,7 +457,7 @@ The default is instead to generate sequences with a variety of different lengths
         <location filename="../src/u_build/HMMBuildDialogController.cpp" line="56"/>
         <location filename="../src/u_build/HMMBuildDialogController.cpp" line="164"/>
         <source>Close</source>
-        <translation type="unfinished">Отмена</translation>
+        <translation>Закрыть</translation>
     </message>
     <message>
         <location filename="../src/u_build/HMMBuildDialogController.cpp" line="77"/>
@@ -724,47 +724,52 @@ The default is instead to generate sequences with a variety of different lengths
         <translation>HMM калибровка &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="200"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="184"/>
+        <source>HMMReadTask didn&apos;t generate &quot;hmm&quot; object, stop.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="204"/>
         <source>Source profile</source>
         <translation>Исходный профайл</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="203"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="207"/>
         <source>Task was not finished</source>
         <translation>Задача была не завершена</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="208"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="212"/>
         <source>Result profile</source>
         <translation>Файл результата</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="209"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="213"/>
         <source>Expert options</source>
         <translation>Дополнительные опции</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="211"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="215"/>
         <source>Number of random sequences to sample</source>
         <translation>Кол-во случайных синтетических последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="212"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="216"/>
         <source>Random number seed</source>
         <translation>Затравка</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="213"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="217"/>
         <source>Mean of length distribution</source>
         <translation>Средняя длина синтетических последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="214"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="218"/>
         <source>Standard deviation of length distribution</source>
         <translation>Стандартное отклонение средней длины</translation>
     </message>
     <message>
-        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="216"/>
+        <location filename="../src/u_calibrate/HMMCalibrateTask.cpp" line="220"/>
         <source>Calculated evidence (mu , lambda)</source>
         <translation>Вычисленная вероятность (мю, лямбда)</translation>
     </message>
@@ -845,7 +850,7 @@ The default is instead to generate sequences with a variety of different lengths
     <message>
         <location filename="../src/HMMIO.cpp" line="219"/>
         <source>Model &quot;%1&quot; is a HMMER3 model, it can&apos;t be used with HMMER2.</source>
-        <translation type="unfinished"></translation>
+        <translation>Модель &quot;%1&quot; это HMMER3 модель, она не может быть использована с HMMER2.</translation>
     </message>
     <message>
         <location filename="../src/HMMIO.cpp" line="385"/>
@@ -1080,12 +1085,12 @@ The default is instead to generate sequences with a variety of different lengths
 <context>
     <name>U2::LocalWorkflow::HMMBuildWorker</name>
     <message>
-        <location filename="../src/u_build/HMMBuildWorker.cpp" line="317"/>
+        <location filename="../src/u_build/HMMBuildWorker.cpp" line="319"/>
         <source>Built HMM profile</source>
         <translation>Построен профайл HMM</translation>
     </message>
     <message>
-        <location filename="../src/u_build/HMMBuildWorker.cpp" line="323"/>
+        <location filename="../src/u_build/HMMBuildWorker.cpp" line="325"/>
         <source>Calibrated HMM profile</source>
         <translation>Откалиброван профайл HMM</translation>
     </message>
@@ -1153,10 +1158,6 @@ The default is instead to generate sequences with a variety of different lengths
         <location filename="../src/u_build/HMMBuildWorker.cpp" line="121"/>
         <source>Random seed</source>
         <translation>Затравка</translation>
-    </message>
-    <message>
-        <source>HMM Build</source>
-        <translation type="obsolete">Построение HMM профайла</translation>
     </message>
     <message>
         <location filename="../src/u_build/HMMBuildWorker.cpp" line="177"/>

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -69,7 +69,7 @@ QString GTUtilsTaskTreeView::getTasksInfo(QList<Task *> tasks, int level){
             result.append("  ");
         }
         result.append(QString("%1:  %2\n").arg(t->getTaskName()).arg(stateMap.value(t->getState())));
-        result.append(getTasksInfo(t->getSubtasks(),level+1));
+        result.append(getTasksInfo(t->getPureSubtasks(),level+1));
     }
     return result;
 }

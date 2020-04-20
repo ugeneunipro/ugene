@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,6 @@
 #ifndef _U2_WORKFLOW_URL_H_
 #define _U2_WORKFLOW_URL_H_
 
-#include <U2Designer/URLLineEdit.h>
-
-#include <U2Lang/ConfigurationEditor.h>
-
 #include <QComboBox>
 #include <QCoreApplication>
 #include <QDialog>
@@ -42,6 +38,10 @@
 #include <QTextEdit>
 #include <QToolButton>
 #include <QVBoxLayout>
+
+#include <U2Designer/URLLineEdit.h>
+
+#include <U2Lang/ConfigurationEditor.h>
 
 #include "PropertyWidget.h"
 
@@ -89,15 +89,15 @@ public:
         AllowSelectSeveralFiles = 1 << 0,            // allows to select several files. Ignored, if AllowSelectOnlyExistingDir is set.
         AllowSelectOnlyExistingDir = 1 << 1,         // allows to select only existing directory. Otherwise, files can be selected (existing or not).
         SelectFileToSave = 1 << 2,                   // allows to select file to save. File can be existing or not. Ignored, if AllowSelectOnlyExistingDir or AllowSelectSeveralFiles is set.
-        SelectParentDirInsteadSelectedFile = 1 << 3, // user can select files, but the directory will be commited as the selected item. It is not possible to select the directory in this mode, AllowSelectOnlyExistingDir flag is ignored.
-        DoNotUseWorkflowOutputFolder = 1 << 4        // do not offer to save file to thw workflow output folder, show the default save dialog. Only if SelectFileToSave flag is set.
+        SelectParentDirInsteadSelectedFile = 1 << 3, // user can select files, but the directory will be committed as the selected item. It is not possible to select the directory in this mode, AllowSelectOnlyExistingDir flag is ignored.
+        DoNotUseWorkflowOutputFolder = 1 << 4        // do not offer to save file to the workflow output folder, show the default save dialog. Only if SelectFileToSave flag is set.
     };
     Q_DECLARE_FLAGS(Options, Option)
 
-    URLDelegate(const QString& filter, const QString &type, const Options &options, QObject *parent = 0, const QString &format = "");
-    URLDelegate(const DelegateTags& tags, const QString &type, const Options &options, QObject *parent = 0);
-    URLDelegate(const QString& filter, const QString& type, bool multi = false, bool isPath = false, bool saveFile = true, QObject *parent = 0, const QString &format = "", bool noFilesMode = false);
-    URLDelegate(const DelegateTags& tags, const QString& type, bool multi = false, bool isPath = false, bool saveFile = true, QObject *parent = 0, bool noFilesMode = false);
+    URLDelegate(const QString& filter, const QString &type, const Options &options, QObject *parent = nullptr, const QString &format = "");
+    URLDelegate(const DelegateTags& tags, const QString &type, const Options &options, QObject *parent = nullptr);
+    URLDelegate(const QString& filter, const QString& type, bool multi = false, bool isPath = false, bool saveFile = true, QObject *parent = nullptr, const QString &format = "", bool noFilesMode = false, bool doNotUseWorkflowOutputFolder = false);
+    URLDelegate(const DelegateTags& tags, const QString& type, bool multi = false, bool isPath = false, bool saveFile = true, QObject *parent = nullptr, bool noFilesMode = false, bool doNotUseWorkflowOutputFolder = false);
 
     QVariant getDisplayValue(const QVariant &v) const;
 
@@ -358,9 +358,9 @@ public:
 
 class U2DESIGNER_EXPORT SchemaRunModeDelegate : public ComboBoxDelegate {
     Q_OBJECT
-public:
-    static const QString THIS_COMPUTER_STR;
-    static const QString REMOTE_COMPUTER_STR;
+private:
+    QString thisComputerOption;
+    QString remoteComputerOption;
 
 public:
     SchemaRunModeDelegate(QObject * parent = 0);
@@ -527,7 +527,25 @@ public:
 
 }; // CharacterDelegate
 
-}//namespace U2
+class U2DESIGNER_EXPORT LineEditWithValidatorDelegate : public PropertyDelegate {
+    Q_OBJECT
+public:
+    LineEditWithValidatorDelegate(const QRegularExpression &regExp, QObject *parent = nullptr);
+
+    QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void setEditorData(QWidget *editor, const QModelIndex &index) const override;
+    void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
+
+    virtual LineEditWithValidatorDelegate *clone() override;
+
+private slots:
+    void sl_valueChanged();
+
+private:
+    const QRegularExpression regExp;
+};
+
+}   // namespace U2
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(U2::URLDelegate::Options)
 

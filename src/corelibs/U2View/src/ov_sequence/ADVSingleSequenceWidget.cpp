@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,10 +33,11 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GHints.h>
 #include <U2Core/GObjectRelationRoles.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/GUrlUtils.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/ExportImageDialog.h>
@@ -63,6 +64,11 @@ namespace U2 {
 #define ADV_HEADER_TOP_BOTTOM_INDENT 2
 #define IMAGE_DIR   "image"
 
+const QString ADVSingleSequenceWidget::SEQUENCE_SETTINGS = "sequenceViewSettings";
+const QString ADVSingleSequenceWidget::DET_VIEW_COLLAPSED = SEQUENCE_SETTINGS + "/detViewCollapsed";
+const QString ADVSingleSequenceWidget::ZOOM_VIEW_COLLAPSED = SEQUENCE_SETTINGS + "/zoomViewState";
+const QString ADVSingleSequenceWidget::OVERVIEW_COLLAPSED = SEQUENCE_SETTINGS + "/overviewState";
+
 ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext* seqCtx, AnnotatedDNAView* ctx)
     : ADVSequenceWidget(ctx),
       detView(NULL),
@@ -73,25 +79,25 @@ ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext* seqCt
 
     toggleViewAction = new QAction(this);
     toggleViewAction->setObjectName("show_hide_all_views");
-    connect(toggleViewAction, SIGNAL(triggered()), SLOT(sl_toggleView()));
+    connect(toggleViewAction, SIGNAL(triggered()), SLOT(sl_toggleAllSubViews()));
 
     togglePanViewAction = new QAction(this);
     togglePanViewAction->setCheckable(true);
     togglePanViewAction->setObjectName("show_hide_zoom_view");
     togglePanViewAction->setIcon(QIcon(":/core/images/zoom_view.png"));
-    connect(togglePanViewAction, SIGNAL(triggered()), SLOT(sl_togglePanView()));
+    connect(togglePanViewAction, SIGNAL(triggered(bool)), SLOT(sl_togglePanView(bool)));
 
     toggleDetViewAction = new QAction(this);
     toggleDetViewAction->setCheckable(true);
     toggleDetViewAction->setObjectName("show_hide_details_view");
     toggleDetViewAction->setIcon(QIcon(":/core/images/details_view.png"));
-    connect(toggleDetViewAction, SIGNAL(triggered()), SLOT(sl_toggleDetView()));
+    connect(toggleDetViewAction, SIGNAL(triggered(bool)), SLOT(sl_toggleDetView(bool)));
 
     toggleOverviewAction = new QAction(this);
     toggleOverviewAction->setCheckable(true);
     toggleOverviewAction->setObjectName("show_hide_overview");
     toggleOverviewAction->setIcon(QIcon(":/core/images/overview.png"));
-    connect(toggleOverviewAction, SIGNAL(triggered()), SLOT(sl_toggleOverview()));
+    connect(toggleOverviewAction, SIGNAL(triggered(bool)), SLOT(sl_toggleOverview(bool)));
 
     connect(seqCtx->getAnnotatedDNAView()->getAnnotationsSelection(),
         SIGNAL(si_selectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)),
@@ -154,17 +160,21 @@ ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext* seqCt
 
     init();
     updateMinMaxHeight();
+    setDetViewCollapsed(AppContext::getSettings()->getValue(DET_VIEW_COLLAPSED, QVariant(false)).toBool());
+    setPanViewCollapsed(AppContext::getSettings()->getValue(ZOOM_VIEW_COLLAPSED, QVariant(false)).toBool());
+    setOverviewCollapsed(AppContext::getSettings()->getValue(OVERVIEW_COLLAPSED, QVariant(false)).toBool());
 }
 
 void ADVSingleSequenceWidget::init() {
     ADVSequenceObjectContext* seqCtx = getSequenceContext();
     detView = new DetView(this, seqCtx);
-    detView->setObjectName("det_view_" + getSequenceObject()->getGObjectName());
+    const QString objName = getSequenceObject()->getGObjectName();
+    detView->setObjectName("det_view_" + objName);
     detView->setMouseTracking(true);
     detView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 
     panView = new PanView(this, seqCtx);
-    panView->setObjectName("pan_view_" + getSequenceObject()->getGObjectName());
+    panView->setObjectName("pan_view_" + objName);
     panView->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     connect(panView, SIGNAL(si_centerPosition(qint64)), SLOT(sl_onLocalCenteringRequest(qint64)));
 
@@ -174,14 +184,12 @@ void ADVSingleSequenceWidget::init() {
     addSequenceView(detView, panView);
 
     panView->setFrameView(detView);
-
     overview = new Overview(this, seqCtx);
-    overview->setObjectName("overview_" + getSequenceObject()->getGObjectName());
+    overview->setObjectName("overview_" + objName);
     overview->setMouseTracking(true);
     overview->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     lineViews.append(overview);
     linesLayout->addWidget(overview);
-
 
     buttonTabOrederedNames = new QList<QString>;
 
@@ -282,18 +290,10 @@ bool ADVSingleSequenceWidget::isViewCollapsed() const {
     return isPanViewCollapsed() && isDetViewCollapsed() && isOverviewCollapsed();
 }
 
-void ADVSingleSequenceWidget::setViewCollapsed(bool v) {
-    if (toggleOverviewAction->isChecked() != !v) {
-        toggleOverviewAction->trigger();
-    }
-    if (togglePanViewAction->isChecked() != !v) {
-        togglePanViewAction->trigger();
-    }
-    if (toggleDetViewAction->isChecked() != !v) {
-        toggleDetViewAction->trigger();
-    }
-
-    updateMinMaxHeight();
+void ADVSingleSequenceWidget::setViewCollapsed(bool collapsed) {
+    setOverviewCollapsed(collapsed);
+    setPanViewCollapsed(collapsed);
+    setDetViewCollapsed(collapsed);
 }
 
 void ADVSingleSequenceWidget::updateViewButtonState() {
@@ -301,34 +301,53 @@ void ADVSingleSequenceWidget::updateViewButtonState() {
     toggleViewAction->setIcon(isViewCollapsed() ? QIcon(":core/images/show_all_views.png") : QIcon(":core/images/hide_all_views.png"));
 }
 
-void ADVSingleSequenceWidget::setPanViewCollapsed(bool v) {
-    panView->setHidden(v);
-    togglePanViewAction->setChecked(!v);
+void ADVSingleSequenceWidget::setPanViewCollapsed(bool collapsed) {
+    if (collapsed == panView->isHidden()) {
+        return;
+    }
+
+    AppContext::getSettings()->setValue(ZOOM_VIEW_COLLAPSED, QVariant(collapsed));
+
+    panView->setHidden(collapsed);
+    togglePanViewAction->setChecked(!collapsed);
+    togglePanViewAction->setText(collapsed ? tr("Show zoom view") : tr("Hide zoom view"));
     updateMinMaxHeight();
 
     if (isPanViewCollapsed()) {
         zoomUseObject.releaseZoom();
-    }
-    else {
+    } else {
         zoomUseObject.useZoom();
     }
-    zoomToRangeAction->setDisabled( isPanViewCollapsed() );
+    zoomToRangeAction->setDisabled(collapsed);
 
     updateViewButtonState();
 }
 
-void ADVSingleSequenceWidget::setDetViewCollapsed(bool v) {
-    detView->setHidden(v);
-    detView->setDisabledDetViewActions(v);
-    toggleDetViewAction->setChecked(!v);
+void ADVSingleSequenceWidget::setDetViewCollapsed(bool collapsed) {
+    if (collapsed == detView->isHidden()) {
+        return;
+    }
 
+    AppContext::getSettings()->setValue(DET_VIEW_COLLAPSED, QVariant(collapsed));
+
+    detView->setHidden(collapsed);
+    detView->setDisabledDetViewActions(collapsed);
+    toggleDetViewAction->setChecked(!collapsed);
+    toggleDetViewAction->setText(collapsed ? tr("Show details view") : tr("Hide details view"));
     updateMinMaxHeight();
     updateViewButtonState();
 }
 
-void ADVSingleSequenceWidget::setOverviewCollapsed(bool v) {
-    overview->setHidden(v);
-    toggleOverviewAction->setChecked(!v);
+void ADVSingleSequenceWidget::setOverviewCollapsed(bool collapsed) {
+    if (collapsed == overview->isHidden()) {
+        return;
+    }
+
+    AppContext::getSettings()->setValue(OVERVIEW_COLLAPSED, QVariant(collapsed));
+
+    overview->setHidden(collapsed);
+    toggleOverviewAction->setChecked(!collapsed);
+    toggleOverviewAction->setText(collapsed ? tr("Show overview") : tr("Hide overview"));
     updateMinMaxHeight();
     updateViewButtonState();
 }
@@ -397,14 +416,8 @@ void ADVSingleSequenceWidget::centerPosition(int pos, QWidget* skipView) {
 }
 
 void ADVSingleSequenceWidget::updateMinMaxHeight() {
-    int height = ADV_HEADER_HEIGHT;
-    foreach(GSequenceLineView* v, lineViews) {
-        height += v->isVisible() * v->minimumHeight();
-    }
-    setMinimumHeight(linesSplitter->minimumHeight());
-
     if (lineViews.size() == 1 && lineViews.first() == overview) {
-        setMaximumHeight(height);
+        setMaximumHeight(ADV_HEADER_HEIGHT + lineViews.first()->minimumHeight());
     } else {
         setMaximumHeight(QWIDGETSIZE_MAX);
     }
@@ -625,14 +638,14 @@ void ADVSingleSequenceWidget::sl_onSelectRange() {
 
 QVector<U2Region> ADVSingleSequenceWidget::getSelectedAnnotationRegions(int max) {
     ADVSequenceObjectContext* seqCtx = getSequenceContext();
-    const QList<AnnotationSelectionData> selection = seqCtx->getAnnotatedDNAView()->getAnnotationsSelection()->getSelection();
+    const QList<Annotation*> selection = seqCtx->getAnnotatedDNAView()->getAnnotationsSelection()->getAnnotations();
     const QSet<AnnotationTableObject *> myAnns = seqCtx->getAnnotationObjects(true);
 
     QVector<U2Region> res;
-    foreach(const AnnotationSelectionData& sel, selection) {
-        AnnotationTableObject *aObj = sel.annotation->getGObject();
+    foreach(const Annotation* annotation, selection) {
+        AnnotationTableObject *aObj = annotation->getGObject();
         if (myAnns.contains(aObj)) {
-            res << U2Region::containingRegion(sel.getSelectedRegions());
+            res << U2Region::containingRegion(annotation->getRegions());
             if (max > 0 && res.size() >= max) {
                 break;
             }
@@ -838,15 +851,14 @@ void ADVSingleSequenceWidget::sl_createCustomRuler() {
     AnnotationSelection *annSelection = getDetGSLView()->getSequenceContext()->getAnnotationsSelection();
     U2SequenceObject *seqObj = getSequenceObject();
     int annOffset = INT_MAX;
-    foreach (const AnnotationSelectionData &selectionData, annSelection->getSelection()) {
-        Annotation *ann = selectionData.annotation;
+    foreach (const Annotation* ann, annSelection->getAnnotations()) {
         AnnotationTableObject *annObj = ann->getGObject();
         if(!annObj->hasObjectRelation(seqObj, ObjectRole_Sequence)) {
             continue;
         }
 
         // find minimum of start positions of selected annotations
-        foreach (const U2Region &region, selectionData.getSelectedRegions()) {
+        foreach (const U2Region &region, ann->getRegions()) {
             annOffset = annOffset > region.startPos ? region.startPos : annOffset;
         }
     }
@@ -886,24 +898,20 @@ void ADVSingleSequenceWidget::updateSelectionActions() {
     selectOutAnnotationRangeAction->setEnabled(!selRegs.isEmpty());
 }
 
-void ADVSingleSequenceWidget::sl_toggleView(){
-    bool newStateCollapsed = !isViewCollapsed();
-    setViewCollapsed(newStateCollapsed);
+void ADVSingleSequenceWidget::sl_toggleAllSubViews(){
+    setViewCollapsed(!isViewCollapsed());
 }
 
-void ADVSingleSequenceWidget::sl_togglePanView() {
-    setPanViewCollapsed(!isPanViewCollapsed());
-    togglePanViewAction->setText(isPanViewCollapsed() ? tr("Show zoom view") : tr("Hide zoom view"));
+void ADVSingleSequenceWidget::sl_togglePanView(bool checked) {
+    setPanViewCollapsed(!checked);
 }
 
-void ADVSingleSequenceWidget::sl_toggleDetView() {
-    setDetViewCollapsed(!isDetViewCollapsed());
-    toggleDetViewAction->setText(isDetViewCollapsed() ? tr("Show details view") : tr("Hide details view"));
+void ADVSingleSequenceWidget::sl_toggleDetView(bool checked) {
+    setDetViewCollapsed(!checked);
 }
 
-void ADVSingleSequenceWidget::sl_toggleOverview() {
-    setOverviewCollapsed(!isOverviewCollapsed());
-    toggleOverviewAction->setText(isOverviewCollapsed() ? tr("Show overview") : tr("Hide overview"));
+void ADVSingleSequenceWidget::sl_toggleOverview(bool checked) {
+    setOverviewCollapsed(!checked);
 }
 
 void ADVSingleSequenceWidget::onSequenceObjectRenamed(const QString&) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,10 +27,11 @@
 
 namespace U2 {
 
-const QString VcfutilsSupport::TOOL_NAME("vcfutils");
+const QString VcfutilsSupport::VCF_UTILS("vcfutils");
+const QString VcfutilsSupport::VCF_UTILS_ID("USUPP_VCFUTILS");
 
-VcfutilsSupport::VcfutilsSupport(const QString &name)
-: ExternalTool(name)
+VcfutilsSupport::VcfutilsSupport(const QString& id, const QString &name)
+: ExternalTool(id, name, "")
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -41,8 +42,8 @@ VcfutilsSupport::VcfutilsSupport(const QString &name)
     executableFileName = "vcfutils.pl";
     description = "The set of utilities for VCF format operations";
 
-    toolRunnerProgramm = ET_PERL;
-    dependencies << ET_PERL;
+    toolRunnerProgram = PerlSupport::ET_PERL_ID;
+    dependencies << PerlSupport::ET_PERL_ID;
 
     validMessage = "varFilter";
     toolKitName = "SAMtools";

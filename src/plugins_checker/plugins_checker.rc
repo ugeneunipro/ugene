@@ -12,8 +12,8 @@
 #endif
 
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION    	UGENE_VER_MAJOR,UGENE_VER_MINOR,UGENE_VER_PATCH,0
-PRODUCTVERSION 	UGENE_VER_MAJOR,UGENE_VER_MINOR,UGENE_VER_PATCH
+FILEVERSION    	UGENE_VER_MAJOR,UGENE_VER_MINOR,0
+PRODUCTVERSION 	UGENE_VER_MAJOR,UGENE_VER_MINOR
 FILEFLAGSMASK  	VS_FFI_FILEFLAGSMASK
 FILEFLAGS      	(VER_DEBUG)
 FILETYPE       	VFT_APP
@@ -24,7 +24,7 @@ BEGIN
         BEGIN
             VALUE "CompanyName",      "Unipro, Russia"
             VALUE "FileDescription",  "Resource dependency checker"
-            VALUE "FileVersion",      TOSTRING(UGENE_VER_MAJOR.UGENE_VER_MINOR.UGENE_VER_PATCH.0)
+            VALUE "FileVersion",      TOSTRING(UGENE_VER_MAJOR.UGENE_VER_MINOR.0)
             VALUE "OriginalFilename", "plugins_checker"
             VALUE "ProductName",      "Unipro UGENE"
             VALUE "ProductVersion",   UGENE_VERSION_STRING

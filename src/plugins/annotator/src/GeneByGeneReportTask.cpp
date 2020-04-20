@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,9 +21,9 @@
 
 #include "GeneByGeneReportTask.h"
 
-#include <U2Core/IOAdapterUtils.h>
-#include <U2Core/GUrlUtils.h>
 #include <U2Core/Counter.h>
+#include <U2Core/GUrlUtils.h>
+#include <U2Core/IOAdapterUtils.h>
 
 #include <QFile>
 #include <QSet>
@@ -32,35 +32,25 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 //GeneByGeneReportSettings
 
-#define MERGE_EXISTING "Merge"
-#define OVERWRITE_EXISTING "Overwrite"
-#define RENAME_EXISTING  "Rename"
+const QString GeneByGeneReportSettings::MERGE_EXISTING = "Merge";
+const QString GeneByGeneReportSettings::OVERWRITE_EXISTING = "Overwrite";
+const QString GeneByGeneReportSettings::RENAME_EXISTING = "Rename";
 
 GeneByGeneReportSettings::GeneByGeneReportSettings(){
     initDefaults();
 }
 
-QStringList GeneByGeneReportSettings::getAvailableFileHandlingOptions() {
-    return QStringList() << MERGE_EXISTING << OVERWRITE_EXISTING << RENAME_EXISTING;
-}
-
-QString GeneByGeneReportSettings::getDefaultFileHandlingOption() {
-    return MERGE_EXISTING;
-}
-
-void GeneByGeneReportSettings::initDefaults() {
+void GeneByGeneReportSettings::initDefaults(){
     outFile = "";
-    existingFile = MERGE_EXISTING;
+    existingFile = GeneByGeneReportSettings::MERGE_EXISTING;
     identity = 90.0f;
     annName = "blast_result";
 }
 
 //////////////////////////////////////////////////////////////////////////
 //GeneByGeneCompareResult
-#define IDENTICAL_YES  "Yes"
-#define IDENTICAL_NO  "No"
-
-GeneByGeneCompareResult::GeneByGeneCompareResult() : identical(false), identityString(IDENTICAL_NO) {}
+const QString GeneByGeneCompareResult::IDENTICAL_YES = "Yes";
+const QString GeneByGeneCompareResult::IDENTICAL_NO = "No";
 
 //////////////////////////////////////////////////////////////////////////
 //GeneByGeneComparator
@@ -87,7 +77,7 @@ GeneByGeneCompareResult GeneByGeneComparator::compareGeneAnnotation(const DNASeq
                         float blastIdent = parseBlastQual(ident);
                         if (blastIdent != -1.0f && blastIdent >= identity){
                             result.identical = true;
-                            result.identityString = IDENTICAL_YES;
+                            result.identityString = GeneByGeneCompareResult::IDENTICAL_YES;
                             result.identityString.append(QString("\\%1").arg(blastIdent));
                             QString gaps = adata->findFirstQualifierValue(BLAST_GAPS);
                             if (!gaps.isEmpty()){
@@ -101,7 +91,7 @@ GeneByGeneCompareResult GeneByGeneComparator::compareGeneAnnotation(const DNASeq
                         }
                     }else{ //not a blast annotation
                         result.identical = true;
-                        result.identityString = IDENTICAL_YES;
+                        result.identityString = GeneByGeneCompareResult::IDENTICAL_YES;
                     }
                 }
             }
@@ -150,7 +140,7 @@ GeneByGeneReportIO::~GeneByGeneReportIO(){
         QList<QString> toWrite;
         toWrite.append(key);
         toWrite.append(mergedTable.take(key));
-        toWrite.append(IDENTICAL_NO);
+        toWrite.append(GeneByGeneCompareResult::IDENTICAL_NO);
         writeRow(toWrite);
     }
 
@@ -163,9 +153,9 @@ GeneByGeneReportIO::~GeneByGeneReportIO(){
 
 void GeneByGeneReportIO::prepareOutputFile( U2OpStatus& os ){
     if(QFile::exists(outFile)){
-        if (existingMode == RENAME_EXISTING){
+        if (GeneByGeneReportSettings::RENAME_EXISTING == existingMode){
             outFile = GUrlUtils::rollFileName(outFile, QSet<QString>());
-        } else if (existingMode == MERGE_EXISTING){
+        }else if (GeneByGeneReportSettings::MERGE_EXISTING == existingMode){
             readMergedTable(outFile, os);
             if(os.hasError()){
                 return;
@@ -197,7 +187,7 @@ void GeneByGeneReportIO::writeTableItem( const QString& geneName, const QString&
             oldIdentities = mergedTable.take(geneName);
         }else{
             for(int i = 0; i < mergedGenomesSize; i++){
-                oldIdentities.append(IDENTICAL_NO);
+                oldIdentities.append(GeneByGeneCompareResult::IDENTICAL_NO);
             }
         }
         toWrite.append(oldIdentities);

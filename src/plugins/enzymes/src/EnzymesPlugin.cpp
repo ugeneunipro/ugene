@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -235,8 +235,8 @@ void EnzymesADVContext::buildMenu(GObjectView *v, QMenu *m) {
     QAction *exportMenuAction = GUIUtils::findAction(m->actions(), ADV_MENU_EXPORT);
     m->insertMenu(exportMenuAction, cloningMenu);
 
-    if (!av->getAnnotationsSelection()->getSelection().isEmpty()) {
-        Annotation *a = av->getAnnotationsSelection()->getSelection().first().annotation;
+    if (!av->getAnnotationsSelection()->getAnnotations().isEmpty()) {
+        Annotation *a = av->getAnnotationsSelection()->getAnnotations().first();
         const QString annName = a->getName();
         const QString groupName = a->getGroup()->getName();
         const int annCount = a->getGroup()->getAnnotations().size();
@@ -255,7 +255,10 @@ void EnzymesADVContext::sl_createPCRProduct() {
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
     SAFE_POINT(av != NULL, "Invalid DNA view!",);
 
-    Annotation *a = av->getAnnotationsSelection()->getSelection().first().annotation;
+    const QList<Annotation*>& annotations = av->getAnnotationsSelection()->getAnnotations();
+    CHECK(!annotations.isEmpty(),)
+
+    Annotation *a = annotations.first();
     AnnotationGroup *group = a->getGroup();
     if (group->getName().startsWith(PRIMER_ANNOTATION_GROUP_NAME)) {
         SAFE_POINT(group->getAnnotations().size() == 2, "Invalid selected annotation count!",);

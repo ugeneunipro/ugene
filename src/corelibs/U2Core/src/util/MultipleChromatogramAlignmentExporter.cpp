@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@
 
 #include <U2Core/ChromatogramUtils.h>
 #include <U2Core/DatatypeSerializeUtils.h>
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/McaDbiUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2AttributeDbi.h>
@@ -132,13 +133,11 @@ DNASequence MultipleChromatogramAlignmentExporter::exportSequence(U2OpStatus &os
     U2SequenceDbi *sequenceDbi = connection.dbi->getSequenceDbi();
     SAFE_POINT_EXT(NULL != sequenceDbi, os.setError("NULL Sequence Dbi during exporting rows sequences"), DNASequence());
 
-    QByteArray sequenceData = sequenceDbi->getSequenceData(sequenceId, U2_REGION_MAX, os);
-    CHECK_OP(os, DNASequence());
-
     U2Sequence dbSequence = sequenceDbi->getSequenceObject(sequenceId, os);
     CHECK_OP(os, DNASequence());
 
-    return DNASequence(dbSequence.visualName, sequenceData);
+    QScopedPointer<U2SequenceObject> sequenceObject(new U2SequenceObject(dbSequence.visualName, U2EntityRef(connection.dbi->getDbiRef(), dbSequence.id)));
+    return sequenceObject->getSequence(U2_REGION_MAX, os);
 }
 
 QVariantMap MultipleChromatogramAlignmentExporter::exportRowAdditionalInfo(U2OpStatus &os, const U2DataId &chromatogramId) const {

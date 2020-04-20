@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -62,6 +62,7 @@ class ColorSchemaSettingsPageState : public AppSettingsGUIPageState {
 public:
     QString colorsDir;
     QList<ColorSchemeData> customSchemas;
+    QList<ColorSchemeData> removedCustomSchemas;
 };
 
 class ColorSchemaSettingsPageWidget: public AppSettingsGUIPageWidget, public Ui_ColorSchemaSettingsWidget {
@@ -82,6 +83,7 @@ private slots:
 
 private:
     QList<ColorSchemeData> customSchemas;
+    QList<ColorSchemeData> removedCustomSchemas;
 };
 
 

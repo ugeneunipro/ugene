@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,8 +28,11 @@
 
 namespace U2 {
 
-ConductGOSupport::ConductGOSupport(const QString &name)
-: ExternalTool(name)
+const QString ConductGOSupport::ET_GO_ANALYSIS = "go_analysis";
+const QString ConductGOSupport::ET_GO_ANALYSIS_ID = "USUPP_CONDUCT_GO_ANALYSIS";
+
+ConductGOSupport::ConductGOSupport(const QString& id, const QString &name)
+: ExternalTool(id, name, "")
 {
     initialize();
 }
@@ -46,22 +49,22 @@ void ConductGOSupport::initialize() {
 
     executableFileName = "go_analysis.py";
 
-    toolRunnerProgramm = ET_PYTHON;
-    dependencies << ET_PYTHON
-                 << ET_R
-                 << ET_R_GOSTATS
-                 << ET_R_GO_DB
-                 << ET_R_HGU133A_DB
-                 << ET_R_HGU133B_DB
-                 << ET_R_HGU1333PLUS2_DB
-                 << ET_R_HGU95AV2_DB
-                 << ET_R_MOUSE430A2_DB
-                 << ET_R_CELEGANS_DB
-                 << ET_R_DROSOPHILA2_DB
-                 << ET_R_ORG_HS_EG_DB
-                 << ET_R_ORG_MM_EG_DB
-                 << ET_R_ORG_CE_EG_DB
-                 << ET_R_ORG_DM_EG_DB;
+    toolRunnerProgram = PythonSupport::ET_PYTHON_ID;
+    dependencies << PythonSupport::ET_PYTHON_ID
+                 << RSupport::ET_R_ID
+                 << RModuleGostatsSupport::ET_R_GOSTATS_ID
+                 << RModuleGodbSupport::ET_R_GO_DB_ID
+                 << RModuleHgu133adbSupport::ET_R_HGU133A_DB_ID
+                 << RModuleHgu133bdbSupport::ET_R_HGU133B_DB_ID
+                 << RModuleHgu133plus2dbSupport::ET_R_HGU1333PLUS2_DB_ID
+                 << RModuleHgu95av2dbSupport::ET_R_HGU95AV2_DB_ID
+                 << RModuleMouse430a2dbSupport::ET_R_MOUSE430A2_DB_ID
+                 << RModuleCelegansdbSupport::ET_R_CELEGANS_DB_ID
+                 << RModuleDrosophila2dbSupport::ET_R_DROSOPHILA2_DB_ID
+                 << RModuleOrghsegdbSupport::ET_R_ORG_HS_EG_DB_ID
+                 << RModuleOrgmmegdbSupport::ET_R_ORG_MM_EG_DB_ID
+                 << RModuleOrgceegdbSupport::ET_R_ORG_CE_EG_DB_ID
+                 << RModuleOrgdmegdbSupport::ET_R_ORG_DM_EG_DB_ID;
 
     validMessage = "Conduct GO";
     validationArguments << "--version";

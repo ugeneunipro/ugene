@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -63,9 +63,7 @@
 #include "bedtools/BedtoolsSupport.h"
 #include "bigWigTools/BedGraphToBigWigWorker.h"
 #include "bigWigTools/BigWigSupport.h"
-#include "blast/BlastAllSupport.h"
-#include "blast/BlastAllWorker.h"
-#include "blast/FormatDBSupport.h"
+#include "blast_plus/FormatDBSupport.h"
 #include "blast_plus/AlignToReferenceBlastWorker.h"
 #include "blast_plus/BlastDBCmdSupport.h"
 #include "blast_plus/BlastPlusSupport.h"
@@ -190,7 +188,7 @@ public:
             foreach(ExternalTool* curTool, AppContext::getExternalToolRegistry()->getAllEntries()){
                 // UGENE-1781: Remove python external tool search in PATH
                 // It should be fixed without crutches.
-                if (curTool->getName() == ET_PYTHON) {
+                if (curTool->getId() == PythonSupport::ET_PYTHON_ID) {
                     continue;
                 }
 
@@ -201,7 +199,7 @@ public:
                     QString exePath = curPath+"/"+curTool->getExecutableFileName();
                     QFileInfo fileExe(exePath);
                     if(fileExe.exists() && (curTool->getPath()=="")){
-                        ExternalToolJustValidateTask* validateTask=new ExternalToolJustValidateTask(curTool->getName(), exePath);
+                        ExternalToolJustValidateTask* validateTask = new ExternalToolJustValidateTask(curTool->getId(), curTool->getName(), exePath);
                         connect(validateTask, SIGNAL(si_stateChanged()), plugin, SLOT(sl_validateTaskStateChanged()));
                         addSubTask(validateTask);
                     }
@@ -225,67 +223,67 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     CHECK(NULL != etRegistry, );
 
     // python with modules
-    etRegistry->registerEntry(new PythonSupport(ET_PYTHON));
-    etRegistry->registerEntry(new PythonModuleDjangoSupport(ET_PYTHON_DJANGO));
-    etRegistry->registerEntry(new PythonModuleNumpySupport(ET_PYTHON_NUMPY));
-    etRegistry->registerEntry(new PythonModuleBioSupport(ET_PYTHON_BIO));
+    etRegistry->registerEntry(new PythonSupport(PythonSupport::ET_PYTHON_ID, PythonSupport::ET_PYTHON));
+    etRegistry->registerEntry(new PythonModuleDjangoSupport(PythonModuleDjangoSupport::ET_PYTHON_DJANGO_ID, PythonModuleDjangoSupport::ET_PYTHON_DJANGO));
+    etRegistry->registerEntry(new PythonModuleNumpySupport(PythonModuleNumpySupport::ET_PYTHON_NUMPY_ID, PythonModuleNumpySupport::ET_PYTHON_NUMPY));
+    etRegistry->registerEntry(new PythonModuleBioSupport(PythonModuleBioSupport::ET_PYTHON_BIO_ID, PythonModuleBioSupport::ET_PYTHON_BIO));
 
     // Rscript with modules
-    etRegistry->registerEntry(new RSupport(ET_R));
-    etRegistry->registerEntry(new RModuleGostatsSupport(ET_R_GOSTATS));
-    etRegistry->registerEntry(new RModuleGodbSupport(ET_R_GO_DB));
-    etRegistry->registerEntry(new RModuleHgu133adbSupport(ET_R_HGU133A_DB));
-    etRegistry->registerEntry(new RModuleHgu133bdbSupport(ET_R_HGU133B_DB));
-    etRegistry->registerEntry(new RModuleHgu133plus2dbSupport(ET_R_HGU1333PLUS2_DB));
-    etRegistry->registerEntry(new RModuleHgu95av2dbSupport(ET_R_HGU95AV2_DB));
-    etRegistry->registerEntry(new RModuleMouse430a2dbSupport(ET_R_MOUSE430A2_DB));
-    etRegistry->registerEntry(new RModuleCelegansdbSupport(ET_R_CELEGANS_DB));
-    etRegistry->registerEntry(new RModuleDrosophila2dbSupport(ET_R_DROSOPHILA2_DB));
-    etRegistry->registerEntry(new RModuleOrghsegdbSupport(ET_R_ORG_HS_EG_DB));
-    etRegistry->registerEntry(new RModuleOrgmmegdbSupport(ET_R_ORG_MM_EG_DB));
-    etRegistry->registerEntry(new RModuleOrgceegdbSupport(ET_R_ORG_CE_EG_DB));
-    etRegistry->registerEntry(new RModuleOrgdmegdbSupport(ET_R_ORG_DM_EG_DB));
-    etRegistry->registerEntry(new RModuleSeqlogoSupport(ET_R_SEQLOGO));
+    etRegistry->registerEntry(new RSupport(RSupport::ET_R_ID, RSupport::ET_R));
+    etRegistry->registerEntry(new RModuleGostatsSupport(RModuleGostatsSupport::ET_R_GOSTATS_ID, RModuleGostatsSupport::ET_R_GOSTATS));
+    etRegistry->registerEntry(new RModuleGodbSupport(RModuleGodbSupport::ET_R_GO_DB_ID, RModuleGodbSupport::ET_R_GO_DB));
+    etRegistry->registerEntry(new RModuleHgu133adbSupport(RModuleHgu133adbSupport::ET_R_HGU133A_DB_ID, RModuleHgu133adbSupport::ET_R_HGU133A_DB));
+    etRegistry->registerEntry(new RModuleHgu133bdbSupport(RModuleHgu133bdbSupport::ET_R_HGU133B_DB_ID, RModuleHgu133bdbSupport::ET_R_HGU133B_DB));
+    etRegistry->registerEntry(new RModuleHgu133plus2dbSupport(RModuleHgu133plus2dbSupport::ET_R_HGU1333PLUS2_DB_ID, RModuleHgu133plus2dbSupport::ET_R_HGU1333PLUS2_DB));
+    etRegistry->registerEntry(new RModuleHgu95av2dbSupport(RModuleHgu95av2dbSupport::ET_R_HGU95AV2_DB_ID, RModuleHgu95av2dbSupport::ET_R_HGU95AV2_DB));
+    etRegistry->registerEntry(new RModuleMouse430a2dbSupport(RModuleMouse430a2dbSupport::ET_R_MOUSE430A2_DB_ID, RModuleMouse430a2dbSupport::ET_R_MOUSE430A2_DB));
+    etRegistry->registerEntry(new RModuleCelegansdbSupport(RModuleCelegansdbSupport::ET_R_CELEGANS_DB_ID, RModuleCelegansdbSupport::ET_R_CELEGANS_DB));
+    etRegistry->registerEntry(new RModuleDrosophila2dbSupport(RModuleDrosophila2dbSupport::ET_R_DROSOPHILA2_DB_ID, RModuleDrosophila2dbSupport::ET_R_DROSOPHILA2_DB));
+    etRegistry->registerEntry(new RModuleOrghsegdbSupport(RModuleOrghsegdbSupport::ET_R_ORG_HS_EG_DB_ID, RModuleOrghsegdbSupport::ET_R_ORG_HS_EG_DB));
+    etRegistry->registerEntry(new RModuleOrgmmegdbSupport(RModuleOrgmmegdbSupport::ET_R_ORG_MM_EG_DB_ID, RModuleOrgmmegdbSupport::ET_R_ORG_MM_EG_DB));
+    etRegistry->registerEntry(new RModuleOrgceegdbSupport(RModuleOrgceegdbSupport::ET_R_ORG_CE_EG_DB_ID, RModuleOrgceegdbSupport::ET_R_ORG_CE_EG_DB));
+    etRegistry->registerEntry(new RModuleOrgdmegdbSupport(RModuleOrgdmegdbSupport::ET_R_ORG_DM_EG_DB_ID, RModuleOrgdmegdbSupport::ET_R_ORG_DM_EG_DB));
+    etRegistry->registerEntry(new RModuleSeqlogoSupport(RModuleSeqlogoSupport::ET_R_SEQLOGO_ID, RModuleSeqlogoSupport::ET_R_SEQLOGO));
 
     //perl
-    PerlSupport *perlSupport = new PerlSupport(ET_PERL);
+    PerlSupport *perlSupport = new PerlSupport(PerlSupport::ET_PERL_ID, PerlSupport::ET_PERL);
     etRegistry->registerEntry(perlSupport);
 
     //java
-    JavaSupport *javaSupport = new JavaSupport(ET_JAVA);
+    JavaSupport *javaSupport = new JavaSupport(JavaSupport::ET_JAVA_ID, JavaSupport::ET_JAVA);
     etRegistry->registerEntry(javaSupport);
 
     //Fill ExternalToolRegistry with supported tools
 
     //ClustalW
-    ClustalWSupport* clustalWTool=new ClustalWSupport(ET_CLUSTAL);
+    ClustalWSupport* clustalWTool=new ClustalWSupport(ClustalWSupport::ET_CLUSTAL_ID, ClustalWSupport::ET_CLUSTAL);
     etRegistry->registerEntry(clustalWTool);
 
     //ClustalO
-    ClustalOSupport* clustalOTool=new ClustalOSupport(ET_CLUSTALO);
+    ClustalOSupport* clustalOTool=new ClustalOSupport(ClustalOSupport::ET_CLUSTALO_ID, ClustalOSupport::ET_CLUSTALO);
     etRegistry->registerEntry(clustalOTool);
 
     //MAFFT
-    MAFFTSupport* mAFFTTool=new MAFFTSupport(ET_MAFFT);
+    MAFFTSupport* mAFFTTool=new MAFFTSupport(MAFFTSupport::ET_MAFFT_ID, MAFFTSupport::ET_MAFFT);
     etRegistry->registerEntry(mAFFTTool);
 
     //T-Coffee
-    TCoffeeSupport* tCoffeeTool=new TCoffeeSupport(ET_TCOFFEE);
+    TCoffeeSupport* tCoffeeTool=new TCoffeeSupport(TCoffeeSupport::ET_TCOFFEE_ID, TCoffeeSupport::ET_TCOFFEE);
     etRegistry->registerEntry(tCoffeeTool);
 
     //MrBayes
-    MrBayesSupport* mrBayesTool = new MrBayesSupport(ET_MRBAYES);
+    MrBayesSupport* mrBayesTool = new MrBayesSupport(MrBayesSupport::ET_MRBAYES_ID, MrBayesSupport::ET_MRBAYES);
     etRegistry->registerEntry(mrBayesTool);
 
     //PhyML
-    PhyMLSupport* phyMlTool = new PhyMLSupport(PhyMLSupport::PhyMlRegistryId);
+    PhyMLSupport* phyMlTool = new PhyMLSupport(PhyMLSupport::PHYML_ID, PhyMLSupport::PHYML);
     etRegistry->registerEntry(phyMlTool);
 
     if (AppContext::getMainWindow()) {
         clustalWTool->getViewContext()->setParent(this);
         clustalWTool->getViewContext()->init();
 
-        ExternalToolSupportAction* clustalWAction = new ExternalToolSupportAction(tr("Align with ClustalW..."), this, QStringList(ET_CLUSTAL));
+        ExternalToolSupportAction* clustalWAction = new ExternalToolSupportAction(tr("Align with ClustalW..."), this, QStringList(ClustalWSupport::ET_CLUSTAL_ID));
         clustalWAction->setObjectName(ToolsMenu::MALIGN_CLUSTALW);
         connect(clustalWAction, SIGNAL(triggered()), clustalWTool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, clustalWAction);
@@ -293,7 +291,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
         clustalOTool->getViewContext()->setParent(this);
         clustalOTool->getViewContext()->init();
 
-        ExternalToolSupportAction* clustalOAction = new ExternalToolSupportAction(tr("Align with ClustalO..."), this, QStringList(ET_CLUSTALO));
+        ExternalToolSupportAction* clustalOAction = new ExternalToolSupportAction(tr("Align with ClustalO..."), this, QStringList(ClustalOSupport::ET_CLUSTALO_ID));
         clustalOAction->setObjectName(ToolsMenu::MALIGN_CLUSTALO);
         connect(clustalOAction, SIGNAL(triggered()), clustalOTool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, clustalOAction);
@@ -301,7 +299,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
         mAFFTTool->getViewContext()->setParent(this);
         mAFFTTool->getViewContext()->init();
 
-        ExternalToolSupportAction* mAFFTAction= new ExternalToolSupportAction(tr("Align with MAFFT..."), this, QStringList(ET_MAFFT));
+        ExternalToolSupportAction* mAFFTAction= new ExternalToolSupportAction(tr("Align with MAFFT..."), this, QStringList(MAFFTSupport::ET_MAFFT_ID));
         mAFFTAction->setObjectName(ToolsMenu::MALIGN_MAFFT);
         connect(mAFFTAction, SIGNAL(triggered()), mAFFTTool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, mAFFTAction);
@@ -309,160 +307,153 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
         tCoffeeTool->getViewContext()->setParent(this);
         tCoffeeTool->getViewContext()->init();
 
-        ExternalToolSupportAction* tCoffeeAction= new ExternalToolSupportAction(tr("Align with T-Coffee..."), this, QStringList(ET_TCOFFEE));
+        ExternalToolSupportAction* tCoffeeAction= new ExternalToolSupportAction(tr("Align with T-Coffee..."), this, QStringList(TCoffeeSupport::ET_TCOFFEE_ID));
         tCoffeeAction->setObjectName(ToolsMenu::MALIGN_TCOFFEE);
         connect(tCoffeeAction, SIGNAL(triggered()), tCoffeeTool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, tCoffeeAction);
     }
 
-    //FormatDB
-    FormatDBSupport* formatDBTool = new FormatDBSupport(ET_FORMATDB);
-    etRegistry->registerEntry(formatDBTool);
-
     //MakeBLASTDB from BLAST+
-    FormatDBSupport* makeBLASTDBTool = new FormatDBSupport(ET_MAKEBLASTDB);
+    FormatDBSupport* makeBLASTDBTool = new FormatDBSupport(FormatDBSupport::ET_MAKEBLASTDB_ID, FormatDBSupport::ET_MAKEBLASTDB);
     etRegistry->registerEntry(makeBLASTDBTool);
 
     //BlastAll
-    BlastAllSupport* blastallTool = new BlastAllSupport(ET_BLASTALL);
-    etRegistry->registerEntry(blastallTool);
-
-    BlastPlusSupport* blastNPlusTool = new BlastPlusSupport(ET_BLASTN);
+    BlastPlusSupport* blastNPlusTool = new BlastPlusSupport(BlastPlusSupport::ET_BLASTN_ID, BlastPlusSupport::ET_BLASTN);
     etRegistry->registerEntry(blastNPlusTool);
-    BlastPlusSupport* blastPPlusTool = new BlastPlusSupport(ET_BLASTP);
+    BlastPlusSupport* blastPPlusTool = new BlastPlusSupport(BlastPlusSupport::ET_BLASTP_ID, BlastPlusSupport::ET_BLASTP);
     etRegistry->registerEntry(blastPPlusTool);
-    BlastPlusSupport* blastXPlusTool = new BlastPlusSupport(ET_BLASTX);
+    BlastPlusSupport* blastXPlusTool = new BlastPlusSupport(BlastPlusSupport::ET_BLASTX_ID, BlastPlusSupport::ET_BLASTX);
     etRegistry->registerEntry(blastXPlusTool);
-    BlastPlusSupport* tBlastNPlusTool = new BlastPlusSupport(ET_TBLASTN);
+    BlastPlusSupport* tBlastNPlusTool = new BlastPlusSupport(BlastPlusSupport::ET_TBLASTN_ID, BlastPlusSupport::ET_TBLASTN);
     etRegistry->registerEntry(tBlastNPlusTool);
-    BlastPlusSupport* tBlastXPlusTool = new BlastPlusSupport(ET_TBLASTX);
+    BlastPlusSupport* tBlastXPlusTool = new BlastPlusSupport(BlastPlusSupport::ET_TBLASTX_ID, BlastPlusSupport::ET_TBLASTX);
     etRegistry->registerEntry(tBlastXPlusTool);
-    BlastPlusSupport* rpsblastTool = new BlastPlusSupport(ET_RPSBLAST);
+    BlastPlusSupport* rpsblastTool = new BlastPlusSupport(BlastPlusSupport::ET_RPSBLAST_ID, BlastPlusSupport::ET_RPSBLAST);
     etRegistry->registerEntry(rpsblastTool);
     BlastDbCmdSupport*  blastDbCmdSupport = new BlastDbCmdSupport();
     etRegistry->registerEntry(blastDbCmdSupport);
 
     // CAP3
-    CAP3Support* cap3Tool = new CAP3Support(ET_CAP3);
+    CAP3Support* cap3Tool = new CAP3Support(CAP3Support::ET_CAP3_ID, CAP3Support::ET_CAP3);
     etRegistry->registerEntry(cap3Tool);
 
     // Bowtie
-    BowtieSupport* bowtieSupport = new BowtieSupport(ET_BOWTIE);
+    BowtieSupport* bowtieSupport = new BowtieSupport(BowtieSupport::ET_BOWTIE_ID, BowtieSupport::ET_BOWTIE);
     etRegistry->registerEntry(bowtieSupport);
-    BowtieSupport* bowtieBuildSupport = new BowtieSupport(ET_BOWTIE_BUILD);
+    BowtieSupport* bowtieBuildSupport = new BowtieSupport(BowtieSupport::ET_BOWTIE_BUILD_ID, BowtieSupport::ET_BOWTIE_BUILD);
     etRegistry->registerEntry(bowtieBuildSupport);
 
     // Bowtie 2
-    Bowtie2Support* bowtie2AlignSupport = new Bowtie2Support(ET_BOWTIE2_ALIGN);
-    Bowtie2Support* bowtie2BuildSupport = new Bowtie2Support(ET_BOWTIE2_BUILD);
-    Bowtie2Support* bowtie2InspectSupport = new Bowtie2Support(ET_BOWTIE2_INSPECT);
+    Bowtie2Support* bowtie2AlignSupport = new Bowtie2Support(Bowtie2Support::ET_BOWTIE2_ALIGN_ID, Bowtie2Support::ET_BOWTIE2_ALIGN);
+    Bowtie2Support* bowtie2BuildSupport = new Bowtie2Support(Bowtie2Support::ET_BOWTIE2_BUILD_ID, Bowtie2Support::ET_BOWTIE2_BUILD);
+    Bowtie2Support* bowtie2InspectSupport = new Bowtie2Support(Bowtie2Support::ET_BOWTIE2_INSPECT_ID, Bowtie2Support::ET_BOWTIE2_INSPECT);
     etRegistry->registerEntry(bowtie2AlignSupport);
     etRegistry->registerEntry(bowtie2BuildSupport);
     etRegistry->registerEntry(bowtie2InspectSupport);
 
     // BWA
-    BwaSupport* bwaSupport = new BwaSupport(ET_BWA);
+    BwaSupport* bwaSupport = new BwaSupport(BwaSupport::ET_BWA_ID, BwaSupport::ET_BWA);
     etRegistry->registerEntry(bwaSupport);
 
     // SPAdes
-    SpadesSupport* spadesSupport = new SpadesSupport(ET_SPADES);
+    SpadesSupport* spadesSupport = new SpadesSupport(SpadesSupport::ET_SPADES_ID, SpadesSupport::ET_SPADES);
     etRegistry->registerEntry(spadesSupport);
 
     // SAMtools (external tool)
-    SamToolsExtToolSupport* samToolsExtToolSupport = new SamToolsExtToolSupport(ET_SAMTOOLS_EXT);
+    SamToolsExtToolSupport* samToolsExtToolSupport = new SamToolsExtToolSupport(SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID, SamToolsExtToolSupport::ET_SAMTOOLS_EXT);
     etRegistry->registerEntry(samToolsExtToolSupport);
 
     // BCFtools (external tool)
-    BcfToolsSupport* bcfToolsSupport = new BcfToolsSupport(ET_BCFTOOLS);
+    BcfToolsSupport* bcfToolsSupport = new BcfToolsSupport(BcfToolsSupport::ET_BCFTOOLS_ID, BcfToolsSupport::ET_BCFTOOLS);
     etRegistry->registerEntry(bcfToolsSupport);
 
     // Tabix
-    TabixSupport* tabixSupport = new TabixSupport(ET_TABIX);
+    TabixSupport* tabixSupport = new TabixSupport(TabixSupport::ET_TABIX_ID, TabixSupport::ET_TABIX);
     etRegistry->registerEntry(tabixSupport);
 
     // VcfConsensus
-    VcfConsensusSupport* vcfConsSupport = new VcfConsensusSupport(ET_VCF_CONSENSUS);
+    VcfConsensusSupport* vcfConsSupport = new VcfConsensusSupport(VcfConsensusSupport::ET_VCF_CONSENSUS_ID, VcfConsensusSupport::ET_VCF_CONSENSUS);
     etRegistry->registerEntry(vcfConsSupport);
 
     // Spidey
-    SpideySupport* spideySupport = new SpideySupport(ET_SPIDEY);
+    SpideySupport* spideySupport = new SpideySupport(SpideySupport::ET_SPIDEY_ID, SpideySupport::ET_SPIDEY);
     etRegistry->registerEntry(spideySupport);
 
     //bedtools
-    BedtoolsSupport* bedtoolsSupport = new BedtoolsSupport(ET_BEDTOOLS);
+    BedtoolsSupport* bedtoolsSupport = new BedtoolsSupport(BedtoolsSupport::ET_BEDTOOLS_ID, BedtoolsSupport::ET_BEDTOOLS);
     etRegistry->registerEntry(bedtoolsSupport);
 
     //cutadapt
-    CutadaptSupport* cutadaptSupport = new CutadaptSupport(ET_CUTADAPT);
+    CutadaptSupport* cutadaptSupport = new CutadaptSupport(CutadaptSupport::ET_CUTADAPT_ID, CutadaptSupport::ET_CUTADAPT);
     etRegistry->registerEntry(cutadaptSupport);
 
     //bigwig
-    BigWigSupport* bigwigSupport = new BigWigSupport(ET_BIGWIG);
+    BigWigSupport* bigwigSupport = new BigWigSupport(BigWigSupport::ET_BIGWIG_ID, BigWigSupport::ET_BIGWIG);
     etRegistry->registerEntry(bigwigSupport);
 
     // TopHat
-    TopHatSupport* tophatTool = new TopHatSupport(ET_TOPHAT);
+    TopHatSupport* tophatTool = new TopHatSupport(TopHatSupport::ET_TOPHAT_ID, TopHatSupport::ET_TOPHAT);
     etRegistry->registerEntry(tophatTool);
 
     // Cufflinks external tools
-    CufflinksSupport *cuffcompareTool = new CufflinksSupport(ET_CUFFCOMPARE);
+    CufflinksSupport *cuffcompareTool = new CufflinksSupport(CufflinksSupport::ET_CUFFCOMPARE_ID, CufflinksSupport::ET_CUFFCOMPARE);
     etRegistry->registerEntry(cuffcompareTool);
-    CufflinksSupport *cuffdiffTool = new CufflinksSupport(ET_CUFFDIFF);
+    CufflinksSupport *cuffdiffTool = new CufflinksSupport(CufflinksSupport::ET_CUFFDIFF_ID, CufflinksSupport::ET_CUFFDIFF);
     etRegistry->registerEntry(cuffdiffTool);
-    CufflinksSupport *cufflinksTool = new CufflinksSupport(ET_CUFFLINKS);
+    CufflinksSupport *cufflinksTool = new CufflinksSupport(CufflinksSupport::ET_CUFFLINKS_ID, CufflinksSupport::ET_CUFFLINKS);
     etRegistry->registerEntry(cufflinksTool);
-    CufflinksSupport *cuffmergeTool = new CufflinksSupport(ET_CUFFMERGE);
+    CufflinksSupport *cuffmergeTool = new CufflinksSupport(CufflinksSupport::ET_CUFFMERGE_ID, CufflinksSupport::ET_CUFFMERGE);
     etRegistry->registerEntry(cuffmergeTool);
-    CufflinksSupport *gffreadTool = new CufflinksSupport(ET_GFFREAD);
+    CufflinksSupport *gffreadTool = new CufflinksSupport(CufflinksSupport::ET_GFFREAD_ID, CufflinksSupport::ET_GFFREAD);
     etRegistry->registerEntry(gffreadTool);
 
     // CEAS
-    CEASSupport *ceasTool = new CEASSupport(ET_CEAS);
+    CEASSupport *ceasTool = new CEASSupport(CEASSupport::ET_CEAS_ID, CEASSupport::ET_CEAS);
     etRegistry->registerEntry(ceasTool);
 
     // MACS
-    MACSSupport *macs = new MACSSupport(ET_MACS);
+    MACSSupport *macs = new MACSSupport(MACSSupport::ET_MACS_ID, MACSSupport::ET_MACS);
     etRegistry->registerEntry(macs);
 
     // peak2gene
-    Peak2GeneSupport *peak2gene = new Peak2GeneSupport(ET_PEAK2GENE);
+    Peak2GeneSupport *peak2gene = new Peak2GeneSupport(Peak2GeneSupport::ET_PEAK2GENE_ID, Peak2GeneSupport::ET_PEAK2GENE);
     etRegistry->registerEntry(peak2gene);
 
     //ConservationPlot
-    ConservationPlotSupport *conservationPlot = new ConservationPlotSupport(ET_CONSERVATION_PLOT);
+    ConservationPlotSupport *conservationPlot = new ConservationPlotSupport(ConservationPlotSupport::ET_CONSERVATION_PLOT_ID, ConservationPlotSupport::ET_CONSERVATION_PLOT);
     etRegistry->registerEntry(conservationPlot);
 
     //SeqPos
-    SeqPosSupport *seqPos = new SeqPosSupport(ET_SEQPOS);
+    SeqPosSupport *seqPos = new SeqPosSupport(SeqPosSupport::ET_SEQPOS_ID, SeqPosSupport::ET_SEQPOS);
     etRegistry->registerEntry(seqPos);
 
     //ConductGO
-    ConductGOSupport *conductGO = new ConductGOSupport(ET_GO_ANALYSIS);
+    ConductGOSupport *conductGO = new ConductGOSupport(ConductGOSupport::ET_GO_ANALYSIS_ID, ConductGOSupport::ET_GO_ANALYSIS);
     etRegistry->registerEntry(conductGO);
 
     //Vcfutils
-    VcfutilsSupport *vcfutils = new VcfutilsSupport(VcfutilsSupport::TOOL_NAME);
+    VcfutilsSupport *vcfutils = new VcfutilsSupport(VcfutilsSupport::VCF_UTILS_ID, VcfutilsSupport::VCF_UTILS);
     etRegistry->registerEntry(vcfutils);
 
     //SnpEff
-    SnpEffSupport *snpeff = new SnpEffSupport(ET_SNPEFF);
+    SnpEffSupport *snpeff = new SnpEffSupport(SnpEffSupport::ET_SNPEFF_ID, SnpEffSupport::ET_SNPEFF);
     etRegistry->registerEntry(snpeff);
 
     //FastQC
-    FastQCSupport *fastqc = new FastQCSupport(ET_FASTQC);
+    FastQCSupport *fastqc = new FastQCSupport(FastQCSupport::ET_FASTQC_ID, FastQCSupport::ET_FASTQC);
     etRegistry->registerEntry(fastqc);
 
     // StringTie
-    StringTieSupport *stringTie = new StringTieSupport(ET_STRINGTIE);
+    StringTieSupport *stringTie = new StringTieSupport(StringTieSupport::ET_STRINGTIE_ID, StringTieSupport::ET_STRINGTIE);
     etRegistry->registerEntry(stringTie);
 
     //HMMER
-    etRegistry->registerEntry(new HmmerSupport(HmmerSupport::BUILD_TOOL));
-    etRegistry->registerEntry(new HmmerSupport(HmmerSupport::SEARCH_TOOL));
-    etRegistry->registerEntry(new HmmerSupport(HmmerSupport::PHMMER_TOOL));
+    etRegistry->registerEntry(new HmmerSupport(HmmerSupport::BUILD_TOOL_ID, HmmerSupport::BUILD_TOOL));
+    etRegistry->registerEntry(new HmmerSupport(HmmerSupport::SEARCH_TOOL_ID, HmmerSupport::SEARCH_TOOL));
+    etRegistry->registerEntry(new HmmerSupport(HmmerSupport::PHMMER_TOOL_ID, HmmerSupport::PHMMER_TOOL));
 
     //Trimmomatic
-    TrimmomaticSupport *trimmomaticSupport = new TrimmomaticSupport(ET_TRIMMOMATIC);
+    TrimmomaticSupport *trimmomaticSupport = new TrimmomaticSupport(TrimmomaticSupport::ET_TRIMMOMATIC_ID, TrimmomaticSupport::ET_TRIMMOMATIC);
     etRegistry->registerEntry(trimmomaticSupport);
 
     if (AppContext::getMainWindow()) {
@@ -500,24 +491,12 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
         etRegistry->setToolkitDescription("Cistrome", tr("<i>Cistrome</i> is a UGENE version of Cistrome pipeline which also includes some tools useful for ChIP-seq analysis"
                 "This pipeline is aimed to provide the following analysis steps: peak calling and annotating, motif search and gene ontology."));
 
-        ExternalToolSupportAction* formatDBAction= new ExternalToolSupportAction(tr("BLAST make database..."), this, QStringList(ET_FORMATDB));
-        formatDBAction->setObjectName(ToolsMenu::BLAST_DB);
-        connect(formatDBAction, SIGNAL(triggered()), formatDBTool, SLOT(sl_runWithExtFileSpecify()));
-
-        ExternalToolSupportAction* makeBLASTDBAction= new ExternalToolSupportAction(tr("BLAST+ make database..."), this, QStringList(ET_MAKEBLASTDB));
+        ExternalToolSupportAction* makeBLASTDBAction= new ExternalToolSupportAction(tr("BLAST+ make database..."), this, QStringList(FormatDBSupport::ET_MAKEBLASTDB_ID));
         makeBLASTDBAction->setObjectName(ToolsMenu::BLAST_DBP);
         connect(makeBLASTDBAction, SIGNAL(triggered()), makeBLASTDBTool, SLOT(sl_runWithExtFileSpecify()));
 
-        BlastAllSupportContext *blastAllViewContext = new BlastAllSupportContext(this);
-        blastAllViewContext->setParent(this);
-        blastAllViewContext->init();
-
-        ExternalToolSupportAction* blastallAction= new ExternalToolSupportAction(tr("BLAST search..."), this, QStringList(ET_BLASTALL));
-        blastallAction->setObjectName(ToolsMenu::BLAST_SEARCH);
-        connect(blastallAction, SIGNAL(triggered()), blastallTool, SLOT(sl_runWithExtFileSpecify()));
-
         ExternalToolSupportAction* alignToRefBlastAction = new ExternalToolSupportAction(tr("Map reads to reference..."),
-                                                                                         this, QStringList() << ET_FORMATDB << ET_BLASTALL);
+                                                                                         this, QStringList() << FormatDBSupport::ET_MAKEBLASTDB_ID << BlastPlusSupport::ET_BLASTN_ID);
         alignToRefBlastAction->setObjectName(ToolsMenu::SANGER_ALIGN);
         connect(alignToRefBlastAction, SIGNAL(triggered(bool)), blastNPlusTool, SLOT(sl_runAlign()));
 
@@ -525,23 +504,21 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
         blastPlusViewCtx->setParent(this);//may be problems???
         blastPlusViewCtx->init();
         QStringList toolList;
-        toolList << ET_BLASTN << ET_BLASTP << ET_BLASTX << ET_TBLASTN << ET_TBLASTX << ET_RPSBLAST;
+        toolList << BlastPlusSupport::ET_BLASTN_ID << BlastPlusSupport::ET_BLASTP_ID << BlastPlusSupport::ET_BLASTX_ID << BlastPlusSupport::ET_TBLASTN_ID << BlastPlusSupport::ET_TBLASTX_ID << BlastPlusSupport::ET_RPSBLAST_ID;
         ExternalToolSupportAction* blastPlusAction= new ExternalToolSupportAction(tr("BLAST+ search..."), this, toolList);
         blastPlusAction->setObjectName(ToolsMenu::BLAST_SEARCHP);
         connect(blastPlusAction, SIGNAL(triggered()), blastNPlusTool, SLOT(sl_runWithExtFileSpecify()));
 
-        ExternalToolSupportAction* blastPlusCmdAction= new ExternalToolSupportAction(tr("BLAST+ query database..."), this, QStringList(ET_BLASTDBCMD));
+        ExternalToolSupportAction* blastPlusCmdAction= new ExternalToolSupportAction(tr("BLAST+ query database..."), this, QStringList(BlastDbCmdSupport::ET_BLASTDBCMD_ID));
         blastPlusCmdAction->setObjectName(ToolsMenu::BLAST_QUERYP);
         connect(blastPlusCmdAction, SIGNAL(triggered()), blastDbCmdSupport, SLOT(sl_runWithExtFileSpecify()));
 
         //Add to menu NCBI Toolkit
-        ToolsMenu::addAction(ToolsMenu::BLAST_MENU, formatDBAction);
         ToolsMenu::addAction(ToolsMenu::BLAST_MENU, makeBLASTDBAction);
-        ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastallAction);
         ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastPlusAction);
         ToolsMenu::addAction(ToolsMenu::BLAST_MENU, blastPlusCmdAction);
 
-        ExternalToolSupportAction* cap3Action = new ExternalToolSupportAction(QString(tr("Reads de novo assembly (with %1)...")).arg(cap3Tool->getName()), this, QStringList(cap3Tool->getName()));
+        ExternalToolSupportAction* cap3Action = new ExternalToolSupportAction(QString(tr("Reads de novo assembly (with %1)...")).arg(cap3Tool->getName()), this, QStringList(cap3Tool->getId()));
         cap3Action->setObjectName(ToolsMenu::SANGER_DENOVO);
         connect(cap3Action, SIGNAL(triggered()), cap3Tool, SLOT(sl_runWithExtFileSpecify()));
         ToolsMenu::addAction(ToolsMenu::SANGER_MENU, cap3Action);
@@ -582,7 +559,7 @@ ExternalToolSupportPlugin::ExternalToolSupportPlugin() :
     genomeReadsFormats << BaseDocumentFormats::FASTA;
     genomeReadsFormats << BaseDocumentFormats::FASTQ;
 
-    AppContext::getGenomeAssemblyAlgRegistry()->registerAlgorithm(new GenomeAssemblyAlgorithmEnv(ET_SPADES, new SpadesTaskFactory(),
+    AppContext::getGenomeAssemblyAlgRegistry()->registerAlgorithm(new GenomeAssemblyAlgorithmEnv(SpadesSupport::ET_SPADES, new SpadesTaskFactory(),
         new SpadesGUIExtensionsFactory(), genomeReadsFormats));
 
     {
@@ -704,7 +681,6 @@ void ExternalToolSupportPlugin::registerWorkers() {
     LocalWorkflow::MAFFTWorkerFactory::init();
 
     LocalWorkflow::AlignToReferenceBlastWorkerFactory::init();
-    LocalWorkflow::BlastAllWorkerFactory::init();
     LocalWorkflow::BlastPlusWorkerFactory::init();
 
     LocalWorkflow::TCoffeeWorkerFactory::init();

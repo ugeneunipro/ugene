@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -128,7 +128,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0002){
     QLineEdit* sequenceLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "sequenceLineEdit"));
     CHECK_SET_ERR(sequenceLineEdit != NULL, "sequenceLineEdit not found");
     GTLineEdit::setText(os, sequenceLineEdit, "phan");
-    QStringList names = GTBaseCompleter::getNames(os, GTBaseCompleter::getCompleter(os));
+    QStringList names = GTBaseCompleter::getNames(os, sequenceLineEdit);
 //Expected state: popup helper contains Phaneroptera_falcata.(case insencivity is checked)
     int num = names.count();
     CHECK_SET_ERR(num == 1, QString("wrong number of sequences in completer. Expected 1, found %1").arg(num));
@@ -149,7 +149,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0003){
     CHECK_SET_ERR(sequenceLineEdit != NULL, "sequenceLineEdit not found");
     GTLineEdit::setText(os, sequenceLineEdit, "wrong name");
 //    Expected state: empty popup helper appeared
-    bool empty = GTBaseCompleter::isEmpty(os, GTBaseCompleter::getCompleter(os));
+    bool empty = GTBaseCompleter::isEmpty(os, sequenceLineEdit);
     CHECK_SET_ERR(empty, "completer is not empty");
     GTWidget::click(os, sequenceLineEdit);//needed to close completer
 }
@@ -166,7 +166,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0004){
     QLineEdit* sequenceLineEdit = qobject_cast<QLineEdit*>(GTWidget::findWidget(os, "sequenceLineEdit"));
     CHECK_SET_ERR(sequenceLineEdit != NULL, "sequenceLineEdit not found");
     GTLineEdit::setText(os, sequenceLineEdit, "Phan");
-    QStringList completerList = GTBaseCompleter::getNames(os, GTBaseCompleter::getCompleter(os));
+    QStringList completerList = GTBaseCompleter::getNames(os, sequenceLineEdit);
 //    Expected state: two sequence names "Phaneroptera_falcata" appeared in popup helper
     CHECK_SET_ERR(completerList.count() == 2, "wrong number of sequences in completer");
     QString first = completerList.at(0);
@@ -223,7 +223,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001){
     CHECK_SET_ERR(c == "#70f970", QString("c has color %1").arg(c));
     CHECK_SET_ERR(gap == "#ffffff", QString("gap has color %1").arg(gap));
 //    4. Check colors for all symbols
-//    (branches: check Jalview, Percentage Identity, Percentage Identity(gray), UGENE color schemes)
+//    (branches: check Jalview, Percentage identity, Percentage identity(gray), UGENE color schemes)
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_1){
@@ -246,7 +246,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_1){
     CHECK_SET_ERR(c == "#ffffff", QString("c has color %1").arg(c));
     CHECK_SET_ERR(gap == "#ffffff", QString("gap has color %1").arg(gap));
 //    4. Check colors for all symbols
-//    (branches: check Jalview, Percentage Identity, Percentage Identity(gray), UGENE color schemes)
+//    (branches: check Jalview, Percentage identity, Percentage identity(gray), UGENE color schemes)
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_2){
@@ -269,7 +269,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_2){
     CHECK_SET_ERR(c == "#ffb340", QString("c has color %1").arg(c));
     CHECK_SET_ERR(gap == "#ffffff", QString("gap has color %1").arg(gap));
 //    4. Check colors for all symbols
-//    (branches: check Jalview, Percentage Identity, Percentage Identity(gray), UGENE color schemes)
+//    (branches: check Jalview, Percentage identity, Percentage identity(gray), UGENE color schemes)
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_3){
@@ -278,9 +278,9 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_3){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    2. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
-//    3. Select "Percentage Identity" color scheme
+//    3. Select "Percentage identity" color scheme
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme,"Percentage Identity");
+    GTComboBox::setIndexWithText(os, colorScheme,"Percentage identity");
     QString a = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0,0));
     QString t = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0,2));
     QString g = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(2,0));
@@ -292,7 +292,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_3){
     CHECK_SET_ERR(c == "#9999ff", QString("c has color %1").arg(c));
     CHECK_SET_ERR(gap == "#ffffff", QString("gap has color %1").arg(gap));
 //    4. Check colors for all symbols
-//    (branches: check Jalview, Percentage Identity, Percentage Identity(gray), UGENE color schemes)
+//    (branches: check Jalview, Percentage identity, Percentage identity(gray), UGENE color schemes)
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_4){
@@ -301,9 +301,9 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_4){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    2. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
-//    3. Select "Percentage Identity (gray)" color scheme
+//    3. Select "Percentage identity (gray)" color scheme
     QComboBox* colorScheme = qobject_cast<QComboBox*>(GTWidget::findWidget(os, "colorScheme"));
-    GTComboBox::setIndexWithText(os, colorScheme,"Percentage Identity (gray)");
+    GTComboBox::setIndexWithText(os, colorScheme,"Percentage identity (gray)");
     QString a = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0,0));
     QString t = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(0,2));
     QString g = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(2,0));
@@ -315,7 +315,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0001_4){
     CHECK_SET_ERR(c == "#999999", QString("c has color %1").arg(c));
     CHECK_SET_ERR(gap == "#ffffff", QString("gap has color %1").arg(gap));
 //    4. Check colors for all symbols
-//    (branches: check Jalview, Percentage Identity, Percentage Identity(gray), UGENE color schemes)
+//    (branches: check Jalview, Percentage identity, Percentage identity(gray), UGENE color schemes)
 }
 
 GUI_TEST_CLASS_DEFINITION(highlighting_test_0002){
@@ -890,10 +890,10 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0007){
     QString g = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(2, 0));
     QString c = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(4, 0));
     QString gap = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(4, 2));
-    CHECK_SET_ERR(a == "#fcff92", QString("a has color %1").arg(a));
+    CHECK_SET_ERR(a == "#fdff6a", QString("a has color %1").arg(a));
     CHECK_SET_ERR(t == "#ff99b1", QString("t has color %1").arg(t));
-    CHECK_SET_ERR(g == "#4eade1", QString("g has color %1").arg(g));
-    CHECK_SET_ERR(c == "#70f970", QString("c has color %1").arg(c));
+    CHECK_SET_ERR(g == "#2aa1e1", QString("g has color %1").arg(g));
+    CHECK_SET_ERR(c == "#49f949", QString("c has color %1").arg(c));
     CHECK_SET_ERR(gap == "#ffffff", QString("gap has color %1").arg(gap));
  /* GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,0), "#fcff92");//yellow
     GTUtilsMSAEditorSequenceArea::checkColor(os, QPoint(0,2), "#ff99b1");//red
@@ -935,9 +935,9 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0008){
     QString g = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(2, 0));
     QString gap2 = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(3, 1));
     QString gap3 = GTUtilsMSAEditorSequenceArea::getColor(os, QPoint(4, 2));
-    CHECK_SET_ERR(a == "#fcff92", QString("a has color %1 intead of %2").arg(a).arg("#fcff92"));
+    CHECK_SET_ERR(a == "#fdff6a", QString("a has color %1 intead of %2").arg(a).arg("#fcff92"));
     CHECK_SET_ERR(gap1 == "#ffffff", QString("gap1 has color %1 intead of %2").arg(gap1).arg("#ffffff"));
-    CHECK_SET_ERR(g == "#4eade1", QString("g has color %1 intead of %2").arg(g).arg("#4eade1"));
+    CHECK_SET_ERR(g == "#2aa1e1", QString("g has color %1 intead of %2").arg(g).arg("#4eade1"));
     CHECK_SET_ERR(gap2 == "#ffffff", QString("gap2 has color%1 intead of %2").arg(gap2).arg("#ffffff"));
     CHECK_SET_ERR(gap3 == "#ffffff", QString("gap3 has color %1 intead of %2").arg(gap3).arg("#ffffff"));
     /*
@@ -1164,14 +1164,14 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0004){
     QLineEdit* line1 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 1);
     CHECK_SET_ERR(line1 != NULL, "lineEdit 1 not found");
     GTLineEdit::setText(os, line1, "wrong name");
-    CHECK_SET_ERR(GTBaseCompleter::isEmpty(os), "Completer is not empty");
+    CHECK_SET_ERR(GTBaseCompleter::isEmpty(os, line1), "Completer is not empty");
 
     GTKeyboardDriver::keyClick( Qt::Key_Escape);
 
     QLineEdit* line2 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 2);
     CHECK_SET_ERR(line2 != NULL, "lineEdit 2 not found");
     GTLineEdit::setText(os, line2, "wrong name");
-    CHECK_SET_ERR(GTBaseCompleter::isEmpty(os), "Completer is not empty");
+    CHECK_SET_ERR(GTBaseCompleter::isEmpty(os, line2), "Completer is not empty");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 //    Expected state: empty popup helper appeared
@@ -1667,9 +1667,9 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005){
     CHECK_SET_ERR(showDistancesCheck != NULL, "showDistancesCheck not found");
     QCheckBox* alignLabelsCheck = qobject_cast<QCheckBox*>(GTWidget::findWidget(os, "alignLabelsCheck"));
     CHECK_SET_ERR(alignLabelsCheck != NULL, "alignLabelsCheck not found");
-
-    QWidget* parent = GTWidget::findWidget(os, "COI [m] COI");
-    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView", parent));
+    QWidget* parent = GTWidget::findWidget(os, "COI [m] COI_SubWindow");
+    QWidget* parent2 = GTWidget::findWidget(os, "COI [m] COI", parent);
+    QGraphicsView* treeView = qobject_cast<QGraphicsView*>(GTWidget::findWidget(os, "treeView", parent2));
 
     QList<QGraphicsSimpleTextItem*> initNames = GTUtilsPhyTree::getVisiableLabels(os, treeView);
     QList<QGraphicsSimpleTextItem*> initDistanses = GTUtilsPhyTree::getVisiableDistances(os, treeView);

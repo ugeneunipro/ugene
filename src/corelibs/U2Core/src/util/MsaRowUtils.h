@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,6 +45,9 @@ public:
      * the position of a non-gap character left-most to the 'pos'.
      */
     static qint64 getUngappedPosition(const U2MsaRowGapModel &gaps, qint64 dataLength, qint64 position, bool allowGapInPos = false);
+    //Only inner gaps, no leading and trailing
+    static U2Region getGappedRegion(const U2MsaRowGapModel& gaps, const U2Region &ungapped);
+    static U2Region getUngappedRegion(const U2MsaRowGapModel& gaps, const U2Region& selection);
     static int getCoreStart(const U2MsaRowGapModel &gaps);
 
     static void insertGaps(U2OpStatus &os, U2MsaRowGapModel &gaps, int rowLengthWithoutTrailing, int position, int count);

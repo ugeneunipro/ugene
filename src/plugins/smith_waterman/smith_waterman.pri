@@ -44,7 +44,7 @@ use_cuda() {
         COMPILER_OPT_EXT = "--compiler-options -fPIC"
     }
 
-    CONFIG(x64) {
+    contains(DEFINES, UGENE_X86_64) {
         SW2_NVCC_ARCH_FLAG = -m 64
     } else {
         SW2_NVCC_ARCH_FLAG = -m 32

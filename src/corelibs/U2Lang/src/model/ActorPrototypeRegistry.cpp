@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,16 +20,26 @@
  */
 
 #include <U2Lang/ActorPrototypeRegistry.h>
+#include <U2Lang/WorkflowUtils.h>
 
 namespace U2 {
 namespace Workflow {
-void ActorPrototypeRegistry::registerProto(const Descriptor& group, ActorPrototype* proto) {
+bool ActorPrototypeRegistry::registerProto(const Descriptor& group, ActorPrototype* proto) {
     // debug check for proto name
-    QString id = proto->getId(); Q_UNUSED(id);
-    assert(!id.contains("."));
+    const QString id = proto->getId();
+    assert(WorkflowEntityValidator::ACCEPTABLE_ID.match(id).isValid());
+    ActorPrototype *existingProto = getProto(id);
+    if (nullptr != existingProto) {
+        coreLog.error(tr("Can't register element config with ID '%1'%2. There is already registered element with this ID%3.")
+                      .arg(id)
+                      .arg(proto->getFilePath().isEmpty() ? QString() : " (" + proto->getFilePath() + ")")
+                      .arg(existingProto->getFilePath().isEmpty() ? QString() : " (" + existingProto->getFilePath() + ")"));
+        return false;
+    }
 
     groups[group].append(proto);
     emit si_registryModified();
+    return true;
 }
 
 ActorPrototype * ActorPrototypeRegistry::unregisterProto(const QString &id) {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -91,7 +91,6 @@ private:
     int getClearRangeStart(const QByteArray &cur_line);
     int getClearRangeEnd(const QByteArray &cur_line);
     void formatSequence(QByteArray& data);
-    QString tr(const char * text) const { return QObject::tr(text); }
 
     IOAdapter *io;
     U2OpStatus *os;

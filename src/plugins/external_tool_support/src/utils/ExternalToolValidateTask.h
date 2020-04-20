@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,17 +36,19 @@ class ExternalToolSearchTask;
 class ExternalToolValidateTask : public Task {
     Q_OBJECT
 public:
-    ExternalToolValidateTask(const QString& toolName, TaskFlags flags = TaskFlag_None);
+    ExternalToolValidateTask(const QString& toolId, const QString& toolName, TaskFlags flags = TaskFlag_None);
     virtual ~ExternalToolValidateTask() {}
 
     virtual Task::ReportResult report() = 0;
 
     bool isValidTool()  { return isValid; }
-    QString getToolName()  { return toolName; }
+    QString getToolId()  { return toolId; }
+    QString getToolName() { return toolName; }
     QString getToolPath()  { return toolPath; }
     QString getToolVersion()  { return version; }
 
 protected:
+    QString toolId;
     QString toolName;
     QString toolPath;
     QString version;
@@ -57,7 +59,7 @@ class ExternalToolJustValidateTask: public ExternalToolValidateTask {
     Q_OBJECT
     Q_DISABLE_COPY(ExternalToolJustValidateTask)
 public:
-    ExternalToolJustValidateTask(const QString& toolName, const QString& path);
+    ExternalToolJustValidateTask(const QString& toolId, const QString& toolName, const QString& path);
     virtual ~ExternalToolJustValidateTask();
 
     virtual void run();
@@ -91,7 +93,7 @@ private:
 class ExternalToolSearchAndValidateTask : public ExternalToolValidateTask {
     Q_OBJECT
 public:
-    ExternalToolSearchAndValidateTask(const QString& toolName);
+    ExternalToolSearchAndValidateTask(const QString& toolId, const QString& toolName);
 
     void prepare();
     virtual QList<Task*> onSubTaskFinished(Task *subTask);

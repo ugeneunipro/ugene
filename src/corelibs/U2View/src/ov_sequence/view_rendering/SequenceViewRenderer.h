@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,7 +49,7 @@ struct CommonSequenceViewMetrics {
 /************************************************************************/
 /* SequenceViewRenderer */
 /************************************************************************/
-class U2VIEW_EXPORT SequenceViewRenderer {
+class U2VIEW_EXPORT SequenceViewRenderer : public QObject {
 public:
     SequenceViewRenderer(SequenceObjectContext* ctx);
 

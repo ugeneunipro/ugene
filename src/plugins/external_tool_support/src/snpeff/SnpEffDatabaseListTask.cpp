@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ namespace U2 {
 
 SnpEffDatabaseListTask::SnpEffDatabaseListTask()
     : ExternalToolSupportTask(tr("SnpEff Database List task"), TaskFlags_FOSE_COSC) {
-    snpEffVersion = AppContext::getExternalToolRegistry()->getByName(ET_SNPEFF)->getVersion();
+    snpEffVersion = AppContext::getExternalToolRegistry()->getById(SnpEffSupport::ET_SNPEFF_ID)->getVersion();
     dbListFilePath = AppContext::getSettings()->getValue(SNPEFF_DATABASE_LIST_SETTINGS + snpEffVersion, QVariant(""), true).toString();
 }
 
@@ -49,7 +49,7 @@ void SnpEffDatabaseListTask::prepare() {
     dbListFilePath += QString(QDir::separator()) + "SnpEff_DB_" + snpEffVersion + ".list";
 
     const QStringList args("databases");
-    ExternalToolRunTask* etTask = new ExternalToolRunTask(ET_SNPEFF, args, new SnpEffParser(),
+    ExternalToolRunTask* etTask = new ExternalToolRunTask(SnpEffSupport::ET_SNPEFF_ID, args, new SnpEffParser(),
                                                           "", QStringList(), QString(), true);
     setListenerForTask(etTask);
     etTask->setStandartOutputFile(dbListFilePath);

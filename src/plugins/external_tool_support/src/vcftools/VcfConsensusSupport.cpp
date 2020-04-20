@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,8 +28,12 @@
 
 namespace U2 {
 
-VcfConsensusSupport::VcfConsensusSupport(const QString &name, const QString &path)
-    : ExternalTool(name, path)
+const QString VcfConsensusSupport::ET_VCF_CONSENSUS = "vcf-consensus";
+const QString VcfConsensusSupport::ET_VCF_CONSENSUS_ID = "USUPP_VCF_CONSENSUS";
+const QString VcfConsensusSupport::VCF_CONSENSUS_TMP_DIR = "vcf-consensus";
+
+VcfConsensusSupport::VcfConsensusSupport(const QString& id, const QString &name, const QString &path)
+    : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow() != NULL) {
         icon = QIcon(":external_tool_support/images/cmdline.png");
@@ -46,8 +50,8 @@ VcfConsensusSupport::VcfConsensusSupport(const QString &name, const QString &pat
     versionRegExp = QRegExp("Version: (\\d+.\\d+.\\d+)");
     toolKitName = "VCFtools";
 
-    toolRunnerProgramm = ET_PERL;
-    dependencies << ET_PERL << ET_TABIX;
+    toolRunnerProgram = PerlSupport::ET_PERL_ID;
+    dependencies << PerlSupport::ET_PERL_ID << TabixSupport::ET_TABIX_ID;
 }
 
 } // namespace U2

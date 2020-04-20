@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ ItemToImportEditDialog::ItemToImportEditDialog(const QString &item, const QStrin
     ui(new Ui_ItemToImportEditDialog)
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "23331306");
+    new HelpButton(this, ui->buttonBox, "24749086");
     init(item, folder, options);
 }
 

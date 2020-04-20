@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,21 +28,22 @@
 
 namespace U2 {
 
-const QString KrakenSupport::GROUP_NAME = "Kraken";
 const QString KrakenSupport::BUILD_TOOL = "kraken-build";
+const QString KrakenSupport::BUILD_TOOL_ID = "USUPP_KRAKEN_BUILD";
 const QString KrakenSupport::CLASSIFY_TOOL = "kraken";
-const QString KrakenSupport::TRANSLATE_TOOL = "kraken-translate";
+const QString KrakenSupport::CLASSIFY_TOOL_ID = "USUPP_KRAKEN";
+const QString KrakenSupport::GROUP_NAME = "Kraken";
 
-KrakenSupport::KrakenSupport(const QString &name)
-    : ExternalTool(name)
+KrakenSupport::KrakenSupport(const QString& id, const QString &name)
+    : ExternalTool(id, name, "")
 {
     toolKitName = GROUP_NAME;
 
     validationArguments << "--version";
     validMessage = "Kraken version ";
     versionRegExp = QRegExp("Kraken version (\\d+\\.\\d+(\\.\\d+)?(\\-[a-zA-Z]*)?)");
-    dependencies << "perl";
-    toolRunnerProgramm = "perl";
+    dependencies << "USUPP_PERL";
+    toolRunnerProgram = "USUPP_PERL";
 
     if (BUILD_TOOL == name) {
         initBuild();
@@ -50,10 +51,6 @@ KrakenSupport::KrakenSupport(const QString &name)
 
     if (CLASSIFY_TOOL == name) {
         initClassify();
-    }
-
-    if (TRANSLATE_TOOL == name) {
-        initTranslate();
     }
 }
 
@@ -73,11 +70,6 @@ void KrakenSupport::initBuild() {
 void KrakenSupport::initClassify() {
     executableFileName = "kraken";
     description = tr("The tool is used to classify a set of sequences. It does this by examining the k-mers within a read and querying a database with those k-mers.");
-}
-
-void KrakenSupport::initTranslate() {
-    executableFileName = "kraken-translate";
-    description = tr("The \"<i>kraken-translate</i>\" executable is used to translate the Kraken classification to make it more readable.");
 }
 
 }   // namespace U2

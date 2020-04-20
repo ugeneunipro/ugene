@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -61,11 +61,20 @@ public:
     /** Returns the reverse sequence */
     static QByteArray reverse(const QByteArray &sequence);
 
-    /** Returns the complement DNA sequence */
-    static QByteArray complement(const QByteArray &sequence);
+    /** Returns the reverse DNASequence */
+    static DNASequence reverse(const DNASequence& sequence);
 
-    /** Returns the reverse-complement DNA sequence */
-    static QByteArray reverseComplement(const QByteArray &sequence);
+    /** Returns the complement sequence */
+    static QByteArray complement(const QByteArray &sequence, const DNAAlphabet *alphabet = nullptr);
+
+    /** Returns the complement DNASequence */
+    static DNASequence complement(const DNASequence& sequence);
+
+    /** Returns the reverse-complement sequence */
+    static QByteArray reverseComplement(const QByteArray &sequence, const DNAAlphabet *alphabet = nullptr);
+
+    /** Returns the reverse-complement DNASequence */
+    static DNASequence reverseComplement(const DNASequence& sequence);
 
     static void crop(DNASequence &sequence, int startPos, int length);
 

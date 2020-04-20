@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,10 +22,9 @@
 #ifndef _U2_ANNOTATOR_WORKER_H_
 #define _U2_ANNOTATOR_WORKER_H_
 
-#include <QSet>
-
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
+
 #include "CollocationsSearchAlgorithm.h"
 
 namespace U2 {
@@ -62,12 +61,11 @@ protected:
 
 class CollocationWorkerFactory : public DomainFactory {
 public:
-    CollocationWorkerFactory() : DomainFactory("collocated-annotation-search") {}
+    static const QString ACTOR_ID;
+    static void init();
+    CollocationWorkerFactory() : DomainFactory(ACTOR_ID) {}
     virtual ~CollocationWorkerFactory() {}
     virtual Worker* createWorker(Actor* a) {return new CollocationWorker(a);}
-
-    static void init();
-
 };
 
 }//Workflow namespace

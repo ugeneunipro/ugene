@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,8 +28,11 @@
 
 namespace U2 {
 
-SamToolsExtToolSupport::SamToolsExtToolSupport(const QString& name, const QString& path)
-    : ExternalTool(name, path)
+const QString SamToolsExtToolSupport::ET_SAMTOOLS_EXT = "SAMtools";
+const QString SamToolsExtToolSupport::ET_SAMTOOLS_EXT_ID = "USUPP_SAMTOOLS";
+
+SamToolsExtToolSupport::SamToolsExtToolSupport(const QString& id, const QString& name, const QString& path)
+    : ExternalTool(id, name, path)
 {
     if (AppContext::getMainWindow()) {
         icon = QIcon(":external_tool_support/images/cmdline.png");

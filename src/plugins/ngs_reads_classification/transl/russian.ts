@@ -88,11 +88,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Warning: classification result for the ‘%1’ (from &apos;%2&apos;) hasn’t been found.</source>
+        <source>Format %1 is not supported by this task.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Format %1 is not supported by this task.</source>
+        <source>Warning: classification result for the ‘%1’ (from &apos;%2&apos;) hasn’t been found.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -187,14 +187,6 @@ See also the &quot;Input data&quot; parameter of the element.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>SE reads or contigs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PE reads</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Invalid taxon ID: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -207,15 +199,23 @@ See also the &quot;Input data&quot; parameter of the element.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>Some input sequences have been skipped, as there was no classification data for them. See log for details.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SE reads or contigs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PE reads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>There are no sequences that belong to taxon ‘%1 (ID: %2)’ in the input ‘%3’ and ‘%4’ files.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>There are no sequences that belong to taxon ‘%1 (ID: %2)’ in the input ‘%3’ file.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Some input sequences have been skipped, as there was no classification data for them. See log for details.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,9 @@
 #include <QFile>
 
 #include <U2Core/AppContext.h>
-#include <U2Core/AppSettings.h>
 #include <U2Core/AppResources.h>
-#include <U2Core/L10n.h>
+#include <U2Core/AppSettings.h>
+#include <U2Core/Theme.h>
 
 #include "BwaSettingsWidget.h"
 #include "BwaSupport.h"
@@ -37,17 +37,8 @@ const QString STYLE_SHEET_FONT_WEIGHT_ATTRIBUTE =   "font-weight";
 const QString INFO_MESSAGE_FONT =                   "bold";
 const QString STYLE_SHEET_ATTRIBUTE_EQUALS_SIGN =   ": ";
 const QString STYLE_SHEET_ATTRIBUTES_SEPARATOR =     ";";
-const QString IS_BUILD_INDEX_ALGO_WARNING =          QObject::tr( "NOTE: \"is\" index algorithm "
-    "is not supposed to work with reference sequences having size larger than 2 GB. In order "
-    "to achieve stable BWA performance it is strongly recommend to set the index algorithm to "
-    "\"bwtsw\"" );
-const QString BWTSW_BUILD_INDEX_ALGO_WARNING =       QObject::tr( "NOTE: \"bwtsw\" index algorithm"
-    " is not supposed to work with reference sequences having size smaller than 10 MB.\nIn order "
-    "to achieve stable BWA performance it is strongly recommend to set the index algorithm to "
-    "\"is\"" );
 
-
-void setStylesheetAttributeValue( const QString &attributeName, const QString &attributeValue,
+static void setStylesheetAttributeValue( const QString &attributeName, const QString &attributeValue,
     QString &stylesheet )
 {
     int attributeDescriptionStart = stylesheet.indexOf( attributeName );
@@ -87,11 +78,17 @@ void BwaIndexAlgorithmWarningReporter::sl_IndexAlgorithmChanged( int index ) {
     QString infoText = QString( );
     if ( 3 == index ) {
         if ( MAX_REFERENCE_SIZE_FOR_IS_METHOD < referenceSequenceFile.size( ) ) {
-            infoText = IS_BUILD_INDEX_ALGO_WARNING;
+            infoText = tr( "NOTE: \"is\" index algorithm "
+                                    "is not supposed to work with reference sequences having size larger than 2 GB. In order "
+                                    "to achieve stable BWA performance it is strongly recommend to set the index algorithm to "
+                                    "\"bwtsw\"" );
         }
     } else if ( 1 == index ) {
         if ( MIN_REFERENCE_SIZE_FOR_BWTSW_METHOD > referenceSequenceFile.size( ) ) {
-            infoText = BWTSW_BUILD_INDEX_ALGO_WARNING;
+            infoText = tr( "NOTE: \"bwtsw\" index algorithm"
+                                    " is not supposed to work with reference sequences having size smaller than 10 MB.\nIn order "
+                                    "to achieve stable BWA performance it is strongly recommend to set the index algorithm to "
+                                    "\"is\"" );
         }
     }
     using namespace U2;
@@ -103,7 +100,7 @@ void BwaIndexAlgorithmWarningReporter::setReportLabelStyle( ) {
     using namespace U2;
     SAFE_POINT( NULL != reportLabel, "Trying to access null pointer data", );
     QString infoLabelStyleSheet = reportLabel->styleSheet( );
-    setStylesheetAttributeValue( STYLE_SHEET_COLOR_ATTRIBUTE, U2::L10N::errorColorLabelStr( ),
+    setStylesheetAttributeValue( STYLE_SHEET_COLOR_ATTRIBUTE, U2::Theme::errorColorLabelStr( ),
         infoLabelStyleSheet );
     setStylesheetAttributeValue( STYLE_SHEET_FONT_WEIGHT_ATTRIBUTE, INFO_MESSAGE_FONT,
         infoLabelStyleSheet );
@@ -126,7 +123,7 @@ BwaSettingsWidget::BwaSettingsWidget(QWidget *parent)
     warningReporter->setReportingLabel(infoLabel);
     connect(indexAlgorithmComboBox, SIGNAL(currentIndexChanged(int)), warningReporter, SLOT(sl_IndexAlgorithmChanged(int)));
     indexSuffixes << BwaTask::indexSuffixes;
-    requiredExtToolNames << ET_BWA;
+    requiredExtToolIds << BwaSupport::ET_BWA_ID;
 }
 
 QMap<QString,QVariant> BwaSettingsWidget::getDnaAssemblyCustomSettings() const {
@@ -226,7 +223,7 @@ BwaSwSettingsWidget::BwaSwSettingsWidget(QWidget *parent):
     numThreadsSpinbox->setMaximum(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
     numThreadsSpinbox->setValue(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
 
-    label->setStyleSheet(QString("color: %1; font: bold;").arg(L10N::successColorLabelStr()));
+    label->setStyleSheet(QString("color: %1; font: bold;").arg(Theme::successColorLabelStr()));
     label->setText(tr("NOTE: bwa-sw performs alignment of long sequencing reads (Sanger or 454). It accepts reads only in FASTA or FASTQ format. "
         "Reads should be compiled into single file."));
 
@@ -234,7 +231,7 @@ BwaSwSettingsWidget::BwaSwSettingsWidget(QWidget *parent):
 
     warningReporter->setReportingLabel(warningLabel);
     connect(indexAlgorithmComboBox, SIGNAL(currentIndexChanged(int)), warningReporter, SLOT(sl_IndexAlgorithmChanged(int)));
-    requiredExtToolNames << ET_BWA;
+    requiredExtToolIds << BwaSupport::ET_BWA_ID;
 }
 
 QMap<QString,QVariant> BwaSwSettingsWidget::getDnaAssemblyCustomSettings() const {
@@ -294,14 +291,14 @@ BwaMemSettingsWidget::BwaMemSettingsWidget(QWidget *parent):
     numThreadsSpinbox->setMaximum(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
     numThreadsSpinbox->setValue(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
 
-    label->setStyleSheet(QString("color: %1; font: bold;").arg(L10N::successColorLabelStr()));
+    label->setStyleSheet(QString("color: %1; font: bold;").arg(Theme::successColorLabelStr()));
     label->setText(tr("NOTE: bwa mem accepts reads only in FASTA or FASTQ format. Reads should be compiled into a single file for each mate end."));
 
     adjustSize();
 
     warningReporter->setReportingLabel(warningLabel);
     connect(indexAlgorithmComboBox, SIGNAL(currentIndexChanged(int)), warningReporter, SLOT(sl_IndexAlgorithmChanged(int)));
-    requiredExtToolNames << ET_BWA;
+    requiredExtToolIds << BwaSupport::ET_BWA_ID;
 }
 
 QMap<QString,QVariant> BwaMemSettingsWidget::getDnaAssemblyCustomSettings() const {

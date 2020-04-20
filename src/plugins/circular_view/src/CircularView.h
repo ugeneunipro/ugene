@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -68,12 +68,9 @@ public:
     void wheelEvent(QWheelEvent* we);
     virtual QSize sizeHint() const;
 
-    virtual QList<AnnotationSelectionData> selectAnnotationByCoord(const QPoint& coord) const;
+    virtual QList<Annotation*> findAnnotationsByCoord(const QPoint& coord) const;
 
     static qreal coordToAngle(const QPoint point);
-
-    const QMap<Annotation *,CircularAnnotationItem *> & getCircularItems() const;
-    const QList<CircularAnnotationLabel *> & getLabelList() const;
 
     bool isCircularTopology() const;
 
@@ -113,12 +110,6 @@ protected:
     void adaptSizes();
     void updateZoomActions();
 
-    void setInverseSelection(const U2Region &r);
-    /**
-     * Used for region that covers the beginning of the sequence and the end of it.
-     * Usage: @startSeqRegion.startPos should be 0 and @endSeqRegion.endPos should be equal to sequence length.
-     */
-    void setInverseSelection(const U2Region &startSeqRegion, const U2Region &endSeqRegion);
     /**
      * Use for continuous region selection only.
      * TODO: if inverse selection function would be fully available (for splitted kind of selection), rewrite it.
@@ -152,7 +143,6 @@ public:
     ~CircularViewRenderArea();
 
     int getAnnotationYLevel(Annotation *a) const { return annotationYLevel.value(a); }
-    void adaptNumberOfLabels(int h);
 
     static const int MIDDLE_ELLIPSE_SIZE;
     int getCenterY() const { return verticalOffset; }
@@ -193,11 +183,6 @@ private:
     QPainterPath createAnnotationArrowPath(float startAngle, float spanAngle, float dAlpha, const QRect &outerRect, const QRect &innerRect,
         const QRect &middleRect, bool complementary, bool isShort) const;
     void removeRegionsOutOfRange(QVector<U2Region> &location, int seqLen) const;
-
-    /**
-     * Returns a pair of merged regions: the second one was added to the first
-     */
-    QPair<U2Region, U2Region> mergeCircularJunctoinRegion(QVector<U2Region> &location, int seqLen) const;
 
     static const int OUTER_ELLIPSE_SIZE;
     static const int ELLIPSE_DELTA;

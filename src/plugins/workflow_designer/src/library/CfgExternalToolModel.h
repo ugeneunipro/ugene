@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -24,6 +24,8 @@
 
 #include <QAbstractTableModel>
 
+#include <U2Designer/PropertyWidget.h>
+
 #include <U2Lang/ExternalToolCfg.h>
 
 namespace U2 {
@@ -37,18 +39,23 @@ public:
     CfgExternalToolItem();
     ~CfgExternalToolItem();
 
-    QString getDataType() const;
-    void setDataType(const QString& id);
+    const QString &getDataType() const;
+    void setDataType(const QString& typeId);
 
-    QString getName() const;
-    void setName(const QString &_name);
+    const QString &getId() const;
+    void setId(const QString &id);
 
-    QString getFormat() const;
-    void setFormat(const QString & f);
+    const QString &getName() const;
+    void setName(const QString &name);
 
-    QString getDescription() const;
-    void setDescription(const QString & _descr);
+    const QString &getFormat() const;
+    void setFormat(const QString &format);
 
+    const QString &getDescription() const;
+    void setDescription(const QString &descr);
+
+    PropertyDelegate *delegateForNames;
+    PropertyDelegate *delegateForIds;
     PropertyDelegate *delegateForTypes;
     PropertyDelegate *delegateForFormats;
 
@@ -59,23 +66,36 @@ private:
     DataTypeRegistry *dtr;
 };
 
-
 class CfgExternalToolModel : public QAbstractTableModel {
     Q_OBJECT
 public:
-    CfgExternalToolModel(bool isInput, QObject *obj = NULL);
+    enum ModelType {
+        Input,
+        Output
+    };
 
-    int rowCount(const QModelIndex & /* = QModelIndex */) const;
-    int columnCount(const QModelIndex & /* = QModelIndex */) const;
-    Qt::ItemFlags flags(const QModelIndex &) const;
+    enum Columns {
+        COLUMN_NAME = 0,
+        COLUMN_ID = 1,
+        COLUMN_DATA_TYPE = 2,
+        COLUMN_FORMAT = 3,
+        COLUMN_DESCRIPTION = 4,
+        COLUMNS_COUNT = COLUMN_DESCRIPTION + 1   // elements count
+    };
+
+    CfgExternalToolModel(ModelType modelType, QObject *obj = NULL);
+
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const;
     CfgExternalToolItem* getItem(const QModelIndex &index) const;
     QList<CfgExternalToolItem*> getItems() const;
-    QVariant data(const QModelIndex &index, int role /* = Qt::DisplayRole */) const;
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
     void createFormatDelegate(const QString &newType, CfgExternalToolItem *item);
-    bool setData(const QModelIndex &index, const QVariant &value, int role);
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    bool insertRows(int row, int count = 0, const QModelIndex & parent = QModelIndex());
-    bool removeRows(int row, int count = 0, const QModelIndex & parent = QModelIndex());
+    bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex());
+    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 
 private:
     void init();
@@ -88,49 +108,78 @@ private:
     QVariantMap seqFormatsW;
     QVariantMap msaFormatsW;
     QVariantMap annFormatsW;
+    QVariantMap annSeqFormatsW;
     QVariantMap seqFormatsR;
     QVariantMap msaFormatsR;
     QVariantMap annFormatsR;
+    QVariantMap annSeqFormatsR;
     QVariantMap textFormat;
 };
 
-
 class AttributeItem {
 public:
-    QString getName() const;
-    void setName(const QString& _name);
-    QString getDataType() const;
-    void setDataType(const QString &_type);
-    QString getDescription() const;
-    void setDescription(const QString &_description);
+    AttributeItem();
+    ~AttributeItem();
+
+    const QString &getId() const;
+    void setId(const QString &id);
+
+    const QString &getName() const;
+    void setName(const QString &name);
+
+    const QString &getDataType() const;
+    void setDataType(const QString &type);
+
+    const QVariant&getDefaultValue() const;
+    void setDefaultValue(const QVariant&defaultValue);
+
+    const QString &getDescription() const;
+    void setDescription(const QString &description);
+
+    PropertyDelegate *delegateForNames;
+    PropertyDelegate *delegateForIds;
+    PropertyDelegate *delegateForDefaultValues;
+
 private:
+    QString id;
     QString name;
     QString type;
+    QVariant defaultValue;
     QString description;
-
 };
 
 class CfgExternalToolModelAttributes : public QAbstractTableModel {
     Q_OBJECT
 public:
-    CfgExternalToolModelAttributes();
+    enum Columns {
+        COLUMN_NAME = 0,
+        COLUMN_ID = 1,
+        COLUMN_DATA_TYPE = 2,
+        COLUMN_DEFAULT_VALUE = 3,
+        COLUMN_DESCRIPTION = 4,
+        COLUMNS_COUNT = COLUMN_DESCRIPTION + 1   // elements count
+    };
+
+    CfgExternalToolModelAttributes(SchemaConfig* schemaConfig, QObject *parent = nullptr);
     ~CfgExternalToolModelAttributes();
 
-    int rowCount(const QModelIndex & /* = QModelIndex */) const;
-    int columnCount(const QModelIndex & /* = QModelIndex */) const;
-    Qt::ItemFlags flags(const QModelIndex &) const;
+    void changeDefaultValueDelegate(const QString& newType, AttributeItem* item);
+    int rowCount(const QModelIndex &parent = QModelIndex()) const;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const;
+    Qt::ItemFlags flags(const QModelIndex &index) const;
     AttributeItem* getItem(const QModelIndex &index) const;
     QList<AttributeItem*> getItems() const;
-    QVariant data(const QModelIndex &index, int role /* = Qt::DisplayRole */) const;
-    bool setData(const QModelIndex &index, const QVariant &value, int role);
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+    bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-    bool insertRows(int row, int count = 0, const QModelIndex & parent = QModelIndex());
-    bool removeRows(int row, int count = 0, const QModelIndex & parent = QModelIndex());
+    bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex());
+    bool removeRows(int row, int count, const QModelIndex &parent = QModelIndex());
 
 private:
     QList<AttributeItem*> items;
-    PropertyDelegate *delegate;
-    QVariantMap types;
+    PropertyDelegate *typesDelegate;
+    QList<ComboItem> types;
+    SchemaConfig *schemaConfig;
 };
 
 } // U2

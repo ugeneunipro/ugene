@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,8 +26,8 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
-
 #include "MaEditor.h"
+#include "./view_rendering/MaEditorSelection.h"
 #include "MSASelectSubalignmentDialog.h"
 
 namespace U2 {
@@ -45,8 +45,8 @@ SelectSubalignmentDialog::SelectSubalignmentDialog(MaEditor *editor, const U2Reg
         int endSeq = -1;
         int startPos = -1;
         int endPos = -1;
-        QRect selection = editor->getCurrentSelection();
-        if (selection.isNull()) {
+        const MaEditorSelection& selection = editor->getSelection();
+        if (selection.isEmpty()) {
             startPos = 0;
             endPos = editor->getAlignmentLen();
             startSeq = 0;
@@ -119,7 +119,7 @@ void SelectSubalignmentDialog::init() {
     SAFE_POINT(editor != NULL, tr("Ma Editor is NULL"), );
 
     setupUi(this);
-    new HelpButton(this, buttonBox, "23331090");
+    new HelpButton(this, buttonBox, "24748869");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Select"));
 
     connect(allButton, SIGNAL(clicked()), SLOT(sl_allButtonClicked()));

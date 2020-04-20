@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -155,8 +155,12 @@ QList<Task*> TestRunnerTask::onSubTaskFinished(Task* subTask) {
                     taskLog.info(QString("Warning: the test temp dir already exists: %1").arg(tmpDir.path()));
                 }
 
-                QString workflowSamplePath = QDir::searchPaths(PATH_PREFIX_DATA).first() + "/workflow_samples/";
+                QString ugeneDataPath = QDir::searchPaths(PATH_PREFIX_DATA).first();
+                QString workflowSamplePath = ugeneDataPath + "/workflow_samples/";
                 newEnv->setVar("WORKFLOW_SAMPLES_DIR", workflowSamplePath);
+
+                QString ugeneSamplesPath = ugeneDataPath + "/samples/";
+                newEnv->setVar("SAMPLE_DATA_DIR", ugeneSamplesPath);
 
                 const QString& testCaseDir = QFileInfo(testState->getTestRef()->getURL()).absoluteDir().absolutePath();
                 newEnv->setVar("LOCAL_DATA_DIR", testCaseDir + "/_input/");

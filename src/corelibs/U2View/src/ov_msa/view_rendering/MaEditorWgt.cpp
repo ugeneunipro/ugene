@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,7 +31,6 @@
 
 #include <U2View/MaEditorStatusBar.h>
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorConsensusArea.h>
 #include <U2View/MaEditorNameList.h>
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MSAEditorOffsetsView.h>
@@ -64,8 +63,9 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       seqAreaHeaderLayout(NULL),
       seqAreaLayout(NULL),
       nameAreaLayout(NULL),
-      collapseModel(new MSACollapsibleItemModel(this)),
+      collapseModel(new MaCollapseModel(this, editor->getMaRowIds())),
       collapsibleMode(false),
+      enableCollapsingOfSingleRowGroups(false),
       scrollController(new ScrollController(editor, this, collapseModel)),
       baseWidthController(new BaseWidthController(this)),
       rowHeightController(NULL),
@@ -81,10 +81,12 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
     connect(getRedoAction(), SIGNAL(triggered()), SLOT(sl_countRedo()));
 }
 
-QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment ali, QWidget* heightTarget){
+QWidget* MaEditorWgt::createHeaderLabelWidget(const QString& text, Qt::Alignment alignment,
+                                              QWidget* heightTarget, bool proxyMouseEventsToNameList) {
+    QString labelHtml = QString("<p style=\"margin-right: 5px\">%1</p>").arg(text);
     return new MaLabelWidget(this,
                              heightTarget == NULL ? seqAreaHeader : heightTarget,
-                             QString("<p style=\"margin-right: 5px\">%1</p>").arg(text), ali);
+                             labelHtml, alignment, proxyMouseEventsToNameList);
 }
 
 ScrollController *MaEditorWgt::getScrollController() {
@@ -188,8 +190,9 @@ void MaEditorWgt::initWidgets() {
     seqAreaContainer->setLayout(seqAreaLayout);
 
     QWidget *label;
-    label = createHeaderLabelWidget(tr("Consensus:"), Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), consArea);
+    label = createHeaderLabelWidget(tr("Consensus:"), Qt::Alignment(Qt::AlignRight | Qt::AlignVCenter), consArea, false);
     label->setMinimumHeight(consArea->height());
+    label->setObjectName("consensusLabel");
 
     nameAreaLayout = new QVBoxLayout();
     nameAreaLayout->setContentsMargins(0, 0, 0, 0);
@@ -201,7 +204,9 @@ void MaEditorWgt::initWidgets() {
     nameAreaContainer = new QWidget();
     nameAreaContainer->setLayout(nameAreaLayout);
     nameAreaContainer->setStyleSheet("background-color: white;");
+    nhBar->setStyleSheet("background-color: normal;"); // avoid white background of scrollbar set 1 line above.
 
+    nameAreaContainer->setMinimumWidth(15); // splitter uses min-size to collapse a widget
     maSplitter.addWidget(nameAreaContainer, 0, 0.1);
     maSplitter.addWidget(seqAreaContainer, 1, 3);
 
@@ -247,8 +252,12 @@ void MaEditorWgt::initActions() {
     // SANGER_TODO: check why delAction is not added
     delSelectionAction = new QAction(tr("Remove selection"), this);
     delSelectionAction->setObjectName("Remove selection");
+#ifndef Q_OS_MAC
+    // Shortcut was wrapped with ifndef to workaround UGENE-6676.
+    // On Qt5.12.6 the issue cannot be reproduced, so shortcut should be restored.
     delSelectionAction->setShortcut(QKeySequence::Delete);
     delSelectionAction->setShortcutContext(Qt::WidgetShortcut);
+#endif
 
     copySelectionAction = new QAction(tr("Copy selection"), this);
     copySelectionAction->setObjectName("copy_selection");

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,15 +21,16 @@
 
 #include <QRegExp>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/Log.h>
 #include <U2Core/TextUtils.h>
+#include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Algorithm/DynTable.h>
 #include <U2Algorithm/RollingArray.h>
-#include <U2Core/U2AlphabetUtils.h>
 
 #include "FindAlgorithm.h"
 
@@ -118,7 +119,7 @@ FindAlgorithmSettings::FindAlgorithmSettings(const QByteArray &pattern, FindAlgo
     int _maxResult2Find )
     : pattern( pattern ), strand( strand ), complementTT( complementTT ), proteinTT( proteinTT ), sequenceAlphabet(sequenceAlphabet),
     searchRegion( searchRegion ), maxErr( maxErr ), patternSettings( _patternSettings ),
-    useAmbiguousBases( ambBases ), maxRegExpResult( _maxRegExpResult ),
+    useAmbiguousBases( ambBases ), maxRegExpResultLength( _maxRegExpResult ),
     maxResult2Find( _maxResult2Find )
 {
 
@@ -813,14 +814,24 @@ void FindAlgorithm::find(
         searchIsCircular = false;
     }
 
+    DNATranslation* newComplTT = complTT;
+    if (complTT != nullptr) {
+        const DNAAlphabet *destinationAlphabet = complTT->getDstAlphabet();
+        if (destinationAlphabet->isExtended()) {
+            newComplTT = complTT;
+        } else {
+            newComplTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(U2AlphabetUtils::getExtendedAlphabet(destinationAlphabet));
+        }
+    }
+
     if ( patternSettings == FindAlgorithmPatternSettings_RegExp ) {
-        findRegExp( rl, aminoTT, complTT, strand, seq, searchIsCircular, range, pattern, maxRegExpResult, stopFlag,
+        findRegExp( rl, aminoTT, newComplTT, strand, seq, searchIsCircular, range, pattern, maxRegExpResult, stopFlag,
             percentsCompleted );
         return;
     }
 
     if( patternSettings == FindAlgorithmPatternSettings_Subst ) {
-        find_subst( rl, aminoTT, complTT, strand, seq, searchIsCircular, range, pattern, patternLen,
+        find_subst( rl, aminoTT, newComplTT, strand, seq, searchIsCircular, range, pattern, patternLen,
             useAmbiguousBases, maxErr, stopFlag, percentsCompleted );
         return;
     }
@@ -835,17 +846,17 @@ void FindAlgorithm::find(
     }
 
     if (aminoTT != NULL) {
-        findInAmino(rl, aminoTT, complTT, strand, insDel, seq, range, searchIsCircular, pattern, patternLen, maxErr,
+        findInAmino(rl, aminoTT, newComplTT, strand, insDel, seq, range, searchIsCircular, pattern, patternLen, maxErr,
             stopFlag, percentsCompleted );
         return;
     }
     char* complPattern = NULL;
     QByteArray tmp;
     if (isComplement(strand)) {
-        SAFE_POINT( NULL != complTT, "Invalid translation supplied!", );
+        SAFE_POINT( NULL != newComplTT, "Invalid translation supplied!", );
         tmp.resize(patternLen);
         complPattern = tmp.data();
-        TextUtils::translate(complTT->getOne2OneMapper(), pattern, patternLen, complPattern);
+        TextUtils::translate(newComplTT->getOne2OneMapper(), pattern, patternLen, complPattern);
         TextUtils::reverse(complPattern, patternLen);
     }
 

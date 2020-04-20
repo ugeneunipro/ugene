@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -24,6 +24,7 @@
 
 #include <U2Lang/LocalDomain.h>
 #include <U2Lang/WorkflowUtils.h>
+
 #include "FindRepeatsTask.h"
 
 namespace U2 {
@@ -64,6 +65,8 @@ class RepeatWorkerFactory : public DomainFactory {
 public:
     static const QString ACTOR_ID;
     static void init();
+    static FindRepeatsTaskSettings defaultSettings();
+
     RepeatWorkerFactory() : DomainFactory(ACTOR_ID) {}
     virtual Worker* createWorker(Actor* a) {return new RepeatWorker(a);}
 };

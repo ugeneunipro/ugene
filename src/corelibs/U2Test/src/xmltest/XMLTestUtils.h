@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -70,6 +70,9 @@ public:
     void checkNecessaryAttributeExistence(const QDomElement &element, const QString &attribute);
     void checkAttribute(const QDomElement &element, const QString &attribute, const QStringList &acceptableValues, bool isNecessary);
     void checkBooleanAttribute(const QDomElement &element, const QString &attribute, bool isNecessary);
+    int getInt(const QDomElement &element, const QString &attribute);
+    qint64 getInt64(const QDomElement &element, const QString &attribute);
+    double getDouble(const QDomElement &element, const QString &attribute);
 
     static const QString TRUE_VALUE;
     static const QString FALSE_VALUE;
@@ -84,6 +87,7 @@ public:
     static const QString TMP_DATA_DIR_PREFIX;
     static const QString COMMON_DATA_DIR_PREFIX;
     static const QString LOCAL_DATA_DIR_PREFIX;
+    static const QString SAMPLE_DATA_DIR_PREFIX;
     static const QString WORKFLOW_SAMPLES_DIR_PREFIX;
     static const QString WORKFLOW_OUTPUT_DIR_PREFIX;
     static const QString EXPECTED_OUTPUT_DIR_PREFIX;

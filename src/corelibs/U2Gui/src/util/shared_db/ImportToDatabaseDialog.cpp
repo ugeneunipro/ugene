@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -50,9 +50,6 @@
 
 namespace U2 {
 
-const QString ImportToDatabaseDialog::DIR_HELPER_NAME = "import_to_database";
-const QString ImportToDatabaseDialog::FILES_AND_FOLDERS = QObject::tr("Files and folders");
-const QString ImportToDatabaseDialog::OBJECTS_AND_DOCUMENTS = QObject::tr("Documents and objects");
 
 ImportToDatabaseDialog::ImportToDatabaseDialog(Document *dbConnection, const QString &defaultFolder, QWidget *parent) :
     QDialog(parent),
@@ -61,7 +58,11 @@ ImportToDatabaseDialog::ImportToDatabaseDialog(Document *dbConnection, const QSt
     baseFolder(U2DbiUtils::makeFolderCanonical(defaultFolder))
 {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "23331306");
+    DIR_HELPER_NAME = "import_to_database";
+    FILES_AND_FOLDERS = tr("Files and folders");
+    OBJECTS_AND_DOCUMENTS = tr("Documents and objects");
+    
+    new HelpButton(this, ui->buttonBox, "24749086");
     init();
     connectSignals();
     updateState();

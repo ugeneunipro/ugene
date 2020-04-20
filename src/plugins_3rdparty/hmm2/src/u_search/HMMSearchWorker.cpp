@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -77,7 +77,7 @@ void HMMSearchWorkerFactory::init() {
             HMMSearchWorker::tr("Annotations marking found similar sequence regions."));
 
         QMap<Descriptor, DataTypePtr> hmmM;
-        hmmM[HMMLib::HMM2_SLOT] = HMMLib::HMM_PROFILE_TYPE();
+        hmmM[HMMLib::HMM2_SLOT()] = HMMLib::HMM_PROFILE_TYPE();
         p << new PortDescriptor(hd, DataTypePtr(new MapDataType("hmm.search.hmm", hmmM)), true /*input*/, false, IntegralBusPort::BLIND_INPUT);
         QMap<Descriptor, DataTypePtr> seqM;
         seqM[BaseSlots::DNA_SEQUENCE_SLOT()] = BaseTypes::DNA_SEQUENCE_TYPE();
@@ -199,7 +199,7 @@ bool HMMSearchWorker::isReady() const {
 
 Task* HMMSearchWorker::tick() {
     while (hmmPort->hasMessage()) {
-        hmms << hmmPort->get().getData().toMap().value(HMMLib::HMM2_SLOT.getId()).value<plan7_s*>();
+        hmms << hmmPort->get().getData().toMap().value(HMM2_SLOT_ID).value<plan7_s*>();
     }
     if (!hmmPort->isEnded()) { //  || hmms.isEmpty() || !seqPort->hasMessage()
         return NULL;
@@ -245,8 +245,8 @@ void HMMSearchWorker::sl_taskFinished(Task *t) {
     }
     if (NULL != output) {
         QList<SharedAnnotationData> list;
-        foreach (Task *sub, t->getSubtasks()) {
-            HMMSearchTask *hst = qobject_cast<HMMSearchTask *>(sub);
+        foreach (const QPointer<Task> &sub, t->getSubtasks()) {
+            HMMSearchTask *hst = qobject_cast<HMMSearchTask *>(sub.data());
             list += hst->getResultsAsAnnotations(U2FeatureTypes::MiscSignal, resultName);
         }
 

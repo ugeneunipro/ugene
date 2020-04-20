@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,11 +44,7 @@ public:
     McaEditorSequenceArea* getSequenceArea() const;
     McaReferenceCharController* getRefCharController() const;
 
-    QAction *getClearSelectionAction() const;
-    QAction *getToogleColumnsAction() const;
-
-signals:
-    void si_clearSelection();
+    QAction *getToggleColumnsAction() const;
 
 protected:
     void initActions();
@@ -58,14 +54,9 @@ protected:
     void initConsensusArea();
     void initStatusBar();
 
-private slots:
-    void sl_alignmentChanged();
-
 private:
     McaEditorReferenceArea*     refArea;
     McaReferenceCharController* refCharController;
-
-    QAction *clearSelectionAction;
 };
 
 }   // namespace U2

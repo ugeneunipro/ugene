@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -59,7 +59,7 @@ void BwaBuildIndexTask::prepare() {
     arguments.append("-p");
     arguments.append(indexPath);
     arguments.append(referencePath);
-    ExternalToolRunTask *task = new ExternalToolRunTask(ET_BWA, arguments, new LogParser());
+    ExternalToolRunTask *task = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new LogParser());
     setListenerForTask(task);
     addSubTask(task);
 }
@@ -193,7 +193,7 @@ void BwaAlignTask::prepare() {
         arguments.append( getSAIPath(currentReadSet.url.getURLString()));
         arguments.append(indexPath);
         arguments.append(currentReadSet.url.getURLString());
-        ExternalToolRunTask* alignTask = new ExternalToolRunTask(ET_BWA, arguments, new LogParser(), NULL);
+        ExternalToolRunTask* alignTask = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new LogParser(), NULL);
         setListenerForTask(alignTask);
         alignTasks.append(alignTask);
     }
@@ -234,7 +234,7 @@ QList<Task *> BwaAlignTask::onSubTaskFinished(Task *subTask) {
                 arguments.append(getSAIPath(currentReadsSet.url.getURLString()));
                 arguments.append(currentReadsSet.url.getURLString());
             }
-            ExternalToolRunTask *task = new ExternalToolRunTask(ET_BWA, arguments, new LogParser(), NULL);
+            ExternalToolRunTask *task = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new LogParser(), NULL);
             setListenerForTask(task);
             samTasks.append(task);
         }
@@ -405,7 +405,7 @@ void BwaMemAlignTask::prepare() {
             }
             arguments.append(upStreamList[pairedReadsCounter].url.getURLString());
             arguments.append(downStreamList[pairedReadsCounter].url.getURLString());
-            ExternalToolRunTask* alignTask = new ExternalToolRunTask(ET_BWA, arguments, new BwaAlignTask::LogParser(), NULL);
+            ExternalToolRunTask* alignTask = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new BwaAlignTask::LogParser(), NULL);
             if (upStreamList.size() == 1) {
                 alignTask->setStandartOutputFile(settings.resultFileName.getURLString());
             } else {
@@ -417,7 +417,7 @@ void BwaMemAlignTask::prepare() {
             alignTasks.append(alignTask);
         } else if (settings.shortReadSets.size() > 1) {
             arguments.append(currentReadSet.url.getURLString());
-            ExternalToolRunTask* alignTask = new ExternalToolRunTask(ET_BWA, arguments, new BwaAlignTask::LogParser(), NULL);
+            ExternalToolRunTask* alignTask = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new BwaAlignTask::LogParser(), NULL);
             QString resultFilePathWithpartNumber = settings.tmpDirPath + "/" + resultFileInfo.baseName() + "_" +
                 QString::number(resultPartsCounter) + "." + resultFileInfo.completeSuffix();
             alignTask->setStandartOutputFile(resultFilePathWithpartNumber);
@@ -425,7 +425,7 @@ void BwaMemAlignTask::prepare() {
             alignTasks.append(alignTask);
         } else {
             arguments.append(currentReadSet.url.getURLString());
-            ExternalToolRunTask* alignTask = new ExternalToolRunTask(ET_BWA, arguments, new BwaAlignTask::LogParser(), NULL);
+            ExternalToolRunTask* alignTask = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new BwaAlignTask::LogParser(), NULL);
             alignTask->setStandartOutputFile(settings.resultFileName.getURLString());
             setListenerForTask(alignTask);
             alignTasks.append(alignTask);
@@ -544,7 +544,7 @@ void BwaSwAlignTask::prepare() {
     arguments.append( readSet.url.getURLString() );
 
 
-    Task* alignTask = new ExternalToolRunTask(ET_BWA, arguments, new BwaAlignTask::LogParser(), NULL);
+    Task* alignTask = new ExternalToolRunTask(BwaSupport::ET_BWA_ID, arguments, new BwaAlignTask::LogParser(), NULL);
     addSubTask(alignTask);
 
 }

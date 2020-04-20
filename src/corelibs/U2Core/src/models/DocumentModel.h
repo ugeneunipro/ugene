@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2019 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -130,11 +130,10 @@ typedef QFlags<DocumentFormatFlag> DocumentFormatFlags;
 class U2CORE_EXPORT DocumentFormat: public QObject {
     Q_OBJECT
 public:
-    static const QString CREATED_NOT_BY_UGENE;
-    static const QString MERGED_SEQ_LOCK;
     static const QString DBI_REF_HINT;
     static const QString DBI_FOLDER_HINT;
     static const QString DEEP_COPY_OBJECT;
+    static const QString STRONG_FORMAT_ACCORDANCE;
 
     static const int READ_BUFF_SIZE;
 
@@ -144,17 +143,17 @@ public:
     };
 
 
-    DocumentFormat(QObject* p, DocumentFormatFlags _flags, const QStringList& fileExts = QStringList())
-        : QObject(p),
-          formatFlags(_flags),
-          fileExtensions(fileExts)
-    {}
+    DocumentFormat(QObject* p, const DocumentFormatId& id, DocumentFormatFlags _flags, const QStringList& fileExts = QStringList());
 
     /* returns unique document format id */
-    virtual DocumentFormatId getFormatId() const = 0;
+    const DocumentFormatId& getFormatId() const {return id;}
 
-    /* returns localized name of the format */
-    virtual const QString& getFormatName() const = 0;
+    /* Returns localized format name. */
+    const QString& getFormatName() const {return formatName;}
+
+    /* Returns localized format description. */
+    const QString& getFormatDescription() const {return formatDescription;}
+
 
     /* returns list of usual file extensions for the format
        Example: "fa", "fasta", "gb" ...
@@ -202,9 +201,6 @@ public:
     */
     virtual FormatCheckResult checkRawData(const QByteArray& dataPrefix, const GUrl& url = GUrl()) const = 0;
 
-    /** Returns generic format description */
-    virtual QString getFormatDescription() const {return formatDescription;}
-
     /* Checks that document format satisfies given constraints */
     virtual bool checkConstraints(const DocumentFormatConstraints& c) const;
 
@@ -238,9 +234,11 @@ protected:
     */
     virtual Document* loadDocument(IOAdapter* io, const U2DbiRef& targetDb, const QVariantMap& hints, U2OpStatus& os) = 0;
 
+    DocumentFormatId    id;
     DocumentFormatFlags formatFlags;
     QStringList         fileExtensions;
     QSet<GObjectType>   supportedObjectTypes;
+    QString             formatName;
     QString             formatDescription;
 
 private:
@@ -524,5 +522,8 @@ public:
 };
 
 } //namespace
+
 Q_DECLARE_METATYPE(U2::Document*)
+Q_DECLARE_OPERATORS_FOR_FLAGS(U2::DocumentFormatFlags)
+
 #endif
