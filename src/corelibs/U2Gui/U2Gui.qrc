@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/core">
+        <file>images/add_annotations_to_reference.png</file>
         <file>images/add_column.png</file>
         <file>images/add_existing_document.png</file>
         <file>images/add_gobject.png</file>

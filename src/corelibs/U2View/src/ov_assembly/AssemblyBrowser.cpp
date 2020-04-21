@@ -106,7 +106,7 @@ GObjectView(AssemblyBrowserFactory::ID, viewName), ui(NULL),
 gobject(o), model(NULL), zoomFactor(INITIAL_ZOOM_FACTOR), xOffsetInAssembly(0), yOffsetInAssembly(0), coverageReady(false),
 cellRendererRegistry(new AssemblyCellRendererFactoryRegistry(this)),
 zoomInAction(NULL), zoomOutAction(NULL), posSelectorAction(NULL), posSelector(NULL), showCoordsOnRulerAction(NULL), saveScreenShotAction(NULL),
-exportToSamAction(NULL), setReferenceAction(NULL), extractAssemblyRegionAction(NULL), loadReferenceTask(NULL)
+exportToSamAction(NULL), setReferenceAction(NULL), addAnnotationsAction(nullptr), extractAssemblyRegionAction(NULL), loadReferenceTask(NULL)
 {
     GCOUNTER( cvar, tvar, "AssemblyBrowser" );
     initFont();
@@ -338,6 +338,8 @@ void AssemblyBrowser::buildStaticToolbar(QToolBar* staticToolBar) {
         staticToolBar->addAction(readHintEnabledAction);
         staticToolBar->addSeparator();
         staticToolBar->addAction(setReferenceAction);
+        staticToolBar->addAction(addAnnotationsAction);
+        staticToolBar->addSeparator();
         staticToolBar->addAction(extractAssemblyRegionAction);
         staticToolBar->addAction(saveScreenShotAction);
     }
@@ -684,6 +686,10 @@ void AssemblyBrowser::setupActions() {
     setReferenceAction = new QAction(QIcon(":core/images/set_reference.png"), tr("Set reference"), this);
     setReferenceAction->setObjectName("setReferenceAction");
     connect(setReferenceAction, SIGNAL(triggered()), SLOT(sl_setReference()));
+
+    addAnnotationsAction = new QAction(QIcon(":core/images/add_annotations_to_reference.png"), tr("Add annotations to reference"), this);
+    addAnnotationsAction->setObjectName("setReferenceAction");
+    connect(addAnnotationsAction, SIGNAL(triggered()), SLOT(sl_addAnnotations()));
 
     extractAssemblyRegionAction = new QAction(QIcon(":core/images/extract_assembly_region.png"), tr("Export assembly region"), this);
     extractAssemblyRegionAction->setObjectName("ExtractAssemblyRegion");
@@ -1110,6 +1116,9 @@ void AssemblyBrowser::sl_setReference() {
             tr("An error occurred while setting reference to \"%1\". You have more than one sequence object selected in the Project View. Please select only one object and try again.").arg(gobject->getGObjectName()),
             QMessageBox::Ok);
     }
+}
+
+void AssemblyBrowser::sl_addAnnotations() {
 }
 
 void AssemblyBrowser::sl_extractAssemblyRegion() {
