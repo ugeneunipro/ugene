@@ -367,6 +367,11 @@ bool parseAttributes(QString attributesStr, QMap<QString, QString>& parsedAttrVa
 
         int spaceCharIndex = attributesStr.indexOf(' ', pos);
 
+        if (-1 == spaceCharIndex) {
+            // There are characters, but there is no a space character
+            return false;
+        }
+
         attributeName = attributesStr.mid(pos, spaceCharIndex - pos);
 
         if (attributeName.contains(';')) {
