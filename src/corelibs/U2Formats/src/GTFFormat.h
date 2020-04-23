@@ -117,6 +117,8 @@ public:
 
     virtual void storeDocument(Document* doc, IOAdapter* io, U2OpStatus& os);
 
+    static QStringList getEntries() {return QStringList();} //читаем список аннотаций для частичной загрузки
+
 protected:
     virtual FormatCheckResult checkRawTextData(const QByteArray& rawData, const GUrl& = GUrl()) const;
 
@@ -131,7 +133,7 @@ private:
     */
     QMap<QString, QList<SharedAnnotationData> > parseDocument(IOAdapter* io, U2OpStatus& os);
 
-    void load(IOAdapter* io, QList<GObject*>& objects, const U2DbiRef& dbiRef, const QVariantMap &hints, U2OpStatus& os);
+    void load(IOAdapter* io, QList<GObject*>& objects, const U2DbiRef& dbiRef, const QVariantMap &hints, U2OpStatus& os); //модифицируем чтобы загружал указанные в hints аннотации
 
     static const int FIELDS_COUNT_IN_EACH_LINE;
     static const QString NO_VALUE_STR;

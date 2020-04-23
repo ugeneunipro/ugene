@@ -77,6 +77,8 @@ enum DocumentFormatFlag {
     DocumentFormatFlag_LockedIfNotCreatedByUGENE    = 1<<10,
 
     DocumentFormatFlag_CannotBeCompressed           = 1<<11
+
+    //Добавляем флаг о возможности частичного чтения
 };
 
 

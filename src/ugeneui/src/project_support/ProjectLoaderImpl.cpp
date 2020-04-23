@@ -518,6 +518,11 @@ Task* ProjectLoaderImpl::openWithProjectTask(const QList<GUrl>& _urls, const QVa
                     dr.rawDataCheckResult.properties.unite(hints);
                     dr.rawDataCheckResult.properties.unite(hintsOverDocuments);
                     if (dr.format != NULL ) {
+                        /*
+                        Здесь определяем если формат содержит флаг на частичное чтение и размер файла больше лимитов, то покахываем диалог с выбором какие аннотации читать
+                        Иформацию об аннотациях для чтения сохраняем в hints
+                        Исходник диалога создаем тут ugeneui\src\project_support\
+                        */
                         bool forceReadingOptions = hints.value(ProjectLoaderHint_ForceFormatOptions, false).toBool();
                         bool optionsAlreadyChosen = hints.value((ProjectLoaderHint_MultipleFilesMode_Flag), false).toBool()
                             || hints.value((DocumentReadingMode_SequenceMergeGapSize), false).toBool()
