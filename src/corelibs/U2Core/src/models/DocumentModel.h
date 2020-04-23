@@ -78,7 +78,7 @@ enum DocumentFormatFlag {
 
     DocumentFormatFlag_CannotBeCompressed           = 1<<11
 
-    //Добавляем флаг о возможности частичного чтения
+    //Add flag for possiblity of partially reading
 };
 
 
