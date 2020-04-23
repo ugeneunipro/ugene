@@ -149,6 +149,7 @@ bool GUrl::operator !=(const GUrl& url) const {
 
 // The function converts url string to multibyte form
 // default code page is CP_THREAD_ACP
+// must use "delete" to delete returned value
 const char* GUrl::getURLStringAnsi(int codePage) const {
 #ifdef Q_OS_WIN
     std::wstring wPath = getURLString().toStdWString();
@@ -158,12 +159,15 @@ const char* GUrl::getURLStringAnsi(int codePage) const {
     if (!buffSize)
         return nullptr;
     
-    char * buffer = new char[buffSize];
+    char* buffer = new char[buffSize + 1];
     if (!WideCharToMultiByte(codePage, 0, wPath.c_str(), -1, buffer, buffSize, NULL, NULL))
         return nullptr;
     return (buffer);
 #else
-    return getURLString().toLocal8Bit().constData();
+    const char* tmp = getURLString().toLocal8Bit().constData();
+    char* buffer = new char[qstrlen(tmp) + 1];
+    qstrcpy(buffer, tmp);
+    return buffer;
 #endif // Q_OS_WIN
 }
 
