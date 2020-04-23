@@ -181,7 +181,7 @@ void MSAEditor::addExportMenu(QMenu* m) {
 
 void MSAEditor::addAppearanceMenu(QMenu* m) {
     QMenu* appearanceMenu = m->addMenu(tr("Appearance"));
-    appearanceMenu->setObjectName(MSAE_MENU_APPEARANCE);
+    appearanceMenu->menuAction()->setObjectName(MSAE_MENU_APPEARANCE);
 
     appearanceMenu->addAction(showOverviewAction);
     auto offsetsController = ui->getOffsetsViewController();

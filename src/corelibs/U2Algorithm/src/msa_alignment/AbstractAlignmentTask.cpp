@@ -78,18 +78,6 @@ bool AbstractAlignmentTaskSettings::convertCustomSettings() {
     return true;
 }
 
-bool AbstractAlignmentTaskSettings::containsValue(const QString& optionName) const {
-    return customSettings.contains(optionName);
-}
-
-void AbstractAlignmentTaskSettings::setResultFileName(const QString& newFileName) {
-    resultFileName = GUrl(newFileName);
-}
-
-void AbstractAlignmentTaskSettings::setCustomSettings(const QMap<QString, QVariant>& settings) {
-    customSettings = settings;
-}
-
 void AbstractAlignmentTaskSettings::appendCustomSettings(const QVariantMap& settings) {
     foreach (const QString& key, settings.keys()) {
         customSettings.insert(key, settings.value(key));
@@ -97,8 +85,7 @@ void AbstractAlignmentTaskSettings::appendCustomSettings(const QVariantMap& sett
 }
 
 bool AbstractAlignmentTaskSettings::isValid() const {
-    return msaRef.isValid() && alphabet.isValid() &&
-            (!resultFileName.isEmpty() || inNewWindow == false);
+    return msaRef.isValid() && alphabet.isValid() && (!resultFileName.isEmpty() || !inNewWindow);
 }
 
 AbstractAlignmentTask::AbstractAlignmentTask(const QString& taskName, TaskFlags flags) : Task(taskName, flags) {

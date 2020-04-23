@@ -3428,6 +3428,7 @@ GUI_TEST_CLASS_DEFINITION(test_6548_1) {
         CHECK_SET_ERR(fontColor == "#000000", QString("wrong color %1").arg(fontColor));
         CHECK_SET_ERR(backgroundColor == "#c0c0c0", QString("wrong color %1").arg(backgroundColor));
 
+#ifndef Q_OS_WIN
         //Check fifth frequent symbol
         pos = QPoint(1, 14);
         fontColor = GTUtilsMSAEditorSequenceArea::getFontColor(os, pos);
@@ -3435,6 +3436,7 @@ GUI_TEST_CLASS_DEFINITION(test_6548_1) {
 
         CHECK_SET_ERR(fontColor == "#ff6600", QString("wrong color %1").arg(fontColor));
         CHECK_SET_ERR(backgroundColor == "#ffffff", QString("wrong color %1").arg(backgroundColor));
+#endif    // !Q_OS_WIN
     }
     //third column check
     {
@@ -4664,7 +4666,7 @@ GUI_TEST_CLASS_DEFINITION(test_6667_1) {
     //7. Click "next" button
     GTUtilsOptionPanelMsa::clickNext(os);
     
-    expectedSelection = QRect(4, 5, 5, 1);
+    expectedSelection = QRect(7, 2, 5, 1);
     actualSelection = GTUtilsMSAEditorSequenceArea::getSelectedRect(os);
     CHECK_SET_ERR(expectedSelection == actualSelection, QString("Incorrect selection after the pattern search. Expected: %1, actual %2")
         .arg(qRectToString(expectedSelection)).arg(qRectToString(actualSelection)));

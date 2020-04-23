@@ -526,29 +526,29 @@
 <context>
     <name>U2::MuscleMSAEditorContext</name>
     <message>
-        <location filename="../src/MusclePlugin.cpp" line="140"/>
+        <location filename="../src/MusclePlugin.cpp" line="137"/>
         <source>Align with MUSCLE...</source>
         <translation>Выравнивание с помощью MUSCLE...</translation>
     </message>
     <message>
-        <location filename="../src/MusclePlugin.cpp" line="149"/>
+        <location filename="../src/MusclePlugin.cpp" line="146"/>
         <source>Align sequences to profile with MUSCLE...</source>
         <translation>Выровнять последовательности на профиль при помощи MUSCLE...</translation>
     </message>
     <message>
-        <location filename="../src/MusclePlugin.cpp" line="158"/>
+        <location filename="../src/MusclePlugin.cpp" line="155"/>
         <source>Align profile to profile with MUSCLE...</source>
         <translation>Выровнять профиль на профиль при помощи MUSCLE...</translation>
     </message>
     <message>
+        <location filename="../src/MusclePlugin.cpp" line="234"/>
         <location filename="../src/MusclePlugin.cpp" line="237"/>
-        <location filename="../src/MusclePlugin.cpp" line="240"/>
         <source>Select file with sequences</source>
         <translation>Выбор файла последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/MusclePlugin.cpp" line="265"/>
-        <location filename="../src/MusclePlugin.cpp" line="269"/>
+        <location filename="../src/MusclePlugin.cpp" line="262"/>
+        <location filename="../src/MusclePlugin.cpp" line="266"/>
         <source>Select file with alignment</source>
         <translation>Выбор файла выравнивания</translation>
     </message>
@@ -569,17 +569,17 @@
 <context>
     <name>U2::MusclePlugin</name>
     <message>
-        <location filename="../src/MusclePlugin.cpp" line="61"/>
+        <location filename="../src/MusclePlugin.cpp" line="58"/>
         <source>MUSCLE</source>
         <translation>MUSCLE</translation>
     </message>
     <message>
-        <location filename="../src/MusclePlugin.cpp" line="62"/>
+        <location filename="../src/MusclePlugin.cpp" line="59"/>
         <source>A port of MUSCLE package for multiple sequence alignment. Check http://www.drive5.com/muscle/ for the original version</source>
         <translation>Порт пакета MUSCLE для выравнивания множественных последовательностей. ￼Сайт оригинального пакета http://www.drive5.com/muscle/</translation>
     </message>
     <message>
-        <location filename="../src/MusclePlugin.cpp" line="70"/>
+        <location filename="../src/MusclePlugin.cpp" line="67"/>
         <source>Align with MUSCLE...</source>
         <translation>Выравнивание с помощью MUSCLE...</translation>
     </message>

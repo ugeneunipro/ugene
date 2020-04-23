@@ -41,6 +41,17 @@ struct U2VIEW_EXPORT FindPatternMsaSettings {
     FindAlgorithmSettings findSettings;
 };
 
+struct U2VIEW_EXPORT FindPatternInMsaResult {
+public:
+    FindPatternInMsaResult(qint64 rowId, const QList<U2Region>& regions);
+
+    /** Unique row id in the multiple alignment object. */
+    qint64 rowId;
+
+    /** List of matched regions with gaps. */
+    QList<U2Region> regions;
+};
+
 class U2VIEW_EXPORT FindPatternMsaTask : public Task {
     Q_OBJECT
 public:
@@ -48,7 +59,9 @@ public:
 
     void prepare() override;
     QList<Task*> onSubTaskFinished(Task* subTask) override;
-    const QMap<int, QList<U2Region> >& getResults() const;
+
+    /** Returns list of per-row results. */
+    const QList<FindPatternInMsaResult>& getResults() const;
 
 private:
     void getResultFromTask();
@@ -59,7 +72,7 @@ private:
     FindPatternListTask* searchInSingleSequenceTask;
     int totalResultsCounter;
 
-    QMap<int, QList<U2Region> > resultsBySeqIndex;
+    QList<FindPatternInMsaResult> results;
 };
 
 }

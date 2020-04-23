@@ -6735,23 +6735,39 @@ Do you want to save changes?</source>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="112"/>
-        <source>Use directory for output files</source>
-        <translation>Использовать папку для выходных файлов</translation>
+        <source>Output files</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="133"/>
-        <source>Directory for custom elements with scripts</source>
-        <translation>Папка для элементов пользователя со скриптами</translation>
+        <source>Custom elements with script</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="154"/>
-        <source>Directory for custom elements with external tools</source>
-        <translation>Папка для элементов пользователя с внешними инструментами</translation>
+        <source>Custom elements with external tools</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="175"/>
+        <source>Included schema elements</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use directory for output files</source>
+        <translation type="vanished">Использовать папку для выходных файлов</translation>
+    </message>
+    <message>
+        <source>Directory for custom elements with scripts</source>
+        <translation type="vanished">Папка для элементов пользователя со скриптами</translation>
+    </message>
+    <message>
+        <source>Directory for custom elements with external tools</source>
+        <translation type="vanished">Папка для элементов пользователя с внешними инструментами</translation>
+    </message>
+    <message>
         <source>Directory for included schema elements</source>
-        <translation>Папка для включенных элементов схемы</translation>
+        <translation type="vanished">Папка для включенных элементов схемы</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="26"/>

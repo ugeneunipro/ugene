@@ -21,7 +21,6 @@
 
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
-#include <U2Core/U2SafePoints.h>
 
 #include "RemoveDashboardsTask.h"
 

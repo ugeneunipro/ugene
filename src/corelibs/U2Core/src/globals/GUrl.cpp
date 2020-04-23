@@ -164,7 +164,8 @@ const char* GUrl::getURLStringAnsi(int codePage) const {
         return nullptr;
     return (buffer);
 #else
-    const char* tmp = getURLString().toLocal8Bit().constData();
+    QByteArray bytes = getURLString().toLocal8Bit();
+    const char* tmp = bytes.constData();
     char* buffer = new char[qstrlen(tmp) + 1];
     qstrcpy(buffer, tmp);
     return buffer;
