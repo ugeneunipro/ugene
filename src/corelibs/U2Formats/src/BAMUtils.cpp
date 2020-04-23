@@ -176,6 +176,7 @@ void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const C
         }
 
         in = samopen(source_path, readMode, aux);
+        delete source_path;
         SAMTOOL_CHECK(NULL != in, openFileError(sourceName), );
         SAMTOOL_CHECK(NULL != in->header, headerError(sourceName), );
         if (options.samToBam && (0 == in->header->n_targets)) {
@@ -189,6 +190,7 @@ void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const C
 
         QByteArray writeMode = ( options.samToBam ) ? "wb" : "wh";
         out = samopen(target_path, writeMode, in->header);
+        delete target_path;
         SAMTOOL_CHECK(NULL != out, openFileError(targetName), );
     }
     // convert files
@@ -239,14 +241,15 @@ static bool isSorted(const QString &headerText) {
 }
 
 bool BAMUtils::isSortedBam(const GUrl &bamUrl, U2OpStatus &os) {
-    const char* path = bamUrl.getURLStringAnsi();
+    const char* urlPath = bamUrl.getURLStringAnsi();
 
     bamFile bamHandler = NULL;
     bam_header_t *header = NULL;
     QString error;
     bool result = false;
 
-    bamHandler = bam_open(path, "r");
+    bamHandler = bam_open(urlPath, "r");
+    delete urlPath;
     if (NULL != bamHandler) {
         header = bam_header_read(bamHandler);
         if (NULL != header) {
@@ -404,7 +407,9 @@ GUrl BAMUtils::rmdupBam(const QString &bamUrl, const QString &rmdupBamTargetUrl,
 }
 
 bool BAMUtils::hasValidBamIndex(const GUrl &bamUrl) {
-    bam_index_t *index = bam_index_load(bamUrl.getURLStringAnsi());
+    const char *urlPath = bamUrl.getURLStringAnsi();
+    bam_index_t *index = bam_index_load(urlPath);
+    delete urlPath;
 
     if (NULL == index) {
         return false;
@@ -452,7 +457,9 @@ void BAMUtils::createBamIndex(const GUrl &bamUrl, U2OpStatus &os) {
 
     coreLog.details(BAMUtils::tr("Build index for bam file: \"%1\"").arg(QString::fromLocal8Bit(bamFileName)));
 
-    int error = bam_index_build(bamUrl.getURLStringAnsi());
+    const char *urlPath = bamUrl.getURLStringAnsi();
+    int error = bam_index_build(urlPath);
+    delete urlPath;
     if (-1 == error) {
         os.setError("Can't build the index");
     }
@@ -623,8 +630,9 @@ void BAMUtils::writeObjects(const QList<GObject*> &objects, const GUrl &urlStr, 
     }
 
     samfile_t *out = samopen(urlPath, openMode.constData(), header);
+    delete urlPath;
     bam_header_destroy(header);
-    CHECK_EXT(NULL != out, os.setError(QString("Can not open file for writing: %1").arg(urlPath)), );
+    CHECK_EXT(NULL != out, (os.setError(QString("Can not open file for writing: %1").arg(urlPath)), delete urlPath), );
 
     writeObjectsWithSamtools(out, objects, os, desiredRegion);
     samclose(out);
