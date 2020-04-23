@@ -22,7 +22,6 @@
 #include "FindPatternMsaTaskTest.h"
 
 #include <U2Core/DocumentModel.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 
 namespace U2 {
@@ -208,29 +207,32 @@ void GTest_FindPatternMsa::prepare() {
 }
 
 Task::ReportResult GTest_FindPatternMsa::report() {
-    if (!findPatternTask->hasError()) {
-        QMap<int, QList<U2::U2Region>> results = findPatternTask->getResults();
-        int resultsCounter = 0;
-        foreach (int key, results.keys()) {
-            resultsCounter += results[key].size();
-        }
-        if (resultsCounter != expectedResultsSize) {
-            stateInfo.setError(QString("Expected and Actual lists of results are different: %1 %2").arg(expectedResultsSize).arg(findPatternTask->getResults().size()));
-            return ReportResult_Finished;
-        }
-        foreach (int key, results.keys()) {
-            foreach(const U2Region &region, results[key]) {
-                if (regionsToCheck.contains(region)) {
-                    regionsToCheck.removeOne(region);
-                }
-                if (regionsToCheck.isEmpty()) {
-                    break;
-                }
+    if (findPatternTask->hasError()) {
+        return ReportResult_Finished;
+    }
+    const QList<FindPatternInMsaResult>& results = findPatternTask->getResults();
+    int resultsCounter = 0;
+    foreach (const FindPatternInMsaResult& result, results) {
+        resultsCounter += result.regions.size();
+    }
+    if (resultsCounter != expectedResultsSize) {
+        stateInfo.setError(QString("Expected and Actual lists of results are different: %1 %2")
+                                   .arg(expectedResultsSize)
+                                   .arg(results.size()));
+        return ReportResult_Finished;
+    }
+    foreach (const FindPatternInMsaResult& result, results) {
+        foreach(const U2Region &region, result.regions) {
+            if (regionsToCheck.contains(region)) {
+                regionsToCheck.removeOne(region);
+            }
+            if (regionsToCheck.isEmpty()) {
+                break;
             }
         }
-        if (!regionsToCheck.isEmpty()) {
-            stateInfo.setError("Not all listed regions present in result");
-        }
+    }
+    if (!regionsToCheck.isEmpty()) {
+        stateInfo.setError("Not all listed regions present in result");
     }
     return ReportResult_Finished;
 }

@@ -25,7 +25,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GAutoDeleteList.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
@@ -34,8 +33,6 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ToolsMenu.h>
-
-#include <U2Lang/WorkflowSettings.h>
 
 #include <U2Test/GTestFrameworkComponents.h>
 

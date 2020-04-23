@@ -25,6 +25,7 @@
 #include <QTextEdit>
 #include <QTreeWidget>
 #include <QTableWidget>
+#include <QRadioButton>
 
 #include <drivers/GTKeyboardDriver.h>
 #include <primitives/GTCheckBox.h>
@@ -371,7 +372,7 @@ void GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(HI::
 
 void GTUtilsOptionPanelSequenceView::toggleInputFromFilePattern( HI::GUITestOpStatus &os )
 {
-    QGroupBox *loadFromFile = qobject_cast<QGroupBox*>(GTWidget::findWidget(os, "loadFromFileGroupBox"));
+    QRadioButton *loadFromFile = qobject_cast<QRadioButton*>(GTWidget::findWidget(os, "usePatternFromFileRadioButton"));
     GTWidget::click(os, loadFromFile);
     //kinda hack for QGroupBox should be rewriten
     GTKeyboardDriver::keyClick(Qt::Key_Space);

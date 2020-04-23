@@ -43,13 +43,10 @@ public:
     AbstractAlignmentTaskSettings(const AbstractAlignmentTaskSettings &s);
     virtual ~AbstractAlignmentTaskSettings();
 
-    void setCustomSettings(const QVariantMap& settings);
     void appendCustomSettings(const QVariantMap& settings);
     QVariant getCustomValue(const QString& optionName, const QVariant& defaultVal) const;
     void setCustomValue(const QString& optionName, const QVariant& val);
     virtual bool convertCustomSettings();
-    bool containsValue(const QString& optionName) const;
-    void setResultFileName(const QString& newFileName);
     virtual bool isValid() const;
 
     QString algorithmName;

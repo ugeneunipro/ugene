@@ -21,7 +21,6 @@
 
 #include "KalignTask.h"
 #include "KalignAdapter.h"
-#include "KalignConstants.h"
 
 extern "C" {
 #include "kalign2/kalign2_context.h"
@@ -30,14 +29,12 @@ extern "C" {
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/AppResources.h>
-#include <U2Core/StateLockableDataModel.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/ProjectModel.h>
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/BaseDocumentFormats.h>
@@ -46,10 +43,7 @@ extern "C" {
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/DNAAlphabet.h>
 
-#include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/SimpleWorkflowTask.h>
-
-#include <U2Gui/OpenViewTask.h>
 
 extern "C" kalign_context *getKalignContext() {
     U2::KalignContext* ctx = static_cast<U2::KalignContext*>(U2::TLSUtils::current(KALIGN_CONTEXT_ID));
@@ -97,7 +91,7 @@ void KalignTask::_run() {
     CHECK(!hasError(),);
     doAlign();
     if (!hasError() && !isCanceled()) {
-        SAFE_POINT_EXT(NULL != resultMA->getAlphabet(), "The alphabet is NULL",);
+        SAFE_POINT(resultMA->getAlphabet() != NULL, "The alphabet is NULL",);
         algoLog.info(tr("Kalign alignment successfully finished"));
     }
 }
@@ -185,6 +179,9 @@ Task::ReportResult KalignGObjectTask::report() {
     SAFE_POINT(!obj.isNull(), "Object was removed?!", ReportResult_Finished);
     CHECK_EXT(!obj->isStateLocked(), stateInfo.setError("object_is_state_locked"), ReportResult_Finished);
 
+    U2OpStatus2Log os;
+    U2UseCommonUserModStep(obj->getEntityRef(), os);
+
     // Apply the result
     const MultipleSequenceAlignment& inputMA = kalignTask->inputMA;
     MultipleSequenceAlignment resultMA = kalignTask->resultMA;
@@ -251,7 +248,6 @@ KalignGObjectRunFromSchemaTask::KalignGObjectRunFromSchemaTask(MultipleSequenceA
 
 void KalignGObjectRunFromSchemaTask::prepare() {
     SimpleMSAWorkflowTaskConfig conf;
-    conf.algoName = "KAlign";
     conf.schemaName = "align-kalign";
     conf.schemaArgs << QString("--bonus-score=%1").arg(config.secret);
     conf.schemaArgs<< QString("--gap-ext-penalty=%1").arg(config.gapExtenstionPenalty);

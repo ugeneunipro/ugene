@@ -122,7 +122,7 @@ void FindPatternTask::prepare() {
     addSubTask(findAlgorithmTask = new FindAlgorithmTask(settings));
 }
 
-FindPatternListTask::FindPatternListTask(const FindAlgorithmTaskSettings &settings, const QList<NamePattern> &patterns, bool removeOverlaps, int match)
+FindPatternListTask::FindPatternListTask(const FindAlgorithmTaskSettings& settings, const QList<NamePattern>& patterns, bool removeOverlaps, int match)
     : Task( tr( "Searching patterns in sequence task" ), TaskFlags_NR_FOSE_COSC), settings(settings), removeOverlaps(removeOverlaps),
     match(match), noResults(true), patterns(patterns)
 {
@@ -144,10 +144,10 @@ int FindPatternListTask::getMaxError(const QString &pattern) const {
     if (settings.patternSettings == FindAlgorithmPatternSettings_Exact) {
         return 0;
     }
-    return int((float)(1 - float(match) / 100) * pattern.length());
+    return int((float) (1 - float(match) / 100) * pattern.length());
 }
 
-const QList<SharedAnnotationData> & FindPatternListTask::getResults() const {
+const QList<SharedAnnotationData>& FindPatternListTask::getResults() const {
     return results;
 }
 
@@ -156,18 +156,17 @@ bool FindPatternListTask::hasNoResults() const {
 }
 
 void FindPatternListTask::prepare() {
-    foreach (const NamePattern &pattern, patterns) {
+    foreach (const NamePattern& pattern, patterns) {
         if (pattern.second.isEmpty()) {
             uiLog.error(tr("Empty pattern"));
             continue;
         }
         FindAlgorithmTaskSettings subTaskSettings = settings;
         subTaskSettings.pattern = pattern.second.toUtf8();
-        subTaskSettings.maxErr = getMaxError( subTaskSettings.pattern );
+        subTaskSettings.maxErr = getMaxError(subTaskSettings.pattern);
         subTaskSettings.name = pattern.first;
         subTaskSettings.countTask = false;
-        FindPatternTask *task = new FindPatternTask(subTaskSettings, removeOverlaps);
-        addSubTask(task);
+        addSubTask(new FindPatternTask(subTaskSettings, removeOverlaps));
     }
 }
 

@@ -957,7 +957,7 @@ GUI_TEST_CLASS_DEFINITION( test_2124 ) {
     // 2. Call the context menu on the sequence area.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
     const QString colorSchemeName = getName() + "_Scheme";
-    GTUtilsDialog::waitForDialog( os, new PopupChooser( os, QStringList( ) << "Colors"
+    GTUtilsDialog::waitForDialog( os, new PopupChooser( os, QStringList( ) << MSAE_MENU_APPEARANCE << "Colors"
         << "Custom schemes" << "Create new color scheme" ) );
     GTUtilsDialog::waitForDialog( os, new NewColorSchemeCreator( os, colorSchemeName,
         NewColorSchemeCreator::amino ) );
@@ -965,7 +965,7 @@ GUI_TEST_CLASS_DEFINITION( test_2124 ) {
 
     // 3. Create a new color scheme for the amino alphabet.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
-    GTUtilsDialog::waitForDialog( os, new PopupChooser( os, QStringList( ) << "Colors"
+    GTUtilsDialog::waitForDialog( os, new PopupChooser(os, QStringList( ) << MSAE_MENU_APPEARANCE << "Colors"
         << "Custom schemes" << colorSchemeName ) );
     GTMouseDriver::click(Qt::RightButton );
 }
@@ -3165,7 +3165,7 @@ GUI_TEST_CLASS_DEFINITION(test_2459) {
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton, QPoint(10, 10));
 
 //    3. Open context menu, open the "Highlighting" submenu, set the "Agreements" type.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Highlighting" << "Agreements"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance" << "Highlighting" << "Agreements"));
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
 
 //    4. Open context menu again, open the "Export" submenu, choose the "Export highlighted" menu item.
@@ -5574,14 +5574,14 @@ GUI_TEST_CLASS_DEFINITION(test_2897) {
 
     //    3. Create a new custom nucleotide color scheme.
     const QString colorSchemeName = getName() + "_NewScheme";
-    GTUtilsDialog::waitForDialog( os, new PopupChooser( os, QStringList( ) << "Colors"
+    GTUtilsDialog::waitForDialog( os, new PopupChooser( os, QStringList( ) << MSAE_MENU_APPEARANCE << "Colors"
         << "Custom schemes" << "Create new color scheme" ) );
     GTUtilsDialog::waitForDialog( os, new NewColorSchemeCreator( os, colorSchemeName,
         NewColorSchemeCreator::nucl ) );
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 
     GTGlobals::sleep(500);
-    GTUtilsDialog::waitForDialog( os, new PopupChooser( os, QStringList( ) << "Colors"
+    GTUtilsDialog::waitForDialog( os, new PopupChooser( os, QStringList( ) << MSAE_MENU_APPEARANCE << "Colors"
         << "Custom schemes" << colorSchemeName ) );
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 

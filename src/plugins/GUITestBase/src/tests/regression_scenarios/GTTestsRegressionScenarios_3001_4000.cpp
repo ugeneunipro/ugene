@@ -1509,28 +1509,28 @@ GUI_TEST_CLASS_DEFINITION(test_3245) {
 
     // 3. Create a new color scheme, accept the preferences dialog.
     const QString colorSchemeName = "test scheme";
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Colors" << "Custom schemes" << "Create new color scheme"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors" << "Custom schemes" << "Create new color scheme"));
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, colorSchemeName, NewColorSchemeCreator::nucl));
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
     GTMouseDriver::click(Qt::RightButton);
 
     // 4. Ensure that the new scheme is added to the context menu. Call the preferences dialog again.
     // 5. Remove the custom scheme and cancel the preferences dialog.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Colors" << "Custom schemes" << colorSchemeName));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors" << "Custom schemes" << colorSchemeName));
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
     GTMouseDriver::click(Qt::RightButton);
 
     combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     CHECK_SET_ERR(combo->count() - 1 == initialItemsNumber, "color scheme hasn't been added to the Options Panel");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Colors" << "Custom schemes" << "Create new color scheme"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors" << "Custom schemes" << "Create new color scheme"));
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, colorSchemeName, NewColorSchemeCreator::nucl,
         NewColorSchemeCreator::Delete, true));
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state: the scheme presents in the context menu, it is shown in the preferences dialog.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Colors" << "Custom schemes" << colorSchemeName));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors" << "Custom schemes" << colorSchemeName));
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(1, 1));
     GTMouseDriver::click(Qt::RightButton);
 

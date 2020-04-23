@@ -19,7 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
 #include <U2Algorithm/MSAConsensusUtils.h>
 #include <U2Algorithm/MsaColorScheme.h>
@@ -33,13 +32,10 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Counter.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/GraphUtils.h>
-#include <U2Gui/OPWidgetFactory.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/OptionsPanel.h>
 
@@ -204,13 +200,13 @@ void MaEditorConsensusArea::drawContent(QPainter& painter) {
     renderer->drawContent(painter);
 }
 
-void MaEditorConsensusArea::drawContent(QPainter &painter,
-                                         const QList<int> &seqIdx,
-                                         const U2Region &region,
-                                         const MaEditorConsensusAreaSettings &consensusSettings) {
-    const ConsensusRenderData consensusRenderData = renderer->getConsensusRenderData(seqIdx, region);
-    const ConsensusRenderSettings renderSettings = renderer->getRenderSettigns(region, consensusSettings);
-    renderer->drawContent(painter, consensusRenderData, consensusSettings, renderSettings);
+void MaEditorConsensusArea::drawContent(QPainter& painter,
+                                        const QList<int>& seqIdx,
+                                        const U2Region& region,
+                                        const MaEditorConsensusAreaSettings& consensusAreaSettings) {
+    ConsensusRenderData consensusRenderData = renderer->getConsensusRenderData(seqIdx, region);
+    ConsensusRenderSettings renderSettings = renderer->getRenderSettigns(region, consensusAreaSettings);
+    renderer->drawContent(painter, consensusRenderData, consensusAreaSettings, renderSettings);
 }
 
 bool MaEditorConsensusArea::highlightConsensusChar(int /*pos*/) {
@@ -386,22 +382,24 @@ void MaEditorConsensusArea::sl_visibleAreaChanged() {
 }
 
 void MaEditorConsensusArea::mousePressEvent(QMouseEvent *e) {
-    if (e->buttons() & Qt::LeftButton) {
-        selecting = true;
-        int lastPos = curPos;
-        curPos = qBound(0, ui->getBaseWidthController()->screenXPositionToColumn(e->x()), ui->getEditor()->getAlignmentLen() - 1);
-        const int selectionHeight = ui->getSequenceArea()->getViewRowCount();
-        // select current column
-        if ((Qt::ShiftModifier == e->modifiers()) && (lastPos != -1)) {
-            MaEditorSelection selection(qMin(lastPos, curPos), 0, abs(curPos - lastPos) + 1, selectionHeight);
-            ui->getSequenceArea()->setSelection(selection);
-            curPos = lastPos;
-        } else {
-            MaEditorSelection selection(curPos, 0, 1, selectionHeight);
-            ui->getSequenceArea()->setSelection(selection);
-        }
-        scribbling = true;
+    if (!(e->buttons() & Qt::LeftButton)) {
+        QWidget::mousePressEvent(e);
+        return;
     }
+    selecting = true;
+    int lastPos = curPos;
+    curPos = qBound(0, ui->getBaseWidthController()->screenXPositionToColumn(e->x()), ui->getEditor()->getAlignmentLen() - 1);
+    int selectionHeight = ui->getSequenceArea()->getViewRowCount();
+    // select current column
+    if ((Qt::ShiftModifier == e->modifiers()) && (lastPos != -1)) {
+        MaEditorSelection selection(qMin(lastPos, curPos), 0, abs(curPos - lastPos) + 1, selectionHeight);
+        ui->getSequenceArea()->setSelection(selection);
+        curPos = lastPos;
+    } else {
+        MaEditorSelection selection(curPos, 0, 1, selectionHeight);
+        ui->getSequenceArea()->setSelection(selection);
+    }
+    scribbling = true;
     QWidget::mousePressEvent(e);
 }
 

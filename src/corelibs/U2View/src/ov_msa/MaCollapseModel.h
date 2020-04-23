@@ -123,6 +123,12 @@ public:
     */
     int getViewRowIndexByMaRowIndex(int maRowIndex, bool failIfNotVisible = false) const;
 
+    /*
+    * Converts MA row id to the view row index.
+    * If MA row has no viewRowIndex (is inside of collapsed group) returns -1.
+    */
+    int getViewRowIndexByMaRowId(qint64 maRowId) const;
+
     /* Returns 'true' if the MA row is inside of some collapsible group and the group is collapsed. */
     bool isGroupWithMaRowIndexCollapsed(int maRowIndex) const;
 
@@ -156,6 +162,7 @@ private:
     QVector<MaCollapsibleGroup> groups;
 
     QHash<int, int> viewRowByMaRow;
+    QHash<qint64, int> viewRowByMaRowId;
     QHash<int, int> maRowByViewRow;
     QHash<int, int> groupByMaRow;
     bool hasGroupsWithMultipleItems;

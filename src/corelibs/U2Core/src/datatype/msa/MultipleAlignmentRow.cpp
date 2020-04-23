@@ -80,10 +80,7 @@ U2Region MultipleAlignmentRowData::getGapped(const U2Region& region) {
 
 bool MultipleAlignmentRowData::isTrailingOrLeadingGap(qint64 position) const {
     CHECK(isGap(position), false);
-    if (position < getCoreStart() || position > getCoreEnd() - 1) {
-        return true;
-    }
-    return false;
+    return position < getCoreStart() || position > getCoreEnd() - 1;
 }
 
 U2Region MultipleAlignmentRowData::getCoreRegion() const {

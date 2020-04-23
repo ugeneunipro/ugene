@@ -172,7 +172,7 @@ int MaEditorSequenceArea::getViewRowCount() const {
 int MaEditorSequenceArea::getRowIndex(const int num) const {
     CHECK(!isAlignmentEmpty(), -1);
     MaCollapseModel *model = ui->getCollapseModel();
-    SAFE_POINT(NULL != model, tr("Invalid collapsible item model!"), -1);
+    SAFE_POINT(model != NULL, tr("Invalid collapsible item model!"), -1);
     return model->getMaRowIndexByViewRowIndex(num);
 }
 
@@ -580,7 +580,7 @@ void MaEditorSequenceArea::onVisibleRangeChanged() {
 
 bool MaEditorSequenceArea::isAlignmentLocked() const {
     MultipleAlignmentObject* obj = editor->getMaObject();
-    SAFE_POINT(NULL != obj, tr("Alignment object is not available"), true);
+    SAFE_POINT(obj != NULL, tr("Alignment object is not available"), true);
     return obj->isStateLocked();
 }
 
@@ -630,7 +630,7 @@ void MaEditorSequenceArea::sl_changeColorScheme() {
     if (NULL == action) {
         action = GUIUtils::getCheckedAction(customColorSchemeMenuActions);
     }
-    CHECK(NULL != action, );
+    CHECK(action != NULL, );
 
     applyColorScheme(action->data().toString());
 }
@@ -715,22 +715,22 @@ void MaEditorSequenceArea::sl_colorSchemeFactoryUpdated() {
 
 void MaEditorSequenceArea::sl_setDefaultColorScheme() {
     MsaColorSchemeFactory *defaultFactory = getDefaultColorSchemeFactory();
-    SAFE_POINT(NULL != defaultFactory, L10N::nullPointerError("default color scheme factory"), );
+    SAFE_POINT(defaultFactory != NULL, L10N::nullPointerError("default color scheme factory"), );
     applyColorScheme(defaultFactory->getId());
 }
 
 void MaEditorSequenceArea::sl_changeHighlightScheme(){
     QAction* a = qobject_cast<QAction*>(sender());
-    if (NULL == a) {
+    if (a == NULL) {
         a = GUIUtils::getCheckedAction(customColorSchemeMenuActions);
     }
-    CHECK(NULL != a, );
+    CHECK(a != NULL, );
 
     editor->saveHighlightingSettings(highlightingScheme->getFactory()->getId(), highlightingScheme->getSettings());
 
     QString id = a->data().toString();
     MsaHighlightingSchemeFactory* factory = AppContext::getMsaHighlightingSchemeRegistry()->getSchemeFactoryById(id);
-    SAFE_POINT(NULL != factory, L10N::nullPointerError("highlighting scheme"), );
+    SAFE_POINT(factory != NULL, L10N::nullPointerError("highlighting scheme"), );
     if (ui->getEditor()->getMaObject() == NULL) {
         return;
     }
@@ -1515,7 +1515,7 @@ void MaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hs
 }
 
 void MaEditorSequenceArea::applyColorScheme(const QString &id) {
-    CHECK(NULL != ui->getEditor()->getMaObject(), );
+    CHECK(ui->getEditor()->getMaObject() != NULL, );
 
     MsaColorSchemeFactory *factory = AppContext::getMsaColorSchemeRegistry()->getSchemeFactoryById(id);
     delete colorScheme;

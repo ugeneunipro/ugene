@@ -27,6 +27,7 @@
 #include <QAbstractButton>
 #include <QPushButton>
 #include <QWidget>
+#include <QLabel>
 
 namespace HI {
 /*!
@@ -45,6 +46,7 @@ public:
     static QPoint getWidgetCenter(GUITestOpStatus &os, QWidget* w);
 
     static QAbstractButton *findButtonByText(GUITestOpStatus &os, const QString &text, QWidget *parentWidget = NULL, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
+    static QList<QLabel*> findLabelByText(GUITestOpStatus &os, const QString &text, QWidget *parentWidget = NULL, const GTGlobals::FindOptions& = GTGlobals::FindOptions());
 
     //returns color of point p in widget w coordinates
     static QColor getColor(GUITestOpStatus &os, QWidget *widget, const QPoint &point);

@@ -35,14 +35,12 @@
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DocumentUtils.h>
-#include <U2Core/GenbankFeatures.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/Theme.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2DbiRegistry.h>
-#include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -69,16 +67,11 @@ namespace U2 {
 
 class FastaPatternsWalker {
 public:
-    FastaPatternsWalker(const QString &_patternsString, int _cursor = 0)
-        : patternsString(_patternsString.toLatin1()), cursor(_cursor)
-    {
-        current = -1;
-        header = false;
-        comment = false;
-    }
+    FastaPatternsWalker(const QString& patternsString, int cursor = 0)
+            : patternsString(patternsString.toLatin1()), cursor(cursor), current(-1), comment(false), header(false) {}
 
     bool hasNext() const {
-        return (current < patternsString.size() - 1);
+        return current < patternsString.size() - 1;
     }
 
     char next() {
@@ -101,14 +94,6 @@ public:
         return !isMetaChars();
     }
 
-    bool isHeader() const {
-        return header;
-    }
-
-    bool isComment() const {
-        return comment;
-    }
-
     /** moves current place to the previous */
     void removeCurrent() {
         CHECK(-1 != current, );
@@ -125,11 +110,7 @@ public:
             return true;
         }
         QChar c(patternsString[current]);
-        if (c.isLetter()) {
-            return c.isUpper();
-        } else {
-            return ('\n' == c);
-        }
+        return c.isLetter() ? c.isUpper() : c == '\n';
     }
 
     void setCurrent(char value) {
@@ -202,13 +183,8 @@ bool FindPatternEventFilter::eventFilter(QObject* obj, QEvent* event) {
     return QObject::eventFilter(obj, event);
 }
 
-const static QString SHOW_OPTIONS_LINK("show_options_link");
 const int FindPatternWidget::DEFAULT_RESULTS_NUM_LIMIT = 100000;
 const int FindPatternWidget::DEFAULT_REGEXP_RESULT_LENGTH_LIMIT = 10000;
-
-const QString FindPatternWidget::NEW_LINE_SYMBOL = "\n";
-const QString FindPatternWidget::STYLESHEET_COLOR_DEFINITION = "color: ";
-const QString FindPatternWidget::STYLESHEET_DEFINITIONS_SEPARATOR = ";";
 
 const int FindPatternWidget::REG_EXP_MIN_RESULT_LEN = 1;
 const int FindPatternWidget::REG_EXP_MAX_RESULT_LEN = 1000;
@@ -242,13 +218,13 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView* _annotatedDnaView) :
         annotModel.sequenceLen = annotatedDnaView->getSequenceInFocus()->getSequenceLength();
 
         annotController = new CreateAnnotationWidgetController(annotModel, this, CreateAnnotationWidgetController::OptionsPanel);
-        annotModelPrepared = false;
-        connect(annotController, SIGNAL(si_annotationNamesEdited()), SLOT(sl_onAnotationNameEdited()));
+        annotationModelIsPrepared = false;
+        connect(annotController, SIGNAL(si_annotationNamesEdited()), SLOT(sl_onAnnotationNameEdited()));
 
         setContentsMargins(0, 0, 0, 0);
 
-        annotsWidget = annotController->getWidget();
-        annotsWidget->setObjectName("annotationsWidget");
+        annotationsWidget = annotController->getWidget();
+        annotationsWidget->setObjectName("annotationsWidget");
 
         const DNAAlphabet* alphabet = activeContext->getAlphabet();
         isAminoSequenceSelected = alphabet->isAmino();
@@ -305,7 +281,7 @@ void FindPatternWidget::initLayout() {
     subgroupsLayout->addWidget(new ShowHideSubgroupWidget(QObject::tr("Search algorithm"), QObject::tr("Search algorithm"), widgetAlgorithm, false));
     subgroupsLayout->addWidget(new ShowHideSubgroupWidget(QObject::tr("Search in"), QObject::tr("Search in"), widgetSearchIn, false));
     subgroupsLayout->addWidget(new ShowHideSubgroupWidget(QObject::tr("Other settings"), QObject::tr("Other settings"), widgetOther, false));
-    subgroupsLayout->addWidget(annotsWidget);
+    subgroupsLayout->addWidget(annotationsWidget);
 
     updateLayout();
 
@@ -473,7 +449,10 @@ void FindPatternWidget::connectSlots()
         this, SLOT(sl_onSequenceModified()));
 
     connect(loadFromFileToolButton, SIGNAL( clicked() ), SLOT( sl_onFileSelectorClicked()));
-    connect(loadFromFileGroupBox, SIGNAL( toggled(bool) ), SLOT( sl_onFileSelectorToggled(bool)));
+    connect(usePatternFromFileRadioButton, SIGNAL(toggled(bool)), SLOT(sl_onFileSelectorToggled(bool)));
+
+    usePatternFromTextEditRadioButton->setChecked(true);
+    updatePatternSourceControlsUiState();
 
     connect(filePathLineEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_activateNewSearch()));
 
@@ -483,6 +462,13 @@ void FindPatternWidget::connectSlots()
 
     connect(useAmbiguousBasesBox, SIGNAL(toggled(bool)), SLOT(sl_toggleExtendedAlphabet()));
     connect(spinMatch, SIGNAL(valueChanged(int)), SLOT(sl_activateNewSearch()));
+}
+
+void FindPatternWidget::updatePatternSourceControlsUiState() {
+    bool isPatternFromText = this->usePatternFromTextEditRadioButton->isChecked();
+    textPattern->setEnabled(isPatternFromText);
+    filePathLineEdit->setEnabled(!isPatternFromText);
+    loadFromFileToolButton->setEnabled(!isPatternFromText);
 }
 
 void FindPatternWidget::sl_onAlgorithmChanged(int index)
@@ -717,8 +703,7 @@ void FindPatternWidget::showHideMessage( bool show, MessageFlag messageFlag, con
                     const QString message = tr("Warning: annotation name or annotation group name are invalid. ");
                     text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
                     if (!additionalMsg.isEmpty()){
-                        const QString message = tr("Reason: ");
-                        text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
+                        text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(tr("Reason: "));
                         text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(additionalMsg);
                     }
                     const QString msg = tr(" Please input valid annotation names. ");
@@ -730,9 +715,8 @@ void FindPatternWidget::showHideMessage( bool show, MessageFlag messageFlag, con
                     const QString message = tr("Warning: annotation names are invalid. ");
                     text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
                     if (!additionalMsg.isEmpty()){
-                        const QString message = tr("Reason: ");
                         text += tr("<b><font color=%1>%2</font></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
-                        text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(additionalMsg);
+                        text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(tr("Reason: "));
                     }
                     const QString msg = tr(" It will be automatically changed to acceptable name if 'Get annotations' button is pressed. ");
                     text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(msg);
@@ -820,7 +804,7 @@ void FindPatternWidget::sl_onMaxResultChanged(int newMaxResult) {
 void FindPatternWidget::setCorrectPatternsString() {
     QTextCursor cursorInTextEdit = textPattern->textCursor();
 
-    if (FindAlgorithmPatternSettings_RegExp != selectedAlgorithm) {
+    if (selectedAlgorithm != FindAlgorithmPatternSettings_RegExp) {
         FastaPatternsWalker walker(textPattern->toPlainText(), cursorInTextEdit.position());
         // Delete all non-alphabet symbols.
         while (walker.hasNext()) {
@@ -829,11 +813,11 @@ void FindPatternWidget::setCorrectPatternsString() {
                 continue;
             }
             if (character.isLetter()) {
-                if(!character.isUpper()) {
+                if (!character.isUpper()) {
                     walker.setCurrent(character.toUpper().toLatin1());
                 }
             } else {
-                if ('\n' != character) {
+                if (character != '\n') {
                     walker.removeCurrent();
                 }
             }
@@ -845,18 +829,6 @@ void FindPatternWidget::setCorrectPatternsString() {
             textPattern->setTextCursor(cursorInTextEdit);
         }
     }
-}
-
-bool FindPatternWidget::hasWrongChars(const QString &input)
-{
-    FastaPatternsWalker walker(input);
-    while (walker.hasNext()) {
-        walker.next();
-        if (!walker.isCorrect()) {
-            return false;
-        }
-    }
-    return true;
 }
 
 void FindPatternWidget::setRegionToWholeSequence()
@@ -883,28 +855,22 @@ bool FindPatternWidget::verifyPatternAlphabet()
     QString patterns = patternNoNames.join("");
 
     bool alphabetIsOk = checkAlphabet(patterns);
-    if (!alphabetIsOk) {
-        showHideMessage(true, PatternAlphabetDoNotMatch);
-    } else {
-        showHideMessage(false, PatternAlphabetDoNotMatch);
-    }
+    showHideMessage(!alphabetIsOk, PatternAlphabetDoNotMatch);
 
     bool result = alphabetIsOk;
 
     if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
-        QString reText = textPattern->toPlainText();
-        
+        QString pattern = textPattern->toPlainText();
+
         // Check that all symbols are ascii
-        if (reText.contains(QRegularExpression(QStringLiteral("[^\\x{0000}-\\x{007F}]")))) {
+        if (pattern.contains(QRegularExpression(QStringLiteral("[^\\x{0000}-\\x{007F}]")))) {
             showHideMessage(true, PatternWrongRegExp);
             result = false;
-        }
-        else {
-            QRegExp regExp(reText.toUtf8());
+        } else {
+            QRegExp regExp(pattern.toUtf8());
             if (regExp.isValid()) {
                 showHideMessage(false, PatternWrongRegExp);
-            }
-            else {
+            } else {
                 showHideMessage(true, PatternWrongRegExp);
                 result = false;
             }
@@ -951,7 +917,7 @@ void FindPatternWidget::checkState()
         getAnnotationsPushButton->setDisabled(true);
         return;
     }
-    if(usePatternNames && !loadFromFileGroupBox->isChecked()) {
+    if(usePatternNames && !usePatternFromFileRadioButton->isChecked()) {
         foreach(const QString &name, nameList){
             if (!Annotation::isValidAnnotationName(name)) {
                 showHideMessage(true, AnnotationNotValidFastaParsedName);
@@ -965,8 +931,7 @@ void FindPatternWidget::checkState()
 
     // Disable the "Search" button if the pattern is empty
     //and pattern is not loaded from a file
-    if (textPattern->toPlainText().isEmpty()
-        && !loadFromFileGroupBox->isChecked()) {
+    if (textPattern->toPlainText().isEmpty() && !usePatternFromFileRadioButton->isChecked()) {
         showHideMessage(false, PatternAlphabetDoNotMatch);
         GUIUtils::setWidgetWarning(textPattern, false);
         return;
@@ -977,12 +942,11 @@ void FindPatternWidget::checkState()
         showHideMessage(true, SearchRegionIncorrect);
         return;
     }
-    if(!loadFromFileGroupBox->isChecked()){
+    if (!usePatternFromFileRadioButton->isChecked()) {
         // Show warning if the length of the pattern is greater than the search region length
         // Not for RegExp algorithm
-        if (FindAlgorithmPatternSettings_RegExp != selectedAlgorithm) {
+        if (selectedAlgorithm != FindAlgorithmPatternSettings_RegExp) {
             bool regionOk = checkPatternRegion(textPattern->toPlainText());
-
             if (!regionOk) {
                 GUIUtils::setWidgetWarning(textPattern, true);
                 showHideMessage(true, PatternIsTooLong);
@@ -1007,31 +971,25 @@ void FindPatternWidget::checkState()
 }
 
 
-void FindPatternWidget::enableDisableMatchSpin()
-{
-    if ((textPattern->toPlainText().isEmpty() && !loadFromFileGroupBox->isChecked()) || isAminoSequenceSelected) {
-        spinMatch->setEnabled(false);
-    } else {
-        spinMatch->setEnabled(true);
-    }
+void FindPatternWidget::enableDisableMatchSpin() {
+    spinMatch->setEnabled(!((textPattern->toPlainText().isEmpty() && !usePatternFromFileRadioButton->isChecked()) || isAminoSequenceSelected));
 }
 
-U2Region FindPatternWidget::getCompleteSearchRegion(bool& regionIsCorrect, qint64 maxLen) const
-{
+U2Region FindPatternWidget::getCompleteSearchRegion(bool& isRegionCorrect, qint64 maxLen) const {
     if (boxRegion->itemData(boxRegion->currentIndex()).toInt() == RegionSelectionIndex_WholeSequence) {
-        regionIsCorrect = true;
+        isRegionCorrect = true;
         return U2Region(0, maxLen);
     }
     bool ok = false;
     qint64 value1 = editStart->text().toLongLong(&ok) - 1;
     if (!ok || value1 < 0) {
-        regionIsCorrect = false;
+        isRegionCorrect = false;
         return U2Region();
     }
 
     int value2 = editEnd->text().toLongLong(&ok);
     if (!ok || value2 <= 0 || value2 > maxLen){
-        regionIsCorrect = false;
+        isRegionCorrect = false;
         return U2Region();
     }
 
@@ -1039,7 +997,7 @@ U2Region FindPatternWidget::getCompleteSearchRegion(bool& regionIsCorrect, qint6
         value2 += maxLen;
     }
 
-    regionIsCorrect = true;
+    isRegionCorrect = true;
     return U2Region(value1, value2 - value1);
 }
 
@@ -1100,9 +1058,8 @@ void FindPatternWidget::sl_onFileSelectorClicked()
         filePathLineEdit->setText(lod.url);
 }
 
-void FindPatternWidget::sl_onFileSelectorToggled(bool on)
-{
-    textPattern->setDisabled(on);
+void FindPatternWidget::sl_onFileSelectorToggled(bool on) {
+    updatePatternSourceControlsUiState();
     checkState();
     if (!on) { // if returning to input-pattern mode -> recheck it's content
         verifyPatternAlphabet();
@@ -1110,7 +1067,7 @@ void FindPatternWidget::sl_onFileSelectorToggled(bool on)
     sl_activateNewSearch(true);
 }
 
-void FindPatternWidget::initFindPatternTask(const QList<NamePattern> &patterns) {
+void FindPatternWidget::initFindPatternTask(const QList<NamePattern>& patterns) {
     CHECK(!patterns.isEmpty(), );
 
     if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
@@ -1180,9 +1137,7 @@ void FindPatternWidget::initFindPatternTask(const QList<NamePattern> &patterns) 
     settings.maxErr = 0;
 
     settings.useAmbiguousBases = useAmbiguousBasesBox->isChecked();
-    settings.maxRegExpResultLength = boxUseMaxResultLen->isChecked() ?
-        boxMaxResultLen->value() :
-    DEFAULT_REGEXP_RESULT_LENGTH_LIMIT;
+    settings.maxRegExpResultLength = boxUseMaxResultLen->isChecked() ? boxMaxResultLen->value() : DEFAULT_REGEXP_RESULT_LENGTH_LIMIT;
 
     // Creating and registering the task
     bool removeOverlaps = removeOverlapsBox->isChecked();
@@ -1191,10 +1146,7 @@ void FindPatternWidget::initFindPatternTask(const QList<NamePattern> &patterns) 
     nextPushButton->setDisabled(true);
     prevPushButton->setDisabled(true);
 
-    searchTask = new FindPatternListTask(settings,
-        patterns,
-        removeOverlaps,
-        spinMatch->value());
+    searchTask = new FindPatternListTask(settings, patterns, removeOverlaps, spinMatch->value());
     connect(searchTask, SIGNAL(si_stateChanged()), SLOT(sl_findPatternTaskStateChanged()));
     startProgressAnimation();
     AppContext::getTaskScheduler()->registerTopLevelTask(searchTask);
@@ -1216,7 +1168,7 @@ void FindPatternWidget::sl_loadPatternTaskStateChanged() {
     stopCurrentSearchTask();
     initFindPatternTask(namesPatterns);
 
-    annotModelPrepared = false;
+    annotationModelIsPrepared = false;
     updateAnnotationsWidget();
 }
 
@@ -1298,16 +1250,12 @@ bool FindPatternWidget::checkPatternRegion( const QString& pattern ){
 
     ADVSequenceObjectContext* activeContext = annotatedDnaView->getSequenceInFocus();
     SAFE_POINT(NULL != activeContext, "Internal error: there is no sequence in focus!", false);
-    bool regionIsCorrect = false;
-    qint64 regionLength = getCompleteSearchRegion(regionIsCorrect, activeContext->getSequenceLength()).length;
+    bool isRegionCorrect = false;
+    qint64 regionLength = getCompleteSearchRegion(isRegionCorrect, activeContext->getSequenceLength()).length;
 
-    SAFE_POINT(regionLength > 0 && true == regionIsCorrect,
-               "Incorrect region length when enabling/disabling the pattern search button.", false);
+    SAFE_POINT(regionLength > 0 && isRegionCorrect, "Incorrect region length when enabling/disabling the pattern search button.", false);
 
-    if (minMatch > regionLength) {
-        return false;
-    }
-    return true;
+    return minMatch <= regionLength;
 }
 
 void FindPatternWidget::sl_onSelectedRegionChanged(){
@@ -1340,7 +1288,7 @@ void FindPatternWidget::sl_onSelectedRegionChanged(){
     checkState();
 }
 
-void FindPatternWidget::sl_onAnotationNameEdited(){
+void FindPatternWidget::sl_onAnnotationNameEdited(){
     checkState();
 }
 
@@ -1361,60 +1309,25 @@ void FindPatternWidget::updatePatternText(int previousAlgorithm) {
     setCorrectPatternsString();
 }
 
-void FindPatternWidget::validateCheckBoxSize(QCheckBox* checkBox, int requiredWidth) {
-    QFont font = checkBox->font();
-    QFontMetrics checkBoxMetrics(font, checkBox);
-    QString text = checkBox->text();
-
-    if(text.contains('\n')) {
-        return;
-    }
-
-    int lastSpacePos = 0;
-    QString wrappedText = "";
-    int startPos = 0;
-    QRect textRect = checkBoxMetrics.boundingRect(text);
-    if(textRect.width() <= requiredWidth) {
-        return;
-    }
-    int length = text.length();
-    for(int endPos = 0; endPos < length; endPos++) {
-        if(' ' == text.at(endPos) || endPos == length - 1) {
-            if(endPos-1 <= startPos) {
-                wrappedText = "";
-            } else {
-                wrappedText = text.mid(startPos, endPos - startPos - 1);
-            }
-            textRect = checkBoxMetrics.boundingRect(wrappedText);
-            if(textRect.width() > requiredWidth && 0 != lastSpacePos) {
-                startPos = endPos;
-                text[lastSpacePos] = '\n';
-            }
-            lastSpacePos = endPos;
-        }
-    }
-    checkBox->setText(text);
-}
-
 void FindPatternWidget::sl_toggleExtendedAlphabet() {
     verifyPatternAlphabet();
     sl_activateNewSearch(true);
 }
 
 void FindPatternWidget::sl_activateNewSearch(bool forcedSearch){
-    if(loadFromFileGroupBox->isChecked()) {
+    if (usePatternFromFileRadioButton->isChecked()) {
         stopCurrentSearchTask();
-        if(filePathLineEdit->text().isEmpty()){
+        if (filePathLineEdit->text().isEmpty()) {
             return;
         }
-        LoadPatternsFileTask *loadTask = new LoadPatternsFileTask(filePathLineEdit->text());
+        auto loadTask = new LoadPatternsFileTask(filePathLineEdit->text());
         connect(loadTask, SIGNAL(si_stateChanged()), SLOT(sl_loadPatternTaskStateChanged()));
         AppContext::getTaskScheduler()->registerTopLevelTask(loadTask);
     } else {
         QList<NamePattern> newPatterns = updateNamePatterns();
-        if(isSearchPatternsDifferent(newPatterns) || forcedSearch){
+        if (isSearchPatternsDifferent(newPatterns) || forcedSearch) {
             patternList.clear();
-            for(int i = 0; i < newPatterns.size();i++){
+            for (int i = 0; i < newPatterns.size(); i++) {
                 newPatterns[i].first = QString::number(i);
                 patternList.append(newPatterns[i].second);
             }
@@ -1426,12 +1339,12 @@ void FindPatternWidget::sl_activateNewSearch(bool forcedSearch){
         stopCurrentSearchTask();
         initFindPatternTask(newPatterns);
 
-        annotModelPrepared = false;
+        annotationModelIsPrepared = false;
     }
 }
 
-QList<NamePattern> FindPatternWidget::updateNamePatterns(){
-    CHECK(!loadFromFileGroupBox->isChecked(), QList<NamePattern>());
+QList<NamePattern> FindPatternWidget::updateNamePatterns() {
+    CHECK(!usePatternFromFileRadioButton->isChecked(), QList<NamePattern>());
 
     U2OpStatus2Log os;
     QList<NamePattern> newPatterns = getPatternsFromTextPatternField(os);
@@ -1444,10 +1357,10 @@ QList<NamePattern> FindPatternWidget::updateNamePatterns(){
 }
 
 void FindPatternWidget::sl_getAnnotationsButtonClicked() {
-    if (!annotModelPrepared){
+    if (!annotationModelIsPrepared){
         bool objectPrepared = annotController->prepareAnnotationObject();
         SAFE_POINT(objectPrepared, "Cannot create an annotation object. Please check settings", );
-        annotModelPrepared = true;
+        annotationModelIsPrepared = true;
     }
     const QString v = annotController->validate();
     SAFE_POINT(v.isEmpty(), "Annotation names are invalid", );
@@ -1492,7 +1405,7 @@ void FindPatternWidget::sl_getAnnotationsButtonClicked() {
     annotController->countDescriptionUsage();
     AppContext::getTaskScheduler()->registerTopLevelTask(new CreateAnnotationsTask(aTableObj, annotationsToCreate, group));
 
-    annotModelPrepared = false;
+    annotationModelIsPrepared = false;
     updateAnnotationsWidget();
 }
 

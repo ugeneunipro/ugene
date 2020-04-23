@@ -152,12 +152,12 @@
 <context>
     <name>U2::KalignGObjectRunFromSchemaTask</name>
     <message>
-        <location filename="../src/KalignTask.cpp" line="261"/>
+        <location filename="../src/KalignTask.cpp" line="257"/>
         <source>Workflow wrapper &apos;%1&apos;</source>
         <translation>Workflow wrapper &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/KalignTask.cpp" line="271"/>
+        <location filename="../src/KalignTask.cpp" line="267"/>
         <source>KAlign align &apos;%1&apos;</source>
         <translation>Выравнивание с помощью Kalign &apos;%1&apos;</translation>
     </message>
@@ -165,7 +165,7 @@
 <context>
     <name>U2::KalignGObjectTask</name>
     <message>
-        <location filename="../src/KalignTask.cpp" line="152"/>
+        <location filename="../src/KalignTask.cpp" line="146"/>
         <source>KALIGN align &apos;%1&apos;</source>
         <translation>Выравнивание с помощью Kalign &apos;%1&apos;</translation>
     </message>
@@ -199,22 +199,22 @@
 <context>
     <name>U2::KalignTask</name>
     <message>
-        <location filename="../src/KalignTask.cpp" line="73"/>
+        <location filename="../src/KalignTask.cpp" line="67"/>
         <source>KALIGN alignment</source>
         <translation>Выравнивание с помощью Kalign</translation>
     </message>
     <message>
-        <location filename="../src/KalignTask.cpp" line="93"/>
+        <location filename="../src/KalignTask.cpp" line="87"/>
         <source>Unsupported alphabet: %1</source>
         <translation>Неподдерживаемый алфавит: %1</translation>
     </message>
     <message>
-        <location filename="../src/KalignTask.cpp" line="96"/>
+        <location filename="../src/KalignTask.cpp" line="90"/>
         <source>Kalign alignment started</source>
         <translation>Kalign alignment started</translation>
     </message>
     <message>
-        <location filename="../src/KalignTask.cpp" line="101"/>
+        <location filename="../src/KalignTask.cpp" line="95"/>
         <source>Kalign alignment successfully finished</source>
         <translation>Kalign alignment successfully finished</translation>
     </message>
