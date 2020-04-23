@@ -90,7 +90,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005){
     GTUtilsStartPage::openStartPage(os);
 //    Click file name in "Resent files" list
     GTGlobals::sleep();
-    GTUtilsStartPage::clickResentDocument(os, "COI.aln");
+    GTWidget::click(os, GTWidget::findLabelByText(os, "COI.aln").first());
 //    Expected state: file is opened
     QString name = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(name == "COI [m] COI", "unexpected window title " + name);
@@ -110,10 +110,9 @@ GUI_TEST_CLASS_DEFINITION(test_0006){
     GTUtilsStartPage::openStartPage(os);
 //    Click project name in "Resent projects" list
     GTGlobals::sleep();
-    GTUtilsStartPage::clickResentProject(os, "proj1.uprj");
+    GTWidget::click(os, GTWidget::findLabelByText(os, "proj1.uprj").first());
 //    Expected state: project is opened
     GTUtilsDocument::checkDocument(os, "1CF7.pdb");
-
     QString expectedTitle;
     expectedTitle = "proj1 UGENE";
     GTUtilsApp::checkUGENETitle(os, expectedTitle);

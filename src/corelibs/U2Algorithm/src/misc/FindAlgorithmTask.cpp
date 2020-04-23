@@ -47,11 +47,10 @@ FindAlgorithmTask::FindAlgorithmTask(const FindAlgorithmTaskSettings& s)
         GCOUNTER(cvar, tvar, "FindAlgorithmTask");
     }
     tpm = Progress_Manual;
-    complementRun = false;
     assert(config.strand == FindAlgorithmStrand_Direct || config.complementTT!=NULL);
 
     addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-        FindAlgorithm::estimateRamUsageInMbytes(config.patternSettings, NULL != config.proteinTT,
+        FindAlgorithm::estimateRamUsageInMbytes(config.patternSettings, config.proteinTT != NULL,
         config.pattern.length(), config.maxErr), true));
 }
 
@@ -82,11 +81,11 @@ void FindAlgorithmTask::onResult(const FindAlgorithmResult& r) {
         taskLog.error(error);
         return;
     }
-    if(config.maxResult2Find != FindAlgorithmSettings::MAX_RESULT_TO_FIND_UNLIMITED && newResults.size() >= config.maxResult2Find){
+    if (config.maxResult2Find != FindAlgorithmSettings::MAX_RESULT_TO_FIND_UNLIMITED && newResults.size() >= config.maxResult2Find) {
         stateInfo.cancelFlag = true;
         return;
     }
-    if(stateInfo.isCoR()){
+    if (stateInfo.isCoR()) {
         return;
     }
     lock.lock();
@@ -122,7 +121,7 @@ Document * LoadPatternsFileTask::getDocumentFromFilePath()
     }
 
     DocumentFormat *format = formats.first().format;
-    if(format->getFormatId() == BaseDocumentFormats::RAW_DNA_SEQUENCE){
+    if (format->getFormatId() == BaseDocumentFormats::RAW_DNA_SEQUENCE) {
         isRawSequence = true;
         return NULL;
     }
@@ -139,39 +138,39 @@ Document * LoadPatternsFileTask::getDocumentFromFilePath()
     return doc;
 }
 
-void LoadPatternsFileTask::run()
-{
+void LoadPatternsFileTask::run() {
     typedef QPair<QString, QString> NamePattern;
 
     Document *doc = getDocumentFromFilePath();
-    if(NULL != doc && !isRawSequence) {
-        const QList<GObject *> &objectsFromDoc = doc->findGObjectByType(GObjectTypes::SEQUENCE);
+    if(doc != NULL && !isRawSequence) {
+        const QList<GObject*>& objectsFromDoc = doc->findGObjectByType(GObjectTypes::SEQUENCE);
 
         foreach(GObject *object, objectsFromDoc) {
-            U2SequenceObject *sequenceObject = qobject_cast<U2SequenceObject*>(object);
-            assert(NULL != sequenceObject);
+            U2SequenceObject* sequenceObject = qobject_cast<U2SequenceObject*>(object);
+            assert(sequenceObject != NULL);
             QByteArray sequence = sequenceObject->getWholeSequenceData(stateInfo);
-            CHECK_OP(stateInfo, );
+            CHECK_OP(stateInfo,);
             QString seqName = sequenceObject->getSequenceName();
-            if(annotationName.isEmpty()){
+            if (annotationName.isEmpty()) {
                 namesPatterns.append(qMakePair(seqName, QString(sequence)));
-            }else{
+            } else {
                 namesPatterns.append(qMakePair(annotationName, QString(sequence)));
             }
         }
     } else {
         QFile file(filePath);
-        if (!file.open(QIODevice::ReadOnly))
+        if (!file.open(QIODevice::ReadOnly)) {
             setError(QString("Cannot open a file: %1").arg(filePath));
+        }
 
         QTextStream stream(&file);
         int fileSize = file.size();
 
-        while(!stream.atEnd() && !stateInfo.cancelFlag) {
+        while (!stream.atEnd() && !stateInfo.cancelFlag) {
             int streamPos = stream.device()->pos();
             stateInfo.progress = 100 * streamPos / fileSize;
             QString pattern = stream.readLine();
-            if (!pattern.isEmpty()){
+            if (!pattern.isEmpty()) {
                 bool contains = false;
                 foreach(const NamePattern& namePattern, namesPatterns){
                     if (namePattern.second == pattern){

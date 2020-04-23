@@ -78,7 +78,7 @@ public:
     void drawContent(QPainter &painter,
                      const QList<int> &seqIdx,
                      const U2Region &region,
-                     const MaEditorConsensusAreaSettings &consensusSettings);
+                     const MaEditorConsensusAreaSettings &consensusAreaSettings);
 
 
 protected:

@@ -22,7 +22,6 @@
 #include <QToolBar>
 
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
-#include <U2Algorithm/BuiltInConsensusAlgorithms.h>
 
 #include <U2Core/AppContext.h>
 
@@ -30,7 +29,6 @@
 
 #include "McaEditorConsensusArea.h"
 #include "McaEditor.h"
-#include "MSAEditor.h" // for menu names consts
 #include "view_rendering/McaConsensusAreaRenderer.h"
 
 #include "ov_msa/MaConsensusMismatchController.h"

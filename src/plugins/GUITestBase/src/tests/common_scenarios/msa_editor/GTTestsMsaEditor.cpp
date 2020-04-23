@@ -183,7 +183,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
 
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTGlobals::sleep();
@@ -193,7 +193,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     CHECK_SET_ERR(offsetsVisible == false, "Offsets are visible");
 
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
 
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTGlobals::sleep();
@@ -209,7 +209,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
 
     // GTUtilsMdi::click(os, GTGlobals::Maximize);
     GTGlobals::sleep();
@@ -222,7 +222,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     CHECK_SET_ERR(offsetsVisible == false, "Offsets are visible");
 
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
 
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTGlobals::sleep();
@@ -240,7 +240,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     //GTUtilsMdi::click(os, GTGlobals::Maximize);
     GTGlobals::sleep();
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "View" << "Show offsets");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show offsets");
     GTGlobals::sleep();
     GTGlobals::sleep();
 
@@ -248,7 +248,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     CHECK_SET_ERR(offsetsVisible == false, "Offsets are visible");
 
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
 
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTGlobals::sleep();
@@ -265,7 +265,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_3) {
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
     CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "View" << "Show offsets");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show offsets");
 
     bool offsetsVisible = GTUtilsMSAEditorSequenceArea::offsetsVisible(os);
     CHECK_SET_ERR(offsetsVisible == false, "Offsets are visible");
@@ -281,7 +281,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_3) {
     GTMouseDriver::doubleClick();
     GTGlobals::sleep();
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "View" << "Show offsets");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Appearance" << "Show offsets");
     GTGlobals::sleep();
     GTGlobals::sleep();
 
@@ -294,7 +294,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_4) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep(1000);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
 
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTGlobals::sleep();
@@ -314,7 +314,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_4) {
     //GTUtilsMdi::click(os, GTGlobals::Maximize);
     GTGlobals::sleep();
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
 
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTGlobals::sleep();
@@ -341,7 +341,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTGlobals::sleep();
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "View" << "Sort sequences by name");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Sort" << "Sort sequences by name");
     GTGlobals::sleep();
 
     GTUtilsMSAEditorSequenceArea::checkSorted(os);
@@ -370,10 +370,10 @@ GUI_TEST_CLASS_DEFINITION(test_0003_3) {
 
     GTUtilsMSAEditorSequenceArea::checkSorted(os, false);
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "View" << "Sort sequences by name");
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions" << "Sort" << "Sort sequences by name");
     GTGlobals::sleep();
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
 
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTGlobals::sleep();
@@ -384,7 +384,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_3) {
 
     GTUtilsMSAEditorSequenceArea::checkSorted(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_VIEW << "show_offsets"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
     GTGlobals::sleep();
 }
@@ -429,8 +429,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004)
     CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
 
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
-                                                      << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
 
     GTMenu::showContextMenu(os, mdiWindow);
     GTGlobals::sleep();
@@ -456,8 +455,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1)
     CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
 
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
-                                                      <<"action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
 
     GTMenu::showContextMenu(os, mdiWindow);
     GTGlobals::sleep();
@@ -483,8 +481,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2)
     CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
 
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
-                                                      << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
 
     GTMenu::showContextMenu(os, mdiWindow);
     GTGlobals::sleep();
@@ -841,8 +838,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
 //     3. Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 300));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
-                                                      << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
     GTMenu::showContextMenu(os, mdiWindow);
@@ -855,8 +851,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
 //     5. Scroll msa to the end.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 550));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
-                                                      << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
 
     GTMenu::showContextMenu(os, mdiWindow);
     GTGlobals::sleep(500);
@@ -909,8 +904,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {  //CHANGES: default names used
 
 //     3. Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 300));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
-                                                      << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
     GTMenu::showContextMenu(os, mdiWindow);
@@ -923,8 +917,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {  //CHANGES: default names used
 
 //     5. Scroll msa to the end.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 550));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
-                                                      << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
 
     GTMenu::showContextMenu(os, mdiWindow);
     GTGlobals::sleep(500);
@@ -978,8 +971,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
 
 //     3. Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 200));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
-                                                      << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
     GTMenu::showContextMenu(os, mdiWindow);
@@ -992,8 +984,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_2) {
 
 //     5. Scroll msa to the end.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 510));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
-                                                      << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
 
     GTMenu::showContextMenu(os, mdiWindow);
     GTGlobals::sleep(500);
@@ -1039,8 +1030,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_3) {
 
 //     3. Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 600));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
-                                                      << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
     GTMenu::showContextMenu(os, mdiWindow);
@@ -1053,8 +1043,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_3) {
 
 //     5. Scroll msa to the end.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 1000));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION
-                                                      << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
 
     GTMenu::showContextMenu(os, mdiWindow);
     GTGlobals::sleep(500);
@@ -3506,7 +3495,7 @@ GUI_TEST_CLASS_DEFINITION(test_0050){
         GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Set this sequence as reference"));
         GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton, QPoint(10, 10));
 
-        GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Highlighting" << "Agreements"));
+        GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Appearance" << "Highlighting" << "Agreements"));
         GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
 
         GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Export" << "Export highlighted"));
@@ -4014,7 +4003,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059){
     };
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new customAppSettingsFiller()));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Colors" << "Custom schemes" << "Create new color scheme"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors" << "Custom schemes" << "Create new color scheme"));
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
 
     GTGlobals::sleep(500);
@@ -4042,12 +4031,12 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
     };
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new customAppSettingsFiller()));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Colors" << "Custom schemes" << "Create new color scheme"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors" << "Custom schemes" << "Create new color scheme"));
 //    Select some color scheme folder. Check state
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
 
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "GUITest_common_scenarios_msa_editor_test_0060", NewColorSchemeCreator::nucl));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Colors" << "Custom schemes" << "Create new color scheme"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors" << "Custom schemes" << "Create new color scheme"));
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
 
     GTGlobals::sleep(500);
@@ -4073,7 +4062,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060){
     };
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new customAppSettingsFiller1()));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Colors" << "Custom schemes" << "Create new color scheme"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors" << "Custom schemes" << "Create new color scheme"));
 //    Select some color scheme folder. Check state
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
 }
@@ -4090,7 +4079,7 @@ GUI_TEST_CLASS_DEFINITION(test_0061){
 
     GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, "GUITest_common_scenarios_msa_editor_test_0061", NewColorSchemeCreator::nucl));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Colors" << "Custom schemes" << "Create new color scheme"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors" << "Custom schemes" << "Create new color scheme"));
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
 
 
@@ -4136,7 +4125,7 @@ GUI_TEST_CLASS_DEFINITION(test_0061){
     };
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new customAppSettingsFiller()));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Colors" << "Custom schemes" << "Create new color scheme"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors" << "Custom schemes" << "Create new color scheme"));
     GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
 
     GTGlobals::sleep(500);

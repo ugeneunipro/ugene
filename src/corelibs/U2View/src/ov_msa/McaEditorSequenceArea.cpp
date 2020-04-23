@@ -197,6 +197,9 @@ void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel) {
         MaEditorSequenceArea::setSelection(MaEditorSelection());
         return;
     }
+    if (sel.isEmpty()) {
+        emit si_clearReferenceSelection();
+    }
     MaEditorSequenceArea::setSelection(sel);
 }
 

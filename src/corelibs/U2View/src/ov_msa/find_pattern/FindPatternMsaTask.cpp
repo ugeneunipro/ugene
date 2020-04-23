@@ -20,25 +20,22 @@
  */
 
 #include "FindPatternMsaTask.h"
-#include "../../ov_sequence/find_pattern/FindPatternTask.h"
-
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 
 namespace U2 {
 
 FindPatternMsaSettings::FindPatternMsaSettings()
-    : msaObj(nullptr),
-    removeOverlaps(false),
-    matchValue(100) {
-
+        : msaObj(nullptr),
+          removeOverlaps(false),
+          matchValue(100) {
 }
 
-FindPatternMsaTask::FindPatternMsaTask(const FindPatternMsaSettings& _settings)
-    : Task(tr("Searching a pattern in multiple alignment task"), TaskFlags_NR_FOSE_COSC),
-    settings(_settings),
-    currentSequenceIndex(0),
-    searchInSingleSequenceTask(nullptr),
-    totalResultsCounter(0) {
+FindPatternMsaTask::FindPatternMsaTask(const FindPatternMsaSettings& settings)
+        : Task(tr("Searching a pattern in multiple alignment task"), TaskFlags_NR_FOSE_COSC),
+          settings(settings),
+          currentSequenceIndex(0),
+          searchInSingleSequenceTask(nullptr),
+          totalResultsCounter(0) {
 }
 
 void FindPatternMsaTask::prepare() {
@@ -47,22 +44,19 @@ void FindPatternMsaTask::prepare() {
 }
 
 void FindPatternMsaTask::createSearchTaskForCurrentSequence() {
-    FindAlgorithmTaskSettings algoSettings;
-    algoSettings.searchIsCircular = false;
-    algoSettings.strand = FindAlgorithmStrand_Direct;
+    FindAlgorithmTaskSettings findPatternSettings;
+    findPatternSettings.searchIsCircular = false;
+    findPatternSettings.strand = FindAlgorithmStrand_Direct;
     //TODO: UGENE-6675
-    algoSettings.maxResult2Find = FindAlgorithmSettings::MAX_RESULT_TO_FIND_UNLIMITED;
-    algoSettings.useAmbiguousBases = false;
-    algoSettings.maxRegExpResultLength = settings.findSettings.maxRegExpResultLength;
-    algoSettings.patternSettings = settings.findSettings.patternSettings;
-    algoSettings.sequenceAlphabet = settings.msaObj->getAlphabet();
-    algoSettings.searchIsCircular = false;
-    QByteArray seq = settings.msaObj->getRow(currentSequenceIndex)->getUngappedSequence().constSequence();
-    FindAlgorithmTaskSettings currentSettings = algoSettings;
-    currentSettings.sequence = seq;
-    currentSettings.searchRegion = settings.msaObj->getRow(currentSequenceIndex)->getUngappedRegion(settings.findSettings.searchRegion);
-    searchInSingleSequenceTask = new FindPatternListTask(currentSettings, settings.patterns, settings.removeOverlaps, settings.matchValue);
-    return;
+    findPatternSettings.maxResult2Find = FindAlgorithmSettings::MAX_RESULT_TO_FIND_UNLIMITED;
+    findPatternSettings.useAmbiguousBases = false;
+    findPatternSettings.maxRegExpResultLength = settings.findSettings.maxRegExpResultLength;
+    findPatternSettings.patternSettings = settings.findSettings.patternSettings;
+    findPatternSettings.sequenceAlphabet = settings.msaObj->getAlphabet();
+    findPatternSettings.searchIsCircular = false;
+    findPatternSettings.sequence = settings.msaObj->getRow(currentSequenceIndex)->getUngappedSequence().constSequence();
+    findPatternSettings.searchRegion = settings.msaObj->getRow(currentSequenceIndex)->getUngappedRegion(settings.findSettings.searchRegion);
+    searchInSingleSequenceTask = new FindPatternListTask(findPatternSettings, settings.patterns, settings.removeOverlaps, settings.matchValue);
 }
 
 QList<Task*> FindPatternMsaTask::onSubTaskFinished(Task* subTask) {
@@ -82,31 +76,37 @@ QList<Task*> FindPatternMsaTask::onSubTaskFinished(Task* subTask) {
             result.append(searchInSingleSequenceTask);
         }
     }
-
     return result;
 }
 
 void FindPatternMsaTask::getResultFromTask() {
-    if (!searchInSingleSequenceTask->getResults().isEmpty()) {
-        QList<U2Region> resultRegions;
-        foreach(const SharedAnnotationData & data, searchInSingleSequenceTask->getResults()) {
-            if (totalResultsCounter >= settings.findSettings.maxResult2Find) {
-                break;
-            }
-            QList<U2Region> gappedRegionList;
-            resultRegions.append(settings.msaObj->getMultipleAlignment()->getRow(currentSequenceIndex).data()->getGapped(data->getRegions().first()));
-            totalResultsCounter++;
-        }
-        if (settings.findSettings.patternSettings == FindAlgorithmPatternSettings_RegExp || settings.patterns.size() > 1) { //Other algos always return sorted results
-            qSort(resultRegions.begin(), resultRegions.end());
-        }
-        resultsBySeqIndex.insert(currentSequenceIndex, resultRegions);
+    const QList<SharedAnnotationData>& rowResults = searchInSingleSequenceTask->getResults();
+    if (rowResults.isEmpty()) {
+        currentSequenceIndex++;
+        return;
     }
+    const MultipleAlignment& multipleAlignment = settings.msaObj->getMultipleAlignment();
+    QList<U2Region> regions;
+    const MultipleAlignmentRow& msaRow = multipleAlignment->getRow(currentSequenceIndex);
+    for (int i = 0; i < rowResults.length() && totalResultsCounter < settings.findSettings.maxResult2Find; i++) {
+        const SharedAnnotationData& annotationData = rowResults[i];
+        const U2Region& resultRegion = annotationData->getRegions().first();
+        const U2Region& resultRegionWithGaps = msaRow.data()->getGapped(resultRegion);
+        regions.append(resultRegionWithGaps);
+        totalResultsCounter++;
+    }
+    qSort(regions.begin(), regions.end());
+    qint64 rowId = msaRow->getRowId();
+    results.insert(rowId, FindPatternInMsaResult(rowId, regions));
     currentSequenceIndex++;
 }
 
-const QMap<int, QList<U2::U2Region> >& FindPatternMsaTask::getResults() const {
-    return resultsBySeqIndex;
+const QList<FindPatternInMsaResult>& FindPatternMsaTask::getResults() const {
+    return results;
+}
+
+FindPatternInMsaResult::FindPatternInMsaResult(qint64 rowId, const QList<U2Region>& regions)
+        : rowId(rowId), regions(regions) {
 }
 
 }

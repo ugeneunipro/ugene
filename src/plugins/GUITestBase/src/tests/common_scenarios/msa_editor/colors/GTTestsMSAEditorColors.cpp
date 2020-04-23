@@ -80,8 +80,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //2. Use context menu {Colors->UGENE} in MSA editor area.
     QWidget* seq=GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<"Colors"<<"UGENE"));
-    GTMenu::showContextMenu(os,seq);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList( ) << MSAE_MENU_APPEARANCE << "Colors" << "UGENE"));
+    GTMenu::showContextMenu(os, seq);
 
 //    Expected state: background for symbols must be:
 //    A - yellow    G - blue    T - red    C - green    gap - no backround
@@ -89,16 +89,16 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     checkColor(os, QPoint(0, 1), "#fdff6a", 5);
 
     //check G
-    checkColor(os,QPoint(2, 2), "#2aa1e1");
+    checkColor(os, QPoint(2, 2), "#2aa1e1", 5, 3);
 
     //check T
-    checkColor(os,QPoint(0, 2), "#ff7195",5);
+    checkColor(os, QPoint(0, 2), "#ff7195",5);
 
     //check C
-    checkColor(os,QPoint(4, 0), "#49f949");
+    checkColor(os, QPoint(4, 0), "#49f949");
 
     //check gap
-    checkColor(os,QPoint(4, 2), "#ffffff",0,5);
+    checkColor(os, QPoint(4, 2), "#ffffff",0,5);
 
 }
 
@@ -108,14 +108,14 @@ GUI_TEST_CLASS_DEFINITION(test_0002){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //    2. Use context menu {Colors->No Colors} in MSA editor area.
     QWidget* seq=GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<"Colors"<<"No colors"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList() << MSAE_MENU_APPEARANCE << "Colors" << "No colors"));
     GTMenu::showContextMenu(os,seq);
 //    Expected state: background for symbols must be white
     //check A
     checkColor(os,QPoint(0, 1), "#ffffff",5);
 
     //check G
-    checkColor(os,QPoint(2, 2), "#ffffff");
+    checkColor(os,QPoint(2, 2), "#ffffff",5, 3);
 
     //check T
     checkColor(os,QPoint(0, 2), "#ffffff",5);
@@ -124,7 +124,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002){
     checkColor(os,QPoint(4, 0), "#ffffff");
 
     //check gap
-    checkColor(os,QPoint(4, 2), "#ffffff",0,5);
+    checkColor(os,QPoint(4, 2), "#ffffff", 0, 5);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003){
@@ -133,7 +133,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003){
     GTUtilsTaskTreeView::waitTaskFinished(os);
 //2. Use context menu {Colors->Jalview} in MSA editor area.
     QWidget* seq=GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<"Colors"<<"Jalview"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList() << MSAE_MENU_APPEARANCE << "Colors" << "Jalview"));
     GTMenu::showContextMenu(os,seq);
 //Expected state: background for symbols must be:
 //A - green G - red T - blue  C - orange gap - no backround
@@ -141,7 +141,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003){
     checkColor(os, QPoint(0, 1), "#48f718", 5);
 
     //check G
-    checkColor(os,QPoint(2, 2), "#eb1a17");
+    checkColor(os,QPoint(2, 2), "#eb1a17", 5, 3);
 
     //check T
     checkColor(os,QPoint(0, 2), "#1674ee",5);
@@ -161,7 +161,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004){
 //    Expected state: Background of the symbol  with the highest number of matches in the column is painted over.
 //    Intensity of colour depends on the frequency of appearance in the column.
     QWidget* seq=GTWidget::findWidget(os, "msa_editor_sequence_area");
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList()<<"Colors"<<"Percentage identity"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os,QStringList() << MSAE_MENU_APPEARANCE << "Colors" << "Percentage identity"));
     GTMenu::showContextMenu(os,seq);
 //    Symbols and columns at the descending order
 //    1. A,G,T at 2,3,9
@@ -170,20 +170,20 @@ GUI_TEST_CLASS_DEFINITION(test_0004){
 //    4. A,C,A,T,A,T,A at 1,4,7,8,11,12,14
 
 //    columns without colored symbols 5,13
-    checkColor(os,QPoint(0, 1), "#a4a4ff",5);//chech1
-    checkColor(os,QPoint(1, 1), "#3c3cff",5);//chech2
-    checkColor(os,QPoint(2, 1), "#3c3cff");//chech3
-    checkColor(os,QPoint(3, 1), "#a4a4ff");//chech4
-    checkColor(os,QPoint(4, 1), "#ffffff",5);//chech5
-    checkColor(os,QPoint(5, 1), "#7171ff",5);//chech6
-    checkColor(os,QPoint(6, 1), "#a4a4ff",5);//chech7
-    checkColor(os,QPoint(7, 2), "#a4a4ff",5);//chech8
-    checkColor(os,QPoint(8, 2), "#3c3cff",5);//chech9
-    checkColor(os,QPoint(9, 2), "#7171ff",5);//chech10
-    checkColor(os,QPoint(10, 1), "#a4a4ff",5);//chech11
-    checkColor(os,QPoint(11, 2), "#a4a4ff",5);//chech12
-    checkColor(os,QPoint(12, 2), "#ffffff",5);//chech13
-    checkColor(os,QPoint(13, 2), "#a4a4ff",5);//chech14
+    checkColor(os,QPoint(0, 1), "#a4a4ff",5);
+    checkColor(os,QPoint(1, 1), "#3c3cff",5);
+    checkColor(os,QPoint(2, 1), "#3c3cff", 5, 3);
+    checkColor(os,QPoint(3, 1), "#a4a4ff");
+    checkColor(os,QPoint(4, 1), "#ffffff",5);
+    checkColor(os,QPoint(5, 1), "#7171ff",5);
+    checkColor(os,QPoint(6, 1), "#a4a4ff",5);
+    checkColor(os,QPoint(7, 2), "#a4a4ff",5);
+    checkColor(os,QPoint(8, 2), "#3c3cff",5);
+    checkColor(os,QPoint(9, 2), "#7171ff",5);
+    checkColor(os,QPoint(10, 1), "#a4a4ff",5);
+    checkColor(os,QPoint(11, 2), "#a4a4ff",5);
+    checkColor(os,QPoint(12, 2), "#ffffff",5);
+    checkColor(os,QPoint(13, 2), "#a4a4ff",5);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {

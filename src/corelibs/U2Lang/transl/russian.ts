@@ -1411,27 +1411,27 @@
 <context>
     <name>U2::SimpleInOutWorkflowTask</name>
     <message>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="67"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="65"/>
         <source>Run workflow: %1</source>
         <translation>Запуск схемы: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="77"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="74"/>
         <source>Cannot create temporary file for writing</source>
         <translation>Невозможно создать временный файл для записи</translation>
     </message>
     <message>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="94"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="91"/>
         <source>Internal error: cannot find workflow %1</source>
         <translation>Внутренняя ошибка: невозможно найти схему %1</translation>
     </message>
     <message>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="123"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="120"/>
         <source>An error occurred during the task. See the log for details.</source>
         <translation>An error occurred during the task. See the log for details.</translation>
     </message>
     <message>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="128"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="125"/>
         <source>Loading result file &apos;%1&apos;</source>
         <translation>Loading result file &apos;%1&apos;</translation>
     </message>
@@ -1439,29 +1439,33 @@
 <context>
     <name>U2::SimpleMSAWorkflow4GObjectTask</name>
     <message>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="179"/>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="199"/>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="215"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="170"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="175"/>
         <source>Object &apos;%1&apos; removed</source>
         <translation>Object &apos;%1&apos; removed</translation>
     </message>
     <message>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="200"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="176"/>
         <source>Object &apos;%1&apos; is locked</source>
         <translation>Object &apos;%1&apos; is locked</translation>
     </message>
     <message>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="227"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="182"/>
+        <source>MSA has incompatible changes during the alignment. Ignoring the alignment result: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="203"/>
         <source>Result document not found!</source>
         <translation>Result document not found!</translation>
     </message>
     <message>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="228"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="204"/>
         <source>Result document content not matched! %1</source>
         <translation>Result document content not matched! %1</translation>
     </message>
     <message>
-        <location filename="../src/support/SimpleWorkflowTask.cpp" line="230"/>
+        <location filename="../src/support/SimpleWorkflowTask.cpp" line="207"/>
         <source>Result document contains no MSA! %1</source>
         <translation>Result document contains no MSA! %1</translation>
     </message>

@@ -21,9 +21,7 @@
 
 #include <QApplication>
 #include <QClipboard>
-#include <QDesktopServices>
 #include <QDir>
-#include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QMessageBox>
@@ -34,7 +32,6 @@
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/Task.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
@@ -42,8 +39,6 @@
 
 #include <U2Gui/MainWindow.h>
 
-#include <U2Lang/URLAttribute.h>
-#include <U2Lang/URLContainer.h>
 #include <U2Lang/WorkflowSettings.h>
 #include <U2Lang/WorkflowUtils.h>
 
@@ -187,7 +182,7 @@ void Dashboard::sl_serialize() {
         bool created = d.mkpath(reportDir);
         CHECK_EXT(created, ioLog.error(tr("Can not create a folder: ") + reportDir), );
     }
-    serialize();
+    dashboardPageController->savePage(getPageFilePath());
     saveSettings();
 }
 
@@ -209,10 +204,6 @@ void Dashboard::sl_workflowStateChanged(Monitor::TaskState state) {
 void Dashboard::loadDocument() {
     loadingStarted = true;
     dashboardPageController->loadPage(loadUrl);
-}
-
-void Dashboard::serialize() {
-    dashboardPageController->savePage(getPageFilePath());
 }
 
 void Dashboard::saveSettings() {

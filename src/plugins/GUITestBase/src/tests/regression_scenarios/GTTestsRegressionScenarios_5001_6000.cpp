@@ -462,7 +462,7 @@ GUI_TEST_CLASS_DEFINITION(test_5052) {
     findOptions.matchPolicy = Qt::MatchContains;
     GTUtilsMdi::closeWindow(os, "NC_", findOptions);
     //3. Click "murine.gb" on Start Page.
-    GTUtilsStartPage::clickResentDocument(os, "murine.gb");
+    GTWidget::click(os, GTWidget::findLabelByText(os, "murine.gb").first());
     //Expected: The file is loaded, the view is opened.
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(GTUtilsDocument::isDocumentLoaded(os, "murine.gb"), "The file is not loaded");
@@ -973,7 +973,7 @@ GUI_TEST_CLASS_DEFINITION(test_5268) {
 
 //    4. Select the custom color scheme.
     GTUtilsOptionPanelMsa::setColorScheme(os, "test_5268");
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "Custom schemes" << "test_5268", PopupChecker::IsChecked));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Appearance" << "Colors" << "Custom schemes" << "test_5268", PopupChecker::IsChecked));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTGlobals::sleep(500);
@@ -988,7 +988,7 @@ GUI_TEST_CLASS_DEFINITION(test_5268) {
                   QString("An incorrect color scheme is set in option panel: expect '%1', got '%2'")
                   .arg("test_5268").arg(opColorScheme));
 
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "Custom schemes" << "test_5268", PopupChecker::IsChecked));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Appearance" << "Colors" << "Custom schemes" << "test_5268", PopupChecker::IsChecked));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
     GTGlobals::sleep(500);

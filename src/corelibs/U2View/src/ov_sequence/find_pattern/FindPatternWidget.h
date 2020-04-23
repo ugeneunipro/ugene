@@ -112,7 +112,7 @@ private slots:
 
     void sl_onSelectedRegionChanged();
 
-    void sl_onAnotationNameEdited();
+    void sl_onAnnotationNameEdited();
 
     void sl_activateNewSearch(bool forcedSearch = true);
     void sl_toggleExtendedAlphabet();
@@ -123,6 +123,7 @@ private slots:
     void sl_onEnterPressed();
     void sl_onShiftEnterPressed();
     void sl_usePatternNamesCbClicked();
+
 private:
     void initLayout();
     void initAlgorithmLayout();
@@ -143,7 +144,7 @@ private:
     QList<NamePattern> updateNamePatterns();
     void showCurrentResultAndStopProgress(const int current, const int total);
     void startProgressAnimation();
-
+    void updatePatternSourceControlsUiState();
     /**
      * Enables or disables the Search button depending on
      * the Pattern field value (it should be not empty and not too long)
@@ -168,7 +169,7 @@ private:
 
     void setRegionToWholeSequence();
 
-    U2Region getCompleteSearchRegion(bool& regionIsCorrect, qint64 maxLen) const;
+    U2Region getCompleteSearchRegion(bool& isRegionCorrect, qint64 maxLen) const;
 
     void initFindPatternTask(const QList< QPair<QString, QString> >& patterns);
 
@@ -176,22 +177,15 @@ private:
     parse them out and returns with their names (if they're exist). */
     QList <QPair<QString, QString> > getPatternsFromTextPatternField(U2OpStatus &os) const;
 
-    /** Checks whether the input string is uppercased or not. */
-    static bool hasWrongChars(const QString &input);
-
     void setCorrectPatternsString();
-
-    void changeColorOfMessageText(const QString &colorName);
-    QString currentColorOfMessageText() const;
 
     void updatePatternText(int previousAlgorithm);
 
-    void validateCheckBoxSize(QCheckBox* checkBox, int requiredWidth);
     void updateAnnotationsWidget();
 
     AnnotatedDNAView* annotatedDnaView;
     CreateAnnotationWidgetController* annotController;
-    bool annotModelPrepared;
+    bool annotationModelIsPrepared;
 
     bool isAminoSequenceSelected;
     bool regionIsCorrect;
@@ -204,7 +198,6 @@ private:
     /** Widgets in the Algorithm group */
     QHBoxLayout* layoutMismatch;
     QVBoxLayout* layoutRegExpLen;
-    QHBoxLayout* layoutRegExpInfo;
 
     QLabel* lblMatch;
     QSpinBox* spinMatch;
@@ -215,16 +208,12 @@ private:
     QCheckBox* boxUseMaxResultLen;
     QSpinBox* boxMaxResultLen;
 
-    QWidget* annotsWidget;
+    QWidget* annotationsWidget;
 
     DNASequenceSelection *currentSelection;
 
     static const int DEFAULT_RESULTS_NUM_LIMIT;
     static const int DEFAULT_REGEXP_RESULT_LENGTH_LIMIT;
-
-    static const QString NEW_LINE_SYMBOL;
-    static const QString STYLESHEET_COLOR_DEFINITION;
-    static const QString STYLESHEET_DEFINITIONS_SEPARATOR;
 
     static const int REG_EXP_MIN_RESULT_LEN;
     static const int REG_EXP_MAX_RESULT_LEN;

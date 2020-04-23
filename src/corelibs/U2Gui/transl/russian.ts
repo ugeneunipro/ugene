@@ -509,14 +509,22 @@
 <context>
     <name>CreateDocumentFromTextDialog</name>
     <message>
-        <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="14"/>
         <source>Create Document</source>
-        <translation>Создание документа</translation>
+        <translation type="vanished">Создание документа</translation>
+    </message>
+    <message>
+        <source>Document location:</source>
+        <translation type="vanished">Расположение документа:</translation>
+    </message>
+    <message>
+        <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="14"/>
+        <source>Create Sequence</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="22"/>
-        <source>Document location:</source>
-        <translation>Расположение документа:</translation>
+        <source>Save sequence to file</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="32"/>
@@ -525,13 +533,21 @@
     </message>
     <message>
         <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="39"/>
-        <source>Document format:</source>
-        <translation>Формат:</translation>
+        <source>File format</source>
+        <translation type="unfinished">Формат файла</translation>
     </message>
     <message>
         <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="49"/>
+        <source>Sequence name</source>
+        <translation type="unfinished">Имя последовательности</translation>
+    </message>
+    <message>
+        <source>Document format:</source>
+        <translation type="vanished">Формат:</translation>
+    </message>
+    <message>
         <source>Sequence name:</source>
-        <translation>Имя последовательности:</translation>
+        <translation type="vanished">Имя последовательности:</translation>
     </message>
     <message>
         <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="65"/>
@@ -1779,22 +1795,22 @@ complement(5..15)</translation>
 <context>
     <name>U2::CreateObjectRelationDialogController</name>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="48"/>
+        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="47"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="49"/>
+        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="48"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="70"/>
+        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="69"/>
         <source>Warning</source>
         <translation>Внимание</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="71"/>
+        <location filename="../src/util/CreateObjectRelationDialogController.cpp" line="70"/>
         <source>Found annotations that are out of the sequence range, continue?</source>
         <translation>Найдены аннотации, выходящие за границы последовательности. Продолжить?</translation>
     </message>
@@ -2563,12 +2579,12 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::MultipleRangeSelector</name>
     <message>
-        <location filename="../src/util/RangeSelector.cpp" line="241"/>
+        <location filename="../src/util/RangeSelector.cpp" line="204"/>
         <source>Go</source>
         <translation>Перейти</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelector.cpp" line="242"/>
+        <location filename="../src/util/RangeSelector.cpp" line="205"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -2917,33 +2933,32 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::RangeSelector</name>
     <message>
-        <location filename="../src/util/RangeSelector.cpp" line="60"/>
-        <location filename="../src/util/RangeSelector.cpp" line="146"/>
+        <location filename="../src/util/RangeSelector.cpp" line="117"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelector.cpp" line="93"/>
+        <location filename="../src/util/RangeSelector.cpp" line="71"/>
         <source>Min</source>
         <translation>Мин</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelector.cpp" line="97"/>
+        <location filename="../src/util/RangeSelector.cpp" line="75"/>
         <source>Max</source>
         <translation>Макс</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelector.cpp" line="113"/>
+        <location filename="../src/util/RangeSelector.cpp" line="91"/>
         <source>Range:</source>
         <translation>Регион:</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelector.cpp" line="125"/>
+        <location filename="../src/util/RangeSelector.cpp" line="103"/>
         <source>-</source>
         <translation>-</translation>
     </message>
     <message>
-        <location filename="../src/util/RangeSelector.cpp" line="152"/>
+        <location filename="../src/util/RangeSelector.cpp" line="123"/>
         <source>Cancel</source>
         <translation>Отменить</translation>
     </message>

@@ -197,6 +197,10 @@ int MaCollapseModel::getViewRowIndexByMaRowIndex(int maRowIndex, bool failIfNotV
     return viewRowByMaRow.value(firstMaInGroup, -1);
 }
 
+int MaCollapseModel::getViewRowIndexByMaRowId(qint64 maRowId) const {
+    return viewRowByMaRowId.value(maRowId, -1);
+}
+
 bool MaCollapseModel::isGroupWithMaRowIndexCollapsed(int maRowIndex) const {
     int viewRowIndex = getViewRowIndexByMaRowIndex(maRowIndex);
     int groupIndex = getCollapsibleGroupIndexByViewRowIndex(viewRowIndex);
@@ -229,6 +233,7 @@ int MaCollapseModel::getViewRowCount() const {
 
 void MaCollapseModel::updateIndex() {
     viewRowByMaRow.clear();
+    viewRowByMaRowId.clear();
     maRowByViewRow.clear();
     groupByMaRow.clear();
     hasGroupsWithMultipleItems = false;
@@ -239,6 +244,8 @@ void MaCollapseModel::updateIndex() {
         for (int i = 0; i < group.maRows.size(); i++) {
             int maRow = group.maRows[i];
             if (i == 0 || !group.isCollapsed) {
+                qint64 maRowId = group.maRowIds[i];
+                viewRowByMaRowId.insert(maRowId, viewRow);
                 viewRowByMaRow.insert(maRow, viewRow);
                 maRowByViewRow.insert(viewRow, maRow);
                 viewRow++;

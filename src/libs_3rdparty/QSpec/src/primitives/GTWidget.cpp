@@ -156,6 +156,45 @@ QAbstractButton* GTWidget::findButtonByText(GUITestOpStatus &os, const QString &
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "findLabelByText"
+QList<QLabel*> GTWidget::findLabelByText(GUITestOpStatus &os,
+                                         const QString &text,
+                                         QWidget *parentWidget,
+                                         const GTGlobals::FindOptions& options) {
+
+    if (parentWidget == NULL) {
+        QList<QLabel*> resultList;
+        foreach(QWidget* parent, GTMainWindow::getMainWindowsAsWidget(os)){
+            QList<QLabel*> list = parent->findChildren<QLabel*>();
+            foreach(QLabel* label, list){
+                if(label->text().contains(text, Qt::CaseInsensitive)){
+                    resultList.append(label);
+                }
+            }
+        }
+        if (options.failIfNotFound) {
+            GT_CHECK_RESULT(resultList.count()!=0,"label not found", QList<QLabel*>());
+        }
+        return resultList;
+    }
+    QList<QLabel*> labelList = parentWidget->findChildren<QLabel*>();
+    QList<QLabel*> foundLabelList;
+    QStringList sL;
+
+    foreach(QLabel* label, labelList){
+        sL.append(label->text());
+        if (label->text().contains(text, Qt::CaseInsensitive)){
+            foundLabelList << label;
+        }
+    }
+    if (options.failIfNotFound) {
+        GT_CHECK_RESULT(foundLabelList.count() != 0, QString("label with this text <%1> not found").arg(text), QList<QLabel*>());
+    }
+    return foundLabelList;
+}
+#undef GT_METHOD_NAME
+
+
 #define GT_METHOD_NAME "findWidget"
 void GTWidget::getAllWidgetsInfo(GUITestOpStatus &os, QWidget *parent){
 

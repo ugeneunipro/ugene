@@ -28,7 +28,6 @@
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MSAUtils.h>
-#include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -44,8 +43,7 @@ namespace U2 {
 using namespace Workflow;
 
 SimpleInOutWorkflowTaskConfig::SimpleInOutWorkflowTaskConfig()
-: emptyResultPossible(false)
-{
+        : emptyResultPossible(false) {
 }
 
 /***************************
@@ -53,8 +51,8 @@ SimpleInOutWorkflowTaskConfig::SimpleInOutWorkflowTaskConfig()
  ***************************/
 static QString SCHEMA_DIR_PATH = QString("%1:cmdline/").arg(PATH_PREFIX_DATA);
 
-static QString findWorkflowPath(const QString & schemaName) {
-    foreach(const QString & ext, WorkflowUtils::WD_FILE_EXTENSIONS) {
+static QString findWorkflowPath(const QString& schemaName) {
+    foreach(const QString& ext, WorkflowUtils::WD_FILE_EXTENSIONS) {
         QString candidate = SCHEMA_DIR_PATH + schemaName + "." + ext;
         if (QFile::exists(candidate)) {
             return candidate;
@@ -64,10 +62,9 @@ static QString findWorkflowPath(const QString & schemaName) {
 }
 
 SimpleInOutWorkflowTask::SimpleInOutWorkflowTask(const SimpleInOutWorkflowTaskConfig& _conf)
-: DocumentProviderTask(tr("Run workflow: %1").arg(_conf.schemaName), TaskFlags_NR_FOSCOE), conf(_conf)
-{
+        : DocumentProviderTask(tr("Run workflow: %1").arg(_conf.schemaName), TaskFlags_NR_FOSCOE), conf(_conf) {
     inDoc = new Document(BaseDocumentFormats::get(conf.inFormat), IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE),
-                        GUrl("unused"), U2DbiRef(), conf.objects, conf.inDocHints);
+                         GUrl("unused"), U2DbiRef(), conf.objects, conf.inDocHints);
     inDoc->setParent(this);
 }
 
@@ -85,13 +82,13 @@ void SimpleInOutWorkflowTask::prepareTmpFile(QTemporaryFile& tmpFile, const QStr
 
 void SimpleInOutWorkflowTask::prepare() {
     prepareTmpFile(inputTmpFile, QString("%1/XXXXXX.%2").arg(QDir::tempPath()).arg(conf.inFormat));
-    CHECK_OP(stateInfo, );
+    CHECK_OP(stateInfo,);
 
     prepareTmpFile(resultTmpFile, QString("%1/XXXXXX.%2").arg(QDir::tempPath()).arg(conf.outFormat));
-    CHECK_OP(stateInfo, );
+    CHECK_OP(stateInfo,);
 
     schemaPath = findWorkflowPath(conf.schemaName);
-    CHECK_EXT(!schemaPath.isEmpty(), setError(tr("Internal error: cannot find workflow %1").arg(conf.schemaName)), );
+    CHECK_EXT(!schemaPath.isEmpty(), setError(tr("Internal error: cannot find workflow %1").arg(conf.schemaName)),);
 
     saveInputTask = new SaveDocumentTask(inDoc, IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), inputTmpFile.fileName());
     addSubTask(saveInputTask);
@@ -118,7 +115,7 @@ QList<Task*> SimpleInOutWorkflowTask::onSubTaskFinished(Task* subTask) {
         runWorkflowTask = new CmdlineTaskRunner(monitorConf);
         res << runWorkflowTask;
     } else if (subTask == runWorkflowTask) {
-        if (0 == QFileInfo(resultTmpFile.fileName()).size()) {
+        if (QFileInfo(resultTmpFile.fileName()).size() == 0) {
             if (!conf.emptyResultPossible) {
                 setError(tr("An error occurred during the task. See the log for details."));
             }
@@ -138,20 +135,18 @@ QList<Task*> SimpleInOutWorkflowTask::onSubTaskFinished(Task* subTask) {
 
 //////////////////////////////////////////////////////////////////////////
 // RunSimpleMSAWorkflow4GObject
-SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& taskName, MultipleSequenceAlignmentObject* _maObj, const SimpleMSAWorkflowTaskConfig& _conf)
-: Task(taskName, TaskFlags_NR_FOSCOE),
-  obj(_maObj),
-  lock(NULL),
-  conf(_conf)
-{
-    SAFE_POINT(NULL != obj, "NULL MultipleSequenceAlignmentObject!",);
+SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& taskName,
+                                                             MultipleSequenceAlignmentObject* msaObj,
+                                                             const SimpleMSAWorkflowTaskConfig& conf)
+        : Task(taskName, TaskFlags_NR_FOSCOE),
+          msaObjectPointer(msaObj),
+          conf(conf) {
+    SAFE_POINT(msaObj != nullptr, "NULL MultipleSequenceAlignmentObject!",);
 
     U2OpStatus2Log os;
-    userModStep = new U2UseCommonUserModStep(obj->getEntityRef(), os);
+    MultipleSequenceAlignment al = MSAUtils::setUniqueRowNames(msaObjectPointer->getMultipleAlignment());
 
-    MultipleSequenceAlignment al = MSAUtils::setUniqueRowNames(obj->getMultipleAlignment());
-
-    MultipleSequenceAlignmentObject *msaObject = MultipleSequenceAlignmentImporter::createAlignment(obj->getEntityRef().dbiRef, al, os);
+    MultipleSequenceAlignmentObject* msaObject = MultipleSequenceAlignmentImporter::createAlignment(msaObjectPointer->getEntityRef().dbiRef, al, os);
     SAFE_POINT_OP(os,);
 
     SimpleInOutWorkflowTaskConfig sioConf;
@@ -168,68 +163,49 @@ SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString& task
 
     setUseDescriptionFromSubtask(true);
     setVerboseLogMode(true);
-    docName = obj->getDocument()->getName();
-}
-
-SimpleMSAWorkflow4GObjectTask::~SimpleMSAWorkflow4GObjectTask() {
-    SAFE_POINT(lock == NULL, "Lock is not deallocated!",);
+    docName = msaObjectPointer->getDocument()->getName();
 }
 
 void SimpleMSAWorkflow4GObjectTask::prepare() {
-    CHECK_EXT(!obj.isNull(), setError(tr("Object '%1' removed").arg(docName)), );
-
-    lock = new StateLock(getTaskName());
-    obj->lockState(lock);
+    CHECK_EXT(!msaObjectPointer.isNull(), setError(tr("Object '%1' removed").arg(docName)),);
 }
-
 
 Task::ReportResult SimpleMSAWorkflow4GObjectTask::report() {
-    if (stateInfo.isCoR()) {
-        releaseModStep();
-    }
-
-    if (lock != NULL) {
-        if (!obj.isNull()) {
-            obj->unlockState(lock);
-        }
-        delete lock;
-        lock = NULL;
-    }
     CHECK_OP(stateInfo, ReportResult_Finished);
-    CHECK_EXT(!obj.isNull(), releaseModStep(tr("Object '%1' removed").arg(docName)), ReportResult_Finished);
-    CHECK_EXT(!obj->isStateLocked(), releaseModStep(tr("Object '%1' is locked").arg(docName)), ReportResult_Finished);
+    CHECK_EXT(!msaObjectPointer.isNull(), setError(tr("Object '%1' removed").arg(docName)), ReportResult_Finished);
+    CHECK_EXT(!msaObjectPointer->isStateLocked(), setError(tr("Object '%1' is locked").arg(docName)), ReportResult_Finished);
 
-    MultipleSequenceAlignment res = getResult();
-    const MultipleSequenceAlignment originalAlignment = obj->getMultipleAlignment();
-    MSAUtils::restoreRowNames(res, originalAlignment->getRowNames());
-    res->setName(originalAlignment->getName());
-    obj->setMultipleAlignment(res);
+    MultipleSequenceAlignment resultMsa = getResult();
+    const MultipleSequenceAlignment& originalMsa = msaObjectPointer->getMultipleAlignment();
+    bool isAllRowsRestored = MSAUtils::restoreRowNames(resultMsa, originalMsa->getRowNames());
+    if (!isAllRowsRestored) {
+        setError(tr("MSA has incompatible changes during the alignment. Ignoring the alignment result: '%1'").arg(docName));
+        return ReportResult_Finished;
+    }
+    resultMsa->setName(originalMsa->getName());
 
-    releaseModStep();
+    U2OpStatus2Log os;
+    if (resultMsa != originalMsa) {
+        U2UseCommonUserModStep userModStep(msaObjectPointer->getEntityRef(), os);
+        msaObjectPointer->setMultipleAlignment(resultMsa);
+    }
 
     return ReportResult_Finished;
-}
-
-void SimpleMSAWorkflow4GObjectTask::releaseModStep(const QString error) {
-    if (!error.isEmpty()) {
-        setError(tr("Object '%1' removed").arg(docName));
-    }
-    delete userModStep;
-    userModStep = NULL;
 }
 
 MultipleSequenceAlignment SimpleMSAWorkflow4GObjectTask::getResult() {
     MultipleSequenceAlignment res;
     CHECK_OP(stateInfo, res);
 
-    SAFE_POINT(runWorkflowTask!=NULL,"SimpleMSAWorkflow4GObjectTask::getResult. No task has been created.",res);
+    SAFE_POINT(runWorkflowTask != NULL, "SimpleMSAWorkflow4GObjectTask::getResult. No task has been created.", res);
+
     Document* d = runWorkflowTask->getDocument();
-    CHECK_EXT(d!=NULL, setError(tr("Result document not found!")), res);
+    CHECK_EXT(d != NULL, setError(tr("Result document not found!")), res);
     CHECK_EXT(d->getObjects().size() == 1, setError(tr("Result document content not matched! %1").arg(d->getURLString())), res);
+
     MultipleSequenceAlignmentObject* maObj = qobject_cast<MultipleSequenceAlignmentObject*>(d->getObjects().first());
-    CHECK_EXT(maObj!=NULL, setError(tr("Result document contains no MSA! %1").arg(d->getURLString())), res);
+    CHECK_EXT(maObj != NULL, setError(tr("Result document contains no MSA! %1").arg(d->getURLString())), res);
     return maObj->getMsaCopy();
 }
-
 
 }    // namespace U2

@@ -165,8 +165,8 @@ enum TaskFlag {
     TaskFlag_ConcatenateChildrenErrors = 1 << 28 // task collects errors from all children and unites them into one report
 };
 
-#define TaskFlags_FOSCOE                (TaskFlags(TaskFlag_FailOnSubtaskError) | TaskFlag_FailOnSubtaskCancel)
-#define TaskFlags_NR_FOSCOE             (TaskFlags_FOSCOE | TaskFlag_NoRun)
+#define TaskFlags_FOSCOE                (U2::TaskFlags(U2::TaskFlag_FailOnSubtaskError) | U2::TaskFlag_FailOnSubtaskCancel)
+#define TaskFlags_NR_FOSCOE             (TaskFlags_FOSCOE | U2::TaskFlag_NoRun)
 #define TaskFlags_RBSF_FOSCOE           (TaskFlags_FOSCOE | TaskFlag_RunBeforeSubtasksFinished)
 
 // TODO: use this new alternative to FOSCOE, more logical: fail on error, cancel on cancel

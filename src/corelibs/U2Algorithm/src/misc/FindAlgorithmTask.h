@@ -60,9 +60,6 @@ public:
 
 private:
     FindAlgorithmTaskSettings config;
-
-    bool    complementRun;
-
     QList<FindAlgorithmResult> newResults;
     QMutex lock;
 };

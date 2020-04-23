@@ -31,7 +31,6 @@ using namespace Workflow;
 
 class DashboardJsAgent;
 class DashboardPageController;
-class ExternalToolsWidgetController;
 
 class U2DESIGNER_EXPORT Dashboard : public U2WebView {
     Q_OBJECT
@@ -91,15 +90,7 @@ private slots:
     void sl_workflowStateChanged(Monitor::TaskState state);
 
 private:
-    enum DashboardTab {
-        OverviewDashTab,
-        InputDashTab,
-        OutputDashTab,
-        ExternalToolsTab
-    };
-
     void loadDocument();
-    void serialize();
     void saveSettings();
     void loadSettings();
 

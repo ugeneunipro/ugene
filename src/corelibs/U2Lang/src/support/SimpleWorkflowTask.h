@@ -93,7 +93,6 @@ class SimpleMSAWorkflowTaskConfig {
 public:
     QString     schemaName;
     QStringList schemaArgs;
-    QString     algoName;
     QVariantMap resultDocHints;
 };
 
@@ -102,21 +101,16 @@ class U2LANG_EXPORT SimpleMSAWorkflow4GObjectTask : public Task {
 
 public:
     SimpleMSAWorkflow4GObjectTask(const QString& taskName, MultipleSequenceAlignmentObject* maObj, const SimpleMSAWorkflowTaskConfig& conf);
-    ~SimpleMSAWorkflow4GObjectTask();
 
     void prepare();
     ReportResult report();
     MultipleSequenceAlignment getResult();
 
 private:
-    void releaseModStep(const QString error = QString());
-
-    QPointer<MultipleSequenceAlignmentObject>  obj;
-    QPointer<StateLock>         lock;
+    QPointer<MultipleSequenceAlignmentObject>  msaObjectPointer;
     QString                     docName;
     SimpleMSAWorkflowTaskConfig conf;
     SimpleInOutWorkflowTask*    runWorkflowTask;
-    U2UseCommonUserModStep      *userModStep;
 };
 
 }    // namespace U2

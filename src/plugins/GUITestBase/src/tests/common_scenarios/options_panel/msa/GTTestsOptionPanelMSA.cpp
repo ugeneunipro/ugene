@@ -861,7 +861,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0006){
     CHECK_SET_ERR(currentScheme == "UGENE", QString("An unexpected color scheme is set: expect '%1', got '%2'")
             .arg("UGENE").arg(currentScheme));
 
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Colors" << "UGENE", PopupChecker::IsChecked));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList() << "Appearance" << "Colors" << "UGENE", PopupChecker::IsChecked));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     GTUtilsOptionPanelMsa::closeTab(os, GTUtilsOptionPanelMsa::Highlighting);
