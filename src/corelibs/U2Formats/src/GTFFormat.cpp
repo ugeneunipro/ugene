@@ -361,7 +361,7 @@ bool parseAttributes(QString attributesStr, QMap<QString, QString>& parsedAttrVa
 
     while (pos < attributesStr.size()) {
         //skip sequence of spaces
-        while (attributesStr.indexOf(' ', pos) == pos) {
+        while (attributesStr.at(pos) == " ") {
             pos++;
         }
 
