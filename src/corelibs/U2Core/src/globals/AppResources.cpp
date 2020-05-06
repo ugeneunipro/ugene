@@ -19,14 +19,6 @@
  * MA 02110-1301, USA.
  */
 
-// clang-format off
-#ifdef Q_OS_WIN
-#include <windows.h>
-#include <Psapi.h>
-#include <Winbase.h> //for IsProcessorFeaturePresent
-#endif
-// clang-format on
-
 #include "AppResources.h"
 
 #include <U2Core/AppContext.h>
@@ -44,6 +36,12 @@
 #endif
 #if defined(Q_OS_LINUX)
 #    include <fstream>
+#endif
+
+#ifdef Q_OS_WIN
+#include <windows.h>
+#include <Psapi.h>
+#include <Winbase.h> //for IsProcessorFeaturePresent
 #endif
 
 namespace U2 {

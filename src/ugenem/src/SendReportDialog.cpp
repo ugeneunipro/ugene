@@ -22,10 +22,10 @@
 #include <qglobal.h>
 
 #ifdef Q_OS_WIN
-#    include <Psapi.h>
-#    include <Winbase.h>    //for IsProcessorFeaturePresent
 #    include <intrin.h>
 #    include <windows.h>
+#    include <Psapi.h>
+#    include <Winbase.h>    //for IsProcessorFeaturePresent
 
 #    include "DetectWin10.h"
 #endif
