@@ -701,7 +701,7 @@ void FindPatternWidget::showHideMessage(bool show, MessageFlag messageFlag, cons
                 break;
             }
             case PatternWrongRegExp: {
-                const QString message = tr("Warning: invalid regexp. ");
+                const QString message = tr("Warning: the input regular expression is invalid! ");
                 text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
                 GUIUtils::setWidgetWarning(textPattern, true);
                 break;

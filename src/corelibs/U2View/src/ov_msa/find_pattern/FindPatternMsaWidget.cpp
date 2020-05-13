@@ -501,7 +501,7 @@ void FindPatternMsaWidget::showHideMessage(bool show, MessageFlag messageFlag, c
                 break;
             }
             case PatternWrongRegExp: {
-                const QString message = tr("Warning: invalid regexp. ");
+                const QString message = tr("Warning: the input regular expression is invalid! ");
                 text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(message);
                 GUIUtils::setWidgetWarning(textPattern, true);
                 break;
@@ -602,12 +602,20 @@ bool FindPatternMsaWidget::verifyPatternAlphabet() {
     bool result = alphabetIsOk;
 
     if (selectedAlgorithm == FindAlgorithmPatternSettings_RegExp) {
-        QRegExp regExp(textPattern->toPlainText());
-        if (regExp.isValid()) {
-            showHideMessage(false, PatternWrongRegExp);
-        } else {
+        QString reText = textPattern->toPlainText();
+
+        // Check that all symbols are ascii
+        if (reText.contains(QRegularExpression(QStringLiteral("[^\\x{0000}-\\x{007F}]")))) {
             showHideMessage(true, PatternWrongRegExp);
             result = false;
+        } else {
+            QRegExp regExp(reText.toUtf8());
+            if (regExp.isValid()) {
+                showHideMessage(false, PatternWrongRegExp);
+            } else {
+                showHideMessage(true, PatternWrongRegExp);
+                result = false;
+            }
         }
     } else {
         showHideMessage(false, PatternWrongRegExp);
