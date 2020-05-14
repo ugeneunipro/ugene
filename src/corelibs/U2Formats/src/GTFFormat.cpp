@@ -99,8 +99,7 @@ const QString GTFFormat::TRANSCRIPT_ID_QUALIFIER_NAME = "transcript_id";
 
 
 GTFFormat::GTFFormat(QObject* parent)
-    : TextDocumentFormat(parent, BaseDocumentFormats::GTF, DocumentFormatFlag_SupportWriting, QStringList("gtf"))
-{
+    : TextDocumentFormat(parent, BaseDocumentFormats::GTF, DocumentFormatFlag_SupportWriting | DocumentFormatFlag_CanBePartiallyRead, QStringList("gtf")) {
     formatName = tr("GTF");
     formatDescription = tr("The Gene transfer format (GTF) is a file format used to hold"
         " information about gene structure.");

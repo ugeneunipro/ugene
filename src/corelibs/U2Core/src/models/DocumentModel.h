@@ -76,9 +76,9 @@ enum DocumentFormatFlag {
     // Document can be locked if created not by UGENE
     DocumentFormatFlag_LockedIfNotCreatedByUGENE    = 1<<10,
 
-    DocumentFormatFlag_CannotBeCompressed           = 1<<11
+    DocumentFormatFlag_CannotBeCompressed           = 1<<11,
 
-    //Add flag for possiblity of partially reading
+    DocumentFormatFlag_CanBePartiallyRead           = 1 << 12
 };
 
 

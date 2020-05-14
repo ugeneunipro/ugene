@@ -28,6 +28,7 @@ HEADERS += src/app_settings/AppSettingsDialogController.h \
            src/project_support/DocumentReadingModeSelectorController.h \
            src/project_support/MultipleDocumentsReadingModeSelectorController.h \
            src/project_support/ExportProjectDialogController.h \
+           src/project_support/ExtractAnnotationsBySequenceDialogController.h \
            src/project_support/ProjectImpl.h \
            src/project_support/ProjectLoaderImpl.h \
            src/project_support/ProjectServiceImpl.h \
@@ -56,6 +57,7 @@ FORMS += src/app_settings/directories_settings/DirectoriesSettingsWidget.ui \
          src/project_support/DocumentFormatSelectorDialog.ui \
          src/project_support/DocumentProviderSelectorDialog.ui \
          src/project_support/ExportProjectDialog.ui \
+         src/project_support/ExtractAnnotationsBySequenceDialog.ui \
          src/project_support/MultipleSequenceFilesReadingMode.ui \
          src/project_support/SequenceReadingModeSelectorDialog.ui \
          src/project_support/SaveProjectDialog.ui \
@@ -89,6 +91,7 @@ SOURCES += src/Main.cpp \
            src/project_support/DocumentReadingModeSelectorController.cpp \
            src/project_support/MultipleDocumentsReadingModeSelectorController.cpp \
            src/project_support/ExportProjectDialogController.cpp \
+           src/project_support/ExtractAnnotationsBySequenceDialogController.cpp \
            src/project_support/ProjectImpl.cpp \
            src/project_support/ProjectLoaderImpl.cpp \
            src/project_support/ProjectServiceImpl.cpp \
