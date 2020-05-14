@@ -514,7 +514,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     GTUtilsProjectTreeView::click(os, "chrM", "chrM.fa");
 
     //4. Right click on the reference area.
-    //Expected: "Unassociate" is disabled.
+    //Expected: "Remove reference sequence" is disabled.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsDisabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
     GTGlobals::sleep();
@@ -525,17 +525,17 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     GTGlobals::sleep();
 
     //6. Right click on the reference area.
-    //Expected: "Unassociate" is enabled.
+    //Expected: "Remove reference sequence" is enabled.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
     GTGlobals::sleep(100);
 
-    //7. Click "Unassociate".
+    //7. Click "Remove reference sequence".
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "unassociateReferenceAction"));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
     //8. Right click on the reference area.
-    //Expected: "Unassociate" is disabled.
+    //Expected: "Remove reference sequence" is disabled.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsDisabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 }
@@ -583,7 +583,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
 
     //8. Right click on the reference area while the file is loading.
-    //Expected: "Unassociate" and "Set reference sequence" are disabled.
+    //Expected: "Remove reference sequence" and "Set reference sequence" are disabled.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "setReferenceAction", PopupChecker::IsDisabled));
     // GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "setReferenceAction", PopupChecker::IsDisabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
@@ -591,9 +591,9 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     //GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
     //9. Right click on the reference area after loading.
-    //Expected: "Unassociate" and "Set reference sequence" are enabled.
+    //Expected: "Remove reference sequence" and "Set reference sequence" are enabled.
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), QStringList() << "Set reference" << "Unassociate", PopupChecker::IsEnabled));
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, QStringList(), QStringList() << "Set reference" << "Remove reference sequence", PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 }
 

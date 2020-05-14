@@ -174,11 +174,15 @@ AssemblyReferenceArea::AssemblyReferenceArea(AssemblyBrowserUi * ui_) :
     setToolTip(tr("Reference sequence"));
     // setup menu
     referenceAreaMenu->addAction(ui_->getWindow()->getSetReferenceAction());
-    unassociateReferenceAction = referenceAreaMenu->addAction(tr("Unassociate"));
+    unassociateReferenceAction = referenceAreaMenu->addAction(QIcon(":core/images/remove_reference.png"), tr("Remove reference sequence"));
     unassociateReferenceAction->setObjectName("unassociateReferenceAction");
     connect(unassociateReferenceAction, SIGNAL(triggered()), SIGNAL(si_unassociateReference()));
     connect(getModel().data(), SIGNAL(si_referenceChanged()), SLOT(sl_onReferenceChanged()));
     sl_onReferenceChanged();
+}
+
+QAction *AssemblyReferenceArea::getUnassociateReferenceAction() {
+    return unassociateReferenceAction;
 }
 
 bool AssemblyReferenceArea::canDrawSequence() {

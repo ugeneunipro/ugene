@@ -2131,7 +2131,7 @@ GUI_TEST_CLASS_DEFINITION(test_4232) {
     CHECK_SET_ERR(!itemFont.bold(), "Variations object item is unexpectedly highlighted in Project view");
 
     // 6. Remove the sequence from the assembly view
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Unassociate"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Remove reference sequence"));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
 
     // Expected state: the sequence object and document aren't highlighted in the Project view

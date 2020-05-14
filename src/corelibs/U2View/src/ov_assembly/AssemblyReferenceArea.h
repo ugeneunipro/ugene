@@ -91,6 +91,8 @@ class AssemblyReferenceArea: public AssemblySequenceArea {
 public:
     AssemblyReferenceArea(AssemblyBrowserUi * ui);
 
+    QAction *getUnassociateReferenceAction();
+
 protected:
     virtual QByteArray getSequenceRegion(U2OpStatus &os);
     virtual bool canDrawSequence();
