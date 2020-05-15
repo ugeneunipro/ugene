@@ -1598,7 +1598,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_project::test_0028);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0030);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0031);
-    REGISTER_TEST(GUITest_common_scenarios_project::test_0032);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0033);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0034);
     REGISTER_TEST(GUITest_common_scenarios_project::test_0035);

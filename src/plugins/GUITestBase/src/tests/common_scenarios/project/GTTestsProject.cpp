@@ -103,7 +103,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     // 3. Fill the next field in dialog:
     //     {Destination folder} _common_data/scenarios/sandbox
     // 4. Click OK button
-    GTUtilsDialog::waitForDialog(os, new ExportProjectDialogFiller(os, testDir + "_common_data/scenarios/sandbox"));
+    GTUtilsDialog::waitForDialog(os, new ExportProjectDialogFiller(os, testDir + "_common_data/scenarios/sandbox/proj1.uprj"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Export project...");
     GTGlobals::sleep();
@@ -157,7 +157,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTGlobals::sleep(4000);
     GTUtilsDocument::checkDocument(os, "1CF7.pdb");
 
-    GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir + "_common_data/scenarios/sandbox", "proj2"));
+    GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir + "_common_data/scenarios/sandbox/proj2"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Save project as...");
     GTGlobals::sleep();
@@ -488,15 +488,6 @@ GUI_TEST_CLASS_DEFINITION(test_0031) {
     GTUtilsMdi::click(os, GTGlobals::Close);
     GTUtilsProject::openFiles(os, dataDir + "samples/FASTA/human_T1.fa");
 
-    GTGlobals::sleep();
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0032) {
-    GTUtilsProject::openFiles(os, testDir + "_common_data/scenarios/project/1.gb");
-
-    GTUtilsDialog::waitForDialog(os, new ExportProjectDialogSizeChecker(os, "project.uprj"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Export project...");
     GTGlobals::sleep();
 }
 

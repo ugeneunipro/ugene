@@ -159,7 +159,7 @@ protected:
     void keyPressEvent(QKeyEvent *event);
 
 private slots:
-    void sl_folderSelectClicked();
+    void sl_fileSelectClicked();
     void sl_fileNameEdited(const QString &);
     void sl_projectNameEdited(const QString &);
 

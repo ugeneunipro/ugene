@@ -218,7 +218,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     expectedImage = roDocumentIcon.pixmap(32, 32).toImage();
     CHECK_SET_ERR(expectedImage == foundImage, "Icon is unlocked");
 
-    GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir + "_common_data/scenarios/sandbox", "proj2"));
+    GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir + "_common_data/scenarios/sandbox/proj2"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Save project as...");
     GTGlobals::sleep();

@@ -179,7 +179,7 @@ void SaveProjectTask::prepare() {
 
             if (rc == QDialog::Accepted) {
                 AppContext::getProject()->setProjectName(d->projectNameEdit->text());
-                url = d->projectFolderEdit->text() + "/" + d->projectFileEdit->text();
+                url = d->projectFilePathEdit->text();
                 if (!url.endsWith(PROJECTFILE_EXT)) {
                     url.append(PROJECTFILE_EXT);
                 }

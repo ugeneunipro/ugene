@@ -37,28 +37,9 @@ void ExportProjectDialogChecker::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
-    QLineEdit *projectFileLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFileEdit", dialog));
+    QLineEdit *projectFileLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFilePathEdit", dialog));
     GT_CHECK(projectFileLineEdit != NULL, "LineEdit is NULL");
     GT_CHECK(projectFileLineEdit->text() == projectName, "Project name is not " + projectName);
-
-    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
-}
-#undef GT_METHOD_NAME
-#undef GT_CLASS_NAME
-
-#define GT_CLASS_NAME "GTUtilsDialog::ExportProjectDialogSizeChecker"
-#define GT_METHOD_NAME "commonScenario"
-void ExportProjectDialogSizeChecker::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
-
-    QLineEdit *projectFolderLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "exportFolderEdit", dialog));
-    GT_CHECK(projectFolderLineEdit != NULL, "LineEdit is NULL");
-
-    QLineEdit *projectFileLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFileEdit", dialog));
-    GT_CHECK(projectFileLineEdit != NULL, "LineEdit is NULL");
-
-    GT_CHECK(projectFileLineEdit->height() == projectFolderLineEdit->height(), "LineEdits vertical sizes is different");
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
 }
@@ -70,12 +51,8 @@ void ExportProjectDialogSizeChecker::commonScenario() {
 void ExportProjectDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");
-
-    QLineEdit *projectFolderLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "exportFolderEdit", dialog));
-    GT_CHECK(projectFolderLineEdit != NULL, "LineEdit is NULL");
-    GTLineEdit::setText(os, projectFolderLineEdit, projectFolder);
-
-    QLineEdit *projectFileLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFileEdit", dialog));
+    
+    QLineEdit *projectFileLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectFilePathEdit", dialog));
     GT_CHECK(projectFileLineEdit != NULL, "LineEdit is NULL");
     if (!projectName.isEmpty()) {
         GTLineEdit::setText(os, projectFileLineEdit, projectName);

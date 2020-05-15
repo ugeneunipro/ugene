@@ -58,7 +58,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //     {Project file name} proj2.uprj
     // 4. Click OK button
     // 5. Click NO in opened messagebox
-    GTUtilsDialog::waitForDialog(os, new ExportProjectDialogFiller(os, testDir + "_common_data/scenarios/sandbox", "proj2.uprj"));
+    GTUtilsDialog::waitForDialog(os, new ExportProjectDialogFiller(os, testDir + "_common_data/scenarios/sandbox/proj2.uprj"));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Export project...");
@@ -103,7 +103,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //     {Project Folder:} _common_data/scenarios/sandbox
     //     {Project file} proj2
     // 4. Click Save button
-    GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir + "_common_data/scenarios/sandbox", "proj2"));
+    GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir + "_common_data/scenarios/sandbox/proj2"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Save project as...");
     GTGlobals::sleep();

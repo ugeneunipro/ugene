@@ -108,7 +108,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //
     // 3. Fill the next field in dialog and click Save button:
     //     {Project Folder:} _common_data/scenarios/sandbox
-    GTUtilsDialog::waitForDialog(os, new ExportProjectDialogFiller(os, testDir + "_common_data/scenarios/sandbox"));
+    GTUtilsDialog::waitForDialog(os, new ExportProjectDialogFiller(os, testDir + "_common_data/scenarios/sandbox/proj2.uprj"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Export project...");
     GTGlobals::sleep();

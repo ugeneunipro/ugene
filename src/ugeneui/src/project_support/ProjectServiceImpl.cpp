@@ -103,18 +103,11 @@ void ProjectServiceImpl::sl_saveAs() {
     }
 
     U2OpStatus2Log os;
-    QString fullPath = GUrlUtils::prepareDirLocation(d->projectFolderEdit->text(), os);
-
-    if (fullPath.isEmpty()) {
-        QMessageBox::critical(0, L10N::errorTitle(), os.getError());
-        return;
-    }
-
-    AppContext::getSettings()->setValue(SETTINGS_DIR + "last_dir", fullPath, true);
+    
 
     AppContext::getProject()->setProjectName(d->projectNameEdit->text());
 
-    QString fileName = fullPath + "/" + d->projectFileEdit->text();
+    QString fileName = d->projectFilePathEdit->text();
     if (!fileName.endsWith(PROJECTFILE_EXT)) {
         fileName.append(PROJECTFILE_EXT);
     }

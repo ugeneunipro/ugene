@@ -198,18 +198,19 @@ void ProjectLoaderImpl::sl_newProject() {
     QObjectScopedPointer<ProjectDialogController> d = new ProjectDialogController(ProjectDialogController::New_Project, p);
     const int rc = d->exec();
     CHECK(!d.isNull(), );
-    AppContext::getSettings()->setValue(SETTINGS_DIR + "last_dir", d->projectFolderEdit->text(), true);
+    QFileInfo fi(d->projectFilePathEdit->text());
+    AppContext::getSettings()->setValue(SETTINGS_DIR + "last_dir", fi.absoluteDir().absolutePath(), true);
 
     if (rc == QDialog::Rejected) {
         updateState();
         return;
     }
 
-    QString fileName = d->projectFolderEdit->text() + "/" + d->projectFileEdit->text();
+    QString fileName = d->projectFilePathEdit->text();
     if (!fileName.endsWith(PROJECTFILE_EXT)) {
         fileName.append(PROJECTFILE_EXT);
     }
-    QFileInfo fi(fileName);
+    fi = QFileInfo(fileName);
     if (fi.exists()) {
         QFile::remove(fileName);
     }
@@ -814,8 +815,6 @@ ProjectDialogController::ProjectDialogController(ProjectDialogController::Mode m
     createButton = buttonBox->button(QDialogButtonBox::Ok);
     setModal(true);
     fileEditIsEmpty = false;
-    QString lastDir = AppContext::getSettings()->getValue(SETTINGS_DIR + "last_dir", QString(""), true).toString();
-    projectFolderEdit->setText(lastDir);
 
     if (m == Save_Project) {
         setWindowTitle(ProjectLoaderImpl::tr("Save project as"));
@@ -823,9 +822,7 @@ ProjectDialogController::ProjectDialogController(ProjectDialogController::Mode m
         projectNameEdit->setText(AppContext::getProject()->getProjectName());
         QString url = AppContext::getProject()->getProjectURL();
         if (!url.isEmpty()) {
-            QFileInfo fi(url);
-            projectFileEdit->setText(fi.completeBaseName());
-            projectFolderEdit->setText(fi.absolutePath());
+            projectFilePathEdit->setText(url);
         } else {
             setupDefaults();
         }
@@ -833,11 +830,11 @@ ProjectDialogController::ProjectDialogController(ProjectDialogController::Mode m
         setupDefaults();
     }
     //projectFolderEdit->setReadOnly(true);
-    if (projectFileEdit->text().isEmpty()) {
+    if (projectFilePathEdit->text().isEmpty()) {
         fileEditIsEmpty = true;
     }
-    connect(folderSelectButton, SIGNAL(clicked()), SLOT(sl_folderSelectClicked()));
-    connect(projectFileEdit, SIGNAL(textEdited(const QString &)), SLOT(sl_fileNameEdited(const QString &)));
+    connect(fileSelectButton, SIGNAL(clicked()), SLOT(sl_fileSelectClicked()));
+    connect(projectFilePathEdit, SIGNAL(textEdited(const QString &)), SLOT(sl_fileNameEdited(const QString &)));
     connect(projectNameEdit, SIGNAL(textEdited(const QString &)), SLOT(sl_projectNameEdited(const QString &)));
     updateState();
 }
@@ -845,14 +842,9 @@ ProjectDialogController::ProjectDialogController(ProjectDialogController::Mode m
 void ProjectDialogController::updateState() {
     bool ready = true;
 
-    const QString &folder = projectFolderEdit->text();
-    const QString &file = projectFileEdit->text();
+    const QString &file = projectFilePathEdit->text();
     const QString &name = projectNameEdit->text();
 
-    //todo: improve check
-    if (folder.isEmpty() || file.isEmpty() || name.isEmpty()) {
-        ready = false;
-    }
     createButton->setEnabled(ready);
 }
 
@@ -865,11 +857,11 @@ void ProjectDialogController::keyPressEvent(QKeyEvent *event) {
     }
 }
 
-void ProjectDialogController::sl_folderSelectClicked() {
-    QString folder = U2FileDialog::getExistingDirectory(this, tr("Choose folder"), projectFolderEdit->text());
-    if (folder.isEmpty())
+void ProjectDialogController::sl_fileSelectClicked() {
+    QString filepath = U2FileDialog::getSaveFileName(this, tr("Save file"), AppContext::getSettings()->getValue(SETTINGS_DIR + "last_dir").toString());
+    if (filepath.isEmpty())
         return;
-    projectFolderEdit->setText(folder);
+    projectFilePathEdit->setText(filepath);
     updateState();
 }
 
@@ -881,19 +873,18 @@ void ProjectDialogController::sl_fileNameEdited(const QString &) {
 
 void ProjectDialogController::sl_projectNameEdited(const QString &text) {
     if (fileEditIsEmpty) {
-        projectFileEdit->setText(text);
+        projectFilePathEdit->setText(text);
     }
     updateState();
 }
 
 void ProjectDialogController::setupDefaults() {
     projectNameEdit->setText(ProjectLoaderImpl::tr("New Project"));
-    projectFolderEdit->setText(QDir::home().absolutePath());
-    projectFileEdit->setText(ProjectLoaderImpl::tr("project"));
+    projectFilePathEdit->setText(ProjectLoaderImpl::tr("project"));
 }
 
 void ProjectDialogController::accept() {
-    QString projUrl = projectFolderEdit->text() + "/" + projectFileEdit->text() + ".uprj";
+    QString projUrl = projectFilePathEdit->text();
     QFileInfo info(projUrl);
     QString absPath = info.absoluteFilePath();
     if (info.exists()) {

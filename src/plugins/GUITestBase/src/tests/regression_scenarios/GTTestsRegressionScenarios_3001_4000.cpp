@@ -452,7 +452,7 @@ GUI_TEST_CLASS_DEFINITION(test_3073) {
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "render_area_human_T1 (UCSC April 2002 chr7:115977709-117855134)"));
 
     GTUtilsDocument::saveDocument(os, "test_3073.gb");
-    GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj_test_3073", sandBoxDir, "proj_test_3073"));
+    GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj_test_3073", sandBoxDir + "/proj_test_3073"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Save project as...",
                               GTGlobals::UseMouse);
@@ -837,7 +837,7 @@ GUI_TEST_CLASS_DEFINITION(test_3133) {
     GTUtilsProjectTreeView::findIndex(os, dbName);
     CHECK_OP(os, );
     //2. Save the project.
-    GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "test_3133", testDir + "_common_data/scenarios/sandbox/", "test_3133"));
+    GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "test_3133", testDir + "_common_data/scenarios/sandbox/test_3133"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Save project as...");
 
@@ -3265,7 +3265,7 @@ GUI_TEST_CLASS_DEFINITION(test_3484_1) {
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
     CHECK_SET_ERR(treeView != NULL, "TreeView not found");
 
-    GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj_3484_1", testDir + "_common_data/scenarios/sandbox/", "proj_3484_1"));
+    GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj_3484_1", testDir + "_common_data/scenarios/sandbox/proj_3484_1"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Save project as...");
     GTGlobals::sleep();

@@ -47,7 +47,7 @@ public:
     }
 
 private slots:
-    void sl_onBrowseButton();
+    void sl_onFileSelectButton();
 
 private:
     //canonical representation of the dir
