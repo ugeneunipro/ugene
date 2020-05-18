@@ -50,6 +50,8 @@ public:
     // global position of menu action's center
     static QPoint actionPos(GUITestOpStatus &os, const QMenu* menu, QAction* action);
 
+    static void checkMenuItems(GUITestOpStatus &os, const QString &menuName, const QStringList &menuItems);
+
     static const QString FILE;
     static const QString ACTIONS;
     static const QString SETTINGS;

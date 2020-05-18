@@ -5690,6 +5690,33 @@ GUI_TEST_CLASS_DEFINITION(test_6752) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
 }
+
+GUI_TEST_CLASS_DEFINITION(test_6786) {
+    //1. Open assembly file
+    //Expected state: menu actions contains next items "Export assembly to SAM format",
+    //"Export assembly region", "Assembly", "Set reference", "Remove reference sequence",
+    //"Reference", "Zoom in", "Zoom out", "Export as image", "Appearance", "Close active view"
+    const QString filePath = sandBoxDir + "test_6786.ugenedb";
+    GTFile::copy(os, testDir + "_common_data/ugenedb/sec1_9_ugenedb.ugenedb", filePath);
+
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTMenu::checkMenuItems(os, "Actions", QStringList() << "Export assembly to SAM format" 
+                                                        << "Export assembly region"
+                                                        << "Assembly"
+                                                        << "Set reference"
+                                                        << "Remove reference sequence"
+                                                        << "Reference"
+                                                        << "Zoom in"
+                                                        << "Zoom out" 
+                                                        << "Export as image" 
+                                                        << "Appearance" 
+                                                        << "Close active view");
+}
+
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2

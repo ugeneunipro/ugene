@@ -84,6 +84,48 @@ void GTMenuPrivate::checkMainMenuItemsState(GUITestOpStatus &os, const QStringLi
     GTGlobals::sleep(100);
 #endif
 }
+
+#undef GT_METHOD_NAME
+
+QStringList getActionTextList(QMenu *m) {
+    QStringList actionNames;
+    foreach (QAction *act, m->actions()) {
+        if (act->menu() != nullptr) {
+            actionNames << getActionTextList(act->menu());
+        }
+        if (!act->text().isEmpty()) {
+            actionNames << act->text();
+        }
+    }
+    return actionNames;
+}
+
+#define GT_METHOD_NAME "checkMenuItems"
+
+void GTMenuPrivate::checkMenuItems(GUITestOpStatus &os, const QString &menuName, const QStringList &menuItems) {
+    QList<QAction *> resultList;
+    foreach (QWidget *parent, GTMainWindow::getMainWindowsAsWidget(os)) {
+        QList<QAction *> list = parent->findChildren<QAction *>();
+        bool isContainMenu = false;
+        foreach (QAction *act, list) {
+            QString name = act->text().replace('&', "");
+            if (name == menuName) {
+                resultList << act;
+                isContainMenu = true;
+            }
+        }
+    }
+    GT_CHECK_RESULT(resultList.count() != 0, "action not found", );
+    GT_CHECK_RESULT(resultList.count() < 2, QString("There are %1 actions with this text").arg(resultList.count()), );
+
+    QStringList actualActions = getActionTextList(resultList.takeFirst()->menu());
+    QStringList expectedActions(menuItems);
+    qSort(actualActions);
+    qSort(expectedActions);
+
+    GT_CHECK_RESULT(actualActions == expectedActions, "actual menu items count different with expected", );
+}
+
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "showMainMenu"

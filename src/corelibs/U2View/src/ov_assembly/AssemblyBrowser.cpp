@@ -357,7 +357,7 @@ void AssemblyBrowser::buildStaticMenu(QMenu* staticMenu) {
         assembly->addAction(exportToSamAction);
         assembly->addAction(extractAssemblyRegionAction);
 
-        QMenu *reference = new QMenu(tr("Assembly"));
+        QMenu *reference = new QMenu(tr("Reference"));
         reference->addAction(setReferenceAction);
         reference->addAction(ui->getReferenceArea()->getUnassociateReferenceAction());
 
@@ -700,7 +700,7 @@ void AssemblyBrowser::setupActions() {
     connect(setReferenceAction, SIGNAL(triggered()), SLOT(sl_setReference()));
 
     addAnnotationsAction = new QAction(QIcon(":core/images/add_annotations_to_reference.png"), tr("Add annotations to reference"), this);
-    addAnnotationsAction->setObjectName("setReferenceAction");
+    addAnnotationsAction->setObjectName("setAnnotationsToReferenceAction");
     connect(addAnnotationsAction, SIGNAL(triggered()), SLOT(sl_addAnnotations()));
 
     extractAssemblyRegionAction = new QAction(QIcon(":core/images/extract_assembly_region.png"), tr("Export assembly region"), this);

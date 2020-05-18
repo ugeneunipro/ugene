@@ -32,6 +32,7 @@ public:
     static void clickMainMenuItem(GUITestOpStatus &os, const QStringList &itemPath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Qt::MatchFlag matchFlag = Qt::MatchExactly);
     static void checkMainMenuItemState(GUITestOpStatus &os, const QStringList &itemPath, PopupChecker::CheckOption expectedState);
     static void checkMainMenuItemsState(GUITestOpStatus &os, const QStringList &menuPath, const QStringList &itemsNames, PopupChecker::CheckOption expectedState);
+    static void checkMenuItems(GUITestOpStatus &os, const QString &menuName, const QStringList &menuItems);
 
 private:
     static void showMainMenu(GUITestOpStatus &os, const QString &menuName, GTGlobals::UseMethod m = GTGlobals::UseMouse);

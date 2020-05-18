@@ -313,6 +313,12 @@ void GTMenu::clickMenuItemByText(GUITestOpStatus &os, const QMenu *menu, const Q
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "checkMenuItems"
+void GTMenu::checkMenuItems(GUITestOpStatus &os, const QString &menuName, const QStringList &menuItems) {
+    GTMenuPrivate::checkMenuItems(os, menuName, menuItems);
+}
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 } // namespace
