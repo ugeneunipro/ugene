@@ -58,6 +58,12 @@ static void registerCoreServices() {
 }
 
 int main(int argc, char **argv) {
+    // User lauches the program manually
+    if (argc == 1) {
+        printf("Use \"ugeneui\" to start Unipro UGENE graphical interface or \"ugenecl\" to use the command-line interface.");
+        return 1;
+    }
+
     CrashHandler::setupHandler();
     CrashHandler::setSendCrashReports(false);
 
