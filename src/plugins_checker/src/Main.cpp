@@ -20,6 +20,7 @@
  */
 
 #include <QApplication>
+#include <QMessageBox>
 
 #include <U2Algorithm/OpenCLGpuRegistry.h>
 
@@ -58,11 +59,10 @@ static void registerCoreServices() {
 }
 
 int main(int argc, char **argv) {
-    // User lauches the program manually
-    if (argc == 1) {
-        printf("Use \"ugeneui\" to start Unipro UGENE graphical interface or \"ugenecl\" to use the command-line interface.");
-        return 1;
-    }
+    bool useGui = true;
+#if defined(Q_OS_UNIX) && defined(Q_WS_X11)
+    useGui = (XOpenDisplay(NULL) != NULL);
+#endif
 
     CrashHandler::setupHandler();
     CrashHandler::setSendCrashReports(false);
@@ -76,6 +76,19 @@ int main(int argc, char **argv) {
     GTIMER(c1, t1, "main()->QApp::exec");
 
     QApplication app(argc, argv);
+
+    // User lauches the program manually
+    if (argc == 1) {
+        if (useGui) {
+            QMessageBox msgBox;
+            msgBox.setWindowTitle("Information");
+            msgBox.setText("Use \"ugeneui\" to start Unipro UGENE graphical interface \nor \"ugenecl\" to use the command-line interface.");
+            msgBox.exec();
+        } else {
+            printf("Use \"ugeneui\" to start Unipro UGENE graphical interface or \"ugenecl\" to use the command-line interface.");
+        }
+        return 1;
+    }
 
     AppContextImpl *appContext = AppContextImpl::getApplicationContext();
     appContext->setWorkingDirectoryPath(QCoreApplication::applicationDirPath());

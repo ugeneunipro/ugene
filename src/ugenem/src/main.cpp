@@ -44,12 +44,6 @@ QString loadReport(int argc, char *argv[]) {
 }    // namespace
 
 int main(int argc, char *argv[]) {
-    // User lauches the program manually
-    if (argc == 1) {
-        printf("Use \"ugeneui\" to start Unipro UGENE graphical interface or \"ugenecl\" to use the command-line interface.");
-        return 1;
-    }
-
     bool useGui = true;
 #if defined(Q_OS_UNIX) && defined(Q_WS_X11)
     useGui = (XOpenDisplay(NULL) != NULL);
@@ -57,6 +51,19 @@ int main(int argc, char *argv[]) {
 
     QApplication a(argc, argv, useGui);
     Q_UNUSED(a);
+
+    // User lauches the program manually
+    if (argc == 1) {
+        if (useGui) {
+            QMessageBox msgBox;
+            msgBox.setWindowTitle("Information");
+            msgBox.setText("Use \"ugeneui\" to start Unipro UGENE graphical interface \nor \"ugenecl\" to use the command-line interface.");
+            msgBox.exec();
+        } else {
+            printf("Use \"ugeneui\" to start Unipro UGENE graphical interface or \"ugenecl\" to use the command-line interface.");
+        }
+        return 1;
+    }
 
 #ifdef Q_OS_MAC
     // A workaround to avoid using non-bundled plugins
