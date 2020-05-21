@@ -228,6 +228,8 @@ public:
 
     virtual QString getRadioButtonText() const;
 
+    virtual QStringList getEntries() const;
+
 protected:
 
    /* io - opened IOAdapter.

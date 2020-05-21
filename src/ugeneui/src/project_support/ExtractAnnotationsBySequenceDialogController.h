@@ -26,13 +26,18 @@
 
 #include <QDialog>
 
+#include <U2Core/DatatypeSerializeUtils.h>
+
 namespace U2 {
 
-class ExtractAnnotationsBySequenceDialog : public QDialog, public Ui_ExtractAnnotationsBySequenceDialog {
+class SaveDocumentController;
+
+class ExtractAnnotationsBySequenceDialogController : public QDialog, public Ui_ExtractAnnotationsBySequenceDialog {
 public:
-    ExtractAnnotationsBySequenceDialog(QWidget *parent = 0);
+    ExtractAnnotationsBySequenceDialogController(const QString &fileName, int fileSizeMb, const DocumentFormatId &formatId, const QStringList &entries, QWidget *parent = 0);
 
 private:
+    SaveDocumentController *saveController;
 };
 
 }

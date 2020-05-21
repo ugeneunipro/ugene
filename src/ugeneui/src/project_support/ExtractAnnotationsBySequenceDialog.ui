@@ -25,10 +25,21 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="widget" native="true"/>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLineEdit" name="filepathLineEdit"/>
+     </item>
+     <item>
+      <widget class="QToolButton" name="browseButton">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
-    <widget class="QTableWidget" name="annotationsTable"/>
+    <widget class="QTableWidget" name="annotationsSelectorTable"/>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -39,7 +50,7 @@
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Help|QDialogButtonBox::Ok|QDialogButtonBox::Open</set>
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok|QDialogButtonBox::Open</set>
      </property>
     </widget>
    </item>

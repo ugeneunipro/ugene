@@ -65,6 +65,7 @@
 #include "DocumentFormatSelectorController.h"
 #include "DocumentProviderSelectorController.h"
 #include "DocumentReadingModeSelectorController.h"
+#include "ExtractAnnotationsBySequenceDialogController.h"
 #include "MultipleDocumentsReadingModeSelectorController.h"
 #include "ProjectImpl.h"
 #include "ProjectLoaderImpl.h"
@@ -504,8 +505,7 @@ Task* ProjectLoaderImpl::openWithProjectTask(const QList<GUrl>& _urls, const QVa
                 conf.useImporters = hints.value(ProjectLoaderHint_UseImporters, true).toBool();
                 conf.bestMatchesOnly = false;
                 formats = DocumentUtils::detectFormat(url, conf);
-            }
-            else{
+            } else{
                 FormatDetectionResult result;
                 result.format = AppContext::getDocumentFormatRegistry()->getFormatById(hintsOverDocuments[ProjectLoaderHint_MultipleFilesMode_RealDocumentFormat].toString());
                 formats << result;
@@ -518,33 +518,25 @@ Task* ProjectLoaderImpl::openWithProjectTask(const QList<GUrl>& _urls, const QVa
                     dr.rawDataCheckResult.properties.unite(hints);
                     dr.rawDataCheckResult.properties.unite(hintsOverDocuments);
                     if (dr.format != NULL ) {
-                        if (dr.format->getFlags().testFlag(DocumentFormatFlag_CanBePartiallyRead /* && sizeCondition */) ) {
-                            //"Help", "Open file", "Extract by sequences", "Cancel"
-                            QMessageBox msgBox;
-                            msgBox.setWindowTitle(tr("Open File or Extract Data by Sequences?"));
-                            QString windowText = tr("The size of the \"%1\" is %2 Mb. It may take some time to parse the data."
-
-                                                    "Probably, the file contains annotations that belong to different sequences (chromosomes)." 
-                                                    "In case only some sequences are investigated, it is recommended to extract annotations that" 
-                                                    "belong to these sequences into a separate file."
-
-                                                    "Usage of the extracted annotations file of a smaller size will help to decrease the time needed for loading the data.");
-                            msgBox.setText(windowText);
-                            QAbstractButton *helpButton = msgBox.addButton(tr("Help"), QMessageBox::HelpRole);
-                            msgBox.addButton(tr("Nope"), QMessageBox::NoRole);
-
-                            msgBox.exec();
-
-                            if (msgBox.clickedButton() == helpButton) {
-                                //Execute command
-                            }
-                        }
                         /*
                         Here we check is format can partially read, check filesize. In that case we show dialog with choose of entries. 
                         Information about entries we store in hints.
                         Dialog will be placed here ugeneui\src\project_support\
                         Size check in format
                         */
+                        if (dr.format->getFlags().testFlag(DocumentFormatFlag_CanBePartiallyRead /* && sizeCondition */) ) {
+                            QStringList entries = dr.format->getEntries();
+                            entries << "A"
+                                    << "B"
+                                    << "C"
+                                    << "D"
+                                    << "E"
+                                    << "F"
+                                    << "G"
+                                    << "H";
+                            ExtractAnnotationsBySequenceDialogController dlg("file", 20, dr.format->getFormatId(), entries);
+                            dlg.exec();
+                        }
                         bool forceReadingOptions = hints.value(ProjectLoaderHint_ForceFormatOptions, false).toBool();
                         bool optionsAlreadyChosen = hints.value((ProjectLoaderHint_MultipleFilesMode_Flag), false).toBool()
                             || hints.value((DocumentReadingMode_SequenceMergeGapSize), false).toBool()

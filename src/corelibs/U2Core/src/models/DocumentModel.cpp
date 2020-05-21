@@ -197,6 +197,10 @@ QString DocumentFormat::getRadioButtonText() const {
     return QString();
 }
 
+QStringList DocumentFormat::getEntries() const {
+    return QStringList();
+}
+
 bool DocumentFormat::isObjectOpSupported(const Document* d, DocObjectOp op, GObjectType t) const {
     assert(d->getDocumentFormat() == this);
 

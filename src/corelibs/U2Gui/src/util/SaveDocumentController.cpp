@@ -44,11 +44,11 @@
 namespace U2 {
 
 SaveDocumentControllerConfig::SaveDocumentControllerConfig()
-    : fileNameEdit(NULL),
-      fileDialogButton(NULL),
-      formatCombo(NULL),
-      compressCheckbox(NULL),
-      parentWidget(NULL),
+    : fileNameEdit(nullptr),
+      fileDialogButton(nullptr),
+      formatCombo(nullptr),
+      compressCheckbox(nullptr),
+      parentWidget(nullptr),
       rollSuffix("_"),
       rollFileName(true),
       rollOutProjectUrls(false) {
@@ -180,11 +180,11 @@ void SaveDocumentController::sl_fileDialogButtonClicked() {
 void SaveDocumentController::sl_formatChanged(const QString &newFormat) {
     currentFormat = newFormat;
 
-    if (conf.compressCheckbox != NULL) {
+    if (conf.compressCheckbox != nullptr) {
         DocumentFormatRegistry* fr = AppContext::getDocumentFormatRegistry();
-        SAFE_POINT(fr != NULL, L10N::nullPointerError("DocumentFormatRegistry"), );
+        SAFE_POINT(fr != nullptr, L10N::nullPointerError("DocumentFormatRegistry"), );
         DocumentFormat* format = fr->getFormatById(formatsInfo.getIdByName(newFormat));
-        if (format != NULL) { // custom format names without DocumentFormat class can be added into the formats combobox (e.g. ExportCoverageDialog)
+        if (format != nullptr) { // custom format names without DocumentFormat class can be added into the formats combobox (e.g. ExportCoverageDialog)
             conf.compressCheckbox->setDisabled(format->checkFlags(DocumentFormatFlag_CannotBeCompressed));
         }
     }
@@ -206,7 +206,7 @@ void SaveDocumentController::sl_formatChanged(const QString &newFormat) {
 }
 
 void SaveDocumentController::sl_compressToggled(bool enable) {
-    CHECK(NULL != conf.compressCheckbox && conf.compressCheckbox->isEnabled(), );
+    CHECK(nullptr != conf.compressCheckbox && conf.compressCheckbox->isEnabled(), );
     QString path = conf.fileNameEdit->text();
     if (enable) {
         addGzExtension(path);
@@ -226,12 +226,12 @@ void SaveDocumentController::init() {
     connect(conf.fileNameEdit, SIGNAL(textChanged(const QString&)), SLOT(sl_fileNameChanged(const QString&)));
     connect(conf.fileNameEdit, SIGNAL(textEdited(const QString&)), SLOT(sl_fileNameChanged(const QString&)));
 
-    if (NULL != conf.compressCheckbox) {
+    if (nullptr != conf.compressCheckbox) {
         connect(conf.compressCheckbox, SIGNAL(toggled(bool)), SLOT(sl_compressToggled(bool)));
     }
 
     initFormatComboBox();
-    CHECK(conf.fileDialogButton != NULL, );
+    CHECK(conf.fileDialogButton != nullptr, );
     connect(conf.fileDialogButton, SIGNAL(clicked()), SLOT(sl_fileDialogButtonClicked()));
 }
 
@@ -254,34 +254,34 @@ void SaveDocumentController::initSimpleFormatInfo(const QList<DocumentFormatId> 
 
 void SaveDocumentController::initFormatComboBox() {
     currentFormat = formatsInfo.getFormatNameById(conf.defaultFormatId);
-    CHECK(conf.formatCombo != NULL, );
+    if (conf.formatCombo != nullptr) {
+        conf.formatCombo->blockSignals(true);
+        conf.formatCombo->clear();
 
-    conf.formatCombo->blockSignals(true);
-    conf.formatCombo->clear();
+        QStringList items = formatsInfo.getNames();
+        items.sort(Qt::CaseInsensitive);
+        conf.formatCombo->addItems(items);
 
-    QStringList items = formatsInfo.getNames();
-    items.sort(Qt::CaseInsensitive);
-    conf.formatCombo->addItems(items);
+        if (currentFormat.isEmpty()) {
+            currentFormat = conf.formatCombo->itemText(0);
+        }
+        conf.formatCombo->setCurrentText(currentFormat);
 
-    if (currentFormat.isEmpty()) {
-        currentFormat = conf.formatCombo->itemText(0);
+        connect(conf.formatCombo, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_formatChanged(const QString &)), Qt::UniqueConnection);
+        sl_formatChanged(conf.formatCombo->currentText());
+        conf.formatCombo->blockSignals(false);
     }
-    conf.formatCombo->setCurrentText(currentFormat);
-
-    connect(conf.formatCombo, SIGNAL(currentIndexChanged(const QString&)), SLOT(sl_formatChanged(const QString&)), Qt::UniqueConnection);
-    sl_formatChanged(conf.formatCombo->currentText());
-    conf.formatCombo->blockSignals(false);
 }
 
 bool SaveDocumentController::cutGzExtension(QString &path) const {
-    CHECK(NULL != conf.compressCheckbox, false);
+    CHECK(nullptr != conf.compressCheckbox, false);
     CHECK(path.endsWith(".gz"), false);
     path.chop(QString(".gz").length());
     return true;
 }
 
 void SaveDocumentController::addGzExtension(QString &path) const {
-    CHECK(NULL != conf.compressCheckbox && conf.compressCheckbox->isChecked() && conf.compressCheckbox->isEnabled(), );
+    CHECK(nullptr != conf.compressCheckbox && conf.compressCheckbox->isChecked() && conf.compressCheckbox->isEnabled(), );
     CHECK(!path.endsWith(".gz"), );
     path += ".gz";
 }
@@ -301,7 +301,7 @@ void SaveDocumentController::addFormatExtension(QString &path) const {
 
 QString SaveDocumentController::prepareDefaultFileFilter() const {
     QStringList extraExtensions;
-    if (NULL != conf.compressCheckbox && conf.compressCheckbox->isEnabled()) {
+    if (nullptr != conf.compressCheckbox && conf.compressCheckbox->isEnabled()) {
         extraExtensions << ".gz";
     }
 
@@ -315,7 +315,7 @@ QString SaveDocumentController::prepareFileFilter() const {
     }
 
     QStringList extraExtensions;
-    if (NULL != conf.compressCheckbox && conf.compressCheckbox->isEnabled()) {
+    if (nullptr != conf.compressCheckbox && conf.compressCheckbox->isEnabled()) {
         extraExtensions << ".gz";
     }
 
@@ -336,7 +336,7 @@ void SaveDocumentController::setPath(const QString &path, const QSet<QString>& e
 
 void SaveDocumentController::setFormat(const QString &formatId) {
     SAFE_POINT(!formatsInfo.getFormatNameById(formatId).isEmpty(), QString("Format '%1' not found in the model"), );
-    if (NULL != conf.formatCombo) {
+    if (nullptr != conf.formatCombo) {
         conf.formatCombo->setCurrentText(formatsInfo.getFormatNameById(formatId));
     } else {
         sl_formatChanged(formatsInfo.getFormatNameById(formatId));
