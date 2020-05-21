@@ -33,6 +33,7 @@
 #include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/Timer.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "GUITestTeamcityLogger.h"
@@ -112,7 +113,7 @@ void GUITestLauncher::run() {
             qint64 startTime = GTimer::currentTimeMicros();
             GUITestTeamcityLogger::testStarted(testNameForTeamCity);
 
-            QString testResult = performTest(testName);
+            QString testResult = runTest(testName);
             results[testName] = testResult;
             if (GUITestTeamcityLogger::testFailed(testResult)) {
                 renameTestLog(testName);
@@ -299,7 +300,24 @@ static bool restoreTestDirWithExternalScript(const QString &pathToShellScript) {
     return true;
 }
 
-QString GUITestLauncher::performTest(const QString &testName) {
+QString GUITestLauncher::runTest(const QString &testName) {
+    int repeatCount = qMax(qgetenv("UGENE_TEST_NUMBER_RERUN_FAILED_TEST").toInt(), 0);
+    QString testOutput;
+    for (int i = 0; i < 1 + repeatCount; i++) {
+        if (i >= 1) {
+            coreLog.error(QString("Re-running the test. Current re-run: %1, max re-runs: %2").arg(i).arg(repeatCount));
+        }
+        U2OpStatusImpl os;
+        testOutput = runTestOnce(os, testName, isVideoRecordingOn());
+        if (!os.hasError()) {
+            break;
+        }
+        coreLog.error(QString("Test failed with error: '%1'. Test output is '%2'.").arg(os.getError()).arg(testOutput));
+    }
+    return testOutput;
+}
+
+QString GUITestLauncher::runTestOnce(U2OpStatus &os, const QString &testName, bool enableVideoRecording) {
     QProcessEnvironment environment = getProcessEnvironment(testName);
 
     QString externalScriptToRestore = qgetenv("UGENE_TEST_EXTERNAL_SCRIPT_TO_RESTORE");
@@ -319,19 +337,20 @@ QString GUITestLauncher::performTest(const QString &testName) {
     qint64 processId = process.processId();
 
     QProcess screenRecorder;
-    if (isVideoRecordingOn()) {
+    if (enableVideoRecording) {
         screenRecorder.start(getScreenRecorderString(testName));
     }
 
-    bool started = process.waitForStarted();
-    if (!started) {
-        return tr("An error occurred while starting UGENE: ") + process.errorString();
+    bool isStarted = process.waitForStarted();
+    if (!isStarted) {
+        QString error = QString("An error occurred while starting UGENE: %1").arg(process.errorString());
+        os.setError(error);
+        return error;
     }
-    bool finished;
-    finished = process.waitForFinished(GUI_TEST_TIMEOUT_MILLIS);
+    bool isFinished = process.waitForFinished(GUI_TEST_TIMEOUT_MILLIS);
     QProcess::ExitStatus exitStatus = process.exitStatus();
 
-    if (!finished || exitStatus != QProcess::NormalExit) {
+    if (!isFinished || exitStatus != QProcess::NormalExit) {
         CmdlineTaskRunner::killChildrenProcesses(processId);
     }
 
@@ -341,7 +360,7 @@ QString GUITestLauncher::performTest(const QString &testName) {
 
     QString testResult = readTestResult(process.readAllStandardOutput());
 
-    if (isVideoRecordingOn()) {
+    if (enableVideoRecording) {
         screenRecorder.close();
         screenRecorder.waitForFinished(2000);
         if (!GUITestTeamcityLogger::testFailed(testResult)) {
@@ -349,17 +368,16 @@ QString GUITestLauncher::performTest(const QString &testName) {
         }
     }
 
-    if (finished && (exitStatus == QProcess::NormalExit)) {
+    if (isFinished && exitStatus == QProcess::NormalExit) {
         return testResult;
     }
 #ifdef Q_OS_WIN
     CmdlineTaskRunner::killProcessTree(process.processId());
 #endif
-    if (finished) {
-        return "An error occurred while finishing UGENE: " + process.errorString() + '\n' + testResult;
-    } else {
-        return "Test fails because of timeout.";
-    }
+    QString error = isFinished ? QString("An error occurred while finishing UGENE: %1\n%2").arg(process.errorString()).arg(testResult) :
+                                 QString("Test fails because of timeout.");
+    os.setError(error);
+    return error;
 }
 
 QStringList GUITestLauncher::getTestProcessArguments(const QString &testName) {

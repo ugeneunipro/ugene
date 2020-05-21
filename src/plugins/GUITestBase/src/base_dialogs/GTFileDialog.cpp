@@ -325,37 +325,45 @@ void GTFileDialogUtils::setViewMode(ViewMode v) {
 
 #define GT_METHOD_NAME "openFile"
 void GTFileDialog::openFile(GUITestOpStatus &os, const QString &path, const QString &fileName, Button button, GTGlobals::UseMethod m) {
-    bool isDirectApiMode = qgetenv("UGENE_USE_DIRECT_API_TO_OPEN_FILES") == "1";
-    if (isDirectApiMode) {
-        class OpenFileScenario : public CustomScenario {
-        public:
-            OpenFileScenario(const QString &pathToFile)
-                : pathToFile(pathToFile) {
-            }
-            void run(HI::GUITestOpStatus &os) {
-                Q_UNUSED(os);
-                auto openFileTask = U2::AppContext::getProjectLoader()->openWithProjectTask(pathToFile);
-                if (openFileTask == nullptr) {
-                    os.setError("Failed to create open file task: " + pathToFile + ". Is the file already in the project?");
-                    return;
-                }
-                U2::AppContext::getTaskScheduler()->registerTopLevelTask(openFileTask);
-            }
-            QString pathToFile;
-        };
-        GTThread::runInMainThread(os, new OpenFileScenario(path + "/" + fileName));
-        GTGlobals::sleep(200);
-    } else {
-        auto utils = new GTFileDialogUtils(os, path, fileName, (GTFileDialogUtils::Button)button, m);
-        GTUtilsDialog::waitForDialog(os, utils);
-        utils->openFileDialog();
+    bool isDirectApiMode = button == Open && qgetenv("UGENE_USE_DIRECT_API_TO_OPEN_FILES") == "1";
+    if (!isDirectApiMode) {
+        openFileWithDialog(os, path, fileName, button, m);
+        return;
     }
+    class OpenFileScenario : public CustomScenario {
+    public:
+        OpenFileScenario(const QString &pathToFile)
+            : pathToFile(pathToFile) {
+        }
+        void run(HI::GUITestOpStatus &os) {
+            Q_UNUSED(os);
+            auto openFileTask = U2::AppContext::getProjectLoader()->openWithProjectTask(pathToFile);
+            if (openFileTask == nullptr) {
+                os.setError("Failed to create open file task: " + pathToFile + ". Is the file already in the project?");
+                return;
+            }
+            U2::AppContext::getTaskScheduler()->registerTopLevelTask(openFileTask);
+        }
+        QString pathToFile;
+    };
+    GTThread::runInMainThread(os, new OpenFileScenario(path + "/" + fileName));
+    GTGlobals::sleep(200);
     GTThread::waitForMainThread();
     GTGlobals::sleep(100);
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "openFile"
+#define GT_METHOD_NAME "openFileWithDialog"
+void GTFileDialog::openFileWithDialog(GUITestOpStatus &os, const QString &path, const QString &fileName, Button button, GTGlobals::UseMethod m) {
+    auto utils = new GTFileDialogUtils(os, path, fileName, (GTFileDialogUtils::Button)button, m);
+    GTUtilsDialog::waitForDialog(os, utils);
+    utils->openFileDialog();
+    GTThread::waitForMainThread();
+    GTGlobals::sleep(100);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "openFileByPath"
 void GTFileDialog::openFile(GUITestOpStatus &os, const QString &filePath, Button button, GTGlobals::UseMethod m) {
     int num = filePath.lastIndexOf('/');
     if (num == -1) {

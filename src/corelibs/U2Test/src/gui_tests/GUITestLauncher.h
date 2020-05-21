@@ -34,6 +34,8 @@
 
 namespace U2 {
 
+class U2OpStatus;
+
 class GUITestLauncher : public Task {
     Q_OBJECT
 public:
@@ -58,7 +60,11 @@ private:
     static QString getTestOutDir();
 
     void firstTestRunCheck(const QString &testName);
-    QString performTest(const QString &testName);
+
+    QString runTest(const QString &testName);
+
+    QString runTestOnce(U2OpStatus &os, const QString &testName, bool enableVideoRecording);
+
     static QString readTestResult(const QByteArray &output);
     bool renameTestLog(const QString &testName);
 

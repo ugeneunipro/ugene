@@ -221,7 +221,7 @@ Primer InSilicoPcrWorker::createPrimer(GObject *object, bool &skipped, U2OpStatu
 
     if (primerSeq->getSequenceLength() > Primer::MAX_LEN) {
         skipped = true;
-        reportError(tr("Primer sequence is too long: %1. The pair is skipped").arg(primerSeq->getSequenceName()));
+        coreLog.details(tr("Primer sequence is too long: %1. The pair is skipped").arg(primerSeq->getSequenceName()));
         return result;
     }
 

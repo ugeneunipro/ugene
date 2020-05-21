@@ -692,7 +692,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_1) {
     //    Expected state: there are two annotation table objects
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
-    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/DNA.fa");
+    GTFileDialog::openFileWithDialog(os, testDir, "_common_data/fasta/DNA.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141619"), "No GXL_141619 object!");
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141618"), "No GXL_141618 object!");
@@ -743,7 +743,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     //    Expected state: there are two annotation table objects
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
-    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/DNA.fa");
+    GTFileDialog::openFileWithDialog(os, testDir, "_common_data/fasta/DNA.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141619"), "No GXL_141619 object!");
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141618"), "No GXL_141618 object!");
@@ -794,7 +794,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010_3) {
     //    Expected state: there are two annotation table objects
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
-    GTUtilsProject::openFile(os, testDir + "_common_data/fasta/DNA.fa");
+    GTFileDialog::openFileWithDialog(os, testDir, "_common_data/fasta/DNA.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141619"), "No GXL_141619 object!");
     CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "GXL_141618"), "No GXL_141618 object!");
@@ -975,7 +975,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
 
     QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "scaffold_90 features");
     QWidget *sequence = GTUtilsSequenceView::getSeqWidgetByNumber(os);
-    CHECK_SET_ERR(sequence != NULL, "Sequence widget not found");
+    CHECK_SET_ERR(sequence != nullptr, "Sequence widget not found");
 
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsProjectTreeView::dragAndDrop(os, idx, sequence);

@@ -29,6 +29,7 @@
 #include <QDir>
 #include <QGuiApplication>
 #include <QMainWindow>
+#include <QProcess>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Log.h>
