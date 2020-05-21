@@ -27,10 +27,6 @@
 #include "SendReportDialog.h"
 #include "Utils.h"
 
-#if defined(Q_OS_UNIX) && defined(Q_WS_X11)
-#    include <X11/Xlib.h>
-#endif
-
 namespace {
 QString loadReport(int argc, char *argv[]) {
     if (Utils::hasReportUrl()) {
@@ -45,8 +41,12 @@ QString loadReport(int argc, char *argv[]) {
 
 int main(int argc, char *argv[]) {
     bool useGui = true;
-#if defined(Q_OS_UNIX) && defined(Q_WS_X11)
-    useGui = (XOpenDisplay(NULL) != NULL);
+#if defined(Q_OS_UNIX)
+    useGui = (getenv("DISPLAY") != 0);
+    if (!useGui && argc==1) {
+        printf("Use \"ugeneui\" to start Unipro UGENE graphical interface or \"ugenecl\" to use the command-line interface.");
+        return 1;
+    }
 #endif
 
     QApplication a(argc, argv, useGui);
