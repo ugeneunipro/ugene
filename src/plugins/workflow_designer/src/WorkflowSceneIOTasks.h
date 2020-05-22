@@ -60,7 +60,7 @@ private:
 
     Schema *schema;
     Metadata *meta;
-    WorkflowScene *scene;
+    QPointer<WorkflowScene> scene;
     QString url;
     QString rawData;
     LoadWorkflowTask::FileFormat format;

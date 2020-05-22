@@ -305,10 +305,7 @@ WorkflowView::WorkflowView(WorkflowGObject *go)
 WorkflowView::~WorkflowView() {
     uiLog.trace("~WorkflowView");
     if (!loadWorkflowSceneTask.isNull()) {
-        TaskScheduler*  ts = AppContext::getTaskScheduler();
-        SAFE_POINT(ts != nullptr, "TaskScheduler isn't found", );
-
-        ts->cancelTask(loadWorkflowSceneTask);
+        loadWorkflowSceneTask->cancel();
     }
     if (AppContext::getProjectService()) {
         AppContext::getProjectService()->enableSaveAction(true);
