@@ -101,6 +101,7 @@ Task::ReportResult LoadWorkflowSceneTask::report() {
     if (hasError()) {
         return ReportResult_Finished;
     }
+    CHECK(scene != nullptr, ReportResult_Finished);
 
     QString err;
     if (!scene->items().isEmpty()) {

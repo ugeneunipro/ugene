@@ -60,6 +60,7 @@ class BreakpointManagerView;
 class WorkflowInvestigationWidgetsController;
 class WorkflowTabView;
 class ExternalToolLogParser;
+class LoadWorkflowSceneTask;
 
 class WorkflowScene : public QGraphicsScene {
     Q_OBJECT
@@ -401,6 +402,7 @@ private:
     BreakpointManagerView *breakpointView;
     QTabWidget *bottomTabs;
     WorkflowInvestigationWidgetsController *investigationWidgets;
+    QPointer<LoadWorkflowSceneTask> loadWorkflowSceneTask;
 
     ExternalToolLogParser *rLogParser;
 };

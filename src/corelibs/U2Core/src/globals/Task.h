@@ -535,6 +535,8 @@ public:
 
     virtual QDateTime estimatedFinishTime(Task *) const = 0;
 
+    virtual void cancelTask(Task* t) = 0;
+
     virtual void cancelAllTasks() = 0;
 
     virtual QString getStateName(Task *t) const = 0;
