@@ -504,10 +504,6 @@ void EntrezQueryTask::sl_replyFinished(QNetworkReply *reply) {
         runRequest(redirectedUrl);
         return;
     }
-//     QString replyStr = QString(reply->readAll());
-//     coreLog.info("================================");
-//     coreLog.info(replyStr);
-//     coreLog.info("================================");
     QXmlInputSource source(reply);
     xmlReader.setContentHandler(resultHandler);
     xmlReader.setErrorHandler(resultHandler);
@@ -561,7 +557,6 @@ bool ESearchResultHandler::characters(const QString &str) {
 }
 
 bool ESearchResultHandler::fatalError(const QXmlParseException &exception) {
-    QString message = exception.message();
     Q_UNUSED(exception);
     assert(0);
     return false;
