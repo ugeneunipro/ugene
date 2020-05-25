@@ -338,10 +338,10 @@ BaseEntrezRequestTask::~BaseEntrezRequestTask() {
 }
 
 void BaseEntrezRequestTask::sl_onError() {
+    loop->exit();
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
     CHECK(reply != nullptr, )
     stateInfo.setError(reply->errorString());
-    loop->exit();
 }
 
 void BaseEntrezRequestTask::sl_uploadProgress(qint64 bytesSent, qint64 bytesTotal) {
