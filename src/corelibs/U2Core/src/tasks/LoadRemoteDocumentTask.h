@@ -178,7 +178,7 @@ public:
 
 protected slots:
     virtual void sl_replyFinished(QNetworkReply *reply) = 0;
-    void sl_onError(QNetworkReply::NetworkError error);
+    void sl_onError();
     void sl_uploadProgress(qint64 bytesSent, qint64 bytesTotal);
     virtual void onProxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *);
 
