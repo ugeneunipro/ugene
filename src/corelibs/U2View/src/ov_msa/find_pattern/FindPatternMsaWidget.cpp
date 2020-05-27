@@ -738,7 +738,7 @@ int FindPatternMsaWidget::getMaxError(const QString &pattern) const {
 }
 
 QStringList FindPatternMsaWidget::getPatternsFromTextPatternField(U2OpStatus &os) const {
-    QString inputText = textPattern->toPlainText().toLocal8Bit();
+    QString inputText = textPattern->toPlainText();
     QList<NamePattern> nameList = FastaFormat::getSequencesAndNamesFromUserInput(inputText, os);
     if (!nameList.isEmpty()) {
         QStringList result;
@@ -927,6 +927,8 @@ void FindPatternMsaWidget::runSearchInSequenceNames(const QStringList &patterns)
         }
         for (int i = 0, n = multipleAlignment->getNumRows(); i < n; i++) {
             const MultipleAlignmentRow &row = multipleAlignment->getRow(i);
+            //DEBUG
+            QString rowName = row->getName();
             if (row->getName().contains(pattern, Qt::CaseInsensitive)) {
                 resultRowIndexSet << i;
             }
