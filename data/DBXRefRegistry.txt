@@ -202,7 +202,7 @@ SK-FST|||Saskatoon Arabidopsis T-DNA mutant population - SK Collection
 
 SoyBase|||Glycine max Genome Database
 
-SPTREMBL|http://www.ebi.ac.uk/uniprot/unisave/?query=%1&search=Go||SWISS-PROT protein sequence database
+SPTREMBL|http://www.ebi.ac.uk/uniprot/unisave/app/#/search/%1||SWISS-PROT protein sequence database
 
 SRPDB|||Signal Recognition Particle Database
 
