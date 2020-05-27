@@ -149,6 +149,9 @@ private:
     void startTrackingRemovedObjects(Task *deleteTask, const QHash<GObject *, Document *> &objs2Docs);
     void startTrackingRemovedFolders(Task *deleteTask, const QList<Folder> &folders);
 
+    static const int NAME_DISPLAYING_SYMBOLS_COUNT;
+    static const int MAX_DISPLAING_NAME_COUNT;
+
     static bool isObjectRemovable(GObject *object);
     static bool isFolderRemovable(const Folder &folder);
     bool isAnyObjectInRecycleBin(const QList<GObject *> &objects);

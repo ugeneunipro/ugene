@@ -65,6 +65,9 @@
 
 namespace U2 {
 
+const int ProjectTreeController::NAME_DISPLAYING_SYMBOLS_COUNT = 30;
+const int ProjectTreeController::MAX_DISPLAING_NAME_COUNT = 5;
+
 ProjectTreeController::ProjectTreeController(EditableTreeView *tree, const ProjectTreeControllerModeSettings &settings, QObject *parent)
     : QObject(parent),
       tree(tree),
@@ -792,8 +795,64 @@ void ProjectTreeController::sl_onRemoveSelectedItems() {
     const QList<Document *> selectedDocs = getDocsInSelection(deriveDocsFromObjs).values();
     const QList<Folder> selectedFolders = getSelectedFolders();
     const QList<GObject *> selectedObjects = objectSelection.getSelectedObjects();
+    
+    QStringList selectedItemNames;
+    foreach(Document * doc, selectedDocs) {
+        selectedItemNames.append(doc->getName());
+    }
+    foreach(const Folder& folder, selectedFolders) {
+        selectedItemNames.append(folder.getFolderName());
+    }
+    foreach(GObject* obj, selectedObjects) {
+        selectedItemNames.append(obj->getGObjectName());
+    }
+    
+    QString fullItemsNamesList;
 
-    removeItems(selectedDocs, selectedFolders, selectedObjects);
+    QString warningMessageText = (1 == selectedItemNames.count()) ? tr("Remove selected item?") : tr("Remove selected items?");
+    warningMessageText += "<ul style=\"margin-top:5px;margin-bottom:0px\"><li>";
+
+    const bool tooManyItemsSelected = (MAX_DISPLAING_NAME_COUNT < selectedItemNames.count());
+
+    int itemCounter = 0;
+    foreach (QString name, selectedItemNames) {
+        if (tooManyItemsSelected) {
+            fullItemsNamesList += " - " + name + "\n";
+        }
+
+        if (MAX_DISPLAING_NAME_COUNT >= ++itemCounter) {
+            // cut long names
+            if (NAME_DISPLAYING_SYMBOLS_COUNT < name.size()) {
+                name = name.left(NAME_DISPLAYING_SYMBOLS_COUNT);
+                name += "...";
+            }
+            warningMessageText += name;
+            warningMessageText += "</li><li>";
+        }
+    }
+    // remove last delimiter
+    warningMessageText = warningMessageText.left(
+        warningMessageText.length() - 9); // 9 is "</li><li>" length
+    warningMessageText += "</li></ul>";
+    if (tooManyItemsSelected) {
+        warningMessageText += "<pre style=\"margin-top:0px;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...</pre>";
+    }
+
+    QObjectScopedPointer<QMessageBox> questionBox = new QMessageBox;
+    questionBox->setIcon(QMessageBox::Question);
+    questionBox->setWindowTitle(QObject::tr("Removing Dashboards"));
+    questionBox->setText(warningMessageText);
+    if (tooManyItemsSelected) {
+        questionBox->setDetailedText(fullItemsNamesList);
+    }
+    questionBox->addButton(QMessageBox::Yes);
+    questionBox->addButton(QMessageBox::No);
+    questionBox->exec();
+    CHECK(!questionBox.isNull(), );
+    
+    if (questionBox->result() == QMessageBox::Yes) {
+        removeItems(selectedDocs, selectedFolders, selectedObjects);
+    }
 }
 
 void ProjectTreeController::sl_onLockedStateChanged() {
