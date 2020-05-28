@@ -927,8 +927,6 @@ void FindPatternMsaWidget::runSearchInSequenceNames(const QStringList &patterns)
         }
         for (int i = 0, n = multipleAlignment->getNumRows(); i < n; i++) {
             const MultipleAlignmentRow &row = multipleAlignment->getRow(i);
-            //DEBUG
-            QString rowName = row->getName();
             if (row->getName().contains(pattern, Qt::CaseInsensitive)) {
                 resultRowIndexSet << i;
             }
