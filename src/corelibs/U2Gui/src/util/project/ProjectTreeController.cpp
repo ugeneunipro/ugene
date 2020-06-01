@@ -809,10 +809,10 @@ void ProjectTreeController::sl_onRemoveSelectedItems() {
     
     QString fullItemsNamesList;
 
-    QString warningMessageText = (1 == selectedItemNames.count()) ? tr("Remove selected item?") : tr("Remove selected items?");
+    QString warningMessageText = (selectedItemNames.count() == 1) ? tr("Do you really want to remove the selected item?") : tr("Do you really want to remove the selected items?");
     warningMessageText += "<ul style=\"margin-top:5px;margin-bottom:0px\"><li>";
 
-    const bool tooManyItemsSelected = (MAX_DISPLAING_NAME_COUNT < selectedItemNames.count());
+    const bool tooManyItemsSelected = (selectedItemNames.count() > MAX_DISPLAING_NAME_COUNT);
 
     int itemCounter = 0;
     foreach (QString name, selectedItemNames) {
@@ -840,7 +840,7 @@ void ProjectTreeController::sl_onRemoveSelectedItems() {
 
     QObjectScopedPointer<QMessageBox> questionBox = new QMessageBox;
     questionBox->setIcon(QMessageBox::Question);
-    questionBox->setWindowTitle(QObject::tr("Removing Dashboards"));
+    questionBox->setWindowTitle((selectedItemNames.count() == 1) ? tr("Remove selected item?") : tr("Remove selected items?"));
     questionBox->setText(warningMessageText);
     if (tooManyItemsSelected) {
         questionBox->setDetailedText(fullItemsNamesList);
