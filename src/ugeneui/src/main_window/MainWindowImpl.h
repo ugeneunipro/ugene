@@ -104,6 +104,7 @@ private slots:
     void sl_exitAction();
     void sl_aboutAction();
     void sl_checkUpdatesAction();
+    void sl_createDesktopShortcutAction();
     void sl_visitWeb();
     void sl_viewOnlineDocumentation();
     void sl_openManualAction();
@@ -135,6 +136,7 @@ private:
     QAction *exitAction;
     QAction *aboutAction;
     QAction *checkUpdateAction;
+    QAction *createDesktopShortcutAction;
     QAction *visitWebAction;
     QAction *viewOnlineDocumentation;
     QAction *openManualAction;
