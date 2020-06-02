@@ -145,7 +145,7 @@ void CircularView::mouseMoveEvent(QMouseEvent *e) {
     // compute selection
     qint64 selStart = lastPressPos;
     qint64 selEnd = movement;
-    bool twoParts = selStart > selEnd;
+    bool twoParts = false;
     if (selStart > selEnd) {
         qSwap<qint64>(selStart, selEnd);
     }
@@ -313,8 +313,9 @@ void CircularView::invertCurrentSelection() {
     const QVector<U2Region> &regions = selection->getSelectedRegions();
     CHECK(regions.size() == 1 || regions.size() == 2, );
     if (regions.size() == 1) {
-        setSelection(U2Region(regions[0].endPos(), seqLen - regions[0].endPos()));
-        addSelection(U2Region(0, regions[0].startPos));
+        U2Region endReg(regions[0].endPos(), seqLen - regions[0].endPos());
+        setSelection(U2Region(0, regions[0].startPos));
+        addSelection(endReg);
     } else if (regions[0].startPos == 0 && regions[1].endPos() == seqLen) {
         setSelection(U2Region(regions[0].endPos(), regions[1].startPos - regions[0].endPos()));
     } else if (regions[1].startPos == 0 && regions[0].endPos() == seqLen) {
