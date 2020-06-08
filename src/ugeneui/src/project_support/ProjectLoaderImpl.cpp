@@ -871,7 +871,8 @@ void ProjectDialogController::keyPressEvent(QKeyEvent *event) {
 }
 
 void ProjectDialogController::sl_fileSelectClicked() {
-    QString filepath = U2FileDialog::getSaveFileName(this, tr("Save file"), AppContext::getSettings()->getValue(SETTINGS_DIR + "last_dir").toString(), tr("Project files (*.proj)"));
+    QString filepath = U2FileDialog::getSaveFileName(this, tr("Save file"), AppContext::getSettings()->getValue(SETTINGS_DIR + "last_dir").toString(), 
+        tr("Project files") + DIALOG_FILTER_PROJECT_EXT);
     if (filepath.isEmpty())
         return;
     projectFilePathEdit->setText(filepath);

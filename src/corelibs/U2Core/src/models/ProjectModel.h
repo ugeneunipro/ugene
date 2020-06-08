@@ -39,6 +39,7 @@ class U2OpStatus;
 
 #define PROJECT_FILE_PURE_EXT QString("uprj")
 #define PROJECTFILE_EXT QString("." + PROJECT_FILE_PURE_EXT)
+#define DIALOG_FILTER_PROJECT_EXT QString(" (*" + PROJECTFILE_EXT + ")")
 
 //data loader hints
 #define ProjectLoaderHint_CloseActiveProject "close-active-project"
