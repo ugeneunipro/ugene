@@ -518,13 +518,13 @@ static void findInAmino_regExp(FindAlgorithmResultsListener *rl,
                                int maxRegExpResult,
                                int &stopFlag,
                                int &percentsCompleted) {
+    QRegExp regExp(pattern, Qt::CaseInsensitive);
+    CHECK(regExp.isValid(), );
+
     percentsCompleted = 0;
 
     int conStart = isDirect(strand) ? 0 : 1;
     int conEnd = isComplement(strand) ? 2 : 1;
-
-    QRegExp regExp(pattern, Qt::CaseInsensitive);
-    SAFE_POINT(regExp.isValid(), "Invalid regular expression supplied!", );
 
     int maxAminoResult = maxRegExpResult * 3;
     int seqLen = QByteArray(seq).size();
@@ -589,6 +589,9 @@ static void findRegExp(FindAlgorithmResultsListener *rl,
                        int maxRegExpResult,
                        int &stopFlag,
                        int &percentsCompleted) {
+    QRegExp regExp(pattern, Qt::CaseInsensitive);
+    CHECK(regExp.isValid(), );
+
     if (aminoTT != NULL) {
         findInAmino_regExp(rl, aminoTT, complTT, strand, seq, range, searchIsCircular, pattern, maxRegExpResult, stopFlag, percentsCompleted);
         return;
@@ -599,9 +602,6 @@ static void findRegExp(FindAlgorithmResultsListener *rl,
     int seqLen = QByteArray(seq).size();
     const int conStart = isDirect(strand) ? 0 : 1;
     const int conEnd = isComplement(strand) ? 2 : 1;
-
-    QRegExp regExp(pattern, Qt::CaseInsensitive);
-    SAFE_POINT(regExp.isValid(), "Invalid regular expression supplied!", );
 
     for (int ci = conStart; ci < conEnd && !stopFlag; ++ci) {
         QString substr;
