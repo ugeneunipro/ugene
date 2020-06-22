@@ -241,7 +241,7 @@ void McaEditorReferenceArea::setReferenceSelection(QMouseEvent *e) {
         start = pos;
         count = 1;
     }
-    int length = editor->getReferenceContext()->getSequenceLength();
+    qint64 length = editor->getReferenceContext()->getSequenceLength();
     if (start + count >= length) {
         count = length - start;
     }
