@@ -155,8 +155,7 @@ char MaConsensusAlgorithmSimpleExtended::getConsensusChar(const MultipleAlignmen
     QVector<QVector<char>> frequencies = getFrequences(ma, column, seqIdx);
 
     char bestCharacter = INVALID_CONS_CHAR;
-    int thresholdCount = ((frequencies.size() - 1) * getThreshold()) / 100;
-    thresholdCount += (((frequencies.size() - 1) * getThreshold()) % 100) == 0 ? 0 : 1;
+    const int thresholdCount = ceil(((frequencies.size() - 1) * getThreshold()) / 100.0);
 
     for (int frequency = frequencies.size() - 1; frequency > 0; frequency--) {
         CHECK_CONTINUE(0 < frequencies[frequency].size());
@@ -171,6 +170,11 @@ char MaConsensusAlgorithmSimpleExtended::getConsensusChar(const MultipleAlignmen
         if (frequencies[frequency].size() > 1 || (frequencies[frequency].size() == 1 && bestCharacter != INVALID_CONS_CHAR)) {
             // There are no characters that fit the threshold, but we can merge a bit less popular characters
             return mergeCharacters(frequencies[frequency] << bestCharacter);
+        }
+        if (frequencies[frequency].size() == 1) {
+            // There are no characters that fit the threshold and we found a single the most popular character.
+            // We need more characters to merge them with this one.
+            bestCharacter = frequencies[frequency].first();
         }
     }
 
