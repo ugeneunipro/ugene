@@ -227,7 +227,13 @@ QString Shtirlitz::formSystemReport() {
     QString qtVersion = qVersion();
     QString osName;
     QString osVersion;
-    getOsNameAndVersion(osName, osVersion);
+    QString kernelType;
+    QString kernelVersion;
+    QString productVersion;
+    QString productType;
+    QString prettyProductName;
+    QString cpuArchitecture;
+    getSysInfo(osName, osVersion, kernelType, kernelVersion, productVersion, productType, prettyProductName, cpuArchitecture);
 
     QString systemReport;
     systemReport += "SYSTEM REPORT:\n";
@@ -238,12 +244,25 @@ QString Shtirlitz::formSystemReport() {
     systemReport += "Word size: " + QString::number(QSysInfo::WordSize) + "\n";
     systemReport += "OS name: " + osName + "\n";
     systemReport += "OS version: " + osVersion + "\n";
+    systemReport += "kernelType: " + kernelType + "\n";
+    systemReport += "kernelVersion: " + kernelVersion + "\n";
+    systemReport += "productVersion: " + productVersion + "\n";
+    systemReport += "productType: " + productType + "\n";
+    systemReport += "prettyProductName: " + prettyProductName + "\n";
+    systemReport += "cpuArchitecture: " + cpuArchitecture + "\n";
     systemReport += "ENDOF SYSTEM REPORT.\n";
 
     return systemReport;
 }
 
-void Shtirlitz::getOsNameAndVersion(QString &name, QString &version) {
+void Shtirlitz::getSysInfo(QString &name,
+                           QString &version,
+                           QString &kernelType,
+                           QString &kernelVersion,
+                           QString &productVersion,
+                           QString &productType,
+                           QString &prettyProductName,
+                           QString &cpuArchitecture) {
 #if defined(Q_OS_WIN)
     name = "Windows";
     version = QString::number(QSysInfo::WindowsVersion);
@@ -252,16 +271,23 @@ void Shtirlitz::getOsNameAndVersion(QString &name, QString &version) {
     version = QString::number(QSysInfo::MacintoshVersion);
 #elif defined(Q_OS_LINUX)
     name = "Linux";
-    Q_UNUSED(version);    //no version is available :(
+    version = "unknown";    //no version is available :(
 #elif defined(Q_OS_FREEBSD)
     name = "FreeBSD";
-    Q_UNUSED(version);    //no version is available :(
+    version = "unknown";    //no version is available :(
 #elif defined(Q_OS_UNIX)
     name = "Unix";
-    Q_UNUSED(version);    //no version is available :(
+    version = "unknown";    //no version is available :(
 #else
     name = "Other";
+    version = "unknown";
 #endif
+    kernelType = QSysInfo::kernelType();
+    kernelVersion = QSysInfo::kernelVersion();
+    productVersion = QSysInfo::productVersion();
+    productType = QSysInfo::productType();
+    prettyProductName = QSysInfo::prettyProductName();
+    cpuArchitecture = QSysInfo::currentCpuArchitecture();
 }
 
 void Shtirlitz::getFirstLaunchInfo(bool &allVersions, bool &minorVersions) {
