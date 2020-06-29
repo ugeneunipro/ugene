@@ -78,8 +78,8 @@ void closeFiles(samfile_t *in, samfile_t *out) {
     }
 }
 
-samfile_t *openSamWithFai(const QByteArray &samUrl, U2OpStatus &os) {
-    QStringList references = BAMUtils::scanSamForReferenceNames(QString(samUrl), os);
+samfile_t *openSamWithFai(const GUrl &samUrl, U2OpStatus &os) {
+    QStringList references = BAMUtils::scanSamForReferenceNames(samUrl.getURLString(), os);
     CHECK_OP(os, NULL);
 
     QTemporaryFile faiFile;
@@ -90,11 +90,19 @@ samfile_t *openSamWithFai(const QByteArray &samUrl, U2OpStatus &os) {
 
     QByteArray faiUrlData = faiUrl.toLocal8Bit();
     void *aux = (void *)faiUrlData.constData();
-    return samopen(samUrl.constData(), "r", aux);
+    return samopen(samUrl.getURLStringAnsi(), "r", aux);
+}
+
+QString openFileError(const QString &file) {
+    return QObject::tr("Fail to open \"%1\" for reading").arg(file);
 }
 
 QString openFileError(const QByteArray &file) {
     return QObject::tr("Fail to open \"%1\" for reading").arg(file.constData());
+}
+
+QString headerError(const QString &file) {
+    return QObject::tr("Fail to read the header from the file: \"%1\"").arg(file);
 }
 
 QString headerError(const QByteArray &file) {
@@ -105,6 +113,10 @@ QString faiError(const QByteArray &file) {
     return QObject::tr("Can not build the fasta index for the file: \"%1\"").arg(file.constData());
 }
 
+QString readsError(const QString &file) {
+    return QObject::tr("Error parsing the reads from the file: \"%1\"").arg(file);
+}
+
 QString readsError(const QByteArray &file) {
     return QObject::tr("Error parsing the reads from the file: \"%1\"").arg(file.constData());
 }
@@ -113,7 +125,12 @@ QString truncatedError(const QByteArray &file) {
     return QObject::tr("Truncated file: \"%1\"").arg(file.constData());
 }
 
-void samreadCheck(int read, U2OpStatus &os, const QByteArray &fileName) {
+QString truncatedError(const QString &file) {
+    return QObject::tr("Truncated file: \"%1\"").arg(file);
+}
+
+template<typename T>
+void samreadCheck(int read, U2OpStatus &os, const T &fileName) {
     if (READ_ERROR_CODE == read) {
         if (NULL != SAMTOOLS_ERROR_MESSAGE) {
             os.setError(SAMTOOLS_ERROR_MESSAGE);
@@ -150,13 +167,11 @@ void convertByteArray(const QList<QByteArray> &byteArray, char **charArray) {
     }
 
 void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const ConvertOption &options, U2OpStatus &os) {
-    const QByteArray samFileName = samUrl.getURLString().toLocal8Bit();
-    const QByteArray bamFileName = bamUrl.getURLString().toLocal8Bit();
     const char *samPath = samUrl.getURLStringAnsi();
     const char *bamPath = bamUrl.getURLStringAnsi();
 
-    QByteArray sourceName = (options.samToBam) ? samFileName : bamFileName;
-    QByteArray targetName = (options.samToBam) ? bamFileName : samFileName;
+    const GUrl sourceFileUrl = (options.samToBam) ? samUrl : bamUrl;
+    const GUrl targetFileUrl = (options.samToBam) ? bamUrl : bamUrl;
     const char *source_path = (options.samToBam) ? samPath : bamPath;
     const char *target_path = (options.samToBam) ? bamPath : samPath;
 
@@ -174,21 +189,22 @@ void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const C
 
         in = samopen(source_path, readMode, aux);
         delete source_path;
-        SAMTOOL_CHECK(NULL != in, openFileError(sourceName), );
-        SAMTOOL_CHECK(NULL != in->header, headerError(sourceName), );
+        SAMTOOL_CHECK(NULL != in, openFileError(sourceFileUrl.getURLString()), );
+        SAMTOOL_CHECK(NULL != in->header, headerError(sourceFileUrl.getURLString()), );
         if (options.samToBam && (0 == in->header->n_targets)) {
-            os.addWarning(tr("There is no header in the SAM file \"%1\". The header information will be generated automatically.").arg(sourceName.constData()));
+            os.addWarning(tr("There is no header in the SAM file \"%1\". The header information will be generated automatically.")
+                .arg(sourceFileUrl.getURLString()));
             samclose(in);
-            in = openSamWithFai(sourceName, os);
+            in = openSamWithFai(sourceFileUrl, os);
             CHECK_OP(os, );
-            SAMTOOL_CHECK(NULL != in, openFileError(sourceName), );
-            SAMTOOL_CHECK(NULL != in->header, headerError(sourceName), );
+            SAMTOOL_CHECK(NULL != in, openFileError(sourceFileUrl.getURLString()), );
+            SAMTOOL_CHECK(NULL != in->header, headerError(sourceFileUrl.getURLString()), );
         }
 
         QByteArray writeMode = (options.samToBam) ? "wb" : "wh";
         out = samopen(target_path, writeMode, in->header);
         delete target_path;
-        SAMTOOL_CHECK(NULL != out, openFileError(targetName), );
+        SAMTOOL_CHECK(NULL != out, openFileError(targetFileUrl.getURLString()), );
     }
     // convert files
     bam1_t *b = bam_init1();
@@ -198,7 +214,7 @@ void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const C
             samwrite(out, b);    // write the alignment to `out'
         }
 
-        samreadCheck(r, os, sourceName);
+        samreadCheck(r, os, sourceFileUrl.getURLString());
         bam_destroy1(b);
     }
 
