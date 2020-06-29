@@ -50,9 +50,8 @@ PluginViewerController::PluginViewerController() {
 PluginViewerController::~PluginViewerController() {
     AppContext::getPluginSupport()->disconnect(this);
 
-    // 'true' mode is not functional anymore after service<->plugin model refactoring
-    // so always save false for pluginview settings, also see UGENE-6369
-    AppContext::getSettings()->setValue(PLUGIN_VIEW_SETTINGS + "isVisible", false);
+    // 'true' mode is not functional anymore after some old service<->plugin model refactoring
+    // so we don't save state for pluginview settings, see UGENE-6369
 
     if (mdiWindow) {
         AppContext::getMainWindow()->getMDIManager()->closeMDIWindow(mdiWindow);
