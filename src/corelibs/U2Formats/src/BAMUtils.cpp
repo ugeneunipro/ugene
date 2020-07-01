@@ -167,13 +167,13 @@ void convertByteArray(const QList<QByteArray> &byteArray, char **charArray) {
     }
 
 void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const ConvertOption &options, U2OpStatus &os) {
-    const char *samPath = samUrl.getURLStringAnsi();
-    const char *bamPath = bamUrl.getURLStringAnsi();
+    QByteArray samPath = samUrl.getURLStringAnsi();
+    QByteArray bamPath = bamUrl.getURLStringAnsi();
 
     const GUrl sourceFileUrl = (options.samToBam) ? samUrl : bamUrl;
     const GUrl targetFileUrl = (options.samToBam) ? bamUrl : bamUrl;
-    const char *source_path = (options.samToBam) ? samPath : bamPath;
-    const char *target_path = (options.samToBam) ? bamPath : samPath;
+    QByteArray source_path = (options.samToBam) ? samPath : bamPath;
+    QByteArray target_path = (options.samToBam) ? bamPath : samPath;
 
     samfile_t *in = NULL;
     samfile_t *out = NULL;
@@ -188,7 +188,6 @@ void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const C
         }
 
         in = samopen(source_path, readMode, aux);
-        delete source_path;
         SAMTOOL_CHECK(NULL != in, openFileError(sourceFileUrl.getURLString()), );
         SAMTOOL_CHECK(NULL != in->header, headerError(sourceFileUrl.getURLString()), );
         if (options.samToBam && (0 == in->header->n_targets)) {
@@ -203,7 +202,6 @@ void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const C
 
         QByteArray writeMode = (options.samToBam) ? "wb" : "wh";
         out = samopen(target_path, writeMode, in->header);
-        delete target_path;
         SAMTOOL_CHECK(NULL != out, openFileError(targetFileUrl.getURLString()), );
     }
     // convert files
@@ -254,7 +252,7 @@ static bool isSorted(const QString &headerText) {
 }
 
 bool BAMUtils::isSortedBam(const GUrl &bamUrl, U2OpStatus &os) {
-    const char *urlPath = bamUrl.getURLStringAnsi();
+    QByteArray urlPath = bamUrl.getURLStringAnsi();
 
     bamFile bamHandler = NULL;
     bam_header_t *header = NULL;
@@ -262,7 +260,6 @@ bool BAMUtils::isSortedBam(const GUrl &bamUrl, U2OpStatus &os) {
     bool result = false;
 
     bamHandler = bam_open(urlPath, "r");
-    delete urlPath;
     if (NULL != bamHandler) {
         header = bam_header_read(bamHandler);
         if (NULL != header) {
@@ -422,9 +419,8 @@ GUrl BAMUtils::rmdupBam(const QString &bamUrl, const QString &rmdupBamTargetUrl,
 }
 
 bool BAMUtils::hasValidBamIndex(const GUrl &bamUrl) {
-    const char *urlPath = bamUrl.getURLStringAnsi();
+    QByteArray urlPath = bamUrl.getURLStringAnsi();
     bam_index_t *index = bam_index_load(urlPath);
-    delete urlPath;
 
     if (NULL == index) {
         return false;
@@ -472,9 +468,8 @@ void BAMUtils::createBamIndex(const GUrl &bamUrl, U2OpStatus &os) {
 
     coreLog.details(BAMUtils::tr("Build index for bam file: \"%1\"").arg(QString::fromLocal8Bit(bamFileName)));
 
-    const char *urlPath = bamUrl.getURLStringAnsi();
+    QByteArray urlPath = bamUrl.getURLStringAnsi();
     int error = bam_index_build(urlPath);
-    delete urlPath;
     if (-1 == error) {
         os.setError("Can't build the index");
     }
@@ -624,7 +619,7 @@ void BAMUtils::writeObjects(const QList<GObject *> &objects, const GUrl &urlStr,
 
     QByteArray url = urlStr.getURLString().toLocal8Bit();
     CHECK_EXT(!url.isEmpty(), os.setError("Empty file url"), );
-    const char *urlPath = urlStr.getURLStringAnsi();
+    QByteArray urlPath = urlStr.getURLStringAnsi();
 
     QByteArray openMode("w");
     if (BaseDocumentFormats::BAM == formatId) {
@@ -644,9 +639,8 @@ void BAMUtils::writeObjects(const QList<GObject *> &objects, const GUrl &urlStr,
     }
 
     samfile_t *out = samopen(urlPath, openMode.constData(), header);
-    delete urlPath;
     bam_header_destroy(header);
-    CHECK_EXT(NULL != out, (os.setError(QString("Can not open file for writing: %1").arg(urlPath)), delete urlPath), );
+    CHECK_EXT(NULL != out, os.setError(QString("Can not open file for writing: %1").arg(urlPath.constData())), );
 
     writeObjectsWithSamtools(out, objects, os, desiredRegion);
     samclose(out);

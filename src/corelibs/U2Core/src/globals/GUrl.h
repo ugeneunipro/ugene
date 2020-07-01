@@ -78,7 +78,7 @@ public:
     // The function converts url string to multibyte form
     // default code page is CP_THREAD_ACP
     // must use "delete" to delete returned value
-    const char *getURLStringAnsi(int codePage = -1) const;
+    QByteArray getURLStringAnsi(int codePage = -1) const;
 
     GUrlType getType() const {
         return type;
