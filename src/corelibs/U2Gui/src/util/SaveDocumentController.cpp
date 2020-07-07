@@ -37,6 +37,7 @@
 #include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2Gui/GUIUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/ProjectUtils.h>
 #include <U2Gui/U2FileDialog.h>
@@ -51,7 +52,8 @@ SaveDocumentControllerConfig::SaveDocumentControllerConfig()
       parentWidget(NULL),
       rollSuffix("_"),
       rollFileName(true),
-      rollOutProjectUrls(false) {
+      rollOutProjectUrls(false),
+      acceptButton(nullptr) {
 }
 
 void SaveDocumentController::SimpleFormatsInfo::addFormat(const QString &name, const QStringList &extensions) {
@@ -144,6 +146,15 @@ DocumentFormatId SaveDocumentController::getFormatIdToSave() const {
 }
 
 void SaveDocumentController::sl_fileNameChanged(const QString &newName) {
+    if (conf.acceptButton != nullptr) {
+        if (FileAndDirectoryUtils::isFilepathCorrect(newName)) {
+            conf.acceptButton->setEnabled(true);
+            GUIUtils::setWidgetWarning(conf.fileNameEdit, false);
+        } else {
+            conf.acceptButton->setDisabled(true);
+            GUIUtils::setWidgetWarning(conf.fileNameEdit, true);
+        }
+    }
     GUrl url(newName);
     QString ext = GUrlUtils::getUncompressedExtension(url);
     if (!formatsInfo.getExtensionsByName(currentFormat).contains(ext) &&

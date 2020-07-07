@@ -229,6 +229,7 @@ void ExportImageDialog::initSaveController(const QString &defaultFormat) {
     config.parentWidget = this;
     config.saveTitle = tr("Save Image As");
     config.rollSuffix = "_copy";
+    config.acceptButton = ui->buttonBox->button(QDialogButtonBox::Ok);
 
     SaveDocumentController::SimpleFormatsInfo formatsInfo;
     QStringList formats = getFormats();

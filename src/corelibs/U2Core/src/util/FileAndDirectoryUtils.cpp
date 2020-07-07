@@ -142,4 +142,88 @@ QString FileAndDirectoryUtils::getAbsolutePath(const QString &filePath) {
     return QFileInfo(result).absoluteFilePath();
 }
 
+bool FileAndDirectoryUtils::isFilepathCorrect(const QString &filePath) {
+#ifdef Q_OS_WIN
+    QString path = filePath;
+    // Anything following the raw filename prefix should be legal.
+    if (path.left(4) == "\\\\?\\")
+        return true;
+
+    // Windows filenames are not case sensitive.
+    path = path.toUpper();
+
+    // Trim the drive letter off
+    if (path[1] == ':' && (path[0] >= 'A' && path[0] <= 'Z'))
+        path = path.right(path.length() - 2);
+
+    QString illegal = "<>:\"|?*";
+
+    foreach (const QChar &c, path) {
+        // Check for control characters
+        if (c.toLatin1() > 0 && c.toLatin1() < 32)
+            return false;
+
+        // Check for illegal characters
+        if (illegal.contains(c))
+            return false;
+    }
+
+    // Check for device names in filenames
+    static QStringList devices;
+
+    if (!devices.count())
+        devices << "CON"
+                << "PRN"
+                << "AUX"
+                << "NUL"
+                << "COM0"
+                << "COM1"
+                << "COM2"
+                << "COM3"
+                << "COM4"
+                << "COM5"
+                << "COM6"
+                << "COM7"
+                << "COM8"
+                << "COM9"
+                << "LPT0"
+                << "LPT1"
+                << "LPT2"
+                << "LPT3"
+                << "LPT4"
+                << "LPT5"
+                << "LPT6"
+                << "LPT7"
+                << "LPT8"
+                << "LPT9";
+
+    const QFileInfo fi(path);
+    const QString basename = fi.baseName();
+
+    foreach (const QString &s, devices)
+        if (basename == s)
+            return false;
+
+    // Check for trailing periods or spaces
+    if (path.right(1) == "." || path.right(1) == " ")
+        return false;
+
+    // Check for pathnames that are too long (disregarding raw pathnames)
+    if (path.length() > 260)
+        return false;
+
+    // Exclude raw device names
+    if (path.left(4) == "\\\\.\\")
+        return false;
+
+    // Since we are checking for a filename, it mustn't be a directory
+    if (path.right(1) == "\\")
+        return false;
+
+    return true;
+#else
+    return QRegExp("^(/[^/ ]*)+/?$").exactMatch(filePath);
+#endif    // Q_OS_WIN
+}
+
 }    // namespace U2
