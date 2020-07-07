@@ -222,7 +222,7 @@ bool FileAndDirectoryUtils::isFilepathCorrect(const QString &filePath) {
 
     return true;
 #else
-    return QRegExp("'^[^*&%\s]+$'").exactMatch(filePath);
+    return true;
 #endif    // Q_OS_WIN
 }
 
