@@ -47,122 +47,121 @@
 
 namespace U2 {
 
-    CreateDesktopShortcutTask::CreateDesktopShortcutTask(bool startUp)
-        : Task(tr("Create desktop shortcut"), TaskFlag_None) {
-        runOnStartup = startUp;
-        setVerboseLogMode(true);
-        startError = false;
-    }
+CreateDesktopShortcutTask::CreateDesktopShortcutTask(bool startUp)
+    : Task(tr("Create desktop shortcut"), TaskFlag_NoRun) {
+    runOnStartup = startUp;
+    setVerboseLogMode(true);
+    startError = false;
+}
 
-    void CreateDesktopShortcutTask::run() {
-        stateInfo.setDescription(tr("Create desktop shortcut running"));
+void CreateDesktopShortcutTask::run() {
+    stateInfo.setDescription(tr("Create desktop shortcut running"));
 
-        stateInfo.setDescription(QString());
-    }
+    stateInfo.setDescription(QString());
+}
 
-    bool CreateDesktopShortcutTask::createDesktopShortcut() {
+bool CreateDesktopShortcutTask::createDesktopShortcut() {
 #if defined(Q_OS_WIN)
-        HRESULT hres;
-        IShellLink *psl;
+    HRESULT hres;
+    IShellLink *psl;
 
-        // Get a pointer to the IShellLink interface. It is assumed that CoInitialize
-        // has already been called.
-        hres = CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, IID_IShellLink, (LPVOID *)&psl);
+    // Get a pointer to the IShellLink interface. It is assumed that CoInitialize
+    // has already been called.
+    hres = CoCreateInstance(CLSID_ShellLink, NULL, CLSCTX_INPROC_SERVER, IID_IShellLink, (LPVOID *)&psl);
+    if (SUCCEEDED(hres)) {
+        IPersistFile *ppf;
+
+        // Set the path to the shortcut target and add the description.
+        WCHAR path[MAX_PATH];
+        GetModuleFileNameW(NULL, path, MAX_PATH);
+        psl->SetPath(path);
+        psl->SetDescription(L"Unipro UGENE");
+
+        // Query IShellLink for the IPersistFile interface, used for saving the
+        // shortcut in persistent storage.
+        hres = psl->QueryInterface(IID_IPersistFile, (LPVOID *)&ppf);
+
         if (SUCCEEDED(hres)) {
-            IPersistFile *ppf;
+            WCHAR wsz[MAX_PATH + 1];
+            CHAR pathLink[MAX_PATH + 1];
 
-            // Set the path to the shortcut target and add the description.
-            WCHAR path[MAX_PATH];
-            GetModuleFileNameW(NULL, path, MAX_PATH);
-            psl->SetPath(path);
-            psl->SetDescription(L"Unipro UGENE");
+            if (SHGetSpecialFolderPathA(HWND_DESKTOP, pathLink, CSIDL_DESKTOP, FALSE)) {
+                strncat(pathLink, "\\UGENE.lnk", __min(strlen("\\UGENE.lnk"), MAX_PATH - strlen(pathLink)));
 
-            // Query IShellLink for the IPersistFile interface, used for saving the
-            // shortcut in persistent storage.
-            hres = psl->QueryInterface(IID_IPersistFile, (LPVOID *)&ppf);
+                // Ensure that the string is Unicode.
+                MultiByteToWideChar(CP_ACP, 0, pathLink, -1, wsz, MAX_PATH);
 
-            if (SUCCEEDED(hres)) {
-                WCHAR wsz[MAX_PATH + 1];
-                CHAR pathLink[MAX_PATH + 1];
+                // Add code here to check return value from MultiByteWideChar
+                // for success.
 
-                if (SHGetSpecialFolderPathA(HWND_DESKTOP, pathLink, CSIDL_DESKTOP, FALSE)) {
-                    strncat(pathLink, "\\UGENE.lnk", __min(strlen("\\UGENE.lnk"), MAX_PATH - strlen(pathLink)));
-
-                    // Ensure that the string is Unicode.
-                    MultiByteToWideChar(CP_ACP, 0, pathLink, -1, wsz, MAX_PATH);
-
-                    // Add code here to check return value from MultiByteWideChar
-                    // for success.
-
-                    // Save the link by calling IPersistFile::Save.
-                    hres = ppf->Save(wsz, TRUE);
-                    ppf->Release();
-                } else {
-                    return false;
-                }
+                // Save the link by calling IPersistFile::Save.
+                hres = ppf->Save(wsz, TRUE);
+                ppf->Release();
+            } else {
+                return false;
             }
-            psl->Release();
         }
-        return SUCCEEDED(hres);
-#elif defined(Q_OS_LINUX)
-        return false;
-#elif defined(Q_OS_MACX)
-        return false;
-#endif    // Q_OS_WIN
+        psl->Release();
     }
+    return SUCCEEDED(hres);
+#elif defined(Q_OS_LINUX)
+    return false;
+#elif defined(Q_OS_MACX)
+    return false;
+#endif    // Q_OS_WIN
+}
 
-    Task::ReportResult CreateDesktopShortcutTask::report() {
-        if (hasError() || startError) {
-            return ReportResult_Finished;
-        }
-
-        Version thisVersion = Version::appVersion();
-
-        Answer answer = DoNothing;
-        if (runOnStartup) {
-        }
-        else {
-            DesktopShortcutMessage message("xxxx");
-            answer = message.getAnswer();
-        }
-
-        switch (answer) {
-        case Create:
-            createDesktopShortcut();
-            break;
-        case DoNothing:
-        default:
-            break;
-        }
+Task::ReportResult CreateDesktopShortcutTask::report() {
+    if (hasError() || startError) {
         return ReportResult_Finished;
     }
 
-    void CreateDesktopShortcutTask::sl_registerInTaskScheduler() {
-        AppContext::getTaskScheduler()->registerTopLevelTask(this);
+    Version thisVersion = Version::appVersion();
+
+    Answer answer = DoNothing;
+    if (runOnStartup) {
+    } else {
+        DesktopShortcutMessage message("xxxx");
+        answer = message.getAnswer();
     }
 
-    /************************************************************************/
-    /* UpdateMessage */
-    /************************************************************************/
-    DesktopShortcutMessage::DesktopShortcutMessage(const QString &newVersion) {
-        QWidget *parent = AppContext::getMainWindow()->getQMainWindow();
-        const QString message = tr("Create desktop shortcut?").arg(newVersion);
-        const QString title = tr("Desktop shortcut");
-
-        dialog = new QMessageBox(QMessageBox::Question, title, message, QMessageBox::NoButton, parent);
-
-        createButton = dialog->addButton(tr("Create"), QMessageBox::ActionRole);
-        dialog->addButton(tr("Cancel"), QMessageBox::ActionRole);
+    switch (answer) {
+    case Create:
+        createDesktopShortcut();
+        break;
+    case DoNothing:
+    default:
+        break;
     }
+    return ReportResult_Finished;
+}
 
-    CreateDesktopShortcutTask::Answer DesktopShortcutMessage::getAnswer() const {
-        dialog->exec();
-        CHECK(!dialog.isNull(), CreateDesktopShortcutTask::DoNothing);
+void CreateDesktopShortcutTask::sl_registerInTaskScheduler() {
+    AppContext::getTaskScheduler()->registerTopLevelTask(this);
+}
 
-        if (createButton == dialog->clickedButton()) {
-            return CreateDesktopShortcutTask::Create;
-        }
-        return CreateDesktopShortcutTask::DoNothing;
+/************************************************************************/
+/* UpdateMessage */
+/************************************************************************/
+DesktopShortcutMessage::DesktopShortcutMessage(const QString &newVersion) {
+    QWidget *parent = AppContext::getMainWindow()->getQMainWindow();
+    const QString message = tr("Create desktop shortcut?").arg(newVersion);
+    const QString title = tr("Desktop shortcut");
+
+    dialog = new QMessageBox(QMessageBox::Question, title, message, QMessageBox::NoButton, parent);
+
+    createButton = dialog->addButton(tr("Create"), QMessageBox::ActionRole);
+    dialog->addButton(tr("Cancel"), QMessageBox::ActionRole);
+}
+
+CreateDesktopShortcutTask::Answer DesktopShortcutMessage::getAnswer() const {
+    dialog->exec();
+    CHECK(!dialog.isNull(), CreateDesktopShortcutTask::DoNothing);
+
+    if (createButton == dialog->clickedButton()) {
+        return CreateDesktopShortcutTask::Create;
     }
+    return CreateDesktopShortcutTask::DoNothing;
+}
 
 }    // namespace U2
