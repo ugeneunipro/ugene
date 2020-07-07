@@ -363,7 +363,7 @@ void MainWindowImpl::prepareGUI() {
     menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(visitWebAction);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(checkUpdateAction);
-#if defined(Q_OS_WIN)
+#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
     menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(createDesktopShortcutAction);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();

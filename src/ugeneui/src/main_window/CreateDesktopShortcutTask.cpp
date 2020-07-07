@@ -21,6 +21,12 @@
 
 #include "CreateDesktopShortcutTask.h"
 
+#if defined(Q_OS_LINUX)
+#include <QCoreApplication>
+#include <QDir>
+#include <QFile>
+#endif // Q_OS_LINUX
+
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QNetworkReply>
@@ -105,6 +111,26 @@ bool CreateDesktopShortcutTask::createDesktopShortcut() {
     }
     return SUCCEEDED(hres);
 #elif defined(Q_OS_LINUX)
+    QString homeDir = QDir::homePath();
+    QFile link(homeDir + "/Desktop/UGENE.desktop");
+    if (link.open(QFile::WriteOnly | QFile::Truncate)) {
+        QTextStream out(&link);
+        out.setCodec("UTF-8");
+        out << "[Desktop Entry]" << endl
+            << "Encoding=UTF-8" << endl
+            << "Version=1.0" << endl
+            << "Type=Application" << endl
+            << "Terminal=false" << endl
+            << "Exec=" + QCoreApplication::applicationFilePath() << endl
+            << "Name=Unipro UGENE" << endl
+            << "Icon=" + QCoreApplication::applicationDirPath() + "/ugene.png" << endl
+            << "Name[en_US]=Unipro UGENE" << endl;
+        link.close();
+        if (!link.setPermissions(link.permissions() | QFileDevice::ExeOwner | QFileDevice::ExeUser)) {
+            return false;
+        }
+        return true;
+    }
     return false;
 #elif defined(Q_OS_MACX)
     return false;
