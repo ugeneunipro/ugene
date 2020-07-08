@@ -24,6 +24,7 @@
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/FailTask.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
@@ -365,6 +366,9 @@ Task *CufflinksWorker::tick() {
 
         return cufflinksSupportTask;
     } else if (input->isEnded()) {
+        if (output->hasMessage() == 0) {
+            return new FailTask(tr("No annatations was processed by Cufflinks, abort."));
+        }
         setDone();
         output->setEnded();
     }
@@ -382,6 +386,8 @@ void CufflinksWorker::sl_cufflinksTaskFinished() {
 
         QVariantMap messageData;
         QList<AnnotationTableObject *> isoformTables = cufflinksSupportTask->getIsoformAnnotationTables();
+        CHECK(!isoformTables.isEmpty(),  );
+
         messageData[CufflinksWorkerFactory::ISO_LEVEL_SLOT_DESCR_ID] = QVariant::fromValue(context->getDataStorage()->putAnnotationTables(isoformTables));
         output->put(Message(outputMapDataType, messageData));
         qDeleteAll(isoformTables);
