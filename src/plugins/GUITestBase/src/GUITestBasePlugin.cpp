@@ -337,6 +337,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_ONLY_WINDOWS(GUITest_regression_scenarios::test_2089);    //, "no forbidden folder characters on linux and mac");
     REGISTER_TEST_WINDOWS(GUITest_regression_scenarios::test_2801, "Specific API should be written for Linux and Mac");
     REGISTER_TEST_WINDOWS(GUITest_regression_scenarios::test_2801_1, "Specific API should be written for Linux and Mac");
+    REGISTER_TEST_WINDOWS(GUITest_regression_scenarios::test_5735, "Windows filepath issue");
     REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_3288, 420000);
     REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_3687_1, 350000);
     REGISTER_TEST_WITH_TIMEOUT(GUITest_regression_scenarios::test_3687_2, 350000);

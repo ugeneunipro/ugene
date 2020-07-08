@@ -55,6 +55,8 @@
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 
+#include <U2Gui/GUIUtils.h>
+
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
 #include <U2View/DetView.h>
@@ -3093,6 +3095,42 @@ GUI_TEST_CLASS_DEFINITION(test_5718) {
     int lengthAfterGapColumnsRemoving = GTUtilsOptionPanelMca::getLength(os);
     GTUtilsOptionPanelMca::closeTab(os, GTUtilsOptionPanelMca::General);
     CHECK_SET_ERR(lengthAfterGapColumnsRemoving < lengthBeforeGapColumnsRemoving, QString("Expected: before gap column removig > after gap column removig, current: before %1, after %2").arg(QString::number(lengthBeforeGapColumnsRemoving)).arg(QString::number(lengthAfterGapColumnsRemoving)));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5735) {
+    class ExportMsaImageWrongPathValue : public ExportMsaImage{
+    public:
+        ExportMsaImageWrongPathValue(HI::GUITestOpStatus &os, QString filePath)
+            : ExportMsaImage(os, filePath, "", 0) {};
+
+        void commonScenario() {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            QLineEdit *fileEdit = dialog->findChild<QLineEdit *>("fileNameEdit");
+            GTLineEdit::setText(os, fileEdit, filePath);
+
+            QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
+            CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
+            QPushButton *okButton = box->button(QDialogButtonBox::Ok);
+            QPushButton *cancelButton = box->button(QDialogButtonBox::Ok);
+
+            CHECK_SET_ERR(okButton->isEnabled() == false, "Export button is unexpectedly enabled");
+            CHECK_SET_ERR(fileEdit->styleSheet().contains("background-color: " + GUIUtils::WARNING_COLOR.name()), "fileedit background color is wrong");
+
+            GTWidget::click(os, cancelButton);
+        }
+    };
+
+    //1. Open an alignment.
+    GTLogTracer l;
+
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Export as image"));
+    GTUtilsDialog::waitForDialog(os, new ExportMsaImageWrongPathValue(os, "test_5735.png:"));
+    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5739) {
