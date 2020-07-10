@@ -25,7 +25,12 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QFile>
-#endif // Q_OS_LINUX
+#elif defined(Q_OS_MAC)
+#include <QCoreApplication>
+#include <QFileInfo>
+#include <QProcess>
+#include <QTemporaryFile>
+#endif // Q_OS_LINUX || Q_OS_MACX
 
 #include <QMainWindow>
 #include <QMessageBox>
@@ -132,8 +137,27 @@ bool CreateDesktopShortcutTask::createDesktopShortcut() {
         return true;
     }
     return false;
-#elif defined(Q_OS_MACX)
-    return false;
+#elif defined(Q_OS_MAC)
+    QTemporaryFile file;
+    if (file.open()) {
+        // We're going to streaming text to the file
+        QTextStream stream(&file);
+        stream << "#!/bin/bash" << '\n'
+               << "" << '\n'
+               << "osascript <<END_SCRIPT" << '\n'
+               << "tell application \"Finder\" to make alias file to file (posix file \"$1\") at desktop" << '\n'
+               << "END_SCRIPT" << '\n';
+        file.close();
+        if (!file.setPermissions(file.permissions() | QFileDevice::ExeOwner | QFileDevice::ExeUser)) {
+            return false;
+        }
+        QFileInfo script(file);
+        QString ugeneui_path = QCoreApplication::applicationFilePath();
+        if (QProcess::execute(QString("/bin/sh ") + script.absoluteFilePath() + " " + ugeneui_path) < 0) {
+            return false;
+        }
+    }
+    return true;
 #endif    // Q_OS_WIN
 }
 

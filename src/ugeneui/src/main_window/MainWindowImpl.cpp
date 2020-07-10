@@ -363,11 +363,9 @@ void MainWindowImpl::prepareGUI() {
     menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(visitWebAction);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(checkUpdateAction);
-#if defined(Q_OS_WIN) || defined(Q_OS_LINUX)
     menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(createDesktopShortcutAction);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
-#endif // Q_OS_WIN
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(welcomePageAction);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(aboutAction);
     if ("1" == qgetenv(ENV_TEST_CRASH_HANDLER)) {
