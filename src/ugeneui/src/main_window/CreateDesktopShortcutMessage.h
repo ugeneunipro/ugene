@@ -19,8 +19,10 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_CREATE_DESKTOP_SHORTCUT_TASKS_H_
-#define _U2_CREATE_DESKTOP_SHORTCUT_TASKS_H_
+#ifndef _U2_CREATE_DESKTOP_SHORTCUT_MESSAGE_H_
+#define _U2_CREATE_DESKTOP_SHORTCUT_MESSAGE_H_
+
+#include "CreateDesktopShortcutTask.h"
 
 #include <QMessageBox>
 
@@ -32,25 +34,17 @@ class QPushButton;
 
 namespace U2 {
 
-class CreateDesktopShortcutTask : public Task {
+class DesktopShortcutMessage : public QObject {
     Q_OBJECT
-public slots:
-    void sl_registerInTaskScheduler();
-
 public:
-    enum Answer { Create,
-                  DoNothing };
-
-    CreateDesktopShortcutTask(bool startUp = false);
-    void run();
-    ReportResult report();
-    bool createDesktopShortcut();
+    DesktopShortcutMessage(const QString &newVersion);
+    CreateDesktopShortcutTask::Answer getAnswer() const;
 
 private:
-    bool runOnStartup;
-    bool startError;
+    QObjectScopedPointer<QMessageBox> dialog;
+    QPushButton *createButton;
 };
 
 }    // namespace U2
 
-#endif
+#endif // _U2_CREATE_DESKTOP_SHORTCUT_MESSAGE_H_

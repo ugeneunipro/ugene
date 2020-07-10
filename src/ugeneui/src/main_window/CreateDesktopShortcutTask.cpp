@@ -19,9 +19,19 @@
  * MA 02110-1301, USA.
  */
 
+#include "CreateDesktopShortcutMessage.h"
 #include "CreateDesktopShortcutTask.h"
 
-#if defined(Q_OS_LINUX)
+
+#if defined(Q_OS_WIN)
+#include <windows.h>
+#include <winnls.h>
+#include <shobjidl.h>
+#include <objbase.h>
+#include <objidl.h>
+#include <shlguid.h>
+#include <shlobj.h>
+#elif defined(Q_OS_LINUX)
 #include <QCoreApplication>
 #include <QDir>
 #include <QFile>
@@ -30,7 +40,7 @@
 #include <QFileInfo>
 #include <QProcess>
 #include <QTemporaryFile>
-#endif // Q_OS_LINUX || Q_OS_MACX
+#endif // Q_OS_WIN || Q_OS_LINUX || Q_OS_MAC
 
 #include <QMainWindow>
 #include <QMessageBox>
@@ -45,16 +55,6 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/MainWindow.h>
-
-#if defined(Q_OS_WIN)
-#include <windows.h>
-#include <winnls.h>
-#include <shobjidl.h>
-#include <objbase.h>
-#include <objidl.h>
-#include <shlguid.h>
-#include <shlobj.h>
-#endif // Q_OS_WIN
 
 namespace U2 {
 

@@ -11,6 +11,7 @@ HEADERS += src/app_settings/AppSettingsDialogController.h \
            src/app_settings/resource_settings/ResourceSettingsGUIController.h \
            src/app_settings/user_apps_settings/UserApplicationsSettingsGUIController.h \
            src/main_window/AboutDialogController.h \
+           src/main_window/CreateDesktopShortcutMessage.h \
            src/main_window/DockWidgetPainter.h \
            src/main_window/SplashScreen.h \
            src/main_window/CheckUpdatesTask.h \
