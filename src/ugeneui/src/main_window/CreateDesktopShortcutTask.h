@@ -40,8 +40,9 @@ public:
                   DoNothing };
 
     CreateDesktopShortcutTask(bool startUp = false);
-    ReportResult report();
+    void run();
     bool createDesktopShortcut();
+    Answer getAnswer() const;
 
 private:
     bool runOnStartup;
