@@ -27,10 +27,6 @@
 #include <windows.h>
 #include <winnls.h>
 #include <shobjidl.h>
-#include <objbase.h>
-#include <objidl.h>
-#include <shlguid.h>
-#include <shlobj.h>
 #elif defined(Q_OS_LINUX)
 #include <QCoreApplication>
 #include <QDir>
@@ -63,12 +59,6 @@ CreateDesktopShortcutTask::CreateDesktopShortcutTask(bool startUp)
     runOnStartup = startUp;
     setVerboseLogMode(true);
     startError = false;
-}
-
-void CreateDesktopShortcutTask::run() {
-    stateInfo.setDescription(tr("Create desktop shortcut running"));
-
-    stateInfo.setDescription(QString());
 }
 
 bool CreateDesktopShortcutTask::createDesktopShortcut() {
@@ -166,11 +156,8 @@ Task::ReportResult CreateDesktopShortcutTask::report() {
         return ReportResult_Finished;
     }
 
-    Version thisVersion = Version::appVersion();
-
     Answer answer = DoNothing;
-    if (runOnStartup) {
-    } else {
+    if (!runOnStartup) {
         DesktopShortcutMessage message("xxxx");
         answer = message.getAnswer();
     }
@@ -184,10 +171,6 @@ Task::ReportResult CreateDesktopShortcutTask::report() {
         break;
     }
     return ReportResult_Finished;
-}
-
-void CreateDesktopShortcutTask::sl_registerInTaskScheduler() {
-    AppContext::getTaskScheduler()->registerTopLevelTask(this);
 }
 
 /************************************************************************/

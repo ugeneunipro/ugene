@@ -34,15 +34,12 @@ namespace U2 {
 
 class CreateDesktopShortcutTask : public Task {
     Q_OBJECT
-public slots:
-    void sl_registerInTaskScheduler();
 
 public:
     enum Answer { Create,
                   DoNothing };
 
     CreateDesktopShortcutTask(bool startUp = false);
-    void run();
     ReportResult report();
     bool createDesktopShortcut();
 
