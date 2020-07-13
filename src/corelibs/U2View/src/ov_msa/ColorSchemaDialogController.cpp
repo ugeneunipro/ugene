@@ -22,16 +22,21 @@
 #include "ColorSchemaDialogController.h"
 
 #include <QColorDialog>
+#include <QMessageBox>
 #include <QPainter>
 
 #include <U2Algorithm/ColorSchemeUtils.h>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
+#include <U2Gui/MainWindow.h>
 #include <U2Gui/U2FileDialog.h>
 
 namespace U2 {
@@ -374,6 +379,10 @@ void ColorSchemaSettingsPageWidget::sl_schemaChanged(int index) {
 void ColorSchemaSettingsPageWidget::sl_onColorsDirButton() {
     QString path = colorsDirEdit->text();
     QString dir = U2FileDialog::getExistingDirectory(this, tr("Choose Folder"), path, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if (!FileAndDirectoryUtils::isDirectoryWritable(dir)) {
+        QMessageBox::warning(this, L10N::warningTitle(), tr("You don't have permissions to write in selected folder."));
+        return;
+    }
     if (!dir.isEmpty()) {
         colorsDirEdit->setText(dir);
         ColorSchemeUtils::setColorsDir(dir);

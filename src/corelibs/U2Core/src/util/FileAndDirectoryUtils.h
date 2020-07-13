@@ -44,6 +44,7 @@ public:
     static bool isFileEmpty(const QString &url);
     static void dumpStringToFile(QFile *f, QString &str);    //Be aware: string will be cleared after dumping
     static QString getAbsolutePath(const QString &filePath);
+    static bool isDirectoryWritable(const QString &path);
 
 private:
     static QString getFormatId(const FormatDetectionResult &r);

@@ -5627,6 +5627,47 @@ GUI_TEST_CLASS_DEFINITION(test_6714) {
     CHECK_SET_ERR(name[0] == "SZYD_Cas9_CR51", QString("Unexpected selected read, expected: SZYD_Cas9_CR51, current: %1").arg(name[0]));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6715) {
+    QDir().mkpath(sandBoxDir + "read_only_dir");
+    GTFile::setReadOnly(os, sandBoxDir + "read_only_dir");
+
+    //new NewColorSchemeCreator(os, "test_5268", NewColorSchemeCreator::nucl, NewColorSchemeCreator::Change)
+    
+    class Scenario : public CustomScenario {
+    public:
+        Scenario() {};
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            QTreeWidget *tree = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "tree"));
+            CHECK_SET_ERR(tree, "tree widger not found");
+
+            QList<QTreeWidgetItem *> items = GTTreeWidget::getItems(tree->invisibleRootItem());
+            foreach (QTreeWidgetItem *item, items) {
+                if (item->text(0) == "  Alignment Color Scheme") {
+                    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
+                    GTMouseDriver::click();
+                }
+            }
+            
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok"));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir + "read_only_dir", GTGlobals::UseMouse, GTFileDialogUtils::Choose));
+
+            GTWidget::click(os, GTWidget::findWidget(os, "colorsDirButton", dialog));
+            GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
+        }
+    };
+    
+    // 1. Open {Settings -> Preferences -> Alignment Color Scheme}. 
+    GTUtilsDialog::waitForDialog(os, new NewColorSchemeCreator(os, new Scenario()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
+                                                << "Preferences...");
+    // 2. Choose read only folder by pressing "..." button
+    // Expected state: warning message about read only folder has appeared
+    GTFile::setReadWrite(os, sandBoxDir + "read_only_dir");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6718) {
     //1. Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");

@@ -142,4 +142,9 @@ QString FileAndDirectoryUtils::getAbsolutePath(const QString &filePath) {
     return QFileInfo(result).absoluteFilePath();
 }
 
+bool FileAndDirectoryUtils::isDirectoryWritable(const QString &path) {
+    QFileInfo selectedDir(path);
+    return !(selectedDir.isDir() && selectedDir.isWritable());
+}
+
 }    // namespace U2
