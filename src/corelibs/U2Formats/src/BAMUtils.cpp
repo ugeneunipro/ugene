@@ -212,7 +212,7 @@ void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const C
             samwrite(out, b);    // write the alignment to `out'
         }
 
-        samreadCheck(r, os, sourceFileUrl.getURLString());
+        samreadCheck<QString>(r, os, sourceFileUrl.getURLString());
         bam_destroy1(b);
     }
 
