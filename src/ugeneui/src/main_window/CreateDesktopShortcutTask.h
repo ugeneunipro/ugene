@@ -42,7 +42,7 @@ public:
     CreateDesktopShortcutTask(bool startUp = false);
     void run();
     bool createDesktopShortcut();
-    Answer getAnswer() const;
+    static Answer getAnswer();
 
 private:
     bool runOnStartup;
