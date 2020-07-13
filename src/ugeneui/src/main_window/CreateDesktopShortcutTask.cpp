@@ -54,7 +54,7 @@
 namespace U2 {
 
 CreateDesktopShortcutTask::CreateDesktopShortcutTask(bool startUp)
-    : Task(tr("Create desktop shortcut"), TaskFlag_RunInMainThread) {
+    : Task(tr("Create desktop shortcut"), TaskFlag_None) {
     runOnStartup = startUp;
     setVerboseLogMode(true);
     startError = false;
