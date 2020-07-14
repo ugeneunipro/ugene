@@ -45,6 +45,7 @@
 #include "tests/common_scenarios/annotations_import/GTTestsAnnotationsImport.h"
 #include "tests/common_scenarios/circular_view/GTTestsCvGeneral.h"
 #include "tests/common_scenarios/cloning/GTTestsCloning.h"
+#include "tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.h"
 #include "tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h"
 #include "tests/common_scenarios/dp_view/GTTestsDpView.h"
 #include "tests/common_scenarios/mca_editor/GTTestsMcaEditor.h"
@@ -3186,6 +3187,11 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     // common_scenarios/cloning
     /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_cloning::test_0011);
+
+    /////////////////////////////////////////////////////////////////////////
+    // common_scenarios/create_shortcut
+    /////////////////////////////////////////////////////////////////////////
+    REGISTER_TEST(GUITest_common_scenarios_create_shortcut::test_0001);
 
     /////////////////////////////////////////////////////////////////////////
     // common_scenarios/options_panel/sequence_view

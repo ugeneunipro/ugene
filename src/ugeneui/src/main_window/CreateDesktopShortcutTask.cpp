@@ -157,14 +157,17 @@ void CreateDesktopShortcutTask::run() {
     }
 }
 
-CreateDesktopShortcutTask::Answer CreateDesktopShortcutTask::getAnswer() {
-    QMessageBox::StandardButton answer = QMessageBox::question(AppContext::getMainWindow()->getQMainWindow(),
-        tr("Desktop shortcut"),
-        tr("Create desktop shortcut?"));
-
-    if (answer == QMessageBox::Yes) {
-        return CreateDesktopShortcutTask::Create;
+Task::ReportResult CreateDesktopShortcutTask::report() {
+    if (!(hasError() || startError)) {
+        CreateDesktopShortcutTask::getAnswer();
     }
+    return ReportResult_Finished;
+}
+
+CreateDesktopShortcutTask::Answer CreateDesktopShortcutTask::getAnswer() {
+    QMessageBox::information(AppContext::getMainWindow()->getQMainWindow(),
+        tr("Desktop shortcut"),
+        tr("A new shortcut to the UGENE application was created on the desktop."));
     return CreateDesktopShortcutTask::DoNothing;
 }
 

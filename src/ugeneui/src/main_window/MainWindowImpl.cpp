@@ -316,9 +316,7 @@ void MainWindowImpl::sl_checkUpdatesAction() {
 }
 
 void MainWindowImpl::sl_createDesktopShortcutAction() {
-    if (CreateDesktopShortcutTask::getAnswer() == CreateDesktopShortcutTask::Create) {
-        AppContext::getTaskScheduler()->registerTopLevelTask(new CreateDesktopShortcutTask());
-    }
+    AppContext::getTaskScheduler()->registerTopLevelTask(new CreateDesktopShortcutTask());
 }
 
 void MainWindowImpl::setWindowTitle(const QString &title) {

@@ -42,6 +42,7 @@ public:
     CreateDesktopShortcutTask(bool startUp = false);
     void run();
     bool createDesktopShortcut();
+    ReportResult report();
     static Answer getAnswer();
 
 private:
