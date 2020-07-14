@@ -158,6 +158,7 @@ QByteArray GUrl::getURLStringAnsi(int codePage) const {
 
     char *buffer = new char[buffSize + 1];
     if (!WideCharToMultiByte(codePage, 0, wPath.c_str(), -1, buffer, buffSize, NULL, NULL)) {
+        delete buffer;
         return nullptr;
     }
     QByteArray bytes = QByteArray(buffer, buffSize + 1);
