@@ -21,6 +21,21 @@
 
 #include <QDir>
 
+#if defined(Q_OS_WIN)
+#include <windows.h>
+#include <shlguid.h>
+#include <shlobj.h>
+#elif defined(Q_OS_LINUX)
+#include <QCoreApplication>
+#include <QDir>
+#include <QFile>
+#elif defined(Q_OS_MAC)
+#include <QCoreApplication>
+#include <QFileInfo>
+#include <QProcess>
+#include <QTemporaryFile>
+#endif // Q_OS_WIN || Q_OS_LINUX || Q_OS_MAC
+
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -98,14 +113,16 @@ GUI_TEST_CLASS_DEFINITION(test_0001)
                     // Ensure that the string is Unicode.
                     MultiByteToWideChar(CP_ACP, 0, pathLink, -1, wsz, MAX_PATH);
 
-                    QFile link(wsz);
+                    QFile link(QString::fromStdWString(wsz));
                     if (link.exists()) {
                         if (!link.permissions().testFlag(QFileDevice::ExeOwner) || !link.permissions().testFlag(QFileDevice::ExeUser)) {
                             CHECK_SET_ERR(false, "Unexpected the desktop shortcut file permissions");
                         }
-                    } else {
+                    }
+                    else {
                         CHECK_SET_ERR(false, "Can't find the desktop shortcut file");
                     }
+                }
             }
         }
         psl->Release();
