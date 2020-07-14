@@ -5630,26 +5630,19 @@ GUI_TEST_CLASS_DEFINITION(test_6714) {
 GUI_TEST_CLASS_DEFINITION(test_6715) {
     QDir().mkpath(sandBoxDir + "read_only_dir");
     GTFile::setReadOnly(os, sandBoxDir + "read_only_dir");
-
-    //new NewColorSchemeCreator(os, "test_5268", NewColorSchemeCreator::nucl, NewColorSchemeCreator::Change)
     
     class Scenario : public CustomScenario {
     public:
         Scenario() {};
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             QTreeWidget *tree = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "tree"));
             CHECK_SET_ERR(tree, "tree widger not found");
 
-            QList<QTreeWidgetItem *> items = GTTreeWidget::getItems(tree->invisibleRootItem());
-            foreach (QTreeWidgetItem *item, items) {
-                if (item->text(0) == "  Alignment Color Scheme") {
-                    GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
-                    GTMouseDriver::click();
-                }
-            }
+            QTreeWidgetItem *item = GTTreeWidget::findItem(os, tree, "  Alignment Color Scheme");
+            GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
+            GTMouseDriver::click();
             
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok"));
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir + "read_only_dir", GTGlobals::UseMouse, GTFileDialogUtils::Choose));
@@ -5665,7 +5658,6 @@ GUI_TEST_CLASS_DEFINITION(test_6715) {
                                                 << "Preferences...");
     // 2. Choose read only folder by pressing "..." button
     // Expected state: warning message about read only folder has appeared
-    GTFile::setReadWrite(os, sandBoxDir + "read_only_dir");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6718) {

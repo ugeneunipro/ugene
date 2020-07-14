@@ -22,6 +22,7 @@
 #include "FileAndDirectoryUtils.h"
 
 #include <QDir>
+#include <QTemporaryFile>
 
 #include <U2Core/Log.h>
 #include <U2Core/U2SafePoints.h>
@@ -143,8 +144,12 @@ QString FileAndDirectoryUtils::getAbsolutePath(const QString &filePath) {
 }
 
 bool FileAndDirectoryUtils::isDirectoryWritable(const QString &path) {
-    QFileInfo selectedDir(path);
-    return !(selectedDir.isDir() && selectedDir.isWritable());
+    if (!QFileInfo(path).isDir()) {
+        return false;
+    }
+
+    QTemporaryFile tmp(path + "/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+    return QFileInfo(tmp).exists();
 }
 
 }    // namespace U2
