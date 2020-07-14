@@ -31,6 +31,7 @@
 #include <QFile>
 #elif defined(Q_OS_MAC)
 #include <QCoreApplication>
+#include <QDir>
 #include <QFileInfo>
 #include <QProcess>
 #include <QTemporaryFile>
@@ -69,12 +70,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001)
     GTMenu::clickMainMenuItem(os,
                               QStringList() << "Help"
                                             << "Create desktop shortcut");
-    GTGlobals::sleep(1000);
+    GTGlobals::sleep(4000);
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
 
     //    Expected state: Dialog information has appeared.
     // Press 'OK'.
-    GTGlobals::sleep(1000);
+    GTGlobals::sleep(4000);
 
     //    Expected state: the desktop shortcut file created and exists
 #if defined(Q_OS_WIN)
@@ -138,24 +139,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001)
         CHECK_SET_ERR(false, "Can't find the desktop shortcut file");
     }
 #elif defined(Q_OS_MAC)
-    QTemporaryFile file;
-    if (file.open()) {
-        // We're going to streaming text to the file
-        QTextStream stream(&file);
-        stream << "#!/bin/bash" << '\n'
-               << "" << '\n'
-               << "osascript <<END_SCRIPT" << '\n'
-               << "tell application \"Finder\" to make alias file to file (posix file \"$1\") at desktop" << '\n'
-               << "END_SCRIPT" << '\n';
-        file.close();
-        if (!file.setPermissions(file.permissions() | QFileDevice::ExeOwner | QFileDevice::ExeUser)) {
-            return false;
-        }
-        QFileInfo script(file);
-        QString ugeneui_path = QCoreApplication::applicationFilePath();
-        if (QProcess::execute(QString("/bin/sh ") + script.absoluteFilePath() + " " + ugeneui_path) < 0) {
-            return false;
-        }
+    QFile ugeneui_path(QCoreApplication::applicationFilePath());
+    QFileInfo fileInfo(ugeneui_path);
+    QString filename(fileInfo.fileName());
+    QFile link(QDir::homePath() + "/Desktop/" + filename);
+    if (QProcess::execute(QString("/usr/bin/mdls ") + link.fileName()) != 0) {
+        CHECK_SET_ERR(false, "Can't find the desktop shortcut file");
     }
 #endif    // Q_OS_WIN
 }

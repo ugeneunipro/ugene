@@ -32,6 +32,7 @@
 #include <QFile>
 #elif defined(Q_OS_MAC)
 #include <QCoreApplication>
+#include <QDir>
 #include <QFileInfo>
 #include <QProcess>
 #include <QTemporaryFile>
@@ -144,7 +145,14 @@ bool CreateDesktopShortcutTask::createDesktopShortcut() {
         }
         QFileInfo script(file);
         QString ugeneui_path = QCoreApplication::applicationFilePath();
-        if (QProcess::execute(QString("/bin/sh ") + script.absoluteFilePath() + " " + ugeneui_path) < 0) {
+        if (QProcess::execute(QString("/bin/sh ") + script.absoluteFilePath() + " " + ugeneui_path) != 0) {
+            return false;
+        }
+
+        QFileInfo fileInfo(ugeneui_path);
+        QString filename(fileInfo.fileName());
+        QFile link(QDir::homePath() + "/Desktop/" + filename);
+        if (QProcess::execute(QString("/usr/bin/mdls ") + link.fileName()) != 0) {
             return false;
         }
     }
