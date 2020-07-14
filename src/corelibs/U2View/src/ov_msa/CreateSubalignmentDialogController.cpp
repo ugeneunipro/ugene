@@ -187,7 +187,6 @@ void CreateSubalignmentDialogController::initSaveController() {
 
 void CreateSubalignmentDialogController::accept() {
     QFileInfo fi(saveController->getSaveFileName());
-    QDir possibleDir(saveController->getSaveFileName());
     QDir dirToSave(fi.dir());
     if (!dirToSave.exists()) {
         QMessageBox::critical(this, this->windowTitle(), tr("Folder to save does not exist"));
@@ -201,7 +200,7 @@ void CreateSubalignmentDialogController::accept() {
         QMessageBox::critical(this, this->windowTitle(), tr("No path specified"));
         return;
     }
-    if (fi.baseName().isEmpty() || possibleDir.exists()) {
+    if (fi.baseName().isEmpty() || fi.isDir()) {
         QMessageBox::critical(this, this->windowTitle(), tr("Filename to save is empty"));
         return;
     }
