@@ -35,6 +35,7 @@
 #include <U2Core/CloneObjectTask.h>
 #include <U2Core/DbiDocumentFormat.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
@@ -43,7 +44,6 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/TaskSignalMapper.h>
 #include <U2Core/TextUtils.h>
-#include <U2Core/TmpDirChecker.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -258,7 +258,7 @@ void BAMImporterTask::initPrepareToImportTask() {
 
     if (convert) {
         QString dirUrl = getDirUrl(loadInfoTask->getSourceUrl());
-        if (!TmpDirChecker::checkWritePermissions(dirUrl)) {
+        if (!FileAndDirectoryUtils::isDirectoryWritable(dirUrl)) {
             const GUrl url(U2DbiUtils::ref2Url(localDbiRef));
             if (url.isLocalFile()) {
                 dirUrl = getDirUrl(url);

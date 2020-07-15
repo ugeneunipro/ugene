@@ -5638,14 +5638,12 @@ GUI_TEST_CLASS_DEFINITION(test_6715) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             QTreeWidget *tree = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "tree"));
-            CHECK_SET_ERR(tree, "tree widger not found");
+            CHECK_SET_ERR(tree, "tree widget not found");
 
-            QTreeWidgetItem *item = GTTreeWidget::findItem(os, tree, "  Alignment Color Scheme");
-            GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
-            GTMouseDriver::click();
+            GTTreeWidget::click(os, GTTreeWidget::findItem(os, tree, "  Alignment Color Scheme"));            
             
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok"));
-            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir + "read_only_dir", GTGlobals::UseMouse, GTFileDialogUtils::Choose));
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok", "You don't have permissions to write in selected folder."));
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, QFileInfo(sandBoxDir + "read_only_dir").absoluteFilePath(), "", GTFileDialogUtils::Choose, GTGlobals::UseMouse));
 
             GTWidget::click(os, GTWidget::findWidget(os, "colorsDirButton", dialog));
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);

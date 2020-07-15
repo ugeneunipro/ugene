@@ -28,13 +28,13 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/FormatUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
 #include <U2Core/Theme.h>
-#include <U2Core/TmpDirChecker.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/DialogUtils.h>
@@ -342,7 +342,7 @@ bool checkWritePermissions(const QString &fileUrl) {
         bool created = dir.mkpath(dir.absolutePath());
         CHECK(created, false);
     }
-    return TmpDirChecker::checkWritePermissions(dir.absolutePath());
+    return FileAndDirectoryUtils::isDirectoryWritable(dir.absolutePath());
 }
 }    // namespace
 

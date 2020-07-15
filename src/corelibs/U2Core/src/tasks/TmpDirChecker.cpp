@@ -26,6 +26,7 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 namespace U2 {
@@ -78,26 +79,10 @@ QString TmpDirChecker::getNewFilePath(const QString &dirPath, const QString &bas
     return filePath;
 }
 
-bool TmpDirChecker::checkWritePermissions(const QString &dirPath) {
-    QDir dir(dirPath);
-    if (!dir.exists()) {
-        return false;
-    }
-
-    QFile tmpFile(getNewFilePath(dir.absolutePath(), "checkWritePermissions"));
-    if (!tmpFile.open(QIODevice::WriteOnly)) {
-        return false;
-    }
-
-    tmpFile.close();
-    tmpFile.remove();
-    return true;
-}
-
 bool TmpDirChecker::checkPath(QString &path) {
     QDir dir;
     dir.mkpath(path);
-    return checkWritePermissions(path);
+    return FileAndDirectoryUtils::isDirectoryWritable(path);
 }
 
 }    //namespace U2

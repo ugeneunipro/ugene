@@ -25,6 +25,7 @@
 #include <QTemporaryFile>
 
 #include <U2Core/Log.h>
+#include <U2Core/TmpDirChecker.h>
 #include <U2Core/U2SafePoints.h>
 
 static const QString OUTPUT_SUBDIR = "run";
@@ -143,13 +144,20 @@ QString FileAndDirectoryUtils::getAbsolutePath(const QString &filePath) {
     return QFileInfo(result).absoluteFilePath();
 }
 
-bool FileAndDirectoryUtils::isDirectoryWritable(const QString &path) {
-    if (!QFileInfo(path).isDir()) {
+bool FileAndDirectoryUtils::isDirectoryWritable(const QString &dirPath) {
+    QDir dir(dirPath);
+    if (!dir.exists()) {
         return false;
     }
 
-    QTemporaryFile tmp(path + "/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-    return QFileInfo(tmp).exists();
+    QFile tmpFile(TmpDirChecker::getNewFilePath(dir.absolutePath(), "checkWritePermissions"));
+    if (!tmpFile.open(QIODevice::WriteOnly)) {
+        return false;
+    }
+
+    tmpFile.close();
+    tmpFile.remove();
+    return true;
 }
 
 }    // namespace U2

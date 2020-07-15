@@ -24,6 +24,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineRegistry.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/TmpDirChecker.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -103,10 +104,10 @@ void CrashHandlerArgsHelper::setDumpUrl(const QString &url) {
 }
 
 QString CrashHandlerArgsHelper::findTempDir(U2OpStatus &os) {
-    if (TmpDirChecker::checkWritePermissions(QDir::tempPath())) {
+    if (FileAndDirectoryUtils::isDirectoryWritable(QDir::tempPath())) {
         return QDir::tempPath();
     }
-    if (TmpDirChecker::checkWritePermissions(QDir::homePath())) {
+    if (FileAndDirectoryUtils::isDirectoryWritable(QDir::homePath())) {
         return QDir::homePath();
     }
     os.setError("No accessible dir");
