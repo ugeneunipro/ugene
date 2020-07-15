@@ -206,7 +206,7 @@ QString WorkflowMonitor::getLogUrl(const QString &actorId, int actorRunNumber, c
     case ExternalToolListener::ERROR_LOG:
         return listener->getStderrLogFileUrl();
     default:
-        FAIL(QString("An unexpected contentType: %1").arg(contentType), QString());
+        FAIL(tr("An unexpected contentType: %1").arg(contentType), QString());
     }
 }
 

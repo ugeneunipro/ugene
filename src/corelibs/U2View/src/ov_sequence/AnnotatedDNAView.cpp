@@ -22,6 +22,7 @@
 #include <limits>
 
 #include <QAction>
+#include <QApplication>
 #include <QMenu>
 #include <QMessageBox>
 #include <QScrollArea>
@@ -1399,7 +1400,7 @@ void AnnotatedDNAView::sl_sequenceModifyTaskStateChanged() {
 
 void AnnotatedDNAView::sl_paste() {
     PasteFactory *pasteFactory = AppContext::getPasteFactory();
-    SAFE_POINT(pasteFactory != NULL, "adFactory is null", );
+    SAFE_POINT(pasteFactory != nullptr, "pasteFactory is null", );
 
     ADVSingleSequenceWidget *wgt = qobject_cast<ADVSingleSequenceWidget *>(focusedWidget);
     CHECK(wgt != NULL, );
@@ -1410,7 +1411,8 @@ void AnnotatedDNAView::sl_paste() {
     SAFE_POINT(detView->getEditor(), "DetViewEditor is NULL", );
     CHECK(detView->getEditor()->isEditMode(), );
 
-    PasteTask *task = pasteFactory->pasteTask(false);
+    PasteTask *task = pasteFactory->createPasteTask(false);
+    CHECK(task != nullptr, );
     connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), detView->getEditor(), SLOT(sl_paste(Task *)));
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }

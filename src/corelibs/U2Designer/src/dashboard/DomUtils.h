@@ -34,13 +34,17 @@ public:
 
     static QDomElement findElementById(const QDomElement &element, const QString &id);
 
+    static QDomElement findParentByTag(const QDomElement &element, const QString &tagName);
+
     static bool hasClass(const QDomElement &element, const QString &className);
 
-    static void findChildElementsByClass(const QDomElement &element, const QString &className, QList<QDomElement> &result);
+    static QList<QDomElement> findChildElementsByClass(const QDomNode& node, const QString &className, int maxDepth = -1);
 
-    static QDomElement findChildElementByClass(const QDomElement &element, const QString &className);
+    static void findChildElementsByClass(const QDomNode &node, const QString &className, QList<QDomElement> &result, int maxDepth = -1);
 
-    static QString toString(const QDomElement &element);
+    static QDomElement findChildElementByClass(const QDomNode &element, const QString &className, int maxDepth = -1);
+
+    static QString toString(const QDomElement &element, bool includeElement);
 };
 
 }    // namespace U2

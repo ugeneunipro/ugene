@@ -26,12 +26,13 @@
 
 #include <QToolButton>
 
+#include <U2Designer/Dashboard.h>
+#include <U2Designer/ExternalToolsDashboardWidget.h>
 #include <U2Designer/U2WebView.h>
 
 #include "GTGlobals.h"
 
 class QTabWidget;
-class Dashboard;
 
 namespace U2 {
 
@@ -47,6 +48,9 @@ public:
     /** Returns active dashboard or nullptr if not found. */
     static Dashboard *findDashboard(HI::GUITestOpStatus &os);
 
+    /** Returns active dashboard. Fails if not found */
+    static Dashboard *getDashboard(HI::GUITestOpStatus &os);
+
     /** Returns load-schema button or nullptr if not found. */
     static QToolButton *findLoadSchemaButton(HI::GUITestOpStatus &os);
 
@@ -57,9 +61,8 @@ public:
     static QStringList getOutputFiles(HI::GUITestOpStatus &os);
     static void clickOutputFile(HI::GUITestOpStatus &os, const QString &outputFileName);
 
-    static HI::HIWebElement findElement(HI::GUITestOpStatus &os, QString text, QString tag = "*", bool exactMatch = false);
-    static HI::HIWebElement findTreeElement(HI::GUITestOpStatus &os, QString text);
-    static HI::HIWebElement findContextMenuElement(HI::GUITestOpStatus &os, QString text);
+    static HI::HIWebElement findWebElement(HI::GUITestOpStatus &os, QString text, QString tag = "*", bool exactMatch = false);
+    static HI::HIWebElement findWebContextMenuElement(HI::GUITestOpStatus &os, QString text);
     static void click(HI::GUITestOpStatus &os, HI::HIWebElement el, Qt::MouseButton button = Qt::LeftButton);
     static QString getTabObjectName(Tabs tab);
     static bool areThereNotifications(HI::GUITestOpStatus &os);
@@ -69,42 +72,46 @@ public:
 
     // External tools tab
     static QString getNodeText(HI::GUITestOpStatus &os, const QString &nodeId);
+
     static int getChildrenNodesCount(HI::GUITestOpStatus &os, const QString &nodeId);
-    static QString getChildNodeId(HI::GUITestOpStatus &os, const QString &nodeId, int childNum);
-    static QString getDescendantNodeId(HI::GUITestOpStatus &os, const QString &nodeId, const QList<int> &childNums);
+
+    static QList<ExternalToolsTreeNode *> getChildNodes(HI::GUITestOpStatus &os, const QString &nodeId);
+
+    static QString getChildNodeId(HI::GUITestOpStatus &os, const QString &nodeId, int childIndex);
+    static QString getDescendantNodeId(HI::GUITestOpStatus &os, const QString &nodeId, const QList<int> &childIndexes);
     static QString getChildWithTextId(HI::GUITestOpStatus &os, const QString &nodeId, const QString &text);    // childrens has to have unique texts
 
-    static bool doesNodeHaveLimitationMessageNode(HI::GUITestOpStatus &os, const QString &nodeId);
-    static QString getLimitationMessageNodeText(HI::GUITestOpStatus &os, const QString &nodeId);
-    static QString getLimitationMessageLogUrl(HI::GUITestOpStatus &os, const QString &nodeId);
+    static bool hasLimitationMessage(HI::GUITestOpStatus &os, const QString &nodeId);
+    static QString getLimitationMessage(HI::GUITestOpStatus &os, const QString &nodeId);
+    static QString getLogUrlFromNodeLimitationMessage(HI::GUITestOpStatus &os, const QString &nodeId);
+    static QString getLogUrlFromOutputContent(HI::GUITestOpStatus &os, const QString &outputNodeId);
 
     static QSize getCopyButtonSize(HI::GUITestOpStatus &os, const QString &toolRunNodeId);
     static void clickCopyButton(HI::GUITestOpStatus &os, const QString &toolRunNodeId);
 
-    // All parent nodes should be expanded
     static bool isNodeVisible(HI::GUITestOpStatus &os, const QString &nodeId);
     static bool isNodeCollapsed(HI::GUITestOpStatus &os, const QString &nodeId);
     static void collapseNode(HI::GUITestOpStatus &os, const QString &nodeId);
     static void expandNode(HI::GUITestOpStatus &os, const QString &nodeId);
+    static void clickNodeTitle(HI::GUITestOpStatus &os, ExternalToolsTreeNode *node);
 
-    static QString getLogUrlFromNode(HI::GUITestOpStatus &os, const QString &outputNodeId);
+    static const QString TREE_ROOT_ID;
 
-    static const QString TREE_ROOT_ID;    // This constant is defined in ExternalToolWidget.js
+    static QWidget *getCopyButton(HI::GUITestOpStatus &os, const QString &toolRunNodeId);
+    static ExternalToolsDashboardWidget *getExternalToolsWidget(HI::GUITestOpStatus &os);
+    static ExternalToolsTreeNode *getExternalToolNode(HI::GUITestOpStatus &os, const QString &nodeId);
+
+    /** Returns external tool matched by text on any level. */
+    static ExternalToolsTreeNode *getExternalToolNodeByText(HI::GUITestOpStatus &os, const QString &textPattern, bool isExactMatch = true);
+
+    /** Returns external tool matched by text with the given parent only. If parent is nullptr - any level is searched. */
+    static ExternalToolsTreeNode *getExternalToolNodeByText(HI::GUITestOpStatus &os, ExternalToolsTreeNode *parent, const QString &textPattern, bool isExactMatch = true);
+
+    /** Returns list of external tool nodes matched by text with the given parent only. If parent is nullptr - any level is searched. */
+    static QList<ExternalToolsTreeNode *> getExternalToolNodesByText(HI::GUITestOpStatus &os, ExternalToolsTreeNode *parent, const QString &textPattern, bool isExactMatch = true);
 
 private:
-    static QString getNodeSpanId(const QString &nodeId);
-    static HI::HIWebElement getCopyButton(HI::GUITestOpStatus &os, const QString &toolRunNodeId);
-    static HI::HIWebElement getNodeSpan(HI::GUITestOpStatus &os, const QString &nodeId);
-
-    static QString getLogUrlFromElement(HI::GUITestOpStatus &os, const HI::HIWebElement &element);
-
     static const QMap<QString, Tabs> tabMap;
-    static const QString PARENT_LI;    // This constant is defined in ExternalToolWidget.js
-
-    // Some CSS attributes
-    static const QString TITLE;
-    static const QString COLLAPSED_NODE_TITLE;
-    static const QString ON_CLICK;
 };
 
 }    // namespace U2

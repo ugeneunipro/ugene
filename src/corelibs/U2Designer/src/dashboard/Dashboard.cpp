@@ -39,6 +39,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/GUrlUtils.h>
+#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2SafePoints.h>
@@ -53,6 +54,9 @@
 
 #include "DashboardJsAgent.h"
 #include "DashboardPageController.h"
+#include "DashboardTabPage.h"
+#include "DomUtils.h"
+#include "ExternalToolsDashboardWidget.h"
 
 namespace U2 {
 
@@ -73,6 +77,8 @@ const QString Dashboard::STATE_CANCELED = "CANCELED";
 #define INPUT_TAB_INDEX 1
 #define EXTERNAL_TOOLS_TAB_INDEX 2
 
+#define EXTERNAL_TOOLS_WIDGET_STATE_KEY "external_tools_widget"
+
 /************************************************************************/
 /* Dashboard */
 /************************************************************************/
@@ -84,13 +90,14 @@ Dashboard::Dashboard(const WorkflowMonitor *monitor, const QString &name, QWidge
       opened(true),
       monitor(monitor),
       workflowInProgress(true),
-      dashboardPageController(nullptr) {
+      dashboardPageController(nullptr),
+      externalToolsWidget(nullptr) {
     initLayout();
     dashboardPageController = new DashboardPageController(this, webView);
     connect(monitor, SIGNAL(si_report()), SLOT(sl_serialize()));
     connect(monitor, SIGNAL(si_dirSet(const QString &)), SLOT(sl_setDirectory(const QString &)));
     connect(monitor, SIGNAL(si_taskStateChanged(Monitor::TaskState)), SLOT(sl_workflowStateChanged(Monitor::TaskState)));
-    connect(monitor, SIGNAL(si_logChanged(Monitor::LogEntry)), SLOT(sl_onLogChanged()));
+    connect(monitor, SIGNAL(si_logChanged(Monitor::LogEntry)), SLOT(sl_onLogChanged(Monitor::LogEntry)));
 
     connect(dashboardPageController, SIGNAL(si_pageReady()), SLOT(sl_serialize()));
     connect(dashboardPageController, SIGNAL(si_pageReady()), SLOT(sl_pageReady()));
@@ -107,7 +114,9 @@ Dashboard::Dashboard(const QString &dirPath, QWidget *parent)
       opened(true),
       monitor(NULL),
       workflowInProgress(false),
-      dashboardPageController(nullptr) {
+      dashboardPageController(nullptr),
+      externalToolsWidget(nullptr) {
+    initialWidgetStates = readInitialWidgetStates(dirPath + REPORT_SUB_DIR + DB_FILE_NAME);
     initLayout();
     dashboardPageController = new DashboardPageController(this, webView);
 
@@ -174,7 +183,6 @@ void Dashboard::initLayout() {
     externalToolsTabButton->setStyleSheet(tabButtonStyleSheet);
     externalToolsTabButton->setCursor(Qt::PointingHandCursor);
     externalToolsTabButton->setCheckable(true);
-    externalToolsTabButton->setVisible(false);
     tabButtonsLayout->addWidget(externalToolsTabButton);
 
     auto tabButtonGroup = new QButtonGroup(tabButtonsRow);
@@ -199,8 +207,25 @@ void Dashboard::initLayout() {
     tabButtonsLayout->addWidget(loadSchemaButton);
     tabButtonsLayout->addSpacing(20);
 
-    webView = new U2WebView(this);
-    mainLayout->addWidget(webView, INT_MAX);
+    stackedWidget = new QStackedWidget();
+    mainLayout->addWidget(stackedWidget, INT_MAX);
+
+    webView = new U2WebView();
+    stackedWidget->addWidget(webView);
+
+    externalToolsTabPage = new DashboardTabPage("external_tools_tab_page");
+    stackedWidget->addWidget(externalToolsTabPage);
+
+    QDomElement externalToolsWidgetState = initialWidgetStates.value(EXTERNAL_TOOLS_WIDGET_STATE_KEY);
+    externalToolsTabButton->setVisible(!externalToolsWidgetState.isNull());
+}
+
+void Dashboard::initExternalToolsTabWidget() {
+    CHECK(externalToolsWidget == nullptr, );
+    QDomElement externalToolsWidgetState = initialWidgetStates.value(EXTERNAL_TOOLS_WIDGET_STATE_KEY);
+    externalToolsWidget = new ExternalToolsDashboardWidget(externalToolsWidgetState, monitor);
+    externalToolsTabPage->addDashboardWidget(tr("External Tools"), externalToolsWidget);
+    externalToolsTabButton->setVisible(true);
 }
 
 void Dashboard::sl_onTabButtonToggled(int id, bool checked) {
@@ -209,13 +234,16 @@ void Dashboard::sl_onTabButtonToggled(int id, bool checked) {
     }
     switch (id) {
     case OVERVIEW_TAB_INDEX:
+        stackedWidget->setCurrentIndex(0);
         dashboardPageController->getAgent()->si_switchTab("overview_tab");
         break;
     case INPUT_TAB_INDEX:
+        stackedWidget->setCurrentIndex(0);
         dashboardPageController->getAgent()->si_switchTab("input_tab");
         break;
     case EXTERNAL_TOOLS_TAB_INDEX:
-        dashboardPageController->getAgent()->si_switchTab("ext_tools_tab");
+        initExternalToolsTabWidget();
+        stackedWidget->setCurrentIndex(1);
         break;
     }
 }
@@ -315,9 +343,9 @@ void Dashboard::sl_pageReady() {
 #endif
 }
 
-void Dashboard::sl_onLogChanged() {
-    // Any log entry automatically adds external tools tab.
-    externalToolsTabButton->setVisible(true);
+void Dashboard::sl_onLogChanged(Monitor::LogEntry logEntry) {
+    initExternalToolsTabWidget();
+    externalToolsWidget->addLogEntry(logEntry);
 }
 
 void Dashboard::sl_serialize() {
@@ -329,8 +357,21 @@ void Dashboard::sl_serialize() {
         bool created = d.mkpath(reportDir);
         CHECK_EXT(created, ioLog.error(tr("Can not create a folder: ") + reportDir), );
     }
-    dashboardPageController->savePage(getPageFilePath());
     saveSettings();
+
+#if UGENE_WEB_KIT
+    QString html = webView->page()->mainFrame()->toHtml();
+    if (externalToolsWidget != nullptr) {
+        html.replace("<div class=\"widget-content\" id=\"externalToolsWidget\"></div>",
+                     "<div class=\"widget-content\" id=\"externalToolsWidget\">" + externalToolsWidget->toHtml() + "</div>");
+    }
+    IOAdapterUtils::writeTextFile(getPageFilePath(), html);
+#else
+//TODO: test
+//     webView->page()->toHtml([this](const QString &html) mutable {
+//        IOAdapterUtils::writeTextFile(getPageFilePath(), html);
+//    });
+#endif
 }
 
 void Dashboard::sl_setDirectory(const QString &value) {
@@ -382,6 +423,95 @@ void Dashboard::updateDashboard() const {
 
 void Dashboard::reserveName() const {
     AppContext::getDashboardInfoRegistry()->reserveName(getDashboardId(), name);
+}
+
+static void trimToWrapper(QString &html) {
+    int startIdx = html.indexOf("<div id=\"wrapper\">");
+    int endIdx = html.indexOf("<div id=\"log_messages\"", startIdx);
+    if (startIdx >= 0 && endIdx >= 0) {
+        html.remove(endIdx, html.length() - endIdx);
+        html.remove(0, startIdx);
+    }
+}
+
+static void fixImages(QString &html) {
+    int startIdx = html.indexOf("<img src=");
+    int endIdx = html.indexOf(">", startIdx);
+    if (startIdx > 0 && endIdx > 0) {
+        html.insert(endIdx, '/');
+    }
+}
+
+static void removeExtraDiv(QString &html) {
+    //UGENE 34 and below may have unbalanced divs count.
+    int openingDivCount = html.count("<div");
+    int closingDivCount = html.count("</div>");
+    if (openingDivCount + 1 == closingDivCount) {
+        int lastClosingDivIndex = html.lastIndexOf("</div>");
+        html.remove(lastClosingDivIndex, 6);
+    }
+}
+
+static void removeHtml(QString &html, const QByteArray &tag) {
+    while (true) {
+        int startIdx = html.indexOf("<" + tag + ">");
+        if (startIdx == -1) {
+            break;
+        }
+        int endIdx = html.indexOf("</" + tag + ">", startIdx);
+        if (endIdx == -1) {
+            break;
+        }
+        html.remove(startIdx, endIdx - startIdx + tag.length() + 3);
+    }
+}
+
+/** In-place fixes old-style UGENE's HTML to be parsable by the QXml. */
+static void makeValidDomFromHtml(QString &htmlData) {
+    trimToWrapper(htmlData);
+    removeHtml(htmlData, "colgroup");
+    fixImages(htmlData);
+    removeExtraDiv(htmlData);
+    htmlData.replace("<br>", "<br/>");
+    htmlData.replace("<wbr>", "<wbr/>");
+}
+
+static void removeProblemsWidgetDom(QString &htmlData) {
+    QString startToken = "<tbody scroll=\"yes\" id=\"problemsWidget123\">";
+    QString endToken = "</tbody>";
+    int startIndex = htmlData.indexOf(startToken);
+    int endIndex = startIndex > 0 ? htmlData.indexOf(endToken, startIndex + startToken.length()) : -1;
+    if (startIndex > 0 && endIndex > 0) {
+        htmlData.remove(startIndex, endIndex + endToken.length() - startIndex);
+    }
+}
+
+QMap<QString, QDomElement> Dashboard::readInitialWidgetStates(const QString &htmlUrl) {
+    QMap<QString, QDomElement> map;
+
+    QString html = IOAdapterUtils::readTextFile(htmlUrl);
+    if (html.isNull()) {
+        coreLog.error(tr("Error reading dashboard file: %1").arg(htmlUrl));
+        return map;
+    }
+    makeValidDomFromHtml(html);
+
+    QString error;
+    QDomDocument doc = DomUtils::fromString(html, error);
+    if (!error.isEmpty()) {
+        // There is an known issue with old UGENE version with illegal ProblemsWidget DOM: inner-ids were not escaped. Remove this widget and try to parse again.
+        removeProblemsWidgetDom(html);
+        doc = DomUtils::fromString(html, error);
+        if (!error.isEmpty()) {
+            coreLog.error(tr("Error parsing dashboard file: '%1', file: %2").arg(error).arg(htmlUrl));
+            return map;
+        }
+    }
+
+    QDomElement rootElement = doc.documentElement();
+    QDomElement externalToolsEl = DomUtils::findElementById(rootElement, "externalToolsWidget");
+    map[EXTERNAL_TOOLS_WIDGET_STATE_KEY] = ExternalToolsDashboardWidget::isValidDom(externalToolsEl) ? externalToolsEl : QDomElement();
+    return map;
 }
 
 }    // namespace U2

@@ -50,7 +50,7 @@ DashboardPageController::DashboardPageController(Dashboard *_dashboard, U2WebVie
         connect(monitor, SIGNAL(si_workerInfoChanged(const QString &, const Monitor::WorkerInfo &)), SLOT(sl_workerInfoChanged(const QString &, const Monitor::WorkerInfo &)));
         connect(monitor, SIGNAL(si_updateProducers()), SLOT(sl_workerStatsUpdate()));
         connect(monitor, SIGNAL(si_newOutputFile(const Monitor::FileInfo &)), SLOT(sl_newOutputFile(const Monitor::FileInfo &)));
-        connect(monitor, SIGNAL(si_logChanged(Monitor::LogEntry)), SLOT(sl_onLogChanged(Monitor::LogEntry)));
+//        connect(monitor, SIGNAL(si_logChanged(Monitor::LogEntry)), SLOT(sl_onLogChanged(Monitor::LogEntry)));
 
         for (const WorkflowNotification &notification : monitor->getNotifications()) {
             sl_newNotification(notification, 0);    // TODO: fix count of notifications

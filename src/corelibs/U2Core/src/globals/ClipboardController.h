@@ -32,7 +32,7 @@ namespace U2 {
 class U2CORE_EXPORT PasteTask : public Task {
     Q_OBJECT
 public:
-    PasteTask();
+    PasteTask(TaskFlags flags = TaskFlag_None);
 
     virtual QList<GUrl> getUrls() const = 0;
     virtual QList<Document *> getDocuments() const = 0;
@@ -46,7 +46,8 @@ class U2CORE_EXPORT PasteFactory : public QObject {
 public:
     PasteFactory(QObject *parent = 0);
 
-    virtual PasteTask *pasteTask(bool useInSequenceWidget) = 0;
+    /** Creates task using current clipboard state. May return NULL if clipboard state is invalid/unsupported. */
+    virtual PasteTask *createPasteTask(bool isAddToProject) = 0;
 };
 
 class U2CORE_EXPORT PasteUtils : public QObject {

@@ -30,15 +30,11 @@
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
-#include <primitives/GTListWidget.h>
 #include <primitives/GTMenu.h>
-#include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSlider.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTSplitter.h>
-#include <primitives/GTTabWidget.h>
-#include <primitives/GTTableView.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
@@ -48,7 +44,6 @@
 #include <utils/GTKeyboardUtils.h>
 #include <utils/GTThread.h>
 #include <utils/GTUtilsDialog.h>
-#include <utils/GTUtilsToolTip.h>
 
 #include <QDialogButtonBox>
 #include <QFileDialog>
@@ -62,7 +57,6 @@
 #include <QTableWidget>
 #include <QTextStream>
 #include <QThreadPool>
-#include <QWizard>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/ExternalToolRegistry.h>
@@ -90,7 +84,6 @@
 #include "GTUtilsBookmarksTreeView.h"
 #include "GTUtilsCircularView.h"
 #include "GTUtilsDashboard.h"
-#include "GTUtilsEscClicker.h"
 #include "GTUtilsExternalTools.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
@@ -99,8 +92,6 @@
 #include "GTUtilsNotifications.h"
 #include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsOptionPanelSequenceView.h"
-#include "GTUtilsOptionsPanel.h"
-#include "GTUtilsPhyTree.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
@@ -111,24 +102,18 @@
 #include "GTUtilsWorkflowDesigner.h"
 #include "api/GTSequenceReadingModeDialog.h"
 #include "api/GTSequenceReadingModeDialogUtils.h"
-#include "runnables/qt/EscapeClicker.h"
-#include "runnables/ugene/corelibs/U2Gui/AlignShortReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/BuildIndexDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/ConvertAssemblyToSAMDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateDocumentFromTextDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/CreateObjectRelationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/DownloadRemoteFileDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditConnectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditQualifierDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/EditSequenceDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportDocumentDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ExportImageDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/FindQualifierDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/FindTandemsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportBAMFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/PositionSelectorFiller.h"
@@ -138,58 +123,36 @@
 #include "runnables/ugene/corelibs/U2Gui/RemovePartFromSequenceDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ReplaceSubsequenceDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/SharedConnectionsDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/util/RenameSequenceFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/DeleteGapsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/DistanceMatrixDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExportHighlightedDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
-#include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/annotator/FindAnnotationCollocationsDialogFiller.h"
 #include "runnables/ugene/plugins/biostruct3d_view/StructuralAlignmentDialogFiller.h"
 #include "runnables/ugene/plugins/cap3/CAP3SupportDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ExportMSA2MSADialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportMSA2SequencesDialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequences2MSADialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
-#include "runnables/ugene/plugins/dna_export/ImportAnnotationsToCsvFiller.h"
-#include "runnables/ugene/plugins/dotplot/BuildDotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/dotplot/DotPlotDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/ConstructMoleculeDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/DigestSequenceDialogFiller.h"
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/BlastAllSupportDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/ClustalOSupportRunDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/FormatDBDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/RemoteBLASTDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/SnpEffDatabaseDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/SpadesGenomeAssemblyDialogFiller.h"
-#include "runnables/ugene/plugins/external_tools/TCoffeeDailogFiller.h"
 #include "runnables/ugene/plugins/weight_matrix/PwmBuildDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/AliasesDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/CreateElementWithCommandLineToolFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/CreateElementWithScriptDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/MAFFT/MAFFTSupportRunDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/hmm3/UHMM3PhmmerDialogFiller.h"
-#include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
-#include "runnables/ugene/ugeneui/ConvertAceToSqliteDialogFiller.h"
 #include "runnables/ugene/ugeneui/CreateNewProjectWidgetFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
-#include "runnables/ugene/ugeneui/DocumentProviderSelectorDialogFiller.h"
-#include "runnables/ugene/ugeneui/NCBISearchDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
-#include "runnables/ugene/ugeneui/SelectDocumentFormatDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
@@ -210,7 +173,7 @@ GUI_TEST_CLASS_DEFINITION(test_3014) {
     GTWidget::click(os, widget3d, Qt::RightButton);
     GTGlobals::sleep(10000);
 
-    //    Expected state: Moleculaar surface calculated and showed. Program not crached.
+    //    Expected state: Molecular surface calculated and showed. Program not crached.
     GTUtilsLog::check(os, l);
 }
 
@@ -2711,10 +2674,10 @@ GUI_TEST_CLASS_DEFINITION(test_3414) {
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTGlobals::sleep(1000);
-    HIWebElement initEl = GTUtilsDashboard::findElement(os, "00:00:0", "SPAN");
+    HIWebElement initEl = GTUtilsDashboard::findWebElement(os, "00:00:0", "SPAN");
     QString s = initEl.toPlainText();
     GTGlobals::sleep(5000);
-    HIWebElement finalEl = GTUtilsDashboard::findElement(os, "00:00:0", "SPAN");
+    HIWebElement finalEl = GTUtilsDashboard::findWebElement(os, "00:00:0", "SPAN");
     QString s1 = finalEl.toPlainText();
     CHECK_SET_ERR(s != s1, "timer not changed");
     GTUtilsTask::cancelTask(os, "Execute workflow");
@@ -3763,8 +3726,7 @@ GUI_TEST_CLASS_DEFINITION(test_3589) {
     // 3. Run the workflow.
     // Expected state: there are warnings about header in log and dashboard.
 
-    QString dirName = "test_3589_" + QDateTime::currentDateTime().toString("yyyy.MM.dd_HH.mm.ss");
-    QString dirPath = sandBoxDir + dirName + "/";
+    QString dirPath = sandBoxDir + "test_3589_" + QDateTime::currentDateTime().toString("yyyy.MM.dd_HH.mm.ss") + "/";
     QDir().mkpath(dirPath);
     GTFile::copy(os, dataDir + "samples/Assembly/chrM.sam", dirPath + "chrM.sam");
 
@@ -3772,15 +3734,16 @@ GUI_TEST_CLASS_DEFINITION(test_3589) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     WorkflowProcessItem *read = GTUtilsWorkflowDesigner::addElement(os, "Read NGS Reads Assembly");
-    CHECK_SET_ERR(read != NULL, "Added workflow element is NULL");
-    GTGlobals::sleep();
+    CHECK_SET_ERR(read != nullptr, "Added workflow element is NULL");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dirPath + "chrM.sam");
 
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(l.getJoinedErrorString().contains("There is no header in the SAM file"), "No warnings about header");
-    CHECK_SET_ERR(2 == GTUtilsLog::getErrors(os, l).size(), "Too many errors");    // initial warning and dashboard problem
+    int errorsCount = GTUtilsLog::getErrors(os, l).size();
+    // Initial warning and dashboard problem
+    CHECK_SET_ERR(errorsCount == 2, "Invalid errors count. Expected 2, got: " + QString::number(errorsCount) + "\nErrors: " + l.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3603) {

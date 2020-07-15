@@ -974,10 +974,11 @@ void AnnotationsTreeView::adjustMenu(QMenu *m) const {
 
 void AnnotationsTreeView::sl_paste() {
     PasteFactory *pasteFactory = AppContext::getPasteFactory();
-    SAFE_POINT(pasteFactory != NULL, "adFactory is null", );
+    SAFE_POINT(pasteFactory != nullptr, "pasteFactory is null", );
 
     bool addToProject = !(tree && tree->hasFocus());
-    PasteTask *task = pasteFactory->pasteTask(addToProject);
+    PasteTask *task = pasteFactory->createPasteTask(addToProject);
+    CHECK(task != nullptr,);
     if (!addToProject) {
         connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_pasteFinished(Task *)));
     }

@@ -94,6 +94,7 @@ int DocumentFormatSelectorController::selectResult(const GUrl &url, QByteArray &
         } else if (r.importer != NULL) {
             // #A6392E is the same color as Theme::errorColorLabelStr(). For some reason Qt's HTML parser cannot handle this value as rgb.
             text = tr("<b><font color=#A6392E>Import: </font>%1</b>. Score: %2 (<i>%3</i>)").arg(r.importer->getImporterName()).arg(r.score()).arg(score2Text(r.score()));
+            objName = r.importer->getImporterName();
         } else {
             assert(0);
             continue;

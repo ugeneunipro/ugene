@@ -95,7 +95,7 @@ function ProblemsWidget(containerId) { // may be add first problem as second arg
     }
 
     function id(info) {
-        return info.actorId + info.message;
+        return escape(info.actorId + info.message);
     }
 
     //constructor code

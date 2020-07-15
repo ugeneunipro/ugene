@@ -41,6 +41,12 @@ public:
     static IOAdapter *open(const GUrl &url, U2OpStatus &os, IOAdapterMode mode = IOAdapterMode_Read, IOAdapterFactory *iof = NULL);
 
     static IOAdapterFactory *get(const IOAdapterId &);
+
+    /** Reads whole file into string. Returns null string in case if error. */
+    static QString readTextFile(const QString &path, const char *codecName = "UTF-8");
+
+    /** Writes (overwrites) a string to file. Returns false of failed. */
+    static bool writeTextFile(const QString &path, const QString &content, const char *codecName = "UTF-8");
 };
 
 }    // namespace U2

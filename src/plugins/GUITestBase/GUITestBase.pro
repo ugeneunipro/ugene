@@ -210,6 +210,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/annotations_import/GTTestsAnnotationsImport.h \
             src/tests/common_scenarios/circular_view/GTTestsCvGeneral.h \
             src/tests/common_scenarios/cloning/GTTestsCloning.h \
+            src/tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.h \
             src/tests/common_scenarios/document_from_text/GTTestsDocumentFromText.h \
             src/tests/common_scenarios/dp_view/GTTestsDpView.h \
             src/tests/common_scenarios/mca_editor/GTTestsMcaEditor.h \
@@ -477,6 +478,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/annotations_import/GTTestsAnnotationsImport.cpp \
             src/tests/common_scenarios/circular_view/GTTestsCvGeneral.cpp \
             src/tests/common_scenarios/cloning/GTTestsCloning.cpp \
+            src/tests/common_scenarios/create_shortcut/GTTestsCreateShortcut.cpp \
             src/tests/common_scenarios/document_from_text/GTTestsDocumentFromText.cpp \
             src/tests/common_scenarios/dp_view/GTTestsDpView.cpp \
             src/tests/common_scenarios/mca_editor/GTTestsMcaEditor.cpp \

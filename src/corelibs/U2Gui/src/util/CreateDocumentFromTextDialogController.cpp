@@ -23,7 +23,6 @@
 
 #include <QFileInfo>
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/GUrlUtils.h>

@@ -50,7 +50,14 @@ private:
     static QString formCountersReport();
     static QString formSystemReport();
 
-    static void getOsNameAndVersion(QString &name, QString &version);
+    static void getSysInfo(QString &name,
+                           QString &version,
+                           QString &kernelType,
+                           QString &kernelVersion,
+                           QString &productVersion,
+                           QString &productType,
+                           QString &prettyProductName,
+                           QString &cpuArchitecture);
 
     static void getFirstLaunchInfo(bool &allVersions, bool &majorVersions);
     static bool enabled();

@@ -1057,7 +1057,7 @@ GUI_TEST_CLASS_DEFINITION(test_4104) {
     //Current state : the "Write Sequence" worker gives the "Nothing to write" error in the log.
     GTUtilsLog::check(os, l);
 
-    HIWebElement button = GTUtilsDashboard::findElement(os, "Dataset 1.gb", "BUTTON");
+    HIWebElement button = GTUtilsDashboard::findWebElement(os, "Dataset 1.gb", "BUTTON");
     GTUtilsDashboard::click(os, button);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -2286,7 +2286,7 @@ GUI_TEST_CLASS_DEFINITION(test_4266) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDashboard::findElement(os, "Loaded sequences: 139.");
+    GTUtilsDashboard::findWebElement(os, "Loaded sequences: 139.");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4272) {

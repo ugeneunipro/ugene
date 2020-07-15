@@ -34,8 +34,8 @@ PasteFactory::PasteFactory(QObject *parent)
 
 ///////////////////
 ///PasteTask
-PasteTask::PasteTask()
-    : Task(tr("Paste data"), TaskFlag_None) {
+PasteTask::PasteTask(TaskFlags flags)
+    : Task(tr("Paste data"), flags) {
 }
 
 void PasteTask::processDocument(Document *) {

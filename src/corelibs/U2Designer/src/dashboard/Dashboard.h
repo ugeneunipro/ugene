@@ -22,11 +22,14 @@
 #ifndef _U2_DASHBOARD_H_
 #define _U2_DASHBOARD_H_
 
+#include <QDomElement>
+#include <QStackedWidget>
 #include <QToolButton>
 #include <QVBoxLayout>
 
 #include <U2Lang/WorkflowMonitor.h>
 
+#include "DashboardTabPage.h"
 #include "webview/U2WebView.h"
 
 namespace U2 {
@@ -34,6 +37,7 @@ using namespace Workflow;
 
 class DashboardJsAgent;
 class DashboardPageController;
+class ExternalToolsDashboardWidget;
 
 class U2DESIGNER_EXPORT Dashboard : public QWidget {
     Q_OBJECT
@@ -92,7 +96,7 @@ private slots:
     void sl_runStateChanged(bool paused);
     void sl_pageReady();
     void sl_serialize();
-    void sl_onLogChanged();
+    void sl_onLogChanged(Monitor::LogEntry logEntry);
     void sl_setDirectory(const QString &dir);
     void sl_workflowStateChanged(Monitor::TaskState state);
 
@@ -100,14 +104,17 @@ private slots:
     void sl_onTabButtonToggled(int id, bool checked);
 
 private:
+    /** Initializes layout with all widgets initialized with the given initial states. */
     void initLayout();
     void loadDocument();
     void saveSettings();
     void loadSettings();
+    static QMap<QString, QDomElement> readInitialWidgetStates(const QString &htmlUrl);
 
     void registerDashboard() const;
     void updateDashboard() const;
     void reserveName() const;
+    void initExternalToolsTabWidget();
 
     bool loadingStarted;
     QString loadUrl;
@@ -124,7 +131,11 @@ private:
     QToolButton *inputTabButton;
     QToolButton *externalToolsTabButton;
 
+    QStackedWidget *stackedWidget;
     U2WebView *webView;
+    DashboardTabPage *externalToolsTabPage;
+    ExternalToolsDashboardWidget *externalToolsWidget;
+    QMap<QString, QDomElement> initialWidgetStates;
 };
 
 }    // namespace U2

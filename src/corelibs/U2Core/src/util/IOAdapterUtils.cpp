@@ -21,6 +21,9 @@
 
 #include "IOAdapterUtils.h"
 
+#include <QFile>
+#include <QTextStream>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/GUrl.h>
 #include <U2Core/IOAdapter.h>
@@ -112,6 +115,28 @@ IOAdapter *IOAdapterUtils::open(const GUrl &url, U2OpStatus &os, IOAdapterMode m
 
 IOAdapterFactory *IOAdapterUtils::get(const IOAdapterId &id) {
     return AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(id);
+}
+
+QString IOAdapterUtils::readTextFile(const QString &path, const char *codecName) {
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return QString();
+    }
+    QTextStream in(&file);
+    in.setCodec(codecName);
+    return in.readAll();
+}
+
+bool IOAdapterUtils::writeTextFile(const QString &path, const QString &content, const char *codecName) {
+    QFile file(path);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        return false;
+    }
+    QTextStream out(&file);
+    out.setCodec(codecName);
+    out << content;
+    out.flush();
+    return true;
 }
 
 }    // namespace U2

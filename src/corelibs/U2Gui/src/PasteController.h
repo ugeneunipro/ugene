@@ -22,8 +22,6 @@
 #ifndef _U2_PASTE_CONTROLLER_H_
 #define _U2_PASTE_CONTROLLER_H_
 
-#include <QClipboard>
-
 #include <U2Core/ClipboardController.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/IOAdapter.h>
@@ -37,7 +35,6 @@ class U2GUI_EXPORT PasteTaskImpl : public PasteTask {
     Q_OBJECT
 public:
     PasteTaskImpl(bool addToProject);
-    void run();
 
     QList<GUrl> getUrls() const {
         return urls;
@@ -58,30 +55,25 @@ protected:
 class U2GUI_EXPORT PasteFactoryImpl : public PasteFactory {
     Q_OBJECT
 public:
-    PasteFactoryImpl(QObject *parent = 0);
+    PasteFactoryImpl(QObject *parent = nullptr);
 
-    PasteTask *pasteTask(bool addToProject);
-
-protected:
-    void connectExclude(PasteTask *task);
-
-protected:
-    QSet<QString> excludedFilenames;
-
-protected slots:
-    void sl_excludeBack();
+    PasteTask *createPasteTask(bool isAddToProject) override;
 };
 
 class PasteUrlsTask : public PasteTaskImpl {
     Q_OBJECT
 public:
-    PasteUrlsTask(const QList<QUrl> &urls, bool addToProject);
+    PasteUrlsTask(const QList<QUrl> &urls, bool isAddToProject);
 };
 
 class PasteTextTask : public PasteTaskImpl {
     Q_OBJECT
 public:
-    PasteTextTask(const QClipboard *clipboard, QSet<QString> &excludedFilenames, bool addToProject);
+    PasteTextTask(const QString &clipboardText, bool isAddToProject);
+    Task::ReportResult report() override;
+
+private:
+    QString clipboardUrl;
 };
 
 }    // namespace U2

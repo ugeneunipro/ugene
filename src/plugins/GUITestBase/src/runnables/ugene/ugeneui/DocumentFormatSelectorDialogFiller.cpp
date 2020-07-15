@@ -35,11 +35,8 @@ namespace U2 {
 
 #define GT_METHOD_NAME "getButton"
 QRadioButton *DocumentFormatSelectorDialogFiller::getButton(HI::GUITestOpStatus &os) {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", NULL);
-    QRadioButton *result = GTWidget::findExactWidget<QRadioButton *>(os, format, dialog, GTGlobals::FindOptions(false));
-
-    return result;
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
+    return GTWidget::findExactWidget<QRadioButton *>(os, format, dialog, GTGlobals::FindOptions(false));
 }
 #undef GT_METHOD_NAME
 
@@ -50,14 +47,12 @@ void DocumentFormatSelectorDialogFiller::commonScenario() {
     GTGlobals::sleep(500);
 
     QRadioButton *radio = getButton(os);
-    if (NULL != radio) {
-        if (-1 != score) {
+    if (radio != nullptr) {
+        if (score != -1) {
             GT_CHECK(formatLineLable != -1, "line is not defined");
 
-            QLabel *label = GTWidget::findExactWidget<QLabel *>(os, QString("label_%1").arg(formatLineLable), dialog, GTGlobals::FindOptions(false));
-            GT_CHECK(label, "label is NULL");
-
-            const QString sign = label->text();
+            QLabel *label = GTWidget::findExactWidget<QLabel *>(os, QString("label_%1").arg(formatLineLable), dialog);
+            QString sign = label->text();
             QRegExp regExp(QString("<b>%1</b> format. Score: (\\d+)").arg(format));
             regExp.indexIn(sign);
             int currentScore = regExp.cap(1).toInt();

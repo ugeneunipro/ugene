@@ -1474,28 +1474,13 @@ GUI_TEST_CLASS_DEFINITION(test_2192) {
     //    4. Start the scheme.
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    5. Open External Tools tab.
+    //    5. Open External Tools tab & copy sam tools path
     GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
-    //    6. Right-click on any tree element.
-    //       Expected state: context menu with 2 options appeared.
-    //                        "Copy selected text" option is not available if there is no selected text.
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findTreeElement(os, "Call Variants"), Qt::RightButton);
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findContextMenuElement(os, "Copy element content"));
-    QString text = GTClipboard::text(os);
-    CHECK_SET_ERR(text == "Call Variants", "copy content works wrong\n" + text);
-    //    7. Choose "Copy element content" on any tree element and paste the data to any editor.
-    //       Expected state: correct data was copied.
-    //    8. Select some amount of text on a tree and click on "Copy selected text" which is now should be available.
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findTreeElement(os, "SAMtools run"));
-    HIWebElement el = GTUtilsDashboard::findElement(os, samtoolsPath, "SPAN");
-    GTWebView::selectElementText(os, GTUtilsDashboard::getDashboardWebView(os), el);
-    GTUtilsDashboard::click(os, el, Qt::RightButton);
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findContextMenuElement(os, "Copy selected text"));
-    //       Paste the data in any editor.
-    text = GTClipboard::text(os);
+    QWidget *samToolsRunNode = GTUtilsDashboard::getCopyButton(os, "actor_call_variants_run_1_tool_SAMtools_run_1");
+    GTWidget::click(os, samToolsRunNode);
 
-    CHECK_SET_ERR(text.contains(samtoolsPath), "copy text works wrong\n" + text);
-    //       Expected state: selected data was copied.
+    QString text = GTClipboard::text(os);
+    CHECK_SET_ERR(text.contains(samtoolsPath), "Unexpected SAMTools path:\n" + text);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2202) {
@@ -1672,7 +1657,7 @@ GUI_TEST_CLASS_DEFINITION(test_2268) {
 
     QDir origToolDir = origToolPath.dir();
 #ifdef Q_OS_LINUX
-    origToolDir.cdUp(); // exit from 'bin' folder
+    origToolDir.cdUp();    // exit from 'bin' folder
 #endif
 
     GTFile::copyDir(os, origToolDir.absolutePath(), sandBoxDir + "GUITest_regression_scenarios_test_2268/");
@@ -1690,7 +1675,7 @@ GUI_TEST_CLASS_DEFINITION(test_2268) {
 
     QDir newToolDir = origToolPath.dir();
 #ifdef Q_OS_LINUX
-    newToolDir.cdUp(); // exit from 'bin' folder
+    newToolDir.cdUp();    // exit from 'bin' folder
 #endif
 
     // 1. Forbid write access to the t-coffee folder recursively (chmod 555 -R %t-coffee-dir%).
@@ -3417,7 +3402,6 @@ GUI_TEST_CLASS_DEFINITION(test_2513) {
     GTMouseDriver::click(Qt::RightButton);
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Reroot tree", PopupChecker::IsEnabled));
     GTMouseDriver::click(Qt::RightButton);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2519) {
@@ -3810,15 +3794,10 @@ GUI_TEST_CLASS_DEFINITION(test_2569) {
     //    4. Click "External Tools" on the appeared Dashboard.
     GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
     //    5. Expand "SAMtools run"
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findTreeElement(os, "SAMtools run"));
-    //    6. Right click on the child element of the "Command" element.
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findTreeElement(os, "Command"), Qt::RightButton);
-    //    7. Click "Copy element content".
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findContextMenuElement(os, "Copy element content"));
-    //    8. Check the clipboard.
-    QString clipboardText = GTClipboard::text(os);
-    //    Expected state: the clipboard content is the same to the element content.
-    CHECK_SET_ERR(clipboardText == "Command", "copy element content works wrong " + clipboardText);
+    auto runNode = GTUtilsDashboard::getExternalToolNodeByText(os, "SAMtools run");
+    GTUtilsDashboard::clickNodeTitle(os, runNode);
+    //    6. Check that "Command" node exists.
+    GTUtilsDashboard::getExternalToolNodeByText(os, runNode, "Command");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2577) {
@@ -4235,8 +4214,8 @@ GUI_TEST_CLASS_DEFINITION(test_2638) {
     QString initTitle = GTUtilsMdi::activeWindowTitle(os);
     GTUtilsDashboard::openTab(os, GTUtilsDashboard::Input);
     GTWebView::traceAllWebElements(os, GTUtilsDashboard::getDashboardWebView(os));
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "Map RNA-Seq Reads with TopHat", "LI"));
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "index", "BUTTON"));
+    GTUtilsDashboard::click(os, GTUtilsDashboard::findWebElement(os, "Map RNA-Seq Reads with TopHat", "LI"));
+    GTUtilsDashboard::click(os, GTUtilsDashboard::findWebElement(os, "index", "BUTTON"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: "Bowtie index folder" parameter's value is folder, it is not tried to be opened bu UGENE when clicking
     QString finalTitle = GTUtilsMdi::activeWindowTitle(os);
@@ -4417,13 +4396,14 @@ GUI_TEST_CLASS_DEFINITION(test_2662) {
     GTUtilsDashboard::openTab(os, GTUtilsDashboard::ExternalTools);
     //    Expected state: vcfTools executible file is /usr/bin/perl path/to/vcfutils.pl
     //    Actual: vcfTools executible file is /usr/bin/perl
-    GTUtilsDashboard::click(os, GTUtilsDashboard::findTreeElement(os, "vcfutils run"));
-    //GTUtilsDashboard::click(os, GTUtilsDashboard::findElement(os, "vcfutils run", "*", true));
+
+    auto node = GTUtilsDashboard::getExternalToolNodeByText(os, "vcfutils run");
+    GTWidget::click(os, node);
 
 #ifdef Q_OS_WIN
-    GTUtilsDashboard::findElement(os, "samtools-0.1.19\\vcfutils.pl", "SPAN");
+    GTUtilsDashboard::getExternalToolNodeByText(os, "samtools-0.1.19\\vcfutils.pl", false);
 #else
-    GTUtilsDashboard::findElement(os, "samtools-0.1.19/vcfutils.pl", "SPAN");
+    GTUtilsDashboard::getExternalToolNodeByText(os, "samtools-0.1.19/vcfutils.pl", false);
 #endif
 }
 
@@ -5512,7 +5492,7 @@ GUI_TEST_CLASS_DEFINITION(test_2897) {
     GTFileDialog::openFile(os, dataDir + "/samples/CLUSTALW/", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    //    2. Open options panel 'Highlighting' tab. 
+    //    2. Open options panel 'Highlighting' tab.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
     GTUtilsOptionPanelMsa::checkTabIsOpened(os, GTUtilsOptionPanelMsa::Highlighting);
 

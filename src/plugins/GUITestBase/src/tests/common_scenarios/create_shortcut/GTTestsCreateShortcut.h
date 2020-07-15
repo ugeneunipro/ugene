@@ -19,28 +19,22 @@
  * MA 02110-1301, USA.
  */
 
-#include "WebViewControllerPrivate.h"
+#ifndef GTTESTSCREATESHORTCUT_H
+#define GTTESTSCREATESHORTCUT_H
 
-#include <QDesktopServices>
-
-#include <U2Core/IOAdapterUtils.h>
-#include <U2Core/U2SafePoints.h>
+#include <U2Test/UGUITestBase.h>
 
 namespace U2 {
 
-WebViewControllerPrivate::WebViewControllerPrivate(U2WebView *_webView)
-    : webView(_webView) {
-}
+namespace GUITest_common_scenarios_create_shortcut {
+#undef GUI_TEST_SUITE
+#define GUI_TEST_SUITE "GUITest_common_scenarios_create_shortcut"
 
-void WebViewControllerPrivate::saveContent(const QString &url, const QString &data) {
-    CHECK(!data.isEmpty(), );
-    if (!IOAdapterUtils::writeTextFile(url, data)) {
-        ioLog.error(tr("Can not open a file for writing: ") + url);
-    }
-}
+GUI_TEST_CLASS_DECLARATION(test_0001)
 
-void WebViewControllerPrivate::sl_linkClicked(const QUrl &url) {
-    QDesktopServices::openUrl(url);
-}
+#undef GUI_TEST_SUITE
+}    // namespace GUITest_common_scenarios_create_shortcut
 
 }    // namespace U2
+
+#endif    // GTTESTSCREATESHORTCUT_H

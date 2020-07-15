@@ -148,7 +148,7 @@ QList<HI::GUITest *> getIdealTestsSplit(int suiteIndex, int suiteCount, const QL
     } else if (suiteCount == 4) {
         testsPerSuite << 640 << 680 << 640 << -1;
     } else if (suiteCount == 5) {
-        testsPerSuite << 517 << 564 << 484 << 521 << -1;
+        testsPerSuite << 517 << 565 << 485 << 518 << -1;
     }
     QList<HI::GUITest *> tests;
     if (testsPerSuite.size() == suiteCount) {

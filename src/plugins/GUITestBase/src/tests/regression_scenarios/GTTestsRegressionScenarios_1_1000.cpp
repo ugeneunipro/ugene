@@ -2513,7 +2513,7 @@ GUI_TEST_CLASS_DEFINITION(test_0873) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Expected state: there are more then 10 result files and they are grouped into sublists
 
-    HIWebElement button = GTUtilsDashboard::findElement(os, "merged.fa", "BUTTON");
+    HIWebElement button = GTUtilsDashboard::findWebElement(os, "merged.fa", "BUTTON");
     GTUtilsDashboard::click(os, button);
     GTThread::waitForMainThread();
 

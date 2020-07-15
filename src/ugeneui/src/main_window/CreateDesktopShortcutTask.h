@@ -19,28 +19,37 @@
  * MA 02110-1301, USA.
  */
 
-#include "WebViewControllerPrivate.h"
+#ifndef _U2_CREATE_DESKTOP_SHORTCUT_TASKS_H_
+#define _U2_CREATE_DESKTOP_SHORTCUT_TASKS_H_
 
-#include <QDesktopServices>
+#include <QMessageBox>
 
-#include <U2Core/IOAdapterUtils.h>
-#include <U2Core/U2SafePoints.h>
+#include <U2Core/QObjectScopedPointer.h>
+#include <U2Core/Task.h>
+#include <U2Core/Version.h>
+
+class QPushButton;
 
 namespace U2 {
 
-WebViewControllerPrivate::WebViewControllerPrivate(U2WebView *_webView)
-    : webView(_webView) {
-}
+class CreateDesktopShortcutTask : public Task {
+    Q_OBJECT
 
-void WebViewControllerPrivate::saveContent(const QString &url, const QString &data) {
-    CHECK(!data.isEmpty(), );
-    if (!IOAdapterUtils::writeTextFile(url, data)) {
-        ioLog.error(tr("Can not open a file for writing: ") + url);
-    }
-}
+public:
+    enum Answer { Create,
+                  DoNothing };
 
-void WebViewControllerPrivate::sl_linkClicked(const QUrl &url) {
-    QDesktopServices::openUrl(url);
-}
+    CreateDesktopShortcutTask(bool startUp = false);
+    void run();
+    bool createDesktopShortcut();
+    ReportResult report();
+    static Answer getAnswer();
+
+private:
+    bool runOnStartup;
+    bool startError;
+};
 
 }    // namespace U2
+
+#endif

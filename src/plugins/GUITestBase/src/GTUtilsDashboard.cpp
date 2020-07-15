@@ -27,59 +27,74 @@
 #include <QRegularExpression>
 #include <QTabWidget>
 
-#include <U2Designer/Dashboard.h>
+#include <U2Gui/HoverQLabel.h>
 
 #include "GTUtilsDashboard.h"
 
 namespace U2 {
 using namespace HI;
 
+const QString GTUtilsDashboard::TREE_ROOT_ID = ExternalToolsDashboardWidget::TREE_ID;
+
 #define GT_CLASS_NAME "GTUtilsDashboard"
-QString GTUtilsDashboard::getNodeSpanId(const QString &nodeId) {
-    // It is defined in ExternalToolsWidget.js.
-    return nodeId + "_span";
-}
 
-HIWebElement GTUtilsDashboard::getCopyButton(GUITestOpStatus &os, const QString &toolRunNodeId) {
-    const QString selector = QString("SPAN#%1 > BUTTON").arg(getNodeSpanId(toolRunNodeId));
-
-    GTGlobals::FindOptions options;
-    options.searchInHidden = true;
-
-    return GTWebView::findElementBySelector(os, getDashboardWebView(os), selector, options);
-}
-
-HIWebElement GTUtilsDashboard::getNodeSpan(GUITestOpStatus &os, const QString &nodeId) {
-    const QString selector = QString("SPAN#%1").arg(getNodeSpanId(nodeId));
-
-    GTGlobals::FindOptions options;
-    options.searchInHidden = true;
-
-    return GTWebView::findElementBySelector(os, getDashboardWebView(os), selector, options);
-}
-
-#define GT_METHOD_NAME "clickOutputFile"
-QString GTUtilsDashboard::getLogUrlFromElement(GUITestOpStatus &os, const HIWebElement &element) {
-    Q_UNUSED(os);
-    const QString onclickFunction = element.attribute(ON_CLICK);
-    QRegularExpression urlFetcher("openLog\\(\\\'(.*)\\\'\\)");
-    const QRegularExpressionMatch match = urlFetcher.match(onclickFunction);
-    GT_CHECK_RESULT(match.hasMatch(),
-                    QString("Can't get URL with a regexp from an element: regexp is '%1', element ID is '%2', element class is '%3'")
-                        .arg(urlFetcher.pattern())
-                        .arg(element.id())
-                        .arg(element.attribute("class")),
-                    QString());
-    return match.captured(1);
+#define GT_METHOD_NAME "getCopyButton"
+QWidget *GTUtilsDashboard::getCopyButton(GUITestOpStatus &os, const QString &toolRunNodeId) {
+    auto node = getExternalToolNode(os, toolRunNodeId);
+    return GTWidget::findWidget(os, "copyButton", node);
 }
 #undef GT_METHOD_NAME
 
-const QString GTUtilsDashboard::TREE_ROOT_ID = "treeRoot";
-const QString GTUtilsDashboard::PARENT_LI = "parent_li";
+#define GT_METHOD_NAME "getExternalToolsWidget"
+ExternalToolsDashboardWidget *GTUtilsDashboard::getExternalToolsWidget(GUITestOpStatus &os) {
+    Dashboard *dashboard = getDashboard(os);
+    return GTWidget::findWidgetByType<ExternalToolsDashboardWidget *>(os, dashboard, "External tools widget is not found");
+}
+#undef GT_METHOD_NAME
 
-const QString GTUtilsDashboard::TITLE = "title";
-const QString GTUtilsDashboard::COLLAPSED_NODE_TITLE = "Expand this branch";
-const QString GTUtilsDashboard::ON_CLICK = "onclick";
+#define GT_METHOD_NAME "getExternalToolNode"
+ExternalToolsTreeNode *GTUtilsDashboard::getExternalToolNode(GUITestOpStatus &os, const QString &nodeId) {
+    ExternalToolsDashboardWidget *widget = getExternalToolsWidget(os);
+    ExternalToolsTreeNode *node = qobject_cast<ExternalToolsTreeNode *>(GTWidget::findWidget(os, nodeId, widget));
+    GT_CHECK_RESULT(node != nullptr, "External tool node not found: " + nodeId, nullptr);
+    return node;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getExternalToolNodeByText"
+ExternalToolsTreeNode *GTUtilsDashboard::getExternalToolNodeByText(GUITestOpStatus &os, const QString &textPattern, bool isExactMatch) {
+    return getExternalToolNodeByText(os, nullptr, textPattern, isExactMatch);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getExternalToolNodesByText"
+QList<ExternalToolsTreeNode *> GTUtilsDashboard::getExternalToolNodesByText(HI::GUITestOpStatus &os, ExternalToolsTreeNode *parent, const QString &textPattern, bool isExactMatch) {
+    QList<ExternalToolsTreeNode *> nodes = parent == nullptr ? getExternalToolsWidget(os)->findChildren<ExternalToolsTreeNode *>() : parent->children;
+    QList<ExternalToolsTreeNode *> result;
+    for (auto node : nodes) {
+        if (node->content == textPattern) {
+            result << node;
+        } else if (!isExactMatch && node->content.contains(textPattern)) {
+            result << node;
+        }
+    }
+    return result;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getExternalToolNodeByTextWithParent"
+ExternalToolsTreeNode *GTUtilsDashboard::getExternalToolNodeByText(GUITestOpStatus &os, ExternalToolsTreeNode *parent, const QString &textPattern, bool isExactMatch) {
+    QList<ExternalToolsTreeNode *> nodes = parent == nullptr ? getExternalToolsWidget(os)->findChildren<ExternalToolsTreeNode *>() : parent->children;
+    for (auto node : nodes) {
+        if (node->content == textPattern) {
+            return node;
+        } else if (!isExactMatch && node->content.contains(textPattern)) {
+            return node;
+        }
+    }
+    GT_CHECK_RESULT(false, "External tool node by text not found: " + textPattern, nullptr);
+}
+#undef GT_METHOD_NAME
 
 WebView *GTUtilsDashboard::getDashboardWebView(HI::GUITestOpStatus &os) {
     Dashboard *dashboard = findDashboard(os);
@@ -136,15 +151,11 @@ void GTUtilsDashboard::clickOutputFile(GUITestOpStatus &os, const QString &outpu
 }
 #undef GT_METHOD_NAME
 
-HIWebElement GTUtilsDashboard::findElement(HI::GUITestOpStatus &os, QString text, QString tag, bool exactMatch) {
+HIWebElement GTUtilsDashboard::findWebElement(HI::GUITestOpStatus &os, QString text, QString tag, bool exactMatch) {
     return GTWebView::findElement(os, getDashboardWebView(os), text, tag, exactMatch);
 }
 
-HIWebElement GTUtilsDashboard::findTreeElement(HI::GUITestOpStatus &os, QString text) {
-    return GTWebView::findTreeElement(os, getDashboardWebView(os), text);
-}
-
-HIWebElement GTUtilsDashboard::findContextMenuElement(HI::GUITestOpStatus &os, QString text) {
+HIWebElement GTUtilsDashboard::findWebContextMenuElement(HI::GUITestOpStatus &os, QString text) {
     return GTWebView::findContextMenuElement(os, getDashboardWebView(os), text);
 }
 
@@ -169,10 +180,20 @@ QString GTUtilsDashboard::getTabObjectName(Tabs tab) {
     return "unknown tab";
 }
 
+#define GT_METHOD_NAME "findDashboard"
 Dashboard *GTUtilsDashboard::findDashboard(HI::GUITestOpStatus &os) {
     QTabWidget *tabWidget = getTabWidget(os);
     return tabWidget == nullptr ? nullptr : qobject_cast<Dashboard *>(tabWidget->currentWidget());
 }
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getDashboard"
+Dashboard *GTUtilsDashboard::getDashboard(HI::GUITestOpStatus &os) {
+    auto dashboard = findDashboard(os);
+    GT_CHECK_RESULT(dashboard != nullptr, "Dashboard widget not found", nullptr);
+    return dashboard;
+}
+#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openTab"
 void GTUtilsDashboard::openTab(HI::GUITestOpStatus &os, Tabs tab) {
@@ -200,45 +221,44 @@ bool GTUtilsDashboard::doesTabExist(HI::GUITestOpStatus &os, Tabs tab) {
 
 #define GT_METHOD_NAME "getNodeText"
 QString GTUtilsDashboard::getNodeText(GUITestOpStatus &os, const QString &nodeId) {
-    return getNodeSpan(os, nodeId).toPlainText();
+    return getExternalToolNode(os, nodeId)->content;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getChildrenNodesCount"
 int GTUtilsDashboard::getChildrenNodesCount(GUITestOpStatus &os, const QString &nodeId) {
-    const QString selector = QString("UL#%1 > LI.%2 > UL").arg(nodeId).arg(PARENT_LI);
+    return nodeId == TREE_ROOT_ID ? getExternalToolsWidget(os)->getTopLevelNodes().size() : getExternalToolNode(os, nodeId)->children.count();
+}
+#undef GT_METHOD_NAME
 
-    GTGlobals::FindOptions options;
-    options.failIfNotFound = false;
-    options.searchInHidden = true;
-
-    return GTWebView::findElementsBySelector(os, getDashboardWebView(os), selector, options).size();
+#define GT_METHOD_NAME "getChildNodes"
+QList<ExternalToolsTreeNode *> GTUtilsDashboard::getChildNodes(GUITestOpStatus &os, const QString &nodeId) {
+    return nodeId == TREE_ROOT_ID ? getExternalToolsWidget(os)->getTopLevelNodes() : getExternalToolNode(os, nodeId)->children;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getChildNodeId"
-QString GTUtilsDashboard::getChildNodeId(GUITestOpStatus &os, const QString &nodeId, int childNum) {
-    return getDescendantNodeId(os, nodeId, {childNum});
+QString GTUtilsDashboard::getChildNodeId(GUITestOpStatus &os, const QString &nodeId, int childIndex) {
+    return getDescendantNodeId(os, nodeId, {childIndex});
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getDescendantNodeId"
-QString GTUtilsDashboard::getDescendantNodeId(GUITestOpStatus &os, const QString &nodeId, const QList<int> &childNums) {
-    QString selector = QString("UL#%1").arg(nodeId);
-    foreach (const int childNum, childNums) {
-        selector += QString(" > LI:nth-of-type(%1) > UL").arg(childNum + 1);
+QString GTUtilsDashboard::getDescendantNodeId(GUITestOpStatus &os, const QString &nodeId, const QList<int> &childIndexes) {
+    QList<ExternalToolsTreeNode *> childNodes = getChildNodes(os, nodeId);
+    QString resultNodeId = nodeId;
+    for (int i : childIndexes) {
+        GT_CHECK_RESULT(i >= 0 && i < childNodes.size(), "Illegal child index: " + QString::number(i) + ", nodes: " + childNodes.size(), "");
+        resultNodeId = childNodes[i]->objectName();
+        childNodes = childNodes[i]->children;
     }
-
-    GTGlobals::FindOptions options;
-    options.searchInHidden = true;
-
-    return GTWebView::findElementBySelector(os, getDashboardWebView(os), selector, options).id();
+    return resultNodeId;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getChildWithTextId"
 QString GTUtilsDashboard::getChildWithTextId(GUITestOpStatus &os, const QString &nodeId, const QString &text) {
-    const int childrenCount = getChildrenNodesCount(os, nodeId);
+    int childrenCount = getChildrenNodesCount(os, nodeId);
     QString resultChildId;
     QStringList quotedChildrenTexts;
     for (int i = 0; i < childrenCount; i++) {
@@ -266,84 +286,91 @@ QString GTUtilsDashboard::getChildWithTextId(GUITestOpStatus &os, const QString 
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "doesNodeHaveLimitationMessageNode"
-bool GTUtilsDashboard::doesNodeHaveLimitationMessageNode(GUITestOpStatus &os, const QString &nodeId) {
-    const QString selector = QString("UL#%1 > LI.%2 > SPAN.limitation-message").arg(nodeId).arg(PARENT_LI);
-
-    GTGlobals::FindOptions options;
-    options.failIfNotFound = false;
-
-    return !GTWebView::findElementsBySelector(os, getDashboardWebView(os), selector, options).isEmpty();
+#define GT_METHOD_NAME "hasLimitationMessage"
+bool GTUtilsDashboard::hasLimitationMessage(GUITestOpStatus &os, const QString &nodeId) {
+    return !getLimitationMessage(os, nodeId).isEmpty();
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getLimitationMessageNodeText"
-QString GTUtilsDashboard::getLimitationMessageNodeText(GUITestOpStatus &os, const QString &nodeId) {
-    const QString selector = QString("UL#%1 > LI.%2 > SPAN.limitation-message").arg(nodeId).arg(PARENT_LI);
-    return GTWebView::findElementBySelector(os, getDashboardWebView(os), selector).toPlainText();
+#define GT_METHOD_NAME "getLimitationMessage"
+QString GTUtilsDashboard::getLimitationMessage(GUITestOpStatus &os, const QString &nodeId) {
+    return nodeId == TREE_ROOT_ID ? getExternalToolsWidget(os)->getLimitationWarningHtml() : getExternalToolNode(os, nodeId)->limitationWarningHtml;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "parseUrlFromContent"
+static QString parseUrlFromContent(GUITestOpStatus &os, const QString &content) {
+    QString urlStartToken = "<a href=\"";
+    int urlStartTokenIdx = content.lastIndexOf(urlStartToken);
+    GT_CHECK_RESULT(urlStartTokenIdx > 0, "urlStartToken is not found, text: " + content, "");
+    int urlStartIdx = urlStartTokenIdx + urlStartToken.length();
+    int urlEndIdx = content.indexOf("\"", urlStartIdx + 1);
+    GT_CHECK_RESULT(urlEndIdx > 0, "urlEndToken is not found, text: " + content, "");
+    return content.mid(urlStartIdx, urlEndIdx - urlStartIdx);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getLimitationMessageLogUrl"
-QString GTUtilsDashboard::getLimitationMessageLogUrl(GUITestOpStatus &os, const QString &nodeId) {
-    const QString selector = QString("UL#%1 > LI.%2 > SPAN.limitation-message > A").arg(nodeId).arg(PARENT_LI);
-    return getLogUrlFromElement(os, GTWebView::findElementBySelector(os, getDashboardWebView(os), selector));
+QString GTUtilsDashboard::getLogUrlFromNodeLimitationMessage(GUITestOpStatus &os, const QString &nodeId) {
+    QString limitationMessage = getLimitationMessage(os, nodeId);
+    return parseUrlFromContent(os, limitationMessage);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getLogUrlFromOutputContent"
+QString GTUtilsDashboard::getLogUrlFromOutputContent(GUITestOpStatus &os, const QString &outputNodeId) {
+    auto content = getExternalToolNode(os, outputNodeId)->content;
+    return parseUrlFromContent(os, content);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getCopyButtonSize"
 QSize GTUtilsDashboard::getCopyButtonSize(GUITestOpStatus &os, const QString &toolRunNodeId) {
-    return getCopyButton(os, toolRunNodeId).geometry().size();
+    return getCopyButton(os, toolRunNodeId)->rect().size();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickCopyButton"
 void GTUtilsDashboard::clickCopyButton(GUITestOpStatus &os, const QString &toolRunNodeId) {
-    click(os, getCopyButton(os, toolRunNodeId));
+    GTWidget::click(os, getCopyButton(os, toolRunNodeId));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isNodeVisible"
 bool GTUtilsDashboard::isNodeVisible(GUITestOpStatus &os, const QString &nodeId) {
-    return getNodeSpan(os, nodeId).isVisible();
+    return getExternalToolNode(os, nodeId)->isVisible();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isNodeCollapsed"
 bool GTUtilsDashboard::isNodeCollapsed(GUITestOpStatus &os, const QString &nodeId) {
-    const HIWebElement nodeSpanElement = getNodeSpan(os, nodeId);
-    return nodeSpanElement.attribute(TITLE, "") == COLLAPSED_NODE_TITLE;
+    return !getExternalToolNode(os, nodeId)->isExpanded();
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "collapseNode"
 void GTUtilsDashboard::collapseNode(GUITestOpStatus &os, const QString &nodeId) {
-    GT_CHECK(isNodeVisible(os, nodeId),
-             QString("SPAN of the node with ID '%1' is not visible. Some of the parent nodes are collapsed?").arg(nodeId));
-
-    GT_CHECK(!isNodeCollapsed(os, nodeId),
-             QString("UL of the node with ID '%1' is not visible. It is already collapsed.").arg(nodeId));
-
-    click(os, getNodeSpan(os, nodeId));
+    GT_CHECK(isNodeVisible(os, nodeId), QString("Node with ID '%1' is not visible. Some of the parent nodes are collapsed?").arg(nodeId));
+    GT_CHECK(!isNodeCollapsed(os, nodeId), QString("Node with ID '%1' is already collapsed.").arg(nodeId));
+    clickNodeTitle(os, getExternalToolNode(os, nodeId));
+    GT_CHECK(isNodeCollapsed(os, nodeId), QString("Node with ID '%1' was not collapsed.").arg(nodeId));
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "expandNode"
 void GTUtilsDashboard::expandNode(GUITestOpStatus &os, const QString &nodeId) {
-    GT_CHECK(isNodeVisible(os, nodeId),
-             QString("SPAN of the node with ID '%1' is not visible. Some of the parent nodes are collapsed?").arg(nodeId));
-
-    GT_CHECK(isNodeCollapsed(os, nodeId),
-             QString("UL of the node with ID '%1' is visible. It is already expanded.").arg(nodeId));
-
-    click(os, getNodeSpan(os, nodeId));
+    GT_CHECK(isNodeVisible(os, nodeId), QString("Node with ID '%1' is not visible. Some of the parent nodes are collapsed?").arg(nodeId));
+    GT_CHECK(isNodeCollapsed(os, nodeId), QString("Node with ID '%1' is already expanded.").arg(nodeId));
+    clickNodeTitle(os, getExternalToolNode(os, nodeId));
+    GT_CHECK(!isNodeCollapsed(os, nodeId), QString("Node with ID '%1' was not expanded.").arg(nodeId));
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getLogUrlFromNode"
-QString GTUtilsDashboard::getLogUrlFromNode(GUITestOpStatus &os, const QString &outputNodeId) {
-    const QString logFileLinkSelector = QString("SPAN#%1 A").arg(getNodeSpanId(outputNodeId));
-    return getLogUrlFromElement(os, GTWebView::findElementBySelector(os, getDashboardWebView(os), logFileLinkSelector));
+#define GT_METHOD_NAME "clickNodeTitle"
+void GTUtilsDashboard::clickNodeTitle(GUITestOpStatus &os, ExternalToolsTreeNode *node) {
+    GT_CHECK(node != nullptr, "Node is null!");
+    GT_CHECK(node->badgeLabel->titleLabel != nullptr, "Node title label is null!");
+    GTWidget::click(os, node->badgeLabel->titleLabel);
 }
 #undef GT_METHOD_NAME
 

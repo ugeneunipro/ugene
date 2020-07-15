@@ -54,7 +54,7 @@ public:
     static void checkItemIsExpanded(HI::GUITestOpStatus &os, QTreeView *treeView, const QModelIndex &itemIndex);
 
     // returns center or item's rect
-    // fails if the item wasn't found
+    // fails if the iteProjectm wasn't found
     static QPoint getItemCenter(HI::GUITestOpStatus &os, const QModelIndex &itemIndex);
     static QPoint getItemCenter(HI::GUITestOpStatus &os, QTreeView *treeView, const QModelIndex &itemIndex);
     static QPoint getItemCenter(HI::GUITestOpStatus &os, const QString &itemName);

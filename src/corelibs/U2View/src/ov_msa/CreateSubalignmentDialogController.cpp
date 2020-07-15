@@ -202,7 +202,7 @@ void CreateSubalignmentDialogController::accept() {
         QMessageBox::critical(this, this->windowTitle(), tr("No path specified"));
         return;
     }
-    if (fi.baseName().isEmpty()) {
+    if (fi.baseName().isEmpty() || fi.isDir()) {
         QMessageBox::critical(this, this->windowTitle(), tr("Filename to save is empty"));
         return;
     }

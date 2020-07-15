@@ -54,6 +54,7 @@
 
 #include "AboutDialogController.h"
 #include "CheckUpdatesTask.h"
+#include "CreateDesktopShortcutTask.h"
 #include "DockManagerImpl.h"
 #include "MDIManagerImpl.h"
 #include "MainWindowImpl.h"
@@ -278,6 +279,10 @@ void MainWindowImpl::createActions() {
     checkUpdateAction->setObjectName("Check for Updates");
     connect(checkUpdateAction, SIGNAL(triggered()), SLOT(sl_checkUpdatesAction()));
 
+    createDesktopShortcutAction = new QAction(tr("Create desktop shortcut"), this);
+    createDesktopShortcutAction->setObjectName("Create desktop shortcut");
+    connect(createDesktopShortcutAction, SIGNAL(triggered()), SLOT(sl_createDesktopShortcutAction()));
+
     openManualAction = new QAction(tr("Open UGENE User Manual"), this);
     openManualAction->setObjectName("Open UGENE User Manual");
     connect(openManualAction, SIGNAL(triggered()), SLOT(sl_openManualAction()));
@@ -308,6 +313,10 @@ void MainWindowImpl::sl_aboutAction() {
 
 void MainWindowImpl::sl_checkUpdatesAction() {
     AppContext::getTaskScheduler()->registerTopLevelTask(new CheckUpdatesTask());
+}
+
+void MainWindowImpl::sl_createDesktopShortcutAction() {
+    AppContext::getTaskScheduler()->registerTopLevelTask(new CreateDesktopShortcutTask());
 }
 
 void MainWindowImpl::setWindowTitle(const QString &title) {
@@ -354,6 +363,9 @@ void MainWindowImpl::prepareGUI() {
     menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(visitWebAction);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(checkUpdateAction);
+    menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
+    menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(createDesktopShortcutAction);
+    menuManager->getTopLevelMenu(MWMENU_HELP)->addSeparator();
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(welcomePageAction);
     menuManager->getTopLevelMenu(MWMENU_HELP)->addAction(aboutAction);
     if ("1" == qgetenv(ENV_TEST_CRASH_HANDLER)) {

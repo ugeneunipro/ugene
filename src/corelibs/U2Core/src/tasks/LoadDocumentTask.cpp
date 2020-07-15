@@ -145,9 +145,10 @@ Task::ReportResult LoadUnloadedDocumentTask::report() {
         } else {
             Document *sourceDoc = loadTask->getDocument();
             unloadedDoc->loadFrom(sourceDoc);    // get all data from source doc;
-            assert(!unloadedDoc->isTreeItemModified());
-            assert(unloadedDoc->isLoaded());
+            Q_ASSERT(!unloadedDoc->isTreeItemModified());
+            Q_ASSERT(unloadedDoc->isLoaded());
             if (sourceDoc->getGHintsMap().value(DocumentReadingMode_LoadAsModified, false).toBool()) {
+                // FIXME: What about active state locks?
                 unloadedDoc->setModified(true);
             }
         }
@@ -256,7 +257,7 @@ LoadDocumentTask *LoadDocumentTask::getDefaultLoadDocTask(U2OpStatus &os, const 
     CHECK_EXT(!url.isEmpty(), os.setError(tr("The fileURL  to load is empty")), NULL);
 
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    CHECK_EXT(NULL != iof, os.setError(tr("Cannot get an IO file adapter factory for the file URL: %1").arg(url.getURLString())), NULL);
+    CHECK_EXT(iof != nullptr, os.setError(tr("Cannot get an IO file adapter factory for the file URL: %1").arg(url.getURLString())), NULL);
 
     QList<FormatDetectionResult> dfs = DocumentUtils::detectFormat(url);
     CHECK_EXT(!dfs.isEmpty(), os.setError(tr("Cannot detect the file format: %1").arg(url.getURLString())), NULL);
