@@ -6167,7 +6167,7 @@ GUI_TEST_CLASS_DEFINITION(test_6809) {
 GUI_TEST_CLASS_DEFINITION(test_6816) {
     //1. Open "_common_data/fasta/pcr_test.fa".
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "pcr_test.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     //2. Open the PCR OP.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
@@ -6186,7 +6186,6 @@ GUI_TEST_CLASS_DEFINITION(test_6816) {
     CHECK_SET_ERR(detailsLinkLabel->isHidden(), "detailsLinkLabel unexpectedly shown");
 
     QLabel *warningLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "warningLabel"));
-    CHECK_SET_ERR(warningLabel != NULL, "Cannot find warningLabel");
     CHECK_SET_ERR(warningLabel->text().contains("Unable to calculate primer statistics."), "Incorrect warning message");
 }
 

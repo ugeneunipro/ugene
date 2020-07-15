@@ -34,7 +34,8 @@
 
 namespace U2 {
 
-bool PrimerStatistics::checkPcrPrimersPair(const QByteArray &forward, const QByteArray &reverse, QString &message, bool &isCriticalError) {
+QString PrimerStatistics::checkPcrPrimersPair(const QByteArray &forward, const QByteArray &reverse, bool &isCriticalError) {
+    QString message;
     isCriticalError = false;
     bool forwardIsValid = validate(forward);
     bool reverseIsValid = validate(reverse);
@@ -48,12 +49,12 @@ bool PrimerStatistics::checkPcrPrimersPair(const QByteArray &forward, const QByt
     if (!message.isEmpty()) {
         message += tr(" Unable to calculate primer statistics.");
         isCriticalError = true;
-        return false;
+        return message;
     }
 
     PrimersPairStatistics calc(forward, reverse);
     message = calc.getFirstError();
-    return message.isEmpty();
+    return message;
 }
 
 double PrimerStatistics::getMeltingTemperature(const QByteArray &sequence) {
