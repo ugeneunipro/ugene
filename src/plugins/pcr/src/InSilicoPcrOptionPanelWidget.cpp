@@ -128,14 +128,19 @@ void InSilicoPcrOptionPanelWidget::sl_onPrimerChanged() {
     }
 
     QString message;
-    bool correct = PrimerStatistics::checkPcrPrimersPair(forward, reverse, message);
+    bool isCriticalError;
+    bool correct = PrimerStatistics::checkPcrPrimersPair(forward, reverse, message, isCriticalError);
     if (correct) {
         warningLabel->hide();
         findProductButton->setText(tr("Find product(s)"));
+        detailsLinkLabel->show();
     } else {
         warningLabel->show();
         warningLabel->setText(tr("Warning: ") + message);
         findProductButton->setText(tr("Find product(s) anyway"));
+        if (isCriticalError) {
+            detailsLinkLabel->hide();
+        }
     }
 }
 

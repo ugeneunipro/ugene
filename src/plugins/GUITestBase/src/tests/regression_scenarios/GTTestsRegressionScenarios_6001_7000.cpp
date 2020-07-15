@@ -6163,6 +6163,33 @@ GUI_TEST_CLASS_DEFINITION(test_6809) {
     CHECK_SET_ERR(nameList3[16] == "Bicolorana_bicolor_EF540830", "The 17 sequence is incorrect");
     CHECK_SET_ERR(nameList3[17] == "Hetrodes_pupus_EF540832", "The 18 sequence is incorrect");
 }
+
+GUI_TEST_CLASS_DEFINITION(test_6816) {
+    //1. Open "_common_data/fasta/pcr_test.fa".
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta", "pcr_test.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Open the PCR OP.
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_IN_SILICO_PCR"));
+
+    //3. Set both primers "Y"
+    QWidget *primerBox = GTWidget::findWidget(os, "forwardPrimerBox");
+    QLineEdit *primerLe = dynamic_cast<QLineEdit *>(GTWidget::findWidget(os, "primerEdit", primerBox));
+    GTLineEdit::setText(os, primerLe, "y", true);
+
+    primerBox = GTWidget::findWidget(os, "reversePrimerBox");
+    primerLe = dynamic_cast<QLineEdit *>(GTWidget::findWidget(os, "primerEdit", primerBox));
+    GTLineEdit::setText(os, primerLe, "y", true);
+
+    //Expected state: "Show primer details" label is hidden, "Unable to calculate primer statistics." warning message is shown
+    QLabel *detailsLinkLabel = dynamic_cast<QLabel *>(GTWidget::findWidget(os, "detailsLinkLabel"));
+    CHECK_SET_ERR(detailsLinkLabel->isHidden(), "detailsLinkLabel unexpectedly shown");
+
+    QLabel *warningLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "warningLabel"));
+    CHECK_SET_ERR(warningLabel != NULL, "Cannot find warningLabel");
+    CHECK_SET_ERR(warningLabel->text().contains("Unable to calculate primer statistics."), "Incorrect warning message");
+}
+
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2
