@@ -426,10 +426,10 @@ void PDBFormat::PDBParser::parseAtom(BioStruct3D &biostruct, U2OpStatus &os) {
     biostruct.modelMap[currentModelIndex + 1].insert(id, a);
 
     if (atomIsInChain) {
-        SAFE_POINT_EXT(chainIndex <= biostruct.moleculeMap.size(), os.setError("Unexpected chainIndex"), );
+        SAFE_POINT_EXT(0 <= chainIndex && chainIndex < biostruct.moleculeMap.size(), os.setError("Unexpected chainIndex"), );
 
         SharedMolecule &mol = biostruct.moleculeMap[chainIndex];
-        SAFE_POINT_EXT(currentModelIndex <= mol->models.size(), os.setError("Unexpected currentModelIndex"), );
+        SAFE_POINT_EXT(0 <= currentModelIndex && currentModelIndex < mol->models.size(), os.setError("Unexpected currentModelIndex"), );
 
         Molecule3DModel &model3D = mol->models[currentModelIndex];
         model3D.atoms.insert(id, a);
