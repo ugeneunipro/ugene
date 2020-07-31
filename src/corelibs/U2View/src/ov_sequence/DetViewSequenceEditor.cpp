@@ -360,6 +360,10 @@ void DetViewSequenceEditor::sl_paste(Task *task) {
 
     U2OpStatusImpl os;
     const QList<DNASequence> &sequences = PasteUtils::getSequences(docs, os);
+    if (sequences.isEmpty()) {
+        coreLog.error(tr("No sequences detected in pasted content."));
+        return;
+    }
     DNASequence seq;
     foreach (const DNASequence &dnaObj, sequences) {
         if (seq.alphabet == NULL) {

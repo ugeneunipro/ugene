@@ -5944,6 +5944,28 @@ GUI_TEST_CLASS_DEFINITION(test_6816) {
     CHECK_SET_ERR(warningLabel->text().contains("Unable to calculate primer statistics."), "Incorrect warning message");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6847) {
+    //    1. Open 'human_T1.fa'
+    GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Switch on the editing mode.
+    QAction *editMode = GTAction::findActionByText(os, "Switch on the editing mode");
+    CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
+    GTWidget::click(os, GTAction::button(os, editMode));
+
+    QPoint point = GTMouseDriver::getMousePosition();
+    GTMouseDriver::moveTo(QPoint(point.x() + 100, point.y()));
+    GTMouseDriver::press();
+
+    //3. Paste content with non-sequence characters
+    //Expected state: log contains error message
+    GTClipboard::setText(os, "?!@#$%^*(");
+    GTLogTracer lt;
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+    GTUtilsLog::checkContainsError(os, lt, "No sequences detected in pasted content.");
+}
+
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2
