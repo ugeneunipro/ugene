@@ -361,7 +361,7 @@ void DetViewSequenceEditor::sl_paste(Task *task) {
     U2OpStatusImpl os;
     const QList<DNASequence> &sequences = PasteUtils::getSequences(docs, os);
     if (sequences.isEmpty()) {
-        coreLog.error(tr("No sequences detected in pasted content."));
+        coreLog.error(tr("No sequences detected in the pasted content."));
         return;
     }
     DNASequence seq;
