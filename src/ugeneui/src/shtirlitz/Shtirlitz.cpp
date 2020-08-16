@@ -148,6 +148,7 @@ QList<Task *> Shtirlitz::wakeup() {
 
         if (!prevDate.isValid() || daysPassed > DAYS_BETWEEN_REPORTS) {
             coreLog.details(ShtirlitzTask::tr("%1 days passed passed since previous Shtirlitz's report. Shtirlitz is sending the new one."));
+            result << sendSystemReport();
             result << sendCountersReport();
             //and save the new date
             s->setValue(SETTINGS_PREVIOUS_REPORT_DATE, QDate::currentDate());
