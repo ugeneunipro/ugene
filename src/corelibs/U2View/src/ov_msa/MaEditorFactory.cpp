@@ -44,6 +44,13 @@ const GObjectViewFactoryId McaEditorFactory::ID("MCAEditor");
 MaEditorFactory::MaEditorFactory(GObjectType type, GObjectViewFactoryId id)
     : GObjectViewFactory(id, tr("Alignment Editor")),
       type(type) {
+    if (id == MsaEditorFactory::ID) {
+        name = tr("Multiple Alignment Editor");
+    } else if (id == McaEditorFactory::ID) {
+        name = tr("Sanger Reads Editor");
+    } else {
+        FAIL("Unknown factory id", );
+    }
 }
 
 bool MaEditorFactory::canCreateView(const MultiGSelection &multiSelection) {
