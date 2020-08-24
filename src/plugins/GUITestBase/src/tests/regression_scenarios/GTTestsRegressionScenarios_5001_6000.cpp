@@ -4548,6 +4548,26 @@ GUI_TEST_CLASS_DEFINITION(test_5840) {
     CHECK_SET_ERR(!isExited, "The document has not been deleted")
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5842) {
+    //1. Open "_common_data/sanger/aligment.ugenedb".
+    GTFileDialog::openFile(os, testDir + "_common_data/sanger/alignment.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Unload document.
+    GTUtilsDocument::unloadDocument(os, "alignment.ugenedb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTLogTracer l;
+    //3. Open the view from the context menu.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View"
+                                                                        << "action_open_view"));
+    GTUtilsProjectTreeView::click(os, "alignment.ugenedb", Qt::RightButton);
+
+    //Expected state: the view is opened without errors.
+    QStringList errorList = GTUtilsLog::getErrors(os, l);
+    CHECK_SET_ERR(errorList.isEmpty(), "Unexpected errors in the log");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5847) {
     //1. Open samples/APR/DNA.apr in read-only mode
     GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, true));

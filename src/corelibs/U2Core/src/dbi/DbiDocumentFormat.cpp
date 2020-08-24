@@ -80,17 +80,19 @@ Document *DbiDocumentFormat::loadDocument(IOAdapter *io, const U2DbiRef &dstDbiR
 
     objects << prepareObjects(handle, objectIds);
 
+    U2DbiRef resultDbiRef = dstDbiRef;
     if (fs.value(DEEP_COPY_OBJECT, false).toBool()) {
         QList<GObject *> clonedObjects = cloneObjects(objects, dstDbiRef, fs, os);
         qDeleteAll(objects);
         CHECK_OP_EXT(os, qDeleteAll(clonedObjects), NULL);
         objects = clonedObjects;
     } else {
+        resultDbiRef = srcDbiRef;
         renameObjectsIfNamesEqual(objects);
     }
 
     QString lockReason = handle.dbi->isReadOnly() ? "The database is read-only" : "";
-    Document *d = new Document(this, io->getFactory(), io->getURL(), dstDbiRef, objects, fs, lockReason);
+    Document *d = new Document(this, io->getFactory(), io->getURL(), resultDbiRef, objects, fs, lockReason);
     d->setDocumentOwnsDbiResources(false);
     d->setModificationTrack(false);
 
