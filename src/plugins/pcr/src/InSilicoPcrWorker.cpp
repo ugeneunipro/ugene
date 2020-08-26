@@ -316,7 +316,11 @@ Task *InSilicoPcrWorker::createTask(const Message &message, U2OpStatus &os) {
     QVariantMap data = message.getData().toMap();
     SharedDbiDataHandler seqId = data[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
     QScopedPointer<U2SequenceObject> seq(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-    SAFE_POINT(!seq.isNull(), L10N::nullPointerError("Sequence"), NULL);
+    if (seq.isNull()) {
+        QString filename = context->getMetadataStorage().get(message.getMetadataId()).getFileUrl();
+        os.setError(tr("The input file \"%1\" doesn't contain valid sequence.").arg(filename));
+        return nullptr;
+    }
     if (seq->getSequenceLength() > InSilicoPcrTaskSettings::MAX_SEQUENCE_LENGTH) {
         os.setError(tr("The sequence is too long: ") + seq->getSequenceName());
         return NULL;
