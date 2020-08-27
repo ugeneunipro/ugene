@@ -100,7 +100,7 @@ void OpenMaEditorTask::open() {
             return;
         }
         if (unloadedReference.isValid()) {
-            GObject *obj = doc->findGObjectByName(unloadedReference.objName);
+            GObject *obj = GObjectUtils::selectObjectByReference(unloadedReference, UOF_LoadedOnly);
             if (obj != NULL && obj->getGObjectType() == type) {
                 maObject = qobject_cast<MultipleAlignmentObject *>(obj);
             }
