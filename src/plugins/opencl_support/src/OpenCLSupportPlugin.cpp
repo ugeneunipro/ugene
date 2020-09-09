@@ -36,10 +36,8 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    // Temporary disable OpenCL plugin
-    //OpenCLSupportPlugin *plug = new OpenCLSupportPlugin();
-    //return plug;
-    return nullptr;
+    OpenCLSupportPlugin *plug = new OpenCLSupportPlugin();
+    return plug;
 }
 
 extern "C" Q_DECL_EXPORT bool U2_PLUGIN_VERIFY_FUNC() {
@@ -62,6 +60,9 @@ const char *OpenCLSupportPlugin::RESOURCE_OPENCL_GPU_NAME = "OpenCLGpu";
 OpenCLSupportPlugin::OpenCLSupportPlugin()
     : Plugin(tr("OpenCL Support"),
              tr("Plugin provides support for OpenCL-enabled GPUs.")) {
+    // Temporary disable OpenCL plugin
+    return;
+
     QString err_str;
 
     OpenCLGpuRegistry *registry = AppContext::getOpenCLGpuRegistry();
