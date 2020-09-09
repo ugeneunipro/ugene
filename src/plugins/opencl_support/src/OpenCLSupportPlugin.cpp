@@ -36,8 +36,10 @@
 namespace U2 {
 
 extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    OpenCLSupportPlugin *plug = new OpenCLSupportPlugin();
-    return plug;
+    // Temporary disable OpenCL plugin
+    //OpenCLSupportPlugin *plug = new OpenCLSupportPlugin();
+    //return plug;
+    return nullptr;
 }
 
 extern "C" Q_DECL_EXPORT bool U2_PLUGIN_VERIFY_FUNC() {
