@@ -142,8 +142,6 @@ private:
     SaveMultipleDocuments *saveAnnotationsTask;
     BedtoolsIntersectTask *intersectTask;
     LoadDocumentTask *loadResultTask;
-
-    QMap<QString, int> renameMap;
 };
 
 }    // namespace U2

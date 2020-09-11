@@ -181,8 +181,8 @@ QList<Task *> BedtoolsIntersectAnnotationsByEntityTask::onSubTaskFinished(Task *
         Document *resultDoc = loadResultTask->getDocument();
         CHECK_EXT(resultDoc != NULL, setError(tr("Result document is NULL")), res);
         result = resultDoc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
+        CHECK_EXT(!result.isEmpty(), setError(tr("No annotation tables resultDoc")), res);
         AnnotationTableObject *ato = qobject_cast<AnnotationTableObject *>(result.first());
-        CHECK_EXT(ato != NULL, setError(tr("Failed to cast to AnnotationTableObject")), res);
         renameAnnotationsFromBed(ato->getRootGroup());
     }
     return res;
@@ -218,13 +218,13 @@ void BedtoolsIntersectAnnotationsByEntityTask::renameAnnotationsForBed(Annotatio
     if (isNumber) {
         group->setName(group->getName() + RENAME_STRING);
     }
-    foreach(AnnotationGroup * g, group->getSubgroups()) {
+    foreach(AnnotationGroup* g, group->getSubgroups()) {
         renameAnnotationsForBed(g);
     }
 }
 
 void BedtoolsIntersectAnnotationsByEntityTask::renameAnnotationsFromBed(AnnotationGroup *group) {
-    if (group->getName().contains(RENAME_STRING)) {
+    if (group->getName().endsWith(RENAME_STRING)) {
         group->setName(group->getName().remove(RENAME_STRING));
     }
     foreach (AnnotationGroup *g, group->getSubgroups()) {
