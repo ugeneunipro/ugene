@@ -42,6 +42,8 @@
 
 #include "BedtoolsSupport.h"
 
+#define RENAME_STRING "_Group_renamed_by_UGENE"
+
 namespace U2 {
 
 double const BedtoolsIntersectSettings::DEFAULT_MIN_OVERLAP = 1E-9;
@@ -179,6 +181,9 @@ QList<Task *> BedtoolsIntersectAnnotationsByEntityTask::onSubTaskFinished(Task *
         Document *resultDoc = loadResultTask->getDocument();
         CHECK_EXT(resultDoc != NULL, setError(tr("Result document is NULL")), res);
         result = resultDoc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
+        AnnotationTableObject *ato = qobject_cast<AnnotationTableObject *>(result.first());
+        CHECK_EXT(ato != NULL, setError(tr("Failed to cast to AnnotationTableObject")), res);
+        renameAnnotationsFromBed(ato->getRootGroup());
     }
     return res;
 }
@@ -199,11 +204,32 @@ Document *BedtoolsIntersectAnnotationsByEntityTask::createAnnotationsDocument(co
     foreach (const U2EntityRef &enRef, entities) {
         U2AnnotationTable t = U2FeatureUtils::getAnnotationTable(enRef, os);
         AnnotationTableObject *table = new AnnotationTableObject(t.visualName, enRef);
+        renameAnnotationsForBed(table->getRootGroup());
         doc->setLoaded(true);
         doc->addObject(table);
     }
 
     return doc;
+}
+
+void BedtoolsIntersectAnnotationsByEntityTask::renameAnnotationsForBed(AnnotationGroup *group) {
+    bool isNumber = false;
+    group->getName().toInt(&isNumber);
+    if (isNumber) {
+        group->setName(group->getName() + RENAME_STRING);
+    }
+    foreach(AnnotationGroup * g, group->getSubgroups()) {
+        renameAnnotationsForBed(g);
+    }
+}
+
+void BedtoolsIntersectAnnotationsByEntityTask::renameAnnotationsFromBed(AnnotationGroup *group) {
+    if (group->getName().contains(RENAME_STRING)) {
+        group->setName(group->getName().remove(RENAME_STRING));
+    }
+    foreach (AnnotationGroup *g, group->getSubgroups()) {
+        renameAnnotationsFromBed(g);
+    }
 }
 
 }    // namespace U2

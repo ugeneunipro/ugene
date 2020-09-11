@@ -112,6 +112,7 @@ private:
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // IntersectAnnotationsTask
+class AnnotationGroup;
 class SaveMultipleDocuments;
 class LoadDocumentTask;
 
@@ -128,6 +129,8 @@ public:
 
 private:
     Document *createAnnotationsDocument(const QString &url, const QList<U2EntityRef> &enities);
+    void renameAnnotationsForBed(AnnotationGroup *group);
+    void renameAnnotationsFromBed(AnnotationGroup *group);
 
     BedtoolsIntersectByEntityRefSettings settings;
     QList<GObject *> result;
@@ -139,6 +142,8 @@ private:
     SaveMultipleDocuments *saveAnnotationsTask;
     BedtoolsIntersectTask *intersectTask;
     LoadDocumentTask *loadResultTask;
+
+    QMap<QString, int> renameMap;
 };
 
 }    // namespace U2
