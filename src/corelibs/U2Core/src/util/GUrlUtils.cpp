@@ -27,6 +27,7 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/Task.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
@@ -309,9 +310,13 @@ QString GUrlUtils::prepareFileLocation(const QString &filePath, U2OpStatus &os) 
 // Sample usage: processing URLs in "save dir" inputs
 QString GUrlUtils::prepareDirLocation(const QString &dirPath, U2OpStatus &os) {
     CHECK_EXT(!dirPath.isEmpty(), os.setError(tr("Folder is not specified")), QString());
+    if (QFileInfo(dirPath).isFile()) {
+        os.setError(tr("Folder is a regular file."));
+        return QString();
+    }
     QDir targetDir(dirPath);
+    QString absPath = targetDir.absolutePath();
     if (!targetDir.exists()) {
-        QString absPath = targetDir.absolutePath();
         if (!targetDir.mkpath(absPath)) {
             os.setError(tr("Folder can't be created: %1").arg(absPath));
             return QString();
@@ -321,9 +326,11 @@ QString GUrlUtils::prepareDirLocation(const QString &dirPath, U2OpStatus &os) {
             os.setError(tr("Folder can't be read: %1").arg(absPath));
             return QString();
         }
+    } else if (!FileAndDirectoryUtils::isDirectoryWritable(absPath)) {
+        os.setError(tr("Folder is read-only: %1").arg(absPath));
+        return QString();
     }
-    QString result = targetDir.absolutePath();
-    return result;
+    return absPath;
 }
 
 QString GUrlUtils::prepareTmpFileLocation(const QString &dir, const QString &prefix, const QString &ext, U2OpStatus &os) {

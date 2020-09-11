@@ -54,6 +54,7 @@
 
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/HttpFileAdapter.h>
+#include <U2Core/IOAdapterUtils.h>
 
 #include <U2Gui/GUIUtils.h>
 
@@ -5176,25 +5177,23 @@ GUI_TEST_CLASS_DEFINITION(test_6706) {
 GUI_TEST_CLASS_DEFINITION(test_6707) {
     //1. Create a folder and put any file in there.
     QDir(sandBoxDir).mkdir("test_6707");
-    QString fileName = sandBoxDir + "/test_6707/file.txt";
-    QFile file(fileName);
-    bool wasOpened = file.open(QIODevice::ReadWrite);
-    CHECK_SET_ERR(wasOpened, QString("File %1 wasn't created").arg(fileName));
 
-    file.close();
+    IOAdapterUtils::writeTextFile(sandBoxDir + "test_6707/file.txt", "Hello!");
+
     //2. Open the "Alignment Color Scheme" tab of the "Application settings" dialog.
     //3. Set "Directory to save color scheme" to the folder you created on the step 1.
-
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != nullptr, "AppSettingsDialogFiller isn't found");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::AlignmentColorScheme);
             QLineEdit *colorsDirEdit = GTWidget::findExactWidget<QLineEdit *>(os, "colorsDirEdit", dialog);
-            CHECK_SET_ERR(colorsDirEdit != nullptr, "colorsDirEdit isn't found");
 
-            GTLineEdit::setText(os, colorsDirEdit, sandBoxDir + "/test_6707/file.txt");
+            GTLineEdit::setText(os, colorsDirEdit, sandBoxDir + "test_6707/file.txt");
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Folder is a regular file."));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+
+            GTLineEdit::setText(os, colorsDirEdit, sandBoxDir + "test_6707");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
@@ -5203,8 +5202,8 @@ GUI_TEST_CLASS_DEFINITION(test_6707) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
                                                 << "Preferences...",
                               GTGlobals::UseMouse);
-    //Expected result: the file is still in the folder, the color schemes appear in the folder.
-    CHECK_SET_ERR(file.exists(), "the file was unexpectedly removed");
+    //Expected result: the file is still in the folder and is not removed/modified.
+    CHECK_SET_ERR(IOAdapterUtils::readTextFile(sandBoxDir + "test_6707/file.txt") == "Hello!", "The file was removed or modified");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6710) {

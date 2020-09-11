@@ -109,7 +109,7 @@ NSMenuItem *GTMenuPrivateMac::getMenuItem(GUITestOpStatus &os, NSMenu *menu, con
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getMenuItem"
+#define GT_METHOD_NAME "checkMenuItemState"
 void GTMenuPrivateMac::checkMenuItemState(GUITestOpStatus &os, NSMenu *containerMenu, const QString &itemTitle, PopupChecker::CheckOption expectedState) {
     switch (expectedState) {
     case PopupChecker::NotExists: {

@@ -39,11 +39,7 @@
       <item row="1" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QLineEdit" name="colorsDirEdit">
-          <property name="readOnly">
-           <bool>false</bool>
-          </property>
-         </widget>
+         <widget class="QLineEdit" name="colorsDirEdit"/>
         </item>
         <item>
          <widget class="QToolButton" name="colorsDirButton">

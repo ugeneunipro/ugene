@@ -270,7 +270,7 @@ QAction *GTMenu::clickMenuItem(GUITestOpStatus &os, const QMenu *menu, const QSt
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "clickMenuItem"
+#define GT_METHOD_NAME "clickMenuItemPrivate"
 void GTMenu::clickMenuItemPrivate(GUITestOpStatus &os, const QMenu *menu, const QStringList &itemPath, GTGlobals::UseMethod useMethod, bool byText, Qt::MatchFlag matchFlag) {
     GT_CHECK(menu != nullptr, "menu is NULL");
     GT_CHECK(!itemPath.isEmpty(), "itemPath is empty");
