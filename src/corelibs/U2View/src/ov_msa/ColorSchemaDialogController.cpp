@@ -341,6 +341,7 @@ ColorSchemaSettingsPageWidget::ColorSchemaSettingsPageWidget(ColorSchemaSettings
     connect(addSchemaButton, SIGNAL(clicked()), SLOT(sl_onAddColorSchema()));
     connect(deleteSchemaButton, SIGNAL(clicked()), SLOT(sl_onDeleteColorSchema()));
     connect(colorSchemas, SIGNAL(currentRowChanged(int)), SLOT(sl_schemaChanged(int)));
+    connect(colorsDirEdit, SIGNAL(editingFinished()), SLOT(sl_validateSchemesDir()));
 
     sl_schemaChanged(colorSchemas->currentRow());
 }
@@ -376,17 +377,35 @@ void ColorSchemaSettingsPageWidget::sl_schemaChanged(int index) {
     }
 }
 
+bool ColorSchemaSettingsPageWidget::sl_validateSchemesDir() {
+    QString dirPath = colorsDirEdit->text();
+    QDir dir(dirPath);
+    bool dirExists = dir.exists();
+    bool result = true;
+    if (dirExists) {
+        dirExists = dir.mkpath(dir.absolutePath());
+    }
+    if (!dirExists) {
+        QMessageBox::warning(this, L10N::warningTitle(), tr("Given directory is not exist and can't be created."));
+        result = false;
+    } else if (!FileAndDirectoryUtils::isDirectoryWritable(dirPath)) {
+        QMessageBox::warning(this, L10N::warningTitle(), tr("You don't have permissions to write in selected folder."));
+        result = false;
+    } 
+    emit si_setLockState(!result);
+    return result;
+}
+
 void ColorSchemaSettingsPageWidget::sl_onColorsDirButton() {
     QString path = colorsDirEdit->text();
     QString dir = U2FileDialog::getExistingDirectory(this, tr("Choose Folder"), path, QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (dir.isEmpty()) {
         return;
     }
-    if (!FileAndDirectoryUtils::isDirectoryWritable(dir)) {
-        QMessageBox::warning(this, L10N::warningTitle(), tr("You don't have permissions to write in selected folder."));
+    colorsDirEdit->setText(dir);
+    if (!sl_validateSchemesDir()) {
         return;
     }
-    colorsDirEdit->setText(dir);
     ColorSchemeUtils::setColorsDir(dir);
     customSchemas.clear();
     colorSchemas->clear();

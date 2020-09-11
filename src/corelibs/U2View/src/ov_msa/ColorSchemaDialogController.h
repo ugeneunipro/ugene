@@ -84,6 +84,7 @@ private slots:
     void sl_onAddColorSchema();
     void sl_onDeleteColorSchema();
     void sl_schemaChanged(int);
+    bool sl_validateSchemesDir();
 
 private:
     QList<ColorSchemeData> customSchemas;
