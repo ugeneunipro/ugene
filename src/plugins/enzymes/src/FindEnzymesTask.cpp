@@ -351,7 +351,15 @@ Task *FindEnzymesAutoAnnotationUpdater::createAutoAnnotationsUpdateTask(const Au
 
     U2SequenceObject *dnaObj = aa->getSeqObject();
     const U2Region wholeSequenceRegion = U2Region(0, dnaObj->getSequenceLength());
-    cfg.searchRegion = savedSearchRegion.intersect(wholeSequenceRegion);
+    if (cfg.circular) {
+        cfg.searchRegion = savedSearchRegion;
+        if (cfg.searchRegion.length > wholeSequenceRegion.length) {
+            cfg.searchRegion.length = wholeSequenceRegion.length;
+        }
+    } else {
+        cfg.searchRegion = savedSearchRegion.intersect(wholeSequenceRegion);
+    }
+    
     if (cfg.searchRegion.isEmpty()) {
         cfg.searchRegion = wholeSequenceRegion;
     }
