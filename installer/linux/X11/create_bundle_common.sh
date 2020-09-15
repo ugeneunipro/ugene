@@ -28,7 +28,7 @@ function add-binary() {
 }
 
 function add-core-library() {
-  library=lib${1}.so.1
+  library=lib${1}.so
   cp -v "${RELEASE_DIR}/${library}" "${TARGET_APP_DIR}"
   dump_symbols "${TARGET_APP_DIR}/${library}"
   strip -v "${TARGET_APP_DIR}/${library}"

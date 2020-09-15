@@ -222,7 +222,8 @@ void SequenceInfo::updateCommonStatisticsData(const DNAStatistics &commonStatist
 
     QString statsInfo = QString("<table cellspacing=%1>").arg(COMMON_STATISTICS_TABLE_CELLSPACING);
 
-    const QString lengthSuffix = alphabet->isNucleic() ? tr("nt") : alphabet->isAmino() ? tr("aa") : QString();
+    const QString lengthSuffix = alphabet->isNucleic() ? tr("nt") : alphabet->isAmino() ? tr("aa") :
+                                                                                          QString();
     statsInfo += formTableRow(CAPTION_SEQ_REGION_LENGTH, getValue(getFormattedLongNumber(commonStatistics.length) + lengthSuffix, isValid), availableSpace);
 
     if (alphabet->isNucleic()) {
@@ -349,8 +350,8 @@ void SequenceInfo::connectSlots() {
 }
 
 void SequenceInfo::sl_onSelectionChanged(LRegionsSelection *,
-                                         const QVector<U2Region> &added,
-                                         const QVector<U2Region> &removed) {
+                                         const QVector<U2Region> & /*added*/,
+                                         const QVector<U2Region> & /*removed*/) {
     updateCurrentRegions();
     updateData();
 }

@@ -22,12 +22,12 @@
 #include "TestRunnerPlugin.h"
 
 #include <QMenu>
-#include <QProcess>
 
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/Settings.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/MainWindow.h>
 
@@ -61,15 +61,14 @@ TestRunnerPlugin::TestRunnerPlugin()
 }
 
 void TestRunnerPlugin::sl_startTestRunner() {
-    CMDLineRegistry *cmdReg = AppContext::getCMDLineRegistry();
-    //QString param = cmdReg->getParameterValue(CMDLineCoreOptions::SUITE_URLS);
     QStringList suiteUrls = CMDLineRegistryUtils::getParameterValuesByWords(CMDLineCoreOptions::SUITE_URLS);
 
     TestRunnerService *srv = new TestRunnerService();
     srv->setEnvironment();
 
     /* Disabling to check if it fixes slow commit/nightly builds
-    if(cmdReg->hasParameter(CMDLineCoreOptions::TEST_THREADS)) {
+    CMDLineRegistry *cmdReg = AppContext::getCMDLineRegistry();
+    if (cmdReg->hasParameter(CMDLineCoreOptions::TEST_THREADS)) {
         QString val = cmdReg->getParameterValue(CMDLineCoreOptions::TEST_THREADS);
         bool isOk;
         val.toInt(&isOk);
@@ -157,16 +156,10 @@ void TestRunnerService::setEnvironment() {
 
 void TestRunnerService::serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged) {
     Q_UNUSED(oldState);
-
-    if (!enabledStateChanged) {
-        return;
-    }
-    //QStringList ugene_env = QProcess::systemEnvironment();
-    //bool test_runner_enabled = -1 != ugene_env.indexOf( QRegExp(QString(ENV_UGENE_DEV)+"*", Qt::CaseInsensitive, QRegExp::Wildcard) );
-
+    CHECK(enabledStateChanged, );
     if (isEnabled()) {
-        assert(view == NULL);
-        assert(windowAction == NULL);
+        SAFE_POINT(view == nullptr, "View must be null!", );
+        SAFE_POINT(windowAction == nullptr, "windowAction must be null!", );
 
         env = new GTestEnvironment();
         readSavedSuites();
@@ -278,13 +271,11 @@ void TestRunnerService::readSavedSuites() {
     //TODO: do it in in service startup task!!!
 
     QStringList suiteUrls = AppContext::getSettings()->getValue(SETTINGS_ROOT + "suites", QStringList()).toStringList();
-    QString err;
-    QMap<QString, QString> env;
-    QString url;
-    foreach (const QString &url, suiteUrls) {
-        GTestSuite *ts = GTestSuite::readTestSuite(url, err);
-        if (ts == NULL) {
-            ioLog.error(tr("Error reading test suite from %1. Error: %2").arg(url).arg(err));
+    for (const QString &suiteUrl : suiteUrls) {
+        QString err;
+        GTestSuite *ts = GTestSuite::readTestSuite(suiteUrl, err);
+        if (ts == nullptr) {
+            ioLog.error(tr("Error reading test suite from %1. Error: %2").arg(suiteUrl).arg(err));
         } else {
             addTestSuite(ts);
         }

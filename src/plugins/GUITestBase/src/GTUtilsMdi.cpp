@@ -315,11 +315,11 @@ void GTUtilsMdi::activateWindow(HI::GUITestOpStatus &os, const QString &windowTi
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkWindowIsActive"
-void GTUtilsMdi::checkWindowIsActive(HI::GUITestOpStatus &os, const QString &windowTitlePart) {
-    GT_CHECK(!windowTitlePart.isEmpty(), "windowTitlePart is empty");
+QWidget *GTUtilsMdi::checkWindowIsActive(HI::GUITestOpStatus &os, const QString &windowTitlePart) {
+    GT_CHECK_RESULT(!windowTitlePart.isEmpty(), "windowTitlePart is empty", nullptr);
 
     MainWindow *mainWindow = AppContext::getMainWindow();
-    GT_CHECK(mainWindow != nullptr, "MainWindow == nullptr");
+    GT_CHECK_RESULT(mainWindow != nullptr, "MainWindow == nullptr", nullptr);
 
     QWidget *window = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && window == nullptr; time += GT_OP_CHECK_MILLIS) {
@@ -329,8 +329,9 @@ void GTUtilsMdi::checkWindowIsActive(HI::GUITestOpStatus &os, const QString &win
             window = activeWindow;
         }
     }
-    GT_CHECK(window != nullptr, "Window with title part '" + windowTitlePart + "' is not found");
+    GT_CHECK_RESULT(window != nullptr, "Window with title part '" + windowTitlePart + "' is not found", nullptr);
     GTThread::waitForMainThread();
+    return window;
 }
 #undef GT_METHOD_NAME
 

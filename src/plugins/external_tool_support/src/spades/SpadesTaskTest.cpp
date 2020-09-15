@@ -58,6 +58,8 @@ const QString GTest_SpadesTaskTest::OUTPUT_DIR = "out";
 const QString GTest_SpadesTaskTest::DESIRED_PARAMETERS = "desired_parameters";
 
 void GTest_SpadesTaskTest::init(XMLTestFormat *tf, const QDomElement &el) {
+    Q_UNUSED(tf);
+
     QVariantMap inputDataSettings;
     QString elementStr = el.attribute(SEQUENCING_PLATFORM);
     if (elementStr == "iontorrent") {
@@ -283,6 +285,8 @@ const QString GTest_CheckYAMLFile::STRINGS_TO_CHECK = "strings_to_check";
 const QString GTest_CheckYAMLFile::INPUT_DIR = "input_dir";
 
 void GTest_CheckYAMLFile::init(XMLTestFormat *tf, const QDomElement &el) {
+    Q_UNUSED(tf);
+
     QVariantMap inputDataSettings;
     QString elementStr = el.attribute(STRINGS_TO_CHECK);
     if (elementStr.isEmpty()) {

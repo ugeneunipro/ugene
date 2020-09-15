@@ -1126,7 +1126,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     // 3. Create annotation using menu {Actions->Add->New Annotation}, with description field filled
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann1", "complement(1.. 20)", "", "description"));
@@ -1137,7 +1137,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 
     //4. Check what created annotation has corresponding qualifier 'note'
     QTreeWidget *treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
-    QTreeWidgetItem *annotationsRoot = GTUtilsAnnotationsTreeView::findItem(os, "ann1  (0, 1)");
+    QTreeWidgetItem *annotationsRoot = GTUtilsAnnotationsTreeView::findItem(os, "ann1  (0, 1)", treeWidget);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, annotationsRoot->child(0)));
     GTMouseDriver::doubleClick();
     GTUtilsAnnotationsTreeView::findItem(os, "note");

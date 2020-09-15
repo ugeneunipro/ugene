@@ -29,17 +29,12 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DNAAlphabet.h>
-#include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/L10n.h>
 #include <U2Core/Log.h>
-#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Settings.h>
-#include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/HelpButton.h>
-#include <U2Gui/U2FileDialog.h>
 
 #include "ColorSchemaDialogController.h"
 
@@ -58,12 +53,17 @@ static void setSchemaColors(const ColorSchemeData &customSchema) {
     QScopedPointer<IOAdapter> io(factory->createIOAdapter());
 
     const QMap<char, QColor> &alphColors = customSchema.alpColors;
-    const QString &file = customSchema.name + ColorSchemeUtils::COLOR_SCHEME_NAME_FILTERS;
     bool defaultType = customSchema.defaultAlpType;
 
     QString keyword(customSchema.type == DNAAlphabet_AMINO ? ColorSchemeUtils::COLOR_SCHEME_AMINO_KEYWORD : (defaultType ? ColorSchemeUtils::COLOR_SCHEME_NUCL_DEFAULT_KEYWORD : ColorSchemeUtils::COLOR_SCHEME_NUCL_EXTENDED_KEYWORD));
 
-    io->open(dir.filePath(file), IOAdapterMode_Write);
+    QString url = dir.filePath(customSchema.name + ColorSchemeUtils::COLOR_SCHEME_NAME_FILTERS);
+    bool ok = io->open(url, IOAdapterMode_Write);
+    if (!ok) {
+        uiLog.error(ColorSchemaSettingsPageWidget::tr("Failed to save schema file: '%1'").arg(url));
+        return;
+    }
+
     // write header
     QByteArray header;
     header.append(QString("%1\n").arg(keyword));

@@ -60,6 +60,9 @@ const char *OpenCLSupportPlugin::RESOURCE_OPENCL_GPU_NAME = "OpenCLGpu";
 OpenCLSupportPlugin::OpenCLSupportPlugin()
     : Plugin(tr("OpenCL Support"),
              tr("Plugin provides support for OpenCL-enabled GPUs.")) {
+    // Temporary disable OpenCL plugin
+    return;
+
     QString err_str;
 
     OpenCLGpuRegistry *registry = AppContext::getOpenCLGpuRegistry();

@@ -2091,11 +2091,11 @@ void WorkflowView::showDashboards() {
 
 void WorkflowView::setDashboardActionDecoration(bool isDashboardsViewActive) {
     if (isDashboardsViewActive) {
-        toggleDashboard->setIconText("To Workflow Designer");
+        toggleDashboard->setIconText(tr("To Workflow Designer"));
         toggleDashboard->setIcon(getToolbarIcon("wd.png"));
         toggleDashboard->setToolTip(tr("Show workflow"));
     } else {
-        toggleDashboard->setIconText("Go to Dashboard");
+        toggleDashboard->setIconText(tr("Go to Dashboard"));
         toggleDashboard->setIcon(getToolbarIcon("dashboard.png"));
         toggleDashboard->setToolTip(tr("Show dashboard"));
     }

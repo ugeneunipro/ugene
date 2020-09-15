@@ -39,16 +39,14 @@ void GUITestTeamcityLogger::testIgnored(const QString &testName, const QString &
 }
 
 void GUITestTeamcityLogger::teamCityLogResult(const QString &testName, const QString &testResult, qint64 testTimeMicros) {
-    if (testFailed(testResult)) {
+    if (isTestFailed(testResult)) {
         teamcityLog.trace(QString("##teamcity[testFailed name='%1' message='%2' details='%2' duration='%3']").arg(escaped(testName), escaped(testResult), QString::number(testTimeMicros)));
     }
-
     teamcityLog.trace(QString("##teamcity[testFinished name='%1' duration='%2']").arg(escaped(testName), QString::number(testTimeMicros)));
 }
 
 QString GUITestTeamcityLogger::escaped(const QString &s) {
     QString esc = s;
-
     esc = esc.replace("|", "||");
     esc = esc.replace("]", "|]");
     esc = esc.replace("\r", "|r");
@@ -57,12 +55,8 @@ QString GUITestTeamcityLogger::escaped(const QString &s) {
     return esc;
 }
 
-bool GUITestTeamcityLogger::testFailed(const QString &testResult) {
-    if (!testResult.contains(successResult)) {
-        return true;
-    }
-
-    return false;
+bool GUITestTeamcityLogger::isTestFailed(const QString &testOutput) {
+    return !testOutput.contains(successResult);
 }
 
 }    // namespace U2

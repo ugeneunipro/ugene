@@ -89,6 +89,7 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0002) {
 
 PRELIMINARY_ACTION_DEFINITION(pre_action_0003) {
     if (qgetenv("UGENE_TEST_SKIP_BACKUP_AND_RESTORE") == "1") {    // Restored by the parent process
+        qDebug("Skipping backup: UGENE_TEST_SKIP_BACKUP_AND_RESTORE = 1");
         return;
     }
     // Backup some files used in tests directly.

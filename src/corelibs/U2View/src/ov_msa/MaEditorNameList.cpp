@@ -764,7 +764,7 @@ void MaEditorNameList::drawText(QPainter &p, const QString &name, const QRect &r
 }
 
 void MaEditorNameList::drawCollapsePrimitive(QPainter &p, bool collapsed, const QRect &rect) {
-    QStyleOptionViewItemV2 branchOption;
+    QStyleOptionViewItem branchOption;
     branchOption.rect = calculateExpandCollapseButtonRect(rect);
     if (collapsed) {
         branchOption.state = QStyle::State_Children | QStyle::State_Sibling;    // test

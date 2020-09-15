@@ -33,6 +33,7 @@ namespace U2 {
 namespace Workflow {
 
 bool CmdlineBasedWorkerValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> &options) const {
+    Q_UNUSED(options);
     ExternalProcessConfig *config = WorkflowEnv::getExternalCfgRegistry()->getConfigById(actor->getProto()->getId());
     if (CustomWorkerUtils::commandContainsVarName(config->cmdLine, CustomWorkerUtils::TOOL_PATH_VAR_NAME)) {
         CHECK_EXT(QFile(config->customToolPath).exists(),

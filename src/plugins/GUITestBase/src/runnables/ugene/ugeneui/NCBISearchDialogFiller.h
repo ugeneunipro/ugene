@@ -81,10 +81,9 @@ private:
     QList<Action> actions;
 };
 
-// use NCBISearchDialogFillerDeprecated instead
-class NCBISearchDialogFillerDeprecated : public Filler {
+class NCBISearchDialogSimpleFiller : public Filler {
 public:
-    NCBISearchDialogFillerDeprecated(HI::GUITestOpStatus &os, QString _query, bool _doubleEnter = false, int _resultLimit = -1, QString _term = "")
+    NCBISearchDialogSimpleFiller(HI::GUITestOpStatus &os, QString _query, bool _doubleEnter = false, int _resultLimit = -1, QString _term = "")
         : Filler(os, "SearchGenbankSequenceDialog"),
           query(_query),
           doubleEnter(_doubleEnter),

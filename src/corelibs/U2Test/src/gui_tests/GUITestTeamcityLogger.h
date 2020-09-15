@@ -34,7 +34,7 @@ public:
 
     //private:
     static QString escaped(const QString &s);    // returns valid teamcity log string with escaped symbols
-    static bool testFailed(const QString &testResult);
+    static bool isTestFailed(const QString &testOutput);
 
     static const QString successResult;
 };

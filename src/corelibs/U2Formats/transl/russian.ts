@@ -89,7 +89,7 @@
         <translation>Невозможно записать данные. База данных закрыта или данные были изменены.</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="787"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="786"/>
         <source>Unexpected number of modified objects. Expected: 1, actual: %1</source>
         <translation>Unexpected number of modified objects. Expected: 1, actual: %1</translation>
     </message>
@@ -2541,8 +2541,8 @@
     <message>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="606"/>
         <location filename="../src/mysql_dbi/MysqlMsaDbi.cpp" line="631"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1142"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1151"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1141"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1150"/>
         <source>Unexpected modification type &apos;%1&apos;</source>
         <translation>Неожиданный тип модификации &apos;%1&apos;</translation>
     </message>
@@ -2612,54 +2612,54 @@
         <translation>Возникла ошибка во время добавления столбца</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="608"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="607"/>
         <source>Can&apos;t undo an operation for the object</source>
         <translation>Невозможно отменить операцию для объекта</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="671"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="670"/>
         <source>Can&apos;t redo an operation for the object</source>
         <translation>Невозможно передвинуться на одну операцию вперед для объекта</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="812"/>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="918"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="811"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="917"/>
         <source>Object not found</source>
         <translation>Объект не найден</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="866"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="865"/>
         <source>Folder not found: %1 (canonical: %2)</source>
         <translation>Папка не найдена: %1 (каноническое: %2)</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1050"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1049"/>
         <source>Not an object, id: %1, type: %2</source>
         <translation>Не является объектом, id: %1, тип: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1074"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1073"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="302"/>
         <source>Unknown object type! Id: %1, type: %2</source>
         <translation>Unknown object type! Id: %1, type: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1118"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1117"/>
         <source>Can&apos;t undo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t undo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1133"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1132"/>
         <source>Can&apos;t redo an unknown operation: &apos;%1&apos;</source>
         <translation>Can&apos;t redo an unknown operation: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1164"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1163"/>
         <source>An error occurred during updating an object name</source>
         <translation>An error occurred during updating an object name</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1182"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="1181"/>
         <source>An error occurred during updating an object name!</source>
         <translation>An error occurred during updating an object name!</translation>
     </message>
@@ -2891,7 +2891,7 @@
         <translation>Unexpected row count. Query: &apos;%1&apos;, rows: %2</translation>
     </message>
     <message>
-        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="824"/>
+        <location filename="../src/mysql_dbi/MysqlObjectDbi.cpp" line="823"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="930"/>
         <location filename="../src/sqlite_dbi/SQLiteObjectDbi.cpp" line="942"/>
         <source>Object not found.</source>

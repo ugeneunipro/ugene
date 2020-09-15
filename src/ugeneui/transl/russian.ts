@@ -770,7 +770,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="58"/>
         <source>Create desktop shortcut</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавление иконки на рабочий стол</translation>
     </message>
     <message>
         <location filename="../src/main_window/CreateDesktopShortcutTask.cpp" line="177"/>
@@ -1267,6 +1267,11 @@ Note that reloading may cause closing of some views associated with objects from
         <translation>Выход</translation>
     </message>
     <message>
+        <location filename="../src/main_window/MainWindowImpl.cpp" line="282"/>
+        <source>Create desktop shortcut</source>
+        <translation>Добавить ярлык на рабочий стол</translation>
+    </message>
+    <message>
         <location filename="../src/main_window/MainWindowImpl.cpp" line="388"/>
         <source>Shutdown already in process. Close UGENE immediately?</source>
         <translation>Программа уже в процессе выключения. Закрыть немедленно?</translation>
@@ -1305,11 +1310,6 @@ Note that reloading may cause closing of some views associated with objects from
         <location filename="../src/main_window/MainWindowImpl.cpp" line="278"/>
         <source>Check for Updates</source>
         <translation>Проверить обновления</translation>
-    </message>
-    <message>
-        <location filename="../src/main_window/MainWindowImpl.cpp" line="282"/>
-        <source>Create desktop shortcut</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../src/main_window/MainWindowImpl.cpp" line="286"/>
@@ -1378,7 +1378,14 @@ Now you can type ugene in command line to start UGENE.</translation>
 or view online documentation.
 
 Do you want view online documentation?</source>
-        <translation>Вы можете попытаться открыть это отсюда: %1 
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>You can try open it manualy from here: %1
+or view online documentation.
+
+Do you want view online documentation?</source>
+        <translation type="vanished">Вы можете попытаться открыть это отсюда: %1
 или посмотреть документацию.
 
 Открыть документацию?</translation>
@@ -1951,7 +1958,7 @@ Do you want view online documentation?</source>
 <context>
     <name>U2::ShtirlitzStartupTask</name>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="360"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="361"/>
         <source>Shtirlitz Startup Task</source>
         <translation>Shtirlitz Startup Task</translation>
     </message>
@@ -1969,22 +1976,22 @@ Do you want view online documentation?</source>
         <translation>%1 дней прошло со времени отправки последнего отчета. Отправляется новый отчет.</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="318"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="319"/>
         <source>Connecting to remote server</source>
         <translation>Соединение с удаленным сервером</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="337"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="338"/>
         <source>Cannot resolve destination path for statistical reports</source>
         <translation>Невозможно определить адрес сервера статистики</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="341"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="342"/>
         <source>Network error while resolving destination URL: </source>
         <translation>Ошибка сети при определении адреса сервера статистики:</translation>
     </message>
     <message>
-        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="354"/>
+        <location filename="../src/shtirlitz/Shtirlitz.cpp" line="355"/>
         <source>Network error while sending report: </source>
         <translation>Ошибка сети при отправке отчета:</translation>
     </message>

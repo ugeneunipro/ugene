@@ -245,14 +245,14 @@ GUI_TEST_CLASS_DEFINITION(test_1001_4) {
 
 GUI_TEST_CLASS_DEFINITION(test_1003) {
     // 1. Open "murine.gb", search for all available restriction sites (i.e. click "Select All" in the "Find Restriction Sites" dialog).
-    // Expected state: UGENE not hangs at 100% complition of 'Auto-annotation update task'
+    // Expected state: UGENE not hangs at 100% completion of 'Auto-annotation update task'
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     class Scenario_test_1003 : public CustomScenario {
     public:
         virtual void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QWidget *enzymesSelectorWidget = GTWidget::findWidget(os, "enzymesSelectorWidget");
             GTWidget::click(os, GTWidget::findWidget(os, "selectAllButton", enzymesSelectorWidget));
 
@@ -2194,17 +2194,13 @@ GUI_TEST_CLASS_DEFINITION(test_1186_2) {
 GUI_TEST_CLASS_DEFINITION(test_1189) {
     //1) Open samples/FASTA/human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    //2) Press Ctrl+F
+    //2) Select any region of the sequence
+    GTUtilsSequenceView::selectSequenceRegion(os, 100, 200);
+
+    //3) Activate search widget with Ctrl+F
     GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-
-    //3) Select any region of the sequence
-    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 100, 200));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select"
-                                                                        << "Sequence region"));
-    GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
 
     //4) Select "Selected region" in "Region" combobox of "Search in" area.
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
@@ -2224,23 +2220,17 @@ GUI_TEST_CLASS_DEFINITION(test_1189) {
 GUI_TEST_CLASS_DEFINITION(test_1189_1) {
     //1) Open samples/FASTA/human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    //2) Press Ctrl+F
-    GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
-    GTGlobals::sleep(500);
-
-    //3) Select any region of the sequence
-    GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
-    QPoint p;
-    p = GTMouseDriver::getMousePosition();
-    p.setX(p.x() - 100);
-    GTMouseDriver::moveTo(p);
-    GTMouseDriver::press();
-    p.setX(p.x() + 200);
-    GTMouseDriver::moveTo(p);
-    GTMouseDriver::release();
+    //2) Select any region of the sequence
+    QWidget *panView = GTUtilsSequenceView::getPanOrDetView(os);
+    QPoint centerPos = panView->mapToGlobal(panView->rect().center());
+    //    GTWidget::click(os, centerPos - QPoint(-100, 0));
+    GTMouseDriver::dragAndDrop(centerPos + QPoint(-100, 0), centerPos + QPoint(100, 0));
     GTThread::waitForMainThread();
+
+    //3) Activate search widget with Ctrl+F
+    GTKeyboardDriver::keyClick('f', Qt::ControlModifier);
 
     //4) Select "Selected region" in "Region" combobox of "Search in" area.
     GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
@@ -2250,9 +2240,11 @@ GUI_TEST_CLASS_DEFINITION(test_1189_1) {
     //5) Ensure that two lineedits became visible and contain correct region
     QLineEdit *start = (QLineEdit *)GTWidget::findWidget(os, "editStart");
     CHECK_SET_ERR(start->isVisible(), "editStart line is not visiable");
+    CHECK_SET_ERR(start->text() != "1", "Wrong startValue: 1.");    // 1 is default
 
     QLineEdit *end = (QLineEdit *)GTWidget::findWidget(os, "editEnd");
     CHECK_SET_ERR(end->isVisible(), "editEnd line is not visiable");
+    CHECK_SET_ERR(start->text() != "199950", "Wrong endValue: 199950.");    // 199950 is the length of human_T1 and is default value.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1190) {    //add AlignShortReadsFiller
@@ -3384,7 +3376,7 @@ GUI_TEST_CLASS_DEFINITION(test_1300_2) {
     //    4. Right click to the COI document in the project view, select {Open view->Open new view: alignment editor} from the context menu.
     //    Expected state: there are two MSA Editors (the second one is active) and no sequence views.
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view"
-                                                                              << "Open new view: Alignment Editor"));
+                                                                              << "Open new view: Multiple Alignment Editor"));
     GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
 
     msaEditorIsVisible = GTUtilsMdi::isAnyPartOfWindowVisible(os, "COI [m] COI");
@@ -5442,17 +5434,15 @@ GUI_TEST_CLASS_DEFINITION(test_1537) {
 GUI_TEST_CLASS_DEFINITION(test_1548) {
     // 1. Open file "data/samples/CLUSTALW/COI.aln"
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // 2. Build tree for the alignment
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/1548.nwk", 0, 0, true));
-    QAbstractButton *tree = GTAction::button(os, "Build Tree");
-    GTWidget::click(os, tree);
-    GTGlobals::sleep(500);
+    GTWidget::click(os, GTAction::button(os, "Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //3. Ensure that the "Sort alignment by tree" button on the tree view toolbar is disabled.
     QAction *sortAction = GTAction::findAction(os, "Sort Alignment");
-    CHECK_SET_ERR(NULL != sortAction, "'Sort alignment by tree' was not found");
     CHECK_SET_ERR(!sortAction->isEnabled(), "'Sort alignment by tree' is unexpectedly enabled");
 }
 
@@ -7235,15 +7225,12 @@ GUI_TEST_CLASS_DEFINITION(test_1687) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1688) {
-    // 1) Open file "_common_data/scenarios/_regression/1688/sr100.000.fa"
-    // Expected state: UGENE show error, not crashed
-    GTLogTracer l;
-
+    // Open file "_common_data/scenarios/_regression/1688/sr100.000.fa" (100k sequences, open as separate)
+    // Expected state: UGENE shows error about too many sequences and does not crash.
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
     GTUtilsProject::openFile(os, testDir + "_common_data/scenarios/_regression/1688/sr100.000.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsLog::check(os, l);
+    GTUtilsNotifications::checkNotificationDialogText(os, "contains too many sequences");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1693) {
@@ -7524,24 +7511,28 @@ GUI_TEST_CLASS_DEFINITION(test_1714) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1720) {
-    //1. Use menu {File->Access remote database...}
-    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "D11266", 0));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                << "Access remote database...",
-                              GTGlobals::UseKey);
-
     GTLogTracer l;
-    GTGlobals::sleep(8000);    //some time needed for request
-    //2. Fill field "Resource ID" with value D11266. Click "OK"
 
-    //3. Use menu {File->Access remote database...}
+    //    1. Load a remote document
+    //    2. Load the document with the same ID again
+    //    Expected state: the view of the document is opened
+    //    Bug state: error message is shown
+
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "D11266", 0));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Access remote database...",
                               GTGlobals::UseKey);
 
-    GTUtilsDialog::waitAllFinished(os);
-    //4. Fill field "Resource ID" with value D11266. Click "OK"
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTUtilsMdi::closeActiveWindow(os);
+
+    // Load again
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "D11266", 0));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "Access remote database...",
+                              GTGlobals::UseKey);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "D11266.gb"));
     GTUtilsLog::check(os, l);
     //Expected state: project view with document "D11266.gb", no error messages in log appear
@@ -8551,40 +8542,19 @@ GUI_TEST_CLASS_DEFINITION(test_1984) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1986) {
-    //1. Run UGENE
-    //2. Use main toolbar { File -> Search NCBI Genbank }
-    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogFillerDeprecated(os, "human", false, 5, "Organism"));
+    // Download a sequence from NCBI. Use "limit" for results.
+    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogSimpleFiller(os, "mouse", false, 5, "Organism"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Search NCBI GenBank...");
-    GTGlobals::sleep();
 
-    //Expected state: the "NCBI Sequence Search" dialog has appeared
+    //Expected state: the chosen sequence has been downloaded, saved in FASTA format and displayed in sequence view
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    //3. Type "human" to the request string
-
-    //4. In the dialog's right bottom corner set "Result limit" to 5
-
-    //5. Press the "Search" button
-
-    //Expected state: only 5 results has appeared in the "Results" list
-
-    //6. Choose some result sequence
-
-    //7. Press the "Download" button
-
-    //Expected state: the "Fetch Data from Remote Database" dialog has appeared, it has the "Output format" combobox
-
-    //8. Select "fasta" output format
-
-    //9. Press "OK"
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
     ProjectViewModel *model = qobject_cast<ProjectViewModel *>(treeView->model());
     QString text = model->data(model->index(0, 0, QModelIndex()), Qt::DisplayRole).toString();
 
     CHECK_SET_ERR(text.contains(".fasta"), text);
-
-    //Expected state: the chosen sequence has been downloaded, saved in FASTA format and displayed in sequence view
 }
 
 }    // namespace GUITest_regression_scenarios

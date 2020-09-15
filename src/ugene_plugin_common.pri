@@ -34,6 +34,7 @@ unix: {
     macx: {
         QMAKE_RPATHDIR += @executable_path/plugins/
     } else {
-        QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN/plugins\'"
+        # Make plugins to look for unloaded libraries (Qt*/U2*) in the app folder when loading.
+        QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN/..\'"
     }
 }

@@ -44,11 +44,12 @@ namespace U2 {
 namespace GUITest_common_scenarios_project_remote_request {
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
+    GTUtilsTaskTreeView::openView(os);
+
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "3EZB", 3));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Access remote database...",
                               GTGlobals::UseKey);
-    GTUtilsTaskTreeView::openView(os);
     GTUtilsTaskTreeView::cancelTask(os, "Download remote documents");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }

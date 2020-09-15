@@ -89,13 +89,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         void run(HI::GUITestOpStatus &os) {
             //Expected state : "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-            QString expected = "80";
-            CHECK_SET_ERR(QString::number(minReadIdentity) == expected, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+            CHECK_SET_ERR(minReadIdentity == 80, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
             //Expected state : "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-            expected = "30";
-            CHECK_SET_ERR(QString::number(quality) == expected, QString("incorrect quality value: expected 30, got %1").arg(quality));
+            CHECK_SET_ERR(quality == 30, QString("incorrect quality value: expected 30, got %1").arg(quality));
 
             //Expected state : "Add to project" option is checked by default
             bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
@@ -103,8 +101,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
             //Expected state : "Result aligment" field is filled by default
             QString output = GTLineEdit::getText(os, "outputLineEdit");
-            bool checkOutput = output.isEmpty();
-            CHECK_SET_ERR(!checkOutput, QString("incorrect output line: is empty"));
+            CHECK_SET_ERR(!output.isEmpty(), QString("incorrect output line: is empty"));
 
             //Expected state : "Result alignment" is pre - filled <path> / Documents / UGENE_Data / reference_sanger_reads_alignment.ugenedb]
             bool checkContainsFirst = output.contains(".ugenedb", Qt::CaseInsensitive);
@@ -120,20 +117,13 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
             //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
             for (int i = 1; i < 21; i++) {
-                QString name = "sanger_";
                 QString num = QString::number(i);
                 if (num.size() == 1) {
                     num = "0" + QString::number(i);
                 }
-                name += num;
-                name += ".ab1";
-                reads << name;
+                reads << ("sanger_" + num + ".ab1");
             }
-            QString readDir = testDir + "_common_data/sanger/";
-            GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list *ob = new GTFileDialogUtils_list(os, readDir, reads);
-            GTUtilsDialog::waitForDialog(os, ob);
-
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, testDir + "_common_data/sanger/", reads));
             GTWidget::click(os, GTWidget::findExactWidget<QPushButton *>(os, "addReadButton"));
 
             //4. Push "Align" button
@@ -162,27 +152,22 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     CHECK_SET_ERR(rows == 16, QString("Incorrect rows quantity, expected: 16, current: %1").arg(rows));
     //    16 reads with names "SZYD_Cas9_CR50"..."SZYD_Cas9_CR56", "SZYD_Cas9_CR60"..."SZYD_Cas9_CR66", "SZYD_Cas9_CR70" and "SZYD_Cas9_CR71"
     QList<QString> rowNames = GTUtilsMcaEditor::getReadsNames(os);
-    foreach (QString rowName, rowNames) {
-        bool checkCurrentName = false;
+    for (const QString &rowName : rowNames) {
+        bool isNameFound = false;
         for (int i = 0; i < 16; i++) {
             QString currentName = namesOfRow[i];
             if (rowName == currentName) {
-                checkCurrentName = true;
+                isNameFound = true;
                 break;
             }
         }
-        CHECK_SET_ERR(checkCurrentName, QString("Name %1 is missing").arg(rowName));
+        CHECK_SET_ERR(isNameFound, QString("Name %1 is missing").arg(rowName));
     }
 
     //5. Report with info
-    GTUtilsNotifications::waitForNotification(os, false, "Mapped reads (16)");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::checkNotificationReportText(os, QStringList() << "Mapped reads (16)" << "Filtered by low similarity (4)");
 
-    //number of filtered sequences with the names: 4
-    GTUtilsNotifications::waitForNotification(os, false, "Filtered by quality (4)");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    //No Еrrors in the Log
+    // No Еrrors in the Log
     QStringList errors = GTUtilsLog::getErrors(os, GTLogTracer("error"));
     CHECK_SET_ERR(errors.isEmpty(), QString("Some errors found"));
 }
@@ -435,9 +420,9 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //    9. Close active view
     GTUtilsMdi::closeActiveWindow(os);
 
-    //    10. Select "Open view" from context menu and select "Open new view: "Alignment Editor" from context view
+    //    10. Select "Open view" from context menu and select "Open new view: "Sanger Reads Editor" from context view
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view"
-                                                                              << "Open new view: Alignment Editor",
+                                                                              << "Open new view: Sanger Reads Editor",
                                                             GTGlobals::UseMouse));
     GTUtilsProjectTreeView::callContextMenu(os, "Mapped reads");
 

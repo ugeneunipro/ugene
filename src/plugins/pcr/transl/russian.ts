@@ -654,22 +654,22 @@
 <context>
     <name>U2::LocalWorkflow::InSilicoPcrReportTask</name>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="364"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="368"/>
         <source>Generate In Silico PCR report</source>
         <translation>Generate In Silico PCR report</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="390"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="394"/>
         <source>Sequence name</source>
         <translation>Имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="406"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="410"/>
         <source>Products count table</source>
         <translation>Таблица продуктов</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="418"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="422"/>
         <source>Primer pair details</source>
         <translation>Информация о парах праймеров</translation>
     </message>
@@ -818,16 +818,21 @@
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="321"/>
+        <source>The input file &quot;%1&quot; doesn&apos;t contain a valid sequence.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="325"/>
         <source>The sequence is too long: </source>
         <translation>The sequence is too long: </translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="355"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="359"/>
         <source>Primers specified in &quot;%1&quot; are too long.</source>
         <translation>Праймеры указанные в &quot;%1&quot; слишком длинные.</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="357"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="361"/>
         <source>Multiple In Silico PCR</source>
         <translation>Multiple In Silico PCR</translation>
     </message>

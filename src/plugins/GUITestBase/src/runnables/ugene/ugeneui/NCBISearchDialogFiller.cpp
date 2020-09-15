@@ -311,20 +311,14 @@ void NcbiSearchDialogFiller::waitTasksFinish() {
 
 #undef GT_CLASS_NAME
 
-#define GT_CLASS_NAME "GTUtilsDialog::NCBISearchDialogFillerDeprecated"
+#define GT_CLASS_NAME "GTUtilsDialog::NCBISearchDialogSimpleFiller"
 #define GT_METHOD_NAME "commonScenario"
-void NCBISearchDialogFillerDeprecated::commonScenario() {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
-
-    GTGlobals::sleep(500);
+void NCBISearchDialogSimpleFiller::commonScenario() {
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QLineEdit *queryEditLE = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "queryEditLineEdit", dialog));
-    GT_CHECK(queryEditLE != NULL, "queryEdit line not found");
+    GT_CHECK(queryEditLE != nullptr, "queryEdit line not found");
     GTLineEdit::setText(os, queryEditLE, query);
-
-    GTWidget::click(os, GTWidget::findWidget(os, "searchButton", dialog));
-    GTGlobals::sleep(5000);
 
     if (term != "") {
         QComboBox *term_box = GTWidget::findExactWidget<QComboBox *>(os, "term_box", dialog);
@@ -333,30 +327,31 @@ void NCBISearchDialogFillerDeprecated::commonScenario() {
     if (resultLimit != -1) {
         QSpinBox *resultLimitBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "resultLimitBox", dialog));
         GTSpinBox::setValue(os, resultLimitBox, resultLimit, GTGlobals::UseKeyBoard);
-        GTWidget::click(os, GTWidget::findWidget(os, "searchButton"));
-        GTGlobals::sleep(5000);
-        int i = getResultNumber();
-        GT_CHECK(i == resultLimit, QString("unexpected number of results. Expected: %1, found: %2").arg(resultLimit).arg(i))
     }
 
-    if (doubleEnter) {
-        GTWidget::click(os, GTWidget::findWidget(os, "searchButton"));
-        GTGlobals::sleep(5000);
+    // Run search
+    GTWidget::click(os, GTWidget::findWidget(os, "searchButton", dialog));
+    // Wait the search is finished.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    if (doubleEnter) {
         QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
         GT_CHECK(box != NULL, "buttonBox is NULL");
         QPushButton *button = box->button(QDialogButtonBox::Cancel);
         GT_CHECK(button != NULL, "cancel button is NULL");
         GTWidget::click(os, button);
-
         return;
     }
 
-    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "", 0, true, false, false, "", GTGlobals::UseMouse, 1));
-    QTreeWidget *w = dialog->findChild<QTreeWidget *>("treeWidget");
-    GT_CHECK(w, "treeWidget not found");
+    QTreeWidget *resultsTreeWidget = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "treeWidget", dialog));
 
-    GTWidget::click(os, w, Qt::LeftButton, QPoint(10, 35));    //fast fix, clicking first result
+    if (resultLimit != -1) {
+        int resultCount = getResultNumber();
+        GT_CHECK(resultCount == resultLimit, QString("unexpected number of results. Expected: %1, found: %2").arg(resultLimit).arg(resultCount))
+    }
+
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "", 0, true, false, false, "", GTGlobals::UseMouse, 1));
+    GTWidget::click(os, resultsTreeWidget, Qt::LeftButton, QPoint(10, 35));    //fast fix, clicking first result
 
     QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
     GT_CHECK(box != NULL, "buttonBox is NULL");
@@ -371,13 +366,13 @@ void NCBISearchDialogFillerDeprecated::commonScenario() {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "shownCorrect"
-bool NCBISearchDialogFillerDeprecated::shownCorrect() {
+bool NCBISearchDialogSimpleFiller::shownCorrect() {
     return true;
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "NCBISearchDialogFiller::getResultNumber"
-int NCBISearchDialogFillerDeprecated::getResultNumber() {
+int NCBISearchDialogSimpleFiller::getResultNumber() {
     QWidget *dialog = QApplication::activeModalWidget();
     GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", -1);
 

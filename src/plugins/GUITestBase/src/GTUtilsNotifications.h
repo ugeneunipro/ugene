@@ -55,9 +55,18 @@ class GTUtilsNotifications {
 public:
     static void waitForNotification(HI::GUITestOpStatus &os, bool dialogExpected = true, const QString &message = "");
 
+    /** Waits for notification, clicks it and checks that the notification report contains the required text tokens. */
+    static void checkNotificationReportText(HI::GUITestOpStatus &os, const QString& textToken);
+    static void checkNotificationReportText(HI::GUITestOpStatus &os, const QStringList &textTokenList);
+
+    /** Waits for notification, clicks it and checks that the modal dialog has the required text. */
+    static void checkNotificationDialogText(HI::GUITestOpStatus &os, const QString& textToken);
+
+    /** Clicks on the active (first) notification widget. */
+    static void clickOnNotificationWidget(HI::GUITestOpStatus &os);
+
     /** Waits until all notification popups are closed. */
     static void waitAllNotificationsClosed(HI::GUITestOpStatus &os);
-
 };
 
 }    // namespace U2

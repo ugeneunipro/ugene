@@ -6547,6 +6547,16 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>Файл не найден: %1</translation>
     </message>
     <message>
+        <location filename="../src/WorkflowViewController.cpp" line="2094"/>
+        <source>To Workflow Designer</source>
+        <translation>В Дизайнер</translation>
+    </message>
+    <message>
+        <location filename="../src/WorkflowViewController.cpp" line="2098"/>
+        <source>Go to Dashboard</source>
+        <translation>К отчётам</translation>
+    </message>
+    <message>
         <location filename="../src/WorkflowViewController.cpp" line="2100"/>
         <source>Show dashboard</source>
         <translation>Показать панель</translation>

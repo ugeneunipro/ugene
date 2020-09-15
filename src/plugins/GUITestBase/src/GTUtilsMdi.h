@@ -48,7 +48,7 @@ public:
     static void checkNoObjectViewWindowIsOpened(HI::GUITestOpStatus &os, const QString &viewId);
 
     /** Checks if window with a given windowTitlePart is active or fails otherwise. Waits for the window to be active up to default timeout. */
-    static void checkWindowIsActive(HI::GUITestOpStatus &os, const QString &windowTitlePart);
+    static QWidget *checkWindowIsActive(HI::GUITestOpStatus &os, const QString &windowTitlePart);
 
     /** Returns list of all object view windows of the given type. */
     static QList<QWidget *> getAllObjectViewWindows(const QString &viewId);

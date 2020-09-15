@@ -21,6 +21,8 @@
 
 #include "SequenceViewAnnotatedRenderer.h"
 
+#include <QPainterPath>
+
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>

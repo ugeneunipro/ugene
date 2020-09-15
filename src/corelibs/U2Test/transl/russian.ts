@@ -86,12 +86,12 @@
 <context>
     <name>U2::GTestSuite</name>
     <message>
-        <location filename="../src/GTest.cpp" line="330"/>
+        <location filename="../src/GTest.cpp" line="327"/>
         <source>Can&apos;t load suite list %1</source>
         <translation>Can&apos;t load suite list %1</translation>
     </message>
     <message>
-        <location filename="../src/GTest.cpp" line="331"/>
+        <location filename="../src/GTest.cpp" line="328"/>
         <source>Can&apos;t open suite list %1</source>
         <translation>Can&apos;t open suite list %1</translation>
     </message>
@@ -120,12 +120,12 @@
         <translation type="vanished">Test fails because of timeout.</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="445"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="446"/>
         <source>Test name</source>
         <translation>Test name</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="445"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="446"/>
         <source>Status</source>
         <translation>Status</translation>
     </message>

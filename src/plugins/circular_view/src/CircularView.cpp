@@ -828,28 +828,35 @@ void CircularViewRenderArea::buildAnnotationItem(DrawAnnotationPass pass, Annota
 
     const QVector<U2Region> aDataLocation = aData->getRegions();
     QVector<U2Region> location = aData->getRegions();
+    bool isComplementaryStrand = aData->getStrand().isCompementary();
     removeRegionsOutOfRange(location, seqLen);
 
     int yLevel = predefinedOrbit == -1 ? findOrbit(location, a) : predefinedOrbit;
-    QList<RegionsPair> mergedRegions;
-    if (circularView->isCircularTopology()) {
-        mergedRegions = U1AnnotationUtils::mergeAnnotatiedRegionsAroundJunctionPoint(location, seqLen);
-    }
-
     QList<CircularAnnotationRegionItem *> regions;
-    foreach (const RegionsPair &pair, mergedRegions) {
-        int idx = aDataLocation.indexOf(pair.first);
-        CircularAnnotationRegionItem *regItem = createAnnotationRegionItem(U2Region(pair.first.startPos, pair.first.length + pair.second.length), seqLen, yLevel, aData, idx);
-        if (regItem != nullptr) {
-            regions.append(regItem);
-            if (!pair.second.isEmpty()) {
-                regItem->setJoinedRegion(pair.second);
+    if (circularView->isCircularTopology()) {
+        // For a circular sequence merge regions around 0 point.
+        QList<RegionsPair> mergedRegions = U1AnnotationUtils::mergeAnnotatiedRegionsAroundJunctionPoint(location, seqLen);
+        for (const RegionsPair &pair : mergedRegions) {
+            int idx = aDataLocation.indexOf(pair.first);
+            CircularAnnotationRegionItem *regItem = createAnnotationRegionItem(U2Region(pair.first.startPos, pair.first.length + pair.second.length), seqLen, yLevel, isComplementaryStrand, idx);
+            if (regItem != nullptr) {
+                regions.append(regItem);
+                if (!pair.second.isEmpty()) {
+                    regItem->setJoinedRegion(pair.second);
+                }
+            }
+        }
+    } else {
+        // For a non-circular sequence draw simple annotations same with ADV.
+        for (int regionIndex = 0; regionIndex < location.length(); regionIndex++) {
+            CircularAnnotationRegionItem *regItem = createAnnotationRegionItem(location[regionIndex], seqLen, yLevel, isComplementaryStrand, regionIndex);
+            if (regItem != nullptr) {
+                regions.append(regItem);
             }
         }
     }
 
-    CircularAnnotationItem *item = new CircularAnnotationItem(a, regions, this);
-    circItems[a] = item;
+    circItems[a] = new CircularAnnotationItem(a, regions, this);
 }
 
 void CircularViewRenderArea::buildItems(QFont labelFont) {
@@ -918,7 +925,7 @@ int CircularViewRenderArea::findOrbit(const QVector<U2Region> &location, Annotat
     return yLevel;
 }
 
-CircularAnnotationRegionItem *CircularViewRenderArea::createAnnotationRegionItem(const U2Region &r, int seqLen, int yLevel, const SharedAnnotationData &aData, int index) {
+CircularAnnotationRegionItem *CircularViewRenderArea::createAnnotationRegionItem(const U2Region &r, int seqLen, int yLevel, bool isComplementaryStrand, int index) {
     int totalLen = r.length;
     float startAngle = (float)r.startPos / (float)seqLen * 360;
     float spanAngle = (float)totalLen / (float)seqLen * 360;
@@ -942,7 +949,7 @@ CircularAnnotationRegionItem *CircularViewRenderArea::createAnnotationRegionItem
         spanAngle = (float)REGION_MIN_LEN / (PI * outerRect.height()) * 360;
     }
 
-    QPainterPath path = createAnnotationArrowPath(startAngle, spanAngle, dAlpha, outerRect, innerRect, middleRect, aData->getStrand().isCompementary(), isShort);
+    QPainterPath path = createAnnotationArrowPath(startAngle, spanAngle, dAlpha, outerRect, innerRect, middleRect, isComplementaryStrand, isShort);
     CHECK(path.length() != 0, NULL);
     qreal centerPercent = 0;
     if (!isShort) {
@@ -1032,27 +1039,26 @@ void CircularViewRenderArea::buildAnnotationLabel(const QFont &font, Annotation 
     }
 
     SequenceObjectContext *ctx = view->getSequenceContext();
-    U2Region seqReg(0, ctx->getSequenceLength());
-
-    int seqLen = seqReg.length;
+    qint64 seqLen = ctx->getSequenceLength();
     QVector<U2Region> location = aData->getRegions();
     removeRegionsOutOfRange(location, seqLen);
 
-    QList<RegionsPair> mergedRegions;
-    if (circularView->isCircularTopology()) {
-        mergedRegions = U1AnnotationUtils::mergeAnnotatiedRegionsAroundJunctionPoint(location, seqLen);
-    }
-
-    int r = 0;
     QVector<U2Region> newLocation;
-    foreach (const RegionsPair &pair, mergedRegions) {
-        newLocation.append(U2Region(pair.first.startPos, pair.first.length + pair.second.length));
+    if (circularView->isCircularTopology()) {
+        // Use merged regions for circular topology.
+        QList<RegionsPair> mergedRegions = U1AnnotationUtils::mergeAnnotatiedRegionsAroundJunctionPoint(location, seqLen);
+        for (const RegionsPair &pair : mergedRegions) {
+            newLocation.append(U2Region(pair.first.startPos, pair.first.length + pair.second.length));
+        }
+    } else {
+        // Use standard location regions for normal topology.
+        newLocation = location;
     }
 
-    for (int r = 0; r < newLocation.count(); r++) {
-        CircularAnnotationLabel *label = new CircularAnnotationLabel(a, newLocation, isAutoAnnotation, r, seqLen, font, this);
+    for (int regionIndex = 0; regionIndex < newLocation.count(); regionIndex++) {
+        CircularAnnotationLabel *label = new CircularAnnotationLabel(a, newLocation, isAutoAnnotation, regionIndex, seqLen, font, this);
         labelList.append(label);
-        CircularAnnotationRegionItem *ri = circItems[a]->getRegions()[r];
+        CircularAnnotationRegionItem *ri = circItems[a]->getRegions()[regionIndex];
         label->setAnnRegion(ri);
         ri->setLabel(label);
     }

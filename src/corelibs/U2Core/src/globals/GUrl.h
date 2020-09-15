@@ -75,9 +75,10 @@ public:
         return urlString;
     }
 
-    // The function converts url string to multibyte form
-    // default code page is CP_THREAD_ACP
-    // must use "delete" to delete returned value
+    /**
+     * The function converts url string to multibyte form for Windows (default code page is CP_THREAD_ACP)
+     * And calls to getURLString().toLocal8Bit() on Linux & Mac platforms.
+     */
     QByteArray getURLStringAnsi(int codePage = -1) const;
 
     GUrlType getType() const {

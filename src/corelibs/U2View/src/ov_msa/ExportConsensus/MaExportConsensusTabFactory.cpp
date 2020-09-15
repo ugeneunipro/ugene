@@ -44,7 +44,7 @@ MsaExportConsensusTabFactory::MsaExportConsensusTabFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;
 }
 
-QWidget *MsaExportConsensusTabFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget *MsaExportConsensusTabFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
@@ -65,7 +65,7 @@ McaExportConsensusTabFactory::McaExportConsensusTabFactory() {
     objectViewOfWidget = ObjViewType_ChromAlignmentEditor;
 }
 
-QWidget *McaExportConsensusTabFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget *McaExportConsensusTabFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);

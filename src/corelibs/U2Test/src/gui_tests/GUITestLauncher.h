@@ -65,8 +65,10 @@ private:
 
     void firstTestRunCheck(const QString &testName);
 
+    /** Runs test and returns test output. */
     QString runTest(const QString &testName);
 
+    /** Runs test once and returns test output. */
     QString runTestOnce(U2OpStatus &os, const QString &testName, int iteration, bool enableVideoRecording);
 
     static QString readTestResult(const QByteArray &output);

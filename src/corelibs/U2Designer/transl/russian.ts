@@ -471,12 +471,12 @@ this merge sequence slot:</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/WorkflowGUIUtils.cpp" line="47"/>
+        <location filename="../src/WorkflowGUIUtils.cpp" line="48"/>
         <source>Select a sample to start</source>
         <translation>Выберите пример</translation>
     </message>
     <message>
-        <location filename="../src/WorkflowGUIUtils.cpp" line="155"/>
+        <location filename="../src/WorkflowGUIUtils.cpp" line="156"/>
         <source>Double click to load the sample</source>
         <translation>Двойной щелчок загрузит пример</translation>
     </message>
@@ -645,7 +645,7 @@ this merge sequence slot:</source>
 <context>
     <name>U2::BadgeLabel</name>
     <message>
-        <location filename="../src/dashboard/ExternalToolsDashboardWidget.cpp" line="481"/>
+        <location filename="../src/dashboard/ExternalToolsDashboardWidget.cpp" line="483"/>
         <source>Copy command line</source>
         <translation>Скопировать командную строку</translation>
     </message>
@@ -786,7 +786,7 @@ bowtie index file</source>
     <message>
         <location filename="../src/dashboard/Dashboard.cpp" line="328"/>
         <source>Failed to open Dashboard.html</source>
-        <translation>Невозможно открыть Dasboard.html</translation>
+        <translation>Невозможно открыть Dashboard.html</translation>
     </message>
     <message>
         <location filename="../src/dashboard/Dashboard.cpp" line="479"/>
@@ -802,22 +802,22 @@ bowtie index file</source>
 <context>
     <name>U2::DashboardFileButton</name>
     <message>
-        <location filename="../src/dashboard/DashboardWidget.cpp" line="218"/>
+        <location filename="../src/dashboard/DashboardWidget.cpp" line="219"/>
         <source>%1 file(s)</source>
         <translation>%1 файл(ов)</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/DashboardWidget.cpp" line="266"/>
+        <location filename="../src/dashboard/DashboardWidget.cpp" line="267"/>
         <source>Open file with UGENE</source>
         <translation>Открыть в UGENE</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/DashboardWidget.cpp" line="272"/>
+        <location filename="../src/dashboard/DashboardWidget.cpp" line="273"/>
         <source>Open folder with the file</source>
         <translation>Открыть папку содержащую файл</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/DashboardWidget.cpp" line="277"/>
+        <location filename="../src/dashboard/DashboardWidget.cpp" line="278"/>
         <source>Open file by OS</source>
         <translation>Открыть файл при помощи операционной системы</translation>
     </message>
@@ -844,7 +844,7 @@ bowtie index file</source>
 <context>
     <name>U2::DashboardWidget</name>
     <message>
-        <location filename="../src/dashboard/DashboardWidget.cpp" line="294"/>
+        <location filename="../src/dashboard/DashboardWidget.cpp" line="326"/>
         <source>File is not found: %1</source>
         <translation>Файл не найден: %1</translation>
     </message>

@@ -159,9 +159,9 @@ public:
 
 protected:
     qint64 coordToPos(const QPoint &p) const override;
-    void resizeEvent(QResizeEvent *e);
-    virtual void drawAll(QPaintDevice *pd);
-    virtual U2Region getAnnotationYRange(Annotation *a, int ri, const AnnotationSettings *as) const;
+    void resizeEvent(QResizeEvent *e) override;
+    virtual void drawAll(QPaintDevice *pd) override;
+    virtual U2Region getAnnotationYRange(Annotation *a, int ri, const AnnotationSettings *as) const override;
 
     void buildAnnotationItem(DrawAnnotationPass pass, Annotation *a, int predefinedOrbit = -1, bool selected = false, const AnnotationSettings *as = NULL);
     void buildAnnotationLabel(const QFont &font, Annotation *a, const AnnotationSettings *as, bool isAutoAnnotation = false);
@@ -187,7 +187,7 @@ protected:
 
 private:
     int findOrbit(const QVector<U2Region> &location, Annotation *a);
-    CircularAnnotationRegionItem *createAnnotationRegionItem(const U2Region &region, int seqLen, int yLevel, const SharedAnnotationData &aData, int index);
+    CircularAnnotationRegionItem *createAnnotationRegionItem(const U2Region &region, int seqLen, int yLevel, bool isComplementaryStrand, int index);
     QPainterPath createAnnotationArrowPath(float startAngle, float spanAngle, float dAlpha, const QRect &outerRect, const QRect &innerRect, const QRect &middleRect, bool complementary, bool isShort) const;
     void removeRegionsOutOfRange(QVector<U2Region> &location, int seqLen) const;
 

@@ -2,49 +2,47 @@
 
 appname=ugenecl
 
-# Check if '-ui' parameter is present. 
+# Check if '-ui' parameter is present.
 # If it does exclude it from the list of parameters
 # and use ugeneui instead of ugenecl
 
 params=()
 
-while [[ $# -gt 0 ]];
-do
-    if [ "$1" = "-ui" ]; then
-        appname=ugeneui
-        if `echo $DESKTOP_SESSION|grep -i kde >/dev/null 2>&1`; then
-            IS_KDE=1
-        fi
-    else
-        params+=("$1")
+while [[ $# -gt 0 ]]; do
+  if [ "$1" = "-ui" ]; then
+    appname=ugeneui
+    if $(echo $DESKTOP_SESSION | grep -i kde >/dev/null 2>&1); then
+      IS_KDE=1
     fi
-    shift
+  else
+    params+=("$1")
+  fi
+  shift
 done
 
-dirname=$(dirname "`readlink -f "$0"`")
+dirname=$(dirname "$(readlink -f "$0")")
 
 tmp="${dirname#?}"
 
 if [ "${dirname%$tmp}" != "/" ]; then
-    dirname="$PWD/$dirname"
+  dirname="$PWD/$dirname"
 fi
-
 
 # check compatibility OS and UGENE (32-bit or 64-bit)
 system_i686=false
 system_x86_64=false
 
-case "`uname -m|grep 64|wc -l|tr -d ' '`" in
-0*) system_i686=true;;
-1*) system_x86_64=true;;
+case "$(uname -m | grep 64 | wc -l | tr -d ' ')" in
+0*) system_i686=true ;;
+1*) system_x86_64=true ;;
 esac
 
 ugene_i686=false
 ugene_x86_64=false
 
-case "`file -b \"$dirname\"/\"$appname\" |cut -d "," -f1 |grep 64|wc -l|tr -d ' '`" in
-0*) ugene_i686=true;;
-1*) ugene_x86_64=true;;
+case "$(file -b "$dirname/$appname" | cut -d "," -f1 | grep 64 | wc -l | tr -d ' ')" in
+0*) ugene_i686=true ;;
+1*) ugene_x86_64=true ;;
 esac
 
 if $system_i686; then
@@ -60,9 +58,4 @@ fi
 # Workaround for UGENE-4619
 export QT_QPA_PLATFORMTHEME=
 
-if [ -z $IS_KDE ]; then
-    "$dirname"/"$appname" "${params[@]}"
-else
-    "$dirname"/"$appname" "${params[@]}" -style cleanlooks
-fi
-
+"$dirname"/"$appname" "${params[@]}"

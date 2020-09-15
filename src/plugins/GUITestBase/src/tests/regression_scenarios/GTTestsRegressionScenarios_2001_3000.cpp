@@ -1488,14 +1488,10 @@ GUI_TEST_CLASS_DEFINITION(test_2204) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2225) {
-    Runnable *filler = new NCBISearchDialogFillerDeprecated(os, "rat", true);
-
-    GTUtilsDialog::waitForDialog(os, filler);
-
+    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogSimpleFiller(os, "rat", true));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Search NCBI GenBank...",
                               GTGlobals::UseKey);
-    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2259) {
@@ -1625,8 +1621,8 @@ GUI_TEST_CLASS_DEFINITION(test_2268) {
     // 1. Forbid write access to the t-coffee folder recursively (chmod 555 -R %t-coffee-dir%).
     GTFile::setReadOnly(os, newToolDir.path(), true);
 
-    // 2. Open "sample/CLUSTALW/COI.aln".
-    GTFileDialog::openFile(os, dataDir + "/samples/CLUSTALW/", "COI.aln");
+    // 2. Open "_common_data/clustal/align.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/align.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 3. Right click on the MSA -> Align -> Align with T-Coffee.
@@ -5237,15 +5233,12 @@ GUI_TEST_CLASS_DEFINITION(test_2829) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2853) {
-    Runnable *filler = new NCBISearchDialogFillerDeprecated(os, "rat");
-
-    GTUtilsDialog::waitForDialog(os, filler);
+    GTUtilsDialog::waitForDialog(os, new NCBISearchDialogSimpleFiller(os, "rat"));
 
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Search NCBI GenBank...",
                               GTGlobals::UseKey);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2863) {

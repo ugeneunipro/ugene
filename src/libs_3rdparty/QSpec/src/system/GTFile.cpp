@@ -328,8 +328,11 @@ void GTFile::removeDir(QString dirName)
 
 #define GT_METHOD_NAME "backup"
 void GTFile::backup(GUITestOpStatus &os, const QString& path) {
+    qDebug("Backup file %s", path.toLocal8Bit().constData());
     if (QFile(path).exists()) {
         copy(os, path, path + backupPostfix);
+    } else {
+        qDebug("Failed to backup. Files does not exist: %s", path.toLocal8Bit().constData());
     }
 }
 #undef GT_METHOD_NAME
@@ -343,7 +346,7 @@ void GTFile::backupDir(GUITestOpStatus &os, const QString& path) {
 
 #define GT_METHOD_NAME "restore"
 void GTFile::restore(GUITestOpStatus &os, const QString& path) {
-
+    qDebug("Restoring file %s", path.toLocal8Bit().constData());
     QFile backupFile(path + backupPostfix);
 
     bool ok = backupFile.open(QIODevice::ReadOnly);

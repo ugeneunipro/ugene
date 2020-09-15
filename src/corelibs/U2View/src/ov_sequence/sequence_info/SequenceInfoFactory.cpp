@@ -39,7 +39,7 @@ SequenceInfoFactory::SequenceInfoFactory() {
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget *SequenceInfoFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget *SequenceInfoFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);

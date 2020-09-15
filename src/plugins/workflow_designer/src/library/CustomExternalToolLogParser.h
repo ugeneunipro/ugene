@@ -33,9 +33,13 @@ public:
 
 private:
     bool isError(const QString &line) const override {
+        Q_UNUSED(line);
         return false;
     };
-    void parseErrOutput(const QString &partOfLog) override {};
+
+    void parseErrOutput(const QString &partOfLog) override {
+        Q_UNUSED(partOfLog);
+    };
 };
 
 }    // namespace U2

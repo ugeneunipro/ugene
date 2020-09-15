@@ -59,7 +59,6 @@ void GUITestThread::run() {
     clearSandbox();
 
     QString error = launchTest(tests);
-    qDebug("launchTest is finished, error: '%s'", error.toLocal8Bit().constData());
     if (isRunPostActionsAndCleanup) {
         cleanup();
     }
@@ -87,10 +86,10 @@ QString GUITestThread::launchTest(const GUITests &tests) {
 
     HI::GUITestOpStatus os;
     try {
-        foreach (HI::GUITest *t, tests) {
-            qDebug("launchTest started: %s", t->getFullName().toLocal8Bit().constData());
-            t->run(os);
-            qDebug("launchTest finished: %s", t->getFullName().toLocal8Bit().constData());
+        for (HI::GUITest *test : tests) {
+            qDebug("launchTest started: %s", test->getFullName().toLocal8Bit().constData());
+            test->run(os);
+            qDebug("launchTest finished: %s", test->getFullName().toLocal8Bit().constData());
         }
     } catch (HI::GUITestOpStatus *) {
     }
@@ -98,15 +97,15 @@ QString GUITestThread::launchTest(const GUITests &tests) {
     QString error = os.getError();
     if (!error.isEmpty()) {
         try {
-            foreach (HI::GUITest *t, postChecks()) {
-                qDebug("launchTest running additional post check: %s", t->getFullName().toLocal8Bit().constData());
-                t->run(os);
-                qDebug("launchTest additional post check is finished: %s", t->getFullName().toLocal8Bit().constData());
+            for (HI::GUITest *test : postChecks()) {
+                qDebug("launchTest running additional post check: %s", test->getFullName().toLocal8Bit().constData());
+                test->run(os);
+                qDebug("launchTest additional post check is finished: %s", test->getFullName().toLocal8Bit().constData());
             }
         } catch (HI::GUITestOpStatus *) {
         }
     }
-    qDebug("lauchTest is finished");
+    qDebug("launchTest for all tests/checks is finished, error: '%s', isEmpty: %d", error.toLocal8Bit().constData(), error.isEmpty());
     return error;
 }
 
@@ -214,8 +213,11 @@ void GUITestThread::cleanup() {
 }
 
 void GUITestThread::writeTestResult() {
-    qDebug("writing test result for teamcity");
-    printf("%s\n", (GUITestService::GUITESTING_REPORT_PREFIX + ": " + testResult).toUtf8().data());
+    QByteArray testOutput = (GUITestService::GUITESTING_REPORT_PREFIX + ": " + testResult).toUtf8();
+    qDebug("writing test result for teamcity: '%s'", testOutput.constData());
+
+    printf("%s\n", testOutput.constData());
+    fflush(stdout);
 }
 
 }    // namespace U2

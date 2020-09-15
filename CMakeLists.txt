@@ -10,8 +10,8 @@ project(ugene)
 
 #set(CMAKE_VERBOSE_MAKEFILE ON)
 
-set(UGENE_VERSION 35.0-dev)
-set(UGENE_VER_MAJOR 35)
+set(UGENE_VERSION 36.0-dev)
+set(UGENE_VER_MAJOR 36)
 set(UGENE_VER_MINOR 0)
 
 set(UGENE_MIN_VERSION_SQLITE 1.25.0)
@@ -24,7 +24,6 @@ add_definitions(
 
         -DUGENE_USE_BUNDLED_ZLIB
         -DUGENE_USE_BUNDLED_SQLITE
-        -DUGENE_WEB_KIT
 
         -DQT_FATAL_ASSERT
 )
@@ -40,9 +39,26 @@ endif (NOT CMAKE_CONFIGURATION_TYPES AND NOT CMAKE_BUILD_TYPE)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG")
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -D_DEBUG")
 
-# Warning levels
+# Warning levels. Keep in sync with ugene_globals.pri
 if (CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wreorder")
+    string(CONCAT GCC_WARNING_FLAGS
+            " -Wall"
+            " -Werror=maybe-uninitialized"
+            " -Werror=parentheses"
+            " -Werror=return-type"
+            " -Werror=uninitialized"
+            " -Wno-cast-function-type"
+            " -Wno-catch-value"
+            " -Wno-class-memaccess"
+            " -Wno-deprecated-copy"
+            " -Wno-expansion-to-defined"
+            " -Wno-ignored-attributes"
+            " -Wno-implicit-fallthrough"
+            " -Wno-sign-compare"
+            " -Wno-unused-parameter"
+            " -Wno-unused-variable"
+            )
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GCC_WARNING_FLAGS}")
 endif ()
 
 # 3rd party libs

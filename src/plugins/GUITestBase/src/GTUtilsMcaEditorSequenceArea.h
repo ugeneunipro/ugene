@@ -51,6 +51,7 @@ public:
     static QStringList getSelectedRowsNames(GUITestOpStatus &os);
     static QRect getSelectedRect(GUITestOpStatus &os);
     static void clickToReferencePositionCenter(GUITestOpStatus &os, qint64 position, const QPoint& clickPointAdjustment = QPoint(0, 0));
+    static void moveCursorToReferencePositionCenter(GUITestOpStatus &os, qint64 position, const QPoint& movePointAdjustment = QPoint(0, 0));
     /**
     *0 - ViewMode
     *1 - ReplaceCharMode

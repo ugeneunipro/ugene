@@ -421,163 +421,163 @@
 <context>
     <name>U2::ADVExportContext</name>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="118"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="110"/>
         <source>Export selected sequence region...</source>
         <translation>Экспорт выбранных участков последовательности...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="122"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="114"/>
         <source>Export sequence of selected annotations...</source>
         <translation>Экспорт последовательностей выбранных аннотаций...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="126"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="118"/>
         <source>Export annotations...</source>
         <translation>Экспорт аннотации...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="130"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="122"/>
         <source>Align selected annotations...</source>
         <translation>Выровнять выбранные аннотации...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="134"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="126"/>
         <source>Align selected annotations (amino acids)...</source>
         <translation>Выровнять выбранные аннотации (аминокислоты)...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="138"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="130"/>
         <source>Align selected sequence regions...</source>
         <translation>Выровнять выбранные последовательности...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="142"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="134"/>
         <source>Align selected sequence regions (amino acids)...</source>
         <translation>Выровнять выбранные регионы (аминокислоты)...</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="146"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="138"/>
         <source>Export sequences by &apos;id&apos;</source>
         <translation>Экспортировать последовательности по &apos;id&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="148"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="140"/>
         <source>Export sequences by &apos;accession&apos;</source>
         <translation>Экспортировать последовательности по &apos;accession&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="150"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="142"/>
         <source>Export sequences by &apos;db_xref&apos;</source>
         <translation>Экспортировать последовательности по &apos;db_xref&apos;</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="153"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="145"/>
         <source>Export BLAST result to alignment</source>
         <translation>Экспорт результатов BLAST в множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="257"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="249"/>
         <source>from &apos;</source>
         <translation>из &apos;</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="258"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="250"/>
         <source>Fetch sequences from remote database</source>
         <translation>Загрузить последовательности из удаленной базы данных</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="261"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="253"/>
         <source>Fetch sequences by &apos;id&apos; %1</source>
         <translation>Загрузить по &apos;id&apos; %1</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="265"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="257"/>
         <source>Fetch sequences by &apos;accession&apos; %1</source>
         <translation>Загрузить по &apos;accsession&apos; %1</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="269"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="261"/>
         <source>Fetch sequences by &apos;db_xref&apos; %1</source>
         <translation>Загрузить по &apos;db_xref&apos; %1</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="477"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="531"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="469"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="522"/>
         <source>Illegal parameter: input alignment is not empty!</source>
         <translation>Некорректный параметр: входное выравнивание не пусто!</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="489"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="481"/>
         <source>%1 is not a BLAST annotation</source>
         <translation>%1 не является BLAST аннотацией</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="494"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="485"/>
         <source>Can not export BLAST annotations from different sequences</source>
         <translation>Невозможно экспортировать BLAST аннотации из разных последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="497"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="488"/>
         <source>Can not find qualifier to set as a name for BLAST sequence</source>
         <translation>Невозможно найти квалификатор, чтобы установить в качестве имени для BLAST последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="577"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="565"/>
         <source>Illegal parameter: Input alignment is not empty!</source>
         <translation>Некорректный параметр: входное выравнивание не пусто!</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="652"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="640"/>
         <source>Create alignment</source>
         <translation>Создать выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="653"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="641"/>
         <source>Save alignment to file</source>
         <translation>Сохранить выравнивание в файл</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="289"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="429"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="281"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="421"/>
         <source>No annotations selected!</source>
         <translation>Сначала выберите аннотации!</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="375"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="367"/>
         <source>No sequence regions selected!</source>
         <translation>Нет выбранных участков!</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="479"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="533"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="471"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="524"/>
         <source>At least 2 annotations are required</source>
         <translation>Нужно выбрать хотя бы 2 аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="548"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="537"/>
         <source>Different sequence alphabets</source>
         <translation>Несопоставимые алфавиты</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="605"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="593"/>
         <source>At least 2 sequences required</source>
         <translation>Необходимо как минимум 2 последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="493"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="541"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="484"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="531"/>
         <source>No sequence object found</source>
         <translation>Последовательность недоступна</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="503"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="562"/>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="619"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="494"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="551"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="607"/>
         <source>Alignment is too large</source>
         <translation>Слишком большой размер выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ExportSequenceViewItems.cpp" line="599"/>
+        <location filename="../src/ExportSequenceViewItems.cpp" line="587"/>
         <source>Can&apos;t derive alignment alphabet</source>
         <translation>Невозможно определить алфавит выравнивания</translation>
     </message>

@@ -102,7 +102,6 @@
 #include "DumpHelpTask.h"
 #include "DumpLicenseTask.h"
 #include "DumpVersionTask.h"
-#include "ForeverTask.h"
 #include "TaskStatusBar.h"
 #include "TestStarter.h"
 

@@ -2241,24 +2241,24 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::GUIUtils</name>
     <message>
-        <location filename="../src/util/GUIUtils.cpp" line="153"/>
-        <location filename="../src/util/GUIUtils.cpp" line="163"/>
-        <location filename="../src/util/GUIUtils.cpp" line="181"/>
+        <location filename="../src/util/GUIUtils.cpp" line="154"/>
+        <location filename="../src/util/GUIUtils.cpp" line="164"/>
+        <location filename="../src/util/GUIUtils.cpp" line="182"/>
         <source>Error!</source>
         <translation>Ошибка!</translation>
     </message>
     <message>
-        <location filename="../src/util/GUIUtils.cpp" line="153"/>
+        <location filename="../src/util/GUIUtils.cpp" line="154"/>
         <source>Document URL is empty!</source>
         <translation>Пустая ссылка!</translation>
     </message>
     <message>
-        <location filename="../src/util/GUIUtils.cpp" line="163"/>
+        <location filename="../src/util/GUIUtils.cpp" line="164"/>
         <source>Unable to launch default web browser.</source>
         <translation>Не удалось запустить браузер Интернет, установленный по умолчанию.</translation>
     </message>
     <message>
-        <location filename="../src/util/GUIUtils.cpp" line="181"/>
+        <location filename="../src/util/GUIUtils.cpp" line="182"/>
         <source>Please specify the browser executable</source>
         <translation>Не указано приложение браузера</translation>
     </message>

@@ -157,6 +157,7 @@
 #include "app_settings/logview_settings/LogSettingsGUIController.h"
 #include "main_window/CheckUpdatesTask.h"
 #include "main_window/MainWindowImpl.h"
+#include "main_window/ProxyStyle.h"
 #include "main_window/SplashScreen.h"
 #include "plugin_viewer/PluginViewerImpl.h"
 #include "project_support/ProjectLoaderImpl.h"
@@ -586,14 +587,14 @@ int main(int argc, char **argv) {
     }
 #endif
     QString style = userAppSettings->getVisualStyle();
+    QStyle *qstyle = nullptr;
     if (!style.isEmpty()) {
-        QStyle *qstyle = QStyleFactory::create(style);
-        if (qstyle != NULL) {
-            app.setStyle(qstyle);
-        } else {
+        qstyle = QStyleFactory::create(style);
+        if (qstyle == NULL) {
             uiLog.details(AppContextImpl::tr("Style not available %1").arg(style));
         }
     }
+    app.setStyle(new ProxyStyle(qstyle));
 
     ResourceTracker *resTrack = new ResourceTracker();
     appContext->setResourceTracker(resTrack);

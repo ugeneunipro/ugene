@@ -1,5 +1,10 @@
 #!/bin/bash
-# this script's home dir is trunk/installer/linux/X11
+# The scripts current dir is ${git-root}/installer/linux/X11
+
+if [ -z "$QT_DIR" ]; then
+  echo QT_DIR environment variable is not set!
+  exit 1
+fi
 
 PRODUCT_NAME="ugene"
 
@@ -18,11 +23,6 @@ ARCH=$(uname -m)
 
 source create_bundle_common.sh
 
-if [ -z "$QT_DIR" ]; then
-  echo QT_DIR environment variable is not set!
-  exit 1
-fi
-
 echo cleaning previous bundle
 rm -rf "${TARGET_APP_DIR}"
 rm -rf "${SYMBOLS_DIR}"
@@ -36,30 +36,38 @@ echo
 echo copying ugenecl
 add-binary ugenecl
 
+echo
 echo copying ugeneui
 add-binary ugeneui
 
+echo
 echo copying ugenem
 add-binary ugenem
 
+echo
 echo copying plugins_checker
 add-binary plugins_checker
 
+echo
 echo copying ugene startup script
 cp -v $RELEASE_DIR/ugene "$TARGET_APP_DIR"
 
+echo
 echo copying man page for UGENE
 mkdir -v "$TARGET_APP_DIR/man1"
 cp -v ../../_common_data/ugene.1.gz "$TARGET_APP_DIR/man1"
 
+echo
 echo copying README file
 cp -v ../../_common_data/README "$TARGET_APP_DIR"
 
+echo
 echo copying LICENSE file
 cp -v ../../_common_data/LICENSE "$TARGET_APP_DIR"
 echo copying LICENSE.3rd_party file
 cp -v ../../_common_data/LICENSE.3rd_party "$TARGET_APP_DIR"
 
+echo
 echo copying file association script files
 cp -v ../../_common_data/Associate_files_to_UGENE.sh "$TARGET_APP_DIR"
 cp -v ../../_common_data/icons.tar.gz "$TARGET_APP_DIR"
@@ -67,31 +75,21 @@ cp -v ../../_common_data/application-x-ugene.xml "$TARGET_APP_DIR"
 cp -v ../../_common_data/ugene.desktop "$TARGET_APP_DIR"
 cp -v ../../_common_data/ugene.png "$TARGET_APP_DIR"
 
-mkdir "${TARGET_APP_DIR}/plugins"
-
+echo
 echo copying translations
 cp -v $RELEASE_DIR/transl_en.qm "$TARGET_APP_DIR"
 cp -v $RELEASE_DIR/transl_ru.qm "$TARGET_APP_DIR"
 
+echo
 echo copying data dir
 cp -r "../../../data" "${TARGET_APP_DIR}"
-if [ ! -z "$UGENE_CISTROME_PATH" ]; then
-  echo "Copying cistrome data"
-  mkdir -p "${TARGET_APP_DIR}/data/cistrome"
-  mv "$UGENE_CISTROME_PATH"/* "${TARGET_APP_DIR}"/data/cistrome/
-fi
-echo
 
-#include external tools package if applicable
-echo copying tools dir
+# Include external tools.
 if [ -e "$RELEASE_DIR/../../tools" ]; then
+  echo
+  echo copying tools dir
   cp -R "$RELEASE_DIR/../../tools" "${TARGET_APP_DIR}/"
-  find "$TARGET_APP_DIR" -name ".svn" | xargs rm -rf
   PACKAGE_TYPE="linux-full"
-  if [ ! -z "$UGENE_R_DIST_PATH" ]; then
-    echo "Copying R tool"
-    cp -R "$UGENE_R_DIST_PATH" "${TARGET_APP_DIR}/tools"
-  fi
 fi
 
 echo
@@ -128,11 +126,9 @@ if [ "$1" == "-test" ]; then
   add-qt-library Qt5Test
 fi
 
-if [ ! -z "$PATH_TO_LIBPROC" ]; then
-  cp -v "$PATH_TO_LIBPROC" "${TARGET_APP_DIR}"
-  strip -v "${TARGET_APP_DIR}"
-fi
 if [ ! -z "$PATH_TO_INCLUDE_LIBS" ]; then
+  echo
+  echo copying include libs from "$PATH_TO_INCLUDE_LIBS"
   cp -v "$PATH_TO_INCLUDE_LIBS"/* "${TARGET_APP_DIR}"
 fi
 
@@ -157,7 +153,9 @@ cp -v -L "$PATH_TO_ICU_I18N_LIB" "${TARGET_APP_DIR}"
 PATH_TO_ICU_UUC_LIB=$(ldd "${QT_DIR}/lib/libQt5Widgets.so.5" | grep libicuuc.so | cut -d " " -f3)
 cp -v -L "$PATH_TO_ICU_UUC_LIB" "${TARGET_APP_DIR}"
 
+echo
 echo copying plugins
+mkdir "${TARGET_APP_DIR}/plugins"
 add-plugin annotator
 add-plugin ball
 add-plugin biostruct3d_view
@@ -198,18 +196,15 @@ add-plugin variants
 add-plugin weight_matrix
 add-plugin wevote_support
 add-plugin workflow_designer
-
 if [ "$1" == "-test" ]; then
   add-plugin test_runner
 fi
 
-# remove svn dirs
+# Remove svn dirs
 find "$TARGET_APP_DIR" -name ".svn" | xargs rm -rf
 
-# shellcheck disable=SC2154
-REVISION=$BUILD_VCS_NUMBER_new_trunk
 if [ -z "$REVISION" ]; then
-  REVISION=$(svn status -u | sed -n -e '/revision/p' | awk '{print $4}')
+  REVISION=$(git rev-parse --short HEAD)
 fi
 
 if [ "$1" == "-test" ]; then
@@ -219,9 +214,5 @@ fi
 # shellcheck disable=SC2027
 PACKAGE_NAME=$PRODUCT_NAME"-"$VERSION"-$PACKAGE_TYPE-"$ARCH"-r"$REVISION$TEST
 
-tar -czf ${SYMBOLS_DIR}.tar.gz $SYMBOLS_DIR/
-tar -czf "$PACKAGE_NAME".tar.gz "$TARGET_APP_DIR"/
-if [ ! -z "$UGENE_CISTROME_PATH" ]; then
-  echo "Copying cistrome data"
-  mv "${TARGET_APP_DIR}"/data/cistrome/* "$UGENE_CISTROME_PATH"
-fi
+tar -czf ${SYMBOLS_DIR}.tar.gz "${SYMBOLS_DIR}"/
+tar -czf "${PACKAGE_NAME}".tar.gz "${TARGET_APP_DIR}"/

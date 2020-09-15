@@ -73,21 +73,8 @@ MultipleAlignmentData::MultipleAlignmentData(const QString &name, const DNAAlpha
     }
 }
 
-MultipleAlignmentData::MultipleAlignmentData(const MultipleAlignmentData &ma)
-    : alphabet(NULL),
-      length(0) {
-    // TODO: implement copying
-    //    copy(ma);
-}
-
 MultipleAlignmentData::~MultipleAlignmentData() {
 }
-
-// TODO: marked to remove (if it is not used)
-//const MultipleAlignmentData & MultipleAlignmentData::operator=(const MultipleAlignmentData &other) {
-//    copy(other);
-//    return *this;
-//}
 
 void MultipleAlignmentData::clear() {
     MaStateCheck check(this);
@@ -109,7 +96,7 @@ const DNAAlphabet *MultipleAlignmentData::getAlphabet() const {
 }
 
 void MultipleAlignmentData::setAlphabet(const DNAAlphabet *newAlphabet) {
-    SAFE_POINT(NULL != newAlphabet, "Internal error: attempted to set NULL alphabet for the alignment", );
+    SAFE_POINT(newAlphabet != nullptr, "Internal error: attempted to set NULL alphabet for the alignment", );
     alphabet = newAlphabet;
 }
 
@@ -154,12 +141,12 @@ int MultipleAlignmentData::getNumRows() const {
 
 U2MsaListGapModel MultipleAlignmentData::getGapModel() const {
     U2MsaListGapModel gapModel;
-    const int length = getLength();
-    foreach (const MultipleAlignmentRow &row, rows) {
+    const int alignmentLength = getLength();
+    for (const MultipleAlignmentRow &row : rows) {
         gapModel << row->getGapModel();
         const int rowPureLength = row->getRowLengthWithoutTrailing();
-        if (rowPureLength < length) {
-            gapModel.last() << U2MsaGap(rowPureLength, length - rowPureLength);
+        if (rowPureLength < alignmentLength) {
+            gapModel.last() << U2MsaGap(rowPureLength, alignmentLength - rowPureLength);
         }
     }
     return gapModel;

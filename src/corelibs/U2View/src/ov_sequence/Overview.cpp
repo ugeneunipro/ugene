@@ -21,6 +21,7 @@
 
 #include "Overview.h"
 
+#include <QPainterPath>
 #include <QToolTip>
 #include <QVBoxLayout>
 

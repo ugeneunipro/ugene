@@ -214,7 +214,7 @@ void DashboardPopupMenu::showEvent(QShowEvent *event) {
 #define FILE_URL_KEY "file-url"
 
 DashboardFileButton::DashboardFileButton(const QStringList &urlList, const QString &dashboardDir, bool isFolderMode)
-    : urlList(urlList), dashboardDirInfo(dashboardDir) {
+    : urlList(urlList), dashboardDirInfo(dashboardDir), isFolderMode(isFolderMode) {
     setObjectName("DashboardFileButton");
     QString buttonText = urlList.size() != 1 ? tr("%1 file(s)").arg(urlList.size()) : QFileInfo(urlList[0]).fileName();
     if (buttonText.length() > 27) {
@@ -312,14 +312,14 @@ void DashboardFileButton::sl_openFileClicked() {
     QString type = tokens[0];
     QString url = tokens[1];
     QFileInfo fileInfo(url);
-    bool isFolder = type == "folder";
-    if (isFolder) {
+    bool isOpenParentDir = type == "folder";    // A parent dir of the url must be opened.
+    if (isOpenParentDir) {
         fileInfo = QFileInfo(fileInfo.absolutePath());
     }
     if (!fileInfo.exists()) {
         fileInfo = findFileOpenCandidateInTheDashboardOutputDir(dashboardDirInfo, fileInfo);
         if (!fileInfo.exists()) {
-            if (isFolder) {
+            if (isOpenParentDir || isFolderMode) {
                 // We can't locate the original dashboard sub-folder. Opening the dashboard folder instead of error message.
                 fileInfo = dashboardDirInfo;
             } else {

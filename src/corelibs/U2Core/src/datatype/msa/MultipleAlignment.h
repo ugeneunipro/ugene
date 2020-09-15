@@ -33,8 +33,6 @@ class DNAAlphabet;
 /** Default name for a multiple alignment */
 #define MA_OBJECT_NAME QString("Multiple alignment")
 
-#define MAlignment_TailedGapsPattern "\\-+$"
-
 class MultipleAlignmentData;
 
 class U2CORE_EXPORT MultipleAlignment {
@@ -83,13 +81,8 @@ protected:
     MultipleAlignmentData(const QString &name = QString(),
                           const DNAAlphabet *alphabet = NULL,
                           const QList<MultipleAlignmentRow> &rows = QList<MultipleAlignmentRow>());
-    MultipleAlignmentData(const MultipleAlignmentData &multipleAlignment);
-
 public:
     virtual ~MultipleAlignmentData();
-
-    // TODO: marked to remove (if it is not used)
-    //    const MultipleAlignmentData & operator=(const MultipleAlignmentData &other);
 
     /**
      * Clears the alignment. Makes alignment length == 0.

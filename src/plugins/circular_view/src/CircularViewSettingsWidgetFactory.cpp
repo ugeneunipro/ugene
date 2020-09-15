@@ -40,7 +40,7 @@ CircularViewSettingsWidgetFactory::CircularViewSettingsWidgetFactory(CircularVie
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget *CircularViewSettingsWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget *CircularViewSettingsWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
     SAFE_POINT(objView != nullptr, tr("Object view is NULL"), nullptr);
 
     CircularViewSplitter *cvSplitter = ctx->getView(objView, false);

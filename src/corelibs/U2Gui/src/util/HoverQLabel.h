@@ -18,14 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-#ifndef _U2_HELP_BUTTON_H_
-#define _U2_HELP_BUTTON_H_
+#ifndef _U2_HOVER_QLABEL_H_
+#define _U2_HOVER_QLABEL_H_
 
 #include <QLabel>
 
 #include <U2Core/global.h>
 
 namespace U2 {
+
 class U2GUI_EXPORT HoverQLabel : public QLabel {
     Q_OBJECT
 public:

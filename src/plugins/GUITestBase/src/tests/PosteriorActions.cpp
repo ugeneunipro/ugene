@@ -120,6 +120,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
 
 POSTERIOR_ACTION_DEFINITION(post_action_0003) {
     if (qgetenv("UGENE_TEST_SKIP_BACKUP_AND_RESTORE") == "1") {    // Restored by the parent process
+        qDebug("Skipping restore: UGENE_TEST_SKIP_BACKUP_AND_RESTORE = 1");
         return;
     }
     // Restore backup files
@@ -138,12 +139,13 @@ POSTERIOR_ACTION_DEFINITION(post_action_0003) {
 
 POSTERIOR_ACTION_DEFINITION(post_action_0004) {
     if (qgetenv("UGENE_TEST_SKIP_BACKUP_AND_RESTORE") == "1") {    // Restored by the parent process
+        qDebug("Skipping restore: UGENE_TEST_SKIP_BACKUP_AND_RESTORE = 1");
         return;
     }
     if (QDir(sandBoxDir).exists()) {
         GTFile::setReadWrite(os, sandBoxDir, true);
         QDir sandBox(sandBoxDir);
-        foreach (const QString &path, sandBox.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden)) {
+        for (const QString &path: sandBox.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden)) {
             GTFile::removeDir(sandBox.absolutePath() + "/" + path);
         }
     }

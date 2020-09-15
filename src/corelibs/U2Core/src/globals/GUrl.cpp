@@ -165,6 +165,7 @@ QByteArray GUrl::getURLStringAnsi(int codePage) const {
     delete buffer;
     return bytes;
 #else
+    Q_UNUSED(codePage);
     return getURLString().toLocal8Bit();
 #endif    // Q_OS_WIN
 }

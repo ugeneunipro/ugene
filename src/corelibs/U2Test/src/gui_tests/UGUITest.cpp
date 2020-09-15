@@ -20,7 +20,6 @@
  */
 
 #include <core/GUITestOpStatus.h>
-#include <system/GTFile.h>
 
 #include <QApplication>
 #include <QDate>
@@ -35,7 +34,7 @@
 
 namespace U2 {
 
-QString getTestDir() {
+QString getTestDirImpl() {
     const QString testDir = qgetenv("UGENE_TESTS_PATH");
     if (!testDir.isEmpty()) {
         if (!QFileInfo(testDir).exists()) {
@@ -62,7 +61,15 @@ QString getTestDir() {
 #endif
 }
 
-QString getDataDir() {
+QString getTestDir() {
+    QString result = getTestDirImpl();
+    if (qgetenv("UGENE_GUI_TEST") == "1") {    // In gui test mode dump test & data dir.
+        qDebug("Test dir: '%s' -> '%s'", result.toLocal8Bit().constData(), QFileInfo(result).absoluteFilePath().toLocal8Bit().constData());
+    }
+    return result;
+}
+
+QString getDataDirImpl() {
     QString dataDir = qgetenv("UGENE_DATA_PATH");
     if (!dataDir.isEmpty()) {
         if (!QFileInfo(dataDir).exists()) {
@@ -97,6 +104,14 @@ QString getDataDir() {
     }
 
     return dataDir;
+}
+
+QString getDataDir() {
+    QString result = getDataDirImpl();
+    if (qgetenv("UGENE_GUI_TEST") == "1") {    // In gui test mode dump test & data dir.
+        qDebug("Data dir: '%s' -> '%s'", result.toLocal8Bit().constData(), QFileInfo(result).absoluteFilePath().toLocal8Bit().constData());
+    }
+    return result;
 }
 
 QString getScreenshotDir() {

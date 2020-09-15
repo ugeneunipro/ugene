@@ -54,8 +54,14 @@ private slots:
 private:
     void addUrlActionsToMenu(QMenu *menu, const QString &url, bool addOpenByUgeneAction = false);
 
+    /** List of urls to open. */
     QStringList urlList;
+
+    /** Path to dashboard dir. */
     QFileInfo dashboardDirInfo;
+
+    /** The must process the URL as a folder. */
+    bool isFolderMode;
 };
 
 /** Styled dashboard menu used with file buttons. */

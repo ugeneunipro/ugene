@@ -3148,13 +3148,13 @@ GUI_TEST_CLASS_DEFINITION(test_5739) {
                                                 << "Map reads to reference...");
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
-    //5. Click to the position 6372 at the reference sequence (first half of the char).
-    GTUtilsMcaEditorSequenceArea::clickToReferencePositionCenter(os, 6372, QPoint(-2, 0));
+    //5. Move mouse cursor to the position 6372 at the reference sequence (first half of the char).
+    GTUtilsMcaEditorSequenceArea::moveCursorToReferencePositionCenter(os, 6372, QPoint(-4, 0));
 
     //6. Select all chars in the reference from here to the end
     QPoint currentPos = GTMouseDriver::getMousePosition();
     int newXPos = GTUtilsMdi::activeWindow(os)->mapToGlobal(GTUtilsMdi::activeWindow(os)->rect().topRight()).x();
-    GTUtilsMcaEditorSequenceArea::dragAndDrop(os, QPoint(newXPos, currentPos.y()));
+    GTMouseDriver::dragAndDrop(currentPos, QPoint(newXPos, currentPos.y()));
     GTThread::waitForMainThread();
 
     //Expected: selected length = 4

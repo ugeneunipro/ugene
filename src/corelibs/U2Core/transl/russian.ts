@@ -1312,7 +1312,7 @@ The session database file is removed after closing of UGENE.</source>
         <translation>ugenedb это внутренний формат файла базы данных UGENE</translation>
     </message>
     <message>
-        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="156"/>
+        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="151"/>
         <source>Invalid destination database reference</source>
         <translation>Неверное расположение референса базы</translation>
     </message>

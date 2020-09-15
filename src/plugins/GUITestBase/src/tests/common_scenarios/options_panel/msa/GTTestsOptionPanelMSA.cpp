@@ -35,6 +35,7 @@
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTFile.h>
+#include <utils/GTThread.h>
 
 #include <QApplication>
 #include <QDir>
@@ -2042,27 +2043,28 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0003) {
     const QString dirName = "export_consensus_test_0003";
     //    1. Open data/samples/CLUSTALW/COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
     //    2. Open export consensus option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
+
     //    3. Select some existing file in read-only directory as output
     QString dirPath = sandBoxDir + dirName;
     bool ok = QDir().mkpath(dirPath);
     CHECK_SET_ERR(ok, "subfolder not created");
     GTFile::setReadOnly(os, dirPath);
 
-    const QString filePath = dirPath + '/' + fileName;
+    QString filePath = dirPath + '/' + fileName;
     setConsensusOutputPath(os, filePath);
+
     //    4. Press export button
     GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
-    GTGlobals::sleep(300);
-    //    Expected state: error in log: Task {Pairwise Alignment Task} finished with error: No permission to write to 'COI_transl.aln' file.
-    QString error = l.getJoinedErrorString();
-    const QString expectedFilePath = QFileInfo(filePath).absoluteFilePath();
-    QString expected = QString("Task {Export consensus} finished with error: Subtask {Save document} is failed: No permission to write to \'%1\' file.").arg(expectedFilePath);
-    CHECK_SET_ERR(error == expected, QString("Unexpected error: %1").arg(error));
+    GTThread::waitForMainThread();
 
-    GTFile::setReadWrite(os, dirPath);
+    //    Expected state: notification is shown that folder is read-only.
+    QString error = l.getJoinedErrorString();
+    QString expected = QString("Task {Export consensus} finished with error: Folder is read-only: %1").arg(QFileInfo(filePath).absolutePath());
+    CHECK_SET_ERR(error == expected, QString("Unexpected error: '%1', expected: '%2'").arg(error).arg(expected));
 }
 
 GUI_TEST_CLASS_DEFINITION(export_consensus_test_0004) {

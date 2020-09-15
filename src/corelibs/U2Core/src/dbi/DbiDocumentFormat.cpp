@@ -73,13 +73,7 @@ Document *DbiDocumentFormat::loadDocument(IOAdapter *io, const U2DbiRef &dstDbiR
     U2ObjectDbi *odbi = handle.dbi->getObjectDbi();
     QList<U2DataId> objectIds = odbi->getObjects(U2ObjectDbi::ROOT_FOLDER, 0, U2DbiOptions::U2_DBI_NO_LIMIT, os);
     CHECK_OP(os, NULL);
-
-    QList<GObject *> objects;
-    U2EntityRef ref;
-    ref.dbiRef = srcDbiRef;
-
-    objects << prepareObjects(handle, objectIds);
-
+    QList<GObject *> objects = prepareObjects(handle, objectIds);
     if (fs.value(DEEP_COPY_OBJECT, false).toBool()) {
         QList<GObject *> clonedObjects = cloneObjects(objects, dstDbiRef, fs, os);
         qDeleteAll(objects);
@@ -106,35 +100,35 @@ QList<GObject *> DbiDocumentFormat::prepareObjects(DbiConnection &handle, const 
 
     bool hasMca = false;
 
-    foreach (const U2DataId &id, objectIds) {
+    for (const U2DataId &dataId : objectIds) {
         U2OpStatus2Log status;
-        ref.entityId = id;
+        ref.entityId = dataId;
 
         U2Object object;
-        handle.dbi->getObjectDbi()->getObject(object, id, status);
+        handle.dbi->getObjectDbi()->getObject(object, dataId, status);
         CHECK_OPERATION(!status.isCoR(), continue);
 
         if (object.visualName.isEmpty()) {
             object.visualName = "Unnamed object";
         }
 
-        GObject *gobject = GObjectUtils::createObject(ref.dbiRef, id, object.visualName);
-        CHECK_OPERATION(NULL != gobject, continue);
+        GObject *gobject = GObjectUtils::createObject(ref.dbiRef, dataId, object.visualName);
+        CHECK_OPERATION(gobject != nullptr, continue);
         hasMca |= (gobject->getGObjectType() == GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT);
 
-        match[id] = gobject;
+        match[dataId] = gobject;
         objects << gobject;
     }
 
     GRUNTIME_NAMED_CONDITION_COUNTER(tvar, cvar, hasMca, "The number of opening of the ugenedb files with Sanger data", "");
 
     if (handle.dbi->getObjectRelationsDbi() != NULL) {
-        foreach (const U2DataId &id, match.keys()) {
+        for (const U2DataId &dataId : match.keys()) {
             U2OpStatus2Log status;
-            GObject *srcObj = match.value(id, NULL);
+            GObject *srcObj = match.value(dataId, NULL);
             SAFE_POINT(srcObj != NULL, "Source object is NULL", QList<GObject *>());
             QList<GObjectRelation> gRelations;
-            QList<U2ObjectRelation> relations = handle.dbi->getObjectRelationsDbi()->getObjectRelations(id, status);
+            QList<U2ObjectRelation> relations = handle.dbi->getObjectRelationsDbi()->getObjectRelations(dataId, status);
             foreach (const U2ObjectRelation &r, relations) {
                 GObject *relatedObject = match[r.referencedObject];
                 if (relatedObject == NULL) {

@@ -44,7 +44,7 @@ MSATreeOptionsWidgetFactory::~MSATreeOptionsWidgetFactory() {
     delete viewSettings;
 }
 
-QWidget *MSATreeOptionsWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget *MSATreeOptionsWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
@@ -82,7 +82,7 @@ TreeOptionsWidgetFactory::~TreeOptionsWidgetFactory() {
     delete viewSettings;
 }
 
-QWidget *TreeOptionsWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget *TreeOptionsWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);
@@ -116,7 +116,7 @@ AddTreeWidgetFactory::AddTreeWidgetFactory() {
     objectViewOfWidget = ObjViewType_AlignmentEditor;
 }
 
-QWidget *AddTreeWidgetFactory::createWidget(GObjectView *objView, const QVariantMap &options) {
+QWidget *AddTreeWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
     SAFE_POINT(objView != nullptr,
                QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
                nullptr);

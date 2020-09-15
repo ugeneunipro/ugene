@@ -60,9 +60,4 @@ fi
 # Workaround for UGENE-4619
 export QT_QPA_PLATFORMTHEME=
 
-if [ -z $IS_KDE ]; then
-    "$dirname/$appname" "${params[@]}"
-else
-    "$dirname/$appname" "${params[@]}" -style cleanlooks
-fi
-
+"$dirname/$appname" "${params[@]}"

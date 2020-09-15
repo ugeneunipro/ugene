@@ -7,7 +7,6 @@ set(CMAKE_AUTORCC ON)
 find_package(Qt5 REQUIRED Core Gui Widgets Xml Network PrintSupport Svg)
 
 add_definitions(-DBUILDING_U2GUI_DLL)
-add_definitions(-DUGENE_WEB_KIT)
 
 include_directories(src)
 include_directories(../../include)

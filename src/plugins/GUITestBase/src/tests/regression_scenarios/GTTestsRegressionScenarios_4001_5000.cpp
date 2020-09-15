@@ -307,9 +307,10 @@ GUI_TEST_CLASS_DEFINITION(test_4013) {
 GUI_TEST_CLASS_DEFINITION(test_4022) {
     //1. Put very long sequence into clipboard.
     //2. Paste it into New document from text dialog and see the warning.
-    //Expected: UGENE does not crash.
+    //Expected: UGENE shows warning & does not crash.
 
-    QApplication::clipboard()->setText(QString("AAAACCCCGGGGTTTTAAAACCCCGGGGTTTTAAAACCCCGGGGTTTTAAAACCCCGGGGTTTT").repeated(344064));
+    // 10Mb (40 * 250_000)
+    QApplication::clipboard()->setText(QString("AAAAAAAAAACCCCCCCCCCGGGGGGGGGGTTTTTTTTTT").repeated(250000));
 
     class Scenario : public CustomScenario {
     public:
@@ -318,10 +319,10 @@ GUI_TEST_CLASS_DEFINITION(test_4022) {
             GTWidget::click(os, GTWidget::findExactWidget<QPlainTextEdit *>(os, "sequenceEdit", dialog));
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "amount of data"));
-            GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+            GTKeyboardUtils::paste(os);
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes, "amount of data"));
-            GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+            GTKeyboardUtils::paste(os);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
@@ -1542,65 +1543,67 @@ GUI_TEST_CLASS_DEFINITION(test_4148) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4150) {
+    QString fileName = GTUtils::genUniqueString("test_4150_murine.gb");
+    GTFile::copy(os, dataDir + "samples/Genbank/murine.gb", sandBoxDir + fileName);
+
     // Connect to the ugene-quad-ubuntu shared DB
     Document *dbDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     // Create a new folder "qwe" there
-    GTUtilsSharedDatabaseDocument::createFolder(os, dbDoc, "/", "test_4150");
-    GTFile::copy(os, dataDir + "samples/Genbank/murine.gb", sandBoxDir + "test_4150_murine.gb");
+    QString folderName = GTUtils::genUniqueString("test_4150");
+    GTUtilsSharedDatabaseDocument::createFolder(os, dbDoc, "/", folderName);
 
     // Open file "data/samples/Genbank/murine.gb"
-    GTFileDialog::openFile(os, sandBoxDir, "test_4150_murine.gb");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
+    GTFileDialog::openFile(os, sandBoxDir, fileName);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     // Close the sequence view
-    GTUtilsMdi::click(os, GTGlobals::Close);
+    GTUtilsMdi::closeActiveWindow(os);
 
     // Drag&drop the sequence document to "qwe" in the DB
-    QModelIndex from = GTUtilsProjectTreeView::findIndex(os, "test_4150_murine.gb");
-    QModelIndex to = GTUtilsProjectTreeView::findIndex(os, "test_4150");
+    QModelIndex from = GTUtilsProjectTreeView::findIndex(os, fileName);
+    QModelIndex to = GTUtilsProjectTreeView::findIndex(os, folderName);
 
-    class scenario_4150_proj_selector : public CustomScenario {
+    class Scenario4150ProjectSelector : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
-            GTGlobals::sleep(1000);
-            QWidget *dialog = QApplication::activeModalWidget();
-
-            QTreeView *treeView = dialog->findChild<QTreeView *>();
-            const QModelIndex documentIndex = GTUtilsProjectTreeView::findIndex(os, treeView, "test_4150_murine.gb");
+        Scenario4150ProjectSelector(const QString &fileName)
+            : fileName(fileName) {
+        }
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            QTreeView *treeView = GTWidget::findWidgetByType<QTreeView *>(os, dialog, "Failed to find tree widget");
+            QModelIndex documentIndex = GTUtilsProjectTreeView::findIndex(os, treeView, fileName);
             GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, treeView, documentIndex));
             GTMouseDriver::click();
-
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
+        QString fileName;
     };
 
-    class scenario_4150 : public CustomScenario {
+    class Scenario4150 : public CustomScenario {
     public:
-        virtual void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
-            GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, new scenario_4150_proj_selector));
+        Scenario4150(const QString &fileName)
+            : fileName(fileName) {
+        }
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, new Scenario4150ProjectSelector(fileName)));
             GTWidget::click(os, GTWidget::findWidget(os, "pbAddObjects", dialog));
-
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
+        QString fileName;
     };
 
-    GTUtilsDialog::waitForDialog(os, new ImportToDatabaseDialogFiller(os, new scenario_4150));
-
+    GTUtilsDialog::waitForDialog(os, new ImportToDatabaseDialogFiller(os, new Scenario4150(fileName)));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__add_menu"
                                                                         << "action_project__import_to_database"));
-    GTUtilsProjectTreeView::click(os, "test_4150", Qt::RightButton);
-    GTGlobals::sleep(5000);
-    to = GTUtilsProjectTreeView::findIndex(os, "test_4150");
+    GTUtilsProjectTreeView::click(os, folderName, Qt::RightButton);
+    to = GTUtilsProjectTreeView::findIndex(os, folderName);
 
-    // Do double click on the sequence object from the "murine.gb" file
+    // Double click on the sequence object from the "murine.gb" file
     QModelIndex seqFile = GTUtilsProjectTreeView::findIndex(os, "NC_001363", from);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, seqFile));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     // Expected state: sequence view has opened, it contains a single set of annotations
     QList<QTreeWidgetItem *> annotationsInFile = GTTreeWidget::getItems(GTUtilsAnnotationsTreeView::getTreeWidget(os)->invisibleRootItem());
@@ -1608,12 +1611,13 @@ GUI_TEST_CLASS_DEFINITION(test_4150) {
     CHECK_SET_ERR(num == 14, QString("unexpected annotations number: %1").arg(num));
 
     // Do double click on the sequence object from the "murine.gb" folder
-    GTUtilsMdi::click(os, GTGlobals::Close);
-    QModelIndex murineFol = GTUtilsProjectTreeView::findIndex(os, "test_4150_murine.gb", to);
+    GTUtilsMdi::closeActiveWindow(os);
+
+    QModelIndex murineFol = GTUtilsProjectTreeView::findIndex(os, fileName, to);
     QModelIndex seqFol = GTUtilsProjectTreeView::findIndex(os, "NC_001363", murineFol);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, seqFol));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     // Expected state: sequence view has opened, it contains a single set of annotations
     annotationsInFile = GTTreeWidget::getItems(GTUtilsAnnotationsTreeView::getTreeWidget(os)->invisibleRootItem());
@@ -2929,15 +2933,11 @@ GUI_TEST_CLASS_DEFINITION(test_4377) {
     // 3. Click the notification.
     // Expected: the report window is opened. There is the list of sequences with empty names.
 
-    GTUtilsNotifications::waitForNotification(os, false);
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/Gene.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    GTGlobals::sleep();
-    QTextEdit *textEdit = dynamic_cast<QTextEdit *>(GTWidget::findWidget(os, "reportTextEdit", GTUtilsMdi::activeWindow(os)));
-    CHECK_SET_ERR(textEdit->toPlainText().contains("The following sequences are empty:"), "Expected message is not found in the report text");
+    GTUtilsNotifications::checkNotificationReportText(os, "The following sequences are empty:");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4383) {

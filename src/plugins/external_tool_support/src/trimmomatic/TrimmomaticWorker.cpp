@@ -101,9 +101,11 @@ void TrimmomaticWorker::cleanup() {
 }
 
 Task *TrimmomaticWorker::createPrepareTask(U2OpStatus &os) const {
+    Q_UNUSED(os);
+
     QList<Task *> tasks;
     QSet<QString> takenNames;
-    foreach (const QString &trimmingStep, trimmingSteps) {
+    for (const QString &trimmingStep : trimmingSteps) {
         if (!trimmingStep.startsWith(IlluminaClipStepFactory::ID)) {
             continue;
         }

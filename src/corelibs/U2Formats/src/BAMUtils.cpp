@@ -171,7 +171,7 @@ void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const C
     QByteArray bamPath = bamUrl.getURLStringAnsi();
 
     const GUrl sourceFileUrl = (options.samToBam) ? samUrl : bamUrl;
-    const GUrl targetFileUrl = (options.samToBam) ? bamUrl : bamUrl;
+    const GUrl targetFileUrl = (options.samToBam) ? bamUrl : samUrl;
     QByteArray source_path = (options.samToBam) ? samPath : bamPath;
     QByteArray target_path = (options.samToBam) ? bamPath : samPath;
 

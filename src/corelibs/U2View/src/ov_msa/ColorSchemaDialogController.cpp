@@ -33,10 +33,10 @@
 #include <U2Core/L10n.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Theme.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/HelpButton.h>
-#include <U2Gui/MainWindow.h>
 #include <U2Gui/U2FileDialog.h>
 
 namespace U2 {
@@ -74,7 +74,6 @@ void ColorSchemaDialogController::paintEvent(QPaintEvent *) {
     if (rect_width == 0) {
         return;
     }
-    int rect_width_rest = alphabetColorsFrame->size().width() % columns;
 
     const int rows = (newColors.size() / columns) + ((newColors.size() % columns) ? 1 : 0);
     const int rect_height = static_cast<double>(alphabetColorsFrame->size().height()) / rows;
@@ -97,7 +96,7 @@ void ColorSchemaDialogController::paintEvent(QPaintEvent *) {
     int hLineY = 0;
     for (int i = 0; i < rows; ++i) {
         int rh = rect_height;
-        rect_width_rest = alphabetColorsFrame->size().width() % columns;
+        int rect_width_rest = alphabetColorsFrame->size().width() % columns;
         if (rect_height_rest > 0) {
             rh++;
             rect_height_rest--;
@@ -358,9 +357,16 @@ void ColorSchemaSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
     update();
 }
 
-AppSettingsGUIPageState *ColorSchemaSettingsPageWidget::getState(QString &) const {
+AppSettingsGUIPageState *ColorSchemaSettingsPageWidget::getState(QString &err) const {
+    QString colorsDir = colorsDirEdit->text();
+    U2OpStatusImpl os;
+    GUrlUtils::prepareDirLocation(colorsDir, os);
+    if (os.hasError()) {
+        err = os.getError();
+        return nullptr;
+    }
     ColorSchemaSettingsPageState *state = new ColorSchemaSettingsPageState();
-    state->colorsDir = colorsDirEdit->text();
+    state->colorsDir = colorsDir;
     state->customSchemas = customSchemas;
     state->removedCustomSchemas = removedCustomSchemas;
     return state;

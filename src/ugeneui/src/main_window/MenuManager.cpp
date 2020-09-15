@@ -32,6 +32,10 @@ MWMenuManagerImpl::MWMenuManagerImpl(QObject *p, QMenuBar *mb)
     : QObject(p) {
     menuBar = mb;
     menuBar->setObjectName(MWMENU);
+#ifdef Q_OS_MAC
+    // TODO: need to check for other OS and remove #ifdef
+    menuBar->setNativeMenuBar(true);
+#endif
     createTopLevelMenu(MWMENU_FILE, tr("&File"));
     createTopLevelMenu(MWMENU_ACTIONS, tr("&Actions"), MWMENU_FILE);
     createTopLevelMenu(MWMENU_SETTINGS, tr("&Settings"), MWMENU_ACTIONS);
