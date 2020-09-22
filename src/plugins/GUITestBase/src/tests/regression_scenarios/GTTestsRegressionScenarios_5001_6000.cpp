@@ -2042,6 +2042,29 @@ GUI_TEST_CLASS_DEFINITION(test_5562_3) {
     CHECK_SET_ERR(check, QString("files are not equal"));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5576) {
+    //1. Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+
+    //2. Build phy tree using options panel.
+    QDir().mkdir(QFileInfo(sandBoxDir + "test_5220/COI_1.nwk").dir().absolutePath());
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_5220/COI_1.nwk", 0, 0, true));
+    GTWidget::click(os, GTAction::button(os, "Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //3. Unload tree.
+    GTUtilsDocument::unloadDocument(os, "COI_1.nwk", false);
+    GTGlobals::sleep();
+
+    //4. Build another one tree using options panel.
+    //Expected state: Ugene is not crash
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_5220/COI_2.nwk", 0, 0, true));
+    GTWidget::click(os, GTAction::button(os, "Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5588) {
     //1. Open File "/samples/CLUSTALW/HIV-1.aln"
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/HIV-1.aln");

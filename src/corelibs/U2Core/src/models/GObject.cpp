@@ -172,16 +172,8 @@ void GObject::setRelationsInDb(QList<GObjectRelation> &list) const {
         const U2DataType refType = U2ObjectTypeUtils::toDataType(relation.ref.objType);
         const bool relatedObjectDbReferenceValid = relation.ref.entityRef.dbiRef.isValid();
 
-        if (U2Type::Unknown == refType || (relatedObjectDbReferenceValid && !(relation.ref.entityRef.dbiRef == entityRef.dbiRef))) {
+        if (U2Type::Unknown == refType || !relatedObjectDbReferenceValid) {
             continue;
-        }
-
-        if (!relatedObjectDbReferenceValid) {
-            QScopedPointer<U2DbiIterator<U2DataId>> idIterator(oDbi->getObjectsByVisualName(relation.ref.objName, refType, os));
-            if (os.isCoR() || !idIterator->hasNext()) {
-                continue;
-            }
-            relation.ref.entityRef = U2EntityRef(entityRef.dbiRef, idIterator->next());
         }
 
         U2ObjectRelation dbRelation;

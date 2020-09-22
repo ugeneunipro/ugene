@@ -201,6 +201,7 @@ void ProjectImpl::removeGObjectViewState(GObjectViewState *s) {
 void ProjectImpl::sl_onObjectAdded(GObject *obj) {
     connect(obj, SIGNAL(si_nameChanged(const QString &)), SLOT(sl_onObjectRenamed(const QString &)));
     connect(obj, SIGNAL(si_relationChanged(const QList<GObjectRelation> &)), SLOT(sl_onObjectRelationChanged(const QList<GObjectRelation> &)));
+    connect(obj->getDocument(), SIGNAL(si_loadedStateChanged()), SLOT(sl_objectLoadedStateChanged()));
     if (!obj->getGHints()->get(GObjectHint_InProjectId).isValid()) {
         obj->getGHints()->set(GObjectHint_InProjectId, genNextObjectId());
     }
@@ -226,6 +227,21 @@ void ProjectImpl::sl_onObjectRelationChanged(const QList<GObjectRelation> &previ
                 obj->relatedObjectRelationChanged();
             }
         }
+    }
+}
+
+void ProjectImpl::sl_objectLoadedStateChanged() {
+    Document *doc = qobject_cast<Document *>(sender());
+    CHECK(doc != nullptr, )
+    if (doc->isLoaded()) {
+        return;
+    }
+    foreach (GObject *obj, doc->getObjects()) {
+        UnloadedObject *uo = qobject_cast<UnloadedObject *>(obj);
+        CHECK(obj != nullptr, )
+        GObjectReference from(uo->getDocument()->getURLString(), uo->getGObjectName(), uo->getLoadedObjectType());
+        //invalidate entity ref
+        updateObjectRelations(from, from);
     }
 }
 

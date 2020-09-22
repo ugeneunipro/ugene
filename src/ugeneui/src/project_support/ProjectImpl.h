@@ -100,6 +100,7 @@ private slots:
     void sl_onObjectRemoved(GObject *o);
     void sl_onObjectRenamed(const QString &oldName);
     void sl_onObjectRelationChanged(const QList<GObjectRelation> &previousRelations);
+    void sl_objectLoadedStateChanged();
 
     void sl_onMdiWindowAdded(MWMDIWindow *w);
     void sl_onMdiWindowClosing(MWMDIWindow *w);
