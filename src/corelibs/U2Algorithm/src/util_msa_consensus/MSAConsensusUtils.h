@@ -40,7 +40,7 @@ public:
 
     static void updateConsensus(const MultipleAlignment &msa, const QVector<U2Region> &region, QByteArray &cons, MSAConsensusAlgorithm *algo);
 
-    static QString getConsensusPercentTip(const MultipleAlignment &msa, int pos, int minReportPercent, int maxReportChars);
+    static QString getConsensusPercentTip(const MultipleAlignment &msa, int pos, int minReportPercent, int maxReportChars, bool ignoreLeadingTrailingGaps = false);
 
     // mask4 must contain 4 descending percent values (>= used), example: 100, 75, 50, 33
     // countGaps tells if to include gaps into percent computation

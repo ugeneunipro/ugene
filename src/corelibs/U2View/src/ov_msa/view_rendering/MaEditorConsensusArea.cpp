@@ -27,7 +27,6 @@
 #include <QToolTip>
 
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
-#include <U2Algorithm/MSAConsensusUtils.h>
 #include <U2Algorithm/MsaColorScheme.h>
 
 #include <U2Core/AppContext.h>
@@ -150,8 +149,9 @@ QString MaEditorConsensusArea::createToolTip(QHelpEvent *he) const {
     QString result;
     if (0 <= column && column <= editor->getAlignmentLen()) {
         assert(editor->getMaObject());
-        const MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
-        result = MSAConsensusUtils::getConsensusPercentTip(ma, column, 0, 4);
+        //const MultipleAlignment ma = editor->getMaObject()->getMultipleAlignment();
+        //result = MSAConsensusUtils::getConsensusPercentTip(ma, column, 0, 4);
+        result = getConsensusPercentTip(column, 0, 4);
     }
     return result;
 }

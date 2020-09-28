@@ -328,8 +328,8 @@ char MultipleChromatogramAlignmentRowData::charAt(qint64 position) const {
     return MsaRowUtils::charAt(sequence.seq, gaps, position);
 }
 
-bool MultipleChromatogramAlignmentRowData::isGap(qint64 position) const {
-    return MsaRowUtils::isGap(sequence.length(), gaps, position);
+bool MultipleChromatogramAlignmentRowData::isGap(qint64 position, bool leadingOrTrailing) const {
+    return MsaRowUtils::isGap(sequence.length(), gaps, position, leadingOrTrailing);
 }
 
 int MultipleChromatogramAlignmentRowData::getUngappedPosition(int pos) const {

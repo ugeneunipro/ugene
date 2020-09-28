@@ -24,6 +24,7 @@
 #include <QToolBar>
 
 #include <U2Algorithm/MSAConsensusAlgorithmRegistry.h>
+#include <U2Algorithm/MSAConsensusUtils.h>
 
 #include <U2Core/AppContext.h>
 
@@ -53,6 +54,10 @@ McaEditorConsensusArea::McaEditorConsensusArea(McaEditorWgt *ui)
 void McaEditorConsensusArea::buildStaticToolbar(QToolBar *t) {
     t->addAction(mismatchController->getPrevMismatchAction());
     t->addAction(mismatchController->getNextMismatchAction());
+}
+
+QString McaEditorConsensusArea::getConsensusPercentTip(int pos, int minReportPercent, int maxReportChars) const {
+    return MSAConsensusUtils::getConsensusPercentTip(editor->getMaObject()->getMultipleAlignment(), pos, 0, 4, true);
 }
 
 void McaEditorConsensusArea::initRenderer() {

@@ -148,7 +148,7 @@ public:
     MultipleAlignmentRow getRowByRowId(qint64 rowId, U2OpStatus &os) const;
 
     char charAt(int rowNumber, qint64 position) const;
-    bool isGap(int rowNumber, qint64 pos) const;
+    bool isGap(int rowNumber, qint64 pos, bool leadingOrTrailing = false) const;
 
     /** Returns all rows' names in the alignment */
     QStringList getRowNames() const;

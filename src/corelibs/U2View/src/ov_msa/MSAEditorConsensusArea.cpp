@@ -21,6 +21,8 @@
 
 #include "MSAEditorConsensusArea.h"
 
+#include <U2Algorithm/MSAConsensusUtils.h>
+
 #include <U2Core/DNAAlphabet.h>
 
 #include <U2Gui/GUIUtils.h>
@@ -41,6 +43,10 @@ MSAEditorConsensusArea::MSAEditorConsensusArea(MsaEditorWgt *ui)
 
     connect(editor, SIGNAL(si_buildStaticMenu(GObjectView *, QMenu *)), SLOT(sl_buildStaticMenu(GObjectView *, QMenu *)));
     connect(editor, SIGNAL(si_buildPopupMenu(GObjectView *, QMenu *)), SLOT(sl_buildContextMenu(GObjectView *, QMenu *)));
+}
+
+QString MSAEditorConsensusArea::getConsensusPercentTip(int pos, int minReportPercent, int maxReportChars) const {
+    return MSAConsensusUtils::getConsensusPercentTip(editor->getMaObject()->getMultipleAlignment(), pos, 0, 4);
 }
 
 void MSAEditorConsensusArea::sl_buildStaticMenu(GObjectView * /*view*/, QMenu *menu) {

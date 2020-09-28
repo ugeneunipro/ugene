@@ -87,6 +87,8 @@ protected:
     void mouseMoveEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
 
+    virtual QString getConsensusPercentTip(int pos, int minReportPercent, int maxReportChars) const = 0;
+
 signals:
     void si_consensusAlgorithmChanged(const QString &algoId);
     void si_consensusThresholdChanged(int value);

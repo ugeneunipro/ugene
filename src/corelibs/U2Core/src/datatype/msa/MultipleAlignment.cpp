@@ -243,8 +243,8 @@ char MultipleAlignmentData::charAt(int rowNumber, qint64 position) const {
     return getRow(rowNumber)->charAt(position);
 }
 
-bool MultipleAlignmentData::isGap(int rowNumber, qint64 pos) const {
-    return getRow(rowNumber)->isGap(pos);
+bool MultipleAlignmentData::isGap(int rowNumber, qint64 pos, bool leadingOrTrailing) const {
+    return getRow(rowNumber)->isGap(pos, leadingOrTrailing);
 }
 
 QStringList MultipleAlignmentData::getRowNames() const {

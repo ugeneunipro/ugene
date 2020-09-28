@@ -172,7 +172,7 @@ public:
      * If the specified position is outside the row bounds, returns a gap.
      */
     char charAt(qint64 position) const;
-    bool isGap(qint64 pos) const;
+    bool isGap(qint64 pos, bool leadingOrTrailing = false) const;
 
     /**
      * Returns base count located leftward to the 'before' position in the alignment.

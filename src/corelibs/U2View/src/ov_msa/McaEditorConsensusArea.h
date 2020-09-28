@@ -49,6 +49,9 @@ public:
     }
     void buildStaticToolbar(QToolBar *tb);
 
+protected:
+    virtual QString getConsensusPercentTip(int pos, int minReportPercent, int maxReportChars) const;
+
 private:
     void initRenderer();
     bool highlightConsensusChar(int pos);

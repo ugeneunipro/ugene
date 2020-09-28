@@ -42,6 +42,9 @@ public:
         return BuiltInConsensusAlgorithms::DEFAULT_ALGO;
     }
 
+protected:
+    virtual QString getConsensusPercentTip(int pos, int minReportPercent, int maxReportChars) const;
+
 private slots:
     void sl_buildStaticMenu(GObjectView *view, QMenu *menu);
     void sl_buildContextMenu(GObjectView *view, QMenu *menu);

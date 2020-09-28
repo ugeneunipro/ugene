@@ -308,10 +308,13 @@ void MsaRowUtils::shiftGapModel(U2MsaRowGapModel &gapModel, int shiftSize) {
     }
 }
 
-bool MsaRowUtils::isGap(int dataLength, const U2MsaRowGapModel &gapModel, int position) {
+bool MsaRowUtils::isGap(int dataLength, const U2MsaRowGapModel &gapModel, int position, bool leadingOrTrailing) {
     int gapsLength = 0;
     foreach (const U2MsaGap &gap, gapModel) {
         if (gap.offset <= position && position < gap.offset + gap.gap) {
+            if (gap.offset != 0 && leadingOrTrailing) {
+                return false;
+            }
             return true;
         }
         if (position < gap.offset) {

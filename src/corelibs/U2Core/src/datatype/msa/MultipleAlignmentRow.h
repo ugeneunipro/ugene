@@ -119,7 +119,7 @@ public:
     virtual void setRowId(qint64 rowId) = 0;
 
     virtual char charAt(qint64 position) const = 0;
-    virtual bool isGap(qint64 position) const = 0;
+    virtual bool isGap(qint64 positionm, bool leadingOrTrailing = false) const = 0;
 
     virtual QByteArray toByteArray(U2OpStatus &os, qint64 length) const = 0;
 
