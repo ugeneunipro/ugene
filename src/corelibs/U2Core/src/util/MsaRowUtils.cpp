@@ -328,22 +328,20 @@ bool MsaRowUtils::isGap(int dataLength, const U2MsaRowGapModel &gapModel, int po
 }
 
 bool MsaRowUtils::isLeadingOrTrailingGap(int dataLength, const U2MsaRowGapModel &gapModel, int position) {
-    int gapsLength = 0;
-    foreach (const U2MsaGap &gap, gapModel) {
-        if (gap.offset == 0 && gap.offset <= position && position < gap.offset + gap.gap) {
-            return true;
-        }
+    if (gapModel.isEmpty()) {
+        return false;
+    }
+    if (gapModel[0].offset == 0 && position < gapModel[0].endPos()) {
+        return true;    // leading gap.
+    }
+    int totalGapsLen = 0;
+    for (const U2MsaGap &gap : gapModel) {
+        totalGapsLen += gap.gap;
         if (position < gap.offset) {
-            return false;
+            return false;    // somewhere in the middle.
         }
-        gapsLength += gap.gap;
     }
-
-    if (dataLength + gapsLength <= position) {
-        return true;
-    }
-
-    return false;
+    return position >= dataLength + totalGapsLen;    // trailing gap.
 }
 
 void MsaRowUtils::chopGapModel(U2MsaRowGapModel &gapModel, qint64 maxLength) {
