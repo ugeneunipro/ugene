@@ -77,7 +77,7 @@ QString MSAConsensusUtils::getConsensusPercentTip(const MultipleAlignment &ma, i
             freqs[idx].second = c;
         } else {
             // count gaps
-            if (ignoreLeadingTrailingGaps && ma->isGap(seq, pos)) {
+            if (ignoreLeadingTrailingGaps && ma->isLeadingOrTrailingGap(seq, pos)) {
                 nSeq--;
                 continue;
             } 
