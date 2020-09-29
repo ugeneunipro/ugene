@@ -307,8 +307,12 @@ char MultipleSequenceAlignmentRowData::charAt(qint64 position) const {
     return MsaRowUtils::charAt(sequence.seq, gaps, position);
 }
 
-bool MultipleSequenceAlignmentRowData::isGap(qint64 pos, bool leadingOrTrailing) const {
-    return MsaRowUtils::isGap(sequence.length(), gaps, pos, leadingOrTrailing);
+bool MultipleSequenceAlignmentRowData::isGap(qint64 pos) const {
+    return MsaRowUtils::isGap(sequence.length(), gaps, pos);
+}
+
+bool MultipleSequenceAlignmentRowData::isLeadingOrTrailingGap(qint64 pos) const {
+    return MsaRowUtils::isLeadingOrTrailingGap(sequence.length(), gaps, pos);
 }
 
 qint64 MultipleSequenceAlignmentRowData::getBaseCount(qint64 before) const {

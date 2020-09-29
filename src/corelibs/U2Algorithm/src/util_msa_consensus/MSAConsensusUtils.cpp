@@ -21,6 +21,8 @@
 
 #include "MSAConsensusUtils.h"
 
+#include <U2Core/U2SafePoints.h>
+
 #include <QPair>
 #include <QVector>
 
@@ -75,13 +77,14 @@ QString MSAConsensusUtils::getConsensusPercentTip(const MultipleAlignment &ma, i
             freqs[idx].second = c;
         } else {
             // count gaps
-            if (ignoreLeadingTrailingGaps && ma->isGap(seq, pos, true)) {
+            if (ignoreLeadingTrailingGaps && ma->isGap(seq, pos)) {
                 nSeq--;
                 continue;
             } 
             ++gaps;
         }
     }
+    CHECK(nSeq != 0, QString());
     qSort(freqs);
     double percentK = 100.0 / nSeq;
 

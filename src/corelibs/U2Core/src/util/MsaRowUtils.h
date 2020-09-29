@@ -59,7 +59,8 @@ public:
      */
     static void addOffsetToGapModel(U2MsaRowGapModel &gapModel, int offset);
     static void shiftGapModel(U2MsaRowGapModel &gapModel, int shiftSize);
-    static bool isGap(int dataLength, const U2MsaRowGapModel &gapModel, int position, bool leadingOrTrailing = false);
+    static bool isGap(int dataLength, const U2MsaRowGapModel &gapModel, int position);
+    static bool isLeadingOrTrailingGap(int dataLength, const U2MsaRowGapModel &gapModel, int position);
     static void chopGapModel(U2MsaRowGapModel &gapModel, qint64 maxLength);
     static void chopGapModel(U2MsaRowGapModel &gapModel, const U2Region &boundRegion);    // gaps will be shifted
     static QByteArray joinCharsAndGaps(const DNASequence &sequence, const U2MsaRowGapModel &gapModel, int rowLength, bool keepLeadingGaps, bool keepTrailingGaps);
