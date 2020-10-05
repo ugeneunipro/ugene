@@ -5939,6 +5939,21 @@ GUI_TEST_CLASS_DEFINITION(test_6847) {
     GTWidget::click(os, GTAction::button(os, editMode));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6875) {
+    //1. Open "_common_data/genbank/HQ007052.gb" sequence.
+    GTFileDialog::openFile(os, testDir + "_common_data/genbank/HQ007052.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //2. Select "Actions > Analyze > Find restriction sites", check "DraRI" enzyme in the appeared dialog, click "OK".
+    //Expected state: ugene not crashed
+    GTUtilsDialog::waitForDialog(os, new FindEnzymesDialogFiller(os, QStringList() << "DraRI"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
+                                                << "Analyze"
+                                                << "Find restriction sites...",
+                              GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2

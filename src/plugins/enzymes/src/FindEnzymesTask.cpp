@@ -179,8 +179,11 @@ QList<SharedAnnotationData> FindEnzymesTask::getResultsAsAnnotations(const QStri
                 SharedAnnotationData ad(new AnnotationData);
                 ad->type = U2FeatureTypes::RestrictionSite;
                 ad->name = r.enzyme->id;
-                ad->location->regions << U2Region(r.pos, seqlen - r.pos);
-                ad->location->regions << U2Region(0, r.enzyme->seq.size() - (seqlen - r.pos));
+                qint64 firstRegionLength = seqlen - r.pos;
+                if (firstRegionLength != 0) {
+                    ad->location->regions << U2Region(r.pos, firstRegionLength);
+                }
+                ad->location->regions << U2Region(0, r.enzyme->seq.size() - firstRegionLength);
                 ad->setStrand(r.strand);
                 if (!dbxrefStr.isEmpty()) {
                     ad->qualifiers.append(U2Qualifier("db_xref", dbxrefStr));
