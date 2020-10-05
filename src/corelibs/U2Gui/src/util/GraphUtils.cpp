@@ -58,13 +58,13 @@ void GraphUtils::drawRuler(QPainter &p, const QPoint &pos, qint64 len, qint64 st
 
     p.setFont(font);
     QFontMetrics fm = p.fontMetrics();
-    int cw = fm.width('0');
+    int cw = fm.size(Qt::TextSingleLine,"0").width();
     int ch = fm.height();
     QString st = FormatUtils::splitThousands(start);
     QString en = FormatUtils::splitThousands(end);
 
-    int stW = fm.width(st);
-    int enW = fm.width(en);
+    int stW = fm.size(Qt::TextSingleLine, st).width() + 1;
+    int enW = fm.size(Qt::TextSingleLine, en).width() + 1;
 
     qint64 span = qMax(start, end) - qMin(start, end);
     int chunk = c.predefinedChunk == 0 ? calculateChunk(start, end, len, p) : c.predefinedChunk;
@@ -283,110 +283,6 @@ int GraphUtils::findChunk(qint64 len, qint64 span, int N) {
     return chunk;
 }
 
-/*
-void GraphUtils::drawDensityPlot(QPainter& p, QRect& drawRect,
-    QRect& calcRect, quint32 n, quint32* x, quint32* y, quint32* len){
-    if (n == 0) {
-        return;
-    }
-    quint32 PIX_SIZE = 2;
-    quint32 squaresX = drawRect.width() / PIX_SIZE;
-    quint32 squaresY = drawRect.height() / PIX_SIZE;
-    if (squaresX == 0 || squaresY == 0) {
-        return;
-    }
-    quint32 dMapSize = squaresX* squaresY;
-    quint32* densityMap = new quint32[dMapSize];
-    memset(densityMap, 0, dMapSize * 4);
-    double xScale = calcRect.width() / (double) squaresX;
-    double yScale = calcRect.height() / (double) squaresY;
-    quint32 offsetX = calcRect.x();
-    quint32 offsetY = calcRect.y();
-    quint32 i;
-    for (i = 0; i < n; i++) {
-        quint32 x0 = x[i] - offsetX;
-        quint32 y0 = y[i] - offsetY;
-        quint32 l = len[i];
-
-        quint32 sx = quint32(x0 / xScale);
-        quint32 sy = quint32(y0 / yScale);
-        quint32 index = sx* squaresY + sy;
-        densityMap[index]++;
-        if (l > xScale || l > yScale) {
-            quint32 lx = l;
-            quint32 ly = l;
-            while (lx || ly) {
-                if (lx) {
-                    sx++;
-                    lx = lx > xScale ? quint32(lx - xScale) : 0;
-                }
-                if (ly) {
-                    sy++;
-                    ly = ly > yScale ? quint32(ly - yScale) : 0;
-                }
-            }
-            index = sx * squaresY + sy;
-            densityMap[index]++;
-        }
-    }
-
-    float maxDensity = 0;
-    for (i = 0; i < dMapSize; i++) {
-        if (densityMap[i] < maxDensity) {
-            continue;
-        }
-        maxDensity = densityMap[i];
-        if (maxDensity > 1000) {
-            maxDensity = 1000;
-            break;
-        }
-    }
-    double k = 1.7;
-    quint32 EXP = 0;
-    while (maxDensity >= 1) {
-        EXP++;
-        maxDensity = maxDensity / k;
-    }
-    double m = 1;
-    for (i = 0; i < EXP; i++) {
-        m = m * k;
-    }
-    quint32 MAX = (quint32) m;
-    quint32* colors = new quint32[MAX + 1];
-    for (i = 0; i < MAX; colors[i++] = 0xFFFFFF)
-        ;
-    quint32 color;
-    double exp = 1;
-    float dc = 255. / (EXP - 1);
-    for (i = 1; i <= EXP; i++) {
-        double endExp = exp* k;
-        quint32 c = 255 - (quint32) (i* dc);
-        color = (c << 16) + (c << 8) + c;
-        for (quint32 j = (quint32) exp; j <= (quint32) endExp; j++) {
-            colors[j] = color;
-        }
-        exp = endExp;
-    }
-    colors[MAX] = 0;
-
-    for (quint32 xi = 0; xi < squaresX; xi++) {
-        quint32 xo = xi* squaresY;
-        for (quint32 yj = 0; yj < squaresY; yj++) {
-            quint32 d = densityMap[xo + yj];
-            if (d == 0) {
-                continue;
-            }
-            d > MAX && (d = MAX);
-            color = colors[d];
-            p.fillRect(QRect(xi * PIX_SIZE, yj * PIX_SIZE, PIX_SIZE, PIX_SIZE),
-                QBrush(color));
-        }
-    }
-    delete colors;
-    delete[] densityMap;
-}
-*/
-
 static QVector<QColor> prepareColors() {
     QVector<QColor> colors(6 * 6 * 6);
     //00 = 0, 1 = 33, 2 = 66, 3 = 99, 4 = CC, 5 = FF
@@ -418,7 +314,7 @@ QColor GraphUtils::proposeLightColorByKey(const QString &key) {
 
 int GraphUtils::calculateChunk(qint64 start, qint64 end, qint64 len, const QPainter &p) {
     QFontMetrics fm = p.fontMetrics();
-    int cw = fm.width('0');
+    int cw = fm.size(Qt::TextSingleLine, "0").width();
     //the width of the bigger number
     int N = cw * qMax(QString::number(start).length(), QString::number(end).length()) * 4 / 3;
     qint64 span = qMax(start, end) - qMin(start, end);

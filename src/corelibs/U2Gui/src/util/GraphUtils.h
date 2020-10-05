@@ -100,8 +100,6 @@ public:
     static int calculateChunk(qint64 start, qint64 end, qint64 len, const QPainter &p);
     static int findChunk(qint64 len, qint64 span, int N);
 
-    //static void drawDensityPlot(QPainter& p, QRect& drawRect, QRect& calcRect, quint32 n, quint32* x, quint32 *y, quint32* len);
-
     static QColor proposeLightColorByKey(const QString &key);
 
     /*
