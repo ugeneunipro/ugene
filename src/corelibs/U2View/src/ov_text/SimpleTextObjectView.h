@@ -65,10 +65,6 @@ public:
 
     virtual Task *updateViewTask(const QString &stateName, const QVariantMap &stateData);
 
-    virtual bool checkAddToView(const MultiGSelection &multiSelection);
-
-    virtual Task *addToViewTask(const MultiGSelection &multiSelection);
-
     virtual const TextSelection &getSelectedText() {
         return selection;
     }

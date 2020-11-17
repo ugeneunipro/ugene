@@ -139,17 +139,6 @@ Task *SimpleTextObjectView::updateViewTask(const QString &stateName, const QVari
     return new UpdateSimpleTextObjectViewTask(this, stateName, state);
 }
 
-bool SimpleTextObjectView::checkAddToView(const MultiGSelection &s) {
-    Q_UNUSED(s);
-    return false;
-}
-
-Task *SimpleTextObjectView::addToViewTask(const MultiGSelection &s) {
-    Q_UNUSED(s);
-    assert(0);
-    return NULL;
-}
-
 #define URL_KEY "url"
 #define OBJ_KEY "obj"
 #define CURS_POS_KEY "cursor_pos"

@@ -43,8 +43,8 @@ class GObjectViewObjectHandler;
 
 class U2GUI_EXPORT GObjectViewFactoryRegistry : public QObject {
 public:
-    GObjectViewFactoryRegistry(QObject *p = NULL)
-        : QObject(p) {
+    GObjectViewFactoryRegistry(QObject *parent = nullptr)
+        : QObject(parent) {
     }
 
     void registerGObjectViewFactory(GObjectViewFactory *f);
@@ -65,8 +65,8 @@ class GObjectReference;
 class U2GUI_EXPORT GObjectViewState : public QObject {
     Q_OBJECT
 public:
-    GObjectViewState(GObjectViewFactoryId _factoryId, const QString &_viewName, const QString &_stateName, const QVariantMap &_stateData, QObject *p = NULL)
-        : QObject(p), factoryId(_factoryId), viewName(_viewName), stateName(_stateName), stateData(_stateData) {
+    GObjectViewState(GObjectViewFactoryId factoryId, const QString &viewName, const QString &stateName, const QVariantMap &stateData, QObject *parent = nullptr)
+        : QObject(parent), factoryId(factoryId), viewName(viewName), stateName(stateName), stateData(stateData) {
     }
 
     GObjectViewFactoryId getViewFactoryId() const {
@@ -107,8 +107,8 @@ class U2GUI_EXPORT GObjectViewFactory : public QObject {
 public:
     static const GObjectViewFactoryId SIMPLE_TEXT_FACTORY;
 
-    GObjectViewFactory(GObjectViewFactoryId _id, const QString &_name, QObject *p = NULL)
-        : QObject(p), id(_id), name(_name) {
+    GObjectViewFactory(GObjectViewFactoryId id, const QString &name, QObject *parent = nullptr)
+        : QObject(parent), id(id), name(name) {
     }
 
     GObjectViewFactoryId getId() const {
@@ -125,20 +125,11 @@ public:
         return false;
     }
 
-    virtual bool isStateInSelection(const MultiGSelection &multiSelection, const QVariantMap &stateData) {
-        Q_UNUSED(multiSelection);
-        Q_UNUSED(stateData);
-        return false;
-    }
+    virtual bool isStateInSelection(const MultiGSelection &multiSelection, const QVariantMap &stateData);
 
     virtual Task *createViewTask(const MultiGSelection &multiSelection, bool single = false) = 0;
 
-    virtual Task *createViewTask(const QString &viewName, const QVariantMap &stateData) {
-        Q_UNUSED(viewName);
-        Q_UNUSED(stateData);
-        assert(0);
-        return NULL;
-    }
+    virtual Task *createViewTask(const QString &viewName, const QVariantMap &stateData);
 
 protected:
     GObjectViewFactoryId id;
@@ -151,7 +142,7 @@ class OptionsPanel;
 class U2GUI_EXPORT GObjectView : public QObject {
     Q_OBJECT
 public:
-    GObjectView(GObjectViewFactoryId factoryId, const QString &viewName, QObject *p = NULL);
+    GObjectView(GObjectViewFactoryId factoryId, const QString &viewName, QObject *p = nullptr);
 
     GObjectViewFactoryId getFactoryId() const {
         return factoryId;
@@ -182,23 +173,7 @@ public:
         return QVariantMap();
     }
 
-    virtual Task *updateViewTask(const QString &stateName, const QVariantMap &stateData) {
-        assert(0);
-        Q_UNUSED(stateName);
-        Q_UNUSED(stateData);
-        return NULL;
-    }
-
-    virtual bool checkAddToView(const MultiGSelection &multiSelection) {
-        Q_UNUSED(multiSelection);
-        return false;
-    }
-
-    virtual Task *addToViewTask(const MultiGSelection &multiSelection) {
-        assert(0);
-        Q_UNUSED(multiSelection);
-        return NULL;
-    }
+    virtual Task *updateViewTask(const QString &stateName, const QVariantMap &stateData) = 0;
 
     void setClosingInterface(GObjectViewCloseInterface *i);
 
@@ -219,6 +194,7 @@ public:
     virtual void addObjectHandler(GObjectViewObjectHandler *oh) {
         objectHandlers.append(oh);
     }
+
     virtual void removeObjectHandler(GObjectViewObjectHandler *oh) {
         objectHandlers.removeOne(oh);
     }
@@ -230,11 +206,11 @@ public:
 protected:
     /** if 'true' is returned -> view will be closed */
     virtual bool onObjectRemoved(GObject *o);
+
     virtual void onObjectAdded(GObject *o);
-    virtual void onObjectRenamed(GObject *obj, const QString &oldName) {
-        Q_UNUSED(obj);
-        Q_UNUSED(oldName);
-    }
+
+    /** Handles object rename event. Does nothing by default. */
+    virtual void onObjectRenamed(GObject *obj, const QString &oldName);
 
 protected:
     virtual void _removeObject(GObject *o);
@@ -290,10 +266,6 @@ public:
         return view->getFactoryId();
     }
 
-    bool isObjectView() const {
-        return true;
-    }
-
     bool isPersistent() const {
         return persistent;
     }
@@ -318,12 +290,10 @@ public:
 
 protected:
     virtual bool onCloseEvent();
+
 signals:
     void si_persistentStateChanged(GObjectViewWindow *thiz);
     void si_windowClosed(GObjectViewWindow *viewWindow);
-
-private:
-    void updateDocumentConnections(Document *o, bool added);
 
 protected:
     GObjectView *view;
@@ -362,7 +332,7 @@ public:
     static QList<GObjectViewState *> selectStates(GObjectViewFactory *f, const MultiGSelection &ms, const QList<GObjectViewState *> &states);
 
     // Returns active object view window.
-    // Returns NULL if active window is not object view window
+    // Returns nullptr if active window is not object view window
     static GObjectViewWindow *getActiveObjectViewWindow();
 };
 
@@ -413,7 +383,6 @@ public:
 
     QList<GObjectViewAction *> getViewActions(GObjectView *view) const;
 
-    // GObjectViewObjectHandler
     virtual void onObjectRemoved(GObjectView *v, GObject *obj);
 
 protected:
@@ -430,17 +399,11 @@ protected slots:
     virtual void sl_buildStaticMenu(GObjectView *v, QMenu *m);
 
 protected:
-    virtual void buildMenu(GObjectView *v, QMenu *m) {
-        Q_UNUSED(v);
-        Q_UNUSED(m);
-    }
+    virtual void buildMenu(GObjectView *v, QMenu *m);
     virtual void disconnectView(GObjectView *v);
 
     QMap<GObjectView *, QList<QObject *>> viewResources;
     GObjectViewFactoryId id;
-
-private:
-    bool initialzed;
 };
 
 }    // namespace U2
