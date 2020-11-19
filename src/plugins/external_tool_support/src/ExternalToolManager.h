@@ -80,8 +80,9 @@ private:
     void innerStart();
     void checkStartupTasksState();
     void markStartupCheckAsFinished();
-    QString addTool(ExternalTool *tool);
+    void addTool(ExternalTool *tool);
     bool dependenciesAreOk(const QString &toolId);
+    QString addToolToListsAndReturnToolPath(const ExternalTool &tool);
     void validateTools(const StrStrMap &toolPaths = StrStrMap(), ExternalToolValidationListener *listener = nullptr);
     void loadCustomTools();
     void searchTools();

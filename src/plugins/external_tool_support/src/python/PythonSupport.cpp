@@ -34,6 +34,12 @@
 
 namespace U2 {
 
+namespace {
+
+const QString PYTHON_VERSION_REGEXP = "(\\d+.\\d+.\\d+)";
+
+} // namespace
+
 const QString PythonSupport::ET_PYTHON_ID = "USUPP_PYTHON2";
 const QString PythonModuleDjangoSupport::ET_PYTHON_DJANGO_ID = "DJANGO";
 const QString PythonModuleNumpySupport::ET_PYTHON_NUMPY_ID = "NUMPY";
@@ -53,11 +59,11 @@ PythonSupport::PythonSupport()
     executableFileName = "python2.7";
 #    endif
 #endif
-    validMessage = "Python ";
+    validMessage = "Python " + PYTHON_VERSION_REGEXP;
     validationArguments << "--version";
 
     description += tr("Python scripts interpreter");
-    versionRegExp = QRegExp("(\\d+.\\d+.\\d+)");
+    versionRegExp = QRegExp(PYTHON_VERSION_REGEXP);
     toolKitName = "python";
 
     muted = true;
