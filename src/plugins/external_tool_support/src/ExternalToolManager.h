@@ -82,7 +82,10 @@ private:
     void markStartupCheckAsFinished();
     void addTool(ExternalTool *tool);
     bool dependenciesAreOk(const QString &toolId);
-    QString addToolToListsAndReturnToolPath(const ExternalTool &tool);
+    void addToolToListsIfNecessary(const ExternalTool &tool);  // add toolId to validateList if tool is not valid and
+                                                               // its dependencies are ok, and to searchList if needed
+    QString findToolPath(const ExternalTool &tool); // return toolPath (or masterToolPath, if tool is module) if tool is
+                                                // not valid and its dependencies are ok. Otherwise return empty string
     void validateTools(const StrStrMap &toolPaths = StrStrMap(), ExternalToolValidationListener *listener = nullptr);
     void loadCustomTools();
     void searchTools();
