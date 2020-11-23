@@ -2185,6 +2185,10 @@ void AnnotationsTreeView::editItem(AVItem *item) {
         editGroupItem(gi);
     } else if (item->type == AVItemType_Annotation) {
         AVAnnotationItem *ai = static_cast<AVAnnotationItem *>(item);
+        if (ai->annotation->getData()->type == U2FeatureType::Comment) {
+            QMessageBox::warning(this, L10N::warningTitle(), tr("Editing of \"comment\" annotation is not allowed!"));
+            return;
+        }
         editAnnotationItem(ai);
     } else {
         SAFE_POINT(item->type == AVItemType_Qualifier, "Unexpected annotation view item's qualifier!", );
