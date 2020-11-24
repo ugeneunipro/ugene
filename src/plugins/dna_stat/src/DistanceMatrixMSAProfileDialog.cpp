@@ -152,6 +152,11 @@ void DistanceMatrixMSAProfileDialog::sl_formatChanged(const QString &newFormatId
 DistanceMatrixMSAProfileTask::DistanceMatrixMSAProfileTask(const DistanceMatrixMSAProfileTaskSettings &_s)
     : Task(tr("Generate distance matrix"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled), s(_s) {
     setVerboseLogMode(true);
+
+    quint64 n = s.ma->getNumRows();
+    TaskResourceUsage resourseUsage(RESOURCE_MEMORY, (n * n * sizeof(int) >> 20) + 1, true);
+    resourseUsage.errorMessage = tr("There is not enough memory to generate distance matrix.");
+    addTaskResource(resourseUsage);
 }
 
 void DistanceMatrixMSAProfileTask::prepare() {
