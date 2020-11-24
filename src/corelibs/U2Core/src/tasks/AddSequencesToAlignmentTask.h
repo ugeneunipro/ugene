@@ -49,11 +49,8 @@ public:
                                       int insertRowIndex = -1,
                                       bool recheckNewSequenceAlphabetOnMismatch = false);
 
-    /**
-     * Runs addSequencesToAlignment to process sequence list.
-     * Override when needed to postpone sequenceList processing.
-     * */
-    void prepare() override;
+    /** Runs addSequencesToAlignment to process sequence list. */
+    void run() override;
 
     const MaModificationInfo &getMaModificationInfo() const {
         return mi;
@@ -61,24 +58,15 @@ public:
 
 protected:
     /**
-     * Check all sequences from the sequenceList and prepares the resultSequenceList: list of sequence can be safely added into the alignment.
-     * Updates 'msaAlphabet' field to fit sequences from the old and new aligments.
+     * Check all sequences from the sequenceList and returns a list of sequences can be safely added into the alignment.
+     * Updates 'msaAlphabet' field to fit sequences from the old and new alignments.
      * Rolls result sequence names to avoid name duplicate.
      * Does not change existing sequences in the alignment.
      */
-    void prepareResultSequenceList();
-
-    /**
-     * Adds sequences from sequenceList into the alignment object. Updates task state.
-     * This method must be called from the main thread because it modifies SQLITE DBI.
-     */
-    void addSequencesToAlignment();
+    QList<DNASequence> prepareResultSequenceList();
 
     /** Original list of sequences to add into the alignment. */
     QList<DNASequence> sequenceList;
-
-    /** List of sequences that can be safely added into the alignment. */
-    QList<DNASequence> resultSequenceList;
 
     /** Insert location for the sequence list. */
     int insertRowIndex;
@@ -101,8 +89,11 @@ private:
 
     static const int maxErrorListSize;
 
-    /** Returns the max length of the rows including trailing gaps */
-    qint64 createMsaRowsFromResultSequenceList(QList<U2MsaRow> &resultRows);
+    /**
+     * Converts input sequence list into msa-row list.
+     * Returns the max length of the rows including trailing gaps.
+     */
+    qint64 createMsaRowsFromResultSequenceList(const QList<DNASequence> &inputSequenceList, QList<U2MsaRow> &resultRowList);
 
     /** Adds rows into the result alignment. */
     void addRowsToAlignment(U2MsaDbi *msaDbi, QList<U2MsaRow> &rows, qint64 maxLength);

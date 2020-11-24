@@ -40,7 +40,7 @@ AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MultipleSeq
                                                                      const QList<DNASequence> &sequenceList,
                                                                      int insertRowIndex,
                                                                      bool recheckNewSequenceAlphabetOnMismatch)
-    : Task("Add sequences to alignment task", TaskFlags(TaskFlags_NR_FOSE_COSC)),
+    : Task("Add sequences to alignment task", TaskFlags(TaskFlags_FOSE_COSC) | TaskFlag_RunInMainThread),
       sequenceList(sequenceList),
       insertRowIndex(insertRowIndex),
       maObj(obj),
@@ -52,11 +52,7 @@ AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MultipleSeq
     mi.rowListChanged = false;
 }
 
-void AddSequenceObjectsToAlignmentTask::prepare() {
-    addSequencesToAlignment();
-}
-
-void AddSequenceObjectsToAlignmentTask::addSequencesToAlignment() {
+void AddSequenceObjectsToAlignmentTask::run() {
     if (maObj.isNull()) {
         stateInfo.setError(tr("Object is empty."));
         return;
@@ -69,7 +65,7 @@ void AddSequenceObjectsToAlignmentTask::addSequencesToAlignment() {
 
     {    // Start of MA-object state lock.
         StateLocker stateLocker(maObj, new StateLock("add_sequences_to_alignment"));
-        prepareResultSequenceList();
+        QList<DNASequence> resultSequenceList = prepareResultSequenceList();
 
         if (resultSequenceList.isEmpty()) {
             return;
@@ -80,7 +76,7 @@ void AddSequenceObjectsToAlignmentTask::addSequencesToAlignment() {
             U2MsaDbi *msaDbi = modStep.getDbi()->getMsaDbi();
 
             QList<U2MsaRow> rows;
-            qint64 maxLength = createMsaRowsFromResultSequenceList(rows);
+            qint64 maxLength = createMsaRowsFromResultSequenceList(resultSequenceList, rows);
             if (isCanceled() || hasError() || rows.isEmpty() || maxLength == 0) {
                 return;
             }
@@ -99,33 +95,34 @@ void AddSequenceObjectsToAlignmentTask::addSequencesToAlignment() {
     }
 }
 
-void AddSequenceObjectsToAlignmentTask::prepareResultSequenceList() {
-    resultSequenceList.clear();
-    for (const DNASequence &dnaObj : sequenceList) {
-        const DNAAlphabet *newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(dnaObj.alphabet, msaAlphabet);
+QList<DNASequence> AddSequenceObjectsToAlignmentTask::prepareResultSequenceList() {
+    QList<DNASequence> resultSequenceList;
+    for (const DNASequence &sequence : sequenceList) {
+        const DNAAlphabet *newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(sequence.alphabet, msaAlphabet);
         if (newAlphabet == nullptr) {
-            errorList << dnaObj.getName();
+            errorList << sequence.getName();
             continue;
         }
         if (!msaAlphabet->isRaw() && msaAlphabet != newAlphabet && recheckNewSequenceAlphabetOnMismatch) {
-            QList<const DNAAlphabet *> allValidAlphabets = U2AlphabetUtils::findAllAlphabets(dnaObj.constSequence());
+            QList<const DNAAlphabet *> allValidAlphabets = U2AlphabetUtils::findAllAlphabets(sequence.constSequence());
             if (allValidAlphabets.contains(msaAlphabet)) {
                 newAlphabet = msaAlphabet;
             }
         }
         msaAlphabet = newAlphabet;
-        resultSequenceList.append(dnaObj);
+        resultSequenceList.append(sequence);
     }
+    return sequenceList;
 }
 
-qint64 AddSequenceObjectsToAlignmentTask::createMsaRowsFromResultSequenceList(QList<U2MsaRow> &resultRows) {
+qint64 AddSequenceObjectsToAlignmentTask::createMsaRowsFromResultSequenceList(const QList<DNASequence> &inputSequenceList, QList<U2MsaRow> &resultRows) {
     U2EntityRef entityRef = maObj->getEntityRef();
     QSet<QString> usedRowNames;
     for (const MultipleAlignmentRow &row : maObj->getRows()) {
         usedRowNames.insert(row->getName());
     }
     qint64 maxLength = 0;
-    for (const DNASequence &sequenceObject : resultSequenceList) {
+    for (const DNASequence &sequenceObject : inputSequenceList) {
         CHECK(!isCanceled() && !hasError(), 0);
         QString rowName = MSAUtils::rollMsaRowName(sequenceObject.getName(), usedRowNames);
         U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, entityRef.dbiRef, stateInfo);
@@ -219,7 +216,6 @@ QList<Task *> AddSequencesFromFilesToAlignmentTask::onSubTaskFinished(Task *subT
         sequence.alphabet = sequenceObject->getAlphabet();
         sequenceList.append(sequence);
     }
-    addSequencesToAlignment();
     return emptySubTasks;
 }
 
@@ -239,7 +235,6 @@ void AddSequencesFromDocumentsToAlignmentTask::prepare() {
         stateInfo.setError("No valid sequences found to add to the alignment.");
         return;
     }
-    addSequencesToAlignment();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
