@@ -29,36 +29,34 @@
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/MSAUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
-#include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2MsaDbi.h>
+#include <U2Core/U2SequenceUtils.h>
 
 namespace U2 {
 
 const int AddSequenceObjectsToAlignmentTask::maxErrorListSize = 5;
 
 AddSequenceObjectsToAlignmentTask::AddSequenceObjectsToAlignmentTask(MultipleSequenceAlignmentObject *obj,
-                                                                     const QList<DNASequence> &seqList,
+                                                                     const QList<DNASequence> &sequenceList,
                                                                      int insertRowIndex,
                                                                      bool recheckNewSequenceAlphabetOnMismatch)
-    // the task must be run in main thread because it updates DBI.
-    : Task("Add sequences to alignment task", TaskFlags(TaskFlags_FOSE_COSC) | TaskFlag_RunInMainThread),
-      seqList(seqList),
+    : Task("Add sequences to alignment task", TaskFlags(TaskFlags_NR_FOSE_COSC)),
+      sequenceList(sequenceList),
       insertRowIndex(insertRowIndex),
       maObj(obj),
-      stateLock(NULL),
       msaAlphabet(maObj->getAlphabet()),
-      dbi(NULL),
-      modStep(NULL),
       recheckNewSequenceAlphabetOnMismatch(recheckNewSequenceAlphabetOnMismatch) {
-    entityRef = maObj->getEntityRef();
-
-    // reset modification inf.
+    // Reset modification info.
     mi.alignmentLengthChanged = false;
     mi.rowContentChanged = false;
     mi.rowListChanged = false;
 }
 
 void AddSequenceObjectsToAlignmentTask::prepare() {
+    addSequencesToAlignment();
+}
+
+void AddSequenceObjectsToAlignmentTask::addSequencesToAlignment() {
     if (maObj.isNull()) {
         stateInfo.setError(tr("Object is empty."));
         return;
@@ -69,34 +67,41 @@ void AddSequenceObjectsToAlignmentTask::prepare() {
         return;
     }
 
-    stateLock = new StateLock("Adding_files_to_alignment");
-    maObj->lockState(stateLock);
-    processObjectsAndSetResultingAlphabet();
+    {    // Start of MA-object state lock.
+        StateLocker stateLocker(maObj, new StateLock("add_sequences_to_alignment"));
+        prepareResultSequenceList();
 
-    // Create user mod step
-    modStep = new U2UseCommonUserModStep(entityRef, stateInfo);
+        if (resultSequenceList.isEmpty()) {
+            return;
+        }
+
+        {    // Start of U2UseCommonUserModStep scope.
+            U2UseCommonUserModStep modStep(maObj->getEntityRef(), stateInfo);
+            U2MsaDbi *msaDbi = modStep.getDbi()->getMsaDbi();
+
+            QList<U2MsaRow> rows;
+            qint64 maxLength = createMsaRowsFromResultSequenceList(rows);
+            if (isCanceled() || hasError() || rows.isEmpty() || maxLength == 0) {
+                return;
+            }
+            CHECK_OP(stateInfo, );
+            addRowsToAlignment(msaDbi, rows, maxLength);
+            CHECK_OP(stateInfo, );
+            updateAlphabet(msaDbi);
+
+        }    // End of U2UseCommonUserModStep scope.
+    }    // End of MA-object state lock.
     CHECK_OP(stateInfo, );
-    dbi = modStep->getDbi()->getMsaDbi();
+
+    maObj->updateCachedMultipleAlignment(mi);
+    if (!errorList.isEmpty()) {
+        setupError();
+    }
 }
 
-void AddSequenceObjectsToAlignmentTask::run() {
-    if (seqList.isEmpty()) {
-        return;
-    }
-    QList<U2MsaRow> rows;
-    qint64 maxLength = createRows(rows);
-    if (isCanceled() || hasError() || rows.isEmpty()) {
-        return;
-    }
-    CHECK_OP(stateInfo, );
-    addRows(rows, maxLength);
-    CHECK_OP(stateInfo, );
-    updateAlphabet();
-}
-
-void AddSequenceObjectsToAlignmentTask::processObjectsAndSetResultingAlphabet() {
-    QList<DNASequence> newSeqList;
-    foreach (const DNASequence &dnaObj, seqList) {
+void AddSequenceObjectsToAlignmentTask::prepareResultSequenceList() {
+    resultSequenceList.clear();
+    for (const DNASequence &dnaObj : sequenceList) {
         const DNAAlphabet *newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(dnaObj.alphabet, msaAlphabet);
         if (newAlphabet == nullptr) {
             errorList << dnaObj.getName();
@@ -109,66 +114,55 @@ void AddSequenceObjectsToAlignmentTask::processObjectsAndSetResultingAlphabet() 
             }
         }
         msaAlphabet = newAlphabet;
-        newSeqList.append(dnaObj);
+        resultSequenceList.append(dnaObj);
     }
-    seqList = newSeqList;
 }
 
-Task::ReportResult AddSequenceObjectsToAlignmentTask::report() {
-    delete modStep;
-    releaseLock();
-
-    if (isCanceled() || hasError() || seqList.size() == 0) {
-        return ReportResult_Finished;
-    }
-
-    // Update object
-    maObj->updateCachedMultipleAlignment(mi);
-
-    if (!errorList.isEmpty()) {
-        setupError();
-    }
-    return ReportResult_Finished;
-}
-
-qint64 AddSequenceObjectsToAlignmentTask::createRows(QList<U2MsaRow> &rows) {
-    qint64 maxLength = 0;
+qint64 AddSequenceObjectsToAlignmentTask::createMsaRowsFromResultSequenceList(QList<U2MsaRow> &resultRows) {
     U2EntityRef entityRef = maObj->getEntityRef();
-    foreach (const DNASequence &seqObj, seqList) {
-        if (isCanceled() || hasError()) {
-            return 0;
-        }
-        U2MsaRow row = MSAUtils::copyRowFromSequence(seqObj, entityRef.dbiRef, stateInfo);
-        if (0 < row.gend) {
-            rows << row;
-            maxLength = qMax(maxLength, (qint64)seqObj.length());
-        }
+    QSet<QString> usedRowNames;
+    for (const MultipleAlignmentRow &row : maObj->getRows()) {
+        usedRowNames.insert(row->getName());
+    }
+    qint64 maxLength = 0;
+    for (const DNASequence &sequenceObject : resultSequenceList) {
+        CHECK(!isCanceled() && !hasError(), 0);
+        QString rowName = MSAUtils::rollMsaRowName(sequenceObject.getName(), usedRowNames);
+        U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, entityRef.dbiRef, stateInfo);
         CHECK_OP(stateInfo, 0);
+        if (rowName != sequenceObject.getName()) {
+            U2EntityRef rowSequenceRef(entityRef.dbiRef, row.sequenceId);
+            U2SequenceUtils::updateSequenceName(rowSequenceRef, rowName, stateInfo);
+            CHECK_OP(stateInfo, 0);
+        }
+        if (row.gend > 0) {
+            resultRows << row;
+            maxLength = qMax(maxLength, (qint64)sequenceObject.length());
+            usedRowNames.insert(rowName);
+        }
     }
     return maxLength;
 }
 
-void AddSequenceObjectsToAlignmentTask::addRows(QList<U2MsaRow> &rows, qint64 maxLength) {
-    if (rows.isEmpty()) {
-        return;
-    }
-
-    dbi->addRows(entityRef.entityId, rows, insertRowIndex, stateInfo);
+void AddSequenceObjectsToAlignmentTask::addRowsToAlignment(U2MsaDbi *msaDbi, QList<U2MsaRow> &rows, qint64 maxLength) {
+    CHECK(!rows.isEmpty(), );
+    const U2EntityRef &entityRef = maObj->getEntityRef();
+    msaDbi->addRows(entityRef.entityId, rows, insertRowIndex, stateInfo);
     CHECK_OP(stateInfo, );
 
     mi.rowListChanged = true;
     mi.alignmentLengthChanged = true;
 
     if (maxLength > maObj->getLength()) {
-        dbi->updateMsaLength(entityRef.entityId, maxLength, stateInfo);
-        CHECK_OP(stateInfo, );
+        msaDbi->updateMsaLength(entityRef.entityId, maxLength, stateInfo);
     }
 }
 
-void AddSequenceObjectsToAlignmentTask::updateAlphabet() {
+void AddSequenceObjectsToAlignmentTask::updateAlphabet(U2MsaDbi *msaDbi) {
     if (maObj->getAlphabet() != msaAlphabet) {
-        SAFE_POINT(NULL != msaAlphabet, "NULL result alphabet", );
-        dbi->updateMsaAlphabet(entityRef.entityId, msaAlphabet->getId(), stateInfo);
+        SAFE_POINT(msaAlphabet != nullptr, "NULL result alphabet", );
+        const U2EntityRef &entityRef = maObj->getEntityRef();
+        msaDbi->updateMsaAlphabet(entityRef.entityId, msaAlphabet->getId(), stateInfo);
         CHECK_OP(stateInfo, );
         mi.alphabetChanged = true;
     }
@@ -186,24 +180,14 @@ void AddSequenceObjectsToAlignmentTask::setupError() {
     setError(error);
 }
 
-void AddSequenceObjectsToAlignmentTask::releaseLock() {
-    if (stateLock != NULL) {
-        if (maObj != NULL) {
-            maObj->unlockState(stateLock);
-        }
-        delete stateLock;
-        stateLock = NULL;
-    }
-}
-
 AddSequencesFromFilesToAlignmentTask::AddSequencesFromFilesToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QStringList &urls, int insertRowIndex)
-    : AddSequenceObjectsToAlignmentTask(obj, QList<DNASequence>(), insertRowIndex, false), urlList(urls), loadTask(NULL) {
+    : AddSequenceObjectsToAlignmentTask(obj, QList<DNASequence>(), insertRowIndex, false), urlList(urls), loadTask(nullptr) {
     connect(maObj, SIGNAL(si_invalidateAlignmentObject()), SLOT(sl_onCancel()));
 }
 
 void AddSequencesFromFilesToAlignmentTask::prepare() {
     AddSequenceObjectsToAlignmentTask::prepare();
-    foreach (const QString &fileWithSequencesUrl, urlList) {
+    for (const QString &fileWithSequencesUrl : urlList) {
         QList<FormatDetectionResult> detectedFormats = DocumentUtils::detectFormat(fileWithSequencesUrl);
         if (!detectedFormats.isEmpty()) {
             IOAdapterFactory *factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
@@ -217,30 +201,30 @@ void AddSequencesFromFilesToAlignmentTask::prepare() {
 }
 
 QList<Task *> AddSequencesFromFilesToAlignmentTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> subTasks;
+    const QList<Task *> emptySubTasks;    // Helper constant. This method never returns any subtasks.
 
     propagateSubtaskError();
     if (isCanceled() || hasError()) {
-        return subTasks;
+        return emptySubTasks;
     }
 
     LoadDocumentTask *loadDocumentSubTask = qobject_cast<LoadDocumentTask *>(subTask);
-    SAFE_POINT(loadDocumentSubTask != NULL, "loadTask is NULL", subTasks);
+    SAFE_POINT(loadDocumentSubTask != nullptr, "loadTask is NULL", emptySubTasks);
     Document *doc = loadDocumentSubTask->getDocument();
-    foreach (GObject *seqObj, doc->findGObjectByType(GObjectTypes::SEQUENCE)) {
-        U2SequenceObject *casted = qobject_cast<U2SequenceObject *>(seqObj);
-        SAFE_POINT(casted != NULL, "Cast to U2SequenceObject failed", subTasks);
-        DNASequence seq = casted->getWholeSequence(stateInfo);
-        CHECK(!stateInfo.isCoR(), subTasks);
-        seq.alphabet = casted->getAlphabet();
-        seqList.append(seq);
+    for (const GObject *objects : doc->findGObjectByType(GObjectTypes::SEQUENCE)) {
+        const U2SequenceObject *sequenceObject = qobject_cast<const U2SequenceObject *>(objects);
+        SAFE_POINT(sequenceObject != nullptr, "Cast to U2SequenceObject failed", emptySubTasks);
+        DNASequence sequence = sequenceObject->getWholeSequence(stateInfo);
+        CHECK(!stateInfo.isCoR(), emptySubTasks);
+        sequence.alphabet = sequenceObject->getAlphabet();
+        sequenceList.append(sequence);
     }
-    processObjectsAndSetResultingAlphabet();
-    return subTasks;
+    addSequencesToAlignment();
+    return emptySubTasks;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-//AddSequencesFromDocumentsToAlignmentTask
+// AddSequencesFromDocumentsToAlignmentTask
 AddSequencesFromDocumentsToAlignmentTask::AddSequencesFromDocumentsToAlignmentTask(MultipleSequenceAlignmentObject *obj,
                                                                                    const QList<Document *> &docs,
                                                                                    int insertRowIndex,
@@ -250,19 +234,20 @@ AddSequencesFromDocumentsToAlignmentTask::AddSequencesFromDocumentsToAlignmentTa
 
 void AddSequencesFromDocumentsToAlignmentTask::prepare() {
     AddSequenceObjectsToAlignmentTask::prepare();
-    seqList = PasteUtils::getSequences(docs, stateInfo);
-    if (seqList.isEmpty()) {
+    sequenceList = PasteUtils::getSequences(docs, stateInfo);
+    if (sequenceList.isEmpty()) {
         stateInfo.setError("No valid sequences found to add to the alignment.");
         return;
     }
-    processObjectsAndSetResultingAlphabet();
+    addSequencesToAlignment();
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// AddSequencesFromFilesToAlignmentTask
 void AddSequencesFromFilesToAlignmentTask::sl_onCancel() {
-    if (loadTask != NULL && !loadTask->isFinished() && !loadTask->isCanceled()) {
+    if (loadTask != nullptr && !loadTask->isFinished() && !loadTask->isCanceled()) {
         loadTask->cancel();
     }
-    releaseLock();
 }
 
 }    // namespace U2

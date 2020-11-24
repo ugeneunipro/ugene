@@ -507,4 +507,14 @@ void MSAUtils::removeColumnsWithGaps(MultipleSequenceAlignment &msa, int require
     }
 }
 
+QString MSAUtils::rollMsaRowName(const QString &rowName, const QSet<QString> &usedRowNamesSet, const QString &suffixSeparator) {
+    QString result = rowName;
+    int counter = 1;
+    while (usedRowNamesSet.contains(result)) {
+        result = rowName + suffixSeparator + QString::number(counter);
+        counter++;
+    }
+    return result;
+}
+
 }    // namespace U2

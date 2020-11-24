@@ -75,6 +75,10 @@ public:
     static U2MsaRow copyRowFromSequence(DNASequence seq, const U2DbiRef &dstDbi, U2OpStatus &os);
 
     static MultipleSequenceAlignment setUniqueRowNames(const MultipleSequenceAlignment &ma);
+
+    /** Returns unique MSA row name. Uses rowName as is if it can't be found in the currentlyUsedNamesSet or rolls the suffix of rowName. */
+    static QString rollMsaRowName(const QString &rowName, const QSet<QString> &usedRowNamesSet, const QString& suffixSeparator = "_");
+
     /**
       * Renames rows in the 'ma' to 'names' according to the following assumptions:
       *   1) 'ma' row names are integers from [0..n - 1] interval,

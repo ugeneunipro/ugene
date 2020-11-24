@@ -55,6 +55,9 @@ public:
     static U2Sequence copySequence(const DNASequence &srcSeq, const U2DbiRef &dstDbi, const QString &dstFolder, U2OpStatus &os);
     static U2Sequence copySequence(const U2EntityRef &srcSeq, const U2DbiRef &dstDbi, const QString &dstFolder, U2OpStatus &os);
 
+    /** Sets sequence name to 'newName'.*/
+    static void updateSequenceName(const U2EntityRef &entityRef, const QString& newName, U2OpStatus &os);
+
     static U2EntityRef import(U2OpStatus &os, const U2DbiRef &dbiRef, const DNASequence &seq, const U2AlphabetId &alphabetId = U2AlphabetId());
     static U2EntityRef import(U2OpStatus &os, const U2DbiRef &dbiRef, const QString &folder, const DNASequence &seq, const U2AlphabetId &alphabetId = U2AlphabetId());
 

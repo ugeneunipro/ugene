@@ -45,35 +45,50 @@ public:
      * If insertRowIndex < 0 or insertRowIndex >= row count - appends sequences to the end of the alignment rows.
      */
     AddSequenceObjectsToAlignmentTask(MultipleSequenceAlignmentObject *obj,
-                                      const QList<DNASequence> &seqList,
+                                      const QList<DNASequence> &sequenceList,
                                       int insertRowIndex = -1,
                                       bool recheckNewSequenceAlphabetOnMismatch = false);
 
-    virtual void prepare();
-    virtual void run();
-    ReportResult report();
+    /**
+     * Runs addSequencesToAlignment to process sequence list.
+     * Override when needed to postpone sequenceList processing.
+     * */
+    void prepare() override;
 
     const MaModificationInfo &getMaModificationInfo() const {
         return mi;
     }
 
 protected:
-    void processObjectsAndSetResultingAlphabet();
+    /**
+     * Check all sequences from the sequenceList and prepares the resultSequenceList: list of sequence can be safely added into the alignment.
+     * Updates 'msaAlphabet' field to fit sequences from the old and new aligments.
+     * Rolls result sequence names to avoid name duplicate.
+     * Does not change existing sequences in the alignment.
+     */
+    void prepareResultSequenceList();
 
-    QList<DNASequence> seqList;
+    /**
+     * Adds sequences from sequenceList into the alignment object. Updates task state.
+     * This method must be called from the main thread because it modifies SQLITE DBI.
+     */
+    void addSequencesToAlignment();
+
+    /** Original list of sequences to add into the alignment. */
+    QList<DNASequence> sequenceList;
+
+    /** List of sequences that can be safely added into the alignment. */
+    QList<DNASequence> resultSequenceList;
+
+    /** Insert location for the sequence list. */
     int insertRowIndex;
-    QPointer<MultipleSequenceAlignmentObject> maObj;
 
-protected:
-    void releaseLock();
+    QPointer<MultipleSequenceAlignmentObject> maObj;
 
 private:
     StateLock *stateLock;
     const DNAAlphabet *msaAlphabet;
     QStringList errorList;
-    U2MsaDbi *dbi;
-    U2EntityRef entityRef;
-    U2UseCommonUserModStep *modStep;
     MaModificationInfo mi;
 
     /*
@@ -85,10 +100,17 @@ private:
     bool recheckNewSequenceAlphabetOnMismatch;
 
     static const int maxErrorListSize;
+
     /** Returns the max length of the rows including trailing gaps */
-    qint64 createRows(QList<U2MsaRow> &rows);
-    void addRows(QList<U2MsaRow> &rows, qint64 maxLength);
-    void updateAlphabet();
+    qint64 createMsaRowsFromResultSequenceList(QList<U2MsaRow> &resultRows);
+
+    /** Adds rows into the result alignment. */
+    void addRowsToAlignment(U2MsaDbi *msaDbi, QList<U2MsaRow> &rows, qint64 maxLength);
+
+    /** Sets MSA object alphabet to 'msaAlphabet' if it is not equal. */
+    void updateAlphabet(U2MsaDbi *msaDbi);
+
+    /** Sets up detailed error message using errorList messages. */
     void setupError();
 };
 
@@ -97,8 +119,9 @@ class U2CORE_EXPORT AddSequencesFromFilesToAlignmentTask : public AddSequenceObj
 public:
     AddSequencesFromFilesToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QStringList &urls, int insertRowIndex);
 
-    virtual void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    void prepare() override;
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
+
 private slots:
     void sl_onCancel();
 
@@ -112,7 +135,7 @@ class U2CORE_EXPORT AddSequencesFromDocumentsToAlignmentTask : public AddSequenc
 public:
     AddSequencesFromDocumentsToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QList<Document *> &docs, int insertRowIndex, bool recheckNewSequenceAlphabets);
 
-    virtual void prepare();
+    void prepare() override;
 
 private:
     QList<Document *> docs;

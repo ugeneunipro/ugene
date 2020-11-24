@@ -597,26 +597,24 @@ void MSAEditorSequenceArea::runPasteTask(bool isPasteBefore) {
     PasteTask *pasteTask = pasteFactory->createPasteTask(isAddToProject);
     CHECK(pasteTask != nullptr, );
     if (isFocused) {
-        connect(new TaskSignalMapper(pasteTask), SIGNAL(si_taskFinished(Task *)), SLOT(sl_pasteFinished(Task *)));
+        connect(new TaskSignalMapper(pasteTask), SIGNAL(si_taskFinished(Task *)), SLOT(sl_pasteTaskFinished(Task *)));
     }
     pasteTask->setProperty(IS_PASTE_BEFORE_PROPERTY_NAME, QVariant::fromValue(isPasteBefore));
     AppContext::getTaskScheduler()->registerTopLevelTask(pasteTask);
 }
 
-void MSAEditorSequenceArea::sl_pasteFinished(Task *_pasteTask) {
+void MSAEditorSequenceArea::sl_pasteTaskFinished(Task *_pasteTask) {
     CHECK(getEditor() != nullptr, );
     MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
     CHECK(!msaObject->isStateLocked(), );
 
     PasteTask *pasteTask = qobject_cast<PasteTask *>(_pasteTask);
-    CHECK(pasteTask != nullptr && !pasteTask->isCanceled(), );
+    CHECK(pasteTask != nullptr && !pasteTask->isCanceled() && !pasteTask->hasError(), );
 
     bool isPasteBefore = pasteTask->property(IS_PASTE_BEFORE_PROPERTY_NAME).toBool();
     const QList<Document *> &docs = pasteTask->getDocuments();
 
-    int insertRowIndex = isPasteBefore ?
-                             (selection.isEmpty() ? 0 : selection.y()) :
-                             (selection.isEmpty() ? -1 : selection.bottom() + 1);
+    int insertRowIndex = isPasteBefore ? (selection.isEmpty() ? 0 : selection.y()) : (selection.isEmpty() ? -1 : selection.bottom() + 1);
     auto task = new AddSequencesFromDocumentsToAlignmentTask(msaObject, docs, insertRowIndex, true);
     task->setErrorNotificationSuppression(true);    // we manually show warning message if needed when task is finished.
     connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_addSequencesToAlignmentFinished(Task *)));

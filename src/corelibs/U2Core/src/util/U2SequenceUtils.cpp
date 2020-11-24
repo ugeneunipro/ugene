@@ -140,6 +140,19 @@ U2Sequence U2SequenceUtils::copySequence(const U2EntityRef &srcSeq, const U2DbiR
     return res;
 }
 
+void U2SequenceUtils::updateSequenceName(const U2EntityRef &entityRef, const QString &newName, U2OpStatus &os) {
+    DbiConnection con(entityRef.dbiRef, os);
+    CHECK_OP(os, );
+
+    U2SequenceDbi *sequenceDbi = con.dbi->getSequenceDbi();
+    U2Sequence sequenceObject = sequenceDbi->getSequenceObject(entityRef.entityId, os);
+    CHECK_OP(os, );
+    if (sequenceObject.visualName != newName) {
+        sequenceObject.visualName = newName;
+        sequenceDbi->updateSequenceObject(sequenceObject, os);
+    }
+}
+
 static QList<QByteArray> _extractRegions(const U2EntityRef &seqRef, const QVector<U2Region> &regions, const DNATranslation *complTT, U2OpStatus &os) {
     QList<QByteArray> res;
 
