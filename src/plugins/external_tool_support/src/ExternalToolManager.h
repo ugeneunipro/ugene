@@ -80,12 +80,18 @@ private:
     void innerStart();
     void checkStartupTasksState();
     void markStartupCheckAsFinished();
-    void addTool(ExternalTool *tool);
+
+    // Add toolId to toolStates and all tool dependencies to dependencies and connect tool validation status change slot
+    void addToToolStatesAndDependencies(ExternalTool *tool);
+
     bool dependenciesAreOk(const QString &toolId);
-    void addToolToListsIfNecessary(const ExternalTool &tool);  // add toolId to validateList if tool is not valid and
-                                                               // its dependencies are ok, and to searchList if needed
-    QString findToolPath(const ExternalTool &tool); // return toolPath (or masterToolPath, if tool is module) if tool is
-                                                // not valid and its dependencies are ok. Otherwise return empty string
+
+    // Add toolId to validateList if tool is not valid and its dependencies are ok, and to searchList if needed. Return
+    // true if tool was added to validateList
+    bool addToSearchAndValidateLists(const ExternalTool &tool);
+
+    // Return toolPath or masterToolPath if tool is module.
+    QString findToolPath(const ExternalTool &tool);
     void validateTools(const StrStrMap &toolPaths = StrStrMap(), ExternalToolValidationListener *listener = nullptr);
     void loadCustomTools();
     void searchTools();
