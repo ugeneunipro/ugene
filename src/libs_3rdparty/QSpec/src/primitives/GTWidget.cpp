@@ -41,6 +41,11 @@ namespace HI {
 void GTWidget::click(GUITestOpStatus &os, QWidget *widget, Qt::MouseButton mouseButton, QPoint p) {
     GT_CHECK(widget != nullptr, "widget is NULL");
 
+#ifdef Q_OS_MAC
+    GTUtilsMac fakeClock;
+    fakeClock.startWorkaroundForMacCGEvents(16000, false);
+#endif
+
     if (p.isNull()) {
         QRect rect = widget->rect();
         p = rect.center();

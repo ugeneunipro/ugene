@@ -75,10 +75,12 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
     // Close all popup widgets
     // Close all modal widgets
     // Clear the clipboard
+
 #ifdef Q_OS_MAC
     GTUtilsMac fakeClock;
     fakeClock.startWorkaroundForMacCGEvents(8000, false);
 #endif
+
     QWidget *popupWidget = QApplication::activePopupWidget();
     while (popupWidget != NULL) {
         GTWidget::close(os, popupWidget);
@@ -99,6 +101,11 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
     // Close the project
     // Close all MDI windows
     // Cancel all tasks
+
+#ifdef Q_OS_MAC
+    GTUtilsMac fakeClock;
+    fakeClock.startWorkaroundForMacCGEvents(16000, false);
+#endif
 
     if (AppContext::getProject() != nullptr) {
 #ifdef Q_OS_MAC
@@ -135,6 +142,11 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
         GTUtilsDialog::cleanup(os, GTUtilsDialog::NoFailOnUnfinished);
 #endif
     }
+
+#ifdef Q_OS_MAC
+    GTUtilsMac fakeClock2;
+    fakeClock2.startWorkaroundForMacCGEvents(16000, false);
+#endif
 
     GTUtilsMdi::closeAllWindows(os);
     AppContext::getTaskScheduler()->cancelAllTasks();
