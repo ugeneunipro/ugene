@@ -51,6 +51,7 @@ HEADERS += \
            src/utils/GTThread.h \
            src/utils/GTUtilsApp.h \
            src/utils/GTUtilsDialog.h \
+           src/utils/GTUtilsMac.h \
            src/utils/GTUtilsToolTip.h \
            src/utils/GTMouseUtils.h \
            src/core/GUITestOpStatus.h \
@@ -109,6 +110,7 @@ SOURCES += \
            src/utils/GTThread.cpp \
            src/utils/GTUtilsApp.cpp \
            src/utils/GTUtilsDialog.cpp \
+           src/utils/GTUtilsMac.cpp \
            src/utils/GTUtilsToolTip.cpp \
            src/utils/GTMouseUtils.cpp \
            src/core/CustomScenario.cpp \

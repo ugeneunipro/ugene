@@ -117,7 +117,7 @@ bool GTMouseDriver::click(const QPoint &p, Qt::MouseButton button) {
     CGEventRef event = CGEventCreateMouseEvent(NULL, kCGEventMouseMoved, pt, btn /*ignored*/);
     DRIVER_CHECK(event != NULL, "Can't create event");
     CGEventPost(kCGSessionEventTap, event);
-    GTGlobals::sleep(100);
+    GTGlobals::sleep(200);
     CFRelease(event);
 
     bp |= button;
@@ -125,7 +125,7 @@ bool GTMouseDriver::click(const QPoint &p, Qt::MouseButton button) {
     DRIVER_CHECK(event2 != NULL, "Can't create event2");
     CGEventSetIntegerValueField(event2, kCGMouseEventClickState, 1);
     CGEventPost(kCGSessionEventTap, event2);
-    GTGlobals::sleep(100);
+    GTGlobals::sleep(200);
     CFRelease(event2);
 
     bp &= (Qt::MouseButtonMask ^ button);
@@ -133,7 +133,7 @@ bool GTMouseDriver::click(const QPoint &p, Qt::MouseButton button) {
     DRIVER_CHECK(event3 != NULL, "Can't create event3");
     CGEventSetIntegerValueField(event3, kCGMouseEventClickState, 1);
     CGEventPost(kCGSessionEventTap, event3);
-    GTGlobals::sleep(100);
+    GTGlobals::sleep(200);
     CFRelease(event3);
 
     GTGlobals::sleep(100);

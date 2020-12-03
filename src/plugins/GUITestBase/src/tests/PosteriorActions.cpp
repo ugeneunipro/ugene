@@ -45,24 +45,10 @@
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/AnyDialogFiller.h"
 
+#include "utils/GTUtilsMac.h"
+
 namespace U2 {
 namespace GUITest_posterior_actions {
-
-#ifdef Q_OS_MAC
-void workaroundForMacCGEvents() {
-    QString prog = qgetenv("UGENE_GUI_TEST_MACOS_WORKAROUND_FOR_CGEVENTS");
-    if (!prog.isNull()) {
-        QProcess fakeClock;
-        fakeClock.startDetached(prog,
-                                {"-x", "1000",
-                                 "-y", "0",
-                                 "-w", "80",
-                                 "-h", "40",
-                                 "-d", "4000",
-                                 "-t", "40"});
-    }
-}
-#endif
 
 POSTERIOR_ACTION_DEFINITION(post_action_0000) {
     // Release all hold keyboard modifier keys
@@ -90,7 +76,8 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
     // Close all modal widgets
     // Clear the clipboard
 #ifdef Q_OS_MAC
-    workaroundForMacCGEvents();
+    GTUtilsMac fakeClock;
+    fakeClock.startWorkaroundForMacCGEvents(8000, false);
 #endif
     QWidget *popupWidget = QApplication::activePopupWidget();
     while (popupWidget != NULL) {

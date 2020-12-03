@@ -25,6 +25,7 @@
 #include <core/CustomScenario.h>
 
 #include <QDialogButtonBox>
+#include <QProcess>
 
 #include "GTGlobals.h"
 
@@ -182,9 +183,7 @@ public:
     static void startHangChecking(GUITestOpStatus &os);
 
     static void stopHangChecking();
-#ifdef Q_OS_MAC
-    static void workaroundForMacCGEvents();
-#endif
+
 private:
     static void checkAllFinished(GUITestOpStatus &os);
 
