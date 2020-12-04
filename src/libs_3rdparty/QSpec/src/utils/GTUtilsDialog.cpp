@@ -231,7 +231,7 @@ void GTUtilsDialog::clickButtonBox(GUITestOpStatus &os, QWidget *dialog, QDialog
 #ifdef Q_OS_MAC
     QMessageBox *mbox = qobject_cast<QMessageBox *>(dialog);
     GTUtilsMac fakeClock;
-    fakeClock.startWorkaroundForMacCGEvents(8000, false);
+    fakeClock.startWorkaroundForMacCGEvents(16000, false);
     if (mbox != NULL && (button == QDialogButtonBox::Yes
                          || button == QDialogButtonBox::No
                          || button == QDialogButtonBox::NoToAll)) {

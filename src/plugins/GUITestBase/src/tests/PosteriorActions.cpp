@@ -76,19 +76,26 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
     // Close all modal widgets
     // Clear the clipboard
 
-#ifdef Q_OS_MAC
-    GTUtilsMac fakeClock;
-    fakeClock.startWorkaroundForMacCGEvents(8000, false);
-#endif
-
     QWidget *popupWidget = QApplication::activePopupWidget();
     while (popupWidget != NULL) {
+
+#ifdef Q_OS_MAC
+    GTUtilsMac fakeClock;
+    fakeClock.startWorkaroundForMacCGEvents(1, true);
+    fakeClock.startWorkaroundForMacCGEvents(16000, false);
+#endif
         GTWidget::close(os, popupWidget);
         popupWidget = QApplication::activePopupWidget();
     }
 
     QWidget *modalWidget = QApplication::activeModalWidget();
     while (modalWidget != NULL) {
+
+#ifdef Q_OS_MAC
+    GTUtilsMac fakeClock;
+    fakeClock.startWorkaroundForMacCGEvents(1, true);
+    fakeClock.startWorkaroundForMacCGEvents(16000, false);
+#endif
         GTWidget::close(os, modalWidget);
         modalWidget = QApplication::activeModalWidget();
     }
@@ -104,6 +111,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
 
 #ifdef Q_OS_MAC
     GTUtilsMac fakeClock;
+    fakeClock.startWorkaroundForMacCGEvents(1, true);
     fakeClock.startWorkaroundForMacCGEvents(16000, false);
 #endif
 
@@ -145,6 +153,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
 
 #ifdef Q_OS_MAC
     GTUtilsMac fakeClock2;
+    fakeClock.startWorkaroundForMacCGEvents(1, true);
     fakeClock2.startWorkaroundForMacCGEvents(16000, false);
 #endif
 
