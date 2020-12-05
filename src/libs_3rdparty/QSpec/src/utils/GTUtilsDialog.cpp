@@ -236,11 +236,9 @@ void GTUtilsDialog::clickButtonBox(GUITestOpStatus &os, QWidget *dialog, QDialog
                          || button == QDialogButtonBox::No
                          || button == QDialogButtonBox::NoToAll)) {
         QMessageBox::StandardButton btn =
-                button == QDialogButtonBox::Yes
-                    ? QMessageBox::Yes
-                    : button == QDialogButtonBox::No
-                        ? QMessageBox::No
-                        : QMessageBox::NoToAll;
+                button == QDialogButtonBox::Yes ? QMessageBox::Yes
+                : button == QDialogButtonBox::NoToAll ? QMessageBox::NoToAll
+                : QMessageBox::No;
         QAbstractButton *pushButton = mbox->button(btn);
         GT_CHECK(pushButton != NULL, "pushButton is NULL");
         GTWidget::click(os, pushButton);

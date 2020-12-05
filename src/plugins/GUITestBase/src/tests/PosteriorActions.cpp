@@ -121,18 +121,25 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
         GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
         GTGlobals::sleep(100);
 
-        GTUtilsDialog::waitForDialog(os, new AnyDialogFiller(os, nullptr, QDialogButtonBox::No));
+        GTUtilsDialog::waitForDialog(os, new AnyDialogFiller(os,
+                                                             nullptr,
+                                                             QDialogButtonBox::No));
+        // Need to close second dialog on Mac
+        GTUtilsDialog::waitForDialog(os, new AnyDialogFiller(os,
+                                                             nullptr,
+                                                             QDialogButtonBox::No), 10000);
+
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
         GTGlobals::sleep(500);
         GTUtilsTaskTreeView::waitTaskFinished(os, 100000);
-        GTGlobals::sleep(5000);
+        GTGlobals::sleep(2000);
 
         GTUtilsDialog::waitForDialog(os, new AppCloseMessageBoxDialogFiller(os));
         GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                     << "Close project");
         GTGlobals::sleep(500);
         GTUtilsTaskTreeView::waitTaskFinished(os, 10000);
-        GTGlobals::sleep(5000);
+        GTGlobals::sleep(2000);
 
         GTUtilsDialog::cleanup(os, GTUtilsDialog::NoFailOnUnfinished);
 #else
