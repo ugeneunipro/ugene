@@ -125,9 +125,9 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
                                                              nullptr,
                                                              QDialogButtonBox::No));
         // Need to close second dialog on Mac
-        GTUtilsDialog::waitForDialog(os, new AnyDialogFiller(os,
-                                                             nullptr,
-                                                             QDialogButtonBox::No), 10000);
+        GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new AnyDialogFiller(os,
+                                                                             nullptr,
+                                                                             QDialogButtonBox::No));
 
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
         GTGlobals::sleep(500);

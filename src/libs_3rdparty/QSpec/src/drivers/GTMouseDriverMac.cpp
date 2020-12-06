@@ -208,11 +208,11 @@ bool GTMouseDriver::release(Qt::MouseButton button) {
 bool GTMouseDriver::doubleClick() {
     QPoint mousePos = QCursor::pos();
     CGEventType eventTypeMouseDown = kCGEventLeftMouseDown;
-    CGEventRef eventPress = CGEventCreateMouseEvent(NULL, eventTypeMouseDown, CGPointMake(mousePos.x(), mousePos.y()), kCGMouseButtonLeft /*ignored*/);
+    CGEventRef eventPress = CGEventCreateMouseEvent(NULL, eventTypeMouseDown, CGPointMake(mousePos.x(), mousePos.y()), kCGMouseButtonLeft);
     DRIVER_CHECK(eventPress != NULL, "Can't create event");
 
     CGEventType eventTypeMouseUp = kCGEventLeftMouseUp;
-    CGEventRef eventRelease = CGEventCreateMouseEvent(NULL, eventTypeMouseUp, CGPointMake(mousePos.x(), mousePos.y()), kCGMouseButtonLeft /*ignored*/);
+    CGEventRef eventRelease = CGEventCreateMouseEvent(NULL, eventTypeMouseUp, CGPointMake(mousePos.x(), mousePos.y()), kCGMouseButtonLeft);
     DRIVER_CHECK(eventRelease != NULL, "Can't create event");
 
     CGEventPost(kCGSessionEventTap, eventPress);
