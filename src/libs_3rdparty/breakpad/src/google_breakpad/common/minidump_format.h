@@ -549,7 +549,7 @@ typedef struct {
   uint64_t  exception_information[MD_EXCEPTION_MAXIMUM_PARAMETERS];
 } MDException;  /* MINIDUMP_EXCEPTION */
 
-//#include "minidump_exception_fuchsia.h"
+#include "minidump_exception_fuchsia.h"
 #include "minidump_exception_linux.h"
 #include "minidump_exception_mac.h"
 #include "minidump_exception_ps3.h"

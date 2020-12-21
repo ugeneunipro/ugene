@@ -34,7 +34,7 @@
 #include <sys/user.h>
 
 #include "client/linux/dump_writer_common/raw_context_cpu.h"
-#include "common/memory.h"
+#include "common/memory_allocator.h"
 #include "google_breakpad/common/minidump_format.h"
 
 namespace google_breakpad {
@@ -65,9 +65,9 @@ struct ThreadInfo {
   struct user_regs regs;
   struct user_fpregs fpregs;
 #elif defined(__aarch64__)
-  // Use the structures defined in <asm/ptrace.h>
-  struct user_pt_regs regs;
-  struct user_fpsimd_state fpregs;
+  // Use the structures defined in <sys/user.h>
+  struct user_regs_struct regs;
+  struct user_fpsimd_struct fpregs;
 #elif defined(__mips__)
   // Use the structure defined in <sys/ucontext.h>.
   mcontext_t mcontext;

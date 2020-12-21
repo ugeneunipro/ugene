@@ -214,7 +214,7 @@ uintptr_t ThreadInfo::GetInstructionPointer() const {
 }
 
 void ThreadInfo::FillCPUContext(RawContextCPU* out) const {
-  out->context_flags = MD_CONTEXT_ARM64_FULL;
+  out->context_flags = MD_CONTEXT_ARM64_FULL_OLD;
 
   out->cpsr = static_cast<uint32_t>(regs.pstate);
   for (int i = 0; i < MD_CONTEXT_ARM64_REG_SP; ++i)
@@ -235,7 +235,13 @@ uintptr_t ThreadInfo::GetInstructionPointer() const {
 }
 
 void ThreadInfo::FillCPUContext(RawContextCPU* out) const {
+#if _MIPS_SIM == _ABI64
+  out->context_flags = MD_CONTEXT_MIPS64_FULL;
+#elif _MIPS_SIM == _ABIO32
   out->context_flags = MD_CONTEXT_MIPS_FULL;
+#else
+# error "This mips ABI is currently not supported (n32)"
+#endif
 
   for (int i = 0; i < MD_CONTEXT_MIPS_GPR_COUNT; ++i)
     out->iregs[i] = mcontext.gregs[i];
