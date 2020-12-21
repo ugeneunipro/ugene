@@ -34,7 +34,9 @@ HEADERS += src/client/minidump_file_writer.h \
            src/client/minidump_file_writer-inl.h \
            src/common/linux/linux_libc_support.h \
            src/common/convert_UTF.h \
+           src/common/macros.h \
            src/common/memory.h \
+           src/common/memory_allocator.h \
            src/common/scoped_ptr.h \
            src/common/string_conversion.h \
            src/common/using_std_string.h
@@ -53,6 +55,7 @@ HEADERS += src/client/linux/crash_generation/crash_generation_client.h \
            src/client/linux/dump_writer_common/thread_info.h \
            src/client/linux/dump_writer_common/ucontext_reader.h \
            src/client/linux/handler/exception_handler.h \
+           src/client/linux/handler/microdump_extra_info.h \
            src/client/linux/handler/minidump_descriptor.h \
            src/client/linux/log/log.h \
            src/client/linux/microdump_writer/microdump_writer.h \
