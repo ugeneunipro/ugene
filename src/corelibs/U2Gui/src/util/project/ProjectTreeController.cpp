@@ -842,12 +842,12 @@ void ProjectTreeController::sl_windowActivated(MWMDIWindow *w) {
     }
 
     // listen all add/remove to view events
-    if (NULL != markActiveView) {
+    if (!markActiveView.isNull()) {
         foreach (GObject *obj, markActiveView->getObjects()) {
             updateObjectActiveStateVisual(obj);
         }
         markActiveView->disconnect(this);
-        markActiveView = NULL;
+        markActiveView.clear();
     }
 
     GObjectViewWindow *ow = qobject_cast<GObjectViewWindow *>(w);

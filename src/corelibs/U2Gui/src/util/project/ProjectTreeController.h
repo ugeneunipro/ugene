@@ -181,7 +181,7 @@ private:
     DocumentSelection documentSelection;
     FolderSelection folderSelection;
     GObjectSelection objectSelection;
-    GObjectView *markActiveView;
+    QPointer<GObjectView> markActiveView;
     GObject *objectIsBeingRecycled;
 
     QHash<Task *, QHash<Document *, QSet<U2DataId>>> task2ObjectsBeingDeleted;
