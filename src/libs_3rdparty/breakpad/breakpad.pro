@@ -41,7 +41,7 @@ HEADERS += src/client/minidump_file_writer.h \
 
 SOURCES += src/client/minidump_file_writer.cc \
            src/common/linux/linux_libc_support.cc \
-           src/common/convert_UTF.c \
+           src/common/convert_UTF.cc \
            src/common/string_conversion.cc
 }
 
