@@ -335,7 +335,9 @@ void DashboardFileButton::sl_openFileClicked() {
             }
         }
     }
-    if (type == "ugene") {
+    // Some known file types, like auto-generated HTML reports should be opened by OS by default.
+    bool isOpenWithOsOverride = url.endsWith(".html") || url.endsWith(".htm");
+    if (type == "ugene" && !isOpenWithOsOverride) {
         QVariantMap hints;
         hints[ProjectLoaderHint_OpenBySystemIfFormatDetectionFailed] = true;
         Task *task = AppContext::getProjectLoader()->openWithProjectTask(fileInfo.absoluteFilePath(), hints);
