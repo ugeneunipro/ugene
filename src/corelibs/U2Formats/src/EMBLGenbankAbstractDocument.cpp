@@ -239,7 +239,7 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef &dbiRef, IOAdapter *io, QL
                     U2SequenceObject *seqObj = new U2SequenceObject(sequenceName, U2EntityRef(dbiRef, u2seq.id));
                     QString translation = U1AnnotationUtils::guessAminoTranslation(annotationsObject, seqObj->getAlphabet());
                     if (!translation.isEmpty()) {
-                        seqObj->setStringAttribute(translation, Translation_Table_Id_Attribute);
+                        seqObj->setStringAttribute(Translation_Table_Id_Attribute, translation);
                     }
 
                     objects << seqObj;

@@ -151,6 +151,26 @@ public:
     Task *createAutoAnnotationsUpdateTask(const AutoAnnotationObject *annotationObject) override;
 
     bool checkConstraints(const AutoAnnotationConstraints &constraints) override;
+
+    /** Returns last saved search region for the given sequence object or empty region if no region was saved. */
+    static U2Region getLastSearchRegionForObject(const U2SequenceObject *sequenceObject);
+
+    /**
+     * Saves the region as last used 'search' region for the object.
+     * This region will be used by default during the next auto-annotation task run.
+     * If no region is set, the whole sequence will be processed.
+     */
+    static void setLastSearchRegionForObject(U2SequenceObject *sequenceObject, const U2Region &region);
+
+    /** Returns last saved 'excluded' region for the given sequence object or empty region if no region was saved. */
+    static U2Region getLastExcludeRegionForObject(const U2SequenceObject *sequenceObject);
+
+    /**
+     * Saves the region as last used 'exclude' region for the object.
+     * This region will be used by default during the next auto-annotation task run.
+     * If no region is set, the whole sequence will be processed.
+     */
+    static void setLastExcludeRegionForObject(U2SequenceObject *sequenceObject, const U2Region &region);
 };
 
 }    // namespace U2

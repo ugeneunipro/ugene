@@ -338,9 +338,10 @@ void BioStruct3DGLWidget::setLightPosition(const Vector3D &pos) {
 }
 
 static int getSequenceChainId(const U2SequenceObject *seqObj) {
-    QVariantMap info = seqObj->getSequenceInfo();
-    SAFE_POINT(info.contains(DNAInfo::CHAIN_ID), "Sequence does not have the CHAIN_ID attribute", -1);
-    return seqObj->getIntegerAttribute(DNAInfo::CHAIN_ID);
+    bool isFound = false;
+    qint64 result = seqObj->getSequenceInfo().value(DNAInfo::CHAIN_ID).toInt(&isFound);
+    SAFE_POINT(isFound, "Sequence does not have the CHAIN_ID attribute", -1);
+    return (int)result;
 }
 
 void BioStruct3DGLWidget::sl_onSequenceSelectionChanged(LRegionsSelection *s, const QVector<U2Region> &added, const QVector<U2Region> &removed) {

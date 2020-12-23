@@ -345,17 +345,16 @@ Task *FindEnzymesAutoAnnotationUpdater::createAutoAnnotationsUpdateTask(const Au
         }
     }
 
+    U2SequenceObject *sequenceObject = annotationObject->getSequenceObject();
     FindEnzymesTaskConfig cfg;
-    cfg.circular = annotationObject->getSequenceObject()->isCircular();
+    cfg.circular = sequenceObject->isCircular();
     cfg.groupName = getGroupName();
     cfg.isAutoAnnotationUpdateTask = true;
     cfg.minHitCount = AppContext::getSettings()->getValue(EnzymeSettings::MIN_HIT_VALUE, 1).toInt();
     cfg.maxHitCount = AppContext::getSettings()->getValue(EnzymeSettings::MAX_HIT_VALUE, INT_MAX).toInt();
     cfg.maxResults = AppContext::getSettings()->getValue(EnzymeSettings::MAX_RESULTS, 500000).toInt();
 
-    U2Region savedSearchRegion = AppContext::getSettings()->getValue(EnzymeSettings::SEARCH_REGION, QVariant::fromValue(U2Region())).value<U2Region>();
-
-    U2SequenceObject *sequenceObject = annotationObject->getSequenceObject();
+    U2Region savedSearchRegion = getLastSearchRegionForObject(sequenceObject);
     U2Region wholeSequenceRegion(0, sequenceObject->getSequenceLength());
     if (cfg.circular) {
         //In circular mode the region can have an overflow to handle end/start positions correctly
@@ -367,20 +366,60 @@ Task *FindEnzymesAutoAnnotationUpdater::createAutoAnnotationsUpdateTask(const Au
         cfg.searchRegion = wholeSequenceRegion;
     }
 
-    QVector<U2Region> excludedRegions =
-        AppContext::getSettings()->getValue(EnzymeSettings::EXCLUDED_REGION, QVariant::fromValue(QVector<U2Region>())).value<QVector<U2Region>>();
-
-    if (!excludedRegions.isEmpty()) {
-        cfg.excludedRegions = excludedRegions;
+    U2Region savedExcludedRegion = getLastExcludeRegionForObject(sequenceObject);
+    if (!savedExcludedRegion.isEmpty()) {
+        cfg.excludedRegions << savedExcludedRegion;
     }
 
     AnnotationTableObject *annotationTableObject = annotationObject->getAnnotationObject();
-    const U2EntityRef &sequenceObjectRef = annotationObject->getSequenceObject()->getEntityRef();
+    const U2EntityRef &sequenceObjectRef = sequenceObject->getEntityRef();
     return new FindEnzymesToAnnotationsTask(annotationTableObject, sequenceObjectRef, selectedEnzymes, cfg);
 }
 
 bool FindEnzymesAutoAnnotationUpdater::checkConstraints(const AutoAnnotationConstraints &constraints) {
     return constraints.alphabet == nullptr ? false : constraints.alphabet->isNucleic();
+}
+
+/** Search (include) and exclude regions are saved per-sequence object in the object attributes. */
+#define ENZYMES_SEARCH_REGION_START "FindEnzymes_searchRegion_start"
+#define ENZYMES_SEARCH_REGION_END "FindEnzymes_searchRegion_end"
+#define ENZYMES_EXCLUDE_REGION_START "FindEnzymes_excludeRegion_start"
+#define ENZYMES_EXCLUDE_REGION_END "FindEnzymes_excludeRegion_end"
+
+/** These 2 regions are used for read-only objects (like public DBI) that can't store attributes. */
+static U2Region lastDefaultSearchRegion;
+static U2Region lastDefaultExcludeRegion;
+
+U2Region FindEnzymesAutoAnnotationUpdater::getLastSearchRegionForObject(const U2SequenceObject *sequenceObject) {
+    qint64 searchRegionStart = sequenceObject->getIntegerAttribute(ENZYMES_SEARCH_REGION_START);
+    qint64 searchRegionEnd = sequenceObject->getIntegerAttribute(ENZYMES_SEARCH_REGION_END);
+    U2Region region(searchRegionStart, searchRegionEnd - searchRegionStart);
+    return region.isEmpty() && sequenceObject->isStateLocked() ? lastDefaultSearchRegion : region;
+}
+
+void FindEnzymesAutoAnnotationUpdater::setLastSearchRegionForObject(U2SequenceObject *sequenceObject, const U2Region &region) {
+    if (sequenceObject->isStateLocked()) {
+        lastDefaultSearchRegion = region;
+        return;
+    }
+    sequenceObject->setIntegerAttribute(ENZYMES_SEARCH_REGION_START, region.startPos);
+    sequenceObject->setIntegerAttribute(ENZYMES_SEARCH_REGION_END, region.endPos());
+}
+
+U2Region FindEnzymesAutoAnnotationUpdater::getLastExcludeRegionForObject(const U2SequenceObject *sequenceObject) {
+    qint64 excludeRegionStart = sequenceObject->getIntegerAttribute(ENZYMES_EXCLUDE_REGION_START);
+    qint64 excludeRegionEnd = sequenceObject->getIntegerAttribute(ENZYMES_EXCLUDE_REGION_END);
+    U2Region region(excludeRegionStart, excludeRegionEnd - excludeRegionStart);
+    return region.isEmpty() && sequenceObject->isStateLocked() ? lastDefaultExcludeRegion : region;
+}
+
+void FindEnzymesAutoAnnotationUpdater::setLastExcludeRegionForObject(U2SequenceObject *sequenceObject, const U2Region &region) {
+    if (sequenceObject->isStateLocked()) {
+        lastDefaultExcludeRegion = region;
+        return;
+    }
+    sequenceObject->setIntegerAttribute(ENZYMES_EXCLUDE_REGION_START, region.startPos);
+    sequenceObject->setIntegerAttribute(ENZYMES_EXCLUDE_REGION_END, region.endPos());
 }
 
 }    // namespace U2

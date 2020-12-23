@@ -90,8 +90,7 @@ private:
 class FindEnzymesDialog : public QDialog, public Ui_FindEnzymesDialog {
     Q_OBJECT
 public:
-    FindEnzymesDialog(ADVSequenceObjectContext *ctx);
-    static void initDefaultSettings();
+    FindEnzymesDialog(ADVSequenceObjectContext *advSequenceContext);
     virtual void accept();
 private slots:
     void sl_onSelectionModified(int total, int nChecked);
@@ -99,7 +98,10 @@ private slots:
 private:
     void initSettings();
     void saveSettings();
-    ADVSequenceObjectContext *seqCtx;
+
+    /** FindEnzymes dialog is always opened for some sequence in ADVSequenceView. */
+    ADVSequenceObjectContext *advSequenceContext;
+
     EnzymesSelectorWidget *enzSel;
     RegionSelectorWithExludedRegion *regionSelector;
 };

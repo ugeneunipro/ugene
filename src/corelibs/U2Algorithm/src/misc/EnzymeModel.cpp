@@ -29,8 +29,6 @@ const QString EnzymeSettings::LAST_SELECTION("plugin_enzymes/selection");
 const QString EnzymeSettings::ENABLE_HIT_COUNT("plugin_enzymes/enable_hit_count");
 const QString EnzymeSettings::MAX_HIT_VALUE("plugin_enzymes/max_hit_value");
 const QString EnzymeSettings::MIN_HIT_VALUE("plugin_enzymes/min_hit_value");
-const QString EnzymeSettings::SEARCH_REGION("plugin_enzymes/search_region");
-const QString EnzymeSettings::EXCLUDED_REGION("plugin_enzymes/non_cut_region");
 const QString EnzymeSettings::MAX_RESULTS("plugin_enzymes/max_results");
 const QString EnzymeSettings::COMMON_ENZYMES("ClaI,BamHI,BglII,DraI,EcoRI,EcoRV,HindIII,PstI,SalI,SmaI,XmaI");
 

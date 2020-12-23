@@ -79,7 +79,6 @@ EnzymesPlugin::EnzymesPlugin()
     }
 
     EnzymesSelectorWidget::setupSettings();
-    FindEnzymesDialog::initDefaultSettings();
 
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
