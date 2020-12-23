@@ -98,6 +98,12 @@ private:
 
 #define AUTO_ANNOTATION_SETTINGS "auto-annotations/"
 
+/**
+ * Maximum number of annotations UGENE can handle safely.
+ * Auto-annotation tasks are recommended to avoid producing more annotation than given number to avoid UI freeze.
+ */
+#define AUTO_ANNOTATION_MAX_ANNOTATIONS_ADV_CAN_HANDLE (150 * 1000)
+
 struct U2CORE_EXPORT AutoAnnotationConstraints {
     AutoAnnotationConstraints();
 
@@ -132,6 +138,14 @@ public:
     }
 
     virtual bool checkConstraints(const AutoAnnotationConstraints &constraints) = 0;
+
+    /**
+     * Creates task to compute auto annotation for the sequence associated with the given annotation object.
+     * Returns nullptr if the task can't be created for some reason:
+     *   for example:
+     *     - there is a chance of overflow in number of resulted annotations for the given context
+     *     - the configuration of the task is not correct.
+     */
     virtual Task *createAutoAnnotationsUpdateTask(const AutoAnnotationObject *autoAnnotationObject) = 0;
 
 private:

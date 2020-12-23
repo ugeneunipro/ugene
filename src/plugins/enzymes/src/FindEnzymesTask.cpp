@@ -321,6 +321,11 @@ void FindSingleEnzymeTask::cleanup() {
     resultList.clear();
 }
 
+qint64 FindSingleEnzymeTask::estimateNumberOfEnzymesInSequence(qint64 sequenceLength, int variants) {
+    // The rough estimation from the tests: 1 enzymes can be found 5 times per 1000bp in both direct and complement strands.
+    return qRound(5 * (sequenceLength / 1000.0) * variants);
+}
+
 //////////////////////////////////////////////////////////////////////////
 // find enzymes auto annotation updater
 
@@ -345,18 +350,26 @@ Task *FindEnzymesAutoAnnotationUpdater::createAutoAnnotationsUpdateTask(const Au
         }
     }
 
+    U2SequenceObject *sequenceObject = annotationObject->getSequenceObject();
+    qint64 sequenceLength = sequenceObject->getSequenceLength();
+    if (selectedEnzymes.isEmpty()) {
+        return nullptr;
+    }
+    if (isTooManyAnnotationsInTheResult(sequenceLength, selectedEnzymes.size())) {
+        uiLog.trace("Find-enzymes task won't start, too many estimated results");
+        return nullptr;
+    }
     FindEnzymesTaskConfig cfg;
     cfg.circular = annotationObject->getSequenceObject()->isCircular();
     cfg.groupName = getGroupName();
     cfg.isAutoAnnotationUpdateTask = true;
     cfg.minHitCount = AppContext::getSettings()->getValue(EnzymeSettings::MIN_HIT_VALUE, 1).toInt();
-    cfg.maxHitCount = AppContext::getSettings()->getValue(EnzymeSettings::MAX_HIT_VALUE, INT_MAX).toInt();
-    cfg.maxResults = AppContext::getSettings()->getValue(EnzymeSettings::MAX_RESULTS, 500000).toInt();
+    cfg.maxHitCount = AppContext::getSettings()->getValue(EnzymeSettings::MAX_HIT_VALUE, AUTO_ANNOTATION_MAX_ANNOTATIONS_ADV_CAN_HANDLE).toInt();
+    cfg.maxResults = AppContext::getSettings()->getValue(EnzymeSettings::MAX_RESULTS, AUTO_ANNOTATION_MAX_ANNOTATIONS_ADV_CAN_HANDLE).toInt();
 
     U2Region savedSearchRegion = AppContext::getSettings()->getValue(EnzymeSettings::SEARCH_REGION, QVariant::fromValue(U2Region())).value<U2Region>();
 
-    U2SequenceObject *sequenceObject = annotationObject->getSequenceObject();
-    U2Region wholeSequenceRegion(0, sequenceObject->getSequenceLength());
+    U2Region wholeSequenceRegion(0, sequenceLength);
     if (cfg.circular) {
         //In circular mode the region can have an overflow to handle end/start positions correctly
         cfg.searchRegion = U2Region(savedSearchRegion.startPos, qMin(savedSearchRegion.length, wholeSequenceRegion.length));
@@ -381,6 +394,11 @@ Task *FindEnzymesAutoAnnotationUpdater::createAutoAnnotationsUpdateTask(const Au
 
 bool FindEnzymesAutoAnnotationUpdater::checkConstraints(const AutoAnnotationConstraints &constraints) {
     return constraints.alphabet == nullptr ? false : constraints.alphabet->isNucleic();
+}
+
+bool FindEnzymesAutoAnnotationUpdater::isTooManyAnnotationsInTheResult(qint64 sequenceLength, int countOfEnzymeVariants) {
+    qint64 maxResultsEstimation = FindSingleEnzymeTask::estimateNumberOfEnzymesInSequence(sequenceLength, countOfEnzymeVariants);
+    return maxResultsEstimation > AUTO_ANNOTATION_MAX_ANNOTATIONS_ADV_CAN_HANDLE;
 }
 
 }    // namespace U2
