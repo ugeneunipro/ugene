@@ -1488,6 +1488,7 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
     // Open de novo assembly dialog
     // Fill it and run
     // Expected result: no errors
+    GTLogTracer l;
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     class Scenario : public CustomScenario {
@@ -1548,7 +1549,6 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
                                                 << "Reads de novo assembly (with SPAdes)...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTLogTracer l;
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
     //Expected: The dashboard appears
     GTUtilsDashboard::getDashboard(os);
@@ -1559,6 +1559,8 @@ GUI_TEST_CLASS_DEFINITION(test_5425_1) {
     // Open de novo assembly dialog
     // Fill it and run
     // Expected result: no errors
+
+    GTLogTracer l;
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     class Scenario : public CustomScenario {
@@ -1619,7 +1621,6 @@ GUI_TEST_CLASS_DEFINITION(test_5425_1) {
                                                 << "Reads de novo assembly (with SPAdes)...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTLogTracer l;
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
     //Expected: The dashboard appears
     GTUtilsDashboard::getDashboard(os);
@@ -1631,6 +1632,8 @@ GUI_TEST_CLASS_DEFINITION(test_5425_2) {
     // Open de novo assembly dialog
     // Fill it and run
     // Expected result: no errors
+
+    GTLogTracer l;
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
@@ -1660,7 +1663,6 @@ GUI_TEST_CLASS_DEFINITION(test_5425_2) {
                                                 << "Reads de novo assembly (with SPAdes)...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTLogTracer l;
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
     //Expected: The dashboard appears
     GTUtilsDashboard::getDashboard(os);

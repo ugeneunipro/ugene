@@ -6359,6 +6359,8 @@ GUI_TEST_CLASS_DEFINITION(test_6941) {
     // Fill it and run
     // Expected result: no errors
 
+    GTLogTracer l;
+
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     class custom : public CustomScenario {
@@ -6389,7 +6391,6 @@ GUI_TEST_CLASS_DEFINITION(test_6941) {
                                                 << "Raw DNA-Seq data processing...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTLogTracer l;
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
     //Expected: The dashboard appears
     GTUtilsDashboard::getDashboard(os);
