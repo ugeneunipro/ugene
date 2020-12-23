@@ -126,7 +126,7 @@ extern "C" {
                        mach_msg_header_t* reply);
 
   // This symbol must be visible to dlsym() - see
-  // http://code.google.com/p/google-breakpad/issues/detail?id=345 for details.
+  // https://bugs.chromium.org/p/google-breakpad/issues/detail?id=345 for details.
   kern_return_t catch_exception_raise(mach_port_t target_port,
                                       mach_port_t failed_thread,
                                       mach_port_t task,
@@ -220,7 +220,7 @@ kern_return_t catch_exception_raise(mach_port_t port, mach_port_t failed_thread,
 }
 #endif
 
-ExceptionHandler::ExceptionHandler(const string &dump_path,
+ExceptionHandler::ExceptionHandler(const string& dump_path,
                                    FilterCallback filter,
                                    MinidumpCallback callback,
                                    void* callback_context,
@@ -304,7 +304,7 @@ bool ExceptionHandler::WriteMinidump(bool write_exception_stream) {
 }
 
 // static
-bool ExceptionHandler::WriteMinidump(const string &dump_path,
+bool ExceptionHandler::WriteMinidump(const string& dump_path,
                                      bool write_exception_stream,
                                      MinidumpCallback callback,
                                      void* callback_context) {
@@ -316,7 +316,7 @@ bool ExceptionHandler::WriteMinidump(const string &dump_path,
 // static
 bool ExceptionHandler::WriteMinidumpForChild(mach_port_t child,
                                              mach_port_t child_blamed_thread,
-                                             const string &dump_path,
+                                             const string& dump_path,
                                              MinidumpCallback callback,
                                              void* callback_context) {
   ScopedTaskSuspend suspend(child);
@@ -355,6 +355,11 @@ bool ExceptionHandler::WriteMinidumpWithException(
     bool exit_after_write,
     bool report_current_thread) {
   bool result = false;
+
+#if TARGET_OS_IPHONE
+  // _exit() should never be called on iOS.
+  exit_after_write = false;
+#endif
 
   if (directCallback_) {
     if (directCallback_(callback_context_,
@@ -459,7 +464,7 @@ kern_return_t ForwardException(mach_port_t task, mach_port_t failed_thread,
 
   kern_return_t result;
   // TODO: Handle the case where |target_behavior| has MACH_EXCEPTION_CODES
-  // set. https://code.google.com/p/google-breakpad/issues/detail?id=551
+  // set. https://bugs.chromium.org/p/google-breakpad/issues/detail?id=551
   switch (target_behavior) {
     case EXCEPTION_DEFAULT:
       result = exception_raise(target_port, failed_thread, task, exception,
