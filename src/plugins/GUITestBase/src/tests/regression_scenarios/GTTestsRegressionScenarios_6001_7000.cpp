@@ -106,6 +106,7 @@
 #include "runnables/ugene/plugins/enzymes/FindEnzymesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/CreateElementWithCommandLineToolFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
@@ -6353,6 +6354,50 @@ GUI_TEST_CLASS_DEFINITION(test_6927) {
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(9, 0, 11, 18));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6941) {
+    // Open de novo assembly dialog
+    // Fill it and run
+    // Expected result: no errors
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
+    class custom : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            GTUtilsWizard::setParameter(os, "FASTQ files", QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath());
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            GTUtilsWizard::setParameter(os, "Reference genome", QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/reference_1K.fa.gz").absoluteFilePath());
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Raw DNA-Seq Data Processing", QStringList() << "Single-end"));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Raw DNA-Seq Data Processing Wizard", new custom()));
+
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "NGS data analysis"
+                                                << "Raw DNA-Seq data processing...");
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTLogTracer l;
+    CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+    //Expected: The dashboard appears
+    GTUtilsDashboard::getDashboard(os);
+    //There should be no notifications.
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Unexpected notification");
+}
+
+
 GUI_TEST_CLASS_DEFINITION(test_6953) {
     // Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
@@ -6393,8 +6438,8 @@ GUI_TEST_CLASS_DEFINITION(test_6953) {
 
     CHECK_SET_ERR(names1[2] == "Phaneroptera_falcata_1", QString("Unexpected name, expected: \"Phaneroptera_falcata_1\", current: %1").arg(names1[2]));
     CHECK_SET_ERR(names1[3] == "Isophya_altaica_EF540820_1", QString("Unexpected name, expected: \"Isophya_altaica_EF540820_1\", current: %1").arg(names1[3]));
-
 }
+
 GUI_TEST_CLASS_DEFINITION(test_6954) {
     // Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
@@ -6423,8 +6468,8 @@ GUI_TEST_CLASS_DEFINITION(test_6954) {
 
     // Expected state: the sequence is inserted into the project because the focus now is on the project list.
     GTUtilsProjectTreeView::checkItem(os, "Phaneroptera_falcata");
-
 }
+
 GUI_TEST_CLASS_DEFINITION(test_6959) {
     // Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
@@ -6513,7 +6558,6 @@ GUI_TEST_CLASS_DEFINITION(test_6959) {
     CHECK_SET_ERR(nameList3[3] == "Mecopoda_sp.__Malaysia_", "The 4 sequence is incorrect");
     CHECK_SET_ERR(nameList3[4] == "Bicolorana_bicolor_EF540830", "The 5 sequence is incorrect");
     CHECK_SET_ERR(nameList3[5] == "Conocephalus_discolor", "The 6 sequence is incorrect");
-
 }
 }    // namespace GUITest_regression_scenarios
 
