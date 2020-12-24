@@ -61,19 +61,7 @@ SpadesSupport::SpadesSupport()
     dependencies << PythonSupport::ET_PYTHON_ID;
 }
 
-/** SPAdes is available only on Linux and Mac. */
-static bool isSupported() {
-#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
-    return true;
-#else
-    return false;
-#endif
-}
-
 void SpadesSupport::checkIn() {
-    if (!isSupported()) {
-        return;
-    }
     AppContext::getExternalToolRegistry()->registerEntry(new SpadesSupport());
 
     QStringList genomeReadsFormats;
