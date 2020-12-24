@@ -210,7 +210,7 @@ bool TaskSchedulerImpl::processFinishedTasks() {
 
         Task *task = ti->task;
         priorityQueue.removeAt(i);
-        if (task->hasFlags(TaskFlag_RunMessageLoopOnly)) {
+        if (task->hasFlags(TaskFlag_RunMessageLoopOnly) && ti->thread != nullptr) {
             QCoreApplication::postEvent(ti->thread,
                                         new QEvent(static_cast<QEvent::Type>(TERMINATE_MESSAGE_LOOP_EVENT_TYPE)));
         }
@@ -223,7 +223,7 @@ bool TaskSchedulerImpl::processFinishedTasks() {
             SAFE_POINT(task != NULL, "When notifying parentTask about finished task: task is NULL", hasFinished);
             propagateStateToParent(task);
             QList<Task *> newSubTasks;
-            if (parentTask->hasFlags(TaskFlag_RunMessageLoopOnly)) {
+            if (parentTask->hasFlags(TaskFlag_RunMessageLoopOnly) && pti->thread != nullptr) {
                 QCoreApplication::postEvent(pti->thread,
                                             new QEvent(static_cast<QEvent::Type>(GET_NEW_SUBTASKS_EVENT_TYPE)));
                 while (!pti->thread->newSubtasksObtained && pti->thread->isRunning()) {
@@ -364,8 +364,16 @@ QString TaskSchedulerImpl::tryLockResources(Task *task, bool prepareStage, bool 
     } else {    //task must be Prepared or Running. Task can be 'Running' if it has subtasks
         SAFE_POINT(task->getState() == Task::State_Running || task->getState() == Task::State_Prepared, QString("Attempt to lock run-stage for task in state: %1!").arg(task->getState()), L10N::internalError());
     }
-    if (!prepareStage && !threadsResource->tryAcquire()) {
-        return tr("Waiting for resource '%1', count: %2").arg(threadsResource->name).arg(1);
+    bool isThreadResourceAcquired = false;
+    // TaskFlag_RunMessageLoopOnly is not a computational task but a message loop (WD scheduling) task.
+    // We can't reserve threads for TaskFlag_RunMessageLoopOnly because it may lead to deadlocks when no thread is available for the WD scheduler
+    // to work but there are child tasks with locked threads waiting for instructions from the WD scheduler.
+    bool isThreadResourceNeeded = !prepareStage && !task->hasFlags(TaskFlag_RunMessageLoopOnly);
+    if (isThreadResourceNeeded) {
+        if (!threadsResource->tryAcquire()) {
+            return tr("Waiting for resource '%1', count: %2").arg(threadsResource->name).arg(1);
+        }
+        isThreadResourceAcquired = true;
     }
 
     TaskResources &tres = getTaskResources(task);
@@ -423,7 +431,7 @@ QString TaskSchedulerImpl::tryLockResources(Task *task, bool prepareStage, bool 
         }
         taskRes.locked = false;
     }
-    if (!prepareStage) {
+    if (isThreadResourceAcquired) {
         threadsResource->release();
     }
 
@@ -436,7 +444,8 @@ void TaskSchedulerImpl::releaseResources(TaskInfo *ti, bool prepareStage) {
     if (!(prepareStage ? ti->hasLockedPrepareResources : ti->hasLockedRunResources)) {
         return;
     }
-    if (!prepareStage) {
+    bool isThreadResourceUsed = !prepareStage && !ti->task->hasFlags(TaskFlag_RunMessageLoopOnly);
+    if (isThreadResourceUsed) {
         threadsResource->release();
     }
     TaskResources &tres = getTaskResources(ti->task);
