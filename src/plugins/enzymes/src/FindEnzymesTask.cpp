@@ -26,6 +26,7 @@
 #include <U2Core/CreateAnnotationTask.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/GHints.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/Log.h>
 #include <U2Core/ProjectModel.h>
@@ -380,46 +381,38 @@ bool FindEnzymesAutoAnnotationUpdater::checkConstraints(const AutoAnnotationCons
     return constraints.alphabet == nullptr ? false : constraints.alphabet->isNucleic();
 }
 
-/** Search (include) and exclude regions are saved per-sequence object in the object attributes. */
-#define ENZYMES_SEARCH_REGION_START "FindEnzymes_searchRegion_start"
-#define ENZYMES_SEARCH_REGION_END "FindEnzymes_searchRegion_end"
-#define ENZYMES_EXCLUDE_REGION_START "FindEnzymes_excludeRegion_start"
-#define ENZYMES_EXCLUDE_REGION_END "FindEnzymes_excludeRegion_end"
+/** Search (include) and exclude regions are saved per-sequence object in the persistent object hints which are saved in the project file. */
+#define ENZYMES_SEARCH_REGION "FindEnzymes_searchRegion"
+#define ENZYMES_EXCLUDE_REGION "FindEnzymes_excludeRegion"
 
-/** These 2 regions are used for read-only objects (like public DBI) that can't store attributes. */
-static U2Region lastDefaultSearchRegion;
-static U2Region lastDefaultExcludeRegion;
+static void setRegionToHints(GObject *object, const QString &hintName, const U2Region &region) {
+    GHints *objectHints = object->getGHints();
+    if (region.isEmpty()) {
+        objectHints->remove(hintName);    // same as default, no need to save.
+        return;
+    }
+    objectHints->set(hintName, QVariant::fromValue<U2Region>(region));
+}
+
+static U2Region getRegionFromHints(const GObject *object, const QString &hintName) {
+    GHints *objectHints = object->getGHints();
+    return objectHints->get(hintName, QVariant::fromValue<U2Region>(U2Region())).value<U2Region>();
+}
 
 U2Region FindEnzymesAutoAnnotationUpdater::getLastSearchRegionForObject(const U2SequenceObject *sequenceObject) {
-    qint64 searchRegionStart = sequenceObject->getIntegerAttribute(ENZYMES_SEARCH_REGION_START);
-    qint64 searchRegionEnd = sequenceObject->getIntegerAttribute(ENZYMES_SEARCH_REGION_END);
-    U2Region region(searchRegionStart, searchRegionEnd - searchRegionStart);
-    return region.isEmpty() && sequenceObject->isStateLocked() ? lastDefaultSearchRegion : region;
+    return getRegionFromHints(sequenceObject, ENZYMES_SEARCH_REGION);
 }
 
 void FindEnzymesAutoAnnotationUpdater::setLastSearchRegionForObject(U2SequenceObject *sequenceObject, const U2Region &region) {
-    if (sequenceObject->isStateLocked()) {
-        lastDefaultSearchRegion = region;
-        return;
-    }
-    sequenceObject->setIntegerAttribute(ENZYMES_SEARCH_REGION_START, region.startPos);
-    sequenceObject->setIntegerAttribute(ENZYMES_SEARCH_REGION_END, region.endPos());
+    setRegionToHints(sequenceObject, ENZYMES_SEARCH_REGION, region);
 }
 
 U2Region FindEnzymesAutoAnnotationUpdater::getLastExcludeRegionForObject(const U2SequenceObject *sequenceObject) {
-    qint64 excludeRegionStart = sequenceObject->getIntegerAttribute(ENZYMES_EXCLUDE_REGION_START);
-    qint64 excludeRegionEnd = sequenceObject->getIntegerAttribute(ENZYMES_EXCLUDE_REGION_END);
-    U2Region region(excludeRegionStart, excludeRegionEnd - excludeRegionStart);
-    return region.isEmpty() && sequenceObject->isStateLocked() ? lastDefaultExcludeRegion : region;
+    return getRegionFromHints(sequenceObject, ENZYMES_EXCLUDE_REGION);
 }
 
 void FindEnzymesAutoAnnotationUpdater::setLastExcludeRegionForObject(U2SequenceObject *sequenceObject, const U2Region &region) {
-    if (sequenceObject->isStateLocked()) {
-        lastDefaultExcludeRegion = region;
-        return;
-    }
-    sequenceObject->setIntegerAttribute(ENZYMES_EXCLUDE_REGION_START, region.startPos);
-    sequenceObject->setIntegerAttribute(ENZYMES_EXCLUDE_REGION_END, region.endPos());
+    setRegionToHints(sequenceObject, ENZYMES_EXCLUDE_REGION, region);
 }
 
 }    // namespace U2
