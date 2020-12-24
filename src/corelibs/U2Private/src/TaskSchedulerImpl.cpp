@@ -210,7 +210,7 @@ bool TaskSchedulerImpl::processFinishedTasks() {
 
         Task *task = ti->task;
         priorityQueue.removeAt(i);
-        if (task->hasFlags(TaskFlag_RunMessageLoopOnly)) {
+        if (task->hasFlags(TaskFlag_RunMessageLoopOnly) && ti->thread != nullptr) {
             QCoreApplication::postEvent(ti->thread,
                                         new QEvent(static_cast<QEvent::Type>(TERMINATE_MESSAGE_LOOP_EVENT_TYPE)));
         }
@@ -223,7 +223,7 @@ bool TaskSchedulerImpl::processFinishedTasks() {
             SAFE_POINT(task != NULL, "When notifying parentTask about finished task: task is NULL", hasFinished);
             propagateStateToParent(task);
             QList<Task *> newSubTasks;
-            if (parentTask->hasFlags(TaskFlag_RunMessageLoopOnly)) {
+            if (parentTask->hasFlags(TaskFlag_RunMessageLoopOnly) && pti->thread != nullptr) {
                 QCoreApplication::postEvent(pti->thread,
                                             new QEvent(static_cast<QEvent::Type>(GET_NEW_SUBTASKS_EVENT_TYPE)));
                 while (!pti->thread->newSubtasksObtained && pti->thread->isRunning()) {
@@ -364,8 +364,16 @@ QString TaskSchedulerImpl::tryLockResources(Task *task, bool prepareStage, bool 
     } else {    //task must be Prepared or Running. Task can be 'Running' if it has subtasks
         SAFE_POINT(task->getState() == Task::State_Running || task->getState() == Task::State_Prepared, QString("Attempt to lock run-stage for task in state: %1!").arg(task->getState()), L10N::internalError());
     }
-    if (!prepareStage && !threadsResource->tryAcquire()) {
-        return tr("Waiting for resource '%1', count: %2").arg(threadsResource->name).arg(1);
+    bool isThreadResourceAcquired = false;
+    // TaskFlag_RunMessageLoopOnly is not a computational task but a message loop (WD scheduling) task.
+    // We can't reserve threads for TaskFlag_RunMessageLoopOnly because it may lead to deadlocks when no thread is available for the WD scheduler
+    // to work but there are child tasks with locked threads waiting for instructions from the WD scheduler.
+    bool isThreadResourceNeeded = !prepareStage && !task->hasFlags(TaskFlag_RunMessageLoopOnly);
+    if (isThreadResourceNeeded) {
+        if (!threadsResource->tryAcquire()) {
+            return tr("Waiting for resource '%1', count: %2").arg(threadsResource->name).arg(1);
+        }
+        isThreadResourceAcquired = true;
     }
 
     TaskResources &tres = getTaskResources(task);
@@ -423,7 +431,7 @@ QString TaskSchedulerImpl::tryLockResources(Task *task, bool prepareStage, bool 
         }
         taskRes.locked = false;
     }
-    if (!prepareStage) {
+    if (!prepareStage && isThreadResourceAcquired) {
         threadsResource->release();
     }
 
@@ -436,7 +444,8 @@ void TaskSchedulerImpl::releaseResources(TaskInfo *ti, bool prepareStage) {
     if (!(prepareStage ? ti->hasLockedPrepareResources : ti->hasLockedRunResources)) {
         return;
     }
-    if (!prepareStage) {
+    bool isThreadResourceUsed = !prepareStage && !ti->task->hasFlags(TaskFlag_RunMessageLoopOnly);
+    if (isThreadResourceUsed) {
         threadsResource->release();
     }
     TaskResources &tres = getTaskResources(ti->task);
@@ -679,16 +688,16 @@ QDateTime TaskSchedulerImpl::estimatedFinishTime(Task *task) const {
 
 static QString state2String(Task::State state) {
     switch (state) {
-    case Task::State_New:
-        return TaskSchedulerImpl::tr("New");
-    case Task::State_Prepared:
-        return TaskSchedulerImpl::tr("Prepared");
-    case Task::State_Running:
-        return TaskSchedulerImpl::tr("Running");
-    case Task::State_Finished:
-        return TaskSchedulerImpl::tr("Finished");
-    default:
-        assert(0);
+        case Task::State_New:
+            return TaskSchedulerImpl::tr("New");
+        case Task::State_Prepared:
+            return TaskSchedulerImpl::tr("Prepared");
+        case Task::State_Running:
+            return TaskSchedulerImpl::tr("Running");
+        case Task::State_Finished:
+            return TaskSchedulerImpl::tr("Finished");
+        default:
+            assert(0);
     }
     return TaskSchedulerImpl::tr("Invalid name");
 }
@@ -771,51 +780,51 @@ void TaskSchedulerImpl::promoteTask(TaskInfo *ti, Task::State newState) {
 
     checkSerialPromotion(pti, ti->task);
     switch (newState) {
-    case Task::State_Prepared:
-        if (pti != NULL) {
-            pti->numPreparedSubtasks++;
-        }
-        if (ti->task->isTopLevelTask() && ti->task->isVerboseLogMode()) {
-            taskLog.info(tr("Starting {%1} task").arg(ti->task->getTaskName()));
-        }
-        break;
-    case Task::State_Running:
-        tti.startTime = GTimer::currentTimeMicros();
-        if (pti != NULL) {
-            pti->numPreparedSubtasks--;
-            pti->numRunningSubtasks++;
-            if (pti->task->getState() < Task::State_Running) {
-                assert(pti->task->getState() == Task::State_Prepared);
-                promoteTask(pti, Task::State_Running);
+        case Task::State_Prepared:
+            if (pti != NULL) {
+                pti->numPreparedSubtasks++;
             }
-        }
-        break;
-    case Task::State_Finished:
-        checkFinishedState(ti);
-        tti.finishTime = GTimer::currentTimeMicros();
-        tsi.setDescription(QString());
-        if (pti != NULL) {
-            if (ti->selfRunFinished) {
-                pti->numRunningSubtasks--;
+            if (ti->task->isTopLevelTask() && ti->task->isVerboseLogMode()) {
+                taskLog.info(tr("Starting {%1} task").arg(ti->task->getTaskName()));
             }
-            assert(pti->numRunningSubtasks >= 0);
-            pti->numFinishedSubtasks++;
-            assert(pti->numFinishedSubtasks <= pti->task->getSubtasks().size());
-        }
-        if (ti->task->isTopLevelTask()) {
-            if (tsi.hasError() && !tsi.cancelFlag) {
-                taskLog.error(tr("Task {%1} finished with error: %2").arg(task->getTaskName()).arg(tsi.getError()));
-            } else if (tsi.cancelFlag) {
-                if (ti->task->isVerboseOnTaskCancel()) {
-                    taskLog.info(tr("Task {%1} canceled").arg(ti->task->getTaskName()));
+            break;
+        case Task::State_Running:
+            tti.startTime = GTimer::currentTimeMicros();
+            if (pti != NULL) {
+                pti->numPreparedSubtasks--;
+                pti->numRunningSubtasks++;
+                if (pti->task->getState() < Task::State_Running) {
+                    assert(pti->task->getState() == Task::State_Prepared);
+                    promoteTask(pti, Task::State_Running);
                 }
-            } else if (ti->task->isVerboseLogMode()) {
-                taskLog.info(tr("Task {%1} finished").arg(ti->task->getTaskName()));
             }
-        }
-        break;
-    default:
-        assert(0);
+            break;
+        case Task::State_Finished:
+            checkFinishedState(ti);
+            tti.finishTime = GTimer::currentTimeMicros();
+            tsi.setDescription(QString());
+            if (pti != NULL) {
+                if (ti->selfRunFinished) {
+                    pti->numRunningSubtasks--;
+                }
+                assert(pti->numRunningSubtasks >= 0);
+                pti->numFinishedSubtasks++;
+                assert(pti->numFinishedSubtasks <= pti->task->getSubtasks().size());
+            }
+            if (ti->task->isTopLevelTask()) {
+                if (tsi.hasError() && !tsi.cancelFlag) {
+                    taskLog.error(tr("Task {%1} finished with error: %2").arg(task->getTaskName()).arg(tsi.getError()));
+                } else if (tsi.cancelFlag) {
+                    if (ti->task->isVerboseOnTaskCancel()) {
+                        taskLog.info(tr("Task {%1} canceled").arg(ti->task->getTaskName()));
+                    }
+                } else if (ti->task->isVerboseLogMode()) {
+                    taskLog.info(tr("Task {%1} finished").arg(ti->task->getTaskName()));
+                }
+            }
+            break;
+        default:
+            assert(0);
     }
 #ifdef _DEBUG
     Task *parentTask = task->getParentTask();
@@ -824,18 +833,18 @@ void TaskSchedulerImpl::promoteTask(TaskInfo *ti, Task::State newState) {
         localTotalSubs = localNewSubs = localPreparedSubs = localRunningSubs = localFinishedSubs = 0;
         foreach (const QPointer<Task> &sub, parentTask->getSubtasks()) {
             switch (sub->getState()) {
-            case Task::State_New:
-                localNewSubs++;
-                break;
-            case Task::State_Prepared:
-                localPreparedSubs++;
-                break;
-            case Task::State_Running:
-                localRunningSubs++;
-                break;
-            case Task::State_Finished:
-                localFinishedSubs++;
-                break;
+                case Task::State_New:
+                    localNewSubs++;
+                    break;
+                case Task::State_Prepared:
+                    localPreparedSubs++;
+                    break;
+                case Task::State_Running:
+                    localRunningSubs++;
+                    break;
+                case Task::State_Finished:
+                    localFinishedSubs++;
+                    break;
             }
             localTotalSubs++;
         }
@@ -1070,26 +1079,26 @@ void TaskThread::run() {
 bool TaskThread::event(QEvent *event) {
     QTimerEvent *timerEvent = NULL;
     switch (static_cast<int>(event->type())) {
-    case GET_NEW_SUBTASKS_EVENT_TYPE:
-        getNewSubtasks();
-        break;
-    case TERMINATE_MESSAGE_LOOP_EVENT_TYPE:
-        terminateMessageLoop();
-        break;
-    case PAUSE_THREAD_EVENT_TYPE:
-        pause();
-        break;
-    case QEvent::Timer:
-        timerEvent = dynamic_cast<QTimerEvent *>(event);
-        assert(NULL != timerEvent);
-        Q_UNUSED(timerEvent);
+        case GET_NEW_SUBTASKS_EVENT_TYPE:
+            getNewSubtasks();
+            break;
+        case TERMINATE_MESSAGE_LOOP_EVENT_TYPE:
+            terminateMessageLoop();
+            break;
+        case PAUSE_THREAD_EVENT_TYPE:
+            pause();
+            break;
+        case QEvent::Timer:
+            timerEvent = dynamic_cast<QTimerEvent *>(event);
+            assert(NULL != timerEvent);
+            Q_UNUSED(timerEvent);
 
-        if (ti->task->hasFlags(TaskFlag_RunMessageLoopOnly) && (ti->task->isCanceled() || ti->task->hasError())) {
-            exit();
-        }
-        break;
-    default:
-        return false;
+            if (ti->task->hasFlags(TaskFlag_RunMessageLoopOnly) && (ti->task->isCanceled() || ti->task->hasError())) {
+                exit();
+            }
+            break;
+        default:
+            return false;
     }
     return true;
 }
