@@ -40,7 +40,7 @@
 namespace U2 {
 
 CheckUpdatesTask::CheckUpdatesTask(bool startUp)
-    : Task(tr("Check for updates"), TaskFlag_None) {
+    : Task(tr("Check for updates"), TaskFlag_SilentCancelOnShutdown) {
     runOnStartup = startUp;
     setVerboseLogMode(true);
     startError = false;

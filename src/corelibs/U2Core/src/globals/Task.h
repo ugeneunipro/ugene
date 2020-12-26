@@ -150,48 +150,86 @@ public:
 
 enum TaskFlag {
 
-    // Base flags
+    /** The task has default behavior: all prepare/run/report methods are called. */
     TaskFlag_None = 0,
 
+    /** No thread will be allocated for the task and no 'run' method will be called. */
     TaskFlag_NoRun = 1 << 1,
 
-    TaskFlag_RunBeforeSubtasksFinished = 1 << 2,    //subtask can be run before its subtasks finished
+    /** The 'run' method of the task can be safely run before all subtasks are finished. */
+    TaskFlag_RunBeforeSubtasksFinished = 1 << 2,
 
-    TaskFlag_NoAutoDelete = 1 << 3,    //for top level tasks only: task is not deleted by scheduler after task is finished
+    /** Top level task flag: task is not deleted by scheduler after task is finished. */
+    TaskFlag_NoAutoDelete = 1 << 3,
 
-    TaskFlag_RunMessageLoopOnly = 1 << 4,    // for tasks that shouldn't run but should conduct processing of their subtasks in a separate thread
+    /**
+     * Th task will communicate with subtasks from its run() method in a separate thread.
+     * The thread allocated for such task is not considered as computational thread and does not count towards thread limits.
+     */
+    TaskFlag_RunMessageLoopOnly = 1 << 4,
 
-    TaskFlag_RunInMainThread = 1 << 5,    // for tasks that need access to GUI, they will be run in main thread
+    /**
+     * Run method for the task is called from the main thread.
+     * Usually the flag is used for tasks which access GUI state.
+     */
+    TaskFlag_RunInMainThread = 1 << 5,
 
-    // Behavior based on subtasks
-    TaskFlag_FailOnSubtaskError = 1 << 10,    //subtask error is propagated automatically
+    /**
+     * The task will be marked as failed if any of subtasks fails.
+     * The task will inherit error message from the failed subtask.
+     */
+    TaskFlag_FailOnSubtaskError = 1 << 10,
 
-    TaskFlag_FailOnSubtaskCancel = 1 << 11,    // error and cancel flag are set if subtask was canceled and parent is neither canceled nor have errors
+    /** The task will be marked as failed if any of subtasks is cancelled. */
+    TaskFlag_FailOnSubtaskCancel = 1 << 11,
 
-    TaskFlag_PropagateSubtaskDesc = 1 << 12,    // task use description from the subtask (last changed)
+    /** Task scheduler will update description of the task with a description of the last changed (progress/state) subtask. */
+    TaskFlag_PropagateSubtaskDesc = 1 << 12,
 
-    TaskFlag_CancelOnSubtaskCancel = 1 << 13,    // only cancel flag is set if subtask was canceled and parent is neither canceled nor have errors
+    /** The task will be marked as canceled if any of subtasks is cancelled. */
+    TaskFlag_CancelOnSubtaskCancel = 1 << 13,
 
-    // Reporting options
-    TaskFlag_ReportingIsSupported = 1 << 20,    // task supports reporting
+    /** The task supports generateReport() to produce a detailed visual report when it is finished. */
+    TaskFlag_ReportingIsSupported = 1 << 20,
 
-    TaskFlag_ReportingIsEnabled = 1 << 21,    // task is asked to generate report
+    /** For tasks that support reporting (see TaskFlag_ReportingIsSupported) the flag indicates that the reporting is enabled and generateReport() will be called. */
+    TaskFlag_ReportingIsEnabled = 1 << 21,
 
-    TaskFlag_VerboseStateLog = 1 << 22,    //tasks prepared/finished state is dumped to the 'info' log category. Effective for top-level tasks only
+    /**
+     * The task will log prepared/finished state into the 'info' logs category. Effective for top-level tasks only.
+     * Used to make important system/user tasks more visible/locatable in log.
+     */
+    TaskFlag_VerboseStateLog = 1 << 22,
 
-    TaskFlag_MinimizeSubtaskErrorText = 1 << 23,    // for TaskFlag_FailOnSubtaskError task minimizes the error text
-    // excluding task-names info from the text
-    // applies this behaviour for the current task and all children of the current task
+    /**
+     * For tasks with TaskFlag_FailOnSubtaskError flag minimizes the final error text by excluding sub-task-names from the error message.
+     * The flag applies this for the current task and all children recursively.
+     */
+    TaskFlag_MinimizeSubtaskErrorText = 1 << 23,
 
-    TaskFlag_SuppressErrorNotification = 1 << 24,    //for top level tasks only: if task fails, tells if notification is shown
+    /** Do not show error notification on task failure. Effective for top-level tasks only. */
+    TaskFlag_SuppressErrorNotification = 1 << 24,
 
-    TaskFlag_VerboseOnTaskCancel = 1 << 25,    // when a task is cancelled, it is dumped to the log ('info' category)
+    /** When the task is cancelled, the state is dumped to the 'info' log category. */
+    TaskFlag_VerboseOnTaskCancel = 1 << 25,
 
-    TaskFlag_OnlyNotificationReport = 1 << 26,    // task is asked to generate report
+    /** When the task is finished a user notification will appear. */
+    TaskFlag_OnlyNotificationReport = 1 << 26,
 
+    /**
+     * The task will collect all warnings from all its children in TaskStateInfo.warnings list.
+     * When set the flag applies recursively for all children.
+     */
     TaskFlag_CollectChildrenWarnings = 1 << 27,
 
-    TaskFlag_ConcatenateChildrenErrors = 1 << 28    // task collects errors from all children and unites them into one report
+    /** The task will collect errors from all children and unite them into a single report. */
+    TaskFlag_ConcatenateChildrenErrors = 1 << 28,
+
+    /**
+     * When set the global shutdown task will not ask user if to cancel the task or not.
+     * The flag should be used for background service tasks.
+     */
+    TaskFlag_SilentCancelOnShutdown = 1 << 29
 };
 
 #define TaskFlags_FOSCOE (U2::TaskFlags(U2::TaskFlag_FailOnSubtaskError) | U2::TaskFlag_FailOnSubtaskCancel)

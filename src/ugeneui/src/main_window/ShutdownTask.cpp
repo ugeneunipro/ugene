@@ -107,20 +107,23 @@ void ShutdownTask::prepare() {
     Task *ct = new CloseWindowsTask();
     addSubTask(ct);
 
-    QList<Task *> activeTopTasks = AppContext::getTaskScheduler()->getTopLevelTasks();
-    activeTopTasks.removeOne(this);
-    if (!activeTopTasks.isEmpty()) {
-        QStringList sl;
-        for (Task *task : activeTopTasks) {
-            sl.append(task->getTaskName());
+    QList<Task *> activeTopLevelTaskList = AppContext::getTaskScheduler()->getTopLevelTasks();
+    activeTopLevelTaskList.removeOne(this);
+    if (!activeTopLevelTaskList.isEmpty()) {
+        QStringList activeUserTaskNameList;
+        for (Task *task : activeTopLevelTaskList) {
+            if (!task->hasFlags(TaskFlag_SilentCancelOnShutdown)) {
+                activeUserTaskNameList.append(task->getTaskName());
+            }
         }
-
         bool isDisableCancelOnShutdownConfirmation = qgetenv("UGENE_GUI_TEST") == "1";
-        QMessageBox::StandardButton ret = isDisableCancelOnShutdownConfirmation ? QMessageBox::Ok :
-                                                                                  QMessageBox::question(mw->getQMainWindow(), tr("Shutdown confirmation"), tr("There are active tasks. Stop them now?") + QString("\n\n - %1").arg(sl.join("\n - ")), QMessageBox::Ok | QMessageBox::Cancel);
-        if (ret != QMessageBox::Ok) {
-            cancel();
-            return;
+        if (!isDisableCancelOnShutdownConfirmation && !activeUserTaskNameList.isEmpty()) {
+            QString message = tr("There are active tasks. Stop them now?") + QString("\n\n - %1").arg(activeUserTaskNameList.join("\n - "));
+            QMessageBox::StandardButton ret = QMessageBox::question(mw->getQMainWindow(), tr("Shutdown confirmation"), message, QMessageBox::Ok | QMessageBox::Cancel);
+            if (ret != QMessageBox::Ok) {
+                cancel();
+                return;
+            }
         }
         // To be run before closing any views
         // otherwise it may cancel tasks produced by closing windows (e.g. SaveWorkflowTask)
