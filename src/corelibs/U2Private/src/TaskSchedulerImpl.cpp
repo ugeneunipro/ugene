@@ -195,7 +195,7 @@ bool TaskSchedulerImpl::processFinishedTasks() {
             }
         }
 
-        if ((NULL != pti) && pti->task->hasFlags(TaskFlag_RunMessageLoopOnly) && (NULL != pti->thread) && pti->thread->isPaused) {
+        if (pti != nullptr && pti->task->hasFlags(TaskFlag_RunMessageLoopOnly) && pti->thread != nullptr && pti->thread->isPaused) {
             continue;
         }
 
@@ -210,6 +210,8 @@ bool TaskSchedulerImpl::processFinishedTasks() {
 
         Task *task = ti->task;
         priorityQueue.removeAt(i);
+
+        // Send TERMINATE_MESSAGE_LOOP_EVENT_TYPE to TaskFlag_RunMessageLoopOnly task with allocated thread.
         if (task->hasFlags(TaskFlag_RunMessageLoopOnly) && ti->thread != nullptr) {
             QCoreApplication::postEvent(ti->thread,
                                         new QEvent(static_cast<QEvent::Type>(TERMINATE_MESSAGE_LOOP_EVENT_TYPE)));
@@ -217,7 +219,7 @@ bool TaskSchedulerImpl::processFinishedTasks() {
         delete ti;    //task is removed from priority queue
 
         // notify parent that subtask finished, check if there are new subtasks from parent
-        if (pti != NULL) {
+        if (pti != nullptr) {
             Task *parentTask = pti->task;
             SAFE_POINT(parentTask != NULL, "When notifying parentTask about finished task: parentTask is NULL", hasFinished);
             SAFE_POINT(task != NULL, "When notifying parentTask about finished task: task is NULL", hasFinished);
