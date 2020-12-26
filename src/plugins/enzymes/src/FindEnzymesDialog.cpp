@@ -527,8 +527,6 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext *advSequenceContex
     sl_onSelectionModified(enzSel->getTotalNumber(), enzSel->getNumSelected());
 }
 
-#define MAX_ENZYMES_TO_FIND 100 * 1000
-
 void FindEnzymesDialog::sl_onSelectionModified(int total, int nChecked) {
     statusLabel->setText(tr("Total number of enzymes: %1, selected %2").arg(total).arg(nChecked));
 }
@@ -567,6 +565,14 @@ void FindEnzymesDialog::accept() {
     if (minHitVal > maxHitVal) {
         QMessageBox::critical(this, tr("Error!"), tr("Minimum hit value must be lesser or equal then maximum!"));
         return;
+    }
+
+    if (FindEnzymesAutoAnnotationUpdater::isTooManyAnnotationsInTheResult(seqCtx->getSequenceLength(), selectedEnzymes.size())) {
+        QString message = tr("Too many results to render. Please reduce the search region or number of selected enzymes.");
+        int ret = QMessageBox::question(this, tr("Warning!"), message, QMessageBox::Cancel | QMessageBox::Ignore);
+        if (ret == QMessageBox::Cancel) {
+            return;
+        }
     }
 
     saveSettings();
