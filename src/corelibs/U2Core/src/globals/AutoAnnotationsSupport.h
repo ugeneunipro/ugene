@@ -101,6 +101,7 @@ private:
 /**
  * Maximum number of annotations UGENE can handle safely.
  * Auto-annotation tasks are recommended to avoid producing more annotation than given number to avoid UI freeze.
+ * The value is the result of testing on standard laptop (2020): rendering of 150k annotations takes ~ 0.25 seconds.
  */
 #define AUTO_ANNOTATION_MAX_ANNOTATIONS_ADV_CAN_HANDLE (150 * 1000)
 

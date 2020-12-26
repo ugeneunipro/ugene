@@ -322,7 +322,7 @@ void FindSingleEnzymeTask::cleanup() {
 }
 
 qint64 FindSingleEnzymeTask::estimateNumberOfEnzymesInSequence(qint64 sequenceLength, int variants) {
-    // The rough estimation from the tests: 1 enzymes can be found 5 times per 1000bp in both direct and complement strands.
+    // The rough estimation experimentally received from test on large DNA files : 1 enzymes can be found 5 times per 1000bp in both direct and complement strands.
     return qRound(5 * (sequenceLength / 1000.0) * variants);
 }
 
