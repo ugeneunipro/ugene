@@ -195,9 +195,7 @@ bool DashboardWidgetUtils::addOrUpdateTableRow(QGridLayout *gridLayout, const QS
 QString DashboardWidgetUtils::parseOpenUrlValueFromOnClick(const QString &onclickValue) {
     int prefixLen = QString("agent.openUrl('").length();
     int suffixLen = QString("')").length();
-    return onclickValue.length() > prefixLen + suffixLen ?
-               onclickValue.mid(prefixLen, onclickValue.length() - prefixLen - suffixLen) :
-               QString();
+    return onclickValue.length() > prefixLen + suffixLen ? onclickValue.mid(prefixLen, onclickValue.length() - prefixLen - suffixLen) : QString();
 }
 
 DashboardPopupMenu::DashboardPopupMenu(QAbstractButton *button, QWidget *parent)
@@ -312,6 +310,12 @@ void DashboardFileButton::sl_dashboardDirChanged(const QString &dashboardDir) {
     dashboardDirInfo = QFileInfo(dashboardDir);
 }
 
+/** Returns true if the url must be opened with OS, but not with UGENE. */
+static bool isOpenWithOsOverride(const QString &url) {
+    QString extension = QFileInfo(url).suffix().toLower();
+    return extension == "html" || extension == "htm";
+}
+
 void DashboardFileButton::sl_openFileClicked() {
     QString typeAndUrl = sender()->property(FILE_URL_KEY).toString();
     QStringList tokens = typeAndUrl.split("\n");
@@ -336,8 +340,7 @@ void DashboardFileButton::sl_openFileClicked() {
         }
     }
     // Some known file types, like auto-generated HTML reports should be opened by OS by default.
-    bool isOpenWithOsOverride = url.endsWith(".html") || url.endsWith(".htm");
-    if (type == "ugene" && !isOpenWithOsOverride) {
+    if (type == "ugene" && !isOpenWithOsOverride(url)) {
         QVariantMap hints;
         hints[ProjectLoaderHint_OpenBySystemIfFormatDetectionFailed] = true;
         Task *task = AppContext::getProjectLoader()->openWithProjectTask(fileInfo.absoluteFilePath(), hints);
