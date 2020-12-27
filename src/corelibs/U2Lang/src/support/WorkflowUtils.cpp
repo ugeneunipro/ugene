@@ -30,6 +30,7 @@
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/ExternalToolRunTask.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/Folder.h>
 #include <U2Core/GObject.h>
 #include <U2Core/L10n.h>
@@ -177,7 +178,7 @@ bool validateExternalTools(Actor *actor, NotificationsList &infoList) {
         }
 
         bool isToolFromAttribute = attr != nullptr && !attr->isDefaultValue();
-        isValid = isToolFromAttribute ? !attr->isEmpty() :!tool->getPath().isEmpty();
+        isValid = isToolFromAttribute ? !attr->isEmpty() : !tool->getPath().isEmpty();
         if (!isValid) {
             infoList << WorkflowNotification(WorkflowUtils::externalToolError(tool->getName()),
                                              actor->getId(),
@@ -1163,44 +1164,6 @@ bool WorkflowUtils::validateInputDbFolders(QString urls, NotificationsList &noti
     return res;
 }
 
-/**
- * Input @dirAbsPath must be an absolute path to a folder (or empty).
- * The method returns "true" if it is possible to create a file in it.
- */
-static bool canWriteToPath(QString dirAbsPath) {
-    if (dirAbsPath.isEmpty()) {
-        return true;
-    }
-    QFileInfo fi(dirAbsPath);
-    SAFE_POINT(fi.dir().isAbsolute(), "Not an absolute path!", false);
-
-    // Find out the folder that exists
-    QDir existenDir(dirAbsPath);
-    while (!existenDir.exists()) {
-        // Get upper folder
-        QString dirPath = existenDir.path();
-        QString dirName = existenDir.dirName();
-        dirPath.remove(    // remove dir name and slash (if any) from the path
-            dirPath.length() - dirName.length() - 1,
-            dirName.length() + 1);
-        if (dirPath.isEmpty()) {
-            return false;
-        }
-        existenDir.setPath(dirPath);
-    }
-
-    // Attempts to write a file to the folder.
-    // This assumes possibility to create any sub-folder, file, etc.
-    QFile file(existenDir.filePath("testWriteAccess.txt"));
-    if (!file.open(QIODevice::WriteOnly)) {
-        return false;
-    }
-    file.close();
-    file.remove();
-
-    return true;
-}
-
 bool WorkflowUtils::validateOutputFile(const QString &url, NotificationsList &notificationList) {
     if (url.isEmpty()) {
         return true;
@@ -1211,12 +1174,11 @@ bool WorkflowUtils::validateOutputFile(const QString &url, NotificationsList &no
         fi.setFile(QDir(WorkflowSettings::getWorkflowOutputDirectory()), url);
     }
 
-    if (canWriteToPath(fi.absolutePath())) {
+    if (FileAndDirectoryUtils::isDirectoryWritable(fi.absolutePath())) {
         return true;
-    } else {
-        notificationList << WorkflowNotification(tr("Can't access output file path: '%1'").arg(fi.absoluteFilePath()));
-        return false;
     }
+    notificationList << WorkflowNotification(tr("Can't access output file path: '%1'").arg(fi.absoluteFilePath()));
+    return false;
 }
 
 bool WorkflowUtils::validateOutputDir(const QString &url, NotificationsList &notificationList) {
@@ -1229,16 +1191,15 @@ bool WorkflowUtils::validateOutputDir(const QString &url, NotificationsList &not
         fi.setFile(QDir(WorkflowSettings::getWorkflowOutputDirectory()), url);
     }
 
-    if (canWriteToPath(fi.absoluteFilePath())) {
+    if (FileAndDirectoryUtils::isDirectoryWritable(fi.absoluteFilePath())) {
         return true;
-    } else {
-        notificationList << WorkflowNotification(tr("Workflow output folder '%1' can't be accessed. Check that the folder exists and you have"
-                                                    " enough permissions to write to it, or choose another folder in the UGENE Application Settings.")
-                                                     .arg(url),
-                                                 "",
-                                                 WorkflowNotification::U2_ERROR);
-        return false;
     }
+    notificationList << WorkflowNotification(tr("Workflow output folder '%1' can't be accessed. Check that the folder exists and you have"
+                                                " enough permissions to write to it, or choose another folder in the UGENE Application Settings.")
+                                                 .arg(url),
+                                             "",
+                                             WorkflowNotification::U2_ERROR);
+    return false;
 }
 
 bool WorkflowUtils::isSharedDbUrlAttribute(const Attribute *attr, const Actor *actor) {

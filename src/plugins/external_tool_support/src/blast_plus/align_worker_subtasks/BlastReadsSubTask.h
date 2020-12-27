@@ -49,7 +49,8 @@ public:
                       const QMap<SharedDbiDataHandler, QString> &readsNames,
                       DbiDataStorage *storage);
 
-    void prepare();
+    void prepare() override;
+    QList<Task *> onSubTaskFinished(Task *task) override;
 
     const QList<BlastAndSwReadTask *> &getBlastSubtasks() const;
 
@@ -60,7 +61,10 @@ private:
     const SharedDbiDataHandler reference;
     const int minIdentityPercent;
 
-    DbiDataStorage *storage;
+    /** Index of the next read to process (run BlastAndSwReadTask) in the list of reads. */
+    int readIndex;
+
+    DbiDataStorage *const storage;
 
     QList<BlastAndSwReadTask *> blastSubTasks;
 };

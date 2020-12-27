@@ -225,11 +225,9 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0001);
     REGISTER_TEST(GUITest_regression_scenarios::test_1499);
     REGISTER_TEST(GUITest_regression_scenarios::test_1548);
-    REGISTER_TEST(GUITest_regression_scenarios::test_3276);
-    REGISTER_TEST(GUITest_regression_scenarios::test_4209);*/
+    REGISTER_TEST(GUITest_regression_scenarios::test_3276);*/
 
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_create_annotation_widget::test_0038, "UGENE-4419");
-
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0004, "UGENE-4835");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0007, "UGENE-5188");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0014, "UGENE-5979");
@@ -237,11 +235,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1499, "UGENE-4791");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_1548, "UGENE-4791");
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3276, "Obsolete, should be replaced by UGENE-6104");
-
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_primer_library::test_0008, "UGENE-5609");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_shared_db_wd::run_workflow_gui_test_0003, "names conflict in database");
-
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_4209, "test consumes too much memory");
 
     REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3156, "drag and drop");
     REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3165, "drag and drop");
@@ -1228,6 +1223,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4188_3);
     REGISTER_TEST(GUITest_regression_scenarios::test_4194);
 
+    REGISTER_TEST(GUITest_regression_scenarios::test_4209);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4209_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4218);
     REGISTER_TEST(GUITest_regression_scenarios::test_4218_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4221);

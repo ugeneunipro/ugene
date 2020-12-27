@@ -56,8 +56,10 @@ BlastReadsSubTask::BlastReadsSubTask(const QString &dbPath,
       readsNames(readsNames),
       reference(reference),
       minIdentityPercent(minIdentityPercent),
+      readIndex(0),
       storage(storage) {
     setMaxParallelSubtasks(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
+    tpm = Progress_Manual;
 }
 
 void BlastReadsSubTask::prepare() {
@@ -65,12 +67,29 @@ void BlastReadsSubTask::prepare() {
     CHECK_EXT(!GUrlUtils::containSpaces(tempPath), setError(tr("The task uses a temporary folder to process the data. The folder path is required not to have spaces. "
                                                                "Please set up an appropriate path for the \"Temporary files\" parameter on the \"Directories\" tab of the UGENE Application Settings.")), );
 
-    foreach (const SharedDbiDataHandler &read, reads) {
-        BlastAndSwReadTask *subTask = new BlastAndSwReadTask(dbPath, read, reference, minIdentityPercent, readsNames[read], storage);
-        addSubTask(subTask);
-
-        blastSubTasks << subTask;
+    // Avoid adding too many subtasks at once. Large numbers of subtasks may work task scheduler slow and freeze the UI.
+    int firstBucketSize = qMin(getMaxParallelSubtasks(), reads.size());
+    for (readIndex = 0; readIndex < firstBucketSize; readIndex++) {
+        const SharedDbiDataHandler &read = reads[readIndex];
+        addSubTask(new BlastAndSwReadTask(dbPath, read, reference, minIdentityPercent, readsNames[read], storage));
     }
+}
+
+QList<Task *> BlastReadsSubTask::onSubTaskFinished(Task *task) {
+    QList<Task *> newSubtasks;
+    CHECK(!isCanceled(), newSubtasks);
+
+    BlastAndSwReadTask *blastTask = qobject_cast<BlastAndSwReadTask *>(task);
+    SAFE_POINT(blastTask != nullptr, "Must be a BlastAndSwReadTask", newSubtasks);
+    blastSubTasks << blastTask;
+    stateInfo.progress = qRound(100.0 * blastSubTasks.size() / reads.size());
+
+    if (readIndex < reads.size()) {
+        const SharedDbiDataHandler &read = reads[readIndex];
+        readIndex++;
+        newSubtasks << new BlastAndSwReadTask(dbPath, read, reference, minIdentityPercent, readsNames[read], storage);
+    }
+    return newSubtasks;
 }
 
 const QList<BlastAndSwReadTask *> &BlastReadsSubTask::getBlastSubtasks() const {
