@@ -1174,7 +1174,7 @@ bool WorkflowUtils::validateOutputFile(const QString &url, NotificationsList &no
         fi.setFile(QDir(WorkflowSettings::getWorkflowOutputDirectory()), url);
     }
 
-    if (FileAndDirectoryUtils::isDirectoryWritable(fi.absolutePath())) {
+    if (FileAndDirectoryUtils::canWriteToPath(fi.absolutePath())) {
         return true;
     }
     notificationList << WorkflowNotification(tr("Can't access output file path: '%1'").arg(fi.absoluteFilePath()));
@@ -1191,7 +1191,7 @@ bool WorkflowUtils::validateOutputDir(const QString &url, NotificationsList &not
         fi.setFile(QDir(WorkflowSettings::getWorkflowOutputDirectory()), url);
     }
 
-    if (FileAndDirectoryUtils::isDirectoryWritable(fi.absoluteFilePath())) {
+    if (FileAndDirectoryUtils::canWriteToPath(fi.absoluteFilePath())) {
         return true;
     }
     notificationList << WorkflowNotification(tr("Workflow output folder '%1' can't be accessed. Check that the folder exists and you have"

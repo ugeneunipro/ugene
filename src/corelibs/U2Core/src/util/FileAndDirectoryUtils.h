@@ -46,6 +46,12 @@ public:
     static QString getAbsolutePath(const QString &filePath);
     static bool isDirectoryWritable(const QString &path);
 
+    /**
+     * Returns "true" if it is possible to create a file (or a sub-path) in absoluteDirPath.
+     * The difference with 'isDirectoryWritable' is that this method doesn't check that the 'absoluteDirPath' dir exists.
+     */
+    static bool canWriteToPath(const QString &absoluteDirPath);
+
 private:
     static QString getFormatId(const FormatDetectionResult &r);
 

@@ -77,10 +77,10 @@ void BlastReadsSubTask::prepare() {
 
 QList<Task *> BlastReadsSubTask::onSubTaskFinished(Task *task) {
     QList<Task *> newSubtasks;
-    CHECK(!isCanceled(), newSubtasks);
+    CHECK(!isCanceled() && !hasError(), newSubtasks);
 
     BlastAndSwReadTask *blastTask = qobject_cast<BlastAndSwReadTask *>(task);
-    SAFE_POINT(blastTask != nullptr, "Must be a BlastAndSwReadTask", newSubtasks);
+    SAFE_POINT_EXT(blastTask != nullptr, setError("Must be a BlastAndSwReadTask"), newSubtasks);
     blastSubTasks << blastTask;
     stateInfo.progress = qRound(100.0 * blastSubTasks.size() / reads.size());
 
