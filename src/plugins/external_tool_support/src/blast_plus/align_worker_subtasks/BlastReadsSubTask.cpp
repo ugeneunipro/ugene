@@ -118,13 +118,13 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
       readName(readName),
       complement(false),
       skipped(false) {
-
     QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
     referenceLength = refObject->getSequenceLength();
 }
 
 void BlastAndSwReadTask::prepare() {
     blastResultDir = ExternalToolSupportUtils::createTmpDir("blast_reads", stateInfo);
+    CHECK_OP(stateInfo, );
     blastTask = getBlastTask();
     CHECK_OP(stateInfo, );
     SAFE_POINT_EXT(NULL != blastTask, setError("BLAST subtask is NULL"), );
