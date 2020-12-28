@@ -79,9 +79,10 @@ void MsaEditorTreeTab::sl_onCountChanged(int count) {
     }
 }
 
-void MsaEditorTreeTab::addTab(QWidget *page, const QString &label) {
-    QTabWidget::addTab(page, label);
+int MsaEditorTreeTab::addTab(QWidget *page, const QString &label) {
+    int tabIndex = QTabWidget::addTab(page, label);
     emit si_tabsCountChanged(count());
+    return tabIndex;
 }
 
 void MsaEditorTreeTab::deleteTree(int index) {
@@ -129,7 +130,7 @@ void MsaEditorTreeTab::sl_onCloseTab() {
 }
 
 MsaEditorTreeTabArea::MsaEditorTreeTabArea(MSAEditor *msaEditor, QWidget *parent)
-    : QWidget(parent), addTabButton(nullptr), editor(msaEditor), treeTabWidget(nullptr), currentLayout(nullptr) {
+    : QWidget(parent), editor(msaEditor), treeTabWidget(nullptr), currentLayout(nullptr) {
     initialize();
 }
 
@@ -148,8 +149,11 @@ MsaEditorTreeTab *MsaEditorTreeTabArea::createTabWidget() {
     return tabWidget;
 }
 
-void MsaEditorTreeTabArea::addTab(QWidget *page, const QString &label) {
-    treeTabWidget->addTab(page, label);
+void MsaEditorTreeTabArea::addTab(QWidget *page, const QString &label, bool activate) {
+    int tabIndex = treeTabWidget->addTab(page, label);
+    if (activate) {
+        treeTabWidget->setCurrentIndex(tabIndex);
+    }
 }
 
 void MsaEditorTreeTabArea::paintEvent(QPaintEvent *) {

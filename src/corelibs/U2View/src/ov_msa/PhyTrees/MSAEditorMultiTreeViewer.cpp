@@ -56,7 +56,7 @@ MSAEditorMultiTreeViewer::MSAEditorMultiTreeViewer(const QString &title, MSAEdit
 }
 
 void MSAEditorMultiTreeViewer::addTreeView(GObjectViewWindow *treeView) {
-    treeTabArea->addTab(treeView, treeView->getViewName());
+    treeTabArea->addTab(treeView, treeView->getViewName(), true);
     treeViewList.append(treeView);
 
     const QList<GObject *> &objects = treeView->getObjects();

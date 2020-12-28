@@ -37,8 +37,10 @@ class MsaEditorTreeTab : public QTabWidget {
 public:
     MsaEditorTreeTab(MSAEditor *msaEditor, QWidget *parent);
 
-    //TODO: method hides base class method.
-    void addTab(QWidget *page, const QString &label);
+    // TODO: method hides base class method to emit 'si_tabsCountChanged'.
+    //  The signal should be emitted from inside of 'virtual void tabInserted(int index)'
+    //  Need to re-check all use-cases before update.
+    int addTab(QWidget *page, const QString &label);
 
     void deleteTree(int index);
 
@@ -75,7 +77,8 @@ class MsaEditorTreeTabArea : public QWidget {
 public:
     MsaEditorTreeTabArea(MSAEditor *msaEditor, QWidget *parent);
 
-    void addTab(QWidget *page, const QString &label);
+    /** Adds new tab with the given content and title. Activates the tab if 'activate' is true. */
+    void addTab(QWidget *page, const QString &label, bool activate = false);
 
     MsaEditorTreeTab *getCurrentTabWidget() const {
         return treeTabWidget;
@@ -94,7 +97,6 @@ signals:
     void si_tabsCountChanged(int curTabsNumber);
 
 private:
-    QPushButton *addTabButton;
     MSAEditor *editor;
     MsaEditorTreeTab *treeTabWidget;
     QLayout *currentLayout;
