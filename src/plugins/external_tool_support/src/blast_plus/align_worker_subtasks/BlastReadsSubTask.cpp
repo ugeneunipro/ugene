@@ -67,27 +67,27 @@ void BlastReadsSubTask::prepare() {
     CHECK_EXT(!GUrlUtils::containSpaces(tempPath), setError(tr("The task uses a temporary folder to process the data. The folder path is required not to have spaces. "
                                                                "Please set up an appropriate path for the \"Temporary files\" parameter on the \"Directories\" tab of the UGENE Application Settings.")), );
 
-    // Avoid adding too many subtasks at once. Large numbers of subtasks may work task scheduler slow and freeze the UI.
+    // First create all tasks to keep the original reads order.
+    for (const SharedDbiDataHandler &read : reads) {
+        blastSubTasks << new BlastAndSwReadTask(dbPath, read, reference, minIdentityPercent, readsNames[read], storage);
+    }
+
+    // Avoid adding too many subtasks to the scheduler at once.
+    // Large numbers of subtasks will make task scheduler slow and freeze the UI.
     int firstBucketSize = qMin(getMaxParallelSubtasks(), reads.size());
     for (readIndex = 0; readIndex < firstBucketSize; readIndex++) {
-        const SharedDbiDataHandler &read = reads[readIndex];
-        addSubTask(new BlastAndSwReadTask(dbPath, read, reference, minIdentityPercent, readsNames[read], storage));
+        addSubTask(blastSubTasks[readIndex]);
     }
 }
 
 QList<Task *> BlastReadsSubTask::onSubTaskFinished(Task *task) {
     QList<Task *> newSubtasks;
     CHECK(!isCanceled() && !hasError(), newSubtasks);
-
-    BlastAndSwReadTask *blastTask = qobject_cast<BlastAndSwReadTask *>(task);
-    SAFE_POINT_EXT(blastTask != nullptr, setError("Must be a BlastAndSwReadTask"), newSubtasks);
-    blastSubTasks << blastTask;
-    stateInfo.progress = qRound(100.0 * blastSubTasks.size() / reads.size());
+    stateInfo.progress = qRound(100.0 * (readIndex + 1) / reads.size());
 
     if (readIndex < reads.size()) {
-        const SharedDbiDataHandler &read = reads[readIndex];
+        newSubtasks << blastSubTasks[readIndex];
         readIndex++;
-        newSubtasks << new BlastAndSwReadTask(dbPath, read, reference, minIdentityPercent, readsNames[read], storage);
     }
     return newSubtasks;
 }
@@ -118,13 +118,13 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
       readName(readName),
       complement(false),
       skipped(false) {
-    blastResultDir = ExternalToolSupportUtils::createTmpDir("blast_reads", stateInfo);
 
     QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
     referenceLength = refObject->getSequenceLength();
 }
 
 void BlastAndSwReadTask::prepare() {
+    blastResultDir = ExternalToolSupportUtils::createTmpDir("blast_reads", stateInfo);
     blastTask = getBlastTask();
     CHECK_OP(stateInfo, );
     SAFE_POINT_EXT(NULL != blastTask, setError("BLAST subtask is NULL"), );
