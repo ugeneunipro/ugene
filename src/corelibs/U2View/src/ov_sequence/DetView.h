@@ -48,7 +48,8 @@ class U2VIEW_EXPORT DetView : public GSequenceLineViewAnnotated {
 public:
     DetView(QWidget *p, SequenceObjectContext *ctx);
     ~DetView();
-    DetViewSequenceEditor *getEditor() {
+
+    DetViewSequenceEditor *getEditor() const {
         return editor;
     }
 
@@ -59,8 +60,8 @@ public:
     bool isWrapMode() const;
     bool isEditMode() const;
 
-    virtual void setStartPos(qint64 pos);
-    virtual void setCenterPos(qint64 pos);
+    void setStartPos(qint64 pos) override;
+    void setCenterPos(qint64 pos) override;
 
     DNATranslation *getComplementTT() const;
     DNATranslation *getAminoTT() const;
@@ -151,45 +152,44 @@ public:
         return renderer;
     }
 
-    virtual U2Region getAnnotationYRange(Annotation *a, int region, const AnnotationSettings *as) const;
-    virtual double getCurrentScale() const;
+    U2Region getAnnotationYRange(Annotation *a, int region, const AnnotationSettings *as) const override;
+    double getCurrentScale() const override;
 
     void setWrapSequence(bool v);
 
-    qint64 coordToPos(const QPoint &p) const;
+    qint64 coordToPos(int x) const override;
+
+    qint64 coordToPos(const QPoint &coord) const override;
+
+    float posToCoordF(qint64 pos, bool useVirtualSpace = false) const override;
 
     DetView *getDetView() const;
 
-    /**
-    *Quantity of symbols in one line
-    */
+    /** Returns number of bases in a single line. */
     int getSymbolsPerLine() const;
-    /**
-    *Quantity of visible lines in the view
-    */
+
+    /** Returns number of visible lines in the view. */
     int getLinesCount() const;
-    /**
-    *Quantity of symbols in all lines (in case multi-line view)
-    */
+
+    /** Returns number of bases in all visible lines.  */
     int getVisibleSymbolsCount() const;
+
+    /** Returns index of the direct strand line. */
     int getDirectLine() const;
 
-    /**
-    *Quantity of shifts in one line
-    */
+    /** Number of shifts (text rows) in a single line. */
     int getShiftsCount() const;
-    /**
-    *Quantity of pixels in one shift
-    */
+
+    /** Number of pixels in one shift. */
     int getShiftHeight() const;
 
     void updateSize();
 
     bool isOnTranslationsLine(const QPoint &p) const;
-    bool isPosOnAnnotationYRange(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as) const;
+    bool isPosOnAnnotationYRange(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as) const override;
 
 protected:
-    virtual void drawAll(QPaintDevice *pd);
+    void drawAll(QPaintDevice *pd) override;
 
 private:
     DetViewRenderer *renderer;

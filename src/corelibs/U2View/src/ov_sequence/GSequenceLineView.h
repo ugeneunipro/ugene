@@ -222,15 +222,28 @@ protected:
 };
 
 class U2VIEW_EXPORT GSequenceLineViewRenderArea : public QWidget {
+    Q_OBJECT
 public:
     GSequenceLineViewRenderArea(GSequenceLineView *p);
     ~GSequenceLineViewRenderArea();
 
+    //TODO: this method is deprecated and will be removed because it does not support multi-line views.
     virtual qint64 coordToPos(int x) const;
-    virtual qint64 coordToPos(const QPoint &p) const;
 
-    virtual int posToCoord(qint64 p, bool useVirtualSpace = false) const;
-    virtual float posToCoordF(qint64 p, bool useVirtualSpace = false) const;
+    /** Returns in-sequence base index by the current on-screen coordinate. */
+    virtual qint64 coordToPos(const QPoint &coord) const;
+
+    /** Returns minimal on-screen X coordinate of the given position. */
+    virtual float posToCoordF(qint64 pos, bool useVirtualSpace = false) const;
+
+    /**
+     * Returns minimal on-screen X coordinate of the given position rounded to integer type.
+     * This function can't be overriden and is based on posToCoordF behavior.
+     */
+    int posToCoord(qint64 pos, bool useVirtualSpace = false) const {
+        return qRound(posToCoordF(pos, useVirtualSpace));
+    }
+
     //number of pixels per base
     virtual double getCurrentScale() const;
     //char width, derived from current 'font'

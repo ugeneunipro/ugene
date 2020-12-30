@@ -164,46 +164,52 @@ bool GSequenceLineViewAnnotated::isAnnotationVisible(const Annotation *a) const 
 }
 
 QList<Annotation *> GSequenceLineViewAnnotated::findAnnotationsByCoord(const QPoint &coord) const {
-    QList<Annotation *> res;
-    GSequenceLineViewAnnotatedRenderArea *ra = static_cast<GSequenceLineViewAnnotatedRenderArea *>(renderArea);
-    CHECK(ra->rect().contains(coord), res);
-    AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
-    const qint64 pos = ra->coordToPos(coord);
-    qint64 dPos = 0;
+    QList<Annotation *> resultAnnotationList;
+    CHECK(renderArea->rect().contains(coord), resultAnnotationList);
+
+    GSequenceLineViewAnnotatedRenderArea *annotatedRenderArea = qobject_cast<GSequenceLineViewAnnotatedRenderArea *>(renderArea);
+    SAFE_POINT(annotatedRenderArea != nullptr, "Not a GSequenceLineViewAnnotatedRenderArea!", resultAnnotationList);
+
+    AnnotationSettingsRegistry *annotationsSettingsRegistry = AppContext::getAnnotationsSettingsRegistry();
+    const qint64 pos = renderArea->coordToPos(coord);
+    qint64 uncertaintyLength = 0;
     if (visibleRange.length > renderArea->width()) {
-        float scale = renderArea->getCurrentScale();
-        dPos = static_cast<qint64>((1 / scale));
-        SAFE_POINT(dPos < seqLen, "Invalid render region end position!", res);
+        double scale = renderArea->getCurrentScale();
+        uncertaintyLength = static_cast<qint64>(1 / scale);
+        SAFE_POINT(uncertaintyLength < seqLen, "Invalid uncertaintyLength for the given seqLen!", resultAnnotationList);
     }
-    U2Region reg(pos - dPos, 1 + 2 * dPos);
-    const QSet<AnnotationTableObject *> aObjs = ctx->getAnnotationObjects(true);
-    foreach (AnnotationTableObject *ao, aObjs) {
-        foreach (Annotation *a, ao->getAnnotationsByRegion(reg)) {
-            const SharedAnnotationData &aData = a->getData();
-            const QVector<U2Region> location = aData->getRegions();
-            for (int i = 0, n = location.size(); i < n; i++) {
-                const U2Region &l = location[i];
-                if (l.intersects(reg) || l.endPos() == reg.startPos) {
-                    bool ok = true;
-                    if (l.endPos() == pos || pos == l.startPos) {    //now check pixel precise coords for boundaries
-                        int x1 = ra->posToCoord(l.startPos, true);
-                        int x2 = ra->posToCoord(l.endPos(), true);
-                        ok = coord.x() <= x2 && coord.x() >= x1;
-                    }
-                    if (ok) {
-                        AnnotationSettings *as = asr->getAnnotationSettings(aData);
-                        if (as->visible) {
-                            if (ra->isPosOnAnnotationYRange(coord, a, i, as)) {
-                                res.append(a);    // select whole annotation (all regions)
-                                break;
-                            }
+    U2Region pointRegion(pos - uncertaintyLength, 1 + 2 * uncertaintyLength);    // A region of sequence covered by the 'QPoint& coord'.
+    const QSet<AnnotationTableObject *> annotationObjectSet = ctx->getAnnotationObjects(true);
+    for (const AnnotationTableObject *annotationObject : annotationObjectSet) {
+        for (Annotation *annotation : annotationObject->getAnnotationsByRegion(pointRegion)) {
+            const SharedAnnotationData &aData = annotation->getData();
+            const QVector<U2Region> locationRegionList = aData->getRegions();
+            for (int i = 0, n = locationRegionList.size(); i < n; i++) {
+                const U2Region &locationRegion = locationRegionList[i];
+                if (locationRegion.intersects(pointRegion) || pointRegion.startPos == locationRegion.endPos()) {
+                    // now check pixel precise coords for boundaries.
+                    if (pos == locationRegion.startPos) {
+                        int posStartX = renderArea->posToCoord(locationRegion.startPos, true);
+                        if (coord.x() < posStartX) {
+                            continue;
                         }
+                    } else if (pos == locationRegion.endPos()) {
+                        // Use endPos() - 1 to avoid moving to the next line in multiline views.
+                        int posEndX = renderArea->posToCoord(locationRegion.endPos() - 1, true) + renderArea->getCharWidth();
+                        if (coord.x() >= posEndX) {
+                            continue;
+                        }
+                    }
+                    AnnotationSettings *annotationSettings = annotationsSettingsRegistry->getAnnotationSettings(aData);
+                    if (annotationSettings->visible && annotatedRenderArea->isPosOnAnnotationYRange(coord, annotation, i, annotationSettings)) {
+                        resultAnnotationList.append(annotation);    // select whole annotation (all regions)
+                        break;
                     }
                 }
             }
         }
     }
-    return res;
+    return resultAnnotationList;
 }
 
 void GSequenceLineViewAnnotated::mousePressEvent(QMouseEvent *me) {

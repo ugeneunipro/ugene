@@ -95,6 +95,7 @@ protected:
 };
 
 class U2VIEW_EXPORT GSequenceLineViewAnnotatedRenderArea : public GSequenceLineViewRenderArea {
+    Q_OBJECT
 public:
     GSequenceLineViewAnnotatedRenderArea(GSequenceLineViewAnnotated *d);
     ~GSequenceLineViewAnnotatedRenderArea();

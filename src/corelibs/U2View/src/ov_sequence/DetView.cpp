@@ -901,9 +901,24 @@ void DetViewRenderArea::drawAll(QPaintDevice *pd) {
     }
 }
 
-qint64 DetViewRenderArea::coordToPos(const QPoint &p) const {
-    QPoint pShifted(p.x(), p.y() + getDetView()->getShift());
+qint64 DetViewRenderArea::coordToPos(int coord) const {
+    qint64 result = GSequenceLineViewAnnotatedRenderArea::coordToPos(coord);
+    SAFE_POINT(false, "Unsafe use of coordToPos(x) in DetView. Use QPoint() based method with y() value.", result);
+    return result;
+}
+
+qint64 DetViewRenderArea::coordToPos(const QPoint &coord) const {
+    QPoint pShifted(coord.x(), coord.y() + getDetView()->getShift());
     return renderer->coordToPos(pShifted, QSize(width(), height()), view->getVisibleRange());
+}
+
+float DetViewRenderArea::posToCoordF(qint64 pos, bool useVirtualSpace) const {
+    float x = GSequenceLineViewAnnotatedRenderArea::posToCoordF(pos, useVirtualSpace);
+    int lineWidth = charWidth * getSymbolsPerLine();
+    while (x >= lineWidth) {
+        x -= lineWidth;
+    }
+    return x;
 }
 
 double DetViewRenderArea::getCurrentScale() const {

@@ -688,32 +688,25 @@ double GSequenceLineViewRenderArea::getCurrentScale() const {
 
 qint64 GSequenceLineViewRenderArea::coordToPos(int _x) const {
     int x = qBound(0, _x, width());
-    const U2Region &vr = view->getVisibleRange();
-    double scale = getCurrentScale();
-    qint64 pos = vr.startPos + x / scale + 0.5;
-    pos = qMax(pos, vr.startPos);
-    pos = qMin(pos, vr.endPos());
-    return pos;
-}
-
-qint64 GSequenceLineViewRenderArea::coordToPos(const QPoint &p) const {
-    return coordToPos(p.x());
-}
-
-float GSequenceLineViewRenderArea::posToCoordF(qint64 p, bool useVirtualSpace) const {
     const U2Region &visibleRange = view->getVisibleRange();
-    if (!useVirtualSpace && !visibleRange.contains(p) && p != visibleRange.endPos()) {
+    double scale = getCurrentScale();
+    qint64 pos = qRound(visibleRange.startPos + x / scale);
+    return qBound(visibleRange.startPos, pos, visibleRange.endPos());
+}
+
+qint64 GSequenceLineViewRenderArea::coordToPos(const QPoint &coord) const {
+    return coordToPos(coord.x());
+}
+
+float GSequenceLineViewRenderArea::posToCoordF(qint64 pos, bool useVirtualSpace) const {
+    const U2Region &visibleRange = view->getVisibleRange();
+    bool isInVisibleRange = visibleRange.contains(pos) || pos == visibleRange.endPos();
+    if (!isInVisibleRange && !useVirtualSpace) {
         return -1;
     }
-    float res = ((p - visibleRange.startPos) * getCurrentScale());
-    int w = width();
-    assert(useVirtualSpace || qRound(res) <= w);
-    Q_UNUSED(w);
-    return res;
-}
-
-int GSequenceLineViewRenderArea::posToCoord(qint64 p, bool useVirtualSpace) const {
-    return qRound(posToCoordF(p, useVirtualSpace));
+    float coord = float((pos - visibleRange.startPos) * getCurrentScale());
+    SAFE_POINT(useVirtualSpace || qRound(coord) <= width(), "Position is out of range!", coord);
+    return coord;
 }
 
 }    // namespace U2
