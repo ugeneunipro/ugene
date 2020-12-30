@@ -270,7 +270,8 @@ const QString AutoAnnotationsUpdateTask::NAME("Auto-annotations update task");
 
 AutoAnnotationsUpdateTask::AutoAnnotationsUpdateTask(AutoAnnotationObject *autoAnnotationObject,
                                                      QList<Task *> updateTasks)
-    : Task(NAME, TaskFlags_NR_FOSE_COSC), autoAnnotationObject(autoAnnotationObject), sequenceObject(nullptr), lock(nullptr),
+    : Task(NAME, TaskFlags_NR_FOSE_COSC | TaskFlag_SilentCancelOnShutdown),
+      autoAnnotationObject(autoAnnotationObject), sequenceObject(nullptr), lock(nullptr),
       subTasks(updateTasks) {
     isAutoAnnotationObjectInvalid = false;
     setMaxParallelSubtasks(1);
