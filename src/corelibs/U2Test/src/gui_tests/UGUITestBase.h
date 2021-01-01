@@ -71,6 +71,9 @@ public:
     /**
      * Returns list of registered tests of the given type that have all labels from the list.
      * If label list empty, returns all tests of the given type.
+     * If any label in the list starts with '-' (minus) sign the method will performs exclusive
+     * filtering: tests with such labels will be excluded from the result.
+     * Example: "Nightly,-Ignored" will return all tests that have "Nightly" label but have no "Ignored" label.
      */
     QList<GUITest *> getTests(TestType testType = Normal, const QStringList &labelList = QStringList()) const;
 
