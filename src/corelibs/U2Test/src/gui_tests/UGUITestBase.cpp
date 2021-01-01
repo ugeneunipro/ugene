@@ -84,8 +84,9 @@ QList<GUITest *> UGUITestBase::getTests(TestType testType, const QStringList &la
         return allTestList;
     }
     QList<GUITest *> filteredTestList;
+    QSet<QString> labelSet = labelList.toSet();
     for (GUITest *test : allTestList) {
-        if (TextUtils::checkFirstListContainsSecond(test->labelList, labelList)) {
+        if (test->labelSet.contains(labelSet)) {
             filteredTestList << test;
         }
     }

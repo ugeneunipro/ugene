@@ -161,7 +161,7 @@ bool GUITestLauncher::initTestList() {
     UGUITestBase *guiTestBase = AppContext::getGUITestBase();
     SAFE_POINT(guiTestBase != nullptr, "Test base is NULL", false);
 
-    // Tests labels sed to build a test set.
+    // Label set to build a run-time test set is passed via environment variable.
     QString labelEnvVar = qgetenv("UGENE_GUI_TEST_LABEL");
     QStringList labelList = labelEnvVar.isEmpty() ? QStringList() : labelEnvVar.split(",");
 
@@ -230,8 +230,8 @@ bool GUITestLauncher::initTestList() {
             }
         }
     } else {
-        // Run all tests with the given label as a single suite.
-        // If label is not provided: all tests are selected.
+        // Run all tests with the given list of labels as a single suite.
+        // If the list of labels is empty all tests are selected.
         testList = guiTestBase->getTests(UGUITestBase::Normal, labelList);
     }
 

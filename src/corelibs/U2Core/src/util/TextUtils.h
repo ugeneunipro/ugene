@@ -129,9 +129,6 @@ public:
 
     /** Splits text into chunks of the given length. */
     static QStringList split(const QString &text, int chunkSize);
-
-    /** Returns true if the first list contains all values from the second. */
-    static bool checkFirstListContainsSecond(const QStringList& firstList, const QStringList& secondList);
 };
 
 template<typename T>

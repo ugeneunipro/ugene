@@ -1,6 +1,7 @@
 #ifndef _HI_GUI_TEST_H_
 #define _HI_GUI_TEST_H_
 
+#include <QSet>
 #include <QTimer>
 
 #include "GTGlobals.h"
@@ -70,8 +71,8 @@ private:
 class HI_EXPORT GUITest : public QObject, public GUITestIgnorable {
     Q_OBJECT
 public:
-    GUITest(const QString &name, const QString &suite, int timeout, const QStringList &labelList = QStringList())
-        : name(name), suite(suite), timeout(timeout), labelList(labelList) {
+    GUITest(const QString &name, const QString &suite, int timeout, const QSet<QString> &labelSet = QSet<QString>())
+        : name(name), suite(suite), timeout(timeout), labelSet(labelSet) {
     }
     virtual ~GUITest() {
     }
@@ -100,8 +101,8 @@ public:
     /** Timeout millis for the test. The test execution is interrupted if the test runs above that limit. */
     const int timeout;
 
-    /** List of test labels. */
-    const QStringList labelList;
+    /** Set of test labels. */
+    const QSet<QString> labelSet;
 
     static QString getFullTestName(const QString &suiteName, const QString &testName) {
         return suiteName + ":" + testName;

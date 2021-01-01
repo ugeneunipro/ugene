@@ -55,8 +55,8 @@ public:
 class U2TEST_EXPORT UGUITest : public GUITest {
     Q_OBJECT
 public:
-    UGUITest(const QString &name, const QString &suite, int timeout, const QStringList &labels)
-        : GUITest(name, suite, timeout, labels) {
+    UGUITest(const QString &name, const QString &suite, int timeout, const QSet<QString> &labelSet)
+        : GUITest(name, suite, timeout, labelSet) {
     }
 
     /** Returns full test name as known by Teamcity. */
@@ -76,12 +76,12 @@ public:
 #define GUI_TEST_CLASS_DECLARATION(className) \
     class className : public UGUITest { \
     public: \
-        className(int timeout = DEFAULT_GUI_TEST_TIMEOUT, const QStringList &labels = QStringList()) \
-            : UGUITest(TESTNAME(className), SUITENAME(className), timeout, labels) { \
+        className(int timeout = DEFAULT_GUI_TEST_TIMEOUT, const QStringList &labelList = QStringList()) \
+            : UGUITest(TESTNAME(className), SUITENAME(className), timeout, labelList.toSet()) { \
         } \
 \
     protected: \
-        virtual void run(HI::GUITestOpStatus &os); \
+        void run(HI::GUITestOpStatus &os) override; \
     };
 
 #define GUI_TEST_CLASS_DEFINITION(className) \
