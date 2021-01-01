@@ -33,14 +33,23 @@
 namespace U2 {
 using namespace HI;
 
-/**
- * A label to mark test as included into the default nightly GUI test suite.
- * Only tests with this labels are executed as a part of nightly GUI testing.
- */
-#define TEAMCITY_BUILD_NIGHTLY "nightly"
-
 /** Default timeout for all GUI tests. */
 #define DEFAULT_GUI_TEST_TIMEOUT 240000
+
+/**
+ * A namespace for known GUI test labels and utility methods.
+ */
+class U2TEST_EXPORT UGUITestLabels {
+public:
+    /**
+     * A label to mark test as included into the default nightly GUI test suite.
+     * Only tests with this labels are executed as a part of nightly GUI testing.
+     */
+    static const QString Nightly;
+
+    /** A label to mark test as included into the 'Metagenomics' teamcity build suite. */
+    static const QString Metagenomics;
+};
 
 /** GUI test with quick access to UGENE specific runtime variables: testDir, dataDir ... */
 class U2TEST_EXPORT UGUITest : public GUITest {

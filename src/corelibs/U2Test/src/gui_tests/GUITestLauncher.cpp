@@ -161,19 +161,22 @@ bool GUITestLauncher::initTestList() {
     UGUITestBase *guiTestBase = AppContext::getGUITestBase();
     SAFE_POINT(guiTestBase != nullptr, "Test base is NULL", false);
 
+    // Tests labels sed to build a test set.
+    QString labelEnvVar = qgetenv("UGENE_GUI_TEST_LABEL");
+    QStringList labelList = labelEnvVar.isEmpty() ? QStringList() : labelEnvVar.split(",");
+
     if (suiteNumber != 0) {
-        // Tests label is used to filter test sets. If no label is provided 'nightly' (TEAMCITY_BUILD_NIGHTLY) tests are used by default.
-        QString label = qgetenv("UGENE_GUI_TEST_LABEL");
-        if (label.isEmpty()) {
-            label = TEAMCITY_BUILD_NIGHTLY;
+        // If no label is provided 'Nightly' (UGUITestLabels::Nightly) label is used by default.
+        if (labelList.isEmpty()) {
+            labelList << UGUITestLabels::Nightly;
         }
         int testSuiteCount = 1;
-        if (label == TEAMCITY_BUILD_NIGHTLY) {
+        if (labelList.contains(UGUITestLabels::Nightly)) {
             // TODO: make configurable via ENV.
             testSuiteCount = isOsWindows() ? 3
-                              : isOsMac()   ? 4
-                              : isOsLinux() ? 5
-                                            : 1;
+                             : isOsMac()   ? 4
+                             : isOsLinux() ? 5
+                                           : 1;
         }
 
         if (suiteNumber < 1 || suiteNumber > testSuiteCount) {
@@ -181,8 +184,8 @@ bool GUITestLauncher::initTestList() {
             return false;
         }
 
-        QList<GUITest *> labeledTestList = guiTestBase->getTests(UGUITestBase::Normal, label);
-        if (label == TEAMCITY_BUILD_NIGHTLY) {
+        QList<GUITest *> labeledTestList = guiTestBase->getTests(UGUITestBase::Normal, labelList);
+        if (labelList.contains(UGUITestLabels::Nightly)) {
             testList = getIdealNightlyTestsSplit(suiteNumber - 1, testSuiteCount, labeledTestList);
         }
         if (testList.isEmpty()) {
@@ -191,7 +194,7 @@ bool GUITestLauncher::initTestList() {
                 testList << labeledTestList[i];
             }
         }
-        coreLog.info(QString("Running suite %1-%2, Tests in the suite: %3, total tests: %4").arg(label).arg(suiteNumber).arg(testList.size()).arg(labeledTestList.length()));
+        coreLog.info(QString("Running suite %1-%2, Tests in the suite: %3, total tests: %4").arg(labelList.join(",")).arg(suiteNumber).arg(testList.size()).arg(labeledTestList.length()));
     } else if (!pathToSuite.isEmpty()) {
         // If a file with tests is specified we ignore labels and look-up in the complete tests set.
         QList<GUITest *> allTestList = guiTestBase->getTests(UGUITestBase::Normal);
@@ -229,7 +232,7 @@ bool GUITestLauncher::initTestList() {
     } else {
         // Run all tests with the given label as a single suite.
         // If label is not provided: all tests are selected.
-        testList = guiTestBase->getTests(UGUITestBase::Normal, qgetenv("UGENE_GUI_TEST_LABEL"));
+        testList = guiTestBase->getTests(UGUITestBase::Normal, labelList);
     }
 
     if (noIgnored) {

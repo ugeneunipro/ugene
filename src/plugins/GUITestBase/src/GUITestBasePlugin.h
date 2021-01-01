@@ -32,10 +32,11 @@ namespace U2 {
 
 class UGUITestBase;
 
-class GUITestBasePlugin : public Plugin {
+class GUITestBasePlugin : public Plugin, private UGUITestLabels {
     Q_OBJECT
 public:
     GUITestBasePlugin();
+
 private slots:
     void sl_showWindow();
 

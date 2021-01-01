@@ -34,7 +34,7 @@
 
 namespace U2 {
 
-QString getTestDirImpl() {
+static QString getTestDirImpl() {
     const QString testDir = qgetenv("UGENE_TESTS_PATH");
     if (!testDir.isEmpty()) {
         if (!QFileInfo(testDir).exists()) {
@@ -61,7 +61,7 @@ QString getTestDirImpl() {
 #endif
 }
 
-QString getTestDir() {
+static QString getTestDir() {
     QString result = getTestDirImpl();
     if (qgetenv("UGENE_GUI_TEST") == "1") {    // In gui test mode dump test & data dir.
         qDebug("Test dir: '%s' -> '%s'", result.toLocal8Bit().constData(), QFileInfo(result).absoluteFilePath().toLocal8Bit().constData());
@@ -69,7 +69,7 @@ QString getTestDir() {
     return result;
 }
 
-QString getDataDirImpl() {
+static QString getDataDirImpl() {
     QString dataDir = qgetenv("UGENE_DATA_PATH");
     if (!dataDir.isEmpty()) {
         if (!QFileInfo(dataDir).exists()) {
@@ -106,7 +106,7 @@ QString getDataDirImpl() {
     return dataDir;
 }
 
-QString getDataDir() {
+static QString getDataDir() {
     QString result = getDataDirImpl();
     if (qgetenv("UGENE_GUI_TEST") == "1") {    // In gui test mode dump test & data dir.
         qDebug("Data dir: '%s' -> '%s'", result.toLocal8Bit().constData(), QFileInfo(result).absoluteFilePath().toLocal8Bit().constData());
@@ -114,7 +114,7 @@ QString getDataDir() {
     return result;
 }
 
-QString getScreenshotDir() {
+static QString getScreenshotDir() {
     QString result;
 #ifdef Q_OS_MAC
     result = "../../../../../../screenshotFol/";
@@ -135,5 +135,8 @@ const QString UGUITest::testDir = getTestDir();
 const QString UGUITest::dataDir = getDataDir();
 const QString UGUITest::sandBoxDir = testDir + "_common_data/scenarios/sandbox/";
 const QString UGUITest::screenshotDir = getScreenshotDir();
+
+const QString UGUITestLabels::Nightly = "Nightly";
+const QString UGUITestLabels::Metagenomics = "Metagenonics";
 
 }    // namespace U2

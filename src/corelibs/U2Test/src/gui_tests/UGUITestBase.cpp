@@ -21,6 +21,8 @@
 
 #include "UGUITestBase.h"
 
+#include <U2Core/TextUtils.h>
+
 namespace U2 {
 
 UGUITestBase::~UGUITestBase() {
@@ -76,15 +78,15 @@ QMap<QString, GUITest *> &UGUITestBase::getMap(TestType testType) {
     }
 }
 
-QList<GUITest *> UGUITestBase::getTests(TestType testType, const QString &label) const {
+QList<GUITest *> UGUITestBase::getTests(TestType testType, const QStringList &labelList) const {
     QList<GUITest *> allTestList = getConstMap(testType).values();
-    if (label.isEmpty()) {
+    if (labelList.isEmpty()) {
         return allTestList;
     }
     QList<GUITest *> filteredTestList;
     for (GUITest *test : allTestList) {
-        if (test->labelList.contains(label)) {
-            filteredTestList.append(test);
+        if (TextUtils::checkFirstListContainsSecond(test->labelList, labelList)) {
+            filteredTestList << test;
         }
     }
     return filteredTestList;

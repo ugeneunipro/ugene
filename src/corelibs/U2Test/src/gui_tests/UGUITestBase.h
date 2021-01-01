@@ -68,8 +68,11 @@ public:
     /** Finds a registered test by the full test name and type. Returns nullptr if no registered test was found. */
     GUITest *getTest(const QString &suite, const QString &name, TestType testType = Normal) const;
 
-    /** Returns copy of the registered tests. If label is not empty, selects only tests with the given label. */
-    QList<GUITest *> getTests(TestType testType = Normal, const QString &label = "") const;
+    /**
+     * Returns list of registered tests of the given type that have all labels from the list.
+     * If label list empty, returns all tests of the given type.
+     */
+    QList<GUITest *> getTests(TestType testType = Normal, const QStringList &labelList = QStringList()) const;
 
 private:
     /** Normal tests. */

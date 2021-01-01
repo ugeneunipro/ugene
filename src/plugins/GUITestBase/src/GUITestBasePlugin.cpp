@@ -105,10 +105,6 @@
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_5001_6000.h"
 #include "tests/regression_scenarios/GTTestsRegressionScenarios_6001_7000.h"
 
-/** A label to mark test as included into the 'Metagenomics' teamcity build suite. */
-#define TEAMCITY_BUILD_METAGENOMICS "metagenomics"
-
-/** Creates list of labels from args. Shortcut function. */
 static QStringList labels(const QString &label) {
     return QStringList() << label;
 }
@@ -120,16 +116,16 @@ static int minutes(int minutes) {
 
 /** Registers a GUI test included into nightly build with a default timeout. */
 #define REGISTER_TEST(TestClass) \
-    guiTestBase->registerTest(new TestClass(DEFAULT_GUI_TEST_TIMEOUT, labels(TEAMCITY_BUILD_NIGHTLY)));
+    guiTestBase->registerTest(new TestClass(DEFAULT_GUI_TEST_TIMEOUT, labels(Nightly)));
 
 /** Registers a GUI test included into nightly build with a custom timeout. */
 #define REGISTER_TEST_WITH_TIMEOUT(TestClass, TIMEOUT) \
-    guiTestBase->registerTest(new TestClass(TIMEOUT, labels(TEAMCITY_BUILD_NIGHTLY)));
+    guiTestBase->registerTest(new TestClass(TIMEOUT, labels(Nightly)));
 
 /** Registers a GUI test included into nightly build with a default timeout and sets its state to Ignored. */
 #define REGISTER_TEST_IGNORED_BY(TestClass, BY, MESSAGE, reason) \
     { \
-        UGUITest *test = new TestClass(DEFAULT_GUI_TEST_TIMEOUT, labels(TEAMCITY_BUILD_NIGHTLY)); \
+        auto test = new TestClass(DEFAULT_GUI_TEST_TIMEOUT, labels(Nightly)); \
         test->setIgnored(BY, MESSAGE); \
         test->setReason(reason); \
         guiTestBase->registerTest(test); \
@@ -138,7 +134,7 @@ static int minutes(int minutes) {
 /** Registers a GUI test included into nightly build with a custom timeout and sets its state to Ignored. */
 #define REGISTER_TEST_IGNORED_BY_WITH_TIMEOUT(TestClass, TIMEOUT, BY, MESSAGE, reason) \
     { \
-        UGUITest *test = new TestClass(TIMEOUT, labels(TEAMCITY_BUILD_NIGHTLY)); \
+        auto test = new TestClass(TIMEOUT, labels(Nightly)); \
         test->setIgnored(BY, MESSAGE); \
         test->setReason(reason); \
         guiTestBase->registerTest(test); \
@@ -170,7 +166,7 @@ static int minutes(int minutes) {
     guiTestBase->registerTest(new TestClass(TIMEOUT, LABELS));
 
 /** Registers a GUI test with the TIMEOUT provided. Adds NIGHTLY_TEST_LABEL label.*/
-#define REGISTER_TEST_T(TestClass, TIMEOUT) REGISTER_TEST_TL(TestClass, TIMEOUT, labels(TEAMCITY_BUILD_NIGHTLY));
+#define REGISTER_TEST_T(TestClass, TIMEOUT) REGISTER_TEST_TL(TestClass, TIMEOUT, labels(Nightly));
 
 /** Registers a GUI test with the labels provided.*/
 #define REGISTER_TEST_L(TestClass, LABELS) REGISTER_TEST_TL(TestClass, DEFAULT_GUI_TEST_TIMEOUT, LABELS);
@@ -2125,29 +2121,29 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/ngs_classification/metaphlan2
     /////////////////////////////////////////////////////////////////////////
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0001, labels(TEAMCITY_BUILD_METAGENOMICS));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0002, labels(TEAMCITY_BUILD_METAGENOMICS));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0003, labels(TEAMCITY_BUILD_METAGENOMICS));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0004, labels(TEAMCITY_BUILD_METAGENOMICS));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0005, labels(TEAMCITY_BUILD_METAGENOMICS));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0006, labels(TEAMCITY_BUILD_METAGENOMICS));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0007, labels(TEAMCITY_BUILD_METAGENOMICS));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0008, labels(TEAMCITY_BUILD_METAGENOMICS));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0001, labels(TEAMCITY_BUILD_METAGENOMICS));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0002, labels(TEAMCITY_BUILD_METAGENOMICS));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0003, labels(TEAMCITY_BUILD_METAGENOMICS));
-    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0004, labels(TEAMCITY_BUILD_METAGENOMICS));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0001, labels(Metagenomics));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0002, labels(Metagenomics));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0003, labels(Metagenomics));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0004, labels(Metagenomics));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0005, labels(Metagenomics));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0006, labels(Metagenomics));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0007, labels(Metagenomics));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_external_tool::test_0008, labels(Metagenomics));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0001, labels(Metagenomics));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0002, labels(Metagenomics));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0003, labels(Metagenomics));
+    REGISTER_TEST_L(GUITest_common_scenarios_mg_metaphlan2_workflow_designer_element::test_0004, labels(Metagenomics));
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/ngs_classification/workflow_designer
     /////////////////////////////////////////////////////////////////////////
 
-    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0001, minutes(10), labels(TEAMCITY_BUILD_METAGENOMICS));
-    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0002, minutes(10), labels(TEAMCITY_BUILD_METAGENOMICS));
-    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0003, minutes(10), labels(TEAMCITY_BUILD_METAGENOMICS));
-    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0004, minutes(10), labels(TEAMCITY_BUILD_METAGENOMICS));
-    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0005, minutes(10), labels(TEAMCITY_BUILD_METAGENOMICS));
-    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0006, minutes(10), labels(TEAMCITY_BUILD_METAGENOMICS));
+    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0001, minutes(10), labels(Metagenomics));
+    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0002, minutes(10), labels(Metagenomics));
+    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0003, minutes(10), labels(Metagenomics));
+    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0004, minutes(10), labels(Metagenomics));
+    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0005, minutes(10), labels(Metagenomics));
+    REGISTER_TEST_TL(GUITest_common_scenarios_ngs_workflow_desingner::test_0006, minutes(10), labels(Metagenomics));
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor

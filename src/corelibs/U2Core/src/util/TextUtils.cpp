@@ -214,4 +214,16 @@ QStringList TextUtils::split(const QString &text, int chunkSize) {
     return result;
 }
 
+bool TextUtils::checkFirstListContainsSecond(const QStringList &firstList, const QStringList &secondList) {
+    if (firstList.size() < secondList.size()) {
+        return false;
+    }
+    for (const QString &valueFromSecondList : secondList) {
+        if (!firstList.contains(valueFromSecondList)) {
+            return false;
+        }
+    }
+    return true;
+}
+
 }    // namespace U2
