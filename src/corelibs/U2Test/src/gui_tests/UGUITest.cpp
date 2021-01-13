@@ -159,7 +159,7 @@ const QString UGUITest::screenshotDir = getScreenshotDir();
 
 const QString UGUITestLabels::Nightly = "Nightly";
 const QString UGUITestLabels::Metagenomics = "Metagenonics";
-const QString UGUITestLabels::Niaid = "NIAID";
+const QString UGUITestLabels::Cistrome = "Cistrome";
 const QString UGUITestLabels::Linux = "Linux";
 const QString UGUITestLabels::MacOS = "MacOS";
 const QString UGUITestLabels::Windows = "Windows";

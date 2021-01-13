@@ -50,8 +50,8 @@ public:
     /** A label to mark test as included into the 'Metagenomics' teamcity build suite. */
     static const QString Metagenomics;
 
-    /** A label to mark test as included into the 'NIAID' teamcity build suite. */
-    static const QString Niaid;
+    /** A label to mark test as included into the 'Cistrome' teamcity build suite. */
+    static const QString Cistrome;
 
     /** A test with this label is safe to run on Linux. */
     static const QString Linux;
