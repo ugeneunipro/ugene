@@ -27,6 +27,7 @@
 #include <primitives/GTWidget.h>
 
 #include <QApplication>
+#include <QFileInfo>
 #include <QGraphicsItem>
 #include <QLineEdit>
 #include <QProcess>
@@ -37,9 +38,11 @@
 #include <U2Gui/ToolsMenu.h>
 
 #include "GTGlobals.h"
+#include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "primitives/GTAction.h"
+#include "primitives/GTLineEdit.h"
 #include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
 #include "runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.h"
@@ -118,6 +121,88 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //    3. Open wizard
 
     //    Expected state: dataset widget fits full height
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0003) {
+    class custom : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            QLineEdit *lineEdit = GTWidget::findWidgetByType<QLineEdit *>(os, dialog, "lineEdit not found");
+            GTLineEdit::setText(os, lineEdit, QFileInfo(dataDir + "cistrome_input/macs_input_chr4/chr4.bed").absoluteFilePath());
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+
+    //1. Click Tools -> NGS data analysis -> ChIP-Seq data analysis.... Choose Only treatment tags
+    //2. Set "cistrome_input/macs_input_chr4/chr4.bed" as input
+    //3. Click "Next" several times and "Run"
+    //4. Wait for workflow finished
+    //Expected state: no errors
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os,
+                                                                    "Configure Cistrome Workflow",
+                                                                    QStringList() << "Only treatment tags"));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "ChIP-seq Analysis Wizard", new custom()));
+
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "NGS data analysis"
+                                                << "ChIP-Seq data analysis...");
+    GTUtilsTaskTreeView::waitTaskFinished(os, 60 * 1000 * 20);
+    QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
+    CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0004) {
+    class custom : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            QLineEdit *lineEdit1 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "Treatment FASTQ widget"));
+            QLineEdit *lineEdit2 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "Control FASTQ widget"));
+            GTLineEdit::setText(os, lineEdit1, QFileInfo(dataDir + "cistrome_input/macs_input_chr4/chr4.bed").absoluteFilePath());
+            GTLineEdit::setText(os, lineEdit2, QFileInfo(dataDir + "cistrome_input/macs_input_chr4/control_tags/chr4.bed").absoluteFilePath());
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+
+    //1. Click Tools -> NGS data analysis -> ChIP-Seq data analysis.... Choose Treatment and control
+    //2. Set "cistrome_input/macs_input_chr4/chr4.bed" as "Treatment" and "cistrome_input/macs_input_chr4/control_tags/chr4.bed" as "Control"
+    //3. Click "Next" several times and "Run"
+    //4. Wait for workflow finished
+    //Expected state: no errors
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os,
+                                                                    "Configure Cistrome Workflow",
+                                                                    QStringList() << "Treatment and control"));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "ChIP-Seq Analysis Wizard", new custom()));
+
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "NGS data analysis"
+                                                << "ChIP-Seq data analysis...");
+    GTUtilsTaskTreeView::waitTaskFinished(os, 60 * 1000 * 20);
+    QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
+    CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
 }
 
 }    // namespace GUITest_common_scenarios_NIAID_pipelines
