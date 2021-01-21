@@ -205,5 +205,83 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0005) {
+    //1. Click Tools -> NGS data analysis -> Raw ChIP-Seq data processing... Choose Single-end
+    //2. Set "_common_data/fastq/lymph.fastq" and _common_data/fasta/DNA.fa as reads and reference in wizard
+    //3. Click "Next" several times and "Run"
+    //4. Wait for workflow finished
+    //Expected state: no errors
+
+    class custom : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            QLineEdit *lineEdit1 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "FASTQ files widget"));
+            
+            GTLineEdit::setText(os, lineEdit1, QFileInfo(testDir + "_common_data/fastq/lymph.fastq").absoluteFilePath());
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            QLineEdit *lineEdit2 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "Reference genome widget"));
+            GTLineEdit::setText(os, lineEdit2, QFileInfo(testDir + "_common_data/fasta/DNA.fa").absoluteFilePath());
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Raw ChIP-Seq Data Processing", QStringList() << "Single-end"));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Raw ChIP-Seq Data Processing Wizard", new custom()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "NGS data analysis"
+                                                << "Raw ChIP-Seq data processing...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
+    CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0006) {
+    //1. Click Tools -> NGS data analysis -> Raw ChIP-Seq data processing... Choose Single-end
+    //2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
+    //3. Click "Next" several times and "Run"
+    //4. Wait for workflow finished
+    //Expected state: no errors
+
+    class custom : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            QLineEdit *lineEdit1 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "FASTQ files widget"));
+            QLineEdit *lineEdit11 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "FASTQ files with pairs widget"));
+
+            GTLineEdit::setText(os, lineEdit1, QFileInfo(testDir + "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq").absoluteFilePath());
+            GTLineEdit::setText(os, lineEdit11, QFileInfo(testDir + "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq").absoluteFilePath());
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            QLineEdit *lineEdit2 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "Reference genome widget"));
+            GTLineEdit::setText(os, lineEdit2, QFileInfo(testDir + "_common_data/fasta/DNA.fa").absoluteFilePath());
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Raw ChIP-Seq Data Processing", QStringList() << "Paired-end"));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Raw ChIP-Seq Data Processing Wizard", new custom()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "NGS data analysis"
+                                                << "Raw ChIP-Seq data processing...");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
+    CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
+}
+
 }    // namespace GUITest_common_scenarios_NIAID_pipelines
 }    // namespace U2
