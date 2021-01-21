@@ -81,8 +81,7 @@ public:
         : WizardFiller(_os, "Tuxedo Wizard") {
     }
     void run() {
-        QWidget *dialog = QApplication::activeModalWidget();
-        GT_CHECK(dialog, "activeModalWidget is NULL");
+        QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
         QList<QWidget *> list = dialog->findChildren<QWidget *>();
 
@@ -124,11 +123,10 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
-    class custom : public CustomScenario {
+    class ChIPSeqAnalysisWizardFiller : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             QLineEdit *lineEdit = GTWidget::findWidgetByType<QLineEdit *>(os, dialog, "lineEdit not found");
             GTLineEdit::setText(os, lineEdit, QFileInfo(dataDir + "cistrome_input/macs_input_chr4/chr4.bed").absoluteFilePath());
@@ -153,7 +151,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os,
                                                                     "Configure Cistrome Workflow",
                                                                     QStringList() << "Only treatment tags"));
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "ChIP-seq Analysis Wizard", new custom()));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "ChIP-seq Analysis Wizard", new ChIPSeqAnalysisWizardFiller()));
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "NGS data analysis"
@@ -164,14 +162,13 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
-    class custom : public CustomScenario {
+    class ChIPSeqAnalysisWizardFiller : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
-            QLineEdit *lineEdit1 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "Treatment FASTQ widget"));
-            QLineEdit *lineEdit2 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "Control FASTQ widget"));
+            QLineEdit *lineEdit1 = GTWidget::findExactWidget<QLineEdit *>(os, "Treatment FASTQ widget");
+            QLineEdit *lineEdit2 = GTWidget::findExactWidget<QLineEdit *>(os, "Control FASTQ widget");
             GTLineEdit::setText(os, lineEdit1, QFileInfo(dataDir + "cistrome_input/macs_input_chr4/chr4.bed").absoluteFilePath());
             GTLineEdit::setText(os, lineEdit2, QFileInfo(dataDir + "cistrome_input/macs_input_chr4/control_tags/chr4.bed").absoluteFilePath());
 
@@ -195,7 +192,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os,
                                                                     "Configure Cistrome Workflow",
                                                                     QStringList() << "Treatment and control"));
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "ChIP-Seq Analysis Wizard", new custom()));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "ChIP-Seq Analysis Wizard", new ChIPSeqAnalysisWizardFiller()));
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "NGS data analysis"
@@ -212,19 +209,18 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     //4. Wait for workflow finished
     //Expected state: no errors
 
-    class custom : public CustomScenario {
+    class RawChIPSeqDataProcessingWizard : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
-            QLineEdit *lineEdit1 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "FASTQ files widget"));
+            QLineEdit *lineEdit1 = GTWidget::findExactWidget<QLineEdit *>(os, "FASTQ files widget");
             
             GTLineEdit::setText(os, lineEdit1, QFileInfo(testDir + "_common_data/fastq/lymph.fastq").absoluteFilePath());
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
-            QLineEdit *lineEdit2 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "Reference genome widget"));
+            QLineEdit *lineEdit2 = GTWidget::findExactWidget<QLineEdit *>(os, "Reference genome widget");
             GTLineEdit::setText(os, lineEdit2, QFileInfo(testDir + "_common_data/fasta/DNA.fa").absoluteFilePath());
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
@@ -234,7 +230,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Raw ChIP-Seq Data Processing", QStringList() << "Single-end"));
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Raw ChIP-Seq Data Processing Wizard", new custom()));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Raw ChIP-Seq Data Processing Wizard", new RawChIPSeqDataProcessingWizard()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "NGS data analysis"
                                                 << "Raw ChIP-Seq data processing...");
@@ -250,21 +246,20 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     //4. Wait for workflow finished
     //Expected state: no errors
 
-    class custom : public CustomScenario {
+    class RawChIPSeqDataProcessingWizard : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
-            QLineEdit *lineEdit1 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "FASTQ files widget"));
-            QLineEdit *lineEdit11 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "FASTQ files with pairs widget"));
+            QLineEdit *lineEdit1 = GTWidget::findExactWidget<QLineEdit *>(os, "FASTQ files widget");
+            QLineEdit *lineEdit11 = GTWidget::findExactWidget<QLineEdit *>(os, "FASTQ files with pairs widget");
 
             GTLineEdit::setText(os, lineEdit1, QFileInfo(testDir + "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq").absoluteFilePath());
             GTLineEdit::setText(os, lineEdit11, QFileInfo(testDir + "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq").absoluteFilePath());
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
-            QLineEdit *lineEdit2 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "Reference genome widget"));
+            QLineEdit *lineEdit2 = GTWidget::findExactWidget<QLineEdit *>(os, "Reference genome widget");
             GTLineEdit::setText(os, lineEdit2, QFileInfo(testDir + "_common_data/fasta/DNA.fa").absoluteFilePath());
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
@@ -274,7 +269,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Raw ChIP-Seq Data Processing", QStringList() << "Paired-end"));
-    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Raw ChIP-Seq Data Processing Wizard", new custom()));
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Raw ChIP-Seq Data Processing Wizard", new RawChIPSeqDataProcessingWizard()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
                                                 << "NGS data analysis"
                                                 << "Raw ChIP-Seq data processing...");
