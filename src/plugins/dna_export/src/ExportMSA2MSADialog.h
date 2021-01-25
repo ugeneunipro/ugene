@@ -38,6 +38,7 @@ public:
     void updateModel();
     DocumentFormatId formatId;
     QString file;
+    bool includeGaps = false;
     bool addToProjectFlag;
     QString translationTable;
     bool exportWholeAlignment;

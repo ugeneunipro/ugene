@@ -506,7 +506,7 @@ void ExportProjectViewItemsContoller::sl_exportNucleicAlignmentToAmino() {
     QList<DNATranslation *> trans;
     trans << AppContext::getDNATranslationRegistry()->lookupTranslation(d->translationTable);
 
-    Task *t = ExportUtils::wrapExportTask(new ExportMSA2MSATask(msa, 0, msa->getNumRows(), d->file, trans, d->formatId), d->addToProjectFlag);
+    Task *t = ExportUtils::wrapExportTask(new ExportMSA2MSATask(msa, 0, msa->getNumRows(), d->file, trans, d->formatId, !d->includeGaps), d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 

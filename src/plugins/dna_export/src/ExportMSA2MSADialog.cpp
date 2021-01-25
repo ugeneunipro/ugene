@@ -73,6 +73,7 @@ void ExportMSA2MSADialog::updateModel() {
     formatId = saveController->getFormatIdToSave();
     file = saveController->getSaveFileName();
     translationTable = tableID[translationCombo->currentIndex()];
+    includeGaps = cbIncludeGaps->isChecked();
     addToProjectFlag = addDocumentButton->isChecked();
     exportWholeAlignment = wholeRangeButton->isChecked();
 }

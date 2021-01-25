@@ -144,9 +144,21 @@ void ExportMSA2SequencesTask::run() {
 //////////////////////////////////////////////////////////////////////////
 // export nucleic alignment 2 amino alignment
 
-ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment &_ma, int _offset, int _len, const QString &_url, const QList<DNATranslation *> &_aminoTranslations, DocumentFormatId _format)
+ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment &_ma,
+                                     int _offset,
+                                     int _len,
+                                     const QString &_url,
+                                     const QList<DNATranslation *> &_aminoTranslations,
+                                     DocumentFormatId _format,
+                                     const bool _trimGaps)
     : DocumentProviderTask(tr("Export alignment to alignment: %1").arg(_url), TaskFlag_None),
-      ma(_ma->getCopy()), offset(_offset), len(_len), url(_url), format(_format), aminoTranslations(_aminoTranslations) {
+      ma(_ma->getCopy()),
+      offset(_offset),
+      len(_len),
+      url(_url),
+      format(_format),
+      aminoTranslations(_aminoTranslations),
+      trimGaps(_trimGaps) {
     GCOUNTER(cvar, "ExportMSA2MSATask");
     CHECK_EXT(!ma->isEmpty(), setError(tr("Nothing to export: multiple alignment is empty")), );
     setVerboseLogMode(true);
@@ -159,7 +171,7 @@ void ExportMSA2MSATask::run() {
     resultDocument = f->createNewLoadedDocument(iof, url, stateInfo);
     CHECK_OP(stateInfo, );
 
-    QList<DNASequence> lst = MSAUtils::ma2seq(ma, true);
+    QList<DNASequence> lst = MSAUtils::ma2seq(ma, trimGaps);
     QList<DNASequence> seqList;
     for (int i = offset; i < offset + len; i++) {
         DNASequence &s = lst[i];

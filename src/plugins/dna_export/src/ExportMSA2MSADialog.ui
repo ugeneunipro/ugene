@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>457</width>
-    <height>278</height>
+    <height>289</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -60,6 +60,13 @@
       <widget class="QComboBox" name="translationCombo"/>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="cbIncludeGaps">
+     <property name="text">
+      <string>Include gaps</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QCheckBox" name="addDocumentButton">

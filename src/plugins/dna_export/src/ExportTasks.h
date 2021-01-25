@@ -79,7 +79,13 @@ private:
 class ExportMSA2MSATask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportMSA2MSATask(const MultipleSequenceAlignment &ma, int offset, int len, const QString &url, const QList<DNATranslation *> &aminoTranslations, DocumentFormatId format);
+    ExportMSA2MSATask(const MultipleSequenceAlignment &ma,
+                      int offset,
+                      int len,
+                      const QString &url,
+                      const QList<DNATranslation *> &aminoTranslations,
+                      DocumentFormatId format,
+                      const bool trimGaps);
 
     void run();
 
@@ -90,6 +96,7 @@ private:
     QString url;
     QString format;
     QList<DNATranslation *> aminoTranslations;    // amino translation for a sequences in alignment. If not NULL -> sequence is translated
+    bool trimGaps;
 };
 
 class DNAChromatogramObject;
