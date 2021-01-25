@@ -243,6 +243,9 @@ GUI_TEST_CLASS_DECLARATION(test_0083)
 // Font
 GUI_TEST_CLASS_DECLARATION(test_0090)
 
+//Export
+GUI_TEST_CLASS_DECLARATION(test_0091)
+
 GUI_TEST_CLASS_DECLARATION(test_fake)
 #undef GUI_TEST_SUITE
 }    // namespace GUITest_common_scenarios_msa_editor
