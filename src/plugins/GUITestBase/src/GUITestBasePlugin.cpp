@@ -3105,8 +3105,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_NIAID_pipelines::test_0002);
     REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0003, minutes(20), labels({Cistrome, Linux}));
     REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0004, minutes(20), labels({Cistrome, Linux}));
-    REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0005, minutes(7), labels({Cistrome});
-    REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0006, minutes(7), labels({Cistrome});
+    REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0005, minutes(7), labels({Cistrome}));
+    REGISTER_TEST_TL(GUITest_common_scenarios_NIAID_pipelines::test_0006, minutes(7), labels({Cistrome}));
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/Tree viewer
     /////////////////////////////////////////////////////////////////////////
