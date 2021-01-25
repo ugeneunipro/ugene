@@ -58,6 +58,7 @@ public:
     QList<Task *> onSubTaskFinished(Task *subTask);
 
     int transTable;
+    bool includeGaps = false;
     QString inputFile;
     QString outputFileName;
     QString expectedOutputFile;
