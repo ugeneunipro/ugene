@@ -25,7 +25,6 @@
 #include <core/CustomScenario.h>
 
 #include <QDialogButtonBox>
-#include <QProcess>
 
 #include "GTGlobals.h"
 

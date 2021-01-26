@@ -92,9 +92,9 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
     while (modalWidget != NULL) {
 
 #ifdef Q_OS_MAC
-    GTUtilsMac fakeClock;
-    fakeClock.startWorkaroundForMacCGEvents(1, true);
-    fakeClock.startWorkaroundForMacCGEvents(16000, false);
+        GTUtilsMac fakeClock;
+        fakeClock.startWorkaroundForMacCGEvents(1, true);
+        fakeClock.startWorkaroundForMacCGEvents(16000, false);
 #endif
         GTWidget::close(os, modalWidget);
         modalWidget = QApplication::activeModalWidget();
