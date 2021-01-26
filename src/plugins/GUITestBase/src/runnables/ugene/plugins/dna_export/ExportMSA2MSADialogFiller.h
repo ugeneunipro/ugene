@@ -29,13 +29,14 @@ using namespace HI;
 
 class ExportMSA2MSADialogFiller : public Filler {
 public:
-    ExportMSA2MSADialogFiller(HI::GUITestOpStatus &_os, int _formatVal = -1, QString _path = "", bool includeGaps = false);
+    ExportMSA2MSADialogFiller(HI::GUITestOpStatus &_os, int _formatVal = -1, QString _path = "", bool includeGaps = false, bool unknownAsGaps = false);
     void commonScenario();
 
 private:
     int formatVal;
     QString path;
     bool includeGaps = false;
+    bool unknownAsGaps = false;
 };
 }    // namespace U2
 
