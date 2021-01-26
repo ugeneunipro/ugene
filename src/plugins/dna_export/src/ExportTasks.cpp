@@ -150,7 +150,8 @@ ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment &_ma,
                                      const QString &_url,
                                      const QList<DNATranslation *> &_aminoTranslations,
                                      DocumentFormatId _format,
-                                     const bool _trimGaps)
+                                     const bool _trimGaps,
+                                     const bool _convertUnknownToGap)
     : DocumentProviderTask(tr("Export alignment to alignment: %1").arg(_url), TaskFlag_None),
       ma(_ma->getCopy()),
       offset(_offset),
@@ -158,7 +159,8 @@ ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment &_ma,
       url(_url),
       format(_format),
       aminoTranslations(_aminoTranslations),
-      trimGaps(_trimGaps) {
+      trimGaps(_trimGaps),
+      convertUnknownToGap(_convertUnknownToGap) {
     GCOUNTER(cvar, "ExportMSA2MSATask");
     CHECK_EXT(!ma->isEmpty(), setError(tr("Nothing to export: multiple alignment is empty")), );
     setVerboseLogMode(true);
@@ -191,6 +193,9 @@ void ExportMSA2MSATask::run() {
             aminoTT->translate(seq.constData(), seq.length(), resseq.data(), resseq.length());
 
             resseq.replace("*", "X");
+            if (!trimGaps && convertUnknownToGap) {
+                resseq.replace("X", "-");
+            }
             DNASequence rs(name, resseq, aminoTT->getDstAlphabet());
             seqList << rs;
         } else {

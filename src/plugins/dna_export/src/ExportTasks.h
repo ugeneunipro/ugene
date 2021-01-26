@@ -85,7 +85,8 @@ public:
                       const QString &url,
                       const QList<DNATranslation *> &aminoTranslations,
                       DocumentFormatId format,
-                      const bool trimGaps);
+                      const bool trimGaps,
+                      const bool convertUnknownToGap);
 
     void run();
 
@@ -97,6 +98,7 @@ private:
     QString format;
     QList<DNATranslation *> aminoTranslations;    // amino translation for a sequences in alignment. If not NULL -> sequence is translated
     bool trimGaps;
+    bool convertUnknownToGap;
 };
 
 class DNAChromatogramObject;

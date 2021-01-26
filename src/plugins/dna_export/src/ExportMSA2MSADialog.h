@@ -35,10 +35,16 @@ class ExportMSA2MSADialog : public QDialog, Ui_ExportMSA2MSADialog {
 public:
     ExportMSA2MSADialog(const QString &defaultFileName, const DocumentFormatId &f, bool wholeAlignmentOnly, QWidget *p);
 
+    enum class UnknownAmino {
+        X,
+        Gap
+    };
+
     void updateModel();
     DocumentFormatId formatId;
     QString file;
     bool includeGaps = false;
+    UnknownAmino unknownAmino = UnknownAmino::X;
     bool addToProjectFlag;
     QString translationTable;
     bool exportWholeAlignment;
