@@ -45,6 +45,7 @@ namespace U2 {
 #define EXTRACT_ROWS_ATTR "rows"
 #define TRANS_TABLE_ATTR "trans-table"
 #define INCLUDE_GAPS "include-gaps"
+#define UNKNOWN_AMINO_2_GAP "unknown-amino-to-gap"
 
 void GTest_ImportPhredQualityScoresTask::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
@@ -163,6 +164,11 @@ void GTest_ExportNucleicToAminoAlignmentTask::init(XMLTestFormat *tf, const QDom
     if (!buf.isEmpty() && buf == "true") {
         includeGaps = true;
     }
+
+    buf = el.attribute(UNKNOWN_AMINO_2_GAP);
+    if (!buf.isEmpty() && buf == "true") {
+        convertUnknownAmino2Gap = true;
+    }
 }
 
 void GTest_ExportNucleicToAminoAlignmentTask::prepare() {
@@ -194,7 +200,8 @@ void GTest_ExportNucleicToAminoAlignmentTask::prepare() {
                                        outputFileName,
                                        trans,
                                        BaseDocumentFormats::CLUSTAL_ALN,
-                                       !includeGaps);
+                                       !includeGaps,
+                                       convertUnknownAmino2Gap);
     addSubTask(exportTask);
 }
 

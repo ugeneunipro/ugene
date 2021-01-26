@@ -59,6 +59,7 @@ public:
 
     int transTable;
     bool includeGaps = false;
+    bool convertUnknownAmino2Gap = false;
     QString inputFile;
     QString outputFileName;
     QString expectedOutputFile;
