@@ -31,14 +31,8 @@ namespace HI {
 class HI_EXPORT GTUtilsMac {
 
 public:
-    GTUtilsMac() {
-    }
-
-    ~GTUtilsMac() {
-        if (process != nullptr) {
-            process->kill();
-        }
-    }
+    GTUtilsMac();
+    ~GTUtilsMac();
 
     void startWorkaroundForMacCGEvents(int delay, bool waitFinished);
 
