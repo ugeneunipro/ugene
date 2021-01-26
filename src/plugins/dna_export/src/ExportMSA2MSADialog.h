@@ -43,8 +43,8 @@ public:
     void updateModel();
     DocumentFormatId formatId;
     QString file;
-    bool includeGaps = false;
-    UnknownAmino unknownAmino = UnknownAmino::X;
+    bool includeGaps = false; //Include gaps of trim before translating
+    UnknownAmino unknownAmino = UnknownAmino::X; //The character unknown amino acids should be translated to
     bool addToProjectFlag;
     QString translationTable;
     bool exportWholeAlignment;

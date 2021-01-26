@@ -97,8 +97,8 @@ private:
     QString url;
     QString format;
     QList<DNATranslation *> aminoTranslations;    // amino translation for a sequences in alignment. If not NULL -> sequence is translated
-    bool trimGaps;
-    bool convertUnknownToGap;
+    bool trimGaps;                                // trim gaps before translation of not
+    bool convertUnknownToGap;                     // if there are unknown amino bases, they are translated as "X" by default, if this value is true tey will be tranlated as "-"
 };
 
 class DNAChromatogramObject;
