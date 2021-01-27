@@ -35,6 +35,10 @@ class ExportMSA2MSADialog : public QDialog, Ui_ExportMSA2MSADialog {
 public:
     ExportMSA2MSADialog(const QString &defaultFileName, const DocumentFormatId &f, bool wholeAlignmentOnly, QWidget *p);
 
+    /*!
+     * \class UnknownAmino
+     * \brief Enum class, which indicates what char unknown amino bases should be
+     */
     enum class UnknownAmino {
         X,
         Gap
@@ -43,8 +47,14 @@ public:
     void updateModel();
     DocumentFormatId formatId;
     QString file;
-    bool includeGaps = false; //Include gaps of trim before translating
-    UnknownAmino unknownAmino = UnknownAmino::X; //The character unknown amino acids should be translated to
+    /*!
+     * Include gaps of trim before translating
+     */
+    bool includeGaps = false;
+    /*!
+     * The character unknown amino acids should be translated to
+     */
+    UnknownAmino unknownAmino = UnknownAmino::X;
     bool addToProjectFlag;
     QString translationTable;
     bool exportWholeAlignment;

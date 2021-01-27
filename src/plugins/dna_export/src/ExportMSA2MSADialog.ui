@@ -74,7 +74,7 @@
       <bool>false</bool>
      </property>
      <property name="title">
-      <string>Translate unknown amino acid as:</string>
+      <string>Translate triplets with gaps as:</string>
      </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>

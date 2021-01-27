@@ -192,10 +192,10 @@ void ExportMSA2MSATask::run() {
             assert(aminoTT->isThree2One());
             aminoTT->translate(seq.constData(), seq.length(), resseq.data(), resseq.length());
 
-            resseq.replace("*", "X");
             if (!trimGaps && convertUnknownToGap) {
                 resseq.replace("X", "-");
             }
+            resseq.replace("*", "X");
             DNASequence rs(name, resseq, aminoTT->getDstAlphabet());
             seqList << rs;
         } else {
