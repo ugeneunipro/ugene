@@ -49,9 +49,13 @@ void GTWidget::click(GUITestOpStatus &os, QWidget *widget, Qt::MouseButton mouse
     if (p.isNull()) {
         QRect rect = widget->rect();
         p = rect.center();
+#ifdef Q_OS_MAC
+        // This is for more stable click/activate on MacOS (found by experiment)
+        // TODO: still need to do more experiments on MacOS
         if (qobject_cast<QLineEdit*>(widget) != nullptr) {
             p -= QPoint(rect.width() / 3, 0);
         }
+#endif
         // TODO: this is a fast fix
         if (widget->objectName().contains("ADV_single_sequence_widget")) {
             p += QPoint(0, 8);
