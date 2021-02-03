@@ -350,7 +350,7 @@ void MaEditor::sl_exportHighlighted() {
     CHECK(!d.isNull(), );
 
     if (d->result() == QDialog::Accepted) {
-        AppContext::getTaskScheduler()->registerTopLevelTask(new ExportHighligtningTask(d.data(), this));
+        AppContext::getTaskScheduler()->registerTopLevelTask(new ExportHighlightingTask(d.data(), this));
     }
 }
 

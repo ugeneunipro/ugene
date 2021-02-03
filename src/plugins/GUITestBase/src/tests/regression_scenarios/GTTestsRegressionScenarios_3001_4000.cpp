@@ -3149,19 +3149,22 @@ GUI_TEST_CLASS_DEFINITION(test_3484) {
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found");
+    // Check that tree is visible.
+    GTWidget::findExactWidget<QGraphicsView *>(os, "treeView");
 
     GTUtilsDocument::unloadDocument(os, "COI_3484.nwk", false);
-    GTGlobals::sleep(500);
-    GTUtilsDocument::saveDocument(os, "COI_3484.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsDocument::unloadDocument(os, "COI_3484.aln", true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTGlobals::sleep();
     GTUtilsDocument::removeDocument(os, "COI_3484.nwk");
-    GTUtilsDocument::loadDocument(os, "COI_3484.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "COI_3484  .nwk") == false, "Unauthorized tree opening!");
+    GTUtilsDocument::loadDocument(os, "COI_3484.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "COI_3484  .nwk", false) == false, "Unauthorized tree opening!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3484_1) {
@@ -3547,25 +3550,25 @@ GUI_TEST_CLASS_DEFINITION(test_3563_1) {
     //    3. Unload both documents (alignment and tree)
     //    4. Load alignment
     //    Expected state: no errors in the log
-    GTLogTracer l;
+    GTLogTracer logTracer;
 
     GTFile::copy(os, testDir + "_common_data/clustal/dna.fasta.aln", testDir + "_common_data/scenarios/sandbox/test_3563_1.aln");
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "test_3563_1.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/test_3563_1.nwk", 0, 0, true));
-    QAbstractButton *tree = GTAction::button(os, "Build Tree");
-    GTWidget::click(os, tree);
-    GTGlobals::sleep();
-    GTUtilsDocument::saveDocument(os, "test_3563_1.aln");
+    GTUtilsMsaEditor::buildPhylogeneticTree(os, testDir + "_common_data/scenarios/sandbox/test_3563_1.nwk");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::unloadDocument(os, "test_3563_1.nwk", false);
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::unloadDocument(os, "test_3563_1.aln", true);
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsLog::check(os, l);
+    GTUtilsDocument::loadDocument(os, "test_3563_1.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsLog::check(os, logTracer);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3563_2) {

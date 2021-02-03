@@ -131,16 +131,18 @@ public:
         emit si_groupColorsChanged(GroupColorSchema());
     }
 
-    QStringList getOrderedSeqNames();
-
-    U2Region getTreeSize();
-
     bool canSynchronizeWithMSA(MSAEditor *msa);
 
     void setSynchronizeMode(SynchronizationMode syncMode);
     bool isCurTreeViewerSynchronized() const;
 
     void highlightBranches();
+
+    /**
+     * Return virtual grouping state for MSA that corresponds to the current tree state.
+     * All sequences are ordered by 'y' position. All collapsed branches are mapped to the virtual groups.
+     */
+    QList<QStringList> getGroupingStateForMsa(const GraphicsBranchItem *root) const;
 
 protected:
     virtual void mousePressEvent(QMouseEvent *e);
@@ -156,7 +158,6 @@ protected:
 
 signals:
     void si_collapseModelChangedInTree(const QList<QStringList> &);
-    void si_seqOrderChanged(const QStringList &order);
     void si_groupColorsChanged(const GroupColorSchema &schema);
     void si_zoomIn();
     void si_zoomOut();
@@ -199,11 +200,10 @@ private:
 };
 
 class MSAEditorTreeViewerUtils {
-public:
-    static QList<QStringList> getCollapsedGroups(const GraphicsBranchItem *root);
-
 private:
     MSAEditorTreeViewerUtils();
+
+public:
     static QStringList getSeqsNamesInBranch(const GraphicsBranchItem *branch);
 };
 

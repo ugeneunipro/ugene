@@ -45,24 +45,10 @@
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/AnyDialogFiller.h"
 
+#include "utils/GTUtilsMac.h"
+
 namespace U2 {
 namespace GUITest_posterior_actions {
-
-#ifdef Q_OS_MAC
-void workaroundForMacCGEvents() {
-    QString prog = qgetenv("UGENE_GUI_TEST_MACOS_WORKAROUND_FOR_CGEVENTS");
-    if (!prog.isNull()) {
-        QProcess fakeClock;
-        fakeClock.startDetached(prog,
-                                {"-x", "1000",
-                                 "-y", "0",
-                                 "-w", "80",
-                                 "-h", "40",
-                                 "-d", "4000",
-                                 "-t", "40"});
-    }
-}
-#endif
 
 POSTERIOR_ACTION_DEFINITION(post_action_0000) {
     // Release all hold keyboard modifier keys
@@ -89,17 +75,27 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
     // Close all popup widgets
     // Close all modal widgets
     // Clear the clipboard
-#ifdef Q_OS_MAC
-    workaroundForMacCGEvents();
-#endif
+
     QWidget *popupWidget = QApplication::activePopupWidget();
     while (popupWidget != NULL) {
+
+#ifdef Q_OS_MAC
+    GTUtilsMac fakeClock;
+    fakeClock.startWorkaroundForMacCGEvents(1, true);
+    fakeClock.startWorkaroundForMacCGEvents(16000, false);
+#endif
         GTWidget::close(os, popupWidget);
         popupWidget = QApplication::activePopupWidget();
     }
 
     QWidget *modalWidget = QApplication::activeModalWidget();
     while (modalWidget != NULL) {
+
+#ifdef Q_OS_MAC
+        GTUtilsMac fakeClock;
+        fakeClock.startWorkaroundForMacCGEvents(1, true);
+        fakeClock.startWorkaroundForMacCGEvents(16000, false);
+#endif
         GTWidget::close(os, modalWidget);
         modalWidget = QApplication::activeModalWidget();
     }
@@ -113,24 +109,37 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
     // Close all MDI windows
     // Cancel all tasks
 
+#ifdef Q_OS_MAC
+    GTUtilsMac fakeClock;
+    fakeClock.startWorkaroundForMacCGEvents(1, true);
+    fakeClock.startWorkaroundForMacCGEvents(16000, false);
+#endif
+
     if (AppContext::getProject() != nullptr) {
 #ifdef Q_OS_MAC
         GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
         GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
         GTGlobals::sleep(100);
 
-        GTUtilsDialog::waitForDialog(os, new AnyDialogFiller(os, nullptr, QDialogButtonBox::No));
+        GTUtilsDialog::waitForDialog(os, new AnyDialogFiller(os,
+                                                             nullptr,
+                                                             QDialogButtonBox::No));
+        // Need to close second dialog on Mac
+        GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new AnyDialogFiller(os,
+                                                                             nullptr,
+                                                                             QDialogButtonBox::No));
+
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
         GTGlobals::sleep(500);
         GTUtilsTaskTreeView::waitTaskFinished(os, 100000);
-        GTGlobals::sleep(5000);
+        GTGlobals::sleep(2000);
 
         GTUtilsDialog::waitForDialog(os, new AppCloseMessageBoxDialogFiller(os));
         GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                     << "Close project");
         GTGlobals::sleep(500);
         GTUtilsTaskTreeView::waitTaskFinished(os, 10000);
-        GTGlobals::sleep(5000);
+        GTGlobals::sleep(2000);
 
         GTUtilsDialog::cleanup(os, GTUtilsDialog::NoFailOnUnfinished);
 #else
@@ -148,6 +157,12 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
         GTUtilsDialog::cleanup(os, GTUtilsDialog::NoFailOnUnfinished);
 #endif
     }
+
+#ifdef Q_OS_MAC
+    GTUtilsMac fakeClock2;
+    fakeClock.startWorkaroundForMacCGEvents(1, true);
+    fakeClock2.startWorkaroundForMacCGEvents(16000, false);
+#endif
 
     GTUtilsMdi::closeAllWindows(os);
     AppContext::getTaskScheduler()->cancelAllTasks();

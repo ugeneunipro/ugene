@@ -52,7 +52,7 @@ public:
         return editAction;
     }
 
-    bool eventFilter(QObject *watched, QEvent *event);
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
     int getCursorPosition() const {
         return cursor;
@@ -73,7 +73,10 @@ private:
 
 private slots:
     void sl_editMode(bool active);
-    void sl_changeCursorColor();
+
+    /** Called periodically as a timer callback to animate blinking edit-mode cursor. */
+    void sl_cursorAnimationTimerCallback();
+
     void sl_objectLockStateChanged();
     void sl_paste(Task *pasteTask);
 

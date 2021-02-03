@@ -69,34 +69,6 @@ void MaCollapseModel::update(const QVector<MaCollapsibleGroup> &newGroups) {
     emit si_toggled();
 }
 
-void MaCollapseModel::updateFromUnitedRows(const QVector<U2Region> &unitedRows, const QList<qint64> &allOrderedMaRowIds) {
-    QVector<U2Region> sortedRegions = unitedRows;
-    qSort(sortedRegions);
-    QVector<MaCollapsibleGroup> newGroups;
-    int maIndex = 0;
-    foreach (const U2Region region, unitedRows) {
-        for (; maIndex < region.startPos; maIndex++) {
-            newGroups.append(MaCollapsibleGroup(maIndex, allOrderedMaRowIds[maIndex], true));
-        }
-        QList<int> maRows;
-        QList<qint64> maRowIds;
-        for (; maIndex < region.endPos(); maIndex++) {
-            maRows << maIndex;
-            maRowIds << allOrderedMaRowIds[maIndex];
-        }
-        newGroups.append(MaCollapsibleGroup(maRows, maRowIds, true));
-    }
-    int numSequences = allOrderedMaRowIds.size();
-    for (; maIndex < numSequences; maIndex++) {
-        newGroups.append(MaCollapsibleGroup(maIndex, allOrderedMaRowIds[maIndex], true));
-    }
-    // Copy collapse info from the current state.
-    for (int i = 0, n = qMin(newGroups.size(), groups.size()); i < n; i++) {
-        newGroups[i].isCollapsed = groups[i].isCollapsed;
-    }
-    update(newGroups);
-}
-
 void MaCollapseModel::reset(const QList<qint64> &allOrderedMaRowIds, const QSet<int> &expandedGroupIndexes) {
     QVector<MaCollapsibleGroup> newGroups;
     int numSequences = allOrderedMaRowIds.size();

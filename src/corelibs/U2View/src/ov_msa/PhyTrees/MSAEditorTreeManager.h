@@ -45,8 +45,6 @@ class MSAEditorTreeManager : public QObject {
     Q_OBJECT
 public:
     MSAEditorTreeManager(MSAEditor *msaEditor);
-    ~MSAEditorTreeManager() {
-    }
 
     void loadRelatedTrees();
 

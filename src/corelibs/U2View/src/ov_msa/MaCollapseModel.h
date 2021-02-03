@@ -35,10 +35,10 @@ namespace U2 {
 class MaCollapsibleGroup {
 public:
     /* Creates with 1 MA row inside. */
-    MaCollapsibleGroup(int maRow, qint64 maRowId, bool isCollapsed = false);
+    MaCollapsibleGroup(int maRowIndex, qint64 maRowId, bool isCollapsed = false);
 
     /* Creates new collapsible group item that starts with maRowIndex and has numRows inside. */
-    MaCollapsibleGroup(const QList<int> &maRows, const QList<qint64> &maRowIds, bool isCollapsed = false);
+    MaCollapsibleGroup(const QList<int> &maRowIndexList, const QList<qint64> &maRowIds, bool isCollapsed = false);
 
     /* Creates empty group. This method should not be used directly but is required by the Vector<MaCollapsibleGroup>. */
     MaCollapsibleGroup();
@@ -78,12 +78,6 @@ public:
 
     /* Updates model to the given groups. */
     void update(const QVector<MaCollapsibleGroup> &groups);
-
-    /**
-     * Updates collapse model using united rows as input.
-     * 'allOrderedMaRowIds' is a list of all ma row ids in the alignment.
-     */
-    void updateFromUnitedRows(const QVector<U2Region> &unitedRows, const QList<qint64> &allOrderedMaRowIds);
 
     /*
      * Flattens all collapsible groups: makes every group contain only 1 sequence.

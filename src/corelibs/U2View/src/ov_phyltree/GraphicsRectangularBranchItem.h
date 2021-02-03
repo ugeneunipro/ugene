@@ -32,7 +32,7 @@ class PhyNode;
 class PhyBranch;
 class GraphicsButtonItem;
 
-class GraphicsRectangularBranchItem : public QObject, public GraphicsBranchItem {
+class U2VIEW_EXPORT GraphicsRectangularBranchItem : public QObject, public GraphicsBranchItem {
     Q_OBJECT
 public:
     static const qreal DEFAULT_WIDTH;

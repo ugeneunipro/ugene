@@ -114,7 +114,6 @@ protected slots:
     void sl_setSeqAsReference();
     void sl_unsetReferenceSeq();
 
-    void sl_onSeqOrderChanged(const QStringList &order);
     void sl_showTreeOP();
     void sl_hideTreeOP();
     void sl_rowsRemoved(const QList<qint64> &rowIds);

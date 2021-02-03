@@ -20,32 +20,23 @@ k
  * MA 02110-1301, USA.
  */
 
-#ifndef GTTESTS_NIAID_PIPELINES_H_
-#define GTTESTS_NIAID_PIPELINES_H_
+/** Tree integration into MSA editor. */
+#ifndef GTTESTS_MSA_EDITOR_TREE_H_
+#define GTTESTS_MSA_EDITOR_TREE_H_
 
 #include <U2Test/UGUITestBase.h>
 
 namespace U2 {
 
-namespace GUITest_common_scenarios_NIAID_pipelines {
+namespace GUITest_common_scenarios_msa_editor_tree {
 #undef GUI_TEST_SUITE
-#define GUI_TEST_SUITE "GUITest_common_scenarios_NIAID_pipelines"
+#define GUI_TEST_SUITE "GUITest_common_scenarios_msa_editor_tree"
 
 GUI_TEST_CLASS_DECLARATION(test_0001)
-GUI_TEST_CLASS_DECLARATION(test_0002)
-GUI_TEST_CLASS_DECLARATION(test_0003)
-GUI_TEST_CLASS_DECLARATION(test_0004)
-GUI_TEST_CLASS_DECLARATION(test_0005)
-GUI_TEST_CLASS_DECLARATION(test_0006)
-GUI_TEST_CLASS_DECLARATION(test_0007)
-GUI_TEST_CLASS_DECLARATION(test_0008)
-GUI_TEST_CLASS_DECLARATION(test_0009)
-GUI_TEST_CLASS_DECLARATION(test_0010)
-GUI_TEST_CLASS_DECLARATION(test_0011)
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_NIAID_pipelines
+}    // namespace GUITest_common_scenarios_msa_editor_tree
 
 }    // namespace U2
 
-#endif    // GTTESTS_NIAID_PIPELINES_H_
+#endif    //GTTESTS_MSA_EDITOR_TREE_H_

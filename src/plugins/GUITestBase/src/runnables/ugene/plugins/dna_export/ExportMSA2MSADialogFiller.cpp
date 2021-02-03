@@ -20,6 +20,7 @@
  */
 
 #include "ExportMSA2MSADialogFiller.h"
+#include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTRadioButton.h>
@@ -35,10 +36,12 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportToSequenceFormatFiller"
 
-ExportMSA2MSADialogFiller::ExportMSA2MSADialogFiller(HI::GUITestOpStatus &_os, int _formatVal, QString _path)
+ExportMSA2MSADialogFiller::ExportMSA2MSADialogFiller(HI::GUITestOpStatus &_os, int _formatVal, QString _path, bool _includeGaps, bool _unknownAsGaps)
     : Filler(_os, "U2__ExportMSA2MSADialog"),
       formatVal(_formatVal),
-      path(_path) {
+      path(_path),
+      includeGaps(_includeGaps),
+      unknownAsGaps(_unknownAsGaps) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
@@ -47,12 +50,20 @@ void ExportMSA2MSADialogFiller::commonScenario() {
     GT_CHECK(dialog != NULL, "dialog not found");
 
     if (!path.isEmpty()) {
-        QLineEdit *fileNameEdit = dialog->findChild<QLineEdit *>("fileNameEdit");
+
+        QLineEdit *fileNameEdit = GTWidget::findExactWidget<QLineEdit *>(os, "fileNameEdit", dialog);
         GTLineEdit::setText(os, fileNameEdit, path);
     }
     if (formatVal >= 0) {
-        QComboBox *formatCombo = dialog->findChild<QComboBox *>("formatCombo");
+        QComboBox *formatCombo = GTWidget::findExactWidget<QComboBox *>(os, "formatCombo", dialog);
         GTComboBox::selectItemByIndex(os, formatCombo, formatVal);
+    }
+    if (includeGaps) {
+        GTCheckBox::setChecked(os, "cbIncludeGaps", dialog);
+
+        if (unknownAsGaps) {
+            GTRadioButton::click(os, "rbUseGaps", dialog);
+        }
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

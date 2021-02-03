@@ -106,7 +106,7 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt *_ui, GScrollBar *hb, G
 
     createSubaligniment = new QAction(tr("Save subalignment..."), this);
     createSubaligniment->setObjectName("Save subalignment");
-    connect(createSubaligniment, SIGNAL(triggered()), SLOT(sl_createSubaligniment()));
+    connect(createSubaligniment, SIGNAL(triggered()), SLOT(sl_createSubalignment()));
 
     saveSequence = new QAction(tr("Export selected sequence(s)..."), this);
     saveSequence->setObjectName("Save sequence");
@@ -124,15 +124,15 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt *_ui, GScrollBar *hb, G
     addSeqFromProjectAction->setObjectName("Sequence from current project");
     connect(addSeqFromProjectAction, SIGNAL(triggered()), SLOT(sl_addSeqFromProject()));
 
-    collapseModeSwitchAction = new QAction(QIcon(":core/images/collapse.png"), tr("Switch on/off collapsing"), this);
-    collapseModeSwitchAction->setObjectName("Enable collapsing");
-    collapseModeSwitchAction->setCheckable(true);
-    connect(collapseModeSwitchAction, SIGNAL(toggled(bool)), SLOT(sl_setCollapsingMode(bool)));
+    toggleVirtualOrderModeAction = new QAction(QIcon(":core/images/collapse.png"), tr("Switch on/off collapsing"), this);
+    toggleVirtualOrderModeAction->setObjectName("Enable collapsing");
+    toggleVirtualOrderModeAction->setCheckable(true);
+    connect(toggleVirtualOrderModeAction, SIGNAL(toggled(bool)), SLOT(sl_toggleVirtualOrderMode(bool)));
 
-    collapseModeUpdateAction = new QAction(QIcon(":core/images/collapse_update.png"), tr("Update collapsed groups"), this);
-    collapseModeUpdateAction->setObjectName("Update collapsed groups");
-    collapseModeUpdateAction->setEnabled(false);
-    connect(collapseModeUpdateAction, SIGNAL(triggered()), SLOT(sl_updateCollapsingMode()));
+    groupSequencesByContentAction = new QAction(QIcon(":core/images/collapse_update.png"), tr("Update collapsed groups"), this);
+    groupSequencesByContentAction->setObjectName("Update collapsed groups");
+    groupSequencesByContentAction->setEnabled(false);
+    connect(groupSequencesByContentAction, SIGNAL(triggered()), SLOT(sl_groupSequencesByContent()));
 
     reverseComplementAction = new QAction(tr("Replace selected rows with reverse-complement"), this);
     reverseComplementAction->setObjectName("replace_selected_rows_with_reverse-complement");
@@ -229,7 +229,7 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo &modInf
     MaCollapseModel *collapseModel = ui->getCollapseModel();
     MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
 
-    if (!ui->isCollapsibleMode()) {
+    if (!ui->isVirtualOrderMode()) {
         // Synchronize collapsible model with a current alignment.
         collapseModel->reset(getEditor()->getMaRowIds());
         return;
@@ -263,8 +263,8 @@ void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
     t->addAction(removeAllGapsAction);
     t->addSeparator();
 
-    t->addAction(collapseModeSwitchAction);
-    t->addAction(collapseModeUpdateAction);
+    t->addAction(toggleVirtualOrderModeAction);
+    t->addAction(groupSequencesByContentAction);
     t->addSeparator();
 }
 
@@ -353,7 +353,7 @@ void MSAEditorSequenceArea::sl_updateActions() {
     saveSequence->setEnabled(!isAlignmentEmpty());
     addSeqFromProjectAction->setEnabled(!readOnly);
     addSeqFromFileAction->setEnabled(!readOnly);
-    collapseModeSwitchAction->setEnabled(!readOnly && !isAlignmentEmpty());
+    toggleVirtualOrderModeAction->setEnabled(!readOnly && !isAlignmentEmpty());
 
     //Update actions of "Edit" group
     bool canEditAlignment = !readOnly && !isAlignmentEmpty();
@@ -467,20 +467,26 @@ void MSAEditorSequenceArea::sl_removeAllGaps() {
     SAFE_POINT_OP(os, );
 }
 
-void MSAEditorSequenceArea::sl_createSubaligniment() {
-    CHECK(getEditor() != nullptr, );
-    QObjectScopedPointer<CreateSubalignmentDialogController> dialog = new CreateSubalignmentDialogController(getEditor()->getMaObject(), selection.toRect(), this);
+void MSAEditorSequenceArea::sl_createSubalignment() {
+    MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
+    const MaEditorSelection &selection = getSelection();
+    QList<int> selectedRowIndexes = getSelectedMaRowIndexes();
+    const MultipleAlignment &alignment = msaObject->getMultipleAlignment();
+    QList<qint64> selectedRowIdList = selectedRowIndexes.isEmpty() ? alignment->getRowsIds() : alignment->getRowIdsByRowIndexes(selectedRowIndexes);
+    U2Region selectedColumnsRegion = selection.isEmpty() ? U2Region(0, msaObject->getLength()) : selection.getXRegion();
+
+    QObjectScopedPointer<CreateSubalignmentDialogController> dialog = new CreateSubalignmentDialogController(msaObject, selectedRowIdList, selectedColumnsRegion, this);
     dialog->exec();
     CHECK(!dialog.isNull(), );
 
     if (dialog->result() == QDialog::Accepted) {
-        U2Region window = dialog->getRegion();
+        selectedColumnsRegion = dialog->getSelectedColumnsRegion();
         bool addToProject = dialog->getAddToProjFlag();
         QString path = dialog->getSavePath();
-        QList<qint64> rowIds = dialog->getSelectedRowIds();
-        Task *csTask = new CreateSubalignmentAndOpenViewTask(getEditor()->getMaObject(),
-                                                             CreateSubalignmentSettings(window, rowIds, path, true, addToProject, dialog->getFormatId()));
-        AppContext::getTaskScheduler()->registerTopLevelTask(csTask);
+        selectedRowIdList = dialog->getSelectedRowIds();
+        CreateSubalignmentSettings createSubalignmentSettings(selectedColumnsRegion, selectedRowIdList, path, true, addToProject, dialog->getFormatId());
+        auto createSubAlignmentTask = new CreateSubalignmentAndOpenViewTask(msaObject, createSubalignmentSettings);
+        AppContext::getTaskScheduler()->registerTopLevelTask(createSubAlignmentTask);
     }
 }
 
@@ -516,8 +522,8 @@ void MSAEditorSequenceArea::sl_saveSequence() {
 void MSAEditorSequenceArea::sl_modelChanged() {
     MaCollapseModel *collapsibleModel = ui->getCollapseModel();
     if (!collapsibleModel->hasGroupsWithMultipleRows()) {
-        collapseModeSwitchAction->setChecked(false);
-        collapseModeUpdateAction->setEnabled(false);
+        toggleVirtualOrderModeAction->setChecked(false);
+        groupSequencesByContentAction->setEnabled(false);
     }
     MaEditorSequenceArea::sl_modelChanged();
 }
@@ -670,30 +676,30 @@ void MSAEditorSequenceArea::sl_addSeqFromProject() {
     }
 }
 
-void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {
+void MSAEditorSequenceArea::sl_toggleVirtualOrderMode(bool enabled) {
     CHECK(getEditor() != nullptr, );
     GCOUNTER(cvar, "Switch collapsing mode");
 
     MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
     if (msaObject == nullptr || msaObject->isStateLocked()) {
-        if (collapseModeSwitchAction->isChecked()) {
-            collapseModeSwitchAction->setChecked(false);
-            collapseModeUpdateAction->setEnabled(false);
+        if (toggleVirtualOrderModeAction->isChecked()) {
+            toggleVirtualOrderModeAction->setChecked(false);
+            groupSequencesByContentAction->setEnabled(false);
         }
         return;
     }
 
-    bool isCollapseModeChanged = ui->isCollapsibleMode() != enabled;
-    ui->setCollapsibleMode(enabled);
-    collapseModeUpdateAction->setEnabled(enabled);
+    bool isChanged = ui->isVirtualOrderMode() != enabled;
+    ui->setVirtualOrderMode(enabled);
+    groupSequencesByContentAction->setEnabled(enabled);
 
     if (enabled) {
-        sl_updateCollapsingMode();
+        sl_groupSequencesByContent();
     } else {
         ui->getCollapseModel()->reset(editor->getMaRowIds());
     }
 
-    if (isCollapseModeChanged) {
+    if (isChanged) {
         setSelection(MaEditorSelection());
     }
 
@@ -701,7 +707,7 @@ void MSAEditorSequenceArea::sl_setCollapsingMode(bool enabled) {
     emit si_collapsingModeChanged();
 }
 
-void MSAEditorSequenceArea::sl_updateCollapsingMode() {
+void MSAEditorSequenceArea::sl_groupSequencesByContent() {
     MaModificationInfo mi;
     mi.alignmentLengthChanged = false;
     updateCollapseModel(mi);
@@ -816,39 +822,32 @@ void MSAEditorSequenceArea::sl_complementCurrentSelection() {
     reverseComplementModification(type);
 }
 
-void MSAEditorSequenceArea::sl_setCollapsingRegions(const QList<QStringList> &collapsedGroups) {
-    CHECK(getEditor() != nullptr, );
+void MSAEditorSequenceArea::sl_setVirtualGroupingMode(const QList<QStringList> &collapsedGroups) {
     MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
-    if (msaObject->isStateLocked()) {
-        collapseModeSwitchAction->setChecked(false);
-        return;
-    }
-
-    MaCollapseModel *collapseModel = ui->getCollapseModel();
     QStringList rowNames = msaObject->getMultipleAlignment()->getRowNames();
+    QList<qint64> rowIds = msaObject->getRowIds();
 
-    // Calculate regions of collapsible groups
-    QVector<U2Region> collapsedRegions;
-    foreach (const QStringList &seqsGroup, collapsedGroups) {
-        int regionStartIdx = rowNames.size() - 1;
-        int regionEndIdx = 0;
-        foreach (const QString &seqName, seqsGroup) {
-            int sequenceIdx = rowNames.indexOf(seqName);
-            regionStartIdx = qMin(sequenceIdx, regionStartIdx);
-            regionEndIdx = qMax(sequenceIdx, regionEndIdx);
+    // The result list of virtual groups.
+    QVector<MaCollapsibleGroup> collapsibleGroupList;
+
+    for (const QStringList &groupSequenceNameList : qAsConst(collapsedGroups)) {
+        QList<int> maRowIndexList;
+        QList<qint64> maRowIdList;
+        for (const QString &sequenceName : qAsConst(groupSequenceNameList)) {
+            int rowIndex = rowNames.indexOf(sequenceName);
+            SAFE_POINT(rowIndex >= 0, "Row is not found: " + sequenceName, );
+            maRowIndexList << rowIndex;
+            maRowIdList << rowIds[rowIndex];
         }
-        if (regionStartIdx >= 0 && regionEndIdx < rowNames.size() && regionEndIdx > regionStartIdx) {
-            U2Region collapsedGroupRegion(regionStartIdx, regionEndIdx - regionStartIdx + 1);
-            collapsedRegions.append(collapsedGroupRegion);
-        }
+        // All groups are collapsed by default for compatibility. TODO: make it configurable.
+        bool isCollapsed = maRowIndexList.length() > 1;
+        collapsibleGroupList << MaCollapsibleGroup(maRowIndexList, maRowIdList, isCollapsed);
     }
-    if (collapsedRegions.length() > 0) {
-        ui->setCollapsibleMode(true);
-        collapseModel->updateFromUnitedRows(collapsedRegions, editor->getMaRowIds());
-    }
+    ui->setVirtualOrderMode(true);
+    ui->getCollapseModel()->update(collapsibleGroupList);
 }
 
-ExportHighligtningTask::ExportHighligtningTask(ExportHighligtingDialogController *dialog, MaEditor *maEditor)
+ExportHighlightingTask::ExportHighlightingTask(ExportHighligtingDialogController *dialog, MaEditor *maEditor)
     : Task(tr("Export highlighting"), TaskFlags_FOSCOE | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled) {
     msaEditor = qobject_cast<MSAEditor *>(maEditor);
     startPos = dialog->startPos;
@@ -860,7 +859,7 @@ ExportHighligtningTask::ExportHighligtningTask(ExportHighligtingDialogController
     url = dialog->url;
 }
 
-void ExportHighligtningTask::run() {
+void ExportHighlightingTask::run() {
     QString exportedData = exportHighlighting(startPos, endPos, startingIndex, keepGaps, dots, transpose);
     QFile resultFile(url.getURLString());
     CHECK_EXT(resultFile.open(QFile::WriteOnly | QFile::Truncate), url.getURLString(), );
@@ -868,11 +867,11 @@ void ExportHighligtningTask::run() {
     contentWriter << exportedData;
 }
 
-Task::ReportResult ExportHighligtningTask::report() {
+Task::ReportResult ExportHighlightingTask::report() {
     return ReportResult_Finished;
 }
 
-QString ExportHighligtningTask::generateReport() const {
+QString ExportHighlightingTask::generateReport() const {
     QString res;
     if (!isCanceled() && !hasError()) {
         res += "<b>" + tr("Export highlighting finished successfully") + "</b><br><b>" + tr("Result file:") + "</b> " + url.getURLString();
@@ -880,7 +879,7 @@ QString ExportHighligtningTask::generateReport() const {
     return res;
 }
 
-QString ExportHighligtningTask::exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose) {
+QString ExportHighlightingTask::exportHighlighting(int startPos, int endPos, int startingIndex, bool keepGaps, bool dots, bool transpose) {
     CHECK(msaEditor != nullptr, QString());
     SAFE_POINT(msaEditor->getReferenceRowId() != U2MsaRow::INVALID_ROW_ID, "Export highlighting is not supported without a reference", QString());
     QStringList result;

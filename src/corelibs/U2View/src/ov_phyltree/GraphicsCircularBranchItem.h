@@ -34,7 +34,7 @@ class PhyNode;
 class GraphicsButtonItem;
 class GraphicsRectangularBranchItem;
 
-class GraphicsCircularBranchItem : public GraphicsBranchItem {
+class U2VIEW_EXPORT GraphicsCircularBranchItem : public GraphicsBranchItem {
     qreal height;
     Direction direction;
     bool visible;

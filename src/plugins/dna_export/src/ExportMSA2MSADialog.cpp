@@ -73,6 +73,10 @@ void ExportMSA2MSADialog::updateModel() {
     formatId = saveController->getFormatIdToSave();
     file = saveController->getSaveFileName();
     translationTable = tableID[translationCombo->currentIndex()];
+    includeGaps = cbIncludeGaps->isChecked();
+    if (includeGaps) {
+        unknownAmino = rbUseX->isChecked() ? UnknownAmino::X : UnknownAmino::Gap;
+    }
     addToProjectFlag = addDocumentButton->isChecked();
     exportWholeAlignment = wholeRangeButton->isChecked();
 }

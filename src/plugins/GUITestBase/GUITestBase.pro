@@ -195,6 +195,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_4001_5000.h \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_5001_6000.h \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_6001_7000.h \
+            src/tests/regression_scenarios/GTTestsRegressionScenarios_7001_8000.h \
 #   Tests/Common Scenarios
             src/tests/common_scenarios/Assembling/Assembly_browser/GTTestsAssemblyBrowser.h \
             src/tests/common_scenarios/Assembling/bowtie2/GTTestsBowtie2.h \
@@ -219,6 +220,7 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.h \
             src/tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.h \
             src/tests/common_scenarios/msa_editor/consensus/GTTestsMSAEditorConsensus.h \
+            src/tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h \
             src/tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.h \
             src/tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h \
             src/tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h \
@@ -466,6 +468,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_4001_5000.cpp \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_5001_6000.cpp \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_6001_7000.cpp \
+            src/tests/regression_scenarios/GTTestsRegressionScenarios_7001_8000.cpp \
 #   Tests/Common Scenarios
             src/tests/common_scenarios/Assembling/Assembly_browser/GTTestsAssemblyBrowser.cpp \
             src/tests/common_scenarios/Assembling/bowtie2/GTTestsBowtie2.cpp \
@@ -490,6 +493,7 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.cpp \
             src/tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.cpp \
             src/tests/common_scenarios/msa_editor/consensus/GTTestsMSAEditorConsensus.cpp \
+            src/tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.cpp \
             src/tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.cpp  \
             src/tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.cpp \
             src/tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.cpp \

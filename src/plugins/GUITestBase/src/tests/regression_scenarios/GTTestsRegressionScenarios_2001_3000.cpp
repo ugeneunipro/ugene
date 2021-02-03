@@ -4712,10 +4712,9 @@ GUI_TEST_CLASS_DEFINITION(test_2761_1) {
             : ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/test_2761_1/2761.aln", QStringList() << "Bicolorana_bicolor_EF540830"
                                                                                                                                   << "Roeseliana_roeseli") {
         }
-        void run() {
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "No write permission to"));
+        void run() override {
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "No write permission"));
             ExtractSelectedAsMSADialogFiller::run();
-            GTGlobals::sleep(1000);
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
     };
@@ -4742,10 +4741,9 @@ GUI_TEST_CLASS_DEFINITION(test_2761_2) {
             : ExtractSelectedAsMSADialogFiller(os, testDir + "_common_data/scenarios/sandbox/test_2761_2/2761.aln", QStringList() << "Bicolorana_bicolor_EF540830"
                                                                                                                                   << "Roeseliana_roeseli") {
         }
-        void run() {
-            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Folder to save does not exist"));
+        void run() override {
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Export folder does not exist"));
             ExtractSelectedAsMSADialogFiller::run();
-            GTGlobals::sleep(1000);
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Cancel);
         }
     };

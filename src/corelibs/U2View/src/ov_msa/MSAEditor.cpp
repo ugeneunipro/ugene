@@ -509,11 +509,6 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     m.exec(QCursor::pos());
 }
 
-void MSAEditor::sl_onSeqOrderChanged(const QStringList &order) {
-    CHECK(!maObject->isStateLocked(), );
-    maObject->sortRowsByList(order);
-}
-
 void MSAEditor::sl_showTreeOP() {
     OptionsPanelWidget *opWidget = dynamic_cast<OptionsPanelWidget *>(optionsPanel->getMainWidget());
     if (opWidget == nullptr) {
@@ -776,8 +771,8 @@ void MSAEditor::sortSequences(const MultipleAlignment::SortType &sortType, const
     U2Region sortRange = selection.height() <= 1 ? U2Region() : U2Region(selection.y(), selection.height());
     msa->sortRows(sortType, sortOrder, sortRange);
 
-    // Drop collapsing mode.
-    getUI()->getSequenceArea()->sl_setCollapsingMode(false);
+    // Disable virtual mode.
+    getUI()->getSequenceArea()->sl_toggleVirtualOrderMode(false);
 
     QStringList rowNames = msa->getRowNames();
     if (rowNames != msaObject->getMultipleAlignment()->getRowNames()) {

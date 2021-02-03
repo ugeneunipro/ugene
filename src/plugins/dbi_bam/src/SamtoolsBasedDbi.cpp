@@ -24,9 +24,6 @@
 #include <QFile>
 #include <QFileInfo>
 
-#include <U2Core/AppContext.h>
-#include <U2Core/AppResources.h>
-#include <U2Core/AppSettings.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/U2AssemblyUtils.h>
 #include <U2Core/U2CoreAttributes.h>
@@ -95,6 +92,7 @@ void SamtoolsBasedDbi::init(const QHash<QString, QString> &properties, const QVa
         initProperties = properties;
         features.insert(U2DbiFeature_ReadSequence);
         features.insert(U2DbiFeature_ReadAssembly);
+        features.insert(U2DbiFeature_ReadAttributes);
         dbiId = url.getURLString();
         state = U2DbiState_Ready;
     } catch (const Exception &e) {
@@ -560,13 +558,6 @@ int SamtoolsBasedAssemblyDbi::toSamtoolsId(const U2DataId &assemblyId, U2OpStatu
     return dbId;
 }
 
-U2DataId SamtoolsBasedAssemblyDbi::toU2Id(int assemblyId) {
-    if (assemblyId < 0) {
-        return U2DataId("");
-    }
-    return U2DataId(QByteArray::number(assemblyId));
-}
-
 U2Assembly SamtoolsBasedAssemblyDbi::getAssemblyObject(const U2DataId &id, U2OpStatus &os) {
     CHECK_EXT(U2DbiState_Ready == dbi.getState(),
               os.setError(BAMDbiPlugin::tr("Invalid samtools DBI state")),
@@ -643,7 +634,9 @@ qint64 SamtoolsBasedAssemblyDbi::getMaxEndPos(const U2DataId &assemblyId, U2OpSt
     CHECK_EXT(NULL != header, os.setError("NULL header"), 0);
     CHECK_EXT(id < header->n_targets, os.setError("Unknown assembly id"), 0);
 
-    return header->target_len[id] - 1;
+    qint64 targetLength = header->target_len[id];
+    // Avoid returning '-1' (object-not-found) for empty assemblies.
+    return targetLength == 0 ? 0 : targetLength - 1;
 }
 
 U2Region SamtoolsBasedAssemblyDbi::getCorrectRegion(const U2DataId &assemblyId, const U2Region &r, U2OpStatus &os) {

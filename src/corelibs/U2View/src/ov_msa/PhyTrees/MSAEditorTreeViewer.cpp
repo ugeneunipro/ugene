@@ -129,6 +129,10 @@ bool MSAEditorTreeViewer::sync() {
     sortSeqAction->setEnabled(true);
     treeViewerUI->sl_sortAlignment();
     treeViewerUI->highlightBranches();
+
+    // Trigger si_visibleRangeChanged that will make tree widget update geometry to the correct scale. TODO: create a better API for this.
+    editor->getUI()->getSequenceArea()->onVisibleRangeChanged();
+
     return true;
 }
 
@@ -164,8 +168,7 @@ void MSAEditorTreeViewer::connectSignals() {
 
     connect(msaUI, SIGNAL(si_startMaChanging()), this, SLOT(sl_stopTracking()));
 
-    connect(treeViewerUI, SIGNAL(si_seqOrderChanged(const QStringList &)), editor, SLOT(sl_onSeqOrderChanged(const QStringList &)));
-    connect(treeViewerUI, SIGNAL(si_collapseModelChangedInTree(const QList<QStringList> &)), msaUI->getSequenceArea(), SLOT(sl_setCollapsingRegions(const QList<QStringList> &)));
+    connect(treeViewerUI, SIGNAL(si_collapseModelChangedInTree(const QList<QStringList> &)), msaUI->getSequenceArea(), SLOT(sl_setVirtualGroupingMode(const QList<QStringList> &)));
     connect(treeViewerUI, SIGNAL(si_groupColorsChanged(const GroupColorSchema &)), msaUI->getEditorNameList(), SLOT(sl_onGroupColorsChanged(const GroupColorSchema &)));
 
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), treeViewerUI, SLOT(sl_onReferenceSeqChanged(qint64)));
@@ -189,8 +192,7 @@ void MSAEditorTreeViewer::disconnectSignals() {
 
     disconnect(msaUI, SIGNAL(si_startMaChanging()), this, SLOT(sl_stopTracking()));
 
-    disconnect(treeViewerUI, SIGNAL(si_seqOrderChanged(const QStringList &)), editor, SLOT(sl_onSeqOrderChanged(const QStringList &)));
-    disconnect(treeViewerUI, SIGNAL(si_collapseModelChangedInTree(const QList<QStringList> &)), msaUI->getSequenceArea(), SLOT(sl_setCollapsingRegions(const QList<QStringList> &)));
+    disconnect(treeViewerUI, SIGNAL(si_collapseModelChangedInTree(const QList<QStringList> &)), msaUI->getSequenceArea(), SLOT(sl_setVirtualGroupingMode(const QList<QStringList> &)));
     disconnect(treeViewerUI, SIGNAL(si_groupColorsChanged(const GroupColorSchema &)), msaUI->getEditorNameList(), SLOT(sl_onGroupColorsChanged(const GroupColorSchema &)));
 
     disconnect(editor, SIGNAL(si_referenceSeqChanged(qint64)), treeViewerUI, SLOT(sl_onReferenceSeqChanged(qint64)));
@@ -495,63 +497,6 @@ void MSAEditorTreeViewerUI::sl_sequenceNameChanged(QString prevName, QString new
     scene()->update();
 }
 
-typedef QPair<qreal, QString> NameWithValuePair;
-
-QStringList MSAEditorTreeViewerUI::getOrderedSeqNames() {
-    QList<QGraphicsItem *> items = scene()->items();
-    QList<NameWithValuePair> namesAndHeightPairList;
-
-    for (QGraphicsItem *item : qAsConst(items)) {
-        GraphicsRectangularBranchItem *branchItem = dynamic_cast<GraphicsRectangularBranchItem *>(item);
-        if (branchItem == nullptr) {
-            continue;
-        }
-        QGraphicsSimpleTextItem *nameItem = branchItem->getNameText();
-        if (nameItem == nullptr) {
-            continue;
-        }
-        qreal y = branchItem->scenePos().y();
-        QString str = nameItem->text();
-        namesAndHeightPairList.append(QPair<qreal, QString>(y, str));
-    }
-    qSort(namesAndHeightPairList.begin(), namesAndHeightPairList.end());
-
-    QStringList seqNames;
-    for (const NameWithValuePair &pair : qAsConst(namesAndHeightPairList)) {
-        seqNames.append(pair.second);
-    }
-
-    getTreeSize();
-
-    return seqNames;
-}
-U2Region MSAEditorTreeViewerUI::getTreeSize() {
-    QList<QGraphicsItem *> items = scene()->items();
-
-    QRectF sceneRect = scene()->sceneRect();
-    qreal minYPos = sceneRect.top();
-    qreal maxYPos = sceneRect.bottom();
-
-    for (QGraphicsItem *item : qAsConst(items)) {
-        auto branchItem = dynamic_cast<GraphicsRectangularBranchItem *>(item);
-        if (branchItem == nullptr) {
-            continue;
-        }
-        QGraphicsSimpleTextItem *nameItem = branchItem->getNameText();
-        if (nameItem == nullptr) {
-            continue;
-        }
-        qreal y = branchItem->scenePos().y();
-        minYPos = qMin(minYPos, y);
-        maxYPos = qMax(maxYPos, y);
-    }
-
-    int minH = mapFromScene(0, minYPos).y();
-    int maxH = mapFromScene(0, maxYPos).y();
-
-    return U2Region(minH, maxH - minH);
-}
-
 void MSAEditorTreeViewerUI::setTreeLayout(TreeLayout newLayout) {
     TreeViewerUI::setTreeLayout(newLayout);
 }
@@ -593,7 +538,9 @@ void MSAEditorTreeViewerUI::sl_onReferenceSeqChanged(qint64) {
 }
 
 void MSAEditorTreeViewerUI::sl_sortAlignment() {
-    emit si_seqOrderChanged(getOrderedSeqNames());
+    // Apply current tree order & collapsing to the alignment.
+    QList<QStringList> groupList = getGroupingStateForMsa(rectRoot);
+    emit si_collapseModelChangedInTree(groupList);
 }
 
 void MSAEditorTreeViewerUI::highlightBranches() {
@@ -806,34 +753,47 @@ void MSAEditorTreeViewerUI::sl_onVisibleRangeChanged(QStringList visibleSeqs, in
 
 void MSAEditorTreeViewerUI::sl_onBranchCollapsed(GraphicsRectangularBranchItem *branch) {
     TreeViewerUI::sl_onBranchCollapsed(branch);
-    QList<QStringList> collapsedGroups = MSAEditorTreeViewerUtils::getCollapsedGroups(rectRoot);
-    emit si_collapseModelChangedInTree(collapsedGroups);
+    sl_sortAlignment();
 }
 
-QList<QStringList> MSAEditorTreeViewerUtils ::getCollapsedGroups(const GraphicsBranchItem *root) {
-    QList<QStringList> result;
+QList<QStringList> MSAEditorTreeViewerUI::getGroupingStateForMsa(const GraphicsBranchItem *root) const {
+    QList<QStringList> groupList;
 
-    QStack<const GraphicsBranchItem *> treeBranches;
-    treeBranches.push(root);
+    // treeBranchStack is used here for Depth-First-Search algorithm implementation with no recursion.
+    QStack<const GraphicsBranchItem *> treeBranchStack;
+    treeBranchStack.push(root);
 
-    do {
-        const GraphicsBranchItem *parentBranch = treeBranches.pop();
-        if (parentBranch->isCollapsed()) {
-            result.append(getSeqsNamesInBranch(parentBranch));
+    while (!treeBranchStack.isEmpty()) {
+        const GraphicsBranchItem *branchItem = treeBranchStack.pop();
+        if (branchItem->isCollapsed()) {
+            groupList.append(MSAEditorTreeViewerUtils::getSeqsNamesInBranch(branchItem));
             continue;
         }
 
-        QList<QGraphicsItem *> childItemList = parentBranch->childItems();
-        for (QGraphicsItem *graphItem : qAsConst(childItemList)) {
-            auto childrenBranch = dynamic_cast<GraphicsBranchItem *>(graphItem);
-            if (childrenBranch == nullptr) {
+        QGraphicsSimpleTextItem *branchNameItem = branchItem->getNameText();
+        if (branchNameItem != nullptr && !branchNameItem->text().isEmpty()) {
+            // Add this leaf of as a separate non-grouped sequence to the list.
+            groupList.append({branchNameItem->text()});
+            continue;
+        }
+
+        QList<QGraphicsItem *> childItemList = branchItem->childItems();
+
+        // Sort items by Y, so virtual order will be the same with the tree.
+        std::sort(childItemList.begin(), childItemList.end(), [](QGraphicsItem *item1, QGraphicsItem *item2) {
+            return item1->y() - item2->y();
+        });
+
+        for (QGraphicsItem *childItem : qAsConst(childItemList)) {
+            auto childBranchItem = dynamic_cast<GraphicsBranchItem *>(childItem);
+            if (childBranchItem == nullptr) {
                 continue;
             }
-            treeBranches.push(childrenBranch);
+            treeBranchStack.push(childBranchItem);
         }
-    } while (!treeBranches.isEmpty());
+    }
 
-    return result;
+    return groupList;
 }
 
 QStringList MSAEditorTreeViewerUtils::getSeqsNamesInBranch(const GraphicsBranchItem *branch) {

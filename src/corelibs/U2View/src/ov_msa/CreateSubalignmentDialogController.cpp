@@ -22,7 +22,6 @@
 #include "CreateSubalignmentDialogController.h"
 
 #include <QDir>
-
 #include <QMessageBox>
 #include <QPalette>
 
@@ -36,7 +35,6 @@
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/ProjectModel.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Formats/GenbankLocationParser.h>
@@ -50,15 +48,15 @@ namespace U2 {
 
 #define ROW_ID_PROPERTY "row-id"
 
-CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleSequenceAlignmentObject *_mobj, const QRect &selection, QWidget *p)
-    : QDialog(p), mobj(_mobj), saveController(NULL) {
+CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleSequenceAlignmentObject *obj, const QList<qint64> &preSelectedRowIdList, const U2Region &preSelectedColumnsRegion, QWidget *p)
+    : QDialog(p), msaObject(obj), selectedRowIds(preSelectedRowIdList), selectedColumnRegion(preSelectedColumnsRegion), saveController(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "54362661");
-    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Extract"));
+    buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Save"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    startLineEdit->setValidator(new QIntValidator(1, mobj->getLength(), startLineEdit));
-    endLineEdit->setValidator(new QIntValidator(1, mobj->getLength(), endLineEdit));
+    startLineEdit->setValidator(new QIntValidator(1, msaObject->getLength(), startLineEdit));
+    endLineEdit->setValidator(new QIntValidator(1, msaObject->getLength(), endLineEdit));
 
     connect(allButton, SIGNAL(clicked()), SLOT(sl_allButtonClicked()));
     connect(noneButton, SIGNAL(clicked()), SLOT(sl_noneButtonClicked()));
@@ -67,11 +65,11 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleS
     connect(startLineEdit, SIGNAL(textEdited(const QString &)), SLOT(sl_regionChanged()));
     connect(endLineEdit, SIGNAL(textEdited(const QString &)), SLOT(sl_regionChanged()));
 
-    int rowNumber = mobj->getNumRows();
-    int alignLength = mobj->getLength();
+    int rowCount = (int)msaObject->getNumRows();
+    int msaLength = (int)msaObject->getLength();
 
     sequencesTableWidget->clearContents();
-    sequencesTableWidget->setRowCount(rowNumber);
+    sequencesTableWidget->setRowCount(rowCount);
     sequencesTableWidget->setColumnCount(1);
     sequencesTableWidget->verticalHeader()->setHidden(true);
     sequencesTableWidget->horizontalHeader()->setHidden(true);
@@ -80,53 +78,36 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleS
 
     initSaveController();
 
-    int startSeq = -1;
-    int endSeq = -1;
-    int startPos = -1;
-    int endPos = -1;
-    if (selection.isNull()) {
-        startPos = 1;
-        endPos = alignLength;
-        startSeq = 0;
-        endSeq = rowNumber - 1;
-    } else {
-        startSeq = selection.y();
-        endSeq = selection.y() + selection.height() - 1;
-        startPos = selection.x() + 1;
-        endPos = selection.x() + selection.width();
+    if (selectedColumnRegion.isEmpty()) {
+        selectedColumnRegion = U2Region(0, msaLength);
     }
-    startLineEdit->setText(QString::number(startPos));
-    endLineEdit->setText(QString::number(endPos));
+    startLineEdit->setText(QString::number(selectedColumnRegion.startPos + 1)); // Visual range starts with 1, not 0.
+    endLineEdit->setText(QString::number(selectedColumnRegion.endPos()));
 
-    for (int i = 0; i < rowNumber; i++) {
-        MultipleSequenceAlignmentRow row = mobj->getMsa()->getMsaRow(i);
-        QCheckBox *cb = new QCheckBox(row->getName(), this);
-        cb->setProperty(ROW_ID_PROPERTY, row.data()->getRowId());
-        cb->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        if ((i >= startSeq) && (i <= endSeq)) {
-            cb->setChecked(true);
-        }
-        sequencesTableWidget->setCellWidget(i, 0, cb);
+    const MultipleSequenceAlignment msa = msaObject->getMsa();
+    for (int i = 0; i < rowCount; i++) {
+        const MultipleSequenceAlignmentRow row = msa->getMsaRow(i);
+        auto checkBox = new QCheckBox(row->getName(), this);
+        checkBox->setProperty(ROW_ID_PROPERTY, row.data()->getRowId());
+        checkBox->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        checkBox->setChecked(selectedRowIds.contains(row->getRowId()));
+        sequencesTableWidget->setCellWidget(i, 0, checkBox);
         sequencesTableWidget->setRowHeight(i, 15);
     }
 }
 
-QString CreateSubalignmentDialogController::getSavePath() {
-    if (NULL == saveController) {
-        return QString();
-    }
+QString CreateSubalignmentDialogController::getSavePath() const {
+    SAFE_POINT(saveController != nullptr, "saveController is nullptr!", "");
     return saveController->getSaveFileName();
 }
 
-DocumentFormatId CreateSubalignmentDialogController::getFormatId() {
-    if (NULL == saveController) {
-        return DocumentFormatId();
-    }
+DocumentFormatId CreateSubalignmentDialogController::getFormatId() const {
+    SAFE_POINT(saveController != nullptr, "saveController is nullptr!", DocumentFormatId());
     return saveController->getFormatIdToSave();
 }
 
-U2Region CreateSubalignmentDialogController::getRegion() {
-    return window;
+const U2Region &CreateSubalignmentDialogController::getSelectedColumnsRegion() const {
+    return selectedColumnRegion;
 }
 
 void CreateSubalignmentDialogController::sl_allButtonClicked() {
@@ -163,7 +144,7 @@ void CreateSubalignmentDialogController::sl_regionChanged() {
         p.setColor(QPalette::Base, QColor(255, 200, 200));
         startLineEdit->setPalette(p);
     }
-    if (end <= start || end > mobj->getLength()) {
+    if (end <= start || end > msaObject->getLength()) {
         QPalette p = endLineEdit->palette();
         p.setColor(QPalette::Base, QColor(255, 200, 200));
         endLineEdit->setPalette(p);
@@ -172,7 +153,7 @@ void CreateSubalignmentDialogController::sl_regionChanged() {
 
 void CreateSubalignmentDialogController::initSaveController() {
     SaveDocumentControllerConfig config;
-    config.defaultFileName = GUrlUtils::getNewLocalUrlByFormat(mobj->getDocument()->getURLString(), mobj->getGObjectName(), BaseDocumentFormats::CLUSTAL_ALN, "_subalign");
+    config.defaultFileName = GUrlUtils::getNewLocalUrlByFormat(msaObject->getDocument()->getURLString(), msaObject->getGObjectName(), BaseDocumentFormats::CLUSTAL_ALN, "_subalign");
     config.defaultFormatId = BaseDocumentFormats::CLUSTAL_ALN;
     config.fileDialogButton = browseButton;
     config.fileNameEdit = filepathEdit;
@@ -191,11 +172,11 @@ void CreateSubalignmentDialogController::accept() {
     QFileInfo fi(saveController->getSaveFileName());
     QDir dirToSave(fi.dir());
     if (!dirToSave.exists()) {
-        QMessageBox::critical(this, this->windowTitle(), tr("Folder to save does not exist"));
+        QMessageBox::critical(this, this->windowTitle(), tr("Export folder does not exist"));
         return;
     }
     if (!FileAndDirectoryUtils::isDirectoryWritable(dirToSave.absolutePath())) {
-        QMessageBox::critical(this, this->windowTitle(), tr("No write permission to '%1' folder").arg(dirToSave.absolutePath()));
+        QMessageBox::critical(this, this->windowTitle(), tr("No write permission for the folder: '%1'").arg(dirToSave.absolutePath()));
         return;
     }
     if (saveController->getSaveFileName().isEmpty()) {
@@ -203,44 +184,45 @@ void CreateSubalignmentDialogController::accept() {
         return;
     }
     if (fi.baseName().isEmpty() || fi.isDir()) {
-        QMessageBox::critical(this, this->windowTitle(), tr("Filename to save is empty"));
+        QMessageBox::critical(this, this->windowTitle(), tr("Export file name is empty"));
         return;
     }
     if (fi.exists() && !fi.permissions().testFlag(QFile::WriteUser)) {
-        QMessageBox::critical(this, this->windowTitle(), tr("No write permission to '%1' file").arg(fi.fileName()));
+        QMessageBox::critical(this, this->windowTitle(), tr("No write permission for the file '%1'").arg(fi.fileName()));
         return;
     }
 
     // '-1' because in memory positions start from 0 not 1
     int start = startLineEdit->text().toInt() - 1;
     int end = endLineEdit->text().toInt() - 1;
-    int seqLen = mobj->getLength();
+    int seqLen = msaObject->getLength();
 
     if (start > end) {
-        QMessageBox::critical(this, windowTitle(), tr("Illegal region!"));
+        QMessageBox::critical(this, windowTitle(), tr("Illegal column range!"));
         return;
     }
 
-    U2Region region(start, end - start + 1), sequence(0, seqLen);
-    if (!sequence.contains(region)) {
-        QMessageBox::critical(this, this->windowTitle(), tr("Illegal region!"));
+    U2Region newSelectedColumnRegion(start, end - start + 1);
+    U2Region wholeSequenceRegion(0, seqLen);
+    if (!wholeSequenceRegion.contains(newSelectedColumnRegion)) {
+        QMessageBox::critical(this, this->windowTitle(), tr("Illegal column range!"));
         return;
     }
 
     updateSelectedRowIds();
 
     if (selectedRowIds.empty()) {
-        QMessageBox::critical(this, this->windowTitle(), tr("You must select at least one sequence"));
+        QMessageBox::critical(this, this->windowTitle(), tr("No selected sequence found"));
         return;
     }
 
-    window = region;
+    selectedColumnRegion = newSelectedColumnRegion;
 
     this->close();
     QDialog::accept();
 }
 
-bool CreateSubalignmentDialogController::getAddToProjFlag() {
+bool CreateSubalignmentDialogController::getAddToProjFlag() const {
     return addToProjBox->isChecked();
 }
 
@@ -253,6 +235,10 @@ void CreateSubalignmentDialogController::updateSelectedRowIds() {
             selectedRowIds << rowId;
         }
     }
+}
+
+const QList<qint64> &CreateSubalignmentDialogController::getSelectedRowIds() const {
+    return selectedRowIds;
 }
 
 CreateSubalignmentAndOpenViewTask::CreateSubalignmentAndOpenViewTask(MultipleSequenceAlignmentObject *maObj, const CreateSubalignmentSettings &settings)

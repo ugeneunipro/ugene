@@ -24,6 +24,8 @@
 
 #include <QAbstractGraphicsShapeItem>
 
+#include <U2Core/global.h>
+
 #include "TreeSettings.h"
 
 namespace U2 {
@@ -31,7 +33,7 @@ namespace U2 {
 class PhyNode;
 class GraphicsButtonItem;
 
-class GraphicsBranchItem : public QAbstractGraphicsShapeItem {
+class U2VIEW_EXPORT GraphicsBranchItem : public QAbstractGraphicsShapeItem {
 public:
     enum Direction { up,
                      down };

@@ -79,7 +79,14 @@ private:
 class ExportMSA2MSATask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportMSA2MSATask(const MultipleSequenceAlignment &ma, int offset, int len, const QString &url, const QList<DNATranslation *> &aminoTranslations, DocumentFormatId format);
+    ExportMSA2MSATask(const MultipleSequenceAlignment &ma,
+                      int offset,
+                      int len,
+                      const QString &url,
+                      const QList<DNATranslation *> &aminoTranslations,
+                      DocumentFormatId format,
+                      const bool trimGaps,
+                      const bool convertUnknownToGap);
 
     void run();
 
@@ -89,7 +96,18 @@ private:
     int len;
     QString url;
     QString format;
-    QList<DNATranslation *> aminoTranslations;    // amino translation for a sequences in alignment. If not NULL -> sequence is translated
+    /*!
+     * Amino translation for a sequences in alignment. If not NULL -> sequence is translated
+     */
+    QList<DNATranslation *> aminoTranslations;
+    /*!
+     * Trim gaps before translation of not
+     */
+    const bool trimGaps;
+    /*!
+     * If there are unknown amino bases, they are translated as "X" by default, if this value is true tey will be tranlated as "-"
+     */
+    const bool convertUnknownToGap;
 };
 
 class DNAChromatogramObject;

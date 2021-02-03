@@ -6,7 +6,6 @@
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
-k
  * of the License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
@@ -20,32 +19,24 @@ k
  * MA 02110-1301, USA.
  */
 
-#ifndef GTTESTS_NIAID_PIPELINES_H_
-#define GTTESTS_NIAID_PIPELINES_H_
+#ifndef _U2_GT_TESTS_REGRESSION_SCENARIOS_7001_8000_H_
+#define _U2_GT_TESTS_REGRESSION_SCENARIOS_7001_8000_H_
 
 #include <U2Test/UGUITestBase.h>
 
 namespace U2 {
 
-namespace GUITest_common_scenarios_NIAID_pipelines {
-#undef GUI_TEST_SUITE
-#define GUI_TEST_SUITE "GUITest_common_scenarios_NIAID_pipelines"
-
-GUI_TEST_CLASS_DECLARATION(test_0001)
-GUI_TEST_CLASS_DECLARATION(test_0002)
-GUI_TEST_CLASS_DECLARATION(test_0003)
-GUI_TEST_CLASS_DECLARATION(test_0004)
-GUI_TEST_CLASS_DECLARATION(test_0005)
-GUI_TEST_CLASS_DECLARATION(test_0006)
-GUI_TEST_CLASS_DECLARATION(test_0007)
-GUI_TEST_CLASS_DECLARATION(test_0008)
-GUI_TEST_CLASS_DECLARATION(test_0009)
-GUI_TEST_CLASS_DECLARATION(test_0010)
-GUI_TEST_CLASS_DECLARATION(test_0011)
+namespace GUITest_regression_scenarios {
 
 #undef GUI_TEST_SUITE
-}    // namespace GUITest_common_scenarios_NIAID_pipelines
+#define GUI_TEST_SUITE "GUITest_regression_scenarios"
+
+GUI_TEST_CLASS_DECLARATION(test_7014)
+
+#undef GUI_TEST_SUITE
+
+}    // namespace GUITest_regression_scenarios
 
 }    // namespace U2
 
-#endif    // GTTESTS_NIAID_PIPELINES_H_
+#endif    // _U2_GT_TESTS_REGRESSION_SCENARIOS_7001_8000_H_

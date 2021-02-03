@@ -171,7 +171,7 @@ void MaEditorNameList::updateScrollBar() {
         maxNameWidth = qMax(fm.width(row->getName()), maxNameWidth);
     }
     // adjustment for branch primitive in collapsing mode
-    if (ui->isCollapsibleMode()) {
+    if (ui->isVirtualOrderMode()) {
         maxNameWidth += 2 * CROSS_SIZE + CHILDREN_OFFSET;
     }
 
@@ -679,7 +679,7 @@ void MaEditorNameList::drawContent(QPainter &painter) {
     SAFE_POINT_OP(os, );
 
     const MaCollapseModel *collapsibleModel = ui->getCollapseModel();
-    int crossSpacing = ui->isCollapsibleMode() ? CROSS_SIZE * 2 : 0;
+    int crossSpacing = ui->isVirtualOrderMode() ? CROSS_SIZE * 2 : 0;
     const ScrollController *scrollController = ui->getScrollController();
     int firstVisibleViewRow = scrollController->getFirstVisibleViewRowIndex(true);
     int lastVisibleViewRow = scrollController->getLastVisibleViewRowIndex(height(), true);
@@ -863,7 +863,7 @@ void MaEditorNameList::scrollSelectionToView(bool fromStart) {
 }
 
 bool MaEditorNameList::triggerExpandCollapseOnSelectedRow(bool collapse) {
-    if (!ui->isCollapsibleMode()) {
+    if (!ui->isVirtualOrderMode()) {
         return false;
     }
     U2Region selection = getSelection();

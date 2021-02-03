@@ -291,8 +291,8 @@ public:
     MaMode getModInfo();
 
 protected:
-    MaEditor *editor;
-    MaEditorWgt *ui;
+    MaEditor *const editor;
+    MaEditorWgt *const ui;
 
     MsaColorScheme *colorScheme;
     MsaHighlightingScheme *highlightingScheme;

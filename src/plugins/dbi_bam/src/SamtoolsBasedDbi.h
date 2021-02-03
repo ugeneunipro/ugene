@@ -110,7 +110,6 @@ public:
     virtual U2DbiIterator<U2AssemblyRead> *getReadsByName(const U2DataId &assemblyId, const QByteArray &name, U2OpStatus &os);
 
     static int toSamtoolsId(const U2DataId &assemblyId, U2OpStatus &os);
-    static U2DataId toU2Id(int assemblyId);
 
     /**
      * Unsupported methods

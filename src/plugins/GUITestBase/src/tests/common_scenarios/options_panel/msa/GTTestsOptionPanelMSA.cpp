@@ -1575,22 +1575,18 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
-    GTGlobals::sleep(1000);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //prepating widgets
+    // Check/prepare tree widgets.
     QWidget *treeView = GTWidget::findWidget(os, "treeView");
-    CHECK_SET_ERR(treeView != NULL, "tree view not found");
     QWidget *heightSlider = GTWidget::findWidget(os, "heightSlider");
-    CHECK_SET_ERR(heightSlider != NULL, "heightSlider not found");
-    QComboBox *layoutCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "layoutCombo"));
-    CHECK_SET_ERR(layoutCombo != NULL, "layoutCombo not found");
+    QComboBox *layoutCombo = GTWidget::findExactWidget<QComboBox*>(os, "layoutCombo");
 
     const QImage initImage = GTWidget::getImage(os, treeView);
 
     //    3. Select circular layout
     GTComboBox::selectItemByText(os, layoutCombo, "Circular");
-    GTGlobals::sleep(500);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: layout changed, height slider is disabled
     const QImage circularImage = GTWidget::getImage(os, treeView);
@@ -1599,7 +1595,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
 
     //    4. Select unrooted layout
     GTComboBox::selectItemByText(os, layoutCombo, "Unrooted");
-    GTGlobals::sleep(500);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: layout changed, height slider is disabled
     const QImage unrootedImage = GTWidget::getImage(os, treeView);
@@ -1608,9 +1604,9 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
 
     //    5. Select rectangular layout
     GTComboBox::selectItemByText(os, layoutCombo, "Rectangular");
-    GTGlobals::sleep(500);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: tree is similar to the beginning, height slider is enabled
+    // Expected state: tree is similar to the beginning, height slider is enabled
     const QImage rectangularImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(initImage == rectangularImage, "final image is not equal to initial");
     CHECK_SET_ERR(heightSlider->isEnabled(), "heightSlider in disabled for rectangular layout");

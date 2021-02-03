@@ -1116,7 +1116,7 @@ void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
     CHECK(!maObject->isStateLocked(), );
 
     // Drop grouping mode.
-    msaEditor->getUI()->getSequenceArea()->sl_setCollapsingMode(false);
+    msaEditor->getUI()->getSequenceArea()->sl_toggleVirtualOrderMode(false);
 
     QSet<qint64> resultUidSet;
     for (const FindPatternWidgetResult &result : qAsConst(allSearchResults)) {

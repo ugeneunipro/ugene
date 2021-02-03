@@ -31,6 +31,7 @@
 
 #include "drivers/GTMouseDriver.h"
 #include "primitives/GTMainWindow.h"
+#include "utils/GTUtilsMac.h"
 #include "utils/GTThread.h"
 
 namespace HI {
@@ -40,8 +41,21 @@ namespace HI {
 void GTWidget::click(GUITestOpStatus &os, QWidget *widget, Qt::MouseButton mouseButton, QPoint p) {
     GT_CHECK(widget != nullptr, "widget is NULL");
 
+#ifdef Q_OS_MAC
+    GTUtilsMac fakeClock;
+    fakeClock.startWorkaroundForMacCGEvents(16000, false);
+#endif
+
     if (p.isNull()) {
-        p = widget->rect().center();
+        QRect rect = widget->rect();
+        p = rect.center();
+#ifdef Q_OS_MAC
+        // This is for more stable click/activate on MacOS (found by experiment)
+        // TODO: still need to do more experiments on MacOS
+        if (qobject_cast<QLineEdit*>(widget) != nullptr) {
+            p -= QPoint(rect.width() / 3, 0);
+        }
+#endif
         // TODO: this is a fast fix
         if (widget->objectName().contains("ADV_single_sequence_widget")) {
             p += QPoint(0, 8);
@@ -56,6 +70,11 @@ void GTWidget::click(GUITestOpStatus &os, QWidget *widget, Qt::MouseButton mouse
 #define GT_METHOD_NAME "setFocus"
 void GTWidget::setFocus(GUITestOpStatus &os, QWidget *w) {
     GT_CHECK(w != NULL, "widget is NULL");
+
+#ifdef Q_OS_MAC
+    GTUtilsMac fakeClock;
+    fakeClock.startWorkaroundForMacCGEvents(1, true);
+#endif
 
     GTWidget::click(os, w);
     GTGlobals::sleep(200);
