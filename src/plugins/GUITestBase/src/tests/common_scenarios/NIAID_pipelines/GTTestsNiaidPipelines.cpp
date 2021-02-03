@@ -370,7 +370,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     //Expected state: no errors
     class RawRNASeqDataProcessingWizard : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QLineEdit *lineEdit1 = GTWidget::findExactWidget<QLineEdit *>(os, "FASTQ files widget");
 
             GTLineEdit::setText(os, lineEdit1, QFileInfo(testDir + "_common_data/fastq/lymph.fastq").absoluteFilePath());
@@ -399,7 +399,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     //Expected state: no errors
     class RawRNASeqDataProcessingWizard : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QLineEdit *lineEdit1 = GTWidget::findExactWidget<QLineEdit *>(os, "FASTQ files widget");
             QLineEdit *lineEdit11 = GTWidget::findExactWidget<QLineEdit *>(os, "FASTQ files with pairs widget");
 
@@ -434,7 +434,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     //Expected state: no errors
     class RawRNASeqDataProcessingWizard : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override  {
             QLineEdit *lineEdit1 = GTWidget::findExactWidget<QLineEdit *>(os, "FASTQ files widget");
 
             GTLineEdit::setText(os, lineEdit1, QFileInfo(testDir + "_common_data/fastq/lymph.fastq").absoluteFilePath());
@@ -472,7 +472,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     //Expected state: no errors
     class RawRNASeqDataProcessingWizard : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
+        void run(HI::GUITestOpStatus &os) override {
             QLineEdit *lineEdit1 = GTWidget::findExactWidget<QLineEdit *>(os, "FASTQ files widget");
             QLineEdit *lineEdit11 = GTWidget::findExactWidget<QLineEdit *>(os, "FASTQ files with pairs widget");
 
