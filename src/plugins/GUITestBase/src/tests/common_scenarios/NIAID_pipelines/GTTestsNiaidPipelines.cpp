@@ -337,8 +337,10 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 GUI_TEST_CLASS_DEFINITION(test_0009) {
     //1. Click Tools -> NGS data analysis -> Raw RNA-Seq data processing... Choose Single-end, Include mapping with tophat
     //2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
-    //3. Click "Next" several times and "Run"
-    //4. Wait for workflow finished
+    //3. Click "Next" two times
+    //4. Set "_common_data/bowtie/index" as bowtie index folder and "e_coli" as "Bowtie index basename"
+    //5. Click "Next" several times and "Run"
+    //6. Wait for workflow finished
     //Expected state: no errors
     class RawRNASeqDataProcessingWizard : public CustomScenario {
     public:
@@ -353,7 +355,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
             QLineEdit *lineEdit3 = GTWidget::findExactWidget<QLineEdit *>(os, "Bowtie index basename widget");
 
             GTLineEdit::setText(os, lineEdit2, QFileInfo(testDir + "_common_data/bowtie/index").absoluteFilePath());
-            GTLineEdit::setText(os, lineEdit3, QFileInfo("e_coli").absoluteFilePath());
+            GTLineEdit::setText(os, lineEdit3, "e_coli");
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
@@ -373,8 +375,10 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 GUI_TEST_CLASS_DEFINITION(test_0010) {
     //1. Click Tools -> NGS data analysis -> Raw RNA-Seq data processing... Choose Paired-end, Include mapping with tophat
     //2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
-    //3. Click "Next" several times and "Run"
-    //4. Wait for workflow finished
+    //3. Click "Next" two times
+    //4. Set "_common_data/bowtie/index" as bowtie index folder and "e_coli" as "Bowtie index basename"
+    //5. Click "Next" several times and "Run"
+    //6. Wait for workflow finished
     //Expected state: no errors
     class RawRNASeqDataProcessingWizard : public CustomScenario {
     public:
@@ -392,7 +396,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
             QLineEdit *lineEdit3 = GTWidget::findExactWidget<QLineEdit *>(os, "Bowtie index basename widget");
 
             GTLineEdit::setText(os, lineEdit2, QFileInfo(testDir + "_common_data/bowtie/index").absoluteFilePath());
-            GTLineEdit::setText(os, lineEdit3, QFileInfo("e_coli").absoluteFilePath());
+            GTLineEdit::setText(os, lineEdit3, "e_coli");
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
