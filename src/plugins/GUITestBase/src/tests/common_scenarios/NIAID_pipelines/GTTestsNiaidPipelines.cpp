@@ -272,7 +272,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0007) {
+GUI_TEST_CLASS_DEFINITION(test_0008) {
     //1. Click Tools -> NGS data analysis -> Raw RNA-Seq data processing... Choose Single-end, Skip mapping
     //2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
     //3. Click "Next" several times and "Run"
@@ -301,7 +301,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0008) {
+GUI_TEST_CLASS_DEFINITION(test_0009) {
     //1. Click Tools -> NGS data analysis -> Raw RNA-Seq data processing... Choose Paired-end, Skip mapping
     //2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
     //3. Click "Next" several times and "Run"
@@ -334,7 +334,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0009) {
+GUI_TEST_CLASS_DEFINITION(test_0010) {
     //1. Click Tools -> NGS data analysis -> Raw RNA-Seq data processing... Choose Single-end, Include mapping with tophat
     //2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
     //3. Click "Next" two times
@@ -372,7 +372,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0010) {
+GUI_TEST_CLASS_DEFINITION(test_0011) {
     //1. Click Tools -> NGS data analysis -> Raw RNA-Seq data processing... Choose Paired-end, Include mapping with tophat
     //2. Set "_common_data/e_coli/e_coli_reads/e_coli_1_1.fastq" "_common_data/e_coli/e_coli_reads/e_coli_1_2.fastq" "_common_data/fasta/DNA.fa" as reads and reference in wizard
     //3. Click "Next" two times
