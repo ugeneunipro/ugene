@@ -6445,6 +6445,35 @@ GUI_TEST_CLASS_DEFINITION(test_6941) {
     CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Unexpected notification");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6952) {
+    //1. Click Tools -> BLAST -> Remote NCBI BLAST... Choose _common_data/fasta/human_T1_cutted.fa as input file
+    //2. CLick Next two times, then Run
+    //Expected state: no errors
+    class RemoteBLASTWizardFiller : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/fasta/human_T1_cutted.fa").absoluteFilePath()));
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
+        }
+    };
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Remote BLASTing Wizard", new RemoteBLASTWizardFiller()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
+                                                << "BLAST"
+                                                << "Remote NCBI BLAST...");
+    
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
+    CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6953) {
     // Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
