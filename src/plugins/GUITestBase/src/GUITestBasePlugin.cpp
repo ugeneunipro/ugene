@@ -229,7 +229,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3276, "Obsolete, should be replaced by UGENE-6104");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_primer_library::test_0008, "UGENE-5609");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_shared_db_wd::run_workflow_gui_test_0003, "names conflict in database");
-
+    
     REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3156, "drag and drop");
     REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3165, "drag and drop");
     REGISTER_TEST_LINUX(GUITest_regression_scenarios::test_3333, "drag and drop");
@@ -254,9 +254,13 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_common_scenarios_shared_database::import_test_0007, "UTI-245");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_common_scenarios_shared_database::import_test_0008, "UTI-245");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_common_scenarios_shared_database::import_test_0016, "UTI-245");
+    REGISTER_TEST_IGNORED_WINDOWS(GUITest_common_scenarios_sequence_view::test_0061_3, "Windows machines for testing are currently unable to render 3D structures");
+    REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_1606, "Windows machines for testing are currently unable to render 3D structures");
+    REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_1700, "Windows machines for testing are currently unable to render 3D structures");
+    REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_1701, "Windows machines for testing are currently unable to render 3D structures");
+    REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_5295, "Windows machines for testing are currently unable to render 3D structures");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_3778, "UGENE-5735");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_4113, "UGENE-5810");
-    REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_5295, "Fails to grab OpenGL widget image on Windows");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_5360, "UGENE-5371");
     REGISTER_TEST_IGNORED_WINDOWS(GUITest_regression_scenarios::test_5371, "UGENE-5371");
     REGISTER_TEST_NOT_FOR_MAC(GUITest_common_scenarios_project::test_0041);    // There is no "Shift + Insert" hotkey on mac
@@ -661,7 +665,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1600_7);
     REGISTER_TEST(GUITest_regression_scenarios::test_1600_8);
     REGISTER_TEST(GUITest_regression_scenarios::test_1603);
-    REGISTER_TEST(GUITest_regression_scenarios::test_1606);
     REGISTER_TEST(GUITest_regression_scenarios::test_1607);
     REGISTER_TEST(GUITest_regression_scenarios::test_1609);
     REGISTER_TEST(GUITest_regression_scenarios::test_1616);
@@ -690,8 +693,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_1687);
     REGISTER_TEST(GUITest_regression_scenarios::test_1688);
 
-    REGISTER_TEST(GUITest_regression_scenarios::test_1700);
-    REGISTER_TEST(GUITest_regression_scenarios::test_1701);
     REGISTER_TEST(GUITest_regression_scenarios::test_1703);    //, "UGENE-3693"
     REGISTER_TEST(GUITest_regression_scenarios::test_1704);
     REGISTER_TEST(GUITest_regression_scenarios::test_1708);
@@ -1930,7 +1931,6 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0060);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0061_1);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0061_2);
-    REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0061_3);
 
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0062);
     REGISTER_TEST(GUITest_common_scenarios_sequence_view::test_0063);

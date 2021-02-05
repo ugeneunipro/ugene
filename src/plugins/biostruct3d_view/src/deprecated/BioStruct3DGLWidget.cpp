@@ -86,7 +86,7 @@ bool BioStruct3DGLWidget::canRender() {
     GLenum error = glGetError();
     bool canRender = error == GL_NO_ERROR;
     if (!canRender) {
-        coreLog.error(tr("The \"3D Structure Viewer\" was disabled, because OpenGL has error ") +
+        coreLog.info(tr("The \"3D Structure Viewer\" was disabled, because OpenGL has error ") +
             QString("(%1): %2").arg(error).arg(reinterpret_cast<const char *>(gluErrorString(error))));
     }
     return canRender;
