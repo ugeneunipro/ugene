@@ -6453,7 +6453,6 @@ GUI_TEST_CLASS_DEFINITION(test_6952) {
     public:
         void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
 
             GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/fasta/human_T1_cutted.fa").absoluteFilePath()));
 
