@@ -4664,7 +4664,60 @@ GUI_TEST_CLASS_DEFINITION(test_0092) {
     CHECK_SET_ERR(clipboardText == expectedMSA, QString("Expected: %1, current: %2").arg(expectedMSA).arg(clipboardText));
 }
 
-GUI_TEST_CLASS_DEFINITION(test_fake) {
+GUI_TEST_CLASS_DEFINITION(test_0093_1) {
+    // 1. Open file _common_data\scenarios\msa\nucl_with_leading_gaps.aln
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/nucl_with_leading_gaps.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
+
+    // 2. Do document context menu {Export->Export aligniment to amino format}
+    // 3. Translate with "frame" 2
+    GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, sandBoxDir + "GUITest_common_scenarios_msa_editor_test_0093.aln", false, false, 2));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "amino_translation_of_alignment_rows"));
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 4. Copy to clipboard
+    GTUtilsMSAEditorSequenceArea::selectArea(os);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_COPY"
+                                                                        << "copy_selection"));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: PPCP\nCP--
+    const QString clipboardText = GTClipboard::sequences(os);
+    const QString expectedMSA = "PPCP\nCP--";
+    CHECK_SET_ERR(clipboardText == expectedMSA, QString("Expected: %1, current: %2").arg(expectedMSA).arg(clipboardText));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0093_2) {
+    // 1. Open file _common_data\scenarios\msa\nucl_with_leading_gaps.aln
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/nucl_with_leading_gaps.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtils::checkExportServiceIsEnabled(os);
+
+    // 2. Do document context menu {Export->Export aligniment to amino format}
+    // 3. Translate with "frame" -3
+    GTUtilsDialog::waitForDialog(os, new ExportMSA2MSADialogFiller(os, -1, sandBoxDir + "GUITest_common_scenarios_msa_editor_test_0093.aln", false, false, -3));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "amino_translation_of_alignment_rows"));
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 4. Copy to clipboard
+    GTUtilsMSAEditorSequenceArea::selectArea(os);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_COPY"
+                                                                        << "copy_selection"));
+    GTMouseDriver::click(Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Expected: GGHG\nHG--
+    const QString clipboardText = GTClipboard::sequences(os);
+    const QString expectedMSA = "GHGG\nGH--";
+
+    CHECK_SET_ERR(clipboardText == expectedMSA, QString("Expected: %1, current: %2").arg(expectedMSA).arg(clipboardText));
+}
+
+    GUI_TEST_CLASS_DEFINITION(test_fake) {
     Q_UNUSED(os);
 }
 

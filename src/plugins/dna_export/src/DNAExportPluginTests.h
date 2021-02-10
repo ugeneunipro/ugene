@@ -60,6 +60,7 @@ public:
     int transTable;
     bool includeGaps = false;
     bool convertUnknownAmino2Gap = false;
+    int translationFrame = 1;
     QString inputFile;
     QString outputFileName;
     QString expectedOutputFile;

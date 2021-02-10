@@ -86,7 +86,9 @@ public:
                       const QList<DNATranslation *> &aminoTranslations,
                       DocumentFormatId format,
                       const bool trimGaps,
-                      const bool convertUnknownToGap);
+                      const bool convertUnknownToGap,
+                      const bool reverseComplement,
+                      const int baseOffset);
 
     void run();
 
@@ -108,6 +110,17 @@ private:
      * If there are unknown amino bases, they are translated as "X" by default, if this value is true tey will be tranlated as "-"
      */
     const bool convertUnknownToGap;
+    /*!
+     * There is required to translate a reverse-complement strand
+     */
+    const bool reverseComplement;
+    /*!
+     * The number of characters to skip based on a translation frame.
+     * If the frame is "1" or "-1", than baseOffset is 0.
+     * If the frame is "2" or "-2", than baseOffset is 1.
+     * If the frame is "3" or "-3", than baseOffset is 2.
+     */
+    const int baseOffset;
 };
 
 class DNAChromatogramObject;

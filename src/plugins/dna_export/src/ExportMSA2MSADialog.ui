@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>457</width>
-    <height>327</height>
+    <height>381</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -107,6 +107,96 @@
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="gbTranslationFrame">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="title">
+      <string>Translation frame:</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <widget class="QRadioButton" name="rbFirstDirectFrame">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>+1</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QRadioButton" name="rbFirstComplementFrame">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>-1</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QRadioButton" name="rbSecondDirectFrame">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>+2</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QRadioButton" name="rbSecondComplementFrame">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>-2</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QRadioButton" name="rbThirdDirectFrame">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>+3</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QRadioButton" name="rbThirdComplementFrame">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>-3</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QCheckBox" name="addDocumentButton">
      <property name="text">
       <string>Add document to the project</string>
@@ -160,8 +250,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>228</x>
-     <y>257</y>
+     <x>237</x>
+     <y>371</y>
     </hint>
     <hint type="destinationlabel">
      <x>228</x>
@@ -176,12 +266,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>228</x>
-     <y>109</y>
+     <x>237</x>
+     <y>105</y>
     </hint>
     <hint type="destinationlabel">
-     <x>228</x>
-     <y>170</y>
+     <x>237</x>
+     <y>161</y>
     </hint>
    </hints>
   </connection>
@@ -192,12 +282,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>228</x>
-     <y>109</y>
+     <x>237</x>
+     <y>105</y>
     </hint>
     <hint type="destinationlabel">
-     <x>332</x>
-     <y>164</y>
+     <x>437</x>
+     <y>151</y>
     </hint>
    </hints>
   </connection>
@@ -208,12 +298,12 @@
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>228</x>
-     <y>109</y>
+     <x>237</x>
+     <y>105</y>
     </hint>
     <hint type="destinationlabel">
-     <x>123</x>
-     <y>164</y>
+     <x>142</x>
+     <y>151</y>
     </hint>
    </hints>
   </connection>

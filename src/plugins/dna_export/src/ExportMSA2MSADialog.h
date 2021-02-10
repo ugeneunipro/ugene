@@ -55,6 +55,11 @@ public:
      * The character unknown amino acids should be translated to
      */
     UnknownAmino unknownAmino = UnknownAmino::X;
+    /*!
+     * The translation frame. Positive - direct, negative - complement.
+     * Possible values - 1, 2, 3, -1, -2, -3.
+     */
+    int translationFrame = 1;
     bool addToProjectFlag;
     QString translationTable;
     bool exportWholeAlignment;

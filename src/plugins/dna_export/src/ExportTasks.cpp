@@ -28,6 +28,7 @@
 #include <U2Core/Counter.h>
 #include <U2Core/DNAChromatogramObject.h>
 #include <U2Core/DNASequenceObject.h>
+#include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/DNATranslationImpl.h>
 #include <U2Core/DocumentModel.h>
@@ -151,7 +152,9 @@ ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment &_ma,
                                      const QList<DNATranslation *> &_aminoTranslations,
                                      DocumentFormatId _format,
                                      const bool _trimGaps,
-                                     const bool _convertUnknownToGap)
+                                     const bool _convertUnknownToGap,
+                                     const bool _reverseComplement,
+                                     const int _baseOffset)
     : DocumentProviderTask(tr("Export alignment to alignment: %1").arg(_url), TaskFlag_None),
       ma(_ma->getCopy()),
       offset(_offset),
@@ -160,7 +163,9 @@ ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment &_ma,
       format(_format),
       aminoTranslations(_aminoTranslations),
       trimGaps(_trimGaps),
-      convertUnknownToGap(_convertUnknownToGap) {
+      convertUnknownToGap(_convertUnknownToGap),
+      reverseComplement(_reverseComplement),
+      baseOffset(_baseOffset) {
     GCOUNTER(cvar, "ExportMSA2MSATask");
     CHECK_EXT(!ma->isEmpty(), setError(tr("Nothing to export: multiple alignment is empty")), );
     setVerboseLogMode(true);
@@ -176,7 +181,8 @@ void ExportMSA2MSATask::run() {
     QList<DNASequence> lst = MSAUtils::ma2seq(ma, trimGaps);
     QList<DNASequence> seqList;
     for (int i = offset; i < offset + len; i++) {
-        DNASequence &s = lst[i];
+        DNASequence s = reverseComplement ? DNASequenceUtils::reverseComplement(lst[i]) : lst[i];
+        s.seq = s.seq.right(s.seq.length() - baseOffset);
         QString name = s.getName();
         if (!aminoTranslations.isEmpty()) {
             DNATranslation *aminoTT = aminoTranslations.first();

@@ -93,22 +93,6 @@ bool BioStruct3DGLWidget::checkShaderPrograms() {
     return opgl;
 }
 
-bool BioStruct3DGLWidget::canRender() {
-    QOffscreenSurface surf;
-    QOpenGLContext ctx;
-    surf.create();
-    ctx.create();
-    ctx.makeCurrent(&surf);
-
-    GLenum error = glGetError();
-    bool canRender = error == GL_NO_ERROR;
-    if (!canRender) {
-        coreLog.error(tr("The \"3D Structure Viewer\" was disabled, because OpenGL has error ") +
-            QString("(%1): %2").arg(error).arg(reinterpret_cast<const char *>(gluErrorString(error))));
-    }
-    return canRender;
-}
-
 void BioStruct3DGLWidget::tryGL() {
     volatile QOpenGLWidget wgt;
     Q_UNUSED(wgt);
