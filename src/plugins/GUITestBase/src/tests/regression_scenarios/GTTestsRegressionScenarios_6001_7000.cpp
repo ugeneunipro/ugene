@@ -6462,6 +6462,7 @@ GUI_TEST_CLASS_DEFINITION(test_6952) {
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
+    const GTLogTracer lt;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Remote BLASTing Wizard", new RemoteBLASTWizardFiller()));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
@@ -6471,6 +6472,9 @@ GUI_TEST_CLASS_DEFINITION(test_6952) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
     CHECK_SET_ERR(errors.size() == 0, "Unexpected errors");
+    CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os),
+                  "Notifications in dashboard: " + GTUtilsDashboard::getJoinedNotificationsString(os));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6953) {
