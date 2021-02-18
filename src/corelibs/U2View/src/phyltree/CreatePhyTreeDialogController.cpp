@@ -32,6 +32,7 @@
 #include <U2Core/AppSettings.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentUtils.h>
+#include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
@@ -172,7 +173,13 @@ bool CreatePhyTreeDialogController::checkMemory() {
 
 void CreatePhyTreeDialogController::initSaveController(const MultipleSequenceAlignmentObject *mobj) {
     SaveDocumentControllerConfig config;
-    config.defaultFileName = GUrlUtils::getNewLocalUrlByExtention(mobj->getDocument()->getURLString(), mobj->getGObjectName(), ".nwk", "");
+    QString urlStr;
+    if (FileAndDirectoryUtils::isDirectoryWritable(QFileInfo(mobj->getDocument()->getURLString()).dir().path())) {
+        urlStr = mobj->getDocument()->getURLString();
+    } else {
+        urlStr = GUrlUtils::getDefaultDataPath() + "/" + mobj->getGObjectName();
+    }
+    config.defaultFileName = GUrlUtils::getNewLocalUrlByExtention(urlStr, mobj->getGObjectName(), ".nwk", "");
     config.defaultFormatId = BaseDocumentFormats::NEWICK;
     config.fileDialogButton = ui->browseButton;
     config.fileNameEdit = ui->fileNameEdit;
