@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,7 +44,8 @@ QList<GraphicsButtonItem *> GTUtilsPhyTree::getNodes(HI::GUITestOpStatus &os) {
     QList<GraphicsButtonItem *> result;
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
     GT_CHECK_RESULT(treeView, "treeView not found", result);
-    for (QGraphicsItem *item : treeView->scene()->items()) {
+    const QList<QGraphicsItem *> itemList = treeView->scene()->items();
+    for (QGraphicsItem *item : qAsConst(itemList)) {
         auto nodeItem = dynamic_cast<GraphicsButtonItem *>(item);
         if (nodeItem != nullptr) {
             result.append(nodeItem);
@@ -58,7 +59,7 @@ QList<GraphicsButtonItem *> GTUtilsPhyTree::getNodes(HI::GUITestOpStatus &os) {
 QList<GraphicsButtonItem *> GTUtilsPhyTree::getSelectedNodes(HI::GUITestOpStatus &os) {
     QList<GraphicsButtonItem *> nodes = getNodes(os);
     QList<GraphicsButtonItem *> selectedNodes;
-    for (auto node : nodes) {
+    for (auto node : qAsConst(nodes)) {
         if (node->isNodeSelected()) {
             selectedNodes << node;
         }
@@ -71,7 +72,7 @@ QList<GraphicsButtonItem *> GTUtilsPhyTree::getSelectedNodes(HI::GUITestOpStatus
 QList<GraphicsButtonItem *> GTUtilsPhyTree::getUnselectedNodes(HI::GUITestOpStatus &os) {
     QList<GraphicsButtonItem *> nodes = getNodes(os);
     QList<GraphicsButtonItem *> unselectedNodes;
-    for (auto node : nodes) {
+    for (auto node : qAsConst(nodes)) {
         if (node->isNodeSelected()) {
             unselectedNodes << node;
         }
@@ -140,7 +141,8 @@ QList<QGraphicsSimpleTextItem *> GTUtilsPhyTree::getDistances(HI::GUITestOpStatu
 #define GT_METHOD_NAME "getVisibleDistances"
 QList<QGraphicsSimpleTextItem *> GTUtilsPhyTree::getVisibleDistances(HI::GUITestOpStatus &os, QGraphicsView *treeView) {
     QList<QGraphicsSimpleTextItem *> result;
-    for (QGraphicsSimpleTextItem *item : getDistances(os, treeView)) {
+    const QList<QGraphicsSimpleTextItem *> textItemList = getDistances(os, treeView);
+    for (QGraphicsSimpleTextItem *item : qAsConst(textItemList)) {
         if (item->isVisible()) {
             result << item;
         }

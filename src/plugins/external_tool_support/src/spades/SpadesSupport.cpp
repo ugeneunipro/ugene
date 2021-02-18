@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -61,19 +61,7 @@ SpadesSupport::SpadesSupport()
     dependencies << PythonSupport::ET_PYTHON_ID;
 }
 
-/** SPAdes is available only on Linux and Mac. */
-static bool isSupported() {
-#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
-    return true;
-#else
-    return false;
-#endif
-}
-
 void SpadesSupport::checkIn() {
-    if (!isSupported()) {
-        return;
-    }
     AppContext::getExternalToolRegistry()->registerEntry(new SpadesSupport());
 
     QStringList genomeReadsFormats;

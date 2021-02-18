@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@ class PhyNode;
 class PhyBranch;
 class GraphicsButtonItem;
 
-class GraphicsRectangularBranchItem : public QObject, public GraphicsBranchItem {
+class U2VIEW_EXPORT GraphicsRectangularBranchItem : public QObject, public GraphicsBranchItem {
     Q_OBJECT
 public:
     static const qreal DEFAULT_WIDTH;

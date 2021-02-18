@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -103,7 +103,7 @@ SpideySupportContext::SpideySupportContext(QObject *p)
 void SpideySupportContext::initViewContext(GObjectView *view) {
     AnnotatedDNAView *dnaView = qobject_cast<AnnotatedDNAView *>(view);
     assert(dnaView != NULL);
-    if (dnaView->getSequenceInFocus() == NULL) {
+    if (dnaView->getActiveSequenceContext() == NULL) {
         return;
     }
 
@@ -169,7 +169,7 @@ void SpideySupportContext::sl_align_with_Spidey() {
     ADVGlobalAction *action = qobject_cast<ADVGlobalAction *>(sender());
     assert(action != NULL);
     AnnotatedDNAView *dnaView = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
-    U2SequenceObject *dnaObj = dnaView->getSequenceInFocus()->getSequenceObject();
+    U2SequenceObject *dnaObj = dnaView->getActiveSequenceContext()->getSequenceObject();
 
     if (rnaObj && dnaObj) {
         CreateAnnotationModel m;

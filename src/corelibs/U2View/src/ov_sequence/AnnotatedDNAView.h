@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -68,15 +68,15 @@ public:
     AnnotatedDNAView(const QString &viewName, const QList<U2SequenceObject *> &dnaObjects);
     ~AnnotatedDNAView();
 
-    virtual void buildStaticToolbar(QToolBar *tb);
+    void buildStaticToolbar(QToolBar *tb) override;
 
-    virtual void buildStaticMenu(QMenu *n);
+    void buildStaticMenu(QMenu *n) override;
 
-    virtual Task *updateViewTask(const QString &stateName, const QVariantMap &stateData);
+    Task *updateViewTask(const QString &stateName, const QVariantMap &stateData) override;
 
-    virtual QVariantMap saveState();
+    QVariantMap saveState() override;
 
-    virtual OptionsPanel *getOptionsPanel();
+    OptionsPanel *getOptionsPanel() override;
 
     // view content
     const QList<ADVSequenceObjectContext *> &getSequenceContexts() const {
@@ -101,19 +101,19 @@ public:
         return seqViews;
     }
 
-    virtual bool canAddObject(GObject *obj);
+    bool canAddObject(GObject *obj) override;
 
-    void addSequenceWidget(ADVSequenceWidget *v);
+    void addSequenceWidget(ADVSequenceWidget *widgetToAdd);
 
-    void removeSequenceWidget(ADVSequenceWidget *v);
+    void removeSequenceWidget(ADVSequenceWidget *sequenceWidget);
 
     void insertWidgetIntoSplitter(ADVSplitWidget *widget);
 
     void unregisterSplitWidget(ADVSplitWidget *widget);
 
-    virtual QString addObject(GObject *o);
+    QString addObject(GObject *o) override;
 
-    void saveWidgetState();
+    void saveWidgetState() override;
 
     ADVSequenceObjectContext *getSequenceContext(AnnotationTableObject *obj) const;
 
@@ -125,15 +125,16 @@ public:
         return scrolledWidget;
     }
 
-    ADVSequenceWidget *getSequenceWidgetInFocus() const {
-        return focusedWidget;
-    }
+    /** Returns active sequence widget. See 'activeSequenceWidget' docs. */
+    ADVSequenceWidget *getActiveSequenceWidget() const;
 
-    ADVSequenceObjectContext *getSequenceInFocus() const;
+    /** Returns context of the active sequence widget. See 'activeSequenceWidget' docs. */
+    ADVSequenceObjectContext *getActiveSequenceContext() const;
+
+    /** Sets sequence widget as active. See 'activeSequenceWidget' docs. */
+    void setActiveSequenceWidget(ADVSequenceWidget *sequenceWidget);
 
     QList<ADVSequenceObjectContext *> findRelatedSequenceContexts(GObject *obj) const;
-
-    void setFocusedSequenceWidget(ADVSequenceWidget *v);
 
     void updateState(const AnnotatedDNAViewState &s);
 
@@ -168,13 +169,13 @@ public:
     }
 
 protected:
-    virtual QWidget *createWidget();
-    virtual bool onObjectRemoved(GObject *o);
-    virtual void onObjectRenamed(GObject *obj, const QString &oldName);
-    virtual bool eventFilter(QObject *, QEvent *);
-    virtual void timerEvent(QTimerEvent *e);
+    QWidget *createWidget() override;
+    bool onObjectRemoved(GObject *o) override;
+    void onObjectRenamed(GObject *obj, const QString &oldName) override;
+    bool eventFilter(QObject *, QEvent *) override;
+    void timerEvent(QTimerEvent *e) override;
 
-    virtual bool isChildWidgetObject(GObject *o) const;
+    bool isChildWidgetObject(GObject *o) const;
     virtual void addAnalyseMenu(QMenu *m);
     virtual void addAddMenu(QMenu *m);
     virtual void addExportMenu(QMenu *m);
@@ -182,7 +183,7 @@ protected:
     virtual void addRemoveMenu(QMenu *m);
     virtual void addEditMenu(QMenu *m);
 
-    virtual bool onCloseEvent();
+    bool onCloseEvent() override;
 
 signals:
     void si_sequenceAdded(ADVSequenceObjectContext *c);
@@ -194,7 +195,9 @@ signals:
     void si_sequenceWidgetAdded(ADVSequenceWidget *w);
     void si_sequenceWidgetRemoved(ADVSequenceWidget *w);
 
-    void si_focusChanged(ADVSequenceWidget *from, ADVSequenceWidget *to);
+    /** Emitted every time active sequence widget is changed. See docs for 'activeSequenceWidget'. */
+    void si_activeSequenceWidgetChanged(ADVSequenceWidget *oldActiveWidget, ADVSequenceWidget *newActiveWidget);
+
     /** Emitted when a part was added to a sequence, or it was removed or replaced */
     void si_sequenceModified(ADVSequenceObjectContext *);
     void si_onClose(AnnotatedDNAView *v);
@@ -226,8 +229,9 @@ private slots:
     void sl_updatePasteAction();
     void sl_relatedObjectRelationChanged();
 
-    virtual void sl_onDocumentAdded(Document *);
-    virtual void sl_onDocumentLoadedStateChanged();
+    void sl_onDocumentAdded(Document *) override;
+    void sl_onDocumentLoadedStateChanged() override;
+
     virtual void sl_removeSelectedSequenceObject();
 
 private:
@@ -293,7 +297,12 @@ private:
     ADVClipboard *clipb;
     ADVSyncViewManager *syncViewManager;
 
-    ADVSequenceWidget *focusedWidget;
+    /*
+     * activeSequenceWidget serves as a target for all view-global widgets.
+     * AnnotatedDNAView always has at least some 'active' sequence widget unless it is in the destroying phase.
+     */
+    ADVSequenceWidget *activeSequenceWidget;
+
     ADVSequenceWidget *replacedSeqWidget;    // not NULL when any sequence widget is dragging to the new place.
 
     int timerId;

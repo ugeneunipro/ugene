@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -196,7 +196,7 @@ void WorkflowTabView::sl_dashboardsListChanged(const QStringList &added, const Q
 
         DashboardInfoRegistry *dashboardInfoRegistry = AppContext::getDashboardInfoRegistry();
         QStringList existingIds = allIds();
-        for (const QString &dashboardId : added) {
+        for (const QString &dashboardId : qAsConst(added)) {
             if (!existingIds.contains(dashboardId)) {
                 DashboardInfo dashboardInfo = dashboardInfoRegistry->getById(dashboardId);
                 if (dashboardInfo.opened) {

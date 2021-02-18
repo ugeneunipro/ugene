@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1689,7 +1689,7 @@ GUI_TEST_CLASS_DEFINITION(test_4156) {
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
 
-            QSpinBox *memBox = dialog->findChild<QSpinBox *>("memorySpinBox");
+            QSpinBox *memBox = dialog->findChild<QSpinBox *>("memBox");
             CHECK_SET_ERR(memBox != NULL, "memorySpinBox not found");
             GTSpinBox::setValue(os, memBox, 256, GTGlobals::UseKeyBoard);
 
@@ -1760,8 +1760,11 @@ GUI_TEST_CLASS_DEFINITION(test_4164) {
     GTFile::copy(os, testDir + "_common_data/vcf/valid.vcf", testDir + "_common_data/scenarios/sandbox/space dir/valid.vcf");
     //1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+
     //2. Add sample: snpEff
     GTUtilsWorkflowDesigner::addSample(os, "SnpEff");
+    GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
+
     //3. Set input file which contains spaces in path
     GTUtilsWorkflowDesigner::click(os, "Input Variations File");
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/scenarios/sandbox/space dir/valid.vcf");
@@ -1769,12 +1772,13 @@ GUI_TEST_CLASS_DEFINITION(test_4164) {
     GTUtilsWorkflowDesigner::click(os, "Annotate and Predict Effects with SnpEff");
     GTUtilsDialog::waitForDialog(os, new SnpEffDatabaseDialogFiller(os, "hg19"));
     GTUtilsWorkflowDesigner::setParameter(os, "Genome", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);
+
     //4. Run workflow
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTGlobals::sleep(5000);
     GTUtilsLog::check(os, l);
     GTUtilsTaskTreeView::cancelTask(os, "Execute workflow");
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4170) {
@@ -2052,17 +2056,50 @@ GUI_TEST_CLASS_DEFINITION(test_4194) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4209) {
+    // Run a task with 10k reads to align (total run time is 20-30 minutes).
+    // Check that the task runs correctly.
+    // Cancel the task: check that UI is not frozen and the task can be canceled correctly.
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4209/", "crash.uwl");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
+    GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(os);
 
     GTUtilsWorkflowDesigner::click(os, "Align to Reference");
     GTUtilsWorkflowDesigner::setParameter(os, "Reference URL", testDir + "_common_data/scenarios/_regression/4209/seq1.gb", GTUtilsWorkflowDesigner::textValue);
-    GTUtilsWorkflowDesigner::setParameter(os, "Result alignment URL", testDir + "_common_data/scenarios/sandbox/4209/4209.ugenedb", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Result alignment URL", QDir(sandBoxDir).absolutePath() + "/4209.ugenedb", GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", testDir + "_common_data/reads/e_coli_10000snp.fa");
+
+    GTUtilsWorkflowDesigner::runWorkflow(os);
+
+    // Wait for some period to ensure that the long running sub-task is started with no crash and cancel it next.
+    GTGlobals::sleep(20000);
+    GTUtilsTaskTreeView::cancelTask(os, "Execute workflow");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4209_1) {
+    // Run a task with 1k reads to align (total run time is 2-3 minutes).
+    // Check that the task finishes with no errors.
+    GTLogTracer logTracer;
+
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4209/", "crash.uwl");
+    GTUtilsWorkflowDesigner::checkWorkflowDesignerWindowIsActive(os);
+
+    GTUtilsWorkflowDesigner::click(os, "Align to Reference");
+    GTUtilsWorkflowDesigner::setParameter(os, "Reference URL", testDir + "_common_data/scenarios/_regression/4209/seq1.gb", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Result alignment URL", QDir(sandBoxDir).absolutePath() + "/4209.ugenedb", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::addInputFile(os, "Read Sequence", testDir + "_common_data/reads/e_coli_1000.fa");
+
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // OMG!
+    // The only error we have today is the error about missed chromatogram.
+    // The error is not correct: "Align to Reference" with BLAST does not need/use a chromatogram at all.
+    // The error was introduced during the time the test was suppressed and made impossible to run "Align to Reference" for reads with no chromatograms.
+    // See: UGENE-5423: Use ChromObject in Sanger algorithm.
+    // This problem will be addressed in the separate bug and logTracer will be checked for no errors.
+    CHECK_SET_ERR(logTracer.errorsList.size() == 1 && logTracer.errorsList[0].contains("The related chromatogram not found"),
+                  "Got unexpected error: " + logTracer.getJoinedErrorString());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4218) {
@@ -3570,7 +3607,7 @@ GUI_TEST_CLASS_DEFINITION(test_4563) {
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
-            GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "memorySpinBox", dialog), 200);
+            GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "memBox", dialog), 200);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -3933,6 +3970,8 @@ GUI_TEST_CLASS_DEFINITION(test_4620) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4621) {
+    qputenv("UGENE_DISABLE_ENZYMES_OVERFLOW_CHECK", "1");    // disable overflow to create a long running "Find Enzymes task".
+
     //1. Open "data/samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3999,130 +4038,108 @@ GUI_TEST_CLASS_DEFINITION(test_4674) {
     // 1. Open COI.aln
     // 2. Build the tree and synchronize it with the alignment
     // 3. Delete one sequence
-    // Expected state: message box appears
-    // 4. Cancel message box
-    // Expected state: the edit is undone and the tree is still connected with the alignment
-    // 5. Delete one sequence one more time
-    // Expected state: message box appears
-    // 6. Confirm the modification
-    // Expected state: the connection with the tree is broken, the sequence is removed
+    //    Expected state: tree is not in sync anymore and can't be synced.
+    // 4. Undo.
+    //    Expected state: tree can be synced again but is not in sync.
 
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::toggleView(os);    // Close project view to make all actions on toolbar available.
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_4674", 0, 0, true));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    int seqNumber = GTUtilsMsaEditor::getSequencesCount(os);
 
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON");
+    int sequenceCount1 = GTUtilsMsaEditor::getSequencesCount(os);
+
     GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
+    int sequenceCount2 = GTUtilsMsaEditor::getSequencesCount(os);
+    CHECK_SET_ERR(sequenceCount2 == sequenceCount1 - 1, "Sequence was not deleted/1");
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/1");
+    CHECK_SET_ERR(!syncModeButton->isEnabled(), "Sync mode button must not be enabled");
 
-    MSAEditorTreeViewerUI *ui = qobject_cast<MSAEditorTreeViewerUI *>(GTUtilsPhyTree::getTreeViewerUi(os));
-    CHECK_SET_ERR(ui != NULL, "Cannot find the tree");
-    CHECK_SET_ERR(ui->isCurTreeViewerSynchronized(), "The connection with the tree is lost");
-    CHECK_SET_ERR(seqNumber == GTUtilsMsaEditor::getSequencesCount(os), "The sequence removal was not undone");
+    GTUtilsMsaEditor::undo(os);
+    GTThread::waitForMainThread();
 
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi");
-    GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
-
-    CHECK_SET_ERR(!ui->isCurTreeViewerSynchronized(), "The connection with the tree is still there");
-    CHECK_SET_ERR(seqNumber != GTUtilsMsaEditor::getSequencesCount(os), "The sequence was not removed");
+    int sequenceCount3 = GTUtilsMsaEditor::getSequencesCount(os);
+    CHECK_SET_ERR(sequenceCount3 == sequenceCount1, "Sequence was not restored");
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/2");
+    CHECK_SET_ERR(syncModeButton->isEnabled(), "Sync mode button must be enabled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4674_1) {
-    // 1. Open COI.aln
-    // 2. Align the sequence to alignment
-    // 3. Build the tree and synchronize it with the alignment
-    // 4. Click Undo
-    // Expected state: message box appears
-    // 4. Cancel message box
-    // Expected state: the undoing is undone and the tree is still connected with the alignment
-    // 5. Click Undo one more time
-    // Expected state: message box appears
-    // 6. Confirm the modification
-    // Expected state: the connection with the tree is broken, the aligned sequence is removed
+    // 1. Open COI.aln.
+    // 2. Align the sequence to alignment.
+    // 3. Build the tree and synchronize it with the alignment.
+    // 4. Click Undo.
+    //    Expected state: the sequence is removed, tree is not in sync anymore and sync action is disabled.
+    // 5. Click Redo
+    // 6. Sync action is enabled again.
 
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::toggleView(os);    // Close project view to make all actions on toolbar available.
 
     GTFileDialogUtils *ob = new GTFileDialogUtils(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsDialog::waitForDialog(os, ob);
 
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != NULL, "MSA \"Align sequence(s) to this alignment\" action not found");
-    GTWidget::click(os, align);
+    GTWidget::click(os, GTAction::button(os, "Align sequence(s) to this alignment"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_4674_1", 0, 0, true));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    int seqNumber = GTUtilsMsaEditor::getSequencesCount(os);
 
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON");
+    int sequenceCount = GTUtilsMsaEditor::getSequencesCount(os);
+
     GTUtilsMsaEditor::undo(os);
-    GTThread::waitForMainThread();
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/1");
+    CHECK_SET_ERR(!syncModeButton->isEnabled(), "Sync mode must be not available");
+    CHECK_SET_ERR(sequenceCount - 1 == GTUtilsMsaEditor::getSequencesCount(os), "Undo must remove 1 sequence from the MSA");
 
-    MSAEditorTreeViewerUI *ui = qobject_cast<MSAEditorTreeViewerUI *>(GTUtilsPhyTree::getTreeViewerUi(os));
-    CHECK_SET_ERR(ui != NULL, "Cannot find the tree");
-    CHECK_SET_ERR(ui->isCurTreeViewerSynchronized(), "The connection with the tree is lost");
-    CHECK_SET_ERR(seqNumber == GTUtilsMsaEditor::getSequencesCount(os), "Undo was not undone 1");
-
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    GTUtilsMsaEditor::undo(os);
-    GTUtilsMsaEditor::undo(os);
-    GTThread::waitForMainThread();
-
-    CHECK_SET_ERR(!ui->isCurTreeViewerSynchronized(), "The connection with the tree is still there");
-    CHECK_SET_ERR(seqNumber != GTUtilsMsaEditor::getSequencesCount(os), "Undo was not undone 2");
+    GTUtilsMsaEditor::redo(os);
+    CHECK_SET_ERR(sequenceCount == GTUtilsMsaEditor::getSequencesCount(os), "Redo must return 1 sequence back to the MSA");
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/2");
+    CHECK_SET_ERR(syncModeButton->isEnabled(), "Sync mode must be available again");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4674_2) {
-    // 1. Open COI.aln
-    // 2. Build the tree and synchronize it with the alignment
-    // 3. Insert a gap
-    // Expected state: message box appears
-    // 4. Cancel message box
-    // Expected state: the insertion is undone and the tree is still connected with the alignment
-    // 5. Insert a gap again
-    // Expected state: message box appears
-    // 6. Confirm the modification
-    // Expected state: the connection with the tree is broken, the gap is removed
-    // 7. Delete some character
-    // Expected state: no message box
+    // 1. Open COI.aln.
+    // 2. Build the tree and check that it is synchronized with MSA.
+    // 3. Insert a gap.
+    //    Expected state: tree is not in sync anymore.
+    // 4. Sync tree.
+    //    Expected state: tree is in sync again.
+    // 5. Delete some character
+    //    Expected state: Tree is not in sync anymore.
 
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProjectTreeView::toggleView(os);    // Close project view to make all actions on toolbar available.
 
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_4674_2", 0, 0, true));
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    int alnLen = GTUtilsMSAEditorSequenceArea::getLength(os);
 
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/1");
+
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(10, 10));
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep();
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/1");
 
-    MSAEditorTreeViewerUI *ui = qobject_cast<MSAEditorTreeViewerUI *>(GTUtilsPhyTree::getTreeViewerUi(os));
-    CHECK_SET_ERR(ui != NULL, "Cannot find the tree");
-    CHECK_SET_ERR(ui->isCurTreeViewerSynchronized(), "The connection with the tree is lost");
-    CHECK_SET_ERR(alnLen == GTUtilsMSAEditorSequenceArea::getLength(os), "Undo was not undone");
-
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
-    GTUtilsMSAEditorSequenceArea::click(os, QPoint(10, 10));
-    GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep();
-
-    CHECK_SET_ERR(!ui->isCurTreeViewerSynchronized(), "The connection with the tree is still there");
-    CHECK_SET_ERR(alnLen != GTUtilsMSAEditorSequenceArea::getLength(os), "Undo was not undone");
+    GTWidget::click(os, syncModeButton);
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/2");
 
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(10, 10));
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/2");
+    CHECK_SET_ERR(syncModeButton->isEnabled(), "Sync mode must be enabled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4687) {
@@ -4913,7 +4930,6 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Copy (custom format)"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-    GTGlobals::sleep(500);
 
     QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
     MSAEditor *editor = mw->findChild<MSAEditor *>();
@@ -4923,7 +4939,6 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Paste"));
     GTWidget::click(os, nameListWidget, Qt::RightButton);
-    GTGlobals::sleep(500);
 
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getNameList(os).size() == 23, "Number of sequences should be 23");
 
@@ -4931,18 +4946,14 @@ GUI_TEST_CLASS_DEFINITION(test_4764_1) {
 
     QString expectedClipboard = "-CTACTAATTCG\n---TTATTAATT\nTTGCTAATTCGA\nTTATTAATCCGG\nCTATTAATTCGA";
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy"));
-    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-    GTGlobals::sleep(500);
+    GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(os);
 
-    QString clipboardText = GTClipboard::sequences(os);
+    QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == expectedClipboard, "expected test didn't equal to actual");
 
     //Expected state subalignment pasted correctly
     GTKeyboardUtils::copy(os);
-    GTGlobals::sleep(200);
-    clipboardText = GTClipboard::sequences(os);
+    clipboardText = GTClipboard::text(os);
     GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR(clipboardText == expectedClipboard, "expected test didn't equal to actual");
 }
@@ -4959,15 +4970,11 @@ GUI_TEST_CLASS_DEFINITION(test_4764_2) {
     QWidget *sequenceAreaWidget = editor->getUI()->getSequenceArea();
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(15, 0), GTGlobals::UseMouse);
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy"));
-    GTWidget::click(os, sequenceAreaWidget, Qt::RightButton);
-    GTGlobals::sleep();
+    GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Paste"));
     GTWidget::click(os, sequenceAreaWidget, Qt::RightButton);
-    GTGlobals::sleep();
 
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 7, "Sequence count should be 7");
 }
@@ -4984,15 +4991,11 @@ GUI_TEST_CLASS_DEFINITION(test_4764_3) {
     QWidget *sequenceAreaWidget = editor->getUI()->getSequenceArea();
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 0), QPoint(5, 4));
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy"));
-    GTWidget::click(os, sequenceAreaWidget, Qt::RightButton);
-    GTGlobals::sleep();
+    GTUtilsMSAEditorSequenceArea::copySelectionByContextMenu(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
                                                                               << "Paste"));
     GTWidget::click(os, sequenceAreaWidget, Qt::RightButton);
-    GTGlobals::sleep();
 
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 8, "Sequence count should be 7");
 }

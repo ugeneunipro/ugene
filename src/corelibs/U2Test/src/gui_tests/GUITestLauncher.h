@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,20 +34,26 @@
 
 namespace U2 {
 
+using namespace HI;
+
 class U2OpStatus;
 
 class GUITestLauncher : public Task {
     Q_OBJECT
 public:
-    GUITestLauncher(int _suiteNumber, bool _noIgnored = false, QString _iniFileTemplate = "");
-    GUITestLauncher(QString _pathToSuite = "", bool _noIgnored = false, QString _iniFileTemplate = "");
+    GUITestLauncher(int suiteNumber, bool noIgnored = false, QString iniFileTemplate = "");
+    GUITestLauncher(QString pathToSuite = "", bool noIgnored = false, QString iniFileTemplate = "");
 
-    virtual void run();
-    virtual QString generateReport() const;
+    void run() override;
+    QString generateReport() const override;
 
 private:
-    QList<HI::GUITest *> tests;
-    QMap<QString, QString> results;
+    /** List of tests to run. */
+    QList<GUITest *> testList;
+
+    /** Result status per test. */
+    QMap<QString, QString> testResultByFullTestNameMap;
+
     int suiteNumber;
     bool noIgnored;
     QString pathToSuite;
@@ -65,16 +71,16 @@ private:
 
     void firstTestRunCheck(const QString &testName);
 
-    /** Runs test and returns test output. */
-    QString runTest(const QString &testName);
+    /** Runs test multiple times (UGENE_TEST_NUMBER_RERUN_FAILED_TEST) and returns test output of the last run. */
+    QString runTest(const QString &testName, const int timeout);
 
     /** Runs test once and returns test output. */
-    QString runTestOnce(U2OpStatus &os, const QString &testName, int iteration, bool enableVideoRecording);
+    QString runTestOnce(U2OpStatus &os, const QString &testName, int iteration, const int timeout, bool enableVideoRecording);
 
     static QString readTestResult(const QByteArray &output);
     bool renameTestLog(const QString &testName);
 
-    bool initGUITestBase();
+    bool initTestList();
     void updateProgress(int finishedCount);
 
     QString getScreenRecorderString(QString testName);

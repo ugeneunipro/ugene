@@ -982,12 +982,12 @@
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="132"/>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="158"/>
         <source>Number of separator symbols (N - for nucleic or X - for amino) between parts.</source>
-        <translation type="unfinished"></translation>
+        <translation>Число разделяющих символов (N - для нуклеотидных или X - для амино) между частями.</translation>
     </message>
     <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="135"/>
         <source>Separator characters between parts</source>
-        <translation type="unfinished"></translation>
+        <translation>Разделитель между частями</translation>
     </message>
     <message>
         <source> bases</source>
@@ -1712,33 +1712,33 @@ The items cannot be recovered once deleted.</source>
         <translation>&lt;авто&gt;</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="238"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="242"/>
         <source>Select annotation saving parameters</source>
         <translation>Выберите параметры сохранения аннотации</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="241"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="245"/>
         <source>Document is already added to the project: &apos;%1&apos;</source>
         <translation>Документ уже существует: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="246"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="250"/>
         <source>Illegal folder: %1</source>
         <translation>Не найден путь: %1</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="251"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="255"/>
         <source>Illegal annotation name! </source>
         <translation>Нелегальные символы в имени аннотации. Допустимы только цифры, буквы и подчёркивания! </translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="256"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="260"/>
         <source>Illegal group name</source>
         <translation>Нелегальные символы в имени группы</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="261"/>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="266"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="265"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="270"/>
         <source>Invalid location! Location must be in GenBank format.
 Simple examples:
 1..10
@@ -1751,7 +1751,7 @@ join(1..10,15..45)
 complement(5..15)</translation>
     </message>
     <message>
-        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="353"/>
+        <location filename="../src/util/CreateAnnotationWidgetController.cpp" line="357"/>
         <source>Save File</source>
         <translation>Сохранить файл</translation>
     </message>
@@ -2239,7 +2239,7 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/ObjectViewModel.cpp" line="126"/>
         <source>Can&apos;t add object: %1 to the closing view</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно добавить объект: %1 в закрывающееся окно</translation>
     </message>
     <message>
         <location filename="../src/ObjectViewModel.cpp" line="129"/>
@@ -2681,7 +2681,7 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/PasteController.cpp" line="113"/>
         <source>Data in clipboard is too large.</source>
-        <translation type="unfinished"></translation>
+        <translation>Двнные в буфере обмена слишком большие.</translation>
     </message>
 </context>
 <context>

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,6 +56,12 @@ class U2OpStatus;
 #define ProjectLoaderHint_DontCheckForExistence "dont-check-for-existence"
 #define ProjectLoaderHint_OpenBySystemIfFormatDetectionFailed "open-by-system-if-format-detection-failed"
 #define ProjectLoaderHint_DoNotAddToRecentDocuments "do-not-add-to-recent-documents"
+
+/**
+ * When this hint is provided the 'openWithProjectTask' skips document format detection.
+ * Effective only for a single document mode today.
+ */
+#define ProjectLoaderHint_DocumentFormat "document-format"
 
 /// Service responsible for project loading / unloading
 class U2CORE_EXPORT ProjectLoader : public QObject {
@@ -148,9 +154,6 @@ signals:
     void si_objectViewStateAdded(GObjectViewState *);
 
     void si_objectViewStateRemoved(GObjectViewState *);
-};
-
-class DocumentSerialState {
 };
 
 }    // namespace U2

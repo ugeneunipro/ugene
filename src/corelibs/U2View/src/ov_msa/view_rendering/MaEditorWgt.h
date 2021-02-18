@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -107,19 +107,14 @@ public:
 
     QAction *getRedoAction() const;
 
-    /* Returns if collapsible mode is enabled or not.
-     *
-     * Note: the collapsible model is used regardless if collapsible mode is enabled or not,
-     * but have different features: in the collapsible mode the model can contains group of multiple sequences
-     * or reordered rows.
-     */
-    bool isCollapsibleMode() const {
-        return collapsibleMode;
-    }
+    /* Returns 'true' if the virtual ordering/grouping mode is enabled. See docs for 'virtualOrderMode' for more details. */
+    bool isVirtualOrderMode() const;
 
-    void setCollapsibleMode(bool collapse) {
-        collapsibleMode = collapse;
-    }
+    /*
+     * Sets virtual grouping mode ON or OFF.
+     * A trivial method that updates the flag in the view model with no other actions/callbacks.
+     */
+    void setVirtualOrderMode(bool flag);
 
     MaCollapseModel *getCollapseModel() const {
         return collapseModel;
@@ -180,7 +175,27 @@ protected:
     MsaUndoRedoFramework *undoFWK;
 
     MaCollapseModel *collapseModel;
-    bool collapsibleMode;
+
+    /**
+     * If true, the 'collapseModel' holds virtual ordering/grouping state.
+     * Otherwise 'collapseModel' contains a trivial (1:1) mapping of in-view row indexes to the file indexes that are always the same.
+     *
+     * This virtual state is never saved to MA file and is preserved in the current view only in runtime.
+     *
+     * Examples of use of virtual grouping/ordering state:
+     *  - Group of sequences with the common content: reorder + groups.
+     *  - Tree sync mode: reorder + groups.
+     *  - Any other mode that requires grouping & expand-collapse capabilities.
+     *
+     * Examples of non-virtual (in-file order modifications):
+     *  - Sort by name, length, leading gap size.
+     *  - Drag & drop or rows in the non-virutalOrderingMode.
+     *
+     *  The virtual ordering/grouping can be applied to read-only alignments.
+     *  Any changes to the order while in the virtualOrderMode are not saved to the MA file.
+     */
+    bool virtualOrderMode;
+
     bool enableCollapsingOfSingleRowGroups;
     ScrollController *scrollController;
     BaseWidthController *baseWidthController;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -86,7 +86,7 @@ ADVAnnotationCreation::ADVAnnotationCreation(AnnotatedDNAView *c)
 }
 
 void ADVAnnotationCreation::sl_createAnnotation() {
-    ADVSequenceObjectContext *seqCtx = ctx->getSequenceInFocus();
+    ADVSequenceObjectContext *seqCtx = ctx->getActiveSequenceContext();
     SAFE_POINT(seqCtx != nullptr, "Invalid sequence context detected!", );
     CreateAnnotationModel m;
     m.useUnloadedObjects = true;

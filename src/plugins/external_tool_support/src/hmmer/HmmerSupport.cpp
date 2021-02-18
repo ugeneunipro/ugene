@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -111,7 +111,7 @@ U2SequenceObject *getDnaSequenceObject() {
     GObjectViewWindow *activeWindow = qobject_cast<GObjectViewWindow *>(AppContext::getMainWindow()->getMDIManager()->getActiveWindow());
     if (activeWindow != nullptr) {
         AnnotatedDNAView *dnaView = qobject_cast<AnnotatedDNAView *>(activeWindow->getObjectView());
-        seqObj = (dnaView != nullptr ? dnaView->getSequenceInFocus()->getSequenceObject() : nullptr);
+        seqObj = (dnaView != nullptr ? dnaView->getActiveSequenceContext()->getSequenceObject() : nullptr);
     }
 
     if (seqObj == nullptr) {
@@ -142,7 +142,7 @@ void HmmerSupport::sl_search() {
     GObjectViewWindow *activeWindow = qobject_cast<GObjectViewWindow *>(AppContext::getMainWindow()->getMDIManager()->getActiveWindow());
     if (activeWindow != nullptr) {
         AnnotatedDNAView *dnaView = qobject_cast<AnnotatedDNAView *>(activeWindow->getObjectView());
-        seqCtx = (dnaView != nullptr) ? dnaView->getSequenceInFocus() : nullptr;
+        seqCtx = (dnaView != nullptr) ? dnaView->getActiveSequenceContext() : nullptr;
     }
 
     QWidget *parent = AppContext::getMainWindow()->getQMainWindow();
@@ -169,7 +169,7 @@ void HmmerSupport::sl_phmmerSearch() {
     GObjectViewWindow *activeWindow = qobject_cast<GObjectViewWindow *>(AppContext::getMainWindow()->getMDIManager()->getActiveWindow());
     if (activeWindow != nullptr) {
         AnnotatedDNAView *dnaView = qobject_cast<AnnotatedDNAView *>(activeWindow->getObjectView());
-        seqCtx = (dnaView != nullptr) ? dnaView->getSequenceInFocus() : nullptr;
+        seqCtx = (dnaView != nullptr) ? dnaView->getActiveSequenceContext() : nullptr;
     }
 
     QWidget *parent = AppContext::getMainWindow()->getQMainWindow();
@@ -334,7 +334,7 @@ void HmmerAdvContext::sl_search() {
     SAFE_POINT(action != nullptr, "action is NULL", );
     AnnotatedDNAView *adv = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
     SAFE_POINT(adv != nullptr, "AnnotatedDNAView is NULL", );
-    ADVSequenceObjectContext *seqCtx = adv->getSequenceInFocus();
+    ADVSequenceObjectContext *seqCtx = adv->getActiveSequenceContext();
     if (seqCtx == nullptr) {
         QMessageBox::critical(parent, tr("Error"), tr("No sequence in focus found"));
         return;
@@ -358,7 +358,7 @@ U2SequenceObject *HmmerAdvContext::getSequenceInFocus(QObject *sender) {
     SAFE_POINT(action != nullptr, "action is NULL", NULL);
     AnnotatedDNAView *adv = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
     SAFE_POINT(adv != nullptr, "AnnotatedDNAView is NULL", NULL);
-    ADVSequenceObjectContext *seqCtx = adv->getSequenceInFocus();
+    ADVSequenceObjectContext *seqCtx = adv->getActiveSequenceContext();
     if (seqCtx == nullptr) {
         return nullptr;
     }
@@ -387,7 +387,7 @@ void Hmmer3LogParser::parseErrOutput(const QString &partOfLog) {
     lastPartOfLog.first() = lastErrLine + lastPartOfLog.first();
     lastErrLine = lastPartOfLog.takeLast();
 
-    for (const QString &buf : lastPartOfLog) {
+    for (const QString &buf : qAsConst(lastPartOfLog)) {
         if (!buf.isEmpty()) {
             algoLog.error("Hmmer3: " + buf);
             setLastError(buf);

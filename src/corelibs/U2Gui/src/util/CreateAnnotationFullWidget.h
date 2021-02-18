@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,7 +30,7 @@ namespace U2 {
 class CreateAnnotationFullWidget : public CreateAnnotationWidget, private Ui_CreateAnnotationFullWidget {
     Q_OBJECT
 public:
-    CreateAnnotationFullWidget(QWidget *parent = NULL);
+    CreateAnnotationFullWidget(qint64 seqLen, QWidget *parent = nullptr);
     ~CreateAnnotationFullWidget();
 
     void setGroupNameVisible(bool visible);
@@ -99,6 +99,8 @@ private:
     void connectSignals();
 
     FormatType formatType;
+    qint64 seqLen;
+    bool isValidLocation;
 };
 
 }    // namespace U2

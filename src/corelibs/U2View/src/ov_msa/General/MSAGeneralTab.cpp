@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -115,7 +115,7 @@ void MSAGeneralTab::initializeParameters() {
     QList<DocumentFormatId> supportedFormats = formatRegistry->selectFormats(constr);
     supportedFormats.append(BaseDocumentFormats::PLAIN_TEXT);
 
-    for (const DocumentFormatId &fid : supportedFormats) {
+    for (const DocumentFormatId &fid : qAsConst(supportedFormats)) {
         DocumentFormat *format = formatRegistry->getFormatById(fid);
         copyType->addItem(QIcon(), format->getFormatName(), format->getFormatId());
     }

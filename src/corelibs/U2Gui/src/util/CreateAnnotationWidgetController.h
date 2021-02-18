@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -84,6 +84,7 @@ public:
 
     // useCompact defines the layout of the widget (normal or compact for the Options Panel)
     CreateAnnotationWidgetController(const CreateAnnotationModel &m, QObject *p, AnnotationWidgetMode layoutMode = Normal);
+    ~CreateAnnotationWidgetController();
 
     // returns error message or empty string if no error found;
     // does not create any new objects
@@ -155,6 +156,10 @@ private:
     QString GROUP_NAME_AUTO;
     static const QString DESCRIPTION_QUALIFIER_KEY;
     static const QString SETTINGS_LASTDIR;
+
+    CreateAnnotationWidgetController(CreateAnnotationWidgetController &&) = delete;
+    CreateAnnotationWidgetController &operator=(CreateAnnotationWidgetController &&) = delete;
+    Q_DISABLE_COPY(CreateAnnotationWidgetController)
 };
 
 }    // namespace U2

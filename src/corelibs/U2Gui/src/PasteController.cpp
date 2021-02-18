@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -106,18 +106,19 @@ PasteTask *PasteFactoryImpl::createPasteTask(bool isAddToProject) {
     if (mimeData->hasUrls()) {
         return new PasteUrlsTask(mimeData->urls(), isAddToProject);
     }
-    QString clipboardText;
     try {
-        clipboardText = clipboard->text();
+        QString clipboardText = mimeData->hasFormat(U2Clipboard::UGENE_MIME_TYPE)
+                                    ? QString::fromUtf8(mimeData->data(U2Clipboard::UGENE_MIME_TYPE))
+                                    : clipboard->text();
+        if (clipboardText.isEmpty()) {
+            coreLog.error(tr("UGENE can not recognize current clipboard content as one of the supported formats."));
+            return nullptr;
+        }
+        return new PasteTextTask(clipboardText, isAddToProject);
     } catch (...) {
         coreLog.error(PasteFactory::tr("Data in clipboard is too large."));
         return nullptr;
     }
-    if (clipboardText.isEmpty()) {
-        coreLog.error("UGENE can not recognize current clipboard content as one of the supported formats.");
-        return nullptr;
-    }
-    return new PasteTextTask(clipboardText, isAddToProject);
 }
 
 ///////////////////////
@@ -125,7 +126,7 @@ PasteTask *PasteFactoryImpl::createPasteTask(bool isAddToProject) {
 PasteUrlsTask::PasteUrlsTask(const QList<QUrl> &toPasteUrls, bool isAddToProject)
     : PasteTaskImpl(isAddToProject) {
     QStringList dirs;
-    for (const QUrl &url : toPasteUrls) {
+    for (const QUrl &url : qAsConst(toPasteUrls)) {
         QString parsedUrl = parseUrl(url.toLocalFile());
         if (QFileInfo(parsedUrl).isDir()) {
             dirs << parsedUrl;
@@ -139,7 +140,7 @@ PasteUrlsTask::PasteUrlsTask(const QList<QUrl> &toPasteUrls, bool isAddToProject
         return;
     }
     CHECK(!urls.isEmpty(), );
-    for (const GUrl &url : urls) {
+    for (const GUrl &url : qAsConst(urls)) {
         DocumentProviderTask *loadDocTask = LoadDocumentTask::getCommonLoadDocTask(url);
         if (loadDocTask) {
             addSubTask(loadDocTask);

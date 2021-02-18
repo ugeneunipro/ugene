@@ -585,12 +585,12 @@
 <context>
     <name>U2::AddExportedDocumentAndOpenViewTask</name>
     <message>
-        <location filename="../src/ExportTasks.cpp" line="71"/>
+        <location filename="../src/ExportTasks.cpp" line="72"/>
         <source>Document is already added to the project %1</source>
         <translation>Документ уже добавлен в проект %1</translation>
     </message>
     <message>
-        <location filename="../src/ExportTasks.cpp" line="77"/>
+        <location filename="../src/ExportTasks.cpp" line="78"/>
         <source>Can&apos;t create load task</source>
         <translation>Can&apos;t create load task</translation>
     </message>
@@ -771,7 +771,7 @@
 <context>
     <name>U2::ExportAlignmentTask</name>
     <message>
-        <location filename="../src/ExportTasks.cpp" line="92"/>
+        <location filename="../src/ExportTasks.cpp" line="93"/>
         <source>Export alignment to &apos;%1&apos;</source>
         <translation>Экспорт выравнивания в &apos;%1&apos;</translation>
     </message>
@@ -846,7 +846,7 @@
 <context>
     <name>U2::ExportDNAChromatogramTask</name>
     <message>
-        <location filename="../src/ExportTasks.cpp" line="202"/>
+        <location filename="../src/ExportTasks.cpp" line="225"/>
         <source>Export chromatogram to SCF</source>
         <translation>Экспорт хроматограммы в SCF</translation>
     </message>
@@ -884,41 +884,96 @@
     </message>
     <message>
         <location filename="../src/ExportMSA2MSADialog.ui" line="67"/>
+        <source>Include gaps</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2MSADialog.ui" line="77"/>
+        <source>Translate triplets with gaps as:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2MSADialog.ui" line="86"/>
+        <source>X</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2MSADialog.ui" line="99"/>
+        <source>Gap</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2MSADialog.ui" line="115"/>
+        <source>Translation frame:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2MSADialog.ui" line="124"/>
+        <source>+1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2MSADialog.ui" line="137"/>
+        <source>-1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2MSADialog.ui" line="150"/>
+        <source>+2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2MSADialog.ui" line="163"/>
+        <source>-2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2MSADialog.ui" line="176"/>
+        <source>+3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2MSADialog.ui" line="189"/>
+        <source>-3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/ExportMSA2MSADialog.ui" line="202"/>
         <source>Add document to the project</source>
         <translation>Добавить документ к проекту</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="77"/>
+        <location filename="../src/ExportMSA2MSADialog.ui" line="212"/>
         <source>Export range</source>
         <translation>Рамки экспорта</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="83"/>
+        <location filename="../src/ExportMSA2MSADialog.ui" line="218"/>
         <source>Whole alignment</source>
         <translation>Всё выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.ui" line="93"/>
+        <location filename="../src/ExportMSA2MSADialog.ui" line="228"/>
         <source>Selected rows</source>
         <translation>Выбранные строки</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.cpp" line="46"/>
+        <location filename="../src/ExportMSA2MSADialog.cpp" line="47"/>
         <source>Export</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.cpp" line="47"/>
+        <location filename="../src/ExportMSA2MSADialog.cpp" line="48"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.cpp" line="98"/>
+        <location filename="../src/ExportMSA2MSADialog.cpp" line="119"/>
         <source>Export alignment</source>
         <translation>Экспорт выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ExportMSA2MSADialog.cpp" line="82"/>
+        <location filename="../src/ExportMSA2MSADialog.cpp" line="103"/>
         <source>File is empty</source>
         <translation>Не указано имя файла</translation>
     </message>
@@ -926,17 +981,17 @@
 <context>
     <name>U2::ExportMSA2MSATask</name>
     <message>
-        <location filename="../src/ExportTasks.cpp" line="148"/>
+        <location filename="../src/ExportTasks.cpp" line="158"/>
         <source>Export alignment to alignment: %1</source>
         <translation>Экспортировать выравнивание в выравнивание: %1</translation>
     </message>
     <message>
-        <location filename="../src/ExportTasks.cpp" line="151"/>
+        <location filename="../src/ExportTasks.cpp" line="170"/>
         <source>Nothing to export: multiple alignment is empty</source>
         <translation>Nothing to export: multiple alignment is empty</translation>
     </message>
     <message>
-        <location filename="../src/ExportTasks.cpp" line="175"/>
+        <location filename="../src/ExportTasks.cpp" line="195"/>
         <source>Out of memory</source>
         <translation>Ошибка выделения памяти</translation>
     </message>
@@ -1002,7 +1057,7 @@
 <context>
     <name>U2::ExportMSA2SequencesTask</name>
     <message>
-        <location filename="../src/ExportTasks.cpp" line="116"/>
+        <location filename="../src/ExportTasks.cpp" line="117"/>
         <source>Export alignment to sequence: %1</source>
         <translation>Экспорт выравнивания в последовательность: %1</translation>
     </message>
@@ -1122,7 +1177,7 @@
     </message>
     <message>
         <location filename="../src/ExportProjectViewItems.cpp" line="390"/>
-        <location filename="../src/ExportProjectViewItems.cpp" line="596"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="609"/>
         <source>No sequence objects selected!</source>
         <translation>Выделите один или более объектов!</translation>
     </message>
@@ -1143,17 +1198,17 @@
         <translation>Выберите одну хроматограмму для экспорта</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="536"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="549"/>
         <source>Select one chromatogram object to export</source>
         <translation>Выберите один объект для экспорта</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="572"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="585"/>
         <source>Select one annotation object to export</source>
         <translation>Выберите один объект аннотации</translation>
     </message>
     <message>
-        <location filename="../src/ExportProjectViewItems.cpp" line="601"/>
+        <location filename="../src/ExportProjectViewItems.cpp" line="614"/>
         <source>Set output quality file</source>
         <translation>Укажите качество выходного файла</translation>
     </message>
@@ -1416,68 +1471,73 @@
 <context>
     <name>U2::GTest</name>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="114"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="117"/>
         <source>Unable to create temporary file</source>
         <translation>Unable to create temporary file</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="133"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="136"/>
         <source>Invalid translation table num: %1</source>
         <translation>Invalid translation table num: %1</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="149"/>
-        <location filename="../src/DNAExportPluginTests.cpp" line="155"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="152"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="158"/>
         <source>Invalid base : %1</source>
         <translation>Invalid base : %1</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="168"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="179"/>
+        <source>Invalid translation frame : %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/DNAExportPluginTests.cpp" line="192"/>
         <source> context not found %1</source>
         <translation> context not found %1</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="174"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="198"/>
         <source> container of object with type &quot;%1&quot; is empty</source>
         <translation> container of object with type &quot;%1&quot; is empty</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="209"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="239"/>
         <source>context  not found %1</source>
         <translation>context  not found %1</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="215"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="245"/>
         <source>container  of object with type &quot;%1&quot; is empty</source>
         <translation>container  of object with type &quot;%1&quot; is empty</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="232"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="262"/>
         <source>context not  found %1</source>
         <translation>context not  found %1</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="238"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="268"/>
         <source>container of  object with type &quot;%1&quot; is empty</source>
         <translation>container of  object with type &quot;%1&quot; is empty</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="245"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="275"/>
         <source>Unexpected alignment length %1, expected %2</source>
         <translation>Unexpected alignment length %1, expected %2</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="250"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="280"/>
         <source>Unexpected alignment size %1, expected %2</source>
         <translation>Unexpected alignment size %1, expected %2</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="259"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="289"/>
         <source>Invalid name for row %1: %2, expected %3</source>
         <translation>Invalid name for row %1: %2, expected %3</translation>
     </message>
     <message>
-        <location filename="../src/DNAExportPluginTests.cpp" line="264"/>
+        <location filename="../src/DNAExportPluginTests.cpp" line="294"/>
         <source>Invalid char at row %1 column %2: %3, expected %4</source>
         <translation>Invalid char at row %1 column %2: %3, expected %4</translation>
     </message>

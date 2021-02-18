@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -105,7 +105,7 @@ Task *TrimmomaticWorker::createPrepareTask(U2OpStatus &os) const {
 
     QList<Task *> tasks;
     QSet<QString> takenNames;
-    for (const QString &trimmingStep : trimmingSteps) {
+    for (const QString &trimmingStep : qAsConst(trimmingSteps)) {
         if (!trimmingStep.startsWith(IlluminaClipStepFactory::ID)) {
             continue;
         }

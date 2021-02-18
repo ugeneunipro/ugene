@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,6 +30,7 @@
 #include <U2Core/DNATranslation.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Settings.h>
+#include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
@@ -73,6 +74,26 @@ void ExportMSA2MSADialog::updateModel() {
     formatId = saveController->getFormatIdToSave();
     file = saveController->getSaveFileName();
     translationTable = tableID[translationCombo->currentIndex()];
+    includeGaps = cbIncludeGaps->isChecked();
+    if (includeGaps) {
+        unknownAmino = rbUseX->isChecked() ? UnknownAmino::X : UnknownAmino::Gap;
+    }
+
+    if (rbFirstDirectFrame->isChecked()) {
+        translationFrame = 1;
+    } else if (rbSecondDirectFrame->isChecked()) {
+        translationFrame = 2;
+    } else if (rbThirdDirectFrame->isChecked()) {
+        translationFrame = 3;
+    } else if (rbFirstComplementFrame->isChecked()) {
+        translationFrame = -1;
+    } else if (rbSecondComplementFrame->isChecked()) {
+        translationFrame = -2;
+    } else if (rbThirdComplementFrame->isChecked()) {
+        translationFrame = -3;
+    } else {
+        FAIL("Unexpected frame", );
+    }
     addToProjectFlag = addDocumentButton->isChecked();
     exportWholeAlignment = wholeRangeButton->isChecked();
 }

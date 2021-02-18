@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -117,8 +117,9 @@ void DiamondClassifyTask::checkSettings() {
     SAFE_POINT_EXT(!settings.readsUrl.isEmpty(), setError(tr("Reads URL is empty")), );
     SAFE_POINT_EXT(!settings.databaseUrl.isEmpty(), setError(tr("DIAMOND database URL is empty")), );
     SAFE_POINT_EXT(!settings.classificationUrl.isEmpty(), setError(tr("DIAMOND classification URL is empty")), );
-    QString id = DNATranslationID(% 1);
-    SAFE_POINT_EXT(AppContext::getDNATranslationRegistry()->lookupTranslation(id.arg(settings.gencode)) != NULL,
+    QString id = DNATranslationID(%1);
+    auto code = AppContext::getDNATranslationRegistry()->lookupTranslation(id.arg(settings.gencode));
+    SAFE_POINT_EXT(code != NULL,
                    setError(tr("Invalid genetic code: %1").arg(settings.gencode)), );
     // TODO validate matrix value??
 }

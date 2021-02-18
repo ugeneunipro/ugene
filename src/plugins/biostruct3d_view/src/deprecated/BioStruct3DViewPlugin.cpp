@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -105,7 +105,7 @@ BioStruct3DViewContext::BioStruct3DViewContext(QObject *p)
 
 void BioStruct3DViewContext::initViewContext(GObjectView *v) {
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(v);
-    U2SequenceObject *dna = av->getSequenceInFocus()->getSequenceObject();
+    U2SequenceObject *dna = av->getActiveSequenceContext()->getSequenceObject();
 
     QList<GObject *> allBiostructs = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::BIOSTRUCTURE_3D);
     QList<GObject *> targetBiostructs = GObjectUtils::findObjectsRelatedToObjectByRole(dna,

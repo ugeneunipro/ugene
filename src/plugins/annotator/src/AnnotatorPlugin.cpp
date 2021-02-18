@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -117,7 +117,7 @@ void AnnotatorViewContext::sl_showCollocationDialog() {
         return;
     }
 
-    ADVSequenceObjectContext *seqCtx = av->getSequenceInFocus();
+    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
     if (seqCtx == NULL) {
         return;
     }
@@ -132,7 +132,7 @@ void AnnotatorViewContext::sl_showCustomAutoAnnotationDialog() {
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
     assert(av);
 
-    ADVSequenceObjectContext *seqCtx = av->getSequenceInFocus();
+    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
     if (seqCtx == NULL) {
         return;
     }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -97,7 +97,7 @@ void AddSequenceObjectsToAlignmentTask::run() {
 
 QList<DNASequence> AddSequenceObjectsToAlignmentTask::prepareResultSequenceList() {
     QList<DNASequence> resultSequenceList;
-    for (const DNASequence &sequence : sequenceList) {
+    for (const DNASequence &sequence : qAsConst(sequenceList)) {
         const DNAAlphabet *newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(sequence.alphabet, msaAlphabet);
         if (newAlphabet == nullptr) {
             errorList << sequence.getName();
@@ -118,11 +118,11 @@ QList<DNASequence> AddSequenceObjectsToAlignmentTask::prepareResultSequenceList(
 qint64 AddSequenceObjectsToAlignmentTask::createMsaRowsFromResultSequenceList(const QList<DNASequence> &inputSequenceList, QList<U2MsaRow> &resultRows) {
     U2EntityRef entityRef = maObj->getEntityRef();
     QSet<QString> usedRowNames;
-    for (const MultipleAlignmentRow &row : maObj->getRows()) {
+    for (const MultipleAlignmentRow &row : qAsConst(maObj->getRows())) {
         usedRowNames.insert(row->getName());
     }
     qint64 maxLength = 0;
-    for (const DNASequence &sequenceObject : inputSequenceList) {
+    for (const DNASequence &sequenceObject : qAsConst(inputSequenceList)) {
         CHECK(!isCanceled() && !hasError(), 0);
         QString rowName = MSAUtils::rollMsaRowName(sequenceObject.getName(), usedRowNames);
         U2MsaRow row = MSAUtils::copyRowFromSequence(sequenceObject, entityRef.dbiRef, stateInfo);
@@ -184,7 +184,7 @@ AddSequencesFromFilesToAlignmentTask::AddSequencesFromFilesToAlignmentTask(Multi
 
 void AddSequencesFromFilesToAlignmentTask::prepare() {
     AddSequenceObjectsToAlignmentTask::prepare();
-    for (const QString &fileWithSequencesUrl : urlList) {
+    for (const QString &fileWithSequencesUrl : qAsConst(urlList)) {
         QList<FormatDetectionResult> detectedFormats = DocumentUtils::detectFormat(fileWithSequencesUrl);
         if (!detectedFormats.isEmpty()) {
             IOAdapterFactory *factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
@@ -208,7 +208,8 @@ QList<Task *> AddSequencesFromFilesToAlignmentTask::onSubTaskFinished(Task *subT
     LoadDocumentTask *loadDocumentSubTask = qobject_cast<LoadDocumentTask *>(subTask);
     SAFE_POINT(loadDocumentSubTask != nullptr, "loadTask is NULL", emptySubTasks);
     Document *doc = loadDocumentSubTask->getDocument();
-    for (const GObject *objects : doc->findGObjectByType(GObjectTypes::SEQUENCE)) {
+    const QList<GObject *> sequenceObjectList = doc->findGObjectByType(GObjectTypes::SEQUENCE);
+    for (const GObject *objects : qAsConst(sequenceObjectList)) {
         const U2SequenceObject *sequenceObject = qobject_cast<const U2SequenceObject *>(objects);
         SAFE_POINT(sequenceObject != nullptr, "Cast to U2SequenceObject failed", emptySubTasks);
         DNASequence sequence = sequenceObject->getWholeSequence(stateInfo);

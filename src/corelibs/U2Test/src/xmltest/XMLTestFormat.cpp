@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,7 +54,8 @@ XMLTestFormat::XMLTestFormat()
 }
 
 XMLTestFormat::~XMLTestFormat() {
-    for (XMLTestFactory *f : testFactories.values()) {
+    const QList<XMLTestFactory *> factoryList = testFactories.values();
+    for (XMLTestFactory *f : qAsConst(factoryList)) {
         delete f;
     }
 }
@@ -98,7 +99,7 @@ bool XMLTestFormat::registerTestFactory(XMLTestFactory *tf) {
 }
 
 void XMLTestFormat::registerTestFactories(const QList<XMLTestFactory *> &factoryList) {
-    for (XMLTestFactory *factory : factoryList) {
+    for (XMLTestFactory *factory : qAsConst(factoryList)) {
         bool ok = registerTestFactory(factory);
         Q_UNUSED(ok);
         Q_ASSERT(ok);

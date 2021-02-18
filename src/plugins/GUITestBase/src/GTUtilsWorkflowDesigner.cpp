@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -330,13 +330,12 @@ void GTUtilsWorkflowDesigner::selectAlgorithm(HI::GUITestOpStatus &os, QTreeWidg
 void GTUtilsWorkflowDesigner::addSample(HI::GUITestOpStatus &os, const QString &sampName, QWidget const *const parentWidget) {
     expandTabs(os, parentWidget);
     QTabWidget *tabs = qobject_cast<QTabWidget *>(GTWidget::findWidget(os, "tabs", parentWidget));
-    GT_CHECK(tabs != NULL, "tabs widget not found");
+    GT_CHECK(tabs != nullptr, "tabs widget not found");
 
     GTTabWidget::setCurrentIndex(os, tabs, 1);
 
     QTreeWidgetItem *samp = findTreeItem(os, sampName, samples);
-    GTGlobals::sleep(100);
-    GT_CHECK(samp != NULL, "sample is NULL");
+    GT_CHECK(samp != nullptr, "sample is NULL");
 
     selectSample(os, samp, parentWidget);
     GTGlobals::sleep(500);

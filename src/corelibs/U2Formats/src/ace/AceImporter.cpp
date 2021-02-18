@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,12 +26,10 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
-#include <U2Core/AssemblyObject.h>
 #include <U2Core/CloneObjectTask.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/ProjectModel.h>
-#include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Timer.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2ObjectDbi.h>
@@ -125,7 +123,8 @@ Task::ReportResult AceImporterTask::report() {
 
 void AceImporterTask::initCloneObjectTasks() {
     const QMap<U2Sequence, U2Assembly> importedObjects = convertTask->getImportedObjects();
-    for (const U2Sequence &reference: importedObjects.keys()) {
+    const QList<U2Sequence> referenceList = importedObjects.keys();
+    for (const U2Sequence &reference : qAsConst(referenceList)) {
         cloneTasks << new CloneAssemblyWithReferenceToDbiTask(importedObjects[reference], reference, localDbiRef, dstDbiRef, settings);
     }
 }

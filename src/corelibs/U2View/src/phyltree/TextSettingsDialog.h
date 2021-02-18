@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,7 +33,8 @@ class TextSettingsDialog : public BaseSettingsDialog, public Ui_TextSettingsDial
     Q_OBJECT
 public:
     TextSettingsDialog(QWidget *parent, const OptionsMap &settings);
-    virtual void accept();
+
+    void accept() override;
 
 protected slots:
     void sl_colorButton();

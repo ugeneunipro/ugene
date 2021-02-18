@@ -30,7 +30,7 @@ namespace HI {
 
 class HI_EXPORT GTListWidget {
 public:
-    static void click(GUITestOpStatus &os, QListWidget *listWidget, const QString &text, Qt::MouseButton button = Qt::LeftButton);
+    static void click(GUITestOpStatus &os, QListWidget *listWidget, const QString &text, Qt::MouseButton button = Qt::LeftButton, int foundItemsNum = 0);
     static bool isItemChecked(GUITestOpStatus &os, QListWidget *listWidget, const QString &text);
     static void checkItem(GUITestOpStatus &os, QListWidget *listWidget, const QString &text, bool newState);
     static void checkAllItems(GUITestOpStatus &os, QListWidget *listWidget, bool newState);

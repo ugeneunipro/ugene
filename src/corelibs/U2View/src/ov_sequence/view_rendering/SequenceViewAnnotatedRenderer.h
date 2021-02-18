@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,9 +33,15 @@ namespace U2 {
 
 class AnnotationSettings;
 
-/************************************************************************/
-/* SequenceViewAnnotatedRenderer */
-/************************************************************************/
+/**
+ * SequenceViewRenderer with annotations rendering support.
+ *
+ * TODO: this class is stateful and contains some layout information (visible det-view lines, fonts),
+ *  but most of its methods accept other partial state data like canvasSize, visibleRange, etc.
+ *  We should cache/update other layout state related fields like 'canvasSize', 'visibleRange' inside the renderer and simplify method signatures
+ *  In this case a good idea could be is to create a Renderer only for a time-range of re-paint (like a QPainter)
+ *  Or, as an alternative, we can make the renderer 100% stateless and have a layout context with as a single parameter into all methods.
+ */
 class SequenceViewAnnotatedRenderer : public SequenceViewRenderer {
 protected:
     struct CutSiteDrawData {
@@ -77,11 +83,10 @@ public:
 
     virtual double getCurrentScale() const = 0;
 
-    virtual U2Region getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const = 0;
-    virtual U2Region getMirroredYRange(const U2Strand &mStrand) const = 0;
+    /** Returns Y range of the cut-site for an annotation on the given strand. */
+    virtual U2Region getCutSiteYRange(const U2Strand &mStrand, int availableHeight) const = 0;
 
-    virtual qint64 getContentIndentY(const QSize &canvasSize, const U2Region &visibleRange) const = 0;
-    virtual qint64 getMinimumHeight() const = 0;
+    virtual int getMinimumHeight() const = 0;
 
     virtual void drawAll(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) = 0;
     virtual void drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) = 0;
@@ -90,7 +95,19 @@ public:
     virtual void drawAnnotationSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, const AnnotationDisplaySettings &displaySettings);
 
 protected:
-    virtual void drawAnnotation(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, Annotation *a, const AnnotationDisplaySettings &displaySettings, const U2Region &predefinedY = U2Region(), bool selected = false, const AnnotationSettings *as = NULL);
+    virtual void drawAnnotation(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, Annotation *a, const AnnotationDisplaySettings &displaySettings, bool selected = false, const AnnotationSettings *as = NULL);
+
+    /**
+     * Returns visible Y range of the annotation region.
+     *
+     * The 'availableHeight' parameter may be used to allow the view to center inner content if extra space is available
+     *  (see non-translation mode in single-line DetView).
+     *
+     * TODO: there is a design flow with this method: multi-line views may have multiple y-regions per single annotation region.
+     *  When GSequenceLineViewGridAnnotationRenderArea will be able to return QRects instead of Regions this annotation rendering logic can be re-written
+     *  and this method is removed.
+     */
+    virtual U2Region getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, int availableHeight) const = 0;
 
     void drawBoundedText(QPainter &p, const QRect &r, const QString &text);
 

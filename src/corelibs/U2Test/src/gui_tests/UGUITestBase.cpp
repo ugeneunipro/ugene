@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -21,9 +21,9 @@
 
 #include "UGUITestBase.h"
 
-namespace U2 {
+#include <U2Core/TextUtils.h>
 
-const QString UGUITestBase::unnamedTestsPrefix = "test";
+namespace U2 {
 
 UGUITestBase::~UGUITestBase() {
     qDeleteAll(tests);
@@ -32,84 +32,86 @@ UGUITestBase::~UGUITestBase() {
     qDeleteAll(postAdditionalChecks);
 }
 
-bool UGUITestBase::registerTest(HI::GUITest *test, TestType testType) {
+bool UGUITestBase::registerTest(GUITest *test, TestType testType) {
     Q_ASSERT(test);
-
-    test->setName(nameUnnamedTest(test, testType));
-
-    if (isNewTest(test, testType)) {
-        addTest(test, testType);
-        return true;
+    QString fullTestName = test->getFullName();
+    if (getTest(fullTestName, type) != nullptr) {
+        return false;
     }
+    getMap(testType).insert(fullTestName, test);
+    return true;
+}
 
+GUITest *UGUITestBase::getTest(const QString &name, TestType testType) const {
+    return getConstMap(testType).value(name);
+}
+
+GUITest *UGUITestBase::getTest(const QString &suite, const QString &name, TestType testType) const {
+    return getTest(HI::GUITest::getFullTestName(suite, name), testType);
+}
+
+const QMap<QString, GUITest *> &UGUITestBase::getConstMap(TestType testType) const {
+    switch (testType) {
+        case PreAdditional:
+            return preAdditional;
+        case PostAdditionalChecks:
+            return postAdditionalChecks;
+        case PostAdditionalActions:
+            return postAdditionalActions;
+        case Normal:
+        default:
+            return tests;
+    }
+}
+
+QMap<QString, GUITest *> &UGUITestBase::getMap(TestType testType) {
+    switch (testType) {
+        case PreAdditional:
+            return preAdditional;
+        case PostAdditionalChecks:
+            return postAdditionalChecks;
+        case PostAdditionalActions:
+            return postAdditionalActions;
+        case Normal:
+        default:
+            return tests;
+    }
+}
+
+/**
+ * Returns true if set1 shares common elements with set2.
+ * Note: We can't use QSet::intersects today because it is not available in QT5.4 (was added in QT5.6)
+ */
+static bool intersects(const QSet<QString> &set1, const QSet<QString> &set2) {
+    for (const QString &value1 : qAsConst(set1)) {
+        if (set2.contains(value1)) {
+            return true;
+        }
+    }
     return false;
 }
 
-QString UGUITestBase::nameUnnamedTest(HI::GUITest *test, TestType testType) {
-    QString testName = test->getName();
-    if (testName.isEmpty()) {
-        testName = getNextTestName(testType);
+QList<GUITest *> UGUITestBase::getTests(TestType testType, const QStringList &labelList) const {
+    QList<GUITest *> allTestList = getConstMap(testType).values();
+    if (labelList.isEmpty()) {
+        return allTestList;
     }
-    return testName;
-}
-
-bool UGUITestBase::isNewTest(HI::GUITest *test, TestType testType) {
-    return test && !findTest(test->getFullName(), testType);
-}
-
-void UGUITestBase::addTest(HI::GUITest *test, TestType testType) {
-    if (test) {
-        getMap(testType).insert(test->getFullName(), test);
-    }
-}
-
-QString UGUITestBase::getNextTestName(TestType testType) {
-    int testsCount = getMap(testType).size();
-    return unnamedTestsPrefix + QString::number(testsCount);
-}
-
-HI::GUITest *UGUITestBase::findTest(const QString &name, TestType testType) {
-    GUITestMap map = getMap(testType);
-    return map.value(name);
-}
-
-HI::GUITest *UGUITestBase::getTest(const QString &suite, const QString &name, TestType testType) {
-    return getMap(testType).value(suite + ":" + name);
-}
-
-HI::GUITest *UGUITestBase::takeTest(const QString &suite, const QString &name, TestType testType) {
-    return getMap(testType).take(suite + ":" + name);
-}
-
-GUITestMap &UGUITestBase::getMap(TestType testType) {
-    switch (testType) {
-    case PreAdditional:
-        return preAdditional;
-    case PostAdditionalChecks:
-        return postAdditionalChecks;
-    case PostAdditionalActions:
-        return postAdditionalActions;
-    case Normal:
-    default:
-        return tests;
-    }
-}
-
-GUITests UGUITestBase::getTests(TestType testType, QString label) {
-    GUITests testList = getMap(testType).values();
-    foreach (GUITest *t, testList) {
-        if (t->getLabel() != label) {
-            testList.takeAt(testList.indexOf(t));
+    QList<GUITest *> filteredTestList;
+    QSet<QString> includeLabelSet;
+    QSet<QString> excludeLabelSet;
+    for (const QString &label : qAsConst(labelList)) {
+        if (label.startsWith("-")) {
+            excludeLabelSet << label;
+        } else {
+            includeLabelSet << label;
         }
     }
-    return testList;
-}
-
-GUITests UGUITestBase::takeTests(TestType testType) {
-    GUITests testList = getMap(testType).values();
-    getMap(testType).clear();
-
-    return testList;
+    for (GUITest *test : qAsConst(allTestList)) {
+        if (test->labelSet.contains(includeLabelSet) && !intersects(test->labelSet, excludeLabelSet)) {
+            filteredTestList << test;
+        }
+    }
+    return filteredTestList;
 }
 
 }    // namespace U2

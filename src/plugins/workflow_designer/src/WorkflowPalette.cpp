@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -776,7 +776,8 @@ bool WorkflowPaletteElements::isExclusivePrototypeUsage(ActorPrototype *proto) c
     WorkflowView *wv = dynamic_cast<WorkflowView *>(schemaConfig);
     CHECK(wv != nullptr, false);
     int actorWithCurrentProtoCounter = 0;
-    for (auto actor : wv->getSchema()->getProcesses()) {
+    const QList<Actor *> actorList = wv->getSchema()->getProcesses();
+    for (auto actor : qAsConst(actorList)) {
         if (actor->getProto() == proto) {
             actorWithCurrentProtoCounter++;
         }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,7 +65,7 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       seqAreaLayout(nullptr),
       nameAreaLayout(nullptr),
       collapseModel(new MaCollapseModel(this, editor->getMaRowIds())),
-      collapsibleMode(false),
+      virtualOrderMode(false),
       enableCollapsingOfSingleRowGroups(false),
       scrollController(new ScrollController(editor, this, collapseModel)),
       baseWidthController(new BaseWidthController(this)),
@@ -290,6 +290,14 @@ void MaEditorWgt::sl_countUndo() {
 
 void MaEditorWgt::sl_countRedo() {
     GCounter::increment("Redo", editor->getFactoryId());
+}
+
+bool MaEditorWgt::isVirtualOrderMode() const {
+    return virtualOrderMode;
+}
+
+void MaEditorWgt::setVirtualOrderMode(bool flag) {
+    virtualOrderMode = flag;
 }
 
 }    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -119,7 +119,20 @@ void MSAExportContext::sl_exportNucleicMsaToAmino() {
     int offset = d->exportWholeAlignment ? 0 : editor->getSelectionRect().top();
     int len = d->exportWholeAlignment ? ma->getNumRows() : editor->getSelectionRect().height();
 
-    Task *t = ExportUtils::wrapExportTask(new ExportMSA2MSATask(ma, offset, len, d->file, trans, d->formatId), d->addToProjectFlag);
+    bool convertUnknowToGaps = d->unknownAmino == ExportMSA2MSADialog::UnknownAmino::Gap;
+    bool reverseComplement = d->translationFrame < 0;
+    int baseOffset = qAbs(d->translationFrame) - 1;
+    Task *t = ExportUtils::wrapExportTask(new ExportMSA2MSATask(ma,
+                                                                offset,
+                                                                len,
+                                                                d->file,
+                                                                trans,
+                                                                d->formatId,
+                                                                !d->includeGaps,
+                                                                convertUnknowToGaps,
+                                                                reverseComplement,
+                                                                baseOffset),
+                                          d->addToProjectFlag);
     AppContext::getTaskScheduler()->registerTopLevelTask(t);
 }
 

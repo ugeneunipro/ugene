@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -69,7 +69,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to BB.
 
@@ -81,9 +80,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "BB  (0, 2)") != NULL, "Item BB not found in tree widget");
 }
 
@@ -102,7 +99,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Select annotation B in annotation tree. Click F2. Change name to BB.
 
@@ -114,9 +110,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "BB  (0, 2)") != NULL, "Item BB not found in tree widget");
 
     QTreeWidgetItem *item1 = GTUtilsAnnotationsTreeView::findItem(os, "BB  (0, 2)");
@@ -127,9 +121,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item1));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "B_group  (0, 2)") != NULL, "Item B_group not found in tree widget");
 }
 
@@ -148,7 +140,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to BB.
 
@@ -160,9 +151,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "BB  (0, 2)") != NULL, "Item BB not found in tree widget");
 
     QTreeWidgetItem *item1 = GTUtilsAnnotationsTreeView::findItem(os, "C_group  (0, 1)");
@@ -173,9 +162,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item1));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "CC  (0, 1)") != NULL, "Item BB not found in tree widget");
 }
 
@@ -194,7 +181,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to CC.
 
@@ -204,7 +190,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "CC") != NULL, "Item CC not found in tree widget");
 }
 
@@ -223,7 +208,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to CC.
 
@@ -233,9 +217,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "CC") != NULL, "Item CC not found in tree widget");
 
     QTreeWidgetItem *item1 = GTUtilsAnnotationsTreeView::findItem(os, "CC");
@@ -244,9 +226,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item1));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "C") != NULL, "Item C not found in tree widget");
 }
 
@@ -265,7 +245,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to CC.
 
@@ -275,9 +254,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "CC") != NULL, "Item CC not found in tree widget");
 
     QTreeWidgetItem *item1 = GTUtilsAnnotationsTreeView::findItem(os, "B");
@@ -286,9 +263,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item1));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "BB") != NULL, "Item BB not found in tree widget");
 }
 
@@ -307,7 +282,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to CC.
 
@@ -317,9 +291,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     bool found = GTUtilsAnnotationsTreeView::findRegion(os, "C", U2Region(20, 40));
     CHECK_SET_ERR(found == true, "There is no {20 ..40} region in annotation");
 }
@@ -339,7 +311,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to CC.
 
@@ -349,9 +320,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     bool found = GTUtilsAnnotationsTreeView::findRegion(os, "C", U2Region(20, 40));
     CHECK_SET_ERR(found == true, "There is no {20 ..40} region in annotation");
     // 4. Select annotation C in annotation tree. Click F2. Change name to CC.
@@ -362,9 +331,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item1));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     bool found1 = GTUtilsAnnotationsTreeView::findRegion(os, "C", U2Region(10, 90));
     CHECK_SET_ERR(found1 == true, "There is no {10 ..90} region in annotation");
 }
@@ -384,7 +351,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to CC.
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "C");
@@ -393,9 +359,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     bool found = GTUtilsAnnotationsTreeView::findRegion(os, "CC", U2Region(20, 40));
     CHECK_SET_ERR(found == true, "There is no {20 ..40} region in annotation");
 
@@ -405,9 +369,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_2) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item1));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     bool found1 = GTUtilsAnnotationsTreeView::findRegion(os, "BB", U2Region(20, 40));
     CHECK_SET_ERR(found1 == true, "There is no {20 ..40} region in annotation");
 }
@@ -426,7 +388,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to CC.
 
@@ -436,14 +397,12 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 
     Runnable *checker = new EditAnnotationChecker(os, "", "complement(20..40)");
     GTUtilsDialog::waitForDialog(os, checker);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 }
 GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     //Rename annotation
@@ -459,7 +418,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to CC.
 
@@ -469,14 +427,12 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 
     Runnable *checker = new EditAnnotationChecker(os, "CC", "complement(20..40)");
     GTUtilsDialog::waitForDialog(os, checker);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 }
 GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     //Rename annotation
@@ -492,7 +448,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Select annotation C in annotation tree. Click F2. Change name to CC.
 
@@ -502,14 +457,12 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 
     Runnable *checker = new EditAnnotationChecker(os, "", "complement(20..40)");
     GTUtilsDialog::waitForDialog(os, checker);
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_F2);
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
@@ -529,10 +482,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     //Location: 1..1000
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "group", "misc_feature", "1..1000"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep();
     //4. CHECK if new gb-format document is loaded into the annotation editor
     //4.1 CHECK if it contains group "group" with annotation "misc_feature" in it
-    GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::findItem(os, "group  (0, 1)");
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
 
@@ -540,11 +491,9 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
     //6. CHECK if misc_feature annotation is removed
     GTUtilsAnnotationsTreeView::findItem(os, "group  (0, 0)");
     GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", GTGlobals::FindOptions(false));
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005_1) {
@@ -564,12 +513,10 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     //Location: 1..1000
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "group", "misc_feature", "1..1000"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep();
 
     //4. CHECK if new gb-format document is loaded into the annotation editor
     //4.1 CHECK if it contains group "group" with annotation "misc_feature" in it
     //TODO: 4.2 CHECK if "group" subgroups/annotations counter displays (0,1)
-    GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::findItem(os, "group  (0, 1)");
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
 
@@ -577,20 +524,16 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
     //6. CHECK if misc_feature annotation is removed
     //TODO: 6.1 CHECK if "group" subgroups/annotations counter displays (0,0)
     GTGlobals::FindOptions options;
     options.failIfNotFound = false;
     QTreeWidgetItem *annotationItem = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", options);
     CHECK_SET_ERR(NULL == annotationItem, "The annotation 'misc_feature' unexpectedly was not removed");
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "group_new", "misc_feature_1", "1..500"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::findItem(os, "group_new  (0, 1)");
     GTUtilsAnnotationsTreeView::findItem(os, "group  (0, 0)");
     QTreeWidgetItem *item1 = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature_1");
@@ -599,10 +542,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
-    GTGlobals::sleep();
     annotationItem = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature_1", options);
     CHECK_SET_ERR(NULL == annotationItem, "The annotation 'misc_feature_1' unexpectedly was not removed");
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005_2) {
@@ -622,20 +563,16 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     //Location: 1..1000
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "group", "misc_feature", "1..1000"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "group_new", "misc_feature_1", "1..500"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep();
 
     //4. CHECK if new gb-format document is loaded into the annotation editor
     //4.1 CHECK if it contains group "group" with annotation "misc_feature" in it
     //TODO: 4.2 CHECK if "group" subgroups/annotations counter displays (0,1)
-    GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::findItem(os, "group  (0, 1)");
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
 
-    GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::findItem(os, "group_new  (0, 1)");
     QTreeWidgetItem *item1 = GTUtilsAnnotationsTreeView::findItem(os, "misc_feature_1");
 
@@ -643,18 +580,15 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
 
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item1));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
 
     //6. CHECK if misc_feature annotation is removed
     //TODO: 6.1 CHECK if "group" subgroups/annotations counter displays (0,0)
     GTUtilsAnnotationsTreeView::findItem(os, "misc_feature", GTGlobals::FindOptions(false));
     GTUtilsAnnotationsTreeView::findItem(os, "misc_feature_1", GTGlobals::FindOptions(false));
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
@@ -672,12 +606,10 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
-    GTGlobals::sleep();
 
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Check that menu item { Edit -> Annotation } is absent at popup menu of sequence view.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item", PopupChecker::NotExists, GTGlobals::UseMouse));
@@ -702,32 +634,26 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
-    GTGlobals::sleep();
 
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1.gb"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Select annotation B in annotation tree.
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "B_group  (0, 2)");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     item = GTUtilsAnnotationsTreeView::findItem(os, "B");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
-    GTGlobals::sleep(100);
 
     // 4. Check that menu item { Edit -> Annotation } is enabled at popup menu of sequence view.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item", PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
-    GTGlobals::sleep();
     // 5. Check that menu item { Edit -> Annotation } is enabled at popup menu of annotations view.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item", PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTUtilsAnnotationsTreeView::callContextMenuOnItem(os, "B");
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006_2) {

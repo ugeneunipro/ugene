@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -61,10 +61,10 @@ public slots:
 
 protected slots:
     void sl_completeRedraw();
+    void sl_editSequenceName();
 
 private slots:
     void sl_copyCurrentSequence();
-    void sl_editSequenceName();
     void sl_lockedStateChanged();
     void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &);
     void sl_vScrollBarActionPerformed();
@@ -79,16 +79,15 @@ protected:
     virtual void updateScrollBar();
 
 protected:
-    void resizeEvent(QResizeEvent *e);
-    void paintEvent(QPaintEvent *e);
-    void keyPressEvent(QKeyEvent *e);
-    void mousePressEvent(QMouseEvent *e);
-    void mouseMoveEvent(QMouseEvent *e);
-    void mouseReleaseEvent(QMouseEvent *e);
-    void mouseDoubleClickEvent(QMouseEvent *e);
-    void focusOutEvent(QFocusEvent *fe);
-    void focusInEvent(QFocusEvent *fe);
-    void wheelEvent(QWheelEvent *we);
+    void resizeEvent(QResizeEvent *e) override;
+    void paintEvent(QPaintEvent *e) override;
+    void keyPressEvent(QKeyEvent *e) override;
+    void mousePressEvent(QMouseEvent *e) override;
+    void mouseMoveEvent(QMouseEvent *e) override;
+    void mouseReleaseEvent(QMouseEvent *e) override;
+    void focusOutEvent(QFocusEvent *fe) override;
+    void focusInEvent(QFocusEvent *fe) override;
+    void wheelEvent(QWheelEvent *we) override;
     //todo context menu?
     int getSelectedMaRow() const;
     virtual QString getTextForRow(int maRowIndex);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,9 +35,31 @@ class ExportMSA2MSADialog : public QDialog, Ui_ExportMSA2MSADialog {
 public:
     ExportMSA2MSADialog(const QString &defaultFileName, const DocumentFormatId &f, bool wholeAlignmentOnly, QWidget *p);
 
+    /*!
+     * \class UnknownAmino
+     * \brief Enum class, which indicates what char unknown amino bases should be
+     */
+    enum class UnknownAmino {
+        X,
+        Gap
+    };
+
     void updateModel();
     DocumentFormatId formatId;
     QString file;
+    /*!
+     * Include gaps of trim before translating
+     */
+    bool includeGaps = false;
+    /*!
+     * The character unknown amino acids should be translated to
+     */
+    UnknownAmino unknownAmino = UnknownAmino::X;
+    /*!
+     * The translation frame. Positive - direct, negative - complement.
+     * Possible values - 1, 2, 3, -1, -2, -3.
+     */
+    int translationFrame = 1;
     bool addToProjectFlag;
     QString translationTable;
     bool exportWholeAlignment;

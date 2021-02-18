@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,31 +39,31 @@
 
 namespace U2 {
 
-const QString PhyMlSettingsPreffixes::ModelType(CreatePhyTreeWidget::settingsPath() + "/phyml_model_t");
-const QString PhyMlSettingsPreffixes::OptimiseEquilibriumFreq(CreatePhyTreeWidget::settingsPath() + "/phyml_eq_freq_flag");
+const QString PhyMlSettingsPreffixes::ModelType(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_model_t");
+const QString PhyMlSettingsPreffixes::OptimiseEquilibriumFreq(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_eq_freq_flag");
 
-const QString PhyMlSettingsPreffixes::EstimateTtRatio(CreatePhyTreeWidget::settingsPath() + "/phyml_est_trans_ratio");
-const QString PhyMlSettingsPreffixes::TtRatio(CreatePhyTreeWidget::settingsPath() + "/phyml_trans_ratio");
+const QString PhyMlSettingsPreffixes::EstimateTtRatio(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_est_trans_ratio");
+const QString PhyMlSettingsPreffixes::TtRatio(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_trans_ratio");
 
-const QString PhyMlSettingsPreffixes::EstimateSitesProportion(CreatePhyTreeWidget::settingsPath() + "/phyml_est_sites_prop");
-const QString PhyMlSettingsPreffixes::InvariableSitesProportion(CreatePhyTreeWidget::settingsPath() + "/phyml_sites_proportion");
+const QString PhyMlSettingsPreffixes::EstimateSitesProportion(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_est_sites_prop");
+const QString PhyMlSettingsPreffixes::InvariableSitesProportion(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_sites_proportion");
 
-const QString PhyMlSettingsPreffixes::EstimateGammaFactor(CreatePhyTreeWidget::settingsPath() + "/phyml_est_gamma");
-const QString PhyMlSettingsPreffixes::GammaFactor(CreatePhyTreeWidget::settingsPath() + "/phyml_gamma");
+const QString PhyMlSettingsPreffixes::EstimateGammaFactor(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_est_gamma");
+const QString PhyMlSettingsPreffixes::GammaFactor(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_gamma");
 
-const QString PhyMlSettingsPreffixes::UseBootstrap(CreatePhyTreeWidget::settingsPath() + "/phyml_use_boot");
-const QString PhyMlSettingsPreffixes::BootstrapReplicatesNumber(CreatePhyTreeWidget::settingsPath() + "/phyml_boot_repl");
+const QString PhyMlSettingsPreffixes::UseBootstrap(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_use_boot");
+const QString PhyMlSettingsPreffixes::BootstrapReplicatesNumber(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_boot_repl");
 
-const QString PhyMlSettingsPreffixes::UseFastMethod(CreatePhyTreeWidget::settingsPath() + "/phyml_use_fast");
-const QString PhyMlSettingsPreffixes::FastMethodIndex(CreatePhyTreeWidget::settingsPath() + "/phyml_fast_method");
+const QString PhyMlSettingsPreffixes::UseFastMethod(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_use_fast");
+const QString PhyMlSettingsPreffixes::FastMethodIndex(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_fast_method");
 
-const QString PhyMlSettingsPreffixes::SubRatesNumber(CreatePhyTreeWidget::settingsPath() + "/phyml_sub_rates");
-const QString PhyMlSettingsPreffixes::OptimiseTopology(CreatePhyTreeWidget::settingsPath() + "/phyml_opt_topol");
-const QString PhyMlSettingsPreffixes::OptimiseBranchLenghs(CreatePhyTreeWidget::settingsPath() + "/phyml_opt_lengths");
+const QString PhyMlSettingsPreffixes::SubRatesNumber(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_sub_rates");
+const QString PhyMlSettingsPreffixes::OptimiseTopology(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_opt_topol");
+const QString PhyMlSettingsPreffixes::OptimiseBranchLenghs(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_opt_lengths");
 
-const QString PhyMlSettingsPreffixes::TreeImprovementType(CreatePhyTreeWidget::settingsPath() + "/phyml_tree_impr");
-const QString PhyMlSettingsPreffixes::TreeSearchingType(CreatePhyTreeWidget::settingsPath() + "/phyml_search");
-const QString PhyMlSettingsPreffixes::UserTreePath(CreatePhyTreeWidget::settingsPath() + "/user_tree");
+const QString PhyMlSettingsPreffixes::TreeImprovementType(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_tree_impr");
+const QString PhyMlSettingsPreffixes::TreeSearchingType(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_search");
+const QString PhyMlSettingsPreffixes::UserTreePath(CreatePhyTreeWidget::getAppSettingsRoot() + "/user_tree");
 
 PhyMlWidget::PhyMlWidget(const MultipleSequenceAlignment &ma, QWidget *parent)
     : CreatePhyTreeWidget(parent),

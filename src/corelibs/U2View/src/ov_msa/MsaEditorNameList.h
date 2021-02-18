@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,6 +30,10 @@ class MsaEditorNameList : public MaEditorNameList {
     Q_OBJECT
 public:
     MsaEditorNameList(MaEditorWgt *ui, QScrollBar *nhBar);
+
+protected:
+    /** Double-click in MSA editor is bound to 'rename-sequence' action. */
+    void mouseDoubleClickEvent(QMouseEvent *e) override;
 
 private slots:
     void sl_buildStaticMenu(GObjectView *view, QMenu *menu);

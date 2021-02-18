@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -112,7 +112,7 @@ void RepeatViewContext::sl_showDialog() {
     QAction *a = (QAction *)sender();
     GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(a);
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
-    ADVSequenceObjectContext *sctx = av->getSequenceInFocus();
+    ADVSequenceObjectContext *sctx = av->getActiveSequenceContext();
     assert(sctx != NULL && sctx->getAlphabet()->isNucleic());
 
     QObjectScopedPointer<FindRepeatsDialog> d = new FindRepeatsDialog(sctx);
@@ -123,7 +123,7 @@ void RepeatViewContext::sl_showTandemDialog() {
     QAction *a = (QAction *)sender();
     GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(a);
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
-    ADVSequenceObjectContext *sctx = av->getSequenceInFocus();
+    ADVSequenceObjectContext *sctx = av->getActiveSequenceContext();
     assert(sctx != NULL && sctx->getAlphabet()->isNucleic());
 
     QObjectScopedPointer<FindTandemsDialog> d = new FindTandemsDialog(sctx);

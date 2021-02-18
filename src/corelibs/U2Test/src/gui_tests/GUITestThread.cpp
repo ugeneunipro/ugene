@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,24 +41,34 @@
 
 namespace U2 {
 
-GUITestThread::GUITestThread(HI::GUITest *test, bool isRunPostActionsAndCleanup)
-    : test(test),
+GUITestThread::GUITestThread(GUITest *test, bool isRunPostActionsAndCleanup)
+    : testToRun(test),
       isRunPostActionsAndCleanup(isRunPostActionsAndCleanup),
       testResult("Not run") {
     SAFE_POINT(test != nullptr, "GUITest is NULL", );
 }
 
-void GUITestThread::run() {
-    SAFE_POINT(test != nullptr, "GUITest is NULL", );
+static QList<GUITest *> getTests(UGUITestBase::TestType testType) {
+    UGUITestBase *testBase = AppContext::getGUITestBase();
+    SAFE_POINT(testBase != nullptr, "", QList<GUITest *>());
 
-    GUITests tests;
-    tests << preChecks();
-    tests << test;
-    tests << postChecks();
+    QList<GUITest *> testList = testBase->getTests(testType);
+    SAFE_POINT(testList.size() > 0, "", QList<GUITest *>());
+
+    return testList;
+}
+
+void GUITestThread::run() {
+    SAFE_POINT(testToRun != nullptr, "GUITest is NULL", );
+
+    QList<GUITest *> testList;
+    testList << getTests(UGUITestBase::PreAdditional);
+    testList << testToRun;
+    testList << getTests(UGUITestBase::PostAdditionalChecks);
 
     clearSandbox();
 
-    QString error = launchTest(tests);
+    QString error = launchTest(testList);
     if (isRunPostActionsAndCleanup) {
         cleanup();
     }
@@ -78,15 +88,15 @@ void GUITestThread::sl_testTimeOut() {
     exit();
 }
 
-QString GUITestThread::launchTest(const GUITests &tests) {
-    QTimer::singleShot(test->getTimeout(), this, SLOT(sl_testTimeOut()));
+QString GUITestThread::launchTest(const QList<GUITest *> &tests) {
+    QTimer::singleShot(testToRun->timeout, this, SLOT(sl_testTimeOut()));
 
     // Start all tests with some common mouse position.
     GTMouseDriver::moveTo(QPoint(400, 300));
 
     HI::GUITestOpStatus os;
     try {
-        for (HI::GUITest *test : tests) {
+        for (GUITest *test : qAsConst(tests)) {
             qDebug("launchTest started: %s", test->getFullName().toLocal8Bit().constData());
             test->run(os);
             qDebug("launchTest finished: %s", test->getFullName().toLocal8Bit().constData());
@@ -97,7 +107,8 @@ QString GUITestThread::launchTest(const GUITests &tests) {
     QString error = os.getError();
     if (!error.isEmpty()) {
         try {
-            for (HI::GUITest *test : postChecks()) {
+            const QList<GUITest *> postCheckList = getTests(UGUITestBase::PostAdditionalChecks);
+            for (GUITest *test : qAsConst(postCheckList)) {
                 qDebug("launchTest running additional post check: %s", test->getFullName().toLocal8Bit().constData());
                 test->run(os);
                 qDebug("launchTest additional post check is finished: %s", test->getFullName().toLocal8Bit().constData());
@@ -109,40 +120,12 @@ QString GUITestThread::launchTest(const GUITests &tests) {
     return error;
 }
 
-GUITests GUITestThread::preChecks() {
-    UGUITestBase *tb = AppContext::getGUITestBase();
-    SAFE_POINT(NULL != tb, "GUITestBase is NULL", GUITests());
-
-    //    GUITests additionalChecks = tb->takeTests(GUITestBase::PreAdditional);
-    GUITests additionalChecks = tb->getTests(UGUITestBase::PreAdditional);
-    SAFE_POINT(!additionalChecks.isEmpty(), "additionalChecks is empty", GUITests());
-
-    return additionalChecks;
-}
-
-GUITests GUITestThread::postChecks() {
-    UGUITestBase *tb = AppContext::getGUITestBase();
-    GUITests additionalChecks = tb->getTests(UGUITestBase::PostAdditionalChecks);
-    SAFE_POINT(!additionalChecks.isEmpty(), "additionalChecks is empty", GUITests());
-    return additionalChecks;
-}
-
-GUITests GUITestThread::postActions() {
-    UGUITestBase *tb = AppContext::getGUITestBase();
-    SAFE_POINT(NULL != tb, "GUITestBase is NULL", GUITests());
-
-    //    GUITests additionalChecks = tb->takeTests(GUITestBase::PostAdditionalActions);
-    GUITests additionalChecks = tb->getTests(UGUITestBase::PostAdditionalActions);
-    SAFE_POINT(!additionalChecks.isEmpty(), "additionalChecks is empty", GUITests());
-
-    return additionalChecks;
-}
-
 void GUITestThread::clearSandbox() {
     const QString pathToSandbox = UGUITest::testDir + "_common_data/scenarios/sandbox/";
     QDir sandbox(pathToSandbox);
 
-    foreach (const QString &fileName, sandbox.entryList()) {
+    const QStringList entryList = sandbox.entryList();
+    for (const QString &fileName : qAsConst(entryList)) {
         if (fileName != "." && fileName != "..") {
             if (QFile::remove(pathToSandbox + fileName)) {
                 continue;
@@ -157,7 +140,8 @@ void GUITestThread::clearSandbox() {
 void GUITestThread::removeDir(const QString &dirName) {
     QDir dir(dirName);
 
-    foreach (const QFileInfo &fileInfo, dir.entryInfoList()) {
+    const QFileInfoList fileInfoList = dir.entryInfoList();
+    for (const QFileInfo &fileInfo : qAsConst(fileInfoList)) {
         const QString fileName = fileInfo.fileName();
         const QString filePath = fileInfo.filePath();
         if (fileName != "." && fileName != "..") {
@@ -193,13 +177,14 @@ void GUITestThread::saveScreenshot() {
     };
 
     HI::GUITestOpStatus os;
-    HI::MainThreadRunnable::runInMainThread(os, new Scenario(test));
+    HI::MainThreadRunnable::runInMainThread(os, new Scenario(testToRun));
 }
 
 void GUITestThread::cleanup() {
     qDebug("Running cleanup after the test");
-    test->cleanup();
-    foreach (HI::GUITest *postAction, postActions()) {
+    testToRun->cleanup();
+    const QList<GUITest *> postActionList = getTests(UGUITestBase::PostAdditionalActions);
+    for (HI::GUITest *postAction : qAsConst(postActionList)) {
         HI::GUITestOpStatus os;
         try {
             qDebug("Cleanup action is started: %s", postAction->getFullName().toLocal8Bit().constData());

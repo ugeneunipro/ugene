@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,6 @@
 #include "CreatePhyTreeDialogController.h"
 
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Algorithm/PhyTreeGeneratorRegistry.h>
 #include <U2Algorithm/SubstMatrixRegistry.h>
@@ -53,13 +52,13 @@
 
 namespace U2 {
 
-CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget *parent, const MultipleSequenceAlignmentObject *mobj, CreatePhyTreeSettings &_settings)
+CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget *parent, const MultipleSequenceAlignmentObject *msaObject, CreatePhyTreeSettings &settings)
     : QDialog(parent),
-      msa(mobj->getMsaCopy()),
-      settings(_settings),
-      settingsWidget(NULL),
+      msa(msaObject->getMsaCopy()),
+      settings(settings),
+      settingsWidget(nullptr),
       ui(new Ui_CreatePhyTree),
-      saveController(NULL) {
+      saveController(nullptr) {
     ui->setupUi(this);
 
     QMap<QString, QString> helpPagesMap;
@@ -74,9 +73,9 @@ CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget *parent, co
     PhyTreeGeneratorRegistry *registry = AppContext::getPhyTreeGeneratorRegistry();
     ui->algorithmBox->addItems(registry->getNameList());
 
-    initSaveController(mobj);
+    initSaveController(msaObject);
 
-    connect(ui->algorithmBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_comboIndexChaged(int)));
+    connect(ui->algorithmBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_comboIndexChanged(int)));
     connect(ui->storeSettings, SIGNAL(clicked()), SLOT(sl_onStoreSettings()));
     connect(ui->restoreSettings, SIGNAL(clicked()), SLOT(sl_onRestoreDefault()));
 
@@ -86,14 +85,14 @@ CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget *parent, co
         defaultIndex = 0;
     }
     ui->algorithmBox->setCurrentIndex(defaultIndex);
-    sl_comboIndexChaged(defaultIndex);
+    sl_comboIndexChanged(defaultIndex);
 }
 
 void CreatePhyTreeDialogController::accept() {
     settings.algorithm = ui->algorithmBox->currentText();
 
     CHECK(checkFileName(), );
-    SAFE_POINT(NULL != settingsWidget, "Settings widget is NULL", );
+    SAFE_POINT(settingsWidget != nullptr, "Settings widget is NULL", );
     settingsWidget->fillSettings(settings);
     CHECK(checkSettings(), );
     CHECK(checkMemory(), );
@@ -101,14 +100,14 @@ void CreatePhyTreeDialogController::accept() {
     QDialog::accept();
 }
 
-void CreatePhyTreeDialogController::sl_comboIndexChaged(int) {
+void CreatePhyTreeDialogController::sl_comboIndexChanged(int) {
     delete settingsWidget;
-    settingsWidget = NULL;
+    settingsWidget = nullptr;
     PhyTreeGeneratorRegistry *registry = AppContext::getPhyTreeGeneratorRegistry();
     PhyTreeGenerator *generator = registry->getGenerator(ui->algorithmBox->currentText());
-    SAFE_POINT(NULL != generator, "PhyTree Generator is NULL", );
+    SAFE_POINT(generator != nullptr, "PhyTree Generator is NULL", );
     settingsWidget = generator->createPhyTreeSettingsWidget(msa, this);
-    SAFE_POINT(NULL != settingsWidget, "Settings widget is NULL", );
+    SAFE_POINT(settingsWidget != nullptr, "Settings widget is NULL", );
     ui->settingsContainerLayout->addWidget(settingsWidget);
 }
 
@@ -155,7 +154,7 @@ bool CreatePhyTreeDialogController::checkSettings() {
 }
 
 bool CreatePhyTreeDialogController::checkMemory() {
-    SAFE_POINT(NULL != settingsWidget, "Settings widget is NULL", false);
+    SAFE_POINT(settingsWidget != nullptr, "Settings widget is NULL", false);
 
     QString msg;
     const bool memCheckOk = settingsWidget->checkMemoryEstimation(msg, msa, settings);
@@ -171,7 +170,7 @@ bool CreatePhyTreeDialogController::checkMemory() {
     return true;
 }
 
-void CreatePhyTreeDialogController::initSaveController(const MultipleSequenceAlignmentObject *mobj) {
+void CreatePhyTreeDialogController::initSaveController(const MultipleSequenceAlignmentObject *msaObject) {
     SaveDocumentControllerConfig config;
     QString urlStr;
     if (FileAndDirectoryUtils::isDirectoryWritable(QFileInfo(mobj->getDocument()->getURLString()).dir().path())) {
@@ -192,3 +191,4 @@ void CreatePhyTreeDialogController::initSaveController(const MultipleSequenceAli
 }
 
 }    // namespace U2
+

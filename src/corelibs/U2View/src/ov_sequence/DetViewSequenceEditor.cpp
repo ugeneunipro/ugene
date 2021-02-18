@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,7 +28,6 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/L10n.h>
 #include <U2Core/ModifySequenceObjectTask.h>
 #include <U2Core/Settings.h>
@@ -38,8 +37,6 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2View/ADVSequenceWidget.h>
-#include <U2View/AnnotatedDNAView.h>
-#include <U2View/SequenceObjectContext.h>
 
 #include "ADVConstants.h"
 #include "ADVSequenceObjectContext.h"
@@ -62,7 +59,7 @@ DetViewSequenceEditor::DetViewSequenceEditor(DetView *view)
     connect(view->getSequenceObject(), SIGNAL(si_lockedStateChanged()), SLOT(sl_objectLockStateChanged()));
 
     reset();
-    connect(&animationTimer, SIGNAL(timeout()), SLOT(sl_changeCursorColor()));
+    connect(&animationTimer, SIGNAL(timeout()), SLOT(sl_cursorAnimationTimerCallback()));
     setParent(view);
 }
 
@@ -91,78 +88,79 @@ bool DetViewSequenceEditor::eventFilter(QObject *, QEvent *event) {
     QAction *a = dnaView->removeAnnsAndQsAction;
 
     switch (event->type()) {
-    case QEvent::FocusOut:
-        // return delete
-        a->setShortcut(QKeySequence(Qt::Key_Delete));
-        return true;
-    case QEvent::FocusIn:
-        // block delete again
-        a->setShortcut(QKeySequence());
-        return true;
+        case QEvent::FocusOut:
+            // return delete
+            a->setShortcut(QKeySequence(Qt::Key_Delete));
+            return true;
+        case QEvent::FocusIn:
+            // block delete again
+            a->setShortcut(QKeySequence());
+            return true;
 
-        // TODO_SVEDIT: shift button!
-    case QEvent::MouseButtonPress:
-    case QEvent::MouseButtonRelease:
-    case QEvent::MouseMove: {
-        QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(event);
-        SAFE_POINT(mouseEvent != NULL, "Failed to cast QEvent to QMouseEvent", true);
+            // TODO_SVEDIT: shift button!
+        case QEvent::MouseButtonPress:
+        case QEvent::MouseButtonRelease:
+        case QEvent::MouseMove: {
+            QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(event);
+            SAFE_POINT(mouseEvent != NULL, "Failed to cast QEvent to QMouseEvent", true);
 
-        if (mouseEvent->buttons() & Qt::LeftButton) {
-            qint64 pos = view->getRenderArea()->coordToPos(view->toRenderAreaPoint(mouseEvent->pos()));
-            setCursor(pos);    // use navigate and take shift into account
+            if (mouseEvent->buttons() & Qt::LeftButton) {
+                qint64 pos = view->getRenderArea()->coordToPos(view->toRenderAreaPoint(mouseEvent->pos()));
+                setCursor(pos);    // use navigate and take shift into account
+            }
+            return false;
         }
-        return false;
-    }
 
-        // TODO_SVEDIT: separate methods
-    case QEvent::KeyPress: {
-        // set cursor position
-        QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
-        SAFE_POINT(keyEvent != NULL, "Failed to cast QEvent to QKeyEvent", true);
+            // TODO_SVEDIT: separate methods
+        case QEvent::KeyPress: {
+            // set cursor position
+            QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
+            SAFE_POINT(keyEvent != NULL, "Failed to cast QEvent to QKeyEvent", true);
 
-        int key = keyEvent->key();
-        bool shiftPressed = keyEvent->modifiers().testFlag(Qt::ShiftModifier);
-        switch (key) {
-        case Qt::Key_Left:
-            navigate(cursor - 1, shiftPressed);
-            break;
-        case Qt::Key_Right:
-            navigate(cursor + 1, shiftPressed);
-            break;
-        case Qt::Key_Up:
-            if (view->isWrapMode()) {
-                navigate(cursor - view->getSymbolsPerLine(), shiftPressed);
+            int key = keyEvent->key();
+            Qt::KeyboardModifiers modifiers = keyEvent->modifiers();
+            bool shiftPressed = modifiers.testFlag(Qt::ShiftModifier);
+            switch (key) {
+                case Qt::Key_Left:
+                    navigate(cursor - 1, shiftPressed);
+                    break;
+                case Qt::Key_Right:
+                    navigate(cursor + 1, shiftPressed);
+                    break;
+                case Qt::Key_Up:
+                    if (view->isWrapMode()) {
+                        navigate(cursor - view->getSymbolsPerLine(), shiftPressed);
+                    }
+                    break;
+                case Qt::Key_Down:
+                    if (view->isWrapMode()) {
+                        navigate(cursor + view->getSymbolsPerLine(), shiftPressed);
+                    }
+                    break;
+                case Qt::Key_Home:
+                    navigate(0, shiftPressed);
+                    break;
+                case Qt::Key_End:
+                    navigate(view->getSequenceLength(), shiftPressed);
+                    break;
+                case Qt::Key_Delete:
+                case Qt::Key_Backspace:
+                    deleteChar(key);
+                    break;
+                case Qt::Key_Space:
+                    insertChar(U2Msa::GAP_CHAR);
+                    break;
+                default:
+                    if (key >= Qt::Key_A && key <= Qt::Key_Z) {
+                        if (modifiers == Qt::NoModifier || modifiers == Qt::ShiftModifier) {
+                            insertChar(key);
+                        }
+                    }
             }
-            break;
-        case Qt::Key_Down:
-            if (view->isWrapMode()) {
-                navigate(cursor + view->getSymbolsPerLine(), shiftPressed);
-            }
-            break;
-        case Qt::Key_Home:
-            navigate(0, shiftPressed);
-            break;
-        case Qt::Key_End:
-            navigate(view->getSequenceLength(), shiftPressed);
-            break;
-        case Qt::Key_Delete:
-        case Qt::Key_Backspace:
-            deleteChar(key);
-            break;
-        case Qt::Key_Space:
-            insertChar(U2Msa::GAP_CHAR);
-            break;
+            return true;
+        }
         default:
-            if (key >= Qt::Key_A && key <= Qt::Key_Z) {
-                if (keyEvent->modifiers() == Qt::NoModifier) {
-                    insertChar(key);
-                }
-            }
-        }
-        return true;
-    }
-    default:
-        return false;
+            return false;
     }
 }
 
@@ -332,6 +330,8 @@ void DetViewSequenceEditor::sl_editMode(bool active) {
         if (sequenceWidget) {
             sequenceWidget->setDetViewCollapsed(false);
         }
+        // Grab the focus and start 'blicking cursor' animation.
+        view->setFocus();
         animationTimer.start(500);
     } else {
         editAction->setDisabled(view->getSequenceObject()->isStateLocked());
@@ -342,8 +342,14 @@ void DetViewSequenceEditor::sl_editMode(bool active) {
     }
 }
 
-void DetViewSequenceEditor::sl_changeCursorColor() {
-    cursorColor = (cursorColor == QColor(Qt::black)) ? Qt::darkGray : Qt::black;
+void DetViewSequenceEditor::sl_cursorAnimationTimerCallback() {
+    // Reproduce 'blink' effect: change the cursor color periodically.
+    // Show 'edit-cursor' only for the focused view and hide it (use transparent color) otherwise.
+    QColor newCursorColor = view->hasFocus() ? (cursorColor == Qt::black ? Qt::darkGray : Qt::black) : Qt::transparent;
+    if (newCursorColor == cursorColor) {    // Avoid extra updates on no changes when  in disabled/transparent mode)
+        return;
+    }
+    cursorColor = newCursorColor;
     view->update();
 }
 

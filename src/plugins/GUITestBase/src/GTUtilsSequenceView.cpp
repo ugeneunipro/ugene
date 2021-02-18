@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -421,71 +421,65 @@ QString GTUtilsSequenceView::getSeqName(HI::GUITestOpStatus &os, ADVSingleSequen
 #define MIN_ANNOTATION_WIDTH 5
 
 #define GT_METHOD_NAME "clickAnnotationDet"
-void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, QString name, int startpos, int number, const bool isDoubleClick, Qt::MouseButton button) {
-    ADVSingleSequenceWidget *seq = getSeqWidgetByNumber(os, number);
-    GSequenceLineViewRenderArea *area = seq->getDetView()->getRenderArea();
-    DetViewRenderArea *det = dynamic_cast<DetViewRenderArea *>(area);
-    GT_CHECK(det != NULL, "det view render area not found");
+void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, const QString &annotationName, int annotationRegionStartPos, int sequenceWidgetIndex, const bool isDoubleClick, Qt::MouseButton button) {
+    ADVSingleSequenceWidget *sequenceView = getSeqWidgetByNumber(os, sequenceWidgetIndex);
+    DetView *detView = sequenceView->getDetView();
+    GT_CHECK(detView != nullptr, "detView not found");
+    auto renderArea = qobject_cast<DetViewRenderArea *>(detView->getRenderArea());
+    GT_CHECK(renderArea != nullptr, "detView render area not found");
 
-    ADVSequenceObjectContext *context = seq->getSequenceContext();
-    context->getAnnotationObjects(true);
-
-    QList<Annotation *> anns;
-    foreach (const AnnotationTableObject *ao, context->getAnnotationObjects(true)) {
-        foreach (Annotation *a, ao->getAnnotations()) {
-            foreach (const U2Region &r, a->getLocation().data()->regions) {
-                if (a->getName() == name && r.startPos == startpos - 1) {
-                    anns << a;
+    QList<Annotation *> selectedAnnotationList;
+    const QSet<AnnotationTableObject *> annotationObjectSet = sequenceView->getSequenceContext()->getAnnotationObjects(true);
+    for (const AnnotationTableObject *ao : qAsConst(annotationObjectSet)) {
+        for (Annotation *a : ao->getAnnotations()) {
+            QVector<U2Region> regions = a->getLocation()->regions;
+            for (const U2Region &r : qAsConst(regions)) {
+                if (a->getName() == annotationName && r.startPos == annotationRegionStartPos - 1) {
+                    selectedAnnotationList << a;
                 }
             }
         }
     }
-    GT_CHECK(anns.size() != 0, QString("Annotation with name %1 and startPos %2").arg(name).arg(startpos));
-    GT_CHECK(anns.size() == 1, QString("Several annotation with name %1 and startPos %2. Number is: %3").arg(name).arg(startpos).arg(anns.size()));
+    GT_CHECK(selectedAnnotationList.size() != 0, QString("Annotation with annotationName %1 and startPos %2").arg(annotationName).arg(annotationRegionStartPos));
+    GT_CHECK(selectedAnnotationList.size() == 1, QString("Several annotation with annotationName %1 and startPos %2. Number is: %3").arg(annotationName).arg(annotationRegionStartPos).arg(selectedAnnotationList.size()));
 
-    Annotation *a = anns.first();
+    Annotation *annotation = selectedAnnotationList.first();
 
-    const SharedAnnotationData &aData = a->getData();
+    const SharedAnnotationData &aData = annotation->getData();
     AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
     AnnotationSettings *as = asr->getAnnotationSettings(aData);
 
-    const U2Region &visibleRange = seq->getDetView()->getVisibleRange();
-    QVector<U2Region> regions = a->getLocation().data()->regions;
     U2Region annotationRegion;
-    int regionId = 0;
-    foreach (const U2Region &reg, regions) {
-        if (reg.startPos == startpos - 1) {
+    int annotationRegionIndex = 0;
+    const QVector<U2Region> regionList = annotation->getRegions();
+    for (const U2Region &reg : qAsConst(regionList)) {
+        if (reg.startPos == annotationRegionStartPos - 1) {
             annotationRegion = reg;
             break;
         }
-        regionId++;
+        annotationRegionIndex++;
     }
     GT_CHECK(!annotationRegion.isEmpty(), "Region not found");
 
-    if (!annotationRegion.intersects(visibleRange)) {
+    if (!annotationRegion.intersects(detView->getVisibleRange())) {
         int center = annotationRegion.center();
         goToPosition(os, center);
-        GTGlobals::sleep();
     }
 
-    const U2Region visibleRegionPart = annotationRegion.intersect(visibleRange);
+    QList<U2Region> yRegionList = renderArea->getAnnotationYRegions(annotation, annotationRegionIndex, as);
+    GT_CHECK(!yRegionList.isEmpty(), "yRegionList is empty!");
 
-    U2Region y;
-    y = det->getAnnotationYRange(a, regionId, as);
-
-    float visibleRegionPartStart = visibleRegionPart.startPos;
-    float visibleRegionPartEnd = visibleRegionPart.endPos();
-    if (seq->getDetView()->isWrapMode() && annotationRegion.endPos() > visibleRange.endPos()) {
-        visibleRegionPartEnd = visibleRegionPart.startPos + seq->getDetView()->getSymbolsPerLine();
+    U2Region yRegion = yRegionList.first();
+    U2Region visibleRegion = detView->getVisibleRange();
+    U2Region annotationVisibleRegion = annotationRegion.intersect(visibleRegion);
+    int x1 = renderArea->posToCoord(annotationVisibleRegion.startPos, true);
+    int x2 = renderArea->posToCoord(annotationVisibleRegion.endPos() - 1, true) + renderArea->getCharWidth();
+    if (x2 <= x1) {    // In the wrap mode x2 may be on a different line. In this case use [x1...line-end] as the click region.
+        x2 = renderArea->width();
     }
-    float x1f = (float)(visibleRegionPartStart - visibleRange.startPos) * det->getCharWidth();
-    float x2f = (float)(visibleRegionPartEnd - visibleRange.startPos) * det->getCharWidth();
 
-    int rw = qMax(MIN_ANNOTATION_WIDTH, qRound(x2f - x1f));
-    int x1 = qRound(x1f);
-
-    const QRect annotationRect(x1, y.startPos, rw, y.length);
-    GTMouseDriver::moveTo(det->mapToGlobal(annotationRect.center()));
+    const QRect clickRect(x1, yRegion.startPos, x2 - x1, yRegion.length);
+    GTMouseDriver::moveTo(renderArea->mapToGlobal(clickRect.center()));
     if (isDoubleClick) {
         GTMouseDriver::doubleClick();
     } else {

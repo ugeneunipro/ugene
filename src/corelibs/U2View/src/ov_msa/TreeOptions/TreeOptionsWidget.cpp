@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -60,10 +60,10 @@ static inline QVBoxLayout *initLayout(QWidget *w) {
     return layout;
 }
 
-TreeOptionsWidget::TreeOptionsWidget(MSAEditor *m, const TreeOpWidgetViewSettings &viewSettings)
-    : msa(m), treeViewer(NULL), viewSettings(viewSettings), showFontSettings(false), showPenSettings(false),
-      savableTab(this, GObjectViewUtils::findViewByName(m->getName())), isUpdating(false) {
-    SAFE_POINT(NULL != msa, QString("Invalid parameter were passed into constructor TreeOptionsWidget"), );
+TreeOptionsWidget::TreeOptionsWidget(MSAEditor *msaEditor, const TreeOpWidgetViewSettings &viewSettings)
+    : editor(msaEditor), treeViewer(NULL), viewSettings(viewSettings), showFontSettings(false), showPenSettings(false),
+      savableTab(this, GObjectViewUtils::findViewByName(msaEditor->getName())), isUpdating(false) {
+    SAFE_POINT(NULL != editor, QString("Invalid parameter were passed into constructor TreeOptionsWidget"), );
 
     contentWidget = new QWidget();
     setupUi(contentWidget);
@@ -75,7 +75,7 @@ TreeOptionsWidget::TreeOptionsWidget(MSAEditor *m, const TreeOpWidgetViewSetting
 }
 
 TreeOptionsWidget::TreeOptionsWidget(TreeViewer *tree, const TreeOpWidgetViewSettings &viewSettings)
-    : msa(NULL), treeViewer(tree->getTreeViewerUI()), viewSettings(viewSettings), showFontSettings(false), showPenSettings(false),
+    : editor(NULL), treeViewer(tree->getTreeViewerUI()), viewSettings(viewSettings), showFontSettings(false), showPenSettings(false),
       savableTab(this, GObjectViewUtils::findViewByName(tree->getName())), isUpdating(false) {
     SAFE_POINT(NULL != treeViewer, QString("Invalid parameter were passed into constructor TreeOptionsWidget"), );
 
@@ -110,16 +110,19 @@ void TreeOptionsWidget::createGroups() {
     QVBoxLayout *mainLayout = initLayout(this);
     mainLayout->setSpacing(0);
 
-    ShowHideSubgroupWidget *generalOpGroup = new ShowHideSubgroupWidget("TREE_GENERAL_OP", tr("General"), treeLayoutWidget, true);
+    auto generalOpGroup = new ShowHideSubgroupWidget("TREE_GENERAL_OP", tr("General"), treeLayoutWidget, true);
     mainLayout->addWidget(generalOpGroup);
-    ShowHideSubgroupWidget *labelsOpGroup = new ShowHideSubgroupWidget("TREE_LABELS_OP", tr("Labels"), labelsGroup, true);
+
+    auto labelsOpGroup = new ShowHideSubgroupWidget("TREE_LABELS_OP", tr("Labels"), labelsGroup, true);
     mainLayout->addWidget(labelsOpGroup);
-    ShowHideSubgroupWidget *scalebarOpGroup = new ShowHideSubgroupWidget("SCALEBAR_OP", tr("Scale Bar"), scalebarGroup, true);
+
+    auto scalebarOpGroup = new ShowHideSubgroupWidget("SCALEBAR_OP", tr("Scale Bar"), scalebarGroup, true);
     mainLayout->addWidget(scalebarOpGroup);
-    ShowHideSubgroupWidget *branchesOpGroup = new ShowHideSubgroupWidget("TREE_BRANCHES_OP", tr("Branches"), branchesGroup, true);
+
+    auto branchesOpGroup = new ShowHideSubgroupWidget("TREE_BRANCHES_OP", tr("Branches"), branchesGroup, true);
     mainLayout->addWidget(branchesOpGroup);
 
-    initialazeOptionsMap();
+    initializeOptionsMap();
     updateAllWidgets();
     connectSlots();
 }
@@ -137,7 +140,8 @@ void TreeOptionsWidget::updateAllWidgets() {
     penGroup->setVisible(viewSettings.showPenSettings);
 
     QMap<TreeViewOption, QVariant> settings = getTreeViewer()->getSettings();
-    foreach (TreeViewOption option, settings.keys()) {
+    const QList<TreeViewOption> keyList = settings.keys();
+    for (const TreeViewOption &option : qAsConst(keyList)) {
         sl_onOptionChanged(option, settings[option]);
     }
     if (!settings[SHOW_NODE_LABELS].toBool()) {
@@ -168,7 +172,7 @@ void TreeOptionsWidget::sl_onOptionChanged(TreeViewOption option, const QVariant
     isUpdating = false;
 }
 
-void TreeOptionsWidget::initialazeOptionsMap() {
+void TreeOptionsWidget::initializeOptionsMap() {
     //Scalebar settings widgets
     optionsMap[scaleSpinBox->objectName()] = SCALEBAR_RANGE;
     optionsMap[scaleFontSizeSpinBox->objectName()] = SCALEBAR_FONT_SIZE;
@@ -228,7 +232,8 @@ void TreeOptionsWidget::connectSlots() {
 
 void TreeOptionsWidget::sl_valueChanged() {
     QWidget *inputWidget = qobject_cast<QWidget *>(sender());
-    SAFE_POINT(NULL != inputWidget, "Null sender in slot", );
+    SAFE_POINT(inputWidget != nullptr, "Null sender in slot", );
+
     QVariant newValue = savableTab.getChildValue(inputWidget->objectName());
     TreeViewOption option = optionsMap[inputWidget->objectName()];
     if (option == SHOW_LABELS) {
@@ -241,13 +246,14 @@ void TreeOptionsWidget::sl_valueChanged() {
 }
 
 void TreeOptionsWidget::createGeneralSettingsWidgets() {
-    QStringList items;
-    items << tr("Rectangular") << tr("Circular") << tr("Unrooted");
-    layoutCombo->addItems(items);
+    layoutCombo->addItems(QStringList()
+                          << tr("Rectangular")
+                          << tr("Circular")
+                          << tr("Unrooted"));
 
-    treeViewCombo->addItem(TreeSettingsDialog::treeDefaultText());
-    treeViewCombo->addItem(TreeSettingsDialog::treePhylogramText());
-    treeViewCombo->addItem(TreeSettingsDialog::treeCladogramText());
+    treeViewCombo->addItem(TreeSettingsDialog::getDefaultTreeModeText());
+    treeViewCombo->addItem(TreeSettingsDialog::getPhylogramTreeModeText());
+    treeViewCombo->addItem(TreeSettingsDialog::getCladogramTreeModeText());
 }
 
 void TreeOptionsWidget::updateFormatSettings() {
@@ -269,9 +275,9 @@ void TreeOptionsWidget::updateFormatSettings() {
     fontComboBox->setCurrentFont(curFont);
 }
 
-TreeViewerUI *TreeOptionsWidget::getTreeViewer() {
-    SAFE_POINT(msa != NULL || treeViewer != NULL, QString("Invalid parameter in constructor TreeOptionsWidget"), NULL);
-    return treeViewer != NULL ? treeViewer : msa->getUI()->getCurrentTree()->getTreeViewerUI();
+TreeViewerUI *TreeOptionsWidget::getTreeViewer() const {
+    SAFE_POINT(editor != nullptr || treeViewer != nullptr, QString("Invalid parameter in constructor TreeOptionsWidget"), nullptr);
+    return treeViewer != nullptr ? treeViewer : editor->getUI()->getCurrentTree()->getTreeViewerUI();
 }
 
 void TreeOptionsWidget::sl_fontChanged() {
@@ -304,14 +310,12 @@ void TreeOptionsWidget::sl_branchesColorButton() {
 }
 
 void TreeOptionsWidget::sl_onLblLinkActivated(const QString &link) {
-    if (SHOW_FONT_OPTIONS_LINK == link) {
+    if (link == SHOW_FONT_OPTIONS_LINK) {
         showFontSettings = !showFontSettings;
         QString labelText = showFontSettings ? tr("Hide font settings") : tr("Show font settings");
         updateShowFontOpLabel(labelText);
         fontSettingsWidget->setVisible(showFontSettings);
-        return;
-    }
-    if (SHOW_PEN_OPTIONS_LINK == link) {
+    } else if (link == SHOW_PEN_OPTIONS_LINK) {
         showPenSettings = !showPenSettings;
         QString labelText = showPenSettings ? tr("Hide pen settings") : tr("Show pen settings");
         updateShowPenOpLabel(labelText);
@@ -326,7 +330,10 @@ void TreeOptionsWidget::updateButtonColor(QPushButton *button, const QColor &new
 }
 
 void TreeOptionsWidget::updateShowFontOpLabel(QString newText) {
-    newText = QString("<a href=\"%1\" style=\"color: %2\">").arg(SHOW_FONT_OPTIONS_LINK).arg(Theme::linkColorLabelStr()) + newText + QString("</a>");
+    newText = QString("<a href=\"%1\" style=\"color: %2\">")
+                  .arg(SHOW_FONT_OPTIONS_LINK)
+                  .arg(Theme::linkColorLabelStr()) +
+              newText + QString("</a>");
 
     lblFontSettings->setText(newText);
     lblFontSettings->setTextInteractionFlags(Qt::LinksAccessibleByKeyboard | Qt::LinksAccessibleByMouse);
@@ -350,8 +357,8 @@ void TreeOptionsWidget::updateRelations(TreeViewOption option, QVariant newValue
     }
 }
 
-AddTreeWidget::AddTreeWidget(MSAEditor *msa)
-    : editor(msa), openTreeButton(NULL), buildTreeButton(NULL), addTreeHint(NULL) {
+AddTreeWidget::AddTreeWidget(MSAEditor *msaEditor)
+    : editor(msaEditor), openTreeButton(nullptr), buildTreeButton(nullptr), addTreeHint(nullptr) {
     setObjectName("AddTreeWidget");
     QVBoxLayout *mainLayout = initLayout(this);
     mainLayout->setSpacing(0);
@@ -361,7 +368,7 @@ AddTreeWidget::AddTreeWidget(MSAEditor *msa)
 
     mainLayout->addWidget(addTreeHint);
 
-    QHBoxLayout *buttonLayout = new QHBoxLayout();
+    auto buttonLayout = new QHBoxLayout();
     buttonLayout->setContentsMargins(0, 5, 0, 0);
 
     openTreeButton = new QPushButton(QIcon(":ugene/images/advanced_open.png"), tr("Open tree"), this);
@@ -370,7 +377,7 @@ AddTreeWidget::AddTreeWidget(MSAEditor *msa)
     buttonLayout->addWidget(openTreeButton);
     openTreeButton->setObjectName("OpenTreeButton");
 
-    QSpacerItem *horizontalSpacer = new QSpacerItem(50, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
+    auto horizontalSpacer = new QSpacerItem(50, 20, QSizePolicy::Maximum, QSizePolicy::Minimum);
     buttonLayout->addSpacerItem(horizontalSpacer);
 
     buildTreeButton = new QPushButton(QIcon(":core/images/phylip.png"), tr("Build tree"), this);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -309,10 +309,11 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
     suite->testTimeout = testTimeout.toInt();
     suite->testTimeout = (suite->testTimeout == 0) ? -1 : suite->testTimeout;    // -1 means timeout check disabled
 
-    for (GTestRef *r : suiteTests) {
+    for (GTestRef *r : qAsConst(suiteTests)) {
         r->setSuite(suite);
     }
-    for (GTestRef *r : excluded.keys()) {
+    const QList<GTestRef *> excludeKeyList = excluded.keys();
+    for (GTestRef *r : qAsConst(excludeKeyList)) {
         r->setSuite(suite);
     }
 
@@ -330,7 +331,7 @@ QList<GTestSuite *> GTestSuite::readTestSuiteList(const QString &url, QStringLis
     }
     QString suiteFileContent = suitListFile.readAll();
     QStringList suiteNamesList = suiteFileContent.split(QRegExp("\\s+"));
-    for (auto suiteName : suiteNamesList) {
+    for (auto suiteName : qAsConst(suiteNamesList)) {
         if (suiteName.isEmpty()) {
             continue;
         }

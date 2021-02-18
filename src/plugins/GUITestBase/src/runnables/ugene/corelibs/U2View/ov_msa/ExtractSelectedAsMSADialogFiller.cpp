@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,8 +42,8 @@ using namespace HI;
 #define GT_CLASS_NAME "GTUtilsDialog::ExtractSelectedAsMSADialogFiller"
 #define GT_METHOD_NAME "run"
 ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(GUITestOpStatus &os,
-                                                                   QString _filepath,
-                                                                   QStringList _list,
+                                                                   const QString &_filepath,
+                                                                   const QStringList &selectedSequenceNameList,
                                                                    int _from,
                                                                    int _to,
                                                                    bool _addToProj,
@@ -51,18 +51,20 @@ ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(GUITestOpStat
                                                                    bool _allButtonPress,
                                                                    bool _noneButtonPress,
                                                                    bool _dontCheckFilepath,
-                                                                   QString format)
+                                                                   const QString &format,
+                                                                   bool useDefaultSequenceSelectionFlag)
     : Filler(os, "CreateSubalignmentDialog"),
       filepath(_filepath),
       format(format),
-      list(_list),
+      sequenceNameList(selectedSequenceNameList),
       from(_from),
       to(_to),
       addToProj(_addToProj),
       invertButtonPress(_invertButtonPress),
       allButtonPress(_allButtonPress),
       noneButtonPress(_noneButtonPress),
-      dontCheckFilepath(_dontCheckFilepath) {
+      dontCheckFilepath(_dontCheckFilepath),
+      useDefaultSequenceSelection(useDefaultSequenceSelectionFlag) {
 }
 
 ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(GUITestOpStatus &os, CustomScenario *c)
@@ -73,7 +75,8 @@ ExtractSelectedAsMSADialogFiller::ExtractSelectedAsMSADialogFiller(GUITestOpStat
       invertButtonPress(false),
       allButtonPress(false),
       noneButtonPress(false),
-      dontCheckFilepath(false) {
+      dontCheckFilepath(false),
+      useDefaultSequenceSelection(false) {
 }
 
 void ExtractSelectedAsMSADialogFiller::commonScenario() {
@@ -97,9 +100,11 @@ void ExtractSelectedAsMSADialogFiller::commonScenario() {
     GTLineEdit::setText(os, filepathEdit, filepath, dontCheckFilepath);
     GTGlobals::sleep(300);
 
-    QWidget *noneButton = dialog->findChild<QWidget *>("noneButton");
-    GT_CHECK(noneButton != NULL, "noneButton is NULL");
-    GTWidget::click(os, noneButton);
+    if (!useDefaultSequenceSelection) {
+        QWidget *noneButton = dialog->findChild<QWidget *>("noneButton");
+        GT_CHECK(noneButton != NULL, "noneButton is NULL");
+        GTWidget::click(os, noneButton);
+    }
 
     if (invertButtonPress) {
         GTGlobals::sleep(300);
@@ -136,26 +141,27 @@ void ExtractSelectedAsMSADialogFiller::commonScenario() {
         GTComboBox::selectItemByText(os, formatCombo, format);
     }
 
-    QTableWidget *table = dialog->findChild<QTableWidget *>("sequencesTableWidget");
-    GT_CHECK(table != NULL, "tableWidget is NULL");
-    QPoint p = table->geometry().topRight();
-    p.setX(p.x() - 2);
-    p.setY(p.y() + 2);
-    p = dialog->mapToGlobal(p);
+    if (!useDefaultSequenceSelection) {
+        QTableWidget *table = dialog->findChild<QTableWidget *>("sequencesTableWidget");
+        GT_CHECK(table != NULL, "tableWidget is NULL");
+        QPoint p = table->geometry().topRight();
+        p.setX(p.x() - 2);
+        p.setY(p.y() + 2);
+        p = dialog->mapToGlobal(p);
 
-    GTMouseDriver::moveTo(p);
-    GTMouseDriver::click();
-    for (int i = 0; i < table->rowCount(); i++) {
-        foreach (QString s, list) {
-            QCheckBox *box = qobject_cast<QCheckBox *>(table->cellWidget(i, 0));
-            if (s == box->text()) {
-                GT_CHECK(box->isEnabled(), QString("%1 box is disabled").arg(box->text()));
-                box->setChecked(true);
+        GTMouseDriver::moveTo(p);
+        GTMouseDriver::click();
+        for (int i = 0; i < table->rowCount(); i++) {
+            foreach (QString s, sequenceNameList) {
+                QCheckBox *box = qobject_cast<QCheckBox *>(table->cellWidget(i, 0));
+                if (s == box->text()) {
+                    GT_CHECK(box->isEnabled(), QString("%1 box is disabled").arg(box->text()));
+                    box->setChecked(true);
+                }
             }
         }
+        GTGlobals::sleep();
     }
-
-    GTGlobals::sleep();
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }
@@ -179,6 +185,10 @@ QStringList ExtractSelectedAsMSADialogFiller::getSequences(HI::GUITestOpStatus &
     return result;
 }
 #undef GT_METHOD_NAME
+
+void ExtractSelectedAsMSADialogFiller::setUseDefaultSequenceSelection(bool flag) {
+    useDefaultSequenceSelection = flag;
+}
 
 #undef GT_CLASS_NAME
 

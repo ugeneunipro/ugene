@@ -97,7 +97,7 @@ struct AppMemory {
 };
 typedef std::list<AppMemory> AppMemoryList;
 
-class Q_DECL_EXPORT ExceptionHandler{
+class Q_DECL_EXPORT ExceptionHandler {
  public:
   // A callback function to run before Breakpad performs any substantial
   // processing of an exception.  A FilterCallback is called before writing
@@ -220,7 +220,7 @@ class Q_DECL_EXPORT ExceptionHandler{
 
   // Get and set the minidump path.
   wstring dump_path() const { return dump_path_; }
-  void set_dump_path(const wstring &dump_path) {
+  void set_dump_path(const wstring& dump_path) {
     dump_path_ = dump_path;
     dump_path_c_ = dump_path_.c_str();
     UpdateNextID();  // Necessary to put dump_path_ in next_minidump_path_.
@@ -239,8 +239,9 @@ class Q_DECL_EXPORT ExceptionHandler{
 
   // Convenience form of WriteMinidump which does not require an
   // ExceptionHandler instance.
-  static bool WriteMinidump(const wstring &dump_path,
-                            MinidumpCallback callback, void* callback_context);
+  static bool WriteMinidump(const wstring& dump_path,
+                            MinidumpCallback callback, void* callback_context,
+                            MINIDUMP_TYPE dump_type = MiniDumpNormal);
 
   // Write a minidump of |child| immediately.  This can be used to
   // capture the execution state of |child| independently of a crash.
@@ -251,7 +252,8 @@ class Q_DECL_EXPORT ExceptionHandler{
                                     DWORD child_blamed_thread,
                                     const wstring& dump_path,
                                     MinidumpCallback callback,
-                                    void* callback_context);
+                                    void* callback_context,
+                                    MINIDUMP_TYPE dump_type = MiniDumpNormal);
 
   // Get the thread ID of the thread requesting the dump (either the exception
   // thread or any other thread that called WriteMinidump directly).  This
@@ -388,7 +390,7 @@ class Q_DECL_EXPORT ExceptionHandler{
 
   scoped_ptr<CrashGenerationClient> crash_generation_client_;
 
-  // The folder in which a minidump will be written, set by the dump_path
+  // The directory in which a minidump will be written, set by the dump_path
   // argument to the constructor, or set_dump_path.
   wstring dump_path_;
 
@@ -513,8 +515,8 @@ class Q_DECL_EXPORT ExceptionHandler{
   static volatile LONG instance_count_;
 
   // disallow copy ctor and operator=
-  explicit ExceptionHandler(const ExceptionHandler &);
-  void operator=(const ExceptionHandler &);
+  explicit ExceptionHandler(const ExceptionHandler&);
+  void operator=(const ExceptionHandler&);
 };
 
 }  // namespace google_breakpad

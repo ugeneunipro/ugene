@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -826,8 +826,8 @@ Task::ReportResult GTest_DNAcompareMulSequencesInTwoObjects::report() {
         }
 
         if (sortValue == "true") {
-            one->sortRowsByName();
-            two->sortRowsByName();
+            one->sortRows(MultipleAlignment::SortByName);
+            two->sortRows(MultipleAlignment::SortByName);
         }
 
         int seqSz = alignedSeqs1.size();

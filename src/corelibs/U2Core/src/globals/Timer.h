@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -85,7 +85,7 @@ private:
 };
 
 #define GTIMER(cvar, tvar, name) \
-    static GCounter cvar(name, TimeCounter::getCounterSuffix(), TimeCounter::getCounterScale()); \
+    static GCounter cvar(name, TimeCounter::getCounterSuffix(), 0, TimeCounter::getCounterScale()); \
     TimeCounter tvar(&cvar, true)
 
 #define WIN_UNIX_EPOCH_DELTA_MSEC qint64(11644473600000000)

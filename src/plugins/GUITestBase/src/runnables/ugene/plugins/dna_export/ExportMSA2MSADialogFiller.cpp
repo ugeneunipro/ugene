@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,6 +20,7 @@
  */
 
 #include "ExportMSA2MSADialogFiller.h"
+#include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTRadioButton.h>
@@ -35,10 +36,13 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::ExportToSequenceFormatFiller"
 
-ExportMSA2MSADialogFiller::ExportMSA2MSADialogFiller(HI::GUITestOpStatus &_os, int _formatVal, QString _path)
+ExportMSA2MSADialogFiller::ExportMSA2MSADialogFiller(HI::GUITestOpStatus &_os, int _formatVal, QString _path, bool _includeGaps, bool _unknownAsGaps, int _frame)
     : Filler(_os, "U2__ExportMSA2MSADialog"),
       formatVal(_formatVal),
-      path(_path) {
+      path(_path),
+      includeGaps(_includeGaps),
+      unknownAsGaps(_unknownAsGaps),
+      frame(_frame) {
 }
 
 #define GT_METHOD_NAME "commonScenario"
@@ -47,13 +51,40 @@ void ExportMSA2MSADialogFiller::commonScenario() {
     GT_CHECK(dialog != NULL, "dialog not found");
 
     if (!path.isEmpty()) {
-        QLineEdit *fileNameEdit = dialog->findChild<QLineEdit *>("fileNameEdit");
+
+        QLineEdit *fileNameEdit = GTWidget::findExactWidget<QLineEdit *>(os, "fileNameEdit", dialog);
         GTLineEdit::setText(os, fileNameEdit, path);
     }
     if (formatVal >= 0) {
-        QComboBox *formatCombo = dialog->findChild<QComboBox *>("formatCombo");
+        QComboBox *formatCombo = GTWidget::findExactWidget<QComboBox *>(os, "formatCombo", dialog);
         GTComboBox::selectItemByIndex(os, formatCombo, formatVal);
     }
+    if (includeGaps) {
+        GTCheckBox::setChecked(os, "cbIncludeGaps", dialog);
+
+        if (unknownAsGaps) {
+            GTRadioButton::click(os, "rbUseGaps", dialog);
+        }
+    }
+
+    QString widgetName;
+    if (frame == 1) {
+        widgetName = "rbFirstDirectFrame";
+    } else if (frame == 2) {
+        widgetName = "rbSecondDirectFrame";
+    } else if (frame == 3) {
+        widgetName = "rbThirdDirectFrame";
+    } else if (frame == -1) {
+        widgetName = "rbFirstComplementFrame";
+    } else if (frame == -2) {
+        widgetName = "rbSecondComplementFrame";
+    } else if (frame == -3) {
+        widgetName = "rbThirdComplementFrame";
+    } else {
+        GT_CHECK(false, "incorrect frame");
+    }
+    GTRadioButton::click(os, widgetName, dialog);
+
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

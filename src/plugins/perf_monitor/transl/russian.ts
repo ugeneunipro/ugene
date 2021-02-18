@@ -34,5 +34,9 @@
         <source>Scale</source>
         <translation>Шкала</translation>
     </message>
+    <message>
+        <source>Reportable</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

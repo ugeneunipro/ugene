@@ -42,7 +42,7 @@
 
 namespace google_breakpad {
 
-// A class for enumerating a folder without using diropen/readdir or other
+// A class for enumerating a directory without using diropen/readdir or other
 // functions which may allocate memory.
 class DirectoryReader {
  public:
@@ -51,7 +51,7 @@ class DirectoryReader {
         buf_used_(0) {
   }
 
-  // Return the next entry from the folder
+  // Return the next entry from the directory
   //   name: (output) the NUL terminated entry name
   //
   // Returns true iff successful (false on EOF).

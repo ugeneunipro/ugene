@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -103,7 +103,7 @@ GObjectView::GObjectView(GObjectViewFactoryId _factoryId, const QString &_viewNa
 
     connect(project, SIGNAL(si_documentAdded(Document *)), SLOT(sl_onDocumentAdded(Document *)));
     connect(project, SIGNAL(si_documentRemoved(Document *)), SLOT(sl_onDocumentRemoved(Document *)));
-    for (Document *document : project->getDocuments()) {
+    for (Document *document : qAsConst(project->getDocuments())) {
         sl_onDocumentAdded(document);
     }
 }
@@ -113,7 +113,7 @@ bool GObjectView::canAddObject(GObject *obj) {
         // the 'obj' is already in the view.
         return false;
     }
-    for (GObjectViewObjectHandler *objectHandler : objectHandlers) {
+    for (GObjectViewObjectHandler *objectHandler : qAsConst(objectHandlers)) {
         if (objectHandler->canHandle(this, obj)) {
             return true;
         }
@@ -131,7 +131,7 @@ QString GObjectView::addObject(GObject *o) {
 
     bool canBeAdded = canAddObject(o);
     if (!canBeAdded) {
-        for (GObjectViewObjectHandler *objectHandler : objectHandlers) {
+        for (GObjectViewObjectHandler *objectHandler : qAsConst(objectHandlers)) {
             canBeAdded = objectHandler->canHandle(this, o);
             if (canBeAdded) {
                 break;
@@ -182,7 +182,7 @@ void GObjectView::sl_onObjectRemovedFromDocument(GObject *o) {
 }
 
 bool GObjectView::onObjectRemoved(GObject *obj) {
-    for (GObjectViewObjectHandler *objectHandler : objectHandlers) {
+    for (GObjectViewObjectHandler *objectHandler : qAsConst(objectHandlers)) {
         objectHandler->onObjectRemoved(this, obj);
     }
     return false;
@@ -190,7 +190,7 @@ bool GObjectView::onObjectRemoved(GObject *obj) {
 
 void GObjectView::onObjectAdded(GObject *obj) {
     connect(obj, SIGNAL(si_nameChanged(const QString &)), SLOT(sl_onObjectNameChanged(const QString &)));
-    for (GObjectViewObjectHandler *objectHandler : objectHandlers) {
+    for (GObjectViewObjectHandler *objectHandler : qAsConst(objectHandlers)) {
         objectHandler->onObjectAdded(this, obj);
     }
 }
@@ -209,7 +209,7 @@ void GObjectView::sl_onDocumentRemoved(Document *d) {
         return;
     }
     d->disconnect(this);
-    for (GObject *object : d->getObjects()) {
+    for (GObject *object : qAsConst(d->getObjects())) {
         if (objects.contains(object)) {
             _removeObject(object);
         }
@@ -259,7 +259,7 @@ bool GObjectView::containsObject(GObject *obj) const {
 
 // Returns true if view  contains any objects from the document
 bool GObjectView::containsDocumentObjects(Document *doc) const {
-    for (GObject *object : doc->getObjects()) {
+    for (GObject *object : qAsConst(doc->getObjects())) {
         if (containsObject(object)) {
             return true;
         }
@@ -378,7 +378,7 @@ void GObjectViewWindow::setupViewMenu(QMenu *m) {
 
 GObjectViewWindow *GObjectViewUtils::findViewByName(const QString &name) {
     QList<MWMDIWindow *> mdiWindows = AppContext::getMainWindow()->getMDIManager()->getWindows();
-    for (MWMDIWindow *mdiWindow : mdiWindows) {
+    for (MWMDIWindow *mdiWindow : qAsConst(mdiWindows)) {
         if (mdiWindow->windowTitle() == name) {
             GObjectViewWindow *objectViewWindow = qobject_cast<GObjectViewWindow *>(mdiWindow);
             if (objectViewWindow != nullptr) {
@@ -394,12 +394,12 @@ QString GObjectViewUtils::genUniqueViewName(const QString &name) {
 
     QSet<QString> usedNames;    //set of names is derived from active views & saved states
     QList<MWMDIWindow *> windows = AppContext::getMainWindow()->getMDIManager()->getWindows();
-    for (const MWMDIWindow *w : windows) {
+    for (const MWMDIWindow *w : qAsConst(windows)) {
         usedNames.insert(w->windowTitle());
     }
     Project *project = AppContext::getProject();
     if (project != nullptr) {
-        for (const GObjectViewState *state : project->getGObjectViewStates()) {
+        for (const GObjectViewState *state : qAsConst(project->getGObjectViewStates())) {
             usedNames.insert(state->getViewName());
         }
     }
@@ -411,7 +411,7 @@ QString GObjectViewUtils::genUniqueStateName(const QString &stateName) {
 
     QSet<QString> usedNames;
     const QList<GObjectViewState *> states = AppContext::getProject()->getGObjectViewStates();
-    for (const GObjectViewState *state : states) {
+    for (const GObjectViewState *state : qAsConst(states)) {
         usedNames.insert(state->getStateName());
     }
     return TextUtils::variate(stateName, " ", usedNames, false, 2);
@@ -427,7 +427,7 @@ QList<GObjectViewState *> GObjectViewUtils::findStatesByViewName(const QString &
     QList<GObjectViewState *> result;
     Project *project = AppContext::getProject();
     if (project != nullptr) {
-        for (GObjectViewState *state : project->getGObjectViewStates()) {
+        for (GObjectViewState *state : qAsConst(project->getGObjectViewStates())) {
             if (state->getViewName() == viewName) {
                 result << state;
             }
@@ -444,7 +444,7 @@ GObjectViewState *GObjectViewUtils::findStateByName(const QString &viewName, con
 }
 
 GObjectViewState *GObjectViewUtils::findStateInList(const QString &viewName, const QString &stateName, const QList<GObjectViewState *> &states) {
-    for (GObjectViewState *state : states) {
+    for (GObjectViewState *state : qAsConst(states)) {
         if (state->getViewName() == viewName && state->getStateName() == stateName) {
             return state;
         }
@@ -455,7 +455,7 @@ GObjectViewState *GObjectViewUtils::findStateInList(const QString &viewName, con
 QList<GObjectViewWindow *> GObjectViewUtils::getAllActiveViews() {
     QList<MWMDIWindow *> mdiWindows = AppContext::getMainWindow()->getMDIManager()->getWindows();
     QList<GObjectViewWindow *> objectViewWindows;
-    for (MWMDIWindow *mdiWindow : mdiWindows) {
+    for (MWMDIWindow *mdiWindow : qAsConst(mdiWindows)) {
         GObjectViewWindow *objectViewWindow = qobject_cast<GObjectViewWindow *>(mdiWindow);
         if (objectViewWindow != nullptr) {
             objectViewWindows << objectViewWindow;
@@ -471,7 +471,7 @@ QList<GObjectViewWindow *> GObjectViewUtils::findViewsByFactoryId(GObjectViewFac
         return resultWindowList;    //Main window is closed.
     }
     QList<MWMDIWindow *> mdiWindows = mainWindow->getMDIManager()->getWindows();
-    for (MWMDIWindow *mdiWindow : mdiWindows) {
+    for (MWMDIWindow *mdiWindow : qAsConst(mdiWindows)) {
         GObjectViewWindow *objectViewWindow = qobject_cast<GObjectViewWindow *>(mdiWindow);
         if (objectViewWindow != nullptr && objectViewWindow->getViewFactoryId() == id) {
             resultWindowList << objectViewWindow;
@@ -484,7 +484,7 @@ QList<GObjectViewState *> GObjectViewUtils::selectStates(const MultiGSelection &
     QList<GObjectViewFactory *> objectViewFactoryList = AppContext::getObjectViewFactoryRegistry()->getAllFactories();
 
     QList<GObjectViewState *> resultStateList;
-    for (GObjectViewFactory *objectViewFactory : objectViewFactoryList) {
+    for (GObjectViewFactory *objectViewFactory : qAsConst(objectViewFactoryList)) {
         QList<GObjectViewState *> stateList = selectStates(objectViewFactory, ms, states);
         resultStateList += stateList;
     }
@@ -493,7 +493,7 @@ QList<GObjectViewState *> GObjectViewUtils::selectStates(const MultiGSelection &
 
 QList<GObjectViewState *> GObjectViewUtils::selectStates(GObjectViewFactory *f, const MultiGSelection &ms, const QList<GObjectViewState *> &states) {
     QList<GObjectViewState *> resultStateList;
-    for (GObjectViewState *state : states) {
+    for (GObjectViewState *state : qAsConst(states)) {
         if (state->getViewFactoryId() == f->getId()) {
             if (f->isStateInSelection(ms, state->getStateData())) {
                 resultStateList << state;
@@ -506,7 +506,7 @@ QList<GObjectViewState *> GObjectViewUtils::selectStates(GObjectViewFactory *f, 
 QList<GObjectViewWindow *> GObjectViewUtils::findViewsWithObject(GObject *obj) {
     QList<GObjectViewWindow *> resultWindowList;
     QList<GObjectViewWindow *> activeViewWindowList = getAllActiveViews();
-    for (GObjectViewWindow *activeViewWindow : activeViewWindowList) {
+    for (GObjectViewWindow *activeViewWindow : qAsConst(activeViewWindowList)) {
         if (activeViewWindow->getObjects().contains(obj)) {
             resultWindowList << activeViewWindow;
         }
@@ -516,9 +516,9 @@ QList<GObjectViewWindow *> GObjectViewUtils::findViewsWithObject(GObject *obj) {
 
 QList<GObjectViewWindow *> GObjectViewUtils::findViewsWithAnyOfObjects(const QList<GObject *> &objs) {
     QList<GObjectViewWindow *> resultViewWindowList;
-    for (GObject *object : objs) {
+    for (GObject *object : qAsConst(objs)) {
         QList<GObjectViewWindow *> viewWindowWithObjectList = findViewsWithObject(object);
-        for (GObjectViewWindow *viewWindow : viewWindowWithObjectList) {
+        for (GObjectViewWindow *viewWindow : qAsConst(viewWindowWithObjectList)) {
             if (!resultViewWindowList.contains(viewWindow)) {
                 resultViewWindowList += viewWindowWithObjectList;
             }
@@ -543,7 +543,8 @@ void GObjectViewWindowContext::init() {
     MWMDIManager *mdiManager = AppContext::getMainWindow()->getMDIManager();
     connect(mdiManager, SIGNAL(si_windowAdded(MWMDIWindow *)), SLOT(sl_windowAdded(MWMDIWindow *)));
     connect(mdiManager, SIGNAL(si_windowClosing(MWMDIWindow *)), SLOT(sl_windowClosing(MWMDIWindow *)));
-    for (MWMDIWindow *mdiWindow : mdiManager->getWindows()) {
+    const QList<MWMDIWindow *> windowList = mdiManager->getWindows();
+    for (MWMDIWindow *mdiWindow : qAsConst(windowList)) {
         sl_windowAdded(mdiWindow);
     }
 }
@@ -553,7 +554,8 @@ GObjectViewWindowContext::~GObjectViewWindowContext() {
     if (mdiManager == nullptr) {    //TODO: disconnect context on view removal and assert (mdi!=NULL) here.
         return;
     }
-    for (MWMDIWindow *window : mdiManager->getWindows()) {
+    const QList<MWMDIWindow *> windowList = mdiManager->getWindows();
+    for (MWMDIWindow *window : qAsConst(windowList)) {
         GObjectViewWindow *objectViewWindow = qobject_cast<GObjectViewWindow *>(window);
         if (objectViewWindow == nullptr || (!id.isEmpty() && objectViewWindow->getViewFactoryId() != id)) {
             continue;
@@ -602,7 +604,7 @@ void GObjectViewWindowContext::buildMenu(GObjectView *, QMenu *) {
 
 void GObjectViewWindowContext::disconnectView(GObjectView *v) {
     QList<QObject *> resourceObjectList = viewResources[v];
-    for (QObject *resourceObject : resourceObjectList) {
+    for (QObject *resourceObject : qAsConst(resourceObjectList)) {
         resourceObject->deleteLater();    // deliver close signals, save view states first
     }
     viewResources.remove(v);
@@ -623,7 +625,8 @@ void GObjectViewWindowContext::addViewAction(GObjectViewAction *a) {
 }
 
 GObjectViewAction *GObjectViewWindowContext::findViewAction(GObjectView *v, const QString &actionName) const {
-    for (GObjectViewAction *viewAction : getViewActions(v)) {
+    const QList<GObjectViewAction *> viewActionList = getViewActions(v);
+    for (GObjectViewAction *viewAction : qAsConst(viewActionList)) {
         if (viewAction->objectName() == actionName) {
             return viewAction;
         }
@@ -634,7 +637,7 @@ GObjectViewAction *GObjectViewWindowContext::findViewAction(GObjectView *v, cons
 QList<GObjectViewAction *> GObjectViewWindowContext::getViewActions(GObjectView *v) const {
     QList<GObjectViewAction *> actions;
     QList<QObject *> resourceObjectList = viewResources[v];
-    for (QObject *resourceObject : resourceObjectList) {
+    for (QObject *resourceObject : qAsConst(resourceObjectList)) {
         GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(resourceObject);
         if (viewAction != nullptr) {
             actions << viewAction;
@@ -645,7 +648,8 @@ QList<GObjectViewAction *> GObjectViewWindowContext::getViewActions(GObjectView 
 
 void GObjectViewWindowContext::onObjectRemoved(GObjectView *v, GObject *obj) {
     GObjectViewObjectHandler::onObjectRemoved(v, obj);
-    for (GObjectViewAction *action : getViewActions(v)) {
+    const QList<GObjectViewAction *> viewActionList = getViewActions(v);
+    for (GObjectViewAction *action : qAsConst(viewActionList)) {
         obj->disconnect(action);
     }
 }
@@ -666,7 +670,8 @@ int GObjectViewAction::getActionOrder() const {
 }
 
 void GObjectViewAction::addToMenuWithOrder(QMenu *menu) {
-    for (QAction *action : menu->actions()) {
+    const QList<QAction *> actionList = menu->actions();
+    for (QAction *action : qAsConst(actionList)) {
         GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(action);
         if (viewAction != nullptr && viewAction->getActionOrder() > actionOrder) {
             menu->insertAction(action, this);

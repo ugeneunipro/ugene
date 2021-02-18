@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,15 +28,12 @@
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/PhyTreeObject.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "../MSAEditor.h"
-#include "MSAEditorTreeManager.h"
-
 namespace U2 {
-MsaEditorTreeTab::MsaEditorTreeTab(MSAEditor *msa, QWidget *parent)
-    : QTabWidget(parent), msa(msa), addTabButton(NULL) {
+
+MsaEditorTreeTab::MsaEditorTreeTab(MSAEditor *msaEditor, QWidget *parent)
+    : QTabWidget(parent), editor(msaEditor), addTabButton(nullptr) {
     setObjectName("MsaEditorTreeTab");
     addTabButton = new QPushButton(QIcon(":/core/images/add_tree.png"), "", this);
     addTabButton->setToolTip(tr("Add existing tree"));
@@ -62,6 +59,7 @@ MsaEditorTreeTab::MsaEditorTreeTab(MSAEditor *msa, QWidget *parent)
     closeTab->setObjectName("Close tab");
     connect(closeTab, SIGNAL(triggered()), SLOT(sl_onCloseTab()));
 }
+
 void MsaEditorTreeTab::sl_onTabCloseRequested(int index) {
     deleteTree(index);
 }
@@ -81,32 +79,33 @@ void MsaEditorTreeTab::sl_onCountChanged(int count) {
     }
 }
 
-void MsaEditorTreeTab::addTab(QWidget *page, const QString &label) {
-    QTabWidget::addTab(page, label);
+int MsaEditorTreeTab::addTab(QWidget *page, const QString &label) {
+    int tabIndex = QTabWidget::addTab(page, label);
     emit si_tabsCountChanged(count());
+    return tabIndex;
 }
 
 void MsaEditorTreeTab::deleteTree(int index) {
-    SAFE_POINT(-1 != index && index < count(), "Incorrect index is detected.", );
-    GObjectViewWindow *win = qobject_cast<GObjectViewWindow *>(widget(index));
-    const GObject *obj = win->getObjectView()->getObjects().at(0);
+    SAFE_POINT(index >= 0 && index < count(), "Incorrect index is detected.", );
+    auto objectViewWindow = qobject_cast<GObjectViewWindow *>(widget(index));
+    const GObject *obj = objectViewWindow->getObjectView()->getObjects().at(0);
     Document *doc = obj->getDocument();
     GObjectReference treeRef(doc->getURLString(), "", GObjectTypes::PHYLOGENETIC_TREE);
     treeRef.objName = obj->getGObjectName();
-    msa->getMaObject()->removeObjectRelation(GObjectRelation(treeRef, ObjectRole_PhylogeneticTree));
+    editor->getMaObject()->removeObjectRelation(GObjectRelation(treeRef, ObjectRole_PhylogeneticTree));
 
     removeTab(index);
-    delete win;
+    delete objectViewWindow;
     emit si_tabsCountChanged(count());
 }
 
 void MsaEditorTreeTab::sl_addTabTriggered() {
-    msa->getTreeManager()->openTreeFromFile();
+    editor->getTreeManager()->openTreeFromFile();
     emit si_tabsCountChanged(count());
 }
 
 void MsaEditorTreeTab::addExistingTree() {
-    msa->getTreeManager()->openTreeFromFile();
+    editor->getTreeManager()->openTreeFromFile();
     emit si_tabsCountChanged(count());
 }
 
@@ -130,10 +129,11 @@ void MsaEditorTreeTab::sl_onCloseTab() {
     deleteTree(index);
 }
 
-MsaEditorTreeTabArea::MsaEditorTreeTabArea(MSAEditor *msa, QWidget *parent)
-    : QWidget(parent), addTabButton(NULL), msa(msa), treeTabWidget(NULL), currentLayout(NULL) {
+MsaEditorTreeTabArea::MsaEditorTreeTabArea(MSAEditor *msaEditor, QWidget *parent)
+    : QWidget(parent), editor(msaEditor), treeTabWidget(nullptr), currentLayout(nullptr) {
     initialize();
 }
+
 void MsaEditorTreeTabArea::initialize() {
     treeTabWidget = createTabWidget();
     currentLayout = new QVBoxLayout();
@@ -142,15 +142,20 @@ void MsaEditorTreeTabArea::initialize() {
     currentLayout->addWidget(treeTabWidget);
     setLayout(currentLayout);
 }
+
 MsaEditorTreeTab *MsaEditorTreeTabArea::createTabWidget() {
-    MsaEditorTreeTab *widget = new MsaEditorTreeTab(msa, this);
-    connect(widget, SIGNAL(si_tabsCountChanged(int)), SIGNAL(si_tabsCountChanged(int)));
-    return widget;
+    auto tabWidget = new MsaEditorTreeTab(editor, this);
+    connect(tabWidget, SIGNAL(si_tabsCountChanged(int)), SIGNAL(si_tabsCountChanged(int)));
+    return tabWidget;
 }
 
-void MsaEditorTreeTabArea::addTab(QWidget *page, const QString &label) {
-    treeTabWidget->addTab(page, label);
+void MsaEditorTreeTabArea::addTab(QWidget *page, const QString &label, bool activate) {
+    int tabIndex = treeTabWidget->addTab(page, label);
+    if (activate) {
+        treeTabWidget->setCurrentIndex(tabIndex);
+    }
 }
+
 void MsaEditorTreeTabArea::paintEvent(QPaintEvent *) {
     QPainter p(this);
     p.fillRect(rect(), Qt::white);

@@ -55,11 +55,17 @@ public:
     static bool hasPixelWithColor(GUITestOpStatus &os, QWidget *widget, const QColor &expectedColor);
     static bool hasPixelWithColor(GUITestOpStatus &os, const QImage &image, const QColor &expectedColor);
 
+    /** Returns true if the image has only the given color. */
+    static bool hasSingleFillColor(const QImage &image, const QColor &color);
+
     /**
      * Returns image of the widget using widget->grab() method.
      * If useGrabWindow is true calls QPixmap::grabWindow method: it allows to capture non-QT (like OpenGL) images.
      */
     static QImage getImage(GUITestOpStatus &os, QWidget *widget, bool useGrabWindow = false);
+
+    /** Creates sub-image from the given image. Fails if 'rect' is not within the image. */
+    static QImage createSubImage(GUITestOpStatus &os, const QImage &image, const QRect &rect);
 
     static void close(GUITestOpStatus &os, QWidget *widget);
     static void showMaximized(GUITestOpStatus &os, QWidget *widget);

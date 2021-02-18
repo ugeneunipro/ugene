@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@ public:
     void storeSettings();
     void restoreDefault();
     int getRandomSeed();
-    bool checkSettings(QString &msg, const CreatePhyTreeSettings &settings);
+    bool checkSettings(QString &message, const CreatePhyTreeSettings &settings);
 
 private:
     void setComboText(QComboBox *combo, const QString &text);

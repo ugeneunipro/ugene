@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -119,7 +119,7 @@ void ExternalToolJustValidateTask::run() {
 
     CHECK(!hasError(), );
 
-    for (const ExternalToolValidation &validation : validations) {
+    for (const ExternalToolValidation &validation : qAsConst(validations)) {
         if (externalToolProcess != NULL) {
             delete externalToolProcess;
             externalToolProcess = NULL;
@@ -193,7 +193,7 @@ void ExternalToolJustValidateTask::cancelProcess() {
 
 void ExternalToolJustValidateTask::setEnvironment(ExternalTool *externalTool) {
     QStringList additionalPaths;
-    for (const QString &toolId : externalTool->getDependencies()) {
+    for (const QString &toolId : qAsConst(externalTool->getDependencies())) {
         ExternalTool *masterTool = AppContext::getExternalToolRegistry()->getById(toolId);
         if (NULL != masterTool) {
             additionalPaths << QFileInfo(masterTool->getPath()).dir().absolutePath();
@@ -440,7 +440,7 @@ QList<Task *> ExternalToolsValidationMasterTask::onSubTaskFinished(Task *subTask
 
 Task::ReportResult ExternalToolsValidationMasterTask::report() {
     if (listener != nullptr) {
-        for (const QPointer<Task> &subTask : getSubtasks()) {
+        for (const QPointer<Task> &subTask : qAsConst(getSubtasks())) {
             ExternalToolValidateTask *task = qobject_cast<ExternalToolValidateTask *>(subTask.data());
             SAFE_POINT(task, "Unexpected ExternalToolValidateTask subtask", ReportResult_Finished);
             listener->setToolState(task->getToolId(), task->isValidTool());

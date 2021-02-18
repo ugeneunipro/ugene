@@ -19,7 +19,7 @@ void ProxyStyle::polish(QWidget *widget) {
     auto *menu = qobject_cast<QMenu *>(widget);
     if (nullptr != menu) {
         const auto actions = menu->actions();
-        for (auto *action: actions) {
+        for (auto *action: qAsConst(actions)) {
             action->setShortcutVisibleInContextMenu(true);
         }
     }

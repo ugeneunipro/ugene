@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -269,12 +269,10 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent *e);
 
     virtual void setTreeLayout(TreeLayout newLayout);
-    GraphicsBranchItem *getRoot() {
-        return root;
-    }
-    GraphicsRectangularBranchItem *getRectRoot() {
-        return rectRoot;
-    }
+
+    /** Returns root item for the tree. */
+    GraphicsBranchItem *getRoot() const;
+
     void setZoom(qreal newzoom);
     void setZoom(qreal horizontalZoom, qreal verticalZoom);
     void defaultZoom();

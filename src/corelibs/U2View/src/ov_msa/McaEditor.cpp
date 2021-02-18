@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,7 +51,7 @@ namespace U2 {
 McaEditor::McaEditor(const QString &viewName,
                      MultipleChromatogramAlignmentObject *obj)
     : MaEditor(McaEditorFactory::ID, viewName, obj),
-      referenceCtx(NULL) {
+      showChromatogramsAction(nullptr), showGeneralTabAction(nullptr), showConsensusTabAction(nullptr), referenceCtx(nullptr) {
     initZoom();
     initFont();
 
@@ -100,22 +100,14 @@ void McaEditor::buildStaticMenu(QMenu *menu) {
 }
 
 int McaEditor::getRowContentIndent(int rowId) const {
-    if (isChromVisible(rowId)) {
+    if (isChromatogramRowExpanded(rowId)) {
         return SequenceWithChromatogramAreaRenderer::INDENT_BETWEEN_ROWS / 2;
     }
     return MaEditor::getRowContentIndent(rowId);
 }
 
-bool McaEditor::isChromVisible(qint64 rowId) const {
-    return isChromVisible(getMaObject()->getRowPosById(rowId));
-}
-
-bool McaEditor::isChromVisible(int rowIndex) const {
+bool McaEditor::isChromatogramRowExpanded(int rowIndex) const {
     return !ui->getCollapseModel()->isGroupWithMaRowIndexCollapsed(rowIndex);
-}
-
-bool McaEditor::isChromatogramButtonChecked() const {
-    return showChromatogramsAction->isChecked();
 }
 
 QString McaEditor::getReferenceRowName() const {
@@ -234,7 +226,19 @@ void McaEditor::initActions() {
     showOverviewAction->setChecked(overviewVisible);
     ui->getOverviewArea()->setVisible(overviewVisible);
     changeFontAction->setText(tr("Change characters font..."));
+
+    gotoSelectedReadAction = new QAction(tr("Go to selected read"), this);
+    gotoSelectedReadAction->setObjectName("centerReadStartAction");
+    gotoSelectedReadAction->setEnabled(false); // Action state is managed by updateActions().
+    connect(gotoSelectedReadAction, SIGNAL(triggered()), SLOT(sl_gotoSelectedRead()));
+
     GCounter::increment(QString("'Show overview' is %1 on MCA open").arg(overviewVisible ? "ON" : "OFF"));
+}
+
+void McaEditor::updateActions() {
+    MaEditor::updateActions();
+    MaEditorSelection selection = getSelection();
+    gotoSelectedReadAction->setEnabled(selection.height() > 0);
 }
 
 void McaEditor::sl_saveOverviewState() {
@@ -293,6 +297,8 @@ void McaEditor::addNavigationMenu(QMenu *menu) {
     navigationMenu->menuAction()->setObjectName(MCAE_MENU_NAVIGATION);
 
     auto ui = getUI();
+    navigationMenu->addAction(gotoSelectedReadAction);
+
     auto ambiguousCharactersController = ui->getSequenceArea()->getAmbiguousCharactersController();
     navigationMenu->addAction(ambiguousCharactersController->getPreviousAction());
     navigationMenu->addAction(ambiguousCharactersController->getNextAction());
@@ -331,6 +337,17 @@ void McaEditor::addEditMenu(QMenu *menu) {
 
     editMenu->addAction(ui->getUndoAction());
     editMenu->addAction(ui->getRedoAction());
+}
+
+void McaEditor::sl_gotoSelectedRead() {
+    GCOUNTER(cvar, "MCAEditor:gotoSelectedRead");
+    MaEditorSelection selection = getSelection();
+    int rowIndex = selection.y();
+    CHECK(selection.height() > 0 && rowIndex >= 0 && rowIndex < maObject->getNumRows(), );
+
+    MultipleChromatogramAlignmentRow mcaRow = getMaObject()->getMcaRow(rowIndex);
+    int rowStartPos = mcaRow->isComplemented() ? mcaRow->getCoreEnd() : mcaRow->getCoreStart();
+    ui->getSequenceArea()->centerPos(rowStartPos);
 }
 
 }    // namespace U2

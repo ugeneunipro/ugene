@@ -86,12 +86,12 @@
 <context>
     <name>U2::GTestSuite</name>
     <message>
-        <location filename="../src/GTest.cpp" line="327"/>
+        <location filename="../src/GTest.cpp" line="328"/>
         <source>Can&apos;t load suite list %1</source>
         <translation>Can&apos;t load suite list %1</translation>
     </message>
     <message>
-        <location filename="../src/GTest.cpp" line="328"/>
+        <location filename="../src/GTest.cpp" line="329"/>
         <source>Can&apos;t open suite list %1</source>
         <translation>Can&apos;t open suite list %1</translation>
     </message>
@@ -99,7 +99,7 @@
 <context>
     <name>U2::GUITestLauncher</name>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="172"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="81"/>
         <source>No tests to run</source>
         <translation>No tests to run</translation>
     </message>
@@ -120,12 +120,12 @@
         <translation type="vanished">Test fails because of timeout.</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="448"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="454"/>
         <source>Test name</source>
         <translation>Test name</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="448"/>
+        <location filename="../src/gui_tests/GUITestLauncher.cpp" line="454"/>
         <source>Status</source>
         <translation>Status</translation>
     </message>
@@ -143,9 +143,8 @@
         <translation>Service to support UGENE GUI testing</translation>
     </message>
     <message>
-        <location filename="../src/gui_tests/GUITestService.cpp" line="252"/>
         <source>Can&apos;t connect external tool manager signal</source>
-        <translation>Can&apos;t connect external tool manager signal</translation>
+        <translation type="vanished">Can&apos;t connect external tool manager signal</translation>
     </message>
 </context>
 <context>

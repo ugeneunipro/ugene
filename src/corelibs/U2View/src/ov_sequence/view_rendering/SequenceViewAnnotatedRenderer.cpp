@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,11 +28,11 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GenbankFeatures.h>
+#include <U2Core/Timer.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
-#include <U2View/SequenceObjectContext.h>
 
 namespace U2 {
 
@@ -84,31 +84,52 @@ SequenceViewAnnotatedRenderer::SequenceViewAnnotatedRenderer(SequenceObjectConte
     : SequenceViewRenderer(ctx) {
 }
 
+// Maximum reasonable distance of cut-site from the annotation to draw it in UGENE (det-view)
+// in the meaningful (related to the annotation) way.
+
+#define MAX_CUTSITE_DISTANCE 100
+
 void SequenceViewAnnotatedRenderer::drawAnnotations(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, const AnnotationDisplaySettings &displaySettings) {
-    foreach (const AnnotationTableObject *ao, ctx->getAnnotationObjects(true)) {
-        QList<Annotation *> annotations = ao->getAnnotationsByRegion(visibleRange);
-        QList<Annotation *> restrictionSites = ao->getAnnotationsByType(U2FeatureTypes::RestrictionSite);
-        foreach (Annotation *a, restrictionSites) {
-            CHECK_CONTINUE(!annotations.contains(a));
-            annotations.append(a);
+    GTIMER(c1, t1, "SequenceViewAnnotatedRenderer::drawAnnotations");
+    U2Region annotationsRange = visibleRange;
+    QList<U2Region> extraAnnotationRegions;
+    qint64 sequenceLength = ctx->getSequenceLength();
+    if (displaySettings.displayCutSites) {
+        annotationsRange = U2Region(annotationsRange.startPos - MAX_CUTSITE_DISTANCE, annotationsRange.length + 2 * MAX_CUTSITE_DISTANCE);
+        if (annotationsRange.startPos < 0) {
+            qint64 tailLength = -annotationsRange.startPos;
+            extraAnnotationRegions << U2Region(sequenceLength - tailLength, tailLength);
         }
-        foreach (Annotation *a, annotations) {
-            drawAnnotation(p, canvasSize, visibleRange, a, displaySettings);
+        if (annotationsRange.endPos() > sequenceLength) {
+            qint64 headLength = annotationsRange.endPos() - sequenceLength;
+            extraAnnotationRegions << U2Region(0, headLength);
+        }
+    }
+    const QSet<AnnotationTableObject *> annotationObjectSet = ctx->getAnnotationObjects(true);
+    for (const AnnotationTableObject *annotationObject : qAsConst(annotationObjectSet)) {
+        for (Annotation *annotation : annotationObject->getAnnotations()) {
+            bool isVisible = annotationsRange.intersects(annotation->getRegions());
+            for (int i = 0; i < extraAnnotationRegions.size() && !isVisible; i++) {
+                isVisible = extraAnnotationRegions[i].intersects(annotation->getRegions());
+            }
+            if (isVisible) {
+                drawAnnotation(p, canvasSize, visibleRange, annotation, displaySettings);
+            }
         }
     }
 }
 
 void SequenceViewAnnotatedRenderer::drawAnnotationSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, const AnnotationDisplaySettings &displaySettings) {
-    const AnnotationSelection *annSelection = ctx->getAnnotationsSelection();
-    foreach (Annotation *annotation, annSelection->getAnnotations()) {
+    const AnnotationSelection *selection = ctx->getAnnotationsSelection();
+    for (Annotation *annotation : qAsConst(selection->getAnnotations())) {
         AnnotationTableObject *o = annotation->getGObject();
         if (ctx->getAnnotationObjects(true).contains(o)) {
-            drawAnnotation(p, canvasSize, visibleRange, annotation, displaySettings, U2Region(), true);
+            drawAnnotation(p, canvasSize, visibleRange, annotation, displaySettings, true);
         }
     }
 }
 
-void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, Annotation *a, const AnnotationDisplaySettings &displaySettings, const U2Region &predefinedY, bool selected, const AnnotationSettings *as) {
+void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, Annotation *a, const AnnotationDisplaySettings &displaySettings, bool selected, const AnnotationSettings *as) {
     const SharedAnnotationData &aData = a->getData();
     if (as == NULL) {
         AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
@@ -122,11 +143,12 @@ void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter &p, const QSize &can
     const bool isRestrictionSite = a->getType() == U2FeatureTypes::RestrictionSite;
     QVector<U2Region> location = aData->getRegions();
     bool simple = location.size() == 1;
+    int availableHeight = canvasSize.height();
     for (int ri = 0, ln = location.size(); ri < ln; ri++) {
         const U2Region &r = location.at(ri);
         if (r.intersects(visibleRange)) {
             const U2Region visibleLocation = r.intersect(visibleRange);
-            const U2Region y = predefinedY.isEmpty() ? getAnnotationYRange(a, ri, as, canvasSize, visibleRange) : predefinedY;
+            const U2Region y = getAnnotationYRange(a, ri, as, availableHeight);
             if (y.startPos < 0) {
                 continue;
             }
@@ -228,6 +250,7 @@ void SequenceViewAnnotatedRenderer::drawAnnotationConnections(QPainter &p, Annot
             dx1 = FEATURE_ARROW_HLEN;
         }
     }
+    int availableHeight = canvasSize.height();
     QVector<U2Region> location = aData->getRegions();
     for (int ri = 0, ln = location.size(); ri < ln; ri++) {
         const U2Region &r = location.at(ri);
@@ -250,8 +273,8 @@ void SequenceViewAnnotatedRenderer::drawAnnotationConnections(QPainter &p, Annot
                     x1 = qBound(-MAX_VIRTUAL_RANGE, x1, MAX_VIRTUAL_RANGE);    //qt4.4 crashes in line clipping alg for extremely large X values
                     x2 = qBound(-MAX_VIRTUAL_RANGE, x2, MAX_VIRTUAL_RANGE);
                     const int midX = (x1 + x2) / 2;
-                    const U2Region pyr = getAnnotationYRange(a, ri - 1, as, canvasSize, visibleRange);
-                    const U2Region yr = getAnnotationYRange(a, ri, as, canvasSize, visibleRange);
+                    const U2Region pyr = getAnnotationYRange(a, ri - 1, as, availableHeight);
+                    const U2Region yr = getAnnotationYRange(a, ri, as, availableHeight);
                     const int y1 = pyr.startPos;
                     const int dy1 = pyr.length / 2;
                     const int y2 = yr.startPos;
@@ -285,7 +308,8 @@ void SequenceViewAnnotatedRenderer::drawCutSite(QPainter &p, const SharedAnnotat
     }
 
     bool isDirectStrand = aData->getStrand().isDirect();
-    U2Region cutSiteY = isDirectStrand ? getMirroredYRange(U2Strand(U2Strand::Complementary)) : getMirroredYRange(U2Strand(U2Strand::Direct));
+    int availableHeight = canvasSize.height();
+    U2Region cutSiteY = getCutSiteYRange(U2Strand(isDirectStrand ? U2Strand::Complementary : U2Strand::Direct), availableHeight);
     QRect mirroredAnnotationRect = annotationRect;
     mirroredAnnotationRect.setY(cutSiteY.startPos);
     mirroredAnnotationRect.setHeight(cutSiteY.length);

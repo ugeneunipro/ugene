@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,23 +44,27 @@ public:
     virtual ~PanViewRenderer() {
     }
 
-    qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const;
+    qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const override;
 
-    double getCurrentScale() const;
+    double getCurrentScale() const override;
 
-    U2Region getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const;
-    U2Region getMirroredYRange(const U2Strand &mStrand) const;
+    U2Region getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as, int availableHeight) const override;
 
-    qint64 getContentIndentY(const QSize &canvasSize, const U2Region &visibleRange) const;
-    qint64 getMinimumHeight() const;
+    U2Region getCutSiteYRange(const U2Strand &mStrand, int availableHeight) const override;
 
-    QSize getBaseCanvasSize(const U2Region &visibleRange) const;
+    int getContentIndentY(int canvasHeight) const;
+
+    int getMinimumHeight() const override;
+
+    QSize getBaseCanvasSize(const U2Region &visibleRange) const override;
+
     void drawAll(QPainter &p, const U2Region &visibleRange);
 
-    void drawAll(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange);
-    void drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange);
+    void drawAll(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) override;
 
-    void drawAnnotations(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, const AnnotationDisplaySettings &displaySettings);
+    void drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) override;
+
+    void drawAnnotations(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, const AnnotationDisplaySettings &displaySettings) override;
 
 protected:
     int getLineY(int line) const;

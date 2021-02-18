@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -32,8 +32,7 @@
 namespace U2 {
 
 TmpDirChecker::TmpDirChecker()
-    : Task("Checking access rights to the temporary folder", TaskFlag_None)    // TODO: make translation
-{
+    : Task(tr("Checking access rights to the temporary folder"), TaskFlag_SilentCancelOnShutdown) {
 }
 
 void TmpDirChecker::run() {

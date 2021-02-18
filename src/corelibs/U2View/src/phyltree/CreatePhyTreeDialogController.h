@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,12 +40,12 @@ class SaveDocumentController;
 class U2VIEW_EXPORT CreatePhyTreeDialogController : public QDialog {
     Q_OBJECT
 public:
-    CreatePhyTreeDialogController(QWidget *parent, const MultipleSequenceAlignmentObject *mobj, CreatePhyTreeSettings &settings);
+    CreatePhyTreeDialogController(QWidget *parent, const MultipleSequenceAlignmentObject *msaObject, CreatePhyTreeSettings &settings);
     ~CreatePhyTreeDialogController();
 
 private slots:
     void accept();
-    void sl_comboIndexChaged(int index);
+    void sl_comboIndexChanged(int index);
     void sl_onStoreSettings();
     void sl_onRestoreDefault();
 
@@ -53,11 +53,10 @@ private:
     bool checkFileName();
     bool checkSettings();
     bool checkMemory();
-    void initSaveController(const MultipleSequenceAlignmentObject *mobj);
+    void initSaveController(const MultipleSequenceAlignmentObject *msaObject);
 
     MultipleSequenceAlignment msa;
     CreatePhyTreeSettings &settings;
-    QList<CreatePhyTreeWidget *> childWidgets;
     CreatePhyTreeWidget *settingsWidget;
     Ui_CreatePhyTree *ui;
     SaveDocumentController *saveController;

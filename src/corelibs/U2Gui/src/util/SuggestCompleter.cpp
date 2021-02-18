@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -171,7 +171,7 @@ int BaseCompleter::getLastChosenItemIndex() const {
 QStringList MSACompletionFiller::getSuggestions(const QString &userText) {
     QStringList result;
     QString userTextLc = userText.toLower();    //TODO: does toLower work correctly for non-Latin1 characters range?
-    for (QString sequenceName : seqNameList) {
+    for (QString sequenceName : qAsConst(seqNameList)) {
         QString sequenceNameLc = sequenceName.toLower();
         if (sequenceNameLc.startsWith(userTextLc)) {
             result.append(sequenceName);

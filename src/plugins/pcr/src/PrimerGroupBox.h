@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,7 +49,9 @@ private slots:
     void sl_browse();
 
     void sl_findPrimerTaskStateChanged();
-    void sl_focusChanged();
+
+    /** Updates group box state to match the new active sequence. */
+    void sl_activeSequenceChanged();
 
 private:
     static QString getTmString(const QString &sequence);

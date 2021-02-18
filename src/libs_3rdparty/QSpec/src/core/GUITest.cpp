@@ -29,17 +29,4 @@ QString getScreenshotDir() {    //TODO:rewrite to use working directory /screens
 
 const QString GUITest::screenshotDir = getScreenshotDir();
 
-void GUITest::sl_fail() {
-#if (QT_VERSION < 0x050000)    // deprecated method
-    QPixmap originalPixmap = QPixmap::grabWindow(QApplication::desktop()->winId());
-#else
-    QPixmap originalPixmap = QGuiApplication::primaryScreen()->grabWindow(QApplication::desktop()->winId());
-#endif
-    originalPixmap.save(GUITest::screenshotDir + name + ".jpg");
-    qCritical("GUItest timed out");
-    qCritical("\nGT_DEBUG_MESSAGE !!!FIRST FAIL");
-    GUITestOpStatus os;    // = new GUITestOpStatus();
-    os.setError("time out");
-}
-
 }    // namespace HI

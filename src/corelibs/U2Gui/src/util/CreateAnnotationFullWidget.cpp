@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,9 +33,11 @@
 
 namespace U2 {
 
-CreateAnnotationFullWidget::CreateAnnotationFullWidget(QWidget *parent)
+CreateAnnotationFullWidget::CreateAnnotationFullWidget(const qint64 seqLen, QWidget *parent)
     : CreateAnnotationWidget(parent),
-      formatType(Simple) {
+      formatType(Simple),
+      seqLen(seqLen),
+      isValidLocation(false) {
     setupUi(this);
     initLayout();
     init();
@@ -153,19 +155,48 @@ void CreateAnnotationFullWidget::setAnnotationName(const QString &name) {
 }
 
 void CreateAnnotationFullWidget::setLocation(const U2Location &location) {
-    QString startString;
-    QString endString;
+    // Example: (200..len,1..100)=(200..100), lambda returns true
+    auto isSimpleSplitLocation = [&location](qint64 seqLen) {
+        if (location->regions.size() < 2) {
+            return false;
+        }
+        return location->regions[0].endPos() == seqLen && location->regions[1].startPos == 0;
+    };
+
+    const bool firstLocationSetting = leRegionStart->text().isEmpty() && leRegionEnd->text().isEmpty();
+
+    isValidLocation = false;
+
+    QString startPos;
+    QString endPos;
     if (!location->isEmpty()) {
-        startString = QString::number(location->regions.first().startPos + 1);
-        endString = QString::number(location->regions.first().endPos());
+        qint64 start;
+        qint64 end;
+        start = location->regions.first().startPos + 1;
+
+        if (location->isMultiRegion() && isSimpleSplitLocation(seqLen)) {
+            // (200..len,1..100,...) equals start=200, end=100
+            end = location->regions[1].endPos();
+        } else {
+            end = location->regions.first().endPos();
+        }
+
+        isValidLocation = (start >= 1 && start <= seqLen && end >= 1 && end <= seqLen);
+        if (isValidLocation) {
+            startPos = QString::number(start);
+            endPos = QString ::number(end);
+        }
     }
 
-    leRegionStart->setText(startString);
-    leRegionEnd->setText(endString);
+    leRegionStart->setText(startPos);
+    leRegionEnd->setText(endPos);
     chbComplement->setChecked(location->strand.isCompementary());
     leLocation->setText(getGenbankLocationString(location));
 
-    if (location->isMultiRegion()) {
+    // Examples: (200..len,1..100,5..10), (200..300,400..500) are not representable in simple format
+    const bool needToShowInGenbank = location->regions.size() > 2 ||
+                                     (location->regions.size() == 2 && !isSimpleSplitLocation(seqLen));
+    if (firstLocationSetting && needToShowInGenbank) {
         rbGenbankFormat->setChecked(true);
     }
 }
@@ -193,7 +224,14 @@ QString CreateAnnotationFullWidget::getDescription() const {
 }
 
 QString CreateAnnotationFullWidget::getLocationString() const {
-    return leLocation->text();
+    const QString location = leLocation->text();
+    if (isValidLocation) {
+        return location;
+    }
+    if (location.startsWith("complement(") && location.endsWith(")")) {
+        return "complement()";
+    }
+    return QString();
 }
 
 bool CreateAnnotationFullWidget::isUsePatternNamesChecked() const {
@@ -238,12 +276,20 @@ void CreateAnnotationFullWidget::showSelectGroupMenu(QMenu &menu) {
 
 void CreateAnnotationFullWidget::sl_regionChanged() {
     bool ok = false;
+    isValidLocation = false;
     qint64 startPos = leRegionStart->text().toLongLong(&ok);
     CHECK(ok, );
     qint64 endPos = leRegionEnd->text().toLongLong(&ok);
     CHECK(ok, );
+    isValidLocation = (startPos >= 1 && startPos <= seqLen && endPos >= 1 && endPos <= seqLen);
 
     U2Location location;
+    if (startPos > endPos) { // split (200..100) to (200..len,1..100)
+        if (startPos <= seqLen && endPos >= 1) {
+            location->regions << U2Region(startPos - 1, seqLen - startPos + 1);
+        }
+        startPos = 1;
+    }
     location->regions << U2Region(startPos - 1, endPos - startPos + 1);
     location->strand = U2Strand(U2Strand(chbComplement->isChecked() ? U2Strand::Complementary : U2Strand::Direct));
 

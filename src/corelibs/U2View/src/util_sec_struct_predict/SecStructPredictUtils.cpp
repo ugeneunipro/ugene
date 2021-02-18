@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -67,7 +67,7 @@ void SecStructPredictViewAction::sl_execute() {
         return;
     }
 
-    ADVSequenceObjectContext *seqCtx = av->getSequenceInFocus();
+    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
     SAFE_POINT(NULL != seqCtx, "NULL sequence context", );
     SAFE_POINT(NULL != seqCtx->getAlphabet(), "NULL alphabet", );
     SAFE_POINT(seqCtx->getAlphabet()->isAmino(), "Wrong alphabet", );

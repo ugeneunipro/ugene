@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -130,7 +130,7 @@ void CodonTableView::sl_setAminoTranslation() {
     }
 }
 
-void CodonTableView::sl_onSequenceFocusChanged(ADVSequenceWidget * /*from*/, ADVSequenceWidget *to) {
+void CodonTableView::sl_onActiveSequenceChanged(ADVSequenceWidget * /*from*/, ADVSequenceWidget *to) {
     CHECK(to != NULL, );
 
     const QList<ADVSequenceObjectContext *> ctx = to->getSequenceContexts();

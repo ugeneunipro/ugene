@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -76,7 +76,7 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     nameAreaLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
 
     // MCA editor has "always ON" collapsible mode.
-    collapsibleMode = true;
+    virtualOrderMode = true;
     enableCollapsingOfSingleRowGroups = true;
     collapseModel->reset(editor->getMaRowIds());
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -42,6 +42,8 @@
 #include <QDir>
 #include <QListWidget>
 #include <QTreeView>
+
+#include <U2Core/UserApplicationsSettings.h>
 
 #include "GTTestsCreateAnnotationWidget.h"
 #include "GTUtilsAnnotationsTreeView.h"
@@ -1638,13 +1640,13 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
 
     GTUtilsAnnotationsTreeView::deleteItem(os, "Misc. Feature  (0, 1)");
 
-    //    5. Call "Create new annotation" dialog.
+    //    6. Call "Create new annotation" dialog.
 
     class Scenario3 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            //    6. Set simple location style. Set region "200..100". Accept the dialog.
+            //    7. Set simple location style. Set region "200..100". Accept the dialog.
             setSimpleLocation(os, 200, 100, false, dialog);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -1655,20 +1657,20 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
     GTUtilsDialog::waitAllFinished(os);
 
-    //    Expected state: there is an annotation with region "join(1..100,200..199950)".
-    expectedLocation = "join(1..100,200..199950)";
+    //    Expected state: there is an annotation with region "join(200..199950,1..100)".
+    expectedLocation = "join(200..199950,1..100)";
     location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "Misc. Feature");
     CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expected '%1', got '%2").arg(expectedLocation).arg(location));
 
     GTUtilsAnnotationsTreeView::deleteItem(os, "Misc. Feature  (0, 1)");
 
-    //    7. Call "Create new annotation" dialog.
+    //    8. Call "Create new annotation" dialog.
 
     class Scenario4 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-            //    8. Set simple location style. Set region "200..100". Check the "Complement" checkbox. Accept the dialog.
+            //    9. Set simple location style. Set region "200..100". Check the "Complement" checkbox. Accept the dialog.
             setSimpleLocation(os, 200, 100, true, dialog);
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -1679,8 +1681,8 @@ GUI_TEST_CLASS_DEFINITION(test_0027) {
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
     GTUtilsDialog::waitAllFinished(os);
 
-    //    Expected state: there is an annotation with region "complement(100..200)".
-    expectedLocation = "complement(100..200)";
+    //    Expected state: there is an annotation with region "complement(join(200..199950,1..100))".
+    expectedLocation = "complement(join(200..199950,1..100))";
     location = GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "Misc. Feature");
     CHECK_SET_ERR(expectedLocation == location, QString("Unexpected location: expect '%1', got '%2").arg(expectedLocation).arg(location));
 }
@@ -2183,6 +2185,12 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
+            //    Expected state: "New document" field contais "~/Documents/UGENE_Data/MyDocument.gb"
+            const QString expectedPath = UserAppsSettings().getDefaultDataDirPath() + "/MyDocument.gb";
+            const QString actualPath = GTWidget::findExactWidget<QLineEdit *>(os, "leNewTablePath", dialog)->text();
+            CHECK_SET_ERR(QFileInfo(expectedPath).absoluteFilePath() == QFileInfo(actualPath).absoluteFilePath(),
+                          QString("New document path: expect \"%1\", got \"%2\"").arg(expectedPath, actualPath))
+
             //    3. Select "Create new table" option. Click "Browse new file" button. Select any file. Accept the dialog.
             QDir().mkpath(sandBoxDir + "test_0034");
             setNewTable(os, dialog);
@@ -2250,6 +2258,12 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
 
             setSmithWatermanPatternAndOpenLastTab(os, dialog);
 
+            //    Expected state: "New document" field contais "~/Documents/UGENE_Data/MyDocument.gb"
+            const QString expectedPath = UserAppsSettings().getDefaultDataDirPath() + "/MyDocument.gb";
+            const QString actualPath = GTWidget::findExactWidget<QLineEdit *>(os, "leNewTablePath", dialog)->text();
+            CHECK_SET_ERR(QFileInfo(expectedPath).absoluteFilePath() == QFileInfo(actualPath).absoluteFilePath(),
+                          QString("New document path: expect \"%1\", got \"%2\"").arg(expectedPath, actualPath))
+
             //    3. Select "Create new table" option. Click "Browse new file" button. Select any file. Accept the dialog.
             QDir().mkpath(sandBoxDir + "test_0035");
             setNewTable(os, dialog);
@@ -2310,6 +2324,12 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
     //    2. Open "Search in Sequence" options panel tab. Set any pattern. Open "Save annotation(s) to" group.
     openFileOpenSearchTabAndSetPattern(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsOptionPanelSequenceView::openSaveAnnotationToShowHideWidget(os);
+
+    //    Expected state: "New document" field contais "~/Documents/UGENE_Data/MyDocument.gb"
+    const QString expectedPath = UserAppsSettings().getDefaultDataDirPath() + "/MyDocument.gb";
+    const QString actualPath = GTWidget::findExactWidget<QLineEdit *>(os, "leNewTablePath")->text();
+    CHECK_SET_ERR(QFileInfo(expectedPath).absoluteFilePath() == QFileInfo(actualPath).absoluteFilePath(),
+                  QString("New document path: expect \"%1\", got \"%2\"").arg(expectedPath, actualPath))
 
     //    3. Select "Create new table" option. Click "Browse new file" button. Select any file. Accept the dialog.
     setNewTable(os);
@@ -2483,24 +2503,24 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             //    9. Enter region "(200..100)" to simple location widgets.
             setSimpleLocation(os, 200, 100, false, dialog);
 
-            //    Expected state: GenBank location string contains "join(1..100,200..199950)" region.
-            expectedGenbankLocation = "join(1..100,200..199950)";
+            //    Expected state: GenBank location string contains "join(200..199950,1..100)" region.
+            expectedGenbankLocation = "join(200..199950,1..100)";
             genbankLocation = leLocation->text();
             CHECK_SET_ERR(expectedGenbankLocation == genbankLocation, QString("19. Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(genbankLocation));
 
             //    10. Check "Complement" checkbox.
             GTCheckBox::setChecked(os, chbComplement);
 
-            //    Expected state: GenBank location string contains "complement(join(1..100,200..199950))" region.
-            expectedGenbankLocation = "complement(join(1..100,200..199950))";
+            //    Expected state: GenBank location string contains "complement(200..199950,1..100)" region.
+            expectedGenbankLocation = "complement(200..199950,1..100)";
             genbankLocation = leLocation->text();
             CHECK_SET_ERR(expectedGenbankLocation == genbankLocation, QString("20. Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(genbankLocation));
 
             //    11. Uncheck "Complement" checkbox.
             GTCheckBox::setChecked(os, chbComplement, false);
 
-            //    Expected state: GenBank location string contains "join(1..100,200..199950)" region.
-            expectedGenbankLocation = "join(1..100,200..199950)";
+            //    Expected state: GenBank location string contains "200..199950,1..100" region.
+            expectedGenbankLocation = "200..199950,1..100";
             genbankLocation = leLocation->text();
             CHECK_SET_ERR(expectedGenbankLocation == genbankLocation, QString("21. Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(genbankLocation));
 
@@ -2542,6 +2562,14 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             CHECK_SET_ERR(!leLocation->isEnabled(), "33. leLocation is unexpectedly enabled");
             CHECK_SET_ERR(!tbDoComplement->isEnabled(), "34. tbDoComplement is unexpectedly enabled");
 
+            //   30. Enter region "(1'000'000..50)" to simple location widgets.
+            setSimpleLocation(os, 1000000, 50, false, dialog);
+
+            //    Expected state: GenBank location string contains "1..50" region.
+            expectedGenbankLocation = "1..50";
+            genbankLocation = leLocation->text();
+            CHECK_SET_ERR(expectedGenbankLocation == genbankLocation, QString("77. Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(genbankLocation));
+
             //    14. Select "GenBank/EMBL format" location style. Set location "300..400".
             setGenbankLocation(os, "300..400", dialog);
             GTKeyboardDriver::keyClick(Qt::Key_Tab);
@@ -2569,35 +2597,84 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             CHECK_SET_ERR("100" == leRegionEnd->text(), QString("42. Unexpected simple location region end: expect %1, got %2").arg("100").arg(leRegionEnd->text()));
             CHECK_SET_ERR(!chbComplement->isChecked(), "43. Simple location complement checkbox is unexpectedly checked");
 
-            //    17. Set location "complement(200..300)".
-            setGenbankLocation(os, "complement(200..300)", dialog);
+            //    17. Set location "join(200..199950,1..100)".
+            setGenbankLocation(os, "join(200..199950,1..100)", dialog);
             GTKeyboardDriver::keyClick(Qt::Key_Tab);
 
-            //    Expected state: simple location widgets contains complemented region "(200..300)".
-            CHECK_SET_ERR(leRegionStart->text() == "200", QString("44. Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
-            CHECK_SET_ERR(leRegionEnd->text() == "300", QString("45. Unexpected simple location region end: expect %1, got %2").arg("300").arg(leRegionEnd->text()));
-            CHECK_SET_ERR(chbComplement->isChecked(), "46. Simple location complement checkbox is unexpectedly unchecked");
+            //    Expected state: simple location widgets contains non-complemented region "(200..100)".
+            CHECK_SET_ERR("200" == leRegionStart->text(), QString("44. Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
+            CHECK_SET_ERR("100" == leRegionEnd->text(), QString("45. Unexpected simple location region end: expect %1, got %2").arg("100").arg(leRegionEnd->text()));
+            CHECK_SET_ERR(!chbComplement->isChecked(), "46. Simple location complement checkbox is unexpectedly checked");
 
             //    18. Click "Do complement" button.
             GTWidget::click(os, tbDoComplement);
 
-            //    Expected state: simple location widgets contains non-complemented region "(200..300)", GenBank location string contains "200..300".
+            //    Expected state: simple location widgets contains complemented region "(200..100)", GenBank location string contains "complement(200..199950,1..100)".
+            expectedGenbankLocation = "complement(200..199950,1..100)";
+            genbankLocation = leLocation->text();
             CHECK_SET_ERR(leRegionStart->text() == "200", QString("47. Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
-            CHECK_SET_ERR(leRegionEnd->text() == "300", QString("48. Unexpected simple location region end: expect %1, got %2").arg("300").arg(leRegionEnd->text()));
-            CHECK_SET_ERR(!chbComplement->isChecked(), "49. Simple location complement checkbox is unexpectedly checked");
-            CHECK_SET_ERR(leLocation->text() == "200..300", QString("50. Unexpected GenBank location string: expect '%1', got '%2'").arg("200..300").arg(leLocation->text()));
+            CHECK_SET_ERR(leRegionEnd->text() == "100", QString("48. Unexpected simple location region end: expect %1, got %2").arg("100").arg(leRegionEnd->text()));
+            CHECK_SET_ERR(chbComplement->isChecked(), "49. Simple location complement checkbox is unexpectedly unchecked");
+            CHECK_SET_ERR(genbankLocation == expectedGenbankLocation, QString("50. Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(leLocation->text()));
 
-            //    19. Set location "400..500qwerty".
+            //    19. Set location "complement(200..300)".
+            setGenbankLocation(os, "complement(200..300)", dialog);
+            GTKeyboardDriver::keyClick(Qt::Key_Tab);
+
+            //    Expected state: simple location widgets contains complemented region "(200..300)".
+            CHECK_SET_ERR(leRegionStart->text() == "200", QString("51. Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
+            CHECK_SET_ERR(leRegionEnd->text() == "300", QString("52. Unexpected simple location region end: expect %1, got %2").arg("300").arg(leRegionEnd->text()));
+            CHECK_SET_ERR(chbComplement->isChecked(), "53. Simple location complement checkbox is unexpectedly unchecked");
+
+            //    20. Click "Do complement" button.
+            GTWidget::click(os, tbDoComplement);
+
+            //    Expected state: simple location widgets contains non-complemented region "(200..300)", GenBank location string contains "200..300".
+            CHECK_SET_ERR(leRegionStart->text() == "200", QString("54. Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
+            CHECK_SET_ERR(leRegionEnd->text() == "300", QString("55. Unexpected simple location region end: expect %1, got %2").arg("300").arg(leRegionEnd->text()));
+            CHECK_SET_ERR(!chbComplement->isChecked(), "56. Simple location complement checkbox is unexpectedly checked");
+            CHECK_SET_ERR(leLocation->text() == "200..300", QString("57. Unexpected GenBank location string: expect '%1', got '%2'").arg("200..300").arg(leLocation->text()));
+
+            //    21. Set location "complement(join(200..199950,1..100))".
+            setGenbankLocation(os, "complement(join(200..199950,1..100))", dialog);
+            GTKeyboardDriver::keyClick(Qt::Key_Tab);
+
+            //    Expected state: simple location widgets contains complemented region "(200..100)".
+            CHECK_SET_ERR("200" == leRegionStart->text(), QString("58. Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
+            CHECK_SET_ERR("100" == leRegionEnd->text(), QString("59. Unexpected simple location region end: expect %1, got %2").arg("100").arg(leRegionEnd->text()));
+            CHECK_SET_ERR(chbComplement->isChecked(), "60. Simple location complement checkbox is unexpectedly unchecked");
+
+            //    22. Click "Do complement" button.
+            GTWidget::click(os, tbDoComplement);
+
+            //    Expected state: simple location widgets contains non-complemented region "(200..100)", GenBank location string contains "200..199950,1..100".
+            expectedGenbankLocation = "200..199950,1..100";
+            genbankLocation = leLocation->text();
+            CHECK_SET_ERR(leRegionStart->text() == "200", QString("61. Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
+            CHECK_SET_ERR(leRegionEnd->text() == "100", QString("62. Unexpected simple location region end: expect %1, got %2").arg("100").arg(leRegionEnd->text()));
+            CHECK_SET_ERR(!chbComplement->isChecked(), "63. Simple location complement checkbox is unexpectedly checked");
+            CHECK_SET_ERR(genbankLocation == expectedGenbankLocation, QString("64. Unexpected GenBank location string: expect '%1', got '%2'").arg(expectedGenbankLocation).arg(leLocation->text()));
+
+            //    23. Set location "400..500qwerty".
             setGenbankLocation(os, "400..500qwerty", dialog);
             GTKeyboardDriver::keyClick(Qt::Key_Tab);
 
             //    Expected state: simple location widgets are empty, GenBank location string is empty.
-            CHECK_SET_ERR(leRegionStart->text().isEmpty(), QString("51. Unexpected simple location region start: expect an empty string, got %1").arg(leRegionStart->text()));
-            CHECK_SET_ERR(leRegionEnd->text().isEmpty(), QString("52. Unexpected simple location region end: expect an empty string, got %1").arg(leRegionEnd->text()));
-            CHECK_SET_ERR(!chbComplement->isChecked(), "53. Simple location complement checkbox is unexpectedly checked");
-            CHECK_SET_ERR(leLocation->text().isEmpty(), QString("54. Unexpected GenBank location string: expect an empty string, got, '%1'").arg(leLocation->text()));
+            CHECK_SET_ERR(leRegionStart->text().isEmpty(), QString("65. Unexpected simple location region start: expect an empty string, got %1").arg(leRegionStart->text()));
+            CHECK_SET_ERR(leRegionEnd->text().isEmpty(), QString("66. Unexpected simple location region end: expect an empty string, got %1").arg(leRegionEnd->text()));
+            CHECK_SET_ERR(!chbComplement->isChecked(), "67. Simple location complement checkbox is unexpectedly checked");
+            CHECK_SET_ERR(leLocation->text().isEmpty(), QString("68. Unexpected GenBank location string: expect an empty string, got, '%1'").arg(leLocation->text()));
 
-            //    20. Check if destination table widgets are enabled or disabled.
+            //    30. Set Location "1..2,3..4".
+            setGenbankLocation(os, "1..2,3..4", dialog);
+            //    31. Select "Simple format" location style. Check "Complement" checkbox.
+            GTRadioButton::click(os, rbSimpleFormat);
+            GTCheckBox::setChecked(os, chbComplement, true);
+            //    Expected state: Simple format checked, Genbank format unchecked.
+            CHECK_SET_ERR(rbSimpleFormat->isChecked() && !rbGenbankFormat->isChecked(), "76. Unexpected switch between formats");
+
+
+            //    24. Check if destination table widgets are enabled or disabled.
             //    Expected state:
             //        Existing table radio button - disabled
             //        Existing table combobox - disabled
@@ -2607,27 +2684,27 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             //        New table browse button - enabled
             //        Auto table radio button - not visible
             QRadioButton *rbExistingTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbExistingTable", dialog);
-            CHECK_SET_ERR(!rbExistingTable->isEnabled(), "55. rbExistingTable is unexpectedly enabled");
+            CHECK_SET_ERR(!rbExistingTable->isEnabled(), "69. rbExistingTable is unexpectedly enabled");
 
             QComboBox *cbExistingTable = GTWidget::findExactWidget<QComboBox *>(os, "cbExistingTable", dialog);
-            CHECK_SET_ERR(!cbExistingTable->isEnabled(), "56. cbExistingTable is unexpectedly enabled");
+            CHECK_SET_ERR(!cbExistingTable->isEnabled(), "70. cbExistingTable is unexpectedly enabled");
 
             QToolButton *tbBrowseExistingTable = GTWidget::findExactWidget<QToolButton *>(os, "tbBrowseExistingTable", dialog);
-            CHECK_SET_ERR(!tbBrowseExistingTable->isEnabled(), "57. tbBrowseExistingTable is unexpectedly enabled");
+            CHECK_SET_ERR(!tbBrowseExistingTable->isEnabled(), "71. tbBrowseExistingTable is unexpectedly enabled");
 
             QRadioButton *rbCreateNewTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbCreateNewTable", dialog);
-            CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "58. rbCreateNewTable is unexpectedly disabled");
+            CHECK_SET_ERR(rbCreateNewTable->isEnabled(), "72. rbCreateNewTable is unexpectedly disabled");
 
             QLineEdit *leNewTablePath = GTWidget::findExactWidget<QLineEdit *>(os, "leNewTablePath", dialog);
-            CHECK_SET_ERR(leNewTablePath->isEnabled(), "59. leNewTablePath is unexpectedly disabled");
+            CHECK_SET_ERR(leNewTablePath->isEnabled(), "73. leNewTablePath is unexpectedly disabled");
 
             QToolButton *tbBrowseNewTable = GTWidget::findExactWidget<QToolButton *>(os, "tbBrowseNewTable", dialog);
-            CHECK_SET_ERR(tbBrowseNewTable->isEnabled(), "60. tbBrowseNewTable is unexpectedly disabled");
+            CHECK_SET_ERR(tbBrowseNewTable->isEnabled(), "74. tbBrowseNewTable is unexpectedly disabled");
 
             QRadioButton *rbUseAutoTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbUseAutoTable", dialog);
-            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "61. rbUseAutoTable is unexpectedly visible");
+            CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "75. rbUseAutoTable is unexpectedly visible");
 
-            //    21. Cancel the dialog.
+            //    25. Cancel the dialog.
             // Dialog is applied to check boundaries.
             setSimpleLocation(os, 199950, 1, false, dialog);
             GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid location! Location must be in GenBank format."));
@@ -2638,14 +2715,14 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, new Scenario1));
     openFileAndCallCreateAnnotationDialog(os, dataDir + "samples/FASTA/human_T1.fa");
 
-    //    22. Open "data/damples/Genbank/murine.gb". Mark the sequence object as circular. Call "Create new annotation" dialog.
+    //    26. Open "data/damples/Genbank/murine.gb". Mark the sequence object as circular. Call "Create new annotation" dialog.
 
     class Scenario2 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
-            //    23. Check if destination table widgets are enabled or disabled.
+            //    27. Check if destination table widgets are enabled or disabled.
             //    Expected state:
             //        Existing table radio button - enabled
             //        Existing table combobox - enabled
@@ -2675,7 +2752,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             QRadioButton *rbUseAutoTable = GTWidget::findExactWidget<QRadioButton *>(os, "rbUseAutoTable", dialog);
             CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
-            //    24. Select "Create new table" option. Check if destination table widgets are enabled or disabled.
+            //    28. Select "Create new table" option. Check if destination table widgets are enabled or disabled.
             GTWidget::click(os, rbCreateNewTable);
 
             //    Expected state:
@@ -2694,7 +2771,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             CHECK_SET_ERR(tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly disabled");
             CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
-            //    25. Select "Existing table" option. Check if destination table widgets are enabled or disabled.
+            //    29. Select "Existing table" option. Check if destination table widgets are enabled or disabled.
             GTWidget::click(os, rbExistingTable);
 
             //    Expected state:
@@ -2713,34 +2790,6 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             CHECK_SET_ERR(!tbBrowseNewTable->isEnabled(), "tbBrowseNewTable is unexpectedly enabled");
             CHECK_SET_ERR(!rbUseAutoTable->isVisible(), "rbUseAutoTable is unexpectedly visible");
 
-            //    26. Select "GenBank/EMBL format" location style. Set location "join(1..100,200..199950)".
-            setGenbankLocation(os, "join(1..100,200..199950)", dialog);
-
-            QLineEdit *leRegionStart = GTWidget::findExactWidget<QLineEdit *>(os, "leRegionStart", dialog);
-            QLineEdit *leRegionEnd = GTWidget::findExactWidget<QLineEdit *>(os, "leRegionEnd", dialog);
-            QCheckBox *chbComplement = GTWidget::findExactWidget<QCheckBox *>(os, "chbComplement", dialog);
-
-            //    Expected state: simple location widgets contains non-complemented region "(200..100)".
-            CHECK_SET_ERR(leRegionStart->text() == "200", QString("Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
-            CHECK_SET_ERR(leRegionEnd->text() == "100", QString("Unexpected simple location region end: expect %1, got %2").arg("100").arg(leRegionEnd->text()));
-            CHECK_SET_ERR(!chbComplement->isChecked(), "Simple location complement checkbox is unexpectedly checked");
-
-            //    27. Set location "complement(join(1..100,200..199950))".
-            setGenbankLocation(os, "complement(join(1..100,200..199950))", dialog);
-
-            //    Expected state: simple location widgets contains complemented region "(200..100)".
-            CHECK_SET_ERR(leRegionStart->text() == "200", QString("Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
-            CHECK_SET_ERR(leRegionEnd->text() == "100", QString("Unexpected simple location region end: expect %1, got %2").arg("100").arg(leRegionEnd->text()));
-            CHECK_SET_ERR(chbComplement->isChecked(), "Simple location complement checkbox is unexpectedly unchecked");
-
-            //    28. Click "Do complement" button.
-            GTWidget::click(os, GTWidget::findExactWidget<QToolButton *>(os, "tbDoComplement", dialog));
-
-            //    Expected state: simple location widgets contains non-complemented region "(200..100)".
-            CHECK_SET_ERR(leRegionStart->text() == "200", QString("Unexpected simple location region start: expect %1, got %2").arg("200").arg(leRegionStart->text()));
-            CHECK_SET_ERR(leRegionEnd->text() == "100", QString("Unexpected simple location region end: expect %1, got %2").arg("100").arg(leRegionEnd->text()));
-            CHECK_SET_ERR(!chbComplement->isChecked(), "Simple location complement checkbox is unexpectedly checked");
-
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
@@ -2749,7 +2798,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsProjectTreeView::markSequenceAsCircular(os, "murine.gb");
+    GTUtilsProjectTreeView::markSequenceAsCircular(os, "NC_001363");
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "New annotation");
 }
 

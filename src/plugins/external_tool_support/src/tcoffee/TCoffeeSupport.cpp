@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -128,7 +128,7 @@ void TCoffeeSupportContext::buildMenu(GObjectView *view, QMenu *m) {
     QList<GObjectViewAction *> actions = getViewActions(view);
     QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
     SAFE_POINT(alignMenu != nullptr, "alignMenu", );
-    for (GObjectViewAction *a : actions) {
+    for (GObjectViewAction *a : qAsConst(actions)) {
         a->addToMenuWithOrder(alignMenu);
     }
 }

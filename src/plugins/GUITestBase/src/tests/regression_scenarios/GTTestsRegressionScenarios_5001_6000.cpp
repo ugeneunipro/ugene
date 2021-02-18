@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -323,7 +323,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_1) {
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
 
-            QSpinBox *memSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "memorySpinBox"));
+            QSpinBox *memSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "memBox"));
             CHECK_SET_ERR(memSpinBox != NULL, "No memorySpinBox");
             GTSpinBox::setValue(os, memSpinBox, memValue, GTGlobals::UseKeyBoard);
 
@@ -371,7 +371,7 @@ GUI_TEST_CLASS_DEFINITION(test_5027_2) {
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
 
-            QSpinBox *memSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "memorySpinBox"));
+            QSpinBox *memSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "memBox"));
             CHECK_SET_ERR(memSpinBox != NULL, "No memorySpinBox");
             GTSpinBox::setValue(os, memSpinBox, memValue, GTGlobals::UseKeyBoard);
 
@@ -1488,6 +1488,7 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
     // Open de novo assembly dialog
     // Fill it and run
     // Expected result: no errors
+    GTLogTracer l;
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     class Scenario : public CustomScenario {
@@ -1548,7 +1549,6 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
                                                 << "Reads de novo assembly (with SPAdes)...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTLogTracer l;
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
     //Expected: The dashboard appears
     GTUtilsDashboard::getDashboard(os);
@@ -1559,6 +1559,8 @@ GUI_TEST_CLASS_DEFINITION(test_5425_1) {
     // Open de novo assembly dialog
     // Fill it and run
     // Expected result: no errors
+
+    GTLogTracer l;
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
     class Scenario : public CustomScenario {
@@ -1619,7 +1621,6 @@ GUI_TEST_CLASS_DEFINITION(test_5425_1) {
                                                 << "Reads de novo assembly (with SPAdes)...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTLogTracer l;
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
     //Expected: The dashboard appears
     GTUtilsDashboard::getDashboard(os);
@@ -1631,6 +1632,8 @@ GUI_TEST_CLASS_DEFINITION(test_5425_2) {
     // Open de novo assembly dialog
     // Fill it and run
     // Expected result: no errors
+
+    GTLogTracer l;
 
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
@@ -1660,7 +1663,6 @@ GUI_TEST_CLASS_DEFINITION(test_5425_2) {
                                                 << "Reads de novo assembly (with SPAdes)...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTLogTracer l;
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
     //Expected: The dashboard appears
     GTUtilsDashboard::getDashboard(os);
@@ -3670,7 +3672,7 @@ GUI_TEST_CLASS_DEFINITION(test_5758) {
 
 GUI_TEST_CLASS_DEFINITION(test_5759) {
     // 1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3934,7 +3936,7 @@ GUI_TEST_CLASS_DEFINITION(test_5770) {
 
 GUI_TEST_CLASS_DEFINITION(test_5773) {
     //    1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4431,7 +4433,7 @@ GUI_TEST_CLASS_DEFINITION(test_5832) {
 
 GUI_TEST_CLASS_DEFINITION(test_5833) {
     //    1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);

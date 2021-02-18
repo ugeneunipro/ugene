@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -63,7 +63,7 @@ StatisticsDashboardWidget::StatisticsDashboardWidget(const QDomElement &dom, con
 
     addTableHeadersRow(tableGridLayout, QStringList() << tr("Element") << tr("Elapsed time") << tr("Output messages"));
     statisticsRows = dom2StatisticRows(dom);
-    for (auto row : statisticsRows) {
+    for (auto row : qAsConst(statisticsRows)) {
         addTableRow(tableGridLayout, row.id, QStringList() << row.name << row.time << row.count);
     }
 }
@@ -76,7 +76,7 @@ QString StatisticsDashboardWidget::toHtml() const {
     QString html = "<div id=\"statisticsWidget\">\n<table>\n";
     html += "<thead><tr><th>" + tr("Element") + "</th><th>" + tr("Elapsed time") + "</th><th>" + tr("Output messages") + "</th></tr></thead>\n";
     html += "<tbody id=\"" + STATISTICS_WIDGET_ID + "\">\n";
-    for (auto row : statisticsRows) {
+    for (auto row : qAsConst(statisticsRows)) {
         html += "<tr class=\"filled-row\" id=\"" + row.id.toHtmlEscaped() + "\">";
         html += "<td>" + row.name.toHtmlEscaped() + "</td>";
         html += "<td>" + row.time.toHtmlEscaped() + "</td>";
@@ -112,7 +112,8 @@ void StatisticsDashboardWidget::sl_workerInfoChanged(const QString &actorId, con
 
 void StatisticsDashboardWidget::sl_updateProducers() {
     const QMap<QString, Monitor::WorkerInfo> &workerInfoMap = monitor->getWorkersInfo();
-    for (const QString &actorId : workerInfoMap.keys()) {
+    const QList<QString> actorIdList = workerInfoMap.keys();
+    for (const QString &actorId : qAsConst(actorIdList)) {
         const Monitor::WorkerInfo &info = workerInfoMap[actorId];
         sl_workerInfoChanged(actorId, info);
     }

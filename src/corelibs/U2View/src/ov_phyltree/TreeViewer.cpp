@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -485,20 +485,20 @@ void TreeViewerUI::setOptionValue(TreeViewOption option, QVariant value) {
 
 void TreeViewerUI::setTreeLayout(TreeLayout newLayout) {
     switch (newLayout) {
-    case RECTANGULAR_LAYOUT:
-        curTreeViewer->getRectangularLayoutAction()->setChecked(true);
-        changeLayout(RECTANGULAR_LAYOUT);
-        break;
-    case CIRCULAR_LAYOUT:
-        curTreeViewer->getCircularLayoutAction()->setChecked(true);
-        changeLayout(CIRCULAR_LAYOUT);
-        break;
-    case UNROOTED_LAYOUT:
-        curTreeViewer->getUnrootedLayoutAction()->setChecked(true);
-        changeLayout(UNROOTED_LAYOUT);
-        break;
-    default:
-        FAIL("Unrecognized tree layout", );
+        case RECTANGULAR_LAYOUT:
+            curTreeViewer->getRectangularLayoutAction()->setChecked(true);
+            changeLayout(RECTANGULAR_LAYOUT);
+            break;
+        case CIRCULAR_LAYOUT:
+            curTreeViewer->getCircularLayoutAction()->setChecked(true);
+            changeLayout(CIRCULAR_LAYOUT);
+            break;
+        case UNROOTED_LAYOUT:
+            curTreeViewer->getUnrootedLayoutAction()->setChecked(true);
+            changeLayout(UNROOTED_LAYOUT);
+            break;
+        default:
+            FAIL("Unrecognized tree layout", );
     }
 }
 TreeLayout TreeViewerUI::getTreeLayout() const {
@@ -533,50 +533,50 @@ void TreeViewerUI::onSettingsChanged(TreeViewOption option, const QVariant &newV
     setOptionValue(option, newValue);
     QAction *action = nullptr;
     switch (option) {
-    case TREE_LAYOUT:
-        setTreeLayout(static_cast<TreeLayout>(newValue.toUInt()));
-        break;
-    case BRANCHES_TRANSFORMATION_TYPE:
-    case WIDTH_COEF:
-    case HEIGHT_COEF:
-        updateTreeSettings();
-        break;
-    case LABEL_COLOR:
-    case LABEL_FONT:
-        updateTextSettings();
-        break;
-    case BRANCH_COLOR:
-    case BRANCH_THICKNESS:
-    case NODE_COLOR:
-    case NODE_RADIUS:
-        updateSettings();
-        break;
-    case SHOW_LABELS:
-        action = curTreeViewer->getNameLabelsAction();
-        changeNamesDisplay();
-        action->setChecked(newValue.toBool());
-        break;
-    case SHOW_DISTANCES:
-        action = curTreeViewer->getDistanceLabelsAction();
-        showLabels(LabelType_Distance);
-        action->setChecked(newValue.toBool());
-        break;
-    case SHOW_NODE_LABELS:
-        changeNodeValuesDisplay();
-        break;
-    case ALIGN_LABELS:
-        action = curTreeViewer->getContAction();
-        changeLabelsAlignment();
-        action->setChecked(newValue.toBool());
-        break;
-    case SCALEBAR_RANGE:
-    case SCALEBAR_FONT_SIZE:
-    case SCALEBAR_LINE_WIDTH:
-        updateLegend();
-        break;
-    default:
-        FAIL("Unrecognized option in TreeViewerUI::onSettingsChanged", );
-        break;
+        case TREE_LAYOUT:
+            setTreeLayout(static_cast<TreeLayout>(newValue.toUInt()));
+            break;
+        case BRANCHES_TRANSFORMATION_TYPE:
+        case WIDTH_COEF:
+        case HEIGHT_COEF:
+            updateTreeSettings();
+            break;
+        case LABEL_COLOR:
+        case LABEL_FONT:
+            updateTextSettings();
+            break;
+        case BRANCH_COLOR:
+        case BRANCH_THICKNESS:
+        case NODE_COLOR:
+        case NODE_RADIUS:
+            updateSettings();
+            break;
+        case SHOW_LABELS:
+            action = curTreeViewer->getNameLabelsAction();
+            changeNamesDisplay();
+            action->setChecked(newValue.toBool());
+            break;
+        case SHOW_DISTANCES:
+            action = curTreeViewer->getDistanceLabelsAction();
+            showLabels(LabelType_Distance);
+            action->setChecked(newValue.toBool());
+            break;
+        case SHOW_NODE_LABELS:
+            changeNodeValuesDisplay();
+            break;
+        case ALIGN_LABELS:
+            action = curTreeViewer->getContAction();
+            changeLabelsAlignment();
+            action->setChecked(newValue.toBool());
+            break;
+        case SCALEBAR_RANGE:
+        case SCALEBAR_FONT_SIZE:
+        case SCALEBAR_LINE_WIDTH:
+            updateLegend();
+            break;
+        default:
+            FAIL("Unrecognized option in TreeViewerUI::onSettingsChanged", );
+            break;
     }
 }
 
@@ -638,7 +638,7 @@ void TreeViewerUI::updateSettings() {
         }
     }
 
-    for (QGraphicsItem *graphItem : updatingItems) {
+    for (QGraphicsItem *graphItem : qAsConst(updatingItems)) {
         GraphicsBranchItem *branchItem = dynamic_cast<GraphicsBranchItem *>(graphItem);
         if (branchItem) {
             branchItem->updateSettings(settings);
@@ -666,7 +666,7 @@ void TreeViewerUI::updateTextSettings() {
     }
 
     QFont curFont = qvariant_cast<QFont>(getOptionValue(LABEL_FONT));
-    for (QGraphicsItem *graphItem : updatingItems) {
+    for (QGraphicsItem *graphItem : qAsConst(updatingItems)) {
         GraphicsBranchItem *branchItem = dynamic_cast<GraphicsBranchItem *>(graphItem);
         if (branchItem != NULL) {
             branchItem->updateTextSettings(qvariant_cast<QFont>(getOptionValue(LABEL_FONT)), curColor);
@@ -721,41 +721,41 @@ void TreeViewerUI::updateTreeSettings(bool setDefautZoom) {
             qreal coef = qMax(static_cast<qreal>(1.0), TreeViewerUI::SIZE_COEF * getOptionValue(WIDTH_COEF).toUInt());
 
             switch (type) {
-            case DEFAULT:
-                if (item->getDistanceText() != NULL) {
-                    if (item->getDistanceText()->text() == "") {
-                        item->setDistanceText("0");
+                case DEFAULT:
+                    if (item->getDistanceText() != NULL) {
+                        if (item->getDistanceText()->text() == "") {
+                            item->setDistanceText("0");
+                        }
                     }
-                }
-                if (item->getNameText() == NULL) {
-                    item->setWidth(avgW * getScale() * coef * item->getLengthCoef());
-                } else {
-                    item->setWidth(0);
-                }
-                break;
-            case PHYLOGRAM:
-                if (item->getDistanceText() != NULL) {
-                    if (item->getDistanceText()->text() == "0") {
-                        item->setDistanceText("");
+                    if (item->getNameText() == NULL) {
+                        item->setWidth(avgW * getScale() * coef * item->getLengthCoef());
+                    } else {
+                        item->setWidth(0);
                     }
-                }
-                item->setWidth(qAbs(item->getDist()) * getScale() * coef);
-                break;
-            case CLADOGRAM:
-                if (item->getDistanceText() != NULL) {
-                    if (item->getDistanceText()->text() == "") {
-                        item->setDistanceText("0");
+                    break;
+                case PHYLOGRAM:
+                    if (item->getDistanceText() != NULL) {
+                        if (item->getDistanceText()->text() == "0") {
+                            item->setDistanceText("");
+                        }
                     }
-                }
-                if (item->getNameText() == NULL) {
-                    item->setWidth(avgW * getScale() * coef);
-                } else {
-                    item->setWidth(0);
-                }
-                break;
-            default:
-                FAIL("Unexpected tree type value", );
-                break;
+                    item->setWidth(qAbs(item->getDist()) * getScale() * coef);
+                    break;
+                case CLADOGRAM:
+                    if (item->getDistanceText() != NULL) {
+                        if (item->getDistanceText()->text() == "") {
+                            item->setDistanceText("0");
+                        }
+                    }
+                    if (item->getNameText() == NULL) {
+                        item->setWidth(avgW * getScale() * coef);
+                    } else {
+                        item->setWidth(0);
+                    }
+                    break;
+                default:
+                    FAIL("Unexpected tree type value", );
+                    break;
             }
         }
     }
@@ -934,7 +934,8 @@ void TreeViewerUI::setZoom(qreal horizontalZoom, qreal verticalZoom) {
     horizontalScale = horizontalZoom;
 
     qreal nodeScale = horizontalScale * (isRectangularLayoutMode() ? 1.2 : 0.4);
-    for (QGraphicsItem *item : scene()->items()) {
+    const QList<QGraphicsItem *> itemList = scene()->items();
+    for (QGraphicsItem *item : qAsConst(itemList)) {
         GraphicsButtonItem *nodeItem = dynamic_cast<GraphicsButtonItem *>(item);
         if (nodeItem != nullptr) {
             nodeItem->setScale(1 / nodeScale);
@@ -1153,19 +1154,19 @@ void TreeViewerUI::changeLabelsAlignment() {
 
     TreeLayout curLayout = getTreeLayout();
     switch (curLayout) {
-    case CIRCULAR_LAYOUT:
-        changeLayout(CIRCULAR_LAYOUT);
-        fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
-        break;
+        case CIRCULAR_LAYOUT:
+            changeLayout(CIRCULAR_LAYOUT);
+            fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
+            break;
 
-    case UNROOTED_LAYOUT:
-        changeLayout(UNROOTED_LAYOUT);
-        fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
-        break;
-    case RECTANGULAR_LAYOUT:
-        //Do nothing
-        show();
-        break;
+        case UNROOTED_LAYOUT:
+            changeLayout(UNROOTED_LAYOUT);
+            fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
+            break;
+        case RECTANGULAR_LAYOUT:
+            //Do nothing
+            show();
+            break;
     }
 }
 
@@ -1186,26 +1187,26 @@ void TreeViewerUI::changeLayout(TreeLayout newLayout) {
     setOptionValue(TREE_LAYOUT, newLayout);
 
     switch (newLayout) {
-    case RECTANGULAR_LAYOUT:
-        scene()->removeItem(root);
-        if (!rectRoot) {
-            redrawRectangularLayout();
-        }
-        root = rectRoot;
-        scene()->addItem(root);
-        defaultZoom();
-        updateRect();
-        updateTreeSettings();
-        onLayoutChanged(newLayout);
-        break;
-    case CIRCULAR_LAYOUT:
-        layoutTask = new CreateCircularBranchesTask(rectRoot, getScale() <= GraphicsRectangularBranchItem::DEFAULT_WIDTH);
-        connect(layoutTask, SIGNAL(si_stateChanged()), SLOT(sl_layoutRecomputed()));
-        break;
-    case UNROOTED_LAYOUT:
-        layoutTask = new CreateUnrootedBranchesTask(rectRoot);
-        connect(layoutTask, SIGNAL(si_stateChanged()), SLOT(sl_layoutRecomputed()));
-        break;
+        case RECTANGULAR_LAYOUT:
+            scene()->removeItem(root);
+            if (!rectRoot) {
+                redrawRectangularLayout();
+            }
+            root = rectRoot;
+            scene()->addItem(root);
+            defaultZoom();
+            updateRect();
+            updateTreeSettings();
+            onLayoutChanged(newLayout);
+            break;
+        case CIRCULAR_LAYOUT:
+            layoutTask = new CreateCircularBranchesTask(rectRoot, getScale() <= GraphicsRectangularBranchItem::DEFAULT_WIDTH);
+            connect(layoutTask, SIGNAL(si_stateChanged()), SLOT(sl_layoutRecomputed()));
+            break;
+        case UNROOTED_LAYOUT:
+            layoutTask = new CreateUnrootedBranchesTask(rectRoot);
+            connect(layoutTask, SIGNAL(si_stateChanged()), SLOT(sl_layoutRecomputed()));
+            break;
     }
     if (newLayout != RECTANGULAR_LAYOUT) {
         AppContext::getTaskScheduler()->registerTopLevelTask(layoutTask);
@@ -1223,25 +1224,25 @@ void TreeViewerUI::sl_rectLayoutRecomputed() {
     connect(rectRoot, SIGNAL(si_branchCollapsed(GraphicsRectangularBranchItem *)), SLOT(sl_onBranchCollapsed(GraphicsRectangularBranchItem *)));
 
     switch (getTreeLayout()) {
-    case CIRCULAR_LAYOUT:
-        setOptionValue(TREE_LAYOUT, RECTANGULAR_LAYOUT);
-        changeLayout(CIRCULAR_LAYOUT);
-        fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
-        break;
+        case CIRCULAR_LAYOUT:
+            setOptionValue(TREE_LAYOUT, RECTANGULAR_LAYOUT);
+            changeLayout(CIRCULAR_LAYOUT);
+            fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
+            break;
 
-    case UNROOTED_LAYOUT:
-        setOptionValue(TREE_LAYOUT, RECTANGULAR_LAYOUT);
-        changeLayout(UNROOTED_LAYOUT);
-        fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
-        break;
-    case RECTANGULAR_LAYOUT:
-        scene()->removeItem(root);
-        root = rootNode;
-        scene()->addItem(root);
-        defaultZoom();
-        updateRect();
+        case UNROOTED_LAYOUT:
+            setOptionValue(TREE_LAYOUT, RECTANGULAR_LAYOUT);
+            changeLayout(UNROOTED_LAYOUT);
+            fitInView(scene()->sceneRect(), Qt::KeepAspectRatio);
+            break;
+        case RECTANGULAR_LAYOUT:
+            scene()->removeItem(root);
+            root = rootNode;
+            scene()->addItem(root);
+            defaultZoom();
+            updateRect();
 
-        break;
+            break;
     }
     updateTreeSettings();
     updateSettings();
@@ -1341,7 +1342,8 @@ void TreeViewerUI::changeNamesDisplay() {
 }
 
 void TreeViewerUI::changeNodeValuesDisplay() {
-    for (QGraphicsItem *curItem : scene()->items()) {
+    const QList<QGraphicsItem *> itemList = scene()->items();
+    for (QGraphicsItem *curItem : qAsConst(itemList)) {
         GraphicsButtonItem *buttonItem = dynamic_cast<GraphicsButtonItem *>(curItem);
         if (buttonItem != nullptr) {
             buttonItem->updateSettings(getSettings());
@@ -1517,15 +1519,15 @@ void TreeViewerUI::updateLayout() {
     TreeLayout tmpL = getTreeLayout();
     setOptionValue(TREE_LAYOUT, RECTANGULAR_LAYOUT);
     switch (tmpL) {
-    case CIRCULAR_LAYOUT:
-        changeLayout(CIRCULAR_LAYOUT);
-        break;
-    case UNROOTED_LAYOUT:
-        changeLayout(UNROOTED_LAYOUT);
-        break;
-    case RECTANGULAR_LAYOUT:
-        //here to please compiler
-        break;
+        case CIRCULAR_LAYOUT:
+            changeLayout(CIRCULAR_LAYOUT);
+            break;
+        case UNROOTED_LAYOUT:
+            changeLayout(UNROOTED_LAYOUT);
+            break;
+        case RECTANGULAR_LAYOUT:
+            //here to please compiler
+            break;
     }
 }
 
@@ -1588,6 +1590,10 @@ bool TreeViewerUI::isOnlyLeafSelected() const {
         }
     }
     return selectedItems == 2;
+}
+
+GraphicsBranchItem *TreeViewerUI::getRoot() const{
+    return root;
 }
 
 }    // namespace U2

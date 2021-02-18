@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -135,11 +135,12 @@ class ExportMaConsensusTask : public DocumentProviderTask {
 public:
     ExportMaConsensusTask(const ExportMaConsensusTaskSettings &s);
 
-    void prepare();
+    void prepare() override;
+
     const QString &getConsensusUrl() const;
 
 protected:
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
 
 private:
     Document *createDocument();

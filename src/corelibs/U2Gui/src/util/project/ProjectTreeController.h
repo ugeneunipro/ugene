@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -181,7 +181,7 @@ private:
     DocumentSelection documentSelection;
     FolderSelection folderSelection;
     GObjectSelection objectSelection;
-    GObjectView *markActiveView;
+    QPointer<GObjectView> markActiveView;
     GObject *objectIsBeingRecycled;
 
     QHash<Task *, QHash<Document *, QSet<U2DataId>>> task2ObjectsBeingDeleted;

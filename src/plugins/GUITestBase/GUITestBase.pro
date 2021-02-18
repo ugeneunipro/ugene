@@ -195,12 +195,14 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_4001_5000.h \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_5001_6000.h \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_6001_7000.h \
+            src/tests/regression_scenarios/GTTestsRegressionScenarios_7001_8000.h \
 #   Tests/Common Scenarios
             src/tests/common_scenarios/Assembling/Assembly_browser/GTTestsAssemblyBrowser.h \
             src/tests/common_scenarios/Assembling/bowtie2/GTTestsBowtie2.h \
             src/tests/common_scenarios/Assembling/dna_assembly/GTTestsDnaAssembly.h \
             src/tests/common_scenarios/Assembling/dna_assembly/GTTestsIndexReuse.h \
             src/tests/common_scenarios/Assembling/dna_assembly/conversions/GTTestsDnaAssemblyConversions.h \
+            src/tests/common_scenarios/Assembling/extract_consensus/GTTestsAssemblyExtractConsensus.h \
             src/tests/common_scenarios/Assembling/sam/GTTestsSAM.h \
             src/tests/common_scenarios/NIAID_pipelines/GTTestsNiaidPipelines.h \
             src/tests/common_scenarios/Query_Designer/GTTestsQuerryDesigner.h \
@@ -219,10 +221,12 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.h \
             src/tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.h \
             src/tests/common_scenarios/msa_editor/consensus/GTTestsMSAEditorConsensus.h \
+            src/tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.h \
             src/tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.h \
             src/tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.h \
             src/tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.h \
             src/tests/common_scenarios/ngs_classification/metaphlan2/GTTestsMetaPhlAn2.h \
+            src/tests/common_scenarios/ngs_classification/workflow_designer/GTTestsNGS_WD.h \
             src/tests/common_scenarios/options_panel/GTTestsOptionPanel.h \
             src/tests/common_scenarios/options_panel/msa/GTTestsOptionPanelMSA.h \
             src/tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.h \
@@ -254,9 +258,11 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/tests/common_scenarios/undo_redo/GTTestsUndoRedo.h \
             src/tests/common_scenarios/workflow_designer/GTTestsWorkflowDesigner.h \
             src/tests/common_scenarios/workflow_designer/dashboard/GTTestsWorkflowDashboard.h \
+            src/tests/common_scenarios/workflow_designer/elements/GTTestsTrimmomaticElement.h \
             src/tests/common_scenarios/workflow_designer/estimating/GTTestsWorkflowEstimating.h \
             src/tests/common_scenarios/workflow_designer/name_filter/GTTestsWorkflowNameFilter.h \
             src/tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.h \
+            src/tests/common_scenarios/workflow_designer/samples/GTTestsWorkflowSamples.h \
             src/tests/common_scenarios/workflow_designer/scripting/GTTestsWorkflowScripting.h \
             src/tests/common_scenarios/workflow_designer/shared_db/GTTestsSharedDbWd.h \
 #   UGENE primitives
@@ -464,12 +470,14 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_4001_5000.cpp \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_5001_6000.cpp \
             src/tests/regression_scenarios/GTTestsRegressionScenarios_6001_7000.cpp \
+            src/tests/regression_scenarios/GTTestsRegressionScenarios_7001_8000.cpp \
 #   Tests/Common Scenarios
             src/tests/common_scenarios/Assembling/Assembly_browser/GTTestsAssemblyBrowser.cpp \
             src/tests/common_scenarios/Assembling/bowtie2/GTTestsBowtie2.cpp \
             src/tests/common_scenarios/Assembling/dna_assembly/GTTestsDnaAssembly.cpp \
             src/tests/common_scenarios/Assembling/dna_assembly/GTTestsIndexReuse.cpp \
             src/tests/common_scenarios/Assembling/dna_assembly/conversions/GTTestsDnaAssemblyConversions.cpp \
+            src/tests/common_scenarios/Assembling/extract_consensus/GTTestsAssemblyExtractConsensus.cpp \
             src/tests/common_scenarios/Assembling/sam/GTTestsSAM.cpp \
             src/tests/common_scenarios/NIAID_pipelines/GTTestsNiaidPipelines.cpp \
             src/tests/common_scenarios/Query_Designer/GTTestsQuerryDesigner.cpp \
@@ -488,10 +496,12 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/msa_editor/align/GTTestsAlignSequenceToMsa.cpp \
             src/tests/common_scenarios/msa_editor/colors/GTTestsMSAEditorColors.cpp \
             src/tests/common_scenarios/msa_editor/consensus/GTTestsMSAEditorConsensus.cpp \
+            src/tests/common_scenarios/msa_editor/tree/GTTestsMSAEditorTree.cpp \
             src/tests/common_scenarios/msa_editor/edit/GTTestsMSAEditorEdit.cpp  \
             src/tests/common_scenarios/msa_editor/replace_character/GTTestsMSAEditorReplaceCharacter.cpp \
             src/tests/common_scenarios/msa_editor/overview/GTTestsMSAEditorOverview.cpp \
             src/tests/common_scenarios/ngs_classification/metaphlan2/GTTestsMetaPhlAn2.cpp \
+            src/tests/common_scenarios/ngs_classification/workflow_designer/GTTestsNGS_WD.cpp \
             src/tests/common_scenarios/options_panel/GTTestsOptionPanel.cpp \
             src/tests/common_scenarios/options_panel/msa/GTTestsOptionPanelMSA.cpp \
             src/tests/common_scenarios/options_panel/sequence_view/GTTestsOptionPanelSequenceView.cpp \
@@ -523,9 +533,11 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/tests/common_scenarios/undo_redo/GTTestsUndoRedo.cpp \
             src/tests/common_scenarios/workflow_designer/GTTestsWorkflowDesigner.cpp \
             src/tests/common_scenarios/workflow_designer/dashboard/GTTestsWorkflowDashboard.cpp \
+            src/tests/common_scenarios/workflow_designer/elements/GTTestsTrimmomaticElement.cpp \
             src/tests/common_scenarios/workflow_designer/estimating/GTTestsWorkflowEstimating.cpp \
             src/tests/common_scenarios/workflow_designer/name_filter/GTTestsWorkflowNameFilter.cpp \
             src/tests/common_scenarios/workflow_designer/parameters_validation/GTTestsWorkflowParameterValidation.cpp \
+            src/tests/common_scenarios/workflow_designer/samples/GTTestsWorkflowSamples.cpp \
             src/tests/common_scenarios/workflow_designer/scripting/GTTestsWorkflowScripting.cpp \
             src/tests/common_scenarios/workflow_designer/shared_db/GTTestsSharedDbWd.cpp \
 #   UGENE primitives

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,13 +49,15 @@ struct TreeOpWidgetViewSettings {
 class U2VIEW_EXPORT TreeOptionsWidget : public QWidget, private Ui_TreeOptionWidget {
     Q_OBJECT
 public:
-    TreeOptionsWidget(TreeViewer *tree, const TreeOpWidgetViewSettings &_viewSettings);
-    TreeOptionsWidget(MSAEditor *msa, const TreeOpWidgetViewSettings &_viewSettings);
+    TreeOptionsWidget(TreeViewer *tree, const TreeOpWidgetViewSettings &viewSettings);
+    TreeOptionsWidget(MSAEditor *msaEditor, const TreeOpWidgetViewSettings &viewSettings);
     ~TreeOptionsWidget();
 
     const TreeOpWidgetViewSettings &getViewSettings();
+
 signals:
     void saveViewSettings(const TreeOpWidgetViewSettings &);
+
 private slots:
     void sl_labelsColorButton();
     void sl_branchesColorButton();
@@ -67,7 +69,7 @@ private slots:
     void sl_onOptionChanged(TreeViewOption option, const QVariant &value);
 
 private:
-    void initialazeOptionsMap();
+    void initializeOptionsMap();
     void initColorButtonsStyle();
     void createGroups();
     void createGeneralSettingsWidgets();
@@ -81,9 +83,9 @@ private:
 
     void updateRelations(TreeViewOption option, QVariant newValue);
 
-    TreeViewerUI *getTreeViewer();
+    TreeViewerUI *getTreeViewer() const;
 
-    MSAEditor *msa;
+    MSAEditor *editor;
     TreeViewerUI *treeViewer;
 
     TreeOpWidgetViewSettings viewSettings;
@@ -103,9 +105,7 @@ private:
 class U2VIEW_EXPORT AddTreeWidget : public QWidget {
     Q_OBJECT
 public:
-    AddTreeWidget(MSAEditor *msa);
-    ~AddTreeWidget() {
-    }
+    AddTreeWidget(MSAEditor *msaEditor);
 
 private slots:
     void sl_onOpenTreeTriggered();
@@ -114,7 +114,6 @@ private slots:
 
 private:
     MSAEditor *editor;
-
     QPushButton *openTreeButton;
     QPushButton *buildTreeButton;
     QLabel *addTreeHint;

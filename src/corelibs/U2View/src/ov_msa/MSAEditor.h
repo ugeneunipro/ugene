@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -100,7 +100,7 @@ public:
 
     char getReferenceCharAt(int pos) const override;
 
-    void sortSequences(bool isByName, const MultipleAlignment::Order &sortOrder);
+    void sortSequences(const MultipleAlignment::SortType &sortType, const MultipleAlignment::Order &sortOrder);
 
 protected slots:
     void sl_onContextMenuRequested(const QPoint &pos);
@@ -114,7 +114,6 @@ protected slots:
     void sl_setSeqAsReference();
     void sl_unsetReferenceSeq();
 
-    void sl_onSeqOrderChanged(const QStringList &order);
     void sl_showTreeOP();
     void sl_hideTreeOP();
     void sl_rowsRemoved(const QList<qint64> &rowIds);
@@ -122,6 +121,7 @@ protected slots:
     void sl_showCustomSettings();
     void sl_sortSequencesByName();
     void sl_sortSequencesByLength();
+    void sl_sortSequencesByLeadingGap();
     void sl_convertBetweenDnaAndRnaAlphabets();
 
 protected:
@@ -131,7 +131,7 @@ protected:
     void onObjectRenamed(GObject *obj, const QString &oldName) override;
     bool onCloseEvent() override;
 
-    void addCopyPasteMenu(QMenu* m) override;
+    void addCopyPasteMenu(QMenu *m) override;
     void addEditMenu(QMenu *m) override;
     void addSortMenu(QMenu *m);
     void addExportMenu(QMenu *m) override;
@@ -164,6 +164,8 @@ public:
     QAction *sortByNameDescendingAction;
     QAction *sortByLengthAscendingAction;
     QAction *sortByLengthDescendingAction;
+    QAction *sortByLeadingGapAscendingAction;
+    QAction *sortByLeadingGapDescendingAction;
 
     QAction *convertDnaToRnaAction;
     QAction *convertRnaToDnaAction;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,25 +65,21 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Create annotation using menu {Actions->Add->New Annotation}
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann1", "complement(1.. 20)"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     // 4. Create annotation using keyboard shortcut Ctrl+N
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep();
 
     // Click "Hide zoom view"
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
-    GTGlobals::sleep();
 
     // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann3", "complement(1.. 20)"));
@@ -92,7 +88,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
 
     // Expected state: there is three new annotations on sequence created by threee different ways
-    GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::findItem(os, "ann1");
     GTUtilsAnnotationsTreeView::findItem(os, "ann2");
     GTUtilsAnnotationsTreeView::findItem(os, "ann3");
@@ -113,25 +108,21 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Create annotation using menu {Actions->Add->New Annotation}
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann1", "complement(1.. 20)"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     // 4. Create annotation using keyboard shortcut Ctrl+N
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep();
 
     // Click "Hide zoom view"
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
-    GTGlobals::sleep();
 
     // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann3", "complement(1.. 20)"));
@@ -140,7 +131,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
 
     // Expected state: there is three new annotations on sequence created by threee different ways
-    GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::findItem(os, "ann1");
     GTUtilsAnnotationsTreeView::findItem(os, "ann2");
     GTUtilsAnnotationsTreeView::findItem(os, "ann3");
@@ -161,25 +151,21 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Create annotation using menu {Actions->Add->New Annotation}
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann1", "complement(1.. 20)"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     // 4. Create annotation using keyboard shortcut Ctrl+N
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep();
 
     // Click "Hide zoom view"
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
-    GTGlobals::sleep();
 
     // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann3", "complement(1.. 20)"));
@@ -188,7 +174,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
 
     // Expected state: there is three new annotations on sequence created by threee different ways
-    GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::findItem(os, "ann1");
     GTUtilsAnnotationsTreeView::findItem(os, "ann2");
     GTUtilsAnnotationsTreeView::findItem(os, "ann3");
@@ -209,7 +194,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
     //
     // 3. Do menu {Actions->Add->New Annotation}
     // Expected state: "Create annotation" dialog has appeared
@@ -224,10 +208,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     // Expected state: annotation with 2 segments has been created
-    GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::findItem(os, "D");
 }
 
@@ -246,7 +228,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
     //
     // 3. Do menu {Actions->Add->New Annotation}
     // Expected state: "Create annotation" dialog has appeared
@@ -261,10 +242,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     // Expected state: annotation with 2 segments has been created
-    GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::findItem(os, "D");
 }
 
@@ -283,7 +262,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
     //
     // 3. Do menu {Actions->Add->New Annotation}
     // Expected state: "Create annotation" dialog has appeared
@@ -298,10 +276,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002_2) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     // Expected state: annotation with 2 segments has been created
-    GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::findItem(os, "D");
 }
 
@@ -320,19 +296,16 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Create annotation using menu {Actions->Add->New Annotation}
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann1", "complement(1.. 20)"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     // 4. Create annotation using keyboard shortcut Ctrl+N
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep();
 
     // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann3", "complement(1.. 20)"));
@@ -341,7 +314,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"), Qt::RightButton);
 
     // Expected state: there is three new annotations on sequence created by threee different ways
-    GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::findItem(os, "ann1");
     GTUtilsAnnotationsTreeView::findItem(os, "ann2");
     GTUtilsAnnotationsTreeView::findItem(os, "ann3");
@@ -362,7 +334,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Create 2 annotations:
     //     1) a1 in group a1
@@ -370,14 +341,12 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     //     2) a1 in group a2
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "a2_group", "a1", "18..20"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     // 4. Toggle highlight for a1.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggle_HL_action"));
@@ -402,7 +371,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Create 2 annotations:
     //     1) a1 in group a1
@@ -410,14 +378,12 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     //     2) a1 in group a2
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "a2_group", "a1", "18..20"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     // 4. Toggle highlight for a1.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggle_HL_action"));
@@ -442,7 +408,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Create 2 annotations:
     //     1) a1 in group a1
@@ -450,14 +415,12 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     //     2) a1 in group a2
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "a2_group", "a1", "18..20"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     // 4. Toggle highlight for a1.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggle_HL_action"));
@@ -482,13 +445,11 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // Click "Hide zoom view"
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
-    GTGlobals::sleep();
 
     // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann3", "complement(1.. 20)"));
@@ -501,15 +462,12 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     // 4. Create annotation using keyboard shortcut Ctrl+N
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep();
 
     // Expected state: there is three new annotations on sequence created by threee different ways
-    GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::findItem(os, "ann1");
     GTUtilsAnnotationsTreeView::findItem(os, "ann2");
     GTUtilsAnnotationsTreeView::findItem(os, "ann3");
@@ -530,7 +488,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
     //
     // 3. Do menu {Actions->Add->New Annotation}
     // Expected state: "Create annotation" dialog has appeared
@@ -545,10 +502,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     // Expected state: annotation with 2 segments has been created
-    GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::findItem(os, "D");
 }
 
@@ -567,7 +522,6 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Create 2 annotations:
     //     1) a1 in group a1
@@ -575,14 +529,12 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     //     2) a1 in group a2
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "a2_group", "a1", "18..20"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     // 4. Toggle highlight for a1.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "toggle_HL_action"));
@@ -607,7 +559,6 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
     //
     // 3. Do menu {Actions->Add->New Annotation}
     // Expected state: "Create annotation" dialog has appeared
@@ -622,10 +573,8 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     // Expected state: annotation with 2 segments has been created
-    GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::findItem(os, "D");
 }
 
@@ -644,13 +593,11 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // Click "Hide zoom view"
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_NC_001363 sequence");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_NC_001363 sequence");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
-    GTGlobals::sleep();
 
     // 5. Press right mouse button on sequence area, use context menu item {Add->New Annotation} to create annotation
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann3", "complement(1.. 20)"));
@@ -663,15 +610,12 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     // 4. Create annotation using keyboard shortcut Ctrl+N
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "ann2", "complement(1.. 20)"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep();
 
     // Expected state: there is three new annotations on sequence created by threee different ways
-    GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::findItem(os, "ann1");
     GTUtilsAnnotationsTreeView::findItem(os, "ann2");
     GTUtilsAnnotationsTreeView::findItem(os, "ann3");
@@ -765,14 +709,12 @@ GUI_TEST_CLASS_DEFINITION(test_0010_2) {
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0010_2.gff", ExportAnnotationsFiller::gff, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep();
 
     GTUtilsDocument::removeDocument(os, "DNA.fa");
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));
     GTUtilsDocument::removeDocument(os, "ann_test_0010_2_18.gb");
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));
     GTUtilsDocument::removeDocument(os, "ann_test_0010_2_19.gb");
-    GTGlobals::sleep();
 
     GTFileDialog::openFile(os, sandBoxDir, "ann_export_test_0010_2.gff");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -817,13 +759,11 @@ GUI_TEST_CLASS_DEFINITION(test_0010_3) {
     GTUtilsAnnotationsTreeView::createQualifier(os, "gene_id", "YT496", "ann_2");
     GTUtilsAnnotationsTreeView::createQualifier(os, "transcript_id", "0012", "ann_2");
 
-    GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::selectItems(os, annList);
 
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0010_3.gtf", ExportAnnotationsFiller::gtf, false, false, false));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep();
 
     GTUtilsDocument::removeDocument(os, "DNA.fa");
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));
@@ -856,7 +796,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_human_T1(UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "exon", "annotation", "200..300", sandBoxDir + "ann_test_0011_1.gb"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
@@ -871,7 +810,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep();
 
     CHECK_SET_ERR(l.isExpectedMessageFound, "No expected message in the log");
 }
@@ -893,7 +831,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_human_T1(UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann", "200..300", sandBoxDir + "ann_test_0011_1.gb"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
@@ -908,7 +845,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new DocumentFormatSelectorDialogFiller(os, "GTF"));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep();
 
     CHECK_SET_ERR(l.isExpectedMessageFound, "No expected message in the log");
 }
@@ -931,7 +867,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_human_T1(UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_zoom_view", toolbar));
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "ann", "200..300", sandBoxDir + "ann_test_0011_1.gb"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ADD"
@@ -946,7 +881,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0011_1.gtf", ExportAnnotationsFiller::gtf, false, false, false));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep();
     GTUtilsLog::check(os, l);
 }
 
@@ -990,11 +924,9 @@ GUI_TEST_CLASS_DEFINITION(test_0012_1) {
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0012_1.bed", ExportAnnotationsFiller::bed, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep();
 
     GTUtilsDocument::removeDocument(os, "sars.gb");
     GTUtilsDocument::removeDocument(os, "scaffold_90.gff");
-    GTGlobals::sleep();
 
     GTFileDialog::openFile(os, sandBoxDir, "ann_export_test_0012_1.bed");
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
@@ -1042,11 +974,9 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(sandBoxDir + "ann_export_test_0012_2.gff", ExportAnnotationsFiller::gff, os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep();
 
     GTUtilsDocument::removeDocument(os, "sars.gb");
     GTUtilsDocument::removeDocument(os, "scaffold_90.gff");
-    GTGlobals::sleep();
 
     GTFileDialog::openFile(os, sandBoxDir, "ann_export_test_0012_2.gff");
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
@@ -1100,7 +1030,6 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(os, sandBoxDir + "ann_export_test_0012_3.gtf", ExportAnnotationsFiller::gtf, false, false, false));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_EXPORT << "action_export_annotations"));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "No"));
     GTUtilsDocument::removeDocument(os, "sars.gb");
@@ -1133,7 +1062,6 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Add"
                                                 << "New annotation...");
-    GTGlobals::sleep();
 
     //4. Check what created annotation has corresponding qualifier 'note'
     QTreeWidget *treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);

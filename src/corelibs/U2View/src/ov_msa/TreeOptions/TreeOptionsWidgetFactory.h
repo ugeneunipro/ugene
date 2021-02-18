@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -74,8 +74,6 @@ class U2VIEW_EXPORT AddTreeWidgetFactory : public OPWidgetFactory {
     Q_OBJECT
 public:
     AddTreeWidgetFactory();
-    virtual ~AddTreeWidgetFactory() {
-    }
 
     QWidget *createWidget(GObjectView *objView, const QVariantMap &options) override;
 

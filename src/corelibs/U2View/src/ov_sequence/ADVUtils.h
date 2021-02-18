@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -62,7 +62,8 @@ public:
     }
 
 private slots:
-    void sl_focusChanged(ADVSequenceWidget *, ADVSequenceWidget *);
+    /** Calls updateState() on every active sequence widget change. */
+    void sl_activeSequenceChanged();
 
 private:
     void updateState();

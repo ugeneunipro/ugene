@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -66,7 +66,7 @@ void TextSettingsDialog::updateColorButton() {
 void TextSettingsDialog::sl_colorButton() {
     curColor = QColorDialog::getColor(curColor, this);
     if (curColor.isValid()) {
-        changedSettings[LABEL_COLOR] = curColor;
+        updatedSettings[LABEL_COLOR] = curColor;
         updateColorButton();
     }
 }
@@ -80,7 +80,7 @@ void TextSettingsDialog::accept() {
     curFont.setUnderline(underlineToolButton->isChecked());
     curFont.setOverline(overlineToolButton->isChecked());
 
-    changedSettings[LABEL_FONT] = curFont;
+    updatedSettings[LABEL_FONT] = curFont;
 
     QDialog::accept();
 }

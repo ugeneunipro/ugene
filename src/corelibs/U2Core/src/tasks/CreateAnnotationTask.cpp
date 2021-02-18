@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -80,10 +80,10 @@ void CreateAnnotationsTask::run() {
     CHECK_OP(stateInfo, );
 
     const QList<QString> &groupNameList = annotationDatasByGroupNameMap.keys();
-    for (const QString &groupName : groupNameList) {
+    for (const QString &groupName : qAsConst(groupNameList)) {
         const QList<SharedAnnotationData> &annotationsInGroup = annotationDatasByGroupNameMap[groupName];
         if (groupName.isEmpty()) {
-            for (const SharedAnnotationData &annotation : annotationsInGroup) {
+            for (const SharedAnnotationData &annotation : qAsConst(annotationsInGroup)) {
                 AnnotationGroup *group = annotationTableObject->getRootGroup()->getSubgroup(annotation->name, true);
                 U2Feature feature = U2FeatureUtils::exportAnnotationDataToFeatures(annotation, rootFeatureId, group->id, dbiRef, stateInfo);
                 CHECK_OP(stateInfo, );
@@ -112,7 +112,7 @@ Task::ReportResult CreateAnnotationsTask::report() {
     }
 
     const QList<AnnotationGroup *> &groupList = annotationsByGroupMap.keys();
-    for (AnnotationGroup *group : groupList) {
+    for (AnnotationGroup *group : qAsConst(groupList)) {
         const QList<Annotation *> &annotationsInGroup = annotationsByGroupMap[group];
         // Add annotation not as new but as existing. We will notify parent object about update later.
         group->addShallowAnnotations(annotationsInGroup, false);

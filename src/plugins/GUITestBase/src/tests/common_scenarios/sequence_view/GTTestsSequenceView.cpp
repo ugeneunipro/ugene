@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -308,7 +308,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
             int i = 0;
             QList<QAction *> act = activePopupMenu->actions();
-            for (QAction *a : act) {
+            for (QAction *a : qAsConst(act)) {
                 QString s = a->objectName();
                 if (i == 1) {
                     GTMenu::clickMenuItem(os, activePopupMenu, s, GTGlobals::UseMouse);
@@ -1495,7 +1495,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
 
     QList<QScrollBar *> list = pan->findChildren<QScrollBar *>();
     QScrollBar *vertical = NULL;
-    for (QScrollBar *b : list) {
+    for (QScrollBar *b : qAsConst(list)) {
         if (b->orientation() == Qt::Vertical) {
             vertical = b;
         }
@@ -1769,7 +1769,8 @@ GUI_TEST_CLASS_DEFINITION(test_0055) {
     GTWidget::click(os, graphView);
     //GTWidget::getAllWidgetsInfo(os, GTUtilsSequenceView::getGraphView(os));
     QWidget *pointer = NULL;
-    for (QWidget *w : GTUtilsSequenceView::getGraphView(os)->findChildren<QWidget *>()) {
+    const QList<QWidget *> childList = GTUtilsSequenceView::getGraphView(os)->findChildren<QWidget *>();
+    for (QWidget *w : qAsConst(childList)) {
         if (w->geometry().width() == 10) {
             pointer = w;
         }

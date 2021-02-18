@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -45,10 +45,10 @@
 
 namespace U2 {
 
-class CircularViewRenderArea;
 class CircularAnnotationItem;
 class CircularAnnotationLabel;
 class CircularAnnotationRegionItem;
+class CircularViewRenderArea;
 struct CircularViewSettings;
 class TextItem;
 
@@ -56,19 +56,18 @@ class CircularView : public GSequenceLineViewAnnotated {
     Q_OBJECT
 public:
     CircularView(QWidget *p, ADVSequenceObjectContext *ctx, CircularViewSettings *settings);
-    void pack();
-    void mousePressEvent(QMouseEvent *e);
-    void mouseMoveEvent(QMouseEvent *e);
-    void mouseReleaseEvent(QMouseEvent *e);
-    void resizeEvent(QResizeEvent *e);
 
-    void keyPressEvent(QKeyEvent *e);
-    void keyReleaseEvent(QKeyEvent *e);
+    void pack() override;
+    void mousePressEvent(QMouseEvent *e) override;
+    void mouseMoveEvent(QMouseEvent *e) override;
+    void mouseReleaseEvent(QMouseEvent *e) override;
+    void resizeEvent(QResizeEvent *e) override;
 
-    void wheelEvent(QWheelEvent *we);
-    virtual QSize sizeHint() const;
+    void keyPressEvent(QKeyEvent *e) override;
+    void keyReleaseEvent(QKeyEvent *e) override;
 
-    virtual QList<Annotation *> findAnnotationsByCoord(const QPoint &coord) const;
+    void wheelEvent(QWheelEvent *we) override;
+    QSize sizeHint() const override;
 
     static qreal coordToAngle(const QPoint point);
 
@@ -99,6 +98,7 @@ signals:
     void si_zoomInDisabled(bool);
     void si_zoomOutDisabled(bool);
     void si_fitInViewDisabled(bool);
+
 public slots:
     void sl_zoomIn();
     void sl_zoomOut();
@@ -107,8 +107,8 @@ public slots:
     void sl_onCircularTopologyChange();
 
 protected slots:
-    virtual void sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &added, const QList<Annotation *> &removed);
-    virtual void sl_onDNASelectionChanged(LRegionsSelection *thiz, const QVector<U2Region> &added, const QVector<U2Region> &removed);
+    void sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &added, const QList<Annotation *> &removed) override;
+    void sl_onDNASelectionChanged(LRegionsSelection *thiz, const QVector<U2Region> &added, const QVector<U2Region> &removed) override;
 
 protected:
     void adaptSizes();
@@ -120,20 +120,21 @@ protected:
      */
     void invertCurrentSelection();
 
-    CircularViewRenderArea *getRenderArea() const;
-
     Direction getDirection(float a, float b) const;
 
     QVBoxLayout *layout;
 
     int lastMovePos;
-    int currectSelectionLen;
+    int currentSelectionLen;
     int lastMouseY;
     bool clockwise;
     bool holdSelection;
     qreal lastPressAngle;
     qreal lastMoveAngle;
     CircularViewSettings *settings;
+
+    /** A renderArea from the base class with a correct type. Used to avoid casts in the code. */
+    CircularViewRenderArea *circularViewRenderArea;
 };
 
 class CircularViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {
@@ -143,8 +144,16 @@ class CircularViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {
     friend class CircularAnnotationRegionItem;
     Q_OBJECT
 public:
+    enum DrawAnnotationPass {
+        DrawAnnotationPass_DrawFill,
+        DrawAnnotationPass_DrawBorder
+    };
+
     CircularViewRenderArea(CircularView *d);
     ~CircularViewRenderArea();
+
+    /** Returns all annotations by a coordinate inside render area. */
+    QList<Annotation *> findAnnotationsByCoord(const QPoint &coord) const override;
 
     int getAnnotationYLevel(Annotation *a) const {
         return annotationYLevel.value(a);
@@ -161,7 +170,6 @@ protected:
     qint64 coordToPos(const QPoint &p) const override;
     void resizeEvent(QResizeEvent *e) override;
     virtual void drawAll(QPaintDevice *pd) override;
-    virtual U2Region getAnnotationYRange(Annotation *a, int ri, const AnnotationSettings *as) const override;
 
     void buildAnnotationItem(DrawAnnotationPass pass, Annotation *a, int predefinedOrbit = -1, bool selected = false, const AnnotationSettings *as = NULL);
     void buildAnnotationLabel(const QFont &font, Annotation *a, const AnnotationSettings *as, bool isAutoAnnotation = false);

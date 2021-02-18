@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -110,7 +110,6 @@ public:
     virtual U2DbiIterator<U2AssemblyRead> *getReadsByName(const U2DataId &assemblyId, const QByteArray &name, U2OpStatus &os);
 
     static int toSamtoolsId(const U2DataId &assemblyId, U2OpStatus &os);
-    static U2DataId toU2Id(int assemblyId);
 
     /**
      * Unsupported methods

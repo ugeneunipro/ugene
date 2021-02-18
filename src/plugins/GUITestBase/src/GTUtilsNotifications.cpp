@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,7 +48,8 @@ NotificationChecker::NotificationChecker(HI::GUITestOpStatus &_os)
 #define GT_METHOD_NAME "sl_checkNotification"
 void NotificationChecker::sl_checkNotification() {
     CHECK(QApplication::activeModalWidget() == nullptr, );
-    for (QWidget *widget : QApplication::allWidgets()) {
+    const QWidgetList widgetList = QApplication::allWidgets();
+    for (QWidget *widget : qAsConst(widgetList)) {
         Notification *notification = qobject_cast<Notification *>(widget);
         if (notification != nullptr && notification->isVisible()) {
             uiLog.trace("notification is found");
@@ -117,7 +118,7 @@ void GTUtilsNotifications::checkNotificationReportText(HI::GUITestOpStatus &os, 
     CHECK_SET_ERR(reportEdit != nullptr, "reportTextEdit is not found");
 
     QString html = reportEdit->toHtml();
-    for (const QString &textToken : textTokens) {
+    for (const QString &textToken : qAsConst(textTokens)) {
         CHECK_SET_ERR(html.contains(textToken), "Report contains expected text: " + textToken);
     }
     GTUtilsMdi::closeActiveWindow(os);
@@ -135,7 +136,8 @@ void GTUtilsNotifications::checkNotificationDialogText(HI::GUITestOpStatus &os, 
 void GTUtilsNotifications::clickOnNotificationWidget(HI::GUITestOpStatus &os) {
     for (int time = 0; time < GT_OP_WAIT_MILLIS; time += GT_OP_CHECK_MILLIS) {
         CHECK(QApplication::activeModalWidget() == nullptr, );
-        for (QWidget *widget : QApplication::allWidgets()) {
+        const QWidgetList widgetList = QApplication::allWidgets();
+        for (QWidget *widget : qAsConst(widgetList)) {
             Notification *notification = qobject_cast<Notification *>(widget);
             if (notification != nullptr && notification->isVisible()) {
                 GTWidget::click(os, notification);

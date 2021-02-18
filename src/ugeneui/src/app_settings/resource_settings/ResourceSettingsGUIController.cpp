@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -76,7 +76,6 @@ void ResourceSettingsGUIPageWidget::setState(AppSettingsGUIPageState *s) {
     cpuBox->setValue(state->nCpus);
     threadBox->setValue(state->nThreads);
     memBox->setValue(state->maxMem);
-    memBox->setObjectName("memorySpinBox");
 }
 
 AppSettingsGUIPageState *ResourceSettingsGUIPageWidget::getState(QString &err) const {

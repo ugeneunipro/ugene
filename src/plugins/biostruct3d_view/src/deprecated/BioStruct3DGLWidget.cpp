@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -114,7 +114,7 @@ BioStruct3DGLWidget::BioStruct3DGLWidget(BioStruct3DObject *obj, const Annotated
 
       spinAction(0), settingsAction(0), closeAction(0), exportImageAction(0), selectModelsAction(0), alignWithAction(0),
       resetAlignmentAction(0), colorSchemeActions(0), rendererActions(0), molSurfaceRenderActions(0),
-      molSurfaceTypeActions(0), selectColorSchemeMenu(0), selectRendererMenu(0), displayMenu(0) {
+      molSurfaceTypeActions(0), selectColorSchemeMenu(0), selectRendererMenu(0), displayMenu(0), lblGlError(nullptr) {
     lightPosition[0] = lightPosition[1] = lightPosition[2] = lightPosition[3] = 0;
     GCOUNTER(cvar, "BioStruct3DGLWidget");
 
@@ -134,6 +134,8 @@ BioStruct3DGLWidget::BioStruct3DGLWidget(BioStruct3DObject *obj, const Annotated
     }
 
     addBiostruct(obj);
+
+    checkRenderingAndCreateLblError();
 
     createActions();
     createMenus();
@@ -228,6 +230,9 @@ void BioStruct3DGLWidget::initializeGL() {
 
 void BioStruct3DGLWidget::resizeGL(int width, int height) {
     glFrame->updateViewPort(width, height);
+    if (lblGlError != nullptr) {
+        lblGlError->resize(size());
+    }
     if (anaglyphStatus == ENABLED) {
         anaglyph->resize(width, height);
     }
@@ -338,9 +343,10 @@ void BioStruct3DGLWidget::setLightPosition(const Vector3D &pos) {
 }
 
 static int getSequenceChainId(const U2SequenceObject *seqObj) {
-    QVariantMap info = seqObj->getSequenceInfo();
-    SAFE_POINT(info.contains(DNAInfo::CHAIN_ID), "Sequence does not have the CHAIN_ID attribute", -1);
-    return seqObj->getIntegerAttribute(DNAInfo::CHAIN_ID);
+    bool isFound = false;
+    qint64 result = seqObj->getSequenceInfo().value(DNAInfo::CHAIN_ID).toInt(&isFound);
+    SAFE_POINT(isFound, "Sequence does not have the CHAIN_ID attribute", -1);
+    return (int)result;
 }
 
 void BioStruct3DGLWidget::sl_onSequenceSelectionChanged(LRegionsSelection *s, const QVector<U2Region> &added, const QVector<U2Region> &removed) {
@@ -636,6 +642,18 @@ bool BioStruct3DGLWidget::isSyncModeOn() {
     bool synchronizationMode = km.testFlag(Qt::ShiftModifier) || frameManager->getSyncLock();
     synchronizationMode &= frameManager->getGLFrames().count() > 1;
     return synchronizationMode;
+}
+
+void BioStruct3DGLWidget::checkRenderingAndCreateLblError() {
+    GLenum error = glGetError();
+    bool canRender = error == GL_NO_ERROR;
+    if (!canRender) {
+        coreLog.info(tr("The \"3D Structure Viewer\" was disabled, because OpenGL has error ") +
+            QString("(%1): %2").arg(error).arg(reinterpret_cast<const char *>(gluErrorString(error))));
+        lblGlError = new QLabel("Failed to initialize OpenGL", this);
+        lblGlError->setAlignment(Qt::AlignCenter | Qt::AlignHCenter);
+        lblGlError->setStyleSheet("QLabel { background-color : black; color : white; }");
+    }
 }
 
 void BioStruct3DGLWidget::setUnselectedShadingLevel(int shading) {

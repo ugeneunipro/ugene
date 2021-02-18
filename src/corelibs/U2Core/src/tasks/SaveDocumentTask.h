@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -53,11 +53,11 @@ public:
     SaveDocumentTask(Document *doc, IOAdapterFactory *iof = NULL, const GUrl &url = GUrl(), SaveDocFlags flags = SaveDoc_Overwrite);
     SaveDocumentTask(Document *doc, SaveDocFlags flags, const QSet<QString> &excludeFileNames = QSet<QString>());
 
-    virtual void prepare();
+    void prepare() override;
 
-    virtual void run();
+    void run() override;
 
-    ReportResult report();
+    ReportResult report() override;
 
     const GUrl &getURL() const {
         return url;
@@ -78,6 +78,12 @@ public:
 
     void addFlag(SaveDocFlag f);
 
+    /** Returns current set of 'openDocumentWithProjectHints'. See 'openDocumentWithProjectHints' for details. */
+    QVariantMap getOpenDocumentWithProjectHints() const;
+
+    /** Sets new 'openDocumentWithProjectHints'. See 'openDocumentWithProjectHints' for details. */
+    void setOpenDocumentWithProjectHints(const QVariantMap &hints);
+
 private:
     StateLock *lock;
     QPointer<Document> doc;
@@ -85,6 +91,9 @@ private:
     GUrl url;
     SaveDocFlags flags;
     QSet<QString> excludeFileNames;
+
+    /** Set of hints passed to openWithProjectTask when SaveDoc_OpenAfter is present.*/
+    QVariantMap openDocumentWithProjectHints;
 };
 
 enum SavedNewDocFlag {

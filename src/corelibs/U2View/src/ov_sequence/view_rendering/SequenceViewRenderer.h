@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,15 +55,13 @@ public:
 
     virtual qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const = 0;
 
-    int posToXCoord(const qint64 p, const QSize &canvasSize, const U2Region &visibleRange) const;
-    virtual float posToXCoordF(const qint64 p, const QSize &canvasSize, const U2Region &visibleRange) const;
+    virtual int posToXCoord(const qint64 pos, const QSize &canvasSize, const U2Region &visibleRange) const;
 
     virtual qint64 getRowLineHeight() const;
 
     virtual double getCurrentScale() const = 0;
 
-    virtual qint64 getContentIndentY(const QSize &canvasSize, const U2Region &visibleRange) const = 0;
-    virtual qint64 getMinimumHeight() const = 0;
+    virtual int getMinimumHeight() const = 0;
 
     virtual void drawAll(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) = 0;
     virtual void drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) = 0;

@@ -2878,17 +2878,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/ExternalToolSupportSettings.cpp" line="137"/>
+        <location filename="../src/ExternalToolSupportSettings.cpp" line="123"/>
         <source>Path for temporary files</source>
         <translation>Путь к папке с временными файлами</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettings.cpp" line="138"/>
+        <location filename="../src/ExternalToolSupportSettings.cpp" line="124"/>
         <source>Path for temporary files not selected.</source>
         <translation>Путь для временных файлов не задан.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettings.cpp" line="139"/>
+        <location filename="../src/ExternalToolSupportSettings.cpp" line="125"/>
         <source>Do you want to select it now?</source>
         <translation>Выбрать сейчас?</translation>
     </message>
@@ -5233,7 +5233,7 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolManagerImpl</name>
     <message>
-        <location filename="../src/ExternalToolManager.cpp" line="383"/>
+        <location filename="../src/ExternalToolManager.cpp" line="249"/>
         <source>A dependency tool isn&apos;t represented in the general tool list. Skip dependency &quot;%1&quot;</source>
         <translation>A dependency tool isn&apos;t represented in the general tool list. Skip dependency &quot;%1&quot;</translation>
     </message>
@@ -5301,53 +5301,53 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation>Модуль позволяет использовать внешние программы</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="209"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="212"/>
         <source>Align with ClustalW...</source>
         <translation>Выравнивание с помощью ClustalW...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="217"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="220"/>
         <source>Align with ClustalO...</source>
         <translation>Выравнивание с помощью ClustalO...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="225"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="228"/>
         <source>Align with MAFFT...</source>
         <translation>Выравнивание с помощью MAFFT...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="233"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="236"/>
         <source>Align with T-Coffee...</source>
         <translation>Выравнивание с помощью T-Coffee...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="352"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="355"/>
         <source>The &lt;i&gt;Basic Local Alignment Search Tool&lt;/i&gt; (BLAST) finds regions of local similarity between sequences. The program compares nucleotide or protein sequences to sequence databases and calculates the statistical significance of matches. BLAST can be used to infer functional and evolutionary relationships between sequences as well as help identify members of gene families.</source>
         <translation>The &lt;i&gt;Basic Local Alignment Search Tool&lt;/i&gt; (BLAST) ищет регионы локального сходства между последовательностями. Программа сравнивает нуклеотидные или белковые последовательности в базах данных последовательностей и вычисляет статистическую значимость совпадений. BLAST может использоваться для выявления функциональных и эволюционных взаимосвязей между последовательностями, а также для определения членов семейств гена.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="356"/>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="358"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="359"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="361"/>
         <source>&lt;i&gt;BLAST+&lt;/i&gt; is a new version of the BLAST package from the NCBI.</source>
         <translation>&lt;i&gt;BLAST+&lt;/i&gt; это новая версия пакета BLAST от NCBI.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="360"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="363"/>
         <source>&lt;i&gt;Bowtie&lt;i&gt; is an ultrafast, memory-efficient short read aligner. It aligns short DNA sequences (reads) to the human genome at a rate of over 25 million 35-bp reads per hour. Bowtie indexes the genome with a Burrows-Wheeler index to keep its memory footprint small: typically about 2.2 GB for the human genome (2.9 GB for paired-end). &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt; </source>
         <translation>&lt;i&gt;Bowtie&lt;i&gt;один из самых быстрых и эффективных инструментов для выравнивания данных секвенирования на референсную последовательность. Так, например, он способен выравнивать короткие (35 нукл.) последовательности ДНК на геном человека со скоростью более 25 миллионов последовательностей / час. &lt;a href=&apos;http://qt-project.org/doc/qt-4.8/qtextbrowser.html#anchorClicked&apos;&gt;Link text&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="367"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="370"/>
         <source>&lt;i&gt;Cufflinks&lt;/i&gt; assembles transcripts, estimates their abundances, and tests for differential expression and regulation in RNA-Seq samples. It accepts aligned RNA-Seq reads and assembles the alignments into a parsimonious set of transcripts. It also estimates the relative abundances of these transcripts based on how many reads support each one, taking into account biases in library preparation protocols. </source>
         <translation>&lt;i&gt;Cufflinks&lt;/i&gt; собирает транскрипции и оценивает их распространенность. </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="374"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="377"/>
         <source>&lt;i&gt;Bowtie 2&lt;/i&gt; is an ultrafast and memory-efficient tool for aligning sequencing reads to long reference sequences. It is particularly good at aligning reads of about 50 up to 100s or 1000s of characters, and particularly good at aligning to relatively long (e.g. mammalian) genomes. &lt;br/&gt;&lt;br/&gt;It indexes the genome with an FM index to keep its memory footprint small: for the human genome, its memory footprint is typically around 3.2Gb. &lt;br/&gt;&lt;br/&gt;&lt;i&gt;Bowtie 2&lt;/i&gt; supports gapped, local, and paired-end alignment modes.</source>
         <translation>&lt;i&gt;Bowtie 2&lt;/i&gt; один из самых быстрых и эффективных инструментов для выравнивания данных секвенирования на большие референсные последовательности. Особенно эффективно применение инструмента для выравнивания ридов начиная от 50 и до сотен и тысяч символов, и больших геномов (например млекопитающих).</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="382"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="385"/>
         <source>&lt;i&gt;Cistrome&lt;/i&gt; is a UGENE version of Cistrome pipeline which also includes some tools useful for ChIP-seq analysisThis pipeline is aimed to provide the following analysis steps: peak calling and annotating, motif search and gene ontology.</source>
         <translation>&lt;i&gt;Cistrome&lt;/i&gt; это версия UGENE пайплайна Cistrome, который включает некоторые инструменты, используемые в ChIP-seq анализе.</translation>
     </message>
@@ -5356,27 +5356,27 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation type="vanished">Создание базы данных BLAST...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="385"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="388"/>
         <source>BLAST+ make database...</source>
         <translation>Создание базы данных BLAST+...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="389"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="392"/>
         <source>Map reads to reference...</source>
         <translation>Выравнивание прочтений на референсную последовательность...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="413"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="416"/>
         <source>Reads de novo assembly (with %1)...</source>
         <translation>Сборка прочтений de novo (при помощи %1)...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="400"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="403"/>
         <source>BLAST+ search...</source>
         <translation>Поиск с помощью BLAST+...</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="404"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="407"/>
         <source>BLAST+ query database...</source>
         <translation>Запрос с помощью BLAST+...</translation>
     </message>
@@ -5398,12 +5398,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportService</name>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="518"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="522"/>
         <source>External tools support</source>
         <translation>Поддержка внешних инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportPlugin.cpp" line="518"/>
+        <location filename="../src/ExternalToolSupportPlugin.cpp" line="522"/>
         <source>Provides support to run external tools from UGENE</source>
         <translation>Позволяет запускать внешние инструменты из UGENE</translation>
     </message>
@@ -5419,17 +5419,17 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolSupportSettingsPageWidget</name>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="657"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="662"/>
         <source>Select an external tool to view more information about it.</source>
         <translation>Выберите инструмент, чтобы увидеть дополнительную информацию о нем.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="515"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="517"/>
         <source>No description</source>
         <translation>Нет описания</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="466"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="468"/>
         <source>External tool &apos;%1&apos; cannot be validated as it depends on other tools, some of which are not valid. The list of tools is the following: </source>
         <translation>Инструмент &apos;%1&apos; не может быть проверен, т.к. он зависит от других инструментов, которые не проверены. Это следующие инструменты: </translation>
     </message>
@@ -5459,37 +5459,37 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
         <translation>Can&apos;t remove custom external tool config file from the storage folder: %1</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="494"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="496"/>
         <source>&apos;%1&apos; is %2 module and it is not installed. Install it and restart UGENE or set another %2 with already installed &apos;%1&apos; module.</source>
         <translation>&apos;%1&apos; это %2 модуль и он не установлен. Установите его и перезапустите UGENE или выберите другой %2 с уже установленным модулем &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="524"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="526"/>
         <source>&lt;br&gt;&lt;br&gt;Version: </source>
         <translation>&lt;br&gt;&lt;br&gt;Версия: </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="528"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="530"/>
         <source>unknown</source>
         <translation>неизвестный</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="533"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="535"/>
         <source>&lt;br&gt;&lt;br&gt;Binary path: </source>
         <translation>&lt;br&gt;&lt;br&gt;Путь: </translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="701"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="706"/>
         <source>Choose Folder With Executables</source>
         <translation>Выберите папку с исполняемыми файлами</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="756"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="760"/>
         <source>Select Folder With External Tools Package</source>
         <translation>Выберите папку пакетом внешних инструментов</translation>
     </message>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="805"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="811"/>
         <source>Not a valid external tools folder</source>
         <translation>Нет подходящей папки внешних инструментов</translation>
     </message>
@@ -5518,12 +5518,12 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolsInstallTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="438"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="454"/>
         <source>Installing external tools</source>
         <translation>Installing external tools</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="443"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="459"/>
         <source> failed: </source>
         <translation> failed: </translation>
     </message>
@@ -5545,15 +5545,26 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::ExternalToolsValidateTask</name>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="409"/>
         <source>Checking external tools</source>
-        <translation>Checking external tools</translation>
+        <translation type="vanished">Checking external tools</translation>
     </message>
     <message>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="427"/>
-        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="429"/>
         <source> failed: </source>
-        <translation> failed: </translation>
+        <translation type="vanished"> failed: </translation>
+    </message>
+</context>
+<context>
+    <name>U2::ExternalToolsValidationMasterTask</name>
+    <message>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="409"/>
+        <source>Validate external tools</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="431"/>
+        <location filename="../src/utils/ExternalToolValidateTask.cpp" line="433"/>
+        <source> failed: </source>
+        <translation type="unfinished"> failed: </translation>
     </message>
 </context>
 <context>
@@ -5580,29 +5591,34 @@ To save under other name press &apos;Cancel&apos; and change name in &apos;Resul
 <context>
     <name>U2::FastQCTask</name>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="120"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="122"/>
         <source>No input URL</source>
         <translation>No input URL</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="125"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="127"/>
         <source>The input file &apos;%1&apos; is empty.</source>
         <translation>The input file &apos;%1&apos; is empty.</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="131"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="133"/>
         <source>Folder does not exist: %1</source>
         <translation>Folder does not exist: %1</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="148"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="150"/>
         <source>Result file does not exist: %1. See the log for details.</source>
         <translation>Result file does not exist: %1. See the log for details.</translation>
     </message>
     <message>
-        <location filename="../src/fastqc/FastqcTask.cpp" line="160"/>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="162"/>
         <source>Unable to move result file from temporary directory to desired location: %1.</source>
         <translation>Unable to move result file from temporary directory to desired location: %1.</translation>
+    </message>
+    <message>
+        <location filename="../src/fastqc/FastqcTask.cpp" line="202"/>
+        <source>Java external tool is not found</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -10991,7 +11007,7 @@ bowtie медленнее, когда указан режим --best.</translati
     </message>
     <message>
         <location filename="../src/snpeff/SnpEffDatabaseDelegate.cpp" line="124"/>
-        <source>The list of genomes is not available.
+        <source>The list of genomes is not available.<byte value="xd"/>
 Make sure %1 and %2 tools are set in the UGENE Application Settings and can be validated.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -12718,8 +12734,8 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::PathLineEdit</name>
     <message>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="824"/>
-        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="826"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="830"/>
+        <location filename="../src/ExternalToolSupportSettingsController.cpp" line="832"/>
         <source>Select a file</source>
         <translation>Выберите файл</translation>
     </message>
@@ -13686,7 +13702,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::UserAppsSettings</name>
     <message>
-        <location filename="../src/ExternalToolSupportSettings.cpp" line="150"/>
+        <location filename="../src/ExternalToolSupportSettings.cpp" line="136"/>
         <source>Temporary UGENE dir is empty</source>
         <translation>Temporary UGENE dir is empty</translation>
     </message>
@@ -13765,37 +13781,37 @@ Set it empty if you want to run Tophat once for all input reads</source>
 <context>
     <name>U2::Workflow::BlastAndSwReadTask</name>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="89"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="108"/>
         <source>Map one read with BLAST &amp; SW task</source>
         <translation>Map one read with BLAST &amp; SW task</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="120"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="139"/>
         <source>A problem occurred while mapping &quot;%1&quot; to &quot;%2&quot;.</source>
         <translation>A problem occurred while mapping &quot;%1&quot; to &quot;%2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="130"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="149"/>
         <source>%1 was skipped. No BLAST results.</source>
         <translation>%1 was skipped. No BLAST results.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="174"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="193"/>
         <source>%1 was skipped. Low similarity: %2. Minimum similarity was set to %3</source>
         <translation>%1 was skipped. Low similarity: %2. Minimum similarity was set to %3</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="275"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="294"/>
         <source>Read doesn&apos;t contain meaningful data</source>
         <translation>Read doesn&apos;t contain meaningful data</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="358"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="377"/>
         <source>The %1 algorithm is not found. Add the %1 plugin.</source>
         <translation>The %1 algorithm is not found. Add the %1 plugin.</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="361"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="380"/>
         <source>The %1 algorithm is not found. Check that the %1 plugin is up to date.</source>
         <translation>The %1 algorithm is not found. Check that the %1 plugin is up to date.</translation>
     </message>
@@ -13808,7 +13824,7 @@ Set it empty if you want to run Tophat once for all input reads</source>
         <translation>Map reads with BLAST &amp; SW task</translation>
     </message>
     <message>
-        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="65"/>
+        <location filename="../src/blast_plus/align_worker_subtasks/BlastReadsSubTask.cpp" line="67"/>
         <source>The task uses a temporary folder to process the data. The folder path is required not to have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</source>
         <translation>The task uses a temporary folder to process the data. The folder path is required not to have spaces. Please set up an appropriate path for the &quot;Temporary files&quot; parameter on the &quot;Directories&quot; tab of the UGENE Application Settings.</translation>
     </message>

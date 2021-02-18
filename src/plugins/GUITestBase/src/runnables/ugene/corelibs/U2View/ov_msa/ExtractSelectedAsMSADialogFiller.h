@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,9 +29,13 @@ using namespace HI;
 
 class ExtractSelectedAsMSADialogFiller : public Filler {
 public:
+    /**
+     * Initialize the default filler scenario for the dialog.
+     * If 'useDefaultSequenceSelection' is 'true' ignores 'selectedSequenceNameList' values and re-uses currently checked values by MSA editor.
+    */
     ExtractSelectedAsMSADialogFiller(HI::GUITestOpStatus &os,
-                                     QString filepath,
-                                     QStringList list,
+                                     const QString &filepath,
+                                     const QStringList &selectedSequenceNameList = QStringList(),
                                      int from = 0,
                                      int to = 0,
                                      bool addToProj = true,
@@ -39,16 +43,21 @@ public:
                                      bool allButtonPress = false,
                                      bool noneButtonPress = false,
                                      bool dontCheckFilepath = false,
-                                     QString format = "");
+                                     const QString &format = "",
+                                     bool useDefaultSequenceSelectionFlag = false);
+
     ExtractSelectedAsMSADialogFiller(HI::GUITestOpStatus &os, CustomScenario *c);
 
-    virtual void commonScenario();
+    void commonScenario() override;
+
     static QStringList getSequences(HI::GUITestOpStatus &os, bool selected = true);
+
+    void setUseDefaultSequenceSelection(bool flag);
 
 private:
     QString filepath;
     QString format;
-    QStringList list;
+    QStringList sequenceNameList;
     int from;
     int to;
     bool addToProj;
@@ -56,6 +65,7 @@ private:
     bool allButtonPress;
     bool noneButtonPress;
     bool dontCheckFilepath;
+    bool useDefaultSequenceSelection;
 };
 
 }    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -65,7 +65,7 @@ void DNAFlexViewContext::sl_showDNAFlexDialog() {
     AnnotatedDNAView *annotView = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
     assert(annotView);
 
-    ADVSequenceObjectContext *seqCtx = annotView->getSequenceInFocus();
+    ADVSequenceObjectContext *seqCtx = annotView->getActiveSequenceContext();
     SAFE_POINT(seqCtx != NULL, "no sequence to perform flex search", );
 
     const DNAAlphabet *alphabet = seqCtx->getAlphabet();

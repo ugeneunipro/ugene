@@ -322,12 +322,12 @@
 <context>
     <name>U2::AceImporter</name>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="150"/>
+        <location filename="../src/ace/AceImporter.cpp" line="149"/>
         <source>ACE file importer</source>
         <translation>Импорт ACE файла</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="154"/>
+        <location filename="../src/ace/AceImporter.cpp" line="153"/>
         <source>ACE files importer is used to convert conventional ACE files into UGENE database format.Having ACE file converted into UGENE DB format you get an fast and efficient interface to your data with an option to change the content</source>
         <translation>Импорт ACE файлов используется для преобразования обычных ACE файлов в формат базы данных UGENE. Преобразовав ACE файл в формат UGENE DB вы получите быстрый и эффективный интерфейс к вашим данным с возможностью изменять содержимое файла</translation>
     </message>
@@ -335,22 +335,22 @@
 <context>
     <name>U2::AceImporterTask</name>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="55"/>
+        <location filename="../src/ace/AceImporter.cpp" line="53"/>
         <source>ACE file import: %1</source>
         <translation>Импорт ACE файла: %1</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="68"/>
+        <location filename="../src/ace/AceImporter.cpp" line="66"/>
         <source>Dbi ref is invalid</source>
         <translation>Dbi ref is invalid</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="84"/>
+        <location filename="../src/ace/AceImporter.cpp" line="82"/>
         <source>Can&apos;t create a temporary database</source>
         <translation>Невозможно создать временную базу данных</translation>
     </message>
     <message>
-        <location filename="../src/ace/AceImporter.cpp" line="137"/>
+        <location filename="../src/ace/AceImporter.cpp" line="136"/>
         <source>Failed to get load task for : %1</source>
         <translation>Не удалось получить загрузку задачи для: %1</translation>
     </message>

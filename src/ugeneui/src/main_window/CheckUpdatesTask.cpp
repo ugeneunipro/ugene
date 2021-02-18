@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,7 +40,7 @@
 namespace U2 {
 
 CheckUpdatesTask::CheckUpdatesTask(bool startUp)
-    : Task(tr("Check for updates"), TaskFlag_None) {
+    : Task(tr("Check for updates"), TaskFlag_SilentCancelOnShutdown) {
     runOnStartup = startUp;
     setVerboseLogMode(true);
     startError = false;

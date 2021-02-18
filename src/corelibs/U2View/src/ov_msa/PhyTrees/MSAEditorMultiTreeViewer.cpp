@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -34,59 +34,60 @@
 
 namespace U2 {
 
-MSAEditorMultiTreeViewer::MSAEditorMultiTreeViewer(QString _title, MSAEditor *_editor)
-    : editor(_editor) {
-    treeTabs = new MsaEditorTreeTabArea(editor, this);
-    titleWidget = _editor->getUI()->createHeaderLabelWidget(_title);
-    MaUtilsWidget *title = dynamic_cast<MaUtilsWidget *>(titleWidget);
-    title->setHeightMargin(-55);
-    QVBoxLayout *treeAreaLayout = new QVBoxLayout(this);
+MSAEditorMultiTreeViewer::MSAEditorMultiTreeViewer(const QString &title, MSAEditor *msaEditor)
+    : editor(msaEditor) {
+    treeTabArea = new MsaEditorTreeTabArea(editor, this);
+    titleWidget = msaEditor->getUI()->createHeaderLabelWidget(title);
+
+    auto maUtilsWidget = dynamic_cast<MaUtilsWidget *>(titleWidget);
+    maUtilsWidget->setHeightMargin(-55);
+
+    auto treeAreaLayout = new QVBoxLayout(this);
     treeAreaLayout->setMargin(0);
     treeAreaLayout->setSpacing(0);
     treeAreaLayout->addWidget(titleWidget);
-    treeAreaLayout->addWidget(treeTabs);
+    treeAreaLayout->addWidget(treeTabArea);
 
     this->setLayout(treeAreaLayout);
 
-    connect(treeTabs, SIGNAL(si_tabsCountChanged(int)), SIGNAL(si_tabsCountChanged(int)));
+    connect(treeTabArea, SIGNAL(si_tabsCountChanged(int)), SIGNAL(si_tabsCountChanged(int)));
 
     setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
 void MSAEditorMultiTreeViewer::addTreeView(GObjectViewWindow *treeView) {
-    treeTabs->addTab(treeView, treeView->getViewName());
-    treeViews.append(treeView);
+    treeTabArea->addTab(treeView, treeView->getViewName(), true);
+    treeViewList.append(treeView);
 
     const QList<GObject *> &objects = treeView->getObjects();
-    foreach (GObject *obj, objects) {
-        if (GObjectTypes::PHYLOGENETIC_TREE == obj->getGObjectType()) {
-            QString objName = obj->getDocument()->getName();
-            tabsNames.append(objName);
+    for (GObject *obj : qAsConst(objects)) {
+        if (obj->getGObjectType() == GObjectTypes::PHYLOGENETIC_TREE) {
+            tabsNameList.append(obj->getDocument()->getName());
         }
     }
 }
 
 QWidget *MSAEditorMultiTreeViewer::getCurrentWidget() const {
-    return treeTabs->getCurrentWidget();
+    return treeTabArea->getCurrentWidget();
 }
 
 MsaEditorTreeTab *MSAEditorMultiTreeViewer::getCurrentTabWidget() const {
-    return treeTabs->getCurrentTabWidget();
+    return treeTabArea->getCurrentTabWidget();
 }
 
 void MSAEditorMultiTreeViewer::sl_onTabCloseRequested(QWidget *page) {
-    treeViews.removeOne(page);
-    GObjectViewWindow *viewWindow = qobject_cast<GObjectViewWindow *>(page);
-    if (NULL != viewWindow) {
-        int i = tabsNames.indexOf(viewWindow->getViewName());
-        tabsNames.removeAt(i);
-        delete viewWindow;
-        emit si_tabsCountChanged(tabsNames.count());
-    }
+    treeViewList.removeOne(page);
+    auto viewWindow = qobject_cast<GObjectViewWindow *>(page);
+    CHECK(viewWindow != nullptr, );
+
+    int tabIndex = tabsNameList.indexOf(viewWindow->getViewName());
+    tabsNameList.removeAt(tabIndex);
+    delete viewWindow;
+    emit si_tabsCountChanged(tabsNameList.count());
 }
 
 const QStringList &MSAEditorMultiTreeViewer::getTreeNames() const {
-    return tabsNames;
+    return tabsNameList;
 }
 
 }    // namespace U2

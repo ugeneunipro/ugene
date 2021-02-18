@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -36,34 +36,38 @@ public:
     DetViewMultiLineRenderer(DetView *detView, SequenceObjectContext *ctx);
     ~DetViewMultiLineRenderer();
 
-    qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const;
-    float posToXCoordF(const qint64 p, const QSize &canvasSize, const U2Region &visibleRange) const;
+    qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const override;
+    int posToXCoord(const qint64 pos, const QSize &canvasSize, const U2Region &visibleRange) const override;
 
-    U2Region getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const;
-    U2Region getMirroredYRange(const U2Strand &mStrand) const;
+    /** Returns all y regions used to draw the given location of the annotation. */
+    QList<U2Region> getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, const QSize &canvasSize, const U2Region &visibleRange) const override;
 
-    qint64 getMinimumHeight() const;
-    qint64 getOneLineHeight() const;
-    qint64 getLinesCount(const QSize &canvasSize) const;
-    qint64 getContentIndentY(const QSize &canvasSize, const U2Region &visibleRange) const;
+    U2Region getCutSiteYRange(const U2Strand &mStrand, int availableHeight) const override;
 
-    int getDirectLine() const;
+    int getMinimumHeight() const override;
+    qint64 getOneLineHeight() const override;
+    qint64 getLinesCount(const QSize &canvasSize) const override;
 
-    int getRowsInLineCount() const;
+    int getDirectLine() const override;
 
-    QSize getBaseCanvasSize(const U2Region &visibleRange) const;
+    int getRowsInLineCount() const override;
 
-    bool isOnTranslationsLine(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const;
-    bool isOnAnnotationLine(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const;
+    QSize getBaseCanvasSize(const U2Region &visibleRange) const override;
 
-    void drawAll(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange);
-    void drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange);
-    void drawCursor(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange);
+    bool isOnTranslationsLine(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const override;
+    bool isOnAnnotationLine(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const override;
 
-    void update();
+    void drawAll(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) override;
+    void drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) override;
+    void drawCursor(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) override;
+
+    void update() override;
+
+protected:
+    U2Region getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, int availableHeight) const override;
 
 private:
-    DetViewSingleLineRenderer *singleLinePainter;
+    DetViewSingleLineRenderer *singleLineRenderer;
 
     int extraIndent;
 

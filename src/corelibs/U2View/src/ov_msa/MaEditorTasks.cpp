@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,27 +30,20 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
-#include <U2Core/MultipleChromatogramAlignmentObject.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SaveDocumentTask.h>
 #include <U2Core/TextObject.h>
 #include <U2Core/U2ObjectDbi.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/U2SequenceUtils.h>
 #include <U2Core/UnloadedObject.h>
-
-#include <U2Formats/DocumentFormatUtils.h>
-
-#include <U2Gui/OpenViewTask.h>
 
 #include "MSAEditor.h"
 #include "MSAEditorConsensusArea.h"
@@ -261,9 +254,9 @@ ExportMaConsensusTask::ExportMaConsensusTask(const ExportMaConsensusTaskSettings
     : DocumentProviderTask(tr("Export consensus"),
                            (TaskFlags(TaskFlag_NoRun) | TaskFlag_FailOnSubtaskError | TaskFlag_CancelOnSubtaskCancel)),
       settings(s),
-      extractConsensus(NULL) {
+      extractConsensus(nullptr) {
     setVerboseLogMode(true);
-    SAFE_POINT_EXT(s.ma != NULL, setError("Given msa pointer is NULL"), );
+    SAFE_POINT_EXT(s.ma != nullptr, setError("Given msa pointer is NULL"), );
 }
 
 void ExportMaConsensusTask::prepare() {
@@ -276,23 +269,27 @@ const QString &ExportMaConsensusTask::getConsensusUrl() const {
 }
 
 QList<Task *> ExportMaConsensusTask::onSubTaskFinished(Task *subTask) {
-    QList<Task *> result;
-    if (subTask == extractConsensus && !isCanceled() && !hasError()) {
-        Document *takenDoc = createDocument();
-        CHECK_OP(stateInfo, result);
-        SaveDocumentTask *saveTask = new SaveDocumentTask(takenDoc, takenDoc->getIOAdapterFactory(), takenDoc->getURL());
-        saveTask->addFlag(SaveDoc_Overwrite);
-        Project *proj = AppContext::getProject();
-        if (proj != NULL) {
-            if (proj->findDocumentByURL(takenDoc->getURL()) != NULL) {
-                result.append(saveTask);
-                return result;
-            }
-        }
-        saveTask->addFlag(SaveDoc_OpenAfter);
-        result.append(saveTask);
+    QList<Task *> taskList;
+    if (subTask != extractConsensus || isCanceled() || hasError()) {
+        return taskList;
     }
-    return result;
+    Document *consensusDocument = createDocument();
+    CHECK_OP(stateInfo, taskList);
+    auto saveTask = new SaveDocumentTask(consensusDocument, consensusDocument->getIOAdapterFactory(), consensusDocument->getURL());
+    saveTask->addFlag(SaveDoc_Overwrite);
+    taskList << saveTask;
+
+    Project *proj = AppContext::getProject();
+    if (proj == nullptr || proj->findDocumentByURL(consensusDocument->getURL()) == nullptr) {
+        saveTask->addFlag(SaveDoc_OpenAfter);
+        if (settings.format == BaseDocumentFormats::RAW_DNA_SEQUENCE || settings.format == BaseDocumentFormats::PLAIN_TEXT) {
+            // Instruct UGENE to load the file content as a RAW sequence.
+            QVariantMap hints;
+            hints[ProjectLoaderHint_DocumentFormat] = BaseDocumentFormats::RAW_DNA_SEQUENCE;
+            saveTask->setOpenDocumentWithProjectHints(hints);
+        }
+    }
+    return taskList;
 }
 
 Document *ExportMaConsensusTask::createDocument() {

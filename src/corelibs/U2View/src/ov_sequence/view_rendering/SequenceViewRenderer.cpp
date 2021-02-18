@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,16 +55,12 @@ SequenceViewRenderer::SequenceViewRenderer(SequenceObjectContext *ctx)
     : ctx(ctx) {
 }
 
-int SequenceViewRenderer::posToXCoord(const qint64 p, const QSize &canvasSize, const U2Region &visibleRange) const {
-    return qRound(posToXCoordF(p, canvasSize, visibleRange));
-}
-
-float SequenceViewRenderer::posToXCoordF(qint64 p, const QSize &canvasSize, const U2Region &visibleRange) const {
+int SequenceViewRenderer::posToXCoord(const qint64 pos, const QSize &canvasSize, const U2Region &visibleRange) const {
     Q_UNUSED(canvasSize);
-    CHECK(visibleRange.contains(p) || p == visibleRange.endPos(), -1);
+    CHECK(visibleRange.contains(pos) || pos == visibleRange.endPos(), -1);
 
-    float res = ((p - visibleRange.startPos) * getCurrentScale());
-    return res;
+    double res = (pos - visibleRange.startPos) * getCurrentScale();
+    return qRound(res);
 }
 
 qint64 SequenceViewRenderer::getRowLineHeight() const {

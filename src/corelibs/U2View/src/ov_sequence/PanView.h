@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -202,7 +202,7 @@ signals:
     void si_updateRows();
 
 public:
-    void setSelection(const U2Region &r);
+    void setSelection(const U2Region &r) override;
     void centerRow(int row);
     int calculateNumRowBarSteps() const;
 
@@ -241,27 +241,28 @@ public:
     int zoomUsing;
 };
 
-class PanViewRenderArea : public GSequenceLineViewAnnotatedRenderArea {
+class U2VIEW_EXPORT PanViewRenderArea : public GSequenceLineViewGridAnnotationRenderArea {
     friend class PanView;
     Q_OBJECT
 public:
     PanViewRenderArea(PanView *d, PanViewRenderer *renderer);
-    ~PanViewRenderArea();
 
-    PanViewRenderer *getRenderer() {
+    PanViewRenderer *getRenderer() const {
         return renderer;
     }
 
-    virtual U2Region getAnnotationYRange(Annotation *a, int region, const AnnotationSettings *as) const;
+    /** Returns all y-regions covered by the annotation location region. */
+    QList<U2Region> getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const override;
+
+    /** Returns Y range for the annotation within render area. */
+    U2Region getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const;
 
     int getRowLineHeight() const;
 
-    void setRenderer(PanViewRenderer *renderer);
-
 protected:
-    virtual void drawAll(QPaintDevice *pd);
+    void drawAll(QPaintDevice *pd) override;
 
-    void resizeEvent(QResizeEvent *e);
+    void resizeEvent(QResizeEvent *e) override;
 
 private:
     bool isSequenceCharsVisible() const;
@@ -270,8 +271,8 @@ private:
         return static_cast<PanView *>(view);
     }
 
-    PanView *panView;
-    PanViewRenderer *renderer;
+    PanView *const panView;
+    PanViewRenderer *const renderer;
 };
 
 }    // namespace U2

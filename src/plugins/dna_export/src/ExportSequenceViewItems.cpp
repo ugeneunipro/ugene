@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -314,8 +314,8 @@ void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
     QString dirPath;
     QString fileBaseName;
 
-    GUrl seqUrl = view->getSequenceInFocus()->getSequenceGObject()->getDocument()->getURL();
-    GUrlUtils::getLocalPathFromUrl(seqUrl, view->getSequenceInFocus()->getSequenceGObject()->getGObjectName(), dirPath, fileBaseName);
+    GUrl seqUrl = view->getActiveSequenceContext()->getSequenceGObject()->getDocument()->getURL();
+    GUrlUtils::getLocalPathFromUrl(seqUrl, view->getActiveSequenceContext()->getSequenceGObject()->getGObjectName(), dirPath, fileBaseName);
     GUrl defaultUrl = GUrlUtils::rollFileName(dirPath + QDir::separator() + fileBaseName + "_annotation." + fileExt, DocumentUtils::getNewDocFileNameExcludesHint());
 
     QObjectScopedPointer<ExportSequencesDialog> d = new ExportSequencesDialog(true,
@@ -357,7 +357,7 @@ void ADVExportContext::sl_saveSelectedAnnotationsSequence() {
 }
 
 void ADVExportContext::sl_saveSelectedSequences() {
-    ADVSequenceObjectContext *seqCtx = view->getSequenceInFocus();
+    ADVSequenceObjectContext *seqCtx = view->getActiveSequenceContext();
     DNASequenceSelection *sel = NULL;
     if (seqCtx != NULL) {
         //TODO: support multi-export..
@@ -424,7 +424,7 @@ void ADVExportContext::sl_saveSelectedAnnotations() {
 
     Annotation *first = *annotationSet.begin();
     Document *doc = first->getGObject()->getDocument();
-    ADVSequenceObjectContext *sequenceContext = view->getSequenceInFocus();
+    ADVSequenceObjectContext *sequenceContext = view->getActiveSequenceContext();
 
     GUrl url;
     if (doc != NULL) {
@@ -477,7 +477,7 @@ void ADVExportContext::prepareMAFromBlastAnnotations(MultipleSequenceAlignment &
     QSet<QString> names;
     int rowIdx = 0;
 
-    for (const Annotation *annotation : selection) {
+    for (const Annotation *annotation : qAsConst(selection)) {
         SAFE_POINT(annotation->getName() == BLAST_ANNOTATION_NAME, tr("%1 is not a BLAST annotation").arg(annotation->getName()), );
 
         ADVSequenceObjectContext *seqCtx = view->getSequenceContext(annotation->getGObject());

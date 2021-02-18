@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,13 +33,14 @@ class U2VIEW_EXPORT McaReferenceAreaRenderer : public PanViewRenderer {
 public:
     McaReferenceAreaRenderer(PanView *panView, SequenceObjectContext *ctx, MaEditor *maEditor);
 
-    qint64 getMinimumHeight() const;
-    float posToXCoordF(const qint64 position, const QSize &canvasSize, const U2Region &visibleRange) const;
+    int getMinimumHeight() const override;
+
+    int posToXCoord(const qint64 position, const QSize &canvasSize, const U2Region &visibleRange) const override;
 
     void setFont(const QFont &font);
 
 private:
-    void drawSequence(QPainter &p, const QSize &canvasSize, const U2Region &region);
+    void drawSequence(QPainter &p, const QSize &canvasSize, const U2Region &region) override;
 
     MaEditor *maEditor;
 };

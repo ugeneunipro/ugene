@@ -24,7 +24,7 @@
         <translation>The unsupported format was provided</translation>
     </message>
     <message>
-        <location filename="../src/UgeneContextWrapper.cpp" line="425"/>
+        <location filename="../src/UgeneContextWrapper.cpp" line="422"/>
         <source>%1-bit version of UGENE started</source>
         <translation>%1-bit version of UGENE started</translation>
     </message>
@@ -32,7 +32,7 @@
 <context>
     <name>U2::AppContextImpl</name>
     <message>
-        <location filename="../src/UgeneContextWrapper.cpp" line="163"/>
+        <location filename="../src/UgeneContextWrapper.cpp" line="161"/>
         <source>UGENE script environment initialization started</source>
         <translation>UGENE script environment initialization started</translation>
     </message>

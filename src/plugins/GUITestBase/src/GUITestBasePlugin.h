@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -26,16 +26,19 @@
 
 #include <U2Core/PluginModel.h>
 
+#include <U2Test/UGUITest.h>
+
 #include "test_runner/GUITestRunner.h"
 
 namespace U2 {
 
 class UGUITestBase;
 
-class GUITestBasePlugin : public Plugin {
+class GUITestBasePlugin : public Plugin, private UGUITestLabels {
     Q_OBJECT
 public:
     GUITestBasePlugin();
+
 private slots:
     void sl_showWindow();
 

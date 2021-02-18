@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,8 +28,8 @@
 
 namespace U2 {
 
-const QString PhyTreeDisplayOptionsWidget::displayWithMsaEditor = CreatePhyTreeWidget::settingsPath() + "/display_with_msa_editor";
-const QString PhyTreeDisplayOptionsWidget::synchronizeWithMsa = CreatePhyTreeWidget::settingsPath() + "/synchronize_with_msa";
+const QString PhyTreeDisplayOptionsWidget::displayWithMsaEditor = CreatePhyTreeWidget::getAppSettingsRoot() + "/display_with_msa_editor";
+const QString PhyTreeDisplayOptionsWidget::synchronizeWithMsa = CreatePhyTreeWidget::getAppSettingsRoot() + "/synchronize_with_msa";
 
 PhyTreeDisplayOptionsWidget::PhyTreeDisplayOptionsWidget(QWidget *parent)
     : CreatePhyTreeWidget(parent),

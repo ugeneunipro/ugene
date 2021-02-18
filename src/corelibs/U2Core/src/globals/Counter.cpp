@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -54,7 +54,7 @@ GCounter::~GCounter() {
 };
 
 GCounter *GCounter::findCounter(const QString &name, const QString &suffix) {
-    for (GCounter *counter : getGlobalCounterList()) {
+    for (GCounter *counter : qAsConst(getGlobalCounterList())) {
         if (name == counter->name && suffix == counter->suffix) {
             return counter;
         }

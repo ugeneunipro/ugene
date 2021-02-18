@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -71,7 +71,7 @@ NotificationsDashboardWidget::NotificationsDashboardWidget(const QDomElement &do
         updateNotificationRow(notificationIndex);
     }
     if (monitor != nullptr) {
-        for (auto notification : monitor->getNotifications()) {
+        for (auto notification : qAsConst(monitor->getNotifications())) {
             sl_newNotification(notification, 1);
         }
         connect(monitor, SIGNAL(si_newNotification(WorkflowNotification, int)), SLOT(sl_newNotification(WorkflowNotification, int)));
@@ -111,7 +111,8 @@ void NotificationsDashboardWidget::updateNotificationRow(int workerIndex) {
     QString messageWithCount = (info.count > 1 ? "(" + QString::number(info.count) + ") " : "") + info.message;
     bool isLastRow = workerIndex == notificationList.size() - 1;
     int rowIndex = workerIndex + 1;
-    QString iconHtml = info.type.isEmpty() ? "" : "<center><img src=\":/U2Lang/images/" + info.type + "_20px.png\"></center>";
+    QString iconHtml = info.type.isEmpty() ? "" : "<center><img class=\"" + info.type +
+        "\" src=\":/U2Lang/images/" + info.type + "_20px.png\"></center>";
     QString rowId = QString::number(workerIndex);
     addTableCell(tableGridLayout, rowId, iconHtml, rowIndex, 0, isLastRow, false);
     addTableCell(tableGridLayout, rowId, info.actorName, rowIndex, 1, isLastRow, false);
@@ -126,7 +127,7 @@ QString NotificationsDashboardWidget::toHtml() const {
     QString html = "<div id=\"problemsWidget\">\n<table>\n";
     html += "<thead><tr><th>" + tr("Type") + "</th><th>" + tr("Element") + "</th><th>" + tr("Message") + "</th></tr></thead>\n";
     html += "<tbody id=\"" + NOTIFICATIONS_WIDGET_ID + "\">\n";
-    for (auto notification : notificationList) {
+    for (auto notification : qAsConst(notificationList)) {
         if (notification.type.isEmpty()) {
             continue;
         }

@@ -1,6 +1,7 @@
 #ifndef _HI_GUI_TEST_H_
 #define _HI_GUI_TEST_H_
 
+#include <QSet>
 #include <QTimer>
 
 #include "GTGlobals.h"
@@ -8,115 +9,62 @@
 
 namespace HI {
 
-class GUITestIgnorable {
-public:
-    // not ignored test, ignored by all, ignored on windows platforms, ignored on linux platforms
-    enum IgnoreStatus { NotIgnored = 0x0,
-                        Ignored = 0x1,
-                        IgnoredWindows = 0x2,
-                        IgnoredLinux = 0x4,
-                        IgnoredMac = 0x8 };
-    enum IgnoreReason { Bug,
-                        System };
-
-    GUITestIgnorable()
-        : ignoreStatus(NotIgnored), ignoreMessage(""), ignoreReason(Bug) {
-    }
-
-    void setIgnored(int status, const QString &message = "") {
-        ignoreStatus = status;
-        ignoreMessage = message;
-        ignoreReason = Bug;
-    }
-    void setReason(IgnoreReason _reason) {
-        ignoreReason = _reason;
-    }
-    int getIgnoreStatus() const {
-        return ignoreStatus;
-    }
-    QString getIgnoreMessage() const {
-        return ignoreMessage;
-    }
-
-    bool isIgnored() const {
-        bool ignored = ignoreStatus & Ignored;
-        bool platformIgnore = false;
-
-#ifdef _WIN32
-        platformIgnore = (ignoreStatus & IgnoredWindows);
-#endif
-
-#ifdef __linux__
-        platformIgnore = (ignoreStatus & IgnoredLinux);
-#endif
-
-#ifdef Q_OS_MAC
-        platformIgnore = (ignoreStatus & IgnoredMac);
-#endif
-
-        return ignored || platformIgnore;
-    }
-    IgnoreReason getReason() {
-        return ignoreReason;
-    }
-
-private:
-    int ignoreStatus;
-    QString ignoreMessage;
-    IgnoreReason ignoreReason;
-};
-
-class HI_EXPORT GUITest : public QObject, public GUITestIgnorable {
+class HI_EXPORT GUITest : public QObject {
     Q_OBJECT
 public:
-    GUITest(const QString &_name = "", const QString &_suite = "", int _timeout = 240000, QString _label = "")
-        : name(_name), suite(_suite), timeout(_timeout), label(_label) {
+    GUITest(const QString &name, const QString &suite, int timeout, const QSet<QString> &labelSet = QSet<QString>())
+        : name(name), suite(suite), timeout(timeout), labelSet(labelSet) {
     }
     virtual ~GUITest() {
     }
 
-    QString getName() const {
-        return name;
-    }
-    QString getSuite() const {
-        return suite;
-    }
+    /** Returns full test name: suite + testName. */
     QString getFullName() const {
-        return suite + ":" + name;
-    }
-    QString getLabel() const {
-        return label;
-    }
-    int getTimeout() const {
-        return timeout;
-    }
-    void setName(const QString &n) {
-        name = n;
-    }
-    void setTimeout(int _timeout) {
-        timeout = _timeout;
-    }
-    void setLabel(QString _label) {
-        label = _label;
+        return getFullTestName(suite, name);
     }
 
+    /** Screenshot dir for tests. TODO: this field is not used inside QSpec. Move it to the correct module. */
     static const QString screenshotDir;
 
+    /** Scenario of the test. Must be implemented in the child class. */
     virtual void run(GUITestOpStatus &os) = 0;
+
+    /** Post-run cleanup. Optional. */
     virtual void cleanup() {
     }
 
-private slots:
-    void sl_fail();
+    /** Unique GUI test name within the suite. */
+    const QString name;
+
+    /** Name of the GUI test suite. */
+    const QString suite;
+
+    /** Timeout millis for the test. The test execution is interrupted if the test runs above that limit. */
+    const int timeout;
+
+    /** Set of test labels. */
+    const QSet<QString> labelSet;
+
+    static QString getFullTestName(const QString &suiteName, const QString &testName) {
+        return suiteName + ":" + testName;
+    }
+
+    /** See docs for the field. */
+    const QString &getDescription() const {
+        return description;
+    }
+
+    /** See docs for the field. */
+    void setDescription(const QString &newDescription) {
+        description = newDescription;
+    }
 
 private:
     GUITest(const GUITest &);
     GUITest &operator=(const GUITest &);
 
-    QString name;
-    QString suite;
-    int timeout;
-    QString label;
+    /** Extra description about the test available to the test runner (example: Teamcity). */
+    QString description;
 };
 
 typedef QList<GUITest *> GUITests;

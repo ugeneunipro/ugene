@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -103,7 +103,7 @@ void CustomWorkerUtils::commandReplaceAllSpecialByUgenePath(QString &cmd, Extern
     commandReplaceSpecialByUgenePath(cmd, TOOL_PATH_VAR_NAME, cfg->customToolPath);
 
     QList<ExternalTool *> all = AppContext::getExternalToolRegistry()->getAllEntries();
-    for (auto tool : all) {
+    for (auto tool : qAsConst(all)) {
         if (!tool->isModule()) {
             commandReplaceSpecialByUgenePath(cmd, tool);
         }

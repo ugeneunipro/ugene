@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -56,8 +56,10 @@ BlastReadsSubTask::BlastReadsSubTask(const QString &dbPath,
       readsNames(readsNames),
       reference(reference),
       minIdentityPercent(minIdentityPercent),
+      readIndex(0),
       storage(storage) {
     setMaxParallelSubtasks(AppContext::getAppSettings()->getAppResourcePool()->getIdealThreadCount());
+    tpm = Progress_Manual;
 }
 
 void BlastReadsSubTask::prepare() {
@@ -65,12 +67,29 @@ void BlastReadsSubTask::prepare() {
     CHECK_EXT(!GUrlUtils::containSpaces(tempPath), setError(tr("The task uses a temporary folder to process the data. The folder path is required not to have spaces. "
                                                                "Please set up an appropriate path for the \"Temporary files\" parameter on the \"Directories\" tab of the UGENE Application Settings.")), );
 
-    foreach (const SharedDbiDataHandler &read, reads) {
-        BlastAndSwReadTask *subTask = new BlastAndSwReadTask(dbPath, read, reference, minIdentityPercent, readsNames[read], storage);
-        addSubTask(subTask);
-
-        blastSubTasks << subTask;
+    // First create all tasks to keep the original reads order.
+    for (const SharedDbiDataHandler &read : qAsConst(reads)) {
+        blastSubTasks << new BlastAndSwReadTask(dbPath, read, reference, minIdentityPercent, readsNames[read], storage);
     }
+
+    // Avoid adding too many subtasks to the scheduler at once.
+    // Large numbers of subtasks will make task scheduler slow and freeze the UI.
+    int firstBucketSize = qMin(getMaxParallelSubtasks(), reads.size());
+    for (readIndex = 0; readIndex < firstBucketSize; readIndex++) {
+        addSubTask(blastSubTasks[readIndex]);
+    }
+}
+
+QList<Task *> BlastReadsSubTask::onSubTaskFinished(Task *task) {
+    QList<Task *> newSubtasks;
+    CHECK(!isCanceled() && !hasError(), newSubtasks);
+    stateInfo.progress = qRound(100.0 * (readIndex + 1) / reads.size());
+
+    if (readIndex < reads.size()) {
+        newSubtasks << blastSubTasks[readIndex];
+        readIndex++;
+    }
+    return newSubtasks;
 }
 
 const QList<BlastAndSwReadTask *> &BlastReadsSubTask::getBlastSubtasks() const {
@@ -99,13 +118,13 @@ BlastAndSwReadTask::BlastAndSwReadTask(const QString &dbPath,
       readName(readName),
       complement(false),
       skipped(false) {
-    blastResultDir = ExternalToolSupportUtils::createTmpDir("blast_reads", stateInfo);
-
     QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, reference));
     referenceLength = refObject->getSequenceLength();
 }
 
 void BlastAndSwReadTask::prepare() {
+    blastResultDir = ExternalToolSupportUtils::createTmpDir("blast_reads", stateInfo);
+    CHECK_OP(stateInfo, );
     blastTask = getBlastTask();
     CHECK_OP(stateInfo, );
     SAFE_POINT_EXT(NULL != blastTask, setError("BLAST subtask is NULL"), );

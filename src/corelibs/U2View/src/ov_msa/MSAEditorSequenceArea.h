@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -133,8 +133,20 @@ public:
     bool hasAminoAlphabet();
 
 public slots:
-    void sl_setCollapsingMode(bool enabled);
+
+    /**
+     * Enables/disables virtual order mode for the MSA.
+     * When enabled automatically groups sequences by their content: calls sl_groupSequencesByContent().
+     */
+    void sl_toggleVirtualOrderMode(bool enabled);
+
     void sl_copySelectionFormatted();
+
+    /**
+     * Enables virtual grouping mode. Re-orders and re-groups sequences according to the name lists.
+     * TODO: rework to use sequence IDs. Multiple same-name sequences can be present in the list.
+     */
+    void sl_setVirtualGroupingMode(const QList<QStringList> &);
 
 protected:
     void focusOutEvent(QFocusEvent *fe);
@@ -160,20 +172,25 @@ private slots:
     void sl_delCol();
     void sl_goto();
     void sl_removeAllGaps();
-    void sl_updateCollapsingMode();
+
+    /**
+     * Groups sequences by content, so each group contains only sequences with the equal base (gaps-excluded) content.
+     * Works a a part of virtual ordering mode only.
+     */
+    void sl_groupSequencesByContent();
+
     void sl_reverseComplementCurrentSelection();
     void sl_reverseCurrentSelection();
     void sl_complementCurrentSelection();
 
     void sl_onPosChangeRequest(int position);
 
-    void sl_createSubaligniment();
+    void sl_createSubalignment();
 
     void sl_saveSequence();
 
     void sl_modelChanged();
 
-    void sl_setCollapsingRegions(const QList<QStringList> &);
     void sl_fontChanged(QFont font);
 
     void sl_alphabetChanged(const MaModificationInfo &mi, const DNAAlphabet *prevAlphabet);
@@ -197,18 +214,30 @@ private:
     QAction *saveSequence;
     QAction *addSeqFromFileAction;
     QAction *addSeqFromProjectAction;
-    QAction *collapseModeSwitchAction;
-    QAction *collapseModeUpdateAction;
+
+    /**
+     * Toggles state of the virtual order mode.
+     * TODO: this is a global action for MA editor. Move it to the M(S)AEditor.h
+     */
+    QAction *toggleVirtualOrderModeAction;
+
+    /**
+     * Joins sequences with the equal content into a single collapsible group.
+     * Enabled only in the virtual grouping mode.
+     * TODO: this is a global action for MA editor. Move it to M(S)AEditor.h
+     */
+    QAction *groupSequencesByContentAction;
+
     QAction *reverseComplementAction;
     QAction *reverseAction;
     QAction *complementAction;
 };
 
 // SANGER_TODO: move to EditorTasks?
-class U2VIEW_EXPORT ExportHighligtningTask : public Task {
+class U2VIEW_EXPORT ExportHighlightingTask : public Task {
     Q_OBJECT
 public:
-    ExportHighligtningTask(ExportHighligtingDialogController *dialog, MaEditor *editor);
+    ExportHighlightingTask(ExportHighligtingDialogController *dialog, MaEditor *editor);
 
     void run();
     QString generateReport() const;

@@ -529,7 +529,7 @@
         <translation>Диапазоны</translation>
     </message>
     <message>
-        <location filename="../src/util/U2FeatureUtils.cpp" line="128"/>
+        <location filename="../src/util/U2FeatureUtils.cpp" line="141"/>
         <source>Unexpected feature operator value detected.</source>
         <translation>Unexpected feature operator value detected.</translation>
     </message>
@@ -659,7 +659,7 @@
 <context>
     <name>U2::AutoAnnotationsSupport</name>
     <message>
-        <location filename="../src/globals/AutoAnnotationsSupport.cpp" line="106"/>
+        <location filename="../src/globals/AutoAnnotationsSupport.cpp" line="94"/>
         <source>Auto-annotations [%1 | %2]</source>
         <translation>Автоаннотации [%1 | %2]</translation>
     </message>
@@ -667,7 +667,7 @@
 <context>
     <name>U2::AutoAnnotationsUpdateTask</name>
     <message>
-        <location filename="../src/globals/AutoAnnotationsSupport.cpp" line="297"/>
+        <location filename="../src/globals/AutoAnnotationsSupport.cpp" line="286"/>
         <source>Empty auto-annotation object</source>
         <translation>Объект автоаннотации пуст</translation>
     </message>
@@ -921,20 +921,20 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::CreateAnnotationsTask</name>
     <message>
-        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="37"/>
-        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="46"/>
-        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="57"/>
+        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="36"/>
+        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="45"/>
+        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="56"/>
         <source>Create annotations</source>
         <translation>Сохранение аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="65"/>
-        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="71"/>
+        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="64"/>
+        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="70"/>
         <source>Annotation table has been removed unexpectedly</source>
         <translation>Annotation table has been removed unexpectedly</translation>
     </message>
     <message>
-        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="107"/>
+        <location filename="../src/tasks/CreateAnnotationTask.cpp" line="110"/>
         <source>Annotation object &apos;%1&apos; not found in active project: %2</source>
         <translation>Таблица аннотаций &quot;%1&quot; не найдена в проекте: %2</translation>
     </message>
@@ -1307,12 +1307,12 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::DbiDocumentFormat</name>
     <message>
-        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="42"/>
+        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="41"/>
         <source>ugenedb is a internal UGENE database file format</source>
         <translation>ugenedb это внутренний формат файла базы данных UGENE</translation>
     </message>
     <message>
-        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="151"/>
+        <location filename="../src/dbi/DbiDocumentFormat.cpp" line="146"/>
         <source>Invalid destination database reference</source>
         <translation>Неверное расположение референса базы</translation>
     </message>
@@ -1641,7 +1641,7 @@ The session database file is removed after closing of UGENE.</source>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="330"/>
         <source>Folder is read-only: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Эта папка только для чтения: %1</translation>
     </message>
     <message>
         <location filename="../src/util/GUrlUtils.cpp" line="368"/>
@@ -2348,22 +2348,22 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::RelocateDocumentTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="350"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="360"/>
         <source>Relocate document %1 -&gt; %2</source>
         <translation>Перемещение документа %1 -&gt; %2</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="356"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="366"/>
         <source>No active project found</source>
         <translation>Нет проекта</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="360"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="370"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="369"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="379"/>
         <source>Only unloaded objects can be relocated</source>
         <translation>Можно перемещать только выгруженные документы</translation>
     </message>
@@ -2421,22 +2421,22 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::SaveCopyAndAddToProjectTask</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="311"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="321"/>
         <source>Save a copy %1</source>
         <translation>Сохранение копии %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="328"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="338"/>
         <source>No active project found</source>
         <translation>Нет проекта</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="329"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="339"/>
         <source>Project is locked</source>
         <translation>Проект заблокирован</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="333"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="343"/>
         <source>Document is already added to the project %1</source>
         <translation>Документ уже добавлен в проект: %1</translation>
     </message>
@@ -2509,34 +2509,34 @@ The session database file is removed after closing of UGENE.</source>
 <context>
     <name>U2::SaveMultipleDocuments</name>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="206"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="216"/>
         <source>Save multiple documents</source>
         <translation>Сохранение нескольких документов</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="217"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="227"/>
         <source>Question?</source>
         <translation>Вопрос?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="218"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="228"/>
         <source>Save document: %1</source>
         <translation>Сохранить документ: %1</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="275"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="285"/>
         <source>You have no permission to write to &apos;%1&apos; file.
 UGENE contains unsaved modifications.</source>
         <translation>У вас недостаточно прав для записи в &apos;%1&apos; файл.
 UGENE содержит несохраненные изменения.</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="276"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="286"/>
         <source>Do you want to save changes to another file?</source>
         <translation>Хотите сохранить изменения в другой файл?</translation>
     </message>
     <message>
-        <location filename="../src/tasks/SaveDocumentTask.cpp" line="290"/>
+        <location filename="../src/tasks/SaveDocumentTask.cpp" line="300"/>
         <source>Save as</source>
         <translation>Сохранить как</translation>
     </message>
@@ -2584,6 +2584,14 @@ UGENE содержит несохраненные изменения.</translati
         <location filename="../src/io/StringAdapter.cpp" line="30"/>
         <source>String buffer</source>
         <translation>Буфер строки</translation>
+    </message>
+</context>
+<context>
+    <name>U2::TmpDirChecker</name>
+    <message>
+        <location filename="../src/tasks/TmpDirChecker.cpp" line="35"/>
+        <source>Checking access rights to the temporary folder</source>
+        <translation>Проверка доступа к временной папке</translation>
     </message>
 </context>
 <context>

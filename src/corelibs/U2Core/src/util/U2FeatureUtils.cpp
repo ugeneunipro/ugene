@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -82,7 +82,7 @@ QList<U2Feature> U2FeatureUtils::exportAnnotationDataToFeatures(const QList<Shar
 
     SAFE_POINT(dbi != nullptr, "Feature DBI is not initialized!", resultFeatureList);
 
-    for (const SharedAnnotationData &annotation : annotationList) {
+    for (const SharedAnnotationData &annotation : qAsConst(annotationList)) {
         SAFE_POINT(!annotation->location->regions.isEmpty(), "Invalid annotation location!", resultFeatureList);
 
         U2Feature feature;
@@ -514,7 +514,7 @@ void U2FeatureUtils::createFeatureEntityFromAnnotationData(const SharedAnnotatio
     }
 
     //add qualifiers
-    for (const U2Qualifier &qualifier : annotation->qualifiers) {
+    for (const U2Qualifier &qualifier : qAsConst(annotation->qualifiers)) {
         resFeatureKeys.append(U2FeatureKey(qualifier.name, qualifier.value));
     }
 

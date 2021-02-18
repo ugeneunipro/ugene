@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -115,7 +115,7 @@ void QueryDesignerViewContext::sl_showDialog() {
     GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(sender());
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
     assert(av);
-    ADVSequenceObjectContext *seqCtx = av->getSequenceInFocus();
+    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
     QObjectScopedPointer<QDDialog> d = new QDDialog(seqCtx);
     d->exec();
 }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -235,7 +235,8 @@ ExternalToolRegistry::~ExternalToolRegistry() {
 }
 
 ExternalTool *ExternalToolRegistry::getByName(const QString &name) const {
-    for (ExternalTool *tool : toolByLowerCaseIdMap.values()) {
+    const QList<ExternalTool *> toolList = toolByLowerCaseIdMap.values();
+    for (ExternalTool *tool : qAsConst(toolList)) {
         if (tool->getName() == name) {
             return tool;
         }
@@ -281,7 +282,8 @@ QList<ExternalTool *> ExternalToolRegistry::getAllEntries() const {
 
 QList<QList<ExternalTool *>> ExternalToolRegistry::getAllEntriesSortedByToolKits() const {
     QMap<QString, QList<ExternalTool *>> toolListByToolKitNameMap;
-    for (ExternalTool *tool : toolByLowerCaseIdMap.values()) {
+    const QList<ExternalTool *> toolList = toolByLowerCaseIdMap.values();
+    for (ExternalTool *tool : qAsConst(toolList)) {
         QString toolKitName = tool->getToolKitName();
         if (!toolListByToolKitNameMap.contains(toolKitName)) {
             toolListByToolKitNameMap.insert(toolKitName, QList<ExternalTool *>() << tool);
@@ -292,7 +294,8 @@ QList<QList<ExternalTool *>> ExternalToolRegistry::getAllEntriesSortedByToolKits
     }
     // Sort tools inside every toolkit tools list by tool name.
     QList<QList<ExternalTool *>> sortedResultList;
-    for (QList<ExternalTool *> &toolsList : toolListByToolKitNameMap.values()) {
+    const QList<QList<ExternalTool *>> toolkitLists = toolListByToolKitNameMap.values();
+    for (QList<ExternalTool *> toolsList : qAsConst(toolkitLists)) {
         std::sort(toolsList.begin(), toolsList.end(), [](ExternalTool *t1, ExternalTool *t2) {
             return t1->getName().compare(t2->getName(), Qt::CaseInsensitive) < 0;
         });

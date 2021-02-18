@@ -1,7 +1,6 @@
-﻿
-/**
+﻿/**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -40,6 +39,7 @@
 #include <QList>
 
 #include <U2View/MaEditorNameList.h>
+#include <U2View/McaEditorReferenceArea.h>
 
 #include "GTTestsMcaEditor.h"
 #include "GTUtilsDashboard.h"
@@ -144,7 +144,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     CHECK_SET_ERR(rows == 16, QString("Incorrect rows quantity, expected: 16, current: %1").arg(rows));
     //    16 reads with names "SZYD_Cas9_CR50"..."SZYD_Cas9_CR56", "SZYD_Cas9_CR60"..."SZYD_Cas9_CR66", "SZYD_Cas9_CR70" and "SZYD_Cas9_CR71"
     QList<QString> rowNames = GTUtilsMcaEditor::getReadsNames(os);
-    for (const QString &rowName : rowNames) {
+    for (const QString &rowName : qAsConst(rowNames)) {
         bool isNameFound = false;
         for (int i = 0; i < 16; i++) {
             QString currentName = namesOfRow[i];
@@ -157,7 +157,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     }
 
     //5. Report with info
-    GTUtilsNotifications::checkNotificationReportText(os, QStringList() << "Mapped reads (16)" << "Filtered by low similarity (4)");
+    GTUtilsNotifications::checkNotificationReportText(os, QStringList() << "Mapped reads (16)"
+                                                                        << "Filtered by low similarity (4)");
 
     // No Еrrors in the Log
     QStringList errors = GTUtilsLog::getErrors(os, GTLogTracer("error"));
@@ -1617,7 +1618,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0017_1) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -1743,7 +1744,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0018_1) {
     //    1. Open "_common_data/sanger/alignment.ugenedb".
-    QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -1861,7 +1862,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0019) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -1890,7 +1891,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
 GUI_TEST_CLASS_DEFINITION(test_0021) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -1936,7 +1937,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
 
 GUI_TEST_CLASS_DEFINITION(test_0022_1) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -1992,7 +1993,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_0022_2) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -2060,7 +2061,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0022_3) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -2124,7 +2125,7 @@ GUI_TEST_CLASS_DEFINITION(test_0022_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_0023_1) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -2161,7 +2162,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_0023_2) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -2212,7 +2213,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0023_3) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -2258,7 +2259,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_0024_1) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -2347,7 +2348,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_0024_2) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -2448,7 +2449,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0024_3) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -2546,7 +2547,7 @@ GUI_TEST_CLASS_DEFINITION(test_0024_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_0025_1) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -2584,7 +2585,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_0025_2) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -2633,7 +2634,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0025_3) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -2679,7 +2680,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -2760,7 +2761,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_0026_2) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -2844,7 +2845,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0026_3) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -2928,7 +2929,7 @@ GUI_TEST_CLASS_DEFINITION(test_0026_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_0027_1) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -2987,7 +2988,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027_1) {
 
 GUI_TEST_CLASS_DEFINITION(test_0027_2) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -3047,7 +3048,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027_2) {
 
 GUI_TEST_CLASS_DEFINITION(test_0027_3) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -3106,7 +3107,7 @@ GUI_TEST_CLASS_DEFINITION(test_0027_3) {
 
 GUI_TEST_CLASS_DEFINITION(test_0028) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -3138,7 +3139,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
 
 GUI_TEST_CLASS_DEFINITION(test_0029) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -3169,7 +3170,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
 
 GUI_TEST_CLASS_DEFINITION(test_0030) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -3213,7 +3214,7 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
 
 GUI_TEST_CLASS_DEFINITION(test_0033) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -3234,7 +3235,7 @@ GUI_TEST_CLASS_DEFINITION(test_0033) {
 
 GUI_TEST_CLASS_DEFINITION(test_0034) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -3282,7 +3283,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
 
 GUI_TEST_CLASS_DEFINITION(test_0038) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -3318,7 +3319,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 
 GUI_TEST_CLASS_DEFINITION(test_0039) {
     //1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -3510,7 +3511,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     //    Check values on the status bar with different selections in the MCA
 
     //    1. Open "_common_data/sanger/alignment.ugenedb".
-    const QString filePath = sandBoxDir + getSuite() + "_" + getName() + ".ugenedb";
+    const QString filePath = sandBoxDir + suite + "_" + name + ".ugenedb";
     GTFile::copy(os, testDir + "_common_data/sanger/alignment.ugenedb", filePath);
     GTFileDialog::openFile(os, filePath);
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
@@ -3531,7 +3532,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    2. Select the first row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 0);
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 1 / 16; RefPos: - / 11878; ReadPos: - / 956.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3549,7 +3549,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    3. Select the second row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 1);
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 2 / 16; RefPos: - / 11878; ReadPos: - / 1173.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3567,7 +3566,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    4. Select the last row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 15);
-    GTGlobals::sleep(1000);
 
     //    Expected state: Line: 16 / 16; RefPos: - / 11878; ReadPos: - / 1048.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3585,7 +3583,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    5. Click "Show chromatograms" button on the toolbar.
     GTUtilsMcaEditor::toggleShowChromatogramsMode(os);
-    GTGlobals::sleep(1000);
 
     //    Expected state: all rows have been expanded, the labels are the same as in the previous step.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3600,10 +3597,9 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR("11878" == referenceLengthString, QString("5. Unexpected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
     CHECK_SET_ERR(NONE_MARK == readPositionString, QString("5. Unexpected read position label: expected '%1', got '%2'").arg(NONE_MARK).arg(readPositionString));
     CHECK_SET_ERR("1048" == readLengthString, QString("5. Unexpected read length label: expected '%1', got '%2'").arg("1048").arg(readLengthString));
-    GTGlobals::sleep(500);
+
     //    6. Select the first row in the name list.
     GTUtilsMcaEditor::clickReadName(os, 0);
-    GTGlobals::sleep(500);
 
     //    Expected state: Line: 1 / 16; RefPos: - / 11878; ReadPos: - / 956.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3621,7 +3617,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    7. Select the first base in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 0);
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: - / 16; RefPos: 1 / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3630,6 +3625,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     referenceLengthString = GTUtilsMcaEditorStatusWidget::getReferenceUngappedLengthString(os);
     readPositionString = GTUtilsMcaEditorStatusWidget::getReadUngappedPositionString(os);
     readLengthString = GTUtilsMcaEditorStatusWidget::getReadUngappedLengthString(os);
+
     CHECK_SET_ERR(NONE_MARK == rowNumberString, QString("7. Unexpected row number label: expected '%1', got '%2'").arg(NONE_MARK).arg(rowNumberString));
     CHECK_SET_ERR("16" == rowCountString, QString("7. Unexpected rows count label: expected '%1', got '%2'").arg("16").arg(rowCountString));
     CHECK_SET_ERR("1" == referencePositionString, QString("7. Unexpected reference position label: expected '%1', got '%2'").arg("1").arg(referencePositionString));
@@ -3639,7 +3635,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    8. Select the third base in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 2);
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: - / 16; RefPos: 3 / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3657,7 +3652,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    9. Select the last base in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 11936);
-    GTGlobals::sleep(1000);
 
     //    Expected state: Line: - / 16; RefPos: 11878 / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3675,7 +3669,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    10. Select a column with a gap in the reference.
     GTUtilsMcaEditorReference::clickToPosition(os, 2071);
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: - / 16; RefPos: gap / 11878; ReadPos: - / -.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3693,7 +3686,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    11. Select the first base of the second read.
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(2052, 1));
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 2 / 16; RefPos: 2053 / 11878; ReadPos: 1 / 1173.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3711,7 +3703,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    12. Select the third base of the fourth read.
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(4615, 3));
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 4 / 16; RefPos: 4570 / 11878; ReadPos: 3 / 1014.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3729,7 +3720,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    13. Select the fourth symbol of the fourth read (it is a gap).
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(4616, 3));
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 4 / 16; RefPos: 4571 / 11878; ReadPos: gap / 1014.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3747,7 +3737,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    14. Select the 19 symbol of the 7 read (it is a gap, the reference also contains a gap on this position).
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(3070, 6));
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 7 / 16; RefPos: gap / 11878; ReadPos: gap / 1036.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3765,7 +3754,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     //    15. Select the 21 symbol of the 7 read.
     GTUtilsMcaEditorSequenceArea::clickToPosition(os, QPoint(3072, 6));
-    GTGlobals::sleep(100);
 
     //    Expected state: Line: 7 / 16; RefPos: 3073 / 11878; ReadPos: 20 / 1036.
     rowNumberString = GTUtilsMcaEditorStatusWidget::getRowNumberString(os);
@@ -3780,6 +3768,89 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     CHECK_SET_ERR("11878" == referenceLengthString, QString("15. Unexpected reference length label: expected '%1', got '%2'").arg("11878").arg(referenceLengthString));
     CHECK_SET_ERR("20" == readPositionString, QString("15. Unexpected read position label: expected '%1', got '%2'").arg("20").arg(readPositionString));
     CHECK_SET_ERR("1036" == readLengthString, QString("15. Unexpected read length label: expected '%1', got '%2'").arg("1036").arg(readLengthString));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0042) {
+    // Open an MCA object.
+    GTFileDialog::openFile(os, testDir + "_common_data/sanger", "alignment_short.ugenedb");
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+
+    McaEditorReferenceArea *referenceArea = GTUtilsMcaEditor::getReferenceArea(os);
+
+    U2Region visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.startPos == 0, "Invalid start position");
+
+    // Select first read (direct).
+    GTUtilsMcaEditor::clickReadName(os, 1);
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+
+    visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.contains(2053), "Direct read is not centered: " + visibleRange.toString());
+
+    // Select the second read (complement).
+    GTUtilsMcaEditor::clickReadName(os, 2);
+    GTKeyboardDriver::keyClick(Qt::Key_Enter);
+
+    visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.contains(6151), "Complement read is not centered: " + visibleRange.toString());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0043) {
+    // Open an MCA object.
+    GTFileDialog::openFile(os, testDir + "_common_data/sanger", "alignment_short.ugenedb");
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+
+    McaEditorReferenceArea *referenceArea = GTUtilsMcaEditor::getReferenceArea(os);
+
+    U2Region visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.startPos == 0, "Invalid start position");
+
+    // Double-click the first read (direct).
+    GTUtilsMcaEditor::doubleClickReadName(os, 1);
+    visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.contains(2053), "Direct read is not centered: " + visibleRange.toString());
+
+    // Double-click the second read (complement).
+    GTUtilsMcaEditor::doubleClickReadName(os, 2);
+    visibleRange = referenceArea->getVisibleRange();
+    CHECK_SET_ERR(visibleRange.contains(6151), "Complement read is not centered: " + visibleRange.toString());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0044) {
+    GTFileDialog::openFile(os, testDir + "_common_data/sanger", "alignment_short.ugenedb");
+    GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+
+    // Center the second (index = 1) read in the sequence area.
+    GTUtilsMcaEditor::clickReadName(os, 1);
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+
+    // Collapse the chromatogram view.
+    GTKeyboardDriver::keyClick(Qt::Key_Left);
+
+    QWidget *sequenceAreaWidget = GTUtilsMcaEditor::getSequenceArea(os);
+
+    // Check that sequence area cell contains a text character up until the cell size is > 7px.
+    // 7px is a hardcoded constant in the MA editor.
+    const int minWidthToShowText = 7;
+    QRect prevRect(0, 0, 10000, 10000);
+    while (true) {
+        QRect rect = GTUtilsMcaEditorSequenceArea::getPositionRect(os, 1, 2053);    // Symbol 'T'.
+        QImage sequenceAreaImage = GTWidget::getImage(os, sequenceAreaWidget, true);
+        // Reduce captured cell image rect by 1 px to avoid border aliasing effects with the next char.
+        QRect cellImageRect(rect.topLeft(), rect.bottomRight() + QPoint(-1, -1));
+        QImage cellImage = GTWidget::createSubImage(os, sequenceAreaImage, cellImageRect);
+        bool hasOnlyBgColor = GTWidget::hasSingleFillColor(cellImage, "#EAEDF7");
+        bool hasTextInTheCell = !hasOnlyBgColor;
+        if (rect.width() >= minWidthToShowText) {
+            CHECK_SET_ERR(hasTextInTheCell, "Expected to have text with the given zoom range");
+        } else {
+            CHECK_SET_ERR(!hasTextInTheCell, "Expected to have no text with the given zoom range");
+            break;
+        }
+        GTUtilsMcaEditor::zoomOut(os);
+        CHECK_SET_ERR(rect.width() < prevRect.width(), "Zoom Out had no effect");
+        prevRect = rect;
+    }
 }
 
 }    //namespace GUITest_common_scenarios_mca_editor

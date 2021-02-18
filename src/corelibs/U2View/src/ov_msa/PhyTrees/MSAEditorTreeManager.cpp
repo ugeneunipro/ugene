@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -46,9 +46,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/DialogUtils.h>
-#include <U2Gui/ExportDocumentDialogController.h>
 #include <U2Gui/LastUsedDirHelper.h>
-#include <U2Gui/OpenViewTask.h>
 #include <U2Gui/U2FileDialog.h>
 
 #include <U2View/MSAEditor.h>
@@ -64,41 +62,41 @@
 #include "phyltree/CreatePhyTreeDialogController.h"
 
 namespace U2 {
-MSAEditorTreeManager::MSAEditorTreeManager(MSAEditor *_editor)
-    : QObject(_editor), editor(_editor), msaObject(NULL), addExistingTree(false) {
-    SAFE_POINT(NULL != editor, "Invalid parameter were passed into constructor MSAEditorTreeManager", );
+MSAEditorTreeManager::MSAEditorTreeManager(MSAEditor *msaEditor)
+    : QObject(msaEditor), editor(msaEditor), msaObject(nullptr), addExistingTree(false) {
+    SAFE_POINT(editor != nullptr, "Invalid parameter were passed into constructor MSAEditorTreeManager", );
 
     Project *project = AppContext::getProject();
-    SAFE_POINT(NULL != project, "Invalid project detected", );
+    SAFE_POINT(project != nullptr, "Invalid project detected", );
 
     connect(project, SIGNAL(si_documentRemoved(Document *)), SLOT(sl_onDocumentRemovedFromProject(Document *)));
 }
 
 void MSAEditorTreeManager::sl_onDocumentRemovedFromProject(Document *doc) {
-    CHECK(NULL != msaObject, );
+    CHECK(msaObject != nullptr, );
     if (doc == msaObject->getDocument()) {
-        msaObject = NULL;
+        msaObject = nullptr;
         return;
     }
-    QList<GObjectRelation> relatedTrees = msaObject->findRelatedObjectsByRole(ObjectRole_PhylogeneticTree);
-    CHECK(!relatedTrees.isEmpty(), );
+    QList<GObjectRelation> treeRelationList = msaObject->findRelatedObjectsByRole(ObjectRole_PhylogeneticTree);
+    CHECK(!treeRelationList.isEmpty(), );
 
-    foreach (const GObjectRelation &r, relatedTrees) {
-        if (r.ref.entityRef.isValid() && NULL != doc->getObjectById(r.ref.entityRef.entityId)) {
-            msaObject->removeObjectRelation(r);
+    for (const GObjectRelation &treeRelation : qAsConst(treeRelationList)) {
+        if (treeRelation.ref.entityRef.isValid() && doc->getObjectById(treeRelation.ref.entityRef.entityId) != nullptr) {
+            msaObject->removeObjectRelation(treeRelation);
         }
     }
 }
 
 void MSAEditorTreeManager::loadRelatedTrees() {
     msaObject = editor->getMaObject();
-    QList<GObjectRelation> relatedTrees = msaObject->findRelatedObjectsByRole(ObjectRole_PhylogeneticTree);
-    CHECK(!relatedTrees.isEmpty(), );
+    QList<GObjectRelation> treeRelationList = msaObject->findRelatedObjectsByRole(ObjectRole_PhylogeneticTree);
+    CHECK(!treeRelationList.isEmpty(), );
 
-    foreach (const GObjectRelation &rel, relatedTrees) {
-        const QString &treeFileName = rel.getDocURL();
+    for (const GObjectRelation &treeRelation : qAsConst(treeRelationList)) {
+        const QString &treeFileName = treeRelation.getDocURL();
         Document *doc = AppContext::getProject()->findDocumentByURL(treeFileName);
-        if (NULL != doc) {
+        if (doc != nullptr) {
             loadTreeFromFile(treeFileName);
         }
     }
@@ -106,10 +104,9 @@ void MSAEditorTreeManager::loadRelatedTrees() {
 
 void MSAEditorTreeManager::buildTreeWithDialog() {
     msaObject = editor->getMaObject();
-    PhyTreeGeneratorRegistry *registry = AppContext::getPhyTreeGeneratorRegistry();
-    QStringList list = registry->getNameList();
+    QStringList phyTreeGeneratorNameList = AppContext::getPhyTreeGeneratorRegistry()->getNameList();
     addExistingTree = false;
-    if (list.size() == 0) {
+    if (phyTreeGeneratorNameList.isEmpty()) {
         QMessageBox::information(editor->getUI(), tr("Calculate phy tree"), tr("No algorithms for building phylogenetic tree are available."));
         return;
     }
@@ -137,7 +134,7 @@ void MSAEditorTreeManager::createPhyTreeGeneratorTask(const CreatePhyTreeSetting
     const MultipleSequenceAlignment msa = msaObject->getMultipleAlignment();
     settings = buildSettings;
 
-    PhyTreeGeneratorLauncherTask *treeGeneratorTask = new PhyTreeGeneratorLauncherTask(msa, settings);
+    auto treeGeneratorTask = new PhyTreeGeneratorLauncherTask(msa, settings);
     if (refreshExistingTree) {
         activeRefreshTasks[treeViewer] = treeGeneratorTask;
         connect(new TaskSignalMapper(treeGeneratorTask), SIGNAL(si_taskSucceeded(Task *)), SLOT(sl_treeRebuildingFinished(Task *)));
@@ -145,18 +142,17 @@ void MSAEditorTreeManager::createPhyTreeGeneratorTask(const CreatePhyTreeSetting
     } else {
         connect(new TaskSignalMapper(treeGeneratorTask), SIGNAL(si_taskSucceeded(Task *)), SLOT(sl_openTree(Task *)));
     }
-    TaskScheduler *scheduler = AppContext::getTaskScheduler();
-    scheduler->registerTopLevelTask(treeGeneratorTask);
+    AppContext::getTaskScheduler()->registerTopLevelTask(treeGeneratorTask);
 }
 
 void MSAEditorTreeManager::sl_treeRebuildingFinished(Task *_treeBuildTask) {
-    PhyTreeGeneratorLauncherTask *treeBuildTask = qobject_cast<PhyTreeGeneratorLauncherTask *>(_treeBuildTask);
-    if (NULL == treeBuildTask || treeBuildTask->isCanceled()) {
+    auto treeBuildTask = qobject_cast<PhyTreeGeneratorLauncherTask *>(_treeBuildTask);
+    if (treeBuildTask == nullptr || treeBuildTask->isCanceled()) {
         return;
     }
 
     MSAEditorTreeViewer *refreshingTree = activeRefreshTasks.key(treeBuildTask);
-    CHECK(NULL != refreshingTree, );
+    CHECK(refreshingTree != nullptr, );
     activeRefreshTasks.remove(refreshingTree);
 
     PhyTreeObject *treeObj = refreshingTree->getPhyObject();
@@ -169,20 +165,17 @@ bool MSAEditorTreeManager::canRefreshTree(MSAEditorTreeViewer *treeViewer) {
 }
 
 void MSAEditorTreeManager::sl_openTree(Task *treeBuildTask) {
-    CHECK(!treeBuildTask->isCanceled(), )
+    CHECK(treeBuildTask != nullptr && !treeBuildTask->isCanceled(), )
 
     PhyTreeGeneratorLauncherTask *treeGeneratorTask = qobject_cast<PhyTreeGeneratorLauncherTask *>(treeBuildTask);
-    if (NULL == treeBuildTask) {
-        return;
-    }
+    CHECK(treeGeneratorTask != nullptr, );
 
     const GUrl &msaURL = msaObject->getDocument()->getURL();
     SAFE_POINT(!msaURL.isEmpty(), QString("Tree URL in MSAEditorTreeManager::sl_openTree() is empty"), );
 
     Project *p = AppContext::getProject();
-    d = NULL;
-    PhyTreeObject *newTreeObj = NULL;
-    TaskScheduler *scheduler = AppContext::getTaskScheduler();
+    treeDocument = nullptr;
+    PhyTreeObject *newTreeObj = nullptr;
     QString treeFileName = settings.fileUrl.getURLString();
     if (treeFileName.isEmpty()) {
         treeFileName = GUrlUtils::rollFileName(msaURL.dirPath() + "/" + msaURL.baseFileName() + ".nwk", DocumentUtils::getNewDocFileNameExcludesHint());
@@ -193,65 +186,62 @@ void MSAEditorTreeManager::sl_openTree(Task *treeBuildTask) {
 
     const QList<Document *> documents = AppContext::getProject()->getDocuments();
     bool isNewDocument = true;
-    foreach (Document *doc, documents) {
+    for (Document *doc : qAsConst(documents)) {
         if (treeFileName == doc->getURLString()) {
-            d = doc;
+            treeDocument = doc;
             isNewDocument = false;
             break;
         }
     }
 
-    if (NULL == d) {
+    if (treeDocument == nullptr) {
         U2OpStatus2Log os;
-        d = df->createNewLoadedDocument(iof, treeFileName, os);
+        treeDocument = df->createNewLoadedDocument(iof, treeFileName, os);
         CHECK_OP(os, );
     }
 
     if (isNewDocument) {
         U2OpStatus2Log os;
-        newTreeObj = PhyTreeObject::createInstance(treeGeneratorTask->getResult(), "Tree", d->getDbiRef(), os);
+        newTreeObj = PhyTreeObject::createInstance(treeGeneratorTask->getResult(), "Tree", treeDocument->getDbiRef(), os);
         CHECK_OP(os, );
-        d->addObject(newTreeObj);
+        treeDocument->addObject(newTreeObj);
+    } else if (!treeDocument->isLoaded()) {
+        phyTree = treeGeneratorTask->getResult();
+        LoadUnloadedDocumentTask *t = new LoadUnloadedDocumentTask(treeDocument);
+        connect(new TaskSignalMapper(t), SIGNAL(si_taskSucceeded(Task *)), SLOT(sl_onPhyTreeDocLoaded(Task *)));
+        AppContext::getTaskScheduler()->registerTopLevelTask(t);
+        return;
     } else {
-        if (!d->isLoaded()) {
-            phyTree = treeGeneratorTask->getResult();
-            LoadUnloadedDocumentTask *t = new LoadUnloadedDocumentTask(d);
-            connect(new TaskSignalMapper(t), SIGNAL(si_taskSucceeded(Task *)), SLOT(sl_onPhyTreeDocLoaded(Task *)));
-            AppContext::getTaskScheduler()->registerTopLevelTask(t);
-            return;
-        } else {
-            const QList<GObject *> &objects = d->getObjects();
-            foreach (GObject *obj, objects) {
-                PhyTreeObject *treeObj = qobject_cast<PhyTreeObject *>(obj);
-                if (treeObj) {
-                    treeObj->setTree(treeGeneratorTask->getResult());
-                    newTreeObj = treeObj;
-                }
+        const QList<GObject *> &objects = treeDocument->getObjects();
+        for (GObject *obj : qAsConst(objects)) {
+            PhyTreeObject *treeObj = qobject_cast<PhyTreeObject *>(obj);
+            if (treeObj) {
+                treeObj->setTree(treeGeneratorTask->getResult());
+                newTreeObj = treeObj;
             }
         }
     }
 
-    if (!p->getDocuments().contains(d)) {
-        p->addDocument(d);
+    if (!p->getDocuments().contains(treeDocument)) {
+        p->addDocument(treeDocument);
     }
 
     if (isNewDocument) {
         msaObject->addObjectRelation(GObjectRelation(GObjectReference(newTreeObj), ObjectRole_PhylogeneticTree));
     }
 
-    Task *saveTask = new SaveDocumentTask(d);
-    scheduler->registerTopLevelTask(saveTask);
+    AppContext::getTaskScheduler()->registerTopLevelTask(new SaveDocumentTask(treeDocument));
 
     openTreeViewer(newTreeObj);
 }
 
 void MSAEditorTreeManager::sl_onPhyTreeDocLoaded(Task *task) {
-    LoadUnloadedDocumentTask *loadTask = qobject_cast<LoadUnloadedDocumentTask *>(task);
-    d = loadTask->getDocument();
-    PhyTreeObject *treeObj = NULL;
-    foreach (GObject *obj, d->getObjects()) {
+    auto loadTask = qobject_cast<LoadUnloadedDocumentTask *>(task);
+    treeDocument = loadTask->getDocument();
+    PhyTreeObject *treeObj = nullptr;
+    for (GObject *obj : qAsConst(treeDocument->getObjects())) {
         treeObj = qobject_cast<PhyTreeObject *>(obj);
-        if (treeObj) {
+        if (treeObj != nullptr) {
             treeObj->setTree(phyTree);
             break;
         }
@@ -260,46 +250,45 @@ void MSAEditorTreeManager::sl_onPhyTreeDocLoaded(Task *task) {
 }
 
 void MSAEditorTreeManager::openTreeViewer(PhyTreeObject *treeObj) {
-    Task *openTask = NULL;
-    if (true == settings.displayWithAlignmentEditor) {
-        openTask = new MSAEditorOpenTreeViewerTask(treeObj, this);
-    } else {
-        openTask = new OpenTreeViewerTask(treeObj, this);
-    }
-    TaskScheduler *scheduler = AppContext::getTaskScheduler();
-    scheduler->registerTopLevelTask(openTask);
+    Task *openTask = settings.displayWithAlignmentEditor
+                         ? new MSAEditorOpenTreeViewerTask(treeObj, this)
+                         : new OpenTreeViewerTask(treeObj, this);
+    AppContext::getTaskScheduler()->registerTopLevelTask(openTask);
 }
 
-void MSAEditorTreeManager::sl_openTreeTaskFinished(Task *t) {
-    CreateMSAEditorTreeViewerTask *task = qobject_cast<CreateMSAEditorTreeViewerTask *>(t);
-    if (NULL != task) {
-        if (settings.displayWithAlignmentEditor) {
-            MSAEditorTreeViewer *treeView = dynamic_cast<MSAEditorTreeViewer *>(task->getTreeViewer());
-            SAFE_POINT(NULL != treeView, tr("Can not convert TreeViewer* to MSAEditorTreeViewer* in function MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t)"), );
-            GObjectViewWindow *w = new GObjectViewWindow(task->getTreeViewer(), editor->getName(), !task->getStateData().isEmpty());
+void MSAEditorTreeManager::sl_openTreeTaskFinished(Task *task) {
+    auto createTreeViewerTask = qobject_cast<CreateMSAEditorTreeViewerTask *>(task);
+    CHECK(createTreeViewerTask != nullptr, );
 
-            connect(w, SIGNAL(si_windowClosed(GObjectViewWindow *)), this, SLOT(sl_onWindowClosed(GObjectViewWindow *)));
-
-            MsaEditorWgt *msaUI = editor->getUI();
-            msaUI->addTreeView(w);
-
-            if (!addExistingTree) {
-                treeView->setCreatePhyTreeSettings(settings);
-                treeView->setParentAignmentName(msaObject->getMultipleAlignment()->getName());
-            }
-
-            treeView->setMSAEditor(editor);
-            if (settings.syncAlignmentWithTree) {
-                treeView->sync();
-            }
-
-            connect(treeView, SIGNAL(si_refreshTree(MSAEditorTreeViewer *)), SLOT(sl_refreshTree(MSAEditorTreeViewer *)));
-        } else {
-            GObjectViewWindow *w = new GObjectViewWindow(task->getTreeViewer(), editor->getName(), !task->getStateData().isEmpty());
-            MWMDIManager *mdiManager = AppContext::getMainWindow()->getMDIManager();
-            mdiManager->addMDIWindow(w);
-        }
+    if (!settings.displayWithAlignmentEditor) {
+        GObjectViewWindow *w = new GObjectViewWindow(createTreeViewerTask->getTreeViewer(), editor->getName(), !createTreeViewerTask->getStateData().isEmpty());
+        MWMDIManager *mdiManager = AppContext::getMainWindow()->getMDIManager();
+        mdiManager->addMDIWindow(w);
+        return;
     }
+
+    auto treeViewer = qobject_cast<MSAEditorTreeViewer *>(createTreeViewerTask->getTreeViewer());
+    SAFE_POINT(treeViewer != nullptr, tr("Can not convert TreeViewer* to MSAEditorTreeViewer* in function MSAEditorTreeManager::sl_openTreeTaskFinished(Task* t)"), );
+
+    //TODO: pass MSA editor to the constructor of MSAEditorTreeViewer and avoid extra state when MSAEditorTreeViewer has no msaEditor assigned.
+    treeViewer->setMSAEditor(editor);
+
+    auto viewWindow = new GObjectViewWindow(treeViewer, editor->getName(), !createTreeViewerTask->getStateData().isEmpty());
+    connect(viewWindow, SIGNAL(si_windowClosed(GObjectViewWindow *)), this, SLOT(sl_onWindowClosed(GObjectViewWindow *)));
+
+    MsaEditorWgt *msaUI = editor->getUI();
+    msaUI->addTreeView(viewWindow);
+
+    if (!addExistingTree) {
+        treeViewer->setCreatePhyTreeSettings(settings);
+        treeViewer->setParentAignmentName(msaObject->getMultipleAlignment()->getName());
+    }
+
+    if (settings.syncAlignmentWithTree) {
+        treeViewer->enableSyncMode();
+    }
+
+    connect(treeViewer, SIGNAL(si_refreshTree(MSAEditorTreeViewer *)), SLOT(sl_refreshTree(MSAEditorTreeViewer *)));
 }
 
 void MSAEditorTreeManager::openTreeFromFile() {
@@ -320,18 +309,12 @@ void MSAEditorTreeManager::openTreeFromFile() {
 }
 
 void MSAEditorTreeManager::loadTreeFromFile(const QString &treeFileName) {
-    TaskScheduler *scheduler = AppContext::getTaskScheduler();
-
-    DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::NEWICK);
-    IOAdapterFactory *iof = IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE);
-    U2OpStatus2Log os;
-
-    const QList<Document *> documents = AppContext::getProject()->getDocuments();
     addExistingTree = true;
     bool isNewDocument = true;
-    Document *doc = NULL;
+    Document *doc = nullptr;
+    const QList<Document *> documents = AppContext::getProject()->getDocuments();
     foreach (doc, documents) {
-        if (treeFileName == doc->getURLString()) {
+        if (doc->getURLString() == treeFileName) {
             isNewDocument = false;
             break;
         }
@@ -343,36 +326,38 @@ void MSAEditorTreeManager::loadTreeFromFile(const QString &treeFileName) {
                 AppContext::getProject()->removeDocument(doc);
             }
         }
-        doc = df->loadDocument(iof, treeFileName, QVariantMap(), os);
-        CHECK(NULL != doc, );
+        U2OpStatus2Log os;
+        IOAdapterFactory *ioFactory = IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE);
+        DocumentFormat *documentFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::NEWICK);
+        doc = documentFormat->loadDocument(ioFactory, treeFileName, QVariantMap(), os);
+        CHECK(doc != nullptr, );
         AppContext::getProject()->addDocument(doc);
     }
 
-    const QList<GObject *> &objects = doc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE);
-    foreach (GObject *obj, objects) {
-        PhyTreeObject *treeObject = qobject_cast<PhyTreeObject *>(obj);
+    const QList<GObject *> treeObjectList = doc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE);
+    for (GObject *obj : qAsConst(treeObjectList)) {
+        auto treeObject = qobject_cast<PhyTreeObject *>(obj);
         msaObject->addObjectRelation(GObjectRelation(GObjectReference(treeObject), ObjectRole_PhylogeneticTree));
-        if (NULL == treeObject) {
+        if (treeObject == nullptr) {
             continue;
         }
         const MSAEditorMultiTreeViewer *multiTreeViewer = getMultiTreeViewer();
-        if (NULL == multiTreeViewer || !multiTreeViewer->getTreeNames().contains(doc->getName())) {
-            Task *task = new MSAEditorOpenTreeViewerTask(treeObject, this);
-            scheduler->registerTopLevelTask(task);
+        if (multiTreeViewer == nullptr || !multiTreeViewer->getTreeNames().contains(doc->getName())) {
+            AppContext::getTaskScheduler()->registerTopLevelTask(new MSAEditorOpenTreeViewerTask(treeObject, this));
         }
     }
 }
 
 void MSAEditorTreeManager::sl_onWindowClosed(GObjectViewWindow *viewWindow) {
     MSAEditorMultiTreeViewer *multiTreeViewer = getMultiTreeViewer();
-    CHECK(NULL != multiTreeViewer, );
+    CHECK(multiTreeViewer != nullptr, );
     multiTreeViewer->sl_onTabCloseRequested(viewWindow);
 }
 
 MSAEditorMultiTreeViewer *MSAEditorTreeManager::getMultiTreeViewer() const {
-    SAFE_POINT(NULL != editor, tr("Incorrect reference to the MSAEditor"), NULL);
+    SAFE_POINT(editor != nullptr, tr("Incorrect reference to the MSAEditor"), nullptr);
     MsaEditorWgt *msaEditorUi = editor->getUI();
-    SAFE_POINT(NULL != msaEditorUi, tr("Incorrect reference to the MSAEditor"), NULL);
+    SAFE_POINT(msaEditorUi != nullptr, tr("Incorrect reference to the MSAEditor"), nullptr);
     return msaEditorUi->getMultiTreeViewer();
 }
 

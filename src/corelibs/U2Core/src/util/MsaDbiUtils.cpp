@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1057,7 +1057,7 @@ QList<qint64> MsaDbiUtils::replaceNonGapCharacter(const U2EntityRef &msaRef, cha
     QList<qint64> rowIds = msaDbi->getOrderedRowIds(msaRef.entityId, os);
     CHECK_OP(os, modifiedRowIds);
     QVariantMap updateSequenceHints;
-    for (qint64 rowId : rowIds) {
+    for (qint64 rowId : qAsConst(rowIds)) {
         U2MsaRow msaRow = msaDbi->getRow(msaRef.entityId, rowId, os);
         CHECK_OP(os, modifiedRowIds);
         U2Region sequenceRegion(msaRow.gstart, msaRow.gend - msaRow.gstart);

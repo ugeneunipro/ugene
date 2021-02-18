@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -171,7 +171,7 @@ void MaEditorNameList::updateScrollBar() {
         maxNameWidth = qMax(fm.width(row->getName()), maxNameWidth);
     }
     // adjustment for branch primitive in collapsing mode
-    if (ui->isCollapsibleMode()) {
+    if (ui->isVirtualOrderMode()) {
         maxNameWidth += 2 * CROSS_SIZE + CHILDREN_OFFSET;
     }
 
@@ -679,7 +679,7 @@ void MaEditorNameList::drawContent(QPainter &painter) {
     SAFE_POINT_OP(os, );
 
     const MaCollapseModel *collapsibleModel = ui->getCollapseModel();
-    int crossSpacing = ui->isCollapsibleMode() ? CROSS_SIZE * 2 : 0;
+    int crossSpacing = ui->isVirtualOrderMode() ? CROSS_SIZE * 2 : 0;
     const ScrollController *scrollController = ui->getScrollController();
     int firstVisibleViewRow = scrollController->getFirstVisibleViewRowIndex(true);
     int lastVisibleViewRow = scrollController->getLastVisibleViewRowIndex(height(), true);
@@ -809,13 +809,6 @@ void MaEditorNameList::sl_editSequenceName() {
     }
 }
 
-void MaEditorNameList::mouseDoubleClickEvent(QMouseEvent *e) {
-    Q_UNUSED(e);
-    if (e->button() == Qt::LeftButton) {
-        sl_editSequenceName();
-    }
-}
-
 void MaEditorNameList::moveSelectedRegion(int shift) {
     CHECK(shift != 0, );
     MultipleAlignmentObject *maObj = editor->getMaObject();
@@ -870,7 +863,7 @@ void MaEditorNameList::scrollSelectionToView(bool fromStart) {
 }
 
 bool MaEditorNameList::triggerExpandCollapseOnSelectedRow(bool collapse) {
-    if (!ui->isCollapsibleMode()) {
+    if (!ui->isVirtualOrderMode()) {
         return false;
     }
     U2Region selection = getSelection();

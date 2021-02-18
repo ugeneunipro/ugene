@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -70,7 +70,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::sequences(os);
+    const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
 
@@ -97,7 +97,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::sequences(os);
+    const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "A", QString("Incorrect selection content: expected - %1, received - %2").arg("A").arg(selectionContent));
 }
 
@@ -126,7 +126,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::sequences(os);
+    const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "G", QString("Incorrect selection content: expected - %1, received - %2").arg("G").arg(selectionContent));
 }
 
@@ -170,7 +170,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::sequences(os);
+    const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "R", QString("Incorrect selection content: expected - %1, received - %2").arg("R").arg(selectionContent));
 }
 
@@ -209,7 +209,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::sequences(os);
+    const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "R", QString("Incorrect selection content: expected - %1, received - %2").arg("R").arg(selectionContent));
 }
 
@@ -235,7 +235,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::sequences(os);
+    const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "A", QString("Incorrect selection content: expected - %1, received - %2").arg("A").arg(selectionContent));
 }
 
@@ -261,7 +261,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep();
-    const QString selectionContent = GTClipboard::sequences(os);
+    const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "A", QString("Incorrect selection content: expected - %1, received - %2").arg("A").arg(selectionContent));
 
     //5. Click "Undo".
@@ -293,7 +293,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::sequences(os);
+    const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "T", QString("Incorrect selection content: expected - %1, received - %2").arg("T").arg(selectionContent));
 }
 GUI_TEST_CLASS_DEFINITION(test_0008) {
@@ -314,7 +314,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::sequences(os);
+    const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
 GUI_TEST_CLASS_DEFINITION(test_0009) {
@@ -334,7 +334,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::sequences(os);
+    const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
 GUI_TEST_CLASS_DEFINITION(test_0010) {
@@ -354,7 +354,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::sequences(os);
+    const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
 GUI_TEST_CLASS_DEFINITION(test_0011) {
@@ -381,7 +381,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::sequences(os);
+    const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
 GUI_TEST_CLASS_DEFINITION(test_0012) {
@@ -404,7 +404,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::sequences(os);
+    const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
 GUI_TEST_CLASS_DEFINITION(test_0013) {
@@ -424,7 +424,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::sequences(os);
+    const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
 
@@ -445,7 +445,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::sequences(os);
+    const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
 
@@ -471,13 +471,13 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(9, 14), QPoint(9, 14));
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    QString selectionContent = GTClipboard::sequences(os);
+    QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "C", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 
     // Check that another sequence from the original group has no changes.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(9, 13), QPoint(9, 13));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    selectionContent = GTClipboard::sequences(os);
+    selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "T", QString("Incorrect selection content: expected - %1, received - %2").arg("C").arg(selectionContent));
 }
 
@@ -498,7 +498,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    QString selectionContent = GTClipboard::sequences(os);
+    QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "-", QString("Incorrect selection content: expected - %1, received - %2").arg("-").arg(selectionContent));
 
     //3. Select a character in sequence.
@@ -513,7 +513,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    selectionContent = GTClipboard::sequences(os);
+    selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "-", QString("Incorrect selection content: expected - %1, received - %2").arg("-").arg(selectionContent));
 }
 
@@ -535,7 +535,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::sequences(os);
+    const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "T", QString("Incorrect selection content: expected - %1, received - %2").arg("T").arg(selectionContent));
 }
 
@@ -558,7 +558,7 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(200);
-    const QString selectionContent = GTClipboard::sequences(os);
+    const QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "T", QString("Incorrect selection content: expected - %1, received - %2").arg("T").arg(selectionContent));
 }
 

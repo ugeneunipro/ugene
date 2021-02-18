@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,12 +29,15 @@ using namespace HI;
 
 class ExportMSA2MSADialogFiller : public Filler {
 public:
-    ExportMSA2MSADialogFiller(HI::GUITestOpStatus &_os, int _formatVal = -1, QString _path = "");
+    ExportMSA2MSADialogFiller(HI::GUITestOpStatus &_os, int _formatVal = -1, QString _path = "", bool includeGaps = false, bool unknownAsGaps = false, int frame = 1);
     void commonScenario();
 
 private:
     int formatVal;
     QString path;
+    bool includeGaps = false;
+    bool unknownAsGaps = false;
+    int frame = 1;
 };
 }    // namespace U2
 

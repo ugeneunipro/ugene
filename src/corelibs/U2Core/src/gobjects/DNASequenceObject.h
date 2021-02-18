@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -85,22 +85,31 @@ public:
 
     QVariantMap getSequenceInfo() const;
 
-    QString getStringAttribute(const QString &seqAttr) const;
+    /** Returns string attribute value of empty string if the attribute does not exist. */
+    QString getStringAttribute(const QString &name) const;
 
-    void setStringAttribute(const QString &newStringAttributeValue, const QString &type);
+    /** Sets string attribute by name.*/
+    void setStringAttribute(const QString &name, const QString &value);
 
-    qint64 getIntegerAttribute(const QString &seqAttr) const;
+    /** Returns integer attribute value of 0.0 if the attribute does not exist. */
+    qint64 getIntegerAttribute(const QString &name) const;
 
-    void setIntegerAttribute(int newIntegerAttributeValue, const QString &type);
+    /** Sets integer attribute by name.*/
+    void setIntegerAttribute(const QString &name, int value);
 
-    double getRealAttribute(const QString &seqAttr) const;
+    /** Returns real attribute value of 0.0 if the attribute does not exist. */
+    double getRealAttribute(const QString &name) const;
 
-    void setRealAttribute(double newRealAttributeValue, const QString &type);
+    /** Sets real attribute by name. */
+    void setRealAttribute(const QString &name, double value);
 
-    QByteArray getByteArrayAttribute(const QString &seqAttr) const;
+    /** Returns QByteArray attribute value of empty QByteArray if the attribute does not exist. */
+    QByteArray getByteArrayAttribute(const QString &name) const;
 
-    void setByteArrayAttribute(const QByteArray &newByteArrayAttributeValue, const QString &type);
+    /** Sets QByteArray attribute by name. */
+    void setByteArrayAttribute(const QString &name, const QByteArray &value);
 
+    /** Compares names of 2 sequence objects using '<' operator of QStrings.. */
     static bool lessThan(const U2SequenceObject *one, const U2SequenceObject *two) {
         return one->name < two->name;
     }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -270,7 +270,8 @@ const QString AutoAnnotationsUpdateTask::NAME("Auto-annotations update task");
 
 AutoAnnotationsUpdateTask::AutoAnnotationsUpdateTask(AutoAnnotationObject *autoAnnotationObject,
                                                      QList<Task *> updateTasks)
-    : Task(NAME, TaskFlags_NR_FOSE_COSC), autoAnnotationObject(autoAnnotationObject), sequenceObject(nullptr), lock(nullptr),
+    : Task(NAME, TaskFlags_NR_FOSE_COSC | TaskFlag_SilentCancelOnShutdown),
+      autoAnnotationObject(autoAnnotationObject), sequenceObject(nullptr), lock(nullptr),
       subTasks(updateTasks) {
     isAutoAnnotationObjectInvalid = false;
     setMaxParallelSubtasks(1);
@@ -289,7 +290,7 @@ void AutoAnnotationsUpdateTask::prepare() {
     sequenceObject->lockState(lock);
 
     autoAnnotationObject->emitStateChange(true);
-    for (Task *subtask : subTasks) {
+    for (Task *subtask : qAsConst(subTasks)) {
         addSubTask(subtask);
     }
 }

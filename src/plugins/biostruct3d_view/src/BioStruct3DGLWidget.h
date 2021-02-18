@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,6 +39,8 @@
 #include "BioStruct3DColorScheme.h"
 #include "BioStruct3DGLRender.h"
 #include "MolecularSurfaceRenderer.h"
+
+class QLabel;
 
 namespace U2 {
 
@@ -269,6 +271,10 @@ private:
     static int getWidgetCount(QString objectName);
     bool isSyncModeOn();
 
+    // Checks if this widget can render and creates a label with a text error if it cannot
+    void checkRenderingAndCreateLblError();
+
+
 private:
     // related sequences view
     const AnnotatedDNAView *dnaView;
@@ -331,6 +337,11 @@ private:
     QMenu *selectColorSchemeMenu;
     QMenu *selectRendererMenu;
     QMenu *displayMenu;
+
+    // if OpenGL has error, label is not null and overlaps GlWidget with text "Failed to initialize OpenGL",
+    // otherwise label is null
+    QLabel *lblGlError;
+
 
 private slots:
     void sl_selectColorScheme(QAction *action);

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -29,12 +29,13 @@
 
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
+#include <U2Core/U2SafePoints.h>
 
 #include "UGUITest.h"
 
 namespace U2 {
 
-QString getTestDirImpl() {
+static QString getTestDirImpl() {
     const QString testDir = qgetenv("UGENE_TESTS_PATH");
     if (!testDir.isEmpty()) {
         if (!QFileInfo(testDir).exists()) {
@@ -61,7 +62,7 @@ QString getTestDirImpl() {
 #endif
 }
 
-QString getTestDir() {
+static QString getTestDir() {
     QString result = getTestDirImpl();
     if (qgetenv("UGENE_GUI_TEST") == "1") {    // In gui test mode dump test & data dir.
         qDebug("Test dir: '%s' -> '%s'", result.toLocal8Bit().constData(), QFileInfo(result).absoluteFilePath().toLocal8Bit().constData());
@@ -69,7 +70,7 @@ QString getTestDir() {
     return result;
 }
 
-QString getDataDirImpl() {
+static QString getDataDirImpl() {
     QString dataDir = qgetenv("UGENE_DATA_PATH");
     if (!dataDir.isEmpty()) {
         if (!QFileInfo(dataDir).exists()) {
@@ -106,7 +107,7 @@ QString getDataDirImpl() {
     return dataDir;
 }
 
-QString getDataDir() {
+static QString getDataDir() {
     QString result = getDataDirImpl();
     if (qgetenv("UGENE_GUI_TEST") == "1") {    // In gui test mode dump test & data dir.
         qDebug("Data dir: '%s' -> '%s'", result.toLocal8Bit().constData(), QFileInfo(result).absoluteFilePath().toLocal8Bit().constData());
@@ -114,7 +115,7 @@ QString getDataDir() {
     return result;
 }
 
-QString getScreenshotDir() {
+static QString getScreenshotDir() {
     QString result;
 #ifdef Q_OS_MAC
     result = "../../../../../../screenshotFol/";
@@ -131,9 +132,40 @@ QString getScreenshotDir() {
     return result;
 }
 
+/** Returns true if the test has Ignored or IgnoredOn<CurrentOS>. */
+bool UGUITestLabels::hasIgnoredLabel(const GUITest *test) {
+    QString ignoreOnPlatformLabel = isOsLinux()     ? UGUITestLabels::IgnoredOnLinux
+                                    : isOsMac()     ? UGUITestLabels::IgnoredOnMacOS
+                                    : isOsWindows() ? UGUITestLabels::IgnoredOnWindows
+                                                    : "";
+    SAFE_POINT(!ignoreOnPlatformLabel.isEmpty(), "Platform is not supported!", true);
+    return test->labelSet.contains(UGUITestLabels::Ignored) || test->labelSet.contains(ignoreOnPlatformLabel);
+}
+
+/** Returns true if the test has current platform label: Linux, MacOS or Windows. */
+bool UGUITestLabels::hasPlatformLabel(const GUITest *test) {
+    QString platformLabel = isOsLinux()     ? UGUITestLabels::Linux
+                            : isOsMac()     ? UGUITestLabels::MacOS
+                            : isOsWindows() ? UGUITestLabels::Windows
+                                            : "";
+    SAFE_POINT(!platformLabel.isEmpty(), "Platform is not supported!", true);
+    return test->labelSet.contains(platformLabel);
+}
+
 const QString UGUITest::testDir = getTestDir();
 const QString UGUITest::dataDir = getDataDir();
 const QString UGUITest::sandBoxDir = testDir + "_common_data/scenarios/sandbox/";
 const QString UGUITest::screenshotDir = getScreenshotDir();
+
+const QString UGUITestLabels::Nightly = "Nightly";
+const QString UGUITestLabels::Metagenomics = "Metagenonics";
+const QString UGUITestLabels::Cistrome = "Cistrome";
+const QString UGUITestLabels::Linux = "Linux";
+const QString UGUITestLabels::MacOS = "MacOS";
+const QString UGUITestLabels::Windows = "Windows";
+const QString UGUITestLabels::Ignored = "Ignored";
+const QString UGUITestLabels::IgnoredOnLinux = "IgnoredOnLinux";
+const QString UGUITestLabels::IgnoredOnMacOS = "IgnoredOnMacOS";
+const QString UGUITestLabels::IgnoredOnWindows = "IgnoredOnWindows";
 
 }    // namespace U2

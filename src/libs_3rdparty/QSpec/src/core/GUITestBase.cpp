@@ -2,79 +2,46 @@
 
 namespace HI {
 
-const QString GUITestBase::unnamedTestsPrefix = "test";
-
 GUITestBase::~GUITestBase() {
     qDeleteAll(tests);
 }
 
 bool GUITestBase::registerTest(GUITest *test) {
-    Q_ASSERT(test);
-
-    test->setName(nameUnnamedTest(test));
-
-    if (isNewTest(test)) {
-        addTest(test);
-        return true;
+    Q_ASSERT(test != nullptr && !test->name.isEmpty());
+    if (hasTest(test->name)) {
+        return false;
     }
-
-    return false;
+    tests.insert(test->getFullName(), test);
+    return true;
 }
 
-QString GUITestBase::nameUnnamedTest(GUITest *test) {
-    Q_ASSERT(test);
-    if (!test) {
-        return "";
-    }
-
-    QString testName = test->getName();
-    if (testName.isEmpty()) {
-        testName = getNextTestName();
-    }
-
-    return testName;
+GUITest *GUITestBase::getTest(const QString &fullTestName) const {
+    return tests.value(fullTestName);
 }
 
-bool GUITestBase::isNewTest(GUITest *test) {
-    return test && !findTest(test->getFullName());
+GUITest *GUITestBase::takeTest(const QString &fullTestName) {
+    return tests.take(fullTestName);
 }
 
-void GUITestBase::addTest(GUITest *test) {
-    if (test) {
-        tests.insert(test->getFullName(), test);
-    }
+bool GUITestBase::hasTest(const QString &fullTestName) const {
+    return tests.contains(fullTestName);
 }
 
-QString GUITestBase::getNextTestName() {
-    int testsCount = tests.size();
-    return unnamedTestsPrefix + QString::number(testsCount);
+GUITest *GUITestBase::getTest(const QString &suiteName, const QString &testName) const {
+    return getTest(GUITest::getFullTestName(suiteName, testName));
 }
 
-GUITest *GUITestBase::findTest(const QString &name) {
-    return tests.value(name);
-}
-bool GUITestBase::containsTest(const QString &name) {
-    return tests.contains(name);
+GUITest *GUITestBase::takeTest(const QString &suiteName, const QString &testName) {
+    return takeTest(GUITest::getFullTestName(suiteName, testName));
 }
 
-GUITest *GUITestBase::getTest(const QString &suite, const QString &name) {
-    return tests.value(suite + ":" + name);
+QList<GUITest *> GUITestBase::getTests() const {
+    return tests.values();
 }
 
-GUITest *GUITestBase::takeTest(const QString &suite, const QString &name) {
-    return tests.take(suite + ":" + name);
-}
-
-GUITests GUITestBase::getTests() {
-    GUITests testList = tests.values();
-
-    return testList;
-}
-
-GUITests GUITestBase::takeTests() {
-    GUITests testList = tests.values();
+QList<GUITest *> GUITestBase::takeTests() {
+    QList<GUITest *> testList = getTests();
     tests.clear();
-
     return testList;
 }
 

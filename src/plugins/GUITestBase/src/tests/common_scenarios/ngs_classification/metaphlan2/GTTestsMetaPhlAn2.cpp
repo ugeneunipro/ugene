@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -289,7 +289,9 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
             CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
-            AppSettingsDialogFiller::setExternalToolPath(os, ET_METAPHLAN, getMetaphlan2WithoutScriptPath());
+            auto path = getMetaphlan2WithoutScriptPath();
+            coreLog.info(QString("getMetaphlan2WithoutScriptPath: %1").arg(path));
+            AppSettingsDialogFiller::setExternalToolPath(os, ET_METAPHLAN, path);
 
             //python" is installed.
             checkExternalToolValid(os, ET_PYTHON, true);
@@ -438,7 +440,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     QStringList errors = GTUtilsWorkflowDesigner::getErrors(os);
     QString error("Classify Sequences with MetaPhlAn2: External tool \"MetaPhlAn2\" is invalid. UGENE may not support this version of the tool or a wrong path to the tools is selected");
     CHECK_SET_ERR(errors.contains(error), "The expected error is absent");
-    const int expectedErrorCount = 3;
+    const int expectedErrorCount = 2;
     CHECK_SET_ERR(expectedErrorCount == errors.size(), QString("There are too many errors: expected %1, got %2").arg(expectedErrorCount).arg(errors.size()));
 }
 

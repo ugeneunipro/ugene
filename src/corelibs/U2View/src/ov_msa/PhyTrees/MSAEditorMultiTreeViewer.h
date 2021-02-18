@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -38,9 +38,7 @@ class MsaEditorTreeTab;
 class U2VIEW_EXPORT MSAEditorMultiTreeViewer : public QWidget {
     Q_OBJECT
 public:
-    MSAEditorMultiTreeViewer(QString _title, MSAEditor *_editor);
-    ~MSAEditorMultiTreeViewer() {
-    }
+    MSAEditorMultiTreeViewer(const QString &title, MSAEditor *msaEditor);
 
     void addTreeView(GObjectViewWindow *treeView);
 
@@ -49,17 +47,19 @@ public:
     MsaEditorTreeTab *getCurrentTabWidget() const;
 
     const QStringList &getTreeNames() const;
+
 signals:
     void si_tabsCountChanged(int tabsCount);
+
 public slots:
     void sl_onTabCloseRequested(QWidget *);
 
 private:
-    MsaEditorTreeTabArea *treeTabs;
+    MsaEditorTreeTabArea *treeTabArea;
     QWidget *titleWidget;
     MSAEditor *editor;
-    QList<QWidget *> treeViews;
-    QStringList tabsNames;
+    QList<QWidget *> treeViewList;
+    QStringList tabsNameList;
 };
 
 }    // namespace U2

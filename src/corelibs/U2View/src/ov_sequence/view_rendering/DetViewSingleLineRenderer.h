@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -57,38 +57,41 @@ private:
 public:
     DetViewSingleLineRenderer(DetView *detView, SequenceObjectContext *ctx);
 
-    virtual qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const;
+    qint64 coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const override;
 
-    virtual U2Region getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const;
-    virtual U2Region getMirroredYRange(const U2Strand &mStrand) const;
+    /** Returns all y regions used to draw the given location of the annotation. */
+    QList<U2Region> getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, const QSize &canvasSize, const U2Region &visibleRange) const override;
 
-    qint64 getMinimumHeight() const;
-    qint64 getOneLineHeight() const;
-    qint64 getLinesCount(const QSize &canvasSize) const;
-    qint64 getContentIndentY(const QSize &canvasSize, const U2Region &visibleRange) const;
+    U2Region getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, int availableHeight) const override;
 
-    int getDirectLine() const {
+    U2Region getCutSiteYRange(const U2Strand &mStrand, int availableHeight) const override;
+
+    int getMinimumHeight() const override;
+    qint64 getOneLineHeight() const override;
+    qint64 getLinesCount(const QSize &canvasSize) const override;
+
+    int getDirectLine() const override {
         return directLine;
     }
 
-    int getRowsInLineCount() const;
+    int getRowsInLineCount() const override;
 
-    QSize getBaseCanvasSize(const U2Region &visibleRange) const;
+    QSize getBaseCanvasSize(const U2Region &visibleRange) const override;
 
-    bool isOnTranslationsLine(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const;
-    bool isOnAnnotationLine(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const;
+    bool isOnTranslationsLine(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const override;
+    bool isOnAnnotationLine(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const override;
 
-    virtual void drawAll(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange);
-    virtual void drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange);
-    virtual void drawCursor(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange);
+    void drawAll(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) override;
+    void drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) override;
+    void drawCursor(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) override;
 
-    void update();
+    void update() override;
 
 private:
-    void drawDirect(QPainter &p, const U2Region &visibleRange);
-    void drawComplement(QPainter &p, const U2Region &visibleRange);
+    void drawDirect(QPainter &p, int availableHeight, const U2Region &visibleRange);
+    void drawComplement(QPainter &p, int availableHeight, const U2Region &visibleRange);
 
-    void drawTranslations(QPainter &p, const U2Region &visibleRange);
+    void drawTranslations(QPainter &p, int availableHeight, const U2Region &visibleRange);
 
     /**
      * Draws direct translation rows.
@@ -98,20 +101,23 @@ private:
                                 const U2Region &visibleRange,
                                 const char *visibleSequence,
                                 const QList<SharedAnnotationData> &annotationsInRange,
-                                const TranslationMetrics &translationMetrics);
+                                const TranslationMetrics &translationMetrics,
+                                int availableHeight);
 
     void drawComplementTranslations(QPainter &painter,
                                     const U2Region &visibleRange,
                                     const char *seqBlock,
                                     const QList<SharedAnnotationData> &annotationsInRange,
-                                    TranslationMetrics &translationMetrics);
+                                    TranslationMetrics &translationMetrics,
+                                    int availableHeight);
 
     void drawRuler(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange);
     void drawSequenceSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange);
 
 private:
-    int getLineY(int line) const;
-    int getTextY(int line) const;
+    int getLineY(int line, int availableHeight) const;
+    int getTextY(int line, int availableHeight) const;
+    int getContentIndentY(int canvasHeight) const;
 
     int getVisibleDirectTransLine(int absoluteFrameNumber) const;
     int getVisibleComplTransLine(int absoluteFrameNumber) const;
@@ -136,8 +142,13 @@ private:
 private:
     int numLines;
     int rulerLine;
+
+    /** Index of the direct line. */
     int directLine;
+
+    /** Index of the complement line. -1 if the complement line is not visible. */
     int complementLine;
+
     int firstDirectTransLine;
     int firstComplTransLine;
 };

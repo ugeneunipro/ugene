@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -85,6 +85,9 @@ private:
     QPoint mousePosToSlider;
     ADVSingleSequenceWidget *seqWidget;
 
+    /** A renderArea from the base class with a correct type. Used to avoid casts in the code. */
+    OverviewRenderArea *overviewRenderArea;
+
     static const QString ANNOTATION_GRAPH_STATE;
 
     friend class OverviewRenderArea;
@@ -102,6 +105,14 @@ public:
 
     void setGraphVisibility(const bool isVisible);
     bool isGraphVisible() const;
+
+    /**
+     * Returns sequence position corresponding to the given on-screen X coordinate.
+     * OverviewRenderArea is a true single-line-view, so the result does not depend on Y coordinate.
+     */
+    int coordXToPos(int coordX) const {
+        return coordToPos(QPoint(coordX, 0));
+    }
 
 protected:
     void drawAll(QPaintDevice *pd);

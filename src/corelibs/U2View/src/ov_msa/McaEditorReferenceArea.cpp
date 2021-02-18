@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -150,74 +150,74 @@ void McaEditorReferenceArea::keyPressEvent(QKeyEvent *event) {
     qint64 baseToScroll = firstPressedSelectionPosition;
 
     switch (key) {
-    case Qt::Key_Left:
-        if (!selectedRegion.isEmpty() && selectedRegion.startPos > 0) {
-            if (isShiftPressed) {
-                if (selectionEndPos == firstPressedSelectionPosition) {
+        case Qt::Key_Left:
+            if (!selectedRegion.isEmpty() && selectedRegion.startPos > 0) {
+                if (isShiftPressed) {
+                    if (selectionEndPos == firstPressedSelectionPosition) {
+                        selectedRegion.startPos--;
+                        selectedRegion.length++;
+                        baseToScroll = selectedRegion.startPos;
+                    } else if (selectedRegion.startPos == firstPressedSelectionPosition) {
+                        selectedRegion.length--;
+                        baseToScroll = selectionEndPos;
+                    } else {
+                        assert(false);
+                    }
+                } else {
                     selectedRegion.startPos--;
-                    selectedRegion.length++;
+                    firstPressedSelectionPosition--;
                     baseToScroll = selectedRegion.startPos;
-                } else if (selectedRegion.startPos == firstPressedSelectionPosition) {
-                    selectedRegion.length--;
-                    baseToScroll = selectionEndPos;
-                } else {
-                    assert(false);
                 }
-            } else {
-                selectedRegion.startPos--;
-                firstPressedSelectionPosition--;
-                baseToScroll = selectedRegion.startPos;
+                ctx->getSequenceSelection()->setSelectedRegions(QVector<U2Region>() << selectedRegion);
+                ui->getScrollController()->scrollToBase(baseToScroll, width());
             }
-            ctx->getSequenceSelection()->setSelectedRegions(QVector<U2Region>() << selectedRegion);
-            ui->getScrollController()->scrollToBase(baseToScroll, width());
-        }
-        accepted = true;
-        break;
-    case Qt::Key_Up:
-        accepted = true;
-        break;
-    case Qt::Key_Right:
-        if (!selectedRegion.isEmpty() && selectionEndPos + 1 < ctx->getSequenceLength()) {
-            if (isShiftPressed) {
-                if (selectedRegion.startPos == firstPressedSelectionPosition) {
-                    selectedRegion.length++;
-                    baseToScroll = selectionEndPos;
-                } else if (selectionEndPos == firstPressedSelectionPosition) {
+            accepted = true;
+            break;
+        case Qt::Key_Up:
+            accepted = true;
+            break;
+        case Qt::Key_Right:
+            if (!selectedRegion.isEmpty() && selectionEndPos + 1 < ctx->getSequenceLength()) {
+                if (isShiftPressed) {
+                    if (selectedRegion.startPos == firstPressedSelectionPosition) {
+                        selectedRegion.length++;
+                        baseToScroll = selectionEndPos;
+                    } else if (selectionEndPos == firstPressedSelectionPosition) {
+                        selectedRegion.startPos++;
+                        selectedRegion.length--;
+                        baseToScroll = selectedRegion.startPos;
+                    } else {
+                        assert(false);
+                    }
+                } else {
                     selectedRegion.startPos++;
-                    selectedRegion.length--;
-                    baseToScroll = selectedRegion.startPos;
-                } else {
-                    assert(false);
+                    firstPressedSelectionPosition++;
+                    baseToScroll = selectionEndPos + 1;
                 }
-            } else {
-                selectedRegion.startPos++;
-                firstPressedSelectionPosition++;
-                baseToScroll = selectionEndPos + 1;
+                ctx->getSequenceSelection()->setSelectedRegions(QVector<U2Region>() << selectedRegion);
+                ui->getScrollController()->scrollToBase(baseToScroll, width());
             }
-            ctx->getSequenceSelection()->setSelectedRegions(QVector<U2Region>() << selectedRegion);
-            ui->getScrollController()->scrollToBase(baseToScroll, width());
-        }
-        accepted = true;
-        break;
-    case Qt::Key_Down:
-        accepted = true;
-        break;
-    case Qt::Key_Home:
-        ui->getScrollController()->scrollToEnd(ScrollController::Left);
-        accepted = true;
-        break;
-    case Qt::Key_End:
-        ui->getScrollController()->scrollToEnd(ScrollController::Right);
-        accepted = true;
-        break;
-    case Qt::Key_PageUp:
-        ui->getScrollController()->scrollPage(ScrollController::Left);
-        accepted = true;
-        break;
-    case Qt::Key_PageDown:
-        ui->getScrollController()->scrollPage(ScrollController::Right);
-        accepted = true;
-        break;
+            accepted = true;
+            break;
+        case Qt::Key_Down:
+            accepted = true;
+            break;
+        case Qt::Key_Home:
+            ui->getScrollController()->scrollToEnd(ScrollController::Left);
+            accepted = true;
+            break;
+        case Qt::Key_End:
+            ui->getScrollController()->scrollToEnd(ScrollController::Right);
+            accepted = true;
+            break;
+        case Qt::Key_PageUp:
+            ui->getScrollController()->scrollPage(ScrollController::Left);
+            accepted = true;
+            break;
+        case Qt::Key_PageDown:
+            ui->getScrollController()->scrollPage(ScrollController::Right);
+            accepted = true;
+            break;
     }
 
     if (accepted) {
@@ -288,17 +288,15 @@ void McaEditorReferenceArea::sl_onSelectionChanged(LRegionsSelection * /*selecti
     emit si_selectionChanged();
 }
 
-McaEditorReferenceRenderArea::McaEditorReferenceRenderArea(McaEditorWgt *_ui, PanView *d, PanViewRenderer *renderer)
+McaEditorReferenceRenderArea::McaEditorReferenceRenderArea(McaEditorWgt *ui, PanView *d, PanViewRenderer *renderer)
     : PanViewRenderArea(d, renderer),
-      ui(_ui) {
+      ui(ui) {
 }
 
-qint64 McaEditorReferenceRenderArea::coordToPos(int x) const {
-    qint64 res = 0;
-    if (ui != NULL) {
-        res = qBound(0, ui->getBaseWidthController()->screenXPositionToColumn(x), ui->getEditor()->getAlignmentLen());
-    }
-    return res;
+qint64 McaEditorReferenceRenderArea::coordToPos(const QPoint &coord) const {
+    int alignmentLen = ui->getEditor()->getAlignmentLen();
+    int pos = ui->getBaseWidthController()->screenXPositionToColumn(coord.x());
+    return qBound(0, pos, alignmentLen);
 }
 
 McaEditorReferenceRenderAreaFactory::McaEditorReferenceRenderAreaFactory(McaEditorWgt *_ui, McaEditor *_editor)

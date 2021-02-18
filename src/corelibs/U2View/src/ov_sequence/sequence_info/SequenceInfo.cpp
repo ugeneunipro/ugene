@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -157,7 +157,7 @@ QString getFormattedLongNumber(qint64 num) {
 }    // namespace
 
 void SequenceInfo::updateCharOccurLayout() {
-    ADVSequenceObjectContext *activeSequenceContext = annotatedDnaView->getSequenceInFocus();
+    ADVSequenceObjectContext *activeSequenceContext = annotatedDnaView->getActiveSequenceContext();
     if (0 != activeSequenceContext) {
         const DNAAlphabet *activeSequenceAlphabet = activeSequenceContext->getAlphabet();
         SAFE_POINT(0 != activeSequenceAlphabet, "An active sequence alphabet is NULL!", );
@@ -171,7 +171,7 @@ void SequenceInfo::updateCharOccurLayout() {
 }
 
 void SequenceInfo::updateDinuclLayout() {
-    ADVSequenceObjectContext *activeSequenceContext = annotatedDnaView->getSequenceInFocus();
+    ADVSequenceObjectContext *activeSequenceContext = annotatedDnaView->getActiveSequenceContext();
     SAFE_POINT(0 != activeSequenceContext, "A sequence context is NULL!", );
 
     const DNAAlphabet *activeSequenceAlphabet = activeSequenceContext->getAlphabet();
@@ -208,7 +208,7 @@ QString getValue(const QString &value, bool isValid) {
 }    // namespace
 
 void SequenceInfo::updateCommonStatisticsData(const DNAStatistics &commonStatistics) {
-    ADVSequenceWidget *wgt = annotatedDnaView->getSequenceWidgetInFocus();
+    ADVSequenceWidget *wgt = annotatedDnaView->getActiveSequenceWidget();
     CHECK(wgt != NULL, );
     ADVSequenceObjectContext *ctx = wgt->getActiveSequenceContext();
     SAFE_POINT(ctx != NULL, tr("Sequence context is NULL"), );
@@ -222,8 +222,8 @@ void SequenceInfo::updateCommonStatisticsData(const DNAStatistics &commonStatist
 
     QString statsInfo = QString("<table cellspacing=%1>").arg(COMMON_STATISTICS_TABLE_CELLSPACING);
 
-    const QString lengthSuffix = alphabet->isNucleic() ? tr("nt") : alphabet->isAmino() ? tr("aa") :
-                                                                                          QString();
+    const QString lengthSuffix = alphabet->isNucleic() ? tr("nt") : alphabet->isAmino() ? tr("aa")
+                                                                                        : QString();
     statsInfo += formTableRow(CAPTION_SEQ_REGION_LENGTH, getValue(getFormattedLongNumber(commonStatistics.length) + lengthSuffix, isValid), availableSpace);
 
     if (alphabet->isNucleic()) {
@@ -326,7 +326,7 @@ void SequenceInfo::connectSlots() {
     SAFE_POINT(!seqContexts.empty(), "AnnotatedDNAView has no sequences contexts!", );
 
     // A sequence has been selected in the Sequence View
-    connect(annotatedDnaView, SIGNAL(si_focusChanged(ADVSequenceWidget *, ADVSequenceWidget *)), this, SLOT(sl_onFocusChanged(ADVSequenceWidget *, ADVSequenceWidget *)));
+    connect(annotatedDnaView, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)), this, SLOT(sl_onActiveSequenceChanged(ADVSequenceWidget *, ADVSequenceWidget *)));
 
     // A sequence has been modified (a subsequence added, removed, etc.)
     connect(annotatedDnaView, SIGNAL(si_sequenceModified(ADVSequenceObjectContext *)), this, SLOT(sl_onSequenceModified()));
@@ -361,8 +361,8 @@ void SequenceInfo::sl_onSequenceModified() {
     updateData();
 }
 
-void SequenceInfo::sl_onFocusChanged(ADVSequenceWidget * /*from*/, ADVSequenceWidget *to) {
-    if (0 != to) {    // i.e. the sequence has been deleted
+void SequenceInfo::sl_onActiveSequenceChanged(ADVSequenceWidget *oldSequenceWidget /*from*/, ADVSequenceWidget *newSequenceWidget) {
+    if (newSequenceWidget != nullptr) {    // i.e. the sequence has been deleted
         updateLayout();
         updateCurrentRegions();
         updateData();
@@ -395,7 +395,7 @@ bool SequenceInfo::eventFilter(QObject *object, QEvent *event) {
 }
 
 void SequenceInfo::updateCurrentRegions() {
-    ADVSequenceObjectContext *seqContext = annotatedDnaView->getSequenceInFocus();
+    ADVSequenceObjectContext *seqContext = annotatedDnaView->getActiveSequenceContext();
     SAFE_POINT(0 != seqContext, "A sequence context is NULL!", );
 
     DNASequenceSelection *selection = seqContext->getSequenceSelection();
@@ -412,7 +412,7 @@ void SequenceInfo::updateCurrentRegions() {
 void SequenceInfo::launchCalculations(QString subgroupId) {
     // Launch the statistics, characters and dinucleotides calculation tasks,
     // if corresponding groups are present and opened
-    ADVSequenceObjectContext *activeContext = annotatedDnaView->getSequenceInFocus();
+    ADVSequenceObjectContext *activeContext = annotatedDnaView->getActiveSequenceContext();
     SAFE_POINT(0 != activeContext, "A sequence context is NULL!", );
 
     U2SequenceObject *seqObj = activeContext->getSequenceObject();
@@ -450,24 +450,24 @@ void SequenceInfo::launchCalculations(QString subgroupId) {
 int SequenceInfo::getAvailableSpace(DNAAlphabetType alphabetType) const {
     QStringList captions;
     switch (alphabetType) {
-    case DNAAlphabet_NUCL:
-        captions << CAPTION_SEQ_REGION_LENGTH
-                 << CAPTION_SEQ_GC_CONTENT
-                 << CAPTION_SEQ_MELTING_TEMPERATURE
-                 << QString("    ") + CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT
-                 << QString("    ") + CAPTION_SEQ_EXTINCTION_COEFFICIENT;
-        // Two captions are ignored because of HTML tags within them
-        //                 << CAPTION_SEQ_NMOLE_OD
-        //                 << CAPTION_SEQ_MG_OD;
-        break;
-    case DNAAlphabet_AMINO:
-        captions << CAPTION_SEQ_REGION_LENGTH
-                 << CAPTION_SEQ_AMINO_MOLECULAR_WEIGHT
-                 << CAPTION_SEQ_ISOELECTIC_POINT;
-        break;
-    default:
-        captions << CAPTION_SEQ_REGION_LENGTH;
-        break;
+        case DNAAlphabet_NUCL:
+            captions << CAPTION_SEQ_REGION_LENGTH
+                     << CAPTION_SEQ_GC_CONTENT
+                     << CAPTION_SEQ_MELTING_TEMPERATURE
+                     << QString("    ") + CAPTION_SEQ_NUCL_MOLECULAR_WEIGHT
+                     << QString("    ") + CAPTION_SEQ_EXTINCTION_COEFFICIENT;
+            // Two captions are ignored because of HTML tags within them
+            //                 << CAPTION_SEQ_NMOLE_OD
+            //                 << CAPTION_SEQ_MG_OD;
+            break;
+        case DNAAlphabet_AMINO:
+            captions << CAPTION_SEQ_REGION_LENGTH
+                     << CAPTION_SEQ_AMINO_MOLECULAR_WEIGHT
+                     << CAPTION_SEQ_ISOELECTIC_POINT;
+            break;
+        default:
+            captions << CAPTION_SEQ_REGION_LENGTH;
+            break;
     }
 
     QFontMetrics fontMetrics(statisticLabel->font());
@@ -515,19 +515,19 @@ QString SequenceInfo::formTableRow(const QString &caption, const QString &value,
 }
 
 StatisticsCache<DNAStatistics> *SequenceInfo::getCommonStatisticsCache() const {
-    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getSequenceInFocus();
+    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
     SAFE_POINT(0 != sequenceContext, "A sequence context is NULL!", NULL);
     return sequenceContext->getCommonStatisticsCache();
 }
 
 StatisticsCache<CharactersOccurrence> *SequenceInfo::getCharactersOccurrenceCache() const {
-    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getSequenceInFocus();
+    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
     SAFE_POINT(0 != sequenceContext, "A sequence context is NULL!", NULL);
     return sequenceContext->getCharactersOccurrenceCache();
 }
 
 StatisticsCache<DinucleotidesOccurrence> *SequenceInfo::getDinucleotidesOccurrenceCache() const {
-    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getSequenceInFocus();
+    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
     SAFE_POINT(0 != sequenceContext, "A sequence context is NULL!", NULL);
     return sequenceContext->getDinucleotidesOccurrenceCache();
 }

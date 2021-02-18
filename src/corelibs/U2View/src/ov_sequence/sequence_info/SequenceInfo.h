@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -52,11 +52,8 @@ public:
 private slots:
     void sl_onSelectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &);
 
-    /**
-    * Focus is changed e.g. when a user selects another sequence or deletes the sequence in focus
-    * Verifies either a region is selected on the sequence in focus.
-    */
-    void sl_onFocusChanged(ADVSequenceWidget *from, ADVSequenceWidget *to);
+    /** Updates sequence info to match active sequence. */
+    void sl_onActiveSequenceChanged(ADVSequenceWidget *oldSequenceWidget, ADVSequenceWidget *newSequenceWidget);
 
     /** A sequence part was added, removed or replaced */
     void sl_onSequenceModified();

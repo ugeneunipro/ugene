@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -118,7 +118,7 @@ void URLListWidget::sl_addFileButton() {
     } else {
         files = U2FileDialog::getOpenFileNames(NULL, tr("Select file"), lod.dir);
     }
-    for (const QString &file : files) {
+    for (const QString &file : qAsConst(files)) {
         lod.url = file;
         addUrl(file);
     }

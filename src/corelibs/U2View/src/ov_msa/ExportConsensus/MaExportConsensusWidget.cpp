@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -87,7 +87,7 @@ void MaExportConsensusWidget::sl_exportClicked() {
     settings.url = saveController->getSaveFileName();
     settings.algorithm = ma->getUI()->getConsensusArea()->getConsensusAlgorithm()->clone();
 
-    ExportMaConsensusTask *exportTask = new ExportMaConsensusTask(settings);
+    auto exportTask = new ExportMaConsensusTask(settings);
     connect(exportTask, SIGNAL(si_stateChanged()), this, SLOT(sl_exportTaskStateChanged()));
     exportTaskUrls << exportTask->getConsensusUrl();
     TaskWatchdog::trackResourceExistence(ma->getMaObject(), exportTask, tr("A problem occurred during export consensus. The multiple alignment is no more available."));

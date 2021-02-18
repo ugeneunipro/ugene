@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -51,31 +51,33 @@ public:
     McaEditor(const QString &viewName,
               MultipleChromatogramAlignmentObject *obj);
 
-    QString getSettingsRoot() const {
+    QString getSettingsRoot() const override {
         return MCAE_SETTINGS_ROOT;
     }
 
-    MultipleChromatogramAlignmentObject *getMaObject() const;
-    McaEditorWgt *getUI() const;
+    MultipleChromatogramAlignmentObject *getMaObject() const override;
+    McaEditorWgt *getUI() const override;
 
-    virtual void buildStaticToolbar(QToolBar *tb);
+    void buildStaticToolbar(QToolBar *tb) override;
 
-    virtual void buildStaticMenu(QMenu *menu);
+    void buildStaticMenu(QMenu *menu) override;
 
-    virtual int getRowContentIndent(int rowId) const;
+    int getRowContentIndent(int rowId) const override;
 
-    bool isChromVisible(qint64 rowId) const;
-    bool isChromVisible(int rowIndex) const;
-    bool isChromatogramButtonChecked() const;
+    bool isChromatogramRowExpanded(int rowIndex) const;
 
-    QString getReferenceRowName() const;
+    QString getReferenceRowName() const override;
 
-    char getReferenceCharAt(int pos) const;
+    char getReferenceCharAt(int pos) const override;
 
     SequenceObjectContext *getReferenceContext() const;
 
+    QAction *getGotoSelectedReadAction() const {
+        return gotoSelectedReadAction;
+    }
+
 protected slots:
-    void sl_onContextMenuRequested(const QPoint &pos);
+    void sl_onContextMenuRequested(const QPoint &pos) override;
     void sl_showHideChromatograms(bool show);
 
 private slots:
@@ -85,13 +87,28 @@ private slots:
     void sl_saveOverviewState();
     void sl_saveChromatogramState();
 
+    /** Callback for the 'gotoSelectedReadAction' action. See docs for 'gotoSelectedReadAction'. */
+    void sl_gotoSelectedRead();
+
 protected:
     QWidget *createWidget() override;
     void initActions() override;
+    void updateActions() override;
 
     QAction *showChromatogramsAction;
     QAction *showGeneralTabAction;
     QAction *showConsensusTabAction;
+
+    /**
+     * When activated MCA editor moves start of the currently selected read into the view.
+     * If the selection contains multiple reads - selects the first one.
+     *
+     * The start of the direct reads (reads located on 3'-5' strand) is the same with their visual start on the screen -
+     *  direct reads are read from the left to the right direction.
+     * The start of the complement reads is they visual end position: such read sequences are read from the right to the left.
+     * This way the action works the same as annotation selection in the sequence view.
+     */
+    QAction *gotoSelectedReadAction;
 
     QMap<qint64, bool> chromVisibility;
 

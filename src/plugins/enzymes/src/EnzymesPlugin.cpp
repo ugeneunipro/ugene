@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -79,7 +79,6 @@ EnzymesPlugin::EnzymesPlugin()
     }
 
     EnzymesSelectorWidget::setupSettings();
-    FindEnzymesDialog::initDefaultSettings();
 
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
@@ -128,12 +127,12 @@ void EnzymesPlugin::sl_onOpenDigestSequenceDialog() {
         return;
     }
 
-    if (!view->getSequenceInFocus()->getSequenceObject()->getAlphabet()->isNucleic()) {
+    if (!view->getActiveSequenceContext()->getSequenceObject()->getAlphabet()->isNucleic()) {
         QMessageBox::information(QApplication::activeWindow(), openDigestSequenceDialog->text(), tr("Can not digest into fragments non-nucleic sequence."));
         return;
     }
 
-    QObjectScopedPointer<DigestSequenceDialog> dlg = new DigestSequenceDialog(view->getSequenceInFocus(), QApplication::activeWindow());
+    QObjectScopedPointer<DigestSequenceDialog> dlg = new DigestSequenceDialog(view->getActiveSequenceContext(), QApplication::activeWindow());
     dlg->exec();
 }
 
@@ -151,14 +150,14 @@ void EnzymesPlugin::sl_onOpenCreateFragmentDialog() {
         return;
     }
 
-    U2SequenceObject *dnaObj = view->getSequenceInFocus()->getSequenceObject();
+    U2SequenceObject *dnaObj = view->getActiveSequenceContext()->getSequenceObject();
     assert(dnaObj != NULL);
     if (!dnaObj->getAlphabet()->isNucleic()) {
         QMessageBox::information(QApplication::activeWindow(), openCreateFragmentDialog->text(), tr("The sequence doesn't have nucleic alphabet, it can not be used in cloning."));
         return;
     }
 
-    QObjectScopedPointer<CreateFragmentDialog> dlg = new CreateFragmentDialog(view->getSequenceInFocus(), QApplication::activeWindow());
+    QObjectScopedPointer<CreateFragmentDialog> dlg = new CreateFragmentDialog(view->getActiveSequenceContext(), QApplication::activeWindow());
     dlg->exec();
 }
 
@@ -200,7 +199,7 @@ void EnzymesADVContext::sl_search() {
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
     assert(av != NULL);
 
-    ADVSequenceObjectContext *seqCtx = av->getSequenceInFocus();
+    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
     assert(seqCtx->getAlphabet()->isNucleic());
     QObjectScopedPointer<FindEnzymesDialog> d = new FindEnzymesDialog(seqCtx);
     d->exec();
@@ -213,7 +212,7 @@ void EnzymesADVContext::sl_search() {
 void EnzymesADVContext::buildMenu(GObjectView *v, QMenu *m) {
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(v);
     SAFE_POINT(NULL != av, "Invalid sequence view", );
-    CHECK(av->getSequenceInFocus()->getAlphabet()->isNucleic(), );
+    CHECK(av->getActiveSequenceContext()->getAlphabet()->isNucleic(), );
 
     QMenu *cloningMenu = new QMenu(tr("Cloning"), m);
     cloningMenu->menuAction()->setObjectName("Cloning");
@@ -256,9 +255,9 @@ void EnzymesADVContext::sl_createPCRProduct() {
         SAFE_POINT(a2->getLocation()->strand == U2Strand::Complementary, "Invalid annotation's strand!", );
         int endPos = a2->getLocation()->regions.at(0).endPos();
 
-        U2SequenceObject *seqObj = av->getSequenceInFocus()->getSequenceObject();
+        U2SequenceObject *seqObj = av->getActiveSequenceContext()->getSequenceObject();
         U2Region region(startPos, endPos - startPos);
-        QObjectScopedPointer<CreateFragmentDialog> dlg = new CreateFragmentDialog(seqObj, region, av->getSequenceWidgetInFocus());
+        QObjectScopedPointer<CreateFragmentDialog> dlg = new CreateFragmentDialog(seqObj, region, av->getActiveSequenceWidget());
         dlg->setWindowTitle("Create PCR product");
         dlg->exec();
     }

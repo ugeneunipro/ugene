@@ -66,31 +66,6 @@ QString GTClipboard::text(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "sequences"
-QString GTClipboard::sequences(GUITestOpStatus &os) {
-    QString fastaText = text(os);
-    if (fastaText.isEmpty() || os.hasError()) {
-        return "";
-    }
-    QStringList sequences;
-    QString currentSequence;
-    for (auto line : fastaText.split("\n")) {
-        if (line.startsWith(">")) {
-            if (!currentSequence.isEmpty()) {
-                sequences << currentSequence;
-                currentSequence.clear();
-            }
-            continue;
-        }
-        currentSequence += line.trimmed();
-    }
-    if (!currentSequence.isEmpty()) {
-        sequences << currentSequence;
-    }
-    return sequences.join("\n");
-}
-#undef GT_METHOD_NAME
-
 #define GT_METHOD_NAME "setText"
 void GTClipboard::setText(GUITestOpStatus &os, QString text) {
     class Scenario : public CustomScenario {

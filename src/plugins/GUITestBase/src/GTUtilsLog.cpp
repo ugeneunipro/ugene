@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -79,7 +79,7 @@ void GTUtilsLog::checkContainsError(HI::GUITestOpStatus &os, const GTLogTracer &
     Q_UNUSED(os);
     GTGlobals::sleep(500);
     bool isErrorFound = false;
-    for (QString error : logTracer.errorsList) {
+    for (QString error : qAsConst(logTracer.errorsList)) {
         if (error.contains(messagePart)) {
             isErrorFound = true;
             break;

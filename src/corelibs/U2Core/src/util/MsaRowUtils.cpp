@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -335,7 +335,7 @@ bool MsaRowUtils::isLeadingOrTrailingGap(int dataLength, const U2MsaRowGapModel 
         return true;    // leading gap.
     }
     int totalGapsLen = 0;
-    for (const U2MsaGap &gap : gapModel) {
+    for (const U2MsaGap &gap : qAsConst(gapModel)) {
         totalGapsLen += gap.gap;
         if (position < gap.offset) {
             return false;    // somewhere in the middle.

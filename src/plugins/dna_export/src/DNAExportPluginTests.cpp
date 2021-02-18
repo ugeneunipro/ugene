@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,6 +44,9 @@ namespace U2 {
 #define EXP_ALIGN_URL_ATTR "exp-url"
 #define EXTRACT_ROWS_ATTR "rows"
 #define TRANS_TABLE_ATTR "trans-table"
+#define INCLUDE_GAPS "include-gaps"
+#define UNKNOWN_AMINO_2_GAP "unknown-amino-to-gap"
+#define TRANSLATION_FRAME "translation-frame"
 
 void GTest_ImportPhredQualityScoresTask::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
@@ -157,6 +160,27 @@ void GTest_ExportNucleicToAminoAlignmentTask::init(XMLTestFormat *tf, const QDom
         }
         selectedRows = U2Region(base, len);
     }
+
+    buf = el.attribute(INCLUDE_GAPS);
+    if (!buf.isEmpty() && buf == "true") {
+        includeGaps = true;
+    }
+
+    buf = el.attribute(UNKNOWN_AMINO_2_GAP);
+    if (!buf.isEmpty() && buf == "true") {
+        convertUnknownAmino2Gap = true;
+    }
+
+    buf = el.attribute(TRANSLATION_FRAME);
+    if (!buf.isEmpty()) {
+        ok = false;
+        int frame = buf.toInt(&ok);
+        if (!ok || frame == 0 || frame > 3 || frame < -3) {
+            stateInfo.setError(GTest::tr("Invalid translation frame : %1").arg(frame));
+            return;
+        }
+        translationFrame = frame;
+    }
 }
 
 void GTest_ExportNucleicToAminoAlignmentTask::prepare() {
@@ -182,12 +206,18 @@ void GTest_ExportNucleicToAminoAlignmentTask::prepare() {
     trid.replace("0", QString("%1").arg(transTable));
     trans << AppContext::getDNATranslationRegistry()->lookupTranslation(trid);
 
+    bool reverseComplement = translationFrame < 0;
+    int offset = qAbs(translationFrame) - 1;
     exportTask = new ExportMSA2MSATask(srcAl,
                                        selectedRows.length ? selectedRows.startPos : 0,
                                        selectedRows.length ? selectedRows.length : srcAl->getNumRows(),
                                        outputFileName,
                                        trans,
-                                       BaseDocumentFormats::CLUSTAL_ALN);
+                                       BaseDocumentFormats::CLUSTAL_ALN,
+                                       !includeGaps,
+                                       convertUnknownAmino2Gap,
+                                       reverseComplement,
+                                       offset);
     addSubTask(exportTask);
 }
 

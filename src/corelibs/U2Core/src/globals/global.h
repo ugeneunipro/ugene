@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -200,5 +200,15 @@ inline bool isOsUnix() {
     return false;
 #endif
 }
+
+/** Backport of qAsConst for QT < 5.7.0. */
+#if (QT_VERSION < QT_VERSION_CHECK(5, 7, 0))
+template<typename T>
+Q_DECL_CONSTEXPR typename std::add_const<T>::type &qAsConst(T &t) noexcept {
+    return t;
+}
+template<typename T>
+void qAsConst(const T &&) = delete;
+#endif
 
 #endif

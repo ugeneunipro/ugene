@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -31,14 +31,14 @@ namespace U2 {
 
 BranchSettingsDialog::BranchSettingsDialog(QWidget *parent, const OptionsMap &settings)
     : BaseSettingsDialog(parent) {
-    changedSettings[BRANCH_COLOR] = settings[BRANCH_COLOR];
-    changedSettings[BRANCH_THICKNESS] = settings[BRANCH_THICKNESS];
+    updatedSettings[BRANCH_COLOR] = settings[BRANCH_COLOR];
+    updatedSettings[BRANCH_THICKNESS] = settings[BRANCH_THICKNESS];
     setupUi(this);
     new HelpButton(this, buttonBox, "54362708");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    thicknessSpinBox->setValue(changedSettings[BRANCH_THICKNESS].toInt());
+    thicknessSpinBox->setValue(updatedSettings[BRANCH_THICKNESS].toInt());
 
     QStyle *buttonStyle = new QProxyStyle(QStyleFactory::create("fusion"));
     buttonStyle->setParent(colorButton);
@@ -50,7 +50,7 @@ BranchSettingsDialog::BranchSettingsDialog(QWidget *parent, const OptionsMap &se
 }
 
 void BranchSettingsDialog::updateColorButton() {
-    QColor branchColor = qvariant_cast<QColor>(changedSettings[BRANCH_COLOR]);
+    QColor branchColor = qvariant_cast<QColor>(updatedSettings[BRANCH_COLOR]);
     QPalette palette = colorButton->palette();
     palette.setColor(colorButton->backgroundRole(), branchColor);
     colorButton->setPalette(palette);
@@ -64,16 +64,16 @@ void BranchSettingsDialog::sl_colorButton() {
     }
 #endif
 
-    QColor branchColor = qvariant_cast<QColor>(changedSettings[BRANCH_COLOR]);
+    QColor branchColor = qvariant_cast<QColor>(updatedSettings[BRANCH_COLOR]);
     QColor newColor = QColorDialog::getColor(branchColor, this, tr("Select Color"), options);
     if (newColor.isValid()) {
-        changedSettings[BRANCH_COLOR] = newColor;
+        updatedSettings[BRANCH_COLOR] = newColor;
         updateColorButton();
     }
 }
 
 void BranchSettingsDialog::accept() {
-    changedSettings[BRANCH_THICKNESS] = thicknessSpinBox->value();
+    updatedSettings[BRANCH_THICKNESS] = thicknessSpinBox->value();
     QDialog::accept();
 }
 

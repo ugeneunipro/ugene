@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -79,7 +79,16 @@ private:
 class ExportMSA2MSATask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    ExportMSA2MSATask(const MultipleSequenceAlignment &ma, int offset, int len, const QString &url, const QList<DNATranslation *> &aminoTranslations, DocumentFormatId format);
+    ExportMSA2MSATask(const MultipleSequenceAlignment &ma,
+                      int offset,
+                      int len,
+                      const QString &url,
+                      const QList<DNATranslation *> &aminoTranslations,
+                      DocumentFormatId format,
+                      const bool trimGaps,
+                      const bool convertUnknownToGap,
+                      const bool reverseComplement,
+                      const int baseOffset);
 
     void run();
 
@@ -89,7 +98,29 @@ private:
     int len;
     QString url;
     QString format;
-    QList<DNATranslation *> aminoTranslations;    // amino translation for a sequences in alignment. If not NULL -> sequence is translated
+    /*!
+     * Amino translation for a sequences in alignment. If not NULL -> sequence is translated
+     */
+    QList<DNATranslation *> aminoTranslations;
+    /*!
+     * Trim gaps before translation of not
+     */
+    const bool trimGaps;
+    /*!
+     * If there are unknown amino bases, they are translated as "X" by default, if this value is true tey will be tranlated as "-"
+     */
+    const bool convertUnknownToGap;
+    /*!
+     * There is required to translate a reverse-complement strand
+     */
+    const bool reverseComplement;
+    /*!
+     * The number of characters to skip based on a translation frame.
+     * If the frame is "1" or "-1", than baseOffset is 0.
+     * If the frame is "2" or "-2", than baseOffset is 1.
+     * If the frame is "3" or "-3", than baseOffset is 2.
+     */
+    const int baseOffset;
 };
 
 class DNAChromatogramObject;

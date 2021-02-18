@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -157,6 +157,40 @@ bool FileAndDirectoryUtils::isDirectoryWritable(const QString &dirPath) {
 
     tmpFile.close();
     tmpFile.remove();
+    return true;
+}
+
+bool FileAndDirectoryUtils::canWriteToPath(const QString &absoluteDirPath) {
+    if (absoluteDirPath.isEmpty()) {
+        return true;
+    }
+    QFileInfo fi(absoluteDirPath);
+    SAFE_POINT(fi.dir().isAbsolute(), "Not an absolute path!", false);
+
+    // Find out the folder that exists
+    QDir existenDir(absoluteDirPath);
+    while (!existenDir.exists()) {
+        // Get upper folder
+        QString dirPath = existenDir.path();
+        QString dirName = existenDir.dirName();
+        dirPath.remove(    // remove dir name and slash (if any) from the path
+            dirPath.length() - dirName.length() - 1,
+            dirName.length() + 1);
+        if (dirPath.isEmpty()) {
+            return false;
+        }
+        existenDir.setPath(dirPath);
+    }
+
+    // Attempts to write a file to the folder.
+    // This assumes possibility to create any sub-folder, file, etc.
+    QFile file(existenDir.filePath("testWriteAccess.txt"));
+    if (!file.open(QIODevice::WriteOnly)) {
+        return false;
+    }
+    file.close();
+    file.remove();
+
     return true;
 }
 

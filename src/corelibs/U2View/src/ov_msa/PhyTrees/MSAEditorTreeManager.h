@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -44,9 +44,7 @@ class MSAEditorMultiTreeViewer;
 class MSAEditorTreeManager : public QObject {
     Q_OBJECT
 public:
-    MSAEditorTreeManager(MSAEditor *_editor);
-    ~MSAEditorTreeManager() {
-    }
+    MSAEditorTreeManager(MSAEditor *msaEditor);
 
     void loadRelatedTrees();
 
@@ -56,7 +54,7 @@ public:
 
 private slots:
     void sl_openTree(Task *treeBuildTask);
-    void sl_openTreeTaskFinished(Task *t);
+    void sl_openTreeTaskFinished(Task *task);
     void sl_onWindowClosed(GObjectViewWindow *viewWindow);
     void sl_treeRebuildingFinished(Task *treeBuildTask);
     void sl_refreshTree(MSAEditorTreeViewer *treeViewer);
@@ -76,7 +74,7 @@ private:
     CreatePhyTreeSettings settings;
     bool addExistingTree;
     PhyTree phyTree;
-    Document *d;
+    Document *treeDocument;
     QMap<MSAEditorTreeViewer *, Task *> activeRefreshTasks;
 };
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -61,11 +61,11 @@ void ExternalToolManagerImpl::sl_initialize() {
 void ExternalToolManagerImpl::sl_onRegistryHasToolsListingLoaded(Task * /*task*/) {
     ExternalToolSupportSettings::loadExternalToolsFromAppConfig();
     QList<ExternalTool *> toolList = etRegistry->getAllEntries();
-    for (ExternalTool *tool : toolList) {
+    for (ExternalTool *tool : qAsConst(toolList)) {
         registerTool(tool);
     }
     StrStrMap toolPathByIdMap;
-    for (ExternalTool *tool : toolList) {
+    for (ExternalTool *tool : qAsConst(toolList)) {
         QString toolPath = addToolToPendingListsAndReturnToolPath(tool);
         if (!toolPath.isEmpty()) {
             toolPathByIdMap.insert(tool->getId(), toolPath);
@@ -90,7 +90,7 @@ void ExternalToolManagerImpl::checkStartupValidationState() {
 }
 
 void ExternalToolManagerImpl::validate(const QStringList &toolIds, const StrStrMap &toolPaths, ExternalToolValidationListener *listener) {
-    for (const QString &toolId : toolIds) {
+    for (const QString &toolId : qAsConst(toolIds)) {
         ExternalTool *tool = etRegistry->getById(toolId);
         if (tool == nullptr) {
             continue;
@@ -124,7 +124,7 @@ void ExternalToolManagerImpl::registerTool(ExternalTool *tool) {
 
     QStringList masterToolList = tool->getDependencies();
     if (!masterToolList.isEmpty()) {
-        for (const QString &masterToolId : masterToolList) {
+        for (const QString &masterToolId : qAsConst(masterToolList)) {
             childToolsMultiMap.insertMulti(masterToolId, tool->getId());
         }
     }
@@ -191,7 +191,8 @@ void ExternalToolManagerImpl::sl_onToolStatusChanged(bool isValid) {
 
     // Process all child tools.
     StrStrMap childToolPathMap;
-    for (const QString &childToolId : childToolsMultiMap.values(tool->getId())) {
+    const QList<QString> childToolList = childToolsMultiMap.values(tool->getId());
+    for (const QString &childToolId : qAsConst(childToolList)) {
         ExternalTool *childTool = etRegistry->getById(childToolId);
         SAFE_POINT(childTool, QString("An external tool '%1' isn't found in the registry").arg(childToolId), );
 
@@ -242,7 +243,8 @@ void ExternalToolManagerImpl::sl_onToolRemovedFromRegistry(const QString &toolId
 
 bool ExternalToolManagerImpl::checkAllDependenciesAreValid(ExternalTool *tool) {
     bool isAllValid = true;
-    for (const QString &masterId : tool->getDependencies()) {
+    const QStringList dependencyList = tool->getDependencies();
+    for (const QString &masterId : qAsConst(dependencyList)) {
         if (!toolStateMap.contains(masterId)) {
             coreLog.details(tr("A dependency tool isn't represented in the general tool list. Skip dependency \"%1\"").arg(masterId));
             isAllValid = false;
@@ -257,7 +259,7 @@ void ExternalToolManagerImpl::runPendingValidationTasks(const StrStrMap &predefi
     QList<Task *> validationTaskList;
     QStringList validationToolList = pendingValidationToolSet.values();
     pendingValidationToolSet.clear();
-    for (const QString &toolId : validationToolList) {
+    for (const QString &toolId : qAsConst(validationToolList)) {
         QString predefinedToolPath;
         bool hasPredefinedPath = predefinedToolPathById.contains(toolId);
         if (hasPredefinedPath) {

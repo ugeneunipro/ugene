@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -49,7 +49,10 @@ private slots:
     void sl_extractProduct();
     void sl_onFindTaskFinished();
     void sl_onSequenceChanged(ADVSequenceObjectContext *sequenceContext);
-    void sl_onFocusChanged();
+
+    /** Updates state of the widget to match the new active sequence. */
+    void sl_activeSequenceChanged();
+
     void sl_onProductsSelectionChanged();
     void sl_onProductDoubleClicked();
     void sl_showDetails(const QString &link);

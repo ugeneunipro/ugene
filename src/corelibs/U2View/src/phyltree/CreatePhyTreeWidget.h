@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -40,11 +40,11 @@ public:
     virtual void fillSettings(CreatePhyTreeSettings &settings) = 0;
     virtual void storeSettings() = 0;
     virtual void restoreDefault() = 0;
+
     virtual bool checkSettings(QString &message, const CreatePhyTreeSettings &settings);
     virtual bool checkMemoryEstimation(QString &message, const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &settings);
-    virtual bool insertOutputOptionWidget(PhyTreeDisplayOptionsWidget *outputOptionsWidget);
 
-    static QString settingsPath();
+    static QString getAppSettingsRoot();
 };
 
 }    // namespace U2

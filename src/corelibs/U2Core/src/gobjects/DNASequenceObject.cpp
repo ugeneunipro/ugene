@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -303,78 +303,92 @@ QVariantMap U2SequenceObject::getSequenceInfo() const {
     return variantMap;
 }
 
-QString U2SequenceObject::getStringAttribute(const QString &seqAttr) const {
-    return getSequenceInfo().value(seqAttr).toString();
+QString U2SequenceObject::getStringAttribute(const QString &name) const {
+    //TODO: Re-check all usages and start using real attributes from DBI!
+    return getSequenceInfo().value(name).toString();
 }
 
-void U2SequenceObject::setStringAttribute(const QString &newStringAttributeValue, const QString &type) {
+void U2SequenceObject::setStringAttribute(const QString &name, const QString &value) {
     U2OpStatus2Log os;
     DbiConnection con(entityRef.dbiRef, os);
     CHECK_OP(os, );
-    QList<U2DataId> oldStringAttributeList = con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId, type, os);
+    QList<U2DataId> oldStringAttributeList = con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId, name, os);
     CHECK_OP(os, );
     if (!oldStringAttributeList.isEmpty()) {
-        con.dbi->getAttributeDbi()->removeObjectAttributes(oldStringAttributeList.first(), os);
+        con.dbi->getAttributeDbi()->removeAttributes(oldStringAttributeList, os);
         CHECK_OP(os, );
     }
-    U2StringAttribute newStringAttribute(entityRef.entityId, type, newStringAttributeValue);
+    U2StringAttribute newStringAttribute(entityRef.entityId, name, value);
     con.dbi->getAttributeDbi()->createStringAttribute(newStringAttribute, os);
     CHECK_OP(os, );
 }
 
-qint64 U2SequenceObject::getIntegerAttribute(const QString &seqAttr) const {
-    return getSequenceInfo().value(seqAttr).toInt();
+qint64 U2SequenceObject::getIntegerAttribute(const QString &name) const {
+    U2OpStatus2Log os;
+    DbiConnection con(entityRef.dbiRef, os);
+    CHECK_OP(os, 0);
+
+    U2AttributeDbi *attributeDbi = con.dbi->getAttributeDbi();
+    QList<U2DataId> attributeList = attributeDbi->getObjectAttributes(entityRef.entityId, name, os);
+    CHECK_OP(os, 0);
+    CHECK(!attributeList.isEmpty(), 0);
+
+    U2IntegerAttribute attribute = attributeDbi->getIntegerAttribute(attributeList.first(), os);
+    CHECK_OP(os, 0);
+    return attribute.value;
 }
 
-void U2SequenceObject::setIntegerAttribute(int newIntegerAttributeValue, const QString &type) {
+void U2SequenceObject::setIntegerAttribute(const QString &name, int value) {
     U2OpStatus2Log os;
     DbiConnection con(entityRef.dbiRef, os);
     CHECK_OP(os, );
-    QList<U2DataId> oldIntegerAttributeList = con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId, type, os);
+    QList<U2DataId> oldIntegerAttributeList = con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId, name, os);
     CHECK_OP(os, );
     if (!oldIntegerAttributeList.isEmpty()) {
-        con.dbi->getAttributeDbi()->removeObjectAttributes(oldIntegerAttributeList.first(), os);
+        con.dbi->getAttributeDbi()->removeAttributes(oldIntegerAttributeList, os);
         CHECK_OP(os, );
     }
-    U2IntegerAttribute newIntegerAttribute(entityRef.entityId, type, newIntegerAttributeValue);
+    U2IntegerAttribute newIntegerAttribute(entityRef.entityId, name, value);
     con.dbi->getAttributeDbi()->createIntegerAttribute(newIntegerAttribute, os);
     CHECK_OP(os, );
 }
 
-double U2SequenceObject::getRealAttribute(const QString &seqAttr) const {
-    return getSequenceInfo().value(seqAttr).toReal();
+double U2SequenceObject::getRealAttribute(const QString &name) const {
+    //TODO: Re-check all usages and start using real attributes from DBI!
+    return getSequenceInfo().value(name).toReal();
 }
 
-void U2SequenceObject::setRealAttribute(double newRealAttributeValue, const QString &type) {
+void U2SequenceObject::setRealAttribute(const QString &name, double value) {
     U2OpStatus2Log os;
     DbiConnection con(entityRef.dbiRef, os);
     CHECK_OP(os, );
-    QList<U2DataId> oldRealAttributeList = con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId, type, os);
+    QList<U2DataId> oldRealAttributeList = con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId, name, os);
     CHECK_OP(os, );
     if (!oldRealAttributeList.isEmpty()) {
-        con.dbi->getAttributeDbi()->removeObjectAttributes(oldRealAttributeList.first(), os);
+        con.dbi->getAttributeDbi()->removeAttributes(oldRealAttributeList, os);
         CHECK_OP(os, );
     }
-    U2RealAttribute newRealAttribute(entityRef.entityId, type, newRealAttributeValue);
+    U2RealAttribute newRealAttribute(entityRef.entityId, name, value);
     con.dbi->getAttributeDbi()->createRealAttribute(newRealAttribute, os);
     CHECK_OP(os, );
 }
 
-QByteArray U2SequenceObject::getByteArrayAttribute(const QString &seqAttr) const {
-    return getSequenceInfo().value(seqAttr).toByteArray();
+QByteArray U2SequenceObject::getByteArrayAttribute(const QString &name) const {
+    //TODO: Re-check all usages and start using real attributes from DBI!
+    return getSequenceInfo().value(name).toByteArray();
 }
 
-void U2SequenceObject::setByteArrayAttribute(const QByteArray &newByteArrayAttributeValue, const QString &type) {
+void U2SequenceObject::setByteArrayAttribute(const QString &name, const QByteArray &value) {
     U2OpStatus2Log os;
     DbiConnection con(entityRef.dbiRef, os);
     CHECK_OP(os, );
-    QList<U2DataId> oldByteArrayAttributeList = con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId, type, os);
+    QList<U2DataId> oldByteArrayAttributeList = con.dbi->getAttributeDbi()->getObjectAttributes(entityRef.entityId, name, os);
     CHECK_OP(os, );
     if (!oldByteArrayAttributeList.isEmpty()) {
-        con.dbi->getAttributeDbi()->removeObjectAttributes(oldByteArrayAttributeList.first(), os);
+        con.dbi->getAttributeDbi()->removeAttributes(oldByteArrayAttributeList, os);
         CHECK_OP(os, );
     }
-    U2ByteArrayAttribute newByteArrayAttribute(entityRef.entityId, type, newByteArrayAttributeValue);
+    U2ByteArrayAttribute newByteArrayAttribute(entityRef.entityId, name, value);
     con.dbi->getAttributeDbi()->createByteArrayAttribute(newByteArrayAttribute, os);
 }
 

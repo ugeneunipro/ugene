@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -55,28 +55,23 @@ double PanViewRenderer::getCurrentScale() const {
     return double(panView->getRenderArea()->width()) / panView->getVisibleRange().length;
 }
 
-U2Region PanViewRenderer::getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const {
+U2Region PanViewRenderer::getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as, int /* availableHeight*/) const {
     Q_UNUSED(r);
-    Q_UNUSED(canvasSize);
-    Q_UNUSED(visibleRange);
-
     CHECK(as->visible, U2Region(-1, 0));
-
     const int row = panView->getRowsManager()->getAnnotationRowIdx(a);
     const int line = s->getRowLine(row);
-
     return U2Region(getLineY(line) + 2, commonMetrics.lineHeight - 4);
 }
 
-U2Region PanViewRenderer::getMirroredYRange(const U2Strand &) const {
+U2Region PanViewRenderer::getCutSiteYRange(const U2Strand &, int) const {
     FAIL("Must not be called!", U2Region(-1, 0));
 }
 
-qint64 PanViewRenderer::getContentIndentY(const QSize &canvasSize, const U2Region & /*visibleRange*/) const {
-    return (canvasSize.height() - s->numLines * commonMetrics.lineHeight) / 2;
+int PanViewRenderer::getContentIndentY(int canvasHeight) const {
+    return (canvasHeight - s->numLines * commonMetrics.lineHeight) / 2;
 }
 
-qint64 PanViewRenderer::getMinimumHeight() const {
+int PanViewRenderer::getMinimumHeight() const {
     return commonMetrics.lineHeight * (s->getAdditionalLines() + 1);
 }
 
@@ -113,10 +108,10 @@ void PanViewRenderer::drawAll(QPainter &p, const QSize &canvasSize, const U2Regi
 
     GraphUtils::RulerConfig c;
 
-    int hCenter = (int)getContentIndentY(canvasSize, visibleRange);
+    int hCenter = getContentIndentY(canvasSize.height());
     double halfChar = getCurrentScale() / 2;
-    int firstCharCenter = qRound(posToXCoordF(visibleRange.startPos, canvasSize, visibleRange) + halfChar);
-    int lastCharCenter = qRound(posToXCoordF(visibleRange.endPos() - 1, canvasSize, visibleRange) + halfChar);
+    int firstCharCenter = posToXCoord(visibleRange.startPos, canvasSize, visibleRange) + halfChar;
+    int lastCharCenter = posToXCoord(visibleRange.endPos() - 1, canvasSize, visibleRange) + halfChar;
     int firstLastWidth = lastCharCenter - firstCharCenter;
     if (qRound(halfChar) == 0) {
         firstLastWidth--;    // make the end of the ruler visible
@@ -142,7 +137,7 @@ void PanViewRenderer::drawAll(QPainter &p, const QSize &canvasSize, const U2Regi
 }
 
 void PanViewRenderer::drawSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) {
-    int hCenter = (int)getContentIndentY(canvasSize, visibleRange);
+    int hCenter = getContentIndentY(canvasSize.height());
     p.translate(0, hCenter);
 
     drawSequence(p, canvasSize, visibleRange);
@@ -223,7 +218,7 @@ void PanViewRenderer::drawSequence(QPainter &p, const QSize &canvasSize, const U
     int y = getLineY(s->getSelectionLine()) + commonMetrics.lineHeight - commonMetrics.yCharOffset;
     for (int i = 0; i < visibleRange.length; i++) {
         char c = seq[i];
-        int x = qRound(posToXCoordF(visibleRange.startPos + i, canvasSize, visibleRange) + halfCharByScale - halfCharByFont);
+        int x = posToXCoord(visibleRange.startPos + i, canvasSize, visibleRange) + halfCharByScale - halfCharByFont;
         p.drawText(x, y, QString(c));
     }
 }
@@ -271,10 +266,10 @@ void PanViewRenderer::drawSequenceSelection(QPainter &p, const QSize &canvasSize
 
         p.setPen(pen1);
         if (visibleRange.contains(r.startPos) && s->numLines > 1) {
-            p.drawLine(x1, -(int)getContentIndentY(canvasSize, visibleRange), x1, ly);
+            p.drawLine(x1, -getContentIndentY(canvasSize.height()), x1, ly);
         }
         if (visibleRange.contains(r.endPos() - 1) && s->numLines > 1) {
-            p.drawLine(x2, -(int)getContentIndentY(canvasSize, visibleRange), x2, ly);
+            p.drawLine(x2, -getContentIndentY(canvasSize.height()), x2, ly);
         }
 
         if (drawRect) {
@@ -428,7 +423,10 @@ PanViewRenderAreaFactory::~PanViewRenderAreaFactory() {
 }
 
 PanViewRenderArea *PanViewRenderAreaFactory::createRenderArea(PanView *panView) const {
-    return new PanViewRenderArea(panView, new PanViewRenderer(panView, panView->getSequenceContext()));
+    auto renderer = new PanViewRenderer(panView, panView->getSequenceContext());
+    auto renderArea = new PanViewRenderArea(panView, renderer);
+    renderer->setParent(renderArea);    // Delete renderer when render area is deleted.
+    return renderArea;
 }
 
 }    // namespace U2

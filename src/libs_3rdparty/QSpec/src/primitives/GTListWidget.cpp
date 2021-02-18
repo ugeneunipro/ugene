@@ -29,11 +29,11 @@ namespace HI {
 #define GT_CLASS_NAME "GTListWidget"
 
 #define GT_METHOD_NAME "click"
-void GTListWidget::click(GUITestOpStatus &os, QListWidget *listWidget, const QString &text, Qt::MouseButton button) {
+void GTListWidget::click(GUITestOpStatus &os, QListWidget *listWidget, const QString &text, Qt::MouseButton button, int foundItemsNum) {
     QList<QListWidgetItem *> list = listWidget->findItems(text, Qt::MatchExactly);
-    GT_CHECK(!list.isEmpty(), QString("item %1 not found").arg(text));
+    GT_CHECK(0 <= foundItemsNum && foundItemsNum < list.size(), QString("item %1 not found").arg(text));
 
-    QListWidgetItem *item = list.first();
+    QListWidgetItem *item = list.at(foundItemsNum);
     listWidget->scrollToItem(item);
 
     QRect r = listWidget->visualItemRect(item);

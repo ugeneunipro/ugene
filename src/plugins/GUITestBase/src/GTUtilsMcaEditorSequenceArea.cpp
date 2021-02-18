@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -307,6 +307,20 @@ QRect GTUtilsMcaEditorSequenceArea::getSelectedRect(GUITestOpStatus &os) {
     GT_CHECK_RESULT(mcaEditArea != NULL, "McaEditorSequenceArea not found", QRect());
 
     return mcaEditArea->getSelection().toRect();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getPositionRect"
+QRect GTUtilsMcaEditorSequenceArea::getPositionRect(GUITestOpStatus &os, int rowIndex, int referenceBaseIndex) {
+    McaEditorWgt *mcaWidget = getSequenceArea(os)->getEditor()->getUI();
+
+    U2Region xRegion = mcaWidget->getBaseWidthController()->getBaseScreenRange(referenceBaseIndex);
+    U2Region yRegion = mcaWidget->getRowHeightController()->getScreenYRegionByMaRowIndex(rowIndex);
+
+    QPoint topLeftPoint(xRegion.startPos, yRegion.startPos);
+    QPoint bottomRight(xRegion.endPos(), yRegion.endPos());
+
+    return QRect(topLeftPoint, bottomRight);
 }
 #undef GT_METHOD_NAME
 

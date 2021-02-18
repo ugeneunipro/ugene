@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -88,6 +88,16 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
     sortByLengthDescendingAction->setObjectName("action_sort_by_length_descending");
     sortByLengthDescendingAction->setToolTip(tr("Sort selected sequences range or the whole alignment by length, descending"));
     connect(sortByLengthDescendingAction, SIGNAL(triggered()), SLOT(sl_sortSequencesByLength()));
+
+    sortByLeadingGapAscendingAction = new QAction(tr("By leading gap"), this);
+    sortByLeadingGapAscendingAction->setObjectName("action_sort_by_leading_gap");
+    sortByLeadingGapAscendingAction->setToolTip(tr("Sort selected sequences range or the whole alignment by leading gap, ascending"));
+    connect(sortByLeadingGapAscendingAction, SIGNAL(triggered()), SLOT(sl_sortSequencesByLeadingGap()));
+
+    sortByLeadingGapDescendingAction = new QAction(tr("By leading gap, descending"), this);
+    sortByLeadingGapDescendingAction->setObjectName("action_sort_by_leading_gap_descending");
+    sortByLeadingGapDescendingAction->setToolTip(tr("Sort selected sequences range or the whole alignment by leading gap, descending"));
+    connect(sortByLeadingGapDescendingAction, SIGNAL(triggered()), SLOT(sl_sortSequencesByLeadingGap()));
 
     openCustomSettingsAction = new QAction(tr("Create new color scheme"), this);
     openCustomSettingsAction->setObjectName("Create new color scheme");
@@ -272,6 +282,8 @@ void MSAEditor::addSortMenu(QMenu *m) {
     menu->addAction(sortByNameDescendingAction);
     menu->addAction(sortByLengthAscendingAction);
     menu->addAction(sortByLengthDescendingAction);
+    menu->addAction(sortByLeadingGapAscendingAction);
+    menu->addAction(sortByLeadingGapDescendingAction);
 }
 
 void MSAEditor::addExportMenu(QMenu *m) {
@@ -495,11 +507,6 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     GUIUtils::disableEmptySubmenus(&m);
 
     m.exec(QCursor::pos());
-}
-
-void MSAEditor::sl_onSeqOrderChanged(const QStringList &order) {
-    CHECK(!maObject->isStateLocked(), );
-    maObject->sortRowsByList(order);
 }
 
 void MSAEditor::sl_showTreeOP() {
@@ -755,21 +762,17 @@ void MSAEditor::sl_showCustomSettings() {
     AppContext::getAppSettingsGUI()->showSettingsDialog(ColorSchemaSettingsPageId);
 }
 
-void MSAEditor::sortSequences(bool isByName, const MultipleAlignment::Order &sortOrder) {
+void MSAEditor::sortSequences(const MultipleAlignment::SortType &sortType, const MultipleAlignment::Order &sortOrder) {
     MultipleSequenceAlignmentObject *msaObject = getMaObject();
     CHECK(!msaObject->isStateLocked(), );
 
     MultipleSequenceAlignment msa = msaObject->getMultipleAlignmentCopy();
     const MaEditorSelection &selection = getSelection();
     U2Region sortRange = selection.height() <= 1 ? U2Region() : U2Region(selection.y(), selection.height());
-    if (isByName) {
-        msa->sortRowsByName(sortOrder, sortRange);
-    } else {
-        msa->sortRowsByLength(sortOrder, sortRange);
-    }
+    msa->sortRows(sortType, sortOrder, sortRange);
 
-    // Drop collapsing mode.
-    getUI()->getSequenceArea()->sl_setCollapsingMode(false);
+    // Disable virtual mode.
+    getUI()->getSequenceArea()->sl_toggleVirtualOrderMode(false);
 
     QStringList rowNames = msa->getRowNames();
     if (rowNames != msaObject->getMultipleAlignment()->getRowNames()) {
@@ -780,12 +783,17 @@ void MSAEditor::sortSequences(bool isByName, const MultipleAlignment::Order &sor
 
 void MSAEditor::sl_sortSequencesByName() {
     MultipleAlignment::Order order = sender() == sortByNameDescendingAction ? MultipleAlignment::Descending : MultipleAlignment::Ascending;
-    sortSequences(true, order);
+    sortSequences(MultipleAlignment::SortByName, order);
 }
 
 void MSAEditor::sl_sortSequencesByLength() {
     MultipleAlignment::Order order = sender() == sortByLengthDescendingAction ? MultipleAlignment::Descending : MultipleAlignment::Ascending;
-    sortSequences(false, order);
+    sortSequences(MultipleAlignment::SortByLength, order);
+}
+
+void MSAEditor::sl_sortSequencesByLeadingGap() {
+    MultipleAlignment::Order order = sender() == sortByLeadingGapDescendingAction ? MultipleAlignment::Descending : MultipleAlignment::Ascending;
+    sortSequences(MultipleAlignment::SortByLeadingGap, order);
 }
 
 void MSAEditor::sl_convertBetweenDnaAndRnaAlphabets() {

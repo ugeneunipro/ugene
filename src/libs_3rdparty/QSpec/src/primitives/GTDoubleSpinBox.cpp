@@ -109,13 +109,13 @@ void GTDoubleSpinbox::setValue(GUITestOpStatus &os, QDoubleSpinBox *spinBox, dou
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setValue"
-void GTDoubleSpinbox::setValue(GUITestOpStatus &os, const QString &spinBoxName, int v, GTGlobals::UseMethod useMethod, QWidget *parent) {
+void GTDoubleSpinbox::setValue(GUITestOpStatus &os, const QString &spinBoxName, double v, GTGlobals::UseMethod useMethod, QWidget *parent) {
     GTDoubleSpinbox::setValue(os, GTWidget::findExactWidget<QDoubleSpinBox *>(os, spinBoxName, parent), v, useMethod);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "setValue"
-void GTDoubleSpinbox::setValue(GUITestOpStatus &os, const QString &spinBoxName, int v, QWidget *parent) {
+void GTDoubleSpinbox::setValue(GUITestOpStatus &os, const QString &spinBoxName, double v, QWidget *parent) {
     GTDoubleSpinbox::setValue(os, GTWidget::findExactWidget<QDoubleSpinBox *>(os, spinBoxName, parent), v);
 }
 #undef GT_METHOD_NAME

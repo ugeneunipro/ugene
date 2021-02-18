@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -290,7 +290,7 @@ IMPLEMENT_TEST(MsaUnitTests, sortRows_byNameAsc) {
     almnt->addRow("NameAB", secondSequence);
     almnt->addRow("NameAA", thirdSequence);
 
-    almnt->sortRowsByName();
+    almnt->sortRows(MultipleAlignment::SortByName);
     QStringList rowNames = almnt->getRowNames();
     CHECK_EQUAL(3, rowNames.count(), "number of rows");
     CHECK_EQUAL("NameAA", rowNames[0], "order");
@@ -309,7 +309,7 @@ IMPLEMENT_TEST(MsaUnitTests, sortRows_byNameDesc) {
     almnt->addRow("NameBA", secondSequence);
     almnt->addRow("NameAB", thirdSequence);
 
-    almnt->sortRowsByName(MultipleAlignment::Descending);
+    almnt->sortRows(MultipleAlignment::SortByName, MultipleAlignment::Descending);
     QStringList rowNames = almnt->getRowNames();
     CHECK_EQUAL(3, rowNames.count(), "number of rows");
     CHECK_EQUAL("NameBA", rowNames[0], "order");

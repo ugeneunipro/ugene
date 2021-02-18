@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -312,7 +312,7 @@ void ExportAutoAnnotationsGroupTask::prepare() {
     aGroup->findAllAnnotationsInGroupSubTree(annotationList);
 
     QList<SharedAnnotationData> newAnnotationDataList;
-    for (const Annotation *annotation : annotationList) {
+    for (const Annotation *annotation : qAsConst(annotationList)) {
         SharedAnnotationData data(new AnnotationData(*(annotation->getData())));
         U1AnnotationUtils::addDescriptionQualifier(data, annDescription);
         newAnnotationDataList.append(data);

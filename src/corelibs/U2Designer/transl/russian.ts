@@ -802,22 +802,22 @@ bowtie index file</source>
 <context>
     <name>U2::DashboardFileButton</name>
     <message>
-        <location filename="../src/dashboard/DashboardWidget.cpp" line="219"/>
+        <location filename="../src/dashboard/DashboardWidget.cpp" line="217"/>
         <source>%1 file(s)</source>
         <translation>%1 файл(ов)</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/DashboardWidget.cpp" line="270"/>
+        <location filename="../src/dashboard/DashboardWidget.cpp" line="268"/>
         <source>Open file with UGENE</source>
         <translation>Открыть в UGENE</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/DashboardWidget.cpp" line="276"/>
+        <location filename="../src/dashboard/DashboardWidget.cpp" line="274"/>
         <source>Open folder with the file</source>
         <translation>Открыть папку содержащую файл</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/DashboardWidget.cpp" line="281"/>
+        <location filename="../src/dashboard/DashboardWidget.cpp" line="279"/>
         <source>Open file by OS</source>
         <translation>Открыть файл при помощи операционной системы</translation>
     </message>
@@ -844,7 +844,7 @@ bowtie index file</source>
 <context>
     <name>U2::DashboardWidget</name>
     <message>
-        <location filename="../src/dashboard/DashboardWidget.cpp" line="333"/>
+        <location filename="../src/dashboard/DashboardWidget.cpp" line="337"/>
         <source>File is not found: %1</source>
         <translation>Файл не найден: %1</translation>
     </message>
@@ -1176,19 +1176,19 @@ bowtie index file</source>
     <name>U2::NotificationsDashboardWidget</name>
     <message>
         <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="68"/>
-        <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="127"/>
+        <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="128"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
         <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="68"/>
-        <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="127"/>
+        <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="128"/>
         <source>Element</source>
         <translation>Элемент</translation>
     </message>
     <message>
         <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="68"/>
-        <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="127"/>
+        <location filename="../src/dashboard/NotificationsDashboardWidget.cpp" line="128"/>
         <source>Message</source>
         <translation>Сообщение</translation>
     </message>
@@ -1251,14 +1251,14 @@ Set up the folder:</source>
 <context>
     <name>U2::ParametersDashboardWidget</name>
     <message>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="216"/>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="282"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="217"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="283"/>
         <source>Parameter</source>
         <translation>Параметр</translation>
     </message>
     <message>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="216"/>
-        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="282"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="217"/>
+        <location filename="../src/dashboard/ParametersDashboardWidget.cpp" line="283"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>

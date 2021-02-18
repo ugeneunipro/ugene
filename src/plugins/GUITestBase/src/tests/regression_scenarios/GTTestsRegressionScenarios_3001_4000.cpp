@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -196,7 +196,7 @@ GUI_TEST_CLASS_DEFINITION(test_3017) {
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep();
-    QString clipboardText = GTClipboard::sequences(os);
+    QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR("S" == clipboardText, "Alignment is not locked" + clipboardText);
 }
 
@@ -858,7 +858,7 @@ GUI_TEST_CLASS_DEFINITION(test_3138) {
     GTGlobals::sleep(500);
 
     QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
-    for (const U2Region &r : regions) {
+    for (const U2Region &r : qAsConst(regions)) {
         CHECK_SET_ERR(r.length > 0, "Invalid annotated region!");
     }
 }
@@ -1163,7 +1163,7 @@ GUI_TEST_CLASS_DEFINITION(test_3180) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Restriction Sites"));
     GTWidget::click(os, GTWidget::findWidget(os, "AutoAnnotationUpdateAction"));
     GTGlobals::systemSleep();
-    for (Task *task : AppContext::getTaskScheduler()->getTopLevelTasks()) {
+    for (Task *task : qAsConst(AppContext::getTaskScheduler()->getTopLevelTasks())) {
         if (task->getTaskName() != "Auto-annotations update task") {
             continue;
         }
@@ -1470,7 +1470,7 @@ GUI_TEST_CLASS_DEFINITION(test_3245) {
     int initialItemsNumber = combo->count();
 
     // 3. Create a new color scheme, accept the preferences dialog.
-    QString colorSchemeName = GTUtils::genUniqueString(getName());
+    QString colorSchemeName = GTUtils::genUniqueString(name);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Custom schemes"
                                                                         << "Create new color scheme"));
@@ -1965,7 +1965,7 @@ GUI_TEST_CLASS_DEFINITION(test_3307) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     QList<QString> keys = GTUtilsProjectTreeView::getDocuments(os).keys();
     QString name;
-    for (const QString &key : keys) {
+    for (const QString &key : qAsConst(keys)) {
         if (key.startsWith("MyDocument")) {
             name = key;
             break;
@@ -2626,10 +2626,10 @@ GUI_TEST_CLASS_DEFINITION(test_3402) {
             continue;
         }
         QList<Task *> innertList;
-        for (Task *t : tList) {
+        for (Task *t : qAsConst(tList)) {
             innertList.append(t->getPureSubtasks());
         }
-        for (Task *t : innertList) {
+        for (Task *t : qAsConst(innertList)) {
             if (t->getTaskName().contains("Opening view")) {
                 end = true;
                 break;
@@ -3149,19 +3149,22 @@ GUI_TEST_CLASS_DEFINITION(test_3484) {
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found");
+    // Check that tree is visible.
+    GTWidget::findExactWidget<QGraphicsView *>(os, "treeView");
 
     GTUtilsDocument::unloadDocument(os, "COI_3484.nwk", false);
-    GTGlobals::sleep(500);
-    GTUtilsDocument::saveDocument(os, "COI_3484.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsDocument::unloadDocument(os, "COI_3484.aln", true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTGlobals::sleep();
     GTUtilsDocument::removeDocument(os, "COI_3484.nwk");
-    GTUtilsDocument::loadDocument(os, "COI_3484.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "COI_3484  .nwk") == false, "Unauthorized tree opening!");
+    GTUtilsDocument::loadDocument(os, "COI_3484.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(GTUtilsProjectTreeView::checkItem(os, "COI_3484  .nwk", false) == false, "Unauthorized tree opening!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3484_1) {
@@ -3356,6 +3359,7 @@ GUI_TEST_CLASS_DEFINITION(test_3519_2) {
         }
     };
 
+    qputenv("UGENE_DISABLE_ENZYMES_OVERFLOW_CHECK", "1");    // disable overflow to create a long running "Find Enzymes task".
     class AllEnzymesSearchScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
@@ -3462,7 +3466,7 @@ GUI_TEST_CLASS_DEFINITION(test_3555) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/muscul4/", "prefab_1_ref.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     GTUtilsMSAEditorSequenceArea::scrollToBottom(os);
 
@@ -3486,7 +3490,7 @@ GUI_TEST_CLASS_DEFINITION(test_3556) {
 
     GTFileDialog::openFile(os, testDir + "_common_data/muscul4/", "prefab_1_ref.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTWidget::click(os, GTAction::button(os, "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "1a0dA");
     GTKeyboardDriver::keyClick(Qt::Key_End, Qt::ControlModifier);
@@ -3546,25 +3550,25 @@ GUI_TEST_CLASS_DEFINITION(test_3563_1) {
     //    3. Unload both documents (alignment and tree)
     //    4. Load alignment
     //    Expected state: no errors in the log
-    GTLogTracer l;
+    GTLogTracer logTracer;
 
     GTFile::copy(os, testDir + "_common_data/clustal/dna.fasta.aln", testDir + "_common_data/scenarios/sandbox/test_3563_1.aln");
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "test_3563_1.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, testDir + "_common_data/scenarios/sandbox/test_3563_1.nwk", 0, 0, true));
-    QAbstractButton *tree = GTAction::button(os, "Build Tree");
-    GTWidget::click(os, tree);
-    GTGlobals::sleep();
-    GTUtilsDocument::saveDocument(os, "test_3563_1.aln");
+    GTUtilsMsaEditor::buildPhylogeneticTree(os, testDir + "_common_data/scenarios/sandbox/test_3563_1.nwk");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::unloadDocument(os, "test_3563_1.nwk", false);
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDocument::unloadDocument(os, "test_3563_1.aln", true);
-    GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsLog::check(os, l);
+    GTUtilsDocument::loadDocument(os, "test_3563_1.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsLog::check(os, logTracer);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3563_2) {
@@ -4631,7 +4635,7 @@ GUI_TEST_CLASS_DEFINITION(test_3731) {
     GTGlobals::sleep();
 
     QList<U2Region> annotatedRegions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
-    for (const U2Region &curRegion : annotatedRegions) {
+    for (const U2Region &curRegion : qAsConst(annotatedRegions)) {
         CHECK_SET_ERR(curRegion.startPos >= 20, "Incorrect annotated region");
     }
 }
@@ -4644,7 +4648,7 @@ GUI_TEST_CLASS_DEFINITION(test_3732) {
             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
-            QSpinBox *memBox = dialog->findChild<QSpinBox *>("memorySpinBox");
+            QSpinBox *memBox = dialog->findChild<QSpinBox *>("memBox");
             CHECK_SET_ERR(memBox != NULL, "memorySpinBox not found");
             GTSpinBox::setValue(os, memBox, 200, GTGlobals::UseKeyBoard);
 
@@ -5100,7 +5104,7 @@ GUI_TEST_CLASS_DEFINITION(test_3797) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
     GTUtilsMSAEditorSequenceArea::selectSequence(os, QString("Mecopoda_sp.__Malaysia_"));
 
     GTKeyboardDriver::keyClick(Qt::Key_PageDown);
@@ -5349,7 +5353,7 @@ GUI_TEST_CLASS_DEFINITION(test_3819) {
     Document *databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
 
     QModelIndexList list = GTUtilsProjectTreeView::findIndeciesInProjectViewNoWait(os, assemblyVisibleName, GTUtilsProjectTreeView::findIndex(os, folderName));
-    for (QModelIndex index : list) {
+    for (QModelIndex index : qAsConst(list)) {
         if (index.data() == "[as] chrM") {
             GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, index);
         }
@@ -5375,7 +5379,7 @@ GUI_TEST_CLASS_DEFINITION(test_3843) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Turn the collapsing mode on.
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     // 3. Expand one of the collapsed sequences.
     GTUtilsMSAEditorSequenceArea::clickCollapseTriangle(os, "Conocephalus_discolor");
@@ -5715,7 +5719,7 @@ GUI_TEST_CLASS_DEFINITION(test_3920) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QList<U2Region> regions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
-    for (const U2Region &r : regions) {
+    for (const U2Region &r : qAsConst(regions)) {
         CHECK_SET_ERR((r.startPos >= 1000 && r.startPos <= 4000 &&
                        r.endPos() >= 1000 && r.endPos() <= 4000),
                       "Invalid annotated region!");
@@ -5736,7 +5740,7 @@ GUI_TEST_CLASS_DEFINITION(test_3927) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     // 2. Enable collapsing mode.
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, "mwtoolbar_activemdi"), "Enable collapsing"));
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
     // 3. Remove the first sequence. x3
     GTUtilsMSAEditorSequenceArea::removeSequence(os, "Phaneroptera_falcata");
     GTUtilsMSAEditorSequenceArea::removeSequence(os, "Isophya_altaica_EF540820");

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -75,19 +75,19 @@ ExternalToolsDashboardWidget::ExternalToolsDashboardWidget(const QDomElement &do
     frameWidget->setLayout(layout);
 
     QList<QDomElement> actorElementList = DomUtils::findChildElementsByClass(DomUtils::findElementById(dom, TREE_ID), NODE_CLASS_ACTOR, 2);
-    for (auto actorSpan : actorElementList) {
+    for (auto actorSpan : qAsConst(actorElementList)) {
         auto actorNode = new ExternalToolsTreeNode(NODE_KIND_ACTOR, actorSpan.attribute("id"), actorSpan.text(), nullptr);
         layout->addWidget(actorNode);
         topLevelNodes << actorNode;
 
         QList<QDomElement> toolElementList = DomUtils::findChildElementsByClass(actorSpan.nextSiblingElement("ul"), NODE_CLASS_TOOL, 2);
-        for (auto toolSpan : toolElementList) {
+        for (auto toolSpan : qAsConst(toolElementList)) {
             auto toolNode = new ExternalToolsTreeNode(NODE_KIND_TOOL, toolSpan.attribute("id"), toolSpan.text(), actorNode);
             layout->addWidget(toolNode);
             addLimitationWarningIfNeeded(toolNode, DomUtils::findParentByTag(toolSpan, "ul"));
 
             QList<QDomElement> runElementList = DomUtils::findChildElementsByClass(toolSpan.nextSiblingElement("ul"), NODE_CLASS_RUN, 2);
-            for (auto runSpan : runElementList) {
+            for (auto runSpan : qAsConst(runElementList)) {
                 auto runNode = new ExternalToolsTreeNode(NODE_KIND_RUN, runSpan.attribute("id"), runSpan.text(), toolNode, DomUtils::hasClass(runSpan, NODE_CLASS_IMPORTANT));
                 layout->addWidget(runNode);
                 addLimitationWarningIfNeeded(runNode, DomUtils::findParentByTag(runSpan, "ul"));
@@ -171,7 +171,7 @@ void ExternalToolsDashboardWidget::addLimitationWarning(ExternalToolsTreeNode *p
 QString ExternalToolsDashboardWidget::toHtml() const {
     CHECK(!topLevelNodes.isEmpty(), "");
     QString html = "<ul id=\"" + TREE_ID + "\">";
-    for (auto node : topLevelNodes) {
+    for (auto node : qAsConst(topLevelNodes)) {
         html += node->toHtml();
     }
     if (!limitationWarningHtml.isEmpty()) {
@@ -182,7 +182,7 @@ QString ExternalToolsDashboardWidget::toHtml() const {
 }
 
 static ExternalToolsTreeNode *findNode(const QList<ExternalToolsTreeNode *> &nodeList, const QString &objectName) {
-    for (auto node : nodeList) {
+    for (const auto &node : qAsConst(nodeList)) {
         if (node->objectName() == objectName) {
             return node;
         }
@@ -279,17 +279,17 @@ ExternalToolsTreeNode *ExternalToolsDashboardWidget::addNodeToLayout(ExternalToo
 
 static int getLevelByNodeKind(int kind) {
     switch (kind) {
-    case NODE_KIND_ACTOR:
-        return 0;
-    case NODE_KIND_TOOL:
-        return 1;
-    case NODE_KIND_RUN:
-        return 2;
-    case NODE_KIND_COMMAND:
-    case NODE_KIND_OUTPUT:
-        return 3;
-    case NODE_KIND_LOG_CONTENT:
-        return 4;
+        case NODE_KIND_ACTOR:
+            return 0;
+        case NODE_KIND_TOOL:
+            return 1;
+        case NODE_KIND_RUN:
+            return 2;
+        case NODE_KIND_COMMAND:
+        case NODE_KIND_OUTPUT:
+            return 3;
+        case NODE_KIND_LOG_CONTENT:
+            return 4;
     }
     SAFE_POINT(false, "Unknown kind: " + QString::number(kind), 0);
 }
@@ -338,7 +338,7 @@ void ExternalToolsTreeNode::sl_toggle() {
     // Auto-expand command & output nodes when RUN node is clicked.
     bool expandAllChildren = isExpandedAfter && getLevelByNodeKind(kind) >= getLevelByNodeKind(NODE_KIND_RUN);
 
-    for (auto child : children) {
+    for (auto child : qAsConst(children)) {
         child->updateExpandCollapseState(isExpandedAfter, expandAllChildren);
     }
 }
@@ -346,11 +346,11 @@ void ExternalToolsTreeNode::sl_toggle() {
 void ExternalToolsTreeNode::updateExpandCollapseState(bool isParentExpanded, bool isApplyToAllLevelOfChildren) {
     this->setVisible(isParentExpanded);
     if (!isParentExpanded) {    // make all children invisible (we use flat VBOX layout model for the tree, so parent must hide children manually).
-        for (auto child : children) {
+        for (auto child : qAsConst(children)) {
             child->updateExpandCollapseState(false);
         }
     } else if (isApplyToAllLevelOfChildren) {    // make children on all levels visible.
-        for (auto child : children) {
+        for (auto child : qAsConst(children)) {
             child->updateExpandCollapseState(true, true);
         }
     }
@@ -399,14 +399,14 @@ void ExternalToolsTreeNode::paintEvent(QPaintEvent *event) {
 QString ExternalToolsTreeNode::getSpanClass() const {
     QString result = NODE_CLASS_BADGE + (isImportant ? " " + NODE_CLASS_IMPORTANT : "");
     switch (kind) {
-    case NODE_KIND_ACTOR:
-        return result + " " + NODE_CLASS_ACTOR;
-    case NODE_KIND_TOOL:
-        return result + " " + NODE_CLASS_TOOL;
-    case NODE_KIND_RUN:
-        return result + " " + NODE_CLASS_RUN;
-    case NODE_KIND_LOG_CONTENT:
-        return result + " " + NODE_CLASS_CONTENT;
+        case NODE_KIND_ACTOR:
+            return result + " " + NODE_CLASS_ACTOR;
+        case NODE_KIND_TOOL:
+            return result + " " + NODE_CLASS_TOOL;
+        case NODE_KIND_RUN:
+            return result + " " + NODE_CLASS_RUN;
+        case NODE_KIND_LOG_CONTENT:
+            return result + " " + NODE_CLASS_CONTENT;
     }
     return result;
 }
@@ -416,7 +416,7 @@ QString ExternalToolsTreeNode::toHtml() const {
     html += "<span id=\"" + objectName() + "\" class=\"" + getSpanClass() + "\">" + content + "</span>\n";
     if (!children.isEmpty()) {
         html += "<ul>\n";
-        for (auto child : children) {
+        for (auto child : qAsConst(children)) {
             html += child->toHtml();
         }
         html += "</ul>\n";
@@ -434,18 +434,18 @@ QString ExternalToolsTreeNode::toHtml() const {
 static QString getBadgeLabelStyle(int kind, bool isImportant) {
     QString style = "border-radius: 6px; padding: 2px 4px; color: white;";
     switch (kind) {
-    case NODE_KIND_ACTOR:
-        return style + "background-color: #92939E;";
-    case NODE_KIND_TOOL:
-        return style + "background-color: #bdb0a0;";
-    case NODE_KIND_RUN:
-        return style + QString("background-color: ") + (isImportant ? RUN_NODE_IMPORTANT_COLOR : RUN_NODE_NORMAL_COLOR) + ";";
-    case NODE_KIND_COMMAND:
-        return style + "background-color: #79ACAC;";
-    case NODE_KIND_OUTPUT:
-        return style + QString("background-color: ") + (isImportant ? RUN_NODE_IMPORTANT_COLOR : "#6699CC") + ";";
-    case NODE_KIND_LOG_CONTENT:
-        return style + "font-size: 16px; background-color: #F0F0F0; color: black;";
+        case NODE_KIND_ACTOR:
+            return style + "background-color: #92939E;";
+        case NODE_KIND_TOOL:
+            return style + "background-color: #bdb0a0;";
+        case NODE_KIND_RUN:
+            return style + QString("background-color: ") + (isImportant ? RUN_NODE_IMPORTANT_COLOR : RUN_NODE_NORMAL_COLOR) + ";";
+        case NODE_KIND_COMMAND:
+            return style + "background-color: #79ACAC;";
+        case NODE_KIND_OUTPUT:
+            return style + QString("background-color: ") + (isImportant ? RUN_NODE_IMPORTANT_COLOR : "#6699CC") + ";";
+        case NODE_KIND_LOG_CONTENT:
+            return style + "font-size: 16px; background-color: #F0F0F0; color: black;";
     }
     return style;
 };

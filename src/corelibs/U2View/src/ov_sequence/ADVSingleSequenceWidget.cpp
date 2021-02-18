@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -570,7 +570,7 @@ bool ADVSingleSequenceWidget::eventFilter(QObject *o, QEvent *e) {
             updateMinMaxHeight();
         }
     } else if (t == QEvent::FocusIn || t == QEvent::MouseButtonPress || t == QEvent::MouseButtonRelease) {
-        ctx->setFocusedSequenceWidget(this);
+        ctx->setActiveSequenceWidget(this);
     }
 
     if (o == headerWidget && t == QEvent::MouseButtonPress) {
@@ -918,7 +918,7 @@ ADVSingleSequenceHeaderWidget::ADVSingleSequenceHeaderWidget(ADVSingleSequenceWi
     setBackgroundRole(QPalette::Window);
     setAutoFillBackground(true);
 
-    connect(ctx->getAnnotatedDNAView(), SIGNAL(si_focusChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_advFocusChanged(ADVSequenceWidget *, ADVSequenceWidget *)));
+    connect(ctx->getAnnotatedDNAView(), SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_onActiveSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)));
 
     //TODO: track focus events (mouse clicks) on toolbar in disabled state and on disabled buttons !!!
 
@@ -986,17 +986,18 @@ void ADVSingleSequenceHeaderWidget::updateTitle() {
 
 void ADVSingleSequenceHeaderWidget::sl_actionTriggered(QAction *a) {
     Q_UNUSED(a);
-    ctx->getAnnotatedDNAView()->setFocusedSequenceWidget(ctx);
+    ctx->getAnnotatedDNAView()->setActiveSequenceWidget(ctx);
 }
 
-void ADVSingleSequenceHeaderWidget::sl_advFocusChanged(ADVSequenceWidget *prevFocus, ADVSequenceWidget *newFocus) {
-    if (prevFocus == ctx || newFocus == ctx) {
+void ADVSingleSequenceHeaderWidget::sl_onActiveSequenceWidgetChanged(ADVSequenceWidget *oldActiveWidget, ADVSequenceWidget *newActiveWidget) {
+    if (oldActiveWidget == ctx || newActiveWidget == ctx) {
         update();
         updateActiveState();
     }
 }
+
 void ADVSingleSequenceHeaderWidget::updateActiveState() {
-    bool focused = ctx->getAnnotatedDNAView()->getSequenceWidgetInFocus() == ctx;
+    bool focused = ctx->getAnnotatedDNAView()->getActiveSequenceWidget() == ctx;
     nameLabel->setEnabled(focused);
     pixLabel->setEnabled(focused);
     ctx->getSelectRangeAction()->setShortcutContext(focused ? Qt::WindowShortcut : Qt::WidgetShortcut);

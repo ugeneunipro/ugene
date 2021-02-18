@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -23,6 +23,7 @@
 #define _U2_GT_UTILS_MSA_EDITOR_H_
 
 #include <GTGlobals.h>
+
 #include <QColor>
 #include <QRect>
 
@@ -41,7 +42,7 @@ class MaSimpleOverview;
 class GTUtilsMsaEditor {
 public:
     /** Returns active MSA editor window or fails. */
-    static QWidget* getActiveMsaEditorWindow(HI::GUITestOpStatus &os);
+    static QWidget *getActiveMsaEditorWindow(HI::GUITestOpStatus &os);
 
     /** Checks that the active MDI window is MSA editor window or fails. */
     static void checkMsaEditorWindowIsActive(HI::GUITestOpStatus &os);
@@ -94,6 +95,12 @@ public:
 
     static void undo(HI::GUITestOpStatus &os);
     static void redo(HI::GUITestOpStatus &os);
+
+    /** Clicks zoom-in button if the button is enabled. Does nothing if the button is disabled. */
+    static void zoomIn(HI::GUITestOpStatus &os);
+
+    /** Clicks zoom-out button if the button is enabled. Does nothing if the button is disabled. */
+    static void zoomOut(HI::GUITestOpStatus &os);
 
     static bool isUndoEnabled(HI::GUITestOpStatus &os);
     static bool isRedoEnabled(HI::GUITestOpStatus &os);

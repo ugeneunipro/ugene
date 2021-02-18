@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -309,7 +309,7 @@ void ADVSyncViewManager::sl_sync() {
 }
 
 void ADVSyncViewManager::sync(bool lock, SyncMode m) {
-    ADVSingleSequenceWidget *focusedW = qobject_cast<ADVSingleSequenceWidget *>(adv->getSequenceWidgetInFocus());
+    ADVSingleSequenceWidget *focusedW = qobject_cast<ADVSingleSequenceWidget *>(adv->getActiveSequenceWidget());
     if (focusedW == NULL) {
         return;
     }
@@ -391,7 +391,7 @@ int ADVSyncViewManager::findSelectedAnnotationPos(ADVSingleSequenceWidget *w) co
 }
 
 ADVSyncViewManager::SyncMode ADVSyncViewManager::detectSyncMode() const {
-    ADVSingleSequenceWidget *focusedW = qobject_cast<ADVSingleSequenceWidget *>(adv->getSequenceWidgetInFocus());
+    ADVSingleSequenceWidget *focusedW = qobject_cast<ADVSingleSequenceWidget *>(adv->getActiveSequenceWidget());
     assert(focusedW != NULL);
     QList<ADVSingleSequenceWidget *> seqs = getViewsFromADV();
 
@@ -471,7 +471,7 @@ void ADVSyncViewManager::sl_onSelectionChanged(LRegionsSelection *sel, const QVe
 
     selectionRecursion = true;
 
-    ADVSingleSequenceWidget *focusedW = qobject_cast<ADVSingleSequenceWidget *>(adv->getSequenceWidgetInFocus());
+    ADVSingleSequenceWidget *focusedW = qobject_cast<ADVSingleSequenceWidget *>(adv->getActiveSequenceWidget());
     if (focusedW == NULL) {
         return;
     }

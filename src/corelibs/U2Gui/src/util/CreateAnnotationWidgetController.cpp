@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -41,6 +41,7 @@
 #include <U2Core/GObjectRelationRoles.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/GObjectUtils.h>
+#include <U2Core/GUrlUtils.h>
 #include <U2Core/GenbankFeatures.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/ProjectModel.h>
@@ -126,6 +127,10 @@ CreateAnnotationWidgetController::CreateAnnotationWidgetController(const CreateA
     connect(w, SIGNAL(si_annotationNameEdited()), SLOT(sl_annotationNameEdited()));
     connect(w, SIGNAL(si_usePatternNamesStateChanged()), SLOT(sl_usePatternNamesStateChanged()));
     connect(occ, SIGNAL(si_comboBoxChanged()), SLOT(sl_documentsComboUpdated()));
+}
+
+CreateAnnotationWidgetController::~CreateAnnotationWidgetController() {
+    // Do not remove the empty destructor because https://doc.qt.io/qt-5/qscopedpointer.html#forward-declared-pointers
 }
 
 void CreateAnnotationWidgetController::updateWidgetForAnnotationModel(const CreateAnnotationModel &newModel) {
@@ -313,7 +318,7 @@ void CreateAnnotationWidgetController::updateModel(bool forValidation) {
 void CreateAnnotationWidgetController::createWidget(CreateAnnotationWidgetController::AnnotationWidgetMode layoutMode) {
     switch (layoutMode) {
     case Full:
-        w = new CreateAnnotationFullWidget();
+        w = new CreateAnnotationFullWidget(model.sequenceLen);
         break;
     case Normal:
         w = new CreateAnnotationNormalWidget();
@@ -322,7 +327,7 @@ void CreateAnnotationWidgetController::createWidget(CreateAnnotationWidgetContro
         w = new CreateAnnotationOptionsPanelWidget();
         break;
     default:
-        w = NULL;
+        w = nullptr;
         FAIL("Unexpected widget type", );
     }
 }
@@ -330,7 +335,7 @@ void CreateAnnotationWidgetController::createWidget(CreateAnnotationWidgetContro
 QString CreateAnnotationWidgetController::defaultDir() {
     QString dir = AppContext::getSettings()->getValue(SETTINGS_LASTDIR, QString(""), true).toString();
     if (dir.isEmpty() || !QDir(dir).exists()) {
-        dir = QDir::homePath();
+        dir = GUrlUtils::getDefaultDataPath();
         Project *prj = AppContext::getProject();
         if (prj != NULL) {
             const QString &prjUrl = prj->getProjectURL();

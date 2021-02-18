@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,11 +20,9 @@
  */
 
 #include "FindEnzymesDialog.h"
-#include <limits>
 
 #include <QCoreApplication>
 #include <QDir>
-#include <QHeaderView>
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QTextStream>
@@ -34,7 +32,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
-#include <U2Core/GObjectReference.h>
 #include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -498,8 +495,8 @@ void EnzymesSelectorWidget::sl_saveEnzymesFile() {
     }
 }
 
-FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext *sctx)
-    : QDialog(sctx->getAnnotatedDNAView()->getWidget()), seqCtx(sctx) {
+FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext *advSequenceContext)
+    : QDialog(advSequenceContext->getAnnotatedDNAView()->getWidget()), advSequenceContext(advSequenceContext) {
     setupUi(this);
     new HelpButton(this, buttonBox, "54363718");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
@@ -512,9 +509,9 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext *sctx)
     minHitSB->setMinimum(ANY_VALUE);
 
     regionSelector = new RegionSelectorWithExludedRegion(this,
-                                                         sctx->getSequenceLength(),
-                                                         sctx->getSequenceSelection(),
-                                                         sctx->getSequenceObject()->isCircular());
+                                                         advSequenceContext->getSequenceLength(),
+                                                         advSequenceContext->getSequenceSelection(),
+                                                         advSequenceContext->getSequenceObject()->isCircular());
     searchRegionLayout->addWidget(regionSelector);
 
     initSettings();
@@ -529,8 +526,6 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext *sctx)
     connect(enzSel, SIGNAL(si_selectionModified(int, int)), SLOT(sl_onSelectionModified(int, int)));
     sl_onSelectionModified(enzSel->getTotalNumber(), enzSel->getNumSelected());
 }
-
-#define MAX_ENZYMES_TO_FIND 100 * 1000
 
 void FindEnzymesDialog::sl_onSelectionModified(int total, int nChecked) {
     statusLabel->setText(tr("Total number of enzymes: %1, selected %2").arg(total).arg(nChecked));
@@ -550,7 +545,7 @@ void FindEnzymesDialog::accept() {
     if (selectedEnzymes.isEmpty()) {
         int ret = QMessageBox::question(this, windowTitle(), tr("<html><body align=\"center\">No enzymes are selected! Do you want to turn off <br>enzymes annotations highlighting?</body></html>"), QMessageBox::Yes, QMessageBox::No);
         if (ret == QMessageBox::Yes) {
-            QAction *toggleAction = AutoAnnotationUtils::findAutoAnnotationsToggleAction(seqCtx, ANNOTATION_GROUP_ENZYME);
+            QAction *toggleAction = AutoAnnotationUtils::findAutoAnnotationsToggleAction(advSequenceContext, ANNOTATION_GROUP_ENZYME);
             if (toggleAction) {
                 toggleAction->setChecked(false);
             }
@@ -572,9 +567,17 @@ void FindEnzymesDialog::accept() {
         return;
     }
 
+    if (FindEnzymesAutoAnnotationUpdater::isTooManyAnnotationsInTheResult(advSequenceContext->getSequenceLength(), selectedEnzymes.size())) {
+        QString message = tr("Too many results to render. Please reduce the search region or number of selected enzymes.");
+        int ret = QMessageBox::question(this, tr("Warning!"), message, QMessageBox::Cancel | QMessageBox::Ignore);
+        if (ret == QMessageBox::Cancel) {
+            return;
+        }
+    }
+
     saveSettings();
 
-    AutoAnnotationUtils::triggerAutoAnnotationsUpdate(seqCtx, ANNOTATION_GROUP_ENZYME);
+    AutoAnnotationUtils::triggerAutoAnnotationsUpdate(advSequenceContext, ANNOTATION_GROUP_ENZYME);
 
     QDialog::accept();
 }
@@ -585,24 +588,19 @@ void FindEnzymesDialog::initSettings() {
     int minHitValue = AppContext::getSettings()->getValue(EnzymeSettings::MIN_HIT_VALUE, 1).toInt();
     int maxHitValue = AppContext::getSettings()->getValue(EnzymeSettings::MAX_HIT_VALUE, 2).toInt();
 
-    U2Region searchRegion = AppContext::getSettings()->getValue(EnzymeSettings::SEARCH_REGION, QVariant::fromValue(U2Region())).value<U2Region>();
-    if (!searchRegion.isEmpty() && U2Region(0, seqCtx->getSequenceLength()).contains(searchRegion)) {
+    U2SequenceObject *sequenceObject = advSequenceContext->getSequenceObject();
+    U2Region searchRegion = FindEnzymesAutoAnnotationUpdater::getLastSearchRegionForObject(sequenceObject);
+    if (searchRegion.length > 0 && U2Region(0, advSequenceContext->getSequenceLength()).contains(searchRegion)) {
         regionSelector->setIncludeRegion(searchRegion);
     }
 
-    QString exludedRegionStr = AppContext::getSettings()->getValue(EnzymeSettings::EXCLUDED_REGION, "").toString();
-    bool excludeRegionOn = false;
-    if (!exludedRegionStr.isEmpty()) {
-        U2Location location;
-        Genbank::LocationParser::parseLocation(qPrintable(exludedRegionStr), exludedRegionStr.length(), location);
-        if (!location->isEmpty()) {
-            excludeRegionOn = true;
-            const U2Region &range = location->regions.first();
-            regionSelector->setExcludeRegion(range);
-        }
+    U2Region excludeRegion = FindEnzymesAutoAnnotationUpdater::getLastExcludeRegionForObject(sequenceObject);
+    if (excludeRegion.length > 0) {
+        regionSelector->setExcludeRegion(excludeRegion);
+        regionSelector->setExcludedCheckboxChecked(true);
+    } else {
+        regionSelector->setExcludedCheckboxChecked(false);
     }
-
-    regionSelector->setExcludedCheckboxChecked(excludeRegionOn);
 
     filterGroupBox->setChecked(useHitCountControl);
     if (useHitCountControl) {
@@ -624,19 +622,10 @@ void FindEnzymesDialog::saveSettings() {
         AppContext::getSettings()->setValue(EnzymeSettings::MAX_HIT_VALUE, INT_MAX);
     }
 
-    QVector<U2Region> range;
-    if (regionSelector->getExcludeRegion() != U2Region()) {
-        range.append(regionSelector->getExcludeRegion());
-    }
-    AppContext::getSettings()->setValue(EnzymeSettings::EXCLUDED_REGION, QVariant::fromValue(range));
-    AppContext::getSettings()->setValue(EnzymeSettings::SEARCH_REGION, QVariant::fromValue(regionSelector->getIncludeRegion()));
-
+    U2SequenceObject *sequenceObject = advSequenceContext->getSequenceObject();
+    FindEnzymesAutoAnnotationUpdater::setLastSearchRegionForObject(sequenceObject, regionSelector->getIncludeRegion());
+    FindEnzymesAutoAnnotationUpdater::setLastExcludeRegionForObject(sequenceObject, regionSelector->getExcludeRegion());
     enzSel->saveSettings();
-}
-
-void FindEnzymesDialog::initDefaultSettings() {
-    AppContext::getSettings()->setValue(EnzymeSettings::EXCLUDED_REGION, "");
-    AppContext::getSettings()->setValue(EnzymeSettings::SEARCH_REGION, "");
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -100,8 +100,8 @@ private slots:
     void sl_loadPatternTaskStateChanged();
     void sl_findPatternTaskStateChanged();
 
-    /** Another sequence has been selected */
-    void sl_onFocusChanged(ADVSequenceWidget *, ADVSequenceWidget *);
+    /** Stops track the old sequence and attaches to the new one. */
+    void sl_onActiveSequenceChanged();
 
     /** A sequence part was added, removed or replaced */
     void sl_onSequenceModified();

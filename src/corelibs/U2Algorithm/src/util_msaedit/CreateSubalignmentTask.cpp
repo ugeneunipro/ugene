@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -87,7 +87,19 @@ void CreateSubalignmentTask::prepare() {
     if (cfg.rowIds.isEmpty()) {
         resultMAObj->crop(cfg.window, cfg.sequenceNames.toSet());
     } else {
-        resultMAObj->crop(cfg.window, cfg.rowIds);
+        QList<qint64> resultRowIdList;    // Maps original row ids to the result row ids by index.
+        if (createCopy) {
+            // Remap old object row ids into new object row ids before calling 'crop'.
+            for (qint64 origRowId : qAsConst(cfg.rowIds)) {
+                int rowIndex = origMAObj->getRowPosById(origRowId);
+                SAFE_POINT(rowIndex >= 0, "Failed to find row by id: " + QString::number(origRowId), );
+                MultipleAlignmentRow row = resultMAObj->getRow(rowIndex);
+                resultRowIdList << row->getRowId();
+            }
+        } else {
+            resultRowIdList = cfg.rowIds;
+        }
+        resultMAObj->crop(cfg.window, resultRowIdList);
     }
 
     if (cfg.saveImmediately) {

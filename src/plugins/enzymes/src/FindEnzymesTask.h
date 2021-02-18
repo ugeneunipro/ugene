@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -59,19 +59,34 @@ class FindEnzymesTask;
 
 struct FindEnzymesTaskConfig {
     FindEnzymesTaskConfig()
-        : maxResults(0x7FFFFFFF),
+        : maxResults(INT_MAX),
           minHitCount(1),
           maxHitCount(INT_MAX),
           circular(false),
           isAutoAnnotationUpdateTask(false) {
     }
+    /** Region to search enzymes. */
     U2Region searchRegion;
+
+    /** List of regions to exclude from the search. */
     QVector<U2Region> excludedRegions;
+
+    /** Group name for the result annotations. */
     QString groupName;
+
+    /** Maximum result count after search task will be stopped. */
     int maxResults;
+
+    /** If the results count is less than 'minHitCount' there will be no annotations created. */
     int minHitCount;
+
+    /** If the results count is greater than 'maxHitCount' there will be no annotations created. */
     int maxHitCount;
+
+    /** If true, the sequence is circular and results must also be searched in start/end overlapped regions. */
     bool circular;
+
+    /** If task is not Auto-Annotation-Update task and no results is found the target 'annotationObject' will be removed from the project. */
     bool isAutoAnnotationUpdateTask;
 };
 
@@ -132,6 +147,12 @@ public:
     void onRegion(SequenceDbiWalkerSubtask *t, TaskStateInfo &ti) override;
     void cleanup() override;
 
+    /**
+     * Returns estimation for a number of results found both strands of the sequence of the given length
+     * for a 'numberOfVariants' different enzyme kinds.
+     */
+    static qint64 estimateNumberOfEnzymesInSequence(qint64 sequenceLength, int numberOfVariants = 1);
+
 private:
     U2EntityRef sequenceObjectRef;
     U2Region region;
@@ -151,6 +172,29 @@ public:
     Task *createAutoAnnotationsUpdateTask(const AutoAnnotationObject *annotationObject) override;
 
     bool checkConstraints(const AutoAnnotationConstraints &constraints) override;
+
+    /** Returns last saved search region for the given sequence object or empty region if no region was saved. */
+    static U2Region getLastSearchRegionForObject(const U2SequenceObject *sequenceObject);
+
+    /**
+     * Saves the region as last used 'search' region for the object.
+     * This region will be used by default during the next auto-annotation task run.
+     * If no region is set, the whole sequence will be processed.
+     */
+    static void setLastSearchRegionForObject(U2SequenceObject *sequenceObject, const U2Region &region);
+
+    /** Returns last saved 'excluded' region for the given sequence object or empty region if no region was saved. */
+    static U2Region getLastExcludeRegionForObject(const U2SequenceObject *sequenceObject);
+
+    /**
+     * Saves the region as last used 'exclude' region for the object.
+     * This region will be used by default during the next auto-annotation task run.
+     * If no region is set, the whole sequence will be processed.
+     */
+    static void setLastExcludeRegionForObject(U2SequenceObject *sequenceObject, const U2Region &region);
+
+    /** Returns true if the task can safely be started for the given sequence length and number of enzymes. */
+    static bool isTooManyAnnotationsInTheResult(qint64 sequenceLength, int countOfEnzymeVariants);
 };
 
 }    // namespace U2

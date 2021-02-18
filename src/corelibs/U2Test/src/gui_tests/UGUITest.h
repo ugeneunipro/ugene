@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -33,13 +33,77 @@
 namespace U2 {
 using namespace HI;
 
+/** Default timeout for all GUI tests. */
+#define DEFAULT_GUI_TEST_TIMEOUT 240000
+
+/**
+ * A namespace for known GUI test labels and utility methods.
+ */
+class U2TEST_EXPORT UGUITestLabels {
+public:
+    /**
+     * A label to mark test as included into the default nightly GUI test suite.
+     * Only tests with this labels are executed as a part of nightly GUI testing.
+     */
+    static const QString Nightly;
+
+    /** A label to mark test as included into the 'Metagenomics' teamcity build suite. */
+    static const QString Metagenomics;
+
+    /** A label to mark test as included into the 'Cistrome' teamcity build suite. */
+    static const QString Cistrome;
+
+    /** A test with this label is safe to run on Linux. */
+    static const QString Linux;
+
+    /** A test with this label is safe to run on MacOS. */
+    static const QString MacOS;
+
+    /** A test with this label is safe to run in Windows. */
+    static const QString Windows;
+
+    /**
+     * A test with this label is included into the list of tests, but is not run and reported as ignored.
+     * Any Ignored or IgnoredOn<Platform> label is considered as a TODO and must have a bug number in the test description.
+     */
+    static const QString Ignored;
+
+    /**
+     * A test with this label is included into the list of tests, but is not run on Linux and reported as ignored.
+     * Any IgnoredOnLinux label is considered as a TODO and must have a bug number in the test description.
+     */
+    static const QString IgnoredOnLinux;
+
+    /**
+     * A test with this label is included into the list of tests, but is not run on MacOS and reported as ignored.
+     * Any IgnoredOnMacOS label is considered as a TODO and must have a bug number in the test description.
+     */
+    static const QString IgnoredOnMacOS;
+
+    /**
+     * A test with this label is included into the list of tests, but is not run on Windows and reported as ignored.
+     * Any IgnoredOnWindows label is considered as a TODO and must have a bug number in the test description.
+     */
+    static const QString IgnoredOnWindows;
+
+    /** Returns true if the test has Ignored or IgnoredOn<CurrentOS>. */
+    static bool hasIgnoredLabel(const GUITest *test);
+
+    /** Returns true if the test has current platform label: Linux, MacOS or Windows. */
+    static bool hasPlatformLabel(const GUITest *test);
+};
+
+/** GUI test with quick access to UGENE specific runtime variables: testDir, dataDir ... */
 class U2TEST_EXPORT UGUITest : public GUITest {
     Q_OBJECT
 public:
-    UGUITest(const QString &_name = "", const QString &_suite = "", int timeout = 240000)
-        : GUITest(_name, _suite, timeout) {
+    UGUITest(const QString &name, const QString &suite, int timeout, const QSet<QString> &labelSet)
+        : GUITest(name, suite, timeout, labelSet) {
     }
-    virtual ~UGUITest() {
+
+    /** Returns full test name as known by Teamcity. */
+    static QString getTeamcityTestName(const QString &suite, const QString &name) {
+        return suite + "_" + name;
     }
 
     static const QString testDir;
@@ -54,21 +118,12 @@ public:
 #define GUI_TEST_CLASS_DECLARATION(className) \
     class className : public UGUITest { \
     public: \
-        className() : UGUITest(TESTNAME(className), SUITENAME(className)) { \
+        className(int timeout = DEFAULT_GUI_TEST_TIMEOUT, const QStringList &labelList = QStringList()) \
+            : UGUITest(TESTNAME(className), SUITENAME(className), timeout, labelList.toSet()) { \
         } \
 \
     protected: \
-        virtual void run(HI::GUITestOpStatus &os); \
-    };
-
-#define GUI_TEST_CLASS_DECLARATION_SET_TIMEOUT(className, timeout) \
-    class className : public UGUITest { \
-    public: \
-        className() : UGUITest(TESTNAME(className), SUITENAME(className), timeout) { \
-        } \
-\
-    protected: \
-        virtual void run(HI::GUITestOpStatus &os); \
+        void run(HI::GUITestOpStatus &os) override; \
     };
 
 #define GUI_TEST_CLASS_DEFINITION(className) \

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,36 +39,24 @@ namespace U2 {
 #define ULOG_CAT_TEST_RUNNER "GUI Test Runner Log"
 static Logger log(ULOG_CAT_TEST_RUNNER);
 
-GUITestRunner::GUITestRunner(UGUITestBase *_guiTestBase, QWidget *parent)
+GUITestRunner::GUITestRunner(UGUITestBase *guiTestBase, QWidget *parent)
     : QWidget(parent),
-      guiTestBase(_guiTestBase) {
+      guiTestBase(guiTestBase) {
     setupUi(this);
     setWindowIcon(QIcon(QString(":gui_test/images/open_gui_test_runner.png")));
     setAttribute(Qt::WA_DeleteOnClose);
 
     tree->setColumnWidth(0, 550);
 
-    const GUITests tests = guiTestBase->getTests();
-    foreach (HI::GUITest *t, tests) {
-        //addTestSuite(ts);
-        QStringList list = QStringList();
-        QString suiteName = t->getSuite();
-        QList<QTreeWidgetItem *> suites = tree->findItems(suiteName, Qt::MatchExactly);
-        if (!suites.isEmpty()) {
-            if (suites.size() == 1) {
-                list.append(t->getName());
-                list.append("Not run");
-                suites.first()->addChild(new QTreeWidgetItem(list));
-            }
-        } else {
-            list.append(t->getSuite());
-            tree->addTopLevelItem(new QTreeWidgetItem(list));
-            QList<QTreeWidgetItem *> suites = tree->findItems(suiteName, Qt::MatchExactly);
-            list.removeFirst();
-            list.append(t->getName());
-            list.append("Not run");
-            suites.first()->addChild(new QTreeWidgetItem(list));
+    QList<GUITest *> testList = guiTestBase->getTests();
+    for (GUITest *test : qAsConst(testList)) {
+        QList<QTreeWidgetItem *> suiteItems = tree->findItems(test->suite, Qt::MatchExactly);
+        QTreeWidgetItem *suiteItem = suiteItems.isEmpty() ? nullptr : suiteItems.first();
+        if (suiteItem == nullptr) {
+            suiteItem = new QTreeWidgetItem(QStringList() << test->suite);
+            tree->addTopLevelItem(suiteItem);
         }
+        suiteItem->addChild(new QTreeWidgetItem(QStringList() << test->name << "Not run"));
     }
 
     delTextAction = new QAction(this);
@@ -103,7 +91,7 @@ void GUITestRunner::sl_runSelected() {
         if (item->childCount() == 0) {    // single test, not suite
             QString suite = item->parent()->text(0);
             QString name = item->text(0);
-            HI::GUITest *test = guiTestBase->getTest(suite, name);
+            GUITest *test = guiTestBase->getTest(suite, name);
             GUITestThread *testThread = new GUITestThread(test, false);
             connect(testThread, SIGNAL(finished()), this, SLOT(sl_testFinished()));
             hide();
@@ -123,14 +111,14 @@ void GUITestRunner::sl_runAllGUITests() {
 void GUITestRunner::sl_testFinished() {
     GUITestThread *testThread = qobject_cast<GUITestThread *>(sender());
     //SAFE_POINT(NULL != testThread, "TestThread is null", );
-    HI::GUITest *test = testThread->getTest();
+    GUITest *test = testThread->getTest();
     QString result = testThread->getTestResult();
     for (int suiteIdx = 0; suiteIdx < tree->topLevelItemCount(); suiteIdx++) {
         QTreeWidgetItem *suite = tree->topLevelItem(suiteIdx);
-        if (test->getSuite() == suite->text(0)) {
+        if (test->suite == suite->text(0)) {
             for (int testIdx = 0; testIdx < suite->childCount(); testIdx++) {
                 QTreeWidgetItem *testItem = suite->child(testIdx);
-                if (testItem->text(0) == test->getName()) {
+                if (testItem->text(0) == test->name) {
                     testItem->setText(1, result);
                 }
             }

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -271,7 +271,7 @@ void TestRunnerService::readSavedSuites() {
     //TODO: do it in in service startup task!!!
 
     QStringList suiteUrls = AppContext::getSettings()->getValue(SETTINGS_ROOT + "suites", QStringList()).toStringList();
-    for (const QString &suiteUrl : suiteUrls) {
+    for (const QString &suiteUrl : qAsConst(suiteUrls)) {
         QString err;
         GTestSuite *ts = GTestSuite::readTestSuite(suiteUrl, err);
         if (ts == nullptr) {

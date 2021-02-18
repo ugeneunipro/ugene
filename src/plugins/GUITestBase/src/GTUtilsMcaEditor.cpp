@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -64,7 +64,6 @@ void GTUtilsMcaEditor::checkMcaEditorWindowIsActive(GUITestOpStatus &os) {
     getActiveMcaEditorWindow(os);
 }
 #undef GT_METHOD_NAME
-
 
 #define GT_METHOD_NAME "getEditor"
 McaEditor *GTUtilsMcaEditor::getEditor(GUITestOpStatus &os) {
@@ -292,6 +291,13 @@ void GTUtilsMcaEditor::clickReadName(GUITestOpStatus &os, const QString &readNam
 void GTUtilsMcaEditor::clickReadName(GUITestOpStatus &os, int readNumber, Qt::MouseButton mouseButton) {
     moveToReadName(os, readNumber);
     GTMouseDriver::click(mouseButton);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "doubleClickReadName"
+void GTUtilsMcaEditor::doubleClickReadName(GUITestOpStatus &os, int readIndex) {
+    moveToReadName(os, readIndex);
+    GTMouseDriver::doubleClick();
 }
 #undef GT_METHOD_NAME
 

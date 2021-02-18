@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -69,6 +69,9 @@ public:
     static QRect getPositionRect(GUITestOpStatus &os, const QPoint& position);
     static QPoint convertCoordinates(GUITestOpStatus &os, const QPoint p);
     static void click(GUITestOpStatus &os, const QPoint &screenMaPoint = QPoint(0, 0));
+
+    /** Calls context menu Copy/Paste->Copy. */
+    static void copySelectionByContextMenu(GUITestOpStatus &os);
 
     // scrolls to the position (in the MSA zero-based coordinates)
     static void scrollToPosition(GUITestOpStatus &os, const QPoint &position);

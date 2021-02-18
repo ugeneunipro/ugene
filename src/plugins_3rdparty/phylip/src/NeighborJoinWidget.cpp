@@ -1,6 +1,6 @@
 /**
 * UGENE - Integrated Bioinformatics Tools.
-* Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+* Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
 * http://ugene.net
 *
 * This program is free software; you can redistribute it and/or
@@ -85,29 +85,29 @@ void NeighborJoinWidget::fillSettings(CreatePhyTreeSettings &settings) {
 }
 
 void NeighborJoinWidget::storeSettings() {
-    AppContext::getSettings()->setValue(CreatePhyTreeWidget::settingsPath() + DIST_MATRIX_MODEL_PATH, cbModel->currentText());
-    AppContext::getSettings()->setValue(CreatePhyTreeWidget::settingsPath() + DIST_MATRIX_GAMMADISTR_PATH, chbGamma->isChecked());
-    AppContext::getSettings()->setValue(CreatePhyTreeWidget::settingsPath() + DIST_MATRIX_ALPHAFACTOR_PATH, sbAlpha->value());
-    AppContext::getSettings()->setValue(CreatePhyTreeWidget::settingsPath() + DIST_MATRIX_TRRATIO_PATH, transitionRatioSpinBox->value());
-    AppContext::getSettings()->setValue(CreatePhyTreeWidget::settingsPath() + SEQ_BOOT_BOTTSTR_PATH, chbEnableBootstrapping->isChecked());
-    AppContext::getSettings()->setValue(CreatePhyTreeWidget::settingsPath() + SEQ_BOOT_REPL_PATH, sbReplicatesNumber->value());
-    AppContext::getSettings()->setValue(CreatePhyTreeWidget::settingsPath() + SEQ_BOOT_SEED_PATH, sbSeed->value());
-    AppContext::getSettings()->setValue(CreatePhyTreeWidget::settingsPath() + SEQ_BOOT_FRACTION_PATH, sbFraction->value());
-    AppContext::getSettings()->setValue(CreatePhyTreeWidget::settingsPath() + SEQ_BOOT_CONSENSUSID_PATH, cbConsensusType->currentText());
+    AppContext::getSettings()->setValue(CreatePhyTreeWidget::getAppSettingsRoot() + DIST_MATRIX_MODEL_PATH, cbModel->currentText());
+    AppContext::getSettings()->setValue(CreatePhyTreeWidget::getAppSettingsRoot() + DIST_MATRIX_GAMMADISTR_PATH, chbGamma->isChecked());
+    AppContext::getSettings()->setValue(CreatePhyTreeWidget::getAppSettingsRoot() + DIST_MATRIX_ALPHAFACTOR_PATH, sbAlpha->value());
+    AppContext::getSettings()->setValue(CreatePhyTreeWidget::getAppSettingsRoot() + DIST_MATRIX_TRRATIO_PATH, transitionRatioSpinBox->value());
+    AppContext::getSettings()->setValue(CreatePhyTreeWidget::getAppSettingsRoot() + SEQ_BOOT_BOTTSTR_PATH, chbEnableBootstrapping->isChecked());
+    AppContext::getSettings()->setValue(CreatePhyTreeWidget::getAppSettingsRoot() + SEQ_BOOT_REPL_PATH, sbReplicatesNumber->value());
+    AppContext::getSettings()->setValue(CreatePhyTreeWidget::getAppSettingsRoot() + SEQ_BOOT_SEED_PATH, sbSeed->value());
+    AppContext::getSettings()->setValue(CreatePhyTreeWidget::getAppSettingsRoot() + SEQ_BOOT_FRACTION_PATH, sbFraction->value());
+    AppContext::getSettings()->setValue(CreatePhyTreeWidget::getAppSettingsRoot() + SEQ_BOOT_CONSENSUSID_PATH, cbConsensusType->currentText());
 
     displayOptions->storeSettings();
 }
 
 void NeighborJoinWidget::restoreDefault() {
-    AppContext::getSettings()->remove(CreatePhyTreeWidget::settingsPath() + DIST_MATRIX_MODEL_PATH);
-    AppContext::getSettings()->remove(CreatePhyTreeWidget::settingsPath() + DIST_MATRIX_GAMMADISTR_PATH);
-    AppContext::getSettings()->remove(CreatePhyTreeWidget::settingsPath() + DIST_MATRIX_ALPHAFACTOR_PATH);
-    AppContext::getSettings()->remove(CreatePhyTreeWidget::settingsPath() + DIST_MATRIX_TRRATIO_PATH);
-    AppContext::getSettings()->remove(CreatePhyTreeWidget::settingsPath() + SEQ_BOOT_BOTTSTR_PATH);
-    AppContext::getSettings()->remove(CreatePhyTreeWidget::settingsPath() + SEQ_BOOT_REPL_PATH);
-    AppContext::getSettings()->remove(CreatePhyTreeWidget::settingsPath() + SEQ_BOOT_SEED_PATH);
-    AppContext::getSettings()->remove(CreatePhyTreeWidget::settingsPath() + SEQ_BOOT_FRACTION_PATH);
-    AppContext::getSettings()->remove(CreatePhyTreeWidget::settingsPath() + SEQ_BOOT_CONSENSUSID_PATH);
+    AppContext::getSettings()->remove(CreatePhyTreeWidget::getAppSettingsRoot() + DIST_MATRIX_MODEL_PATH);
+    AppContext::getSettings()->remove(CreatePhyTreeWidget::getAppSettingsRoot() + DIST_MATRIX_GAMMADISTR_PATH);
+    AppContext::getSettings()->remove(CreatePhyTreeWidget::getAppSettingsRoot() + DIST_MATRIX_ALPHAFACTOR_PATH);
+    AppContext::getSettings()->remove(CreatePhyTreeWidget::getAppSettingsRoot() + DIST_MATRIX_TRRATIO_PATH);
+    AppContext::getSettings()->remove(CreatePhyTreeWidget::getAppSettingsRoot() + SEQ_BOOT_BOTTSTR_PATH);
+    AppContext::getSettings()->remove(CreatePhyTreeWidget::getAppSettingsRoot() + SEQ_BOOT_REPL_PATH);
+    AppContext::getSettings()->remove(CreatePhyTreeWidget::getAppSettingsRoot() + SEQ_BOOT_SEED_PATH);
+    AppContext::getSettings()->remove(CreatePhyTreeWidget::getAppSettingsRoot() + SEQ_BOOT_FRACTION_PATH);
+    AppContext::getSettings()->remove(CreatePhyTreeWidget::getAppSettingsRoot() + SEQ_BOOT_CONSENSUSID_PATH);
 
     cbModel->setCurrentIndex(0);
     chbGamma->setChecked(false);
@@ -192,25 +192,25 @@ void NeighborJoinWidget::init(const MultipleSequenceAlignment &ma) {
         cbModel->addItems(ProtDistModelTypes::getProtDistModelTypes());
     }
 
-    const QString matrixModelName = AppContext::getSettings()->getValue(CreatePhyTreeWidget::settingsPath() + DIST_MATRIX_MODEL_PATH, cbModel->itemText(0)).toString();
+    const QString matrixModelName = AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + DIST_MATRIX_MODEL_PATH, cbModel->itemText(0)).toString();
     cbModel->setCurrentIndex(cbModel->findText(matrixModelName));
     sl_onMatrixModelChanged(matrixModelName);
 
-    chbGamma->setChecked(AppContext::getSettings()->getValue(CreatePhyTreeWidget::settingsPath() + DIST_MATRIX_GAMMADISTR_PATH, false).toBool());
-    sbAlpha->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::settingsPath() + DIST_MATRIX_ALPHAFACTOR_PATH, 0.5).toDouble());
-    transitionRatioSpinBox->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::settingsPath() + DIST_MATRIX_TRRATIO_PATH, 2.0).toDouble());
+    chbGamma->setChecked(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + DIST_MATRIX_GAMMADISTR_PATH, false).toBool());
+    sbAlpha->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + DIST_MATRIX_ALPHAFACTOR_PATH, 0.5).toDouble());
+    transitionRatioSpinBox->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + DIST_MATRIX_TRRATIO_PATH, 2.0).toDouble());
 
     sbSeed->setValue(getRandomSeed());
 
     cbConsensusType->addItems(ConsensusModelTypes::getConsensusModelTypes());
 
-    chbEnableBootstrapping->setChecked(AppContext::getSettings()->getValue(CreatePhyTreeWidget::settingsPath() + SEQ_BOOT_BOTTSTR_PATH, false).toBool());
+    chbEnableBootstrapping->setChecked(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + SEQ_BOOT_BOTTSTR_PATH, false).toBool());
 
-    sbReplicatesNumber->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::settingsPath() + SEQ_BOOT_REPL_PATH, 100).toInt());
-    sbSeed->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::settingsPath() + SEQ_BOOT_SEED_PATH, getRandomSeed()).toInt());
-    sbFraction->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::settingsPath() + SEQ_BOOT_FRACTION_PATH, 0.5).toDouble());
+    sbReplicatesNumber->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + SEQ_BOOT_REPL_PATH, 100).toInt());
+    sbSeed->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + SEQ_BOOT_SEED_PATH, getRandomSeed()).toInt());
+    sbFraction->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + SEQ_BOOT_FRACTION_PATH, 0.5).toDouble());
 
-    const QString consensusTypeName = AppContext::getSettings()->getValue(CreatePhyTreeWidget::settingsPath() + SEQ_BOOT_CONSENSUSID_PATH, cbConsensusType->itemText(0)).toString();
+    const QString consensusTypeName = AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + SEQ_BOOT_CONSENSUSID_PATH, cbConsensusType->itemText(0)).toString();
     cbConsensusType->setCurrentIndex(cbConsensusType->findText(consensusTypeName));
     sl_onConsensusTypeChanged(consensusTypeName);
 }

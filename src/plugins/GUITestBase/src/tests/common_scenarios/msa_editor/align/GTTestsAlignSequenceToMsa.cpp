@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -70,7 +70,7 @@ void checkAlignedRegion(HI::GUITestOpStatus &os, const QRect &selectionRect, con
     GTKeyboardUtils::copy(os);
     GTGlobals::sleep(500);
 
-    const QString clipboardText = GTClipboard::sequences(os);
+    const QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == expectedContent, QString("Incorrect alignment of the region\n Expected: \n%1 \nResult: \n%2").arg(expectedContent).arg(clipboardText));
 }
 
@@ -397,7 +397,8 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
                                                       << "GCGCTAAGCCTTTTAAGCGCGCGCGCGC";
     GTUtilsTaskTreeView::waitTaskFinished(os);
     const QStringList msaData = GTUtilsMsaEditor::getWholeData(os);
-    CHECK_SET_ERR(expectedMsaData == msaData, "Unexpected MSA data");
+    CHECK_SET_ERR(expectedMsaData == msaData, "Expected:\n" + expectedMsaData.join("\n") + "\nFound:\n" + msaData.join("\n"));
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0012) {

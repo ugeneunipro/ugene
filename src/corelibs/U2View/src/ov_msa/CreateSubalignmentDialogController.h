@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -35,17 +35,24 @@ class SaveDocumentController;
 class U2VIEW_EXPORT CreateSubalignmentDialogController : public QDialog, private Ui_CreateSubalignmentDialog {
     Q_OBJECT
 public:
-    CreateSubalignmentDialogController(MultipleSequenceAlignmentObject *_mobj, const QRect &selection, QWidget *p = NULL);
+    CreateSubalignmentDialogController(MultipleSequenceAlignmentObject *obj, const QList<qint64> &preSelectedRowIdList, const U2Region &preSelectedColumnsRegion, QWidget *p = nullptr);
 
-    void accept();
+    void accept() override;
 
-    bool getAddToProjFlag();
-    QString getSavePath();
-    DocumentFormatId getFormatId();
-    U2Region getRegion();
-    const QList<qint64> &getSelectedRowIds() const {
-        return selectedRowIds;
-    }
+    /** Returns 'true' if 'addToProject' option was checked in the dialog and the saved sub-alignment must be added to the active project. */
+    bool getAddToProjFlag() const;
+
+    /** Returns path to the saved sub-alignment. */
+    QString getSavePath() const;
+
+    /** Returns document format of the sub-alignment document. */
+    DocumentFormatId getFormatId() const;
+
+    /** Returns selected columns range in the original alignment. */
+    const U2Region &getSelectedColumnsRegion() const;
+
+    /** Returns selected row ids in the original alignment. */
+    const QList<qint64> &getSelectedRowIds() const;
 
 private slots:
     void sl_allButtonClicked();
@@ -57,9 +64,9 @@ private:
     void initSaveController();
     void updateSelectedRowIds();
 
-    MultipleSequenceAlignmentObject *mobj;
-    U2Region window;
+    MultipleSequenceAlignmentObject *msaObject;
     QList<qint64> selectedRowIds;
+    U2Region selectedColumnRegion;
     SaveDocumentController *saveController;
 };
 

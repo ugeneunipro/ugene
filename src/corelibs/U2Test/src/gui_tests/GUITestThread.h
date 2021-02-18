@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -30,20 +30,22 @@
 
 namespace U2 {
 
+using namespace HI;
+
 class Logger;
-typedef QList<HI::GUITest *> GUITests;
 
 class U2TEST_EXPORT GUITestThread : public QThread {
     Q_OBJECT
 public:
-    GUITestThread(HI::GUITest *test, bool isCleanupNeeded = true);
+    GUITestThread(GUITest *test, bool isCleanupNeeded = true);
 
-    void run();
+    void run() override;
 
-    HI::GUITest *getTest() {
-        return test;
+    GUITest *getTest() const {
+        return testToRun;
     }
-    QString getTestResult() {
+
+    QString getTestResult() const {
         return testResult;
     }
 
@@ -51,18 +53,14 @@ private slots:
     void sl_testTimeOut();
 
 private:
-    QString launchTest(const GUITests &tests);
-
-    static GUITests preChecks();
-    static GUITests postChecks();
-    static GUITests postActions();
+    QString launchTest(const QList<GUITest *> &tests);
     void clearSandbox();
     static void removeDir(const QString &dirName);
     void saveScreenshot();
     void cleanup();
     void writeTestResult();
 
-    HI::GUITest *test;
+    GUITest *testToRun;
     bool isRunPostActionsAndCleanup;
     QString testResult;
 };

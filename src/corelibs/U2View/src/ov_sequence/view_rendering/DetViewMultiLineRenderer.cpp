@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,38 +37,58 @@ const int DetViewMultiLineRenderer::INDENT_BETWEEN_LINES = 30;
 DetViewMultiLineRenderer::DetViewMultiLineRenderer(DetView *detView, SequenceObjectContext *ctx)
     : DetViewRenderer(detView, ctx),
       extraIndent(0) {
-    singleLinePainter = new DetViewSingleLineRenderer(detView, ctx);
+    singleLineRenderer = new DetViewSingleLineRenderer(detView, ctx);
 }
 
 DetViewMultiLineRenderer::~DetViewMultiLineRenderer() {
-    delete singleLinePainter;
+    delete singleLineRenderer;
 }
 
 qint64 DetViewMultiLineRenderer::coordToPos(const QPoint &p, const QSize &canvasSize, const U2Region &visibleRange) const {
     qint64 symbolsPerLine = getSymbolsPerLine(canvasSize.width());
     U2Region firstLineVisibleRange(visibleRange.startPos, symbolsPerLine);
-    qint64 posOnFirstLine = singleLinePainter->coordToPos(p, canvasSize, firstLineVisibleRange);
+    qint64 posOnFirstLine = singleLineRenderer->coordToPos(p, canvasSize, firstLineVisibleRange);
     int line = p.y() / getOneLineHeight();
     return qMin(ctx->getSequenceLength(), posOnFirstLine + line * symbolsPerLine);
 }
 
-float DetViewMultiLineRenderer::posToXCoordF(const qint64 p, const QSize &canvasSize, const U2Region &visibleRange) const {
-    CHECK(visibleRange.contains(p), -1);
+int DetViewMultiLineRenderer::posToXCoord(const qint64 pos, const QSize &canvasSize, const U2Region &visibleRange) const {
+    CHECK(visibleRange.contains(pos), -1);
 
     qint64 symbolsPerLine = getSymbolsPerLine(canvasSize.width());
-    return commonMetrics.charWidth * (p % symbolsPerLine);
+    return commonMetrics.charWidth * (pos % symbolsPerLine);
 }
 
-U2Region DetViewMultiLineRenderer::getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const {
-    if (qgetenv(ENV_GUI_TEST).toInt() == 1) {
-        U2Region res = singleLinePainter->getAnnotationYRange(a, r, as, QSize(canvasSize.width(), getOneLineHeight()), visibleRange);
-        res.startPos += INDENT_BETWEEN_LINES / 2;
-        return res;
+QList<U2Region> DetViewMultiLineRenderer::getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings, const QSize &canvasSize, const U2Region &visibleRange) const {
+    SAFE_POINT(locationRegionIndex >= 0 && locationRegionIndex < annotation->getRegions().length(), "Invalid locationRegionIndex", QList<U2Region>());
+
+    // Compute region offset within a single line.
+    int availableHeightForSingleLine = singleLineRenderer->getOneLineHeight();    // Use minimal required height to draw a single line in singleLineRenderer.
+    U2Region singleLineYRegion = singleLineRenderer->getAnnotationYRange(annotation, locationRegionIndex, annotationSettings, availableHeightForSingleLine);
+    // The first line is indented from the widget start by the half of indent.
+    singleLineYRegion.startPos += INDENT_BETWEEN_LINES / 2;
+    // Apply vertical scroll shift within multi-line det-view.
+    singleLineYRegion.startPos -= detView->getShift();
+
+    int baseCountPerLine = getSymbolsPerLine(canvasSize.width());
+    int singleLineHeight = getOneLineHeight();
+
+    // Compute continuous yRegions split across multiple lines for the given location region.
+    QList<U2Region> yRegionList;
+    const U2Region &locationRegion = annotation->getRegions()[locationRegionIndex];
+    U2Region visibleLocationRegion = visibleRange.intersect(locationRegion);
+    if (visibleLocationRegion.isEmpty()) {
+        return yRegionList;
     }
-    FAIL("The method must never be called", U2Region());
+    int locationFirstLineIndex = (visibleLocationRegion.startPos - visibleRange.startPos) / baseCountPerLine;
+    int lineFirstPos = visibleRange.startPos + (locationFirstLineIndex * baseCountPerLine);
+    for (int lineIndex = locationFirstLineIndex; lineFirstPos < visibleLocationRegion.endPos(); lineIndex++, lineFirstPos += baseCountPerLine) {
+        yRegionList << U2Region(singleLineYRegion.startPos + lineIndex * singleLineHeight, singleLineYRegion.length);
+    }
+    return yRegionList;
 }
 
-U2Region DetViewMultiLineRenderer::getMirroredYRange(const U2Strand &) const {
+U2Region DetViewMultiLineRenderer::getCutSiteYRange(const U2Strand &, int) const {
     FAIL("The method must never be called", U2Region());
 }
 
@@ -76,7 +96,7 @@ bool DetViewMultiLineRenderer::isOnTranslationsLine(const QPoint &p, const QSize
     qint64 symbolsPerLine = getSymbolsPerLine(canvasSize.width());
     U2Region range(visibleRange.startPos, qMin(symbolsPerLine, visibleRange.length));
     do {
-        if (singleLinePainter->isOnTranslationsLine(p, canvasSize, range)) {
+        if (singleLineRenderer->isOnTranslationsLine(p, canvasSize, range)) {
             return true;
         }
         range.startPos += symbolsPerLine;
@@ -86,9 +106,8 @@ bool DetViewMultiLineRenderer::isOnTranslationsLine(const QPoint &p, const QSize
 }
 
 bool DetViewMultiLineRenderer::isOnAnnotationLine(const QPoint &p, Annotation *a, int region, const AnnotationSettings *as, const QSize &canvasSize, const U2Region &visibleRange) const {
-    qint64 symbolsPerLine = getSymbolsPerLine(canvasSize.width());
-    QSize oneLineMinSize(canvasSize.width(), getMinimumHeight());
-    U2Region yRange = singleLinePainter->getAnnotationYRange(a, region, as, oneLineMinSize, U2Region(visibleRange.startPos, qMin(visibleRange.length, symbolsPerLine)));
+    int availableHeightForSingleLine = singleLineRenderer->getOneLineHeight();    // Use minimal required height to draw a single line in singleLineRenderer.
+    U2Region yRange = singleLineRenderer->getAnnotationYRange(a, region, as, availableHeightForSingleLine);
     yRange.startPos += (INDENT_BETWEEN_LINES + extraIndent) / 2;
     do {
         if (yRange.contains(p.y())) {
@@ -100,28 +119,24 @@ bool DetViewMultiLineRenderer::isOnAnnotationLine(const QPoint &p, Annotation *a
     return false;
 }
 
-qint64 DetViewMultiLineRenderer::getMinimumHeight() const {
-    return singleLinePainter->getMinimumHeight();
+int DetViewMultiLineRenderer::getMinimumHeight() const {
+    return singleLineRenderer->getMinimumHeight();
 }
 
 qint64 DetViewMultiLineRenderer::getOneLineHeight() const {
-    return singleLinePainter->getOneLineHeight() + INDENT_BETWEEN_LINES + extraIndent;
+    return singleLineRenderer->getOneLineHeight() + INDENT_BETWEEN_LINES + extraIndent;
 }
 
 qint64 DetViewMultiLineRenderer::getLinesCount(const QSize &canvasSize) const {
     return canvasSize.height() / getOneLineHeight();
 }
 
-qint64 DetViewMultiLineRenderer::getContentIndentY(const QSize &, const U2Region &) const {
-    return 0;
-}
-
 int DetViewMultiLineRenderer::getDirectLine() const {
-    return singleLinePainter->getDirectLine();
+    return singleLineRenderer->getDirectLine();
 }
 
 int DetViewMultiLineRenderer::getRowsInLineCount() const {
-    return singleLinePainter->getRowsInLineCount() + 2;
+    return singleLineRenderer->getRowsInLineCount() + 2;
 }
 
 QSize DetViewMultiLineRenderer::getBaseCanvasSize(const U2Region &visibleRange) const {
@@ -139,7 +154,7 @@ void DetViewMultiLineRenderer::drawAll(QPainter &p, const QSize &canvasSize, con
     U2Region oneLineRegion(visibleRange.startPos, symbolsPerLine);
     p.fillRect(QRect(QPoint(0, 0), canvasSize), Qt::white);
 
-    // wide the indent between lines if neccessary
+    // Add extra indent between lines if necessary.
     extraIndent = 0;
     int sequenceLinesCount = visibleRange.length / symbolsPerLine + 1;
     if (ctx->getSequenceLength() == visibleRange.length) {
@@ -154,9 +169,9 @@ void DetViewMultiLineRenderer::drawAll(QPainter &p, const QSize &canvasSize, con
         // cut the extra space at the end of the sequence
         oneLineRegion.length = qMin(visibleRange.endPos() - oneLineRegion.startPos, oneLineRegion.length);
 
-        singleLinePainter->drawAll(p,
-                                   QSize(canvasSize.width(), getOneLineHeight()),
-                                   oneLineRegion);
+        singleLineRenderer->drawAll(p,
+                                    QSize(canvasSize.width(), getOneLineHeight()),
+                                    oneLineRegion);
 
         p.translate(0, getOneLineHeight());
         indentCounter += getOneLineHeight();
@@ -178,9 +193,9 @@ void DetViewMultiLineRenderer::drawSelection(QPainter &p, const QSize &canvasSiz
         // cut the extra space at the end of the sequence
         oneLineRegion.length = qMin(visibleRange.endPos() - oneLineRegion.startPos, oneLineRegion.length);
 
-        singleLinePainter->drawSelection(p,
-                                         QSize(canvasSize.width(), getOneLineHeight()),
-                                         oneLineRegion);
+        singleLineRenderer->drawSelection(p,
+                                          QSize(canvasSize.width(), getOneLineHeight()),
+                                          oneLineRegion);
 
         p.translate(0, getOneLineHeight());
         indentCounter += getOneLineHeight();
@@ -202,9 +217,9 @@ void DetViewMultiLineRenderer::drawCursor(QPainter &p, const QSize &canvasSize, 
     do {
         // cut the extra space at the end of the sequence
         oneLineRegion.length = qMin(visibleRange.endPos() - oneLineRegion.startPos, oneLineRegion.length);
-        singleLinePainter->drawCursor(p,
-                                      QSize(canvasSize.width(), getOneLineHeight()),
-                                      oneLineRegion);
+        singleLineRenderer->drawCursor(p,
+                                       QSize(canvasSize.width(), getOneLineHeight()),
+                                       oneLineRegion);
 
         p.translate(0, getOneLineHeight());
         indentCounter += getOneLineHeight();
@@ -218,7 +233,11 @@ void DetViewMultiLineRenderer::drawCursor(QPainter &p, const QSize &canvasSize, 
 }
 
 void DetViewMultiLineRenderer::update() {
-    singleLinePainter->update();
+    singleLineRenderer->update();
+}
+
+U2Region DetViewMultiLineRenderer::getAnnotationYRange(Annotation *, int, const AnnotationSettings *, int) const {
+    FAIL("This method must never be called and exists due to a design flow. DetViewMultiLineRenderer delegates annotation rendering to DetViewSingleLineRenderer", U2Region());
 }
 
 }    // namespace U2

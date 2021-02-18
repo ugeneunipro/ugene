@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -59,6 +59,8 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
     : GObjectView(factoryId, viewName),
       ui(NULL),
       resizeMode(ResizeMode_FontAndContent),
+      minimumFontPointSize(6),
+      maximumFontPointSize(24),
       zoomFactor(0),
       cachedColumnWidth(0),
       cursorPosition(QPoint(0, 0)),
@@ -131,6 +133,10 @@ void MaEditor::sl_onAlignmentChanged(const MultipleAlignment &, const MaModifica
     updateActions();
 }
 
+void MaEditor::sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &) {
+    updateActions();
+}
+
 QVariantMap MaEditor::saveState() {
     return MaEditorState::saveState(this);
 }
@@ -170,8 +176,7 @@ int MaEditor::getSequenceRowHeight() const {
 
 int MaEditor::getColumnWidth() const {
     if (cachedColumnWidth == 0) {
-        QFontMetrics fm(font, ui);
-        cachedColumnWidth = fm.width('W') * zoomMult;
+        cachedColumnWidth = getUnifiedSequenceFontCharRect(font).width() * zoomMult;
 
         cachedColumnWidth = (int)(cachedColumnWidth * zoomFactor);
         cachedColumnWidth = qMax(cachedColumnWidth, MOBJECT_MIN_COLUMN_WIDTH);
@@ -219,7 +224,7 @@ void MaEditor::sl_zoomIn() {
 
     if (resizeMode == ResizeMode_OnlyContent) {
         setZoomFactor(zoomFactor * zoomMult);
-    } else if ((pSize < MOBJECT_MAX_FONT_SIZE) && (resizeMode == ResizeMode_FontAndContent)) {
+    } else if (pSize < maximumFontPointSize && resizeMode == ResizeMode_FontAndContent) {
         font.setPointSize(pSize + 1);
         setFont(font);
     }
@@ -239,12 +244,12 @@ void MaEditor::sl_zoomIn() {
 
 void MaEditor::sl_zoomOut() {
     GCounter::increment("Zoom out", getFactoryId());
-    int pSize = font.pointSize();
+    int fontPointSize = font.pointSize();
 
     bool resizeModeChanged = false;
 
-    if (pSize > MOBJECT_MIN_FONT_SIZE) {
-        font.setPointSize(pSize - 1);
+    if (fontPointSize > minimumFontPointSize) {
+        font.setPointSize(fontPointSize - 1);
         setFont(font);
     } else {
         SAFE_POINT(zoomMult > 0, QString("Incorrect value of MSAEditor::zoomMult"), );
@@ -268,20 +273,18 @@ void MaEditor::sl_zoomToSelection() {
     int selectionWidth = selection.width();
     float pixelsPerBase = (seqAreaWidth / float(selectionWidth)) * zoomMult;
     int fontPointSize = int(pixelsPerBase / fontPixelToPointSize);
-    if (fontPointSize >= MOBJECT_MIN_FONT_SIZE) {
-        if (fontPointSize > MOBJECT_MAX_FONT_SIZE) {
-            fontPointSize = MOBJECT_MAX_FONT_SIZE;
-        }
+    if (fontPointSize >= minimumFontPointSize) {
+        fontPointSize = qMin(fontPointSize, maximumFontPointSize);
         font.setPointSize(fontPointSize);
         setFont(font);
         resizeMode = ResizeMode_FontAndContent;
         setZoomFactor(1);
     } else {
-        if (font.pointSize() != MOBJECT_MIN_FONT_SIZE) {
-            font.setPointSize(MOBJECT_MIN_FONT_SIZE);
+        if (font.pointSize() != minimumFontPointSize) {
+            font.setPointSize(minimumFontPointSize);
             setFont(font);
         }
-        setZoomFactor(pixelsPerBase / (MOBJECT_MIN_FONT_SIZE * fontPixelToPointSize));
+        setZoomFactor(pixelsPerBase / (minimumFontPointSize * fontPixelToPointSize));
         resizeMode = ResizeMode_OnlyContent;
     }
     ui->getScrollController()->setFirstVisibleBase(selection.x());
@@ -347,7 +350,7 @@ void MaEditor::sl_exportHighlighted() {
     CHECK(!d.isNull(), );
 
     if (d->result() == QDialog::Accepted) {
-        AppContext::getTaskScheduler()->registerTopLevelTask(new ExportHighligtningTask(d.data(), this));
+        AppContext::getTaskScheduler()->registerTopLevelTask(new ExportHighlightingTask(d.data(), this));
     }
 }
 
@@ -374,32 +377,32 @@ void MaEditor::initActions() {
     ui->addAction(clearSelectionAction);
 
     connect(this, SIGNAL(si_clearSelection()), ui->getSequenceArea(), SLOT(sl_cancelSelection()));
+
+    connect(ui->getSequenceArea(),
+            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
+            SLOT(sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)));
 }
 
 void MaEditor::initZoom() {
     Settings *s = AppContext::getSettings();
-    SAFE_POINT(s != NULL, "AppConext is NULL", );
+    SAFE_POINT(s != NULL, "AppContext is NULL", );
     zoomFactor = s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_ZOOM_FACTOR, MOBJECT_DEFAULT_ZOOM_FACTOR).toFloat();
     updateResizeMode();
 }
 
 void MaEditor::initFont() {
     Settings *s = AppContext::getSettings();
-    SAFE_POINT(s != NULL, "AppConext is NULL", );
+    SAFE_POINT(s != NULL, "AppContext is NULL", );
     font.setFamily(s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_FAMILY, MOBJECT_DEFAULT_FONT_FAMILY).toString());
     font.setPointSize(s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_SIZE, MOBJECT_DEFAULT_FONT_SIZE).toInt());
     font.setItalic(s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_ITALIC, false).toBool());
     font.setBold(s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_BOLD, false).toBool());
 
-    calcFontPixelToPointSizeCoef();
+    updateFontMetrics();
 }
 
 void MaEditor::updateResizeMode() {
-    if ((font.pointSize() >= MOBJECT_MIN_FONT_SIZE) && (zoomFactor < 1.0f)) {
-        resizeMode = ResizeMode_OnlyContent;
-    } else {
-        resizeMode = ResizeMode_FontAndContent;
-    }
+    resizeMode = font.pointSize() >= minimumFontPointSize && zoomFactor < 1.0f ? ResizeMode_OnlyContent : ResizeMode_FontAndContent;
 }
 
 void MaEditor::addCopyPasteMenu(QMenu *m) {
@@ -433,8 +436,8 @@ void MaEditor::addAlignMenu(QMenu *m) {
 void MaEditor::setFont(const QFont &f) {
     int pSize = f.pointSize();
     font = f;
-    calcFontPixelToPointSizeCoef();
-    font.setPointSize(qBound(MOBJECT_MIN_FONT_SIZE, pSize, MOBJECT_MAX_FONT_SIZE));
+    updateFontMetrics();
+    font.setPointSize(qBound(minimumFontPointSize, pSize, maximumFontPointSize));
     updateResizeMode();
     emit si_fontChanged(font);
 
@@ -446,9 +449,31 @@ void MaEditor::setFont(const QFont &f) {
     widget->update();
 }
 
-void MaEditor::calcFontPixelToPointSizeCoef() {
-    QFontInfo info(font);
-    fontPixelToPointSize = (double)info.pixelSize() / (double)info.pointSize();
+void MaEditor::updateFontMetrics() {
+    QFontInfo fontInfo(font);
+    fontPixelToPointSize = fontInfo.pixelSize() / fontInfo.pointSizeF();
+
+    // Re-calculate the minimumFontPointSize based on the current font.
+    // The minimum font size is computed using the similar logic with Assembly Browser:
+    // it is equal to maximum font size value that can safely be rendered in the pre-defined on-screen cell of width = 7px.
+    // This approach is good, because UGENE continues to draw sequence characters until there is enough pixels in the cell to draw a
+    // meaningful shape regardless of the current device settings.
+    // TODO: this logic should be refactored and centralized for all sequence views in UGENE with zooming support.
+    const int minimumCellWidthToShowText = 7;
+    const int minimumFontCharWidthInsideCell = minimumCellWidthToShowText - 2;    // Keep 1px left & right padding inside the cell.
+    const int minimumSafeFontPointSize = 8;    // This value was historically used in UGENE as minimum with no known issues.
+    QFont fontToEstimate = font;
+    int estimatedMinimumFontPointSize = minimumSafeFontPointSize;    // Start with a safe value and estimate smaller values.
+    while (fontToEstimate.pointSize() > 0) {
+        int charWidth = getUnifiedSequenceFontCharRect(fontToEstimate).width();
+        if (charWidth < minimumFontCharWidthInsideCell) {
+            // The estimated char size is too small. Stop on the previous value.
+            break;
+        }
+        estimatedMinimumFontPointSize = fontToEstimate.pointSize();
+        fontToEstimate.setPointSize(fontToEstimate.pointSize() - 1);
+    }
+    minimumFontPointSize = estimatedMinimumFontPointSize;
 }
 
 void MaEditor::setFirstVisiblePosSeq(int firstPos, int firstSeq) {
@@ -467,9 +492,9 @@ void MaEditor::setZoomFactor(double newZoomFactor) {
 }
 
 void MaEditor::updateActions() {
-    zoomInAction->setEnabled(font.pointSize() < MOBJECT_MAX_FONT_SIZE);
+    zoomInAction->setEnabled(font.pointSize() < maximumFontPointSize);
     zoomOutAction->setEnabled(getColumnWidth() > MOBJECT_MIN_COLUMN_WIDTH);
-    zoomToSelectionAction->setEnabled(font.pointSize() < MOBJECT_MAX_FONT_SIZE);
+    zoomToSelectionAction->setEnabled(font.pointSize() < maximumFontPointSize);
     changeFontAction->setEnabled(resizeMode == ResizeMode_FontAndContent);
     emit si_updateActions();
 }
@@ -493,6 +518,11 @@ QList<qint64> MaEditor::getMaRowIds() const {
 void MaEditor::selectRows(int firstViewRowIndex, int numberOfRows) {
     MaEditorSelection selection(0, firstViewRowIndex, getAlignmentLen(), numberOfRows);
     ui->getSequenceArea()->setSelection(selection);
+}
+
+QRect MaEditor::getUnifiedSequenceFontCharRect(const QFont &sequenceFont) const {
+    QFontMetrics fontMetrics(sequenceFont, ui);
+    return fontMetrics.boundingRect('W');
 }
 
 }    // namespace U2

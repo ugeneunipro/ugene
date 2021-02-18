@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -132,7 +132,7 @@ void OutputFilesDashboardWidget::updateWorkerRow(int workerIndex) {
         auto cellWidgetLayout = new QVBoxLayout();
         cellWidgetLayout->setContentsMargins(0, 0, 0, 0);
         cellWidget->setLayout(cellWidgetLayout);
-        for (auto url : worker.files) {
+        for (auto url : qAsConst(worker.files)) {
             cellWidgetLayout->addWidget(new DashboardFileButton(QStringList() << url, dashboardDir, monitor));
         }
         addTableCell(tableGridLayout, worker.name, cellWidget, workerIndex + 1, 0, isLastRow, false);
@@ -150,13 +150,13 @@ QString OutputFilesDashboardWidget::toHtml() const {
     QString html = "<div id=\"outputWidget\">\n<table>\n";
     html += "<thead><tr><th>" + tr("File") + "</th><th>" + tr("Producer") + "</th></tr></thead>\n";
     html += "<tbody id=\"" + OUTPUT_FILES_WIDGET_ID + "\">\n";
-    for (auto workerInfo : workerOutputList) {
+    for (auto workerInfo : qAsConst(workerOutputList)) {
         if (workerInfo.id.isEmpty()) {
             continue;
         }
         html += "<tr id=\"output-widget:" + workerInfo.id.replace('"', "_") + "\">\n";
         html += "<td><div><ul>\n";
-        for (auto url : workerInfo.files) {
+        for (auto url : qAsConst(workerInfo.files)) {
             html += "<li><a>" + url.toHtmlEscaped() + "</a></li>\n";
         }
         html += "</ul></div></td>\n";

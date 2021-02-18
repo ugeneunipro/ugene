@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -1116,13 +1116,13 @@ void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
     CHECK(!maObject->isStateLocked(), );
 
     // Drop grouping mode.
-    msaEditor->getUI()->getSequenceArea()->sl_setCollapsingMode(false);
+    msaEditor->getUI()->getSequenceArea()->sl_toggleVirtualOrderMode(false);
 
     QSet<qint64> resultUidSet;
-    for (const FindPatternWidgetResult &result : allSearchResults) {
+    for (const FindPatternWidgetResult &result : qAsConst(allSearchResults)) {
         resultUidSet << result.rowId;
     }
-    const QList<qint64> &allRowIds = msaEditor->getMaRowIds();
+    const QList<qint64> allRowIds = msaEditor->getMaRowIds();
     if (resultUidSet.size() >= allRowIds.size()) {
         // Can't re-group anything: every sequence has a result.
         msaEditor->selectRows(0, allRowIds.size());
@@ -1140,7 +1140,7 @@ void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
     // Reorder rows: move search results to the top. Keep the order stable.
     QList<qint64> rowsInTheGroup;
     QList<qint64> rowsOutOfTheGroup;
-    for (qint64 rowId : allRowIds) {
+    for (qint64 rowId : qAsConst(allRowIds)) {
         if (resultUidSet.contains(rowId)) {
             rowsInTheGroup << rowId;
         } else {

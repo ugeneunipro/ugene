@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -201,12 +201,12 @@ QString WorkflowMonitor::getLogsDir() const {
 QString WorkflowMonitor::getLogUrl(const QString &actorId, int actorRunNumber, const QString &toolName, int toolRunNumber, int contentType) const {
     WDListener *listener = getListener(actorId, actorRunNumber, toolName, toolRunNumber);
     switch (contentType) {
-    case ExternalToolListener::OUTPUT_LOG:
-        return listener->getStdoutLogFileUrl();
-    case ExternalToolListener::ERROR_LOG:
-        return listener->getStderrLogFileUrl();
-    default:
-        FAIL(tr("An unexpected contentType: %1").arg(contentType), QString());
+        case ExternalToolListener::OUTPUT_LOG:
+            return listener->getStdoutLogFileUrl();
+        case ExternalToolListener::ERROR_LOG:
+            return listener->getStderrLogFileUrl();
+        default:
+            FAIL(tr("An unexpected contentType: %1").arg(contentType), QString());
     }
 }
 
@@ -231,7 +231,7 @@ Monitor::TaskState WorkflowMonitor::getTaskState() const {
             }
         }
     } else {
-        for (const WorkflowNotification &notification : notifications) {
+        for (const WorkflowNotification &notification : qAsConst(notifications)) {
             if (WorkflowNotification::U2_ERROR == notification.type || WorkflowNotification::U2_WARNING == notification.type) {
                 state = RUNNING_WITH_PROBLEMS;
                 break;
@@ -507,46 +507,46 @@ QString WDListener::getStderrLogFileUrl(const QString &actorId, int runNumber, c
 void WDListener::initLogFile(int contentType) {
     const QString logsDir = monitor->getLogsDir();
     switch (contentType) {
-    case OUTPUT_LOG:
-        CHECK(!outputLogFile.isOpen(), );
-        outputLogFile.setFileName(GUrlUtils::rollFileName(logsDir + "/" + getStdoutLogFileUrl(actorName, actorRunNumber, getToolName(), toolRunNumber), "_"));
-        outputLogFile.open(QIODevice::WriteOnly);
-        outputLogStream.setDevice(&outputLogFile);
-        break;
-    case ERROR_LOG:
-        CHECK(!errorLogFile.isOpen(), );
-        errorLogFile.setFileName(GUrlUtils::rollFileName(logsDir + "/" + getStderrLogFileUrl(actorName, actorRunNumber, getToolName(), toolRunNumber), "_"));
-        errorLogFile.open(QIODevice::WriteOnly);
-        errorLogStream.setDevice(&errorLogFile);
-        break;
-    default:
-        FAIL(QString("An unexpected contentType: %1").arg(contentType), );
+        case OUTPUT_LOG:
+            CHECK(!outputLogFile.isOpen(), );
+            outputLogFile.setFileName(GUrlUtils::rollFileName(logsDir + "/" + getStdoutLogFileUrl(actorName, actorRunNumber, getToolName(), toolRunNumber), "_"));
+            outputLogFile.open(QIODevice::WriteOnly);
+            outputLogStream.setDevice(&outputLogFile);
+            break;
+        case ERROR_LOG:
+            CHECK(!errorLogFile.isOpen(), );
+            errorLogFile.setFileName(GUrlUtils::rollFileName(logsDir + "/" + getStderrLogFileUrl(actorName, actorRunNumber, getToolName(), toolRunNumber), "_"));
+            errorLogFile.open(QIODevice::WriteOnly);
+            errorLogStream.setDevice(&errorLogFile);
+            break;
+        default:
+            FAIL(QString("An unexpected contentType: %1").arg(contentType), );
     }
 }
 
 void WDListener::writeToFile(int messageType, const QString &message) {
     switch (messageType) {
-    case OUTPUT_LOG:
-        if (!outputLogFile.isOpen()) {
-            initLogFile(OUTPUT_LOG);
-        }
-        writeToFile(outputLogStream, message);
-        if (!outputHasMessages) {
-            outputLogStream.flush();
-            outputHasMessages = true;
-        }
-        break;
-    case ERROR_LOG:
-        if (!errorLogFile.isOpen()) {
-            initLogFile(ERROR_LOG);
-        }
-        writeToFile(errorLogStream, message);
-        if (!errorHasMessages) {
-            errorLogStream.flush();
-            errorHasMessages = true;
-        }
-        break;
-    default:;    // Do not write to file
+        case OUTPUT_LOG:
+            if (!outputLogFile.isOpen()) {
+                initLogFile(OUTPUT_LOG);
+            }
+            writeToFile(outputLogStream, message);
+            if (!outputHasMessages) {
+                outputLogStream.flush();
+                outputHasMessages = true;
+            }
+            break;
+        case ERROR_LOG:
+            if (!errorLogFile.isOpen()) {
+                initLogFile(ERROR_LOG);
+            }
+            writeToFile(errorLogStream, message);
+            if (!errorHasMessages) {
+                errorLogStream.flush();
+                errorHasMessages = true;
+            }
+            break;
+        default:;    // Do not write to file
     }
 }
 

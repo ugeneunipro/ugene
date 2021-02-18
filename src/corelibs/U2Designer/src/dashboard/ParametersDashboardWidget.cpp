@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -102,9 +102,9 @@ static QList<WorkerParametersInfo> dom2WorkerParametersInfo(const QDomElement &d
 
 static QList<WorkerParametersInfo> params2WorkerInfos(const QList<Workflow::Monitor::WorkerParamsInfo> &workerInfoList) {
     QList<WorkerParametersInfo> result;
-    for (auto workerInfo : workerInfoList) {
+    for (auto workerInfo : qAsConst(workerInfoList)) {
         QList<WorkerParameterInfo> parameters;
-        for (auto p : workerInfo.parameters) {
+        for (auto p : qAsConst(workerInfo.parameters)) {
             QString name = p->getDisplayName();
             QString value;
             bool isUrl = false;
@@ -113,13 +113,14 @@ static QList<WorkerParametersInfo> params2WorkerInfos(const QList<Workflow::Moni
             QVariant valueVariant = p->getAttributePureValue();
             if (valueVariant.canConvert<QList<Dataset>>()) {
                 QList<Dataset> sets = valueVariant.value<QList<Dataset>>();
-                for (const Dataset &set : sets) {
+                for (const Dataset &set : qAsConst(sets)) {
                     if (sets.size() > 1) {
                         name += ": " + set.getName();
                     }
                     QStringList urls;
-                    for (auto url : set.getUrls()) {
-                        urls << url->getUrl();
+                    const QList<URLContainer *> urlContainers = set.getUrls();
+                    for (const auto &urlContainer : qAsConst(urlContainers)) {
+                        urls << urlContainer->getUrl();
                     }
                     value = urls.join("\n");
                     isDataset = true;
@@ -234,7 +235,7 @@ void ParametersDashboardWidget::showWorkerParameters(int workerIndex) {
         valueWidget->setLayout(valueWidgetLayout);
 
         QStringList urlList = parameter.value.split("\n");
-        for (auto url : urlList) {
+        for (auto url : qAsConst(urlList)) {
             QFileInfo fileInfo(url);
             if (!fileInfo.isAbsolute()) {
                 fileInfo = QFileInfo(QDir(dashboardDir), url).absoluteFilePath();
@@ -281,7 +282,7 @@ QString ParametersDashboardWidget::toHtml() const {
         html += "<table class=\"table table-bordered table-fixed param-value-column\">\n";
         html += "<thead><tr><th>" + tr("Parameter").toHtmlEscaped() + "</th><th>" + tr("Value").toHtmlEscaped() + "</th></tr></thead>\n";
         html += "<tbody>\n";
-        for (auto parameter : worker.parameters) {
+        for (auto parameter : qAsConst(worker.parameters)) {
             html += "<tr>";
             html += "<td>" + parameter.name.toHtmlEscaped() + "</td>";
             html += "<td" + getParameterTypeClass(parameter) + ">" + parameter.value.toHtmlEscaped() + "</td>";

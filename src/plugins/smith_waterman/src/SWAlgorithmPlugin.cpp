@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -161,7 +161,7 @@ void SWAlgorithmADVContext::sl_search() {
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
     assert(av != NULL);
 
-    ADVSequenceObjectContext *seqCtx = av->getSequenceInFocus();
+    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
     SmithWatermanDialogController::run(av->getWidget(), seqCtx, &dialogConfig);
 }
 

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -27,10 +27,7 @@
 #include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/DNASequenceObject.h>
-#include <U2Core/GObjectTypes.h>
-#include <U2Core/GObjectUtils.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/TaskSignalMapper.h>
@@ -40,7 +37,6 @@
 #include <U2Core/U2AttributeUtils.h>
 #include <U2Core/U2CoreAttributes.h>
 #include <U2Core/U2CrossDatabaseReferenceDbi.h>
-#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -50,8 +46,6 @@
 #include <U2Core/VariantTrackObject.h>
 
 #include <U2Gui/ObjectViewTasks.h>
-
-#include "AssemblyBrowser.h"
 
 namespace U2 {
 
@@ -175,39 +169,48 @@ U2Region AssemblyModel::getGlobalRegion() {
 }
 
 qint64 AssemblyModel::getModelLength(U2OpStatus &os) {
-    if (NO_VAL == cachedModelLength) {
-        // try to set length from attributes
-        U2AttributeDbi *attributeDbi = dbiHandle.dbi->getAttributeDbi();
-        if (attributeDbi != NULL) {
-            U2IntegerAttribute attr = U2AttributeUtils::findIntegerAttribute(attributeDbi, assembly.id, U2BaseAttributeName::reference_length, os);
-            LOG_OP(os);
-            if (attr.hasValidId()) {
-                cachedModelLength = attr.value;
-            }
-            // ignore incorrect attribute value and remove corrupted attribute (auto-fix incorrectly converted ugenedb)
-            if (cachedModelLength == 0) {
-                coreLog.details(QString("ignored incorrect value of attribute %1: should be > 0, got %2. Bad attribute removed!").arg(QString(U2BaseAttributeName::reference_length)).arg(cachedModelLength));
+    if (cachedModelLength != NO_VAL) {
+        return cachedModelLength;
+    }
+    // Try to set 'cachedModelLength' from attributes.
+    QSet<U2DbiFeature> dbiFeatureSet = dbiHandle.dbi->getFeatures();
+    bool canReadAttributes = dbiFeatureSet.contains(U2DbiFeature_ReadAttributes);
+    bool canWriteAttributes = dbiFeatureSet.contains(U2DbiFeature_WriteAttributes);
+    U2AttributeDbi *attributeDbi = canReadAttributes ? dbiHandle.dbi->getAttributeDbi() : nullptr;
+    if (attributeDbi != nullptr) {
+        U2IntegerAttribute attr = U2AttributeUtils::findIntegerAttribute(attributeDbi, assembly.id, U2BaseAttributeName::reference_length, os);
+        LOG_OP(os);
+        if (attr.hasValidId()) {
+            cachedModelLength = attr.value;
+            // Ignore incorrect attribute value and remove the corrupted attribute: auto-fix incorrectly converted ugenedb.
+            if (cachedModelLength <= 0) {
+                coreLog.details(tr("Ignored incorrect value of attribute %1: should be > 0, got %2. Bad attribute removed!")
+                                    .arg(QString(U2BaseAttributeName::reference_length))
+                                    .arg(cachedModelLength));
                 cachedModelLength = NO_VAL;
-                U2AttributeUtils::removeAttribute(attributeDbi, attr.id, os);
+                if (canWriteAttributes) {
+                    U2AttributeUtils::removeAttribute(attributeDbi, attr.id, os);
+                }
             }
         }
-        // if cannot from attributes -> set from reference or max end pos
+        // If cannot get 'cachedModelLength' from the attributes -> set from the reference or max end pos.
         if (cachedModelLength == NO_VAL) {
             qint64 refLen = hasReference() ? refObj->getSequenceLength() : 0;
             qint64 assLen = assemblyDbi->getMaxEndPos(assembly.id, os);
             LOG_OP(os);
             cachedModelLength = qMax(refLen, assLen);
 
-            // and save in attribute
-            U2IntegerAttribute attr;
-            U2AttributeUtils::init(attr, assembly, U2BaseAttributeName::reference_length);
-            attr.value = cachedModelLength;
-            attributeDbi->createIntegerAttribute(attr, os);
+            // And save the correct value into the DB.
+            if (canWriteAttributes) {
+                U2AttributeUtils::init(attr, assembly, U2BaseAttributeName::reference_length);
+                attr.value = cachedModelLength;
+                attributeDbi->createIntegerAttribute(attr, os);
+            }
         }
-        if (cachedModelLength == NO_VAL) {
-            os.setError("Can't get model length, database is corrupted");
-            LOG_OP(os);
-        }
+    }
+    if (cachedModelLength == NO_VAL) {
+        os.setError("Can't get model length from the database!");
+        LOG_OP(os);
     }
     return cachedModelLength;
 }
@@ -270,69 +273,69 @@ void AssemblyModel::setAssembly(U2AssemblyDbi *dbi, const U2Assembly &assm) {
     // check if have reference
     if (!assembly.referenceId.isEmpty()) {
         switch (U2DbiUtils::toType(assembly.referenceId)) {
-        case U2Type::Sequence: {
-            Project *prj = AppContext::getProject();
-            SAFE_POINT(prj != NULL, tr("No active project found!"), );
+            case U2Type::Sequence: {
+                Project *prj = AppContext::getProject();
+                SAFE_POINT(prj != NULL, tr("No active project found!"), );
 
-            Document *refDoc = prj->findDocumentByURL(U2DbiUtils::ref2Url(dbiHandle.dbi->getDbiRef()));
-            SAFE_POINT(refDoc != NULL, tr("No reference document found in the project"), );
+                Document *refDoc = prj->findDocumentByURL(U2DbiUtils::ref2Url(dbiHandle.dbi->getDbiRef()));
+                SAFE_POINT(refDoc != NULL, tr("No reference document found in the project"), );
 
-            U2SequenceObject *refObj = qobject_cast<U2SequenceObject *>(refDoc->getObjectById(assembly.referenceId));
-            SAFE_POINT(refObj != NULL, tr("No reference object found in the project"), );
+                U2SequenceObject *refObj = qobject_cast<U2SequenceObject *>(refDoc->getObjectById(assembly.referenceId));
+                SAFE_POINT(refObj != NULL, tr("No reference object found in the project"), );
 
-            setReference(refObj);
-            break;
-        }
-
-        case U2Type::CrossDatabaseReference: {
-            // 1. get cross reference by ref id
-            U2CrossDatabaseReferenceDbi *crossDbi = dbiHandle.dbi->getCrossDatabaseReferenceDbi();
-            U2OpStatusImpl status;
-            U2CrossDatabaseReference crossRef = crossDbi->getCrossReference(assembly.referenceId, status);
-            SAFE_POINT_OP(status, );
-
-            // 2. find project and load reference doc to project
-            Project *prj = AppContext::getProject();
-            SAFE_POINT(prj != NULL, tr("No active project found!"), );
-
-            Document *refDoc = prj->findDocumentByURL(crossRef.dataRef.dbiRef.dbiId);
-            Task *t = NULL;
-            if (refDoc != NULL) {    // document already in project, load if it is not loaded
-                if (refDoc->isLoaded()) {
-                    sl_referenceLoaded();
-                } else {
-                    t = new LoadUnloadedDocumentTask(refDoc);
-                }
-
-                connect(refDoc, SIGNAL(si_loadedStateChanged()), SLOT(sl_referenceDocLoadedStateChanged()));
-            } else {    // no document at project -> create doc, add it to project and load it
-                t = createLoadReferenceAndAddToProjectTask(crossRef);
-                if (NULL == t) {
-                    QString refUrl = crossRef.dataRef.dbiRef.dbiId;
-                    QString refName = crossRef.dataRef.entityId;
-
-                    QMessageBox::warning(QApplication::activeWindow(), tr("Warning"), tr("A file '%1' with the reference sequence '%2' not found!\n"
-                                                                                         "Try to open another file with a reference sequence and associate it with the assembly.")
-                                                                                          .arg(refUrl)
-                                                                                          .arg(refName),
-                                         QMessageBox::Ok,
-                                         QMessageBox::Ok);
-                    dissociateReference();
-                }
+                setReference(refObj);
+                break;
             }
 
-            // 4. run task and wait for finished in referenceLoaded()
-            if (t != NULL) {
-                startLoadReferenceTask(t);
+            case U2Type::CrossDatabaseReference: {
+                // 1. get cross reference by ref id
+                U2CrossDatabaseReferenceDbi *crossDbi = dbiHandle.dbi->getCrossDatabaseReferenceDbi();
+                U2OpStatusImpl status;
+                U2CrossDatabaseReference crossRef = crossDbi->getCrossReference(assembly.referenceId, status);
+                SAFE_POINT_OP(status, );
+
+                // 2. find project and load reference doc to project
+                Project *prj = AppContext::getProject();
+                SAFE_POINT(prj != NULL, tr("No active project found!"), );
+
+                Document *refDoc = prj->findDocumentByURL(crossRef.dataRef.dbiRef.dbiId);
+                Task *t = NULL;
+                if (refDoc != NULL) {    // document already in project, load if it is not loaded
+                    if (refDoc->isLoaded()) {
+                        sl_referenceLoaded();
+                    } else {
+                        t = new LoadUnloadedDocumentTask(refDoc);
+                    }
+
+                    connect(refDoc, SIGNAL(si_loadedStateChanged()), SLOT(sl_referenceDocLoadedStateChanged()));
+                } else {    // no document at project -> create doc, add it to project and load it
+                    t = createLoadReferenceAndAddToProjectTask(crossRef);
+                    if (NULL == t) {
+                        QString refUrl = crossRef.dataRef.dbiRef.dbiId;
+                        QString refName = crossRef.dataRef.entityId;
+
+                        QMessageBox::warning(QApplication::activeWindow(), tr("Warning"), tr("A file '%1' with the reference sequence '%2' not found!\n"
+                                                                                             "Try to open another file with a reference sequence and associate it with the assembly.")
+                                                                                              .arg(refUrl)
+                                                                                              .arg(refName),
+                                             QMessageBox::Ok,
+                                             QMessageBox::Ok);
+                        dissociateReference();
+                    }
+                }
+
+                // 4. run task and wait for finished in referenceLoaded()
+                if (t != NULL) {
+                    startLoadReferenceTask(t);
+                }
+
+                break;
             }
 
-            break;
-        }
-
-        default: {
-            dissociateReference();
-            FAIL(tr("Unexpected object is set as reference"), );
-        }
+            default: {
+                dissociateReference();
+                FAIL(tr("Unexpected object is set as reference"), );
+            }
         }
     }
 }

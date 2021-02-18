@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -62,8 +62,6 @@ public:
     static const QString ENABLE_HIT_COUNT;
     static const QString MAX_HIT_VALUE;
     static const QString MIN_HIT_VALUE;
-    static const QString SEARCH_REGION;
-    static const QString EXCLUDED_REGION;
     static const QString MAX_RESULTS;
     static const QString COMMON_ENZYMES;
 };

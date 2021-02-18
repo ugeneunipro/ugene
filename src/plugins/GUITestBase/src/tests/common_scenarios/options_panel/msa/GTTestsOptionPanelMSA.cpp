@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -326,7 +326,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0002) {
 
     //    2. Create custom color scheme
     QString suffix = GTUtils::genUniqueString();
-    QString schemeName = getName() + "Scheme" + suffix;
+    QString schemeName = name + "Scheme" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, schemeName, NewColorSchemeCreator::nucl);
 
     //    3. Open highlighting option panel tab
@@ -358,9 +358,9 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0002_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Create 3 color schemes
     QString suffix = GTUtils::genUniqueString();
-    QString scheme1 = getName() + "_scheme1" + suffix;
-    QString scheme2 = getName() + "_scheme2" + suffix;
-    QString scheme3 = getName() + "_scheme3" + suffix;
+    QString scheme1 = name + "_scheme1" + suffix;
+    QString scheme2 = name + "_scheme2" + suffix;
+    QString scheme3 = name + "_scheme3" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme1, NewColorSchemeCreator::nucl);
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme2, NewColorSchemeCreator::nucl);
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme3, NewColorSchemeCreator::nucl);
@@ -378,7 +378,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0003) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Create custom color scheme
     QString suffix = GTUtils::genUniqueString();
-    const QString scheme = getName() + "_scheme111111111111111111111111111111111111111111111" + suffix;
+    const QString scheme = name + "_scheme111111111111111111111111111111111111111111111" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme, NewColorSchemeCreator::nucl);
     //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
@@ -788,7 +788,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0005) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Create custom color scheme
     QString suffix = GTUtils::genUniqueString();
-    const QString scheme = getName() + "_scheme" + suffix;
+    const QString scheme = name + "_scheme" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme, NewColorSchemeCreator::amino);
     //    3. Open highlighting option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
@@ -834,9 +834,9 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0005_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Create 3 color schemes
     QString suffix = GTUtils::genUniqueString();
-    QString scheme1 = getName() + "_scheme1" + suffix;
-    QString scheme2 = getName() + "_scheme2" + suffix;
-    QString scheme3 = getName() + "_scheme3" + suffix;
+    QString scheme1 = name + "_scheme1" + suffix;
+    QString scheme2 = name + "_scheme2" + suffix;
+    QString scheme3 = name + "_scheme3" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme1, NewColorSchemeCreator::amino);
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme2, NewColorSchemeCreator::amino);
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme3, NewColorSchemeCreator::amino);
@@ -855,7 +855,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0006) {
 
     //    2. Create custom color scheme
     QString suffix = GTUtils::genUniqueString();
-    const QString scheme = getName() + "_scheme" + suffix;
+    const QString scheme = name + "_scheme" + suffix;
     GTUtilsMSAEditorSequenceArea::createColorScheme(os, scheme, NewColorSchemeCreator::amino);
 
     //    3. Open highlighting option panel tab
@@ -1575,22 +1575,18 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
-    GTGlobals::sleep(1000);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //prepating widgets
+    // Check/prepare tree widgets.
     QWidget *treeView = GTWidget::findWidget(os, "treeView");
-    CHECK_SET_ERR(treeView != NULL, "tree view not found");
     QWidget *heightSlider = GTWidget::findWidget(os, "heightSlider");
-    CHECK_SET_ERR(heightSlider != NULL, "heightSlider not found");
-    QComboBox *layoutCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "layoutCombo"));
-    CHECK_SET_ERR(layoutCombo != NULL, "layoutCombo not found");
+    QComboBox *layoutCombo = GTWidget::findExactWidget<QComboBox*>(os, "layoutCombo");
 
     const QImage initImage = GTWidget::getImage(os, treeView);
 
     //    3. Select circular layout
     GTComboBox::selectItemByText(os, layoutCombo, "Circular");
-    GTGlobals::sleep(500);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: layout changed, height slider is disabled
     const QImage circularImage = GTWidget::getImage(os, treeView);
@@ -1599,7 +1595,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
 
     //    4. Select unrooted layout
     GTComboBox::selectItemByText(os, layoutCombo, "Unrooted");
-    GTGlobals::sleep(500);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    Expected state: layout changed, height slider is disabled
     const QImage unrootedImage = GTWidget::getImage(os, treeView);
@@ -1608,9 +1604,9 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0003) {
 
     //    5. Select rectangular layout
     GTComboBox::selectItemByText(os, layoutCombo, "Rectangular");
-    GTGlobals::sleep(500);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Expected state: tree is similar to the beginning, height slider is enabled
+    // Expected state: tree is similar to the beginning, height slider is enabled
     const QImage rectangularImage = GTWidget::getImage(os, treeView);
     CHECK_SET_ERR(initImage == rectangularImage, "final image is not equal to initial");
     CHECK_SET_ERR(heightSlider->isEnabled(), "heightSlider in disabled for rectangular layout");
@@ -1985,7 +1981,6 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Open export consensus option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::ExportConsensus);
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Plain text"));
     //    3. Select some existing file as output
     QString s = sandBoxDir + fileName;
     QFile f(s);
@@ -2102,23 +2097,12 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0004) {
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
-    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new exportConsensusTest0004Filler()));
     GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QLineEdit *pathLe = GTWidget::findExactWidget<QLineEdit *>(os, "pathLe");
     QString pathLeText = pathLe->text();
     CHECK_SET_ERR(!pathLeText.isEmpty() && pathLeText.contains("COI_consensus_1.txt"), "wrong lineEdit text: " + pathLeText);
-}
-
-GUI_TEST_CLASS_DEFINITION(export_consensus_test_0005) {
-    Q_UNUSED(os);
-    //empty path
-}
-
-GUI_TEST_CLASS_DEFINITION(export_consensus_test_0006) {
-    Q_UNUSED(os);
-    //empty path
 }
 
 GUI_TEST_CLASS_DEFINITION(statistics_test_0001) {

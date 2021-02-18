@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -37,46 +37,63 @@
 
 namespace U2 {
 
-typedef QMap<QString, HI::GUITest *> GUITestMap;
-typedef QList<HI::GUITest *> GUITests;
-
 class U2TEST_EXPORT UGUITestBase {
 public:
-    enum TestType { Normal,
-                    PreAdditional,
-                    PostAdditionalChecks,
-                    PostAdditionalActions } type;
+    /** Type of the test: some test types has special handling in runtime. */
+    enum TestType {
+        /** A standard user test. */
+        Normal,
+
+        /** A pre-check. Runs before the Normal test. */
+        PreAdditional,
+
+        /** A post-check. Runs after the Normal test. Validates UGENE state after the Normal test is finished. */
+        PostAdditionalChecks,
+
+        /** A post-action. Runs after the Normal & PostCheck tests. Used to perform additional cleanup with no checks. */
+        PostAdditionalActions
+    } type;
 
     virtual ~UGUITestBase();
 
-    bool registerTest(HI::GUITest *test, TestType testType = Normal);
-    HI::GUITest *getTest(const QString &suite, const QString &name, TestType testType = Normal);
-    HI::GUITest *takeTest(const QString &suite, const QString &name, TestType testType = Normal);    // removes item from UGUITestBase
+    /**
+     * Registers test in the test base. Returns true if the test was successfully registered
+     * or false if another test is already registered with the given name.
+     * */
+    bool registerTest(GUITest *test, TestType testType = Normal);
 
-    GUITests getTests(TestType testType = Normal, QString label = "");
-    GUITests takeTests(TestType testType = Normal);    // removes items from UGUITestBase
+    /** Finds a registered test by the full test name and type. Returns nullptr if no registered test was found. */
+    GUITest *getTest(const QString &name, TestType testType = Normal) const;
 
-    GUITests getTestsWithoutRemoving(TestType testType = Normal);
+    /** Finds a registered test by the full test name and type. Returns nullptr if no registered test was found. */
+    GUITest *getTest(const QString &suite, const QString &name, TestType testType = Normal) const;
 
-    HI::GUITest *findTest(const QString &name, TestType testType = Normal);
-
-    static const QString unnamedTestsPrefix;
+    /**
+     * Returns list of registered tests of the given type that have all labels from the list.
+     * If label list empty, returns all tests of the given type.
+     * If any label in the list starts with '-' (minus) sign the method will performs exclusive
+     * filtering: tests with such labels will be excluded from the result.
+     * Example: "Nightly,-Ignored" will return all tests that have "Nightly" label but have no "Ignored" label.
+     */
+    QList<GUITest *> getTests(TestType testType = Normal, const QStringList &labelList = QStringList()) const;
 
 private:
-    GUITestMap tests;
-    GUITestMap preAdditional;
-    GUITestMap postAdditionalChecks;
-    GUITestMap postAdditionalActions;
-    // GUI checks additional to the launched checks
+    /** Normal tests. */
+    QMap<QString, GUITest *> tests;
 
-    GUITestMap &getMap(TestType testType);
+    /** PreAdditional tests. */
+    QMap<QString, GUITest *> preAdditional;
 
-    QString getNextTestName(TestType testType);
+    /** PostAdditionalChecks tests. */
+    QMap<QString, GUITest *> postAdditionalChecks;
 
-    bool isNewTest(HI::GUITest *test, TestType testType);
-    void addTest(HI::GUITest *test, TestType testType);
+    /** PostAdditionalActions tests. */
+    QMap<QString, GUITest *> postAdditionalActions;
 
-    QString nameUnnamedTest(HI::GUITest *test, TestType testType);
+    /** Returns tests map of the given type. */
+    QMap<QString, GUITest *> &getMap(TestType testType);
+
+    const QMap<QString, GUITest *> &getConstMap(TestType testType) const;
 };
 
 }    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,6 +28,8 @@
 #include <QMenu>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QPixmap>
+#include <QScopedPointer>
 #include <QToolButton>
 #include <QWheelEvent>
 #include <QWidget>
@@ -185,7 +187,7 @@ protected slots:
 protected:
     QPoint toRenderAreaPoint(const QPoint &p) const;
     virtual void updateScrollBar();
-    void setSelection(const U2Region &r);
+    virtual void setSelection(const U2Region &r);
     void addSelection(const U2Region &r);
     void removeSelection(const U2Region &r);
     virtual void setBorderCursor(const QPoint &p);
@@ -222,24 +224,26 @@ protected:
 };
 
 class U2VIEW_EXPORT GSequenceLineViewRenderArea : public QWidget {
+    Q_OBJECT
 public:
     GSequenceLineViewRenderArea(GSequenceLineView *p);
-    ~GSequenceLineViewRenderArea();
 
-    virtual qint64 coordToPos(int x) const;
-    virtual qint64 coordToPos(const QPoint &p) const;
+    /** Returns in-sequence base index by the current on-screen coordinate. */
+    virtual qint64 coordToPos(const QPoint &coord) const;
 
-    virtual int posToCoord(qint64 p, bool useVirtualSpace = false) const;
-    virtual float posToCoordF(qint64 p, bool useVirtualSpace = false) const;
-    //number of pixels per base
+    /** Returns a minimal on-screen X coordinate of the given sequence position. */
+    virtual int posToCoord(qint64 pos, bool useVirtualSpace = false) const;
+
+    /** Returns number of pixels per-base. */
     virtual double getCurrentScale() const;
-    //char width, derived from current 'font'
+
+    /** Returns width in pixels required to draw a single text character using sequenceFont. */
     int getCharWidth() const {
         return charWidth;
     }
 
 protected:
-    virtual void paintEvent(QPaintEvent *e);
+    void paintEvent(QPaintEvent *e) override;
 
     virtual void drawAll(QPaintDevice *pd) = 0;
     void drawFrame(QPainter &p);
@@ -247,11 +251,16 @@ protected:
 
     void updateFontMetrics();
 
-    GSequenceLineView *view;
-    QPixmap *cachedView;
+    /** Returns a cached pixmap used to render the whole area. */
+    QPixmap *getCachedPixmap() const {
+        return cachedView.data();
+    }
 
-    //! VIEW_RENDERER_REFACTORING: the following parameters should be stored only in renderer (until they cannot be modifyed in view).
-    //! Currenlty they are doubled in SequenceViewRenderer class.
+    GSequenceLineView *view;
+    QScopedPointer<QPixmap> cachedView;
+
+    //! VIEW_RENDERER_REFACTORING: the following parameters should be stored only in renderer (until they cannot be modified in view).
+    //! Currently they are doubled in SequenceViewRenderer class.
     //per char and per line metrics
     QFont sequenceFont;
     QFont smallSequenceFont;

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -48,7 +48,8 @@ const QString Overview::ANNOTATION_GRAPH_STATE = "sequenceViewSettings/annotatio
 Overview::Overview(ADVSingleSequenceWidget *p, ADVSequenceObjectContext *ctx)
     : GSequenceLineView(p, ctx),
       seqWidget(p) {
-    renderArea = new OverviewRenderArea(this);
+    overviewRenderArea = new OverviewRenderArea(this);
+    renderArea = overviewRenderArea;
     visibleRange = U2Region(0, ctx->getSequenceLength());
     renderArea->setMouseTracking(true);
     renderArea->setObjectName("OverviewRenderArea");
@@ -144,10 +145,7 @@ void Overview::pack() {
 }
 
 void Overview::sl_graphActionTriggered() {
-    OverviewRenderArea *ra = qobject_cast<OverviewRenderArea *>(renderArea);
-    SAFE_POINT(nullptr != ra, "OverviewRenderArea is nullptr", );
-
-    setGraphActionVisible(!ra->isGraphVisible());
+    setGraphActionVisible(!overviewRenderArea->isGraphVisible());
 }
 
 void Overview::sl_visibleRangeChanged() {
@@ -156,22 +154,21 @@ void Overview::sl_visibleRangeChanged() {
 
 void Overview::mousePressEvent(QMouseEvent *me) {
     if (me->buttons() & Qt::LeftButton) {
-        OverviewRenderArea *ra = static_cast<OverviewRenderArea *>(renderArea);
         QPoint renderAreaPos = toRenderAreaPoint(me->pos());
 
         //make selection if shift was pressed
         if (me->modifiers().testFlag(Qt::ShiftModifier)) {
-            lastPressPos = ra->coordToPos(renderAreaPos.x());
+            lastPressPos = overviewRenderArea->coordXToPos(renderAreaPos.x());
             QWidget::mousePressEvent(me);
             return;
         }
 
-        QRectF panSlider(ra->getPanSlider());
-        QRectF detSlider(ra->getDetSlider());
+        QRectF panSlider(overviewRenderArea->getPanSlider());
+        QRectF detSlider(overviewRenderArea->getDetSlider());
         panSliderClicked = panSlider.contains(renderAreaPos);
         panSliderMovedRight = (panSlider.topRight().x() - renderAreaPos.x() < 10) && panSliderClicked;
         panSliderMovedLeft = (renderAreaPos.x() - panSlider.topLeft().x() < 10) && panSliderClicked;
-        offset = renderArea->coordToPos(me->pos().x()) - renderArea->coordToPos(panSlider.left());
+        offset = overviewRenderArea->coordXToPos(me->pos().x()) - overviewRenderArea->coordXToPos(panSlider.left());
         //don't process detSlider when details view is collapsed
         if (seqWidget->isDetViewCollapsed()) {
             detSliderClicked = false;
@@ -192,11 +189,11 @@ void Overview::mousePressEvent(QMouseEvent *me) {
             qint64 panVisLen = panView->getVisibleRange().length;
             qint64 detVisLen = detView->getVisibleRange().length;
 
-            qint64 panPos = renderArea->coordToPos(renderAreaPos.x() - panSlider.width() / 2);
+            qint64 panPos = overviewRenderArea->coordXToPos(renderAreaPos.x() - panSlider.width() / 2);
             panPos = qBound(qint64(0), panPos, seqLen - panVisLen);
             panView->setVisibleRange(U2Region(panPos, panVisLen));
 
-            qint64 detPos = renderArea->coordToPos(renderAreaPos.x());
+            qint64 detPos = overviewRenderArea->coordXToPos(renderAreaPos.x());
             detPos = qBound(qint64(0), detPos, seqLen - detVisLen);
             detView->setVisibleRange(U2Region(detPos, detVisLen));
         }
@@ -213,9 +210,8 @@ void Overview::mouseReleaseEvent(QMouseEvent *me) {
 
 void Overview::mouseMoveEvent(QMouseEvent *me) {
     QPoint renderAreaPos = toRenderAreaPoint(me->pos());
-    OverviewRenderArea *ra = static_cast<OverviewRenderArea *>(renderArea);
-    QRectF panSlider(ra->getPanSlider());
 
+    QRectF panSlider(overviewRenderArea->getPanSlider());
     if (((panSlider.topRight().x() - renderAreaPos.x() < 10 && panSlider.topRight().x() - renderAreaPos.x() > -5) || (renderAreaPos.x() - panSlider.topLeft().x() > -5 && renderAreaPos.x() - panSlider.topLeft().x() < 10)) && panView->isVisible()) {
         setCursor(QCursor(Qt::SizeHorCursor));
     } else {
@@ -223,10 +219,10 @@ void Overview::mouseMoveEvent(QMouseEvent *me) {
     }
 
     if (me->buttons() & Qt::LeftButton) {
-        qint64 pos = renderArea->coordToPos(renderAreaPos.x() - mousePosToSlider.x());
+        qint64 pos = overviewRenderArea->coordXToPos(renderAreaPos.x() - mousePosToSlider.x());
         if (lastPressPos != -1) {    //make selection
             U2Region selection;
-            qint64 mousePos = renderArea->coordToPos(renderAreaPos.x());
+            qint64 mousePos = overviewRenderArea->coordXToPos(renderAreaPos.x());
             qint64 selLen = mousePos - lastPressPos;
             if (selLen > 0) {
                 selection.startPos = lastPressPos;
@@ -243,26 +239,20 @@ void Overview::mouseMoveEvent(QMouseEvent *me) {
         if (panView->isVisible()) {
             qint64 seqLen = ctx->getSequenceLength();
             if (panSliderMovedRight) {
-                OverviewRenderArea *ra = static_cast<OverviewRenderArea *>(renderArea);
-
-                QRectF panSlider(ra->getPanSlider());
                 qreal length = me->pos().x() - panSlider.right();
-                qint64 panVisLen = renderArea->coordToPos(qAbs(length));
+                qint64 panVisLen = overviewRenderArea->coordXToPos(qAbs(length));
                 if (length < 0) {
                     panVisLen *= -1;
                 }
 
                 panVisLen = panView->getVisibleRange().length + panVisLen;
-                pos = renderArea->coordToPos(panSlider.left());
+                pos = overviewRenderArea->coordXToPos(panSlider.left());
                 if (panVisLen > 0 && seqLen >= (panVisLen + pos)) {
                     panView->setVisibleRange(U2Region(pos, panVisLen));
                 }
             } else if (panSliderMovedLeft) {
-                OverviewRenderArea *ra = static_cast<OverviewRenderArea *>(renderArea);
-
-                QRectF panSlider(ra->getPanSlider());
                 int length = panSlider.left() - me->pos().x();
-                qint64 panVisLen = renderArea->coordToPos(qAbs(length));
+                qint64 panVisLen = overviewRenderArea->coordXToPos(qAbs(length));
                 if (length < 0) {
                     panVisLen *= -1;
                 }
@@ -287,19 +277,17 @@ void Overview::mouseMoveEvent(QMouseEvent *me) {
 
 void Overview::mouseDoubleClickEvent(QMouseEvent *me) {
     if (me->buttons() & Qt::LeftButton) {
-        OverviewRenderArea *ra = static_cast<OverviewRenderArea *>(renderArea);
-
         qint64 seqLen = ctx->getSequenceLength();
-        QRectF panSlider(ra->getPanSlider());
+        QRectF panSlider(overviewRenderArea->getPanSlider());
         qint64 panVisLen = panView->getVisibleRange().length;
         QPoint renderAreaPos = toRenderAreaPoint(me->pos());
-        qint64 panPos = ra->coordToPos(renderAreaPos.x() - panSlider.width() / 2);
+        qint64 panPos = overviewRenderArea->coordXToPos(renderAreaPos.x() - panSlider.width() / 2);
         panPos = qBound(qint64(0), qint64(panPos), seqLen - panVisLen);
         panView->setVisibleRange(U2Region(panPos, panVisLen));
 
         //don't process detSlider when details view is collapsed
         if (!seqWidget->isDetViewCollapsed()) {
-            qint64 detPos = ra->coordToPos(renderAreaPos.x());
+            qint64 detPos = overviewRenderArea->coordXToPos(renderAreaPos.x());
             detView->setStartPos(detPos);
         }
 
@@ -337,11 +325,10 @@ bool Overview::event(QEvent *e) {
 }
 
 QString Overview::createToolTip(QHelpEvent *he) {
-    OverviewRenderArea *ra = qobject_cast<OverviewRenderArea *>(renderArea);
     QPoint renderAreaPos = toRenderAreaPoint(he->pos());
-    int halfChar = ra->getCurrentScale() / 2;
-    qint64 pos = ra->coordToPos(renderAreaPos.x() + halfChar);
-    qint64 pos2 = ra->coordToPos(renderAreaPos.x() + halfChar + 1);
+    int halfChar = overviewRenderArea->getCurrentScale() / 2;
+    qint64 pos = overviewRenderArea->coordXToPos(renderAreaPos.x() + halfChar);
+    qint64 pos2 = overviewRenderArea->coordXToPos(renderAreaPos.x() + halfChar + 1);
     qint64 delta = 0;
     if (pos2 - 1 > pos) {
         delta = pos2 - pos - 1;
@@ -350,10 +337,10 @@ QString Overview::createToolTip(QHelpEvent *he) {
     if (delta != 0) {
         tip += ".." + QString::number(pos + delta);
     }
-    if (ra->isGraphVisible()) {
-        int density = ra->getAnnotationDensity(pos);
+    if (overviewRenderArea->isGraphVisible()) {
+        int density = overviewRenderArea->getAnnotationDensity(pos);
         for (int i = pos; i <= pos + delta; ++i) {
-            int nextPosDensity = ra->getAnnotationDensity(i);
+            int nextPosDensity = overviewRenderArea->getAnnotationDensity(i);
             density = qMax(density, nextPosDensity);
         }
         tip += "\n" + tr("Annotation density ") + QString::number(density);
@@ -378,12 +365,10 @@ void Overview::connectAnnotationTableObject(AnnotationTableObject *object) {
 }
 
 void Overview::setGraphActionVisible(const bool setVisible) {
-    OverviewRenderArea *ra = qobject_cast<OverviewRenderArea *>(renderArea);
-    SAFE_POINT(nullptr != ra, "OverviewRenderArea is nullptr", );
-    CHECK(ra->isGraphVisible() != setVisible, );
+    CHECK(overviewRenderArea->isGraphVisible() != setVisible, );
 
     AppContext::getSettings()->setValue(ANNOTATION_GRAPH_STATE, QVariant(setVisible));
-    ra->setGraphVisibility(setVisible);
+    overviewRenderArea->setGraphVisibility(setVisible);
     addUpdateFlags(GSLV_UF_NeedCompleteRedraw);
     update();
 }
@@ -468,7 +453,7 @@ void OverviewRenderArea::drawAll(QPaintDevice *pd) {
     GSLV_UpdateFlags uf = view->getUpdateFlags();
     bool completeRedraw = uf.testFlag(GSLV_UF_NeedCompleteRedraw) || uf.testFlag(GSLV_UF_AnnotationsChanged) || uf.testFlag(GSLV_UF_ViewResized);
     if (completeRedraw) {
-        QPainter pCached(cachedView);
+        QPainter pCached(getCachedPixmap());
         pCached.fillRect(0, 0, pd->width(), pd->height(), Qt::white);
         if (graphVisible) {
             setAnnotationsOnPos();
@@ -544,8 +529,8 @@ void OverviewRenderArea::drawRuler(QPainter &p) {
     U2Region visibleRange = gv->getVisibleRange();
 
     float halfChar = getCurrentScale() / 2;
-    int firstCharCenter = qRound(posToCoordF(visibleRange.startPos) + halfChar);
-    int lastCharCenter = qRound(posToCoordF(visibleRange.endPos() - 1) + halfChar);
+    int firstCharCenter = qRound(posToCoord(visibleRange.startPos) + halfChar);
+    int lastCharCenter = qRound(posToCoord(visibleRange.endPos() - 1) + halfChar);
     int firstLastWidth = lastCharCenter - firstCharCenter;
     if (qRound(halfChar) == 0) {
         firstLastWidth--;    // make the end of the ruler visible
@@ -580,16 +565,16 @@ void OverviewRenderArea::drawGraph(QPainter &p) {
     p.fillRect(0, 0, width() - PEN_WIDTH, ANNOTATION_GRAPH_HEIGHT - PEN_WIDTH, Qt::white);
 
     int halfChar = getCurrentScale() / 2;
-    for (int i = 0; i < width(); i++) {
+    for (int x = 0; x < width(); x++) {
         int count;
-        qint64 pos1 = coordToPos(i + halfChar);
+        qint64 pos1 = coordXToPos(x + halfChar);
         if (pos1 < 1 || pos1 > annotationsOnPos.size() + 1) {
             continue;
         }
-        if (coordToPos(i + 1) > pos1) {
+        if (coordXToPos(x + 1) > pos1) {
             count = annotationsOnPos.at(pos1 - 1);
         } else {
-            qint64 pos2 = coordToPos(i) - 1;
+            qint64 pos2 = coordXToPos(x) - 1;
             count = annotationsOnPos.at(pos1 - 1);
             for (int pos = pos1; pos < pos2; pos++) {
                 int nextCount = annotationsOnPos.at(pos - 1);
@@ -599,22 +584,22 @@ void OverviewRenderArea::drawGraph(QPainter &p) {
         QColor col = getUnitColor(count);
         graphPen.setColor(col);
         p.setPen(graphPen);
-        p.drawLine(i, 0, i, ANNOTATION_GRAPH_HEIGHT);
+        p.drawLine(x, 0, x, ANNOTATION_GRAPH_HEIGHT);
     }
     p.restore();
 }
 
 QColor OverviewRenderArea::getUnitColor(int count) {
     switch (count) {
-    case 0:
-        return QColor(0xFF, 0xFF, 0xFF);
-    case 1:
-        return QColor(0xCC, 0xCC, 0xCC);
-    case 2:
-    case 3:
-        return QColor(0x66, 0x66, 0x66);
-    default:
-        return QColor(0x00, 0x00, 0x00);
+        case 0:
+            return QColor(0xFF, 0xFF, 0xFF);
+        case 1:
+            return QColor(0xCC, 0xCC, 0xCC);
+        case 2:
+        case 3:
+            return QColor(0x66, 0x66, 0x66);
+        default:
+            return QColor(0x00, 0x00, 0x00);
     }
 }
 }    // namespace U2

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -842,12 +842,12 @@ void ProjectTreeController::sl_windowActivated(MWMDIWindow *w) {
     }
 
     // listen all add/remove to view events
-    if (NULL != markActiveView) {
+    if (!markActiveView.isNull()) {
         foreach (GObject *obj, markActiveView->getObjects()) {
             updateObjectActiveStateVisual(obj);
         }
         markActiveView->disconnect(this);
-        markActiveView = NULL;
+        markActiveView.clear();
     }
 
     GObjectViewWindow *ow = qobject_cast<GObjectViewWindow *>(w);

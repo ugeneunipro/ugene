@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -483,7 +483,7 @@ void ChromatogramViewRenderArea::drawAll(QPaintDevice *pd) {
     heightPD = height();
 
     if (completeRedraw) {
-        QPainter p(cachedView);
+        QPainter p(getCachedPixmap());
         p.setRenderHint(QPainter::Antialiasing, true);
         p.setFont(font);
         p.setPen(Qt::black);
@@ -744,18 +744,18 @@ void ChromatogramViewRenderArea::drawQualityValues(qreal x, qreal y, qreal w, qr
     for (int i = int(visible.startPos); i < visible.endPos(); i++) {
         qreal xP = kLinearTransformQV * chroma.baseCalls[i] + bLinearTransformQV - charWidth / 2 + linePen.width();
         switch (ba[i]) {
-        case 'A':
-            rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_A[i]);
-            break;
-        case 'C':
-            rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_C[i]);
-            break;
-        case 'G':
-            rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_G[i]);
-            break;
-        case 'T':
-            rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_T[i]);
-            break;
+            case 'A':
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_A[i]);
+                break;
+            case 'C':
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_C[i]);
+                break;
+            case 'G':
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_G[i]);
+                break;
+            case 'T':
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_T[i]);
+                break;
         }
         if (qAbs(rectangle.height()) > h / 100) {
             p.drawRoundedRect(rectangle, 1.0, 1.0);
@@ -797,28 +797,28 @@ void ChromatogramViewRenderArea::drawChromatogramBaseCallsLines(qreal x, qreal y
         double lineX = kLinearTransformTrace * temp + bLinearTransformTrace;
         bool drawBase = true;
         switch (ba[j]) {
-        case 'A':
-            yRes = -qMin(chroma.A[temp] * areaHeight / chromaMax, h);
-            p.setPen(colorForIds[0]);
-            drawBase = settings.drawTraceA;
-            break;
-        case 'C':
-            yRes = -qMin(chroma.C[temp] * areaHeight / chromaMax, h);
-            p.setPen(colorForIds[1]);
-            drawBase = settings.drawTraceC;
-            break;
-        case 'G':
-            yRes = -qMin(chroma.G[temp] * areaHeight / chromaMax, h);
-            p.setPen(colorForIds[2]);
-            drawBase = settings.drawTraceG;
-            break;
-        case 'T':
-            yRes = -qMin(chroma.T[temp] * areaHeight / chromaMax, h);
-            p.setPen(colorForIds[3]);
-            drawBase = settings.drawTraceT;
-            break;
-        case 'N':
-            continue;
+            case 'A':
+                yRes = -qMin(chroma.A[temp] * areaHeight / chromaMax, h);
+                p.setPen(colorForIds[0]);
+                drawBase = settings.drawTraceA;
+                break;
+            case 'C':
+                yRes = -qMin(chroma.C[temp] * areaHeight / chromaMax, h);
+                p.setPen(colorForIds[1]);
+                drawBase = settings.drawTraceC;
+                break;
+            case 'G':
+                yRes = -qMin(chroma.G[temp] * areaHeight / chromaMax, h);
+                p.setPen(colorForIds[2]);
+                drawBase = settings.drawTraceG;
+                break;
+            case 'T':
+                yRes = -qMin(chroma.T[temp] * areaHeight / chromaMax, h);
+                p.setPen(colorForIds[3]);
+                drawBase = settings.drawTraceT;
+                break;
+            case 'N':
+                continue;
         };
         if (drawBase) {
             p.drawLine(int(lineX), 0, int(lineX), int(yRes));
@@ -829,16 +829,16 @@ void ChromatogramViewRenderArea::drawChromatogramBaseCallsLines(qreal x, qreal y
 
 QColor ChromatogramViewRenderArea::getBaseColor(char base) {
     switch (base) {
-    case 'A':
-        return Qt::darkGreen;
-    case 'C':
-        return Qt::blue;
-    case 'G':
-        return Qt::black;
-    case 'T':
-        return Qt::red;
-    default:
-        return Qt::black;
+        case 'A':
+            return Qt::darkGreen;
+        case 'C':
+            return Qt::blue;
+        case 'G':
+            return Qt::black;
+        case 'T':
+            return Qt::red;
+        default:
+            return Qt::black;
     }
 }
 

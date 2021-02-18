@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -314,7 +314,7 @@ static void extractCustomTools(QList<QList<ExternalTool *>> &toolKitList, QList<
 /** Returns master ExternalTool if tools list contains only 1 tool and 0+ modules or nullptr otherwise. */
 static ExternalTool *isMasterWithModules(const QList<ExternalTool *> &toolsList) {
     ExternalTool *master = nullptr;
-    for (ExternalTool *tool : toolsList) {
+    for (ExternalTool *tool : qAsConst(toolsList)) {
         if (tool->isModule()) {
             continue;
         }
@@ -330,7 +330,8 @@ void ExternalToolSupportSettingsPageWidget::setState(AppSettingsGUIPageState *s)
     ExternalToolSupportSettingsPageState *state = qobject_cast<ExternalToolSupportSettingsPageState *>(s);
     SAFE_POINT(state != nullptr, "ExternalToolSupportSettingsPageState is absent", );
 
-    for (ExternalTool *tool : state->getExternalTools()) {
+    const QList<ExternalTool *> toolList = state->getExternalTools();
+    for (ExternalTool *tool : qAsConst(toolList)) {
         ExternalToolInfo info;
         info.id = tool->getId();
         info.dirName = tool->getDirName();
@@ -350,7 +351,7 @@ void ExternalToolSupportSettingsPageWidget::setState(AppSettingsGUIPageState *s)
     extractCustomTools(toolsPerToolkitList, customToolList);
 
     QTreeWidgetItem *rootItem = twIntegratedTools->invisibleRootItem();
-    for (QList<ExternalTool *> toolsList : toolsPerToolkitList) {
+    for (QList<ExternalTool *> toolsList : qAsConst(toolsPerToolkitList)) {
         CHECK_CONTINUE(!toolsList.isEmpty());
 
         if (toolsList.length() == 1) {
@@ -362,20 +363,20 @@ void ExternalToolSupportSettingsPageWidget::setState(AppSettingsGUIPageState *s)
             QTreeWidgetItem *masterItem = appendToolItem(rootItem, groupTool);
             masterItem->setExpanded(false);
             toolsList.removeOne(groupTool);
-            for (ExternalTool *tool : toolsList) {
+            for (ExternalTool *tool : qAsConst(toolsList)) {
                 appendToolItem(masterItem, tool, true);
             }
         } else {
             groupTool = toolsList[0];
             QTreeWidgetItem *toolkitItem = createToolkitItem(twIntegratedTools, groupTool->getToolKitName(), groupTool->getIcon());
-            for (ExternalTool *tool : toolsList) {
+            for (ExternalTool *tool : qAsConst(toolsList)) {
                 appendToolItem(toolkitItem, tool);
             }
         }
     }
 
     QTreeWidgetItem *customToolsRootItem = twCustomTools->invisibleRootItem();
-    for (ExternalTool *tool : customToolList) {
+    for (ExternalTool *tool : qAsConst(customToolList)) {
         appendToolItem(customToolsRootItem, tool);
     }
 
@@ -471,7 +472,7 @@ QString ExternalToolSupportSettingsPageWidget::getToolStateDescription(ExternalT
 
         QStringList invalidDependencies;
         QStringList dependencies = tool->getDependencies();
-        for (const QString &masterId : dependencies) {
+        for (const QString &masterId : qAsConst(dependencies)) {
             if (etManager->getToolState(masterId) != ExternalToolManager::Valid) {
                 QString masterName = AppContext::getExternalToolRegistry()->getToolNameById(masterId);
                 if (tool->getId() != masterId && tool->getToolKitName() != masterName) {
@@ -579,7 +580,8 @@ AppSettingsGUIPageState *ExternalToolSupportSettingsPageWidget::getState(QString
     Q_UNUSED(err);
 
     QList<ExternalTool *> externalTools;
-    for (const ExternalToolInfo &info : externalToolsInfo) {
+    const QList<ExternalToolInfo> toolInfoList = externalToolsInfo.values();
+    for (const ExternalToolInfo &info : qAsConst(toolInfoList)) {
         auto externalTool = new ExternalTool(info.id, info.dirName, info.name, info.path);
         externalTool->setValid(info.isValid);
         externalTool->setVersion(info.version);
@@ -765,14 +767,16 @@ void ExternalToolSupportSettingsPageWidget::sl_onBrowseToolPackPath() {
         StrStrMap toolPaths;
         bool isValidExternalToolsFolder = false;
 
-        for (const ExternalTool *externalTool : AppContext::getExternalToolRegistry()->getAllEntries()) {
+        const QList<ExternalTool *> toolList = AppContext::getExternalToolRegistry()->getAllEntries();
+        for (const ExternalTool *externalTool : qAsConst(toolList)) {
             if (externalTool->isModule()) {
                 continue;
             }
             QTreeWidgetItem *item = externalToolsItems.value(externalTool->getId(), nullptr);
             SAFE_POINT(item != nullptr, QString("Tree item not found for the tool %1").arg(externalTool->getName()), );
 
-            for (QString dirName : dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+            const QStringList dirList = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+            for (QString dirName : qAsConst(dirList)) {
                 if (externalTool->getDirName() != dirName) {
                     continue;
                 }

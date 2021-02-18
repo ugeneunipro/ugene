@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -275,20 +275,19 @@ void AppSettingsDialogFiller::setWorkflowOutputDirPath(GUITestOpStatus &os, cons
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "OpenTab"
+#define GT_METHOD_NAME "openTab"
 void AppSettingsDialogFiller::openTab(HI::GUITestOpStatus &os, Tabs tab) {
-    QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog, "activeModalWidget is NULL");
+    QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
     QString itemText = tabMap.value(tab);
     GT_CHECK(!itemText.isEmpty(), "tree element for item not found");
 
-    QTreeWidget *mainTree = GTWidget::findExactWidget<QTreeWidget *>(os, "tree");
-
+    QTreeWidget *mainTree = GTWidget::findExactWidget<QTreeWidget *>(os, "tree", dialog);
     if (mainTree->selectedItems().first()->text(0) != itemText) {
         GTTreeWidget::click(os, GTTreeWidget::findItem(os, mainTree, itemText));
     }
     GTGlobals::sleep(300);
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 
@@ -360,47 +359,47 @@ void NewColorSchemeCreator::commonScenario() {
     }
 
     switch (act) {
-    case Delete: {
-        QListWidget *colorSchemas = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "colorSchemas", dialog));
-        GT_CHECK(colorSchemas != NULL, "colorSchemas list widget not found");
-        GTListWidget::click(os, colorSchemas, schemeName);
-        GTGlobals::sleep(500);
+        case Delete: {
+            QListWidget *colorSchemas = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "colorSchemas", dialog));
+            GT_CHECK(colorSchemas != NULL, "colorSchemas list widget not found");
+            GTListWidget::click(os, colorSchemas, schemeName);
+            GTGlobals::sleep(500);
 
-        QWidget *deleteSchemaButton = GTWidget::findWidget(os, "deleteSchemaButton", dialog);
-        GT_CHECK(deleteSchemaButton, "deleteSchemaButton not found");
-        while (!deleteSchemaButton->isEnabled()) {
-            uiLog.trace("deleteSchemaButton is disabled");
-            GTGlobals::sleep(100);
-        }
-        GTWidget::click(os, deleteSchemaButton);
-        break;
-    }
-    case Create: {
-        QWidget *addSchemaButton = GTWidget::findWidget(os, "addSchemaButton");
-        GT_CHECK(addSchemaButton, "addSchemaButton not found");
-
-        GTUtilsDialog::waitForDialog(os, new CreateAlignmentColorSchemeDialogFiller(os, schemeName, al));
-        GTWidget::click(os, addSchemaButton);
-        break;
-    }
-    case Change: {
-        GTListWidget::click(os, GTWidget::findExactWidget<QListWidget *>(os, "colorSchemas", dialog), schemeName);
-
-        class Scenario : public CustomScenario {
-        public:
-            void run(HI::GUITestOpStatus &os) {
-                QWidget *dialog = QApplication::activeModalWidget();
-                GT_CHECK(NULL != dialog, "Active modal widget is NULL");
-                GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, 255, 0, 0));
-                GTWidget::click(os, GTWidget::findWidget(os, "alphabetColorsFrame", dialog), Qt::LeftButton, QPoint(5, 5));
-
-                GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+            QWidget *deleteSchemaButton = GTWidget::findWidget(os, "deleteSchemaButton", dialog);
+            GT_CHECK(deleteSchemaButton, "deleteSchemaButton not found");
+            while (!deleteSchemaButton->isEnabled()) {
+                uiLog.trace("deleteSchemaButton is disabled");
+                GTGlobals::sleep(100);
             }
-        };
+            GTWidget::click(os, deleteSchemaButton);
+            break;
+        }
+        case Create: {
+            QWidget *addSchemaButton = GTWidget::findWidget(os, "addSchemaButton");
+            GT_CHECK(addSchemaButton, "addSchemaButton not found");
 
-        GTUtilsDialog::waitForDialog(os, new ColorSchemeDialogFiller(os, new Scenario));
-        GTWidget::click(os, GTWidget::findWidget(os, "changeSchemaButton", dialog));
-    }
+            GTUtilsDialog::waitForDialog(os, new CreateAlignmentColorSchemeDialogFiller(os, schemeName, al));
+            GTWidget::click(os, addSchemaButton);
+            break;
+        }
+        case Change: {
+            GTListWidget::click(os, GTWidget::findExactWidget<QListWidget *>(os, "colorSchemas", dialog), schemeName);
+
+            class Scenario : public CustomScenario {
+            public:
+                void run(HI::GUITestOpStatus &os) {
+                    QWidget *dialog = QApplication::activeModalWidget();
+                    GT_CHECK(NULL != dialog, "Active modal widget is NULL");
+                    GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, 255, 0, 0));
+                    GTWidget::click(os, GTWidget::findWidget(os, "alphabetColorsFrame", dialog), Qt::LeftButton, QPoint(5, 5));
+
+                    GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+                }
+            };
+
+            GTUtilsDialog::waitForDialog(os, new ColorSchemeDialogFiller(os, new Scenario));
+            GTWidget::click(os, GTWidget::findWidget(os, "changeSchemaButton", dialog));
+        }
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, cancel ? QDialogButtonBox::Cancel : QDialogButtonBox::Ok);

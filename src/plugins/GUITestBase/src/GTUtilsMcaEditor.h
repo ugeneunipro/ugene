@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,9 +22,9 @@
 #ifndef _U2_GT_UTILS_MCA_EDITOR_H_
 #define _U2_GT_UTILS_MCA_EDITOR_H_
 
-#include <QWidget>
 #include <QLabel>
 #include <QScrollBar>
+#include <QWidget>
 
 namespace HI {
 class GUITestOpStatus;
@@ -43,7 +43,7 @@ class MultipleAlignmentRowData;
 class GTUtilsMcaEditor {
 public:
     /** Returns active MCA editor window or fails. */
-    static QWidget* getActiveMcaEditorWindow(HI::GUITestOpStatus &os);
+    static QWidget *getActiveMcaEditorWindow(HI::GUITestOpStatus &os);
 
     /** Checks if editor window is active or fails. */
     static void checkMcaEditorWindowIsActive(HI::GUITestOpStatus &os);
@@ -78,6 +78,9 @@ public:
     static void moveToReadName(HI::GUITestOpStatus &os, int readNumber);
     static void clickReadName(HI::GUITestOpStatus &os, const QString &sequenceName, Qt::MouseButton mouseButton = Qt::LeftButton);
     static void clickReadName(HI::GUITestOpStatus &os, int readNumber, Qt::MouseButton mouseButton = Qt::LeftButton);
+
+    /** Double clicks read with the given index in the name list. */
+    static void doubleClickReadName(HI::GUITestOpStatus &os, int readIndex);
 
     static void removeRead(HI::GUITestOpStatus &os, const QString &readName);
 

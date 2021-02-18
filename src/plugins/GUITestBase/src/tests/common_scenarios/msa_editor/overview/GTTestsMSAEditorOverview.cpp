@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -251,14 +251,14 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     //    1. Open "_common_data/clustal/COI_na.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI na.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Show simple overview"));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "msa_overview_area"));
 
     QWidget *overviewSimple = GTWidget::findWidget(os, "msa_overview_area_simple");
-    QWidget *overviewGraph = GTWidget::findWidget(os, "msa_overview_area_graph");
 
     //saving overviews' images
-    QImage imgSimple1 = GTWidget::getImage(os, overviewSimple);
+    QImage imageBefore = GTWidget::getImage(os, overviewSimple);
 
     //    2. Select one symbol.
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(5, 5));
@@ -266,19 +266,12 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 
     //    3. Press Delete button and release it after a while.
     GTKeyboardDriver::keyPress(Qt::Key_Delete);
-    GTGlobals::sleep(1000);
-
-    //    Expected state: while button is pressed graph overview is blocked. Overview updating starts on button release.
-    //    Simple overview updates simultaneously.
-    //checking simple overview image changed
-    QImage imgSimple2 = GTWidget::getImage(os, overviewSimple);
-
-    CHECK_SET_ERR(imgSimple1 != imgSimple2, "simple overview not updated");
-
-    const QColor c = GTWidget::getColor(os, overviewGraph, overviewGraph->rect().center() - QPoint(0, 20));
-    CHECK_SET_ERR(c.name() == "#a0a0a4", "simple overview has wrong color. Expected: #a0a0a4, Found: " + c.name());
-
+    GTGlobals::sleep(2000);
     GTKeyboardDriver::keyRelease(Qt::Key_Delete);
+
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QImage imageAfter = GTWidget::getImage(os, overviewSimple);
+    CHECK_SET_ERR(imageBefore != imageAfter, "simple overview not updated");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0010) {

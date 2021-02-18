@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -311,11 +311,11 @@ void CircularViewContext::sl_setSequenceOrigin() {
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(setSequenceOriginAction->getObjectView());
     CHECK(NULL != av, );
 
-    ADVSequenceObjectContext *seqCtx = av->getSequenceInFocus();
+    ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
     U2SequenceObject *seqObj = seqCtx->getSequenceObject();
     CHECK(NULL != seqObj, );
 
-    QObjectScopedPointer<SetSequenceOriginDialog> dlg = new SetSequenceOriginDialog(av->getSequenceWidgetInFocus());
+    QObjectScopedPointer<SetSequenceOriginDialog> dlg = new SetSequenceOriginDialog(av->getActiveSequenceWidget());
     const int res = dlg->exec();
     CHECK(!dlg.isNull(), );
 

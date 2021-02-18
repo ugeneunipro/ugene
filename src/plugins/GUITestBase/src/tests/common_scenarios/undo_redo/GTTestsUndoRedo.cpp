@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -94,7 +94,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {    //DIFFERENCE: lock document is checked
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(9, 0));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    QString clipboardText = GTClipboard::sequences(os);
+    QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "--TAAGACTT", "Undo works wrong. Found text is: " + clipboardText);
 
     //check redo
@@ -105,7 +105,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {    //DIFFERENCE: lock document is checked
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(9, 0));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    clipboardText = GTClipboard::sequences(os);
+    clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "----TAAGAC", "Redo works wrong. Found text is: " + clipboardText);
 }
 
@@ -223,7 +223,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {    //undo remove selection
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(3, 1));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    QString clipdoardText = GTClipboard::sequences(os);
+    QString clipdoardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipdoardText == "ACTT\nCTTA", QString("Expected ACTT\nCTTA, found: %1").arg(clipdoardText));
 
     //undo
@@ -235,7 +235,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {    //undo remove selection
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(3, 1));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    clipdoardText = GTClipboard::sequences(os);
+    clipdoardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipdoardText == "TAAG\nTAAG", QString("Expected TAAG\nTAAG, found: %1").arg(clipdoardText));
 
     //redo
@@ -247,7 +247,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {    //undo remove selection
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(3, 1));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
     GTGlobals::sleep(500);
-    clipdoardText = GTClipboard::sequences(os);
+    clipdoardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipdoardText == "ACTT\nCTTA", QString("Expected ACTT\nCTTA, found: %1").arg(clipdoardText));
 }
 
@@ -268,7 +268,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {    //undo replace_selected_rows_with_reve
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
     GTGlobals::sleep(500);
-    QString clipboardText = GTClipboard::sequences(os);
+    QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "CAA\nTGA\nATC",
                   "Clipboard string and expected MSA string differs");
 
@@ -286,7 +286,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {    //undo replace_selected_rows_with_reve
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
     GTGlobals::sleep(500);
-    clipboardText = GTClipboard::sequences(os);
+    clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "TTG\nTCA\nGAT",
                   "Clipboard string and expected MSA string differs");
 
@@ -307,7 +307,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {    //undo replace_selected_rows_with_reve
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
     GTGlobals::sleep(500);
-    clipboardText = GTClipboard::sequences(os);
+    clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "CAA\nTGA\nATC",
                   "Clipboard string and expected MSA string differs");
 
@@ -334,7 +334,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {    //undo replace_selected_rows_with_re
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
     GTGlobals::sleep(500);
-    QString clipboardText = GTClipboard::sequences(os);
+    QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "GTT\nACT\nTAG",
                   "Clipboard string and expected MSA string differs");
 
@@ -352,7 +352,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {    //undo replace_selected_rows_with_re
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
     GTGlobals::sleep(500);
-    clipboardText = GTClipboard::sequences(os);
+    clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "TTG\nTCA\nGAT",
                   "Clipboard string and expected MSA string differs");
 
@@ -373,7 +373,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {    //undo replace_selected_rows_with_re
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
     GTGlobals::sleep(500);
-    clipboardText = GTClipboard::sequences(os);
+    clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "GTT\nACT\nTAG",
                   "Clipboard string and expected MSA string differs");
 
@@ -401,7 +401,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
     GTGlobals::sleep(500);
-    QString clipboardText = GTClipboard::sequences(os);
+    QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "AAC\nAGT\nCTA",
                   "Clipboard string and expected MSA string differs. Clipboard string is: " + clipboardText);
 
@@ -419,7 +419,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
     GTGlobals::sleep(500);
-    clipboardText = GTClipboard::sequences(os);
+    clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "TTG\nTCA\nGAT",
                   "Clipboard string and expected MSA string differs");
 
@@ -440,7 +440,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
     GTGlobals::sleep(500);
-    clipboardText = GTClipboard::sequences(os);
+    clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "AAC\nAGT\nCTA",
                   "Clipboard string and expected MSA string differs");
 

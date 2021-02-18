@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -39,6 +39,19 @@ public:
                 Input,
                 ExternalTools };
 
+    // Dashboard notification class. Contains the type of notification (info/warning/error), the name of the workflow
+    // element to which the notification relates and the notification message
+    struct Notification {
+        Notification() = delete; // No default dashboard notification
+
+        QString type; // The type of dashboard notification (info/warning/error)
+        QString element; // The name of workflow element to which the dashboard notification relates
+        QString message; // The dashboard notification message
+
+        // Returns the notification as a string
+        QString toString() const;
+    };
+
     /** Returns active dashboard or nullptr if not found. */
     static Dashboard *findDashboard(HI::GUITestOpStatus &os);
 
@@ -59,7 +72,15 @@ public:
     static void clickOutputFile(HI::GUITestOpStatus &os, const QString &outputFileName);
 
     static QString getTabObjectName(Tabs tab);
+
     static bool hasNotifications(HI::GUITestOpStatus &os);
+
+    // Returns a list of dashboard notifications
+    static QList<Notification> getNotifications(HI::GUITestOpStatus &os);
+
+    // Returns a QString containing all dashboard notifications, splitted by '\n'
+    static QString getJoinedNotificationsString(HI::GUITestOpStatus &os);
+
     static void openTab(HI::GUITestOpStatus &os, Tabs tab);
 
     static bool hasTab(HI::GUITestOpStatus &os, Tabs tab);
@@ -105,6 +126,12 @@ public:
     static QList<ExternalToolsTreeNode *> getExternalToolNodesByText(HI::GUITestOpStatus &os, ExternalToolsTreeNode *parent, const QString &textPattern, bool isExactMatch = true);
 
 private:
+    /** The <img> tag with the class attribute is searched for in the |html|. The attribute value is the type of notification. */
+    static QString getNotificationTypeFromHtml(HI::GUITestOpStatus &os, const QString &html);
+
+    /** Returns text from the (row, column) notification table cell. The (row, column) cell must exist. */
+    static QString getNotificationCellText(HI::GUITestOpStatus &os, const QGridLayout &tableLayout, int row, int col);
+
     static const QMap<QString, Tabs> tabMap;
 };
 

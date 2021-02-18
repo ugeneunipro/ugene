@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -60,7 +60,7 @@ private:
 class simple_crazy_user : public HI::GUITest {
 public:
     simple_crazy_user()
-        : HI::GUITest("simple_crazy_user") {
+        : GUITest("simple_crazy_user", "", DEFAULT_GUI_TEST_TIMEOUT) {
     }
 
 protected:

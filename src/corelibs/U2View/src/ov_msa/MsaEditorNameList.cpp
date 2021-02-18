@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -20,6 +20,8 @@
  */
 
 #include "MsaEditorNameList.h"
+
+#include <QMouseEvent>
 
 #include <U2Gui/GUIUtils.h>
 
@@ -55,6 +57,15 @@ void MsaEditorNameList::buildMenu(QMenu *menu) {
 
 MSAEditor *MsaEditorNameList::getEditor() const {
     return qobject_cast<MSAEditor *>(editor);
+}
+
+void MsaEditorNameList::mouseDoubleClickEvent(QMouseEvent *e) {
+    if (e->button() == Qt::LeftButton) {
+        sl_editSequenceName();
+        e->ignore();
+        return;
+    }
+    QWidget::mouseDoubleClickEvent(e);
 }
 
 }    // namespace U2

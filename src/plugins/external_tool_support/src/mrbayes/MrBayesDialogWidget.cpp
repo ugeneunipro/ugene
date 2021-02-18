@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -75,18 +75,18 @@ MrBayesWidget::MrBayesWidget(const MultipleSequenceAlignment &ma, QWidget *paren
 
     seedSpin->setValue(getRandomSeed());
 
-    gammaCategoriesSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::settingsPath() + MR_BAYES_GAMMA, 4).toInt());
-    ngenSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::settingsPath() + MR_BAYES_CHAIN_LENGTH, 10000).toInt());
-    sfreqSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::settingsPath() + MR_BAYES_SUBSEMPL_FREQ, 1000).toInt());
-    burninSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::settingsPath() + MR_BAYES_BURNIN, 10).toInt());
-    nheatedSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::settingsPath() + MR_BAYES_HEATED, 4).toInt());
-    tempSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::settingsPath() + MR_BAYES_TEMPR, 0.4).toDouble());
-    seedSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::settingsPath() + MR_BAYES_SEED, getRandomSeed()).toInt());
+    gammaCategoriesSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_GAMMA, 4).toInt());
+    ngenSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_CHAIN_LENGTH, 10000).toInt());
+    sfreqSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_SUBSEMPL_FREQ, 1000).toInt());
+    burninSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_BURNIN, 10).toInt());
+    nheatedSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_HEATED, 4).toInt());
+    tempSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_TEMPR, 0.4).toDouble());
+    seedSpin->setValue(AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_SEED, getRandomSeed()).toInt());
 
-    QString comboText = AppContext::getSettings()->getValue(CreatePhyTreeWidget::settingsPath() + MR_BAYES_MODEL_TYPE, isAminoAcidAlphabet ? modelTypeCombo->itemText(0) : MrBayesModelTypes::HKY85).toString();
+    QString comboText = AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_MODEL_TYPE, isAminoAcidAlphabet ? modelTypeCombo->itemText(0) : MrBayesModelTypes::HKY85).toString();
     setComboText(modelTypeCombo, comboText);
 
-    comboText = AppContext::getSettings()->getValue(CreatePhyTreeWidget::settingsPath() + MR_BAYES_RATE_VATIATION, MrBayesVariationTypes::gamma).toString();
+    comboText = AppContext::getSettings()->getValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_RATE_VATIATION, MrBayesVariationTypes::gamma).toString();
     setComboText(rateVariationCombo, comboText);
 }
 
@@ -105,27 +105,27 @@ void MrBayesWidget::fillSettings(CreatePhyTreeSettings &settings) {
 }
 
 void MrBayesWidget::storeSettings() {
-    AppContext::getSettings()->setValue(CreatePhyTreeWidget::settingsPath() + MR_BAYES_MODEL_TYPE, modelTypeCombo->currentText());
-    AppContext::getSettings()->setValue(CreatePhyTreeWidget::settingsPath() + MR_BAYES_RATE_VATIATION, rateVariationCombo->currentText());
-    AppContext::getSettings()->setValue(CreatePhyTreeWidget::settingsPath() + MR_BAYES_GAMMA, gammaCategoriesSpin->value());
-    AppContext::getSettings()->setValue(CreatePhyTreeWidget::settingsPath() + MR_BAYES_CHAIN_LENGTH, ngenSpin->value());
-    AppContext::getSettings()->setValue(CreatePhyTreeWidget::settingsPath() + MR_BAYES_SUBSEMPL_FREQ, sfreqSpin->value());
-    AppContext::getSettings()->setValue(CreatePhyTreeWidget::settingsPath() + MR_BAYES_BURNIN, burninSpin->value());
-    AppContext::getSettings()->setValue(CreatePhyTreeWidget::settingsPath() + MR_BAYES_HEATED, nheatedSpin->value());
-    AppContext::getSettings()->setValue(CreatePhyTreeWidget::settingsPath() + MR_BAYES_TEMPR, tempSpin->value());
-    AppContext::getSettings()->setValue(CreatePhyTreeWidget::settingsPath() + MR_BAYES_SEED, seedSpin->value());
+    AppContext::getSettings()->setValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_MODEL_TYPE, modelTypeCombo->currentText());
+    AppContext::getSettings()->setValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_RATE_VATIATION, rateVariationCombo->currentText());
+    AppContext::getSettings()->setValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_GAMMA, gammaCategoriesSpin->value());
+    AppContext::getSettings()->setValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_CHAIN_LENGTH, ngenSpin->value());
+    AppContext::getSettings()->setValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_SUBSEMPL_FREQ, sfreqSpin->value());
+    AppContext::getSettings()->setValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_BURNIN, burninSpin->value());
+    AppContext::getSettings()->setValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_HEATED, nheatedSpin->value());
+    AppContext::getSettings()->setValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_TEMPR, tempSpin->value());
+    AppContext::getSettings()->setValue(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_SEED, seedSpin->value());
     displayOptions->storeSettings();
 }
 void MrBayesWidget::restoreDefault() {
-    AppContext::getSettings()->remove(CreatePhyTreeWidget::settingsPath() + MR_BAYES_MODEL_TYPE);
-    AppContext::getSettings()->remove(CreatePhyTreeWidget::settingsPath() + MR_BAYES_RATE_VATIATION);
-    AppContext::getSettings()->remove(CreatePhyTreeWidget::settingsPath() + MR_BAYES_GAMMA);
-    AppContext::getSettings()->remove(CreatePhyTreeWidget::settingsPath() + MR_BAYES_CHAIN_LENGTH);
-    AppContext::getSettings()->remove(CreatePhyTreeWidget::settingsPath() + MR_BAYES_SUBSEMPL_FREQ);
-    AppContext::getSettings()->remove(CreatePhyTreeWidget::settingsPath() + MR_BAYES_BURNIN);
-    AppContext::getSettings()->remove(CreatePhyTreeWidget::settingsPath() + MR_BAYES_HEATED);
-    AppContext::getSettings()->remove(CreatePhyTreeWidget::settingsPath() + MR_BAYES_TEMPR);
-    AppContext::getSettings()->remove(CreatePhyTreeWidget::settingsPath() + MR_BAYES_SEED);
+    AppContext::getSettings()->remove(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_MODEL_TYPE);
+    AppContext::getSettings()->remove(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_RATE_VATIATION);
+    AppContext::getSettings()->remove(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_GAMMA);
+    AppContext::getSettings()->remove(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_CHAIN_LENGTH);
+    AppContext::getSettings()->remove(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_SUBSEMPL_FREQ);
+    AppContext::getSettings()->remove(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_BURNIN);
+    AppContext::getSettings()->remove(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_HEATED);
+    AppContext::getSettings()->remove(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_TEMPR);
+    AppContext::getSettings()->remove(CreatePhyTreeWidget::getAppSettingsRoot() + MR_BAYES_SEED);
 
     setComboText(modelTypeCombo, MrBayesModelTypes::HKY85);
     setComboText(rateVariationCombo, MrBayesVariationTypes::gamma);
@@ -167,8 +167,8 @@ int MrBayesWidget::getRandomSeed() {
     return seed;
 }
 
-bool MrBayesWidget::checkSettings(QString &messsage, const CreatePhyTreeSettings &settings) {
-    //Check that MrBayes and tempory folder path defined
+bool MrBayesWidget::checkSettings(QString &message, const CreatePhyTreeSettings &settings) {
+    //Check that MrBayes and temporary folder path defined
     ExternalToolRegistry *reg = AppContext::getExternalToolRegistry();
     ExternalTool *mb = reg->getById(MrBayesSupport::ET_MRBAYES_ID);
     assert(mb);
@@ -203,7 +203,7 @@ bool MrBayesWidget::checkSettings(QString &messsage, const CreatePhyTreeSettings
     ExternalToolSupportSettings::checkTemporaryDir(os);
     CHECK_OP(os, false);
 
-    return displayOptions->checkSettings(messsage, settings);
+    return displayOptions->checkSettings(message, settings);
 }
 
 QString MrBayesWidget::generateMrBayesSettingsScript() {

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -22,7 +22,6 @@
 #include "PanView.h"
 
 #include <QDialog>
-#include <QFontMetrics>
 #include <QGridLayout>
 #include <QPainter>
 #include <QTextEdit>
@@ -37,11 +36,9 @@
 #include <U2Core/Log.h>
 #include <U2Core/SelectionModel.h>
 #include <U2Core/Timer.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GScrollBar.h>
-#include <U2Gui/GraphUtils.h>
 
 #include "ADVSequenceObjectContext.h"
 #include "ADVSingleSequenceWidget.h"
@@ -592,14 +589,10 @@ const U2Region PanView::getRegionToZoom() const {
 //////////////////////////////////////////////////////////////////////////
 /// render
 PanViewRenderArea::PanViewRenderArea(PanView *d, PanViewRenderer *renderer)
-    : GSequenceLineViewAnnotatedRenderArea(d),
+    : GSequenceLineViewGridAnnotationRenderArea(d),
       panView(d),
       renderer(renderer) {
     SAFE_POINT(NULL != renderer, "Renderer is NULL", );
-}
-
-PanViewRenderArea::~PanViewRenderArea() {
-    delete renderer;
 }
 
 void PanViewRenderArea::drawAll(QPaintDevice *pd) {
@@ -610,7 +603,7 @@ void PanViewRenderArea::drawAll(QPaintDevice *pd) {
 
     QPainter p(pd);
     if (completeRedraw) {
-        QPainter pCached(cachedView);
+        QPainter pCached(getCachedPixmap());
         renderer->drawAll(pCached, QSize(pd->width(), pd->height()), view->getVisibleRange());
         pCached.end();
     }
@@ -632,20 +625,19 @@ void PanViewRenderArea::drawAll(QPaintDevice *pd) {
     }
 }
 
-U2Region PanViewRenderArea::getAnnotationYRange(Annotation *a, int r, const AnnotationSettings *as) const {
-    U2Region region = renderer->getAnnotationYRange(a, r, as, size(), view->getVisibleRange());
-    region.startPos += renderer->getContentIndentY(size(), view->getVisibleRange());
+U2Region PanViewRenderArea::getAnnotationYRange(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const {
+    U2Region region = renderer->getAnnotationYRange(annotation, locationRegionIndex, annotationSettings, height());
+    region.startPos += renderer->getContentIndentY(height());
     return region;
+}
+
+QList<U2Region> PanViewRenderArea::getAnnotationYRegions(Annotation *annotation, int locationRegionIndex, const AnnotationSettings *annotationSettings) const {
+    // Each annotation region has only 1 y-region in PanView.
+    return QList<U2Region>() << getAnnotationYRange(annotation, locationRegionIndex, annotationSettings);
 }
 
 int PanViewRenderArea::getRowLineHeight() const {
     return renderer->getRowLineHeight();
-}
-
-void PanViewRenderArea::setRenderer(PanViewRenderer *newRenderer) {
-    SAFE_POINT(NULL != newRenderer, "New renderer is NULL", );
-    delete renderer;
-    renderer = newRenderer;
 }
 
 bool PanViewRenderArea::isSequenceCharsVisible() const {

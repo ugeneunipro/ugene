@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -142,7 +142,7 @@ int MultipleAlignmentData::getNumRows() const {
 U2MsaListGapModel MultipleAlignmentData::getGapModel() const {
     U2MsaListGapModel gapModel;
     const int alignmentLength = getLength();
-    for (const MultipleAlignmentRow &row : rows) {
+    for (const MultipleAlignmentRow &row : qAsConst(rows)) {
         gapModel << row->getGapModel();
         const int rowPureLength = row->getRowLengthWithoutTrailing();
         if (rowPureLength < alignmentLength) {
@@ -160,16 +160,6 @@ static bool isLessByName(const MultipleAlignmentRow &row1, const MultipleAlignme
     return QString::compare(row1->getName(), row2->getName(), Qt::CaseInsensitive) < 0;
 }
 
-void MultipleAlignmentData::sortRowsByName(MultipleAlignment::Order order, const U2Region &range) {
-    U2Region allRowsRange = U2Region(0, rows.size());
-    SAFE_POINT(range.intersect(allRowsRange) == range, "Sort range is out of bounds", )
-    MaStateCheck check(this);
-    Q_UNUSED(check);
-    bool isAscending = order == MultipleAlignment::Ascending;
-    U2Region sortingRange = range.isEmpty() ? allRowsRange : range;
-    std::stable_sort(rows.begin() + sortingRange.startPos, rows.begin() + sortingRange.endPos(), isAscending ? isLessByName : isGreaterByName);
-}
-
 static bool isGreaterByLength(const MultipleAlignmentRow &row1, const MultipleAlignmentRow &row2) {
     return row1->getUngappedLength() > row2->getUngappedLength();
 }
@@ -178,14 +168,36 @@ static bool isLessByLength(const MultipleAlignmentRow &row1, const MultipleAlign
     return row1->getUngappedLength() < row2->getUngappedLength();
 }
 
-void MultipleAlignmentData::sortRowsByLength(MultipleAlignment::Order order, const U2Region &range) {
+static bool isGreaterByLeadingGap(const MultipleAlignmentRow &row1, const MultipleAlignmentRow &row2) {
+    return row1->getCoreStart() > row2->getCoreStart();
+}
+
+static bool isLessByLeadingGap(const MultipleAlignmentRow &row1, const MultipleAlignmentRow &row2) {
+    return row1->getCoreStart() < row2->getCoreStart();
+}
+
+void MultipleAlignmentData::sortRows(MultipleAlignment::SortType type, MultipleAlignment::Order order, const U2Region &range) {
     U2Region allRowsRange = U2Region(0, rows.size());
     SAFE_POINT(range.intersect(allRowsRange) == range, "Sort range is out of bounds", )
     MaStateCheck check(this);
     Q_UNUSED(check);
     bool isAscending = order == MultipleAlignment::Ascending;
     U2Region sortingRange = range.isEmpty() ? allRowsRange : range;
-    std::stable_sort(rows.begin() + sortingRange.startPos, rows.begin() + sortingRange.endPos(), isAscending ? isLessByLength : isGreaterByLength);
+    const auto &rangeStartIterator = rows.begin() + sortingRange.startPos;
+    const auto &rangeEndIterator = rows.begin() + sortingRange.endPos();
+    switch (type) {
+        case MultipleAlignment::SortByName:
+            std::stable_sort(rangeStartIterator, rangeEndIterator, isAscending ? isLessByName : isGreaterByName);
+            break;
+        case MultipleAlignment::SortByLength:
+            std::stable_sort(rangeStartIterator, rangeEndIterator, isAscending ? isLessByLength : isGreaterByLength);
+            break;
+        case MultipleAlignment::SortByLeadingGap:
+            std::stable_sort(rangeStartIterator, rangeEndIterator, isAscending ? isLessByLeadingGap : isGreaterByLeadingGap);
+            break;
+        default:
+            FAIL("Unsupported sort type: " + QString::number(type), );
+    }
 }
 
 MultipleAlignmentRow MultipleAlignmentData::getRow(int rowIndex) {

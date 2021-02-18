@@ -31,6 +31,7 @@
 
 #include "drivers/GTMouseDriver.h"
 #include "primitives/GTMainWindow.h"
+#include "utils/GTUtilsMac.h"
 #include "utils/GTThread.h"
 
 namespace HI {
@@ -40,8 +41,21 @@ namespace HI {
 void GTWidget::click(GUITestOpStatus &os, QWidget *widget, Qt::MouseButton mouseButton, QPoint p) {
     GT_CHECK(widget != nullptr, "widget is NULL");
 
+#ifdef Q_OS_MAC
+    GTUtilsMac fakeClock;
+    fakeClock.startWorkaroundForMacCGEvents(16000, false);
+#endif
+
     if (p.isNull()) {
-        p = widget->rect().center();
+        QRect rect = widget->rect();
+        p = rect.center();
+#ifdef Q_OS_MAC
+        // This is for more stable click/activate on MacOS (found by experiment)
+        // TODO: still need to do more experiments on MacOS
+        if (qobject_cast<QLineEdit*>(widget) != nullptr) {
+            p -= QPoint(rect.width() / 3, 0);
+        }
+#endif
         // TODO: this is a fast fix
         if (widget->objectName().contains("ADV_single_sequence_widget")) {
             p += QPoint(0, 8);
@@ -56,6 +70,11 @@ void GTWidget::click(GUITestOpStatus &os, QWidget *widget, Qt::MouseButton mouse
 #define GT_METHOD_NAME "setFocus"
 void GTWidget::setFocus(GUITestOpStatus &os, QWidget *w) {
     GT_CHECK(w != NULL, "widget is NULL");
+
+#ifdef Q_OS_MAC
+    GTUtilsMac fakeClock;
+    fakeClock.startWorkaroundForMacCGEvents(1, true);
+#endif
 
     GTWidget::click(os, w);
     GTGlobals::sleep(200);
@@ -271,6 +290,28 @@ QImage GTWidget::getImage(GUITestOpStatus &os, QWidget *widget, bool useGrabWind
     QImage image;
     GTThread::runInMainThread(os, new GrabImageScenario(widget, image, useGrabWindow));
     return image;
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "createSubImage"
+QImage GTWidget::createSubImage(GUITestOpStatus &os, const QImage &image, const QRect &rect) {
+    GT_CHECK_RESULT(image.rect().contains(rect), "Invalid sub-image rect!", QImage());
+    int offset = rect.x() * image.depth() / 8 + rect.y() * image.bytesPerLine();
+    return QImage(image.bits() + offset, rect.width(), rect.height(), image.bytesPerLine(), image.format());
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "hasSingleFillColor"
+bool GTWidget::hasSingleFillColor(const QImage &image, const QColor &color) {
+    for (int x = 0; x < image.width(); x++) {
+        for (int y = 0; y < image.height(); y++) {
+            QColor pixelColor = image.pixel(x, y);
+            if (pixelColor != color) {
+                return false;
+            }
+        }
+    }
+    return true;
 }
 #undef GT_METHOD_NAME
 

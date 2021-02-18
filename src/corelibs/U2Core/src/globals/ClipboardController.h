@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -28,6 +28,16 @@
 #include <U2Core/Task.h>
 
 namespace U2 {
+
+/** Clipboard related helper methods and constants used by UGENE. */
+class U2CORE_EXPORT U2Clipboard {
+public:
+    /**
+     * MIME type used internally by UGENE. Marks the plain text data of a known document format
+     * that can be auto-detected by UGENE. Example: FASTA, CLUSTALW, Genbank...
+     */
+    static const QString UGENE_MIME_TYPE;
+};
 
 class U2CORE_EXPORT PasteTask : public Task {
     Q_OBJECT

@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2020 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ class PhyNode;
 class GraphicsButtonItem;
 class GraphicsRectangularBranchItem;
 
-class GraphicsCircularBranchItem : public GraphicsBranchItem {
+class U2VIEW_EXPORT GraphicsCircularBranchItem : public GraphicsBranchItem {
     qreal height;
     Direction direction;
     bool visible;

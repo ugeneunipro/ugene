@@ -36,7 +36,7 @@ namespace google_breakpad {
 
 // Minidump defines register structures which are different from the raw
 // structures which we get from the kernel. These are platform specific
-// functions to juggle the ucontext and user structures into minidump format.
+// functions to juggle the ucontext_t and user structures into minidump format.
 
 #if defined(__i386__)
 
@@ -48,8 +48,8 @@ uintptr_t UContextReader::GetInstructionPointer(const ucontext_t* uc) {
   return uc->uc_mcontext.gregs[REG_EIP];
 }
 
-void UContextReader::FillCPUContext(RawContextCPU *out, const ucontext_t *uc,
-                                    const struct _libc_fpstate* fp) {
+void UContextReader::FillCPUContext(RawContextCPU* out, const ucontext_t* uc,
+                                    const fpstate_t* fp) {
   const greg_t* regs = uc->uc_mcontext.gregs;
 
   out->context_flags = MD_CONTEXT_X86_FULL |
@@ -96,8 +96,8 @@ uintptr_t UContextReader::GetInstructionPointer(const ucontext_t* uc) {
   return uc->uc_mcontext.gregs[REG_RIP];
 }
 
-void UContextReader::FillCPUContext(RawContextCPU *out, const ucontext_t *uc,
-                                    const struct _libc_fpstate* fpregs) {
+void UContextReader::FillCPUContext(RawContextCPU* out, const ucontext_t* uc,
+                                    const fpstate_t* fpregs) {
   const greg_t* regs = uc->uc_mcontext.gregs;
 
   out->context_flags = MD_CONTEXT_AMD64_FULL;
@@ -153,7 +153,7 @@ uintptr_t UContextReader::GetInstructionPointer(const ucontext_t* uc) {
   return uc->uc_mcontext.arm_pc;
 }
 
-void UContextReader::FillCPUContext(RawContextCPU *out, const ucontext_t *uc) {
+void UContextReader::FillCPUContext(RawContextCPU* out, const ucontext_t* uc) {
   out->context_flags = MD_CONTEXT_ARM_FULL;
 
   out->iregs[0] = uc->uc_mcontext.arm_r0;
@@ -192,9 +192,9 @@ uintptr_t UContextReader::GetInstructionPointer(const ucontext_t* uc) {
   return uc->uc_mcontext.pc;
 }
 
-void UContextReader::FillCPUContext(RawContextCPU *out, const ucontext_t *uc,
+void UContextReader::FillCPUContext(RawContextCPU* out, const ucontext_t* uc,
                                     const struct fpsimd_context* fpregs) {
-  out->context_flags = MD_CONTEXT_ARM64_FULL;
+  out->context_flags = MD_CONTEXT_ARM64_FULL_OLD;
 
   out->cpsr = static_cast<uint32_t>(uc->uc_mcontext.pstate);
   for (int i = 0; i < MD_CONTEXT_ARM64_REG_SP; ++i)
@@ -218,8 +218,14 @@ uintptr_t UContextReader::GetInstructionPointer(const ucontext_t* uc) {
   return uc->uc_mcontext.pc;
 }
 
-void UContextReader::FillCPUContext(RawContextCPU *out, const ucontext_t *uc) {
+void UContextReader::FillCPUContext(RawContextCPU* out, const ucontext_t* uc) {
+#if _MIPS_SIM == _ABI64
+  out->context_flags = MD_CONTEXT_MIPS64_FULL;
+#elif _MIPS_SIM == _ABIO32
   out->context_flags = MD_CONTEXT_MIPS_FULL;
+#else
+#error "This mips ABI is currently not supported (n32)"
+#endif
 
   for (int i = 0; i < MD_CONTEXT_MIPS_GPR_COUNT; ++i)
     out->iregs[i] = uc->uc_mcontext.gregs[i];
