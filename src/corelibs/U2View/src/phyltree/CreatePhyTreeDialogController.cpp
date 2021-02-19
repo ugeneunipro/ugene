@@ -173,7 +173,8 @@ bool CreatePhyTreeDialogController::checkMemory() {
 void CreatePhyTreeDialogController::initSaveController(const MultipleSequenceAlignmentObject *msaObject) {
     SaveDocumentControllerConfig config;
     QString urlStr;
-    if (FileAndDirectoryUtils::isDirectoryWritable(QFileInfo(msaObject->getDocument()->getURLString()).dir().path())) {
+    QString msaObjUrlString = msaObject->getDocument()->getURLString();
+    if (FileAndDirectoryUtils::isDirectoryWritable(QFileInfo(msaObjUrlString).dir().path())) {
         urlStr = msaObject->getDocument()->getURLString();
     } else {
         urlStr = GUrlUtils::getDefaultDataPath() + "/" + msaObject->getGObjectName();
