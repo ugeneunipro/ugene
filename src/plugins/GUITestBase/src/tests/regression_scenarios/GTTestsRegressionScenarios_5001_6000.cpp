@@ -56,6 +56,7 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/GUrlUtils.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/ADVSequenceObjectContext.h>
@@ -1984,6 +1985,22 @@ GUI_TEST_CLASS_DEFINITION(test_5499) {
     //    Expected state: the message about "not ABIF format" appears, UGENE doesn't crash.
     GTUtilsLog::checkContainsError(os, logTracer, "Not a valid ABIF file");
     GTGlobals::sleep();
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5450) {
+    QString readOnlyDir = QDir(sandBoxDir + "test_5450").absolutePath();
+    QFile::remove(GUrlUtils::getDefaultDataPath() + "/" + "COI.nwk");
+    QDir().mkpath(readOnlyDir);
+    GTFile::setReadOnly(os, readOnlyDir);
+    //1. open document samples/CLUSTALW/COI.aln
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, 100, readOnlyDir + "/COI.nwk"));
+
+    QAbstractButton *tree = GTAction::button(os, "Build Tree");
+    GTWidget::click(os, tree);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(QFile::remove(GUrlUtils::getDefaultDataPath() + "/" + "COI.nwk"), "Tree file didn't exists or can't be deleted!");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5517) {
