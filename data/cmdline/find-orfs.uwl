@@ -72,6 +72,10 @@ workflow find-orfs{
                 alias:name;
                 description:"Name of the result annotations marking found ORFs (using 'ORF' by default)";
             }
+            orf-search.strand {
+                alias:strand;
+                description:"Strand to search in";
+            }
             write-genbank.accumulate {
                 alias:accumulate;
                 description:"Accumulate all incoming data in one file or create separate files for each input. In the latter case, an incremental numerical suffix is added to the file name (using 'True' by default)";
