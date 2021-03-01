@@ -65,7 +65,6 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       seqAreaLayout(nullptr),
       nameAreaLayout(nullptr),
       collapseModel(new MaCollapseModel(this, editor->getMaRowIds())),
-      virtualOrderMode(false),
       enableCollapsingOfSingleRowGroups(false),
       scrollController(new ScrollController(editor, this, collapseModel)),
       baseWidthController(new BaseWidthController(this)),
@@ -290,14 +289,6 @@ void MaEditorWgt::sl_countUndo() {
 
 void MaEditorWgt::sl_countRedo() {
     GCounter::increment("Redo", editor->getFactoryId());
-}
-
-bool MaEditorWgt::isVirtualOrderMode() const {
-    return virtualOrderMode;
-}
-
-void MaEditorWgt::setVirtualOrderMode(bool flag) {
-    virtualOrderMode = flag;
 }
 
 }    // namespace U2

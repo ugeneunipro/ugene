@@ -134,19 +134,17 @@ public:
 
 public slots:
 
-    /**
-     * Enables/disables virtual order mode for the MSA.
-     * When enabled automatically groups sequences by their content: calls sl_groupSequencesByContent().
-     */
-    void sl_toggleVirtualOrderMode(bool enabled);
+    /** Switches between Original and Sequence row orders. */
+    void sl_toggleSequenceRowOrder(bool isOrderBySequence);
 
     void sl_copySelectionFormatted();
 
     /**
-     * Enables virtual grouping mode. Re-orders and re-groups sequences according to the name lists.
+     * Enables 'Free' grouping mode. Re-orders and re-groups rows according to the name lists.
      * TODO: rework to use sequence IDs. Multiple same-name sequences can be present in the list.
+     * TODO: move this method to MSAEditor class.
      */
-    void sl_setVirtualGroupingMode(const QList<QStringList> &);
+    void sl_enableFreeRowOrderMode(const QList<QStringList> &);
 
 protected:
     void focusOutEvent(QFocusEvent *fe);
@@ -201,6 +199,9 @@ private:
     void initRenderer();
     void runPasteTask(bool isPasteBefore);
 
+    /** Updates enabled/checked states of row-ordering actions based on the current row-order-mode in MSA. */
+    void updateRowOrderActionsState();
+
     void buildMenu(QMenu *m);
 
     void reverseComplementModification(ModificationType &type);
@@ -216,17 +217,18 @@ private:
     QAction *addSeqFromProjectAction;
 
     /**
-     * Toggles state of the virtual order mode.
+     * Switches between Sequence and Original row ordering modes.
+     * When checked the Sequence mode is ON.
      * TODO: this is a global action for MA editor. Move it to the M(S)AEditor.h
      */
-    QAction *toggleVirtualOrderModeAction;
+    QAction *toggleSequenceRowOrderAction;
 
     /**
-     * Joins sequences with the equal content into a single collapsible group.
-     * Enabled only in the virtual grouping mode.
+     * The action is enabled only in Sequence row ordering mode and triggers recompute of sequence order/groups by content.
      * TODO: this is a global action for MA editor. Move it to M(S)AEditor.h
+     * TODO: this action has no use today, because in Sequence mode MA editor automatically adjusts order/groups on every MA update.
      */
-    QAction *groupSequencesByContentAction;
+    QAction *refreshSequenceRowOrder;
 
     QAction *reverseComplementAction;
     QAction *reverseAction;

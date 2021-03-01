@@ -77,16 +77,12 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //2. Zoom in until overview selection transforms to cross-hair
     for (int i = 0; i < 24; i++) {
         GTKeyboardDriver::keyClick('=', Qt::ShiftModifier);
-        GTGlobals::sleep(100);
     }
-    GTGlobals::sleep(2000);
     //3. Move it to the very left
     GTKeyboardDriver::keyClick(Qt::Key_Home);
-    GTGlobals::sleep(2000);
     //4. Try to zoom out
     for (int i = 0; i < 24; i++) {
         GTKeyboardDriver::keyClick('-');
-        GTGlobals::sleep(100);
     }
     //Expected state: coordinates is not negative
     //CHECK_SET_ERR(AssemblyRuler::browser->calcAsmPosX(qint pos), "Coordinates is negative");
@@ -451,7 +447,6 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     URLWidget *urlWidget = qobject_cast<URLWidget *>(GTUtilsWorkflowDesigner::getParametersTable(os)->findChild<URLWidget *>());
     GTKeyboardDriver::keySequence("aaa");
     GTKeyboardDriver::keyPress(Qt::Key_Enter);
-    GTGlobals::sleep(1000);
     CHECK_SET_ERR(NULL != urlWidget, "Output file url widget was not found");
     QTreeWidget *completer = urlWidget->findChild<QTreeWidget *>();
     CHECK_SET_ERR(completer != NULL, "auto completer widget was not found");
@@ -489,7 +484,6 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     GTUtilsAssemblyBrowser::zoomToMax(os);
     GTUtilsDialog::waitForDialog(os, new ExportCoverageDialogFiller(os, actions));
     GTUtilsAssemblyBrowser::callExportCoverageDialog(os, GTUtilsAssemblyBrowser::Reads);
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0017) {
@@ -510,18 +504,15 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     //Expected: "Unassociate" is disabled.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsDisabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
-    GTGlobals::sleep();
 
     //5. Click "Set reference sequence".
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "setReferenceAction"));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
-    GTGlobals::sleep();
 
     //6. Right click on the reference area.
     //Expected: "Unassociate" is enabled.
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "unassociateReferenceAction", PopupChecker::IsEnabled));
     GTWidget::click(os, GTWidget::findWidget(os, "Assembly reference sequence area"), Qt::RightButton);
-    GTGlobals::sleep(100);
 
     //7. Click "Unassociate".
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "unassociateReferenceAction"));
@@ -634,7 +625,6 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Genbank/murine.gb"));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Set reference");
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0020) {
@@ -667,7 +657,6 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0022) {
@@ -684,7 +673,6 @@ GUI_TEST_CLASS_DEFINITION(test_0022) {
     GTUtilsNotifications::waitForNotification(os, true, "does not contain sequences");
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
     GTWidget::click(os, GTAction::button(os, "setReferenceAction"));
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0023) {
@@ -764,7 +752,6 @@ GUI_TEST_CLASS_DEFINITION(test_0026_1) {
     //    1. Open "_common_data/ugenedb/chrM.sorted.bam.ugenedb".
     GTFileDialog::openFile(os, testDir + "_common_data/ugenedb", "chrM.sorted.bam.ugenedb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     //    2. Select region to extract and import extracted file to project
     GTUtilsDialog::waitForDialog(os, new ExtractAssemblyRegionDialogFiller(os, sandBoxDir + "/test_26_1.bam", U2Region(228, 1488), "BAM"));
@@ -894,7 +881,6 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     for (int i = 0; i < 8; i++) {
         GTUtilsAssemblyBrowser::zoomIn(os, GTUtilsAssemblyBrowser::Hotkey);
     }
-    GTGlobals::sleep(1000);
 
     int initHorVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal)->value();
     int initVerVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Vertical)->value();
@@ -903,7 +889,6 @@ GUI_TEST_CLASS_DEFINITION(test_0030) {
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(-200, -200));
     GTMouseDriver::release();
 
-    GTGlobals::sleep(500);
     //    Check scrollbars, rules values etc.
     int finalHorVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Horizontal)->value();
     int finalVerVal = GTUtilsAssemblyBrowser::getScrollBar(os, Qt::Vertical)->value();
@@ -1050,7 +1035,6 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
     for (int i = 0; i < 10; i++) {
         GTUtilsAssemblyBrowser::zoomIn(os, GTUtilsAssemblyBrowser::Hotkey);
     }
-    GTGlobals::sleep();
     //    Check clipboard
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "copy_read_information", GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "assembly_reads_area"));
@@ -1062,7 +1046,6 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
     //    Check reads position
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy current position to clipboard", GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, GTWidget::findWidget(os, "assembly_reads_area"));
-    GTGlobals::sleep(1000);
     clipboard = GTClipboard::text(os);
     bool ok;
     clipboard.toInt(&ok);

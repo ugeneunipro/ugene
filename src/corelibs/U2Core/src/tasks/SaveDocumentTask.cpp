@@ -228,7 +228,6 @@ SaveMultipleDocuments::SaveMultipleDocuments(const QList<Document *> &docs, bool
                                                                          tr("Save document: %1").arg(doc->getURLString()),
                                                                          buttons,
                                                                          QApplication::activeWindow()));
-            messageBox->button(QMessageBox::Cancel)->hide();
 
             int res = saveAll ? QMessageBox::YesToAll : messageBox->exec();
 
@@ -286,7 +285,7 @@ GUrl SaveMultipleDocuments::chooseAnotherUrl(Document *doc) {
         msgBox->setInformativeText(tr("Do you want to save changes to another file?"));
 
         QPushButton *saveButton = msgBox->addButton(QMessageBox::Save);
-        msgBox->addButton(QMessageBox::Cancel);
+        QPushButton *cancelButton = msgBox->addButton(QMessageBox::Cancel);
         msgBox->setDefaultButton(saveButton);
         msgBox->setObjectName("permissionBox");
         msgBox->exec();
@@ -303,9 +302,13 @@ GUrl SaveMultipleDocuments::chooseAnotherUrl(Document *doc) {
 #endif
             if (!fileName.isEmpty()) {
                 url = fileName;
-            } else {
-                return GUrl();
+            } else {    // Cancel in "Save as" dialog clicked
+                cancel();
+                break;
             }
+        } else if (msgBox->clickedButton() == cancelButton) {
+            cancel();
+            break;
         } else {
             return GUrl();
         }

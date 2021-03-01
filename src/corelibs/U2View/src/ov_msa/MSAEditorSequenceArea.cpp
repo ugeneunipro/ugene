@@ -124,15 +124,15 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt *_ui, GScrollBar *hb, G
     addSeqFromProjectAction->setObjectName("Sequence from current project");
     connect(addSeqFromProjectAction, SIGNAL(triggered()), SLOT(sl_addSeqFromProject()));
 
-    toggleVirtualOrderModeAction = new QAction(QIcon(":core/images/collapse.png"), tr("Switch on/off collapsing"), this);
-    toggleVirtualOrderModeAction->setObjectName("Enable collapsing");
-    toggleVirtualOrderModeAction->setCheckable(true);
-    connect(toggleVirtualOrderModeAction, SIGNAL(toggled(bool)), SLOT(sl_toggleVirtualOrderMode(bool)));
+    toggleSequenceRowOrderAction = new QAction(QIcon(":core/images/collapse.png"), tr("Switch on/off collapsing"), this);
+    toggleSequenceRowOrderAction->setObjectName("toggle_sequence_row_order_action");
+    toggleSequenceRowOrderAction->setCheckable(true);
+    connect(toggleSequenceRowOrderAction, SIGNAL(toggled(bool)), SLOT(sl_toggleSequenceRowOrder(bool)));
 
-    groupSequencesByContentAction = new QAction(QIcon(":core/images/collapse_update.png"), tr("Update collapsed groups"), this);
-    groupSequencesByContentAction->setObjectName("Update collapsed groups");
-    groupSequencesByContentAction->setEnabled(false);
-    connect(groupSequencesByContentAction, SIGNAL(triggered()), SLOT(sl_groupSequencesByContent()));
+    refreshSequenceRowOrder = new QAction(QIcon(":core/images/collapse_update.png"), tr("Update collapsed groups"), this);
+    refreshSequenceRowOrder->setObjectName("refresh_sequence_row_order_action");
+    refreshSequenceRowOrder->setEnabled(false);
+    connect(refreshSequenceRowOrder, SIGNAL(triggered()), SLOT(sl_groupSequencesByContent()));
 
     reverseComplementAction = new QAction(tr("Replace selected rows with reverse-complement"), this);
     reverseComplementAction->setObjectName("replace_selected_rows_with_reverse-complement");
@@ -227,15 +227,25 @@ void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo &modInf
         return;
     }
     MaCollapseModel *collapseModel = ui->getCollapseModel();
-    MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
-
-    if (!ui->isVirtualOrderMode()) {
+    auto mode = editor->getRowOrderMode();
+    if (mode == MaEditorRowOrderMode::Original) {
         // Synchronize collapsible model with a current alignment.
         collapseModel->reset(getEditor()->getMaRowIds());
         return;
+    } else if (mode == MaEditorRowOrderMode::Free) {
+        // Check if the modification is compatible with the current view state: all rows have view properties assigned. Reset to the Original order if not.
+        QSet<qint64> maRowIds = getEditor()->getMaRowIds().toSet();
+        QSet<qint64> viewModelRowIds = collapseModel->getAllRowIds();
+        if (viewModelRowIds != maRowIds) {
+            sl_toggleSequenceRowOrder(false);
+        }
+        return;
     }
 
-    // Create row groups by similarity. Do not modify the alignment.
+    SAFE_POINT(mode == MaEditorRowOrderMode::Sequence, "Unexpected row order mode", );
+
+    // Order and group rows by sequence content.
+    MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
     QList<QList<int>> rowGroups = groupRowsBySimilarity(msaObject->getRows());
     QVector<MaCollapsibleGroup> newCollapseGroups;
 
@@ -263,8 +273,8 @@ void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
     t->addAction(removeAllGapsAction);
     t->addSeparator();
 
-    t->addAction(toggleVirtualOrderModeAction);
-    t->addAction(groupSequencesByContentAction);
+    t->addAction(toggleSequenceRowOrderAction);
+    t->addAction(refreshSequenceRowOrder);
     t->addSeparator();
 }
 
@@ -353,7 +363,7 @@ void MSAEditorSequenceArea::sl_updateActions() {
     saveSequence->setEnabled(!isAlignmentEmpty());
     addSeqFromProjectAction->setEnabled(!readOnly);
     addSeqFromFileAction->setEnabled(!readOnly);
-    toggleVirtualOrderModeAction->setEnabled(!readOnly && !isAlignmentEmpty());
+    toggleSequenceRowOrderAction->setEnabled(!readOnly && !isAlignmentEmpty());
 
     //Update actions of "Edit" group
     bool canEditAlignment = !readOnly && !isAlignmentEmpty();
@@ -522,8 +532,8 @@ void MSAEditorSequenceArea::sl_saveSequence() {
 void MSAEditorSequenceArea::sl_modelChanged() {
     MaCollapseModel *collapsibleModel = ui->getCollapseModel();
     if (!collapsibleModel->hasGroupsWithMultipleRows()) {
-        toggleVirtualOrderModeAction->setChecked(false);
-        groupSequencesByContentAction->setEnabled(false);
+        toggleSequenceRowOrderAction->setChecked(false);
+        refreshSequenceRowOrder->setEnabled(false);
     }
     MaEditorSequenceArea::sl_modelChanged();
 }
@@ -684,33 +694,21 @@ void MSAEditorSequenceArea::sl_addSeqFromProject() {
     }
 }
 
-void MSAEditorSequenceArea::sl_toggleVirtualOrderMode(bool enabled) {
+void MSAEditorSequenceArea::sl_toggleSequenceRowOrder(bool isOrderBySequence) {
     CHECK(getEditor() != nullptr, );
     GCOUNTER(cvar, "Switch collapsing mode");
 
-    MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
-    if (msaObject == nullptr || msaObject->isStateLocked()) {
-        if (toggleVirtualOrderModeAction->isChecked()) {
-            toggleVirtualOrderModeAction->setChecked(false);
-            groupSequencesByContentAction->setEnabled(false);
-        }
-        return;
-    }
+    MaEditorRowOrderMode newMode = isOrderBySequence ? MaEditorRowOrderMode::Sequence : MaEditorRowOrderMode::Original;
+    CHECK(editor->getRowOrderMode() != newMode, );
 
-    bool isChanged = ui->isVirtualOrderMode() != enabled;
-    ui->setVirtualOrderMode(enabled);
-    groupSequencesByContentAction->setEnabled(enabled);
-
-    if (enabled) {
+    editor->setRowOrderMode(newMode);
+    updateRowOrderActionsState();
+    if (isOrderBySequence) {
         sl_groupSequencesByContent();
     } else {
         ui->getCollapseModel()->reset(editor->getMaRowIds());
     }
-
-    if (isChanged) {
-        setSelection(MaEditorSelection());
-    }
-
+    setSelection(MaEditorSelection());
     ui->getScrollController()->updateVerticalScrollBar();
     emit si_collapsingModeChanged();
 }
@@ -830,7 +828,7 @@ void MSAEditorSequenceArea::sl_complementCurrentSelection() {
     reverseComplementModification(type);
 }
 
-void MSAEditorSequenceArea::sl_setVirtualGroupingMode(const QList<QStringList> &collapsedGroups) {
+void MSAEditorSequenceArea::sl_enableFreeRowOrderMode(const QList<QStringList> &collapsedGroups) {
     MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
     QStringList rowNames = msaObject->getMultipleAlignment()->getRowNames();
     QList<qint64> rowIds = msaObject->getRowIds();
@@ -851,8 +849,15 @@ void MSAEditorSequenceArea::sl_setVirtualGroupingMode(const QList<QStringList> &
         bool isCollapsed = maRowIndexList.length() > 1;
         collapsibleGroupList << MaCollapsibleGroup(maRowIndexList, maRowIdList, isCollapsed);
     }
-    ui->setVirtualOrderMode(true);
+    editor->setRowOrderMode(MaEditorRowOrderMode::Free);
+    updateRowOrderActionsState();
     ui->getCollapseModel()->update(collapsibleGroupList);
+}
+
+void MSAEditorSequenceArea::updateRowOrderActionsState() {
+    auto mode = editor->getRowOrderMode();
+    toggleSequenceRowOrderAction->setChecked(mode == MaEditorRowOrderMode::Sequence);
+    refreshSequenceRowOrder->setEnabled(toggleSequenceRowOrderAction->isChecked());
 }
 
 ExportHighlightingTask::ExportHighlightingTask(ExportHighligtingDialogController *dialog, MaEditor *maEditor)

@@ -64,6 +64,7 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
       zoomFactor(0),
       cachedColumnWidth(0),
       cursorPosition(QPoint(0, 0)),
+      rowOrderMode(MaEditorRowOrderMode::Original),
       exportHighlightedAction(NULL),
       clearSelectionAction(NULL) {
     GCOUNTER(cvar, factoryId);
@@ -523,6 +524,14 @@ void MaEditor::selectRows(int firstViewRowIndex, int numberOfRows) {
 QRect MaEditor::getUnifiedSequenceFontCharRect(const QFont &sequenceFont) const {
     QFontMetrics fontMetrics(sequenceFont, ui);
     return fontMetrics.boundingRect('W');
+}
+
+MaEditorRowOrderMode MaEditor::getRowOrderMode() const {
+    return rowOrderMode;
+}
+
+void MaEditor::setRowOrderMode(MaEditorRowOrderMode mode) {
+    rowOrderMode = mode;
 }
 
 }    // namespace U2

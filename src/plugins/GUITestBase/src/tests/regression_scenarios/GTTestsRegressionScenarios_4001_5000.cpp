@@ -4109,14 +4109,16 @@ GUI_TEST_CLASS_DEFINITION(test_4674_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4674_2) {
-    // 1. Open COI.aln.
-    // 2. Build the tree and check that it is synchronized with MSA.
-    // 3. Insert a gap.
-    //    Expected state: tree is not in sync anymore.
-    // 4. Sync tree.
-    //    Expected state: tree is in sync again.
-    // 5. Delete some character
-    //    Expected state: Tree is not in sync anymore.
+    // Open COI.aln.
+    // Build the tree and check that it is synchronized with MSA.
+    // Insert a gap.
+    //   Expected state: tree is still in sync.
+    // Drag & drop sequence (change order).
+    //   Expected state: tree is not in sync anymore.
+    // Sync tree.
+    //  Expected state: tree is in sync again.
+    // Delete some character
+    //  Expected state: Tree is still in sync mode.
 
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -4129,17 +4131,26 @@ GUI_TEST_CLASS_DEFINITION(test_4674_2) {
     QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/1");
 
+    // Add gap to the alignment. The tree must keep sync mode, because sync mode is by the name list order only and the name list is not changed.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(10, 10));
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/1");
-
-    GTWidget::click(os, syncModeButton);
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/2");
 
+    // Change sequences order by dragging.
+    GTUtilsMsaEditor::clickSequence(os, 2);
+    QPoint dragFromPoint = GTUtilsMsaEditor::getSequenceNameRect(os, 2).center();
+    QPoint dragToPoint = GTUtilsMsaEditor::getSequenceNameRect(os, 4).center();
+    GTMouseDriver::dragAndDrop(dragFromPoint, dragToPoint);
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
+
+    // Enable sync mode again.
+    GTWidget::click(os, syncModeButton);
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/3");
+
+    // Delete gap from the alignment. The tree must keep sync mode, because sync mode is by the name list order only and the name list is not changed.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(10, 10));
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/2");
-    CHECK_SET_ERR(syncModeButton->isEnabled(), "Sync mode must be enabled");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/4");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4687) {

@@ -6923,6 +6923,93 @@ GUI_TEST_CLASS_DEFINITION(test_6999) {
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7000) {
+    // 1. Create read_only_dir
+    QDir().mkpath(sandBoxDir + "read_only_dir");
+    GTFile::setReadOnly(os, sandBoxDir + "read_only_dir");
+
+    // 2. Create new project and open samples/FASTA/human_T1.fa
+    GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "New Project", sandBoxDir + "proj.uprj"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "New project...");
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // 3. Call "New annotation" dialog (Ctrl+N).
+    // 4. Set region 1..1.
+    // 5. Set as "New document" "path to/read_only_dir/annot.gb".
+    // 6. Click "Create".
+    QString annotationPath = QFileInfo(sandBoxDir + "read_only_dir/annot.gb").absoluteFilePath();
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "<auto>", "", "1..1", annotationPath));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    GTLogTracer log("Task {Shutdown} canceled");
+
+    // 7.1. Close UGENE.
+    // 7.2. Click "Yes", then "Save", then "Cancel".
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, "/", GTGlobals::UseMouse, GTFileDialogUtils::Cancel));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Save, "permission", "permissionBox"));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Yes", "Save document: "));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Exit");
+    //      Expected state: 1) The log has "Task {Shutdown} canceled" message;
+    //                      2) Project tree has "annot.gb" document;
+    //                      3) Annotations tree has "annot.gb" item.
+    GTUtilsLog::checkContainsMessage(os, log);
+    GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
+    GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 1)");
+
+    GTLogTracer log1("Task {Shutdown} canceled");
+
+    // 8.1. Close UGENE.
+    // 8.2. Click "Yes", then "Cancel".
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Cancel, "permission", "permissionBox"));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Yes", "Save document: "));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Exit");
+    //      Expected state: similar.
+    GTUtilsLog::checkContainsMessage(os, log1);
+    GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
+    GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 1)");
+
+    GTLogTracer log2("Task {Shutdown} canceled");
+
+    // 9.1. Close UGENE.
+    // 9.2. Click "Cancel".
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Cancel"));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Exit");
+    //      Expected state: similar.
+    GTUtilsLog::checkContainsMessage(os, log2);
+    GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
+    GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 1)");
+
+    // 10. Create another annotation with region 1..1 and path "path to/read_only_dir/annot1.gb".
+    annotationPath = QFileInfo(sandBoxDir + "read_only_dir/annot1.gb").absoluteFilePath();
+    GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "Misc. Feature", "", "1..1", annotationPath));
+    GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+
+    class Clicker : public CustomScenario {
+    public:
+        void run(GUITestOpStatus& os) override {
+            auto labelsList = GTWidget::findLabelByText(os, "Save document", GTWidget::getActiveModalWidget(os));
+            QMessageBox::StandardButton b = labelsList.first()->text().endsWith("annot1.gb") ? QMessageBox::Cancel : QMessageBox::No;
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, b));
+        }
+    };
+
+    GTLogTracer log3("Task {Shutdown} canceled");
+
+    // 11. Close UGENE.
+    // 12. Click "No", then "Cancel"
+    GTUtilsDialog::waitForDialog(os, new Filler(os, "", new Clicker()));
+    GTUtilsDialog::waitForDialog(os, new Filler(os, "", new Clicker()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "Exit");
+    //     Expected state: similar.
+    GTUtilsLog::checkContainsMessage(os, log3);
+    GTUtilsProjectTreeView::getItemCenter(os, "annot.gb");
+    GTUtilsProjectTreeView::getItemCenter(os, "annot1.gb");
+    GTUtilsAnnotationsTreeView::findItem(os, "Annotations [annot.gb] *");
+    GTUtilsAnnotationsTreeView::findItem(os, "Annotations [annot1.gb] *");
+}
+
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2

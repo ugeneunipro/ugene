@@ -107,15 +107,6 @@ public:
 
     QAction *getRedoAction() const;
 
-    /* Returns 'true' if the virtual ordering/grouping mode is enabled. See docs for 'virtualOrderMode' for more details. */
-    bool isVirtualOrderMode() const;
-
-    /*
-     * Sets virtual grouping mode ON or OFF.
-     * A trivial method that updates the flag in the view model with no other actions/callbacks.
-     */
-    void setVirtualOrderMode(bool flag);
-
     MaCollapseModel *getCollapseModel() const {
         return collapseModel;
     }
@@ -174,27 +165,7 @@ protected:
 
     MsaUndoRedoFramework *undoFWK;
 
-    MaCollapseModel *collapseModel;
-
-    /**
-     * If true, the 'collapseModel' holds virtual ordering/grouping state.
-     * Otherwise 'collapseModel' contains a trivial (1:1) mapping of in-view row indexes to the file indexes that are always the same.
-     *
-     * This virtual state is never saved to MA file and is preserved in the current view only in runtime.
-     *
-     * Examples of use of virtual grouping/ordering state:
-     *  - Group of sequences with the common content: reorder + groups.
-     *  - Tree sync mode: reorder + groups.
-     *  - Any other mode that requires grouping & expand-collapse capabilities.
-     *
-     * Examples of non-virtual (in-file order modifications):
-     *  - Sort by name, length, leading gap size.
-     *  - Drag & drop or rows in the non-virutalOrderingMode.
-     *
-     *  The virtual ordering/grouping can be applied to read-only alignments.
-     *  Any changes to the order while in the virtualOrderMode are not saved to the MA file.
-     */
-    bool virtualOrderMode;
+    MaCollapseModel *const collapseModel;
 
     bool enableCollapsingOfSingleRowGroups;
     ScrollController *scrollController;

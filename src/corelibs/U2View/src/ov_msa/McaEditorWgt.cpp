@@ -75,8 +75,6 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     nameAreaLayout->insertWidget(0, refName);
     nameAreaLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
 
-    // MCA editor has "always ON" collapsible mode.
-    virtualOrderMode = true;
     enableCollapsingOfSingleRowGroups = true;
     collapseModel->reset(editor->getMaRowIds());
 

@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 #include <base_dialogs/GTFileDialog.h>
+#include <primitives/GTAction.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/GTWidget.h>
@@ -33,7 +34,9 @@
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsPhyTree.h"
+#include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 
 namespace U2 {
 
@@ -73,6 +76,59 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     nameList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     expectedExpandedTreeNameList = QStringList({"h", "b", "f", "d", "c", "e", "g", "a"});
     CHECK_SET_ERR(nameList == expectedExpandedTreeNameList, "Restored full tree name list not matched: " + nameList.join(","));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0002) {
+    // Check that after a tree is built and sync mode is enabled the MaEditorRowOrder::Free mode is enabled:
+    //  - 'toggle_sequence_row_order_action' is unchecked.
+    //  - 'refresh_sequence_row_order_action' is disabled.
+    //  - sequences are ordered by the tree.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    QStringList originalSequenceNames1 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
+
+    GTUtilsProjectTreeView::toggleView(os);    // Close project view to make all actions on toolbar available.
+
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "msa_editor_tree_test_0002", 0, 0, true));
+    GTWidget::click(os, GTAction::button(os, "Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QStringList byTreeSequenceNames1 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
+    QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
+    QAbstractButton *toggleSequenceOrderButton = GTAction::button(os, "toggle_sequence_row_order_action");
+    QAbstractButton *refreshSequenceOrderButton = GTAction::button(os, "refresh_sequence_row_order_action");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/1");
+    CHECK_SET_ERR(!toggleSequenceOrderButton->isChecked(), "toggleSequenceOrderButton must be unchecked/1");
+    CHECK_SET_ERR(!refreshSequenceOrderButton->isEnabled(), "refreshSequenceOrderButton must be disabled/1");
+    CHECK_SET_ERR(originalSequenceNames1 != byTreeSequenceNames1, "MSA must be re-ordered by tree");
+
+    // Switch to the 'Sequence' mode.
+    GTWidget::click(os, toggleSequenceOrderButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/1");
+    CHECK_SET_ERR(toggleSequenceOrderButton->isChecked(), "toggleSequenceOrderButton must be checked/1");
+    CHECK_SET_ERR(refreshSequenceOrderButton->isEnabled(), "refreshSequenceOrderButton must be enabled/1");
+
+    // Switch to the 'Original' mode.
+    GTWidget::click(os, toggleSequenceOrderButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QStringList originalSequenceNames2 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF/2");
+    CHECK_SET_ERR(!toggleSequenceOrderButton->isChecked(), "toggleSequenceOrderButton must be unchecked/2");
+    CHECK_SET_ERR(!refreshSequenceOrderButton->isEnabled(), "refreshSequenceOrderButton must be disabled/2");
+    CHECK_SET_ERR(originalSequenceNames1 == originalSequenceNames2, "original sequence name list is not restored");
+
+    // Switch back to the order-by-tree (MaEditorRowOrder::Free) mode.
+    GTWidget::click(os, syncModeButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QStringList byTreeSequenceNames2 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/2");
+    CHECK_SET_ERR(!toggleSequenceOrderButton->isChecked(), "toggleSequenceOrderButton must be unchecked/3");
+    CHECK_SET_ERR(!refreshSequenceOrderButton->isEnabled(), "refreshSequenceOrderButton must be disabled/3");
+    CHECK_SET_ERR(byTreeSequenceNames1 == byTreeSequenceNames2, "by-tree sequence name list is not restored");
 }
 
 }    // namespace GUITest_common_scenarios_msa_editor_tree

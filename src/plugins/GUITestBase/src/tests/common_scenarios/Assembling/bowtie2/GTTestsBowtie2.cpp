@@ -59,7 +59,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     indexList << testDir + "_common_data/scenarios/sandbox/human_T1_cutted.rev.1.bt2";
     indexList << testDir + "_common_data/scenarios/sandbox/human_T1_cutted.rev.2.bt2";
 
-    GTGlobals::sleep(500);
     for (int i = 0; i < indexList.size(); i++) {
         CHECK_SET_ERR(GTFile::check(os, indexList[i]), "Index file " + indexList[i] + " is missing!");
     }
@@ -122,8 +121,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
                                                 << "Map reads to reference...");
     CHECK_OP(os, );
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
@@ -190,8 +187,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
                                                 << "Map reads to reference...");
     CHECK_OP(os, );
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
@@ -266,8 +261,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
                                                 << "Map reads to reference...");
     CHECK_OP(os, );
     GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
@@ -296,9 +289,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
                                                 << "Map reads to reference...");
 
     GTUtilsDialog::waitForDialog(os, new ImportBAMFileFiller(os));
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 }
 
 }    // namespace GUITest_Bowtie2

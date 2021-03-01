@@ -3847,9 +3847,13 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
             CHECK_SET_ERR(!hasTextInTheCell, "Expected to have no text with the given zoom range");
             break;
         }
-        GTUtilsMcaEditor::zoomOut(os);
-        CHECK_SET_ERR(rect.width() < prevRect.width(), "Zoom Out had no effect");
+        // Check that at least one rect dimension was reduced. Some fonts on Windows may have equal width on "Zoom Out" but in this case they always have different height.
+        bool isWidthReduced = rect.width() < prevRect.width();
+        bool isHeightReduced = rect.height() < prevRect.height();
+        CHECK_SET_ERR(isWidthReduced || isHeightReduced, "Zoom Out had no effect");
         prevRect = rect;
+
+        GTUtilsMcaEditor::zoomOut(os);
     }
 }
 

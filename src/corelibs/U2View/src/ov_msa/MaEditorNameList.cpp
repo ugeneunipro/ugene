@@ -49,8 +49,6 @@
 
 namespace U2 {
 
-#define CHILDREN_OFFSET 8
-
 MaEditorNameList::MaEditorNameList(MaEditorWgt *_ui, QScrollBar *_nhBar)
     : labels(NULL),
       ui(_ui),
@@ -170,10 +168,10 @@ void MaEditorNameList::updateScrollBar() {
     foreach (const MultipleAlignmentRow &row, maObj->getMultipleAlignment()->getRows()) {
         maxNameWidth = qMax(fm.width(row->getName()), maxNameWidth);
     }
-    // adjustment for branch primitive in collapsing mode
-    if (ui->isVirtualOrderMode()) {
-        maxNameWidth += 2 * CROSS_SIZE + CHILDREN_OFFSET;
-    }
+
+    // Adjustment for branch primitive in collapsing mode
+    bool hasChildLabels = ui->getCollapseModel()->hasGroupsWithMultipleRows();
+    maxNameWidth += getGroupExpanderWidth() + (hasChildLabels ? CHILDREN_OFFSET : 0);
 
     int availableWidth = getAvailableWidth();
     int nSteps = 1;
@@ -188,6 +186,10 @@ void MaEditorNameList::updateScrollBar() {
 
     nhBar->setVisible(nSteps > 1);
     connect(nhBar, SIGNAL(valueChanged(int)), SLOT(sl_completeRedraw()));
+}
+
+int MaEditorNameList::getGroupExpanderWidth() const {
+    return ui->isCollapsingOfSingleRowGroupsEnabled() || ui->getCollapseModel()->hasGroupsWithMultipleRows() ? 2 * CROSS_SIZE : 0;
 }
 
 int MaEditorNameList::getSelectedMaRow() const {
@@ -679,7 +681,7 @@ void MaEditorNameList::drawContent(QPainter &painter) {
     SAFE_POINT_OP(os, );
 
     const MaCollapseModel *collapsibleModel = ui->getCollapseModel();
-    int crossSpacing = ui->isVirtualOrderMode() ? CROSS_SIZE * 2 : 0;
+    int crossSpacing = getGroupExpanderWidth();
     const ScrollController *scrollController = ui->getScrollController();
     int firstVisibleViewRow = scrollController->getFirstVisibleViewRowIndex(true);
     int lastVisibleViewRow = scrollController->getLastVisibleViewRowIndex(height(), true);
@@ -863,9 +865,6 @@ void MaEditorNameList::scrollSelectionToView(bool fromStart) {
 }
 
 bool MaEditorNameList::triggerExpandCollapseOnSelectedRow(bool collapse) {
-    if (!ui->isVirtualOrderMode()) {
-        return false;
-    }
     U2Region selection = getSelection();
     MaCollapseModel *collapseModel = ui->getCollapseModel();
     int minRowsInGroupToShowExpandCollapse = ui->isCollapsingOfSingleRowGroupsEnabled() ? 1 : 2;
@@ -877,13 +876,10 @@ bool MaEditorNameList::triggerExpandCollapseOnSelectedRow(bool collapse) {
             groupsToToggle << groupIndex;
         }
     }
-    if (groupsToToggle.isEmpty()) {
-        return false;
-    }
     foreach (int groupIndex, groupsToToggle) {
         collapseModel->toggleGroup(groupIndex, collapse);
     }
-    return true;
+    return !groupsToToggle.isEmpty();
 }
 
 }    // namespace U2

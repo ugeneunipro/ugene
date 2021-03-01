@@ -212,20 +212,20 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     // Tests for investigation
     //////////////////////////////////////////////////////////////////////////
 
-/*  REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0004);
+/*
+    REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0004);
     REGISTER_TEST(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0007);
     REGISTER_TEST(GUITest_common_scenarios_primer_library::test_0008);
     REGISTER_TEST(GUITest_common_scenarios_shared_db_wd::run_workflow_gui_test_0003);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0014);
     REGISTER_TEST(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0001);
-    REGISTER_TEST(GUITest_regression_scenarios::test_3276);*/
+*/
 
     
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0004, "UGENE-4835");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_options_panel_MSA::tree_settings_test_0007, "UGENE-5188");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::tool_launch_nodes_test_0014, "UGENE-5979");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_workflow_dashboard::tree_nodes_creation_test_0001, "UGENE-5979");
-    REGISTER_TEST_IGNORED(GUITest_regression_scenarios::test_3276, "Obsolete, should be replaced by UGENE-6104");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_primer_library::test_0008, "UGENE-5609");
     REGISTER_TEST_IGNORED(GUITest_common_scenarios_shared_db_wd::run_workflow_gui_test_0003, "names conflict in database");
 
@@ -954,6 +954,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3085_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_3086);
     REGISTER_TEST(GUITest_regression_scenarios::test_3092);
+
     REGISTER_TEST(GUITest_regression_scenarios::test_3101);
     REGISTER_TEST(GUITest_regression_scenarios::test_3102);
     REGISTER_TEST(GUITest_regression_scenarios::test_3103);
@@ -973,10 +974,10 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3143);
     REGISTER_TEST(GUITest_regression_scenarios::test_3144);
     REGISTER_TEST(GUITest_regression_scenarios::test_3155);
-
     REGISTER_TEST(GUITest_regression_scenarios::test_3170);
     REGISTER_TEST(GUITest_regression_scenarios::test_3175);
     REGISTER_TEST(GUITest_regression_scenarios::test_3180);
+
     REGISTER_TEST(GUITest_regression_scenarios::test_3209_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_3214);
     REGISTER_TEST(GUITest_regression_scenarios::test_3216_1);
@@ -998,12 +999,13 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_3266);
     REGISTER_TEST(GUITest_regression_scenarios::test_3270);
     REGISTER_TEST(GUITest_regression_scenarios::test_3274);
-
+    REGISTER_TEST(GUITest_regression_scenarios::test_3276);
     REGISTER_TEST(GUITest_regression_scenarios::test_3277);
     REGISTER_TEST(GUITest_regression_scenarios::test_3279);
     REGISTER_TEST(GUITest_regression_scenarios::test_3283);
     REGISTER_TEST(GUITest_regression_scenarios::test_3287);
     REGISTER_TEST(GUITest_regression_scenarios::test_3288);
+
     REGISTER_TEST(GUITest_regression_scenarios::test_3305);
     REGISTER_TEST(GUITest_regression_scenarios::test_3306);
     REGISTER_TEST(GUITest_regression_scenarios::test_3307);
@@ -1732,6 +1734,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6990_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_6995);
     REGISTER_TEST(GUITest_regression_scenarios::test_6999);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7000);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_7003);
     REGISTER_TEST(GUITest_regression_scenarios::test_7014);
@@ -2407,6 +2410,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     // Common scenarios/msa_editor/tree
     /////////////////////////////////////////////////////////////////////////
     REGISTER_TEST(GUITest_common_scenarios_msa_editor_tree::test_0001);
+    REGISTER_TEST(GUITest_common_scenarios_msa_editor_tree::test_0002);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/edit

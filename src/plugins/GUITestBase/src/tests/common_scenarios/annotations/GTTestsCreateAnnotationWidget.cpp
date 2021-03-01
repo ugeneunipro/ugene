@@ -201,7 +201,6 @@ public:
     }
 
     void run(HI::GUITestOpStatus &os) {
-        GTGlobals::sleep(1000);
         GTMouseDriver::release();
         QMenu *activePopupMenu = qobject_cast<QMenu *>(QApplication::activePopupWidget());
         CHECK_SET_ERR(NULL != activePopupMenu, "Active popup menu is NULL");
@@ -506,7 +505,6 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
             //    3. Enter "tel".
             GTKeyboardDriver::keySequence("tel");
-            GTGlobals::sleep(500);
 
             //    Expected state: "Telomere" type is selected. Cancel the dialog.
             const QString type = getTypeFromFullWidget(os, dialog);
@@ -534,9 +532,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
             //    5. Click to the annotation type combobox. Enter "tel". Click "Enter".
             GTWidget::click(os, GTWidget::findExactWidget<QComboBox *>(os, "cbAnnotationType", dialog));
             GTKeyboardDriver::keySequence("tel");
-            GTGlobals::sleep();
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
-            GTGlobals::sleep();
 
             //    Expected state: "Telomere" type is selected. Cancel the dialog.
             const QString type = getTypeFromNormalWidget(os, dialog);
@@ -560,9 +556,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     //    Expected state: "Telomere" type is selected. Cancel the dialog.
     GTWidget::click(os, GTWidget::findExactWidget<QComboBox *>(os, "cbAnnotationType"));
     GTKeyboardDriver::keySequence("tel");
-    GTGlobals::sleep();
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
-    GTGlobals::sleep();
 
     const QString type = getTypeFromOptionsPanelWidget(os);
     CHECK_SET_ERR("Telomere" == type,
@@ -3061,7 +3055,6 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
     //    8. Select "Create new table" option. Check if destination table widgets are enabled or disabled.
     //GTWidget::click(os, GTWidget::findWidget(os, "rbCreateNewTable"));
     GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "rbCreateNewTable"));
-    GTGlobals::sleep();
 
     //    Expected state:
     //        Existing table radio button - enabled
@@ -3081,7 +3074,6 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
 
     //    9. Select "Existing table" option. Check if destination table widgets are enabled or disabled.
     GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "rbExistingTable"));
-    GTGlobals::sleep();
 
     //    Expected state:
     //        Existing table radio button - enabled
@@ -3101,7 +3093,6 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
 
     //    10. Open "Annotation parameters" group. Check "Use pattern name" checkbox state.
     GTUtilsOptionPanelSequenceView::openAnnotationParametersShowHideWidget(os);
-    GTGlobals::sleep();
 
     //    Expected state: it is visible and enabled.
     chbUsePatternNames = GTWidget::findExactWidget<QCheckBox *>(os, "chbUsePatternNames");

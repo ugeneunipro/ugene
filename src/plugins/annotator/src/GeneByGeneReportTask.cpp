@@ -290,6 +290,10 @@ GeneByGeneReportTask::~GeneByGeneReportTask() {
     geneData.clear();
 }
 
+const GeneByGeneReportSettings &GeneByGeneReportTask::getSettings() const {
+    return settings;
+}
+
 void GeneByGeneReportTask::run() {
     if (isCanceled()) {
         return;

@@ -119,6 +119,12 @@ protected:
     void moveSelectedRegion(int shift);
 
     /**
+     * Returns width required by the group expander element in the active row ordering mode.
+     * The group expander requires space only if there are collapsible groups in the view.
+     */
+    int getGroupExpanderWidth() const;
+
+    /**
      * Returns collapsible group related to the expand-collapse button located by the given screen coordinate.
      * Returns NULL if the given coordinate is not for expand-collapse block.
      */

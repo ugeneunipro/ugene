@@ -65,18 +65,14 @@ public:
         : name(storeName), path(filePath), minFeatureSize(0) {
     }
     void load();
-    bool isLoaded() const {
-        return !features.isEmpty();
-    }
-    int getMinFeatureSize() const {
-        return minFeatureSize;
-    }
-    const QString &getName() const {
-        return name;
-    }
-    const QList<FeaturePattern> &getFeatures() const {
-        return features;
-    }
+
+    bool isLoaded() const;
+
+    int getMinFeatureSize() const;
+
+    const QString &getName() const;
+
+    const QList<FeaturePattern> &getFeatures() const;
 };
 
 typedef QSharedPointer<FeatureStore> SharedFeatureStore;

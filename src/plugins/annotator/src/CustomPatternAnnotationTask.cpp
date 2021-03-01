@@ -157,6 +157,21 @@ QList<Task *> CustomPatternAnnotationTask::onSubTaskFinished(Task *subTask) {
 
 //////////////////////////////////////////////////////////////////////////
 // FeatureStore
+bool FeatureStore::isLoaded() const {
+    return !features.isEmpty();
+}
+
+int FeatureStore::getMinFeatureSize() const {
+    return minFeatureSize;
+}
+
+const QString &FeatureStore::getName() const {
+    return name;
+}
+
+const QList<FeaturePattern> &FeatureStore::getFeatures() const {
+    return features;
+}
 
 void FeatureStore::load() {
     QFile inputFile(path);

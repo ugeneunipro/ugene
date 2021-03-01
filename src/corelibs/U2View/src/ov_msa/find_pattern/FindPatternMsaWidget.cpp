@@ -1115,8 +1115,8 @@ void FindPatternMsaWidget::sl_groupResultsButtonClicked() {
     MultipleSequenceAlignmentObject *maObject = msaEditor->getMaObject();
     CHECK(!maObject->isStateLocked(), );
 
-    // Drop grouping mode.
-    msaEditor->getUI()->getSequenceArea()->sl_toggleVirtualOrderMode(false);
+    // Switch to the Original row order mode.
+    msaEditor->getUI()->getSequenceArea()->sl_toggleSequenceRowOrder(false);
 
     QSet<qint64> resultUidSet;
     for (const FindPatternWidgetResult &result : qAsConst(allSearchResults)) {

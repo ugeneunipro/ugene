@@ -150,6 +150,9 @@ public:
         return hasGroupsWithMultipleItems;
     }
 
+    /** Returns all row ids in the model. */
+    QSet<qint64> getAllRowIds() const;
+
 signals:
     void si_aboutToBeToggled();
     void si_toggled();

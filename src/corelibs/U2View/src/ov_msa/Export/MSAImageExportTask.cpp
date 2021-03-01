@@ -203,6 +203,11 @@ void MSAImageExportToSvgTask::run() {
     int ok = msaSettings.exportAll || (!msaSettings.region.isEmpty() && !msaSettings.seqIdx.isEmpty());
     SAFE_POINT_EXT(ok, setError(tr("Nothing to export")), );
 
+    // Repeating logic of ExportToBitmap task. TODO: use common code for both tasks.
+    if (msaSettings.exportAll) {
+        msaSettings.region = U2Region(0, mObj->getLength());
+    }
+
     QSvgGenerator generator;
     generator.setFileName(settings.fileName);
 
@@ -301,21 +306,14 @@ void MSAImageExportController::initSettingsWidget() {
     connect(settingsUi->selectRegionButton, SIGNAL(clicked()), SLOT(sl_showSelectRegionDialog()));
     connect(settingsUi->comboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_regionChanged()));
 
-    SAFE_POINT(ui->getSequenceArea() != NULL, tr("MSA sequence area is NULL"), );
     MaEditorSelection selection = ui->getSequenceArea()->getSelection();
     CHECK(!selection.isEmpty(), );
     msaSettings.region = U2Region(selection.x(), selection.width());
     msaSettings.seqIdx.clear();
-    if (!ui->isVirtualOrderMode()) {
-        for (qint64 i = selection.y(); i < selection.height() + selection.y(); i++) {
-            msaSettings.seqIdx.append(i);
-        }
-    } else {
-        MaCollapseModel *model = ui->getCollapseModel();
-        SAFE_POINT(model != NULL, tr("MSA Collapsible Model is NULL"), );
-        for (qint64 i = selection.y(); i < selection.height() + selection.y(); i++) {
-            msaSettings.seqIdx.append(model->getMaRowIndexByViewRowIndex(i));
-        }
+    MaCollapseModel *model = ui->getCollapseModel();
+    for (qint64 viewRowIndex = selection.y(); viewRowIndex <= selection.bottom(); viewRowIndex++) {
+        int maRowIndex = model->getMaRowIndexByViewRowIndex(viewRowIndex);
+        msaSettings.seqIdx.append(maRowIndex);
     }
 }
 
@@ -385,18 +383,7 @@ bool MSAImageExportController::canExportToSvg() const {
 
 void MSAImageExportController::updateSeqIdx() const {
     CHECK(msaSettings.exportAll, );
-    if (!ui->isVirtualOrderMode()) {
-        msaSettings.seqIdx.clear();
-        for (qint64 i = 0; i < ui->getEditor()->getNumSequences(); i++) {
-            msaSettings.seqIdx.append(i);
-        }
-        msaSettings.region = U2Region(0, ui->getEditor()->getAlignmentLen());
-    }
-
-    CHECK(ui->isVirtualOrderMode(), );
-
     MaCollapseModel *model = ui->getCollapseModel();
-    SAFE_POINT(model != NULL, tr("MSA Collapsible Model is NULL"), );
     msaSettings.seqIdx.clear();
     for (qint64 i = 0; i < ui->getEditor()->getNumSequences(); i++) {
         if (model->getViewRowIndexByMaRowIndex(i, true) != -1) {

@@ -107,9 +107,7 @@ public:
 
     virtual void run();
 
-    const GeneByGeneReportSettings &getSettings() {
-        return settings;
-    }
+    const GeneByGeneReportSettings &getSettings() const;
 
 private:
     GeneByGeneReportSettings settings;

@@ -69,6 +69,31 @@ public:
     QVariantMap highlightSchemeSettings;
 };
 
+/** Set of row ordering modes supported by MaEditor. */
+enum class MaEditorRowOrderMode {
+    /**
+     * The default order of sequences in the MA: same as in the original source file.
+     * Note: there are no collapsible groups support in this mode.
+     */
+    Original,
+
+    /**
+     * Rows are ordered by sequence content similarity.
+     * Sequences with the equal content are joined into collapsible groups.
+     * This mode is managed/supported internally by MA editor: MA editor automatically rebuilds groups when MA content changes.
+     * The order is not saved to the file and is kept in the view memory only.
+     * This mode allows to re-order read-only MA objects.
+     */
+    Sequence,
+
+    /**
+     * Sequences are ordered by some external manager (e.g. tree-view) and can be re-ordered by user (e.g. drag & drop).
+     * The order is not saved to the file and is kept in the view memory only.
+     * This mode allows to re-order read-only MA objects.
+     */
+    Free
+};
+
 class U2VIEW_EXPORT MaEditor : public GObjectView {
     Q_OBJECT
     friend class OpenSavedMaEditorTask;
@@ -166,6 +191,15 @@ public:
     /** Returns a unified bounding rect for a single sequence character for the given font. */
     QRect getUnifiedSequenceFontCharRect(const QFont &sequenceFont) const;
 
+    /** Returns active row ordering mode. See docs for 'MaEditorRowOrderMode' enum for details. */
+    MaEditorRowOrderMode getRowOrderMode() const;
+
+    /**
+     * Updates currently active row order mode.
+     * This is a trivial method with no other actions/callbacks.
+     */
+    void setRowOrderMode(MaEditorRowOrderMode mode);
+
 signals:
     void si_fontChanged(const QFont &f);
     void si_zoomOperationPerformed(bool resizeModeChanged);
@@ -247,6 +281,9 @@ protected:
 
     /** Current cursor position: 'x' is offset in alignment (0...len) and 'y' is a sequence index in the aligment. */
     QPoint cursorPosition;
+
+    /** Active row ordering mode in the view. */
+    MaEditorRowOrderMode rowOrderMode;
 
 public:
     QAction *saveAlignmentAction;

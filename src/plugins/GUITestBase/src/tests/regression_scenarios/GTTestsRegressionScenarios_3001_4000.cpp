@@ -1769,27 +1769,33 @@ GUI_TEST_CLASS_DEFINITION(test_3274) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3276) {
-    //    1. Open "data/samples/CLUSTALW/COI.aln".
+    // Open "data/samples/CLUSTALW/COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    //    2. Build a phylogenetic tree synchronized with the alignment.
-    QDir().mkdir(QFileInfo(sandBoxDir + "test_3276/COI.nwk").dir().absolutePath());
+    // Build a phylogenetic tree. Check that the tree is synchronized with the alignment.
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_3276/COI.wnk", 0, 0, true));
-    GTWidget::click(os, GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "Build Tree"));
+    GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    3. Rename the first and the second sequences to "1".
+    QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/1");
+    CHECK_SET_ERR(syncModeButton->isEnabled(), "Sync mode must be enabled/1");
+
+    // Rename the first and the second sequences to "1".
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "Isophya_altaica_EF540820", "1");
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "Bicolorana_bicolor_EF540830", "1");
 
-    //    4. Remove the first sequence.
+    // Ensure that sync mode is ON: the tree tracks all sequence rename operations correctly.
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/2");
+    CHECK_SET_ERR(syncModeButton->isEnabled(), "Sync mode must be enabled/2");
+
+    // Remove the first sequence.
     GTUtilsMSAEditorSequenceArea::removeSequence(os, "1");
 
-    //    5. Ensure that the "Sort alignment by tree" button on the tree view toolbar is disabled.
-    QAction *sortAction = GTAction::findAction(os, "Sort Alignment");
-    CHECK_SET_ERR(NULL != sortAction, "'Sort alignment by tree' was not found");
-    CHECK_SET_ERR(!sortAction->isEnabled(), "'Sort alignment by tree' is unexpectedly enabled");
+    // Ensure that sync mode is OFF, and can't be  enabled because tree and MSA sequence counts do not match.
+    CHECK_SET_ERR(!syncModeButton->isChecked(), "Sync mode must be OFF");
+    CHECK_SET_ERR(!syncModeButton->isEnabled(), "Sync mode must be disabled");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3277) {
