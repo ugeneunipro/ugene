@@ -2000,6 +2000,7 @@ GUI_TEST_CLASS_DEFINITION(test_5450) {
     QAbstractButton *tree = GTAction::button(os, "Build Tree");
     GTWidget::click(os, tree);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    //2. Be sure what tree file was created at "c:\Users\<USERNAME>\Documents\UGENE_Data\"
     CHECK_SET_ERR(QFile::remove(GUrlUtils::getDefaultDataPath() + "/" + "COI.nwk"), "Tree file didn't exists or can't be deleted!");
 }
 
