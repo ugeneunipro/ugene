@@ -15,14 +15,12 @@ workflow find-orfs{
     orf-search {
         type:orf-search;
         name:"ORF marker";
-        strand:0;
     }
     write-genbank {
         type:write-sequence;
         name:"Write Genbank";
         document-format:genbank;
     }
-
 
     .actor-bindings {
         read-sequence.out-sequence->orf-search.in-sequence
@@ -74,7 +72,7 @@ workflow find-orfs{
             }
             orf-search.strand {
                 alias:strand;
-                description:"Strand to search in";
+                description:"Strand to search in, can be 'both', 'direct' or 'complement' (using 'both' by default)";
             }
             write-genbank.accumulate {
                 alias:accumulate;
@@ -87,20 +85,20 @@ workflow find-orfs{
         }
         visual {
             orf-search {
-                pos:"-615 -600";
+                pos:"-600 -585";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 in-sequence.angle:180;
                 out-annotations.angle:360;
             }
             read-sequence {
-                pos:"-780 -600";
+                pos:"-765 -585";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 out-sequence.angle:360;
             }
             write-genbank {
-                pos:"-285 -600";
+                pos:"-270 -585";
                 style:ext;
                 bg-color-ext:"0 128 128 64";
                 in-sequence.angle:180;
