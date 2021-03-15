@@ -176,6 +176,9 @@ echo copy readme.txt file
 cp ./readme.txt $BUILD_DIR/readme.txt
 
 if [ ! "$1" ]; then
+    echo Code signing...
+    ./codesign.mac.sh "$TARGET_APP_DIR_RENAMED"/Contents
+
     echo
     echo Compressing symbols...
     tar czf "${SYMBOLS_DIR}.tar.gz" "${SYMBOLS_DIR}"
