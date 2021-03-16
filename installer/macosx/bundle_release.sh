@@ -183,8 +183,6 @@ echo copy readme.txt file
 cp ./readme.txt $BUILD_DIR/readme.txt
 
 if [ ! "$1" ]; then
-    #echo Code signing...
-    #./codesign.mac.sh "$BUILD_DIR/Unipro UGENE.app"/Contents
     echo
     echo '------ ichebyki ------'
     echo Tar $BUILD_DIR
@@ -192,6 +190,10 @@ if [ ! "$1" ]; then
     rm -rf ~/BUILD_DIR.tgz
     echo tar czf ~/BUILD_DIR.tgz "$BUILD_DIR"
     tar czf ~/BUILD_DIR.tgz "$BUILD_DIR"
+
+    echo
+    echo Code signing...
+    ./codesign.mac.sh "$BUILD_DIR/Unipro UGENE.app"/Contents
 
     echo
     echo Compressing symbols...
