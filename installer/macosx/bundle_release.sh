@@ -160,17 +160,17 @@ done
 echo
 echo '------ ichebyki ------'
 echo Tar "$TARGET_APP_DIR" before macdeployqt
-echo rm -rf ~/TARGET_APP_DIR.tgz
-rm -rf ~/TARGET_APP_DIR.tgz
-echo tar czf ~/TARGET_APP_DIR.tgz "$TARGET_APP_DIR"
-tar czf ~/TARGET_APP_DIR.tgz "$TARGET_APP_DIR"
+echo rm -rf ~/"$TARGET_APP_DIR".tgz
+rm -rf ~/"$TARGET_APP_DIR".tgz
+echo tar czf "$TARGET_APP_DIR".tgz "$TARGET_APP_DIR"
+tar czf "$TARGET_APP_DIR".tgz "$TARGET_APP_DIR"
 
 echo
 echo macdeployqt running...
 echo "pwd="$(pwd)
 echo "which macdeployqt="$(which macdeployqt)
-echo macdeployqt "$TARGET_APP_DIR" -codesign="Developer ID Application: Alteametasoft" -verbose=3 -no-strip -executable="$TARGET_EXE_DIR"/ugeneui -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
-macdeployqt "$TARGET_APP_DIR" -codesign="Developer ID Application: Alteametasoft" -verbose=3 -no-strip -executable="$TARGET_EXE_DIR"/ugeneui -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
+echo macdeployqt "$TARGET_APP_DIR" -codesign="Developer ID Application: Alteametasoft" -timestamp -no-strip -executable="$TARGET_EXE_DIR"/ugeneui -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
+macdeployqt "$TARGET_APP_DIR" -codesign="Developer ID Application: Alteametasoft" -timestamp -no-strip -executable="$TARGET_EXE_DIR"/ugeneui -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
 
 echo mv "$TARGET_APP_DIR" "$TARGET_APP_DIR_RENAMED"
 mv "$TARGET_APP_DIR" "$TARGET_APP_DIR_RENAMED"
@@ -188,10 +188,10 @@ if [ ! "$1" ]; then
     echo
     echo '------ ichebyki ------'
     echo Tar $BUILD_DIR
-    echo rm -rf ~/BUILD_DIR.tgz
-    rm -rf ~/BUILD_DIR.tgz
-    echo tar czf ~/BUILD_DIR.tgz "$BUILD_DIR"
-    tar czf ~/BUILD_DIR.tgz "$BUILD_DIR"
+    echo rm -rf ~/"${BUILD_DIR}".tgz
+    rm -rf ~/"${BUILD_DIR}".tgz
+    echo tar czf ~/"${BUILD_DIR}".tgz "$BUILD_DIR"
+    tar czf ~/"${BUILD_DIR}".tgz "$BUILD_DIR"
 
     echo
     echo Compressing symbols...
