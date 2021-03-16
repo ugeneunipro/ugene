@@ -158,12 +158,19 @@ do
 done
 
 echo
+echo '------ ichebyki ------'
+echo Tar "$TARGET_APP_DIR" before macdeployqt
+echo rm -rf ~/"$TARGET_APP_DIR".tgz
+rm -rf ~/"$TARGET_APP_DIR".tgz
+echo tar czf "$TARGET_APP_DIR".tgz "$TARGET_APP_DIR"
+tar czf "$TARGET_APP_DIR".tgz "$TARGET_APP_DIR"
 
+echo
 echo macdeployqt running...
 echo "pwd="$(pwd)
 echo "which macdeployqt="$(which macdeployqt)
-echo macdeployqt "$TARGET_APP_DIR" -no-strip -executable="$TARGET_EXE_DIR"/ugeneui -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
-macdeployqt "$TARGET_APP_DIR" -no-strip -executable="$TARGET_EXE_DIR"/ugeneui -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
+echo macdeployqt "$TARGET_APP_DIR" -codesign="Developer ID Application: Alteametasoft" -timestamp -no-strip -executable="$TARGET_EXE_DIR"/ugeneui -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
+macdeployqt "$TARGET_APP_DIR" -codesign="Developer ID Application: Alteametasoft" -timestamp -no-strip -executable="$TARGET_EXE_DIR"/ugeneui -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
 
 echo mv "$TARGET_APP_DIR" "$TARGET_APP_DIR_RENAMED"
 mv "$TARGET_APP_DIR" "$TARGET_APP_DIR_RENAMED"
@@ -176,22 +183,30 @@ echo copy readme.txt file
 cp ./readme.txt $BUILD_DIR/readme.txt
 
 if [ ! "$1" ]; then
-    echo Code signing...
-    ./codesign.mac.sh "$BUILD_DIR/Unipro UGENE.app"/Contents
+    #echo Code signing...
+    #./codesign.mac.sh "$BUILD_DIR/Unipro UGENE.app"/Contents
+    echo
+    echo '------ ichebyki ------'
+    echo Tar $BUILD_DIR
+    echo rm -rf ~/"${BUILD_DIR}".tgz
+    rm -rf ~/"${BUILD_DIR}".tgz
+    echo tar czf ~/"${BUILD_DIR}".tgz "$BUILD_DIR"
+    tar czf ~/"${BUILD_DIR}".tgz "$BUILD_DIR"
 
     echo
     echo Compressing symbols...
+    echo tar czf "${SYMBOLS_DIR}.tar.gz" "${SYMBOLS_DIR}"
     tar czf "${SYMBOLS_DIR}.tar.gz" "${SYMBOLS_DIR}"
 
     echo
     echo pkg-dmg running...
+    echo ./pkg-dmg --source $BUILD_DIR --target ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg --license ./LICENSE.with_3rd_party --volname "Unipro UGENE $UGENE_VERSION" --symlink /Applications
     ./pkg-dmg --source $BUILD_DIR --target ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg --license ./LICENSE.with_3rd_party --volname "Unipro UGENE $UGENE_VERSION" --symlink /Applications
 
     echo
     echo Signing dmg-file...
-    ./codesign.mac.sh \
-        ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg \
-        "$BUILD_DIR/Unipro UGENE.app"/Contents/Info.plist
+    echo ./codesign.mac.sh ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg "$BUILD_DIR/Unipro UGENE.app"/Contents/Info.plist
+    ./codesign.mac.sh ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg "$BUILD_DIR/Unipro UGENE.app"/Contents/Info.plist
 fi
 
 echo "Restore PATH env var"
