@@ -169,8 +169,8 @@ echo
 echo macdeployqt running...
 echo "pwd="$(pwd)
 echo "which macdeployqt="$(which macdeployqt)
-echo macdeployqt "$TARGET_APP_DIR" -codesign="Developer ID Application: Alteametasoft" -timestamp -no-strip -executable="$TARGET_EXE_DIR"/ugeneui -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
-macdeployqt "$TARGET_APP_DIR" -codesign="Developer ID Application: Alteametasoft" -timestamp -no-strip -executable="$TARGET_EXE_DIR"/ugeneui -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
+echo macdeployqt "$TARGET_APP_DIR" -codesign="Developer ID Application: Alteametasoft" -verbose=3 -no-strip -executable="$TARGET_EXE_DIR"/ugeneui -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
+macdeployqt "$TARGET_APP_DIR" -codesign="Developer ID Application: Alteametasoft" -verbose=3 -no-strip -executable="$TARGET_EXE_DIR"/ugeneui -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
 
 echo mv "$TARGET_APP_DIR" "$TARGET_APP_DIR_RENAMED"
 mv "$TARGET_APP_DIR" "$TARGET_APP_DIR_RENAMED"
