@@ -160,10 +160,10 @@ done
 echo
 echo '------ ichebyki ------'
 echo Tar "$TARGET_APP_DIR" before macdeployqt
-echo rm -rf ~/"$TARGET_APP_DIR".tgz
-rm -rf ~/"$TARGET_APP_DIR".tgz
-echo tar czf "$TARGET_APP_DIR".tgz "$TARGET_APP_DIR"
-tar czf "$TARGET_APP_DIR".tgz "$TARGET_APP_DIR"
+echo rm -rf ~/"TARGET_APP_DIR".tgz
+rm -rf ~/"TARGET_APP_DIR".tgz
+echo tar czf "TARGET_APP_DIR".tgz "$TARGET_APP_DIR"
+tar czf "TARGET_APP_DIR".tgz "$TARGET_APP_DIR"
 
 echo
 echo macdeployqt running...
@@ -188,10 +188,10 @@ if [ ! "$1" ]; then
     echo
     echo '------ ichebyki ------'
     echo Tar $BUILD_DIR
-    echo rm -rf ~/"${BUILD_DIR}".tgz
-    rm -rf ~/"${BUILD_DIR}".tgz
-    echo tar czf ~/"${BUILD_DIR}".tgz "$BUILD_DIR"
-    tar czf ~/"${BUILD_DIR}".tgz "$BUILD_DIR"
+    echo rm -rf ~/"BUILD_DIR".tgz
+    rm -rf ~/"BUILD_DIR".tgz
+    echo tar czf ~/"BUILD_DIR".tgz "$BUILD_DIR"
+    tar czf ~/"BUILD_DIR".tgz "$BUILD_DIR"
 
     echo
     echo Compressing symbols...
