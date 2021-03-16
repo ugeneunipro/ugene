@@ -196,6 +196,14 @@ if [ ! "$1" ]; then
     ./codesign.mac.sh "$BUILD_DIR/Unipro UGENE.app"/Contents
 
     echo
+    echo '------ ichebyki ------'
+    echo Tar $BUILD_DIR after signing
+    echo rm -rf ~/BUILD_DIR_2.tgz
+    rm -rf ~/BUILD_DIR_2.tgz
+    echo tar czf ~/BUILD_DIR_2.tgz "$BUILD_DIR"
+    tar czf ~/BUILD_DIR_2.tgz "$BUILD_DIR"
+
+    echo
     echo Compressing symbols...
     echo tar czf "${SYMBOLS_DIR}.tar.gz" "${SYMBOLS_DIR}"
     tar czf "${SYMBOLS_DIR}.tar.gz" "${SYMBOLS_DIR}"
