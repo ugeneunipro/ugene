@@ -192,17 +192,17 @@ echo copy readme.txt file
 cp ./readme.txt $BUILD_DIR/readme.txt
 
 if [ ! "$1" ]; then
-    echo
-    #echo Code signing...
-    #./codesign.mac.sh "$BUILD_DIR/Unipro UGENE.app"/Contents
     set -x
+    echo
+    echo Code signing...
+    ./codesign.mac.sh "${TARGET_APP_DIR_RENAMED}"
+
+    echo
     echo "Signing app '$BUILD_DIR'"
     codesign \
         --sign "Developer ID Application: Alteametasoft" \
         --timestamp \
-        --force \
         --verbose=4 \
-        --deep \
         --entitlements "${TARGET_APP_DIR_RENAMED}"/Contents/Info.plist \
         "${TARGET_APP_DIR_RENAMED}" \
     || exit -1
@@ -220,8 +220,8 @@ if [ ! "$1" ]; then
 
     echo
     echo Signing dmg-file...
-    echo ./codesign.mac.sh ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg "$BUILD_DIR/Unipro UGENE.app"/Contents/Info.plist
-    ./codesign.mac.sh ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg "$BUILD_DIR/Unipro UGENE.app"/Contents/Info.plist
+    echo ./codesign.mac.sh ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg "$TARGET_APP_DIR_RENAMED"/Contents/Info.plist
+    ./codesign.mac.sh ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg "$TARGET_APP_DIR_RENAMED"/Contents/Info.plist
 fi
 
 echo "Restore PATH env var"
