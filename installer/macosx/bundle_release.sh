@@ -26,6 +26,10 @@ RELEASE_DIR=${SOURCE_DIR}/src/_release
 TARGET_APP_DIR="$BUILD_DIR/${PRODUCT_NAME}.app/"
 TARGET_APP_DIR_RENAMED="$BUILD_DIR/${PRODUCT_DISPLAY_NAME}.app/"
 TARGET_EXE_DIR="${TARGET_APP_DIR}/Contents/MacOS"
+TARGET_RESOURCES_DIR="${TARGET_APP_DIR}/Contents/Resources"
+TARGET_DATA_DIR="${TARGET_APP_DIR}/Contents/Resources/data"
+TARGET_PLUGINS_DIR="${TARGET_APP_DIR}/Contents/Resources/plugins"
+TARGET_TOOLS_DIR="${TARGET_APP_DIR}/Contents/Resources/tools"
 SYMBOLS_DIR=symbols
 
 
@@ -48,8 +52,8 @@ mkdir "${TARGET_APP_DIR}"
 mkdir "${TARGET_APP_DIR}/Contents"
 mkdir "${TARGET_APP_DIR}/Contents/Frameworks"
 mkdir "${TARGET_APP_DIR}/Contents/MacOS"
-mkdir "${TARGET_APP_DIR}/Contents/Resources"
-mkdir "${TARGET_EXE_DIR}/plugins"
+mkdir "${TARGET_RESOURCES_DIR}"
+mkdir "${TARGET_RESOURCES_DIR}/plugins"
 
 echo copying icons
 cp ${SOURCE_DIR}/src/ugeneui/images/ugene-doc.icns "$TARGET_APP_DIR/Contents/Resources"
@@ -61,15 +65,23 @@ cp $RELEASE_DIR/transl_*.qm "$TARGET_EXE_DIR"
 cp -R ./qt_menu.nib "${TARGET_EXE_DIR}/../Resources"
 find "${TARGET_EXE_DIR}/../Resources/qt_menu.nib" -name ".svn" | xargs rm -rf
 
+##############################################
+# codesign don't like dot '.' in dir names
+# MacOS/data must be link to ../Resources/data
 echo copying data dir
+cp -R "$RELEASE_DIR/../../data" "${TARGET_RESOURCES_DIR}/"
+find "${TARGET_RESOURCES_DIR}" -name ".svn" | xargs rm -rf
+(cd "${TARGET_EXE_DIR}" && ln -s ../Resources/data)
 
-cp -R "$RELEASE_DIR/../../data" "${TARGET_EXE_DIR}/"
-find $TARGET_EXE_DIR -name ".svn" | xargs rm -rf
-
+##############################################
+# codesign don't like dot '.' in dir names
+# MacOS/tools must be link to ../Resources/tools
+echo copying data dir
 #include external tools package if applicable
 if [ -e "$RELEASE_DIR/../../tools" ]; then
-    cp -R "$RELEASE_DIR/../../tools" "${TARGET_EXE_DIR}/"
-    find $TARGET_EXE_DIR -name ".svn" | xargs rm -rf
+    cp -R "$RELEASE_DIR/../../tools" "${TARGET_RESOURCES_DIR}/"
+    find "${TARGET_RESOURCES_DIR}" -name ".svn" | xargs rm -rf
+    (cd "${TARGET_EXE_DIR}" && ln -s ../Resources/tools)
 fi
 
 echo Copying UGENE binaries
@@ -152,25 +164,22 @@ if [ "$1" == "-test" ]
                              api_tests"
 fi
 
+##############################################
+# codesign don't like dot '.' in dir names
+# MacOS/plugins must be link to ../Resources/plugins
+mkdir -p "${TARGET_PLUGINS_DIR}"
+(cd "${TARGET_EXE_DIR}" && ln -s ../Resources/plugins)
 for PLUGIN in $PLUGIN_LIST
 do
     add-plugin $PLUGIN
 done
 
 echo
-echo '------ ichebyki ------'
-echo Tar "$TARGET_APP_DIR" before macdeployqt
-echo rm -rf ~/TARGET_APP_DIR.tgz
-rm -rf ~/TARGET_APP_DIR.tgz
-echo tar czf ~/TARGET_APP_DIR.tgz "$TARGET_APP_DIR"
-tar czf ~/TARGET_APP_DIR.tgz "$TARGET_APP_DIR"
-
-echo
 echo macdeployqt running...
 echo "pwd="$(pwd)
 echo "which macdeployqt="$(which macdeployqt)
-echo macdeployqt "$TARGET_APP_DIR" -codesign="Developer ID Application: Alteametasoft" -verbose=3 -no-strip -executable="$TARGET_EXE_DIR"/ugeneui -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
-macdeployqt "$TARGET_APP_DIR" -codesign="Developer ID Application: Alteametasoft" -verbose=3 -no-strip -executable="$TARGET_EXE_DIR"/ugeneui -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
+echo macdeployqt "$TARGET_APP_DIR" -no-strip -executable="$TARGET_EXE_DIR"/ugeneui -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
+macdeployqt "$TARGET_APP_DIR" -no-strip -executable="$TARGET_EXE_DIR"/ugeneui -executable="$TARGET_EXE_DIR"/ugenecl -executable="$TARGET_EXE_DIR"/ugenem -executable="$TARGET_EXE_DIR"/plugins_checker
 
 echo mv "$TARGET_APP_DIR" "$TARGET_APP_DIR_RENAMED"
 mv "$TARGET_APP_DIR" "$TARGET_APP_DIR_RENAMED"
@@ -184,24 +193,20 @@ cp ./readme.txt $BUILD_DIR/readme.txt
 
 if [ ! "$1" ]; then
     echo
-    echo '------ ichebyki ------'
-    echo Tar $BUILD_DIR
-    echo rm -rf ~/BUILD_DIR.tgz
-    rm -rf ~/BUILD_DIR.tgz
-    echo tar czf ~/BUILD_DIR.tgz "$BUILD_DIR"
-    tar czf ~/BUILD_DIR.tgz "$BUILD_DIR"
-
-    echo
-    echo Code signing...
-    ./codesign.mac.sh "$BUILD_DIR/Unipro UGENE.app"/Contents
-
-    echo
-    echo '------ ichebyki ------'
-    echo Tar $BUILD_DIR after signing
-    echo rm -rf ~/BUILD_DIR_2.tgz
-    rm -rf ~/BUILD_DIR_2.tgz
-    echo tar czf ~/BUILD_DIR_2.tgz "$BUILD_DIR"
-    tar czf ~/BUILD_DIR_2.tgz "$BUILD_DIR"
+    #echo Code signing...
+    #./codesign.mac.sh "$BUILD_DIR/Unipro UGENE.app"/Contents
+    set -x
+    echo "Signing app '$BUILD_DIR'"
+    codesign \
+        --sign "Developer ID Application: Alteametasoft" \
+        --timestamp \
+        --force \
+        --verbose=4 \
+        --deep \
+        --entitlements "${TARGET_EXE_DIR}"/Info.plist \
+        "$BUILD_DIR" \
+    || exit -1
+    set +x
 
     echo
     echo Compressing symbols...
