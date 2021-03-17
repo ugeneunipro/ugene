@@ -197,15 +197,15 @@ if [ ! "$1" ]; then
     echo Code signing...
     ./codesign.mac.sh "${TARGET_APP_DIR_RENAMED}"
 
-    echo
-    echo "Signing app '$BUILD_DIR'"
-    codesign \
-        --sign "Developer ID Application: Alteametasoft" \
-        --timestamp \
-        --verbose=4 \
-        --entitlements "${TARGET_APP_DIR_RENAMED}"/Contents/Info.plist \
-        "${TARGET_APP_DIR_RENAMED}" \
-    || exit -1
+    # echo
+    # echo "Signing app '$TARGET_APP_DIR_RENAMED'"
+    # codesign \
+    #     --sign "Developer ID Application: Alteametasoft" \
+    #     --timestamp \
+    #     --verbose=4 \
+    #     --entitlements "${TARGET_APP_DIR_RENAMED}"/Contents/Info.plist \
+    #     "${TARGET_APP_DIR_RENAMED}" \
+    # || exit -1
     set +x
 
     echo
