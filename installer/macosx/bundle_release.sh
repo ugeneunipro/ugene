@@ -76,7 +76,7 @@ find "${TARGET_RESOURCES_DIR}" -name ".svn" | xargs rm -rf
 ##############################################
 # codesign don't like dot '.' in dir names
 # MacOS/tools must be link to ../Resources/tools
-echo copying data dir
+echo copying tools dir
 #include external tools package if applicable
 if [ -e "$RELEASE_DIR/../../tools" ]; then
     cp -R "$RELEASE_DIR/../../tools" "${TARGET_RESOURCES_DIR}/"
@@ -203,8 +203,8 @@ if [ ! "$1" ]; then
         --force \
         --verbose=4 \
         --deep \
-        --entitlements "${TARGET_EXE_DIR}"/Info.plist \
-        "$BUILD_DIR" \
+        --entitlements "${TARGET_APP_DIR_RENAMED}"/Contents/Info.plist \
+        "${TARGET_APP_DIR_RENAMED}" \
     || exit -1
     set +x
 
