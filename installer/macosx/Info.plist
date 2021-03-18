@@ -3,6 +3,9 @@
 <plist version="0.9">
 
 <dict>
+    <key>CFBundleIdentifier</key>
+    <string>net.ugene.ugene</string>
+
     <key>CFBundleDisplayName</key>
     <string>Unipro UGENE</string>
 
@@ -23,6 +26,12 @@
 
     <key>CFBundleExecutable</key>
     <string>ugeneui</string>
+
+    <key>CFBundleExecutable</key>
+    <string>ugenecl</string>
+
+    <key>CFBundleExecutable</key>
+    <string>ugenem</string>
 
     <key>NSHighResolutionCapable</key>
     <string>True</string>

@@ -321,6 +321,11 @@ void PluginSupportImpl::updateSavedState(PluginRef *ref) {
 }
 
 QDir PluginSupportImpl::getDefaultPluginsDir() {
+#ifdef Q_OS_MAC
+    if (! QDir(AppContext::getWorkingDirectoryPath() + "/plugins").exists()) {
+        return QDir(AppContext::getWorkingDirectoryPath() + "/../Resources/plugins");
+    }
+#endif
     return QDir(AppContext::getWorkingDirectoryPath() + "/plugins");
 }
 

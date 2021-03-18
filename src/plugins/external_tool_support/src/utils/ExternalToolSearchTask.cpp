@@ -53,6 +53,10 @@ void ExternalToolSearchTask::run() {
 
     if (toolsDir.isEmpty() && QFileInfo(appDir.absoluteFilePath(DEFAULT_TOOLS_DIR_NAME)).isDir()) {
         toolsDir = appDir.absoluteFilePath(DEFAULT_TOOLS_DIR_NAME);
+#ifdef Q_OS_MAC
+    } else if (toolsDir.isEmpty() && QFileInfo(appDir.absoluteFilePath("../Resources/" + DEFAULT_TOOLS_DIR_NAME)).isDir()) {
+        toolsDir = appDir.absoluteFilePath("../Resources/" + DEFAULT_TOOLS_DIR_NAME);
+#endif
     }
 
     if (!toolsDir.isEmpty()) {
