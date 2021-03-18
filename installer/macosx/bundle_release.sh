@@ -61,9 +61,9 @@ cp ${SOURCE_DIR}/src/ugeneui/images/ugeneui.icns "$TARGET_APP_DIR/Contents/Resou
 cp ${SOURCE_DIR}/installer/macosx/Info.plist "$TARGET_APP_DIR/Contents"
 
 echo copying translations
-cp $RELEASE_DIR/transl_*.qm "$TARGET_EXE_DIR"
-cp -R ./qt_menu.nib "${TARGET_EXE_DIR}/../Resources"
-find "${TARGET_EXE_DIR}/../Resources/qt_menu.nib" -name ".svn" | xargs rm -rf
+cp $RELEASE_DIR/transl_*.qm "${TARGET_RESOURCES_DIR}/"
+cp -R ./qt_menu.nib "${TARGET_RESOURCES_DIR}/"
+find "${TARGET_RESOURCES_DIR}/qt_menu.nib" -name ".svn" | xargs rm -rf
 
 ##############################################
 # codesign don't like dot '.' in dir names
@@ -71,7 +71,6 @@ find "${TARGET_EXE_DIR}/../Resources/qt_menu.nib" -name ".svn" | xargs rm -rf
 echo copying data dir
 cp -R "$RELEASE_DIR/../../data" "${TARGET_RESOURCES_DIR}/"
 find "${TARGET_RESOURCES_DIR}" -name ".svn" | xargs rm -rf
-(cd "${TARGET_EXE_DIR}" && ln -s ../Resources/data)
 
 ##############################################
 # codesign don't like dot '.' in dir names
@@ -81,7 +80,6 @@ echo copying tools dir
 if [ -e "$RELEASE_DIR/../../tools" ]; then
     cp -R "$RELEASE_DIR/../../tools" "${TARGET_RESOURCES_DIR}/"
     find "${TARGET_RESOURCES_DIR}" -name ".svn" | xargs rm -rf
-    (cd "${TARGET_EXE_DIR}" && ln -s ../Resources/tools)
 fi
 
 echo Copying UGENE binaries
@@ -168,7 +166,6 @@ fi
 # codesign don't like dot '.' in dir names
 # MacOS/plugins must be link to ../Resources/plugins
 mkdir -p "${TARGET_PLUGINS_DIR}"
-(cd "${TARGET_EXE_DIR}" && ln -s ../Resources/plugins)
 for PLUGIN in $PLUGIN_LIST
 do
     add-plugin $PLUGIN
