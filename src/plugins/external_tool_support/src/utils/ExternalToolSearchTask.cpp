@@ -34,6 +34,9 @@
 namespace U2 {
 
 #define DEFAULT_TOOLS_DIR_NAME "tools"
+#ifdef Q_OS_MAC
+#define DEFAULT_TOOLS_DIR_NAME_MAC "../Resources/tools"
+#endif
 
 ExternalToolSearchTask::ExternalToolSearchTask(const QString &toolId)
     : Task(tr("'%1' external tool search task").arg(AppContext::getExternalToolRegistry()->getToolNameById(toolId)), TaskFlag_None),
@@ -54,8 +57,8 @@ void ExternalToolSearchTask::run() {
     if (toolsDir.isEmpty() && QFileInfo(appDir.absoluteFilePath(DEFAULT_TOOLS_DIR_NAME)).isDir()) {
         toolsDir = appDir.absoluteFilePath(DEFAULT_TOOLS_DIR_NAME);
 #ifdef Q_OS_MAC
-    } else if (toolsDir.isEmpty() && QFileInfo(appDir.absoluteFilePath("../Resources/" + DEFAULT_TOOLS_DIR_NAME)).isDir()) {
-        toolsDir = appDir.absoluteFilePath("../Resources/" + DEFAULT_TOOLS_DIR_NAME);
+    } else if (toolsDir.isEmpty() && QFileInfo(appDir.absoluteFilePath(DEFAULT_TOOLS_DIR_NAME_MAC)).isDir()) {
+        toolsDir = appDir.absoluteFilePath(DEFAULT_TOOLS_DIR_NAME_MAC);
 #endif
     }
 
