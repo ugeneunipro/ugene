@@ -33,6 +33,9 @@
     <key>CFBundleExecutable</key>
     <string>ugenem</string>
 
+    <key>CFBundleExecutable</key>
+    <string>plugins_checker</string>
+
     <key>NSHighResolutionCapable</key>
     <string>True</string>
     
