@@ -27,15 +27,6 @@
     <key>CFBundleExecutable</key>
     <string>ugeneui</string>
 
-    <key>CFBundleExecutable</key>
-    <string>ugenecl</string>
-
-    <key>CFBundleExecutable</key>
-    <string>ugenem</string>
-
-    <key>CFBundleExecutable</key>
-    <string>plugins_checker</string>
-
     <key>NSHighResolutionCapable</key>
     <string>True</string>
     

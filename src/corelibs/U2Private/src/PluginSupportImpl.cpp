@@ -43,6 +43,10 @@
 #    include <windows.h>
 #endif
 
+#ifdef Q_OS_MAC
+#include <CoreFoundation/CoreFoundation.h>
+#endif
+
 namespace U2 {
 
 /* TRANSLATOR U2::PluginSupportImpl */
@@ -323,7 +327,15 @@ void PluginSupportImpl::updateSavedState(PluginRef *ref) {
 QDir PluginSupportImpl::getDefaultPluginsDir() {
 #ifdef Q_OS_MAC
     if (! QDir(AppContext::getWorkingDirectoryPath() + "/plugins").exists()) {
-        return QDir(AppContext::getWorkingDirectoryPath() + "/../Resources/plugins");
+        CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
+        CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
+                                                      kCFURLPOSIXPathStyle);
+        const char *pathPtr = CFStringGetCStringPtr(macPath,
+                                                    CFStringGetSystemEncoding());
+        QString pluginsDir = QString(pathPtr) + "/Resources/plugins";
+        CFRelease(appUrlRef);
+        CFRelease(macPath);
+        return QDir(pluginsDir);
     }
 #endif
     return QDir(AppContext::getWorkingDirectoryPath() + "/plugins");

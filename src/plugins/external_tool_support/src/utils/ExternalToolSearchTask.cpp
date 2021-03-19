@@ -31,12 +31,13 @@
 
 #include "ExternalToolSupportSettings.h"
 
+#ifdef Q_OS_MAC
+#include <CoreFoundation/CoreFoundation.h>
+#endif
+
 namespace U2 {
 
 #define DEFAULT_TOOLS_DIR_NAME "tools"
-#ifdef Q_OS_MAC
-#define DEFAULT_TOOLS_DIR_NAME_MAC "../Resources/tools"
-#endif
 
 ExternalToolSearchTask::ExternalToolSearchTask(const QString &toolId)
     : Task(tr("'%1' external tool search task").arg(AppContext::getExternalToolRegistry()->getToolNameById(toolId)), TaskFlag_None),
@@ -57,8 +58,17 @@ void ExternalToolSearchTask::run() {
     if (toolsDir.isEmpty() && QFileInfo(appDir.absoluteFilePath(DEFAULT_TOOLS_DIR_NAME)).isDir()) {
         toolsDir = appDir.absoluteFilePath(DEFAULT_TOOLS_DIR_NAME);
 #ifdef Q_OS_MAC
-    } else if (toolsDir.isEmpty() && QFileInfo(appDir.absoluteFilePath(DEFAULT_TOOLS_DIR_NAME_MAC)).isDir()) {
-        toolsDir = appDir.absoluteFilePath(DEFAULT_TOOLS_DIR_NAME_MAC);
+    } else if (toolsDir.isEmpty()) {
+        CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
+        CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
+                                                      kCFURLPOSIXPathStyle);
+        const char *pathPtr = CFStringGetCStringPtr(macPath,
+                                                    CFStringGetSystemEncoding());
+        if (QFileInfo(QString(pathPtr) + "/Resources/tools").isDir()) {
+            toolsDir = QString(pathPtr) + "/Resources/tools";
+        }
+        CFRelease(appUrlRef);
+        CFRelease(macPath);
 #endif
     }
 
