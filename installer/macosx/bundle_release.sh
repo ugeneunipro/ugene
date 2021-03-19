@@ -87,7 +87,7 @@ add-binary ugeneui
 add-binary ugenem
 add-binary ugenecl
 add-binary plugins_checker
-cp ./ugene "$TARGET_EXE_DIR"
+#cp ./ugene "$TARGET_EXE_DIR"
 
 echo Copying core shared libs
 
