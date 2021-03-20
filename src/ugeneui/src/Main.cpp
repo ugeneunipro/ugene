@@ -525,8 +525,8 @@ int main(int argc, char **argv) {
                                                           kCFURLPOSIXPathStyle);
             const char *bundlePath = CFStringGetCStringPtr(macPath,
                                                         CFStringGetSystemEncoding());
-            qDebug("==== bundlePath=%s\n", bundlePath);
-            QString translationFileDir = QString(bundlePath) + "/Contents/Resources";
+            printf("==== bundlePath=%s\n", bundlePath);
+            QString translationFileDir = QString(bundlePath) + "/Resources";
             QString transl = "transl_en";
             if (!envTranslation.isEmpty()) {
                 transl = QString("transl_") + envTranslation;
