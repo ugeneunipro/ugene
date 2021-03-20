@@ -166,10 +166,6 @@
 #include "update/UgeneUpdater.h"
 #include "welcome_page/WelcomePageMdiController.h"
 
-#ifdef Q_OS_MAC
-#include <CoreFoundation/CoreFoundation.h>
-#endif
-
 using namespace U2;
 
 #ifdef Q_OS_WIN
@@ -507,7 +503,8 @@ int main(int argc, char **argv) {
         // set translations
         QString transFile[] = {
             userAppSettings->getTranslationFile(),
-            "transl_en"
+            "transl_en",
+            "transl_ru"
         };
         for (int i = transFile[0].isEmpty() ? 1 : 0; i < 3; ++i) {
             if (!translator.load(transFile[i], AppContext::getWorkingDirectoryPath())) {
