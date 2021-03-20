@@ -523,9 +523,10 @@ int main(int argc, char **argv) {
             CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
             CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
                                                           kCFURLPOSIXPathStyle);
-            const char *pathPtr = CFStringGetCStringPtr(macPath,
+            const char *bundlePath = CFStringGetCStringPtr(macPath,
                                                         CFStringGetSystemEncoding());
-            QString translationFileDir = QString(pathPtr) + "/Resources";
+            qDebug("==== bundlePath=%s\n", bundlePath);
+            QString translationFileDir = QString(bundlePath) + "/Contents/Resources";
             QString transl = "transl_en";
             if (!envTranslation.isEmpty()) {
                 transl = QString("transl_") + envTranslation;
