@@ -166,6 +166,10 @@
 #include "update/UgeneUpdater.h"
 #include "welcome_page/WelcomePageMdiController.h"
 
+#ifdef Q_OS_MAC
+#include <CoreFoundation/CoreFoundation.h>
+#endif
+
 using namespace U2;
 
 #ifdef Q_OS_WIN
@@ -517,9 +521,14 @@ int main(int argc, char **argv) {
         }
 #ifdef Q_OS_MAC
         if (!trOK) {
-            QString translationFileDir = QCoreApplication::applicationDirPath() +
-                    "/../Resources";
-            fprintf(stderr, "translationFileDir: %s\n", translationFileDir.toLocal8Bit().constData());
+            CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
+            CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
+                                                          kCFURLPOSIXPathStyle);
+            const char *bundlePath = CFStringGetCStringPtr(macPath,
+                                                           CFStringGetSystemEncoding());
+            fprintf(stderr, "==== bundlePath=%s\n", bundlePath);
+            QString translationFileDir = QString(bundlePath) + "/Resources";
+            fprintf(stderr, "==== translationFileDir: %s\n", translationFileDir.toLocal8Bit().constData());
             QString transl = "transl_en";
             if (!envTranslation.isEmpty()) {
                 transl = QString("transl_") + envTranslation;
@@ -528,6 +537,8 @@ int main(int argc, char **argv) {
                 trOK = true;
                 settings->setValue("UGENE_CURR_TRANSL", transl.right(2));
             }
+            CFRelease(appUrlRef);
+            CFRelease(macPath);
         }
 #endif
         if (!trOK) {
