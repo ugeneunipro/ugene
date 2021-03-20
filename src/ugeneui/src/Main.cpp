@@ -526,9 +526,13 @@ int main(int argc, char **argv) {
             const char *pathPtr = CFStringGetCStringPtr(macPath,
                                                         CFStringGetSystemEncoding());
             QString translationFileDir = QString(pathPtr) + "/Resources";
-            if (translator.load("transl_en", translationFileDir)) {
+            QString transl = "transl_en";
+            if (!envTranslation.isEmpty()) {
+                transl = QString("transl_") + envTranslation;
+            }
+            if (translator.load(transl, translationFileDir)) {
                 trOK = true;
-                settings->setValue("UGENE_CURR_TRANSL", "en");
+                settings->setValue("UGENE_CURR_TRANSL", transl.right(2));
             }
             CFRelease(appUrlRef);
             CFRelease(macPath);

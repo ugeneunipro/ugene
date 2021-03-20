@@ -190,9 +190,14 @@ cp ./readme.txt $BUILD_DIR/readme.txt
 
 if [ ! "$1" ]; then
     set -x
+    echo "##teamcity[blockOpened name='Bundle code signing']"
     echo
+    echo Save ditto zip before signing
+    rm -f ~/bundle-ditto-0.zip
+    /usr/bin/ditto -c -k --keepParent "${TARGET_APP_DIR_RENAMED}" ~/bundle-ditto-0.zip
     echo Code signing...
     ./codesign.mac.sh "${TARGET_APP_DIR_RENAMED}"
+    echo "##teamcity[blockClosed name='Bundle code signing']"
 
     # echo
     # echo "Signing app '$TARGET_APP_DIR_RENAMED'"
