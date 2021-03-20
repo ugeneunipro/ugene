@@ -520,13 +520,9 @@ int main(int argc, char **argv) {
         }
 #ifdef Q_OS_MAC
         if (!trOK) {
-            CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
-            CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
-                                                          kCFURLPOSIXPathStyle);
-            const char *bundlePath = CFStringGetCStringPtr(macPath,
-                                                        CFStringGetSystemEncoding());
-            printf("==== bundlePath=%s\n", bundlePath);
-            QString translationFileDir = QString(bundlePath) + "/Resources";
+            QString translationFileDir = QCoreApplication::applicationDirPath() +
+                    "/../Resources";
+            fprintf(stderr, "translationFileDir: %s\n", translationFileDir.toLocal8Bit().constData());
             QString transl = "transl_en";
             if (!envTranslation.isEmpty()) {
                 transl = QString("transl_") + envTranslation;
@@ -535,8 +531,6 @@ int main(int argc, char **argv) {
                 trOK = true;
                 settings->setValue("UGENE_CURR_TRANSL", transl.right(2));
             }
-            CFRelease(appUrlRef);
-            CFRelease(macPath);
         }
 #endif
         if (!trOK) {
