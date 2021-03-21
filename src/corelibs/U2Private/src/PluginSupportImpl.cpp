@@ -332,7 +332,7 @@ QDir PluginSupportImpl::getDefaultPluginsDir() {
                                                       kCFURLPOSIXPathStyle);
         const char *pathPtr = CFStringGetCStringPtr(macPath,
                                                     CFStringGetSystemEncoding());
-        QString pluginsDir = QString(pathPtr) + "/Resources/plugins";
+        QString pluginsDir = QString(pathPtr) + "/Contents/Resources/plugins";
         CFRelease(appUrlRef);
         CFRelease(macPath);
         return QDir(pluginsDir);

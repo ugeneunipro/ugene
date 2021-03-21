@@ -64,8 +64,8 @@ void ExternalToolSearchTask::run() {
                                                       kCFURLPOSIXPathStyle);
         const char *pathPtr = CFStringGetCStringPtr(macPath,
                                                     CFStringGetSystemEncoding());
-        if (QFileInfo(QString(pathPtr) + "/Resources/tools").isDir()) {
-            toolsDir = QString(pathPtr) + "/Resources/tools";
+        if (QFileInfo(QString(pathPtr) + "/Contents/Resources/tools").isDir()) {
+            toolsDir = QString(pathPtr) + "/Contents/Resources/tools";
         }
         CFRelease(appUrlRef);
         CFRelease(macPath);
