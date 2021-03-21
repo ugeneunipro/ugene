@@ -167,6 +167,23 @@ static void setDataSearchPaths() {
     } else if (QDir(appDirPath + RELATIVE_DEV_DATA_DIR).exists()) {    //data location for developers
         printf("ADDED PATH %s \n", qPrintable(appDirPath + RELATIVE_DEV_DATA_DIR));
         dataSearchPaths.push_back(appDirPath + RELATIVE_DEV_DATA_DIR);
+#ifdef Q_OS_MAC
+    } else {
+        CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
+        CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
+                                                      kCFURLPOSIXPathStyle);
+        const char *bundlePath = CFStringGetCStringPtr(macPath,
+                                                       CFStringGetSystemEncoding());
+        fprintf(stderr, "==== bundlePath=%s\n", bundlePath);
+        QString dataDir = QString(bundlePath) + "/Contents/Resources/data";
+        fprintf(stderr, "==== dataDir: %s\n", dataDir.toLocal8Bit().constData());
+        if (QDir(dataDir).exists()) {    //data location in Resources
+            dataSearchPaths.push_back(dataDir);
+            printf("ADDED PATH %s \n", qPrintable(dataDir));
+        }
+        CFRelease(appUrlRef);
+        CFRelease(macPath);
+#endif
     }
 
 #if (defined(Q_OS_UNIX)) && defined(UGENE_DATA_DIR)

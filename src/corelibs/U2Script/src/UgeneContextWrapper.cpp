@@ -90,6 +90,10 @@
 
 #include "UgeneContextWrapper.h"
 
+#ifdef Q_OS_MAC
+#include <CoreFoundation/CoreFoundation.h>
+#endif
+
 int ARGC = 0;
 
 namespace U2 {
@@ -105,6 +109,22 @@ static void setDataSearchPaths() {
     } else if (QDir(AppContext::getWorkingDirectoryPath() + relativeDevDataDir).exists()) {
         coreLog.info("Added path: " + AppContext::getWorkingDirectoryPath() + relativeDevDataDir);
         dataSearchPaths.push_back(AppContext::getWorkingDirectoryPath() + relativeDevDataDir);
+#ifdef Q_OS_MAC
+    } else {
+        CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
+        CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
+                                                      kCFURLPOSIXPathStyle);
+        const char *bundlePath = CFStringGetCStringPtr(macPath,
+                                                       CFStringGetSystemEncoding());
+        fprintf(stderr, "==== bundlePath=%s\n", bundlePath);
+        QString dataDir = QString(bundlePath) + "/Contents/Resources/data";
+        fprintf(stderr, "==== dataDir: %s\n", dataDir.toLocal8Bit().constData());
+        if (QDir(dataDir).exists()) {    //data location in Resources
+            dataSearchPaths.push_back(dataDir);
+        }
+        CFRelease(appUrlRef);
+        CFRelease(macPath);
+#endif
     }
 
 #if (defined(Q_OS_UNIX)) && defined(UGENE_DATA_DIR)

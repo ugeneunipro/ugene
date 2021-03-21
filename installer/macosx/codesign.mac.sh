@@ -74,7 +74,7 @@ find "$contents_dir"/Resources -type f \
 || exit -1
 
 echo "============= Sign all files in $contents_dir/MacOS dir ============="
-find "$contents_dir"/MacOS -maxdepth 1 -a -type f \
+find "$contents_dir"/MacOS -name '*.dylib' \
 -exec codesign \
     --sign "Developer ID Application: Alteametasoft" \
     --timestamp \
@@ -82,5 +82,46 @@ find "$contents_dir"/MacOS -maxdepth 1 -a -type f \
     --verbose=11 \
     --entitlements "$entitlements" \
     "{}" \; \
+|| exit -1
+find "$contents_dir"/MacOS -name '*.a' \
+-exec codesign \
+    --sign "Developer ID Application: Alteametasoft" \
+    --timestamp \
+    --force \
+    --verbose=11 \
+    --entitlements "$entitlements" \
+    "{}" \; \
+|| exit -1
+codesign \
+    --sign "Developer ID Application: Alteametasoft" \
+    --timestamp \
+    --force \
+    --verbose=11 \
+    --entitlements "$entitlements" \
+    "$contents_dir"/MacOS/plugins_checker \
+|| exit -1
+codesign \
+    --sign "Developer ID Application: Alteametasoft" \
+    --timestamp \
+    --force \
+    --verbose=11 \
+    --entitlements "$entitlements" \
+    "$contents_dir"/MacOS/ugenem \
+|| exit -1
+codesign \
+    --sign "Developer ID Application: Alteametasoft" \
+    --timestamp \
+    --force \
+    --verbose=11 \
+    --entitlements "$entitlements" \
+    "$contents_dir"/MacOS/ugenecl \
+|| exit -1
+codesign \
+    --sign "Developer ID Application: Alteametasoft" \
+    --timestamp \
+    --force \
+    --verbose=11 \
+    --entitlements "$entitlements" \
+    "$contents_dir"/MacOS/ugeneui \
 || exit -1
 
