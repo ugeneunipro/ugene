@@ -221,9 +221,7 @@ static void setDataSearchPaths() {
                                                       kCFURLPOSIXPathStyle);
         const char *bundlePath = CFStringGetCStringPtr(macPath,
                                                        CFStringGetSystemEncoding());
-        fprintf(stderr, "==== bundlePath=%s\n", bundlePath);
         QString dataDir = QString(bundlePath) + "/Contents/Resources/data";
-        fprintf(stderr, "==== dataDir: %s\n", dataDir.toLocal8Bit().constData());
         if (QDir(dataDir).exists()) {    //data location in Resources
             dataSearchPaths.push_back(dataDir);
         }
@@ -542,9 +540,7 @@ int main(int argc, char **argv) {
                                                           kCFURLPOSIXPathStyle);
             const char *bundlePath = CFStringGetCStringPtr(macPath,
                                                            CFStringGetSystemEncoding());
-            fprintf(stderr, "==== bundlePath=%s\n", bundlePath);
             QString translationFileDir = QString(bundlePath) + "/Contents/Resources";
-            fprintf(stderr, "==== translationFileDir: %s\n", translationFileDir.toLocal8Bit().constData());
             QString transl = "transl_en";
             if (!envTranslation.isEmpty()) {
                 transl = QString("transl_") + envTranslation;

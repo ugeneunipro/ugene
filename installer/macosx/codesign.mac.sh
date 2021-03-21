@@ -32,7 +32,6 @@ elif [ -f "$1" ]; then
         --timestamp \
         --force \
         --verbose=4 \
-        --entitlements "$entitlements" \
         "$1" \
     || exit -1
     exit 0
@@ -47,7 +46,8 @@ codesign \
     --timestamp \
     --force \
     --verbose=11 \
-    --entitlements "$entitlements" \
+    --options hard \
+    --strict \
     "$1"/Contents/Frameworks/* \
 || exit -1
 
@@ -58,7 +58,8 @@ find "$contents_dir"/PlugIns -type f \
     --timestamp \
     --force \
     --verbose=11 \
-    --entitlements "$entitlements" \
+    --options hard \
+    --strict \
     "{}" \; \
 || exit -1
 
@@ -69,7 +70,8 @@ find "$contents_dir"/Resources -type f \
     --timestamp \
     --force \
     --verbose=11 \
-    --entitlements "$entitlements" \
+    --options hard \
+    --strict \
     "{}" \; \
 || exit -1
 
@@ -80,7 +82,8 @@ find "$contents_dir"/MacOS -name '*.dylib' \
     --timestamp \
     --force \
     --verbose=11 \
-    --entitlements "$entitlements" \
+    --options hard \
+    --strict \
     "{}" \; \
 || exit -1
 find "$contents_dir"/MacOS -name '*.a' \
@@ -89,7 +92,8 @@ find "$contents_dir"/MacOS -name '*.a' \
     --timestamp \
     --force \
     --verbose=11 \
-    --entitlements "$entitlements" \
+    --options hard \
+    --strict \
     "{}" \; \
 || exit -1
 codesign \
@@ -97,7 +101,8 @@ codesign \
     --timestamp \
     --force \
     --verbose=11 \
-    --entitlements "$entitlements" \
+    --options hard \
+    --strict \
     "$contents_dir"/MacOS/plugins_checker \
 || exit -1
 codesign \
@@ -105,7 +110,8 @@ codesign \
     --timestamp \
     --force \
     --verbose=11 \
-    --entitlements "$entitlements" \
+    --options hard \
+    --strict \
     "$contents_dir"/MacOS/ugenem \
 || exit -1
 codesign \
@@ -113,7 +119,8 @@ codesign \
     --timestamp \
     --force \
     --verbose=11 \
-    --entitlements "$entitlements" \
+    --options hard \
+    --strict \
     "$contents_dir"/MacOS/ugenecl \
 || exit -1
 codesign \
@@ -121,7 +128,8 @@ codesign \
     --timestamp \
     --force \
     --verbose=11 \
-    --entitlements "$entitlements" \
+    --options hard \
+    --strict \
     "$contents_dir"/MacOS/ugeneui \
 || exit -1
 

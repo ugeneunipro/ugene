@@ -116,9 +116,7 @@ static void setDataSearchPaths() {
                                                       kCFURLPOSIXPathStyle);
         const char *bundlePath = CFStringGetCStringPtr(macPath,
                                                        CFStringGetSystemEncoding());
-        fprintf(stderr, "==== bundlePath=%s\n", bundlePath);
         QString dataDir = QString(bundlePath) + "/Contents/Resources/data";
-        fprintf(stderr, "==== dataDir: %s\n", dataDir.toLocal8Bit().constData());
         if (QDir(dataDir).exists()) {    //data location in Resources
             dataSearchPaths.push_back(dataDir);
         }
