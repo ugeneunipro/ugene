@@ -192,10 +192,9 @@ if [ ! "$1" ]; then
     set -x
     echo "##teamcity[blockOpened name='Bundle code signing']"
     echo
-    echo Save ditto zip before signing
-    rm -f ~/bundle-ditto-0.zip
-    /usr/bin/ditto -c -k --keepParent "${TARGET_APP_DIR_RENAMED}" ~/bundle-ditto-0.zip
     echo Code signing...
+    echo pwd=`pwd`
+    echo ./codesign.mac.sh "${TARGET_APP_DIR_RENAMED}"
     ./codesign.mac.sh "${TARGET_APP_DIR_RENAMED}"
     echo "##teamcity[blockClosed name='Bundle code signing']"
 
