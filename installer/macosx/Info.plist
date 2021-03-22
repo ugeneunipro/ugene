@@ -6,6 +6,12 @@
     <key>CFBundleIdentifier</key>
     <string>net.ugene.ugene</string>
 
+    <key>CFBundleVersion</key>
+    <string>38.0</string>
+
+    <key>CFBundleShortVersionString</key>
+    <string>38.0</string>
+
     <key>CFBundleDisplayName</key>
     <string>Unipro UGENE</string>
 
