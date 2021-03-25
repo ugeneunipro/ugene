@@ -48,6 +48,7 @@ codesign \
     --verbose=11 \
     --options hard \
     --strict \
+    --entitlements Entitlements.plist \
     "$1"/Contents/Frameworks/* \
 || exit -1
 
@@ -60,6 +61,7 @@ find "$contents_dir"/PlugIns -type f \
     --verbose=11 \
     --options hard \
     --strict \
+    --entitlements Entitlements.plist \
     "{}" \; \
 || exit -1
 
@@ -72,6 +74,7 @@ find "$contents_dir"/Resources -type f \
     --verbose=11 \
     --options hard \
     --strict \
+    --entitlements Entitlements.plist \
     "{}" \; \
 || exit -1
 
@@ -84,6 +87,7 @@ find "$contents_dir"/MacOS -name '*.dylib' \
     --verbose=11 \
     --options hard \
     --strict \
+    --entitlements Entitlements.plist \
     "{}" \; \
 || exit -1
 find "$contents_dir"/MacOS -name '*.a' \
@@ -94,6 +98,7 @@ find "$contents_dir"/MacOS -name '*.a' \
     --verbose=11 \
     --options hard \
     --strict \
+    --entitlements Entitlements.plist \
     "{}" \; \
 || exit -1
 codesign \
@@ -103,6 +108,7 @@ codesign \
     --verbose=11 \
     --options hard \
     --strict \
+    --entitlements Entitlements.plist \
     "$contents_dir"/MacOS/plugins_checker \
 || exit -1
 codesign \
@@ -112,6 +118,7 @@ codesign \
     --verbose=11 \
     --options hard \
     --strict \
+    --entitlements Entitlements.plist \
     "$contents_dir"/MacOS/ugenem \
 || exit -1
 codesign \
@@ -121,6 +128,7 @@ codesign \
     --verbose=11 \
     --options hard \
     --strict \
+    --entitlements Entitlements.plist \
     "$contents_dir"/MacOS/ugenecl \
 || exit -1
 codesign \
@@ -130,6 +138,7 @@ codesign \
     --verbose=11 \
     --options hard \
     --strict \
+    --entitlements Entitlements.plist \
     "$contents_dir"/MacOS/ugeneui \
 || exit -1
 
