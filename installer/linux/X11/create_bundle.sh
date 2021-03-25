@@ -146,8 +146,11 @@ chrpath -r '$ORIGIN/..' "${TARGET_APP_DIR}/platforms"/*.so
 cp -r -v "${QT_DIR}/plugins/imageformats" "${TARGET_APP_DIR}"
 strip -v "${TARGET_APP_DIR}"/imageformats/*.so
 
-cp -r -v "${QT_DIR}/plugins/platformthemes" "${TARGET_APP_DIR}"
-strip -v "${TARGET_APP_DIR}"/platformthemes/*.so
+# GTK platform theme from this folder provides a nice-looking UI on GTK+ based window managers, but unfortunately
+# do not respect font size on non-GTK ones, like LXDM. So UGENE has very small and unreadable font in menu.
+# Disabling this plugin until the solution is found.
+#cp -r -v "${QT_DIR}/plugins/platformthemes" "${TARGET_APP_DIR}"
+#strip -v "${TARGET_APP_DIR}"/platformthemes/*.so
 
 cp -r -v "${QT_DIR}/plugins/xcbglintegrations" "${TARGET_APP_DIR}"
 strip -v "${TARGET_APP_DIR}"/xcbglintegrations/*.so
