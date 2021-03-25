@@ -593,8 +593,10 @@ int main(int argc, char **argv) {
     }
     auto proxyStyle = new ProxyStyle(qtStyle);
     // Re-use the original style object name, because it is saved in the settings as a part of 'User preferences'.
-    proxyStyle->setObjectName(qtStyle->objectName());
-    app.setStyle(proxyStyle);
+    if (qtStyle != nullptr) {
+        proxyStyle->setObjectName(qtStyle->objectName());
+    }
+    QApplication::setStyle(proxyStyle);
 
     ResourceTracker *resTrack = new ResourceTracker();
     appContext->setResourceTracker(resTrack);
