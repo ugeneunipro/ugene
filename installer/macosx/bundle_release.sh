@@ -195,9 +195,9 @@ if [ ! "$1" ]; then
     echo Code signing...
     echo pwd=`pwd`
     echo ./codesign_clear-i386.sh "${TARGET_APP_DIR_RENAMED}"
-    ./codesign_clear-i386.sh "${TARGET_APP_DIR_RENAMED}"
+    bash ./codesign_clear-i386.sh "${TARGET_APP_DIR_RENAMED}"
     echo ./codesign.mac.sh "${TARGET_APP_DIR_RENAMED}"
-    ./codesign.mac.sh "${TARGET_APP_DIR_RENAMED}"
+    bash ./codesign.mac.sh "${TARGET_APP_DIR_RENAMED}"
     echo "##teamcity[blockClosed name='Bundle code signing']"
 
     # echo
@@ -223,8 +223,8 @@ if [ ! "$1" ]; then
 
     echo
     echo Signing dmg-file...
-    echo ./codesign.mac.sh ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg "$TARGET_APP_DIR_RENAMED"/Contents/Info.plist
-    ./codesign.mac.sh ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg "$TARGET_APP_DIR_RENAMED"/Contents/Info.plist
+    echo ./codesign.mac.sh ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg
+    bash ./codesign.mac.sh ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg
 fi
 
 echo "Restore PATH env var"

@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 __pwd__=`pwd`
 rootdir=`dirname $0`
@@ -25,7 +25,7 @@ function finish {
 }
 trap finish EXIT
 
-echo '#!/usr/bin/bash'                                   > thin_x86_64.sh
+echo '#!/bin/bash'                                   > thin_x86_64.sh
 echo 'f="$1"'                                           >> thin_x86_64.sh
 echo 'echo mv "${f}" "${f}.bak"'                        >> thin_x86_64.sh
 echo 'mv "${f}" "${f}.bak"'                             >> thin_x86_64.sh
@@ -42,7 +42,7 @@ find "$1" -type f -exec file {} \; 2>&1 \
 
 cat lipo-i386-list.txt \
     | perl -n -e '$_=~s/([^:]+)\:.*/$1/; print $_;' \
-    | xargs -L 1 -I "{}" bash thin_x86_64.sh "{}"
+    | xargs -L 1 -I "{}" bash ./thin_x86_64.sh "{}"
 
 
 
