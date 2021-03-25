@@ -194,6 +194,8 @@ if [ ! "$1" ]; then
     echo
     echo Code signing...
     echo pwd=`pwd`
+    echo ./codesign_clear-i386.sh "${TARGET_APP_DIR_RENAMED}"
+    ./codesign_clear-i386.sh "${TARGET_APP_DIR_RENAMED}"
     echo ./codesign.mac.sh "${TARGET_APP_DIR_RENAMED}"
     ./codesign.mac.sh "${TARGET_APP_DIR_RENAMED}"
     echo "##teamcity[blockClosed name='Bundle code signing']"
