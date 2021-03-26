@@ -1,19 +1,20 @@
 #!/bin/bash
 
 __pwd__=`pwd`
-rootdir=`dirname $0`
-rootdir=`(cd $rootdir; pwd)`
+rootdir=`dirname "$0"`
+rootdir=`(cd "$rootdir"; pwd)`
 
-if [ ! -d $rootdir ]; then
+if [ ! -d "$rootdir" ]; then
     exit
 fi
 
 SECONDS=0
-LOG_FILE=$rootdir/`basename $0`.log
+LOG_FILE="$rootdir"/`basename "$0"`.log
+LIPO_FILE="$rootdir"/`basename "$0"`.lipo.txt
 # Save stdout, stderr
 exec 3>&1 4>&2
 # Redirect output ( > ) into a named pipe ( >() ) running "tee"
-exec >  >(tee -i ${LOG_FILE}) 2>&1
+exec >  >(tee -i "${LOG_FILE}") 2>&1
 
 function finish {
     EXIT_CODE=$?
@@ -34,21 +35,12 @@ echo 'lipo "${f}.bak" -thin x86_64 -output "${f}"'      >> thin_x86_64.sh
 echo 'echo rm -f "${f}.bak"'                            >> thin_x86_64.sh
 echo 'rm -f "${f}.bak"'                                 >> thin_x86_64.sh
 
-find "$1" -type f -exec file {} \; 2>&1 \
+find "$1" -type f -exec file "{}" \; 2>&1 \
     | grep "architectures" \
-    | grep i386: \
-    | grep x86_64: \
-    | tee lipo-i386-list.txt
+    | grep i386 \
+    | grep x86_64 \
+    | tee "${LIPO_FILE}"
 
-cat lipo-i386-list.txt \
+cat "${LIPO_FILE}" \
     | perl -n -e '$_=~s/([^:]+)\:.*/$1/; print $_;' \
     | xargs -L 1 -I "{}" bash ./thin_x86_64.sh "{}"
-
-
-
-# lipo _MDmod.so.bak -thin x86_64 -output _MDmod.so
-# lipo: can't figure out the architecture type of:
-
-# _MDmod.so: Mach-O universal binary with 2 architectures: [i386: Mach-O bundle i386] [x86_64: Mach-O 64-bit bundle x86_64]
-# _MDmod.so (for architecture i386):	Mach-O bundle i386
-# _MDmod.so (for architecture x86_64):	Mach-O 64-bit bundle x86_64

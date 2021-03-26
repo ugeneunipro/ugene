@@ -35,7 +35,16 @@
 
     <key>NSHighResolutionCapable</key>
     <string>True</string>
-    
+
+    <key>BuildMachineOSBuild</key>
+    <string>16G29</string>
+
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.business</string>
+
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.education</string>
+
     <key>CFBundleDocumentTypes</key>
     <array>
         <!-- Project -->
