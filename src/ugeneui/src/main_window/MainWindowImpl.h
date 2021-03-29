@@ -36,6 +36,7 @@ class QToolBar;
 #if defined(Q_OS_DARWIN) && !defined(_DEBUG)
 #    define _INSTALL_TO_PATH_ACTION
 #endif
+#undef _INSTALL_TO_PATH_ACTION
 
 namespace U2 {
 
