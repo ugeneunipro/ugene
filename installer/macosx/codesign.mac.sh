@@ -1,6 +1,8 @@
 #!/bin/bash
 #set -x
 
+if [[ -f `dirname $0`/utils.sh ]]; then source `dirname $0`/utils.sh; fi
+
 #/Users/ichebyki/UGENE/git/master/ugene/installer/macosx/pkg-dmg \
 #    --source /Users/ichebyki/Downloads/code-sign \
 #    --target ugene-37.0-mac-x86_64-r11111.dmg \
@@ -14,9 +16,7 @@
 if [ -d "$1" ]; then
     echo "Signing recursively all files in directory '$1'"
     if [ -f "$2" ]; then
-	entitlements="$2"
-    else
-        entitlements="$1/Contents/Info.plist"
+        entitlements="--entitlements $2"
     fi
     contents_dir="$1/Contents"
 elif [ -f "$1" ]; then
@@ -46,8 +46,9 @@ codesign \
     --timestamp \
     --force \
     --verbose=11 \
-    --options hard \
+    --options runtime \
     --strict \
+    ${entitlements} \
     "$1"/Contents/Frameworks/* \
 || exit -1
 
@@ -58,8 +59,9 @@ find "$contents_dir"/PlugIns -type f \
     --timestamp \
     --force \
     --verbose=11 \
-    --options hard \
+    --options runtime \
     --strict \
+    ${entitlements} \
     "{}" \; \
 || exit -1
 
@@ -70,8 +72,9 @@ find "$contents_dir"/Resources -type f \
     --timestamp \
     --force \
     --verbose=11 \
-    --options hard \
+    --options runtime \
     --strict \
+    ${entitlements} \
     "{}" \; \
 || exit -1
 
@@ -82,8 +85,9 @@ find "$contents_dir"/MacOS -name '*.dylib' \
     --timestamp \
     --force \
     --verbose=11 \
-    --options hard \
+    --options runtime \
     --strict \
+    ${entitlements} \
     "{}" \; \
 || exit -1
 find "$contents_dir"/MacOS -name '*.a' \
@@ -92,8 +96,9 @@ find "$contents_dir"/MacOS -name '*.a' \
     --timestamp \
     --force \
     --verbose=11 \
-    --options hard \
+    --options runtime \
     --strict \
+    ${entitlements} \
     "{}" \; \
 || exit -1
 codesign \
@@ -101,8 +106,9 @@ codesign \
     --timestamp \
     --force \
     --verbose=11 \
-    --options hard \
+    --options runtime \
     --strict \
+    ${entitlements} \
     "$contents_dir"/MacOS/plugins_checker \
 || exit -1
 codesign \
@@ -110,8 +116,9 @@ codesign \
     --timestamp \
     --force \
     --verbose=11 \
-    --options hard \
+    --options runtime \
     --strict \
+    ${entitlements} \
     "$contents_dir"/MacOS/ugenem \
 || exit -1
 codesign \
@@ -119,8 +126,9 @@ codesign \
     --timestamp \
     --force \
     --verbose=11 \
-    --options hard \
+    --options runtime \
     --strict \
+    ${entitlements} \
     "$contents_dir"/MacOS/ugenecl \
 || exit -1
 codesign \
@@ -128,8 +136,9 @@ codesign \
     --timestamp \
     --force \
     --verbose=11 \
-    --options hard \
+    --options runtime \
     --strict \
+    ${entitlements} \
     "$contents_dir"/MacOS/ugeneui \
 || exit -1
 

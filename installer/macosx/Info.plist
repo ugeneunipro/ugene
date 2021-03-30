@@ -45,6 +45,9 @@
     <key>LSApplicationCategoryType</key>
     <string>public.app-category.education</string>
 
+    <key>LSMinimumSystemVersion</key>
+    <string>10.12</string>
+    
     <key>CFBundleDocumentTypes</key>
     <array>
         <!-- Project -->
