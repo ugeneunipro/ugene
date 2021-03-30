@@ -1922,7 +1922,9 @@ void AnnotationsTreeView::sl_onRemoveColumnByHeaderClick() {
 
 void AnnotationsTreeView::sl_searchQualifier() {
     QObjectScopedPointer<SearchQualifierDialog> d = new SearchQualifierDialog(this, this);
-    d->exec();
+    if (d->isValid()) {
+        d->exec();
+    }
 }
 
 void AnnotationsTreeView::sl_invertSelection() {

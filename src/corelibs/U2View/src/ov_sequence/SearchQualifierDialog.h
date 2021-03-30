@@ -39,6 +39,9 @@ public:
     SearchQualifierDialog(QWidget *p, AnnotationsTreeView *treeView);
     ~SearchQualifierDialog();
 
+    // Return true if dialog can execute
+    bool isValid() const;
+
 protected:
     bool eventFilter(QObject *obj, QEvent *e);
     void clearPrevResults();
@@ -59,6 +62,9 @@ private:
     AVItem *groupToSearchIn;
     AVItem *parentAnnotationofPrevResult;
     int indexOfPrevResult;
+
+    // The default is `false`. If `SAFE_POINT`s in the constructor worked without errors, it is `true`
+    bool isValid_;
 };
 
 }    // namespace U2
