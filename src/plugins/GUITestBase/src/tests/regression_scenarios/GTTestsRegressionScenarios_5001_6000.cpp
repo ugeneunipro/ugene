@@ -731,7 +731,7 @@ GUI_TEST_CLASS_DEFINITION(test_5211) {
 //    4. Press the next key sequence:
 //        Windows and Linux: Shift+Ins
 //        macOS: Meta+Y
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
     GTKeyboardUtils::paste();
 #else
     GTKeyboardDriver::keyClick('y', Qt::MetaModifier);

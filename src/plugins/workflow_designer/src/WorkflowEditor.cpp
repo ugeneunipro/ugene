@@ -66,7 +66,7 @@ WorkflowEditor::WorkflowEditor(WorkflowView *p)
     table->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     specialParameters->hide();
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     QString style("QGroupBox::title {margin-bottom: 9px;}");
     editorBox->setStyleSheet(style);
 #endif

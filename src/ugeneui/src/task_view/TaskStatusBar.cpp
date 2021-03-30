@@ -72,7 +72,7 @@ TaskStatusBar::TaskStatusBar() {
     l->addWidget(lampLabel);
     l->addWidget(notificationLabel);
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     l->addSpacing(16);
 #endif
 

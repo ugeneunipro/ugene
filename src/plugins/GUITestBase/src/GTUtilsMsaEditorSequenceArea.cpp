@@ -218,7 +218,7 @@ void GTUtilsMSAEditorSequenceArea::scrollToBottom(GUITestOpStatus &os) {
     // scroll down
     GScrollBar *vBar = GTWidget::findExactWidget<GScrollBar *>(os, "vertical_sequence_scroll", GTUtilsMsaEditor::getActiveMsaEditorWindow(os));
     GT_CHECK(vBar != nullptr, "Vertical scroll bar is not found");
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     vBar->setValue(vBar->maximum());
     return;
 #endif

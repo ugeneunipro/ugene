@@ -271,7 +271,7 @@ void Shtirlitz::getSysInfo(QString &name,
 #if defined(Q_OS_WIN)
     name = "Windows";
     version = QString::number(QSysInfo::WindowsVersion);
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_DARWIN)
     name = "Mac";
     version = QString::number(QSysInfo::MacintoshVersion);
 #elif defined(Q_OS_LINUX)

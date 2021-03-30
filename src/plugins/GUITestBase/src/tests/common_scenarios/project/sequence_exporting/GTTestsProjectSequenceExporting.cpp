@@ -93,7 +93,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     CHECK_SET_ERR(!doc2->isLoaded(), "2.gb is loaded");
     //     2) UGENE window titled with text "proj4 UGENE"
     QString expectedTitle;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     expectedTitle = "proj4 UGENE";
 #else
     expectedTitle = "proj4 UGENE";

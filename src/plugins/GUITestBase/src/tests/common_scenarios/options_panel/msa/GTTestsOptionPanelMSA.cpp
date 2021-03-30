@@ -1804,7 +1804,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
     GTGlobals::sleep();
 //    3. Change labels color.
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
     setLabelsColor(os, 255, 0, 0);
     GTGlobals::sleep();
     //    Expected: color changed
@@ -1962,7 +1962,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
     GTGlobals::sleep();
 //    3. change branch color
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
     setBranchColor(os, 255, 0, 0);
 #else
     expandPenSettings(os);
@@ -1972,7 +1972,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     QGraphicsView *treeView = GTWidget::findExactWidget<QGraphicsView *>(os, "treeView");
     CHECK_SET_ERR(treeView != NULL, "tree view not found");
     QString colorName;
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
     colorName = "#ff0000";
 #else
     colorName = "#000000";

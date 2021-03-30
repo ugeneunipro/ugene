@@ -95,7 +95,7 @@ void MWMDIManagerImpl::prepareGUI() {
     cascadeAct->setStatusTip(tr("Cascade windows"));
     connect(cascadeAct, SIGNAL(triggered()), mdiArea, SLOT(cascadeSubWindows()));
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     QKeySequence nextActKeySequence(Qt::CTRL + (Qt::Key)'`');
     QKeySequence nextActKeySequenceAdditional(Qt::META + Qt::Key_Tab);
     QKeySequence prevActKeySequence(Qt::CTRL + Qt::SHIFT + (Qt::Key)'`');
@@ -401,7 +401,7 @@ void MWMDIManagerImpl::sl_onSubWindowActivated(QMdiSubWindow *w) {
     // clear old windows menu/tb content
     clearMDIContent(false);
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     // A workaround for UGENE-6315 (QTBUG-67895): background widgets are drawn over the foreground widget on macOS with the native style
     if (QMdiArea::TabbedView == mdiArea->viewMode()) {
         foreach (MDIItem *item, items) {

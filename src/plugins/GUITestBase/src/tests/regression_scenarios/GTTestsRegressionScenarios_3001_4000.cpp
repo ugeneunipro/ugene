@@ -3014,7 +3014,7 @@ GUI_TEST_CLASS_DEFINITION(test_3472) {
     CHECK_SET_ERR(NULL != outputFilePathEdit, "Invalid output file path edit field");
 
     GTWidget::setFocus(os, outputFilePathEdit);
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
     GTKeyboardDriver::keyClick(Qt::Key_Home);
 #else
     GTKeyboardDriver::keyClick(Qt::LeftArrow, Qt::ControlModifier);
@@ -3036,7 +3036,7 @@ GUI_TEST_CLASS_DEFINITION(test_3472) {
     GTGlobals::sleep(5000);    //needed for windows
 
     GTWidget::setFocus(os, outputFilePathEdit);
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
     GTKeyboardDriver::keyClick(Qt::Key_Home);
 #else
     GTKeyboardDriver::keyClick(Qt::LeftArrow, Qt::ControlModifier);

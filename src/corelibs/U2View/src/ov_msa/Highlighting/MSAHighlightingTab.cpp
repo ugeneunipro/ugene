@@ -158,7 +158,7 @@ QWidget *MSAHighlightingTab::createHighlightingGroup() {
     layout->addWidget(thresholdMoreRb);
     layout->addWidget(useDots);
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     layout->addSpacerItem(new QSpacerItem(40, 8, QSizePolicy::Expanding, QSizePolicy::Minimum));
 #endif
     layout->addWidget(buttonAndSpacer);

@@ -34,7 +34,7 @@ public:
     enum ViewMode {List, Detail};
     enum TextInput { Typing, CopyPaste };
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     GTFileDialogUtils(GUITestOpStatus &os, const QString &folderPath, const QString &fileName, Button b = Open, GTGlobals::UseMethod = GTGlobals::UseMouse, TextInput = CopyPaste);
     GTFileDialogUtils(GUITestOpStatus &os, const QString &filePath, GTGlobals::UseMethod method = GTGlobals::UseMouse, Button b = Open, TextInput = CopyPaste);
 #else

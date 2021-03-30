@@ -528,7 +528,7 @@ GUI_TEST_CLASS_DEFINITION(test_4047) {
         void run(HI::GUITestOpStatus &os) {
             GTGlobals::sleep(500);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
             //dirty hack for mac
             GTGlobals::sleep(500);
             if (QApplication::activeModalWidget() != NULL) {

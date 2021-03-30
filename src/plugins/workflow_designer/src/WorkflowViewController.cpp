@@ -164,7 +164,7 @@ static void addToggleDashboardAction(QToolBar *toolBar, QAction *action) {
     b->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     b->setAutoRaise(false);
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     b->setStyleSheet("QToolButton {"
                      "font-size: 13px;"
                      "border: 1px solid gray;"
@@ -2151,7 +2151,7 @@ void WorkflowView::sl_loadScene() {
     QString dir = AppContext::getSettings()->getValue(LAST_DIR, QString("")).toString();
     QString filter = DesignerUtils::getSchemaFileFilter(true, true);
     QString url;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         url = U2FileDialog::getOpenFileName(0, tr("Open workflow file"), dir, filter, 0, QFileDialog::DontUseNativeDialog);
     } else

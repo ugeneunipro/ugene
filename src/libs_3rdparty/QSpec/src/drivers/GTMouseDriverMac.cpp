@@ -23,13 +23,13 @@
 
 #include "GTMouseDriver.h"
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 #    include <ApplicationServices/ApplicationServices.h>
 #endif
 
 namespace HI {
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 #    define GT_CLASS_NAME "GTMouseDriverMac"
 QPoint GTMouseDriver::mousePos = QPoint(-1, -1);
 Qt::MouseButtons GTMouseDriver::bp = Qt::NoButton;
@@ -256,5 +256,5 @@ bool GTMouseDriver::scroll(int value) {
 #    undef GT_METHOD_NAME
 #    undef GT_CLASS_NAME
 
-#endif    // Q_OS_MAC
+#endif    // Q_OS_DARWIN
 }    // namespace HI

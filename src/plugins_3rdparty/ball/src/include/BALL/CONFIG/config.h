@@ -56,7 +56,7 @@ typedef unsigned long long int  uint64_t;
 /* #undef BALL_OS_FREEBSD */
 /* #undef BALL_OS_NETBSD */
 /* #undef BALL_OS_OPENBSD */
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 #define BALL_OS_DARWIN
 #endif
 #ifdef Q_OS_WIN

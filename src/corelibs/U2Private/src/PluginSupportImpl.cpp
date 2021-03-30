@@ -176,7 +176,7 @@ void LoadAllPluginsTask::addToOrderingQueue(const QString &url) {
         coreLog.trace(QString("Plugin platform is not Windows: %1").arg(desc.id));
         return;
     }
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_DARWIN)
     if (desc.platform.name != PlatformName_Mac) {
         coreLog.trace(QString("Plugin platform is not Mac: %1").arg(desc.id));
         return;
@@ -380,7 +380,7 @@ void AddPluginTask::prepare() {
     QString checkVersion = settings->getValue(PLUGIN_VERIFICATION + desc.id, "").toString();
 
     bool verificationIsEnabled = true;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     if (qgetenv(ENV_GUI_TEST).toInt() == 1) {
         verificationIsEnabled = false;
     }

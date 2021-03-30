@@ -33,7 +33,7 @@ GTUtilsMac::GTUtilsMac() {
 }
 
 GTUtilsMac::~GTUtilsMac() {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     if (process != nullptr) {
         process->kill();
         delete process;
@@ -42,7 +42,7 @@ GTUtilsMac::~GTUtilsMac() {
 }
 
 void GTUtilsMac::startWorkaroundForMacCGEvents(int delay, bool waitFinished) {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     QString prog = qgetenv("UGENE_GUI_TEST_MACOS_WORKAROUND_FOR_CGEVENTS");
 
     if (!prog.isNull()) {

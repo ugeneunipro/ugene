@@ -108,7 +108,7 @@ void Primer3DialogFiller::commonScenario() {
         QPushButton *button = dialog->findChild<QPushButton *>("pickPrimersButton");
         GT_CHECK(button != NULL, "PickPrimers button is NULL");
         GTWidget::click(os, button);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
         dialog->close();
 #else
         GTKeyboardDriver::keyClick(Qt::Key_Escape);

@@ -74,7 +74,7 @@ QString U2FileDialog::getSaveFileName(QWidget *parent, const QString &caption, c
 }
 
 void U2FileDialog::activateWindow() {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     QWidget *target = QApplication::activeModalWidget();
     if (NULL == target) {
         MainWindow *mainWindow = AppContext::getMainWindow();

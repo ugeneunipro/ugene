@@ -108,7 +108,7 @@ const QString CmdlineTaskRunner::REPORT_FILE_ARG = "ugene-write-task-report-to-f
 QList<long> CmdlineTaskRunner::getChildrenProcesses(qint64 processId, bool fullTree) {
     QList<long> children;
 
-#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+#if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN)
     char *buff = NULL;
     size_t len = 255;
     char command[256] = {0};
@@ -178,7 +178,7 @@ int CmdlineTaskRunner::killChildrenProcesses(qint64 processId, bool fullTree) {
         uiLog.trace("    kill process: " + QString::number(child));
         result += killProcess(child);
 
-#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+#if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN)
         usleep(1000000);
 #elif defined(Q_OS_WIN)
         Sleep(1000);
@@ -204,7 +204,7 @@ int CmdlineTaskRunner::killProcessTree(qint64 processId) {
 
 int CmdlineTaskRunner::killProcess(qint64 processId) {
     int result = 0;
-#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+#if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN)
     int exist = QProcess::execute("kill -0 " + QString::number(processId));
     if (exist == 0) {
         result = QProcess::execute("kill -9 " + QString::number(processId));

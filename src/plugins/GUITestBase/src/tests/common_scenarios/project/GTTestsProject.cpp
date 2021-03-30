@@ -164,7 +164,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     QString expectedTitle;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     expectedTitle = "UGENE";
 #else
     expectedTitle = "UGENE";

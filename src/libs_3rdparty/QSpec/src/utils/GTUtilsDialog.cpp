@@ -228,7 +228,7 @@ void GTUtilsDialog::clickButtonBox(GUITestOpStatus &os, QDialogButtonBox::Standa
 
 #define GT_METHOD_NAME "clickButtonBox"
 void GTUtilsDialog::clickButtonBox(GUITestOpStatus &os, QWidget *dialog, QDialogButtonBox::StandardButton button) {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     QMessageBox *mbox = qobject_cast<QMessageBox *>(dialog);
     GTUtilsMac fakeClock;
     fakeClock.startWorkaroundForMacCGEvents(16000, false);

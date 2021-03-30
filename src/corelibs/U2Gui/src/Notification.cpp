@@ -388,7 +388,7 @@ void NotificationStack::addNotification(const QString &message, NotificationType
 
 QPoint NotificationStack::getBottomRightOfMainWindow() {
     QPoint pos;
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
     // This behavior is correct.
     pos = AppContext::getMainWindow()->getQMainWindow()->geometry().bottomRight();
 #else

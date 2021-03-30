@@ -20,7 +20,7 @@
  */
 
 #include <qglobal.h>
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 
 #    include <client/mac/handler/exception_handler.h>
 #    include <execinfo.h>
