@@ -190,6 +190,7 @@ cp ./readme.txt $BUILD_DIR/readme.txt
 
 if [ ! "$1" ]; then
     set -x
+
     echo "##teamcity[blockOpened name='Bundle code signing']"
     echo
     echo Code signing...
@@ -199,17 +200,13 @@ if [ ! "$1" ]; then
     echo ./codesign.mac.sh "${TARGET_APP_DIR_RENAMED}"
     bash ./codesign.mac.sh "${TARGET_APP_DIR_RENAMED}"
     echo "##teamcity[blockClosed name='Bundle code signing']"
-
-    # echo
-    # echo "Signing app '$TARGET_APP_DIR_RENAMED'"
-    # codesign \
-    #     --sign "Developer ID Application: Alteametasoft" \
-    #     --timestamp \
-    #     --verbose=4 \
-    #     --entitlements "${TARGET_APP_DIR_RENAMED}"/Contents/Info.plist \
-    #     "${TARGET_APP_DIR_RENAMED}" \
-    # || exit -1
-    set +x
+    
+    echo
+    echo Create pkg file
+    bash ./productbuild.sh \
+        "${TARGET_APP_DIR_RENAMED}" \
+        "${TARGET_APP_DIR_RENAMED}".pkg \
+        "ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}".pkg
 
     echo
     echo Compressing symbols...
@@ -225,6 +222,8 @@ if [ ! "$1" ]; then
     echo Signing dmg-file...
     echo ./codesign.mac.sh ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg
     bash ./codesign.mac.sh ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg
+
+    set +x
 fi
 
 echo "Restore PATH env var"
