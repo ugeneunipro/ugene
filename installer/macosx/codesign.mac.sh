@@ -1,17 +1,7 @@
 #!/bin/bash
-#set -x
+set -x
 
 if [[ -f `dirname $0`/utils.sh ]]; then source `dirname $0`/utils.sh; fi
-
-#/Users/ichebyki/UGENE/git/master/ugene/installer/macosx/pkg-dmg \
-#    --source /Users/ichebyki/Downloads/code-sign \
-#    --target ugene-37.0-mac-x86_64-r11111.dmg \
-#    --license /Users/ichebyki/UGENE/git/master/ugene/installer/macosx/LICENSE.with_3rd_party \
-#    --volname Unipro UGENE 37.0 \
-#    --symlink /Applications
-
-#To get a list of signing identities, I found the perfect answer in this objc.io article:
-#    security find-identity -v -p codesigning
 
 if [ -d "$1" ]; then
     echo "Signing recursively all files in directory '$1'"
@@ -39,6 +29,8 @@ else
     echo "ERROR: First arg must be directory or single file! Exit."
     exit -1
 fi
+
+ditto -c -k --keepParent "$1" ~/bundle-ditto-0.zip
 
 echo "============= Sign all frameworks ============="
 codesign \
@@ -141,4 +133,6 @@ codesign \
     ${entitlements} \
     "$contents_dir"/MacOS/ugeneui \
 || exit -1
+
+ditto -c -k --keepParent "$1" ~/bundle-ditto-1.zip
 
