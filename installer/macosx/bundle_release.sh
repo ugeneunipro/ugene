@@ -205,7 +205,7 @@ if [ ! "$1" ]; then
     echo Create pkg file
     bash ./productbuild.sh \
         "${TARGET_APP_DIR_RENAMED}" \
-        "${TARGET_APP_DIR_RENAMED}".pkg \
+        "ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}".not-signed.pkg \
         "ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}".pkg
 
     echo

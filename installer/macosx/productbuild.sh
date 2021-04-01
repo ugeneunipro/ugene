@@ -1,8 +1,10 @@
 #!/bin/bash
+set -x
 
 if [[ -f `dirname $0`/utils.sh ]]; then source `dirname $0`/utils.sh; fi
 
 if [[ -z "$1" ]]; then echo ERROR!; exit -1; fi
+if [[ ! -d "$1" ]]; then echo ERROR!; exit -1; fi
 
 productbuild \
     --component "$1" \
