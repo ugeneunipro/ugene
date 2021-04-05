@@ -6680,6 +6680,39 @@ GUI_TEST_CLASS_DEFINITION(test_6960) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6963) {
+    //1. Open Application Settings and check if WindowsVista on Windows or Macintosh on macOS styles are exist
+    class Custom : public CustomScenario {
+        void run(HI::GUITestOpStatus& os) {
+            QWidget* dialog = QApplication::activeModalWidget();
+
+            QTreeWidget* tree = GTWidget::findExactWidget<QTreeWidget*>(os, "tree", dialog);
+            CHECK_SET_ERR(tree != NULL, "QTreeWidget unexpectedly not found");
+
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::General);
+
+            QComboBox* styleCombo = GTWidget::findExactWidget<QComboBox*>(os, "styleCombo", dialog);
+            CHECK_SET_ERR(styleCombo != NULL, "styleCombo unexpectedly not found");
+
+            QString text;
+#ifdef _WIN32
+            text = "WindowsVista";
+#elif Q_OS_DARWIN
+            text = "Macintosh";
+#endif
+
+            GTComboBox::selectItemByText(os, styleCombo, text);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
+    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
+        << "Preferences...",
+        GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6966) {
     // Open 100bp file
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/100bp.fa");
