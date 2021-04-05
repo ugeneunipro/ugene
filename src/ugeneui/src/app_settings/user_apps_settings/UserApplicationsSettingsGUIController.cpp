@@ -102,6 +102,8 @@ AppSettingsGUIPageWidget *UserApplicationsSettingsPageController::createWidget(A
 }
 
 const QString UserApplicationsSettingsPageController::helpPageId = QString("60227712");
+const QMap<QString, QString> UserApplicationsSettingsPageWidget::STYLE_KEYS_FIXED_REGISTER =
+                        { {"windowsvista", "WindowsVista"}, {"macintosh", "Macintosh"} };
 
 UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserApplicationsSettingsPageController *ctrl) {
     setupUi(this);
@@ -111,7 +113,15 @@ UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserAppli
         it.next();
         langCombo->addItem(it.key(), it.value());
     }
-    styleCombo->addItems(QStyleFactory::keys());
+    auto keys = QStyleFactory::keys();
+    for (const auto& key : keys) {
+        if (STYLE_KEYS_FIXED_REGISTER.keys().contains(key)) {
+            const QString& fixedName = STYLE_KEYS_FIXED_REGISTER.value(key);
+            keys.removeOne(key);
+            keys.append(fixedName);
+        }
+    }
+    styleCombo->addItems(keys);
 }
 
 void UserApplicationsSettingsPageWidget::setState(AppSettingsGUIPageState *s) {

@@ -82,6 +82,10 @@ public:
 
 private slots:
     void sl_transFileClicked();
+
+private:
+    //Keys
+    static const QMap<QString, QString> STYLE_KEYS_FIXED_REGISTER;
 };
 
 }    // namespace U2
