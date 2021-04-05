@@ -101,9 +101,9 @@ QVariantMap getFormatsMap(MapType mapType) {
         }
         if (format->checkFlags(DocumentFormatFlag_SupportWriting) || (BOOLEANS == mapType)) {
             if (BOOLEANS == mapType) {
-                result[fid] = false;
+                result[AppContext::getDocumentFormatRegistry()->getFormatById(fid)->getFormatName()] = false;
             } else {
-                result[fid] = fid;
+                result[AppContext::getDocumentFormatRegistry()->getFormatById(fid)->getFormatName()] = fid;
             }
         }
     }
