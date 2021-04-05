@@ -44,8 +44,7 @@ SearchQualifierDialog::SearchQualifierDialog(QWidget *p, AnnotationsTreeView *tr
       ui(new Ui_SearchQualifierDialog),
       groupToSearchIn(NULL),
       parentAnnotationofPrevResult(NULL),
-      indexOfPrevResult(-1),
-      isValid_(false) {
+      indexOfPrevResult(-1) {
     ui->setupUi(this);
     new HelpButton(this, ui->buttonBox, "60227857");
     ui->buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Select all"));
@@ -59,9 +58,6 @@ SearchQualifierDialog::SearchQualifierDialog(QWidget *p, AnnotationsTreeView *tr
     clearPrevResults();
 
     AVItem *currentItem = static_cast<AVItem *>(treeView->tree->currentItem());
-    SAFE_POINT(currentItem != nullptr, "Cannot cast current Tree Widget Item to Annotation View Item", )
-    isValid_ = true;
-
     switch (currentItem->type) {
     case AVItemType_Group: {
         groupToSearchIn = currentItem;
@@ -116,10 +112,6 @@ bool SearchQualifierDialog::eventFilter(QObject *obj, QEvent *e) {
 SearchQualifierDialog::~SearchQualifierDialog() {
     clearPrevResults();
     delete ui;
-}
-
-bool SearchQualifierDialog::isValid() const {
-    return isValid_;
 }
 
 void SearchQualifierDialog::sl_searchTaskStateChanged() {
