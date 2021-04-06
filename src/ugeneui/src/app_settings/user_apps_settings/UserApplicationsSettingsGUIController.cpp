@@ -118,7 +118,6 @@ UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserAppli
     for (const auto& key : qAsConst(keys)) {
         if (STYLE_KEYS_FIXED_REGISTER.contains(key)) {
             const QString& fixedName = STYLE_KEYS_FIXED_REGISTER.value(key);
-            keys.removeOne(key);
             fixedKeys.append(fixedName);
         } else {
             fixedKeys.append(key);
