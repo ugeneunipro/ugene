@@ -6682,34 +6682,30 @@ GUI_TEST_CLASS_DEFINITION(test_6960) {
 
 GUI_TEST_CLASS_DEFINITION(test_6963) {
     //1. Open Application Settings and check if WindowsVista on Windows or Macintosh on macOS styles are exist
-    class Custom : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) {
-            QWidget* dialog = QApplication::activeModalWidget();
-
-            QTreeWidget* tree = GTWidget::findExactWidget<QTreeWidget*>(os, "tree", dialog);
-            CHECK_SET_ERR(tree != NULL, "QTreeWidget unexpectedly not found");
+    class CheckStyleScenario : public CustomScenario {
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::General);
 
             QComboBox* styleCombo = GTWidget::findExactWidget<QComboBox*>(os, "styleCombo", dialog);
-            CHECK_SET_ERR(styleCombo != NULL, "styleCombo unexpectedly not found");
 
             QString text;
-#ifdef _WIN32
-            text = "WindowsVista";
-#elif Q_OS_DARWIN
-            text = "Macintosh";
-#endif
+            if (isOsWindows()) {
+                text = "WindowsVista";
+            } else if (isOsMac()) {
+                text = "Macintosh";
+            } else if (isOsLinux()) {
+                text = "Fusion";
+            }
 
             GTComboBox::selectItemByText(os, styleCombo, text);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new Custom()));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-        << "Preferences...",
-        GTGlobals::UseMouse);
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new CheckStyleScenario()));
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..." }, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
