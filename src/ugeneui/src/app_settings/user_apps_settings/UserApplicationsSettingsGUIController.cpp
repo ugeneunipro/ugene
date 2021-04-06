@@ -114,14 +114,17 @@ UserApplicationsSettingsPageWidget::UserApplicationsSettingsPageWidget(UserAppli
         langCombo->addItem(it.key(), it.value());
     }
     auto keys = QStyleFactory::keys();
-    for (const auto& key : keys) {
-        if (STYLE_KEYS_FIXED_REGISTER.keys().contains(key)) {
+    QStringList fixedKeys;
+    for (const auto& key : qAsConst(keys)) {
+        if (STYLE_KEYS_FIXED_REGISTER.contains(key)) {
             const QString& fixedName = STYLE_KEYS_FIXED_REGISTER.value(key);
             keys.removeOne(key);
-            keys.append(fixedName);
+            fixedKeys.append(fixedName);
+        } else {
+            fixedKeys.append(key);
         }
     }
-    styleCombo->addItems(keys);
+    styleCombo->addItems(fixedKeys);
 }
 
 void UserApplicationsSettingsPageWidget::setState(AppSettingsGUIPageState *s) {

@@ -84,7 +84,13 @@ private slots:
     void sl_transFileClicked();
 
 private:
-    //Keys
+    /**
+     * @brief STYLE_KEYS_FIXED_REGISTER
+     * The bunch of "Appearence" with fixed register.
+     * The first value - the original name, prodused by QStyleFactory::keys(), the second value - new name with fixed register.
+     * Note, that you can't replace any characters, only register could be changed
+     * (see here, https://doc.qt.io/qt-5/qstylefactory.html#details, "keys are case insensitive")
+     */
     static const QMap<QString, QString> STYLE_KEYS_FIXED_REGISTER;
 };
 
