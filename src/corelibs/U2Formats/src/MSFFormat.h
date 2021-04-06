@@ -31,23 +31,21 @@ namespace U2 {
 
 class IOAdapter;
 
-class U2FORMATS_EXPORT MSFFormat : public TextDocumentFormatDeprecated {
+class U2FORMATS_EXPORT MSFFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
-    MSFFormat(QObject *p);
+    MSFFormat(QObject *parent);
 
-    virtual void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
+    FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl & = GUrl()) const override;
 
-    virtual void storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os);
+    Document *loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) override;
 
-protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray &rawData, const GUrl & = GUrl()) const;
+    void storeTextDocument(IOAdapterWriter &writer, Document *document, U2OpStatus &os) override;
 
-    virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
+    void storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) override;
 
 private:
-    void save(IOAdapter *io, Document *doc, U2OpStatus &ti);
-    void load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &objects, const QVariantMap &hints, U2OpStatus &ti);
+    static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObject *> &objects, const QVariantMap &hints, U2OpStatus &os);
 
     static int getCheckSum(const QByteArray &seq);
 

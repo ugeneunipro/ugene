@@ -41,7 +41,6 @@
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatus.h>
-#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "ClustalWAlnFormat.h"
@@ -193,15 +192,15 @@ void ClustalWAlnFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QL
     objects.append(obj);
 }
 
-Document *ClustalWAlnFormat::loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
+Document *ClustalWAlnFormat::loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
     QList<GObject *> objects;
-    load(reader, dbiRef, objects, fs, os);
+    load(reader, dbiRef, objects, hints, os);
     CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
     assert(objects.size() == 1);
-    return new Document(this, reader.getFactory(), reader.getURL(), dbiRef, objects, fs);
+    return new Document(this, reader.getFactory(), reader.getURL(), dbiRef, objects, hints);
 }
 
-void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &ti) {
+void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) {
     SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), "Clustal entry storing: no alignment", );
     const QList<GObject *> &als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(als.size() == 1, "Clustal entry storing: alignment objects count error", );
@@ -212,10 +211,9 @@ void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<GObje
     const MultipleSequenceAlignment msa = obj->getMultipleAlignment();
 
     // Write header.
-    U2OpStatus2Log os;
     QString header("CLUSTAL W 2.0 multiple sequence alignment\n\n");
     writer.write(os, header);
-    CHECK_OP_EXT(os, ti.setError(L10N::errorTitle()), );
+    CHECK_OP(os, );
 
     // Precalculate maximum sequence name length.
     int maxNameLength = 0;
@@ -277,7 +275,7 @@ void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<GObje
             line.append('\n');
 
             writer.write(os, line);
-            CHECK_OP_EXT(os, ti.setError(L10N::errorTitle()), );
+            CHECK_OP(os, );
         }
 
         // Write consensus.
@@ -285,7 +283,7 @@ void ClustalWAlnFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<GObje
         line.append(consensus.mid(i, partLen));
         line.append("\n\n");
         writer.write(os, line);
-        CHECK_OP_EXT(os, ti.setError(L10N::errorTitle()), );
+        CHECK_OP(os, );
     }
 }
 
@@ -301,7 +299,6 @@ void ClustalWAlnFormat::storeTextDocument(IOAdapterWriter &writer, Document *d, 
     QMap<GObjectType, QList<GObject *>> objectsMap;
     objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT] = objectList;
     storeTextEntry(writer, objectsMap, os);
-    CHECK_EXT(!os.isCoR(), os.setError(L10N::errorWritingFile(d->getURL())), );
 }
 
 FormatCheckResult ClustalWAlnFormat::checkRawTextData(const QString &dataPrefix, const GUrl &) const {

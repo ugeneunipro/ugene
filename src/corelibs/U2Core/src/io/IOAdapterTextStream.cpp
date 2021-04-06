@@ -125,7 +125,7 @@ int IOAdapterReader::read(U2OpStatus &os, QString &result, int maxLength, const 
     textForUndo.clear();
     bool isReadingTerminatorSequence = false;
     while (!stream.atEnd() && result.length() != maxLength) {
-        QChar unicodeChar = get(os);
+        QChar unicodeChar = readChar(os);
         CHECK_OP(os, 0);
         uchar latin1Char = unicodeChar.toLatin1();
         bool isTerminatorChar = terminators.at(latin1Char);
@@ -135,14 +135,14 @@ int IOAdapterReader::read(U2OpStatus &os, QString &result, int maxLength, const 
                 *terminatorFound = true;
             }
             if (terminatorMode == IOAdapter::Term_Exclude) {
-                unget();    // Push back the current terminator char and break.
+                unreadChar();    // Push back the current terminator char and break.
                 break;
             } else if (terminatorMode == IOAdapter::Term_Skip) {
                 continue;
             }
             // The terminator char will be included below as a normal one.
         } else if (isReadingTerminatorSequence) {
-            unget();    // Push back the current non-terminator char and break.
+            unreadChar();    // Push back the current non-terminator char and break.
             break;
         }
         result.append(unicodeChar);
@@ -154,7 +154,27 @@ int IOAdapterReader::read(U2OpStatus &os, QString &result, int maxLength, const 
     return result.length();
 }
 
-QChar IOAdapterReader::get(U2OpStatus &os) {
+bool IOAdapterReader::readLine(U2OpStatus &os, QString &result, int maxLength) {
+    bool terminatorsFound = false;
+    result.clear();
+    read(os, result, maxLength, TextUtils::LINE_BREAKS, IOAdapter::Term_Exclude, &terminatorsFound);
+    if (terminatorsFound) {
+        // Skip all chars from the TextUtils::LINE_BREAKS. Stop on '\n'.
+        // '\n' is the last character on supported OSes: '\n' on Linux and MacOS and '\r\n' on Windows.
+        while (!atEnd() && readChar(os) != '\n') {
+            CHECK_OP(os, false);
+        }
+    }
+    return terminatorsFound;
+}
+
+QString IOAdapterReader::readLine(U2OpStatus &os, int maxLength) {
+    QString result;
+    readLine(os, result, maxLength);
+    return result;
+}
+
+QChar IOAdapterReader::readChar(U2OpStatus &os) {
     QChar ch;
     if (unreadCharsBuffer.isEmpty()) {
         stream >> ch;
@@ -171,9 +191,9 @@ QChar IOAdapterReader::get(U2OpStatus &os) {
     return ch;
 }
 
-void IOAdapterReader::unget() {
-    SAFE_POINT(!textForUndo.isEmpty(), "Can't unget(), textForUndo is empty!", );
-    SAFE_POINT(unreadCharsBuffer.isEmpty(), "unreadCharsBuffer must be empty during unget()", );
+void IOAdapterReader::unreadChar() {
+    SAFE_POINT(!textForUndo.isEmpty(), "Can't unreadChar(), textForUndo is empty!", );
+    SAFE_POINT(unreadCharsBuffer.isEmpty(), "unreadCharsBuffer must be empty during unreadChar()", );
     unreadCharsBuffer.append(textForUndo[textForUndo.length() - 1]);
 }
 
@@ -188,6 +208,10 @@ void IOAdapterReader::undo() {
 
 int IOAdapterReader::getProgress() const {
     return ioAdapter->getProgress();
+}
+
+bool IOAdapterReader::atEnd() const {
+    return unreadCharsBuffer.isEmpty() && stream.atEnd();
 }
 
 ///////////////////////////////////////////////
