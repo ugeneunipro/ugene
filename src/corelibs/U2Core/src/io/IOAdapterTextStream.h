@@ -110,7 +110,7 @@ public:
 
     /**
      * Reads a single line (until '\n' character) from the text stream into the 'result' buffer.
-     * Excludes line terminator sequence characters ('\r' and ('\n') from the result.
+     * Excludes line terminator sequence characters ('\r' and '\n') from the result.
      *
      * Returns 'true' if the line terminator was found.
      * Returns 'false' if this is the last line in the stream or 'maxLength' was reached before the line terminator was found.
