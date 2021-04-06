@@ -349,7 +349,7 @@ void MSFFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, 
         line += "  " + LEN_FIELD;
         line += " " + QString("%1").arg(maLen, -maxLengthLen);
         line += "  " + CHECK_FIELD;
-        line += " " + QString("%1").arg(checkSums[row->getRowId()], -maxCheckSumLen);    //TODO??
+        line += " " + QString("%1").arg(checkSums[row->getRowId()], -maxCheckSumLen);
         line += "  " + WEIGHT_FIELD;
         line += " " + QByteArray::number(WEIGHT_VALUE) + "\n";
         writer.write(os, line);
