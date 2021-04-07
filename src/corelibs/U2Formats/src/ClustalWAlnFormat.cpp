@@ -91,10 +91,12 @@ void ClustalWAlnFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QL
     // Read names and sequences.
     while (reader.read(os, buf, READ_BUFF_SIZE, LINE_BREAKS, IOAdapter::Term_Include, &lineOk) > 0 && !os.isCoR()) {
         if (buf.startsWith(CLUSTAL_HEADER)) {
-            reader.undo();    // Start of the next document in the stream.
+            reader.undo(os);    // Start of the next document in the stream.
+            CHECK_OP(os, )
             break;
         }
         int numNs = 0;
+
         int len = buf.length();
         while (len > 0 && TextUtils::isLineBreak(buf, len - 1)) {
             if (buf[len - 1] == '\n') {

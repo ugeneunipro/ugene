@@ -136,14 +136,17 @@ public:
     int getProgress() const;
 
     /** Undo last read() operation. */
-    void undo();
+    void undo(U2OpStatus &os);
 
 private:
-    /** Reads a single character from the stream. Can be called only in the context of 'read' operation. */
+    /** Reads a single character from the stream. Returns '\0' if end of stream is reached. */
     QChar readChar(U2OpStatus &os);
 
-    /** Puts back the last read character to the stream buffer. Can be called only in the context of 'read' operation. */
-    void unreadChar();
+    /**
+     * Puts back the last character from the 'textForUndo' into the unreadCharsBuffer.
+     * Reduces size of 'textForUndo' block by 1. This method is safe to call only from the 'read()' method: read comments inside.
+     */
+    void unreadChar(U2OpStatus &os);
 
     /** The last text read during the last 'read' call. Contains all text (with separators) and is used for undo(). */
     QString textForUndo;
