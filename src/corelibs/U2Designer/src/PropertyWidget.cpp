@@ -410,13 +410,12 @@ QVariantMap ComboBoxWithDbUrlWidget::getItems() const {
 /* ComboBoxWithChecksWidget */
 /************************************************************************/
 ComboBoxWithChecksWidget::ComboBoxWithChecksWidget(const QVariantMap &_items, QWidget *parent)
-    : PropertyWidget(parent), items(_items) {
+    : PropertyWidget(parent), cm(nullptr), items(_items) {
     comboBox = new QComboBox(this);
-    cm = NULL;
     addMainWidget(comboBox);
+    initModelView();
 
-    setValue(value());
-
+    connect(cm, SIGNAL(itemChanged(QStandardItem *)), this, SLOT(sl_itemChanged(QStandardItem *)));
     connect(comboBox, SIGNAL(activated(const QString &)), this, SIGNAL(valueChanged(const QString &)));
     connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(sl_valueChanged(int)));
 }
@@ -433,42 +432,19 @@ QVariant ComboBoxWithChecksWidget::value() {
 }
 
 void ComboBoxWithChecksWidget::setValue(const QVariant &value) {
-    disconnect(cm, SIGNAL(itemChanged(const QModelIndex &)), this, SLOT(sl_itemChanged(const QModelIndex &)));
-    QStringList curList = value.toString().split(",");
-    if (cm == NULL) {
-        cm = new QStandardItemModel(items.size(), 1, comboBox);
-    } else {
-        cm->clear();
-        delete cm;
-        cm = new QStandardItemModel(items.size(), 1, comboBox);
+    if (cm == nullptr) {
+        coreLog.error("Model of ComboBoxWithChecksWidget is nullptr");
+        return;
     }
 
-    const QList<QString> &keys = items.keys();
-    int i = 0;
-
-    QStandardItem *ghostItem = new QStandardItem();
-    cm->setItem(i++, ghostItem);
-
-    foreach (const QString &key, keys) {
+    QStringList curList = value.toString().split(',', QString::SkipEmptyParts);
+    for (int i = 1; i < cm->rowCount(); i++) {
+        QStandardItem *item = cm->item(i);
+        QString key = item->data().toString();
         bool checked = curList.contains(key, Qt::CaseInsensitive);
         items[key] = checked;
-        QStandardItem *item = new QStandardItem(key);
-        item->setCheckable(true);
-        item->setEditable(false);
-        item->setSelectable(false);
         item->setCheckState((checked) ? Qt::Checked : Qt::Unchecked);
-        item->setData(key);
-        cm->setItem(i++, item);
     }
-    comboBox->setModel(cm);
-
-    QListView *vw = new QListView(comboBox);
-    vw->setModel(cm);
-    vw->setRowHidden(0, true);
-
-    comboBox->setView(vw);
-    ghostItem->setText(ComboBoxWithChecksWidget::value().toString());
-    connect(cm, SIGNAL(itemChanged(QStandardItem *)), this, SLOT(sl_itemChanged(QStandardItem *)));
 }
 
 void ComboBoxWithChecksWidget::sl_valueChanged(int) {
@@ -481,16 +457,42 @@ void ComboBoxWithChecksWidget::sl_itemChanged(QStandardItem *item) {
     QString key = standardItem->data().toString();
 
     if (items.contains(key)) {
-        Qt::CheckState checkState = standardItem->checkState();
-        if (checkState == Qt::Checked) {
-            items[key] = true;
-        } else if (checkState == Qt::Unchecked) {
-            items[key] = false;
+        bool newCheckState = standardItem->checkState() == Qt::Checked;
+        if (items.value(key).toBool() != newCheckState) {
+            items[key] = newCheckState;
+            emit si_update(this);
         }
         sl_valueChanged(0);
     }
 
     comboBox->setItemText(0, value().toString());
+}
+
+void ComboBoxWithChecksWidget::initModelView() {
+    cm = new QStandardItemModel(items.size(), 1, comboBox);
+
+    int i = 0;
+    auto ghostItem = new QStandardItem();
+    ghostItem->setText(ComboBoxWithChecksWidget::value().toString());
+    cm->setItem(i++, ghostItem);
+
+    for (auto it = items.begin(); it != items.end(); ++it) {
+        QStandardItem *item = new QStandardItem(it.key());
+        item->setCheckable(true);
+        item->setEditable(false);
+        item->setSelectable(false);
+        item->setCheckState(it.value().toBool() ? Qt::Checked : Qt::Unchecked);
+        item->setData(it.key());
+        cm->setItem(i++, item);
+    }
+
+    comboBox->setModel(cm);
+
+    auto vw = new QListView(comboBox);
+    vw->setModel(cm);
+    vw->setRowHidden(0, true);
+
+    comboBox->setView(vw);
 }
 
 /************************************************************************/

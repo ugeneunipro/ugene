@@ -237,6 +237,7 @@ public:
 
 signals:
     void valueChanged(const QString &value);
+    void si_update(QWidget *);
 
 protected:
     QComboBox *comboBox;
@@ -246,6 +247,9 @@ protected:
 protected slots:
     virtual void sl_valueChanged(int index);
     virtual void sl_itemChanged(QStandardItem *item);
+
+private:
+    void initModelView();
 };
 
 /************************************************************************/
