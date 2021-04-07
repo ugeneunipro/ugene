@@ -339,7 +339,7 @@ private:
 
     void updateLayout();
 
-    void updateTextSettings();
+    void updateTextSettings(TreeViewOption option);
 
     void updateBrachSettings();
 

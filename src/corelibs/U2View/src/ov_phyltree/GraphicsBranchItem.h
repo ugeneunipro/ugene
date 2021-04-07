@@ -98,7 +98,8 @@ public:
 
     void updateSettings(const OptionsMap &settings);
     void updateChildSettings(const OptionsMap &settings);
-    void updateTextSettings(const QFont &font, const QColor &color);
+    void updateTextFont(const QFont &font);
+    void updateTextColor(const QColor &color);
 
     const OptionsMap &getSettings() const;
 

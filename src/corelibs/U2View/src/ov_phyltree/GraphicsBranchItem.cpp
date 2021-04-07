@@ -63,20 +63,30 @@ void GraphicsBranchItem::updateChildSettings(const OptionsMap &newSettings) {
     }
 }
 
-void GraphicsBranchItem::updateTextSettings(const QFont &font, const QColor &color) {
+void GraphicsBranchItem::updateTextFont(const QFont &font) {
     QFont prevFont;
     if (distanceText) {
         prevFont = distanceText->font();
         distanceText->setFont(font);
-        distanceText->setBrush(color);
     }
     if (nameText) {
         prevFont = nameText->font();
         nameText->setFont(font);
-        nameText->setBrush(color);
     }
     if (font != prevFont) {
         setLabelPositions();
+    }
+}
+
+void GraphicsBranchItem::updateTextColor(const QColor &color) {
+    QFont prevFont;
+    if (distanceText) {
+        prevFont = distanceText->font();
+        distanceText->setBrush(color);
+    }
+    if (nameText) {
+        prevFont = nameText->font();
+        nameText->setBrush(color);
     }
 }
 

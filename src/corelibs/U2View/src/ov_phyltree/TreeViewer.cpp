@@ -542,8 +542,10 @@ void TreeViewerUI::onSettingsChanged(TreeViewOption option, const QVariant &newV
             updateScene(true);
             break;
         case LABEL_COLOR:
+            updateTextSettings(LABEL_COLOR);
+            break;
         case LABEL_FONT:
-            updateTextSettings();
+            updateTextSettings(LABEL_FONT);
             break;
         case BRANCH_COLOR:
         case BRANCH_THICKNESS:
@@ -650,28 +652,36 @@ void TreeViewerUI::updateSettings() {
         scene()->update();
     }
 }
-void TreeViewerUI::updateTextSettings() {
+void TreeViewerUI::updateTextSettings(TreeViewOption option) {
     QList<QGraphicsItem *> updatingItems = scene()->selectedItems();
-    QColor curColor = qvariant_cast<QColor>(getOptionValue(LABEL_COLOR));
-    if (updatingItems.isEmpty()) {
-        updatingItems = items();
-
-        QList<QGraphicsItem *> legendChildItems = legend->childItems();
-        if (!legendChildItems.isEmpty()) {
-            QGraphicsSimpleTextItem *legendText = dynamic_cast<QGraphicsSimpleTextItem *>(legendChildItems.first());
-            if (legendText) {
-                legendText->setBrush(curColor);
-            }
-        }
-    }
-
-    QFont curFont = qvariant_cast<QFont>(getOptionValue(LABEL_FONT));
     for (QGraphicsItem *graphItem : qAsConst(updatingItems)) {
         GraphicsBranchItem *branchItem = dynamic_cast<GraphicsBranchItem *>(graphItem);
         if (branchItem != NULL) {
-            branchItem->updateTextSettings(qvariant_cast<QFont>(getOptionValue(LABEL_FONT)), curColor);
-            if (branchItem->getCorrespondingItem()) {
-                branchItem->getCorrespondingItem()->updateTextSettings(curFont, curColor);
+            if (option == LABEL_COLOR) {
+                QColor curColor = qvariant_cast<QColor>(getOptionValue(LABEL_COLOR));
+                if (updatingItems.isEmpty()) {
+                    updatingItems = items();
+
+                    QList<QGraphicsItem *> legendChildItems = legend->childItems();
+                    if (!legendChildItems.isEmpty()) {
+                        QGraphicsSimpleTextItem *legendText = dynamic_cast<QGraphicsSimpleTextItem *>(legendChildItems.first());
+                        if (legendText) {
+                            legendText->setBrush(curColor);
+                        }
+                    }
+                }
+                branchItem->updateTextColor(curColor);
+                if (branchItem->getCorrespondingItem()) {
+                    branchItem->getCorrespondingItem()->updateTextColor(curColor);
+                }
+            } else if (option == LABEL_FONT) {
+                QFont curFont = qvariant_cast<QFont>(getOptionValue(LABEL_FONT));
+                branchItem->updateTextFont(curFont);
+                if (branchItem->getCorrespondingItem()) {
+                    branchItem->getCorrespondingItem()->updateTextFont(curFont);
+                }
+            } else {
+                return;
             }
         }
         GraphicsButtonItem *buttonItem = dynamic_cast<GraphicsButtonItem *>(graphItem);
@@ -1247,7 +1257,8 @@ void TreeViewerUI::sl_rectLayoutRecomputed() {
     }
     updateScene(true);
     updateSettings();
-    updateTextSettings();
+    updateTextSettings(LABEL_COLOR);
+    updateTextSettings(LABEL_FONT);
 }
 
 void TreeViewerUI::sl_onBranchCollapsed(GraphicsRectangularBranchItem *) {
