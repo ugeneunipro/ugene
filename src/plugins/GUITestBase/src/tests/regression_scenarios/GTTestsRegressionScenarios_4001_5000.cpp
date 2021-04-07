@@ -6047,14 +6047,14 @@ GUI_TEST_CLASS_DEFINITION(test_4985) {
 
     GTFileDialog::openFile(os, file.fileName());
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    
+
     file.remove();
     file.close();
-    
+
     GTUtilsDialog::waitForDialog(os, new MessageBoxNoToAllOrNo(os));
     GTUtilsStartPage::openStartPage(os);
     GTWidget::click(os, GTWidget::findLabelByText(os, "- A.fa").first());
-    
+
     QMessageBox *dialog = qobject_cast<QMessageBox *>(GTWidget::getActiveModalWidget(os));
     CHECK_SET_ERR(dialog != nullptr, "Expected MessageBox")
     QString actual = dialog->text();
