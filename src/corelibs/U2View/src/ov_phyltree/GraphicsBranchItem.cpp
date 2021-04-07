@@ -79,13 +79,10 @@ void GraphicsBranchItem::updateTextFont(const QFont &font) {
 }
 
 void GraphicsBranchItem::updateTextColor(const QColor &color) {
-    QFont prevFont;
     if (distanceText) {
-        prevFont = distanceText->font();
         distanceText->setBrush(color);
     }
     if (nameText) {
-        prevFont = nameText->font();
         nameText->setBrush(color);
     }
 }
