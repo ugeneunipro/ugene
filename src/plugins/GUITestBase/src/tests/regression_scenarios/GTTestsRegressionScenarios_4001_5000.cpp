@@ -6030,6 +6030,39 @@ GUI_TEST_CLASS_DEFINITION(test_4983) {
     GTUtilsLog::check(os, l);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4985) {
+    // Create file _common_data/scenarios/sandbox/A.fa with text "A"
+    // Open this file
+    // Delete this file from hard disk
+    // "File Modification Detected" dialog appears. Click "No"
+    // On Start Page open recent file A.fa
+    //      Expected: error message box with text "File doesn't exist: _common_data\scenarios\sandbox\a.fa" appears
+
+    QFile file(testDir + "_common_data/scenarios/sandbox/A.fa");
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream out(&file);
+    out << 'A';
+    out.flush();
+    CHECK_SET_ERR(file.size() == 1, "Error writing file " + file.fileName())
+
+    GTFileDialog::openFile(os, file.fileName());
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    
+    file.remove();
+    file.close();
+    
+    GTUtilsDialog::waitForDialog(os, new MessageBoxNoToAllOrNo(os));
+    GTUtilsStartPage::openStartPage(os);
+    GTWidget::click(os, GTWidget::findLabelByText(os, "- A.fa").first());
+    
+    QMessageBox *dialog = qobject_cast<QMessageBox *>(GTWidget::getActiveModalWidget(os));
+    CHECK_SET_ERR(dialog != nullptr, "Expected MessageBox")
+    QString actual = dialog->text();
+    QString expected = "File doesn't exist: " + QFileInfo(file.fileName()).absoluteFilePath();
+    CHECK_SET_ERR(actual == expected, "MessageBox text: expected \"" + expected + "\", actual \"" + actual + '"')
+    dialog->button(QMessageBox::Ok)->click();
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4986) {
     //    1. Open "data/samples/Genbank/murine.gb".
     //    2. Open "data/samples/GFF/5prime_utr_intron_A20.gff".
