@@ -62,6 +62,7 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
@@ -6038,29 +6039,20 @@ GUI_TEST_CLASS_DEFINITION(test_4985) {
     // On Start Page open recent file A.fa
     //      Expected: error message box with text "File doesn't exist: _common_data\scenarios\sandbox\a.fa" appears
 
-    QFile file(testDir + "_common_data/scenarios/sandbox/A.fa");
-    file.open(QIODevice::WriteOnly | QIODevice::Text);
-    QTextStream out(&file);
-    out << 'A';
-    out.flush();
-    CHECK_SET_ERR(file.size() == 1, "Error writing file " + file.fileName())
+    QString filePath = testDir + "_common_data/scenarios/sandbox/A.fa";
+    IOAdapterUtils::writeTextFile(filePath, "A");
 
-    GTFileDialog::openFile(os, file.fileName());
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    file.remove();
-    file.close();
+    QFile(filePath).remove();
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxNoToAllOrNo(os));
     GTUtilsStartPage::openStartPage(os);
-    GTWidget::click(os, GTWidget::findLabelByText(os, "- A.fa").first());
 
-    QMessageBox *dialog = qobject_cast<QMessageBox *>(GTWidget::getActiveModalWidget(os));
-    CHECK_SET_ERR(dialog != nullptr, "Expected MessageBox")
-    QString actual = dialog->text();
-    QString expected = "File doesn't exist: " + QFileInfo(file.fileName()).absoluteFilePath();
-    CHECK_SET_ERR(actual == expected, "MessageBox text: expected \"" + expected + "\", actual \"" + actual + '"')
-    dialog->button(QMessageBox::Ok)->click();
+    QString expected = "File doesn't exist: " + QFileInfo(filePath).absoluteFilePath();
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, expected));
+    GTWidget::click(os, GTWidget::findLabelByText(os, "- A.fa").first());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4986) {
