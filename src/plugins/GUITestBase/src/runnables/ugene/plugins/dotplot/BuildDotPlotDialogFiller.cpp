@@ -57,14 +57,14 @@ void BuildDotPlotFiller::commonScenario() {
 
     GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "mergeFirstCheckBox", dialog), mergeFirstBoxChecked);
     if (mergeFirstBoxChecked) {
-        GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "gapFirst", dialog), firstGapSize);
+        GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "gapFirst", dialog), firstGapSize);
     }
 
     if (!oneSequenceBoxChecked) {
         GTLineEdit::setText(os, GTWidget::findLineEdit(os, "secondFileEdit", dialog), secondFileName);
         GTCheckBox::setChecked(os, GTWidget::findCheckBox(os, "mergeSecondCheckBox", dialog), mergeSecondBoxChecked);
         if (mergeSecondBoxChecked) {
-            GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "gapSecond", dialog), secondGapSize);
+            GTSpinBox::setValue(os, GTWidget::findSpinBox(os, "gapSecond", dialog), secondGapSize);
         }
     }
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
