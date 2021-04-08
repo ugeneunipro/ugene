@@ -2249,14 +2249,13 @@ GUI_TEST_CLASS_DEFINITION(test_2352) {
     //3. Select any binary file as first file in dialog
     //Expected state: file is not selected, no crash
 
-    QString bin = QCoreApplication::applicationFilePath();
-    GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, bin, bin, false, false, false, 5, 5, true));
+    QString randomBinaryFile = QCoreApplication::applicationFilePath();
+
+    GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, randomBinaryFile, randomBinaryFile, false, false, false, 5, 5, true));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Build dotplot..."});
 
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Build dotplot...");
-
-    GTGlobals::sleep();
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2360) {

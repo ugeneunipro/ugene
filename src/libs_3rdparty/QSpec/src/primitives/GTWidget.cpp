@@ -69,7 +69,7 @@ void GTWidget::click(GUITestOpStatus &os, QWidget *widget, Qt::MouseButton mouse
 
 #define GT_METHOD_NAME "setFocus"
 void GTWidget::setFocus(GUITestOpStatus &os, QWidget *w) {
-    GT_CHECK(w != NULL, "widget is NULL");
+    GT_CHECK(w != nullptr, "widget is NULL");
 
 #ifdef Q_OS_MAC
     GTUtilsMac fakeClock;
@@ -93,7 +93,7 @@ void GTWidget::setFocus(GUITestOpStatus &os, QWidget *w) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findWidget"
-QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &widgetName, QWidget const *const parentWidget, const GTGlobals::FindOptions &options) {
+QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     QWidget *widget = nullptr;
     for (int time = 0; time < GT_OP_WAIT_MILLIS && widget == nullptr; time += GT_OP_CHECK_MILLIS) {
         GTGlobals::sleep(time > 0 ? GT_OP_CHECK_MILLIS : 0);
@@ -116,6 +116,27 @@ QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &widgetName, QW
         GT_CHECK_RESULT(widget != nullptr, QString("Widget '%1' not found").arg(widgetName), NULL);
     }
     return widget;
+}
+#undef GT_METHOD_NAME
+
+#define GT_CLASS_NAME "GTWidget"
+#define GT_METHOD_NAME "findLineEdit"
+QLineEdit *GTWidget::findLineEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QLineEdit *>(os, widgetName, parentWidget, options);
+}
+#undef GT_METHOD_NAME
+
+#define GT_CLASS_NAME "GTWidget"
+#define GT_METHOD_NAME "findCheckBox"
+QCheckBox *GTWidget::findCheckBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QCheckBox *>(os, widgetName, parentWidget, options);
+}
+#undef GT_METHOD_NAME
+
+#define GT_CLASS_NAME "GTWidget"
+#define GT_METHOD_NAME "findSpinBox"
+QSpinBox *GTWidget::findSpinBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QSpinBox *>(os, widgetName, parentWidget, options);
 }
 #undef GT_METHOD_NAME
 
@@ -476,7 +497,7 @@ void GTWidget::checkEnabled(GUITestOpStatus &os, QWidget *widget, bool expectedE
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkEnabled"
-void GTWidget::checkEnabled(GUITestOpStatus &os, const QString &widgetName, bool expectedEnabledState, QWidget const *const parent) {
+void GTWidget::checkEnabled(GUITestOpStatus &os, const QString &widgetName, bool expectedEnabledState, const QWidget *parent) {
     checkEnabled(os, GTWidget::findWidget(os, widgetName, parent), expectedEnabledState);
 }
 #undef GT_METHOD_NAME

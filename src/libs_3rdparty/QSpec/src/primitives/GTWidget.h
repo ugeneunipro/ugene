@@ -24,9 +24,12 @@
 
 #include <QAbstractButton>
 #include <QAbstractItemView>
+#include <QCheckBox>
 #include <QLabel>
+#include <QLineEdit>
 #include <QMenu>
 #include <QPushButton>
+#include <QSpinBox>
 #include <QWidget>
 
 #include "GTGlobals.h"
@@ -44,11 +47,11 @@ public:
     static void setFocus(GUITestOpStatus &os, QWidget *w);
 
     // finds widget with the given object name using given FindOptions. Parent widget is QMainWindow, if not set
-    static QWidget *findWidget(GUITestOpStatus &os, const QString &widgetName, const QWidget *const parentWidget = NULL, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
+    static QWidget *findWidget(GUITestOpStatus &os, const QString &widgetName, const QWidget *const parentWidget = nullptr, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
     static QPoint getWidgetCenter(QWidget *widget);
 
-    static QAbstractButton *findButtonByText(GUITestOpStatus &os, const QString &text, QWidget *parentWidget = NULL, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
-    static QList<QLabel *> findLabelByText(GUITestOpStatus &os, const QString &text, QWidget *parentWidget = NULL, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
+    static QAbstractButton *findButtonByText(GUITestOpStatus &os, const QString &text, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
+    static QList<QLabel *> findLabelByText(GUITestOpStatus &os, const QString &text, QWidget *parentWidget = nullptr, const GTGlobals::FindOptions & = GTGlobals::FindOptions());
 
     //returns color of point p in widget w coordinates
     static QColor getColor(GUITestOpStatus &os, QWidget *widget, const QPoint &point);
@@ -89,24 +92,33 @@ public:
     static QMenu *getActivePopupMenu(GUITestOpStatus &os);
 
     static void checkEnabled(GUITestOpStatus &os, QWidget *widget, bool expectedEnabledState = true);
-    static void checkEnabled(GUITestOpStatus &os, const QString &widgetName, bool expectedEnabledState = true, QWidget const *const parent = NULL);
+    static void checkEnabled(GUITestOpStatus &os, const QString &widgetName, bool expectedEnabledState = true, const QWidget *parent = nullptr);
 
     static void scrollToIndex(GUITestOpStatus &os, QAbstractItemView *itemView, const QModelIndex &index);
 
 #define GT_CLASS_NAME "GTWidget"
 #define GT_METHOD_NAME "findExactWidget"
     template<class T>
-    static T findExactWidget(GUITestOpStatus &os, const QString &widgetName, QWidget const *const parentWidget = NULL, const GTGlobals::FindOptions &options = GTGlobals::FindOptions()) {
-        T result = NULL;
+    static T findExactWidget(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions()) {
+        T result = nullptr;
         QWidget *w = findWidget(os, widgetName, parentWidget, options);
         result = qobject_cast<T>(w);
         if (options.failIfNotFound) {
-            GT_CHECK_RESULT(w != NULL, "widget " + widgetName + " not found", result);
-            GT_CHECK_RESULT(result != NULL, "widget of specefied class not found, but there is another widget with the same name, its class is: " + QString(w->metaObject()->className()), result);
+            GT_CHECK_RESULT(w != nullptr, "widget " + widgetName + " not found", result);
+            GT_CHECK_RESULT(result != nullptr, "widget of specified class not found, but there is another widget with the same name, its class is: " + QString(w->metaObject()->className()), result);
         }
         return result;
     }
 #undef GT_METHOD_NAME
+
+    /** Calls findExactWidget with QLineEdit type. Shortcut method. */
+    static QLineEdit *findLineEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+
+    /** Calls findExactWidget with QCheckBox type. Shortcut method. */
+    static QCheckBox *findCheckBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+
+    /** Calls findExactWidget with QSpinBox type. Shortcut method. */
+    static QSpinBox *findSpinBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 
 #define GT_METHOD_NAME "findWidgetByType"
     /** Finds a child widget with the given type. Fails is widget can't be found. */
