@@ -57,6 +57,7 @@ linux-g++ {
     # A few UGENE headers (like U2Location) emits thousands of deprecated-copy warnings.
     # TODO: Fix UGENE code and remove the suppression.
     QMAKE_CXXFLAGS += -Wno-deprecated-copy
+    QMAKE_CXXFLAGS += -Wno-deprecated-declarations
 
     # These warnings must be errors:
     QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
