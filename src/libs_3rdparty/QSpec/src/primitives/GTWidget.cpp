@@ -119,32 +119,21 @@ QWidget *GTWidget::findWidget(GUITestOpStatus &os, const QString &widgetName, co
 }
 #undef GT_METHOD_NAME
 
-#define GT_CLASS_NAME "GTWidget"
-#define GT_METHOD_NAME "findLineEdit"
 QLineEdit *GTWidget::findLineEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QLineEdit *>(os, widgetName, parentWidget, options);
 }
-#undef GT_METHOD_NAME
 
-#define GT_CLASS_NAME "GTWidget"
-#define GT_METHOD_NAME "findCheckBox"
 QCheckBox *GTWidget::findCheckBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QCheckBox *>(os, widgetName, parentWidget, options);
 }
-#undef GT_METHOD_NAME
 
-#define GT_CLASS_NAME "GTWidget"
-#define GT_METHOD_NAME "findSpinBox"
 QSpinBox *GTWidget::findSpinBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
     return findExactWidget<QSpinBox *>(os, widgetName, parentWidget, options);
 }
-#undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getWidgetCenter"
 QPoint GTWidget::getWidgetCenter(QWidget *widget) {
     return widget->mapToGlobal(widget->rect().center());
 }
-#undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "findButtonByText"
 QAbstractButton *GTWidget::findButtonByText(GUITestOpStatus &os, const QString &text, QWidget *parentWidget, const GTGlobals::FindOptions &options) {
