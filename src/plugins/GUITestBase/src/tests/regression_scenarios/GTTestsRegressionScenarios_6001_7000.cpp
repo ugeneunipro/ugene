@@ -6092,6 +6092,7 @@ GUI_TEST_CLASS_DEFINITION(test_6862_1) {
             CHECK_SET_ERR(value == "hpdi.xml", QString("Motif database value (2): expected \"hpdi.xml\", current: \"%1\"").arg(value))
 
             GTComboBox::checkValues(os, GTWidget::findExactWidget<QComboBox *>(os, "Motif database widget"), QStringList("cistrome.xml"));
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Apply);
