@@ -30,13 +30,13 @@
 #elif defined(Q_OS_LINUX)
 #    include <QCoreApplication>
 #    include <QFile>
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_DARWIN)
 #    include <QCoreApplication>
 #    include <QDir>
 #    include <QFileInfo>
 #    include <QProcess>
 #    include <QTemporaryFile>
-#endif    // Q_OS_WIN || Q_OS_LINUX || Q_OS_MAC
+#endif    // Q_OS_WIN || Q_OS_LINUX || Q_OS_DARWIN
 
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/MessageBoxFiller.h>
@@ -119,7 +119,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     } else {
         CHECK_SET_ERR(false, "Can't find the desktop shortcut file");
     }
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_DARWIN)
     QFile ugeneui_path(QCoreApplication::applicationFilePath());
     QFileInfo fileInfo(ugeneui_path);
     QString filename(fileInfo.fileName());

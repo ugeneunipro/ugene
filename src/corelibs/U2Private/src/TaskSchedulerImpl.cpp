@@ -20,7 +20,7 @@
  */
 
 #include "TaskSchedulerImpl.h"
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 #    include "SleepPreventerMac.h"
 #endif
 
@@ -202,7 +202,7 @@ bool TaskSchedulerImpl::processFinishedTasks() {
         hasFinished = true;
         promoteTask(ti, Task::State_Finished);
 
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
         QCoreApplication::processEvents();
 #endif
 
@@ -740,7 +740,7 @@ void TaskSchedulerImpl::checkSerialPromotion(TaskInfo *pti, Task *subtask) {
 }
 
 void TaskSchedulerImpl::createSleepPreventer() {
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
     sleepPreventer = new SleepPreventer;
 #else
     sleepPreventer = new SleepPreventerMac;

@@ -295,7 +295,7 @@ ComboBoxWithUrlWidget::ComboBoxWithUrlWidget(const QVariantMap &items, bool _isP
     connect(toolButton, SIGNAL(clicked()), SLOT(sl_browse()));
     layout()->addWidget(toolButton);
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     toolButton->setMinimumHeight(18);
     QString style = "QComboBox {"
                     "min-height: 19px;"

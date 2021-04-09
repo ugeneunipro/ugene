@@ -71,7 +71,7 @@ MaEditorStatusBar::MaEditorStatusBar(MultipleAlignmentObject *mobj, MaEditorSequ
 
     selectionPattern = tr("Sel %1");
     lineLabel = new TwoArgPatternLabel(tr("Ln %1 / %2"), tr("Line %1 of %2"), "Line", this);
-    colomnLabel = new TwoArgPatternLabel(tr("Col %1 / %2"), tr("Column %1 of %2"), "Column", this);
+    columnLabel = new TwoArgPatternLabel(tr("Col %1 / %2"), tr("Column %1 of %2"), "Column", this);
     positionLabel = new TwoArgPatternLabel(tr("Pos %1 / %2"), tr("Position %1 of %2"), "Position", this);
     selectionLabel = new TwoArgPatternLabel(selectionPattern, tr("Selection width and height are %1"), "Selection", this);
 
@@ -122,11 +122,14 @@ void MaEditorStatusBar::updateLock() {
 }
 
 void MaEditorStatusBar::updateLineLabel() {
+    QString currentLineText = NONE_MARK;
     MaEditorSelection selection = seqArea->getSelection();
-    const int firstSelected = seqArea->getRowIndex(selection.y());
-    const int totalVisible = aliObj->getNumRows();
-    lineLabel->update(selection.isEmpty() || firstSelected == -1 ? NONE_MARK : QString::number(firstSelected + 1),
-                      QString::number(totalVisible));
+    if (!selection.isEmpty()) {
+        qint64 firstSelectedViewRowIndex = selection.y();
+        currentLineText = QString::number(firstSelectedViewRowIndex + 1);
+    }
+    qint64 viewRowCount = seqArea->getViewRowCount();
+    lineLabel->update(currentLineText, QString::number(viewRowCount));
 }
 
 void MaEditorStatusBar::updatePositionLabel() {
@@ -140,7 +143,7 @@ void MaEditorStatusBar::updateColumnLabel() {
     const QPoint &pos = selection.topLeft();
 
     qint64 alignmentLen = aliObj->getLength();
-    colomnLabel->update(selection.isEmpty() ? NONE_MARK : QString::number(pos.x() + 1), QString::number(alignmentLen));
+    columnLabel->update(selection.isEmpty() ? NONE_MARK : QString::number(pos.x() + 1), QString::number(alignmentLen));
 }
 
 void MaEditorStatusBar::updateSelectionLabel() {

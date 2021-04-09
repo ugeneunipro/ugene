@@ -174,9 +174,9 @@ inline bool isOsWindows() {
 #endif
 }
 
-/** Returns true if the current OS is MacOS (Q_OS_MAC). */
+/** Returns true if the current OS is MacOS (Q_OS_DARWIN). */
 inline bool isOsMac() {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     return true;
 #else
     return false;

@@ -26,7 +26,7 @@
 
 #include <U2Core/Log.h>
 #include <U2Core/Vector3D.h>
-#if defined(Q_OS_MAC)
+#if defined(Q_OS_DARWIN)
 #    include <OpenGL/glu.h>
 #else
 #    include <GL/glu.h>

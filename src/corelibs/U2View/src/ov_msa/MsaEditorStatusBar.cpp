@@ -43,7 +43,7 @@ MsaEditorStatusBar::MsaEditorStatusBar(MultipleAlignmentObject *mobj, MaEditorSe
 
 void MsaEditorStatusBar::setupLayout() {
     layout->addWidget(lineLabel);
-    layout->addWidget(colomnLabel);
+    layout->addWidget(columnLabel);
     layout->addWidget(positionLabel);
     layout->addWidget(selectionLabel);
 

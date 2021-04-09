@@ -31,7 +31,7 @@
 #include <U2Core/Timer.h>
 #include <U2Core/U2SafePoints.h>
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 #    include <U2Core/AppResources.h>
 #endif
 
@@ -277,7 +277,7 @@ void ExternalToolJustValidateTask::checkVersion(const QString &partOfLog) {
 
 void ExternalToolJustValidateTask::checkArchitecture(const QString &toolPath) {
     Q_UNUSED(toolPath);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     QProcess archProcess;
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     archProcess.setProcessEnvironment(env);

@@ -597,7 +597,7 @@ void WidgetCreator::visit(WidgetsArea *wa) {
     scrollContent->setLayout(layout);
     foreach (WizardWidget *w, wa->getWidgets()) {
         int labelSize = wa->getLabelSize();
-#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+#if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN)
         labelSize *= 1.3;
 #elif defined(Q_OS_UNIX)
         labelSize *= 1.4;
@@ -838,7 +838,7 @@ QList<WidgetController *> &PageContentCreator::getControllers() {
 void PageContentCreator::createTitle(QVBoxLayout *contentLayout) {
     pageTitle = new QLabel();
     pageTitle->setWordWrap(true);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     pageTitle->setStyleSheet("QLabel {font-size: 20pt; padding-bottom: 10px; color: #0c3762}");
 #else
     pageTitle->setStyleSheet("QLabel {font-size: 16pt; padding-bottom: 10px; color: #0c3762}");
@@ -869,7 +869,7 @@ GroupBox::GroupBox(bool collapsible, const QString &title, bool fullWidth)
     QVBoxLayout *layout = new QVBoxLayout();
     QGroupBox::setLayout(layout);
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     layout->setContentsMargins(0, 0, 0, 0);
     QString style = "QGroupBox  {"
                     "margin-top: 30px;"    // leave space at the top for the title

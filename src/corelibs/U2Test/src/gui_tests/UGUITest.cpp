@@ -47,7 +47,7 @@ static QString getTestDirImpl() {
 
     bool ok;
     int i = qgetenv("UGENE_GUI_TEST_SUITE_NUMBER").toInt(&ok);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     if (ok && i > 1) {
         return QString("../../../../../../test%1/").arg(i - 1);
     } else {
@@ -82,7 +82,7 @@ static QString getDataDirImpl() {
 
     bool ok = false;
     const int suiteNumber = qgetenv("UGENE_GUI_TEST_SUITE_NUMBER").toInt(&ok);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     if (ok && suiteNumber > 1) {
         dataDir = QString("data%1/").arg(suiteNumber - 1);
     } else {
@@ -117,7 +117,7 @@ static QString getDataDir() {
 
 static QString getScreenshotDir() {
     QString result;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     result = "../../../../../../screenshotFol/";
 #else
     QString guiTestOutputDirectory = qgetenv("GUI_TESTING_OUTPUT");

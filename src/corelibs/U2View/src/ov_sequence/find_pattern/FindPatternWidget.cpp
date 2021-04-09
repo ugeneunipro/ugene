@@ -670,7 +670,7 @@ void FindPatternWidget::showHideMessage(bool show, MessageFlag messageFlag, cons
     }
 
     if (!messageFlags.isEmpty()) {
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
         const QString lineBreakShortcut = "Ctrl+Enter";
 #else
         const QString lineBreakShortcut = "Cmd+Enter";

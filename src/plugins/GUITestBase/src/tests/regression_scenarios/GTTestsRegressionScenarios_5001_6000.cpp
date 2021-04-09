@@ -731,7 +731,7 @@ GUI_TEST_CLASS_DEFINITION(test_5211) {
 //    4. Press the next key sequence:
 //        Windows and Linux: Shift+Ins
 //        macOS: Meta+Y
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
     GTKeyboardUtils::paste();
 #else
     GTKeyboardDriver::keyClick('y', Qt::MetaModifier);
@@ -1660,17 +1660,18 @@ GUI_TEST_CLASS_DEFINITION(test_5425_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5431) {
-    // 1. Open "_common_data/scenarios/msa/ma2_gapped.aln".
+    // Open "_common_data/scenarios/msa/ma2_gapped.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
-    // 2. Remove all columns except the first one.
+    // Remove all columns except the first one.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 0), QPoint(13, 9));
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep();
 
+    // Toggle collapse by sequence content mode: there will be 2 collapsed groups.
     GTUtilsMsaEditor::toggleCollapsingMode(os);
+    int viewRowCount = GTUtilsMsaEditor::getSequencesCount(os);
+    CHECK_SET_ERR(viewRowCount == 2, "Wrong visible row count. Expected: 2, got: " + QString::number(viewRowCount));
 
     CHECK_SET_ERR(GTUtilsMsaEditor::isSequenceCollapsed(os, "Tettigonia_viridissima"),
                   "1 Tettigonia_viridissima is not collapsed");
@@ -1679,8 +1680,9 @@ GUI_TEST_CLASS_DEFINITION(test_5431) {
 
     GTUtilsMSAEditorSequenceArea::removeSequence(os, "Phaneroptera_falcata");
 
-    // 3. Expected state: first group is removed
-    CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 4, "Wrong rows number");
+    // Expected state: the first group is removed, the second one is collapsed, so we have only 1 visible row.
+    viewRowCount = GTUtilsMsaEditor::getSequencesCount(os);
+    CHECK_SET_ERR(viewRowCount == 1, "Wrong visiable row count. Expected: 1, got: " + QString::number(viewRowCount));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5447_1) {

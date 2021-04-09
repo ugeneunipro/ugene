@@ -2073,7 +2073,7 @@ GUI_TEST_CLASS_DEFINITION(test_6298) {
     // 3. Press "OK" button
     // 4. Expected state: the alignment alphabet is "Standard amino acid"
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     //hack for mac
     MainWindow *mw = AppContext::getMainWindow();
     CHECK_SET_ERR(mw != NULL, "MainWindow is NULL");

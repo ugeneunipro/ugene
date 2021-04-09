@@ -35,7 +35,7 @@ GroupOptionsWidget::GroupOptionsWidget(const QString &_groupId, const QString &_
       widget(_widget),
       mainWidget(mainWidget),
       title(_title) {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     setStyleSheet("font-size: 11.25pt;");
 #else
     setStyleSheet("font-size: 8.25pt;");

@@ -47,7 +47,7 @@ McaEditorStatusBar::McaEditorStatusBar(MultipleAlignmentObject *mobj,
     setObjectName("mca_editor_status_bar");
     setStatusBarStyle();
 
-    colomnLabel->setPatterns(tr("RefPos %1 / %2"),
+    columnLabel->setPatterns(tr("RefPos %1 / %2"),
                              tr("Reference position %1 of %2"));
     positionLabel->setPatterns(tr("ReadPos %1 / %2"),
                                tr("Read position %1 of %2"));
@@ -62,7 +62,7 @@ McaEditorStatusBar::McaEditorStatusBar(MultipleAlignmentObject *mobj,
 
 void McaEditorStatusBar::setupLayout() {
     layout->addWidget(lineLabel);
-    layout->addWidget(colomnLabel);
+    layout->addWidget(columnLabel);
     layout->addWidget(positionLabel);
     layout->addWidget(lockLabel);
 }
@@ -78,11 +78,11 @@ void McaEditorStatusBar::updateLabels() {
 
     QString ungappedRefLen = QString::number(refCharController->getUngappedLength());
     if (selection->isEmpty()) {
-        colomnLabel->update(NONE_MARK, ungappedRefLen);
+        columnLabel->update(NONE_MARK, ungappedRefLen);
     } else {
         int startSelection = selection->getSelectedRegions().first().startPos;
         int refPos = refCharController->getUngappedPosition(startSelection);
-        colomnLabel->update(refPos == -1 ? GAP_MARK : QString::number(refPos + 1), ungappedRefLen);
+        columnLabel->update(refPos == -1 ? GAP_MARK : QString::number(refPos + 1), ungappedRefLen);
     }
 }
 

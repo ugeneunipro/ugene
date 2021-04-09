@@ -121,7 +121,7 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0005) {
 
     QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
     CHECK_SET_ERR(mw != NULL, "main window is NULL");
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     GTWidget::click(os, mw, Qt::LeftButton, QPoint(200, 200));
 #endif
 }

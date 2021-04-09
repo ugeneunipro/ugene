@@ -58,7 +58,7 @@ void BranchSettingsDialog::updateColorButton() {
 
 void BranchSettingsDialog::sl_colorButton() {
     QColorDialog::ColorDialogOptions options;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         options |= QColorDialog::DontUseNativeDialog;
     }

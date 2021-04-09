@@ -304,7 +304,7 @@ QString ImportToDatabaseDialog::getFolderToImport() {
 
     QFileDialog::Options additionalOptions;
     Q_UNUSED(additionalOptions);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         additionalOptions = QFileDialog::DontUseNativeDialog;
     }

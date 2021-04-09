@@ -45,7 +45,7 @@ AppSettingsGUIImpl::AppSettingsGUIImpl(QObject *p)
     QAction *settingsDialogAction = new QAction(QIcon(":ugene/images/preferences.png"), tr("Preferences..."), this);
     connect(settingsDialogAction, SIGNAL(triggered()), SLOT(sl_showSettingsDialog()));
     settingsDialogAction->setObjectName("action__settings");
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     settingsDialogAction->setMenuRole(QAction::ApplicationSpecificRole);
     settingsDialogAction->setShortcut(QKeySequence("Ctrl+,"));
     settingsDialogAction->setShortcutContext(Qt::ApplicationShortcut);

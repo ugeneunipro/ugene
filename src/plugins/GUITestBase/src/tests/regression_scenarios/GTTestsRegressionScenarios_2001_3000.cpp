@@ -2615,7 +2615,7 @@ GUI_TEST_CLASS_DEFINITION(test_2401) {
     // Expected: the file is imported without errors, the assembly is opened.
     // 4. Close the project.
     GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
 #else
@@ -4751,7 +4751,7 @@ GUI_TEST_CLASS_DEFINITION(test_2762) {
         }
         virtual void run() {
             GTGlobals::sleep();
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
             QDialogButtonBox *buttonBox = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox"));
             QAbstractButton *cancel = buttonBox->button(QDialogButtonBox::Cancel);
             GTWidget::click(os, cancel);

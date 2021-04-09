@@ -295,7 +295,7 @@ void MSAEditorTreeManager::openTreeFromFile() {
     LastUsedDirHelper h;
     QString filter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::NEWICK, false, QStringList());
     QString file;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         file = U2FileDialog::getOpenFileName(QApplication::activeWindow(), tr("Select files to open..."), h.dir, filter, 0, QFileDialog::DontUseNativeDialog);
     } else

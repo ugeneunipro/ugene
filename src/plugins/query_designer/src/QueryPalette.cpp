@@ -54,7 +54,7 @@ public:
             QStyleOptionButton buttonOption;
 
             buttonOption.state = option.state;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
             buttonOption.state |= QStyle::State_Raised;
 #endif
             buttonOption.state &= ~QStyle::State_HasFocus;

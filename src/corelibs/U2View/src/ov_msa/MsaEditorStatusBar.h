@@ -32,8 +32,10 @@ public:
     MsaEditorStatusBar(MultipleAlignmentObject *mobj, MaEditorSequenceArea *seqArea);
 
 private:
+    /** Set ups initial layout of the status bar. Called as a part of the constructor. */
     void setupLayout();
-    void updateLabels();
+
+    void updateLabels() override;
 };
 
 }    // namespace U2

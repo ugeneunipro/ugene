@@ -430,7 +430,7 @@ void FindPatternMsaWidget::showHideMessage(bool show, MessageFlag messageFlag, c
     }
 
     if (!messageFlags.isEmpty()) {
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
         QString lineBreakShortcut = "Ctrl+Enter";
 #else
         QString lineBreakShortcut = "Cmd+Enter";

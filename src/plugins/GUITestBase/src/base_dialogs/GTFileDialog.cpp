@@ -241,7 +241,7 @@ void GTFileDialogUtils::selectFile() {
     }
 
     case GTGlobals::UseMouse:
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
         w->scrollTo(index, QAbstractItemView::ScrollHint::PositionAtCenter);
 #else
         w->scrollTo(index);

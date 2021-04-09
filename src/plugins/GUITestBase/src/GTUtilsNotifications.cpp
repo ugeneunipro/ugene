@@ -81,7 +81,7 @@ void NotificationDialogFiller::commonScenario() {
     }
     QWidget *ok = GTWidget::findButtonByText(os, "Ok", dialog);
     GTWidget::click(os, ok);
-#if defined Q_OS_WIN || defined Q_OS_MAC
+#if defined Q_OS_WIN || defined Q_OS_DARWIN
     dialog = QApplication::activeModalWidget();
     if (dialog != NULL) {
         ok = GTWidget::findButtonByText(os, "Ok", dialog);

@@ -26,7 +26,7 @@
 #    include <windows.h>
 #endif    // Q_OS_WIN
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 #    include "app_settings/ResetSettingsMac.h"
 #endif
 
@@ -415,9 +415,7 @@ int main(int argc, char **argv) {
 
 #ifdef Q_OS_DARWIN
     fixMacFonts();
-#endif
 
-#ifdef Q_OS_MACOS
     // A workaround for https://bugreports.qt.io/browse/QTBUG-87014: "Qt application gets stuck trying to open main window under Big Sur"
     qputenv("QT_MAC_WANTS_LAYER", "1");
 #endif
@@ -554,7 +552,7 @@ int main(int argc, char **argv) {
     } else {
         osArchCounterSuffix += " 32-bit";
     }
-#elif defined Q_OS_MAC
+#elif defined Q_OS_DARWIN
     osArchCounterSuffix += " 64-bit";
 #else
     QString currentCpuArchitecture = QSysInfo::currentCpuArchitecture();
@@ -617,7 +615,7 @@ int main(int argc, char **argv) {
     MainWindowImpl *mw = new MainWindowImpl();
     appContext->setMainWindow(mw);
     mw->prepare();
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     // TODO: need to check for other OS and remove #ifdef
     if (cmdLineRegistry->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST) || cmdLineRegistry->hasParameter(CMDLineCoreOptions::LAUNCH_GUI_TEST_BATCH)) {
         mw->getQMainWindow()->menuBar()->setNativeMenuBar(false);
@@ -1089,12 +1087,12 @@ int main(int argc, char **argv) {
     delete globalSettings;
 
     if (deleteSettingsFile) {
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
         QFile ff;
         ff.remove(iniFile);
 #else
         ResetSettingsMac::reset();
-#endif    // !Q_OS_MAC
+#endif    // !Q_OS_DARWIN
     }
 
     UgeneUpdater::onClose();

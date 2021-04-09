@@ -162,7 +162,7 @@ void ColorSchemaDialogController::mouseReleaseEvent(QMouseEvent *event) {
         it.next();
         if (it.value().contains(event->pos().x() - alphabetColorsFrame->geometry().x(), event->pos().y() - alphabetColorsFrame->geometry().y())) {
             QObjectScopedPointer<QColorDialog> d = new QColorDialog(this);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
             // A workaround because of UGENE-2263
             // Another way should be found.
             // I suppose, that it is bug in the Qt libraries (Qt-4.8.5 for mac)

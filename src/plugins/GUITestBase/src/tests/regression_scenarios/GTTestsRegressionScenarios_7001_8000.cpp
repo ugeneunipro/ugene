@@ -285,6 +285,22 @@ GUI_TEST_CLASS_DEFINITION(test_7106) {
     CHECK_SET_ERR(sequenceList2 == sequenceList1, "Sequence order must not change");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7127) {
+    // Make an alignment ordered by tree and check that the row order shown in the status bar is correct.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsMsaEditor::buildPhylogeneticTree(os, sandBoxDir + "test_7127");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    for (int i = 0; i < 18; i++) {
+        GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(0, i));
+        QString rowNumber = GTMSAEditorStatusWidget::getRowNumberString(os);
+        QString expectedRowNumber = QString::number(i + 1);
+        CHECK_SET_ERR(rowNumber == expectedRowNumber, "Unexpected row number! Expected:  " + expectedRowNumber + ", got: " + rowNumber);
+    }
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7152) {
     // Check that corner characters of an alignment has valid info shown in the status bar.
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/region.full-gap.aln");

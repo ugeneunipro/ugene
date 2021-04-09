@@ -89,10 +89,10 @@ static bool closeViews() {
 // This function prepends empty string to RecentProjects in UGENE SETTINGS in order
 // to prevent project auto loading on next UGENE launch
 static void cancelProjectAutoLoad() {
-    QStringList recentFiles = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME, QStringList(), true).toStringList();
+    QStringList recentFiles = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME).toStringList();
     QString emptyUrl;
     recentFiles.prepend(emptyUrl);
-    AppContext::getSettings()->setValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME, recentFiles, true);
+    AppContext::getSettings()->setValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME, recentFiles);
 }
 
 void ShutdownTask::prepare() {

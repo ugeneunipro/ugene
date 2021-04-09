@@ -59,7 +59,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDocument::checkDocument(os, "1.gb");
     //     2) UGENE window titled with text "UGENE"
     QString expectedTitle;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     expectedTitle = "proj2 UGENE";
 #else
     expectedTitle = "-* UGENE";

@@ -70,7 +70,7 @@ public:
     }
 
     static QString linkColorLabelStr() {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
         return "gray";
 #else
         return "palette(shadow)";

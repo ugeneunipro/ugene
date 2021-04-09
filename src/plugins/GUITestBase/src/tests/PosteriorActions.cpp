@@ -80,7 +80,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
     QWidget *popupWidget = QApplication::activePopupWidget();
     while (popupWidget != NULL) {
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     GTUtilsMac fakeClock;
     fakeClock.startWorkaroundForMacCGEvents(1, true);
     fakeClock.startWorkaroundForMacCGEvents(16000, false);
@@ -92,7 +92,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
     QWidget *modalWidget = QApplication::activeModalWidget();
     while (modalWidget != NULL) {
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
         GTUtilsMac fakeClock;
         fakeClock.startWorkaroundForMacCGEvents(1, true);
         fakeClock.startWorkaroundForMacCGEvents(16000, false);
@@ -110,14 +110,14 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
     // Close all MDI windows
     // Cancel all tasks
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     GTUtilsMac fakeClock;
     fakeClock.startWorkaroundForMacCGEvents(1, true);
     fakeClock.startWorkaroundForMacCGEvents(16000, false);
 #endif
 
     if (AppContext::getProject() != nullptr) {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
         GTWidget::click(os, GTUtilsProjectTreeView::getTreeView(os));
         GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
         GTGlobals::sleep(100);
@@ -159,7 +159,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
 #endif
     }
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     GTUtilsMac fakeClock2;
     fakeClock.startWorkaroundForMacCGEvents(1, true);
     fakeClock2.startWorkaroundForMacCGEvents(16000, false);

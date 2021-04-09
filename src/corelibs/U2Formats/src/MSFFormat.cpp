@@ -21,23 +21,17 @@
 
 #include "MSFFormat.h"
 
-#include <U2Core/DNAAlphabet.h>
-#include <U2Core/GObjectTypes.h>
 #include <U2Core/IOAdapter.h>
-#include <U2Core/L10n.h>
-#include <U2Core/MSAUtils.h>
+#include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/MultipleSequenceAlignmentWalker.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2AlphabetUtils.h>
-#include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
-
-#include <U2Formats/DocumentFormatUtils.h>
 
 namespace U2 {
 
@@ -56,52 +50,27 @@ const QByteArray MSFFormat::SECTION_SEPARATOR = "//";
 const int MSFFormat::CHARS_IN_ROW = 50;
 const int MSFFormat::CHARS_IN_WORD = 10;
 
-/* TRANSLATOR U2::MSFFormat */
-
 //TODO: recheck if it does support streaming! Fix isObjectOpSupported if not!
 
-MSFFormat::MSFFormat(QObject *p)
-    : TextDocumentFormatDeprecated(p, BaseDocumentFormats::MSF, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList("msf")) {
+MSFFormat::MSFFormat(QObject *parent)
+    : TextDocumentFormat(parent, BaseDocumentFormats::MSF, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList("msf")) {
     formatName = tr("MSF");
     supportedObjectTypes += GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     formatDescription = tr("MSF format is used to store multiple aligned sequences. Files include the sequence name and the sequence itself, which is usually aligned with other sequences in the file.");
 }
 
-static bool getNextLine(IOAdapter *io, QByteArray &line, bool simplify = true) {
-    QByteArray readBuffer(DocumentFormat::READ_BUFF_SIZE, '\0');
-    char *buff = readBuffer.data();
-
-    qint64 len;
-    bool eolFound = false, eof = false;
-    while (!eolFound) {
-        len = io->readLine(buff, DocumentFormat::READ_BUFF_SIZE, &eolFound);
-        if (len < DocumentFormat::READ_BUFF_SIZE && !eolFound) {
-            eolFound = eof = true;
-        }
-        line += readBuffer;
-    }
-    if (len != DocumentFormat::READ_BUFF_SIZE) {
-        line.resize(line.size() + len - DocumentFormat::READ_BUFF_SIZE);
-    }
-    if (simplify) {
-        line = line.simplified();
-    }
-    return eof;
-}
-
-static QByteArray getField(const QByteArray &line, const QByteArray &name) {
+/** Parses MSF field value from the line. Returns empty line if the field was not found. */
+static QString parseField(const QString &line, const QString &name) {
     int p = line.indexOf(name);
     if (p >= 0) {
         p += name.length();
-        if (line[p] == ' ')
+        if (line[p] == ' ') {
             ++p;
+        }
         int q = line.indexOf(' ', p);
-        if (q >= 0)
-            return line.mid(p, q - p);
-        else
-            return line.mid(p);
+        return q >= 0 ? line.mid(p, q - p) : line.mid(p);
     }
-    return QByteArray();
+    return "";
 }
 
 int MSFFormat::getCheckSum(const QByteArray &seq) {
@@ -110,7 +79,7 @@ int MSFFormat::getCheckSum(const QByteArray &seq) {
     for (int i = 0; i < seq.length(); ++i) {
         char ch = seq[i];
         if (ch >= 'a' && ch <= 'z') {
-            ch = ch + 'A' - 'a';
+            ch = (char)(ch + 'A' - 'a');
         }
         sum = (sum + ((i % CHECK_SUM_COUNTER_MOD) + 1) * ch) % MSFFormat::CHECK_SUM_MOD;
     }
@@ -127,24 +96,23 @@ struct MsfRow {
     int length;
 };
 
-void MSFFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &objects, const QVariantMap &hints, U2OpStatus &ti) {
-    MultipleSequenceAlignment al(io->getURL().baseFileName());
+void MSFFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObject *> &objects, const QVariantMap &hints, U2OpStatus &os) {
+    QString objName = reader.getURL().baseFileName();
+    MultipleSequenceAlignment al(objName);
 
-    //skip comments
+    // Skip comments.
     int checkSum = -1;
-    while (!ti.isCoR() && checkSum < 0) {
-        QByteArray line;
-        if (getNextLine(io, line)) {
-            ti.setError(MSFFormat::tr("Incorrect format"));
-            return;
-        }
+    while (!os.isCoR() && checkSum < 0 && !reader.atEnd()) {
+        QString line = reader.readLine(os, DocumentFormat::READ_BUFF_SIZE).simplified();
+        CHECK_OP(os, );
         if (line.endsWith(END_OF_HEADER_LINE)) {
             bool ok;
-            checkSum = getField(line, CHECK_FIELD).toInt(&ok);
-            if (!ok || checkSum < 0)
+            checkSum = parseField(line, CHECK_FIELD).toInt(&ok);
+            if (!ok || checkSum < 0) {
                 checkSum = CHECK_SUM_MOD;
+            }
         }
-        ti.setProgress(io->getProgress());
+        os.setProgress(reader.getProgress());
     }
 
     //read info
@@ -153,22 +121,19 @@ void MSFFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &ob
 
     QMap<QString, int> duplicatedNamesCount;    // a workaround for incorrectly saved files
 
-    while (!ti.isCoR()) {
-        QByteArray line;
-        if (getNextLine(io, line)) {
-            ti.setError(MSFFormat::tr("Unexpected end of file"));
-            return;
-        }
+    while (!os.isCoR() && !reader.atEnd()) {
+        QString line = reader.readLine(os, DocumentFormat::READ_BUFF_SIZE).simplified();
+        CHECK_OP(os, );
         if (line.startsWith(SECTION_SEPARATOR)) {
             break;
         }
 
         bool ok = false;
-        QString name = QString::fromUtf8(getField(line, NAME_FIELD).data());
+        QString name = parseField(line, NAME_FIELD);
         if (name.isEmpty()) {
             continue;
         }
-        int check = getField(line, CHECK_FIELD).toInt(&ok);
+        int check = parseField(line, CHECK_FIELD).toInt(&ok);
         if (!ok || check < 0) {
             sum = check = CHECK_SUM_MOD;
         }
@@ -189,41 +154,39 @@ void MSFFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &ob
             sum = (sum + check) % CHECK_SUM_MOD;
         }
 
-        ti.setProgress(io->getProgress());
+        os.setProgress(reader.getProgress());
     }
     if (checkSum < CHECK_SUM_MOD && sum < CHECK_SUM_MOD && sum != checkSum) {
         coreLog.info(tr("File check sum is incorrect: expected value: %1, current value %2").arg(checkSum).arg(sum));
     }
 
-    //read data
-    bool eof = false;
-
+    // read data
     QRegExp coordsRegexp("^\\s+\\d+(\\s+\\d+)?\\s*$");
     QRegExp onlySpacesRegexp("^\\s+$");
 
     QMap<QString, int> processedDuplicatedNames;
 
-    while (!eof && !ti.isCoR()) {
-        QByteArray line;
-        eof = getNextLine(io, line, false);
+    while (!os.isCoR() && !reader.atEnd()) {
+        QString line = reader.readLine(os, DocumentFormat::READ_BUFF_SIZE);
+        CHECK_OP(os, )
 
-        if (line.isEmpty() || -1 != onlySpacesRegexp.indexIn(line) || -1 != coordsRegexp.indexIn(line)) {
+        if (line.isEmpty() || onlySpacesRegexp.indexIn(line) != -1 || coordsRegexp.indexIn(line) != -1) {
             // Skip empty lines, lines with spaces only and lines with alignment coordinates
             continue;
         }
 
         line = line.simplified();
-        const int spaceIndex = line.indexOf(" ");
-        if (-1 == spaceIndex) {
+        int spaceIndex = line.indexOf(" ");
+        if (spaceIndex == -1) {
             // Skip the line without spaces
             continue;
         }
 
-        const QByteArray name = line.mid(0, spaceIndex);
+        QString name = line.mid(0, spaceIndex);
         int msfRowNumber = -1;
         int duplicatesSkipped = 0;
         for (int i = 0; i < msfRows.length(); i++) {
-            if (msfRows[i].name.toUtf8() == name) {
+            if (msfRows[i].name == name) {
                 if (duplicatesSkipped == processedDuplicatedNames.value(name, 0)) {
                     // This row is not processed yet
                     msfRowNumber = i;
@@ -243,7 +206,7 @@ void MSFFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &ob
             }
         }
 
-        if (-1 == msfRowNumber) {
+        if (msfRowNumber == -1) {
             // Skip the line with unknown row name
             continue;
         }
@@ -251,11 +214,11 @@ void MSFFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &ob
         for (int q, p = line.indexOf(' ') + 1; p > 0; p = q + 1) {
             q = line.indexOf(' ', p);
             QString subSeq = (q < 0) ? line.mid(p) : line.mid(p, q - p);
-            al->appendChars(msfRowNumber, msfRows[msfRowNumber].length, subSeq.toUtf8().constData(), subSeq.length());
+            al->appendChars(msfRowNumber, msfRows[msfRowNumber].length, subSeq.toLatin1().constData(), subSeq.length());
             msfRows[msfRowNumber].length += subSeq.length();
         }
 
-        ti.setProgress(io->getProgress());
+        os.setProgress(reader.getProgress());
     }
 
     //checksum
@@ -273,54 +236,34 @@ void MSFFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &ob
     }
 
     U2AlphabetUtils::assignAlphabet(al);
-    CHECK_EXT(al->getAlphabet() != NULL, ti.setError(MSFFormat::tr("Alphabet unknown")), );
+    CHECK_EXT(al->getAlphabet() != nullptr, os.setError(MSFFormat::tr("Alphabet unknown")), );
 
-    U2OpStatus2Log os;
-    const QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
+    QString folder = hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
     MultipleSequenceAlignmentObject *obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
     CHECK_OP(os, );
     objects.append(obj);
 }
 
-Document *MSFFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
+Document *MSFFormat::loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
     QList<GObject *> objs;
-    load(io, dbiRef, objs, fs, os);
+    load(reader, dbiRef, objs, fs, os);
 
-    CHECK_OP_EXT(os, qDeleteAll(objs), NULL);
-    return new Document(this, io->getFactory(), io->getURL(), dbiRef, objs, fs);
+    CHECK_OP_EXT(os, qDeleteAll(objs), nullptr);
+    return new Document(this, reader.getFactory(), reader.getURL(), dbiRef, objs, fs);
 }
 
-static bool writeBlock(IOAdapter *io, U2OpStatus &ti, const QByteArray &buf) {
-    int len = io->writeBlock(buf);
-    if (len != buf.length()) {
-        ti.setError(L10N::errorTitle());
-        return true;
-    }
-    return false;
-}
-
-void MSFFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
-    MultipleSequenceAlignmentObject *obj = NULL;
-    if ((d->getObjects().size() != 1) || ((obj = qobject_cast<MultipleSequenceAlignmentObject *>(d->getObjects().first())) == NULL)) {
-        os.setError("No data to write;");
-        return;
-    }
-
-    QList<GObject *> als;
-    als << obj;
+void MSFFormat::storeTextDocument(IOAdapterWriter &writer, Document *document, U2OpStatus &os) {
+    CHECK_OP(os, );
     QMap<GObjectType, QList<GObject *>> objectsMap;
-    objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT] = als;
-    storeEntry(io, objectsMap, os);
-    CHECK_EXT(!os.isCoR(), os.setError(L10N::errorWritingFile(d->getURL())), );
+    objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT] = document->getObjects();
+    storeTextEntry(writer, objectsMap, os);
 }
 
-namespace {
+static const QString SUFFIX_SEPARATOR = "_";
 
-const QString SUFFIX_SEPARATOR = "_";
-
-void splitCompleteName(const QString &completeName, QString &baseName, QString &suffix) {
+static void splitCompleteName(const QString &completeName, QString &baseName, QString &suffix) {
     const int separatorIndex = completeName.lastIndexOf(SUFFIX_SEPARATOR);
-    if (-1 == separatorIndex) {
+    if (separatorIndex == -1) {
         baseName = completeName;
         suffix = QString();
         return;
@@ -337,7 +280,7 @@ void splitCompleteName(const QString &completeName, QString &baseName, QString &
     }
 }
 
-QString increaseSuffix(const QString &completeName) {
+static QString increaseSuffix(const QString &completeName) {
     QString baseName;
     QString suffix;
     splitCompleteName(completeName, baseName, suffix);
@@ -347,37 +290,36 @@ QString increaseSuffix(const QString &completeName) {
     return baseName + SUFFIX_SEPARATOR + QString("%1").arg(suffix.toInt() + 1, suffix.length(), 10, QChar('0'));
 }
 
-QString rollRowName(QString rowName, const QList<QString> &nonUniqueNames) {
-    while (nonUniqueNames.contains(rowName)) {
-        rowName = increaseSuffix(rowName);
+static QString rollRowName(const QString &rowName, const QList<QString> &nonUniqueNames) {
+    QString resultName = rowName;
+    while (nonUniqueNames.contains(resultName)) {
+        resultName = increaseSuffix(resultName);
     }
-    return rowName;
+    return resultName;
 }
 
-}    // namespace
-
-void MSFFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) {
+void MSFFormat::storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) {
     SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), "MSF entry storing: no alignment", );
-    const QList<GObject *> &als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
-    SAFE_POINT(1 == als.size(), "MSF entry storing: alignment objects count error", );
+    const QList<GObject *> &objectList = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
+    SAFE_POINT(objectList.size() == 1, "MSFFormat::storeTextEntry can store only 1 object per file. Got: " + QString::number(objectList.size()), );
 
-    const MultipleSequenceAlignmentObject *obj = dynamic_cast<MultipleSequenceAlignmentObject *>(als.first());
-    SAFE_POINT(NULL != obj, "MSF entry storing: NULL alignment object", );
+    auto *obj = dynamic_cast<MultipleSequenceAlignmentObject *>(objectList.first());
+    SAFE_POINT(obj != nullptr, "MSF entry storing: the object is not an alignment", );
 
-    const MultipleSequenceAlignment msa = obj->getMultipleAlignment();
+    const MultipleSequenceAlignment &msa = obj->getMultipleAlignment();
 
     // Make row names unique
     QMap<qint64, QString> uniqueRowNames;
     int maxNameLen = 0;
     foreach (const MultipleSequenceAlignmentRow &row, msa->getMsaRows()) {
-        uniqueRowNames.insert(row->getRowId(), rollRowName(row->getName().replace(' ', '_'), uniqueRowNames.values()));
+        QString rolledRowName = rollRowName(row->getName().replace(' ', '_'), uniqueRowNames.values());
+        uniqueRowNames.insert(row->getRowId(), rolledRowName);
         maxNameLen = qMax(maxNameLen, uniqueRowNames.last().length());
     }
 
-    //precalculate seq writing params
+    // Precalculate sequence writing params.
     int maLen = msa->getLength();
     int checkSum = 0;
-    static int maxCheckSumLen = 4;
     QMap<qint64, int> checkSums;
     foreach (const MultipleSequenceAlignmentRow &row, msa->getMsaRows()) {
         QByteArray sequence = row->toByteArray(os, maLen).replace(U2Msa::GAP_CHAR, '.');
@@ -387,21 +329,22 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject 
     }
     int maxLengthLen = QString::number(maLen).length();
 
-    //write first line
-    QByteArray line = "  " + MSF_FIELD;
-    line += " " + QByteArray::number(maLen);
+    // Write the first line.
+    QString line = "  " + MSF_FIELD;
+    line += " " + QString::number(maLen);
     line += "  " + TYPE_FIELD;
     line += " " + (obj->getAlphabet()->isAmino() ? TYPE_VALUE_PROTEIN : TYPE_VALUE_NUCLEIC);
     line += "  " + QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm");
     line += "  " + CHECK_FIELD;
-    line += " " + QByteArray::number(checkSum);
+    line += " " + QString::number(checkSum);
     line += "  " + END_OF_HEADER_LINE + "\n\n";
-    if (writeBlock(io, os, line))
-        return;
+    writer.write(os, line);
+    CHECK_OP(os, );
 
-    //write info
+    // Write per-row info.
+    int maxCheckSumLen = 4;
     foreach (const MultipleSequenceAlignmentRow &row, msa->getMsaRows()) {
-        QByteArray line = " " + NAME_FIELD;
+        line = " " + NAME_FIELD;
         line += " " + uniqueRowNames[row->getRowId()].leftJustified(maxNameLen + 1);
         line += "  " + LEN_FIELD;
         line += " " + QString("%1").arg(maLen, -maxLengthLen);
@@ -409,81 +352,72 @@ void MSFFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject 
         line += " " + QString("%1").arg(checkSums[row->getRowId()], -maxCheckSumLen);
         line += "  " + WEIGHT_FIELD;
         line += " " + QByteArray::number(WEIGHT_VALUE) + "\n";
-        if (writeBlock(io, os, line)) {
-            return;
-        }
+        writer.write(os, line);
+        CHECK_OP(os, );
     }
-    if (writeBlock(io, os, "\n" + SECTION_SEPARATOR + "\n\n")) {
-        return;
-    }
+
+    writer.write(os, "\n" + SECTION_SEPARATOR + "\n\n");
+    CHECK_OP(os, );
 
     MultipleSequenceAlignmentWalker walker(msa, '.');
     for (int i = 0; !os.isCoR() && i < maLen; i += CHARS_IN_ROW) {
         /* write numbers */ {
-            QByteArray line(maxNameLen + 2, ' ');
+            line = QString(maxNameLen + 2, ' ');
             QString t = QString("%1").arg(i + 1);
             QString s = QString("%1").arg(i + CHARS_IN_ROW < maLen ? i + CHARS_IN_ROW : maLen);
             int r = maLen - i < CHARS_IN_ROW ? maLen % CHARS_IN_ROW : CHARS_IN_ROW;
             r += (r - 1) / CHARS_IN_WORD - (t.length() + s.length());
             line += t;
             if (r > 0) {
-                line += QByteArray(r, ' ');
+                line += QString(r, ' ');
                 line += s;
             }
             line += '\n';
-            if (writeBlock(io, os, line)) {
-                return;
-            }
+            writer.write(os, line);
+            CHECK_OP(os, );
         }
 
         //write sequence
-        QList<QByteArray> seqs = walker.nextData(CHARS_IN_ROW, os);
+        QList<QByteArray> sequenceList = walker.nextData(CHARS_IN_ROW, os);
         CHECK_OP(os, );
-        QList<QByteArray>::ConstIterator si = seqs.constBegin();
-        QList<MultipleSequenceAlignmentRow> rows = msa->getMsaRows();
-        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = rows.constBegin();
-        for (; si != seqs.constEnd(); si++, ri++) {
+        QList<QByteArray>::ConstIterator si = sequenceList.constBegin();
+        QList<MultipleSequenceAlignmentRow> msaRowList = msa->getMsaRows();
+        QList<MultipleSequenceAlignmentRow>::ConstIterator ri = msaRowList.constBegin();
+        for (; si != sequenceList.constEnd(); si++, ri++) {
             const MultipleSequenceAlignmentRow &row = *ri;
-            QByteArray line = uniqueRowNames[row->getRowId()].leftJustified(maxNameLen + 1).toUtf8();
-
+            QString rowName = uniqueRowNames[row->getRowId()].leftJustified(maxNameLen + 1);
             for (int j = 0; j < CHARS_IN_ROW && i + j < maLen; j += CHARS_IN_WORD) {
-                line += ' ';
+                rowName += ' ';
                 int nChars = qMin(CHARS_IN_WORD, maLen - (i + j));
-                QByteArray bytes = si->mid(j, nChars);
-                line += bytes;
+                QString sequencePart = si->mid(j, nChars);
+                rowName += sequencePart;
             }
-            SAFE_POINT_OP(os, );
-            line += '\n';
-            if (writeBlock(io, os, line)) {
-                return;
-            }
+            rowName += '\n';
+            writer.write(os, rowName);
+            CHECK_OP(os, );
         }
-        if (writeBlock(io, os, "\n")) {
-            return;
-        }
+        writer.write(os, "\n");
+        CHECK_OP(os, );
     }
 }
 
-FormatCheckResult MSFFormat::checkRawTextData(const QByteArray &rawData, const GUrl &) const {
-    const char *data = rawData.constData();
-    int size = rawData.size();
-
-    bool hasBinaryData = TextUtils::contains(TextUtils::BINARY, data, size);
-    if (hasBinaryData) {
-        return FormatDetection_NotMatched;
-    }
-    if (rawData.contains("MSF:") || rawData.contains("!!AA_MULTIPLE_ALIGNMENT 1.0") || rawData.contains("!!NA_MULTIPLE_ALIGNMENT 1.0") || (rawData.contains("Name:") && rawData.contains("Len:") && rawData.contains("Check:") && rawData.contains("Weight:"))) {
+FormatCheckResult MSFFormat::checkRawTextData(const QString &dataPrefix, const GUrl &) const {
+    if (dataPrefix.contains("MSF:") ||
+        dataPrefix.contains("!!AA_MULTIPLE_ALIGNMENT 1.0") ||
+        dataPrefix.contains("!!NA_MULTIPLE_ALIGNMENT 1.0") ||
+        (dataPrefix.contains("Name:") && dataPrefix.contains("Len:") &&
+         dataPrefix.contains("Check:") && dataPrefix.contains("Weight:"))) {
         return FormatDetection_VeryHighSimilarity;
     }
 
-    if (rawData.contains("GDC ")) {
+    if (dataPrefix.contains("GDC ")) {
         return FormatDetection_AverageSimilarity;
     }
 
-    //MSF documents may contain unlimited number of comment lines in header ->
-    //it is impossible to determine if file has MSF format by some predefined
-    //amount of raw data read from it.
-    if (rawData.contains("GCG ") || rawData.contains("MSF ")) {
+    // MSF documents may contain unlimited number of comment lines in header ->
+    // it is impossible to determine if file has MSF format by some predefined
+    // amount of raw data read from it.
+    if (dataPrefix.contains("GCG ") || dataPrefix.contains("MSF ")) {
         return FormatDetection_LowSimilarity;
     }
     return FormatDetection_VeryLowSimilarity;

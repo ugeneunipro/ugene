@@ -58,7 +58,7 @@ void GTUtilsMdi::click(HI::GUITestOpStatus &os, GTGlobals::WindowAction action) 
     //        return;
     //    }
 
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
     switch (action) {
     case GTGlobals::Close: {
 #    ifdef Q_OS_UNIX
@@ -161,7 +161,7 @@ void GTUtilsMdi::closeWindow(HI::GUITestOpStatus &os, const QString &windowName,
 
 #define GT_METHOD_NAME "closeAllWindows"
 void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus &os) {
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {

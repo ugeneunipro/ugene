@@ -38,10 +38,12 @@ public:
                        McaReferenceCharController *refCharController);
 
 private:
+    /** Set ups initial layout of the status bar. Called as a part of the constructor. */
     void setupLayout();
-    void updateLabels();
-    void updateLineLabel();
-    void updatePositionLabel();
+
+    void updateLabels() override;
+    void updateLineLabel() override;
+    void updatePositionLabel() override;
 
     McaReferenceCharController *refCharController;
     McaEditorNameList *nameList;

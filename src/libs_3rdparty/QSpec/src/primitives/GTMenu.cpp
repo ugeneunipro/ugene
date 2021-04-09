@@ -90,7 +90,7 @@ namespace {
 
 QStringList fixMenuItemPath(const QStringList &itemPath) {
     QStringList fixedItemPath = itemPath;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     // Some actions are moved to the application menu on mac
 #    ifdef _DEBUG
     const QString appName = "ugeneuid";

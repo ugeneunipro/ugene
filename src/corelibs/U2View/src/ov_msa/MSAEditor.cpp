@@ -684,7 +684,7 @@ void MSAEditor::alignSequencesFromFilesToAlignment() {
 
     LastUsedDirHelper lod;
     QStringList urls;
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
         urls = U2FileDialog::getOpenFileNames(ui, tr("Open file with sequences"), lod.dir, filter, 0, QFileDialog::DontUseNativeDialog);
     } else
