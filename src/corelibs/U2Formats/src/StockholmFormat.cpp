@@ -227,40 +227,41 @@ static QString getAnnotationName(Annotation *ann) {
 
     AnnotationType t = ann->type;
     switch (t) {
-    case UNI_ANNOTATION:
-        return QString(StockholmFormat::UNI_ANNOTATION_MARK);
-    case FILE_ANNOTATION: {
-        AnnotationTag tag = ann->tag;
-        switch (tag) {
-        case ID:
-            return QString(StockholmFormat::FILE_ANNOTATION_ID);
-        case AC:
-            return QString(StockholmFormat::FILE_ANNOTATION_AC);
-        case DE:
-            return QString(StockholmFormat::FILE_ANNOTATION_DE);
-        case GA:
-            return QString(StockholmFormat::FILE_ANNOTATION_GA);
-        case NC:
-            return QString(StockholmFormat::FILE_ANNOTATION_NC);
-        case TC:
-            return QString(StockholmFormat::FILE_ANNOTATION_TC);
+        case UNI_ANNOTATION:
+            return QString(StockholmFormat::UNI_ANNOTATION_MARK);
+        case FILE_ANNOTATION: {
+            AnnotationTag tag = ann->tag;
+            switch (tag) {
+                case ID:
+                    return QString(StockholmFormat::FILE_ANNOTATION_ID);
+                case AC:
+                    return QString(StockholmFormat::FILE_ANNOTATION_AC);
+                case DE:
+                    return QString(StockholmFormat::FILE_ANNOTATION_DE);
+                case GA:
+                    return QString(StockholmFormat::FILE_ANNOTATION_GA);
+                case NC:
+                    return QString(StockholmFormat::FILE_ANNOTATION_NC);
+                case TC:
+                    return QString(StockholmFormat::FILE_ANNOTATION_TC);
+                default:
+                    assert(false);
+                    break;
+            }
+        }
+        case COLUMN_ANNOTATION: {
+            AnnotationTag tag = ann->tag;
+            switch (tag) {
+                case SS_CONS:
+                    return QString(StockholmFormat::COLUMN_ANNOTATION_SS_CONS);
+                case RF:
+                    return QString(StockholmFormat::COLUMN_ANNOTATION_RF);
+                default:
+                    assert(false);
+            }
+        }
         default:
             assert(false);
-        }
-    }
-    case COLUMN_ANNOTATION: {
-        AnnotationTag tag = ann->tag;
-        switch (tag) {
-        case SS_CONS:
-            return QString(StockholmFormat::COLUMN_ANNOTATION_SS_CONS);
-        case RF:
-            return QString(StockholmFormat::COLUMN_ANNOTATION_RF);
-        default:
-            assert(false);
-        }
-    }
-    default:
-        assert(false);
     }
     return QString();
 }
@@ -630,9 +631,7 @@ static void load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &l, con
         uni_file = uni_file || isUniFile(ann_bank);
 
         name = getMsaName(ann_bank);
-        name = (QString::null == name || names_list.contains(name)) ?
-                   filename + "_" + QString::number(l.size()) :
-                   name;
+        name = (QString::null == name || names_list.contains(name)) ? filename + "_" + QString::number(l.size()) : name;
         names_list.append(name);
         msa->setName(name);
 
