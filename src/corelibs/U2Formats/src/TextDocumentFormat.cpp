@@ -73,6 +73,19 @@ TextDocumentFormat::TextDocumentFormat(QObject *p, const DocumentFormatId &id, D
 FormatCheckResult TextDocumentFormat::checkRawData(const QByteArray &rawBinaryData, const GUrl &url) const {
     QTextStream stream(rawBinaryData, QIODevice::ReadOnly);    // Use QTextStream to auto-detect multi-byte encoding.
     QString text = stream.readAll();
+    // QTextStream does not provide any info if the codec was successfully detected or not and
+    // fall backs to a local 8-bit in case if it can't find a correct codec.
+    // The check below is a trivial test that filters most of the binaries.
+    // The rest of the check should be done in the DocumentFormat itself: the per-format detection must be
+    // sensitive enough not to mark bad texts as 'Matched'.
+    bool isBinaryData = false;
+    for (int i = 0; i < text.length() && !isBinaryData; i++) {
+        quint16 unicodeValue = text.at(i).unicode();
+        isBinaryData = unicodeValue < TextUtils::BINARY.size() && TextUtils::BINARY.testBit(unicodeValue);
+    }
+    if (isBinaryData) {
+        return FormatDetection_NotMatched;
+    }
     return checkRawTextData(text, url);
 }
 

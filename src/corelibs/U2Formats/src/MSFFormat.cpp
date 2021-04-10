@@ -420,7 +420,7 @@ FormatCheckResult MSFFormat::checkRawTextData(const QString &dataPrefix, const G
     if (dataPrefix.contains("GCG ") || dataPrefix.contains("MSF ")) {
         return FormatDetection_LowSimilarity;
     }
-    return FormatDetection_VeryLowSimilarity;
+    return FormatDetection_NotMatched;
 }
 
 }    //namespace U2
