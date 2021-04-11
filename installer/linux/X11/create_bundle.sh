@@ -224,7 +224,8 @@ if [ "$1" == "-test" ]; then
   TEST="-test"
 fi
 
-PACKAGE_NAME=${PRODUCT_NAME}-${VERSION}-${TEAMCITY_BUILD_NUMBER}-${PACKAGE_TYPE}-${ARCH}-r${REVISION}${TEST}
+# Example: ugene-39.0-dev-b216277-linux-full-x86_64-r7eae07cab3.tar.gz
+PACKAGE_NAME=${PRODUCT_NAME}-${VERSION}-b${TEAMCITY_BUILD_NUMBER}-${PACKAGE_TYPE}-${ARCH}-r${REVISION}${TEST}
 
 tar -czf ${SYMBOLS_DIR}.tar.gz "${SYMBOLS_DIR}"/
 tar -czf "${PACKAGE_NAME}".tar.gz "${TARGET_APP_DIR}"/
