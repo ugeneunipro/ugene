@@ -906,7 +906,7 @@ QString AnnotatedDNAView::addObject(GObject *o) {
         connect(o, SIGNAL(si_relatedObjectRelationChanged()), SLOT(sl_relatedObjectRelationChanged()));
     } else if (o->getGObjectType() == GObjectTypes::ANNOTATION_TABLE) {
         AnnotationTableObject *ao = qobject_cast<AnnotationTableObject *>(o);
-        SAFE_POINT(ao != NULL, "Invalid annotation table!", QString::null);
+        SAFE_POINT(ao != NULL, "Invalid annotation table!", QString());
         annotations.append(ao);
         foreach (ADVSequenceObjectContext *sc, rCtx) {
             sc->addAnnotationObject(ao);

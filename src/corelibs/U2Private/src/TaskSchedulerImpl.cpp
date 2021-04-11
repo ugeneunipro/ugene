@@ -359,7 +359,7 @@ void TaskSchedulerImpl::runThread(TaskInfo *ti) {
 }
 
 QString TaskSchedulerImpl::tryLockResources(Task *task, bool prepareStage, bool &hasLockedResourcesAfterCall) {
-    QString errorString = QString::null;
+    QString errorString = QString();
 
     if (prepareStage) {    //task must be New
         SAFE_POINT(task->getState() == Task::State_New, "Attempt to lock prepare-stage resources for non-NEW task!", L10N::internalError());

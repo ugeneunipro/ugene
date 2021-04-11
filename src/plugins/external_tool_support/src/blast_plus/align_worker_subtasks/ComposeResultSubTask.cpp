@@ -329,7 +329,7 @@ U2MsaRowGapModel ComposeResultSubTask::getReferenceGaps() {
         result << getShiftedGaps(i);
         CHECK_OP(stateInfo, result);
     }
-    qSort(result.begin(), result.end(), compare);
+    std::sort(result.begin(), result.end(), compare);
     return result;
 }
 

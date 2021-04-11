@@ -284,7 +284,7 @@ QList<SharedAnnotationData> VectorNtiSequenceFormat::prepareAnnotations(const QL
     foreach (AnnotationGroup *group, annotationsByGroups.keys()) {
         sortedAnnotations += annotationsByGroups[group];
     }
-    qStableSort(sortedAnnotations.begin(), sortedAnnotations.end());
+    std::stable_sort(sortedAnnotations.begin(), sortedAnnotations.end());
 
     return sortedAnnotations;
 }

@@ -273,7 +273,7 @@ QString CreateAnnotationWidgetController::validate() {
         }
     }
 
-    return QString::null;
+    return QString();
 }
 
 void CreateAnnotationWidgetController::updateModel(bool forValidation) {
@@ -419,7 +419,7 @@ void CreateAnnotationWidgetController::sl_groupName() {
         w->setGroupName(groupNames.first());
         return;
     }
-    qSort(groupNames);
+    std::sort(groupNames.begin(), groupNames.end());
 
     QMenu menu(w);
     foreach (const QString &str, groupNames) {

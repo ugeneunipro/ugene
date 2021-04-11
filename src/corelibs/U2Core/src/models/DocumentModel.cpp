@@ -222,7 +222,7 @@ Document::Document(DocumentFormat *_df, IOAdapterFactory *_io, const GUrl &_url,
     ctxState = new GHintsDefaultImpl(hints);
     name = url.fileName();
 
-    qFill(modLocks, modLocks + DocumentModLock_NUM_LOCKS, (StateLock *)NULL);
+    std::fill(modLocks, modLocks + DocumentModLock_NUM_LOCKS, (StateLock *)NULL);
 
     loadStateChangeMode = true;
     addUnloadedObjects(unloadedObjects);
@@ -241,7 +241,7 @@ Document::Document(DocumentFormat *_df, IOAdapterFactory *_io, const GUrl &_url,
     name = url.fileName();
 
     loadStateChangeMode = true;
-    qFill(modLocks, modLocks + DocumentModLock_NUM_LOCKS, (StateLock *)NULL);
+    std::fill(modLocks, modLocks + DocumentModLock_NUM_LOCKS, (StateLock *)NULL);
     foreach (GObject *o, _objects) {
         _addObject(o);
     }

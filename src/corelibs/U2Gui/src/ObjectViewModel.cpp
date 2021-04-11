@@ -146,7 +146,7 @@ QString GObjectView::addObject(GObject *o) {
     objects << o;
     onObjectAdded(o);
     emit si_objectAdded(this, o);
-    return QString::null;
+    return QString();
 }
 
 void GObjectView::_removeObject(GObject *o) {

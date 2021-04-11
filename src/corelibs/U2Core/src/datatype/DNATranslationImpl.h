@@ -171,7 +171,7 @@ public:
         int size = index.getIndexSize();
         assert(size > 0);
         resultByIndex = new T[size];
-        qFill(resultByIndex, resultByIndex + size, defaultVal);
+        std::fill(resultByIndex, resultByIndex + size, defaultVal);
 
         //assign indexed values
         foreach (const Mapping3To1<T> &m, rawMapping) {
@@ -188,7 +188,7 @@ public:
         int size = index.getIndexSize();
         assert(size > 0);
         resultByIndex = new T[size];
-        qFill(resultByIndex, resultByIndex + size, defaultVal);
+        std::fill(resultByIndex, resultByIndex + size, defaultVal);
     }
 
     ~IndexedMapping3To1() {

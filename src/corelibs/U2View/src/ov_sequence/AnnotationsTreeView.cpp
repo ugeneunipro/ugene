@@ -1148,7 +1148,7 @@ void AnnotationsTreeView::sl_removeAnnsAndQs() {
     //now remove selected groups
     QList<AVGroupItem *> groupItemsToRemove = selectGroupItems(tree->selectedItems(), TriState_No, TriState_No);
 
-    qSort(groupItemsToRemove.begin(), groupItemsToRemove.end(), groupDepthInverseComparator);
+    std::sort(groupItemsToRemove.begin(), groupItemsToRemove.end(), groupDepthInverseComparator);
     //now remove all groups
     foreach (AVGroupItem *gi, groupItemsToRemove) {
         AnnotationGroup *pg = gi->group->getParentGroup();
@@ -2110,7 +2110,7 @@ void AnnotationsTreeView::editAnnotationItem(AVAnnotationItem *ai) {
             ai->annotation->setType(newType);
         }
 
-        if ((m.description.isEmpty() && oldDescription != QString::null) || (m.description != oldDescription)) {
+        if ((m.description.isEmpty() && oldDescription != QString()) || (m.description != oldDescription)) {
             ai->annotation->removeQualifier(U2Qualifier(GBFeatureUtils::QUALIFIER_NOTE, oldDescription));
         }
         if (!m.description.isEmpty() && m.description != oldDescription) {

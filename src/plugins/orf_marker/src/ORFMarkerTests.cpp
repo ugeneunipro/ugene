@@ -199,8 +199,8 @@ Task::ReportResult GTest_ORFMarkerTask::report() {
         stateInfo.setError(QString("Expected and Actual lists of regions are different: %1 %2").arg(expectedSize).arg(actualSize));
         return ReportResult_Finished;
     }
-    qSort(actualResults);
-    qSort(expectedResults);
+    std::sort(actualResults.begin(), actualResults.end());
+    std::sort(expectedResults.begin(), expectedResults.end());
     if (actualResults != expectedResults) {
         stateInfo.setError(QString("One of the expected regions not found in results"));
         return ReportResult_Finished;

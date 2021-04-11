@@ -80,7 +80,8 @@ inline bool isValidFile(const QString &link, const qint64 &processStartTime) {
     if (url.isLocalFile()) {
         if (QFile::exists(link)) {
             QFileInfo info(link);
-            bool createdAtThisRun = (info.lastModified().toTime_t() >= processStartTime);
+            qint64 lastModifiedTimeSeconds = info.lastModified().toSecsSinceEpoch();
+            bool createdAtThisRun = (lastModifiedTimeSeconds >= processStartTime);
             return createdAtThisRun;
         }
     }

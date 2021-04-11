@@ -1050,7 +1050,7 @@ void FindPatternMsaWidget::resortResultsByViewState() {
             visibleSearchResults << result;
         }
     }
-    qSort(visibleSearchResults.begin(), visibleSearchResults.end(), SearchResultsComparator());
+    std::sort(visibleSearchResults.begin(), visibleSearchResults.end(), SearchResultsComparator());
     currentResultIndex = findCurrentResultIndexFromSelection();
 }
 

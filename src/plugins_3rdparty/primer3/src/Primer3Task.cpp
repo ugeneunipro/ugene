@@ -660,7 +660,7 @@ Task::ReportResult Primer3SWTask::report() {
     }
 
     if (regionTasks.size() + circRegionTasks.size() > 1) {
-        qStableSort(bestPairs);
+        std::stable_sort(bestPairs.begin(), bestPairs.end());
         int pairsCount = 0;
         if (!settings.getIntProperty("PRIMER_NUM_RETURN", &pairsCount)) {
             setError("can't get PRIMER_NUM_RETURN property");

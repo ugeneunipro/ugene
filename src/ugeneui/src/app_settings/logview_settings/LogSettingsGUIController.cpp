@@ -130,7 +130,7 @@ void LogSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
     }
 
     QList<QString> categoryNames = settings.getLoggerSettings().keys();
-    qSort(categoryNames);
+    std::sort(categoryNames.begin(), categoryNames.end());
     foreach (const QString &categoryName, categoryNames) {
         const LoggerSettings &cs = settings.getLoggerSettings(categoryName);
         QTableWidgetItem *nameItem = new QTableWidgetItem(cs.categoryName);

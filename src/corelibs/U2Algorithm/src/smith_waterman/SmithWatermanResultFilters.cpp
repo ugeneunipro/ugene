@@ -72,7 +72,7 @@ static bool revScoreComparator(const SmithWatermanResult &s0, const SmithWaterma
 bool SWRF_WithoutIntersect::applyFilter(QList<SmithWatermanResult> *lst) {
     QList<SmithWatermanResult> &results = *lst;
 
-    qSort(results.begin(), results.end(), revScoreComparator);
+    std::sort(results.begin(), results.end(), revScoreComparator);
 
     int i = 0;
     int size = results.size();

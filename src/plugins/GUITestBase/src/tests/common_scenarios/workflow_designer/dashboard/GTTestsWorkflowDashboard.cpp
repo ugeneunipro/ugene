@@ -3966,10 +3966,10 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
                                                                  qMakePair(QString("Align sequences with MUSCLE 2"), true),
                                                                  qMakePair(QString("Extract consensus as sequence 1"), true),
                                                                  qMakePair(QString("Extract consensus as sequence 2"), true)});
-            qSort(expectedDashboardsState.begin(), expectedDashboardsState.end(), sorting);
+            std::sort(expectedDashboardsState.begin(), expectedDashboardsState.end(), sorting);
 
             QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
-            qSort(actualDashboardsState.begin(), actualDashboardsState.end(), sorting);
+            std::sort(actualDashboardsState.begin(), actualDashboardsState.end(), sorting);
 
             CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
                           QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")
@@ -4306,10 +4306,10 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
                                                                  qMakePair(QString("Align sequences with MUSCLE 2"), true),
                                                                  qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                  qMakePair(QString("Extract consensus as sequence 2"), true)});
-            qSort(expectedDashboardsState.begin(), expectedDashboardsState.end(), sorting);
+            std::sort(expectedDashboardsState.begin(), expectedDashboardsState.end(), sorting);
 
             QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
-            qSort(actualDashboardsState.begin(), actualDashboardsState.end(), sorting);
+            std::sort(actualDashboardsState.begin(), actualDashboardsState.end(), sorting);
 
             CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
                           QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")
@@ -4647,10 +4647,10 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
                                                                  qMakePair(QString("Align sequences with MUSCLE 2"), true),
                                                                  qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                  qMakePair(QString("Extract consensus as sequence 2"), false)});
-            qSort(expectedDashboardsState.begin(), expectedDashboardsState.end(), sorting);
+            std::sort(expectedDashboardsState.begin(), expectedDashboardsState.end(), sorting);
 
             QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
-            qSort(actualDashboardsState.begin(), actualDashboardsState.end(), sorting);
+            std::sort(actualDashboardsState.begin(), actualDashboardsState.end(), sorting);
 
             CHECK_SET_ERR(expectedDashboardsState.size() == actualDashboardsState.size(),
                           QString("Expected dashboards count is not equal to the actual dashboards list size: expected %1, got %2")

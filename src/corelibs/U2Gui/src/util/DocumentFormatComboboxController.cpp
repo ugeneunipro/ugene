@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-DocumentFormatComboboxController::DocumentFormatComboboxController(QObject *p, QComboBox *cb, const DocumentFormatConstraints &_c, DocumentFormatId active)
+DocumentFormatComboboxController::DocumentFormatComboboxController(QObject *p, QComboBox *cb, const DocumentFormatConstraints &_c, const DocumentFormatId& active)
     : QObject(p), combo(cb), c(_c) {
     assert(combo->count() == 0);
 
@@ -98,7 +98,7 @@ void DocumentFormatComboboxController::fill(QComboBox *combo, QList<DocumentForm
 DocumentFormatId DocumentFormatComboboxController::getActiveFormatId(QComboBox *combo) {
     int i = combo->currentIndex();
     if (i == -1) {
-        return DocumentFormatId::null;
+        return DocumentFormatId();
     }
     DocumentFormatId id = combo->itemData(i).toString();
     return id;

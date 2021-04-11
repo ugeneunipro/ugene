@@ -410,7 +410,7 @@ void GenerateDNASequenceTask::prepare() {
 
 void GenerateDNASequenceTask::run() {
     if (seed < 0) {
-        qsrand(QDateTime::currentDateTime().toTime_t());
+        qsrand(uint(QDateTime::currentDateTime().toSecsSinceEpoch() / 1000));
     } else {
         qsrand(seed);
     }

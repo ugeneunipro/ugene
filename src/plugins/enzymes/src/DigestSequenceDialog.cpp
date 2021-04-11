@@ -231,7 +231,7 @@ void DigestSequenceDialog::updateAvailableEnzymeWidget() {
     availableEnzymeWidget->clear();
 
     QList<QString> enzymesList(availableEnzymes.values());
-    qSort(enzymesList);
+    std::sort(enzymesList.begin(), enzymesList.end());
 
     foreach (const QString &enzymeId, enzymesList) {
         QString cutInfo;

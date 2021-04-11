@@ -117,7 +117,7 @@ QList<Task *> RealignSequencesInAlignmentTask::onSubTaskFinished(Task *subTask) 
         foreach (qint64 idToRemove, rowsToAlignIds) {
             rowPosToRemove.append(originalMsaObject->getRowPosById(idToRemove));
         }
-        qSort(rowPosToRemove);
+        std::sort(rowPosToRemove.begin(), rowPosToRemove.end());
         std::reverse(rowPosToRemove.begin(), rowPosToRemove.end());
         foreach (int rowPos, rowPosToRemove) {
             msaObject->removeRow(rowPos);

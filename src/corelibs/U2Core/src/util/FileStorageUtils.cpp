@@ -33,7 +33,7 @@ using namespace FileStorage;
 
 static QString getCommonHashForFile(const QString &url) {
     QFileInfo info(url);
-    uint modified = info.lastModified().toTime_t();
+    qint64 modified = info.lastModified().toSecsSinceEpoch();
 
     return QByteArray::number(modified);
 }

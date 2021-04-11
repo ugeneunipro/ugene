@@ -48,7 +48,7 @@ void DinucleotitePropertyRegistry::registerProperty(const QString& str) {
     QMap<QString, QString> keys;
     float data[16];
     float defVal = -100000;
-    qFill((float*)data, data + 16, defVal);
+    std::fill((float*)data, data + 16, defVal);
 
     QStringList lines = str.split('\n', QString::SkipEmptyParts);
     bool dimode = false;
@@ -83,7 +83,7 @@ void DinucleotitePropertyRegistry::registerProperty(const QString& str) {
     
     DiPropertySitecon* p = new DiPropertySitecon();
     p->keys = keys;
-    qCopy((float*)data, data + 16, (float*)p->original);
+    std::copy((float*)data, data + 16, (float*)p->original);
     normalize(p);
     props.append(p);
 }

@@ -61,7 +61,7 @@ void ExtendedDNAlphabetComparator::buildIndex() {
     V = not T (A or C or G)
     N = A or C or G or T
     */
-    qFill(index, index + DNA_AL_EX_INDEX_SIZE, 0);
+    std::fill(index, index + DNA_AL_EX_INDEX_SIZE, 0);
     index['A' - ' '] = (1 << bit('A'));
     index['C' - ' '] = (1 << bit('C'));
     index['G' - ' '] = (1 << bit('G'));

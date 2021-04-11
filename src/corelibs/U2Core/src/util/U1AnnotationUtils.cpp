@@ -317,7 +317,7 @@ QList<U2Region> U1AnnotationUtils::getRelatedLowerCaseRegions(const U2SequenceOb
     }
 
     // extract lower case annotations from upper case ones
-    qStableSort(upperCaseRegs.begin(), upperCaseRegs.end());
+    std::stable_sort(upperCaseRegs.begin(), upperCaseRegs.end());
 
     qint64 nextStartPos = 0;
     foreach (const U2Region &reg, upperCaseRegs) {

@@ -1192,7 +1192,7 @@ void FindPatternWidget::sl_findPatternTaskStateChanged() {
             prevPushButton->setDisabled(true);
             getAnnotationsPushButton->setDisabled(true);
         } else {
-            qSort(findPatternResults.begin(), findPatternResults.end(), compareByRegionStartPos);
+            std::sort(findPatternResults.begin(), findPatternResults.end(), compareByRegionStartPos);
             bool isSearchInSelection = isSearchInSelectionMode();
             // In search in selection mode we do not auto-activate the first search result to avoid concurrent selection update with user.
             currentResultIndex = isSearchInSelection ? -1 : 0;

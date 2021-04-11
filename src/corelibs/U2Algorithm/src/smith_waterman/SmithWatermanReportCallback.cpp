@@ -179,7 +179,7 @@ QString SmithWatermanReportCallbackMAImpl::report(const QList<SmithWatermanResul
     case MSA_Alignment_InCurrentWindow:
         return planFor_MSA_Alignment_InCurrentWindow(_results);
     default:
-        FAIL("Unexpected algorithm mode!", QString::null);
+        FAIL("Unexpected algorithm mode!", QString());
     }
 }
 
@@ -193,7 +193,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_SequenceView_Search(const QLi
     tagsRegistry->resetCounters();
 
     foreach (SmithWatermanResult pairAlignSeqs, results) {
-        SAFE_POINT(!(0 == pairAlignSeqs.ptrnSubseq.startPos && 0 == pairAlignSeqs.ptrnSubseq.length) && !(0 == pairAlignSeqs.refSubseq.startPos && 0 == pairAlignSeqs.refSubseq.length), "Invalid SW algorithm result detected!", QString::null);
+        SAFE_POINT(!(0 == pairAlignSeqs.ptrnSubseq.startPos && 0 == pairAlignSeqs.ptrnSubseq.length) && !(0 == pairAlignSeqs.refSubseq.startPos && 0 == pairAlignSeqs.refSubseq.length), "Invalid SW algorithm result detected!", QString());
 
         DocumentFormat *format = AppContext::getDocumentFormatRegistry()
                                      ->getFormatById(BaseDocumentFormats::CLUSTAL_ALN);
@@ -266,12 +266,12 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InNewWindow(
 
     SAFE_POINT((firstSequenceRef.dbiRef == sourceMsaRef.dbiRef) && (secondSequenceRef.dbiRef == sourceMsaRef.dbiRef),
                tr("Sequences aren't stored in the source msa dbi"),
-               QString::null);
+               QString());
 
     SAFE_POINT(!(0 == pairAlignSeqs.ptrnSubseq.startPos && 0 == pairAlignSeqs.ptrnSubseq.length) &&
                    !(0 == pairAlignSeqs.refSubseq.startPos && 0 == pairAlignSeqs.refSubseq.length),
                "Invalid SW algorithm results detected!",
-               QString::null);
+               QString());
 
     DocumentFormat *format = AppContext::getDocumentFormatRegistry()
                                  ->getFormatById(BaseDocumentFormats::CLUSTAL_ALN);
@@ -284,7 +284,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InNewWindow(
     CHECK_OP(stateInfo, tr("SmithWatermanReportCallback failed to create new MA document."));
 
     U2SequenceDbi *seqDbi = sourceMsaConnection.dbi->getSequenceDbi();
-    SAFE_POINT(NULL != seqDbi, "Invalid sequence DBI detected!", QString::null);
+    SAFE_POINT(NULL != seqDbi, "Invalid sequence DBI detected!", QString());
 
     U2Sequence firstSequence = seqDbi->getSequenceObject(firstSequenceRef.entityId, os);
     CHECK_OP(os, tr("Failed to get the sequence object."));
@@ -307,7 +307,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InNewWindow(
     ptrnSequenceData = seqDbi->getSequenceData(ptrnSequence->id, U2Region(0, ptrnSequence->length), os);
     CHECK_OP(os, tr("Failed to get the sequence data."));
 
-    SAFE_POINT(refSequenceData.length() > 0 && ptrnSequenceData.length() > 0, "Invalid sequence length detected!", QString::null);
+    SAFE_POINT(refSequenceData.length() > 0 && ptrnSequenceData.length() > 0, "Invalid sequence length detected!", QString());
     alignSequences(refSequenceData, ptrnSequenceData, pairAlignSeqs.pairAlignment);
 
     MultipleSequenceAlignment msa(refSequence->visualName + " vs. " + ptrnSequence->visualName, alphabet);
@@ -343,10 +343,10 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InCurrentWindow
                tr("Sequences aren't stored in the source msa dbi"),
                0);
 
-    SAFE_POINT(!(0 == pairAlignSeqs.ptrnSubseq.startPos && 0 == pairAlignSeqs.ptrnSubseq.length) && !(0 == pairAlignSeqs.refSubseq.startPos && pairAlignSeqs.refSubseq.length == 0), "Invalid SW algorithm result detected!", QString::null);
+    SAFE_POINT(!(0 == pairAlignSeqs.ptrnSubseq.startPos && 0 == pairAlignSeqs.ptrnSubseq.length) && !(0 == pairAlignSeqs.refSubseq.startPos && pairAlignSeqs.refSubseq.length == 0), "Invalid SW algorithm result detected!", QString());
 
     U2SequenceDbi *seqDbi = sourceMsaConnection.dbi->getSequenceDbi();
-    SAFE_POINT(NULL != seqDbi, "Invalid sequence DBI detected!", QString::null);
+    SAFE_POINT(NULL != seqDbi, "Invalid sequence DBI detected!", QString());
 
     U2Sequence firstSequence = seqDbi->getSequenceObject(firstSequenceRef.entityId, os);
     CHECK_OP(os, tr("Failed to get the sequence object."));
@@ -371,11 +371,11 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InCurrentWindow
                                                os);
     CHECK_OP(os, tr("Failed to get the sequence data."));
 
-    SAFE_POINT(refSequenceData.length() > 0 && ptrnSequenceData.length() > 0, "Invalid sequence length", QString::null);
+    SAFE_POINT(refSequenceData.length() > 0 && ptrnSequenceData.length() > 0, "Invalid sequence length", QString());
     alignSequences(refSequenceData, ptrnSequenceData, pairAlignSeqs.pairAlignment);
 
     U2MsaDbi *msaDbi = sourceMsaConnection.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "Invalid MSA DBI detected!", QString::null);
+    SAFE_POINT(NULL != msaDbi, "Invalid MSA DBI detected!", QString());
 
     QList<U2MsaRow> rows = msaDbi->getRows(sourceMsaRef.entityId, os);
     CHECK_OP(os, tr("Failed to get msa from dbi"));

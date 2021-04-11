@@ -183,7 +183,7 @@ U2Region uniteRegions(const QVector<U2Region> &regions) {
 
 QVector<U2Region> joinRegions(QVector<U2Region> &regions) {
     QVector<U2Region> result;
-    qSort(regions);
+    std::sort(regions.begin(), regions.end());
     for (int i = 0, size = regions.size(); i < size;) {
         U2Region joined = regions[i];
         ++i;

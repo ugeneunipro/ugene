@@ -65,7 +65,9 @@ void Dbi::init(const QHash<QString, QString> &properties, const QVariantMap & /*
         }
         reader.reset(new BamReader(*ioAdapter));
         QFileInfo fileInfo(url.getURLString());
-        sqliteUrl = GUrl(QDir::temp().absoluteFilePath(url.fileName() + "." + QString::number(fileInfo.lastModified().toTime_t()) + "." + QString::number(fileInfo.size()) + ".sqlite"));
+        sqliteUrl = GUrl(QDir::temp().absoluteFilePath(url.fileName() +
+                                                       "." + QString::number(fileInfo.lastModified().toSecsSinceEpoch()) +
+                                                       "." + QString::number(fileInfo.size()) + ".sqlite"));
         bool exists = false;
         if (QFile::exists(sqliteUrl.getURLString())) {
             exists = true;
@@ -802,35 +804,35 @@ U2AssemblyRead AssemblyDbi::alignmentToRead(const Alignment &alignment) {
     foreach (const Alignment::CigarOperation &cigarOperation, alignment.getCigar()) {
         U2CigarOp cigarOp = U2CigarOp_Invalid;
         switch (cigarOperation.getOperation()) {
-        case Alignment::CigarOperation::AlignmentMatch:
-            cigarOp = U2CigarOp_M;
-            break;
-        case Alignment::CigarOperation::Insertion:
-            cigarOp = U2CigarOp_I;
-            break;
-        case Alignment::CigarOperation::Deletion:
-            cigarOp = U2CigarOp_D;
-            break;
-        case Alignment::CigarOperation::Skipped:
-            cigarOp = U2CigarOp_N;
-            break;
-        case Alignment::CigarOperation::SoftClip:
-            cigarOp = U2CigarOp_S;
-            break;
-        case Alignment::CigarOperation::HardClip:
-            cigarOp = U2CigarOp_H;
-            break;
-        case Alignment::CigarOperation::Padding:
-            cigarOp = U2CigarOp_P;
-            break;
-        case Alignment::CigarOperation::SequenceMatch:
-            cigarOp = U2CigarOp_EQ;
-            break;
-        case Alignment::CigarOperation::SequenceMismatch:
-            cigarOp = U2CigarOp_X;
-            break;
-        default:
-            assert(false);
+            case Alignment::CigarOperation::AlignmentMatch:
+                cigarOp = U2CigarOp_M;
+                break;
+            case Alignment::CigarOperation::Insertion:
+                cigarOp = U2CigarOp_I;
+                break;
+            case Alignment::CigarOperation::Deletion:
+                cigarOp = U2CigarOp_D;
+                break;
+            case Alignment::CigarOperation::Skipped:
+                cigarOp = U2CigarOp_N;
+                break;
+            case Alignment::CigarOperation::SoftClip:
+                cigarOp = U2CigarOp_S;
+                break;
+            case Alignment::CigarOperation::HardClip:
+                cigarOp = U2CigarOp_H;
+                break;
+            case Alignment::CigarOperation::Padding:
+                cigarOp = U2CigarOp_P;
+                break;
+            case Alignment::CigarOperation::SequenceMatch:
+                cigarOp = U2CigarOp_EQ;
+                break;
+            case Alignment::CigarOperation::SequenceMismatch:
+                cigarOp = U2CigarOp_X;
+                break;
+            default:
+                assert(false);
         }
         row->cigar.append(U2CigarToken(cigarOp, cigarOperation.getLength()));
     }

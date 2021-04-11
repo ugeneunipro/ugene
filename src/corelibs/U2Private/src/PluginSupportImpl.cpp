@@ -259,7 +259,7 @@ QString PluginSupportImpl::getPluginFileURL(Plugin *p) const {
             return ref->library->fileName();
         }
     }
-    return QString::null;
+    return QString();
 }
 
 PluginRef *PluginSupportImpl::findRef(Plugin *p) const {

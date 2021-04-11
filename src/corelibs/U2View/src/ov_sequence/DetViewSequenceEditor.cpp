@@ -253,7 +253,7 @@ void DetViewSequenceEditor::deleteChar(int key) {
         QVector<U2Region> regions = ctx->getSequenceSelection()->getSelectedRegions();
         ctx->getSequenceSelection()->clear();
         if (regions.size() != 1) {
-            qSort(regions);
+            std::sort(regions.begin(), regions.end());
             for (int i = 0; i < regions.size(); i++) {
                 // can cause problems
                 modifySequence(seqObj, regions[i], DNASequence());

@@ -214,7 +214,7 @@ Task::ReportResult HMMSearchTask::report() {
     }
 
     // sort results by E-value
-    qSort(results.begin(), results.end(), HMMSearchResult_LessThan);
+    std::sort(results.begin(), results.end(), HMMSearchResult_LessThan);
     return ReportResult_Finished;
 }
 

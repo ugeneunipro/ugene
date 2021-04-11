@@ -209,7 +209,7 @@ static QString getMsaName(const AnnotationBank &ann_bank) {
             return ann->val;
         }
     }
-    return QString::null;
+    return QString();
 }
 
 static bool isUniFile(const AnnotationBank &ann_bank) {
@@ -246,8 +246,8 @@ static QString getAnnotationName(Annotation *ann) {
                     return QString(StockholmFormat::FILE_ANNOTATION_TC);
                 default:
                     assert(false);
-                    break;
             }
+            break;
         }
         case COLUMN_ANNOTATION: {
             AnnotationTag tag = ann->tag;
@@ -631,7 +631,7 @@ static void load(IOAdapter *io, const U2DbiRef &dbiRef, QList<GObject *> &l, con
         uni_file = uni_file || isUniFile(ann_bank);
 
         name = getMsaName(ann_bank);
-        name = (QString::null == name || names_list.contains(name)) ? filename + "_" + QString::number(l.size()) : name;
+        name = (QString() == name || names_list.contains(name)) ? filename + "_" + QString::number(l.size()) : name;
         names_list.append(name);
         msa->setName(name);
 

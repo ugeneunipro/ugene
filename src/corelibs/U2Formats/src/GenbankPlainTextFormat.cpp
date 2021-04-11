@@ -799,7 +799,7 @@ void GenbankPlainTextFormat::writeAnnotations(IOAdapter *io, const QList<GObject
         sortedAnnotations += ao->getAnnotations();
     }
 
-    qStableSort(sortedAnnotations.begin(), sortedAnnotations.end(), Annotation::annotationLessThanByRegion);
+    std::stable_sort(sortedAnnotations.begin(), sortedAnnotations.end(), Annotation::annotationLessThanByRegion);
 
     for (int i = 0; i < sortedAnnotations.size(); ++i) {
         Annotation *a = sortedAnnotations.at(i);

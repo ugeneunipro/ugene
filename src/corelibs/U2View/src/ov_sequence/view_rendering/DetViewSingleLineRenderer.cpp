@@ -516,7 +516,7 @@ void DetViewSingleLineRenderer::drawComplementTranslations(QPainter &p,
 
             QByteArray amino;
             if (isTranslateAnnotationOrSelection) {
-                qSort(sortedRegions[complLine].begin(), sortedRegions[complLine].end());
+                std::sort(sortedRegions[complLine].begin(), sortedRegions[complLine].end());
                 amino = translateComplSelection(sortedRegions[complLine], translation, seq, seqLen, visibleRange);
             } else {
                 amino = translate(translation, seq, seqLen);

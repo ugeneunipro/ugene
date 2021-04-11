@@ -227,7 +227,7 @@ QList<Task *> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task *subTask) {
                 s.ma->sortRowsBySimilarity(unitedRows);
                 QList<MultipleSequenceAlignmentRow> rows;
                 int i = 1;
-                srand(QDateTime::currentDateTime().toTime_t());
+                srand(uint(QDateTime::currentDateTime().toSecsSinceEpoch() / 1000));
                 foreach (const U2Region &reg, unitedRows) {
                     MultipleSequenceAlignmentRow row = s.ma->getMsaRow(reg.startPos + qrand() % reg.length);
                     row->setName(QString("Group %1: ").arg(i) + "(" + row->getName() + ")");

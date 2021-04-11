@@ -291,7 +291,7 @@ QColor ColorGenerator::getColor(int index) const {
     }
 }
 void ColorGenerator::generateColors() {
-    srand(QDateTime::currentDateTime().toTime_t());
+    srand(uint(QDateTime::currentDateTime().toSecsSinceEpoch() / 1000));
     int countOfAddedColors = countOfColors - colors.size();
     for (int i = 0; i < countOfAddedColors; i++) {
         QColor color;

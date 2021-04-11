@@ -139,7 +139,7 @@ QString SaveDocumentController::getSaveFileName() const {
 }
 
 DocumentFormatId SaveDocumentController::getFormatIdToSave() const {
-    SAFE_POINT(!currentFormat.isEmpty(), "Current format is not set", DocumentFormatId::null);
+    SAFE_POINT(!currentFormat.isEmpty(), "Current format is not set", DocumentFormatId());
     return formatsInfo.getIdByName(currentFormat);
 }
 

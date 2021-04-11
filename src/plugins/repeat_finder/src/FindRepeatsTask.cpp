@@ -197,7 +197,7 @@ bool CompareResultLen(RFResult r1, RFResult r2) {
 void FindRepeatsTask::filterUniqueRepeats() {
     quint64 t1 = GTimer::currentTimeMicros();
 
-    qSort(results.begin(), results.end(), CompareResultLen);
+    std::sort(results.begin(), results.end(), CompareResultLen);
 
     bool changed = false;
     for (int i = 0, n = results.size(); i < n; i++) {
@@ -235,7 +235,7 @@ void FindRepeatsTask::filterNestedRepeats() {
     //if one repeats fits into another repeat -> filter it
     quint64 t1 = GTimer::currentTimeMicros();
 
-    qSort(results);
+    std::sort(results.begin(), results.end());
 
     bool changed = false;
     int extraLen = settings.mismatches;    //extra len added to repeat region to search for duplicates

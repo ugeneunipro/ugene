@@ -7,6 +7,11 @@ DEFINES+=UGENE_VERSION=$${UGENE_VERSION}
 DEFINES+=UGENE_VER_MAJOR=$${UGENE_VER_MAJOR}
 DEFINES+=UGENE_VER_MINOR=$${UGENE_VER_MINOR}
 
+# Use of any Qt API marked as deprecated before 5.7 will cause compile time errors.
+# The goal is to increase this value gradually up to the current version used in UGENE
+# and do not use any deprecated API.
+DEFINES+=QT_DISABLE_DEPRECATED_BEFORE=0x050700
+
 CONFIG += c++11
 
 # Do not use library suffix names for files and ELF-dependency sections on Linux.

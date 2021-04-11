@@ -96,7 +96,7 @@ void CreateAnnotationFullWidget::setAnnotationNameEnabled(bool enable) {
 
 void CreateAnnotationFullWidget::useAminoAnnotationTypes(bool useAmino) {
     QStringList featureTypes = getFeatureTypes(useAmino);
-    qSort(featureTypes.begin(), featureTypes.end(), caseInsensitiveLessThan);
+    std::sort(featureTypes.begin(), featureTypes.end(), caseInsensitiveLessThan);
 
     lwAnnotationType->clear();
     lwAnnotationType->addItems(featureTypes);

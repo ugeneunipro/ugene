@@ -604,8 +604,8 @@ struct AnnotationsLess {
             return a1Size < a2Size;
         }
 
-        qSort(a1Regions);
-        qSort(a2Regions);
+        std::sort(a1Regions.begin(), a1Regions.end());
+        std::sort(a2Regions.begin(), a2Regions.end());
 
         if (a1Regions.first().startPos != a2Regions.first().startPos) {
             return a1Regions.first().startPos < a2Regions.first().startPos;
@@ -661,8 +661,8 @@ Task::ReportResult GTest_CheckAnnotationsLocationsInTwoObjects::report() {
             //////////////////////////////////////////////////////////
             QList<Annotation *> annList1 = myAnnotation->getAnnotations();
             QList<Annotation *> annList2 = myAnnotation2->getAnnotations();
-            qSort(annList1.begin(), annList1.end(), AnnotationsLess());
-            qSort(annList2.begin(), annList2.end(), AnnotationsLess());
+            std::sort(annList1.begin(), annList1.end(), AnnotationsLess());
+            std::sort(annList2.begin(), annList2.end(), AnnotationsLess());
 
             for (int n = 0; (n != annList1.size()) && (n != annList2.size()); n++) {
                 if (annList1.at(n)->getType() == U2FeatureTypes::Comment) {
@@ -673,8 +673,8 @@ Task::ReportResult GTest_CheckAnnotationsLocationsInTwoObjects::report() {
                 }
                 U2Location l1 = annList1.at(n)->getLocation();
                 U2Location l2 = annList2.at(n)->getLocation();
-                qSort(l1->regions);
-                qSort(l2->regions);
+                std::sort(l1->regions.begin(), l1->regions.end());
+                std::sort(l2->regions.begin(), l2->regions.end());
                 if (l1 != l2) {
                     const QString locationString1 = U1AnnotationUtils::buildLocationString(*l1);
                     const QString locationString2 = U1AnnotationUtils::buildLocationString(*l2);

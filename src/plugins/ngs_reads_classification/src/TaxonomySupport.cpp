@@ -342,8 +342,8 @@ TaxonomyTreeModel::TaxonomyTreeModel(const QString &data, QObject *parent)
 QList<TaxID> TaxonomyTreeModel::getChildrenSorted(TaxID id) const {
     QList<TaxID> values = tree->getChildren(id);
     if (values.size() > 1) {
-        //qSort(values.begin(), values.end(), TaxonNameComparator(tree));
-        qSort(values.begin(), values.end(), taxIdLessThan);
+        //std::sort(values.begin(), values.end(), TaxonNameComparator(tree));
+        std::sort(values.begin(), values.end(), taxIdLessThan);
     }
     return values;
 }
@@ -454,7 +454,7 @@ Qt::ItemFlags TaxonomyTreeModel::flags(const QModelIndex &index) const {
     }
 
     if (index.column() == 0) {
-        flags |= Qt::ItemIsUserCheckable | Qt::ItemIsTristate;
+        flags |= Qt::ItemIsUserCheckable | Qt::ItemIsAutoTristate;
     }
 
     return flags;

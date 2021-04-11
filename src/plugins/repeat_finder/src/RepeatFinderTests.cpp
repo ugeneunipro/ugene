@@ -254,7 +254,7 @@ void GTest_FindSingleSequenceRepeatsTask::run() {
     }
     file.close();
 
-    qSort(expectedResults);
+    std::sort(expectedResults.begin(), expectedResults.end());
 
     //check all subtasks
     FindRepeatsTask *sub = qobject_cast<FindRepeatsTask *>(getSubtasks()[0].data());
@@ -266,7 +266,7 @@ void GTest_FindSingleSequenceRepeatsTask::run() {
                                .arg(getAlgName(sub->getSettings().algo)));
         return;
     }
-    qSort(calcResults);
+    std::sort(calcResults.begin(), calcResults.end());
 
     for (int i = 0, n = expectedResults.size(); i < n; i++) {
         RFResult re = expectedResults[i];
@@ -394,8 +394,8 @@ void GTest_FindTandemRepeatsTask::run() {
         stateInfo.setError(QString("Results count not matched, num = %1, expected = %2\n%3").arg(calcResults.size()).arg(expectedResults.size()).arg(results));
         return;
     }
-    qSort(expectedResults);
-    qSort(calcResults);
+    std::sort(expectedResults.begin(), expectedResults.end());
+    std::sort(calcResults.begin(), calcResults.end());
 
     for (int i = 0, n = expectedResults.size(); i < n; i++) {
         Tandem re = expectedResults[i];
@@ -532,7 +532,7 @@ void GTest_FindRealTandemRepeatsTask::run() {
     }
     file.close();
 
-    qSort(expectedResults);
+    std::sort(expectedResults.begin(), expectedResults.end());
 
     //check all subtasks
     TandemFinder *sub = qobject_cast<TandemFinder *>(this->getSubtasks()[0].data());
@@ -663,7 +663,7 @@ void GTest_SArrayBasedFindTask::run() {
         return;
     }
 
-    qSort(expectedResults);
+    std::sort(expectedResults.begin(), expectedResults.end());
 
     QList<int> calcResults = findTask->getResults();
     if (expectedResults.size() != calcResults.size()) {
@@ -673,7 +673,7 @@ void GTest_SArrayBasedFindTask::run() {
         return;
     }
 
-    qSort(calcResults);
+    std::sort(calcResults.begin(), calcResults.end());
     for (int i = 0, n = expectedResults.size(); i < n; i++) {
         int re = expectedResults[i];
         int rc = calcResults[i];

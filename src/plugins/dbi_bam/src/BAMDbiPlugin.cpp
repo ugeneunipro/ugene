@@ -90,7 +90,7 @@ BAMImporter::BAMImporter()
     SAMFormat sam;
     extsSet.unite(bam.getSupportedDocumentFileExtensions().toSet()).unite(sam.getSupportedDocumentFileExtensions().toSet());
     QStringList exts = extsSet.toList();
-    qSort(exts);
+    std::sort(exts.begin(), exts.end());
 
     formatIds << BaseDocumentFormats::BAM << BaseDocumentFormats::SAM;
     extensions << exts;

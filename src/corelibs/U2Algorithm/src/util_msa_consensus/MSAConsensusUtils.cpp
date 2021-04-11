@@ -85,7 +85,7 @@ QString MSAConsensusUtils::getConsensusPercentTip(const MultipleAlignment &ma, i
         }
     }
     CHECK(nSeq != 0, QString());
-    qSort(freqs);
+    std::sort(freqs.begin(), freqs.end());
     double percentK = 100.0 / nSeq;
 
     QString res = "<table cellspacing=7>";
@@ -169,7 +169,7 @@ quint32 MSAConsensusUtils::packConsensusCharsToInt(const MultipleAlignment &ma, 
             numNoGaps++;
         }
     }
-    qSort(freqs);
+    std::sort(freqs.begin(), freqs.end());
     if (!gapsAffectPercents && numNoGaps == 0) {
         return 0xE0E0E0E0;    //'4' in masks, '0' in values
     }

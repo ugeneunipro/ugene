@@ -142,7 +142,7 @@ static bool providerNameComparator(const CMDLineHelpProvider *p1, const CMDLineH
 
 void CMDLineRegistry::registerCMDLineHelpProvider(CMDLineHelpProvider *provider) {
     helpProviders.append(provider);
-    qStableSort(helpProviders.begin(), helpProviders.end(), providerNameComparator);
+    std::stable_sort(helpProviders.begin(), helpProviders.end(), providerNameComparator);
 }
 
 void CMDLineRegistry::unregisterCMDLineHelpProvider(CMDLineHelpProvider *provider) {

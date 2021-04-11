@@ -45,7 +45,7 @@ struct GUrlLess {
 };
 
 bool MultipleDocumentsReadingModeSelectorController::adjustReadingMode(QVariantMap &props, QList<GUrl> &urls, const QMap<QString, qint64> &headerSequenceLengths) {
-    qSort(urls.begin(), urls.end(), GUrlLess());
+    std::sort(urls.begin(), urls.end(), GUrlLess());
 
     MultipleDocumentsReadingModeDialog d(urls, QApplication::activeWindow());
     return d.setupGUI(urls, props, headerSequenceLengths);

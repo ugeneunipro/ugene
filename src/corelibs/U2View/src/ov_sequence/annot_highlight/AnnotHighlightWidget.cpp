@@ -455,7 +455,7 @@ void AnnotHighlightWidget::loadAnnotTypes() {
     updateAnnotationNames();
 
     QList<QString> annotNames = annotNamesWithAminoInfo.keys();
-    qSort(annotNames);
+    std::sort(annotNames.begin(), annotNames.end());
 
     // Get the currently selected annotation name
     QString currentAnnotName = annotTree->getCurrentItemAnnotName();

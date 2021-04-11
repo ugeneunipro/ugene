@@ -54,7 +54,7 @@ bool DNAAlphabetRegistryImpl::registerAlphabet(const DNAAlphabet *a) {
     }
     alphabets.push_back(a);
     //WARN: original order for equal alphabets must not be changed (DNA must be before RNA)
-    qStableSort(alphabets.begin(), alphabets.end(), alphabetComplexityComparator);
+    std::stable_sort(alphabets.begin(), alphabets.end(), alphabetComplexityComparator);
     return true;
 }
 

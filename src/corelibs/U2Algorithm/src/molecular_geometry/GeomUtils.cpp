@@ -34,7 +34,7 @@ GeodesicSphere::GeodesicSphere(const Vector3D &center, float radius, int detaill
 
     QVector<Vector3D> normals;
     vertices.resize(elementarySphere->count());
-    qCopy(elementarySphere->begin(), elementarySphere->end(), vertices.begin());
+    std::copy(elementarySphere->begin(), elementarySphere->end(), vertices.begin());
 
     int size = vertices.count();
     for (int i = 0; i < size; ++i) {
@@ -74,7 +74,6 @@ void GeodesicSphere::interpolate(const Vector3D &v1, const Vector3D &v2, const V
     interpolate(v1, nv1, nv3, v, detailLevel - 1);
     interpolate(nv1, v2, nv2, v, detailLevel - 1);
     interpolate(nv3, nv2, v3, v, detailLevel - 1);
-    return;
 }
 
 QVector<Vector3D> *GeodesicSphere::createGeodesicSphere(int detailLevel) {
