@@ -246,6 +246,7 @@ static QString getAnnotationName(Annotation *ann) {
                     return QString(StockholmFormat::FILE_ANNOTATION_TC);
                 default:
                     assert(false);
+                    break;
             }
             break;
         }
