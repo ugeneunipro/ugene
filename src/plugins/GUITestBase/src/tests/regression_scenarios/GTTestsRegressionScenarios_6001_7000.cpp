@@ -6064,7 +6064,7 @@ GUI_TEST_CLASS_DEFINITION(test_6862) {
     GTUtilsWorkflowDesigner::setParameter(os, "Accept flag", "Mate strand", GTUtilsWorkflowDesigner::ComboChecks);
 
     QString checkboxValue = GTComboBox::getCurrentText(os, GTWidget::findExactWidget<QComboBox *>(os, "mainWidget"));
-    CHECK_SET_ERR(checkboxValue == "Mate strand", QString("Accept flag value: expected \"Mate strand\", current: \"%1\"").arg(checkboxValue))
+    CHECK_SET_ERR(checkboxValue == "Mate strand", QString("Accept flag value: expected 'Mate strand', current: '%1'").arg(checkboxValue))
 
     // Click on an empty place on the scene
     GTWidget::click(os, GTWidget::findWidget(os, "sceneView"));
@@ -6075,7 +6075,7 @@ GUI_TEST_CLASS_DEFINITION(test_6862) {
     GTUtilsWorkflowDesigner::clickParameter(os, "Accept flag");
     GTUtilsWorkflowDesigner::clickParameter(os, "Accept flag");
     checkboxValue = GTComboBox::getCurrentText(os, GTWidget::findExactWidget<QComboBox *>(os, "mainWidget"));
-    CHECK_SET_ERR(checkboxValue == "Mate strand", QString("Accept flag value (1): expected \"Mate strand\", current: \"%1\"").arg(checkboxValue))
+    CHECK_SET_ERR(checkboxValue == "Mate strand", QString("Accept flag value (1): expected 'Mate strand', current: '%1'").arg(checkboxValue))
 
     // To successfully complete the test
     GTWidget::click(os, GTWidget::findWidget(os, "sceneView"));
@@ -6089,7 +6089,7 @@ GUI_TEST_CLASS_DEFINITION(test_6862_1) {
                 GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             }
             QString value = GTComboBox::getCurrentText(os, GTWidget::findExactWidget<QComboBox *>(os, "Motif database widget"));
-            CHECK_SET_ERR(value == "hpdi.xml", QString("Motif database value (2): expected \"hpdi.xml\", current: \"%1\"").arg(value))
+            CHECK_SET_ERR(value == "hpdi.xml", QString("Motif database value (2): expected 'hpdi.xml', current: '%1'").arg(value))
 
             GTComboBox::checkValues(os, GTWidget::findExactWidget<QComboBox *>(os, "Motif database widget"), QStringList("cistrome.xml"));
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
@@ -6116,8 +6116,7 @@ GUI_TEST_CLASS_DEFINITION(test_6862_1) {
     // Click Next and Apply
     //     Expected state: Motif database value is "cistrome.xml"
 
-    StartupDialogFiller *filler = new StartupDialogFiller(os);
-    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, filler);
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
     GTFileDialog::openFile(os, dataDir + "workflow_samples/NGS/cistrome/chip_seq.uwl");
 
     GTUtilsWorkflowDesigner::click(os, "Collect Motifs with SeqPos");
@@ -6125,15 +6124,13 @@ GUI_TEST_CLASS_DEFINITION(test_6862_1) {
 
     // Click on the name of the Motif database parameter
     QTableView *table = GTUtilsWorkflowDesigner::getParametersTable(os);
-    QAbstractItemModel *parametersModel = table->model();
-    CHECK_SET_ERR(parametersModel != nullptr, "ComboBox model is nullptr")
-    table->scrollTo(parametersModel->index(4, 0));
     GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 0, 4));
+    GTThread::waitForMainThread();
     GTMouseDriver::click();
 
     // Check that Motif database value is "hpdi.xml"
     QString value = GTUtilsWorkflowDesigner::getParameter(os, "Motif database");
-    CHECK_SET_ERR(value == "hpdi.xml", QString("Motif database value: expected \"hpdi.xml\", current: \"%1\"").arg(value))
+    CHECK_SET_ERR(value == "hpdi.xml", QString("Motif database value: expected 'hpdi.xml', current: '%1'").arg(value))
 
     // Click on empty place on the scene
     GTWidget::click(os, GTWidget::findWidget(os, "sceneView"));
@@ -6145,7 +6142,7 @@ GUI_TEST_CLASS_DEFINITION(test_6862_1) {
     // Check that Motif database value is "cistrome.xml"
     GTUtilsWorkflowDesigner::click(os, "Collect Motifs with SeqPos");
     value = GTUtilsWorkflowDesigner::getParameter(os, "Motif database");
-    CHECK_SET_ERR(value == "cistrome.xml", QString("Motif database value: expected \"cistrome.xml\", current: \"%1\"").arg(value))
+    CHECK_SET_ERR(value == "cistrome.xml", QString("Motif database value: expected 'cistrome.xml', current: '%1'").arg(value))
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6875) {

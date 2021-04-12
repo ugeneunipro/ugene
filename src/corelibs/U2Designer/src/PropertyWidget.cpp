@@ -432,12 +432,8 @@ QVariant ComboBoxWithChecksWidget::value() {
 }
 
 void ComboBoxWithChecksWidget::setValue(const QVariant &value) {
-    if (cm == nullptr) {
-        coreLog.error("Model of ComboBoxWithChecksWidget is nullptr");
-        return;
-    }
-
     QStringList curList = value.toString().split(',', QString::SkipEmptyParts);
+    // 0-item is a `ghostItem` with the result of all currently checked checkboxes. That's why we start with 1.
     for (int i = 1; i < cm->rowCount(); i++) {
         QStandardItem *item = cm->item(i);
         QString key = item->data().toString();
