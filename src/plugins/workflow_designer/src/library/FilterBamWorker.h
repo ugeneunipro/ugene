@@ -78,6 +78,7 @@ public:
     Worker *createWorker(Actor *a) {
         return new FilterBamWorker(a);
     }
+    QMap<QString, QString> formatNameIdAssociation;
 };    //FilterBamWorkerFactory
 
 class BamFilterSetting {

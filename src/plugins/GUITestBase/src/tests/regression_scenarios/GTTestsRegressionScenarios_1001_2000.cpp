@@ -8421,7 +8421,7 @@ GUI_TEST_CLASS_DEFINITION(test_1918) {
     //5. Set the following parameters of the "File Conversion" element: { Document format : NEXUS },
     //                                                                  { Excluded formats : CLUSTAL }
     GTUtilsWorkflowDesigner::click(os, "File Format Conversion");
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "Nexus", GTUtilsWorkflowDesigner::comboValue, GTGlobals::UseMouse);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "NEXUS", GTUtilsWorkflowDesigner::comboValue, GTGlobals::UseMouse);
     GTUtilsWorkflowDesigner::setParameter(os, "Excluded formats", QStringList("CLUSTALW"), GTUtilsWorkflowDesigner::ComboChecks);
     GTUtilsWorkflowDesigner::setParameter(os, "Output folder", 0, GTUtilsWorkflowDesigner::comboValue);
     GTUtilsWorkflowDesigner::setParameter(os, "Custom folder", QDir().absoluteFilePath(sandBoxDir + "regression_1918"), GTUtilsWorkflowDesigner::textValue);

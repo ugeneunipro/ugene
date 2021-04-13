@@ -187,7 +187,12 @@ void ConvertFilesFormatWorker::init() {
     inputUrlPort = ports.value(INPUT_PORT);
     outputUrlPort = ports.value(OUTPUT_PORT);
     targetFormat = getValue<QString>(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
-    excludedFormats = getValue<QString>(EXCLUDED_FORMATS_ID).split(",", QString::SkipEmptyParts);
+    QStringList excludedFormatNames = getValue<QString>(EXCLUDED_FORMATS_ID).split(",", QString::SkipEmptyParts);
+    for (const QString &formatId : AppContext::getDocumentFormatRegistry()->getRegisteredFormats()) {
+        if (excludedFormatNames.contains(AppContext::getDocumentFormatRegistry()->getFormatById(formatId)->getFormatName())) {
+            excludedFormats.append(formatId);
+        }
+    }
 }
 
 bool ConvertFilesFormatWorker::ensureFileExists(const QString &url) {

@@ -21,6 +21,7 @@
 
 #include "FilterBamWorker.h"
 
+#include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentModel.h>
@@ -181,8 +182,8 @@ void FilterBamWorkerFactory::init() {
         delegates[CUSTOM_DIR_ID] = new URLDelegate("", "", false, true);
 
         QVariantMap formatMap;
-        formatMap[BaseDocumentFormats::BAM] = BaseDocumentFormats::BAM;
-        formatMap[BaseDocumentFormats::SAM] = BaseDocumentFormats::SAM;
+        formatMap[AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::BAM)->getFormatName()] = BaseDocumentFormats::BAM;
+        formatMap[AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::SAM)->getFormatName()] = BaseDocumentFormats::SAM;
         delegates[OUT_FORMAT_ID] = new ComboBoxDelegate(formatMap);
         QVariantMap lenMap;
         lenMap["minimum"] = QVariant(0);
@@ -239,7 +240,14 @@ Task *FilterBamWorker::tick() {
             setting.outName = getTargetName(url, outputDir);
             setting.inputUrl = url;
             setting.inputFormat = detectedFormat;
-            setting.outputFormat = getValue<QString>(OUT_FORMAT_ID);
+            QString outputFormatName = getValue<QString>(OUT_FORMAT_ID);
+            for (const QString &formatId : AppContext::getDocumentFormatRegistry()->getRegisteredFormats()) {
+                if (outputFormatName == AppContext::getDocumentFormatRegistry()->getFormatById(formatId)->getFormatName()) {
+                    setting.outputFormat = formatId;
+                    break;
+                }
+            }
+            CHECK(!setting.outputFormat.isEmpty(), nullptr)
             setting.mapq = getValue<int>(MAPQ_ID);
             setting.acceptFilter = getHexValueByFilterString(getValue<QString>(ACCEPT_FLAG_ID), getFilterCodes());
             setting.skipFilter = getHexValueByFilterString(getValue<QString>(FLAG_ID), getFilterCodes());
