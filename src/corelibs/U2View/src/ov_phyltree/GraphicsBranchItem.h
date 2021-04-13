@@ -98,7 +98,9 @@ public:
 
     void updateSettings(const OptionsMap &settings);
     void updateChildSettings(const OptionsMap &settings);
+    /** Replace current font with given */
     void updateTextFont(const QFont &font);
+    /** Replace current color with given */
     void updateTextColor(const QColor &color);
 
     const OptionsMap &getSettings() const;

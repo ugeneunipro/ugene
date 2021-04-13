@@ -172,6 +172,34 @@ void TreeOptionsWidget::sl_onOptionChanged(TreeViewOption option, const QVariant
     isUpdating = false;
 }
 
+void TreeOptionsWidget::sl_selectionChanged() {
+    disconnect(labelsColorButton, SIGNAL(clicked()), nullptr, nullptr);
+    disconnect(boldAttrButton, SIGNAL(clicked(bool)), nullptr, nullptr);
+    disconnect(italicAttrButton, SIGNAL(clicked(bool)), nullptr, nullptr);
+    disconnect(underlineAttrButton, SIGNAL(clicked(bool)), nullptr, nullptr);
+    disconnect(fontSizeSpinBox, SIGNAL(valueChanged(int)), nullptr, nullptr);
+    disconnect(fontComboBox, SIGNAL(currentFontChanged(const QFont &)), nullptr, nullptr);
+
+    QFont font;
+    QColor color;
+    treeViewer->getSelectedBranchSettings(color, font);
+    if (!(font == QFont() && color == QColor())) {
+        fontComboBox->setCurrentFont(font);
+        fontSizeSpinBox->setValue(font.pointSize());
+        boldAttrButton->setChecked(font.bold());
+        italicAttrButton->setChecked(font.italic());
+        underlineAttrButton->setChecked(font.underline());
+        updateButtonColor(labelsColorButton, color);
+    }
+
+    connect(labelsColorButton, SIGNAL(clicked()), SLOT(sl_labelsColorButton()));
+    connect(boldAttrButton, SIGNAL(clicked(bool)), SLOT(sl_fontChanged()));
+    connect(italicAttrButton, SIGNAL(clicked(bool)), SLOT(sl_fontChanged()));
+    connect(underlineAttrButton, SIGNAL(clicked(bool)), SLOT(sl_fontChanged()));
+    connect(fontSizeSpinBox, SIGNAL(valueChanged(int)), SLOT(sl_fontChanged()));
+    connect(fontComboBox, SIGNAL(currentFontChanged(const QFont &)), SLOT(sl_fontChanged()));
+}
+
 void TreeOptionsWidget::initializeOptionsMap() {
     //Scalebar settings widgets
     optionsMap[scaleSpinBox->objectName()] = SCALEBAR_RANGE;
@@ -228,6 +256,8 @@ void TreeOptionsWidget::connectSlots() {
 
     connect(branchesColorButton, SIGNAL(clicked()), SLOT(sl_branchesColorButton()));
     connect(lineWeightSpinBox, SIGNAL(valueChanged(int)), SLOT(sl_valueChanged()));
+
+    connect(treeViewer->scene(), SIGNAL(selectionChanged()), SLOT(sl_selectionChanged()));
 }
 
 void TreeOptionsWidget::sl_valueChanged() {

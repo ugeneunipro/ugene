@@ -261,6 +261,11 @@ public:
     void onPhyTreeChanged();
 
     bool isOnlyLeafSelected() const;
+    /* 
+     * Set font and color with corresponding values for root branch, or left them default
+     * in case of null distanceText 
+     */
+    void getSelectedBranchSettings(QColor &color, QFont &font) const;
 
 protected:
     virtual void wheelEvent(QWheelEvent *e);

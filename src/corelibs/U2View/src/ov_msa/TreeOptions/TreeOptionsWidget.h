@@ -67,6 +67,8 @@ private slots:
     void sl_valueChanged();
 
     void sl_onOptionChanged(TreeViewOption option, const QVariant &value);
+    /* Slot for handling scene selection changes */
+    void sl_selectionChanged();
 
 private:
     void initializeOptionsMap();

@@ -652,8 +652,29 @@ void TreeViewerUI::updateSettings() {
         scene()->update();
     }
 }
+void TreeViewerUI::getSelectedBranchSettings(QColor &color, QFont &font) const {
+    QList<QGraphicsItem *> selectedItems = scene()->selectedItems();
+    if (selectedItems.isEmpty()) {
+        return;
+    }
+    int maxLength = 0;
+    GraphicsBranchItem *rootItem = nullptr;
+    for (QGraphicsItem *graphItem : qAsConst(selectedItems)) {
+        GraphicsBranchItem *branchItem = dynamic_cast<GraphicsBranchItem *>(graphItem);
+        if (branchItem->getBranchLength() >= maxLength) {
+            maxLength = branchItem->getBranchLength();
+            rootItem = branchItem;
+        }
+    }
+    CHECK(rootItem != nullptr, )
+    if (rootItem->getDistanceText() != nullptr) {
+        font = rootItem->getDistanceText()->font();
+        color = rootItem->getDistanceText()->brush().color();
+    }
+}
+
 void TreeViewerUI::updateTextSettings(TreeViewOption option) {
-    QList<QGraphicsItem *> updatingItems = scene()->selectedItems();
+    QList<QGraphicsItem *> updatingItems = scene()->selectedItems().isEmpty() ? scene()->items() : scene()->selectedItems();
     for (QGraphicsItem *graphItem : qAsConst(updatingItems)) {
         GraphicsBranchItem *branchItem = dynamic_cast<GraphicsBranchItem *>(graphItem);
         if (branchItem != NULL) {
@@ -680,8 +701,6 @@ void TreeViewerUI::updateTextSettings(TreeViewOption option) {
                 if (branchItem->getCorrespondingItem()) {
                     branchItem->getCorrespondingItem()->updateTextFont(curFont);
                 }
-            } else {
-                return;
             }
         }
         GraphicsButtonItem *buttonItem = dynamic_cast<GraphicsButtonItem *>(graphItem);
