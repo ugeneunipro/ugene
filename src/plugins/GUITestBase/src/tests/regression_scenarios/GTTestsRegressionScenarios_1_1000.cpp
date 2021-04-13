@@ -2414,6 +2414,7 @@ GUI_TEST_CLASS_DEFINITION(test_0871) {
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTFileDialog::openFile(os, sandBoxDir, "/test_0871");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
