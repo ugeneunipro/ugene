@@ -241,7 +241,8 @@ Task *FilterBamWorker::tick() {
             setting.inputUrl = url;
             setting.inputFormat = detectedFormat;
             QString outputFormatName = getValue<QString>(OUT_FORMAT_ID);
-            for (const QString &formatId : AppContext::getDocumentFormatRegistry()->getRegisteredFormats()) {
+            const QStringList formatIdsList = AppContext::getDocumentFormatRegistry()->getRegisteredFormats();
+            for (const QString &formatId : qAsConst(formatIdsList)) {
                 const QString formatName = AppContext::getDocumentFormatRegistry()->getFormatById(formatId)->getFormatName();
                 if (outputFormatName == formatName) {
                     setting.outputFormat = formatId;
