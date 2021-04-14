@@ -660,7 +660,8 @@ void TreeViewerUI::getSelectedBranchSettings(QColor &color, QFont &font) const {
     int maxLength = 0;
     GraphicsBranchItem *rootItem = nullptr;
     for (QGraphicsItem *graphItem : qAsConst(selectedItems)) {
-        GraphicsBranchItem *branchItem = dynamic_cast<GraphicsBranchItem *>(graphItem);
+        auto *branchItem = dynamic_cast<GraphicsBranchItem *>(graphItem);
+        CHECK(branchItem != nullptr, )
         if (branchItem->getBranchLength() >= maxLength) {
             maxLength = branchItem->getBranchLength();
             rootItem = branchItem;
@@ -682,10 +683,9 @@ void TreeViewerUI::updateTextSettings(TreeViewOption option) {
                 QColor curColor = qvariant_cast<QColor>(getOptionValue(LABEL_COLOR));
                 if (updatingItems.isEmpty()) {
                     updatingItems = items();
-
                     QList<QGraphicsItem *> legendChildItems = legend->childItems();
                     if (!legendChildItems.isEmpty()) {
-                        QGraphicsSimpleTextItem *legendText = dynamic_cast<QGraphicsSimpleTextItem *>(legendChildItems.first());
+                        auto *legendText = dynamic_cast<QGraphicsSimpleTextItem *>(legendChildItems.first());
                         if (legendText) {
                             legendText->setBrush(curColor);
                         }

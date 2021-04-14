@@ -173,10 +173,6 @@ void TreeOptionsWidget::sl_onOptionChanged(TreeViewOption option, const QVariant
 }
 
 void TreeOptionsWidget::sl_selectionChanged() {
-    disconnect(labelsColorButton, SIGNAL(clicked()), nullptr, nullptr);
-    disconnect(boldAttrButton, SIGNAL(clicked(bool)), nullptr, nullptr);
-    disconnect(italicAttrButton, SIGNAL(clicked(bool)), nullptr, nullptr);
-    disconnect(underlineAttrButton, SIGNAL(clicked(bool)), nullptr, nullptr);
     disconnect(fontSizeSpinBox, SIGNAL(valueChanged(int)), nullptr, nullptr);
     disconnect(fontComboBox, SIGNAL(currentFontChanged(const QFont &)), nullptr, nullptr);
 
@@ -191,11 +187,6 @@ void TreeOptionsWidget::sl_selectionChanged() {
         underlineAttrButton->setChecked(font.underline());
         updateButtonColor(labelsColorButton, color);
     }
-
-    connect(labelsColorButton, SIGNAL(clicked()), SLOT(sl_labelsColorButton()));
-    connect(boldAttrButton, SIGNAL(clicked(bool)), SLOT(sl_fontChanged()));
-    connect(italicAttrButton, SIGNAL(clicked(bool)), SLOT(sl_fontChanged()));
-    connect(underlineAttrButton, SIGNAL(clicked(bool)), SLOT(sl_fontChanged()));
     connect(fontSizeSpinBox, SIGNAL(valueChanged(int)), SLOT(sl_fontChanged()));
     connect(fontComboBox, SIGNAL(currentFontChanged(const QFont &)), SLOT(sl_fontChanged()));
 }
