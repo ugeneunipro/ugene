@@ -414,7 +414,7 @@ QWidget *ComboBoxWithChecksDelegate::createEditor(QWidget *parent,
                                                   const QModelIndex & /* index */) const {
     ComboBoxWithChecksWidget *editor = new ComboBoxWithChecksWidget(items, parent);
     connect(editor, SIGNAL(valueChanged(const QString &)), this, SIGNAL(si_valueChanged(const QString &)));
-    connect(editor, SIGNAL(si_update(QWidget *)), this, SIGNAL(commitData(QWidget *)));
+    connect(editor, SIGNAL(si_valueChanged(const QVariant &)), SLOT(sl_commit()));
     return editor;
 }
 
@@ -439,6 +439,12 @@ QVariant ComboBoxWithChecksDelegate::getDisplayValue(const QVariant &val) const 
     QString display = val.toString();
     emit si_valueChanged(display);
     return QVariant(display);
+}
+
+void ComboBoxWithChecksDelegate::sl_commit() {
+    if (auto editor = static_cast<ComboBoxWithChecksWidget *>(sender())) {
+        emit commitData(editor);
+    }
 }
 
 /********************************

@@ -456,9 +456,8 @@ void ComboBoxWithChecksWidget::sl_itemChanged(QStandardItem *item) {
         bool newCheckState = standardItem->checkState() == Qt::Checked;
         if (items.value(key).toBool() != newCheckState) {
             items[key] = newCheckState;
-            emit si_update(this);
+            sl_valueChanged(0);
         }
-        sl_valueChanged(0);
     }
 
     comboBox->setItemText(0, value().toString());

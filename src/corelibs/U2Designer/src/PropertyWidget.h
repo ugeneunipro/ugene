@@ -237,7 +237,6 @@ public:
 
 signals:
     void valueChanged(const QString &value);
-    void si_update(QWidget *);    // Needed in order to commit data to the model on every click.
 
 protected:
     QComboBox *comboBox;
