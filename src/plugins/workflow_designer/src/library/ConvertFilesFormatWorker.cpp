@@ -100,10 +100,11 @@ QVariantMap getFormatsMap(MapType mapType) {
             continue;
         }
         if (format->checkFlags(DocumentFormatFlag_SupportWriting) || (BOOLEANS == mapType)) {
+            const QString formatName = format->getFormatName();
             if (BOOLEANS == mapType) {
-                result[AppContext::getDocumentFormatRegistry()->getFormatById(fid)->getFormatName()] = false;
+                result[formatName] = false;
             } else {
-                result[AppContext::getDocumentFormatRegistry()->getFormatById(fid)->getFormatName()] = fid;
+                result[formatName] = fid;
             }
         }
     }
@@ -189,7 +190,8 @@ void ConvertFilesFormatWorker::init() {
     targetFormat = getValue<QString>(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
     QStringList excludedFormatNames = getValue<QString>(EXCLUDED_FORMATS_ID).split(",", QString::SkipEmptyParts);
     for (const QString &formatId : AppContext::getDocumentFormatRegistry()->getRegisteredFormats()) {
-        if (excludedFormatNames.contains(AppContext::getDocumentFormatRegistry()->getFormatById(formatId)->getFormatName())) {
+        const QString formatName = AppContext::getDocumentFormatRegistry()->getFormatById(formatId)->getFormatName();
+        if (excludedFormatNames.contains(formatName)) {
             excludedFormats.append(formatId);
         }
     }
