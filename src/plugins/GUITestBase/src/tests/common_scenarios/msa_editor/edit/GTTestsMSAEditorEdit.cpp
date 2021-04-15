@@ -543,11 +543,9 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     //2. Select region 4..11 from Zychia_baranovi sequence. Press "Delete" button.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 8), QPoint(10, 8));
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(200);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 8), QPoint(11, 8));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     QString clipboardText = GTClipboard::text(os);
     GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR(clipboardText == "TTAA--------", "\nExpected: TTAA--------\nFound:\n" + clipboardText);
