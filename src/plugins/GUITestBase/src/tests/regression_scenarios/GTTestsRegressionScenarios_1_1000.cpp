@@ -2408,14 +2408,13 @@ GUI_TEST_CLASS_DEFINITION(test_0871) {
 
     WorkflowProcessItem *amino = GTUtilsWorkflowDesigner::addElement(os, "Amino Acid Translation", true);
     WorkflowProcessItem *write = GTUtilsWorkflowDesigner::addElement(os, "Write Sequence");
-    GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir(sandBoxDir).absolutePath() + "/test_0871", GTUtilsWorkflowDesigner::textValue);
+    GTUtilsWorkflowDesigner::setParameter(os, "Output file", QDir(sandBoxDir).absolutePath() + "/test_0871.fa", GTUtilsWorkflowDesigner::textValue);
     GTUtilsWorkflowDesigner::connect(os, read, amino);
     GTUtilsWorkflowDesigner::connect(os, amino, write);
-    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTUtilsWorkflowDesigner::runWorkflow(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTFileDialog::openFile(os, sandBoxDir, "/test_0871");
-    GTGlobals::sleep();
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
+    GTUtilsDashboard::clickOutputFile(os, "test_0871.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::rename(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134) Amino translation 0 direct", "0");
     GTUtilsProjectTreeView::rename(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134) Amino translation 1 direct", "1");
