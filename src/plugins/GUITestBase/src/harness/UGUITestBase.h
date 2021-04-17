@@ -37,7 +37,7 @@
 
 namespace U2 {
 
-class U2TEST_EXPORT UGUITestBase {
+class UGUITestBase {
     UGUITestBase();
 public:
     /** Type of the test: some test types has special handling in runtime. */
