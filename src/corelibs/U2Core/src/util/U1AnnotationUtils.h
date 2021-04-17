@@ -124,9 +124,6 @@ public:
     static QString buildLocationString(const U2LocationData &location);
     static QString buildLocationString(const QVector<U2Region> &regions);
 
-    /** Returns location string for the annotation in Genbank format. */
-    static QString buildLocationString(const Annotation *annotation);
-
     static QString lowerCaseAnnotationName;
     static QString upperCaseAnnotationName;
 };

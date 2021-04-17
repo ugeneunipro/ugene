@@ -113,20 +113,16 @@ public:
         return r.startPos != startPos || r.length != length;
     }
 
-    /**
-     * Compares regions by start position or by the end position if the start positions are equal.
-     * Returns true if this region start/end position is strictly lower than the start/end  position of the 'other' region.
-     */
-    bool operator<(const U2Region &other) const {
-        return startPos == other.startPos ? endPos() < other.endPos() : startPos < other.startPos;
+    /** Compares 2 regions by start position.
+    Returns true if this region starts strictly earlier than the specified one. */
+    bool operator<(const U2Region &r) const {
+        return startPos < r.startPos;
     }
 
-    /**
-     * Compares regions by start position or by the end position if the start positions are equal.
-     * Returns true if this region start/end position is strictly higher than the start/end  position of the 'other' region.
-     */
-    bool operator>(const U2Region &other) const {
-        return startPos == other.startPos ? endPos() > other.endPos() : startPos > other.startPos;
+    /** Compares 2 regions by start position.
+    Returns true if this region starts strictly later than the specified one. */
+    bool operator>(const U2Region &r) const {
+        return startPos > r.startPos;
     }
 
     /**
