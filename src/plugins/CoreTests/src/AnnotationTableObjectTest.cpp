@@ -586,6 +586,16 @@ void GTest_CheckAnnotationsLocationsInTwoObjects::init(XMLTestFormat *tf, const 
     }
 }
 
+/**
+ * Returns location string for the annotation with all location regions sorted.
+ * Such sorting is not correct in general (regions order matters) but this way our tests are written today.
+ */
+static QString buildSortedLocationString(const Annotation *annotation) {
+    U2Location location = annotation->getLocation();
+    std::sort(location->regions.begin(), location->regions.end());
+    return U1AnnotationUtils::buildLocationString(*location);
+}
+
 Task::ReportResult GTest_CheckAnnotationsLocationsInTwoObjects::report() {
     Document *doc = getContext<Document>(this, docContextName);
     if (doc == NULL) {
@@ -632,12 +642,12 @@ Task::ReportResult GTest_CheckAnnotationsLocationsInTwoObjects::report() {
             QStringList locationStringList2;
             for (auto annotation : qAsConst(annList1)) {
                 if (annotation->getType() != U2FeatureTypes::Comment) {
-                    locationStringList1 << U1AnnotationUtils::buildLocationString(annotation);
+                    locationStringList1 << buildSortedLocationString(annotation);
                 }
             }
             for (auto annotation : qAsConst(annList2)) {
                 if (annotation->getType() != U2FeatureTypes::Comment) {
-                    locationStringList2 << U1AnnotationUtils::buildLocationString(annotation);
+                    locationStringList2 << buildSortedLocationString(annotation);
                 }
             }
             CHECK_EXT(locationStringList1.size() == locationStringList2.size(),
