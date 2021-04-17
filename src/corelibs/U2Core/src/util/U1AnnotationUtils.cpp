@@ -489,6 +489,10 @@ QString U1AnnotationUtils::buildLocationString(const SharedAnnotationData &d) {
     return buildLocationString(*d->location);
 }
 
+QString U1AnnotationUtils::buildLocationString(const Annotation *annotation) {
+    return buildLocationString(*annotation->getLocation());
+}
+
 QString U1AnnotationUtils::buildLocationString(const QVector<U2Region> &regions) {
     QString locationStr;
     for (int i = 0, n = regions.size(); i < n; ++i) {

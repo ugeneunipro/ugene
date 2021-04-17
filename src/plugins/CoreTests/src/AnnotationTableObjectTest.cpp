@@ -632,12 +632,12 @@ Task::ReportResult GTest_CheckAnnotationsLocationsInTwoObjects::report() {
             QStringList locationStringList2;
             for (auto annotation : qAsConst(annList1)) {
                 if (annotation->getType() != U2FeatureTypes::Comment) {
-                    locationStringList1.append(U1AnnotationUtils::buildLocationString(*annotation->getLocation()));
+                    locationStringList1 << U1AnnotationUtils::buildLocationString(annotation);
                 }
             }
             for (auto annotation : qAsConst(annList2)) {
                 if (annotation->getType() != U2FeatureTypes::Comment) {
-                    locationStringList2.append(U1AnnotationUtils::buildLocationString(*annotation->getLocation()));
+                    locationStringList2 << U1AnnotationUtils::buildLocationString(annotation);
                 }
             }
             CHECK_EXT(locationStringList1.size() == locationStringList2.size(),
