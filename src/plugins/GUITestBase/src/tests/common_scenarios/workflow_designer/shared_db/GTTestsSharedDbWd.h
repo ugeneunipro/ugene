@@ -22,7 +22,7 @@
 #ifndef _GTTESTS_SHARED_DB_WD_H_
 #define _GTTESTS_SHARED_DB_WD_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 

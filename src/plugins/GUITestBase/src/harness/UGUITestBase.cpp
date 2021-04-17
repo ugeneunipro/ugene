@@ -25,11 +25,12 @@
 
 namespace U2 {
 
-UGUITestBase::~UGUITestBase() {
-    qDeleteAll(tests);
-    qDeleteAll(preAdditional);
-    qDeleteAll(postAdditionalActions);
-    qDeleteAll(postAdditionalChecks);
+UGUITestBase::UGUITestBase() {
+}
+
+UGUITestBase *UGUITestBase::getInstance() {
+    static UGUITestBase *instance = new UGUITestBase();
+    return instance;
 }
 
 bool UGUITestBase::registerTest(GUITest *test, TestType testType) {

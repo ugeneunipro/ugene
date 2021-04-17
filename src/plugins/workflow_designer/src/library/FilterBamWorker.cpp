@@ -244,6 +244,7 @@ Task *FilterBamWorker::tick() {
             const QStringList formatIdsList = AppContext::getDocumentFormatRegistry()->getRegisteredFormats();
             for (const QString &formatId : qAsConst(formatIdsList)) {
                 const QString formatName = AppContext::getDocumentFormatRegistry()->getFormatById(formatId)->getFormatName();
+                //if (outputFormatName.compare(formatName, Qt::CaseInsensitive) == 0) {
                 if (outputFormatName == formatName) {
                     setting.outputFormat = formatId;
                     break;

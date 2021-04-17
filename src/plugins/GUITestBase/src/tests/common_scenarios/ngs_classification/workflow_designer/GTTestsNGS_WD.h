@@ -22,7 +22,7 @@
 #ifndef GT_TESTS_NGS_WD
 #define GT_TESTS_NGS_WD
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 

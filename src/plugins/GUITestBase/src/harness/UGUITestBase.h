@@ -31,13 +31,14 @@
 
 #include <U2Gui/MainWindow.h>
 
-#include <U2Test/UGUITest.h>
+#include <harness/UGUITest.h>
 
 #include <U2View/ADVSingleSequenceWidget.h>
 
 namespace U2 {
 
 class U2TEST_EXPORT UGUITestBase {
+    UGUITestBase();
 public:
     /** Type of the test: some test types has special handling in runtime. */
     enum TestType {
@@ -53,8 +54,6 @@ public:
         /** A post-action. Runs after the Normal & PostCheck tests. Used to perform additional cleanup with no checks. */
         PostAdditionalActions
     } type;
-
-    virtual ~UGUITestBase();
 
     /**
      * Registers test in the test base. Returns true if the test was successfully registered
@@ -76,6 +75,9 @@ public:
      * Example: "Nightly,-Ignored" will return all tests that have "Nightly" label but have no "Ignored" label.
      */
     QList<GUITest *> getTests(TestType testType = Normal, const QStringList &labelList = QStringList()) const;
+
+    /** Returns UGUITestBase instance. There is only 1 instance of the database per application. */
+    static UGUITestBase* getInstance();
 
 private:
     /** Normal tests. */

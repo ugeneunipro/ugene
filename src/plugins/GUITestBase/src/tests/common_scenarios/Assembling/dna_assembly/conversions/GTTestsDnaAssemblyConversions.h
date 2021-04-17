@@ -24,7 +24,7 @@
 
 #include <U2Core/global.h>
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 namespace GUITest_dna_assembly_conversions {

@@ -7,8 +7,6 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 find_package(Qt5 REQUIRED Core Gui Widgets Xml Network Script Svg LinguistTools)
 
-add_definitions(-DHI_EXCLUDED)
-
 include_directories(src)
 include_directories(../include)
 include_directories(../corelibs/U2Private/src)
@@ -26,5 +24,5 @@ add_executable(ugeneui ${HDRS} ${SRCS} ${QM_FILES} ${RCC_SRCS})
 target_link_libraries(ugeneui
         Qt5::Core Qt5::Gui Qt5::Widgets Qt5::Xml Qt5::Network Qt5::Script
         ugenedb breakpad samtools
-        U2Core U2Algorithm U2Formats U2Lang U2Gui U2Designer U2View U2Test QSpec)
+        U2Core U2Algorithm U2Formats U2Lang U2Gui U2Designer U2View U2Test)
 

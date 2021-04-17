@@ -23,7 +23,7 @@ k
 #ifndef GTTESTS_WORKFLOW_NAME_FILTER_H_
 #define GTTESTS_WORKFLOW_NAME_FILTER_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 

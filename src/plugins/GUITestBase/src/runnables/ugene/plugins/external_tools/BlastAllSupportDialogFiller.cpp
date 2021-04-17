@@ -26,7 +26,7 @@
 #include <QApplication>
 #include <QComboBox>
 
-#include <U2Test/UGUITest.h>
+#include <harness/UGUITestBase.h>
 
 #include "BlastAllSupportDialogFiller.h"
 #include "GTUtilsTaskTreeView.h"

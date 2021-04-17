@@ -38,7 +38,7 @@
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
 
-#include "U2Test/UGUITest.h"
+#include <harness/UGUITest.h>
 
 #include "utils/GTUtilsDialog.h"
 #include "GTUtilsWorkflowDesigner.h"

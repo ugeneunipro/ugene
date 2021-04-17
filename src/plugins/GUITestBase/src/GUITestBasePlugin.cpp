@@ -26,8 +26,9 @@
 
 #include <U2Gui/ToolsMenu.h>
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
+#include "harness/GUITestService.h"
 #include "tests/PosteriorActions.h"
 #include "tests/PosteriorChecks.h"
 #include "tests/PreliminaryActions.h"
@@ -174,16 +175,16 @@ static int minutes(int minutes) {
 #define REGISTER_TEST_ONLY_MAC(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, MacOS}))
 
 extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    if (AppContext::getMainWindow()) {
-        GUITestBasePlugin *plug = new GUITestBasePlugin();
-        return plug;
+    CHECK(AppContext::getMainWindow() != nullptr, nullptr);
+    if (GUITestService::isGuiTestServiceNeeded()) {
+        new GUITestService();
     }
-    return NULL;
+    return new GUITestBasePlugin();
 }
 
 GUITestBasePlugin::GUITestBasePlugin()
     : Plugin(tr("GUITestBase"), tr("GUI Test Base")) {
-    UGUITestBase *guiTestBase = AppContext::getGUITestBase();
+    UGUITestBase *guiTestBase = UGUITestBase::getInstance();
 
     registerTests(guiTestBase);
     registerAdditionalActions(guiTestBase);
@@ -198,7 +199,7 @@ GUITestBasePlugin::GUITestBasePlugin()
 
 void GUITestBasePlugin::sl_showWindow() {
     if (view == NULL) {
-        view = new GUITestRunner(AppContext::getGUITestBase());
+        view = new GUITestRunner(UGUITestBase::getInstance());
         view->show();
     } else {
         view->raise();

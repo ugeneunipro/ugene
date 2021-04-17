@@ -23,7 +23,7 @@ k
 #ifndef _GTTESTS_WORKFLOW_SCRIPTING_H_
 #define _GTTESTS_WORKFLOW_SCRIPTING_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 namespace GUITest_common_scenarios_workflow_scripting {

@@ -22,7 +22,7 @@
 #ifndef _U2_PRELIMINARY_ACTIONS_H_
 #define _U2_PRELIMINARY_ACTIONS_H_
 
-#include <U2Test/UGUITest.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 namespace GUITest_preliminary_actions {

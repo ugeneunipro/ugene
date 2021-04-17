@@ -23,7 +23,7 @@ k
 #ifndef GTTESTS_TRIMMOMATIC_ELEMENT_H_
 #define GTTESTS_TRIMMOMATIC_ELEMENT_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 

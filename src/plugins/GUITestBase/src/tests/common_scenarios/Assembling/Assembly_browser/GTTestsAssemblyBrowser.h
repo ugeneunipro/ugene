@@ -23,7 +23,7 @@ k
 #ifndef U2_GUITEST_ASSEMBLY_BROWSER_H_
 #define U2_GUITEST_ASSEMBLY_BROWSER_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 
