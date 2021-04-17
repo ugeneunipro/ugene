@@ -21,7 +21,6 @@
 
 #include "FilterBamWorker.h"
 
-#include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentImport.h>
 #include <U2Core/DocumentModel.h>
@@ -182,8 +181,8 @@ void FilterBamWorkerFactory::init() {
         delegates[CUSTOM_DIR_ID] = new URLDelegate("", "", false, true);
 
         QVariantMap formatMap;
-        formatMap[AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::BAM)->getFormatName()] = BaseDocumentFormats::BAM;
-        formatMap[AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::SAM)->getFormatName()] = BaseDocumentFormats::SAM;
+        formatMap[BaseDocumentFormats::BAM] = BaseDocumentFormats::BAM;
+        formatMap[BaseDocumentFormats::SAM] = BaseDocumentFormats::SAM;
         delegates[OUT_FORMAT_ID] = new ComboBoxDelegate(formatMap);
         QVariantMap lenMap;
         lenMap["minimum"] = QVariant(0);
@@ -240,16 +239,7 @@ Task *FilterBamWorker::tick() {
             setting.outName = getTargetName(url, outputDir);
             setting.inputUrl = url;
             setting.inputFormat = detectedFormat;
-            QString outputFormatName = getValue<QString>(OUT_FORMAT_ID);
-            const QStringList formatIdsList = AppContext::getDocumentFormatRegistry()->getRegisteredFormats();
-            for (const QString &formatId : qAsConst(formatIdsList)) {
-                const QString formatName = AppContext::getDocumentFormatRegistry()->getFormatById(formatId)->getFormatName();
-                if (outputFormatName == formatName) {
-                    setting.outputFormat = formatId;
-                    break;
-                }
-            }
-            CHECK(!setting.outputFormat.isEmpty(), nullptr)
+            setting.outputFormat = getValue<QString>(OUT_FORMAT_ID);
             setting.mapq = getValue<int>(MAPQ_ID);
             setting.acceptFilter = getHexValueByFilterString(getValue<QString>(ACCEPT_FLAG_ID), getFilterCodes());
             setting.skipFilter = getHexValueByFilterString(getValue<QString>(FLAG_ID), getFilterCodes());

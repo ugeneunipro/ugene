@@ -115,8 +115,7 @@ void ConvertSnpeffVariationsToAnnotationsFactory::init() {
 
         QVariantMap map;
         foreach (const DocumentFormatId &formatId, supportedFormats) {
-            const QString formatName = AppContext::getDocumentFormatRegistry()->getFormatById(formatId)->getFormatName();
-            map[formatName] = formatId;
+            map[formatId] = formatId;
         }
         delegates[BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()] = new ComboBoxDelegate(map);
     }
