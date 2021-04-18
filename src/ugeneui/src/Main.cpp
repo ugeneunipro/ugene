@@ -511,56 +511,51 @@ int main(int argc, char **argv) {
     // The file specified by user has the highest priority in the translations lookup order.
     QStringList envList = QProcess::systemEnvironment();
     QString envTranslationFile = findKey(envList, "UGENE_TRANSLATION_FILE");
-    if (!envTranslationFile.isEmpty()) {
-        trOK = translator.load(envTranslationFile);
-        settings->setValue("UGENE_CURR_TRANSL",
-                           QFileInfo(envTranslationFile).fileName().right(2));
-    }
-
-    if (!trOK) {
-        // set translations
-        QString transFile[] = {
+    if (envTranslationFile.isEmpty() || !translator.load(envTranslationFile)) {
+        if (!envTranslationFile.isEmpty()) {
+            failedToLoadTranslatorFiles << envTranslationFile;
+        }
+        QStringList translationFileList = {
+            "transl_" + findKey(envList, "UGENE_TRANSLATION"),
             userAppSettings->getTranslationFile(),
-            "transl_en",
-            "transl_ru"
-        };
-        for (int i = transFile[0].isEmpty() ? 1 : 0; i < 3; ++i) {
-            if (!translator.load(transFile[i], AppContext::getWorkingDirectoryPath())) {
-                fprintf(stderr, "Translation not found: %s\n", transFile[i].toLatin1().constData());
-            } else {
-                settings->setValue("UGENE_CURR_TRANSL", transFile[i].right(2));
-                trOK = true;
+            "transl_" + QLocale::system().name().left(2).toLower()};
+        // Keep only valid entries.
+        translationFileList.removeAll("");
+        translationFileList.removeAll("transl_");
+        translationFileList.removeDuplicates();
+        // Use the first translation from the list that works.
+        for (const QString &translationFile : qAsConst(translationFileList)) {
+            if (translationFile == "transl_en" || translator.load(translationFile, AppContext::getWorkingDirectoryPath())) {
                 break;
             }
-        }
-#ifdef Q_OS_MAC
-        if (!trOK) {
-            CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
-            CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
-                                                          kCFURLPOSIXPathStyle);
-            const char *bundlePath = CFStringGetCStringPtr(macPath,
-                                                           CFStringGetSystemEncoding());
-            QString translationFileDir = QString(bundlePath) + "/Contents/Resources";
-            QString transl = "transl_en";
-            if (!envTranslation.isEmpty()) {
-                transl = QString("transl_") + envTranslation;
-            }
-            if (translator.load(transl, translationFileDir)) {
-                trOK = true;
-                settings->setValue("UGENE_CURR_TRANSL", transl.right(2));
-            }
-            CFRelease(appUrlRef);
-            CFRelease(macPath);
-        }
-#endif
-        if (!trOK) {
-            fprintf(stderr, "No translations found, exiting\n");
-            return 1;
+            failedToLoadTranslatorFiles << translationFile;
         }
     }
     if (!translator.isEmpty()) {
         QCoreApplication::installTranslator(&translator);
         GObjectTypes::initTypeTranslations();
+#ifdef Q_OS_MAC
+    } else {
+        CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
+        CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
+                                                      kCFURLPOSIXPathStyle);
+        const char *bundlePath = CFStringGetCStringPtr(macPath,
+                                                       CFStringGetSystemEncoding());
+        QString translationFileDir = QString(bundlePath) + "/Contents/Resources";
+        QString transl = "transl_en";
+        if (!envTranslation.isEmpty()) {
+            transl = QString("transl_") + envTranslation;
+        }
+        if (translator.load(transl, translationFileDir)) {
+            settings->setValue("UGENE_CURR_TRANSL", transl.right(2));
+        }
+        CFRelease(appUrlRef);
+        CFRelease(macPath);
+        if (!translator.isEmpty()) {
+            QCoreApplication::installTranslator(&translator);
+            GObjectTypes::initTypeTranslations();
+        }
+#endif
     }
     GObjectTypes::initTypeIcons();
 
