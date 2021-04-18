@@ -542,6 +542,7 @@ int main(int argc, char **argv) {
         const char *bundlePath = CFStringGetCStringPtr(macPath,
                                                        CFStringGetSystemEncoding());
         QString translationFileDir = QString(bundlePath) + "/Contents/Resources";
+        QString envTranslation = findKey(envList, "UGENE_TRANSLATION");
         QString transl = "transl_en";
         if (!envTranslation.isEmpty()) {
             transl = QString("transl_") + envTranslation;
