@@ -67,8 +67,11 @@ linux-g++ {
     # that have no older counterparts. To address 'new API' problem we should either use a post-build 'glibc'
     # version check for all binaries we build or/and run our pre-release tests on the old Ubuntu 16.04 host with
     # the binary we want to release.
-    QMAKE_CFLAGS += -include $$ROOT_SRC_DIR/include/3rdparty/force_link_glibc_2.17.h
-    QMAKE_CXXFLAGS += -include $$ROOT_SRC_DIR/include/3rdparty/force_link_glibc_2.17.h
+    UGENE_BUILD_FOR_OLD_GLIBC = $$(UGENE_BUILD_FOR_OLD_GLIBC)
+    equals(UGENE_BUILD_FOR_OLD_GLIBC, 1) {
+        QMAKE_CFLAGS += -include $$ROOT_SRC_DIR/include/3rdparty/glibc/force_link_glibc_2.17.h
+        QMAKE_CXXFLAGS += -include $$ROOT_SRC_DIR/include/3rdparty/glibc/force_link_glibc_2.17.h
+    }
 
     # Enable all warnings. Every new version of GCC will provide new reasonable defaults.
     # See https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
