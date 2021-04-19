@@ -44,6 +44,72 @@
 
 /* TRANSLATOR U2::ASNFormat */
 
+// `comment` is string like
+// "Some title Mol_id: 1; Molecule: Molecule name; Chain: A, C; Some_specification: Specification value; Mol_id: 2; Molecule: Molecule name; Chain: B, D; Some_specification: Specification value"
+// Returns list of
+// "Mol_id: 1; Molecule: Molecule name; Chain: A, C; Some_specification: Specification value"
+// "Mol_id: 2; Molecule: Molecule name; Chain: B, D; Some_specification: Specification value"
+static QStringList parseMolecules(const QString &comment) {
+    QStringList ans;
+
+    const int molIdInd = comment.indexOf("Mol_id", Qt::CaseInsensitive);
+    if (molIdInd < 0) {
+        return ans;
+    }
+    const QString molInfos = comment.mid(molIdInd);    // No title at the beginning
+
+    int start = 0;
+    int end = molInfos.indexOf("Mol_id", start + 1, Qt::CaseInsensitive);
+    while (start > -1) {
+        QString str = molInfos.mid(start, end).trimmed();
+        if (str.endsWith(';')) {
+            str.remove(str.length() - 1, 1);
+        }
+        ans << str;
+        start = end;
+        end = molInfos.indexOf("Mol_id", start + 1, Qt::CaseInsensitive);
+    }
+    return ans;
+}
+
+// mol is string like
+// "Mol_id: 1; Chain: A, C; Some_specification: Specification value"
+// Returns {'A', 'C'}
+static QList<char> parseChains(const QString &mol) {
+    QList<char> ans;
+
+    int start = mol.indexOf("Chain:", Qt::CaseInsensitive);
+    if (start < 0) {
+        return ans;
+    }
+    start += 6;    // "Chain:" length
+    const int end = mol.indexOf(';', start);
+    const QString chains = mol.mid(start, end > start ? end - start : -1);
+    for (QString &str : chains.split(',', QString::SkipEmptyParts)) {
+        str = str.trimmed();
+        if (str.length() == 1) {
+            ans << str.at(0).toLatin1();
+        }
+    }
+    return ans;
+}
+
+// mol is string like
+// "Mol_id: 1; Molecule: Molecule name; Some_specification: Specification value"
+// Returns "Molecule name"
+static QString parseMolName(const QString &mol) {
+    QString ans;
+
+    int start = mol.indexOf("Molecule:", Qt::CaseInsensitive);
+    if (start < 0) {
+        return ans;
+    }
+    start += 9;    // Length of "Molecule:"
+    const int end = mol.indexOf(';', start);
+    ans = mol.mid(start, end > start ? end - start : -1).trimmed();
+    return ans;
+}
+
 namespace U2 {
 
 ASNFormat::ASNFormat(QObject *p)
@@ -405,6 +471,8 @@ void ASNFormat::BioStructLoader::loadBioStructGraph(AsnNode *graphNode, BioStruc
             ...
     */
 
+    QMap<char, QString> names = loadMoleculeNames(graphNode->findChildByName("descr"));
+
     AsnNode *moleculesNode = graphNode->findChildByName("molecule-graphs");
 
     foreach (AsnNode *molNode, moleculesNode->children) {
@@ -413,9 +481,18 @@ void ASNFormat::BioStructLoader::loadBioStructGraph(AsnNode *graphNode, BioStruc
         int molId = molNode->getChildById(0)->value.toInt(&ok);
         SAFE_POINT(ok, "Invalid type conversion", );
         // Load molecule data
-        QByteArray molTypeName = molNode->findChildByName("descr")->findChildByName("molecule-type")->value;
+        AsnNode *const descrNode = molNode->findChildByName("descr");
+        QByteArray molTypeName = descrNode->findChildByName("molecule-type")->value;
+        QByteArray molChainId = descrNode->findChildByName("name")->value;
         if (molTypeName == "protein" || molTypeName == "dna" || molTypeName == "rna") {
             MoleculeData *mol = new MoleculeData();
+            if (molChainId.length() == 1) {
+                mol->chainId = molChainId[0];
+                if (names.contains(mol->chainId)) {
+                    mol->name = names[mol->chainId];
+                }
+            }
+
             loadMoleculeFromNode(molNode, mol);
             struc.moleculeMap.insert(molId, SharedMolecule(mol));
         }
@@ -546,6 +623,30 @@ void ASNFormat::BioStructLoader::loadIntraResidueBonds(BioStruct3D &struc) {
             }
         }
     }
+}
+
+QMap<char, QString> ASNFormat::BioStructLoader::loadMoleculeNames(AsnNode *biostructGraphDescr) {
+    QMap<char, QString> ans;
+    if (biostructGraphDescr == nullptr) {
+        return ans;
+    }
+
+    if (AsnNode *const comment = biostructGraphDescr->findChildByName("pdb-comment")) {
+        QStringList molecules = parseMolecules(comment->value);
+
+        for (const QString &mol : qAsConst(molecules)) {
+            QString name = parseMolName(mol);
+            if (name.isEmpty()) {
+                continue;
+            }
+
+            QList<char> chains = parseChains(mol);
+            for (char chain : qAsConst(chains)) {
+                ans.insert(chain, name);
+            }
+        }
+    }
+    return ans;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////

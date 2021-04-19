@@ -185,6 +185,9 @@ private:
         void loadIntraResidueBonds(BioStruct3D &struc);
         const StdResidue loadResidueFromNode(AsnNode *resNode, ResidueData *residue);
 
+        // chain_id -> molecule name
+        QMap<char, QString> loadMoleculeNames(AsnNode *biostructGraphDescr);
+
     private:
         const StdResidueDictionary *standardDictionary;
         QScopedPointer<StdResidueDictionary> localDictionary;
