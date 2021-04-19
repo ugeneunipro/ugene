@@ -38,7 +38,6 @@
 namespace U2 {
 
 class UGUITestBase {
-    UGUITestBase();
 public:
     /** Type of the test: some test types has special handling in runtime. */
     enum TestType {

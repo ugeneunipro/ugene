@@ -25,9 +25,6 @@
 
 namespace U2 {
 
-UGUITestBase::UGUITestBase() {
-}
-
 UGUITestBase *UGUITestBase::getInstance() {
     static UGUITestBase *instance = new UGUITestBase();
     return instance;
