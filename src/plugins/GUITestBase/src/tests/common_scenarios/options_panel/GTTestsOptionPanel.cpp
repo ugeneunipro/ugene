@@ -46,15 +46,9 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
-#include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
-#include "runnables/ugene/corelibs/U2Gui/CreateAnnotationWidgetFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/EditAnnotationDialogFiller.h"
-#include "runnables/ugene/corelibs/U2Gui/EditGroupAnnotationsDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 #include "system/GTClipboard.h"
-#include "utils/GTKeyboardUtils.h"
-#include "utils/GTUtilsApp.h"
 
 namespace U2 {
 
@@ -62,7 +56,7 @@ namespace GUITest_common_scenarios_options_panel {
 using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
-    //    Options panel. Information tab. Character occurence
+    //    Options panel. Information tab. Character occurrence
     //    1. Open file (samples/FASTA/human_T1.fa)
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -89,7 +83,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0001_1) {
-    //    Options panel. Information tab. Character occurence
+    //    Options panel. Information tab. Character occurrence
     //    1. Open file (_common_data/scenarios/_regression/1093/refrence.fa)
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/1093/", "refrence.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -264,11 +258,11 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
                            "29.7%  ");
     CHECK_SET_ERR(clipboardText.contains(text), "\nExpected:\n" + text + "\nFound: " + clipboardText);
 
-    //3. Use context menu to select and copy information from "Character Occurence". Paste copied information into test editor
-    //Expected state: copied and pasted iformation are identical
+    //3. Use context menu to select and copy information from "Character Occurrence". Paste copied information into test editor
+    //Expected state: copied and pasted information are identical
 }
 GUI_TEST_CLASS_DEFINITION(test_0005) {
-    //    Options panel. Copyng
+    //    Options panel. Copying
     //    1. Open file (_common_data\fasta\multy_fa.fa). Open fiel in separate sequences mode.
     GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/fasta/multy_fa.fa");
 
@@ -321,7 +315,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
 GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     // DEFFERS: OTHER SOURSE FILE, OTHER SUBSEQUENCE
-    // PROJECT IS CLOSED MANUALY TO CACHE MESSAGEBOX
+    // PROJECT IS CLOSED MANUALLY TO CACHE MESSAGEBOX
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -769,6 +763,30 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     QWidget *openCvWidget2 = GTWidget::findWidget(os, "openCvWidget", parent);
     CHECK_SET_ERR(openCvWidget2 != NULL, "No hint widget");
     CHECK_SET_ERR(openCvWidget2->isHidden(), "Hint label and OpenCV button should be hidden");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0021) {
+    //Check Options panel -> Information tab -> Codons.
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    // Activate Information tab on Options panel at the right edge of UGENE window. Expand Dinucleotides
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
+
+    QWidget *codonsPanel = GTWidget::findWidget(os, "options_panel_codons_widget");
+    GTWidget::click(os, codonsPanel);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QLabel *codonsLabel = GTWidget::findWidgetByType<QLabel *>(os, codonsPanel, "Failed to find label inside codons panel");
+    CHECK_SET_ERR(codonsLabel->text().contains("<td><b>L:&nbsp;&nbsp;</b></td><td>44 225 &nbsp;&nbsp;</td>"),
+                  "Codons state does not contain expected entry (L:44225)");
+
+    GTUtilsSequenceView::selectSequenceRegion(os, 19, 21);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    CHECK_SET_ERR(codonsLabel->text().contains("<td><b>L:&nbsp;&nbsp;</b></td><td>1 &nbsp;&nbsp;</td>"),
+                  "Codons state does not contain expected entry (L:1)");
+    CHECK_SET_ERR(codonsLabel->text().contains("<td><b>Q:&nbsp;&nbsp;</b></td><td>1 &nbsp;&nbsp;</td>"),
+                  "Codons state does not contain expected entry (Q:1)");
 }
 
 }    // namespace GUITest_common_scenarios_options_panel

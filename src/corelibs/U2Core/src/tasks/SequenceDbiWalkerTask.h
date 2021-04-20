@@ -83,57 +83,33 @@ private:
 class U2CORE_EXPORT SequenceDbiWalkerSubtask : public Task {
     Q_OBJECT
 public:
-    SequenceDbiWalkerSubtask(SequenceDbiWalkerTask *t, const U2Region &globalReg, bool lo, bool ro, const U2EntityRef &seqRef, int localLen, bool doCompl, bool doAmino);
+    SequenceDbiWalkerSubtask(SequenceDbiWalkerTask *_t, const U2Region &glob, bool lo, bool ro, const U2EntityRef &seqRef, bool _doCompl, bool _doAmino);
 
-    void run();
+    void run() override;
 
-    const char *getRegionSequence();
+    /** Returns region sequence with all transformation applied. Computes the region sequence during the first call. */
+    const QByteArray &getRegionSequence();
 
-    int getRegionSequenceLen();
-
-    bool isDNAComplemented() const {
-        return doCompl;
-    }
-
-    bool isAminoTranslated() const {
-        return doAmino;
-    }
-
-    U2Region getGlobalRegion() const {
-        return globalRegion;
-    }
-
-    const SequenceDbiWalkerConfig &getGlobalConfig() const {
-        return t->getConfig();
-    }
-
-    bool intersectsWithOverlaps(const U2Region &globalReg) const;
-    bool hasLeftOverlap() const {
-        return leftOverlap;
-    }
-    bool hasRightOverlap() const {
-        return rightOverlap;
-    }
+    /** Returns global coordinates of the sequence region processed by this sub-task. */
+    const U2Region &getGlobalRegion() const;
 
 private:
-    bool needLocalRegionProcessing() const {
-        return (doAmino || doCompl) && processedSeqImage.isEmpty();
-    }
-    void prepareLocalRegion();
+    /** Prepares region sequence data if needed. */
+    void prepareRegionSequence();
 
     SequenceDbiWalkerTask *t;
     U2Region globalRegion;
     U2EntityRef seqRef;
-    const char *localSeq;
-    const char *originalLocalSeq;
-    int localLen;
-    int originalLocalLen;
     bool doCompl;
     bool doAmino;
     bool leftOverlap;
     bool rightOverlap;
 
-    QByteArray processedSeqImage;
+    /** Result region sequence with all needed transformations applied. */
+    QByteArray regionSequence;
+
+    /** Used for lazy initialization of the local sequence. */
+    bool isRegionSequencePrepared = false;
 };
 
 }    // namespace U2
