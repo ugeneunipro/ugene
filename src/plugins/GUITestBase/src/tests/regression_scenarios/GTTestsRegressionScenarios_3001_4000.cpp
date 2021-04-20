@@ -4626,7 +4626,7 @@ GUI_TEST_CLASS_DEFINITION(test_3731) {
     GTFileDialog::openFile(os, dataDir + "samples/MMDB", "1CRN.prt");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QPoint itemCenter = GTUtilsAnnotationsTreeView::getItemCenter(os, "1CRN chain 1 annotation [1CRN.prt]");
+    QPoint itemCenter = GTUtilsAnnotationsTreeView::getItemCenter(os, "1CRN chain A annotation [1CRN.prt]");
     itemCenter.setX(itemCenter.x() + 10);
     GTMouseDriver::moveTo(itemCenter);
     GTMouseDriver::click();
