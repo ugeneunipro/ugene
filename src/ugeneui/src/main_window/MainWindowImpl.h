@@ -35,8 +35,10 @@ class QToolBar;
 
 #if defined(Q_OS_DARWIN) && !defined(_DEBUG)
 #    define _INSTALL_TO_PATH_ACTION
+// TODO: Temporary disable menu item which creates link to app on desktop
+//       Need to fix for Catalina/Big Sur
+#    undef _INSTALL_TO_PATH_ACTION
 #endif
-#undef _INSTALL_TO_PATH_ACTION
 
 namespace U2 {
 
