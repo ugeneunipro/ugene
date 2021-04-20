@@ -85,19 +85,32 @@ bool GenbankPlainTextFormat::isStreamingSupport() {
 }
 
 bool GenbankPlainTextFormat::readIdLine(ParserState *st) {
-    if (!st->hasKey("LOCUS")) {
+    if (!st->hasKey(DNAInfo::LOCUS.toLocal8Bit())) {
         QByteArray rawData(st->buff);
-        int locusStartPos = rawData.indexOf("\nLOCUS");
-        if (-1 == locusStartPos) {
-            st->si.setError(tr("LOCUS is not the first line"));
-            return false;
-        } else {
+        int locusStartPos = rawData.indexOf(QString("\n%1").arg(DNAInfo::LOCUS));
+        if (locusStartPos != -1) { //We are here if the "GenBank" file has some pre-description (see UGENE-4463)
             while (locusStartPos >= st->len) {
                 st->readNextLine();
                 rawData = QByteArray(st->buff);
-                locusStartPos = rawData.indexOf("\nLOCUS");
+                locusStartPos = rawData.indexOf(QString("\n%1").arg(DNAInfo::LOCUS));
             }
             st->buff = st->buff + locusStartPos;
+        } else {
+            //The GenBank file should have the indent (st->valOffset) before the real data
+            //Possibly, this GenBank file doesn't have the strong indent (UGENE-7092)
+            rawData = QByteArray(st->buff, st->len);
+            int locusStartPos = rawData.indexOf(DNAInfo::LOCUS.toLocal8Bit());
+            CHECK_EXT(locusStartPos != -1, st->si.setError(tr("LOCUS is not the first line")), false);
+
+            rawData = rawData.right(rawData.size() - DNAInfo::LOCUS.size());
+            int locusAndNameGapSize = 0;
+            while (rawData.front() == ' ') {
+                rawData = rawData.right(rawData.size() - 1);
+                locusAndNameGapSize++;
+            }
+            int indentBeforeName = locusStartPos + DNAInfo::LOCUS.size() + locusAndNameGapSize;
+            int shiftToLeft = st->valOffset - indentBeforeName;
+            st->buff -= shiftToLeft;
         }
     }
 

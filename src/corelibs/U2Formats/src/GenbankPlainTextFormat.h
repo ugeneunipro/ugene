@@ -66,7 +66,7 @@ protected:
     QString getFeatureTypeString(U2FeatureType featureType, bool isAmino) const;
     bool breakQualifierOnSpaceOnly(const QString &qualifierName) const;
 
-    static const int VAL_OFF = 12;
+    static constexpr int VAL_OFF = 12;
 
     static const QMap<U2FeatureType, GBFeatureKey> additionalFeatureTypes;    // some feature types might be converted to the GBFeatureKey
     static QMap<U2FeatureType, GBFeatureKey> initAdditionalFeatureTypes();
