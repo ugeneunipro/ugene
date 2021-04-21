@@ -88,6 +88,7 @@
 //U2Private
 #include <AppContextImpl.h>
 #include <AppSettingsImpl.h>
+#include <BundleInfoMac.h>
 #include <ConsoleLogDriver.h>
 #include <CredentialsAskerCli.h>
 #include <DocumentFormatRegistryImpl.h>
@@ -270,7 +271,11 @@ int main(int argc, char **argv) {
     QStringList translationFileList = {
         "transl_" + cmdLineRegistry->getParameterValue(CMDLineCoreOptions::TRANSLATION),
         userAppSettings->getTranslationFile(),
-        "transl_" + QLocale::system().name().left(2).toLower()};
+        "transl_" + QLocale::system().name().left(2).toLower()
+#ifdef Q_OS_MAC
+        , BundleInfoMac::getExtraTranslationSearchPath(cmdLineRegistry)
+#endif
+    };
     // Keep only valid entries.
     translationFileList.removeAll("");
     translationFileList.removeAll("transl_");
@@ -283,26 +288,6 @@ int main(int argc, char **argv) {
         }
         failedToLoadTranslatorFiles << translationFile;
     }
-#ifdef Q_OS_MAC
-    if (!trOK) {
-        CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
-        CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
-                                                      kCFURLPOSIXPathStyle);
-        const char *bundlePath = CFStringGetCStringPtr(macPath,
-                                                       CFStringGetSystemEncoding());
-        QString translationFileDir = QString(bundlePath) + "/Contents/Resources";
-        QString transl = "transl_en";
-        QString cmdlineTransl = cmdLineRegistry->getParameterValue(CMDLineCoreOptions::TRANSLATION);
-        if (!cmdlineTransl.isEmpty()) {
-            transl = QString("transl_") + cmdlineTransl;
-        }
-        if (translator.load(transl, translationFileDir)) {
-            trOK = true;
-        }
-        CFRelease(appUrlRef);
-        CFRelease(macPath);
-    }
-#endif
     if (!trOK) {
         fprintf(stderr, "No translations found, exiting\n");
         return 1;
