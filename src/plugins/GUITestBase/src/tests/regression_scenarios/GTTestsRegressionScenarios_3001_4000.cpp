@@ -1847,7 +1847,7 @@ GUI_TEST_CLASS_DEFINITION(test_3283) {
     GTFileDialog::openFile(os, dataDir + "samples/MMDB", "1CRN.prt");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Click to any annotation on the panoramic view.
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CRN chain 1 annotation"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CRN chain A annotation"));
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "sec_struct  (0, 5)");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
