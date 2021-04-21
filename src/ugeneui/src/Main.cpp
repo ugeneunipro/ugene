@@ -134,6 +134,7 @@
 #include <U2View/MSAHighlightingTabFactory.h>
 #include <U2View/MaExportConsensusTabFactory.h>
 #include <U2View/McaGeneralTabFactory.h>
+#include <U2View/McaReadsTabFactory.h>
 #include <U2View/PairAlignFactory.h>
 #include <U2View/RefSeqCommonWidget.h>
 #include <U2View/SeqStatisticsWidgetFactory.h>
@@ -335,6 +336,7 @@ static void initOptionsPanels() {
     //MCA groups
     opWidgetFactoryRegistry->registerFactory(new McaGeneralTabFactory());
     opWidgetFactoryRegistry->registerFactory(new McaExportConsensusTabFactory());
+    opWidgetFactoryRegistry->registerFactory(new McaReadsTabFactory());
 }
 
 static void initProjectFilterTaskRegistry() {

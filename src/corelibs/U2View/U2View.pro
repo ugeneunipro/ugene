@@ -107,6 +107,9 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/highlighting/MsaHighlightingSavableTab.h \
            src/ov_msa/highlighting/MsaSchemeComboBoxController.h \
            src/ov_msa/highlighting/MsaSchemesMenuBuilder.h \
+           src/ov_msa/mca_reads/McaAlternativeMutationsWidget.h \
+           src/ov_msa/mca_reads/McaReadsTabFactory.h \
+           src/ov_msa/mca_reads/McaReadsTabSettings.h \
            src/ov_msa/overview/MaEditorOverviewArea.h \
            src/ov_msa/overview/MaGraphCalculationTask.h \
            src/ov_msa/overview/MaGraphOverview.h \
@@ -257,6 +260,7 @@ FORMS += src/LicenseDialog.ui \
          src/ov_msa/general/GeneralTabOptionsPanelWidget.ui \
          src/ov_msa/general/MaConsensusModeWidget.ui \
          src/ov_msa/general/McaGeneralTabOptionsPanelWidget.ui \
+         src/ov_msa/mca_reads/McaAlternativeMutationsWidget.ui \
          src/ov_msa/pairwise_alignment/PairwiseAlignmentOptionsPanelWidget.ui \
          src/ov_msa/phy_tree_options/TreeOptionsWidget.ui \
          src/ov_msa/statistics/MSADistancesColumnSettingsWidget.ui \
@@ -383,6 +387,8 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/highlighting/MSAHighlightingTabFactory.cpp \
            src/ov_msa/highlighting/MsaHighlightingSavableTab.cpp \
            src/ov_msa/highlighting/MsaSchemesMenuBuilder.cpp \
+           src/ov_msa/mca_reads/McaAlternativeMutationsWidget.cpp \
+           src/ov_msa/mca_reads/McaReadsTabFactory.cpp \
            src/ov_msa/overview/MaEditorOverviewArea.cpp \
            src/ov_msa/overview/MaGraphCalculationTask.cpp \
            src/ov_msa/overview/MaGraphOverview.cpp \

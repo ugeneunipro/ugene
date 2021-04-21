@@ -22,7 +22,7 @@
 #ifndef _U2_MCA_DBI_UTILS_H_
 #define _U2_MCA_DBI_UTILS_H_
 
-#include <globals/global.h>
+#include <U2Core/global.h>
 
 namespace U2 {
 
@@ -43,6 +43,11 @@ public:
     static void removeCharacters(const U2EntityRef &mcaRef, const QList<qint64> &rowIds, qint64 pos, qint64 count, U2OpStatus &os);
 
     static void replaceCharacterInRow(const U2EntityRef &mcaRef, qint64 rowId, qint64 pos, char newChar, U2OpStatus &os);
+    /*
+     * Replaces the set of characters.
+     * It's better then use @replaceCharacterInRow several times, because this function opens database just one time.
+     */
+    static void replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 rowId, QMap<qint64, char> newCharList, U2OpStatus& os);
     static void removeRegion(const U2EntityRef &entityRef, const qint64 rowId, qint64 pos, qint64 count, U2OpStatus &os);
 };
 

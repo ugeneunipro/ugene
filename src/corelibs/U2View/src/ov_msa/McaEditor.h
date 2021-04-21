@@ -51,6 +51,10 @@ public:
     McaEditor(const QString &viewName,
               MultipleChromatogramAlignmentObject *obj);
 
+    ~McaEditor() {
+        emit si_isAbout2BeDestroyed();
+    }
+
     QString getSettingsRoot() const override {
         return MCAE_SETTINGS_ROOT;
     }
@@ -75,6 +79,10 @@ public:
     QAction *getGotoSelectedReadAction() const {
         return gotoSelectedReadAction;
     }
+
+signals:
+    /* Emit this signal to notify that McaEditor is about to be destroyed. */
+    void si_isAbout2BeDestroyed();
 
 protected slots:
     void sl_onContextMenuRequested(const QPoint &pos) override;

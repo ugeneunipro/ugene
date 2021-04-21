@@ -22,6 +22,7 @@
 #ifndef _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_OBJECT_H_
 #define _U2_MULTIPLE_CHROMATOGRAM_ALIGNMENT_OBJECT_H_
 
+#include <U2View/McaReadsTabSettings.h>
 #include <U2Core/GObject.h>
 #include <U2Core/MultipleAlignmentObject.h>
 #include <U2Core/MultipleChromatogramAlignment.h>
@@ -70,9 +71,20 @@ public:
     void deleteColumnsWithGaps(U2OpStatus &os);
 
     void trimRow(const int rowIndex, int currentPos, U2OpStatus &os, TrimEdge edge);
+
+    /**
+      * Updates the corresponding alternative mutations.
+      * Shows the second strongest character, if it's peak height persantage is more then @settings.threshold.
+      */
+    void updateAlternativeMutations(const McaReadsTabSettings& settings, U2OpStatus& os);
+
     void saveState();
     void releaseState();
     int getReferenceLengthWithGaps() const;
+
+private slots:
+    /* Has to be called before MaEditor is destroyed to remove the all update mutations by @updateAlternativeMutations. */
+    void sl_viewIsAbout2BeDestroyed();
 
 private:
     void loadAlignment(U2OpStatus &os);

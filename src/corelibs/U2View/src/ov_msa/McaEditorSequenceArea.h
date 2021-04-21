@@ -26,6 +26,7 @@
 
 #include "McaEditor.h"
 #include "view_rendering/MaEditorSequenceArea.h"
+#include "mca_reads/McaReadsTabSettings.h"
 
 namespace U2 {
 
@@ -69,6 +70,9 @@ public:
     virtual void adjustReferenceLength(U2OpStatus &os);
 
     MaAmbiguousCharactersController *getAmbiguousCharactersController() const;
+
+    const McaReadsTabSettings& getMcaReadsTabSettings() const;
+    void setMcaReadsTabSettings(const McaReadsTabSettings& newSettings);
 
     QMenu *getTraceActionsMenu() const;
     QAction *getIncreasePeaksHeightAction() const;
@@ -122,6 +126,7 @@ private:
     void updateTrimActions(bool isEnabled);
 
     ChromatogramViewSettings settings;
+    McaReadsTabSettings mcaReadsTabSettings;
     MaAmbiguousCharactersController *ambiguousCharactersController;
 
     QAction *showQVAction;

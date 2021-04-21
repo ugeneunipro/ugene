@@ -153,6 +153,14 @@ MaAmbiguousCharactersController *McaEditorSequenceArea::getAmbiguousCharactersCo
     return ambiguousCharactersController;
 }
 
+const McaReadsTabSettings& U2::McaEditorSequenceArea::getMcaReadsTabSettings() const {
+    return mcaReadsTabSettings;
+}
+
+void McaEditorSequenceArea::setMcaReadsTabSettings(const McaReadsTabSettings& newSettings) {
+    mcaReadsTabSettings = newSettings;
+}
+
 QMenu *McaEditorSequenceArea::getTraceActionsMenu() const {
     return traceActionsMenu;
 }
