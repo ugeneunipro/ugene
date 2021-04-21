@@ -19,9 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include "GTTestsWorkflowSamples.h"
-
 #include <QDir>
+
+#include "GTTestsWorkflowSamples.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsProjectTreeView.h"
@@ -32,6 +32,7 @@
 #include "primitives/GTMenu.h"
 #include "primitives/GTWidget.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
+#include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
 
@@ -74,9 +75,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os),
                   "Notifications in dashboard: " /*+ GTUtilsDashboard::getJoinedNotificationsString(os)*/);
 
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate));
     GTUtilsDashboard::clickOutputFile(os, "Dataset 1.fa");
     GTUtilsProjectTreeView::getItemCenter(os, "NC_004718");
     GTUtilsProjectTreeView::getItemCenter(os, "NC_014267");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 }    // namespace GUITest_common_scenarios_workflow_samples
