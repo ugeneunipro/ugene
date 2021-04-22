@@ -8143,7 +8143,7 @@ GUI_TEST_CLASS_DEFINITION(test_1834) {
 
     //4. Set the "Document format" parameter of the "File Format Conversion" element to "Mega".
     GTUtilsWorkflowDesigner::click(os, "File Format Conversion");
-    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "mega", GTUtilsWorkflowDesigner::comboValue, GTGlobals::UseMouse);
+    GTUtilsWorkflowDesigner::setParameter(os, "Document format", "Mega", GTUtilsWorkflowDesigner::comboValue, GTGlobals::UseMouse);
     GTUtilsWorkflowDesigner::setParameter(os, "Output folder", 0, GTUtilsWorkflowDesigner::comboValue, GTGlobals::UseMouse);
     GTUtilsWorkflowDesigner::setParameter(os, "Custom folder", QDir().absoluteFilePath(sandBoxDir + "regression_1834"), GTUtilsWorkflowDesigner::textValue);
 
