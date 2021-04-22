@@ -186,7 +186,7 @@ private:
         const StdResidue loadResidueFromNode(AsnNode *resNode, ResidueData *residue);
 
         // chain_id -> molecule name
-        QMap<char, QString> loadMoleculeNames(AsnNode *biostructGraphDescr);
+        static QMap<char, QString> loadMoleculeNames(AsnNode *biostructGraphDescr);
 
     private:
         const StdResidueDictionary *standardDictionary;

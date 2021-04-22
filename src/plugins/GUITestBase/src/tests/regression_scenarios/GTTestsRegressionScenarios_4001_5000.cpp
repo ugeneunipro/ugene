@@ -6033,12 +6033,9 @@ GUI_TEST_CLASS_DEFINITION(test_4975_1) {
     CHECK_SET_ERR(moleculeName == "Polymerase Acidic Protein", QString("Incorrect molecule name is detected for chain A: '%1'").arg(moleculeName));
 
     QTreeWidgetItem *annotationsChainB = GTUtilsAnnotationsTreeView::findItem(os, "2ZNL chain B annotation [2ZNL.prt]");
-    CHECK_SET_ERR(annotationsChainB != nullptr, QString("Can't find '2ZNL chain B annotation [2ZNL.prt]' annotations document"));
     QTreeWidgetItem *chainInfoGroup = GTUtilsAnnotationsTreeView::findItem(os, "chain_info  (0, 1)", annotationsChainB);
-    CHECK_SET_ERR(chainInfoGroup != nullptr, QString("Can't find 'chain_info' annotation group for chain B"));
     GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *> {chainInfoGroup});
     QTreeWidgetItem *chainInfo = GTUtilsAnnotationsTreeView::findItem(os, "chain_info", chainInfoGroup);
-    CHECK_SET_ERR(chainInfo != nullptr, QString("Can't find 'chain_info' annotation for chain B (1)"));
     GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *> {chainInfo});
     QString moleculeNameChainB = GTUtilsAnnotationsTreeView::getQualifierValue(os, "molecule_name", chainInfo);
 
