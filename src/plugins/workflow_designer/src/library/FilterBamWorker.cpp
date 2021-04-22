@@ -240,16 +240,7 @@ Task *FilterBamWorker::tick() {
             setting.outName = getTargetName(url, outputDir);
             setting.inputUrl = url;
             setting.inputFormat = detectedFormat;
-            QString outputFormatName = getValue<QString>(OUT_FORMAT_ID);
-            const QStringList formatIdsList = AppContext::getDocumentFormatRegistry()->getRegisteredFormats();
-            for (const QString &formatId : qAsConst(formatIdsList)) {
-                const QString formatName = AppContext::getDocumentFormatRegistry()->getFormatById(formatId)->getFormatName();
-                if (outputFormatName == formatName) {
-                    setting.outputFormat = formatId;
-                    break;
-                }
-            }
-            CHECK(!setting.outputFormat.isEmpty(), nullptr)
+            setting.outputFormat = getValue<QString>(OUT_FORMAT_ID);
             setting.mapq = getValue<int>(MAPQ_ID);
             setting.acceptFilter = getHexValueByFilterString(getValue<QString>(ACCEPT_FLAG_ID), getFilterCodes());
             setting.skipFilter = getHexValueByFilterString(getValue<QString>(FLAG_ID), getFilterCodes());
