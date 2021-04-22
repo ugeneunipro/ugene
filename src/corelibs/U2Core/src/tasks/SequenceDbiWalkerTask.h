@@ -35,6 +35,8 @@ class SequenceDbiWalkerSubtask;
 class U2CORE_EXPORT SequenceDbiWalkerConfig : public SequenceWalkerConfig {
 public:
     U2EntityRef seqRef;
+    /** If true, not 3 but only the first frame is translated. Same for complement & direct modes. */
+    bool translateOnlyFirstFrame = false;
 };
 
 class U2CORE_EXPORT SequenceDbiWalkerCallback {

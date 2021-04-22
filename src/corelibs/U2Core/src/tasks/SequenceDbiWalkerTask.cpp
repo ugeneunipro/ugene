@@ -73,9 +73,10 @@ QList<SequenceDbiWalkerSubtask *> SequenceDbiWalkerTask::prepareSubtasks() {
             res += complTasks;
         }
     } else {
-        // try walk 3 direct and 3 complement translations
+        // try walk up to 3 direct and 3 complement translation frames.
+        int nFrames = config.translateOnlyFirstFrame ? 1 : 3;
         if (config.strandToWalk == StrandOption_Both || config.strandToWalk == StrandOption_DirectOnly) {
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < nFrames; i++) {
                 U2Region strandRange(config.range.startPos + i, config.range.length - i);
                 QVector<U2Region> chunks = splitRange(strandRange, config.chunkSize, config.overlapSize, config.lastChunkExtraLen, false);
                 QList<SequenceDbiWalkerSubtask *> directTasks = createSubs(chunks, false, true);
@@ -84,7 +85,7 @@ QList<SequenceDbiWalkerSubtask *> SequenceDbiWalkerTask::prepareSubtasks() {
         }
         if (config.strandToWalk == StrandOption_Both || config.strandToWalk == StrandOption_ComplementOnly) {
             assert(config.complTrans != NULL);
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < nFrames; i++) {
                 U2Region strandRange(config.range.startPos, config.range.length - i);
                 QVector<U2Region> chunks = splitRange(strandRange, config.chunkSize, config.overlapSize, config.lastChunkExtraLen, true);
                 QList<SequenceDbiWalkerSubtask *> complTasks = createSubs(chunks, true, true);

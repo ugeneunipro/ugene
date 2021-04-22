@@ -21,15 +21,15 @@
 
 #include "CodonOccurTask.h"
 
+#include <U2Core/Annotation.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2Region.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/U2SequenceDbi.h>
 
 namespace U2 {
 
-CodonOccurTask::CodonOccurTask(DNATranslation *complementTranslation, DNATranslation *aminoTranslation, const U2EntityRef &seqRef, const QVector<U2Region> &regions)
+CodonOccurTask::CodonOccurTask(DNATranslation *complementTranslation, DNATranslation *aminoTranslation, const U2EntityRef &seqRef)
     : BackgroundTask<QList<CharOccurResult>>(tr("Count codons"), TaskFlag_NoRun) {
     SequenceDbiWalkerConfig config;
     config.seqRef = seqRef;
@@ -39,9 +39,43 @@ CodonOccurTask::CodonOccurTask(DNATranslation *complementTranslation, DNATransla
     config.chunkSize = 10 * 1000 * 1000;    // Use maximum 6*10mb RAM.
     // Run only 1 subtask at a time: the code in onRegion() is not thread-safe: updates global QHash state.
     config.nThreads = 1;
-    for (const U2Region region : regions) {
+    addSubTask(new SequenceDbiWalkerTask(config, this, tr("Count all codons in sequence")));
+}
+
+CodonOccurTask::CodonOccurTask(DNATranslation *complementTranslation, DNATranslation *aminoTranslation, const U2EntityRef &seqRef, const QVector<U2Region> &regions)
+    : BackgroundTask<QList<CharOccurResult>>(tr("Count codons"), TaskFlag_NoRun) {
+    SequenceDbiWalkerConfig config;
+    config.seqRef = seqRef;
+    config.complTrans = complementTranslation;
+    config.strandToWalk = StrandOption_Both;
+    config.aminoTrans = aminoTranslation;
+    config.chunkSize = 10 * 1000 * 1000;    // Use maximum 6*10mb RAM.
+    config.translateOnlyFirstFrame = true;
+    // Run only 1 subtask at a time: the code in onRegion() is not thread-safe: updates global QHash state.
+    config.nThreads = 1;
+    for (const U2Region &region : qAsConst(regions)) {
         config.range = region;
-        addSubTask(new SequenceDbiWalkerTask(config, this, tr("Count codons per region")));
+        addSubTask(new SequenceDbiWalkerTask(config, this, tr("Count codons in sequence region")));
+    }
+}
+
+CodonOccurTask::CodonOccurTask(DNATranslation *complementTranslation, DNATranslation *aminoTranslation, const U2EntityRef &seqRef, const QList<Annotation *> &annotations)
+    : BackgroundTask<QList<CharOccurResult>>(tr("Count codons"), TaskFlag_NoRun) {
+    SequenceDbiWalkerConfig config;
+    config.seqRef = seqRef;
+    config.complTrans = complementTranslation;
+    config.aminoTrans = aminoTranslation;
+    config.chunkSize = 10 * 1000 * 1000;    // Use maximum 6*10mb RAM.
+    config.translateOnlyFirstFrame = true;
+    // Run only 1 subtask at a time: the code in onRegion() is not thread-safe: updates global QHash state.
+    config.nThreads = 1;
+    for (const Annotation *annotation : qAsConst(annotations)) {
+        U2Location location = annotation->getLocation();
+        config.strandToWalk = location->strand.isDirect() ? StrandOption_DirectOnly : StrandOption_ComplementOnly;
+        for (const U2Region &region : qAsConst(location->regions)) {
+            config.range = region;
+            addSubTask(new SequenceDbiWalkerTask(config, this, tr("Count codons in annotated region")));
+        }
     }
 }
 
@@ -66,7 +100,12 @@ Task::ReportResult CodonOccurTask::report() {
         result << CharOccurResult(codon, count, percent);
     }
     std::sort(result.begin(), result.end(), [](const CharOccurResult &c1, CharOccurResult &c2) {
-        return c1.getNumberOfOccur() > c2.getNumberOfOccur();    // Reversed order: most frequent is first.
+        if (c1.getNumberOfOccur() != c2.getNumberOfOccur()) {
+            // Reversed order: most frequent is first.
+            return c1.getNumberOfOccur() > c2.getNumberOfOccur();
+        }
+        // If both counts are equal sort by character.
+        return c1.getChar() < c2.getChar();
     });
     return ReportResult_Finished;
 }

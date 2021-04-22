@@ -43,6 +43,8 @@ class ADVSequenceWidget;
 class AnnotatedDNAView;
 class LRegionsSelection;
 class ShowHideSubgroupWidget;
+class AnnotationSelection;
+class Annotation;
 
 class U2VIEW_EXPORT SequenceInfo : public QWidget {
     Q_OBJECT
@@ -51,6 +53,8 @@ public:
 
 private slots:
     void sl_onSelectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &);
+    void sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &);
+    void sl_onAminoTranslationChanged();
 
     /** Updates sequence info to match active sequence. */
     void sl_onActiveSequenceChanged(ADVSequenceWidget *oldSequenceWidget, ADVSequenceWidget *newSequenceWidget);

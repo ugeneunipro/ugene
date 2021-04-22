@@ -24,6 +24,7 @@
 #include <QLabel>
 #include <QVBoxLayout>
 
+#include <U2Core/AnnotationSelection.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
@@ -339,12 +340,34 @@ void SequenceInfo::updateCodonsOccurrenceData() {
 
 void SequenceInfo::updateCodonsOccurrenceData(const QList<CharOccurResult> &codonStatList) {
     bool isFinal = codonTaskRunner.isIdle();
-    QString html = "<table cellspacing=5>";
-    for (const CharOccurResult &codon : qAsConst(codonStatList)) {
-        html += "<tr>";
-        html += QString("<td><b>") + codon.getChar() + QString(":&nbsp;&nbsp;</b></td>");
-        html += "<td>" + getValue(getFormattedLongNumber(codon.getNumberOfOccur()), isFinal) + "&nbsp;&nbsp;</td>";
-        html += "</tr>";
+    ADVSequenceObjectContext *activeContext = annotatedDnaView->getActiveSequenceContext();
+    SAFE_POINT(activeContext != nullptr, "A sequence context is NULL!", );
+
+    bool isAnnotationSelection = !activeContext->getAnnotationsSelection()->isEmpty();
+    bool isSequenceSelection = !isAnnotationSelection && !activeContext->getSequenceSelection()->isEmpty();
+    QString whereInfo = isAnnotationSelection ? tr("selected annotations")
+                                              : (isSequenceSelection ? tr("selected regions")
+                                                                     : tr("whole sequence"));
+    QString frameInfo = isAnnotationSelection ? tr("guided by annotation")
+                                              : (isSequenceSelection ? tr("1 direct and 1 complement")
+                                                                     : tr("3 direct and 3 complement"));
+
+    QString html;
+    html += "<table cellspacing=5>";
+    html += "<tr><td>" + tr("Report for:") + "</td><td><i>" + whereInfo + "</i></td></tr>";
+    html += "<tr><td>" + tr("Frames in report:") + "</td><td><i>" + frameInfo + "</i></td></tr>";
+    html += "</table>";
+
+    html += "<table cellspacing=5>";
+    if (codonStatList.isEmpty()) {
+        html += "<tr><td>" + tr("Selection is too small") + "</td></tr>";
+    } else {
+        for (const CharOccurResult &codon : qAsConst(codonStatList)) {
+            html += "<tr>";
+            html += QString("<td><b>") + codon.getChar() + QString(":&nbsp;&nbsp;</b></td>");
+            html += "<td>" + getValue(getFormattedLongNumber(codon.getNumberOfOccur()), isFinal) + "&nbsp;&nbsp;</td>";
+            html += "</tr>";
+        }
     }
     html += "</table>";
 
@@ -359,6 +382,11 @@ void SequenceInfo::connectSlotsForSeqContext(ADVSequenceObjectContext *seqContex
             SIGNAL(si_selectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &)),
             SLOT(sl_onSelectionChanged(LRegionsSelection *, const QVector<U2Region> &, const QVector<U2Region> &)));
 
+    connect(seqContext->getAnnotationsSelection(),
+            SIGNAL(si_selectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)),
+            SLOT(sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &)));
+
+    connect(seqContext, SIGNAL(si_aminoTranslationChanged()), SLOT(sl_onAminoTranslationChanged()));
     connect(seqContext->getSequenceObject(), SIGNAL(si_sequenceChanged()), SLOT(sl_onSequenceModified()));
 }
 
@@ -395,6 +423,18 @@ void SequenceInfo::connectSlots() {
 void SequenceInfo::sl_onSelectionChanged(LRegionsSelection *,
                                          const QVector<U2Region> & /*added*/,
                                          const QVector<U2Region> & /*removed*/) {
+    updateCurrentRegions();
+    updateData();
+}
+
+void SequenceInfo::sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &) {
+    getCodonsOccurrenceCache()->sl_invalidate();
+    updateCurrentRegions();
+    updateData();
+}
+
+void SequenceInfo::sl_onAminoTranslationChanged() {
+    getCodonsOccurrenceCache()->sl_invalidate();
     updateCurrentRegions();
     updateData();
 }
@@ -483,7 +523,14 @@ void SequenceInfo::launchCalculations(const QString &subgroupId) {
             codonWidget->showProgress();
             DNATranslation *complementTranslation = activeContext->getComplementTT();
             DNATranslation *aminoTranslation = activeContext->getAminoTT();
-            codonTaskRunner.run(new CodonOccurTask(complementTranslation, aminoTranslation, seqRef, currentRegions));
+            AnnotationSelection *annotationSelection = activeContext->getAnnotationsSelection();
+            DNASequenceSelection *sequenceSelection = activeContext->getSequenceSelection();
+            auto task = !annotationSelection->isEmpty()
+                            ? new CodonOccurTask(complementTranslation, aminoTranslation, seqRef, annotationSelection->getAnnotations())
+                            : (!sequenceSelection->isEmpty()
+                                   ? new CodonOccurTask(complementTranslation, aminoTranslation, seqRef, sequenceSelection->getSelectedRegions())
+                                   : new CodonOccurTask(complementTranslation, aminoTranslation, seqRef));
+            codonTaskRunner.run(task);
             getCodonsOccurrenceCache()->sl_invalidate();
             updateCodonsOccurrenceData(getCodonsOccurrenceCache()->getStatistics());
         }
