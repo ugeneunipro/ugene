@@ -162,6 +162,8 @@ static int minutes(int minutes) {
 
 /** Registers test on all platforms except Windows. */
 #define REGISTER_TEST_NOT_FOR_WINDOWS(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Linux, MacOS}))
+/** Registers test on all platforms except Linux. */
+#define REGISTER_TEST_NOT_FOR_LINUX(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Windows, MacOS}))
 /** Registers test on all platforms except MacOS. */
 #define REGISTER_TEST_NOT_FOR_MAC(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Linux, Windows}))
 
@@ -1709,6 +1711,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6954);
     REGISTER_TEST(GUITest_regression_scenarios::test_6959);
     REGISTER_TEST(GUITest_regression_scenarios::test_6960);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6963);
     REGISTER_TEST(GUITest_regression_scenarios::test_6966);
     REGISTER_TEST(GUITest_regression_scenarios::test_6968);
     REGISTER_TEST(GUITest_regression_scenarios::test_6971);

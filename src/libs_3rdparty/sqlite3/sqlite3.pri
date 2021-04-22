@@ -3,10 +3,15 @@ include( ../../ugene_globals.pri )
 TEMPLATE = lib
 CONFIG +=thread debug_and_release warn_off
 INCLUDEPATH += src
-DEFINES+=SQLITE_ENABLE_COLUMN_METADATA
+
+# RTree index is used by UGENE to optimize access to annotations & NGS reads.
+# See https://www.sqlite.org/rtree.html
 DEFINES+=SQLITE_ENABLE_RTREE
-unix:DEFINES+=SQLITE_OMIT_LOAD_EXTENSION
-DEFINES+=THREADSAFE
+
+# This option disables the entire extension loading mechanism from SQLite.
+# No sqlite extensions are used by UGENE today.
+DEFINES+=SQLITE_OMIT_LOAD_EXTENSION
+
 LIBS += -L../../$$out_dir()
 DESTDIR = ../../$$out_dir()
 TARGET = ugenedb$$D

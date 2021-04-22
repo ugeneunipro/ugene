@@ -27,7 +27,6 @@
 #include <U2Core/GObject.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/Log.h>
-#include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2FeatureType.h>
@@ -587,43 +586,15 @@ void GTest_CheckAnnotationsLocationsInTwoObjects::init(XMLTestFormat *tf, const 
     }
 }
 
-struct AnnotationsLess {
-    bool operator()(Annotation *a1, Annotation *a2) const {
-        if (a1->getStrand() != a2->getStrand()) {
-            return a1->getStrand().getDirectionValue() < a2->getStrand().getDirectionValue();
-        }
-
-        QVector<U2Region> a1Regions = a1->getLocation()->regions;
-        QVector<U2Region> a2Regions = a2->getLocation()->regions;
-        int a1Size = a1Regions.size();
-        int a2Size = a2Regions.size();
-        CHECK(a1Size != 0, true);
-        CHECK(a2Size != 0, false);
-
-        if (a1Size != a2Size) {
-            return a1Size < a2Size;
-        }
-
-        std::sort(a1Regions.begin(), a1Regions.end());
-        std::sort(a2Regions.begin(), a2Regions.end());
-
-        if (a1Regions.first().startPos != a2Regions.first().startPos) {
-            return a1Regions.first().startPos < a2Regions.first().startPos;
-        }
-        if (a1Regions.last().endPos() != a2Regions.last().endPos()) {
-            return a1Regions.last().endPos() < a2Regions.last().endPos();
-        }
-        for (int i = 0; i < a1Size - 1; i++) {
-            if (a1Regions[i].endPos() != a2Regions[i].endPos()) {
-                return a1Regions[i].endPos() < a2Regions[i].endPos();
-            }
-            if (a1Regions[i + 1].startPos != a2Regions[i + 1].endPos()) {
-                return a1Regions[i + 1].startPos < a2Regions[i + 1].endPos();
-            }
-        }
-        return true;
-    }
-};
+/**
+ * Returns location string for the annotation with all location regions sorted.
+ * Such sorting is not correct in general (regions order matters) but this way our tests are written today.
+ */
+static QString buildSortedLocationString(const Annotation *annotation) {
+    U2Location location = annotation->getLocation();
+    std::sort(location->regions.begin(), location->regions.end());
+    return U1AnnotationUtils::buildLocationString(*location);
+}
 
 Task::ReportResult GTest_CheckAnnotationsLocationsInTwoObjects::report() {
     Document *doc = getContext<Document>(this, docContextName);
@@ -639,6 +610,12 @@ Task::ReportResult GTest_CheckAnnotationsLocationsInTwoObjects::report() {
 
     const QList<GObject *> &objs = doc->getObjects();
     const QList<GObject *> &objs2 = doc2->getObjects();
+
+    CHECK_EXT(!compareNumObjects || objs.size() == objs2.size(),
+              stateInfo.setError(QString("Number of objects does not match: [%1=%2] vs [%3=%4]")
+                                     .arg(docContextName, QString::number(objs.size()), secondDocContextName, QString::number(objs2.size()))),
+              ReportResult_Finished);
+
     GObject *obj = NULL;
     AnnotationTableObject *myAnnotation = NULL;
     AnnotationTableObject *myAnnotation2 = NULL;
@@ -661,46 +638,35 @@ Task::ReportResult GTest_CheckAnnotationsLocationsInTwoObjects::report() {
             //////////////////////////////////////////////////////////
             QList<Annotation *> annList1 = myAnnotation->getAnnotations();
             QList<Annotation *> annList2 = myAnnotation2->getAnnotations();
-            std::sort(annList1.begin(), annList1.end(), AnnotationsLess());
-            std::sort(annList2.begin(), annList2.end(), AnnotationsLess());
-
-            for (int n = 0; (n != annList1.size()) && (n != annList2.size()); n++) {
-                if (annList1.at(n)->getType() == U2FeatureTypes::Comment) {
-                    annList1.removeAt(n);
-                }
-                if (annList2.at(n)->getType() == U2FeatureTypes::Comment) {
-                    annList2.removeAt(n);
-                }
-                U2Location l1 = annList1.at(n)->getLocation();
-                U2Location l2 = annList2.at(n)->getLocation();
-                std::sort(l1->regions.begin(), l1->regions.end());
-                std::sort(l2->regions.begin(), l2->regions.end());
-                if (l1 != l2) {
-                    const QString locationString1 = U1AnnotationUtils::buildLocationString(*l1);
-                    const QString locationString2 = U1AnnotationUtils::buildLocationString(*l2);
-                    stateInfo.setError(QString("annotations locations not matched. A1 location is '%1', A2 location is '%2'")
-                                           .arg(locationString1)
-                                           .arg(locationString2));
-                    return ReportResult_Finished;
+            QStringList locationStringList1;
+            QStringList locationStringList2;
+            for (auto annotation : qAsConst(annList1)) {
+                if (annotation->getType() != U2FeatureTypes::Comment) {
+                    locationStringList1 << buildSortedLocationString(annotation);
                 }
             }
-            //////////////////////////////////////////////////////////
+            for (auto annotation : qAsConst(annList2)) {
+                if (annotation->getType() != U2FeatureTypes::Comment) {
+                    locationStringList2 << buildSortedLocationString(annotation);
+                }
+            }
+            CHECK_EXT(locationStringList1.size() == locationStringList2.size(),
+                      stateInfo.setError(QString("Annotation list sizes do not match: %1 != %2").arg(locationStringList1.size()).arg(locationStringList2.size())),
+                      ReportResult_Finished);
+            locationStringList1.sort();
+            locationStringList2.sort();
+
+            // Check that 2 lists are equal. Report the first error if any.
+            for (int j = 0; j < locationStringList1.size(); j++) {
+                QString locationString1 = locationStringList1[j];
+                QString locationString2 = locationStringList2[j];
+                CHECK_EXT(locationString1 == locationString2,
+                          stateInfo.setError(QString("Annotations locations do not match. A1 location is '%1', A2 location is '%2'")
+                                                 .arg(locationString1, locationString2)),
+                          ReportResult_Finished);
+            }
         }
     }
-
-    if (!compareNumObjects) {
-        return ReportResult_Finished;
-    }
-
-    if (objs.size() != objs2.size()) {
-        QString error("Number of objects in doc1 mismatches: [%1=%2] vs [%3=%4]");
-        error = error.arg(docContextName).arg(objs.size()).arg(secondDocContextName).arg(objs2.size());
-        if (obj) {
-            error += QString("\nLast good object: %1").arg(obj->getGObjectName());
-        }
-        stateInfo.setError(error);
-    }
-
     return ReportResult_Finished;
 }
 

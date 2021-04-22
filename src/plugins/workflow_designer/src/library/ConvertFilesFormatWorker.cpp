@@ -100,11 +100,10 @@ QVariantMap getFormatsMap(MapType mapType) {
             continue;
         }
         if (format->checkFlags(DocumentFormatFlag_SupportWriting) || (BOOLEANS == mapType)) {
-            const QString formatName = format->getFormatName();
             if (BOOLEANS == mapType) {
-                result[formatName] = false;
+                result[fid] = false;
             } else {
-                result[formatName] = fid;
+                result[fid] = fid;
             }
         }
     }
@@ -188,14 +187,7 @@ void ConvertFilesFormatWorker::init() {
     inputUrlPort = ports.value(INPUT_PORT);
     outputUrlPort = ports.value(OUTPUT_PORT);
     targetFormat = getValue<QString>(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
-    QStringList excludedFormatNames = getValue<QString>(EXCLUDED_FORMATS_ID).split(",", QString::SkipEmptyParts);
-    const QStringList formatIdsList = AppContext::getDocumentFormatRegistry()->getRegisteredFormats();
-    for (const QString &formatId : qAsConst(formatIdsList)) {
-        const QString formatName = AppContext::getDocumentFormatRegistry()->getFormatById(formatId)->getFormatName();
-        if (excludedFormatNames.contains(formatName)) {
-            excludedFormats.append(formatId);
-        }
-    }
+    excludedFormats = getValue<QString>(EXCLUDED_FORMATS_ID).split(",", QString::SkipEmptyParts);
 }
 
 bool ConvertFilesFormatWorker::ensureFileExists(const QString &url) {
