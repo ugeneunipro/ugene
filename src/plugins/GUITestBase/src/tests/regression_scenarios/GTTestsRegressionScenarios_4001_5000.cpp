@@ -1832,6 +1832,66 @@ GUI_TEST_CLASS_DEFINITION(test_4170) {
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item1));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4177) {
+    class FontSettingsHelper {
+    public:
+        static void changeFontAndSize(HI::GUITestOpStatus &os,  const QString &fontFamilyStr, int fontSize) {
+            QComboBox *fontComboBox = GTWidget::findExactWidget<QComboBox *>(os, "fontComboBox");
+            GTComboBox::selectItemByText(os, fontComboBox, fontFamilyStr);
+            GTGlobals::sleep(500);
+            GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox"), fontSize, GTGlobals::UseMouse);
+        }
+
+        static void fontChecker(HI::GUITestOpStatus &os, const QString &expectedFamilyStr, int expectedSize) {
+            CHECK_SET_ERR(GTComboBox::getCurrentText(os, "fontComboBox") == expectedFamilyStr, "unexpected style: " + GTComboBox::getCurrentText(os, "fontComboBox"));
+            CHECK_SET_ERR(GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox")) == QString::number(expectedSize), 
+                QString("unexpected point size: %1").arg(GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox"))));
+        }        
+        
+        static void getFontSettings(HI::GUITestOpStatus &os, QString &familyStr, int &size) {
+            familyStr = GTComboBox::getCurrentText(os, "fontComboBox");
+            size = GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox"));
+        }
+    };
+
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
+    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QWidget *labelsColorButton = GTWidget::findWidget(os, "labelsColorButton");
+    CHECK_SET_ERR(labelsColorButton != NULL, "labelsColorButton not found");
+    if (!labelsColorButton->isVisible()) {
+        GTWidget::click(os, GTWidget::findWidget(os, "lblFontSettings"));
+    }
+    QString defaultFontFamily;
+    int defaultSize;
+
+    QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
+    QList<GraphicsButtonItem *>  nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
+    GTUtilsPhyTree::clickNode(os, nodes[0]);
+    GTUtilsPhyTree::clickNode(os, nodes[1]);    
+    FontSettingsHelper::getFontSettings(os, defaultFontFamily, defaultSize);
+    FontSettingsHelper::changeFontAndSize(os, defaultFontFamily, 16);
+
+    GTUtilsPhyTree::clickNode(os, nodes[2]);
+    FontSettingsHelper::changeFontAndSize(os, "MS Serif", 22);
+
+    GTUtilsPhyTree::clickNode(os, nodes[1]);
+    FontSettingsHelper::fontChecker(os, "MS Serif", 22);
+    FontSettingsHelper::changeFontAndSize(os, defaultFontFamily, 22);
+
+    GTUtilsPhyTree::clickNode(os, nodes[2]);
+    FontSettingsHelper::fontChecker(os, "MS Serif", 22);
+    FontSettingsHelper::changeFontAndSize(os, defaultFontFamily, defaultSize);
+
+    GTUtilsPhyTree::clickNode(os, nodes[1]);
+    FontSettingsHelper::fontChecker(os, defaultFontFamily, defaultSize);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4179) {
     //1. Open file "data/samples/Genabnk/sars.gb"
     //Current state: Two words are merged into a single one, in the file they are separated by a newline symbol.

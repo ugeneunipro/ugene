@@ -43,6 +43,7 @@
 #include "ov_msa/PhyTrees/MSAEditorMultiTreeViewer.h"
 #include "ov_msa/PhyTrees/MSAEditorTreeViewer.h"
 #include "ov_msa/PhyTrees/MsaEditorTreeTabArea.h"
+#include "ov_phyltree/GraphicsBranchItem.h"
 #include "ov_phyltree/TreeViewer.h"
 #include "phyltree/TreeSettingsDialog.h"
 
@@ -153,7 +154,8 @@ void TreeOptionsWidget::sl_onOptionChanged(TreeViewOption option, const QVariant
     if (option == SHOW_LABELS) {
         alignLabelsCheck->setEnabled(value.toBool());
     }
-    if (option == LABEL_COLOR || option == LABEL_FONT) {
+    if (option == LABEL_COLOR || option == LABEL_FONT_TYPE || option == LABEL_FONT_SIZE || 
+        option == LABEL_FONT_BOLD || option == LABEL_FONT_ITALIC || option == LABEL_FONT_UNDELINE) {
         updateFormatSettings();
         return;
     }
@@ -172,13 +174,16 @@ void TreeOptionsWidget::sl_onOptionChanged(TreeViewOption option, const QVariant
     isUpdating = false;
 }
 
-void TreeOptionsWidget::sl_selectionChanged() {
-    disconnect(fontSizeSpinBox, SIGNAL(valueChanged(int)), nullptr, nullptr);
-    disconnect(fontComboBox, SIGNAL(currentFontChanged(const QFont &)), nullptr, nullptr);
+void TreeOptionsWidget::sl_selectionChanged(GraphicsBranchItem *parentItem) {
+    const QSignalBlocker fontSizeBlocker(fontSizeSpinBox);
+    const QSignalBlocker fontComboBlocker(fontComboBox);
 
     QFont font;
     QColor color;
-    treeViewer->getSelectedBranchSettings(color, font);
+    if (parentItem->getDistanceText() != nullptr) {
+        font = parentItem->getDistanceText()->font();
+        color = parentItem->getDistanceText()->brush().color();
+    }
     if (!(font == QFont() && color == QColor())) {
         fontComboBox->setCurrentFont(font);
         fontSizeSpinBox->setValue(font.pointSize());
@@ -187,8 +192,6 @@ void TreeOptionsWidget::sl_selectionChanged() {
         underlineAttrButton->setChecked(font.underline());
         updateButtonColor(labelsColorButton, color);
     }
-    connect(fontSizeSpinBox, SIGNAL(valueChanged(int)), SLOT(sl_fontChanged()));
-    connect(fontComboBox, SIGNAL(currentFontChanged(const QFont &)), SLOT(sl_fontChanged()));
 }
 
 void TreeOptionsWidget::initializeOptionsMap() {
@@ -230,11 +233,11 @@ void TreeOptionsWidget::connectSlots() {
 
     //Labels format widgets
     connect(labelsColorButton, SIGNAL(clicked()), SLOT(sl_labelsColorButton()));
-    connect(boldAttrButton, SIGNAL(clicked(bool)), SLOT(sl_fontChanged()));
-    connect(italicAttrButton, SIGNAL(clicked(bool)), SLOT(sl_fontChanged()));
-    connect(underlineAttrButton, SIGNAL(clicked(bool)), SLOT(sl_fontChanged()));
-    connect(fontSizeSpinBox, SIGNAL(valueChanged(int)), SLOT(sl_fontChanged()));
-    connect(fontComboBox, SIGNAL(currentFontChanged(const QFont &)), SLOT(sl_fontChanged()));
+    connect(boldAttrButton, SIGNAL(clicked(bool)), SLOT(sl_fontBoldChanged()));
+    connect(italicAttrButton, SIGNAL(clicked(bool)), SLOT(sl_fontItalicChanged()));
+    connect(underlineAttrButton, SIGNAL(clicked(bool)), SLOT(sl_fontUnderlineChanged()));
+    connect(fontSizeSpinBox, SIGNAL(valueChanged(int)), SLOT(sl_fontSizeChanged()));
+    connect(fontComboBox, SIGNAL(currentFontChanged(const QFont &)), SLOT(sl_fontTypeChanged()));
 
     //Scalebar settings widgets
     connect(scaleSpinBox, SIGNAL(valueChanged(double)), SLOT(sl_valueChanged()));
@@ -248,7 +251,7 @@ void TreeOptionsWidget::connectSlots() {
     connect(branchesColorButton, SIGNAL(clicked()), SLOT(sl_branchesColorButton()));
     connect(lineWeightSpinBox, SIGNAL(valueChanged(int)), SLOT(sl_valueChanged()));
 
-    connect(treeViewer->scene(), SIGNAL(selectionChanged()), SLOT(sl_selectionChanged()));
+    connect(getTreeViewer(), SIGNAL(si_updateBranches(GraphicsBranchItem *)), SLOT(sl_selectionChanged(GraphicsBranchItem *)));
 }
 
 void TreeOptionsWidget::sl_valueChanged() {
@@ -282,18 +285,17 @@ void TreeOptionsWidget::updateFormatSettings() {
     QColor curColor = qvariant_cast<QColor>(getTreeViewer()->getOptionValue(LABEL_COLOR));
     updateButtonColor(labelsColorButton, curColor);
 
-    QFont curFont = qvariant_cast<QFont>(getTreeViewer()->getOptionValue(LABEL_FONT));
-    fontSizeSpinBox->setValue(curFont.pointSize());
+    QFont curFont = qvariant_cast<QFont>(getTreeViewer()->getOptionValue(LABEL_FONT_TYPE));
+    fontComboBox->setCurrentFont(curFont);
 
+    fontSizeSpinBox->setValue(getTreeViewer()->getOptionValue(LABEL_FONT_SIZE).toInt());
     boldAttrButton->setCheckable(true);
     italicAttrButton->setCheckable(true);
     underlineAttrButton->setCheckable(true);
 
-    boldAttrButton->setChecked(curFont.bold());
-    italicAttrButton->setChecked(curFont.italic());
-    underlineAttrButton->setChecked(curFont.underline());
-
-    fontComboBox->setCurrentFont(curFont);
+    boldAttrButton->setChecked(getTreeViewer()->getOptionValue(LABEL_FONT_BOLD).toBool());
+    italicAttrButton->setChecked(getTreeViewer()->getOptionValue(LABEL_FONT_ITALIC).toBool());
+    underlineAttrButton->setChecked(getTreeViewer()->getOptionValue(LABEL_FONT_UNDELINE).toBool());
 }
 
 TreeViewerUI *TreeOptionsWidget::getTreeViewer() const {
@@ -301,15 +303,24 @@ TreeViewerUI *TreeOptionsWidget::getTreeViewer() const {
     return treeViewer != nullptr ? treeViewer : editor->getUI()->getCurrentTree()->getTreeViewerUI();
 }
 
-void TreeOptionsWidget::sl_fontChanged() {
-    QFont newFont = fontComboBox->currentFont();
-    newFont.setPointSize(fontSizeSpinBox->value());
+void TreeOptionsWidget::sl_fontTypeChanged() {
+    getTreeViewer()->changeOption(LABEL_FONT_TYPE, fontComboBox->currentFont());
+}
 
-    newFont.setBold(boldAttrButton->isChecked());
-    newFont.setItalic(italicAttrButton->isChecked());
-    newFont.setUnderline(underlineAttrButton->isChecked());
+void TreeOptionsWidget::sl_fontSizeChanged() {
+    getTreeViewer()->changeOption(LABEL_FONT_SIZE, fontSizeSpinBox->value());
+}
 
-    getTreeViewer()->changeOption(LABEL_FONT, newFont);
+void TreeOptionsWidget::sl_fontBoldChanged() {
+    getTreeViewer()->changeOption(LABEL_FONT_BOLD, boldAttrButton->isChecked());
+}
+
+void TreeOptionsWidget::sl_fontItalicChanged() {
+    getTreeViewer()->changeOption(LABEL_FONT_ITALIC, italicAttrButton->isChecked());
+}
+
+void TreeOptionsWidget::sl_fontUnderlineChanged() {
+    getTreeViewer()->changeOption(LABEL_FONT_UNDELINE, underlineAttrButton->isChecked());
 }
 
 void TreeOptionsWidget::sl_labelsColorButton() {

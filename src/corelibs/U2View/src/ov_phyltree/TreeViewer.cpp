@@ -544,8 +544,20 @@ void TreeViewerUI::onSettingsChanged(TreeViewOption option, const QVariant &newV
         case LABEL_COLOR:
             updateTextSettings(LABEL_COLOR);
             break;
-        case LABEL_FONT:
-            updateTextSettings(LABEL_FONT);
+        case LABEL_FONT_TYPE:
+            updateTextSettings(LABEL_FONT_TYPE);
+            break;  
+        case LABEL_FONT_SIZE:
+            updateTextSettings(LABEL_FONT_SIZE);
+            break;  
+        case LABEL_FONT_BOLD:
+            updateTextSettings(LABEL_FONT_BOLD);
+            break;  
+        case LABEL_FONT_ITALIC:
+            updateTextSettings(LABEL_FONT_ITALIC);
+            break;  
+        case LABEL_FONT_UNDELINE:
+            updateTextSettings(LABEL_FONT_UNDELINE);
             break;
         case BRANCH_COLOR:
         case BRANCH_THICKNESS:
@@ -604,7 +616,11 @@ void TreeViewerUI::initializeSettings() {
     setOptionValue(SCALEBAR_LINE_WIDTH, 1);
 
     setOptionValue(LABEL_COLOR, QColor(Qt::darkGray));
-    setOptionValue(LABEL_FONT, TreeViewerUtils::getFont());
+    setOptionValue(LABEL_FONT_TYPE, TreeViewerUtils::getFont());
+    setOptionValue(LABEL_FONT_SIZE, TreeViewerUtils::getFont().pixelSize());
+    setOptionValue(LABEL_FONT_BOLD, false);
+    setOptionValue(LABEL_FONT_ITALIC, false);
+    setOptionValue(LABEL_FONT_UNDELINE, false);
 
     setOptionValue(SHOW_LABELS, true);
     setOptionValue(SHOW_DISTANCES, !phyObject->haveNodeLabels());
@@ -657,13 +673,13 @@ void TreeViewerUI::getSelectedBranchSettings(QColor &color, QFont &font) const {
     if (selectedItems.isEmpty()) {
         return;
     }
-    int maxLength = 0;
+    int childCount = 0;
     GraphicsBranchItem *rootItem = nullptr;
     for (QGraphicsItem *graphItem : qAsConst(selectedItems)) {
         auto *branchItem = dynamic_cast<GraphicsBranchItem *>(graphItem);
         CHECK(branchItem != nullptr, )
-        if (branchItem->getBranchLength() >= maxLength) {
-            maxLength = branchItem->getBranchLength();
+        if (branchItem->getChildItems().size() >= childCount) {
+            childCount = branchItem->getChildItems().size();
             rootItem = branchItem;
         }
     }
@@ -675,7 +691,10 @@ void TreeViewerUI::getSelectedBranchSettings(QColor &color, QFont &font) const {
 }
 
 void TreeViewerUI::updateTextSettings(TreeViewOption option) {
-    QList<QGraphicsItem *> updatingItems = scene()->selectedItems().isEmpty() ? scene()->items() : scene()->selectedItems();
+    QList<QGraphicsItem *> updatingItems = scene()->items();
+    if (!scene()->selectedItems().isEmpty()) {
+        updatingItems = scene()->selectedItems();
+    }
     for (QGraphicsItem *graphItem : qAsConst(updatingItems)) {
         GraphicsBranchItem *branchItem = dynamic_cast<GraphicsBranchItem *>(graphItem);
         if (branchItem != NULL) {
@@ -695,11 +714,11 @@ void TreeViewerUI::updateTextSettings(TreeViewOption option) {
                 if (branchItem->getCorrespondingItem()) {
                     branchItem->getCorrespondingItem()->updateTextColor(curColor);
                 }
-            } else if (option == LABEL_FONT) {
-                QFont curFont = qvariant_cast<QFont>(getOptionValue(LABEL_FONT));
-                branchItem->updateTextFont(curFont);
+            } else if (option == LABEL_COLOR || option == LABEL_FONT_TYPE || option == LABEL_FONT_SIZE ||
+                       option == LABEL_FONT_BOLD || option == LABEL_FONT_ITALIC || option == LABEL_FONT_UNDELINE) {
+                branchItem->updateTextProperty(option, getOptionValue(option));
                 if (branchItem->getCorrespondingItem()) {
-                    branchItem->getCorrespondingItem()->updateTextFont(curFont);
+                    branchItem->getCorrespondingItem()->updateTextProperty(option, getOptionValue(option));
                 }
             }
         }
@@ -1101,6 +1120,7 @@ void TreeViewerUI::updateBrachSettings() {
                 setOptionValue(BRANCH_THICKNESS, branch->getSettings()[BRANCH_THICKNESS]);
                 setOptionValue(BRANCH_COLOR, branch->getSettings()[BRANCH_COLOR]);
             }
+            emit si_updateBranches(branch);
             break;
         }
     }
@@ -1277,7 +1297,11 @@ void TreeViewerUI::sl_rectLayoutRecomputed() {
     updateScene(true);
     updateSettings();
     updateTextSettings(LABEL_COLOR);
-    updateTextSettings(LABEL_FONT);
+    updateTextSettings(LABEL_FONT_TYPE);
+    updateTextSettings(LABEL_FONT_SIZE);
+    updateTextSettings(LABEL_FONT_BOLD);
+    updateTextSettings(LABEL_FONT_ITALIC);
+    updateTextSettings(LABEL_FONT_UNDELINE);
 }
 
 void TreeViewerUI::sl_onBranchCollapsed(GraphicsRectangularBranchItem *) {

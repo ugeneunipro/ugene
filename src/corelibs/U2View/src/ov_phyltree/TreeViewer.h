@@ -267,6 +267,9 @@ public:
      */
     void getSelectedBranchSettings(QColor &color, QFont &font) const;
 
+signals:
+    void si_updateBranches(GraphicsBranchItem *item);
+
 protected:
     virtual void wheelEvent(QWheelEvent *e);
     virtual void resizeEvent(QResizeEvent *e);

@@ -63,20 +63,45 @@ void GraphicsBranchItem::updateChildSettings(const OptionsMap &newSettings) {
     }
 }
 
-void GraphicsBranchItem::updateTextFont(const QFont &font) {
-    QFont prevFont;
+void GraphicsBranchItem::updateTextProperty(TreeViewOption property, const QVariant &propertyVal) {
+    QFont dtFont = distanceText ? distanceText->font() : QFont();
+    QFont ntFont = nameText ? nameText->font() : QFont();
+    int pixSize = dtFont.pixelSize();
+    int pixSize2;
+    switch (property) {
+        case U2::LABEL_FONT_TYPE:
+            dtFont.setFamily(qvariant_cast<QFont>(propertyVal).family());
+            ntFont.setFamily(qvariant_cast<QFont>(propertyVal).family());
+            pixSize2 = dtFont.pixelSize();
+            break;
+        case U2::LABEL_FONT_SIZE:
+            dtFont.setPixelSize(qvariant_cast<int>(propertyVal));
+            ntFont.setPixelSize(qvariant_cast<int>(propertyVal));
+            break;
+        case U2::LABEL_FONT_BOLD:
+            dtFont.setBold(qvariant_cast<bool>(propertyVal));
+            ntFont.setBold(qvariant_cast<bool>(propertyVal));
+            break;
+        case U2::LABEL_FONT_ITALIC:
+            dtFont.setItalic(qvariant_cast<bool>(propertyVal));
+            ntFont.setItalic(qvariant_cast<bool>(propertyVal));
+            break;
+        case U2::LABEL_FONT_UNDELINE:
+            dtFont.setUnderline(qvariant_cast<bool>(propertyVal));
+            ntFont.setUnderline(qvariant_cast<bool>(propertyVal));
+            break;
+        default:
+            break;
+    }
+
     if (distanceText) {
-        prevFont = distanceText->font();
-        distanceText->setFont(font);
+        distanceText->setFont(dtFont);
     }
     if (nameText) {
-        prevFont = nameText->font();
-        nameText->setFont(font);
-    }
-    if (font != prevFont) {
-        setLabelPositions();
+        nameText->setFont(ntFont);
     }
 }
+
 
 void GraphicsBranchItem::updateTextColor(const QColor &color) {
     if (distanceText) {

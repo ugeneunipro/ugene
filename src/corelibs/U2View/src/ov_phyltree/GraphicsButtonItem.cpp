@@ -193,7 +193,11 @@ void GraphicsButtonItem::rerootTree(PhyTreeObject *treeObject) {
 
 void GraphicsButtonItem::updateSettings(const OptionsMap &settings) {
     CHECK(NULL != nodeLabel, );
-    QFont newFont = qvariant_cast<QFont>(settings[LABEL_FONT]);
+    QFont newFont = qvariant_cast<QFont>(settings[LABEL_FONT_TYPE]);
+    newFont.setPixelSize(qvariant_cast<int>(settings[LABEL_FONT_SIZE]));
+    newFont.setBold(qvariant_cast<int>(settings[LABEL_FONT_BOLD]));
+    newFont.setItalic(qvariant_cast<int>(settings[LABEL_FONT_ITALIC]));
+    newFont.setUnderline(qvariant_cast<int>(settings[LABEL_FONT_UNDELINE]));
     nodeLabel->setFont(newFont);
     QColor labelsColor = qvariant_cast<QColor>(settings[LABEL_COLOR]);
     nodeLabel->setBrush(labelsColor);

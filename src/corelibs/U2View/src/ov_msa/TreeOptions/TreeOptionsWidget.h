@@ -29,6 +29,7 @@
 
 namespace U2 {
 
+class GraphicsBranchItem;
 class MSAEditor;
 class SimilarityStatisticsSettings;
 class ShowHideSubgroupWidget;
@@ -61,14 +62,18 @@ signals:
 private slots:
     void sl_labelsColorButton();
     void sl_branchesColorButton();
-    void sl_fontChanged();
+    void sl_fontTypeChanged();
+    void sl_fontSizeChanged();
+    void sl_fontBoldChanged();
+    void sl_fontItalicChanged();
+    void sl_fontUnderlineChanged();
 
     void sl_onLblLinkActivated(const QString &link);
     void sl_valueChanged();
 
     void sl_onOptionChanged(TreeViewOption option, const QVariant &value);
     /* Slot for handling scene selection changes */
-    void sl_selectionChanged();
+    void sl_selectionChanged(GraphicsBranchItem *parentItem);
 
 private:
     void initializeOptionsMap();
