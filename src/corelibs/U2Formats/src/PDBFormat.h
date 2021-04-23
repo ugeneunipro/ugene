@@ -78,6 +78,10 @@ private:
         QSet<QByteArray> resIndSet;
         QMap<QString, QString> chainToMoleculeMap;
 
+        // True, if the name of the molecule has not yet been read to the end
+        // (in a multiline name, the semicolon has not yet been read).
+        bool readingMoleculeName;
+
         // Methods
         QByteArray getSpecValue(const QByteArray &specLine, const QByteArray &valueName);
         void parseHeader(BioStruct3D &biostruct, U2OpStatus &ti);

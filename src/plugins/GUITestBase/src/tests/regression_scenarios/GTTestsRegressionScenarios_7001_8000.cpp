@@ -32,6 +32,7 @@
 #include <QFileInfo>
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
+#include "GTUtilsAnnotationsTreeView.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
@@ -319,6 +320,24 @@ GUI_TEST_CLASS_DEFINITION(test_7152) {
                           GTMSAEditorStatusWidget::getSequenceUngappedPositionString(os);
     GTMSAEditorStatusWidget::getColumnNumberString(os);
     CHECK_SET_ERR(bottomRight == "11/40/35", "Bottom right position is wrong: " + bottomRight);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7197) {
+    // Open data/samples/PDB/1CF7.PDB.
+    // Check that there is "molecule_name" qualifier with value
+    //     "DNA (5'-D(*AP*TP*TP*TP*TP*CP*GP*CP*GP*CP*GP*GP*TP*TP*TP*T)-3')" in "chain_info" annotation for chain C.
+    GTFileDialog::openFile(os, dataDir + "samples/PDB", "1CF7.PDB");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    QTreeWidgetItem *annotationsChainC = GTUtilsAnnotationsTreeView::findItem(os, "1CF7 chain C annotation [1CF7.PDB]");
+    QTreeWidgetItem *chainInfoGroup = GTUtilsAnnotationsTreeView::findItem(os, "chain_info  (0, 1)", annotationsChainC);
+    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *> {chainInfoGroup});
+    QTreeWidgetItem *chainInfo = GTUtilsAnnotationsTreeView::findItem(os, "chain_info", chainInfoGroup);
+    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *> {chainInfo});
+    QString moleculeNameChainC = GTUtilsAnnotationsTreeView::getQualifierValue(os, "molecule_name", chainInfo);
+
+    CHECK_SET_ERR(moleculeNameChainC == "DNA (5'-D(*AP*TP*TP*TP*TP*CP*GP*CP*GP*CP*GP*GP*TP*TP*TP*T)-3')",
+                  QString("Incorrect molecule name is detected for chain C: '%1'").arg(moleculeNameChainC))
 }
 
 }    // namespace GUITest_regression_scenarios
