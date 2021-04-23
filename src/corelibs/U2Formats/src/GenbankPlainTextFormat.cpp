@@ -85,30 +85,33 @@ bool GenbankPlainTextFormat::isStreamingSupport() {
 }
 
 bool GenbankPlainTextFormat::readIdLine(ParserState *st) {
-    if (!st->hasKey(DNAInfo::LOCUS.toLocal8Bit())) {
+    static const QByteArray LOCUS = DNAInfo::LOCUS.toLocal8Bit();
+    if (!st->hasKey(LOCUS)) {
         QByteArray rawData(st->buff);
-        int locusStartPos = rawData.indexOf(QString("\n%1").arg(DNAInfo::LOCUS));
+        int locusStartPos = rawData.indexOf("\n" + LOCUS);
         if (locusStartPos != -1) { //We are here if the "GenBank" file has some pre-description (see UGENE-4463)
             while (locusStartPos >= st->len) {
                 st->readNextLine();
                 rawData = QByteArray(st->buff);
-                locusStartPos = rawData.indexOf(QString("\n%1").arg(DNAInfo::LOCUS));
+                locusStartPos = rawData.indexOf("\n" + LOCUS);
             }
             st->buff = st->buff + locusStartPos;
         } else {
             //The GenBank file should have the indent (st->valOffset) before the real data
             //Possibly, this GenBank file doesn't have the strong indent (UGENE-7092)
-            rawData = QByteArray(st->buff, st->len);
-            int locusStartPos = rawData.indexOf(DNAInfo::LOCUS.toLocal8Bit());
-            CHECK_EXT(locusStartPos != -1, st->si.setError(tr("LOCUS is not the first line")), false);
+            rawData = QByteArray::fromRawData(st->buff, st->len);
+            CHECK_EXT(rawData.indexOf(LOCUS) == 0, st->si.setError(tr("LOCUS is not the first line")), false);
 
-            rawData = rawData.right(rawData.size() - DNAInfo::LOCUS.size());
-            int locusAndNameGapSize = 0;
-            while (rawData.front() == ' ') {
-                rawData = rawData.right(rawData.size() - 1);
-                locusAndNameGapSize++;
-            }
-            int indentBeforeName = locusStartPos + DNAInfo::LOCUS.size() + locusAndNameGapSize;
+            //Indent before the beginnig of the line and name of the sequence
+            int indentBeforeName = 0;
+            do {
+                if (indentBeforeName == 0) {
+                    indentBeforeName = LOCUS.size();
+                } else {
+                    indentBeforeName++;
+                }
+                rawData = QByteArray::fromRawData(st->buff + indentBeforeName, st->len - indentBeforeName);
+            } while (rawData.front() == ' ');
             int shiftToLeft = st->valOffset - indentBeforeName;
             st->buff -= shiftToLeft;
         }
