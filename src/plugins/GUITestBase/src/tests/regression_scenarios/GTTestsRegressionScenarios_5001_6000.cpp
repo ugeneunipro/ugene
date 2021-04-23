@@ -599,6 +599,18 @@ GUI_TEST_CLASS_DEFINITION(test_5130) {
                       ", Cons: " + consFontAfter.toString() + ", SeqArea: " + seqAreaFontAfter.toString());
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5136) {
+    // Open the data/samples/PDB/1CF7.PDB.
+    // In context menu go to Molecular surface->SAS.
+    //    Expected state: molecular surface calculated and showed. Program not crashed.
+    GTFileDialog::openFile(os, dataDir + "samples/PDB", "1CF7.PDB");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Molecular Surface", "SAS"}));
+    QWidget *widget3d = GTWidget::findWidget(os, "1-1CF7");
+    GTWidget::click(os, widget3d, Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5137) {
     // 1. Open document test/_common_data/clustal/big.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");

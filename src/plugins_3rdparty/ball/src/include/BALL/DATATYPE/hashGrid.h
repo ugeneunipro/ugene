@@ -191,22 +191,33 @@ namespace BALL
 			virtual ~BoxIteratorTraits() {}
 
 			BoxIteratorTraits()
-				: bound_(0),
-					position_(0),
-					x_(0), y_(0), z_(0)
+                : bound_(nullptr),
+                  cur_box_(nullptr),
+                  position_(0),
+                  x_(0),
+                  y_(0),
+                  z_(0)
 			{
 			}
 
 			BoxIteratorTraits(const HashGridBox3& box)
-				: bound_((HashGridBox3 *)&box),
-					position_(0)
+                : bound_((HashGridBox3 *)&box),
+                  cur_box_(bound_),
+                  position_(0),
+                  x_(0),
+                  y_(0),
+                  z_(0)
 			{
 				bound_->getIndices(x_, y_, z_);
 			}
 
 			BoxIteratorTraits(const BoxIteratorTraits& traits, bool /* deep */ = true)
-				:	bound_(traits.bound_),
-					position_(traits.position_)
+                : bound_(traits.bound_),
+                  cur_box_(traits.cur_box_),
+                  position_(traits.position_),
+                  x_(traits.x_),
+                  y_(traits.y_),
+                  z_(traits.z_)
 			{
 			}
 
