@@ -339,14 +339,15 @@ void SequenceInfo::updateCodonsOccurrenceData() {
 }
 
 void SequenceInfo::updateCodonsOccurrenceData(const QList<CharOccurResult> &codonStatList) {
-    bool isFinal = codonTaskRunner.isIdle();
     ADVSequenceObjectContext *activeContext = annotatedDnaView->getActiveSequenceContext();
     SAFE_POINT(activeContext != nullptr, "A sequence context is NULL!", );
 
-    bool isAnnotationSelection = !activeContext->getAnnotationsSelection()->isEmpty();
-    bool isSequenceSelection = !isAnnotationSelection && !activeContext->getSequenceSelection()->isEmpty();
-    QString whereInfo = isAnnotationSelection ? tr("selected annotations")
-                                              : (isSequenceSelection ? tr("selected regions")
+    AnnotationSelection *annotationSelection = activeContext->getAnnotationsSelection();
+    DNASequenceSelection *sequenceSelection = activeContext->getSequenceSelection();
+    bool isAnnotationSelection = !annotationSelection->isEmpty();
+    bool isSequenceSelection = !isAnnotationSelection && !sequenceSelection->isEmpty();
+    QString whereInfo = isAnnotationSelection ? (annotationSelection->getAnnotations().size() > 1 ? tr("selected annotations") : tr("selected annotation"))
+                                              : (isSequenceSelection ? (sequenceSelection->regions.size() > 1 ? tr("selected regions") : tr("selected region"))
                                                                      : tr("whole sequence"));
     QString frameInfo = isAnnotationSelection ? tr("guided by annotation")
                                               : (isSequenceSelection ? tr("1 direct and 1 complement")
@@ -362,6 +363,7 @@ void SequenceInfo::updateCodonsOccurrenceData(const QList<CharOccurResult> &codo
     if (codonStatList.isEmpty()) {
         html += "<tr><td>" + tr("Selection is too small") + "</td></tr>";
     } else {
+        bool isFinal = codonTaskRunner.isIdle();
         for (const CharOccurResult &codon : qAsConst(codonStatList)) {
             html += "<tr>";
             html += QString("<td><b>") + codon.getChar() + QString(":&nbsp;&nbsp;</b></td>");
@@ -423,6 +425,7 @@ void SequenceInfo::connectSlots() {
 void SequenceInfo::sl_onSelectionChanged(LRegionsSelection *,
                                          const QVector<U2Region> & /*added*/,
                                          const QVector<U2Region> & /*removed*/) {
+    getCodonsOccurrenceCache()->sl_invalidate();
     updateCurrentRegions();
     updateData();
 }

@@ -777,16 +777,54 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     GTWidget::click(os, codonsPanel);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    // Whole sequence.
     QLabel *codonsLabel = GTWidget::findWidgetByType<QLabel *>(os, codonsPanel, "Failed to find label inside codons panel");
-    CHECK_SET_ERR(codonsLabel->text().contains("<td><b>L:&nbsp;&nbsp;</b></td><td>44 225 &nbsp;&nbsp;</td>"),
-                  "Codons state does not contain expected entry (L:44225)");
+    QString text = codonsLabel->text();
+    CHECK_SET_ERR(text.contains("whole sequence"), "Expected to see 'whole sequence' in the report");
+    CHECK_SET_ERR(text.contains("<td><b>L:&nbsp;&nbsp;</b></td><td>44 225 &nbsp;&nbsp;</td>"),
+                  "Codons report does not contain expected entry (L:44225)");
 
+    // Selected regions (same as whole sequence).
+    GTUtilsSequenceView::selectSequenceRegion(os, 1, 199950);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    text = codonsLabel->text();
+    CHECK_SET_ERR(text.contains("selected region"), "Expected to see 'selected region' in the report");
+    CHECK_SET_ERR(text.contains("<td><b>L:&nbsp;&nbsp;</b></td><td>14 476 &nbsp;&nbsp;</td>"),
+                  "Codons report does not contain expected entry (L:14476)");
+
+    // Selected regions: 1 codon on direct and 1 on complement frames.
     GTUtilsSequenceView::selectSequenceRegion(os, 19, 21);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    CHECK_SET_ERR(codonsLabel->text().contains("<td><b>L:&nbsp;&nbsp;</b></td><td>1 &nbsp;&nbsp;</td>"),
-                  "Codons state does not contain expected entry (L:1)");
-    CHECK_SET_ERR(codonsLabel->text().contains("<td><b>Q:&nbsp;&nbsp;</b></td><td>1 &nbsp;&nbsp;</td>"),
-                  "Codons state does not contain expected entry (Q:1)");
+    text = codonsLabel->text();
+    CHECK_SET_ERR(text.contains("selected region"), "Expected to see 'selected region' in the report");
+    CHECK_SET_ERR(text.contains("<td><b>L:&nbsp;&nbsp;</b></td><td>1 &nbsp;&nbsp;</td>"),
+                  "Codons report does not contain expected entry (L:1)");
+    CHECK_SET_ERR(text.contains("<td><b>Q:&nbsp;&nbsp;</b></td><td>1 &nbsp;&nbsp;</td>"),
+                  "Codons report does not contain expected entry (Q:1)");
+
+    GTUtilsSequenceView::selectSequenceRegion(os, 19, 20);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    text = codonsLabel->text();
+    CHECK_SET_ERR(text.contains("selected region"), "Expected to see 'selected region' in the report");
+    CHECK_SET_ERR(text.contains("Selection is too small"), "Expected to see 'Selection is too small' in the report");
+
+    // Annotation.
+    GTUtilsAnnotationsTreeView::createAnnotation(os, "test-group", "test-feature", "1..199950");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    text = codonsLabel->text();
+    CHECK_SET_ERR(text.contains("selected annotation"), "Expected to see 'selected annotation' in the report");
+    CHECK_SET_ERR(text.contains("<td><b>L:&nbsp;&nbsp;</b></td><td>6 975 &nbsp;&nbsp;</td>"),
+                  "Codons report does not contain expected entry (L:6975)");
+
+    // Remove the annotation -> report is reset to the last selected region: 19, 20 that is 'too small'.
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
+    GTMouseDriver::click();
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    text = codonsLabel->text();
+    CHECK_SET_ERR(text.contains("selected region"), "Expected to see 'selected region' in the report/2");
+    CHECK_SET_ERR(text.contains("Selection is too small"), "Expected to see 'Selection is too small' in the report/2");
 }
 
 }    // namespace GUITest_common_scenarios_options_panel
