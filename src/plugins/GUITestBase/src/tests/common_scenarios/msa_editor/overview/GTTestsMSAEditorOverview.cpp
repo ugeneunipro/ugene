@@ -136,7 +136,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     QMainWindow *window = AppContext::getMainWindow()->getQMainWindow();
     if (window->isMaximized()) {
         GTWidget::showNormal(os, window);
-        GTGlobals::sleep(500);
     }
     GTWidget::resizeWidget(os, window, QSize(550, 550));
 
@@ -165,9 +164,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     QImage imgGraph1 = GTWidget::getImage(os, overviewGraph);
 
     QMainWindow *window = AppContext::getMainWindow()->getQMainWindow();
-    window->showNormal();
-
-    GTGlobals::sleep(1000);
+    GTWidget::showNormal(os, window);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QImage imgSimple2 = GTWidget::getImage(os, overviewSimple);
     QImage imgGraph2 = GTWidget::getImage(os, overviewGraph);
@@ -198,7 +196,6 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
 
         GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(40, 17));
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
-        GTGlobals::sleep(500);
 
         //checking images changed
         QImage imgSimple2 = GTWidget::getImage(os, overviewSimple);
@@ -266,7 +263,6 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
 
     //    3. Press Delete button and release it after a while.
     GTKeyboardDriver::keyPress(Qt::Key_Delete);
-    GTGlobals::sleep(2000);
     GTKeyboardDriver::keyRelease(Qt::Key_Delete);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -293,7 +289,6 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     //    3. Press Delete button and release it after a while.
     GTKeyboardDriver::keyPress(Qt::Key_Space);
-    GTGlobals::sleep(1000);
 
     //    Expected state: while button is pressed graph overview is blocked. Overview updating starts on button release.
     //    Simple overview updates simultaneously.
@@ -383,7 +378,6 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
     CHECK_SET_ERR(combo != NULL, "colorScheme not found!");
     GTComboBox::selectItemByText(os, combo, "No colors");
-    GTGlobals::sleep(200);
 
     //    3. Change Color Scheme.
     const QColor c = GTUtilsMsaEditor::getSimpleOverviewPixelColor(os, QPoint(5, overviewSimple->rect().height() - 5));
@@ -436,7 +430,6 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
 
     //    4. Go to Highlighting tab on Options panel.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
-    GTGlobals::sleep(500);
 
     //    5. Select Highlighting to "Gaps"
     QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
@@ -449,7 +442,6 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
                                                                         << "Highlighting"));
     GTMenu::showContextMenu(os, overviewGraph);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
-    GTGlobals::sleep(1000);
 
     //    Expected state: graph didn't change.
     const QImage img1 = GTWidget::getImage(os, overviewGraph);
