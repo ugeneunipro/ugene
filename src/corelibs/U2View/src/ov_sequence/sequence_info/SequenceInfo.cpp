@@ -431,6 +431,10 @@ void SequenceInfo::sl_onSelectionChanged(LRegionsSelection *,
 }
 
 void SequenceInfo::sl_onAnnotationSelectionChanged(AnnotationSelection *, const QList<Annotation *> &, const QList<Annotation *> &) {
+    ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
+    if (sequenceContext == nullptr) {
+        return; // Sequence context may be null when ADV is being destroyed.
+    }
     getCodonsOccurrenceCache()->sl_invalidate();
     updateCurrentRegions();
     updateData();
