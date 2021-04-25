@@ -6781,6 +6781,35 @@ GUI_TEST_CLASS_DEFINITION(test_6960) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6963) {
+    //1. Open Application Settings and check if WindowsVista on Windows or Macintosh on macOS styles are exist
+    class CheckStyleScenario : public CustomScenario {
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::General);
+
+            QComboBox* styleCombo = GTWidget::findExactWidget<QComboBox*>(os, "styleCombo", dialog);
+
+            QString text;
+            if (isOsWindows()) {
+                text = "WindowsVista";
+            } else if (isOsMac()) {
+                text = "Macintosh";
+            } else if (isOsLinux()) {
+                text = "Fusion";
+            }
+
+            GTComboBox::selectItemByText(os, styleCombo, text);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new CheckStyleScenario()));
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..." }, GTGlobals::UseMouse);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6966) {
     // Open 100bp file
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/100bp.fa");

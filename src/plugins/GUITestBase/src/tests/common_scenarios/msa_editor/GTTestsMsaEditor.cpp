@@ -43,7 +43,7 @@
 
 #include <QApplication>
 
-#include <U2Test/UGUITest.h>
+#include <harness/UGUITestBase.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/MSAEditor.h>

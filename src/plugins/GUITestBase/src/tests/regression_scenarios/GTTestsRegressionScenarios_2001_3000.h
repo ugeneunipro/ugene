@@ -22,7 +22,7 @@
 #ifndef _U2_GT_TESTS_REGRESSION_SCENARIOS_2001_3000_H_
 #define _U2_GT_TESTS_REGRESSION_SCENARIOS_2001_3000_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 

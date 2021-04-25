@@ -26,8 +26,9 @@
 
 #include <U2Gui/ToolsMenu.h>
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
+#include "harness/GUITestService.h"
 #include "tests/PosteriorActions.h"
 #include "tests/PosteriorChecks.h"
 #include "tests/PreliminaryActions.h"
@@ -162,6 +163,8 @@ static int minutes(int minutes) {
 
 /** Registers test on all platforms except Windows. */
 #define REGISTER_TEST_NOT_FOR_WINDOWS(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Linux, MacOS}))
+/** Registers test on all platforms except Linux. */
+#define REGISTER_TEST_NOT_FOR_LINUX(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Windows, MacOS}))
 /** Registers test on all platforms except MacOS. */
 #define REGISTER_TEST_NOT_FOR_MAC(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, Linux, Windows}))
 
@@ -174,16 +177,16 @@ static int minutes(int minutes) {
 #define REGISTER_TEST_ONLY_MAC(TestClass) REGISTER_TEST_L(TestClass, labels({Nightly, MacOS}))
 
 extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
-    if (AppContext::getMainWindow()) {
-        GUITestBasePlugin *plug = new GUITestBasePlugin();
-        return plug;
+    CHECK(AppContext::getMainWindow() != nullptr, nullptr);
+    if (GUITestService::isGuiTestServiceNeeded()) {
+        new GUITestService();
     }
-    return NULL;
+    return new GUITestBasePlugin();
 }
 
 GUITestBasePlugin::GUITestBasePlugin()
     : Plugin(tr("GUITestBase"), tr("GUI Test Base")) {
-    UGUITestBase *guiTestBase = AppContext::getGUITestBase();
+    UGUITestBase *guiTestBase = UGUITestBase::getInstance();
 
     registerTests(guiTestBase);
     registerAdditionalActions(guiTestBase);
@@ -198,7 +201,7 @@ GUITestBasePlugin::GUITestBasePlugin()
 
 void GUITestBasePlugin::sl_showWindow() {
     if (view == NULL) {
-        view = new GUITestRunner(AppContext::getGUITestBase());
+        view = new GUITestRunner(UGUITestBase::getInstance());
         view->show();
     } else {
         view->raise();
@@ -1709,6 +1712,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_6954);
     REGISTER_TEST(GUITest_regression_scenarios::test_6959);
     REGISTER_TEST(GUITest_regression_scenarios::test_6960);
+    REGISTER_TEST(GUITest_regression_scenarios::test_6963);
     REGISTER_TEST(GUITest_regression_scenarios::test_6966);
     REGISTER_TEST(GUITest_regression_scenarios::test_6968);
     REGISTER_TEST(GUITest_regression_scenarios::test_6971);

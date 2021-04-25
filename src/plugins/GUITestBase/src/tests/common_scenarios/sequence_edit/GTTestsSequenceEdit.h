@@ -22,7 +22,7 @@
 #ifndef _U2_GUI_TEST_SEQUENCE_EDIT_H_
 #define _U2_GUI_TEST_SEQUENCE_EDIT_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 

@@ -120,10 +120,6 @@
 #include <U2Lang/WorkflowSettings.h>
 
 #include <U2Test/GTestFrameworkComponents.h>
-#ifndef HI_EXCLUDED
-#    include <U2Test/GUITestService.h>
-#    include <U2Test/UGUITestBase.h>
-#endif    //HI_EXCLUDED
 #include <U2Test/XMLTestFormat.h>
 
 #include <U2View/AnnotHighlightWidgetFactory.h>
@@ -809,10 +805,6 @@ int main(int argc, char **argv) {
 
     AutoAnnotationsSupport *aaSupport = new AutoAnnotationsSupport();
     appContext->setAutoAnnotationsSupport(aaSupport);
-#ifndef HI_EXCLUDED
-    UGUITestBase *tb = new UGUITestBase();
-    appContext->setGUITestBase(tb);
-#endif    //HI_EXCLUDED
 
     AppFileStorage *appFileStorage = new AppFileStorage();
     U2OpStatusImpl os;
@@ -842,12 +834,6 @@ int main(int argc, char **argv) {
     }
 
     registerCoreServices();
-
-#ifndef HI_EXCLUDED
-    if (GUITestService::isGuiTestServiceNeeded()) {
-        new GUITestService();
-    }
-#endif    //HI_EXCLUDED
 
     GCOUNTER(cvar, "ugeneui launch");
 
@@ -902,11 +888,6 @@ int main(int argc, char **argv) {
 
     appContext->setProjectFilterTaskRegistry(NULL);
     delete projectFilterTaskRegistry;
-
-#ifndef HI_EXCLUDED
-    appContext->setGUITestBase(NULL);
-    delete tb;
-#endif    //HI_EXCLUDED
 
     appContext->setRecentlyDownloadedCache(NULL);
     delete rdc;

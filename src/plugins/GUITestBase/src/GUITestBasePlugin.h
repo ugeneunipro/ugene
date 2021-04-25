@@ -26,7 +26,7 @@
 
 #include <U2Core/PluginModel.h>
 
-#include <U2Test/UGUITest.h>
+#include <harness/UGUITestBase.h>
 
 #include "test_runner/GUITestRunner.h"
 

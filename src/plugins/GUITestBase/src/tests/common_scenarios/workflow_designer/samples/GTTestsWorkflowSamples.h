@@ -22,7 +22,7 @@
 #ifndef GTTESTS_WORKFLOW_SAMPLES_H_
 #define GTTESTS_WORKFLOW_SAMPLES_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 
