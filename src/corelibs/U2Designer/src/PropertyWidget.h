@@ -231,7 +231,7 @@ private:
 class U2DESIGNER_EXPORT ComboBoxWithChecksWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    ComboBoxWithChecksWidget(const QVariantMap &items, QWidget *parent = NULL);
+    ComboBoxWithChecksWidget(const QVariantMap &items, const QVariantMap &visibleKeyToBusValueTranslationMap = QVariantMap(), QWidget *parent = NULL);
     virtual QVariant value();
     virtual void setValue(const QVariant &value);
 
@@ -249,6 +249,9 @@ protected slots:
 
 private:
     void initModelView();
+
+private:
+    QVariantMap visibleKeyToBusValueTranslationMap;
 };
 
 /************************************************************************/

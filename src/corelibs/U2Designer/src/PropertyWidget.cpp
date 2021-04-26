@@ -409,8 +409,8 @@ QVariantMap ComboBoxWithDbUrlWidget::getItems() const {
 /************************************************************************/
 /* ComboBoxWithChecksWidget */
 /************************************************************************/
-ComboBoxWithChecksWidget::ComboBoxWithChecksWidget(const QVariantMap &_items, QWidget *parent)
-    : PropertyWidget(parent), cm(nullptr), items(_items) {
+ComboBoxWithChecksWidget::ComboBoxWithChecksWidget(const QVariantMap &_items, const QVariantMap &_visibleKeyToBusValueTranslationMap, QWidget *parent)
+    : PropertyWidget(parent), cm(nullptr), items(_items), visibleKeyToBusValueTranslationMap(_visibleKeyToBusValueTranslationMap) {
     comboBox = new QComboBox(this);
     addMainWidget(comboBox);
     initModelView();
@@ -423,9 +423,13 @@ ComboBoxWithChecksWidget::ComboBoxWithChecksWidget(const QVariantMap &_items, QW
 QVariant ComboBoxWithChecksWidget::value() {
     QStringList sList;
     const QList<QString> &keys = items.keys();
-    foreach (const QString &key, keys) {
+    for (const QString &key: qAsConst(keys)) {
         if (items[key].toBool()) {
-            sList << key;
+            if (visibleKeyToBusValueTranslationMap.isEmpty()) {
+                sList << key;
+            } else {
+                sList << visibleKeyToBusValueTranslationMap[key].toString();
+            }
         }
     }
     return sList.join(",");
@@ -490,6 +494,26 @@ void ComboBoxWithChecksWidget::initModelView() {
     comboBox->setView(vw);
 }
 
+/************************************************************************/
+/* ComboBoxWithChecksAndVisibleNameWidget */
+/************************************************************************/
+/*
+ ComboBoxWithChecksAndVisibleNameWidget::ComboBoxWithChecksAndVisibleNameWidget(const QVariantMap &visibleKeyValueMap, 
+     const QVariantMap &visibleKeyToBusValueTranslationMap, QWidget *parent)
+     : ComboBoxWithChecksWidget(visibleKeyValueMap, parent), visibleKeyToBusValueTranslationMap(visibleKeyToBusValueTranslationMap) {
+}
+
+QVariant ComboBoxWithChecksAndVisibleNameWidget::value() {
+    QStringList sList;
+    const QList<QString> &keys = items.keys();
+    for (const QString &key : qAsConst(keys)) {
+        if (items[key].toBool()) {
+            sList << visibleKeyToBusValueTranslationMap[key].toString();
+        }
+    }
+    return sList.join(",");
+}
+*/
 /************************************************************************/
 /* URLWidget */
 /************************************************************************/

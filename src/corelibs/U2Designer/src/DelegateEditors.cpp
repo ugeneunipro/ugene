@@ -404,15 +404,14 @@ PropertyDelegate::Type ComboBoxWithDbUrlsDelegate::type() const {
 /********************************
 * ComboBoxWithChecksDelegate
 ********************************/
-
 PropertyWidget *ComboBoxWithChecksDelegate::createWizardWidget(U2OpStatus & /*os*/, QWidget *parent) const {
-    return new ComboBoxWithChecksWidget(items, parent);
+    return new ComboBoxWithChecksWidget(items, visibleKeyToBusValueTranslationMap, parent);
 }
 
 QWidget *ComboBoxWithChecksDelegate::createEditor(QWidget *parent,
                                                   const QStyleOptionViewItem & /* option */,
                                                   const QModelIndex & /* index */) const {
-    ComboBoxWithChecksWidget *editor = new ComboBoxWithChecksWidget(items, parent);
+    ComboBoxWithChecksWidget *editor = new ComboBoxWithChecksWidget(items, visibleKeyToBusValueTranslationMap, parent);
     connect(editor, SIGNAL(valueChanged(const QString &)), this, SIGNAL(si_valueChanged(const QString &)));
     connect(editor, SIGNAL(si_valueChanged(const QVariant &)), SLOT(sl_commit()));
     return editor;

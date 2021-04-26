@@ -152,7 +152,8 @@ void ConvertFilesFormatWorkerFactory::init() {
         delegates[BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()] = new ComboBoxDelegate(formatsIds);
 
         QVariantMap formatsBooleans = getFormatsMap(BOOLEANS);
-        delegates[EXCLUDED_FORMATS_ID] = new ComboBoxWithChecksDelegate(formatsBooleans);
+        QVariantMap translationMap = getFormatsMap(IDS);
+        delegates[EXCLUDED_FORMATS_ID] = new ComboBoxWithChecksDelegate(formatsBooleans, translationMap);
 
         QVariantMap directoryMap;
         QString fileDir = ConvertFilesFormatWorker::tr("Input file");
@@ -186,14 +187,7 @@ void ConvertFilesFormatWorker::init() {
     inputUrlPort = ports.value(INPUT_PORT);
     outputUrlPort = ports.value(OUTPUT_PORT);
     targetFormat = getValue<QString>(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
-    QStringList excludedFormatNames = getValue<QString>(EXCLUDED_FORMATS_ID).split(",", QString::SkipEmptyParts);
-    const QStringList formatIdsList = AppContext::getDocumentFormatRegistry()->getRegisteredFormats();
-    for (const QString &formatId : qAsConst(formatIdsList)) {
-        const QString formatName = AppContext::getDocumentFormatRegistry()->getFormatById(formatId)->getFormatName();
-        if (excludedFormatNames.contains(formatName)) {
-            excludedFormats.append(formatId);
-        }
-    }
+    excludedFormats = getValue<QString>(EXCLUDED_FORMATS_ID).split(",", QString::SkipEmptyParts);
 }
 
 bool ConvertFilesFormatWorker::ensureFileExists(const QString &url) {
