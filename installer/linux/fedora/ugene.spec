@@ -52,7 +52,6 @@ is a designer for custom bioinformatics workflows.
 %else
         UGENE_WITHOUT_NON_FREE=1 \
 %endif
-        UGENE_EXCLUDE_LIST_ENABLED=1
 
 
 make %{?_smp_mflags}

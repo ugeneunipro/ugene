@@ -247,13 +247,6 @@ is_debug_build() {
     D=d
 }
 
-#Variable enabling exclude list for ugene modules
-#UGENE_EXCLUDE_LIST_ENABLED = 1
-defineTest( exclude_list_enabled ) {
-    contains( UGENE_EXCLUDE_LIST_ENABLED, 1 ) : return (true)
-    return (false)
-}
-
 #Variable enabling exclude list for ugene non-free modules
 defineTest( without_non_free ) {
     contains( UGENE_WITHOUT_NON_FREE, 1 ) : return (true)
@@ -283,8 +276,4 @@ defineTest(minQtVersion) {
         return(true)
     }
     return(false)
-}
-
-if (exclude_list_enabled()) {
-    DEFINES += HI_EXCLUDED
 }
