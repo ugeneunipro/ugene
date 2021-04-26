@@ -64,7 +64,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
              QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
              GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
              GTKeyboardDriver::keyClick(Qt::Key_Escape);
-             GTGlobals::sleep(500);
 
              GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
          }
@@ -127,7 +126,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
              QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
              GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
              GTKeyboardDriver::keyClick(Qt::Key_Escape);
-             GTGlobals::sleep(500);
 
              GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
          }
@@ -190,7 +188,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
              QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
              GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
              GTKeyboardDriver::keyClick(Qt::Key_Escape);
-             GTGlobals::sleep(500);
 
              GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
          }
@@ -251,7 +248,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
              QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
              GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
              GTKeyboardDriver::keyClick(Qt::Key_Escape);
-             GTGlobals::sleep(500);
 
              GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
          }
@@ -312,7 +308,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
              QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
              GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
              GTKeyboardDriver::keyClick(Qt::Key_Escape);
-             GTGlobals::sleep(500);
 
              GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
          }
@@ -372,7 +367,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
              QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
              GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
              GTKeyboardDriver::keyClick(Qt::Key_Escape);
-             GTGlobals::sleep(500);
 
              GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
          }
