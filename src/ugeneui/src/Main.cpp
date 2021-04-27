@@ -143,6 +143,7 @@
 //U2Private imports
 #include <AppContextImpl.h>
 #include <AppSettingsImpl.h>
+#include <BundleInfoMac.h>
 #include <DocumentFormatRegistryImpl.h>
 #include <IOAdapterRegistryImpl.h>
 #include <PluginSupportImpl.h>
@@ -216,17 +217,10 @@ static void setDataSearchPaths() {
         dataSearchPaths.push_back(appDirPath + RELATIVE_DEV_DATA_DIR);
 #ifdef Q_OS_MAC
     } else {
-        CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
-        CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
-                                                      kCFURLPOSIXPathStyle);
-        const char *bundlePath = CFStringGetCStringPtr(macPath,
-                                                       CFStringGetSystemEncoding());
-        QString dataDir = QString(bundlePath) + "/Contents/Resources/data";
-        if (QDir(dataDir).exists()) {    //data location in Resources
+        QString dataDir = BundleInfoMac::getExtraTranslationSearchPath(cmdLineRegistry);
+        if (!dataDir.isEmpty()) {
             dataSearchPaths.push_back(dataDir);
         }
-        CFRelease(appUrlRef);
-        CFRelease(macPath);
 #endif
     }
 
@@ -518,7 +512,9 @@ int main(int argc, char **argv) {
         QStringList translationFileList = {
             "transl_" + findKey(envList, "UGENE_TRANSLATION"),
             userAppSettings->getTranslationFile(),
-            "transl_" + QLocale::system().name().left(2).toLower()};
+            "transl_" + QLocale::system().name().left(2).toLower(),
+            BundleInfoMac.getExtraTranslationSearchPath(cmdLineRegistry)
+        };
         // Keep only valid entries.
         translationFileList.removeAll("");
         translationFileList.removeAll("transl_");
@@ -534,29 +530,6 @@ int main(int argc, char **argv) {
     if (!translator.isEmpty()) {
         QCoreApplication::installTranslator(&translator);
         GObjectTypes::initTypeTranslations();
-#ifdef Q_OS_MAC
-    } else {
-        CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
-        CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
-                                                      kCFURLPOSIXPathStyle);
-        const char *bundlePath = CFStringGetCStringPtr(macPath,
-                                                       CFStringGetSystemEncoding());
-        QString translationFileDir = QString(bundlePath) + "/Contents/Resources";
-        QString envTranslation = findKey(envList, "UGENE_TRANSLATION");
-        QString transl = "transl_en";
-        if (!envTranslation.isEmpty()) {
-            transl = QString("transl_") + envTranslation;
-        }
-        if (translator.load(transl, translationFileDir)) {
-            settings->setValue("UGENE_CURR_TRANSL", transl.right(2));
-        }
-        CFRelease(appUrlRef);
-        CFRelease(macPath);
-        if (!translator.isEmpty()) {
-            QCoreApplication::installTranslator(&translator);
-            GObjectTypes::initTypeTranslations();
-        }
-#endif
     }
     GObjectTypes::initTypeIcons();
 

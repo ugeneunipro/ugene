@@ -33,14 +33,17 @@
 
 namespace U2 {
 
-#ifdef Q_OS_MAC
-
 class BundleInfoMac {
 public:
+#ifdef Q_OS_MAC
     static QString getExtraTranslationSearchPath(CMDLineRegistry *);
-};
-
+    static QString getDataSearchPath();
+#else
+    static QString getExtraTranslationSearchPath(CMDLineRegistry *) { return ""; }
+    static QString getDataSearchPath() { return ""; }
 #endif
+
+};
 
 }    // namespace U2
 

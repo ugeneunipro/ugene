@@ -45,6 +45,23 @@ QString BundleInfoMac::getExtraTranslationSearchPath(CMDLineRegistry *cmdLineReg
     return returnPath;
 }
 
+QString BundleInfoMac::getDataSearchPath() {
+    BundleInfoMac::getExtraTranslationSearchPath(cmdLineRegistry)
+    CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
+    CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
+                                                  kCFURLPOSIXPathStyle);
+    const char *bundlePath = CFStringGetCStringPtr(macPath,
+                                                   CFStringGetSystemEncoding());
+    QString dataDir = QString(bundlePath) + "/Contents/Resources/data";
+    if (!QDir(dataDir).exists()) {    //data location in Resources
+        dataDir = "";
+    }
+    CFRelease(appUrlRef);
+    CFRelease(macPath);
+
+    return dataDir;
+}
+
 #endif
 
 }    // namespace U2

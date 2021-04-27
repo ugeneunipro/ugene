@@ -178,7 +178,6 @@ static void setDataSearchPaths() {
         QString dataDir = QString(bundlePath) + "/Contents/Resources/data";
         if (QDir(dataDir).exists()) {    //data location in Resources
             dataSearchPaths.push_back(dataDir);
-            printf("ADDED PATH %s \n", qPrintable(dataDir));
         }
         CFRelease(appUrlRef);
         CFRelease(macPath);
@@ -271,10 +270,8 @@ int main(int argc, char **argv) {
     QStringList translationFileList = {
         "transl_" + cmdLineRegistry->getParameterValue(CMDLineCoreOptions::TRANSLATION),
         userAppSettings->getTranslationFile(),
-        "transl_" + QLocale::system().name().left(2).toLower()
-#ifdef Q_OS_MAC
-        , BundleInfoMac::getExtraTranslationSearchPath(cmdLineRegistry)
-#endif
+        "transl_" + QLocale::system().name().left(2).toLower(),
+        BundleInfoMac::getExtraTranslationSearchPath(cmdLineRegistry)
     };
     // Keep only valid entries.
     translationFileList.removeAll("");
@@ -287,10 +284,6 @@ int main(int argc, char **argv) {
             break;
         }
         failedToLoadTranslatorFiles << translationFile;
-    }
-    if (!trOK) {
-        fprintf(stderr, "No translations found, exiting\n");
-        return 1;
     }
 
     // 2 create functional components of congene
