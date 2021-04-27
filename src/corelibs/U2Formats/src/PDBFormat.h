@@ -103,6 +103,9 @@ private:
         bool seqResContains(char chainIdentier, int residueIndex, char acronym);
         QByteArray getNextSpecLine();
 
+        // Returns the end-of-name index for `specification`.
+        int endOfNameInd(const QString &specification);
+
     public:
         PDBParser(IOAdapter *io);
         void parseBioStruct3D(BioStruct3D &biostruct, U2OpStatus &ts);

@@ -87,6 +87,17 @@ class GTest_BioStruct3DAtomResidueName : public XmlTest {
     int modelId;
 };
 
+class GTest_BioStruct3DMoleculeName : public XmlTest {
+    Q_OBJECT
+    SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_BioStruct3DMoleculeName, "check-biostruct3d-molecule-name");
+
+    ReportResult report();
+
+    QString objContextName;
+    QString molName;
+    int chainInd;
+};
+
 class GTest_PDBFormatStressTest : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_PDBFormatStressTest, "try-load-all-pdb-documents");

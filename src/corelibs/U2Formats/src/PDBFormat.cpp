@@ -282,16 +282,6 @@ void PDBFormat::PDBParser::parseMacromolecularContent(bool firstCompndLine, U2Op
     Details
     */
 
-    // Returns the end-of-name index for `specification`.
-    auto endOfNameInd = [&](const QString &specification) {
-        int index = QRegExp(";\\s*$").indexIn(specification);
-        if (index < 0) {
-            return specification.size();
-        }
-        readingMoleculeName = false;    // Molecule name has ended.
-        return index;
-    };
-
     if (!firstCompndLine) {
         QString specification = currentPDBLine.mid(10, currentPDBLine.size() - 11).trimmed().toLatin1();
         if (specification.startsWith(MOLECULE_TAG)) {
@@ -618,6 +608,15 @@ void PDBFormat::PDBParser::createMolecule(char chainIdentifier, BioStruct3D &bio
 
 void PDBFormat::PDBParser::updateResidueIndexes(BioStruct3D & /*biostruc*/) {
 }
+
+int PDBFormat::PDBParser::endOfNameInd(const QString &specification) {
+    int index = QRegExp(";\\s*$").indexIn(specification);
+    if (index < 0) {
+        return specification.size();
+    }
+    readingMoleculeName = false;    // Molecule name has ended.
+    return index;
+};
 
 char PDBFormat::getAcronymByName(const QByteArray &name) {
     if (acronymNameMap.contains(name))
