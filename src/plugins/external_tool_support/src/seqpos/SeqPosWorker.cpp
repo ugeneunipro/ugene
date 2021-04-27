@@ -148,7 +148,7 @@ PropertyWidget *SeqPosComboBoxWithChecksDelegate::createWizardWidget(U2OpStatus 
 /* SeqPosComboBoxWithChecksWidget */
 /************************************************************************/
 SeqPosComboBoxWithChecksWidget::SeqPosComboBoxWithChecksWidget(const QVariantMap &items, QWidget *parent)
-    : ComboBoxWithChecksWidget(items, QVariantMap(), parent),
+    : ComboBoxWithChecksWidget(items, QMap<QString, QString>(), parent),
       hintLabel(NULL) {
     QLayout *l = layout();
     if (l) {

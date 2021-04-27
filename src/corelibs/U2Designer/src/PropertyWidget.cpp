@@ -409,8 +409,8 @@ QVariantMap ComboBoxWithDbUrlWidget::getItems() const {
 /************************************************************************/
 /* ComboBoxWithChecksWidget */
 /************************************************************************/
-ComboBoxWithChecksWidget::ComboBoxWithChecksWidget(const QVariantMap &_items, const QVariantMap &_visibleKeyToBusValueTranslationMap, QWidget *parent)
-    : PropertyWidget(parent), cm(nullptr), items(_items), visibleKeyToBusValueTranslationMap(_visibleKeyToBusValueTranslationMap) {
+ComboBoxWithChecksWidget::ComboBoxWithChecksWidget(const QVariantMap &_items, const QMap<QString, QString> &_visibleKeyToBusValueMap, QWidget *parent)
+    : PropertyWidget(parent), cm(nullptr), items(_items), visibleKeyToBusValueMap(_visibleKeyToBusValueMap), getVisibleValue(false) {
     comboBox = new QComboBox(this);
     addMainWidget(comboBox);
     initModelView();
@@ -425,10 +425,10 @@ QVariant ComboBoxWithChecksWidget::value() {
     const QList<QString> &keys = items.keys();
     for (const QString &key: qAsConst(keys)) {
         if (items[key].toBool()) {
-            if (visibleKeyToBusValueTranslationMap.isEmpty()) {
+            if (visibleKeyToBusValueMap.isEmpty() || getVisibleValue) {
                 sList << key;
             } else {
-                sList << visibleKeyToBusValueTranslationMap[key].toString();
+                sList << visibleKeyToBusValueMap[key];
             }
         }
     }
@@ -436,7 +436,9 @@ QVariant ComboBoxWithChecksWidget::value() {
 }
 
 void ComboBoxWithChecksWidget::setValue(const QVariant &value) {
+    getVisibleValue = true;
     QStringList curList = value.toString().split(',', QString::SkipEmptyParts);
+    getVisibleValue = false;
     // 0-item is a `ghostItem` with the result of all currently checked checkboxes. That's why we start with 1.
     for (int i = 1; i < cm->rowCount(); i++) {
         QStandardItem *item = cm->item(i);
@@ -455,16 +457,19 @@ void ComboBoxWithChecksWidget::sl_valueChanged(int) {
 void ComboBoxWithChecksWidget::sl_itemChanged(QStandardItem *item) {
     QStandardItem *standardItem = item;
     QString key = standardItem->data().toString();
-
+    getVisibleValue = true;
     if (items.contains(key)) {
         bool newCheckState = standardItem->checkState() == Qt::Checked;
         if (items.value(key).toBool() != newCheckState) {
             items[key] = newCheckState;
-            sl_valueChanged(0);
+            comboBox->setCurrentIndex(0);
+            emit si_valueChanged(value());
+            
         }
     }
 
     comboBox->setItemText(0, value().toString());
+    getVisibleValue = false;
 }
 
 void ComboBoxWithChecksWidget::initModelView() {
@@ -494,26 +499,6 @@ void ComboBoxWithChecksWidget::initModelView() {
     comboBox->setView(vw);
 }
 
-/************************************************************************/
-/* ComboBoxWithChecksAndVisibleNameWidget */
-/************************************************************************/
-/*
- ComboBoxWithChecksAndVisibleNameWidget::ComboBoxWithChecksAndVisibleNameWidget(const QVariantMap &visibleKeyValueMap, 
-     const QVariantMap &visibleKeyToBusValueTranslationMap, QWidget *parent)
-     : ComboBoxWithChecksWidget(visibleKeyValueMap, parent), visibleKeyToBusValueTranslationMap(visibleKeyToBusValueTranslationMap) {
-}
-
-QVariant ComboBoxWithChecksAndVisibleNameWidget::value() {
-    QStringList sList;
-    const QList<QString> &keys = items.keys();
-    for (const QString &key : qAsConst(keys)) {
-        if (items[key].toBool()) {
-            sList << visibleKeyToBusValueTranslationMap[key].toString();
-        }
-    }
-    return sList.join(",");
-}
-*/
 /************************************************************************/
 /* URLWidget */
 /************************************************************************/

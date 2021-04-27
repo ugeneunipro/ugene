@@ -329,8 +329,8 @@ public:
         : PropertyDelegate(parent), items(items) {
     }
 
-    ComboBoxWithChecksDelegate(const QVariantMap &items, const QVariantMap &visibleKeyToBusValueTranslationMap, QObject *parent = nullptr)
-        : PropertyDelegate(parent), items(items), visibleKeyToBusValueTranslationMap(visibleKeyToBusValueTranslationMap) {
+    ComboBoxWithChecksDelegate(const QVariantMap &items, const QMap<QString, QString> &visibleKeyToBusValueMap, QObject *parent = nullptr)
+        : PropertyDelegate(parent), items(items), visibleKeyToBusValueMap(visibleKeyToBusValueMap) {
     }
         
     virtual ~ComboBoxWithChecksDelegate() {
@@ -344,7 +344,7 @@ public:
     QVariant getDisplayValue(const QVariant &) const;
 
     virtual PropertyDelegate *clone() {
-        return new ComboBoxWithChecksDelegate(items, visibleKeyToBusValueTranslationMap, parent());
+        return new ComboBoxWithChecksDelegate(items, visibleKeyToBusValueMap, parent());
     }
 
     void getItems(QVariantMap &items) const;
@@ -357,7 +357,7 @@ private slots:
 
 protected:
     QVariantMap items;
-    QVariantMap visibleKeyToBusValueTranslationMap;
+    QMap<QString, QString> visibleKeyToBusValueMap;
 };
 
 class U2DESIGNER_EXPORT ComboBoxWithBoolsDelegate : public ComboBoxDelegate {

@@ -231,7 +231,7 @@ private:
 class U2DESIGNER_EXPORT ComboBoxWithChecksWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    ComboBoxWithChecksWidget(const QVariantMap &items, const QVariantMap &visibleKeyToBusValueTranslationMap = QVariantMap(), QWidget *parent = NULL);
+    ComboBoxWithChecksWidget(const QVariantMap &items, const QMap<QString, QString> &visibleKeyToBusValueMap = QMap<QString, QString>(), QWidget *parent = NULL);
     virtual QVariant value();
     virtual void setValue(const QVariant &value);
 
@@ -251,7 +251,12 @@ private:
     void initModelView();
 
 private:
-    QVariantMap visibleKeyToBusValueTranslationMap;
+    QMap<QString, QString> visibleKeyToBusValueMap;
+    /*
+    * variable to get 'visible value' when it needed instead of writing very similar value() method
+    * also we cant change value() signature because it virtual
+    */
+    bool getVisibleValue;
 };
 
 /************************************************************************/

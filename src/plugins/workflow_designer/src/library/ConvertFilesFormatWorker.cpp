@@ -142,7 +142,6 @@ void ConvertFilesFormatWorkerFactory::init() {
         Attribute *customDirAttr = new Attribute(customDir, BaseTypes::STRING_TYPE(), false, QVariant(""));
         customDirAttr->addRelation(new VisibilityRelation(OUT_MODE_ID, CUSTOM));
         a << customDirAttr;
-        //a << new Attribute( customDir, BaseTypes::STRING_TYPE(), false, QString(""));
         a << new Attribute(excludedFormats, BaseTypes::STRING_TYPE(), false);
     }
 
@@ -152,8 +151,13 @@ void ConvertFilesFormatWorkerFactory::init() {
         delegates[BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId()] = new ComboBoxDelegate(formatsIds);
 
         QVariantMap formatsBooleans = getFormatsMap(BOOLEANS);
-        QVariantMap translationMap = getFormatsMap(IDS);
-        delegates[EXCLUDED_FORMATS_ID] = new ComboBoxWithChecksDelegate(formatsBooleans, translationMap);
+        QMap<QString, QString> translationMapStr;
+        const QVariantMap translationMapQV = getFormatsMap(IDS);
+        const QStringList keys = translationMapQV.keys();
+        for (const QString &key : qAsConst(keys)) {
+            translationMapStr.insert(key, translationMapQV[key].toString());
+        }
+        delegates[EXCLUDED_FORMATS_ID] = new ComboBoxWithChecksDelegate(formatsBooleans, translationMapStr);
 
         QVariantMap directoryMap;
         QString fileDir = ConvertFilesFormatWorker::tr("Input file");
