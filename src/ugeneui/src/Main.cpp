@@ -217,7 +217,7 @@ static void setDataSearchPaths() {
         dataSearchPaths.push_back(appDirPath + RELATIVE_DEV_DATA_DIR);
 #ifdef Q_OS_MAC
     } else {
-        QString dataDir = BundleInfoMac::getExtraTranslationSearchPath(cmdLineRegistry);
+        QString dataDir = BundleInfoMac::getDataSearchPath();
         if (!dataDir.isEmpty()) {
             dataSearchPaths.push_back(dataDir);
         }
@@ -513,7 +513,7 @@ int main(int argc, char **argv) {
             "transl_" + findKey(envList, "UGENE_TRANSLATION"),
             userAppSettings->getTranslationFile(),
             "transl_" + QLocale::system().name().left(2).toLower(),
-            BundleInfoMac.getExtraTranslationSearchPath(cmdLineRegistry)
+            BundleInfoMac::getExtraTranslationSearchPath(cmdLineRegistry)
         };
         // Keep only valid entries.
         translationFileList.removeAll("");

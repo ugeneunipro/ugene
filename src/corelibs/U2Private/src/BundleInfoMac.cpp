@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <QDir>
 #include "BundleInfoMac.h"
 
 namespace U2 {
@@ -46,7 +47,6 @@ QString BundleInfoMac::getExtraTranslationSearchPath(CMDLineRegistry *cmdLineReg
 }
 
 QString BundleInfoMac::getDataSearchPath() {
-    BundleInfoMac::getExtraTranslationSearchPath(cmdLineRegistry)
     CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
     CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
                                                   kCFURLPOSIXPathStyle);
