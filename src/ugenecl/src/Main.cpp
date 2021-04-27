@@ -264,7 +264,6 @@ int main(int argc, char **argv) {
 
     // Set translations if needed: use value in the settings or cmd-line parameter override.
     // The default case 'en' does not need any files: the values for this locale are hardcoded in the code.
-    bool trOK = false;
     QTranslator translator;
     QStringList failedToLoadTranslatorFiles;    // List of translators file names tried but failed to load/not found.
     QStringList translationFileList = {
@@ -280,7 +279,6 @@ int main(int argc, char **argv) {
     // Use the first translation from the list that works.
     for (const QString &translationFile : qAsConst(translationFileList)) {
         if (translationFile == "transl_en" || translator.load(translationFile, AppContext::getWorkingDirectoryPath())) {
-            trOK = true;
             break;
         }
         failedToLoadTranslatorFiles << translationFile;
