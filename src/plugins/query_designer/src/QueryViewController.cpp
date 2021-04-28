@@ -166,7 +166,7 @@ void QueryScene::insertRow(int idx) {
             }
         }
     }
-    qSort(units.begin(), units.end(), yPosLessThan);
+    std::sort(units.begin(), units.end(), yPosLessThan);
     foreach (QGraphicsItem *it, units) {
         QPointF itPos = it->scenePos();
         itPos.ry() += GRID_STEP;

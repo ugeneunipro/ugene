@@ -295,14 +295,14 @@ void Annotation::findQualifiers(const QString &name, QList<U2Qualifier> &res) co
 }
 
 QString Annotation::findFirstQualifierValue(const QString &name) const {
-    SAFE_POINT(!name.isEmpty(), "Attempting to find a qualifier having an empty name!", QString::null);
+    SAFE_POINT(!name.isEmpty(), "Attempting to find a qualifier having an empty name!", QString());
 
     foreach (const U2Qualifier &qual, data->qualifiers) {
         if (name == qual.name) {
             return qual.value;
         }
     }
-    return QString::null;
+    return QString();
 }
 
 bool Annotation::annotationLessThan(Annotation *first, Annotation *second) {

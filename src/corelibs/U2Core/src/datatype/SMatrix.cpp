@@ -35,7 +35,7 @@ SMatrix::SMatrix(const QString &_name, const DNAAlphabet *_alphabet, const QList
     charsInRow = maxChar - minChar + 1;
 
     scores.resize(charsInRow * charsInRow);
-    qFill(scores.data(), scores.data() + scores.size(), -1000000);
+    std::fill(scores.data(), scores.data() + scores.size(), -1000000);
 
     minScore = 1000000;
     maxScore = -1000000;

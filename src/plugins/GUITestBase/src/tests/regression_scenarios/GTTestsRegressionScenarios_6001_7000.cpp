@@ -2073,7 +2073,7 @@ GUI_TEST_CLASS_DEFINITION(test_6298) {
     // 3. Press "OK" button
     // 4. Expected state: the alignment alphabet is "Standard amino acid"
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     //hack for mac
     MainWindow *mw = AppContext::getMainWindow();
     CHECK_SET_ERR(mw != NULL, "MainWindow is NULL");
@@ -6044,6 +6044,107 @@ GUI_TEST_CLASS_DEFINITION(test_6860) {
     // Expected state: columns from 1 to 11 are selected.
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 11, 18));
 }
+
+GUI_TEST_CLASS_DEFINITION(test_6862) {
+    //      Make sure the GUI of the Filter BAM/SAM files element is working correctly:
+    // Open WD
+    // Add Filter BAM/SAM files element to the scene
+    // Highlight this element
+    // Double click on the Accept flag value
+    // Select "Mate strand"
+    //  Expected state: "Mate strand" checked
+    // Click on an empty place on the scene
+    // Select Filter BAM/SAM files again
+    //  Expected state: Accept flag value is "Mate strand", the Mate strand is checked
+
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsWorkflowDesigner::addElement(os, "Filter BAM/SAM files");
+
+    GTUtilsWorkflowDesigner::click(os, "Filter BAM/SAM files");
+    GTUtilsWorkflowDesigner::setParameter(os, "Accept flag", "Mate strand", GTUtilsWorkflowDesigner::ComboChecks);
+
+    QString checkboxValue = GTComboBox::getCurrentText(os, GTWidget::findExactWidget<QComboBox *>(os, "mainWidget"));
+    CHECK_SET_ERR(checkboxValue == "Mate strand", QString("Accept flag value: expected 'Mate strand', current: '%1'").arg(checkboxValue))
+
+    // Click on an empty place on the scene
+    GTWidget::click(os, GTWidget::findWidget(os, "sceneView"));
+    // Select Filter BAM/SAM files element again
+    GTUtilsWorkflowDesigner::click(os, "Filter BAM/SAM files");
+
+    // Check that Mate strand is checked
+    GTUtilsWorkflowDesigner::clickParameter(os, "Accept flag");
+    GTUtilsWorkflowDesigner::clickParameter(os, "Accept flag");
+    checkboxValue = GTComboBox::getCurrentText(os, GTWidget::findExactWidget<QComboBox *>(os, "mainWidget"));
+    CHECK_SET_ERR(checkboxValue == "Mate strand", QString("Accept flag value (1): expected 'Mate strand', current: '%1'").arg(checkboxValue))
+
+    // To successfully complete the test
+    GTWidget::click(os, GTWidget::findWidget(os, "sceneView"));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6862_1) {
+    class CheckWizardWidget : public CustomScenario {
+    public:
+        void run(GUITestOpStatus &os) override {
+            for (int i = 0; i < 5; i++) {
+                GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            }
+            QString value = GTComboBox::getCurrentText(os, GTWidget::findExactWidget<QComboBox *>(os, "Motif database widget"));
+            CHECK_SET_ERR(value == "hpdi.xml", QString("Motif database value (2): expected 'hpdi.xml', current: '%1'").arg(value))
+
+            GTComboBox::checkValues(os, GTWidget::findExactWidget<QComboBox *>(os, "Motif database widget"), QStringList("cistrome.xml"));
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Apply);
+        }
+    };
+
+    //      Make sure the changes did not destroy good behavior in
+    //              . Clicking elsewhere after switching in a checkbox
+    //              . Wizard
+    //              . ComboBoxWithChecksWidget derived class
+    // Open data/workflow_samples/NGS/cistrome/chip_seq.uwl
+    // Select Collect Motifs with SeqPos element
+    // Change Motif database parameter from "cistrome.xml" to "hpdi.xml"
+    // Click on the name of the Motif database parameter
+    //     Expected state: Motif database value is "hpdi.xml"
+    // Click on empty place on the scene
+    // Call schema wizard
+    // Click Next 5 times
+    //     Expected state: Motif database value is "hpdi.xml"
+    // Set "cistrome.xml" as the Motif database parameter
+    // Click Next and Apply
+    //     Expected state: Motif database value is "cistrome.xml"
+
+    GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new StartupDialogFiller(os));
+    GTFileDialog::openFile(os, dataDir + "workflow_samples/NGS/cistrome/chip_seq.uwl");
+
+    GTUtilsWorkflowDesigner::click(os, "Collect Motifs with SeqPos");
+    GTUtilsWorkflowDesigner::setParameter(os, "Motif database", "hpdi.xml", GTUtilsWorkflowDesigner::ComboChecks);
+
+    // Click on the name of the Motif database parameter
+    QTableView *table = GTUtilsWorkflowDesigner::getParametersTable(os);
+    GTMouseDriver::moveTo(GTTableView::getCellPosition(os, table, 0, 4));
+    GTThread::waitForMainThread();
+    GTMouseDriver::click();
+
+    // Check that Motif database value is "hpdi.xml"
+    QString value = GTUtilsWorkflowDesigner::getParameter(os, "Motif database");
+    CHECK_SET_ERR(value == "hpdi.xml", QString("Motif database value: expected 'hpdi.xml', current: '%1'").arg(value))
+
+    // Click on empty place on the scene
+    GTWidget::click(os, GTWidget::findWidget(os, "sceneView"));
+
+    // Fill wizard
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "ChIP-seq Analysis Wizard", new CheckWizardWidget()));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, "mwtoolbar_activemdi", "Show wizard");
+
+    // Check that Motif database value is "cistrome.xml"
+    GTUtilsWorkflowDesigner::click(os, "Collect Motifs with SeqPos");
+    value = GTUtilsWorkflowDesigner::getParameter(os, "Motif database");
+    CHECK_SET_ERR(value == "cistrome.xml", QString("Motif database value: expected 'cistrome.xml', current: '%1'").arg(value))
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6875) {
     //1. Open "_common_data/genbank/HQ007052.gb" sequence.
     GTFileDialog::openFile(os, testDir + "_common_data/genbank/HQ007052.gb");
@@ -6677,6 +6778,35 @@ GUI_TEST_CLASS_DEFINITION(test_6960) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Export project...");
     GTGlobals::sleep();
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6963) {
+    //1. Open Application Settings and check if WindowsVista on Windows or Macintosh on macOS styles are exist
+    class CheckStyleScenario : public CustomScenario {
+        void run(HI::GUITestOpStatus& os) override {
+            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+
+            AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::General);
+
+            QComboBox* styleCombo = GTWidget::findExactWidget<QComboBox*>(os, "styleCombo", dialog);
+
+            QString text;
+            if (isOsWindows()) {
+                text = "WindowsVista";
+            } else if (isOsMac()) {
+                text = "Macintosh";
+            } else if (isOsLinux()) {
+                text = "Fusion";
+            }
+
+            GTComboBox::selectItemByText(os, styleCombo, text);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new CheckStyleScenario()));
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..." }, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 

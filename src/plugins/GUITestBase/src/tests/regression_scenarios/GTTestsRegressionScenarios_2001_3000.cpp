@@ -2249,14 +2249,11 @@ GUI_TEST_CLASS_DEFINITION(test_2352) {
     //3. Select any binary file as first file in dialog
     //Expected state: file is not selected, no crash
 
-    QString bin = QCoreApplication::applicationFilePath();
-    GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, bin, bin, false, false, false, 5, 5, true));
+    QString randomBinaryFile = QCoreApplication::applicationFilePath();
+
+    GTUtilsDialog::waitForDialog(os, new BuildDotPlotFiller(os, randomBinaryFile, randomBinaryFile, false, false, false, 5, 5, true));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
-
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Build dotplot...");
-
-    GTGlobals::sleep();
+    GTMenu::clickMainMenuItem(os, {"Tools", "Build dotplot..."});
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2360) {
@@ -2615,7 +2612,7 @@ GUI_TEST_CLASS_DEFINITION(test_2401) {
     // Expected: the file is imported without errors, the assembly is opened.
     // 4. Close the project.
     GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
 #else
@@ -4751,7 +4748,7 @@ GUI_TEST_CLASS_DEFINITION(test_2762) {
         }
         virtual void run() {
             GTGlobals::sleep();
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
             QDialogButtonBox *buttonBox = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox"));
             QAbstractButton *cancel = buttonBox->button(QDialogButtonBox::Cancel);
             GTWidget::click(os, cancel);

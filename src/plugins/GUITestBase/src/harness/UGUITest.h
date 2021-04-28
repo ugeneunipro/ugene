@@ -39,7 +39,7 @@ using namespace HI;
 /**
  * A namespace for known GUI test labels and utility methods.
  */
-class U2TEST_EXPORT UGUITestLabels {
+class UGUITestLabels {
 public:
     /**
      * A label to mark test as included into the default nightly GUI test suite.
@@ -94,7 +94,7 @@ public:
 };
 
 /** GUI test with quick access to UGENE specific runtime variables: testDir, dataDir ... */
-class U2TEST_EXPORT UGUITest : public GUITest {
+class UGUITest : public GUITest {
     Q_OBJECT
 public:
     UGUITest(const QString &name, const QString &suite, int timeout, const QSet<QString> &labelSet)

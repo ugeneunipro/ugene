@@ -22,7 +22,7 @@
 #ifndef GT_TESTS_METAPHLAN_H
 #define GT_TESTS_METAPHLAN_H
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 

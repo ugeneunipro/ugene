@@ -40,7 +40,7 @@
 
 namespace U2 {
 
-#if defined(Q_OS_LINUX) | defined(Q_OS_MAC)
+#if defined(Q_OS_LINUX) | defined(Q_OS_DARWIN)
 const QString SaveDocumentInFolderController::HOME_DIR_IDENTIFIER = "~/";
 #else
 const QString SaveDocumentInFolderController::HOME_DIR_IDENTIFIER = "%UserProfile%/";

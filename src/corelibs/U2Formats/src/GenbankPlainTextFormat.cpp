@@ -85,19 +85,35 @@ bool GenbankPlainTextFormat::isStreamingSupport() {
 }
 
 bool GenbankPlainTextFormat::readIdLine(ParserState *st) {
-    if (!st->hasKey("LOCUS")) {
+    static const QByteArray LOCUS = DNAInfo::LOCUS.toLocal8Bit();
+    if (!st->hasKey(LOCUS)) {
         QByteArray rawData(st->buff);
-        int locusStartPos = rawData.indexOf("\nLOCUS");
-        if (-1 == locusStartPos) {
-            st->si.setError(tr("LOCUS is not the first line"));
-            return false;
-        } else {
+        int locusStartPos = rawData.indexOf("\n" + LOCUS);
+        if (locusStartPos != -1) { //We are here if the "GenBank" file has some pre-description (see UGENE-4463)
             while (locusStartPos >= st->len) {
                 st->readNextLine();
                 rawData = QByteArray(st->buff);
-                locusStartPos = rawData.indexOf("\nLOCUS");
+                locusStartPos = rawData.indexOf("\n" + LOCUS);
             }
             st->buff = st->buff + locusStartPos;
+        } else {
+            //The GenBank file should have the indent (st->valOffset) before the real data
+            //Possibly, this GenBank file doesn't have the strong indent (UGENE-7092)
+            rawData = QByteArray::fromRawData(st->buff, st->len);
+            CHECK_EXT(rawData.indexOf(LOCUS) == 0, st->si.setError(tr("LOCUS is not the first line")), false);
+
+            //Indent before the beginnig of the line and name of the sequence
+            int indentBeforeName = 0;
+            do {
+                if (indentBeforeName == 0) {
+                    indentBeforeName = LOCUS.size();
+                } else {
+                    indentBeforeName++;
+                }
+                rawData = QByteArray::fromRawData(st->buff + indentBeforeName, st->len - indentBeforeName);
+            } while (rawData.front() == ' ');
+            int shiftToLeft = st->valOffset - indentBeforeName;
+            st->buff -= shiftToLeft;
         }
     }
 
@@ -799,7 +815,7 @@ void GenbankPlainTextFormat::writeAnnotations(IOAdapter *io, const QList<GObject
         sortedAnnotations += ao->getAnnotations();
     }
 
-    qStableSort(sortedAnnotations.begin(), sortedAnnotations.end(), Annotation::annotationLessThanByRegion);
+    std::stable_sort(sortedAnnotations.begin(), sortedAnnotations.end(), Annotation::annotationLessThanByRegion);
 
     for (int i = 0; i < sortedAnnotations.size(); ++i) {
         Annotation *a = sortedAnnotations.at(i);

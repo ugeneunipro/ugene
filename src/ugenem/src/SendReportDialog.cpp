@@ -59,7 +59,7 @@
 //#define HOST_URL "http://127.0.0.1:80"
 #ifdef Q_OS_LINUX
 #    define DESTINATION_URL_KEEPER_PAGE "/crash_reports_dest_breakpad_lin.html"
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_DARWIN)
 #    define DESTINATION_URL_KEEPER_PAGE "/crash_reports_dest_breakpad_mac.html"
 #elif defined(Q_OS_UNIX)
 #    define DESTINATION_URL_KEEPER_PAGE "/crash_reports_dest_breakpad_unx.html"
@@ -272,7 +272,7 @@ QString SendReportDialog::getUgeneExecutablePath() const {
     isWin = true;
     name = "ugeneui.exe";
 #endif
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     name = "ugeneui";
 #endif
 #ifdef QT_DEBUG
@@ -376,7 +376,7 @@ QString ReportSender::getOSVersion() {
     result = "Linux";
 #elif defined(Q_OS_FREEBSD)
     result = "FreeBSD";
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_DARWIN)
     result = "Mac ";
     switch (static_cast<int>(QSysInfo::MacintoshVersion)) {
     case QSysInfo::MV_9:
@@ -430,7 +430,7 @@ int ReportSender::getTotalPhysicalMemory() {
     return (int)(getMemorySize() / (1024 * 1024));
 }
 
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
 void cpuID(unsigned i, unsigned regs[4]) {
 #    ifdef _WIN32
     __cpuid((int *)regs, (int)i);
@@ -458,7 +458,7 @@ void cpuID(unsigned i, unsigned regs[4]) {
 
 QString ReportSender::getCPUInfo() {
     QString result;
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
     unsigned regs[4];
 
     // Get vendor

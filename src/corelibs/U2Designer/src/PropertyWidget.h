@@ -246,6 +246,9 @@ protected:
 protected slots:
     virtual void sl_valueChanged(int index);
     virtual void sl_itemChanged(QStandardItem *item);
+
+private:
+    void initModelView();
 };
 
 /************************************************************************/

@@ -28,7 +28,7 @@
 #include <U2Core/Settings.h>
 #include <U2Core/U2DbiUtils.h>
 
-#include <U2Test/UGUITest.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 
@@ -61,7 +61,7 @@ QString getStringSetting(const QString &key) {
 QString getOsSuffix() {
 #if defined(Q_OS_WIN)
     return "_win";
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_DARWIN)
     return "_mac";
 #else
     return "_linux";

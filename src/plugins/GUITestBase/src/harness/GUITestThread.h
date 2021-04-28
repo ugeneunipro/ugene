@@ -34,7 +34,7 @@ using namespace HI;
 
 class Logger;
 
-class U2TEST_EXPORT GUITestThread : public QThread {
+class GUITestThread : public QThread {
     Q_OBJECT
 public:
     GUITestThread(GUITest *test, bool isCleanupNeeded = true);

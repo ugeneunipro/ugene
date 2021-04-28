@@ -67,7 +67,7 @@ char MSAConsensusAlgorithmDefault::getConsensusCharAndScore(const MultipleAlignm
             freqs[idx].second = c;
         }
     }
-    qSort(freqs);
+    std::sort(freqs.begin(), freqs.end());
     int p1 = freqs[freqs.size() - 1].first;
     int p2 = freqs[freqs.size() - 2].first;
     if (p1 == 0 || (p1 == 1 && nSeq > 1)) {

@@ -82,7 +82,7 @@ void ExternalToolSupportAction::setState(bool isAnyToolConfigured) {
         }
     }
 
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
     // On Mac OS X native menu bar ignores font style changes providing via Qt.
     // Result is not an italic font, it has normal style but less size.
     // Turning off the italic style doesn't return the font's previous state.

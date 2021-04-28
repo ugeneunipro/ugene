@@ -22,7 +22,7 @@
 #ifndef GTTESTSSTARTPAGE_H
 #define GTTESTSSTARTPAGE_H
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 

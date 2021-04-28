@@ -342,7 +342,7 @@ void CircularAnnotationLabel::drawLabelOutsideRegion(QPainter *p, QPen &pen) {
 }
 
 void CircularAnnotationLabel::setLabelsVisible(QList<CircularAnnotationLabel *> &labelItems) {
-    qSort<QList<CircularAnnotationLabel *>::iterator>(labelItems.begin(), labelItems.end(), labelLengthLessThan);
+    std::sort<QList<CircularAnnotationLabel *>::iterator>(labelItems.begin(), labelItems.end(), labelLengthLessThan);
     foreach (CircularAnnotationLabel *l, labelItems) {
         l->setVisible(true);
     }

@@ -229,7 +229,7 @@ void PrimerGrouperTask::findCompatibleGroups() {
     }
 
     if (!compatiblePrimersGroups.isEmpty()) {
-        qSort(compatiblePrimersGroups.begin(), compatiblePrimersGroups.end(), groupsCompareFunction);
+        std::sort(compatiblePrimersGroups.begin(), compatiblePrimersGroups.end(), groupsCompareFunction);
         createReport(compatiblePrimersGroups);
         writeReportToFile();
     }

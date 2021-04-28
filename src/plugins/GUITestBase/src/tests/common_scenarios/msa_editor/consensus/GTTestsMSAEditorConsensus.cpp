@@ -57,7 +57,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Consensus mode", GTGlobals::UseMouse));
     GTMenu::showContextMenu(os, seq);
-    GTGlobals::sleep(500);
 
     QComboBox *consensusCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusCombo != NULL, "consensusCombo is NULL");
@@ -336,7 +335,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //2. Open general option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
-    GTGlobals::sleep(200);
     QComboBox *consensusType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusType != NULL, "consensus combobox not found");
     //3. Select "Default" consensus mode. Limits are 1-100
@@ -369,7 +367,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //2. Open general option panel tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
-    GTGlobals::sleep(200);
 
     QComboBox *consensusType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "consensusType"));
     CHECK_SET_ERR(consensusType != NULL, "consensus combobox not found");
@@ -381,19 +378,16 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTComboBox::selectItemByText(os, consensusType, "Default");
     GTSpinBox::setValue(os, thresholdSpinBox, 10, GTGlobals::UseKeyBoard);
     GTWidget::click(os, thresholdResetButton);
-    GTGlobals::sleep(500);
     checkValues(os, 100);
     //3. Select "Levitsky" consensus mode
     GTComboBox::selectItemByText(os, consensusType, "Levitsky");
     GTSpinBox::setValue(os, thresholdSpinBox, 70, GTGlobals::UseKeyBoard);
     GTWidget::click(os, thresholdResetButton);
-    GTGlobals::sleep(500);
     checkValues(os, 90);
     //3. Select "Strict" consensus mode
     GTComboBox::selectItemByText(os, consensusType, "Strict");
     GTSpinBox::setValue(os, thresholdSpinBox, 10, GTGlobals::UseKeyBoard);
     GTWidget::click(os, thresholdResetButton);
-    GTGlobals::sleep(500);
     checkValues(os, 100);
 }
 }    // namespace GUITest_common_scenarios_msa_editor_consensus

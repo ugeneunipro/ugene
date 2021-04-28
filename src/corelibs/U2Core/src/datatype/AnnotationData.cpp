@@ -121,7 +121,7 @@ QString AnnotationData::findFirstQualifierValue(const QString &name) const {
             return q.value;
         }
     }
-    return QString::null;
+    return QString();
 }
 
 bool AnnotationData::operator<(const AnnotationData &other) const {

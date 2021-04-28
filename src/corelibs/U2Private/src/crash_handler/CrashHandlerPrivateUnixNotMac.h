@@ -23,7 +23,7 @@
 #define _U2_CRASH_HANDLER_PRIVATE_UNIX_NOT_MAC_H_
 
 #include <qglobal.h>
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_DARWIN)
 
 #    include <client/linux/handler/exception_handler.h>
 

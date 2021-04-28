@@ -23,7 +23,7 @@ k
 #ifndef GTTESTS_TREE_VIEWER_H_
 #define GTTESTS_TREE_VIEWER_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 

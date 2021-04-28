@@ -202,6 +202,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_sequence/image_export/SingleSequenceImageExportController.h \
            src/ov_sequence/image_export/SingleSequenceImageExportTask.h \
            src/ov_sequence/sequence_info/CharOccurTask.h \
+           src/ov_sequence/sequence_info/CodonOccurTask.h \
            src/ov_sequence/sequence_info/DNAStatisticsTask.h \
            src/ov_sequence/sequence_info/DinuclOccurTask.h \
            src/ov_sequence/sequence_info/SequenceInfo.h \
@@ -471,6 +472,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_sequence/image_export/SingleSequenceImageExportController.cpp \
            src/ov_sequence/image_export/SingleSequenceImageExportTask.cpp \
            src/ov_sequence/sequence_info/CharOccurTask.cpp \
+           src/ov_sequence/sequence_info/CodonOccurTask.cpp \
            src/ov_sequence/sequence_info/DinuclOccurTask.cpp \
            src/ov_sequence/sequence_info/DNAStatisticsTask.cpp \
            src/ov_sequence/sequence_info/SequenceInfo.cpp \

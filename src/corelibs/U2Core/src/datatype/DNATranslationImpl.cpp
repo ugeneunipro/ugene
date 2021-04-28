@@ -113,7 +113,7 @@ Index3To1::Index3To1() {
     indexSize = 0;
     bitsPerChar = 0;
     bitsPerCharX2 = 0;
-    qFill(maskByChar, maskByChar + 256, 0);
+    std::fill(maskByChar, maskByChar + 256, 0);
 }
 
 void Index3To1::init(const QList<Triplet> &ts) {
@@ -179,7 +179,7 @@ void Index3To1::init(const QByteArray &alphabetChars) {
 /// 1->3
 DNATranslation1to3Impl::DNATranslation1to3Impl(const QString &_id, const QString &_name, const DNAAlphabet *src, const DNAAlphabet *dst, const BackTranslationRules &rules)
     : DNATranslation(_id, _name, src, dst), index(rules) {
-    qsrand(QDateTime::currentDateTime().toTime_t());
+    qsrand(uint(QDateTime::currentDateTime().toSecsSinceEpoch() / 1000));
 }
 
 DNATranslation1to3Impl::~DNATranslation1to3Impl() {

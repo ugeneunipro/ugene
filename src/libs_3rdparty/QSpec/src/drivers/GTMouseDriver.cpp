@@ -35,7 +35,7 @@ bool GTMouseDriver::click(Qt::MouseButton button) {
     return true;
 }
 
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
 bool GTMouseDriver::click(const QPoint &p, Qt::MouseButton button) {
     DRIVER_CHECK(moveTo(p), "Mouse move was failed");
     DRIVER_CHECK(press(button), "Button could not be pressed");
@@ -91,7 +91,7 @@ bool GTMouseDriver::selectArea(const QPoint &start, const QPoint &end) {
     return true;
 }
 
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
 bool GTMouseDriver::doubleClick() {
     DRIVER_CHECK(press(Qt::LeftButton), "Left button could not be pressed on first click");
     DRIVER_CHECK(release(Qt::LeftButton), "Left button could not be released on first click");

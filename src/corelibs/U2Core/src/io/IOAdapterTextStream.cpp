@@ -125,7 +125,7 @@ int IOAdapterReader::read(U2OpStatus &os, QString &result, int maxLength, const 
     textForUndo.clear();
     bool isReadingTerminatorSequence = false;
     while (!stream.atEnd() && result.length() != maxLength) {
-        QChar unicodeChar = get(os);
+        QChar unicodeChar = readChar(os);
         CHECK_OP(os, 0);
         uchar latin1Char = unicodeChar.toLatin1();
         bool isTerminatorChar = terminators.at(latin1Char);
@@ -135,14 +135,16 @@ int IOAdapterReader::read(U2OpStatus &os, QString &result, int maxLength, const 
                 *terminatorFound = true;
             }
             if (terminatorMode == IOAdapter::Term_Exclude) {
-                unget();    // Push back the current terminator char and break.
+                unreadChar(os);    // Push back the current terminator char and break.
+                CHECK_OP(os, result.length());
                 break;
             } else if (terminatorMode == IOAdapter::Term_Skip) {
                 continue;
             }
             // The terminator char will be included below as a normal one.
         } else if (isReadingTerminatorSequence) {
-            unget();    // Push back the current non-terminator char and break.
+            unreadChar(os);    // Push back the current non-terminator char and break.
+            CHECK_OP(os, result.length());
             break;
         }
         result.append(unicodeChar);
@@ -154,7 +156,26 @@ int IOAdapterReader::read(U2OpStatus &os, QString &result, int maxLength, const 
     return result.length();
 }
 
-QChar IOAdapterReader::get(U2OpStatus &os) {
+bool IOAdapterReader::readLine(U2OpStatus &os, QString &result, int maxLength) {
+    bool terminatorsFound = false;
+    read(os, result, maxLength, TextUtils::LINE_BREAKS, IOAdapter::Term_Exclude, &terminatorsFound);
+    if (terminatorsFound) {
+        // Skip all chars from the TextUtils::LINE_BREAKS. Stop on '\n'.
+        // '\n' is the last character on supported OSes: '\n' on Linux and MacOS and '\r\n' on Windows.
+        while (!atEnd() && readChar(os) != '\n') {
+            CHECK_OP(os, false);
+        }
+    }
+    return terminatorsFound;
+}
+
+QString IOAdapterReader::readLine(U2OpStatus &os, int maxLength) {
+    QString result;
+    readLine(os, result, maxLength);
+    return result;
+}
+
+QChar IOAdapterReader::readChar(U2OpStatus &os) {
     QChar ch;
     if (unreadCharsBuffer.isEmpty()) {
         stream >> ch;
@@ -171,23 +192,49 @@ QChar IOAdapterReader::get(U2OpStatus &os) {
     return ch;
 }
 
-void IOAdapterReader::unget() {
-    SAFE_POINT(!textForUndo.isEmpty(), "Can't unget(), textForUndo is empty!", );
-    SAFE_POINT(unreadCharsBuffer.isEmpty(), "unreadCharsBuffer must be empty during unget()", );
-    unreadCharsBuffer.append(textForUndo[textForUndo.length() - 1]);
+void IOAdapterReader::unreadChar(U2OpStatus &os) {
+    SAFE_POINT_EXT(!textForUndo.isEmpty(), os.setError(L10N::internalError()), );
+    QChar ch = textForUndo[textForUndo.length() - 1];
+    textForUndo.resize(textForUndo.length() - 1);
+    if (unreadCharsBufferPos == 0) {
+        // 'unreadCharsBuffer' must always be empty inside of this branch to avoid a data move (prepend side effect) in
+        // the frequently called 'unreadChar()' method.
+        // If someone breaks this state we will see the assertion.
+        // The code below the assertion correctly handles even non empty 'unreadCharsBuffer' - so it will not break
+        // users, but only slow down the reader in case of bugs.
+        Q_ASSERT(unreadCharsBuffer.isEmpty());
+        unreadCharsBuffer.prepend(ch);
+        // The reason why 'unreadCharsBuffer' is always empty here is:
+        // 1. 'unreadCharsBuffer' may be non-empty here only if it was non-empty when the 'read()' is called.
+        // 2. 'read()' always makes a series of 'readChar()' calls before a single 'unreadChar()' call.
+        // 3. If 'unreadCharsBuffer' is exhausted during the 'readChar()' call -> it is emptied: safe to prepend.
+        // 4. If 'unreadCharsBuffer' is not exhausted during the 'readChar()' sequence -> the
+        //    'unreadCharsBufferPos' will be > 0 and this branch will not be taken at all.
+    } else {
+        unreadCharsBufferPos--;
+        SAFE_POINT_EXT(unreadCharsBufferPos < unreadCharsBuffer.length(), os.setError(L10N::internalError()), );
+        SAFE_POINT_EXT(unreadCharsBuffer[unreadCharsBufferPos] == ch, os.setError(L10N::internalError()), );
+    }
 }
 
-void IOAdapterReader::undo() {
-    SAFE_POINT(!textForUndo.isEmpty(), "Only 1 undo() per read() is supported!", );
-    SAFE_POINT(unreadCharsBuffer.length() <= 1, "unreadCharsBuffer size must be <= 1!", );
-    unreadCharsBuffer.clear();
-    unreadCharsBuffer.append(textForUndo);
-    unreadCharsBufferPos = 0;
+void IOAdapterReader::undo(U2OpStatus &os) {
+    // Undo is allowed to be called only when the last read()/readLine() op returned some result.
+    SAFE_POINT_EXT(!textForUndo.isEmpty(), os.setError(L10N::internalError()), );
+    unreadCharsBufferPos = -textForUndo.length();    // Step back in the unread buffer.
+    if (unreadCharsBufferPos < 0) {    // If some data is missed in the buffer add if from the textForUndo.
+        int nCharsToPrepend = -unreadCharsBufferPos;
+        unreadCharsBuffer.prepend(textForUndo.constData(), nCharsToPrepend);
+        unreadCharsBufferPos = 0;
+    }
     textForUndo.clear();
 }
 
 int IOAdapterReader::getProgress() const {
     return ioAdapter->getProgress();
+}
+
+bool IOAdapterReader::atEnd() const {
+    return unreadCharsBuffer.isEmpty() && stream.atEnd();
 }
 
 ///////////////////////////////////////////////

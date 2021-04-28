@@ -347,6 +347,9 @@ public:
 signals:
     void si_valueChanged(const QString &newVal) const;
 
+private slots:
+    void sl_commit();
+
 protected:
     QVariantMap items;
 };

@@ -31,7 +31,7 @@ namespace U2 {
 class U2GUI_EXPORT DocumentFormatComboboxController : public QObject {
     Q_OBJECT
 public:
-    DocumentFormatComboboxController(QObject *p, QComboBox *combo, const DocumentFormatConstraints &c, DocumentFormatId active = DocumentFormatId::null);
+    DocumentFormatComboboxController(QObject *p, QComboBox *combo, const DocumentFormatConstraints &c, const DocumentFormatId &active = DocumentFormatId());
 
     void updateConstraints(const DocumentFormatConstraints &c);
 

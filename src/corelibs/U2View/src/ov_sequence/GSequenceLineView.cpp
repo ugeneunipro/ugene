@@ -519,7 +519,7 @@ void GSequenceLineView::cancelSelectionResizing() {
 void GSequenceLineView::resizeSelection(const QPoint &areaPoint) {
     qint64 pos = renderArea->coordToPos(areaPoint);
     QVector<U2Region> regions = ctx->getSequenceSelection()->getSelectedRegions();
-    qSort(regions.begin(), regions.end());
+    std::sort(regions.begin(), regions.end());
 
     if (lastPressPos == -1) {
         if (!regions.isEmpty()) {
@@ -599,7 +599,7 @@ void GSequenceLineView::changeSelectionOnScrollbarMoving(const U2Region &newSele
 void GSequenceLineView::changeSelection(QVector<U2Region> &regions, const U2Region &newSelection) {
     resizableRegion = newSelection;
     regions << newSelection;
-    qSort(regions.begin(), regions.end());
+    std::sort(regions.begin(), regions.end());
     ctx->getSequenceSelection()->setSelectedRegions(regions);
 }
 

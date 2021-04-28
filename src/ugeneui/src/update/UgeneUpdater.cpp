@@ -101,7 +101,7 @@ void UgeneUpdater::setEnabled(bool value) {
 }
 
 QString UgeneUpdater::getMaintenanceToolPath() const {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     QString path = QCoreApplication::applicationDirPath() + "/../../setup.app/Contents/MacOS/setup";
 #else
     QString path = QCoreApplication::applicationDirPath() + "/setup";

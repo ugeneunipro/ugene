@@ -32,13 +32,13 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QFile>
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_DARWIN)
 #include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
 #include <QProcess>
 #include <QTemporaryFile>
-#endif // Q_OS_WIN || Q_OS_LINUX || Q_OS_MAC
+#endif // Q_OS_WIN || Q_OS_LINUX || Q_OS_DARWIN
 
 #include <QMainWindow>
 #include <QMessageBox>
@@ -131,7 +131,7 @@ bool CreateDesktopShortcutTask::createDesktopShortcut() {
         return true;
     }
     return false;
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_DARWIN)
     QTemporaryFile file;
     if (file.open()) {
         // We're going to streaming text to the file

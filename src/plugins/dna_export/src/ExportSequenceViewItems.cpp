@@ -445,7 +445,7 @@ void ADVExportContext::sl_saveSelectedAnnotations() {
     }
 
     //TODO: lock documents or use shared-data objects
-    qStableSort(annotationSet.begin(), annotationSet.end(), Annotation::annotationLessThan);
+    std::stable_sort(annotationSet.begin(), annotationSet.end(), Annotation::annotationLessThan);
 
     // run task
     Task *t = NULL;

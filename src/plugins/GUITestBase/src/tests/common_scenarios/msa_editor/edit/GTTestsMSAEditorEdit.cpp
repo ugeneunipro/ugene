@@ -62,7 +62,6 @@ void test_1(HI::GUITestOpStatus &os, int i, QString expectedSec, int j = 0) {
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(j, i));
     GTKeyboardDriver::keyClick(Qt::Key_Space);
 
-    GTGlobals::sleep(500);
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 1));
     if (j == 0)
         GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, i), QPoint(14, i));
@@ -70,7 +69,6 @@ void test_1(HI::GUITestOpStatus &os, int i, QString expectedSec, int j = 0) {
         GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, i), QPoint(13, i));
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
     QString clipboardTest = GTClipboard::text(os);
 
     CHECK_SET_ERR(clipboardTest == expectedSec, clipboardTest);
@@ -117,7 +115,6 @@ void test_3(HI::GUITestOpStatus &os, int i = 0, QString expectedSec = "") {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, i), QPoint(14, i));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
-    GTGlobals::sleep(500);
     QString clipboardTest = GTClipboard::text(os);
 
     CHECK_SET_ERR(clipboardTest == expectedSec, clipboardTest);
@@ -257,7 +254,6 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(13, 9));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
-    GTGlobals::sleep(500);
     QString clipboardTest = GTClipboard::text(os);
     QString expectedSeq = QString("AAGACTTCTTTTAA\n"
                                   "AAGCTTACTAA---\n"
@@ -298,7 +294,6 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(12, 9));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
-    GTGlobals::sleep(500);
     QString clipboardTest = GTClipboard::text(os);
     QString expectedSeq = QString("AAGCTTCTTTTAA\n"
                                   "AAGTTACTAA---\n"
@@ -341,7 +336,6 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(12, 9));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
-    GTGlobals::sleep(500);
     QString clipboardTest = GTClipboard::text(os);
     QString expectedSeq = QString("AAGCTTCTTTTAA\n"
                                   "AAGTTACTAA---\n"
@@ -392,12 +386,9 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {
     GTUtilsDialog::waitForDialog(os, new DeleteGapsDialogFiller(os, 1));
     GTMenu::showContextMenu(os, seq);
 
-    GTGlobals::sleep(1000);
-
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(12, 9));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
-    GTGlobals::sleep(500);
     QString clipboardTest = GTClipboard::text(os);
     QString expectedSeq = QString("AAGCTTCTTTTAA\n"
                                   "AAGTTACTAA---\n"
@@ -540,7 +531,6 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsMSAEditorSequenceArea::click(os);
     for (int i = 0; i < 7; i++) {
         GTKeyboardDriver::keyClick(Qt::Key_Space);
-        GTGlobals::sleep(200);
     }
     //Expected state: UGENE not crash
 }
@@ -553,11 +543,9 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     //2. Select region 4..11 from Zychia_baranovi sequence. Press "Delete" button.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 8), QPoint(10, 8));
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(200);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 8), QPoint(11, 8));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     QString clipboardText = GTClipboard::text(os);
     GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR(clipboardText == "TTAA--------", "\nExpected: TTAA--------\nFound:\n" + clipboardText);
@@ -569,7 +557,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     //Expected state: Zychia_baranovi TTAGATTATTAA
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 8), QPoint(11, 8));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     clipboardText = GTClipboard::text(os);
     GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR(clipboardText == "TTAGATTATTAA", "\nExpected: TTAGATTATTAA\nFound:\n" + clipboardText);
@@ -580,7 +567,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     //Expected state: Zychia_baranovi TTAA
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 8), QPoint(11, 8));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "TTAA--------", "\nExpected: TTAA--------\nFound:\n" + clipboardText);
 }
@@ -592,11 +578,9 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     //2. Select region 4..11 from Zychia_baranovi sequence. Press "Delete" button.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(3, 8), QPoint(10, 8));
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(200);
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 8), QPoint(11, 8));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     QString clipboardText = GTClipboard::text(os);
     GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR(clipboardText == "TTAA--------", "\nExpected: TTAA--------\nFound:\n" + clipboardText);
@@ -607,7 +591,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     //Expected state: Zychia_baranovi TTAGATTATTAA
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 8), QPoint(11, 8));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     clipboardText = GTClipboard::text(os);
     GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR(clipboardText == "TTAGATTATTAA", "\nExpected: TTAGATTATTAA\nFound:\n" + clipboardText);
@@ -623,7 +606,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011_1) {
     //Expected state: Zychia_baranovi TTAA
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 8), QPoint(11, 8));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(200);
     clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "TTAA--------", "\nExpected: TTAA--------\nFound:\n" + clipboardText);
 }
@@ -642,7 +624,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(13, 9));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
-    GTGlobals::sleep(500);
     QString clipboardTest = GTClipboard::text(os);
     QString expectedSeq = QString("AAGACTTCTTTTAA\n"
                                   "AAGCTTACTAA---\n"
@@ -664,7 +645,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(13, 9));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
-    GTGlobals::sleep(500);
     clipboardTest = GTClipboard::text(os);
     QString modyfiedSeq = QString("AAGACTTCTTTTAA\n"
                                   "AAGCTTACTAA---\n"
@@ -686,7 +666,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(13, 9));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
-    GTGlobals::sleep(500);
     clipboardTest = GTClipboard::text(os);
 
     CHECK_SET_ERR(clipboardTest == expectedSeq, "\n Expected: \n" + expectedSeq + "\nFound:\n" + clipboardTest);
@@ -701,12 +680,10 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
     for (int i = 0; i < 6; i++) {
         GTKeyboardDriver::keyClick(Qt::Key_Space);
-        GTGlobals::sleep(200);
     }
     //3. Undo this
     for (int i = 0; i < 6; i++) {
         GTKeyboardDriver::keyClick('z', Qt::ControlModifier);
-        GTGlobals::sleep(200);
     }
     //Expected state: First sequwnce is AAGACTTCTTTTAA
     GTWidget::click(os, GTWidget::findWidget(os, "msa_editor_sequence_area"));
@@ -714,7 +691,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011_3) {
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(13, 0));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
-    GTGlobals::sleep(500);
     QString clipboardTest = GTClipboard::text(os);
     QString expectedSeq = QString("AAGACTTCTTTTAA");
     CHECK_SET_ERR(clipboardTest == expectedSeq, "\n Expected: \n" + expectedSeq + "\nFound:\n" + clipboardTest);
@@ -728,7 +704,6 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     //2. Select region 3..8 for Conocephalus_discolor sequence. Press Ctrl+C.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(2, 4), QPoint(7, 4));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
     //Expected state: GCTTAT has copied to clipboard
     QString clipboardTest = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardTest == "GCTTAT", "\n Expected: \nGCTTAT\nFound:\n" + clipboardTest);
@@ -820,9 +795,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     //5. Open result.aln in aligniment viewer
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(10, 1));
-    GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
 
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "TTATTAATTCG\nTTATTAATCCG", "clipboardText is:\n" + clipboardText);
@@ -871,11 +844,9 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
                                                    << "Montana_montana";
             for (int i = 0; i < table->rowCount(); i++) {
                 GTKeyboardDriver::keyClick(Qt::Key_Down);
-                GTGlobals::sleep(100);
                 QCheckBox *box = qobject_cast<QCheckBox *>(table->cellWidget(i, 0));
                 if (list.contains(box->text())) {
                     GTKeyboardDriver::keyClick(Qt::Key_Space);
-                    GTGlobals::sleep(100);
                 }
             }
 
@@ -908,7 +879,6 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment"));
     GTUtilsDialog::waitForDialog(os, new ExtractSelectedAsMSADialogFiller(os, new Scenario));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-    GTGlobals::sleep();
 }
 
 }    // namespace GUITest_common_scenarios_msa_editor_edit

@@ -46,7 +46,7 @@ class U2SequenceObject;
 CollocationsDialogController::CollocationsDialogController(QStringList _names, ADVSequenceObjectContext *_ctx)
     : allNames(_names), ctx(_ctx) {
     task = NULL;
-    qSort(allNames);
+    std::sort(allNames.begin(), allNames.end());
     setupUi(this);
     new HelpButton(this, buttonBox, "60229060");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));

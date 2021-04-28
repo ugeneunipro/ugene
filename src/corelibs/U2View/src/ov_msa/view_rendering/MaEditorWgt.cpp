@@ -236,7 +236,7 @@ void MaEditorWgt::initActions() {
     // SANGER_TODO: check why delAction is not added
     delSelectionAction = new QAction(tr("Remove selection"), this);
     delSelectionAction->setObjectName("Remove selection");
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
     // Shortcut was wrapped with ifndef to workaround UGENE-6676.
     // On Qt5.12.6 the issue cannot be reproduced, so shortcut should be restored.
     delSelectionAction->setShortcut(QKeySequence::Delete);

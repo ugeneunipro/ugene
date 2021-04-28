@@ -61,7 +61,7 @@ void AssemblyPackAlgorithm::pack(PackAlgorithmAdapter &adapter, U2AssemblyPackSt
 
     stat.maxProw = 0;
     gauto_array<qint64> tails(new qint64[PACK_TAIL_SIZE]);
-    qFill(tails.get(), tails.get() + PACK_TAIL_SIZE, -1);
+    std::fill(tails.get(), tails.get() + PACK_TAIL_SIZE, -1);
 
     QScopedPointer<U2DbiIterator<PackAlgorithmData>> allReadsIterator(adapter.selectAllReads(os));
     PackAlgorithmContext ctx;

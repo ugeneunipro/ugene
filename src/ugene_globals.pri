@@ -1,11 +1,18 @@
 include (ugene_version.pri)
 
+ROOT_SRC_DIR=$$PWD
+
 UGENE_GLOBALS_DEFINED=1
 
 DEFINES+=U2_DISTRIBUTION_INFO=$${U2_DISTRIBUTION_INFO}
 DEFINES+=UGENE_VERSION=$${UGENE_VERSION}
 DEFINES+=UGENE_VER_MAJOR=$${UGENE_VER_MAJOR}
 DEFINES+=UGENE_VER_MINOR=$${UGENE_VER_MINOR}
+
+# Use of any Qt API marked as deprecated before 5.7 will cause compile time errors.
+# The goal is to increase this value gradually up to the current version used in UGENE
+# and do not use any deprecated API.
+DEFINES+=QT_DISABLE_DEPRECATED_BEFORE=0x050700
 
 CONFIG += c++11
 
@@ -50,6 +57,22 @@ macx {
 }
 
 linux-g++ {
+    # Try to build glibc_2.17 compatible binaries (Ubuntu 14.04/Debian 8/CentOS 7) regardless of the local 'glibc'
+    # version on the build machine. See https://github.com/wheybags/glibc_version_header
+    #
+    # For a wider range of supported platforms this value should be aligned with the 'glibc'
+    # used to build QT binaries.
+    #
+    # This solution is not bulletproof, because it won't replace methods from a newer 'glibc'
+    # that have no older counterparts. To address 'new API' problem we should either use a post-build 'glibc'
+    # version check for all binaries we build or/and run our pre-release tests on the old Ubuntu 16.04 host with
+    # the binary we want to release.
+    UGENE_BUILD_FOR_OLD_GLIBC = $$(UGENE_BUILD_FOR_OLD_GLIBC)
+    equals(UGENE_BUILD_FOR_OLD_GLIBC, 1) {
+        QMAKE_CFLAGS += -include $$ROOT_SRC_DIR/include/3rdparty/glibc/force_link_glibc_2.17.h
+        QMAKE_CXXFLAGS += -include $$ROOT_SRC_DIR/include/3rdparty/glibc/force_link_glibc_2.17.h
+    }
+
     # Enable all warnings. Every new version of GCC will provide new reasonable defaults.
     # See https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
     QMAKE_CXXFLAGS += -Wall
@@ -57,6 +80,7 @@ linux-g++ {
     # A few UGENE headers (like U2Location) emits thousands of deprecated-copy warnings.
     # TODO: Fix UGENE code and remove the suppression.
     QMAKE_CXXFLAGS += -Wno-deprecated-copy
+    QMAKE_CXXFLAGS += -Wno-deprecated-declarations
 
     # These warnings must be errors:
     QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
@@ -223,13 +247,6 @@ is_debug_build() {
     D=d
 }
 
-#Variable enabling exclude list for ugene modules
-#UGENE_EXCLUDE_LIST_ENABLED = 1
-defineTest( exclude_list_enabled ) {
-    contains( UGENE_EXCLUDE_LIST_ENABLED, 1 ) : return (true)
-    return (false)
-}
-
 #Variable enabling exclude list for ugene non-free modules
 defineTest( without_non_free ) {
     contains( UGENE_WITHOUT_NON_FREE, 1 ) : return (true)
@@ -259,8 +276,4 @@ defineTest(minQtVersion) {
         return(true)
     }
     return(false)
-}
-
-if (exclude_list_enabled()) {
-    DEFINES += HI_EXCLUDED
 }

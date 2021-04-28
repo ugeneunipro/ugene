@@ -87,7 +87,7 @@ AppResourcePool::AppResourcePool() {
 
     int totalPhysicalMemory = getTotalPhysicalMemory();
     int maxMem = s->getValue(SETTINGS_ROOT + "maxMem", totalPhysicalMemory).toInt();
-#if defined(Q_OS_MAC64) || defined(Q_OS_WIN64) || defined(UGENE_X86_64) || defined(__amd64__) || defined(__AMD64__) || defined(__x86_64__) || defined(_M_X64)
+#if defined(Q_OS_DARWIN) || defined(Q_OS_WIN64) || defined(UGENE_X86_64) || defined(__amd64__) || defined(__AMD64__) || defined(__x86_64__) || defined(_M_X64)
     maxMem = maxMem > x64MaxMemoryLimitMb ? x64MaxMemoryLimitMb : maxMem;
 #else
     maxMem = maxMem > x32MaxMemoryLimitMb ? x32MaxMemoryLimitMb : maxMem;
@@ -130,7 +130,7 @@ int AppResourcePool::getTotalPhysicalMemory() {
     // number (number of pages / 1024), so we should be safe here.
     totalPhysicalMemory = (int)(numpages * (pagesize / 1024) / 1024);
 
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_DARWIN)
     QProcess p;
     p.start("sysctl", QStringList() << "-n"
                                     << "hw.memsize");
@@ -158,7 +158,7 @@ bool AppResourcePool::is32BitBuild() {
 }
 
 bool AppResourcePool::isSystem64bit() {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     QProcess p;
     p.start("sysctl", QStringList() << "-n"
                                     << "hw.optional.x86_64");
@@ -217,7 +217,7 @@ size_t AppResourcePool::getCurrentAppMemory() {
     if (ok) {
         return output_mem;
     }
-#elif defined(Q_OS_MAC)
+#elif defined(Q_OS_DARWIN)
 //    qint64 pid = QCoreApplication::applicationPid();
 
 //    QProcess p;

@@ -52,7 +52,7 @@ void GTCrazyUserMonitor::checkActiveWidget() {
     bool actionListEmpty = actionList.isEmpty();
     SAFE_POINT(false == actionListEmpty, "", );
 
-    qSort(actionList.begin(), actionList.end(), GTAbstractGUIAction::lessThan);
+    std::sort(actionList.begin(), actionList.end(), GTAbstractGUIAction::lessThan);
     uiLog.trace("sorted actionList:");
     foreach (GTAbstractGUIAction *a, actionList) {
         uiLog.trace(QString("Action for %1 with priority %2").arg(a->objectClassName()).arg(a->getPriority()));

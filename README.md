@@ -12,7 +12,7 @@ We highly recommend you to install Qt to any operating system with Qt online-ins
 * QtScript
 
 Other options to install Qt:
-* Ubuntu >=14.04: `sudo apt-get install qt5-default qttools5-dev-tools qtscript5-dev libqt5svg5-dev
+* Ubuntu >=14.04: `sudo apt-get install qt5-default qttools5-dev-tools qtscript5-dev libqt5svg5-dev`
 * Ubuntu 12.04:
     * Download and install Qt 5.5.1: www.qt.io/download-open-source/
     * Set the system variable: export PATH=$PATH:~/Qt5.5.1/5.5/gcc_64/bin

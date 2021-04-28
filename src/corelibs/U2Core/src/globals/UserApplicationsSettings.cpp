@@ -249,7 +249,7 @@ QString UserAppsSettings::createCurrentProcessTemporarySubDir(U2OpStatus &os, co
         }
     }
 
-    uint time = QDateTime::currentDateTime().toTime_t();
+    qint64 time = QDateTime::currentDateTime().toSecsSinceEpoch() / 1000;
     QString baseDirName = QByteArray::number(time);
 
     // create sub dir

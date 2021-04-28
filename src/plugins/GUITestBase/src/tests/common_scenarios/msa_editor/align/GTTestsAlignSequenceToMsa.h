@@ -23,7 +23,7 @@ k
 #ifndef GTTESTS_ALIGN_SEQUENCE_TO_ALIGNMENT_H_
 #define GTTESTS_ALIGN_SEQUENCE_TO_ALIGNMENT_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 

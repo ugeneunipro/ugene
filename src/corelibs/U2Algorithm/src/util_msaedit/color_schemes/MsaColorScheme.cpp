@@ -220,13 +220,13 @@ bool compareNames(const MsaColorSchemeFactory *a1, const MsaColorSchemeFactory *
 void MsaColorSchemeRegistry::addMsaColorSchemeFactory(MsaColorSchemeFactory *commonFactory) {
     assert(getSchemeFactoryById(commonFactory->getId()) == NULL);
     colorers.append(commonFactory);
-    qStableSort(colorers.begin(), colorers.end(), compareNames);
+    std::stable_sort(colorers.begin(), colorers.end(), compareNames);
 }
 
 void MsaColorSchemeRegistry::addMsaCustomColorSchemeFactory(MsaColorSchemeCustomFactory *customFactory) {
     assert(getSchemeFactoryById(customFactory->getId()) == NULL);
     customColorers.append(customFactory);
-    qStableSort(colorers.begin(), colorers.end(), compareNames);
+    std::stable_sort(colorers.begin(), colorers.end(), compareNames);
 }
 
 void MsaColorSchemeRegistry::sl_onCustomSettingsChanged() {

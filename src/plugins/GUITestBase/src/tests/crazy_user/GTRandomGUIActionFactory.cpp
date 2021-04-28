@@ -29,7 +29,7 @@
 
 #include <U2Core/U2SafePoints.h>
 
-#include <U2Test/UGUITest.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 

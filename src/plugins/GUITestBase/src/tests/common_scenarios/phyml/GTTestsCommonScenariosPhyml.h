@@ -22,7 +22,7 @@
 #ifndef _U2_GT_TESTS_COMMON_SCENARIOS_PHYML_H_
 #define _U2_GT_TESTS_COMMON_SCENARIOS_PHYML_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 namespace GUITest_common_scenarios_phyml {

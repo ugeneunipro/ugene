@@ -162,8 +162,7 @@ QList<GUITest *> getIdealNightlyTestsSplit(int suiteIndex, int suiteCount, const
 bool GUITestLauncher::initTestList() {
     testList.clear();
 
-    UGUITestBase *guiTestBase = AppContext::getGUITestBase();
-    SAFE_POINT(guiTestBase != nullptr, "Test base is NULL", false);
+    UGUITestBase *guiTestBase = UGUITestBase::getInstance();
 
     // Label set to build a run-time test set is passed via environment variable.
     QString labelEnvVar = qgetenv("UGENE_GUI_TEST_LABEL");

@@ -108,6 +108,27 @@ public:
      */
     int read(U2OpStatus &os, QString &result, int maxLength, const QBitArray &terminators, IOAdapter::TerminatorHandling terminatorMode, bool *terminatorFound = nullptr);
 
+    /**
+     * Reads a single line (until '\n' character) from the text stream into the 'result' buffer.
+     * Excludes line terminator sequence characters ('\r' and '\n') from the result.
+     *
+     * Returns 'true' if the line terminator was found.
+     * Returns 'false' if this is the last line in the stream or 'maxLength' was reached before the line terminator was found.
+     *
+     * This operation can be 'undone'.
+     */
+    bool readLine(U2OpStatus &os, QString &result, int maxLength);
+
+    /**
+     * Returns a single line read from the stream.
+     * The method behaves exactly like readLine(os, result, ...) with a buffer,
+     *  but always creates and returns a new buffer QString and returns it as the result.
+     */
+    QString readLine(U2OpStatus &os, int maxLength);
+
+    /** Returns true if the end of the stream is reached. */
+    bool atEnd() const;
+
     /*
      * Returns a progress value in the range 0..100, or a negative value if the progress is unknown/not supported
      * Proxies the call to ioAdapter.getProgress method.
@@ -115,14 +136,17 @@ public:
     int getProgress() const;
 
     /** Undo last read() operation. */
-    void undo();
+    void undo(U2OpStatus &os);
 
 private:
-    /** Reads a single character from the stream. Can be called only in the context of 'read' operation. */
-    QChar get(U2OpStatus &os);
+    /** Reads a single character from the stream. Returns '\0' if end of stream is reached. */
+    QChar readChar(U2OpStatus &os);
 
-    /** Puts back the last read character to the stream buffer. Can be called only in the context of 'read' operation. */
-    void unget();
+    /**
+     * Puts back the last character from the 'textForUndo' into the unreadCharsBuffer.
+     * Reduces size of 'textForUndo' block by 1. This method is safe to call only from the 'read()' method: read comments inside.
+     */
+    void unreadChar(U2OpStatus &os);
 
     /** The last text read during the last 'read' call. Contains all text (with separators) and is used for undo(). */
     QString textForUndo;

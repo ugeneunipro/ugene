@@ -459,7 +459,7 @@ void MultipleSequenceAlignmentRowData::replaceChars(char origChar, char resultCh
             U2MsaGap gap(index, 1);
             newGapsModel.append(gap);
         }
-        qSort(newGapsModel.begin(), newGapsModel.end(), U2MsaGap::lessThan);
+        std::sort(newGapsModel.begin(), newGapsModel.end(), U2MsaGap::lessThan);
 
         // Replace the gaps model with the new one
         gaps = newGapsModel;

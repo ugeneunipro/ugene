@@ -22,7 +22,7 @@
 #ifndef _U2_GT_TESTS_ANNOTATIONS_QUALIFIERS_H_
 #define _U2_GT_TESTS_ANNOTATIONS_QUALIFIERS_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 

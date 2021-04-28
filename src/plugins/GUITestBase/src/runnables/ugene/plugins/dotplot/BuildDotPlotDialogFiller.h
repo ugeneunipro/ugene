@@ -29,23 +29,26 @@ using namespace HI;
 
 class BuildDotPlotFiller : public Filler {
 public:
-    BuildDotPlotFiller(HI::GUITestOpStatus &_os, const QString &_firstFileEdit, const QString &_secondFileEdit = "", bool _mergeFirstBoxChecked = false, bool _oneSequenceBoxChecked = false, bool _mergeSecondBoxChecked = false, int _gapFirstVal = 5, int _gapSecondVal = 5, bool cancel = false)
-        : Filler(_os, "DotPlotFilesDialog"),
-          mergeFirstBoxChecked(_mergeFirstBoxChecked),
-          oneSequenceBoxChecked(_oneSequenceBoxChecked),
-          mergeSecondBoxChecked(_mergeSecondBoxChecked),
-          firstFileEdit(_firstFileEdit),
-          secondFileEdit(_secondFileEdit),
-          gapFirstVal(_gapFirstVal), gapSecondVal(_gapSecondVal),
-          cancel(cancel) {
-    }
-    void commonScenario();
+    BuildDotPlotFiller(HI::GUITestOpStatus &_os,
+                       const QString &_firstFileName,
+                       const QString &_secondFileName = "",
+                       bool _mergeFirstBoxChecked = false,
+                       bool _oneSequenceBoxChecked = false,
+                       bool _mergeSecondBoxChecked = false,
+                       int _gapFirstValue = 5,
+                       int _gapSecondValue = 5,
+                       bool cancel = false);
+
+    void commonScenario() override;
 
 private:
-    bool mergeFirstBoxChecked, oneSequenceBoxChecked, mergeSecondBoxChecked;
-    const QString firstFileEdit;
-    const QString secondFileEdit;
-    int gapFirstVal, gapSecondVal;
+    bool mergeFirstBoxChecked;
+    bool oneSequenceBoxChecked;
+    bool mergeSecondBoxChecked;
+    QString firstFileName;
+    QString secondFileName;
+    int firstGapSize;
+    int secondGapSize;
     bool cancel;
 };
 }    // namespace U2

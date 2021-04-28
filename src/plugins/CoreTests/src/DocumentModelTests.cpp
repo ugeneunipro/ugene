@@ -589,8 +589,8 @@ Task::ReportResult GTest_DocumentObjectNames::report() {
     foreach (GObject *ob, objs) {
         objNames.append(ob->getGObjectName());
     }
-    qSort(objNames);
-    qSort(names);
+    std::sort(objNames.begin(), objNames.end());
+    std::sort(names.begin(), names.end());
     for (int i = 0; i < names.size(); i++) {
         QString name = names[i];
         QString objName = objNames[i];
@@ -639,8 +639,8 @@ Task::ReportResult GTest_DocumentObjectTypes::report() {
     foreach (GObject *ob, objs) {
         objTypes.append(ob->getGObjectType());
     }
-    qSort(objTypes);
-    qSort(types);
+    std::sort(objTypes.begin(), objTypes.end());
+    std::sort(types.begin(), types.end());
     for (int i = 0; i < types.size(); i++) {
         GObjectType type = types[i];
         GObjectType objType = objTypes[i];

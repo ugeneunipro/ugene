@@ -22,11 +22,6 @@
 #ifndef _U2_ANNOTATIONS_TREE_VIEW_
 #define _U2_ANNOTATIONS_TREE_VIEW_
 
-#include <QCloseEvent>
-#include <QFlags>
-#include <QLabel>
-#include <QPair>
-#include <QQueue>
 #include <QTimer>
 #include <QTreeWidget>
 
@@ -267,7 +262,6 @@ private:
     static const QString annotationMimeType;
 
     friend class RemoveItemsTask;
-    friend class FindQualifierTask;
     friend class SearchQualifierDialog;
 };
 
@@ -351,59 +345,6 @@ public:
     //TODO: keep values in U2Qualifier struct
     const QString qName;
     QString qValue;
-};
-
-class FindQualifierTaskSettings {
-public:
-    FindQualifierTaskSettings(AVItem *_groupToSearchIn, const QString &_name, const QString &_value, bool _isExactMatch, bool _searchAll, AVItem *_prevAnnotation = NULL, int _prevIndex = -1)
-        : groupToSearchIn(_groupToSearchIn), name(_name), value(_value), isExactMatch(_isExactMatch), prevAnnotation(_prevAnnotation), prevIndex(_prevIndex), searchAll(_searchAll) {
-    }
-
-    AVItem *groupToSearchIn;
-    QString name;
-    QString value;
-    bool isExactMatch;
-    AVItem *prevAnnotation;
-    int prevIndex;
-    bool searchAll;
-};
-
-class U2VIEW_EXPORT FindQualifierTask : public Task {
-    Q_OBJECT
-public:
-    FindQualifierTask(AnnotationsTreeView *treeView, const FindQualifierTaskSettings &settings);
-    void run();
-    ReportResult report();
-
-    int getIndexOfResult() const {
-        return indexOfResult;
-    }
-    AVItem *getResultAnnotation() const {
-        return resultAnnotation;
-    }
-    bool isFound() const {
-        return foundResult;
-    }
-
-private:
-    void findInAnnotation(AVItem *annotation, bool &found);
-    void findInGroup(AVItem *group, bool &found);
-    int getStartIndexGroup(AVItem *group);
-    int getStartIndexAnnotation(AVItem *annotation);
-
-    AnnotationsTreeView *treeView;
-    QString qname;
-    QString qvalue;
-    AVItem *groupToSearchIn;
-    bool isExactMatch;
-    bool searchAll;
-    bool foundResult;
-
-    int indexOfResult;
-    AVItem *resultAnnotation;
-
-    QQueue<AVItem *> toExpand;    //this queue is needed to expand items in main thread
-    QList<QPair<AVAnnotationItem *, int>> foundQuals;    //this is needed to set found items as selected
 };
 
 }    // namespace U2

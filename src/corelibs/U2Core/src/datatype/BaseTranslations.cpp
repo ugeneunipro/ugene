@@ -124,7 +124,7 @@ static void fill1To3(BackTranslationRules &map,
             }
         } else {
             map.index[(int)c] = map.map.size();
-            qSort(v);
+            std::sort(v.begin(), v.end());
             v.first().p += (100 - sump);
             foreach (TripletP t, v) {
                 map.map.append(t);

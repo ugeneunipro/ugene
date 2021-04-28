@@ -23,7 +23,7 @@ k
 #ifndef GTTESTS_MSA_EDITOR_EDIT_H_
 #define GTTESTS_MSA_EDITOR_EDIT_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 

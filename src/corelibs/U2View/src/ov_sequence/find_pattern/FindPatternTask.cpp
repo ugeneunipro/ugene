@@ -53,7 +53,7 @@ QList<Task *> FindPatternTask::onSubTaskFinished(Task *subTask) {
 
         QList<FindAlgorithmResult> resultz = task->popResults();
         if (settings.patternSettings == FindAlgorithmPatternSettings_RegExp) {    //Other algos always return sorted results
-            qSort(resultz.begin(), resultz.end(), FindAlgorithmResult::lessByRegionStartPos);
+            std::sort(resultz.begin(), resultz.end(), FindAlgorithmResult::lessByRegionStartPos);
         }
         if (removeOverlaps && !resultz.isEmpty()) {
             removeOverlappedResults(resultz);

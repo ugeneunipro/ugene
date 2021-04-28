@@ -90,7 +90,7 @@ QMenu *MWMenuManagerImpl::createTopLevelMenu(const QString &sysName, const QStri
     //#else
     if (MWMENU_WINDOW != sysName) {
         qmenu->installEventFilter(this);
-#    ifndef Q_OS_MAC
+#    ifndef Q_OS_DARWIN
         qmenu->setEnabled(false);
 #    else
 //        if (!QApplication::testAttribute(Qt::AA_DontUseNativeMenuBar)) {          //UGENE-339, not tested for attribute set
@@ -120,7 +120,7 @@ bool MWMenuManagerImpl::eventFilter(QObject *obj, QEvent *event) {
         QMenu *menu = qobject_cast<QMenu *>(obj);
         assert(menu != NULL);
         //coreLog.trace("aaa:EventFilter (Menu Manager)");
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
         menu->setEnabled(!menu->isEmpty());
 #else
         touchMenu(menu);

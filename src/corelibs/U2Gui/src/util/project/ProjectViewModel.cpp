@@ -483,7 +483,7 @@ void ProjectViewModel::merge(Document *doc, const DocumentFoldersUpdate &update)
     }
 
     // delete deleted folders
-    qSort(deletedFolders);
+    std::sort(deletedFolders.begin(), deletedFolders.end());
     while (!deletedFolders.isEmpty()) {
         QString path = deletedFolders.takeLast();
         if (!docFolders->isFolderIgnored(path)) {

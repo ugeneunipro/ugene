@@ -1506,7 +1506,7 @@ GUI_TEST_CLASS_DEFINITION(test_1113) {    //commit AboutDialogController.cpp
         }
         virtual void run() {
             GTGlobals::sleep();
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
             GTKeyboardDriver::keyRelease(GTKeyboardDriver::key[Qt::Key_F1]);
 #endif
 
@@ -1523,7 +1523,7 @@ GUI_TEST_CLASS_DEFINITION(test_1113) {    //commit AboutDialogController.cpp
 
             QString text = child->objectName();
             CHECK_SET_ERR(text.contains("64-bit") || text.contains("32-bit"), text);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
             GTWidget::click(os, GTWidget::findWidget(os, "close_button"));
 #else
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -1533,7 +1533,7 @@ GUI_TEST_CLASS_DEFINITION(test_1113) {    //commit AboutDialogController.cpp
     };
     GTGlobals::sleep(1000);
     GTUtilsDialog::waitForDialog(os, new EscClicker(os));
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     //hack for mac
     MainWindow *mw = AppContext::getMainWindow();
     CHECK_SET_ERR(mw != NULL, "MainWindow is NULL");
@@ -1558,7 +1558,7 @@ GUI_TEST_CLASS_DEFINITION(test_1113_1) {    //commit AboutDialogController.cpp
         }
         virtual void run() {
             GTGlobals::sleep();
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
             GTMouseDriver::release();
 #endif
             QWidget *dialog = QApplication::activeModalWidget();
@@ -1574,7 +1574,7 @@ GUI_TEST_CLASS_DEFINITION(test_1113_1) {    //commit AboutDialogController.cpp
 
             QString text = child->objectName();
             CHECK_SET_ERR(text.contains("64-bit") || text.contains("32-bit"), text);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
             GTWidget::click(os, GTWidget::findWidget(os, "close_button"));
 #else
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -4362,7 +4362,7 @@ GUI_TEST_CLASS_DEFINITION(test_1426) {
     CHECK_SET_ERR(line, "QLineEdit not found. Widget in this cell might be not QLineEdit");
     GTLineEdit::setText(os, line, dataDir + "samples/FASTA/HMM/aligment15900.hmm");
     GTGlobals::sleep(1000);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     GTGlobals::sleep();
     GTMouseDriver::doubleClick();
 #endif

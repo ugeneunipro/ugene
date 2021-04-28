@@ -16,8 +16,6 @@ libssl-dev
 
 2) Build UGENE in release mode
 
-Set UGENE_EXCLUDE_LIST_ENABLED=1  
-
 3) launch ./create_bundle.sh from trunk/installer/linux/X11/
 
 Remember: for std c++ lib compatibility you have to build on the lowest system which you would like to support since std lib doesn't have backward compatibility.

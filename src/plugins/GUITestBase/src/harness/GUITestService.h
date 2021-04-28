@@ -39,7 +39,7 @@ class GUITestLauncher;
 class GUITestService;
 class MainThreadRunnable;
 
-class U2TEST_EXPORT GUITestService : public Service {
+class GUITestService : public Service {
     Q_OBJECT
 public:
     enum LaunchOptions { NONE,

@@ -73,7 +73,7 @@ LogSettingsPageWidget::LogSettingsPageWidget() {
     connect(tableWidget, SIGNAL(currentCellChanged(int, int, int, int)), SLOT(sl_currentCellChanged(int, int, int, int)));
     connect(fileOutCB, SIGNAL(stateChanged(int)), SLOT(sl_outFileStateChanged(int)));
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     // Layout fix for mac: the font size is bigger than in another systems.
     tableWidget->horizontalHeader()->setDefaultSectionSize(110);
 #endif
@@ -130,7 +130,7 @@ void LogSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
     }
 
     QList<QString> categoryNames = settings.getLoggerSettings().keys();
-    qSort(categoryNames);
+    std::sort(categoryNames.begin(), categoryNames.end());
     foreach (const QString &categoryName, categoryNames) {
         const LoggerSettings &cs = settings.getLoggerSettings(categoryName);
         QTableWidgetItem *nameItem = new QTableWidgetItem(cs.categoryName);

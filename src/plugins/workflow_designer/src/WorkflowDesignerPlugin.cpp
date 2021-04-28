@@ -341,7 +341,7 @@ void WorkflowDesignerService::initSampleActions() {
     ngsControl.requiredPlugins << externalToolsPlugin;
 
     // SPAdes is available only on Linux and Mac.
-#if defined(Q_OS_LINUX) || defined(Q_OS_MAC)
+#if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN)
     SampleAction ngsDenovo(ToolsMenu::NGS_DENOVO, ToolsMenu::NGS_MENU, "NGS/from_tools_menu_only/ngs_assembly.uwl", tr("Reads de novo assembly (with SPAdes)..."));
     ngsDenovo.requiredPlugins << externalToolsPlugin;
     samples->registerAction(ngsDenovo);

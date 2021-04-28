@@ -48,23 +48,15 @@ GUITestThread::GUITestThread(GUITest *test, bool isRunPostActionsAndCleanup)
     SAFE_POINT(test != nullptr, "GUITest is NULL", );
 }
 
-static QList<GUITest *> getTests(UGUITestBase::TestType testType) {
-    UGUITestBase *testBase = AppContext::getGUITestBase();
-    SAFE_POINT(testBase != nullptr, "", QList<GUITest *>());
-
-    QList<GUITest *> testList = testBase->getTests(testType);
-    SAFE_POINT(testList.size() > 0, "", QList<GUITest *>());
-
-    return testList;
-}
-
 void GUITestThread::run() {
     SAFE_POINT(testToRun != nullptr, "GUITest is NULL", );
 
+    UGUITestBase *db = UGUITestBase::getInstance();
+
     QList<GUITest *> testList;
-    testList << getTests(UGUITestBase::PreAdditional);
+    testList << db->getTests(UGUITestBase::PreAdditional);
     testList << testToRun;
-    testList << getTests(UGUITestBase::PostAdditionalChecks);
+    testList << db->getTests(UGUITestBase::PostAdditionalChecks);
 
     clearSandbox();
 
@@ -107,7 +99,8 @@ QString GUITestThread::launchTest(const QList<GUITest *> &tests) {
     QString error = os.getError();
     if (!error.isEmpty()) {
         try {
-            const QList<GUITest *> postCheckList = getTests(UGUITestBase::PostAdditionalChecks);
+            UGUITestBase *testBase = UGUITestBase::getInstance();
+            const QList<GUITest *> postCheckList = testBase->getTests(UGUITestBase::PostAdditionalChecks);
             for (GUITest *test : qAsConst(postCheckList)) {
                 qDebug("launchTest running additional post check: %s", test->getFullName().toLocal8Bit().constData());
                 test->run(os);
@@ -183,7 +176,8 @@ void GUITestThread::saveScreenshot() {
 void GUITestThread::cleanup() {
     qDebug("Running cleanup after the test");
     testToRun->cleanup();
-    const QList<GUITest *> postActionList = getTests(UGUITestBase::PostAdditionalActions);
+    UGUITestBase *testBase = UGUITestBase::getInstance();
+    const QList<GUITest *> postActionList = testBase->getTests(UGUITestBase::PostAdditionalActions);
     for (HI::GUITest *postAction : qAsConst(postActionList)) {
         HI::GUITestOpStatus os;
         try {

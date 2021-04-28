@@ -210,16 +210,6 @@ Task *GUITestService::createTestSuiteLauncherTask() const {
     return task;
 }
 
-static QList<GUITest *> getTests(UGUITestBase::TestType testType) {
-    UGUITestBase *testBase = AppContext::getGUITestBase();
-    SAFE_POINT(testBase != nullptr, "", QList<GUITest *>());
-
-    QList<GUITest *> testList = testBase->getTests(testType);
-    SAFE_POINT(testList.size() > 0, "", QList<GUITest *>());
-
-    return testList;
-}
-
 void GUITestService::sl_allStartUpPluginsLoaded() {
     auto externalToolsManager = AppContext::getExternalToolRegistry()->getManager();
     if (externalToolsManager != nullptr && externalToolsManager->isInStartupValidationMode()) {
@@ -231,11 +221,12 @@ void GUITestService::sl_allStartUpPluginsLoaded() {
 }
 
 void GUITestService::runAllGUITests() {
-    QList<GUITest *> initTests = getTests(UGUITestBase::PreAdditional);
-    QList<GUITest *> postCheckTests = getTests(UGUITestBase::PostAdditionalChecks);
-    QList<GUITest *> postActionTests = getTests(UGUITestBase::PostAdditionalActions);
+    UGUITestBase *db = UGUITestBase::getInstance();
+    QList<GUITest *> initTests = db->getTests(UGUITestBase::PreAdditional);
+    QList<GUITest *> postCheckTests = db->getTests(UGUITestBase::PostAdditionalChecks);
+    QList<GUITest *> postActionTests = db->getTests(UGUITestBase::PostAdditionalActions);
 
-    QList<GUITest *> tests = getTests(UGUITestBase::Normal);
+    QList<GUITest *> tests = db->getTests(UGUITestBase::Normal);
     SAFE_POINT(!tests.isEmpty(), "", );
 
     QString runOneTestOnly = qgetenv("UGENE_GUI_TEST_NAME_RUN_ONLY");
@@ -294,11 +285,9 @@ void GUITestService::runGUITest() {
     QString fullTestName = cmdLine->getParameterValue(CMDLineCoreOptions::LAUNCH_GUI_TEST);
     isTeamcityLogOn = cmdLine->hasParameter(CMDLineCoreOptions::TEAMCITY_OUTPUT);
 
-    UGUITestBase *testBase = AppContext::getGUITestBase();
-    SAFE_POINT(testBase != nullptr, "Test base is null", );
-
     QString suiteName = fullTestName.split(":").first();
     QString testName = fullTestName.split(":").last();
+    UGUITestBase *testBase = UGUITestBase::getInstance();
     GUITest *test = testBase->getTest(suiteName, testName);
 
     if (test == nullptr) {
@@ -317,8 +306,7 @@ void GUITestService::runGUITest() {
 }
 
 void GUITestService::runGUICrazyUserTest() {
-    UGUITestBase *testBase = AppContext::getGUITestBase();
-    SAFE_POINT(testBase, "", );
+    UGUITestBase *testBase = UGUITestBase::getInstance();
     GUITest *test = testBase->getTest("", "simple_crazy_user");
     runGUITest(test);
 }

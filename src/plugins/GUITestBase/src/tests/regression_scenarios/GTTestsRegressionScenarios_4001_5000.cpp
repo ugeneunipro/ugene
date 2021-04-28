@@ -62,6 +62,7 @@
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
+#include <U2Core/IOAdapterUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
@@ -528,7 +529,7 @@ GUI_TEST_CLASS_DEFINITION(test_4047) {
         void run(HI::GUITestOpStatus &os) {
             GTGlobals::sleep(500);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Cancel);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
             //dirty hack for mac
             GTGlobals::sleep(500);
             if (QApplication::activeModalWidget() != NULL) {
@@ -6097,6 +6098,30 @@ GUI_TEST_CLASS_DEFINITION(test_4983) {
 
     //Expected: the color scheme is changed without errors.
     GTUtilsLog::check(os, l);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4985) {
+    // Create file _common_data/scenarios/sandbox/A.fa with text "A"
+    // Open this file
+    // Delete this file from hard disk
+    // "File Modification Detected" dialog appears. Click "No"
+    // On Start Page open recent file A.fa
+    //      Expected: error message box with text "File doesn't exist: _common_data\scenarios\sandbox\a.fa" appears
+
+    QString filePath = testDir + "_common_data/scenarios/sandbox/A.fa";
+    IOAdapterUtils::writeTextFile(filePath, "A");
+
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    QFile(filePath).remove();
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxNoToAllOrNo(os));
+    GTUtilsStartPage::openStartPage(os);
+
+    QString expected = "File doesn't exist: " + QFileInfo(filePath).absoluteFilePath();
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, expected));
+    GTWidget::click(os, GTWidget::findLabelByText(os, "- A.fa").first());
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4986) {

@@ -34,7 +34,7 @@ namespace U2 {
 
 int FileAndDirectoryUtils::MIN_LENGTH_TO_WRITE = 32768;
 
-#if defined(Q_OS_LINUX) | defined(Q_OS_MAC)
+#if defined(Q_OS_LINUX) | defined(Q_OS_DARWIN)
 const QString FileAndDirectoryUtils::HOME_DIR_IDENTIFIER = "~/";
 #else
 const QString FileAndDirectoryUtils::HOME_DIR_IDENTIFIER = "%UserProfile%/";

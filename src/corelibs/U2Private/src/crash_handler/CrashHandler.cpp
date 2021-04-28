@@ -33,9 +33,9 @@
 #include "CrashLogCache.h"
 #include "TaskSchedulerImpl.h"
 
-#if defined(Q_OS_MAC)
+#if defined(Q_OS_DARWIN)
 #    include "CrashHandlerPrivateMac.h"
-#elif defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#elif defined(Q_OS_UNIX) && !defined(Q_OS_DARWIN)
 #    include "CrashHandlerPrivateUnixNotMac.h"
 #elif defined(Q_OS_WIN)
 #    include "CrashHandlerPrivateWin.h"
@@ -121,9 +121,9 @@ void CrashHandler::setupLogCache() {
 
 void CrashHandler::setupPrivateHandler() {
     assert(crashHandlerPrivate == NULL);
-#if defined(Q_OS_MAC)
+#if defined(Q_OS_DARWIN)
     crashHandlerPrivate = new CrashHandlerPrivateMac;
-#elif defined(Q_OS_UNIX) && !defined(Q_OS_MAC)
+#elif defined(Q_OS_UNIX) && !defined(Q_OS_DARWIN)
     crashHandlerPrivate = new CrashHandlerPrivateUnixNotMac;
 #elif defined(Q_OS_WIN)
     crashHandlerPrivate = new CrashHandlerPrivateWin;

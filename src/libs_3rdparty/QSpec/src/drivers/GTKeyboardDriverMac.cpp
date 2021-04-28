@@ -22,14 +22,14 @@
 #include "GTGlobals.h"
 #include "GTKeyboardDriver.h"
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 #    include <ApplicationServices/ApplicationServices.h>
 #    include <Carbon/Carbon.h>
 #endif
 
 namespace HI {
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 
 int asciiToVirtual(int);
 bool extractShiftModifier(char &key);

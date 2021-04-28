@@ -43,7 +43,7 @@
 
 #include <QApplication>
 
-#include <U2Test/UGUITest.h>
+#include <harness/UGUITestBase.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/MSAEditor.h>
@@ -3535,7 +3535,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_5) {
     CHECK_SET_ERR(clipboardText.contains("<p><span style=\"background-color:#ff99b1;\">T</span><span style=\"background-color:#fcff92;\">A</span><span style=\"background-color:#fcff92;\">A</span></p>"), clipboardText);
 }
 
-/** These tests are created according to test plan: https://ugene.net/wiki/display/PD/MSA**/
+/** These tests are created according to test plan: https://doc.ugene.net/wiki/display/PD/MSA**/
 
 GUI_TEST_CLASS_DEFINITION(test_0054) {
     //    Open COI.aln

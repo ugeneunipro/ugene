@@ -65,7 +65,7 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     // A workaround to avoid using non-bundled plugins
     QCoreApplication::removeLibraryPath(QLibraryInfo::location(QLibraryInfo::PluginsPath));
     QCoreApplication::addLibraryPath("../PlugIns");

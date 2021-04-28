@@ -109,7 +109,7 @@ Task::ReportResult FindExonRegionsTask::report() {
             }
         }
     }
-    qSort(exonRegions);
+    std::sort(exonRegions.begin(), exonRegions.end());
     return ReportResult_Finished;
 }
 

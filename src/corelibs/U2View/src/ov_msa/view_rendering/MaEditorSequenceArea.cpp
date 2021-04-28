@@ -1044,7 +1044,7 @@ void MaEditorSequenceArea::keyPressEvent(QKeyEvent *e) {
     bool isMsaEditor = qobject_cast<MSAEditor *>(getEditor()) != nullptr;
     bool isShiftPressed = e->modifiers().testFlag(Qt::ShiftModifier);
     bool isCtrlPressed = e->modifiers().testFlag(Qt::ControlModifier);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     // In one case it is better to use a Command key as modifier,
     // in another - a Control key. genuineCtrl - Control key on Mac OS X.
     bool isGenuineCtrlPressed = e->modifiers().testFlag(Qt::MetaModifier);

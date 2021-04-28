@@ -61,7 +61,7 @@ int MuscleParallelTask::estimateMemoryUsageInMb(const MultipleSequenceAlignment 
     foreach (const MultipleSequenceAlignmentRow &row, ma->getMsaRows()) {
         rowsLengths.append(row->getCoreLength());
     }
-    qSort(rowsLengths.begin(), rowsLengths.end(), qGreater<int>());
+    std::sort(rowsLengths.begin(), rowsLengths.end(), std::greater<int>());
 
     qint64 usedBytes = 0;
     int availableThreads = workpool->nThreads;

@@ -306,7 +306,7 @@ void DigestSequenceTask::run() {
             }
         }
     }
-    qSort(results.begin(), results.end(), compareAnnotationsbyLength);
+    std::sort(results.begin(), results.end(), compareAnnotationsbyLength);
 
     for (int fragmentCounter = 0; fragmentCounter < results.size(); fragmentCounter++) {
         results[fragmentCounter]->name = QString("Fragment %1").arg(fragmentCounter + 1);

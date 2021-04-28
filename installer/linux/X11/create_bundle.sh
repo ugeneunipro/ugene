@@ -10,9 +10,13 @@ PRODUCT_NAME="ugene"
 
 VERSION_MAJOR=$(cat ../../../src/ugene_version.pri | grep 'UGENE_VER_MAJOR=' | awk -F'=' '{print $2}')
 VERSION_MINOR=$(cat ../../../src/ugene_version.pri | grep 'UGENE_VER_MINOR=' | awk -F'=' '{print $2}')
-VERSION=$(cat ../../../src/ugene_version.pri | grep UGENE_VERSION | awk -F'=' '{print $2}' |
-  sed -e 's/$${UGENE_VER_MAJOR}/'"$VERSION_MAJOR"'/g' \
-    -e 's/$${UGENE_VER_MINOR}/'"$VERSION_MINOR"'/g')
+VERSION_SUFFIX=$(cat ../../../src/ugene_version.pri | grep 'UGENE_VER_SUFFIX=' | awk -F'=' '{print $2}')
+VERSION=$(
+  cat ../../../src/ugene_version.pri | grep UGENE_VERSION | awk -F'=' '{print $2}' |
+    sed -e 's/$${UGENE_VER_MAJOR}/'"$VERSION_MAJOR"'/g' \
+      -e 's/$${UGENE_VER_MINOR}/'"$VERSION_MINOR"'/g' \
+      -e 's/$${UGENE_VER_SUFFIX}/'"$VERSION_SUFFIX"'/g'
+)
 
 RELEASE_DIR=../../../src/_release
 SYMBOLS_DIR=symbols
@@ -220,8 +224,8 @@ if [ "$1" == "-test" ]; then
   TEST="-test"
 fi
 
-# shellcheck disable=SC2027
-PACKAGE_NAME=$PRODUCT_NAME"-"$VERSION"-$PACKAGE_TYPE-"$ARCH"-r"$REVISION$TEST
+# Example: ugene-39.0-dev-b216277-linux-full-x86_64-r7eae07cab3.tar.gz
+PACKAGE_NAME=${PRODUCT_NAME}-${VERSION}-b${TEAMCITY_BUILD_NUMBER}-${PACKAGE_TYPE}-${ARCH}-r${REVISION}${TEST}
 
 tar -czf ${SYMBOLS_DIR}.tar.gz "${SYMBOLS_DIR}"/
 tar -czf "${PACKAGE_NAME}".tar.gz "${TARGET_APP_DIR}"/

@@ -20,7 +20,7 @@
  */
 
 #include "TaskSchedulerImpl.h"
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 #    include "SleepPreventerMac.h"
 #endif
 
@@ -93,7 +93,7 @@ TaskSchedulerImpl::~TaskSchedulerImpl() {
 
 void TaskSchedulerImpl::cancelTask(Task *task) {
     if (task->getState() < Task::State_Finished) {
-        taskLog.info(tr("Canceling task: %1").arg(task->getTaskName()));
+        taskLog.trace(tr("Canceling task: %1").arg(task->getTaskName()));
         getTaskStateInfo(task).cancelFlag = true;
         resumeThreadWithTask(task);    // for the case when task's thread is paused. it should be resumed and terminated
         foreach (const QPointer<Task> &t, task->getSubtasks()) {
@@ -202,7 +202,7 @@ bool TaskSchedulerImpl::processFinishedTasks() {
         hasFinished = true;
         promoteTask(ti, Task::State_Finished);
 
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
         QCoreApplication::processEvents();
 #endif
 
@@ -359,7 +359,7 @@ void TaskSchedulerImpl::runThread(TaskInfo *ti) {
 }
 
 QString TaskSchedulerImpl::tryLockResources(Task *task, bool prepareStage, bool &hasLockedResourcesAfterCall) {
-    QString errorString = QString::null;
+    QString errorString = QString();
 
     if (prepareStage) {    //task must be New
         SAFE_POINT(task->getState() == Task::State_New, "Attempt to lock prepare-stage resources for non-NEW task!", L10N::internalError());
@@ -740,7 +740,7 @@ void TaskSchedulerImpl::checkSerialPromotion(TaskInfo *pti, Task *subtask) {
 }
 
 void TaskSchedulerImpl::createSleepPreventer() {
-#ifndef Q_OS_MAC
+#ifndef Q_OS_DARWIN
     sleepPreventer = new SleepPreventer;
 #else
     sleepPreventer = new SleepPreventerMac;
