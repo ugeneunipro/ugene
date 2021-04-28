@@ -103,8 +103,8 @@ private:
         bool seqResContains(char chainIdentier, int residueIndex, char acronym);
         QByteArray getNextSpecLine();
 
-        // Returns the end-of-name index for `specification`.
-        int endOfNameInd(const QString &specification);
+        // Returns the end-of-name index for `specification`. Changes `readingMoleculeName` if needed.
+        int returnEndOfNameIndexAndUpdateParserState(const QString &specification);
 
     public:
         PDBParser(IOAdapter *io);

@@ -87,15 +87,23 @@ class GTest_BioStruct3DAtomResidueName : public XmlTest {
     int modelId;
 };
 
+/**
+ * Checks that the Biological 3D structure has the given molecule name for the given molecule chain index.
+ * Minimal usage example:
+ *
+ * <load-document index="doc" url="pdb/SomePdb.pdb" io="local_file" format="pdb"/>
+ * <find-object-by-name index="obj" doc="doc" name="SomePdb" type="OT_BIOSTRUCT3D"/>
+ * <check-biostruct3d-molecule-name obj="obj" chain-index="1" molecule-name="Expected" />
+ */
 class GTest_BioStruct3DMoleculeName : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_BioStruct3DMoleculeName, "check-biostruct3d-molecule-name");
 
-    ReportResult report();
+    ReportResult report() override;
 
     QString objContextName;
-    QString molName;
-    int chainInd;
+    QString moleculeName;
+    int chainIndex;
 };
 
 class GTest_PDBFormatStressTest : public XmlTest {

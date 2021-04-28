@@ -38,8 +38,8 @@ namespace U2 {
 #define X_COORD_ATTR "x"
 #define Y_COORD_ATTR "y"
 #define Z_COORD_ATTR "z"
-#define CHAIN_IND_ATTR "chain-ind"
-#define MOL_NAME_ATTR "mol-name"
+#define CHAIN_IND_ATTR "chain-index"
+#define MOL_NAME_ATTR "molecule-name"
 
 void GTest_BioStruct3DNumberOfAtoms::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
@@ -395,9 +395,7 @@ Task::ReportResult GTest_BioStruct3DAtomResidueName::report() {
 }
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-void GTest_BioStruct3DMoleculeName::init(XMLTestFormat *tf, const QDomElement &el) {
-    Q_UNUSED(tf);
-
+void GTest_BioStruct3DMoleculeName::init(XMLTestFormat *, const QDomElement &el) {
     objContextName = el.attribute(OBJ_ATTR);
     if (objContextName.isEmpty()) {
         failMissingValue(OBJ_ATTR);
@@ -408,19 +406,17 @@ void GTest_BioStruct3DMoleculeName::init(XMLTestFormat *tf, const QDomElement &e
     QString v = el.attribute(CHAIN_IND_ATTR);
     if (!v.isEmpty()) {
         bool ok = false;
-        chainInd = v.toInt(&ok);
+        chainIndex = v.toInt(&ok);
         if (!ok) {
             stateInfo.setError(QString("invalid value type %1, int required").arg(CHAIN_IND_ATTR));
         }
     }
 
     // molecule name
-    v = el.attribute(MOL_NAME_ATTR);
-    if (v.isEmpty()) {
+    moleculeName = el.attribute(MOL_NAME_ATTR);
+    if (moleculeName.isEmpty()) {
         failMissingValue(MOL_NAME_ATTR);
-        return;
     }
-    molName = v;
 }
 
 Task::ReportResult GTest_BioStruct3DMoleculeName::report() {
@@ -436,16 +432,16 @@ Task::ReportResult GTest_BioStruct3DMoleculeName::report() {
         return ReportResult_Finished;
     }
 
-    SharedMolecule molecule = biostructObj->getBioStruct3D().moleculeMap[chainInd];
+    SharedMolecule molecule = biostructObj->getBioStruct3D().moleculeMap[chainIndex];
     if (!molecule) {
-        stateInfo.setError(QString("molecule with chain ind = %1 not found").arg(chainInd));
+        stateInfo.setError(QString("molecule with chain ind = %1 not found").arg(chainIndex));
         return ReportResult_Finished;
     }
 
     QString tmpName = molecule->name;
 
-    if (molName != tmpName) {
-        stateInfo.setError(QString("molecule with chain ind=%1 does not match: %2, expected %3").arg(chainInd).arg(tmpName).arg(molName));
+    if (moleculeName != tmpName) {
+        stateInfo.setError(QString("molecule with chain ind=%1 does not match: %2, expected %3").arg(chainIndex).arg(tmpName).arg(moleculeName));
     }
 
     return ReportResult_Finished;

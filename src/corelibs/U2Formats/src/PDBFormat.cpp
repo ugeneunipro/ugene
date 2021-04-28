@@ -286,7 +286,7 @@ void PDBFormat::PDBParser::parseMacromolecularContent(bool firstCompndLine, U2Op
         QString specification = currentPDBLine.mid(10, currentPDBLine.size() - 11).trimmed().toLatin1();
         if (specification.startsWith(MOLECULE_TAG)) {
             readingMoleculeName = true;
-            int index = endOfNameInd(specification);
+            int index = returnEndOfNameIndexAndUpdateParserState(specification);
             currentMoleculeName = specification.mid(MOLECULE_TAG.size() + 1, index - MOLECULE_TAG.size() - 1).trimmed();
         } else if (specification.startsWith(CHAIN_TAG)) {
             QStringList idetifiers = specification.split(QRegExp(",|:|;"));
@@ -297,7 +297,8 @@ void PDBFormat::PDBParser::parseMacromolecularContent(bool firstCompndLine, U2Op
                 }
             }
         } else if (readingMoleculeName) {
-            currentMoleculeName += specification.left(endOfNameInd(specification)).trimmed();
+            int index = returnEndOfNameIndexAndUpdateParserState(specification);
+            currentMoleculeName += specification.left(index).trimmed();
         }
     }
 }
@@ -609,8 +610,9 @@ void PDBFormat::PDBParser::createMolecule(char chainIdentifier, BioStruct3D &bio
 void PDBFormat::PDBParser::updateResidueIndexes(BioStruct3D & /*biostruc*/) {
 }
 
-int PDBFormat::PDBParser::endOfNameInd(const QString &specification) {
-    int index = QRegExp(";\\s*$").indexIn(specification);
+int PDBFormat::PDBParser::returnEndOfNameIndexAndUpdateParserState(const QString &specification) {
+    static const QRegExp end(";\\s*$");
+    int index = end.indexIn(specification);
     if (index < 0) {
         return specification.size();
     }
