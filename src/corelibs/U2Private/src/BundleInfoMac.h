@@ -27,7 +27,7 @@
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineRegistry.h>
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
@@ -35,12 +35,18 @@ namespace U2 {
 
 class BundleInfoMac {
 public:
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
+    static QString getDBundlePath();
     static QString getExtraTranslationSearchPath(CMDLineRegistry *);
     static QString getDataSearchPath();
+    static QString getPluginsSearchPath();
+    static QString getToolsSearchPath();
 #else
+    static QString getDBundlePath() { return ""; }
     static QString getExtraTranslationSearchPath(CMDLineRegistry *) { return ""; }
     static QString getDataSearchPath() { return ""; }
+    static QString getPluginsSearchPath() { return ""; }
+    static QString getToolsSearchPath() { return ""; }
 #endif
 
 };

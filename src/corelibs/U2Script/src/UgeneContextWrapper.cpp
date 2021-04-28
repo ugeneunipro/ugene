@@ -86,11 +86,13 @@
 #include <U2Lang/QueryDesignerRegistry.h>
 #include <U2Lang/WorkflowEnvImpl.h>
 
+#include <BundleInfoMac.h>
+
 #include <U2Test/GTestFrameworkComponents.h>
 
 #include "UgeneContextWrapper.h"
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
@@ -109,19 +111,12 @@ static void setDataSearchPaths() {
     } else if (QDir(AppContext::getWorkingDirectoryPath() + relativeDevDataDir).exists()) {
         coreLog.info("Added path: " + AppContext::getWorkingDirectoryPath() + relativeDevDataDir);
         dataSearchPaths.push_back(AppContext::getWorkingDirectoryPath() + relativeDevDataDir);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     } else {
-        CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
-        CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
-                                                      kCFURLPOSIXPathStyle);
-        const char *bundlePath = CFStringGetCStringPtr(macPath,
-                                                       CFStringGetSystemEncoding());
-        QString dataDir = QString(bundlePath) + "/Contents/Resources/data";
-        if (QDir(dataDir).exists()) {    //data location in Resources
-            dataSearchPaths.push_back(dataDir);
+        QString dir = BundleInfoMac::getDataSearchPath();
+        if (QDir(dir).exists()) {
+            dataSearchPaths.push_back(dir);
         }
-        CFRelease(appUrlRef);
-        CFRelease(macPath);
 #endif
     }
 

@@ -6,6 +6,9 @@ include (ugene_lib_common.pri)
 
 QT += network xml svg
 
+INCLUDEPATH += ../../corelibs/U2Private/src
+LIBS += -lU2Private$$D
+
 LIBS += -L../../$$out_dir()
 LIBS += -lU2Core$$D -lU2Algorithm$$D -lU2Formats$$D -lU2Gui$$D -lU2View$$D -lU2Test$$D -lU2Lang$$D -lU2Designer$$D
 

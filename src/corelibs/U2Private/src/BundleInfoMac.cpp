@@ -24,42 +24,52 @@
 
 namespace U2 {
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 
-QString BundleInfoMac::getExtraTranslationSearchPath(CMDLineRegistry *cmdLineRegistry) {
-    QString returnPath;
+QString BundleInfoMac::getDBundlePath() {
     CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
     CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
                                                   kCFURLPOSIXPathStyle);
     const char *bundlePath = CFStringGetCStringPtr(macPath,
                                                    CFStringGetSystemEncoding());
-    QString translationFileDir = QString(bundlePath) + "/Contents/Resources";
+    CFRelease(appUrlRef);
+    CFRelease(macPath);
+
+    return QString(bundlePath);
+}
+
+QString BundleInfoMac::getExtraTranslationSearchPath(CMDLineRegistry *cmdLineRegistry) {
+    QString translationFileDir = getDBundlePath() + "/Contents/Resources";
     QString transl = "transl_en";
     QString cmdlineTransl = cmdLineRegistry->getParameterValue(CMDLineCoreOptions::TRANSLATION);
     if (!cmdlineTransl.isEmpty()) {
         transl = QString("transl_") + cmdlineTransl;
     }
-    returnPath = translationFileDir + "/" + transl;
-    CFRelease(appUrlRef);
-    CFRelease(macPath);
-
-    return returnPath;
+    return translationFileDir + "/" + transl;
 }
 
 QString BundleInfoMac::getDataSearchPath() {
-    CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
-    CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
-                                                  kCFURLPOSIXPathStyle);
-    const char *bundlePath = CFStringGetCStringPtr(macPath,
-                                                   CFStringGetSystemEncoding());
-    QString dataDir = QString(bundlePath) + "/Contents/Resources/data";
-    if (!QDir(dataDir).exists()) {    //data location in Resources
-        dataDir = "";
+    QString dir = getDBundlePath() + "/Contents/Resources/data";
+    if (!QDir(dir).exists()) {    //data location in Resources
+        dir = "";
     }
-    CFRelease(appUrlRef);
-    CFRelease(macPath);
+    return dir;
+}
 
-    return dataDir;
+QString BundleInfoMac::getPluginsSearchPath() {
+    QString dir = getDBundlePath() + "/Contents/Resources/plugins";
+    if (!QDir(dir).exists()) {    //data location in Resources
+        dir = "";
+    }
+    return dir;
+}
+
+QString BundleInfoMac::getToolsSearchPath() {
+    QString dir = getDBundlePath() + "/Contents/Resources/tools";
+    if (!QDir(dir).exists()) {    //data location in Resources
+        dir = "";
+    }
+    return dir;
 }
 
 #endif

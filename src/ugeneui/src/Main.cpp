@@ -167,7 +167,7 @@
 #include "update/UgeneUpdater.h"
 #include "welcome_page/WelcomePageMdiController.h"
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
@@ -215,7 +215,7 @@ static void setDataSearchPaths() {
         dataSearchPaths.push_back(appDirPath + RELATIVE_DATA_DIR);
     } else if (QDir(appDirPath + RELATIVE_DEV_DATA_DIR).exists()) {    //data location for developers
         dataSearchPaths.push_back(appDirPath + RELATIVE_DEV_DATA_DIR);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     } else {
         QString dataDir = BundleInfoMac::getDataSearchPath();
         if (!dataDir.isEmpty()) {

@@ -29,9 +29,11 @@
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <BundleInfoMac.h>
+
 #include "ExternalToolSupportSettings.h"
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
@@ -57,18 +59,12 @@ void ExternalToolSearchTask::run() {
 
     if (toolsDir.isEmpty() && QFileInfo(appDir.absoluteFilePath(DEFAULT_TOOLS_DIR_NAME)).isDir()) {
         toolsDir = appDir.absoluteFilePath(DEFAULT_TOOLS_DIR_NAME);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     } else if (toolsDir.isEmpty()) {
-        CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
-        CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
-                                                      kCFURLPOSIXPathStyle);
-        const char *pathPtr = CFStringGetCStringPtr(macPath,
-                                                    CFStringGetSystemEncoding());
-        if (QFileInfo(QString(pathPtr) + "/Contents/Resources/tools").isDir()) {
-            toolsDir = QString(pathPtr) + "/Contents/Resources/tools";
+        QString dir = BundleInfoMac::getToolsSearchPath();
+        if (QFileInfo(dir).isDir()) {
+            toolsDir = dir;
         }
-        CFRelease(appUrlRef);
-        CFRelease(macPath);
 #endif
     }
 

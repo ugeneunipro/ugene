@@ -106,7 +106,7 @@
 #include "TaskStatusBar.h"
 #include "TestStarter.h"
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
@@ -168,19 +168,12 @@ static void setDataSearchPaths() {
     } else if (QDir(appDirPath + RELATIVE_DEV_DATA_DIR).exists()) {    //data location for developers
         printf("ADDED PATH %s \n", qPrintable(appDirPath + RELATIVE_DEV_DATA_DIR));
         dataSearchPaths.push_back(appDirPath + RELATIVE_DEV_DATA_DIR);
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     } else {
-        CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
-        CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
-                                                      kCFURLPOSIXPathStyle);
-        const char *bundlePath = CFStringGetCStringPtr(macPath,
-                                                       CFStringGetSystemEncoding());
-        QString dataDir = QString(bundlePath) + "/Contents/Resources/data";
-        if (QDir(dataDir).exists()) {    //data location in Resources
-            dataSearchPaths.push_back(dataDir);
+        QString dir = BundleInfoMac::getDataSearchPath();
+        if (QDir(dir).exists()) {
+            dataSearchPaths.push_back(dir);
         }
-        CFRelease(appUrlRef);
-        CFRelease(macPath);
 #endif
     }
 
@@ -282,6 +275,10 @@ int main(int argc, char **argv) {
             break;
         }
         failedToLoadTranslatorFiles << translationFile;
+    }
+    if (!translator.isEmpty()) {
+        QCoreApplication::installTranslator(&translator);
+        GObjectTypes::initTypeTranslations();
     }
 
     // 2 create functional components of congene

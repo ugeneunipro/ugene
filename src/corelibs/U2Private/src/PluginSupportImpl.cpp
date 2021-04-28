@@ -36,6 +36,7 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/MainWindow.h>
+#include <BundleInfoMac.h>
 
 #include "ServiceRegistryImpl.h"
 
@@ -43,7 +44,7 @@
 #    include <windows.h>
 #endif
 
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
 #include <CoreFoundation/CoreFoundation.h>
 #endif
 
@@ -325,17 +326,9 @@ void PluginSupportImpl::updateSavedState(PluginRef *ref) {
 }
 
 QDir PluginSupportImpl::getDefaultPluginsDir() {
-#ifdef Q_OS_MAC
+#ifdef Q_OS_DARWIN
     if (! QDir(AppContext::getWorkingDirectoryPath() + "/plugins").exists()) {
-        CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
-        CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
-                                                      kCFURLPOSIXPathStyle);
-        const char *pathPtr = CFStringGetCStringPtr(macPath,
-                                                    CFStringGetSystemEncoding());
-        QString pluginsDir = QString(pathPtr) + "/Contents/Resources/plugins";
-        CFRelease(appUrlRef);
-        CFRelease(macPath);
-        return QDir(pluginsDir);
+        return QDir(BundleInfoMac::getPluginsSearchPath());
     }
 #endif
     return QDir(AppContext::getWorkingDirectoryPath() + "/plugins");
