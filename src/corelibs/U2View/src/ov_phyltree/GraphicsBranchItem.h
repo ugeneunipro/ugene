@@ -98,9 +98,9 @@ public:
 
     void updateSettings(const OptionsMap &settings);
     void updateChildSettings(const OptionsMap &settings);
-    /** Replace current font with given */
+    /** Replace current font with given one */
     void updateTextProperty(TreeViewOption property, const QVariant &propertyVal);
-    /** Replace current color with given */
+    /** Replace current color with given one */
     void updateTextColor(const QColor &color);
 
     const OptionsMap &getSettings() const;
