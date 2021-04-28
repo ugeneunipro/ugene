@@ -1844,8 +1844,8 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
 
         static void fontChecker(HI::GUITestOpStatus &os, const QString &expectedFamilyStr, int expectedSize) {
             CHECK_SET_ERR(GTComboBox::getCurrentText(os, "fontComboBox") == expectedFamilyStr, "unexpected style: " + GTComboBox::getCurrentText(os, "fontComboBox"));
-            CHECK_SET_ERR(GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox")) == QString::number(expectedSize), 
-                QString("unexpected point size: %1").arg(GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox"))));
+            int actualSize = GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox"));
+            CHECK_SET_ERR(actualSize == expectedSize, QString("unexpected point size: %1").arg(QString::number(actualSize)));
         }        
         
         static void getFontSettings(HI::GUITestOpStatus &os, QString &familyStr, int &size) {
@@ -1872,22 +1872,30 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
 
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
     QList<GraphicsButtonItem *>  nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
-    GTUtilsPhyTree::clickNode(os, nodes[0]);
-    GTUtilsPhyTree::clickNode(os, nodes[1]);    
+    //1. Open samples/CLUSTALW/COI.aln and build tree for it
+    GTUtilsPhyTree::clickNode(os, nodes[0]);//drop sticked ruler
+    //2. Select node, change font size to 16, also remember default parameters
+    GTUtilsPhyTree::clickNode(os, nodes[1]);
     FontSettingsHelper::getFontSettings(os, defaultFontFamily, defaultSize);
     FontSettingsHelper::changeFontAndSize(os, defaultFontFamily, 16);
-
+    //3. Click on parent node for node selected at step 1.
+    //Change its font to Arial with size 22
     GTUtilsPhyTree::clickNode(os, nodes[2]);
-    FontSettingsHelper::changeFontAndSize(os, "MS Serif", 22);
-
+    FontSettingsHelper::changeFontAndSize(os, "Arial", 22);
+    //4. Go back to first one node
+    //Expected state: its font became Arial with size 22
     GTUtilsPhyTree::clickNode(os, nodes[1]);
-    FontSettingsHelper::fontChecker(os, "MS Serif", 22);
+    FontSettingsHelper::fontChecker(os, "Arial", 22);
+    //5. Change font to default
     FontSettingsHelper::changeFontAndSize(os, defaultFontFamily, 22);
-
+    //6. Select parent node again
+    //Expected state: font still Arial with size 22
     GTUtilsPhyTree::clickNode(os, nodes[2]);
-    FontSettingsHelper::fontChecker(os, "MS Serif", 22);
+    FontSettingsHelper::fontChecker(os, "Arial", 22);
+    //7. Change font and size to defaults
     FontSettingsHelper::changeFontAndSize(os, defaultFontFamily, defaultSize);
-
+    //8. Select first node
+    //Expected state: font and size now became default
     GTUtilsPhyTree::clickNode(os, nodes[1]);
     FontSettingsHelper::fontChecker(os, defaultFontFamily, defaultSize);
 }

@@ -80,7 +80,7 @@ void TextSettingsDialog::accept() {
     curFont.setOverline(overlineToolButton->isChecked());
 
     updatedSettings[LABEL_FONT_TYPE] = curFont;
-    updatedSettings[LABEL_FONT_SIZE] = curFont.pixelSize();
+    updatedSettings[LABEL_FONT_SIZE] = curFont.pointSize();
     updatedSettings[LABEL_FONT_BOLD] = curFont.bold();
     updatedSettings[LABEL_FONT_ITALIC] = curFont.italic();
     updatedSettings[LABEL_FONT_UNDELINE] = curFont.underline();

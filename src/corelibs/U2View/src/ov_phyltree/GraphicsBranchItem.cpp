@@ -66,17 +66,14 @@ void GraphicsBranchItem::updateChildSettings(const OptionsMap &newSettings) {
 void GraphicsBranchItem::updateTextProperty(TreeViewOption property, const QVariant &propertyVal) {
     QFont dtFont = distanceText ? distanceText->font() : QFont();
     QFont ntFont = nameText ? nameText->font() : QFont();
-    int pixSize = dtFont.pixelSize();
-    int pixSize2;
     switch (property) {
         case U2::LABEL_FONT_TYPE:
             dtFont.setFamily(qvariant_cast<QFont>(propertyVal).family());
-            ntFont.setFamily(qvariant_cast<QFont>(propertyVal).family());
-            pixSize2 = dtFont.pixelSize();
+            ntFont.setFamily(qvariant_cast<QFont>(propertyVal).family());            
             break;
         case U2::LABEL_FONT_SIZE:
-            dtFont.setPixelSize(qvariant_cast<int>(propertyVal));
-            ntFont.setPixelSize(qvariant_cast<int>(propertyVal));
+            dtFont.setPointSize(qvariant_cast<int>(propertyVal));
+            ntFont.setPointSize(qvariant_cast<int>(propertyVal));
             break;
         case U2::LABEL_FONT_BOLD:
             dtFont.setBold(qvariant_cast<bool>(propertyVal));

@@ -617,7 +617,7 @@ void TreeViewerUI::initializeSettings() {
 
     setOptionValue(LABEL_COLOR, QColor(Qt::darkGray));
     setOptionValue(LABEL_FONT_TYPE, TreeViewerUtils::getFont());
-    setOptionValue(LABEL_FONT_SIZE, TreeViewerUtils::getFont().pixelSize());
+    setOptionValue(LABEL_FONT_SIZE, TreeViewerUtils::getFont().pointSize());
     setOptionValue(LABEL_FONT_BOLD, false);
     setOptionValue(LABEL_FONT_ITALIC, false);
     setOptionValue(LABEL_FONT_UNDELINE, false);
