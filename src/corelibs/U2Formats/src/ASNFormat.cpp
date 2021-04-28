@@ -51,23 +51,24 @@
 // "Mol_id: 2; Molecule: Molecule name; Chain: B, D; Some_specification: Specification value"
 static QStringList parseMolecules(const QString &comment) {
     QStringList ans;
+    const QString molIdStr("Mol_id");
 
-    const int molIdInd = comment.indexOf("Mol_id", Qt::CaseInsensitive);
+    const int molIdInd = comment.indexOf(molIdStr, Qt::CaseInsensitive);
     if (molIdInd < 0) {
         return ans;
     }
     const QString molInfos = comment.mid(molIdInd);    // No title at the beginning
 
     int start = 0;
-    int end = molInfos.indexOf("Mol_id", start + 1, Qt::CaseInsensitive);
+    int end = 0;
     while (start > -1) {
+        end = molInfos.indexOf(molIdStr, start + 1, Qt::CaseInsensitive);
         QString str = molInfos.mid(start, end).trimmed();
         if (str.endsWith(';')) {
             str.remove(str.length() - 1, 1);
         }
         ans << str;
         start = end;
-        end = molInfos.indexOf("Mol_id", start + 1, Qt::CaseInsensitive);
     }
     return ans;
 }
