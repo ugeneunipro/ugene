@@ -197,7 +197,7 @@ void GraphicsButtonItem::updateSettings(const OptionsMap &settings) {
     newFont.setPointSize(qvariant_cast<int>(settings[LABEL_FONT_SIZE]));
     newFont.setBold(qvariant_cast<int>(settings[LABEL_FONT_BOLD]));
     newFont.setItalic(qvariant_cast<int>(settings[LABEL_FONT_ITALIC]));
-    newFont.setUnderline(qvariant_cast<int>(settings[LABEL_FONT_UNDELINE]));
+    newFont.setUnderline(qvariant_cast<int>(settings[LABEL_FONT_UNDERLINE]));
     nodeLabel->setFont(newFont);
     QColor labelsColor = qvariant_cast<QColor>(settings[LABEL_COLOR]);
     nodeLabel->setBrush(labelsColor);

@@ -155,7 +155,7 @@ void TreeOptionsWidget::sl_onOptionChanged(TreeViewOption option, const QVariant
         alignLabelsCheck->setEnabled(value.toBool());
     }
     if (option == LABEL_COLOR || option == LABEL_FONT_TYPE || option == LABEL_FONT_SIZE || 
-        option == LABEL_FONT_BOLD || option == LABEL_FONT_ITALIC || option == LABEL_FONT_UNDELINE) {
+        option == LABEL_FONT_BOLD || option == LABEL_FONT_ITALIC || option == LABEL_FONT_UNDERLINE) {
         updateFormatSettings();
         return;
     }
@@ -184,7 +184,9 @@ void TreeOptionsWidget::sl_selectionChanged(GraphicsBranchItem *parentItem) {
         font = parentItem->getDistanceText()->font();
         color = parentItem->getDistanceText()->brush().color();
     }
-    if (!(font == QFont() && color == QColor())) {
+    bool isCustomFont = font != QFont();
+    bool isCustomColor = color != QColor();
+    if (isCustomFont || isCustomColor) {
         fontComboBox->setCurrentFont(font);
         fontSizeSpinBox->setValue(font.pointSize());
         boldAttrButton->setChecked(font.bold());
@@ -295,7 +297,7 @@ void TreeOptionsWidget::updateFormatSettings() {
 
     boldAttrButton->setChecked(getTreeViewer()->getOptionValue(LABEL_FONT_BOLD).toBool());
     italicAttrButton->setChecked(getTreeViewer()->getOptionValue(LABEL_FONT_ITALIC).toBool());
-    underlineAttrButton->setChecked(getTreeViewer()->getOptionValue(LABEL_FONT_UNDELINE).toBool());
+    underlineAttrButton->setChecked(getTreeViewer()->getOptionValue(LABEL_FONT_UNDERLINE).toBool());
 }
 
 TreeViewerUI *TreeOptionsWidget::getTreeViewer() const {
@@ -320,7 +322,7 @@ void TreeOptionsWidget::sl_fontItalicChanged() {
 }
 
 void TreeOptionsWidget::sl_fontUnderlineChanged() {
-    getTreeViewer()->changeOption(LABEL_FONT_UNDELINE, underlineAttrButton->isChecked());
+    getTreeViewer()->changeOption(LABEL_FONT_UNDERLINE, underlineAttrButton->isChecked());
 }
 
 void TreeOptionsWidget::sl_labelsColorButton() {

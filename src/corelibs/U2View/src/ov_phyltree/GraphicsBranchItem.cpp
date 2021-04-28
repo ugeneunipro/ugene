@@ -83,7 +83,7 @@ void GraphicsBranchItem::updateTextProperty(TreeViewOption property, const QVari
             dtFont.setItalic(qvariant_cast<bool>(propertyVal));
             ntFont.setItalic(qvariant_cast<bool>(propertyVal));
             break;
-        case U2::LABEL_FONT_UNDELINE:
+        case U2::LABEL_FONT_UNDERLINE:
             dtFont.setUnderline(qvariant_cast<bool>(propertyVal));
             ntFont.setUnderline(qvariant_cast<bool>(propertyVal));
             break;

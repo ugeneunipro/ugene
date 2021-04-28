@@ -556,8 +556,8 @@ void TreeViewerUI::onSettingsChanged(TreeViewOption option, const QVariant &newV
         case LABEL_FONT_ITALIC:
             updateTextSettings(LABEL_FONT_ITALIC);
             break;  
-        case LABEL_FONT_UNDELINE:
-            updateTextSettings(LABEL_FONT_UNDELINE);
+        case LABEL_FONT_UNDERLINE:
+            updateTextSettings(LABEL_FONT_UNDERLINE);
             break;
         case BRANCH_COLOR:
         case BRANCH_THICKNESS:
@@ -620,7 +620,7 @@ void TreeViewerUI::initializeSettings() {
     setOptionValue(LABEL_FONT_SIZE, TreeViewerUtils::getFont().pointSize());
     setOptionValue(LABEL_FONT_BOLD, false);
     setOptionValue(LABEL_FONT_ITALIC, false);
-    setOptionValue(LABEL_FONT_UNDELINE, false);
+    setOptionValue(LABEL_FONT_UNDERLINE, false);
 
     setOptionValue(SHOW_LABELS, true);
     setOptionValue(SHOW_DISTANCES, !phyObject->haveNodeLabels());
@@ -677,8 +677,7 @@ void TreeViewerUI::getSelectedBranchSettings(QColor &color, QFont &font) const {
     GraphicsBranchItem *rootItem = nullptr;
     for (QGraphicsItem *graphItem : qAsConst(selectedItems)) {
         auto *branchItem = dynamic_cast<GraphicsBranchItem *>(graphItem);
-        CHECK(branchItem != nullptr, )
-        if (branchItem->getChildItems().size() >= childCount) {
+        if (branchItem != nullptr && branchItem->getChildItems().size() >= childCount) {
             childCount = branchItem->getChildItems().size();
             rootItem = branchItem;
         }
@@ -715,7 +714,7 @@ void TreeViewerUI::updateTextSettings(TreeViewOption option) {
                     branchItem->getCorrespondingItem()->updateTextColor(curColor);
                 }
             } else if (option == LABEL_COLOR || option == LABEL_FONT_TYPE || option == LABEL_FONT_SIZE ||
-                       option == LABEL_FONT_BOLD || option == LABEL_FONT_ITALIC || option == LABEL_FONT_UNDELINE) {
+                       option == LABEL_FONT_BOLD || option == LABEL_FONT_ITALIC || option == LABEL_FONT_UNDERLINE) {
                 branchItem->updateTextProperty(option, getOptionValue(option));
                 if (branchItem->getCorrespondingItem()) {
                     branchItem->getCorrespondingItem()->updateTextProperty(option, getOptionValue(option));
@@ -1301,7 +1300,7 @@ void TreeViewerUI::sl_rectLayoutRecomputed() {
     updateTextSettings(LABEL_FONT_SIZE);
     updateTextSettings(LABEL_FONT_BOLD);
     updateTextSettings(LABEL_FONT_ITALIC);
-    updateTextSettings(LABEL_FONT_UNDELINE);
+    updateTextSettings(LABEL_FONT_UNDERLINE);
 }
 
 void TreeViewerUI::sl_onBranchCollapsed(GraphicsRectangularBranchItem *) {

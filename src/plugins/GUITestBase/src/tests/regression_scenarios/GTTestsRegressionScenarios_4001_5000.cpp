@@ -1838,7 +1838,6 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
         static void changeFontAndSize(HI::GUITestOpStatus &os,  const QString &fontFamilyStr, int fontSize) {
             QComboBox *fontComboBox = GTWidget::findExactWidget<QComboBox *>(os, "fontComboBox");
             GTComboBox::selectItemByText(os, fontComboBox, fontFamilyStr);
-            GTGlobals::sleep(500);
             GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox"), fontSize, GTGlobals::UseMouse);
         }
 
@@ -1863,15 +1862,17 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QWidget *labelsColorButton = GTWidget::findWidget(os, "labelsColorButton");
-    CHECK_SET_ERR(labelsColorButton != NULL, "labelsColorButton not found");
     if (!labelsColorButton->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "lblFontSettings"));
     }
     QString defaultFontFamily;
     int defaultSize;
 
-    QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
+    QGraphicsView *treeView = GTWidget::findExactWidget<QGraphicsView*>(os, "treeView");
     QList<GraphicsButtonItem *>  nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
+    CHECK_SET_ERR(nodes.size() == 16, 
+        QString("Something goes wrong with building tree from COI.aln We are expect 16 nodes instead of: %1")
+        .arg(QString::number(nodes.size())));
     //1. Open samples/CLUSTALW/COI.aln and build tree for it
     GTUtilsPhyTree::clickNode(os, nodes[0]);//drop sticked ruler
     //2. Select node, change font size to 16, also remember default parameters

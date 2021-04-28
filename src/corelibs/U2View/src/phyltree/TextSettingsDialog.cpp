@@ -48,7 +48,7 @@ TextSettingsDialog::TextSettingsDialog(QWidget *parent, const OptionsMap &settin
     sizeSpinBox->setValue(qvariant_cast<int>(settings[LABEL_FONT_SIZE]));
     boldToolButton->setChecked(qvariant_cast<bool>(settings[LABEL_FONT_BOLD]));
     italicToolButton->setChecked(qvariant_cast<bool>(settings[LABEL_FONT_ITALIC]));
-    underlineToolButton->setChecked(qvariant_cast<bool>(settings[LABEL_FONT_UNDELINE]));
+    underlineToolButton->setChecked(qvariant_cast<bool>(settings[LABEL_FONT_UNDERLINE]));
     overlineToolButton->setChecked(curFont.overline());
 
     overlineToolButton->setVisible(false);
@@ -83,7 +83,7 @@ void TextSettingsDialog::accept() {
     updatedSettings[LABEL_FONT_SIZE] = curFont.pointSize();
     updatedSettings[LABEL_FONT_BOLD] = curFont.bold();
     updatedSettings[LABEL_FONT_ITALIC] = curFont.italic();
-    updatedSettings[LABEL_FONT_UNDELINE] = curFont.underline();
+    updatedSettings[LABEL_FONT_UNDERLINE] = curFont.underline();
 
     QDialog::accept();
 }
