@@ -62,7 +62,7 @@ void ExternalToolSearchTask::run() {
 #ifdef Q_OS_DARWIN
     } else if (toolsDir.isEmpty()) {
         QString dir = BundleInfoMac::getToolsSearchPath();
-        if (QFileInfo(dir).isDir()) {
+        if (!dir.isEmpty()) {
             toolsDir = dir;
         }
 #endif

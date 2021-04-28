@@ -22,6 +22,10 @@
 #include <QDir>
 #include "BundleInfoMac.h"
 
+#ifdef Q_OS_DARWIN
+#include <CoreFoundation/CoreFoundation.h>
+#endif
+
 namespace U2 {
 
 #ifdef Q_OS_DARWIN

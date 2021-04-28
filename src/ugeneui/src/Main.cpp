@@ -167,10 +167,6 @@
 #include "update/UgeneUpdater.h"
 #include "welcome_page/WelcomePageMdiController.h"
 
-#ifdef Q_OS_DARWIN
-#include <CoreFoundation/CoreFoundation.h>
-#endif
-
 using namespace U2;
 
 #ifdef Q_OS_WIN

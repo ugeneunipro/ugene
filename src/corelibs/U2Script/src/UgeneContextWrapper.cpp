@@ -92,10 +92,6 @@
 
 #include "UgeneContextWrapper.h"
 
-#ifdef Q_OS_DARWIN
-#include <CoreFoundation/CoreFoundation.h>
-#endif
-
 int ARGC = 0;
 
 namespace U2 {
@@ -114,7 +110,7 @@ static void setDataSearchPaths() {
 #ifdef Q_OS_DARWIN
     } else {
         QString dir = BundleInfoMac::getDataSearchPath();
-        if (QDir(dir).exists()) {
+        if (!dir.isEmpty()) {
             dataSearchPaths.push_back(dir);
         }
 #endif

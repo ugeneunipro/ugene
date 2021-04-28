@@ -27,10 +27,6 @@
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineRegistry.h>
 
-#ifdef Q_OS_DARWIN
-#include <CoreFoundation/CoreFoundation.h>
-#endif
-
 namespace U2 {
 
 class BundleInfoMac {

@@ -44,10 +44,6 @@
 #    include <windows.h>
 #endif
 
-#ifdef Q_OS_DARWIN
-#include <CoreFoundation/CoreFoundation.h>
-#endif
-
 namespace U2 {
 
 /* TRANSLATOR U2::PluginSupportImpl */
