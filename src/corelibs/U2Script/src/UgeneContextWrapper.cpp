@@ -105,7 +105,7 @@ static void setDataSearchPaths() {
     if (QDir(AppContext::getWorkingDirectoryPath() + relativeDataDir).exists()) {
         dataSearchPaths.push_back(AppContext::getWorkingDirectoryPath() + relativeDataDir);
     } else if (QDir(AppContext::getWorkingDirectoryPath() + relativeDevDataDir).exists()) {
-        coreLog.info("Added path: " + AppContext::getWorkingDirectoryPath() + relativeDevDataDir);
+        coreLog.info(AppContextImpl::tr("Added path: %1").arg(AppContext::getWorkingDirectoryPath() + relativeDevDataDir));
         dataSearchPaths.push_back(AppContext::getWorkingDirectoryPath() + relativeDevDataDir);
 #ifdef Q_OS_DARWIN
     } else {

@@ -33,10 +33,6 @@
 
 #include "ExternalToolSupportSettings.h"
 
-#ifdef Q_OS_DARWIN
-#include <CoreFoundation/CoreFoundation.h>
-#endif
-
 namespace U2 {
 
 #define DEFAULT_TOOLS_DIR_NAME "tools"
