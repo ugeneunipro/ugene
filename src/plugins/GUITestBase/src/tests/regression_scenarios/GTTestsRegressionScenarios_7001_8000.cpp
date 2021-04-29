@@ -22,24 +22,31 @@
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
+#include <primitives/GTCheckBox.h>
 #include <primitives/GTMenu.h>
+#include <primitives/GTRadioButton.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
+#include <system/GTFile.h>
 #include <utils/GTUtilsDialog.h>
 
 #include <QApplication>
 #include <QFileInfo>
+#include <QRadioButton>
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
+#include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "api/GTMSAEditorStatusWidget.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
+#include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
+#include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
 
@@ -319,6 +326,40 @@ GUI_TEST_CLASS_DEFINITION(test_7152) {
                           GTMSAEditorStatusWidget::getSequenceUngappedPositionString(os);
     GTMSAEditorStatusWidget::getColumnNumberString(os);
     CHECK_SET_ERR(bottomRight == "11/40/35", "Bottom right position is wrong: " + bottomRight);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7183) {
+    class ExportSequencesScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = QApplication::activeModalWidget();
+            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+
+            GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "bothStrandsButton", dialog));
+            GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "translateButton", dialog), true);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+    //1. Open file _common_data/fasta/reads.fa as separate sequences.
+    QString filePath = testDir + "_common_data/fasta/reads.fa";
+    QString fileName = "reads.fa";
+    GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
+    GTFileDialog::openFile(os, sandBoxDir + "/" + fileName);
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    
+    for (int i = 0; i < 8; i++) {
+        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
+        GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, new ExportSequencesScenario()));
+        GTUtilsProjectTreeView::click(os, "reads.fa", Qt::RightButton);
+        GTUtilsTaskTreeView::waitTaskFinished(os);
+    }
+    //2. Open context menu on reads.fa file in project view. Select "Export/Import -> Export sequences..."
+    //3. Check the "Save both strands" radiobutton
+    //4. Check the "Translate to amino" checkbox
+    //5. Push Export button in the dialog.
+    //6. Repeat steps 2-5 8 times
+    //Expected state: UGENE is not crash
 }
 
 }    // namespace GUITest_regression_scenarios

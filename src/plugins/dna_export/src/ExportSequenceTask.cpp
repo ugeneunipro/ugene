@@ -109,29 +109,38 @@ void ExportSequenceItem::releaseOwnedSeq() {
     }
 }
 
+bool ExportSequenceItem::isRefAlreadyCounted(const U2EntityRef& seqRef) {
+    for (const U2EntityRef &ref : sequencesRefCounts.keys()) {
+        if (ref == seqRef) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void ExportSequenceItem::startSeqOwnership() {
     SAFE_POINT(seqRef.isValid(), "Invalid sequence DBI reference", );
 
     QMutexLocker locker(&seqRefGuard);
-    SAFE_POINT(!sequencesRefCounts.contains(seqRef), "Sequence is unexpectedly tracked", );
+    SAFE_POINT(!isRefAlreadyCounted(seqRef), "Sequence is unexpectedly tracked", );
     sequencesRefCounts.insert(seqRef, 1);
 }
 
 int ExportSequenceItem::incrementSeqRefCount() const {
     QMutexLocker locker(&seqRefGuard);
-    SAFE_POINT(sequencesRefCounts.contains(seqRef) && sequencesRefCounts[seqRef] > 0, "Sequence is unexpectedly not tracked", -1);
+    SAFE_POINT(isRefAlreadyCounted(seqRef) && sequencesRefCounts[seqRef] > 0, "Sequence is unexpectedly not tracked", -1);
     return ++sequencesRefCounts[seqRef];
 }
 
 int ExportSequenceItem::decrementSeqRefCount() const {
     QMutexLocker locker(&seqRefGuard);
-    SAFE_POINT(sequencesRefCounts.contains(seqRef) && sequencesRefCounts[seqRef] > 0, "Sequence is unexpectedly not tracked", -1);
+    SAFE_POINT(isRefAlreadyCounted(seqRef) && sequencesRefCounts[seqRef] > 0, "Sequence is unexpectedly not tracked", -1);
     return --sequencesRefCounts[seqRef];
 }
 
 void ExportSequenceItem::stopSeqOwnership() {
     QMutexLocker locker(&seqRefGuard);
-    SAFE_POINT(sequencesRefCounts.contains(seqRef), "Sequence is unexpectedly not tracked", );
+    SAFE_POINT(isRefAlreadyCounted(seqRef), "Sequence is unexpectedly not tracked", );
     sequencesRefCounts.remove(seqRef);
 }
 
@@ -156,7 +165,7 @@ U2SequenceObject *ExportSequenceItem::takeOwnedSeq() {
 
 bool ExportSequenceItem::ownsSeq() const {
     QMutexLocker locker(&seqRefGuard);
-    return sequencesRefCounts.contains(seqRef);
+    return isRefAlreadyCounted(seqRef);
 }
 
 bool ExportSequenceItem::isEmpty() const {
