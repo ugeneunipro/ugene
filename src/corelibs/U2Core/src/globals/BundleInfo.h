@@ -19,34 +19,30 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_BUNDLE_INFO_MAC_H_
-#define _U2_BUNDLE_INFO_MAC_H_
+#ifndef _U2_BUNDLE_INFO_H_
+#define _U2_BUNDLE_INFO_H_
 
-#include <QCoreApplication>
-
-#include <U2Core/CMDLineCoreOptions.h>
-#include <U2Core/CMDLineRegistry.h>
+#include <QString>
 
 namespace U2 {
 
-class BundleInfoMac {
-public:
-#ifdef Q_OS_DARWIN
-    static QString getDBundlePath();
-    static QString getExtraTranslationSearchPath(CMDLineRegistry *);
-    static QString getDataSearchPath();
-    static QString getPluginsSearchPath();
-    static QString getToolsSearchPath();
-#else
-    static QString getDBundlePath() { return ""; }
-    static QString getExtraTranslationSearchPath(CMDLineRegistry *) { return ""; }
-    static QString getDataSearchPath() { return ""; }
-    static QString getPluginsSearchPath() { return ""; }
-    static QString getToolsSearchPath() { return ""; }
-#endif
+class CMDLineRegistry;
 
+class BundleInfo {
+public:
+    /** Returns a valid extra translation file URL or an empty string if there is no such path. */
+    static QString getExtraTranslationSearchPath(CMDLineRegistry *);
+
+    /** Returns extra data folder path or an empty string if there is no such path. */
+    static QString getDataSearchPath();
+
+    /** Returns extra plugins folder path or an empty string if there is no such path. */
+    static QString getPluginsSearchPath();
+
+    /** Returns extra tools folder path or an empty string if there is no such path. */
+    static QString getToolsSearchPath();
 };
 
 }    // namespace U2
 
-#endif    // _U2_BUNDLE_INFO_MAC_H_
+#endif

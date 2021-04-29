@@ -90,6 +90,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/globals/AppSettings.h \
            src/globals/AutoAnnotationsSupport.h \
            src/globals/BaseDocumentFormats.h \
+           src/globals/BundleInfo.h \
            src/globals/ClipboardController.h \
            src/globals/Counter.h \
            src/globals/CredentialsAsker.h \
@@ -333,6 +334,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/globals/AppResources.cpp \
            src/globals/AutoAnnotationsSupport.cpp \
            src/globals/BaseDocumentFormats.cpp \
+           src/globals/BundleInfo.cpp \
            src/globals/ClipboardController.cpp \
            src/globals/Counter.cpp \
            src/globals/CredentialsAsker.cpp \

@@ -19,18 +19,19 @@
  * MA 02110-1301, USA.
  */
 
+#include "BundleInfo.h"
+
 #include <QDir>
-#include "BundleInfoMac.h"
+#include <qglobal.h>
 
 #ifdef Q_OS_DARWIN
-#include <CoreFoundation/CoreFoundation.h>
+#    include <CoreFoundation/CoreFoundation.h>
 #endif
 
 namespace U2 {
 
 #ifdef Q_OS_DARWIN
-
-QString BundleInfoMac::getDBundlePath() {
+static QString getMacBundlePath() {
     CFURLRef appUrlRef = CFBundleCopyBundleURL(CFBundleGetMainBundle());
     CFStringRef macPath = CFURLCopyFileSystemPath(appUrlRef,
                                                   kCFURLPOSIXPathStyle);
@@ -41,41 +42,48 @@ QString BundleInfoMac::getDBundlePath() {
 
     return QString(bundlePath);
 }
+#endif
 
-QString BundleInfoMac::getExtraTranslationSearchPath(CMDLineRegistry *cmdLineRegistry) {
-    QString translationFileDir = getDBundlePath() + "/Contents/Resources";
+QString BundleInfo::getExtraTranslationSearchPath(CMDLineRegistry *cmdLineRegistry) {
+#ifdef Q_OS_DARWIN
+    QString translationFileDir = getMacBundlePath() + "/Contents/Resources";
     QString transl = "transl_en";
     QString cmdlineTransl = cmdLineRegistry->getParameterValue(CMDLineCoreOptions::TRANSLATION);
     if (!cmdlineTransl.isEmpty()) {
         transl = QString("transl_") + cmdlineTransl;
     }
     return translationFileDir + "/" + transl;
-}
-
-QString BundleInfoMac::getDataSearchPath() {
-    QString dir = getDBundlePath() + "/Contents/Resources/data";
-    if (!QDir(dir).exists()) {    //data location in Resources
-        dir = "";
-    }
-    return dir;
-}
-
-QString BundleInfoMac::getPluginsSearchPath() {
-    QString dir = getDBundlePath() + "/Contents/Resources/plugins";
-    if (!QDir(dir).exists()) {    //data location in Resources
-        dir = "";
-    }
-    return dir;
-}
-
-QString BundleInfoMac::getToolsSearchPath() {
-    QString dir = getDBundlePath() + "/Contents/Resources/tools";
-    if (!QDir(dir).exists()) {    //data location in Resources
-        dir = "";
-    }
-    return dir;
-}
-
+#else
+    Q_UNUSED(cmdLineRegistry);
+    return "";
 #endif
+}
+
+QString BundleInfo::getDataSearchPath() {
+#ifdef Q_OS_DARWIN
+    QString dir = getMacBundlePath() + "/Contents/Resources/data";
+    return QDir(dir).exists() ? dir : "";
+#else
+    return "";
+#endif
+}
+
+QString BundleInfo::getPluginsSearchPath() {
+#ifdef Q_OS_DARWIN
+    QString dir = getMacBundlePath() + "/Contents/Resources/plugins";
+    return QDir(dir).exists() ? dir : "";
+#else
+    return "";
+#endif
+}
+
+QString BundleInfo::getToolsSearchPath() {
+#ifdef Q_OS_DARWIN
+    QString dir = getMacBundlePath() + "/Contents/Resources/tools";
+    return QDir(dir).exists() ? dir : "";
+#else
+    return "";
+#endif
+}
 
 }    // namespace U2
