@@ -32,9 +32,12 @@
 #include <QFileInfo>
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
+#include "GTUtilsDocument.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
+#include "GTUtilsOptionPanelMSA.h"
+#include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "api/GTMSAEditorStatusWidget.h"
@@ -319,6 +322,31 @@ GUI_TEST_CLASS_DEFINITION(test_7152) {
                           GTMSAEditorStatusWidget::getSequenceUngappedPositionString(os);
     GTMSAEditorStatusWidget::getColumnNumberString(os);
     CHECK_SET_ERR(bottomRight == "11/40/35", "Bottom right position is wrong: " + bottomRight);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7212) {
+    // Open _common_data/clustal/shortened_big.aln.
+    // Click the Pairwise Alignment tab of the Options Panel.
+    // Select two sequence from the original alignment and click on the Align button.
+    // Until the task completes, click the Pairwise Alignment tab again.
+    // Wait for task finish.
+    // Return to big.aln and click the Pairwise Alignment tab of the Options Panel.
+    // Click Align.
+    //     Expected state: no crash.
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/shortened_big.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
+    GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "seq1");
+    GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "seq2");
+    GTWidget::click(os, GTUtilsOptionPanelMsa::getAlignButton(os));
+    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDocument::removeDocument(os, "PairwiseAlignmentResult.aln");
+    GTUtilsProjectTreeView::doubleClickItem(os, "shortened_big.aln");
+    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
+    GTWidget::click(os, GTUtilsOptionPanelMsa::getAlignButton(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 }    // namespace GUITest_regression_scenarios

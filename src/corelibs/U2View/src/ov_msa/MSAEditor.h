@@ -39,7 +39,7 @@ public:
     PairwiseAlignmentWidgetsSettings()
         : firstSequenceId(U2MsaRow::INVALID_ROW_ID),
           secondSequenceId(U2MsaRow::INVALID_ROW_ID), inNewWindow(true),
-          pairwiseAlignmentTask(NULL), showSequenceWidget(true), showAlgorithmWidget(false),
+          pairwiseAlignmentTask(), showSequenceWidget(true), showAlgorithmWidget(false),
           showOutputWidget(false), sequenceSelectionModeOn(false) {
     }
 
@@ -48,7 +48,7 @@ public:
     QString algorithmName;
     bool inNewWindow;
     QString resultFileName;
-    PairwiseAlignmentTask *pairwiseAlignmentTask;
+    QPointer<PairwiseAlignmentTask> pairwiseAlignmentTask;
     bool showSequenceWidget;
     bool showAlgorithmWidget;
     bool showOutputWidget;
