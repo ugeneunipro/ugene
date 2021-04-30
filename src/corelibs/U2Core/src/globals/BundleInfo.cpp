@@ -27,6 +27,7 @@
 #ifdef Q_OS_DARWIN
 #    include <CoreFoundation/CoreFoundation.h>
 
+#    include <U2Core/CMDLineCoreOptions.h>
 #    include <U2Core/CMDLineRegistry.h>
 #endif
 
