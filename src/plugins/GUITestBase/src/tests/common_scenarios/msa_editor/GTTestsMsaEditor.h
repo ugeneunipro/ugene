@@ -22,7 +22,7 @@
 #ifndef GTTESTSMSAEDITOR_H
 #define GTTESTSMSAEDITOR_H
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 

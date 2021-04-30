@@ -120,10 +120,6 @@
 #include <U2Lang/WorkflowSettings.h>
 
 #include <U2Test/GTestFrameworkComponents.h>
-#ifndef HI_EXCLUDED
-#    include <U2Test/GUITestService.h>
-#    include <U2Test/UGUITestBase.h>
-#endif    //HI_EXCLUDED
 #include <U2Test/XMLTestFormat.h>
 
 #include <U2View/AnnotHighlightWidgetFactory.h>
@@ -147,6 +143,7 @@
 //U2Private imports
 #include <AppContextImpl.h>
 #include <AppSettingsImpl.h>
+#include <BundleInfoMac.h>
 #include <DocumentFormatRegistryImpl.h>
 #include <IOAdapterRegistryImpl.h>
 #include <PluginSupportImpl.h>
@@ -214,6 +211,13 @@ static void setDataSearchPaths() {
         dataSearchPaths.push_back(appDirPath + RELATIVE_DATA_DIR);
     } else if (QDir(appDirPath + RELATIVE_DEV_DATA_DIR).exists()) {    //data location for developers
         dataSearchPaths.push_back(appDirPath + RELATIVE_DEV_DATA_DIR);
+#ifdef Q_OS_DARWIN
+    } else {
+        QString dataDir = BundleInfoMac::getDataSearchPath();
+        if (!dataDir.isEmpty()) {
+            dataSearchPaths.push_back(dataDir);
+        }
+#endif
     }
 
 #if (defined(Q_OS_UNIX)) && defined(UGENE_DATA_DIR)
@@ -504,7 +508,9 @@ int main(int argc, char **argv) {
         QStringList translationFileList = {
             "transl_" + findKey(envList, "UGENE_TRANSLATION"),
             userAppSettings->getTranslationFile(),
-            "transl_" + QLocale::system().name().left(2).toLower()};
+            "transl_" + QLocale::system().name().left(2).toLower(),
+            BundleInfoMac::getExtraTranslationSearchPath(cmdLineRegistry)
+        };
         // Keep only valid entries.
         translationFileList.removeAll("");
         translationFileList.removeAll("transl_");
@@ -809,10 +815,6 @@ int main(int argc, char **argv) {
 
     AutoAnnotationsSupport *aaSupport = new AutoAnnotationsSupport();
     appContext->setAutoAnnotationsSupport(aaSupport);
-#ifndef HI_EXCLUDED
-    UGUITestBase *tb = new UGUITestBase();
-    appContext->setGUITestBase(tb);
-#endif    //HI_EXCLUDED
 
     AppFileStorage *appFileStorage = new AppFileStorage();
     U2OpStatusImpl os;
@@ -842,12 +844,6 @@ int main(int argc, char **argv) {
     }
 
     registerCoreServices();
-
-#ifndef HI_EXCLUDED
-    if (GUITestService::isGuiTestServiceNeeded()) {
-        new GUITestService();
-    }
-#endif    //HI_EXCLUDED
 
     GCOUNTER(cvar, "ugeneui launch");
 
@@ -902,11 +898,6 @@ int main(int argc, char **argv) {
 
     appContext->setProjectFilterTaskRegistry(NULL);
     delete projectFilterTaskRegistry;
-
-#ifndef HI_EXCLUDED
-    appContext->setGUITestBase(NULL);
-    delete tb;
-#endif    //HI_EXCLUDED
 
     appContext->setRecentlyDownloadedCache(NULL);
     delete rdc;

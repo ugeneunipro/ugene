@@ -93,7 +93,7 @@ TaskSchedulerImpl::~TaskSchedulerImpl() {
 
 void TaskSchedulerImpl::cancelTask(Task *task) {
     if (task->getState() < Task::State_Finished) {
-        taskLog.info(tr("Canceling task: %1").arg(task->getTaskName()));
+        taskLog.trace(tr("Canceling task: %1").arg(task->getTaskName()));
         getTaskStateInfo(task).cancelFlag = true;
         resumeThreadWithTask(task);    // for the case when task's thread is paused. it should be resumed and terminated
         foreach (const QPointer<Task> &t, task->getSubtasks()) {

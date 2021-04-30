@@ -22,7 +22,7 @@
 #ifndef _U2_GUITEST_DNA_ASSEMBLY_H_
 #define _U2_GUITEST_DNA_ASSEMBLY_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 namespace GUITest_dna_assembly {

@@ -19,52 +19,34 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_GUI_TEST_THREAD_H_
-#define _U2_GUI_TEST_THREAD_H_
+#ifndef _U2_BUNDLE_INFO_MAC_H_
+#define _U2_BUNDLE_INFO_MAC_H_
 
-#include <core/GUITest.h>
+#include <QCoreApplication>
 
-#include <QThread>
-
-#include <U2Core/global.h>
+#include <U2Core/CMDLineCoreOptions.h>
+#include <U2Core/CMDLineRegistry.h>
 
 namespace U2 {
 
-using namespace HI;
-
-class Logger;
-
-class U2TEST_EXPORT GUITestThread : public QThread {
-    Q_OBJECT
+class BundleInfoMac {
 public:
-    GUITestThread(GUITest *test, bool isCleanupNeeded = true);
+#ifdef Q_OS_DARWIN
+    static QString getDBundlePath();
+    static QString getExtraTranslationSearchPath(CMDLineRegistry *);
+    static QString getDataSearchPath();
+    static QString getPluginsSearchPath();
+    static QString getToolsSearchPath();
+#else
+    static QString getDBundlePath() { return ""; }
+    static QString getExtraTranslationSearchPath(CMDLineRegistry *) { return ""; }
+    static QString getDataSearchPath() { return ""; }
+    static QString getPluginsSearchPath() { return ""; }
+    static QString getToolsSearchPath() { return ""; }
+#endif
 
-    void run() override;
-
-    GUITest *getTest() const {
-        return testToRun;
-    }
-
-    QString getTestResult() const {
-        return testResult;
-    }
-
-private slots:
-    void sl_testTimeOut();
-
-private:
-    QString launchTest(const QList<GUITest *> &tests);
-    void clearSandbox();
-    static void removeDir(const QString &dirName);
-    void saveScreenshot();
-    void cleanup();
-    void writeTestResult();
-
-    GUITest *testToRun;
-    bool isRunPostActionsAndCleanup;
-    QString testResult;
 };
 
 }    // namespace U2
 
-#endif    // _U2_GUI_TEST_THREAD_H_
+#endif    // _U2_BUNDLE_INFO_MAC_H_

@@ -2,6 +2,13 @@ include (GUITestBase.pri)
 
 # Input
 HEADERS +=  src/GUITestBasePlugin.h \
+            src/harness/UGUITestBase.h \
+            src/harness/GUITestLauncher.h \
+            src/harness/GUITestService.h \
+            src/harness/GUITestTeamcityLogger.h \
+            src/harness/GUITestThread.h \
+            src/harness/GUITestWindow.h \
+            src/harness/UGUITest.h \
             src/tests/crazy_user/GTAbstractGUIAction.h \
             src/tests/crazy_user/GTRandomGUIActionFactory.h \
             src/tests/crazy_user/GUICrazyUserTest.h \
@@ -277,6 +284,13 @@ HEADERS +=  src/GUITestBasePlugin.h \
             src/test_runner/GUITestRunner.h
 
 SOURCES +=  src/GUITestBasePlugin.cpp \
+            src/harness/UGUITestBase.cpp \
+            src/harness/GUITestLauncher.cpp \
+            src/harness/GUITestService.cpp \
+            src/harness/GUITestTeamcityLogger.cpp \
+            src/harness/GUITestThread.cpp \
+            src/harness/GUITestWindow.cpp \
+            src/harness/UGUITest.cpp \
             src/tests/crazy_user/GTAbstractGUIAction.cpp \
             src/tests/crazy_user/GTRandomGUIActionFactory.cpp \
             src/tests/crazy_user/GUICrazyUserTest.cpp \
@@ -552,7 +566,8 @@ SOURCES +=  src/GUITestBasePlugin.cpp \
             src/test_runner/GUITestRunner.cpp
 
 FORMS += \
-    src/test_runner/GUITestRunner.ui
+    src/test_runner/GUITestRunner.ui \
+    src/harness/GUITestingWindow.ui
 
 RESOURCES += \
     GUITestBase.qrc

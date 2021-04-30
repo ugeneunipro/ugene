@@ -24,7 +24,7 @@
 
 #include <QWidget>
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 #include "ui_GUITestRunner.h"
 

@@ -5,13 +5,7 @@ QT += xml gui widgets
 DEFINES+= QT_FATAL_ASSERT BUILDING_U2TEST_DLL
 
 LIBS += -L../../$$out_dir()
-LIBS += -lU2Core$$D -lQSpec$$D
-INCLUDEPATH += ../../libs_3rdparty/QSpec/src
-
-if (contains(DEFINES, HI_EXCLUDED)) {
-    # GUI testing is not included into public build
-    LIBS -= -lQSpec$$D
-}
+LIBS += -lU2Core$$D
 
 DESTDIR = ../../$$out_dir()
 

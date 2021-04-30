@@ -22,7 +22,7 @@
 #ifndef _GTTESTS_IN_SILICO_PCR_H_
 #define _GTTESTS_IN_SILICO_PCR_H_
 
-#include <U2Test/UGUITestBase.h>
+#include <harness/UGUITestBase.h>
 
 namespace U2 {
 namespace GUITest_common_scenarios_in_silico_pcr {

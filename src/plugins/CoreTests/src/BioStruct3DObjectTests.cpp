@@ -38,6 +38,8 @@ namespace U2 {
 #define X_COORD_ATTR "x"
 #define Y_COORD_ATTR "y"
 #define Z_COORD_ATTR "z"
+#define CHAIN_IND_ATTR "chain-index"
+#define MOL_NAME_ATTR "molecule-name"
 
 void GTest_BioStruct3DNumberOfAtoms::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
@@ -391,6 +393,59 @@ Task::ReportResult GTest_BioStruct3DAtomResidueName::report() {
 
     return ReportResult_Finished;
 }
+///////////////////////////////////////////////////////////////////////////////////////////
+
+void GTest_BioStruct3DMoleculeName::init(XMLTestFormat *, const QDomElement &el) {
+    objContextName = el.attribute(OBJ_ATTR);
+    if (objContextName.isEmpty()) {
+        failMissingValue(OBJ_ATTR);
+        return;
+    }
+
+    // chain ind
+    QString v = el.attribute(CHAIN_IND_ATTR);
+    if (!v.isEmpty()) {
+        bool ok = false;
+        chainIndex = v.toInt(&ok);
+        if (!ok) {
+            stateInfo.setError(QString("invalid value type %1, int required").arg(CHAIN_IND_ATTR));
+        }
+    }
+
+    // molecule name
+    moleculeName = el.attribute(MOL_NAME_ATTR);
+    if (moleculeName.isEmpty()) {
+        failMissingValue(MOL_NAME_ATTR);
+    }
+}
+
+Task::ReportResult GTest_BioStruct3DMoleculeName::report() {
+    GObject *obj = getContext<GObject>(this, objContextName);
+    if (obj == nullptr) {
+        stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
+        return ReportResult_Finished;
+    }
+
+    BioStruct3DObject *biostructObj = qobject_cast<BioStruct3DObject *>(obj);
+    if (biostructObj == nullptr) {
+        stateInfo.setError(QString("can't cast to biostruct3d object from: %1").arg(obj->getGObjectName()));
+        return ReportResult_Finished;
+    }
+
+    SharedMolecule molecule = biostructObj->getBioStruct3D().moleculeMap[chainIndex];
+    if (!molecule) {
+        stateInfo.setError(QString("molecule with chain ind = %1 not found").arg(chainIndex));
+        return ReportResult_Finished;
+    }
+
+    QString tmpName = molecule->name;
+
+    if (moleculeName != tmpName) {
+        stateInfo.setError(QString("molecule with chain ind=%1 does not match: %2, expected %3").arg(chainIndex).arg(tmpName).arg(moleculeName));
+    }
+
+    return ReportResult_Finished;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
@@ -509,6 +564,7 @@ QList<XMLTestFactory *> BioStruct3DObjectTests::createTestFactories() {
     res.append(GTest_BioStruct3DAtomCoordinates::createFactory());
     res.append(GTest_BioStruct3DAtomResidueName::createFactory());
     res.append(GTest_BioStruct3DAtomChainIndex::createFactory());
+    res.append(GTest_BioStruct3DMoleculeName::createFactory());
     res.append(GTest_PDBFormatStressTest::createFactory());
     res.append(GTest_ASNFormatStressTest::createFactory());
 

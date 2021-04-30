@@ -21,16 +21,6 @@ use_opencl() {
 
 message("Qt version is $${QT_VERSION}")
 
-GUI_TESTING_ENABLED = 0
-if (exists(./src/libs_3rdparty/QSpec/QSpec.pro): !exclude_list_enabled()) {
-    message( "GUI testing is enabled" )
-    GUI_TESTING_ENABLED = 1
-}
-
-!equals(GUI_TESTING_ENABLED, 1) {
-    DEFINES += HI_EXCLUDED
-}
-
 # create target build & plugin folders (to copy licenses/descriptors to)
 mkpath($$OUT_PWD/src/_debug/plugins)
 mkpath($$OUT_PWD/src/_release/plugins)

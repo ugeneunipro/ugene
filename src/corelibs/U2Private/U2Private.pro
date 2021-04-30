@@ -17,7 +17,8 @@ HEADERS += src/AppContextImpl.h \
            src/crash_handler/CrashHandlerArgsHelper.h \
            src/crash_handler/CrashHandlerPrivate.h \
            src/crash_handler/CrashLogCache.h \
-           src/crash_handler/StackWalker.h
+           src/crash_handler/StackWalker.h \
+           src/BundleInfoMac.h
 
 SOURCES += src/AppContextImpl.cpp \
            src/AppSettingsImpl.cpp \
@@ -35,7 +36,8 @@ SOURCES += src/AppContextImpl.cpp \
            src/crash_handler/CrashHandlerArgsHelper.cpp \
            src/crash_handler/CrashHandlerPrivate.cpp \
            src/crash_handler/CrashLogCache.cpp \
-           src/crash_handler/StackWalker.cpp
+           src/crash_handler/StackWalker.cpp \
+           src/BundleInfoMac.cpp
 
 TRANSLATIONS += transl/russian.ts
 

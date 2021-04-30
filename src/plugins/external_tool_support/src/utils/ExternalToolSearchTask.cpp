@@ -29,6 +29,8 @@
 #include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <BundleInfoMac.h>
+
 #include "ExternalToolSupportSettings.h"
 
 namespace U2 {
@@ -53,6 +55,13 @@ void ExternalToolSearchTask::run() {
 
     if (toolsDir.isEmpty() && QFileInfo(appDir.absoluteFilePath(DEFAULT_TOOLS_DIR_NAME)).isDir()) {
         toolsDir = appDir.absoluteFilePath(DEFAULT_TOOLS_DIR_NAME);
+#ifdef Q_OS_DARWIN
+    } else if (toolsDir.isEmpty()) {
+        QString dir = BundleInfoMac::getToolsSearchPath();
+        if (!dir.isEmpty()) {
+            toolsDir = dir;
+        }
+#endif
     }
 
     if (!toolsDir.isEmpty()) {
