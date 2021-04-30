@@ -194,7 +194,7 @@ void GetAssemblyLengthTask::run() {
     const U2IntegerAttribute lengthAttribute = U2AttributeUtils::findIntegerAttribute(attributeDbi, assemblyId, U2BaseAttributeName::reference_length, stateInfo);
     CHECK_OP(stateInfo, );
     CHECK_EXT(lengthAttribute.hasValidId(), setError(tr("Can't get the assembly length: attribute is missing")), );
-    CHECK_EXT(lengthAttribute.value > 0, setError(tr("Assembly has zero length")), );
+    CHECK_EXT(lengthAttribute.value > 0, setError(tr("Assembly length must be greater than zero")), );
 
     length = lengthAttribute.value;
 }
