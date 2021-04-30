@@ -473,7 +473,7 @@ GUI_TEST_CLASS_DEFINITION(test_0567) {
             : Filler(os, "DotPlotDialog") {
         }
         virtual void run() {
-            QWidget *dialog = QApplication::activeModalWidget();
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
 
             GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
@@ -566,7 +566,7 @@ GUI_TEST_CLASS_DEFINITION(test_0587) {
             : Filler(os, "BuildIndexFromRefDialog") {
         }
         virtual void run() {
-            QWidget *dialog = QApplication::activeModalWidget();
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
 
             QComboBox *methodNamesBox = dialog->findChild<QComboBox *>("methodNamesBox");
@@ -621,7 +621,7 @@ GUI_TEST_CLASS_DEFINITION(test_0597) {
             : Filler(os, "SaveGraphCutoffsDialog") {
         }
         void commonScenario() {
-            QWidget *dialog = QApplication::activeModalWidget();
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
 
             QLineEdit *newTablePath = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "leNewTablePath", dialog));
@@ -994,9 +994,7 @@ GUI_TEST_CLASS_DEFINITION(test_0684) {
     class CreateFragmentScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal dialog is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    The opened dialog should have the selected region by default.
             GTComboBox::checkCurrentValue(os, GTWidget::findExactWidget<QComboBox *>(os, "region_type_combo", dialog), "Selected region");
             GTLineEdit::checkText(os, GTWidget::findExactWidget<QLineEdit *>(os, "start_edit_line", dialog), "2000");
@@ -1027,9 +1025,7 @@ GUI_TEST_CLASS_DEFINITION(test_0684) {
     class ConstructMoleculeScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal dialog is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //       Add created fragment.
             GTListWidget::click(os, GTWidget::findExactWidget<QListWidget *>(os, "fragmentListWidget", dialog), "NC_004718 (sars.gb) Fragment (2000-9000) [core length - 7001 bp]");
             GTWidget::click(os, GTWidget::findWidget(os, "takeButton", dialog));
@@ -1089,9 +1085,7 @@ GUI_TEST_CLASS_DEFINITION(test_0688) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    3. In opened dialog, select any matrix and press Search button
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "position_weight_matrix/JASPAR/fungi/MA0265.1.pfm"));
             GTWidget::click(os, GTWidget::findWidget(os, "pbSelectModelFile", dialog));
@@ -1120,8 +1114,7 @@ GUI_TEST_CLASS_DEFINITION(test_0700) {
     class CancelScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTGlobals::sleep(500);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
@@ -1262,8 +1255,7 @@ GUI_TEST_CLASS_DEFINITION(test_0750) {
     class Custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTWidget::click(os, GTWidget::findButtonByText(os, "Cancel", dialog));
         }
     };
@@ -1463,9 +1455,7 @@ GUI_TEST_CLASS_DEFINITION(test_0778) {
             : name(name) {
         }
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::FileFormat);
 
             QComboBox *caseCombo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "caseCombo"));
@@ -1532,8 +1522,7 @@ GUI_TEST_CLASS_DEFINITION(test_0782) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "dialog not found");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTWidget::click(os, GTWidget::findButtonByText(os, "Cancel", dialog));
         }
     };
@@ -1791,9 +1780,7 @@ GUI_TEST_CLASS_DEFINITION(test_0814) {
             : name(name) {
         }
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Logging);
 
             QCheckBox *fileOut = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "fileOutCB"));
@@ -2021,8 +2008,7 @@ GUI_TEST_CLASS_DEFINITION(test_0840) {
     class DigestCircularSequenceScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QListWidget *availableEnzymeWidget = GTWidget::findExactWidget<QListWidget *>(os, "availableEnzymeWidget", dialog);
             CHECK_SET_ERR(NULL != availableEnzymeWidget, "Cannot find available enzyme list widget");
 
@@ -2036,9 +2022,7 @@ GUI_TEST_CLASS_DEFINITION(test_0840) {
     class CreateAnnotationScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "leAnnotationName", dialog), "EcoRV");
             GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "leGroupName", dialog), "enzyme");
 
@@ -2154,9 +2138,7 @@ GUI_TEST_CLASS_DEFINITION(test_0844) {
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "algoComboBox"));
             CHECK_SET_ERR(combo != NULL, "algoComboBox not found!");
             GTComboBox::selectItemByText(os, combo, "Suffix array");
@@ -2661,9 +2643,7 @@ GUI_TEST_CLASS_DEFINITION(test_0899) {
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    Expected state:
             //        1) opened dialog have File formats: {FASTA, FASTQ, GFF, Genbank, Vector NTI sequence}
             QComboBox *documentFormatComboBox = GTWidget::findExactWidget<QComboBox *>(os, "documentFormatComboBox", dialog);
@@ -2804,9 +2784,7 @@ GUI_TEST_CLASS_DEFINITION(test_0930) {
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    2. Look at the first column in the table above "Source URL" label.
             //    Expected state: you saw "Assembly name" in the colunms head.
 
@@ -3350,9 +3328,7 @@ GUI_TEST_CLASS_DEFINITION(test_0999_1) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    2. Fill next fields in this dialog
             //        {Paste sequence here} - AAAAAD
             //        {Custom settings} - checked
@@ -3383,9 +3359,7 @@ GUI_TEST_CLASS_DEFINITION(test_0999_2) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    2. Fill next fields in this dialog
             //        {Paste sequence here} - AAAZZZZZZAAA
             //        {Custom settings} - checked
@@ -3427,9 +3401,7 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
         }
 
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), algorithm);
 
             //    3. Fill fields "Range start" and "Range end" with values "1" and "2" respectively.
@@ -3457,9 +3429,7 @@ GUI_TEST_CLASS_DEFINITION(test_1000) {
         }
 
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
             GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "algorithmComboBox", dialog), algorithm);
 

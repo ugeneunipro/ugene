@@ -961,8 +961,7 @@ GUI_TEST_CLASS_DEFINITION(test_0035) {
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             QLineEdit *filepathLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "filepathLineEdit", dialog);
             GTLineEdit::setText(os, filepathLineEdit, sandBoxDir + "chrM.snp");

@@ -62,9 +62,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
             : Filler(_os, "CreateAnnotationDialog"), buttonName(radioButtonName) {
         }
         void commonScenario() {
-            QWidget *dialog = QApplication::activeModalWidget();
-            GT_CHECK(dialog != NULL, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QRadioButton *btn = dialog->findChild<QRadioButton *>("rbExistingTable");
             GT_CHECK(btn != NULL, "Radio button not found");
 
@@ -117,9 +115,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             : Filler(_os, "CreateAnnotationDialog"), buttonName(radioButtonName) {
         }
         void commonScenario() {
-            QWidget *dialog = QApplication::activeModalWidget();
-            GT_CHECK(dialog != NULL, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QRadioButton *btn = dialog->findChild<QRadioButton *>("rbExistingTable");
             GT_CHECK(btn != NULL, "Radio button not found");
 

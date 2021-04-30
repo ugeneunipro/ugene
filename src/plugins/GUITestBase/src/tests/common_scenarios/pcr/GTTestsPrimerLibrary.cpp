@@ -274,8 +274,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     //    and accept the dialog.
     class ExportToFastaScenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             ExportPrimersDialogFiller::setExportTarget(os, ExportPrimersDialogFiller::LocalFile);
             ExportPrimersDialogFiller::setFormat(os, "FASTA");
             ExportPrimersDialogFiller::setFilePath(os, sandBoxDir + "pcrlib/test_0006/primers.fa");
@@ -332,8 +331,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     //    and accept the dialog.
     class ExportToGenbankScenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             ExportPrimersDialogFiller::setExportTarget(os, ExportPrimersDialogFiller::LocalFile);
             ExportPrimersDialogFiller::setFormat(os, "GenBank");
             ExportPrimersDialogFiller::setFilePath(os, sandBoxDir + "pcrlib/test_0007/primers.gb");
@@ -443,8 +441,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     //    and accept the dialog.
     class ImportFromMultifasta : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::LocalFiles);
             ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/fasta/random_primers.fa");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -489,8 +486,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     //    and accept the dialog.
     class ImportFromSeveralFiles : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::LocalFiles);
             ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/fasta/random_primers.fa");
             ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/fasta/random_primers2.fa");
@@ -545,8 +541,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     //    and accept the dialog.
     class ImportFromSharedDatabaseObjects : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::SharedDb);
             ImportPrimersDialogFiller::connectDatabase(os, "ugene_gui_test");
             ImportPrimersDialogFiller::addObjects(os, "ugene_gui_test", QStringList() << "primerToImport1"
@@ -595,8 +590,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     //    and accept the dialog.
     class ImportFromSharedDatabaseFolder : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::SharedDb);
             ImportPrimersDialogFiller::connectDatabase(os, "ugene_gui_test");
             ImportPrimersDialogFiller::addObjects(os, "ugene_gui_test", QStringList() << "test_0012");
@@ -642,8 +636,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     //    and accept the dialog.
     class ImportFromTwoSharedDatabases : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::SharedDb);
             ImportPrimersDialogFiller::connectDatabase(os, "ugene_gui_test");
             ImportPrimersDialogFiller::connectDatabase(os, "ugene_gui_test_ro");
@@ -754,8 +747,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     //    and accept the dialog.
     class ImportFromSeveralFiles : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::LocalFiles);
             ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/cmdline/primers/primer_degenerated_1.fasta");
             ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/cmdline/primers/primer_degenerated_2.fasta");

@@ -749,8 +749,7 @@ GUI_TEST_CLASS_DEFINITION(test_0028) {
             : Filler(os, "ImageExportForm") {
         }
         void run() override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTWidget::clickWindowTitle(os, dialog);
 
             QRadioButton *radioButton = dialog->findChild<QRadioButton *>("currentViewButton");
@@ -818,8 +817,7 @@ GUI_TEST_CLASS_DEFINITION(test_0029) {
         }
 
         void run() override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTWidget::clickWindowTitle(os, dialog);
 
             QWidget *rangeSelector = dialog->findChild<QWidget *>("range_selector");
@@ -1571,9 +1569,7 @@ GUI_TEST_CLASS_DEFINITION(test_0050) {
     class WrongNameChecker : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Illegal annotation name"));
             QLineEdit *nameEdit = GTWidget::findExactWidget<QLineEdit *>(os, "leAnnotationName", dialog);
             GTLineEdit::setText(os, nameEdit, "//");
@@ -1586,9 +1582,7 @@ GUI_TEST_CLASS_DEFINITION(test_0050) {
     class WrongDistanceChecker : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QRadioButton *gbFormatLocation = dialog->findChild<QRadioButton *>("rbGenbankFormat");
             CHECK_SET_ERR(gbFormatLocation != NULL, "radio button rbGenbankFormat not found");
             GTRadioButton::click(os, gbFormatLocation);
@@ -1629,9 +1623,7 @@ GUI_TEST_CLASS_DEFINITION(test_0050_1) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Genes"
                                                                                       << "promoter"));
             GTWidget::click(os, GTWidget::findWidget(os, "showNameGroupsButton", dialog));
@@ -1822,9 +1814,7 @@ GUI_TEST_CLASS_DEFINITION(test_0056) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Invalid cutoff range"));
             QGroupBox *minmaxGroup = GTWidget::findExactWidget<QGroupBox *>(os, "minmaxGroup", dialog);
             minmaxGroup->setChecked(true);
@@ -2483,9 +2473,7 @@ GUI_TEST_CLASS_DEFINITION(test_0078) {
         }
 
         void run() override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QWidget *regionSelector = GTWidget::findWidget(os, "region_selector_with_excluded");
             CHECK_SET_ERR(regionSelector != NULL, "region_selector_with_excluded not found");
 
