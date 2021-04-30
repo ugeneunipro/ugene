@@ -331,10 +331,8 @@ GUI_TEST_CLASS_DEFINITION(test_7152) {
 GUI_TEST_CLASS_DEFINITION(test_7183) {
     class ExportSequencesScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "bothStrandsButton", dialog));
             GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "translateButton", dialog), true);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
