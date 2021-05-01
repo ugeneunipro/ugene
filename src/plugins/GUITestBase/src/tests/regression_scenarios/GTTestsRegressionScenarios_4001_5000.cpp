@@ -123,7 +123,6 @@
 #include "runnables/ugene/corelibs/U2View/ov_assembly/ExportReadsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/DeleteGapsDialogFiller.h"
-#include "runnables/ugene/plugins/biostruct3d_view/StructuralAlignmentDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportAnnotationsDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequences2MSADialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
@@ -6013,64 +6012,6 @@ GUI_TEST_CLASS_DEFINITION(test_4969_2) {
     CHECK_SET_ERR(GTUtilsDocument::isDocumentLoaded(os, "murine.gb"), "The file is not loaded");
     QString title = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title.contains("NC_"), "Wrong MDI window is active");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_4975_1) {
-    // Open _common_data/mmdb/2ZNL.prt.
-    // Check that first sequence name is "2ZNL chain A sequence".
-    // Check that first annotation table name is "2ZNL chain A annotation".
-    // Check that there is "molecule_name" qualifier with value "Polymerase Acidic Protein" in "chain_info" annotation
-    //    for chain A.
-    // Check that there is "molecule_name" qualifier with value "Rna-Directed Rna Polymerase Catalytic Subunit" in
-    //    "chain_info" annotation for chain B.
-    GTFileDialog::openFile(os, testDir + "_common_data/mmdb", "2ZNL.prt");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-    GTUtilsProjectTreeView::checkItem(os, "2ZNL chain A sequence");
-    GTUtilsProjectTreeView::checkItem(os, "2ZNL chain A annotation");
-
-    GTUtilsAnnotationsTreeView::selectItems(os, {"chain_info"});
-    QString moleculeName = GTUtilsAnnotationsTreeView::getQualifierValue(os, "molecule_name", GTUtilsAnnotationsTreeView::findItem(os, "chain_info"));
-    CHECK_SET_ERR(moleculeName == "Polymerase Acidic Protein", QString("Incorrect molecule name is detected for chain A: '%1'").arg(moleculeName));
-
-    QTreeWidgetItem *annotationsChainB = GTUtilsAnnotationsTreeView::findItem(os, "2ZNL chain B annotation [2ZNL.prt]");
-    QTreeWidgetItem *chainInfoGroup = GTUtilsAnnotationsTreeView::findItem(os, "chain_info  (0, 1)", annotationsChainB);
-    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *> {chainInfoGroup});
-    QTreeWidgetItem *chainInfo = GTUtilsAnnotationsTreeView::findItem(os, "chain_info", chainInfoGroup);
-    GTUtilsAnnotationsTreeView::selectItems(os, QList<QTreeWidgetItem *> {chainInfo});
-    QString moleculeNameChainB = GTUtilsAnnotationsTreeView::getQualifierValue(os, "molecule_name", chainInfo);
-
-    CHECK_SET_ERR(moleculeNameChainB == "Rna-Directed Rna Polymerase Catalytic Subunit", QString("Incorrect molecule name is detected for chain B: '%1'").arg(moleculeNameChainB));
-}
-
-GUI_TEST_CLASS_DEFINITION(test_4975_2) {
-    // Open _common_data/mmdb/1CRN_without_molecule.prt.
-    // Check that first annotation table name is "1CRN chain A sequence".
-    // Check that there is "chain_id" qualifier with value "A" in "chain_info" annotation for chain A.
-    // Check that there is not "molecule_name" qualifier.
-    GTFileDialog::openFile(os, testDir + "_common_data/mmdb", "1CRN_without_molecule.prt");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-    GTUtilsProjectTreeView::checkItem(os, "1CRN chain A annotation");
-
-    GTUtilsAnnotationsTreeView::selectItems(os, {"chain_info"});
-    QString chainId = GTUtilsAnnotationsTreeView::getQualifierValue(os, "chain_id", "chain_info");
-    CHECK_SET_ERR(chainId == "A", QString("Incorrect 'chain_info' qualifier value: %1").arg(chainId));
-
-    QTreeWidgetItem *moleculeName = GTUtilsAnnotationsTreeView::findItem(os, "molecule_name", GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(moleculeName == nullptr, QString("There is 'moleculeName' qualifier"));
-}
-
-GUI_TEST_CLASS_DEFINITION(test_4975_3) {
-    // Open _common_data/mmdb/2ZNL.prt.
-    // Call context menu on the 3dview, select {Structural Alignment -> Align With...} menu item.
-    // Check that chain combobox contains identifiers: A, B.
-    // Accept the dialog.
-    GTFileDialog::openFile(os, testDir + "_common_data/mmdb", "2ZNL.prt");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-    QStringList chainIndexes {"A", "B"};
-    GTUtilsDialog::waitForDialog(os, new StructuralAlignmentDialogFiller(os, chainIndexes));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Structural Alignment", "align_with"}));
-    QWidget *widget3d = GTWidget::findWidget(os, "1-2ZNL");
-    GTWidget::click(os, widget3d, Qt::RightButton);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4983) {
