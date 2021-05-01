@@ -3738,6 +3738,115 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
     }
 }
 
+
+GUI_TEST_CLASS_DEFINITION(test_0045_1) {
+    // Description: check "Alternative mutations" using slider to set threshold
+    // 0. Copy test file to sandbox
+    QString file = sandBoxDir + "test_0045_1.ugenedb";
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment_alternative_mutations.ugenedb", file);
+
+    // 1. Open "sandBoxDir + "test_0045_1.ugenedb""
+    GTFileDialog::openFile(os, file);
+
+    // 1. Scroll to 298 base
+    GTUtilsMcaEditorSequenceArea::scrollToBase(os, 297);
+
+    // Expected: read 1, pos 298 - C
+    char ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 0));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 1, pos 298), expected: C, current: %1").arg(ch));
+
+    // Expected: read 2, pos 298 - C
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 1));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 2, pos 298), expected: C, current: %1").arg(ch));
+
+    // 3. Open the "Reads" tab, check "Show alternative mutations", set threshold to 85 by slider and click "Update"
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, true, 85, false);
+
+    // Expected: read 1, pos 298 - T
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 0));
+    CHECK_SET_ERR(ch == 'T', QString("Incorrect chararcter (read 1, pos 298) with AM threshold 85, expected: T, current: %1").arg(ch));
+
+    // Expected: read 2, pos 298 - C
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 1));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 2, pos 298), expected: C, current: %1").arg(ch));
+
+    // 4. Set threshold to 70 by slider and click "Update"
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, true, 70, false);
+
+    // Expected: read 1, pos 298 - T
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 0));
+    CHECK_SET_ERR(ch == 'T', QString("Incorrect chararcter (read 1, pos 298) with AM threshold 70, expected: T, current: %1").arg(ch));
+
+    // Expected: read 2, pos 298 - T
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 1));
+    CHECK_SET_ERR(ch == 'T', QString("Incorrect chararcter (read 2, pos 298) with AM threshold 70, expected: T, current: %1").arg(ch));
+
+    // 5. Uncheck "Show alternative mutations"
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, false);
+
+    // Expected: read 1, pos 298 - C
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 0));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 1, pos 298) after AM unchecked, expected: C, current: %1").arg(ch));
+
+    // Expected: read 2, pos 298 - C
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 1));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 2, pos 298) after AM unchecked, expected: C, current: %1").arg(ch));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0045_2) {
+    // Description: check "Alternative mutations" using spinbox to set threshold
+    // 0. Copy test file to sandbox
+    QString file = sandBoxDir + "test_0045_2.ugenedb";
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment_alternative_mutations.ugenedb", file);
+
+    // 1. Open "sandBoxDir + "test_0045_2.ugenedb""
+    GTFileDialog::openFile(os, file);
+
+    // 1. Scroll to 298 base
+    GTUtilsMcaEditorSequenceArea::scrollToBase(os, 297);
+
+    // Expected: read 1, pos 298 - C
+    char ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 0));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 1, pos 298), expected: C, current: %1").arg(ch));
+
+    // Expected: read 2, pos 298 - C
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 1));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 2, pos 298), expected: C, current: %1").arg(ch));
+
+    // 3. Open the "Reads" tab, check "Show alternative mutations", set threshold to 85 by spinbox and click "Update"
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, true, 85, true);
+
+    // Expected: read 1, pos 298 - T
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 0));
+    CHECK_SET_ERR(ch == 'T', QString("Incorrect chararcter (read 1, pos 298) with AM threshold 85, expected: T, current: %1").arg(ch));
+
+    // Expected: read 2, pos 298 - C
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 1));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 2, pos 298), expected: C, current: %1").arg(ch));
+
+    // 4. Set threshold to 70 by spinbox and click "Update"
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, true, 70, true);
+
+    // Expected: read 1, pos 298 - T
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 0));
+    CHECK_SET_ERR(ch == 'T', QString("Incorrect chararcter (read 1, pos 298) with AM threshold 70, expected: T, current: %1").arg(ch));
+
+    // Expected: read 2, pos 298 - T
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 1));
+    CHECK_SET_ERR(ch == 'T', QString("Incorrect chararcter (read 2, pos 298) with AM threshold 70, expected: T, current: %1").arg(ch));
+
+    // 5. Uncheck "Show alternative mutations"
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, false);
+
+    // Expected: read 1, pos 298 - C
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 0));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 1, pos 298) after AM unchecked, expected: C, current: %1").arg(ch));
+
+    // Expected: read 2, pos 298 - C
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 1));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 2, pos 298) after AM unchecked, expected: C, current: %1").arg(ch));
+}
+
 }    //namespace GUITest_common_scenarios_mca_editor
 
 }    //namespace U2

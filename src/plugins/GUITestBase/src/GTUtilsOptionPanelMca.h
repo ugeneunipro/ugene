@@ -30,6 +30,7 @@ public:
     enum Tabs {
         General,
         Consensus,
+        Reads
     };
 
     enum FileFormat {
@@ -64,9 +65,14 @@ public:
     static void pushResetButton(HI::GUITestOpStatus &os);
     static void pushExportButton(HI::GUITestOpStatus &os);
 
-private:
-    static QMap<Tabs, QString> initNames();
-    static QMap<Tabs, QString> initInnerWidgetNames();
+    /*
+     * Open the "reads" tab and set up the "Alternative mutations" widget
+     * @os operation status
+     * @show check the "Show alternative mutations" checkbox if true, otherwise uncheck
+     * @value persentage value, default - 75
+     * @withSpinbox set value with the spin box if true, otherwise with slider
+     **/
+    static void showAlternativeMutations(HI::GUITestOpStatus& os, bool show, int value = 75, bool withSpinbox = true);
 };
 }    // namespace U2
 
