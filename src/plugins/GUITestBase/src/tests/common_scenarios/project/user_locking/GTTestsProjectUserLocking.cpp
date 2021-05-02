@@ -96,16 +96,11 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
-    GTGlobals::sleep(200);
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep(200);
     GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
-
-    GTGlobals::sleep(2000);
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnnotationDialogComboBoxChecker(os, ""));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
@@ -156,7 +151,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     QModelIndex item = GTUtilsProjectTreeView::findIndex(os, "1.gb");
 
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "1.gb");
-    GTGlobals::sleep(100);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View"
                                                                         << "action_open_view"));
@@ -177,7 +171,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnnotationDialogComboBoxChecker(os, ""));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep(1000);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_DOCUMENT__LOCK));
     GTMouseDriver::moveTo(itemPos);

@@ -703,7 +703,6 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0014) {
     }
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Connect to UGENE shared database...");
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(proj_test_0001) {
@@ -932,8 +931,6 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0007) {
     CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
     QAbstractItemModel *model = treeView->model();
 
-    GTGlobals::sleep();
-
     const QModelIndex invisibleIndex = QModelIndex();
     int objCount1 = model->rowCount(invisibleIndex);
     CHECK_SET_ERR(1 == objCount1, QString("Invalid filtered objects count. Expected 1. Actual: %1").arg(objCount1));
@@ -1145,7 +1142,6 @@ GUI_TEST_CLASS_DEFINITION(import_test_0003) {
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     QTreeWidget *annotationTableWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);
     GTUtilsProjectTreeView::dragAndDrop(os, databaseAnnotationObjectItemIndex, annotationTableWidget);
-    GTGlobals::sleep();
 
     // Disconnect and connect to the database again.
     GTUtilsSharedDatabaseDocument::disconnectDatabase(os, databaseDoc);
@@ -2350,13 +2346,11 @@ GUI_TEST_CLASS_DEFINITION(del_test_0002) {
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "dt0002_human_T1"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep(3000);
     GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     CHECK_OP(os, );
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "dt0002_COI"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep(3000);
     GTWidget::findWidget(os, "msa_editor_dt0002_COI");
     CHECK_OP(os, );
 
@@ -2364,7 +2358,6 @@ GUI_TEST_CLASS_DEFINITION(del_test_0002) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTGlobals::sleep(3000);
     QWidget *seqView = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", NULL, GTGlobals::FindOptions(false));
     CHECK_SET_ERR(NULL == seqView, "Sequence view is not closed");
     QWidget *msaView = GTWidget::findWidget(os, "msa_editor_dt0002_COI", NULL, GTGlobals::FindOptions(false));
@@ -2421,7 +2414,6 @@ GUI_TEST_CLASS_DEFINITION(export_test_0001) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
     GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, testDir + "_common_data/scenarios/sandbox/", "et0001_export.fasta"));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep(3000);
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0001_export.fasta"));
     GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
@@ -2446,7 +2438,6 @@ GUI_TEST_CLASS_DEFINITION(export_test_0002) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << "ep_exportAnnotations2CSV"));
     GTUtilsDialog::waitForDialog(os, new ExportAnnotationsFiller(testDir + "_common_data/scenarios/sandbox/et0002_features.gb", ExportAnnotationsFiller::genbank, os));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep(5000);
 
     bool exported = QFileInfo(testDir + "_common_data/scenarios/sandbox/et0002_features.gb").exists();
     CHECK_SET_ERR(exported, "Object is not exported");
@@ -2470,7 +2461,6 @@ GUI_TEST_CLASS_DEFINITION(export_test_0003) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_OBJECT));
     GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, testDir + "_common_data/scenarios/sandbox/", "et0003_alignment.aln", ExportDocumentDialogFiller::CLUSTALW, false, true));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep(5000);
 
     GTWidget::findWidget(os, "msa_editor_et0003_alignment");
     CHECK_OP(os, );
@@ -2519,7 +2509,6 @@ GUI_TEST_CLASS_DEFINITION(export_test_0005) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_OBJECT));
     GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, testDir + "_common_data/scenarios/sandbox/", "et0005_variations.vcf", ExportDocumentDialogFiller::VCF, false, true));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep(5000);
 
     bool exported = QFileInfo(testDir + "_common_data/scenarios/sandbox/et0005_variations.vcf").exists();
     CHECK_SET_ERR(exported, "Object is not exported");
@@ -2544,7 +2533,6 @@ GUI_TEST_CLASS_DEFINITION(export_test_0006) {
     GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, testDir + "_common_data/scenarios/sandbox/", "et0006_text.txt", ExportDocumentDialogFiller::TEXT, false, true));
     GTUtilsDialog::waitForDialog(os, new SelectDocumentFormatDialogFiller(os));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep(5000);
 
     GTWidget::findWidget(os, "et0006_text [et0006_text.txt]");
     CHECK_OP(os, );
@@ -2568,7 +2556,6 @@ GUI_TEST_CLASS_DEFINITION(export_test_0007) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CHROMATOGRAM));
     GTUtilsDialog::waitForDialog(os, new ExportChromatogramFiller(os, testDir + "_common_data/scenarios/sandbox/", "et0007_chroma.scf", ExportChromatogramFiller::SCF, false, false, true));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep(5000);
 
     GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
     CHECK_OP(os, );
@@ -2592,7 +2579,6 @@ GUI_TEST_CLASS_DEFINITION(export_test_0008) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_OBJECT));
     GTUtilsDialog::waitForDialog(os, new ExportDocumentDialogFiller(os, testDir + "_common_data/scenarios/sandbox/", "et0008_tree.nwk", ExportDocumentDialogFiller::NWK, false, true));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep(5000);
 
     GTWidget::findWidget(os, "Tree [et0008_tree.nwk]");
     CHECK_OP(os, );

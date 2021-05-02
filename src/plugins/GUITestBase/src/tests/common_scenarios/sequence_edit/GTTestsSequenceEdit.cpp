@@ -63,12 +63,10 @@ namespace GUITest_common_scenarios_sequence_edit {
 using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsProject::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 50));
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
     GTKeyboardUtils::selectAll();
-    GTGlobals::sleep(1000);
 
     Runnable *removeDialog = new RemovePartFromSequenceDialogFiller(os,
                                                                     RemovePartFromSequenceDialogFiller::Remove,
@@ -81,7 +79,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                                                 << "Edit"
                                                 << "Remove subsequence...",
                               GTGlobals::UseMouse);
-    GTGlobals::sleep(1000);
 
     GTUtilsSequenceView::openSequenceView(os, "result.fa");
 
@@ -139,7 +136,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     Runnable *filler = new InsertSequenceFiller(os,
                                                 "AAAAAA",
@@ -154,10 +150,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
                                                 << "Edit"
                                                 << "Insert subsequence...",
                               GTGlobals::UseKey);
-    GTGlobals::sleep();
-
     GTUtilsDocument::checkDocument(os, "result.fa");
-    GTGlobals::sleep();
 
     GTUtilsSequenceView::openSequenceView(os, "result.fa");
 
@@ -170,7 +163,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     Runnable *filler = new InsertSequenceFiller(os,
                                                 "AAAAAA",
@@ -185,10 +177,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
                                                 << "Edit"
                                                 << "Insert subsequence...",
                               GTGlobals::UseKey);
-    GTGlobals::sleep();
 
     GTUtilsDocument::checkDocument(os, "result.gb");
-    GTGlobals::sleep();
 
     GTUtilsSequenceView::openSequenceView(os, "result.gb");
 
@@ -203,7 +193,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 50));
     GTKeyboardUtils::selectAll();
-    GTGlobals::sleep(1000);
     Runnable *removeDialog = new RemovePartFromSequenceDialogFiller(os,
                                                                     RemovePartFromSequenceDialogFiller::Remove,
                                                                     true,
@@ -214,11 +203,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
                                                 << "Edit"
                                                 << "Remove subsequence...",
                               GTGlobals::UseMouse);
-    GTGlobals::sleep(1000);
     GTUtilsDocument::checkDocument(os, "result.fa");
-    GTGlobals::sleep(1000);
     GTUtilsSequenceView::openSequenceView(os, "result.fa");
-    GTGlobals::sleep(1000);
 
     int sequenceLength = GTUtilsSequenceView::getLengthOfSequence(os);
     CHECK_SET_ERR(sequenceLength == 199900, "Sequence length is " + QString::number(sequenceLength) + ", expected 199900");
@@ -249,7 +235,6 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
                                                 << "Edit"
                                                 << "Remove subsequence...",
                               GTGlobals::UseMouse);
-    GTGlobals::sleep(1000);
 
     // Expected result: the sequence is started from "AAT", the sequence length is 29, DUMMY_1 annotation is [2..5].
     QString sequenceBegin = GTUtilsSequenceView::getBeginOfSequenceAsString(os, 3);
@@ -266,13 +251,11 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTFileDialog::openFile(os, testDir + "_common_data/edit_sequence/", "test.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTGlobals::sleep();
     QTreeWidgetItem *dummyTest = GTUtilsAnnotationsTreeView::findItem(os, "DUMMY_1");
     CHECK_SET_ERR(dummyTest != NULL, "There is no annotation DUMMY_1");
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 2, 2));
     GTKeyboardUtils::selectAll();
-    GTGlobals::sleep();
 
     Runnable *removeDialog = new RemovePartFromSequenceDialogFiller(os,
                                                                     RemovePartFromSequenceDialogFiller::Remove,
@@ -285,7 +268,6 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
                                                 << "Edit"
                                                 << "Remove subsequence...",
                               GTGlobals::UseMouse);
-    GTGlobals::sleep();
 
     int sequenceLength = GTUtilsSequenceView::getLengthOfSequence(os);
     CHECK_SET_ERR(sequenceLength == 29, "Sequence length is " + QString::number(sequenceLength) + ", expected 29");
@@ -302,12 +284,9 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 10, 13));
 
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_0"));
-    GTGlobals::sleep();
     GTKeyboardUtils::selectAll();
-    GTGlobals::sleep(1000);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(1000);
 
     QString sequence = GTClipboard::text(os);
     CHECK_SET_ERR("ACCC" == sequence, "Incorrect sequence is copied");
@@ -320,10 +299,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, 1, 11));
     GTKeyboardUtils::selectAll();
-    GTGlobals::sleep(1000);
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ADV_MENU_COPY << ADV_COPY_TRANSLATION_ACTION, GTGlobals::UseKey));
     GTMenu::showContextMenu(os, mdiWindow);
-    GTGlobals::sleep(1000);
     QString text = GTClipboard::text(os);
 
     CHECK_SET_ERR(text == "K*K", "Sequcence part translated to <" + text + ">, expected K*K");
@@ -332,14 +309,11 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTFileDialog::openFile(os, testDir + "_common_data/edit_sequence/", "test.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_COPY"
                                                                         << "action_copy_annotation_sequence"));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "DUMMY_1"));
-    GTGlobals::sleep(1000);
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep(1000);
 
     const QString expectedSequence = "AATGA";
 
@@ -355,7 +329,6 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
                                                 << "Edit"
                                                 << "Remove subsequence...",
                               GTGlobals::UseMouse);
-    GTGlobals::sleep(1000);
 
     QString sequenceBegin = GTUtilsSequenceView::getBeginOfSequenceAsString(os, 3);
     CHECK_SET_ERR(sequenceBegin == "AAT", "Sequence starts with " + sequenceBegin + ", expected AAT");

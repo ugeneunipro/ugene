@@ -68,7 +68,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     // 5. Type to the project filter field "coi"
     GTUtilsProjectTreeView::filterProject(os, "coi");
-    GTGlobals::sleep();
 
     // Expected: There are items under the "Object name" item. They contain both "coi" in any case and either of document names "COI.aln"
     // or "ugene_gui_test" and don't contain "human_T1.fa"
@@ -324,7 +323,6 @@ void checkDeleteButton(HI::GUITestOpStatus &os, const QString &groupName, const 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, objectIndexes.first()));
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(200);
 
     groupIndexes = GTUtilsProjectTreeView::findFilteredIndexes(os, groupName);
     CHECK_SET_ERR(groupIndexes.size() == 1, QString("Expected a single '%1' filter group in the project view").arg(groupName));
@@ -498,7 +496,6 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     // Expected state: Project filter clear button is visible
     CHECK_SET_ERR(clearButton->isVisible(), "Project filter clear button is unexpectedly invisible");
-    GTGlobals::sleep(3000);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(clearButton->isVisible(), "Project filter clear button is unexpectedly invisible");
 
@@ -518,9 +515,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     // 6. Remove typed word using a backspace
     for (int i = 0; i < 3; ++i) {
         GTKeyboardDriver::keyPress(Qt::Key_Backspace);
-        GTGlobals::sleep(100);
     }
-    GTGlobals::sleep(3000);
 
     // Expected state: Project filter clear button is invisible
     CHECK_SET_ERR(!clearButton->isVisible(), "Project filter clear button is unexpectedly visible");
