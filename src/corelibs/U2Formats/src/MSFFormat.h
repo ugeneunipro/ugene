@@ -36,7 +36,7 @@ class U2FORMATS_EXPORT MSFFormat : public TextDocumentFormat {
 public:
     MSFFormat(QObject *parent);
 
-    FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl & = GUrl()) const override;
+    FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl &originalDataUrl) const override;
 
     Document *loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) override;
 

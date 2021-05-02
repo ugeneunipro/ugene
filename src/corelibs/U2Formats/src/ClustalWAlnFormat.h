@@ -42,7 +42,7 @@ public:
 
     void storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) override;
 
-    FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl & = GUrl()) const override;
+    FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl &originalDataUrl) const override;
 
     Document *loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) override;
 
