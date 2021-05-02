@@ -766,55 +766,55 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0021) {
-    //Check Options panel -> Information tab -> Codons.
+    //Check Options panel -> Information tab -> Amino acids.
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     // Activate Information tab on Options panel at the right edge of UGENE window. Expand Dinucleotides
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
-    QWidget *codonsPanel = GTWidget::findWidget(os, "options_panel_codons_widget");
-    GTWidget::click(os, codonsPanel);
+    QWidget *reportPanel = GTWidget::findWidget(os, "options_panel_amino_acids_widget");
+    GTWidget::click(os, reportPanel);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Whole sequence.
-    QLabel *codonsLabel = GTWidget::findWidgetByType<QLabel *>(os, codonsPanel, "Failed to find label inside codons panel");
-    QString text = codonsLabel->text();
+    QLabel *reportLabel = GTWidget::findWidgetByType<QLabel *>(os, reportPanel, "Failed to find label inside amino acids panel");
+    QString text = reportLabel->text();
     CHECK_SET_ERR(text.contains("whole sequence"), "Expected to see 'whole sequence' in the report");
     CHECK_SET_ERR(text.contains("<td><b>L:&nbsp;&nbsp;</b></td><td>44 225 &nbsp;&nbsp;</td>"),
-                  "Codons report does not contain expected entry (L:44225)");
+                  "Amino acids report does not contain expected entry (L:44225)");
 
     // Selected regions (same as whole sequence).
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 199950);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    text = codonsLabel->text();
+    text = reportLabel->text();
     CHECK_SET_ERR(text.contains("selected region"), "Expected to see 'selected region' in the report");
     CHECK_SET_ERR(text.contains("<td><b>L:&nbsp;&nbsp;</b></td><td>14 476 &nbsp;&nbsp;</td>"),
-                  "Codons report does not contain expected entry (L:14476)");
+                  "Amino acids report does not contain expected entry (L:14476)");
 
-    // Selected regions: 1 codon on direct and 1 on complement frames.
+    // Selected regions: 1 amino acid on direct and 1 on complement frames.
     GTUtilsSequenceView::selectSequenceRegion(os, 19, 21);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    text = codonsLabel->text();
+    text = reportLabel->text();
     CHECK_SET_ERR(text.contains("selected region"), "Expected to see 'selected region' in the report");
     CHECK_SET_ERR(text.contains("<td><b>L:&nbsp;&nbsp;</b></td><td>1 &nbsp;&nbsp;</td>"),
-                  "Codons report does not contain expected entry (L:1)");
+                  "Amino acids report does not contain expected entry (L:1)");
     CHECK_SET_ERR(text.contains("<td><b>Q:&nbsp;&nbsp;</b></td><td>1 &nbsp;&nbsp;</td>"),
-                  "Codons report does not contain expected entry (Q:1)");
+                  "Amino acids report does not contain expected entry (Q:1)");
 
     GTUtilsSequenceView::selectSequenceRegion(os, 19, 20);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    text = codonsLabel->text();
+    text = reportLabel->text();
     CHECK_SET_ERR(text.contains("selected region"), "Expected to see 'selected region' in the report");
     CHECK_SET_ERR(text.contains("Selection is too small"), "Expected to see 'Selection is too small' in the report");
 
     // Annotation.
     GTUtilsAnnotationsTreeView::createAnnotation(os, "test-group", "test-feature", "1..199950");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    text = codonsLabel->text();
+    text = reportLabel->text();
     CHECK_SET_ERR(text.contains("selected annotation"), "Expected to see 'selected annotation' in the report");
     CHECK_SET_ERR(text.contains("<td><b>L:&nbsp;&nbsp;</b></td><td>6 975 &nbsp;&nbsp;</td>"),
-                  "Codons report does not contain expected entry (L:6975)");
+                  "Amino acids report does not contain expected entry (L:6975)");
 
     // Remove the annotation -> report is reset to the last selected region: 19, 20 that is 'too small'.
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
@@ -822,7 +822,7 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    text = codonsLabel->text();
+    text = reportLabel->text();
     CHECK_SET_ERR(text.contains("selected region"), "Expected to see 'selected region' in the report/2");
     CHECK_SET_ERR(text.contains("Selection is too small"), "Expected to see 'Selection is too small' in the report/2");
 }
