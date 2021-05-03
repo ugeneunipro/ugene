@@ -36,7 +36,7 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::ExportSequenceAsAlignmentFiller"
 ExportSequenceAsAlignmentFiller::ExportSequenceAsAlignmentFiller(HI::GUITestOpStatus &_os, const QString &_path, const QString &_name, ExportSequenceAsAlignmentFiller::FormatToUse _format, bool addDocumentToProject, GTGlobals::UseMethod method)
     : Filler(_os, "U2__ExportSequences2MSADialog"), name(_name), useMethod(method), format(_format), addToProject(addDocumentToProject) {
-    path = GTFileDialog::toAbsoluteNativePath(_path);
+    path = GTFileDialog::toAbsoluteNativePath(_path, true);
 
     comboBoxItems[Clustalw] = "CLUSTALW";
     comboBoxItems[Fasta] = "FASTA";

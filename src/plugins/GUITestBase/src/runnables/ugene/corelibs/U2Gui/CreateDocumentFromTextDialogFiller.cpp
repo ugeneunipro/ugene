@@ -158,7 +158,7 @@ CancelCreateDocumentFiller::CancelCreateDocumentFiller(HI::GUITestOpStatus &_os,
       symbol(_symbol), format(_format), saveFile(saveFile), useMethod(method) {
     sequenceName = _sequenceName;
     pasteDataHere = _pasteDataHere;
-    documentLocation = GTFileDialog::toAbsoluteNativePath(_documentLocation, false);
+    documentLocation = GTFileDialog::toAbsoluteNativePath(_documentLocation);
     comboBoxItems[FASTA] = "FASTA";
     comboBoxItems[Genbank] = "GenBank";
     comboBoxAlphabetItems[StandardDNA] = "Standard DNA";

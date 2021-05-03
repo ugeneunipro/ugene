@@ -46,7 +46,7 @@ RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(HI::GUITe
 
 RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus &_os, RemoveType _removeType, bool _saveNew, const QString &_saveToFile, FormatToUse _format)
     : Filler(_os, "RemovePartFromSequenceDialog"), removeType(_removeType), format(_format), saveNew(_saveNew), recalculateQuals(false) {
-    saveToFile = GTFileDialog::toAbsoluteNativePath(_saveToFile, false);
+    saveToFile = GTFileDialog::toAbsoluteNativePath(_saveToFile);
     comboBoxItems[FASTA] = "FASTA";
     comboBoxItems[Genbank] = "GenBank";
 }

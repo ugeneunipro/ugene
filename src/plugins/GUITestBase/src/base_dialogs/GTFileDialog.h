@@ -97,7 +97,7 @@ public:
      * If non-absolute path is given appends "QDir::currentPath()" to the path.
      * If 'appendSlash' is true ensures that the returned path is a director path (ends with slash).
      */
-    static QString toAbsoluteNativePath(const QString &path, bool appendSlash = true);
+    static QString toAbsoluteNativePath(const QString &path, bool appendSlash = false);
 };
 
 }    // namespace HI

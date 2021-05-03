@@ -39,7 +39,7 @@ namespace U2 {
 ExportToSequenceFormatFiller::ExportToSequenceFormatFiller(HI::GUITestOpStatus &_os, const QString &_path, const QString &_name, documentFormat _format, bool saveFile, bool keepCharacters, GTGlobals::UseMethod method)
     : Filler(_os, "U2__ExportMSA2SequencesDialog"), name(_name), format(_format), saveFile(saveFile), keepCharacters(keepCharacters),
       useMethod(method) {
-    path = GTFileDialog::toAbsoluteNativePath(_path);
+    path = GTFileDialog::toAbsoluteNativePath(_path, true);
     comboBoxItems[EMBL] = "EMBL";
     comboBoxItems[FASTA] = "FASTA";
     comboBoxItems[FASTQ] = "FASTQ";

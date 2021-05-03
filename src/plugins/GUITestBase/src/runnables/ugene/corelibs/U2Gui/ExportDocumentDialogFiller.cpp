@@ -41,7 +41,7 @@ ExportDocumentDialogFiller::ExportDocumentDialogFiller(HI::GUITestOpStatus &_os,
     : Filler(_os, "ExportDocumentDialog"),
       path(_path), name(_name), useMethod(method), format(_format), compressFile(compressFile), addToProject(addToProject) {
     if (!path.isEmpty()) {
-        path = GTFileDialog::toAbsoluteNativePath(_path);
+        path = GTFileDialog::toAbsoluteNativePath(_path, true);
     }
 
     comboBoxItems[BAM] = "BAM";

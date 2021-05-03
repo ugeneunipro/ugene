@@ -48,7 +48,7 @@ InsertSequenceFiller::InsertSequenceFiller(HI::GUITestOpStatus &_os, const QStri
       documentLocation(_documentLocation), format(_format), saveToNewFile(_saveToNewFile), mergeAnnotations(_mergeAnnotations),
       useMethod(method), wrongInput(_wrongInput), recalculateQuals(recalculateQuals) {
     if (!documentLocation.isEmpty()) {
-        documentLocation = GTFileDialog::toAbsoluteNativePath(documentLocation, false);
+        documentLocation = GTFileDialog::toAbsoluteNativePath(documentLocation);
     }
     comboBoxItems[FASTA] = "FASTA";
     comboBoxItems[Genbank] = "GenBank";
