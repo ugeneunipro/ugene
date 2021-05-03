@@ -22,7 +22,6 @@
 #include "BundleInfo.h"
 
 #include <QDir>
-#include <qglobal.h>
 
 #ifdef Q_OS_DARWIN
 #    include <CoreFoundation/CoreFoundation.h>

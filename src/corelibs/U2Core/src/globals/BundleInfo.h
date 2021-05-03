@@ -22,13 +22,13 @@
 #ifndef _U2_BUNDLE_INFO_H_
 #define _U2_BUNDLE_INFO_H_
 
-#include <QString>
+#include <U2Core/global.h>
 
 namespace U2 {
 
 class CMDLineRegistry;
 
-class BundleInfo {
+class U2CORE_EXPORT BundleInfo {
 public:
     /** Returns a valid extra translation file URL or an empty string if there is no such path. */
     static QString getExtraTranslationSearchPath(CMDLineRegistry *);
