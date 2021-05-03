@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <base_dialogs/GTFileDialog.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
@@ -29,7 +30,6 @@
 #include <QApplication>
 #include <QDialogButtonBox>
 #include <QDir>
-#include <QPushButton>
 
 #include "ExportSequencesDialogFiller.h"
 
@@ -41,12 +41,7 @@ QString ExportSelectedRegionFiller::defaultExportPath = "";
 ExportSelectedRegionFiller::ExportSelectedRegionFiller(HI::GUITestOpStatus &_os, const QString &_path, const QString &_name, bool translate, const QString &seqName, bool saveAllAminoFrames)
     : Filler(_os, "U2__ExportSequencesDialog"), name(_name), seqName(seqName), translate(translate),
       saveAllAminoFrames(saveAllAminoFrames) {
-    QString __path = QDir::cleanPath(QDir::currentPath() + "/" + _path);
-    if (__path.at(__path.count() - 1) != '/') {
-        __path += '/';
-    }
-
-    path = __path;
+    path = GTFileDialog::toAbsoluteNativePath(_path);
 }
 
 ExportSelectedRegionFiller::ExportSelectedRegionFiller(GUITestOpStatus &os, const QString &filePath)
@@ -109,12 +104,7 @@ ExportSequenceOfSelectedAnnotationsFiller::ExportSequenceOfSelectedAnnotationsFi
     : Filler(_os, "U2__ExportSequencesDialog"), gapLength(_gapLength), format(_format), addToProject(_addDocToProject),
       exportWithAnnotations(false), options(_options), useMethod(method) {
     exportWithAnnotations = _exportWithAnnotations;
-    QString __path = QDir::cleanPath(QDir::currentPath() + "/" + _path);
-    // no needs to add '/' so _path includes file name
-    /*if (__path.at(__path.count() - 1) != '/') {
-    __path += '/';
-    }*/
-    path = QDir::toNativeSeparators(__path);
+    path = GTFileDialog::toAbsoluteNativePath(_path, false);
 
     comboBoxItems[Fasta] = "FASTA";
     comboBoxItems[Fastq] = "FASTQ";

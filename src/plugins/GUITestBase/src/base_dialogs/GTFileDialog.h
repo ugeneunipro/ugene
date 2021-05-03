@@ -62,7 +62,7 @@ protected:
     TextInput textInput;
 };
 
-class GTFileDialogUtils_list : public GTFileDialogUtils{
+class GTFileDialogUtils_list : public GTFileDialogUtils {
 public:
     GTFileDialogUtils_list(GUITestOpStatus &os, const QString &folderPath, const QStringList &fileNames);
     GTFileDialogUtils_list(GUITestOpStatus &os, const QStringList &filePaths);
@@ -91,8 +91,15 @@ public:
 
     static void openFileList(GUITestOpStatus &, const QString &, const QStringList &);
     static void openFileList(GUITestOpStatus &os, const QStringList &filePaths);
+
+    /**
+     * Converts absolute or relative path to the absolute path with native file separators which is safe to use in QT file dialog.
+     * If non-absolute path is given appends "QDir::currentPath()" to the path.
+     * If 'appendSlash' is true ensures that the returned path is a director path (ends with slash).
+     */
+    static QString toAbsoluteNativePath(const QString &path, bool appendSlash = true);
 };
 
-} // namespace
+}    // namespace HI
 
-#endif // GTFILE_DIALOG_H
+#endif    // GTFILE_DIALOG_H

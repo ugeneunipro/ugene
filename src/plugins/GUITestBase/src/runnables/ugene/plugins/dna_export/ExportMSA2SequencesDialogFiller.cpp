@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "ExportMSA2SequencesDialogFiller.h"
+#include <base_dialogs/GTFileDialog.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
@@ -29,7 +29,8 @@
 #include <QApplication>
 #include <QDialogButtonBox>
 #include <QDir>
-#include <QPushButton>
+
+#include "ExportMSA2SequencesDialogFiller.h"
 
 namespace U2 {
 
@@ -38,11 +39,7 @@ namespace U2 {
 ExportToSequenceFormatFiller::ExportToSequenceFormatFiller(HI::GUITestOpStatus &_os, const QString &_path, const QString &_name, documentFormat _format, bool saveFile, bool keepCharacters, GTGlobals::UseMethod method)
     : Filler(_os, "U2__ExportMSA2SequencesDialog"), name(_name), format(_format), saveFile(saveFile), keepCharacters(keepCharacters),
       useMethod(method) {
-    QString __path = QDir::cleanPath(QDir::currentPath() + "/" + _path);
-    if (__path.at(__path.count() - 1) != '/') {
-        __path += '/';
-    }
-    path = __path;
+    path = GTFileDialog::toAbsoluteNativePath(_path);
     comboBoxItems[EMBL] = "EMBL";
     comboBoxItems[FASTA] = "FASTA";
     comboBoxItems[FASTQ] = "FASTQ";

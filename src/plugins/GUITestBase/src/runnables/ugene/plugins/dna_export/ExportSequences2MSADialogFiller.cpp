@@ -18,7 +18,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
-
+#include <base_dialogs/GTFileDialog.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
@@ -36,12 +36,7 @@ namespace U2 {
 #define GT_CLASS_NAME "GTUtilsDialog::ExportSequenceAsAlignmentFiller"
 ExportSequenceAsAlignmentFiller::ExportSequenceAsAlignmentFiller(HI::GUITestOpStatus &_os, const QString &_path, const QString &_name, ExportSequenceAsAlignmentFiller::FormatToUse _format, bool addDocumentToProject, GTGlobals::UseMethod method)
     : Filler(_os, "U2__ExportSequences2MSADialog"), name(_name), useMethod(method), format(_format), addToProject(addDocumentToProject) {
-    QString __path = QDir::cleanPath(QDir::currentPath() + "/" + _path);
-    if (__path.at(__path.count() - 1) != QDir::separator()) {
-        __path += QDir::separator();
-    }
-
-    path = QDir::toNativeSeparators(__path);
+    path = GTFileDialog::toAbsoluteNativePath(_path);
 
     comboBoxItems[Clustalw] = "CLUSTALW";
     comboBoxItems[Fasta] = "FASTA";

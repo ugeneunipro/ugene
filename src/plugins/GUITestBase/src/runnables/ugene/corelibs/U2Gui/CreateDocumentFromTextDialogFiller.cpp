@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <base_dialogs/GTFileDialog.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTGroupBox.h>
@@ -64,8 +65,7 @@ CreateDocumentFiller::CreateDocumentFiller(HI::GUITestOpStatus &_os,
       useMethod(method) {
     sequenceName = _sequenceName;
     pasteDataHere = _pasteDataHere;
-    QString __documentLocation = QDir::cleanPath(QDir::currentPath() + "/" + _documentLocation);
-    documentLocation = QDir::toNativeSeparators(__documentLocation);
+    documentLocation = GTFileDialog::toAbsoluteNativePath(_documentLocation);
     comboBoxItems[FASTA] = "FASTA";
     comboBoxItems[Genbank] = "GenBank";
     comboBoxAlphabetItems[StandardDNA] = "Standard DNA";
@@ -158,8 +158,7 @@ CancelCreateDocumentFiller::CancelCreateDocumentFiller(HI::GUITestOpStatus &_os,
       symbol(_symbol), format(_format), saveFile(saveFile), useMethod(method) {
     sequenceName = _sequenceName;
     pasteDataHere = _pasteDataHere;
-    QString __documentLocation = QDir::cleanPath(QDir::currentPath() + "/" + _documentLocation);
-    documentLocation = __documentLocation;
+    documentLocation = GTFileDialog::toAbsoluteNativePath(_documentLocation, false);
     comboBoxItems[FASTA] = "FASTA";
     comboBoxItems[Genbank] = "GenBank";
     comboBoxAlphabetItems[StandardDNA] = "Standard DNA";

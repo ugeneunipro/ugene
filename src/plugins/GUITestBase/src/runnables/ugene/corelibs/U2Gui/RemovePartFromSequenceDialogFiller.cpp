@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <base_dialogs/GTFileDialog.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTGroupBox.h>
@@ -45,8 +46,7 @@ RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(HI::GUITe
 
 RemovePartFromSequenceDialogFiller::RemovePartFromSequenceDialogFiller(HI::GUITestOpStatus &_os, RemoveType _removeType, bool _saveNew, const QString &_saveToFile, FormatToUse _format)
     : Filler(_os, "RemovePartFromSequenceDialog"), removeType(_removeType), format(_format), saveNew(_saveNew), recalculateQuals(false) {
-    QString __saveToFile = QDir::cleanPath(QDir::currentPath() + "/" + _saveToFile);
-    saveToFile = QDir::toNativeSeparators(__saveToFile);
+    saveToFile = GTFileDialog::toAbsoluteNativePath(_saveToFile, false);
     comboBoxItems[FASTA] = "FASTA";
     comboBoxItems[Genbank] = "GenBank";
 }
