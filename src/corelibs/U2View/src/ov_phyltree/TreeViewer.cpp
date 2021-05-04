@@ -529,7 +529,6 @@ void TreeViewerUI::changeOption(TreeViewOption option, const QVariant &newValue)
 
 void TreeViewerUI::onSettingsChanged(TreeViewOption option, const QVariant &newValue) {
     SAFE_POINT(settings.keys().contains(option), "Unrecognized option in TreeViewerUI::onSettingsChanged", );
-    CHECK(newValue != getOptionValue(option), );
     setOptionValue(option, newValue);
     QAction *action = nullptr;
     switch (option) {
