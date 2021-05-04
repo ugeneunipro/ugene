@@ -1869,7 +1869,6 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
     QString defaultFontFamily;
     int defaultSize;
 
-    QGraphicsView *treeView = GTWidget::findExactWidget<QGraphicsView*>(os, "treeView");
     QList<GraphicsButtonItem *>  nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
     CHECK_SET_ERR(nodes.size() == 16, 
         QString("Something goes wrong with building tree from COI.aln We are expect 16 nodes instead of: %1")
