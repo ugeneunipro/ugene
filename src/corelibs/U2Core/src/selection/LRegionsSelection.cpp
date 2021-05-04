@@ -29,7 +29,7 @@ LRegionsSelection::LRegionsSelection(const GSelectionType &type, QObject *p)
 }
 
 void LRegionsSelection::clear() {
-    if (regions.isEmpty()) {
+    if (isEmpty()) {
         return;
     }
     QVector<U2Region> removedRegions = regions;
