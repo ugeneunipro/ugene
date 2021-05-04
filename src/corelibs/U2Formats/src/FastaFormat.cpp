@@ -318,7 +318,7 @@ static void writeHeaderToFile(IOAdapterWriter &writer, const QString &sequenceNa
 }
 
 // TODO: a recommended width for FASTA lines is 80 chars to be readable in text editors.
-#define SAVE_LINE_LEN qint64(1024 * 1024)
+static constexpr qint64 SAVE_LINE_LEN = 1024 * 1024;
 
 static void saveSequenceObject(IOAdapterWriter &writer, const U2SequenceObject *sequence, U2OpStatus &os) {
     writeHeaderToFile(writer, sequence->getSequenceName(), os);
