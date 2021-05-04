@@ -101,7 +101,7 @@ public:
     DNAChromatogram getGappedChromatogram() const;
 
     /** Returns the position of @pos, including gaps */
-    int getGappedPosition(int pos) const;
+    qint64 getGappedPosition(int pos) const;
 
     /** Returns ID of the row in the database. */
     qint64 getRowId() const;
@@ -194,7 +194,7 @@ public:
     qint64 getBaseCount(qint64 before) const;
 
     /** Returns pair of the first and the second (by peak height) chromatogram trace characted in the @pos position */
-    QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue> getTwoHighestPeaks(const qint64 position) const;
+    QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue> getTwoHighestPeaks(qint64 position) const;
 
     /**
      * Exactly compares the rows. Sequences and gap models must match.

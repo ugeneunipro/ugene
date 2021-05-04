@@ -166,7 +166,7 @@ DNAChromatogram MultipleChromatogramAlignmentRowData::getGappedChromatogram() co
     return ChromatogramUtils::getGappedChromatogram(chromatogram, gaps);
 }
 
-int MultipleChromatogramAlignmentRowData::getGappedPosition(int pos) const {
+qint64 MultipleChromatogramAlignmentRowData::getGappedPosition(int pos) const {
     return MsaRowUtils::getGappedRegion(gaps, U2Region(pos, 1)).startPos;
 }
 
@@ -353,7 +353,7 @@ qint64 MultipleChromatogramAlignmentRowData::getBaseCount(qint64 before) const {
 }
 
 QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue>
-                MultipleChromatogramAlignmentRowData::getTwoHighestPeaks(const qint64 position) const {
+                MultipleChromatogramAlignmentRowData::getTwoHighestPeaks(qint64 position) const {
     const int baseCall = chromatogram.baseCalls[position];
     QList<DNAChromatogram::ChromatogramTraceAndValue> peaks =
                                     { { DNAChromatogram::Trace::Trace_A, chromatogram.A[baseCall] },
@@ -362,11 +362,10 @@ QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramT
                                       { DNAChromatogram::Trace::Trace_T, chromatogram.T[baseCall] } };
     std::sort(peaks.begin(),
               peaks.end(),
-        [](const DNAChromatogram::ChromatogramTraceAndValue& first,
-            const DNAChromatogram::ChromatogramTraceAndValue& second) {
+        [](const auto& first, const auto& second) {
         return first.value > second.value;
     });
-    return { peaks.first(), peaks.at(1) };
+    return { peaks[0], peaks[1] };
 }
 
 bool MultipleChromatogramAlignmentRowData::isRowContentEqual(const MultipleChromatogramAlignmentRow &row) const {

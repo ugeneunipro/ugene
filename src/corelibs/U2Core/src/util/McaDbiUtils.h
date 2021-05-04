@@ -47,7 +47,7 @@ public:
      * Replaces the set of characters.
      * It's better then use @replaceCharacterInRow several times, because this function opens database just one time.
      */
-    static void replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 rowId, QMap<qint64, char> newCharList, U2OpStatus& os);
+    static void replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 rowId, QHash<qint64, char> newCharList, U2OpStatus& os);
     static void removeRegion(const U2EntityRef &entityRef, const qint64 rowId, qint64 pos, qint64 count, U2OpStatus &os);
 };
 

@@ -263,12 +263,12 @@ void MultipleChromatogramAlignmentObject::trimRow(const int rowIndex, int curren
 void MultipleChromatogramAlignmentObject::updateAlternativeMutations(const McaReadsTabSettings& settings, U2OpStatus& os) {
     for (int i = 0; i < getNumRows(); i++) {
         const MultipleChromatogramAlignmentRow& mcaRow = static_cast<const MultipleChromatogramAlignmentRow&>(getRow(i));
-        const int ungappedLength = mcaRow->getUngappedLength();
+        qint64 ungappedLength = mcaRow->getUngappedLength();
 
-        QMap<qint64, char> newCharList;
+        QHash<qint64, char> newCharList;
         for (int j = 0; j < ungappedLength; j++) {
             auto res = mcaRow->getTwoHighestPeaks(j);
-            const double minimumThresholdValue = (double)res.second.value / res.first.value * 100;
+            double minimumThresholdValue = (double)res.second.value / res.first.value * 100;
             char newChar = 'A';
             if (minimumThresholdValue < settings.threshold || !settings.showAlternativeMutations) {
                 newChar = DNAChromatogram::TRACE_CHARACTER[res.first.trace];
@@ -276,7 +276,7 @@ void MultipleChromatogramAlignmentObject::updateAlternativeMutations(const McaRe
                 newChar = DNAChromatogram::TRACE_CHARACTER[res.second.trace];
             }
 
-            int gappedPos = mcaRow->getGappedPosition(j);
+            auto gappedPos = mcaRow->getGappedPosition(j);
             char currentChar = mcaRow->charAt(gappedPos);
             if (currentChar == newChar) {
                 continue;

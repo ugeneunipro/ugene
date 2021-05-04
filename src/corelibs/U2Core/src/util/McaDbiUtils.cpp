@@ -329,7 +329,7 @@ void McaDbiUtils::replaceCharacterInRow(const U2EntityRef &mcaRef, qint64 rowId,
     CHECK_OP(os, );
 }
 
-void U2::McaDbiUtils::replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 rowId, QMap<qint64, char> newCharList, U2OpStatus& os) {
+void U2::McaDbiUtils::replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 rowId, QHash<qint64, char> newCharList, U2OpStatus& os) {
     // Prepare the connection
     QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(mcaRef.dbiRef, os));
     CHECK_OP(os, );

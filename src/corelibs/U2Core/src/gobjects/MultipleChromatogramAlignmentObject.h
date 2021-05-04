@@ -74,7 +74,7 @@ public:
 
     /**
       * Updates the corresponding alternative mutations.
-      * Shows the second strongest character, if it's peak height persantage is more then @settings.threshold.
+      * Set the second strongest character, if it's peak height persantage is more then @settings threshold.
       */
     void updateAlternativeMutations(const McaReadsTabSettings& settings, U2OpStatus& os);
 
