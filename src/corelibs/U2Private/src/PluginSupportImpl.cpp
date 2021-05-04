@@ -28,6 +28,7 @@
 #include <QSet>
 
 #include <U2Core/AppContext.h>
+#include <U2Core/BundleInfo.h>
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/CmdlineTaskRunner.h>
 #include <U2Core/L10n.h>
@@ -36,7 +37,6 @@
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/MainWindow.h>
-#include <BundleInfoMac.h>
 
 #include "ServiceRegistryImpl.h"
 
@@ -323,8 +323,8 @@ void PluginSupportImpl::updateSavedState(PluginRef *ref) {
 
 QDir PluginSupportImpl::getDefaultPluginsDir() {
 #ifdef Q_OS_DARWIN
-    if (! QDir(AppContext::getWorkingDirectoryPath() + "/plugins").exists()) {
-        QString dir = BundleInfoMac::getPluginsSearchPath();
+    if (!QDir(AppContext::getWorkingDirectoryPath() + "/plugins").exists()) {
+        QString dir = BundleInfo::getPluginsSearchPath();
         if (!dir.isEmpty()) {
             return QDir(dir);
         }

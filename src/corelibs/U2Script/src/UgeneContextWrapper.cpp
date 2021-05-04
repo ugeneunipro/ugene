@@ -58,6 +58,7 @@
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppFileStorage.h>
 #include <U2Core/AutoAnnotationsSupport.h>
+#include <U2Core/BundleInfo.h>
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/CMDLineUtils.h>
@@ -86,8 +87,6 @@
 #include <U2Lang/QueryDesignerRegistry.h>
 #include <U2Lang/WorkflowEnvImpl.h>
 
-#include <BundleInfoMac.h>
-
 #include <U2Test/GTestFrameworkComponents.h>
 
 #include "UgeneContextWrapper.h"
@@ -109,7 +108,7 @@ static void setDataSearchPaths() {
         dataSearchPaths.push_back(AppContext::getWorkingDirectoryPath() + relativeDevDataDir);
 #ifdef Q_OS_DARWIN
     } else {
-        QString dir = BundleInfoMac::getDataSearchPath();
+        QString dir = BundleInfo::getDataSearchPath();
         if (!dir.isEmpty()) {
             dataSearchPaths.push_back(dir);
         }

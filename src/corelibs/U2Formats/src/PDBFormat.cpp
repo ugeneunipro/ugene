@@ -177,7 +177,8 @@ PDBFormat::PDBParser::PDBParser(IOAdapter *_io)
       currentPDBLine(""),
       currentChainIndex(1),
       currentMoleculeIndex(0),
-      residueOrder(0) {
+      residueOrder(0),
+      readingMoleculeName(false) {
     currentModelIndex = 0;
     currentChainIndentifier = ' ';
     flagMultipleModels = false;
@@ -280,12 +281,12 @@ void PDBFormat::PDBParser::parseMacromolecularContent(bool firstCompndLine, U2Op
     list
     Details
     */
+
     if (!firstCompndLine) {
         QString specification = currentPDBLine.mid(10, currentPDBLine.size() - 11).trimmed().toLatin1();
         if (specification.startsWith(MOLECULE_TAG)) {
-            QRegExp end(";\\s*$");
-            int index = end.indexIn(specification);
-            index = (index > 0) ? index : specification.size();
+            readingMoleculeName = true;
+            int index = returnEndOfNameIndexAndUpdateParserState(specification);
             currentMoleculeName = specification.mid(MOLECULE_TAG.size() + 1, index - MOLECULE_TAG.size() - 1).trimmed();
         } else if (specification.startsWith(CHAIN_TAG)) {
             QStringList idetifiers = specification.split(QRegExp(",|:|;"));
@@ -295,6 +296,9 @@ void PDBFormat::PDBParser::parseMacromolecularContent(bool firstCompndLine, U2Op
                     chainToMoleculeMap[identifier] = currentMoleculeName;
                 }
             }
+        } else if (readingMoleculeName) {
+            int index = returnEndOfNameIndexAndUpdateParserState(specification);
+            currentMoleculeName += specification.left(index).trimmed();
         }
     }
 }
@@ -605,6 +609,16 @@ void PDBFormat::PDBParser::createMolecule(char chainIdentifier, BioStruct3D &bio
 
 void PDBFormat::PDBParser::updateResidueIndexes(BioStruct3D & /*biostruc*/) {
 }
+
+int PDBFormat::PDBParser::returnEndOfNameIndexAndUpdateParserState(const QString &specification) {
+    static const QRegExp end(";\\s*$");
+    int index = end.indexIn(specification);
+    if (index < 0) {
+        return specification.size();
+    }
+    readingMoleculeName = false;    // Molecule name has ended.
+    return index;
+};
 
 char PDBFormat::getAcronymByName(const QByteArray &name) {
     if (acronymNameMap.contains(name))

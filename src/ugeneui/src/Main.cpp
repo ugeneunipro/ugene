@@ -143,7 +143,6 @@
 //U2Private imports
 #include <AppContextImpl.h>
 #include <AppSettingsImpl.h>
-#include <BundleInfoMac.h>
 #include <DocumentFormatRegistryImpl.h>
 #include <IOAdapterRegistryImpl.h>
 #include <PluginSupportImpl.h>
@@ -151,6 +150,8 @@
 #include <SettingsImpl.h>
 #include <TaskSchedulerImpl.h>
 #include <crash_handler/CrashHandler.h>
+
+#include <U2Core/BundleInfo.h>
 
 #include "app_settings/AppSettingsGUIImpl.h"
 #include "app_settings/logview_settings/LogSettingsGUIController.h"
@@ -213,7 +214,7 @@ static void setDataSearchPaths() {
         dataSearchPaths.push_back(appDirPath + RELATIVE_DEV_DATA_DIR);
 #ifdef Q_OS_DARWIN
     } else {
-        QString dataDir = BundleInfoMac::getDataSearchPath();
+        QString dataDir = BundleInfo::getDataSearchPath();
         if (!dataDir.isEmpty()) {
             dataSearchPaths.push_back(dataDir);
         }
@@ -509,8 +510,7 @@ int main(int argc, char **argv) {
             "transl_" + findKey(envList, "UGENE_TRANSLATION"),
             userAppSettings->getTranslationFile(),
             "transl_" + QLocale::system().name().left(2).toLower(),
-            BundleInfoMac::getExtraTranslationSearchPath(cmdLineRegistry)
-        };
+            BundleInfo::getExtraTranslationSearchPath(cmdLineRegistry)};
         // Keep only valid entries.
         translationFileList.removeAll("");
         translationFileList.removeAll("transl_");
