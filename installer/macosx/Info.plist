@@ -3,6 +3,15 @@
 <plist version="0.9">
 
 <dict>
+    <key>CFBundleIdentifier</key>
+    <string>net.ugene.ugene</string>
+
+    <key>CFBundleVersion</key>
+    <string>38.0</string>
+
+    <key>CFBundleShortVersionString</key>
+    <string>38.0</string>
+
     <key>CFBundleDisplayName</key>
     <string>Unipro UGENE</string>
 
@@ -26,6 +35,18 @@
 
     <key>NSHighResolutionCapable</key>
     <string>True</string>
+
+    <key>BuildMachineOSBuild</key>
+    <string>16G29</string>
+
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.business</string>
+
+    <key>LSApplicationCategoryType</key>
+    <string>public.app-category.education</string>
+
+    <key>LSMinimumSystemVersion</key>
+    <string>10.12</string>
     
     <key>CFBundleDocumentTypes</key>
     <array>
