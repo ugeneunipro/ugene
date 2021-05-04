@@ -417,9 +417,10 @@ DNASequence *FastaFormat::loadTextSequence(IOAdapterReader &reader, U2OpStatus &
         }
         sequence.squeeze();
 
-        auto dnaSequence = new DNASequence(header, sequence);
-        dnaSequence->alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
-        SAFE_POINT(dnaSequence->alphabet != nullptr, "Sequence alphabet is null!", nullptr);
+        // TODO: shouldn't we detect the alphabet here instead of using the hardcoded one?
+        auto alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
+        SAFE_POINT(alphabet != nullptr, "Can't find built-in NUCL_DNA_EXTENDED alphabet!", nullptr);
+        auto dnaSequence = new DNASequence(header, sequence, alphabet);
         if (!dnaSequence->alphabet->isCaseSensitive()) {
             TextUtils::translate(TextUtils::UPPER_CASE_MAP, const_cast<char *>(dnaSequence->seq.constData()), dnaSequence->seq.length());
         }
