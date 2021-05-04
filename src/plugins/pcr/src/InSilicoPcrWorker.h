@@ -63,9 +63,9 @@ public:
 
 private:
     QByteArray chapterName(const QString &name) const;
-    QByteArray createReport() const;
+    QByteArray createReport();
     QByteArray productsTable() const;
-    QByteArray primerDetails() const;
+    QByteArray primerDetails();
     QByteArray chapterContent(const QByteArray &content) const;
     QByteArray chapter(const QByteArray &name, const QByteArray &content) const;
     QString readHtml() const;

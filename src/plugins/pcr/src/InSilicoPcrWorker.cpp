@@ -375,7 +375,7 @@ void InSilicoPcrReportTask::run() {
     io->writeBlock(createReport());
 }
 
-QByteArray InSilicoPcrReportTask::createReport() const {
+QByteArray InSilicoPcrReportTask::createReport() {
     QString html = readHtml();
     QStringList tokens = html.split("<body>");
     SAFE_POINT(2 == tokens.size(), "Wrong HTML base", "");
@@ -410,11 +410,15 @@ QByteArray InSilicoPcrReportTask::productsTable() const {
     return chapterName(tr("Products count table")) + chapterContent(result);
 }
 
-QByteArray InSilicoPcrReportTask::primerDetails() const {
+QByteArray InSilicoPcrReportTask::primerDetails() {
     QByteArray result;
     for (int i = 0; i < primers.size(); i++) {
         QPair<Primer, Primer> pair = primers[i];
         PrimersPairStatistics calc(pair.first.sequence.toLocal8Bit(), pair.second.sequence.toLocal8Bit());
+        if (!calc.getInitializationError().isEmpty()) {
+            setError(calc.getInitializationError());
+            return "";
+        }
         result += chapter(
             chapterName("<span class=\"span-closed\">&#9656;</span> " + pair.first.name + " / " + pair.second.name),
             chapterContent(calc.generateReport().toLocal8Bit()));
