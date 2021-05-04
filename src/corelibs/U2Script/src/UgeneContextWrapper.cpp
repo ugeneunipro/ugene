@@ -58,6 +58,7 @@
 #include <U2Core/AnnotationSettings.h>
 #include <U2Core/AppFileStorage.h>
 #include <U2Core/AutoAnnotationsSupport.h>
+#include <U2Core/BundleInfo.h>
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineRegistry.h>
 #include <U2Core/CMDLineUtils.h>
@@ -103,8 +104,15 @@ static void setDataSearchPaths() {
     if (QDir(AppContext::getWorkingDirectoryPath() + relativeDataDir).exists()) {
         dataSearchPaths.push_back(AppContext::getWorkingDirectoryPath() + relativeDataDir);
     } else if (QDir(AppContext::getWorkingDirectoryPath() + relativeDevDataDir).exists()) {
-        coreLog.info("Added path: " + AppContext::getWorkingDirectoryPath() + relativeDevDataDir);
+        coreLog.info(AppContextImpl::tr("Added path: %1").arg(AppContext::getWorkingDirectoryPath() + relativeDevDataDir));
         dataSearchPaths.push_back(AppContext::getWorkingDirectoryPath() + relativeDevDataDir);
+#ifdef Q_OS_DARWIN
+    } else {
+        QString dir = BundleInfo::getDataSearchPath();
+        if (!dir.isEmpty()) {
+            dataSearchPaths.push_back(dir);
+        }
+#endif
     }
 
 #if (defined(Q_OS_UNIX)) && defined(UGENE_DATA_DIR)

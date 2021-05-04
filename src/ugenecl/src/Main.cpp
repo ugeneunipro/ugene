@@ -98,6 +98,8 @@
 #include <TaskSchedulerImpl.h>
 #include <crash_handler/CrashHandler.h>
 
+#include <U2Core/BundleInfo.h>
+
 // local project imports
 #include "DumpHelpTask.h"
 #include "DumpLicenseTask.h"
@@ -163,6 +165,13 @@ static void setDataSearchPaths() {
     } else if (QDir(appDirPath + RELATIVE_DEV_DATA_DIR).exists()) {    //data location for developers
         printf("ADDED PATH %s \n", qPrintable(appDirPath + RELATIVE_DEV_DATA_DIR));
         dataSearchPaths.push_back(appDirPath + RELATIVE_DEV_DATA_DIR);
+#ifdef Q_OS_DARWIN
+    } else {
+        QString dir = BundleInfo::getDataSearchPath();
+        if (!dir.isEmpty()) {
+            dataSearchPaths.push_back(dir);
+        }
+#endif
     }
 
 #if (defined(Q_OS_UNIX)) && defined(UGENE_DATA_DIR)
@@ -250,7 +259,8 @@ int main(int argc, char **argv) {
     QStringList translationFileList = {
         "transl_" + cmdLineRegistry->getParameterValue(CMDLineCoreOptions::TRANSLATION),
         userAppSettings->getTranslationFile(),
-        "transl_" + QLocale::system().name().left(2).toLower()};
+        "transl_" + QLocale::system().name().left(2).toLower(),
+        BundleInfo::getExtraTranslationSearchPath(cmdLineRegistry)};
     // Keep only valid entries.
     translationFileList.removeAll("");
     translationFileList.removeAll("transl_");
