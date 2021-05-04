@@ -4617,15 +4617,10 @@ GUI_TEST_CLASS_DEFINITION(test_2773) {
     // input: _common_data/cmdline/DNA.fa
     // offset: sss
     // out: some/valid/path
-    // 3. run sheme.
+    // 3. run the scheme.
     // Expected state: UGENE doesn't crash, error message appears.
 
-    //need to copy enlement to data dir
-#ifdef Q_OS_LINUX
-    QFile::copy(testDir + "_common_data/cmdline/_proto/translateTest.usa", "../../data/workflow_samples/users/translateTest.usa");
-#else
     GTFile::copy(os, testDir + "_common_data/cmdline/_proto/translateTest.usa", dataDir + "/workflow_samples/users/translateTest.usa");
-#endif
 
     GTLogTracer l;
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);

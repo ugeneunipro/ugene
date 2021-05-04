@@ -88,7 +88,6 @@
 //U2Private
 #include <AppContextImpl.h>
 #include <AppSettingsImpl.h>
-#include <BundleInfoMac.h>
 #include <ConsoleLogDriver.h>
 #include <CredentialsAskerCli.h>
 #include <DocumentFormatRegistryImpl.h>
@@ -98,6 +97,8 @@
 #include <SettingsImpl.h>
 #include <TaskSchedulerImpl.h>
 #include <crash_handler/CrashHandler.h>
+
+#include <U2Core/BundleInfo.h>
 
 // local project imports
 #include "DumpHelpTask.h"
@@ -166,7 +167,7 @@ static void setDataSearchPaths() {
         dataSearchPaths.push_back(appDirPath + RELATIVE_DEV_DATA_DIR);
 #ifdef Q_OS_DARWIN
     } else {
-        QString dir = BundleInfoMac::getDataSearchPath();
+        QString dir = BundleInfo::getDataSearchPath();
         if (!dir.isEmpty()) {
             dataSearchPaths.push_back(dir);
         }
@@ -259,8 +260,7 @@ int main(int argc, char **argv) {
         "transl_" + cmdLineRegistry->getParameterValue(CMDLineCoreOptions::TRANSLATION),
         userAppSettings->getTranslationFile(),
         "transl_" + QLocale::system().name().left(2).toLower(),
-        BundleInfoMac::getExtraTranslationSearchPath(cmdLineRegistry)
-    };
+        BundleInfo::getExtraTranslationSearchPath(cmdLineRegistry)};
     // Keep only valid entries.
     translationFileList.removeAll("");
     translationFileList.removeAll("transl_");
