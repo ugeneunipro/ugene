@@ -137,12 +137,12 @@ static void skipLeadingWhitesAndComments(IOAdapterReader &reader, U2OpStatus &os
     }
 }
 
-/** Reads full (with '>') FASTA header line from the current position. */
-static QString readHeaderLine(IOAdapterReader &reader, U2OpStatus &os) {
+/** Reads a full FASTA header line from the current position and returns a part with no leading '>' character. */
+static QString readHeader(IOAdapterReader &reader, U2OpStatus &os) {
     QString line = reader.readLine(os, DocumentFormat::READ_BUFF_SIZE).trimmed();
     CHECK_OP(os, "");
     CHECK_EXT(isHeaderLine(line), os.setError(FastaFormat::tr("First line is not a FASTA header")), "");
-    return line;
+    return line.mid(1);    // Return a part with no '>' prefix.
 }
 
 /** Loads sequence objects into 'objects' list from the text data in FASTA format available via 'reader'. */
@@ -178,12 +178,12 @@ static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariant
         skipLeadingWhitesAndComments(reader, os);
         CHECK_OP(os, );
 
-        QString headerLine = readHeaderLine(reader, os);
+        QString header = readHeader(reader, os).trimmed();
         CHECK_OP(os, );
 
         // Construct sequence name.
         if (sequenceNumber == 0 || !mergeIntoSingleSequence) {
-            QString objectName = headerLine.mid(1).trimmed();
+            QString objectName = header;
             if (objectName.isEmpty()) {
                 objectName = "Sequence";
             }
@@ -232,9 +232,9 @@ static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariant
         }
 
         if (mergeIntoSingleSequence) {
-            memoryLocker.tryAcquire(headerLine.size());
+            memoryLocker.tryAcquire(header.size());
             CHECK_OP_BREAK(os);
-            headers.append(headerLine);
+            headers.append(header);
             mergedMapping.append(U2Region(sequenceStart, sequenceLen));
         } else {
             if (objectsCountLimit > 0 && objects.size() >= objectsCountLimit) {
@@ -249,13 +249,13 @@ static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariant
             U2Sequence seq = seqImporter.finalizeSequenceAndValidate(os);
             if (os.getError() == U2SequenceImporter::EMPTY_SEQUENCE_ERROR) {
                 os.setError("");
-                emptySeqNames << headerLine.mid(1);
+                emptySeqNames << header;
                 continue;
             }
             sequenceRef.entityRef = U2EntityRef(dbiRef, seq.id);
 
             //TODO parse header
-            U2StringAttribute attr(seq.id, DNAInfo::FASTA_HDR, headerLine.mid(1));
+            U2StringAttribute attr(seq.id, DNAInfo::FASTA_HDR, header);
             con.dbi->getAttributeDbi()->createStringAttribute(attr, os);
             CHECK_OP_BREAK(os);
 
@@ -384,9 +384,9 @@ DNASequence *FastaFormat::loadTextSequence(IOAdapterReader &reader, U2OpStatus &
         skipLeadingWhitesAndComments(reader, os);
         CHECK_OP(os, nullptr);
 
-        QString headerLine = readHeaderLine(reader, os);
+        QString header = readHeader(reader, os).trimmed();
         CHECK_OP(os, nullptr);
-        l.tryAcquire(headerLine.capacity());
+        l.tryAcquire(header.capacity());
         CHECK_OP(os, nullptr);
 
         // Read sequence.
@@ -417,8 +417,7 @@ DNASequence *FastaFormat::loadTextSequence(IOAdapterReader &reader, U2OpStatus &
         }
         sequence.squeeze();
 
-        QString sequenceName = headerLine.mid(1);
-        auto dnaSequence = new DNASequence(sequenceName, sequence);
+        auto dnaSequence = new DNASequence(header, sequence);
         dnaSequence->alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());
         SAFE_POINT(dnaSequence->alphabet != nullptr, "Sequence alphabet is null!", nullptr);
         if (!dnaSequence->alphabet->isCaseSensitive()) {
