@@ -93,13 +93,15 @@ void GTClipboard::setText(GUITestOpStatus &os, QString text) {
 namespace {
 QList<QUrl> toLocalQUrls(GUITestOpStatus &os, const QList<QString> &urls) {
     QList<QUrl> qurls;
-    foreach (const QString &url, urls) {
+    for (const QString &url : qAsConst(urls)) {
         QFileInfo fi(url);
-        if (fi.makeAbsolute()) {
+        if (fi.isAbsolute()) {
+            qurls.append(QUrl::fromLocalFile(url));
+        } else if (fi.makeAbsolute()) {
             QString absolutePath = fi.absoluteFilePath();
             qurls.append(QUrl::fromLocalFile(absolutePath));
         } else {
-            os.setError("Cannot make an absolute path");
+            os.setError("Cannot make an absolute path: " + url);
             return qurls;
         }
     }
