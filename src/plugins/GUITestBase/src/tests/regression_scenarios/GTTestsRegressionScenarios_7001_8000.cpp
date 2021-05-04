@@ -329,8 +329,10 @@ GUI_TEST_CLASS_DEFINITION(test_7212) {
     // Click the Pairwise Alignment tab of the Options Panel.
     // Select two sequence from the original alignment and click on the Align button.
     // Until the task completes, click the Pairwise Alignment tab again.
-    // Wait for task finish.
-    // Return to big.aln and click the Pairwise Alignment tab of the Options Panel.
+    // Wait for task finish. A new document "PairwiseAlignmentResult.aln" has been added to the project.
+    //
+    // Remove PairwiseAlignmentResult.aln from project.
+    // Return to shortened_big.aln and click the Pairwise Alignment tab of the Options Panel.
     // Click Align.
     //     Expected state: no crash.
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/shortened_big.aln");

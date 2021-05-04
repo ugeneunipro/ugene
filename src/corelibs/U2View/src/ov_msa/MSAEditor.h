@@ -39,7 +39,7 @@ public:
     PairwiseAlignmentWidgetsSettings()
         : firstSequenceId(U2MsaRow::INVALID_ROW_ID),
           secondSequenceId(U2MsaRow::INVALID_ROW_ID), inNewWindow(true),
-          pairwiseAlignmentTask(), showSequenceWidget(true), showAlgorithmWidget(false),
+          showSequenceWidget(true), showAlgorithmWidget(false),
           showOutputWidget(false), sequenceSelectionModeOn(false) {
     }
 
