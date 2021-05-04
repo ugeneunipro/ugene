@@ -19,7 +19,7 @@
  * MA 02110-1301, USA.
  */
 
-#include "ExportDocumentDialogFiller.h"
+#include <base_dialogs/GTFileDialog.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTLineEdit.h>
@@ -30,6 +30,8 @@
 #include <QDir>
 #include <QPushButton>
 
+#include "ExportDocumentDialogFiller.h"
+
 namespace U2 {
 
 QString ExportDocumentDialogFiller::defaultExportString = "";
@@ -38,13 +40,8 @@ QString ExportDocumentDialogFiller::defaultExportString = "";
 ExportDocumentDialogFiller::ExportDocumentDialogFiller(HI::GUITestOpStatus &_os, const QString &_path, const QString &_name, ExportDocumentDialogFiller::FormatToUse _format, bool compressFile, bool addToProject, GTGlobals::UseMethod method)
     : Filler(_os, "ExportDocumentDialog"),
       path(_path), name(_name), useMethod(method), format(_format), compressFile(compressFile), addToProject(addToProject) {
-    QString __path = QDir::cleanPath(QDir::currentPath() + "/" + _path);
-    if (__path.at(__path.count() - 1) != '/') {
-        __path += '/';
-    }
-
     if (!path.isEmpty()) {
-        path = QDir::toNativeSeparators(__path);
+        path = GTFileDialog::toAbsoluteNativePath(_path, true);
     }
 
     comboBoxItems[BAM] = "BAM";

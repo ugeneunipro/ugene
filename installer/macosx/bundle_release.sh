@@ -26,6 +26,10 @@ RELEASE_DIR=${SOURCE_DIR}/src/_release
 TARGET_APP_DIR="$BUILD_DIR/${PRODUCT_NAME}.app/"
 TARGET_APP_DIR_RENAMED="$BUILD_DIR/${PRODUCT_DISPLAY_NAME}.app/"
 TARGET_EXE_DIR="${TARGET_APP_DIR}/Contents/MacOS"
+TARGET_RESOURCES_DIR="${TARGET_APP_DIR}/Contents/Resources"
+TARGET_DATA_DIR="${TARGET_APP_DIR}/Contents/Resources/data"
+TARGET_PLUGINS_DIR="${TARGET_APP_DIR}/Contents/Resources/plugins"
+TARGET_TOOLS_DIR="${TARGET_APP_DIR}/Contents/Resources/tools"
 SYMBOLS_DIR=symbols
 
 
@@ -48,8 +52,8 @@ mkdir "${TARGET_APP_DIR}"
 mkdir "${TARGET_APP_DIR}/Contents"
 mkdir "${TARGET_APP_DIR}/Contents/Frameworks"
 mkdir "${TARGET_APP_DIR}/Contents/MacOS"
-mkdir "${TARGET_APP_DIR}/Contents/Resources"
-mkdir "${TARGET_EXE_DIR}/plugins"
+mkdir "${TARGET_RESOURCES_DIR}"
+mkdir "${TARGET_RESOURCES_DIR}/plugins"
 
 echo copying icons
 cp ${SOURCE_DIR}/src/ugeneui/images/ugene-doc.icns "$TARGET_APP_DIR/Contents/Resources"
@@ -57,19 +61,25 @@ cp ${SOURCE_DIR}/src/ugeneui/images/ugeneui.icns "$TARGET_APP_DIR/Contents/Resou
 cp ${SOURCE_DIR}/installer/macosx/Info.plist "$TARGET_APP_DIR/Contents"
 
 echo copying translations
-cp $RELEASE_DIR/transl_*.qm "$TARGET_EXE_DIR"
-cp -R ./qt_menu.nib "${TARGET_EXE_DIR}/../Resources"
-find "${TARGET_EXE_DIR}/../Resources/qt_menu.nib" -name ".svn" | xargs rm -rf
+cp $RELEASE_DIR/transl_*.qm "${TARGET_RESOURCES_DIR}/"
+cp -R ./qt_menu.nib "${TARGET_RESOURCES_DIR}/"
+find "${TARGET_RESOURCES_DIR}/qt_menu.nib" -name ".svn" | xargs rm -rf
 
+##############################################
+# codesign don't like dot '.' in dir names
+# MacOS/data must be link to ../Resources/data
 echo copying data dir
+cp -R "$RELEASE_DIR/../../data" "${TARGET_RESOURCES_DIR}/"
+find "${TARGET_RESOURCES_DIR}" -name ".svn" | xargs rm -rf
 
-cp -R "$RELEASE_DIR/../../data" "${TARGET_EXE_DIR}/"
-find $TARGET_EXE_DIR -name ".svn" | xargs rm -rf
-
+##############################################
+# codesign don't like dot '.' in dir names
+# MacOS/tools must be link to ../Resources/tools
+echo copying tools dir
 #include external tools package if applicable
 if [ -e "$RELEASE_DIR/../../tools" ]; then
-    cp -R "$RELEASE_DIR/../../tools" "${TARGET_EXE_DIR}/"
-    find $TARGET_EXE_DIR -name ".svn" | xargs rm -rf
+    cp -R "$RELEASE_DIR/../../tools" "${TARGET_RESOURCES_DIR}/"
+    find "${TARGET_RESOURCES_DIR}" -name ".svn" | xargs rm -rf
 fi
 
 echo Copying UGENE binaries
@@ -77,7 +87,7 @@ add-binary ugeneui
 add-binary ugenem
 add-binary ugenecl
 add-binary plugins_checker
-cp ./ugene "$TARGET_EXE_DIR"
+#cp ./ugene "$TARGET_EXE_DIR"
 
 echo Copying core shared libs
 
@@ -152,13 +162,16 @@ if [ "$1" == "-test" ]
                              api_tests"
 fi
 
+##############################################
+# codesign don't like dot '.' in dir names
+# MacOS/plugins must be link to ../Resources/plugins
+mkdir -p "${TARGET_PLUGINS_DIR}"
 for PLUGIN in $PLUGIN_LIST
 do
     add-plugin $PLUGIN
 done
 
 echo
-
 echo macdeployqt running...
 echo "pwd="$(pwd)
 echo "which macdeployqt="$(which macdeployqt)
@@ -176,22 +189,41 @@ echo copy readme.txt file
 cp ./readme.txt $BUILD_DIR/readme.txt
 
 if [ ! "$1" ]; then
+    set -x
+
+    echo "##teamcity[blockOpened name='Bundle code signing']"
+    echo
     echo Code signing...
-    ./codesign.mac.sh "$BUILD_DIR/Unipro UGENE.app"/Contents
+    echo pwd=`pwd`
+    echo ./codesign_clear-i386.sh "${TARGET_APP_DIR_RENAMED}"
+    bash ./codesign_clear-i386.sh "${TARGET_APP_DIR_RENAMED}"
+    echo ./codesign.mac.sh "${TARGET_APP_DIR_RENAMED}"
+    bash ./codesign.mac.sh "${TARGET_APP_DIR_RENAMED}"
+    echo "##teamcity[blockClosed name='Bundle code signing']"
+    
+    echo
+    echo Create pkg file
+    bash ./productbuild.sh \
+        "${TARGET_APP_DIR_RENAMED}" \
+        "ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}".not-signed.pkg \
+        "ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}".pkg
 
     echo
     echo Compressing symbols...
+    echo tar czf "${SYMBOLS_DIR}.tar.gz" "${SYMBOLS_DIR}"
     tar czf "${SYMBOLS_DIR}.tar.gz" "${SYMBOLS_DIR}"
 
     echo
     echo pkg-dmg running...
+    echo ./pkg-dmg --source $BUILD_DIR --target ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg --license ./LICENSE.with_3rd_party --volname "Unipro UGENE $UGENE_VERSION" --symlink /Applications
     ./pkg-dmg --source $BUILD_DIR --target ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg --license ./LICENSE.with_3rd_party --volname "Unipro UGENE $UGENE_VERSION" --symlink /Applications
 
     echo
     echo Signing dmg-file...
-    ./codesign.mac.sh \
-        ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg \
-        "$BUILD_DIR/Unipro UGENE.app"/Contents/Info.plist
+    echo ./codesign.mac.sh ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg
+    bash ./codesign.mac.sh ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg
+
+    set +x
 fi
 
 echo "Restore PATH env var"
