@@ -362,7 +362,8 @@ QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramT
                                       { DNAChromatogram::Trace::Trace_T, chromatogram.T[baseCall] } };
     std::sort(peaks.begin(),
               peaks.end(),
-        [](const auto& first, const auto& second) {
+        [](const DNAChromatogram::ChromatogramTraceAndValue& first,
+           const DNAChromatogram::ChromatogramTraceAndValue& second) {
         return first.value > second.value;
     });
     return { peaks[0], peaks[1] };
