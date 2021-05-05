@@ -2788,7 +2788,9 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {    //UGENE crashes when opening several f
     GTUtilsProjectTreeView::findIndex(os, "COI.aln");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    GTGlobals::sleep(500);
     QFile(dataDir + "/samples/CLUSTALW/human_T1.fa").remove();
+    GTGlobals::sleep(5000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0041) {

@@ -279,6 +279,7 @@ GUI_TEST_CLASS_DEFINITION(test_5018) {
     CHECK_SET_ERR(GTFile::check(os, homePath + "/test_5018.fa"), "File was not created");
     GTUtilsDialog::waitForDialog(os, new MessageBoxNoToAllOrNo(os));
     QFile(homePath + "/test_5018.fa").remove();
+    GTGlobals::sleep(5000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5026) {

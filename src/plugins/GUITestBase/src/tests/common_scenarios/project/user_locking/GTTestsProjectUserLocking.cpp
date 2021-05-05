@@ -96,11 +96,16 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDocument::checkDocument(os, "1.gb");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 features"));
+    GTGlobals::sleep(200);
     GTMouseDriver::doubleClick();
+    GTGlobals::sleep(200);
     GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
+
+    GTGlobals::sleep(2000);
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnnotationDialogComboBoxChecker(os, ""));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
+    GTGlobals::sleep(1000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {

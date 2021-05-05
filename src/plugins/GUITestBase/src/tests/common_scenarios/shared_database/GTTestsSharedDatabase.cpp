@@ -931,6 +931,8 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0007) {
     CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
     QAbstractItemModel *model = treeView->model();
 
+    GTGlobals::sleep();
+
     const QModelIndex invisibleIndex = QModelIndex();
     int objCount1 = model->rowCount(invisibleIndex);
     CHECK_SET_ERR(1 == objCount1, QString("Invalid filtered objects count. Expected 1. Actual: %1").arg(objCount1));

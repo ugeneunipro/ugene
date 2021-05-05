@@ -180,6 +180,7 @@ GUI_TEST_CLASS_DEFINITION(test_4007) {
     murineFile.write("L");
     murineFile.close();
 
+    GTGlobals::sleep(5000);
     GTGlobals::FindOptions murineOptions(false);
     GTUtilsDocument::removeDocument(os, "human_T1.fa");
 
@@ -191,11 +192,11 @@ GUI_TEST_CLASS_DEFINITION(test_4007) {
     //there is no errors in the log.
     GTUtilsProjectTreeView::doubleClickItem(os, "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(5000);
     GTUtilsAnnotationsTreeView::findFirstAnnotation(os);
 
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
-
 GUI_TEST_CLASS_DEFINITION(test_4008) {
     //    1. Open "samples/CLUSTALW/COI.aln".
     //    2. Use Alignment Viewer context menu -> View.
@@ -3935,6 +3936,7 @@ GUI_TEST_CLASS_DEFINITION(test_4628) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    GTGlobals::sleep();
     QTextEdit *textEdit = dynamic_cast<QTextEdit *>(GTWidget::findWidget(os, "reportTextEdit", GTUtilsMdi::activeWindow(os)));
     CHECK_SET_ERR(textEdit->toPlainText().contains("incorrect strand value '+379aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa...' at line 5333"),
                   "Expected message is not found in the report text");
@@ -4954,6 +4956,7 @@ GUI_TEST_CLASS_DEFINITION(test_4784_2) {
                                                 << "Analyze"
                                                 << "Query with local BLAST+...",
                               GTGlobals::UseMouse);
+    GTGlobals::sleep(100);
 
     //5. Delete "chr6.fa" in file browser.
     //7. Click "No" in the appeared message box.
@@ -4961,6 +4964,7 @@ GUI_TEST_CLASS_DEFINITION(test_4784_2) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No, "was removed from"));
     GTUtilsNotifications::waitForNotification(os, true, "The sequence is no more available");
     QFile::remove(sandBoxDir + "regression_test_4784_2.fa");
+    GTGlobals::sleep(5000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4785_1) {
@@ -5245,6 +5249,7 @@ GUI_TEST_CLASS_DEFINITION(test_4833_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4804", "standard_amino.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ext_dna.fa", "ext_dna_seq"));
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard amino acid\" to \"Raw\"");

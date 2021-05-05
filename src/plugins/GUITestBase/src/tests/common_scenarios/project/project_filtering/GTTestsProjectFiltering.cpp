@@ -496,6 +496,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
 
     // Expected state: Project filter clear button is visible
     CHECK_SET_ERR(clearButton->isVisible(), "Project filter clear button is unexpectedly invisible");
+    GTGlobals::sleep(3000);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(clearButton->isVisible(), "Project filter clear button is unexpectedly invisible");
 
@@ -515,7 +516,9 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     // 6. Remove typed word using a backspace
     for (int i = 0; i < 3; ++i) {
         GTKeyboardDriver::keyPress(Qt::Key_Backspace);
+        GTGlobals::sleep(100);
     }
+    GTGlobals::sleep(3000);
 
     // Expected state: Project filter clear button is invisible
     CHECK_SET_ERR(!clearButton->isVisible(), "Project filter clear button is unexpectedly visible");

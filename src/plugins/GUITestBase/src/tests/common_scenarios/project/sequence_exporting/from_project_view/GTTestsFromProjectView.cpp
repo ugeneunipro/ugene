@@ -439,6 +439,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(1000);
 
     // Expected state:
     //     1) Project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
@@ -453,6 +454,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::doubleClick();
+    GTGlobals::sleep();
 
     // Expected result: NC_001363 sequence has been opened in sequence view
     GObjectViewWindow *activeWindow = qobject_cast<GObjectViewWindow *>(GTUtilsMdi::activeWindow(os));
@@ -476,8 +478,10 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     GTMouseDriver::click(Qt::RightButton);
 
     // 5. Open file _common_data/scenarios/sandbox/exp2.msf
+    GTGlobals::sleep();
     GTFileDialog::openFile(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(1000);
 
     // Expected state: multiple alignment view with NC_001363 sequence has been opened
     if (GTUtilsProjectTreeView::getSelectedItem(os) != "[s] NC_001363 sequence") {
@@ -487,7 +491,6 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     GTKeyboardDriver::keyClick('q', Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
-
 GUI_TEST_CLASS_DEFINITION(test_0007_2) {
     const QString doc1("1.gb"), doc2("2.gb");
     const QString filePath = testDir + "_common_data/scenarios/project/proj4.uprj";
@@ -503,6 +506,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(1000);
 
     // Expected state:
     //     1) Project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
@@ -517,6 +521,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::doubleClick();
+    GTGlobals::sleep();
 
     // Expected result: NC_001363 sequence has been opened in sequence view
     GObjectViewWindow *activeWindow = qobject_cast<GObjectViewWindow *>(GTUtilsMdi::activeWindow(os));
@@ -540,8 +545,10 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
     GTMouseDriver::click(Qt::RightButton);
 
     // 5. Open file _common_data/scenarios/sandbox/exp2.msf
+    GTGlobals::sleep();
     GTFileDialog::openFile(os, dataDir + "_common_data/scenarios/sandbox/", "exp2.meg");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(1000);
 
     // Expected state: multiple alignment view with NC_001363 sequence has been opened
     if (GTUtilsProjectTreeView::getSelectedItem(os) != "[s] NC_001363 sequence") {

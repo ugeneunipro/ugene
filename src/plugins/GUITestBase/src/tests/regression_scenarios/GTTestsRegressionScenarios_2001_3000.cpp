@@ -660,6 +660,7 @@ GUI_TEST_CLASS_DEFINITION(test_2076) {
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsWorkflowDesigner::saveWorkflowAs(os, sandBoxDir + "test_2076.uwl", "test_2076");
     GTUtilsWorkflowDesigner::runWorkflow(os);
+    GTGlobals::sleep();
     //    Expected state: workflow monitor appeared
 
     //    3) Click on the 'Dashboards manager' tool button
@@ -688,6 +689,7 @@ GUI_TEST_CLASS_DEFINITION(test_2076) {
         }
     };
     GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new custom()));
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2077) {
@@ -1071,6 +1073,7 @@ GUI_TEST_CLASS_DEFINITION(test_2150) {
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
     GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
+    GTGlobals::sleep();
 
     // 4. Set some name to the result file.
     //    QTableView* table = qobject_cast<QTableView*>(GTWidget::findWidget(os,"table"));
@@ -1086,10 +1089,12 @@ GUI_TEST_CLASS_DEFINITION(test_2150) {
 
     // 5. Run the workflow.
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
+    GTGlobals::sleep(5000);
     //GTUtilsTaskTreeView::waitTaskFinished(os,1000);
 
     // 6. During the workflow execution open the "Tasks" panel in the bottom, find in the task tree the "MUSCLE alignment" subtask and cancel it.
     GTUtilsTask::cancelSubTask(os, "MUSCLE alignment");
+    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2152) {
@@ -1226,6 +1231,7 @@ GUI_TEST_CLASS_DEFINITION(test_2188) {
     CHECK_OP(os, );
     GTFileDialog::openFile(os, helper.dir, helper.fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(500);
 
     // 2. At the same time open the file with a text editor
     // 3. Change something and save
@@ -1238,6 +1244,7 @@ GUI_TEST_CLASS_DEFINITION(test_2188) {
     qint64 writed = file.write("AAAAAAAAAA");
     CHECK_SET_ERR(10 == writed, "Can not write to the file");
     file.close();
+    GTGlobals::sleep(6000);
 
     // Expected state: All the sequences were reloaded and displayed correctly in sequence view
     int length = GTUtilsSequenceView::getLengthOfSequence(os);
@@ -1797,11 +1804,13 @@ GUI_TEST_CLASS_DEFINITION(test_2282) {
     GTUtilsProjectTreeView::findIndex(os, assDocName);
 
     GTUtilsMdi::closeWindow(os, GTUtilsMdi::activeWindowTitle(os));
+    GTGlobals::sleep(100);
 
     // 3. Delete "chrM.sorted.bam.ugenedb" from the file system (i.e. not from UGENE).
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
     bool deleteResult = QFile::remove(QFileInfo(assFileName).absoluteFilePath());
     CHECK_SET_ERR(deleteResult, "Unable to remove assembly file");
+    GTGlobals::sleep(5000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_2284) {

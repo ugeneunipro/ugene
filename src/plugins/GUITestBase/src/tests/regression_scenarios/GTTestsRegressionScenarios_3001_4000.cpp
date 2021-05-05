@@ -478,6 +478,7 @@ GUI_TEST_CLASS_DEFINITION(test_3085_1) {
     file.close();
     //QFile(sandBoxDir + "murine_3085_1.gb").rename(sandBoxDir + "murine_3085_1_1.gb");
     //QFile(testDir + "_common_data/regression/3085/murine_1.gb").copy(sandBoxDir + "murine_3085_1.gb");
+    GTGlobals::sleep(6000);
 
     //Expected state: file was updated, the sequence view with annotations is opened and updated.
     QWidget *reloaded1Sv = GTUtilsMdi::activeWindow(os);
@@ -494,6 +495,8 @@ GUI_TEST_CLASS_DEFINITION(test_3085_1) {
     file1.open(QIODevice::WriteOnly);
     file1.write(data);
     file1.close();
+
+    GTGlobals::sleep(6000);
 
     //Expected state:: file was updated, the sequence view with annotations is opened and updated.
     QWidget *reloaded2Sv = GTUtilsMdi::activeWindow(os);
@@ -2008,6 +2011,7 @@ GUI_TEST_CLASS_DEFINITION(test_3318) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_LOAD << "Sequence from current project"));
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "human_T1.fa", "human_T1 (UCSC April 2002 chr7:115977709-117855134)"));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    GTGlobals::sleep();
 
     // 4. Make the sequence reference
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-5, 18));
@@ -2031,13 +2035,16 @@ GUI_TEST_CLASS_DEFINITION(test_3318) {
     //GTMouseDriver::dragAndDrop(GTMouseDriver::getMousePosition(), GTMouseDriver::getMousePosition() + QPoint(0, -200));
 
     GTMouseDriver::click();
+    GTGlobals::sleep(1000);
     GTMouseDriver::press();
     for (int i = 0; i < 50; i++) {
         GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(0, -5));
     }
+    GTGlobals::sleep(200);
     //GTUtilsMSAEditorSequenceArea::moveTo(os, mouseDragPosition + QPoint(0, -10));
     GTMouseDriver::release();
     GTThread::waitForMainThread();
+    GTGlobals::sleep(200);
 
     // Expected result: the highlighting mode is the same, human_T1 is still the reference.
     CHECK_SET_ERR(highlightingSchemeCombo->currentText() == "Disagreements", "Invalid highlighting scheme");
@@ -2596,6 +2603,7 @@ GUI_TEST_CLASS_DEFINITION(test_3414) {
 
     QLabel *timeLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "timeLabel", GTUtilsDashboard::getDashboard(os)));
     QString timeBefore = timeLabel->text();
+    GTGlobals::sleep(3000);
     QString timeAfter = timeLabel->text();
     CHECK_SET_ERR(timeBefore != timeAfter, "timer is not changed, timeBefore: " + timeBefore + ", timeAfter: " + timeAfter);
     GTUtilsTask::cancelTask(os, "Execute workflow");
@@ -3746,6 +3754,7 @@ GUI_TEST_CLASS_DEFINITION(test_3610) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Select"
                                                                         << "Sequence region"));
     GTMouseDriver::click(Qt::RightButton);
+    GTGlobals::sleep(1000);
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) override {
@@ -3758,8 +3767,10 @@ GUI_TEST_CLASS_DEFINITION(test_3610) {
             GTKeyboardDriver::keyClick('A', Qt::ControlModifier);
             GTKeyboardDriver::keyClick('=');
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+            GTGlobals::sleep();
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok"));
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Ok"));
+            GTGlobals::sleep();
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
         }
     };
@@ -4874,11 +4885,13 @@ GUI_TEST_CLASS_DEFINITION(test_3785_1) {
     //1. Open "_common_data/clustal/fungal - all.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/fungal - all.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(3000);
 
     //2. Align with ClustalW.
     GTUtilsDialog::waitForDialog(os, new ClustalWDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with ClustalW"));
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
+    GTGlobals::sleep(1000);
 
     //Expected: task started.
     CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 1, "Task did not started");
@@ -4892,6 +4905,7 @@ GUI_TEST_CLASS_DEFINITION(test_3785_1) {
     //4. Delete the document from the project.
     GTUtilsProjectTreeView::click(os, "fungal - all.aln");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep(3000);
 
     //Expected: task is cancelled.
     CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 0, "Task is not cancelled");
@@ -4901,11 +4915,13 @@ GUI_TEST_CLASS_DEFINITION(test_3785_2) {
     //1. Open "_common_data/clustal/fungal - all.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/fungal - all.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTGlobals::sleep(3000);
 
     //2. Align with ClustalW.
     GTUtilsDialog::waitForDialog(os, new ClustalWDialogFiller(os));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with ClustalW"));
     GTWidget::click(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os), Qt::RightButton);
+    GTGlobals::sleep(1000);
 
     //Expected: task started.
     CHECK_SET_ERR(1 == GTUtilsTaskTreeView::getTopLevelTasksCount(os), "Task did not started");
@@ -4919,6 +4935,7 @@ GUI_TEST_CLASS_DEFINITION(test_3785_2) {
     //4. Delete the object from the document.
     GTUtilsProjectTreeView::click(os, "fungal - all");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTGlobals::sleep(3000);
 
     //Expected: task is cancelled.
     CHECK_SET_ERR(GTUtilsTaskTreeView::getTopLevelTasksCount(os) == 0, "Task is not cancelled");

@@ -6032,6 +6032,7 @@ GUI_TEST_CLASS_DEFINITION(test_1609) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, new CustomFileDialogUtils()));
     QFile::remove(sandBoxDir + "human_T1.fa");
+    GTGlobals::sleep(5000);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1616) {
@@ -6370,12 +6371,14 @@ GUI_TEST_CLASS_DEFINITION(test_1658) {
     //    6. Delete the created file with tree "data/samples/CLUSTALW/COI.nwk"
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::NoToAll));
     QFile(testDir + "_common_data/scenarios/sandbox/COI_1658.nwk").remove();
+    GTGlobals::sleep(5000);
     //    Expected state: Warning dialog appears
 
     //    7. Press "No to all" button or press "Yes" and save it in another folder
 
     //    8. Make double click on "COI.aln" item in project view
     GTUtilsProjectTreeView::doubleClickItem(os, "COI.aln");
+    GTGlobals::sleep(500);
     //    Expected state: MSA view opens without tree view, no error messages in log appear
 
     QWidget *treeWidget = GTWidget::findWidget(os, "treeView", NULL, GTGlobals::FindOptions(false));
@@ -7285,6 +7288,7 @@ GUI_TEST_CLASS_DEFINITION(test_1747) {
     CHECK_SET_ERR(progress >= 0 && progress <= 100, QString("Incorrect progress: %1").arg(progress));
     int oldProgress = progress;
 
+    GTGlobals::sleep(5000);
     text = taskProgressBar->text();
     CHECK_SET_ERR(text.contains("%"), "unexpected text: " + text);
     text = text.left(text.length() - 1);

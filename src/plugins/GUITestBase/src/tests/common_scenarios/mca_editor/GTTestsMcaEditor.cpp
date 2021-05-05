@@ -3160,6 +3160,7 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
 
     //4. Push "Reset to default value"
     GTUtilsOptionPanelMca::pushResetButton(os);
+    GTGlobals::sleep();
 
     //Expected state : Threshold = 100 %
     threshold = GTUtilsOptionPanelMca::getThreshold(os);
