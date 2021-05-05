@@ -5769,6 +5769,14 @@ GUI_TEST_CLASS_DEFINITION(test_6760) {
     //Expected result: the annotation is present in another sequence view too.
     GTUtilsAnnotationsTreeView::findItem(os, "5_prime_UTR_intron");
 }
+
+GUI_TEST_CLASS_DEFINITION(test_6806) {
+    //1. Open file _common_data\regression\6806\6806.gb
+    //Expected state UGENE not crash
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/6806/6806.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6808) {
     // Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");

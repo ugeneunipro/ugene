@@ -38,7 +38,6 @@ static QString getQueryForFeatureDeletionTrigger() {
     return "CREATE TRIGGER FeatureDeletion BEFORE DELETE ON Feature "
            "FOR EACH ROW "
            "BEGIN "
-           "DELETE FROM FeatureLocationRTreeIndex WHERE id = OLD.id;"
            "DELETE FROM Feature WHERE parent = OLD.id;"
            "END";
 }
@@ -64,12 +63,6 @@ void SQLiteFeatureDbi::initSqlSchema(U2OpStatus &os) {
     SQLiteWriteQuery("CREATE TABLE AnnotationTable (object INTEGER PRIMARY KEY, rootId INTEGER NOT NULL, "
                      "FOREIGN KEY(object) REFERENCES Object(id) ON DELETE CASCADE, "
                      "FOREIGN KEY(rootId) REFERENCES Feature(id) ON DELETE CASCADE)",
-                     db,
-                     os)
-        .execute();
-
-    //Feature index
-    SQLiteWriteQuery("CREATE VIRTUAL TABLE FeatureLocationRTreeIndex USING rtree_i32(id, start, end)",
                      db,
                      os)
         .execute();
@@ -371,9 +364,6 @@ QSharedPointer<SQLiteQuery> SQLiteFeatureDbi::createFeatureQuery(const QString &
     if (useKeyTable) {
         tablesPart += ", FeatureKey AS fk";
     }
-    if (useRegion && (1 != fq.intersectRegion.length || oneClosestFeature)) {
-        tablesPart += ", FeatureLocationRTreeIndex AS fr";
-    }
 
     QString fullQuery = selectPart + " FROM " + tablesPart;
     if (!wherePart.isEmpty()) {
@@ -547,9 +537,6 @@ void SQLiteFeatureDbi::createFeature(U2Feature &feature, const QList<U2FeatureKe
                                       "VALUES(?1,    ?2,   ?3,     ?4,   ?5,   ?6,       ?7,     ?8,    ?9,   ?10)");
     QSharedPointer<SQLiteQuery> qf = t.getPreparedQuery(queryStringf, db, os);
 
-    static const QString queryStringr("INSERT INTO FeatureLocationRTreeIndex(id, start, end) VALUES(?1, ?2, ?3)");
-    QSharedPointer<SQLiteQuery> qr = t.getPreparedQuery(queryStringr, db, os);
-
     CHECK_OP(os, );
     qf->bindInt32(1, feature.featureClass);
     qf->bindInt32(2, feature.featureType);
@@ -562,12 +549,6 @@ void SQLiteFeatureDbi::createFeature(U2Feature &feature, const QList<U2FeatureKe
     qf->bindInt64(9, feature.location.region.length);
     qf->bindInt32(10, qHash(feature.name));
     feature.id = qf->insert(U2Type::Feature);
-    CHECK_OP(os, );
-
-    qr->bindDataId(1, feature.id);
-    qr->bindInt64(2, feature.location.region.startPos);
-    qr->bindInt64(3, feature.location.region.endPos());
-    qr->execute();
     CHECK_OP(os, );
 
     addFeatureKeys(keys, feature.id, db, os);
@@ -669,12 +650,6 @@ void SQLiteFeatureDbi::updateLocation(const U2DataId &featureId, const U2Feature
     qf.bindDataId(4, featureId);
     qf.execute();
     CHECK_OP(os, );
-
-    SQLiteWriteQuery qr("UPDATE FeatureLocationRTreeIndex SET start = ?1, end = ?2 WHERE id = ?3", db, os);
-    qr.bindInt64(1, location.region.startPos);
-    qr.bindInt64(2, location.region.endPos());
-    qr.bindDataId(3, featureId);
-    qr.execute();
 }
 
 void SQLiteFeatureDbi::updateType(const U2DataId &featureId, U2FeatureType newType, U2OpStatus &os) {
@@ -775,8 +750,7 @@ U2DbiIterator<U2Feature> *SQLiteFeatureDbi::getFeaturesByRegion(const U2Region &
     SQLiteTransaction t(db, os);
 
     const bool selectByRoot = !rootId.isEmpty();
-    const QString queryByRegion = "SELECT " + FDBI_FIELDS + " FROM Feature AS f "
-                                                            "INNER JOIN FeatureLocationRTreeIndex AS fr ON f.id = fr.id WHERE " +
+    const QString queryByRegion = "SELECT " + FDBI_FIELDS + " FROM Feature AS f " +
                                   (selectByRoot ? QString("f.root = ?3 AND ") : QString()) + (contains ? "fr.start >= ?1 AND fr.end <= ?2" : "fr.start <= ?2 AND fr.end >= ?1");
 
     QSharedPointer<SQLiteQuery> q = t.getPreparedQuery(queryByRegion, db, os);
