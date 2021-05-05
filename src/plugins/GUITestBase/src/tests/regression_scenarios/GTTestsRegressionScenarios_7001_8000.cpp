@@ -39,6 +39,7 @@
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
+#include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
@@ -343,9 +344,9 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
     QString fileName = "reads.fa";
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTFileDialog::openFile(os, sandBoxDir + "/" + fileName);
+    GTUtilsProject::openFile(os, sandBoxDir + "/" + fileName);
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-    
+
     for (int i = 0; i < 8; i++) {
         GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
         GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, new ExportSequencesScenario()));
