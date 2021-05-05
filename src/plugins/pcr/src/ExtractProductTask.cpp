@@ -23,6 +23,7 @@
 
 #include <QCoreApplication>
 #include <QDir>
+#include <QTemporaryFile>
 
 #include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
@@ -240,7 +241,11 @@ void ExtractProductTask::run() {
     AnnotationTableObject *annotations = new AnnotationTableObject(productSequence.getName() + " features", dbiRef);
     annotations->addAnnotations(QList<SharedAnnotationData>() << getPrimerAnnotation(product.forwardPrimerMatchLength, U2Strand::Direct, productSequence.length()));
     annotations->addAnnotations(QList<SharedAnnotationData>() << getPrimerAnnotation(product.reversePrimerMatchLength, U2Strand::Complementary, productSequence.length()));
-    annotations->addObjectRelation(GObjectRelation(GObjectReference(sequenceObject), ObjectRole_Sequence));
+    GObjectReference ref(sequenceObject);
+    QTemporaryFile temporaryFile;
+    temporaryFile.open();
+    ref.docUrl = QFileInfo(temporaryFile).absolutePath();
+    annotations->addObjectRelation(GObjectRelation(ref, ObjectRole_Sequence));
     doc->addObject(annotations);
 
     if (ExtractProductSettings::None != settings.annotationsExtraction) {
