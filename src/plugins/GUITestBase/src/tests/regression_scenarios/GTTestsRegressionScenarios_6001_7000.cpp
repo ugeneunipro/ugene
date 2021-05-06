@@ -1336,6 +1336,7 @@ GUI_TEST_CLASS_DEFINITION(test_6233) {
             GTClipboard::clear(os);
             for (int i = 0; i < 7; i++) {
                 for (int j = 0; j < 20; j++) {
+                    GTGlobals::sleep(100);
                     QPoint mousePos(GTMouseDriver::getMousePosition());
 #ifdef Q_OS_WIN
                     globalPos = QPoint(mousePos.x() + 11, mousePos.y() + 1);
@@ -1346,7 +1347,9 @@ GUI_TEST_CLASS_DEFINITION(test_6233) {
                     Qt::CursorShape shape = selectToolPackLabel->cursor().shape();
                     if (shape != Qt::ArrowCursor) {
                         GTMouseDriver::click(Qt::RightButton);
+                        GTGlobals::sleep(200);
                         GTKeyboardDriver::keyClick(Qt::Key_Down);
+                        GTGlobals::sleep(200);
                         GTKeyboardDriver::keyClick(Qt::Key_Enter);
                         clip = GTClipboard::text(os);
                         if (!clip.isEmpty()) {
@@ -1357,6 +1360,7 @@ GUI_TEST_CLASS_DEFINITION(test_6233) {
                 if (!clip.isEmpty()) {
                     break;
                 }
+                GTGlobals::sleep(25);
                 globalPos = QPoint(xpos, globalPos.y() + 5);
                 GTMouseDriver::moveTo(globalPos);
             }
