@@ -35,7 +35,7 @@
 namespace U2 {
 
 Notification::Notification(const QString &message, NotificationType _type, QAction *_action)
-    : QLabel(qobject_cast<QWidget *>(AppContext::getMainWindow())),
+    : QLabel(),
       action(_action), type(_type) {
     setMinimumWidth(TT_WIDTH);
     setMaximumWidth(TT_WIDTH);
@@ -57,7 +57,8 @@ Notification::Notification(const QString &message, NotificationType _type, QActi
     generateCSS(false);
     generateCSSforCloseButton(false);
 
-    setWindowFlags(Qt::ToolTip);
+    setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::Tool);
+
     close->installEventFilter(this);
     h->addStretch();
     h->addWidget(close);
@@ -311,32 +312,33 @@ void NotificationStack::addNotification(Notification *t) {
         }
     }
 
-    bool isModalWidgetActive = nullptr != QApplication::activeModalWidget() && QApplication::activeModalWidget()->isActiveWindow();
-    bool onScreen = AppContext::getMainWindow()->getQMainWindow()->isActiveWindow();
     notifications.append(t);
-    if (onScreen || isModalWidgetActive) {
-        notificationsOnScreen.append(t);
-    }
+    notificationsOnScreen.append(t);
     emit si_changed();
 
     connect(t, SIGNAL(si_delete()), this, SLOT(sl_delete()), Qt::DirectConnection);
-    if (onScreen || isModalWidgetActive) {
-        QPoint pos = getBottomRightOfMainWindow();
-        t->showNotification(pos.x() - TT_WIDTH, pos.y() - 50 - notificationPosition);
-        notificationNumber++;
-        notificationPosition += TT_HEIGHT;
-        connect(t, SIGNAL(si_dissapear()), SLOT(sl_notificationDissapear()));
-    } else {
-        addToNotificationWidget(t);
-    }
+
+    QPoint pos = getBottomRightOfMainWindow();
+    t->showNotification(pos.x() - TT_WIDTH, pos.y() - 50 - notificationPosition);
+    notificationNumber++;
+    notificationPosition += TT_HEIGHT;
+    connect(t, SIGNAL(si_dissapear()), SLOT(sl_notificationDissapear()));
 }
 
 void NotificationStack::sl_notificationDissapear() {
     notificationNumber = qMax(0, notificationNumber - 1);
     notificationPosition = qMax(0, notificationPosition - TT_HEIGHT);
 
-    Notification *t = qobject_cast<Notification *>(sender());
-    addToNotificationWidget(t);
+    if (auto removedNotification = qobject_cast<Notification *>(sender())) {
+        int removedNotificationY = removedNotification->y();
+        addToNotificationWidget(removedNotification);
+        // Shift all notifications above the removed one down.
+        for (auto notification : notificationsOnScreen) {
+            if (notification->y() < removedNotificationY) {
+                notification->move(notification->x(), notification->y() + TT_HEIGHT);
+            }
+        }
+    };
 }
 
 void NotificationStack::addToNotificationWidget(Notification *t) {
