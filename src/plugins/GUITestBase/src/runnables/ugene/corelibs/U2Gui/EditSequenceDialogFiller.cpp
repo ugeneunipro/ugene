@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
@@ -47,9 +48,8 @@ InsertSequenceFiller::InsertSequenceFiller(HI::GUITestOpStatus &_os, const QStri
       documentLocation(_documentLocation), format(_format), saveToNewFile(_saveToNewFile), mergeAnnotations(_mergeAnnotations),
       useMethod(method), wrongInput(_wrongInput), recalculateQuals(recalculateQuals) {
     if (!documentLocation.isEmpty()) {
-        documentLocation = QDir::cleanPath(QDir::currentPath() + "/" + documentLocation);
+        documentLocation = GTFileDialog::toAbsoluteNativePath(documentLocation);
     }
-    documentLocation = QDir::toNativeSeparators(documentLocation);
     comboBoxItems[FASTA] = "FASTA";
     comboBoxItems[Genbank] = "GenBank";
     mergeAnnotations = _mergeAnnotations;

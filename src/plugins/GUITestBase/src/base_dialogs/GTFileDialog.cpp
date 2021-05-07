@@ -126,10 +126,6 @@ void GTFileDialogUtils::init(const QString &filePath) {
 GTFileDialogUtils_list::GTFileDialogUtils_list(GUITestOpStatus &_os, const QString &_path, const QStringList &fileNames)
     : GTFileDialogUtils(_os, _path, "", Open, GTGlobals::UseMouse),
       fileNamesList(fileNames) {
-    //    path = QDir::cleanPath(QDir::currentPath() + "/" + _path);
-    //    if (path.at(path.count() - 1) != '/') {
-    //        path += '/';
-    //    }
     foreach (const QString &name, fileNames) {
         filePaths << _path + "/" + name;
     }
@@ -391,6 +387,19 @@ void GTFileDialog::openFileList(GUITestOpStatus &os, const QStringList &filePath
     GTFileDialogUtils_list *openFileDialogFiller = new GTFileDialogUtils_list(os, filePaths);
     GTUtilsDialog::waitForDialog(os, openFileDialogFiller);
     openFileDialogFiller->openFileDialog();
+}
+
+QString GTFileDialog::toAbsoluteNativePath(const QString &path, bool appendSlash) {
+    QString result = path;
+    if (!QFileInfo(result).isAbsolute()) {
+        result = QDir::currentPath() + "/" + result;
+    }
+    result = QDir::cleanPath(result);
+    result = QDir::toNativeSeparators(result);
+    if (appendSlash && !result.endsWith(QDir::separator())) {
+        result += QDir::separator();
+    }
+    return result;
 }
 
 #undef GT_CLASS_NAME
