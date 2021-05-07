@@ -40,6 +40,8 @@ McaReadsTabFactory::McaReadsTabFactory() {
 }
 
 QWidget* McaReadsTabFactory::createWidget(GObjectView* objView, const QVariantMap& options) {
+    Q_UNUSED(options);
+
     SAFE_POINT(objView != nullptr,
         QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
         nullptr);

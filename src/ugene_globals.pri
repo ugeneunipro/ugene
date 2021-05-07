@@ -12,7 +12,7 @@ DEFINES+=UGENE_VER_MINOR=$${UGENE_VER_MINOR}
 # and do not use any deprecated API.
 DEFINES+=QT_DISABLE_DEPRECATED_BEFORE=0x050700
 
-CONFIG += c++11
+CONFIG += c++14
 
 # Do not use library suffix names for files and ELF-dependency sections on Linux.
 # Reason: we do not support multiple versions of UGENE in the same folder and
