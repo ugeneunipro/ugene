@@ -97,7 +97,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // 5. In WD press the "Validate" button
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Please fix issues listed in the error list (located under workflow)."));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
-    GTGlobals::sleep(2000);
 
     // Expected state: The "File not found" error has appeared in the "Error list"
     GTUtilsWorkflowDesigner::checkErrorList(os, "Read alignment: File not found:");
@@ -135,7 +134,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTMouseDriver::moveTo(readAlignmentCenter);
     GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFolder(os, outputDir.absolutePath());
-    GTGlobals::sleep(2000);
     GTWidget::click(os, activeWindow);
 
     //    5. Delete this folder
@@ -149,7 +147,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     QAbstractButton *validateButton = GTAction::button(os, "Validate workflow");
     CHECK_SET_ERR(validateButton, "Validate button wasn't found");
     GTWidget::click(os, validateButton);
-    GTGlobals::sleep(2000);
 
     //    Expected state: The "folder not found" error has appeared in the "Error list"
     GTUtilsWorkflowDesigner::checkErrorList(os, "Read alignment: folder not found:");
@@ -199,7 +196,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //5. In WD press the "Validate" button
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Please fix issues listed in the error list (located under workflow)."));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
-    GTGlobals::sleep(200);
 
     //Expected state: The "File not found" error has appeared in the "Error list"
     GTUtilsWorkflowDesigner::checkErrorList(os, "File not found");
@@ -230,7 +226,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTMouseDriver::moveTo(GTUtilsWorkflowDesigner::getItemCenter(os, "Read alignment"));
     GTMouseDriver::click();
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/clustal/align.aln");
-    GTGlobals::sleep(2000);
 
     QFile dir(testDir + "_common_data/scenarios/sandbox/permDir");
     CHECK_SET_ERR(dir.exists(), "Sandbox not found");
@@ -246,7 +241,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     // 5. In WD press the "Validate" button
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Please fix issues listed in the error list (located under workflow)."));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
-    GTGlobals::sleep(2000);
 
     // Expected state: The "File not found" error has appeared in the "Error list"
     p |= QFile::WriteOwner;
@@ -310,7 +304,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     //7. In WD press the "Validate" button
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Please fix issues listed in the error list (located under workflow)."));
     GTWidget::click(os, GTAction::button(os, "Validate workflow"));
-    GTGlobals::sleep(200);
 
     //Expected state: The "File not found" error has appeared in the "Error list"
     GTUtilsWorkflowDesigner::checkErrorList(os, "Folder not found");
