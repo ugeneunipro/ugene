@@ -119,7 +119,7 @@ bool U2EntityRef::operator!=(const U2EntityRef &other) const {
 }
 
 bool U2EntityRef::operator<(const U2EntityRef &other) const {
-    return dbiRef.dbiFactoryId + dbiRef.dbiId + entityId + QString::number(version) < other.dbiRef.dbiFactoryId + other.dbiRef.dbiId + other.entityId + QString::number(other.version);
+    return dbiRef.dbiFactoryId.toUtf8() + dbiRef.dbiId.toUtf8() + entityId + QString::number(version).toUtf8() < other.dbiRef.dbiFactoryId.toUtf8() + other.dbiRef.dbiId.toUtf8() + other.entityId + QString::number(other.version).toUtf8();
 }
 
 namespace {

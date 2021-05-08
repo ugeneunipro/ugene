@@ -53,15 +53,6 @@ namespace U2 {
 
 QMap<U2EntityRef, int> ExportSequenceItem::sequencesRefCounts = QMap<U2EntityRef, int>();
 
-bool isRefAlreadyCounted(const U2EntityRef &seqRef, const QMap<U2EntityRef, int> &sequencesRefCounts) {
-    for (const U2EntityRef &ref : sequencesRefCounts.keys()) {
-        if (ref == seqRef) {
-            return true;
-        }
-    }
-    return false;
-}
-
 ExportSequenceItem::ExportSequenceItem()
     : circular(false), alphabet(NULL), length(0), complTT(NULL), aminoTT(NULL), backTT(NULL) {
 }
@@ -122,25 +113,25 @@ void ExportSequenceItem::startSeqOwnership() {
     SAFE_POINT(seqRef.isValid(), "Invalid sequence DBI reference", );
 
     QMutexLocker locker(&seqRefGuard);
-    SAFE_POINT(!isRefAlreadyCounted(seqRef, sequencesRefCounts), "Sequence is unexpectedly tracked", );
+    SAFE_POINT(!sequencesRefCounts.contains(seqRef), "Sequence is unexpectedly tracked", );
     sequencesRefCounts.insert(seqRef, 1);
 }
 
 int ExportSequenceItem::incrementSeqRefCount() const {
     QMutexLocker locker(&seqRefGuard);
-    SAFE_POINT(isRefAlreadyCounted(seqRef, sequencesRefCounts) && sequencesRefCounts[seqRef] > 0, "Sequence is unexpectedly not tracked", -1);
+    SAFE_POINT(sequencesRefCounts.contains(seqRef) && sequencesRefCounts[seqRef] > 0, "Sequence is unexpectedly not tracked", -1);
     return ++sequencesRefCounts[seqRef];
 }
 
 int ExportSequenceItem::decrementSeqRefCount() const {
     QMutexLocker locker(&seqRefGuard);
-    SAFE_POINT(isRefAlreadyCounted(seqRef, sequencesRefCounts) && sequencesRefCounts[seqRef] > 0, "Sequence is unexpectedly not tracked", -1);
+    SAFE_POINT(sequencesRefCounts.contains(seqRef) && sequencesRefCounts[seqRef] > 0, "Sequence is unexpectedly not tracked", -1);
     return --sequencesRefCounts[seqRef];
 }
 
 void ExportSequenceItem::stopSeqOwnership() {
     QMutexLocker locker(&seqRefGuard);
-    SAFE_POINT(isRefAlreadyCounted(seqRef, sequencesRefCounts), "Sequence is unexpectedly not tracked", );
+    SAFE_POINT(sequencesRefCounts.contains(seqRef), "Sequence is unexpectedly not tracked", );
     sequencesRefCounts.remove(seqRef);
 }
 
@@ -165,7 +156,7 @@ U2SequenceObject *ExportSequenceItem::takeOwnedSeq() {
 
 bool ExportSequenceItem::ownsSeq() const {
     QMutexLocker locker(&seqRefGuard);
-    return isRefAlreadyCounted(seqRef, sequencesRefCounts);
+    return sequencesRefCounts.contains(seqRef);
 }
 
 bool ExportSequenceItem::isEmpty() const {
