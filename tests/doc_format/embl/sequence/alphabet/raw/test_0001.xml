@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!--sequence's alphabet id must be  RAW(in sequense symbol "j")-->
+
+    <load-document index="doc" url="embl/RAW.embl" io="local_file" format="embl"/>
+    <find-object-by-name index="obj" doc="doc" name="RAW263 standard" type="OT_SEQUENCE"/>
+
+    <check-sequence-alphabet-by-id obj="obj" value="RAW_ALPHABET"/>
+
+</multi-test>

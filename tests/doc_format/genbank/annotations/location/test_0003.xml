@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- multiregion annotation location test -->
+
+    <load-document index="doc" url="genbank/murine_sarcoma.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="obj" doc="doc" name="NC_001363 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-number index="ann" obj="obj" number="4"/>
+
+    <check-annotation-location annotation="ann" location="2970..3413,3412..3873" complement="0"/>
+
+</multi-test>

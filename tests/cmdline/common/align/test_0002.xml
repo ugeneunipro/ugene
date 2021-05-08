@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline task="align"
+                 in="!common_data_dir!cmdline/DNA_nucl_ext_rand_seq.aln"
+                 out="!tmp_data_dir!align0002_tmp.aln"/>
+
+    <load-document index="doc1" url="align0002_tmp.aln" io="local_file" format="clustal" dir="temp"/>
+    <load-document index="doc2" url="cmdline/align/DNA_nucl_ext_rand_seq_aligned.aln" io="local_file" format="clustal"/>
+    <compare-Msequences-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

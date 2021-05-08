@@ -1,0 +1,4 @@
+<suite test-timeout="5" name="Format detection">
+    <env-var name="COMMON_DATA_DIR"/>
+    <test-dir test-ext="*.xml" path="format_detection" test-format="XML" exclude="&#xa;    "/>
+</suite>

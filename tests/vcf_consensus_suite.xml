@@ -1,0 +1,5 @@
+<suite name="Vcf-Consensus tests">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <test-dir test-ext="*.xml" path="vcf_consensus" test-format="XML"/>
+</suite>

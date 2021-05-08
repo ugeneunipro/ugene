@@ -1,0 +1,37 @@
+<multi-test>
+
+    <create-temp-dir url="format_specification_2"/>
+    <copy-file from="!common_data_dir!regression/6314/test_0002.fa" to="!tmp_data_dir!format_specification_2/test_0002.fa"/>
+
+    <load-document
+            index="doc"
+            sequence-mode="msa"
+            dir="temp"
+            url="format_specification_2/test_0002.fa"
+            io="local_file"
+            format="fasta"
+    />
+
+    <save-document
+            doc="doc"
+            io="local_file"
+            url="format_specification_2/test_0002_new.aln"
+            format="clustal"
+    />
+
+    <load-document
+            index="doc1"
+            dir="temp"
+            url="format_specification_2/test_0002_new.aln"
+            io="local_file"
+            format="clustal"
+    />
+
+    <find-object-by-name index="doc2" doc="doc1" name="test_0002_new" type="OT_MSA"/>
+
+    <check-Msequence-name
+            obj="doc2"
+            seqname="1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"
+    />
+
+</multi-test>

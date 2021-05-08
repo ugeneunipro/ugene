@@ -1,0 +1,17 @@
+<multi-test>
+
+    <load-document index="doc" url="gff/ATO/2.gff" io="local_file" format="gff"/>
+
+    <find-object-by-name index="ATO_ctg123" doc="doc" name="ctg123 features" type="OT_ANNOTATIONS"/>
+
+    <find-object-by-name index="ATO_ctg456" doc="doc" name="ctg456 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="ATO_ctg123" location="700..900" complement="false"/>
+
+    <find-annotation-by-location index="ann2" obj="ATO_ctg456" location="120..150" complement="false"/>
+
+    <find-annotation-by-location index="ann3" obj="ATO_ctg123" location="300..390" complement="false"/>
+
+    <find-annotation-by-location index="ann4" obj="ATO_ctg456" location="500..550" complement="false"/>
+
+</multi-test>

@@ -1,0 +1,13 @@
+<multi-test>
+
+    <run-cmdline task="join-quality"
+                 in="!common_data_dir!regression/quality/seq2.fa"
+                 quality="!common_data_dir!regression/quality/q2.qual"
+                 out="!tmp_data_dir!regression_1339_0001.fastq"
+    />
+
+    <load-document index="doc" url="regression_1339_0001.fastq" io="local_file" format="fastq" dir="temp"/>
+
+    <check-num-objects doc="doc" value="6"/>
+
+</multi-test>

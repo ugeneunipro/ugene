@@ -1,0 +1,7 @@
+<suite name="Smith Waterman Tests classic 2 remote suite">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <env-var name="IMPL" value="Classic 2"/>
+    <env-var name="MACHINE" value="remote_machines/ugene-quad-ubuntu.machine"/>
+    <test-dir path="smith_waterman2" test-format="XML" test-ext="*.xml"/>
+</suite>

@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test nexus -->
+
+    <fd-perfect-match url="nexus/complex.nex" format="nexus"/>
+
+</multi-test>

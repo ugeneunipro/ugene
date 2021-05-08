@@ -1,0 +1,9 @@
+<unittest>
+
+    FasqUnitTests
+    + checkRawData
+    + checkRawDataMultiple
+    + checkRawDataInvalidHeaderStartWith
+    + checkRawDataInvalidQualityHeaderStartWith
+
+</unittest>

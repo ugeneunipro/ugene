@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Try to load 1 msa in gzip archive -->
+
+    <load-document index="doc" url="stockholm/gzip2.sto.gz" io="local_file_gzip" format="stockholm"/>
+
+    <check-num-objects doc="doc" value="1"/>
+    <check-document-object-names doc="doc" value="msa_name"/>
+    <check-document-object-types doc="doc" value="OT_MSA"/>
+
+</multi-test>

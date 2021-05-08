@@ -1,0 +1,16 @@
+<multi-test>
+    <!-- Run dna assembly task and check results (self alignment) -->
+
+    <load-document index="doc" url="dna_assembly/test003/result_ACGT_rand_1000.sam" io="local_file" format="sam"/>
+
+    <find-object-by-name index="expected" doc="doc" name="reference_and_others" type="OT_MSA"/>
+
+    <test-dna-assembly-to-ref
+            res-index="expected"
+            assembly-method="UGENE Genome Aligner"
+            ref-seq="fasta/reference_ACGT_rand_1000.fa"
+            shortreads="reads/reads_ACGT_rand_1000_1.fa"
+    />
+
+
+</multi-test>

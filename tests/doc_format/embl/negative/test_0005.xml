@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- try to load doc truncated on seq entry -->
+
+    <load-broken-document index="doc" url="embl/broken/truncated_SQ_doc_embl.embl" io="local_file" format="embl"/>
+
+</multi-test>

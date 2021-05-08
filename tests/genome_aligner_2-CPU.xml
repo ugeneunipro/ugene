@@ -1,0 +1,8 @@
+<suite name="Genome Aligner Tests 2" test-timeout="300">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <test-dir test-format="XML" exclude="test002_NVIDIA.xml,test003_Intel.xml" test-ext="*.xml" path="genome_aligner_2"/>
+    <excluded test="test002_NVIDIA.xml" reason="failed due to timeout"/>
+    <excluded test="test003_Intel.xml" reason="failed due t0 timeout"/>
+</suite>
+

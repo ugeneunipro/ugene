@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: options: wpb hand eclust, model: ABC_tran, has SS_cons, RF annotations 
+	cmd: ./hmmbuild -hand -wpb -eclust -eid 0.77 ABC_tran_wpb_hand_eclust2.hmm ABC_tran.sto -->
+
+    <uhmmer3-build inputFile="stockholm/ABC_tran.sto" outputFile="test_ABC_tran_wpb_hand_eclust2.hmm"
+                   mc="hand" rw="wpb" ew="eclust 0.77" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/ABC_tran_wpb_hand_eclust2.hmm" file2="test_ABC_tran_wpb_hand_eclust2.hmm"
+                        tmp1="no" tmp2="yes"/>
+
+</multi-test>

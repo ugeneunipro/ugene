@@ -1,0 +1,31 @@
+<multi-test>
+
+    <!-- Create some fragments, ligate them and check result -->
+
+    <load-document index="doc" url="genbank/70Bp_new.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="seq" doc="doc" name="A sequence" type="OT_SEQUENCE"/>
+    <find-object-by-name index="aobj" doc="doc" name="Annotations" type="OT_ANNOTATIONS"/>
+
+    <digest-into-fragments sequence="seq" annotation-table="aobj"
+                           url="enzymes/rebase_v003_t2_com.bairoch.gz" enzymes="EcoRi" search-for-enzymes="true"/>
+
+    <ligate-fragments index="result" seq-context="seq"
+                      annotation-context="aobj" fragments="70Bp_new.gb:Fragment 1;70Bp_new.gb:Fragment 2"
+                      check-overhangs="false" circular="false"/>
+
+    <find-object-by-name index="newseq" doc="result" name="result" type="OT_SEQUENCE"/>
+    <check-sequence-size obj="newseq" value="66"/>
+    <check-sequence-part obj="newseq"
+                         value="CAGTGAATCATCGAG" seqstart="0"/>
+
+
+    <find-object-by-name index="annotations" doc="result" name="result annotations" type="OT_ANNOTATIONS"/>
+    <find-annotation-by-location index="a1" obj="annotations" location="18..47" complement="false"/>
+    <check-annotation-name annotation="a1" name="gene 2"/>
+
+    <find-annotation-by-name index="a2" obj="annotations" name="A sequence Fragment 2"/>
+    <check-annotation-sequence annotation="a2" sequence="newseq"
+                               value="TAATGTGAATTGCAG"/>
+
+</multi-test>

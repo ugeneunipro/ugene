@@ -1,0 +1,5 @@
+<multi-test>
+
+    <load-document index="doc" url="gff/negative/2.gff" io="local_file" format="gff" message="Parsing error"/>
+
+</multi-test>

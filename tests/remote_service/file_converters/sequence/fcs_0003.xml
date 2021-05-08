@@ -1,0 +1,13 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_seq_write_fa.uws"
+            in="!common_data_dir!fastq/eas.fastq"
+            out="!tmp_data_dir!fcs_0003.fa"
+            task-remote-machine="!config_file_path!"
+    />
+
+    <load-document index="doc1" url="fastq/eas.fastq" io="local_file" format="fastq"/>
+    <load-document index="doc2" url="fcs_0003.fa" io="local_file" format="fasta" dir="temp"/>
+    <compare-sequences-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

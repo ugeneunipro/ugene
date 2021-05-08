@@ -1,0 +1,6 @@
+<suite test-timeout="75" name="HMM2 plugin tests: sse optimized hmmsearch">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <env-var local="true" value="sse" name="HMMSEARCH_ALGORITHM"/>
+    <test-dir test-ext="*.xml" path="hmm2/hmmsearch" test-format="XML" exclude="nucleic/nucl_dna_def_al/hmmfs/test_0001.xml,nucleic/nucl_dna_def_al/hmmsw/test_0001.xml"/>
+</suite>

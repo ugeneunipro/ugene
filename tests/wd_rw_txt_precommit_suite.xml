@@ -1,0 +1,5 @@
+<suite test-timeout="300" name="CMDLine ugene precommit tests of read-write plain text workflow workers">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <test-dir test-ext="*.xml" path="cmdline/common/read_text" test-format="XML"/>
+</suite>

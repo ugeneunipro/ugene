@@ -1,0 +1,13 @@
+<multi-test>
+    <!-- test all allowed symbols in sequence (AMINO DEFAULT ALPHABET)-->
+    <!--ACDEFGH  IKLMN  PQRST  VWXY-->
+    <!--all symbols except BJOUZ-->
+
+    <load-document index="doc" url="genbank/all_alphabet.gen" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="obj1" doc="doc" name="B" type="OT_SEQUENCE"/>
+    <check-sequence-size obj="obj1" value="40"/>
+    <check-sequence-alphabet-by-id obj="obj1" value="AMINO_DEFAULT_ALPHABET"/>
+    <check-sequence-part obj="obj1" value="IKLMNNNNNN" seqstart="10"/>
+
+</multi-test>

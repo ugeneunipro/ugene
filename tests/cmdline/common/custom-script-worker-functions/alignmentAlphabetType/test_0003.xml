@@ -1,0 +1,8 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/alignmentAlphabetTest/alignmentAlphabetTest.uwl"
+                 in="!common_data_dir!clustal/dafault_RNA.aln"
+                 expected="Standard RNA"
+                 message="TEST PASSED"
+    />
+
+</multi-test>

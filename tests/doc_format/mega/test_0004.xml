@@ -1,0 +1,16 @@
+<multi-test>
+
+    <!-- Test reading file: simple file, with comments, Msequence-size=81, number
+	 of sequence=11 -->
+
+    <load-document index="doc" url="mega/MegaTest_9.meg" io="local_file" format="mega"/>
+
+    <check-num-objects doc="doc" value="1"/>
+    <check-document-object-names doc="doc" value="MegaTest_9"/>
+    <check-document-object-types doc="doc" value="OT_MSA"/>
+
+    <find-object-by-name index="obj" doc="doc" name="MegaTest_9" type="OT_MSA"/>
+    <check-Msequence-size obj="obj" value="81"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj" value="11"/>
+
+</multi-test>

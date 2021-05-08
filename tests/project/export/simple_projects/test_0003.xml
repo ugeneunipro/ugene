@@ -1,0 +1,13 @@
+<multi-test>
+
+    <load-project url="project/export/empty_new.uprj"/>
+
+    <export-project url="/export1"/>
+
+    <unload-project/>
+
+    <load-project url="export1/empty_new.uprj" load_from_temp="1"/>
+
+    <unload-project/>
+
+</multi-test>

@@ -1,0 +1,11 @@
+<multi-test>
+    <!--
+    Sequence:
+    CTA-CTA-CTA-TTCC-GTT-GTT-GTT-CAA-AGTT-AGTT-AGTT
+    Tandems
+    Tandem repeat CTA 3x3 at pos 0
+    Tandem repeat GTT 3x3 at pos 13
+    Tandem repeat AGTT 4x3 at pos 29
+    -->
+    <find-tandems sequence="CTACTACTATTCCGTTGTTGTTCAAAGTTAGTTAGTT" minSize="3" repeatCount="3" expected_result="0,9,3;13,9,3;25,12,4"/>
+</multi-test>

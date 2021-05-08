@@ -1,0 +1,10 @@
+<!-- No primers / Bad primers format -->
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/pcr/pcr.uwl"
+            in="!common_data_dir!fasta/pcr_test.fa"
+            primers="!common_data_dir!clustal/RAW.aln"
+            out="!tmp_data_dir!pcr_0001.gb"
+            message="No primer sequences in the file"
+    />
+</multi-test>

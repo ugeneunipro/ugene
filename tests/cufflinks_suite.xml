@@ -1,0 +1,5 @@
+<suite test-timeout="30" name="Cufflinks tests">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <test-dir test-ext="*.xml" path="cufflinks" test-format="XML" exclude="workflow_designer/test_0001.xml"/>
+</suite>

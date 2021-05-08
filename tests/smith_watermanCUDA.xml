@@ -1,0 +1,6 @@
+<suite name="Smith Waterman Tests on GPU of NVidia">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <env-var name="IMPL" value="CUDA"/>
+    <test-dir path="smith_waterman2" test-format="XML" test-ext="*.xml"/>
+</suite>

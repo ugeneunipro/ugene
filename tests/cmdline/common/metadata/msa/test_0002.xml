@@ -1,0 +1,21 @@
+<!-- Two files, one dataset -->
+<multi-test>
+    <remove-temp-dir url="msa_metadata_0002"/>
+    <create-temp-dir url="msa_metadata_0002"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_ali_write_ali.uws"
+            in="!common_data_dir!msf/test5.msf;msf/1.msf"
+            format="phylip-interleaved"
+            working-dir="msa_metadata_0002"
+    />
+
+    <load-document index="doc1" url="msa_metadata_0002/test5.phy" io="local_file" format="phylip-interleaved" dir="temp"/>
+    <load-document index="doc2" url="msa_metadata_0002/1.phy" io="local_file" format="phylip-interleaved" dir="temp"/>
+    <check-num-objects doc="doc1" value="1"/>
+    <check-num-objects doc="doc2" value="1"/>
+    <find-object-by-name index="obj1" doc="doc1" name="test5" type="OT_MSA"/>
+    <find-object-by-name index="obj2" doc="doc2" name="1" type="OT_MSA"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj1" value="17"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj2" value="4"/>
+</multi-test>

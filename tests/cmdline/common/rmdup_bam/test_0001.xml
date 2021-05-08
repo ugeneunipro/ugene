@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/rmdup_bam/rmdup_bam.uwl"
+            in="!common_data_dir!bam/hg19_chr5_chr10_chr12_chrX.sorted.bam"
+            out_dir="!tmp_data_dir!"
+            out_name="bam_rmdup_test_0001.bam"
+            s="True"
+    />
+    <compare-sam-by-length file1="bam_rmdup_test_0001.bam" file2="cmdline/rmdup_bam/out1.bam" isbam="1"/>
+</multi-test>

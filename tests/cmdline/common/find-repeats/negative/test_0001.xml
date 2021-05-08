@@ -1,0 +1,11 @@
+<multi-test>
+    <run-cmdline task="find-repeats"
+                 in="!common_data_dir!cmdline/DNA.fa"
+                 out="!tmp_data_dir!find_repeatsn0001_tmp.gbk"
+                 min-length="5"
+                 identity="90"
+                 min-distance="0"
+                 max-distance="5000"
+                 inverted="xcgwe"
+                 message="Incorrect value"/>
+</multi-test>

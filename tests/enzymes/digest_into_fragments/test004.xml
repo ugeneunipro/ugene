@@ -1,0 +1,45 @@
+<multi-test>
+
+    <!-- Find enzyme, cut CIRCULAR sequence into fragments -->
+
+    <load-document index="doc" url="genbank/pBR322.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="seq" doc="doc" name="SYNPBR322" type="OT_SEQUENCE"/>
+
+    <find-enzymes result-name="results" url="enzymes/rebase_v003_t2_com.bairoch.gz" sequence="seq" enzymes="AvaI,ClaI"
+                  result="AvaI:1425..1430;ClaI:23..28"/>
+
+    <digest-into-fragments sequence="seq" annotation-table="results" circular="true"
+                           url="enzymes/rebase_v003_t2_com.bairoch.gz" enzymes="AvaI,ClaI"/>
+
+    <find-annotation-by-location index="a1" obj="results" location="27..1425" complement="false"/>
+    <check-annotation-name annotation="a1" name="Fragment 2"/>
+    <check-annotation-qualifier annotation="a1" qualifier="left_end_term" value="ClaI"/>
+    <check-annotation-qualifier annotation="a1" qualifier="left_end_seq" value="CG"/>
+    <check-annotation-qualifier annotation="a1" qualifier="right_end_term" value="AvaI"/>
+    <check-annotation-qualifier annotation="a1" qualifier="right_end_seq" value="TCGG"/>
+
+    <find-annotation-by-name index="a2" obj="results" name="Fragment 1"/>
+    <check-annotation-location annotation="a2" location="1430..4361;1..24" complement="0"/>
+    <check-annotation-qualifier annotation="a2" qualifier="left_end_term" value="AvaI"/>
+    <check-annotation-qualifier annotation="a2" qualifier="left_end_seq" value="TCGG"/>
+    <check-annotation-qualifier annotation="a2" qualifier="right_end_term" value="ClaI"/>
+    <check-annotation-qualifier annotation="a2" qualifier="right_end_seq" value="CG"/>
+
+    <!--
+    <find-annotation-by-location index="a2" obj="results" location="1430..4361" complement="false" />
+    <check-annotation-name annotation="a2" name="Fragment 1" />
+    <check-annotation-qualifier annotation="a2" qualifier="left_end_term" value="AvaI" />
+    <check-annotation-qualifier annotation="a2" qualifier="right_end_term" value="" />
+    <check-annotation-qualifier annotation="a2" qualifier="SPLIT" value="2956" />
+
+
+    <find-annotation-by-location index="a3" obj="results" location="1..24" complement="false" />
+    <check-annotation-name annotation="a3" name="Fragment 1" />
+    <check-annotation-qualifier annotation="a3" qualifier="left_end_term" value="" />
+    <check-annotation-qualifier annotation="a3" qualifier="right_end_term" value="ClaI" />
+    <check-annotation-qualifier annotation="a3" qualifier="SPLIT" value="-2956" />
+    -->
+
+
+</multi-test>

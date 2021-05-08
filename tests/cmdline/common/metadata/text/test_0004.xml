@@ -1,0 +1,16 @@
+<!-- Two files in one dataset -->
+<multi-test>
+    <remove-temp-dir url="text_metadata_0004"/>
+    <create-temp-dir url="text_metadata_0004"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_text_write_text.uws"
+            in="!common_data_dir!cmdline/metadata/double_string.txt;cmdline/metadata/single_string.txt"
+            split="true"
+            acc="true"
+            working-dir="text_metadata_0004"
+    />
+
+    <check-temp-file url="text_metadata_0004/Dataset 1.txt" exists="1"/>
+    <check-temp-file url="text_metadata_0004/Dataset 2.txt" exists="0"/>
+</multi-test>

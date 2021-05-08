@@ -1,0 +1,18 @@
+<!-- Check "Trim and map Sanger reads" sample with SCF input file -->
+<multi-test>
+
+    <run-cmdline
+            task="align-to-reference"
+            reference="!common_data_dir!sanger/dataset2/reference.gb"
+            reads="!common_data_dir!sanger/dataset2/read.scf"
+            min-identity="50"
+            result-url="!tmp_data_dir!sanger_test_0001.ugenedb"
+    />
+
+    <copy-file from="!common_data_dir!sanger/dataset2/dataset2.ugenedb" to="!tmp_data_dir!sanger_test_0001_expected.ugenedb"/>
+
+    <load-document index="actual" url="sanger_test_0001.ugenedb" io="local_file" format="usqlite" dir="temp"/>
+    <load-document index="expected" url="sanger_test_0001_expected.ugenedb" io="local_file" format="usqlite" dir="temp"/>
+    <compare-two-mca doc1="actual" doc2="expected"/>
+
+</multi-test>

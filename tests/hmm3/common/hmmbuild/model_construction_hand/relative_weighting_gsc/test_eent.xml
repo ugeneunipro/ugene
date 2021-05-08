@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: options: wgsc hand eent, model: 2-Hacid_dh, has SS_cons, RF annotations 
+	cmd: ./hmmbuild -seed 4343 -hand -wgsc -eent 2-Hacid_dh_gsc_hand_eent.hmm 2-Hacid_dh.sto -->
+
+    <uhmmer3-build inputFile="stockholm/2-Hacid_dh.sto" outputFile="test_2-Hacid_dh_gsc_hand_eent.hmm"
+                   seed="4343" mc="hand" rw="wgsc" ew="eent" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/2-Hacid_dh_gsc_hand_eent.hmm" file2="test_2-Hacid_dh_gsc_hand_eent.hmm"
+                        tmp1="no" tmp2="yes"/>
+
+</multi-test>

@@ -1,0 +1,9 @@
+<multi-test>
+    <run-cmdline task="hmm2-search"
+                 hmm="!common_data_dir!cmdline/1-cysPrx_C_aligned.hmm"
+                 seq="!common_data_dir!cmdline/1-cys.fa"
+                 e-val="1"
+                 score="asdz"
+                 out="!tmp_data_dir!hmm2-searchn0004_tmp.gbk"
+                 message="Incorrect value"/>
+</multi-test>

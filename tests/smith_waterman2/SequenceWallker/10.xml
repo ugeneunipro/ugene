@@ -1,0 +1,22 @@
+<multi-test>
+    <!-- Checking Smith-Waterman algorithm -->
+
+    <load-document index="searchSeqDoc" url="smith_waterman2/sequenceWallker/10/search.txt" io="local_file" format="fasta"/>
+    <find-object-by-name index="searchSeq" doc="searchSeqDoc" name="S" type="OT_SEQUENCE"/>
+
+    <load-document index="patternSeqDoc" url="smith_waterman2/sequenceWallker/10/query.txt" io="local_file" format="fasta"/>
+    <find-object-by-name index="patternSeq" doc="patternSeqDoc" name="Q" type="OT_SEQUENCE"/>
+
+
+    <plugin_sw-algorithm
+            subst_f="smith_waterman2/blosum62.txt"
+            seq_f="searchSeq"
+            pattern_f="patternSeq"
+            g_o="-1"
+            g_e="-1"
+            percent_of_score="28"
+
+            expected_res="24,157..162**24,265..270**24,299..304**24,381..386**24,406..411**24,533..538**23,157..163**23,299..305"
+    />
+
+</multi-test>

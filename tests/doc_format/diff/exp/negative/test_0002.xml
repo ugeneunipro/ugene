@@ -1,0 +1,5 @@
+<multi-test>
+
+    <load-broken-document index="doc" url="diff/exp/gene_exp_broken1.diff" io="local_file" format="diff"/>
+
+</multi-test>

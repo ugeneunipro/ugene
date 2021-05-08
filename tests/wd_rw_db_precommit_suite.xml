@@ -1,0 +1,5 @@
+<suite name="CMDLine ugene precommit tests of read-write remote resources workflow workers">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <test-dir path="cmdline/common/read_db" test-format="XML" test-ext="*.xml"/>
+</suite>

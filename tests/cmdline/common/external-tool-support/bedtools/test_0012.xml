@@ -1,0 +1,11 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!bedtools/genomecov.uwl"
+            in="!common_data_dir!bedtools/three_blocks.bam"
+            out_dir="!tmp_data_dir!"
+            out_name="gcov_bed_test_0001.bg"
+            mode="3"
+    />
+    <compare-docs doc1="!common_data_dir!bedtools/gcout01.bg" doc2="!tmp_data_dir!gcov_bed_test_0001.bg"/>
+
+</multi-test>

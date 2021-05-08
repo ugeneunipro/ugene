@@ -1,0 +1,18 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/get-sequence-by-annotation/get-sequence-by-annotation.uwl"
+            in="!common_data_dir!cmdline/get-sequence-by-annotation/3422.gb"
+            out="!tmp_data_dir!get-sequence-by-annotation_seq0001_tmp.gb"
+            transl="true"
+    />
+    <load-document index="doc" url="get-sequence-by-annotation_seq0001_tmp.gb" io="local_file" format="genbank" dir="temp"/>
+    <find-object-by-name index="obj1" doc="doc" name="NC_004718 12..42,100..150 join_1" type="OT_SEQUENCE"/>
+    <check-sequence-part obj="obj1" value="LPTQEKPTNLAACLVHLRSINNNKFYC" seqstart="0"/>
+
+    <find-object-by-name index="obj2" doc="doc" name="NC_004718 20..30,700..900 join_3" type="OT_SEQUENCE"/>
+    <check-sequence-part obj="obj2" value="PGKAVTSLALIPLKIMNKTGTLSMAVVHSVNSLVSSMEVQSLAMSTTISVAQMGTLLIASKIFSHARASQ" seqstart="0"/>
+
+    <find-object-by-name index="obj3" doc="doc" name="NC_004718 200..300,400..500 join_2" type="OT_SEQUENCE"/>
+    <check-sequence-part obj="obj3" value="FVRVAVDHQHT*VSSGCDRKVRWRALFLVSTRKHSKMALVV**SWKKAYCPSLNSPMCSLNVLMP*A" seqstart="0"/>
+
+</multi-test>

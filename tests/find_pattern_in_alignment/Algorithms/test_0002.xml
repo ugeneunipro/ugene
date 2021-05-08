@@ -1,0 +1,6 @@
+<!-- UTEST-12 -->
+<multi-test>
+    <load-document index="doc1" url="clustal/COI.aln" io="local_file" format="clustal"/>
+    <find-pattern-msa in="doc1" patterns="AC.*TT" searchRegion="1..604" algorithm="regexp" resultsSize="19044"/>
+    <find-pattern-msa in="doc1" patterns="AC.*TT" searchRegion="1..604" algorithm="regexp" maxResultRegExpLength="65" resultsSize="4267"/>
+</multi-test>

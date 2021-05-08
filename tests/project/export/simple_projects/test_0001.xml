@@ -1,0 +1,25 @@
+<multi-test>
+
+    <load-project url="project/export/project_new1.uprj"/>
+
+    <load-document-from-project document="murine.gb"/>
+
+    <find-object-by-name index="ato" doc="murine.gb" name="NC_001363 features" type="OT_ANNOTATIONS"/>
+
+    <plugin_dna-annotator-search doc="murine.gb" seq="ato" groups="misc_feature" region_size="589" is_fit_to_region="true" expected_results="2..590"/>
+
+    <export-project url="/export1"/>
+
+    <unload-project documents="murine.gb"/>
+
+    <load-project url="export1/project_new1.uprj" load_from_temp="1"/>
+
+    <load-document-from-project document="murine.gb"/>
+
+    <find-object-by-name index="ato1" doc="murine.gb" name="NC_001363 features" type="OT_ANNOTATIONS"/>
+
+    <plugin_dna-annotator-search doc="murine.gb" seq="ato1" groups="misc_feature" region_size="589" is_fit_to_region="true" expected_results="2..590"/>
+
+    <unload-project documents="murine.gb"/>
+
+</multi-test>

@@ -1,0 +1,13 @@
+<multi-test>
+    <!-- https://ugene.dev/tracker/browse/UGENE-3216 -->
+    <!-- Test spaces quantity in qualifiers after genbank saving -->
+    <!-- A space right before line break shouldn't be duplicated -->
+
+    <load-document index="doc1" url="genbank/multiline_qualifier.gen" io="local_file" format="genbank"/>
+    <save-document doc="doc1" url="_temp15.gen" io="local_file" format="genbank"/>
+    <load-document index="doc2" url="_temp15.gen" io="local_file" format="text" dir="temp"/>
+    <find-object-by-name index="obj" doc="doc2" name="_temp15" type="OT_TEXT"/>
+    <check-string-exists obj="obj" string="                     /qual_with_space=&quot;012345678901234567890123456789 " must_exist="true" whole_line="true"/>
+    <check-string-exists obj="obj" string="                     012345678901234567890123456789&quot;" must_exist="true" whole_line="true"/>
+
+</multi-test>

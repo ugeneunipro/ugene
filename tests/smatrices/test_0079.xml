@@ -1,0 +1,5 @@
+<multi-test>
+
+    <check-subst-matrix file="dna" column="V" row="M" val="1" alphabet="NUCL_DNA_EXTENDED_ALPHABET"/>
+
+</multi-test>

@@ -1,0 +1,19 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/snp_effect/rsnp.uwl"
+            in="!common_data_dir!cmdline/snp_effect/TEST_SNP_rsnp.snp"
+            out-reg="!tmp_data_dir!snp_effect_rsnp_reg_test_0001.txt"
+            out-gene="!tmp_data_dir!snp_effect_rsnp_gene_test_0001.txt"/>
+
+    <find-in-snp-result-table
+            file_name="snp_effect_rsnp_reg_test_0001.txt"
+            chr_name="chr6"
+            allele="A/G"
+            pos="32635046"
+            gene_id="AK295476"
+            report_type="regulatory"
+            column_name="rSNPTranscrFactors"
+            expected_value="-"
+    />
+
+</multi-test>

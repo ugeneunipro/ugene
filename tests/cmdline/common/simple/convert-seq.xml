@@ -1,0 +1,7 @@
+<multi-test>
+    <run-cmdline task="convert-seq" in="!common_data_dir!fasta/DNA.fa" out="!tmp_data_dir!convert_seq_tmp.gbk" format="genbank"/>
+    <load-document index="doc1" url="fasta/DNA.fa" io="local_file" format="fasta"/>
+    <load-document index="doc2" url="convert_seq_tmp.gbk" io="local_file" format="genbank" dir="temp"/>
+    <compare-sequences-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

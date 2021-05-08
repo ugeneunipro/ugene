@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline
+            task="join-quality"
+            in="!common_data_dir!reads/eas.fa"
+            out="!tmp_data_dir!join_qual_neg0001_tmp.fastq"
+            quality="!common_data_dir!fasta/broken/broken_qual_01"
+            message="broken_qual_01 is not a quality file"
+    />
+
+</multi-test>

@@ -1,0 +1,10 @@
+<suite name="Repeat finder tests" test-timeout="30">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <test-dir path="repeat_finder/sarray_index" test-format="XML" test-ext="*.xml"/>
+    <test-dir path="repeat_finder/exact" test-format="XML" test-ext="*.xml"/>
+    <test-dir path="repeat_finder/unique_repeats" test-format="XML" test-ext="*.xml"/>
+    <test-dir path="repeat_finder/tandem" test-format="XML" test-ext="*.xml"/>
+    <test-dir path="repeat_finder/mismatches" test-format="XML" test-ext="*.xml"/>
+
+</suite>

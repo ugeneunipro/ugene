@@ -1,0 +1,13 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/find-pattern/find-ptrn.uws"
+                 in="!common_data_dir!cmdline/DNA.fa"
+                 out="!tmp_data_dir!find_ptrn0001_tmp.gbk"
+                 ptrn="acg"
+    />
+
+    <load-document index="doc1" url="find_ptrn0001_tmp.gbk" io="local_file" format="genbank" dir="temp"/>
+    <load-document index="doc2" url="cmdline/find-pattern/01.gb" io="local_file" format="genbank"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+</multi-test>

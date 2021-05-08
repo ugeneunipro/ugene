@@ -1,0 +1,19 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/snp_effect/rsnp.uwl"
+            in="!common_data_dir!cmdline/snp_effect/TEST_SNP_rsnp.snp"
+            out-reg="!tmp_data_dir!snp_effect_rsnp_reg_test_0003.txt"
+            out-gene="!tmp_data_dir!snp_effect_rsnp_gene_test_0003.txt"/>
+
+    <find-in-snp-result-table
+            file_name="snp_effect_rsnp_reg_test_0003.txt"
+            chr_name="chr19"
+            allele="C/T"
+            pos="46975615"
+            gene_id="NM_001103149"
+            report_type="regulatory"
+            column_name="rSNPTranscrFactors"
+            expected_value="-"
+    />
+
+</multi-test>

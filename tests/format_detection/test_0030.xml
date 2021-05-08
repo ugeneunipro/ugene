@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test phylip-sequential -->
+
+    <fd-perfect-match url="phylip/seq_protein.ph" format="phylip-sequential"/>
+
+</multi-test>

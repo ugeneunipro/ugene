@@ -1,0 +1,9 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_text_write_text.uws"
+            in="!common_data_dir!fasta/DNA.fa"
+            out="!tmp_data_dir!write_text_0001.txt"/>
+
+    <compare-docs doc1="fasta/DNA.fa" doc2="write_text_0001.txt" temp="2"/>
+
+</multi-test>

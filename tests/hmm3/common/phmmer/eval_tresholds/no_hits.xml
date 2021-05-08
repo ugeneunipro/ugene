@@ -1,0 +1,8 @@
+<multi-test>
+    <!-- query: rnd_query db: rnd_db with such tresholds no hits here
+	./phmmer -E 1e-80 -domE 1e-77 rnd_query2.fa rnd_db.fa >  rnd_query2_rnd_db_seqE_domE.out -->
+
+    <hmm3-phmmer query="hmmer3/phmmer/rnd_query2.fa" db="hmmer3/phmmer/rnd_db.fa" seqE="1e-80" domE="1e-77" outputDir="common/phmmer/eval_tresholds/no_hits/"/>
+    <hmm3-phmmer-compare trueOut="hmmer3/phmmer/rnd_query2_rnd_db_seqE_domE.out" actualOut="common/phmmer/eval_tresholds/no_hits/output.txt"/>
+
+</multi-test>

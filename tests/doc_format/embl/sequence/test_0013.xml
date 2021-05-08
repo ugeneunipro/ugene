@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- try to check sequence size in broken sequence(...AT 1TG...-in the midle of sequence) -->
+
+    <load-document index="doc" url="embl/numbers_in_the_middle.embl" io="local_file" format="embl"/>
+
+    <find-object-by-name index="obj" doc="doc" name="AB000263 standard" type="OT_SEQUENCE"/>
+
+    <check-sequence-size obj="obj" value="236"/>
+
+</multi-test>

@@ -1,0 +1,34 @@
+<!--https://ugene.dev/tracker/browse/UGENE-2906-->
+<multi-test>
+
+    <!-- Create some fragments, ligate them and check result -->
+
+    <load-document index="doc" url="genbank/pBR322.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="seq" doc="doc" name="SYNPBR322" type="OT_SEQUENCE"/>
+    <find-object-by-name index="source" doc="doc" name="SYNPBR322 features" type="OT_ANNOTATIONS"/>
+
+
+    <find-enzymes result-name="aobj" url="enzymes/rebase_v003_t2_com.bairoch.gz" sequence="seq" enzymes="AvaI,ClaI"
+                  result="AvaI:1425..1430;ClaI:23..28"/>
+
+
+    <digest-into-fragments sequence="seq" annotation-table="aobj" circular="true"
+                           url="enzymes/rebase_v003_t2_com.bairoch.gz" enzymes="AvaI,ClaI"/>
+
+    <ligate-fragments index="result" seq-context="seq"
+                      annotation-context="aobj;source" fragments="pBR322.gb:Fragment 1;pBR322.gb:Fragment 2"
+                      check-overhangs="true" circular="true"/>
+
+
+    <find-object-by-name index="newseq" doc="result" name="result" type="OT_SEQUENCE"/>
+    <check-sequence-size obj="newseq" value="4361"/>
+
+    <find-object-by-name index="annotations" doc="result" name="result annotations" type="OT_ANNOTATIONS"/>
+    <find-annotation-by-location index="a1" obj="annotations" location="486..677" complement="false"/>
+    <check-annotation-name annotation="a1" name="CDS"/>
+    <check-annotation-sequence annotation="a1" sequence="newseq"
+                               value="GTGACCAAACAGGAAAAAACCGCCCTTAACATGGCCCGCTTTATCAGAAGCCAGACATTAACGCTTCTGGAGAAACTCAACGAGCTGGACGCGGATGAACAGGCAGACATCTGTGAATCGCTTCACGACCACGCTGATGAGCTTTACCGCAGCTGCCTCGCGCGTTTCGGTGATGACGGTGAAAACCTCTGA"/>
+
+
+</multi-test>

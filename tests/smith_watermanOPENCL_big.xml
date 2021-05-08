@@ -1,0 +1,6 @@
+<suite name="Smith Waterman Tests GPU using OpenCL, big and long test">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <env-var name="IMPL" value="OPENCL"/>
+    <test-dir path="smith_waterman_big" test-format="XML" test-ext="*.xml"/>
+</suite>

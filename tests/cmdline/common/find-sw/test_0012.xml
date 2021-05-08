@@ -1,0 +1,16 @@
+<multi-test>
+    <run-cmdline task="find-sw"
+                 ref="!common_data_dir!cmdline/DNA_circular.gb"
+                 out="!tmp_data_dir!find_sw_0012_tmp.gb"
+                 ptrn="!common_data_dir!cmdline/find-sw/patterns/circ_pattern1.fa"
+                 score="100"
+                 matrix="dna"
+                 filter="none"
+    />
+
+    <load-document index="doc1" url="find_sw_0012_tmp.gb" io="local_file" format="genbank" dir="temp"/>
+    <load-document index="doc2" url="cmdline/find-sw/12.gb" io="local_file" format="genbank"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+</multi-test>

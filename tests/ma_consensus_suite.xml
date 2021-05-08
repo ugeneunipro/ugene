@@ -1,0 +1,4 @@
+<suite name="Multiple alignment consensus algorithms tests">
+    <env-var name="COMMON_DATA_DIR"/>
+    <test-dir path="ma_consensus" test-format="XML" test-ext="*.xml"/>
+</suite>

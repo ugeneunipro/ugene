@@ -1,0 +1,6 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/validation/rs-datasets-count.uwl"
+                 in="url1"
+                 message="The minimum datasets count is 2. The current count is 1"
+    />
+</multi-test>

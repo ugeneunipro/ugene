@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- try to find seqpart in multy sequence -->
+
+    <load-document index="doc" url="phylip/seq_protein.ph" io="local_file" format="phylip-sequential"/>
+    <find-object-by-name index="obj" doc="doc" name="seq_protein" type="OT_MSA"/>
+
+    <check-Msequence-part obj="obj" value="GANHSFMPIVVEAVPLEHFENWSSLMLEDASLGS" seqstart="200" seqname="Human"/>
+
+</multi-test>

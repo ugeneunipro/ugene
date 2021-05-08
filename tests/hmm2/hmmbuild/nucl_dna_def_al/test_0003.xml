@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- uHMMER Build test: P7_BASE_CONFIG, default dna alphabet  -->
+
+    <uhmmer-build infile="clustal/COI na.aln" outfile="COI na(BASE).hmm" expert="BASE" hmmname="" deltemp="yes"/>
+
+    <hmm-compare file1="hmm/nucl_dna_default_al/COI na(hmms).hmm" file2="COI na(BASE).hmm"/>
+
+</multi-test>

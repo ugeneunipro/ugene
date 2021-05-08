@@ -1,0 +1,13 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/stringtie/stringtie_workflow.uwl"
+            in="!common_data_dir!bam/chrM.sorted.bam"
+            primary-output="!tmp_data_dir!/chrM_test1.gtf"
+    />
+
+    <load-document index="doc1" url="chrM_test1.gtf" io="local_file" format="gff" dir="temp"/>
+    <load-document index="doc2" url="cmdline/stringtie/chrM_default_output.gtf" io="local_file" format="gff"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+</multi-test>

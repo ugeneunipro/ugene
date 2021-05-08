@@ -1,0 +1,15 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_ali_write_ali.uws"
+            in="!common_data_dir!cmdline/CBS.sto"
+            out="!tmp_data_dir!fca_0003.msf"
+            format="msf"
+            task-remote-machine="!config_file_path!"
+    />
+
+    <load-document index="doc1" url="fca_0003.msf" io="local_file" format="msf" dir="temp"/>
+    <load-document index="doc2" url="cmdline/CBS.sto" io="local_file" format="stockholm"/>
+    <compare-Msequences-in-two-objects doc="doc1" value="doc2"/>
+
+
+</multi-test>

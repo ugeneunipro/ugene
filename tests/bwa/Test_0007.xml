@@ -1,0 +1,6 @@
+<multi-test>
+
+    <!-- Bwa test: run with prebuilt index -->
+    <bwa index="bwa/index1/ecoli.fa" reads="reads/e_coli_1000_2.fa" pattern="bwa/pattern/e_coli_1000_2_MEM.sam" alg="BWA-MEM"/>
+
+</multi-test>

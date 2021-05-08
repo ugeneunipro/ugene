@@ -1,0 +1,7 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/validation/ws-script-bool.uwl"
+                 acc="false"
+                 nomessage="accumulate error"
+                 message="accumulate warning"
+    />
+</multi-test>

@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: options: wgsc fast eent + eX, model: 1-cysPrx_C, has SS_cons, RF annotations 
+	cmd: ./hmmbuild -seed 10 -fast -wgsc -eent 1-cysPrx_C_gsc_fast_eent3.hmm 1-cysPrx_C.sto -->
+
+    <uhmmer3-build inputFile="stockholm/1-cysPrx_C.sto" outputFile="test_1-cysPrx_C_gsc_fast_eent3.hmm"
+                   seed="10" mc="fast" rw="wgsc" ew="eent" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/1-cysPrx_C_gsc_fast_eent3.hmm" file2="test_1-cysPrx_C_gsc_fast_eent3.hmm"
+                        tmp1="no" tmp2="yes"/>
+
+</multi-test>

@@ -1,0 +1,15 @@
+<!-- Check the consensus calculation: simple extended algorithm, threshold = 80% -->
+<multi-test>
+    <run-cmdline
+            task="extract_consensus_sequence"
+            in="!common_data_dir!scenarios/msa/simple_extended_consensus.aln"
+            algorithm="Simple extended"
+            threshold="80"
+            out="!tmp_data_dir!simple_extended_consensus_0003.fa"
+    />
+
+    <load-document index="actual" url="simple_extended_consensus_0003.fa" io="local_file" format="fasta" dir="temp"/>
+    <load-document index="expected" url="scenarios/consensus/simple_extended_80.fa" io="local_file" format="fasta"/>
+    <compare-sequences-in-two-objects doc="actual" value="expected"/>
+
+</multi-test>

@@ -1,0 +1,8 @@
+<!-- UTEST-14 -->
+<multi-test>
+    <load-document index="doc1" url="clustal/COI.aln" io="local_file" format="clustal"/>
+    <find-pattern-msa in="doc1" patterns="AAA" searchRegion="1..604" algorithm="exact" resultsSize="134"/>
+    <find-pattern-msa in="doc1" patterns="AAA" searchRegion="1..604" algorithm="exact" removeOverlaps="true" resultsSize="119"/>
+    <find-pattern-msa in="doc1" patterns="AAA" searchRegion="1..604" algorithm="exact" removeOverlaps="true"
+                      maxResultsToFind="20" resultsSize="20"/>
+</multi-test>

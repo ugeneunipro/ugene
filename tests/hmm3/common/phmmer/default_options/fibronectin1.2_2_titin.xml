@@ -1,0 +1,8 @@
+<multi-test>
+    <!-- query: finronectin1.2_2 db: titin.fa
+	./phmmer fibronectin1.2_2.fa titin.fa > fibronectin_2_titin.out -->
+
+    <hmm3-phmmer query="hmmer3/phmmer/fibronectin1.2_2.fa" db="fasta/titin.fa" outputDir="common/phmmer/default_options/fibronectin1.2_2_titin/"/>
+    <hmm3-phmmer-compare trueOut="hmmer3/phmmer/fibronectin_2_titin.out" actualOut="common/phmmer/default_options/fibronectin1.2_2_titin/output.txt"/>
+
+</multi-test>

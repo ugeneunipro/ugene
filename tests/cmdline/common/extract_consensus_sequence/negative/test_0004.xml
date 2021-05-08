@@ -1,0 +1,11 @@
+<multi-test>
+    <run-cmdline task="extract_consensus_sequence"
+                 in="!common_data_dir!clustal/COI na.aln"
+                 out="!tmp_data_dir!extract_consensus_sequence_negative_test_0001.fa"
+                 format="fasta"
+                 algorithm=""
+                 keep_gaps="true"
+                 threshold="100"
+                 message="Extract Consensus from Alignment as Sequence: Required parameter is not set: Algorithm (use --algorithm option)"
+    />
+</multi-test>

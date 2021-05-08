@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!---test must find that alphabet is AMINO EXTENDED(ACDEFGHJ symbols)-->
+
+    <load-document index="doc" url="fasta/amino_ext.fa" io="local_file" format="fasta"/>
+    <find-object-by-name index="obj" doc="doc" name="amino_ext" type="OT_SEQUENCE"/>
+
+    <check-sequence-alphabet-by-id obj="obj" value="AMINO_EXTENDED_ALPHABET"/>
+
+</multi-test>

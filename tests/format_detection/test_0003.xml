@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test clustal -->
+
+    <fd-perfect-match url="clustal/COI na.aln" format="clustal"/>
+
+</multi-test>

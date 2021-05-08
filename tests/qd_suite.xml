@@ -1,0 +1,4 @@
+<suite name="Query designer test suite">
+    <env-var name="COMMON_DATA_DIR"/>
+    <test-dir test-ext="*.xml" path="query_designer" test-format="XML"/>
+</suite>

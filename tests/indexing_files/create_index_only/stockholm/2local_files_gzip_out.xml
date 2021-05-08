@@ -1,0 +1,8 @@
+<multi-test>
+
+    <!-- try to create gzipped index of 2 local files -->
+
+    <create-file-index input="indexing_files/stockholm/2local_files_1.sto,indexing_files/stockholm/2local_files_2.sto"
+                       output="2local_files.uind.gz" delete="yes"/>
+
+</multi-test>

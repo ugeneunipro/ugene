@@ -1,0 +1,8 @@
+<multi-test>
+
+    <load-document index="doc1" url="neighbor_join/align_04.aln" io="local_file" format="clustal"/>
+    <load-document index="doc2" url="neighbor_join/tree_04" io="local_file" format="newick"/>
+    <test-neighbor-join in="doc1" sample="doc2"/>
+
+
+</multi-test>

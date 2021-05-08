@@ -1,0 +1,5 @@
+<multi-test>
+    <!-- try to load document with empty msa -->
+    <load-broken-document index="doc" url="stockholm/empty_msa.sto" io="local_file" format="stockholm"/>
+
+</multi-test>

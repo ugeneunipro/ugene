@@ -1,0 +1,18 @@
+<multi-test>
+
+    <!-- compare sequences with complicated names -->
+
+    <load-document index="doc" url="nexus/bp_data.nex" io="local_file" format="nexus"/>
+    <find-object-by-name index="obj" doc="doc" name="bp_data" type="OT_MSA"/>
+
+    <check-Msequence-part obj="obj" value="A-C-G-Tc-gtgtgtgctct-t-t------ac-gtgtgtgctct-t-t" seqstart="0" seqname="t1"/>
+    <check-Msequence-part obj="obj" value="A-C-GcTc-gtg-----tct-t-t----acac-gtg-----tct-t-t" seqstart="0" seqname="t2 the name"/>
+    <check-Msequence-part obj="obj" value="A-CcGcTc-gtgtgtgct--------acacac-gtgtgtgct------" seqstart="0" seqname="isnthat [a] strange name?"/>
+    <check-Msequence-part obj="obj" value="A-C-G-T-----------------------------------------" seqstart="0" seqname="one should be punished, for (that)!"/>
+    <check-Msequence-part obj="obj" value="A-CNG-TN--acgtNN-NNN-NNN--NN---N--acgtNN-NNN-NNN" seqstart="0" seqname="t5"/>
+    <check-Msequence-part obj="obj" value="AcCaGtTc-N--aaaaaaaa-a-aacgactac-N--aaaaaaaa-a-a" seqstart="0" seqname="t6"/>
+    <check-Msequence-part obj="obj" value="ANC-GgTg-ggggggggggg-g-gNN--Nggg-ggggggggggg-g-g" seqstart="0" seqname="t7"/>
+    <check-Msequence-part obj="obj" value="AtCtGtTt-ttttttttttt-N-Ntttttttt-ttttttttttt-N-N" seqstart="0" seqname="t8"/>
+    <check-Msequence-part obj="obj" value="cccccccc-cccccccccccNc-ccccccccc-cccccccccccNc-c" seqstart="0" seqname="t9"/>
+
+</multi-test>

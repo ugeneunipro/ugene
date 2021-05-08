@@ -1,0 +1,5 @@
+<suite name="Genome Aligner Tests 2" test-timeout="300">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <test-dir test-format="XML" exclude="" test-ext="*.xml" path="genome_aligner_2"/>
+</suite>

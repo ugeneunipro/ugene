@@ -1,0 +1,7 @@
+<multi-test>
+    <run-cmdline task="convert-msa" in="!common_data_dir!cmdline/1-cysPrx_C.sto" out="!tmp_data_dir!convert_msa_tmp.aln" format="clustal"/>
+    <load-document index="doc1" url="cmdline/1-cysPrx_C.sto" io="local_file" format="stockholm"/>
+    <load-document index="doc2" url="convert_msa_tmp.aln" io="local_file" format="clustal" dir="temp"/>
+    <compare-Msequences-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

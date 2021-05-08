@@ -1,0 +1,8 @@
+<multi-test>
+    <!-- query: rnd_query db: rnd_db 6 of 18 domains here
+	./phmmer -seed 55 -domE 1e-200 -Z 10.0 -domZ 5.5 rnd_query.fa rnd_db.fa >  rnd_query_rnd_db_seed_domE_z_domZ.out -->
+
+    <hmm3-phmmer query="hmmer3/phmmer/rnd_query.fa" db="hmmer3/phmmer/rnd_db.fa" seed="55" domE="1e-200" z="10.0" domZ="5.5" outputDir="common/phmmer/eval_tresholds/rnd/"/>
+    <hmm3-phmmer-compare trueOut="hmmer3/phmmer/rnd_query_rnd_db_seed_domE_z_domZ.out" actualOut="common/phmmer/eval_tresholds/rnd/output.txt"/>
+
+</multi-test>

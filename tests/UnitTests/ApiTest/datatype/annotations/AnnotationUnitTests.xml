@@ -1,0 +1,15 @@
+<unittest>
+
+    AnnotationUnitTest
+    + get_IdObjectData
+    + getSet_Name
+    + getSet_LocationOperator
+    + getSet_Strand
+    + getSet_Location
+    + getSet_Regions
+    + getSet_Qualifiers
+    + find_Qualifiers
+    + get_Group
+    + getSet_Case
+
+</unittest>

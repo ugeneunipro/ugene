@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- Test save option, check sequence names save correct, in file 1 sequence,  fasta to fasta-->
+
+    <load-document index="doc" url="fasta/fa1.fa" io="local_file" format="fasta"/>
+    <save-document doc="doc" url="_temp1.fa" io="local_file" format="fasta"/>
+    <load-document index="doc2" url="_temp1.fa" io="local_file" format="fasta" dir="temp"/>
+    <compare-sequences-names-in-two-objects doc="doc" value="doc2"/>
+
+</multi-test>

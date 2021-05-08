@@ -1,0 +1,27 @@
+<unittest>
+
+    CInterfaceManualTests
+    + basic_align
+    + faqual2fastq
+    + msa2clustal
+    + query2alignment
+    + seq2gen
+    + tfbs
+    + build_test_HMM
+    + search_HMM
+    + search_TFBS
+    + call_variants
+    + chip_seq
+    + chip_seq_with_control
+    - tuxedo_main
+    - tuxedo_main_paired
+    - tuxedo_multiple_dataset
+    - tuxedo_multiple_dataset_paired
+    + tuxedo_single_dataset
+    + tuxedo_single_dataset_paired
+    + find_sequences
+    + gene_by_gene_report
+    + merge_sequence_annotation
+    + consensus
+
+</unittest>
