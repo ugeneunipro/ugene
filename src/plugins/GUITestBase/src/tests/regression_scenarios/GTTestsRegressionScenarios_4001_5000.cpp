@@ -281,7 +281,7 @@ GUI_TEST_CLASS_DEFINITION(test_4011) {
     //    Current state:
     //    Runtime error occurred(x86 version of UGENE)
     //    Windows hangs(x64 version)
-    l.checkMessage("Nothing to write");
+    GTLogTracer::checkMessage("Nothing to write");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4013) {
@@ -615,7 +615,7 @@ GUI_TEST_CLASS_DEFINITION(test_4065) {
     GTFileDialog::openFile(os, sandBoxDir + "example_bam.bam");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    bool hasMessage = l.checkMessage("No bam index given");
+    bool hasMessage = GTLogTracer::checkMessage("No bam index given");
     CHECK_SET_ERR(false == hasMessage, "Error message is found. Bam index file not found.");
 }
 
@@ -3412,7 +3412,6 @@ GUI_TEST_CLASS_DEFINITION(test_4524) {
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(10, 10));
     GTMouseDriver::click(Qt::RightButton);
 
-
     const qint64 imageFileSize = GTFile::getSize(os, sandBoxDir + "test_4524.svg");
     CHECK_SET_ERR(imageFileSize > 0, "Export MSA to image failed. Unexpected image file size");
 
@@ -3553,7 +3552,7 @@ GUI_TEST_CLASS_DEFINITION(test_4563) {
 
     // 6. check log message
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    l.checkMessage("Can't allocate enough memory");
+    GTLogTracer::checkMessage("Can't allocate enough memory");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4587) {
@@ -4674,47 +4673,46 @@ GUI_TEST_CLASS_DEFINITION(test_4728) {
 
 GUI_TEST_CLASS_DEFINITION(test_4732) {
     QFile::copy(dataDir + "samples/FASTA/human_T1.fa", sandBoxDir + "test_4732.fa");
-    //1. Open "data/samples/FASTA/human_T1.fa".
+
+    // Open "data/samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, sandBoxDir + "test_4732.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Document context menu -> Export / Import -> Export sequences.
-    //Expected: "Export selected sequences" dialog appears.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
-    class Scenario : public CustomScenario {
+    class RemoveFileScenarioScenario : public CustomScenario {
     public:
-        Scenario()
-            : filler(NULL) {
+        RemoveFileScenarioScenario()
+            : filler(nullptr) {
         }
         void setFiller(ExportSelectedRegionFiller *value) {
             filler = value;
         }
-        void run(HI::GUITestOpStatus &os) {
-            //3. Delete "human_T1.fa" document from the file system.
-            bool removed = QFile::remove(sandBoxDir + "test_4732.fa");
-            CHECK_SET_ERR(removed, "Can't remove the file");
+        void run(HI::GUITestOpStatus &os) override {
+            // Delete "human_T1.fa" document from the file system.
+            bool isFileRemoved = QFile::remove(sandBoxDir + "test_4732.fa");
+            CHECK_SET_ERR(isFileRemoved, "Can't remove the file");
 
-            //Expected: the dialog about external modification of documents does not appear.
-            CHECK_SET_ERR(NULL != filler, "NULL filler");
+            CHECK_SET_ERR(filler != nullptr, "filler is null");
             filler->setPath(sandBoxDir);
             filler->setName("test_4732_out.fa");
 
-            //4. Click "Export".
+            // Click "Export".
             filler->commonScenario();
         }
-
-    private:
         ExportSelectedRegionFiller *filler;
     };
-    //Expected: the dialog about external modification of documents appears.
-    //5. Click "No".
-    //Expected: UGENE does not crash.
+    // Document context menu -> Export / Import -> Export sequences.
+    // Expected: "Export selected sequences" dialog appears.
+    // Expected: the dialog about external modification of documents appears. Click "No".
+    // Expected: UGENE does not crash.
+    GTUtils::checkExportServiceIsEnabled(os);
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_EXPORT_SEQUENCE}));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
-    Scenario *scenario = new Scenario();
-    ExportSelectedRegionFiller *filler = new ExportSelectedRegionFiller(os, scenario);
+    auto scenario = new RemoveFileScenarioScenario();
+    auto filler = new ExportSelectedRegionFiller(os, scenario);
     scenario->setFiller(filler);
     GTUtilsDialog::waitForDialog(os, filler);
     GTUtilsProjectTreeView::click(os, "test_4732.fa", Qt::RightButton);
+    GTUtilsDialog::waitAllFinished(os);    // wait for all GTUtilsDialog::waitForDialog waiters are finished (file removed message box).
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4734) {
@@ -5428,8 +5426,8 @@ GUI_TEST_CLASS_DEFINITION(test_4860) {
 
     QWidget *next = GTWidget::findWidget(os, "nextPushButton");
     CHECK_SET_ERR(GTUtilsSequenceView::getSelection(os).size() == 1, "Incorrect selection: selected region should be only one");
-    int startPosPrev = GTUtilsSequenceView::getSelection(os).first().startPos;
-    int startPosNext = -1;
+    qint64 startPosPrev = GTUtilsSequenceView::getSelection(os).first().startPos;
+    qint64 startPosNext = -1;
     for (int i = 0; i < 10; i++) {
         GTWidget::click(os, next);
 
@@ -5503,7 +5501,6 @@ GUI_TEST_CLASS_DEFINITION(test_4885_2) {
 
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(0, 0));
     GTMouseDriver::doubleClick();
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4885_3) {
@@ -5572,7 +5569,6 @@ GUI_TEST_CLASS_DEFINITION(test_4908) {
     QPoint detPos = detView->mapToGlobal(detView->rect().center());
 
     GTMouseDriver::dragAndDrop(GTMouseDriver::getMousePosition(), detPos);
-
 
     GTUtilsSequenceView::enableEditingMode(os, true, 0);
     GTUtilsSequenceView::enableEditingMode(os, true, 1);
