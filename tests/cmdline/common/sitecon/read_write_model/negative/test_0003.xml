@@ -1,0 +1,7 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/sitecon/read-write-model.uws"
+                 in="!common_data_dir!/Sitecon/Algorithm/siteconBuilds/e2f_30_w2.sitecon"
+                 out="!tmp_data_dir!/bla-bla/e2f_30_w2_bad_model2_actual.sitecon"
+                 message="Error opening file for writing"
+    />
+</multi-test>

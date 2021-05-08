@@ -1,0 +1,4 @@
+<suite test-timeout="30" name="Position weight matrix tests">
+    <env-var name="COMMON_DATA_DIR"/>
+    <test-dir test-ext="*.xml" path="position_weight_matrix" test-format="XML"/>
+</suite>

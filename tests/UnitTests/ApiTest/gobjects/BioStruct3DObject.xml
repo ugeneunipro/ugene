@@ -1,0 +1,13 @@
+<unittest>
+
+    BioStruct3DObjectUnitTests
+    + createInstance
+    + createInstance_WrongDbi
+    + getBioStruct3D
+    + getBioStruct3D_Null
+    + clone
+    + clone_NullDbi
+    + clone_NullObj
+    + remove
+
+</unittest>

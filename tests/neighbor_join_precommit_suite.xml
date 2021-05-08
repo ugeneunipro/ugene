@@ -1,0 +1,4 @@
+<suite name="neighbor join tests" test-timeout="30">
+    <env-var name="COMMON_DATA_DIR"/>
+    <test-dir path="neighbor_join" test-format="XML" test-ext="*.xml"/>
+</suite>

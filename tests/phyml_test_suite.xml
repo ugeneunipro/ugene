@@ -1,0 +1,4 @@
+<suite name="phyml tests">
+    <env-var name="COMMON_DATA_DIR"/>
+    <test-dir path="phyml" test-format="XML" test-ext="*.xml"/>
+</suite>

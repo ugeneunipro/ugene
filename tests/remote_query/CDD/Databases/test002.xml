@@ -1,0 +1,13 @@
+<multi-test>
+
+    <plugin_remote-query
+            seq="TTCCPSIVARSNFNVCRLPGTPEAICATYTGCIIIPGATCPGDYAN"
+            alg="blastp"
+            db="CDSEARCH/oasis_pfam v3.11"
+            e-value="1e-07"
+            hits="10"
+            strand="direct"
+            expected_results=""
+    />
+
+</multi-test>

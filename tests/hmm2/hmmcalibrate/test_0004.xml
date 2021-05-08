@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- uHMMER Parallel Calibrate test, hmm: a_sym_seq.hmm, seed 0  -->
+
+    <uhmmer-calibrate hmmfile="hmm/A_SYM_SEQ.hmm" mu="-11.929487" lambda="0.57082790" nthreads="2" seed="0"/>
+
+</multi-test>

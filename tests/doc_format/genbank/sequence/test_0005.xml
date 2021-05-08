@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- try to check sequence size and alphabet  in broken sequence(Unacceptable simbols like "_") -->
+
+    <load-document index="doc" url="genbank/broken/illegal_symbols.gen" io="local_file" format="genbank"/>
+    <find-object-by-name index="obj" doc="doc" name="A" type="OT_SEQUENCE"/>
+
+    <check-sequence-size obj="obj" value="74"/>
+    <check-sequence-alphabet-by-id obj="obj" value="RAW_ALPHABET"/>
+
+    <check-sequence-part obj="obj" value="__TGCAGAAT" seqstart="10"/>
+
+</multi-test>

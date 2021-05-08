@@ -1,0 +1,20 @@
+<multi-test>
+
+    <!--  Open PDB file. Check number of chains,
+          number of atoms,
+          residue and atom number,
+          check random atoms chain index, residue name, coords -->
+
+    <load-document index="doc" url="pdb/1MOT.pdb" io="local_file" format="pdb"/>
+    <find-object-by-name index="obj" doc="doc" name="1MOT" type="OT_BIOSTRUCT3D"/>
+
+    <check-biostruct3d-number-of-chains obj="obj" value="1"/>
+    <check-biostruct3d-number-of-atoms obj="obj" value="408"/>
+    <check-biostruct3d-atom-chain-id obj="obj" atom-id="111" value="1"/>
+    <check-biostruct3d-atom-residue-name obj="obj" atom-id="222" value="MET"/>
+    <check-biostruct3d-atom-coords obj="obj" atom-id="333" model-id="1" x="2.318" y="13.584" z="-6.671"/>
+    <check-biostruct3d-atom-coords obj="obj" atom-id="333" model-id="4" x="-10.038" y="16.068" z="-6.425"/>
+    <check-biostruct3d-atom-coords obj="obj" atom-id="333" model-id="8" x="5.310" y="13.263" z="5.928"/>
+    <check-biostruct3d-atom-coords obj="obj" atom-id="333" model-id="12" x="-5.342" y="3.460" z="11.376"/>
+
+</multi-test>

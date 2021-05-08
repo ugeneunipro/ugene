@@ -1,0 +1,4 @@
+<suite name="Sitecon tests">
+    <env-var name="COMMON_DATA_DIR"/>
+    <test-dir path="Sitecon/32" test-format="XML" test-ext="*.xml"/>
+</suite>

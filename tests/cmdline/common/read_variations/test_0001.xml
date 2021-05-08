@@ -1,0 +1,11 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_variations_write_variations.uws"
+            in="!common_data_dir!vcf/valid.vcf"
+            out="!tmp_data_dir!write_variations_0001.vcf"
+            out_format="vcf"/>
+
+
+    <compare-docs doc1="vcf/valid.vcf" doc2="write_variations_0001.vcf" temp="2"/>
+
+</multi-test>

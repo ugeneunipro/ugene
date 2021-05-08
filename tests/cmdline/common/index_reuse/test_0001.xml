@@ -1,0 +1,63 @@
+<multi-test>
+    <remove-temp-dir url="index_reuse_bowtie"/>
+    <create-temp-dir url="index_reuse_bowtie"/>
+    <copy-file from="!common_data_dir!bowtie2/reads_1.fq" to="!tmp_data_dir!index_reuse_bowtie/reads_1.fq"/>
+    <copy-file from="!common_data_dir!bowtie2/lambda_virus.fa" to="!tmp_data_dir!index_reuse_bowtie/lambda_virus.fa"/>
+    <!--building index check-->
+    <run-cmdline
+            task="!common_data_dir!cmdline/index_reuse/bowtie.uwl"
+            in="!tmp_data_dir!index_reuse_bowtie/reads_1.fq"
+            out_file="out1.sam"
+            out_dir="!tmp_data_dir!index_reuse_bowtie"
+            ref="!tmp_data_dir!index_reuse_bowtie/lambda_virus.fa"
+    />
+
+    <check-files-num folder="!tmp_data_dir!index_reuse_bowtie" expected="11"/>
+
+    <!--check index reuse-->
+    <wait ms="30000"/>
+    <run-cmdline
+            task="!common_data_dir!cmdline/index_reuse/bowtie.uwl"
+            in="!tmp_data_dir!index_reuse_bowtie/reads_1.fq"
+            out_file="out1.sam"
+            out_dir="!tmp_data_dir!index_reuse_bowtie"
+            ref="!tmp_data_dir!index_reuse_bowtie/lambda_virus.fa"
+    />
+    <check-creation-time url="!tmp_data_dir!index_reuse_bowtie/lambda_virus.1.ebwt" moreThen="30"/>
+
+    <!--check .fa index names-->
+    <copy-file from="!tmp_data_dir!index_reuse_bowtie/lambda_virus.1.ebwt" to="!tmp_data_dir!index_reuse_bowtie/lambda_virus.fa.1.ebwt"/>
+    <copy-file from="!tmp_data_dir!index_reuse_bowtie/lambda_virus.2.ebwt" to="!tmp_data_dir!index_reuse_bowtie/lambda_virus.fa.2.ebwt"/>
+    <copy-file from="!tmp_data_dir!index_reuse_bowtie/lambda_virus.3.ebwt" to="!tmp_data_dir!index_reuse_bowtie/lambda_virus.fa.3.ebwt"/>
+    <copy-file from="!tmp_data_dir!index_reuse_bowtie/lambda_virus.4.ebwt" to="!tmp_data_dir!index_reuse_bowtie/lambda_virus.fa.4.ebwt"/>
+    <copy-file from="!tmp_data_dir!index_reuse_bowtie/lambda_virus.rev.1.ebwt" to="!tmp_data_dir!index_reuse_bowtie/lambda_virus.fa.rev.1.ebwt"/>
+    <copy-file from="!tmp_data_dir!index_reuse_bowtie/lambda_virus.rev.2.ebwt" to="!tmp_data_dir!index_reuse_bowtie/lambda_virus.fa.rev.2.ebwt"/>
+
+    <remove-temp-file url="index_reuse_bowtie/lambda_virus.1.ebwt"/>
+    <remove-temp-file url="index_reuse_bowtie/lambda_virus.2.ebwt"/>
+    <remove-temp-file url="index_reuse_bowtie/lambda_virus.3.ebwt"/>
+    <remove-temp-file url="index_reuse_bowtie/lambda_virus.4.ebwt"/>
+    <remove-temp-file url="index_reuse_bowtie/lambda_virus.rev.1.ebwt"/>
+    <remove-temp-file url="index_reuse_bowtie/lambda_virus.rev.2.ebwt"/>
+    <run-cmdline
+            task="!common_data_dir!cmdline/index_reuse/bowtie.uwl"
+            in="!tmp_data_dir!index_reuse_bowtie/reads_1.fq"
+            out_file="out1.sam"
+            out_dir="!tmp_data_dir!index_reuse_bowtie"
+            ref="!tmp_data_dir!index_reuse_bowtie/lambda_virus.fa"
+    />
+
+    <check-files-num folder="!tmp_data_dir!index_reuse_bowtie" expected="13"/>
+
+    <!--check index file as reference-->
+    <run-cmdline
+            task="!common_data_dir!cmdline/index_reuse/bowtie.uwl"
+            in="!tmp_data_dir!index_reuse_bowtie/reads_1.fq"
+            out_file="out1.sam"
+            out_dir="!tmp_data_dir!index_reuse_bowtie"
+            ref="!tmp_data_dir!index_reuse_bowtie/lambda_virus.fa.1.ebwt"
+    />
+    <check-files-num folder="!tmp_data_dir!index_reuse_bowtie" expected="14"/>
+
+    <remove-temp-dir url="index_reuse_bowtie"/>
+</multi-test>

@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- Annotation qualifier test: test with line breaks between qualifiers -->
+
+    <load-document index="doc" url="genbank/quotes_whites_tests.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="obj" doc="doc" name="NC_012472 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-number index="ann" obj="obj" number="0"/>
+
+    <check-annotation-qualifier annotation="ann" qualifier="product" value="transcriptional regulator, MarR family"/>
+
+</multi-test>

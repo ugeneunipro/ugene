@@ -1,0 +1,20 @@
+<multi-test>
+    <plugin_primer_3>
+        <plugin_primer_3_in
+
+                PRIMER_SEQUENCE_ID="hyb_probe_only"
+                PRIMER_TASK="pick_HYB_probe_ONly"
+                PRIMER_INTERNAL_OLIGO_EXCLUDED_REGION="90,20"
+                SEQUENCE="GCATCTGCACCCTGTAAACCCTGGCTCCTGCCTCTCCGGGACACCCCACTGAGGTCAGCACACCCTGCAGGTTTAGAAGGGGTGTCTGGGTGCATTTGGTGACACCGCAGGCAGAGGGGGGACNCCACAGCCAGCTCTGCCCGCGGATGCCACGTCCATTTGCTTCAGCAGGATC"
+                PRIMER_SELF_ANY="12"
+                PRIMER_MAX_POLY_X="100"
+                PRIMER_SELF_END="8"
+                PRIMER_FILE_FLAG="1"
+                PRIMER_EXPLAIN_FLAG="1"
+
+        />
+        <plugin_primer_3_out
+                PRIMER_PAIRS_NUMBER="0"
+        />
+    </plugin_primer_3>
+</multi-test>

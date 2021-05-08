@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to check alphabet  in multy sequence (more then 60 symbols, 2 seq in Mseq)(must be AMINO_EXTENDED_ALPHABET) -->
+
+    <load-document index="doc" url="clustal/amino_ext.aln" io="local_file" format="clustal"/>
+    <find-object-by-name index="obj" doc="doc" name="amino_ext" type="OT_MSA"/>
+    <check-Msequence-alphabet-by-id obj="obj" value="AMINO_EXTENDED_ALPHABET"/>
+
+</multi-test>

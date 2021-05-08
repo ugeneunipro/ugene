@@ -1,0 +1,12 @@
+<multi-test>
+    <!--
+    Sequence:
+    TC:*-TCG-TCG-TCG-*:CC
+    Tandems
+    Tandem repeat TCG 3x3 at pos 2
+    We expect such results:
+    2,9,3
+    .(end of results)
+    -->
+    <find-tandems sequence="TCTCGTCGTCGCC" minSize="3" maxSize="9" repeatCount="3" expected_result="2,9,3;"/>
+</multi-test>

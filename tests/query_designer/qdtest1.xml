@@ -1,0 +1,10 @@
+<!--ignored because of https://ugene.dev/tracker/browse/UGENE-2771-->
+<multi-test>
+
+    <load-document index="sd" url="query/qdtest1.gb" io="local_file" format="genbank"/>
+
+    <load-document index="ad" url="query/qdtest1_result.gb" io="local_file" format="genbank"/>
+
+    <qd_search seq="sd" expected_result="ad" schema="query/qdtest1.uql"/>
+
+</multi-test>

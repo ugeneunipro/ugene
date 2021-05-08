@@ -1,0 +1,14 @@
+<multi-test>
+    <!--
+    Sequence:
+    :*-ATCG-ATC-ATC-ATC-*:
+    Tandems
+    Tandem repeat ATC 4x3 at pos 0
+    Insertions
+    3
+    We expect such results:
+    4,9,3
+    .(end of results)
+    -->
+    <find-tandems sequence="ATCGATCATCATC" minSize="3" maxSize="9" repeatCount="3" expected_result="4,9,3;"/>
+</multi-test>

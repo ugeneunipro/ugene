@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Test reading file: in file 1 object Sequence-->
+
+    <load-document index="doc" url="msf/test1.msf" io="local_file" format="msf"/>
+
+    <check-num-objects doc="doc" value="1"/>
+    <check-document-object-names doc="doc" value="test1"/>
+    <check-document-object-types doc="doc" value="OT_MSA"/>
+
+</multi-test>

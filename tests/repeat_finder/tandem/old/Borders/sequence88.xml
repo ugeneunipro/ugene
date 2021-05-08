@@ -1,0 +1,12 @@
+<multi-test>
+    <!--
+    Sequence:
+    TTTT:*-ATAGCTACT-ATAGCTACT-ATAGCTACT-*:AT
+    Tandems
+    Tandem repeat ATAGCTACT 3x9 at pos 4
+    We expect such results:
+    3,30,9
+    .(end of results)
+    -->
+    <find-tandems sequence="TTTTATAGCTACTATAGCTACTATAGCTACTAT" minSize="9" maxSize="27" repeatCount="3" expected_result="3,30,9;"/>
+</multi-test>

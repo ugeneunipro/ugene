@@ -1,0 +1,7 @@
+<suite name="Smith Waterman Tests classic">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <env-var name="IMPL" value="Classic"/>
+    <test-dir path="smith_waterman2" test-format="XML" test-ext="*.xml"
+              exclude="Multi/01.xml,Multi/08.xml,Multi/09.xml,Multi/10.xml,Multi/06.xml,Multi/07.xml,SequenceWallker/02.xml,SequenceWallker/03.xml,SequenceWallker/07.xml,SequenceWallker/08.xml,Simple/03.xml,small/04.xml,small/03.xml"/>
+</suite>

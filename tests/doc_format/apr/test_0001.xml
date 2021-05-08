@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Test reading file: 1 objects in file OT_MSA-->
+
+    <load-document index="doc" url="apr/gyrA.apr" io="local_file" format="Vector_nti_alignx"/>
+
+    <check-num-objects doc="doc" value="1"/>
+    <check-document-object-names doc="doc" value="gyrA"/>
+    <check-document-object-types doc="doc" value="OT_MSA"/>
+
+</multi-test>

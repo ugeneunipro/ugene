@@ -1,0 +1,6 @@
+<multi-test>
+
+    <!-- Bwa test: run with prebuilt index, parameters -O 3 -->
+    <bwa index="bwa/index/ecoli.fa" reads="reads/e_coli_1000.fa" pattern="bwa/pattern/e_coli_1000_O3.sam" gap-open-penalty="3"/>
+
+</multi-test>

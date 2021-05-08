@@ -1,0 +1,5 @@
+<suite test-timeout="30" name="Bowtie plugin tests">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <test-dir path="bowtie" test-ext="*.xml" test-format="XML" exclude="workflow_designer/test_0001.xml,workflow_designer/test_0002.xml,workflow_designer/test_0003.xml,workflow_designer/test_0004.xml,workflow_designer/test_0005.xml"/>
+</suite>

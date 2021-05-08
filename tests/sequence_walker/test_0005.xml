@@ -1,0 +1,8 @@
+<multi-test>
+
+    <!-- SequenceWalker Test: check regions, huge step -->
+
+    <sw-check-region chunk="5000" overlap="2000" extra_len="3000" region="0..500" reverse="false" result="0..500"/>
+    <sw-check-region chunk="5000" overlap="2000" extra_len="3000" region="0..500" reverse="true" result="0..500"/>
+
+</multi-test>

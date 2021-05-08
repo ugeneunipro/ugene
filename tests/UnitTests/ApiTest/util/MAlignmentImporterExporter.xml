@@ -1,0 +1,6 @@
+<unittest>
+
+    MAlignmentImporterExporterUnitTests
+    + importExportAlignment
+
+</unittest>

@@ -1,0 +1,6 @@
+<multi-test>
+
+    <!-- Incorrect strand -->
+    <load-broken-document index="doc" url="gff/negative/wrong_strand.gff" io="local_file" format="gff" sequence-mode="sequence" message="Parsing error: incorrect strand patameter at line 4. Strand can be '+','-' or '.'"/>
+
+</multi-test>

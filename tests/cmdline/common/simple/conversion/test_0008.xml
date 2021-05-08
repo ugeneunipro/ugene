@@ -1,0 +1,14 @@
+<multi-test>
+
+    <remove-temp-dir url="conversion_0008"/>
+    <create-temp-dir url="conversion_0008"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/conversion/schema.uwl"
+            in="!common_data_dir!sam/scerevisiae.sam"
+            target="fasta"
+            working-dir="conversion_0008"
+            message="The formats are not compatible"
+    />
+
+</multi-test>

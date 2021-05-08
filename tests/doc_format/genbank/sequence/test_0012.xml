@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- test all allowed symbols in sequence (NUCL DNA EXTENDED ALPHABET)-->
+    <!--ACGTRYKMSWBDHVN-->
+
+    <load-document index="doc" url="genbank/all_alphabet.gen" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="obj" doc="doc" name="A" type="OT_SEQUENCE"/>
+    <check-sequence-size obj="obj" value="40"/>
+    <check-sequence-alphabet-by-id obj="obj" value="NUCL_DNA_EXTENDED_ALPHABET"/>
+    <check-sequence-part obj="obj" value="BDHVNACGTR" seqstart="10"/>
+
+</multi-test>

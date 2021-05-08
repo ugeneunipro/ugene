@@ -1,0 +1,14 @@
+<multi-test>
+
+    <!-- test for annotation at the end of sequence -->
+
+    <load-document index="doc" url="swiss_prot/P01375.sw" io="local_file" format="swiss-prot"/>
+
+    <find-object-by-name index="obj" doc="doc" name="TNFA_HUMAN features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-number index="annot" obj="obj" number="9"/>
+
+    <check-annotation-location annotation="annot" location="77..233" complement="0"/>
+
+
+</multi-test>

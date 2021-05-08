@@ -1,0 +1,8 @@
+<!--scheme fails on validation. error not written in log-->
+<multi-test>
+    <run-cmdline
+            task="align"
+            in="" out="!tmp_data_dir!align2_tmp.aln"
+            message="Required parameter has no datasets specified: Input file(s)"/>
+
+</multi-test>

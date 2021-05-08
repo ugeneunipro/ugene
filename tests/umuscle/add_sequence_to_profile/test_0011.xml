@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- uMuscle test: 1 sequence, 3 gaps to be added to the middle. Original ali must not be modified -->
+
+    <load-document index="doc1" url="alignment/add_sequence_to_profile/ali02.aln" io="local_file" format="clustal"/>
+    <load-document index="doc2" url="alignment/add_sequence_to_profile/seq11.fa" io="local_file" format="fasta"/>
+
+    <umuscle-add-unaligned-seq-to-profile ali-doc="doc1" seq-doc="doc2" result-ali-len="11"
+                                          gap-map="4,5,6"/>
+
+</multi-test>

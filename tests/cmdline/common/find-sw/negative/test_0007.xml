@@ -1,0 +1,12 @@
+<!-- may be this test incorrect!!! -->
+<multi-test>
+    <run-cmdline task="find-sw"
+                 ref="!common_data_dir!cmdline/DNA.fa"
+                 out="!tmp_data_dir!find_swn0007_tmp.gbk"
+                 ptrn="!common_data_dir!cmdline/find-sw/patterns/qwwzxc.fa"
+                 score="100"
+                 matrix="auto"
+                 filter="none"
+                 message="Incorrect value"
+    />
+</multi-test>

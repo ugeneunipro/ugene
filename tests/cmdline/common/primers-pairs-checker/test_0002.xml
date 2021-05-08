@@ -1,0 +1,8 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/primers/check_primers.uwl"
+            in="!common_data_dir!cmdline/primers/primersOdd.fa"
+            out="!tmp_data_dir!check_primers_report_2.html"
+            message="No correct primers pairs found"
+    />
+</multi-test>

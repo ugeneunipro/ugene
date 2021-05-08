@@ -1,0 +1,28 @@
+<!-- UGENE-6380: the test checks that "Classify Sequences with MetaPhlAn2" workflow element is able to create folders for the output files -->
+
+<multi-test>
+    <remove-temp-dir url="metaphlan2_core_3"/>
+    <create-temp-dir url="metaphlan2_core_3"/>
+    <copy-file from="!common_data_dir!metagenomics/cmdline/metaphlan2/core/input/small_stool.fa" to="!tmp_data_dir!metaphlan2_core_3/small_stool.fa"/>
+
+    <run-cmdline
+            working-dir="metaphlan2_core_3"
+            task="!common_data_dir!metagenomics/cmdline/metaphlan2/workflows/metaphlan2_basic_se.uwl"
+            in="!tmp_data_dir!metaphlan2_core_3/small_stool.fa"
+            bowti2_out="!tmp_data_dir!metaphlan2_core_3/nonexisting_dir_1/nonexisting_dir_1/bowtie_out.txt"
+            out="!tmp_data_dir!metaphlan2_core_3/nonexisting_dir_2/nonexisting_dir_2/out.txt"
+    />
+
+    <!-- Compare MetaPhlAn2 output -->
+    <compare-docs
+            doc1="!tmp_data_dir!metaphlan2_core_3/nonexisting_dir_2/nonexisting_dir_2/out.txt"
+            doc2="!common_data_dir!metagenomics/cmdline/metaphlan2/core/output/small_stool_profile.txt"/>
+
+    <!-- Compare Bowtie2 output -->
+    <compare-docs
+            mixed-lines="true"
+            doc1="!tmp_data_dir!metaphlan2_core_3/nonexisting_dir_1/nonexisting_dir_1/bowtie_out.txt"
+            doc2="!common_data_dir!metagenomics/cmdline/metaphlan2/core/output/small_stool_bowtie2out.txt"/>
+
+    <remove-temp-dir url="metaphlan2_core_3"/>
+</multi-test>

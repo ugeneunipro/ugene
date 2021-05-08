@@ -1,0 +1,8 @@
+<multi-test>
+
+    <!-- Test reading empty file with comments-->
+
+    <load-document index="doc" url="nexus/bp_comment.nex" io="local_file" format="nexus"/>
+
+    <check-num-objects doc="doc" value="0"/>
+</multi-test>

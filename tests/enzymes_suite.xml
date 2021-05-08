@@ -1,0 +1,4 @@
+<suite test-timeout="30" name="Enzymes plugin tests">
+    <env-var name="COMMON_DATA_DIR"/>
+    <test-dir test-ext="*.xml" path="enzymes" test-format="XML" exclude="digest_into_fragments/test008.xml,digest_into_fragments/test010.xml,ligate_fragments/test003.xml,ligate_fragments/test004.xml"/>
+</suite>

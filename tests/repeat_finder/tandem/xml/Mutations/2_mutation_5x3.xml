@@ -1,0 +1,20 @@
+<multi-test>
+    <!--
+    Sequence:
+    GGAAT-GGAAT-GGAAg
+    TTGTA-TTGTA-TTGTA
+    ACATA-ACATA-ACATA
+
+    Tandems
+    Tandem repeat GGAAT 3x5 at pos 0
+    Tandem repeat TTGTA 3x5 at pos 14
+    Tandem repeat ACATA 3x5 at pos 28
+    Mutations
+    Mutation in repeat #2 of 0th tandem at pos 4
+    We expect such results:
+    15,15,5
+    28,17,5
+    .(end of results)
+    -->
+    <find-tandems sequence="GGAATGGAATGGAAGTTGTATTGTATTGTAACATAACATAACATA" minSize="5" repeatCount="3" expected_result="15,15,5;28,17,5;"/>
+</multi-test>

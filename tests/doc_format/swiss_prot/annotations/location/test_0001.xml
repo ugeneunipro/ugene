@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- test for the annotation location -->
+
+    <load-document index="doc" url="swiss_prot/P01375.sw" io="local_file" format="swiss-prot"/>
+
+    <find-object-by-name index="obj" doc="doc" name="TNFA_HUMAN features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="annot" obj="obj" location="1..35" complement="false"/>
+
+</multi-test>

@@ -1,0 +1,49 @@
+<multi-test>
+
+    <create-temp-file url="write-seq-split-rename-0003_split1.fa" data=">old1\nAAAA\n"/>
+    <create-temp-file url="write-seq-split-rename-0003_split2.fa" data=">old2\nAAAA\n"/>
+    <create-temp-file url="write-seq-split-rename-0003_split1_1.fa" data=">old1\nAAAA\n"/>
+    <create-temp-file url="write-seq-split-rename-0003_split2_1.fa" data=">old2\nAAAA\n"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/write/seq-seq.uwl"
+            in="!common_data_dir!cmdline/read-write/write/seq2.fa"
+            out="!tmp_data_dir!write-seq-split-rename-0003.fa"
+            action="4"
+            split="2"
+            accum="false"
+    />
+
+    <load-document index="doc1" url="write-seq-split-rename-0003_split1.fa" io="local_file" format="fasta" dir="temp"/>
+    <check-num-objects doc="doc1" value="1"/>
+    <find-object-by-name index="seq1" doc="doc1" name="seq1" type="OT_SEQUENCE"/>
+    <check-sequence-part obj="seq1" value="AAAAAAAAAAAAAAAAAA" seqstart="0"/>
+
+    <load-document index="doc2" url="write-seq-split-rename-0003_split2.fa" io="local_file" format="fasta" dir="temp"/>
+    <check-num-objects doc="doc2" value="1"/>
+    <find-object-by-name index="seq2" doc="doc2" name="seq1" type="OT_SEQUENCE"/>
+    <check-sequence-part obj="seq2" value="TTTTTTTTTTTTTTTTTTT" seqstart="0"/>
+
+    <load-document index="doc3" url="write-seq-split-rename-0003_split1_1.fa" io="local_file" format="fasta" dir="temp"/>
+    <check-num-objects doc="doc3" value="1"/>
+    <find-object-by-name index="seq3" doc="doc3" name="seq2" type="OT_SEQUENCE"/>
+    <check-sequence-part obj="seq3" value="CCCCCCCCCCCCCCCCCCC" seqstart="0"/>
+
+    <load-document index="doc4" url="write-seq-split-rename-0003_split2_1.fa" io="local_file" format="fasta" dir="temp"/>
+    <check-num-objects doc="doc4" value="1"/>
+    <find-object-by-name index="seq4" doc="doc4" name="seq2" type="OT_SEQUENCE"/>
+    <check-sequence-part obj="seq4" value="AAAAAAAAAAAAAAAAAAA" seqstart="0"/>
+
+    <check-temp-file url="write-seq-split-rename-0003_split1_oldcopy1.fa" exists="1"/>
+    <remove-temp-file url="write-seq-split-rename-0003_split1_oldcopy1.fa"/>
+
+    <check-temp-file url="write-seq-split-rename-0003_split2_oldcopy1.fa" exists="1"/>
+    <remove-temp-file url="write-seq-split-rename-0003_split2_oldcopy1.fa"/>
+
+    <check-temp-file url="write-seq-split-rename-0003_split1_1_oldcopy1.fa" exists="1"/>
+    <remove-temp-file url="write-seq-split-rename-0003_split1_1_oldcopy1.fa"/>
+
+    <check-temp-file url="write-seq-split-rename-0003_split2_1_oldcopy1.fa" exists="1"/>
+    <remove-temp-file url="write-seq-split-rename-0003_split2_1_oldcopy1.fa"/>
+
+</multi-test>

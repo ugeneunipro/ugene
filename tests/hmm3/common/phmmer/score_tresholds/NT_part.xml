@@ -1,0 +1,8 @@
+<multi-test>
+    <!-- query: NT_078103_query1 db: NT_078103 domT treshold here
+	./phmmer -domT 200.0 NT_078103_query1.fa NT_078103.fa > NT_078103_query1_NT_078103_db_domT.out -->
+
+    <hmm3-phmmer query="hmmer3/phmmer/NT_078103_query1.fa" db="hmmer3/phmmer/NT_part.fa" domT="200.0" outputDir="common/phmmer/score_tresholds/NT_part/"/>
+    <hmm3-phmmer-compare trueOut="hmmer3/phmmer/NT_part_score_threshold.out" actualOut="common/phmmer/score_tresholds/NT_part/output.txt"/>
+
+</multi-test>

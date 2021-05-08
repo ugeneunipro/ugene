@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Test reading file: an usual file -->
+
+    <load-document index="doc" url="vcf/onlyHeader.vcf" io="local_file" format="vcf"/>
+
+    <save-document doc="doc" url="_temp0001.vcf" io="local_file" format="vcf"/>
+
+    <compare-vcf-docs doc1="vcf/onlyHeader.vcf" doc2="_temp0001.vcf" temp="2"/>
+
+</multi-test>

@@ -1,0 +1,10 @@
+<multi-test>
+    <!--
+    Sequence:
+    CTAAC-TGG-TGG-TGG-TGG-TGG-TGG-TGG-CTAGC-CTAGC-CTAGC-CTAGC-CTAGC-CTAGC-CTAGC-CTAGC-CTAGC-G
+    Tandems
+    Tandem repeat TGG 3x7 at pos 5
+    Tandem repeat CTAGC 5x9 at pos 26
+    -->
+    <find-tandems sequence="CTAACTGGTGGTGGTGGTGGTGGTGGCTAGCCTAGCCTAGCCTAGCCTAGCCTAGCCTAGCCTAGCCTAGCG" minSize="3" repeatCount="3" expected_result="5,21,3;26,45,5"/>
+</multi-test>

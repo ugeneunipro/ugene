@@ -1,0 +1,4 @@
+<suite name="Document format tests" test-timeout="90">
+    <env-var name="COMMON_DATA_DIR"/>
+    <test-dir test-ext="*.xml" test-format="XML" path="doc_format"/>
+</suite>

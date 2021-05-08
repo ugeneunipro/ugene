@@ -1,0 +1,4 @@
+<suite name="API tests">
+    <env-var name="COMMON_DATA_DIR"/>
+    <test-dir test-ext="*.xml" path="ApiTest" test-format="XML"/>
+</suite>

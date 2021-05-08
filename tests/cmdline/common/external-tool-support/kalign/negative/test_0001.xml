@@ -1,0 +1,9 @@
+<multi-test>
+    <run-cmdline
+            task="align-kalign"
+            in=""
+            out="!tmp_data_dir!align2_tmp.aln"
+            message="Required parameter has no datasets specified: Input file(s) (use --in option)"
+    />
+
+</multi-test>

@@ -1,0 +1,5 @@
+<suite name="Annotator plugin tests" test-timeout="180">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <test-dir path="annotator" test-format="XML" test-ext="*.xml"/>
+</suite>

@@ -1,0 +1,17 @@
+<multi-test>
+    <!-- Paired reads, multiple files in two datasets -->
+    <remove-temp-dir url="bowtie2_12"/>
+    <create-temp-dir url="bowtie2_12"/>
+    <load-document index="doc" url="e_coli/e_coli_cut.fa" io="local_file" format="fasta"/>
+    <save-document doc="doc" url="bowtie2_12/e_coli_cut.fa" io="local_file" format="fasta"/>
+    <run-cmdline
+            task="!common_data_dir!bowtie2/aligner_worker/bowtie2-aligner-paired.uwl"
+            index="!tmp_data_dir!bowtie2_12/e_coli_cut.fa"
+            sam-dir="!tmp_data_dir!bowtie2_12"
+            reads1="!common_data_dir!e_coli/e_coli_reads/e_coli_1_1.fastq;e_coli/e_coli_reads/e_coli_2_2.fastq;;e_coli/e_coli_reads/e_coli_2_1.fastq"
+            reads2="!common_data_dir!e_coli/e_coli_reads/e_coli_1_2.fastq;e_coli/e_coli_reads/e_coli_2_1.fastq;;e_coli/e_coli_reads/e_coli_2_2.fastq"
+    />
+    <compare-sam-by-length file1="bowtie2_12/bowtie/out.sam" file2="bowtie2/aligner_worker/paired12_rev.sam"/>
+    <compare-sam-by-length file1="bowtie2_12/bowtie_1/out.sam" file2="bowtie2/aligner_worker/paired2.sam"/>
+    <remove-temp-dir url="bowtie2_12"/>
+</multi-test>

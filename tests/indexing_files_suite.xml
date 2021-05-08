@@ -1,0 +1,5 @@
+<suite name="Large files indexing plugin tests">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <test-dir path="indexing_files" test-format="XML" test-ext="*.xml"/>
+</suite>

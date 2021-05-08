@@ -1,0 +1,14 @@
+<!-- Read APR - write CLUSTALW -->
+
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_ali_write_ali.uws"
+            in="!common_data_dir!apr/gyrA.apr"
+            out="!tmp_data_dir!write_ali_0010.aln"
+            format="clustal"/>
+
+    <load-document index="doc1" url="write_ali_0010.aln" io="local_file" format="clustal" dir="temp"/>
+    <load-document index="doc2" url="apr/gyrA.apr" io="local_file" format="Vector_nti_alignx"/>
+    <compare-Msequences-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

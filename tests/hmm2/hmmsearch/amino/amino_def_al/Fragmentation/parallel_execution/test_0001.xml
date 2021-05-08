@@ -1,0 +1,29 @@
+<multi-test>
+
+    <!-- uHMMER Search test: amino default alphabet sequence, amino default hmm, parallel hmmsearch task-->
+
+    <load-document index="doc" url="fasta/titin.fa" io="local_file" format="fasta"/>
+
+    <uhmmer-search index="hmmsearch" hmmfile="hmm/fn3.hmm" seqdoc="doc" expert_opt="0" chunksize="400" parallel="true"/>
+
+    <find-object-by-name index="obj" doc="hmmsearch" name="Annotations" type="OT_ANNOTATIONS"/>
+
+    <check-num-annotations obj="obj" value="132"/>
+
+    <find-annotation-by-number index="ann" obj="obj" number="0"/>
+
+    <check-annotation-location annotation="ann" location="6593..6679" complement="0"/>
+
+    <check-annotation-qualifier annotation="ann" qualifier="Score" value="46.7"/>
+
+    <check-annotation-qualifier annotation="ann" qualifier="E-value" value="8.7e-015"/>
+
+    <find-annotation-by-number index="ann2" obj="obj" number="131"/>
+
+    <check-annotation-location annotation="ann2" location="24625..24709" complement="0"/>
+
+    <check-annotation-qualifier annotation="ann2" qualifier="Score" value="61.5"/>
+
+    <check-annotation-qualifier annotation="ann2" qualifier="E-value" value="3e-019"/>
+
+</multi-test>

@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- try to load broken data from document (ID not in the first line)-->
+
+    <load-broken-document index="doc" url="embl/broken/broken_doc_embl.embl" io="local_file" format="embl"/>
+
+</multi-test>

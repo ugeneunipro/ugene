@@ -1,0 +1,20 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/addQualifierTest/addQualifierTest2.uwl"
+                 in="!common_data_dir!cmdline/custom-script-worker-functions/addQualifierTest/sars.gb"
+                 out="!common_data_dir!cmdline/custom-script-worker-functions/addQualifierTest/result_2.gb"
+                 q_name="NAME_EEE"
+                 q_val="VAL_EEE"/>
+
+    <load-document index="doc" url="cmdline/custom-script-worker-functions/addQualifierTest/result_2.gb" io="local_file" format="genbank"/>
+    <find-object-by-name index="obj" doc="doc" name="NC_004718 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-name index="annot" obj="obj" name="5UTR"/>
+    <check-annotation-qualifier annotation="annot" qualifier="NAME_EEE" value="VAL_EEE"/>
+
+    <find-annotation-by-name index="annot2" obj="obj" name="gene"/>
+    <check-annotation-qualifier annotation="annot2" qualifier="NAME_EEE" value="VAL_EEE"/>
+
+    <find-annotation-by-name index="annot3" obj="obj" name="CDS"/>
+    <check-annotation-qualifier annotation="annot3" qualifier="NAME_EEE" value="VAL_EEE"/>
+
+</multi-test>

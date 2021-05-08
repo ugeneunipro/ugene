@@ -1,0 +1,7 @@
+<suite name="Ping remote service">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <test-dir test-ext="*.xml" path="remote_service/ping" test-format="XML"
+              exclude="ping_local_machine.xml"
+    />
+</suite>

@@ -1,0 +1,4 @@
+<suite name="Load remote document">
+    <env-var name="COMMON_DATA_DIR"/>
+    <test-dir test-ext="*.xml" path="load_remote_document" test-format="XML"/>
+</suite>

@@ -1,0 +1,5 @@
+<suite name="CMDLine ugene precommit tests of workflow validation" test-timeout="300">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <test-dir path="cmdline/common/validation" test-format="XML" test-ext="*.xml"/>
+</suite>

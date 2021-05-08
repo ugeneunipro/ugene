@@ -1,0 +1,5 @@
+<suite name="Primer 3 tests" test-timeout="30">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <test-dir test-ext="*.xml" path="primer3" test-format="XML"/>
+</suite>

@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!-- Find multiple enzymes -->
+
+    <load-document index="doc" url="genbank/70Bp.gen" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="seq" doc="doc" name="A" type="OT_SEQUENCE"/>
+
+    <find-enzymes maxHit="1" url="enzymes/rebase_v003_t2_com.bairoch.gz" sequence="seq" enzymes="HinfI,EcoRI,PleI,ScrFI,MwoI"
+                  result="EcoRI:15..20;PleI:32..36;MwoI:44..54"/>
+
+</multi-test>

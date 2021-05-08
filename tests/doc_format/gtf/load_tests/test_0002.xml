@@ -1,0 +1,19 @@
+<!-- The test verifies that we can input a file with annotations for several reference sequences. -->
+
+<multi-test lockForLogListening="true">
+
+    <load-document index="doc" url="gtf/load_tests/fusions.gtf" io="local_file" format="gtf" no-message="GTF parsing error"/>
+
+    <find-object-by-name index="Ann1" doc="doc" name="fusedChr1 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-name index="ann_exon1" obj="Ann1" name="exon"/>
+
+    <check-annotation-qualifier annotation="ann_exon1" qualifier="transcript_id" value="FUSION_DKGE_SPTLC3_001"/>
+
+    <find-object-by-name index="Ann2" doc="doc" name="fusedChr2 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-name index="ann_exon2" obj="Ann2" name="exon"/>
+
+    <check-annotation-qualifier annotation="ann_exon2" qualifier="transcript_id" value="FUSION_WDR16_RALGAPA_002"/>
+
+</multi-test>

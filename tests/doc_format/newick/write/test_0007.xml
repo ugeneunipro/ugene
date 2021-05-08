@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- Test save option, 4 objects in file -->
+
+    <load-document index="doc" url="newick/eutheriaNCBIDataWithTaxIDs.nh" io="local_file" format="newick"/>
+    <save-document doc="doc" url="_temp0007.newick" io="local_file" format="newick"/>
+    <load-document index="doc2" url="_temp0007.newick" io="local_file" format="newick" dir="temp"/>
+    <compare-trees-in-two-objects doc="doc" value="doc2"/>
+
+</multi-test>

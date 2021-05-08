@@ -1,0 +1,7 @@
+<multi-test>
+    <!-- UGENE-4394: Add CMV immediate early promoter -->
+    <load-document index="doc" url="annotator/pME18S-FL3-3-modified.gb" io="local_file" format="genbank"/>
+    <custom-auto-annotation-search doc="doc" seq="AB009864" result="plasmid_annotations" circular="false"/>
+    <find-annotation-by-name index="ann" obj="plasmid_annotations" name="CMV_immediate_early_promoter"/>
+    <check-annotation-location annotation="ann" location="3336..3924" complement="0"/>
+</multi-test>

@@ -1,0 +1,7 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/getMinimumQualityTest/getMinimumQualityTest.uwl"
+                 in="!common_data_dir!cmdline/1-cys.fa"
+                 expected="100"
+                 message="TEST PASSED"/>
+
+</multi-test>

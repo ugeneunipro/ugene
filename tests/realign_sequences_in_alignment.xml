@@ -1,0 +1,6 @@
+<suite test-timeout="300" name="Realign sequences in alignment">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <env-var value="1" name="NUM_THREADS"/>
+    <test-dir test-ext="*.xml" path="realign_sequences_in_alignment" test-format="XML"/>
+</suite>

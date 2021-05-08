@@ -1,0 +1,10 @@
+<!--scheme fails on validation. error not written in log-->
+<multi-test>
+    <run-cmdline task="hmm2-build"
+                 in=""
+                 out="!tmp_data_dir!hmm2-buildn0006_tmp.hmm"
+                 seed="42"
+                 calibrate="true"
+                 message="Read alignment: Required parameter is not set: Input file(s)"/>
+
+</multi-test>

@@ -1,0 +1,5 @@
+<suite name="Project suite">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <test-dir path="project" test-format="XML" test-ext="*.xml"/>
+</suite>

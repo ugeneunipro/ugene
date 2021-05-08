@@ -1,0 +1,9 @@
+<suite test-timeout="300" name="HMM3 plugin tests">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <test-dir test-ext="*.xml" path="hmm3/common" test-format="XML" exclude="phmmer/acceleration_heuristics/NT_078103_2.xml,phmmer/default_options/NT_078103_1.xml,phmmer/eval_calibration/fibronectin1.2_1_titin.xml,phmmer/score_tresholds/NT_078103_1.xml"/>
+    <!-- Theese tests are to slow for precommit -->
+    <excluded test="phmmer/default_options/NT_078103_1.xml" reason="UGENE-3145"/>
+    <excluded test="phmmer/default_options/NT_078103_2.xml" reason="UGENE-3145"/>
+    <excluded test="phmmer/score_tresholds/NT_078103_1.xml" reason="UGENE-3145"/>
+</suite>

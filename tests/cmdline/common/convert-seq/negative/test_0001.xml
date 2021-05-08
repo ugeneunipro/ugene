@@ -1,0 +1,10 @@
+<!--scheme fails on validation. error not written in log-->
+<multi-test>
+    <run-cmdline
+            task="convert-seq"
+            in=""
+            out="!tmp_data_dir!convert_seqn0001_tmp.gbk"
+            format="genbank"
+            message="Required parameter has no datasets specified: Input file(s)"/>
+
+</multi-test>

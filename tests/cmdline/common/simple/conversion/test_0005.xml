@@ -1,0 +1,16 @@
+<multi-test>
+
+    <remove-temp-dir url="conversion_0005_1"/>
+    <create-temp-dir url="conversion_0005_1"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/conversion/schema.uwl"
+            in="!common_data_dir!sam/scerevisiae.sam"
+            target="bam"
+            working-dir="conversion_0005_1"
+    />
+
+    <compare-docs doc1="cmdline/conversion/scerevisiae.sam.bam"
+                  doc2="conversion_0005_1/Converted_files/scerevisiae.sam.bam" temp="2" by_lines="true"/>
+
+</multi-test>

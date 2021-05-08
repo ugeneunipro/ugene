@@ -1,0 +1,5 @@
+<multi-test>
+
+    <fd-perfect-match url="newick/COXII CDS tree.newick" format="newick"/>
+
+</multi-test>

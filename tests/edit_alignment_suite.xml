@@ -1,0 +1,5 @@
+<suite name="Edit alignment tests">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <test-dir test-ext="*.xml" path="edit_alignment" test-format="XML"/>
+</suite>

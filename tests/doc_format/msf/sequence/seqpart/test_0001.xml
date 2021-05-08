@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- try to find seqpart in first of protein sequense in multy sequence -->
+
+    <load-document index="doc" url="msf/pla2_20.msf" io="local_file" format="msf"/>
+    <find-object-by-name index="obj" doc="doc" name="pla2_20" type="OT_MSA"/>
+
+    <check-Msequence-part obj="obj" value="S-----AYD" seqstart="65" seqname="Pa22_Notsc"/>
+
+</multi-test>

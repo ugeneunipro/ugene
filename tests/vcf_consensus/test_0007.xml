@@ -1,0 +1,16 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!vcf_consensus/vcf_url.uwl"
+            in-seq="!common_data_dir!vcf_consensus/human.fa"
+            in-vcf="!common_data_dir!vcf_consensus/human.vcf"
+            out-seq="!tmp_data_dir!vcf_cons_test_0007.fa"
+            out-url="!tmp_data_dir!vcf_out_url.txt"
+    />
+
+    <compare-docs
+            doc1="vcf_consensus/out_human.fa"
+            doc2="vcf_cons_test_0007.fa"
+            temp="2"
+    />
+
+</multi-test>

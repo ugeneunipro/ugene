@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Test reading file: no data in an AF tag -->
+
+    <load-broken-document url="ace/ace_test_91_(error).ace" io="local_file" format="ace"/>
+
+</multi-test>

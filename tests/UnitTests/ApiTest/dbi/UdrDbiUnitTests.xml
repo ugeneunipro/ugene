@@ -1,0 +1,21 @@
+<unittest>
+
+    UdrDbiUnitTests
+    + getRecord
+    + addRecord_1
+    + addRecord_2
+    + addRecord_with_adapter
+    + removeRecord
+    + OutputStream_write
+    + OutputStream_write_2
+    + InputStream_read
+    + InputStream_skip_OutOfRange_1
+    + InputStream_skip_OutOfRange_2_negative
+    + InputStream_skip_Range_1
+    + InputStream_skip_Range_2_negative
+    + createObject
+    + createObject_removeObject
+    + getObjectRecords_1
+    + getObjectRecords_2
+
+</unittest>

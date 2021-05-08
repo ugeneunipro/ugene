@@ -1,0 +1,13 @@
+<multi-test>
+    <!--
+    Sequence:
+    GCGT:*-TAA-TAA-TAAA-TAA-TAA-*:
+    Tandems
+    Tandem repeat TAA 5x3 at pos 4
+    Insertions
+    13
+    We expect such results:
+    .(end of results)
+    -->
+    <find-tandems sequence="GCGTTAATAATAAATAATAA" minSize="3" maxSize="9" repeatCount="4" expected_result=""/>
+</multi-test>

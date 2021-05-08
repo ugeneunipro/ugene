@@ -1,0 +1,5 @@
+<multi-test>
+
+    <load-broken-document index="doc" url="fasta/broken/data_in_the_name_line.fa" io="local_file" format="fasta"/>
+
+</multi-test>

@@ -1,0 +1,11 @@
+<multi-test>
+    <run-cmdline
+            task="extract-sequence"
+            in="!common_data_dir!genbank/murine_sarcoma.gb"
+            out="!tmp_data_dir!extract_seq0003n_tmp.fa"
+            annotation-names-file="!common_data_dir!cmdline/extract-sequence/negative/names_3.txt"
+            accept-or-filter="false"
+            message="Workflow name not specified"
+    />
+
+</multi-test>

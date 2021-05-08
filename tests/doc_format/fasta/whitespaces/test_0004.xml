@@ -1,0 +1,8 @@
+<multi-test>
+
+    <load-document index="doc" url="fasta/whitespases/fa_w4.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="obj" doc="doc" name="3 3 3 3" type="OT_SEQUENCE"/>
+    <check-sequence-part obj="obj" value="AAAAAAACCCCCCAAAAAAAACCCCCCCCACACAAAAAAACCCCCCCAAAAAAACCCCCCC" seqstart="0"/>
+
+</multi-test>

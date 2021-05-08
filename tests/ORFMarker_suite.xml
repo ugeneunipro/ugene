@@ -1,0 +1,5 @@
+<suite name="ORFMarker plugin tests" test-timeout="30">
+    <env-var name="COMMON_DATA_DIR"/>
+    <env-var name="TEMP_DATA_DIR"/>
+    <test-dir path="ORFMarker" test-format="XML" test-ext="*.xml"/>
+</suite>

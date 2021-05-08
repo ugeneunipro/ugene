@@ -1,0 +1,5 @@
+<multi-test>
+
+    <load-document index="doc" url="pdb/Ncbi.pdb" io="local_file" format="pdb"/>
+
+</multi-test>

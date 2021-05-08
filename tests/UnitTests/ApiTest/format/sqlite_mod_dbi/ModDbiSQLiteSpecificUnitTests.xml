@@ -1,0 +1,46 @@
+<unittest>
+
+    ModDbiSQLiteSpecificUnitTests
+    + createStep_noMultiAndUser
+    + createStep_noMultiAndUser2Steps
+    + createStep_startMulti
+    + createStep_start2MultiNoUser
+    + createStep_startUser
+    + createStep_oneUser2Multi
+    + createStep_severalUser
+    + createStep_separateThread
+    + userSteps_oneAct_auto
+    + userSteps_severalAct_auto
+    + userSteps_severalActUndo_auto
+    + userSteps_severalActUndoRedo_auto
+    + userSteps_severalActUndoRedoAct_auto
+    + userSteps_oneAct_man
+    + userSteps_severalAct_man
+    + userSteps_severalActUndo_man
+    + userSteps_severalActUndoRedo_man
+    + userSteps_severalActUndoRedoAct_man
+    + userSteps_oneAct_diffObj
+    + userSteps_severalAct_diffObj
+    + userSteps_severalActUndo_diffObj
+    + userSteps_severalActUndoRedo_diffObj
+    + userSteps_severalActUndoRedoAct_diffObj
+    + updateMsaName_noModTrack
+    + updateMsaName_severalSteps
+    + updateMsaName_severalUndoThenAction
+    + updateMsaAlphabet_noModTrack
+    + updateMsaAlphabet_severalSteps
+    + updateMsaAlphabet_severalUndoThenAction
+    + updateGapModel_noModTrack
+    + updateGapModel_severalSteps
+    + updateGapModel_severalUndoThenAction
+    + updateRowContent_noModTrack
+    + updateRowContent_severalSteps
+    + updateRowContent_severalUndoThenAction
+    + setNewRowsOrder_noModTrack
+    + setNewRowsOrder_severalSteps
+    + setNewRowsOrder_severalUndoThenAction
+    + updateRowName_noModTrack
+    + updateRowName_severalSteps
+    + updateRowName_severalUndoThenAction
+
+</unittest>

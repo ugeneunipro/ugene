@@ -1,0 +1,7 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/sitecon/read-write-model.uws"
+                 in="!common_data_dir!/Sitecon/Algorithm/siteconBuilds/e2f_30_w2_bad_model.sitecon"
+                 out="!tmp_data_dir!e2f_30_w2_bad_model_actual.sitecon"
+                 message="properties not matches"
+    />
+</multi-test>

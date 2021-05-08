@@ -1,0 +1,18 @@
+<multi-test>
+    <!-- Run dna assembly task and check results -->
+
+    <load-document index="doc" url="dna_assembly/test018/eas_aligned.sam" io="local_file" format="sam"/>
+
+    <find-object-by-name index="expected" doc="doc" name="EAS_REF_and_others" type="OT_MSA"/>
+
+    <test-dna-assembly-to-ref
+            res-index="expected"
+            assembly-method="UGENE Genome Aligner"
+            ref-seq="dna_assembly/test018/ref_eas.fa"
+            shortreads="dna_assembly/test018/eas1.fastq;dna_assembly/test018/eas2.fastq;dna_assembly/test018/eas3.fastq"
+            custom-options="quality_threshold=13"
+
+    />
+
+
+</multi-test>

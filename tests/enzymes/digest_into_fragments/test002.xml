@@ -1,0 +1,34 @@
+<multi-test>
+
+    <!-- Find enzyme, cut CIRCULAR sequence into fragments -->
+
+    <load-document index="doc" url="genbank/70Bp.gen" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="seq" doc="doc" name="A" type="OT_SEQUENCE"/>
+
+    <find-enzymes result-name="results" url="enzymes/rebase_v003_t2_com.bairoch.gz" sequence="seq" enzymes="HinfI,EcoRI"
+                  result="HinfI:24..28,32..36;EcoRI:15..20"/>
+
+    <digest-into-fragments sequence="seq" annotation-table="results"
+                           url="enzymes/rebase_v003_t2_com.bairoch.gz" enzymes="EcoRi,HinfI"/>
+
+    <find-annotation-by-name index="a1" obj="results" name="Fragment 1"/>
+    <check-annotation-location annotation="a1" location="36..70" complement="0"/>
+    <check-annotation-qualifier annotation="a1" qualifier="left_end_term" value="HinfI"/>
+    <check-annotation-qualifier annotation="a1" qualifier="right_end_term" value=""/>
+    <check-annotation-qualifier annotation="a1" qualifier="right_end_seq" value=""/>
+
+
+    <find-annotation-by-name index="a2" obj="results" name="Fragment 2"/>
+    <check-annotation-location annotation="a2" location="1..15" complement="0"/>
+    <check-annotation-qualifier annotation="a2" qualifier="left_end_term" value=""/>
+    <check-annotation-qualifier annotation="a2" qualifier="right_end_term" value="EcoRI"/>
+
+
+    <find-annotation-by-name index="a3" obj="results" name="Fragment 3"/>
+    <check-annotation-location annotation="a3" location="20..24" complement="0"/>
+    <check-annotation-qualifier annotation="a3" qualifier="left_end_term" value="EcoRI"/>
+    <check-annotation-qualifier annotation="a3" qualifier="right_end_term" value="HinfI"/>
+
+
+</multi-test>

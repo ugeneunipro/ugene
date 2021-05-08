@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Botwie negative test: Reference assembly failed - no possible alignment found -->
+    <bowtie index="fasta/titin.fa" build="1" reads="reads/e_coli_1000.fa" pattern="bowtie/pattern/e_coli_1000.sam"
+            negative="Reference assembly failed - no possible alignment found"/>
+
+</multi-test>

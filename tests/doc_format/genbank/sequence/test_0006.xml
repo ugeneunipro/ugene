@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- in file exist 2 sequences with difrent Alphabets; 1- RAW Alphabet and  2- AMINO_DEFAULT Alphabet-->
+    <!-- in second sequence's Alphabet(amino default) must be 80 simbols-->
+
+    <load-document index="doc" url="genbank/base_amino_all_symp.gen" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="obj2" doc="doc" name="B" type="OT_SEQUENCE"/>
+
+    <check-sequence-size obj="obj2" value="80"/>
+
+
+</multi-test>

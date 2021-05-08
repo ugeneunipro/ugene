@@ -1,0 +1,8 @@
+<!-- Verify an invalid BED file that can't be opened: -->
+<!-- "chromStart" is greater than "chromEnd". -->
+
+<multi-test lockForLogListening="true">
+
+    <load-broken-document index="doc" url="bed/invalid_input/incorrect_coords/start_greater_end.bed" io="local_file" format="bed"/>
+
+</multi-test>
