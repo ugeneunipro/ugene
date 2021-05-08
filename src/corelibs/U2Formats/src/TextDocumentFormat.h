@@ -69,7 +69,7 @@ protected:
 
     /**
      * Loads a DNASequence object from the current state of the reader.
-     * Returns a valid sequence object or sets an error to the 'os'.
+     * Returns a valid sequence object or nullptr if there are no more sequences left in the stream.
      * By default returns nullptr & error that sequence loading is not supported by the current format.
      */
     virtual DNASequence *loadTextSequence(IOAdapterReader &reader, U2OpStatus &os);

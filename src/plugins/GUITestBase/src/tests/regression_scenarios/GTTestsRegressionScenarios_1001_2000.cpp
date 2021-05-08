@@ -1734,20 +1734,17 @@ GUI_TEST_CLASS_DEFINITION(test_1154) {
     GTFile::copyDir(os, testDir + "_common_data/regression/1154", sandBoxDir + "1154");
 
     AlignShortReadsFiller::UgeneGenomeAlignerParams parameters(sandBoxDir + "1154/reference.fa",
-                                                               QStringList() << sandBoxDir + "1154/read.fa"
-                                                                             << sandBoxDir + "1154/read2.fa");
+                                                               {sandBoxDir + "1154/read.fa", sandBoxDir + "1154/read2.fa"});
     parameters.useBestMode = false;
     parameters.samOutput = false;
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, &parameters));
     GTUtilsDialog::waitForDialogWhichMustNotBeRun(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "The short reads can't be mapped to the reference sequence!"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "NGS data analysis"
-                                                << "Map reads to reference...");
+    GTMenu::clickMainMenuItem(os, {"Tools", "NGS data analysis", "Map reads to reference..."});
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDocument::checkDocument(os, "reference.ugenedb");
 
-    const bool hasMessage = logTracer.checkMessage("50% reads aligned.");
+    bool hasMessage = GTLogTracer::checkMessage("50% reads aligned.");
     CHECK_SET_ERR(hasMessage, "The expected message is not found in the log");
 }
 

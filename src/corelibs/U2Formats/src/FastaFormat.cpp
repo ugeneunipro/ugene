@@ -96,13 +96,23 @@ static QVariantMap buildFormatDetectionHints(const QString &data) {
     return hints;
 }
 
+/** Returns true if the line is a valid comment line for FASTA format. */
+static bool isCommentLine(const QString &line) {
+    return line.startsWith(FastaFormat::FASTA_COMMENT_START_SYMBOL);
+}
+
+/** Returns true if the line is a valid comment line for FASTA format. */
+static bool isHeaderLine(const QString &line) {
+    return line.startsWith(FastaFormat::FASTA_HEADER_START_SYMBOL);
+}
+
 FormatCheckResult FastaFormat::checkRawTextData(const QString &dataPrefix, const GUrl &) const {
     QString data = TextUtils::skip(TextUtils::WHITES, dataPrefix);
     FormatDetectionScore score;
-    if (data.startsWith(FASTA_HEADER_START_SYMBOL)) {
+    if (isHeaderLine(data)) {
         // A perfect match: start of the FASTA file.
         score = FormatDetection_Matched;
-    } else if (data.startsWith(FASTA_COMMENT_START_SYMBOL) && data.contains(data.startsWith(QString("\n") + FASTA_HEADER_START_SYMBOL))) {
+    } else if (isCommentLine(data) && data.contains(QString("\n") + FASTA_HEADER_START_SYMBOL)) {
         // A good match: looks like a FASTA comment before a FASTA header line.
         score = FormatDetection_HighSimilarity;
     } else {
@@ -112,16 +122,6 @@ FormatCheckResult FastaFormat::checkRawTextData(const QString &dataPrefix, const
     FormatCheckResult result(score);
     result.properties = buildFormatDetectionHints(data);
     return result;
-}
-
-/** Returns true if the line is a valid comment line for FASTA format. */
-static bool isCommentLine(const QString &line) {
-    return line.startsWith(FastaFormat::FASTA_COMMENT_START_SYMBOL);
-}
-
-/** Returns true if the line is a valid comment line for FASTA format. */
-static bool isHeaderLine(const QString &line) {
-    return line.startsWith(FastaFormat::FASTA_HEADER_START_SYMBOL);
 }
 
 /** Skips leading 'whites' and comment lines from the stream. */
@@ -383,6 +383,7 @@ DNASequence *FastaFormat::loadTextSequence(IOAdapterReader &reader, U2OpStatus &
         QString buf(DocumentFormat::READ_BUFF_SIZE + 1, '\0');
         skipLeadingWhitesAndComments(reader, os);
         CHECK_OP(os, nullptr);
+        CHECK(!reader.atEnd(), nullptr);
 
         QString header = readHeader(reader, os).trimmed();
         CHECK_OP(os, nullptr);
