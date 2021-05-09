@@ -184,30 +184,24 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "HIV-1.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_PROJECT__EXPORT_AS_SEQUENCES_ACTION));
+    GTUtils::checkExportServiceIsEnabled(os);
 
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION, ACTION_PROJECT__EXPORT_AS_SEQUENCES_ACTION}));
     GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, dataDir + " _common_data/scenarios/sandbox/", "export1.fa", ExportToSequenceFormatFiller::FASTA, true, true));
-
     GTUtilsProjectTreeView::click(os, "HIV-1.aln", Qt::RightButton);
 
     GTUtilsProjectTreeView::getItemCenter(os, "export1.fa");
     GTUtilsProjectTreeView::scrollTo(os, "ru131");
-
     GTKeyboardDriver::keyClick('w', Qt::ControlModifier);
 
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "ru131");
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::doubleClick();
 
-    QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
-    if (!activeWindow->windowTitle().contains("ru131") && !os.hasError()) {
-        os.setError("fasta file with sequences has been not opened");
-    }
+    GTUtilsMdi::checkWindowIsActive(os, "ru131");
 
     QString sequenceEnd = GTUtilsSequenceView::getEndOfSequenceAsString(os, 1);
-    if (sequenceEnd.at(0) != '-' && !os.hasError()) {
-        os.setError("sequence [s] ru131 has not NOT'-' symbols at the end of sequence");
-    }
+    CHECK_SET_ERR(sequenceEnd.at(0) == '-', "Sequence has no '-' symbol as a suffix");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
