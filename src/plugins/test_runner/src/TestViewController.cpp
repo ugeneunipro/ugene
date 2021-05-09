@@ -626,11 +626,6 @@ void TestViewController::saveTestSuite(const QString &url, QMap<GTestRef *, QStr
         return;
     }
 
-    if (suiteDoc.doctype().name() != "UGENE_TEST_FRAMEWORK_SUITE") {
-        err = ("not_a_test_suite_file");
-        return;
-    }
-
     QDomElement suiteEl = suiteDoc.documentElement();
     if (suiteEl.tagName() != "suite") {
         err = ("suite_elem_not_found");

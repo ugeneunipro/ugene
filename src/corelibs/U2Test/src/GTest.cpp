@@ -155,11 +155,6 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
         return NULL;
     }
 
-    if (suiteDoc.doctype().name() != "UGENE_TEST_FRAMEWORK_SUITE") {
-        err = ("not_a_test_suite_file");
-        return NULL;
-    }
-
     QDomElement suiteEl = suiteDoc.documentElement();
     if (suiteEl.tagName() != "suite") {
         err = ("suite_elem_not_found");
