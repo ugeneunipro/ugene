@@ -2540,49 +2540,43 @@ GUI_TEST_CLASS_DEFINITION(test_3437) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3402) {
-    //    Open "test/_common_data/clustal/100_sequences.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/clustal", "3000_sequences.aln");
-    //    Call context menu on the "100_sequences" object.
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
     GTUtilsProjectTreeView::checkProjectViewIsOpened(os);
-    GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, sandBoxDir, "test_3402.fa", ExportToSequenceFormatFiller::FASTA, true, true));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "action_project__export_import_menu_action"
-                                                                        << "action_project__export_as_sequence_action"));
 
+    //  Call context menu on the "100_sequences" object.
+    GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, sandBoxDir, "test_3402.fa", ExportToSequenceFormatFiller::FASTA, true, true));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_project__export_import_menu_action" , "action_project__export_as_sequence_action"}));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "3000_sequences.aln"));
     GTMouseDriver::click(Qt::RightButton);
-    //GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    Select {Export/Import -> Export alignmnet to sequence format...}
 
-    //    menu item.
-    //    Export somewhere as fasta, sure that "Add document to the project" checkbox is checked.
-    //    Wait until open view task will start.
-    TaskScheduler *scheduller = AppContext::getTaskScheduler();
-
-    bool end = false;
-    while (!end) {
-        QList<Task *> tList = scheduller->getTopLevelTasks();
-        if (tList.isEmpty()) {
+    TaskScheduler *scheduler = AppContext::getTaskScheduler();
+    bool isTaskFound = false;
+    while (!isTaskFound) {
+        QList<Task *> topLevelTasks = scheduler->getTopLevelTasks();
+        if (topLevelTasks.isEmpty()) {
             continue;
         }
-        QList<Task *> innertList;
-        for (Task *t : qAsConst(tList)) {
-            innertList.append(t->getPureSubtasks());
+        QList<Task *> subTasks;
+        for (const Task *task : qAsConst(topLevelTasks)) {
+            subTasks.append(task->getPureSubtasks());
         }
-        for (Task *t : qAsConst(innertList)) {
-            if (t->getTaskName().contains("Opening view")) {
-                end = true;
+        for (const Task *task : qAsConst(subTasks)) {
+            if (task != nullptr && task->getTaskName().contains("Opening view")) {
+                isTaskFound = true;
                 break;
             }
         }
+        //TODO: replace this method with a helper method that waits until task by name.
+        GTGlobals::sleep(10);
     }
 
-    //         Expected state: the fasta document is present in the project, open view task is in progress.
+    // Expected state: the fasta document is present in the project, open view task is in progress.
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "test_3402.fa"));
-    //    Delete the fasta document from the project.
+    // Delete the fasta document from the project.
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    //    Current state: UGENE not crashes.
+    // Current state: UGENE does not crash.
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3414) {
