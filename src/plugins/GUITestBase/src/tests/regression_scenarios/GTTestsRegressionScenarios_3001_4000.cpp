@@ -2546,7 +2546,7 @@ GUI_TEST_CLASS_DEFINITION(test_3402) {
 
     //  Call context menu on the "100_sequences" object.
     GTUtilsDialog::waitForDialog(os, new ExportToSequenceFormatFiller(os, sandBoxDir, "test_3402.fa", ExportToSequenceFormatFiller::FASTA, true, true));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_project__export_import_menu_action" , "action_project__export_as_sequence_action"}));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"action_project__export_import_menu_action", "action_project__export_as_sequence_action"}));
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "3000_sequences.aln"));
     GTMouseDriver::click(Qt::RightButton);
 
@@ -3270,6 +3270,8 @@ GUI_TEST_CLASS_DEFINITION(test_3519_2) {
     GTWidget::click(os, GTWidget::findWidget(os, "Find restriction sites_widget"));
     GTThread::waitForMainThread();
 
+    GTGlobals::sleep(1000);
+
     GTUtilsTaskTreeView::openView(os);
     GTUtilsDialog::waitForDialog(os, new SiteconCustomFiller(os));
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
@@ -3399,32 +3401,33 @@ GUI_TEST_CLASS_DEFINITION(test_3556) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3557) {
-    //1. Open "_common_data/muscul4/prefab_1_ref.aln".
     GTFileDialog::openFile(os, testDir + "_common_data/muscul4/", "prefab_1_ref.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Press the "Switch on/off collapsing" tool button.
+    // "Switch on/off collapsing" tool button.
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Switch on/off collapsing");
 
-    //3. Select the "2|1a0cA|gi|32470780" and "1a0cA" sequences.
-    //GTUtilsMSAEditorSequenceArea::scrollToBottom(os);
-    GTUtilsMSAEditorSequenceArea::selectSequence(os, "1a0dA");
+    GTUtilsMsaEditor::clickSequenceName(os, "1a0dA");
+
+    // Scroll to end of the list.
     GTKeyboardDriver::keyClick(Qt::Key_End, Qt::ControlModifier);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    const int rowsCount = GTUtilsMsaEditor::getSequencesCount(os);
-    GTUtilsMSAEditorSequenceArea::selectSequence(os, "2|1a0cA|gi|32470780");
-    GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTUtilsMSAEditorSequenceArea::selectSequence(os, "1a0cA");
-    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
-    //4. Open the "Pairwise Alignment" OP tab.
+    GTUtilsMsaEditor::clickSequenceName(os, "2|1a0cA|gi|32470780");
+
+    GTGlobals::sleep(1000); // Wait to avoid double click.
+    GTKeyboardDriver::keyPress(Qt::Key_Shift);
+    GTUtilsMsaEditor::clickSequenceName(os, "1a0cA");
+    GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+    GTThread::waitForMainThread();
+
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 
     //Expected: "2|1a0cA|gi|32470780" and "1a0cA" are in the OP.
-    const QString firstRowName = GTUtilsOptionPanelMsa::getSeqFromPAlineEdit(os, 1);
-    const QString secondRowName = GTUtilsOptionPanelMsa::getSeqFromPAlineEdit(os, 2);
-    const QString expectedFirstRowName = "2|1a0cA|gi|32470780";
-    const QString expectedSecondRowName = "1a0cA";
+    QString firstRowName = GTUtilsOptionPanelMsa::getSeqFromPAlineEdit(os, 1);
+    QString secondRowName = GTUtilsOptionPanelMsa::getSeqFromPAlineEdit(os, 2);
+    QString expectedFirstRowName = "2|1a0cA|gi|32470780";
+    QString expectedSecondRowName = "1a0cA";
     CHECK_SET_ERR(firstRowName == expectedFirstRowName, QString("Wrong first sequence: expected '%1', got '%2'").arg(expectedFirstRowName).arg(firstRowName));
     CHECK_SET_ERR(secondRowName == expectedSecondRowName, QString("Wrong second sequence: expected '%1', got '%2'").arg(expectedSecondRowName).arg(secondRowName));
 }
