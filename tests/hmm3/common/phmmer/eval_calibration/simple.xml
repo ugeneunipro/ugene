@@ -1,0 +1,11 @@
+<multi-test>
+    <!-- query: tt_query db: tt_db simple test
+	./phmmer -EvL 50 -EvN 100 -EfL 50 -EfN 100 -Eft 0.01 tt_query.fa tt_db.fa >  tt_query_tt_db_eval_calibration.out -->
+
+    <hmm3-phmmer query="hmmer3/phmmer/tt_query.fa" db="hmmer3/phmmer/tt_db.fa"
+                 EvL="50" EvN="100" EfL="50" EfN="100" Eft="0.01"
+                 outputDir="common/phmmer/eval_calibration/simple/"
+    />
+    <hmm3-phmmer-compare trueOut="hmmer3/phmmer/tt_query_tt_db_eval_calibration.out" actualOut="common/phmmer/eval_calibration/simple/output.txt"/>
+
+</multi-test>

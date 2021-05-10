@@ -21,13 +21,17 @@
 
 #include "CInterfaceManualTests.h"
 
+#include <QCoreApplication>
+
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "SchemeSimilarityUtils.h"
-
 static const int MAX_ELEMENT_NAME_LENGTH = 100;
-static const QString PROPER_WD_SCHEMES_PATH = PATH_PREFIX_DATA + QString(":workflow_samples");
+
+static QString getWdSchemesPath() {
+    return QCoreApplication::applicationDirPath() + "/data/workflow_samples";
+}
 
 namespace U2 {
 
@@ -62,7 +66,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, basic_align) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/Alignment/basic_align.uwl",
+                                                  getWdSchemesPath() + "/Alignment/basic_align.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -101,7 +105,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, faqual2fastq) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/Conversions/faqual2fastq.uwl",
+                                                  getWdSchemesPath() + "/Conversions/faqual2fastq.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -129,7 +133,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, msa2clustal) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/Conversions/msa2clustal.uwl",
+                                                  getWdSchemesPath() + "/Conversions/msa2clustal.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -202,7 +206,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, query2alignment) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/Conversions/query2alignment.uwl",
+                                                  getWdSchemesPath() + "/Conversions/query2alignment.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -241,7 +245,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, seq2gen) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/Conversions/seq2gen.uwl",
+                                                  getWdSchemesPath() + "/Conversions/seq2gen.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -315,7 +319,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, tfbs) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/Data merging/tfbs.uwl",
+                                                  getWdSchemesPath() + "/Data merging/tfbs.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -405,7 +409,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, build_test_HMM) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/HMMER/build-test-HMM.uwl",
+                                                  getWdSchemesPath() + "/HMMER/build-test-HMM.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -464,7 +468,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, search_HMM) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/HMMER/searchHMM.uwl",
+                                                  getWdSchemesPath() + "/HMMER/searchHMM.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -548,7 +552,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, search_TFBS) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/Transcriptomics/SearchTFBS.uwl",
+                                                  getWdSchemesPath() + "/Transcriptomics/SearchTFBS.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -610,7 +614,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, call_variants) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/NGS/ngs_variant_calling.uwl",
+                                                  getWdSchemesPath() + "/NGS/ngs_variant_calling.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -705,7 +709,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, chip_seq) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/NGS/cistrome/chip_seq.uwl",
+                                                  getWdSchemesPath() + "/NGS/cistrome/chip_seq.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -813,7 +817,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, chip_seq_with_control) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/NGS/cistrome/chip_seq_with_control.uwl",
+                                                  getWdSchemesPath() + "/NGS/cistrome/chip_seq_with_control.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -889,7 +893,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, tuxedo_main) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/NGS/tuxedo/tuxedo_main.uwl",
+                                                  getWdSchemesPath() + "/NGS/tuxedo/tuxedo_main.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -994,7 +998,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, tuxedo_main_paired) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/NGS/tuxedo/tuxedo_main_paired.uwl",
+                                                  getWdSchemesPath() + "/NGS/tuxedo/tuxedo_main_paired.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -1059,7 +1063,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, tuxedo_multiple_dataset) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/NGS/tuxedo/tuxedo_no_novel_transcr.uwl",
+                                                  getWdSchemesPath() + "/NGS/tuxedo/tuxedo_no_novel_transcr.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -1150,7 +1154,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, tuxedo_multiple_dataset_paired) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/NGS/tuxedo/tuxedo_no_novel_transcr_paired.uwl",
+                                                  getWdSchemesPath() + "/NGS/tuxedo/tuxedo_no_novel_transcr_paired.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -1204,7 +1208,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, tuxedo_single_dataset) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/NGS/tuxedo/tuxedo_single_dataset.uwl",
+                                                  getWdSchemesPath() + "/NGS/tuxedo/tuxedo_single_dataset.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -1283,7 +1287,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, tuxedo_single_dataset_paired) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/NGS/tuxedo/tuxedo_single_dataset_paired.uwl",
+                                                  getWdSchemesPath() + "/NGS/tuxedo/tuxedo_single_dataset_paired.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -1333,7 +1337,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, find_sequences) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/Scenarios/find_sequences.uwl",
+                                                  getWdSchemesPath() + "/Scenarios/find_sequences.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -1387,7 +1391,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, gene_by_gene_report) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/Scenarios/gene_by_gene_report.uwl",
+                                                  getWdSchemesPath() + "/Scenarios/gene_by_gene_report.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -1435,7 +1439,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, merge_sequence_annotation) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/Scenarios/merge_sequence_annotation.uwl",
+                                                  getWdSchemesPath() + "/Scenarios/merge_sequence_annotation.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 
@@ -1474,7 +1478,7 @@ IMPLEMENT_TEST(CInterfaceManualTests, consensus) {
 
     U2OpStatusImpl stateInfo;
     SchemeSimilarityUtils::checkSchemesSimilarity(scheme,
-                                                  PROPER_WD_SCHEMES_PATH + "/NGS/consensus.uwl",
+                                                  getWdSchemesPath() + "/NGS/consensus.uwl",
                                                   stateInfo);
     CHECK_NO_ERROR(stateInfo);
 

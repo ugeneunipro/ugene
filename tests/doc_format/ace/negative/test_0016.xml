@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Test reading file: a name in an RD tag doesn't mutch with a name in an AF tag -->
+
+    <load-broken-document url="ace/ace_test_11_(error).ace" io="local_file" format="ace"/>
+
+</multi-test>

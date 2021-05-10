@@ -1,0 +1,6 @@
+<multi-test>
+
+    <!-- Empty sequence -->
+    <load-broken-document index="doc" url="swiss_prot/broken/empty_sequence_merge.txt" io="local_file" format="swiss-prot" sequence-mode="merge" message="Probably, this is because the sequence is empty"/>
+
+</multi-test>

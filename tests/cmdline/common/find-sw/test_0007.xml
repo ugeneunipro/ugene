@@ -1,0 +1,16 @@
+<multi-test>
+    <run-cmdline task="find-sw"
+                 ref="!common_data_dir!fasta/RNA_1_seq.fa"
+                 out="!tmp_data_dir!find_sw0007_tmp.gbk"
+                 ptrn="!common_data_dir!cmdline/find-sw/patterns/GCUCGGGAGG.fa"
+                 matrix="rna"
+                 score="71"
+                 filter="none"
+    />
+
+    <load-document index="doc1" url="find_sw0007_tmp.gbk" io="local_file" format="genbank" dir="temp"/>
+    <load-document index="doc2" url="cmdline/find-sw/07.gb" io="local_file" format="genbank"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+</multi-test>

@@ -1,0 +1,11 @@
+<multi-test>
+    <plugin_remote-query
+            seq="TTCCPSIVARSNFNVCRLPGTPEAICATYTGCIIIPGATCPGDYAN"
+            alg="blastp"
+            db="cdd"
+            e-value="0"
+            hits="10"
+            strand="direct"
+            expected_results=""
+    />
+</multi-test>

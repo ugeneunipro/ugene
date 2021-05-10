@@ -1,0 +1,17 @@
+<multi-test>
+
+    <!-- Task test: check subtask canceled -->
+
+    <task-create index="task" type="infinite_task" name="test_task" delete="1" flags="TaskFlag_None|TaskFlag_NoAutoDelete"/>
+    <task-create index="subtask" type="infinite_task" name="test_subtask" delete="1" flags="TaskFlag_None"/>
+    <task-add-subtask obj="task" subtask="subtask"/>
+    <task-exec obj="task"/>
+    <wait ms="500"/>
+    <task-check-state obj="task" state="State_Running"/>
+    <task-check-state obj="subtask" state="State_Running"/>
+    <task-cancel obj="task"/>
+    <wait ms="10000" obj="task" cond="WaitCond_StateChanged" state="State_Finished"/>
+    <task-check-state obj="subtask" cancelflag="1"/>
+    <task-check-state obj="subtask" state="State_Finished"/>
+
+</multi-test>

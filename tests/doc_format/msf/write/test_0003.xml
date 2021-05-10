@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Test saving file: row names have to be unique, all non-unique row names have to be rolled -->
+
+    <load-document index="doc" url="clustal/non_unique_row_names.aln" io="local_file" format="clustal"/>
+    <save-document doc="doc" url="write_temp0003.msf" io="local_file" format="msf"/>
+    <load-document index="doc2" url="write_temp0003.msf" io="local_file" format="msf" dir="temp"/>
+    <load-document index="doc3" url="msf/rolled_row_names.msf" io="local_file" format="msf"/>
+    <compare-Msequences-in-two-objects doc="doc2" value="doc3"/>
+
+</multi-test>

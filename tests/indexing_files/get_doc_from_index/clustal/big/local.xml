@@ -1,0 +1,15 @@
+<multi-test>
+
+    <!-- try to get specified document from index file created on big local file and check msa with original -->
+
+    <generate-file input="indexing_files/clustal/local_file.aln" amount="8000" outCtxName="tmpOut" gzipOut=""/>
+    <create-file-index tmpInput="yes" input="tmpOut" output="bclu_local_file.uind" delete="yes"/>
+    <load-document index="indDoc" dir="temp" url="bclu_local_file.uind" io="local_file"
+                   format="index"/>
+    <get-doc-from-index indDocName="indDoc" docNum="4399" docCtxName="outDoc"/>
+
+    <load-document index="trueDoc" url="indexing_files/clustal/local_file.aln"
+                   io="local_file" format="clustal"/>
+    <compare-Msequences-in-two-objects doc="outDoc" value="trueDoc"/>
+
+</multi-test>

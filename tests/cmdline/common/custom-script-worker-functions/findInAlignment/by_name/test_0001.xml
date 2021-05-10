@@ -1,0 +1,7 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/findInAlignmentTest/findInAlignmentTest.uwl"
+                 in="!common_data_dir!cmdline/DNA_nucl_ext_rand_seq.aln"
+                 seq_name="SEQUENCE_3"
+                 expected="1"
+    />
+</multi-test>

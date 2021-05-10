@@ -1,0 +1,14 @@
+<multi-test>
+
+    <!-- Annotation qualifier test: If the text string includes double quotation marks, each set
+    must be `escaped' by placing a double quotation mark in front of it -->
+
+    <load-document index="doc" url="genbank/custom.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="obj" doc="doc" name="NC_002528 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-number index="ann" obj="obj" number="1"/>
+
+    <check-annotation-qualifier annotation="ann" qualifier="note" value="This is an example of &quot;escaped&quot; quotation marks"/>
+
+</multi-test>

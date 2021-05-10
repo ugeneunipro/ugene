@@ -1,0 +1,9 @@
+<multi-test>
+    <!-- query: finronectin1.2_1 db: titin.fa
+	./phmmer -seed 1000 -EvL 50 -EvN 30 -EfL 1000 -EfN 1300 -Eft 0.00001 fibronectin1.2_1.fa titin.fa > fibronectin_1_titin_seed_eval_calibration.out -->
+
+    <hmm3-phmmer query="hmmer3/phmmer/fibronectin1.2_1.fa" db="fasta/titin.fa" seed="1000" EvL="50" EvN="30" EfL="1000" EfN="1300" Eft="0.00001"
+                 outputDir="common/phmmer/eval_calibration/fibronectin1.2_1_titin/"/>
+    <hmm3-phmmer-compare trueOut="hmmer3/phmmer/fibronectin_1_titin_seed_eval_calibration.out" actualOut="common/phmmer/eval_calibration/fibronectin1.2_1_titin/output.txt"/>
+
+</multi-test>

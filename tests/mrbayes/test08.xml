@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- MrBayes Test -->
+    <load-document index="doc" url="mrbayes/alignment_4.aln" io="local_file" format="clustal"/>
+    <find-object-by-name index="obj" doc="doc" name="alignment_4" type="OT_MSA"/>
+    <calc-tree-from-alignment index="tree" obj="obj" algorithm="MrBayes"/>
+    <check-phynode-has-sibling obj="tree" phynode="Brontosaur" sibling="B.subtilis"/>
+    <check-phynode-has-sibling obj="tree" phynode="Baluchithe" sibling="B. virgini"/>
+    <check-phynode-branch-distance obj="tree" phynode="Hesperorni" value="0.147"/>
+</multi-test>

@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- try to find seqpart in second of protein sequense in multy sequence -->
+
+    <load-document index="doc" url="clustal/default_amino_long.aln" io="local_file" format="clustal"/>
+    <find-object-by-name index="obj" doc="doc" name="default_amino_long" type="OT_MSA"/>
+
+    <check-Msequence-part obj="obj" value="STSGTTSGPGPARPARARPRRPRE" seqstart="123" seqname="FOSB_HUMAN"/>
+
+</multi-test>

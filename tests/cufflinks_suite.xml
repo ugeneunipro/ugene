@@ -1,0 +1,4 @@
+<suite test-timeout="30" name="Cufflinks tests">
+
+    <test-dir test-ext="*.xml" path="cufflinks" test-format="XML" exclude="workflow_designer/test_0001.xml"/>
+</suite>

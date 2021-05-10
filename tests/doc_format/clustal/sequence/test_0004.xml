@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to check multy sequence size  base nucl rna alphabit more then 60 symbols, no size at the end of line(must be 604) -->
+
+    <load-document index="doc" url="clustal/dafault_RNA.aln" io="local_file" format="clustal"/>
+    <find-object-by-name index="obj" doc="doc" name="dafault_RNA" type="OT_MSA"/>
+    <check-Msequence-size obj="obj" value="604"/>
+
+</multi-test>

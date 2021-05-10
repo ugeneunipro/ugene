@@ -1,0 +1,8 @@
+<multi-test>
+    <!-- query: rnd_query db: rnd_db
+	./phmmer -nonull2 rnd_query2.fa rnd_db.fa >  rnd_query2_rnd_db_nonull2.out -->
+
+    <hmm3-phmmer query="hmmer3/phmmer/rnd_query2.fa" db="hmmer3/phmmer/rnd_db.fa" nonull2="yes" outputDir="common/phmmer/acceleration_heuristics/rnd2"/>
+    <hmm3-phmmer-compare trueOut="hmmer3/phmmer/rnd_query2_rnd_db_nonull2.out" actualOut="common/phmmer/acceleration_heuristics/rnd2/output.txt"/>
+
+</multi-test>

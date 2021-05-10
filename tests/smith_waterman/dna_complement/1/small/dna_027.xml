@@ -1,0 +1,18 @@
+<multi-test>
+    <dna name="dna_complement_1_small_027"
+         pattern="AGTGGAGG"
+         seq="CAGTAGTGTGTCATCGAGTAGCATTGCTTCCGCATAGGA"
+         strand="complement"
+         start_pos="0"
+         seq_len="39"
+         score="17"
+         threshold="5"
+         aphabet="ACGT"
+         gap_open="-12"
+         gap_extd="-4"
+         subst_matrix="5 -4 -4 -4
+				              -4  5 -4 -4
+				              -4 -4  5 -4
+				              -4 -4 -4  5"
+    />
+</multi-test>

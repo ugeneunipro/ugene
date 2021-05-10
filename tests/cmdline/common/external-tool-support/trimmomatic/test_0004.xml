@@ -1,0 +1,19 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/external-tool-support/trimmomatic/pe_trimmomatic.uwl"
+            in1="!common_data_dir!cmdline/external-tool-support/trimmomatic/small-R1.fastq"
+            in2="!common_data_dir!cmdline/external-tool-support/trimmomatic/small-R2.fastq"
+            steps="HEADCROP:5"
+            out-paired1="!tmp_data_dir!trimmomatic/test_0004/small-R1P.fastq"
+            out-paired2="!tmp_data_dir!trimmomatic/test_0004/small-R2P.fastq"
+            out-unpaired1="!tmp_data_dir!trimmomatic/test_0004/small-R1U.fastq"
+            out-unpaired2="!tmp_data_dir!trimmomatic/test_0004/small-R2U.fastq"
+            generate-log="true"
+            log-url="!tmp_data_dir!trimmomatic/test_0004/small_trimlog.txt"
+    />
+    <compare-docs doc1="!common_data_dir!cmdline/external-tool-support/trimmomatic/test_0004_result/small-R1P.fastq" doc2="!tmp_data_dir!trimmomatic/test_0004/small-R1P.fastq"/>
+    <compare-docs doc1="!common_data_dir!cmdline/external-tool-support/trimmomatic/test_0004_result/small-R2P.fastq" doc2="!tmp_data_dir!trimmomatic/test_0004/small-R2P.fastq"/>
+    <compare-docs doc1="!common_data_dir!cmdline/external-tool-support/trimmomatic/test_0004_result/small-R1U.fastq" doc2="!tmp_data_dir!trimmomatic/test_0004/small-R1U.fastq"/>
+    <compare-docs doc1="!common_data_dir!cmdline/external-tool-support/trimmomatic/test_0004_result/small-R2U.fastq" doc2="!tmp_data_dir!trimmomatic/test_0004/small-R2U.fastq"/>
+    <compare-docs doc1="!common_data_dir!cmdline/external-tool-support/trimmomatic/test_0004_result/small_trimlog.txt" doc2="!tmp_data_dir!trimmomatic/test_0004/small_trimlog.txt"/>
+</multi-test>

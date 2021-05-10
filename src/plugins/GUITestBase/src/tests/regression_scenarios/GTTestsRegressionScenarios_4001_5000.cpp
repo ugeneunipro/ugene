@@ -1183,8 +1183,7 @@ GUI_TEST_CLASS_DEFINITION(test_4116) {
     public:
         void run(HI::GUITestOpStatus &os) {
             //    Expected: the dialog is modal, the "OK" button is disabled.
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             CHECK_SET_ERR(GTUtilsDialog::buttonBox(os, dialog) != NULL, "ButtonBox is NULL");
 
             QWidget *okButton = GTUtilsDialog::buttonBox(os, dialog)->button(QDialogButtonBox::Ok);

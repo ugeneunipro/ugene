@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!bedGraphToBigWig/bedGraphToBigWig.uwl"
+            in="!common_data_dir!bedGraphToBigWig/1.bg"
+            out_dir="!tmp_data_dir!"
+            out_name="bedGraphToBigWig_test_0001.bigWig"
+    />
+    <compare-docs doc1="!common_data_dir!bedGraphToBigWig/out1.bigWig" doc2="!tmp_data_dir!bedGraphToBigWig_test_0001.bigWig"/>
+
+</multi-test>

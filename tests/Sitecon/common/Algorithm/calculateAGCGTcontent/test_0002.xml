@@ -1,0 +1,7 @@
+<multi-test>
+
+    <load-document index="doc" url="Sitecon/Algorithm/test2.aln" io="local_file" format="clustal"/>
+
+    <sitecon-calculateACGTContent doc="doc" expected_results="25,26,25,26"/>
+
+</multi-test>

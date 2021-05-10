@@ -1,0 +1,62 @@
+<multi-test>
+    <remove-temp-dir url="index_reuse_bwa"/>
+    <create-temp-dir url="index_reuse_bwa"/>
+    <copy-file from="!common_data_dir!bowtie2/reads_1.fq" to="!tmp_data_dir!index_reuse_bwa/reads_1.fq"/>
+    <copy-file from="!common_data_dir!bowtie2/lambda_virus.fa" to="!tmp_data_dir!index_reuse_bwa/lambda_virus.fa"/>
+    <!--building index check-->
+    <run-cmdline
+            task="!common_data_dir!cmdline/index_reuse/bwa.uwl"
+            in="!tmp_data_dir!index_reuse_bwa/reads_1.fq"
+            out_file="out1.sam"
+            out_dir="!tmp_data_dir!index_reuse_bwa"
+            ref="!tmp_data_dir!index_reuse_bwa/lambda_virus.fa"
+    />
+
+    <check-files-num folder="!tmp_data_dir!index_reuse_bwa" expected="10"/>
+
+    <!--check index reuse-->
+    <wait ms="30000"/>
+    <run-cmdline
+            task="!common_data_dir!cmdline/index_reuse/bwa.uwl"
+            in="!tmp_data_dir!index_reuse_bwa/reads_1.fq"
+            out_file="out1.sam"
+            out_dir="!tmp_data_dir!index_reuse_bwa"
+            ref="!tmp_data_dir!index_reuse_bwa/lambda_virus.fa"
+    />
+    <check-creation-time url="!tmp_data_dir!index_reuse_bwa/lambda_virus.amb" moreThen="30"/>
+
+    <!--check .fa index names-->
+    <copy-file from="!tmp_data_dir!index_reuse_bwa/lambda_virus.amb" to="!tmp_data_dir!index_reuse_bwa/lambda_virus.fa.amb"/>
+    <copy-file from="!tmp_data_dir!index_reuse_bwa/lambda_virus.ann" to="!tmp_data_dir!index_reuse_bwa/lambda_virus.fa.ann"/>
+    <copy-file from="!tmp_data_dir!index_reuse_bwa/lambda_virus.bwt" to="!tmp_data_dir!index_reuse_bwa/lambda_virus.fa.bwt"/>
+    <copy-file from="!tmp_data_dir!index_reuse_bwa/lambda_virus.pac" to="!tmp_data_dir!index_reuse_bwa/lambda_virus.fa.pac"/>
+    <copy-file from="!tmp_data_dir!index_reuse_bwa/lambda_virus.sa" to="!tmp_data_dir!index_reuse_bwa/lambda_virus.fa.sa"/>
+
+    <remove-temp-file url="index_reuse_bwa/lambda_virus.amb"/>
+    <remove-temp-file url="index_reuse_bwa/lambda_virus.ann"/>
+    <remove-temp-file url="index_reuse_bwa/lambda_virus.bwt"/>
+    <remove-temp-file url="index_reuse_bwa/lambda_virus.pac"/>
+    <remove-temp-file url="index_reuse_bwa/lambda_virus.sa"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/index_reuse/bwa.uwl"
+            in="!tmp_data_dir!index_reuse_bwa/reads_1.fq"
+            out_file="out1.sam"
+            out_dir="!tmp_data_dir!index_reuse_bwa"
+            ref="!tmp_data_dir!index_reuse_bwa/lambda_virus.fa"
+    />
+
+    <check-files-num folder="!tmp_data_dir!index_reuse_bwa" expected="12"/>
+
+    <!--check index file as reference-->
+    <run-cmdline
+            task="!common_data_dir!cmdline/index_reuse/bwa.uwl"
+            in="!tmp_data_dir!index_reuse_bwa/reads_1.fq"
+            out_file="out1.sam"
+            out_dir="!tmp_data_dir!index_reuse_bwa"
+            ref="!tmp_data_dir!index_reuse_bwa/lambda_virus.fa.amb"
+    />
+    <check-files-num folder="!tmp_data_dir!index_reuse_bwa" expected="13"/>
+
+    <remove-temp-dir url="index_reuse_bwa"/>
+</multi-test>

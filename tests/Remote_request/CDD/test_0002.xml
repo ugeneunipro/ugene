@@ -1,0 +1,6 @@
+<!-- checking boundary conditions max length -->
+<multi-test>
+
+    <plugin_remote-request min_length="0" max_length="78" strand="direct" script="cdd.qs" seq="MTAAVKDELSRVDVKPCCRRAEMAALLRFAGGLHIVSGRVVVEAELDTGAVARRLRREIAEVYGYPSEIHVLASGGLRK" expected_results="pfam10298"/>
+
+</multi-test>

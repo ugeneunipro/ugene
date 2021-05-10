@@ -94,7 +94,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             foreach (const QString &read, settings.readUrls) {
                 GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, read));
                 GTWidget::click(os, addReadButton);
-                GTGlobals::sleep();
             }
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -341,7 +340,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005_3) {
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::setParameter(os, "Mapped reads file", QFileInfo(sandBoxDir + "sanger_test_0005_3.ugenedb").absoluteFilePath());
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
-            GTGlobals::sleep(200);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
@@ -413,7 +411,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005_4) {
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
             GTUtilsWizard::setParameter(os, "Mapped reads file", QFileInfo(sandBoxDir + "sanger_test_0005_4.ugenedb").absoluteFilePath());
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
-            GTGlobals::sleep(200);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
         }
     };
@@ -502,7 +499,6 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
                                                 << "Map reads to reference...");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     CHECK_SET_ERR(l.hasErrors(), "Expected to have errors in the log, but no errors found");
 

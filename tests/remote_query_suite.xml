@@ -1,0 +1,8 @@
+<suite name="Remote query plugin tests">
+
+    <!-- plugin_remote-query -->
+    <env-var name="NUM_THREADS" value="1"/>
+    <env-var name="REMOTE_QUERY" value="1" local="true"/>
+    <test-dir path="remote_query" test-format="XML" test-ext="*.xml"/>
+
+</suite>

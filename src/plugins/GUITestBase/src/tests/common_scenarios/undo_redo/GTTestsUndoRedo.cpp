@@ -60,7 +60,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {    //DIFFERENCE: lock document is checked
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
     for (int i = 0; i < 6; i++) {
         GTKeyboardDriver::keyClick(Qt::Key_Space);
-        GTGlobals::sleep(200);
     }
 
     QAbstractButton *undo = GTAction::button(os, "msa_action_undo");
@@ -68,7 +67,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {    //DIFFERENCE: lock document is checked
     //3. Undo this
     for (int i = 0; i < 3; i++) {
         GTWidget::click(os, undo);
-        GTGlobals::sleep(200);
     }
     //4. lock document
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "COI.aln"));
@@ -93,18 +91,15 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {    //DIFFERENCE: lock document is checked
     GTWidget::click(os, undo);
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(9, 0));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "--TAAGACTT", "Undo works wrong. Found text is: " + clipboardText);
 
     //check redo
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
     GTWidget::click(os, redo);
-    GTGlobals::sleep(200);
     GTWidget::click(os, redo);
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(9, 0));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
     clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "----TAAGAC", "Redo works wrong. Found text is: " + clipboardText);
 }
@@ -119,14 +114,12 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {    //DIFFERENCE: delete sequence is check
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 3));
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Roeseliana_roeseli", "Roeseliana_roeseli"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 
     // Expected state: sequence deleted
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 3));
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Montana_montana", "Montana_montana"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep(500);
 
     //3. undo deletion
     QAbstractButton *undo = GTAction::button(os, "msa_action_undo");
@@ -138,7 +131,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {    //DIFFERENCE: delete sequence is check
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 3));
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Roeseliana_roeseli", "Roeseliana_roeseli"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep(500);
 
     //4. Redo delition
     GTWidget::click(os, redo);
@@ -147,7 +139,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {    //DIFFERENCE: delete sequence is check
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 3));
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Montana_montana", "Montana_montana"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {    //DIFFERENCE: add sequence is checked
@@ -222,7 +213,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {    //undo remove selection
     //Expected state: selection removed
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(3, 1));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
     QString clipdoardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipdoardText == "ACTT\nCTTA", QString("Expected ACTT\nCTTA, found: %1").arg(clipdoardText));
 
@@ -234,7 +224,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {    //undo remove selection
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(3, 1));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
     clipdoardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipdoardText == "TAAG\nTAAG", QString("Expected TAAG\nTAAG, found: %1").arg(clipdoardText));
 
@@ -246,7 +235,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {    //undo remove selection
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(3, 1));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
     clipdoardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipdoardText == "ACTT\nCTTA", QString("Expected ACTT\nCTTA, found: %1").arg(clipdoardText));
 }
@@ -264,10 +252,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {    //undo replace_selected_rows_with_reve
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state: sequence changed from TTG -> CAA
-    GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
-    GTGlobals::sleep(500);
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "CAA\nTGA\nATC",
                   "Clipboard string and expected MSA string differs");
@@ -282,10 +268,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {    //undo replace_selected_rows_with_reve
     GTWidget::click(os, undo);
 
     // Expected state: sequence changed from CAA -> TTG
-    GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
-    GTGlobals::sleep(500);
     clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "TTG\nTCA\nGAT",
                   "Clipboard string and expected MSA string differs");
@@ -296,17 +280,13 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {    //undo replace_selected_rows_with_reve
     CHECK_SET_ERR((nameList[0] == "L") && (nameList[1] == "S") && (nameList[2] == "D"),
                   "There are unexpected names in nameList");
 
-    GTGlobals::sleep(500);
-
     // 4. Redo
     QAbstractButton *redo = GTAction::button(os, "msa_action_redo");
     GTWidget::click(os, redo);
 
     // Expected state: sequence changed from TTG -> CAA
-    GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
-    GTGlobals::sleep(500);
     clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "CAA\nTGA\nATC",
                   "Clipboard string and expected MSA string differs");
@@ -330,10 +310,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {    //undo replace_selected_rows_with_re
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state: sequence changed from TTG -> GTT
-    GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
-    GTGlobals::sleep(500);
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "GTT\nACT\nTAG",
                   "Clipboard string and expected MSA string differs");
@@ -348,10 +326,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {    //undo replace_selected_rows_with_re
     GTWidget::click(os, undo);
 
     // Expected state: sequence changed from GTT -> TTG
-    GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
-    GTGlobals::sleep(500);
     clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "TTG\nTCA\nGAT",
                   "Clipboard string and expected MSA string differs");
@@ -362,17 +338,13 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {    //undo replace_selected_rows_with_re
     CHECK_SET_ERR((nameList[0] == "L") && (nameList[1] == "S") && (nameList[2] == "D"),
                   "There are unexpected names in nameList");
 
-    GTGlobals::sleep(500);
-
     // 4. Redo
     QAbstractButton *redo = GTAction::button(os, "msa_action_redo");
     GTWidget::click(os, redo);
 
     // Expected state: sequence changed from TTG -> GTT
-    GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
-    GTGlobals::sleep(500);
     clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "GTT\nACT\nTAG",
                   "Clipboard string and expected MSA string differs");
@@ -397,10 +369,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state: sequence changed from TTG -> AAC
-    GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
-    GTGlobals::sleep(500);
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "AAC\nAGT\nCTA",
                   "Clipboard string and expected MSA string differs. Clipboard string is: " + clipboardText);
@@ -415,10 +385,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     GTWidget::click(os, undo);
 
     // Expected state: sequence changed from AAC -> TTG
-    GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
-    GTGlobals::sleep(500);
     clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "TTG\nTCA\nGAT",
                   "Clipboard string and expected MSA string differs");
@@ -429,17 +397,13 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     CHECK_SET_ERR((nameList[0] == "L") && (nameList[1] == "S") && (nameList[2] == "D"),
                   "There are unexpected names in nameList");
 
-    GTGlobals::sleep(500);
-
     // 4. Redo
     QAbstractButton *redo = GTAction::button(os, "msa_action_redo");
     GTWidget::click(os, redo);
 
     // Expected state: sequence changed from TTG -> AAC
-    GTGlobals::sleep(500);
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
-    GTGlobals::sleep(500);
     clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == "AAC\nAGT\nCTA",
                   "Clipboard string and expected MSA string differs");

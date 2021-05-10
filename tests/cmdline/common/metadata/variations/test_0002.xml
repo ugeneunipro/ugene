@@ -1,0 +1,17 @@
+<!-- One file, by files -->
+<multi-test>
+    <remove-temp-dir url="variations_metadata_0002"/>
+    <create-temp-dir url="variations_metadata_0002"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_variations_write_variations.uws"
+            in="!common_data_dir!vcf/valid.vcf"
+            out_format="vcf"
+            accum="false"
+            suffix="_out"
+            working-dir="variations_metadata_0002"
+    />
+
+    <load-document index="doc" url="variations_metadata_0002/valid_out.vcf" io="local_file" format="vcf" dir="temp"/>
+    <check-num-objects doc="doc" value="1"/>
+</multi-test>

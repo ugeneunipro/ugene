@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!-- Format detection test newick -->
+
+    <!-- Disabled due newick format detection isn't perfect yet
+    <fd-perfect-match url="newick/SampleTree.newick" format="newick"/> -->
+
+    <fd-check-score url="newick/SampleTree.newick" format="newick" more-than="6"/>
+    <!-- nearest concurent sam -->
+    <fd-check-score url="newick/SampleTree.newick" format="sam" less-than="5"/>
+
+</multi-test>

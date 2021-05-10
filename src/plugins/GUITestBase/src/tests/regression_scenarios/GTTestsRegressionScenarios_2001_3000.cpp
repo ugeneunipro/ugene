@@ -2116,11 +2116,7 @@ GUI_TEST_CLASS_DEFINITION(test_2351) {
         }
 
         virtual void run() {
-            QWidget *dialog = QApplication::activeModalWidget();
-            if (NULL == dialog) {
-                os.setError("Modal dialog not found");
-                return;
-            }
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             QLineEdit *projectNameEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "projectNameEdit", dialog));
             if (NULL == projectNameEdit) {

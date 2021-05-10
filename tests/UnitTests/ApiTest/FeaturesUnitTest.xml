@@ -1,0 +1,9 @@
+<unittest>
+
+    FeatureTableObjectUnitTest
+    - createEmptyFeaturesTableObject
+    - addAnnotationSingleRegion
+    - addAnnotationMultipleRegion
+    - addFeatureSingleRegion
+
+</unittest>

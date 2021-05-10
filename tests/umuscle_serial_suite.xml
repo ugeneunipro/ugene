@@ -1,0 +1,4 @@
+<suite test-timeout="60" name="uMuscle serial plugin tests">
+    <env-var local="true" value="1" name="MUSCLE_N_THREADS"/>
+    <test-dir test-ext="*.xml" path="umuscle" test-format="XML"/>
+</suite>

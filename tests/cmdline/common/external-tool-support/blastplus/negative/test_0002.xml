@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline task="local-blast+"
+                 in=""
+                 out="!tmp_data_dir!blast+-searchn0002_tmp_begin.gb"
+                 dbpath="!common_data_dir!cmdline/external-tool-support/blastplus/"
+                 dbname="sars"
+                 p="blastn"
+                 message="Read sequence: Required parameter has no datasets specified: Input file(s) (use --in option)"
+    />
+</multi-test>

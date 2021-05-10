@@ -1,0 +1,7 @@
+<multi-test>
+    <run-cmdline task="convert-seq" in="!common_data_dir!genbank/1anot_1seq.gen" out="!tmp_data_dir!convert_seq2_tmp.fa" format="fasta"/>
+    <load-document index="doc1" url="genbank/1anot.gen" io="local_file" format="genbank"/>
+    <load-document index="doc2" url="convert_seq2_tmp.fa" io="local_file" format="fasta" dir="temp"/>
+    <compare-sequences-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

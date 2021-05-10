@@ -2447,8 +2447,6 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0001) {
     //    6. Close the messagebox.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."));
     GTWidget::click(os, dashboardsManagerButton);
-
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
@@ -2781,8 +2779,6 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0004) {
 
     GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
     GTWidget::click(os, dashboardsManagerButton);
-
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
@@ -2864,8 +2860,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0001) {
     //    12. Close the messagebox.
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", "You do not have any dashboards yet. You need to run some workflow to use Dashboards Manager."));
     GTWidget::click(os, dashboardsManagerButton);
-
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
@@ -3061,8 +3055,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
 
     const QStringList outputFiles2 = GTUtilsDashboard::getOutputFiles(os);
     CHECK_SET_ERR(!outputFiles2.isEmpty(), "Active dashboard is not displayed properly");
-
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
@@ -3253,8 +3245,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
 
     const QStringList outputFiles2 = GTUtilsDashboard::getOutputFiles(os);
     CHECK_SET_ERR(!outputFiles2.isEmpty(), "Active dashboard is not displayed properly");
-
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
@@ -3378,8 +3368,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     //    Expected result: the "Dashboards Manager" dialog appears. It contains two items, both of them are unchecked. Their names are "Extract consensus as sequence 1" and "Extract consensus as sequence 2".
     GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
     GTWidget::click(os, dashboardsManagerButton);
-
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005_1) {
@@ -3463,8 +3451,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005_1) {
     coreLog.info("Try to start workflow #2");
     GTUtilsWorkflowDesigner::runWorkflow(os);
     coreLog.info("It seems that workflow was started");
-
-    GTGlobals::sleep();
 }
 
 static int setUpMuscleSchemeInNewWdWindow(GUITestOpStatus &os, const QString &file) {
@@ -4456,8 +4442,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
     //    28. Cancel the dialog.
     GTUtilsDialog::waitForDialog(os, new DashboardsManagerDialogFiller(os, new Scenario()));
     GTWidget::click(os, dashboardsManagerButton);
-
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
@@ -4797,8 +4781,6 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
                   QString("Active dashboard has an unexpected name: expect '%1', got '%2'")
                       .arg(expectedTabName)
                       .arg(actualTabName));
-
-    GTGlobals::sleep();
 }
 
 }    // namespace GUITest_common_scenarios_workflow_dashboard

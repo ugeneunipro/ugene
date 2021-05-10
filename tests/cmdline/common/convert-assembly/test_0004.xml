@@ -1,0 +1,32 @@
+<multi-test>
+    <!-- Convert BAM to BAM test -->
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_assembly_write_assembly.uwl"
+            in="!common_data_dir!bam/small.bam.sorted.bam"
+            out="!tmp_data_dir!convert_assembly_0004.bam"
+            out_format="bam"
+    />
+
+    <!-- Convert files to SAM for comparing -->
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_assembly_write_assembly.uwl"
+            in="!tmp_data_dir!convert_assembly_0004.bam"
+            out="!tmp_data_dir!convert_assembly_0004_res.sam"
+            out_format="sam"
+    />
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_assembly_write_assembly.uwl"
+            in="!common_data_dir!bam/small.bam.sorted.bam"
+            out="!tmp_data_dir!convert_assembly_0004_exp.sam"
+            out_format="sam"
+    />
+
+    <!-- Check results -->
+    <load-document index="doc1" url="convert_assembly_0004_res.sam" io="local_file" format="sam" dir="temp"/>
+    <load-document index="doc2" url="convert_assembly_0004_exp.sam" io="local_file" format="sam" dir="temp"/>
+    <compare-Msequences-in-two-objects doc="doc1" value="doc2"/>
+
+    <find-object-by-name index="obj" doc="doc1" name="ref_and_others" type="OT_MSA"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj" value="11"/>
+
+</multi-test>

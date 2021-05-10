@@ -1,0 +1,12 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/subsequenceTest/subsequenceTest.uwl"
+                 in="!common_data_dir!cmdline/DNA.fa"
+                 out="!common_data_dir!cmdline/custom-script-worker-functions/subsequenceTest/result_1.fa"
+                 beg="15"
+                 end="20"/>
+
+    <load-document index="actual" url="cmdline/custom-script-worker-functions/subsequenceTest/result_1.fa" io="local_file" format="fasta"/>
+    <load-document index="expected" url="cmdline/custom-script-worker-functions/subsequenceTest/sub_15_20.fa" io="local_file" format="fasta"/>
+    <compare-sequences-in-two-objects doc="actual" value="expected"/>
+
+</multi-test>

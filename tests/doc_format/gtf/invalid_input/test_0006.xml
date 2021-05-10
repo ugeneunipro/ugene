@@ -1,0 +1,14 @@
+<!-- Verify an invalid GTF file that can be opened: incorrect format of attributes (not 'gene_id' and 'transcript_id'). -->
+
+<multi-test lockForLogListening="true">
+
+    <load-document index="doc" url="gtf/invalid/attr_no_semicolon.gtf" io="local_file" format="gtf" message="GTF parsing error: invalid attributes format"/>
+
+    <find-object-by-name index="ATO" doc="doc" name="seqName features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-name index="ann_CDS" obj="ATO" name="CDS"/>
+
+    <check-no-annotation-qualifier annotation="ann_CDS" qualifier="gene_id"/>
+    <check-no-annotation-qualifier annotation="ann_CDS" qualifier="transcript_id"/>
+
+</multi-test>

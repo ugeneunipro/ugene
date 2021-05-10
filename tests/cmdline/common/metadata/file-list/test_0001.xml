@@ -1,0 +1,16 @@
+<!-- By files -->
+<multi-test>
+    <remove-temp-dir url="file-list_metadata_0001"/>
+    <create-temp-dir url="file-list_metadata_0001"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/metadata/file-list.uwl"
+            in="!common_data_dir!cmdline/metadata/single_string.txt;cmdline/metadata/double_string.txt"
+            accum="false"
+            suffix="_out"
+            working-dir="file-list_metadata_0001"
+    />
+
+    <check-temp-file url="file-list_metadata_0001/single_string_out.txt" exists="1"/>
+    <check-temp-file url="file-list_metadata_0001/double_string_out.txt" exists="1"/>
+</multi-test>

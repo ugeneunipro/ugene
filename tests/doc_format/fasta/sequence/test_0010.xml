@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!-- in file exist 2 sequences with difrent Alphabets; 1- RAW Alphabet and  2- AMINO_DEFAULT Alphabet-->
+    <!-- 1st sequence's Alphabet id must be RAW_ALPHABET-->
+
+    <load-document index="doc" url="fasta/base_amino_all_symp.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="obj" doc="doc" name="SEQUENCE_1" type="OT_SEQUENCE"/>
+
+    <check-sequence-alphabet-by-id obj="obj" value="RAW_ALPHABET"/>
+
+</multi-test>

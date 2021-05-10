@@ -1,0 +1,6 @@
+<multi-test>
+    <run-cmdline task="align-clustalw" in="" out="!tmp_data_dir!align2_tmp.aln"
+                 message="Read alignment: Required parameter has no datasets specified: Input file(s) (use --in option)"
+    />
+
+</multi-test>

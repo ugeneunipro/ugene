@@ -6870,8 +6870,7 @@ GUI_TEST_CLASS_DEFINITION(test_1677) {
     public:
         void run(HI::GUITestOpStatus &os) {
             GTGlobals::sleep();
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QWizard *wizard = qobject_cast<QWizard *>(dialog);
             CHECK_SET_ERR(wizard, "activeModalWidget is not wizard");
 

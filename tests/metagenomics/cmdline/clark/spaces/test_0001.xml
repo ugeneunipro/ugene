@@ -1,0 +1,3 @@
+<!-- The test checks that CLARK can build a database, if there are spaces in the UGENE folder path. -->
+
+<fail msg="The test is not implemented, because it is impossible to add a space to UGENE folder path in the current state."/>

@@ -1,0 +1,37 @@
+<multi-test lockForLogListening="true">
+    <remove-temp-dir url="cufflinks_0001"/>
+    <!-- Running a simple workflow with Cufflinks -->
+    <run-cmdline
+            task="!common_data_dir!cufflinks/cufflinks.uwl"
+            out_isoforms="!tmp_data_dir!cufflinks_0001_isoforms"
+            out_cufflinks_dir="!tmp_data_dir!cufflinks_0001"
+            in_assembly="!common_data_dir!ugenedb/example-alignment.ugenedb"
+    />
+
+    <!-- Verify transcripts output -->
+    <load-document index="doc_transcripts" url="cufflinks_0001/cufflinks_out/transcripts.gtf" io="local_file" format="gtf" no-message="GTF parsing error" dir="temp"/>
+
+    <find-object-by-name index="ATO_transcripts" doc="doc_transcripts" name="Example_sequence features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-name index="ann_exon" obj="ATO_transcripts" name="exon"/>
+    <find-annotation-by-name index="ann_transcript" obj="ATO_transcripts" name="transcript"/>
+
+    <check-annotation-qualifier annotation="ann_exon" qualifier="source" value="Cufflinks"/>
+
+
+    <!-- Verify isoforms output -->
+    <load-document index="doc_isoforms" url="cufflinks_0001_isoforms.fpkm_tracking" io="local_file" format="fpkm-tracking" no-message="FPKM Tracking Format parsing error" dir="temp"/>
+
+    <!-- Note: name of the annotations table object is detected from locus in the FPKM Tracking Format file -->
+    <find-object-by-name index="ATO_isoforms" doc="doc_isoforms" name="Example_sequence features" type="OT_ANNOTATIONS"/>
+
+
+    <!-- Verify genes output -->
+    <load-document index="doc_genes" url="cufflinks_0001/cufflinks_out/genes.fpkm_tracking" io="local_file" format="fpkm-tracking" no-message="FPKM Tracking Format parsing error" dir="temp"/>
+
+    <!-- Note: name of the annotations table object is detected from locus -->
+    <find-object-by-name index="ATO_genes" doc="doc_genes" name="Example_sequence features" type="OT_ANNOTATIONS"/>
+
+    <remove-temp-dir url="cufflinks_0001"/>
+
+</multi-test>

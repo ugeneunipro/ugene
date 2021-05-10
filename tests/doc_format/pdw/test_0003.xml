@@ -1,0 +1,14 @@
+<multi-test>
+
+    <!-- Test reading file and loading sequence -->
+
+    <load-document index="doc" url="pdw/test1.pdw" io="local_file" format="pdw"/>
+
+    <check-num-objects doc="doc" value="1"/>
+
+    <check-document-object-names doc="doc" value="New DNA"/>
+
+    <check-document-object-types doc="doc" value="OT_SEQUENCE"/>
+
+
+</multi-test>

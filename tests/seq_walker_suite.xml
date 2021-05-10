@@ -1,0 +1,3 @@
+<suite name="SequenceWalker tests" test-timeout="30">
+    <test-dir path="sequence_walker" test-format="XML" test-ext="*.xml"/>
+</suite>

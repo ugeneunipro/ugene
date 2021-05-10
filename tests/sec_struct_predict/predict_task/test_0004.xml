@@ -1,0 +1,22 @@
+<multi-test>
+    <!-- Run secondary structure prediction task on input seq, check its results -->
+
+    <load-document index="doc" url="sec_struct_predict/file0004.fasta" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="seq" doc="doc" name="1CRN" type="OT_SEQUENCE"/>
+
+    <predict-sec-structure-and-save-results index="obj" seq-name="seq" algorithm-name="GORIV"/>
+
+    <check-num-annotations obj="obj" value="4"/>
+
+    <find-annotation-by-number index="a0" obj="obj" number="0"/>
+
+    <check-annotation-qualifier annotation="a0" qualifier="sec_struct_type" value="beta_strand"/>
+
+    <check-annotation-location annotation="a0" location="15..15" complement="0"/>
+
+    <find-annotation-by-location index="a1" obj="obj" location="32..35" complement="false"/>
+
+    <check-annotation-qualifier annotation="a1" qualifier="sec_struct_type" value="beta_strand"/>
+
+</multi-test>

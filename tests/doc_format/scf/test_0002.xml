@@ -1,0 +1,16 @@
+<multi-test>
+
+    <!-- Test reading file: the sequence object has to have the quality attribute -->
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_seq_write_faq.uws"
+            in="!common_data_dir!scf/90-JRI-07.scf"
+            out="!tmp_data_dir!scf_format_test_0002.fastq"
+    />
+
+    <load-document index="result" url="scf_format_test_0002.fastq" io="local_file" format="fastq" dir="temp"/>
+    <load-document index="expected" url="fastq/90-JRI-07.fastq" io="local_file" format="fastq"/>
+
+    <compare-sequence-quality-in-two-objects doc1="result" doc2="expected"/>
+
+</multi-test>

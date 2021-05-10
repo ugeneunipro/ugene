@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Test reading file: bad data in an AF tag -->
+
+    <import-broken-document url="ace/ace_test_81_(error).ace" io="local_file" format="ace"/>
+
+</multi-test>

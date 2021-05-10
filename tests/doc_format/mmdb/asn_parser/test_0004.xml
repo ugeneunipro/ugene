@@ -1,0 +1,33 @@
+<multi-test>
+
+    <!-- Test parsing ASN-1 file, find some nodes by name, check them -->
+
+    <load-asn-tree index="node0" url="mmdb/asn_parser/test04.prt" io="local_file"/>
+    <check-node-type node="node0" type="ASN_ROOT"/>
+    <check-node-children-count node="node0" children-count="3"/>
+
+    <find-first-node-by-name index="node1" root-node="node0" name="mol"/>
+    <check-node-type node="node1" type="ASN_VALUE"/>
+    <check-node-value node="node1" value="1CRN"/>
+    <check-node-children-count node="node1" children-count="0"/>
+
+    <find-first-node-by-name index="node2" root-node="node0" name="inst"/>
+    <check-node-type node="node2" type="ASN_SEQ"/>
+    <check-node-children-count node="node2" children-count="4"/>
+
+    <find-first-node-by-name index="node3" root-node="node2" name="seq-data"/>
+    <check-node-type node="node3" type="ASN_VALUE"/>
+    <check-node-value node="node3" value="iupacaa &quot;TTCCPSIVARSNFNVCRLPGTPEAICATYTGCIIIPGATCPGDYAN&quot;"/>
+    <check-node-children-count node="node3" children-count="0"/>
+
+    <find-first-node-by-name index="node4" root-node="node0" name="connections"/>
+    <check-node-type node="node4" type="ASN_SEQ"/>
+    <check-node-children-count node="node4" children-count="4"/>
+
+    <find-first-node-by-name index="node5" root-node="node4" name="green"/>
+    <check-node-type node="node5" type="ASN_VALUE"/>
+    <check-node-value node="node5" value="9000"/>
+    <check-node-children-count node="node5" children-count="0"/>
+
+
+</multi-test>

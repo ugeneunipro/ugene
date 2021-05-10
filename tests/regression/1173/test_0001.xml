@@ -1,0 +1,10 @@
+<multi-test>
+
+    <load-document index="doc" url="gff/Sodo_DSM_4582_primeScaff.seq.gff3.gz" io="local_file_gzip" format="GFF"/>
+
+    <find-object-by-name index="obj" doc="doc" name="Sodo_DSM_4582_SCAFFOLD1 sequence" type="OT_SEQUENCE"/>
+    <check-sequence-size obj="obj" value="5078456"/>
+    <check-sequence-alphabet-by-id obj="obj" value="NUCL_DNA_DEFAULT_ALPHABET"/>
+    <check-sequence-part obj="obj" value="CTTGTGGGGTATAAAAC" seqstart="5078439"/>
+
+</multi-test>

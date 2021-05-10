@@ -1,0 +1,13 @@
+<multi-test>
+    <load-document index="doc" url="edit_sequence/fa1.fa" io="local_file" format="fasta"/>
+
+    <Add_Part_To_Sequence_Task
+            doc_name="doc"
+            seq_name="fasta file part 1"
+            start_pos="2"
+            inserted_sequence="ACGT"
+            annotation_name=""
+            expected_sequence="ACACGTTG"
+            expected_regions=""
+    />
+</multi-test>

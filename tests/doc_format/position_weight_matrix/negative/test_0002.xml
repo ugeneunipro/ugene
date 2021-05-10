@@ -1,0 +1,6 @@
+<multi-test>
+
+    <!-- Regression: UGENE-3507 -->
+    <load-broken-document index="doc" url="position_weight_matrix/negative/MA0265.1.pfm" io="local_file" format="PFMatrix" message="The file format is not PFM"/>
+
+</multi-test>

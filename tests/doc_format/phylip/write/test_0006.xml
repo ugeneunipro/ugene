@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- Test save option, check sequences alphabet save correct, phylip-sequential to phylip-sequential-->
+
+    <load-document index="doc" url="phylip/seq_amino_canon.ph" io="local_file" format="phylip-sequential"/>
+    <save-document doc="doc" url="_temp0006.phy" io="local_file" format="phylip-sequential"/>
+    <load-document index="doc2" url="_temp0006.phy" io="local_file" format="phylip-sequential" dir="temp"/>
+    <compare-Msequences-alphabets-in-two-objects doc="doc" value="doc2"/>
+
+</multi-test>

@@ -1,0 +1,6 @@
+<multi-test>
+
+    <!-- Empty sequence -->
+    <load-broken-document index="doc" url="pdw/negative/empty_sequence_align.pdw" io="local_file" format="pdw" sequence-mode="msa" message="Probably, this is because the sequence is empty"/>
+
+</multi-test>

@@ -1,0 +1,7 @@
+<!-- Verify an invalid FPKM File Format that can't be opened: invalid header - incorrect name of the 'gene_id' column. -->
+
+<multi-test lockForLogListening="true">
+
+    <load-broken-document index="doc" url="fpkm_tracking_format/invalid/invalid_header_gene_id_column.fpkm_tracking" io="local_file" format="fpkm-tracking"/>
+
+</multi-test>

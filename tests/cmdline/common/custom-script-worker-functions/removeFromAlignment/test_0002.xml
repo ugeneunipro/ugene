@@ -1,0 +1,14 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/custom-script-worker-functions/removeFromAlignmentTest/removeFromAlignmentTest.uwl"
+            in="!common_data_dir!cmdline/CBS.sto"
+            row="10"
+            out="!common_data_dir!cmdline/custom-script-worker-functions/removeFromAlignmentTest/result2.aln"
+    />
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/custom-script-worker-functions/rowNumTest/rowNumTest.uwl"
+            in="!common_data_dir!cmdline/custom-script-worker-functions/removeFromAlignmentTest/result2.aln"
+            expected="5"/>
+
+</multi-test>

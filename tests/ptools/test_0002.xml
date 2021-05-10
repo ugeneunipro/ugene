@@ -1,0 +1,11 @@
+<multi-test>
+    <!-- Checking that results of our ptools based aligner and ptools are the same on equal biostructs translated -->
+    <load-document index="doc_ref" url="ptools/1MOT.pdb" io="local_file" format="pdb"/>
+    <load-document index="doc_mob" url="ptools/1MOT_translated.pdb" io="local_file" format="pdb"/>
+
+    <find-object-by-name index="refo" doc="doc_ref" name="1MOT" type="OT_BIOSTRUCT3D"/>
+    <find-object-by-name index="mobo" doc="doc_mob" name="1MOT_translated" type="OT_BIOSTRUCT3D"/>
+
+    <ptools-align-and-compare refo="refo" mobo="mobo" rmsd="2.17997e-15" transform="1, -7.58343e-18, 0, -3, 7.58343e-18, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1" accuracy="1e-5"/>
+
+</multi-test>

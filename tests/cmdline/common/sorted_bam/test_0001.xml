@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/sort_bam/sort_bam.uwl"
+            in="!common_data_dir!bam/scerevisiae.bam"
+            out_dir="!tmp_data_dir!"
+            out_name="bam_sort_test_0001.bam"
+            index="True"
+    />
+    <compare-sam-by-length file1="bam_sort_test_0001.bam" file2="cmdline/sort_bam/out1.bam" isbam="1"/>
+</multi-test>

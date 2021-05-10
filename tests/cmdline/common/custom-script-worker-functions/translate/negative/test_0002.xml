@@ -1,0 +1,8 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/translateTest/translateTest.uwl"
+                 in="!common_data_dir!cmdline/DNA.fa"
+                 offset="3"
+                 out="!common_data_dir!cmdline/custom-script-worker-functions/translateTest/result_5.fa"
+                 message="Offset must be from interval [0,2]"
+    />
+</multi-test>

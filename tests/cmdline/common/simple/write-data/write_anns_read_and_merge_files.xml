@@ -1,0 +1,16 @@
+<multi-test>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/write/ann-ann.uwl"
+            in="!common_data_dir!cmdline/read-write/write/ann1.gb;cmdline/read-write/write/ann2.gb"
+            out="!tmp_data_dir!write_anns_merge_files.gb"
+            mode="2"
+    />
+
+    <load-document index="doc1" url="write_anns_merge_files.gb" io="local_file" format="genbank" dir="temp"/>
+    <load-document index="doc2" url="cmdline/read-write/write/merge_files_result.gb" io="local_file" format="genbank"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <check-num-objects doc="doc1" value="1"/>
+
+</multi-test>

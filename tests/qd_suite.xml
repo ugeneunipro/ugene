@@ -1,0 +1,3 @@
+<suite name="Query designer test suite">
+    <test-dir test-ext="*.xml" path="query_designer" test-format="XML"/>
+</suite>

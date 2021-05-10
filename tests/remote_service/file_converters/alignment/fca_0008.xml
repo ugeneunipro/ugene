@@ -1,0 +1,14 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_ali_write_sto.uws"
+            in="!common_data_dir!cmdline/CBS.sto"
+            out="!tmp_data_dir!fca_0008.sto"
+            task-remote-machine="!config_file_path!"
+    />
+
+    <load-document index="doc1" url="fca_0008.sto" io="local_file" format="stockholm" dir="temp"/>
+    <load-document index="doc2" url="cmdline/CBS.sto" io="local_file" format="stockholm"/>
+    <compare-Msequences-in-two-objects doc="doc1" value="doc2"/>
+
+
+</multi-test>

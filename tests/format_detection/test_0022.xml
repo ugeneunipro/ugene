@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test ugene workflow format (.uws) -->
+
+    <fd-perfect-match url="workflow/remoteDBReaderTest.uws" format="WorkflowDocFormat"/>
+
+</multi-test>
