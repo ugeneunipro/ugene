@@ -2843,6 +2843,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_options_panel::test_0019);
     REGISTER_TEST(GUITest_common_scenarios_options_panel::test_0020);
     REGISTER_TEST(GUITest_common_scenarios_options_panel::test_0021);
+    REGISTER_TEST(GUITest_common_scenarios_options_panel::test_0022);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/option_panel
