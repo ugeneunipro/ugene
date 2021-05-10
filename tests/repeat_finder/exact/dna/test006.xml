@@ -1,0 +1,19 @@
+<multi-test>
+    <load-document index="s1d" url="abif/A01.abi" io="local_file" format="abi"/>
+    <find-object-by-name index="s1" doc="s1d" name="A1#berezikov" type="OT_SEQUENCE"/>
+
+    <load-document index="doc" url="genbank/murine_sarcoma.gb" io="local_file" format="genbank"/>
+    <find-object-by-name index="s2" doc="doc" name="NC_001363" type="OT_SEQUENCE"/>
+
+    <find-repeats
+            seq="s1"
+            seq2="s2"
+            w="7"
+            mind="0"
+            filterNested="true"
+            reflect="false"
+            alg="suffix"
+            expected_result="repeat_finder/res_test006.txt"
+    />
+
+</multi-test>

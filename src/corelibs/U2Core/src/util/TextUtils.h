@@ -71,6 +71,9 @@ public:
 
     inline static int skip(const QBitArray &map, const char *seq, int len);
 
+    /**  Returns substring with all characters from the 'map' skipped on the left side of the original string. */
+    static QString skip(const QBitArray &map, const QString &text);
+
     inline static int keep(const char *srcSeq, int len, char *dstSeq, const QBitArray &keepMap);
 
     inline static int keep(char *srcSeq, int len, const QBitArray &keepMap) {

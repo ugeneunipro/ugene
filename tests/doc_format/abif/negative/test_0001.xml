@@ -1,0 +1,5 @@
+<multi-test>
+    <!-- try to load broken data from document-->
+    <load-broken-document index="doc" url="abif/broken/1.ab1" io="local_file" format="abi"/>
+
+</multi-test>

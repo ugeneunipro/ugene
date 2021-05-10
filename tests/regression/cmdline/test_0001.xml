@@ -1,0 +1,12 @@
+<multi-test>
+
+    <run-cmdline task="!common_data_dir!regression/cmdline/test_0001.uwl"
+                 in="!common_data_dir!genbank/CVU55762.gb;genbank/CVU55762.gb"
+                 out="!tmp_data_dir!regression_cmd_0001.gb"
+    />
+
+    <load-document index="doc" url="regression_cmd_0001.gb" io="local_file" format="genbank" dir="temp"/>
+
+    <check-num-objects doc="doc" value="4"/>
+
+</multi-test>

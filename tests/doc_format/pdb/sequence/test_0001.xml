@@ -1,0 +1,14 @@
+<multi-test>
+
+    <!-- Load sequence object, check its alphabet, size, a part of sequence -->
+
+    <load-document index="doc" url="pdb/1FSC.pdb" io="local_file" format="pdb"/>
+
+    <find-object-by-name index="obj" doc="doc" name="1FSC chain A sequence" type="OT_SEQUENCE"/>
+    <check-sequence-alphabet-by-id obj="obj" value="AMINO_DEFAULT_ALPHABET"/>
+    <check-sequence-size obj="obj" value="61"/>
+    <check-sequence-part obj="obj" value="TMCYSHTTTS" seqstart="0"/>
+    <check-sequence-part obj="obj" value="KCCTSPDKCN" seqstart="50"/>
+
+
+</multi-test>

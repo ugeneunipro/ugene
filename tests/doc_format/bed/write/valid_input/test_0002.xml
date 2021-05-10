@@ -1,0 +1,13 @@
+<!-- Verify saving of a valid BED file: only 3 fields. -->
+
+<multi-test lockForLogListening="true">
+
+    <load-document index="doc" url="bed/valid_input/fields_num_3.bed" io="local_file" format="bed" no-message="BED parsing error"/>
+
+    <save-document doc="doc" url="_tmp_fields_num_3.bed" io="local_file" format="bed"/>
+
+    <load-document index="doc2" url="_tmp_fields_num_3.bed" io="local_file" format="bed" dir="temp" no-message="BED parsing error"/>
+
+    <compare-annotations-qualifiers-in-two-objects doc="doc" value="doc2"/>
+
+</multi-test>

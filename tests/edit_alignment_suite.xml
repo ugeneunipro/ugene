@@ -1,0 +1,4 @@
+<suite name="Edit alignment tests">
+
+    <test-dir test-ext="*.xml" path="edit_alignment" test-format="XML"/>
+</suite>

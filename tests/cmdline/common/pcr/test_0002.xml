@@ -1,0 +1,10 @@
+<!-- Odd primers number -->
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/pcr/pcr.uwl"
+            in="!common_data_dir!fasta/pcr_test.fa"
+            primers="!common_data_dir!cmdline/pcr/primers_odd.fa"
+            out="!tmp_data_dir!pcr_0002.gb"
+            message="odd number of primers in the file"
+    />
+</multi-test>

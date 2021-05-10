@@ -1,0 +1,13 @@
+<multi-test>
+    <!--
+    Sequence:
+    :*-TTGTC-TTGTC-TTGTCA-TTGTC-TTGTC-*:
+    Tandems
+    Tandem repeat TTGTC 5x5 at pos 0
+    Insertions
+    15
+    We expect such results:
+    .(end of results)
+    -->
+    <find-tandems sequence="TTGTCTTGTCTTGTCATTGTCTTGTC" minSize="5" maxSize="15" repeatCount="4" expected_result=""/>
+</multi-test>

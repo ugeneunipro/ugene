@@ -1,0 +1,14 @@
+<!-- The test verifies that several reference files can be specified. -->
+<multi-test>
+    <run-cmdline task="find-sw"
+                 ref="!common_data_dir!cmdline/DNA.fa;cmdline/eas.fastq"
+                 out="!tmp_data_dir!find_sw_several_references.gb"
+                 ptrn="!common_data_dir!cmdline/find-sw/patterns/aaa_gta.fa"
+    />
+
+    <load-document index="doc1" url="find_sw_several_references.gb" io="local_file" format="genbank" dir="temp"/>
+    <load-document index="doc2" url="cmdline/find-sw/10.gb" io="local_file" format="genbank"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+</multi-test>

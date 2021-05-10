@@ -1,0 +1,23 @@
+<!-- Two datasets -->
+<multi-test>
+    <remove-temp-dir url="sequence_metadata_0004"/>
+    <create-temp-dir url="sequence_metadata_0004"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_seq_write_seq.uws"
+            in="!common_data_dir!cmdline/metadata/double_seq.fa;;cmdline/metadata/single_seq.fa"
+            format="gff"
+            working-dir="sequence_metadata_0004"
+    />
+
+    <load-document index="doc1" url="sequence_metadata_0004/Dataset 1.gff" io="local_file" format="gff" dir="temp"/>
+    <load-document index="doc2" url="sequence_metadata_0004/Dataset 2.gff" io="local_file" format="gff" dir="temp"/>
+    <check-num-objects doc="doc1" value="2"/>
+    <check-num-objects doc="doc2" value="1"/>
+    <find-object-by-name index="obj1" doc="doc1" name="sequence1 sequence" type="OT_SEQUENCE"/>
+    <find-object-by-name index="obj2" doc="doc1" name="sequence2 sequence" type="OT_SEQUENCE"/>
+    <find-object-by-name index="obj3" doc="doc2" name="sequence sequence" type="OT_SEQUENCE"/>
+    <check-sequence-part obj="obj1" value="AAAAAAAAAAAAAAAAAAAA" seqstart="0"/>
+    <check-sequence-part obj="obj2" value="CCCCCCCCCCCCCCCCCCCC" seqstart="0"/>
+    <check-sequence-part obj="obj3" value="AAAAAAAAAAAAAAAAAAAA" seqstart="0"/>
+</multi-test>

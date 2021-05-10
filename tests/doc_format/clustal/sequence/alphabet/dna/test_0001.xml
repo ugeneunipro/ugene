@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to check alphabet  in multy sequence (must be NUCL_DNA_DEFAULT_ALPHABET) -->
+
+    <load-document index="doc" url="clustal/COI na.aln" io="local_file" format="clustal"/>
+    <find-object-by-name index="obj" doc="doc" name="COI na" type="OT_MSA"/>
+    <check-Msequence-alphabet-by-id obj="obj" value="NUCL_DNA_DEFAULT_ALPHABET"/>
+
+</multi-test>

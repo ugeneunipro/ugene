@@ -1,0 +1,13 @@
+<!-- Verify saving of a valid GTF file. -->
+
+<multi-test lockForLogListening="true">
+
+    <load-document index="doc" url="gtf/valid.gtf" io="local_file" format="gtf" no-message="GTF parsing error"/>
+
+    <save-document doc="doc" url="_temp1.gtf" io="local_file" format="gtf"/>
+
+    <load-document index="doc2" url="_temp1.gtf" io="local_file" format="gtf" dir="temp" no-message="GTF parsing error"/>
+
+    <compare-annotations-qualifiers-in-two-objects doc="doc" value="doc2"/>
+
+</multi-test>

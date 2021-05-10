@@ -1,0 +1,18 @@
+<!-- Metadata transition: Multiplexer, 1 to many -->
+<multi-test>
+    <remove-temp-dir url="metadata_0006"/>
+    <create-temp-dir url="metadata_0006"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/metadata/multiplexer.uwl"
+            in1="!common_data_dir!genbank/70Bp.gen;genbank/1seq.gen"
+            in2="!common_data_dir!genbank/1anot_1seq.gen"
+            accum="false"
+            rule="0"
+            working-dir="metadata_0006"
+    />
+
+    <check-temp-file url="metadata_0006/70Bp.txt" exists="1"/>
+    <check-temp-file url="metadata_0006/1seq.txt" exists="1"/>
+    <check-temp-file url="metadata_0006/1anot_1seq.txt" exists="0"/>
+</multi-test>

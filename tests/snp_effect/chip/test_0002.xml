@@ -1,0 +1,19 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/snp_effect/chip.uwl"
+            in="!common_data_dir!cmdline/snp_effect/TEST_SNP_chip.snp"
+            out-reg="!tmp_data_dir!snp_effect_chip_reg_test_0002.txt"
+            out-gene="!tmp_data_dir!snp_effect_chip_gene_test_0002.txt"/>
+
+    <find-in-snp-result-table
+            file_name="snp_effect_chip_reg_test_0002.txt"
+            chr_name="chr6"
+            allele="G/A"
+            pos="32635450"
+            gene_id="HLA-DQB1"
+            report_type="regulatory"
+            column_name="ChIPTools"
+            expected_value="Pol2[135];Pol2-4H8[204];"
+    />
+
+</multi-test>

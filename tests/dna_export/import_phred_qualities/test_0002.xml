@@ -1,0 +1,19 @@
+<multi-test>
+
+    <!-- Check sequence quality scores -->
+
+    <load-document index="doc" url="reads/staphylococcus.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="s0" doc="doc" name="GSALE33T8396F566725 2500 5000 3200 51 393" type="OT_SEQUENCE"/>
+    <find-object-by-name index="s1" doc="doc" name="GSACR60T91S2191B1 2500 5000 3200 22 542" type="OT_SEQUENCE"/>
+
+    <import-phred-qualities seq-list="s0,s1" url="reads/staphylococcus.qual"/>
+
+    <check-sequence-quality-scores obj="s0"
+                                   quality="((()./)*0.65/.((((**33=841+87///-*(-.,,6,8-&gt;9;48+*63&lt;&lt;C966970;78733=I==A66:9=BBE&lt;@@@@@2=7ECECEDEECC?AAAA@?DA6;&gt;C99CCCDCCDAADAA69CDDCEECE9CAAAAADAA@@B&gt;=CEEEEDEDCCDCCCA?@=H===H@DCDCCCEFDCCDCDDDEEEEEEDDCCDDCDCDCCEAAACCD98/0-]/.-0..489A@@@@H@ADA@A=DBBBBBDJEECCEEEECDDDCDCCEEEEEEEDDCDCCC&gt;BB=@&gt;?@BEE;:C7&lt;85DEEEDEEEECDBDCDCCC?B&gt;DCC?7++(]()0185=?98.2/4:&lt;=;4-979864648944115&gt;;89;:;??;540)+()+++,2.]/++,,+,/,,0.0+)(((((()((((,,))((*(++***)+(+)(()()),*)+,00,***)+)+*+**)**)(()()())(())((((((()))(((((((**)+*))*))((((*).((((((()((()(()+++*())))(((++**()()))*))),()(((()))(((,)(((())*****)+))+))***())))++))1+)*()*(()*+)),))*))*(((((()()((((((((()(*))))*+)*)()((()))))*)*(()(+)+)(),*()(*))*+,,*-0))((((()(((((****+**(,(*((())(**())*),))(****),+*+**((((*)(+))**(())))((()*())**,,./+))**)**+**(*(*))((((((((()*)()()())*)*((((((((((++++*()*))(((*((())*)*),**,),)*)+--,*()(**()))*)))+)*)*)+-*)))))())*)))(**()))()),,,*+))))(+)(()(*-*)(*)(**+))))((((((((((((++))((**())*+++*+)*(()((((**))))((()))()+*++.**-**(,()(()(((())-*+(**+((((()))))*(*(((()()*)()(+((**)(()(((*(+)())))))*))))((()+**,()(()()())***(((((((((*,,+"/>
+
+    <check-sequence-quality-scores obj="s1"
+                                   quality="!!!!!!!!!!!!!!!!!!!!!!!!!!!6&gt;&gt;BE;:7??:;????GFMFB?????CFFFGNFFFCGNNFFCCCCCCFGGFFFBBBB?====??FFFFFFFFFFIFB?????CCCCCCDDFIFFFFFINNNJJJJNFCCCCCCFFFFJFFFFFFNJTTJJ??CCFBF???JJJJFFFJJJFFFFKCJJJJJHHHHCHHJJJJJJJTTTTTTHJJNNNHHJJJJTJHHHHHHHHHHHJJHFC??CCHHHHHHHHHFJHTTTTNJJJHHNHHHJCJETTTJFKKKKFEJFFFJ=A777&lt;:?JNNJJJJFFFJNJFFFFBBBBBBBBBFJFFFJJJNNJIIFBBBBBBFFNNNIIFF===FFIIIKFFFFFFFFFNNRRFC@CC@@==9@@CCCFFFFFFFFFF@?=::57&lt;@@CCFFFF?B?:8133&lt;&lt;=:77!!!!!56=;=;@8;;;53!!!8:;@&gt;&lt;63376864!!1!!!663!!!1!!220!!!!!4!!!!!!!!400!!!!!!10!2255400!!!!!!!!]!!032!!6863!!!!!!20!!!0!!!!!!!!!!!0=0!!!!!!!!!!!!!!!!1!!!!!!5!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!01!!!!!!!!!!!!!!!!!!!!!8!!!!!!!!!!0!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!7&lt;1!!!!!!!!!!!!!!!!!!!!!0!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!3!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1!!!!!!!!!!!!:==!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!2!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!01!!!!!!!!4!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!0!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!0!!!!!!!"/>
+
+
+</multi-test>

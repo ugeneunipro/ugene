@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test gtf -->
+
+    <fd-perfect-match url="vcf/valid.vcf" format="vcf"/>
+
+</multi-test>

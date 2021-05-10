@@ -1,0 +1,8 @@
+<!-- Verify an invalid BED file that can't be opened: -->
+<!-- "chromEnd" is a string, not an integer. -->
+
+<multi-test lockForLogListening="true">
+
+    <load-broken-document index="doc" url="bed/invalid_input/incorrect_coords/end_is_str.bed" io="local_file" format="bed"/>
+
+</multi-test>

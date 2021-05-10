@@ -1,0 +1,6 @@
+<!-- simple search for compliment strand-->
+<multi-test>
+
+    <plugin_remote-request min_length="0" max_length="100" strand="compliment" script="blastn.qs" seq="CAATTTGGTCCACTGATCTGG" expected_results="gb|AC189550.1|,emb|AL929297.10|"/>
+
+</multi-test>

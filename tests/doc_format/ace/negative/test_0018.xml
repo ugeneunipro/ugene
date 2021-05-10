@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Test reading file: bad clear range -->
+
+    <load-broken-document url="ace/ace_test_31_(error).ace" io="local_file" format="ace"/>
+
+</multi-test>

@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test pdw -->
+
+    <fd-perfect-match url="pdw/sample.pdw" format="pdw"/>
+
+</multi-test>

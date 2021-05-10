@@ -1,0 +1,4 @@
+<suite name="Primer 3 tests" test-timeout="30">
+
+    <test-dir test-ext="*.xml" path="primer3" test-format="XML"/>
+</suite>

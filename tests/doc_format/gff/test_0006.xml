@@ -1,0 +1,14 @@
+<multi-test>
+
+    <load-document index="doc" url="gff/empty_lines.gff" io="local_file" format="gff"/>
+
+    <find-object-by-name index="A03" doc="doc" name="A03 features" type="OT_ANNOTATIONS"/>
+
+    <find-object-by-name index="A10" doc="doc" name="A10 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="A03" location="12913066..12917489" complement="true"/>
+
+    <find-annotation-by-location index="ann2" obj="A10" location="16627002..16627674" complement="true"/>
+
+
+</multi-test>

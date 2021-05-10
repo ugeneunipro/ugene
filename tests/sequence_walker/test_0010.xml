@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- SequenceWalker Test: check region with startPos!=0 -->
+
+    <sw-check-region chunk="7" overlap="2" extra_len="10" region="10..30" reverse="false"
+                     result="10..17,15..30"/>
+
+    <sw-check-region chunk="7" overlap="2" extra_len="10" region="10..30" reverse="true"
+                     result="10..25,23..30"/>
+
+</multi-test>

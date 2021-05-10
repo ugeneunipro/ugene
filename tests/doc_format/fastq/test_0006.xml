@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Test reading file: in file 1 object Sequence-->
+
+    <load-document index="doc" url="fastq/test_mikki.fastq" io="local_file" format="fastq"/>
+
+    <check-num-objects doc="doc" value="1"/>
+    <check-document-object-names doc="doc" value="HWI-ST313:234:B0A4AABXX:5:1101:1228:2103 1:N:0:CGTACG"/>
+    <check-document-object-types doc="doc" value="OT_SEQUENCE"/>
+
+</multi-test>

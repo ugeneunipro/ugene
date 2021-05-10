@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Test reading file: in file 1 object Sequence-->
+
+    <load-document index="doc" url="fastq/eas.fastq" io="local_file" format="fastq"/>
+
+    <check-num-objects doc="doc" value="3"/>
+    <check-document-object-names doc="doc" value="EAS54_6_R1_2_1_413_324,EAS54_6_R1_2_1_540_792,EAS54_6_R1_2_1_443_348"/>
+    <check-document-object-types doc="doc" value="OT_SEQUENCE,OT_SEQUENCE,OT_SEQUENCE"/>
+
+</multi-test>

@@ -1,0 +1,30 @@
+<!-- By files, two datasets -->
+<multi-test>
+    <remove-temp-dir url="sequence_metadata_0006"/>
+    <create-temp-dir url="sequence_metadata_0006"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_seq_write_seq.uws"
+            in="!common_data_dir!cmdline/metadata/double_seq.fa;;cmdline/metadata/single_seq.fa"
+            format="genbank"
+            accum="false"
+            working-dir="sequence_metadata_0006"
+    />
+
+    <load-document index="doc1" url="sequence_metadata_0006/double_seq.gb" io="local_file" format="genbank" dir="temp"/>
+    <load-document index="doc2" url="sequence_metadata_0006/double_seq_1.gb" io="local_file" format="genbank" dir="temp"/>
+    <load-document index="doc3" url="sequence_metadata_0006/single_seq.gb" io="local_file" format="genbank" dir="temp"/>
+    <check-num-objects doc="doc1" value="1"/>
+    <check-num-objects doc="doc2" value="1"/>
+    <check-num-objects doc="doc3" value="1"/>
+
+    <find-object-by-name index="obj1" doc="doc1" name="sequence1" type="OT_SEQUENCE"/>
+    <find-object-by-name index="obj2" doc="doc2" name="sequence2" type="OT_SEQUENCE"/>
+    <find-object-by-name index="obj3" doc="doc3" name="sequence" type="OT_SEQUENCE"/>
+    <check-sequence-part obj="obj1" value="AAAAAAAAAAAAAAAAAAAA" seqstart="0"/>
+    <check-sequence-part obj="obj2" value="CCCCCCCCCCCCCCCCCCCC" seqstart="0"/>
+    <check-sequence-part obj="obj3" value="AAAAAAAAAAAAAAAAAAAA" seqstart="0"/>
+
+    <check-temp-file url="sequence_metadata_0006/Dataset 1.gb" exists="0"/>
+    <check-temp-file url="sequence_metadata_0006/Dataset 2.gb" exists="0"/>
+</multi-test>

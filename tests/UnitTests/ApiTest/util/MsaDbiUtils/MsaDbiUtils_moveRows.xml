@@ -1,0 +1,21 @@
+<unittest>
+
+    MsaDbiUtilsUnitTests
+    + moveRows_oneLineInMiddle
+    + moveRows_oneLineInMiddleToTheTop
+    + moveRows_oneLineInMiddleToTheBottom
+    + moveRows_oneBlockInMiddle
+    + moveRows_oneBlockInMiddleToTheOutside
+    + moveRows_twoBlocksInMiddleWithoutGluing
+    + moveRows_twoBlocksInMiddleWithGluing
+    + moveRows_twoBlocksOnTopWithoutGluing
+    + moveRows_twoBlocksOnTopWithGluing
+    + moveRows_twoBlocksOnBottomWithoutGluing
+    + moveRows_twoBlocksOnBottomWithGluing
+    + moveRows_threeBlocksWithoutGluing
+    + moveRows_threeBlocksWithOnceGluing
+    + moveRows_threeBlocksWithTwiceGluing
+    + moveRows_UnorderedList
+    + moveRows_InvalidRowList
+
+</unittest>

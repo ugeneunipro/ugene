@@ -1,0 +1,17 @@
+<!-- Paired reads, two datasets -->
+<multi-test>
+    <remove-temp-dir url="bwa-mem3"/>
+    <create-temp-dir url="bwa-mem3"/>
+    <load-document index="doc" url="e_coli/e_coli_cut.fa" io="local_file" format="fasta"/>
+    <save-document doc="doc" url="bwa-mem3/e_coli_cut.fa" io="local_file" format="fasta"/>
+    <run-cmdline
+            task="!common_data_dir!bwa/workflow/bwa-mem-paired.uwl"
+            index="!tmp_data_dir!bwa-mem3/e_coli_cut.fa"
+            sam-dir="!tmp_data_dir!bwa-mem3"
+            reads1="!common_data_dir!e_coli/e_coli_reads/e_coli_1_1.fastq;;e_coli/e_coli_reads/e_coli_2_1.fastq"
+            reads2="!common_data_dir!e_coli/e_coli_reads/e_coli_1_2.fastq;;e_coli/e_coli_reads/e_coli_2_2.fastq"
+    />
+    <compare-sam-by-length file1="bwa-mem3/bwa/out.sam" file2="bwa/workflow/mem-paired1.sam"/>
+    <compare-sam-by-length file1="bwa-mem3/bwa_1/out.sam" file2="bwa/workflow/mem-paired2.sam"/>
+    <remove-temp-dir url="bwa-mem3"/>
+</multi-test>

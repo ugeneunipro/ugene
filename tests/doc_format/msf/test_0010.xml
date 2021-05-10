@@ -1,0 +1,15 @@
+<multi-test>
+
+    <!-- Test reading invalid files, which contains rows with the same names and incorrect file checksum -->
+
+    <load-document index="actual" url="msf/test10.msf" io="local_file" format="msf"/>
+
+    <check-num-objects doc="actual" value="1"/>
+    <check-document-object-names doc="actual" value="test10"/>
+    <check-document-object-types doc="actual" value="OT_MSA"/>
+
+    <load-document index="expected" url="msf/expected/test10_expected.aln" io="local_file" format="clustal"/>
+
+    <compare-two-msa doc1="actual" doc2="expected"/>
+
+</multi-test>

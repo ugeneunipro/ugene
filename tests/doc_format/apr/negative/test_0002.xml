@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Test reading file: a name in an RD tag doesn't mutch with a name in an AF tag -->
+
+    <import-broken-document url="apr/DNA(error)1.apr" outUrl="apr/DNA(error)_" io="local_file" format="Vector_nti_alignx"/>
+
+</multi-test>

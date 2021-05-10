@@ -22,7 +22,6 @@
 #include "StreamSequenceWriter.h"
 
 #include <U2Core/AppContext.h>
-#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/IOAdapter.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -62,10 +61,6 @@ StreamShortReadsWriter::~StreamShortReadsWriter() {
 }
 
 StreamShortReadWriter::StreamShortReadWriter() {
-    DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTA);
-    fastaFormat = qobject_cast<FastaFormat *>(df);
-    assert(fastaFormat != NULL);
-
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     io = iof->createIOAdapter();
 }
@@ -76,21 +71,21 @@ StreamShortReadWriter::~StreamShortReadWriter() {
 }
 
 bool StreamShortReadWriter::init(const GUrl &url) {
-    ouputPath = url;
+    outputPath = url;
     bool res = io->open(url, IOAdapterMode_Write);
     return res;
 }
 
 bool StreamShortReadWriter::writeNextSequence(const DNASequence &seq) {
     U2OpStatus2Log os;
-    fastaFormat->storeSequence(seq, io, os);
+    FastaFormat::storeSequence(seq, io, os);
 
     return !os.hasError();
 }
 
 bool StreamShortReadWriter::writeNextSequence(const U2SequenceObject *seq) {
     U2OpStatus2Log os;
-    fastaFormat->storeSequence(seq, io, os);
+    FastaFormat::storeSequence(seq, io, os);
 
     return !os.hasError();
 }

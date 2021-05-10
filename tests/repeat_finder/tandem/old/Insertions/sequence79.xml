@@ -1,0 +1,13 @@
+<multi-test>
+    <!--
+    Sequence:
+    TTGC:*-ACTCAAT-ACTCAATA-ACTCAAT-ACTCAAT-ACTCAAT-*:CG
+    Tandems
+    Tandem repeat ACTCAAT 5x7 at pos 4
+    Insertions
+    18
+    We expect such results:
+    .(end of results)
+    -->
+    <find-tandems sequence="TTGCACTCAATACTCAATAACTCAATACTCAATACTCAATCG" minSize="7" maxSize="21" repeatCount="4" expected_result=""/>
+</multi-test>

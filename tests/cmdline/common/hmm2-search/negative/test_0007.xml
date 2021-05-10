@@ -1,0 +1,9 @@
+<multi-test>
+    <run-cmdline task="hmm2-search"
+                 hmm=""
+                 seq="!common_data_dir!cmdline/1-cys.fa"
+                 e-val="1"
+                 score="-2000"
+                 out="!tmp_data_dir!hmm2-searchn0007_tmp.gbk"
+                 message="parameter is not set"/>
+</multi-test>

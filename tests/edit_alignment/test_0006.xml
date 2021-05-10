@@ -1,0 +1,16 @@
+<multi-test>
+
+    <load-document index="doc" url="edit_alignment/PPL.aln" io="local_file" format="clustal"/>
+
+    <load-document index="expected" url="edit_alignment/PPLex01.aln" io="local_file" format="clustal"/>
+
+    <test-remove-alignment-region
+            doc_name="doc"
+            expected_doc_name="expected"
+            start-seq="2"
+            start-base="0"
+            width="426"
+            height="3"
+    />
+
+</multi-test>

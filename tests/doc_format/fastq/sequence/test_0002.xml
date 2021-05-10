@@ -1,0 +1,11 @@
+<multi-test>
+
+    <load-document index="doc" url="fastq/slx.fastq.gz" io="local_file_gzip" format="fastq"/>
+
+    <find-object-by-name index="obj2" doc="doc" name="test_run:4:133:511:464" type="OT_SEQUENCE"/>
+    <check-sequence-alphabet-by-id obj="obj2" value="NUCL_DNA_DEFAULT_ALPHABET"/>
+    <check-sequence-size obj="obj2" value="74"/>
+    <check-sequence-part obj="obj2" value="GCAAATCACCAGAAGGCGGTTCCTGAATGAATGGGAATTCGTCTAAGAAGTTTAAGATTGCTGAGGGTCAGTGG" seqstart="0"/>
+
+
+</multi-test>

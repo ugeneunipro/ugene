@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test genbank -->
+
+    <fd-perfect-match url="genbank/70Bp.gen" format="genbank"/>
+
+</multi-test>

@@ -1,0 +1,15 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/hmm3/hmm3-search.uwl"
+                 in-al="!common_data_dir!cmdline/hmm3/COI.aln"
+                 in-seq="!common_data_dir!cmdline/hmm3/seq1.fa"
+                 out-seq="!tmp_data_dir!hmm3-search0001_n_tmp.gbk"
+                 score="0"
+    />
+
+    <load-document index="doc1" url="hmm3-search0001_n_tmp.gbk" io="local_file" format="genbank" dir="temp"/>
+    <load-document index="doc2" url="cmdline/hmm3/out1.gb" io="local_file" format="genbank"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

@@ -1,0 +1,7 @@
+<multi-test>
+
+    <load-document index="doc" url="Sitecon/Algorithm/e2f5.aln" io="local_file" format="clustal"/>
+
+    <sitecon-calculateDispersionAndAverage doc="doc" di_positions="0,47,10" props_indexes="0,9" expected_results="35.278,4.5328,-0.44,3.8650,37.264,3.674361,2.32,2.728003,38.454,3.769487,-0.44,3.864971"/>
+
+</multi-test>

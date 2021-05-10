@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to check numbers of sequence in Msequence in protein sequensesone size 60 symbols (must be 2)-->
+
+    <load-document index="doc" url="clustal/default_amino_short.aln" io="local_file" format="clustal"/>
+    <find-object-by-name index="obj" doc="doc" name="default_amino_short" type="OT_MSA"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj" value="2"/>
+
+</multi-test>

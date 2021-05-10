@@ -21,11 +21,13 @@
 
 #include "CInterfaceSasTests.h"
 
+#include <QFileInfo>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/GAutoDeleteList.h>
-#include <U2Core/global.h>
 #include <U2Core/Log.h>
 #include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/global.h>
 
 #include <U2Lang/ActorModel.h>
 #include <U2Lang/ActorPrototypeRegistry.h>
@@ -33,28 +35,20 @@
 
 #include "SchemeSimilarityUtils.h"
 
-#include <QFileInfo>
-
-static QString getTestDirImpl() {
-    QString testDir = qgetenv("UGENE_TESTS_PATH");
-    QString defaultTestDir;
-    if (isOsMac()) {
-        defaultTestDir = U2::AppContext::getWorkingDirectoryPath() + "/../../../../../../test/";
-    } else {
-        defaultTestDir = U2::AppContext::getWorkingDirectoryPath() + "/../../test/";
+static QString getCommonDataDir() {
+    QString commonDataDir = qgetenv("COMMON_DATA_DIR");
+    QString defaultCommonDataDir = U2::AppContext::getWorkingDirectoryPath() +
+                                   (isOsMac() ? "/../../../../../../test/_common_data" : "/../../test/_common_data");
+    if (commonDataDir.isEmpty()) {
+        commonDataDir = defaultCommonDataDir;
+    } else if (!QFileInfo::exists(commonDataDir)) {
+        U2::coreLog.error(QString("COMMON_DATA_DIR doesn't exist: '%1'. The default path is set: '%2'.").arg(commonDataDir).arg(defaultCommonDataDir));
+        commonDataDir = defaultCommonDataDir;
     }
-    if (testDir.isEmpty()) {
-        testDir = defaultTestDir;
-    } else if (!QFileInfo::exists(testDir)) {
-        U2::coreLog.error(QString("UGENE_TESTS_PATH doesn't exist: '%1'. The default path is set: '%2'.").arg(testDir).arg(defaultTestDir));
-        testDir = defaultTestDir;
-    }
-
-    testDir = testDir + (testDir.endsWith("/") ? "" : "/");
-    return testDir;
+    return commonDataDir + (commonDataDir.endsWith("/") ? "" : "/");
 }
 
-static const QString WD_SCHEMES_PATH = getTestDirImpl() + "_common_data/cmdline/wd-sas-schemes/";
+static const QString WD_SCHEMES_PATH = getCommonDataDir() + "cmdline/wd-sas-schemes/";
 
 static U2ErrorType getActorDisplayName(const QString &actorId, QString &actorName) {
     U2::Workflow::ActorPrototypeRegistry *prototypeRegistry = U2::Workflow::WorkflowEnv::getProtoRegistry();

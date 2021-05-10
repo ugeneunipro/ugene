@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!vcf_consensus/vcf_base.uwl"
+            in-seq="!common_data_dir!vcf_consensus/human.vcf"
+            in-vcf="!common_data_dir!vcf_consensus/human.vcf"
+            out-seq="!tmp_data_dir!vcf_cons_neg_test_0004.fa"
+            message="The fasta sequence does not match the REF at 6:12009179. .(00..."
+    />
+
+</multi-test>

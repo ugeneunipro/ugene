@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test raw -->
+
+    <fd-perfect-match url="raw_sequence/eas.raw" format="raw"/>
+
+</multi-test>

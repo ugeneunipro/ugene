@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test mega -->
+
+    <fd-perfect-match url="mega/MegaTest_1.meg" format="mega"/>
+
+</multi-test>

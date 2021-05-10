@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!-- try to get specified document from index file created on gzip file -->
+
+    <create-file-index input="indexing_files/stockholm/2gz.sto.gz" output="sgz_file.uind" delete="yes"/>
+    <load-document index="indDoc" dir="temp" url="sgz_file.uind" io="local_file" format="index"/>
+    <get-doc-from-index indDocName="indDoc" docNum="5" docCtxName="outDoc"/>
+
+    <load-document index="trueDoc" url="indexing_files/stockholm/local_file_item2.sto" io="local_file" format="stockholm"/>
+    <compare-Msequences-in-two-objects doc="outDoc" value="trueDoc"/>
+
+</multi-test>

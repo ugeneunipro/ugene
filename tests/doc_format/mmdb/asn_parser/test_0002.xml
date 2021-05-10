@@ -1,0 +1,28 @@
+<multi-test>
+
+    <!-- Test parsing ASN-1 file, find some nodes by name, check them -->
+
+    <load-asn-tree index="node0" url="mmdb/asn_parser/test02.prt" io="local_file"/>
+    <check-node-type node="node0" type="ASN_ROOT"/>
+    <check-node-children-count node="node0" children-count="4"/>
+
+    <find-first-node-by-name index="node1" root-node="node0" name="date std"/>
+    <check-node-type node="node1" type="ASN_SEQ"/>
+    <check-node-children-count node="node1" children-count="2"/>
+
+    <find-first-node-by-name index="node2" root-node="node0" name="year"/>
+    <check-node-type node="node2" type="ASN_VALUE"/>
+    <check-node-value node="node2" value="2009"/>
+    <check-node-children-count node="node2" children-count="0"/>
+
+    <find-first-node-by-name index="node3" root-node="node0" name="version-of-database release-date std"/>
+    <check-node-type node="node3" type="ASN_SEQ"/>
+    <check-node-children-count node="node3" children-count="3"/>
+
+    <find-first-node-by-name index="node4" root-node="node3" name="year"/>
+    <check-node-type node="node4" type="ASN_VALUE"/>
+    <check-node-value node="node4" value="2007"/>
+    <check-node-children-count node="node4" children-count="0"/>
+
+
+</multi-test>

@@ -1,0 +1,17 @@
+<suite name="CMDLine ugene tests">
+
+    <env-var name="PROTOTYPE" value="cmdline/_proto"/>
+    <test-dir path="cmdline" test-format="XML" test-ext="*.xml"
+
+              exclude_64="simple/hmm2-build.xml,
+        sitecon/build_model/test_0001.xml,
+        sitecon/build_model/test_0002.xml,
+        sitecon/build_model/test_0003.xml,
+        sitecon/build_model/test_0004.xml,
+		find-sw/test_0004.xml,
+		find-sw/test_0005.xml,
+		find-sw/test_0007.xml"
+
+    />
+
+</suite>

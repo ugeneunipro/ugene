@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- try to get specified document from gzipped index file created on gzipped file and check msa with the original -->
+
+    <generate-file input="indexing_files/stockholm/gzip_file.sto" amount="1000" outCtxName="tmpOut" gzipOut="yes"/>
+    <create-file-index tmpInput="yes" input="tmpOut" output="gz_file2.uind.gz" delete="yes"/>
+    <load-document index="indDoc" dir="temp" url="gz_file2.uind.gz" io="local_file_gzip" format="index"/>
+    <get-doc-from-index indDocName="indDoc" docNum="451" docCtxName="outDoc"/>
+
+    <load-document index="trueDoc" url="indexing_files/stockholm/gzip_file.sto" io="local_file" format="stockholm"/>
+    <compare-Msequences-in-two-objects doc="outDoc" value="trueDoc"/>
+
+</multi-test>

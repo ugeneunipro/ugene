@@ -1,0 +1,6 @@
+<!--running chip-seq with default parameters-->
+<multi-test>
+
+    <load-broken-document index="doc" url="regression/968/test.gb" io="local_file" format="genbank" message="Region boundary can not be less then zero: -1"/>
+
+</multi-test>

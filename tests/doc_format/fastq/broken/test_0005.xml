@@ -1,0 +1,8 @@
+<multi-test>
+
+    <!-- Empty sequence -->
+    <load-document index="doc" url="fastq/broken/empty_sequence_align.fastq" io="local_file" format="fastq" sequence-mode="msa"/>
+
+    <check-num-objects doc="doc" value="1"/>
+
+</multi-test>

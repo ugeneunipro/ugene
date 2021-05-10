@@ -1,0 +1,12 @@
+<multi-test>
+    <run-cmdline task="extract_consensus_sequence"
+                 in="!common_data_dir!clustal/COI na.aln"
+                 out="!tmp_data_dir!extract_consensus_sequence_test_consensus_algos_0002.fa"
+                 format="fasta"
+                 threshold="90"
+                 algorithm="Levitsky"
+                 keep_gaps="true"
+    />
+
+    <compare-docs doc1="!tmp_data_dir!extract_consensus_sequence_test_consensus_algos_0002.fa" doc2="!common_data_dir!cmdline/extract_consensus_sequence/consensus_algos/test_0002.fa"/>
+</multi-test>

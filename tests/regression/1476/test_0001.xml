@@ -1,0 +1,14 @@
+<multi-test>
+
+    <load-document index="doc" url="nexus/S-OIV.nex" io="local_file" format="nexus"/>
+
+    <check-num-objects doc="doc" value="1"/>
+    <check-document-object-names doc="doc" value="S-OIV"/>
+    <check-document-object-types doc="doc" value="OT_MSA"/>
+
+    <find-object-by-name index="obj" doc="doc" name="S-OIV" type="OT_MSA"/>
+
+    <check-numbers-of-sequence-in-Msequence obj="obj" value="50"/>
+    <check-Msequence-size obj="obj" value="13109"/>
+
+</multi-test>

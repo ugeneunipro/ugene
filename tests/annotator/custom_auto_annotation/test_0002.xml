@@ -1,0 +1,12 @@
+<multi-test>
+
+    <load-document index="doc" url="annotator/seq_with_promoter_circular.fa" io="local_file" format="fasta"/>
+
+    <custom-auto-annotation-search doc="doc" seq="seq_with_T7_and_Xpress_EK" result="plasmid_annotations" circular="true"/>
+
+    <find-annotation-by-name index="ann1" obj="plasmid_annotations" name="Xpress_EK"/>
+
+    <check-annotation-location annotation="ann1" location="563..563,1..23" complement="0"/>
+
+
+</multi-test>

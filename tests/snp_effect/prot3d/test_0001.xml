@@ -1,0 +1,19 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/snp_effect/prot3d.uwl"
+            in="!common_data_dir!cmdline/snp_effect/TEST_SNP_3d.snp"
+            out-reg="!tmp_data_dir!snp_effect3d_reg_test_0001.txt"
+            out-gene="!tmp_data_dir!snp_effect3d_gene_test_0001.txt"/>
+
+    <find-in-snp-result-table
+            file_name="snp_effect3d_gene_test_0001.txt"
+            chr_name="chr6"
+            allele="A/G"
+            pos="154360797"
+            gene_id="DQ680044"
+            report_type="ingene"
+            column_name="prot3d"
+            expected_value="-"
+    />
+
+</multi-test>

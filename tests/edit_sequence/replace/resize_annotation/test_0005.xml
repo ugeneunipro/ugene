@@ -1,0 +1,23 @@
+<multi-test>
+    <load-document index="doc" url="edit_sequence/test.gb" io="local_file" format="genbank"/>
+
+    <replace-part-of-sequence
+            doc_name="doc"
+            seq_name="NC_001363 sequence"
+            start_pos="0"
+            length="7"
+            inserted_sequence=""
+            annotation_processing="resize"
+            expected_sequence="AGACCCCACCCGTAGGTGGCAAG"
+            annotation_name="DUMMY_1"
+    />
+
+    <find-object-by-name index="obj" doc="doc" name="NC_001363 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-name index="a1" obj="obj" name="A"/>
+    <check-annotation-location annotation="a1" location="3..13" complement="0"/>
+
+    <find-annotation-by-name index="a2" obj="obj" name="DUMMY_2"/>
+    <check-annotation-location annotation="a2" location="15..19" complement="0"/>
+
+</multi-test>

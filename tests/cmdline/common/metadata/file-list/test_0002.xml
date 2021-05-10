@@ -1,0 +1,16 @@
+<!-- By datasets -->
+<multi-test>
+    <remove-temp-dir url="file-list_metadata_0002"/>
+    <create-temp-dir url="file-list_metadata_0002"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/metadata/file-list.uwl"
+            in="!common_data_dir!cmdline/metadata/single_string.txt;;cmdline/metadata/double_string.txt"
+            accum="true"
+            suffix="_out"
+            working-dir="file-list_metadata_0002"
+    />
+
+    <check-temp-file url="file-list_metadata_0002/Dataset 1_out.txt" exists="1"/>
+    <check-temp-file url="file-list_metadata_0002/Dataset 2_out.txt" exists="1"/>
+</multi-test>

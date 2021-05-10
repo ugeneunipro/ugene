@@ -1,0 +1,14 @@
+<multi-test>
+    <remove-temp-dir url="regression_4182_3"/>
+    <create-temp-dir url="regression_4182_3"/>
+
+    <run-cmdline
+            task="!common_data_dir!regression/4182/snpeff.uwl"
+            in="!common_data_dir!vcf/wrong_chr_name.vcf"
+            message="ERROR_CHROMOSOME_NOT_FOUND"
+            mode="2"
+            genome="hg19"
+            out_dir="!tmp_data_dir!regression_4182_3"
+    />
+
+</multi-test>

@@ -1,0 +1,13 @@
+<multi-test>
+    <!--
+    Sequence:
+    :*-AGTAC-AtTAC-AtTAC-*:GAAC
+    Tandems
+    Tandem repeat AGTAC 3x5 at pos 0
+    Mutations
+    Mutation in repeat #1 of 0th tandem at pos 1
+    We expect such results:
+    .(end of results)
+    -->
+    <find-tandems sequence="AGTACATTACATTACGAAC" minSize="5" maxSize="15" repeatCount="3" expected_result=""/>
+</multi-test>

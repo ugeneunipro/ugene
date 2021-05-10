@@ -1,0 +1,26 @@
+<!-- Verify a valid BED file (TopHat output) -->
+<!-- It is also verified that the name of the annotations table object depends on the "chrom" field.  -->
+
+<multi-test lockForLogListening="true">
+
+    <load-document index="doc" url="bed/valid_input/tophat_output.bed" io="local_file" format="bed" no-message="BED parsing error"/>
+
+    <find-object-by-name index="ATO" doc="doc" name="test_chromosome features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="ATO" location="180..400" complement="false"/>
+    <find-annotation-by-location index="ann2" obj="ATO" location="351..550" complement="false"/>
+
+    <check-annotation-qualifier annotation="ann1" qualifier="track_name" value="junctions"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="track_description" value="TopHat junctions"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="chrom" value="test_chromosome"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="name" value="JUNC00000001"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="score" value="37"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="strand" value="+"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="thick_start" value="179"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="thick_end" value="400"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="item_rgb" value="255,0,0"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="block_count" value="2"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="block_sizes" value="71,50"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="block_starts" value="0,171"/>
+
+</multi-test>

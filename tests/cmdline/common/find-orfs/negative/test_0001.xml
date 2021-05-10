@@ -1,0 +1,9 @@
+<!--scheme fails on validation. error not written in log-->
+<multi-test>
+    <run-cmdline
+            task="find-orfs"
+            in=""
+            out="!tmp_data_dir!find_orfsn0001_tmp.gbk"
+            message="Required parameter has no datasets specified: Input file(s)"/>
+
+</multi-test>

@@ -1,0 +1,5 @@
+<suite test-timeout="300" name="HMM2 plugin tests">
+
+    <test-dir test-ext="*.xml" path="hmm2" test-format="XML"/>
+    <!-- Theese tests are to slow for precommit -->
+</suite>

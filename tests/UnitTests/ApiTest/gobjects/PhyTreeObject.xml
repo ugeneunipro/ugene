@@ -1,0 +1,14 @@
+<unittest>
+
+    PhyTreeObjectUnitTests
+    + createInstance
+    + createInstance_WrongDbi
+    + getTree
+    + getTree_Null
+    + setTree
+    + clone
+    + clone_NullDbi
+    + clone_NullObj
+    + remove
+
+</unittest>

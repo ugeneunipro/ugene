@@ -1,0 +1,10 @@
+<multi-test>
+    <!-- Checking binary find opencl  algorithm -->
+
+    <check-binary-find-opencl
+            numbers="2"
+            find_numbers="2"
+            expected_res="1"
+    />
+
+</multi-test>

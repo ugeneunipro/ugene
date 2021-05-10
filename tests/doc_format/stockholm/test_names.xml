@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- test on msa naming correctness -->
+
+    <load-document index="doc" url="stockholm/names.sto" io="local_file" format="stockholm"/>
+    <check-num-objects doc="doc" value="6"/>
+
+    <check-document-object-names doc="doc" value="name1,name2,names_2,Multiple alignment_2,names_4,name5"/>
+    <check-document-object-types doc="doc" value="OT_MSA,OT_MSA,OT_MSA,OT_MSA,OT_MSA,OT_MSA"/>
+
+</multi-test>

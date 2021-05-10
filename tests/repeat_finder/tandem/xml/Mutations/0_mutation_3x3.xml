@@ -1,0 +1,14 @@
+<multi-test>
+    <!--
+    Sequence:
+    tCC-GCC-GCC
+
+    Tandems
+    Tandem repeat GCC 3x3 at pos 0
+    Mutations
+    Mutation in repeat #0 of 0th tandem at pos 0
+    We expect such results:
+    .(end of results)
+    -->
+    <find-tandems sequence="TCCGCCGCC" minSize="3" repeatCount="3" expected_result=""/>
+</multi-test>

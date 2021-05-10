@@ -1,0 +1,15 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/annotations/export.uwl"
+            in="!common_data_dir!genbank/70Bp_new.gb"
+            out="!tmp_data_dir!an_0001.gbk"
+            task-remote-machine="!config_file_path!"
+    />
+
+    <load-document index="doc1" url="genbank/70Bp_new.gb" io="local_file" format="genbank"/>
+    <load-document index="doc2" url="an_0001.gbk" io="local_file" format="genbank" dir="temp"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2" compare-num-objects="false"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2" compare-num-objects="false"/>
+
+</multi-test>

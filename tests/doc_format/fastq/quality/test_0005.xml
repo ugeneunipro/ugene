@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!-- Check sequence quality scores -->
+
+    <load-document index="doc" url="fastq/wiki.fastq" io="local_file" format="fastq"/>
+
+    <find-object-by-name index="obj" doc="doc" name="SEQ_ID" type="OT_SEQUENCE"/>
+    <check-sequence-quality-scores obj="obj" quality="!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65"/>
+    <check-sequence-quality-value obj="obj" pos="0" value="0"/>
+    <check-sequence-quality-value obj="obj" pos="13" value="8"/>
+    <check-sequence-quality-value obj="obj" pos="20" value="7"/>
+</multi-test>

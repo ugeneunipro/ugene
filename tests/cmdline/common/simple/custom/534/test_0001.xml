@@ -1,0 +1,16 @@
+<multi-test>
+    <remove-temp-dir url="534"/>
+    <create-temp-dir url="534"/>
+
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/custom/534/remote.uwl"
+            in="!common_data_dir!genbank/PBR322_blast_annotations.gb"
+            working-dir="534"
+            out="!tmp_data_dir!custom_534_0001_tmp.gb"
+    />
+
+    <load-document index="doc" url="custom_534_0001_tmp.gb" io="local_file" format="genbank" dir="temp"/>
+    <check-num-objects doc="doc" value="20"/>
+
+</multi-test>

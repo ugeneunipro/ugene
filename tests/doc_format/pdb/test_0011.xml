@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!--  Open PDB file. Check chain C molecule name -->
+
+    <load-document index="doc" url="pdb/1CF7.pdb" io="local_file" format="pdb"/>
+    <find-object-by-name index="obj" doc="doc" name="1CF7" type="OT_BIOSTRUCT3D"/>
+
+    <check-biostruct3d-molecule-name obj="obj" chain-index="3" molecule-name="DNA (5'-D(*AP*TP*TP*TP*TP*CP*GP*CP*GP*CP*GP*GP*TP*TP*TP*T)-3')"/>
+
+</multi-test>

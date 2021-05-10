@@ -1,0 +1,7 @@
+<multi-test>
+    <!-- Sequences order after realignment -->
+    <load-document index="doc1" url="realign_sequences_in_alignment/COI_SHORT_21x88_order.aln" io="local_file" format="clustal"/>
+    <load-document index="doc2" url="realign_sequences_in_alignment/COI_SHORT_21x88_order_result.aln" io="local_file" format="clustal"/>
+    <realign in="doc1" rows="9,10,11"/>
+    <compare-malignment doc1="doc1" doc2="doc2"/>
+</multi-test>

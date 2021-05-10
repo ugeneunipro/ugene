@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!-- Find 1 enzyme, check that W processed like T -->
+
+    <load-document index="doc" url="fasta/enzymes/enzyme_TfiI.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="seq" doc="doc" name="TfiI in the middle -> T|GAWTC" type="OT_SEQUENCE"/>
+
+    <find-enzymes url="enzymes/rebase_v003_t2_com.bairoch.gz" sequence="seq" enzymes="TfiI"
+                  result="TfiI:12..16"/>
+
+</multi-test>

@@ -1,0 +1,30 @@
+<multi-test>
+
+    <remove-temp-dir url="conversion_0001"/>
+    <create-temp-dir url="conversion_0001"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/conversion/schema.uwl"
+            in="!common_data_dir!fasta/abcd.fa;fasta/AMINO.fa;fasta/11.gb;fasta/test.TXT"
+            target="genbank"
+            working-dir="conversion_0001"
+    />
+
+    <load-document index="actual1" url="conversion_0001/Converted_files/abcd.fa.gb" io="local_file" format="genbank"
+                   dir="temp"/>
+    <load-document index="expected1" url="cmdline/conversion/abcd.fa.gb" io="local_file" format="genbank"/>
+    <compare-sequences-in-two-objects doc="actual1" value="expected1"/>
+
+    <load-document index="actual2" url="conversion_0001/Converted_files/AMINO.fa.gb" io="local_file" format="genbank"
+                   dir="temp"/>
+    <load-document index="expected2" url="cmdline/conversion/AMINO.fa.gb" io="local_file" format="genbank"/>
+    <compare-sequences-in-two-objects doc="actual2" value="expected2"/>
+
+    <check-temp-file url="conversion_0001/Converted files/11.gb.gb" exists="0"/>
+
+    <load-document index="actual3" url="conversion_0001/Converted_files/test.TXT.gb" io="local_file" format="genbank"
+                   dir="temp"/>
+    <load-document index="expected3" url="cmdline/conversion/test.TXT.gb" io="local_file" format="genbank"/>
+    <compare-sequences-in-two-objects doc="actual3" value="expected3"/>
+
+</multi-test>

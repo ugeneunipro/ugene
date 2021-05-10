@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- try to load broken data from document(no name of sequence)-->
+
+    <load-broken-document url="fasta/broken/broken_doc.fa" io="local_file" format="fasta"/>
+
+</multi-test>

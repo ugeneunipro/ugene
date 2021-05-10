@@ -1,0 +1,14 @@
+<multi-test>
+    <load-document index="doc" url="edit_sequence/test3.gb" io="local_file" format="genbank"/>
+
+    <Add_Part_To_Sequence_Task
+            doc_name="doc"
+            seq_name="test_sequence"
+            start_pos="11"
+            annotation_processing="split_separate"
+            inserted_sequence="TTT"
+            annotation_name="misc_feature"
+            expected_sequence="CCGTAGGTGGCTTTAAGCTAGCTTAAGTAACGCCACTTTGCAAGGCATG"
+            expected_regions="10,11 14,30"
+    />
+</multi-test>

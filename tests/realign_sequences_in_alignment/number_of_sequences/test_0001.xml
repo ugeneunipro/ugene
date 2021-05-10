@@ -1,0 +1,7 @@
+<multi-test>
+    <!-- Realign half of the alignment-->
+    <load-document index="doc1" url="realign_sequences_in_alignment/COI_SHORT_10x88_5_to_5.aln" io="local_file" format="clustal"/>
+    <load-document index="doc2" url="realign_sequences_in_alignment/COI_SHORT_10x88_5_to_5_result.aln" io="local_file" format="clustal"/>
+    <realign in="doc1" rows="5,6,7,8,9"/>
+    <compare-malignment doc1="doc1" doc2="doc2"/>
+</multi-test>

@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- MrBayes Test -->
+    <load-document index="doc" url="mrbayes/alignment_1.nex" io="local_file" format="nexus"/>
+    <find-object-by-name index="obj" doc="doc" name="alignment_1" type="OT_MSA"/>
+    <calc-tree-from-alignment index="tree" obj="obj" algorithm="MrBayes"/>
+    <check-phynode-has-sibling obj="tree" phynode="rat" sibling="mouse"/>
+    <check-phynode-branch-distance obj="tree" phynode="hamster" value="0.113"/>
+
+
+</multi-test>

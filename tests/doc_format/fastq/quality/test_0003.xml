@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Check sequence quality scores -->
+
+    <load-document index="doc" url="fastq/slx.fastq.gz" io="local_file_gzip" format="fastq"/>
+
+    <find-object-by-name index="obj" doc="doc" name="test_run:4:133:593:417" type="OT_SEQUENCE"/>
+    <check-sequence-quality-scores obj="obj" quality="IIIIIIIIIIIIIIIIIIIIIIIIIIIII:IIIIII?IIIIIIIIIIIIIIIIIIIIIIIII2IIIIII55@I,"/>
+    <check-sequence-quality-value obj="obj" pos="0" value="40"/>
+    <check-sequence-quality-value obj="obj" pos="73" value="11"/>
+</multi-test>

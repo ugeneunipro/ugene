@@ -1,0 +1,15 @@
+<unittest>
+
+    SequenceDbiUnitTests
+    + getSequenceObject
+    + getSequenceObjectInvalid
+    + getAllSequenceObjects
+    + getSequenceData
+    + getLongSequenceData
+    + getSequenceDataInvalid
+    + createSequenceObject
+    + updateSequenceData
+    + updateHugeSequenceData
+    - updateSequencesData
+
+</unittest>

@@ -1,0 +1,14 @@
+<multi-test>
+
+    <load-document index="doc" url="subaligniment/e2f5_gapped.aln" io="local_file" format="clustal"/>
+
+    <load-document index="expected" url="subaligniment/e2f5_expected_gapped.aln" io="local_file" format="clustal"/>
+
+    <plugin_create-subaligniment-task
+            doc_name="doc"
+            sequences=">S1345;,>1909"
+            window="16..24"
+            expected_doc_name="expected"
+    />
+
+</multi-test>

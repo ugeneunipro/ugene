@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- in file exist 2 sequences with difrent Alphabets; 1- RAW Alphabet and  2- AMINO_DEFAULT Alphabet-->
+    <!--in second sequence(amino default Alphabet) must be 120 simbols-->
+
+    <load-document index="doc" url="fasta/base_amino_all_symp.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="obj1" doc="doc" name="SEQUENCE_2" type="OT_SEQUENCE"/>
+    <check-sequence-size obj="obj1" value="120"/>
+
+</multi-test>

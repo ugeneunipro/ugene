@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!-- Check sequence quality scores -->
+
+    <load-document index="doc" url="fastq/illumina.fastq" io="local_file" format="fastq"/>
+
+    <find-object-by-name index="obj" doc="doc" name="HWI-EAS209_0006_FC706VJ:5:58:5894:21141#ATCACG/1" type="OT_SEQUENCE"/>
+    <check-sequence-quality-scores obj="obj" quality="efcfffffcfeefffcffffffddf`feed]`]_Ba_^__[YBBBBBBBBBBRTT\]][]dddd`ddd^dddadd^BBBBBBBBBBBBBBBBBBBBBBBB"/>
+    <check-sequence-quality-value obj="obj" pos="1" value="38"/>
+    <check-sequence-quality-value obj="obj" pos="50" value="2"/>
+    <check-sequence-quality-value obj="obj" pos="95" value="2"/>
+</multi-test>

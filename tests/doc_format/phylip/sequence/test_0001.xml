@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to check multy sequence size in protein sequenses(must be 13) -->
+
+    <load-document index="doc" url="phylip/intseq_short.phy" io="local_file" format="phylip-interleaved"/>
+    <find-object-by-name index="obj" doc="doc" name="intseq_short" type="OT_MSA"/>
+    <check-Msequence-size obj="obj" value="13"/>
+
+</multi-test>

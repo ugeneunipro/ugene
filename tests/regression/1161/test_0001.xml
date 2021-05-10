@@ -1,0 +1,15 @@
+<multi-test>
+    <!-- Convert SAM to UGENEDB test -->
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_assembly_write_assembly.uwl"
+            in="!common_data_dir!sam/e_coli_1000.sam"
+            out="!tmp_data_dir!convert_assembly_0007.ugenedb"
+            out_format="usqlite"
+    />
+
+    <check-storage-file url="fileinfo.ugenedb" exists="1"/>
+    <check-storage-file url="e_coli_1000.sam.bam" exists="1"/>
+    <check-storage-file url="e_coli_1000.sam.bam.sorted.bam" exists="1"/>
+    <check-storage-file url="e_coli_1000.sam.bam.sorted.bam.bai" exists="1"/>
+
+</multi-test>

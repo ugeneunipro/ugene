@@ -1,0 +1,8 @@
+<multi-test>
+
+    <!-- Task test: promoting test: cancel not running task, not serial subtasks -->
+    <!-- Note: Today state set to TaskState_Running before check for task can be running  -->
+
+    <task-state-order-test subtask_num="20" serial="0" cancel="1"/>
+
+</multi-test>

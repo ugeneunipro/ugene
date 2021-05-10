@@ -1,0 +1,6 @@
+<multi-test>
+
+    <!-- Botwie test: run with prebuild index -->
+    <bowtie index="bowtie/index/e_coli.1.ebwt" reads="reads/e_coli_1000_1.fa" pattern="bowtie/pattern/e_coli_1000_1.sam"/>
+
+</multi-test>

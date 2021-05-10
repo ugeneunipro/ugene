@@ -1,0 +1,12 @@
+<multi-test>
+    <run-cmdline task="sitecon-build"
+                 in="!common_data_dir!/Sitecon/Algorithm/e2f.aln"
+                 out="!tmp_data_dir!e2f_actual.sitecon"
+                 clength="1000000"
+                 walg="1"
+    />
+    <load-document index="doc1" url="e2f_actual.sitecon" io="local_file" format="text" dir="temp"/>
+    <load-document index="doc2" url="/Sitecon/Algorithm/siteconBuilds/e2f.sitecon" io="local_file" format="text"/>
+
+    <compare-sitecon-models model1="doc1" model2="doc2"/>
+</multi-test>

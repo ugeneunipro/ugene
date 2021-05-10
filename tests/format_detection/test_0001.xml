@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!-- Format detection test abif -->
+
+    <fd-perfect-match url="abif/A01.abi" format="abi"/>
+
+    <!-- other examples:
+        <fd-check-score url="genbank/70Bp.gen" format="genbank" more-than="5"/> 
+        <fd-check-score url="genbank/70Bp.gen" format="genbank" less-than="10"/> 
+        <fd-check-score url="genbank/70Bp.gen" format="genbank" equal-to="7"/> -->
+
+</multi-test>

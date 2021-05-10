@@ -1,0 +1,15 @@
+<multi-test>
+
+    <!--  Open MMDB file. Check sequence names, annotation names, molecule names -->
+
+    <load-document index="doc" url="mmdb/2ZNL.prt" io="local_file" format="mmdb"/>
+    <check-num-objects doc="doc" value="5"/>
+
+    <check-document-object-names doc="doc" value="2ZNL chain A sequence,2ZNL chain A annotation,2ZNL chain B sequence,2ZNL chain B annotation,2ZNL"/>
+    <check-document-object-types doc="doc" value="OT_SEQUENCE,OT_ANNOTATIONS,OT_SEQUENCE,OT_ANNOTATIONS,OT_BIOSTRUCT3D"/>
+
+    <find-object-by-name index="obj" doc="doc" name="2ZNL" type="OT_BIOSTRUCT3D"/>
+    <check-biostruct3d-molecule-name obj="obj" chain-index="1" molecule-name="Polymerase Acidic Protein"/>
+    <check-biostruct3d-molecule-name obj="obj" chain-index="2" molecule-name="Rna-Directed Rna Polymerase Catalytic Subunit"/>
+
+</multi-test>

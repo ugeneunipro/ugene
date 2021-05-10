@@ -118,7 +118,8 @@ static QString getDataDirPath() {
     if (!dataDir.isEmpty()) {
         return dataDir;
     }
-    return QDir::searchPaths(PATH_PREFIX_DATA).first();
+    QStringList paths = QDir::searchPaths(PATH_PREFIX_DATA);
+    return paths.first();
 }
 
 const QString WorkflowSettings::getUserDirectory() {
