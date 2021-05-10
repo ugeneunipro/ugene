@@ -57,8 +57,8 @@ public:
     TextDocumentFormat(QObject *p, const DocumentFormatId &id, DocumentFormatFlags _flags, const QStringList &fileExts = QStringList());
 
 protected:
-    /** Checks if the 'rawTextData' text is stored using this document format. */
-    virtual FormatCheckResult checkRawTextData(const QString &rawTextData, const GUrl &originalDataUrl) const = 0;
+    /** Checks if the 'dataPrefix' text is stored using this document format. */
+    virtual FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl &originalDataUrl) const = 0;
 
     /**
      * Loads a document from the given stream.
@@ -69,7 +69,7 @@ protected:
 
     /**
      * Loads a DNASequence object from the current state of the reader.
-     * Returns a valid sequence object or sets an error to the 'os'.
+     * Returns a valid sequence object or nullptr if there are no more sequences left in the stream.
      * By default returns nullptr & error that sequence loading is not supported by the current format.
      */
     virtual DNASequence *loadTextSequence(IOAdapterReader &reader, U2OpStatus &os);
@@ -89,7 +89,7 @@ protected:
 
 private:
     /** Detects encoding of the raw binary data and calls 'checkRawTextData'. */
-    FormatCheckResult checkRawData(const QByteArray &rawBinaryData, const GUrl &originalDataUrl = GUrl()) const override;
+    FormatCheckResult checkRawData(const QByteArray &rawBinaryData, const GUrl &originalDataUrl) const override;
 
     /** Delegates this call to 'loadTextDocument' with a valid text reader instance. */
     Document *loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) override;

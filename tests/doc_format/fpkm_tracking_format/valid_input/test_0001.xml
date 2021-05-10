@@ -1,0 +1,42 @@
+<!-- Verify a valid FPKM Tracking Format file: valid values of each field. -->
+<!-- The name of the annotations table object is also verified. -->
+
+<multi-test lockForLogListening="true">
+
+    <load-document index="doc" url="fpkm_tracking_format/valid/all_values.fpkm_tracking" io="local_file" format="fpkm-tracking" no-message="FPKM Tracking Format parsing error"/>
+
+    <find-object-by-name index="ATO" doc="doc" name="fake_genome features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="ATO" location="4..9996" complement="false"/>
+    <find-annotation-by-location index="ann2" obj="ATO" location="10..9000" complement="false"/>
+    <find-annotation-by-location index="ann3" obj="ATO" location="20..2000" complement="false"/>
+
+    <check-annotation-qualifier annotation="ann2" qualifier="tracking_id" value="CUFF.1.2"/>
+    <check-annotation-qualifier annotation="ann2" qualifier="class_code" value="classCode"/>
+    <check-annotation-qualifier annotation="ann2" qualifier="nearest_ref_id" value="nearestRefID"/>
+    <check-annotation-qualifier annotation="ann2" qualifier="gene_id" value="geneID"/>
+    <check-annotation-qualifier annotation="ann2" qualifier="gene_short_name" value="geneShortName"/>
+    <check-annotation-qualifier annotation="ann2" qualifier="tss_id" value="tssID"/>
+    <check-annotation-qualifier annotation="ann2" qualifier="locus" value="fake_genome:10-9000"/>
+    <check-annotation-qualifier annotation="ann2" qualifier="length" value="8900"/>
+    <check-annotation-qualifier annotation="ann2" qualifier="coverage" value="21.0543"/>
+    <check-annotation-qualifier annotation="ann2" qualifier="FPKM" value="101122"/>
+    <check-annotation-qualifier annotation="ann2" qualifier="FPKM_conf_lo" value="99456.8"/>
+    <check-annotation-qualifier annotation="ann2" qualifier="FPKM_conf_hi" value="106070"/>
+    <check-annotation-qualifier annotation="ann2" qualifier="FPKM_status" value="OK"/>
+
+    <check-annotation-qualifier annotation="ann3" qualifier="tracking_id" value="CUFF.1.3"/>
+    <check-annotation-qualifier annotation="ann3" qualifier="locus" value="fake_genome:20-2000"/>
+    <check-no-annotation-qualifier annotation="ann3" qualifier="class_code"/>
+    <check-no-annotation-qualifier annotation="ann3" qualifier="nearest_ref_id"/>
+    <check-no-annotation-qualifier annotation="ann3" qualifier="gene_id"/>
+    <check-no-annotation-qualifier annotation="ann3" qualifier="gene_short_name"/>
+    <check-no-annotation-qualifier annotation="ann3" qualifier="tss_id"/>
+    <check-no-annotation-qualifier annotation="ann3" qualifier="length"/>
+    <check-no-annotation-qualifier annotation="ann3" qualifier="coverage"/>
+    <check-no-annotation-qualifier annotation="ann3" qualifier="FPKM"/>
+    <check-no-annotation-qualifier annotation="ann3" qualifier="FPKM_conf_lo"/>
+    <check-no-annotation-qualifier annotation="ann3" qualifier="FPKM_conf_hi"/>
+    <check-no-annotation-qualifier annotation="ann3" qualifier="FPKM_status"/>
+
+</multi-test>

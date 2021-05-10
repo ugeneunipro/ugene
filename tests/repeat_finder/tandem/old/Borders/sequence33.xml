@@ -1,0 +1,12 @@
+<multi-test>
+    <!--
+    Sequence:
+    TTTC:*-GAGAT-GAGAT-GAGAT-*:
+    Tandems
+    Tandem repeat GAGAT 3x5 at pos 4
+    We expect such results:
+    4,15,5
+    .(end of results)
+    -->
+    <find-tandems sequence="TTTCGAGATGAGATGAGAT" minSize="5" maxSize="15" repeatCount="3" expected_result="4,15,5;"/>
+</multi-test>

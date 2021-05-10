@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test gtf -->
+
+    <fd-perfect-match url="snp/valid.snp" format="snp"/>
+
+</multi-test>

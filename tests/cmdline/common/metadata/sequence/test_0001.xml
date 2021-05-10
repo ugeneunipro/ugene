@@ -1,0 +1,17 @@
+<!-- One sequence -->
+<multi-test>
+    <remove-temp-dir url="sequence_metadata_0001"/>
+    <create-temp-dir url="sequence_metadata_0001"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_seq_write_seq.uws"
+            in="!common_data_dir!cmdline/metadata/single_seq.fa"
+            format="genbank"
+            working-dir="sequence_metadata_0001"
+    />
+
+    <load-document index="doc" url="sequence_metadata_0001/Dataset 1.gb" io="local_file" format="genbank" dir="temp"/>
+    <check-num-objects doc="doc" value="1"/>
+    <find-object-by-name index="obj" doc="doc" name="sequence" type="OT_SEQUENCE"/>
+    <check-sequence-part obj="obj" value="AAAAAAAAAAAAAAAAAAAA" seqstart="0"/>
+</multi-test>

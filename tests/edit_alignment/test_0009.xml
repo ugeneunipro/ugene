@@ -1,0 +1,14 @@
+<multi-test>
+
+    <load-document index="doc" url="edit_alignment/animals.aln" io="local_file" format="clustal"/>
+
+    <load-document index="expected" url="edit_alignment/animals_a02.aln" io="local_file" format="clustal"/>
+
+    <test-add-seq-to-alignment
+            doc_name="doc"
+            expected_doc_name="expected"
+            seq_file_name="edit_alignment/seq02.fa"
+
+    />
+
+</multi-test>

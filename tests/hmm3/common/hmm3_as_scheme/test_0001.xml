@@ -1,0 +1,18 @@
+<multi-test>
+    <remove-temp-dir url="hmm3_1"/>
+    <create-temp-dir url="hmm3_1"/>
+    <run-cmdline
+            task="hmm3-build-and-search"
+            in_alignment="!common_data_dir!hmmer3/schemes/MADE1.sto"
+            in_sequence="!common_data_dir!hmmer3/schemes/dna_target.fa"
+            out="!tmp_data_dir!hmm3_1/dna_target.gb"
+            working-dir="hmm3_1/working_dir"
+    />
+
+    <load-document index="doc1" url="hmmer3/schemes/made1_dna_target_result.gb" io="local_file" format="genbank"/>
+    <load-document index="doc2" url="hmm3_1/dna_target.gb" io="local_file" format="genbank" dir="temp"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

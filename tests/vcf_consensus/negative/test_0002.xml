@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!vcf_consensus/vcf_base.uwl"
+            in-seq="!common_data_dir!vcf_consensus/stats.fa"
+            in-vcf="!common_data_dir!vcf_consensus/stats.vcf"
+            out-seq="!tmp_data_dir!vcf_cons_neg_test_0002.fa"
+            message="The fasta sequence does not match the REF at 1:15. TTAT(TATAA..."
+    />
+
+</multi-test>

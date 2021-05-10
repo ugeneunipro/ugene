@@ -1,0 +1,15 @@
+<multi-test>
+
+    <copy-file from="!common_data_dir!ugenedb/toy.sam.bam.ugenedb" to="!tmp_data_dir!cmdline/assembly-coverage/test_0018.ugenedb"/>
+
+    <run-cmdline task="extract_coverage"
+                 in-assembly="!tmp_data_dir!cmdline/assembly-coverage/test_0018.ugenedb"
+                 url-out="!tmp_data_dir!cmdline/assembly-coverage/assembly_coverage_0018.txt"
+                 format='1'
+                 threshold="65535"
+    />
+
+    <compare-docs doc1="!tmp_data_dir!cmdline/assembly-coverage/assembly_coverage_0018.txt" doc2="!common_data_dir!cmdline/assembly-coverage/assembly_coverage_0018.txt"/>
+    <compare-docs doc1="!tmp_data_dir!cmdline/assembly-coverage/assembly_coverage_0018_1.txt" doc2="!common_data_dir!cmdline/assembly-coverage/assembly_coverage_0018_1.txt"/>
+
+</multi-test>

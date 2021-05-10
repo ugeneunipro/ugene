@@ -1,0 +1,4 @@
+<multi-test>
+    <run-cmdline task="convert-seq" in="!common_data_dir!cmdline/raw.seq" out="!tmp_data_dir!convert_seq0006_tmp.gbk" format="genbank"/>
+
+</multi-test>

@@ -1,0 +1,39 @@
+<multi-test>
+
+    <load-project url="project/export/project_new3.uprj"/>
+
+    <load-document-from-project document="murine.gb"/>
+
+    <find-object-by-name index="ato0" doc="murine.gb" name="NC_001363 features" type="OT_ANNOTATIONS"/>
+
+    <plugin_dna-annotator-search doc="murine.gb" seq="ato0" groups="misc_feature" region_size="589" is_fit_to_region="true" expected_results="2..590"/>
+
+    <load-document-from-project document="annotations1.gb"/>
+
+    <find-object-by-name index="ato1" doc="annotations1.gb" name="Annotations1" type="OT_ANNOTATIONS"/>
+
+    <plugin_dna-annotator-search doc="murine.gb" seq="ato1" groups="BBB" region_size="55" is_fit_to_region="true" expected_results="2..56"/>
+
+    <load-document-from-project document="annotations2.gb"/>
+
+    <export-project url="/export1"/>
+
+    <unload-project documents="murine.gb,annotations1.gb,annotations2.gb"/>
+
+    <load-project url="export1/project_new3.uprj" load_from_temp="1"/>
+
+    <load-document-from-project document="murine.gb"/>
+
+    <find-object-by-name index="ato00" doc="murine.gb" name="NC_001363 features" type="OT_ANNOTATIONS"/>
+
+    <plugin_dna-annotator-search doc="murine.gb" seq="ato00" groups="misc_feature" region_size="589" is_fit_to_region="true" expected_results="2..590"/>
+
+    <load-document-from-project document="annotations1.gb"/>
+
+    <find-object-by-name index="ato11" doc="annotations1.gb" name="Annotations1" type="OT_ANNOTATIONS"/>
+
+    <plugin_dna-annotator-search doc="murine.gb" seq="ato11" groups="BBB" region_size="55" is_fit_to_region="true" expected_results="2..56"/>
+
+    <unload-project documents="murine.gb,annotations1.gb"/>
+
+</multi-test>

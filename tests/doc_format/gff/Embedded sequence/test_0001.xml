@@ -1,0 +1,17 @@
+<multi-test>
+
+    <load-document index="doc" url="gff/Embedded sequence/1.gff" io="local_file" format="gff"/>
+
+    <find-object-by-name index="sample1s" doc="doc" name="sample1 sequence" type="OT_SEQUENCE"/>
+
+    <find-object-by-name index="sample2s" doc="doc" name="sample2 sequence" type="OT_SEQUENCE"/>
+
+    <find-object-by-name index="sample1f" doc="doc" name="sample1 features" type="OT_ANNOTATIONS"/>
+
+    <find-object-by-name index="sample2f" doc="doc" name="sample2 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="sample1f" location="3..22" complement="true"/>
+
+    <find-annotation-by-location index="ann2" obj="sample2f" location="5..26" complement="true"/>
+
+</multi-test>

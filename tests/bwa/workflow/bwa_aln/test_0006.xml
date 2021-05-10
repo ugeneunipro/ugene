@@ -1,0 +1,19 @@
+<multi-test>
+    <remove-temp-dir url="bwa6"/>
+    <create-temp-dir url="bwa6"/>
+    <run-cmdline
+            task="!common_data_dir!bwa/workflow/bwa.uwl"
+            in="!common_data_dir!reads/e_coli_1000_2.fa"
+            out_dir="!tmp_data_dir!bwa6"
+            ref="!common_data_dir!bwa/index/ecoli.fa"
+            use-miss-prob="false"
+            max-diff="4"
+            index-alg="is"
+            seed-length="25"
+            max-gap="3"
+            best-hits="23"
+            scaled-gap="true"
+    />
+    <compare-sam-by-length file1="bwa6/bwa/out.sam" file2="bwa/aln_pattern/max_diff/ecoli_2_is_base_options.sam"/>
+    <remove-temp-dir url="bwa6"/>
+</multi-test>

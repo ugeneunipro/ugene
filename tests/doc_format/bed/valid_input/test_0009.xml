@@ -1,0 +1,13 @@
+<!-- Verify a valid BED file with strand value "-" -->
+
+<multi-test lockForLogListening="true">
+
+    <load-document index="doc" url="bed/valid_input/rev_compl_strand.bed" io="local_file" format="bed" no-message="BED parsing error"/>
+
+    <find-object-by-name index="ATO" doc="doc" name="test_chromosome features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="ATO" location="180..400" complement="true"/>
+
+    <check-annotation-qualifier annotation="ann1" qualifier="strand" value="-"/>
+
+</multi-test>

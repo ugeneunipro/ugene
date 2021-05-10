@@ -1,0 +1,22 @@
+<unittest>
+
+    FeatureDbiUnitTests
+    + createFeature
+    + getFeature
+    + countFeatures
+    + getFeatures
+    + getFeatureKeys
+    + addKey
+    + removeAllKeysByName
+    + removeAllKeys
+    + updateKeyValue
+    + updateLocation
+    + updateName
+    + updateParentId
+    + removeFeature
+    + getFeaturesByRegion
+    + getSubFeatures
+    + getFeaturesBySequence
+    + sortingSubgroups
+
+</unittest>

@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Shifts whole sequence region correctly . -->
+    <check-shift-sequence location-before="1..10" location-after="join(6..10,1..5)" shift="5" sequence-length="10"/>
+    <check-shift-sequence location-before="join(6..10,1..5)" location-after="1..10" shift="5" sequence-length="10"/>
+
+</multi-test>

@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!--sequence's  alphabet must be NUCL DNA EXTENDED ALPHABET( ACGNU MRWSYKVHDBX simbols) -->
+
+    <load-document index="doc" url="fasta/RNA.fa" io="local_file" format="fasta"/>
+    <find-object-by-name index="obj" doc="doc" name="AB000264" type="OT_SEQUENCE"/>
+
+    <check-sequence-alphabet-by-id obj="obj" value="NUCL_RNA_EXTENDED_ALPHABET"/>
+
+</multi-test>

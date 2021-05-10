@@ -1,0 +1,16 @@
+<!-- Two files, by datasets, merge -->
+<multi-test>
+    <remove-temp-dir url="variations_metadata_0004"/>
+    <create-temp-dir url="variations_metadata_0004"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_variations_write_variations.uws"
+            in="!common_data_dir!vcf/valid.vcf;vcf/withoutHeader.vcf"
+            out_format="vcf"
+            accum="true"
+            suffix="_out"
+            working-dir="variations_metadata_0004"
+    />
+
+    <check-temp-file url="variations_metadata_0004/Dataset 1_out.vcf" exists="1"/>
+</multi-test>

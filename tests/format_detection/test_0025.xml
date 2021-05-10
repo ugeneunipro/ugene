@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test ugene database format (.ugenedb) -->
+
+    <fd-perfect-match url="scenarios/assembly/example-alignment.ugenedb" format="usqlite"/>
+
+</multi-test>

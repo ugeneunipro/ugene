@@ -1,0 +1,17 @@
+<multi-test>
+
+    <!-- Check sequence quality scores -->
+
+    <load-document index="doc" url="reads/eas.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="s0" doc="doc" name="EAS54_6_R1_2_1_413_324" type="OT_SEQUENCE"/>
+    <find-object-by-name index="s1" doc="doc" name="EAS54_6_R1_2_1_540_792" type="OT_SEQUENCE"/>
+    <find-object-by-name index="s2" doc="doc" name="EAS54_6_R1_2_1_443_348" type="OT_SEQUENCE"/>
+
+    <import-phred-qualities seq-list="s0,s1,s2" url="reads/eas.qual"/>
+
+    <check-sequence-quality-scores obj="s0" quality=";;3;;;;;;;;;;;;7;;;;;;;88"/>
+    <check-sequence-quality-scores obj="s1" quality=";;;;;;;;;;;7;;;;;-;;;3;83"/>
+    <check-sequence-quality-scores obj="s2" quality=";;;;;;;;;;;9;7;;.7;393333"/>
+
+</multi-test>

@@ -1,0 +1,17 @@
+<!-- One file, one dataset -->
+<multi-test>
+    <remove-temp-dir url="msa_metadata_0001"/>
+    <create-temp-dir url="msa_metadata_0001"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_ali_write_ali.uws"
+            in="!common_data_dir!msf/1.msf"
+            format="clustal"
+            working-dir="msa_metadata_0001"
+    />
+
+    <load-document index="doc" url="msa_metadata_0001/1.aln" io="local_file" format="clustal" dir="temp"/>
+    <check-num-objects doc="doc" value="1"/>
+    <find-object-by-name index="obj" doc="doc" name="1" type="OT_MSA"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj" value="4"/>
+</multi-test>

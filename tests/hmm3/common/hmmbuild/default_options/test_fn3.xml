@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: default options, model: fn3, has SS_cons annotation 
+	cmd: ./hmmbuild fn3.hmm fn3.sto -->
+
+    <uhmmer3-build inputFile="stockholm/fn3.sto" outputFile="test_fn3.hmm" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/fn3.hmm" file2="test_fn3.hmm" tmp1="no" tmp2="yes"/>
+
+</multi-test>

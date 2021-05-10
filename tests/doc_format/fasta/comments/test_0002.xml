@@ -1,0 +1,15 @@
+<multi-test>
+
+    <!-- Comment after header-->
+
+    <load-document index="doc" url="fasta/comments/fa_c2.fa" io="local_file" format="fasta"/>
+
+    <check-num-objects doc="doc" value="2"/>
+
+    <find-object-by-name index="obj" doc="doc" name="SEQ_1" type="OT_SEQUENCE"/>
+    <check-sequence-part obj="obj" value="GTCAGATTGAA" seqstart="0"/>
+
+    <find-object-by-name index="obj2" doc="doc" name="SEQ_2" type="OT_SEQUENCE"/>
+    <check-sequence-part obj="obj2" value="AAGGATGGATA" seqstart="0"/>
+
+</multi-test>

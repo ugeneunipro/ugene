@@ -1,0 +1,9 @@
+<multi-test>
+    <!--
+    Sequence:
+    TGG-TGG-TGG-AAAAAA
+    Tandems
+    Tandem repeat TGG 3x3 at pos 0
+    -->
+    <find-tandems sequence="TGGTGGTGGAAAAAA" minSize="3" repeatCount="3" expected_result="0,9,3;"/>
+</multi-test>

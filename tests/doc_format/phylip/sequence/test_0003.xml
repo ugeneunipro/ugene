@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to check numbers of sequence in Msequence (must be 10)-->
+
+    <load-document index="doc" url="phylip/int_protein.phy.dat" io="local_file" format="phylip-interleaved"/>
+    <find-object-by-name index="obj" doc="doc" name="int_protein" type="OT_MSA"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj" value="10"/>
+
+</multi-test>

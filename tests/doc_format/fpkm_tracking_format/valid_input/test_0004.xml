@@ -1,0 +1,15 @@
+<!-- Verify a valid FPKM Tracking Format file: there is only one "additional column" - 'status'. -->
+
+<multi-test lockForLogListening="true">
+
+    <load-document index="doc" url="fpkm_tracking_format/valid/not_all_fpkm_columns.fpkm_tracking" io="local_file" format="fpkm-tracking" no-message="FPKM Tracking Format parsing error"/>
+
+    <find-object-by-name index="ATO" doc="doc" name="fake_genome features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="ATO" location="4..9996" complement="false"/>
+
+    <check-annotation-qualifier annotation="ann1" qualifier="locus" value="fake_genome:4-9996"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="coverage" value="22.7011"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="status" value="OK"/>
+
+</multi-test>

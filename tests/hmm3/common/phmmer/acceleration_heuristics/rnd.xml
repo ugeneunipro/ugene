@@ -1,0 +1,8 @@
+<multi-test>
+    <!-- query: rnd_query db: rnd_db
+	./phmmer -F1 0.4 -F2 0.1 -F3 0.5 rnd_query.fa rnd_db.fa >  rnd_query_rnd_db_f1_f2_f3.out -->
+
+    <hmm3-phmmer query="hmmer3/phmmer/rnd_query.fa" db="hmmer3/phmmer/rnd_db.fa" f1="0.4" f2="0.1" f3="0.5" outputDir="common/phmmer/acceleration_heuristics/rnd"/>
+    <hmm3-phmmer-compare trueOut="hmmer3/phmmer/rnd_query_rnd_db_f1_f2_f3.out" actualOut="common/phmmer/acceleration_heuristics/rnd/output.txt"/>
+
+</multi-test>

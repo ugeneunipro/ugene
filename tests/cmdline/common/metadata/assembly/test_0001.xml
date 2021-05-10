@@ -1,0 +1,18 @@
+<!-- One assembly -->
+<multi-test>
+    <remove-temp-dir url="assembly_metadata_0001"/>
+    <create-temp-dir url="assembly_metadata_0001"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_assembly_write_assembly.uwl"
+            in="!common_data_dir!bam/small.bam.sorted.bam"
+            ouf_format="bam"
+            suffix="_out"
+            working-dir="assembly_metadata_0001"
+    />
+
+    <load-document index="doc" url="assembly_metadata_0001/small_out.bam" io="local_file" format="bam" dir="temp"/>
+    <check-num-objects doc="doc" value="1"/>
+
+    <find-object-by-name index="obj" doc="doc" name="ref_and_others" type="OT_ASSEMBLY"/>
+</multi-test>

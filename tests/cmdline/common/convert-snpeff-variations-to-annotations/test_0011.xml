@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/convert-snpeff-variations-to-annotations/convert-snpeff-variations-to-annotations.uwl" in-url="!common_data_dir!cmdline/convert-snpeff-variations-to-annotations/eff_info_with_insuffient_data.vcf" out-url="!tmp_data_dir!eff_info_with_insuffient_data.gb" format="genbank"/>
+
+    <load-document index="doc1" url="cmdline/convert-snpeff-variations-to-annotations/eff_info_with_insuffient_data.gb" io="local_file" format="genbank"/>
+    <load-document index="doc2" url="eff_info_with_insuffient_data.gb" io="local_file" format="genbank" dir="temp"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2" compare-num-objects="false"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2" compare-num-objects="false"/>
+    <compare-annotations-qualifiers-in-two-objects doc="doc1" value="doc2"/>
+</multi-test>

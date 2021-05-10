@@ -1,0 +1,12 @@
+<multi-test>
+    <!--
+    Sequence:
+    :*-GATATAG-GATATAG-GATATAG-*:GCTC
+    Tandems
+    Tandem repeat GATATAG 3x7 at pos 0
+    We expect such results:
+    0,22,7
+    .(end of results)
+    -->
+    <find-tandems sequence="GATATAGGATATAGGATATAGGCTC" minSize="7" maxSize="21" repeatCount="3" expected_result="0,22,7;"/>
+</multi-test>

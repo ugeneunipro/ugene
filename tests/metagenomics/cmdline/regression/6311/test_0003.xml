@@ -1,0 +1,23 @@
+<multi-test>
+    <remove-temp-dir
+            url="regression_6311_3"
+    />
+
+    <create-temp-dir
+            url="regression_6311_3"
+    />
+
+    <copy-file
+            from="!common_data_dir!metagenomics/cmdline/regression/6311/6311.aln"
+            to="!tmp_data_dir!regression_6311_3/6311.aln"
+    />
+
+    <run-cmdline
+            working-dir="regression_6311_3"
+            task="!common_data_dir!metagenomics/cmdline/metaphlan2/workflows/metaphlan2_basic_se.uwl"
+            in="!tmp_data_dir!regression_6311_3/6311.aln"
+            message="Unexpected input file format detected. It should be FASTA or FASTQ"
+    />
+
+    <remove-temp-dir url="regression_6311_3"/>
+</multi-test>

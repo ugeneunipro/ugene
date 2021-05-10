@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- uMuscle test: alignment and sequence are equal. Result: no gaps -->
+
+    <load-document index="doc1" url="alignment/add_sequence_to_profile/ali01.aln" io="local_file" format="clustal"/>
+    <load-document index="doc2" url="alignment/add_sequence_to_profile/seq01.fa" io="local_file" format="fasta"/>
+
+    <umuscle-add-unaligned-seq-to-profile ali-doc="doc1" seq-doc="doc2" result-ali-len="15" gap-map=""/>
+
+</multi-test>

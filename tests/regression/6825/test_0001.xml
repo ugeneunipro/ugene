@@ -1,0 +1,8 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/pcr/pcr.uwl"
+            in="!common_data_dir!fasta/22.gb"
+            primers="!common_data_dir!cmdline/pcr/primers_anns_1.fa"
+            message="doesn't contain a valid sequence."
+    />
+</multi-test>

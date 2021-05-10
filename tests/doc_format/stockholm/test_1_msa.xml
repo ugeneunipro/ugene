@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- try to load stokholm file with 1 msa -->
+
+    <load-document index="doc" url="stockholm/1_msa_4_seq.sto" io="local_file" format="stockholm"/>
+    <check-num-objects doc="doc" value="1"/>
+
+    <check-document-object-names doc="doc" value="1_msa_4_seq_0"/>
+    <check-document-object-types doc="doc" value="OT_MSA"/>
+
+</multi-test>

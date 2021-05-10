@@ -1,0 +1,11 @@
+<multi-test>
+
+    <load-document index="doc" url="gff/scaffold_90.gff" io="local_file" format="gff"/>
+
+    <find-object-by-name index="ATO" doc="doc" name="scaffold_90 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="ATO" location="317..609" complement="false"/>
+
+    <find-annotation-by-location index="ann2" obj="ATO" location="1090..1114" complement="false"/>
+
+</multi-test>

@@ -1,0 +1,11 @@
+<!--Check consensus with symbols '.' and ':' -->
+<multi-test>
+    <run-cmdline task="extract_consensus_string"
+                 in="!common_data_dir!clustal/align.aln"
+                 out="!tmp_data_dir!extract_consensus_string_test_consensus_algos_0002.txt"
+                 algorithm="Clustal"
+                 threshold="100"
+    />
+
+    <compare-docs doc1="!tmp_data_dir!extract_consensus_string_test_consensus_algos_0002.txt" doc2="!common_data_dir!cmdline/extract_consensus_string/consensus_algos/test_0002.txt"/>
+</multi-test>

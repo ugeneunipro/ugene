@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Can return to the original form with forward shift. -->
+    <check-shift-sequence location-before="2..4" location-after="join(9..10,1..1)" shift="7" sequence-length="10"/>
+    <check-shift-sequence location-before="join(9..10,1..1)" location-after="2..4" shift="3" sequence-length="10"/>
+
+</multi-test>

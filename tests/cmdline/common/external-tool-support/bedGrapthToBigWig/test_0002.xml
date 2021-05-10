@@ -1,0 +1,12 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!bedGraphToBigWig/bedGraphToBigWig.uwl"
+            in="!common_data_dir!bedGraphToBigWig/1.bg"
+            out_dir="!tmp_data_dir!s p a c e s"
+            out_name="bedGraphToBigWig_test_0002.bigWig"
+            genome="!common_data_dir!bedGraphToBigWig/hg 18.genome"
+    />
+
+    <check-temp-file url="s p a c e s/bedGraphToBigWig_test_0002.bigWig" exists="1"/>
+
+</multi-test>

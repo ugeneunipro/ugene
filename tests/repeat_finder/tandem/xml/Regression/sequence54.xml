@@ -1,0 +1,14 @@
+<multi-test>
+    <!--
+    Sequence:
+    TGGC
+    CCGA-CCGA-CCGA-CCGA-gCGA-*:CCTG
+    Tandems
+    Tandem repeat CCGA 5x4 at pos 4
+    Mutations
+    Mutation in repeat #4 of 0th tandem at pos 0
+    We expect such results:
+    .(end of results)
+    -->
+    <find-tandems seq="TGGCCCGACCGACCGACCGAGCGACCTG" minSize="4" maxSize="12" repeatCount="5" expected_result=""/>
+</multi-test>

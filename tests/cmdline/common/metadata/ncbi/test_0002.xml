@@ -1,0 +1,16 @@
+<!-- By datasets -->
+<multi-test>
+    <remove-temp-dir url="ncbi_metadata_0002"/>
+    <create-temp-dir url="ncbi_metadata_0002"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_db_write_fa.uws"
+            db="SWISS-PROT"
+            id="A0N8V2"
+            save="!tmp_data_dir!"
+            accum="true"
+            working-dir="ncbi_metadata_0002"
+    />
+
+    <check-temp-file url="ncbi_metadata_0002/write-fasta_output.fa" exists="1"/>
+</multi-test>

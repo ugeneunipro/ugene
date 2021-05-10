@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to load broken data from document(no name of sequence)-->
+
+    <load-document index="doc" url="fastq/broken/no-qual.fastq" io="local_file" format="fastq"/>
+
+    <check-num-objects doc="doc" value="2"/>
+
+</multi-test>

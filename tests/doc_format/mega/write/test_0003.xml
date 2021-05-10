@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- Test save option, check sequences alphabet save correct, fasta to fasta-->
+
+    <load-document index="doc" url="mega/MegaTest_1.meg" io="local_file" format="mega"/>
+    <save-document doc="doc" url="_temp0003.meg" io="local_file" format="mega"/>
+    <load-document index="doc2" url="_temp0003.meg" io="local_file" format="mega" dir="temp"/>
+    <compare-Msequences-alphabets-in-two-objects doc="doc" value="doc2"/>
+
+</multi-test>

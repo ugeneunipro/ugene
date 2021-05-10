@@ -1,0 +1,13 @@
+<multi-test>
+    <remove-temp-dir url="snpeff2"/>
+    <create-temp-dir url="snpeff2"/>
+    <run-cmdline
+            task="!common_data_dir!cmdline/external-tool-support/snpeff/snpeff.uwl"
+            in="!common_data_dir!cmdline/external-tool-support/snpeff/annotate_1.vcf"
+            out_dir="!tmp_data_dir!/snpeff2"
+            genome="testCase"
+    />
+    <compare-vcf-docs doc1="cmdline/external-tool-support/snpeff/2.vcf" doc2="snpeff2/snpeff/snp_eff.vcf" temp="2"/>
+    <remove-temp-dir url="snpeff2"/>
+</multi-test>
+

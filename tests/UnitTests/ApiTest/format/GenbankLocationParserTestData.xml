@@ -1,0 +1,34 @@
+<unittest>
+
+    LocationParserTestData
+    + locationParser
+    + locationParserEmpty
+    + locationParserCompare
+    + locationParserDuplicate
+    + locationParserInvalid
+    + locationParserComplement
+    + locationParserComplementInvalid
+    - hugeLocationParser
+    + buildLocationString
+    + buildLocationStringDuplicate
+    - buildLocationStringInvalid
+    + locationOperatorJoin
+    + locationOperatorJoinInvalid
+    + locationOperatorOrder
+    + locationOperatorOrderInvalid
+    + locationParserParenthesis
+    + locationParserParenthesisInvalid
+    - locationParserLeftParenthesisMissed
+    + locationParserRightParenthesisMissed
+    + locationParserPeriod
+    + locationParserPeriodInvalid
+    + locationParserDoublePeriodInvalid
+    + locationParserCommaInvalid
+    - locationParserNumberInvalid
+    + locationParserLessInvalid
+    + locationParserGreaterInvalid
+    + locationParserName
+    + locationParserNameInvalid
+    - locationBuildStringNumberInvalid
+
+</unittest>

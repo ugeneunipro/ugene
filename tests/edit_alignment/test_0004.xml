@@ -1,0 +1,16 @@
+<multi-test>
+
+    <load-document index="doc" url="edit_alignment/COI.aln" io="local_file" format="clustal"/>
+
+    <load-document index="expected" url="edit_alignment/COIex04.aln" io="local_file" format="clustal"/>
+
+    <test-remove-alignment-region
+            doc_name="doc"
+            expected_doc_name="expected"
+            start-seq="1"
+            start-base="1"
+            width="603"
+            height="16"
+    />
+
+</multi-test>

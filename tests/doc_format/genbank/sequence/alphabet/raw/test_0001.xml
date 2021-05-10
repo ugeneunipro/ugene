@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!--test in sequence must be RAW alphabet(in sequense symbol "j")-->
+
+    <load-document index="doc" url="genbank/RAW.gen" io="local_file" format="genbank"/>
+    <find-object-by-name index="obj" doc="doc" name="RAW263" type="OT_SEQUENCE"/>
+
+    <check-sequence-alphabet-by-id obj="obj" value="RAW_ALPHABET"/>
+
+</multi-test>

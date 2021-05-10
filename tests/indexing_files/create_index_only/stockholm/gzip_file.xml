@@ -1,0 +1,8 @@
+<multi-test>
+
+    <!-- try to create index of gzipped file ( gzip 1.2.4 version ) -->
+
+    <generate-file input="indexing_files/stockholm/gzip_file.sto" amount="1400" outCtxName="tmpFile" gzipOut="yes"/>
+    <create-file-index tmpInput="yes" input="tmpFile" output="gzip_file.uind" delete="yes"/>
+
+</multi-test>

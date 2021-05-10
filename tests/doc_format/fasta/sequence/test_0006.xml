@@ -1,0 +1,17 @@
+<multi-test>
+
+    <!-- in file exist 3 sequences with difrent Alphabets; 1- NUCL DNA basic 2- NUCL DNA extended 3- RAW -->
+    <!--test all sequences size-->
+
+    <load-document index="doc" url="fasta/base_ext_nucl_all_symb.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="obj" doc="doc" name="SEQUENCE_1" type="OT_SEQUENCE"/>
+    <check-sequence-size obj="obj" value="70"/>
+
+    <find-object-by-name index="obj1" doc="doc" name="SEQUENCE_2" type="OT_SEQUENCE"/>
+    <check-sequence-size obj="obj1" value="80"/>
+
+    <find-object-by-name index="obj2" doc="doc" name="SEQUENCE_3" type="OT_SEQUENCE"/>
+    <check-sequence-size obj="obj2" value="90"/>
+
+</multi-test>

@@ -1,0 +1,20 @@
+<!-- Circular sequence, inner annotations, inside begin, inside end -->
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/pcr/pcr.uwl"
+            in="!common_data_dir!cmdline/pcr/begin-end.gb"
+            primers="!common_data_dir!cmdline/pcr/primers_anns_1.fa"
+            mismatches="0"
+            annotations="0"
+            report="!tmp_data_dir!pcr_anns_0001.txt"
+            out="!tmp_data_dir!pcr_anns_0001.gb"
+    />
+
+    <load-document index="doc" url="pcr_anns_0001.gb" io="local_file" format="genbank" dir="temp"/>
+    <find-object-by-name index="anns" doc="doc" name="sequence:521-80 features" type="OT_ANNOTATIONS"/>
+    <check-num-annotations obj="anns" value="4"/>
+    <find-annotation-by-name index="begin" obj="anns" name="begin"/>
+    <find-annotation-by-name index="end" obj="anns" name="end"/>
+    <check-annotation-location annotation="begin" location="61..80" complement="0"/>
+    <check-annotation-location annotation="end" location="81..100" complement="0"/>
+</multi-test>

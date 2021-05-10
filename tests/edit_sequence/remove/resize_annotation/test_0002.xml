@@ -1,0 +1,14 @@
+<multi-test>
+    <load-document index="doc" url="edit_sequence/test.gb" io="local_file" format="genbank"/>
+
+    <Remove_Part_From_Sequence_Task
+            doc_name="doc"
+            seq_name="NC_001363 sequence"
+            start_pos="2"
+            length="2"
+            annotation_processing="resize"
+            annotation_name="DUMMY_1"
+            expected_sequence="aagaaagaccccacccgtaggtggcaag"
+            expected_regions="1,4"
+    />
+</multi-test>

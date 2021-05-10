@@ -1,0 +1,22 @@
+<multi-test>
+
+    <!-- Test that UTF-8 encoding is correctly supported. -->
+
+    <load-document index="doc" url="clustal/utf8.aln" io="local_file" format="clustal"/>
+
+    <check-num-objects doc="doc" value="1"/>
+    <check-document-object-types doc="doc" value="OT_MSA"/>
+    <find-object-by-name index="obj" doc="doc" name="utf8" type="OT_MSA"/>
+
+    <check-Msequence-name obj="obj" seqname="Montana_montana"/>
+    <check-Msequence-name obj="obj" seqname="Дураков_работа_любит"/>
+    <check-Msequence-name obj="obj" seqname="死神愛りんご"/>
+    <check-Msequence-name obj="obj" seqname="ἀγεωμέτρητος_μηδεὶς_εἰσίτω"/>
+    <check-Msequence-name obj="obj" seqname="دكانتك_مفتوحة_"/>
+    <check-Msequence-name obj="obj" seqname="_गधे_को_गधा_खुजलाता_है"/>
+    <check-Msequence-name obj="obj" seqname="✢_✣_✤_✥_✦_✧_✡︎_✶_✷"/>
+    <check-Msequence-name obj="obj" seqname="פרה_פרה_"/>
+    <check-Msequence-name obj="obj" seqname="პოლიცია_გამოიძახე"/>
+    <check-Msequence-name obj="obj" seqname="画龙点睛。"/>
+
+</multi-test>

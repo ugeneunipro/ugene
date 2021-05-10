@@ -1,0 +1,20 @@
+<multi-test>
+    <!--
+    Sequence:
+    TCGATtTT-TCGATCTT-TCGATCTT
+    TGCCGCGC-TGCCGCGC-TGCCGCGC
+    ACTTCCGT-ACTTCCGT-ACTTCCGT
+
+    Tandems
+    Tandem repeat TCGATCTT 3x8 at pos 0
+    Tandem repeat TGCCGCGC 3x8 at pos 23
+    Tandem repeat ACTTCCGT 3x8 at pos 46
+    Mutations
+    Mutation in repeat #0 of 0th tandem at pos 5
+    We expect such results:
+    24,24,8
+    48,24,8
+    .(end of results)
+    -->
+    <find-tandems sequence="TCGATTTTTCGATCTTTCGATCTTTGCCGCGCTGCCGCGCTGCCGCGCACTTCCGTACTTCCGTACTTCCGT" minSize="8" repeatCount="3" expected_result="24,24,8;48,24,8;"/>
+</multi-test>

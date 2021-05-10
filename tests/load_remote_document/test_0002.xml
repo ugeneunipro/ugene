@@ -1,0 +1,3 @@
+<multi-test>
+    <load-remote-document database="NCBI protein sequence database" document_id="AAA59172.1" expected_document="load_remote_document/AAA59172.1.gb"/>
+</multi-test>

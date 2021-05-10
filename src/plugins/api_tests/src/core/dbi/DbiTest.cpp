@@ -48,7 +48,7 @@ bool TestDbiProvider::init(const QString &dbiFileName, bool _useConnectionPool) 
     }
 
     TestRunnerSettings *trs = AppContext::getAppSettings()->getTestRunnerSettings();
-    QString originalFile = trs->getVar("COMMON_DATA_DIR") + "/" + dbiFileName;
+    QString originalFile = trs->getVar("COMMON_DATA_DIR") + "/unit_tests/" + dbiFileName;
 
     QString tmpFile = QDir::temp().absoluteFilePath(QFileInfo(originalFile).fileName());
 

@@ -1,0 +1,17 @@
+<!-- Two files in two datasets -->
+<multi-test>
+    <remove-temp-dir url="assembly_metadata_0003"/>
+    <create-temp-dir url="assembly_metadata_0003"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_assembly_write_assembly.uwl"
+            in="!common_data_dir!ace/ace_test_2.ace;bam/small.bam.sorted.bam"
+            out_format="bam"
+            working-dir="assembly_metadata_0003"
+    />
+
+    <load-document index="doc1" url="assembly_metadata_0003/ace_test_2.bam" io="local_file" format="bam" dir="temp"/>
+    <load-document index="doc2" url="assembly_metadata_0003/small.bam" io="local_file" format="bam" dir="temp"/>
+    <check-num-objects doc="doc1" value="2"/>
+    <check-num-objects doc="doc2" value="1"/>
+</multi-test>

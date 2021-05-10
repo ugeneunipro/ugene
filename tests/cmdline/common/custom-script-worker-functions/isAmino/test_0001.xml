@@ -1,0 +1,7 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/isAminoTest/isAminoTest.uwl"
+                 in="!common_data_dir!cmdline/DNA.fa"
+                 expected="false"
+                 message="TEST PASSED"/>
+
+</multi-test>

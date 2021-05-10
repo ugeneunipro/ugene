@@ -1,0 +1,24 @@
+<!-- 1 sequence, 1 pair -->
+<multi-test>
+    <remove-temp-dir url="pcr_0003"/>
+    <create-temp-dir url="pcr_0003"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/pcr/pcr.uwl"
+            in="!common_data_dir!fasta/pcr_test.fa"
+            primers="!common_data_dir!cmdline/pcr/primers_pIB2-SEC13.fa"
+            working-dir="pcr_0003"
+    />
+
+    <load-document index="doc" url="pcr_0003/pcr_test_pIB2-SEC13_1_fr_3-3396.gb" io="local_file" format="genbank" dir="temp"/>
+    <check-num-objects doc="doc" value="2"/>
+    <find-object-by-name index="seq" doc="doc" name="pIB2-SEC13:3-3396" type="OT_SEQUENCE"/>
+    <check-sequence-size obj="seq" value="3394"/>
+
+    <find-object-by-name index="anns" doc="doc" name="pIB2-SEC13:3-3396 features" type="OT_ANNOTATIONS"/>
+    <find-annotation-by-name index="forward" obj="anns" name="misc_feature" number="0"/>
+    <find-annotation-by-name index="reverse" obj="anns" name="misc_feature" number="1"/>
+    <check-annotation-location annotation="forward" location="1..50" complement="0"/>
+    <check-annotation-location annotation="reverse" location="3348..3394" complement="1"/>
+
+</multi-test>

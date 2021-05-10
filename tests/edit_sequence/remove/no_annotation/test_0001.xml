@@ -1,0 +1,13 @@
+<multi-test>
+    <load-document index="doc" url="edit_sequence/fa1.fa" io="local_file" format="fasta"/>
+
+    <Remove_Part_From_Sequence_Task
+            doc_name="doc"
+            seq_name="fasta file part 1"
+            start_pos="1"
+            length="2"
+            annotation_name=""
+            expected_sequence="AG"
+            expected_regions=""
+    />
+</multi-test>

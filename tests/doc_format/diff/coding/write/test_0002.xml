@@ -1,0 +1,19 @@
+<multi-test>
+
+    <load-document index="doc1" url="diff/coding/cds_cut.diff" io="local_file" format="diff"/>
+    <save-document doc="doc1" url="diff_cds2.diff" io="local_file" format="diff"/>
+    <load-document index="doc2" url="diff_cds2.diff" io="local_file" format="diff" dir="temp"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-qualifiers-in-two-objects doc="doc1" value="doc2"/>
+
+    <find-object-by-name index="obj" doc="doc2" name="differential" type="OT_ANNOTATIONS"/>
+    <check-num-annotations obj="obj" value="2"/>
+    <find-annotation-by-location index="ann" obj="obj" location="151..251" complement="false"/>
+    <check-annotation-qualifier annotation="ann" qualifier="chromosome" value="test_chromosome"/>
+    <check-annotation-qualifier annotation="ann" qualifier="sample_1" value="q3"/>
+    <check-annotation-qualifier annotation="ann" qualifier="sample_2" value="q4"/>
+    <check-annotation-qualifier annotation="ann" qualifier="status" value="OK"/>
+
+</multi-test>

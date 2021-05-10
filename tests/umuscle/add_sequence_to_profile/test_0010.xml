@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!-- uMuscle test: 2 sequences, first is 2x ali, second is ali with 4 letters inserted. 
+        Result: 19 gaps in ali and the second sequence, 4 in the first -->
+
+    <load-document index="doc1" url="alignment/add_sequence_to_profile/ali01.aln" io="local_file" format="clustal"/>
+    <load-document index="doc2" url="alignment/add_sequence_to_profile/seq10.fa" io="local_file" format="fasta"/>
+
+    <umuscle-add-unaligned-seq-to-profile ali-doc="doc1" seq-doc="doc2" result-ali-len="34"
+                                          gap-map="6,7,8,9|15,16,17,18,19,20,21,22,23,24,25,26,27,28,29"/>
+
+</multi-test>

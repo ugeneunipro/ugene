@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- Test reading file: in file 1 object Sequence -->
+
+    <load-document index="doc" url="genbank/70Bp.gen" io="local_file" format="genbank"/>
+
+    <check-num-objects doc="doc" value="1"/>
+
+    <check-document-object-names doc="doc" value="A"/>
+
+    <check-document-object-types doc="doc" value="OT_SEQUENCE"/>
+
+</multi-test>

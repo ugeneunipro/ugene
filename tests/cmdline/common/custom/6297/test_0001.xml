@@ -1,0 +1,7 @@
+<multi-test lockForLogListening="true">
+
+    <run-cmdline task="!workflow_samples!NGS/fastqc.uwl"
+                 in="!common_data_dir!cmdline/custom/6297/6297.fastq"
+                 message="Make sure each read takes exactly four lines."/>
+
+</multi-test>

@@ -1,0 +1,7 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom/1998/1998.uws"
+                 names="!common_data_dir!cmdline/custom/1998/names.txt"
+                 in="!common_data_dir!cmdline/custom/1998/empty.fa"
+                 message="Document is empty"/>
+
+</multi-test>

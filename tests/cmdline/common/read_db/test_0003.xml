@@ -1,0 +1,15 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_db_write_gen.uws"
+            db="NCBI GenBank (DNA sequence)"
+            id="NC_001363"
+            save="!tmp_data_dir!"
+            out="!tmp_data_dir!read_db_0003.gbk"/>
+
+    <load-document index="doc1" url="read_db_0003.gbk" io="local_file" format="genbank" dir="temp"/>
+    <load-document index="doc2" url="NC_001363.gb" io="local_file" format="genbank" dir="temp"/>
+
+    <compare-sequences-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-and-num-reordered doc="doc1" value="doc2"/>
+
+</multi-test>

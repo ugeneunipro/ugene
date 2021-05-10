@@ -1,0 +1,20 @@
+<multi-test>
+
+    <load-document index="doc" url="annotator/seq_with_promoter.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="seq" doc="doc" name="seq_with_T7" type="OT_SEQUENCE"/>
+
+    <custom-auto-annotation-search doc="doc" seq="seq_with_T7" result="plasmid_annotations" circular="false"/>
+
+    <find-annotation-by-name index="ann1" obj="plasmid_annotations" name="T7_promoter"/>
+
+    <check-annotation-location annotation="ann1" location="247..265" complement="0"/>
+
+    <check-annotation-sequence annotation="ann1" sequence="seq" value="TAATACGACTCACTATAGG"/>
+
+    <find-annotation-by-name index="ann2" obj="plasmid_annotations" name="pBRrevBam_primer"/>
+
+    <check-annotation-location annotation="ann2" location="381..400" complement="1"/>
+
+
+</multi-test>

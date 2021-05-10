@@ -1,0 +1,6 @@
+<!-- UGENE-6406 GTF parsing errors for chr20.gtf -->
+<multi-test lockForLogListening="true">
+
+    <load-document index="doc" url="gtf/valid_input/test_0008.gtf" io="local_file" format="gtf" no-message="GTF parsing error: invalid attributes format at line"/>
+
+</multi-test>

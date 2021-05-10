@@ -1,0 +1,13 @@
+<!-- Verify a valid BED file with not set value itemRgb. -->
+
+<multi-test lockForLogListening="true">
+
+    <load-document index="doc" url="bed/valid_input/item_rgb_is_0.bed" io="local_file" format="bed" no-message="BED parsing error"/>
+
+    <find-object-by-name index="ATO" doc="doc" name="test_chromosome features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="ATO" location="180..400" complement="false"/>
+
+    <check-annotation-qualifier annotation="ann1" qualifier="item_rgb" value="0"/>
+
+</multi-test>

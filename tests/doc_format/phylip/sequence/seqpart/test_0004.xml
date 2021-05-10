@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- try to find seqpart in the second sequense in multy sequence -->
+
+    <load-document index="doc" url="phylip/seq_amino_wrapped.ph" io="local_file" format="phylip-sequential"/>
+    <find-object-by-name index="obj" doc="doc" name="seq_amino_wrapped" type="OT_MSA"/>
+
+    <check-Msequence-part obj="obj" value="NPIRPVTDRAASTLESAVLGALGRTRHALRFARFAVRY" seqstart="30" seqname="ALEU_HORVU"/>
+
+</multi-test>

@@ -1,0 +1,9 @@
+<multi-test>
+
+    <load-document index="s1d" url="fasta/repeat_finder/human_T1_part1.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="s1" doc="s1d" name="human_T1 (UCSC April 2002 chr7:115977709-117855134)" type="OT_SEQUENCE"/>
+
+    <find-repeats seq="s1" w="120" c="9" mind="0" filterNested="true" reflect="false" expected_result="repeat_finder/res_dna_mismatch_1_1.txt"/>
+
+</multi-test>

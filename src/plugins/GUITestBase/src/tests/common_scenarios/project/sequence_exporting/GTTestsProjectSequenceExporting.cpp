@@ -103,7 +103,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // 2. Double click on "[a] Annotations" sequence object, in project view tree
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // Expected result: NC_001363 sequence has been opened in sequence view
     GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
@@ -115,7 +114,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // {Add created document to project} set checked
 
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 4);
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_EXPORT"
                                                                         << "action_export_selected_sequence_region",
@@ -130,12 +128,10 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state: sequence view [1..4] has been opened, with sequence "AAAT"
-    GTGlobals::sleep();
     GTUtilsDocument::checkDocument(os, "exp.fasta");
 
     QString seq;
     GTUtilsSequenceView::getSequenceAsString(os, seq);
-    GTGlobals::sleep();
 
     CHECK_SET_ERR(seq == "AAAT", "exported sequence differs from AAAT");
 
@@ -166,7 +162,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // 2. Double click on "[a] Annotations" sequence object, in project view tree
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     //     Expected result: NC_001363 sequence has been opened in sequence view
     GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
@@ -214,7 +209,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     // 1. Use menu {File->Open}. Open project _common_data/scenario/project/proj4.uprj
     GTFileDialog::openFile(os, sandBoxDir, fileName);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     // Expected state:
     //     1) Project view with document "1.gb" and "2.gb" is opened
@@ -225,7 +219,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
     GTMouseDriver::moveTo(itemPos);
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep(1000);
 
     // Expected result: NC_001363 sequence has been opened in sequence view
     GTUtilsDocument::checkDocument(os, doc1, AnnotatedDNAViewFactory::ID);
@@ -233,7 +226,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     // 3. Select joined annotation B. Use context menu item {Export->Export Sequence of Selected Annotations}
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "B_joined"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // Expected state: Export Sequence of Selected Annotations
     // 4. Fill the next field in dialog:
@@ -320,7 +312,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, nc_001363));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep(1000);
     GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
 
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "C");
@@ -328,7 +319,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "C"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_EXPORT"
                                                                         << "action_export_annotations",
@@ -343,7 +333,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsDialog::waitForDialog(os, filler);
     GTMouseDriver::click(Qt::RightButton);
 
-    GTGlobals::sleep(1000);
     bool equals = GTFile::equals(os, testDir + "_common_data/scenarios/sandbox/1.csv", testDir + "_common_data/scenarios/project/test_0005.csv");
     CHECK_SET_ERR(equals == true, "Exported file differs from the test file");
 
@@ -367,18 +356,12 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "New document from text...",
                               GTGlobals::UseKey);
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, true, "misc_feature_group", "misc_feature", "complement(1.. 20)"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep();
-
-    GTGlobals::sleep();
 
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "misc_feature"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_EXPORT"
                                                                         << "action_export_sequence_of_selected_annotations",
@@ -393,8 +376,6 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsDialog::waitForDialog(os, filler3);
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "misc_feature"));
     GTMouseDriver::click(Qt::RightButton);
-
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008) {
@@ -490,7 +471,6 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
 
     GTUtilsProjectTreeView::click(os, "NC_001363");
     GTKeyboardDriver::keyPress(Qt::Key_Delete);
-    GTGlobals::sleep(200);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CORRESPONDING_SEQ));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
@@ -528,11 +508,9 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTKeyboardDriver::keyPress(Qt::Key_Control);
-    GTGlobals::sleep(200);
     GTUtilsProjectTreeView::click(os, "Ca21chr5 features");
     GTUtilsProjectTreeView::click(os, "Ca21chr1 features");
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTGlobals::sleep(200);
 
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CORRESPONDING_SEQ, PopupChecker::NotExists));
     GTMouseDriver::click(Qt::RightButton);

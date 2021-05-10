@@ -1,0 +1,15 @@
+<multi-test>
+
+    <!-- test try to find part in first position, in last position, in the middle(protein alphabet)-->
+
+    <load-document index="doc" url="swiss_prot/P01375.sw" io="local_file" format="swiss-prot"/>
+
+    <find-object-by-name index="obj" doc="doc" name="TNFA_HUMAN" type="OT_SEQUENCE"/>
+
+    <check-sequence-part obj="obj" value="MSTESMIR" seqstart="0"/>
+
+    <check-sequence-part obj="obj" value="SRTPSDKPVA" seqstart="80"/>
+
+    <check-sequence-part obj="obj" value="AESGQVYFGIIAL" seqstart="220"/>
+
+</multi-test>

@@ -142,8 +142,8 @@ static QString addExcludeTests(const QString &fullTestDirPath, const QString &st
 GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
     QFile f(url);
     if (!f.open(QIODevice::ReadOnly)) {
-        err = QString("cant_open_file %1").arg(url);
-        return NULL;
+        err = "Can't open file: " + url;
+        return nullptr;
     }
     QByteArray xmlData = f.readAll();
     f.close();
@@ -151,26 +151,21 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
     QDomDocument suiteDoc;
     bool res = suiteDoc.setContent(xmlData);
     if (!res) {
-        err = ("not_an_xml_suite_file");
-        return NULL;
-    }
-
-    if (suiteDoc.doctype().name() != "UGENE_TEST_FRAMEWORK_SUITE") {
-        err = ("not_a_test_suite_file");
-        return NULL;
+        err = "Not XML doc: " + url;
+        return nullptr;
     }
 
     QDomElement suiteEl = suiteDoc.documentElement();
     if (suiteEl.tagName() != "suite") {
-        err = ("suite_elem_not_found");
-        return NULL;
+        err = "Top level element is not <suite>: " + url;
+        return nullptr;
     }
 
     //Name
     QString suiteName = suiteEl.attribute("name");
     if (suiteName.isEmpty()) {
-        err = ("suite_name_is_empty");
-        return NULL;
+        err = "Suite name is empty: " + url;
+        return nullptr;
     }
 
     //Test timeout
@@ -188,14 +183,14 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
         QDomElement varEl = n.toElement();
         QString varName = varEl.attribute("name");
         if (varName.isEmpty()) {
-            err = ("var_tag_without_name");
+            err = "var_tag_without_name: " + url;
             return NULL;
         }
         QString varVal = varEl.attribute("value");
         suiteEnv.setVar(varName, varVal);
     }
 
-    //Tests
+    // Tests
     QFileInfo suiteUrl(url);
     QString suiteDir = suiteUrl.absoluteDir().absolutePath();
     QList<GTestRef *> suiteTests;
@@ -214,31 +209,31 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
         QDomElement testDirEl = n.toElement();
         dirPath = testDirEl.attribute("path");
         if (dirPath.isEmpty()) {
-            err = ("path_attribute_not_found");
+            err = "path_attribute_not_found: " + url;
             break;
         }
         QString fullTestDirPath = suiteDir + "/" + dirPath;
         QFileInfo testDir(fullTestDirPath);
         if (!testDir.exists()) {
-            err = QString("test_dir_not_exists %1").arg(fullTestDirPath);
+            err = "test_dir_not_exists:" + fullTestDirPath;
             break;
         }
 
-        QList<QRegExp> xlist;
-        err = addExcludeTests(fullTestDirPath, testDirEl.attribute("exclude"), xlist);
+        QList<QRegExp> excludeRexExList;
+        err = addExcludeTests(fullTestDirPath, testDirEl.attribute("exclude"), excludeRexExList);
         if (!err.isEmpty()) {
             break;
         }
 
         if (sizeof(void *) == 8) {    // means that it is 64 bit system
-            err = addExcludeTests(fullTestDirPath, testDirEl.attribute("exclude_64"), xlist);
+            err = addExcludeTests(fullTestDirPath, testDirEl.attribute("exclude_64"), excludeRexExList);
             if (!err.isEmpty()) {
                 break;
             }
         }
 
         if (sizeof(void *) == 4) {    // means that it is 32 bit system
-            err = addExcludeTests(fullTestDirPath, testDirEl.attribute("exclude_32"), xlist);
+            err = addExcludeTests(fullTestDirPath, testDirEl.attribute("exclude_32"), excludeRexExList);
             if (!err.isEmpty()) {
                 break;
             }
@@ -247,14 +242,13 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
         testFormatName = testDirEl.attribute("test-format");
         bool recursive = testDirEl.attribute("recursive") != "false";
         QString testExt = testDirEl.attribute("test-ext");
-        QStringList testURLs = findAllFiles(fullTestDirPath, testExt, recursive, 0);
-        foreach (const QString &tUrl, testURLs) {
-            int shortNameLen = tUrl.length() - fullTestDirPath.length() - 1;    // minus '/' char
+        QStringList testUrls = findAllFiles(fullTestDirPath, testExt, recursive, 0);
+        for (const QString &testUrl : qAsConst(testUrls)) {
+            int shortNameLen = testUrl.length() - fullTestDirPath.length() - 1;    // minus '/' char
             assert(shortNameLen > 0);
-            QString tShortName = tUrl.right(shortNameLen);
-            GTestRef *tref = new GTestRef(tUrl, tShortName, testFormatName);
+            QString tShortName = testUrl.right(shortNameLen);
             //all tests appended
-            suiteTests << tref;
+            suiteTests << new GTestRef(testUrl, tShortName, testFormatName);
         }
     }
 
@@ -296,7 +290,7 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
         for (iter = excluded.begin(); iter != excluded.end(); ++iter) {
             delete iter.key();
         }
-        return NULL;
+        return nullptr;
     }
 
     GTestSuite *suite = new GTestSuite();
@@ -341,12 +335,13 @@ QList<GTestSuite *> GTestSuite::readTestSuiteList(const QString &url, QStringLis
         }
         QString absolutePath = QFileInfo(dir + "/" + suiteName).absoluteFilePath();
         QString error;
-        GTestSuite *ts = GTestSuite::readTestSuite(absolutePath, error);
-        if (ts == nullptr) {
+        GTestSuite *testSuite = GTestSuite::readTestSuite(absolutePath, error);
+        if (testSuite == nullptr) {
             assert(!error.isEmpty());
             errs << error;
         } else {
-            result << ts;
+            coreLog.info(QString("Loaded test suite '%1', tests: %2").arg(testSuite->getName()).arg(testSuite->tests.size()));
+            result << testSuite;
         }
     }
     return result;

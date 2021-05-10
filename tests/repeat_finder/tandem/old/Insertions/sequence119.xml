@@ -1,0 +1,14 @@
+<multi-test>
+    <!--
+    Sequence:
+    :*-GTCGATGACGG-GTCGATGACGG-GTCGATGACGG-GTCGATGACGGA-*:CCTC
+    Tandems
+    Tandem repeat GTCGATGACGG 4x11 at pos 0
+    Insertions
+    44
+    We expect such results:
+    0,44,11
+    .(end of results)
+    -->
+    <find-tandems sequence="GTCGATGACGGGTCGATGACGGGTCGATGACGGGTCGATGACGGACCTC" minSize="11" maxSize="33" repeatCount="3" expected_result="0,44,11;"/>
+</multi-test>

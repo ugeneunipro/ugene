@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- Comment: uHMMER Search test: E-value catoff test-->
+
+    <load-document index="doc" url="fasta/titin.fa" io="local_file" format="fasta"/>
+
+    <uhmmer-search index="hmmsearch" hmmfile="hmm/fn3.hmm" seqdoc="doc" expert_opt="1" evalue_cutoff="1e-26" seq_in_db="1"/>
+
+    <find-object-by-name index="obj" doc="hmmsearch" name="Annotations" type="OT_ANNOTATIONS"/>
+
+    <check-num-annotations obj="obj" value="132"/>
+
+</multi-test>

@@ -1,0 +1,24 @@
+<multi-test>
+
+    <remove-temp-dir url="conversion_0003"/>
+    <create-temp-dir url="conversion_0003"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/conversion/schema.uwl"
+            in="!common_data_dir!fasta/abcd.fa;fasta/AMINO.fa;fasta/11.gb;fasta/test.TXT"
+            target="gff"
+            exclude="fasta"
+            working-dir="conversion_0003"
+    />
+
+    <check-temp-file url="conversion_0003/Converted_files/abcd.fa.gb" exists="0"/>
+    <check-temp-file url="conversion_0003/Converted_files/AMINO.fa.gb" exists="0"/>
+
+    <load-document index="actual1" url="conversion_0003/Converted_files/11.gb.gff" io="local_file" format="gff"
+                   dir="temp"/>
+    <load-document index="expected1" url="cmdline/conversion/11.gb.gff" io="local_file" format="gff"/>
+    <compare-sequences-in-two-objects doc="actual1" value="expected1"/>
+
+    <check-temp-file url="conversion_0003/Converted_files/test.TXT.gb" exists="0"/>
+
+</multi-test>

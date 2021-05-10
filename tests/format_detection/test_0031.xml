@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test phylip-interleaved -->
+
+    <fd-perfect-match url="phylip/int_amino.phy" format="phylip-interleaved"/>
+
+</multi-test>

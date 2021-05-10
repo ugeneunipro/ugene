@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Test checking file format: raw sequence-->
+
+    <check-document-format url="raw_sequence/eas.raw" value="raw"/>
+
+</multi-test>

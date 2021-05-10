@@ -1,0 +1,17 @@
+<multi-test>
+
+    <run-cmdline task="!common_data_dir!regression/1503/gene_orthologs.uwl"
+                 in="!common_data_dir!regression/1503/genome1.fa;regression/1503/genome2.fa"
+                 patterns="!common_data_dir!regression/1503/patterns"
+                 out="!tmp_data_dir!regression_1503.aln"
+    />
+
+    <load-document index="doc1" url="regression_1503.aln" io="local_file" format="clustal" dir="temp"/>
+    <find-object-by-name index="obj1" doc="doc1" name="regression_1503" type="OT_MSA"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj1" value="3"/>
+
+    <load-document index="doc2" url="regression_1503_1.aln" io="local_file" format="clustal" dir="temp"/>
+    <find-object-by-name index="obj2" doc="doc2" name="regression_1503_1" type="OT_MSA"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj2" value="3"/>
+
+</multi-test>

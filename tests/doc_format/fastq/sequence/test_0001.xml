@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- in file exist 2 sequences with the same alphabet -->
+    <!-- 1st sequence's alphabet id must be  AMINO_DEFAULT_ALPHABET it's size =25 -->
+
+    <load-document index="doc" url="fastq/eas.fastq" io="local_file" format="fastq"/>
+
+    <find-object-by-name index="obj" doc="doc" name="EAS54_6_R1_2_1_413_324" type="OT_SEQUENCE"/>
+    <check-sequence-alphabet-by-id obj="obj" value="NUCL_DNA_DEFAULT_ALPHABET"/>
+    <check-sequence-size obj="obj" value="25"/>
+    <check-sequence-part obj="obj" value="CCCTTCTTGTCTTCAGCGTTTCTCC" seqstart="0"/>
+
+</multi-test>

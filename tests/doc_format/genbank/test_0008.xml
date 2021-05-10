@@ -1,0 +1,14 @@
+<multi-test>
+
+    <load-document index="doc" url="genbank/remote_entries.gb" io="local_file" format="genbank" message="The file contains features of another remote GenBank file. These features have been skipped."/>
+
+    <find-object-by-name index="ato" doc="doc" name="11 features" type="OT_ANNOTATIONS"/>
+
+    <check-num-annotations obj="ato" value="3"/>
+
+    <find-annotation-by-name index="annot1" obj="ato" name="gene"/>
+    <check-annotation-location annotation="annot1" location="228..322" complement="1"/>
+
+    <find-annotation-by-name index="annot2" obj="ato" name="misc_RNA"/>
+    <check-annotation-location annotation="annot2" location="133410..133498,133609..133716,160073..161415" complement="0"/>
+</multi-test>

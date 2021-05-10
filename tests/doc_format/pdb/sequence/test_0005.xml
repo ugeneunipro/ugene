@@ -1,0 +1,18 @@
+<multi-test>
+
+    <!-- Load sequence object, check its alphabet, size, a part of sequence -->
+
+    <load-document index="doc" url="pdb/1O1K.pdb" io="local_file" format="pdb"/>
+
+    <find-object-by-name index="obj1" doc="doc" name="1O1K chain A sequence" type="OT_SEQUENCE"/>
+    <check-sequence-alphabet-by-id obj="obj1" value="AMINO_DEFAULT_ALPHABET"/>
+    <check-sequence-size obj="obj1" value="140"/>
+    <check-sequence-part obj="obj1" value="LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTK" seqstart="0"/>
+
+    <find-object-by-name index="obj2" doc="doc" name="1O1K chain B sequence" type="OT_SEQUENCE"/>
+    <check-sequence-alphabet-by-id obj="obj2" value="AMINO_DEFAULT_ALPHABET"/>
+    <check-sequence-size obj="obj2" value="146"/>
+    <check-sequence-part obj="obj2" value="ENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANA" seqstart="100"/>
+
+
+</multi-test>

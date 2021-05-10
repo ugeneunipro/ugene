@@ -1,0 +1,3 @@
+<multi-test>
+    <load-document index="doc" url="gff/no_fasta_header.gff" io="local_file" format="gff" message="One or more sequences in this file don't have names."/>
+</multi-test>

@@ -1,0 +1,6 @@
+<multi-test>
+    <run-cmdline task="hmm2-build"
+                 in="!common_data_dir!cmdline/CBS.sto"
+                 out="!tmp_data_dir!hmm2-build0001_tmp.hmm"/>
+    <hmm-compare file1="cmdline/hmm2-build/01.hmm" file2="hmm2-build0001_tmp.hmm"/>
+</multi-test>

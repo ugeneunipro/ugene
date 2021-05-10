@@ -1,0 +1,7 @@
+<suite name="Remote service converters tests">
+
+    <env-var name="CONFIG_FILE" value="remote_service/ping_local_machine.cfg"/>
+    <test-dir test-ext="*.xml" path="remote_service" test-format="XML"
+              exclude="ping/ping_amazon_ec2.xml"
+    />
+</suite>

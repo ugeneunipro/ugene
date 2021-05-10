@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!-- Find 1 enzyme in a middle of a sequence -->
+
+    <load-document index="doc" url="enzymes/palindromic.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="seq" doc="doc" name="Sequence" type="OT_SEQUENCE"/>
+
+    <find-enzymes url="enzymes/rebase_v003_t2_com.bairoch.gz" sequence="seq" enzymes="BssSI"
+                  result="BssSI:4..9,30..35"/>
+
+</multi-test>

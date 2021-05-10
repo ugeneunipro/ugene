@@ -1,0 +1,18 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!bedtools/slop.uwl"
+            i="!common_data_dir!bedtools/a.bed"
+            out_dir="!tmp_data_dir!"
+            out_name="slop_bed_test_0006.bed"
+            g="!common_data_dir!bedtools/tiny.genome"
+            l="0"
+            r="5"
+            s="True"
+    />
+    <load-document index="doc" url="slop_bed_test_0006.bed" io="local_file" format="bed" dir="temp"/>
+    <find-object-by-name index="ATO" doc="doc" name="chr1 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="ATO" location="101..205" complement="false"/>
+    <find-annotation-by-location index="ann2" obj="ATO" location="96..200" complement="true"/>
+
+</multi-test>

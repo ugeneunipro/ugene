@@ -1,0 +1,11 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_text_write_text.uws"
+            in="!common_data_dir!genbank/1anot_1seq.gen"
+            out="!tmp_data_dir!fct_0002.txt"
+            task-remote-machine="!config_file_path!"
+    />
+
+    <compare-docs doc1="genbank/1anot_1seq.gen" doc2="fct_0002.txt" temp="2"/>
+
+</multi-test>

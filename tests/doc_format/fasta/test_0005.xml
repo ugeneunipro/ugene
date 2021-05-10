@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- Test reading file: whites are allowed at the begining of the file-->
+
+    <load-document index="doc" url="fasta/fa3.fa" io="local_file" format="fasta"/>
+
+    <check-num-objects doc="doc" value="1"/>
+    <check-document-object-names doc="doc" value="fasta file part 1"/>
+
+</multi-test>

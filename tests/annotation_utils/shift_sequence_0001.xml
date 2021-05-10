@@ -1,0 +1,8 @@
+<multi-test>
+
+    <!-- Simple shift. -->
+    <check-shift-sequence location-before="1..2" location-after="2..3" shift="1" sequence-length="10"/>
+    <check-shift-sequence location-before="2..3" location-after="1..2" shift="-1" sequence-length="10"/>
+    <check-shift-sequence location-before="2..3" location-after="9..10" shift="7" sequence-length="10"/>
+
+</multi-test>

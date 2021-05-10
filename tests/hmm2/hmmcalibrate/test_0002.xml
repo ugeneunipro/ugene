@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- uHMMER Parallel Calibrate test, hmm: COI na.hmm, seed 0  -->
+
+    <uhmmer-calibrate hmmfile="hmm/COI na.hmm" mu="-425.51785" lambda="0.040567163" seed="0" nthreads="2"/>
+
+</multi-test>

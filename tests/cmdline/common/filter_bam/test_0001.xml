@@ -1,0 +1,12 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/filter_bam/filter_bam.uwl"
+            in="!common_data_dir!bam/hg19_chr5_chr10_chr12_chrX.sorted.bam"
+            out_dir="!tmp_data_dir!"
+            out_name="bam_filter_test_0001.bam"
+            q="1"
+            F="The read is unmapped"
+            r="chr12 chrX"
+    />
+    <compare-sam-by-length file1="bam_filter_test_0001.bam" file2="cmdline/filter_bam/out1.bam" isbam="1"/>
+</multi-test>
