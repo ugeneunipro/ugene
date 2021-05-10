@@ -1,0 +1,14 @@
+<multi-test>
+
+    <!-- Test: open and read pdb file-->
+
+    <load-document index="doc" url="pdb/1FSC.pdb" io="local_file" format="pdb"/>
+
+    <check-num-objects doc="doc" value="3"/>
+
+    <check-document-object-names doc="doc" value="1FSC chain A sequence,1FSC chain A annotation,1FSC"/>
+
+    <check-document-object-types doc="doc" value="OT_SEQUENCE,OT_ANNOTATIONS,OT_BIOSTRUCT3D"/>
+
+
+</multi-test>

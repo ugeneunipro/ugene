@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: options: wgsc hand enone, model: ABC_tran, has SS_cons, RF annotations 
+	cmd: ./hmmbuild -hand -wgsc -enone -EvL 110 -EvN 215 -EfL 90 -EfN 178 -Eft 0.23 ABC_tran_gsc_hand_enone.hmm ABC_tran.sto -->
+
+    <uhmmer3-build inputFile="stockholm/ABC_tran.sto" outputFile="test_ABC_tran_gsc_hand_enone.hmm"
+                   mc="hand" rw="wgsc" ew="enone" eval="110 215 90 178 0.23" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/ABC_tran_gsc_hand_enone.hmm" file2="test_ABC_tran_gsc_hand_enone.hmm"
+                        tmp1="no" tmp2="yes"/>
+
+</multi-test>

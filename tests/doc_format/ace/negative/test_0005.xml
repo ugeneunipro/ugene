@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Test reading file: there is no QA keyword -->
+
+    <import-broken-document url="ace/ace_test_51_(error).ace" io="local_file" format="ace"/>
+
+</multi-test>

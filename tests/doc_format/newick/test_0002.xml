@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- Test reading file: 4 object in file, type OT_PTREE -->
+
+    <load-document index="doc" url="newick/test01.newick" io="local_file" format="newick"/>
+
+    <check-num-objects doc="doc" value="4"/>
+    <check-document-object-types doc="doc" value="OT_PTREE,OT_PTREE,OT_PTREE,OT_PTREE"/>
+
+</multi-test>

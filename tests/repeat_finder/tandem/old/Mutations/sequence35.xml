@@ -1,0 +1,14 @@
+<multi-test>
+    <!--
+    Sequence:
+    CGTG:*-GATCG-aATCG-atTCG-*:CCTC
+    Tandems
+    Tandem repeat GATCG 3x5 at pos 4
+    Mutations
+    Mutation in repeat #1 of 0th tandem at pos 0
+    Mutation in repeat #2 of 0th tandem at pos 1
+    We expect such results:
+    .(end of results)
+    -->
+    <find-tandems sequence="CGTGGATCGAATCGATTCGCCTC" minSize="5" maxSize="15" repeatCount="3" expected_result=""/>
+</multi-test>

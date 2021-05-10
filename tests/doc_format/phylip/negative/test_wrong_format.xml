@@ -1,0 +1,5 @@
+<multi-test>
+    <!-- try to load document with wrong format -->
+    <load-broken-document index="doc" url="phylip/intseq_short_raw_on_new_line.phy" io="local_file" format="phylip-interleaved"/>
+
+</multi-test>

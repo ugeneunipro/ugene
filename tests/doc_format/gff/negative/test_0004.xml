@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- try to load empty doc-->
+
+    <load-broken-document index="doc" url="gff/negative/4.gff" io="local_file" format="gff"/>
+
+</multi-test>

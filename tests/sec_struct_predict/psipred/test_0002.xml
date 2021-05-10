@@ -1,0 +1,10 @@
+<multi-test>
+    <!-- Run GORIV task on input seq, check its results -->
+
+    <test-sec-struct-predict-algorithm
+            algorithm-name="PsiPred"
+            seq="MTKQEKTALNMARFIRSQTLTLLEKLNELDPDEQADICESLHDHADELYRSCLARFGDDGENL"
+            output-seq="CCHHHHHHHHHHHHHHHHHHHHHHHHHCCCHHHHHHHHHHHHHHHHHHHHHHHHHHCCCCCCC"
+    />
+
+</multi-test>

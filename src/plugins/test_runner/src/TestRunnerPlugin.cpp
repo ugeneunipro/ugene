@@ -63,21 +63,21 @@ TestRunnerPlugin::TestRunnerPlugin()
 void TestRunnerPlugin::sl_startTestRunner() {
     QStringList suiteUrls = CMDLineRegistryUtils::getParameterValuesByWords(CMDLineCoreOptions::SUITE_URLS);
 
-    TestRunnerService *srv = new TestRunnerService();
-    srv->setEnvironment();
+    auto testRunnerService = new TestRunnerService();
+    testRunnerService->setEnvironment();
 
     CMDLineRegistry *cmdReg = AppContext::getCMDLineRegistry();
     if (cmdReg->hasParameter(CMDLineCoreOptions::TEST_THREADS)) {
         QString val = cmdReg->getParameterValue(CMDLineCoreOptions::TEST_THREADS);
         bool isOk;
         val.toInt(&isOk);
-        if(!isOk) {
+        if (!isOk) {
             printf("Incorrect number of threads\n");
             AppContext::getTaskScheduler()->cancelAllTasks();
             AppContext::getMainWindow()->getQMainWindow()->close();
             return;
         }
-        srv->setVar(NUM_THREADS_VAR, val);
+        testRunnerService->setVar(NUM_THREADS_VAR, val);
     }
 
     foreach (const QString &param, suiteUrls) {
@@ -93,30 +93,31 @@ void TestRunnerPlugin::sl_startTestRunner() {
             QString error;
             GTestSuite *suite = GTestSuite::readTestSuite(dir, error);
             if (error != "") {
-                printf("%s\n", tr("Can't load suite %1").arg(param).toLatin1().constData());
+                printf("%s\n", tr("Can't load suite %1").arg(param).toLocal8Bit().constData());
                 AppContext::getTaskScheduler()->cancelAllTasks();
                 AppContext::getMainWindow()->getQMainWindow()->close();
                 return;
             }
-            srv->addTestSuite(suite);
+            testRunnerService->addTestSuite(suite);
         } else {
             if (param.split(".").last() == "list") {
-                QStringList errs;
-                QList<GTestSuite *> lst = GTestSuite::readTestSuiteList(dir, errs);
-                if (!errs.isEmpty()) {
-                    printf("%s\n", tr("Can't load suite %1").arg(param).toLatin1().constData());
+                QStringList errorMessageList;
+                QList<GTestSuite *> testSuiteList = GTestSuite::readTestSuiteList(dir, errorMessageList);
+                if (!errorMessageList.isEmpty()) {
+                    QString errorDetails = errorMessageList.join("\n");
+                    printf("%s\n", tr("Can't load suite %1, errors: %2").arg(param).arg(errorDetails).toLocal8Bit().constData());
                     AppContext::getTaskScheduler()->cancelAllTasks();
                     AppContext::getMainWindow()->getQMainWindow()->close();
 
                     return;
                 }
-                foreach (GTestSuite *ts, lst) {
-                    QString urlfs = ts->getURL();
-                    if (srv->findTestSuiteByURL(urlfs) != NULL) {
-                        delete ts;
-                    } else {
-                        srv->addTestSuite(ts);
+                foreach (GTestSuite *testSuite, testSuiteList) {
+                    QString testSuiteUrl = testSuite->getURL();
+                    if (testRunnerService->findTestSuiteByURL(testSuiteUrl) != nullptr) {
+                        delete testSuite;    // duplicate.
+                        continue;
                     }
+                    testRunnerService->addTestSuite(testSuite);
                 }
             } else {
                 printf("Not a test suite\n");
@@ -127,7 +128,7 @@ void TestRunnerPlugin::sl_startTestRunner() {
         }
     }
 
-    TestViewController *view = new TestViewController(srv, true);
+    auto view = new TestViewController(testRunnerService, true);
     AppContext::getMainWindow()->getMDIManager()->addMDIWindow(view);
     view->sl_runAllSuitesAction();
 }
@@ -259,10 +260,12 @@ void TestRunnerService::readBuiltInVars() {
         env->setVar(TIME_OUT_VAR, TIME_OUT_VAR_VALUE);
     }
     if (!vars.contains("COMMON_DATA_DIR") || vars.value("COMMON_DATA_DIR").isEmpty()) {
-        env->setVar("COMMON_DATA_DIR", "/_common_data");
+        QString commonDataDir = qgetenv("COMMON_DATA_DIR");
+        env->setVar("COMMON_DATA_DIR", commonDataDir.isEmpty() ? "/_common_data" : commonDataDir);
     }
     if (!vars.contains("TEMP_DATA_DIR") || vars.value("TEMP_DATA_DIR").isEmpty()) {
-        env->setVar("TEMP_DATA_DIR", "/_tmp");
+        QString tempDataDir = qgetenv("TEMP_DATA_DIR");
+        env->setVar("TEMP_DATA_DIR", tempDataDir.isEmpty() ? "/_tmp" : tempDataDir);
     }
 }
 

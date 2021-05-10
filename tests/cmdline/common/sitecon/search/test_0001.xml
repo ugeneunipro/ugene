@@ -1,0 +1,13 @@
+<multi-test>
+    <run-cmdline task="sitecon-search"
+                 in="!common_data_dir!/Sitecon/Algorithm/DICTY_part.fa"
+                 out="!tmp_data_dir!DICTY_part_actual.gb"
+                 inmodel="!common_data_dir!/Sitecon/Algorithm/siteconBuilds/e2f_44_nw.sitecon"
+
+    />
+    <load-document index="doc1" url="DICTY_part_actual.gb" io="local_file" format="genbank" dir="temp"/>
+    <load-document index="doc2" url="/Sitecon/Algorithm/DICTY_part.gb" io="local_file" format="genbank"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+</multi-test>

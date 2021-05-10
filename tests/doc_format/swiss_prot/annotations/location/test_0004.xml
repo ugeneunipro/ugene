@@ -1,0 +1,14 @@
+<multi-test>
+
+    <!-- Comment:  multiregion annotation location test -->
+
+    <load-document index="doc" url="swiss_prot/P01375.sw" io="local_file" format="swiss-prot"/>
+
+    <find-object-by-name index="obj" doc="doc" name="TNFA_HUMAN features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-number index="annot" obj="obj" number="20"/>
+
+    <check-annotation-location annotation="annot" location="145..145,177..177" complement="0"/>
+
+
+</multi-test>

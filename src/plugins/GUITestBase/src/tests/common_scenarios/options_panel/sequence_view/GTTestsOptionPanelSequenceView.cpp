@@ -114,7 +114,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTUtilsOptionPanelSequenceView::enterFilepathForSavingAnnotations(os, sandBoxDir + "op_seqview_test_0001.gb");
     GTUtilsOptionPanelSequenceView::clickGetAnnotation(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
     GTWidget::click(os, GTWidget::findWidget(os, "annotations_tree_widget"));
     GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature  (0, 2)");
 }

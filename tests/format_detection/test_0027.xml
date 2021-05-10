@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test gtf -->
+
+    <fd-perfect-match url="gtf/valid.gtf" format="gtf"/>
+
+</multi-test>

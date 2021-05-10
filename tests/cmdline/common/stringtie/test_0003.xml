@@ -1,0 +1,25 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/stringtie/stringtie_workflow.uwl"
+            in="!common_data_dir!bam/chrM.sorted.bam"
+            primary-output="!tmp_data_dir!/chrM_test2.gtf"
+            ref-annotations="!common_data_dir!cmdline/stringtie/chrM_ref_anns.gtf"
+            gene-abund-flag="true"
+            gene-abund-output="!tmp_data_dir!/gene_abund.txt"
+    />
+
+    <load-document index="doc1" url="chrM_test2.gtf" io="local_file" format="gff" dir="temp"/>
+    <load-document index="doc2" url="cmdline/stringtie/chrM_with_ref_output.gtf" io="local_file" format="gff"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+
+    <!-- compare-docs doc1="cmdline/stringtie/chrM_gene_abund.txt" doc2=""gene_abund.txt" by_lines="true" temp="2"/-->
+    <!-- load-document index="doc3" url="gene_abund.gtf" io="local_file" format="gff" dir="temp"/-->
+    <!-- load-document index="doc4" url="cmdline/stringtie/chrM_gene_abund.gtf" io="local_file" format="gff"/-->
+
+    <!-- compare-annotations-num-in-two-objects doc="doc3" value="doc4"/ -->
+    <!-- compare-annotations-locations-in-two-objects doc="doc3" value="doc4"/ -->
+
+
+</multi-test>

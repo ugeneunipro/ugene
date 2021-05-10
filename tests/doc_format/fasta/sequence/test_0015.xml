@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Comment: OT_SEQUENCE length test (AMINO_DEFAULT_ALPHABET)-->
+
+    <load-document index="doc" url="fasta/aaa.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="obj" doc="doc" name="file" type="OT_SEQUENCE"/>
+
+    <check-sequence-size obj="obj" value="10502"/>
+
+</multi-test>

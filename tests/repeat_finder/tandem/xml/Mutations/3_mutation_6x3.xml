@@ -1,0 +1,14 @@
+<multi-test>
+    <!--
+    Sequence:
+    AAgTCC-AAATCC-AAATCC
+
+    Tandems
+    Tandem repeat AAATCC 3x6 at pos 0
+    Mutations
+    Mutation in repeat #0 of 0th tandem at pos 2
+    We expect such results:
+    .(end of results)
+    -->
+    <find-tandems sequence="AAGTCCAAATCCAAATCC" minSize="6" repeatCount="3" expected_result=""/>
+</multi-test>

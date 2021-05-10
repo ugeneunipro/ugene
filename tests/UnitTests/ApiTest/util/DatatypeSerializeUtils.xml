@@ -1,0 +1,15 @@
+<unittest>
+
+    DatatypeSerializeUtilsUnitTest
+    + DNAChromatogramSerializer_true
+    + DNAChromatogramSerializer_false
+    + NewickPhyTreeSerializer
+    + NewickPhyTreeSerializer_failed
+    + BioStruct3DSerializer
+    + BioStruct3DSerializer_failed
+    + WMatrixSerializer
+    + WMatrixSerializer_failed
+    + FMatrixSerializer
+    + FMatrixSerializer_failed
+
+</unittest>

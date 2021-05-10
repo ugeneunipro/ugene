@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- Test save option, check sequences names save correct, fasta to fasta-->
+
+    <load-document index="doc" url="clustal/amino_from_wikipedia.aln" io="local_file" format="clustal"/>
+    <save-document doc="doc" url="_temp0002.aln" io="local_file" format="clustal"/>
+    <load-document index="doc2" url="_temp0002.aln" io="local_file" format="clustal" dir="temp"/>
+    <compare-Msequences-names-in-two-objects doc="doc" value="doc2"/>
+
+</multi-test>

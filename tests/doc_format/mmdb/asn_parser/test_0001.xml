@@ -1,0 +1,20 @@
+<multi-test>
+
+    <!-- Test parsing ASN-1 file, find some nodes by name, check them -->
+
+    <load-asn-tree index="node0" url="mmdb/asn_parser/test01.prt" io="local_file"/>
+    <check-node-type node="node0" type="ASN_ROOT"/>
+    <check-node-children-count node="node0" children-count="5"/>
+
+    <find-first-node-by-name index="node1" root-node="node0" name="x"/>
+    <check-node-type node="node1" type="ASN_VALUE"/>
+    <check-node-value node="node1" value="5"/>
+    <check-node-children-count node="node1" children-count="0"/>
+
+    <find-first-node-by-name index="node2" root-node="node0" name="name-of-database"/>
+    <check-node-type node="node2" type="ASN_VALUE"/>
+    <check-node-value node="node2" value="Protein Data Bank"/>
+    <check-node-children-count node="node2" children-count="0"/>
+
+
+</multi-test>

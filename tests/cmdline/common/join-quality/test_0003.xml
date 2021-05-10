@@ -1,0 +1,17 @@
+<multi-test>
+    <run-cmdline
+            task="join-quality"
+            in="!common_data_dir!reads/e_coli_1000.fa"
+            out="!tmp_data_dir!join_qual0003_tmp.fastq"
+            quality="!common_data_dir!reads/e_coli_1000.qual"
+    />
+
+    <load-document index="doc1" url="join_qual0003_tmp.fastq" io="local_file" format="fastq" dir="temp"/>
+
+    <load-document index="doc2" url="cmdline/join-quality/03.fastq" io="local_file" format="fastq"/>
+
+
+    <compare-sequences-in-two-objects doc="doc1" value="doc2"/>
+    <compare-sequence-quality-in-two-objects doc1="doc1" doc2="doc2"/>
+
+</multi-test>

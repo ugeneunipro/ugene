@@ -1,0 +1,23 @@
+<multi-test>
+
+    <create-temp-file url="write-text-append-0002.txt" data=""/>
+    <create-temp-file url="write-text-append-0002_1.txt" data="qqqqqqqqqqqqqqqqqqqqqqqqqqqq\n"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/write/text-text.uwl"
+            in="!common_data_dir!cmdline/read-write/write/text1.txt"
+            out="!tmp_data_dir!write-text-append-0002.txt"
+            lines="true"
+            action="2"
+            accum="false"
+    />
+
+    <compare-docs doc1="cmdline/read-write/write/text2.txt" doc2="write-text-append-0002.txt" temp="2" by_lines="true"/>
+    <compare-docs doc1="cmdline/read-write/write/text1.txt" doc2="write-text-append-0002_1.txt" temp="2" by_lines="true"/>
+
+    <check-temp-file url="write-text-append-0002_oldcopy1.txt" exists="0"/>
+    <check-temp-file url="write-text-append-0002_1_oldcopy1.txt" exists="0"/>
+
+    <remove-temp-file url="write-text-append-0002_1.txt"/>
+
+</multi-test>

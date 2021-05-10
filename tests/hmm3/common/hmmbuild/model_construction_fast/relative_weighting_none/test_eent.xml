@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: options: wnone fast eent, model: fn3, has SS_cons, RF annotations 
+	cmd: ./hmmbuild -seed 157 -fast -wnone -eent -ere 1.7 fn3_wnone_fast_eent.hmm fn3.sto -->
+
+    <uhmmer3-build inputFile="stockholm/fn3.sto" outputFile="test_fn3_wnone_fast_eent.hmm"
+                   seed="157" mc="fast" rw="wnone" ew="eent 1.7" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/fn3_wnone_fast_eent.hmm" file2="test_fn3_wnone_fast_eent.hmm"
+                        tmp1="no" tmp2="yes"/>
+
+</multi-test>

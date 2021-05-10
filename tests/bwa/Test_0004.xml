@@ -1,0 +1,6 @@
+<multi-test>
+
+    <!-- Bwa test: build index from random reference sequence, reads cover 140%, matching 100% -->
+    <bwa index="fasta/reference_ACGT_rand_1000.fa" build="1" reads="reads/reads_ACGT_rand_1000_1.fa" pattern="bwa/pattern/reference_ACGT_rand_1000_1.sam"/>
+
+</multi-test>

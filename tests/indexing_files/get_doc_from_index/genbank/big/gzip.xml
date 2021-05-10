@@ -1,0 +1,16 @@
+<multi-test>
+
+    <!-- try to get specified document from gzipped index file created on gzipped file and check sequences with original  -->
+
+    <generate-file input="indexing_files/genbank/local_file2.gbk" amount="3000"
+                   outCtxName="tmpOut" gzipOut="yes"/>
+    <create-file-index tmpInput="yes" input="tmpOut" output="bgbk_gz_file.uind.gz" delete="yes"/>
+    <load-document index="indDoc" dir="temp" url="bgbk_gz_file.uind.gz"
+                   io="local_file_gzip" format="index"/>
+    <get-doc-from-index indDocName="indDoc" docNum="6666" docCtxName="outDoc"/>
+
+    <load-document index="trueDoc" url="indexing_files/genbank/local_file2_item3.gbk"
+                   io="local_file" format="genbank"/>
+    <compare-sequences-in-two-objects doc="outDoc" value="trueDoc"/>
+
+</multi-test>

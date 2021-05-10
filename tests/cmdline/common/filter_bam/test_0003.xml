@@ -1,0 +1,12 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/filter_bam/filter_bam.uwl"
+            in="!common_data_dir!bam/hg19_chr5_chr10_chr12_chrX.sorted.bam"
+            out_dir="!tmp_data_dir!"
+            out_name="bam_filter_test_0003.bam"
+            q="20"
+            F="The mate is unmapped,The read is a PCR or optical duplicate"
+            r="chrX"
+    />
+    <compare-sam-by-length file1="bam_filter_test_0003.bam" file2="cmdline/filter_bam/out3.bam" isbam="1"/>
+</multi-test>

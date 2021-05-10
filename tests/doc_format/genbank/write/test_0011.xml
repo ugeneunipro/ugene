@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Test save option, check annotations locations save correct, in file 1 sequence and 1 annotation, genbank to genbank-->
+
+    <load-document index="doc" url="genbank/1anot_1seq.gen" io="local_file" format="genbank"/>
+    <save-document doc="doc" url="_temp11.gen" io="local_file" format="genbank"/>
+    <load-document index="doc2" url="_temp11.gen" io="local_file" format="genbank" dir="temp"/>
+    <compare-annotations-locations-in-two-objects doc="doc" value="doc2"/>
+
+
+</multi-test>

@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Task test: task promoting test -->
+
+    <task-state-order-test serial="1"/>
+
+</multi-test>

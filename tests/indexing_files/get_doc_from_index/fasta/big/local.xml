@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- try to get specified document from index file created on local file and check fasta sequences -->
+
+    <generate-file input="indexing_files/fasta/raw.fa" amount="5000" outCtxName="tmpOut" gzipOut=""/>
+    <create-file-index tmpInput="yes" input="tmpOut" output="bfa_local_file.uind" delete="yes"/>
+    <load-document index="indDoc" dir="temp" url="bfa_local_file.uind" io="local_file" format="index"/>
+    <get-doc-from-index indDocName="indDoc" docNum="4999" docCtxName="outDoc"/>
+
+    <load-document index="trueDoc" url="indexing_files/fasta/raw.fa" io="local_file" format="fasta"/>
+    <compare-sequences-in-two-objects doc="outDoc" value="trueDoc"/>
+
+</multi-test>

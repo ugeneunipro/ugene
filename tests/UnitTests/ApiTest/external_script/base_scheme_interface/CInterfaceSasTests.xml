@@ -1,0 +1,33 @@
+<unittest>
+
+    CInterfaceSasTests
+    + align_with_clustalO_sas
+    + align_with_clustalW_sas
+    + align_with_kalign_sas
+    + align_with_mafft_sas
+    + align_with_muscle_sas
+    + align_with_tcoffee_sas
+    + annotate_with_uql_sas
+    + basic_align_sas
+    + build_weight_matrix_sas
+    + cd_search_sas
+    + dna_statistics_sas
+    + faqual2fastq_sas
+    + filter_annotations_by_name_sas
+    + find_repeats_sas
+    + hmm2_build_sas
+    + import_phred_qualities_sas
+    + join_sequences_into_alignment_sas
+    + local_blast_search_sas
+    + local_blast_plus_search_sas
+    + merge_annotations_sas
+    + merge_assemblies_with_cuffmerge_sas
+    + orf_marker_sas
+    + remote_blast_sas
+    + reverse_complement_sas
+    + split_alignment_into_sequences_sas
+    + split_assembly_into_sequences_sas
+    + text2sequence_sas
+    + extract_consensus_sas
+
+</unittest>

@@ -62,9 +62,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     // Press Ctrl+N and add annotation to it annotations table.
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "CCC", "1.. 10"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     // Expected state: in project view 1.gb document has marked as modified (with blue color)
     QModelIndex d = GTUtilsProjectTreeView::findIndex(os, "1.gb");
     GTUtilsProjectTreeView::itemModificationCheck(os, d, true);
@@ -88,9 +86,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {    //CHANGES another annotation created
     // Press Ctrl+N and add annotation to it annotations table.
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "GROUP", "Annotation", "4.. 18"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep();
 
-    GTGlobals::sleep();
     // Expected state: in project view 1.gb document has marked as modified (with blue color)
     QModelIndex d = GTUtilsProjectTreeView::findIndex(os, "1.gb");
     GTUtilsProjectTreeView::itemModificationCheck(os, d, true);
@@ -135,7 +131,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     // Press Ctrl+N and add annotation "misc_feature" to the annotations table in 1.gb document.
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, false, "<auto>", "misc_feature", "complement(1.. 20)"));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep();
 
     // Expected state: in project view 1.gb document has marked as modified (with blue color)
     QModelIndex d = GTUtilsProjectTreeView::findIndex(os, "1.gb");
@@ -162,7 +157,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected state: annotation added at step 6 already presents in document
-    GTGlobals::sleep();
     GTUtilsAnnotationsTreeView::findItem(os, "misc_feature");
 }
 

@@ -1,0 +1,15 @@
+<multi-test>
+    <!--
+    Sequence:
+    CAGA:*-CCTTGA-CCTTG-CCTTG-CCTTG-CCTTGT-*:GA
+    Tandems
+    Tandem repeat CCTTG 5x5 at pos 4
+    Insertions
+    9
+    30
+    We expect such results:
+    10,20,5
+    .(end of results)
+    -->
+    <find-tandems sequence="CAGACCTTGACCTTGCCTTGCCTTGCCTTGTGA" minSize="5" maxSize="15" repeatCount="4" expected_result="10,20,5;"/>
+</multi-test>

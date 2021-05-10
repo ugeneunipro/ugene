@@ -1,0 +1,16 @@
+<!-- 2 sequences, 2 pairs -->
+<multi-test>
+    <remove-temp-dir url="pcr_0004"/>
+    <create-temp-dir url="pcr_0004"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/pcr/pcr.uwl"
+            in="!common_data_dir!fasta/pcr_test.fa;fasta/human_T1_cutted.fa"
+            primers="!common_data_dir!cmdline/pcr/primers2.fa"
+            working-dir="pcr_0004"
+    />
+
+    <check-temp-file url="pcr_0004/human_T1_cutted_human_T1_fr_1-200.gb" exists="1"/>
+    <check-temp-file url="pcr_0004/pcr_test_pIB2-SEC13_1_fr_3-3396.gb" exists="1"/>
+
+</multi-test>

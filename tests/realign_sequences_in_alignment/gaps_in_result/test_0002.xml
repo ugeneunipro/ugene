@@ -1,0 +1,7 @@
+<multi-test>
+    <!-- Relign sequences with serial gaps in result alignment -->
+    <load-document index="doc1" url="realign_sequences_in_alignment/COI_SHORT_6x604_serial_gaps_in_base.aln" io="local_file" format="clustal"/>
+    <load-document index="doc2" url="realign_sequences_in_alignment/COI_SHORT_6x604_serial_gaps_in_base_result.aln" io="local_file" format="clustal"/>
+    <realign in="doc1" rows="3,4,5"/>
+    <compare-malignment doc1="doc1" doc2="doc2"/>
+</multi-test>

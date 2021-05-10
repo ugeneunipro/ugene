@@ -1,0 +1,17 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!regression/1056/workflow.uwl"
+            in-seq="!common_data_dir!fasta/human_T1_cutted.fa"
+            in-anns="!common_data_dir!gff/small2.gff"
+            out="!tmp_data_dir!regression_1056.gb"
+    />
+
+    <load-document index="doc" url="regression_1056.gb" io="local_file" format="GenBank" dir="temp"/>
+    <check-num-objects doc="doc" value="2"/>
+
+    <find-object-by-name index="seqObj" doc="doc" name="human_T1 (UCSC April 2002 chr7:115977709-117855134)" type="OT_SEQUENCE"/>
+    <check-sequence-size obj="seqObj" value="200"/>
+
+    <find-object-by-name index="annsObj" doc="doc" name="human_T1 (UCSC April 2002 chr7:115977709-117855134) features" type="OT_ANNOTATIONS"/>
+
+</multi-test>

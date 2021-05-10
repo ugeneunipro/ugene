@@ -1,0 +1,38 @@
+<unittest>
+
+    UdrSchemaUnitTests
+    + addField_RecordId
+    + addField_Object
+    + addField_DuplicateName
+    + addField_IncorrectName
+    + addField_BLOB_1_not_indexed
+    + addField_BLOB_2_indexed
+    + getField_OutOfRange_1_negative
+    + getField_OutOfRange_2_greater
+    + getField_Range
+    + getField_Data
+    + addMultiIndex_DuplicateField_1
+    + addMultiIndex_DuplicateField_2
+    + addMultiIndex_OutOfRange_1
+    + addMultiIndex_OutOfRange_2
+    + addMultiIndex_OutOfRange_3_negative
+    + addMultiIndex_SingleColumn
+    + addMultiIndex_AllColumns
+    + addMultiIndex_BackOrder
+    + addMultiIndex_DuplicateIndex
+    + addMultiIndex_BLOB
+    + UdrValue_Double_getInt
+    + UdrValue_String_getDouble
+    + UdrValue_Null_getInt
+    + UdrValue_Null_getString
+    + UdrValue_Double_getDouble
+    + UdrValue_String_getDataId
+    + isCorrectName_CorrectName
+    + isCorrectName_FirstDigit
+    + isCorrectName_FirstUnderscore
+    + isCorrectName_HasSpaces
+    + registerSchema_IncorrectName
+    + UdrSchema_ObjectReference
+    + UdrSchema_NoObjectReference
+
+</unittest>

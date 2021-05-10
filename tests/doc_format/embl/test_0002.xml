@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Test reading file: in file 2 objects Annotation and Sequence file in  zip arhive-->
+
+    <load-document index="doc" url="embl/11.embl.gz" io="local_file_gzip" format="embl"/>
+
+    <check-num-objects doc="doc" value="2"/>
+    <check-document-object-names doc="doc" value="X56734 features,X56734"/>
+    <check-document-object-types doc="doc" value="OT_ANNOTATIONS,OT_SEQUENCE"/>
+
+</multi-test>

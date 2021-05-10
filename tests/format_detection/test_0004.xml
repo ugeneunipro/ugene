@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test embl -->
+
+    <fd-perfect-match url="embl/111.embl" format="embl"/>
+
+</multi-test>

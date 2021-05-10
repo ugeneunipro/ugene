@@ -1,0 +1,9 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/charAtTest/charAtTest.uwl"
+                 in="!common_data_dir!cmdline/DNA.fa"
+                 expected="T"
+                 pos="5"
+                 message="TEST PASSED"
+    />
+
+</multi-test>

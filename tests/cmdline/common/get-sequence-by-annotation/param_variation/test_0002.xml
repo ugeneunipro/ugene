@@ -1,0 +1,12 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/get-sequence-by-annotation/get-sequence-by-annotation.uwl"
+            in="!common_data_dir!cmdline/get-sequence-by-annotation/compl_ann.gb"
+            out="!tmp_data_dir!get-sequence-by-annotation_seq0001_tmp.gb"
+            compl="true"
+    />
+    <load-document index="doc" url="get-sequence-by-annotation_seq0001_tmp.gb" io="local_file" format="genbank" dir="temp"/>
+    <find-object-by-name index="obj1" doc="doc" name="region [1 100] 10..20 ann1" type="OT_SEQUENCE"/>
+    <check-sequence-part obj="obj1" value="GGTAGGTAAAA" seqstart="0"/>
+
+</multi-test>

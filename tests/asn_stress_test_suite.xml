@@ -1,0 +1,4 @@
+<suite name="ASN Format stress test">
+    <env-var name="DIR_WITH_ASN_FILES"/>
+    <test-dir path="asn_stress_test" test-format="XML" test-ext="*.xml"/>
+</suite>

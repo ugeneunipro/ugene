@@ -1,0 +1,13 @@
+<unittest>
+
+    MsaDbiUtilsUnitTests
+    +removeRegion_oneRow
+    +removeRegion_threeRows
+    +removeRegion_lengthChange
+    +removeRegion_allRows
+    +removeRegion_all
+    +removeRegion_negativePos
+    +removeRegion_wrongId
+    +removeRegion_wrongCount
+
+</unittest>

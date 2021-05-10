@@ -1,0 +1,18 @@
+<multi-test>
+    <load-document index="s1d" url="repeat_finder/NC_000117.fna.txt" io="local_file" format="fasta"/>
+    <find-object-by-name index="s1" doc="s1d" name="NC_000117" type="OT_SEQUENCE"/>
+
+    <find-repeats
+            seq="s1"
+            seq2="s1"
+            w="100"
+            mind="0"
+            filterNested="true"
+            reflect="false"
+            alg="suffix"
+            mind="0"
+            maxd="5000"
+            expected_result="repeat_finder/res_dna_exact_check_mismatches_8.txt"
+    />
+
+</multi-test>

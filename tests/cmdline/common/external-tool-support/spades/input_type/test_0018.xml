@@ -1,0 +1,41 @@
+<multi-test>
+    <!-- link to testplan https://ugene.net/wiki/display/PD/Test+plan%3A+SPAdes+workflow+element+input+ports -->
+
+    <remove-temp-dir url="spades-task-input-type_0018/"/>
+    <create-temp-dir url="spades-task-input-type_0018/"/>
+
+    <spades-task-input-type out="spades-task-input-type_0018/" trusted_contigs="true"
+                            sanger_reads="true"
+                            pe_reads="true" pe_reads_orientation="rf" pe_reads_type="single"
+                            hq_mp="true" hq_mp_orientation="fr" hq_mp_type="interlaced"
+                            pbccs_reads="true"
+                            mp="true" mp_orientation="ff" mp_type="single"
+                            unpaired_reads="true"
+                            pbclr_reads="true"
+                            onp_reads="true"
+                            untrusted_contigs="true"
+                            sanger_reads="true"
+                            desired_parameters="-t 16;-m 250"/>
+
+    <check-yaml-file input_dir="spades-task-input-type_0018/"
+                     strings_to_check="single reads:;
+	left reads:;
+	right reads:;
+	interlaced reads:;
+	orientation: &quot;rf&quot;;
+	orientation: &quot;fr&quot;;
+	orientation: &quot;ff&quot;;
+	type: &quot;single&quot;;
+	type: &quot;paired-end&quot;;
+	type: &quot;hq-mate-pairs&quot;;
+	type: &quot;mate-pairs&quot;;
+	type: &quot;pacbio&quot;;
+	type: &quot;nanopore&quot;;
+	type: &quot;untrusted-contigs&quot;;
+	type: &quot;sanger&quot;;
+	type: &quot;trusted-contigs&quot;;"
+    />
+
+    <remove-temp-dir url="spades-task-input-type_0018/"/>
+
+</multi-test>

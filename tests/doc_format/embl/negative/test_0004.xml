@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- try to load doc truncated on feature table -->
+
+    <load-broken-document index="doc" url="embl/broken/truncated_FT_doc_embl.embl" io="local_file" format="embl"/>
+
+</multi-test>

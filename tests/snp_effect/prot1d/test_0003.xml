@@ -1,0 +1,19 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/snp_effect/prot1d.uwl"
+            in="!common_data_dir!cmdline/snp_effect/TEST_SNP_1d.snp"
+            out-reg="!tmp_data_dir!snp_effect_reg_test_0003.txt"
+            out-gene="!tmp_data_dir!snp_effect_gene_test_0003.txt"/>
+
+    <find-in-snp-result-table
+            file_name="snp_effect_gene_test_0003.txt"
+            chr_name="chr16"
+            allele="C/T"
+            pos="48258198"
+            gene_id="ABCC11"
+            report_type="ingene"
+            column_name="prot1d"
+            expected_value="N"
+    />
+
+</multi-test>

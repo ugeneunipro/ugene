@@ -1,0 +1,8 @@
+<multi-test>
+
+    <!-- MrBayes Test -->
+    <load-document index="doc1" url="phyml/shortDNA.phy" io="local_file" format="phylip-interleaved"/>
+    <load-document index="doc2" url="phyml/shortDNA_TN93.nwk" io="local_file" format="newick"/>
+    <test-PHYML in="doc1" sample="doc2" model="HKY85"/>
+
+</multi-test>

@@ -1,0 +1,8 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/alignmentAlphabetTest/alignmentAlphabetTest.uwl"
+                 in="!common_data_dir!clustal/COI na.aln"
+                 expected="Standard DNA"
+                 message="TEST PASSED"
+    />
+
+</multi-test>

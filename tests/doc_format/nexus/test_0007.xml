@@ -1,0 +1,16 @@
+<multi-test>
+
+    <!-- Test reading full example from Geneious-->
+
+    <load-document index="doc" url="nexus/geneious.nex" io="local_file" format="nexus"/>
+
+    <check-num-objects doc="doc" value="2"/>
+    <check-document-object-names doc="doc" value="geneious,tree_1"/>
+    <check-document-object-types doc="doc" value="OT_MSA,OT_PTREE"/>
+
+    <find-object-by-name index="obj" doc="doc" name="geneious" type="OT_MSA"/>
+
+    <check-numbers-of-sequence-in-Msequence obj="obj" value="5"/>
+    <check-Msequence-size obj="obj" value="141"/>
+
+</multi-test>

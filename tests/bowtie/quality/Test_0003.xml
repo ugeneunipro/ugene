@@ -1,0 +1,6 @@
+<multi-test>
+
+    <!-- Botwie test: run with prebuild index, check output quality scores -->
+    <bowtie index="bowtie/index/e_coli.1.ebwt" format="fastq" reads="reads/e_coli_1000.fq" pat_format="sam" pattern="sam/e_coli_1000.sam.gz"/>
+
+</multi-test>

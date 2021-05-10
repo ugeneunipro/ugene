@@ -1,0 +1,7 @@
+<!-- UTEST-11 -->
+<multi-test>
+    <load-document index="doc1" url="clustal/COI.aln" io="local_file" format="clustal"/>
+    <find-pattern-msa in="doc1" patterns="AACTGA" searchRegion="1..604" algorithm="subst" resultsSize="7"/>
+    <find-pattern-msa in="doc1" patterns="AACTGA" searchRegion="1..604" algorithm="subst" matchValue="75" resultsSize="59"/>
+    <find-pattern-msa in="doc1" patterns="AACTGA" searchRegion="1..604" algorithm="subst" matchValue="60" resultsSize="372"/>
+</multi-test>

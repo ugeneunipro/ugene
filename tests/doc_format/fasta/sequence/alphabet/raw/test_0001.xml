@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!--test must find that alphabet is RAW(in sequence symbol "j")-->
+
+    <load-document index="doc" url="fasta/RAW.fa" io="local_file" format="fasta"/>
+    <find-object-by-name index="obj" doc="doc" name="RAW263" type="OT_SEQUENCE"/>
+
+    <check-sequence-alphabet-by-id obj="obj" value="RAW_ALPHABET"/>
+
+</multi-test>

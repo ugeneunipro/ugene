@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!-- Find 1 enzyme at the end of the sequence -->
+
+    <load-document index="doc" url="fasta/enzymes/enzyme_Bsmi.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="seq" doc="doc" name="Bsmi in the middle|GAATGC" type="OT_SEQUENCE"/>
+
+    <find-enzymes url="enzymes/rebase_v003_t2_com.bairoch.gz" sequence="seq" enzymes="BsmI"
+                  result="BsmI:13..18"/>
+
+</multi-test>

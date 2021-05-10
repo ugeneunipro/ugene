@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!--test of id for amino alphabet must be  AMINO EXTENDED ALPHABET(ACDEFGHJ symbols)-->
+
+    <load-document index="doc" url="genbank/amino_ext.gen" io="local_file" format="genbank"/>
+    <find-object-by-name index="obj" doc="doc" name="amino-ext" type="OT_SEQUENCE"/>
+
+    <check-sequence-alphabet-by-id obj="obj" value="AMINO_EXTENDED_ALPHABET"/>
+
+</multi-test>

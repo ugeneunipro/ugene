@@ -1,0 +1,17 @@
+<multi-test>
+    <!--
+    Sequence:
+    GGAA-GGAA-GGAA
+    AAAG-AAA-AAAG
+
+    Tandems
+    Tandem repeat GGAA 3x4 at pos 0
+    Tandem repeat AAAG 3x4 at pos 11
+    Deletions
+    19
+    We expect such results:
+    0,12,4
+    .(end of results)
+    -->
+    <find-tandems sequence="GGAAGGAAGGAAAAAGAAAAAAG" minSize="4" repeatCount="3" expected_result="0,12,4;"/>
+</multi-test>

@@ -1,0 +1,7 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/validation/rs-script-datasets-count.uwl"
+                 in="url1;;url2;;url3;;url4"
+                 nomessage="Minimum error"
+                 message="Maximum warning"
+    />
+</multi-test>

@@ -34,7 +34,7 @@ static QByteArray getUpperCaseMap();
 static QByteArray getLowerCaseMap();
 static QByteArray getSpaceLine();
 static QBitArray getLessThan();
-static QBitArray getGrearThan();
+static QBitArray getGreaterThan();
 static QBitArray getQualNameAllowedSymbols();
 
 const QBitArray TextUtils::ALPHAS = getAlphas();
@@ -47,7 +47,7 @@ const QByteArray TextUtils::UPPER_CASE_MAP = getUpperCaseMap();
 const QByteArray TextUtils::LOWER_CASE_MAP = getLowerCaseMap();
 const QByteArray TextUtils::SPACE_LINE = getSpaceLine();
 const QBitArray TextUtils::LESS_THAN = getLessThan();
-const QBitArray TextUtils::GREATER_THAN = getGrearThan();
+const QBitArray TextUtils::GREATER_THAN = getGreaterThan();
 const QBitArray TextUtils::QUALIFIER_NAME_CHARS = getAlphas() | getNums() | getQualNameAllowedSymbols();
 
 //TODO: optimize shared data structs access! -> replace it with arrays with bounds checking in debug
@@ -107,7 +107,7 @@ QBitArray getLessThan() {
     return res;
 }
 
-QBitArray getGrearThan() {
+QBitArray getGreaterThan() {
     QBitArray res = getEmptyBitMap();
     res['>'] = true;
     return res;
@@ -237,6 +237,16 @@ bool TextUtils::isLineBreak(const QString &text, int charIndex) {
 bool TextUtils::isWhiteSpace(const QString &text, int charIndex) {
     uchar bitIndex = uchar((text.at(charIndex).toLatin1()));
     return WHITES.testBit(bitIndex);
+}
+
+QString TextUtils::skip(const QBitArray &map, const QString &text) {
+    for (int i = 0, n = text.length(); i < n; i++) {
+        uchar c = uchar(text[i].toLatin1());
+        if (!map.testBit(c)) {
+            return i == 0 ? text : text.right(n - i);
+        }
+    }
+    return "";
 }
 
 }    // namespace U2

@@ -1,0 +1,13 @@
+<multi-test>
+    <!-- https://ugene.dev/tracker/browse/UGENE-3254 -->
+    <!-- Test spaces quantity in qualifiers after genbank saving -->
+    <!-- There shouldn't be spaces before line break in the middle of qualifier value -->
+
+    <load-document index="doc1" url="genbank/multiline_qualifier.gen" io="local_file" format="genbank"/>
+    <save-document doc="doc1" url="_temp14.gen" io="local_file" format="genbank"/>
+    <load-document index="doc2" url="_temp14.gen" io="local_file" format="text" dir="temp"/>
+    <find-object-by-name index="obj" doc="doc2" name="_temp14" type="OT_TEXT"/>
+    <check-string-exists obj="obj" string="                     /long_qualifier=&quot;012345678901234567890123456789" must_exist="true" whole_line="true"/>
+    <check-string-exists obj="obj" string="                     012345678901234567890123456789&quot;" must_exist="true" whole_line="true"/>
+
+</multi-test>

@@ -1,0 +1,11 @@
+<multi-test>
+    <remove-temp-dir url="bwa_7"/>
+    <create-temp-dir url="bwa_7"/>
+    <run-cmdline
+            task="!common_data_dir!bwa/workflow/bwa.uwl"
+            in="!common_data_dir!reads/e_coli_1000.fa"
+            out_dir="!tmp_data_dir!bwa_7"
+            ref="!common_data_dir!bwa/index/ecoli_corrupted.fa"
+    />
+    <remove-temp-dir url="bwa_7"/>
+</multi-test>

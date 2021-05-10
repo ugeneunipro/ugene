@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- try to find seqpart in multy sequence -->
+
+    <load-document index="doc" url="phylip/seq_bp.phy" io="local_file" format="phylip-sequential"/>
+    <find-object-by-name index="obj" doc="doc" name="seq_bp" type="OT_MSA"/>
+
+    <check-Msequence-part obj="obj" value="AGGUCAACCUGGAU---AUUUAAUUGGUGAUGAUCAAAUCUAUAAUG" seqstart="25" seqname="MeUriopUer"/>
+
+</multi-test>

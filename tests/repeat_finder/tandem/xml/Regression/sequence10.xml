@@ -1,0 +1,12 @@
+<multi-test>
+    <!--
+    Sequence:
+    GGG-GGG-GGG-GGG
+    Tandems
+    Tandem repeat GGG 4x3 at pos 0
+    We expect such results:
+    0 12 1
+    .(end of results)
+    -->
+    <find-tandems sequence="GGGGGGGGGGGG" minSize="1" repeatCount="4" expected_result="0,12,1;"/>
+</multi-test>

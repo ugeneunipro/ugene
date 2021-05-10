@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/quality/export_phred.uwl"
+            seq="!common_data_dir!fastq/illumina.fastq"
+            out="!tmp_data_dir!quality_0001_tmp.qual"
+    />
+
+    <compare-docs doc1="fastq/illumina.qual" doc2="quality_0001_tmp.qual" temp="2" by_lines="true"/>
+
+</multi-test>

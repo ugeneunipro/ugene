@@ -1,0 +1,18 @@
+<multi-test>
+    <remove-temp-dir url="index_alb_bwa"/>
+    <create-temp-dir url="index_alb_bwa"/>
+    <copy-file from="!common_data_dir!bowtie2/reads_1.fq" to="!tmp_data_dir!index_alb_bwa/reads_1.fq"/>
+    <copy-file from="!common_data_dir!bowtie2/lambda_virus.fa" to="!tmp_data_dir!index_alb_bwa/lambda_virus.fa"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/index_reuse/bwa.uwl"
+            in="!tmp_data_dir!index_alb_bwa/reads_1.fq"
+            out_file="out1.sam"
+            out_dir="!tmp_data_dir!index_alb_bwa"
+            ref="!tmp_data_dir!index_alb_bwa/lambda_virus.fa"
+            index_alg="div"
+            mesage="some correct messages"
+    />
+
+    <remove-temp-dir url="index_alb_bwa"/>
+</multi-test>

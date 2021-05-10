@@ -1,0 +1,8 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/alignmentAlphabetTest/alignmentAlphabetTest.uwl"
+                 in="!common_data_dir!clustal/default_amino_short.aln"
+                 expected="Standard amino acid"
+                 message="TEST PASSED"
+    />
+
+</multi-test>

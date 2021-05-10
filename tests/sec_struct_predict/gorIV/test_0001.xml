@@ -1,0 +1,9 @@
+<multi-test>
+    <!-- Run GORIV task on input seq, check its results -->
+
+    <test-sec-struct-predict-algorithm
+            algorithm-name="GORIV"
+            seq="TMCYSHTTTSRAILTNCGENSCYRKSRRHPPKMVLGRGCGCPPGDDNLEVKCCTSPDKCNY"
+            output-seq="CCCCCCCCEECEEEECCCCCCCCCCCCCCCCEEEEECCCCCCCCCCCCEEEEECCCCCCCC"/>
+
+</multi-test>

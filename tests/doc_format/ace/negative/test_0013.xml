@@ -1,0 +1,5 @@
+<multi-test>
+
+    <import-broken-document url="ace/HHC00063.ace" io="local_file" format="ace"/>
+
+</multi-test>

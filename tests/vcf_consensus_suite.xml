@@ -1,0 +1,4 @@
+<suite name="Vcf-Consensus tests">
+
+    <test-dir test-ext="*.xml" path="vcf_consensus" test-format="XML"/>
+</suite>

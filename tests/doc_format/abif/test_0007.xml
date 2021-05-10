@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Test reading file: 3 objects in file-->
+
+    <load-document index="doc" url="abif/027_700_SeqE6.f_A4_20200909_212753.ab1.gz" io="local_file_gzip" format="abi"/>
+
+    <check-num-objects doc="doc" value="3"/>
+    <check-document-object-names doc="doc" value="027_700_SeqE6.f_A4,Chromatogram,Info"/>
+    <check-document-object-types doc="doc" value="OT_SEQUENCE,OT_CHROMATOGRAM,OT_TEXT"/>
+
+</multi-test>
