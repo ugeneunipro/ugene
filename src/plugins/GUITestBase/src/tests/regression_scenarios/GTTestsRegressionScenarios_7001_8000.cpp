@@ -40,8 +40,8 @@
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
-
 #include "GTUtilsOptionPanelMSA.h"
+#include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
@@ -334,10 +334,8 @@ GUI_TEST_CLASS_DEFINITION(test_7152) {
 GUI_TEST_CLASS_DEFINITION(test_7183) {
     class ExportSequencesScenario : public CustomScenario {
     public:
-        void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "bothStrandsButton", dialog));
             GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "translateButton", dialog), true);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -348,7 +346,7 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
     QString fileName = "reads.fa";
     GTFile::copy(os, filePath, sandBoxDir + "/" + fileName);
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
-    GTFileDialog::openFile(os, sandBoxDir + "/" + fileName);
+    GTUtilsProject::openFile(os, sandBoxDir + "/" + fileName);
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
     for (int i = 0; i < 8; i++) {

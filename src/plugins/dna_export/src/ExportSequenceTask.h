@@ -70,7 +70,6 @@ private:
 
     void releaseOwnedSeq();
 
-    static bool isRefAlreadyCounted(const U2EntityRef &seqRef);
     static QMap<U2EntityRef, int> sequencesRefCounts;
 };
 
