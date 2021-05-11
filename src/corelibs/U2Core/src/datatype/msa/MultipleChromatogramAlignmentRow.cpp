@@ -352,14 +352,44 @@ qint64 MultipleChromatogramAlignmentRowData::getBaseCount(qint64 before) const {
     return MsaRowUtils::getUngappedPosition(gaps, sequence.length(), trimmedRowPos, true);
 }
 
+const QMap<DNAChromatogram::Trace, QVector<ushort> DNAChromatogram::*> PEAKS =
+                    { {DNAChromatogram::Trace::Trace_A, &DNAChromatogram::A},
+                      {DNAChromatogram::Trace::Trace_C, &DNAChromatogram::C},
+                      {DNAChromatogram::Trace::Trace_G, &DNAChromatogram::G},
+                      {DNAChromatogram::Trace::Trace_T, &DNAChromatogram::T} };
+
 QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue>
-                MultipleChromatogramAlignmentRowData::getTwoHighestPeaks(qint64 position) const {
-    const int baseCall = chromatogram.baseCalls[position];
-    QList<DNAChromatogram::ChromatogramTraceAndValue> peaks =
-                                    { { DNAChromatogram::Trace::Trace_A, chromatogram.A[baseCall] },
-                                      { DNAChromatogram::Trace::Trace_C, chromatogram.C[baseCall] },
-                                      { DNAChromatogram::Trace::Trace_G, chromatogram.G[baseCall] },
-                                      { DNAChromatogram::Trace::Trace_T, chromatogram.T[baseCall] } };
+                MultipleChromatogramAlignmentRowData::getTwoHighestPeaks(qint64 position, bool& hasTwoPeaks) const {
+    hasTwoPeaks = true;
+    int previousBaseCall = chromatogram.baseCalls[position != 0 ? position - 1 : position];
+    int baseCall = chromatogram.baseCalls[position];
+    int nextBaseCall = chromatogram.baseCalls[position != (chromatogram.baseCalls.size() - 1) ? position + 1 : position];
+    QList<DNAChromatogram::ChromatogramTraceAndValue> peaks;
+
+    for (auto peak : PEAKS.keys()) {
+        const auto& chromatogramVector = chromatogram.*PEAKS.value(peak);
+        auto peakValue = chromatogramVector[baseCall];
+        int startOfCharacterBaseCall = baseCall - ((baseCall - previousBaseCall) / 2);
+        int startValue = chromatogramVector[startOfCharacterBaseCall];
+        if (previousBaseCall == baseCall) {
+            startValue = chromatogramVector[0];
+        }
+        int endOfCharacterBaseCall = baseCall + ((nextBaseCall - baseCall) / 2);
+        int endValue = chromatogramVector[endOfCharacterBaseCall];
+        if (nextBaseCall == baseCall) {
+            endValue = chromatogramVector[chromatogramVector.size() - 1];
+        }
+
+        if (startValue <= peakValue && endValue <= peakValue) {
+            peaks.append({ peak, peakValue });
+        }
+    }
+
+    if (peaks.size() < 2) {
+        hasTwoPeaks = false;
+        return { {DNAChromatogram::Trace::Trace_A, 0 }, {DNAChromatogram::Trace::Trace_C, 0 } };
+    }
+
     std::sort(peaks.begin(),
               peaks.end(),
         [](const auto& first, const auto& second) {

@@ -267,7 +267,12 @@ void MultipleChromatogramAlignmentObject::updateAlternativeMutations(const McaRe
 
         QHash<qint64, char> newCharList;
         for (int j = 0; j < ungappedLength; j++) {
-            auto res = mcaRow->getTwoHighestPeaks(j);
+            bool ok = false;
+            auto res = mcaRow->getTwoHighestPeaks(j, ok);
+            if (!ok) {
+                continue;
+            }
+
             double minimumThresholdValue = (double)res.second.value / res.first.value * 100;
             char newChar = 'A';
             if (minimumThresholdValue < settings.threshold || !settings.showAlternativeMutations) {
