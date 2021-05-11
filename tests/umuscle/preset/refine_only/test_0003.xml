@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- uMuscle test: complex options: preset -refine only, -maxiters 2-->
+    <load-document index="doc1" url="clustal/fungal - all.gap_cut.aln" io="local_file" format="clustal"/>
+    <load-document index="doc2" url="clustal/fungal - all.gap_cut.muscle -refine -maxiters 2.aln" io="local_file" format="clustal"/>
+    <umuscle in="doc1" refine="1" maxiters="2"/>
+    <compare-malignment doc1="doc1" doc2="doc2"/>
+
+
+</multi-test>

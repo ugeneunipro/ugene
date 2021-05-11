@@ -1,0 +1,13 @@
+<multi-test>
+
+    <run-cmdline task="!common_data_dir!regression/1480/1480.uwl"
+                 in="!common_data_dir!regression/1480/1480.fa"
+                 out="!tmp_data_dir!regression_1480.gb"
+    />
+
+    <load-document index="doc" url="regression_1480.gb" io="local_file" format="genbank" dir="temp"/>
+
+    <find-object-by-name index="obj" doc="doc" name="Annotations" type="OT_ANNOTATIONS"/>
+    <check-num-annotations obj="obj" value="6"/>
+
+</multi-test>

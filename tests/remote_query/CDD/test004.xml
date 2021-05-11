@@ -1,0 +1,13 @@
+<multi-test>
+    <plugin_remote-query
+            seq="15794541"
+            alg="blastp"
+            db="cdd"
+            e-value="1e-03"
+            hits="10"
+            strand="direct"
+            expected_results=""
+
+            simple="true"
+    />
+</multi-test>

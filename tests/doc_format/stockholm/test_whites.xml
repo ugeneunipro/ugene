@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- try to try to confuse parser with whitespaces. 1 msa named "msa_name" -->
+
+    <load-document index="doc" url="stockholm/whites.sto" io="local_file" format="stockholm"/>
+    <check-num-objects doc="doc" value="1"/>
+
+    <check-document-object-names doc="doc" value="msa_name"/>
+    <check-document-object-types doc="doc" value="OT_MSA"/>
+
+</multi-test>

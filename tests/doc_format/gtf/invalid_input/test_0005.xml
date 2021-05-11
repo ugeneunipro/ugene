@@ -1,0 +1,13 @@
+<!-- Verify an invalid GTF file that can be opened: invalid frame value (value = 3). -->
+
+<multi-test lockForLogListening="true">
+
+    <load-document index="doc" url="gtf/invalid/invalid_frame_int.gtf" io="local_file" format="gtf" message="GTF parsing error: incorrect frame value"/>
+
+    <find-object-by-name index="ATO" doc="doc" name="seqName features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-name index="ann_CDS" obj="ATO" name="CDS"/>
+
+    <check-no-annotation-qualifier annotation="ann_CDS" qualifier="frame"/>
+
+</multi-test>

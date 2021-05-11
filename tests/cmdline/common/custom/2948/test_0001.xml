@@ -1,0 +1,18 @@
+<multi-test>
+    <run-cmdline
+            task="pfm-search"
+            score="80"
+            matrix="!common_data_dir!cmdline/custom/2948/Fake_regulator_TTAGCTAT.pfm"
+            seq="!common_data_dir!cmdline/custom/2948/Fake_sequence.fasta"
+            out="!tmp_data_dir!results.gb"
+            strand="0"/>
+
+    <load-document index="doc1" url="results.gb" io="local_file" format="genbank" dir="temp"/>
+
+    <load-document index="doc2" url="cmdline/custom/2948/expected.gb" io="local_file" format="genbank"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- Test reading file: in file 1 object Sequence-->
+
+    <load-document index="doc" url="raw_sequence/eas.raw" io="local_file" format="raw"/>
+
+    <check-num-objects doc="doc" value="1"/>
+    <check-document-object-types doc="doc" value="OT_SEQUENCE"/>
+
+</multi-test>

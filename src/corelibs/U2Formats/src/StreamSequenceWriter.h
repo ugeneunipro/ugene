@@ -79,8 +79,8 @@ public:
     bool init(const GUrl &url);
     bool writeNextSequence(const DNASequence &seq);
     bool writeNextSequence(const U2SequenceObject *seq);
-    const GUrl &getOutputPath() {
-        return ouputPath;
+    const GUrl &getOutputPath() const {
+        return outputPath;
     }
     void close();
 
@@ -88,8 +88,7 @@ protected:
     IOAdapter *io;
 
 private:
-    FastaFormat *fastaFormat;
-    GUrl ouputPath;
+    GUrl outputPath;
 };
 
 class U2FORMATS_EXPORT StreamGzippedShortReadWriter : public StreamShortReadWriter {

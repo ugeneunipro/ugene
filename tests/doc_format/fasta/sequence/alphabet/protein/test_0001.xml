@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!---test must find that alphabet is AMINO DEFAULT(ACDEFGH symbols)-->
+
+    <load-document index="doc" url="fasta/AMINO.fa" io="local_file" format="fasta"/>
+    <find-object-by-name index="obj" doc="doc" name="AMINO263" type="OT_SEQUENCE"/>
+
+    <check-sequence-alphabet-by-id obj="obj" value="AMINO_DEFAULT_ALPHABET"/>
+
+</multi-test>

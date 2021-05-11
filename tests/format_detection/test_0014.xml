@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test pdb -->
+
+    <fd-perfect-match url="pdb/1FSC.pdb" format="pdb"/>
+
+</multi-test>

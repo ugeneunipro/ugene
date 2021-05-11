@@ -1,0 +1,5 @@
+<multi-test>
+    <!-- try to load document with equal names in one block -->
+    <load-broken-document index="doc" url="stockholm/equal_names_in_block.sto" io="local_file" format="stockholm"/>
+
+</multi-test>

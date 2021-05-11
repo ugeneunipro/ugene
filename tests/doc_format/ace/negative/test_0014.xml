@@ -1,0 +1,5 @@
+<multi-test>
+
+    <import-broken-document url="ace/one_string_eol.ace" format="ace" message="There is no assemblies in input file"/>
+
+</multi-test>

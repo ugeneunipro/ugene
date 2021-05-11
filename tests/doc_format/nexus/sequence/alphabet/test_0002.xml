@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to check alphabet  in multy sequence (must be AMINO_DEFAULT_ALPHABET) -->
+
+    <load-document index="doc" url="nexus/protein.nex" io="local_file" format="nexus"/>
+    <find-object-by-name index="obj" doc="doc" name="protein" type="OT_MSA"/>
+    <check-Msequence-alphabet-by-id obj="obj" value="AMINO_DEFAULT_ALPHABET"/>
+
+</multi-test>

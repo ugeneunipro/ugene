@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!--sequence's alphabet id must be  AMINO_EXTENDED_ALPHABET(ACDEFGHJ symbols)-->
+
+    <load-document index="doc" url="embl/amino_ext.embl" io="local_file" format="embl"/>
+    <find-object-by-name index="obj" doc="doc" name="Amino_ext" type="OT_SEQUENCE"/>
+
+    <check-sequence-alphabet-by-id obj="obj" value="AMINO_EXTENDED_ALPHABET"/>
+
+</multi-test>

@@ -59,7 +59,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                                                 << "Analyze"
                                                 << "Find repeats...",
                               GTGlobals::UseMouse);
-    GTGlobals::sleep();
 
     // 3. Close sequence view, then reopen it
     GTUtilsMdi::click(os, GTGlobals::Close);
@@ -67,7 +66,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "seq4.fa"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep(1000);
 
     // 4. Check that annotation have the qualifier "repeat homology"
     GTUtilsAnnotationsTreeView::getTreeWidget(os);

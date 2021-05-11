@@ -1,0 +1,21 @@
+<multi-test>
+    <!-- link to testplan https://ugene.net/wiki/display/PD/Test+plan%3A+SPAdes+workflow+element+input+ports -->
+
+    <remove-temp-dir url="spades-task-input-type_0012/"/>
+    <create-temp-dir url="spades-task-input-type_0012/"/>
+
+    <spades-task-input-type out="spades-task-input-type_0012/" unpaired_reads="true" mp="true" mp_orientation="ff" mp_type="interlaced" desired_parameters="-t 16;-m 250"/>
+
+    <check-yaml-file input_dir="spades-task-input-type_0012/"
+                     strings_to_check="type: &quot;mate-pairs&quot;;
+	single reads:;
+	2_single_read;
+	type: &quot;mate-pairs&quot;;
+	orientation: &quot;ff&quot;;
+	interlaced reads:;
+	1_mate-pairs_read;"
+    />
+
+    <remove-temp-dir url="spades-task-input-type_0012/"/>
+
+</multi-test>

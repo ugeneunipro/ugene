@@ -1,0 +1,10 @@
+<multi-test>
+
+    <load-document index="doc1" url="regression/3929/PBR322.gb" io="local_file" format="genbank"/>
+    <save-document doc="doc1" url="3929.gb" io="local_file" format="genbank"/>
+    <load-document index="doc2" url="3929.gb" io="local_file" dir="temp" format="text"/>
+    <find-object-by-name index="obj" doc="doc2" name="3929" type="OT_TEXT"/>
+    <check-string-exists obj="obj" must_exist="true" newlines="true" string="ACCESSION   J01749 K00005 L08654 M10282 M10283 M10286 M10356 M10784 M10785\n            M10786 M33694 V01119"/>
+    <check-string-exists obj="obj" must_exist="false" newlines="true" string="            M10786 M33694 V01119\nACCESSION   J01749 K00005 L08654 M10282 M10283 M10286 M10356 M10784 M10785"/>
+
+</multi-test>

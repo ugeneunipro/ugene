@@ -1,0 +1,12 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_seq_write_seq.uws"
+            in="!common_data_dir!fasta/DNA.fa"
+            out="!tmp_data_dir!write_seq_0010.gb"
+            format="genbank"/>
+
+    <load-document index="doc1" url="fasta/DNA.fa" io="local_file" format="fasta"/>
+    <load-document index="doc2" url="write_seq_0010.gb" io="local_file" format="genbank" dir="temp"/>
+    <compare-sequences-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

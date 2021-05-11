@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline task="align-clustalw"
+                 in="!common_data_dir!cmdline/external-tool-support/clustalw/not_aligned.aln"
+                 out="!tmp_data_dir!clustal_actual_align1.aln"
+    />
+    <load-document index="doc1" url="clustal_actual_align1.aln" io="local_file" format="clustal" dir="temp"/>
+    <load-document index="doc2" url="cmdline/external-tool-support/clustalw/align_1.aln" io="local_file" format="clustal"/>
+
+    <compare-malignment doc1="doc1" doc2="doc2"/>
+</multi-test>

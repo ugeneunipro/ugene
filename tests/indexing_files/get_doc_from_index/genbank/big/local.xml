@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- try to get specified document from index file created on local file and check sequences with original  -->
+
+    <generate-file input="indexing_files/genbank/local_file.gbk" amount="3000" outCtxName="tmpOut" gzipOut=""/>
+    <create-file-index tmpInput="yes" input="tmpOut" output="bgbk_local_file.uind" delete="yes"/>
+    <load-document index="indDoc" dir="temp" url="bgbk_local_file.uind" io="local_file" format="index"/>
+    <get-doc-from-index indDocName="indDoc" docNum="2999" docCtxName="outDoc"/>
+
+    <load-document index="trueDoc" url="indexing_files/genbank/local_file.gbk" io="local_file" format="genbank"/>
+    <compare-sequences-in-two-objects doc="outDoc" value="trueDoc"/>
+
+</multi-test>

@@ -1,0 +1,14 @@
+<multi-test>
+
+    <!-- check sequence size and alphabet in good sequence -->
+
+    <load-document index="doc" url="swiss_prot/P01375.sw" io="local_file" format="swiss-prot"/>
+
+    <find-object-by-name index="obj" doc="doc" name="TNFA_HUMAN" type="OT_SEQUENCE"/>
+
+    <check-sequence-size obj="obj" value="233"/>
+    <check-sequence-alphabet obj="obj" value="AMINO_DEFAULT_ALPHABET"/>
+    <check-sequence-alphabet-by-id obj="obj" value="AMINO_DEFAULT_ALPHABET"/>
+
+
+</multi-test>

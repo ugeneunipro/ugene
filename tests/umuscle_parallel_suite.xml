@@ -1,0 +1,4 @@
+<suite name="uMuscle parallel plugin tests" test-timeout="45">
+    <env-var name="MUSCLE_N_THREADS" value="5" local="true"/>
+    <test-dir path="umuscle" test-format="XML" test-ext="*.xml"/>
+</suite>

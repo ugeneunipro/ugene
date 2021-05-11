@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Test reading file: in file 4 objects 2 Annotations and 2 Sequences -->
+
+    <load-document index="doc" url="embl/44.embl" io="local_file" format="embl"/>
+
+    <check-num-objects doc="doc" value="4"/>
+    <check-document-object-names doc="doc" value="AB000263 standard features,AB000263 standard,AB000264 features,AB000264"/>
+    <check-document-object-types doc="doc" value="OT_ANNOTATIONS,OT_SEQUENCE,OT_ANNOTATIONS,OT_SEQUENCE"/>
+
+</multi-test>

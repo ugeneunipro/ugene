@@ -1,0 +1,17 @@
+<multi-test>
+    <load-document index="doc" url="fasta/repeat_finder/7.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="s1" doc="doc" name="seq1" type="OT_SEQUENCE"/>
+
+    <find-repeats
+            seq="s1"
+            w="55"
+            minSize="50"
+            mind="0"
+            maxd="5000"
+            filterUnique="true"
+            reflect="false"
+            expected_result="repeat_finder/res_unique_test004.txt"/>
+
+
+</multi-test>

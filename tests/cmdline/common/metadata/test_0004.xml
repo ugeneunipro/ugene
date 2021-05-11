@@ -1,0 +1,15 @@
+<!-- Metadata transition: Grouper, by files -->
+<multi-test>
+    <remove-temp-dir url="metadata_0004"/>
+    <create-temp-dir url="metadata_0004"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/metadata/grouper.uwl"
+            in="!common_data_dir!genbank/70Bp.gen;;genbank/1anot_1seq.gen"
+            accum="false"
+            working-dir="metadata_0004"
+    />
+
+    <check-temp-file url="metadata_0004/write-sequence_output.fa" exists="1"/>
+    <check-temp-file url="metadata_0004/write-sequence_output_1.fa" exists="1"/>
+</multi-test>

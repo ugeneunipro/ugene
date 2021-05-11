@@ -1,0 +1,21 @@
+<multi-test>
+    <!--
+    Sequence:
+    ATCTG-ATCTG-ATCTGC
+    TTGGA-TTGGA-TTGGA
+    ACATG-ACATG-ACATG
+
+    Tandems
+    Tandem repeat ATCTG 3x5 at pos 0
+    Tandem repeat TTGGA 3x5 at pos 15
+    Tandem repeat ACATG 3x5 at pos 29
+    Insertions
+    15
+    We expect such results:
+    0,15,5
+    16,15,5
+    31,15,5
+    .(end of results)
+    -->
+    <find-tandems sequence="ATCTGATCTGATCTGCTTGGATTGGATTGGAACATGACATGACATG" minSize="5" repeatCount="3" expected_result="0,15,5;16,15,5;31,15,5;"/>
+</multi-test>

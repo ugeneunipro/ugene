@@ -1,0 +1,16 @@
+<multi-test>
+
+    <!-- Test reading file and loading sequence -->
+
+    <load-document index="doc" url="pdw/pBR322.pdw" io="local_file" format="pdw"/>
+
+    <find-object-by-name index="obj" doc="doc" name="pBR322.gb annotations" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="a1" obj="obj" location="27..33" complement="true"/>
+    <check-annotation-name annotation="a1" name="promoter P1"/>
+
+    <find-annotation-by-location index="a2" obj="obj" location="86..1276" complement="false"/>
+    <check-annotation-name annotation="a2" name="TC(R)"/>
+
+
+</multi-test>

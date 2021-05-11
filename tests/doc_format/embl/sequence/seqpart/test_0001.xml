@@ -1,0 +1,14 @@
+<multi-test>
+
+    <!-- test try to find part in first position, in last position, in the middle(base nucl dna alphabet)-->
+
+    <load-document index="doc" url="embl/base_ext_nucl_all_symb.embl" io="local_file" format="embl"/>
+    <find-object-by-name index="obj" doc="doc" name="AB000263 standard" type="OT_SEQUENCE"/>
+
+    <check-sequence-part obj="obj" value="TAATGTGAAT" seqstart="0"/>
+
+    <check-sequence-part obj="obj" value="GCGCCCC" seqstart="230"/>
+
+    <check-sequence-part obj="obj" value="GAATTGCA" seqstart="6"/>
+
+</multi-test>

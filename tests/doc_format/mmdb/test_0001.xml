@@ -1,0 +1,15 @@
+<multi-test>
+
+    <!-- Test: open and read mmdb file-->
+
+    <load-document index="doc" url="mmdb/1CRN.prt" io="local_file" format="mmdb"/>
+
+    <check-num-objects doc="doc" value="3"/>
+
+    <check-document-object-names doc="doc" value="1CRN chain A sequence,1CRN chain A annotation,1CRN"/>
+
+
+    <check-document-object-types doc="doc" value="OT_SEQUENCE,OT_ANNOTATIONS,OT_BIOSTRUCT3D"/>
+
+
+</multi-test>

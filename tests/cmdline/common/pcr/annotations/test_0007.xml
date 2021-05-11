@@ -1,0 +1,16 @@
+<!-- Linear sequence, no annotations -->
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/pcr/pcr.uwl"
+            in="!common_data_dir!cmdline/pcr/begin-end.gb"
+            primers="!common_data_dir!cmdline/pcr/primers_anns_2.fa"
+            mismatches="0"
+            annotations="2"
+            report="!tmp_data_dir!pcr_anns_0007.txt"
+            out="!tmp_data_dir!pcr_anns_0007.gb"
+    />
+
+    <load-document index="doc" url="pcr_anns_0007.gb" io="local_file" format="genbank" dir="temp"/>
+    <find-object-by-name index="anns" doc="doc" name="sequence:201-400 features" type="OT_ANNOTATIONS"/>
+    <check-num-annotations obj="anns" value="2"/>
+</multi-test>

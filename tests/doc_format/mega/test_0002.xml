@@ -1,0 +1,15 @@
+<multi-test>
+
+    <!-- Test reading file: file with many new lines and spaces, Msequence-size=633 -->
+
+    <load-document index="doc" url="mega/MegaTest_2.meg" io="local_file" format="mega"/>
+
+    <check-num-objects doc="doc" value="1"/>
+    <check-document-object-names doc="doc" value="MegaTest_2"/>
+    <check-document-object-types doc="doc" value="OT_MSA"/>
+
+    <find-object-by-name index="obj" doc="doc" name="MegaTest_2" type="OT_MSA"/>
+    <check-Msequence-size obj="obj" value="633"/>
+    <check-Msequence-part obj="obj" value="ACCCAAGTATTGACTCACCC" seqstart="30" seqname="Kung_(19)_{African}"/>
+
+</multi-test>

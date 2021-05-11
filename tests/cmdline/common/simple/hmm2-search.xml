@@ -1,0 +1,11 @@
+<multi-test>
+    <run-cmdline task="hmm2-search" in-hmm="!common_data_dir!cmdline/hmm2-build/1-cysPrx_C_aligned.hmm" in-seq="!common_data_dir!cmdline/1-cys.fa"
+                 out="!tmp_data_dir!hmm2-search_tmp.gbk"/>
+
+    <load-document index="doc1" url="hmm2-search_tmp.gbk" io="local_file" format="genbank" dir="temp"/>
+    <load-document index="doc2" url="cmdline/1-cys_hmm.gb" io="local_file" format="genbank"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

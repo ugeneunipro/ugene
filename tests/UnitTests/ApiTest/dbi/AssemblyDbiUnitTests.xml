@@ -1,0 +1,30 @@
+<unittest>
+
+    AssemblyDbiUnitTests
+    + getAssemblyObject
+    + getAssemblyObjectInvalid
+    + countReads
+    + countReadsInvalid
+    + getReads
+    + getReadsInvalid
+    + getReadsByRow
+    + getReadsByRowInvalid
+    + getReadsByRow
+    + getReadsByRowInvalid
+    + getReadsByName
+    + getReadsByNameInvalid
+    + getMaxPackedRow
+    + getMaxPackedRowInvalid
+    + getMaxEndPos
+    + getMaxEndPosInvalid
+    + createAssemblyObject
+    + removeReads
+    + removeReadsInvalid
+    + addReads
+    + addReadsInvalid
+    + pack
+    + packInvalid
+    + calculateCoverage
+    + calculateCoverageInvalid
+
+</unittest>

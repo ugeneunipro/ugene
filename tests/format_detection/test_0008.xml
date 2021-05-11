@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test gff -->
+
+    <fd-perfect-match url="gff/ucsc_example.gff" format="gff"/>
+
+</multi-test>

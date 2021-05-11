@@ -160,10 +160,11 @@ QString SeqPasterWidgetController::addSequence(const QString &name, QString data
 
 bool SeqPasterWidgetController::isFastaFormat(const QString &data) {
     DocumentFormatRegistry *docFormatRegistry = AppContext::getDocumentFormatRegistry();
-    SAFE_POINT(NULL != docFormatRegistry, L10N::nullPointerError("document format registry"), false);
+    SAFE_POINT(docFormatRegistry != nullptr, L10N::nullPointerError("document format registry"), false);
     DocumentFormat *fastaFormat = docFormatRegistry->getFormatById(BaseDocumentFormats::FASTA);
-    SAFE_POINT(NULL != fastaFormat, L10N::nullPointerError("FASTA format"), false);
-    return FormatDetection_Matched == fastaFormat->checkRawData(data.toLatin1()).score;
+    SAFE_POINT(fastaFormat != nullptr, L10N::nullPointerError("FASTA format"), false);
+    int score = fastaFormat->checkRawData(data.toLatin1()).score;
+    return score >= FormatDetection_HighSimilarity;
 }
 
 void SeqPasterWidgetController::disableCustomSettings() {

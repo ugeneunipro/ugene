@@ -1,0 +1,5 @@
+<multi-test>
+
+    <sitecon-check_diproperty_attrib key="MI" val="P0000005" exp_ave="0" exp_sdev="0.86317"/>
+
+</multi-test>

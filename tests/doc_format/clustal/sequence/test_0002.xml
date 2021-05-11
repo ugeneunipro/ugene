@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to check multy sequence size in proteinsequenses(must be 338 ) -->
+
+    <load-document index="doc" url="clustal/default_amino_long.aln" io="local_file" format="clustal"/>
+    <find-object-by-name index="obj" doc="doc" name="default_amino_long" type="OT_MSA"/>
+    <check-Msequence-size obj="obj" value="338"/>
+
+</multi-test>

@@ -1,0 +1,11 @@
+<multi-test>
+
+    <load-document index="doc" url="gff/Embedded sequence/3.gff" io="local_file" format="gff"/>
+
+    <find-object-by-name index="sample1s" doc="doc" name="sample sequence" type="OT_SEQUENCE"/>
+
+    <find-object-by-name index="sample2s" doc="doc" name="sample_0 sequence" type="OT_SEQUENCE"/>
+
+    <find-object-by-name index="sample3s" doc="doc" name="sample_1 sequence" type="OT_SEQUENCE"/>
+
+</multi-test>

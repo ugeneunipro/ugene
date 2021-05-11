@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test stockholm -->
+
+    <fd-perfect-match url="stockholm/1_msa_4_seq.sto" format="stockholm"/>
+
+</multi-test>

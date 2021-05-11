@@ -1,0 +1,8 @@
+<!-- Verify an invalid BED file that CAN be opened: -->
+<!-- a "blockStarts" value is bigger than the annotation region. -->
+
+<multi-test>
+
+    <load-broken-document index="doc" url="bed/invalid_input/incorrect_blocks/block_start_too_big.bed" io="local_file" format="bed" message="The file does not contain valid annotations"/>
+
+</multi-test>

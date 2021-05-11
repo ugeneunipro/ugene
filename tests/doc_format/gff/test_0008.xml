@@ -1,0 +1,11 @@
+<multi-test>
+
+    <load-document index="doc" url="gff/sars.gff" io="local_file" format="gff"/>
+
+    <find-object-by-name index="NC_004718" doc="doc" name="NC_004718 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="NC_004718" location="265..21485" complement="false"/>
+
+    <find-annotation-by-location index="ann2" obj="NC_004718" location="27273..27641" complement="false"/>
+
+</multi-test>

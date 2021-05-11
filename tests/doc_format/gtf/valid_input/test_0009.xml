@@ -1,0 +1,14 @@
+<!-- Verify an invalid GTF file that can be opened: 'gene_id' attribute is absent. -->
+
+<multi-test lockForLogListening="true">
+
+    <load-document index="doc" url="gtf/invalid/invalid_no_gene_id.gtf" io="local_file" format="gtf"/>
+
+    <find-object-by-name index="ATO" doc="doc" name="seqName features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-name index="ann_CDS" obj="ATO" name="CDS"/>
+
+    <check-no-annotation-qualifier annotation="ann_CDS" qualifier="gene_id"/>
+    <check-annotation-qualifier annotation="ann_CDS" qualifier="transcript_id" value="DUSP222"/>
+
+</multi-test>

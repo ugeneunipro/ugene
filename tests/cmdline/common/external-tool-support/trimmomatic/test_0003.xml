@@ -1,0 +1,12 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/external-tool-support/trimmomatic/se_trimmomatic.uwl"
+            in="!common_data_dir!cmdline/external-tool-support/trimmomatic/small-R1.fastq"
+            steps="HEADCROP:5"
+            out="!tmp_data_dir!trimmomatic/test_0003/small-R1_trim.fastq"
+            generate-log="true"
+            log-url="!tmp_data_dir!trimmomatic/test_0003/small-R1_trimlog.txt"
+    />
+    <compare-docs doc1="!common_data_dir!cmdline/external-tool-support/trimmomatic/test_0003_result/small-R1_trim.fastq" doc2="!tmp_data_dir!trimmomatic/test_0003/small-R1_trim.fastq"/>
+    <compare-docs doc1="!common_data_dir!cmdline/external-tool-support/trimmomatic/test_0003_result/small-R1_trimlog.txt" doc2="!tmp_data_dir!trimmomatic/test_0003/small-R1_trimlog.txt"/>
+</multi-test>

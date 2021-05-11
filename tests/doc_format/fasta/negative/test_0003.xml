@@ -1,0 +1,5 @@
+<multi-test>
+
+    <load-document index="doc" url="fasta/broken/IS_whitespaces.fa" io="local_file" format="fasta"/>
+
+</multi-test>

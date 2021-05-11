@@ -1,0 +1,31 @@
+<multi-test>
+
+    <load-document index="doc1" url="dot_prepended_filenames/.file1.ab1" io="local_file" format="abi"/>
+    <import-document index="doc2" url="dot_prepended_filenames/.file2.ace" io="local_file" format="ace"/>
+    <load-document index="doc3" url="dot_prepended_filenames/.file2.ace" io="local_file" format="ace"/>
+    <import-document index="doc4" url="dot_prepended_filenames/.file3.bam" io="local_file" format="bam"/>
+    <load-document index="doc5" url="dot_prepended_filenames/.file4.bed" io="local_file" format="bed"/>
+    <load-document index="doc6" url="dot_prepended_filenames/.file5.diff" io="local_file" format="diff"/>
+    <load-document index="doc7" url="dot_prepended_filenames/.file6.fa" io="local_file" format="fasta"/>
+    <load-document index="doc8" url="dot_prepended_filenames/.file7.fastq" io="local_file" format="fastq"/>
+    <load-document index="doc9" url="dot_prepended_filenames/.file8.gff" io="local_file" format="gff"/>
+    <load-document index="doc10" url="dot_prepended_filenames/.file9.aln" io="local_file" format="clustal"/>
+    <load-document index="doc11" url="dot_prepended_filenames/.file10.meg" io="local_file" format="mega"/>
+    <load-document index="doc12" url="dot_prepended_filenames/.file11.msf" io="local_file" format="msf"/>
+    <load-document index="doc13" url="dot_prepended_filenames/.file12.newick" io="local_file" format="newick"/>
+    <load-document index="doc14" url="dot_prepended_filenames/.file13.nex" io="local_file" format="nexus"/>
+    <load-document index="doc15" url="dot_prepended_filenames/.file14.nwk" io="local_file" format="newick"/>
+    <load-document index="doc16" url="dot_prepended_filenames/.file15.pdw" io="local_file" format="pdw"/>
+    <load-document index="doc17" url="dot_prepended_filenames/.file16.pdb" io="local_file" format="pdb"/>
+    <load-document index="doc18" url="dot_prepended_filenames/.file17.raw" io="local_file" format="raw"/>
+    <load-document index="doc19" url="dot_prepended_filenames/.file18.sto" io="local_file" format="stockholm"/>
+    <load-document index="doc20" url="dot_prepended_filenames/.file19.sw" io="local_file" format="swiss-prot"/>
+    <load-document index="doc21" url="dot_prepended_filenames/.file20.ugenedb" io="local_file" format="usqlite"/>
+    <load-document index="doc22" url="dot_prepended_filenames/.file21.gb" io="local_file" format="genbank"/>
+    <load-document index="doc23" url="dot_prepended_filenames/.file22.txt" io="local_file" format="text"/>
+    <load-document index="doc24" url="dot_prepended_filenames/.file23.embl" io="local_file" format="embl"/>
+    <load-document index="doc25" url="dot_prepended_filenames/.file24.scf.scf" io="local_file" format="scf"/>
+
+    <import-document index="doc26" url="dot_prepended_filenames/.file25.apr" outUrl="apr/.file25_" outFormat="CLUSTAL" io="local_file" format="Vector_nti_alignx"/>
+
+</multi-test>

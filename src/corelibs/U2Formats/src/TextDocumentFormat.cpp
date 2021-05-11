@@ -99,10 +99,11 @@ Document *TextDocumentFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef
 
 DNASequence *TextDocumentFormat::loadSequence(IOAdapter *io, U2OpStatus &os) {
     CHECK_OP(os, nullptr);
+    if (io->isEof()) {
+        return nullptr;
+    }
     IOAdapterReader reader(io);
-    DNASequence *sequence = loadTextSequence(reader, os);
-    SAFE_POINT(sequence != nullptr || os.hasError(), "Either sequence must not be null or there must be an error!", sequence);
-    return sequence;
+    return loadTextSequence(reader, os);
 }
 
 DNASequence *TextDocumentFormat::loadTextSequence(IOAdapterReader &, U2OpStatus &os) {

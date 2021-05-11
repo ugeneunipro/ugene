@@ -1,0 +1,18 @@
+<multi-test>
+    <remove-temp-dir url="genome_aligner_4"/>
+    <create-temp-dir url="genome_aligner_4"/>
+    <run-cmdline
+            task="!common_data_dir!genome_aligner/workflow/genome-aligner.uwl"
+            in="!common_data_dir!reads/e_coli_1000.fa"
+            out-dir="!tmp_data_dir!genome_aligner_4"
+            ref="!common_data_dir!bwa/index/ecoli.fa"
+            abs-mis-enabled="false"
+            abs-mis="0"
+            percent-mis="10"
+            rev-compl="false"
+            best-mode="false"
+            omit-count="15"
+    />
+    <compare-sam-by-length file1="genome_aligner_4/genome_aligner/out.sam" file2="genome_aligner/workflow/data_4.sam"/>
+    <remove-temp-dir url="genome_aligner_4"/>
+</multi-test>

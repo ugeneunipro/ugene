@@ -1,0 +1,16 @@
+<!-- Long primer second -->
+<multi-test>
+    <remove-temp-dir url="pcr_0006"/>
+    <create-temp-dir url="pcr_0006"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/pcr/pcr.uwl"
+            in="!common_data_dir!fasta/pcr_test.fa"
+            primers="!common_data_dir!cmdline/pcr/primers_long2.fa"
+            working-dir="pcr_0006"
+            message="Primer sequence is too long"
+    />
+
+    <check-temp-file url="pcr_0006/pcr_test_pIB2-SEC13_1_fr_3-3396.gb" exists="1"/>
+
+</multi-test>

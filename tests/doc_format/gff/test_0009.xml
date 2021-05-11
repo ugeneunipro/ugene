@@ -1,0 +1,11 @@
+<multi-test>
+
+    <load-document index="doc" url="gff/comments.gff" io="local_file" format="gff"/>
+
+    <find-object-by-name index="chr22" doc="doc" name="chr22 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="chr22" location="10010000..10010100" complement="false"/>
+
+    <find-annotation-by-location index="ann2" obj="chr22" location="10020000..10025000" complement="true"/>
+
+</multi-test>

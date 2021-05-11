@@ -1,0 +1,13 @@
+<multi-test>
+
+    <load-document index="doc" url="gff/joined_annotations/1.gff" io="local_file" format="gff"/>
+
+    <find-object-by-name index="ATO_ctg123" doc="doc" name="ctg123 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="exon1" obj="ATO_ctg123" location="700..900" complement="false"/>
+
+    <find-annotation-by-location index="exon2" obj="ATO_ctg123" location="153..234" complement="false"/>
+
+    <find-annotation-by-location index="exon3" obj="ATO_ctg123" location="111..122" complement="false"/>
+
+</multi-test>

@@ -1,0 +1,9 @@
+<!-- Verify an invalid BED file that CAN be opened: -->
+<!-- "thickEnd" is greater than "chromEnd". -->
+
+<multi-test>
+
+    <load-document index="doc" url="bed/invalid_input/incorrect_thick_coords/thick_end_greater_end.bed" io="local_file" format="bed"/>
+
+</multi-test>
+

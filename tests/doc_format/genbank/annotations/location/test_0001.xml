@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- annotation location test -->
+
+    <load-document index="doc" url="genbank/buchnera_prefix.gbk" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="obj" doc="doc" name="NC_002528 features" type="OT_ANNOTATIONS"/>
+    <find-annotation-by-number index="annot" obj="obj" number="2"/>
+    <check-annotation-location annotation="annot" location="197..2083" complement="0"/>
+
+</multi-test>

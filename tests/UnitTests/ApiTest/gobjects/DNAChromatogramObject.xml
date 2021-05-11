@@ -1,0 +1,13 @@
+<unittest>
+
+    DNAChromatogramObjectUnitTests
+    + createInstance
+    + createInstance_WrongDbi
+    + getChromatogram
+    + getChromatogram_Null
+    + clone
+    + clone_NullDbi
+    + clone_NullObj
+    + remove
+
+</unittest>

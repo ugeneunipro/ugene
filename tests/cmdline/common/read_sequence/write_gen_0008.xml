@@ -1,0 +1,11 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_seq_write_gen.uws"
+            in="!common_data_dir!fastq/slx.fastq.gz"
+            out="!tmp_data_dir!write_gen_0008.gbk"/>
+
+    <load-document index="doc1" url="fastq/slx.fastq.gz" io="local_file_gzip" format="fastq"/>
+    <load-document index="doc2" url="write_gen_0008.gbk" io="local_file" format="genbank" dir="temp"/>
+    <compare-sequences-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

@@ -1,0 +1,14 @@
+<multi-test>
+
+    <copy-file from="!common_data_dir!ugenedb/toy.sam.bam.ugenedb" to="!tmp_data_dir!cmdline/assembly-coverage/test_0012.ugenedb"/>
+
+    <run-cmdline task="extract_coverage"
+                 in-assembly="!tmp_data_dir!cmdline/assembly-coverage/test_0012.ugenedb"
+                 url-out="!tmp_data_dir!cmdline/assembly-coverage/assembly_coverage_0012.bedgraph"
+                 format="2"
+    />
+
+    <compare-docs doc1="!tmp_data_dir!cmdline/assembly-coverage/assembly_coverage_0012.bedgraph" doc2="!common_data_dir!cmdline/assembly-coverage/assembly_coverage_0012.bedgraph"/>
+    <compare-docs doc1="!tmp_data_dir!cmdline/assembly-coverage/assembly_coverage_0012_1.bedgraph" doc2="!common_data_dir!cmdline/assembly-coverage/assembly_coverage_0012_1.bedgraph"/>
+
+</multi-test>

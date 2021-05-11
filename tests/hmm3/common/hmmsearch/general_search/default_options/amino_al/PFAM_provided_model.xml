@@ -1,0 +1,6 @@
+<multi-test>
+
+    <load-document index="seq" url="hmmer3/search/pepsin.fa" io="local_file" format="fasta"/>
+    <hmm3-search hmm="hmmer3/search/PFAM_model.hmm" seqDoc="seq" outputDir="common/hmmsearch/general_search/default_options/amino_al/PFAM_provided_model/"/>
+
+</multi-test>

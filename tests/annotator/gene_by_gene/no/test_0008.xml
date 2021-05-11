@@ -1,0 +1,9 @@
+<multi-test>
+    <!-- region == borders-->
+    <load-document index="doc" url="annotator/gen1_blast.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="VC1456" doc="doc" name="VC1456 features" type="OT_ANNOTATIONS"/>
+
+    <plugin_dna-annotator-gene-by-gene doc="doc" seq="VC1456" ann_name="blast_result" identity="99" exp_result="false"/>
+
+</multi-test>

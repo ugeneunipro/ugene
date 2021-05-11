@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- A simple test for "remove all columns of gaps"  -->
+    <load-document index="doc1" url="edit_alignment/columns_of_gaps.aln" io="local_file" format="clustal"/>
+    <load-document index="doc2" url="edit_alignment/columns_of_gaps_removed_columns.aln" io="local_file" format="clustal"/>
+    <remove-columns-of-gaps in="doc1"/>
+    <compare-malignment doc1="doc1" doc2="doc2"/>
+
+</multi-test>

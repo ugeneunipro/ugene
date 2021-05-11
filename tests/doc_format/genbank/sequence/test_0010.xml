@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- try to check sequence alphabet in broken sequence must be RAW_alphabet(...CAT 32167CGA... - numbers in the midle of sequence) -->
+
+    <load-document index="doc" url="genbank/numbers_in_the_middle.gen" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="obj" doc="doc" name="A" type="OT_SEQUENCE"/>
+
+    <check-sequence-alphabet-by-id obj="obj" value="NUCL_DNA_DEFAULT_ALPHABET"/>
+
+</multi-test>

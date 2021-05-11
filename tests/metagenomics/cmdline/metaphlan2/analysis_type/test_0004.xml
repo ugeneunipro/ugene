@@ -1,0 +1,23 @@
+<multi-test>
+    <remove-temp-dir url="metaphlan2_analysis_type_4"/>
+    <create-temp-dir url="metaphlan2_analysis_type_4"/>
+    <copy-file from="!common_data_dir!metagenomics/cmdline/metaphlan2/analysis_type/input/small_P00134-R1.fastq" to="!tmp_data_dir!metaphlan2_analysis_type_4/small_P00134-R1.fastq"/>
+    <copy-file from="!common_data_dir!metagenomics/cmdline/metaphlan2/analysis_type/input/small_P00134-R2.fastq" to="!tmp_data_dir!metaphlan2_analysis_type_4/small_P00134-R2.fastq"/>
+
+    <run-cmdline
+            working-dir="metaphlan2_analysis_type_4"
+            task="!common_data_dir!metagenomics/cmdline/metaphlan2/workflows/metaphlan2_basic_pe.uwl"
+            in_1="!tmp_data_dir!metaphlan2_analysis_type_4/small_P00134-R1.fastq"
+            in_2="!tmp_data_dir!metaphlan2_analysis_type_4/small_P00134-R2.fastq"
+            input_data="paired-end"
+            analisys_type="reads-map"
+            format="fastq"
+    />
+
+    <compare-docs
+            mixed-lines="true"
+            doc1="!tmp_data_dir!metaphlan2_analysis_type_4/run/MetaPhlAn2/profiles/small_P00134_profile.txt"
+            doc2="!common_data_dir!metagenomics/cmdline/metaphlan2/analysis_type/output/small_P00134_profile_reads_map.txt"/>
+
+    <remove-temp-dir url="metaphlan2_analysis_type_4"/>
+</multi-test>

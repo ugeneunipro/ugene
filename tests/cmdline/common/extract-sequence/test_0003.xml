@@ -1,0 +1,22 @@
+<multi-test>
+    <run-cmdline
+            task="extract-sequence"
+            in="!common_data_dir!genbank/murine_sarcoma.gb"
+            out="!tmp_data_dir!extract_seq0003_tmp.fa"
+            annotation-names-file="!common_data_dir!cmdline/extract-sequence/names_3.txt"
+            accept-or-filter="true"
+            extend-left="3"
+            extend-right="6"
+    />
+
+    <load-document index="doc" url="extract_seq0003_tmp.fa" io="local_file" format="fasta" dir="temp"/>
+
+    <check-num-objects doc="doc" value="2"/>
+
+    <check-document-object-types doc="doc" value="OT_SEQUENCE,OT_SEQUENCE"/>
+
+    <find-object-by-name index="obj" doc="doc" name="NC_001363 2..590 misc_feature" type="OT_SEQUENCE"/>
+
+    <check-sequence-part obj="obj" value="AAATGA" seqstart="0"/>
+
+</multi-test>

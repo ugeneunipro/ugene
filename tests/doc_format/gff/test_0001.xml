@@ -1,0 +1,15 @@
+<multi-test>
+
+    <load-document index="doc" url="gff/ucsc_example.gff" io="local_file" format="gff"/>
+
+    <find-object-by-name index="ATO_chr7" doc="doc" name="chr7 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="ATO_chr7" location="127471197..127472363" complement="false"/>
+
+    <find-annotation-by-location index="ann2" obj="ATO_chr7" location="127472364..127473530" complement="false"/>
+
+    <find-annotation-by-location index="ann3" obj="ATO_chr7" location="127473531..127474697" complement="false"/>
+
+    <find-annotation-by-location index="ann4" obj="ATO_chr7" location="127474698..127475864" complement="false"/>
+
+</multi-test>

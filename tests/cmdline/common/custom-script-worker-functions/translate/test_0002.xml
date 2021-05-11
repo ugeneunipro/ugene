@@ -1,0 +1,11 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/translateTest/translateTest.uwl"
+                 in="!common_data_dir!cmdline/DNA.fa"
+                 offset="1"
+                 out="!common_data_dir!cmdline/custom-script-worker-functions/translateTest/result_1.fa"/>
+
+    <load-document index="actual" url="cmdline/custom-script-worker-functions/translateTest/result_1.fa" io="local_file" format="fasta"/>
+    <load-document index="expected" url="cmdline/custom-script-worker-functions/translateTest/translation_1.fa" io="local_file" format="fasta"/>
+    <compare-sequences-in-two-objects doc="actual" value="expected"/>
+
+</multi-test>

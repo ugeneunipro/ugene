@@ -1,0 +1,9 @@
+<multi-test>
+    <run-cmdline task="sitecon-search"
+                 in="!common_data_dir!/Sitecon/Algorithm/DICTY_part.fa"
+                 out="!tmp_data_dir!DICTY_part_actual.gb"
+                 inmodel="!common_data_dir!/Sitecon/Algorithm/siteconBuilds/e2f_44_nw.sitecon"
+                 min-score="10"
+                 message="Min score can not be less 60% or more 100%"
+    />
+</multi-test>

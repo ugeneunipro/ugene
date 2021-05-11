@@ -1,0 +1,14 @@
+<multi-test>
+
+    <copy-file from="!common_data_dir!ugenedb/Klebsislla.sort.bam.ugenedb" to="!tmp_data_dir!cmdline/assembly-coverage/test_0008.ugenedb"/>
+
+    <run-cmdline task="extract_coverage"
+                 in-assembly="!tmp_data_dir!cmdline/assembly-coverage/test_0008.ugenedb"
+                 url-out="!tmp_data_dir!cmdline/assembly-coverage/assembly_coverage_0008.txt"
+                 format='1'
+    />
+
+    <compare-docs doc1="!tmp_data_dir!cmdline/assembly-coverage/assembly_coverage_0008.txt" doc2="!common_data_dir!cmdline/assembly-coverage/assembly_coverage_0008.txt"/>
+    <compare-docs doc1="!tmp_data_dir!cmdline/assembly-coverage/assembly_coverage_0008_1.txt" doc2="!common_data_dir!cmdline/assembly-coverage/assembly_coverage_0008_1.txt"/>
+
+</multi-test>

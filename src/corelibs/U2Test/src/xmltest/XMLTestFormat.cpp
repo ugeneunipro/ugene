@@ -66,12 +66,13 @@ GTest *XMLTestFormat::createTest(const QString &name, GTest *cp, const GTestEnvi
     int col = 0;
     bool res = doc.setContent(testData, &err, &line, &col);
     if (!res) {
-        err = QString("error_reading_test: ") + err;
-        err += QString(" line: %1 col: %2").arg(QString::number(line)).arg(QString::number(col));
+        err = "Error reading test: " + err;
+        err += QString(" line: %1 col: %2").arg(line).arg(col);
         return nullptr;
     }
-    if (doc.doctype().name() != "UGENE_TEST_FRAMEWORK_TEST" && doc.documentElement().tagName() != "multi-test") {
-        err = QString("not_a_test_file");
+    QString topLevelElementTag = doc.documentElement().tagName();
+    if (topLevelElementTag != "multi-test" && topLevelElementTag != "unittest") {
+        err = "Top level element is not <multi-test>: " + topLevelElementTag;
         return nullptr;
     }
     QDomElement testEl = doc.documentElement();

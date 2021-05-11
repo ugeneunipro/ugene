@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!--simple test try to find part in sequence(lower case)-->
+
+    <load-document index="doc" url="embl/extended_alp_12.embl" io="local_file" format="embl"/>
+
+    <find-object-by-name index="obj" doc="doc" name="AB000263 standard" type="OT_SEQUENCE"/>
+
+    <check-sequence-part obj="obj" value="ctgccctgcccctggagggtggccccaccggccgagacagc" seqstart="60"/>
+
+
+</multi-test>

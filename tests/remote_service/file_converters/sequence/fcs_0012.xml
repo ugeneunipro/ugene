@@ -1,0 +1,14 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_seq_write_seq.uws"
+            in="!common_data_dir!genbank/1seq.gen"
+            out="!tmp_data_dir!fcs_0012.seq"
+            format="raw"
+            task-remote-machine="!config_file_path!"
+    />
+
+    <load-document index="doc1" url="genbank/1seq.gen" io="local_file" format="genbank"/>
+    <load-document index="doc2" url="fcs_0012.seq" io="local_file" format="raw" dir="temp"/>
+    <compare-sequences-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

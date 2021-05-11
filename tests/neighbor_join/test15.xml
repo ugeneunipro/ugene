@@ -1,0 +1,8 @@
+<multi-test>
+
+    <!-- Neighbor Join Test -->
+    <load-document index="doc1" url="neighbor_join/clustal3.aln" io="local_file" format="clustal"/>
+    <load-document index="doc2" url="neighbor_join/boottree3.nwk" io="local_file" format="newick"/>
+    <test-neighbor-join in="doc1" sample="doc2" bootstrapSeed="5905"/>
+
+</multi-test>

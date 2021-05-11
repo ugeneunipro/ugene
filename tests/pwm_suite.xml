@@ -1,0 +1,3 @@
+<suite test-timeout="30" name="Position weight matrix tests">
+    <test-dir test-ext="*.xml" path="position_weight_matrix" test-format="XML"/>
+</suite>

@@ -1,0 +1,16 @@
+<multi-test>
+
+    <create-temp-file url="write-msa-append-0001.aln" data="test\ntest\ntest"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/write/msa-msa.uwl"
+            in="!common_data_dir!cmdline/read-write/write/msa1.aln"
+            out="!tmp_data_dir!write-msa-append-0001.aln"
+            action="2"
+    />
+
+    <load-broken-document index="doc" url="write-msa-append-0001.aln" io="local_file" format="clustal" dir="temp"/>
+
+    <check-temp-file url="write-msa-append-0001_oldcopy1.aln" exists="0"/>
+
+</multi-test>

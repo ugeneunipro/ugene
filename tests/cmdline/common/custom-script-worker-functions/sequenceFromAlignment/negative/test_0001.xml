@@ -1,0 +1,8 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/sequenceFromAlignmentTest/sequenceFromAlignmentTest.uwl"
+                 in="!common_data_dir!cmdline/DNA_nucl_ext_rand_seq.aln"
+                 out="!common_data_dir!cmdline/custom-script-worker-functions/sequenceFromAlignmentTest/negative/result_2.fa"
+                 row="-1"
+                 message="Row is out of range"
+    />
+</multi-test>

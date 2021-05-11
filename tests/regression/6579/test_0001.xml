@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline
+            task="!workflow_samples!Scenarios/intersect_annotations.uwl"
+            in-A="!common_data_dir!regression/6579/a.gb"
+            in-B="!common_data_dir!regression/6579/b.gb"
+            out-file="!tmp_data_dir!6579_out.gff"
+            out-format="gff"
+    />
+    <compare-docs doc1="!common_data_dir!regression/6579/intersect.gff" doc2="!tmp_data_dir!6579_out.gff"/>
+</multi-test>

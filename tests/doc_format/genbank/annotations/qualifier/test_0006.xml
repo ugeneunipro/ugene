@@ -1,0 +1,14 @@
+<multi-test>
+
+    <!-- Annotation qualifier test: test that words separated correctly -->
+
+    <load-document index="doc" url="genbank/H37Rv_part.gbk" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="obj" doc="doc" name="Mycobacterium tuberculosis H37Rv features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-number index="ann" obj="obj" number="0"/>
+
+    <check-annotation-qualifier annotation="ann" qualifier="note"
+                                value="Rv3728, (MTV025.076), len: 1065. Unknown membrane protein organised in two domains. Domain comprising first 510 aa residues is similar to various multidrug resistance and efflux proteins and contains sugar transport proteins signature 1 (PS00216). Part corresponding to last 550 aa residues contains cyclic nucleotide-binding domain signature 2(PS00889) and is very similar to hypothetical 62.1 kd M. tuberculosisprotein MTCY9C4_3 (31.0% identity in 546 aa overlap). Highly similar to M. tuberculosis gp|Z95121|MTY20B11_14 hypothetical protein (1048 aa), FASTA scores: opt: 4328z-score: 3768.2 E(): 0; 63.2% identity in 1073 aa overlap, N-terminus similar to MTCY3G12_1; MTCY98_2; MTCY369_27 andMTCY180.41c"/>
+
+</multi-test>

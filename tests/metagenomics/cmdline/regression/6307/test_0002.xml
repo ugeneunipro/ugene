@@ -1,0 +1,46 @@
+<multi-test>
+    <remove-temp-dir
+            url="regression_6307_2 folder with spaces"
+    />
+
+    <create-temp-dir
+            url="regression_6307_2 folder with spaces"
+    />
+
+    <copy-file
+            from="!common_data_dir!metagenomics/cmdline/regression/6307/folder with spaces/6307_R1.fastq"
+            to="!tmp_data_dir!regression_6307_2 folder with spaces/6307_R1.fastq"
+    />
+
+    <copy-file
+            from="!common_data_dir!metagenomics/cmdline/regression/6307/folder with spaces/6307_R2.fastq"
+            to="!tmp_data_dir!regression_6307_2 folder with spaces/6307_R2.fastq"
+    />
+
+    <copy-file
+            is_dir="true"
+            from="/opt/share/virogenesis-dev/unpacked_installer_data/ngs_classification.metaphlan2.database/data/data/ngs_classification/metaphlan2/mpa_v20_m200"
+            to="!tmp_data_dir!regression_6307_2 folder with spaces/mpa_v20_m200/"
+    />
+
+    <run-cmdline
+            working-dir="regression_6307_2 folder with spaces"
+            task="!common_data_dir!metagenomics/cmdline/metaphlan2/workflows/metaphlan2_basic_pe.uwl"
+            db="!tmp_data_dir!regression_6307_2 folder with spaces/mpa_v20_m200/"
+            in_1="!tmp_data_dir!regression_6307_2 folder with spaces/6307_R1.fastq"
+            in_2="!tmp_data_dir!regression_6307_2 folder with spaces/6307_R2.fastq"
+            format="fastq"
+    />
+
+    <check-temp-file
+            url="regression_6307_2 folder with spaces/run/MetaPhlAn2/bowtie2out/6307_bowtie2out.txt"
+            exists="1"
+    />
+
+    <check-temp-file
+            url="regression_6307_2 folder with spaces/run/MetaPhlAn2/profiles/6307_profile.txt"
+            exists="1"
+    />
+
+    <remove-temp-dir url="regression_6307_2 folder with spaces"/>
+</multi-test>

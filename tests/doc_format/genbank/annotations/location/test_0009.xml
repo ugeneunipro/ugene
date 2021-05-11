@@ -1,0 +1,26 @@
+<multi-test>
+
+    <load-document index="doc" url="genbank/merge2.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="ato" doc="doc" name="merge_document2.gb annotations" type="OT_ANNOTATIONS"/>
+    <find-annotation-by-number index="annot" obj="ato" number="0"/>
+    <check-annotation-location annotation="annot" location="1..25" complement="0"/>
+    <find-annotation-by-number index="annot1" obj="ato" number="1"/>
+    <check-annotation-location annotation="annot1" location="36..60" complement="0"/>
+    <find-annotation-by-number index="annot2" obj="ato" number="2"/>
+    <check-annotation-location annotation="annot2" location="71..95" complement="0"/>
+    <find-annotation-by-number index="annot3" obj="ato" number="3"/>
+    <check-annotation-location annotation="annot3" location="106..305" complement="0"/>
+    <find-annotation-by-number index="annot4" obj="ato" number="4"/>
+    <check-annotation-location annotation="annot4" location="106..130" complement="0"/>
+    <find-annotation-by-number index="annot5" obj="ato" number="5"/>
+    <check-annotation-location annotation="annot5" location="141..165" complement="0"/>
+    <find-annotation-by-number index="annot6" obj="ato" number="6"/>
+    <check-annotation-location annotation="annot6" location="176..200" complement="0"/>
+    <find-annotation-by-number index="annot7" obj="ato" number="7"/>
+    <check-annotation-location annotation="annot7" location="211..235" complement="0"/>
+    <find-annotation-by-number index="annot8" obj="ato" number="8"/>
+    <check-annotation-location annotation="annot8" location="246..270" complement="0"/>
+    <find-annotation-by-number index="annot9" obj="ato" number="9"/>
+    <check-annotation-location annotation="annot9" location="281..305" complement="0"/>
+</multi-test>

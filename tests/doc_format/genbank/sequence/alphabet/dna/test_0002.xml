@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!--in sequence must be NUCL DNA DEFAULT ALPHABET(only ACGNT simbols) -->
+
+    <load-document index="doc" url="genbank/DNA.gen" io="local_file" format="genbank"/>
+    <find-object-by-name index="obj" doc="doc" name="GXP_170357" type="OT_SEQUENCE"/>
+
+    <check-sequence-alphabet-by-id obj="obj" value="NUCL_DNA_DEFAULT_ALPHABET"/>
+
+</multi-test>

@@ -1,0 +1,12 @@
+<multi-test>
+    <run-cmdline task="find-repeats"
+                 in="!common_data_dir!cmdline/DNA.fa"
+                 out="!tmp_data_dir!find_repeatsn0008_tmp.gbk"
+                 min-length="5"
+                 identity="140"
+                 min-distance="0"
+                 max-distance="5000"
+                 inverted="true"
+                 name=""
+                 message="parameter is not set"/>
+</multi-test>

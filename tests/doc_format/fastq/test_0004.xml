@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Test reading file: in file 1 object Sequence-->
+
+    <load-document index="doc" url="fastq/solexa.fastq" io="local_file" format="fastq"/>
+
+    <check-num-objects doc="doc" value="1"/>
+    <check-document-object-names doc="doc" value="SRR001666.1 071112_SLXA-EAS1_s_7:5:1:817:345 length=36"/>
+    <check-document-object-types doc="doc" value="OT_SEQUENCE"/>
+
+</multi-test>

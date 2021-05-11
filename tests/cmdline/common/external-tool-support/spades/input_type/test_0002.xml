@@ -1,0 +1,11 @@
+<multi-test>
+    <!-- link to testplan https://ugene.net/wiki/display/PD/Test+plan%3A+SPAdes+workflow+element+input+ports -->
+
+    <remove-temp-dir url="spades-task-input-type_0002/"/>
+    <create-temp-dir url="spades-task-input-type_0002/"/>
+
+    <spades-task-input-type out="spades-task-input-type_0002/" platform="iontorrent" unpaired_reads="true" desired_parameters="-t 16;-m 250;--iontorrent"/>
+
+    <remove-temp-dir url="spades-task-input-type_0002/"/>
+
+</multi-test>

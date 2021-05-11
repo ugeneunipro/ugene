@@ -1,0 +1,5 @@
+<!-- UTEST-8 -->
+<multi-test>
+    <load-document index="doc1" url="scenarios/msa/ma2_gapped.aln" io="local_file" format="clustal"/>
+    <find-pattern-msa in="doc1" patterns="AA;CT" searchRegion="1..14" algorithm="exact" resultsSize="27"/>
+</multi-test>

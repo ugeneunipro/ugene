@@ -1,0 +1,14 @@
+<multi-test>
+    <!--
+    Sequence:
+    GCCA:*-cCT-cCT-cCa-cCa-cCa-*:CCCG
+    Tandems
+    Tandem repeat ACT 5x3 at pos 4
+    Mutations
+    Mutation in repeat #0 of 0th tandem at pos 0
+    Mutation in repeat #2 of 0th tandem at pos 2
+    We expect such results:
+    .(end of results)
+    -->
+    <find-tandems sequence="GCCACCTCCTCCACCACCACCCG" minSize="3" maxSize="9" repeatCount="4" expected_result=""/>
+</multi-test>

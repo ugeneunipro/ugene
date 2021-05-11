@@ -1,0 +1,3 @@
+<suite name="Annotator plugin tests" test-timeout="180">
+    <test-dir path="annotator" test-format="XML" test-ext="*.xml"/>
+</suite>

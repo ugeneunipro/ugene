@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- uHMMER Parallel Calibrate test: much thread number, hmm: fn3.hmm, seed 123  -->
+
+    <uhmmer-calibrate hmmfile="hmm/fn3.hmm" mu="-46.941811" lambda="0.233898088" nthreads="2" seed="123"/>
+
+</multi-test>

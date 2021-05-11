@@ -1,0 +1,5 @@
+<multi-test>
+    <!-- try to load document with a white space in sequence name -->
+    <load-broken-document index="doc" url="stockholm/bad_seq_name.sto" io="local_file" format="stockholm"/>
+
+</multi-test>

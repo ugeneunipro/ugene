@@ -1,0 +1,9 @@
+<multi-test>
+
+    <load-document index="doc" url="gff/Quals/1.gff" io="local_file" format="gff"/>
+
+    <find-object-by-name index="ATO_ctg123" doc="doc" name="ctg123 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="ATO_ctg123" location="700..900" complement="false"/>
+
+</multi-test>

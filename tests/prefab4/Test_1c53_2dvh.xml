@@ -1,0 +1,3 @@
+<multi-test>
+    <umuscle-load-align-qscore in="prefab4/input/in/1c/1c53_2dvh.gz" out="prefab4/ref/1c53_2dvh" qscr="1"/>
+</multi-test> 

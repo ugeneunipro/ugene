@@ -138,7 +138,7 @@ MSAEditorTreeViewerUI *GTUtilsMsaEditor::getTreeView(GUITestOpStatus &os) {
 MaEditorNameList *GTUtilsMsaEditor::getNameListArea(GUITestOpStatus &os) {
     QWidget *activeWindow = getActiveMsaEditorWindow(os);
     MaEditorNameList *result = GTWidget::findExactWidget<MaEditorNameList *>(os, "msa_editor_name_list", activeWindow);
-    GT_CHECK_RESULT(NULL != result, "MaGraphOverview is not found", NULL);
+    GT_CHECK_RESULT(result != nullptr, "MaGraphOverview is not found", nullptr);
     return result;
 }
 #undef GT_METHOD_NAME
@@ -159,25 +159,23 @@ MSAEditorSequenceArea *GTUtilsMsaEditor::getSequenceArea(GUITestOpStatus &os) {
 #define GT_METHOD_NAME "getSequenceNameRect"
 QRect GTUtilsMsaEditor::getSequenceNameRect(GUITestOpStatus &os, const QString &sequenceName) {
     MaEditorNameList *nameList = getNameListArea(os);
-    GT_CHECK_RESULT(NULL != nameList, "MSAEditorNameList not found", QRect());
+    GT_CHECK_RESULT(nameList != nullptr, "MSAEditorNameList not found", QRect());
 
-    const QStringList names = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
-    const int rowNumber = names.indexOf(sequenceName);
-    GT_CHECK_RESULT(0 <= rowNumber, QString("Sequence '%1' not found").arg(sequenceName), QRect());
+    QStringList names = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
+    int rowNumber = names.indexOf(sequenceName);
+    GT_CHECK_RESULT(rowNumber >= 0, QString("Sequence '%1' not found").arg(sequenceName), QRect());
     return getSequenceNameRect(os, rowNumber);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getSequenceNameRect"
 QRect GTUtilsMsaEditor::getSequenceNameRect(GUITestOpStatus &os, int rowNumber) {
-    Q_UNUSED(os);
-    GT_CHECK_RESULT(0 <= rowNumber, QString("Sequence '%1' not found").arg(rowNumber), QRect());
+    GT_CHECK_RESULT(rowNumber >= 0, QString("Sequence '%1' not found").arg(rowNumber), QRect());
+
+    U2Region rowViewRange = getEditorUi(os)->getRowHeightController()->getScreenYRegionByViewRowIndex(rowNumber);
 
     MaEditorNameList *nameList = getNameListArea(os);
-    GT_CHECK_RESULT(NULL != nameList, "MSAEditorNameList not found", QRect());
-
-    const U2Region rowScreenRange = getEditorUi(os)->getRowHeightController()->getScreenYRegionByViewRowIndex(rowNumber);
-    return QRect(nameList->mapToGlobal(QPoint(0, rowScreenRange.startPos)), nameList->mapToGlobal(QPoint(nameList->width(), rowScreenRange.endPos())));
+    return QRect(nameList->mapToGlobal(QPoint(0, rowViewRange.startPos)), nameList->mapToGlobal(QPoint(nameList->width(), rowViewRange.endPos())));
 }
 #undef GT_METHOD_NAME
 
@@ -247,7 +245,7 @@ void GTUtilsMsaEditor::moveToSequence(GUITestOpStatus &os, int rowNumber) {
 
 #define GT_METHOD_NAME "moveToSequenceName"
 void GTUtilsMsaEditor::moveToSequenceName(GUITestOpStatus &os, const QString &sequenceName) {
-    const QRect sequenceNameRect = getSequenceNameRect(os, sequenceName);
+    QRect sequenceNameRect = getSequenceNameRect(os, sequenceName);
     GTMouseDriver::moveTo(sequenceNameRect.center());
 }
 #undef GT_METHOD_NAME

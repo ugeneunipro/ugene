@@ -1,0 +1,19 @@
+<multi-test>
+    <dna name="dna_direct_1_small_009"
+         pattern="CGCCGGAGGCGGAGTGTGCGCCCCAATAGACCACGGAGAGGGATTCGCGG"
+         seq="CC"
+         strand="direct"
+         start_pos="0"
+         seq_len="2"
+         score="10"
+         threshold="1"
+         aphabet="ACGT"
+         gap_open="-12"
+         gap_extd="-4"
+         subst_matrix="5 -4 -4 -4
+				              -4  5 -4 -4
+				              -4 -4  5 -4
+				              -4 -4 -4  5"
+
+    />
+</multi-test>

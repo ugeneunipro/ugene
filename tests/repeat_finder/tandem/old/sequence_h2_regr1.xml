@@ -1,0 +1,12 @@
+<multi-test>
+    <!--
+    Sequence:
+    ATCATGATTACCTGTCTATCTTCTTTCTAAAC-TTGACAAG-TTGACAAG-TTGACAAG-AGATATAAGTTGACAAGAGATATAATATTTTCTTGT
+    Tandems
+    Tandem repeat TTGACAAG 3x8 at pos 32
+    We expect such results:
+    32,24,8
+    .(end of results)
+    -->
+    <find-tandems sequence="ATCATGATTACCTGTCTATCTTCTTTCTAAACTTGACAAGTTGACAAGTTGACAAGAGATATAAGTTGACAAGAGATATAATATTTTCTTGT" minSize="8" repeatCount="3" expected_result="32,24,8;"/>
+</multi-test>

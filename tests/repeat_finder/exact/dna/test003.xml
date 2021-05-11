@@ -1,0 +1,12 @@
+<multi-test>
+    <load-document index="s1d" url="fasta/repeat_finder/3.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="s1" doc="s1d" name="3" type="OT_SEQUENCE"/>
+
+    <find-repeats
+            seq="s1"
+            reg="2..8"
+            w="2" reflect="false"
+            expected_result="repeat_finder/res_dna_exact_3.txt"/>
+
+</multi-test>

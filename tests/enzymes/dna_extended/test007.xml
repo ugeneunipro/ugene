@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!-- Find several enzymes at the large sequence -->
+
+    <load-document index="doc" url="embl/Haemophilus.emb" io="local_file" format="embl"/>
+
+    <find-object-by-name index="seq" doc="doc" name="AY027935   standard" type="OT_SEQUENCE"/>
+
+    <find-enzymes url="enzymes/rebase_v003_t2_com.bairoch.gz" sequence="seq" enzymes="MspA1I"
+                  result="MspA1I:404..409,1250..1255,5928..5933,6876..6881,7119..7124,11875..11880,13009..13014,15684..15689,18659..18664,19274..19279,22686..22691,23226..23231,24248..24253,27942..27947,28022..28027,28886..28891,30109..30114,30618..30623"/>
+
+</multi-test>

@@ -1,0 +1,16 @@
+<!-- Paired reads, one dataset -->
+<multi-test>
+    <remove-temp-dir url="bwa8"/>
+    <create-temp-dir url="bwa8"/>
+    <load-document index="doc" url="e_coli/e_coli_cut.fa" io="local_file" format="fasta"/>
+    <save-document doc="doc" url="bwa8/e_coli_cut.fa" io="local_file" format="fasta"/>
+    <run-cmdline
+            task="!common_data_dir!bwa/workflow/bwa-paired.uwl"
+            index="!tmp_data_dir!bwa8/e_coli_cut.fa"
+            sam-dir="!tmp_data_dir!bwa8"
+            reads1="!common_data_dir!e_coli/e_coli_reads/e_coli_1_1.fastq"
+            reads2="!common_data_dir!e_coli/e_coli_reads/e_coli_1_2.fastq"
+    />
+    <compare-sam-by-length file1="bwa8/bwa/out.sam" file2="bwa/workflow/paired1.sam"/>
+    <remove-temp-dir url="bwa8"/>
+</multi-test>
