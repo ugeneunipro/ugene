@@ -56,6 +56,7 @@ public:
     const DimerFinderResult &getDimersInfo() const;
 
     QString getFirstError() const;
+    /* Returns the error occurred during initialization (construction) */
     QString getInitializationError() const;
 
     bool isValidGC(QString &error) const;
