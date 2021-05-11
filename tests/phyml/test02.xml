@@ -1,0 +1,8 @@
+<multi-test>
+
+    <!-- MrBayes Test -->
+    <load-document index="doc1" url="phylip/int_amino.phy" io="local_file" format="phylip-interleaved"/>
+    <load-document index="doc2" url="phyml/int_amino_dayhoff.nwk" io="local_file" format="newick"/>
+    <test-PHYML in="doc1" sample="doc2" model="dayhoff" datatype="aa"/>
+
+</multi-test>

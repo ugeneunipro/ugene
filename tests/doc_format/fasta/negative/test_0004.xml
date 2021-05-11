@@ -1,0 +1,5 @@
+<multi-test>
+
+    <load-document index="doc" url="fasta/broken/illegal_header.fa" io="local_file" format="fasta"/>
+
+</multi-test>

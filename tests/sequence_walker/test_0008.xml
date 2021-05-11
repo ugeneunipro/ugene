@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- SequenceWalker Test: check odd overlap-->
+
+    <sw-check-region chunk="5" overlap="3" extra_len="3" region="0..20" reverse="false"
+                     result="0..5,2..7,4..9,6..11,8..13,10..15,12..20"/>
+
+    <sw-check-region chunk="5" overlap="3" extra_len="3" region="0..20" reverse="true"
+                     result="0..8,5..10,7..12,9..14,11..16,13..18,15..20"/>
+
+</multi-test>

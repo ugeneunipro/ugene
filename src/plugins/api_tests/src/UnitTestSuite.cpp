@@ -99,9 +99,10 @@ void UnitTestSuite::init(XMLTestFormat *tf, const QDomElement &el) {
 void UnitTestSuite::prepare() {
     QString dataDir = env->getVar("COMMON_DATA_DIR");
     AppContext::getAppSettings()->getTestRunnerSettings()->setVar("COMMON_DATA_DIR", dataDir);
-    tests_run();
+    runAllTests();
 }
-void UnitTestSuite::test_run(const QString &testName) {
+
+void UnitTestSuite::runTest(const QString &testName) {
     UnitTest *t = (UnitTest *)QMetaType::create(QMetaType::type(testName.toStdString().c_str()));
     if (t != NULL) {
         t->SetUp();
@@ -119,11 +120,11 @@ void UnitTestSuite::test_run(const QString &testName) {
     }
 }
 
-void UnitTestSuite::tests_run() {
+void UnitTestSuite::runAllTests() {
     foreach (const QString &suite, tests.keys()) {
         QStringList testList = tests.value(suite);
         foreach (const QString &testName, testList) {
-            test_run(suite + "_" + testName);
+            runTest(suite + "_" + testName);
         }
     }
 }

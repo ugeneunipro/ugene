@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Task test: check subtask cancel flag -->
+
+    <task-create index="task" type="base_task" name="test_task" flags="TaskFlag_None" delete="1"/>
+    <task-create index="subtask" type="base_task" name="test_subtask" flags="TaskFlag_None"/>
+    <task-add-subtask obj="task" subtask="subtask"/>
+    <task-cancel obj="task"/>
+    <task-check-state obj="subtask" cancelflag="1"/>
+
+</multi-test>

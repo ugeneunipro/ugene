@@ -1,0 +1,11 @@
+<!-- 1 to 1, N<M -->
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/multiplexer/text.uwl"
+            in1="!common_data_dir!cmdline/multiplexer/text2.txt"
+            in2="!common_data_dir!cmdline/multiplexer/text1.txt"
+            out="!tmp_data_dir!multiplexer_0003.txt"
+            rule="1"
+    />
+    <compare-docs doc1="cmdline/multiplexer/result_1_1_n_le_m.txt" doc2="multiplexer_0003.txt" temp="2"/>
+</multi-test>

@@ -1,0 +1,15 @@
+<multi-test>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/consensus/consensus.uwl"
+            in="!common_data_dir!bam/scerevisiae.bam"
+            out="!tmp_data_dir!consensus_0001.fa"
+            algo="Default"
+            gaps="false"
+    />
+
+    <load-document index="actual" url="consensus_0001.fa" io="local_file" format="fasta" dir="temp"/>
+    <load-document index="expected" url="cmdline/consensus/scerevisiae_consensus_default_nogaps.fa" io="local_file" format="fasta"/>
+    <compare-sequences-in-two-objects doc="actual" value="expected"/>
+
+</multi-test>

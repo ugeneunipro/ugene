@@ -1,0 +1,23 @@
+<suite name="HMM3 plugin tests" test-timeout="120">
+
+    <test-dir path="hmm3" test-format="XML" test-ext="*.xml"
+              exclude="hmmbuild/default_options/test_2-Hacid_dh_C.xml,
+		 hmmbuild/default_options/test_2-Hacid_dh.xml,
+		 hmmbuild/default_options/test_5_msa.xml,
+		 hmmbuild/default_options/test_ABC_tran.xml,
+		 hmmbuild/default_options/test_Asp.xml,
+		 hmmbuild/default_options/test_ATP-synt_ab.xml,
+		 hmmbuild/default_options/test_Caudal_act.xml,
+		 hmmbuild/default_options/test_fn3.xml,
+		 phmmer/acceleration_heuristics/fibronectin1.2_titin.xml,
+    		 phmmer/acceleration_heuristics/NT_078103_2.xml,
+    	         phmmer/default_options/fibronectin1.2_2_titin.xml,
+    	         phmmer/default_options/fibronectin1.2_titin.xml,
+    	         phmmer/default_options/NT_078103_1.xml,
+    	         phmmer/default_options/NT_078103_2.xml,
+                 phmmer/eval_tresholds/fibronectin1.2_titin.xml,
+                 phmmer/score_tresholds/fibronectin1.2_2_titin.xml,
+                 phmmer/score_tresholds/NT_078103_1.xml,
+		 phmmer/scoring_system/rnd.xml"/> <!-- Theese tests are to slow for precommit -->
+
+</suite>

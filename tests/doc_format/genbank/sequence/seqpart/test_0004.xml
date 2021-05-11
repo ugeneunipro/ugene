@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!-- in file exist 2 sequences with difrent Alphabets; 1- RAW Alphabet and  2- AMINO_DEFAULT Alphabet-->
+    <!-- test  must find part in 1st sequence-->
+
+    <load-document index="doc" url="genbank/base_amino_all_symp.gen" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="obj1" doc="doc" name="A" type="OT_SEQUENCE"/>
+
+    <check-sequence-part obj="obj1" value="ELRESTGAGM" seqstart="10"/>
+
+</multi-test>

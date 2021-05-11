@@ -1,0 +1,10 @@
+<multi-test>
+
+    <load-document index="doc" url="fastq/illumina.fastq" io="local_file" format="fastq"/>
+
+    <find-object-by-name index="obj" doc="doc" name="HWI-EAS209_0006_FC706VJ:5:58:5894:21141#ATCACG/1" type="OT_SEQUENCE"/>
+    <check-sequence-alphabet-by-id obj="obj" value="NUCL_DNA_DEFAULT_ALPHABET"/>
+    <check-sequence-size obj="obj" value="100"/>
+    <check-sequence-part obj="obj" value="TTAATTGGTAAATAAATCTCCTAATAGCTTAGATNTTACCTTNNNNNNNNNNTAGTTTCTTGAGATTTGTTGGGGGAGACATTTTTGTGATTGCCTTGAT" seqstart="0"/>
+
+</multi-test>

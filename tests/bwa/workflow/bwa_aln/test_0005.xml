@@ -1,0 +1,14 @@
+<multi-test>
+    <remove-temp-dir url="bwa5"/>
+    <create-temp-dir url="bwa5"/>
+    <run-cmdline
+            task="!common_data_dir!bwa/workflow/bwa.uwl"
+            in="!common_data_dir!reads/e_coli_1000_1.fa"
+            out_dir="!tmp_data_dir!bwa5"
+            ref="!common_data_dir!bwa/index/ecoli.fa"
+            use-miss-prob="false"
+            max-diff="5"
+    />
+    <compare-sam-by-length file1="bwa5/bwa/out.sam" file2="bwa/aln_pattern/max_diff/e_coli_1_max_diff_5.sam"/>
+    <remove-temp-dir url="bwa5"/>
+</multi-test>

@@ -1,0 +1,16 @@
+<multi-test>
+    <!-- Convert BAM to SAM test -->
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_assembly_write_assembly.uwl"
+            in="!common_data_dir!bam/small.bam.sorted.bam"
+            out="!tmp_data_dir!convert_assembly_0005.sam"
+            out_format="sam"
+    />
+
+    <load-document index="doc1" url="convert_assembly_0005.sam" io="local_file" format="sam" dir="temp"/>
+
+    <find-object-by-name index="obj" doc="doc1" name="ref_and_others" type="OT_MSA"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj" value="11"/>
+    <check-Msequence-part obj="obj" value="--GGGGGGGGGGGGGGGGGGGGGGG" seqstart="35" seqname="r9"/>
+
+</multi-test>

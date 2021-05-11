@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: default options, model: 2-oxoacid_dh
+	cmd: ./hmmbuild 2-oxoacid_dh.hmm 2-oxoacid_dh.sto -->
+
+    <uhmmer3-build inputFile="stockholm/2-oxoacid_dh.sto" outputFile="test_2-oxoacid_dh.hmm" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/2-oxoacid_dh.hmm" file2="test_2-oxoacid_dh.hmm" tmp1="no" tmp2="yes"/>
+
+</multi-test>

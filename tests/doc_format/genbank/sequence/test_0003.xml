@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- in file exist 3 sequences with difrent Alphabets; 1- NUCL DNA basic 2- NUCL DNA extended 3- RAW -->
+    <!-- second sequence's Alphabet id must be NUCL_DNA_EXTENDED-->
+
+    <load-document index="doc" url="genbank/base_ext_nucl_all_symb.gen" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="obj1" doc="doc" name="B" type="OT_SEQUENCE"/>
+
+    <check-sequence-alphabet-by-id obj="obj1" value="NUCL_DNA_EXTENDED_ALPHABET"/>
+
+
+</multi-test>

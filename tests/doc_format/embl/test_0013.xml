@@ -1,0 +1,14 @@
+<multi-test>
+
+    <!-- Comment:  annotation location test with symbol `<` -->
+
+    <load-document index="doc" url="embl/111.embl" io="local_file" format="embl"/>
+
+    <find-object-by-name index="obj" doc="doc" name="X56734 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-number index="annot" obj="obj" number="4"/>
+
+    <check-annotation-location annotation="annot" location="10..189" complement="0"/>
+
+
+</multi-test>

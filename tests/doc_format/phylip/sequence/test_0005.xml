@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to check numbers of sequence in Msequence (must be 18)-->
+
+    <load-document index="doc" url="phylip/seq_bp.phy" io="local_file" format="phylip-sequential"/>
+    <find-object-by-name index="obj" doc="doc" name="seq_bp" type="OT_MSA"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj" value="18"/>
+
+</multi-test>

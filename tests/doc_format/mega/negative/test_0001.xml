@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Test reading file: contains a comment without end ';'-->
+
+    <load-broken-document index="doc" url="mega/MegaTest_3_(with_errors).meg" io="local_file" format="mega"/>
+
+</multi-test>

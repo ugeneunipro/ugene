@@ -1,0 +1,4 @@
+<suite name="Task tests" test-timeout="30">
+    <test-dir path="task" test-format="XML" test-ext="*.xml"
+              exclude="1test_0002.xml,1test_0003.xml"/>
+</suite>

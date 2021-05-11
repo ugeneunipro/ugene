@@ -1,0 +1,16 @@
+<multi-test>
+    <!-- Convert BAM to FASTA test -->
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_assembly_write_sequence.uwl"
+            in="!common_data_dir!bam/small.bam.sorted.bam"
+            out="!tmp_data_dir!convert_assembly_0003.fa"
+    />
+
+    <load-document index="doc" url="convert_assembly_0003.fa" io="local_file" format="fasta" dir="temp"/>
+    <check-num-objects doc="doc" value="11"/>
+
+    <find-object-by-name index="obj" doc="doc" name="r1" type="OT_SEQUENCE"/>
+    <check-sequence-size obj="obj" value="41"/>
+    <check-sequence-part obj="obj" value="GGGGGGGGGGTTTTTTTGGGGGGGGGGGGGGGGGGGGGGGG" seqstart="0"/>
+
+</multi-test>

@@ -1,0 +1,22 @@
+<suite test-timeout="30" name="Dna assembly tests">
+
+    <test-dir test-ext="*.xml" path="dna_assembly" test-format="XML" exclude="*"/>
+    <excluded test="percentage_mismatches/test007.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="percentage_mismatches/test008.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="percentage_mismatches/test009.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="percentage_mismatches/test010.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="percentage_mismatches/test011.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="prebuilt_index/test013.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="prebuilt_index/test014.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="prebuilt_index/test015.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="prebuilt_index/test016.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="prebuilt_index/test017.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="test001.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="test002.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="test003.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="test004.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="test005.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="test006.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="test012.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="test018.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+</suite>

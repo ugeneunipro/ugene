@@ -1,0 +1,14 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/multiple_read_variations.uwl"
+            in="!common_data_dir!vcf/valid.vcf"
+            out1="!tmp_data_dir!write_variations_0007.vcf"
+            out_format1="vcf"
+            out2="!tmp_data_dir!write_variations_0007.snp"
+            out_format2="snp"/>
+
+
+    <compare-docs doc1="vcf/valid.vcf" doc2="write_variations_0007.vcf" temp="2"/>
+    <compare-docs doc1="vcf/exportedToSNP.snp" doc2="write_variations_0007.snp" temp="2"/>
+
+</multi-test>

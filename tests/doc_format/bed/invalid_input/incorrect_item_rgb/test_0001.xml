@@ -1,0 +1,10 @@
+<!-- Verify an invalid BED file that CAN be opened: -->
+<!-- itemRGB has not enough values. -->
+
+
+<multi-test>
+
+    <load-broken-document index="doc" url="bed/invalid_input/incorrect_item_rgb/not_enough_values.bed" io="local_file" format="bed" message="The file does not contain valid annotations"/>
+
+</multi-test>
+

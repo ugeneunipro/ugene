@@ -1,0 +1,14 @@
+<multi-test>
+    <!--
+    Sequence:
+    CA:*-ATTCGGTAaCT-ATTCGGTAaCT-ATTCGGTAaCT-*:GCTA
+    Tandems
+    Tandem repeat ATTCGGTATCT 3x11 at pos 2
+    Mutations
+    Mutation in repeat #0 of 0th tandem at pos 8
+    We expect such results:
+    2,33,11
+    .(end of results)
+    -->
+    <find-tandems sequence="CAATTCGGTAACTATTCGGTAACTATTCGGTAACTGCTA" minSize="11" maxSize="33" repeatCount="3" expected_result="2,33,11;"/>
+</multi-test>

@@ -1,7 +1,5 @@
 include (ugene_version.pri)
 
-ROOT_SRC_DIR=$$PWD
-
 UGENE_GLOBALS_DEFINED=1
 
 DEFINES+=U2_DISTRIBUTION_INFO=$${U2_DISTRIBUTION_INFO}
@@ -54,25 +52,10 @@ macx {
     CONFIG -= warn_on
     #Ignore "'weak_import' attribute ignored" warning coming from OpenCL headers
     QMAKE_CXXFLAGS += -Wall -Wno-ignored-attributes
+    LIBS += -framework CoreFoundation
 }
 
 linux-g++ {
-    # Try to build glibc_2.17 compatible binaries (Ubuntu 14.04/Debian 8/CentOS 7) regardless of the local 'glibc'
-    # version on the build machine. See https://github.com/wheybags/glibc_version_header
-    #
-    # For a wider range of supported platforms this value should be aligned with the 'glibc'
-    # used to build QT binaries.
-    #
-    # This solution is not bulletproof, because it won't replace methods from a newer 'glibc'
-    # that have no older counterparts. To address 'new API' problem we should either use a post-build 'glibc'
-    # version check for all binaries we build or/and run our pre-release tests on the old Ubuntu 16.04 host with
-    # the binary we want to release.
-    UGENE_BUILD_FOR_OLD_GLIBC = $$(UGENE_BUILD_FOR_OLD_GLIBC)
-    equals(UGENE_BUILD_FOR_OLD_GLIBC, 1) {
-        QMAKE_CFLAGS += -include $$ROOT_SRC_DIR/include/3rdparty/glibc/force_link_glibc_2.17.h
-        QMAKE_CXXFLAGS += -include $$ROOT_SRC_DIR/include/3rdparty/glibc/force_link_glibc_2.17.h
-    }
-
     # Enable all warnings. Every new version of GCC will provide new reasonable defaults.
     # See https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html
     QMAKE_CXXFLAGS += -Wall
@@ -247,13 +230,6 @@ is_debug_build() {
     D=d
 }
 
-#Variable enabling exclude list for ugene modules
-#UGENE_EXCLUDE_LIST_ENABLED = 1
-defineTest( exclude_list_enabled ) {
-    contains( UGENE_EXCLUDE_LIST_ENABLED, 1 ) : return (true)
-    return (false)
-}
-
 #Variable enabling exclude list for ugene non-free modules
 defineTest( without_non_free ) {
     contains( UGENE_WITHOUT_NON_FREE, 1 ) : return (true)
@@ -283,8 +259,4 @@ defineTest(minQtVersion) {
         return(true)
     }
     return(false)
-}
-
-if (exclude_list_enabled()) {
-    DEFINES += HI_EXCLUDED
 }

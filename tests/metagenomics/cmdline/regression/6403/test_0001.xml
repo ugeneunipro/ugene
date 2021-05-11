@@ -1,0 +1,73 @@
+<multi-test>
+
+    <remove-temp-dir
+            url="regression_6343"
+    />
+
+    <create-temp-dir
+            url="regression_6343"
+    />
+
+    <copy-file
+            from="!common_data_dir!fastq/eas.fastq"
+            to="!tmp_data_dir!regression_6343/6403.fastq"
+    />
+
+    <run-cmdline
+            working-dir="regression_6343"
+            task="!common_data_dir!metagenomics/cmdline/regression/6403/ngs_data_qc.uwl"
+            in_left="!tmp_data_dir!regression_6343/6403.fastq;;!tmp_data_dir!regression_6343/6403.fastq"
+            in_right="!tmp_data_dir!regression_6343/6403.fastq;;!tmp_data_dir!regression_6343/6403.fastq"
+    />
+
+    <!--1-->
+    <check-temp-file
+            url="regression_6343/run/Trimmomatic/6403P.fastq"
+            exists="1"
+    />
+
+    <!--2-->
+    <check-temp-file
+            url="regression_6343/run/Trimmomatic/6403P_1.fastq"
+            exists="1"
+    />
+
+    <!--3-->
+    <check-temp-file
+            url="regression_6343/run/Trimmomatic/6403U.fastq"
+            exists="1"
+    />
+
+    <!--4-->
+    <check-temp-file
+            url="regression_6343/run/Trimmomatic/6403U_1.fastq"
+            exists="1"
+    />
+
+    <!--5-->
+    <check-temp-file
+            url="regression_6343/run/Trimmomatic_1/6403P.fastq"
+            exists="1"
+    />
+
+    <!--6-->
+    <check-temp-file
+            url="regression_6343/run/Trimmomatic_1/6403P_1.fastq"
+            exists="1"
+    />
+
+    <!--7-->
+    <check-temp-file
+            url="regression_6343/run/Trimmomatic_1/6403U.fastq"
+            exists="1"
+    />
+
+    <!--8-->
+    <check-temp-file
+            url="regression_6343/run/Trimmomatic_1/6403U_1.fastq"
+            exists="1"
+    />
+
+    --
+    <remove-temp-dir url="regression_6343"/>
+</multi-test>

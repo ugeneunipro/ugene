@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Test for annotations count in document -->
+
+    <load-document index="doc" url="embl/111.embl" io="local_file" format="embl"/>
+
+    <find-object-by-name index="obj" doc="doc" name="X56734 features" type="OT_ANNOTATIONS"/>
+
+    <check-num-annotations obj="obj" value="10"/>
+
+</multi-test>

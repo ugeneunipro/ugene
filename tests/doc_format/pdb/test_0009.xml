@@ -1,0 +1,19 @@
+<multi-test>
+
+    <!--  Open PDB file. Check number of chains,
+          number of atoms,
+          residue and atom number,
+          check random atoms chain index, residue name, coords -->
+
+    <load-document index="doc" url="pdb/LORE2B7_long.pdb" io="local_file" format="pdb"/>
+    <find-object-by-name index="obj" doc="doc" name="LORE2B7_long" type="OT_BIOSTRUCT3D"/>
+
+    <check-biostruct3d-number-of-chains obj="obj" value="1"/>
+    <check-biostruct3d-number-of-atoms obj="obj" value="941"/>
+    <check-biostruct3d-atom-chain-id obj="obj" atom-id="100" value="1"/>
+    <check-biostruct3d-atom-residue-name obj="obj" atom-id="200" value="ARG"/>
+    <check-biostruct3d-atom-coords obj="obj" atom-id="300" model-id="1" x="42.966" y="47.351" z="55.344"/>
+    <check-biostruct3d-atom-coords obj="obj" atom-id="941" model-id="1" x="64.273" y="47.399" z="58.647"/>
+
+
+</multi-test>

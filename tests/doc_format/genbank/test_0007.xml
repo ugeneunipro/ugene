@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- UGENE-3117 regression test -->
+
+    <load-document index="doc" url="genbank/Smc3_LOCUS_19_45436_bp_DNA_HTG_4_changed.gbk" io="local_file" format="genbank"/>
+
+    <check-num-objects doc="doc" value="2"/>
+    <check-document-object-names doc="doc" value="19 features,19"/>
+    <check-document-object-types doc="doc" value="OT_ANNOTATIONS,OT_SEQUENCE"/>
+
+</multi-test>

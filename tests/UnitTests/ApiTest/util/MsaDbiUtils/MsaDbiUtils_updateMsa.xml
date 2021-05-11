@@ -1,0 +1,15 @@
+<unittest>
+
+    MsaDbiUtilsUnitTests
+    + updateMsa_empty
+    + updateMsa_nothingNew
+    + updateMsa_newOrder
+    + updateMsa_newName
+    + updateMsa_newAlphabet
+    + updateMsa_newContent
+    + updateMsa_newSequence
+    + updateMsa_additionalRows
+    + updateMsa_removeRows
+    + updateMsa_clear
+
+</unittest>

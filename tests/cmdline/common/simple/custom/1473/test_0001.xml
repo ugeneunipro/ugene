@@ -1,0 +1,11 @@
+<multi-test lockForLogListening="true">
+    <remove-temp-dir url="1473"/>
+    <create-temp-dir url="1473"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/custom/1473/1473.uwl"
+            message="Write Sequence: The format FASTA does not support annotations"
+            working-dir="1473"
+    />
+
+</multi-test>

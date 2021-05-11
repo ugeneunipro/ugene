@@ -1,0 +1,10 @@
+<multi-test>
+    <!-- fn3.hmm, titin.fa amino alphabet domE treshold
+	./hmmsearch -domE 1.0e-17 fn3.hmm titin.fa > e_dom_fn3_hmm_titin_fa.out -->
+
+    <load-document index="seq" url="fasta/titin.fa" io="local_file" format="fasta"/>
+    <hmm3-search hmm="hmmer3/build/fn3.hmm" domE="1.0e-17" seqDoc="seq" outputDir="common/hmmsearch/general_search/eval_tresholds/amino_al/fn3_titin/"/>
+
+    <hmm3-search-compare trueOut="hmmer3/search/e_dom_fn3_hmm_titin_fa.out" actualOut="common/hmmsearch/general_search/eval_tresholds/amino_al/fn3_titin/output.txt"/>
+
+</multi-test>

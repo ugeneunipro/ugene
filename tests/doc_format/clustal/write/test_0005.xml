@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- Test save option for a file with UTF-16 encoding. -->
+
+    <load-document index="doc1" url="clustal/utf16be.aln" io="local_file" format="clustal"/>
+    <save-document doc="doc1" url="_temp0005.aln" io="local_file" format="clustal"/>
+    <load-document index="doc2" url="_temp0005.aln" io="local_file" format="clustal" dir="temp"/>
+    <compare-Msequences-alphabets-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

@@ -1,0 +1,9 @@
+<multi-test>
+
+    <load-document index="doc" url="regression/3458/quotation.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="obj" doc="doc" name="NC_001363 features" type="OT_ANNOTATIONS"/>
+    <find-annotation-by-number index="ann" obj="obj" number="0"/>
+    <check-annotation-qualifier annotation="ann" qualifier="qual" value='value"value'/>
+
+</multi-test>

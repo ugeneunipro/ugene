@@ -1,0 +1,19 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/snp_effect/rsnp.uwl"
+            in="!common_data_dir!cmdline/snp_effect/TEST_SNP_rsnp.snp"
+            out-reg="!tmp_data_dir!snp_effect_rsnp_reg_test_0002.txt"
+            out-gene="!tmp_data_dir!snp_effect_rsnp_gene_test_0002.txt"/>
+
+    <find-in-snp-result-table
+            file_name="snp_effect_rsnp_reg_test_0002.txt"
+            chr_name="chr6"
+            allele="G/A"
+            pos="32635450"
+            gene_id="HLA-DQB1"
+            report_type="regulatory"
+            column_name="rSNPTranscrFactors"
+            expected_value="GR"
+    />
+
+</multi-test>

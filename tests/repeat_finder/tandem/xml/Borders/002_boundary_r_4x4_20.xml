@@ -1,0 +1,9 @@
+<multi-test>
+    <!--
+    Sequence:
+    GCTA-ACGT-ACGT-ACGT-ACGT
+    Tandems
+    Tandem repeat TGG 4x4 at pos 4
+    -->
+    <find-tandems sequence="GCTAACGTACGTACGTACGT" minSize="4" repeatCount="3" expected_result="4,16,4;"/>
+</multi-test>

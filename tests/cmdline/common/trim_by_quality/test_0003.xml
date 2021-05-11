@@ -1,0 +1,15 @@
+<!-- Check "Sequence Quality Trimmer" element with Illumina 1.5+ Phred+64 encoding. -->
+<multi-test>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/trim_by_quality/sequence-trim-by-qual.uwl"
+            in="!common_data_dir!fastq/illumina.fastq"
+            out="!tmp_data_dir!trim_by_quality/test_0003.fastq"
+            format="fastq"
+    />
+
+    <load-document index="actual" url="trim_by_quality/test_0003.fastq" io="local_file" format="fastq" dir="temp"/>
+    <load-document index="expected" url="cmdline/trim_by_quality/illumina.fastq.trimmed.fastq" io="local_file" format="fastq"/>
+    <compare-sequences-in-two-objects doc="actual" value="expected"/>
+
+</multi-test>

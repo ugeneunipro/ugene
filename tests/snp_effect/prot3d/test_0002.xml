@@ -1,0 +1,19 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/snp_effect/prot3d.uwl"
+            in="!common_data_dir!cmdline/snp_effect/TEST_SNP_3d.snp"
+            out-reg="!tmp_data_dir!snp_effect3d_reg_test_0002.txt"
+            out-gene="!tmp_data_dir!snp_effect3d_gene_test_0002.txt"/>
+
+    <find-in-snp-result-table
+            file_name="snp_effect3d_gene_test_0002.txt"
+            chr_name="chr10"
+            allele="G/A"
+            pos="96541616"
+            gene_id="CP2CJ_HUMAN"
+            report_type="ingene"
+            column_name="prot3d"
+            expected_value="+"
+    />
+
+</multi-test>

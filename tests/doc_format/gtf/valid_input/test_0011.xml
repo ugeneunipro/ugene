@@ -1,0 +1,3 @@
+<multi-test lockForLogListening="true">
+    <load-document index="doc" url="gtf/valid_with_spaces.gtf" io="local_file" format="gtf" no-message="GTF parsing error"/>
+</multi-test>

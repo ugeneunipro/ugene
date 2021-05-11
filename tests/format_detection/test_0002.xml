@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test ace -->
+
+    <fd-perfect-match url="ace/ace_test_1.ace" format="ace"/>
+
+</multi-test>

@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Test reading tree bock, type OT_PTREE-->
+
+    <load-document index="doc" url="nexus/bp_tree.nex" io="local_file" format="nexus"/>
+
+    <check-num-objects doc="doc" value="2"/>
+    <check-document-object-names doc="doc" value="tree1,tree1_1"/>
+    <check-document-object-types doc="doc" value="OT_PTREE,OT_PTREE"/>
+
+</multi-test>

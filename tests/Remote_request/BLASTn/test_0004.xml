@@ -1,0 +1,6 @@
+<!-- checking boundary conditions max length -->
+<multi-test>
+
+    <plugin_remote-request min_length="0" max_length="18" strand="direct" script="blastn.qs" seq="CCAGATCAGTGGACCAAATTG" expected_results="gb|AC189550.1|,emb|AL929297.10|"/>
+
+</multi-test>

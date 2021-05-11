@@ -1,0 +1,25 @@
+<multi-test>
+    <remove-temp-dir url="rna1"/>
+    <create-temp-dir url="rna1"/>
+    <copy-file from="!common_data_dir!cmdline/workflow_samples/raw_ngs/reads_1.fastq.gz" to="!tmp_data_dir!rna1/reads_1.fastq.gz"/>
+
+    <run-cmdline
+            task="!workflow_samples!NGS/raw_ngs/rnaseq/rnaseq_single.uwl"
+            in="!tmp_data_dir!rna1/reads_1.fastq.gz"
+            out_dir="!tmp_data_dir!rna1"
+            idx_dir="!common_data_dir!cmdline/workflow_samples/raw_ngs/bowtie_index/"
+            idx_name="test"
+            out_mode="2"
+            fasqc1_out_dir_type="2"
+            fasqc1_out_dir="!tmp_data_dir!rna1"
+            casava1_out_dir_type="2"
+            casava1_out_dir="!tmp_data_dir!rna1"
+            trim_reads1_out_dir_type="2"
+            trim_reads1_out_dir="!tmp_data_dir!rna1"
+    />
+
+    <compare-sam-by-length file1="rna1/tophat_out/accepted_hits.bam" file2="cmdline/workflow_samples/raw_ngs/accepted_hits.bam" isbam="1"/>
+
+
+    <remove-temp-dir url="rna1"/>
+</multi-test>

@@ -1,0 +1,8 @@
+<multi-test>
+    <!-- query: NT_078103_query2 db: titin no hits here
+	./phmmer -nobias -nonull2 NT_078103_query2.fa NT_078103.fa > NT_078103_query2_NT_078103_db_nobias_nonull2.out   -->
+
+    <hmm3-phmmer query="hmmer3/phmmer/NT_078103_query2.fa" db="hmmer3/phmmer/NT_078103.fa" nobias="yes" nonull2="yes" outputDir="common/phmmer/acceleration_heuristics/NT_078103_2/"/>
+    <hmm3-phmmer-compare trueOut="hmmer3/phmmer/NT_078103_query2_NT_078103_db_nobias_nonull2.out" actualOut="common/phmmer/acceleration_heuristics/NT_078103_2/output.txt"/>
+
+</multi-test>

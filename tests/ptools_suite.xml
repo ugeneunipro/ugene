@@ -1,0 +1,4 @@
+<suite name="PTools plugin tests">
+
+    <test-dir path="ptools" test-format="XML" test-ext="*.xml"/>
+</suite>

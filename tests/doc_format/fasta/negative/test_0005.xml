@@ -1,0 +1,5 @@
+<multi-test>
+
+    <load-broken-document index="doc" url="fasta/broken/headers_only.fa" io="local_file" format="fasta"/>
+
+</multi-test>

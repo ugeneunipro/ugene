@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to check multy sequence size (must be 48) -->
+
+    <load-document index="doc" url="nexus/bp_data.nex" io="local_file" format="nexus"/>
+    <find-object-by-name index="obj" doc="doc" name="bp_data" type="OT_MSA"/>
+    <check-Msequence-size obj="obj" value="48"/>
+
+</multi-test>

@@ -1,0 +1,5 @@
+<suite name="Smith Waterman Tests classic 2" test-timeout="30">
+
+    <env-var name="IMPL" value="Classic 2"/>
+    <test-dir path="smith_waterman2" test-format="XML" test-ext="*.xml"/>
+</suite>

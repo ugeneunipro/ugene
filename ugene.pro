@@ -80,20 +80,6 @@ use_opencl() {
     SUBDIRS += src/plugins/opencl_support
 }
 
-exclude_list_enabled() {
-    SUBDIRS -= src/plugins/CoreTests
-    SUBDIRS -= src/plugins/test_runner
-    SUBDIRS -= src/plugins/perf_monitor
-    SUBDIRS -= src/plugins/GUITestBase
-    SUBDIRS -= src/plugins/api_tests
-    SUBDIRS -= src/libs_3rdparty/QSpec
-}
-
-!equals(GUI_TESTING_ENABLED, 1) {
-    SUBDIRS -= src/plugins/GUITestBase
-    SUBDIRS -= src/libs_3rdparty/QSpec
-}
-
 without_non_free() {
     SUBDIRS -= src/plugins_3rdparty/psipred
 }

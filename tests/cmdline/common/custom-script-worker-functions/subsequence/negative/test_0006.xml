@@ -1,0 +1,9 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/subsequenceTest/subsequenceTest.uwl"
+                 in="!common_data_dir!cmdline/DNA.fa"
+                 out="!common_data_dir!cmdline/custom-script-worker-functions/subsequenceTest/result_1.fa"
+                 beg="10"
+                 end="745"
+                 message="Subsequence's end offset is out of range"/>
+
+</multi-test>

@@ -1,0 +1,16 @@
+<!-- Check "FASTQ Quality Trimmer" element with Sanger Phred+33 encoding: it should be able to filter out reads by quality -->
+<multi-test>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/trim_by_quality/trim-by-qual.uwl"
+            in="!common_data_dir!fastq/BT474_short.fastq"
+            out-dir="!tmp_data_dir!"
+            out="test_0007.fastq"
+            quality_threshold="34"
+    />
+
+    <load-document index="actual" url="test_0007.fastq" io="local_file" format="fastq" dir="temp"/>
+    <load-document index="expected" url="cmdline/trim_by_quality/BT474_short.fastq.trimmed.filtered_by_quality.fastq" io="local_file" format="fastq"/>
+    <compare-sequences-in-two-objects doc="actual" value="expected"/>
+
+</multi-test>

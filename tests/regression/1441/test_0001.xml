@@ -1,0 +1,11 @@
+<multi-test>
+
+    <run-cmdline task="!common_data_dir!regression/1441/1441.uwl"
+                 in="!common_data_dir!regression/1441/in.snp"
+                 out="!tmp_data_dir!regression_1441.vcf"
+                 out_format="vcf"
+    />
+
+    <compare-docs doc1="regression/1441/expected.vcf" doc2="regression_1441.vcf" temp="2" by_lines="true"/>
+
+</multi-test>

@@ -1,0 +1,13 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_ali_write_ali.uws"
+            in="!common_data_dir!mega/MegaTest_1.meg"
+            out="!tmp_data_dir!write_ali_0006.aln"
+            format="clustal"/>
+
+    <load-document index="doc1" url="write_ali_0006.aln" io="local_file" format="clustal" dir="temp"/>
+    <load-document index="doc2" url="mega/MegaTest_1.meg" io="local_file" format="mega"/>
+    <compare-Msequences-in-two-objects doc="doc1" value="doc2"/>
+
+
+</multi-test>

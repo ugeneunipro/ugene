@@ -1,0 +1,12 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_ali_write_clu.uws"
+            in="!common_data_dir!cmdline/1-cysPrx_C.sto"
+            out="!tmp_data_dir!write_clu_0002.aln"/>
+
+    <load-document index="doc1" url="write_clu_0002.aln" io="local_file" format="clustal" dir="temp"/>
+    <load-document index="doc2" url="cmdline/1-cysPrx_C.sto" io="local_file" format="stockholm"/>
+    <compare-Msequences-in-two-objects doc="doc1" value="doc2"/>
+
+
+</multi-test>

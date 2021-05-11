@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- try to load empty doc-->
+
+    <load-broken-document index="doc" url="zero" io="local_file" format="embl"/>
+
+</multi-test>

@@ -1,0 +1,3 @@
+<multi-test>
+    <load-remote-document database="pdb" document_id="3HUS" expected_document="load_remote_document/3HUS.pdb"/>
+</multi-test>

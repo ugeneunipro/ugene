@@ -1,0 +1,5 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/validation/ws-script-error.uwl"
+                 message="Wrong attribute id: wrong-attr"
+    />
+</multi-test>

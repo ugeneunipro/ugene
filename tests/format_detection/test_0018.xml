@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test scf -->
+
+    <fd-perfect-match url="scf/90-JRI-07.scf" format="scf"/>
+
+</multi-test>

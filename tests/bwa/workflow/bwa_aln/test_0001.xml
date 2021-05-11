@@ -1,0 +1,18 @@
+<multi-test>
+    <remove-temp-dir url="bwa1"/>
+    <create-temp-dir url="bwa1"/>
+    <run-cmdline
+            task="!common_data_dir!bwa/workflow/bwa.uwl"
+            in="!common_data_dir!reads/e_coli_1000.fa"
+            out_dir="!tmp_data_dir!bwa1"
+            ref="!common_data_dir!bwa/index/ecoli.fa"
+            use-miss-prob="true"
+            missing-prob="0.1"
+            index-alg="is"
+            seed-length="16"
+            max-gap="4"
+            best-hits="20"
+    />
+    <compare-sam-by-length file1="bwa1/bwa/out.sam" file2="bwa/aln_pattern/miss_prob/ecoli_is_miss_brob_1.sam"/>
+    <remove-temp-dir url="bwa1"/>
+</multi-test>

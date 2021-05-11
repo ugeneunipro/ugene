@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- uMuscle test: 3 sequences, first is prefix of ali(6), 
+                                    second is suffix(9). 
+                                    third is equal to ali
+                                    Result: no gaps in ali, 9 gaps in the first and 6 in the second sequence -->
+
+    <load-document index="doc1" url="alignment/add_sequence_to_profile/ali01.aln" io="local_file" format="clustal"/>
+    <load-document index="doc2" url="alignment/add_sequence_to_profile/seq06.fa" io="local_file" format="fasta"/>
+
+    <umuscle-add-unaligned-seq-to-profile ali-doc="doc1" seq-doc="doc2" result-ali-len="15" gap-map="6,7,8,9,10,11,12,13,14|0,1,2,3,4,5|"/>
+
+</multi-test>

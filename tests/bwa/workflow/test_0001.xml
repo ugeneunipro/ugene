@@ -1,0 +1,12 @@
+<multi-test>
+    <remove-temp-dir url="bwa-mem1"/>
+    <create-temp-dir url="bwa-mem1"/>
+    <run-cmdline
+            task="!common_data_dir!bwa/workflow/bwa-mem.uwl"
+            in="!common_data_dir!reads/e_coli_1000.fa"
+            out_dir="!tmp_data_dir!bwa-mem1"
+            ref="!common_data_dir!bwa/index/ecoli.fa"
+    />
+    <compare-sam-by-length file1="bwa-mem1/bwa/out.sam" file2="bwa/pattern/e_coli_1000_MEM.sam"/>
+    <remove-temp-dir url="bwa-mem1"/>
+</multi-test>

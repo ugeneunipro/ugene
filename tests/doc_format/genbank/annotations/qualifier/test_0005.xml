@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- Annotation qualifier test: symbol '/' inside value string after line feed-->
+
+    <load-document index="doc" url="genbank/custom.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="obj" doc="doc" name="NC_002528 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-number index="ann" obj="obj" number="1"/>
+
+    <check-annotation-qualifier annotation="ann" qualifier="gene" value="/string with symbol '/'    /string with symbol '/' /string with symbol '/'"/>
+
+</multi-test>

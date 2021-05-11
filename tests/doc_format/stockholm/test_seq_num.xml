@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to check number of sequences in msa -->
+
+    <load-document index="doc" url="stockholm/seq_num.sto" io="local_file" format="stockholm"/>
+    <find-object-by-name index="obj" doc="doc" name="seq_num_0" type="OT_MSA"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj" value="5"/>
+
+</multi-test>

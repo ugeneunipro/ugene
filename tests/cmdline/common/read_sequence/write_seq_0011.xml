@@ -1,0 +1,12 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_seq_write_seq.uws"
+            in="!common_data_dir!raw_sequence/eas.raw"
+            out="!tmp_data_dir!write_seq_0011.fastq"
+            format="fastq"/>
+
+    <load-document index="doc1" url="raw_sequence/eas.raw" io="local_file" format="raw"/>
+    <load-document index="doc2" url="write_seq_0011.fastq" io="local_file" format="fastq" dir="temp"/>
+    <compare-sequences-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

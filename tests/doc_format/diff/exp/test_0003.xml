@@ -1,0 +1,24 @@
+<multi-test>
+
+    <load-document index="doc" url="diff/exp/gene_exp2.diff" io="local_file" format="diff"/>
+
+    <check-num-objects doc="doc" value="1"/>
+    <check-document-object-names doc="doc" value="differential"/>
+    <check-document-object-types doc="doc" value="OT_ANNOTATIONS"/>
+
+    <find-object-by-name index="obj" doc="doc" name="differential" type="OT_ANNOTATIONS"/>
+    <check-num-annotations obj="obj" value="2"/>
+
+    <find-annotation-by-location index="ann1" obj="obj" location="53..551" complement="false"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="chromosome" value="test_chromosome"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="test_id" value="CUFF.1"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="value_1" value="1.05229e+07"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="significant" value="no"/>
+
+    <find-annotation-by-location index="ann2" obj="obj" location="2..23" complement="false"/>
+    <check-annotation-qualifier annotation="ann2" qualifier="chromosome" value="test_chromosome"/>
+    <check-annotation-qualifier annotation="ann2" qualifier="test_id" value="CUFF.2"/>
+    <check-annotation-qualifier annotation="ann2" qualifier="value_1" value="0.1"/>
+    <check-annotation-qualifier annotation="ann2" qualifier="significant" value="yes"/>
+
+</multi-test>

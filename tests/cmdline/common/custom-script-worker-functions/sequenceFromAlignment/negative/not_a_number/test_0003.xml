@@ -1,0 +1,11 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/sequenceFromAlignmentTest/sequenceFromAlignmentTest2.uwl"
+                 in="!common_data_dir!cmdline/DNA_nucl_ext_rand_seq.aln"
+                 out="!common_data_dir!cmdline/custom-script-worker-functions/sequenceFromAlignmentTest/result_1.fa"
+                 row="2"
+                 beg="2"
+                 len="ww"
+                 message="Incorrect value for 'len'"
+    />
+
+</multi-test>

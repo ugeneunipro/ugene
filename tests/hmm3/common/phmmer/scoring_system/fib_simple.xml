@@ -1,0 +1,8 @@
+<multi-test>
+    <!-- query: fib_simple db: titin score tresholds open and extend probabilities here. scoring matrix: BLOSUM62
+    ./phmmer -popen 0.35 -pextend 0.0001 fib_simple.fa titin.fa > fib_simple_query_titin_db_open_extend.out -->
+
+    <hmm3-phmmer query="hmmer3/phmmer/fib_simple.fa" db="fasta/titin.fa" popen="0.35" pextend="0.0001" outputDir="common/phmmer/scoring_system/fib_simple/"/>
+    <hmm3-phmmer-compare trueOut="hmmer3/phmmer/fib_simple_query_titin_db_open_extend.out" actualOut="common/phmmer/scoring_system/fib_simple/output.txt"/>
+
+</multi-test>

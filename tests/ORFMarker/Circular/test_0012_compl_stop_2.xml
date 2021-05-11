@@ -1,0 +1,9 @@
+<multi-test>
+    <!-- Checking termination with region-->
+    <load-document index="doc" url="ORFMarker/circ_test_compl_stop_2.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="ato" doc="doc" name="circ_test_compl_stop_2" type="OT_SEQUENCE"/>
+
+    <plugin_orf-marker-search seq="ato" strand="both" min_length="0" terminates_with_region="false" starts_with_init_codon="true" allow_alt_init_codons="false" translation_id="1" include_stop_codon="true" expected_results="1..10,13..14"/>
+
+</multi-test>

@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- Shift around sequence length point. -->
+    <check-shift-sequence location-before="2..4" location-after="join(9..10,1..1)" shift="7" sequence-length="10"/>
+    <check-shift-sequence location-before="2..4" location-after="join(10..10,1..2)" shift="8" sequence-length="10"/>
+    <!--  7 + 1 == 8  -->
+    <check-shift-sequence location-before="join(9..10,1..1)" location-after="join(10..10,1..2)" shift="1" sequence-length="10"/>
+
+</multi-test>

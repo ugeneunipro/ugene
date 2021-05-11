@@ -145,7 +145,6 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0003) {
     //2. Double - click on the CDS annotation with location(3875..4999) in the Zoom View.
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 3875, 0, true);
-    GTGlobals::sleep();
 
     //    Expected state :
     //    The Details View has been scrolled to the annotation location.The annotation has wide border.There is dashed selection of the region.
@@ -183,7 +182,6 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0003) {
     CHECK_SET_ERR(wrapMode != NULL, "Cannot find Wrap sequence action");
     GTWidget::click(os, GTAction::button(os, wrapMode));
     GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 5048, 0, true);
-    GTGlobals::sleep();
 
     //    Expected state :
     //    The Zoom View has been scrolled to the fourth CDS annotation.The annotation has wide border.There is blue selection for the region.
@@ -205,11 +203,9 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0004) {
     //3. Double-click in the Details View on the direct strand between coordinates 6 and 7.
     GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2, 0, true);
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     //4. Press 'G' on the keyboard.
     GTKeyboardDriver::keyClick('g');
-    GTGlobals::sleep();
 
     //Expected state:
     //The "misc_feature" annotations with locations (2..590) and (13..15) have been removed.
@@ -232,7 +228,6 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0001) {
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2970);
     //GTKeyboardDriver::keyRelease(Qt::Key_Control);
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTGlobals::sleep();
 
     //    Expected state :
     //    In the Overview : there is NO blue selection.
@@ -251,7 +246,6 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0001) {
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 5048, 0, true);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTGlobals::sleep();
 
     //    Expected state :
     //    In the Overview : there is blue selection for region(5048..5203).
@@ -269,7 +263,6 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0001) {
     const QPoint pos = GTMouseDriver::getMousePosition();
     GTMouseDriver::moveTo(QPoint(pos.x(), pos.y() - 20));
     GTMouseDriver::click();
-    GTGlobals::sleep();
 
     //    Expected state : nothing is selected in the Overview, Zoom View, Details View, Annotations Editor.
     selection = GTUtilsSequenceView::getSelection(os);
@@ -287,21 +280,17 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0002) {
 
     //2. Click on the first CDS annotation with location(1042..2658).
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042);
-    GTGlobals::sleep();
 
     //3. Hold Ctrl, click on the second CDS annotation with location(2970..3873).
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2970);
-    GTGlobals::sleep();
 
     //4. Hold Ctrl, double - click on the third CDS annotation with location(3875..4999).
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 3875, 0, true);
-    GTGlobals::sleep();
 
     //5. Hold Ctrl, double - click on the fourth CDS annotation with location(5048..5203).
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 5048, 0, true);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTGlobals::sleep();
 
     //6. Click "Copy selected sequence".
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
@@ -385,7 +374,6 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0003) {
 
     //2. Click on the first CDS annotation with location(1042..2658).
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042);
-    GTGlobals::sleep();
 
     //3. Open menu item "Select" in the Details View context menu.
     //    Expected state :
@@ -422,7 +410,6 @@ GUI_TEST_CLASS_DEFINITION(mixed_test_0003) {
     GTKeyboardDriver::keyPress(Qt::Key_Control);
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 2970);
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
-    GTGlobals::sleep();
 
     //6. Open menu item "Select" in the Details View context menu.
     //    Expected state :
@@ -667,7 +654,6 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0004) {
 
     //2. Click on the CDS annotation with location(3875..4999) in the Zoom View.
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 3875, 0, false);
-    GTGlobals::sleep();
 
     //    Expected state :
     //    The Details View has been scrolled to the annotation location.The annotation has wide border.
@@ -705,7 +691,6 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0004) {
     CHECK_SET_ERR(wrapMode != NULL, "Cannot find Wrap sequence action");
     GTWidget::click(os, GTAction::button(os, wrapMode));
     GTUtilsSequenceView::clickAnnotationDet(os, "CDS", 5048, 0, false);
-    GTGlobals::sleep();
 
     //    Expected state :
     //    The Zoom View has been scrolled to the fourth CDS annotation.The annotation has wide border.
@@ -726,11 +711,9 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0005) {
 
     //3. Click in the Details View on the direct strand between coordinates 6 and 7.
     GTUtilsSequenceView::clickAnnotationDet(os, "misc_feature", 2);
-    GTGlobals::sleep();
 
     //4. Press 'G' on the keyboard.
     GTKeyboardDriver::keyClick('g');
-    GTGlobals::sleep();
 
     //    Expected state : the sequence has been modified.It starts from characters "AAATGAGAAGAC".
     QList<QTreeWidgetItem *> items = GTUtilsAnnotationsTreeView::findItems(os, "misc_feature");

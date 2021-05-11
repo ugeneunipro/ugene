@@ -1,0 +1,4 @@
+<suite name="Project suite">
+
+    <test-dir path="project" test-format="XML" test-ext="*.xml"/>
+</suite>

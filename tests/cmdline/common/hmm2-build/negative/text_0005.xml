@@ -1,0 +1,9 @@
+<multi-test>
+    <run-cmdline task="hmm2-build"
+                 in="!common_data_dir!cmdline/1-cysPrx_C_aligned.sto"
+                 out=""
+                 seed="42"
+                 calibrate="true"
+                 message="must be set"/>
+
+</multi-test>

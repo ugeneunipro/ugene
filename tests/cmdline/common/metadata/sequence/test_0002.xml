@@ -1,0 +1,19 @@
+<!-- Two sequences in one dataset -->
+<multi-test>
+    <remove-temp-dir url="sequence_metadata_0002"/>
+    <create-temp-dir url="sequence_metadata_0002"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_seq_write_seq.uws"
+            in="!common_data_dir!cmdline/metadata/double_seq.fa"
+            format="fastq"
+            working-dir="sequence_metadata_0002"
+    />
+
+    <load-document index="doc" url="sequence_metadata_0002/Dataset 1.fastq" io="local_file" format="fastq" dir="temp"/>
+    <check-num-objects doc="doc" value="2"/>
+    <find-object-by-name index="obj1" doc="doc" name="sequence1" type="OT_SEQUENCE"/>
+    <find-object-by-name index="obj2" doc="doc" name="sequence2" type="OT_SEQUENCE"/>
+    <check-sequence-part obj="obj1" value="AAAAAAAAAAAAAAAAAAAA" seqstart="0"/>
+    <check-sequence-part obj="obj2" value="CCCCCCCCCCCCCCCCCCCC" seqstart="0"/>
+</multi-test>

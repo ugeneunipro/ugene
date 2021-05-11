@@ -1,0 +1,7 @@
+<multi-test>
+
+    <run-cmdline task="!common_data_dir!regression/2143/estimation.uwl"
+                 seq_in="!common_data_dir!regression/2143/human_T1.fa"
+                 seq_out="!tmp_data_dir!regression_2143.fa"
+    />
+</multi-test>

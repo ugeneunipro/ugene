@@ -505,8 +505,7 @@ bool ClassificationFilterTask::write(DNASequence *seq, QString fileName, const S
         return false;
     }
     if (format->getFormatId() == BaseDocumentFormats::FASTA) {
-        FastaFormat *fasta = qobject_cast<FastaFormat *>(format);
-        fasta->storeSequence(*seq, io, stateInfo);
+        FastaFormat::storeSequence(*seq, io, stateInfo);
         //if (stateInfo.hasError())
     } else if (format->getFormatId() == BaseDocumentFormats::FASTQ) {
         QString err = tr("Failed writing sequence to ‘%1’.").arg(io->getURL().getURLString());

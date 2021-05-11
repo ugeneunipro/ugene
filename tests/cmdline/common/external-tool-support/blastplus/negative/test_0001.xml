@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline task="local-blast+"
+                 in="!common_data_dir!cmdline/external-tool-support/blastplus/query_begin.fa"
+                 out="!tmp_data_dir!blast+-searchn0001_tmp_begin.gb"
+                 dbpath="!common_data_dir!cmdline/external-tool-support/blastplus/"
+                 dbname=""
+                 p="blastn"
+                 message="parameter is not set"
+    />
+</multi-test>

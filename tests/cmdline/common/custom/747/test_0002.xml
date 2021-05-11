@@ -1,0 +1,13 @@
+<multi-test>
+
+    <run-cmdline task="!common_data_dir!cmdline/custom/747/747.uwl"
+                 in="!common_data_dir!cmdline/custom/747/murine.gb"
+                 out="!tmp_data_dir!747_out_2.gff"
+                 format="gff"/>
+
+    <load-document index="doc" url="747_out_2.gff" io="local_file" format="gff" dir="temp"/>
+    <find-object-by-name index="obj" doc="doc" name="NC_001363 features" type="OT_ANNOTATIONS"/>
+    <find-annotation-by-name index="ann" obj="obj" name="misc_feature" number="1"/>
+    <check-annotation-location annotation="ann" location="5245..5833" complement="0"/>
+
+</multi-test>

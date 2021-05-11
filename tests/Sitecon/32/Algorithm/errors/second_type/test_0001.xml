@@ -1,0 +1,7 @@
+<multi-test>
+
+    <load-document index="doc" url="Sitecon/Algorithm/e2f.aln" io="local_file" format="clustal"/>
+
+    <sitecon-calculateSecondTypeError doc="doc" offset="69" expected_results="44,52,62,75,92,117,153,210,268,333,454,649,1052,1492,1922,2940,4346,5880,7139,9087,19990"/>
+
+</multi-test>

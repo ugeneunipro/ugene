@@ -1,0 +1,28 @@
+<multi-test>
+
+    <!-- Load sequence object, check its alphabet, size, a part of sequence -->
+
+    <load-document index="doc" url="pdb/1CF7.pdb" io="local_file" format="pdb"/>
+
+    <find-object-by-name index="obj1" doc="doc" name="1CF7 chain B sequence" type="OT_SEQUENCE"/>
+    <check-sequence-alphabet-by-id obj="obj1" value="AMINO_DEFAULT_ALPHABET"/>
+    <check-sequence-size obj="obj1" value="82"/>
+    <check-sequence-part obj="obj1" value="GKGLRHFSMKVCEKVQRKGTTSYNEVADELVSEFTNSNNHLAADSAYDQKNIRRRVYDALNVLMAMNIISKEKKEIKWIGLP" seqstart="0"/>
+
+    <find-object-by-name index="obj2" doc="doc" name="1CF7 chain A sequence" type="OT_SEQUENCE"/>
+    <check-sequence-alphabet-by-id obj="obj2" value="AMINO_DEFAULT_ALPHABET"/>
+    <check-sequence-size obj="obj2" value="67"/>
+    <check-sequence-part obj="obj2" value="SRHEKSLGLLTTKFVSLLQEAKDGVLDLKLAADTLAVRQKRRIYDITNVLEGIGLIEKKSKNSIQWK" seqstart="0"/>
+
+    <find-object-by-name index="obj3" doc="doc" name="1CF7 chain C sequence" type="OT_SEQUENCE"/>
+    <check-sequence-alphabet-by-id obj="obj3" value="NUCL_DNA_DEFAULT_ALPHABET"/>
+    <check-sequence-size obj="obj3" value="15"/>
+    <check-sequence-part obj="obj3" value="TTTTCGCGCGGTTTT" seqstart="0"/>
+
+    <find-object-by-name index="obj4" doc="doc" name="1CF7 chain D sequence" type="OT_SEQUENCE"/>
+    <check-sequence-alphabet-by-id obj="obj4" value="NUCL_DNA_DEFAULT_ALPHABET"/>
+    <check-sequence-size obj="obj4" value="15"/>
+    <check-sequence-part obj="obj4" value="AAAACCGCGCGAAAA" seqstart="0"/>
+
+
+</multi-test>

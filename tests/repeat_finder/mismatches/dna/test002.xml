@@ -1,0 +1,9 @@
+<multi-test>
+
+    <load-document index="s1d" url="fasta/repeat_finder/1.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="s1" doc="s1d" name="1" type="OT_SEQUENCE"/>
+
+    <!--  <find-repeats seq="s1" w="3" c="1" mind="0" reflect="false" expected_result="repeat_finder/res_dna_mismatch_2.txt" />
+      -->
+</multi-test>

@@ -1,0 +1,17 @@
+<multi-test>
+    <!-- Run dna assembly task and check results -->
+
+    <load-document index="doc" url="dna_assembly/test005/shigella_sonnei_result_05.sam" io="local_file" format="sam"/>
+
+    <find-object-by-name index="expected" doc="doc" name="gi|145294040|ref|NC_009347.1|_Shigella_sonnei_Ss046_plasmid_pSS046_spC,_complete_sequence_and_others" type="OT_MSA"/>
+
+    <test-dna-assembly-to-ref
+            res-index="expected"
+            assembly-method="UGENE Genome Aligner"
+            ref-seq="fasta/Shigella_sonnei_pSS046.fa"
+            shortreads="dna_assembly/test004/shigella_sonnei_reads.fna"
+            custom-options="if_absolute_mismatches_value=1,mismatches_allowed=3"
+    />
+
+
+</multi-test>

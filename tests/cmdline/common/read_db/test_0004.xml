@@ -1,0 +1,11 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_db.uws"
+            db="pdb"
+            id="3INS"
+            save="!tmp_data_dir!"/>
+
+    <load-document index="doc1" url="3INS.pdb" io="local_file" format="pdb" dir="temp"/>
+    <check-document-object-types doc="doc1" value="OT_SEQUENCE,OT_ANNOTATIONS,OT_SEQUENCE,OT_ANNOTATIONS,OT_SEQUENCE,OT_ANNOTATIONS,OT_SEQUENCE,OT_ANNOTATIONS,OT_BIOSTRUCT3D"/>
+
+</multi-test>

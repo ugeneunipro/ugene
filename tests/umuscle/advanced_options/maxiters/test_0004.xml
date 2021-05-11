@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- uMuscle test: preset -large alignment -->
+    <load-document index="doc1" url="clustal/protein.fasta.aln" io="local_file" format="clustal"/>
+    <load-document index="doc2" url="clustal/protein.fasta.muscle -maxiters 5.aln" io="local_file" format="clustal"/>
+    <umuscle in="doc1" maxiters="5"/>
+    <compare-malignment doc1="doc1" doc2="doc2"/>
+
+
+</multi-test>

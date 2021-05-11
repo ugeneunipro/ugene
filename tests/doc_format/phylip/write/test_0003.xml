@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- Test save option, check sequences alphabet save correct, phylip-interleaved to phylip-interleaved-->
+
+    <load-document index="doc" url="phylip/int_protein.phy.dat" io="local_file" format="phylip-interleaved"/>
+    <save-document doc="doc" url="_temp0003.phy" io="local_file" format="phylip-interleaved"/>
+    <load-document index="doc2" url="_temp0003.phy" io="local_file" format="phylip-interleaved" dir="temp"/>
+    <compare-Msequences-alphabets-in-two-objects doc="doc" value="doc2"/>
+
+</multi-test>

@@ -1,0 +1,16 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_seq_write_gen.uws"
+            in="!common_data_dir!genbank/HQ007052.gb;genbank/CVU55762.gb"
+            out="!tmp_data_dir!test_1355.gb"
+            accum="false"
+    />
+
+    <load-document index="doc1" url="test_1355.gb" io="local_file" format="text" dir="temp"/>
+    <find-object-by-name index="obj1" doc="doc1" name="test_1355" type="OT_TEXT"/>
+    <check-string-exists obj="obj1" must_exist="true" string="AUTHORS   Koksharov,M.I. and Ugarova,N.N."/>
+
+    <load-document index="doc2" url="test_1355_1.gb" io="local_file" format="text" dir="temp"/>
+    <find-object-by-name index="obj2" doc="doc2" name="test_1355_1" type="OT_TEXT"/>
+    <check-string-exists obj="obj2" must_exist="true" string="AUTHORS   Cormack,B.P., Valdivia,R.H. and Falkow,S."/>
+</multi-test>

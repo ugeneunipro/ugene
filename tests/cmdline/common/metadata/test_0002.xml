@@ -1,0 +1,20 @@
+<!-- Metadata transition: Amino Translation -->
+<multi-test>
+    <remove-temp-dir url="metadata_0002"/>
+    <create-temp-dir url="metadata_0002"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/metadata/amino.uwl"
+            in="!common_data_dir!fasta/DNA_1_seq.fa;fasta/human_T1_cutted.fa"
+            accum="false"
+            suffix="_amino"
+            working-dir="metadata_0002"
+    />
+
+    <check-temp-file url="metadata_0002/DNA_1_seq_amino.fa" exists="1"/>
+    <check-temp-file url="metadata_0002/DNA_1_seq_amino_1.fa" exists="1"/>
+    <check-temp-file url="metadata_0002/DNA_1_seq_amino_2.fa" exists="1"/>
+    <check-temp-file url="metadata_0002/human_T1_cutted_amino.fa" exists="1"/>
+    <check-temp-file url="metadata_0002/human_T1_cutted_amino_1.fa" exists="1"/>
+    <check-temp-file url="metadata_0002/human_T1_cutted_amino_2.fa" exists="1"/>
+</multi-test>

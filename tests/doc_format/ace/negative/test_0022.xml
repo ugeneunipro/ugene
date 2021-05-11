@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Test reading file: a name is duplicated -->
+
+    <load-broken-document url="ace/ace_test_71_(error).ace" io="local_file" format="ace"/>
+
+</multi-test>

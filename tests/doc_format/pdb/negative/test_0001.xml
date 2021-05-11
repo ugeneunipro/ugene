@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- try to load broken data from document(no pdbID)-->
+
+    <load-broken-document url="pdb/broken/bad0001.pdb" io="local_file" format="pdb"/>
+
+</multi-test>

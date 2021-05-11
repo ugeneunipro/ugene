@@ -1,0 +1,15 @@
+<multi-test>
+    <run-cmdline task="hmm2-search"
+                 in-hmm="!common_data_dir!cmdline/hmm2-build/01.hmm"
+                 in-seq="!common_data_dir!cmdline/hmm2-search/human_T1.fa"
+                 out="!tmp_data_dir!hmm2-search0001_tmp.gbk"
+                 e-val="2"
+                 score="0"/>
+
+    <load-document index="doc1" url="hmm2-search0001_tmp.gbk" io="local_file" format="genbank" dir="temp"/>
+    <load-document index="doc2" url="cmdline/hmm2-search/01.gb" io="local_file" format="genbank"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

@@ -1,0 +1,15 @@
+<multi-test>
+
+    <run-cmdline task="!common_data_dir!regression/799/test_0001.uwl"
+                 in="!common_data_dir!genbank/quotes_whites_tests.gb"
+                 out="!tmp_data_dir!regression_799_0001.gb"
+    />
+
+    <load-document index="doc" url="regression_799_0001.gb" io="local_file" format="GenBank" dir="temp"/>
+
+    <check-num-objects doc="doc" value="2"/>
+    <find-object-by-name index="obj" doc="doc" name="NC_012472 features" type="OT_ANNOTATIONS"/>
+    <find-annotation-by-name index="ann" obj="obj" name="gene"/>
+    <check-annotation-qualifier annotation="ann" qualifier="pseudo" value=""/>
+
+</multi-test>

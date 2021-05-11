@@ -1,0 +1,4 @@
+<suite test-timeout="300" name="CMDLine ugene precommit tests of read-write sequence workflow workers">
+
+    <test-dir test-ext="*.xml" path="cmdline/common/read_sequence" test-format="XML"/>
+</suite>

@@ -1,0 +1,9 @@
+<multi-test>
+    <!-- UGENE-3467: crash on read sequences with empty names -->
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_seq_write_fa.uws"
+            in="!common_data_dir!pdb/broken/empty_name.pdb"
+            out="!tmp_data_dir!UGENE-3467_pdb.fa"/>
+
+</multi-test>
