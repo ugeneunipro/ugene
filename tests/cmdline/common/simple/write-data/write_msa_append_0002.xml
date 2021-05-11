@@ -1,0 +1,19 @@
+<multi-test>
+
+    <create-temp-file url="write-msa-append-0002.aln" data="test\ntest\ntest"/>
+    <create-temp-file url="write-msa-append-0002_1.aln" data="test\ntest\ntest"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/write/msa-msa.uwl"
+            in="!common_data_dir!cmdline/read-write/write/msa1.aln;cmdline/read-write/write/msa2.aln"
+            out="!tmp_data_dir!write-msa-append-0002.aln"
+            action="2"
+    />
+
+    <load-broken-document index="doc" url="write-msa-append-0002.aln" io="local_file" format="clustal" dir="temp"/>
+    <load-broken-document index="doc1" url="write-msa-append-0002_1.aln" io="local_file" format="clustal" dir="temp"/>
+
+    <check-temp-file url="write-msa-append-0002_oldcopy1.aln" exists="0"/>
+    <check-temp-file url="write-msa-append-0002_1_oldcopy1.aln" exists="0"/>
+
+</multi-test>

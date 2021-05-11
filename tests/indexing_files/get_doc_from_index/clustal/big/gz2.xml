@@ -1,0 +1,16 @@
+<multi-test>
+
+    <!-- try to get specified document from gzipped index file created on big gzipped file and check msa with original -->
+
+    <generate-file input="indexing_files/clustal/gzip_file.aln.gz" amount="3000"
+                   outCtxName="tmpOut" gzipOut="yes"/>
+    <create-file-index tmpInput="yes" input="tmpOut" output="bclu_gz_file2.uind.gz" delete="yes"/>
+    <load-document index="indDoc" dir="temp" url="bclu_gz_file2.uind.gz" io="local_file_gzip"
+                   format="index"/>
+    <get-doc-from-index indDocName="indDoc" docNum="6333" docCtxName="outDoc"/>
+
+    <load-document index="trueDoc" url="indexing_files/clustal/local_file_item3.aln"
+                   io="local_file" format="clustal"/>
+    <compare-Msequences-in-two-objects doc="outDoc" value="trueDoc"/>
+
+</multi-test>

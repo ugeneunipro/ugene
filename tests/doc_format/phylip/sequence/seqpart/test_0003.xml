@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- try to find seqpart in multy sequence -->
+
+    <load-document index="doc" url="phylip/int_stan.phy" io="local_file" format="phylip-interleaved"/>
+    <find-object-by-name index="obj" doc="doc" name="int_stan" type="OT_MSA"/>
+
+    <check-Msequence-part obj="obj" value="CGTTGTTAATGTTCGT" seqstart="20" seqname="B. virgini"/>
+
+</multi-test>

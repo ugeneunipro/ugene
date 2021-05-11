@@ -1,0 +1,9 @@
+<multi-test>
+    <run-cmdline task="sitecon-build"
+                 in="!common_data_dir!/Sitecon/Algorithm/test.aln"
+                 out="!tmp_data_dir!test3_actual.sitecon"
+                 clength="100000"
+                 walg="0"
+                 rseed="10"
+                 message="Alignment contains gaps "/>
+</multi-test>

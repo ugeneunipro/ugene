@@ -124,7 +124,7 @@ int IOAdapterReader::read(U2OpStatus &os, QString &result, int maxLength, const 
     result.clear();
     textForUndo.clear();
     bool isReadingTerminatorSequence = false;
-    while (!stream.atEnd() && result.length() != maxLength) {
+    while (!atEnd() && result.length() != maxLength) {
         QChar unicodeChar = readChar(os);
         CHECK_OP(os, 0);
         uchar latin1Char = unicodeChar.toLatin1();

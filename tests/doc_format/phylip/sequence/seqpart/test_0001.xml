@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- try to find seqpart in first sequense in multy sequence -->
+
+    <load-document index="doc" url="phylip/int_amino.phy" io="local_file" format="phylip-interleaved"/>
+    <find-object-by-name index="obj" doc="doc" name="int_amino" type="OT_MSA"/>
+
+    <check-Msequence-part obj="obj" value="LFVLAVFTVF" seqstart="10" seqname="CYS1_DICDI"/>
+
+</multi-test>

@@ -1,0 +1,19 @@
+<multi-test>
+    <dna name="dna_complement_1_small_026"
+         pattern="TTGGGCCAAGCCCTGGTGACGAGTG"
+         seq="ATGCATATCTCTTGCCACCGATGATAGTCCCGCTGCCAGACTG"
+         strand="complement"
+         start_pos="0"
+         seq_len="43"
+         score="34"
+         threshold="10"
+         aphabet="ACGT"
+         gap_open="-12"
+         gap_extd="-4"
+         subst_matrix="5 -4 -4 -4
+				              -4  5 -4 -4
+				              -4 -4  5 -4
+				              -4 -4 -4  5"
+
+    />
+</multi-test>

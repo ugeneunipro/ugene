@@ -36,9 +36,12 @@
 #include <QRadioButton>
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
+#include "GTUtilsDocument.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
+
+#include "GTUtilsOptionPanelMSA.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
@@ -347,7 +350,7 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
     GTFileDialog::openFile(os, sandBoxDir + "/" + fileName);
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-    
+
     for (int i = 0; i < 8; i++) {
         GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
         GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, new ExportSequencesScenario()));
@@ -360,6 +363,33 @@ GUI_TEST_CLASS_DEFINITION(test_7183) {
     //5. Push Export button in the dialog.
     //6. Repeat steps 2-5 8 times
     //Expected state: UGENE is not crash
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7212) {
+    // Open _common_data/clustal/shortened_big.aln.
+    // Click the Pairwise Alignment tab of the Options Panel.
+    // Select two sequence from the original alignment and click on the Align button.
+    // Until the task completes, click the Pairwise Alignment tab again.
+    // Wait for task finish. A new document "PairwiseAlignmentResult.aln" has been added to the project.
+    //
+    // Remove PairwiseAlignmentResult.aln from project.
+    // Return to shortened_big.aln and click the Pairwise Alignment tab of the Options Panel.
+    // Click Align.
+    //     Expected state: no crash.
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/shortened_big.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
+    GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "seq1");
+    GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "seq2");
+    GTWidget::click(os, GTUtilsOptionPanelMsa::getAlignButton(os));
+    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsDocument::removeDocument(os, "PairwiseAlignmentResult.aln");
+    GTUtilsProjectTreeView::doubleClickItem(os, "shortened_big.aln");
+    GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
+    GTWidget::click(os, GTUtilsOptionPanelMsa::getAlignButton(os));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
 }    // namespace GUITest_regression_scenarios

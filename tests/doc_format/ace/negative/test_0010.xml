@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Test reading file: no RD tag cause unexpected end of file -->
+
+    <import-broken-document url="ace/ace_test_101_(error).ace" io="local_file" format="ace"/>
+
+</multi-test>

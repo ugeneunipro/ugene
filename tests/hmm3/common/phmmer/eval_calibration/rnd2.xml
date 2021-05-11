@@ -1,0 +1,9 @@
+<multi-test>
+    <!-- query: rnd_query db: rnd_db
+	./phmmer -EvL 150 -EvN 190 -EfL 109 -EfN 250 -Eft 0.5 rnd_query2.fa rnd_db.fa >  rnd_query2_rnd_db_eval_calibration.out -->
+
+    <hmm3-phmmer query="hmmer3/phmmer/rnd_query2.fa" db="hmmer3/phmmer/rnd_db.fa"
+                 EvL="150" EvN="190" EfL="109" EfN="250" Eft="0.5" outputDir="common/phmmer/eval_calibration/rnd2/"/>
+    <hmm3-phmmer-compare trueOut="hmmer3/phmmer/rnd_query2_rnd_db_eval_calibration.out" actualOut="common/phmmer/eval_calibration/rnd2/output.txt"/>
+
+</multi-test>

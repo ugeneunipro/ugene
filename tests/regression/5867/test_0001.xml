@@ -1,0 +1,22 @@
+<!-- UGENE-5867: after 1.27.0 release user's workflow became broken.
+A new workflow has been created to do the same work. 
+This test checks it on the user data. -->
+
+<multi-test>
+    <run-cmdline task="!common_data_dir!regression/5867/Sanger Sequencing Analysis_analogue.uwl"
+                 reads="!common_data_dir!sanger/dataset4/scf/pFB7-CDK5RAP2_P1713799_009.scf;!common_data_dir!sanger/dataset4/scf/pFB7-CDK5RAP2_P1713799_010.scf;!common_data_dir!sanger/dataset4/scf/pFB7-CDK5RAP2_P1713799_025.scf;!common_data_dir!sanger/dataset4/scf/pFB7-CDK5RAP2_P1713799_026.scf;!common_data_dir!sanger/dataset4/scf/pFB7-CDK5RAP2_P1713799_041.scf;!common_data_dir!sanger/dataset4/scf/pFB7-CDK5RAP2_P1713799_043.scf;!common_data_dir!sanger/dataset4/scf/pFB7-CDK5RAP2_P1713799_044.scf;!common_data_dir!sanger/dataset4/scf/pFB7-CDK5RAP2_P1713799_059.scf;!common_data_dir!sanger/dataset4/scf/pFB7-CDK5RAP2_P1713799_060.scf;!common_data_dir!sanger/dataset4/scf/pFB7-CDK5RAP2_P1713799_075.scf;!common_data_dir!sanger/dataset4/scf/pFB7-CDK5RAP2_P1713799_076.scf;!common_data_dir!sanger/dataset4/scf/pFB7-CDK5RAP2_P1713799_091.scf;!common_data_dir!sanger/dataset4/scf/pFB7-CDK5RAP2_P1713799_092.scf"
+                 reference-new="!common_data_dir!sanger/dataset4/reference.gb"
+                 reference-old="!common_data_dir!sanger/dataset3/reference.gb"
+                 result-url-new="!tmp_data_dir!regression_5867_new.ugenedb"
+                 result-url-old="!tmp_data_dir!regression_5867_old.ugenedb"
+    />
+
+    <load-document index="doc1_new" url="regression_5867_new.ugenedb" io="local_file" format="usqlite" dir="temp"/>
+    <load-document index="doc2_new" url="regression/5867/new.ugenedb" io="local_file" format="usqlite"/>
+    <compare-two-mca doc1="doc1_new" doc2="doc2_new"/>
+
+    <load-document index="doc1_old" url="regression_5867_old.ugenedb" io="local_file" format="usqlite" dir="temp"/>
+    <load-document index="doc2_old" url="regression/5867/old.ugenedb" io="local_file" format="usqlite"/>
+    <compare-two-mca doc1="doc1_old" doc2="doc2_old"/>
+
+</multi-test>

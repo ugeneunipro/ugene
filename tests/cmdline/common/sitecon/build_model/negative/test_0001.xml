@@ -1,0 +1,10 @@
+<!--sheme fails on validation. error not written in log-->
+<multi-test>
+    <run-cmdline task="sitecon-build"
+                 in=""
+                 out="!tmp_data_dir!test_actual.sitecon"
+                 clength="100000"
+                 walg="0"
+                 message="Required parameter has no datasets specified: Input file(s)"
+    />
+</multi-test>

@@ -113,10 +113,13 @@ qint64 LocalFileAdapter::readBlock(char *data, qint64 size) {
     SAFE_POINT(isOpen(), "Adapter is not opened!", -1);
     qint64 l = 0;
     if (bufferOptimization) {
-        qint64 copySize = 0;
         while (l < size) {
             if (currentPos == bufLen) {
                 bufLen = f->read(bufData, BUF_SIZE);
+                if (bufLen == 0) {    // End of file.
+                    currentPos = 0;
+                    break;
+                }
                 if (formatMode == TextMode) {
                     bufLen = TextUtils::cutByteOrderMarks(bufData, errorMessage, bufLen);
                 }
@@ -126,7 +129,7 @@ qint64 LocalFileAdapter::readBlock(char *data, qint64 size) {
                 }
                 currentPos = 0;
             }
-            copySize = qMin(bufLen - currentPos, size - l);
+            qint64 copySize = qMin(bufLen - currentPos, size - l);
             if (0 == copySize || hasError()) {
                 break;
             }

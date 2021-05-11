@@ -1,0 +1,6 @@
+<multi-test>
+
+    <!-- Incorrect frame column -->
+    <load-broken-document index="doc" url="gff/negative/wrong_frame.gff" io="local_file" format="gff" sequence-mode="sequence" message="Parsing error: incorrect frame parameter at line 3. Frame can be a number between 0-2 or '.' symbol"/>
+
+</multi-test>

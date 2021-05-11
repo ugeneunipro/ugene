@@ -1,0 +1,9 @@
+<multi-test>
+    <!-- 14-3-3.hmm, 14-3-3_epsilon2.fa amino alphabet 
+	./hmmsearch 14-3-3.hmm 14-3-3_epsilon2.fa > g_14-3-3_hmm_epsilon2_fa.out -->
+
+    <load-document index="seq" url="hmmer3/search/14-3-3_epsilon2.fa" io="local_file" format="fasta"/>
+    <hmm3-search hmm="hmmer3/build/14-3-3.hmm" seqDoc="seq" outputDir="common/hmmsearch/general_search/default_options/amino_al/14-3-3_epsilon2/"/>
+    <hmm3-search-compare trueOut="hmmer3/search/g_14-3-3_hmm_epsilon2_fa.out" actualOut="common/hmmsearch/general_search/default_options/amino_al/14-3-3_epsilon2/output.txt"/>
+
+</multi-test>

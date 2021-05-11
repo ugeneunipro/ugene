@@ -1,0 +1,14 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_ali_write_sto.uws"
+            in="!common_data_dir!mega/MegaTest_1.meg"
+            out="!tmp_data_dir!fca_0009.sto"
+            task-remote-machine="!config_file_path!"
+    />
+
+    <load-document index="doc1" url="fca_0009.sto" io="local_file" format="stockholm" dir="temp"/>
+    <load-document index="doc2" url="mega/MegaTest_1.meg" io="local_file" format="mega"/>
+    <compare-Msequences-in-two-objects doc="doc1" value="doc2"/>
+
+
+</multi-test>

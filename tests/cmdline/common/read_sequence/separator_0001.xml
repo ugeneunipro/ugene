@@ -1,0 +1,15 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/test_separator.uwl"
+            in="!common_data_dir!fastq/eas.fastq,!common_data_dir!fastq/eas.fastq"
+            out_dir="!tmp_data_dir!"
+            out_name="separator_test.fastq"
+    />
+    <load-document index="doc1" url="fastq/eas.fastq" io="local_file" format="fastq"/>
+    <load-document index="doc2" url="separator_test.fastq" io="local_file" format="fastq" dir="temp"/>
+    <compare-sequences-in-two-objects doc="doc1" value="doc2"/>
+
+    <load-document index="doc3" url="separator_test_1.fastq" io="local_file" format="fastq" dir="temp"/>
+    <compare-sequences-in-two-objects doc="doc1" value="doc3"/>
+
+</multi-test>

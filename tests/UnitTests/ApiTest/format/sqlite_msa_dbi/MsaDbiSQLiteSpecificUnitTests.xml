@@ -1,0 +1,50 @@
+<unittest>
+
+    MsaDbiSQLiteSpecificUnitTests
+    + updateMsaName_noModTrack
+    + updateMsaName_undo
+    + updateMsaName_redo
+    + updateMsaName_severalSteps
+    + updateMsaAlphabet_noModTrack
+    + updateMsaAlphabet_undo
+    + updateMsaAlphabet_redo
+    + updateMsaAlphabet_severalSteps
+    + updateGapModel_noModTrack
+    + updateGapModel_undo
+    + updateGapModel_redo
+    + updateGapModel_severalSteps
+    + updateRowContent_noModTrack
+    + updateRowContent_undo
+    + updateRowContent_redo
+    + updateRowContent_severalSteps
+    + addRow_append_noModTrack
+    + addRow_append_undo
+    + addRow_append_redo
+    + addRow_zeroPos_undo
+    + addRow_zeroPos_redo
+    + addRow_middlePos_undo
+    + addRow_middlePos_redo
+    + addRow_lastRowPos_undo
+    + addRow_lastRowPos_redo
+    + addRow_child_noModTrack
+    + addRow_child_Track
+    + addRow_several_Steps
+    + setNewRowsOrder_noModTrack
+    + setNewRowsOrder_undo
+    + setNewRowsOrder_redo
+    + setNewRowsOrder_severalSteps
+    + updateRowName_noModTrack
+    + updateRowName_undo
+    + updateRowName_redo
+    + updateRowName_severalSteps
+    + removeRow_noModTrack
+    + removeRow_undo
+    + removeRow_redo
+    + removeRows_noModTrack
+    + removeRows_undo
+    + removeRows_redo
+    + addRows_noModTrack
+    + addRows_undo
+    + addRows_redo
+
+</unittest>

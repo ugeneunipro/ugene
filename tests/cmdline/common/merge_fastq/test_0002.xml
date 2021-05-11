@@ -1,0 +1,11 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/merge_fastq/merge.uwl"
+            in="!common_data_dir!cmdline/merge_fastq/in01.fastq;!common_data_dir!cmdline/merge_fastq/in02.fastq"
+            out_dir="!tmp_data_dir!"
+            out_name="merge_fastq_test_0002.fastq"
+    />
+    <load-document index="doc1" url="cmdline/merge_fastq/out0102.fastq" io="local_file" format="fastq"/>
+    <load-document index="doc2" url="merge_fastq_test_0002.fastq" io="local_file" format="fastq" dir="temp"/>
+    <compare-sequences-in-two-objects doc="doc1" value="doc2"/>
+</multi-test>

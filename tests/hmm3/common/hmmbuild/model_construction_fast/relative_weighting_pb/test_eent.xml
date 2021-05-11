@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: options: wpb fast eent, model: Asp, has SS_cons, RF annotations 
+	cmd: ./hmmbuild -seed 512 -fast -wpb -eent -ere 1.91 Asp_wpb_fast_eent.hmm Asp.sto -->
+
+    <uhmmer3-build inputFile="stockholm/Asp.sto" outputFile="test_Asp_wpb_fast_eent.hmm"
+                   seed="512" mc="fast" rw="wpb" ew="eent 1.91" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/Asp_wpb_fast_eent.hmm" file2="test_Asp_wpb_fast_eent.hmm"
+                        tmp1="no" tmp2="yes"/>
+
+</multi-test>

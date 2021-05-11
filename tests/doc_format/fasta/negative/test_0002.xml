@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Test reading file: whites are allowed at the begining of the file-->
+
+    <load-broken-document index="doc" url="fasta/broken/fa3.broken.fa" io="local_file" format="fasta"/>
+
+</multi-test>

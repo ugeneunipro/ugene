@@ -77,7 +77,6 @@ void test1(HI::GUITestOpStatus &os, QString s = "") {
         GTMouseDriver::moveTo(p);
 
         GTMouseDriver::release();
-        GTGlobals::sleep(500);
 
         //4. Select the resized element and press <Del>
         if (s == "arr") {
@@ -87,7 +86,6 @@ void test1(HI::GUITestOpStatus &os, QString s = "") {
         }
         GTMouseDriver::click();
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
-        GTGlobals::sleep(500);
         //check no elements on scene
         QGraphicsView *sceneView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "sceneView"));
         QList<QGraphicsItem *> items = sceneView->items();

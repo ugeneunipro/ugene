@@ -1,0 +1,14 @@
+<multi-test lockForLogListening="true">
+
+    <remove-temp-dir url="pcr_0008"/>
+    <create-temp-dir url="pcr_0008"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/pcr/pcr.uwl"
+            in="!sample_data_dir!FASTA/human_T1.fa"
+            primers="!common_data_dir!cmdline/pcr/long_primers.fa"
+            working-dir="pcr_0008"
+            message="Primers specified in &quot;long_primers.fa&quot; are too long."
+    />
+
+</multi-test>

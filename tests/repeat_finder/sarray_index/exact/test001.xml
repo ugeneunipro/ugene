@@ -1,0 +1,12 @@
+<multi-test>
+    <!-- Finds all query patterns in sequence and checks results -->
+
+    <load-document index="s1d" url="fasta/seq1.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="s1" doc="s1d" name="SEQUENCE_WITH_A_ENTRY" type="OT_SEQUENCE"/>
+
+    <sarray-based-find sequence="s1"
+                       query="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+                       expected_result="3,4,5,6"/>
+
+</multi-test>

@@ -1,0 +1,16 @@
+<multi-test>
+
+    <load-document index="doc" url="FindAlgorithm/test_06.gb" io="local_file" format="genbank"/>
+
+    <find-algorithm document="doc"
+                    sequence="seq1"
+                    strand="direct"
+                    pattern="WHSNV"
+                    source="translation"
+                    range="55..76"
+                    max_error="0"
+                    algorithm="exact"
+                    ambig=""
+                    expected="circular(58..66,0..7)"
+    />
+</multi-test>

@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- try to load broken data from document (no end of seq "//" in first sequense)-->
+
+    <load-broken-document index="doc" url="genbank/broken/70Bp2.gen" io="local_file" format="genbank"/>
+
+</multi-test>

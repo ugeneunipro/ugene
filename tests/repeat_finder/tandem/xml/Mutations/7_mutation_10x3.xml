@@ -1,0 +1,14 @@
+<multi-test>
+    <!--
+    Sequence:
+    TGGTTGGGg-TGGTTGGGT-TGGTTGGGT
+
+    Tandems
+    Tandem repeat TGGTTGGGT 3x9 at pos 0
+    Mutations
+    Mutation in repeat #0 of 0th tandem at pos 8
+    We expect such results:
+    .(end of results)
+    -->
+    <find-tandems sequence="TGGTTGGGGTGGTTGGGTTGGTTGGGT" minSize="9" repeatCount="3" expected_result=""/>
+</multi-test>

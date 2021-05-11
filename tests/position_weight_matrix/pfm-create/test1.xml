@@ -1,0 +1,17 @@
+<multi-test>
+    <!-- Checking alternative start codons checked-->
+    <load-document index="doc" url="position_weight_matrix/alignment/test1.aln" io="local_file" format="clustal"/>
+
+    <check-pfm-create
+            obj="doc"
+            filetype="alignment"
+            size="5"
+            length="10"
+            pfmtype="mononucleotide"
+            expected-values="0, 2, 5, 0, 1, 0, 0, 4, 0, 0;
+                         0, 2, 0, 0, 1, 2, 0, 0, 2, 0;
+                         0, 0, 0, 5, 0, 0, 0, 0, 0, 0;
+                         5, 1, 0, 0, 3, 3, 5, 1, 3, 5"
+    />
+
+</multi-test>

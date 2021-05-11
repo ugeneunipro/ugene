@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- uHMMER Build test: P7_FS_CONFIG, extended rna alphabet  -->
+
+    <uhmmer-build infile="clustal/COI_na_rna_ext.aln" outfile="COI_na_rna_ext(FS).hmm" expert="FS" hmmname="" deltemp="yes"/>
+
+    <hmm-compare file1="hmm/nucl_rna_ext_al/COI_na_rna_ext(hmmfs).hmm" file2="COI_na_rna_ext(FS).hmm"/>
+
+</multi-test>

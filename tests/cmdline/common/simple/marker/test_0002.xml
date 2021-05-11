@@ -1,0 +1,18 @@
+<multi-test>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/marker/anns-count.uwl"
+            in="!common_data_dir!genbank/CVU55762.gb;fasta/RNA.fa"
+            anns="!tmp_data_dir!marker_0002_anns.gb"
+            no-anns="!tmp_data_dir!marker_0002_no-anns.fa"
+    />
+
+    <load-document index="actual_anns" url="marker_0002_anns.gb" io="local_file" format="genbank" dir="temp"/>
+    <load-document index="expected_anns" url="genbank/CVU55762.gb" io="local_file" format="genbank"/>
+    <compare-sequences-in-two-objects doc="actual_anns" value="expected_anns"/>
+
+    <load-document index="actual_no_anns" url="marker_0002_no-anns.fa" io="local_file" format="fasta" dir="temp"/>
+    <load-document index="expected_no_anns" url="fasta/RNA.fa" io="local_file" format="fasta"/>
+    <compare-sequences-in-two-objects doc="actual_no_anns" value="expected_no_anns"/>
+
+</multi-test>

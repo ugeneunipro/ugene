@@ -1,0 +1,21 @@
+<!-- Verify a valid FPKM Tracking Format file: several "FPKM" columns for different samples, another names of these columns (according to the spec, not to the Cufflinks output). -->
+
+<multi-test lockForLogListening="true">
+
+    <load-document index="doc" url="fpkm_tracking_format/valid/several_fpkm_samples.fpkm_tracking" io="local_file" format="fpkm-tracking" no-message="FPKM Tracking Format parsing error"/>
+
+    <find-object-by-name index="ATO" doc="doc" name="fake_genome features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="ATO" location="4..9996" complement="false"/>
+
+    <check-annotation-qualifier annotation="ann1" qualifier="q0_FPKM" value="102130"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="q0_FPKM_lo" value="99235.0"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="q0_FPKM_hi" value="105030"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="q0_status" value="OK"/>
+
+    <check-annotation-qualifier annotation="ann1" qualifier="q1_FPKM" value="102131"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="q1_FPKM_lo" value="99235.1"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="q1_FPKM_hi" value="105031"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="q1_status" value="OK"/>
+
+</multi-test>

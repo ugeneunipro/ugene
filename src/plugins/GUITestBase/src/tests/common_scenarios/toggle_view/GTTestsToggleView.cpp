@@ -1173,7 +1173,6 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "GC Content (%)"));
     GTWidget::click(os, circularViewSe1);
-    GTGlobals::sleep(500);
     CHECK_SET_ERR(GTUtilsTaskTreeView::countTasks(os, "Calculate graph points") == 0, "Calculation task was not cancelled");
 }
 

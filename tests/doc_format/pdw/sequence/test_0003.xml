@@ -1,0 +1,14 @@
+<multi-test>
+
+    <!-- in file exist 1 sequence with difrent Alphabet NUCL DNA -->
+
+    <load-document index="doc" url="pdw/test1.pdw" io="local_file" format="pdw"/>
+
+    <find-object-by-name index="obj" doc="doc" name="New DNA" type="OT_SEQUENCE"/>
+
+    <check-sequence-alphabet-by-id obj="obj" value="NUCL_DNA_DEFAULT_ALPHABET"/>
+
+    <check-sequence-part obj="obj" value="AAAAAAAAAACCCCCAAAAATTTTTCCCCCGGGGGCCCCCAAAAAAAAACTTTT" seqstart="0"/>
+
+
+</multi-test>

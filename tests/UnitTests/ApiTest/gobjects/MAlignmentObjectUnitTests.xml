@@ -1,0 +1,10 @@
+<unittest>
+
+    MAlignmentObjectUnitTests
+    + getMAlignment
+    + setMAlignment
+    + deleteGap_regionWithNonGapSymbols
+    + deleteGap_trailingGaps
+    + deleteGap_gapRegion
+
+</unittest>

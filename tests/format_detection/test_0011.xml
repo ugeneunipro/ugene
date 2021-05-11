@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test msf -->
+
+    <fd-perfect-match url="msf/lipid8.msf" format="msf"/>
+
+</multi-test>

@@ -1,0 +1,9 @@
+<multi-test>
+    <run-cmdline task="hmm2-build"
+                 in="!common_data_dir!cmdline/align/1-cysPrx_C_aligned.sto"
+                 out="!tmp_data_dir!hmm2-buildn0003_tmp.hmm"
+                 seed="-6"
+                 calibrate="true"
+                 message="Incorrect value"/>
+
+</multi-test>

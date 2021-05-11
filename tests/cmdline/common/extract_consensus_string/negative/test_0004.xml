@@ -1,0 +1,9 @@
+<multi-test>
+    <run-cmdline task="extract_consensus_string"
+                 in="!common_data_dir!clustal/COI na.aln"
+                 out="!tmp_data_dir!extract_consensus_string_negative_test_0004.txt"
+                 algorithm=""
+                 threshold="100"
+                 message="Extract Consensus from Alignment as String: Required parameter is not set: Algorithm"
+    />
+</multi-test>

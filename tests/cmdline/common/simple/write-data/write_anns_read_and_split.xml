@@ -1,0 +1,16 @@
+<multi-test>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/write/ann-ann.uwl"
+            in="!common_data_dir!cmdline/read-write/write/ann3.gb;"
+            out="!tmp_data_dir!write_anns_split.gb"
+            mode="0"
+    />
+
+    <load-document index="doc1" url="cmdline/read-write/write/ann3.gb" io="local_file" format="genbank"/>
+    <load-document index="doc2" url="write_anns_split.gb" io="local_file" format="genbank" dir="temp"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <check-num-objects doc="doc2" value="2"/>
+
+</multi-test>

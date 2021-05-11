@@ -1,0 +1,18 @@
+<multi-test>
+    <!--
+    Sequence:
+    TCtT-TCTT-TCTT
+    TCAC-TCAC-TCAC
+
+    Tandems
+    Tandem repeat TCTT 3x4 at pos 0
+    Tandem repeat TCAC 3x4 at pos 11
+    Mutations
+    Mutation in repeat #0 of 0th tandem at pos 2
+    We expect such results:
+    0,14,4
+    12,12,4
+    .(end of results)
+    -->
+    <find-tandems sequence="TCTTTCTTTCTTTCACTCACTCAC" minSize="4" repeatCount="3" expected_result="0,14,4;12,12,4;"/>
+</multi-test>

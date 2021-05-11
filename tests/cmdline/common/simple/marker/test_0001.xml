@@ -1,0 +1,18 @@
+<multi-test>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/marker/length.uwl"
+            in="!common_data_dir!fasta/AMINO.fa;fasta/RNA.fa"
+            short="!tmp_data_dir!marker_0001_short.fa"
+            long="!tmp_data_dir!marker_0001_long.fa"
+    />
+
+    <load-document index="actual_short" url="marker_0001_short.fa" io="local_file" format="fasta" dir="temp"/>
+    <load-document index="expected_short" url="fasta/AMINO.fa" io="local_file" format="fasta"/>
+    <compare-sequences-in-two-objects doc="actual_short" value="expected_short"/>
+
+    <load-document index="actual_long" url="marker_0001_long.fa" io="local_file" format="fasta" dir="temp"/>
+    <load-document index="expected_long" url="fasta/RNA.fa" io="local_file" format="fasta"/>
+    <compare-sequences-in-two-objects doc="actual_long" value="expected_long"/>
+
+</multi-test>

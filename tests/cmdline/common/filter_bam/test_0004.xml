@@ -1,0 +1,11 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/filter_bam/filter_bam.uwl"
+            in="!common_data_dir!sam/filter_sam_in1.sam"
+            out_dir="!tmp_data_dir!"
+            out_name="bam_filter_test_0004.sam"
+            format="sam"
+            F="Read is the second in a pair"
+    />
+    <compare-sam-by-length file1="bam_filter_test_0004.sam" file2="cmdline/filter_bam/out4.sam"/>
+</multi-test>

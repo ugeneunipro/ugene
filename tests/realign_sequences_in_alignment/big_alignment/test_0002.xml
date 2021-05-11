@@ -1,0 +1,7 @@
+<multi-test>
+    <!-- Relign sequences to a high alignment-->
+    <load-document index="doc1" url="realign_sequences_in_alignment/human_adenovirus_200x255.aln" io="local_file" format="clustal"/>
+    <load-document index="doc2" url="realign_sequences_in_alignment/human_adenovirus_200x255_high_align_result.aln" io="local_file" format="clustal"/>
+    <realign in="doc1" rows="197,198,199"/>
+    <compare-malignment doc1="doc1" doc2="doc2"/>
+</multi-test>

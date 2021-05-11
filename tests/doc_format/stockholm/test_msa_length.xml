@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- try to load stokholm file with 1 msa, containing sequences  of length 64 -->
+
+    <load-document index="doc" url="stockholm/check_length.sto" io="local_file" format="stockholm"/>
+    <check-num-objects doc="doc" value="1"/>
+
+    <find-object-by-name index="obj" doc="doc" name="check_length_0" type="OT_MSA"/>
+    <check-Msequence-size obj="obj" value="64"/>
+
+</multi-test>

@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- uHMMER Search test: fragmentation test, hmmsearch chunk size 120, target sequence before seek area interface -->
+
+    <load-document index="doc" url="fasta/seq1.fa" io="local_file" format="fasta"/>
+
+    <uhmmer-search index="hmmsearch" hmmfile="hmm/A_SYM_SEQ.hmm" seqdoc="doc" expert_opt="0" chunksize="120"/>
+
+    <find-object-by-name index="obj" doc="hmmsearch" name="Annotations" type="OT_ANNOTATIONS"/>
+
+    <check-num-annotations obj="obj" value="1"/>
+
+</multi-test>

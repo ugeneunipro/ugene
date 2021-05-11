@@ -1,0 +1,13 @@
+<!-- Verify saving of a valid FPKM Tracking Format file. -->
+
+<multi-test lockForLogListening="true">
+
+    <load-document index="doc" url="fpkm_tracking_format/valid/all_values.fpkm_tracking" io="local_file" format="fpkm-tracking" no-message="FPKM Tracking Format parsing error"/>
+
+    <save-document doc="doc" url="_temp1.fpkm_tracking" io="local_file" format="fpkm-tracking"/>
+
+    <load-document index="doc2" url="_temp1.fpkm_tracking" io="local_file" format="fpkm-tracking" dir="temp" no-message="FPKM Tracking Format parsing error"/>
+
+    <compare-annotations-qualifiers-in-two-objects doc="doc" value="doc2"/>
+
+</multi-test>

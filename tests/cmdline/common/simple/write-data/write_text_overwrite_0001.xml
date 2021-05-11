@@ -1,0 +1,17 @@
+<multi-test>
+
+    <create-temp-file url="write-text-overwrite-0001.txt" data="11111"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/write/text-text.uwl"
+            in="!common_data_dir!cmdline/read-write/write/text1.txt"
+            out="!tmp_data_dir!write-text-overwrite-0001.txt"
+            lines="true"
+            action="1"
+    />
+
+    <compare-docs doc1="cmdline/read-write/write/text1.txt" doc2="write-text-overwrite-0001.txt" temp="2" by_lines="true"/>
+
+    <check-temp-file url="write-text-overwrite-0001_oldcopy1.txt" exists="0"/>
+
+</multi-test>

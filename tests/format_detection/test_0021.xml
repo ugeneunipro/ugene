@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test ugene query format (.uql) -->
+
+    <fd-perfect-match url="query/qdtest1.uql" format="QueryDocFormat"/>
+
+</multi-test>

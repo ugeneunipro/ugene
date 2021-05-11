@@ -1,0 +1,19 @@
+<multi-test>
+    <dna name="dna_complement_2_big_003"
+         pattern="TCATCCCCCACTTCCA"
+         seq="TATCCAACCAGAAGAGAGGTTTAATCCCGGTCCGACTCAACAGGTGCAAAATTTTCGGTAATTAGGGACTCAGTCCCTAATAGA"
+         strand="complement"
+         start_pos="0"
+         seq_len="84"
+         score="44"
+         threshold="2"
+         aphabet="ACGT"
+         gap_open="-1"
+         gap_extd="-1"
+         subst_matrix="5 -4 -4 -4
+				              -4  5 -4 -4
+				              -4 -4  5 -4
+				              -4 -4 -4  5"
+
+    />
+</multi-test>

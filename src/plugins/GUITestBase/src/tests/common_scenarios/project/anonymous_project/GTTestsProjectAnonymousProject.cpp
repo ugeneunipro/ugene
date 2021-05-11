@@ -48,7 +48,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     // Expected state:
     //     1) Project view with document "1CF7.PDB" is opened
-    GTGlobals::sleep(5000);
     GTUtilsDocument::checkDocument(os, "1CF7.PDB");
 
     // 2. Use menu {File->Export Project}
@@ -62,17 +61,14 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Export project...");
-    GTGlobals::sleep();
 
     // 6. Use menu {File->Close project}
     // 7. Click NO in opened messagebox
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
-    GTGlobals::sleep();
 
     // 8. Use menu {File->Open}. Open project _common_data/scenarios/sandbox/proj2.uprj
-    GTGlobals::sleep();
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/sandbox/", "proj2.uprj");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -82,7 +78,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     //     3) File path at tooltip for "1CF7.PDB" must be "_common_data/scenarios/sandbox/1CF7.PDB"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
-    GTGlobals::sleep();
     GTUtilsToolTip::checkExistingToolTip(os, "_common_data/scenarios/sandbox/1CF7.PDB");
 }
 
@@ -106,12 +101,10 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "proj2", testDir + "_common_data/scenarios/sandbox/proj2"));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Save project as...");
-    GTGlobals::sleep();
 
     // 5. Use menu {File->Close project}
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
-    GTGlobals::sleep();
 
     // Expected state: project and sequence view closed
     GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
@@ -126,7 +119,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //     3) File path at tooltip for "1CF7.PDB" must be "samples/PDB/1CF7.PDB"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.PDB"));
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(5, 5));
-    GTGlobals::sleep();
     GTUtilsToolTip::checkExistingToolTip(os, "samples/PDB/1CF7.PDB");
 }
 

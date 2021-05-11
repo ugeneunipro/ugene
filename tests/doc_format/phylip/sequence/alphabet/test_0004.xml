@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to check alphabet  in multy sequence (must be AMINO_DEFAULT_ALPHABET) -->
+
+    <load-document index="doc" url="phylip/int_amino.phy" io="local_file" format="phylip-interleaved"/>
+    <find-object-by-name index="obj" doc="doc" name="int_amino" type="OT_MSA"/>
+    <check-Msequence-alphabet-by-id obj="obj" value="AMINO_DEFAULT_ALPHABET"/>
+
+</multi-test>

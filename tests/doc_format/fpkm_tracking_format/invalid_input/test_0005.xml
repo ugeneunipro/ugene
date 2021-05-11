@@ -1,0 +1,7 @@
+<!-- Verify an invalid FPKM File Format that can't be opened: invalid locus (and, therefore, coordinates) - no hyphen between coordinates. -->
+
+<multi-test lockForLogListening="true">
+
+    <load-broken-document index="doc" url="fpkm_tracking_format/invalid/invalid_locus_no_hyphen.fpkm_tracking" io="local_file" format="fpkm-tracking"/>
+
+</multi-test>

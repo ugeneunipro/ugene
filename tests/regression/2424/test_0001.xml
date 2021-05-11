@@ -1,0 +1,8 @@
+<multi-test>
+
+    <run-cmdline task="!common_data_dir!regression/2424/schema.uwl"
+                 in="!common_data_dir!fasta/AMINO.fa"
+                 message="Quality Filter Example: Empty script text"
+    />
+
+</multi-test>

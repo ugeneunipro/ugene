@@ -1,0 +1,8 @@
+<multi-test>
+    <!-- query: rnd_query db: rnd_db popen pextend probabylities scoring matrix: BLOSUM62
+    ./phmmer -popen 0 -pextend 0 rnd_query.fa rnd_db.fa > rnd_query_rnd_db_open_extend.out -->
+
+    <hmm3-phmmer query="hmmer3/phmmer/rnd_query.fa" db="hmmer3/phmmer/rnd_db.fa" popen="0" pextend="0" outputDir="common/phmmer/scoring_system/rnd/"/>
+    <hmm3-phmmer-compare trueOut="hmmer3/phmmer/rnd_query_rnd_db_open_extend.out" actualOut="common/phmmer/scoring_system/rnd/output.txt"/>
+
+</multi-test>

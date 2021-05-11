@@ -1,0 +1,16 @@
+<unittest>
+
+    AttributeDbiUnitTests
+    + getAvailableAttributeNames
+    + getObjectAttributes
+    + getObjectAttributesByName
+    + getObjectPairAttributes
+    + getObjectPairAttributesByName
+    + removeAttributes
+    + removeObjectAttributes
+    + IntegerAttribute
+    + RealAttribute
+    + StringAttribute
+    + ByteArrayAttribute
+
+</unittest>

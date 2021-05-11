@@ -1,0 +1,14 @@
+<multi-test>
+    <!--
+    Sequence:
+    GCGCAT-CGCAT-GCGCAT
+
+    Tandems
+    Tandem repeat GCGCAT 3x6 at pos 0
+    Deletions
+    6
+    We expect such results:
+    .(end of results)
+    -->
+    <find-tandems sequence="GCGCATCGCATGCGCAT" minSize="6" repeatCount="3" expected_result=""/>
+</multi-test>

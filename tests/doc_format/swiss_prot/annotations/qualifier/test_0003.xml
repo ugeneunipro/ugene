@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- Test the FTId=PRO_XXXXXXXXXX qualifier string -->
+
+    <load-document index="doc" url="swiss_prot/P01375.sw" io="local_file" format="swiss-prot"/>
+
+    <find-object-by-name index="obj" doc="doc" name="TNFA_HUMAN features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="annot" obj="obj" location="1..233" complement="false"/>
+
+    <check-annotation-qualifier annotation="annot" qualifier="FTId" value="PRO_0000034423."/>
+
+</multi-test>

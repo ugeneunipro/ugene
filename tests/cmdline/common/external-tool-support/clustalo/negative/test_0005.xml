@@ -1,0 +1,4 @@
+<multi-test>
+    <run-cmdline task="align-clustalo" in="!common_data_dir!cmdline/DNA_nucl_ext_rand_seq.aln" out="!tmp_data_dir!align2_tmp.aln" tmpdir="" message="Required parameter is not set"/>
+
+</multi-test>

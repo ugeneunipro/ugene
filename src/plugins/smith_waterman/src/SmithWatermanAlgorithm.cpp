@@ -172,8 +172,9 @@ void SmithWatermanAlgorithm::calculateMatrixForMultipleAlignmentResult() {
     unsigned char *src = (unsigned char *)searchSeq.data(), *pat = (unsigned char *)patternSeq.data();
 
     n = pat_n * 2;
-    int dirn = (4 + pat_n + 3) >> 2;
-    int *buf, *matrix = (int *)malloc(n * sizeof(int) + pat_n * 0x80 + matrixLength * dirn);
+    unsigned int dirn = (4 + pat_n + 3) >> 2;
+    unsigned int memory = n * sizeof(int) + pat_n * 0x80 + matrixLength * dirn;
+    int* buf, * matrix = (int*)malloc(memory);
     if (matrix == NULL) {
         std::bad_alloc e;
         throw e;

@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!vcf_consensus/vcf_base.uwl"
+            in-seq="!common_data_dir!vcf_consensus/human.fa"
+            in-vcf="!common_data_dir!vcf_consensus/withoutHeader.vcf"
+            out-seq="!tmp_data_dir!vcf_cons_neg_test_0001.fa"
+            message="vcf-consensus tool exited with code 29"
+    />
+
+</multi-test>

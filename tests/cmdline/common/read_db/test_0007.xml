@@ -1,0 +1,14 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_db_write_fa.uws"
+            db="SWISS-PROT"
+            id="A0N8V2"
+            save="!tmp_data_dir!"
+            out="!tmp_data_dir!test_0007.fa"/>
+
+    <load-document index="doc1" url="A0N8V2.txt" io="local_file" format="swiss-prot" dir="temp"/>
+    <load-document index="doc2" url="test_0007.fa" io="local_file" format="fasta" dir="temp"/>
+
+    <compare-sequences-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

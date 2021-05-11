@@ -1,0 +1,12 @@
+<multi-test>
+    <!--
+    Sequence:
+    TTAC:*-AAA-AAA-AAA-AAA-AAA-*:TA
+    Tandems
+    Tandem repeat AAA 5x3 at pos 4
+    We expect such results:
+    4,15,1
+    .(end of results)
+    -->
+    <find-tandems sequence="TTACAAAAAAAAAAAAAAATA" minSize="1" maxSize="9" repeatCount="4" expected_result="4,15,1;"/>
+</multi-test>

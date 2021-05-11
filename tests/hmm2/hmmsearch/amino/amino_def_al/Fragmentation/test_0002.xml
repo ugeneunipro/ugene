@@ -1,0 +1,14 @@
+<multi-test>
+
+    <!-- uHMMER Search test: amino default alphabet sequence, amino default hmm-->
+
+    <load-document index="doc" url="fasta/titin.fa" io="local_file" format="fasta"/>
+
+    <uhmmer-search index="hmmsearch" hmmfile="hmm/fn3.hmm" seqdoc="doc" expert_opt="0" chunksize="500"/>
+
+    <find-object-by-name index="obj" doc="hmmsearch" name="Annotations" type="OT_ANNOTATIONS"/>
+
+    <check-num-annotations obj="obj" value="132"/>
+
+</multi-test>
+

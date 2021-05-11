@@ -1,0 +1,12 @@
+<multi-test>
+    <!--
+    Sequence:
+    AC:*-CGGTTACGAC-CGGTTACGAC-CGGTTACGAC-CGGTTACGAC-CGGTTACGAC-*:GT
+    Tandems
+    Tandem repeat CGGTTACGAC 5x10 at pos 2
+    We expect such results:
+    0,52,10
+    .(end of results)
+    -->
+    <find-tandems sequence="ACCGGTTACGACCGGTTACGACCGGTTACGACCGGTTACGACCGGTTACGACGT" minSize="10" maxSize="30" repeatCount="5" expected_result="0,52,10;"/>
+</multi-test>

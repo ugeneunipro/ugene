@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!-- in file exist 2 sequences with difrent Alphabets; 1- RAW Alphabet and 2- AMINO_DEFAULT Alphabet-->
+    <!-- in 1st sequence (Alphabet raw) must be 237 simbols-->
+
+    <load-document index="doc" url="embl/base_amino_all_symb.embl" io="local_file" format="embl"/>
+
+    <find-object-by-name index="obj" doc="doc" name="AB000263 standard" type="OT_SEQUENCE"/>
+
+    <check-sequence-size obj="obj" value="236"/>
+
+</multi-test>

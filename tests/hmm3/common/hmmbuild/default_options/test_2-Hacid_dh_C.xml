@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: default options, model: 2-Hacid_dh_C, has SS_cons annotaions 
+	cmd: ./hmmbuild 2-Hacid_dh_C.hmm 2-Hacid_dh_C.sto -->
+
+    <uhmmer3-build inputFile="stockholm/2-Hacid_dh_C.sto" outputFile="test_2-Hacid_dh_C.hmm" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/2-Hacid_dh_C.hmm" file2="test_2-Hacid_dh_C.hmm" tmp1="no" tmp2="yes"/>
+
+</multi-test>

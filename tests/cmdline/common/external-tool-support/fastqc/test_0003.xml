@@ -1,0 +1,14 @@
+<multi-test>
+    <remove-temp-dir url="fastqc3"/>
+    <create-temp-dir url="fastqc3"/>
+    <run-cmdline
+            task="!workflow_samples!NGS/fastqc.uwl"
+            in="!common_data_dir!cmdline/external-tool-support/fastqc/1000gsample.fastq"
+            out_file="!tmp_data_dir!fastqc3/1000gsample_fastqc.html"
+            c="!common_data_dir!cmdline/external-tool-support/fastqc/fastqc_contaminants.txt"
+            mode="2"
+
+    />
+    <compare-docs doc1="!common_data_dir!cmdline/external-tool-support/fastqc/out2.html" doc2="!tmp_data_dir!fastqc3/1000gsample_fastqc.html" first_n_lines="50"/>
+    <remove-temp-dir url="fastqc3"/>
+</multi-test>

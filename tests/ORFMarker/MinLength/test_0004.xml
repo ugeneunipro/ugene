@@ -1,0 +1,11 @@
+<multi-test>
+    <!-- Checking option: min_length, include stop codon-->
+    <load-document index="doc" url="ORFMarker/test6.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="dna" doc="doc" name="NC_005816" type="OT_SEQUENCE"/>
+
+    <plugin_orf-marker-search seq="dna" strand="both" min_length="800"
+                              terminates_with_region="true" starts_with_init_codon="true" include_stop_codon="true"
+                              allow_alt_init_codons="false" translation_id="1" expected_results="87..1109,4815..5888,6664..7602"/>
+
+</multi-test>

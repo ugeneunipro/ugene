@@ -1,0 +1,5 @@
+<suite test-timeout="240" name="CMDLine ugene precommit tests of standard workflow schemas">
+
+    <env-var value="cmdline/_proto" name="PROTOTYPE"/>
+    <test-dir test-ext="*.xml" path="cmdline/common/simple" test-format="XML"/>
+</suite>

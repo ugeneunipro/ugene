@@ -1,0 +1,19 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/snp_effect/tata.uwl"
+            in="!common_data_dir!cmdline/snp_effect/regulatory_snp_TATA.snp"
+            out-reg="!tmp_data_dir!snp_effect_tata_reg_test_0001.txt"
+            out-gene="!tmp_data_dir!snp_effect_tata_gene_test_0001.txt"/>
+
+    <find-in-snp-result-table
+            file_name="snp_effect_tata_reg_test_0001.txt"
+            chr_name="chr4"
+            allele="C/T"
+            pos="176923703"
+            gene_id="GPM6A"
+            report_type="regulatory"
+            column_name="TATATool"
+            expected_value="0/unsignificant"
+    />
+
+</multi-test>

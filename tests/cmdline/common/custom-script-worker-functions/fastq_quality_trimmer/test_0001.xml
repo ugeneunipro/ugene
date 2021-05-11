@@ -1,0 +1,14 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/fastq_quality_trimmer/fastq-trimmer-noscript.uwl"
+                 in="!common_data_dir!cmdline/custom-script-worker-functions/fastq_quality_trimmer/small.fastq"
+                 out_dir="!tmp_data_dir!"
+                 out_name="fastq_quality_trimmer_res01.fastq"
+                 qual="30"
+                 len="0"
+                 trim_both_ends="false"
+    />
+    <load-document index="actual" url="fastq_quality_trimmer_res01.fastq" io="local_file" format="fastq" dir="temp"/>
+    <load-document index="expected" url="cmdline/custom-script-worker-functions/fastq_quality_trimmer/small_res.fastq" io="local_file" format="fastq"/>
+    <compare-sequences-in-two-objects doc="actual" value="expected"/>
+
+</multi-test>

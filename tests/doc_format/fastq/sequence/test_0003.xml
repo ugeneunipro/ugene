@@ -1,0 +1,15 @@
+<multi-test>
+
+    <!-- file with sequences of RAW alphabets -->
+
+    <load-document index="doc" url="fastq/broken/illegal-symbols.fastq" io="local_file" format="fastq"/>
+
+    <find-object-by-name index="obj1" doc="doc" name="EAS54_6_R1_2_1_413_324" type="OT_SEQUENCE"/>
+    <find-object-by-name index="obj2" doc="doc" name="EAS54_6_R1_2_1_540_792" type="OT_SEQUENCE"/>
+    <find-object-by-name index="obj3" doc="doc" name="EAS54_6_R1_2_1_443_348" type="OT_SEQUENCE"/>
+
+    <check-sequence-alphabet-by-id obj="obj1" value="RAW_ALPHABET"/>
+    <check-sequence-alphabet-by-id obj="obj2" value="RAW_ALPHABET"/>
+    <check-sequence-alphabet-by-id obj="obj3" value="RAW_ALPHABET"/>
+
+</multi-test>

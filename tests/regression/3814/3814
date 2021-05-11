@@ -1,0 +1,6 @@
+1. Open "data/samples/FASTA/human_T1.fa".
+2. Unload "human_T1.fa" document.
+3. Select {Tools -> BLAST -> BLAST Search...} menu item in the main menu.
+4. Set "data/samples/FASTA/human_T1.fa" as input file.
+5. Expected state: the document is loaded, a view is opened.
+6. Current state: a message box appears, it contains an error: "This file does not contain any sequence.".

@@ -1,0 +1,6 @@
+<multi-test>
+
+    <!-- Bwa test: run with prebuilt index, sanger quality scores -->
+    <bwa index="bwa/index/ecoli.fa" reads="reads/e_coli_1000_1.fq" pattern="bwa/pattern/e_coli_1000_1.fq.sam"/>
+
+</multi-test>

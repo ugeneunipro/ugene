@@ -1,0 +1,18 @@
+<multi-test>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_anns_write_anns.uwl"
+            in="!common_data_dir!cmdline/read-write/merge_anns/empty_lines.gff;cmdline/read-write/merge_anns/ATO"
+            out="!tmp_data_dir!convert_ans_0001.gff"
+            format="gff"
+            mode="2"
+    />
+
+    <load-document index="doc1" url="cmdline/read-write/merge_anns/merged1.gff" io="local_file" format="gff"/>
+    <load-document index="doc2" url="convert_ans_0001.gff" io="local_file" format="gff" dir="temp"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-qualifiers-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

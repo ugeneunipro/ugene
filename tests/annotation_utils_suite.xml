@@ -1,0 +1,3 @@
+<suite name="Annotation utils tests">
+    <test-dir path="annotation_utils" test-format="XML" test-ext="*.xml"/>
+</suite>

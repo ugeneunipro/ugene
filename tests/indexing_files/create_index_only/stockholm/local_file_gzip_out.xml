@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- try to create gzipped index of local file -->
+
+    <create-file-index input="indexing_files/stockholm/local_file.sto" output="local_file.uind.gz" delete="yes"/>
+
+</multi-test>

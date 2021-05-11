@@ -1,0 +1,12 @@
+<!-- regular search -->
+<multi-test>
+
+    <plugin_remote-query
+            e-value="1e-01"
+            alg="blastp"
+            hits="10"
+            db="cdd"
+            seq="MTAAVKDELSRVDVKPCCRRAEMAALLRFAGGLHIVSGRVVVEAELDTGAVARRLRREIAEVYGYPSEIHVLASGGLRK"
+            expected_results="150898,254576,129815,240093,252769,224398"/>
+
+</multi-test>

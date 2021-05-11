@@ -1,0 +1,20 @@
+<multi-test>
+    <remove-temp-dir url="metaphlan2_analysis_type_3"/>
+    <create-temp-dir url="metaphlan2_analysis_type_3"/>
+    <copy-file from="!common_data_dir!metagenomics/cmdline/metaphlan2/analysis_type/input/small_stool.fa" to="!tmp_data_dir!metaphlan2_analysis_type_3/small_stool.fa"/>
+
+    <run-cmdline
+            working-dir="metaphlan2_analysis_type_3"
+            task="!common_data_dir!metagenomics/cmdline/metaphlan2/workflows/metaphlan2_basic_se.uwl"
+            in="!tmp_data_dir!metaphlan2_analysis_type_3/small_stool.fa"
+            analisys_type="reads-map"
+            format="fasta"
+    />
+
+    <compare-docs
+            mixed-lines="true"
+            doc1="!tmp_data_dir!metaphlan2_analysis_type_3/run/MetaPhlAn2/profiles/small_stool_profile.txt"
+            doc2="!common_data_dir!metagenomics/cmdline/metaphlan2/analysis_type/output/small_stool_profile_3_reads_map.txt"/>
+
+    <remove-temp-dir url="metaphlan2_analysis_type_3"/>
+</multi-test>

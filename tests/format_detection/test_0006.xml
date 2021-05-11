@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test fastq -->
+
+    <fd-perfect-match url="fastq/eas.fastq" format="fastq"/>
+
+</multi-test>

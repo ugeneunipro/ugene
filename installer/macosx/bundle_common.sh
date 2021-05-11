@@ -43,12 +43,12 @@ function add-plugin {
         exit 1
     fi
 
-    cp "${RELEASE_DIR}/plugins/${PLUGIN_LIB}"  "${TARGET_EXE_DIR}/plugins/"
-    cp "${RELEASE_DIR}/plugins/${PLUGIN_DESC}" "${TARGET_EXE_DIR}/plugins/"
-    cp "${RELEASE_DIR}/plugins/${PLUGIN_LICENSE}" "${TARGET_EXE_DIR}/plugins/"
+    cp "${RELEASE_DIR}/plugins/${PLUGIN_LIB}"  "${TARGET_PLUGINS_DIR}/"
+    cp "${RELEASE_DIR}/plugins/${PLUGIN_DESC}" "${TARGET_PLUGINS_DIR}/"
+    cp "${RELEASE_DIR}/plugins/${PLUGIN_LICENSE}" "${TARGET_PLUGINS_DIR}/"
 
     echo Extracting debug symbols for "plugins/${PLUGIN_LIB}"
-    dump_symbols "${TARGET_EXE_DIR}/plugins/${PLUGIN_LIB}"
+    dump_symbols "${TARGET_PLUGINS_DIR}/${PLUGIN_LIB}"
 }
 
 function add-library {

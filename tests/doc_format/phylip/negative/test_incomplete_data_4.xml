@@ -1,0 +1,5 @@
+<multi-test>
+    <!-- try to load document with incomplete data -->
+    <load-broken-document index="doc" url="phylip/seq_stan_incomplete.phy" io="local_file" format="phylip-sequential"/>
+
+</multi-test>

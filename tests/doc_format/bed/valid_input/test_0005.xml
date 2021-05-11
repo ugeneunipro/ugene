@@ -1,0 +1,26 @@
+<!-- Verify a valid BED file with 6 fields: -->
+<!-- three required fields "chrom", "chromStart" and "chromEnd" -->
+<!-- and optional fields "name", "score", "strand"  -->
+
+<multi-test lockForLogListening="true">
+
+    <load-document index="doc" url="bed/valid_input/fields_num_6.bed" io="local_file" format="bed" no-message="BED parsing error"/>
+
+    <find-object-by-name index="ATO" doc="doc" name="test_chromosome features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="ATO" location="180..400" complement="false"/>
+
+    <check-annotation-qualifier annotation="ann1" qualifier="track_name" value="testTrackName"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="track_description" value="Test track description"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="chrom" value="test_chromosome"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="name" value="name1"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="score" value="104"/>
+    <check-annotation-qualifier annotation="ann1" qualifier="strand" value="+"/>
+    <check-no-annotation-qualifier annotation="ann1" qualifier="thick_start"/>
+    <check-no-annotation-qualifier annotation="ann1" qualifier="thick_end"/>
+    <check-no-annotation-qualifier annotation="ann1" qualifier="item_rgb"/>
+    <check-no-annotation-qualifier annotation="ann1" qualifier="block_count"/>
+    <check-no-annotation-qualifier annotation="ann1" qualifier="block_sizes"/>
+    <check-no-annotation-qualifier annotation="ann1" qualifier="block_starts"/>
+
+</multi-test>

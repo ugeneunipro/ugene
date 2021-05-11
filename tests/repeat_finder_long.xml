@@ -1,0 +1,5 @@
+<suite name="Repeat finder long tests">
+
+    <test-dir path="repeat_finder/mismatches_long" test-format="XML" test-ext="*.xml"/>
+
+</suite>

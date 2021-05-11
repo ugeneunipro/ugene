@@ -1,0 +1,29 @@
+<multi-test>
+    <remove-temp-dir
+            url="regression_6311_2"
+    />
+
+    <create-temp-dir
+            url="regression_6311_2"
+    />
+
+    <copy-file
+            from="!common_data_dir!metagenomics/cmdline/regression/6311/6311.fastq"
+            to="!tmp_data_dir!regression_6311_2/6311.fastq"
+    />
+
+    <copy-file
+            from="!common_data_dir!metagenomics/cmdline/regression/6311/6311.fa"
+            to="!tmp_data_dir!regression_6311_2/6311.fa"
+    />
+
+    <run-cmdline
+            working-dir="regression_6307_2 folder with spaces"
+            task="!common_data_dir!metagenomics/cmdline/metaphlan2/workflows/metaphlan2_basic_pe.uwl"
+            in_1="!tmp_data_dir!regression_6311_2/6311.fastq"
+            in_2="!tmp_data_dir!regression_6311_2/6311.fa"
+            message="Input files with PE reads have different format"
+    />
+
+    <remove-temp-dir url="regression_6311_2"/>
+</multi-test>

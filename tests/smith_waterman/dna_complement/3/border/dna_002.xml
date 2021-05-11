@@ -1,0 +1,18 @@
+<multi-test>
+    <dna name="dna_complement_3_border_002"
+         pattern="ACGTTA"
+         seq="ACGTTAACGTAACT"
+         strand="complement"
+         start_pos="0"
+         seq_len="14"
+         score="18"
+         threshold="17"
+         aphabet="ACGT"
+         gap_open="-12"
+         gap_extd="-4"
+         subst_matrix="3 -2 -2 -2
+				              -2  3 -2 -2
+				              -2 -2  3 -2
+				              -2 -2 -2  3"
+    />
+</multi-test>
