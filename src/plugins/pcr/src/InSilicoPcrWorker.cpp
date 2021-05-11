@@ -371,11 +371,12 @@ InSilicoPcrReportTask::InSilicoPcrReportTask(const QList<TableRow> &table, const
 void InSilicoPcrReportTask::run() {
     QScopedPointer<IOAdapter> io(IOAdapterUtils::open(reportUrl, stateInfo, IOAdapterMode_Write));
     CHECK_OP(stateInfo, );
-
-    io->writeBlock(createReport());
+    const QString& report = createReport();
+    CHECK_OP(stateInfo, );
+    io->writeBlock(report.toUtf8());
 }
 
-QByteArray InSilicoPcrReportTask::createReport() {
+QString InSilicoPcrReportTask::createReport() {
     QString html = readHtml();
     QStringList tokens = html.split("<body>");
     SAFE_POINT(2 == tokens.size(), "Wrong HTML base", "");

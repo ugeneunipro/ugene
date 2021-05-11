@@ -63,7 +63,7 @@ public:
 
 private:
     QByteArray chapterName(const QString &name) const;
-    QByteArray createReport();
+    QString createReport();
     QByteArray productsTable() const;
     QByteArray primerDetails();
     QByteArray chapterContent(const QByteArray &content) const;
