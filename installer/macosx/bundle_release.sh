@@ -16,9 +16,11 @@ echo Source: $SOURCE_DIR
 
 VERSION_MAJOR=`cat ${SOURCE_DIR}/src/ugene_version.pri | grep 'UGENE_VER_MAJOR=' | awk -F'=' '{print $2}'`
 VERSION_MINOR=`cat ${SOURCE_DIR}/src/ugene_version.pri | grep 'UGENE_VER_MINOR=' | awk -F'=' '{print $2}'`
+VERSION_SUFFIX=`cat ${SOURCE_DIR}/src/ugene_version.pri | grep 'UGENE_VER_SUFFIX=' | awk -F'=' '{print $2}'`
 UGENE_VERSION=`cat ${SOURCE_DIR}/src/ugene_version.pri | grep UGENE_VERSION | awk -F'=' '{print $2}' | \
                sed -e 's/$${UGENE_VER_MAJOR}/'"$VERSION_MAJOR"'/g' \
-                   -e 's/$${UGENE_VER_MINOR}/'"$VERSION_MINOR"'/g'`
+                   -e 's/$${UGENE_VER_MINOR}/'"$VERSION_MINOR"'/g' \
+                   -e 's/$${UGENE_VER_SUFFIX}/'"$VERSION_SUFFIX"'/g'`
 
 ARCHITECTURE=`uname -m`
 BUILD_DIR=./release_bundle
@@ -203,6 +205,15 @@ if [ ! "$1" ]; then
     
     echo
     echo Create pkg file
+    if [ -f "${TARGET_APP_DIR_RENAMED}/Contents/MacOS/ugeneui" ]; then
+        archx=`file ${TARGET_APP_DIR_RENAMED}/Contents/MacOS/ugeneui | grep x86_64`
+        if [ ! -z "$archx" ]; then
+            ARCHITECTURE=x86_64
+        fi
+    fi
+    if [ -z "${BUILD_VCS_NUMBER_new_trunk}" ]; then
+        BUILD_VCS_NUMBER_new_trunk=`git rev-parse --short HEAD`
+    fi
     bash ./productbuild.sh \
         "${TARGET_APP_DIR_RENAMED}" \
         "ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}".not-signed.pkg \
