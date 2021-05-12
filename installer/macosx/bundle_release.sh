@@ -22,7 +22,8 @@ UGENE_VERSION=`cat ${SOURCE_DIR}/src/ugene_version.pri | grep UGENE_VERSION | aw
                    -e 's/$${UGENE_VER_MINOR}/'"$VERSION_MINOR"'/g' \
                    -e 's/$${UGENE_VER_SUFFIX}/'"$VERSION_SUFFIX"'/g'`
 
-ARCHITECTURE=`uname -m`
+#ARCHITECTURE=`uname -m`
+ARCHITECTURE=x86_64
 BUILD_DIR=./release_bundle
 RELEASE_DIR=${SOURCE_DIR}/src/_release
 TARGET_APP_DIR="$BUILD_DIR/${PRODUCT_NAME}.app/"
@@ -224,10 +225,25 @@ if [ ! "$1" ]; then
     echo tar czf "${SYMBOLS_DIR}.tar.gz" "${SYMBOLS_DIR}"
     tar czf "${SYMBOLS_DIR}.tar.gz" "${SYMBOLS_DIR}"
 
+    #echo
+    #echo pkg-dmg running...
+    #echo ./pkg-dmg --source $BUILD_DIR --target ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg --license ./LICENSE.with_3rd_party --volname "Unipro UGENE $UGENE_VERSION" --symlink /Applications
+    #./pkg-dmg --source $BUILD_DIR --target ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg --license ./LICENSE.with_3rd_party --volname "Unipro UGENE $UGENE_VERSION" --symlink /Applications
+    
     echo
-    echo pkg-dmg running...
-    echo ./pkg-dmg --source $BUILD_DIR --target ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg --license ./LICENSE.with_3rd_party --volname "Unipro UGENE $UGENE_VERSION" --symlink /Applications
-    ./pkg-dmg --source $BUILD_DIR --target ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg --license ./LICENSE.with_3rd_party --volname "Unipro UGENE $UGENE_VERSION" --symlink /Applications
+    echo Create dmg-file
+    echo ./create-dmg.sh \
+        "${TARGET_APP_DIR_RENAMED}".dmg-dir \
+        "${UGENE_VERSION}" \
+        "${TARGET_APP_DIR_RENAMED}" \
+        "ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}".pkg \
+        "ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}".dmg
+    ./create-dmg.sh \
+        "${TARGET_APP_DIR_RENAMED}".dmg-dir \
+        "${UGENE_VERSION}" \
+        "${TARGET_APP_DIR_RENAMED}" \
+        "ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}".pkg \
+        "ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}".dmg
 
     echo
     echo Signing dmg-file...
