@@ -86,7 +86,7 @@ Task::ReportResult GTest_CreateTmpDir::report() {
     if (!exists) {
         bool created = tmpDir.mkdir(url);
         if (!created) {
-            setError("Can not create a folder: " + url);
+            setError("Can not create a folder: " + QFileInfo(tmpDir, url).absoluteFilePath());
         }
     }
     return ReportResult_Finished;
