@@ -2970,7 +2970,6 @@ GUI_TEST_CLASS_DEFINITION(test_2451) {
     class customWizard : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    4. Select input MSA "samples\CLUSTALW\COI.aln"
             GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << dataDir + "samples/CLUSTALW/COI.aln"));
             //    5. Press "Next" button

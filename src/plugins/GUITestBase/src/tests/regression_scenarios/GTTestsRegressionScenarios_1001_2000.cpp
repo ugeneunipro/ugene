@@ -2371,7 +2371,6 @@ GUI_TEST_CLASS_DEFINITION(test_1204) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QSpinBox *maxResultsSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "quantitySpinBox"));
             GTSpinBox::setValue(os, maxResultsSpinBox, 5000, GTGlobals::UseKeyBoard);
             GTKeyboardDriver::keyClick(Qt::Key_Enter);
