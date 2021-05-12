@@ -128,7 +128,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QLineEdit *lineEdit1 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "FASTQ file(s) 1 widget"));
             QLineEdit *lineEdit2 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "FASTQ file(s) 2 widget"));
             GTLineEdit::setText(os, lineEdit1, QFileInfo(testDir + "_common_data/metagenomics/workflow_designer/4R-WGA_S31_L001_R1_001.fastq").absoluteFilePath());
@@ -241,7 +240,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QLineEdit *lineEdit1 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "FASTQ file(s) 1 widget"));
             QLineEdit *lineEdit2 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "FASTQ file(s) 2 widget"));
             GTLineEdit::setText(os, lineEdit1, QFileInfo(testDir + "_common_data/metagenomics/workflow_designer/4R-WGA_S31_L001_R1_001.fastq").absoluteFilePath());
@@ -351,7 +349,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QLineEdit *lineEdit1 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "FASTQ file(s) 1 widget"));
             QLineEdit *lineEdit2 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "FASTQ file(s) 2 widget"));
             GTLineEdit::setText(os, lineEdit1, QFileInfo(testDir + "_common_data/metagenomics/workflow_designer/4R-WGA_S31_L001_R1_001.fastq").absoluteFilePath());

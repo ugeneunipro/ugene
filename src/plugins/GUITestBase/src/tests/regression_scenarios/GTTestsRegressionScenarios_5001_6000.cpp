@@ -696,7 +696,6 @@ GUI_TEST_CLASS_DEFINITION(test_5208) {
     //    and accept the dialog.
     class ImportFromMultifasta : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             ImportPrimersDialogFiller::setImportTarget(os, ImportPrimersDialogFiller::LocalFiles);
             ImportPrimersDialogFiller::addFile(os, testDir + "_common_data/fasta/random_primers.fa");
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
@@ -1486,7 +1485,6 @@ GUI_TEST_CLASS_DEFINITION(test_5425) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath()));
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
@@ -1551,7 +1549,6 @@ GUI_TEST_CLASS_DEFINITION(test_5425_1) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
             GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath()));
 
@@ -1594,7 +1591,6 @@ GUI_TEST_CLASS_DEFINITION(test_5425_2) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
             GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath()));
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
@@ -4241,7 +4237,6 @@ GUI_TEST_CLASS_DEFINITION(test_5798_5) {
     class customWizard : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //4. Select input MSA "samples/APR/DNA.apr"
             GTUtilsWizard::setInputFiles(os, QList<QStringList>() << (QStringList() << dataDir + "samples/APR/DNA.apr"));
 

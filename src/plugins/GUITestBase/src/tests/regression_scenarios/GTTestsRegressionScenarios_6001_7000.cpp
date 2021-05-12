@@ -6465,7 +6465,6 @@ GUI_TEST_CLASS_DEFINITION(test_6941) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsWizard::setParameter(os, "FASTQ files", QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath());
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);

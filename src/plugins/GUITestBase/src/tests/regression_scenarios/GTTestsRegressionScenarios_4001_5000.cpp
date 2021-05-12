@@ -1446,7 +1446,6 @@ GUI_TEST_CLASS_DEFINITION(test_4134) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
 
             QString trimBothValue = GTUtilsWizard::getParameter(os, "Trim both ends").toString();
