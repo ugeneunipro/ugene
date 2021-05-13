@@ -233,13 +233,13 @@ if [ ! "$1" ]; then
     echo
     echo Create dmg-file
     echo ./create-dmg.sh \
-        "${TARGET_APP_DIR_RENAMED}".dmg-dir \
+        ugene-app.dmg-dir \
         "${UGENE_VERSION}" \
         "${TARGET_APP_DIR_RENAMED}" \
         "ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}".pkg \
         "ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}".dmg
-    ./create-dmg.sh \
-        "${TARGET_APP_DIR_RENAMED}".dmg-dir \
+    bash ./create-dmg.sh \
+        ugene-app.dmg-dir \
         "${UGENE_VERSION}" \
         "${TARGET_APP_DIR_RENAMED}" \
         "ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}".pkg \
