@@ -16,7 +16,6 @@ mkdir -p "$DMG_DIR"
 cp -R "$APP_DIR"/Contents/Resources/data/samples "$DMG_DIR"
 mv "$DMG_DIR"/samples "$DMG_DIR"/Samples
 cp readme.txt "$DMG_DIR"
-xcrun stapler staple "$APP_DIR"
 cp "$PKG_FILE" "$DMG_DIR"
 
 if [[ 1 == 1 ]]; then
