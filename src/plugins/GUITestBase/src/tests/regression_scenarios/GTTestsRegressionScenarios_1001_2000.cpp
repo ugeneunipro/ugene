@@ -6212,6 +6212,7 @@ GUI_TEST_CLASS_DEFINITION(test_1609) {
     public:
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
             GTWidget::click(os, GTWidget::findButtonByText(os, "Cancel", dialog));
         }
     };
