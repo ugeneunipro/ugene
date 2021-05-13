@@ -19,7 +19,7 @@ cp readme.txt "$DMG_DIR"
 cp "$PKG_FILE" "$DMG_DIR"
 
 if [[ 1 == 1 ]]; then
-    szk=`du -ks "$DMG_DIR"  | perl -n -e 'if(/(\d+)\D.*/){print $DMG_DIR;}'`
+    szk=`du -ks "$DMG_DIR"  | perl -n -e 'if(/(\d+)\D.*/){print $1;}'`
     szm=$((szk / 1000 + 50))
     echo
     echo hdiutil create -size ${szm}m -srcfolder "$DMG_DIR" -volname "UGENE-$UGENE_VERSION" "$DMG_FILE"
