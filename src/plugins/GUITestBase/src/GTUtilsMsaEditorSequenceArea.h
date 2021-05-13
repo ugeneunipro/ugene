@@ -42,7 +42,16 @@ public:
     static void selectColumnInConsensus(GUITestOpStatus &os, int columnNumber);
 
     // MSAEditorNameList
+
+    /** Returns all names in MSA object as stored in the object. */
     static QStringList getNameList(GUITestOpStatus &os);
+
+    /**
+     * Returns ordered list of row names rendered on the screen: both from the visible on the screen are and from the overflow (available with the scroll).
+     * Excludes invisible rows inside of collapsed groups.
+     * */
+    static QStringList getCurrentRowNames(GUITestOpStatus &os);
+
     static bool hasSequencesWithNames(GUITestOpStatus &os, const QStringList &names);
     static QStringList getVisibleNames(GUITestOpStatus &os);
     static QString getSimilarityValue(GUITestOpStatus &os, int row);
@@ -66,7 +75,7 @@ public:
     static void selectArea(GUITestOpStatus &os, QPoint p1 = QPoint(0, 0), QPoint p2 = QPoint(-1, -1), GTGlobals::UseMethod method = GTGlobals::UseKey);
     static void cancelSelection(GUITestOpStatus &os);
     /** Returns on-screen (global) bounding rectangle for the base position. */
-    static QRect getPositionRect(GUITestOpStatus &os, const QPoint& position);
+    static QRect getPositionRect(GUITestOpStatus &os, const QPoint &position);
     static QPoint convertCoordinates(GUITestOpStatus &os, const QPoint p);
     static void click(GUITestOpStatus &os, const QPoint &screenMaPoint = QPoint(0, 0));
 
@@ -93,9 +102,9 @@ public:
     static bool hasAminoAlphabet(GUITestOpStatus &os);
     static bool isSequenceHighlighted(GUITestOpStatus &os, const QString &seqName);
     static QString getColor(GUITestOpStatus &os, QPoint p);
-    static bool hasPixelWithColor(GUITestOpStatus &os, const QPoint& p, const QColor& color);
-    static void checkMsaCellColors(GUITestOpStatus &os, const QPoint& pos, const QString& fgColor, const QString& bgColor);
-    static void checkMsaCellColor(GUITestOpStatus &os, const QPoint& pos, const QString& color);
+    static bool hasPixelWithColor(GUITestOpStatus &os, const QPoint &p, const QColor &color);
+    static void checkMsaCellColors(GUITestOpStatus &os, const QPoint &pos, const QString &fgColor, const QString &bgColor);
+    static void checkMsaCellColor(GUITestOpStatus &os, const QPoint &pos, const QString &color);
     static bool checkColor(GUITestOpStatus &os, const QPoint &p, const QString &expectedColor);
     static int getRowHeight(GUITestOpStatus &os, int rowNumber);
 

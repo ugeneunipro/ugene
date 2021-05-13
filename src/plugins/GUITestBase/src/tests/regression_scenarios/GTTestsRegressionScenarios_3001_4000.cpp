@@ -3411,15 +3411,14 @@ GUI_TEST_CLASS_DEFINITION(test_3557) {
 
     // Scroll to end of the list.
     GTKeyboardDriver::keyClick(Qt::Key_End, Qt::ControlModifier);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    // Select another sequence.
     GTUtilsMsaEditor::clickSequenceName(os, "2|1a0cA|gi|32470780");
 
-    GTGlobals::sleep(1000); // Wait to avoid double click.
+    // Hold SHIFT & select +1 sequence.
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
     GTUtilsMsaEditor::clickSequenceName(os, "1a0cA");
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-    GTThread::waitForMainThread();
 
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
 

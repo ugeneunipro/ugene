@@ -123,19 +123,19 @@ void GTUtilsMSAEditorSequenceArea::selectArea(GUITestOpStatus &os, QPoint p1, QP
     p2.ry() = (p2.y() == -1 ? sequenceArea->getViewRowCount() - 1 : p2.y());
 
     switch (method) {
-    case GTGlobals::UseKey:
-        clickToPosition(os, p1);
-        GTKeyboardDriver::keyPress(Qt::Key_Shift);
-        clickToPosition(os, p2);
-        GTKeyboardDriver::keyRelease(Qt::Key_Shift);
-        break;
-    case GTGlobals::UseMouse:
-        GTMouseDriver::dragAndDrop(convertCoordinates(os, p1), convertCoordinates(os, p2));
-        break;
-    case GTGlobals::UseKeyBoard:
-        GT_CHECK(false, "Not implemented");
-    default:
-        GT_CHECK(false, "An unknown method");
+        case GTGlobals::UseKey:
+            clickToPosition(os, p1);
+            GTKeyboardDriver::keyPress(Qt::Key_Shift);
+            clickToPosition(os, p2);
+            GTKeyboardDriver::keyRelease(Qt::Key_Shift);
+            break;
+        case GTGlobals::UseMouse:
+            GTMouseDriver::dragAndDrop(convertCoordinates(os, p1), convertCoordinates(os, p2));
+            break;
+        case GTGlobals::UseKeyBoard:
+            GT_CHECK(false, "Not implemented");
+        default:
+            GT_CHECK(false, "An unknown method");
     }
 }
 #undef GT_METHOD_NAME
@@ -281,6 +281,21 @@ QStringList GTUtilsMSAEditorSequenceArea::getNameList(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "getCurrentRowNames"
+QStringList GTUtilsMSAEditorSequenceArea::getCurrentRowNames(GUITestOpStatus &os) {
+    MSAEditor *editor = GTUtilsMsaEditor::getEditor(os);
+    MaCollapseModel *collapseModel = editor->getUI()->getCollapseModel();
+    int viewRowCount = collapseModel->getViewRowCount();
+    QStringList rowNameList;
+    for (int viewRowIndex = 0; viewRowIndex < viewRowCount; viewRowIndex++) {
+        int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
+        MultipleAlignmentRow maRow = editor->getMaObject()->getRow(maRowIndex);
+        rowNameList << maRow->getName();
+    }
+    return rowNameList;
+}
+#undef GT_METHOD_NAME
+
 #define GT_METHOD_NAME "hasSequencesWithNames"
 bool GTUtilsMSAEditorSequenceArea::hasSequencesWithNames(GUITestOpStatus &os, const QStringList &names) {
     QStringList nameList = getNameList(os);
@@ -305,8 +320,7 @@ QStringList GTUtilsMSAEditorSequenceArea::getVisibleNames(GUITestOpStatus &os) {
     MaEditorNameList *nameListArea = GTUtilsMsaEditor::getNameListArea(os);
     CHECK_SET_ERR_RESULT(nameListArea != nullptr, "MSA Editor name list area is NULL", QStringList());
 
-    const QList<int> visibleRowsIndexes = editor->getUI()->getDrawHelper()->getVisibleMaRowIndexes(
-        nameListArea->height());
+    const QList<int> visibleRowsIndexes = editor->getUI()->getDrawHelper()->getVisibleMaRowIndexes(nameListArea->height());
 
     QStringList visibleRowNames;
     foreach (const int rowIndex, visibleRowsIndexes) {
@@ -747,61 +761,61 @@ void GTUtilsMSAEditorSequenceArea::expandSelectedRegion(GUITestOpStatus &os, con
 
     QPoint startPos;
     switch (expandedBorder) {
-    case (0):
-        startPos = QPoint(selection.center().x(), selection.top());
-        break;
-    case (1):
-        startPos = QPoint(selection.right(), selection.center().y());
-        break;
-    case (2):
-        startPos = QPoint(selection.center().x(), selection.bottom());
-        break;
-    case (3):
-        startPos = QPoint(selection.left(), selection.center().y());
-        break;
-    case (4):
-        startPos = selection.topRight();
-        break;
-    case (5):
-        startPos = selection.bottomRight();
-        break;
-    case (6):
-        startPos = selection.bottomLeft();
-        break;
-    case (7):
-        startPos = selection.topLeft();
-        break;
-    default:
-        CHECK_SET_ERR(false, QString("Unexpected movable border"));
+        case (0):
+            startPos = QPoint(selection.center().x(), selection.top());
+            break;
+        case (1):
+            startPos = QPoint(selection.right(), selection.center().y());
+            break;
+        case (2):
+            startPos = QPoint(selection.center().x(), selection.bottom());
+            break;
+        case (3):
+            startPos = QPoint(selection.left(), selection.center().y());
+            break;
+        case (4):
+            startPos = selection.topRight();
+            break;
+        case (5):
+            startPos = selection.bottomRight();
+            break;
+        case (6):
+            startPos = selection.bottomLeft();
+            break;
+        case (7):
+            startPos = selection.topLeft();
+            break;
+        default:
+            CHECK_SET_ERR(false, QString("Unexpected movable border"));
     }
 
     startPos = convertCoordinates(os, startPos);
 
     switch (expandedBorder) {
-    case (0):
-        startPos = QPoint(startPos.x(), startPos.y() - height / 2);
-        break;
-    case (1):
-        startPos = QPoint(startPos.x() + width / 2, startPos.y());
-        break;
-    case (2):
-        startPos = QPoint(startPos.x(), startPos.y() + height / 2);
-        break;
-    case (3):
-        startPos = QPoint(startPos.x() - width / 2, startPos.y());
-        break;
-    case (4):
-        startPos = QPoint(startPos.x() + width / 2, startPos.y() - height / 2);
-        break;
-    case (5):
-        startPos = QPoint(startPos.x() + width / 2, startPos.y() + height / 2);
-        break;
-    case (6):
-        startPos = QPoint(startPos.x() - width / 2, startPos.y() + height / 2);
-        break;
-    case (7):
-        startPos = QPoint(startPos.x() - width / 2, startPos.y() - height / 2);
-        break;
+        case (0):
+            startPos = QPoint(startPos.x(), startPos.y() - height / 2);
+            break;
+        case (1):
+            startPos = QPoint(startPos.x() + width / 2, startPos.y());
+            break;
+        case (2):
+            startPos = QPoint(startPos.x(), startPos.y() + height / 2);
+            break;
+        case (3):
+            startPos = QPoint(startPos.x() - width / 2, startPos.y());
+            break;
+        case (4):
+            startPos = QPoint(startPos.x() + width / 2, startPos.y() - height / 2);
+            break;
+        case (5):
+            startPos = QPoint(startPos.x() + width / 2, startPos.y() + height / 2);
+            break;
+        case (6):
+            startPos = QPoint(startPos.x() - width / 2, startPos.y() + height / 2);
+            break;
+        case (7):
+            startPos = QPoint(startPos.x() - width / 2, startPos.y() - height / 2);
+            break;
     }
 
     GTMouseDriver::moveTo(startPos);
@@ -810,22 +824,22 @@ void GTUtilsMSAEditorSequenceArea::expandSelectedRegion(GUITestOpStatus &os, con
 
     QPoint endPos;
     switch (expandedBorder) {
-    case (0):
-    case (2):
-        endPos = QPoint(startPos.x(), startPos.y() + symbolsToExpand * height);
-        break;
-    case (1):
-    case (3):
-        endPos = QPoint(startPos.x() + symbolsToExpand * width, startPos.y());
-        break;
-    case (4):
-    case (6):
-        endPos = QPoint(startPos.x() + symbolsToExpand * width, startPos.y() - symbolsToExpand * height);
-        break;
-    case (5):
-    case (7):
-        endPos = QPoint(startPos.x() + symbolsToExpand * width, startPos.y() + symbolsToExpand * height);
-        break;
+        case (0):
+        case (2):
+            endPos = QPoint(startPos.x(), startPos.y() + symbolsToExpand * height);
+            break;
+        case (1):
+        case (3):
+            endPos = QPoint(startPos.x() + symbolsToExpand * width, startPos.y());
+            break;
+        case (4):
+        case (6):
+            endPos = QPoint(startPos.x() + symbolsToExpand * width, startPos.y() - symbolsToExpand * height);
+            break;
+        case (5):
+        case (7):
+            endPos = QPoint(startPos.x() + symbolsToExpand * width, startPos.y() + symbolsToExpand * height);
+            break;
     }
 
     GTMouseDriver::moveTo(endPos);
