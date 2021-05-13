@@ -90,7 +90,8 @@ static QString getDataDirImpl() {
         dataDir = QString("data/");
     }
 
-    if (!QFileInfo(dataDir).exists()) {
+    if (!QFileInfo(dataDir).exists() &&
+            ! BundleInfo::getDataSearchPath().isEmpty()) {
         dataDir = BundleInfo::getDataSearchPath() + "/";
     }
 #else
