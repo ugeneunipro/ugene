@@ -97,7 +97,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
             bool addToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
             CHECK_SET_ERR(addToProject, QString("incorrect addToProject state: expected true, got false"));
 
-            //Expected state : "Result aligment" field is filled by default
+            //Expected state : "Result alignment" field is filled by default
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             CHECK_SET_ERR(output.contains("UGENE_Data"), QString("incorrect output line: do not contain default path: UGENE_Data"));
             CHECK_SET_ERR(output.contains("sanger_reads_alignment"), QString("incorrect output line: do not contain default path: sanger_reads_alignment"));
@@ -156,11 +156,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         CHECK_SET_ERR(isNameFound, QString("Name %1 is missing").arg(rowName));
     }
 
-    //5. Report with info
-    GTUtilsNotifications::checkNotificationReportText(os, QStringList() << "Mapped reads (16)"
-                                                                        << "Filtered by low similarity (4)");
-
-    // No Еrrors in the Log
+    // No Errors in the Log
     QStringList errors = GTUtilsLog::getErrors(os, GTLogTracer("error"));
     CHECK_SET_ERR(errors.isEmpty(), QString("Some errors found"));
 }

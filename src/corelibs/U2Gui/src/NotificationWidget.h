@@ -46,7 +46,7 @@ class Header : public QFrame {
 
 public:
     Header(QWidget *w = NULL);
-    bool isFixed();
+    bool isFixed() const;
 
 protected:
     void mousePressEvent(QMouseEvent *me);
@@ -68,8 +68,7 @@ class NotificationWidget : public QFrame {
     Q_OBJECT
 
 public:
-    NotificationWidget(QWidget *w = NULL);
-    Header *titleBar() const;
+    NotificationWidget(QWidget *w);
     void addNotification(QWidget *w);
     bool removeNotification(QWidget *w);
     void setFixed(bool val);
@@ -78,16 +77,15 @@ protected:
     bool event(QEvent *event);
 
 private:
-    QScrollArea *scrlArea;
-    QVBoxLayout *layout;
-    QFrame *frame;
-    Header *header;
+    QScrollArea *scrollArea = nullptr;
+    QVBoxLayout *layout = nullptr;
+    QFrame *frame = nullptr;
+    Header *header = nullptr;
 
-    QPoint m_old_pos;
-    bool m_mouse_down;
-    bool left, right, bottom;
-
-    bool isFixed;
+    bool left = false;
+    bool right = false;
+    bool bottom = false;
+    bool isFixed = false;
 };
 
 }    // namespace U2
