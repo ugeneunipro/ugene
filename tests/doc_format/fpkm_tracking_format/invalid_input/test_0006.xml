@@ -1,0 +1,7 @@
+<!-- Verify an invalid FPKM File Format that can't be opened: invalid locus (and, therefore, coordinates) - start coordinate is greater than end coordinate. -->
+
+<multi-test lockForLogListening="true">
+
+    <load-broken-document index="doc" url="fpkm_tracking_format/invalid/invalid_locus_start_greater_end.fpkm_tracking" io="local_file" format="fpkm-tracking"/>
+
+</multi-test>

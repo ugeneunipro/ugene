@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- Test reading file: in file 1 broken sequence object-->
+
+    <load-document index="doc" url="fastq/eas_broken.fastq" io="local_file" format="fastq"/>
+
+    <check-num-objects doc="doc" value="2"/>
+
+</multi-test>

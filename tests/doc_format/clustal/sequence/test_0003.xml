@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to check multy sequence size in protein sequense more then 60 symbols, no size at the end of line(must be 384) -->
+
+    <load-document index="doc" url="clustal/amino_from_wikipedia.aln" io="local_file" format="clustal"/>
+    <find-object-by-name index="obj" doc="doc" name="amino_from_wikipedia" type="OT_MSA"/>
+    <check-Msequence-size obj="obj" value="384"/>
+
+</multi-test>

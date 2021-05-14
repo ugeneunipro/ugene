@@ -1,0 +1,16 @@
+<multi-test>
+
+    <!-- Check sequence quality scores -->
+
+    <load-document index="doc" url="reads/slx.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="s0" doc="doc" name="test_run:4:133:593:417" type="OT_SEQUENCE"/>
+    <find-object-by-name index="s1" doc="doc" name="test_run:4:134:529:256" type="OT_SEQUENCE"/>
+
+    <import-phred-qualities seq-list="s0,s1" url="reads/slx.qual"/>
+
+    <check-sequence-quality-scores obj="s0" quality="IIIIIIIIIIIIIIIIIIIIIIIIIIIII:IIIIII?IIIIIIIIIIIIIIIIIIIIIIIII2IIIIII55@I,"/>
+    <check-sequence-quality-scores obj="s1" quality="IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII&gt;IIIIIIIIIIIIIIIIIIIIIIIEDIIIIIIC&lt;I&gt;8I4I14"/>
+
+
+</multi-test>

@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- try to load broken data from document (LOCUC mast by LOCUS)-->
+
+    <load-broken-document index="doc" url="genbank/broken/broken_gen1.gen" io="local_file" format="genbank"/>
+
+</multi-test>

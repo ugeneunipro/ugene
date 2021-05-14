@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- try to load doc truncated on feature table -->
+
+    <load-broken-document index="doc" url="swiss_prot/broken/truncated_FT_doc_swiss_prot.sw" io="local_file" format="swiss-prot"/>
+
+</multi-test>

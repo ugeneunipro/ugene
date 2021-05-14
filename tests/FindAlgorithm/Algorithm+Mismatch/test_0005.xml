@@ -1,0 +1,17 @@
+<multi-test>
+
+    <load-document index="doc" url="FindAlgorithm/test_03.fa" io="local_file" format="fasta"/>
+
+    <find-algorithm document="doc"
+                    sequence="seq1"
+                    strand="direct"
+                    pattern="SN"
+                    source="direct"
+                    range="1..14"
+                    max_error="1"
+                    algorithm="insdel"
+                    ambig=""
+                    expected="5..6;10..12;10..13;13..14"
+    />
+
+</multi-test>

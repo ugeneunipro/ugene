@@ -1,0 +1,12 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/cutadapt/cutadapt.uwl"
+            in="!common_data_dir!cmdline/cutadapt/in01.fastq"
+            out_dir="!tmp_data_dir!"
+            out_name="cutadapt_fastq_test_0003.fastq"
+            a="!common_data_dir!cmdline/cutadapt/adapters1.fasta"
+    />
+    <load-document index="doc1" url="cmdline/cutadapt/out03.fastq" io="local_file" format="fastq"/>
+    <load-document index="doc2" url="cutadapt_fastq_test_0003.fastq" io="local_file" format="fastq" dir="temp"/>
+    <compare-sequences-in-two-objects doc="doc1" value="doc2"/>
+</multi-test>

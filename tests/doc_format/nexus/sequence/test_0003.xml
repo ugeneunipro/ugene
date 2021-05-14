@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!-- Test reading data block, type OT_MSA-->
+
+    <load-document index="doc" url="nexus/bp_data.nex" io="local_file" format="nexus"/>
+
+    <check-num-objects doc="doc" value="1"/>
+
+    <check-document-object-names doc="doc" value="bp_data"/>
+    <check-document-object-types doc="doc" value="OT_MSA"/>
+
+</multi-test>

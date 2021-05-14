@@ -1,0 +1,14 @@
+<multi-test>
+
+    <!-- try to get specified document from gzipped index file created on gzipped file and check fasta sequences -->
+
+    <generate-file input="indexing_files/fasta/gz_file.fa.gz" amount="8000" outCtxName="tmpOut" gzipOut="yes"/>
+    <create-file-index tmpInput="yes" input="tmpOut" output="bfa_gz_file.uind.gz" delete="yes"/>
+    <load-document index="indDoc" dir="temp" url="bfa_gz_file.uind.gz" io="local_file_gzip"
+                   format="index"/>
+    <get-doc-from-index indDocName="indDoc" docNum="4399" docCtxName="outDoc"/>
+
+    <load-document index="trueDoc" url="indexing_files/fasta/local_file_item3.fa" io="local_file" format="fasta"/>
+    <compare-sequences-in-two-objects doc="outDoc" value="trueDoc"/>
+
+</multi-test>

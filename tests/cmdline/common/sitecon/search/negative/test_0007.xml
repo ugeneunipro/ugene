@@ -1,0 +1,9 @@
+<multi-test>
+    <run-cmdline task="sitecon-search"
+                 in="!common_data_dir!/Sitecon/Algorithm/DICTY_part.fa"
+                 out="!tmp_data_dir!DICTY_part_actual.gb"
+                 inmodel="!common_data_dir!/Sitecon/Algorithm/siteconBuilds/e2f_44_nw.sitecon"
+                 strand="2"
+                 message="Search in strand can only be 0(both) or 1(direct) or -1(complement)"
+    />
+</multi-test>

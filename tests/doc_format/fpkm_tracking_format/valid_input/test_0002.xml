@@ -1,0 +1,13 @@
+<!-- Verify a valid FPKM Tracking Format file: locus value contains two colons (the one in the sequence name, and the one that divides sequence name and coordinates). -->
+
+<multi-test lockForLogListening="true">
+
+    <load-document index="doc" url="fpkm_tracking_format/valid/locus_seqname_contains_colon.fpkm_tracking" io="local_file" format="fpkm-tracking" no-message="FPKM Tracking Format parsing error"/>
+
+    <find-object-by-name index="ATO" doc="doc" name="fake:genome features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="ATO" location="4..9996" complement="false"/>
+
+    <check-annotation-qualifier annotation="ann1" qualifier="locus" value="fake:genome:4-9996"/>
+
+</multi-test>

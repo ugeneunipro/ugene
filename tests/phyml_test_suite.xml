@@ -1,0 +1,3 @@
+<suite name="phyml tests">
+    <test-dir path="phyml" test-format="XML" test-ext="*.xml"/>
+</suite>

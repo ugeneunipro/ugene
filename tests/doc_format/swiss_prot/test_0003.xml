@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Test reading file: in file 2 objects Annotation and Sequence-->
+
+    <load-document index="doc" url="swiss_prot/A0N8V2.sw" io="local_file" format="swiss-prot"/>
+
+    <check-num-objects doc="doc" value="2"/>
+    <check-document-object-names doc="doc" value="A0N8V2_SHEEP features,A0N8V2_SHEEP"/>
+    <check-document-object-types doc="doc" value="OT_ANNOTATIONS,OT_SEQUENCE"/>
+
+</multi-test>

@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to create index of 2 gzipped files ( gzip 1.2.4 version ) -->
+
+    <generate-file input="indexing_files/stockholm/gzip_file.sto" amount="500" outCtxName="tmpFile1" gzipOut="yes"/>
+    <generate-file input="indexing_files/stockholm/2local_files_1.sto" amount="1500" outCtxName="tmpFile2" gzipOut="yes"/>
+    <create-file-index tmpInput="yes" input="tmpFile1,tmpFile2" output="2gzip_file.uind" delete="yes"/>
+
+</multi-test>

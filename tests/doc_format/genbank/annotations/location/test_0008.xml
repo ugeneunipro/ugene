@@ -1,0 +1,10 @@
+<multi-test>
+
+    <load-document index="doc" url="genbank/merge.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="ato" doc="doc" name="merge.gb annotations" type="OT_ANNOTATIONS"/>
+    <find-annotation-by-number index="annot" obj="ato" number="0"/>
+    <check-annotation-location annotation="annot" location="1..70" complement="0"/>
+    <find-annotation-by-number index="annot1" obj="ato" number="1"/>
+    <check-annotation-location annotation="annot1" location="81..150" complement="0"/>
+</multi-test>

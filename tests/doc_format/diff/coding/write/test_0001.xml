@@ -1,0 +1,11 @@
+<multi-test>
+
+    <load-document index="doc1" url="diff/coding/cds2.diff" io="local_file" format="diff"/>
+    <save-document doc="doc1" url="diff_cds1.diff" io="local_file" format="diff"/>
+    <load-document index="doc2" url="diff_cds1.diff" io="local_file" format="diff" dir="temp"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-qualifiers-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

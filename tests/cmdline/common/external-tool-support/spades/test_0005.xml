@@ -1,0 +1,19 @@
+<multi-test>
+    <remove-temp-dir url="spades5"/>
+    <create-temp-dir url="spades5"/>
+    <run-cmdline
+            task="!common_data_dir!cmdline/external-tool-support/spades/spades_paired.uwl"
+            in="!common_data_dir!cmdline/external-tool-support/spades/ecoli_1K_1.fq"
+            in_pair="!common_data_dir!cmdline/external-tool-support/spades/ecoli_1K_2.fq"
+            out_dir="!tmp_data_dir!spades5"
+            type="Single Cell"/>
+    <load-document index="actual" url="spades5/spades/contigs.fasta" io="local_file" format="fasta" dir="temp"/>
+    <load-document index="expected" url="cmdline/external-tool-support/spades/contigs_005.fasta" io="local_file" format="fasta"/>
+    <compare-sequences-in-two-objects doc="actual" value="expected"/>
+
+    <load-document index="actual1" url="spades5/spades/scaffolds.fasta" io="local_file" format="fasta" dir="temp"/>
+    <load-document index="expected1" url="cmdline/external-tool-support/spades/scaffolds_005.fasta" io="local_file" format="fasta"/>
+    <compare-sequences-in-two-objects doc="actual1" value="expected1"/>
+
+    <remove-temp-dir url="spades5"/>
+</multi-test>

@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- try to load broken data from document ( FEATURES stay after ORIGIN)-->
+
+    <load-broken-document index="doc" url="genbank/broken/broken_gen2.gen" io="local_file" format="genbank"/>
+
+</multi-test>

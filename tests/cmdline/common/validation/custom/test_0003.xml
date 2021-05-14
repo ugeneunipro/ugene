@@ -1,0 +1,6 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/validation/rs-datasets-count.uwl"
+                 in="url1;;url2;;url3"
+                 nomessage="The maximum datasets count is 3"
+    />
+</multi-test>

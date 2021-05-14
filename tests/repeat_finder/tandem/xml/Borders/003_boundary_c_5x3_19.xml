@@ -1,0 +1,9 @@
+<multi-test>
+    <!--
+    Sequence:
+    CC-TTAAG-TTAAG-TTAAG-CC
+    Tandems
+    Tandem repeat TTAAG 5x3 at pos 2
+    -->
+    <find-tandems sequence="CCTTAAGTTAAGTTAAGCC" minSize="5" repeatCount="3" expected_result="2,15,5;"/>
+</multi-test>

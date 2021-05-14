@@ -1,0 +1,12 @@
+<multi-test>
+    <!--
+    Sequence:
+    GATA:*-CGGTCTCGGTT-CGGTCTCGGTT-CGGTCTCGGTT-*:TG
+    Tandems
+    Tandem repeat CGGTCTCGGTT 3x11 at pos 4
+    We expect such results:
+    4,33,11
+    .(end of results)
+    -->
+    <find-tandems sequence="GATACGGTCTCGGTTCGGTCTCGGTTCGGTCTCGGTTTG" minSize="11" maxSize="33" repeatCount="3" expected_result="4,33,11;"/>
+</multi-test>

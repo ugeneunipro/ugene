@@ -1,0 +1,12 @@
+<multi-test>
+    <run-cmdline
+            task="!workflow_samples!Scenarios/intersect_annotations.uwl"
+            in-A="!common_data_dir!bedtools/mutation.gff"
+            in-B="!common_data_dir!bedtools/introns.bed"
+            out-file="!tmp_data_dir!bedtools_test_00019_intersect.bed"
+            out-format="bed"
+            report="2"
+    />
+    <compare-docs doc1="!common_data_dir!bedtools/out19.bed" doc2="!tmp_data_dir!bedtools_test_00019_intersect.bed"/>
+
+</multi-test>

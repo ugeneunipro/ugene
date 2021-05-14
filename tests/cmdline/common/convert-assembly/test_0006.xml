@@ -1,0 +1,32 @@
+<multi-test>
+    <!-- Convert UGENEDB to BAM test -->
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_assembly_write_assembly.uwl"
+            in="!common_data_dir!ugenedb/example-alignment.ugenedb"
+            out="!tmp_data_dir!convert_assembly_0006.bam"
+            out_format="bam"
+    />
+
+    <!-- Convert files to SAM for comparing -->
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_assembly_write_assembly.uwl"
+            in="!tmp_data_dir!convert_assembly_0006.bam"
+            out="!tmp_data_dir!convert_assembly_0006_res.sam"
+            out_format="sam"
+    />
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_assembly_write_assembly.uwl"
+            in="!common_data_dir!ugenedb/example-alignment.ugenedb"
+            out="!tmp_data_dir!convert_assembly_0006_exp.sam"
+            out_format="sam"
+    />
+
+    <!-- Check results -->
+    <load-document index="doc1" url="convert_assembly_0006_res.sam" io="local_file" format="sam" dir="temp"/>
+    <load-document index="doc2" url="convert_assembly_0006_exp.sam" io="local_file" format="sam" dir="temp"/>
+    <compare-Msequences-in-two-objects doc="doc1" value="doc2"/>
+
+    <find-object-by-name index="obj" doc="doc1" name="Example sequence" type="OT_MSA"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj" value="4971"/>
+
+</multi-test>

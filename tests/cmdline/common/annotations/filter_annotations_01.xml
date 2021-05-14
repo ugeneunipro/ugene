@@ -1,0 +1,15 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/annotations/filter_by_qual.uwl"
+            in="!common_data_dir!gtf/valid.gtf"
+            out="!tmp_data_dir!result.gtf"
+            qname="gene_id"
+            qval="DUSP22"/>
+
+    <load-document index="doc1" url="gtf/filtered.gtf" io="local_file" format="gtf"/>
+    <load-document index="doc2" url="result.gtf" io="local_file" format="gtf" dir="temp"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

@@ -1,0 +1,15 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/quality/import_phred.uwl"
+            in-seq="!common_data_dir!fasta/illumina.fa"
+            in-qual="!common_data_dir!fastq/illumina.qual"
+            qual-type="Encoded"
+            out="!tmp_data_dir!quality_0002_tmp.fastq"
+    />
+
+    <load-document index="doc1" url="quality_0002_tmp.fastq" io="local_file" format="fastq" dir="temp"/>
+    <load-document index="doc2" url="fastq/illumina.fastq" io="local_file" format="fastq"/>
+    <compare-sequences-in-two-objects doc="doc1" value="doc2"/>
+    <compare-sequence-quality-in-two-objects doc1="doc1" doc2="doc2"/>
+
+</multi-test>

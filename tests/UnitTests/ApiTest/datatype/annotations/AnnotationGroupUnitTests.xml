@@ -1,0 +1,11 @@
+<unittest>
+
+    AnnotationGroupUnitTest
+    + get_IdObject
+    + getSet_Name
+    + groupHierarchy
+    + getSet_Annotations
+    + findAnnotationsInSubtree
+    + getSet_Subgroups
+
+</unittest>

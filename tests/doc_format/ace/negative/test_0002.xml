@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Test reading file: bad data in a sequence -->
+
+    <import-broken-document url="ace/ace_test_21_(error).ace" io="local_file" format="ace"/>
+
+</multi-test>

@@ -1,0 +1,30 @@
+<multi-test>
+    <remove-temp-dir url="broken_index_reuse_bwa"/>
+    <create-temp-dir url="broken_index_reuse_bwa"/>
+    <copy-file from="!common_data_dir!bowtie2/reads_1.fq" to="!tmp_data_dir!broken_index_reuse_bwa/reads_1.fq"/>
+    <copy-file from="!common_data_dir!bowtie2/lambda_virus.fa" to="!tmp_data_dir!broken_index_reuse_bwa/lambda_virus.fa"/>
+
+    <!--building index check-->
+    <run-cmdline
+            task="!common_data_dir!cmdline/index_reuse/bwa.uwl"
+            in="!tmp_data_dir!broken_index_reuse_bwa/reads_1.fq"
+            out_file="out1.sam"
+            out_dir="!tmp_data_dir!broken_index_reuse_bwa"
+            ref="!tmp_data_dir!broken_index_reuse_bwa/lambda_virus.fa"
+    />
+
+    <check-files-num folder="!tmp_data_dir!broken_index_reuse_bwa" expected="10"/>
+
+    <remove-temp-file url="broken_index_reuse_bwa/lambda_virus.ann"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/index_reuse/bwa.uwl"
+            in="!tmp_data_dir!broken_index_reuse_bwa/reads_1.fq"
+            out_file="out1.sam"
+            out_dir="!tmp_data_dir!broken_index_reuse_bwa"
+            ref="!tmp_data_dir!broken_index_reuse_bwa/lambda_virus.amb"
+            message="broken_index_reuse_bwa/lambda_virus.3.ebwt&quot; does not exist"
+    />
+
+    <remove-temp-dir url="broken_index_reuse_bwa"/>
+</multi-test>

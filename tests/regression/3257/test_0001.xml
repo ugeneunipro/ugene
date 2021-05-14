@@ -1,0 +1,10 @@
+<multi-test>
+
+    <run-cmdline task="!common_data_dir!regression/3257/3257.uwl"
+                 in="!common_data_dir!regression/3257/A01.abi"
+                 out="!tmp_data_dir!3257"
+    />
+
+    <compare-docs doc1="3257/A01.abi.fastq"
+                  doc2="regression/3257/A01.abi.fastq" temp="1" by_lines="true"/>
+</multi-test>

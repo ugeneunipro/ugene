@@ -1,0 +1,17 @@
+<multi-test>
+    <!-- Convert SAM to SAM test -->
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_assembly_write_assembly.uwl"
+            in="!common_data_dir!sam/example.sam"
+            out="!tmp_data_dir!convert_assembly_0001.sam"
+            out_format="sam"
+    />
+
+    <load-document index="doc1" url="convert_assembly_0001.sam" io="local_file" format="sam" dir="temp"/>
+    <load-document index="doc2" url="sam/example.sam" io="local_file" format="sam"/>
+    <compare-Msequences-in-two-objects doc="doc1" value="doc2"/>
+
+    <find-object-by-name index="obj" doc="doc1" name="chr20" type="OT_MSA"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj" value="2"/>
+
+</multi-test>

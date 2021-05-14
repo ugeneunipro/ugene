@@ -1,0 +1,6 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/validation/ws-script-string.uwl"
+                 format="fasta"
+                 message="Error: fasta"
+    />
+</multi-test>

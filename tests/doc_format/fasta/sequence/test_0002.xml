@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- in file exist 2 sequences with the same alphabet -->
+    <!-- second sequence's alphabet id must be  AMINO_DEFAULT_ALPHABET it's size =120 -->
+
+    <load-document index="doc" url="fasta/multy_fa.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="obj2" doc="doc" name="SEQUENCE_2" type="OT_SEQUENCE"/>
+    <check-sequence-alphabet-by-id obj="obj2" value="AMINO_DEFAULT_ALPHABET"/>
+    <check-sequence-size obj="obj2" value="120"/>
+
+
+</multi-test>

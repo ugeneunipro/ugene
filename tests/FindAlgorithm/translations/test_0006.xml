@@ -1,0 +1,18 @@
+<multi-test>
+
+    <load-document index="doc" url="FindAlgorithm/test_01.fa" io="local_file" format="fasta"/>
+
+    <find-algorithm document="doc"
+                    sequence="seq1"
+                    strand="both"
+                    pattern="CCC*"
+                    source=""
+                    range="0..10"
+                    max_error="0"
+                    algorithm="regexp"
+                    ambig=""
+                    expected="1..3;1..4;2..4"
+                    max_len="9"
+    />
+
+</multi-test>

@@ -1,0 +1,13 @@
+<multi-test>
+    <!-- Finds all query patterns in sequence and checks results -->
+
+    <load-document index="s1d" url="fasta/repeat_finder/1.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="s1" doc="s1d" name="1" type="OT_SEQUENCE"/>
+
+    <sarray-based-find sequence="s1"
+                       query="AAA"
+                       expected_result="1,7"
+                       bit-mask="true"
+    />
+</multi-test>

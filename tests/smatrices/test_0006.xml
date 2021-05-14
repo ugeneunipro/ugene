@@ -1,0 +1,5 @@
+<multi-test>
+
+    <check-subst-matrix file="blosum50" column="N" row="W" val="-4" alphabet="AMINO_DEFAULT_ALPHABET"/>
+
+</multi-test>

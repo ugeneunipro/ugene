@@ -1,0 +1,12 @@
+<!-- 1 to many, N=0 and M>0 -->
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/multiplexer/seq.uwl"
+            in1="!common_data_dir!genbank/70Bp.gen"
+            in2="!common_data_dir!genbank/70Bp2.gen"
+            filter1="wrong_accession"
+            out="!tmp_data_dir!multiplexer_0006.fa"
+            rule="0"
+            message="Nothing to write"
+    />
+</multi-test>

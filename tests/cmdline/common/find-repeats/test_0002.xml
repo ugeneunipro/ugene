@@ -1,0 +1,17 @@
+<multi-test>
+    <run-cmdline task="find-repeats"
+                 in="!common_data_dir!cmdline/DNA.fa"
+                 out="!tmp_data_dir!find_repeats0002_tmp.gbk"
+                 min-length="5"
+                 identity="100"
+                 min-distance="0"
+                 max-distance="40"
+                 inverted="true"/>
+
+    <load-document index="doc1" url="find_repeats0002_tmp.gbk" io="local_file" format="genbank" dir="temp"/>
+    <load-document index="doc2" url="cmdline/find-repeats/02.gb" io="local_file" format="genbank"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

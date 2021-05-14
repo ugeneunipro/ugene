@@ -1,0 +1,6 @@
+<multi-test>
+
+    <!-- Columns count warning -->
+    <load-document index="doc" url="vcf/warning.vcf" io="local_file" format="vcf" message="Line 2: There are too few columns in this line. The line was skipped." message2="Line 7: There are too few columns in this line. The line was skipped."/>
+
+</multi-test>

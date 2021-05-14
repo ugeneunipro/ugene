@@ -1,0 +1,6 @@
+<multi-test>
+
+    <!-- Bwa test: run with prebuilt index, parameters -k 0 -->
+    <bwa index="bwa/index/ecoli.fa" reads="reads/e_coli_1000.fa" pattern="bwa/pattern/e_coli_1000_k0.sam" max-seed-differences="0"/>
+
+</multi-test>

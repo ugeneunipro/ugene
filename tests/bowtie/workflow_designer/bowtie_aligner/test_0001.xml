@@ -1,0 +1,11 @@
+<multi-test>
+    <remove-temp-dir url="bowtie1"/>
+    <create-temp-dir url="bowtie1"/>
+    <run-cmdline
+            task="!common_data_dir!bowtie/workflow_designer/bowtie_aligner.uwl"
+            in="!common_data_dir!reads/e_coli_1000.fa"
+            out_dir="!tmp_data_dir!bowtie1"
+            ref="!common_data_dir!bwa/index/ecoli.fa"/>
+    <check-temp-file url="bowtie1/bowtie/out.sam" exists="1"/>
+    <remove-temp-dir url="bowtie1"/>
+</multi-test>

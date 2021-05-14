@@ -1,0 +1,3 @@
+<multi-test>
+    <load-document index="doc" url="gff/no_fasta_header_3.gff" io="local_file" format="gff"/>
+</multi-test>

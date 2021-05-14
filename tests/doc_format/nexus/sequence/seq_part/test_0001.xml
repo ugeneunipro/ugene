@@ -1,0 +1,19 @@
+<multi-test>
+
+    <!-- try to find seqpart in dna multy sequence in the start -->
+
+    <load-document index="doc" url="nexus/dna.nex" io="local_file" format="nexus"/>
+    <find-object-by-name index="obj" doc="doc" name="dna" type="OT_MSA"/>
+
+    <check-Msequence-part obj="obj" value="ATGGCATATCCCATA" seqstart="0" seqname="Cow"/>
+    <check-Msequence-part obj="obj" value="ATGGCACACCCAACG" seqstart="0" seqname="Carp"/>
+    <check-Msequence-part obj="obj" value="ATGGCCAACCACTCC" seqstart="0" seqname="Chicken"/>
+    <check-Msequence-part obj="obj" value="ATGGCACATGCAGCG" seqstart="0" seqname="Human"/>
+    <check-Msequence-part obj="obj" value="ATGGCACATCCCACA" seqstart="0" seqname="Loach"/>
+    <check-Msequence-part obj="obj" value="ATGGCCTACCCATTC" seqstart="0" seqname="Mouse"/>
+    <check-Msequence-part obj="obj" value="ATGGCTTACCCATTT" seqstart="0" seqname="Rat"/>
+    <check-Msequence-part obj="obj" value="ATGGCATACCCCCTA" seqstart="0" seqname="Seal"/>
+    <check-Msequence-part obj="obj" value="ATGGCATATCCATTC" seqstart="0" seqname="Whale"/>
+    <check-Msequence-part obj="obj" value="ATGGCACACCCATCA" seqstart="0" seqname="Frog"/>
+
+</multi-test>

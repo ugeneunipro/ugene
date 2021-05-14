@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Format detection test mmdb -->
+
+    <fd-perfect-match url="mmdb/1CRN.prt" format="mmdb"/>
+
+</multi-test>

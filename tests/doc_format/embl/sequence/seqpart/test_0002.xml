@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!--simple test try to find part in sequence(NUCL DNA DEFAULT)-->
+
+    <load-document index="doc" url="embl/12.embl" io="local_file" format="embl"/>
+
+    <find-object-by-name index="obj" doc="doc" name="AB000263 standard" type="OT_SEQUENCE"/>
+
+    <check-sequence-part obj="obj" value="CTGCCCTGCCCCTGGAGGGTGGCCCCACCGGCCGAGACAGC" seqstart="60"/>
+
+
+</multi-test>

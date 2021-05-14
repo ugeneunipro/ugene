@@ -1,0 +1,17 @@
+<multi-test>
+
+    <!--  Open MMDB ASN.1 file. Check number of chains,
+          number of atoms,
+          residue and atom number,
+          check random atoms chain index, residue name, coords -->
+
+    <load-document index="doc" url="mmdb/1O1K.prt" io="local_file" format="mmdb"/>
+    <find-object-by-name index="obj" doc="doc" name="1O1K" type="OT_BIOSTRUCT3D"/>
+
+    <check-biostruct3d-number-of-chains obj="obj" value="4"/>
+    <check-biostruct3d-number-of-atoms obj="obj" value="4760"/>
+    <check-biostruct3d-atom-chain-id obj="obj" atom-id="2000" value="2"/>
+    <check-biostruct3d-atom-residue-name obj="obj" atom-id="2000" value="GLU"/>
+    <check-biostruct3d-atom-coords obj="obj" atom-id="2000" x="38.437" y="-1.121" z="37.683"/>
+
+</multi-test>

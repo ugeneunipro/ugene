@@ -1,0 +1,12 @@
+<!--scheme fails on validation. error not written in log-->
+<multi-test>
+    <run-cmdline task="find-repeats"
+                 in=""
+                 out="!tmp_data_dir!find_repeatsn0007_tmp.gbk"
+                 min-length="5"
+                 identity="140"
+                 min-distance="0"
+                 max-distance="5000"
+                 inverted="true"
+                 message="Required parameter has no datasets specified: Input file(s)"/>
+</multi-test>

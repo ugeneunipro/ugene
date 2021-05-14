@@ -1,0 +1,15 @@
+<!-- Verify an invalid FPKM File Format file that can be opened: no value for tracking ID. -->
+<!-- The test also verifies that there are two error messages. -->
+
+<multi-test lockForLogListening="true">
+
+    <load-document index="doc" url="fpkm_tracking_format/invalid/no_tracking_id.fpkm_tracking" io="local_file" format="fpkm-tracking" message="FPKM Tracking Format parsing error: tracking ID value is empty" message2="FPKM Tracking Format parsing error: one or more errors occurred while parsing the input file"/>
+
+    <find-object-by-name index="ATO" doc="doc" name="fake_genome features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="ATO" location="4..9996" complement="false"/>
+
+    <check-annotation-qualifier annotation="ann1" qualifier="locus" value="fake_genome:4-9996"/>
+    <check-no-annotation-qualifier annotation="ann1" qualifier="tracking_id"/>
+
+</multi-test>

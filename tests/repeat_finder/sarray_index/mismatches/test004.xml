@@ -1,0 +1,13 @@
+<multi-test>
+    <!-- Finds all query patterns in sequence and checks results -->
+
+    <load-document index="s1d" url="fasta/AMINO.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="s1" doc="s1d" name="AMINO263" type="OT_SEQUENCE"/>
+
+    <sarray-based-find sequence="s1"
+                       query="CCCCDDDA"
+                       mismatches="1"
+                       expected_result="17"/>
+
+</multi-test>

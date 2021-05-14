@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- Test reading file containing \t -->
+
+    <load-document index="doc" url="fasta/CpxR.sef" io="local_file" format="fasta"/>
+
+    <check-num-objects doc="doc" value="29"/>
+
+</multi-test>

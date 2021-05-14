@@ -1,0 +1,16 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/find-collocated/boundaries/boundaries.uwl"
+            in="!common_data_dir!cmdline/find-collocated/boundaries/in_4.gb"
+            out="!tmp_data_dir!find_collocation0008_tmp.gb"
+    />
+
+    <load-document index="doc" url="find_collocation0008_tmp.gb" io="local_file" format="genbank" dir="temp"/>
+    <check-num-objects doc="doc" value="2"/>
+    <check-document-object-types doc="doc" value="OT_ANNOTATIONS,OT_SEQUENCE"/>
+
+    <find-object-by-name index="anns" doc="doc" name="in features" type="OT_ANNOTATIONS"/>
+    <find-annotation-by-name index="ann" obj="anns" name="g_feature"/>
+    <check-annotation-location annotation="ann" location="21..30" complement="0"/>
+
+</multi-test>

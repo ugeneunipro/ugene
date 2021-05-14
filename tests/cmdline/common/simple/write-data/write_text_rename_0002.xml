@@ -1,0 +1,18 @@
+<multi-test>
+
+    <create-temp-file url="write-text-rename-0002.txt" data="11111"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/write/text-text.uwl"
+            in="!common_data_dir!cmdline/read-write/write/text1.txt"
+            out="!tmp_data_dir!write-text-rename-0002.txt"
+            lines="true"
+            action="4"
+    />
+
+    <compare-docs doc1="cmdline/read-write/write/text1.txt" doc2="write-text-rename-0002.txt" temp="2" by_lines="true"/>
+
+    <check-temp-file url="write-text-rename-0002_oldcopy1.txt" exists="1"/>
+    <remove-temp-file url="write-text-rename-0002_oldcopy1.txt"/>
+
+</multi-test>

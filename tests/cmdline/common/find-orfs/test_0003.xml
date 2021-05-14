@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline task="find-orfs" in="!common_data_dir!cmdline/DNA.fa" out="!tmp_data_dir!find_orfs0003_tmp.gbk" require-stop-codon="true" require-init-codon="false" allow-alternative-codons="true" min-length="124"/>
+
+    <load-document index="doc1" url="find_orfs0003_tmp.gbk" io="local_file" format="genbank" dir="temp"/>
+    <load-document index="doc2" url="cmdline/find-orfs/03.gb" io="local_file" format="genbank"/>
+
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

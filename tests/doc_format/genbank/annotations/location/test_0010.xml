@@ -1,0 +1,28 @@
+<multi-test>
+
+    <!-- UGENE-3218 - safe_point on genbank with very big location -->
+
+    <load-document index="doc" url="genbank/big_feature_region.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="ato" doc="doc" name="test1 features" type="OT_ANNOTATIONS"/>
+    <find-annotation-by-name index="annot" obj="ato" name="UNIPROTKB_A5H0L6_KEYWORD_ATP-binding"/>
+    <check-annotation-location annotation="annot" location="1..656" complement="0"/>
+    <find-annotation-by-name index="annot1" obj="ato" name="UNIPROTKB_A5H0L6_KEYWORD_Nucleotide-binding"/>
+    <check-annotation-location annotation="annot1" location="1..656" complement="0"/>
+    <find-annotation-by-name index="annot2" obj="ato" name="NO SIGNAL:0:0" number="0"/>
+    <check-annotation-location annotation="annot2" location="1..9223371036854775807" complement="0"/>
+    <find-annotation-by-name index="annot3" obj="ato" name="NO TARGET:0:0"/>
+    <check-annotation-location annotation="annot3" location="1..9223371036854775807" complement="0"/>
+    <find-annotation-by-name index="annot4" obj="ato" name="NO SIGNAL:0:0" number="1"/>
+    <check-annotation-location annotation="annot4" location="1..9223371036854775807" complement="0"/>
+    <find-annotation-by-name index="annot5" obj="ato" name="UNIPROTKB_A5H0L6_NON_TER_1_1"/>
+    <check-annotation-location annotation="annot5" location="1..1" complement="0"/>
+    <find-annotation-by-name index="annot6" obj="ato" name="UNIPROTKB_A5H0L6_ORGANISM_Lingulodinium  polyedrum"/>
+    <check-annotation-location annotation="annot6" location="1..656" complement="0"/>
+    <find-annotation-by-name index="annot7" obj="ato" name="A5H0L6"/>
+    <check-annotation-location annotation="annot7" location="1..656" complement="0"/>
+    <find-annotation-by-name index="annot8" obj="ato" name="UNIPROTKB_pubmed_17573241"/>
+    <check-annotation-location annotation="annot8" location="1..656" complement="0"/>
+    <find-annotation-by-name index="annot9" obj="ato" name="UNIPROTKB_160621"/>
+    <check-annotation-location annotation="annot9" location="1..656" complement="0"/>
+</multi-test>

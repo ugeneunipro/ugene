@@ -1,0 +1,12 @@
+<multi-test>
+
+    <load-document index="doc" url="gff/small2.gff" io="local_file" format="gff"/>
+
+    <find-object-by-name index="chromosome_1" doc="doc" name="chromosome_1 features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-location index="ann1" obj="chromosome_1" location="1..124" complement="false"/>
+
+    <find-annotation-by-location index="ann2" obj="chromosome_1" location="4841..5001" complement="true"/>
+
+
+</multi-test>

@@ -1,0 +1,18 @@
+<multi-test>
+    <dna name="dna_complement_4_border_004"
+         pattern="ACTGTTGGTCACTGGTGTCATAAGACAGTGAT"
+         seq="TTCCCGTTTTAATTCC"
+         strand="complement"
+         start_pos="0"
+         seq_len="16"
+         score="16"
+         threshold="10"
+         aphabet="ACGT"
+         gap_open="-8"
+         gap_extd="-2"
+         subst_matrix="3 -1 -2 -1
+	                    -1  3 -1 -2
+	                    -2 -1  3 -1
+	                    -1 -2 -1  3"
+    />
+</multi-test>

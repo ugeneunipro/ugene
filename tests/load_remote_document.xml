@@ -1,0 +1,3 @@
+<suite name="Load remote document">
+    <test-dir test-ext="*.xml" path="load_remote_document" test-format="XML"/>
+</suite>

@@ -1,0 +1,14 @@
+<unittest>
+
+    TextObjectUnitTests
+    + createInstance
+    + createInstance_WrongDbi
+    + getText
+    + getText_Null
+    + setText
+    + clone
+    + clone_NullDbi
+    + clone_NullObj
+    + remove
+
+</unittest>

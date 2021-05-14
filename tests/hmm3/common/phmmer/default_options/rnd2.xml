@@ -1,0 +1,8 @@
+<multi-test>
+    <!-- query: rnd_query db: rnd_db
+	./phmmer rnd_query2.fa rnd_db.fa >  rnd_query2_rnd_db.out -->
+
+    <hmm3-phmmer query="hmmer3/phmmer/rnd_query2.fa" db="hmmer3/phmmer/rnd_db.fa" outputDir="common/phmmer/default_options/rnd2/"/>
+    <hmm3-phmmer-compare trueOut="hmmer3/phmmer/rnd_query2_rnd_db.out" actualOut="common/phmmer/default_options/rnd2/output.txt"/>
+
+</multi-test>

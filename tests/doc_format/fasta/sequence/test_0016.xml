@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- try to check sequence size  in broken sequence(...TCAG345TGAA...- numbers in the midle of sequence) -->
+
+    <load-document index="doc" url="fasta/numbers_in_the_middle.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="obj" doc="doc" name="SEQUENCE_1" type="OT_SEQUENCE"/>
+
+    <check-sequence-size obj="obj" value="70"/>
+
+</multi-test>

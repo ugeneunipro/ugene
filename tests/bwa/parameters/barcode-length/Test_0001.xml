@@ -1,0 +1,6 @@
+<multi-test>
+
+    <!-- Bwa test: run with prebuilt index, parameters -B 5 -->
+    <bwa index="bwa/index/ecoli.fa" reads="reads/e_coli_1000.fa" pattern="bwa/pattern/e_coli_1000_B5.sam" barcode-length="5"/>
+
+</multi-test>

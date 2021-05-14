@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Can return to the original form with forward shift for multi-region annotation. -->
+    <check-shift-sequence location-before="join(2..4,6..8)" location-after="join(9..10,1..1,3..5)" shift="7" sequence-length="10"/>
+    <check-shift-sequence location-before="join(9..10,1..1,3..5)" location-after="join(2..4,6..8)" shift="3" sequence-length="10"/>
+
+</multi-test>

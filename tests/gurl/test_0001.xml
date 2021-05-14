@@ -1,0 +1,31 @@
+<multi-test>
+    <convert-path original="\\rodionov-pc\Illumina\BAMs\ChrM\chrM.fa" expected-result="//rodionov-pc/Illumina/BAMs/ChrM/chrM.fa" platform="win"/>
+    <convert-path original="//rodionov-pc/Illumina/BAMs/ChrM/chrM.fa" expected-result="//rodionov-pc/Illumina/BAMs/ChrM/chrM.fa" platform="win"/>
+    <convert-path original="//rodionov-pc/.././Illumina/./././.././BAMs/ChrM/chrM.fa" expected-result="//rodionov-pc/BAMs/ChrM/chrM.fa" platform="win"/>
+    <convert-path original="d:\workspace\Illumina\BAMs\ChrM\chrM.fa" expected-result="D:/workspace/Illumina/BAMs/ChrM/chrM.fa" platform="win"/>
+    <convert-path original="d:/workspace/Illumina/BAMs/ChrM/chrM.fa" expected-result="D:/workspace/Illumina/BAMs/ChrM/chrM.fa" platform="win"/>
+    <convert-path original="d:\workspace\.\..\.\.\Illumina\BAMs\ChrM\..\..\chrM.fa" expected-result="D:/Illumina/chrM.fa" platform="win"/>
+    <convert-path original="d:\\\workspace\.\\..\.\.\Illumina\BAMs\ChrM\..\..\chrM.fa" expected-result="D:/Illumina/chrM.fa" platform="win"/>
+    <convert-path original="file:///D:/workspace/Illumina/BAMs/ChrM/chrM.fa" expected-result="D:/workspace/Illumina/BAMs/ChrM/chrM.fa" platform="win"/>
+    <convert-path original="file://////D://workspace/../Illumina/././BAMs/ChrM/chrM.fa" expected-result="D:/Illumina/BAMs/ChrM/chrM.fa" platform="win"/>
+    <convert-path original="file://////D://workspace/../Il lumina/././BAMs/ChrM/chrM.fa" expected-result="D:/Il lumina/BAMs/ChrM/chrM.fa" platform="win"/>
+    <convert-path original="d:/workspace/Illumina/BAMs/ChrM/chrM.fa" expected-result="D:/workspace/Illumina/BAMs/ChrM/chrM.fa" platform="win"/>
+    <convert-path original="d:/chrM.fa/" expected-result="D:/chrM.fa" platform="win"/>
+    <convert-path original="d:\chrM.fa\" expected-result="D:/chrM.fa" platform="win"/>
+    <convert-path original="d:\'~`!@#$%&amp;^()[]_-+=\chrM.fa\" expected-result="D:/'~`!@#$%&amp;^()[]_-+=/chrM.fa" platform="win"/>
+
+    <convert-path original="/etc/Illumina/BAMs/ChrM/chrM.fa" expected-result="/etc/Illumina/BAMs/ChrM/chrM.fa" platform="unix"/>
+    <convert-path original="//etc/Illumina/././/.././BAMs//ChrM/chrM.fa" expected-result="/etc/BAMs/ChrM/chrM.fa" platform="unix"/>
+    <convert-path original="file:///etc/Illumina/BAMs/ChrM/chrM.fa" expected-result="/etc/Illumina/BAMs/ChrM/chrM.fa" platform="unix"/>
+    <convert-path original="file://///etc/././foo/..//Il lumina/BAMs/ChrM/chrM.fa" expected-result="/etc/Il lumina/BAMs/ChrM/chrM.fa" platform="unix"/>
+    <convert-path original="/etc/Illumina/`^~&lt;&gt;>=+_-;:!?'&quot;()[]@$*\&amp;#%//" expected-result="/etc/Illumina/`^~&lt;&gt;>=+_-;:!?'&quot;()[]@$*\&amp;#%" platform="unix"/>
+
+    <!-- Qt resource paths -->
+    <convert-path original=":/etc/Illumina/BAMs/ChrM/chrM.fa" expected-result=":/etc/Illumina/BAMs/ChrM/chrM.fa" platform="win"/>
+    <convert-path original=":etc/Illumina/BAMs/ChrM/chrM.fa" expected-result=":/etc/Illumina/BAMs/ChrM/chrM.fa" platform="win"/>
+    <convert-path original=":/.././etc/../Il lumina/BAMs/ChrM/chrM.fa" expected-result=":/Il lumina/BAMs/ChrM/chrM.fa" platform="win"/>
+
+    <convert-path original=":/etc/Illumina/BAMs/ChrM/chrM.fa" expected-result=":/etc/Illumina/BAMs/ChrM/chrM.fa" platform="unix"/>
+    <convert-path original=":etc/Illumina/BAMs/ChrM/chrM.fa" expected-result=":/etc/Illumina/BAMs/ChrM/chrM.fa" platform="unix"/>
+    <convert-path original=":/.././etc/../Il lumina/BAMs/ChrM/chrM.fa" expected-result=":/Il lumina/BAMs/ChrM/chrM.fa" platform="unix"/>
+</multi-test>

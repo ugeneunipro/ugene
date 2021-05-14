@@ -1,0 +1,5 @@
+<multi-test>
+    <!-- try to load document with bad header -->
+    <load-broken-document index="doc" url="stockholm/bad_header.sto" io="local_file" format="stockholm"/>
+
+</multi-test>

@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- uHMMER Build test: P7_LS_CONFIG, extended dna alphabet  -->
+
+    <uhmmer-build infile="clustal/COI_na_dna_ext.aln" outfile="COI_na_dna_ext.hmm" expert="LS" hmmname="" deltemp="yes"/>
+
+    <hmm-compare file1="hmm/nucl_dna_ext_al/COI_na_dna_ext(hmmls).hmm" file2="COI_na_dna_ext.hmm"/>
+
+</multi-test>

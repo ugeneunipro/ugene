@@ -1,0 +1,4 @@
+<suite name="Kalign plugin PREFAB4 common tests">
+    <test-dir path="kalign_prefab4/common" test-format="XML" test-ext="*.xml"/>
+
+</suite>

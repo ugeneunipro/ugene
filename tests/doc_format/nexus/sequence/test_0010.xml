@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to check numbers of sequence in Msequence (must be 2)-->
+
+    <load-document index="doc" url="nexus/same_name.nex" io="local_file" format="nexus"/>
+    <find-object-by-name index="obj" doc="doc" name="same_name" type="OT_MSA"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj" value="2"/>
+
+</multi-test>

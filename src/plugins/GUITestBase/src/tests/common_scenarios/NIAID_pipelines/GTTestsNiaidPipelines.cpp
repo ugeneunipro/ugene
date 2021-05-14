@@ -127,7 +127,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure Tuxedo Workflow", QStringList() << "Full"
                                                                                                                   << "Single-end"));
     GTUtilsWorkflowDesigner::addSample(os, "Tuxedo tools");
-    GTGlobals::sleep();
     //    3. Open wizard
 
     //    Expected state: dataset widget fits full height

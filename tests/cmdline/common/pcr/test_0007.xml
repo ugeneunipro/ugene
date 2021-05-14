@@ -1,0 +1,24 @@
+<!-- Circular sequence -->
+<multi-test>
+    <remove-temp-dir url="pcr_0007"/>
+    <create-temp-dir url="pcr_0007"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/pcr/pcr.uwl"
+            in="!common_data_dir!genbank/CVU55762.gb"
+            primers="!common_data_dir!cmdline/pcr/primers_CVU55762.fa"
+            working-dir="pcr_0007"
+    />
+
+    <load-document index="doc" url="pcr_0007/CVU55762_forward_4674-90.gb" io="local_file" format="genbank" dir="temp"/>
+    <check-num-objects doc="doc" value="2"/>
+    <find-object-by-name index="seq" doc="doc" name="CVU55762:4674-90" type="OT_SEQUENCE"/>
+    <check-sequence-size obj="seq" value="150"/>
+
+    <find-object-by-name index="anns" doc="doc" name="CVU55762:4674-90 features" type="OT_ANNOTATIONS"/>
+    <find-annotation-by-name index="forward" obj="anns" name="misc_feature" number="0"/>
+    <find-annotation-by-name index="reverse" obj="anns" name="misc_feature" number="1"/>
+    <check-annotation-location annotation="forward" location="1..40" complement="0"/>
+    <check-annotation-location annotation="reverse" location="111..150" complement="1"/>
+
+</multi-test>

@@ -1,0 +1,6 @@
+<!-- regular search -->
+<multi-test>
+
+    <plugin_remote-request min_length="0" max_length="100" strand="direct" script="blastp.qs" seq="GKYMSRQTHLFKVDGDYVEFAPPHCYCERLCCAGSTASPMHNATPSLQGRGSDVSTTSSD" expected_results="gb|ABF74689.1|,ref|YP_001538120.1|,ref|YP_001159914.1|,ref|XP_002461294.1|,ref|ZP_06216834.1|,ref|ZP_04604845.1|"/>
+
+</multi-test>

@@ -1,0 +1,25 @@
+<!-- Two files, two datasets -->
+<multi-test>
+    <remove-temp-dir url="msa_metadata_0003"/>
+    <create-temp-dir url="msa_metadata_0003"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_ali_write_ali.uws"
+            in="!common_data_dir!msf/test5.msf;;msf/1.msf"
+            format="mega"
+            suffix="_out"
+            working-dir="msa_metadata_0003"
+    />
+
+    <load-document index="doc1" url="msa_metadata_0003/test5_out.meg" io="local_file" format="mega" dir="temp"/>
+    <load-document index="doc2" url="msa_metadata_0003/1_out.meg" io="local_file" format="mega" dir="temp"/>
+    <check-num-objects doc="doc1" value="1"/>
+    <check-num-objects doc="doc2" value="1"/>
+    <find-object-by-name index="obj1" doc="doc1" name="test5_out" type="OT_MSA"/>
+    <find-object-by-name index="obj2" doc="doc2" name="1_out" type="OT_MSA"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj1" value="17"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj2" value="4"/>
+
+    <check-temp-file url="msa_metadata_0003/test5.meg" exists="0"/>
+    <check-temp-file url="msa_metadata_0003/1.meg" exists="0"/>
+</multi-test>

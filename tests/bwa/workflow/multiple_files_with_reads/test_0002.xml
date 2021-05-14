@@ -1,0 +1,15 @@
+<multi-test>
+    <remove-temp-dir url="bwa_mem_1"/>
+    <create-temp-dir url="bwa_mem_1"/>
+    <load-document index="doc" url="bwa/index1/ecoli.fa" io="local_file" format="fasta"/>
+    <save-document doc="doc" url="bwa_mem_1/ecoli.fa" io="local_file" format="fasta"/>
+    <run-cmdline
+            task="!common_data_dir!bwa/bwa_mem_worker/bwa_mem_aligner.uwl"
+            reference="!tmp_data_dir!bwa_mem_1/ecoli.fa"
+            out-dir="!tmp_data_dir!bwa_mem_1"
+            reads_up="!common_data_dir!e_coli/e_coli_reads/bwa-mem/reads_1_us.fastq;e_coli/e_coli_reads/bwa-mem/reads_2_us.fastq"
+            reads_down="!common_data_dir!e_coli/e_coli_reads/bwa-mem/reads_1_ds.fastq;e_coli/e_coli_reads/bwa-mem/reads_2_ds.fastq"
+    />
+    <compare-sam-by-length file1="bwa_mem_1/bwa/out.sam" file2="bwa/bwa_mem_worker/result.sam"/>
+    <remove-temp-dir url="bwa_mem_1"/>
+</multi-test>

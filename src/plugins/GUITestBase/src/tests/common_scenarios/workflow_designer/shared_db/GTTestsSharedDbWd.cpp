@@ -85,7 +85,6 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0001) {
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(NULL != datasetList, "Unable to find dataset list widget");
@@ -108,7 +107,6 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0002) {
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(NULL != datasetList, "Unable to find dataset list widget");
@@ -131,7 +129,6 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0003) {
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(NULL != datasetList, "Unable to find dataset list widget");
@@ -154,7 +151,6 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0004) {
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(NULL != datasetList, "Unable to find dataset list widget");
@@ -177,7 +173,6 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0005) {
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(NULL != datasetList, "Unable to find dataset list widget");
@@ -200,7 +195,6 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0006) {
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     QListWidget *datasetList = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "itemsArea"));
     CHECK_SET_ERR(NULL != datasetList, "Unable to find dataset list widget");
@@ -231,7 +225,6 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0008) {
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "ugene_gui_test", "export_tests"));
     GTWidget::click(os, addFromDbButton);
@@ -256,7 +249,6 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0009) {
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     GTUtilsWorkflowDesigner::setDatasetInputFile(os, testDir + "_common_data/ugenedb/Klebsislla.sort.bam.ugenedb");
 
@@ -294,7 +286,6 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0010) {
 
     GTWidget::click(os, addFromDbButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     QMap<QString, QStringList> doc2Items;
     doc2Items["ugene_gui_test"] << "export_test_0007"
@@ -331,7 +322,6 @@ GUI_TEST_CLASS_DEFINITION(read_gui_test_0011) {
 
     GTWidget::click(os, addFromDbButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     QMap<QString, QStringList> doc2Items;
     doc2Items["ugene_gui_test"] << "pt0001_dir2"
@@ -373,7 +363,6 @@ GUI_TEST_CLASS_DEFINITION(read_gui_neg_test_0012) {
 
     GTWidget::click(os, addFromDbButton);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(write_gui_test_0001_1) {
@@ -534,7 +523,6 @@ GUI_TEST_CLASS_DEFINITION(save_uwl_gui_test_0002) {
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     QString path = sandBoxDir + "save_uwl_gui_test_0001.uwl";
     GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os, path, "New workflow"));
@@ -555,7 +543,6 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0001_1) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Please fix issues listed in the error list (located under workflow)."));
 
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
-    GTGlobals::sleep(5000);
 
     GTUtilsWorkflowDesigner::checkErrorList(os, "Unable to connect to the database");
 }
@@ -573,7 +560,6 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0001_2) {
     GTUtilsDialog::waitForDialog(os, new AuthenticationDialogFiller(os, GTDatabaseConfig::login(), GTDatabaseConfig::password()));
 
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
-    GTGlobals::sleep(5000);
 
     GTUtilsLog::check(os, l);
 }
@@ -609,7 +595,6 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0003) {
     GTWidget::click(os, addFromDbButton);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep();
 
     GTUtilsWorkflowDesigner::addAlgorithm(os, "Write Annotations");
     GTUtilsWorkflowDesigner::setParameter(os, "Data storage", 1, GTUtilsWorkflowDesigner::comboValue);
@@ -695,13 +680,11 @@ GUI_TEST_CLASS_DEFINITION(run_workflow_gui_test_0006) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Please fix issues listed in the error list (located under workflow)."));
 
     GTWidget::click(os, GTAction::button(os, "Run workflow"));
-    GTGlobals::sleep();
 
     GTUtilsWorkflowDesigner::checkErrorList(os, "Unable to connect to the database");
 
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Discard));
     GTUtilsMdi::click(os, GTGlobals::Close);
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3726) {

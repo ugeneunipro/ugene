@@ -1,0 +1,7 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/hasQualityTest/hasQualityTest.uwl"
+                 in="!common_data_dir!cmdline/eas.fastq"
+                 expected="TRUE"
+                 message="TEST PASSED"/>
+
+</multi-test>

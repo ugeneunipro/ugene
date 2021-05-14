@@ -1,0 +1,19 @@
+<!-- Circular sequence, all annotations, joined annotation, one part intersects begin, another part intersects both begin and end -->
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/pcr/pcr.uwl"
+            in="!common_data_dir!cmdline/pcr/joined-long.gb"
+            primers="!common_data_dir!cmdline/pcr/primers_anns_1.fa"
+            mismatches="0"
+            annotations="1"
+            report="!tmp_data_dir!pcr_anns_0004.txt"
+            out="!tmp_data_dir!pcr_anns_0004.gb"
+    />
+
+    <load-document index="doc" url="pcr_anns_0004.gb" io="local_file" format="genbank" dir="temp"/>
+    <find-object-by-name index="anns" doc="doc" name="sequence:521-80 features" type="OT_ANNOTATIONS"/>
+    <check-num-annotations obj="anns" value="3"/>
+    <find-annotation-by-name index="ann" obj="anns" name="long"/>
+    <check-annotation-location annotation="ann" location="1..30,41..60,101..160" complement="0"/>
+    <check-annotation-qualifier annotation="ann" qualifier="warning" value="This is only a part of the original annotation. The annotation was truncated by PCR product extraction."/>
+</multi-test>

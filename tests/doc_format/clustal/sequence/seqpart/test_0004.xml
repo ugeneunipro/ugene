@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- try to find seqpart in third of protein sequense in multy sequence in the midle position -->
+
+    <load-document index="doc" url="clustal/amino_from_wikipedia.aln" io="local_file" format="clustal"/>
+    <find-object-by-name index="obj" doc="doc" name="amino_from_wikipedia" type="OT_MSA"/>
+
+    <check-Msequence-part obj="obj" value="TTGALESAIAIATGKML" seqstart="180" seqname="CATH_HUMAN"/>
+
+</multi-test>

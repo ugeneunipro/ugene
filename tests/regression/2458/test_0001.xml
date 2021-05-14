@@ -1,0 +1,8 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/find-pattern/find-ptrn.uws"
+                 in="!common_data_dir!fasta/aaa.fa"
+                 out="!tmp_data_dir!2458.gb"
+                 ptrn="acgt"
+    />
+
+</multi-test>

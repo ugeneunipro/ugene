@@ -1,0 +1,3 @@
+<multi-test>
+    <load-remote-document database="NCBI GenBank (DNA sequence)" document_id="D11266" expected_document="load_remote_document/D11266.gb"/>
+</multi-test>

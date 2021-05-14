@@ -1,0 +1,9 @@
+<multi-test>
+    <run-cmdline task="extract_consensus_string"
+                 in="!common_data_dir!clustal/COI na.aln"
+                 out="!tmp_data_dir!extract_consensus_string_test_negative_0006.txt"
+                 algorithm="Default"
+                 threshold=""
+                 message="Incorrect value for 'threshold', null or default value passed to workflow"
+    />
+</multi-test>

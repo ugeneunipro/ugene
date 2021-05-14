@@ -1,0 +1,9 @@
+<!-- Verify an invalid BED file that CAN be opened: -->
+<!-- "strand" is a string. -->
+
+<multi-test>
+
+    <load-broken-document index="doc" url="bed/invalid_input/incorrect_strand/strand_is_str.bed" io="local_file" format="bed" message="The file does not contain valid annotations"/>
+
+</multi-test>
+

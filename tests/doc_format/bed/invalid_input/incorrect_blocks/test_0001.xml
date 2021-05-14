@@ -1,0 +1,8 @@
+<!-- Verify an invalid BED file that CAN be opened: -->
+<!-- "blockCount" is a string, not an integer. -->
+
+<multi-test>
+
+    <load-broken-document index="doc" url="bed/invalid_input/incorrect_blocks/block_count_is_str.bed" io="local_file" format="bed" message="The file does not contain valid annotations"/>
+
+</multi-test>

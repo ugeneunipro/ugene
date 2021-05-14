@@ -1,0 +1,4 @@
+<suite name="Kalign plugin precommt tests" test-timeout="45">
+    <!--selection from kalign prefab4 suite-->
+    <test-dir path="kalign" test-format="XML" test-ext="*.xml"/>
+</suite>

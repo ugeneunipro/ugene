@@ -1,0 +1,14 @@
+<multi-test>
+    <!--
+    Sequence:
+    CAGG:*-ACGGGCAGCAA-ACGGGcAGCAA-ACGGGcAGCAA-ACGGGcAGCAA-ACGGGcAGCAA-*:CACC
+    Tandems
+    Tandem repeat ACGGGCAGCAA 5x11 at pos 4
+    Mutations
+    Mutation in repeat #1 of 0th tandem at pos 5
+    We expect such results:
+    4,55,11
+    .(end of results)
+    -->
+    <find-tandems sequence="CAGGACGGGCAGCAAACGGGCAGCAAACGGGCAGCAAACGGGCAGCAAACGGGCAGCAACACC" minSize="11" maxSize="33" repeatCount="4" expected_result="4,55,11;"/>
+</multi-test>

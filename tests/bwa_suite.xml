@@ -1,0 +1,4 @@
+<suite test-timeout="300" name="Bwa plugin tests">
+
+    <test-dir test-ext="*.xml" path="bwa" test-format="XML"/>
+</suite>

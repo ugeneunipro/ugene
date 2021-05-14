@@ -1,0 +1,17 @@
+<multi-test>
+
+    <!-- Test reading file: very big file, with comments, Msequence-size=11039, number
+	 of sequence=10 -->
+
+    <load-document index="doc" url="mega/MegaTest_1.meg" io="local_file" format="mega"/>
+
+    <check-num-objects doc="doc" value="1"/>
+    <check-document-object-names doc="doc" value="MegaTest_1"/>
+    <check-document-object-types doc="doc" value="OT_MSA"/>
+
+    <find-object-by-name index="obj" doc="doc" name="MegaTest_1" type="OT_MSA"/>
+    <check-Msequence-size obj="obj" value="11039"/>
+    <check-Msequence-part obj="obj" value="FIAAPPVDIDGIREPVAGSL" seqstart="50" seqname="Odontella"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj" value="10"/>
+
+</multi-test>

@@ -1,0 +1,19 @@
+<multi-test>
+
+    <!-- uHMMER Search test: fragmentation test, hmmsearch chunk size 110, target sequence intersects seek area interface -->
+
+    <load-document index="doc" url="fasta/seq4.fa" io="local_file" format="fasta"/>
+
+    <uhmmer-search index="hmmsearch" hmmfile="hmm/A_SYM_SEQ.hmm" seqdoc="doc" expert_opt="0" chunksize="110"/>
+
+    <find-object-by-name index="obj" doc="hmmsearch" name="Annotations" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-number index="ann" obj="obj" number="0"/>
+
+    <check-annotation-location annotation="ann" location="151..200" complement="0"/>
+
+    <check-annotation-qualifier annotation="ann" qualifier="Score" value="-5.1"/>
+
+    <check-annotation-qualifier annotation="ann" qualifier="E-value" value="0.97"/>
+
+</multi-test>

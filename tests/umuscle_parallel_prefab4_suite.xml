@@ -1,0 +1,5 @@
+<suite name="uMuscle parallel plugin PREFAB4 tests">
+    <env-var name="MUSCLE_N_THREADS" value="2" local="true"/>
+    <!-- tests excluded due to their incompatibility with original muscle -->
+    <test-dir path="prefab4" test-format="XML" test-ext="*.xml"/>
+</suite>

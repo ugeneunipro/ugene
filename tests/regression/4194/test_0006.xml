@@ -1,0 +1,21 @@
+<multi-test>
+    <!--
+    * 1. Create workflow Read Sequence -> Filter annotations by name -> Write Sequence
+    * 2. Uncheck value "Set of annotations (by Read Sequence)" in parameter "Set of annotations" of Write Sequence element
+    * 3. Set as input sequence "samples/Genbank/sars.gb"
+    * 4. Set value of "Annotation names file" to file with only this string: "CDS\ngene"
+    * 5. Run workflow
+    * Expected state: Output file have only CDS and gene annotations
+    -->
+    <run-cmdline task="!common_data_dir!regression/4194/test-4194.uwl"
+                 in="!sample_data_dir!/Genbank/sars.gb"
+                 out="!tmp_data_dir!regression_4194_0006.gb"
+                 a-name-file="!common_data_dir!regression/4194/filter2.txt"
+    />
+
+    <load-document index="doc1" url="regression_4194_0006.gb" io="local_file" format="GenBank" dir="temp"/>
+    <load-document index="doc2" url="regression/4194/ref/test_0001.gb" io="local_file" format="GenBank"/>
+
+    <compare-annotations-names-in-two-objects doc="doc2" value="doc1"/>
+
+</multi-test>

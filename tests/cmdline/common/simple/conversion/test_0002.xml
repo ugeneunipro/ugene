@@ -1,0 +1,19 @@
+<multi-test>
+
+    <remove-temp-dir url="conversion_0002"/>
+    <create-temp-dir url="conversion_0002"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/conversion/schema.uwl"
+            in="!common_data_dir!fasta/abcd.fa;fasta/AMINO.fa;fasta/11.gb;fasta/test.TXT"
+            target="genbank"
+            exclude="fasta"
+            working-dir="conversion_0002"
+    />
+
+    <check-temp-file url="conversion_0002/Converted files/abcd.fa.gb" exists="0"/>
+    <check-temp-file url="conversion_0002/Converted files/AMINO.fa.gb" exists="0"/>
+    <check-temp-file url="conversion_0002/Converted files/11.gb.gb" exists="0"/>
+    <check-temp-file url="conversion_0002/Converted files/test.TXT.gb" exists="0"/>
+
+</multi-test>

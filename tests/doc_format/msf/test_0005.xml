@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Test reading file: whites are allowed at the begining of the file-->
+
+    <load-document index="doc" url="msf/test5.msf" io="local_file" format="msf"/>
+
+    <check-num-objects doc="doc" value="1"/>
+    <check-document-object-names doc="doc" value="test5"/>
+    <check-document-object-types doc="doc" value="OT_MSA"/>
+
+</multi-test>

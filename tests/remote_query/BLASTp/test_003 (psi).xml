@@ -1,0 +1,25 @@
+<multi-test>
+    <plugin_remote-query
+
+            seq="TTCCPSIVARSNFNVCRLPGTPEAICATYTGCIIIPGATCPGDYAN"
+            alph="amino"
+            alg="blastp"
+            db="nr"
+            e-value="10"
+            hits="3"
+            word_size="3"
+            filters="L"
+            short_seq="0"
+            gap_costs="11 1"
+            match_scores="2 -3"
+            matrix="BLOSUM62"
+            service="psi"
+
+            max_length="2048"
+            min_length="0"
+            strand="direct"
+
+            expected_results="P01542,1CRN_A,1AB1_A"
+
+    />
+</multi-test>

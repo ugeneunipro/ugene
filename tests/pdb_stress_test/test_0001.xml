@@ -1,0 +1,6 @@
+<multi-test>
+    <!-- Load document from every PDB file in specified dir -->
+
+    <try-load-all-pdb-documents/>
+
+</multi-test>

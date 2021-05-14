@@ -1,0 +1,30 @@
+<multi-test>
+
+    <create-temp-file url="write-seq-overwrite-0002.fa" data=">old\nAAAA\n"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/write/seq-seq.uwl"
+            in="!common_data_dir!cmdline/read-write/write/seq4.fa"
+            out="!tmp_data_dir!write-seq-overwrite-0002.fa"
+            action="1"
+            accum="false"
+    />
+
+    <load-document index="doc1" url="write-seq-overwrite-0002.fa" io="local_file" format="fasta" dir="temp"/>
+    <check-num-objects doc="doc1" value="1"/>
+
+    <load-document index="doc2" url="write-seq-overwrite-0002_1.fa" io="local_file" format="fasta" dir="temp"/>
+    <check-num-objects doc="doc2" value="1"/>
+
+    <load-document index="doc3" url="write-seq-overwrite-0002_2.fa" io="local_file" format="fasta" dir="temp"/>
+    <check-num-objects doc="doc3" value="1"/>
+
+    <load-document index="doc4" url="write-seq-overwrite-0002_3.fa" io="local_file" format="fasta" dir="temp"/>
+    <check-num-objects doc="doc4" value="1"/>
+
+    <check-temp-file url="write-seq-append-0002_oldcopy1.fa" exists="0"/>
+    <check-temp-file url="write-seq-append-0002_1_oldcopy1.fa" exists="0"/>
+    <check-temp-file url="write-seq-append-0002_2_oldcopy1.fa" exists="0"/>
+    <check-temp-file url="write-seq-append-0002_3_oldcopy1.fa" exists="0"/>
+
+</multi-test>

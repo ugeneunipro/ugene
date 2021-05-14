@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to check numbers of sequence in Msequence (must be 3)-->
+
+    <load-document index="doc" url="phylip/seq_amino_canon.ph" io="local_file" format="phylip-sequential"/>
+    <find-object-by-name index="obj" doc="doc" name="seq_amino_canon" type="OT_MSA"/>
+    <check-numbers-of-sequence-in-Msequence obj="obj" value="3"/>
+
+</multi-test>
