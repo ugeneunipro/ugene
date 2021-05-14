@@ -349,9 +349,7 @@ void MSAEditorSequenceArea::sl_alphabetChanged(const MaModificationInfo &mi, con
     if (message.isEmpty()) {
         return;
     }
-    const NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
-    CHECK(notificationStack != nullptr, );
-    notificationStack->addNotification(message, Info_Not);
+    NotificationStack::addNotification(message, Info_Not);
 }
 
 void MSAEditorSequenceArea::sl_updateActions() {
@@ -627,9 +625,7 @@ void MSAEditorSequenceArea::sl_addSequencesToAlignmentFinished(Task *task) {
     CHECK(addSeqTask != nullptr, );
     const MaModificationInfo &mi = addSeqTask->getMaModificationInfo();
     if (!mi.rowListChanged) {
-        const NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
-        CHECK(notificationStack != nullptr, );
-        notificationStack->addNotification(tr("No new rows were inserted: selection contains no valid sequences."), Warning_Not);
+        NotificationStack::addNotification(tr("No new rows were inserted: selection contains no valid sequences."), Warning_Not);
     }
 }
 

@@ -57,7 +57,7 @@ public:
 
     void showNotification(int x, int y);
 
-    QString getText() const;
+    const QString &getText() const;
 
     NotificationType getType() const;
 
@@ -80,7 +80,7 @@ private:
     void updateCloseButtonStyle(bool isHovered);
 
 signals:
-    /** The signal is emitted when notification is hidden. */
+    /** The signal is emitted after the notification is hidden. */
     void si_notificationHideEvent();
     void si_delete();
 
@@ -115,7 +115,7 @@ public:
     bool hasError() const;
     void setFixed(bool val);
 
-    // just a shortcut to write less
+    /** Adds instance of Notification to the notification stack. */
     static void addNotification(const QString &message, NotificationType type, QAction *action = 0);
 
 private slots:

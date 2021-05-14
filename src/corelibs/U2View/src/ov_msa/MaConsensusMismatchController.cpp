@@ -116,18 +116,18 @@ void MaConsensusMismatchController::selectNextMismatch(NavigationDirection direc
     int pos = initialPos;
     do {
         switch (direction) {
-        case Forward:
-            pos++;
-            if (pos == mismatchCache.size()) {
-                pos = 0;
-            }
-            break;
-        default:
-            pos--;
-            if (pos == -1) {
-                pos = mismatchCache.size() - 1;
-            }
-            break;
+            case Forward:
+                pos++;
+                if (pos == mismatchCache.size()) {
+                    pos = 0;
+                }
+                break;
+            default:
+                pos--;
+                if (pos == -1) {
+                    pos = mismatchCache.size() - 1;
+                }
+                break;
         }
         consCache->updateCacheItem(pos);
         if (mismatchCache[pos] == true) {
@@ -135,11 +135,7 @@ void MaConsensusMismatchController::selectNextMismatch(NavigationDirection direc
             return;
         }
     } while (pos != initialPos);
-
-    // no mismatches - show notification
-    const NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
-    CHECK(notificationStack != NULL, );
-    notificationStack->addNotification(tr("There are no variations in the consensus sequence."), Info_Not);
+    NotificationStack::addNotification(tr("There are no variations in the consensus sequence."), Info_Not);
 }
 
 }    // namespace U2

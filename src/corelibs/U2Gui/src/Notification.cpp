@@ -258,7 +258,7 @@ void Notification::sl_timeout() {
     }
 }
 
-QString Notification::getText() const {
+const QString &Notification::getText() const {
     return text;
 }
 
@@ -386,8 +386,10 @@ void NotificationStack::setFixed(bool val) {
 }
 
 void NotificationStack::addNotification(const QString &message, NotificationType type, QAction *action) {
-    Notification *n = new Notification(message, type, action);
-    AppContext::getMainWindow()->getNotificationStack()->addNotification(n);
+    NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
+    if (notificationStack != nullptr) {
+        notificationStack->addNotification(new Notification(message, type, action));
+    }
 }
 
 QPoint NotificationStack::getBottomRightOfMainWindow() {

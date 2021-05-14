@@ -710,17 +710,17 @@ void AssemblyBrowser::sl_exportCoverage() {
     if (QDialog::Accepted == dialogResult) {
         Task *exportTask = NULL;
         switch (d->getFormat()) {
-        case ExportCoverageSettings::Histogram:
-            exportTask = new ExportCoverageHistogramTask(getModel()->getDbiConnection().dbi->getDbiRef(), assembly.id, d->getSettings());
-            break;
-        case ExportCoverageSettings::PerBase:
-            exportTask = new ExportCoveragePerBaseTask(getModel()->getDbiConnection().dbi->getDbiRef(), assembly.id, d->getSettings());
-            break;
-        case ExportCoverageSettings::Bedgraph:
-            exportTask = new ExportCoverageBedgraphTask(getModel()->getDbiConnection().dbi->getDbiRef(), assembly.id, d->getSettings());
-            break;
-        default:
-            FAIL("Unexpected format", );
+            case ExportCoverageSettings::Histogram:
+                exportTask = new ExportCoverageHistogramTask(getModel()->getDbiConnection().dbi->getDbiRef(), assembly.id, d->getSettings());
+                break;
+            case ExportCoverageSettings::PerBase:
+                exportTask = new ExportCoveragePerBaseTask(getModel()->getDbiConnection().dbi->getDbiRef(), assembly.id, d->getSettings());
+                break;
+            case ExportCoverageSettings::Bedgraph:
+                exportTask = new ExportCoverageBedgraphTask(getModel()->getDbiConnection().dbi->getDbiRef(), assembly.id, d->getSettings());
+                break;
+            default:
+                FAIL("Unexpected format", );
         }
         AppContext::getTaskScheduler()->registerTopLevelTask(exportTask);
     }
@@ -999,15 +999,13 @@ QString AssemblyBrowser::chooseReferenceUrl() const {
 }
 
 void AssemblyBrowser::showReferenceLoadingError(const QList<GObject *> &sequenceObjects, const QString &url) const {
-    const NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
     QString message;
-
     if (sequenceObjects.isEmpty()) {
         message = tr("An error occurred while setting reference to \"%1\" assembly. The selected file \"%2\" does not contain sequences.").arg(gobject->getGObjectName()).arg(url);
     } else {
         message = tr("An error occurred while setting reference to \"%1\" assembly. There are more than one sequence in file \"%2\". Please select the required sequence object in the Project View and click \"Set reference\" again.").arg(gobject->getGObjectName()).arg(url);
     }
-    notificationStack->addNotification(message, Error_Not);
+    NotificationStack::addNotification(message, Error_Not);
 }
 
 void AssemblyBrowser::loadReferenceFromFile() {
