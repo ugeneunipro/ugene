@@ -18,21 +18,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
  */
+
 #include "HelpButton.h"
 
 #include <QComboBox>
 #include <QPushButton>
 
-#include <U2Core/AppContext.h>
-
 #include <U2Gui/GUIUtils.h>
-#include <U2Gui/MainWindow.h>
-
-#include "Notification.h"
 
 namespace U2 {
-
-const QString HelpButton::INVALID_VALUE = "invalid";
 
 HelpButton::HelpButton(QObject *parent, QDialogButtonBox *b, const QString &_pageId)
     : QObject(parent), pageId(_pageId), dialogBox(b) {
@@ -47,10 +41,7 @@ HelpButton::HelpButton(QObject *parent, QAbstractButton *hb, const QString &_pag
 }
 
 void HelpButton::sl_buttonClicked() {
-    QTimer::singleShot(1000, []() {
-        AppContext::getMainWindow()->addNotification("Notification: " + QString::number(clock()), Error_Not);
-    });
-    //    GUIUtils::runWebBrowser("https://doc.ugene.net/wiki/pages/viewpage.action?pageId=" + pageId + "&from=ugene");
+    GUIUtils::runWebBrowser("https://doc.ugene.net/wiki/pages/viewpage.action?pageId=" + pageId + "&from=ugene");
 }
 
 void HelpButton::updatePageId(const QString &newPageId) {
