@@ -58,7 +58,7 @@ public:
         QMap<int, int> productsNumber;    // pair number -> products count
     };
 
-    InSilicoPcrReportTask(const QList<TableRow> &table, const QList<QPair<Primer, Primer>> &primers, const QString &reportUrl);
+    InSilicoPcrReportTask(const QList<TableRow> &table, const QList<QPair<Primer, Primer>> &primers, const QString &reportUrl, const QString &primersUrl);
     void run();
 
 private:
@@ -74,6 +74,7 @@ private:
     QList<TableRow> table;
     QList<QPair<Primer, Primer>> primers;
     QString reportUrl;
+    QString primersUrl;
 };
 
 class InSilicoPcrWorker : public BaseThroughWorker {

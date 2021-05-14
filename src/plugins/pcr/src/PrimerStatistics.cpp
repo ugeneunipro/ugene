@@ -136,7 +136,7 @@ PrimerStatisticsCalculator::PrimerStatisticsCalculator(const QByteArray &sequenc
         case 'N':
             break;
         default:
-            initializationError = QString(PrimerStatistics::tr("Unexpected symbol: ") + c);
+            initializationError = QString(PrimerStatistics::tr("Unexpected symbol: %1").arg(c));
             return;
         }
         if (prevC == c) {

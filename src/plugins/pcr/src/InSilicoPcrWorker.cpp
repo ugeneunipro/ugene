@@ -309,7 +309,7 @@ int InSilicoPcrWorker::createMetadata(const InSilicoPcrTaskSettings &settings, c
 Task *InSilicoPcrWorker::onInputEnded() {
     CHECK(!reported, NULL);
     reported = true;
-    return new InSilicoPcrReportTask(table, primers, getValue<QString>(REPORT_ATTR_ID));
+    return new InSilicoPcrReportTask(table, primers, getValue<QString>(REPORT_ATTR_ID), getValue<QString>(PRIMERS_ATTR_ID));
 }
 
 Task *InSilicoPcrWorker::createTask(const Message &message, U2OpStatus &os) {
@@ -364,8 +364,8 @@ Task *InSilicoPcrWorker::createTask(const Message &message, U2OpStatus &os) {
 /************************************************************************/
 /* InSilicoPcrReportTask */
 /************************************************************************/
-InSilicoPcrReportTask::InSilicoPcrReportTask(const QList<TableRow> &table, const QList<QPair<Primer, Primer>> &primers, const QString &reportUrl)
-    : Task(tr("Generate In Silico PCR report"), TaskFlag_None), table(table), primers(primers), reportUrl(reportUrl) {
+InSilicoPcrReportTask::InSilicoPcrReportTask(const QList<TableRow> &table, const QList<QPair<Primer, Primer>> &primers, const QString &reportUrl, const QString &_primersUrl)
+    : Task(tr("Generate In Silico PCR report"), TaskFlag_None), table(table), primers(primers), reportUrl(reportUrl), primersUrl(_primersUrl) {
 }
 
 void InSilicoPcrReportTask::run() {
@@ -417,7 +417,7 @@ QByteArray InSilicoPcrReportTask::primerDetails() {
         QPair<Primer, Primer> pair = primers[i];
         PrimersPairStatistics calc(pair.first.sequence.toLocal8Bit(), pair.second.sequence.toLocal8Bit());
         if (!calc.getInitializationError().isEmpty()) {
-            setError(calc.getInitializationError());
+            setError(tr("An error '%1' has occurred during processing file with primers '%2'").arg(calc.getInitializationError()).arg(primersUrl));
             return "";
         }
         result += chapter(
