@@ -38,11 +38,10 @@ class DNATranslation;
 class Annotation;
 
 /** Computes map of codon counts for the given sequence in the current set of regions. */
-class U2VIEW_EXPORT CodonOccurTask : public BackgroundTask<QList<CharOccurResult>>, public SequenceDbiWalkerCallback {
+class U2VIEW_EXPORT CodonOccurTask : public BackgroundTask<QMap<QByteArray, qint64>>, public SequenceDbiWalkerCallback {
 public:
     /** Create a task to count codons in all 6 frames (3 direct and 3 complement) in the whole sequence. */
     CodonOccurTask(DNATranslation *complementTranslation,
-                   DNATranslation *aminoTranslation,
                    const U2EntityRef &seqRef);
 
     /**
@@ -50,13 +49,11 @@ public:
      * Every regions in this case is a part of a 'sequence selection'.
      */
     CodonOccurTask(DNATranslation *complementTranslation,
-                   DNATranslation *aminoTranslation,
                    const U2EntityRef &seqRef,
                    const QVector<U2Region> &regions);
 
     /** Creates a task to count codons in 1 frame guided by the annotation strand. */
     CodonOccurTask(DNATranslation *complementTranslation,
-                   DNATranslation *aminoTranslation,
                    const U2EntityRef &seqRef,
                    const QList<Annotation *> &annotations);
 
@@ -65,7 +62,7 @@ public:
     ReportResult report() override;
 
 private:
-    QHash<char, qint64> countPerCodon;
+    QMap<QByteArray, qint64> countPerCodon;
 };
 
 }    // namespace U2

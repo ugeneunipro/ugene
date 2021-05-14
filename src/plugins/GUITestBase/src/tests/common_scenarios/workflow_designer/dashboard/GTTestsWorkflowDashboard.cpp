@@ -222,9 +222,7 @@ public:
     }
 
     void run(HI::GUITestOpStatus &os) {
-        QWidget *dialog = QApplication::activeModalWidget();
-        CHECK_SET_ERR(nullptr != dialog, "activeModalWidget is nullptr");
-
+        QWidget *dialog = GTWidget::getActiveModalWidget(os);
         AppSettingsDialogFiller::setWorkflowOutputDirPath(os, path);
         GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
     }
@@ -2489,9 +2487,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0002) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != nullptr, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), true),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), true)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -2624,9 +2620,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0003) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != nullptr, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), true)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -2751,9 +2745,7 @@ GUI_TEST_CLASS_DEFINITION(view_opening_test_0004) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), false)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -2961,9 +2953,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0002) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), true),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), true)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -3158,9 +3148,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0003) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), true)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -3316,9 +3304,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0004) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Extract consensus as sequence 1"), false),
                                                                        qMakePair(QString("Extract consensus as sequence 2"), false)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -3604,9 +3590,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0005) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             const QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Align sequences with MUSCLE 1"), true),
                                                                        qMakePair(QString("Align sequences with MUSCLE 2"), true)});
             const QList<QPair<QString, bool>> actualDashboardsState = DashboardsManagerDialogFiller::getDashboardsState(os);
@@ -3945,9 +3929,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0006) {
         }
 
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Align sequences with MUSCLE 1"), true),
                                                                  qMakePair(QString("Align sequences with MUSCLE 2"), true),
                                                                  qMakePair(QString("Extract consensus as sequence 1"), true),
@@ -4285,9 +4267,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0007) {
         }
 
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Align sequences with MUSCLE 1"), true),
                                                                  qMakePair(QString("Align sequences with MUSCLE 2"), true),
                                                                  qMakePair(QString("Extract consensus as sequence 1"), false),
@@ -4624,9 +4604,7 @@ GUI_TEST_CLASS_DEFINITION(output_dir_scanning_test_0008) {
         }
 
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QList<QPair<QString, bool>> expectedDashboardsState({qMakePair(QString("Align sequences with MUSCLE 1"), true),
                                                                  qMakePair(QString("Align sequences with MUSCLE 2"), true),
                                                                  qMakePair(QString("Extract consensus as sequence 1"), false),

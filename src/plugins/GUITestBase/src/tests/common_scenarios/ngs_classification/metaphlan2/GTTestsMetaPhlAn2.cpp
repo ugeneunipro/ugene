@@ -154,9 +154,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 GUI_TEST_CLASS_DEFINITION(test_0002) {
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
             //python" is not installed.
@@ -198,9 +196,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     qputenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY", "0");
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
             //python" is installed.
@@ -241,9 +237,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 GUI_TEST_CLASS_DEFINITION(test_0004) {
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
             //python" is installed.
@@ -285,9 +279,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     qputenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY", "0");
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
             auto path = getMetaphlan2WithoutScriptPath();
             coreLog.info(QString("getMetaphlan2WithoutScriptPath: %1").arg(path));
@@ -328,9 +320,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     qputenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY", "0");
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
             //python" is installed.
@@ -369,9 +359,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     qputenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY", "0");
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
             //python" is installed.
@@ -412,9 +400,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     // 3. Apply settings.
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
             AppSettingsDialogFiller::setExternalToolPath(os, ET_PYTHON, "/invalid_path/");

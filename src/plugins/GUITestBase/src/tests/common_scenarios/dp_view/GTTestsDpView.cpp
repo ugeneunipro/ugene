@@ -276,9 +276,7 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
         }
         virtual void run() {
             CHECK_SET_ERR(1 <= scenario && scenario <= 4, "Wrong scenario number");
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QCheckBox *includeAreaCheckbox = dialog->findChild<QCheckBox *>("include_area_selection");
             CHECK_SET_ERR(includeAreaCheckbox != NULL, "inlclu_area_selection is NULL");
 

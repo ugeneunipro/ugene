@@ -909,9 +909,7 @@ GUI_TEST_CLASS_DEFINITION(test_0055) {
         CustomScenarioCancel() {
         }
         virtual void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
@@ -947,9 +945,7 @@ GUI_TEST_CLASS_DEFINITION(test_0057) {
         CheckPathScenario() {
         }
         virtual void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QTreeWidget *treeWidget = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "shortReadsTable", dialog));
             CHECK_SET_ERR(treeWidget != NULL, "Tree widget is NULL");
             QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
