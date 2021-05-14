@@ -27,6 +27,7 @@
 #include <QDir>
 #include <QScreen>
 
+#include <U2Core/BundleInfo.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/Log.h>
 #include <U2Core/U2SafePoints.h>
@@ -87,6 +88,11 @@ static QString getDataDirImpl() {
         dataDir = QString("data%1/").arg(suiteNumber - 1);
     } else {
         dataDir = QString("data/");
+    }
+
+    if (!QFileInfo(dataDir).exists() &&
+            ! BundleInfo::getDataSearchPath().isEmpty()) {
+        dataDir = BundleInfo::getDataSearchPath() + "/";
     }
 #else
     if (ok && suiteNumber > 1) {
