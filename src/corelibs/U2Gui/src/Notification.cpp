@@ -54,8 +54,8 @@ Notification::Notification(const QString &message, NotificationType _type, QActi
     setText(metrics.elidedText(text, Qt::ElideRight, width() - 50));
     setToolTip(text);
 
-    generateCSS(false);
-    generateCSSforCloseButton(false);
+    updateStyle(false);
+    updateCloseButtonStyle(false);
 
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::Tool);
 
@@ -69,34 +69,34 @@ Notification::Notification(const QString &message, NotificationType _type, QActi
     close->setFixedSize(16, 16);
 }
 
-void Notification::generateCSS(bool isHovered) {
+void Notification::updateStyle(bool isHovered) {
     QString bgColor;
     QString img;
     QString fontColor;
     QString border;
     switch (type) {
-    case Info_Not:
-        bgColor = "background-color: #BDE5F8;";
-        fontColor = "color: #00529B;";
-        img = "background-image: url(':core/images/info_notification.png');";
-        break;
-    case Error_Not:
-        bgColor = "background-color: #FFBABA;";
-        fontColor = "color: #D8000C;";
-        img = "background-image: url(':core/images/error_notification.png');";
-        break;
-    case Report_Not:
-        bgColor = "background-color: #BDE5F8;";
-        fontColor = "color: #00529B;";
-        img = "background-image: url(':core/images/info_notification.png');";
-        break;
-    case Warning_Not:
-        bgColor = "background-color: #FCF8E3;";
-        fontColor = "color: #C09853;";
-        img = "background-image: url(':core/images/warning_notification.png');";
-        break;
-    default:
-        assert(0);
+        case Info_Not:
+            bgColor = "background-color: #BDE5F8;";
+            fontColor = "color: #00529B;";
+            img = "background-image: url(':core/images/info_notification.png');";
+            break;
+        case Error_Not:
+            bgColor = "background-color: #FFBABA;";
+            fontColor = "color: #D8000C;";
+            img = "background-image: url(':core/images/error_notification.png');";
+            break;
+        case Report_Not:
+            bgColor = "background-color: #BDE5F8;";
+            fontColor = "color: #00529B;";
+            img = "background-image: url(':core/images/info_notification.png');";
+            break;
+        case Warning_Not:
+            bgColor = "background-color: #FCF8E3;";
+            fontColor = "color: #C09853;";
+            img = "background-image: url(':core/images/warning_notification.png');";
+            break;
+        default:
+            assert(0);
     }
 
     if (isHovered) {
@@ -117,7 +117,7 @@ void Notification::generateCSS(bool isHovered) {
     setStyleSheet(css);
 }
 
-void Notification::generateCSSforCloseButton(bool isHovered) {
+void Notification::updateCloseButtonStyle(bool isHovered) {
     QString css;
     QString background;
     if (isHovered) {
@@ -138,23 +138,24 @@ void Notification::generateCSSforCloseButton(bool isHovered) {
 
 bool Notification::event(QEvent *e) {
     if (e->type() == QEvent::ToolTip) {
-        QHelpEvent *hEvent = static_cast<QHelpEvent *>(e);
-        QToolTip::showText(hEvent->globalPos(), QString(text));
-        return true;
+        if (auto helpEvent = dynamic_cast<QHelpEvent *>(e)) {
+            QToolTip::showText(helpEvent->globalPos(), QString(text));
+            return true;
+        }
     }
     if (e->type() == QEvent::HoverEnter) {
-        generateCSS(true);
+        updateStyle(true);
     }
     if (e->type() == QEvent::HoverLeave) {
-        generateCSS(false);
+        updateStyle(false);
     }
-    return QWidget::event(e);
+    return QLabel::event(e);
 }
 
 void Notification::mousePressEvent(QMouseEvent *ev) {
     if (ev->button() == Qt::LeftButton) {
         if (timer.isActive()) {
-            dissapear();
+            hideNotification();
         }
         if (action) {
             action->trigger();
@@ -208,15 +209,16 @@ void Notification::mousePressEvent(QMouseEvent *ev) {
 
 bool Notification::eventFilter(QObject *, QEvent *event) {
     if (event->type() == QEvent::MouseButtonPress) {
-        QMouseEvent *e = static_cast<QMouseEvent *>(event);
-        if (e->button() == Qt::LeftButton) {
-            emit si_delete();
-            return true;
+        if (auto mouseEvent = dynamic_cast<QMouseEvent *>(event)) {
+            if (mouseEvent->button() == Qt::LeftButton) {
+                emit si_delete();
+                return true;
+            }
         }
     } else if (event->type() == QEvent::HoverEnter) {
-        generateCSSforCloseButton(true);
+        updateCloseButtonStyle(true);
     } else if (event->type() == QEvent::HoverLeave) {
-        generateCSSforCloseButton(false);
+        updateCloseButtonStyle(false);
     }
     return false;
 }
@@ -237,10 +239,10 @@ void Notification::switchEmbeddedVisualState() {
     setAttribute(Qt::WA_Hover);
 }
 
-void Notification::dissapear() {
+void Notification::hideNotification() {
     hide();
     timer.stop();
-    emit si_dissapear();
+    emit si_notificationHideEvent();
 }
 
 void Notification::sl_timeout() {
@@ -248,7 +250,7 @@ void Notification::sl_timeout() {
     if (rect.height() >= TT_HEIGHT) {
         ++timeCounter;
         if (timeCounter > 250) {
-            dissapear();
+            hideNotification();
         }
     } else {
         move(rect.topLeft().x(), rect.topLeft().y() - 10);
@@ -264,7 +266,7 @@ NotificationType Notification::getType() const {
     return type;
 }
 
-void Notification::increaseCounter() {
+void Notification::incrementCounter() {
     counter++;
     QFontMetrics metrics(font(), this);
     QString addText = "(" + QString::number(counter) + ")";
@@ -274,14 +276,14 @@ void Notification::increaseCounter() {
 
 NotificationStack::NotificationStack(QObject *o /* = NULL */)
     : QObject(o), notificationPosition(0), notificationNumber(0) {
-    w = new NotificationWidget(AppContext::getMainWindow()->getQMainWindow());
+    notificationWidget = new NotificationWidget(AppContext::getMainWindow()->getQMainWindow());
 }
 
 NotificationStack::~NotificationStack() {
-    foreach (Notification *t, notifications) {
-        delete t;
+    foreach (Notification *notification, notifications) {
+        delete notification;
     }
-    delete w;
+    delete notificationWidget;
 }
 
 bool NotificationStack::hasError() const {
@@ -296,7 +298,7 @@ bool NotificationStack::hasError() const {
 void NotificationStack::addNotification(Notification *t) {
     foreach (Notification *nt, notificationsOnScreen) {
         if (nt->getText().split("]")[1] == t->getText().split("]")[1]) {    //there is always minimum one ']' symbol
-            nt->increaseCounter();
+            nt->incrementCounter();
             delete t;
             return;
         }
@@ -322,10 +324,10 @@ void NotificationStack::addNotification(Notification *t) {
     t->showNotification(pos.x() - TT_WIDTH, pos.y() - 50 - notificationPosition);
     notificationNumber++;
     notificationPosition += TT_HEIGHT;
-    connect(t, SIGNAL(si_dissapear()), SLOT(sl_notificationDissapear()));
+    connect(t, SIGNAL(si_notificationHideEvent()), SLOT(sl_onNotificationHidden()));
 }
 
-void NotificationStack::sl_notificationDissapear() {
+void NotificationStack::sl_onNotificationHidden() {
     notificationNumber = qMax(0, notificationNumber - 1);
     notificationPosition = qMax(0, notificationPosition - TT_HEIGHT);
 
@@ -333,7 +335,7 @@ void NotificationStack::sl_notificationDissapear() {
         int removedNotificationY = removedNotification->y();
         addToNotificationWidget(removedNotification);
         // Shift all notifications above the removed one down.
-        for (auto notification : notificationsOnScreen) {
+        for (auto notification : qAsConst(notificationsOnScreen)) {
             if (notification->y() < removedNotificationY) {
                 notification->move(notification->x(), notification->y() + TT_HEIGHT);
             }
@@ -344,16 +346,16 @@ void NotificationStack::sl_notificationDissapear() {
 void NotificationStack::addToNotificationWidget(Notification *t) {
     t->switchEmbeddedVisualState();
     t->show();
-    t->setParent(w);
-    w->addNotification(t);
+    t->setParent(notificationWidget);
+    notificationWidget->addNotification(t);
     notificationsOnScreen.removeOne(t);
 }
 
 void NotificationStack::sl_delete() {
-    Notification *t = qobject_cast<Notification *>(sender());
-    int i = notifications.indexOf(t);
+    Notification *notification = qobject_cast<Notification *>(sender());
+    int i = notifications.indexOf(notification);
     assert(i != -1);
-    w->removeNotification(t);
+    notificationWidget->removeNotification(notification);
     notifications.takeAt(i);
     emit si_changed();
     //t->deleteLater();
@@ -374,13 +376,13 @@ QList<Notification *> NotificationStack::getItems() const {
 void NotificationStack::showStack() {
     QPoint pos = getBottomRightOfMainWindow();
 
-    w->move(pos.x() - w->width(), pos.y() - w->height());
-    w->show();
-    w->setWindowState(Qt::WindowActive);
+    notificationWidget->move(pos.x() - notificationWidget->width(), pos.y() - notificationWidget->height());
+    notificationWidget->show();
+    notificationWidget->setWindowState(Qt::WindowActive);
 }
 
 void NotificationStack::setFixed(bool val) {
-    w->setFixed(val);
+    notificationWidget->setFixed(val);
 }
 
 void NotificationStack::addNotification(const QString &message, NotificationType type, QAction *action) {
@@ -390,16 +392,16 @@ void NotificationStack::addNotification(const QString &message, NotificationType
 
 QPoint NotificationStack::getBottomRightOfMainWindow() {
     QPoint pos;
-#ifndef Q_OS_DARWIN
-    // This behavior is correct.
-    pos = AppContext::getMainWindow()->getQMainWindow()->geometry().bottomRight();
-#else
-    // Widget's rect doesn't know its real position on the screen. Lets calculate it manually.
-    QPoint topLeft = AppContext::getMainWindow()->getQMainWindow()->mapToGlobal(QPoint(0, 0));
-    QSize mainWindowSize = AppContext::getMainWindow()->getQMainWindow()->geometry().size();
-    pos = QPoint(topLeft.x() + mainWindowSize.width(), topLeft.y() + mainWindowSize.height());    // bottom right
-    pos -= QPoint(4, 27);    // Some space for the statusbar and window's edge.
-#endif
+    if (isOsMac()) {
+        // Widget's rect doesn't know its real position on the screen. Lets calculate it manually.
+        QPoint topLeft = AppContext::getMainWindow()->getQMainWindow()->mapToGlobal(QPoint(0, 0));
+        QSize mainWindowSize = AppContext::getMainWindow()->getQMainWindow()->geometry().size();
+        pos = QPoint(topLeft.x() + mainWindowSize.width(), topLeft.y() + mainWindowSize.height());    // bottom right
+        pos -= QPoint(4, 27);    // Some space for the statusbar and window's edge.
+    } else {
+        // This behavior is correct.
+        pos = AppContext::getMainWindow()->getQMainWindow()->geometry().bottomRight();
+    }
     return pos;
 }
 
