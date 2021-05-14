@@ -187,4 +187,8 @@ const U2Region &SequenceDbiWalkerSubtask::getGlobalRegion() const {
     return globalRegion;
 }
 
+SequenceDbiWalkerTask *SequenceDbiWalkerSubtask::getSequenceDbiWalkerTask() const {
+    return t;
+}
+
 }    // namespace U2

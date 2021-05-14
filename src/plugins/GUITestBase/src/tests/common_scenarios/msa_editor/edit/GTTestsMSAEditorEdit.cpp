@@ -815,9 +815,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
             //Expected state: Create subaligniment dialog has appeared, all sequences are checked
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QTableWidget *table = GTWidget::findExactWidget<QTableWidget *>(os, "sequencesTableWidget", dialog);
             CHECK_SET_ERR(NULL != table, "tableWidget is NULL");
 

@@ -98,7 +98,7 @@ private:
     void updateCodonsOccurrenceData();
 
     /** Updates codon occurrence label from the 'codonStatList'. */
-    void updateCodonsOccurrenceData(const QList<CharOccurResult> &codonStatList);
+    void updateCodonsOccurrenceData(const QMap<QByteArray, qint64> &codonStatsMap);
 
     /**  Listen when something has been changed in the AnnotatedDNAView or in the Options Panel */
     void connectSlotsForSeqContext(ADVSequenceObjectContext *);
@@ -126,7 +126,7 @@ private:
     StatisticsCache<DNAStatistics> *getCommonStatisticsCache() const;
     StatisticsCache<CharactersOccurrence> *getCharactersOccurrenceCache() const;
     StatisticsCache<DinucleotidesOccurrence> *getDinucleotidesOccurrenceCache() const;
-    StatisticsCache<CharactersOccurrence> *getCodonsOccurrenceCache() const;
+    StatisticsCache<QMap<QByteArray, qint64>> *getCodonsOccurrenceCache() const;
 
     AnnotatedDNAView *annotatedDnaView;
 
@@ -145,7 +145,10 @@ private:
 
     ShowHideSubgroupWidget *codonWidget = nullptr;
     QLabel *codonLabel = nullptr;
-    BackgroundTaskRunner<CharactersOccurrence> codonTaskRunner;
+    BackgroundTaskRunner<QMap<QByteArray, qint64>> codonTaskRunner;
+
+    ShowHideSubgroupWidget *aminoAcidWidget = nullptr;
+    QLabel *aminoAcidLabel = nullptr;
 
     QVector<U2Region> currentRegions;
 
@@ -175,6 +178,7 @@ private:
     static const QString CHAR_OCCUR_GROUP_ID;
     static const QString DINUCL_OCCUR_GROUP_ID;
     static const QString CODON_OCCUR_GROUP_ID;
+    static const QString AMINO_ACID_OCCUR_GROUP_ID;
     static const QString STAT_GROUP_ID;
 };
 

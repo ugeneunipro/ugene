@@ -1029,7 +1029,7 @@ public:
         : MessageBoxDialogFiller(os, _b) {
     }
     void run() override {
-        QWidget *activeModal = QApplication::activeModalWidget();
+        QWidget *activeModal = GTWidget::getActiveModalWidget(os);
         QMessageBox *messageBox = qobject_cast<QMessageBox *>(activeModal);
         CHECK_SET_ERR(messageBox != NULL, "messageBox is NULL");
 
@@ -1801,7 +1801,7 @@ GUI_TEST_CLASS_DEFINITION(test_3283) {
     GTFileDialog::openFile(os, dataDir + "samples/MMDB", "1CRN.prt");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    2. Click to any annotation on the panoramic view.
-    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CRN chain 1 annotation"));
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CRN chain A annotation"));
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "sec_struct  (0, 5)");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
     GTMouseDriver::click();
@@ -2762,9 +2762,7 @@ GUI_TEST_CLASS_DEFINITION(test_3450) {
             : Filler(os, "ExportHighlightedDialog") {
         }
         void run() override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QLineEdit *filePath = dialog->findChild<QLineEdit *>("fileNameEdit");
             CHECK_SET_ERR(filePath != NULL, "fileNameEdit is NULL");
             CHECK_SET_ERR(!GTLineEdit::copyText(os, filePath).isEmpty(), "Default file path is empty");
@@ -2818,9 +2816,7 @@ GUI_TEST_CLASS_DEFINITION(test_3451) {
             : Filler(os, "ExportHighlightedDialog") {
         }
         void run() override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QSpinBox *startPos = dialog->findChild<QSpinBox *>("startLineEdit");
             CHECK_SET_ERR(startPos != NULL, "startLineEdit is NULL");
 
@@ -3194,9 +3190,7 @@ GUI_TEST_CLASS_DEFINITION(test_3519_1) {
             : Filler(os, "SiteconSearchDialog") {
         }
         void run() override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "/sitecon_models/eukaryotic", "CLOCK.sitecon.gz"));
             QWidget *modelButton = GTWidget::findWidget(os, "pbSelectModelFile", dialog);
             GTWidget::click(os, modelButton);
@@ -3239,9 +3233,7 @@ GUI_TEST_CLASS_DEFINITION(test_3519_2) {
             : Filler(os, "SiteconSearchDialog") {
         }
         void run() override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "/sitecon_models/eukaryotic", "CLOCK.sitecon.gz"));
             QWidget *modelButton = GTWidget::findWidget(os, "pbSelectModelFile", dialog);
             GTWidget::click(os, modelButton);
@@ -3257,9 +3249,7 @@ GUI_TEST_CLASS_DEFINITION(test_3519_2) {
     class AllEnzymesSearchScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QWidget *selectAllButton = GTWidget::findWidget(os, "selectAllButton", dialog);
             GTWidget::click(os, selectAllButton);
 
@@ -3498,9 +3488,7 @@ GUI_TEST_CLASS_DEFINITION(test_3571_1) {
     class Custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QRadioButton *separateRB = dialog->findChild<QRadioButton *>(QString::fromUtf8("separateRB"));
             CHECK_SET_ERR(separateRB != NULL, "radio button not found");
             GTRadioButton::click(os, separateRB);
@@ -3542,9 +3530,7 @@ GUI_TEST_CLASS_DEFINITION(test_3571_2) {
     class Custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QRadioButton *separateRB = dialog->findChild<QRadioButton *>(QString::fromUtf8("separateRB"));
             CHECK_SET_ERR(separateRB != NULL, "radio button not found");
             GTRadioButton::click(os, separateRB);
@@ -3755,9 +3741,7 @@ GUI_TEST_CLASS_DEFINITION(test_3610) {
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QPlainTextEdit *plainText = dialog->findChild<QPlainTextEdit *>("sequenceEdit");
             CHECK_SET_ERR(plainText != NULL, "plain text not found");
             GTWidget::click(os, plainText);
@@ -4496,7 +4480,7 @@ GUI_TEST_CLASS_DEFINITION(test_3731) {
     GTFileDialog::openFile(os, dataDir + "samples/MMDB", "1CRN.prt");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QPoint itemCenter = GTUtilsAnnotationsTreeView::getItemCenter(os, "1CRN chain 1 annotation [1CRN.prt]");
+    QPoint itemCenter = GTUtilsAnnotationsTreeView::getItemCenter(os, "1CRN chain A annotation [1CRN.prt]");
     itemCenter.setX(itemCenter.x() + 10);
     GTMouseDriver::moveTo(itemCenter);
     GTMouseDriver::click();
@@ -4518,9 +4502,7 @@ GUI_TEST_CLASS_DEFINITION(test_3732) {
     //    1. Open UGENE preferences, open "Resources" tab, set UGENE memory limit to 200Mb.
     class MemoryLimitSetScenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::Resourses);
             QSpinBox *memBox = dialog->findChild<QSpinBox *>("memBox");
             CHECK_SET_ERR(memBox != NULL, "memorySpinBox not found");
@@ -4801,9 +4783,7 @@ GUI_TEST_CLASS_DEFINITION(test_3773_1) {
             : Filler(_os, "HmmerBuildDialog") {
         }
         void run() override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK(dialog, );
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QLineEdit *outHmmfileEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "outHmmfileEdit", dialog));
             CHECK(outHmmfileEdit, );
 
@@ -4847,8 +4827,7 @@ GUI_TEST_CLASS_DEFINITION(test_3778) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "dialog is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QLineEdit *fileNameEdit = GTWidget::findExactWidget<QLineEdit *>(os, "fileNameEdit", dialog);
             GTLineEdit::setText(os, fileNameEdit, sandBoxDir + "circular_human_T1 (UCSC April 2002 chr7:115977709-117855134).png");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
