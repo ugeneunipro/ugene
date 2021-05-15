@@ -23,8 +23,10 @@
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
@@ -47,7 +49,9 @@
 #include "GTUtilsTaskTreeView.h"
 #include "api/GTMSAEditorStatusWidget.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
@@ -293,6 +297,48 @@ GUI_TEST_CLASS_DEFINITION(test_7106) {
 
     QStringList sequenceList2 = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
     CHECK_SET_ERR(sequenceList2 == sequenceList1, "Sequence order must not change");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7125) {
+    // Open data/samples/CLUSTALW/ty3.aln.gz
+    // Press the Build Tree button on the toolbar.
+    // In the "Build Phylogenetic Tree" dialog select the PhyML Maximum Likelihood method.
+    // Select CpREV substitution model.
+    // Press "Save Settings".
+    // Cancel the dialog.
+    // Open data/samples/CLUSTALW/COI.aln
+    // Press the Build Tree button on the toolbar.
+    // In the "Build Phylogenetic Tree" dialog select the PhyML Maximum Likelihood method.
+    // Press "Build".
+    //    Expected state: no crash.
+
+    class SaveSettingsScenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+
+            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
+
+            auto currentCombobox = GTWidget::findExactWidget<QComboBox *>(os, "algorithmBox", dialog);
+            GTComboBox::selectItemByText(os, currentCombobox, "PhyML Maximum Likelihood");
+
+            currentCombobox = GTWidget::findExactWidget<QComboBox *>(os, "subModelCombo", dialog);
+            GTComboBox::selectItemByText(os, currentCombobox, "CpREV");
+
+            GTWidget::click(os, GTWidget::findButtonByText(os, "Save Settings", dialog));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new SaveSettingsScenario));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
+
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFillerPhyML(os, false));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7127) {

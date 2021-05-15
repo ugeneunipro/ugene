@@ -241,7 +241,7 @@ void ComboBoxController::addParameterToCmdLineSettings(QStringList &settings) {
     }
     settings << cmdLinePrefix;
     int curIndex = inputWidget->currentIndex();
-    if (parameters.size() > curIndex) {
+    if (curIndex >= 0 && parameters.size() > curIndex) {
         settings << parameters.at(curIndex);
     } else {
         settings << inputWidget->currentText();
