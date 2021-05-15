@@ -317,15 +317,15 @@ static void writeHeaderToFile(IOAdapterWriter &writer, const QString &sequenceNa
     writer.write(os, FastaFormat::FASTA_HEADER_START_SYMBOL + sequenceName + '\n');
 }
 
-// TODO: a recommended width for FASTA lines is 80 chars to be readable in text editors.
-static constexpr qint64 SAVE_LINE_LEN = 1024 * 1024;
+/** Length of the FASTA sequence line. Using 80 symbols to make FASTA files readable in text editors. */
+static constexpr qint64 FASTA_SEQUENCE_LINE_LENGTH = 80;
 
 static void saveSequenceObject(IOAdapterWriter &writer, const U2SequenceObject *sequence, U2OpStatus &os) {
     writeHeaderToFile(writer, sequence->getSequenceName(), os);
     CHECK_OP(os, );
     qint64 sequenceLength = sequence->getSequenceLength();
-    for (int i = 0; i < sequenceLength; i += SAVE_LINE_LEN) {
-        qint64 chunkSize = qMin(SAVE_LINE_LEN, sequenceLength - i);
+    for (int i = 0; i < sequenceLength; i += FASTA_SEQUENCE_LINE_LENGTH) {
+        qint64 chunkSize = qMin(FASTA_SEQUENCE_LINE_LENGTH, sequenceLength - i);
         QByteArray chunkContent = sequence->getSequenceData(U2Region(i, chunkSize), os);
         CHECK_OP(os, );
         writer.write(os, QString::fromLatin1(chunkContent));
@@ -340,8 +340,8 @@ static void saveSequence(IOAdapterWriter &writer, const DNASequence &sequence, U
 
     const char *seq = sequence.constData();
     qint64 len = sequence.length();
-    for (qint64 i = 0; i < len; i += SAVE_LINE_LEN) {
-        int chunkSize = (int)qMin(SAVE_LINE_LEN, len - i);
+    for (qint64 i = 0; i < len; i += FASTA_SEQUENCE_LINE_LENGTH) {
+        int chunkSize = (int)qMin(FASTA_SEQUENCE_LINE_LENGTH, len - i);
         writer.write(os, QString::fromLatin1(seq + i, chunkSize));
         CHECK_OP(os, );
     }
