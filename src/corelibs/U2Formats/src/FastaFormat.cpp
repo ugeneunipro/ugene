@@ -326,10 +326,15 @@ static void saveSequenceObject(IOAdapterWriter &writer, const U2SequenceObject *
     qint64 sequenceLength = sequence->getSequenceLength();
     for (int i = 0; i < sequenceLength; i += FASTA_SEQUENCE_LINE_LENGTH) {
         qint64 chunkSize = qMin(FASTA_SEQUENCE_LINE_LENGTH, sequenceLength - i);
-        QByteArray chunkContent = sequence->getSequenceData(U2Region(i, chunkSize), os);
+        U2Region region(i, chunkSize);
+        QByteArray chunkContent = sequence->getSequenceData(region, os);
         CHECK_OP(os, );
         writer.write(os, QString::fromLatin1(chunkContent));
         CHECK_OP(os, );
+        if (region.endPos() < sequenceLength) {
+            writer.write(os, "\n");
+            CHECK_OP(os, );
+        }
     }
     writer.write(os, "\n");
 }
@@ -339,11 +344,15 @@ static void saveSequence(IOAdapterWriter &writer, const DNASequence &sequence, U
     CHECK_OP(os, );
 
     const char *seq = sequence.constData();
-    qint64 len = sequence.length();
-    for (qint64 i = 0; i < len; i += FASTA_SEQUENCE_LINE_LENGTH) {
-        int chunkSize = (int)qMin(FASTA_SEQUENCE_LINE_LENGTH, len - i);
+    qint64 sequenceLength = sequence.length();
+    for (qint64 i = 0; i < sequenceLength; i += FASTA_SEQUENCE_LINE_LENGTH) {
+        int chunkSize = (int)qMin(FASTA_SEQUENCE_LINE_LENGTH, sequenceLength - i);
         writer.write(os, QString::fromLatin1(seq + i, chunkSize));
         CHECK_OP(os, );
+        if (i + chunkSize < sequenceLength) {
+            writer.write(os, "\n");
+            CHECK_OP(os, );
+        }
     }
     writer.write(os, "\n");
 }
