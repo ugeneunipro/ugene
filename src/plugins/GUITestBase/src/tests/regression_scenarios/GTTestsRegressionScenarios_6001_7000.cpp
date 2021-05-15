@@ -3993,12 +3993,10 @@ GUI_TEST_CLASS_DEFINITION(test_6628_5) {
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/empty_file.fa"));
     QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"empty_file.fa\" file can't be alignment to the \"COI\" alignment - the file is empty.");
     GTWidget::click(os, align);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitAllFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected result: the COI alignment is not modified,
     int sequenceNumberAfterAlignment = GTUtilsMsaEditor::getSequencesCount(os);
@@ -4009,7 +4007,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_5) {
     GTUtilsLog::checkContainsError(os, lt, "Task {Load sequences and add to alignment task} finished with error: Data from the \"empty_file.fa\" file can't be alignment to the \"COI\" alignment - the file is empty.");
 
     //The "Undo" button is disabled
-    CHECK_SET_ERR(!GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is enebled, but shouldn't be");
+    CHECK_SET_ERR(!GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is enabled, but shouldn't be");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6628_6) {
@@ -6734,12 +6732,12 @@ GUI_TEST_CLASS_DEFINITION(test_6960) {
 GUI_TEST_CLASS_DEFINITION(test_6963) {
     //1. Open Application Settings and check if WindowsVista on Windows or Macintosh on macOS styles are exist
     class CheckStyleScenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) override {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::General);
 
-            QComboBox* styleCombo = GTWidget::findExactWidget<QComboBox*>(os, "styleCombo", dialog);
+            QComboBox *styleCombo = GTWidget::findExactWidget<QComboBox *>(os, "styleCombo", dialog);
 
             QString text;
             if (isOsWindows()) {
@@ -6756,7 +6754,7 @@ GUI_TEST_CLASS_DEFINITION(test_6963) {
     };
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new CheckStyleScenario()));
-    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..." }, GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -7010,7 +7008,8 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
 
     // 2. Create new project and open samples/FASTA/human_T1.fa
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "New Project", sandBoxDir + "proj.uprj"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "New project...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "New project...");
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -7029,7 +7028,8 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, "/", GTGlobals::UseMouse, GTFileDialogUtils::Cancel));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Save, "permission", "permissionBox"));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Yes", "Save document: "));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Exit");
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "Exit");
     //      Expected state: 1) The log has "Task {Shutdown} canceled" message;
     //                      2) Project tree has "annot.gb" document;
     //                      3) Annotations tree has "annot.gb" item.
@@ -7043,7 +7043,8 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
     // 8.2. Click "Yes", then "Cancel".
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Cancel, "permission", "permissionBox"));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Yes", "Save document: "));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Exit");
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "Exit");
     //      Expected state: similar.
     GTUtilsLog::checkContainsMessage(os, log1);
     GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
@@ -7054,7 +7055,8 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
     // 9.1. Close UGENE.
     // 9.2. Click "Cancel".
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Cancel"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Exit");
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "Exit");
     //      Expected state: similar.
     GTUtilsLog::checkContainsMessage(os, log2);
     GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
@@ -7067,7 +7069,7 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
 
     class Clicker : public CustomScenario {
     public:
-        void run(GUITestOpStatus& os) override {
+        void run(GUITestOpStatus &os) override {
             auto labelsList = GTWidget::findLabelByText(os, "Save document", GTWidget::getActiveModalWidget(os));
             QMessageBox::StandardButton b = labelsList.first()->text().endsWith("annot1.gb") ? QMessageBox::Cancel : QMessageBox::No;
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, b));
