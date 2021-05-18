@@ -239,13 +239,29 @@ void ComboBoxController::addParameterToCmdLineSettings(QStringList &settings) {
     if (cmdLinePrefix.isEmpty()) {
         return;
     }
-    settings << cmdLinePrefix;
+
     int curIndex = inputWidget->currentIndex();
-    if (curIndex >= 0 && parameters.size() > curIndex) {
-        settings << parameters.at(curIndex);
-    } else {
-        settings << inputWidget->currentText();
+    QString parameter;
+    if (curIndex < 0) {    // curIndex in (-inf, 0)
+        coreLog.error(tr("Failed to get parameter value '%1' from combobox '%2'").arg(cmdLinePrefix, inputWidget->objectName()));
+
+        if (!defaultValue.isNull() && defaultValue.canConvert<int>()) {
+            parameter = inputWidget->itemText(defaultValue.toInt());
+            coreLog.details(tr("Default value '%1' will be used").arg(parameter));
+        }
+
+    } else if (parameters.size() > curIndex) {    // curIndex in [0, parameters.size())
+        parameter = parameters.at(curIndex);
+    } else {    // curIndex in [parameters.size(), +inf)
+        parameter = inputWidget->currentText();
     }
+
+    if (parameter.isEmpty()) {
+        coreLog.error(tr("No parameter value, parameter '%1' is skipped").arg(cmdLinePrefix));
+        return;
+    }
+    settings << cmdLinePrefix;
+    settings << parameter;
 }
 
 /*LineEditController*/

@@ -317,8 +317,6 @@ GUI_TEST_CLASS_DEFINITION(test_7125) {
         void run(GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
-            GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new LicenseAgreementDialogFiller(os));
-
             auto currentCombobox = GTWidget::findExactWidget<QComboBox *>(os, "algorithmBox", dialog);
             GTComboBox::selectItemByText(os, currentCombobox, "PhyML Maximum Likelihood");
 
