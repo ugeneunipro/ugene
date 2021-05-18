@@ -331,12 +331,9 @@ static void saveSequenceObject(IOAdapterWriter &writer, const U2SequenceObject *
         CHECK_OP(os, );
         writer.write(os, QString::fromLatin1(chunkContent));
         CHECK_OP(os, );
-        if (region.endPos() < sequenceLength) {
-            writer.write(os, "\n");
-            CHECK_OP(os, );
-        }
+        writer.write(os, "\n");
+        CHECK_OP(os, );
     }
-    writer.write(os, "\n");
 }
 
 static void saveSequence(IOAdapterWriter &writer, const DNASequence &sequence, U2OpStatus &os) {
@@ -349,12 +346,9 @@ static void saveSequence(IOAdapterWriter &writer, const DNASequence &sequence, U
         int chunkSize = (int)qMin(FASTA_SEQUENCE_LINE_LENGTH, sequenceLength - i);
         writer.write(os, QString::fromLatin1(seq + i, chunkSize));
         CHECK_OP(os, );
-        if (i + chunkSize < sequenceLength) {
-            writer.write(os, "\n");
-            CHECK_OP(os, );
-        }
+        writer.write(os, "\n");
+        CHECK_OP(os, );
     }
-    writer.write(os, "\n");
 }
 
 void FastaFormat::storeTextDocument(IOAdapterWriter &writer, Document *document, U2OpStatus &os) {
