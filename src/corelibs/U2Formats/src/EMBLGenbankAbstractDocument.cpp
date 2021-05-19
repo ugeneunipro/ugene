@@ -203,6 +203,7 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef &dbiRef, IOAdapter *io, QL
                 }
                 CHECK_OP(os, );
             }
+            CHECK_OP(os, )
             foreach (const QString &groupName, groupName2Annotations.keys()) {
                 annotationsObject->addAnnotations(groupName2Annotations[groupName], groupName);
             }
