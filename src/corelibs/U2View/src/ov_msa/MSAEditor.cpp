@@ -673,7 +673,7 @@ void MSAEditor::alignSequencesFromObjectsToAlignment(const QList<GObject *> &obj
     extractor.extractSequencesFromObjects(objects);
 
     if (!extractor.getSequenceRefs().isEmpty()) {
-        AlignSequencesToAlignmentTask *task = new AlignSequencesToAlignmentTask(getMaObject(), extractor);
+        auto task = new AlignSequencesToAlignmentTask(getMaObject(), extractor);
         TaskWatchdog::trackResourceExistence(maObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     }
@@ -693,7 +693,7 @@ void MSAEditor::alignSequencesFromFilesToAlignment() {
 
     if (!urls.isEmpty()) {
         lod.url = urls.first();
-        LoadSequencesAndAlignToAlignmentTask *task = new LoadSequencesAndAlignToAlignmentTask(getMaObject(), urls);
+        auto task = new LoadSequencesAndAlignToAlignmentTask(getMaObject(), urls);
         TaskWatchdog::trackResourceExistence(maObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     }

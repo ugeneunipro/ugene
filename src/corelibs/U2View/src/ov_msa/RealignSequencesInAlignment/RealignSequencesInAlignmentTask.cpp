@@ -128,7 +128,7 @@ QList<Task *> RealignSequencesInAlignmentTask::onSubTaskFinished(Task *subTask) 
             sequenceFilesToAlign.append(it.next());
         }
 
-        LoadSequencesAndAlignToAlignmentTask *task = new LoadSequencesAndAlignToAlignmentTask(msaObject, sequenceFilesToAlign);
+        auto task = new LoadSequencesAndAlignToAlignmentTask(msaObject, sequenceFilesToAlign);
         res.append(task);
     }
 
