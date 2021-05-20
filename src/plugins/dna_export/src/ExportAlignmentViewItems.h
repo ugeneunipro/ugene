@@ -41,8 +41,9 @@ public:
     ExportAlignmentViewItemsController(QObject *p);
 
 protected:
-    virtual void initViewContext(GObjectView *view);
-    virtual void buildMenu(GObjectView *v, QMenu *m);
+    void initViewContext(GObjectView *view) override;
+
+    void buildMenu(GObjectView *view, QMenu *menu, const QString &menuType) override;
 };
 
 class MSAExportContext : public QObject {

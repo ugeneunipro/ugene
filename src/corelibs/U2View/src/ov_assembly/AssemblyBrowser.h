@@ -54,11 +54,12 @@ public:
     bool checkValid(U2OpStatus &os);
 
     // from GObjectView
-    virtual void buildStaticToolbar(QToolBar *tb);
-    virtual void buildStaticMenu(QMenu *m);
-    virtual QVariantMap saveState();
-    virtual Task *updateViewTask(const QString &stateName, const QVariantMap &stateData);
-    virtual OptionsPanel *getOptionsPanel();
+    void buildStaticToolbar(QToolBar *tb) override;
+    void buildMenu(QMenu *menu, const QString &type) override;
+
+    QVariantMap saveState() override;
+    Task *updateViewTask(const QString &stateName, const QVariantMap &stateData) override;
+    OptionsPanel *getOptionsPanel() override;
 
     void setGlobalCoverageInfo(CoverageInfo info);
     QList<CoveredRegion> getCoveredRegions() const;
@@ -247,9 +248,9 @@ private:
     QAction *posSelectorAction;
     PositionSelector *posSelector;
     QList<QAction *> overviewScaleTypeActions;
-    QAction *showCoordsOnRulerAction;
+    QAction *showCoordsOnRulerAction = nullptr;
     QAction *showCoverageOnRulerAction;
-    QAction *readHintEnabledAction;
+    QAction *readHintEnabledAction = nullptr;
     QAction *saveScreenShotAction;
     QAction *exportToSamAction;
     QAction *setReferenceAction;

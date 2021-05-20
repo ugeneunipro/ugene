@@ -530,7 +530,11 @@ void AnnotatedDNAView::buildStaticToolbar(QToolBar *tb) {
     syncViewManager->updateToolbar2(tb);
 }
 
-void AnnotatedDNAView::buildStaticMenu(QMenu *m) {
+void AnnotatedDNAView::buildMenu(QMenu *m, const QString &type) {
+    if (type != GObjectViewMenuType::STATIC) {
+        GObjectView::buildMenu(m, type);
+        return;
+    }
     m->addAction(posSelectorAction);
     clipb->addCopyMenu(m);
     m->addSeparator();
@@ -544,7 +548,7 @@ void AnnotatedDNAView::buildStaticMenu(QMenu *m) {
 
     annotationsView->adjustStaticMenu(m);
 
-    GObjectView::buildStaticMenu(m);
+    GObjectView::buildMenu(m, type);
 }
 
 void AnnotatedDNAView::addAnalyseMenu(QMenu *m) {
@@ -818,7 +822,7 @@ void AnnotatedDNAView::sl_onContextMenuRequested() {
     if (activeSequenceWidget != NULL) {
         activeSequenceWidget->buildPopupMenu(m);
     }
-    emit si_buildPopupMenu(this, &m);
+    emit si_buildMenu(this, &m, GObjectViewMenuType::CONTEXT);
 
     m.exec(QCursor::pos());
 }

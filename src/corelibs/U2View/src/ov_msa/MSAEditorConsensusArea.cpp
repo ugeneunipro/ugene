@@ -41,19 +41,14 @@ MSAEditorConsensusArea::MSAEditorConsensusArea(MsaEditorWgt *ui)
     initRenderer();
     setupFontAndHeight();
 
-    connect(editor, SIGNAL(si_buildStaticMenu(GObjectView *, QMenu *)), SLOT(sl_buildStaticMenu(GObjectView *, QMenu *)));
-    connect(editor, SIGNAL(si_buildPopupMenu(GObjectView *, QMenu *)), SLOT(sl_buildContextMenu(GObjectView *, QMenu *)));
+    connect(editor, SIGNAL(si_buildMenu(GObjectView *, QMenu *, const QString &)), SLOT(sl_buildMenu(GObjectView *, QMenu *, const QString &)));
 }
 
 QString MSAEditorConsensusArea::getConsensusPercentTip(int pos, int minReportPercent, int maxReportChars) const {
     return MSAConsensusUtils::getConsensusPercentTip(editor->getMaObject()->getMultipleAlignment(), pos, minReportPercent, maxReportChars);
 }
 
-void MSAEditorConsensusArea::sl_buildStaticMenu(GObjectView * /*view*/, QMenu *menu) {
-    buildMenu(menu);
-}
-
-void MSAEditorConsensusArea::sl_buildContextMenu(GObjectView * /*view*/, QMenu *menu) {
+void MSAEditorConsensusArea::sl_buildMenu(GObjectView * /*view*/, QMenu *menu, const QString &) {
     buildMenu(menu);
 }
 
@@ -64,8 +59,8 @@ void MSAEditorConsensusArea::initRenderer() {
 QString MSAEditorConsensusArea::getLastUsedAlgoSettingsKey() const {
     const DNAAlphabet *al = editor->getMaObject()->getAlphabet();
     SAFE_POINT(al != nullptr, "Alphabet is NULL", "");
-    const char *suffix = al->isAmino() ? "_protein" : al->isNucleic() ? "_nucleic" :
-                                                                        "_raw";
+    const char *suffix = al->isAmino() ? "_protein" : al->isNucleic() ? "_nucleic"
+                                                                      : "_raw";
     return editor->getSettingsRoot() + "_consensus_algorithm_" + suffix;
 }
 

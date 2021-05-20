@@ -66,8 +66,8 @@ protected slots:
     void sl_fetchSequenceById();
 
 protected:
-    virtual void initViewContext(GObjectView *view);
-    virtual void buildMenu(GObjectView *view, QMenu *m);
+    void initViewContext(GObjectView *view) override;
+    void buildMenu(GObjectView *view, QMenu *menu, const QString &menuType) override;
 
 private:
     QStringList toolIdList;

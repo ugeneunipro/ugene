@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "KalignPlugin.h"
+
 #include <QDialog>
 #include <QMainWindow>
 
@@ -52,7 +54,6 @@
 
 #include "KalignConstants.h"
 #include "KalignDialogController.h"
-#include "KalignPlugin.h"
 #include "KalignTask.h"
 #include "KalignWorker.h"
 #include "PairwiseAlignmentHirschbergGUIExtensionFactory.h"
@@ -62,42 +63,40 @@
 
 namespace U2 {
 
-extern "C" Q_DECL_EXPORT Plugin* U2_PLUGIN_INIT_FUNC() {
-    KalignPlugin * plug = new KalignPlugin();
+extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
+    KalignPlugin *plug = new KalignPlugin();
     return plug;
 }
 
 KalignPlugin::KalignPlugin()
     : Plugin(tr("Kalign"),
-    tr("A port of Kalign package for multiple sequence alignment. Check http://msa.sbc.su.se for the original version")),
-    ctx(NULL)
-{
-
-    bool guiMode = AppContext::getMainWindow()!=NULL;
+             tr("A port of Kalign package for multiple sequence alignment. Check http://msa.sbc.su.se for the original version")),
+      ctx(NULL) {
+    bool guiMode = AppContext::getMainWindow() != NULL;
 
     if (guiMode) {
         ctx = new KalignMSAEditorContext(this);
         ctx->init();
 
-        QAction* kalignAction = new QAction(tr("Align with Kalign..."), this);
+        QAction *kalignAction = new QAction(tr("Align with Kalign..."), this);
         kalignAction->setObjectName(ToolsMenu::MALIGN_KALIGN);
         kalignAction->setIcon(QIcon(":kalign/images/kalign_16.png"));
         ToolsMenu::addAction(ToolsMenu::MALIGN_MENU, kalignAction);
-        connect(kalignAction,SIGNAL(triggered()),SLOT(sl_runWithExtFileSpecify()));
+        connect(kalignAction, SIGNAL(triggered()), SLOT(sl_runWithExtFileSpecify()));
     }
 
-    LocalWorkflow::KalignWorkerFactory::init(); //TODO
+    LocalWorkflow::KalignWorkerFactory::init();    //TODO
     //TODO:
     //Kalign Test
 
-    GTestFormatRegistry* tfr = AppContext::getTestFramework()->getTestFormatRegistry();
-    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat*>(tfr->findFormat("XML"));
-    assert(xmlTestFormat!=NULL);
+    GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
+    XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
+    assert(xmlTestFormat != NULL);
 
-    GAutoDeleteList<XMLTestFactory>* l = new GAutoDeleteList<XMLTestFactory>(this);
+    GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = KalignTests ::createTestFactories();
 
-    foreach(XMLTestFactory* f, l->qlist) {
+    foreach (XMLTestFactory *f, l->qlist) {
         bool res = xmlTestFormat->registerTestFactory(f);
         Q_UNUSED(res);
         assert(res);
@@ -114,10 +113,10 @@ void KalignPlugin::sl_runWithExtFileSpecify() {
     kalignRunDialog->exec();
     CHECK(!kalignRunDialog.isNull(), );
 
-    if(kalignRunDialog->result() != QDialog::Accepted){
+    if (kalignRunDialog->result() != QDialog::Accepted) {
         return;
     }
-    KalignWithExtFileSpecifySupportTask* kalignTask=new KalignWithExtFileSpecifySupportTask(settings);
+    KalignWithExtFileSpecifySupportTask *kalignTask = new KalignWithExtFileSpecifySupportTask(settings);
     AppContext::getTaskScheduler()->registerTopLevelTask(kalignTask);
 }
 
@@ -125,32 +124,33 @@ KalignPlugin::~KalignPlugin() {
     //nothing to do
 }
 
-MSAEditor* KalignAction::getMSAEditor() const {
-    MSAEditor* e = qobject_cast<MSAEditor*>(getObjectView());
+MSAEditor *KalignAction::getMSAEditor() const {
+    MSAEditor *e = qobject_cast<MSAEditor *>(getObjectView());
     SAFE_POINT(e != NULL, "Can't get an appropriate MSA Editor", NULL);
     return e;
 }
 
 void KalignAction::sl_updateState() {
-    StateLockableItem* item = qobject_cast<StateLockableItem*>(sender());
+    StateLockableItem *item = qobject_cast<StateLockableItem *>(sender());
     SAFE_POINT(item != NULL, "Unexpected sender: expect StateLockableItem", );
-    MSAEditor* msaEditor = getMSAEditor();
+    MSAEditor *msaEditor = getMSAEditor();
     CHECK(msaEditor != NULL, );
     setEnabled(!item->isStateLocked() && !msaEditor->isAlignmentEmpty());
 }
 
-KalignMSAEditorContext::KalignMSAEditorContext(QObject* p) : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
+KalignMSAEditorContext::KalignMSAEditorContext(QObject *p)
+    : GObjectViewWindowContext(p, MsaEditorFactory::ID) {
 }
 
-void KalignMSAEditorContext::initViewContext(GObjectView* view) {
-    MSAEditor* msaed = qobject_cast<MSAEditor*>(view);
+void KalignMSAEditorContext::initViewContext(GObjectView *view) {
+    MSAEditor *msaed = qobject_cast<MSAEditor *>(view);
     SAFE_POINT(msaed != NULL, "Invalid GObjectView", );
     CHECK(msaed->getMaObject() != NULL, );
 
     bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
 
-    KalignAction* alignAction = new KalignAction(this, view, tr("Align with Kalign..."), 2000);
+    KalignAction *alignAction = new KalignAction(this, view, tr("Align with Kalign..."), 2000);
     alignAction->setObjectName("align_with_kalign");
     alignAction->setIcon(QIcon(":kalign/images/kalign_16.png"));
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
@@ -161,20 +161,20 @@ void KalignMSAEditorContext::initViewContext(GObjectView* view) {
     addViewAction(alignAction);
 }
 
-void KalignMSAEditorContext::buildMenu(GObjectView* v, QMenu* m) {
+void KalignMSAEditorContext::buildMenu(GObjectView *v, QMenu *m, const QString &) {
     QList<GObjectViewAction *> actions = getViewActions(v);
-    QMenu* alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
-    assert(alignMenu!=NULL);
-    foreach(GObjectViewAction* a, actions) {
+    QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
+    assert(alignMenu != NULL);
+    foreach (GObjectViewAction *a, actions) {
         a->addToMenuWithOrder(alignMenu);
     }
 }
 
 void KalignMSAEditorContext::sl_align() {
-    KalignAction* action = qobject_cast<KalignAction*>(sender());
-    assert(action!=NULL);
-    MSAEditor* ed = action->getMSAEditor();
-    MultipleSequenceAlignmentObject* obj = ed->getMaObject();
+    KalignAction *action = qobject_cast<KalignAction *>(sender());
+    assert(action != NULL);
+    MSAEditor *ed = action->getMSAEditor();
+    MultipleSequenceAlignmentObject *obj = ed->getMaObject();
 
     KalignTaskSettings s;
     QObjectScopedPointer<KalignDialogController> dlg = new KalignDialogController(ed->getWidget(), obj->getMultipleAlignment(), s);
@@ -185,7 +185,7 @@ void KalignMSAEditorContext::sl_align() {
         return;
     }
 
-    AlignGObjectTask * kalignTask = new KalignGObjectRunFromSchemaTask(obj, s);
+    AlignGObjectTask *kalignTask = new KalignGObjectRunFromSchemaTask(obj, s);
     Task *alignTask = NULL;
 
     if (dlg->translateToAmino()) {
@@ -202,15 +202,11 @@ void KalignMSAEditorContext::sl_align() {
 }
 
 KalignPairwiseAligmnentAlgorithm::KalignPairwiseAligmnentAlgorithm()
-    : AlignmentAlgorithm(PairwiseAlignment, "Hirschberg (KAlign)",
-                                 new PairwiseAlignmentHirschbergTaskFactory(),
-                                 new PairwiseAlignmentHirschbergGUIExtensionFactory(),
-                                 "KAlign")
-{
+    : AlignmentAlgorithm(PairwiseAlignment, "Hirschberg (KAlign)", new PairwiseAlignmentHirschbergTaskFactory(), new PairwiseAlignmentHirschbergGUIExtensionFactory(), "KAlign") {
 }
 
 bool KalignPairwiseAligmnentAlgorithm::checkAlphabet(const DNAAlphabet *al) const {
     return !(al->isRaw() || (al->isAmino() && al->isExtended()));
 }
 
-}//namespace
+}    // namespace U2

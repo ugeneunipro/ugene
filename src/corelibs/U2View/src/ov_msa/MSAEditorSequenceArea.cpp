@@ -84,8 +84,7 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt *_ui, GScrollBar *hb, G
 
     initRenderer();
 
-    connect(editor, SIGNAL(si_buildPopupMenu(GObjectView *, QMenu *)), SLOT(sl_buildContextMenu(GObjectView *, QMenu *)));
-    connect(editor, SIGNAL(si_buildStaticMenu(GObjectView *, QMenu *)), SLOT(sl_buildStaticMenu(GObjectView *, QMenu *)));
+    connect(editor, SIGNAL(si_buildMenu(GObjectView *, QMenu *, const QString &)), SLOT(sl_buildMenu(GObjectView *, QMenu *, const QString &)));
     connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView *, QToolBar *)), SLOT(sl_buildStaticToolbar(GObjectView *, QToolBar *)));
 
     selectionColor = Qt::black;
@@ -278,13 +277,11 @@ void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
     t->addSeparator();
 }
 
-void MSAEditorSequenceArea::sl_buildStaticMenu(GObjectView *, QMenu *m) {
+void MSAEditorSequenceArea::sl_buildMenu(GObjectView *, QMenu *m, const QString &type) {
     buildMenu(m);
-}
-
-void MSAEditorSequenceArea::sl_buildContextMenu(GObjectView *, QMenu *m) {
-    buildMenu(m);
-
+    if (type == GObjectViewMenuType::STATIC) {
+        return;
+    }
     QMenu *editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
     SAFE_POINT(editMenu != nullptr, "editMenu is null", );
 

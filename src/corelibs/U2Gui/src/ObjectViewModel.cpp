@@ -43,6 +43,8 @@ namespace U2 {
 
 const QString GObjectViewState::APP_CLOSING_STATE_NAME("Auto saved");
 const GObjectViewFactoryId GObjectViewFactory::SIMPLE_TEXT_FACTORY("SimpleTextView");
+const QString GObjectViewMenuType::CONTEXT("gobject-view-menu-type-context");
+const QString GObjectViewMenuType::STATIC("object-view-menu-type-static");
 
 void GObjectViewState::setViewName(const QString &newName) {
     // this method is not a real state modification: state caches view name as a reference, but not its internal data
@@ -221,6 +223,9 @@ void GObjectView::sl_onDocumentRemoved(Document *d) {
     }
 }
 
+void GObjectView::sl_onDocumentLoadedStateChanged() {
+}
+
 void GObjectView::sl_onObjectNameChanged(const QString &oldName) {
     CHECK(AppContext::getProject() != nullptr, );
     GObject *object = qobject_cast<GObject *>(sender());
@@ -248,8 +253,8 @@ void GObjectView::buildStaticToolbar(QToolBar *tb) {
     emit si_buildStaticToolbar(this, tb);
 }
 
-void GObjectView::buildStaticMenu(QMenu *m) {
-    emit si_buildStaticMenu(this, m);
+void GObjectView::buildMenu(QMenu *m, const QString &type) {
+    emit si_buildMenu(this, m, type);
 }
 
 // Returns true if view  contains this object
@@ -370,7 +375,7 @@ void GObjectViewWindow::setupMDIToolbar(QToolBar *tb) {
 }
 
 void GObjectViewWindow::setupViewMenu(QMenu *m) {
-    view->buildStaticMenu(m);
+    view->buildMenu(m, GObjectViewMenuType::STATIC);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -577,8 +582,7 @@ void GObjectViewWindowContext::sl_windowAdded(MWMDIWindow *w) {
 
     initViewContext(objectView);
 
-    connect(objectView, SIGNAL(si_buildPopupMenu(GObjectView *, QMenu *)), SLOT(sl_buildContextMenu(GObjectView *, QMenu *)));
-    connect(objectView, SIGNAL(si_buildStaticMenu(GObjectView *, QMenu *)), SLOT(sl_buildStaticMenu(GObjectView *, QMenu *)));
+    connect(objectView, SIGNAL(si_buildMenu(GObjectView *, QMenu *, const QString &)), SLOT(sl_buildMenu(GObjectView *, QMenu *, const QString &)));
 }
 
 void GObjectViewWindowContext::sl_windowClosing(MWMDIWindow *w) {
@@ -590,15 +594,11 @@ void GObjectViewWindowContext::sl_windowClosing(MWMDIWindow *w) {
     disconnectView(objectView);
 }
 
-void GObjectViewWindowContext::sl_buildContextMenu(GObjectView *v, QMenu *m) {
-    buildMenu(v, m);
+void GObjectViewWindowContext::sl_buildMenu(GObjectView *v, QMenu *m, const QString &type) {
+    buildMenu(v, m, type);
 }
 
-void GObjectViewWindowContext::sl_buildStaticMenu(GObjectView *v, QMenu *m) {
-    buildMenu(v, m);
-}
-
-void GObjectViewWindowContext::buildMenu(GObjectView *, QMenu *) {
+void GObjectViewWindowContext::buildMenu(GObjectView *, QMenu *, const QString &) {
     // No menu by default.
 }
 
@@ -679,6 +679,19 @@ void GObjectViewAction::addToMenuWithOrder(QMenu *menu) {
         }
     }
     menu->addAction(this);
+}
+
+GObjectViewObjectHandler::~GObjectViewObjectHandler() {
+}
+
+bool GObjectViewObjectHandler::canHandle(GObjectView *, GObject *) {
+    return false;
+}
+
+void GObjectViewObjectHandler::onObjectAdded(GObjectView *, GObject *) {
+}
+
+void GObjectViewObjectHandler::onObjectRemoved(GObjectView *, GObject *) {
 }
 
 }    // namespace U2

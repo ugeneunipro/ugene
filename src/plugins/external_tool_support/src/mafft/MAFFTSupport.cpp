@@ -137,7 +137,7 @@ void MAFFTSupportContext::initViewContext(GObjectView *view) {
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_MAFFT()));
 }
 
-void MAFFTSupportContext::buildMenu(GObjectView *view, QMenu *m) {
+void MAFFTSupportContext::buildMenu(GObjectView *view, QMenu *m, const QString &) {
     QList<GObjectViewAction *> actions = getViewActions(view);
     QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
     SAFE_POINT(alignMenu != NULL, "alignMenu", );

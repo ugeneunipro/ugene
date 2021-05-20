@@ -122,7 +122,7 @@ private slots:
     void sl_onAddAnnotationObjectToView();
     void sl_removeObjectFromView();
     void sl_removeAnnsAndQs();
-    void sl_onBuildPopupMenu(GObjectView *thiz, QMenu *menu);
+    void sl_onBuildMenu(GObjectView *thiz, QMenu *menu, const QString &type);
     void sl_onCopyQualifierValue();
     void sl_onCopyQualifierURL();
     void sl_onToggleQualifierColumn();

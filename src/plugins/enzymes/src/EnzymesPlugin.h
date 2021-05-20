@@ -59,8 +59,10 @@ protected slots:
     void sl_createPCRProduct();
 
 protected:
-    virtual void buildMenu(GObjectView *v, QMenu *m);
-    virtual void initViewContext(GObjectView *view);
+    void buildMenu(GObjectView *view, QMenu *menu, const QString &menuType) override;
+
+    void initViewContext(GObjectView *view) override;
+
     QList<QAction *> cloningActions;
 };
 

@@ -210,7 +210,11 @@ void MSAEditor::buildStaticToolbar(QToolBar *tb) {
     GObjectView::buildStaticToolbar(tb);
 }
 
-void MSAEditor::buildStaticMenu(QMenu *m) {
+void MSAEditor::buildMenu(QMenu *m, const QString &type) {
+    if (type != GObjectViewMenuType::STATIC) {
+        GObjectView::buildMenu(m, type);
+        return;
+    }
     addAppearanceMenu(m);
 
     addNavigationMenu(m);
@@ -229,7 +233,7 @@ void MSAEditor::buildStaticMenu(QMenu *m) {
 
     addAdvancedMenu(m);
 
-    GObjectView::buildStaticMenu(m);
+    GObjectView::buildMenu(m, type);
 
     GUIUtils::disableEmptySubmenus(m);
 }
@@ -502,7 +506,7 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     }
     m.addSeparator();
 
-    emit si_buildPopupMenu(this, &m);
+    emit si_buildMenu(this, &m, GObjectViewMenuType::CONTEXT);
 
     GUIUtils::disableEmptySubmenus(&m);
 
@@ -587,7 +591,7 @@ void MSAEditor::initDragAndDropSupport() {
 }
 
 void MSAEditor::sl_align() {
-    QMenu m, *mm;
+    QMenu m;
 
     addLoadMenu(&m);
     addCopyPasteMenu(&m);
@@ -601,14 +605,14 @@ void MSAEditor::sl_align() {
     addExportMenu(&m);
     addAdvancedMenu(&m);
 
-    emit si_buildPopupMenu(this, &m);
+    emit si_buildMenu(this, &m, GObjectViewMenuType::CONTEXT);
 
     GUIUtils::disableEmptySubmenus(&m);
 
-    mm = GUIUtils::findSubMenu(&m, MSAE_MENU_ALIGN);
-    SAFE_POINT(mm != nullptr, "mm", );
+    QMenu *alignMenu = GUIUtils::findSubMenu(&m, MSAE_MENU_ALIGN);
+    SAFE_POINT(alignMenu != nullptr, "mm", );
 
-    mm->exec(QCursor::pos());
+    alignMenu->exec(QCursor::pos());
 }
 
 void MSAEditor::sl_addToAlignment() {

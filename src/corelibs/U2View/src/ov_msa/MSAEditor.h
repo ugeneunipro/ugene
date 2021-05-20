@@ -79,7 +79,7 @@ public:
 
     virtual void buildStaticToolbar(QToolBar *tb) override;
 
-    virtual void buildStaticMenu(QMenu *m) override;
+    void buildMenu(QMenu *m, const QString &type) override;
 
     MsaEditorWgt *getUI() const override;
 

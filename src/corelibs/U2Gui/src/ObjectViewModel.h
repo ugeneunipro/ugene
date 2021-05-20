@@ -179,7 +179,7 @@ public:
 
     virtual void buildStaticToolbar(QToolBar *tb);
 
-    virtual void buildStaticMenu(QMenu *n);
+    virtual void buildMenu(QMenu *menu, const QString &type);
 
     virtual bool canAddObject(GObject *obj);
 
@@ -217,8 +217,12 @@ protected:
     virtual QWidget *createWidget() = 0;
 
 signals:
-    void si_buildPopupMenu(GObjectView *v, QMenu *m);
-    void si_buildStaticMenu(GObjectView *v, QMenu *m);
+    /**
+     * Emitted when menu of the given type is about to be shown.
+     * A client should add related menu items to the menu.
+     */
+    void si_buildMenu(GObjectView *v, QMenu *m, const QString &type);
+
     void si_buildStaticToolbar(GObjectView *v, QToolBar *tb);
     void si_objectAdded(GObjectView *v, GObject *obj);
     void si_objectRemoved(GObjectView *v, GObject *obj);
@@ -230,8 +234,7 @@ protected slots:
 
     virtual void sl_onDocumentAdded(Document *);
     virtual void sl_onDocumentRemoved(Document *);
-    virtual void sl_onDocumentLoadedStateChanged() {
-    }
+    virtual void sl_onDocumentLoadedStateChanged();
 
 protected:
     GObjectViewFactoryId factoryId;
@@ -243,6 +246,16 @@ protected:
     bool closing;
     QList<GObjectViewObjectHandler *> objectHandlers;
     OptionsPanel *optionsPanel;
+};
+
+/** Constants for known GObject view menu types. */
+class U2GUI_EXPORT GObjectViewMenuType {
+public:
+    /** A constant for building a contextual (popup) menu. See buildMenu for details. */
+    const static QString CONTEXT;
+
+    /** A constant for building a static (toolbar-level) menu. See buildMenu for details. */
+    const static QString STATIC;
 };
 
 class U2GUI_EXPORT GObjectViewCloseInterface {
@@ -353,24 +366,25 @@ private:
     int actionOrder;
 };
 
+/**
+ * Abstraction of the object handler for a view.
+ * If a view has a handler that can 'handle' an object, this object can be added to the view.
+ */
 class U2GUI_EXPORT GObjectViewObjectHandler {
 public:
-    virtual ~GObjectViewObjectHandler() {
-    }
-    virtual bool canHandle(GObjectView *v, GObject *obj) {
-        Q_UNUSED(v);
-        Q_UNUSED(obj);
-        return false;
-    }
+    virtual ~GObjectViewObjectHandler();
 
-    virtual void onObjectAdded(GObjectView *v, GObject *obj) {
-        Q_UNUSED(v);
-        Q_UNUSED(obj);
-    }
-    virtual void onObjectRemoved(GObjectView *v, GObject *obj) {
-        Q_UNUSED(v);
-        Q_UNUSED(obj);
-    }
+    /**
+     * Checks if the handler can 'handle' the object.
+     * If there is at least one handler that returns 'yes', the object can be added to the view.
+     */
+    virtual bool canHandle(GObjectView *view, GObject *obj);
+
+    /** Called when an object is added to the view. */
+    virtual void onObjectAdded(GObjectView *view, GObject *obj);
+
+    /** Called when an object is removed from the view. */
+    virtual void onObjectRemoved(GObjectView *view, GObject *obj);
 };
 
 class U2GUI_EXPORT GObjectViewWindowContext : public QObject, public GObjectViewObjectHandler {
@@ -395,11 +409,18 @@ protected:
 protected slots:
     virtual void sl_windowAdded(MWMDIWindow *);
     virtual void sl_windowClosing(MWMDIWindow *);
-    virtual void sl_buildContextMenu(GObjectView *v, QMenu *m);
-    virtual void sl_buildStaticMenu(GObjectView *v, QMenu *m);
+
+    virtual void sl_buildMenu(GObjectView *view, QMenu *menu, const QString &type);
 
 protected:
-    virtual void buildMenu(GObjectView *v, QMenu *m);
+    /**
+     * Populates menu with a contextual actions.
+     * The menu type indicates type of the menu: 'context' string is a default contextual popup menu,
+     * 'static' is for the static menu shown in the application toolbar and other string values are specific values for the view.
+     * Example of custom menu types: 're-align-current-alignment', 'add-sequence-to-alignment', etc...
+     * */
+    virtual void buildMenu(GObjectView *view, QMenu *menu, const QString &menuType);
+
     virtual void disconnectView(GObjectView *v);
 
     QMap<GObjectView *, QList<QObject *>> viewResources;
