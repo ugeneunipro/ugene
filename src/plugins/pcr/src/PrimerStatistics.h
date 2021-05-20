@@ -96,7 +96,7 @@ public:
     QString getFirstError() const;
 
     QString generateReport() const;
-
+    /* Returns the error occurred during initialization (construction) */
     QString getInitializationError() const;
 
     static const QString TmString;
