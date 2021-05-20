@@ -1,11 +1,11 @@
 <!DOCTYPE UGENE_TEST_FRAMEWORK_TEST>
 <multi-test>
 <run-cmdline
-        task="!common_data_dir!cmdline/pcr/pcr.uwl"
-        in="!common_data_dir!fasta/pcr_test.fa"
-        primers="!common_data_dir!primer3/not_for_production.lib"
-        out="!tmp_data_dir!7216_out.gb"
-        message="Unexpected symbol: Y"
-    />
+task="!common_data_dir!cmdline/pcr/pcr.uwl"
+in="!common_data_dir!fasta/pcr_test.fa"
+primers="!common_data_dir!primer3/not_for_production.lib"
+out="!tmp_data_dir!7216_out.gb"
+message="An error 'Unexpected symbol: Y' has occurred during processing file with primers"
+/>
 
 </multi-test>

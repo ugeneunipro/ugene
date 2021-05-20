@@ -371,7 +371,7 @@ InSilicoPcrReportTask::InSilicoPcrReportTask(const QList<TableRow> &table, const
 void InSilicoPcrReportTask::run() {
     QScopedPointer<IOAdapter> io(IOAdapterUtils::open(reportUrl, stateInfo, IOAdapterMode_Write));
     CHECK_OP(stateInfo, );
-    const QString& report = createReport();
+    const QString report = createReport();
     CHECK_OP(stateInfo, );
     io->writeBlock(report.toUtf8());
 }
@@ -411,7 +411,7 @@ QByteArray InSilicoPcrReportTask::productsTable() const {
     return chapterName(tr("Products count table")) + chapterContent(result);
 }
 
-QByteArray InSilicoPcrReportTask::primerDetails() {
+QString InSilicoPcrReportTask::primerDetails() {
     QByteArray result;
     for (int i = 0; i < primers.size(); i++) {
         QPair<Primer, Primer> pair = primers[i];
