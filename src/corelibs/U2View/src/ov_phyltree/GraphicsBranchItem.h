@@ -98,10 +98,8 @@ public:
 
     void updateSettings(const OptionsMap &settings);
     void updateChildSettings(const OptionsMap &settings);
-    /** Replace current font with given one */
+    /** Update currnt property with given */
     void updateTextProperty(TreeViewOption property, const QVariant &propertyVal);
-    /** Replace current color with given one */
-    void updateTextColor(const QColor &color);
 
     const OptionsMap &getSettings() const;
 
@@ -133,6 +131,8 @@ public:
     int getLengthCoef() const {
         return lengthCoef;
     }
+
+    void initDistanceText(const QString &text = QString());
 
     QRectF visibleChildrenBoundingRect(const QTransform &viewTransform) const;
 };

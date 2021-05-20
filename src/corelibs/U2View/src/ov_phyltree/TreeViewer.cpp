@@ -104,6 +104,7 @@ TreeViewer::TreeViewer(const QString &viewName, GObject *obj, GraphicsRectangula
     requiredObjects.append(phyObject);
     onObjectAdded(phyObject);
     connect(phyObject, SIGNAL(si_phyTreeChanged()), SLOT(sl_onPhyTreeChanged()));
+    root->initDistanceText();
 }
 
 QTransform TreeViewer::getTransform() const {
@@ -381,11 +382,12 @@ const qreal TreeViewerUI::SIZE_COEF = 0.1;
 TreeViewerUI::TreeViewerUI(TreeViewer *treeViewer)
     : phyObject(treeViewer->getPhyObject()),
       root(treeViewer->getRoot()),
+      lastUpdatedBranch(root),
       maxNameWidth(0.0),
       verticalScale(1.0),
       horizontalScale(1.0),
       curTreeViewer(treeViewer),
-      updatingFromOP(false),
+      dontSendOptionChangedSignal(false),
       rectRoot(treeViewer->getRoot()) {
     setWindowIcon(GObjectTypes::getTypeInfo(GObjectTypes::PHYLOGENETIC_TREE).icon);
 
@@ -478,7 +480,7 @@ QVariant TreeViewerUI::getOptionValue(TreeViewOption option) const {
 
 void TreeViewerUI::setOptionValue(TreeViewOption option, QVariant value) {
     settings[option] = value;
-    if (!updatingFromOP) {
+    if (!dontSendOptionChangedSignal) {
         emit si_optionChanged(option, value);
     }
 }
@@ -505,6 +507,10 @@ TreeLayout TreeViewerUI::getTreeLayout() const {
     return static_cast<TreeLayout>(getOptionValue(TREE_LAYOUT).toUInt());
 }
 
+GraphicsBranchItem *TreeViewerUI::getLastUpdatedBranch() const {
+    return lastUpdatedBranch;
+}
+
 void TreeViewerUI::onPhyTreeChanged() {
     layoutTask = new CreateRectangularBranchesTask(phyObject->getTree()->getRootNode());
 
@@ -522,9 +528,9 @@ void TreeViewerUI::updateSettings(const OptionsMap &settings) {
 }
 
 void TreeViewerUI::changeOption(TreeViewOption option, const QVariant &newValue) {
-    updatingFromOP = true;
+    dontSendOptionChangedSignal = true;
     onSettingsChanged(option, newValue);
-    updatingFromOP = false;
+    dontSendOptionChangedSignal = false;
 }
 
 void TreeViewerUI::onSettingsChanged(TreeViewOption option, const QVariant &newValue) {
@@ -541,22 +547,12 @@ void TreeViewerUI::onSettingsChanged(TreeViewOption option, const QVariant &newV
             updateScene(true);
             break;
         case LABEL_COLOR:
-            updateTextSettings(LABEL_COLOR);
-            break;
         case LABEL_FONT_TYPE:
-            updateTextSettings(LABEL_FONT_TYPE);
-            break;  
         case LABEL_FONT_SIZE:
-            updateTextSettings(LABEL_FONT_SIZE);
-            break;  
         case LABEL_FONT_BOLD:
-            updateTextSettings(LABEL_FONT_BOLD);
-            break;  
         case LABEL_FONT_ITALIC:
-            updateTextSettings(LABEL_FONT_ITALIC);
-            break;  
         case LABEL_FONT_UNDERLINE:
-            updateTextSettings(LABEL_FONT_UNDERLINE);
+            updateTextSettings(option);
             break;
         case BRANCH_COLOR:
         case BRANCH_THICKNESS:
@@ -667,26 +663,6 @@ void TreeViewerUI::updateSettings() {
         scene()->update();
     }
 }
-void TreeViewerUI::getSelectedBranchSettings(QColor &color, QFont &font) const {
-    QList<QGraphicsItem *> selectedItems = scene()->selectedItems();
-    if (selectedItems.isEmpty()) {
-        return;
-    }
-    int childCount = 0;
-    GraphicsBranchItem *rootItem = nullptr;
-    for (QGraphicsItem *graphItem : qAsConst(selectedItems)) {
-        auto *branchItem = dynamic_cast<GraphicsBranchItem *>(graphItem);
-        if (branchItem != nullptr && branchItem->getChildItems().size() >= childCount) {
-            childCount = branchItem->getChildItems().size();
-            rootItem = branchItem;
-        }
-    }
-    CHECK(rootItem != nullptr, )
-    if (rootItem->getDistanceText() != nullptr) {
-        font = rootItem->getDistanceText()->font();
-        color = rootItem->getDistanceText()->brush().color();
-    }
-}
 
 void TreeViewerUI::updateTextSettings(TreeViewOption option) {
     QList<QGraphicsItem *> updatingItems = scene()->items();
@@ -697,23 +673,19 @@ void TreeViewerUI::updateTextSettings(TreeViewOption option) {
         GraphicsBranchItem *branchItem = dynamic_cast<GraphicsBranchItem *>(graphItem);
         if (branchItem != NULL) {
             if (option == LABEL_COLOR) {
-                QColor curColor = qvariant_cast<QColor>(getOptionValue(LABEL_COLOR));
                 if (updatingItems.isEmpty()) {
                     updatingItems = items();
                     QList<QGraphicsItem *> legendChildItems = legend->childItems();
                     if (!legendChildItems.isEmpty()) {
                         auto *legendText = dynamic_cast<QGraphicsSimpleTextItem *>(legendChildItems.first());
                         if (legendText) {
-                            legendText->setBrush(curColor);
+                            legendText->setBrush(qvariant_cast<QColor>(getOptionValue(LABEL_COLOR)));
                         }
                     }
                 }
-                branchItem->updateTextColor(curColor);
-                if (branchItem->getCorrespondingItem()) {
-                    branchItem->getCorrespondingItem()->updateTextColor(curColor);
-                }
-            } else if (option == LABEL_COLOR || option == LABEL_FONT_TYPE || option == LABEL_FONT_SIZE ||
-                       option == LABEL_FONT_BOLD || option == LABEL_FONT_ITALIC || option == LABEL_FONT_UNDERLINE) {
+            } 
+            if (option == LABEL_COLOR || option == LABEL_FONT_TYPE || option == LABEL_FONT_SIZE ||
+                option == LABEL_FONT_BOLD || option == LABEL_FONT_ITALIC || option == LABEL_FONT_UNDERLINE) {
                 branchItem->updateTextProperty(option, getOptionValue(option));
                 if (branchItem->getCorrespondingItem()) {
                     branchItem->getCorrespondingItem()->updateTextProperty(option, getOptionValue(option));
@@ -1107,21 +1079,37 @@ void TreeViewerUI::collapseSelected() {
 
 void TreeViewerUI::updateBrachSettings() {
     QList<QGraphicsItem *> childItems = items();
+    GraphicsBranchItem *branch = root;
     foreach (QGraphicsItem *graphItem, childItems) {
         GraphicsButtonItem *buttonItem = dynamic_cast<GraphicsButtonItem *>(graphItem);
         if (buttonItem != nullptr && buttonItem->isPathToRootSelected()) {
-            GraphicsBranchItem *branch = dynamic_cast<GraphicsBranchItem *>(buttonItem->parentItem());
+            branch = dynamic_cast<GraphicsBranchItem *>(buttonItem->parentItem());
             SAFE_POINT(branch != nullptr, "Collapsing is impossible because button has not parent branch", );
-
-            GraphicsBranchItem *parentBranch = dynamic_cast<GraphicsBranchItem *>(branch->parentItem());
-            if (parentBranch != nullptr) {
-                setOptionValue(BRANCH_THICKNESS, branch->getSettings()[BRANCH_THICKNESS]);
-                setOptionValue(BRANCH_COLOR, branch->getSettings()[BRANCH_COLOR]);
-            }
-            emit si_updateBranches(branch);
             break;
         }
     }
+    setOptionValue(BRANCH_THICKNESS, branch->getSettings()[BRANCH_THICKNESS]);
+    setOptionValue(BRANCH_COLOR, branch->getSettings()[BRANCH_COLOR]);
+    QFont font;
+    QColor color;
+    if (branch->getDistanceText() != nullptr) {
+        font = branch->getDistanceText()->font();
+        color = branch->getDistanceText()->brush().color();
+    }
+    bool isCustomFont = font != QFont();
+    bool isCustomColor = color != QColor();
+    if (isCustomFont || isCustomColor) {
+        dontSendOptionChangedSignal = true;
+        setOptionValue(LABEL_FONT_TYPE, font);
+        setOptionValue(LABEL_FONT_SIZE, font.pointSize());
+        setOptionValue(LABEL_FONT_BOLD, font.bold());
+        setOptionValue(LABEL_FONT_ITALIC, font.italic());
+        setOptionValue(LABEL_FONT_UNDERLINE, font.underline());
+        setOptionValue(LABEL_COLOR, color);
+        dontSendOptionChangedSignal = false;
+    }
+    lastUpdatedBranch = branch;
+    emit si_updateBranch();
 }
 
 bool TreeViewerUI::isSelectedCollapsed() {

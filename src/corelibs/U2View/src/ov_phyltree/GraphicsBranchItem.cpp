@@ -87,6 +87,14 @@ void GraphicsBranchItem::updateTextProperty(TreeViewOption property, const QVari
             dtFont.setUnderline(qvariant_cast<bool>(propertyVal));
             ntFont.setUnderline(qvariant_cast<bool>(propertyVal));
             break;
+        case U2::LABEL_COLOR:
+            if (distanceText) {
+                distanceText->setBrush(qvariant_cast<QColor>(propertyVal));
+            }
+            if (nameText) {
+                nameText->setBrush(qvariant_cast<QColor>(propertyVal));
+            }
+            break;
         default:
             break;
     }
@@ -96,16 +104,6 @@ void GraphicsBranchItem::updateTextProperty(TreeViewOption property, const QVari
     }
     if (nameText) {
         nameText->setFont(ntFont);
-    }
-}
-
-
-void GraphicsBranchItem::updateTextColor(const QColor &color) {
-    if (distanceText) {
-        distanceText->setBrush(color);
-    }
-    if (nameText) {
-        nameText->setBrush(color);
     }
 }
 
@@ -203,13 +201,7 @@ void GraphicsBranchItem::initText(qreal d) {
     if (str == "0") {
         str = "";
     }
-    //test
-    distanceText = new QGraphicsSimpleTextItem(str);
-    distanceText->setFont(TreeViewerUtils::getFont());
-    distanceText->setBrush(Qt::darkGray);
-    setLabelPositions();
-    distanceText->setParentItem(this);
-    distanceText->setZValue(1);
+    initDistanceText(str);
 }
 
 GraphicsBranchItem::GraphicsBranchItem(bool withButton, double nodeValue)
@@ -365,6 +357,15 @@ void GraphicsBranchItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
             nameItemSelection->hide();
         }
     }
+}
+
+void GraphicsBranchItem::initDistanceText(const QString &text) {
+    distanceText = new QGraphicsSimpleTextItem(text);
+    distanceText->setFont(TreeViewerUtils::getFont());
+    distanceText->setBrush(Qt::darkGray);
+    setLabelPositions();
+    distanceText->setParentItem(this);
+    distanceText->setZValue(1);
 }
 
 QRectF GraphicsBranchItem::visibleChildrenBoundingRect(const QTransform &viewTransform) const {

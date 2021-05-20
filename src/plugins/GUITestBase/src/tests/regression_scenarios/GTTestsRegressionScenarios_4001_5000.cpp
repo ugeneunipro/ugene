@@ -1806,7 +1806,8 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
         }
 
         static void fontChecker(HI::GUITestOpStatus &os, const QString &expectedFamilyStr, int expectedSize) {
-            CHECK_SET_ERR(GTComboBox::getCurrentText(os, "fontComboBox") == expectedFamilyStr, "unexpected style: " + GTComboBox::getCurrentText(os, "fontComboBox"));
+            QString comboText = GTComboBox::getCurrentText(os, "fontComboBox");
+            CHECK_SET_ERR(comboText == expectedFamilyStr, "unexpected style: " + comboText);
             int actualSize = GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox"));
             CHECK_SET_ERR(actualSize == expectedSize, QString("unexpected point size: %1").arg(QString::number(actualSize)));
         }        
@@ -1861,6 +1862,71 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
     //8. Select first node
     //Expected state: font and size now became default
     GTUtilsPhyTree::clickNode(os, nodes[1]);
+    FontSettingsHelper::fontChecker(os, defaultFontFamily, defaultSize);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4177_1) {
+    class FontSettingsHelper {
+    public:
+        static void changeFontAndSize(HI::GUITestOpStatus &os, const QString &fontFamilyStr, int fontSize) {
+            QComboBox *fontComboBox = GTWidget::findExactWidget<QComboBox *>(os, "fontComboBox");
+            GTComboBox::selectItemByText(os, fontComboBox, fontFamilyStr);
+            GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox"), fontSize, GTGlobals::UseMouse);
+        }
+
+        static void fontChecker(HI::GUITestOpStatus &os, const QString &expectedFamilyStr, int expectedSize) {
+            QString comboText = GTComboBox::getCurrentText(os, "fontComboBox");
+            CHECK_SET_ERR(comboText == expectedFamilyStr, "unexpected style: " + comboText);
+            int actualSize = GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox"));
+            CHECK_SET_ERR(actualSize == expectedSize, QString("unexpected point size: %1").arg(QString::number(actualSize)));
+        }
+
+        static void getFontSettings(HI::GUITestOpStatus &os, QString &familyStr, int &size) {
+            familyStr = GTComboBox::getCurrentText(os, "fontComboBox");
+            size = GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox"));
+        }
+    };
+
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
+    GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QWidget *labelsColorButton = GTWidget::findWidget(os, "labelsColorButton");
+    if (!labelsColorButton->isVisible()) {
+        GTWidget::click(os, GTWidget::findWidget(os, "lblFontSettings"));
+    }
+    QString defaultFontFamily;
+    int defaultSize;
+
+    QList<GraphicsButtonItem *> nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
+    CHECK_SET_ERR(nodes.size() == 16,
+                  QString("Something goes wrong with building tree from COI.aln We are expect 16 nodes instead of: %1")
+                      .arg(QString::number(nodes.size())));
+    //1. Open samples/CLUSTALW/COI.aln and build tree for it
+    GTUtilsPhyTree::clickNode(os, nodes[0]);    //drop sticked ruler
+    //2. Select node, change font size to 16
+    GTUtilsPhyTree::clickNode(os, nodes[1]);
+    FontSettingsHelper::getFontSettings(os, defaultFontFamily, defaultSize);
+    FontSettingsHelper::changeFontAndSize(os, defaultFontFamily, 16);
+    //3. Close OP tab
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
+    //4. Click to empty space near the node to reset selection
+    GTThread::waitForMainThread();
+    QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
+    CHECK_SET_ERR(treeView, "treeView not found");
+    QPointF sceneCoord = nodes[1]->mapToScene(nodes[1]->boundingRect().topLeft());
+    QPoint viewCord = treeView->mapFromScene(sceneCoord);
+    QPoint globalCoord = treeView->mapToGlobal(viewCord);
+    globalCoord += QPoint(nodes[1]->boundingRect().width() / 2 + 8, nodes[1]->boundingRect().height() / 2 + 8);
+    GTMouseDriver::moveTo(globalCoord);
+    GTMouseDriver::click();
+    //5. Open OP tab
+    //Expected state: font and size are default
+    GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
     FontSettingsHelper::fontChecker(os, defaultFontFamily, defaultSize);
 }
 

@@ -71,8 +71,9 @@ TreeOptionsWidget::TreeOptionsWidget(MSAEditor *msaEditor, const TreeOpWidgetVie
 
     initColorButtonsStyle();
     createGroups();
-
+    savableTab.disableSavingForWidgets(saveDisabledWidgets());
     U2WidgetStateStorage::restoreWidgetState(savableTab);
+    sl_selectionChanged();
 }
 
 TreeOptionsWidget::TreeOptionsWidget(TreeViewer *tree, const TreeOpWidgetViewSettings &viewSettings)
@@ -85,8 +86,9 @@ TreeOptionsWidget::TreeOptionsWidget(TreeViewer *tree, const TreeOpWidgetViewSet
 
     initColorButtonsStyle();
     createGroups();
-
+    savableTab.disableSavingForWidgets(saveDisabledWidgets());
     U2WidgetStateStorage::restoreWidgetState(savableTab);
+    sl_selectionChanged();
 }
 
 TreeOptionsWidget::~TreeOptionsWidget() {
@@ -174,26 +176,26 @@ void TreeOptionsWidget::sl_onOptionChanged(TreeViewOption option, const QVariant
     isUpdating = false;
 }
 
-void TreeOptionsWidget::sl_selectionChanged(GraphicsBranchItem *parentItem) {
+void TreeOptionsWidget::sl_selectionChanged() {
     const QSignalBlocker fontSizeBlocker(fontSizeSpinBox);
     const QSignalBlocker fontComboBlocker(fontComboBox);
 
-    QFont font;
-    QColor color;
-    if (parentItem->getDistanceText() != nullptr) {
-        font = parentItem->getDistanceText()->font();
-        color = parentItem->getDistanceText()->brush().color();
-    }
-    bool isCustomFont = font != QFont();
-    bool isCustomColor = color != QColor();
-    if (isCustomFont || isCustomColor) {
-        fontComboBox->setCurrentFont(font);
-        fontSizeSpinBox->setValue(font.pointSize());
-        boldAttrButton->setChecked(font.bold());
-        italicAttrButton->setChecked(font.italic());
-        underlineAttrButton->setChecked(font.underline());
-        updateButtonColor(labelsColorButton, color);
-    }
+    fontComboBox->setCurrentFont(qvariant_cast<QFont>(getTreeViewer()->getOptionValue(LABEL_FONT_TYPE)));
+    fontSizeSpinBox->setValue(getTreeViewer()->getOptionValue(LABEL_FONT_SIZE).toInt());
+    boldAttrButton->setChecked(getTreeViewer()->getOptionValue(LABEL_FONT_BOLD).toBool());
+    italicAttrButton->setChecked(getTreeViewer()->getOptionValue(LABEL_FONT_ITALIC).toBool());
+    underlineAttrButton->setChecked(getTreeViewer()->getOptionValue(LABEL_FONT_UNDERLINE).toBool());
+    updateButtonColor(labelsColorButton, qvariant_cast<QColor>(getTreeViewer()->getOptionValue(LABEL_COLOR)));
+}
+
+QStringList TreeOptionsWidget::saveDisabledWidgets() {
+    return QStringList()
+           << fontComboBox->objectName()
+           << fontSizeSpinBox->objectName()
+           << boldAttrButton->objectName()
+           << italicAttrButton->objectName()
+           << underlineAttrButton->objectName()
+           << labelsColorButton->objectName();
 }
 
 void TreeOptionsWidget::initializeOptionsMap() {
@@ -253,7 +255,7 @@ void TreeOptionsWidget::connectSlots() {
     connect(branchesColorButton, SIGNAL(clicked()), SLOT(sl_branchesColorButton()));
     connect(lineWeightSpinBox, SIGNAL(valueChanged(int)), SLOT(sl_valueChanged()));
 
-    connect(getTreeViewer(), SIGNAL(si_updateBranches(GraphicsBranchItem *)), SLOT(sl_selectionChanged(GraphicsBranchItem *)));
+    connect(getTreeViewer(), SIGNAL(si_updateBranch()), SLOT(sl_selectionChanged()));
 }
 
 void TreeOptionsWidget::sl_valueChanged() {
@@ -440,6 +442,27 @@ void AddTreeWidget::sl_onBuildTreeTriggered() {
 
 void AddTreeWidget::sl_updateBuildTreeButtonState() {
     buildTreeButton->setDisabled(editor->getNumSequences() < 2 || editor->getMaObject()->isStateLocked());
+}
+
+ TreeOptionsSavableWidget::TreeOptionsSavableWidget(QWidget *wrappedWidget, MWMDIWindow *contextWindow /*= NULL*/)
+    : U2SavableWidget(wrappedWidget, contextWindow) {
+}
+
+TreeOptionsSavableWidget::~TreeOptionsSavableWidget() {
+    U2WidgetStateStorage::saveWidgetState(*this);
+    widgetStateSaved = true;
+}
+
+void TreeOptionsSavableWidget::disableSavingForWidgets(const QStringList &s) {
+    widgetsNotToSave.append(s);
+}
+
+bool TreeOptionsSavableWidget::childCanBeSaved(QWidget *child) const {
+    if (widgetsNotToSave.contains(child->objectName())) {
+        return false;
+    } else {
+        return U2SavableWidget::childCanBeSaved(child);
+    }
 }
 
 }    // namespace U2
