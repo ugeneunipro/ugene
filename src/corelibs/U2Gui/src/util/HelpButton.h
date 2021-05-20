@@ -43,8 +43,6 @@ public:
 
     void updatePageId(const QString &pageId);
 
-    static const QString INVALID_VALUE;
-
 protected slots:
     virtual void sl_buttonClicked();
 
@@ -58,8 +56,9 @@ class U2GUI_EXPORT ComboboxDependentHelpButton : public HelpButton {
     Q_OBJECT
 public:
     ComboboxDependentHelpButton(QObject *parent, QDialogButtonBox *b, QComboBox *cb, const QMap<QString, QString> &pageMap);
+
 protected slots:
-    void sl_buttonClicked();
+    void sl_buttonClicked() override;
 
 private:
     const QMap<QString, QString> pageMap;

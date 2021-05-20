@@ -5322,30 +5322,31 @@ GUI_TEST_CLASS_DEFINITION(test_4804_5) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4804_6) {
-    //    1. Open _common_data/scenarios/_regression/4804/standard_dna.aln
+    // Open DNA sequence.
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4804", "standard_dna.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    2. Add amino extended sequence throu context menu {Add->Sequence from file}
+    // Add amino sequence and check the alphabet change notification.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804/ext_amino.fa"));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_LOAD << "Sequence from file"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_LOAD, "Sequence from file"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-    GTGlobals::sleep();
 
-    //   4. Undo changes
+    GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Raw\"");
+    GTUtilsDialog::waitAllFinished(os);
+
+    //   Undo the changes: no notification is expected.
     GTUtilsMsaEditor::undo(os);
-    GTThread::waitForMainThread();
     GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::checkNoVisibleNotifications(os);
 
-    //   5. Redo changes and check appearing notifications
-    GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Raw\". Use \"Undo\", if you'd like to restore the original alignment.");
+    //   Redo the changes and check the notification again.
     GTUtilsMsaEditor::redo(os);
-    GTThread::waitForMainThread();
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Raw\"");
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4833_1) {
-    //Add sequence from curent project by main menu
+    //Add sequence from current project by main menu
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4804", "ext_dna.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4804", "standard_amino.aln");

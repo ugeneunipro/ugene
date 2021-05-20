@@ -176,6 +176,14 @@ void GTUtilsNotifications::waitAllNotificationsClosed(HI::GUITestOpStatus &os) {
 
 #undef GT_METHOD_NAME
 
+#define GT_METHOD_NAME "checkNoVisibleNotifications"
+void GTUtilsNotifications::checkNoVisibleNotifications(HI::GUITestOpStatus &os) {
+    QWidget *notification = findAnyVisibleNotificationWidget();
+    GT_CHECK(notification == nullptr, "Found active notification!");
+}
+
+#undef GT_METHOD_NAME
+
 #undef GT_CLASS_NAME
 
 }    // namespace U2

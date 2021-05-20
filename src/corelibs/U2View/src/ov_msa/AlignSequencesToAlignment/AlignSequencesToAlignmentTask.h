@@ -44,8 +44,6 @@ public:
 
     void setAlphabet(const DNAAlphabet *newAlphabet);
 
-    void extractSequencesFromDocuments(const QList<Document *> &documentsList);
-
     void extractSequencesFromDocument(Document *doc);
 
     void extractSequencesFromObjects(const QList<GObject *> &objects);
@@ -62,15 +60,12 @@ public:
 
     const QList<Document *> &getUsedDocuments() const;
 
-    const DNAAlphabet *resultingAlphabet() const;
-
 private:
     void checkAlphabet(const DNAAlphabet *alphabet, const QString &objectName);
 
     QList<U2EntityRef> sequenceRefs;
     QStringList errorList;
     const DNAAlphabet *seqsAlphabet;
-    bool extractFromMsa;
     QStringList sequenceNames;
     qint64 sequencesMaxLength;
     QList<Document *> usedDocuments;
@@ -80,16 +75,18 @@ class LoadSequencesTask : public Task {
     Q_OBJECT
 public:
     LoadSequencesTask(const DNAAlphabet *msaAlphabet, const QStringList &filesWithSequences);
-    void prepare();
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    void prepare() override;
 
-    ReportResult report();
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
+
+    ReportResult report() override;
 
     const SequenceObjectsExtractor &getExtractor() const;
 
 private:
     const DNAAlphabet *msaAlphabet;
+
     QStringList urls;
 
     SequenceObjectsExtractor extractor;
@@ -103,12 +100,14 @@ private:
 class AlignSequencesToAlignmentTask : public Task {
     Q_OBJECT
 public:
-    AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject *obj, const SequenceObjectsExtractor &extractor, bool forceUseUgeneNativeAligner = false);
-    void prepare();
-    ReportResult report();
+    AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject *obj, const SequenceObjectsExtractor &extractor);
+
+    void prepare() override;
+
+    ReportResult report() override;
 
 private:
-    void fillSettingsByDefault();
+    void initSettingsWithDefaults();
 
     QPointer<MultipleSequenceAlignmentObject> maObjPointer;
     QStringList urls;
@@ -118,13 +117,13 @@ private:
     AlignSequencesToAlignmentTaskSettings settings;
     QList<Document *> usedDocuments;
     const DNAAlphabet *initialMsaAlphabet;
-    SequenceObjectsExtractor extr;
+    SequenceObjectsExtractor sequenceObjectsExtractor;
 };
 
 class LoadSequencesAndAlignToAlignmentTask : public Task {
     Q_OBJECT
 public:
-    LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QStringList &urls, bool forceUseUgeneNativeAligner = false);
+    LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QStringList &urls);
 
     void prepare() override;
     QList<Task *> onSubTaskFinished(Task *subTask) override;
@@ -134,7 +133,6 @@ private:
     QStringList urls;
     QPointer<MultipleSequenceAlignmentObject> maObjPointer;
     LoadSequencesTask *loadSequencesTask;
-    bool forceUseUgeneNativeAligner;
 };
 
 }    // namespace U2
