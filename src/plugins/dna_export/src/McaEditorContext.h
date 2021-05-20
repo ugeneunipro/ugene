@@ -35,8 +35,8 @@ private slots:
     void sl_exportMca2Msa();
 
 private:
-    void initViewContext(GObjectView *view);
-    void buildMenu(GObjectView *view, QMenu *menu);
+    void initViewContext(GObjectView *view) override;
+    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
 };
 
 }    // namespace U2

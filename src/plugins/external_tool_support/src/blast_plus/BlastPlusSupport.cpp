@@ -287,7 +287,7 @@ static void setActionFontItalic(QAction *action, bool italic) {
     action->setFont(font);
 }
 
-void BlastPlusSupportContext::buildMenu(GObjectView *view, QMenu *m, const QString &) {
+void BlastPlusSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
     QList<GObjectViewAction *> actions = getViewActions(view);
     QMenu *analyseMenu = GUIUtils::findSubMenu(m, ADV_MENU_ANALYSE);
     SAFE_POINT(analyseMenu != NULL, "analyseMenu", );

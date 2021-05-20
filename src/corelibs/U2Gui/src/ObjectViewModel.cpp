@@ -595,11 +595,29 @@ void GObjectViewWindowContext::sl_windowClosing(MWMDIWindow *w) {
 }
 
 void GObjectViewWindowContext::sl_buildMenu(GObjectView *v, QMenu *m, const QString &type) {
-    buildMenu(v, m, type);
+    if (type == GObjectViewMenuType::STATIC) {
+        buildStaticMenu(v, m);
+    } else if (type == GObjectViewMenuType::CONTEXT) {
+        buildContextMenu(v, m);
+    } else {
+        buildActionMenu(v, m, type);
+    }
 }
 
-void GObjectViewWindowContext::buildMenu(GObjectView *, QMenu *, const QString &) {
-    // No menu by default.
+void GObjectViewWindowContext::buildStaticMenu(GObjectView *view, QMenu *menu) {
+    buildStaticOrContextMenu(view, menu);
+}
+
+void GObjectViewWindowContext::buildContextMenu(GObjectView *view, QMenu *menu) {
+    buildStaticOrContextMenu(view, menu);
+}
+
+void GObjectViewWindowContext::buildStaticOrContextMenu(GObjectView *, QMenu *) {
+    // No extra static/context menu items by default.
+}
+
+void GObjectViewWindowContext::buildActionMenu(GObjectView *, QMenu *, const QString &) {
+    // No extra action menu items by default.
 }
 
 void GObjectViewWindowContext::disconnectView(GObjectView *v) {

@@ -161,7 +161,7 @@ void KalignMSAEditorContext::initViewContext(GObjectView *view) {
     addViewAction(alignAction);
 }
 
-void KalignMSAEditorContext::buildMenu(GObjectView *v, QMenu *m, const QString &) {
+void KalignMSAEditorContext::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
     QList<GObjectViewAction *> actions = getViewActions(v);
     QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
     assert(alignMenu != NULL);

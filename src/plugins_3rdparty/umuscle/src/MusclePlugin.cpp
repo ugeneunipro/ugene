@@ -161,7 +161,7 @@ void MuscleMSAEditorContext::initViewContext(GObjectView *view) {
     addViewAction(alignProfilesAction);
 }
 
-void MuscleMSAEditorContext::buildMenu(GObjectView *v, QMenu *m, const QString &) {
+void MuscleMSAEditorContext::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
     QList<GObjectViewAction *> actions = getViewActions(v);
     QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
     SAFE_POINT(alignMenu != NULL, "alignMenu", );

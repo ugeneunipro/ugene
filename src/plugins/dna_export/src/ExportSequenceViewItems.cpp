@@ -80,7 +80,7 @@ void ExportSequenceViewItemsController::initViewContext(GObjectView *v) {
     addViewResource(av, vc);
 }
 
-void ExportSequenceViewItemsController::buildMenu(GObjectView *v, QMenu *m, const QString &) {
+void ExportSequenceViewItemsController::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
     QList<QObject *> resources = viewResources.value(v);
     assert(resources.size() == 1);
     QObject *r = resources.first();

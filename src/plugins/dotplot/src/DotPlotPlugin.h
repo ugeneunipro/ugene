@@ -50,10 +50,10 @@ public:
     DotPlotViewContext(QObject *p);
 
 protected:
-    virtual void initViewContext(GObjectView *view);
+    void initViewContext(GObjectView *view) override;
 
     void createSplitter();
-    void buildMenu(GObjectView *v, QMenu *m);
+    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
     DotPlotSplitter *getView(GObjectView *view, bool create);
     void removeDotPlotView(GObjectView *view);
 

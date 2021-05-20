@@ -212,7 +212,7 @@ void HMMMSAEditorContext::initViewContext(GObjectView *view) {
     addViewAction(a);
 }
 
-void HMMMSAEditorContext::buildMenu(GObjectView *v, QMenu *m, const QString &) {
+void HMMMSAEditorContext::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
     MSAEditor *msaed = qobject_cast<MSAEditor *>(v);
     SAFE_POINT(NULL != msaed && NULL != m, "Invalid GObjectVeiw or QMenu", );
     CHECK(msaed->getMaObject() != NULL, );

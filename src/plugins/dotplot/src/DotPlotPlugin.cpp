@@ -264,7 +264,7 @@ DotPlotSplitter *DotPlotViewContext::getView(GObjectView *view, bool create) {
 }
 
 // context menu opened
-void DotPlotViewContext::buildMenu(U2::GObjectView *v, QMenu *m) {
+void DotPlotViewContext::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
     QList<QObject *> resources = viewResources.value(v);
     foreach (QObject *r, resources) {
         DotPlotSplitter *dotPlotView = qobject_cast<DotPlotSplitter *>(r);

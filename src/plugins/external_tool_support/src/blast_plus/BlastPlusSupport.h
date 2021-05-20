@@ -67,7 +67,7 @@ protected slots:
 
 protected:
     void initViewContext(GObjectView *view) override;
-    void buildMenu(GObjectView *view, QMenu *menu, const QString &menuType) override;
+    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
 
 private:
     QStringList toolIdList;

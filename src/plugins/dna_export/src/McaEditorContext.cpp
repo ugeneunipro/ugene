@@ -56,7 +56,7 @@ void McaEditorContext::initViewContext(GObjectView *view) {
     addViewAction(action);
 }
 
-void McaEditorContext::buildMenu(GObjectView *view, QMenu *menu) {
+void McaEditorContext::buildStaticOrContextMenu(GObjectView *view, QMenu *menu) {
     McaEditor *mcaEditor = qobject_cast<McaEditor *>(view);
     SAFE_POINT(NULL != mcaEditor, "Mca Editor is NULL", );
     SAFE_POINT(NULL != menu, "Menu is NULL", );

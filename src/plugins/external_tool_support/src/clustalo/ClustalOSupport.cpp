@@ -139,7 +139,7 @@ void ClustalOSupportContext::initViewContext(GObjectView *view) {
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_ClustalO()));
 }
 
-void ClustalOSupportContext::buildMenu(GObjectView *view, QMenu *m, const QString &) {
+void ClustalOSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
     QList<GObjectViewAction *> actions = getViewActions(view);
     QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
     SAFE_POINT(alignMenu != NULL, "alignMenu", );

@@ -124,7 +124,7 @@ void TCoffeeSupportContext::initViewContext(GObjectView *view) {
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_TCoffee()));
 }
 
-void TCoffeeSupportContext::buildMenu(GObjectView *view, QMenu *m, const QString &) {
+void TCoffeeSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
     QList<GObjectViewAction *> actions = getViewActions(view);
     QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
     SAFE_POINT(alignMenu != nullptr, "alignMenu", );

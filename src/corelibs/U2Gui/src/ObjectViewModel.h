@@ -397,7 +397,7 @@ public:
 
     QList<GObjectViewAction *> getViewActions(GObjectView *view) const;
 
-    virtual void onObjectRemoved(GObjectView *v, GObject *obj);
+    void onObjectRemoved(GObjectView *v, GObject *obj) override;
 
 protected:
     /// init context associated with 'view'
@@ -414,12 +414,34 @@ protected slots:
 
 protected:
     /**
-     * Populates menu with a contextual actions.
-     * The menu type indicates type of the menu: 'context' string is a default contextual popup menu,
-     * 'static' is for the static menu shown in the application toolbar and other string values are specific values for the view.
-     * Example of custom menu types: 're-align-current-alignment', 'add-sequence-to-alignment', etc...
-     * */
-    virtual void buildMenu(GObjectView *view, QMenu *menu, const QString &menuType);
+     * Populates static global application menu with actions added by the class instance.
+     * This method is called when the view builds GObjectViewMenuType::Static menu.
+     */
+    virtual void buildStaticMenu(GObjectView *view, QMenu *menu);
+
+    /**
+     * Populates context popup menu with actions added by the class instance.
+     * This method is called when the view builds GObjectViewMenuType::Context menu.
+     */
+    virtual void buildContextMenu(GObjectView *view, QMenu *menu);
+
+    /**
+     * Populates menu with type specific actions.
+     * This method is called during construction of the type specific popup menu in the view like 'Align' button menu in MSA Editor.
+     * The method is never called for the generic 'GObjectViewMenuType::Context' or 'GObjectViewMenuType::Static' menu types:
+     *  use 'buildContextMenu' or 'buildStaticMenu' for that types.
+     */
+    virtual void buildActionMenu(GObjectView *view, QMenu *menu, const QString &menuType);
+
+    /**
+     * Builds both 'GObjectViewMenuType::Static' and 'GObjectViewMenuType::Context' menus.
+     *
+     * This convenience method is called by default by the base impls of buildStaticMenu() and buildContextMenu() and
+     * exists because most of the UGENE plugins create equal static & context menus.
+     *
+     * This method is never called for menu types other than 'GObjectViewMenuType::Static' and 'GObjectViewMenuType::Context'.
+     */
+    virtual void buildStaticOrContextMenu(GObjectView *view, QMenu *menu);
 
     virtual void disconnectView(GObjectView *v);
 
