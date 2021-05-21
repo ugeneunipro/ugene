@@ -712,9 +712,6 @@ void GObjectViewAction::addToMenuWithOrder(QMenu *menu) {
     menu->addAction(this);
 }
 
-GObjectViewObjectHandler::~GObjectViewObjectHandler() {
-}
-
 bool GObjectViewObjectHandler::canHandle(GObjectView *, GObject *) {
     return false;
 }

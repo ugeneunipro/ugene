@@ -383,7 +383,7 @@ private:
  */
 class U2GUI_EXPORT GObjectViewObjectHandler {
 public:
-    virtual ~GObjectViewObjectHandler();
+    virtual ~GObjectViewObjectHandler() = default;
 
     /**
      * Checks if the handler can 'handle' the object.
