@@ -279,7 +279,7 @@ void MSAEditor::addEditMenu(QMenu *m) {
     menu->menuAction()->setObjectName(MSAE_MENU_EDIT);
 }
 
-void MSAEditor::addSortMenu(QMenu *m) const {
+void MSAEditor::addSortMenu(QMenu *m) {
     QMenu *menu = m->addMenu(tr("Sort"));
     menu->menuAction()->setObjectName(MSAE_MENU_SORT);
     menu->addAction(sortByNameAscendingAction);
@@ -364,7 +364,7 @@ void MSAEditor::addHighlightingMenu(QMenu *m) {
     m->insertMenu(GUIUtils::findAction(m->actions(), MSAE_MENU_EDIT), highlightSchemeMenu);
 }
 
-void MSAEditor::addNavigationMenu(QMenu *m) const {
+void MSAEditor::addNavigationMenu(QMenu *m) {
     QMenu *navMenu = m->addMenu(tr("Navigation"));
     navMenu->menuAction()->setObjectName(MSAE_MENU_NAVIGATION);
     navMenu->addAction(gotoAction);
@@ -373,14 +373,14 @@ void MSAEditor::addNavigationMenu(QMenu *m) const {
     navMenu->addAction(searchInSequenceNamesAction);
 }
 
-void MSAEditor::addTreeMenu(QMenu *m) const {
+void MSAEditor::addTreeMenu(QMenu *m) {
     QMenu *em = m->addMenu(tr("Tree"));
     //em->setIcon(QIcon(":core/images/tree.png"));
     em->menuAction()->setObjectName(MSAE_MENU_TREES);
     em->addAction(buildTreeAction);
 }
 
-void MSAEditor::addAdvancedMenu(QMenu *m) const {
+void MSAEditor::addAdvancedMenu(QMenu *m) {
     QMenu *menu = m->addMenu(tr("Advanced"));
     menu->menuAction()->setObjectName(MSAE_MENU_ADVANCED);
 

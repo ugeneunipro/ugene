@@ -133,15 +133,15 @@ protected:
 
     void addCopyPasteMenu(QMenu *m) override;
     void addEditMenu(QMenu *m) override;
-    void addSortMenu(QMenu *m) const;
+    void addSortMenu(QMenu *m);
     void addExportMenu(QMenu *m) override;
     void addAppearanceMenu(QMenu *m);
     void addColorsMenu(QMenu *m);
     void addHighlightingMenu(QMenu *m);
-    void addNavigationMenu(QMenu *m) const;
-    void addTreeMenu(QMenu *m) const;
-    void addAdvancedMenu(QMenu *m) const;
-    static void addStatisticsMenu(QMenu *m);
+    void addNavigationMenu(QMenu *m);
+    void addTreeMenu(QMenu *m);
+    void addAdvancedMenu(QMenu *m);
+    void addStatisticsMenu(QMenu *m);
 
     void updateActions() override;
 
