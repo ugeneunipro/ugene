@@ -211,7 +211,7 @@ void MSAEditor::buildStaticToolbar(QToolBar *tb) {
 }
 
 void MSAEditor::buildMenu(QMenu *m, const QString &type) {
-    if (type != GObjectViewMenuType::STATIC) {
+    if (type != MsaEditorMenuType::STATIC) {
         GObjectView::buildMenu(m, type);
         return;
     }
@@ -506,7 +506,7 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     }
     m.addSeparator();
 
-    emit si_buildMenu(this, &m, GObjectViewMenuType::CONTEXT);
+    emit si_buildMenu(this, &m, MsaEditorMenuType::CONTEXT);
 
     GUIUtils::disableEmptySubmenus(&m);
 

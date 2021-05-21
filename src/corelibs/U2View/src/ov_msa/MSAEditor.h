@@ -176,7 +176,7 @@ private:
 };
 
 /** Set of custom menu actions in MSA editor. */
-class U2VIEW_EXPORT MsaEditorMenuType {
+class U2VIEW_EXPORT MsaEditorMenuType : public GObjectViewMenuType {
 public:
     /** "Align" button menu identifier. */
     const static QString ALIGN;

@@ -87,7 +87,7 @@ void McaEditor::buildStaticToolbar(QToolBar *tb) {
 }
 
 void McaEditor::buildMenu(QMenu *menu, const QString &type) {
-    if (type != GObjectViewMenuType::STATIC) {
+    if (type != MsaEditorMenuType::STATIC) {
         GObjectView::buildMenu(menu, type);
         return;
     }
@@ -132,8 +132,8 @@ SequenceObjectContext *McaEditor::getReferenceContext() const {
 
 void McaEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     QMenu menu;
-    buildMenu(&menu, GObjectViewMenuType::STATIC);    // TODO: this call triggers extra signal for static menu.
-    emit si_buildMenu(this, &menu, GObjectViewMenuType::CONTEXT);
+    buildMenu(&menu, MsaEditorMenuType::STATIC);    // TODO: this call triggers extra signal for static menu.
+    emit si_buildMenu(this, &menu, MsaEditorMenuType::CONTEXT);
     menu.exec(QCursor::pos());
 }
 

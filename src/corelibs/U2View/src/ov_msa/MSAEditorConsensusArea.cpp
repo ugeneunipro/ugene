@@ -49,7 +49,7 @@ QString MSAEditorConsensusArea::getConsensusPercentTip(int pos, int minReportPer
 }
 
 void MSAEditorConsensusArea::sl_buildMenu(GObjectView * /*view*/, QMenu *menu, const QString &menuType) {
-    if (menuType == GObjectViewMenuType::CONTEXT || menuType == GObjectViewMenuType::STATIC) {
+    if (menuType == MsaEditorMenuType::CONTEXT || menuType == MsaEditorMenuType::STATIC) {
         buildMenu(menu);
     }
 }
