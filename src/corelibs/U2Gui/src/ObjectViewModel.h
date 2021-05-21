@@ -356,14 +356,25 @@ public:
     GObjectViewAction(QObject *p, GObjectView *v, const QString &text, int order = GObjectViewAction_DefaultOrder);
 
     GObjectView *getObjectView() const;
+
     int getActionOrder() const;
+
     void addToMenuWithOrder(QMenu *menu);
+
+    /** Returns true if the action is present in the menu of the given type. */
+    bool isInMenu(const QString &menuType) const;
+
+    /** Sets menu type ids this action should be present in. */
+    void setMenuTypes(const QList<QString> &menuTypes);
 
 private:
     GObjectView *view;
 
     // Action order can be used to set-up relative action position in GUI elements
     int actionOrder;
+
+    /** Set of view action menu types this action belongs to. */
+    QList<QString> menuTypes;
 };
 
 /**

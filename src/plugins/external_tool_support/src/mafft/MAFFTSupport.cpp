@@ -126,8 +126,9 @@ void MAFFTSupportContext::initViewContext(GObjectView *view) {
     bool objLocked = msaEditor->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaEditor->isAlignmentEmpty();
 
-    AlignMsaAction *alignAction = new AlignMsaAction(this, MAFFTSupport::ET_MAFFT_ID, view, tr("Align with MAFFT..."), 2000);
+    auto alignAction = new AlignMsaAction(this, MAFFTSupport::ET_MAFFT_ID, view, tr("Align with MAFFT..."), 2000);
     alignAction->setObjectName("Align with MAFFT");
+    alignAction->setMenuTypes({MsaEditorMenuType::ALIGN});
 
     addViewAction(alignAction);
     alignAction->setEnabled(!objLocked && !isMsaEmpty);

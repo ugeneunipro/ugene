@@ -150,10 +150,11 @@ void KalignMSAEditorContext::initViewContext(GObjectView *view) {
     bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
 
-    KalignAction *alignAction = new KalignAction(this, view, tr("Align with Kalign..."), 2000);
+    auto alignAction = new KalignAction(this, view, tr("Align with Kalign..."), 2000);
     alignAction->setObjectName("align_with_kalign");
     alignAction->setIcon(QIcon(":kalign/images/kalign_16.png"));
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
+    alignAction->setMenuTypes({MsaEditorMenuType::ALIGN});
 
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align()));
     connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));

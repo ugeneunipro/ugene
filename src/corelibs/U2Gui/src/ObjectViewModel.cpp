@@ -616,8 +616,13 @@ void GObjectViewWindowContext::buildStaticOrContextMenu(GObjectView *, QMenu *) 
     // No extra static/context menu items by default.
 }
 
-void GObjectViewWindowContext::buildActionMenu(GObjectView *, QMenu *, const QString &) {
-    // No extra action menu items by default.
+void GObjectViewWindowContext::buildActionMenu(GObjectView *view, QMenu *menu, const QString &menuType) {
+    QList<GObjectViewAction *> viewActions = getViewActions(view);
+    for (GObjectViewAction *action : viewActions) {
+        if (action->isInMenu(menuType)) {
+            action->addToMenuWithOrder(menu);
+        }
+    }
 }
 
 void GObjectViewWindowContext::disconnectView(GObjectView *v) {
@@ -687,9 +692,17 @@ int GObjectViewAction::getActionOrder() const {
     return actionOrder;
 }
 
+bool GObjectViewAction::isInMenu(const QString &menuType) const {
+    return menuTypes.contains(menuType);
+}
+
+void GObjectViewAction::setMenuTypes(const QList<QString> &newMenuTypes) {
+    menuTypes = newMenuTypes;
+}
+
 void GObjectViewAction::addToMenuWithOrder(QMenu *menu) {
-    const QList<QAction *> actionList = menu->actions();
-    for (QAction *action : qAsConst(actionList)) {
+    QList<QAction *> actionList = menu->actions();
+    for (QAction *action : actionList) {
         GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(action);
         if (viewAction != nullptr && viewAction->getActionOrder() > actionOrder) {
             menu->insertAction(action, this);

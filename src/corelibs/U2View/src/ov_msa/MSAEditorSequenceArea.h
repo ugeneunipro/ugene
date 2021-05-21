@@ -160,7 +160,7 @@ protected:
     void focusInEvent(QFocusEvent *fe) override;
 
 private slots:
-    void sl_buildMenu(GObjectView *v, QMenu *m, const QString &type);
+    void sl_buildMenu(GObjectView *v, QMenu *m, const QString &menuType);
     void sl_buildStaticToolbar(GObjectView *v, QToolBar *t);
     void sl_lockedStateChanged();
     void sl_addSeqFromFile();

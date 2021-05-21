@@ -133,28 +133,31 @@ void MuscleMSAEditorContext::initViewContext(GObjectView *view) {
     bool objLocked = msaed->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaed->isAlignmentEmpty();
 
-    MuscleAction *alignAction = new MuscleAction(this, view, tr("Align with MUSCLE..."), 1000);
+    auto alignAction = new MuscleAction(this, view, tr("Align with MUSCLE..."), 1000);
     alignAction->setIcon(QIcon(":umuscle/images/muscle_16.png"));
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
     alignAction->setObjectName("Align with muscle");
+    alignAction->setMenuTypes({MsaEditorMenuType::ALIGN});
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align()));
     connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
     connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
     addViewAction(alignAction);
 
-    MuscleAction *addSequencesAction = new MuscleAction(this, view, tr("Align sequences to profile with MUSCLE..."), 1001);
+    auto addSequencesAction = new MuscleAction(this, view, tr("Align sequences to profile with MUSCLE..."), 1001);
     addSequencesAction->setIcon(QIcon(":umuscle/images/muscle_16.png"));
     addSequencesAction->setEnabled(!objLocked && !isMsaEmpty);
     addSequencesAction->setObjectName("Align sequences to profile with MUSCLE");
+    addSequencesAction->setMenuTypes({MsaEditorMenuType::ALIGN});    // TODO: move to ADD_SEQUENCE_TO_ALIGNMENT menu
     connect(addSequencesAction, SIGNAL(triggered()), SLOT(sl_alignSequencesToProfile()));
     connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), addSequencesAction, SLOT(sl_updateState()));
     connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), addSequencesAction, SLOT(sl_updateState()));
     addViewAction(addSequencesAction);
 
-    MuscleAction *alignProfilesAction = new MuscleAction(this, view, tr("Align profile to profile with MUSCLE..."), 1002);
+    auto alignProfilesAction = new MuscleAction(this, view, tr("Align profile to profile with MUSCLE..."), 1002);
     alignProfilesAction->setIcon(QIcon(":umuscle/images/muscle_16.png"));
     alignProfilesAction->setEnabled(!objLocked && !isMsaEmpty);
     alignProfilesAction->setObjectName("Align profile to profile with MUSCLE");
+    alignProfilesAction->setMenuTypes({MsaEditorMenuType::ALIGN});
     connect(alignProfilesAction, SIGNAL(triggered()), SLOT(sl_alignProfileToProfile()));
     connect(msaed->getMaObject(), SIGNAL(si_lockedStateChanged()), alignProfilesAction, SLOT(sl_updateState()));
     connect(msaed->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignProfilesAction, SLOT(sl_updateState()));

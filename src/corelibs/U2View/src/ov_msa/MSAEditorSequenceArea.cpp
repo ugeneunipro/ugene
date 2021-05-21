@@ -277,9 +277,13 @@ void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
     t->addSeparator();
 }
 
-void MSAEditorSequenceArea::sl_buildMenu(GObjectView *, QMenu *m, const QString &type) {
-    buildMenu(m);
-    if (type == GObjectViewMenuType::STATIC) {
+void MSAEditorSequenceArea::sl_buildMenu(GObjectView *, QMenu *m, const QString &menuType) {
+    bool isContextMenu = menuType == GObjectViewMenuType::CONTEXT;
+    bool isMainMenu = menuType == GObjectViewMenuType::STATIC;
+    if (isContextMenu || isMainMenu) {
+        buildMenu(m);
+    }
+    if (!isContextMenu) {
         return;
     }
     QMenu *editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);

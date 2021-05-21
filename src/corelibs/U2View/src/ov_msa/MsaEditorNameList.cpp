@@ -34,8 +34,10 @@ MsaEditorNameList::MsaEditorNameList(MaEditorWgt *ui, QScrollBar *nhBar)
     connect(editor, SIGNAL(si_buildMenu(GObjectView *, QMenu *, const QString &)), SLOT(sl_buildMenu(GObjectView *, QMenu *, const QString &)));
 }
 
-void MsaEditorNameList::sl_buildMenu(GObjectView *, QMenu *menu, const QString &) {
-    buildMenu(menu);
+void MsaEditorNameList::sl_buildMenu(GObjectView *, QMenu *menu, const QString &menuType) {
+    if (menuType == GObjectViewMenuType::CONTEXT || menuType == GObjectViewMenuType::STATIC) {
+        buildMenu(menu);
+    }
 }
 
 void MsaEditorNameList::buildMenu(QMenu *menu) {

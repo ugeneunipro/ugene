@@ -48,8 +48,10 @@ QString MSAEditorConsensusArea::getConsensusPercentTip(int pos, int minReportPer
     return MSAConsensusUtils::getConsensusPercentTip(editor->getMaObject()->getMultipleAlignment(), pos, minReportPercent, maxReportChars);
 }
 
-void MSAEditorConsensusArea::sl_buildMenu(GObjectView * /*view*/, QMenu *menu, const QString &) {
-    buildMenu(menu);
+void MSAEditorConsensusArea::sl_buildMenu(GObjectView * /*view*/, QMenu *menu, const QString &menuType) {
+    if (menuType == GObjectViewMenuType::CONTEXT || menuType == GObjectViewMenuType::STATIC) {
+        buildMenu(menu);
+    }
 }
 
 void MSAEditorConsensusArea::initRenderer() {

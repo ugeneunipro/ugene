@@ -128,8 +128,9 @@ void ClustalOSupportContext::initViewContext(GObjectView *view) {
     bool objLocked = msaEditor->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaEditor->isAlignmentEmpty();
 
-    AlignMsaAction *alignAction = new AlignMsaAction(this, ClustalOSupport::ET_CLUSTALO_ID, view, tr("Align with ClustalO..."), 2000);
+    auto alignAction = new AlignMsaAction(this, ClustalOSupport::ET_CLUSTALO_ID, view, tr("Align with ClustalO..."), 2000);
     alignAction->setObjectName("Align with ClustalO");
+    alignAction->setMenuTypes({MsaEditorMenuType::ALIGN});
 
     addViewAction(alignAction);
     alignAction->setEnabled(!objLocked && !isMsaEmpty);

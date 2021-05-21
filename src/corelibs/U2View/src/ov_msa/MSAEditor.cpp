@@ -60,10 +60,10 @@
 
 namespace U2 {
 
+const QString MsaEditorMenuType::ALIGN("msa-editor-menu-align");
+
 MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *obj)
     : MaEditor(MsaEditorFactory::ID, viewName, obj),
-      alignSequencesToAlignmentAction(nullptr),
-      realignSomeSequenceAction(nullptr),
       treeManager(this) {
     gotoAction = nullptr;
     searchInSequencesAction = nullptr;
@@ -178,7 +178,7 @@ bool MSAEditor::onCloseEvent() {
     return true;
 }
 
-const MultipleSequenceAlignmentRow MSAEditor::getRowByViewRowIndex(int viewRowIndex) const {
+MultipleSequenceAlignmentRow MSAEditor::getRowByViewRowIndex(int viewRowIndex) const {
     int maRowIndex = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
     return getMaObject()->getMsaRow(maRowIndex);
 }
@@ -279,7 +279,7 @@ void MSAEditor::addEditMenu(QMenu *m) {
     menu->menuAction()->setObjectName(MSAE_MENU_EDIT);
 }
 
-void MSAEditor::addSortMenu(QMenu *m) {
+void MSAEditor::addSortMenu(QMenu *m) const {
     QMenu *menu = m->addMenu(tr("Sort"));
     menu->menuAction()->setObjectName(MSAE_MENU_SORT);
     menu->addAction(sortByNameAscendingAction);
@@ -364,7 +364,7 @@ void MSAEditor::addHighlightingMenu(QMenu *m) {
     m->insertMenu(GUIUtils::findAction(m->actions(), MSAE_MENU_EDIT), highlightSchemeMenu);
 }
 
-void MSAEditor::addNavigationMenu(QMenu *m) {
+void MSAEditor::addNavigationMenu(QMenu *m) const {
     QMenu *navMenu = m->addMenu(tr("Navigation"));
     navMenu->menuAction()->setObjectName(MSAE_MENU_NAVIGATION);
     navMenu->addAction(gotoAction);
@@ -373,14 +373,14 @@ void MSAEditor::addNavigationMenu(QMenu *m) {
     navMenu->addAction(searchInSequenceNamesAction);
 }
 
-void MSAEditor::addTreeMenu(QMenu *m) {
+void MSAEditor::addTreeMenu(QMenu *m) const {
     QMenu *em = m->addMenu(tr("Tree"));
     //em->setIcon(QIcon(":core/images/tree.png"));
     em->menuAction()->setObjectName(MSAE_MENU_TREES);
     em->addAction(buildTreeAction);
 }
 
-void MSAEditor::addAdvancedMenu(QMenu *m) {
+void MSAEditor::addAdvancedMenu(QMenu *m) const {
     QMenu *menu = m->addMenu(tr("Advanced"));
     menu->menuAction()->setObjectName(MSAE_MENU_ADVANCED);
 
@@ -591,28 +591,9 @@ void MSAEditor::initDragAndDropSupport() {
 }
 
 void MSAEditor::sl_align() {
-    QMenu m;
-
-    addLoadMenu(&m);
-    addCopyPasteMenu(&m);
-    addEditMenu(&m);
-    addSortMenu(&m);
-    m.addSeparator();
-
-    addAlignMenu(&m);
-    addTreeMenu(&m);
-    addStatisticsMenu(&m);
-    addExportMenu(&m);
-    addAdvancedMenu(&m);
-
-    emit si_buildMenu(this, &m, GObjectViewMenuType::CONTEXT);
-
-    GUIUtils::disableEmptySubmenus(&m);
-
-    QMenu *alignMenu = GUIUtils::findSubMenu(&m, MSAE_MENU_ALIGN);
-    SAFE_POINT(alignMenu != nullptr, "mm", );
-
-    alignMenu->exec(QCursor::pos());
+    QMenu menu;
+    emit si_buildMenu(this, &menu, MsaEditorMenuType::ALIGN);
+    menu.exec(QCursor::pos());
 }
 
 void MSAEditor::sl_addToAlignment() {

@@ -113,8 +113,9 @@ void TCoffeeSupportContext::initViewContext(GObjectView *view) {
     bool objLocked = msaEditor->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaEditor->isAlignmentEmpty();
 
-    AlignMsaAction *alignAction = new AlignMsaAction(this, TCoffeeSupport::ET_TCOFFEE_ID, view, tr("Align with T-Coffee..."), 2000);
+    auto alignAction = new AlignMsaAction(this, TCoffeeSupport::ET_TCOFFEE_ID, view, tr("Align with T-Coffee..."), 2000);
     alignAction->setObjectName("Align with T-Coffee");
+    alignAction->setMenuTypes({MsaEditorMenuType::ALIGN});
 
     addViewAction(alignAction);
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
