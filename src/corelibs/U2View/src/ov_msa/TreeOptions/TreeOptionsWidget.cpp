@@ -43,7 +43,6 @@
 #include "ov_msa/PhyTrees/MSAEditorMultiTreeViewer.h"
 #include "ov_msa/PhyTrees/MSAEditorTreeViewer.h"
 #include "ov_msa/PhyTrees/MsaEditorTreeTabArea.h"
-#include "ov_phyltree/GraphicsBranchItem.h"
 #include "ov_phyltree/TreeViewer.h"
 #include "phyltree/TreeSettingsDialog.h"
 
@@ -71,7 +70,7 @@ TreeOptionsWidget::TreeOptionsWidget(MSAEditor *msaEditor, const TreeOpWidgetVie
 
     initColorButtonsStyle();
     createGroups();
-    savableTab.disableSavingForWidgets(saveDisabledWidgets());
+    savableTab.disableSavingForWidgets(getSaveDisabledWidgets());
     U2WidgetStateStorage::restoreWidgetState(savableTab);
     sl_selectionChanged();
 }
@@ -86,7 +85,7 @@ TreeOptionsWidget::TreeOptionsWidget(TreeViewer *tree, const TreeOpWidgetViewSet
 
     initColorButtonsStyle();
     createGroups();
-    savableTab.disableSavingForWidgets(saveDisabledWidgets());
+    savableTab.disableSavingForWidgets(getSaveDisabledWidgets());
     U2WidgetStateStorage::restoreWidgetState(savableTab);
     sl_selectionChanged();
 }
@@ -188,7 +187,7 @@ void TreeOptionsWidget::sl_selectionChanged() {
     updateButtonColor(labelsColorButton, qvariant_cast<QColor>(getTreeViewer()->getOptionValue(LABEL_COLOR)));
 }
 
-QStringList TreeOptionsWidget::saveDisabledWidgets() {
+QStringList TreeOptionsWidget::getSaveDisabledWidgets() const {
     return QStringList()
            << fontComboBox->objectName()
            << fontSizeSpinBox->objectName()
@@ -444,7 +443,7 @@ void AddTreeWidget::sl_updateBuildTreeButtonState() {
     buildTreeButton->setDisabled(editor->getNumSequences() < 2 || editor->getMaObject()->isStateLocked());
 }
 
- TreeOptionsSavableWidget::TreeOptionsSavableWidget(QWidget *wrappedWidget, MWMDIWindow *contextWindow /*= NULL*/)
+ TreeOptionsSavableWidget::TreeOptionsSavableWidget(QWidget *wrappedWidget, MWMDIWindow *contextWindow /*= nullptr*/)
     : U2SavableWidget(wrappedWidget, contextWindow) {
 }
 

@@ -29,7 +29,6 @@
 
 namespace U2 {
 
-class GraphicsBranchItem;
 class MSAEditor;
 class SimilarityStatisticsSettings;
 class ShowHideSubgroupWidget;
@@ -49,7 +48,7 @@ struct TreeOpWidgetViewSettings {
 
 class TreeOptionsSavableWidget: public U2SavableWidget {
 public:
-    TreeOptionsSavableWidget(QWidget *wrappedWidget, MWMDIWindow *contextWindow = NULL);
+    TreeOptionsSavableWidget(QWidget *wrappedWidget, MWMDIWindow *contextWindow = nullptr);
     ~TreeOptionsSavableWidget();
 
     void disableSavingForWidgets(const QStringList &s);
@@ -90,7 +89,7 @@ private slots:
     void sl_selectionChanged();
 
 private:
-    QStringList saveDisabledWidgets();
+    QStringList getSaveDisabledWidgets() const;
     void initializeOptionsMap();
     void initColorButtonsStyle();
     void createGroups();

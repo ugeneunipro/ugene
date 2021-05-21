@@ -1916,7 +1916,7 @@ GUI_TEST_CLASS_DEFINITION(test_4177_1) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
     //4. Click to empty space near the node to reset selection
     GTThread::waitForMainThread();
-    QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
+    QGraphicsView *treeView = GTWidget::findExactWidget<QGraphicsView *>(os, "treeView");
     CHECK_SET_ERR(treeView, "treeView not found");
     QPointF sceneCoord = nodes[1]->mapToScene(nodes[1]->boundingRect().topLeft());
     QPoint viewCord = treeView->mapFromScene(sceneCoord);

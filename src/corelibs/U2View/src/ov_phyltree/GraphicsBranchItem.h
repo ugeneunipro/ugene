@@ -98,7 +98,7 @@ public:
 
     void updateSettings(const OptionsMap &settings);
     void updateChildSettings(const OptionsMap &settings);
-    /** Update currnt property with given */
+    /** Update current property with given one */
     void updateTextProperty(TreeViewOption property, const QVariant &propertyVal);
 
     const OptionsMap &getSettings() const;
