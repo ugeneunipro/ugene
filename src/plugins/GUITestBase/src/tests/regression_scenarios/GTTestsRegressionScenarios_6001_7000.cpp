@@ -3500,10 +3500,7 @@ GUI_TEST_CLASS_DEFINITION(test_6581) {
 
     // 2. Click "Align sequence to this alignment" button on the toolbarand select attached sequence "Sequence.txt".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/6581/Sequence.txt"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result: the sequence has been aligned to the alignment.
@@ -3862,11 +3859,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_1) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/multifasta_with_gap_seq.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"seq2\", \"seq4\".");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected result : sequences made of gaps only are not aligned, i.e. "seq1", "seq3"and "seq5" are aligned.
@@ -3895,11 +3889,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_2) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/multifasta_with_gap_seq.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"seq2\", \"seq4\".");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected result : sequences made of gaps only are not aligned, i.e. "seq1", "seq3"and "seq5" are aligned.
@@ -3928,11 +3919,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_3) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/gap_only_seq.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected result: the alignment is not modified.
@@ -3963,11 +3951,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_4) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/gap_only_seq.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected result: the alignment is not modified.
@@ -3992,9 +3977,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_5) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/empty_file.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
     GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"empty_file.fa\" file can't be alignment to the \"COI\" alignment - the file is empty.");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4020,11 +4004,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_6) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/incorrect_fasta_header_only.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"incorrect_fasta_header_only.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid.");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitAllFinished(os);
 
@@ -4051,11 +4032,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_7) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/incorrect_multifasta_with_empty_seq.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"incorrect_multifasta_with_empty_seq.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid.");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected result: the COI alignment is not modified,

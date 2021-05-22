@@ -21,6 +21,7 @@
 
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTAction.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
@@ -465,6 +466,13 @@ void GTUtilsMsaEditor::closeActiveTreeTab(GUITestOpStatus &os) {
 #define GT_METHOD_NAME "dragAndDropSequenceFromProject"
 void GTUtilsMsaEditor::dragAndDropSequenceFromProject(GUITestOpStatus &os, const QStringList &pathToSequence) {
     GTUtilsProjectTreeView::dragAndDrop(os, pathToSequence, getEditorUi(os));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "activateAlignSequencesToAlignmentMenu"
+void GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(HI::GUITestOpStatus &os, const QString &partOfMenuItemText) {
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {partOfMenuItemText}, GTGlobals::UseMouse, Qt::MatchContains));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
 }
 #undef GT_METHOD_NAME
 

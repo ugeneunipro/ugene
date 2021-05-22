@@ -111,6 +111,9 @@ public:
     static void closeActiveTreeTab(HI::GUITestOpStatus &os);
 
     static void dragAndDropSequenceFromProject(HI::GUITestOpStatus &os, const QStringList &pathToSequence);
+
+    /** Clicks "Align sequence(s) to alignment" button and selects a menu item with the given text. */
+    static void activateAlignSequencesToAlignmentMenu(HI::GUITestOpStatus &os, const QString &partOfMenuItemText);
 };
 
 }    // namespace U2

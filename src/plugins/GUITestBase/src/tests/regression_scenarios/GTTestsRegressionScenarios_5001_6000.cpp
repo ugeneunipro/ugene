@@ -419,7 +419,7 @@ GUI_TEST_CLASS_DEFINITION(test_5039) {
 
     //3. Add an additional sequence from file : "test/_common_data/fasta/amino_ext.fa".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/amino_ext.fa"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //4. Open the "Export consensus" OP tab.
@@ -609,9 +609,7 @@ GUI_TEST_CLASS_DEFINITION(test_5137) {
 
     // 2. Add a big sequence.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/", "PF07724_full_family.fa"));
-    QAbstractButton *alignButton = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(alignButton != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-    GTWidget::click(os, alignButton);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
 
     // 3. Delete the original alignment and wait for the error in the log.
     GTUtilsNotifications::waitForNotification(os, true, "A problem occurred during adding sequences. The multiple alignment is no more available.");
@@ -4444,7 +4442,7 @@ GUI_TEST_CLASS_DEFINITION(test_5849) {
     // Select "..\samples\CLUSTALW\COI.aln" in the dialog.
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
 
     // 3. Select a sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(2, 2));
