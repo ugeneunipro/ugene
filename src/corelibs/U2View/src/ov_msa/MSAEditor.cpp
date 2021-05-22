@@ -37,7 +37,6 @@
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/GroupHeaderImageWidget.h>
 #include <U2Gui/GroupOptionsWidget.h>
-#include <U2Gui/LastUsedDirHelper.h>
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/OptionsPanel.h>
 #include <U2Gui/OptionsPanelWidget.h>
@@ -46,7 +45,6 @@
 #include <U2View/ColorSchemaSettingsController.h>
 #include <U2View/FindPatternMsaWidgetFactory.h>
 
-#include "AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
 #include "Highlighting/MsaSchemesMenuBuilder.h"
 #include "MSAEditorOffsetsView.h"
 #include "MSAEditorSequenceArea.h"
@@ -61,6 +59,7 @@
 namespace U2 {
 
 const QString MsaEditorMenuType::ALIGN("msa-editor-menu-align");
+const QString MsaEditorMenuType::ALIGN_SEQUENCES_TO_ALIGNMENT("msa-editor-menu-align-sequences-to-alignment");
 
 MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *obj)
     : MaEditor(MsaEditorFactory::ID, viewName, obj),
@@ -597,28 +596,9 @@ void MSAEditor::sl_align() {
 }
 
 void MSAEditor::sl_addToAlignment() {
-    CHECK(!maObject->isStateLocked(), );
-
-    ProjectView *pv = AppContext::getProjectView();
-    SAFE_POINT(pv != nullptr, "Project view is null", );
-
-    const GObjectSelection *selection = pv->getGObjectSelection();
-    SAFE_POINT(selection != nullptr, "GObjectSelection is null", );
-
-    QList<GObject *> objects = selection->getSelectedObjects();
-    bool selectFromProject = !objects.isEmpty();
-
-    foreach (GObject *object, objects) {
-        if (object == getMaObject() || (object->getGObjectType() != GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT && object->getGObjectType() != GObjectTypes::SEQUENCE)) {
-            selectFromProject = false;
-            break;
-        }
-    }
-    if (selectFromProject) {
-        alignSequencesFromObjectsToAlignment(objects);
-    } else {
-        alignSequencesFromFilesToAlignment();
-    }
+    QMenu menu;
+    emit si_buildMenu(this, &menu, MsaEditorMenuType::ALIGN_SEQUENCES_TO_ALIGNMENT);
+    menu.exec(QCursor::pos());
 }
 
 void MSAEditor::sl_searchInSequences() {
@@ -650,38 +630,6 @@ void MSAEditor::sl_realignSomeSequences() {
     Task *realignTask = new RealignSequencesInAlignmentTask(getMaObject(), rowIds);
     TaskWatchdog::trackResourceExistence(ui->getEditor()->getMaObject(), realignTask, tr("A problem occurred during realigning sequences. The multiple alignment is no more available."));
     AppContext::getTaskScheduler()->registerTopLevelTask(realignTask);
-}
-
-void MSAEditor::alignSequencesFromObjectsToAlignment(const QList<GObject *> &objects) {
-    SequenceObjectsExtractor extractor;
-    extractor.setAlphabet(maObject->getAlphabet());
-    extractor.extractSequencesFromObjects(objects);
-
-    if (!extractor.getSequenceRefs().isEmpty()) {
-        auto task = new AlignSequencesToAlignmentTask(getMaObject(), extractor);
-        TaskWatchdog::trackResourceExistence(maObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
-        AppContext::getTaskScheduler()->registerTopLevelTask(task);
-    }
-}
-
-void MSAEditor::alignSequencesFromFilesToAlignment() {
-    QString filter = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
-
-    LastUsedDirHelper lod;
-    QStringList urls;
-#ifdef Q_OS_DARWIN
-    if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
-        urls = U2FileDialog::getOpenFileNames(ui, tr("Open file with sequences"), lod.dir, filter, 0, QFileDialog::DontUseNativeDialog);
-    } else
-#endif
-        urls = U2FileDialog::getOpenFileNames(ui, tr("Open file with sequences"), lod.dir, filter);
-
-    if (!urls.isEmpty()) {
-        lod.url = urls.first();
-        auto task = new LoadSequencesAndAlignToAlignmentTask(getMaObject(), urls);
-        TaskWatchdog::trackResourceExistence(maObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
-        AppContext::getTaskScheduler()->registerTopLevelTask(task);
-    }
 }
 
 void MSAEditor::sl_setSeqAsReference() {

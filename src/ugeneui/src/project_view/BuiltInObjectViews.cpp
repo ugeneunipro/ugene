@@ -36,23 +36,17 @@ namespace U2 {
 void ProjectViewImpl::registerBuiltInObjectViews() {
     GObjectViewFactoryRegistry *reg = AppContext::getObjectViewFactoryRegistry();
 
-    GObjectViewFactory *f = new SimpleTextObjectViewFactory();
-    reg->registerGObjectViewFactory(f);
+    reg->registerGObjectViewFactory(new SimpleTextObjectViewFactory());
+    reg->registerGObjectViewFactory(new AnnotatedDNAViewFactory());
 
-    f = new AnnotatedDNAViewFactory();
-    reg->registerGObjectViewFactory(f);
+    // MSA Editor.
+    auto msaEditorFactory = new MsaEditorFactory();
+    reg->registerGObjectViewFactory(msaEditorFactory);
+    msaEditorFactory->registerMsaEditorViewFeatures();
 
-    f = new MsaEditorFactory();
-    reg->registerGObjectViewFactory(f);
-
-    f = new McaEditorFactory();
-    reg->registerGObjectViewFactory(f);
-
-    f = new TreeViewerFactory();
-    reg->registerGObjectViewFactory(f);
-
-    f = new AssemblyBrowserFactory();
-    reg->registerGObjectViewFactory(f);
+    reg->registerGObjectViewFactory(new McaEditorFactory());
+    reg->registerGObjectViewFactory(new TreeViewerFactory());
+    reg->registerGObjectViewFactory(new AssemblyBrowserFactory());
 }
 
 void ProjectViewImpl::unregisterBuiltInObjectViews() {

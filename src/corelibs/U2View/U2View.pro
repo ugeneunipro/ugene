@@ -96,6 +96,7 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/MsaOpSavableTab.h \
            src/ov_msa/MSASelectSubalignmentDialog.h \
            src/ov_msa/MsaEditorUserModStepController.h \
+           src/ov_msa/AlignSequencesToAlignment/AlignSequencesToAlignmentSupport.h \
            src/ov_msa/AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h \
            src/ov_msa/helpers/BaseWidthController.h \
            src/ov_msa/helpers/DrawHelper.h \
@@ -371,6 +372,7 @@ SOURCES += src/LicenseDialog.cpp \
            src/ov_msa/MsaOpSavableTab.cpp \
            src/ov_msa/MSASelectSubalignmentDialog.cpp \
            src/ov_msa/MsaEditorUserModStepController.cpp \
+           src/ov_msa/AlignSequencesToAlignment/AlignSequencesToAlignmentSupport.cpp \
            src/ov_msa/AlignSequencesToAlignment/AlignSequencesToAlignmentTask.cpp \
            src/ov_msa/helpers/BaseWidthController.cpp \
            src/ov_msa/helpers/DrawHelper.cpp \

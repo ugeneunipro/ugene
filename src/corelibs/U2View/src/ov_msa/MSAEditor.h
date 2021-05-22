@@ -146,8 +146,6 @@ protected:
     void updateActions() override;
 
     void initDragAndDropSupport();
-    void alignSequencesFromObjectsToAlignment(const QList<GObject *> &objects);
-    void alignSequencesFromFilesToAlignment();
 
 public:
     QAction *buildTreeAction = nullptr;
@@ -180,6 +178,9 @@ class U2VIEW_EXPORT MsaEditorMenuType : public GObjectViewMenuType {
 public:
     /** "Align" button menu identifier. */
     const static QString ALIGN;
+
+    /** "Align sequence(s) to this alignment" menu identifier. */
+    const static QString ALIGN_SEQUENCES_TO_ALIGNMENT;
 };
 
 }    // namespace U2
