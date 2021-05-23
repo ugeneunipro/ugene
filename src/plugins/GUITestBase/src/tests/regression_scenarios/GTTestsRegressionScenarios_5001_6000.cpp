@@ -1686,7 +1686,6 @@ GUI_TEST_CLASS_DEFINITION(test_5447_1) {
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsProjectTreeView::dragAndDrop(os, annotationsTableObjectIndex, GTUtilsSequenceView::getSeqWidgetByNumber(os));
 
-
     //    Expected state: all annotations are doubled.
     const QStringList oldGroups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 features [murine.gb]");
     const QStringList newGroups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 features [test_5447_1.gb]");
@@ -2514,18 +2513,16 @@ GUI_TEST_CLASS_DEFINITION(test_5622) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5636) {
-    //1. Open File "\samples\CLUSTALW\COI.aln"
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Click Actions->Align->Align sequence to profile with MUSCLE...
-    //3. Select "\samples\CLUSTALW\COI.aln"
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Align sequences to profile with MUSCLE..."));
+    // Click Align sequences to alignment->Align sequence to profile with MUSCLE...
+    // Select "\samples\CLUSTALW\COI.aln"
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align");
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "Align sequences to profile with MUSCLE...");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected state: 18 sequences are added to the msa.
+    // Expected state: 18 sequences are added to the msa.
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 36, "Incorrect sequences count");
 }
 
@@ -4812,7 +4809,6 @@ GUI_TEST_CLASS_DEFINITION(test_5950) {
 
             U2Region sel = selection.first();
             CHECK_SET_ERR(sel.length != 0, "Selection length is 0");
-
         }
     }
 

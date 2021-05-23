@@ -51,7 +51,7 @@ void AlignSequencesToAlignmentSupport::initViewContext(GObjectView *view) {
     //  The final code should build action per each algorithm registered in the AlignmentAlgorithmsRegistry.
     auto alignAction = new AlignSequencesToAlignmentAction(this, msaEditor, tr("Add sequences with MAFFT..."), 100);
     alignAction->setIcon(QIcon(":/core/images/add_to_alignment.png"));    //TODO: add a dedicated icon for MAFFT.
-    alignAction->setObjectName("Align with MAFFT");
+    alignAction->setObjectName("Add sequences to alignment with MAFFT");
     alignAction->setMenuTypes({MsaEditorMenuType::ALIGN_SEQUENCES_TO_ALIGNMENT});
     alignAction->sl_updateState();
 
@@ -64,7 +64,7 @@ void AlignSequencesToAlignmentSupport::sl_alignSequencesToAlignment() {
     SAFE_POINT(action != nullptr, "Not a AlignSequencesToAlignmentAction!", );
     auto msaEditor = action->getEditor();
     auto msaObject = msaEditor->getMaObject();
-    CHECK(!msaObject->isStateLocked(), );
+    SAFE_POINT(!msaObject->isStateLocked(), "The action must never be called for a readonly object!", );
 
     ProjectView *projectView = AppContext::getProjectView();
     SAFE_POINT(projectView != nullptr, "Project view is null", );
@@ -111,7 +111,6 @@ void AlignSequencesToAlignmentSupport::sl_alignSequencesToAlignment() {
 AlignSequencesToAlignmentAction::AlignSequencesToAlignmentAction(QObject *parent, MSAEditor *view, const QString &text, int order)
     : GObjectViewAction(parent, view, text, order), msaEditor(view) {
     connect(msaEditor, SIGNAL(si_lockedStateChanged()), SLOT(sl_updateState()));
-    connect(msaEditor, SIGNAL(si_alignmentBecomesEmpty(bool)), SLOT(sl_updateState()));
 }
 
 MSAEditor *AlignSequencesToAlignmentAction::getEditor() const {
@@ -120,7 +119,7 @@ MSAEditor *AlignSequencesToAlignmentAction::getEditor() const {
 
 void AlignSequencesToAlignmentAction::sl_updateState() {
     auto msaObject = msaEditor->getMaObject();
-    setEnabled(msaObject != nullptr && !msaObject->isStateLocked() && !msaEditor->isAlignmentEmpty());
+    setEnabled(msaObject != nullptr && !msaObject->isStateLocked());
 }
 
 }    // namespace U2

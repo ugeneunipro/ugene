@@ -27,6 +27,7 @@
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <harness/UGUITestBase.h>
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
@@ -42,8 +43,6 @@
 #include <utils/GTThread.h>
 
 #include <QApplication>
-
-#include <harness/UGUITestBase.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/MSAEditor.h>
@@ -3968,38 +3967,49 @@ GUI_TEST_CLASS_DEFINITION(test_0062) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0063) {
-    //    Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    Press "align" button on toolbar. Check state
-
-    class custom : public CustomScenario {
+    class CheckAlignMenuScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QStringList expectedActions = QStringList() << "Align with muscle"
-                                                        << "Align sequences to profile with MUSCLE"
-                                                        << "Align profile to profile with MUSCLE"
-                                                        << "Align with ClustalW"
-                                                        << "Align with ClustalO"
-                                                        << "Align with MAFFT"
-                                                        << "Align with T-Coffee"
-                                                        << "align_with_kalign";
-            QMenu *m = qobject_cast<QMenu *>(QApplication::activePopupWidget());
-            CHECK_SET_ERR(m != NULL, "menu not found");
-            QList<QAction *> menuActions = m->actions();
-            CHECK_SET_ERR(menuActions.size() == 8, QString("unexpected number of actions: %1").arg(menuActions.size()));
-            for (QAction *act : qAsConst(menuActions)) {
-                CHECK_SET_ERR(expectedActions.contains(act->objectName()), act->objectName() + " unexpectidly found in menu");
+            QStringList expectedActionObjectNames = {"Align with muscle",
+                                                     "Align with ClustalW",
+                                                     "Align with ClustalO",
+                                                     "Align with MAFFT",
+                                                     "Align with T-Coffee",
+                                                     "align_with_kalign"};
+            QList<QAction *> menuActions = GTWidget::getActivePopupMenu(os)->actions();
+            CHECK_SET_ERR(menuActions.size() == expectedActionObjectNames.size(), QString("Unexpected number of actions in 'Align' menu: %1").arg(menuActions.size()));
+            for (const QAction *action : qAsConst(menuActions)) {
+                CHECK_SET_ERR(expectedActionObjectNames.contains(action->objectName()), action->objectName() + " is not found in 'Align' menu");
             }
-
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new custom()));
-    GTWidget::click(os, GTAction::button(os, "Align"));
+    class CheckAlignToSequenceMenuScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            QStringList expectedActionObjectNames = {"Add sequences to alignment with MAFFT",
+                                                     "Align sequences to profile with MUSCLE",
+                                                     "Align profile to profile with MUSCLE"};
+            QList<QAction *> menuActions = GTWidget::getActivePopupMenu(os)->actions();
+            CHECK_SET_ERR(menuActions.size() == expectedActionObjectNames.size(),
+                          QString("Unexpected number of actions in 'Align to alignment': %1").arg(menuActions.size()));
+            for (const QAction *action : qAsConst(menuActions)) {
+                CHECK_SET_ERR(expectedActionObjectNames.contains(action->objectName()), action->objectName() + " is not found in 'Align to alignment' menu");
+            }
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        }
+    };
 
-    GTGlobals::sleep(500);
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new CheckAlignMenuScenario()));
+    GTWidget::click(os, GTAction::button(os, "Align"));
+    GTUtilsDialog::waitAllFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new CheckAlignToSequenceMenuScenario()));
+    GTWidget::click(os, GTAction::button(os, "Align sequence(s) to this alignment"));
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0064) {
