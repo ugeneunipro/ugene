@@ -53,18 +53,32 @@ public:
     void init(MultipleAlignmentObject* maObject, MaEditorSequenceArea* seqArea);
 
 private slots:
-    void sl_mutationsGroupBoxToggled(bool on);
-    void sl_mutationsThresholdValueChanged(int newValue);
+    /*
+     * Update the sequence area and write new alternative mutations settings to the database
+     **/
     void sl_updateAlternativeMutations();
+    /*
+     * Update the database without affecting GUI
+     **/
+    void sl_updateDb();
 
 private:
-    void updateAlternativeMutations();
+    /*
+     * Update GUI with values from the database
+     **/
+    void updateValuesFromDb();
+    /*
+     * Update the database with values from GUI
+     **/
+    void updateDb(U2OpStatus& os);
 
     McaEditorSequenceArea* seqArea = nullptr;
     MultipleChromatogramAlignmentObject* mcaObject = nullptr;
+    U2IntegerAttribute checkedStateAttribute;
     U2IntegerAttribute thresholdAttribute;
     U2Object mcaDbiObj;
 
+    static const QString ALTERNATIVE_MUTATIONS_CHECKED;
     static const QString ALTERNATIVE_MUTATIONS_THRESHOLD;
 };
 

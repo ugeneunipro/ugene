@@ -109,7 +109,6 @@ HEADERS += src/LicenseDialog.h \
            src/ov_msa/highlighting/MsaSchemesMenuBuilder.h \
            src/ov_msa/mca_reads/McaAlternativeMutationsWidget.h \
            src/ov_msa/mca_reads/McaReadsTabFactory.h \
-           src/ov_msa/mca_reads/McaReadsTabSettings.h \
            src/ov_msa/overview/MaEditorOverviewArea.h \
            src/ov_msa/overview/MaGraphCalculationTask.h \
            src/ov_msa/overview/MaGraphOverview.h \

@@ -33,6 +33,7 @@
 
 namespace U2 {
 
+const QString McaAlternativeMutationsWidget::ALTERNATIVE_MUTATIONS_CHECKED = "ALTERNATIVE_MUTATIONS_CHECKED";
 const QString McaAlternativeMutationsWidget::ALTERNATIVE_MUTATIONS_THRESHOLD = "ALTERNATIVE_MUTATIONS_THRESHOLD";
 
 McaAlternativeMutationsWidget::McaAlternativeMutationsWidget(QWidget* parent)
@@ -51,59 +52,15 @@ void McaAlternativeMutationsWidget::init(MultipleAlignmentObject* _maObject, MaE
     mcaObject = qobject_cast<MultipleChromatogramAlignmentObject*>(_maObject);
     SAFE_POINT(mcaObject != nullptr, "MaConsensusModeWidget can not be initialized: MultipleChromatogramAlignmentObject is nullptr", );
 
-    const auto& tabSettings = seqArea->getMcaReadsTabSettings();
     mutationsGroupBox->setChecked(false);
     mutationsThresholdSlider->setValue(99);
 
-    U2OpStatus2Log os;
-    QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(mcaObject->getEntityRef().dbiRef, os));
-    CHECK_OP(os, );
+    updateValuesFromDb();
 
-    auto attributeDbi = con->dbi->getAttributeDbi();
-    SAFE_POINT(attributeDbi != nullptr, "attributeDbi not found", );
-
-    auto objectAttributes = attributeDbi->getObjectAttributes(mcaObject->getEntityRef().entityId, ALTERNATIVE_MUTATIONS_THRESHOLD, os);
-    CHECK_OP(os, );
-    SAFE_POINT(objectAttributes.size() == 0 || objectAttributes.size() == 1, "Unexpected objectAttributes size", );
-
-    bool setUpFromDb = objectAttributes.size() == 1;
-    if (setUpFromDb) {
-        thresholdAttribute.id = objectAttributes.first();
-    }
-    mcaDbiObj.dbiId = mcaObject->getEntityRef().dbiRef.dbiId;
-    mcaDbiObj.id = mcaObject->getEntityRef().entityId;
-    mcaDbiObj.version = mcaObject->getModificationVersion();
-    U2AttributeUtils::init(thresholdAttribute, mcaDbiObj, ALTERNATIVE_MUTATIONS_THRESHOLD);
-
-    if (setUpFromDb) {
-        auto thresholdIntAttribute = attributeDbi->getIntegerAttribute(thresholdAttribute.id, os);
-        SAFE_POINT_OP(os, );
-
-        if (thresholdIntAttribute.value != 0) {
-            mutationsGroupBox->setChecked(true);
-            mutationsThresholdSlider->setValue(thresholdIntAttribute.value);
-        }
-    }
-
-    connect(mutationsGroupBox, SIGNAL(toggled(bool)), this, SLOT(sl_mutationsGroupBoxToggled(bool)));
-    connect(mutationsThresholdSlider, SIGNAL(valueChanged(int)), this, SLOT(sl_mutationsThresholdValueChanged(int)));
-    connect(mutationsThresholdSpinBox, SIGNAL(valueChanged(int)), this, SLOT(sl_mutationsThresholdValueChanged(int)));
+    connect(mutationsGroupBox, SIGNAL(toggled(bool)), this, SLOT(sl_updateAlternativeMutations()));
+    connect(mutationsThresholdSlider, SIGNAL(valueChanged(int)), this, SLOT(sl_updateDb()));
+    connect(mutationsThresholdSpinBox, SIGNAL(valueChanged(int)), this, SLOT(sl_updateDb()));
     connect(updateMutationsPushButton, SIGNAL(pressed()), this, SLOT(sl_updateAlternativeMutations()));
-    connect(seqArea->getEditor(), SIGNAL(si_isAbout2BeDestroyed()), mcaObject, SLOT(sl_viewIsAbout2BeDestroyed()));
-}
-
-
-void McaAlternativeMutationsWidget::sl_mutationsGroupBoxToggled(bool on) {
-    auto tabSettings = seqArea->getMcaReadsTabSettings();
-    tabSettings.showAlternativeMutations = on;
-    seqArea->setMcaReadsTabSettings(tabSettings);
-    updateAlternativeMutations();
-}
-
-void McaAlternativeMutationsWidget::sl_mutationsThresholdValueChanged(int newValue) {
-    auto tabSettings = seqArea->getMcaReadsTabSettings();
-    tabSettings.threshold = newValue;
-    seqArea->setMcaReadsTabSettings(tabSettings);
 }
 
 void McaAlternativeMutationsWidget::sl_updateAlternativeMutations() {
@@ -111,28 +68,102 @@ void McaAlternativeMutationsWidget::sl_updateAlternativeMutations() {
     U2UseCommonUserModStep userModStep(mcaObject->getEntityRef(), os);
     Q_UNUSED(userModStep);
 
-    const auto& tabSettings = seqArea->getMcaReadsTabSettings();
-    mcaObject->updateAlternativeMutations(tabSettings, os);
-    SAFE_POINT_OP(os, );
+    mcaObject->updateAlternativeMutations(mutationsGroupBox->isChecked(), mutationsThresholdSlider->value(), os);
+    CHECK_OP(os, );
 
+    updateDb(os);
+    CHECK_OP(os, );
+}
+
+void McaAlternativeMutationsWidget::sl_updateDb() {
+    U2OpStatus2Log os;
+    updateDb(os);
+    CHECK_OP(os, );
+}
+
+void McaAlternativeMutationsWidget::updateValuesFromDb() {
+    U2OpStatus2Log os;
     QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(mcaObject->getEntityRef().dbiRef, os));
     CHECK_OP(os, );
 
     auto attributeDbi = con->dbi->getAttributeDbi();
     SAFE_POINT(attributeDbi != nullptr, "attributeDbi not found", );
 
-    if (!thresholdAttribute.id.isEmpty()) {
-        U2AttributeUtils::removeAttribute(attributeDbi, thresholdAttribute.id, os);
-        SAFE_POINT_OP(os, );
-    }
+    auto initAttribute = [&](U2IntegerAttribute& attribute, const QString& name) {
+        auto objectAttributes = attributeDbi->getObjectAttributes(mcaObject->getEntityRef().entityId, name, os);
+        CHECK_OP(os, );
+        SAFE_POINT(objectAttributes.size() == 0 || objectAttributes.size() == 1, QString("Unexpected %1 objectAttributes size").arg(name), );
 
-    thresholdAttribute.value = mutationsGroupBox->isChecked() ? mutationsThresholdSlider->value() : 0;
-    attributeDbi->createIntegerAttribute(thresholdAttribute, os);
+        bool setUpFromDb = objectAttributes.size() == 1;
+        if (setUpFromDb) {
+            attribute.id = objectAttributes.first();
+        }
+        mcaDbiObj.dbiId = mcaObject->getEntityRef().dbiRef.dbiId;
+        mcaDbiObj.id = mcaObject->getEntityRef().entityId;
+        mcaDbiObj.version = mcaObject->getModificationVersion();
+        U2AttributeUtils::init(attribute, mcaDbiObj, name);
+    };
+
+    initAttribute(checkedStateAttribute, ALTERNATIVE_MUTATIONS_CHECKED);
     CHECK_OP(os, );
+
+    initAttribute(thresholdAttribute, ALTERNATIVE_MUTATIONS_THRESHOLD);
+    CHECK_OP(os, );
+
+    auto avaliableAttributeNames = attributeDbi->getAvailableAttributeNames(os);
+    CHECK_OP(os, );
+
+    bool setUpFromDb = avaliableAttributeNames.contains(ALTERNATIVE_MUTATIONS_CHECKED);
+    if (setUpFromDb) {
+        auto checkedIntAttribute = attributeDbi->getIntegerAttribute(checkedStateAttribute.id, os);
+        CHECK_OP(os, );
+
+        auto thresholdIntAttribute = attributeDbi->getIntegerAttribute(thresholdAttribute.id, os);
+        CHECK_OP(os, );
+
+        mutationsGroupBox->setChecked((bool)checkedIntAttribute.value);
+        mutationsThresholdSlider->setValue(thresholdIntAttribute.value);
+    }
 }
 
-void McaAlternativeMutationsWidget::updateAlternativeMutations() {
-    sl_updateAlternativeMutations();
+//void McaAlternativeMutationsWidget::initAttribute(U2AttributeDbi* attributeDbi, const QString& attributeName, U2OpStatus& os) {
+//    auto checkedObjectAttributes = attributeDbi->getObjectAttributes(mcaObject->getEntityRef().entityId, attributeName, os);
+//    CHECK_OP(os, );
+//    SAFE_POINT(checkedObjectAttributes.size() == 0 || checkedObjectAttributes.size() == 1, QString("Unexpected %1 objectAttributes size").arg(attributeName), );
+//
+//    bool setUpFromDb = checkedObjectAttributes.size() == 1;
+//    if (setUpFromDb) {
+//        checkedStateAttribute.id = checkedObjectAttributes.first();
+//    }
+//    mcaDbiObj.dbiId = mcaObject->getEntityRef().dbiRef.dbiId;
+//    mcaDbiObj.id = mcaObject->getEntityRef().entityId;
+//    mcaDbiObj.version = mcaObject->getModificationVersion();
+//    U2AttributeUtils::init(checkedStateAttribute, mcaDbiObj, attributeName);
+//}
+
+void McaAlternativeMutationsWidget::updateDb(U2OpStatus& os) {
+    QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(mcaObject->getEntityRef().dbiRef, os));
+    CHECK_OP(os, );
+
+    auto attributeDbi = con->dbi->getAttributeDbi();
+    SAFE_POINT(attributeDbi != nullptr, "attributeDbi not found", );
+
+    auto updateAttribute = [&](U2IntegerAttribute& attribute, int value) {
+        if (!attribute.id.isEmpty()) {
+            U2AttributeUtils::removeAttribute(attributeDbi, attribute.id, os);
+            CHECK_OP(os, );
+        }
+
+        attribute.value = value;
+        attributeDbi->createIntegerAttribute(attribute, os);
+        CHECK_OP(os, );
+    };
+
+    updateAttribute(checkedStateAttribute, (int)mutationsGroupBox->isChecked());
+    CHECK_OP(os, );
+
+    updateAttribute(thresholdAttribute, mutationsThresholdSlider->value());
+    CHECK_OP(os, );
 }
 
 }

@@ -260,7 +260,7 @@ void MultipleChromatogramAlignmentObject::trimRow(const int rowIndex, int curren
     updateCachedMultipleAlignment(modificationInfo);
 }
 
-void MultipleChromatogramAlignmentObject::updateAlternativeMutations(const McaReadsTabSettings& settings, U2OpStatus& os) {
+void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus& os) {
     for (int i = 0; i < getNumRows(); i++) {
         const MultipleChromatogramAlignmentRow& mcaRow = static_cast<const MultipleChromatogramAlignmentRow&>(getRow(i));
         qint64 ungappedLength = mcaRow->getUngappedLength();
@@ -275,7 +275,7 @@ void MultipleChromatogramAlignmentObject::updateAlternativeMutations(const McaRe
 
             double minimumThresholdValue = (double)res.second.value / res.first.value * 100;
             char newChar = 'A';
-            if (minimumThresholdValue < settings.threshold || !settings.showAlternativeMutations) {
+            if (minimumThresholdValue < threshold || !showAlternativeMutations) {
                 newChar = DNAChromatogram::TRACE_CHARACTER[res.first.trace];
             } else {
                 newChar = DNAChromatogram::TRACE_CHARACTER[res.second.trace];
@@ -296,14 +296,6 @@ void MultipleChromatogramAlignmentObject::updateAlternativeMutations(const McaRe
         SAFE_POINT_OP(os, );
     }
     updateCachedMultipleAlignment();
-}
-
-void MultipleChromatogramAlignmentObject::sl_viewIsAbout2BeDestroyed() {
-    U2OpStatus2Log os;
-    McaReadsTabSettings settings;
-    settings.showAlternativeMutations = false;
-    updateAlternativeMutations(settings, os);
-    SAFE_POINT_OP(os, );
 }
 
 void MultipleChromatogramAlignmentObject::loadAlignment(U2OpStatus &os) {
