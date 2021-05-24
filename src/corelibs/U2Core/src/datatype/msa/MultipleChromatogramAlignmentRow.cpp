@@ -366,18 +366,19 @@ QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramT
     int nextBaseCall = chromatogram.baseCalls[position != (chromatogram.baseCalls.size() - 1) ? position + 1 : position];
     QList<DNAChromatogram::ChromatogramTraceAndValue> peaks;
 
-    for (auto peak : PEAKS.keys()) {
-        const auto& chromatogramVector = chromatogram.*PEAKS.value(peak);
-        auto peakValue = chromatogramVector[baseCall];
+    auto peaksKeys = PEAKS.keys();
+    for (auto peak : qAsConst(peaksKeys)) {
+        const QVector<ushort>& chromatogramBaseCallVector = chromatogram.*PEAKS.value(peak);
+        auto peakValue = chromatogramBaseCallVector[baseCall];
         int startOfCharacterBaseCall = baseCall - ((baseCall - previousBaseCall) / 2);
-        int startValue = chromatogramVector[startOfCharacterBaseCall];
+        int startValue = chromatogramBaseCallVector[startOfCharacterBaseCall];
         if (previousBaseCall == baseCall) {
-            startValue = chromatogramVector[0];
+            startValue = chromatogramBaseCallVector[0];
         }
         int endOfCharacterBaseCall = baseCall + ((nextBaseCall - baseCall) / 2);
-        int endValue = chromatogramVector[endOfCharacterBaseCall];
+        int endValue = chromatogramBaseCallVector[endOfCharacterBaseCall];
         if (nextBaseCall == baseCall) {
-            endValue = chromatogramVector[chromatogramVector.size() - 1];
+            endValue = chromatogramBaseCallVector[chromatogramBaseCallVector.size() - 1];
         }
 
         if (startValue <= peakValue && endValue <= peakValue) {

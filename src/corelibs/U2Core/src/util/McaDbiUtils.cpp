@@ -353,6 +353,9 @@ void U2::McaDbiUtils::replaceCharactersInRow(const U2EntityRef& mcaRef, qint64 r
         qint64 posInSeq = -1;
         qint64 endPosInSeq = -1;
         MaDbiUtils::getStartAndEndSequencePositions(seq, row.gaps, pos, 1, posInSeq, endPosInSeq);
+        SAFE_POINT(posInSeq >= 0, "incorrect posInSeq value", );
+        SAFE_POINT(endPosInSeq >= 0, "incorrect endPosInSeq value", );
+
         if (posInSeq >= 0 && endPosInSeq > posInSeq) {    // not gap
             U2OpStatus2Log os;
             DNASequenceUtils::replaceChars(seq, posInSeq, QByteArray(1, newChar), os);

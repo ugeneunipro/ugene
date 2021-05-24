@@ -180,6 +180,9 @@ void GTUtilsOptionPanelMca::pushExportButton(HI::GUITestOpStatus &os) {
     QToolButton *result = GTWidget::findExactWidget<QToolButton *>(os, "exportBtn");
     result->click();
 }
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "showAlternativeMutations"
 void GTUtilsOptionPanelMca::showAlternativeMutations(HI::GUITestOpStatus& os, bool show, int value, bool withSpinbox) {
     GTUtilsOptionPanelMca::openTab(os, Tabs::Reads);
     GTGroupBox::setChecked(os, "mutationsGroupBox", show);

@@ -24,6 +24,9 @@
 
 #include "ui_McaAlternativeMutationsWidget.h"
 
+#include <U2Core/U2AttributeDbi.h>
+#include <U2Core/U2Type.h>
+
 namespace U2 {
 
 class MaEditorSequenceArea;
@@ -50,7 +53,7 @@ public:
     void init(MultipleAlignmentObject* maObject, MaEditorSequenceArea* seqArea);
 
 private slots:
-    void sl_mutationsGroupBoxToggeled(bool on);
+    void sl_mutationsGroupBoxToggled(bool on);
     void sl_mutationsThresholdValueChanged(int newValue);
     void sl_updateAlternativeMutations();
 
@@ -59,6 +62,10 @@ private:
 
     McaEditorSequenceArea* seqArea = nullptr;
     MultipleChromatogramAlignmentObject* mcaObject = nullptr;
+    U2IntegerAttribute thresholdAttribute;
+    U2Object mcaDbiObj;
+
+    static const QString ALTERNATIVE_MUTATIONS_THRESHOLD;
 };
 
 }

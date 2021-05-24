@@ -39,9 +39,7 @@ McaReadsTabFactory::McaReadsTabFactory() {
     objectViewOfWidget = ObjViewType_ChromAlignmentEditor;
 }
 
-QWidget* McaReadsTabFactory::createWidget(GObjectView* objView, const QVariantMap& options) {
-    Q_UNUSED(options);
-
+QWidget* McaReadsTabFactory::createWidget(GObjectView* objView, const QVariantMap& ) {
     SAFE_POINT(objView != nullptr,
         QString("Internal error: unable to create widget for group '%1', object view is NULL.").arg(GROUP_ID),
         nullptr);
@@ -57,7 +55,10 @@ QWidget* McaReadsTabFactory::createWidget(GObjectView* objView, const QVariantMa
     widget->setLayout(layout);
 
     McaAlternativeMutationsWidget* alternativeMutationsWgt = new McaAlternativeMutationsWidget(widget);
-    alternativeMutationsWgt->init(ma->getMaObject(), ma->getUI()->getSequenceArea());
+    auto ui = ma->getUI();
+    SAFE_POINT(ui != nullptr, "UI isn't found", nullptr);
+
+    alternativeMutationsWgt->init(ma->getMaObject(), ui->getSequenceArea());
     ShowHideSubgroupWidget* alternativeMutations = new ShowHideSubgroupWidget("ALTERNATIVE_MUTATIONS_MODE", tr("Alternative mutations"), alternativeMutationsWgt, true);
     layout->addWidget(alternativeMutations);
 
