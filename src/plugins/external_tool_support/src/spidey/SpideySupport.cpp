@@ -116,7 +116,7 @@ void SpideySupportContext::initViewContext(GObjectView *view) {
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_Spidey()));
 }
 
-void SpideySupportContext::buildMenu(GObjectView *view, QMenu *m) {
+void SpideySupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
     QList<GObjectViewAction *> actions = getViewActions(view);
     QMenu *alignMenu = GUIUtils::findSubMenu(m, ADV_MENU_ALIGN);
     SAFE_POINT(alignMenu != NULL, "alignMenu", );

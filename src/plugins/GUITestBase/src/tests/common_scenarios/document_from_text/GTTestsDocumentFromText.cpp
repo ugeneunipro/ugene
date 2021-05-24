@@ -1403,9 +1403,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //    2. Input nucleotide sequences in the dialog appeared in FASTA format:
             //    >seq_name1
             //    >seq_name2

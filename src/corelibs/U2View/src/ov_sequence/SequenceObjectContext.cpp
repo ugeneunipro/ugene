@@ -269,7 +269,7 @@ StatisticsCache<DinucleotidesOccurrence> *SequenceObjectContext::getDinucleotide
     return &dinucleotidesOccurrenceCache;
 }
 
-StatisticsCache<CharactersOccurrence> *SequenceObjectContext::getCodonsOccurrenceCache() {
+StatisticsCache<QMap<QByteArray, qint64>> *SequenceObjectContext::getCodonsOccurrenceCache() {
     return &codonsOccurrenceCache;
 }
 

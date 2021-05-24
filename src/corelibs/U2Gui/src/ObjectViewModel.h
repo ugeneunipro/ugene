@@ -179,7 +179,7 @@ public:
 
     virtual void buildStaticToolbar(QToolBar *tb);
 
-    virtual void buildStaticMenu(QMenu *n);
+    virtual void buildMenu(QMenu *menu, const QString &type);
 
     virtual bool canAddObject(GObject *obj);
 
@@ -217,8 +217,12 @@ protected:
     virtual QWidget *createWidget() = 0;
 
 signals:
-    void si_buildPopupMenu(GObjectView *v, QMenu *m);
-    void si_buildStaticMenu(GObjectView *v, QMenu *m);
+    /**
+     * Emitted when menu of the given type is about to be shown.
+     * A client should add related menu items to the menu.
+     */
+    void si_buildMenu(GObjectView *v, QMenu *m, const QString &type);
+
     void si_buildStaticToolbar(GObjectView *v, QToolBar *tb);
     void si_objectAdded(GObjectView *v, GObject *obj);
     void si_objectRemoved(GObjectView *v, GObject *obj);
@@ -230,8 +234,7 @@ protected slots:
 
     virtual void sl_onDocumentAdded(Document *);
     virtual void sl_onDocumentRemoved(Document *);
-    virtual void sl_onDocumentLoadedStateChanged() {
-    }
+    virtual void sl_onDocumentLoadedStateChanged();
 
 protected:
     GObjectViewFactoryId factoryId;
@@ -243,6 +246,16 @@ protected:
     bool closing;
     QList<GObjectViewObjectHandler *> objectHandlers;
     OptionsPanel *optionsPanel;
+};
+
+/** Constants for known GObject view menu types. */
+class U2GUI_EXPORT GObjectViewMenuType {
+public:
+    /** A constant for building a contextual (popup) menu. See buildMenu for details. */
+    const static QString CONTEXT;
+
+    /** A constant for building a static (toolbar-level) menu. See buildMenu for details. */
+    const static QString STATIC;
 };
 
 class U2GUI_EXPORT GObjectViewCloseInterface {
@@ -343,34 +356,46 @@ public:
     GObjectViewAction(QObject *p, GObjectView *v, const QString &text, int order = GObjectViewAction_DefaultOrder);
 
     GObjectView *getObjectView() const;
+
     int getActionOrder() const;
+
     void addToMenuWithOrder(QMenu *menu);
+
+    /** Returns true if the action is present in the menu of the given type. */
+    bool isInMenu(const QString &menuType) const;
+
+    /** Sets menu type ids this action should be present in. */
+    void setMenuTypes(const QList<QString> &menuTypes);
 
 private:
     GObjectView *view;
 
     // Action order can be used to set-up relative action position in GUI elements
     int actionOrder;
+
+    /** Set of view action menu types this action belongs to. */
+    QList<QString> menuTypes;
 };
 
+/**
+ * Abstraction of the object handler for a view.
+ * If a view has a handler that can 'handle' an object, this object can be added to the view.
+ */
 class U2GUI_EXPORT GObjectViewObjectHandler {
 public:
-    virtual ~GObjectViewObjectHandler() {
-    }
-    virtual bool canHandle(GObjectView *v, GObject *obj) {
-        Q_UNUSED(v);
-        Q_UNUSED(obj);
-        return false;
-    }
+    virtual ~GObjectViewObjectHandler() = default;
 
-    virtual void onObjectAdded(GObjectView *v, GObject *obj) {
-        Q_UNUSED(v);
-        Q_UNUSED(obj);
-    }
-    virtual void onObjectRemoved(GObjectView *v, GObject *obj) {
-        Q_UNUSED(v);
-        Q_UNUSED(obj);
-    }
+    /**
+     * Checks if the handler can 'handle' the object.
+     * If there is at least one handler that returns 'yes', the object can be added to the view.
+     */
+    virtual bool canHandle(GObjectView *view, GObject *obj);
+
+    /** Called when an object is added to the view. */
+    virtual void onObjectAdded(GObjectView *view, GObject *obj);
+
+    /** Called when an object is removed from the view. */
+    virtual void onObjectRemoved(GObjectView *view, GObject *obj);
 };
 
 class U2GUI_EXPORT GObjectViewWindowContext : public QObject, public GObjectViewObjectHandler {
@@ -383,7 +408,7 @@ public:
 
     QList<GObjectViewAction *> getViewActions(GObjectView *view) const;
 
-    virtual void onObjectRemoved(GObjectView *v, GObject *obj);
+    void onObjectRemoved(GObjectView *v, GObject *obj) override;
 
 protected:
     /// init context associated with 'view'
@@ -395,11 +420,40 @@ protected:
 protected slots:
     virtual void sl_windowAdded(MWMDIWindow *);
     virtual void sl_windowClosing(MWMDIWindow *);
-    virtual void sl_buildContextMenu(GObjectView *v, QMenu *m);
-    virtual void sl_buildStaticMenu(GObjectView *v, QMenu *m);
+
+    virtual void sl_buildMenu(GObjectView *view, QMenu *menu, const QString &type);
 
 protected:
-    virtual void buildMenu(GObjectView *v, QMenu *m);
+    /**
+     * Populates static global application menu with actions added by the class instance.
+     * This method is called when the view builds GObjectViewMenuType::Static menu.
+     */
+    virtual void buildStaticMenu(GObjectView *view, QMenu *menu);
+
+    /**
+     * Populates context popup menu with actions added by the class instance.
+     * This method is called when the view builds GObjectViewMenuType::Context menu.
+     */
+    virtual void buildContextMenu(GObjectView *view, QMenu *menu);
+
+    /**
+     * Populates menu with type specific actions.
+     * This method is called during construction of the type specific popup menu in the view like 'Align' button menu in MSA Editor.
+     * The method is never called for the generic 'GObjectViewMenuType::Context' or 'GObjectViewMenuType::Static' menu types:
+     *  use 'buildContextMenu' or 'buildStaticMenu' for that types.
+     */
+    virtual void buildActionMenu(GObjectView *view, QMenu *menu, const QString &menuType);
+
+    /**
+     * Builds both 'GObjectViewMenuType::Static' and 'GObjectViewMenuType::Context' menus.
+     *
+     * This convenience method is called by default by the base impls of buildStaticMenu() and buildContextMenu() and
+     * exists because most of the UGENE plugins create equal static & context menus.
+     *
+     * This method is never called for menu types other than 'GObjectViewMenuType::Static' and 'GObjectViewMenuType::Context'.
+     */
+    virtual void buildStaticOrContextMenu(GObjectView *view, QMenu *menu);
+
     virtual void disconnectView(GObjectView *v);
 
     QMap<GObjectView *, QList<QObject *>> viewResources;

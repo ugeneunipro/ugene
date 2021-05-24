@@ -76,7 +76,7 @@ void DNAStatMSAEditorContext::initViewContext(GObjectView *v) {
     addViewAction(profileAction);
 }
 
-void DNAStatMSAEditorContext::buildMenu(GObjectView *v, QMenu *m) {
+void DNAStatMSAEditorContext::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
     MSAEditor *msaed = qobject_cast<MSAEditor *>(v);
     if (msaed != NULL && !msaed->getMaObject())
         return;
@@ -113,7 +113,7 @@ void DistanceMatrixMSAEditorContext::initViewContext(GObjectView *v) {
     addViewAction(profileAction);
 }
 
-void DistanceMatrixMSAEditorContext::buildMenu(GObjectView *v, QMenu *m) {
+void DistanceMatrixMSAEditorContext::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
     MSAEditor *msaed = qobject_cast<MSAEditor *>(v);
     if (msaed != NULL && !msaed->getMaObject())
         return;

@@ -27,20 +27,19 @@
 #include <U2Core/Task.h>
 
 #include "GenomeAlignerIndex.h"
-#include "WriteAlignedReadsSubTask.h"
 
 namespace U2 {
 
 class WriteAlignedReadsSubTask : public Task {
     Q_OBJECT
 public:
-    WriteAlignedReadsSubTask(QReadWriteLock &listM, QMutex &_writeLock, GenomeAlignerWriter *seqWriter, QList<DataBunch *> &data, quint64 &readsAligned);
-    virtual void run();
+    WriteAlignedReadsSubTask(QReadWriteLock &listM, QMutex &_writeLock, GenomeAlignerWriter *seqWriter, QList<DataBunch *> &data, qint64 &readsAligned);
+    void run() override;
 
 private:
     GenomeAlignerWriter *seqWriter;
     QList<DataBunch *> &data;
-    quint64 &readsAligned;
+    qint64 &readsAligned;
 
     inline void setReadWritten(SearchQuery *read, SearchQuery *revCompl);
     QReadWriteLock &listM;

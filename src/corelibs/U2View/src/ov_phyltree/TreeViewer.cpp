@@ -144,6 +144,10 @@ Task *TreeViewer::updateViewTask(const QString &stateName, const QVariantMap &st
     return new UpdateTreeViewerTask(this, stateName, stateData);
 }
 
+OptionsPanel *TreeViewer::getOptionsPanel() {
+    return optionsPanel;
+}
+
 void TreeViewer::createActions() {
     // Tree Settings
     treeSettingsAction = new QAction(QIcon(":core/images/phylip.png"), tr("Tree Settings..."), ui);
@@ -291,7 +295,11 @@ void TreeViewer::buildMSAEditorStaticToolbar(QToolBar *tb) {
     tb->removeAction(zoomToAllAction);
 }
 
-void TreeViewer::buildStaticMenu(QMenu *m) {
+void TreeViewer::buildMenu(QMenu *m, const QString &type) {
+    if (type != GObjectViewMenuType::STATIC) {
+        GObjectView::buildMenu(m, type);
+        return;
+    }
     // Tree Settings
     m->addAction(treeSettingsAction);
 
@@ -337,7 +345,7 @@ void TreeViewer::buildStaticMenu(QMenu *m) {
 
     m->addSeparator();
 
-    GObjectView::buildStaticMenu(m);
+    GObjectView::buildMenu(m, type);
     GUIUtils::disableEmptySubmenus(m);
 }
 
@@ -1633,7 +1641,7 @@ bool TreeViewerUI::isOnlyLeafSelected() const {
     return selectedItems == 2;
 }
 
-GraphicsBranchItem *TreeViewerUI::getRoot() const{
+GraphicsBranchItem *TreeViewerUI::getRoot() const {
     return root;
 }
 

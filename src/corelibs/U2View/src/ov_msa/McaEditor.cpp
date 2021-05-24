@@ -86,7 +86,11 @@ void McaEditor::buildStaticToolbar(QToolBar *tb) {
     GObjectView::buildStaticToolbar(tb);
 }
 
-void McaEditor::buildStaticMenu(QMenu *menu) {
+void McaEditor::buildMenu(QMenu *menu, const QString &type) {
+    if (type != MsaEditorMenuType::STATIC) {
+        GObjectView::buildMenu(menu, type);
+        return;
+    }
     addAlignmentMenu(menu);
     addAppearanceMenu(menu);
     addNavigationMenu(menu);
@@ -95,7 +99,7 @@ void McaEditor::buildStaticMenu(QMenu *menu) {
     menu->addAction(showConsensusTabAction);
     menu->addSeparator();
 
-    GObjectView::buildStaticMenu(menu);
+    GObjectView::buildMenu(menu, type);
     GUIUtils::disableEmptySubmenus(menu);
 }
 
@@ -128,8 +132,8 @@ SequenceObjectContext *McaEditor::getReferenceContext() const {
 
 void McaEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     QMenu menu;
-    buildStaticMenu(&menu);
-    emit si_buildPopupMenu(this, &menu);
+    buildMenu(&menu, MsaEditorMenuType::STATIC);    // TODO: this call triggers extra signal for static menu.
+    emit si_buildMenu(this, &menu, MsaEditorMenuType::CONTEXT);
     menu.exec(QCursor::pos());
 }
 
@@ -229,7 +233,7 @@ void McaEditor::initActions() {
 
     gotoSelectedReadAction = new QAction(tr("Go to selected read"), this);
     gotoSelectedReadAction->setObjectName("centerReadStartAction");
-    gotoSelectedReadAction->setEnabled(false); // Action state is managed by updateActions().
+    gotoSelectedReadAction->setEnabled(false);    // Action state is managed by updateActions().
     connect(gotoSelectedReadAction, SIGNAL(triggered()), SLOT(sl_gotoSelectedRead()));
 
     GCounter::increment(QString("'Show overview' is %1 on MCA open").arg(overviewVisible ? "ON" : "OFF"));

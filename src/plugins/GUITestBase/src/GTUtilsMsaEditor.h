@@ -63,7 +63,7 @@ public:
     static MSAEditorSequenceArea *getSequenceArea(HI::GUITestOpStatus &os);
 
     static QRect getSequenceNameRect(HI::GUITestOpStatus &os, const QString &sequenceName);
-    static QRect getSequenceNameRect(HI::GUITestOpStatus &os, int rowNumber);
+    static QRect getSequenceNameRect(HI::GUITestOpStatus &os, int viewRowIndex);
     static QRect getColumnHeaderRect(HI::GUITestOpStatus &os, int column);
 
     static void replaceSequence(HI::GUITestOpStatus &os, const QString &sequenceToReplace, int targetPosition);

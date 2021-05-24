@@ -57,8 +57,9 @@ protected slots:
     void sl_align_with_ClustalW();
 
 protected:
-    virtual void initViewContext(GObjectView *view);
-    virtual void buildMenu(GObjectView *view, QMenu *m);
+    void initViewContext(GObjectView *view) override;
+
+    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
 };
 
 }    // namespace U2

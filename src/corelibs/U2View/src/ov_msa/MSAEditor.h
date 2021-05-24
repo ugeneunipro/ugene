@@ -79,12 +79,12 @@ public:
 
     virtual void buildStaticToolbar(QToolBar *tb) override;
 
-    virtual void buildStaticMenu(QMenu *m) override;
+    void buildMenu(QMenu *m, const QString &type) override;
 
     MsaEditorWgt *getUI() const override;
 
     //Return alignment row that is displayed on target line in MSAEditor
-    const MultipleSequenceAlignmentRow getRowByViewRowIndex(int viewRowIndex) const;
+    MultipleSequenceAlignmentRow getRowByViewRowIndex(int viewRowIndex) const;
 
     PairwiseAlignmentWidgetsSettings *getPairwiseAlignmentWidgetsSettings() const {
         return pairwiseAlignmentWidgetsSettings;
@@ -150,29 +150,36 @@ protected:
     void alignSequencesFromFilesToAlignment();
 
 public:
-    QAction *buildTreeAction;
-    QAction *alignAction;
-    QAction *alignSequencesToAlignmentAction;
-    QAction *realignSomeSequenceAction;
-    QAction *setAsReferenceSequenceAction;
-    QAction *unsetReferenceSequenceAction;
-    QAction *gotoAction;
-    QAction *searchInSequencesAction;
-    QAction *searchInSequenceNamesAction;
-    QAction *openCustomSettingsAction;
-    QAction *sortByNameAscendingAction;
-    QAction *sortByNameDescendingAction;
-    QAction *sortByLengthAscendingAction;
-    QAction *sortByLengthDescendingAction;
-    QAction *sortByLeadingGapAscendingAction;
-    QAction *sortByLeadingGapDescendingAction;
+    QAction *buildTreeAction = nullptr;
+    QAction *alignAction = nullptr;
+    QAction *alignSequencesToAlignmentAction = nullptr;
+    QAction *realignSomeSequenceAction = nullptr;
+    QAction *setAsReferenceSequenceAction = nullptr;
+    QAction *unsetReferenceSequenceAction = nullptr;
+    QAction *gotoAction = nullptr;
+    QAction *searchInSequencesAction = nullptr;
+    QAction *searchInSequenceNamesAction = nullptr;
+    QAction *openCustomSettingsAction = nullptr;
+    QAction *sortByNameAscendingAction = nullptr;
+    QAction *sortByNameDescendingAction = nullptr;
+    QAction *sortByLengthAscendingAction = nullptr;
+    QAction *sortByLengthDescendingAction = nullptr;
+    QAction *sortByLeadingGapAscendingAction = nullptr;
+    QAction *sortByLeadingGapDescendingAction = nullptr;
 
-    QAction *convertDnaToRnaAction;
-    QAction *convertRnaToDnaAction;
+    QAction *convertDnaToRnaAction = nullptr;
+    QAction *convertRnaToDnaAction = nullptr;
 
 private:
-    PairwiseAlignmentWidgetsSettings *pairwiseAlignmentWidgetsSettings;
+    PairwiseAlignmentWidgetsSettings *pairwiseAlignmentWidgetsSettings = nullptr;
     MSAEditorTreeManager treeManager;
+};
+
+/** Set of custom menu actions in MSA editor. */
+class U2VIEW_EXPORT MsaEditorMenuType : public GObjectViewMenuType {
+public:
+    /** "Align" button menu identifier. */
+    const static QString ALIGN;
 };
 
 }    // namespace U2

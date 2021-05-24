@@ -95,6 +95,9 @@ public:
     /** Returns global coordinates of the sequence region processed by this sub-task. */
     const U2Region &getGlobalRegion() const;
 
+    /** Returns top-level sequence walker task. */
+    SequenceDbiWalkerTask *getSequenceDbiWalkerTask() const;
+
 private:
     /** Prepares region sequence data if needed. */
     void prepareRegionSequence();

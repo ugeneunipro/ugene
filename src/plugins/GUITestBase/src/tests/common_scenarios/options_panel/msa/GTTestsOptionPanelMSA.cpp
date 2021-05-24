@@ -2057,7 +2057,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0004) {
     //0. Change Documents folder to sandbox
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::setDocumentsDirPath(os, sandBoxDir);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -2082,9 +2082,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0004) {
         exportConsensusTest0004Filler() {
         }
         virtual void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };

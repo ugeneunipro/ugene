@@ -148,7 +148,7 @@ AnnotationsTreeView::AnnotationsTreeView(AnnotatedDNAView *_ctx)
 
     restoreWidgetState();
 
-    connect(ctx, SIGNAL(si_buildPopupMenu(GObjectView *, QMenu *)), SLOT(sl_onBuildPopupMenu(GObjectView *, QMenu *)));
+    connect(ctx, SIGNAL(si_buildMenu(GObjectView *, QMenu *, const QString &)), SLOT(sl_onBuildMenu(GObjectView *, QMenu *, const QString &)));
     connect(ctx, SIGNAL(si_annotationObjectAdded(AnnotationTableObject *)), SLOT(sl_onAnnotationObjectAdded(AnnotationTableObject *)));
     connect(ctx, SIGNAL(si_annotationObjectRemoved(AnnotationTableObject *)), SLOT(sl_onAnnotationObjectRemoved(AnnotationTableObject *)));
     connect(ctx, SIGNAL(si_sequenceAdded(ADVSequenceObjectContext *)), SLOT(sl_sequenceAdded(ADVSequenceObjectContext *)));
@@ -362,19 +362,19 @@ QList<AVAnnotationItem *> AnnotationsTreeView::findAnnotationItems(const AVGroup
         AVItem *childItem = dynamic_cast<AVItem *>(gi->child(i));
         SAFE_POINT(NULL != childItem, "Can't cast 'QTreeWidgetItem *' to 'AVItem *'", QList<AVAnnotationItem *>());
         switch (childItem->type) {
-        case AVItemType_Annotation: {
-            AVAnnotationItem *annotationItem = dynamic_cast<AVAnnotationItem *>(childItem);
-            SAFE_POINT(NULL != annotationItem, "Can't cast 'AVItem *' to 'AVAnnotationItem *'", QList<AVAnnotationItem *>());
-            annotationItems << annotationItem;
-            break;
-        }
-        case AVItemType_Group: {
-            AVGroupItem *groupItem = dynamic_cast<AVGroupItem *>(childItem);
-            SAFE_POINT(NULL != groupItem, "Can't cast 'AVItem *' to 'AVGroupItem *'", QList<AVAnnotationItem *>());
-            annotationItems << findAnnotationItems(groupItem);
-            break;
-        }
-        default:;    // Do nothing
+            case AVItemType_Annotation: {
+                AVAnnotationItem *annotationItem = dynamic_cast<AVAnnotationItem *>(childItem);
+                SAFE_POINT(NULL != annotationItem, "Can't cast 'AVItem *' to 'AVAnnotationItem *'", QList<AVAnnotationItem *>());
+                annotationItems << annotationItem;
+                break;
+            }
+            case AVItemType_Group: {
+                AVGroupItem *groupItem = dynamic_cast<AVGroupItem *>(childItem);
+                SAFE_POINT(NULL != groupItem, "Can't cast 'AVItem *' to 'AVGroupItem *'", QList<AVAnnotationItem *>());
+                annotationItems << findAnnotationItems(groupItem);
+                break;
+            }
+            default:;    // Do nothing
         }
     }
     return annotationItems;
@@ -445,17 +445,17 @@ void AnnotationsTreeView::sl_onItemSelectionChanged() {
     // make the text of Edit action correct
     if (selectedTreeItems.size() == 1) {
         switch (static_cast<AVItem *>(selectedTreeItems.last())->type) {
-        case AVItemType_Group:
-            editAction->setText(tr("Group"));
-            break;
-        case AVItemType_Qualifier:
-            editAction->setText(tr("Qualifier"));
-            break;
-        case AVItemType_Annotation:
-            editAction->setText(tr("Annotation"));
-            break;
-        default:
-            FAIL("Invalid annotation tree item type", );
+            case AVItemType_Group:
+                editAction->setText(tr("Group"));
+                break;
+            case AVItemType_Qualifier:
+                editAction->setText(tr("Qualifier"));
+                break;
+            case AVItemType_Annotation:
+                editAction->setText(tr("Annotation"));
+                break;
+            default:
+                FAIL("Invalid annotation tree item type", );
         }
     }
 
@@ -674,51 +674,51 @@ void AnnotationsTreeView::sl_onAnnotationsRemoved(const QList<Annotation *> &as)
 void AnnotationsTreeView::sl_onAnnotationsModified(const QList<AnnotationModification> &annotationModifications) {
     foreach (const AnnotationModification &annotationModification, annotationModifications) {
         switch (annotationModification.type) {
-        case AnnotationModification_NameChanged:
-        case AnnotationModification_LocationChanged:
-        case AnnotationModification_TypeChanged: {
-            QList<AVAnnotationItem *> aItems = findAnnotationItems(annotationModification.annotation);
-            assert(!aItems.isEmpty());
-            foreach (AVAnnotationItem *ai, aItems) {
-                ai->updateVisual(ATVAnnUpdateFlag_BaseColumns);
-            }
-        } break;
-
-        case AnnotationModification_QualifierRemoved: {
-            const QualifierModification &qm = static_cast<const QualifierModification &>(annotationModification);
-            QList<AVAnnotationItem *> aItems = findAnnotationItems(qm.annotation);
-            foreach (AVAnnotationItem *ai, aItems) {
-                ai->removeQualifier(qm.getQualifier());
-            }
-        } break;
-        case AnnotationModification_QualifierAdded: {
-            const QualifierModification &qm = static_cast<const QualifierModification &>(annotationModification);
-            QList<AVAnnotationItem *> aItems = findAnnotationItems(qm.annotation);
-            foreach (AVAnnotationItem *ai, aItems) {
-                if (ai->isExpanded() || ai->childCount() > 1) {    //if item was expanded - add real qualifier items
-                    ai->addQualifier(qm.getQualifier());
-                } else {
-                    ai->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);    //otherwise process indicator only
+            case AnnotationModification_NameChanged:
+            case AnnotationModification_LocationChanged:
+            case AnnotationModification_TypeChanged: {
+                QList<AVAnnotationItem *> aItems = findAnnotationItems(annotationModification.annotation);
+                assert(!aItems.isEmpty());
+                foreach (AVAnnotationItem *ai, aItems) {
+                    ai->updateVisual(ATVAnnUpdateFlag_BaseColumns);
                 }
-            }
-        } break;
-        case AnnotationModification_AddedToGroup: {
-            const AnnotationGroupModification &gmd = static_cast<const AnnotationGroupModification &>(annotationModification);
-            AVGroupItem *gi = findGroupItem(gmd.getGroup());
-            SAFE_POINT(NULL != gi, L10N::nullPointerError("annotation view group item"), );
-            buildAnnotationTree(gi, gmd.annotation);
-            gi->updateVisual();
-        } break;
+            } break;
 
-        case AnnotationModification_RemovedFromGroup: {
-            const AnnotationGroupModification &gmd = static_cast<const AnnotationGroupModification &>(annotationModification);
-            AVAnnotationItem *ai = findAnnotationItem(gmd.getGroup(), gmd.annotation);
-            SAFE_POINT(NULL != ai, L10N::nullPointerError("annotation view item"), );
-            AVGroupItem *gi = dynamic_cast<AVGroupItem *>(ai->parent());
-            selectedAnnotation.remove(ai);
-            delete ai;
-            gi->updateVisual();
-        } break;
+            case AnnotationModification_QualifierRemoved: {
+                const QualifierModification &qm = static_cast<const QualifierModification &>(annotationModification);
+                QList<AVAnnotationItem *> aItems = findAnnotationItems(qm.annotation);
+                foreach (AVAnnotationItem *ai, aItems) {
+                    ai->removeQualifier(qm.getQualifier());
+                }
+            } break;
+            case AnnotationModification_QualifierAdded: {
+                const QualifierModification &qm = static_cast<const QualifierModification &>(annotationModification);
+                QList<AVAnnotationItem *> aItems = findAnnotationItems(qm.annotation);
+                foreach (AVAnnotationItem *ai, aItems) {
+                    if (ai->isExpanded() || ai->childCount() > 1) {    //if item was expanded - add real qualifier items
+                        ai->addQualifier(qm.getQualifier());
+                    } else {
+                        ai->setChildIndicatorPolicy(QTreeWidgetItem::ShowIndicator);    //otherwise process indicator only
+                    }
+                }
+            } break;
+            case AnnotationModification_AddedToGroup: {
+                const AnnotationGroupModification &gmd = static_cast<const AnnotationGroupModification &>(annotationModification);
+                AVGroupItem *gi = findGroupItem(gmd.getGroup());
+                SAFE_POINT(NULL != gi, L10N::nullPointerError("annotation view group item"), );
+                buildAnnotationTree(gi, gmd.annotation);
+                gi->updateVisual();
+            } break;
+
+            case AnnotationModification_RemovedFromGroup: {
+                const AnnotationGroupModification &gmd = static_cast<const AnnotationGroupModification &>(annotationModification);
+                AVAnnotationItem *ai = findAnnotationItem(gmd.getGroup(), gmd.annotation);
+                SAFE_POINT(NULL != ai, L10N::nullPointerError("annotation view item"), );
+                AVGroupItem *gi = dynamic_cast<AVGroupItem *>(ai->parent());
+                selectedAnnotation.remove(ai);
+                delete ai;
+                gi->updateVisual();
+            } break;
         }
     }
 }
@@ -868,7 +868,10 @@ void AnnotationsTreeView::updateColumnContextActions(AVItem *item, int col) {
     }
 }
 
-void AnnotationsTreeView::sl_onBuildPopupMenu(GObjectView *, QMenu *m) {
+void AnnotationsTreeView::sl_onBuildMenu(GObjectView *, QMenu *m, const QString &type) {
+    if (type != GObjectViewMenuType::CONTEXT) {
+        return;
+    }
     // Add actions that not depends on the point popup is called
     adjustMenu(m);
 
@@ -978,7 +981,7 @@ void AnnotationsTreeView::sl_paste() {
 
     bool addToProject = !(tree && tree->hasFocus());
     PasteTask *task = pasteFactory->createPasteTask(addToProject);
-    CHECK(task != nullptr,);
+    CHECK(task != nullptr, );
     if (!addToProject) {
         connect(new TaskSignalMapper(task), SIGNAL(si_taskFinished(Task *)), SLOT(sl_pasteFinished(Task *)));
     }
@@ -1206,14 +1209,14 @@ static bool isReadOnly(QTreeWidgetItem *item) {
         AVItem *itemi = dynamic_cast<AVItem *>(item);
         AnnotationTableObject *obj;
         switch (itemi->type) {
-        case AVItemType_Group:
-            obj = dynamic_cast<AVGroupItem *>(itemi)->group->getGObject();
-            break;
-        case AVItemType_Annotation:
-            obj = dynamic_cast<AVAnnotationItem *>(itemi)->annotation->getGObject();
-            break;
-        default:
-            continue;
+            case AVItemType_Group:
+                obj = dynamic_cast<AVGroupItem *>(itemi)->group->getGObject();
+                break;
+            case AVItemType_Annotation:
+                obj = dynamic_cast<AVAnnotationItem *>(itemi)->annotation->getGObject();
+                break;
+            default:
+                continue;
         }
         if (obj->isStateLocked()) {
             return true;
@@ -1234,157 +1237,157 @@ bool AnnotationsTreeView::eventFilter(QObject *o, QEvent *e) {
     }
     const QEvent::Type etype = e->type();
     switch (etype) {
-    case QEvent::ToolTip: {
-        const QHelpEvent *he = static_cast<const QHelpEvent *>(e);
-        const QPoint globalPos = he->globalPos();
-        const QPoint viewportPos = tree->viewport()->mapFromGlobal(globalPos);
-        const QTreeWidgetItem *item = tree->itemAt(viewportPos);
-        if (NULL != item) {
-            const AVItem *avi = static_cast<const AVItem *>(item);
-            if (AVItemType_Annotation == avi->type) {
-                const AVAnnotationItem *ai = static_cast<const AVAnnotationItem *>(avi);
-                const ADVSequenceObjectContext *sc = ctx->getSequenceContext(ai->getAnnotationTableObject());
-                const bool seqObjectContextValid = (NULL != sc);
-                const QString tip = Annotation::getQualifiersTip(ai->annotation->getData(), 15, seqObjectContextValid ? sc->getSequenceObject() : NULL, seqObjectContextValid ? sc->getComplementTT() : NULL);
-                if (!tip.isEmpty()) {
-                    QToolTip::showText(he->globalPos(), tip);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    case QEvent::MouseButtonRelease:
-        lastMB = ((QMouseEvent *)e)->button();
-        isDragging = false;
-        return false;
-    case QEvent::MouseButtonPress: {
-        QMouseEvent *me = dynamic_cast<QMouseEvent *>(e);
-        if (me->modifiers() == Qt::NoModifier && me->button() == Qt::LeftButton) {
-            QTreeWidgetItem *item = tree->itemAt(dragStartPos = me->pos());
-            if (item != NULL) {
-                AVItemType type = dynamic_cast<AVItem *>(item)->type;
-                if (type == AVItemType_Annotation || type == AVItemType_Group) {
-                    if (!tree->selectedItems().contains(item)) {
-                        tree->setCurrentItem(item);
-                    }
-                    isDragging = true;
-                    return false;
-                }
-            }
-        }
-        isDragging = false;
-        return false;
-    }
-    case QEvent::MouseMove: {
-        QMouseEvent *me = dynamic_cast<QMouseEvent *>(e);
-        if (!(me->buttons() & Qt::LeftButton) || !isDragging) {
-            return false;
-        }
-        if ((me->pos() - dragStartPos).manhattanLength() < QApplication::startDragDistance()) {
-            return true;
-        }
-        initiateDragAndDrop(me);
-        return true;
-    }
-    case QEvent::DragEnter: {
-        QDragEnterEvent *de = dynamic_cast<QDragEnterEvent *>(e);
-        if (de->mimeData()->hasFormat(annotationMimeType)) {
-            de->acceptProposedAction();
-            uiLog.trace("Drag enter event in Annotations view : format is OK");
-            return true;
-        }
-        uiLog.trace("Drag enter event in Annotations view : unsupported mime format!");
-        return false;
-    }
-    case QEvent::DragMove: {    // update current D&D state
-        QDragMoveEvent *de = dynamic_cast<QDragMoveEvent *>(e);
-        if (de->mimeData()->hasFormat(annotationMimeType)) {
-            QTreeWidgetItem *item = tree->itemAt(de->pos());
-            if (item == NULL) {
-                de->ignore();
-                uiLog.trace("Drag event in Annotations view : invalid destination");
-                return true;
-            }
-            if (isReadOnly(item)) {
-                de->ignore();
-                uiLog.trace(QString("Drag event in Annotations view : destination is read-only: %1").arg(item->text(0)));
-                return true;
-            }
-            Qt::DropAction dndAction = (de->keyboardModifiers() & Qt::ShiftModifier) ? Qt::CopyAction : Qt::MoveAction;
-            if (dndAction == Qt::MoveAction && dndCopyOnly) {
-                de->ignore();
-                uiLog.trace("Drag event in Annotations view : source is read-only, can't move");
-                return true;
-            }
-
-            for (AVItem *itemi = dynamic_cast<AVItem *>(item); itemi != NULL; itemi = dynamic_cast<AVItem *>(itemi->parent())) {
-                if (itemi->type == AVItemType_Group) {
-                    for (int i = 0, s = dndSelItems.size(); i < s; ++i) {
-                        AVItem *dndItem = dndSelItems[i];
-                        if (dndItem == itemi) {    // do not allow drop group into itself
-                            de->ignore();
-                            uiLog.trace("Drag event in Annotations view : can't move group into itself!");
-                            return true;
-                        }
-                    }
-                }
-            }
-            if (item->parent() == NULL) {    //destination is root item
-                for (int i = 0, s = dndSelItems.size(); i < s; ++i) {
-                    AVItem *dndItem = dndSelItems[i];
-                    if (dndItem->type == AVItemType_Annotation) {
-                        de->ignore();
-                        // root group can't have annotations -> problem with store/load invariant..
-                        uiLog.trace("Drag event in Annotations view : can't move annotations, destination group is not found!");
+        case QEvent::ToolTip: {
+            const QHelpEvent *he = static_cast<const QHelpEvent *>(e);
+            const QPoint globalPos = he->globalPos();
+            const QPoint viewportPos = tree->viewport()->mapFromGlobal(globalPos);
+            const QTreeWidgetItem *item = tree->itemAt(viewportPos);
+            if (NULL != item) {
+                const AVItem *avi = static_cast<const AVItem *>(item);
+                if (AVItemType_Annotation == avi->type) {
+                    const AVAnnotationItem *ai = static_cast<const AVAnnotationItem *>(avi);
+                    const ADVSequenceObjectContext *sc = ctx->getSequenceContext(ai->getAnnotationTableObject());
+                    const bool seqObjectContextValid = (NULL != sc);
+                    const QString tip = Annotation::getQualifiersTip(ai->annotation->getData(), 15, seqObjectContextValid ? sc->getSequenceObject() : NULL, seqObjectContextValid ? sc->getComplementTT() : NULL);
+                    if (!tip.isEmpty()) {
+                        QToolTip::showText(he->globalPos(), tip);
                         return true;
                     }
                 }
             }
-            de->setDropAction(dndAction);
-            de->accept();
-            uiLog.trace(QString("Drag event in Annotations view, status: OK, type: %1").arg(dndAction == Qt::MoveAction ? "Move" : "Copy"));
-            return true;
-        }
-        return false;
-    }
-    case QEvent::Drop: {
-        uiLog.trace("Drop event in Annotations view");
-        QDropEvent *de = dynamic_cast<QDropEvent *>(e);
-        const QMimeData *mime = de->mimeData();
-        if (mime->hasFormat(annotationMimeType)) {
-            QTreeWidgetItem *item = tree->itemAt(de->pos());
-            if (item != NULL) {
-                AVItem *avItem = dynamic_cast<AVItem *>(item);
-                while (avItem != NULL && avItem->type != AVItemType_Group) {
-                    avItem = dynamic_cast<AVItem *>(avItem->parent());
-                }
-                if (avItem != NULL) {
-                    dropDestination = static_cast<AVGroupItem *>(avItem);
-                    SAFE_POINT(dropDestination != NULL, "dropDestination is NULL", false);
-                    if (de->keyboardModifiers() & Qt::ShiftModifier) {
-                        de->setDropAction(Qt::CopyAction);
-                    } else {
-                        de->setDropAction(Qt::MoveAction);
-                    }
-                    de->accept();
-                    uiLog.trace(QString("Drop event in Annotations view : destination group %1").arg(dropDestination->group->getGroupPath()));
-                } else {
-                    uiLog.trace("Drop event in Annotations view : something weird, can't derive destination group!");
-                }
-                return true;
-            } else {
-                uiLog.trace("Drop event in Annotations view : invalid destination");
-            }
-        } else {
-            uiLog.trace("Drop event in Annotations view : unknown MIME format");
             return false;
         }
-        de->ignore();
-        return true;
-    }
-    default:
-        return false;
+        case QEvent::MouseButtonRelease:
+            lastMB = ((QMouseEvent *)e)->button();
+            isDragging = false;
+            return false;
+        case QEvent::MouseButtonPress: {
+            QMouseEvent *me = dynamic_cast<QMouseEvent *>(e);
+            if (me->modifiers() == Qt::NoModifier && me->button() == Qt::LeftButton) {
+                QTreeWidgetItem *item = tree->itemAt(dragStartPos = me->pos());
+                if (item != NULL) {
+                    AVItemType type = dynamic_cast<AVItem *>(item)->type;
+                    if (type == AVItemType_Annotation || type == AVItemType_Group) {
+                        if (!tree->selectedItems().contains(item)) {
+                            tree->setCurrentItem(item);
+                        }
+                        isDragging = true;
+                        return false;
+                    }
+                }
+            }
+            isDragging = false;
+            return false;
+        }
+        case QEvent::MouseMove: {
+            QMouseEvent *me = dynamic_cast<QMouseEvent *>(e);
+            if (!(me->buttons() & Qt::LeftButton) || !isDragging) {
+                return false;
+            }
+            if ((me->pos() - dragStartPos).manhattanLength() < QApplication::startDragDistance()) {
+                return true;
+            }
+            initiateDragAndDrop(me);
+            return true;
+        }
+        case QEvent::DragEnter: {
+            QDragEnterEvent *de = dynamic_cast<QDragEnterEvent *>(e);
+            if (de->mimeData()->hasFormat(annotationMimeType)) {
+                de->acceptProposedAction();
+                uiLog.trace("Drag enter event in Annotations view : format is OK");
+                return true;
+            }
+            uiLog.trace("Drag enter event in Annotations view : unsupported mime format!");
+            return false;
+        }
+        case QEvent::DragMove: {    // update current D&D state
+            QDragMoveEvent *de = dynamic_cast<QDragMoveEvent *>(e);
+            if (de->mimeData()->hasFormat(annotationMimeType)) {
+                QTreeWidgetItem *item = tree->itemAt(de->pos());
+                if (item == NULL) {
+                    de->ignore();
+                    uiLog.trace("Drag event in Annotations view : invalid destination");
+                    return true;
+                }
+                if (isReadOnly(item)) {
+                    de->ignore();
+                    uiLog.trace(QString("Drag event in Annotations view : destination is read-only: %1").arg(item->text(0)));
+                    return true;
+                }
+                Qt::DropAction dndAction = (de->keyboardModifiers() & Qt::ShiftModifier) ? Qt::CopyAction : Qt::MoveAction;
+                if (dndAction == Qt::MoveAction && dndCopyOnly) {
+                    de->ignore();
+                    uiLog.trace("Drag event in Annotations view : source is read-only, can't move");
+                    return true;
+                }
+
+                for (AVItem *itemi = dynamic_cast<AVItem *>(item); itemi != NULL; itemi = dynamic_cast<AVItem *>(itemi->parent())) {
+                    if (itemi->type == AVItemType_Group) {
+                        for (int i = 0, s = dndSelItems.size(); i < s; ++i) {
+                            AVItem *dndItem = dndSelItems[i];
+                            if (dndItem == itemi) {    // do not allow drop group into itself
+                                de->ignore();
+                                uiLog.trace("Drag event in Annotations view : can't move group into itself!");
+                                return true;
+                            }
+                        }
+                    }
+                }
+                if (item->parent() == NULL) {    //destination is root item
+                    for (int i = 0, s = dndSelItems.size(); i < s; ++i) {
+                        AVItem *dndItem = dndSelItems[i];
+                        if (dndItem->type == AVItemType_Annotation) {
+                            de->ignore();
+                            // root group can't have annotations -> problem with store/load invariant..
+                            uiLog.trace("Drag event in Annotations view : can't move annotations, destination group is not found!");
+                            return true;
+                        }
+                    }
+                }
+                de->setDropAction(dndAction);
+                de->accept();
+                uiLog.trace(QString("Drag event in Annotations view, status: OK, type: %1").arg(dndAction == Qt::MoveAction ? "Move" : "Copy"));
+                return true;
+            }
+            return false;
+        }
+        case QEvent::Drop: {
+            uiLog.trace("Drop event in Annotations view");
+            QDropEvent *de = dynamic_cast<QDropEvent *>(e);
+            const QMimeData *mime = de->mimeData();
+            if (mime->hasFormat(annotationMimeType)) {
+                QTreeWidgetItem *item = tree->itemAt(de->pos());
+                if (item != NULL) {
+                    AVItem *avItem = dynamic_cast<AVItem *>(item);
+                    while (avItem != NULL && avItem->type != AVItemType_Group) {
+                        avItem = dynamic_cast<AVItem *>(avItem->parent());
+                    }
+                    if (avItem != NULL) {
+                        dropDestination = static_cast<AVGroupItem *>(avItem);
+                        SAFE_POINT(dropDestination != NULL, "dropDestination is NULL", false);
+                        if (de->keyboardModifiers() & Qt::ShiftModifier) {
+                            de->setDropAction(Qt::CopyAction);
+                        } else {
+                            de->setDropAction(Qt::MoveAction);
+                        }
+                        de->accept();
+                        uiLog.trace(QString("Drop event in Annotations view : destination group %1").arg(dropDestination->group->getGroupPath()));
+                    } else {
+                        uiLog.trace("Drop event in Annotations view : something weird, can't derive destination group!");
+                    }
+                    return true;
+                } else {
+                    uiLog.trace("Drop event in Annotations view : invalid destination");
+                }
+            } else {
+                uiLog.trace("Drop event in Annotations view : unknown MIME format");
+                return false;
+            }
+            de->ignore();
+            return true;
+        }
+        default:
+            return false;
     }
 }
 
@@ -1922,7 +1925,7 @@ void AnnotationsTreeView::sl_onRemoveColumnByHeaderClick() {
 
 void AnnotationsTreeView::sl_searchQualifier() {
     SAFE_POINT(currentItem() != nullptr,
-        "Qualifier search cannot be started: no annotation tree item is selected for searching in",)
+               "Qualifier search cannot be started: no annotation tree item is selected for searching in", )
     QObjectScopedPointer<SearchQualifierDialog> d = new SearchQualifierDialog(this, this);
     d->exec();
 }

@@ -64,8 +64,8 @@ private slots:
     void sl_build();
 
 private:
-    void initViewContext(GObjectView *view);
-    void buildMenu(GObjectView *view, QMenu *menu);
+    void initViewContext(GObjectView *view) override;
+    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
 };
 
 class HmmerAdvContext : public GObjectViewWindowContext {
@@ -77,7 +77,7 @@ private slots:
     void sl_search();
 
 private:
-    void initViewContext(GObjectView *view);
+    void initViewContext(GObjectView *view) override;
 
     QWidget *getParentWidget(QObject *sender);
     U2SequenceObject *getSequenceInFocus(QObject *sender);

@@ -104,8 +104,8 @@ protected slots:
     void sl_onDNAViewClosed(AnnotatedDNAView *v);
 
 protected:
-    virtual void initViewContext(GObjectView *view);
-    void buildMenu(GObjectView *v, QMenu *m);
+    void initViewContext(GObjectView *view) override;
+    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
     CircularViewSplitter *getView(GObjectView *view, bool create);
     void removeCircularView(GObjectView *view);
     void toggleViews(AnnotatedDNAView *view);

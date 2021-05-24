@@ -53,7 +53,8 @@ public:
     RemoteBLASTViewContext(QObject *p);
 
 protected:
-    virtual void initViewContext(GObjectView *view);
+    void initViewContext(GObjectView *view) override;
+
 private slots:
     void sl_showDialog();
 };

@@ -45,6 +45,7 @@
 
 namespace U2 {
 
+//TODO: calling tr() int static context! Translator is not initialized yet!
 const QString GenomeAlignerTask::taskName(QObject::tr("UGENE Genome Aligner"));
 const QString GenomeAlignerTask::OPTION_ALIGN_REVERSED("align_reversed");
 const QString GenomeAlignerTask::OPTION_OPENCL("use_gpu_optimization");
@@ -53,7 +54,6 @@ const QString GenomeAlignerTask::OPTION_MISMATCHES("mismatches_allowed");
 const QString GenomeAlignerTask::OPTION_PERCENTAGE_MISMATCHES("mismatches_percentage_allowed");
 const QString GenomeAlignerTask::OPTION_INDEX_DIR("dir_of_the_index_file");
 const QString GenomeAlignerTask::OPTION_BEST("best_mode");
-const QString GenomeAlignerTask::OPTION_DBI_IO("dbi_io");
 const QString GenomeAlignerTask::OPTION_QUAL_THRESHOLD("quality_threshold");
 const QString GenomeAlignerTask::OPTION_READS_MEMORY_SIZE("reads_mem_size");
 const QString GenomeAlignerTask::OPTION_SEQ_PART_SIZE("seq_part_size");
@@ -70,7 +70,6 @@ GenomeAlignerTask::GenomeAlignerTask(const DnaAssemblyToRefTaskSettings &_settin
       seqReader(NULL),
       seqWriter(NULL),
       justBuildIndex(_justBuildIndex),
-      bunchSize(0),
       index(NULL),
       lastQuery(NULL) {
     GCOUNTER(cvar, "GenomeAlignerTask");
@@ -80,7 +79,6 @@ GenomeAlignerTask::GenomeAlignerTask(const DnaAssemblyToRefTaskSettings &_settin
     readsAligned = 0;
     shortreadLoadTime = 0;
     resultWriteTime = 0;
-    searchTime = 0;
     indexLoadTime = 0;
     shortreadIOTime = 0;
     currentProgress = 0.0f;
@@ -287,7 +285,7 @@ QList<Task *> GenomeAlignerTask::onSubTaskFinished(Task *subTask) {
 
             alignContext.minReadLength = INT_MAX;
             alignContext.maxReadLength = 0;
-            readTask = new ReadShortReadsSubTask(&lastQuery, seqReader, settings, alignContext, readMemSize * 1000 * 1000);
+            readTask = new ReadShortReadsSubTask(seqReader, settings, alignContext, readMemSize * 1000 * 1000);
             readTask->setSubtaskProgressWeight(0.0f);
             subTasks.append(readTask);
             findTask = new GenomeAlignerFindTask(index, &alignContext, pWriteTask);

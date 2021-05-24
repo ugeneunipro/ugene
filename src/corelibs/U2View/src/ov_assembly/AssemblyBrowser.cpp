@@ -23,7 +23,6 @@
 
 #include <QApplication>
 #include <QDesktopWidget>
-#include <QDialogButtonBox>
 #include <QDropEvent>
 #include <QEvent>
 #include <QMenu>
@@ -38,7 +37,6 @@
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/FormatUtils.h>
 #include <U2Core/GObjectSelection.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/L10n.h>
@@ -50,11 +48,9 @@
 #include <U2Core/U2AssemblyDbi.h>
 #include <U2Core/U2AssemblyUtils.h>
 #include <U2Core/U2CrossDatabaseReferenceDbi.h>
-#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2SafePoints.h>
-#include <U2Core/U2SequenceDbi.h>
 #include <U2Core/U2Type.h>
 #include <U2Core/VariantTrackObject.h>
 
@@ -333,18 +329,22 @@ void AssemblyBrowser::sl_onPosChangeRequest(int pos) {
     setXOffsetInAssembly(normalizeXoffset(pos - 1));
     ui->getReadsArea()->setFocus();
 }
-void AssemblyBrowser::buildStaticMenu(QMenu *staticMenu) {
+void AssemblyBrowser::buildMenu(QMenu *menu, const QString &type) {
+    if (type != GObjectViewMenuType::STATIC) {
+        GObjectView::buildMenu(menu, type);
+        return;
+    }
     U2OpStatusImpl os;
     if (model->hasReads(os)) {
-        staticMenu->addAction(zoomInAction);
-        staticMenu->addAction(zoomOutAction);
-        staticMenu->addAction(saveScreenShotAction);
-        staticMenu->addAction(exportToSamAction);
-        staticMenu->addAction(extractAssemblyRegionAction);
-        staticMenu->addAction(setReferenceAction);
+        menu->addAction(zoomInAction);
+        menu->addAction(zoomOutAction);
+        menu->addAction(saveScreenShotAction);
+        menu->addAction(exportToSamAction);
+        menu->addAction(extractAssemblyRegionAction);
+        menu->addAction(setReferenceAction);
     }
-    GObjectView::buildStaticMenu(staticMenu);
-    GUIUtils::disableEmptySubmenus(staticMenu);
+    GObjectView::buildMenu(menu, type);
+    GUIUtils::disableEmptySubmenus(menu);
 }
 
 void AssemblyBrowser::setGlobalCoverageInfo(CoverageInfo newInfo) {
@@ -710,17 +710,17 @@ void AssemblyBrowser::sl_exportCoverage() {
     if (QDialog::Accepted == dialogResult) {
         Task *exportTask = NULL;
         switch (d->getFormat()) {
-        case ExportCoverageSettings::Histogram:
-            exportTask = new ExportCoverageHistogramTask(getModel()->getDbiConnection().dbi->getDbiRef(), assembly.id, d->getSettings());
-            break;
-        case ExportCoverageSettings::PerBase:
-            exportTask = new ExportCoveragePerBaseTask(getModel()->getDbiConnection().dbi->getDbiRef(), assembly.id, d->getSettings());
-            break;
-        case ExportCoverageSettings::Bedgraph:
-            exportTask = new ExportCoverageBedgraphTask(getModel()->getDbiConnection().dbi->getDbiRef(), assembly.id, d->getSettings());
-            break;
-        default:
-            FAIL("Unexpected format", );
+            case ExportCoverageSettings::Histogram:
+                exportTask = new ExportCoverageHistogramTask(getModel()->getDbiConnection().dbi->getDbiRef(), assembly.id, d->getSettings());
+                break;
+            case ExportCoverageSettings::PerBase:
+                exportTask = new ExportCoveragePerBaseTask(getModel()->getDbiConnection().dbi->getDbiRef(), assembly.id, d->getSettings());
+                break;
+            case ExportCoverageSettings::Bedgraph:
+                exportTask = new ExportCoverageBedgraphTask(getModel()->getDbiConnection().dbi->getDbiRef(), assembly.id, d->getSettings());
+                break;
+            default:
+                FAIL("Unexpected format", );
         }
         AppContext::getTaskScheduler()->registerTopLevelTask(exportTask);
     }
@@ -999,15 +999,13 @@ QString AssemblyBrowser::chooseReferenceUrl() const {
 }
 
 void AssemblyBrowser::showReferenceLoadingError(const QList<GObject *> &sequenceObjects, const QString &url) const {
-    const NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
     QString message;
-
     if (sequenceObjects.isEmpty()) {
         message = tr("An error occurred while setting reference to \"%1\" assembly. The selected file \"%2\" does not contain sequences.").arg(gobject->getGObjectName()).arg(url);
     } else {
         message = tr("An error occurred while setting reference to \"%1\" assembly. There are more than one sequence in file \"%2\". Please select the required sequence object in the Project View and click \"Set reference\" again.").arg(gobject->getGObjectName()).arg(url);
     }
-    notificationStack->addNotification(message, Error_Not);
+    NotificationStack::addNotification(message, Error_Not);
 }
 
 void AssemblyBrowser::loadReferenceFromFile() {

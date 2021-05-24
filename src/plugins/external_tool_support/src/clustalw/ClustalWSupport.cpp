@@ -128,8 +128,9 @@ void ClustalWSupportContext::initViewContext(GObjectView *view) {
     bool objLocked = msaEditor->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaEditor->isAlignmentEmpty();
 
-    AlignMsaAction *alignAction = new AlignMsaAction(this, ClustalWSupport::ET_CLUSTAL_ID, view, tr("Align with ClustalW..."), 2000);
+    auto alignAction = new AlignMsaAction(this, ClustalWSupport::ET_CLUSTAL_ID, view, tr("Align with ClustalW..."), 2000);
     alignAction->setObjectName("Align with ClustalW");
+    alignAction->setMenuTypes({MsaEditorMenuType::ALIGN});
 
     addViewAction(alignAction);
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
@@ -139,7 +140,7 @@ void ClustalWSupportContext::initViewContext(GObjectView *view) {
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_ClustalW()));
 }
 
-void ClustalWSupportContext::buildMenu(GObjectView *view, QMenu *m) {
+void ClustalWSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
     QList<GObjectViewAction *> actions = getViewActions(view);
     QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
     SAFE_POINT(alignMenu != NULL, "alignMenu", );

@@ -84,8 +84,7 @@ MSAEditorSequenceArea::MSAEditorSequenceArea(MaEditorWgt *_ui, GScrollBar *hb, G
 
     initRenderer();
 
-    connect(editor, SIGNAL(si_buildPopupMenu(GObjectView *, QMenu *)), SLOT(sl_buildContextMenu(GObjectView *, QMenu *)));
-    connect(editor, SIGNAL(si_buildStaticMenu(GObjectView *, QMenu *)), SLOT(sl_buildStaticMenu(GObjectView *, QMenu *)));
+    connect(editor, SIGNAL(si_buildMenu(GObjectView *, QMenu *, const QString &)), SLOT(sl_buildMenu(GObjectView *, QMenu *, const QString &)));
     connect(editor, SIGNAL(si_buildStaticToolbar(GObjectView *, QToolBar *)), SLOT(sl_buildStaticToolbar(GObjectView *, QToolBar *)));
 
     selectionColor = Qt::black;
@@ -278,13 +277,15 @@ void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
     t->addSeparator();
 }
 
-void MSAEditorSequenceArea::sl_buildStaticMenu(GObjectView *, QMenu *m) {
-    buildMenu(m);
-}
-
-void MSAEditorSequenceArea::sl_buildContextMenu(GObjectView *, QMenu *m) {
-    buildMenu(m);
-
+void MSAEditorSequenceArea::sl_buildMenu(GObjectView *, QMenu *m, const QString &menuType) {
+    bool isContextMenu = menuType == MsaEditorMenuType::CONTEXT;
+    bool isMainMenu = menuType == MsaEditorMenuType::STATIC;
+    if (isContextMenu || isMainMenu) {
+        buildMenu(m);
+    }
+    if (!isContextMenu) {
+        return;
+    }
     QMenu *editMenu = GUIUtils::findSubMenu(m, MSAE_MENU_EDIT);
     SAFE_POINT(editMenu != nullptr, "editMenu is null", );
 
@@ -349,9 +350,7 @@ void MSAEditorSequenceArea::sl_alphabetChanged(const MaModificationInfo &mi, con
     if (message.isEmpty()) {
         return;
     }
-    const NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
-    CHECK(notificationStack != nullptr, );
-    notificationStack->addNotification(message, Info_Not);
+    NotificationStack::addNotification(message, Info_Not);
 }
 
 void MSAEditorSequenceArea::sl_updateActions() {
@@ -627,9 +626,7 @@ void MSAEditorSequenceArea::sl_addSequencesToAlignmentFinished(Task *task) {
     CHECK(addSeqTask != nullptr, );
     const MaModificationInfo &mi = addSeqTask->getMaModificationInfo();
     if (!mi.rowListChanged) {
-        const NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
-        CHECK(notificationStack != nullptr, );
-        notificationStack->addNotification(tr("No new rows were inserted: selection contains no valid sequences."), Warning_Not);
+        NotificationStack::addNotification(tr("No new rows were inserted: selection contains no valid sequences."), Warning_Not);
     }
 }
 

@@ -156,26 +156,27 @@ MSAEditorSequenceArea *GTUtilsMsaEditor::getSequenceArea(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getSequenceNameRect"
+#define GT_METHOD_NAME "getSequenceNameRectByName"
 QRect GTUtilsMsaEditor::getSequenceNameRect(GUITestOpStatus &os, const QString &sequenceName) {
     MaEditorNameList *nameList = getNameListArea(os);
     GT_CHECK_RESULT(nameList != nullptr, "MSAEditorNameList not found", QRect());
 
-    QStringList names = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
-    int rowNumber = names.indexOf(sequenceName);
-    GT_CHECK_RESULT(rowNumber >= 0, QString("Sequence '%1' not found").arg(sequenceName), QRect());
-    return getSequenceNameRect(os, rowNumber);
+    QStringList rowNames = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    int viewRowIndex = rowNames.indexOf(sequenceName);
+    GT_CHECK_RESULT(viewRowIndex >= 0, QString("Sequence '%1' not found").arg(sequenceName), QRect());
+    return getSequenceNameRect(os, viewRowIndex);
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getSequenceNameRect"
-QRect GTUtilsMsaEditor::getSequenceNameRect(GUITestOpStatus &os, int rowNumber) {
-    GT_CHECK_RESULT(rowNumber >= 0, QString("Sequence '%1' not found").arg(rowNumber), QRect());
+#define GT_METHOD_NAME "getSequenceNameRectByIndex"
+QRect GTUtilsMsaEditor::getSequenceNameRect(GUITestOpStatus &os, int viewRowIndex) {
+    GT_CHECK_RESULT(viewRowIndex >= 0, QString("Sequence '%1' not found").arg(viewRowIndex), QRect());
 
-    U2Region rowViewRange = getEditorUi(os)->getRowHeightController()->getScreenYRegionByViewRowIndex(rowNumber);
-
+    U2Region nameListYRegion = getEditorUi(os)->getRowHeightController()->getScreenYRegionByViewRowIndex(viewRowIndex);
     MaEditorNameList *nameList = getNameListArea(os);
-    return QRect(nameList->mapToGlobal(QPoint(0, rowViewRange.startPos)), nameList->mapToGlobal(QPoint(nameList->width(), rowViewRange.endPos())));
+    QPoint topLeftPoint = nameList->mapToGlobal(QPoint(0, (int)nameListYRegion.startPos));
+    QPoint bottomRightPoint = nameList->mapToGlobal(QPoint(nameList->width(), (int)nameListYRegion.endPos()));
+    return QRect(topLeftPoint, bottomRightPoint);
 }
 #undef GT_METHOD_NAME
 

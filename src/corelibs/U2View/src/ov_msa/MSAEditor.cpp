@@ -60,10 +60,10 @@
 
 namespace U2 {
 
+const QString MsaEditorMenuType::ALIGN("msa-editor-menu-align");
+
 MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *obj)
     : MaEditor(MsaEditorFactory::ID, viewName, obj),
-      alignSequencesToAlignmentAction(nullptr),
-      realignSomeSequenceAction(nullptr),
       treeManager(this) {
     gotoAction = nullptr;
     searchInSequencesAction = nullptr;
@@ -178,7 +178,7 @@ bool MSAEditor::onCloseEvent() {
     return true;
 }
 
-const MultipleSequenceAlignmentRow MSAEditor::getRowByViewRowIndex(int viewRowIndex) const {
+MultipleSequenceAlignmentRow MSAEditor::getRowByViewRowIndex(int viewRowIndex) const {
     int maRowIndex = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
     return getMaObject()->getMsaRow(maRowIndex);
 }
@@ -210,7 +210,11 @@ void MSAEditor::buildStaticToolbar(QToolBar *tb) {
     GObjectView::buildStaticToolbar(tb);
 }
 
-void MSAEditor::buildStaticMenu(QMenu *m) {
+void MSAEditor::buildMenu(QMenu *m, const QString &type) {
+    if (type != MsaEditorMenuType::STATIC) {
+        GObjectView::buildMenu(m, type);
+        return;
+    }
     addAppearanceMenu(m);
 
     addNavigationMenu(m);
@@ -229,7 +233,7 @@ void MSAEditor::buildStaticMenu(QMenu *m) {
 
     addAdvancedMenu(m);
 
-    GObjectView::buildStaticMenu(m);
+    GObjectView::buildMenu(m, type);
 
     GUIUtils::disableEmptySubmenus(m);
 }
@@ -502,7 +506,7 @@ void MSAEditor::sl_onContextMenuRequested(const QPoint & /*pos*/) {
     }
     m.addSeparator();
 
-    emit si_buildPopupMenu(this, &m);
+    emit si_buildMenu(this, &m, MsaEditorMenuType::CONTEXT);
 
     GUIUtils::disableEmptySubmenus(&m);
 
@@ -587,28 +591,9 @@ void MSAEditor::initDragAndDropSupport() {
 }
 
 void MSAEditor::sl_align() {
-    QMenu m, *mm;
-
-    addLoadMenu(&m);
-    addCopyPasteMenu(&m);
-    addEditMenu(&m);
-    addSortMenu(&m);
-    m.addSeparator();
-
-    addAlignMenu(&m);
-    addTreeMenu(&m);
-    addStatisticsMenu(&m);
-    addExportMenu(&m);
-    addAdvancedMenu(&m);
-
-    emit si_buildPopupMenu(this, &m);
-
-    GUIUtils::disableEmptySubmenus(&m);
-
-    mm = GUIUtils::findSubMenu(&m, MSAE_MENU_ALIGN);
-    SAFE_POINT(mm != nullptr, "mm", );
-
-    mm->exec(QCursor::pos());
+    QMenu menu;
+    emit si_buildMenu(this, &menu, MsaEditorMenuType::ALIGN);
+    menu.exec(QCursor::pos());
 }
 
 void MSAEditor::sl_addToAlignment() {
@@ -673,7 +658,7 @@ void MSAEditor::alignSequencesFromObjectsToAlignment(const QList<GObject *> &obj
     extractor.extractSequencesFromObjects(objects);
 
     if (!extractor.getSequenceRefs().isEmpty()) {
-        AlignSequencesToAlignmentTask *task = new AlignSequencesToAlignmentTask(getMaObject(), extractor);
+        auto task = new AlignSequencesToAlignmentTask(getMaObject(), extractor);
         TaskWatchdog::trackResourceExistence(maObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     }
@@ -693,7 +678,7 @@ void MSAEditor::alignSequencesFromFilesToAlignment() {
 
     if (!urls.isEmpty()) {
         lod.url = urls.first();
-        LoadSequencesAndAlignToAlignmentTask *task = new LoadSequencesAndAlignToAlignmentTask(getMaObject(), urls);
+        auto task = new LoadSequencesAndAlignToAlignmentTask(getMaObject(), urls);
         TaskWatchdog::trackResourceExistence(maObject, task, tr("A problem occurred during adding sequences. The multiple alignment is no more available."));
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     }

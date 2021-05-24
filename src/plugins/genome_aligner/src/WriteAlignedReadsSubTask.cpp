@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-WriteAlignedReadsSubTask::WriteAlignedReadsSubTask(QReadWriteLock &_listM, QMutex &_writeLock, GenomeAlignerWriter *_seqWriter, QList<DataBunch *> &_data, quint64 &r)
+WriteAlignedReadsSubTask::WriteAlignedReadsSubTask(QReadWriteLock &_listM, QMutex &_writeLock, GenomeAlignerWriter *_seqWriter, QList<DataBunch *> &_data, qint64 &r)
     : Task("WriteAlignedReadsSubTask", TaskFlag_None), seqWriter(_seqWriter), data(_data), readsAligned(r), listM(_listM), writeLock(_writeLock) {
 }
 

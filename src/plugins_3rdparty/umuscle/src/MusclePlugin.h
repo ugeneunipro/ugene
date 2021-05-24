@@ -22,11 +22,12 @@
 #ifndef _U2_UMUSCLE_PLUGIN_H_
 #define _U2_UMUSCLE_PLUGIN_H_
 
-#include <U2Core/PluginModel.h>
-#include <U2Core/AppContext.h>
-#include <U2Gui/ObjectViewModel.h>
-
 #include <QMenu>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/PluginModel.h>
+
+#include <U2Gui/ObjectViewModel.h>
 
 namespace U2 {
 
@@ -44,15 +45,13 @@ public slots:
     void sl_runWithExtFileSpecify();
 
 private:
-    MuscleMSAEditorContext* ctx;
-    
+    MuscleMSAEditorContext *ctx;
 };
 
-
-class MuscleMSAEditorContext: public GObjectViewWindowContext {
+class MuscleMSAEditorContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    MuscleMSAEditorContext(QObject* p);
+    MuscleMSAEditorContext(QObject *p);
 
 protected slots:
     void sl_align();
@@ -60,22 +59,23 @@ protected slots:
     void sl_alignProfileToProfile();
 
 protected:
-    virtual void initViewContext(GObjectView* view);
-    virtual void buildMenu(GObjectView* v, QMenu* m);
+    void initViewContext(GObjectView *view) override;
+    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
 };
 
 class MuscleAction : public GObjectViewAction {
     Q_OBJECT
 public:
-    MuscleAction(QObject* p, GObjectView* v, const QString& text, int order) 
-		: GObjectViewAction(p, v, text, order) {}
+    MuscleAction(QObject *p, GObjectView *v, const QString &text, int order)
+        : GObjectViewAction(p, v, text, order) {
+    }
 
-    MSAEditor*  getMSAEditor() const;
+    MSAEditor *getMSAEditor() const;
 
 private slots:
     void sl_updateState();
 };
 
-} //namespace
+}    // namespace U2
 
 #endif
