@@ -40,6 +40,7 @@
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsMcaEditor.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsOptionPanelMSA.h"
@@ -49,10 +50,12 @@
 #include "GTUtilsTaskTreeView.h"
 #include "api/GTMSAEditorStatusWidget.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
@@ -353,6 +356,50 @@ GUI_TEST_CLASS_DEFINITION(test_7127) {
         QString expectedRowNumber = QString::number(i + 1);
         CHECK_SET_ERR(rowNumber == expectedRowNumber, "Unexpected row number! Expected:  " + expectedRowNumber + ", got: " + rowNumber);
     }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7151) {
+    // Open data/samples/ACE/BL060C3.ace as MSA.
+    // Close project, don't save. These steps are required for BL060C3.ace to appear in the Recent Files.
+    // Click Tools->Sanger data analysis->Map reads to reference...
+    // Set _common_data/sanger/reference.gb as reference.
+    // Add sanger_01.ab1-sanger_20.ab1 as reads.
+    // Click Map.
+    // While running Sanger, click BL060C3.ace from Recent Files on Start Page.
+    // Wait for the Sanger Reads Editor to appears.
+    // In Select Document Format dialog click OK.
+    //     Expected: no crash.
+
+    class WaitInSelectFormatDialog : public CustomScenario {
+    public:
+        void run(GUITestOpStatus &os) override {
+            GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
+    GTFileDialog::openFileWithDialog(os, dataDir + "samples/ACE", "BL060C3.ace");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsProject::closeProject(os);
+
+    const QList<QLabel *> labels = GTWidget::findLabelByText(os, "- BL060C3.ace");
+    CHECK_SET_ERR(labels.size() > 0, "Expected recent files BL060C3.ace on Start Page")
+
+    AlignToReferenceBlastDialogFiller::Settings settings;
+    settings.referenceUrl = testDir + "_common_data/sanger/reference.gb";
+    for (int i = 1; i <= 20; i++) {
+        settings.readUrls << QString(testDir + "_common_data/sanger/sanger_%1.ab1").arg(i, 2, 10, QChar('0'));
+    }
+    settings.outAlignment = QFileInfo(sandBoxDir + "test_7151").absoluteFilePath();
+
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
+
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, new WaitInSelectFormatDialog));
+    GTWidget::click(os, labels.first());
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7152) {
