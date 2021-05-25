@@ -309,7 +309,7 @@ int InSilicoPcrWorker::createMetadata(const InSilicoPcrTaskSettings &settings, c
 Task *InSilicoPcrWorker::onInputEnded() {
     CHECK(!reported, NULL);
     reported = true;
-    return new InSilicoPcrReportTask(table, primers, getValue<QString>(REPORT_ATTR_ID));
+    return new InSilicoPcrReportTask(table, primers, getValue<QString>(REPORT_ATTR_ID), getValue<QString>(PRIMERS_ATTR_ID));
 }
 
 Task *InSilicoPcrWorker::createTask(const Message &message, U2OpStatus &os) {
@@ -364,18 +364,19 @@ Task *InSilicoPcrWorker::createTask(const Message &message, U2OpStatus &os) {
 /************************************************************************/
 /* InSilicoPcrReportTask */
 /************************************************************************/
-InSilicoPcrReportTask::InSilicoPcrReportTask(const QList<TableRow> &table, const QList<QPair<Primer, Primer>> &primers, const QString &reportUrl)
-    : Task(tr("Generate In Silico PCR report"), TaskFlag_None), table(table), primers(primers), reportUrl(reportUrl) {
+InSilicoPcrReportTask::InSilicoPcrReportTask(const QList<TableRow> &table, const QList<QPair<Primer, Primer>> &primers, const QString &reportUrl, const QString &_primersUrl)
+    : Task(tr("Generate In Silico PCR report"), TaskFlag_None), table(table), primers(primers), reportUrl(reportUrl), primersUrl(_primersUrl) {
 }
 
 void InSilicoPcrReportTask::run() {
     QScopedPointer<IOAdapter> io(IOAdapterUtils::open(reportUrl, stateInfo, IOAdapterMode_Write));
     CHECK_OP(stateInfo, );
-
-    io->writeBlock(createReport());
+    const QString report = createReport();
+    CHECK_OP(stateInfo, );
+    io->writeBlock(report.toUtf8());
 }
 
-QByteArray InSilicoPcrReportTask::createReport() const {
+QString InSilicoPcrReportTask::createReport() {
     QString html = readHtml();
     QStringList tokens = html.split("<body>");
     SAFE_POINT(2 == tokens.size(), "Wrong HTML base", "");
@@ -410,11 +411,15 @@ QByteArray InSilicoPcrReportTask::productsTable() const {
     return chapterName(tr("Products count table")) + chapterContent(result);
 }
 
-QByteArray InSilicoPcrReportTask::primerDetails() const {
+QString InSilicoPcrReportTask::primerDetails() {
     QByteArray result;
     for (int i = 0; i < primers.size(); i++) {
         QPair<Primer, Primer> pair = primers[i];
         PrimersPairStatistics calc(pair.first.sequence.toLocal8Bit(), pair.second.sequence.toLocal8Bit());
+        if (!calc.getInitializationError().isEmpty()) {
+            setError(tr("An error '%1' has occurred during processing file with primers '%2'").arg(calc.getInitializationError()).arg(primersUrl));
+            return "";
+        }
         result += chapter(
             chapterName("<span class=\"span-closed\">&#9656;</span> " + pair.first.name + " / " + pair.second.name),
             chapterContent(calc.generateReport().toLocal8Bit()));
