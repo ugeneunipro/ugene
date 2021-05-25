@@ -22,8 +22,11 @@
 #include <GTGlobals.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <drivers/GTKeyboardDriver.h>
+#include <primitives/GTAction.h>
+#include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTMenu.h>
+#include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
@@ -310,8 +313,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
 
     //3. Click "Align sequence(s) to this alignment" button on the toolbar.
     //4. Select "data/samples/FASTQ/eas.fastq".
-    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
     GTUtilsMsaEditor::checkAlignSequencesToAlignmentMenu(os, "MAFFT", PopupChecker::IsDisabled);
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 

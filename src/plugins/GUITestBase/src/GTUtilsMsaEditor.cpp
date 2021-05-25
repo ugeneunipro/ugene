@@ -477,7 +477,7 @@ void GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(HI::GUITestOpStatus
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkAlignSequencesToAlignmentMenu"
-void GTUtilsMsaEditor::checkAlignSequencesToAlignmentMenu(HI::GUITestOpStatus &os, const QString &partOfMenuItemText, const PopupChecker::CheckOption& checkOption) {
+void GTUtilsMsaEditor::checkAlignSequencesToAlignmentMenu(HI::GUITestOpStatus &os, const QString &partOfMenuItemText, const PopupChecker::CheckOption &checkOption) {
     GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {partOfMenuItemText}, checkOption, GTGlobals::UseMouse, Qt::MatchContains));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
