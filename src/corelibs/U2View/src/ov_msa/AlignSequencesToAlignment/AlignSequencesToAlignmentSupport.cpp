@@ -52,7 +52,7 @@ void AlignSequencesToAlignmentSupport::initViewContext(GObjectView *view) {
 
     AlignmentAlgorithmsRegistry *alignmentAlgorithmsRegistry = AppContext::getAlignmentAlgorithmsRegistry();
     QStringList addToAlignmentAlgorithmIds = alignmentAlgorithmsRegistry->getAvailableAlgorithmIds(AddToAlignment);
-    for (const QString &algorithmId : addToAlignmentAlgorithmIds) {
+    for (const QString &algorithmId : qAsConst(addToAlignmentAlgorithmIds)) {
         AlignmentAlgorithm *algorithm = alignmentAlgorithmsRegistry->getAlgorithm(algorithmId);
         auto alignAction = new AlignSequencesToAlignmentAction(this, msaEditor, algorithmId, algorithm->getActionName(), 100);
         alignAction->setIcon(QIcon(":/core/images/add_to_alignment.png"));    //TODO: add a dedicated icon per algorithm.
