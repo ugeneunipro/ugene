@@ -36,19 +36,12 @@ public:
 
 protected:
     void initViewContext(GObjectView *view) override;
-
-protected slots:
-    /**
-     * Runs alignment selected alignment algorithm.
-     * Finds the selected algorithm using the sender action data.
-     */
-    void sl_alignSequencesToAlignment();
 };
 
 class AlignSequencesToAlignmentAction : public GObjectViewAction {
     Q_OBJECT
 public:
-    AlignSequencesToAlignmentAction(QObject *parent, MSAEditor *msaEditor, const QString &text, int order);
+    AlignSequencesToAlignmentAction(QObject *parent, MSAEditor *msaEditor, const QString &algorithmId, const QString &text, int order);
 
     /** Returns MSA editor this action is created for. */
     MSAEditor *getEditor() const;
@@ -56,8 +49,16 @@ public:
 public slots:
     void sl_updateState();
 
+    /**
+     * Runs alignment selected alignment algorithm.
+     * Finds the selected algorithm using the sender action data.
+     */
+    void sl_activate();
+
 private:
     MSAEditor *msaEditor = nullptr;
+
+    QString algorithmId;
 };
 
 }    // namespace U2

@@ -22,13 +22,9 @@
 #include <GTGlobals.h>
 #include <base_dialogs/GTFileDialog.h>
 #include <drivers/GTKeyboardDriver.h>
-#include <primitives/GTAction.h>
-#include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTMenu.h>
-#include <primitives/GTToolbar.h>
 #include <primitives/GTTreeWidget.h>
-#include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
 #include <utils/GTKeyboardUtils.h>
@@ -315,7 +311,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     //3. Click "Align sequence(s) to this alignment" button on the toolbar.
     //4. Select "data/samples/FASTQ/eas.fastq".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTQ/eas.fastq"));
-    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
+    GTUtilsMsaEditor::checkAlignSequencesToAlignmentMenu(os, "MAFFT", PopupChecker::IsDisabled);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected state: three sequences are added to the msa.
@@ -485,8 +482,9 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //    3. Click "Align sequence(s) to this alignment" button on the toolbar.
+    GTUtilsMsaEditor::checkAlignSequencesToAlignmentMenu(os, "MAFFT", PopupChecker::NotExists);
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/add_and_align/add_and_align_3.fa"));
-    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
 
     //    4. Select "_common_data/scenarios/add_and_align/add_and_align_3.fa" in the dialog.
     //    Expected state: an additional row appeared in the alignment, the forth column doesn't consist only of gaps, there are no columns of gaps even in the end of the alignment.

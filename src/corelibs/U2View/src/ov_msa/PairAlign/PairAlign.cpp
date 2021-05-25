@@ -376,7 +376,7 @@ void PairAlign::sl_alignButtonPressed() {
     U2EntityRef secondSequenceRef = U2EntityRef(msaRef.dbiRef, secondSeqId);
 
     PairwiseAlignmentTaskSettings settings;
-    settings.algorithmName = algorithmListComboBox->currentText();
+    settings.algorithmId = algorithmListComboBox->currentText();
 
     if (!saveController->getSaveFileName().isEmpty()) {
         settings.resultFileName = GUrl(saveController->getSaveFileName());
@@ -408,8 +408,8 @@ void PairAlign::sl_alignButtonPressed() {
 
     AlignmentAlgorithmsRegistry *par = AppContext::getAlignmentAlgorithmsRegistry();
     SAFE_POINT(par != NULL, "AlignmentAlgorithmsRegistry is NULL.", );
-    AbstractAlignmentTaskFactory *factory = par->getAlgorithm(settings.algorithmName)->getFactory(settings.realizationName);
-    SAFE_POINT(factory != NULL, QString("Task factory for algorithm %1, realization %2 not found.").arg(settings.algorithmName, settings.realizationName), );
+    AbstractAlignmentTaskFactory *factory = par->getAlgorithm(settings.algorithmId)->getFactory(settings.realizationName);
+    SAFE_POINT(factory != NULL, QString("Task factory for algorithm %1, realization %2 not found.").arg(settings.algorithmId, settings.realizationName), );
 
     PairwiseAlignmentTask *task = qobject_cast<PairwiseAlignmentTask *>(factory->getTaskInstance(&settings));
     SAFE_POINT(task != NULL, "Task is null!", );

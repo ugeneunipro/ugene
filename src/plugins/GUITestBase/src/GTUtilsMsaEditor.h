@@ -23,6 +23,7 @@
 #define _U2_GT_UTILS_MSA_EDITOR_H_
 
 #include <GTGlobals.h>
+#include <primitives/PopupChooser.h>
 
 #include <QColor>
 #include <QRect>
@@ -114,6 +115,9 @@ public:
 
     /** Clicks "Align sequence(s) to alignment" button and selects a menu item with the given text. */
     static void activateAlignSequencesToAlignmentMenu(HI::GUITestOpStatus &os, const QString &partOfMenuItemText);
+
+    /** Clicks "Align sequence(s) to alignment" button has the given state. */
+    static void checkAlignSequencesToAlignmentMenu(HI::GUITestOpStatus &os, const QString &partOfMenuItemText, const HI::PopupChecker::CheckOption &checkOption);
 };
 
 }    // namespace U2
