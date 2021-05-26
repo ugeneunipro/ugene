@@ -63,7 +63,7 @@ MusclePlugin::MusclePlugin()
         ctx->init();
 
         //Add to tools menu for fast run
-        QAction *muscleAction = new QAction(tr("Align with MUSCLE..."), this);
+        QAction *muscleAction = new QAction(tr("Align with MUSCLE…"), this);
         muscleAction->setIcon(QIcon(":umuscle/images/muscle_16.png"));
         muscleAction->setObjectName(ToolsMenu::MALIGN_MUSCLE);
         connect(muscleAction, SIGNAL(triggered()), SLOT(sl_runWithExtFileSpecify()));

@@ -4859,7 +4859,7 @@ GUI_TEST_CLASS_DEFINITION(test_2784) {
     QAbstractButton *undoButton = GTAction::button(os, "msa_action_undo");
     CHECK_SET_ERR(!undoButton->isEnabled(), "'Undo' button is unexpectedly enabled");
 
-    //2. Choose in the context menu{ Align->Align with MUSCLE... }
+    //2. Choose in the context menu{ Align->Align with MUSCLE… }
     //Expected state : The "Align with MUSCLE" dialog has appeared
     //3. Check the "Translation to amino when aligning" checkbox and press "Align"
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(41, 0), QPoint(43, 17));

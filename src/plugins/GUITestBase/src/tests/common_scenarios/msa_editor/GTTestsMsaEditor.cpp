@@ -3969,6 +3969,7 @@ GUI_TEST_CLASS_DEFINITION(test_0062) {
 GUI_TEST_CLASS_DEFINITION(test_0063) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
+
     class CheckAlignMenuScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
@@ -3990,7 +3991,8 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
     class CheckAlignToSequenceMenuScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QStringList expectedActionObjectNames = {"Add sequences to alignment with MAFFT",
+            QStringList expectedActionObjectNames = {"align-to-alignment-ugene",
+                                                     "align-to-alignment-mafft",
                                                      "Align sequences to profile with MUSCLE",
                                                      "Align profile to profile with MUSCLE"};
             QList<QAction *> menuActions = GTWidget::getActivePopupMenu(os)->actions();

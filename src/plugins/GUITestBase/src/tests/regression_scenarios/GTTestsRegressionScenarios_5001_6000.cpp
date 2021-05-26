@@ -484,8 +484,7 @@ GUI_TEST_CLASS_DEFINITION(test_5082) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Align it with MUSCLE.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Align"
-                                                                              << "Align with MUSCLE..."));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Align", "Align with MUSCLE…"}));
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
@@ -2519,7 +2518,7 @@ GUI_TEST_CLASS_DEFINITION(test_5636) {
     // Click Align sequences to alignment->Align sequence to profile with MUSCLE...
     // Select "\samples\CLUSTALW\COI.aln"
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
-    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "Align sequences to profile with MUSCLE...");
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "Align sequences to alignment with MUSCLE");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: 18 sequences are added to the msa.
@@ -4427,38 +4426,30 @@ GUI_TEST_CLASS_DEFINITION(test_5847) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5849) {
-    //CHECK_SET_ERR(!undoButton->isEnabled(), "'Undo' button is unexpectedly enabled");
-
-    // 1. Open "..\general_common_data\fasta\empty.fa".
-
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "empty.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // 2. Click the "Align sequence(s) to this alignment" button on the toolbar.
+    // Click the "Align sequence(s) to this alignment" button on the toolbar.
     // Expected state: the file selection dialog is opened.
     // Select "..\samples\CLUSTALW\COI.aln" in the dialog.
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
-    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // 3. Select a sequence.
+    // Select a sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(2, 2));
     QAbstractButton *undoButton = GTAction::button(os, "msa_action_undo");
 
-    // 4. Click the "Undo" button.
+    // Click the "Undo" button.
     GTWidget::click(os, undoButton);
     QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
-    CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
 
     // Expected state: the selection has been cleared.
-    QLabel *line = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Line", msaEditorStatusBar));
-    CHECK_SET_ERR(line != NULL, "Line of MSAEditorStatusBar is NULL");
-    QLabel *column = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Column", msaEditorStatusBar));
-    CHECK_SET_ERR(column != NULL, "Column of MSAEditorStatusBar is NULL");
-    QLabel *position = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Position", msaEditorStatusBar));
-    CHECK_SET_ERR(position != NULL, "Position of MSAEditorStatusBar is NULL");
-    QLabel *selection = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Selection", msaEditorStatusBar));
-    CHECK_SET_ERR(selection != NULL, "Selection of MSAEditorStatusBar is NULL");
+    QLabel *line = GTWidget::findExactWidget<QLabel *>(os, "Line", msaEditorStatusBar);
+    QLabel *column = GTWidget::findExactWidget<QLabel *>(os, "Column", msaEditorStatusBar);
+    QLabel *position = GTWidget::findExactWidget<QLabel *>(os, "Position", msaEditorStatusBar);
+    QLabel *selection = GTWidget::findExactWidget<QLabel *>(os, "Selection", msaEditorStatusBar);
 
     CHECK_SET_ERR(line->text() == "Seq - / 0", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col - / 0", "Column is " + column->text());

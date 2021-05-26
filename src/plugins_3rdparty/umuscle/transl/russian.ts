@@ -527,7 +527,7 @@
     <name>U2::MuscleMSAEditorContext</name>
     <message>
         <location filename="../src/MusclePlugin.cpp" line="137"/>
-        <source>Align with MUSCLE...</source>
+        <source>Align with MUSCLE…</source>
         <translation>Выравнивание с помощью MUSCLE...</translation>
     </message>
     <message>
@@ -580,7 +580,7 @@
     </message>
     <message>
         <location filename="../src/MusclePlugin.cpp" line="67"/>
-        <source>Align with MUSCLE...</source>
+        <source>Align with MUSCLE…</source>
         <translation>Выравнивание с помощью MUSCLE...</translation>
     </message>
 </context>

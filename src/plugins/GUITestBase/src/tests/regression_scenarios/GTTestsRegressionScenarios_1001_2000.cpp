@@ -835,7 +835,7 @@ GUI_TEST_CLASS_DEFINITION(test_1044) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. In MSA context menu choose {Align -> Align with MUSCLE...}.
+    //2. In MSA context menu choose {Align -> Align with MUSCLE…}.
     //Expected state: "Align with MUSCLE" dialog appears.
     //3. Set checkbox "Translate to amino when aligning".
     //Expected state: The "Translation table" field becomes enabled.
@@ -5783,7 +5783,7 @@ GUI_TEST_CLASS_DEFINITION(test_1586) {
     //    2. Use context menu {align->align with MUSCLE}
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Align"
-                                                                              << "Align with MUSCLE..."));
+                                                                              << "Align with MUSCLE…"));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -6051,7 +6051,7 @@ GUI_TEST_CLASS_DEFINITION(test_1600_6) {
     GTGlobals::sleep(500);
     //    Expected state: One collapsible item has appeared in MSA
 
-    //    3. Choose in MSA context menu { Align -> Align with MUSCLE... }
+    //    3. Choose in MSA context menu { Align -> Align with MUSCLE… }
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os));
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseMouse));
