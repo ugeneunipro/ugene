@@ -135,7 +135,7 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
     connect(convertRawToDnaAction, SIGNAL(triggered()), SLOT(sl_convertRawToDnaAlphabet()));
 
     convertRawToAminoAction = new QAction(tr("Convert RAW to Amino alphabet"), this);
-    convertRawToAminoAction->setObjectName("convertRawToDnaAction");
+    convertRawToAminoAction->setObjectName("convertRawToAminoAction");
     convertRawToAminoAction->setToolTip(tr("Convert alignment from RAW to Amino alphabet: use X for unknown symbols"));
     connect(convertRawToAminoAction, SIGNAL(triggered()), SLOT(sl_convertRawToAminoAlphabet()));
 

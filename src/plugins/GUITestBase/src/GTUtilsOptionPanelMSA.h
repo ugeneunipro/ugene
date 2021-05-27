@@ -73,9 +73,6 @@ public:
     static bool isTabOpened(HI::GUITestOpStatus &os, Tabs tab);
     static void checkTabIsOpened(HI::GUITestOpStatus &os, Tabs tab);
 
-    /** Returns inner widget of the current tab. */
-    static QWidget *getInnerTabWidget(HI::GUITestOpStatus &os);
-
     static void addReference(HI::GUITestOpStatus &os, QString seqName, AddRefMethod method = Button);
     static void addFirstSeqToPA(HI::GUITestOpStatus &os, QString seqName, AddRefMethod method = Button);
     static void addSecondSeqToPA(HI::GUITestOpStatus &os, QString seqName, AddRefMethod method = Button);

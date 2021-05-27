@@ -454,7 +454,7 @@ GUI_TEST_CLASS_DEFINITION(test_7246) {
     GTUtilsMsaEditor::undo(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
-    CHECK_SET_ERR(GTUtilsOptionPanelMsa::getAlphabetLabelText(os).contains("Raw"), "Alphabet is not RAW/2: " + alphabet);
+    CHECK_SET_ERR(alphabet.contains("Raw"), "Alphabet is not RAW/2: " + alphabet);
 
     // Click convert to DNA button and check the the alphabet is 'DNA'.
     GTWidget::click(os, GTWidget::findButtonByText(os, "DNA", tabWidget));
@@ -468,7 +468,7 @@ GUI_TEST_CLASS_DEFINITION(test_7246) {
     GTWidget::click(os, GTWidget::findButtonByText(os, "RNA", tabWidget));
     GTUtilsTaskTreeView::waitTaskFinished(os);
     alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
-    CHECK_SET_ERR(GTUtilsOptionPanelMsa::getAlphabetLabelText(os).contains("RNA"), "Alphabet is not RNA: " + alphabet);
+    CHECK_SET_ERR(alphabet.contains("RNA"), "Alphabet is not RNA: " + alphabet);
     sequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
     CHECK_SET_ERR(sequence == "UUUNNNNNNNNNNUNNNNNANNNGNNNANNNNANNNNNNNGUNNNUNGNNANNUGGANGN", "Not a RNA sequence: " + sequence);
 }
