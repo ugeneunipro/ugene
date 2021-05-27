@@ -2727,14 +2727,13 @@ GUI_TEST_CLASS_DEFINITION(test_4325) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4334) {
-    //1. Open "_common_data/fasta/empty.fa" as msa.
+    // Open "_common_data/fasta/empty.fa" as msa.
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/empty.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
     GTLogTracer lt;
-    //    2. Add human_t1.fa sequence through the context menu {Add->Sequence from file}
+    // Add human_t1.fa sequence through the context menu {Add->Sequence from file}
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/FASTA", "human_T1.fa"));
-    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -2990,7 +2989,7 @@ GUI_TEST_CLASS_DEFINITION(test_4386_1) {
 
     //    3. Align with Muscle (or other algorithm).
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Align"
-                                                                              << "Align with MUSCLE..."));
+                                                                              << "Align with MUSCLE…"));
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
@@ -3144,7 +3143,7 @@ GUI_TEST_CLASS_DEFINITION(test_4440) {
     GTUtilsProjectTreeView::checkItem(os, GTUtilsProjectTreeView::getTreeView(os), "COI", idx);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Align"
-                                                                              << "Align with MUSCLE..."));
+                                                                              << "Align with MUSCLE…"));
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3525,7 +3524,7 @@ GUI_TEST_CLASS_DEFINITION(test_4552) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Align"
-                                                                              << "Align with MUSCLE..."));
+                                                                              << "Align with MUSCLE…"));
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
@@ -5269,34 +5268,29 @@ GUI_TEST_CLASS_DEFINITION(test_4804_3) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4804_4) {
-    //    1. Open _common_data/scenarios/_regression/4804/standard_dna.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4804", "standard_dna.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    2. Check what MAFFT tool is set up
-    //    3. Use 'Align sequence(s) to this alignment' toolbar button to align Extended rna sequence to alignment
-    //Expected state: corresponding notification message has appeared
-    GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_rna.fa");
-    GTUtilsDialog::waitForDialog(os, ob);
+
+    // Use 'Align sequence(s) to this alignment' toolbar button to align Extended rna sequence to alignment
+    // Expected state: corresponding notification message has appeared
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_rna.fa"));
 
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Raw\"");
     GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4804_5) {
-    //    1. Check what MAFFT tool is not set up
-    //    2. Open _common_data/scenarios/_regression/4804/standard_rna.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/4804", "standard_rna.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    3. Use 'Align sequence(s) to this alignment' toolbar button to align Extended rna sequence to alignment
-    //Expected state: corresponding notification message has appeared
-    GTUtilsExternalTools::removeTool(os, "MAFFT");
-    GTFileDialogUtils *ob = new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_dna.fa");
-    GTUtilsDialog::waitForDialog(os, ob);
+
+    // Use 'Align sequence(s) to this alignment' toolbar button to align Extended rna sequence to alignment
+    // Expected state: corresponding notification message has appeared
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_dna.fa"));
 
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard RNA\" to \"Raw\". Use \"Undo\", if you'd like to restore the original alignment.");
-    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4804_6) {
@@ -5380,7 +5374,7 @@ GUI_TEST_CLASS_DEFINITION(test_4833_5) {
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_amino.fa"));
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard amino acid\" to \"Extended amino acid\"");
-    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "Align sequences to profile with MUSCLE");
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "Align sequences to alignment with MUSCLE");
     GTUtilsDialog::waitAllFinished(os);
 }
 
@@ -5414,8 +5408,8 @@ GUI_TEST_CLASS_DEFINITION(test_4833_8) {
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/4804", "ext_amino.fa"));
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard amino acid\" to \"Extended amino acid\"");
-    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "Align profile to profile with MUSCLE");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "Align alignment to alignment with MUSCLE");
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4839_1) {

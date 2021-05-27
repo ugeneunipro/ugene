@@ -3877,20 +3877,16 @@ GUI_TEST_CLASS_DEFINITION(test_6628_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6628_2) {
-    //1.  Open "COI.aln" file.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    //2. Remove the "MAFFT" external toos
-    GTUtilsExternalTools::removeTool(os, "MAFFT");
-
-    //3. Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
-    //4. Select "_common_data\empty_sequences\multifasta_with_gap_seq.fa".
+    // Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
+    // Select "_common_data\empty_sequences\multifasta_with_gap_seq.fa".
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/multifasta_with_gap_seq.fa"));
     GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"seq2\", \"seq4\".");
-    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected result : sequences made of gaps only are not aligned, i.e. "seq1", "seq3"and "seq5" are aligned.
@@ -3907,23 +3903,20 @@ GUI_TEST_CLASS_DEFINITION(test_6628_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6628_3) {
-    //1.  Open "COI.aln" file.
+    // Open "COI.aln" file.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    //2. Remove the "MAFFT" external toos
-    GTUtilsExternalTools::removeTool(os, "MAFFT");
-
-    //3. Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
-    //4. Select "_common_data\empty_sequences\gap_only_seq.fa".
+    // Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
+    // Select "_common_data\empty_sequences\gap_only_seq.fa".
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/gap_only_seq.fa"));
     GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".");
-    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected result: the alignment is not modified.
+    // Expected result: the alignment is not modified.
     int sequenceNumberAfterAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     CHECK_SET_ERR(sequenceNumberAfterAlignment == sequenceNumberBeforeAlignment,
                   QString("Unexpected number of sequences, expected: %1, current: %2").arg(sequenceNumberBeforeAlignment).arg(sequenceNumberAfterAlignment));
@@ -5628,7 +5621,7 @@ GUI_TEST_CLASS_DEFINITION(test_6751) {
     GTWidget::click(os, GTWidget::findWidget(os, "consensusLabel"));
     GTWidget::click(os, GTWidget::findWidget(os, "consensusLabel"));
 
-    // 3. Select "Align" -> "Align with MUSCLE..." and click on the "Align" button.
+    // 3. Select "Align" -> "Align with MUSCLE…" and click on the "Align" button.
 
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default, true, true));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseMouse));
@@ -5658,7 +5651,7 @@ GUI_TEST_CLASS_DEFINITION(test_6754) {
 
     // 1. open document samples/CLUSTALW/COI.aln
     GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
-    // 2. Click "Align > Align with MUSCLE..." and click "Align".
+    // 2. Click "Align > Align with MUSCLE…" and click "Align".
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default, true, true));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseMouse));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);

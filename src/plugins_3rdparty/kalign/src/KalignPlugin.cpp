@@ -203,7 +203,12 @@ void KalignMSAEditorContext::sl_align() {
 }
 
 KalignPairwiseAligmnentAlgorithm::KalignPairwiseAligmnentAlgorithm()
-    : AlignmentAlgorithm(PairwiseAlignment, "Hirschberg (KAlign)", new PairwiseAlignmentHirschbergTaskFactory(), new PairwiseAlignmentHirschbergGUIExtensionFactory(), "KAlign") {
+    : AlignmentAlgorithm(PairwiseAlignment,
+                         "Hirschberg (KAlign)",
+                         KalignPlugin::tr("Hirschberg (KAlign)"),
+                         new PairwiseAlignmentHirschbergTaskFactory(),
+                         new PairwiseAlignmentHirschbergGUIExtensionFactory(),
+                         "KAlign") {
 }
 
 bool KalignPairwiseAligmnentAlgorithm::checkAlphabet(const DNAAlphabet *al) const {

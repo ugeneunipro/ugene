@@ -213,10 +213,13 @@ const SequenceObjectsExtractor &LoadSequencesTask::getExtractor() const {
 /************************************************************************/
 /* AlignSequencesToAlignmentTask */
 /************************************************************************/
-AlignSequencesToAlignmentTask::AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject *obj, const SequenceObjectsExtractor &extractor)
+AlignSequencesToAlignmentTask::AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QString &algorithmId, const SequenceObjectsExtractor &extractor)
     : Task(tr("Align sequences to alignment task"), TaskFlags_NR_FOSE_COSC), maObjPointer(obj), stateLock(nullptr), docStateLock(nullptr),
       sequencesMaxLength(extractor.getMaxSequencesLength()), sequenceObjectsExtractor(extractor) {
-    initSettingsWithDefaults();
+    settings.addAsFragments = sequencesMaxLength < 100 && maObjPointer->getLength() / sequencesMaxLength > 3;
+    settings.msaRef = maObjPointer->getEntityRef();
+    settings.inNewWindow = false;
+    settings.algorithmId = algorithmId;
     settings.addedSequencesRefs = extractor.getSequenceRefs();
     settings.addedSequencesNames = extractor.getSequenceNames();
     settings.maxSequenceLength = extractor.getMaxSequencesLength();
@@ -251,25 +254,9 @@ void AlignSequencesToAlignmentTask::prepare() {
 
     AlignmentAlgorithmsRegistry *alignmentRegistry = AppContext::getAlignmentAlgorithmsRegistry();
     SAFE_POINT(alignmentRegistry != nullptr, "AlignmentAlgorithmsRegistry is NULL.", );
-    AlignmentAlgorithm *addAlgorithm = alignmentRegistry->getAlgorithm(settings.algorithmName);
-    SAFE_POINT_EXT(addAlgorithm != nullptr, setError(QString("Can not find \"%1\" algorithm").arg(settings.algorithmName)), );
+    AlignmentAlgorithm *addAlgorithm = alignmentRegistry->getAlgorithm(settings.algorithmId);
+    SAFE_POINT_EXT(addAlgorithm != nullptr, setError(QString("Can not find \"%1\" algorithm").arg(settings.algorithmId)), );
     addSubTask(addAlgorithm->getFactory()->getTaskInstance(&settings));
-}
-
-void AlignSequencesToAlignmentTask::initSettingsWithDefaults() {
-    AlignmentAlgorithmsRegistry *alignmentRegistry = AppContext::getAlignmentAlgorithmsRegistry();
-    SAFE_POINT(alignmentRegistry != nullptr, "AlignmentAlgorithmsRegistry is NULL.", );
-    if (settings.algorithmName.isEmpty()) {
-        QStringList availableAlgorithmIds = alignmentRegistry->getAvailableAlgorithmIds(AddToAlignment);
-        if (availableAlgorithmIds.contains(BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT) && maObjPointer->getMultipleAlignment()->getNumRows() != 0) {
-            settings.algorithmName = BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT;
-        } else {
-            settings.algorithmName = BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE;
-        }
-    }
-    settings.addAsFragments = sequencesMaxLength < 100 && maObjPointer->getLength() / sequencesMaxLength > 3;
-    settings.msaRef = maObjPointer->getEntityRef();
-    settings.inNewWindow = false;
 }
 
 Task::ReportResult AlignSequencesToAlignmentTask::report() {
@@ -301,8 +288,9 @@ Task::ReportResult AlignSequencesToAlignmentTask::report() {
 /************************************************************************/
 /* LoadSequencesAndAlignToAlignmentTask */
 /************************************************************************/
-LoadSequencesAndAlignToAlignmentTask::LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QStringList &urls)
-    : Task(tr("Load sequences and add to alignment task"), TaskFlag_NoRun | TaskFlag_CollectChildrenWarnings), urls(urls), maObjPointer(obj), loadSequencesTask(nullptr) {
+LoadSequencesAndAlignToAlignmentTask::LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QString &_algorithmId, const QStringList &urls)
+    : Task(tr("Load sequences and add to alignment task"), TaskFlag_NoRun | TaskFlag_CollectChildrenWarnings),
+      urls(urls), algorithmId(_algorithmId), maObjPointer(obj), loadSequencesTask(nullptr) {
 }
 
 void LoadSequencesAndAlignToAlignmentTask::prepare() {
@@ -323,7 +311,7 @@ QList<Task *> LoadSequencesAndAlignToAlignmentTask::onSubTaskFinished(Task *subT
         return QList<Task *>();
     }
     QList<Task *> subTasks;
-    auto alignSequencesToAlignmentTask = new AlignSequencesToAlignmentTask(maObjPointer, loadSequencesTask->getExtractor());
+    auto alignSequencesToAlignmentTask = new AlignSequencesToAlignmentTask(maObjPointer, algorithmId, loadSequencesTask->getExtractor());
     alignSequencesToAlignmentTask->setSubtaskProgressWeight(95);
     subTasks << alignSequencesToAlignmentTask;
     return subTasks;

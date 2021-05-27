@@ -166,7 +166,12 @@ void SWAlgorithmADVContext::sl_search() {
 }
 
 SWPairwiseAlignmentAlgorithm::SWPairwiseAlignmentAlgorithm()
-    : AlignmentAlgorithm(PairwiseAlignment, "Smith-Waterman", new PairwiseAlignmentSmithWatermanTaskFactory(SW_classic), new PairwiseAlignmentSmithWatermanGUIExtensionFactory(SW_classic), "SW_classic") {
+    : AlignmentAlgorithm(PairwiseAlignment,
+                         "Smith-Waterman",
+                         AlignmentAlgorithmsRegistry::tr("Smith-Waterman"),
+                         new PairwiseAlignmentSmithWatermanTaskFactory(SW_classic),
+                         new PairwiseAlignmentSmithWatermanGUIExtensionFactory(SW_classic),
+                         "SW_classic") {
 }
 
 bool SWPairwiseAlignmentAlgorithm::checkAlphabet(const DNAAlphabet *alphabet) const {

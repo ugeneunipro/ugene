@@ -163,32 +163,37 @@ PopupCheckerByText::PopupCheckerByText(GUITestOpStatus &os, CustomScenario *scen
 PopupCheckerByText::PopupCheckerByText(GUITestOpStatus &os,
                                        const QStringList &namePath,
                                        PopupChecker::CheckOptions options,
-                                       GTGlobals::UseMethod useMethod)
+                                       GTGlobals::UseMethod useMethod,
+                                       Qt::MatchFlag _matchFlag)
     : Filler(os, GUIDialogWaiter::WaitSettings(QString(), GUIDialogWaiter::Popup)),
       menuPath(namePath.mid(0, namePath.size() - 1)),
       itemsNames(namePath.isEmpty() ? "" : namePath.last()),
       options(options),
-      useMethod(useMethod) {
+      useMethod(useMethod),
+      matchFlag(_matchFlag) {
 }
 
 PopupCheckerByText::PopupCheckerByText(GUITestOpStatus &os,
                                        const QStringList &menuPath,
                                        const QStringList &itemsNames,
                                        PopupChecker::CheckOptions options,
-                                       GTGlobals::UseMethod useMethod)
+                                       GTGlobals::UseMethod useMethod,
+                                       Qt::MatchFlag _matchFlag)
     : Filler(os, GUIDialogWaiter::WaitSettings(QString(), GUIDialogWaiter::Popup)),
       menuPath(menuPath),
       itemsNames(itemsNames),
       options(options),
-      useMethod(useMethod) {
+      useMethod(useMethod),
+      matchFlag(_matchFlag) {
 }
 
 PopupCheckerByText::PopupCheckerByText(GUITestOpStatus &os,
                                        const QStringList &menuPath,
                                        const QMap<QString, QKeySequence> &namesAndShortcuts,
                                        PopupChecker::CheckOptions options,
-                                       GTGlobals::UseMethod useMethod)
-    : PopupCheckerByText(os, menuPath, namesAndShortcuts.keys(), options, useMethod) {
+                                       GTGlobals::UseMethod useMethod,
+                                       Qt::MatchFlag _matchFlag)
+    : PopupCheckerByText(os, menuPath, namesAndShortcuts.keys(), options, useMethod, _matchFlag) {
     itemsShortcuts = namesAndShortcuts.values();
 }
 
@@ -201,18 +206,18 @@ void PopupCheckerByText::commonScenario() {
     }
     QAction *act = NULL;
     if (!menuPath.isEmpty()) {
-        GTMenu::clickMenuItemByText(os, activePopupMenu, menuPath, useMethod);
+        GTMenu::clickMenuItemByText(os, activePopupMenu, menuPath, useMethod, matchFlag);
     }
 
     QMenu *activePopupMenuToCheck = qobject_cast<QMenu *>(QApplication::activePopupWidget());
 
     foreach (const QString &itemName, itemsNames) {
-        act = GTMenu::getMenuItem(os, activePopupMenuToCheck, itemName, true);
+        act = GTMenu::getMenuItem(os, activePopupMenuToCheck, itemName, true, matchFlag);
         if (options.testFlag(PopupChecker::Exists)) {
             GT_CHECK(act != NULL, "action '" + itemName + "' not found");
             qDebug("GT_DEBUG_MESSAGE options.testFlag(Exists)");
         } else {
-            GT_CHECK(act == NULL, "action '" + itemName + "' unexpectidly found");
+            GT_CHECK(act == NULL, "action '" + itemName + "' unexpectedly found");
         }
 
         if (options.testFlag(PopupChecker::IsEnabled)) {
@@ -227,7 +232,7 @@ void PopupCheckerByText::commonScenario() {
 
         if (options.testFlag(PopupChecker::IsChecable)) {
             GT_CHECK(act->isCheckable(), "action '" + act->objectName() + "' is not checkable");
-            qDebug("GT_DEBUG_MESSAGE options.testFlag(IsChecable)");
+            qDebug("GT_DEBUG_MESSAGE options.testFlag(IsCheckable)");
         }
 
         if (options.testFlag(PopupChecker::IsChecked)) {
