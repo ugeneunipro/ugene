@@ -58,8 +58,6 @@ void McaAlternativeMutationsWidget::init(MultipleAlignmentObject* _maObject, MaE
     updateValuesFromDb();
 
     connect(mutationsGroupBox, SIGNAL(toggled(bool)), this, SLOT(sl_updateAlternativeMutations()));
-    connect(mutationsThresholdSlider, SIGNAL(valueChanged(int)), this, SLOT(sl_updateDb()));
-    connect(mutationsThresholdSpinBox, SIGNAL(valueChanged(int)), this, SLOT(sl_updateDb()));
     connect(updateMutationsPushButton, SIGNAL(pressed()), this, SLOT(sl_updateAlternativeMutations()));
 }
 
@@ -71,12 +69,6 @@ void McaAlternativeMutationsWidget::sl_updateAlternativeMutations() {
     mcaObject->updateAlternativeMutations(mutationsGroupBox->isChecked(), mutationsThresholdSlider->value(), os);
     CHECK_OP(os, );
 
-    updateDb(os);
-    CHECK_OP(os, );
-}
-
-void McaAlternativeMutationsWidget::sl_updateDb() {
-    U2OpStatus2Log os;
     updateDb(os);
     CHECK_OP(os, );
 }
@@ -125,21 +117,6 @@ void McaAlternativeMutationsWidget::updateValuesFromDb() {
         mutationsThresholdSlider->setValue(thresholdIntAttribute.value);
     }
 }
-
-//void McaAlternativeMutationsWidget::initAttribute(U2AttributeDbi* attributeDbi, const QString& attributeName, U2OpStatus& os) {
-//    auto checkedObjectAttributes = attributeDbi->getObjectAttributes(mcaObject->getEntityRef().entityId, attributeName, os);
-//    CHECK_OP(os, );
-//    SAFE_POINT(checkedObjectAttributes.size() == 0 || checkedObjectAttributes.size() == 1, QString("Unexpected %1 objectAttributes size").arg(attributeName), );
-//
-//    bool setUpFromDb = checkedObjectAttributes.size() == 1;
-//    if (setUpFromDb) {
-//        checkedStateAttribute.id = checkedObjectAttributes.first();
-//    }
-//    mcaDbiObj.dbiId = mcaObject->getEntityRef().dbiRef.dbiId;
-//    mcaDbiObj.id = mcaObject->getEntityRef().entityId;
-//    mcaDbiObj.version = mcaObject->getModificationVersion();
-//    U2AttributeUtils::init(checkedStateAttribute, mcaDbiObj, attributeName);
-//}
 
 void McaAlternativeMutationsWidget::updateDb(U2OpStatus& os) {
     QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(mcaObject->getEntityRef().dbiRef, os));

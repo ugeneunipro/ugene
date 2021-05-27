@@ -41,7 +41,7 @@ class MultipleChromatogramAlignmentObject;
  * all symbols with the second chromatogram trace percentage more than the defined "threshold" value
  * has to be replaced with the symbol, which corresponds to the second chromatogram trace.
  */
-class McaAlternativeMutationsWidget : public QWidget, public Ui_McaAlternativeMutationsWidget {
+class McaAlternativeMutationsWidget : public QWidget, private Ui_McaAlternativeMutationsWidget {
     Q_OBJECT
 public:
     McaAlternativeMutationsWidget(QWidget* parent = nullptr);
@@ -57,10 +57,6 @@ private slots:
      * Update the sequence area and write new alternative mutations settings to the database
      **/
     void sl_updateAlternativeMutations();
-    /*
-     * Update the database without affecting GUI
-     **/
-    void sl_updateDb();
 
 private:
     /*
