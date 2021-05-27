@@ -37,14 +37,10 @@ class MSAGeneralTab : public QWidget, public Ui_GeneralTabOptionsPanelWidget {
 public:
     MSAGeneralTab(MSAEditor *msaEditor);
 
-signals:
-    void si_algorithmChanged(const QString &algoId);
-    void si_thresholdChanged(int val);
-
 public slots:
     void sl_alignmentChanged();
     void sl_copyFormatSelectionChanged(int value);
-    void sl_convertAlphabetButtonClicked();
+    void sl_convertNucleicAlphabetButtonClicked();
 
 private:
     void connectSignals();

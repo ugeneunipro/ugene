@@ -86,11 +86,13 @@ void GTUtilsOptionPanelMsa::toggleTab(HI::GUITestOpStatus &os, GTUtilsOptionPane
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openTab"
-void GTUtilsOptionPanelMsa::openTab(HI::GUITestOpStatus &os, Tabs tab) {
+QWidget *GTUtilsOptionPanelMsa::openTab(HI::GUITestOpStatus &os, Tabs tab) {
     if (!isTabOpened(os, tab)) {
         toggleTab(os, tab);
     }
     GTThread::waitForMainThread();
+    QString widgetName = innerWidgetNames[tab];
+    return GTWidget::findWidget(os, widgetName);
 }
 #undef GT_METHOD_NAME
 
@@ -126,17 +128,17 @@ void GTUtilsOptionPanelMsa::addReference(HI::GUITestOpStatus &os, QString seqNam
     GT_CHECK(nameList.contains(seqName), QString("sequence with name %1 not found").arg(seqName));
 
     switch (method) {
-    case Button:
-        GTUtilsMSAEditorSequenceArea::selectSequence(os, seqName);
-        GTWidget::click(os, GTWidget::findWidget(os, "addSeq"));
-        break;
-    case Completer:
-        QWidget *sequenceLineEdit = GTWidget::findWidget(os, "sequenceLineEdit");
-        GTWidget::click(os, sequenceLineEdit);
-        GTKeyboardDriver::keyClick(seqName.at(0).toLatin1());
-        GTGlobals::sleep(200);
-        GTBaseCompleter::click(os, sequenceLineEdit, seqName);
-        break;
+        case Button:
+            GTUtilsMSAEditorSequenceArea::selectSequence(os, seqName);
+            GTWidget::click(os, GTWidget::findWidget(os, "addSeq"));
+            break;
+        case Completer:
+            QWidget *sequenceLineEdit = GTWidget::findWidget(os, "sequenceLineEdit");
+            GTWidget::click(os, sequenceLineEdit);
+            GTKeyboardDriver::keyClick(seqName.at(0).toLatin1());
+            GTGlobals::sleep(200);
+            GTBaseCompleter::click(os, sequenceLineEdit, seqName);
+            break;
     }
     GTThread::waitForMainThread();
 }
@@ -187,37 +189,37 @@ void GTUtilsOptionPanelMsa::copySelection(HI::GUITestOpStatus &os, const CopyFor
 
     QString stringFormat;
     switch (format) {
-    case CopyFormat::Fasta:
-        stringFormat = "Fasta";
-        break;
-    case CopyFormat::CLUSTALW:
-        stringFormat = "CLUSTALW";
-        break;
-    case CopyFormat::Stocholm:
-        stringFormat = "Stocholm";
-        break;
-    case CopyFormat::MSF:
-        stringFormat = "MSF";
-        break;
-    case CopyFormat::NEXUS:
-        stringFormat = "NEXUS";
-        break;
-    case CopyFormat::Mega:
-        stringFormat = "Mega";
-        break;
-    case CopyFormat::PHYLIP_Interleaved:
-        stringFormat = "PHYLIP Interleaved";
-        break;
-    case CopyFormat::PHYLIP_Sequential:
-        stringFormat = "PHYLIP Sequential";
-        break;
-    case CopyFormat::Rich_text:
-        stringFormat = "Rich text (HTML)";
-        break;
+        case CopyFormat::Fasta:
+            stringFormat = "Fasta";
+            break;
+        case CopyFormat::CLUSTALW:
+            stringFormat = "CLUSTALW";
+            break;
+        case CopyFormat::Stocholm:
+            stringFormat = "Stocholm";
+            break;
+        case CopyFormat::MSF:
+            stringFormat = "MSF";
+            break;
+        case CopyFormat::NEXUS:
+            stringFormat = "NEXUS";
+            break;
+        case CopyFormat::Mega:
+            stringFormat = "Mega";
+            break;
+        case CopyFormat::PHYLIP_Interleaved:
+            stringFormat = "PHYLIP Interleaved";
+            break;
+        case CopyFormat::PHYLIP_Sequential:
+            stringFormat = "PHYLIP Sequential";
+            break;
+        case CopyFormat::Rich_text:
+            stringFormat = "Rich text (HTML)";
+            break;
 
-    default:
-        GT_CHECK_RESULT(false, "Unexpected format", );
-        break;
+        default:
+            GT_CHECK_RESULT(false, "Unexpected format", );
+            break;
     }
     GTComboBox::selectItemByText(os, copyType, stringFormat);
 
@@ -278,17 +280,17 @@ void GTUtilsOptionPanelMsa::addSeqToPA(HI::GUITestOpStatus &os, QString seqName,
     GT_CHECK(nameList.contains(seqName), QString("sequence with name %1 not found").arg(seqName));
 
     switch (method) {
-    case Button:
-        GTUtilsMSAEditorSequenceArea::selectSequence(os, seqName);
-        GTWidget::click(os, getAddButton(os, number));
-        break;
-    case Completer:
-        QWidget *sequenceLineEdit = getSeqLineEdit(os, number);
-        GTWidget::click(os, sequenceLineEdit);
-        GTKeyboardDriver::keyClick(seqName.at(0).toLatin1());
-        GTGlobals::sleep(200);
-        GTBaseCompleter::click(os, sequenceLineEdit, seqName);
-        break;
+        case Button:
+            GTUtilsMSAEditorSequenceArea::selectSequence(os, seqName);
+            GTWidget::click(os, getAddButton(os, number));
+            break;
+        case Completer:
+            QWidget *sequenceLineEdit = getSeqLineEdit(os, number);
+            GTWidget::click(os, sequenceLineEdit);
+            GTKeyboardDriver::keyClick(seqName.at(0).toLatin1());
+            GTGlobals::sleep(200);
+            GTBaseCompleter::click(os, sequenceLineEdit, seqName);
+            break;
     }
 }
 #undef GT_METHOD_NAME
@@ -343,14 +345,14 @@ int GTUtilsOptionPanelMsa::getThreshold(GUITestOpStatus &os) {
 void GTUtilsOptionPanelMsa::setThresholdComparison(GUITestOpStatus &os, GTUtilsOptionPanelMsa::ThresholdComparison comparison) {
     openTab(os, Highlighting);
     switch (comparison) {
-    case LessOrEqual:
-        GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "thresholdLessRb"));
-        break;
-    case GreaterOrEqual:
-        GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "thresholdMoreRb"));
-        break;
-    default:
-        GT_CHECK(false, QString("An unknown threshold comparison type: %1").arg(comparison));
+        case LessOrEqual:
+            GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "thresholdLessRb"));
+            break;
+        case GreaterOrEqual:
+            GTRadioButton::click(os, GTWidget::findExactWidget<QRadioButton *>(os, "thresholdMoreRb"));
+            break;
+        default:
+            GT_CHECK(false, QString("An unknown threshold comparison type: %1").arg(comparison));
     }
 }
 #undef GT_METHOD_NAME
@@ -561,6 +563,14 @@ QWidget *GTUtilsOptionPanelMsa::getWidget(HI::GUITestOpStatus &os, const QString
     } else {
         GT_CHECK_RESULT(false, "number should be 1 or 2", NULL);
     }
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getAlphabetLabelText"
+QString GTUtilsOptionPanelMsa::getAlphabetLabelText(HI::GUITestOpStatus &os) {
+    checkTabIsOpened(os, General);
+    auto label = GTWidget::findExactWidget<QLabel *>(os, "alignmentAlphabet");
+    return label->text();
 }
 #undef GT_METHOD_NAME
 

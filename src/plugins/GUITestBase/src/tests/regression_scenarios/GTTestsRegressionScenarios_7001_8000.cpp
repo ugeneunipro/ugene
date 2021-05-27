@@ -434,6 +434,45 @@ GUI_TEST_CLASS_DEFINITION(test_7212) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7246) {
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/RAW.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Check that alphabet is RAW.
+    QWidget *tabWidget = GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    QString alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
+    CHECK_SET_ERR(alphabet.contains("Raw"), "Alphabet is not RAW/1: " + alphabet);
+
+    // Click convert to Amino button and check the the alphabet is 'Amino'.
+    GTWidget::click(os, GTWidget::findButtonByText(os, "Amino", tabWidget));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
+    CHECK_SET_ERR(alphabet.contains("amino"), "Alphabet is not Amino: " + alphabet);
+    QString sequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
+    CHECK_SET_ERR(sequence == "UTTSQDLQWLVXPTLIXSMAQSQGQPLASQPPAVDPYDMPGTSYSTPGLSAYSTGGASGS", "Not an Amino sequence: " + sequence);
+
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
+    CHECK_SET_ERR(GTUtilsOptionPanelMsa::getAlphabetLabelText(os).contains("Raw"), "Alphabet is not RAW/2: " + alphabet);
+
+    // Click convert to DNA button and check the the alphabet is 'DNA'.
+    GTWidget::click(os, GTWidget::findButtonByText(os, "DNA", tabWidget));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
+    CHECK_SET_ERR(alphabet.contains("DNA"), "Alphabet is not DNA: " + alphabet);
+    sequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
+    CHECK_SET_ERR(sequence == "TTTNNNNNNNNNNTNNNNNANNNGNNNANNNNANNNNNNNGTNNNTNGNNANNTGGANGN", "Not a DNA sequence: " + sequence);
+
+    // Click convert to RNA button and check the the alphabet is 'RNA'.
+    GTWidget::click(os, GTWidget::findButtonByText(os, "RNA", tabWidget));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
+    CHECK_SET_ERR(GTUtilsOptionPanelMsa::getAlphabetLabelText(os).contains("RNA"), "Alphabet is not RNA: " + alphabet);
+    sequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
+    CHECK_SET_ERR(sequence == "UUUNNNNNNNNNNUNNNNNANNNGNNNANNNNANNNNNNNGUNNNUNGNNANNUGGANGN", "Not a RNA sequence: " + sequence);
+}
+
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2

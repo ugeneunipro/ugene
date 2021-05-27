@@ -122,7 +122,15 @@ protected slots:
     void sl_sortSequencesByName();
     void sl_sortSequencesByLength();
     void sl_sortSequencesByLeadingGap();
+
+    /** Converts from DNA to RNA alphabet and back. */
     void sl_convertBetweenDnaAndRnaAlphabets();
+
+    /** Converts from RAW to DNA alphabet. Replaces all unknown chars with 'N' and 'U' with 'T'. */
+    void sl_convertRawToDnaAlphabet();
+
+    /** Converts from RAW to Amino alphabet. Replaces all unknown chars with 'X'. */
+    void sl_convertRawToAminoAlphabet();
 
 protected:
     QWidget *createWidget() override;
@@ -167,6 +175,8 @@ public:
 
     QAction *convertDnaToRnaAction = nullptr;
     QAction *convertRnaToDnaAction = nullptr;
+    QAction *convertRawToDnaAction = nullptr;
+    QAction *convertRawToAminoAction = nullptr;
 
 private:
     PairwiseAlignmentWidgetsSettings *pairwiseAlignmentWidgetsSettings = nullptr;
