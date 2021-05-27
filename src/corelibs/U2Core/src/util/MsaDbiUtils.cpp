@@ -1075,7 +1075,9 @@ QList<qint64> MsaDbiUtils::keepOnlyAlphabetChars(const U2EntityRef &msaRef, cons
     QList<qint64> modifiedRowIds;
     QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(msaRef.dbiRef, os));
     CHECK_OP(os, modifiedRowIds);
-    SAFE_POINT(replacementMap.size() == 256 || replacementMap.isEmpty(), "replacementMap has invalid size!", modifiedRowIds);
+
+    bool hasReplacementMap = replacementMap.size() == 256;
+    SAFE_POINT(hasReplacementMap || replacementMap.isEmpty(), "replacementMap has invalid size: " + QString::number(replacementMap.size()), modifiedRowIds);
 
     U2MsaDbi *msaDbi = con->dbi->getMsaDbi();
     U2SequenceDbi *sequenceDbi = con->dbi->getSequenceDbi();
@@ -1085,7 +1087,6 @@ QList<qint64> MsaDbiUtils::keepOnlyAlphabetChars(const U2EntityRef &msaRef, cons
     QVariantMap updateSequenceHints;
     QByteArray alphabetChars = alphabet->getAlphabetChars();
     QBitArray validCharsMap = TextUtils::createBitMap(alphabetChars);
-    bool hasReplacementMap = replacementMap.size() == 256;
     char defaultChar = alphabet->getDefaultSymbol();
     for (qint64 rowId : qAsConst(rowIds)) {
         U2MsaRow msaRow = msaDbi->getRow(msaRef.entityId, rowId, os);
@@ -1097,7 +1098,7 @@ QList<qint64> MsaDbiUtils::keepOnlyAlphabetChars(const U2EntityRef &msaRef, cons
             char c = sequenceData[i];
             if (!validCharsMap.testBit(c)) {
                 isModified = true;
-                char newChar = hasReplacementMap ? replacementMap[c] : '\0';
+                char newChar = hasReplacementMap ? replacementMap[(quint8)c] : '\0';
                 sequenceData[i] = validCharsMap.testBit(newChar) ? newChar : defaultChar;
             }
         }

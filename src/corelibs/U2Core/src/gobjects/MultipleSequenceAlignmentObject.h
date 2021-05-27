@@ -72,6 +72,8 @@ public:
      * 'replacementMap' can be used to adjust characters conversion:
      *  - first a character is mapped using 'replacementMap'
      *  - next this character is checked that it is valid for the given alphabet.
+     *
+     * The 'replacementMap' can be either empty of should contain mapping for all possible 256 Latin1 chars.
      */
     void morphAlphabet(const DNAAlphabet *newAlphabet, const QByteArray &replacementMap = QByteArray());
 

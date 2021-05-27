@@ -150,6 +150,7 @@ public:
     /**
      * Keeps only valid characters all characters from the given alphabet.
      * Tries to use 'replacementMap' for all invalid characters first: if the replacementMap contains non-'\0' character - uses the mapped value.
+     * The 'replacementMap' can be either empty of should contain mapping for all possible 256 Latin1 chars.
      */
     static QList<qint64> keepOnlyAlphabetChars(const U2EntityRef &msaRef, const DNAAlphabet *alphabet, const QByteArray &replacementMap, U2OpStatus &os);
 
