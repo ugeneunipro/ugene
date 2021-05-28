@@ -1,1 +1,1 @@
-#include "../../corelibs/U2View/src/ov_msa/ExportConsensus/MaExportConsensusTabFactory.h"
+#include "../../corelibs/U2View/src/ov_msa/export_consensus/MaExportConsensusTabFactory.h"

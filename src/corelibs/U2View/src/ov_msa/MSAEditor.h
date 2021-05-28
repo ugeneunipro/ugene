@@ -27,7 +27,7 @@
 
 #include "MaEditor.h"
 #include "MsaEditorWgt.h"
-#include "PhyTrees/MSAEditorTreeManager.h"
+#include "phy_tree/MSAEditorTreeManager.h"
 
 namespace U2 {
 

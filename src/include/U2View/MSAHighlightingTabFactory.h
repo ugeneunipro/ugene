@@ -1,1 +1,1 @@
-#include "../../corelibs/U2View/src/ov_msa/Highlighting/MSAHighlightingTabFactory.h"
+#include "../../corelibs/U2View/src/ov_msa/highlighting/MSAHighlightingTabFactory.h"

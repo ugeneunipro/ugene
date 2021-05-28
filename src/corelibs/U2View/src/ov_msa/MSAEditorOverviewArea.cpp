@@ -27,9 +27,9 @@
 
 #include "MSAEditor.h"
 #include "MSAEditorSequenceArea.h"
-#include "Overview/MaGraphOverview.h"
-#include "Overview/MaOverviewContextMenu.h"
-#include "Overview/MaSimpleOverview.h"
+#include "overview/MaGraphOverview.h"
+#include "overview/MaOverviewContextMenu.h"
+#include "overview/MaSimpleOverview.h"
 
 namespace U2 {
 

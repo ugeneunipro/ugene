@@ -36,8 +36,8 @@
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include "../AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
-#include "../ExportSequencesTask.h"
+#include "ov_msa/align_to_alignment/AlignSequencesToAlignmentTask.h"
+#include "ov_msa/ExportSequencesTask.h"
 
 namespace U2 {
 

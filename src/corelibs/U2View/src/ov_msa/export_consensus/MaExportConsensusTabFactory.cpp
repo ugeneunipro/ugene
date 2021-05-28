@@ -29,7 +29,7 @@
 
 #include <U2View/MSAEditor.h>
 
-#include "../General/MaConsensusModeWidget.h"
+#include "ov_msa/general/MaConsensusModeWidget.h"
 #include "MaExportConsensusWidget.h"
 
 namespace U2 {

@@ -33,17 +33,17 @@
 #include <U2Gui/OPWidgetFactoryRegistry.h>
 #include <U2Gui/OptionsPanel.h>
 
-#include "ExportConsensus/MaExportConsensusTabFactory.h"
-#include "General/McaGeneralTabFactory.h"
 #include "MSAEditorOffsetsView.h"
 #include "MaConsensusMismatchController.h"
 #include "MaEditorFactory.h"
 #include "McaEditorConsensusArea.h"
 #include "McaEditorNameList.h"
 #include "McaEditorSequenceArea.h"
-#include "Overview/MaEditorOverviewArea.h"
+#include "export_consensus/MaExportConsensusTabFactory.h"
+#include "general/McaGeneralTabFactory.h"
 #include "helpers/MaAmbiguousCharactersController.h"
 #include "ov_sequence/SequenceObjectContext.h"
+#include "overview/MaEditorOverviewArea.h"
 #include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
 namespace U2 {

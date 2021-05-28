@@ -45,14 +45,14 @@
 #include <U2View/ColorSchemaSettingsController.h>
 #include <U2View/FindPatternMsaWidgetFactory.h>
 
-#include "Highlighting/MsaSchemesMenuBuilder.h"
 #include "MSAEditorOffsetsView.h"
 #include "MSAEditorSequenceArea.h"
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
 #include "MaEditorTasks.h"
-#include "Overview/MaEditorOverviewArea.h"
-#include "RealignSequencesInAlignment/RealignSequencesInAlignmentTask.h"
+#include "realign_to_alignment/RealignSequencesInAlignmentTask.h"
+#include "highlighting/MsaSchemesMenuBuilder.h"
+#include "overview/MaEditorOverviewArea.h"
 #include "view_rendering/MaEditorConsensusArea.h"
 #include "view_rendering/MaEditorSequenceArea.h"
 

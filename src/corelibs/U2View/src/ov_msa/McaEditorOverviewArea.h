@@ -22,7 +22,7 @@
 #ifndef _U2_MCA_EDITOR_OVERVIEW_AREA_H_
 #define _U2_MCA_EDITOR_OVERVIEW_AREA_H_
 
-#include "Overview/MaEditorOverviewArea.h"
+#include "overview/MaEditorOverviewArea.h"
 
 namespace U2 {
 
