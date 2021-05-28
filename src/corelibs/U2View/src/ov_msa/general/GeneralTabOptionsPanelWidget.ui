@@ -174,7 +174,7 @@
   <customwidget>
    <class>U2::MaConsensusModeWidget</class>
    <extends>QWidget</extends>
-   <header>ov_msa/General/MaConsensusModeWidget.h</header>
+   <header>ov_msa/general/MaConsensusModeWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
