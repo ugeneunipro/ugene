@@ -64,7 +64,18 @@ public:
     void replaceCharacter(int startPos, int rowIndex, char newChar);
 
     /** Replaces all characters in the alignment and updates alphabet if provided.*/
-    void replaceAllCharacters(char oldChar, char newChar, const DNAAlphabet* newAlphabet = nullptr);
+    void replaceAllCharacters(char oldChar, char newChar, const DNAAlphabet *newAlphabet = nullptr);
+
+    /**
+     * Updates MSA alphabet to the 'newAlphabet'.
+     * Keeps only valid chars for the new alphabet, all invalid are replaced with the default symbol.
+     * 'replacementMap' can be used to adjust characters conversion:
+     *  - first a character is mapped using 'replacementMap'
+     *  - next this character is checked that it is valid for the given alphabet.
+     *
+     * The 'replacementMap' can be either empty of should contain mapping for all possible 256 Latin1 chars.
+     */
+    void morphAlphabet(const DNAAlphabet *newAlphabet, const QByteArray &replacementMap = QByteArray());
 
     void deleteColumnsWithGaps(U2OpStatus &os, int requiredGapsCount = -1);
 

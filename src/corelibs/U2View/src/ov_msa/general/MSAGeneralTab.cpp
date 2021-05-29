@@ -40,16 +40,16 @@
 namespace U2 {
 
 MSAGeneralTab::MSAGeneralTab(MSAEditor *msaEditor)
-    : msaEditor(msaEditor), savableTab(this, GObjectViewUtils::findViewByName(msaEditor->getName())) {
+    : Ui_GeneralTabOptionsPanelWidget(), msaEditor(msaEditor), savableTab(this, GObjectViewUtils::findViewByName(msaEditor->getName())) {
     SAFE_POINT(msaEditor != nullptr, "MSA Editor is not defined.", );
 
     setupUi(this);
 
-    ShowHideSubgroupWidget *alignmentInfo = new ShowHideSubgroupWidget("ALIGNMENT_INFO", tr("Alignment info"), alignmentInfoWidget, true);
-    ShowHideSubgroupWidget *consensusMode = new ShowHideSubgroupWidget("CONSENSUS_MODE", tr("Consensus mode"), consensusModeWidget, true);
+    auto alignmentInfo = new ShowHideSubgroupWidget("ALIGNMENT_INFO", tr("Alignment info"), alignmentInfoWidget, true);
+    auto consensusMode = new ShowHideSubgroupWidget("CONSENSUS_MODE", tr("Consensus mode"), consensusModeWidget, true);
     // Note: use same action name with context menu in MSA-editor.
-    ShowHideSubgroupWidget *copyType = new ShowHideSubgroupWidget("COPY_TYPE", tr("Copy (custom format)"), copyTypeWidget, true);
-    ShowHideSubgroupWidget *sortType = new ShowHideSubgroupWidget("SORT_TYPE", tr("Sort sequences"), new MsaEditorSortSequencesWidget(nullptr, msaEditor), true);
+    auto copyType = new ShowHideSubgroupWidget("COPY_TYPE", tr("Copy (custom format)"), copyTypeWidget, true);
+    auto sortType = new ShowHideSubgroupWidget("SORT_TYPE", tr("Sort sequences"), new MsaEditorSortSequencesWidget(nullptr, msaEditor), true);
     Ui_GeneralTabOptionsPanelWidget::layout->addWidget(alignmentInfo);
     Ui_GeneralTabOptionsPanelWidget::layout->addWidget(consensusMode);
     Ui_GeneralTabOptionsPanelWidget::layout->addWidget(copyType);
@@ -63,11 +63,13 @@ MSAGeneralTab::MSAGeneralTab(MSAEditor *msaEditor)
     updateState();
 }
 
-void MSAGeneralTab::sl_convertAlphabetButtonClicked() {
+void MSAGeneralTab::sl_convertNucleicAlphabetButtonClicked() {
     if (msaEditor->convertDnaToRnaAction->isEnabled()) {
         msaEditor->convertDnaToRnaAction->trigger();
     } else if (msaEditor->convertRnaToDnaAction->isEnabled()) {
         msaEditor->convertRnaToDnaAction->trigger();
+    } else if (msaEditor->convertRawToDnaAction->isEnabled()) {
+        msaEditor->convertRawToDnaAction->trigger();
     }
 }
 
@@ -86,7 +88,8 @@ void MSAGeneralTab::connectSignals() {
     // Inner signals
     connect(copyType, SIGNAL(currentIndexChanged(int)), SLOT(sl_copyFormatSelectionChanged(int)));
     connect(copyButton, SIGNAL(clicked()), sequenceArea, SLOT(sl_copySelectionFormatted()));
-    connect(convertAlphabetButton, SIGNAL(clicked()), SLOT(sl_convertAlphabetButtonClicked()));
+    connect(convertAminoAlphabetButton, SIGNAL(clicked()), msaEditor->convertRawToAminoAction, SLOT(trigger()));
+    connect(convertNucleicAlphabetButton, SIGNAL(clicked()), SLOT(sl_convertNucleicAlphabetButtonClicked()));
 
     // External signals
     connect(msaEditor->getMaObject(),
@@ -139,17 +142,23 @@ void MSAGeneralTab::updateState() {
 void MSAGeneralTab::updateConvertAlphabetButtonState() {
     bool isDnaToRnaEnabled = msaEditor->convertDnaToRnaAction->isEnabled();
     bool isRnaToDnaEnabled = msaEditor->convertRnaToDnaAction->isEnabled();
-    convertAlphabetButton->setVisible(isDnaToRnaEnabled || isRnaToDnaEnabled);
+    bool isRawToDnaEnabled = msaEditor->convertRawToDnaAction->isEnabled();
+    bool isRawToAminoEnabled = msaEditor->convertRawToAminoAction->isEnabled();
+    convertNucleicAlphabetButton->setVisible(isDnaToRnaEnabled || isRnaToDnaEnabled || isRawToDnaEnabled);
+    convertAminoAlphabetButton->setVisible(isRawToAminoEnabled);
 
     if (isDnaToRnaEnabled) {
-        convertAlphabetButton->setText(tr("RNA"));
-        convertAlphabetButton->setToolTip(tr("Convert DNA alignment to RNA alignment"));
+        convertNucleicAlphabetButton->setText(tr("RNA"));
+        convertNucleicAlphabetButton->setToolTip(tr("Convert DNA alignment to RNA alignment"));
     } else if (isRnaToDnaEnabled) {
-        convertAlphabetButton->setText(tr("DNA"));
-        convertAlphabetButton->setToolTip(tr("Convert RNA alignment to DNA alignment"));
+        convertNucleicAlphabetButton->setText(tr("DNA"));
+        convertNucleicAlphabetButton->setToolTip(tr("Convert RNA alignment to DNA alignment"));
+    } else if (isRawToDnaEnabled) {
+        convertNucleicAlphabetButton->setText(tr("DNA"));
+        convertNucleicAlphabetButton->setToolTip(tr("Convert RAW alignment to DNA alignment"));
     } else {
-        convertAlphabetButton->setText("");
-        convertAlphabetButton->setToolTip("");
+        convertNucleicAlphabetButton->setText("");
+        convertNucleicAlphabetButton->setToolTip("");
     }
 }
 

@@ -129,6 +129,16 @@ MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *o
     convertRnaToDnaAction->setToolTip(tr("Convert alignment from RNA to DNA alphabet: replace U with T"));
     connect(convertRnaToDnaAction, SIGNAL(triggered()), SLOT(sl_convertBetweenDnaAndRnaAlphabets()));
 
+    convertRawToDnaAction = new QAction(tr("Convert RAW to DNA alphabet"), this);
+    convertRawToDnaAction->setObjectName("convertRawToDnaAction");
+    convertRawToDnaAction->setToolTip(tr("Convert alignment from RAW to DNA alphabet: use N for unknown symbols"));
+    connect(convertRawToDnaAction, SIGNAL(triggered()), SLOT(sl_convertRawToDnaAlphabet()));
+
+    convertRawToAminoAction = new QAction(tr("Convert RAW to Amino alphabet"), this);
+    convertRawToAminoAction->setObjectName("convertRawToAminoAction");
+    convertRawToAminoAction->setToolTip(tr("Convert alignment from RAW to Amino alphabet: use X for unknown symbols"));
+    connect(convertRawToAminoAction, SIGNAL(triggered()), SLOT(sl_convertRawToAminoAlphabet()));
+
     updateActions();
 }
 
@@ -150,6 +160,8 @@ void MSAEditor::updateActions() {
     auto alphabetId = maObject->getAlphabet()->getId();
     convertDnaToRnaAction->setEnabled(!isReadOnly && alphabetId == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
     convertRnaToDnaAction->setEnabled(!isReadOnly && alphabetId == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT());
+    convertRawToDnaAction->setEnabled(!isReadOnly && alphabetId == BaseDNAAlphabetIds::RAW());
+    convertRawToAminoAction->setEnabled(!isReadOnly && alphabetId == BaseDNAAlphabetIds::RAW());
 }
 
 void MSAEditor::sl_buildTree() {
@@ -744,6 +756,36 @@ void MSAEditor::sl_convertBetweenDnaAndRnaAlphabets() {
     char fromChar = isDnaAlphabet ? 'T' : 'U';
     char toChar = isDnaAlphabet ? 'U' : 'T';
     msaObject->replaceAllCharacters(fromChar, toChar, resultAlphabet);
+}
+
+void MSAEditor::sl_convertRawToDnaAlphabet() {
+    CHECK(!maObject->isStateLocked(), )
+
+    auto alphabetId = maObject->getAlphabet()->getId();
+    CHECK(alphabetId == BaseDNAAlphabetIds::RAW(), );
+
+    auto msaObject = getMaObject();
+    auto alphabetRegistry = AppContext::getDNAAlphabetRegistry();
+    U2OpStatus2Log os;
+    U2UseCommonUserModStep userModStep(msaObject->getEntityRef(), os);
+    auto resultAlphabet = alphabetRegistry->findById(BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    QByteArray replacementMap(256, '\0');
+    replacementMap['U'] = 'T';
+    msaObject->morphAlphabet(resultAlphabet, replacementMap);
+}
+
+void MSAEditor::sl_convertRawToAminoAlphabet() {
+    CHECK(!maObject->isStateLocked(), )
+
+    auto alphabetId = maObject->getAlphabet()->getId();
+    CHECK(alphabetId == BaseDNAAlphabetIds::RAW(), );
+
+    auto msaObject = getMaObject();
+    auto alphabetRegistry = AppContext::getDNAAlphabetRegistry();
+    U2OpStatus2Log os;
+    U2UseCommonUserModStep userModStep(msaObject->getEntityRef(), os);
+    auto resultAlphabet = alphabetRegistry->findById(BaseDNAAlphabetIds::AMINO_DEFAULT());
+    msaObject->morphAlphabet(resultAlphabet);
 }
 
 }    // namespace U2

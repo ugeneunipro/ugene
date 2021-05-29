@@ -148,6 +148,13 @@ public:
     static QList<qint64> replaceNonGapCharacter(const U2EntityRef &msaRef, char oldChar, char newChar, U2OpStatus &os);
 
     /**
+     * Keeps only valid characters all characters from the given alphabet.
+     * Tries to use 'replacementMap' for all invalid characters first: if the replacementMap contains non-'\0' character - uses the mapped value.
+     * The 'replacementMap' can be either empty of should contain mapping for all possible 256 Latin1 chars.
+     */
+    static QList<qint64> keepOnlyAlphabetChars(const U2EntityRef &msaRef, const DNAAlphabet *alphabet, const QByteArray &replacementMap, U2OpStatus &os);
+
+    /**
      * Keeps only the specified rows in the alignment - 'count' characters from position 'pos'.
      * If a row length is less than 'pos', the sequence and gap model becomes empty.
      * Updates the alignment length.
@@ -155,7 +162,7 @@ public:
      * Parameter 'pos' must be >= 0 and < the alignment length.
      * Parameter 'count' must be > 0.
      */
-    static void crop(const U2EntityRef &msaRef, const QList<qint64> rowIds, qint64 pos, qint64 count, U2OpStatus &os);
+    static void crop(const U2EntityRef &msaRef, const QList<qint64> &rowIds, qint64 pos, qint64 count, U2OpStatus &os);
 
     /**
      * Removes leading and trailing gaps, if required.

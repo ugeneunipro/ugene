@@ -6280,7 +6280,7 @@ GUI_TEST_CLASS_DEFINITION(test_6903) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_GENERAL"));
 
-    QToolButton *toDnaButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "convertAlphabetButton"));
+    QToolButton *toDnaButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "convertNucleicAlphabetButton"));
     GTWidget::click(os, toDnaButton);
 
     QComboBox *copyType = GTWidget::findExactWidget<QComboBox *>(os, "copyType");
