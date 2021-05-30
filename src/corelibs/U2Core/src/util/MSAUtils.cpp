@@ -372,31 +372,32 @@ void MSAUtils::assignOriginalDataIds(const MultipleSequenceAlignment &origMsa,
                                      QList<int> &removedRowIndexes,
                                      QList<int> &addedRowIndexes) {
     QList<MultipleSequenceAlignmentRow> origMsaRows = origMsa->getMsaRows();
-    QSet<qint64> matchedRowIds;
-    for (int newRowIndex = 0, newRowCount = newMsa->getNumRows(); newRowIndex < newRowCount; ++newRowIndex) {
+    QSet<qint64> remappedRowIds;
+    for (int newRowIndex = 0; newRowIndex < newMsa->getNumRows(); newRowIndex++) {
         MultipleSequenceAlignmentRow newMsaRow = newMsa->getMsaRow(newRowIndex);
         QString newRowNameForCompare = newMsaRow->getName().replace(" ", "_");
-        bool isNewRowFound = false;
-        for (int origRowIndex = 0, origRowCount = origMsaRows.size(); origRowIndex < origRowCount; origRowIndex++) {
+        bool isNewRowRemapped = false;
+        for (int origRowIndex = 0; origRowIndex < origMsaRows.size(); origRowIndex++) {
             const MultipleSequenceAlignmentRow &origMsaRow = origMsaRows[origRowIndex];
             QString origRowNameForCompare = origMsaRow->getName().replace(" ", "_");
             if (newRowNameForCompare == origRowNameForCompare && origMsaRow->getSequence().seq == newMsaRow->getSequence().seq) {
-                isNewRowFound = true;
+                isNewRowRemapped = true;
                 qint64 rowId = origMsaRow->getRowDbInfo().rowId;
                 newMsa->setRowId(newRowIndex, rowId);
-                matchedRowIds.insert(rowId);
+                remappedRowIds.insert(rowId);
 
                 U2DataId sequenceId = origMsaRow->getRowDbInfo().sequenceId;
                 newMsa->setSequenceId(newRowIndex, sequenceId);
                 break;
             }
         }
-        if (!isNewRowFound) {
+        if (!isNewRowRemapped) {
             addedRowIndexes << newRowIndex;
         }
     }
     for (int origRowIndex = 0, origRowCount = origMsaRows.size(); origRowIndex < origRowCount; origRowIndex++) {
-        if (!matchedRowIds.contains(origMsaRows[origRowIndex]->getRowId())) {
+        qint64 origRowId = origMsaRows[origRowIndex]->getRowId();
+        if (!remappedRowIds.contains(origRowId)) {
             removedRowIndexes << origRowIndex;
         }
     }
@@ -405,11 +406,11 @@ void MSAUtils::assignOriginalDataIds(const MultipleSequenceAlignment &origMsa,
 void MSAUtils::assignOriginalDataIds(const MultipleSequenceAlignment &origMsa,
                                      MultipleSequenceAlignment &newMsa,
                                      U2OpStatus &os) {
-    QList<int> added;
     QList<int> removed;
-    assignOriginalDataIds(origMsa, newMsa, added, removed);
-    if (!added.isEmpty() || removed.isEmpty()) {
-        os.setError(tr("Failed to map result MSA rows into original MSA rows"));
+    QList<int> added;
+    assignOriginalDataIds(origMsa, newMsa, removed, added);
+    if (!added.isEmpty() || !removed.isEmpty()) {
+        os.setError(tr("Failed to map result MSA rows into original MSA rows. Removed: %1, added: %2").arg(removed.size()).arg(added.size()));
     }
 }
 
