@@ -518,5 +518,27 @@ GUI_TEST_CLASS_DEFINITION(test_0016_3) {
     CHECK_SET_ERR(expectedSeq2Data == actualSeq2Data, QString("Unexpected 'seq2' data: expected '%1', got '%2'").arg(expectedSeq2Data).arg(actualSeq2Data));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0017) {
+    // The test checks that ClustalO "Align alignment to alignment" works correctly.
+
+    GTFileDialog::openFile(os, testDir + "_common_data/muscul4/protein.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QStringList alignmentBefore = GTUtilsMsaEditor::getWholeData(os);
+
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/alignment/align_sequence_to_an_alignment/chicken-part.fa"));
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "ClustalO");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QStringList alignmentAfter = GTUtilsMsaEditor::getWholeData(os);
+    CHECK_SET_ERR(alignmentAfter.size() == alignmentBefore.size() + 1, "Unexpected alignment size: " + QString::number(alignmentAfter.size()));
+
+    alignmentAfter.removeLast();
+    CHECK_SET_ERR(alignmentBefore == alignmentAfter, "Original alignment was changed");
+
+    QString alignedSequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, "Chicken_Part");
+    QString expectedSequence = "MANHSQLGFQDASSPIMEELVEFHDHALMVALAICSLVLYLLTLMLMEKLS-SNTVDAQEVELIWTILPAIVLVLLALPSL--------------------------------KDLSFDSYMTPTTDLPLGHFRLLEVDHRIVIPMESPIRVIITADDVLHSWAVPALGVKTDAIPGRLNQTSFITTRPGVFYGQCSEICGANHSYMPIVVESTPLKHFEAWSSLLSS------";
+    CHECK_SET_ERR(alignedSequence == expectedSequence, "Wrong aligned sequence: " + alignedSequence);
+}
+
 }    // namespace GUITest_common_scenarios_align_sequences_to_msa
 }    // namespace U2
