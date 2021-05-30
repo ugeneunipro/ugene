@@ -77,11 +77,6 @@
         <source>Loads test suites and runs them.</source>
         <translation>Test süitlerini yükler ve çalıştırır.</translation>
     </message>
-    <message>
-        <location filename="../src/GTestFrameworkComponents.cpp" line="118"/>
-        <source>Output a test&apos;s messages to the TeamCity system.</source>
-        <translation>TeamCity sistemine bir testin mesajlarını gönderin.</translation>
-    </message>
 </context>
 <context>
     <name>U2::GTestSuite</name>
