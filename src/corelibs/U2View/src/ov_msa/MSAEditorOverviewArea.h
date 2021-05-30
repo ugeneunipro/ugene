@@ -27,7 +27,7 @@
 
 #include <U2Core/global.h>
 
-#include "Overview/MaEditorOverviewArea.h"
+#include "overview/MaEditorOverviewArea.h"
 
 namespace U2 {
 

@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline task="extract_consensus_sequence"
+                 in=""
+                 out="!tmp_data_dir!extract_consensus_sequence_test_threshold_0001.fa"
+                 format="fasta"
+                 algorithm="Strict"
+                 keep_gaps="true"
+                 threshold="70"
+                 message="Read Alignment: Required parameter has no datasets specified: Input file(s) (use --in option)"/>
+</multi-test>

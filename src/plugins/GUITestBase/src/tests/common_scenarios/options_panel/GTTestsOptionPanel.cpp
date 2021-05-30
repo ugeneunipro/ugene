@@ -73,7 +73,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                         "&nbsp;</td><td>37 622 &nbsp;&nbsp;</td><td>18.8%&nbsp;&nbsp;"
                         "</td></tr><tr><td><b>T:&nbsp;&nbsp;</td><td>59 445 &nbsp;&nbsp;"
                         "</td><td>29.7%&nbsp;&nbsp;</td></tr></table>");
-    GTGlobals::sleep(1000);
     CHECK_SET_ERR(l->text() == s, "Found: " + l->text());
     //    Expected state: next statistics has shown
     //    A: 62 842 31.4%
@@ -99,7 +98,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
                         "&nbsp;</td><td>26 &nbsp;&nbsp;</td><td>22.8%&nbsp;&nbsp;"
                         "</td></tr><tr><td><b>T:&nbsp;&nbsp;</td><td>27 &nbsp;&nbsp;"
                         "</td><td>23.7%&nbsp;&nbsp;</td></tr></table>");
-    GTGlobals::sleep(1000);
     CHECK_SET_ERR(l->text() == s, "Found: " + l->text());
 }
 
@@ -110,7 +108,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //2. Activate Information tab on Options panel at the right edge of UGENE window. Expand Dinucleotides
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_INFO"));
-    GTGlobals::sleep(500);
 
     QWidget *w = GTWidget::findWidget(os, "Dinucleotides");
     GTWidget::click(os, w);
@@ -132,7 +129,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
                         "&nbsp;</td></tr><tr><td><b>TC:&nbsp;&nbsp;</td><td>11 978 &nbsp;"
                         "&nbsp;</td></tr><tr><td><b>TG:&nbsp;&nbsp;</td><td>13 329 &nbsp;"
                         "&nbsp;</td></tr><tr><td><b>TT:&nbsp;&nbsp;</td><td>19 964 &nbsp;&nbsp;</td></tr></table>");
-    GTGlobals::sleep();
     CHECK_SET_ERR(l->text() == s, "Found: " + l->text());
     /*Expected state: next statistics has shown
 AA:  21 960
@@ -181,7 +177,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002_1) {
                         "</td><td>9 &nbsp;&nbsp;</td></tr><tr><td><b>TG:&nbsp;&nbsp;"
                         "</td><td>2 &nbsp;&nbsp;</td></tr><tr><td><b>TT:&nbsp;&nbsp;"
                         "</td><td>5 &nbsp;&nbsp;</td></tr></table>");
-    GTGlobals::sleep(1000);
     CHECK_SET_ERR(l->text() == s, "Found: " + l->text());
 }
 
@@ -242,7 +237,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTThread::waitForMainThread();
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    GTGlobals::sleep(500);
     QString clipboardText = GTClipboard::text(os);
     QString text = QString("A:  \n"
                            "62 842   \n"
@@ -276,7 +270,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     QString s = l->text();
 
     GTWidget::click(os, GTWidget::findWidget(os, "ADV_single_sequence_widget_1"));
-    GTGlobals::sleep(1000);
     //w=GTWidget::findWidget(os,"Characters Occurrence");
     GTWidget::click(os, w);
     //l=w->findChild<QLabel*>();
@@ -299,18 +292,15 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     // 2. Open view for "1.gb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "NC_001363 sequence"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
     // 3. Press ctrl+f. Check focus. Find subsequence TA
     GTUtilsOptionsPanel::runFindPatternWithHotKey("TA", os);
 
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
-    GTGlobals::sleep(500);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
 
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006_1) {
@@ -322,7 +312,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     GTUtilsOptionsPanel::runFindPatternWithHotKey("TTTTTAAAAA", os);
 
     GTWidget::click(os, GTWidget::findWidget(os, "getAnnotationsPushButton"));
-    GTGlobals::sleep(500);
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
@@ -340,7 +329,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
 
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
@@ -526,7 +514,6 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
                         "</table>");
     CHECK_SET_ERR(statisticsLabel->text() == s, "Statistics is wrong!");
 
-    GTGlobals::sleep(1000);
     QWidget *w1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
     CHECK_SET_ERR(w1 != NULL, "ADV single sequence widget 1 is NULL");
     GTWidget::click(os, w1);
@@ -549,7 +536,6 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
 
     CHECK_SET_ERR(statisticsLabel->text() == s, "Statistics is wrong!");
 
-    GTGlobals::sleep(1000);
     QWidget *w2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_2");
     CHECK_SET_ERR(w2 != NULL, "ADV single sequence widget 2 is NULL");
     GTWidget::click(os, w2);
@@ -713,7 +699,6 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
                                                                                 "sars.gb",
                                                                                 "NC_004718");
     GTWidget::click(os, GTWidget::findWidget(os, "OP_CV_SETTINGS"));
-    GTGlobals::sleep(500);
 
     QWidget *openCvWidget = GTWidget::findWidget(os, "openCvWidget");
     CHECK_SET_ERR(openCvWidget != NULL, "No hint widget");
@@ -721,7 +706,6 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "openCvButton"));
     CHECK_SET_ERR(GTUtilsCv::isCvPresent(os, seqWidget), "No CV opened");
-    GTGlobals::sleep(500);
     CHECK_SET_ERR(openCvWidget->isHidden(), "Hint label and OpenCV button should be hidden");
 
     GTUtilsCv::cvBtn::click(os, seqWidget);
@@ -744,7 +728,6 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
                                                                                  "NC_004718");
     CHECK_SET_ERR(!GTUtilsCv::isCvPresent(os, seqWidget1), "CV opened");
     GTWidget::click(os, GTWidget::findWidget(os, "OP_CV_SETTINGS"));
-    GTGlobals::sleep(500);
 
     QWidget *openCvWidget1 = GTWidget::findWidget(os, "openCvWidget");
     CHECK_SET_ERR(openCvWidget1 != NULL, "No hint widget");
@@ -756,7 +739,6 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     CHECK_SET_ERR(seqWidgets.size() == 1, "Wrong number of sequences");
     ADVSingleSequenceWidget *seqWidget2 = seqWidgets.first();
     CHECK_SET_ERR(GTUtilsCv::isCvPresent(os, seqWidget2), "No CV opened");
-    GTGlobals::sleep();
 
     QWidget *parent = GTWidget::findWidget(os, "NC_014267 [NC_014267.1.gb]");
     GTWidget::click(os, GTWidget::findWidget(os, "OP_CV_SETTINGS", parent));
@@ -770,51 +752,51 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
 
-    // Activate Information tab on Options panel at the right edge of UGENE window. Expand Dinucleotides
+    // Activate Information tab on Options panel at the right edge of UGENE window. Expand "Codons"
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
-    QWidget *codonsPanel = GTWidget::findWidget(os, "options_panel_codons_widget");
-    GTWidget::click(os, codonsPanel);
+    QWidget *reportPanel = GTWidget::findWidget(os, "options_panel_codons_widget");
+    GTWidget::click(os, reportPanel);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Whole sequence.
-    QLabel *codonsLabel = GTWidget::findWidgetByType<QLabel *>(os, codonsPanel, "Failed to find label inside codons panel");
-    QString text = codonsLabel->text();
+    QLabel *reportLabel = GTWidget::findWidgetByType<QLabel *>(os, reportPanel, "Failed to find label inside codons panel");
+    QString text = reportLabel->text();
     CHECK_SET_ERR(text.contains("whole sequence"), "Expected to see 'whole sequence' in the report");
-    CHECK_SET_ERR(text.contains("<td><b>L:&nbsp;&nbsp;</b></td><td>44 225 &nbsp;&nbsp;</td>"),
-                  "Codons report does not contain expected entry (L:44225)");
+    CHECK_SET_ERR(text.contains("<td><b>AAA:&nbsp;&nbsp;</b></td><td>16 558 &nbsp;&nbsp;</td>"),
+                  "Amino acids report does not contain expected entry (AAA:16558)");
 
     // Selected regions (same as whole sequence).
     GTUtilsSequenceView::selectSequenceRegion(os, 1, 199950);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    text = codonsLabel->text();
+    text = reportLabel->text();
     CHECK_SET_ERR(text.contains("selected region"), "Expected to see 'selected region' in the report");
-    CHECK_SET_ERR(text.contains("<td><b>L:&nbsp;&nbsp;</b></td><td>14 476 &nbsp;&nbsp;</td>"),
-                  "Codons report does not contain expected entry (L:14476)");
+    CHECK_SET_ERR(text.contains("<td><b>AAA:&nbsp;&nbsp;</b></td><td>5 501 &nbsp;&nbsp;</td>"),
+                  "Amino acids report does not contain expected entry (AAA:5501)");
 
     // Selected regions: 1 codon on direct and 1 on complement frames.
     GTUtilsSequenceView::selectSequenceRegion(os, 19, 21);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    text = codonsLabel->text();
+    text = reportLabel->text();
     CHECK_SET_ERR(text.contains("selected region"), "Expected to see 'selected region' in the report");
-    CHECK_SET_ERR(text.contains("<td><b>L:&nbsp;&nbsp;</b></td><td>1 &nbsp;&nbsp;</td>"),
-                  "Codons report does not contain expected entry (L:1)");
-    CHECK_SET_ERR(text.contains("<td><b>Q:&nbsp;&nbsp;</b></td><td>1 &nbsp;&nbsp;</td>"),
-                  "Codons report does not contain expected entry (Q:1)");
+    CHECK_SET_ERR(text.contains("<td><b>CAA:&nbsp;&nbsp;</b></td><td>1 &nbsp;&nbsp;</td>"),
+                  "Amino acids report does not contain expected entry (CAA:1)");
+    CHECK_SET_ERR(text.contains("<td><b>TTG:&nbsp;&nbsp;</b></td><td>1 &nbsp;&nbsp;</td>"),
+                  "Amino acids report does not contain expected entry (TTG:1)");
 
     GTUtilsSequenceView::selectSequenceRegion(os, 19, 20);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    text = codonsLabel->text();
+    text = reportLabel->text();
     CHECK_SET_ERR(text.contains("selected region"), "Expected to see 'selected region' in the report");
     CHECK_SET_ERR(text.contains("Selection is too small"), "Expected to see 'Selection is too small' in the report");
 
     // Annotation.
     GTUtilsAnnotationsTreeView::createAnnotation(os, "test-group", "test-feature", "1..199950");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    text = codonsLabel->text();
+    text = reportLabel->text();
     CHECK_SET_ERR(text.contains("selected annotation"), "Expected to see 'selected annotation' in the report");
-    CHECK_SET_ERR(text.contains("<td><b>L:&nbsp;&nbsp;</b></td><td>6 975 &nbsp;&nbsp;</td>"),
-                  "Codons report does not contain expected entry (L:6975)");
+    CHECK_SET_ERR(text.contains("<td><b>AAA:&nbsp;&nbsp;</b></td><td>2 929 &nbsp;&nbsp;</td>"),
+                  "Amino acids report does not contain expected entry (AAA:2929)");
 
     // Remove the annotation -> report is reset to the last selected region: 19, 20 that is 'too small'.
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
@@ -822,7 +804,69 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    text = codonsLabel->text();
+    text = reportLabel->text();
+    CHECK_SET_ERR(text.contains("selected region"), "Expected to see 'selected region' in the report/2");
+    CHECK_SET_ERR(text.contains("Selection is too small"), "Expected to see 'Selection is too small' in the report/2");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0022) {
+    //Check Options panel -> Information tab -> Amino acids.
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    // Activate Information tab on Options panel at the right edge of UGENE window. Expand "Amino Acids".
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
+
+    QWidget *reportPanel = GTWidget::findWidget(os, "options_panel_amino_acids_widget");
+    GTWidget::click(os, reportPanel);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Whole sequence.
+    QLabel *reportLabel = GTWidget::findWidgetByType<QLabel *>(os, reportPanel, "Failed to find label inside amino acids panel");
+    QString text = reportLabel->text();
+    CHECK_SET_ERR(text.contains("whole sequence"), "Expected to see 'whole sequence' in the report");
+    CHECK_SET_ERR(text.contains("<td><b>L:&nbsp;&nbsp;</b></td><td>44 225 &nbsp;&nbsp;</td>"),
+                  "Amino acids report does not contain expected entry (L:44225)");
+
+    // Selected region (whole sequence range).
+    GTUtilsSequenceView::selectSequenceRegion(os, 1, 199950);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    text = reportLabel->text();
+    CHECK_SET_ERR(text.contains("selected region"), "Expected to see 'selected region' in the report");
+    CHECK_SET_ERR(text.contains("<td><b>L:&nbsp;&nbsp;</b></td><td>14 476 &nbsp;&nbsp;</td>"),
+                  "Amino acids report does not contain expected entry (L:14476)");
+
+    // Selected regions: 1 amino acid on direct and 1 on complement frames.
+    GTUtilsSequenceView::selectSequenceRegion(os, 19, 21);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    text = reportLabel->text();
+    CHECK_SET_ERR(text.contains("selected region"), "Expected to see 'selected region' in the report");
+    CHECK_SET_ERR(text.contains("<td><b>L:&nbsp;&nbsp;</b></td><td>1 &nbsp;&nbsp;</td>"),
+                  "Amino acids report does not contain expected entry (L:1)");
+    CHECK_SET_ERR(text.contains("<td><b>Q:&nbsp;&nbsp;</b></td><td>1 &nbsp;&nbsp;</td>"),
+                  "Amino acids report does not contain expected entry (Q:1)");
+
+    GTUtilsSequenceView::selectSequenceRegion(os, 19, 20);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    text = reportLabel->text();
+    CHECK_SET_ERR(text.contains("selected region"), "Expected to see 'selected region' in the report");
+    CHECK_SET_ERR(text.contains("Selection is too small"), "Expected to see 'Selection is too small' in the report");
+
+    // Annotation.
+    GTUtilsAnnotationsTreeView::createAnnotation(os, "test-group", "test-feature", "1..199950");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    text = reportLabel->text();
+    CHECK_SET_ERR(text.contains("selected annotation"), "Expected to see 'selected annotation' in the report");
+    CHECK_SET_ERR(text.contains("<td><b>L:&nbsp;&nbsp;</b></td><td>6 975 &nbsp;&nbsp;</td>"),
+                  "Amino acids report does not contain expected entry (L:6975)");
+
+    // Remove the annotation -> report is reset to the last selected region: 19, 20 that is 'too small'.
+    GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "MyDocument.gb"));
+    GTMouseDriver::click();
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    text = reportLabel->text();
     CHECK_SET_ERR(text.contains("selected region"), "Expected to see 'selected region' in the report/2");
     CHECK_SET_ERR(text.contains("Selection is too small"), "Expected to see 'Selection is too small' in the report/2");
 }

@@ -61,7 +61,7 @@ public:
 private:
     QList<GSequenceGraphFactory *> graphFactories;
 
-    virtual void initViewContext(GObjectView *view);
+    void initViewContext(GObjectView *view) override;
 
 private slots:
     void sl_sequenceWidgetAdded(ADVSequenceWidget *);

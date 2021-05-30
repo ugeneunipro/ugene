@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Test reading file: a file with the unusual indent -->
+
+    <load-document index="doc" url="genbank/431443.gb" io="local_file" format="genbank"/>
+
+    <check-num-objects doc="doc" value="2"/>
+
+    <check-document-object-names doc="doc" value="Untitled,Untitled features"/>
+
+</multi-test>

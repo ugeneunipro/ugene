@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-const QString BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE("Align sequences to an alignment by UGENE");
-const QString BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT("Align sequences to an alignment by MAFFT");
+const QString BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE("align-to-alignment-ugene");
+const QString BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT("align-to-alignment-mafft");
 
 }    // namespace U2

@@ -1,0 +1,13 @@
+<multi-test>
+    <load-document index="doc" url="edit_sequence/test.gb" io="local_file" format="genbank"/>
+
+    <Add_Part_To_Sequence_Task
+            doc_name="doc"
+            seq_name="NC_001363 sequence"
+            start_pos="1"
+            inserted_sequence="ACGT"
+            annotation_name="DUMMY_1"
+            expected_sequence="aACGTaatgaaagaccccacccgtaggtggcaag"
+            expected_regions="5,10"
+    />
+</multi-test>

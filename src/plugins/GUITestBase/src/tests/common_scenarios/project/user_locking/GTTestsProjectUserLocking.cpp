@@ -62,9 +62,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
             : Filler(_os, "CreateAnnotationDialog"), buttonName(radioButtonName) {
         }
         void commonScenario() {
-            QWidget *dialog = QApplication::activeModalWidget();
-            GT_CHECK(dialog != NULL, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QRadioButton *btn = dialog->findChild<QRadioButton *>("rbExistingTable");
             GT_CHECK(btn != NULL, "Radio button not found");
 
@@ -117,9 +115,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             : Filler(_os, "CreateAnnotationDialog"), buttonName(radioButtonName) {
         }
         void commonScenario() {
-            QWidget *dialog = QApplication::activeModalWidget();
-            GT_CHECK(dialog != NULL, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QRadioButton *btn = dialog->findChild<QRadioButton *>("rbExistingTable");
             GT_CHECK(btn != NULL, "Radio button not found");
 
@@ -156,7 +152,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     QModelIndex item = GTUtilsProjectTreeView::findIndex(os, "1.gb");
 
     QPoint itemPos = GTUtilsProjectTreeView::getItemCenter(os, "1.gb");
-    GTGlobals::sleep(100);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View"
                                                                         << "action_open_view"));
@@ -177,7 +172,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnnotationDialogComboBoxChecker(os, ""));
     GTKeyboardDriver::keyClick('n', Qt::ControlModifier);
-    GTGlobals::sleep(1000);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_DOCUMENT__LOCK));
     GTMouseDriver::moveTo(itemPos);

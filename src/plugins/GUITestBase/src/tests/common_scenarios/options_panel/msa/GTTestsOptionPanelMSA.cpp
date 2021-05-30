@@ -187,7 +187,6 @@ GUI_TEST_CLASS_DEFINITION(general_test_0005) {
     //    3. Delete Hetrodes_pupus_EF540832
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "Hetrodes_pupus_EF540832");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(300);
 
     //    Expected state: Sequence number is 17
     const int height = GTUtilsOptionPanelMsa::getHeight(os);
@@ -196,7 +195,6 @@ GUI_TEST_CLASS_DEFINITION(general_test_0005) {
     //    4. Select one column. Press delete
     GTUtilsMsaEditor::clickColumn(os, 5);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(300);
 
     //    Expected state: Length is 603
     const int length = GTUtilsOptionPanelMsa::getLength(os);
@@ -386,7 +384,6 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0003) {
     GTComboBox::selectItemByText(os, colorScheme, scheme);
     //    5. Delete scheme which is selected
     GTUtilsMSAEditorSequenceArea::deleteColorScheme(os, scheme);
-    GTGlobals::sleep(500);
 
     //    UGENE not crashes
     //    default color sheme is selected
@@ -867,7 +864,6 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0006) {
 
     //    5. Delete scheme which is selected
     GTUtilsMSAEditorSequenceArea::deleteColorScheme(os, scheme);
-    GTGlobals::sleep(500);
 
     //    UGENE doesn't crash
     const QString currentScheme = GTUtilsOptionPanelMsa::getColorScheme(os);
@@ -1286,7 +1282,6 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0006) {
     GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Isophya_altaica_EF540820");
     //    4. Align with KAlign
     GTWidget::click(os, GTWidget::findWidget(os, "alignButton"));
-    GTGlobals::sleep(1000);
     QString expected = "AAGACTTCTTTTAA\n"
                        "AAGCTTACT---AA";
     GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(0, 0), QPoint(13, 1), expected);
@@ -1406,7 +1401,6 @@ void setOutputPath(HI::GUITestOpStatus &os, const QString &path, const QString &
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, path, name, GTFileDialogUtils::Save));
     GTWidget::click(os, outputFileSelectButton);
-    GTGlobals::sleep(300);
 }
 }    // namespace
 
@@ -1430,7 +1424,6 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0008) {
 
     setOutputPath(os, sandBoxDir, fileName);
     align(os);
-    GTGlobals::sleep(500);
     //    Expected state: file rewrited
     int size = GTFile::getSize(os, sandBoxDir + fileName);
     CHECK_SET_ERR(size == 185, QString("unexpected file size %1").arg(size));
@@ -1464,7 +1457,6 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0009) {
 
     setOutputPath(os, sandBoxDir + dirName, fileName);
     align(os);
-    GTGlobals::sleep(500);
     //    Expected state: error in log: Task {Pairwise alignment task} finished with error: No permission to write to 'pairwise_alignment_test_0009.aln' file.
     QString error = l.getJoinedErrorString();
     const QString expectedFilePath = QFileInfo(filePath).absoluteFilePath();
@@ -1498,7 +1490,6 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0010) {
 
     setOutputPath(os, dirPath, fileName);
     align(os);
-    GTGlobals::sleep(500);
     //    Expected state: error in log: Task {Pairwise alignment task} finished with error: No permission to write to 'COI_transl.aln' file.
     QString error = l.getJoinedErrorString();
     const QString expectedFilePath = QFileInfo(filePath).absoluteFilePath();
@@ -1526,9 +1517,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0011) {
     CHECK_SET_ERR(!initialText.isEmpty(), "line edit is empty");
     GTWidget::click(os, outputFileLineEdit);
     GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
-    GTGlobals::sleep(300);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(300);
     QString finalText = outputFileLineEdit->text();
     //Expected state: empty path can not be set
     CHECK_SET_ERR(initialText == finalText, QString("wrong text! expected: '%1', actual: '%2'").arg(initialText).arg(finalText));
@@ -1543,7 +1532,6 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0001) {
     //    3. Press "Open tree" button. Select data/samples/CLUSTALW/COI.nwk in file dialog
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/Newick", "COI.nwk"));
     GTWidget::click(os, GTWidget::findWidget(os, "OpenTreeButton"));
-    GTGlobals::sleep(1000);
     //    Expected state: tree opened.
     GTWidget::findWidget(os, "treeView");
 }
@@ -1558,7 +1546,6 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0002) {
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default"));
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
     //    4. Fill build tree dialog with defaulb values
     //    Expected state: tree built.
@@ -1676,7 +1663,6 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
     QCheckBox *showNamesCheck = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "showNamesCheck"));
     CHECK_SET_ERR(showNamesCheck != NULL, "showNamesCheck not found");
@@ -1695,7 +1681,6 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
 
     //    3. Uncheck "show names" checkbox.
     GTCheckBox::setChecked(os, showNamesCheck, false);
-    GTGlobals::sleep(500);
 
     //    Expected state: names are not shown, align labels checkbox is disabled
     QList<QGraphicsSimpleTextItem *> names = GTUtilsPhyTree::getVisibleLabels(os, treeView);
@@ -1704,7 +1689,6 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
 
     //    4. Check "show names" checkbox.
     GTCheckBox::setChecked(os, showNamesCheck, true);
-    GTGlobals::sleep(500);
 
     //    Expected state: names are shown, align labels checkbox is enabled
     names = GTUtilsPhyTree::getVisibleLabels(os, treeView);
@@ -1713,7 +1697,6 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
 
     //    5. Uncheck "show distanses" checkbox.
     GTCheckBox::setChecked(os, showDistancesCheck, false);
-    GTGlobals::sleep(500);
 
     //    Expected state: distanses are not shown
     QList<QGraphicsSimpleTextItem *> distanses = GTUtilsPhyTree::getVisibleDistances(os, treeView);
@@ -1721,7 +1704,6 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
 
     //    6. Check "show distanses" checkbox.
     GTCheckBox::setChecked(os, showDistancesCheck, true);
-    GTGlobals::sleep(500);
 
     //    Expected state: distanses are shown
     distanses = GTUtilsPhyTree::getVisibleDistances(os, treeView);
@@ -1802,11 +1784,9 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
-    GTGlobals::sleep();
 //    3. Change labels color.
 #ifndef Q_OS_DARWIN
     setLabelsColor(os, 255, 0, 0);
-    GTGlobals::sleep();
     //    Expected: color changed
     bool b = checkLabelColor(os, "#ff0000");
     CHECK_SET_ERR(b, "color not changed");
@@ -1818,7 +1798,6 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
     QLineEdit *l = fontComboBox->findChild<QLineEdit *>();
     GTLineEdit::setText(os, l, "Serif");
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
-    GTGlobals::sleep(500);
     //    Expected: font changed
     QGraphicsSimpleTextItem *label = GTUtilsPhyTree::getVisibleLabels(os).at(0);
     QString family = label->font().family();
@@ -1840,29 +1819,23 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
 
     //bold
     GTWidget::click(os, boldAttrButton);
-    GTGlobals::sleep(300);
     CHECK_SET_ERR(label->font().bold(), "expected bold font");
     //not bold
     GTWidget::click(os, boldAttrButton);
-    GTGlobals::sleep(300);
     CHECK_SET_ERR(!label->font().bold(), "bold font not canceled");
 
     //italic
     GTWidget::click(os, italicAttrButton);
-    GTGlobals::sleep(300);
     CHECK_SET_ERR(label->font().italic(), "expected italic font");
     //not italic
     GTWidget::click(os, italicAttrButton);
-    GTGlobals::sleep(300);
     CHECK_SET_ERR(!label->font().italic(), "italic font not canceled");
 
     //underline
     GTWidget::click(os, underlineAttrButton);
-    GTGlobals::sleep(300);
     CHECK_SET_ERR(label->font().underline(), "expected underline font");
     //not underline
     GTWidget::click(os, underlineAttrButton);
-    GTGlobals::sleep(300);
     CHECK_SET_ERR(!label->font().underline(), "underline font not canceled");
 }
 
@@ -1960,14 +1933,12 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
-    GTGlobals::sleep();
 //    3. change branch color
 #ifndef Q_OS_DARWIN
     setBranchColor(os, 255, 0, 0);
 #else
     expandPenSettings(os);
 #endif
-    GTGlobals::sleep(500);
     //    Expected state: color changed
     QGraphicsView *treeView = GTWidget::findExactWidget<QGraphicsView *>(os, "treeView");
     CHECK_SET_ERR(treeView != NULL, "tree view not found");
@@ -2043,7 +2014,6 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0002) {
     setConsensusOutputPath(os, filePath);
     //    4. Press export button
     GTWidget::click(os, GTWidget::findWidget(os, "exportBtn"));
-    GTGlobals::sleep(300);
     //    Expected state: error in log: Task {Save document} finished with error: No permission to write to 'COI_transl.aln' file.
     QString error = l.getJoinedErrorString();
     const QString expectedFilePath = QFileInfo(filePath).absoluteFilePath();
@@ -2087,7 +2057,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0004) {
     //0. Change Documents folder to sandbox
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::setDocumentsDirPath(os, sandBoxDir);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -2112,9 +2082,7 @@ GUI_TEST_CLASS_DEFINITION(export_consensus_test_0004) {
         exportConsensusTest0004Filler() {
         }
         virtual void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
@@ -2141,7 +2109,6 @@ GUI_TEST_CLASS_DEFINITION(statistics_test_0001) {
     CHECK_SET_ERR(refSeqWarning->text() == "Hint: select a reference above", QString("Unexpected hint: %1").arg(refSeqWarning->text()));
     //    5. Add Phaneroptera_falcata as reference
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
-    GTGlobals::sleep(500);
     //    Expected state: similarity column appaered
     QString s0 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     CHECK_SET_ERR(s0 == "0%", QString("Unexpected similarity at line 1: %1").arg(s0));
@@ -2151,7 +2118,6 @@ GUI_TEST_CLASS_DEFINITION(statistics_test_0001) {
     //    6. Check counts mode
     QRadioButton *countsButton = GTWidget::findExactWidget<QRadioButton *>(os, "countsButton");
     GTRadioButton::click(os, countsButton);
-    GTGlobals::sleep(500);
 
     s0 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     CHECK_SET_ERR(s0 == "0", QString("Unexpected similarity at line 1: %1").arg(s0));
@@ -2160,7 +2126,6 @@ GUI_TEST_CLASS_DEFINITION(statistics_test_0001) {
     //    7. Check exclude gabs mode
     QCheckBox *excludeGapsCheckBox = GTWidget::findExactWidget<QCheckBox *>(os, "excludeGapsCheckBox");
     GTCheckBox::setChecked(os, excludeGapsCheckBox, true);
-    GTGlobals::sleep(500);
 
     s0 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 7);
     CHECK_SET_ERR(s0 == "110", QString("Unexpected similarity at line 8: %1").arg(s0));
@@ -2212,7 +2177,6 @@ GUI_TEST_CLASS_DEFINITION(statistics_test_0003) {
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(500);
     //    Expected state: similarity changed, updateButton ins disablec
     QString s0 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     CHECK_SET_ERR(s0 == "0%", QString("(1)Unexpected similarity at line 1: %1").arg(s0));
@@ -2230,7 +2194,6 @@ GUI_TEST_CLASS_DEFINITION(statistics_test_0003) {
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(500);
     //    Expected state: similarity not changed
     s0 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     CHECK_SET_ERR(s0 == "0%", QString("(2)Unexpected similarity at line 1: %1").arg(s0));
@@ -2238,7 +2201,6 @@ GUI_TEST_CLASS_DEFINITION(statistics_test_0003) {
     CHECK_SET_ERR(s1 == "18%", QString("(2)Unexpected similarity at line 2: %1").arg(s1));
     //    6. Press autoUpdate button
     GTWidget::click(os, updateButton);
-    GTGlobals::sleep(500);
     //    Expected state: similarity updated
     s0 = GTUtilsMSAEditorSequenceArea::getSimilarityValue(os, 0);
     CHECK_SET_ERR(s0 == "0%", QString("(3)Unexpected similarity at line 1: %1").arg(s0));
@@ -2264,9 +2226,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0001) {
 
     //close and open option panel
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_GENERAL"));
-    GTGlobals::sleep(500);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_GENERAL"));
-    GTGlobals::sleep(500);
 
     //checks
     QLineEdit *sequenceLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "sequenceLineEdit");
@@ -2299,9 +2259,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0002) {
 
     //close and open option panel
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
-    GTGlobals::sleep(500);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
-    GTGlobals::sleep(500);
 
     //checks
     QLineEdit *sequenceLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "sequenceLineEdit");
@@ -2347,9 +2305,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0003) {
 
     //close and open option panel
     GTWidget::click(os, GTWidget::findWidget(os, "OP_PAIRALIGN"));
-    GTGlobals::sleep(500);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_PAIRALIGN"));
-    GTGlobals::sleep(500);
 
     //checks
     QLineEdit *l1 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 1);
@@ -2401,9 +2357,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0003_1) {    //
 
     //close and open option panel
     GTWidget::click(os, GTWidget::findWidget(os, "OP_PAIRALIGN"));
-    GTGlobals::sleep(500);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_PAIRALIGN"));
-    GTGlobals::sleep(500);
 
     //checks
     QLineEdit *l1 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 1);
@@ -2462,7 +2416,6 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004) {
 
     //close and open option panel
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
-    GTGlobals::sleep(500);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
 
     //check settings
@@ -2516,7 +2469,6 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0004_1) {
 
     //close and open option panel
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
-    GTGlobals::sleep(500);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_TREES_WIDGET"));
 
     //checks
@@ -2558,9 +2510,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0005) {
 
     //close and open option panel
     GTWidget::click(os, GTWidget::findWidget(os, "OP_EXPORT_CONSENSUS"));
-    GTGlobals::sleep(500);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_EXPORT_CONSENSUS"));
-    GTGlobals::sleep(500);
 
     //checks
     pathLe = GTWidget::findExactWidget<QLineEdit *>(os, "pathLe");
@@ -2596,9 +2546,7 @@ GUI_TEST_CLASS_DEFINITION(save_parameters_test_0006) {
 
     //close and open option panel
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_STATISTICS_WIDGET"));
-    GTGlobals::sleep(500);
     GTWidget::click(os, GTWidget::findWidget(os, "OP_SEQ_STATISTICS_WIDGET"));
-    GTGlobals::sleep(500);
 
     //checks
     showDistancesColumnCheck = GTWidget::findExactWidget<QCheckBox *>(os, "showDistancesColumnCheck");

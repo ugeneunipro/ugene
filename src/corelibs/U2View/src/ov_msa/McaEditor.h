@@ -60,7 +60,7 @@ public:
 
     void buildStaticToolbar(QToolBar *tb) override;
 
-    void buildStaticMenu(QMenu *menu) override;
+    void buildMenu(QMenu *menu, const QString &type) override;
 
     int getRowContentIndent(int rowId) const override;
 
@@ -108,7 +108,7 @@ protected:
      * The start of the complement reads is they visual end position: such read sequences are read from the right to the left.
      * This way the action works the same as annotation selection in the sequence view.
      */
-    QAction *gotoSelectedReadAction;
+    QAction *gotoSelectedReadAction = nullptr;
 
     QMap<qint64, bool> chromVisibility;
 

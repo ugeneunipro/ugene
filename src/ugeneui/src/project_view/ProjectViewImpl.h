@@ -152,7 +152,6 @@ private:
     //todo: find a better place to do this
     void registerBuiltInObjectViews();
     void unregisterBuiltInObjectViews();
-    void export2Document(ExportDocumentDialogController &dialog, bool tracePath = true) const;
 
     QAction *saveSelectedDocsAction;
     QAction *relocateDocumentAction;

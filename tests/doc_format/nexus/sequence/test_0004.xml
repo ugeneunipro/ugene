@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to check multy sequence size (must be 705) -->
+
+    <load-document index="doc" url="nexus/dna.nex" io="local_file" format="nexus"/>
+    <find-object-by-name index="obj" doc="doc" name="dna" type="OT_MSA"/>
+    <check-Msequence-size obj="obj" value="705"/>
+
+</multi-test>

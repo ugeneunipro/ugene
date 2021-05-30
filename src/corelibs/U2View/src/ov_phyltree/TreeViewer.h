@@ -56,18 +56,18 @@ public:
     TreeViewer(const QString &viewName, GObject *obj, GraphicsRectangularBranchItem *root, qreal scale);
 
     //from GObjectView
-    virtual void buildStaticToolbar(QToolBar *tb);
-    virtual void buildStaticMenu(QMenu *m);
+    void buildStaticToolbar(QToolBar *tb) override;
+    void buildMenu(QMenu *m, const QString &type) override;
 
     void buildMSAEditorStaticToolbar(QToolBar *tb);
 
     void createActions();
 
-    virtual QVariantMap saveState();
-    virtual Task *updateViewTask(const QString &stateName, const QVariantMap &stateData);
-    virtual OptionsPanel *getOptionsPanel() {
-        return optionsPanel;
-    }
+    QVariantMap saveState() override;
+
+    Task *updateViewTask(const QString &stateName, const QVariantMap &stateData) override;
+
+    OptionsPanel *getOptionsPanel() override;
 
     QAction *getPrintAction() const {
         return printAction;

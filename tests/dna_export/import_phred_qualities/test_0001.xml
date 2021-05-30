@@ -1,0 +1,20 @@
+<multi-test>
+
+    <!-- Check sequence quality scores -->
+
+    <load-document index="doc" url="reads/e_coli_1000.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="s0" doc="doc" name="r0" type="OT_SEQUENCE"/>
+    <find-object-by-name index="s1" doc="doc" name="r1" type="OT_SEQUENCE"/>
+    <find-object-by-name index="s2" doc="doc" name="r2" type="OT_SEQUENCE"/>
+    <find-object-by-name index="s3" doc="doc" name="r3" type="OT_SEQUENCE"/>
+
+    <import-phred-qualities seq-list="s0,s1,s2,s3" url="reads/e_coli_1000.qual"/>
+
+    <check-sequence-quality-scores obj="s0" quality="EDCCCBAAAA@@@@?&gt;===&lt;;;9:99987776554"/>
+    <check-sequence-quality-scores obj="s1" quality="EDCCCBAAAA@@@@?&gt;===&lt;;;9:99987776554"/>
+    <check-sequence-quality-scores obj="s2" quality="EDCCCBAAAA@@@@?&gt;===&lt;;;9:99987776554"/>
+    <check-sequence-quality-scores obj="s3" quality="EDCCCBAAAA@@@@?&gt;===&lt;;;9:99987776554"/>
+
+
+</multi-test>

@@ -1,0 +1,16 @@
+<!-- Single reads, two datasets -->
+<multi-test>
+    <remove-temp-dir url="bwa10"/>
+    <create-temp-dir url="bwa10"/>
+    <load-document index="doc" url="e_coli/e_coli_cut.fa" io="local_file" format="fasta"/>
+    <save-document doc="doc" url="bwa10/e_coli_cut.fa" io="local_file" format="fasta"/>
+    <run-cmdline
+            task="!common_data_dir!bwa/workflow/bwa.uwl"
+            ref="!tmp_data_dir!bwa10/e_coli_cut.fa"
+            out_dir="!tmp_data_dir!bwa10"
+            in="!common_data_dir!e_coli/e_coli_reads/e_coli_1_1.fastq;;e_coli/e_coli_reads/e_coli_1_2.fastq"
+    />
+    <compare-sam-by-length file1="bwa10/bwa/out.sam" file2="bwa/workflow/single1_1.sam"/>
+    <compare-sam-by-length file1="bwa10/bwa_1/out.sam" file2="bwa/workflow/single1_2.sam"/>
+    <remove-temp-dir url="bwa10"/>
+</multi-test>

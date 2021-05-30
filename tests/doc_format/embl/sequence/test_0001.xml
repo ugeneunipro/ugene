@@ -1,0 +1,14 @@
+<multi-test>
+
+    <!-- try to check sequence size and alphabet  in broken sequence(Unacceptable simbols like "_") -->
+
+    <load-document index="doc" url="embl/broken/illegal_symbols.embl" io="local_file" format="embl"/>
+    <find-object-by-name index="obj" doc="doc" name="AB000263 standard" type="OT_SEQUENCE"/>
+
+    <check-sequence-size obj="obj" value="74"/>
+    <check-sequence-alphabet obj="obj" value="RAW_ALPHABET"/>
+    <check-sequence-alphabet-by-id obj="obj" value="RAW_ALPHABET"/>
+
+    <check-sequence-part obj="obj" value="__TGCAGAAT" seqstart="10"/>
+
+</multi-test>

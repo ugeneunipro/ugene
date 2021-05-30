@@ -21,6 +21,7 @@
 
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <primitives/GTAction.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
@@ -138,7 +139,7 @@ MSAEditorTreeViewerUI *GTUtilsMsaEditor::getTreeView(GUITestOpStatus &os) {
 MaEditorNameList *GTUtilsMsaEditor::getNameListArea(GUITestOpStatus &os) {
     QWidget *activeWindow = getActiveMsaEditorWindow(os);
     MaEditorNameList *result = GTWidget::findExactWidget<MaEditorNameList *>(os, "msa_editor_name_list", activeWindow);
-    GT_CHECK_RESULT(NULL != result, "MaGraphOverview is not found", NULL);
+    GT_CHECK_RESULT(result != nullptr, "MaGraphOverview is not found", nullptr);
     return result;
 }
 #undef GT_METHOD_NAME
@@ -156,28 +157,27 @@ MSAEditorSequenceArea *GTUtilsMsaEditor::getSequenceArea(GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getSequenceNameRect"
+#define GT_METHOD_NAME "getSequenceNameRectByName"
 QRect GTUtilsMsaEditor::getSequenceNameRect(GUITestOpStatus &os, const QString &sequenceName) {
     MaEditorNameList *nameList = getNameListArea(os);
-    GT_CHECK_RESULT(NULL != nameList, "MSAEditorNameList not found", QRect());
+    GT_CHECK_RESULT(nameList != nullptr, "MSAEditorNameList not found", QRect());
 
-    const QStringList names = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
-    const int rowNumber = names.indexOf(sequenceName);
-    GT_CHECK_RESULT(0 <= rowNumber, QString("Sequence '%1' not found").arg(sequenceName), QRect());
-    return getSequenceNameRect(os, rowNumber);
+    QStringList rowNames = GTUtilsMSAEditorSequenceArea::getCurrentRowNames(os);
+    int viewRowIndex = rowNames.indexOf(sequenceName);
+    GT_CHECK_RESULT(viewRowIndex >= 0, QString("Sequence '%1' not found").arg(sequenceName), QRect());
+    return getSequenceNameRect(os, viewRowIndex);
 }
 #undef GT_METHOD_NAME
 
-#define GT_METHOD_NAME "getSequenceNameRect"
-QRect GTUtilsMsaEditor::getSequenceNameRect(GUITestOpStatus &os, int rowNumber) {
-    Q_UNUSED(os);
-    GT_CHECK_RESULT(0 <= rowNumber, QString("Sequence '%1' not found").arg(rowNumber), QRect());
+#define GT_METHOD_NAME "getSequenceNameRectByIndex"
+QRect GTUtilsMsaEditor::getSequenceNameRect(GUITestOpStatus &os, int viewRowIndex) {
+    GT_CHECK_RESULT(viewRowIndex >= 0, QString("Sequence '%1' not found").arg(viewRowIndex), QRect());
 
+    U2Region nameListYRegion = getEditorUi(os)->getRowHeightController()->getScreenYRegionByViewRowIndex(viewRowIndex);
     MaEditorNameList *nameList = getNameListArea(os);
-    GT_CHECK_RESULT(NULL != nameList, "MSAEditorNameList not found", QRect());
-
-    const U2Region rowScreenRange = getEditorUi(os)->getRowHeightController()->getScreenYRegionByViewRowIndex(rowNumber);
-    return QRect(nameList->mapToGlobal(QPoint(0, rowScreenRange.startPos)), nameList->mapToGlobal(QPoint(nameList->width(), rowScreenRange.endPos())));
+    QPoint topLeftPoint = nameList->mapToGlobal(QPoint(0, (int)nameListYRegion.startPos));
+    QPoint bottomRightPoint = nameList->mapToGlobal(QPoint(nameList->width(), (int)nameListYRegion.endPos()));
+    return QRect(topLeftPoint, bottomRightPoint);
 }
 #undef GT_METHOD_NAME
 
@@ -247,7 +247,7 @@ void GTUtilsMsaEditor::moveToSequence(GUITestOpStatus &os, int rowNumber) {
 
 #define GT_METHOD_NAME "moveToSequenceName"
 void GTUtilsMsaEditor::moveToSequenceName(GUITestOpStatus &os, const QString &sequenceName) {
-    const QRect sequenceNameRect = getSequenceNameRect(os, sequenceName);
+    QRect sequenceNameRect = getSequenceNameRect(os, sequenceName);
     GTMouseDriver::moveTo(sequenceNameRect.center());
 }
 #undef GT_METHOD_NAME
@@ -466,6 +466,21 @@ void GTUtilsMsaEditor::closeActiveTreeTab(GUITestOpStatus &os) {
 #define GT_METHOD_NAME "dragAndDropSequenceFromProject"
 void GTUtilsMsaEditor::dragAndDropSequenceFromProject(GUITestOpStatus &os, const QStringList &pathToSequence) {
     GTUtilsProjectTreeView::dragAndDrop(os, pathToSequence, getEditorUi(os));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "activateAlignSequencesToAlignmentMenu"
+void GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(HI::GUITestOpStatus &os, const QString &partOfMenuItemText) {
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {partOfMenuItemText}, GTGlobals::UseMouse, Qt::MatchContains));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkAlignSequencesToAlignmentMenu"
+void GTUtilsMsaEditor::checkAlignSequencesToAlignmentMenu(HI::GUITestOpStatus &os, const QString &partOfMenuItemText, const PopupChecker::CheckOption &checkOption) {
+    GTUtilsDialog::waitForDialog(os, new PopupCheckerByText(os, {partOfMenuItemText}, checkOption, GTGlobals::UseMouse, Qt::MatchContains));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
 }
 #undef GT_METHOD_NAME
 

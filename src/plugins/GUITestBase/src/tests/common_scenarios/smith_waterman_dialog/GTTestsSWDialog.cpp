@@ -69,7 +69,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
                                                 << "Analyze"
                                                 << "Find pattern [Smith-Waterman]...",
                               GTGlobals::UseMouse);
-    GTGlobals::sleep();
 
     // 4. Check names of alignment files and names of found subsequences
     const QString seqNameMismatchErrorMessage = "sequences name list mismatch detected in file ";
@@ -82,7 +81,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 
         GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, expectedFileName.left(expectedFileName.length() - alignmentFileExtension.length())));
         GTMouseDriver::doubleClick();
-        GTGlobals::sleep();
 
         const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
         CHECK_SET_ERR(2 == sequencesNameList.length(), seqNumberMismatchErrorMessage + expectedFileName);
@@ -131,7 +129,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
                                                 << "Analyze"
                                                 << "Find pattern [Smith-Waterman]...",
                               GTGlobals::UseMouse);
-    GTGlobals::sleep();
 
     // 4. Close sequence view, then reopen it
     GTUtilsMdi::click(os, GTGlobals::Close);
@@ -139,7 +136,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "S"));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep(3000);
 
     // 5. Check names and count of annotations
     QTreeWidget *treeWidget = GTUtilsAnnotationsTreeView::getTreeWidget(os);

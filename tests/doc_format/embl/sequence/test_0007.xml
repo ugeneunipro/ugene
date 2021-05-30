@@ -1,0 +1,14 @@
+<multi-test>
+
+    <!-- in file exist 2 sequences with difrent Alphabets; 1- RAW Alphabet and 2- AMINO_DEFAULT Alphabet-->
+    <!-- test 1st sequence's Alphabet id must be RAW_ALPHABET-->
+
+    <load-document index="doc" url="embl/base_amino_all_symb.embl" io="local_file" format="embl"/>
+
+    <find-object-by-name index="obj" doc="doc" name="AB000263 standard" type="OT_SEQUENCE"/>
+
+    <check-sequence-size obj="obj" value="236"/>
+
+    <check-sequence-alphabet-by-id obj="obj" value="AMINO_EXTENDED_ALPHABET"/>
+
+</multi-test>

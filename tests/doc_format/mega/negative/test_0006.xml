@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Test reading file: file without TITLE -->
+
+    <load-broken-document index="doc" url="mega/MegaTest_10_(with_errors).meg" io="local_file" format="mega"/>
+
+</multi-test>

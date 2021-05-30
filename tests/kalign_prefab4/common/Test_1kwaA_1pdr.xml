@@ -1,0 +1,3 @@
+<multi-test>
+    <kalign-load-align-qscore in="prefab4/input/in/1k/1kwaA_1pdr.gz" out="prefab4/ref/1kwaA_1pdr" qscr="0.859" dqscr="0.01"/>
+</multi-test> 

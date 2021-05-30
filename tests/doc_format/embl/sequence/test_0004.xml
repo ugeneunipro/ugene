@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- in file exist 3 sequences with difrent Alphabets; 1- NUCL DNA basic 2- NUCL DNA extended 3- RAW -->
+    <!-- third sequence's Alphabet id must be RAW-->
+
+    <load-document index="doc" url="embl/base_ext_nucl_all_symb.embl" io="local_file" format="embl"/>
+
+    <find-object-by-name index="obj3" doc="doc" name="AB000265" type="OT_SEQUENCE"/>
+
+    <check-sequence-alphabet-by-id obj="obj3" value="NUCL_DNA_DEFAULT_ALPHABET"/>
+    <check-sequence-size obj="obj3" value="129"/>
+
+</multi-test>

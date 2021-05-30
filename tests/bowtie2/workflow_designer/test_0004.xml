@@ -1,0 +1,26 @@
+<multi-test>
+    <remove-temp-dir url="bowtie2_4"/>
+    <create-temp-dir url="bowtie2_4"/>
+    <load-document index="doc" url="/bowtie2/lambda_virus.fa" io="local_file" format="fasta"/>
+    <save-document doc="doc" url="_tempRef4.fa" io="local_file" format="fasta"/>
+    <run-cmdline
+            task="!common_data_dir!bowtie2/aligner_worker/bowtie2-aligner.uwl"
+            in="!common_data_dir!bowtie2/reads_2.fq"
+            out-dir="!tmp_data_dir!bowtie2_4"
+            ref="!tmp_data_dir!_tempRef4.fa"
+            mode="--end-to-end"
+            mismatches="1"
+            seed-length="4"
+            dpad="0"
+            gbar="20"
+            seed="5"
+            no-mixed="true"
+            no-discordant="true"
+            nofw="true"
+            norc="false"
+            no-overlap="false"
+            no-contain="false"
+    />
+    <compare-sam-by-length file1="bowtie2_4/bowtie/out.sam" file2="bowtie2/aligner_worker/pattern4.sam"/>
+    <remove-temp-dir url="bowtie2_4"/>
+</multi-test>

@@ -1,0 +1,7 @@
+<multi-test>
+    <!-- Relign sequences to a long alignment-->
+    <load-document index="doc1" url="realign_sequences_in_alignment/HIV-1_21x1340.aln" io="local_file" format="clustal"/>
+    <load-document index="doc2" url="realign_sequences_in_alignment/HIV-1_21x1340_long_result.aln" io="local_file" format="clustal"/>
+    <realign in="doc1" rows="19,20,21"/>
+    <compare-malignment doc1="doc1" doc2="doc2"/>
+</multi-test>

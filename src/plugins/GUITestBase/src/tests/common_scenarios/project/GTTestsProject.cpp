@@ -119,7 +119,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     //     3) File path at tooltip for "1CF7.PDB" must be "_common_data/scenarios/sandbox/1CF7.pdb"
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7.pdb"));
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(5, 5));
-    GTGlobals::sleep();
     GTUtilsToolTip::checkExistingToolTip(os, "_common_data/scenarios/sandbox/1CF7.pdb");
 
     // 7. Select "1CF7.PDB" in project tree and press Enter
@@ -127,7 +126,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTMouseDriver::click();
     GTKeyboardDriver::keyClick(Qt::Key_Enter);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
     // Expected state:
     //     1) Document is loaded,
@@ -173,9 +171,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
     QMenu *m = GTMenu::showMainMenu(os, MWMENU_FILE);
     QAction *result = GTMenu::getMenuItem(os, m, ACTION_PROJECTSUPPORT__EXPORT_PROJECT, false);
-    GTGlobals::sleep();
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
-    GTGlobals::sleep(100);
 
     GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
     CHECK_SET_ERR(result == NULL, "Export menu item present in menu without any project created");
@@ -228,7 +224,6 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTMouseDriver::click(Qt::RightButton);
 
     GTUtilsDocument::checkDocument(os, "1.gb.gz");
-    GTGlobals::sleep(100);
     QString fileNames[] = {"_common_data/scenarios/project/test_0012.gb", "_common_data/scenarios/project/1.gb"};
     QString fileContent[2];
 
@@ -281,8 +276,6 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
                                                 << "Access remote database...",
                               GTGlobals::UseKey);
 
-    GTGlobals::sleep();
-
     GTUtilsTaskTreeView::openView(os);
     GTUtilsTaskTreeView::cancelTask(os, "Download remote documents");
 }
@@ -299,7 +292,6 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "murine_copy1.gb"));
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(5, 5));
-    GTGlobals::sleep();
 
     GTUtilsToolTip::checkExistingToolTip(os, ".dir");
 }
@@ -342,7 +334,6 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_REMOVE" << ACTION_EDIT_SELECT_SEQUENCE_FROM_VIEW));
     GTMenu::showContextMenu(os, w);
-    GTGlobals::sleep(1000);
 
     QFont fse1_2 = GTUtilsProjectTreeView::getFont(os, se1);
     CHECK_SET_ERR(!fse1_2.bold(), "se1 is not marked with regular text");
@@ -383,7 +374,6 @@ GUI_TEST_CLASS_DEFINITION(test_0021) {
     CHECK_SET_ERR(font.bold(), "se2 item font is not a bold_1");
 
     GTUtilsMdi::closeActiveWindow(os);
-    GTGlobals::sleep(1000);
     item = GTUtilsProjectTreeView::findIndex(os, "se1");
     font = GTUtilsProjectTreeView::getFont(os, item);
     CHECK_SET_ERR(!font.bold(), "se1 item font is not a bold_2");
@@ -531,7 +521,6 @@ GUI_TEST_CLASS_DEFINITION(test_0034) {
     GTUtilsProjectTreeView::click(os, "murine.gb");
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Open containing folder", PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "murine.gb", Qt::RightButton);
-    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0035) {
@@ -574,7 +563,6 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
     GTUtilsProjectTreeView::click(os, "sars.gb");
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << "Open containing folder", PopupChecker::IsEnabled, GTGlobals::UseMouse));
     GTUtilsProjectTreeView::click(os, "sars.gb", Qt::RightButton);
-    GTGlobals::sleep(500);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0038) {
@@ -604,14 +592,12 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     //check for first document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig1");
     GTThread::waitForMainThread();
-    GTGlobals::sleep();
     title1 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title1 == "Contig1 [BL060C3.ace]", "unexpected title for doc1: " + title1);
 
     //check for second document
     GTUtilsProjectTreeView::doubleClickItem(os, "Contig2");
     GTThread::waitForMainThread();
-    GTGlobals::sleep();
     title2 = GTUtilsMdi::activeWindowTitle(os);
     CHECK_SET_ERR(title2 == "Contig2 [BL060C3.ace]", "unexpected title for doc2: " + title2);
 }
@@ -702,7 +688,6 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     GTClipboard::setText(os, ">human_T1 (UCS\nACGT\nACG");
 
     GTKeyboardDriver::keyClick(Qt::Key_Insert, Qt::ShiftModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "human_T1 (UCS");
 }
@@ -719,7 +704,6 @@ GUI_TEST_CLASS_DEFINITION(test_0042) {
     GTUtilsDialog::waitForDialog(os, new StartupDialogFiller(os));
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     CHECK_SET_ERR(GTUtilsMdi::activeWindowTitle(os).contains("Workflow Designer"), "Mdi window is not a WD window");
 }
@@ -735,7 +719,6 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
     GTClipboard::setText(os, fileContent);
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "Tree");
 }
@@ -766,7 +749,6 @@ GUI_TEST_CLASS_DEFINITION(test_0046) {
     GTClipboard::setText(os, fileContent);
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "1CF7");
 
@@ -786,7 +768,6 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
     GTClipboard::setText(os, fileContent);
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 }
@@ -801,7 +782,6 @@ GUI_TEST_CLASS_DEFINITION(test_0048) {
         GTUtilsProjectTreeView::click(os, "COI.aln");
         GTClipboard::setText(os, QString(">human_T%1\r\nACGT\r\nACG").arg(QString::number(i)));
         GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-        GTGlobals::sleep(500);
         uiLog.trace(QString("item number %1 inserted").arg(i));
     }
 
@@ -920,7 +900,6 @@ GUI_TEST_CLASS_DEFINITION(test_0054) {
 
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Separate, 10, true));
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0055) {
@@ -930,9 +909,7 @@ GUI_TEST_CLASS_DEFINITION(test_0055) {
         CustomScenarioCancel() {
         }
         virtual void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
         }
     };
@@ -945,7 +922,6 @@ GUI_TEST_CLASS_DEFINITION(test_0055) {
 
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new CustomScenarioCancel()));
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0056) {
@@ -960,7 +936,6 @@ GUI_TEST_CLASS_DEFINITION(test_0056) {
 
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, "Plain text"));
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0057) {
@@ -970,9 +945,7 @@ GUI_TEST_CLASS_DEFINITION(test_0057) {
         CheckPathScenario() {
         }
         virtual void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QTreeWidget *treeWidget = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "shortReadsTable", dialog));
             CHECK_SET_ERR(treeWidget != NULL, "Tree widget is NULL");
             QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
@@ -991,7 +964,6 @@ GUI_TEST_CLASS_DEFINITION(test_0057) {
     GTUtilsDialog::waitForDialog(os, new AlignShortReadsFiller(os, new CheckPathScenario()));
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Align));
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0058) {
@@ -1017,7 +989,6 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
 
     GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/FASTA/human_T1.fa");
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 }
@@ -1028,7 +999,6 @@ GUI_TEST_CLASS_DEFINITION(test_0060) {
 
     GTClipboard::setText(os, "ACGT");
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "clipboard", GTGlobals::FindOptions(true, Qt::MatchContains));
 }
@@ -1040,7 +1010,6 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
     GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/FASTA/human_T1.fa");
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -1051,7 +1020,6 @@ GUI_TEST_CLASS_DEFINITION(test_0062) {
     GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/FASTA/human_T1.fa" << dataDir + "samples/HMM/aligment15900.hmm");
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTUtilsProjectTreeView::findIndex(os, "aligment15900");
@@ -1064,12 +1032,10 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
     GTUtilsDialog::waitForDialog(os, new SaveProjectDialogFiller(os, QDialogButtonBox::No));
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Close project");
-    GTGlobals::sleep();
 
     GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/FASTA/human_T1.fa");
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 }
@@ -1083,7 +1049,6 @@ GUI_TEST_CLASS_DEFINITION(test_0064) {
     GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/FASTA/human_T1.fa");
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(sequencesNameList.length() > 0, "No sequences");
@@ -1099,7 +1064,6 @@ GUI_TEST_CLASS_DEFINITION(test_0065) {
     GTClipboard::setText(os, ">human_T1\r\nACGTACG\r\n");
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(sequencesNameList.length() > 0, "No sequences");
@@ -1117,7 +1081,6 @@ GUI_TEST_CLASS_DEFINITION(test_0066) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "MSAE_MENU_COPY"
                                                                         << "paste"));
     GTMouseDriver::click(Qt::RightButton);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(sequencesNameList.length() > 0, "No sequences");
@@ -1131,7 +1094,6 @@ GUI_TEST_CLASS_DEFINITION(test_0067) {
     GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/FASTA/human_T1.fa");
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "human_T1 (UCSC April 2002 chr7:115977709-117855134)");
 }
@@ -1149,7 +1111,6 @@ GUI_TEST_CLASS_DEFINITION(test_0068) {
     GTWidget::click(os, GTAction::button(os, editMode));
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     int len = GTUtilsSequenceView::getLengthOfSequence(os);
     CHECK_SET_ERR(len > 199950, "No sequences pasted");
@@ -1167,7 +1128,6 @@ GUI_TEST_CLASS_DEFINITION(test_0069) {
     GTWidget::click(os, GTAction::button(os, editMode));
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     int len = GTUtilsSequenceView::getLengthOfSequence(os);
     CHECK_SET_ERR(len > 199950, "No sequences pasted");
@@ -1182,7 +1142,6 @@ GUI_TEST_CLASS_DEFINITION(test_0070) {
 
     GTUtilsSequenceView::enableEditingMode(os, true);
     GTKeyboardUtils::paste();
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     int len = GTUtilsSequenceView::getLengthOfSequence(os);
     CHECK_SET_ERR(len > 199950, "No sequences pasted");
@@ -1195,7 +1154,6 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
     GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/Genbank/sars.gb");
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "NC_004718");
 }
@@ -1239,7 +1197,6 @@ GUI_TEST_CLASS_DEFINITION(test_0074) {
     GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/Genbank/sars.gb");
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
-    GTGlobals::sleep();
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsProjectTreeView::findIndex(os, "NC_004718");
 }

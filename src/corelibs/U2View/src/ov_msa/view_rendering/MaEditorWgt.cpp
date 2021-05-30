@@ -41,7 +41,7 @@
 
 #include "MaEditorUtils.h"
 #include "SequenceAreaRenderer.h"
-#include "ov_msa/Export/MSAImageExportTask.h"
+#include "ov_msa/export/MSAImageExportTask.h"
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/DrawHelper.h"
 #include "ov_msa/helpers/ScrollController.h"

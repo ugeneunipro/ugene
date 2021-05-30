@@ -770,8 +770,7 @@ GUI_TEST_CLASS_DEFINITION(test_6102) {
     //    2) Run Smith-waterman search using:
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit *>(os, "teditPattern", dialog), "RPHP*VAS*LK*RHFARHGKIHN*E*KSSDQGQ");
 
             GTRadioButton::click(os, "radioTranslation", dialog);
@@ -814,9 +813,7 @@ GUI_TEST_CLASS_DEFINITION(test_6118) {
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //3. Add two "ILLUMINACLIP" steps with adapters with similar filenames located in different directories to Trimmomatic worker.
             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
             QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
@@ -874,8 +871,7 @@ GUI_TEST_CLASS_DEFINITION(test_6135) {
     class custom : public CustomScenario {
     public:
         virtual void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
     };
@@ -952,8 +948,7 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
     //1. Change workflow designer output folder to sandbox
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QTreeWidget *tree = GTWidget::findExactWidget<QTreeWidget *>(os, "tree", dialog);
             CHECK_SET_ERR(tree != NULL, "QTreeWidget unexpectedly not found");
 
@@ -983,8 +978,7 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
 
     class TrimmomaticCustomScenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QToolButton *addButton = GTWidget::findExactWidget<QToolButton *>(os, "buttonAdd", dialog);
             CHECK_SET_ERR(addButton != NULL, "addButton unexpectedly not found");
 
@@ -1102,8 +1096,7 @@ GUI_TEST_CLASS_DEFINITION(test_6212) {
     //3. Click on the Trimmomatic element, then click on the "Configure steps" parameter in the Property Editor, click on the appeared browse button in the value field.
     class TrimmomaticCustomScenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QDialogButtonBox *buttonBox = GTWidget::findExactWidget<QDialogButtonBox *>(os, "buttonBox", dialog);
             CHECK_SET_ERR(buttonBox != NULL, "QDialogButtonBox unexpectedly not found");
 
@@ -1189,9 +1182,7 @@ GUI_TEST_CLASS_DEFINITION(test_6230) {
     //    Expected state: there is an error message in the report: "The task uses a temporary folder to process the data. The folder path is required not to have spaces. Please set up an appropriate path for the "Temporary files" parameter on the "Directories" tab of the UGENE Application Settings.".
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AlignToReferenceBlastDialogFiller::setReference(os, testDir + "_common_data/sanger/reference.gb", dialog);
 
             QStringList reads;
@@ -1289,9 +1280,7 @@ GUI_TEST_CLASS_DEFINITION(test_6232_3) {
     //3. Select "Actions > Cloning > Digest into fragments".Add "Esp3I" to the "Selected enzymes", disable "Circular Molecule" checkBox and click "OK".
     class Scenario : public CustomScenario {
         void run(GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTCheckBox::setChecked(os, "circularBox", false, dialog);
             GTWidget::click(os, GTWidget::findWidget(os, "addAllButton", dialog));
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -1355,8 +1344,7 @@ GUI_TEST_CLASS_DEFINITION(test_6233) {
     //1. Find the link to the ET downloadp page in the application settings
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
             QLabel *selectToolPackLabel = GTWidget::findExactWidget<QLabel *>(os, "selectToolPackLabel");
             CHECK_SET_ERR(selectToolPackLabel != NULL, "selectToolPackLabel unexpectedly not found");
@@ -1449,9 +1437,7 @@ GUI_TEST_CLASS_DEFINITION(test_6235_1) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTWidget::click(os, GTWidget::findWidget(os, "addAllButton", dialog));
 
             GTCheckBox::setChecked(os, "circularBox", true, dialog);
@@ -1490,9 +1476,7 @@ GUI_TEST_CLASS_DEFINITION(test_6235_2) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTWidget::click(os, GTWidget::findWidget(os, "addAllButton", dialog));
 
             GTCheckBox::setChecked(os, "circularBox", false, dialog);
@@ -1531,9 +1515,7 @@ GUI_TEST_CLASS_DEFINITION(test_6235_3) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTWidget::click(os, GTWidget::findWidget(os, "addAllButton", dialog));
 
             GTCheckBox::setChecked(os, "circularBox", true, dialog);
@@ -1572,9 +1554,7 @@ GUI_TEST_CLASS_DEFINITION(test_6235_4) {
     class Scenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTWidget::click(os, GTWidget::findWidget(os, "addAllButton", dialog));
 
             GTCheckBox::setChecked(os, "circularBox", false, dialog);
@@ -1828,7 +1808,7 @@ GUI_TEST_CLASS_DEFINITION(test_6256) {
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::WorkflowDesigner);
-            QWidget *dialog = QApplication::activeModalWidget();
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QDir().mkpath(tempDir);
             GTFile::setReadOnly(os, tempDir);
             GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "workflowOutputEdit", dialog), tempDir);
@@ -1977,9 +1957,7 @@ GUI_TEST_CLASS_DEFINITION(test_6279) {
     class Custom : public CustomScenario {
     public:
         virtual void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "dialog not found");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("leAnnotationName");
             CHECK_SET_ERR(lineEdit != NULL, "line edit leAnnotationName not found");
 
@@ -2006,9 +1984,7 @@ GUI_TEST_CLASS_DEFINITION(test_6279) {
 GUI_TEST_CLASS_DEFINITION(test_6283) {
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
             //2. Open a python tab
@@ -2096,9 +2072,7 @@ GUI_TEST_CLASS_DEFINITION(test_6298) {
 GUI_TEST_CLASS_DEFINITION(test_6301) {
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
 
             bool isPathOnlyValidation = qgetenv("UGENE_EXTERNAL_TOOLS_VALIDATION_BY_PATH_ONLY") == "1";
@@ -2130,8 +2104,7 @@ GUI_TEST_CLASS_DEFINITION(test_6309) {
         }
 
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
             CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
             QPushButton *pushButton = box->button(QDialogButtonBox::Ok);
@@ -2260,8 +2233,7 @@ GUI_TEST_CLASS_DEFINITION(test_6378) {
     //1. Remove Python from external tools
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "AppSettingsDialogFiller isn't found");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
             AppSettingsDialogFiller::clearToolPath(os, "python");
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
@@ -2337,8 +2309,7 @@ GUI_TEST_CLASS_DEFINITION(test_6397) {
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
             GTGlobals::sleep(1000);
-            QWidget *dialog = QApplication::activeModalWidget();
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QSpinBox *maxDistanceBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "maxDistBox", dialog));
             GTSpinBox::checkLimits(os, maxDistanceBox, 0, 1000000);
 
@@ -2773,9 +2744,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
     //    10. Go to the last page, accept the dialog.
     class ModifyScenario : public CustomScenario {
         void run(GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QWizard *wizard = qobject_cast<QWizard *>(dialog);
             CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
 
@@ -2802,9 +2771,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
     //    Expected state: the command is "a modified command".
     class CheckScenario : public CustomScenario {
         void run(GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QWizard *wizard = qobject_cast<QWizard *>(dialog);
             CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
 
@@ -2865,9 +2832,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
     //    10. Go to the last page, accept the dialog.
     class ModifyScenario : public CustomScenario {
         void run(GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QWizard *wizard = qobject_cast<QWizard *>(dialog);
             CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
 
@@ -2894,9 +2859,7 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
     //    Expected state: the element description on the scene is "a modified description on the scene".
     class CheckScenario : public CustomScenario {
         void run(GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "Active modal widget is nullptr");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QWizard *wizard = qobject_cast<QWizard *>(dialog);
             CHECK_SET_ERR(nullptr != wizard, "Can't cast current dialog to QWizard");
 
@@ -3537,10 +3500,7 @@ GUI_TEST_CLASS_DEFINITION(test_6581) {
 
     // 2. Click "Align sequence to this alignment" button on the toolbarand select attached sequence "Sequence.txt".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/6581/Sequence.txt"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result: the sequence has been aligned to the alignment.
@@ -3555,9 +3515,7 @@ GUI_TEST_CLASS_DEFINITION(test_6586_1) {
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "activeModalWidget is missed");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //3. Skip the first page
             QRadioButton *rbIntegratedTool = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rbIntegratedTool", dialog));
             CHECK_SET_ERR(nullptr != rbIntegratedTool, "rbIntegratedTool not found");
@@ -3617,9 +3575,7 @@ GUI_TEST_CLASS_DEFINITION(test_6586_2) {
 
     class Scenario : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(nullptr != dialog, "activeModalWidget is missed");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             //3. Skip the first page
             QRadioButton *rbIntegratedTool = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rbIntegratedTool", dialog));
             CHECK_SET_ERR(nullptr != rbIntegratedTool, "rbIntegratedTool not found");
@@ -3903,11 +3859,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_1) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/multifasta_with_gap_seq.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"seq2\", \"seq4\".");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected result : sequences made of gaps only are not aligned, i.e. "seq1", "seq3"and "seq5" are aligned.
@@ -3924,23 +3877,16 @@ GUI_TEST_CLASS_DEFINITION(test_6628_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6628_2) {
-    //1.  Open "COI.aln" file.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    //2. Remove the "MAFFT" external toos
-    GTUtilsExternalTools::removeTool(os, "MAFFT");
-
-    //3. Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
-    //4. Select "_common_data\empty_sequences\multifasta_with_gap_seq.fa".
+    // Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
+    // Select "_common_data\empty_sequences\multifasta_with_gap_seq.fa".
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/multifasta_with_gap_seq.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"seq2\", \"seq4\".");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected result : sequences made of gaps only are not aligned, i.e. "seq1", "seq3"and "seq5" are aligned.
@@ -3957,26 +3903,20 @@ GUI_TEST_CLASS_DEFINITION(test_6628_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6628_3) {
-    //1.  Open "COI.aln" file.
+    // Open "COI.aln" file.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    //2. Remove the "MAFFT" external toos
-    GTUtilsExternalTools::removeTool(os, "MAFFT");
-
-    //3. Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
-    //4. Select "_common_data\empty_sequences\gap_only_seq.fa".
+    // Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
+    // Select "_common_data\empty_sequences\gap_only_seq.fa".
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/gap_only_seq.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected result: the alignment is not modified.
+    // Expected result: the alignment is not modified.
     int sequenceNumberAfterAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     CHECK_SET_ERR(sequenceNumberAfterAlignment == sequenceNumberBeforeAlignment,
                   QString("Unexpected number of sequences, expected: %1, current: %2").arg(sequenceNumberBeforeAlignment).arg(sequenceNumberAfterAlignment));
@@ -4004,11 +3944,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_4) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/gap_only_seq.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected result: the alignment is not modified.
@@ -4033,13 +3970,10 @@ GUI_TEST_CLASS_DEFINITION(test_6628_5) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/empty_file.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"empty_file.fa\" file can't be alignment to the \"COI\" alignment - the file is empty.");
-    GTWidget::click(os, align);
-    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsDialog::waitAllFinished(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected result: the COI alignment is not modified,
     int sequenceNumberAfterAlignment = GTUtilsMsaEditor::getSequencesCount(os);
@@ -4050,7 +3984,7 @@ GUI_TEST_CLASS_DEFINITION(test_6628_5) {
     GTUtilsLog::checkContainsError(os, lt, "Task {Load sequences and add to alignment task} finished with error: Data from the \"empty_file.fa\" file can't be alignment to the \"COI\" alignment - the file is empty.");
 
     //The "Undo" button is disabled
-    CHECK_SET_ERR(!GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is enebled, but shouldn't be");
+    CHECK_SET_ERR(!GTUtilsMsaEditor::isUndoEnabled(os), "The \"Undo\" button is enabled, but shouldn't be");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6628_6) {
@@ -4063,11 +3997,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_6) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/incorrect_fasta_header_only.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"incorrect_fasta_header_only.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid.");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitAllFinished(os);
 
@@ -4094,11 +4025,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_7) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/incorrect_multifasta_with_empty_seq.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"incorrect_multifasta_with_empty_seq.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid.");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected result: the COI alignment is not modified,
@@ -4639,9 +4567,7 @@ GUI_TEST_CLASS_DEFINITION(test_6684) {
     //UTEST-38
     class Custom : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QSpinBox *minLenBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "minLenBox", dialog));
             CHECK_SET_ERR(minLenBox->value() == 70, "Min lengths value doesn't match");
 
@@ -4871,9 +4797,7 @@ GUI_TEST_CLASS_DEFINITION(test_6684_1) {
     //UTEST-40
     class Custom100 : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QSpinBox *minLenBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "minLenBox", dialog));
             CHECK_SET_ERR(minLenBox->value() == 100, "Min lengths value doesn't match");
 
@@ -4886,9 +4810,7 @@ GUI_TEST_CLASS_DEFINITION(test_6684_1) {
 
     class Custom70 : public CustomScenario {
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QSpinBox *minLenBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "minLenBox", dialog));
             CHECK_SET_ERR(minLenBox->value() == 70, "Min lengths value doesn't match");
 
@@ -5699,7 +5621,7 @@ GUI_TEST_CLASS_DEFINITION(test_6751) {
     GTWidget::click(os, GTWidget::findWidget(os, "consensusLabel"));
     GTWidget::click(os, GTWidget::findWidget(os, "consensusLabel"));
 
-    // 3. Select "Align" -> "Align with MUSCLE..." and click on the "Align" button.
+    // 3. Select "Align" -> "Align with MUSCLE…" and click on the "Align" button.
 
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default, true, true));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseMouse));
@@ -5729,7 +5651,7 @@ GUI_TEST_CLASS_DEFINITION(test_6754) {
 
     // 1. open document samples/CLUSTALW/COI.aln
     GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
-    // 2. Click "Align > Align with MUSCLE..." and click "Align".
+    // 2. Click "Align > Align with MUSCLE…" and click "Align".
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default, true, true));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseMouse));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
@@ -6366,7 +6288,7 @@ GUI_TEST_CLASS_DEFINITION(test_6903) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_GENERAL"));
 
-    QToolButton *toDnaButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "convertAlphabetButton"));
+    QToolButton *toDnaButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "convertNucleicAlphabetButton"));
     GTWidget::click(os, toDnaButton);
 
     QComboBox *copyType = GTWidget::findExactWidget<QComboBox *>(os, "copyType");
@@ -6520,9 +6442,6 @@ GUI_TEST_CLASS_DEFINITION(test_6941) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
             GTUtilsWizard::setParameter(os, "FASTQ files", QFileInfo(testDir + "_common_data/cmdline/external-tool-support/spades/ecoli_1K_1.fq").absoluteFilePath());
 
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
@@ -6792,12 +6711,12 @@ GUI_TEST_CLASS_DEFINITION(test_6960) {
 GUI_TEST_CLASS_DEFINITION(test_6963) {
     //1. Open Application Settings and check if WindowsVista on Windows or Macintosh on macOS styles are exist
     class CheckStyleScenario : public CustomScenario {
-        void run(HI::GUITestOpStatus& os) override {
-            QWidget* dialog = GTWidget::getActiveModalWidget(os);
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::General);
 
-            QComboBox* styleCombo = GTWidget::findExactWidget<QComboBox*>(os, "styleCombo", dialog);
+            QComboBox *styleCombo = GTWidget::findExactWidget<QComboBox *>(os, "styleCombo", dialog);
 
             QString text;
             if (isOsWindows()) {
@@ -6814,7 +6733,7 @@ GUI_TEST_CLASS_DEFINITION(test_6963) {
     };
 
     GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, new CheckStyleScenario()));
-    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..." }, GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
@@ -7068,7 +6987,8 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
 
     // 2. Create new project and open samples/FASTA/human_T1.fa
     GTUtilsDialog::waitForDialog(os, new SaveProjectAsDialogFiller(os, "New Project", sandBoxDir + "proj.uprj"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "New project...");
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "New project...");
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -7087,7 +7007,8 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, "/", GTGlobals::UseMouse, GTFileDialogUtils::Cancel));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Save, "permission", "permissionBox"));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Yes", "Save document: "));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Exit");
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "Exit");
     //      Expected state: 1) The log has "Task {Shutdown} canceled" message;
     //                      2) Project tree has "annot.gb" document;
     //                      3) Annotations tree has "annot.gb" item.
@@ -7101,7 +7022,8 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
     // 8.2. Click "Yes", then "Cancel".
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Cancel, "permission", "permissionBox"));
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Yes", "Save document: "));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Exit");
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "Exit");
     //      Expected state: similar.
     GTUtilsLog::checkContainsMessage(os, log1);
     GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
@@ -7112,7 +7034,8 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
     // 9.1. Close UGENE.
     // 9.2. Click "Cancel".
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Cancel"));
-    GTMenu::clickMainMenuItem(os, QStringList() << "File" << "Exit");
+    GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                << "Exit");
     //      Expected state: similar.
     GTUtilsLog::checkContainsMessage(os, log2);
     GTUtilsProjectTreeView::getItemCenter(os, "Annotations");
@@ -7125,7 +7048,7 @@ GUI_TEST_CLASS_DEFINITION(test_7000) {
 
     class Clicker : public CustomScenario {
     public:
-        void run(GUITestOpStatus& os) override {
+        void run(GUITestOpStatus &os) override {
             auto labelsList = GTWidget::findLabelByText(os, "Save document", GTWidget::getActiveModalWidget(os));
             QMessageBox::StandardButton b = labelsList.first()->text().endsWith("annot1.gb") ? QMessageBox::Cancel : QMessageBox::No;
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, b));

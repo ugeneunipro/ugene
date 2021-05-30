@@ -70,7 +70,7 @@ public:
 
     void buildStaticToolbar(QToolBar *tb) override;
 
-    void buildStaticMenu(QMenu *n) override;
+    void buildMenu(QMenu *menu, const QString &type) override;
 
     Task *updateViewTask(const QString &stateName, const QVariantMap &stateData) override;
 

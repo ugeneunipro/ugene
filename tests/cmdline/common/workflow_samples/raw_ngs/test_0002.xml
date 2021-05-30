@@ -1,0 +1,35 @@
+<multi-test>
+    <remove-temp-dir url="rna2"/>
+    <create-temp-dir url="rna2"/>
+    <run-cmdline
+            task="!workflow_samples!NGS/raw_ngs/rnaseq/rnaseq_paired.uwl"
+            in="!common_data_dir!cmdline/workflow_samples/raw_ngs/reads_1.fastq.gz"
+            in_mate="!common_data_dir!cmdline/workflow_samples/raw_ngs/reads_2.fastq.gz"
+            out_dir="!tmp_data_dir!rna2"
+            idx_dir="!common_data_dir!cmdline/workflow_samples/raw_ngs/bowtie_index/"
+            idx_name="test"
+            out_mode="2"
+            out_mode1="2"
+            fasqc1_out_dir_type="2"
+            fasqc2_out_dir_type="2"
+            fasqc3_out_dir_type="2"
+            fasqc4_out_dir_type="2"
+            fasqc1_out_dir="!tmp_data_dir!rna2"
+            fasqc2_out_dir="!tmp_data_dir!rna2"
+            fasqc3_out_dir="!tmp_data_dir!rna2"
+            fasqc4_out_dir="!tmp_data_dir!rna2"
+            casava1_out_dir_type="2"
+            casava2_out_dir_type="2"
+            casava1_out_dir="!tmp_data_dir!rna2"
+            casava2_out_dir="!tmp_data_dir!rna2"
+            trim_reads1_out_dir_type="2"
+            trim_reads2_out_dir_type="2"
+            trim_reads1_out_dir="!tmp_data_dir!rna2"
+            trim_reads2_out_dir="!tmp_data_dir!rna2"
+    />
+
+    <compare-sam-by-length file1="rna2/tophat_out/accepted_hits.bam" file2="cmdline/workflow_samples/raw_ngs/accepted_hits2.bam" isbam="1"/>
+
+
+    <remove-temp-dir url="rna2"/>
+</multi-test>

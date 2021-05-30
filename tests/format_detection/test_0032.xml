@@ -1,0 +1,6 @@
+<multi-test>
+
+    <!-- Regression: UGENE-3505 -->
+    <fd-perfect-match url="gff/negative/empty_sequence.gff" format="gff"/>
+
+</multi-test>

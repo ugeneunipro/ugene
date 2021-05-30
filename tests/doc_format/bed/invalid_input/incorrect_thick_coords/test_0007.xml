@@ -1,0 +1,9 @@
+<!-- Verify an invalid BED file that CAN be opened: -->
+<!-- there is only "thickStart" column, no "thickEnd". -->
+
+<multi-test>
+
+    <load-broken-document index="doc" url="bed/invalid_input/incorrect_thick_coords/only_thick_start.bed" io="local_file" format="bed" message="The file does not contain valid annotations"/>
+
+</multi-test>
+

@@ -45,10 +45,10 @@ public:
 
 protected slots:
     void sl_showMSAProfileDialog();
-    void buildMenu(GObjectView *v, QMenu *m);
+    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
 
 protected:
-    virtual void initViewContext(GObjectView *view);
+    void initViewContext(GObjectView *view) override;
 };
 
 class DistanceMatrixMSAEditorContext : public GObjectViewWindowContext {
@@ -58,10 +58,10 @@ public:
 
 protected slots:
     void sl_showDistanceMatrixDialog();
-    void buildMenu(GObjectView *v, QMenu *m);
+    void buildStaticOrContextMenu(GObjectView *view, QMenu *menu) override;
 
 protected:
-    virtual void initViewContext(GObjectView *view);
+    void initViewContext(GObjectView *view) override;
 };
 
 }    // namespace U2

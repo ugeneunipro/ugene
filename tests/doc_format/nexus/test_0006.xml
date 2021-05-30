@@ -1,0 +1,17 @@
+<multi-test>
+
+    <!-- Test reading full example from BioPython-->
+
+    <load-document index="doc" url="nexus/bp_all.nex" io="local_file" format="nexus"/>
+
+    <check-num-objects doc="doc" value="3"/>
+    <check-document-object-names doc="doc" value="bp_all,tree1,tree1_1"/>
+    <check-document-object-types doc="doc" value="OT_MSA,OT_PTREE,OT_PTREE"/>
+
+    <find-object-by-name index="obj" doc="doc" name="bp_all" type="OT_MSA"/>
+
+    <check-numbers-of-sequence-in-Msequence obj="obj" value="9"/>
+    <check-Msequence-size obj="obj" value="48"/>
+
+
+</multi-test>

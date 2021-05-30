@@ -1,0 +1,3 @@
+<!-- The test checks that CLARK can build a database, if there are spaces in the CLARK external tool path. -->
+
+<fail msg="The test is not implemented, because it is impossible to use a specific external tool in the current state."/>

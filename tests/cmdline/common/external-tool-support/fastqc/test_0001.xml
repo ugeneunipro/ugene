@@ -1,0 +1,11 @@
+<multi-test>
+    <remove-temp-dir url="fastqc1"/>
+    <create-temp-dir url="fastqc1"/>
+    <run-cmdline
+            task="!common_data_dir!cmdline/external-tool-support/fastqc/fastqc.uwl"
+            in="!common_data_dir!cmdline/external-tool-support/fastqc/1000gsample.fastq"
+            out_file="!tmp_data_dir!fastqc1/1000gsample_fastqc.html"
+    />
+    <compare-docs doc1="!common_data_dir!cmdline/external-tool-support/fastqc/out1.html" doc2="!tmp_data_dir!fastqc1/1000gsample_fastqc.html" first_n_lines="50"/>
+    <remove-temp-dir url="fastqc1"/>
+</multi-test>

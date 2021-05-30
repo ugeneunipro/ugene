@@ -21,16 +21,12 @@
 
 #include "GTTestsMSAEditorReplaceCharacter.h"
 #include <drivers/GTKeyboardDriver.h>
-#include <drivers/GTMouseDriver.h>
 
 #include <QApplication>
-#include <QCheckBox>
 #include <QComboBox>
-#include <QSpinBox>
 #include <QTableWidget>
 
 #include <U2View/MSAEditor.h>
-#include <U2View/MSAEditorSequenceArea.h>
 
 #include "GTGlobals.h"
 #include "GTUtilsMdi.h"
@@ -42,7 +38,6 @@
 #include "primitives/GTMenu.h"
 #include "primitives/PopupChooser.h"
 #include "system/GTClipboard.h"
-#include "utils/GTKeyboardUtils.h"
 #include "utils/GTUtilsDialog.h"
 
 namespace U2 {
@@ -177,7 +172,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
 
     //3. Press Shift + R keys on the keyboard.
     //Expected result : the character is selected in the replacement mode(i.e.the border of the character are drawn using another color and / or bold).
-    GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
+    GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);    // Enter replacement mode.
 
     //4. Press a key on the keyboard with another character of the same alphabet(e.g C key).
     //Expected result :
@@ -185,20 +180,23 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     //A warning notification appears : Alphabet of the character, inserted into the alignment, differs from the alignment alphabet.The alignment alphabet has been set to
     //"%1".Use "Undo", if you'd like to restore the original alignment.
     //Here "%1" is one of the values : "Standard DNA", "Extended DNA", "Standard RNA", "Extended RNA", "Standard amino acid", "Extended amino acid", "Raw".
+    GTKeyboardDriver::keyClick('r');    // Type 'R' character.
     GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Extended DNA\"");
-    GTKeyboardDriver::keyClick('r');
+    GTUtilsDialog::waitAllFinished(os);
 
     //5. Click "Undo".
     //Expected state : There is NO notifications.
     GTUtilsMsaEditor::undo(os);
+    GTUtilsNotifications::checkNoVisibleNotifications(os);
 
     //6. Click "Redo".
     //Expected state : The warning notification appears again.
-    GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Extended DNA\"");
     GTUtilsMsaEditor::redo(os);
+    GTUtilsNotifications::waitForNotification(os, true, "from \"Standard DNA\" to \"Extended DNA\"");
+    GTUtilsDialog::waitAllFinished(os);
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    const QString selectionContent = GTClipboard::text(os);
+    QString selectionContent = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent == "R", QString("Incorrect selection content: expected - %1, received - %2").arg("R").arg(selectionContent));
 }
 

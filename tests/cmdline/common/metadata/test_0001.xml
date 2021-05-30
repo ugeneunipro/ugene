@@ -1,0 +1,19 @@
+<!-- Metadata transition: extract consensus -->
+<multi-test>
+    <remove-temp-dir url="metadata_0001"/>
+    <create-temp-dir url="metadata_0001"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/metadata/extract-consensus.uwl"
+            in="!common_data_dir!clustal/COI na.aln;clustal/dafault_RNA.aln"
+            out_format="vcf"
+            accum="false"
+            suffix="_consensus"
+            working-dir="metadata_0001"
+    />
+
+    <load-document index="doc1" url="metadata_0001/COI na_consensus.fa" io="local_file" format="fasta" dir="temp"/>
+    <load-document index="doc2" url="metadata_0001/dafault_RNA_consensus.fa" io="local_file" format="fasta" dir="temp"/>
+    <check-num-objects doc="doc1" value="1"/>
+    <check-num-objects doc="doc1" value="1"/>
+</multi-test>

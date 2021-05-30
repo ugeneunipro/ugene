@@ -38,7 +38,7 @@ AbstractAlignmentTaskSettings::AbstractAlignmentTaskSettings(const QVariantMap &
 }
 
 AbstractAlignmentTaskSettings::AbstractAlignmentTaskSettings(const AbstractAlignmentTaskSettings &s)
-    : algorithmName(s.algorithmName),
+    : algorithmId(s.algorithmId),
       realizationName(s.realizationName),
       inNewWindow(s.inNewWindow),
       msaRef(s.msaRef),
@@ -60,7 +60,7 @@ void AbstractAlignmentTaskSettings::setCustomValue(const QString &optionName, co
 
 bool AbstractAlignmentTaskSettings::convertCustomSettings() {
     if (customSettings.contains(ALGORITHM_NAME)) {
-        algorithmName = customSettings.value(ALGORITHM_NAME).toString();
+        algorithmId = customSettings.value(ALGORITHM_NAME).toString();
         customSettings.remove(ALGORITHM_NAME);
     }
     if (customSettings.contains(REALIZATION_NAME)) {

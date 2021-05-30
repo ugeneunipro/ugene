@@ -50,7 +50,7 @@ public:
 protected slots:
         void sl_showDialog();
 protected:
-    virtual void initViewContext(GObjectView* v);
+    void initViewContext(GObjectView* v) override;
     //virtual void makeBaseMenu(GObjectView* v, QMenu* m);
 };
 

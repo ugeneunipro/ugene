@@ -57,9 +57,7 @@ using namespace HI;
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     class TrimmomaticScenario : public CustomScenario {
          void run(HI::GUITestOpStatus &os) {
-             QWidget *dialog = QApplication::activeModalWidget();
-             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+             QWidget *dialog = GTWidget::getActiveModalWidget(os);
              GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
              QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
              GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
@@ -72,9 +70,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QLineEdit *lineEdit = GTWidget::findWidgetByType<QLineEdit *>(os, dialog, "lineedit not found");
             GTLineEdit::setText(os, lineEdit, QFileInfo(dataDir + "samples/FASTQ/eas.fastq").absoluteFilePath());
 
@@ -119,9 +115,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
     class TrimmomaticScenario : public CustomScenario {
          void run(HI::GUITestOpStatus &os) {
-             QWidget *dialog = QApplication::activeModalWidget();
-             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+             QWidget *dialog = GTWidget::getActiveModalWidget(os);
              GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
              QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
              GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
@@ -134,9 +128,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
             QLineEdit *lineEdit1 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "FASTQ file(s) 1 widget"));
             QLineEdit *lineEdit2 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "FASTQ file(s) 2 widget"));
             GTLineEdit::setText(os, lineEdit1, QFileInfo(testDir + "_common_data/metagenomics/workflow_designer/4R-WGA_S31_L001_R1_001.fastq").absoluteFilePath());
@@ -181,9 +172,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     class TrimmomaticScenario : public CustomScenario {
          void run(HI::GUITestOpStatus &os) {
-             QWidget *dialog = QApplication::activeModalWidget();
-             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+             QWidget *dialog = GTWidget::getActiveModalWidget(os);
              GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
              QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
              GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
@@ -196,10 +185,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QLineEdit *lineEdit = GTWidget::findWidgetByType<QLineEdit *>(os, dialog, "lineedit not found");
             GTLineEdit::setText(os, lineEdit, QFileInfo(dataDir + "samples/FASTQ/eas.fastq").absoluteFilePath());
 
@@ -241,9 +227,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 GUI_TEST_CLASS_DEFINITION(test_0004) {
     class TrimmomaticScenario : public CustomScenario {
          void run(HI::GUITestOpStatus &os) {
-             QWidget *dialog = QApplication::activeModalWidget();
-             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+             QWidget *dialog = GTWidget::getActiveModalWidget(os);
              GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
              QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
              GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
@@ -256,9 +240,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
             QLineEdit *lineEdit1 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "FASTQ file(s) 1 widget"));
             QLineEdit *lineEdit2 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "FASTQ file(s) 2 widget"));
             GTLineEdit::setText(os, lineEdit1, QFileInfo(testDir + "_common_data/metagenomics/workflow_designer/4R-WGA_S31_L001_R1_001.fastq").absoluteFilePath());
@@ -301,9 +282,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 GUI_TEST_CLASS_DEFINITION(test_0005) {
     class TrimmomaticScenario : public CustomScenario {
          void run(HI::GUITestOpStatus &os) {
-             QWidget *dialog = QApplication::activeModalWidget();
-             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+             QWidget *dialog = GTWidget::getActiveModalWidget(os);
              GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
              QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
              GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
@@ -316,10 +295,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QLineEdit *lineEdit = GTWidget::findWidgetByType<QLineEdit *>(os, dialog, "lineedit not found");
             GTLineEdit::setText(os, lineEdit, QFileInfo(testDir + "_common_data/metagenomics/workflow_designer/4R-WGA_S31_L001_R2_001.fastq").absoluteFilePath());
 
@@ -360,9 +336,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     class TrimmomaticScenario : public CustomScenario {
          void run(HI::GUITestOpStatus &os) {
-             QWidget *dialog = QApplication::activeModalWidget();
-             CHECK_SET_ERR(NULL != dialog, "Active modal widget is NULL");
-
+             QWidget *dialog = GTWidget::getActiveModalWidget(os);
              GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
              QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
              GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
@@ -375,9 +349,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog, "activeModalWidget is NULL");
-
             QLineEdit *lineEdit1 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "FASTQ file(s) 1 widget"));
             QLineEdit *lineEdit2 = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "FASTQ file(s) 2 widget"));
             GTLineEdit::setText(os, lineEdit1, QFileInfo(testDir + "_common_data/metagenomics/workflow_designer/4R-WGA_S31_L001_R1_001.fastq").absoluteFilePath());

@@ -1,0 +1,13 @@
+<suite test-timeout="60" name="CMDLine ugene precommit tests of read-write assembly workflow workers">
+
+    <test-dir test-ext="*.xml" path="cmdline/common/convert-assembly" test-format="XML" exclude="*"/>
+    <!-- Theese tests are to slow for precommit -->
+    <excluded test="test_0001.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="test_0002.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="test_0003.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="test_0004.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="test_0005.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="test_0006.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="test_0007.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+    <excluded test="test_0008.xml" reason="https://ugene.dev/tracker/browse/UGENE-2965"/>
+</suite>

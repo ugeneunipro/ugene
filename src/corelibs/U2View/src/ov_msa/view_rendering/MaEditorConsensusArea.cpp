@@ -39,7 +39,7 @@
 #include <U2Gui/OptionsPanel.h>
 
 // SANGER_TODO: remove relative paths
-#include "../General/MSAGeneralTabFactory.h"
+#include "../general/MSAGeneralTabFactory.h"
 #include "../MSAEditor.h"
 #include "../MSAEditorConsensusArea.h"
 #include "../MSAEditorSequenceArea.h"

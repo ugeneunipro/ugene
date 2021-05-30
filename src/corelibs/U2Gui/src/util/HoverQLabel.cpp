@@ -21,6 +21,8 @@
 
 #include "HoverQLabel.h"
 
+#include <QMouseEvent>
+
 namespace U2 {
 
 HoverQLabel::HoverQLabel(const QString &html, const QString &normalStyle, const QString &hoveredStyle, const QString &objectName)
@@ -52,6 +54,7 @@ void HoverQLabel::leaveEvent(QEvent *event) {
 void HoverQLabel::mousePressEvent(QMouseEvent *event) {
     QLabel::mousePressEvent(event);
     emit clicked();
+    event->accept();
 }
 
 }    // namespace U2

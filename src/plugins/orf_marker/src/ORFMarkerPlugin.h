@@ -49,7 +49,7 @@ protected slots:
     void sl_showDialog();
 
 protected:
-    virtual void initViewContext(GObjectView *view);
+    void initViewContext(GObjectView *view) override;
 };
 
 class ORFMarkerTests {

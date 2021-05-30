@@ -1,0 +1,25 @@
+<multi-test>
+
+    <create-temp-file url="write-msa-rename-0002.aln" data=">old\nAAAA\n"/>
+    <create-temp-file url="write-msa-rename-0002_1.aln" data=">old\nAAAA\n"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/write/msa-msa.uwl"
+            in="!common_data_dir!cmdline/read-write/write/msa1.aln;cmdline/read-write/write/msa2.aln"
+            out="!tmp_data_dir!write-msa-rename-0002.aln"
+            action="4"
+    />
+
+    <load-document index="doc1" url="write-msa-rename-0002.aln" io="local_file" format="clustal" dir="temp"/>
+    <check-num-objects doc="doc1" value="1"/>
+
+    <load-document index="doc2" url="write-msa-rename-0002_1.aln" io="local_file" format="clustal" dir="temp"/>
+    <check-num-objects doc="doc2" value="1"/>
+
+    <check-temp-file url="write-msa-rename-0002_oldcopy1.aln" exists="1"/>
+    <remove-temp-file url="write-msa-rename-0002_oldcopy1.aln"/>
+
+    <check-temp-file url="write-msa-rename-0002_1_oldcopy1.aln" exists="1"/>
+    <remove-temp-file url="write-msa-rename-0002_1_oldcopy1.aln"/>
+
+</multi-test>

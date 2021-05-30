@@ -1,0 +1,10 @@
+<multi-test>
+
+    <load-document index="doc" url="fastq/solexa.fastq" io="local_file" format="fastq"/>
+
+    <find-object-by-name index="obj" doc="doc" name="SRR001666.1 071112_SLXA-EAS1_s_7:5:1:817:345 length=36" type="OT_SEQUENCE"/>
+    <check-sequence-alphabet-by-id obj="obj" value="NUCL_DNA_DEFAULT_ALPHABET"/>
+    <check-sequence-size obj="obj" value="36"/>
+    <check-sequence-part obj="obj" value="GGGTGATGGCCGCTGCCGATGGCGTCAAATCCCACC" seqstart="0"/>
+
+</multi-test>

@@ -1,0 +1,13 @@
+<multi-test>
+
+    <load-project index="prj" url="project/export/project_new2.uprj"/>
+
+    <load-document-from-project document="murmur.gb"/>
+
+    <find-object-by-name index="ato" doc="murmur.gb" name="NC_001363 features" type="OT_ANNOTATIONS"/>
+
+    <plugin_dna-annotator-search doc="murmur.gb" seq="ato" groups="misc_feature" region_size="589" is_fit_to_region="true" expected_results="2..590"/>
+
+    <unload-project/>
+
+</multi-test>

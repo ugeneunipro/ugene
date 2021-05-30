@@ -1,0 +1,4 @@
+<suite name="Large files indexing plugin tests">
+
+    <test-dir path="indexing_files" test-format="XML" test-ext="*.xml"/>
+</suite>

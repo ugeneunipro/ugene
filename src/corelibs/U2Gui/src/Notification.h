@@ -54,34 +54,39 @@ class U2GUI_EXPORT Notification : public QLabel {
 
 public:
     Notification(const QString &message, NotificationType _type, QAction *_action = 0);
-    ~Notification() {
-    }
 
     void showNotification(int x, int y);
-    QString getText() const;
-    NotificationType getType() const;
-    virtual bool eventFilter(QObject *watched, QEvent *event);
-    void increaseCounter();
 
-    // Switches notification to embedded visual state:
-    // In embedded state notification is shown inside NotificationWidget
+    const QString &getText() const;
+
+    NotificationType getType() const;
+
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
+    void incrementCounter();
+
+    /**
+     * Switches notification to the embedded visual state:
+     * In the embedded state notification is shown inside NotificationWidget.
+     */
     void switchEmbeddedVisualState();
 
 private slots:
     void sl_timeout();
 
 private:
-    void dissapear();
-    void generateCSS(bool isHovered);
-    void generateCSSforCloseButton(bool isHovered);
+    void hideNotification();
+    void updateStyle(bool isHovered);
+    void updateCloseButtonStyle(bool isHovered);
 
 signals:
-    void si_dissapear();
+    /** The signal is emitted after the notification is hidden. */
+    void si_notificationHideEvent();
     void si_delete();
 
 protected:
-    bool event(QEvent *e);
-    void mousePressEvent(QMouseEvent *ev);
+    bool event(QEvent *e) override;
+    void mousePressEvent(QMouseEvent *ev) override;
 
 private:
     QAction *action;
@@ -90,9 +95,9 @@ private:
 
     QString text;
     NotificationType type;
-    int timeCounter;
+    int timeCounter = 0;
     //counter for duplicate notifications
-    int counter;
+    int counter = 0;
 };
 
 class U2GUI_EXPORT NotificationStack : public QObject {
@@ -110,22 +115,24 @@ public:
     bool hasError() const;
     void setFixed(bool val);
 
-    // just a shortcut to write less
+    /** Adds instance of Notification to the notification stack. */
     static void addNotification(const QString &message, NotificationType type, QAction *action = 0);
+
 private slots:
-    void sl_notificationDissapear();
+    /** Called when notification is hidden. The called is the 'Notification' instance. */
+    void sl_onNotificationHidden();
     void sl_delete();
 
 signals:
     void si_changed();
 
 private:
-    QPoint getBottomRightOfMainWindow();    // because of Mac's strange behavior
+    static QPoint getBottomRightOfMainWindow();    // because of Mac's strange behavior
 
     // Adds notification as a child to notification widget
     void addToNotificationWidget(Notification *n);
 
-    NotificationWidget *w;
+    NotificationWidget *notificationWidget;
 
     QList<Notification *> notifications;
     QList<Notification *> notificationsOnScreen;
@@ -139,16 +146,15 @@ private:
     LogLevel and NotificationType can be passed as params.
     Defaults are LogLevel_ERROR and Error_Not, respectively
 */
-
 class U2GUI_EXPORT U2OpStatus2Notification : public U2OpStatus2Log {
 public:
-    U2OpStatus2Notification(NotificationType t = Error_Not, LogLevel l = LogLevel_ERROR)
-        : U2OpStatus2Log(l), notificationType(t) {
+    U2OpStatus2Notification(NotificationType type = Error_Not, LogLevel level = LogLevel_ERROR)
+        : U2OpStatus2Log(level), notificationType(type) {
     }
 
-    virtual void setError(const QString &err) {
-        U2OpStatus2Log::setError(err);
-        NotificationStack::addNotification(err, notificationType);
+    void setError(const QString &error) override {
+        U2OpStatus2Log::setError(error);
+        NotificationStack::addNotification(error, notificationType);
     }
 
 private:

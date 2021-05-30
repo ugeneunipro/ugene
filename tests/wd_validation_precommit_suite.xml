@@ -1,0 +1,4 @@
+<suite name="CMDLine ugene precommit tests of workflow validation" test-timeout="300">
+
+    <test-dir path="cmdline/common/validation" test-format="XML" test-ext="*.xml"/>
+</suite>

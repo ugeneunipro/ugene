@@ -194,7 +194,7 @@ CircularViewSplitter *CircularViewContext::getView(GObjectView *view, bool creat
 }
 
 //////////////////////////////////////////////////////////////////////////
-void CircularViewContext::buildMenu(GObjectView *v, QMenu *m) {
+void CircularViewContext::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
     bool empty = true;
     QList<QObject *> resources = viewResources.value(v);
     foreach (QObject *r, resources) {

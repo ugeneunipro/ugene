@@ -1,0 +1,9 @@
+<!--https://ugene.dev/tracker/browse/UGENE-2773-->
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/custom-script-worker-functions/translateTest/translateTest.uwl"
+                 in="!common_data_dir!cmdline/DNA.fa"
+                 offset="sss"
+                 out="!common_data_dir!cmdline/custom-script-worker-functions/translateTest/result_4.fa"
+                 message="Incorrect value for 'offset', null or default value passed to schema"
+    />
+</multi-test>

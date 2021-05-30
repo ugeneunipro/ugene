@@ -1,0 +1,19 @@
+<multi-test>
+    <dna name="dna_direct"
+         pattern="TCATCCCCCACTTCCA"
+         seq="TATCCAACCAGAAGAGAGGTTTAATCCCGGTCCGACTCAACAGGTGCAAAATTTTCGGTAATTAGGGACTCAGTCCCTAATAGA"
+         strand="direct"
+         start_pos="0"
+         seq_len="84"
+         score="16"
+         threshold="10"
+         aphabet="ACGT"
+         gap_open="-12"
+         gap_extd="-4"
+         subst_matrix="3 -2 -2 -2
+				              -2  3 -2 -2
+				              -2 -2  3 -2
+				              -2 -2 -2  3"
+
+    />
+</multi-test>

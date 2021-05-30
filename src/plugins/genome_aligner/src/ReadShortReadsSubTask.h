@@ -38,23 +38,19 @@ class GenomeAlignerReader;
 class ReadShortReadsSubTask : public Task {
     Q_OBJECT
 public:
-    ReadShortReadsSubTask(SearchQuery **lastQuery,
-                          GenomeAlignerReader *seqReader,
+    ReadShortReadsSubTask(GenomeAlignerReader *seqReader,
                           const DnaAssemblyToRefTaskSettings &settings,
                           AlignContext &alignContext,
-                          quint64 freeMemorySize);
-    virtual void run();
+                          qint64 freeMemorySize);
+    void run() override;
 
-    uint bunchSize;
-    int minReadLength;
-    int maxReadLength;
+    int bunchSize = 0;
 
 private:
-    SearchQuery **lastQuery;
     GenomeAlignerReader *seqReader;
     const DnaAssemblyToRefTaskSettings &settings;
     AlignContext &alignContext;
-    quint64 freeMemorySize;
+    qint64 freeMemorySize;
     qint64 prevMemoryHint;
 
     DataBunch *dataBunch;

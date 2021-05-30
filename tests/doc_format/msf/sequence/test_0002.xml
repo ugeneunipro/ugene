@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to check multy sequence size in proteinsequenses(must be 131) -->
+
+    <load-document index="doc" url="msf/2.msf" io="local_file" format="msf"/>
+    <find-object-by-name index="obj" doc="doc" name="2" type="OT_MSA"/>
+    <check-Msequence-size obj="obj" value="131"/>
+
+</multi-test>

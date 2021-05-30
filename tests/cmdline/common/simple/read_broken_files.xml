@@ -1,0 +1,10 @@
+<multi-test>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_broken_files.uwl"
+            in="!common_data_dir!cmdline/read-write/read_broken_files"
+            out="!tmp_data_dir!read_broken_files.aln"
+            message="Unsupported document format"
+    />
+
+</multi-test>

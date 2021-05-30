@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to check alphabet  in multy sequence(must be NUCL_RNA_EXTENDED_ALPHABET) -->
+
+    <load-document index="doc" url="clustal/COI_na_rna_ext.aln" io="local_file" format="clustal"/>
+    <find-object-by-name index="obj" doc="doc" name="COI_na_rna_ext" type="OT_MSA"/>
+    <check-Msequence-alphabet-by-id obj="obj" value="NUCL_RNA_EXTENDED_ALPHABET"/>
+
+</multi-test>

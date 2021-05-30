@@ -27,6 +27,7 @@
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
+#include <harness/UGUITestBase.h>
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
@@ -42,8 +43,6 @@
 #include <utils/GTThread.h>
 
 #include <QApplication>
-
-#include <harness/UGUITestBase.h>
 
 #include <U2View/ADVConstants.h>
 #include <U2View/MSAEditor.h>
@@ -3086,9 +3085,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
             : Filler(os, "ImageExportForm") {
         }
         void run() override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new DefaultDialogFiller(os, "SelectSubalignmentDialog", QDialogButtonBox::Cancel));
             QComboBox *exportType = dialog->findChild<QComboBox *>("comboBox");
             GTComboBox::selectItemByText(os, exportType, "Custom region", GTGlobals::UseMouse);
@@ -3118,9 +3115,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045_1) {
             : Filler(os, "ImageExportForm") {
         }
         void run() override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QComboBox *exportType = dialog->findChild<QComboBox *>("comboBox");
             CHECK_SET_ERR(exportType->currentText() == "Whole alignment", "Wrong combo box text!");
 
@@ -3169,8 +3164,7 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
         }
 
         void run() override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QDialogButtonBox *box = dialog->findChild<QDialogButtonBox *>("buttonBox");
             CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
             QPushButton *ok = box->button(QDialogButtonBox::Ok);
@@ -3206,9 +3200,7 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
             : Filler(os, "ImageExportForm") {
         }
         void run() override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTUtilsDialog::waitForDialog(os, new SelectSubalignmentChecker(os));
             QPushButton *select = dialog->findChild<QPushButton *>("selectRegionButton");
             GTWidget::click(os, select);
@@ -3239,9 +3231,7 @@ GUI_TEST_CLASS_DEFINITION(test_0048) {
             : Filler(os, "ImageExportForm") {
         }
         void run() override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QComboBox *exportType = dialog->findChild<QComboBox *>("comboBox");
             CHECK_SET_ERR(exportType != NULL, "Cannot find comboBox");
             CHECK_SET_ERR(exportType->currentText() == "Whole alignment", "Wrong combo box text!");
@@ -3348,9 +3338,7 @@ GUI_TEST_CLASS_DEFINITION(test_0052) {
             : Filler(os, "ImageExportForm") {
         }
         void run() override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(dialog != NULL, "activeModalWidget is NULL");
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QComboBox *exportType = dialog->findChild<QComboBox *>("comboBox");
             CHECK_SET_ERR(exportType != NULL, "Cannot find comboBox");
             CHECK_SET_ERR(exportType->currentText() == "Whole alignment", "Wrong combo box text!");
@@ -3582,8 +3570,7 @@ GUI_TEST_CLASS_DEFINITION(test_0055) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QLineEdit *filepathEdit = GTWidget::findExactWidget<QLineEdit *>(os, "filepathEdit", dialog);
             GTLineEdit::setText(os, filepathEdit, dataDir + "samples/CLUSTALW/COI.aln");
 
@@ -3610,8 +3597,7 @@ GUI_TEST_CLASS_DEFINITION(test_0056) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QLineEdit *fileNameEdit = GTWidget::findExactWidget<QLineEdit *>(os, "fileNameEdit", dialog);
             GTLineEdit::setText(os, fileNameEdit, sandBoxDir + "murine.aln");
 
@@ -3638,9 +3624,7 @@ GUI_TEST_CLASS_DEFINITION(test_0057) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
-            GTGlobals::sleep();
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QRadioButton *join2alignmentMode = GTWidget::findExactWidget<QRadioButton *>(os, "join2alignmentMode", dialog);
             GTRadioButton::click(os, join2alignmentMode);
             GTGlobals::sleep();
@@ -3664,7 +3648,7 @@ GUI_TEST_CLASS_DEFINITION(test_0058) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTGlobals::sleep(500);
 
             QWidget *logoWidget = GTWidget::findWidget(os, "logoWidget", dialog);
@@ -3706,8 +3690,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
     public:
         void run(HI::GUITestOpStatus &os) override {
             GTGlobals::sleep(500);
-            QWidget *dialog = QApplication::activeModalWidget();
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QWidget *alphabetColorsFrame = GTWidget::findWidget(os, "alphabetColorsFrame", dialog);
 
             int cellWidth = alphabetColorsFrame->geometry().width() / 6;
@@ -3754,8 +3737,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
     public:
         void run(HI::GUITestOpStatus &os) override {
             GTGlobals::sleep(500);
-            QWidget *dialog = QApplication::activeModalWidget();
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QLineEdit *schemeName = GTWidget::findExactWidget<QLineEdit *>(os, "schemeName", dialog);
             GTLineEdit::setText(os, schemeName, "GUITest_common_scenarios_msa_editor_test_0059_scheme");
 
@@ -3773,7 +3755,7 @@ GUI_TEST_CLASS_DEFINITION(test_0059) {
     class customAppSettingsFiller : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTGlobals::sleep(500);
 
             GTUtilsDialog::waitForDialog(os, new CreateAlignmentColorSchemeDialogFiller(os, new customColorSchemeCreator()));
@@ -3803,7 +3785,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060) {
     class customAppSettingsFiller : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTGlobals::sleep(500);
 
             GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, QFileInfo(sandBoxDir).absoluteFilePath(), "", GTFileDialogUtils::Choose));
@@ -3835,7 +3817,7 @@ GUI_TEST_CLASS_DEFINITION(test_0060) {
     class customAppSettingsFiller1 : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTGlobals::sleep(500);
 
             QLineEdit *colorsDirEdit = GTWidget::findExactWidget<QLineEdit *>(os, "colorsDirEdit", dialog);
@@ -3877,8 +3859,7 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
     public:
         void run(HI::GUITestOpStatus &os) override {
             GTGlobals::sleep(500);
-            QWidget *dialog = QApplication::activeModalWidget();
-
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QLabel *validLabel = GTWidget::findExactWidget<QLabel *>(os, "validLabel", dialog);
             QLineEdit *schemeName = GTWidget::findExactWidget<QLineEdit *>(os, "schemeName", dialog);
 
@@ -3902,7 +3883,7 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
     class customAppSettingsFiller : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTGlobals::sleep(500);
 
             GTUtilsDialog::waitForDialog(os, new CreateAlignmentColorSchemeDialogFiller(os, new customColorSchemeCreator()));
@@ -3986,38 +3967,51 @@ GUI_TEST_CLASS_DEFINITION(test_0062) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0063) {
-    //    Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //    Press "align" button on toolbar. Check state
 
-    class custom : public CustomScenario {
+    class CheckAlignMenuScenario : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QStringList expectedActions = QStringList() << "Align with muscle"
-                                                        << "Align sequences to profile with MUSCLE"
-                                                        << "Align profile to profile with MUSCLE"
-                                                        << "Align with ClustalW"
-                                                        << "Align with ClustalO"
-                                                        << "Align with MAFFT"
-                                                        << "Align with T-Coffee"
-                                                        << "align_with_kalign";
-            QMenu *m = qobject_cast<QMenu *>(QApplication::activePopupWidget());
-            CHECK_SET_ERR(m != NULL, "menu not found");
-            QList<QAction *> menuActions = m->actions();
-            CHECK_SET_ERR(menuActions.size() == 8, QString("unexpected number of actions: %1").arg(menuActions.size()));
-            for (QAction *act : qAsConst(menuActions)) {
-                CHECK_SET_ERR(expectedActions.contains(act->objectName()), act->objectName() + " unexpectidly found in menu");
+            QStringList expectedActionObjectNames = {"Align with muscle",
+                                                     "Align with ClustalW",
+                                                     "Align with ClustalO",
+                                                     "Align with MAFFT",
+                                                     "Align with T-Coffee",
+                                                     "align_with_kalign"};
+            QList<QAction *> menuActions = GTWidget::getActivePopupMenu(os)->actions();
+            CHECK_SET_ERR(menuActions.size() == expectedActionObjectNames.size(), QString("Unexpected number of actions in 'Align' menu: %1").arg(menuActions.size()));
+            for (const QAction *action : qAsConst(menuActions)) {
+                CHECK_SET_ERR(expectedActionObjectNames.contains(action->objectName()), action->objectName() + " is not found in 'Align' menu");
             }
-
             GTKeyboardDriver::keyClick(Qt::Key_Escape);
         }
     };
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new custom()));
-    GTWidget::click(os, GTAction::button(os, "Align"));
+    class CheckAlignToSequenceMenuScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            QStringList expectedActionObjectNames = {"align-to-alignment-ugene",
+                                                     "align-to-alignment-mafft",
+                                                     "Align sequences to profile with MUSCLE",
+                                                     "Align profile to profile with MUSCLE"};
+            QList<QAction *> menuActions = GTWidget::getActivePopupMenu(os)->actions();
+            CHECK_SET_ERR(menuActions.size() == expectedActionObjectNames.size(),
+                          QString("Unexpected number of actions in 'Align to alignment': %1").arg(menuActions.size()));
+            for (const QAction *action : qAsConst(menuActions)) {
+                CHECK_SET_ERR(expectedActionObjectNames.contains(action->objectName()), action->objectName() + " is not found in 'Align to alignment' menu");
+            }
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        }
+    };
 
-    GTGlobals::sleep(500);
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new CheckAlignMenuScenario()));
+    GTWidget::click(os, GTAction::button(os, "Align"));
+    GTUtilsDialog::waitAllFinished(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, new CheckAlignToSequenceMenuScenario()));
+    GTWidget::click(os, GTAction::button(os, "Align sequence(s) to this alignment"));
+    GTUtilsDialog::waitAllFinished(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0064) {
@@ -4279,7 +4273,7 @@ GUI_TEST_CLASS_DEFINITION(test_0074) {
     class custom : public CustomScenario {
     public:
         void run(HI::GUITestOpStatus &os) override {
-            QWidget *dialog = QApplication::activeModalWidget();
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
             GTGlobals::sleep(500);
 
             QStringList list = ExtractSelectedAsMSADialogFiller::getSequences(os, true);

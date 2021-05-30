@@ -53,7 +53,7 @@ private slots:
 private:
     GSequenceGraphFactory *graphFactory;
 
-    virtual void initViewContext(GObjectView *view);
+    void initViewContext(GObjectView *view) override;
 };
 
 }    // namespace U2

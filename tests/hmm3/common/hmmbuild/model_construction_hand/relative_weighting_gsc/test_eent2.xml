@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: options: wgsc hand eent + ere, model: ABC_tran, has SS_cons, RF annotations 
+	cmd: ./hmmbuild -hand -wgsc -eent -ere 1.5 ABC_tran_gsc_hand_eent.hmm ABC_tran.sto -->
+
+    <uhmmer3-build inputFile="stockholm/ABC_tran.sto" outputFile="test_ABC_tran_gsc_hand_eent.hmm"
+                   mc="hand" rw="wgsc" ew="eent 1.5" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/ABC_tran_gsc_hand_eent.hmm" file2="test_ABC_tran_gsc_hand_eent.hmm"
+                        tmp1="no" tmp2="yes"/>
+
+</multi-test>

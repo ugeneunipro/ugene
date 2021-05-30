@@ -31,19 +31,19 @@ class UnitTestSuite : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(UnitTestSuite, "unittest", TaskFlags_NR_FOSCOE);
 
-    void prepare();
-    void cleanup();
+    void prepare() override;
+    void cleanup() override;
 
 protected:
-    void tests_run();
-    void test_run(const QString &testName);
+    void runAllTests();
+    void runTest(const QString &testName);
 
     QMap<QString, QStringList> tests;
 
 private:
-    int passed;
-    int ignored;
-    int failed;
+    int passed = 0;
+    int ignored = 0;
+    int failed = 0;
 };
 
 }    // namespace U2

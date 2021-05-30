@@ -1,0 +1,7 @@
+<multi-test>
+
+    <!-- Task test: serial subtask promoting test -->
+
+    <task-state-order-test subtask_num="30" serial="1"/>
+
+</multi-test>

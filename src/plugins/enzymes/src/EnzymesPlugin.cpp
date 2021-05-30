@@ -207,9 +207,8 @@ void EnzymesADVContext::sl_search() {
 
 // TODO: move definitions to core
 #define PRIMER_ANNOTATION_GROUP_NAME "pair"
-#define PRIMER_ANNOTATION_NAME "primer"
 
-void EnzymesADVContext::buildMenu(GObjectView *v, QMenu *m) {
+void EnzymesADVContext::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(v);
     SAFE_POINT(NULL != av, "Invalid sequence view", );
     CHECK(av->getActiveSequenceContext()->getAlphabet()->isNucleic(), );

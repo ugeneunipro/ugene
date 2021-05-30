@@ -1,0 +1,18 @@
+<!-- Two assemblies -->
+<multi-test>
+    <remove-temp-dir url="assembly_metadata_0002"/>
+    <create-temp-dir url="assembly_metadata_0002"/>
+
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_assembly_write_assembly.uwl"
+            in="!common_data_dir!ace/ace_test_1.ace"
+            ouf_format="bam"
+            working-dir="assembly_metadata_0002"
+    />
+
+    <load-document index="doc" url="assembly_metadata_0002/ace_test_1.bam" io="local_file" format="bam" dir="temp"/>
+    <check-num-objects doc="doc" value="2"/>
+
+    <find-object-by-name index="obj1" doc="doc" name="1" type="OT_ASSEMBLY"/>
+    <find-object-by-name index="obj2" doc="doc" name="2" type="OT_ASSEMBLY"/>
+</multi-test>

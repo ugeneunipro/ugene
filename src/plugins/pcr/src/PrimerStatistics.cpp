@@ -136,7 +136,8 @@ PrimerStatisticsCalculator::PrimerStatisticsCalculator(const QByteArray &sequenc
         case 'N':
             break;
         default:
-            FAIL(QString("Unexpected symbol: ") + c, );
+            initializationError = PrimerStatistics::tr("Unexpected symbol: %1").arg(c);
+            return;
         }
         if (prevC == c) {
             currentRun++;
@@ -222,6 +223,10 @@ QString PrimerStatisticsCalculator::getFirstError() const {
     return result;
 }
 
+QString PrimerStatisticsCalculator::getInitializationError() const {
+    return initializationError;
+}
+
 bool PrimerStatisticsCalculator::isValidGC(QString &error) const {
     double value = getGC();
     CHECK_EXT(value >= GC_BOTTOM, error = getMessage(PrimerStatistics::tr("low GC-content")), false);
@@ -277,10 +282,14 @@ const QString RUNS_RANGE = QString("&lt;=%1 base runs").arg(PrimerStatisticsCalc
 const QString DIMERS_RANGE = QString("&Delta;G &gt;=%1 kcal/mol").arg(PrimerStatisticsCalculator::DIMERS_ENERGY_THRESHOLD);
 }    // namespace
 
-PrimersPairStatistics::PrimersPairStatistics(const QByteArray &forward, const QByteArray &reverse)
-    : forward(forward, PrimerStatisticsCalculator::Forward),
-      reverse(reverse, PrimerStatisticsCalculator::Reverse) {
-    HeteroDimersFinder dimersFinder(forward, reverse);
+PrimersPairStatistics::PrimersPairStatistics(const QByteArray &_forward, const QByteArray &_reverse)
+    : forward(_forward, PrimerStatisticsCalculator::Forward),
+      reverse(_reverse, PrimerStatisticsCalculator::Reverse) {
+    initializationError = forward.getInitializationError().isEmpty() ? reverse.getInitializationError() : forward.getInitializationError();
+    if (!initializationError.isEmpty()) {
+        return;
+    }
+    HeteroDimersFinder dimersFinder(_forward, _reverse);
     dimersInfo = dimersFinder.getResult();
 }
 
@@ -335,6 +344,10 @@ QString PrimersPairStatistics::generateReport() const {
     result += "</table>";
     addDimersToReport(result);
     return result;
+}
+
+QString PrimersPairStatistics::getInitializationError() const {
+    return initializationError;
 }
 
 void PrimersPairStatistics::addDimersToReport(QString &report) const {

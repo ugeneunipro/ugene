@@ -1,0 +1,40 @@
+<multi-test>
+
+    <!-- Test parsing ASN-1 file, find some nodes by name, check them -->
+
+    <load-asn-tree index="node0" url="mmdb/1CRN.prt" io="local_file"/>
+    <check-node-type node="node0" type="ASN_ROOT"/>
+    <check-node-children-count node="node0" children-count="4"/>
+
+    <find-first-node-by-name index="node1" root-node="node0" name="chemical-graph"/>
+    <check-node-type node="node1" type="ASN_SEQ"/>
+    <check-node-children-count node="node1" children-count="2"/>
+
+    <find-first-node-by-name index="node2" root-node="node1" name="pdb-class"/>
+    <check-node-type node="node2" type="ASN_VALUE"/>
+    <check-node-value node="node2" value="Plant Seed Protein"/>
+    <check-node-children-count node="node2" children-count="0"/>
+
+    <find-first-node-by-name index="node3" root-node="node0" name="residue-sequence"/>
+    <check-node-type node="node3" type="ASN_SEQ"/>
+    <check-node-children-count node="node3" children-count="46"/>
+
+    <find-first-node-by-name index="node4" root-node="node0" name="model"/>
+    <check-node-type node="node4" type="ASN_SEQ"/>
+    <check-node-children-count node="node4" children-count="1"/>
+
+    <find-first-node-by-name index="node5" root-node="node4" name="number-of-points"/>
+    <check-node-type node="node5" type="ASN_VALUE"/>
+    <check-node-value node="node5" value="327"/>
+    <check-node-children-count node="node5" children-count="0"/>
+
+    <find-first-node-by-name index="node6" root-node="node4" name="sites"/>
+    <check-node-type node="node6" type="ASN_SEQ"/>
+    <check-node-children-count node="node6" children-count="4"/>
+
+    <find-first-node-by-name index="node7" root-node="node6" name="y"/>
+    <check-node-type node="node7" type="ASN_SEQ"/>
+    <check-node-children-count node="node7" children-count="327"/>
+
+
+</multi-test>

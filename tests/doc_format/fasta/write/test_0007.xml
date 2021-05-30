@@ -1,0 +1,10 @@
+<multi-test>
+    <!-- Read a file with a very long single sequence line, write a copy and check that the copy has 80 chars per line. -->
+
+    <load-document index="doc" url="fasta/pcr_test.fa" io="local_file" format="fasta"/>
+
+    <save-document doc="doc" url="pcr_test_copy.fa" io="local_file" format="fasta"/>
+
+    <compare-docs doc1="!common_data_dir!fasta/pcr_test_80_per_column.fa"
+                  doc2="!tmp_data_dir!pcr_test_copy.fa"/>
+</multi-test>

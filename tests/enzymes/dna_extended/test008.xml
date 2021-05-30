@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!-- Find different enzymes -->
+
+    <load-document index="doc" url="genbank/70Bp.gen" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="seq" doc="doc" name="A" type="OT_SEQUENCE"/>
+
+    <find-enzymes url="enzymes/rebase_v003_t2_com.bairoch.gz" sequence="seq" enzymes="TfiI,NciI,ApoI"
+                  result="TfiI:24..28;NciI:66..70;ApoI:15..20"/>
+
+</multi-test>

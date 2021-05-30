@@ -1,0 +1,5 @@
+<multi-test>
+
+    <check-subst-matrix file="pam180" column="W" row="H" val="-4" alphabet="AMINO_DEFAULT_ALPHABET"/>
+
+</multi-test>

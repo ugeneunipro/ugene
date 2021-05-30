@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<multi-test>
+
+    <!-- uHMMER3 Build test: options: wpb fast eclust, model: fn3, has SS_cons, RF annotations
+	cmd: ./hmmbuild -seed 1024 -fast -wpb -eclust fn3_wpb_fast_eclust.hmm fn3.sto -->
+
+    <uhmmer3-build inputFile="stockholm/fn3.sto" outputFile="test_fn3_wpb_fast_eclust.hmm"
+                   seed="1024" mc="fast" rw="wpb" ew="eclust" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/fn3_wpb_fast_eclust.hmm" file2="test_fn3_wpb_fast_eclust.hmm"
+                        tmp1="no" tmp2="yes"/>
+
+</multi-test>

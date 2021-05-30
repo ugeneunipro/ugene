@@ -30,8 +30,8 @@
 #include "MsaEditorNameList.h"
 #include "MsaEditorSimilarityColumn.h"
 #include "MsaEditorStatusBar.h"
-#include "PhyTrees/MSAEditorMultiTreeViewer.h"
 #include "helpers/MsaRowHeightController.h"
+#include "phy_tree/MSAEditorMultiTreeViewer.h"
 
 namespace U2 {
 

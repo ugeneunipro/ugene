@@ -1,0 +1,9 @@
+<multi-test>
+    <!-- asp.hmm, titin.fa amino alphabet 
+	./hmmsearch Asp.hmm titin.fa > g_asp_hmm_titin_fa.out -->
+
+    <load-document index="seq" url="fasta/titin.fa" io="local_file" format="fasta"/>
+    <hmm3-search hmm="hmmer3/build/Asp.hmm" seqDoc="seq" outputDir="common/hmmsearch/general_search/default_options/amino_al/no_hits/"/>
+    <hmm3-search-compare trueOut="hmmer3/search/g_asp_hmm_titin_fa.out" actualOut="common/hmmsearch/general_search/default_options/amino_al/no_hits/output.txt"/>
+
+</multi-test>

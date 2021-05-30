@@ -61,7 +61,7 @@ protected slots:
     void sl_search();
 
 protected:
-    virtual void initViewContext(GObjectView* view);
+    void initViewContext(GObjectView* view) override;
 };
 
 class SiteconAlgorithmTests {

@@ -21,7 +21,7 @@
 
 #include "McaEditorOverviewArea.h"
 
-#include "Overview/MaSangerOverview.h"
+#include "overview/MaSangerOverview.h"
 
 namespace U2 {
 

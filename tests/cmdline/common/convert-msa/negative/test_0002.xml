@@ -1,0 +1,10 @@
+<!--scheme fails on validation. error not written in log-->
+<multi-test>
+    <run-cmdline
+            task="convert-msa"
+            in=""
+            out="!tmp_data_dir!convert_msan0002_tmp.msf"
+            format="msf"
+            message="Required parameter has no datasets specified: Input file(s)"/>
+
+</multi-test>

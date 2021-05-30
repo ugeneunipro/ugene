@@ -1,0 +1,12 @@
+<!--scheme fails on validation. error not written in log-->
+<multi-test>
+    <run-cmdline task="find-sw"
+                 ref=""
+                 out="!tmp_data_dir!find_swn0009_tmp.gbk"
+                 ptrn="!common_data_dir!cmdline/find-sw/patterns/acg.fa"
+                 score="100"
+                 matrix="auto"
+                 filter="none"
+                 message="Read Reference Sequence: Required parameter has no datasets specified: Input file(s) (use --ref option)"
+    />
+</multi-test>

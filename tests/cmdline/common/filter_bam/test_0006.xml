@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline
+            task="!workflow_samples!NGS/unmapped_reads.uwl"
+            in="!common_data_dir!bam/Mycobacterium.sorted.bam"
+            out_mode="2"
+            out_dir="!tmp_data_dir!"
+            out_name="bam_filter_test_0006.bam"
+    />
+    <compare-sam-by-length file1="bam_filter_test_0006.bam" file2="cmdline/filter_bam/out6.bam" isbam="1"/>
+</multi-test>

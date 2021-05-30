@@ -62,7 +62,7 @@ void ExportAlignmentViewItemsController::initViewContext(GObjectView *v) {
     addViewResource(msaed, mc);
 }
 
-void ExportAlignmentViewItemsController::buildMenu(GObjectView *v, QMenu *m) {
+void ExportAlignmentViewItemsController::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
     QList<QObject *> resources = viewResources.value(v);
     assert(resources.size() == 1);
     QObject *r = resources.first();

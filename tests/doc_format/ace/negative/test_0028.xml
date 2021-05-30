@@ -1,0 +1,5 @@
+<multi-test>
+
+    <load-broken-document url="ace/one_string_eol.ace" format="ace" io="local_file" message="File doesn't contain any msa objects"/>
+
+</multi-test>

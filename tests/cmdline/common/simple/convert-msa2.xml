@@ -1,0 +1,7 @@
+<multi-test>
+    <run-cmdline task="convert-msa" in="!common_data_dir!cmdline/DNA_nucl_ext_rand_seq_2.aln" out="!tmp_data_dir!convert_msa2_tmp.msf" format="msf"/>
+    <load-document index="doc1" url="cmdline/DNA_nucl_ext_rand_seq_2.aln" io="local_file" format="clustal"/>
+    <load-document index="doc2" url="convert_msa2_tmp.msf" io="local_file" format="msf" dir="temp"/>
+    <compare-Msequences-in-two-objects doc="doc1" value="doc2"/>
+
+</multi-test>

@@ -1,0 +1,14 @@
+<multi-test>
+    <run-cmdline task="!workflow_samples!Alignment/extract_msa_consensus_as_text.uwl"
+                 in="!common_data_dir!clustal/COI na.aln;clustal/dafault_RNA.aln"
+                 format="text"
+                 algorithm="Default"
+                 threshhold="100"
+                 working-dir=""
+    />
+
+    <check-temp-file url="COI na.aln_consensus.txt" exists="1"/>
+
+    <check-temp-file url="dafault_RNA.aln_consensus.txt" exists="1"/>
+
+</multi-test>

@@ -1,0 +1,13 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_ali_write_ali.uws"
+            in="!common_data_dir!cmdline/DNA_nucl_ext_rand_seq.aln"
+            out="!tmp_data_dir!write_ali_0007.meg"
+            format="mega"/>
+
+    <load-document index="doc1" url="write_ali_0007.meg" io="local_file" format="mega" dir="temp"/>
+    <load-document index="doc2" url="cmdline/DNA_nucl_ext_rand_seq.aln" io="local_file" format="clustal"/>
+    <compare-Msequences-in-two-objects doc="doc1" value="doc2"/>
+
+
+</multi-test>

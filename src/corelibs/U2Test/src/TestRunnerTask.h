@@ -55,7 +55,9 @@ protected:
     int finishedTests;
     int totalTests;
     QList<GTestState *> awaitingTests;
-    QList<GTestEnvironment *> mergedSuites;
+
+    /** All tests environments created during the run. Will be deleted with the test. */
+    QList<GTestEnvironment *> allTestEnvironments;
 };
 
 class U2TEST_EXPORT LoadTestTask : public Task {

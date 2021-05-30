@@ -1,0 +1,3 @@
+<suite name="Sitecon tests">
+    <test-dir path="Sitecon/common" test-format="XML" test-ext="*.xml"/>
+</suite>

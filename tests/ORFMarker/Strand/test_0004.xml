@@ -1,0 +1,11 @@
+<multi-test>
+    <!-- Checking options: reverse strand search, include stop codon -->
+    <load-document index="doc" url="ORFMarker/test2.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="ato" doc="doc" name="NC_001363" type="OT_SEQUENCE"/>
+
+    <plugin_orf-marker-search seq="ato" strand="compliment" min_length="0" terminates_with_region="true"
+                              starts_with_init_codon="true" allow_alt_init_codons="false" include_stop_codon="true"
+                              translation_id="1" expected_results="4..15"/>
+
+</multi-test>

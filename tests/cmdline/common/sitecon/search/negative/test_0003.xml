@@ -1,0 +1,9 @@
+<multi-test>
+    <run-cmdline task="sitecon-search"
+                 in="!common_data_dir!/Sitecon/Algorithm/DICTY_part.fa"
+                 out="!tmp_data_dir!DICTY_part_actual.gb"
+                 inmodel="!common_data_dir!/Sitecon/Algorithm/siteconBuilds/e2f_44_nw.sitecon"
+                 min-err1="-0.1"
+                 message="Min Err1 can not be less 0 or more 1"
+    />
+</multi-test>

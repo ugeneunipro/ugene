@@ -1,0 +1,8 @@
+<multi-test>
+    <run-cmdline task="extract_consensus_string"
+                 in=""
+                 out="!tmp_data_dir!extract_consensus_string_test_threshold_0001.txt"
+                 algorithm="Default"
+                 threshold="70"
+                 message="Read Alignment: Required parameter has no datasets specified: Input file(s) (use --in option)"/>
+</multi-test>

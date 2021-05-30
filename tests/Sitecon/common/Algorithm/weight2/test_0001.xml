@@ -1,0 +1,9 @@
+<multi-test>
+
+    <load-document index="doc" url="Sitecon/Algorithm/human_T1.fa" io="local_file" format="fasta"/>
+
+    <find-object-by-name index="ato" doc="doc" name="human_T1 (UCSC April 2002 chr7:115977709-117855134)" type="OT_SEQUENCE"/>
+
+    <sitecon-search_task sequence="ato" model="Sitecon/Algorithm/siteconBuilds/e2f_44_w2.sitecon" treshhold="77" strand="both" expected_results="167186,79.2,compliment;89992,77.7,compliment;148634,77.5,direct;165403,77.8,direct;305,79.4,compliment"/>
+
+</multi-test>

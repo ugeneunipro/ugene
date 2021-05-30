@@ -65,7 +65,7 @@ MAFFTSupport::MAFFTSupport()
     versionRegExp = QRegExp("MAFFT v(\\d+\\.\\d+\\w)");
     toolKitName = "MAFFT";
 
-    AppContext::getAlignmentAlgorithmsRegistry()->registerAlgorithm(new MafftAddToAligmnentAlgorithm());
+    AppContext::getAlignmentAlgorithmsRegistry()->registerAlgorithm(new MafftAddToAlignmentAlgorithm());
 }
 
 void MAFFTSupport::sl_runWithExtFileSpecify() {
@@ -126,8 +126,9 @@ void MAFFTSupportContext::initViewContext(GObjectView *view) {
     bool objLocked = msaEditor->getMaObject()->isStateLocked();
     bool isMsaEmpty = msaEditor->isAlignmentEmpty();
 
-    AlignMsaAction *alignAction = new AlignMsaAction(this, MAFFTSupport::ET_MAFFT_ID, view, tr("Align with MAFFT..."), 2000);
+    auto alignAction = new AlignMsaAction(this, MAFFTSupport::ET_MAFFT_ID, view, tr("Align with MAFFT..."), 2000);
     alignAction->setObjectName("Align with MAFFT");
+    alignAction->setMenuTypes({MsaEditorMenuType::ALIGN});
 
     addViewAction(alignAction);
     alignAction->setEnabled(!objLocked && !isMsaEmpty);
@@ -137,7 +138,7 @@ void MAFFTSupportContext::initViewContext(GObjectView *view) {
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_MAFFT()));
 }
 
-void MAFFTSupportContext::buildMenu(GObjectView *view, QMenu *m) {
+void MAFFTSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
     QList<GObjectViewAction *> actions = getViewActions(view);
     QMenu *alignMenu = GUIUtils::findSubMenu(m, MSAE_MENU_ALIGN);
     SAFE_POINT(alignMenu != NULL, "alignMenu", );

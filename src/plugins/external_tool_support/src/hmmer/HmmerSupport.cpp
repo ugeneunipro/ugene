@@ -287,7 +287,7 @@ void HmmerMsaEditorContext::initViewContext(GObjectView *view) {
     addViewAction(action);
 }
 
-void HmmerMsaEditorContext::buildMenu(GObjectView *view, QMenu *menu) {
+void HmmerMsaEditorContext::buildStaticOrContextMenu(GObjectView *view, QMenu *menu) {
     MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
     SAFE_POINT(msaEditor != nullptr, "Msa Editor is NULL", );
     SAFE_POINT(menu != nullptr, "Menu is NULL", );

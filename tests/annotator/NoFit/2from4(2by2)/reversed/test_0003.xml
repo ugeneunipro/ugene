@@ -1,0 +1,9 @@
+<multi-test>
+    <!-- region == borders, 2 results-->
+    <load-document index="doc" url="annotator/test2reversed.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="ato" doc="doc" name="NC_001363 features" type="OT_ANNOTATIONS"/>
+
+    <plugin_dna-annotator-search doc="doc" seq="ato" groups="A,B" region_size="11" is_fit_to_region="false" expected_results="53..63,40..50"/>
+
+</multi-test>

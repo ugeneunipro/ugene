@@ -1,0 +1,7 @@
+<suite name="Metagenomics tests">
+    <test-dir path="metagenomics" test-format="XML" test-ext="*.xml"/>
+
+    <excluded test="cmdline/clark/spaces/test_0001.xml" reason="Test is not implemented because of test system restrictions: it needs to launch UGENE from the folder with spaces"/>
+    <excluded test="cmdline/clark/spaces/test_0004.xml" reason="Test is not implemented because of test system restrictions: it needs to use an external tool from specific folder with spaces"/>
+    <excluded test="cmdline/clark/spaces/test_0005.xml" reason="Test is not implemented because of test system restrictions: it needs to have taxonomy data in a specific folder with spaces"/>
+</suite>

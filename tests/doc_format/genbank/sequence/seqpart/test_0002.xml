@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!--simple test try to find part in sequence(NUKL DNA DEFAULT ALPHABET)-->
+
+    <load-document index="doc" url="genbank/murine_sarcoma.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="obj" doc="doc" name="NC_001363" type="OT_SEQUENCE"/>
+
+    <check-sequence-part obj="obj" value="TGCCCCGGCTCAGGGCCAAGAACAGATGAGACAGCTGAGTGATGGGCCAAACAGGATATCTGTGGTAAGCAGTTCCTGCCCCGGCTCGGGGCCAAGAACAGATGGTCCCC" seqstart="5400"/>
+    <check-sequence-part obj="obj" value="CCCC" seqstart="10" seqend="13"/>
+</multi-test>

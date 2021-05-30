@@ -23,6 +23,7 @@
 #define _U2_GT_UTILS_MSA_EDITOR_H_
 
 #include <GTGlobals.h>
+#include <primitives/PopupChooser.h>
 
 #include <QColor>
 #include <QRect>
@@ -63,7 +64,7 @@ public:
     static MSAEditorSequenceArea *getSequenceArea(HI::GUITestOpStatus &os);
 
     static QRect getSequenceNameRect(HI::GUITestOpStatus &os, const QString &sequenceName);
-    static QRect getSequenceNameRect(HI::GUITestOpStatus &os, int rowNumber);
+    static QRect getSequenceNameRect(HI::GUITestOpStatus &os, int viewRowIndex);
     static QRect getColumnHeaderRect(HI::GUITestOpStatus &os, int column);
 
     static void replaceSequence(HI::GUITestOpStatus &os, const QString &sequenceToReplace, int targetPosition);
@@ -111,6 +112,12 @@ public:
     static void closeActiveTreeTab(HI::GUITestOpStatus &os);
 
     static void dragAndDropSequenceFromProject(HI::GUITestOpStatus &os, const QStringList &pathToSequence);
+
+    /** Clicks "Align sequence(s) to alignment" button and selects a menu item with the given text. */
+    static void activateAlignSequencesToAlignmentMenu(HI::GUITestOpStatus &os, const QString &partOfMenuItemText);
+
+    /** Clicks "Align sequence(s) to alignment" button has the given state. */
+    static void checkAlignSequencesToAlignmentMenu(HI::GUITestOpStatus &os, const QString &partOfMenuItemText, const HI::PopupChecker::CheckOption &checkOption);
 };
 
 }    // namespace U2

@@ -1,0 +1,9 @@
+<multi-test>
+
+    <!-- try to check multy sequence size (must be 234) -->
+
+    <load-document index="doc" url="phylip/seq_protein.ph" io="local_file" format="phylip-sequential"/>
+    <find-object-by-name index="obj" doc="doc" name="seq_protein" type="OT_MSA"/>
+    <check-Msequence-size obj="obj" value="234"/>
+
+</multi-test>

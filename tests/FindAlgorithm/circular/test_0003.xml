@@ -1,0 +1,17 @@
+<multi-test>
+
+    <load-document index="doc" url="FindAlgorithm/test_06.gb" io="local_file" format="genbank"/>
+
+    <find-algorithm document="doc"
+                    sequence="seq1"
+                    strand="direct"
+                    pattern="GGCATATCAAT"
+                    source=""
+                    range="0..66"
+                    max_error="4"
+                    algorithm="subst"
+                    ambig=""
+                    expected="circular(59..66,0..4)"
+    />
+
+</multi-test>

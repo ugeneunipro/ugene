@@ -1,0 +1,4 @@
+<suite name="Smith Waterman performance tests">
+
+    <test-dir path="smith_waterman_perf" test-format="XML" test-ext="*.xml"/>
+</suite>

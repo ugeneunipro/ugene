@@ -1,0 +1,7 @@
+<multi-test>
+    <!-- MAFFT aligning big sequences (length of sequence(s) ≥⅓ alignment length -->
+    <load-document index="doc1" url="realign_sequences_in_alignment/COI_and_3_big_sequence.aln" io="local_file" format="clustal"/>
+    <load-document index="doc2" url="realign_sequences_in_alignment/COI_and_3_big_sequence_result.aln" io="local_file" format="clustal"/>
+    <realign in="doc1" rows="18,19,20"/>
+    <compare-malignment doc1="doc1" doc2="doc2"/>
+</multi-test>

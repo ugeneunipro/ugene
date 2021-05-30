@@ -99,7 +99,7 @@ static QString generateTmpFileUrl(const QString &filePathAndPattern) {
 }
 
 void MafftAddToAlignmentTask::prepare() {
-    algoLog.info(tr("Align sequences to an existing alignment by MAFFT started"));
+    algoLog.info(tr("Align sequences to alignment with MAFFT started"));
 
     MSAUtils::removeColumnsWithGaps(inputMsa, inputMsa->getNumRows());
 
@@ -325,11 +325,14 @@ AbstractAlignmentTask *MafftAddToAlignmentTaskFactory::getTaskInstance(AbstractA
     return new MafftAddToAlignmentTask(*addSettings);
 }
 
-MafftAddToAligmnentAlgorithm::MafftAddToAligmnentAlgorithm()
-    : AlignmentAlgorithm(AddToAlignment, BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT, new MafftAddToAlignmentTaskFactory(), NULL) {
+MafftAddToAlignmentAlgorithm::MafftAddToAlignmentAlgorithm()
+    : AlignmentAlgorithm(AddToAlignment,
+                         BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT,
+                         AlignmentAlgorithmsRegistry::tr("Align sequences to alignment with MAFFT…"),
+                         new MafftAddToAlignmentTaskFactory()) {
 }
 
-bool MafftAddToAligmnentAlgorithm::isAlgorithmAvailable() const {
+bool MafftAddToAlignmentAlgorithm::isAlgorithmAvailable() const {
     return AppContext::getExternalToolRegistry()->getById(MAFFTSupport::ET_MAFFT_ID)->isValid();
 }
 

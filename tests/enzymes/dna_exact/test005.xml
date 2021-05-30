@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!-- Find 2 instance of enzyme with 'N' in the middle -->
+
+    <load-document index="doc" url="genbank/70Bp.gen" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="seq" doc="doc" name="A" type="OT_SEQUENCE"/>
+
+    <find-enzymes url="enzymes/rebase_v003_t2_com.bairoch.gz" sequence="seq" enzymes="HinfI"
+                  result="HinfI:24..28,32..36"/>
+
+</multi-test>

@@ -1,1 +1,1 @@
-#include "../../corelibs/U2View/src/ov_msa/General/MSAGeneralTabFactory.h"
+#include "../../corelibs/U2View/src/ov_msa/general/MSAGeneralTabFactory.h"

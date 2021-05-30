@@ -1,0 +1,14 @@
+<multi-test>
+
+    <!-- test for annotation complement flag -->
+
+    <load-document index="doc" url="embl/Haemophilus.emb" io="local_file" format="embl"/>
+
+    <find-object-by-name index="obj" doc="doc" name="AY027935   standard features" type="OT_ANNOTATIONS"/>
+
+    <find-annotation-by-number index="annot" obj="obj" number="2"/>
+
+    <check-annotation-location annotation="annot" location="1712..2476" complement="1"/>
+
+
+</multi-test>

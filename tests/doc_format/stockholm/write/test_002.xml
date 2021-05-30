@@ -1,0 +1,10 @@
+<multi-test>
+
+    <!-- Test save option, check sequences save correct, fasta to fasta-->
+
+    <load-document index="doc" url="stockholm/14-3-3.sto" io="local_file" format="stockholm"/>
+    <save-document doc="doc" url="_temp0002.sto" io="local_file" format="stockholm"/>
+    <load-document index="doc2" url="_temp0002.sto" io="local_file" format="stockholm" dir="temp"/>
+    <compare-Msequences-in-two-objects doc="doc" value="doc2"/>
+
+</multi-test>

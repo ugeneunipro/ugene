@@ -1,0 +1,4 @@
+<suite name="Edit sequence tests">
+
+    <test-dir test-ext="*.xml" path="edit_sequence" test-format="XML"/>
+</suite>

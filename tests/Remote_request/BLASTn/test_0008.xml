@@ -1,0 +1,6 @@
+<!-- checking boundary conditions for min length, compliment strand -->
+<multi-test>
+
+    <plugin_remote-request min_length="19" max_length="100" strand="compliment" script="blastn.qs" seq="CAATTTGGTCCACTGATCTGG" expected_results=""/>
+
+</multi-test>

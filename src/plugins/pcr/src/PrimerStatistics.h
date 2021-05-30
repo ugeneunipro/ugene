@@ -56,6 +56,8 @@ public:
     const DimerFinderResult &getDimersInfo() const;
 
     QString getFirstError() const;
+    /* Returns the error occurred during initialization (construction) */
+    QString getInitializationError() const;
 
     bool isValidGC(QString &error) const;
     bool isValidTm(QString &error) const;
@@ -83,6 +85,8 @@ private:
     int nG;
     int nT;
     int maxRun;
+
+    QString initializationError;
 };
 
 class PrimersPairStatistics {
@@ -92,6 +96,8 @@ public:
     QString getFirstError() const;
 
     QString generateReport() const;
+    /* Returns the error occurred during initialization (construction) */
+    QString getInitializationError() const;
 
     static const QString TmString;
     static QString toString(double value);
@@ -114,6 +120,8 @@ private:
     DimerFinderResult dimersInfo;
     PrimerStatisticsCalculator forward;
     PrimerStatisticsCalculator reverse;
+
+    QString initializationError;
 };
 
 }    // namespace U2

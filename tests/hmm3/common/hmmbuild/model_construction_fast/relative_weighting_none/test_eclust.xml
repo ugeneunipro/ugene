@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- uHMMER3 Build test: options: wnone fast eclust, model: 14-3-3, has SS_cons, RF annotations 
+	cmd: ./hmmbuild -fast -wnone -eclust -eid 0.75 14-3-3_wnone_fast_eclust.hmm 14-3-3.sto -->
+
+    <uhmmer3-build inputFile="stockholm/14-3-3.sto" outputFile="test_14-3-3_wnone_fast_eclust.hmm"
+                   mc="fast" rw="wnone" ew="eclust 0.75" delOutput="yes"/>
+    <hmm3-compare-files file1="hmmer3/build/14-3-3_wnone_fast_eclust.hmm" file2="test_14-3-3_wnone_fast_eclust.hmm"
+                        tmp1="no" tmp2="yes"/>
+
+</multi-test>

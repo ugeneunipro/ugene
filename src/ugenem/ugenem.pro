@@ -4,7 +4,7 @@ QT += xml network widgets
 TEMPLATE = app
 CONFIG += qt thread debug_and_release
 macx : CONFIG -= app_bundle
-unix:!macx: QMAKE_LFLAGS += -no-pie
+unix:!macx: QMAKE_LFLAGS += --no-pie
 DEFINES+= QT_DLL QT_FATAL_ASSERT
 INCLUDEPATH += src _tmp
 

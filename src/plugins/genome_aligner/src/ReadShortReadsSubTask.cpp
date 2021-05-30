@@ -85,16 +85,13 @@ static SearchQuery *createRevComplQuery(SearchQuery *query, DNATranslation *tran
     return rQu;
 }
 
-ReadShortReadsSubTask::ReadShortReadsSubTask(SearchQuery **_lastQuery,
-                                             GenomeAlignerReader *_seqReader,
+ReadShortReadsSubTask::ReadShortReadsSubTask(GenomeAlignerReader *_seqReader,
                                              const DnaAssemblyToRefTaskSettings &_settings,
                                              AlignContext &_alignContext,
-                                             quint64 m)
-    : Task("ReadShortReadsSubTask", TaskFlag_None), lastQuery(_lastQuery),
+                                             qint64 m)
+    : Task("ReadShortReadsSubTask", TaskFlag_None),
       seqReader(_seqReader), settings(_settings), alignContext(_alignContext),
       freeMemorySize(m), prevMemoryHint(0), dataBunch(NULL) {
-    minReadLength = INT_MAX;
-    maxReadLength = 0;
 }
 
 void ReadShortReadsSubTask::readingFinishedWakeAll() {

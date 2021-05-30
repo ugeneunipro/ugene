@@ -1,0 +1,21 @@
+<multi-test>
+    <!--
+    Sequence:
+    CTAATGTT-CTAATGTT-CTAATGTT
+    TTGTTCCA-TTGTTCCA-TTGTTCCAA
+    CTCTGAAA-CTCTGAAA-CTCTGAAA
+
+    Tandems
+    Tandem repeat CTAATGTT 3x8 at pos 0
+    Tandem repeat TTGTTCCA 3x8 at pos 23
+    Tandem repeat CTCTGAAA 3x8 at pos 47
+    Insertions
+    47
+    We expect such results:
+    0,24,8
+    24,24,8
+    47,26,8
+    .(end of results)
+    -->
+    <find-tandems sequence="CTAATGTTCTAATGTTCTAATGTTTTGTTCCATTGTTCCATTGTTCCAACTCTGAAACTCTGAAACTCTGAAA" minSize="8" repeatCount="3" expected_result="0,24,8;24,24,8;47,26,8;"/>
+</multi-test>

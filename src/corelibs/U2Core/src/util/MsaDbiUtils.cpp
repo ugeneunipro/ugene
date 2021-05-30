@@ -1071,6 +1071,46 @@ QList<qint64> MsaDbiUtils::replaceNonGapCharacter(const U2EntityRef &msaRef, cha
     return modifiedRowIds;
 }
 
+QList<qint64> MsaDbiUtils::keepOnlyAlphabetChars(const U2EntityRef &msaRef, const DNAAlphabet *alphabet, const QByteArray &replacementMap, U2OpStatus &os) {
+    QList<qint64> modifiedRowIds;
+    QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(msaRef.dbiRef, os));
+    CHECK_OP(os, modifiedRowIds);
+
+    bool hasReplacementMap = replacementMap.size() == 256;
+    SAFE_POINT(hasReplacementMap || replacementMap.isEmpty(), "replacementMap has invalid size: " + QString::number(replacementMap.size()), modifiedRowIds);
+
+    U2MsaDbi *msaDbi = con->dbi->getMsaDbi();
+    U2SequenceDbi *sequenceDbi = con->dbi->getSequenceDbi();
+
+    QList<qint64> rowIds = msaDbi->getOrderedRowIds(msaRef.entityId, os);
+    CHECK_OP(os, modifiedRowIds);
+    QVariantMap updateSequenceHints;
+    QByteArray alphabetChars = alphabet->getAlphabetChars();
+    QBitArray validCharsMap = TextUtils::createBitMap(alphabetChars);
+    char defaultChar = alphabet->getDefaultSymbol();
+    for (qint64 rowId : qAsConst(rowIds)) {
+        U2MsaRow msaRow = msaDbi->getRow(msaRef.entityId, rowId, os);
+        CHECK_OP(os, modifiedRowIds);
+        U2Region sequenceRegion(msaRow.gstart, msaRow.gend - msaRow.gstart);
+        QByteArray sequenceData = sequenceDbi->getSequenceData(msaRow.sequenceId, sequenceRegion, os);
+        bool isModified = false;
+        for (int i = 0, n = sequenceData.length(); i < n; i++) {
+            char c = sequenceData[i];
+            if (!validCharsMap.testBit(c)) {
+                isModified = true;
+                char newChar = hasReplacementMap ? replacementMap[(quint8)c] : '\0';
+                sequenceData[i] = validCharsMap.testBit(newChar) ? newChar : defaultChar;
+            }
+        }
+        if (isModified) {
+            msaDbi->updateRowContent(msaRef.entityId, rowId, sequenceData, msaRow.gaps, os);
+            CHECK_OP(os, modifiedRowIds);
+            modifiedRowIds << rowId;
+        }
+    }
+    return modifiedRowIds;
+}
+
 QList<qint64> MsaDbiUtils::removeEmptyRows(const U2EntityRef &msaRef, const QList<qint64> &rowIds, U2OpStatus &os) {
     QScopedPointer<DbiConnection> con(MaDbiUtils::getCheckedConnection(msaRef.dbiRef, os));
     SAFE_POINT_OP(os, QList<qint64>());
@@ -1099,7 +1139,7 @@ QList<qint64> MsaDbiUtils::removeEmptyRows(const U2EntityRef &msaRef, const QLis
     return emptyRowIds;
 }
 
-void MsaDbiUtils::crop(const U2EntityRef &msaRef, const QList<qint64> rowIds, qint64 pos, qint64 count, U2OpStatus &os) {
+void MsaDbiUtils::crop(const U2EntityRef &msaRef, const QList<qint64> &rowIds, qint64 pos, qint64 count, U2OpStatus &os) {
     // Get the alignment
     MultipleSequenceAlignmentExporter alExporter;
     MultipleSequenceAlignment al = alExporter.getAlignment(msaRef.dbiRef, msaRef.entityId, os);

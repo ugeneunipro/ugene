@@ -1,0 +1,5 @@
+<multi-test>
+
+    <check-subst-matrix file="identity" column="X" row="Z" val="-10000" alphabet="AMINO_DEFAULT_ALPHABET"/>
+
+</multi-test>

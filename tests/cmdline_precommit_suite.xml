@@ -1,0 +1,7 @@
+<suite name="CMDLine ugene precommit tests of standard workflow schemas" test-timeout="300">
+
+    <env-var name="PROTOTYPE" value="cmdline/_proto"/>
+    <test-dir path="cmdline/common/simple" test-format="XML" test-ext="*.xml"
+              exclude_64="hmm2-search.xml,hmm2-build.xml,find-repeats.xml"
+              exclude="convert-msa.xml, convert-msa2.xml, hmm2-build.xml"/> <!-- Theese tests are to slow for precommit -->
+</suite>

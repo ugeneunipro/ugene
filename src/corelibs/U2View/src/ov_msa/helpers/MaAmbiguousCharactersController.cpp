@@ -95,8 +95,7 @@ void MaAmbiguousCharactersController::scrollToNextAmbiguous(NavigationDirection 
         maEditorWgt->getSequenceArea()->setSelection(MaEditorSelection(nextAmbiguous, 1, 1));
     } else {
         // no mismatches - show notification
-        const NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
-        notificationStack->addNotification(tr("There are no ambiguous characters in the alignment."), Info_Not);
+        NotificationStack::addNotification(tr("There are no ambiguous characters in the alignment."), Info_Not);
     }
 }
 

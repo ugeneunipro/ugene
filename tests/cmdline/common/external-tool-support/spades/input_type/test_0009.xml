@@ -1,0 +1,17 @@
+<multi-test>
+    <!-- link to testplan https://ugene.net/wiki/display/PD/Test+plan%3A+SPAdes+workflow+element+input+ports -->
+
+    <remove-temp-dir url="spades-task-input-type_0009/"/>
+    <create-temp-dir url="spades-task-input-type_0009/"/>
+
+    <spades-task-input-type out="spades-task-input-type_0009/" pbccs_reads="true" desired_parameters="-t 16;-m 250"/>
+
+    <check-yaml-file input_dir="spades-task-input-type_0009/"
+                     strings_to_check="type: &quot;single&quot;;
+	single reads:;
+	1_single_read"
+    />
+
+    <remove-temp-dir url="spades-task-input-type_0009/"/>
+
+</multi-test>

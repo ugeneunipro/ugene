@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- Check sequence quality scores -->
+
+    <load-document index="doc" url="fastq/solexa.fastq" io="local_file" format="fastq"/>
+
+    <find-object-by-name index="obj" doc="doc" name="SRR001666.1 071112_SLXA-EAS1_s_7:5:1:817:345 length=36" type="OT_SEQUENCE"/>
+    <check-sequence-quality-scores obj="obj" quality="IIIIIIIIIIIIIIIIIIIIIIIIIIIIII9IG9IC"/>
+    <check-sequence-quality-value obj="obj" pos="1" value="40"/>
+    <check-sequence-quality-value obj="obj" pos="11" value="40"/>
+    <check-sequence-quality-value obj="obj" pos="23" value="40"/>
+    <check-sequence-quality-value obj="obj" pos="35" value="34"/>
+</multi-test>

@@ -1,0 +1,21 @@
+<multi-test>
+    <!--
+     * 1. Create workflow Read Sequence -> Filter annotations by name -> Write Sequence
+     * 2. Uncheck value "Set of annotations (by Read Sequence)" in parameter "Set of annotations" of Write Sequence element
+     * 3. Set as input sequence "samples/Genbank/sars.gb"
+     * 4. Set value of "Annotation names" to "CDS wrong names"
+     * 5. Run workflow
+     * Expected state: Output file have only CDS annotations
+    -->
+    <run-cmdline task="!common_data_dir!regression/4194/test-4194.uwl"
+                 in="!sample_data_dir!/Genbank/sars.gb"
+                 out="!tmp_data_dir!regression_4194_0002.gb"
+                 a-name="CDS wrong names !@#EWQDS 5$~@$ *"
+    />
+
+    <load-document index="doc1" url="regression_4194_0002.gb" io="local_file" format="GenBank" dir="temp"/>
+    <load-document index="doc2" url="regression/4194/ref/test_0002.gb" io="local_file" format="GenBank"/>
+
+    <compare-annotations-names-in-two-objects doc="doc2" value="doc1"/>
+
+</multi-test>

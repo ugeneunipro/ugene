@@ -84,17 +84,11 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0001) {
 
     //4. Print "A, C, G, T, N, gap" symbols
     GTKeyboardDriver::keyClick('A');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('C');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('G');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('T');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('N');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(100);
 
     //Expected state: Sequence starts with "A,C, G,T,N,gap"
     QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 6));
@@ -104,17 +98,11 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0001) {
     GTUtilsSequenceView::setCursor(os, 199939);
 
     GTKeyboardDriver::keyClick('A');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('C');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('G');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('T');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('N');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(100);
 
     //Expected state : Sequence ends with "A,C, G,T,N,gap"
     string = GTUtilsSequenceView::getRegionAsString(os, U2Region(199940, 6));
@@ -148,13 +136,9 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0002) {
 
     //4. Print "QWER" symbols
     GTKeyboardDriver::keyClick('Q');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('W');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('E');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('R');
-    GTGlobals::sleep(100);
 
     //Expected state: Sequence starts with "A,C, G,T,N,gap"
     QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 4));
@@ -189,13 +173,9 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0003) {
 
     //4. Print "-AAA" symbols
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('A');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('A');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('A');
-    GTGlobals::sleep(100);
 
     //Expected state: Sequence starts with "-AAA"
     QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 4));
@@ -205,11 +185,8 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0003) {
     GTUtilsSequenceView::clickOnDetView(os);
     GTUtilsSequenceView::setCursor(os, 1);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(100);
 
     //Expected state : Sequence ends with "-"
     string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 4));
@@ -220,20 +197,14 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0003) {
     GTUtilsSequenceView::clickOnDetView(os);
     GTUtilsSequenceView::setCursor(os, 0);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(100);
     GTUtilsSequenceView::setCursor(os, 0);
 
     //7. Push B�ckspa�� 3 times
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Backspace);
-    GTGlobals::sleep(100);
 
     //Expected state : Nothing happens
     string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 4));
@@ -242,11 +213,8 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0003) {
     //8. Push Detete 3 times
     GTUtilsSequenceView::setCursor(os, 0);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(100);
 
     //Expected state : 3 gaps are deleted
     string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 4));
@@ -281,17 +249,11 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0004) {
 
     //4. Print "A, C, G, T, N, gap" symbols
     GTKeyboardDriver::keyClick('A');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('C');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('G');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('T');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('N');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(100);
 
     //Expected state: Sequence starts with "A,C, G,T,N,gap"
     QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1, 6));
@@ -304,7 +266,6 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0004) {
     //6. Put cursor in "199 939" position and do �TRL + V
     GTUtilsSequenceView::setCursor(os, 199939);
     GTKeyboardUtils::paste();
-    GTGlobals::sleep();
 
     //Expected state : Sequence ends with "A,C, G,T,N,gap"
     string = GTUtilsSequenceView::getRegionAsString(os, U2Region(199940, 6));
@@ -336,10 +297,8 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0001) {
 
     //6. Do mouse click in position before last "A" symbol in sequence (in position 3873)
     GTUtilsSequenceView::setCursor(os, 3872);
-    GTGlobals::sleep(1000);
     const U2Region visibleAreaBeforeInsert = GTUtilsSequenceView::getVisibleRange(os);
     GTKeyboardDriver::keyClick('A');
-    GTGlobals::sleep(100);
 
     //Expected state : Visible area was not changed
     const U2Region visibleAreaAfterInsert = GTUtilsSequenceView::getVisibleRange(os);
@@ -392,17 +351,11 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0002) {
 
     //6. Type "ACGTN-"
     GTKeyboardDriver::keyClick('A');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('C');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('G');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('T');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('N');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(100);
 
     //Expected state : annotation starts with "AACGTN-"
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
@@ -418,13 +371,9 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0002) {
     //8. Type some forbiden symbols "QWER"
     GTUtilsSequenceView::setCursor(os, 1042);
     GTKeyboardDriver::keyClick('Q');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('W');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('E');
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick('R');
-    GTGlobals::sleep(100);
 
     //Expected state: annotation starts with "AACGTN-"
     string = GTUtilsSequenceView::getRegionAsString(os, U2Region(selectedAnnotationRegions.first().startPos + 1, 7));
@@ -458,7 +407,6 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0003) {
 
     //6. Push "A" sympols
     GTKeyboardDriver::keyClick('A');
-    GTGlobals::sleep(1000);
 
     //Expected state: Annotation CDS (1043, 2674) was removed
     annotationRegions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
@@ -492,7 +440,6 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0004) {
     //6. Push "gap" sympol
     GTUtilsSequenceView::setCursor(os, 1047);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(1000);
 
     //Expected state : Annotation CDS(1043, 2674) was removed
     annotationRegions = GTUtilsAnnotationsTreeView::getAnnotatedRegions(os);
@@ -529,7 +476,6 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0005) {
 
     //6. Push "gap" sympol
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(1000);
 
     //Expected state : Annotation CDS(1042..1199, 1201..2661 appeared
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
@@ -572,7 +518,6 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0006) {
 
     //6. Push "gap" sympol
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(1000);
 
     //Expected state: Two annotation CDS (1042..1199, 1201..2661) appeared
     GTUtilsSequenceView::clickAnnotationPan(os, "CDS", 1042, 0, true);
@@ -632,11 +577,8 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0007) {
 
     //8. Add 3 gaps
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(100);
 
     //Symbol gap "-" in position 1505 - 1507
     const QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1505, 3));
@@ -687,11 +629,8 @@ GUI_TEST_CLASS_DEFINITION(with_anns_test_0008) {
 
     //8. Add 3 gaps
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(100);
     GTKeyboardDriver::keyClick(Qt::Key_Space);
-    GTGlobals::sleep(100);
 
     //Symbol gap "-" in position 1505 - 1507
     const QString string = GTUtilsSequenceView::getRegionAsString(os, U2Region(1505, 3));

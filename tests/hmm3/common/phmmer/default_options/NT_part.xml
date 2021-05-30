@@ -1,0 +1,8 @@
+<multi-test>
+    <!-- query: NT_078103_query1 db: titin no hits here
+	./phmmer NT_078103_query1.fa NT_078103.fa > NT_078103_query1_NT_078103_db.out   -->
+
+    <hmm3-phmmer query="hmmer3/phmmer/NT_078103_query1.fa" db="hmmer3/phmmer/NT_part.fa" outputDir="common/phmmer/default_options/NT_part/"/>
+    <hmm3-phmmer-compare trueOut="hmmer3/phmmer/NT_part.out" actualOut="common/phmmer/default_options/NT_part/output.txt"/>
+
+</multi-test>

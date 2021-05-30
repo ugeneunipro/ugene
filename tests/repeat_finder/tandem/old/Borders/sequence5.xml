@@ -1,0 +1,12 @@
+<multi-test>
+    <!--
+    Sequence:
+    CC:*-ACT-ACT-ACT-*:GCAC
+    Tandems
+    Tandem repeat ACT 3x3 at pos 2
+    We expect such results:
+    2,9,3
+    .(end of results)
+    -->
+    <find-tandems sequence="CCACTACTACTGCAC" minSize="3" maxSize="9" repeatCount="3" expected_result="2,9,3;"/>
+</multi-test>

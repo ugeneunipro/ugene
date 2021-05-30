@@ -1,0 +1,10 @@
+<multi-test>
+    <run-cmdline task="!common_data_dir!cmdline/sitecon/read-write-model.uws"
+                 in="!common_data_dir!/Sitecon/Algorithm/siteconBuilds/e2f_30_w2.sitecon.gz"
+                 out="!tmp_data_dir!e2f_30_w2_actual2.sitecon"
+    />
+    <load-document index="doc1" url="e2f_30_w2_actual2.sitecon" io="local_file" format="text" dir="temp"/>
+    <load-document index="doc2" url="/Sitecon/Algorithm/siteconBuilds/e2f_30_w2.sitecon" io="local_file" format="text"/>
+
+    <compare-sitecon-models model1="doc1" model2="doc2"/>
+</multi-test>

@@ -1,0 +1,16 @@
+<multi-test>
+    <run-cmdline
+            task="!common_data_dir!cmdline/read-write/read_seq_write_gen.uws"
+            in="!common_data_dir!genbank/murine_sarcoma.gb"
+            out="!tmp_data_dir!fcs_0009.gbk"
+            task-remote-machine="!config_file_path!"
+    />
+
+    <load-document index="doc1" url="genbank/murine_sarcoma.gb" io="local_file" format="genbank"/>
+    <load-document index="doc2" url="fcs_0009.gbk" io="local_file" format="genbank" dir="temp"/>
+    <compare-sequences-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-num-in-two-objects doc="doc1" value="doc2"/>
+    <compare-annotations-locations-in-two-objects doc="doc1" value="doc2"/>
+
+
+</multi-test>

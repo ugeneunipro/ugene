@@ -1,0 +1,14 @@
+<multi-test>
+    <!--
+    Sequence:
+    ATTA:*-GGCCA-GGCCA-GGCCA-GGtCA-*:GGCG
+    Tandems
+    Tandem repeat GGCCA 4x5 at pos 4
+    Mutations
+    Mutation in repeat #3 of 0th tandem at pos 2
+    We expect such results:
+    3,18,5
+    .(end of results)
+    -->
+    <find-tandems sequence="ATTAGGCCAGGCCAGGCCAGGTCAGGCG" minSize="5" maxSize="15" repeatCount="3" expected_result="3,18,5;"/>
+</multi-test>

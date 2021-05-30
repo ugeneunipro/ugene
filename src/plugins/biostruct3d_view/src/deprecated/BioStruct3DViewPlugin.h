@@ -52,13 +52,13 @@ class BioStruct3DViewContext : public GObjectViewWindowContext {
 public:
     BioStruct3DViewContext(QObject *p);
 
-    virtual bool canHandle(GObjectView *v, GObject *o);
+    bool canHandle(GObjectView *v, GObject *o) override;
 
-    virtual void onObjectAdded(GObjectView *v, GObject *obj);
-    virtual void onObjectRemoved(GObjectView *v, GObject *obj);
+    void onObjectAdded(GObjectView *v, GObject *obj) override;
+    void onObjectRemoved(GObjectView *v, GObject *obj) override;
 
 protected:
-    virtual void initViewContext(GObjectView *view);
+    void initViewContext(GObjectView *view) override;
 
     void unregister3DView(GObjectView *view, BioStruct3DSplitter *view3d);
 

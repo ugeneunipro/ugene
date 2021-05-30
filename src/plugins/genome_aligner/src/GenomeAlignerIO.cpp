@@ -251,6 +251,8 @@ GenomeAlignerDbiWriter::GenomeAlignerDbiWriter(const QString &dbiFilePath,
 }
 
 void GenomeAlignerDbiWriter::write(SearchQuery *seq, SAType offset) {
+    writtenReadsCount++;
+
     U2AssemblyRead read(new U2AssemblyReadData());
 
     read->name = seq->getName().toLatin1();
