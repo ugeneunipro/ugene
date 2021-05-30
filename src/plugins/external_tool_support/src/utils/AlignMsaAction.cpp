@@ -27,18 +27,22 @@
 
 namespace U2 {
 
+AlignMsaAction::AlignMsaAction(QObject *parent, const QString &toolId, MSAEditor *_msaEditor, const QString &text, int order)
+    : ExternalToolSupportAction(parent, _msaEditor, text, order, QStringList(toolId)), msaEditor(_msaEditor) {
+    sl_updateState();
+
+    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
+    connect(msaObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_updateState()));
+    connect(msaObject, SIGNAL(si_alignmentBecomesEmpty(bool)), SLOT(sl_updateState()));
+}
+
 MSAEditor *AlignMsaAction::getMsaEditor() const {
-    MSAEditor *e = qobject_cast<MSAEditor *>(getObjectView());
-    SAFE_POINT(e != NULL, "Can't get an appropriate MSA Editor", NULL);
-    return e;
+    return msaEditor;
 }
 
 void AlignMsaAction::sl_updateState() {
-    StateLockableItem *item = qobject_cast<StateLockableItem *>(sender());
-    SAFE_POINT(item != NULL, "Unexpected sender: expect StateLockableItem", );
-    MSAEditor *msaEditor = getMsaEditor();
-    CHECK(msaEditor != NULL, );
-    setEnabled(!item->isStateLocked() && !msaEditor->isAlignmentEmpty());
+    auto *msaObject = msaEditor->getMaObject();
+    setEnabled(!msaObject->isStateLocked() && !msaEditor->isAlignmentEmpty());
 }
 
 }    // namespace U2

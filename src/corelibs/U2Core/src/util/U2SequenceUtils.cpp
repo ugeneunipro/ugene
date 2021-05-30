@@ -67,7 +67,7 @@ qint64 U2SequenceUtils::length(const U2EntityRef &ref, U2OpStatus &os) {
 
 U2Sequence U2SequenceUtils::copySequence(const DNASequence &srcSeq, const U2DbiRef &dstDbi, const QString &dstFolder, U2OpStatus &os) {
     U2Sequence res;
-    res.alphabet = srcSeq.alphabet->getId();
+    res.alphabet = srcSeq.alphabet == nullptr ? nullptr : srcSeq.alphabet->getId();
     res.circular = srcSeq.circular;
     res.length = srcSeq.length();
     res.visualName = srcSeq.getName();

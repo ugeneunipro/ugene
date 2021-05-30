@@ -602,7 +602,7 @@ MultipleSequenceAlignment MultipleSequenceAlignmentData::getExplicitCopy() const
 void MultipleSequenceAlignmentData::copy(const MultipleAlignmentData &other) {
     try {
         copy(dynamic_cast<const MultipleSequenceAlignmentData &>(other));
-    } catch (std::bad_cast&) {
+    } catch (std::bad_cast &) {
         FAIL("Can't cast MultipleAlignmentData to MultipleSequenceAlignmentData", );
     }
 }

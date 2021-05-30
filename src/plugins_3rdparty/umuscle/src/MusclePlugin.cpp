@@ -217,12 +217,9 @@ void MuscleMSAEditorContext::sl_align() {
 
 void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
     MuscleAction *action = qobject_cast<MuscleAction *>(sender());
-    assert(action != NULL);
-    MSAEditor *ed = action->getMSAEditor();
-    MultipleSequenceAlignmentObject *obj = ed->getMaObject();
-    if (obj == NULL)
-        return;
-    assert(!obj->isStateLocked());
+    SAFE_POINT(action != nullptr, "Not a MuscleAction!", );
+    MSAEditor *msaEditor = action->getMSAEditor();
+    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
 
     DocumentFormatConstraints c;
     QString f1 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, false);
@@ -230,22 +227,15 @@ void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
     QString filter = f2 + "\n" + f1;
 
     LastUsedDirHelper lod;
-#ifdef Q_OS_DARWIN
-    if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
-        lod.url = U2FileDialog::getOpenFileName(NULL, tr("Select file with sequences"), lod, filter, 0, QFileDialog::DontUseNativeDialog);
-    } else
-#endif
-        lod.url = U2FileDialog::getOpenFileName(NULL, tr("Select file with sequences"), lod, filter);
-    if (lod.url.isEmpty()) {
-        return;
-    }
+    lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Select file with sequences"), lod, filter);
+    CHECK(!lod.url.isEmpty(), );
 
-    Task *alignTask = new MuscleAddSequencesToProfileTask(obj, lod.url, MuscleAddSequencesToProfileTask::Sequences2Profile);
-    connect(obj, SIGNAL(destroyed()), alignTask, SLOT(cancel()));
+    auto alignTask = new MuscleAddSequencesToProfileTask(msaObject, lod.url, MuscleAddSequencesToProfileTask::Sequences2Profile);
+    connect(msaObject, SIGNAL(destroyed()), alignTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(alignTask);
 
     // Turn off rows collapsing
-    ed->resetCollapsibleModel();
+    msaEditor->resetCollapsibleModel();
 }
 
 void MuscleMSAEditorContext::sl_alignProfileToProfile() {

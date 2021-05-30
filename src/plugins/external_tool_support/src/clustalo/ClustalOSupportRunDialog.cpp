@@ -60,7 +60,7 @@ void ClustalOSupportRunDialog::accept() {
         settings.numIterations = iterationNumberSpinBox->value();
     }
     if (maxGTIterationsCheckBox->isChecked()) {
-        settings.maxGuidetreeIterations = maxGTIterationsSpinBox->value();
+        settings.maxGuideTreeIterations = maxGTIterationsSpinBox->value();
     }
     if (maxHMMIterationsCheckBox->isChecked()) {
         settings.maxHMMIterations = maxHMMIterationsSpinBox->value();
@@ -118,7 +118,7 @@ void ClustalOWithExtFileSpecifySupportRunDialog::accept() {
     }
 
     if (maxGTIterationsCheckBox->isChecked()) {
-        settings.maxGuidetreeIterations = maxGTIterationsSpinBox->value();
+        settings.maxGuideTreeIterations = maxGTIterationsSpinBox->value();
     }
 
     if (maxHMMIterationsCheckBox->isChecked()) {

@@ -145,7 +145,7 @@ SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString &task
     SAFE_POINT(msaObj != nullptr, "NULL MultipleSequenceAlignmentObject!", );
 
     U2OpStatus2Log os;
-    MultipleSequenceAlignment al = MSAUtils::setUniqueRowNames(msaObjectPointer->getMultipleAlignment());
+    MultipleSequenceAlignment al = MSAUtils::createCopyWithIndexedRowNames(msaObjectPointer->getMultipleAlignment());
 
     MultipleSequenceAlignmentObject *msaObject = MultipleSequenceAlignmentImporter::createAlignment(msaObjectPointer->getEntityRef().dbiRef, al, os);
     SAFE_POINT_OP(os, );
@@ -188,7 +188,7 @@ Task::ReportResult SimpleMSAWorkflow4GObjectTask::report() {
 
     MultipleSequenceAlignment resultMsa = getResult();
     const MultipleSequenceAlignment &originalMsa = msaObjectPointer->getMultipleAlignment();
-    bool isAllRowsRestored = MSAUtils::restoreRowNames(resultMsa, originalMsa->getRowNames());
+    bool isAllRowsRestored = MSAUtils::restoreOriginalRowNamesFromIndexedNames(resultMsa, originalMsa->getRowNames());
     if (!isAllRowsRestored) {
         setError(tr("MSA has incompatible changes during the alignment. Ignoring the alignment result: '%1'").arg(docName));
         return ReportResult_Finished;
