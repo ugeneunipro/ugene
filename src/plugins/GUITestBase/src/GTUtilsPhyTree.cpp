@@ -108,7 +108,7 @@ QList<QGraphicsSimpleTextItem *> GTUtilsPhyTree::getLabels(HI::GUITestOpStatus &
 QList<QGraphicsSimpleTextItem *> GTUtilsPhyTree::getVisibleLabels(HI::GUITestOpStatus &os, QGraphicsView *treeView) {
     QList<QGraphicsSimpleTextItem *> result;
     foreach (QGraphicsSimpleTextItem *item, getLabels(os, treeView)) {
-        if (item->isVisible()) {
+        if (item->isVisible() && !item->text().isEmpty()) {
             result << item;
         }
     }
