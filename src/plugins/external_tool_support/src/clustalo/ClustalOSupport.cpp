@@ -213,14 +213,14 @@ void ClustalOSupportContext::checkClustalOSetup(U2OpStatus &os) {
         msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
         msgBox->setDefaultButton(QMessageBox::Yes);
         int ret = msgBox->exec();
-        CHECK_EXT(!msgBox.isNull(), os.setError(tr("Can't validate ClustalO external tool set up")), );
+        CHECK_EXT(!msgBox.isNull(), os.setError(tr("Can't validate ClustalO external tool")), );
 
         if (ret == QMessageBox::Yes) {
             AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
             pathToClustalO = AppContext::getExternalToolRegistry()->getById(ClustalOSupport::ET_CLUSTALO_ID)->getPath();
         }
     }
-    CHECK_EXT(!pathToClustalO.isEmpty(), os.setError(tr("ClustalO external tool is not set up set up")), );
+    CHECK_EXT(!pathToClustalO.isEmpty(), os.setError(tr("ClustalO external tool is not set up")), );
     ExternalToolSupportSettings::checkTemporaryDir(os);
 }
 

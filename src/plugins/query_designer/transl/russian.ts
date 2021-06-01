@@ -851,7 +851,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>U2::QueryDesignerService</name>
     <message>
-        <location filename="../src/QueryDesignerPlugin.h" line="63"/>
+        <location filename="../src/QueryDesignerPlugin.h" line="64"/>
         <source>Query Designer</source>
         <translation>Дизайнер запросов</translation>
     </message>

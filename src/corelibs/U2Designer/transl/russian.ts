@@ -831,17 +831,6 @@ bowtie index file</source>
     </message>
 </context>
 <context>
-    <name>U2::DashboardJsAgent</name>
-    <message>
-        <source>Error</source>
-        <translation type="vanished">Ошибка</translation>
-    </message>
-    <message>
-        <source>The file does not exist</source>
-        <translation type="vanished">Файл не существует</translation>
-    </message>
-</context>
-<context>
     <name>U2::DashboardWidget</name>
     <message>
         <location filename="../src/dashboard/DashboardWidget.cpp" line="337"/>
@@ -1352,12 +1341,12 @@ Set up the folder:</source>
 <context>
     <name>U2::SchemaRunModeDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="596"/>
+        <location filename="../src/DelegateEditors.cpp" line="604"/>
         <source>This computer</source>
         <translation>Данный компьютер</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="597"/>
+        <location filename="../src/DelegateEditors.cpp" line="605"/>
         <source>Remote computer</source>
         <translation>Удаленный компьютер</translation>
     </message>
@@ -1451,17 +1440,17 @@ Set up the folder:</source>
 <context>
     <name>U2::StringListDelegate</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="722"/>
+        <location filename="../src/DelegateEditors.cpp" line="730"/>
         <source>Enter items</source>
         <translation>Введите элементы</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="724"/>
+        <location filename="../src/DelegateEditors.cpp" line="732"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="726"/>
+        <location filename="../src/DelegateEditors.cpp" line="734"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -1547,7 +1536,7 @@ Set up the folder:</source>
 <context>
     <name>U2::URLWidget</name>
     <message>
-        <location filename="../src/PropertyWidget.cpp" line="521"/>
+        <location filename="../src/PropertyWidget.cpp" line="518"/>
         <source>add</source>
         <translation>добавить</translation>
     </message>
@@ -1591,17 +1580,17 @@ Set up the folder:</source>
 <context>
     <name>U2::WorkflowUtils</name>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="584"/>
+        <location filename="../src/DelegateEditors.cpp" line="592"/>
         <source>Overwrite</source>
         <translation>Переписать</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="585"/>
+        <location filename="../src/DelegateEditors.cpp" line="593"/>
         <source>Rename</source>
         <translation>Переименовать</translation>
     </message>
     <message>
-        <location filename="../src/DelegateEditors.cpp" line="587"/>
+        <location filename="../src/DelegateEditors.cpp" line="595"/>
         <source>Append</source>
         <translation>Дописать</translation>
     </message>
