@@ -43,7 +43,7 @@ namespace U2 {
 DNAFlexDialog::DNAFlexDialog(ADVSequenceObjectContext *_ctx)
     : QDialog(_ctx->getAnnotatedDNAView()->getWidget()) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229062");
+    new HelpButton(this, buttonBox, "65930694");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

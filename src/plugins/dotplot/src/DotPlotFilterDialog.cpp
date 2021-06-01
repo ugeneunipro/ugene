@@ -41,7 +41,7 @@ namespace U2 {
 DotPlotFilterDialog::DotPlotFilterDialog(QWidget *parent, ADVSequenceObjectContext *sequenceX, ADVSequenceObjectContext *sequenceY)
     : QDialog(parent), xSeq(sequenceX), ySeq(sequenceY), fType(All), filterGroup(NULL), seqXItem(NULL), seqYItem(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60227971");
+    new HelpButton(this, buttonBox, "65929603");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

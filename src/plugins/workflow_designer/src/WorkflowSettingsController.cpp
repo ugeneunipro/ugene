@@ -84,7 +84,7 @@ AppSettingsGUIPageWidget *WorkflowSettingsPageController::createWidget(AppSettin
     return r;
 }
 
-const QString WorkflowSettingsPageController::helpPageId = QString("60227734");
+const QString WorkflowSettingsPageController::helpPageId = QString("65929366");
 
 WorkflowSettingsPageWidget::WorkflowSettingsPageWidget(WorkflowSettingsPageController *) {
     setupUi(this);

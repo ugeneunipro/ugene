@@ -58,7 +58,7 @@ static QList<BioStruct3DObject *> findAvailableBioStructs() {
 StructuralAlignmentDialog::StructuralAlignmentDialog(const BioStruct3DObject *fixedRef /* = 0*/, int fixedRefModel /* = -1*/, QWidget *parent /* = 0*/)
     : QDialog(parent), task(0) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60227915");
+    new HelpButton(this, buttonBox, "65929547");
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
 

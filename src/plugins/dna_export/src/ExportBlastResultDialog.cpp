@@ -39,7 +39,7 @@ ExportBlastResultDialog::ExportBlastResultDialog(QWidget *p, const QString &defa
     : QDialog(p),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229083");
+    new HelpButton(this, buttonBox, "65930715");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

@@ -61,9 +61,9 @@ CreatePhyTreeDialogController::CreatePhyTreeDialogController(QWidget *parent, co
     ui->setupUi(this);
 
     QMap<QString, QString> helpPagesMap;
-    helpPagesMap.insert("PHYLIP Neighbor Joining", "60228083");
-    helpPagesMap.insert("MrBayes", "60228086");
-    helpPagesMap.insert("PhyML Maximum Likelihood", "60228080");
+    helpPagesMap.insert("PHYLIP Neighbor Joining", "65929715");
+    helpPagesMap.insert("MrBayes", "65929718");
+    helpPagesMap.insert("PhyML Maximum Likelihood", "65929712");
     new ComboboxDependentHelpButton(this, ui->buttonBox, ui->algorithmBox, helpPagesMap);
 
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Build"));

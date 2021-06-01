@@ -51,7 +51,7 @@ namespace U2 {
 CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleSequenceAlignmentObject *obj, const QList<qint64> &preSelectedRowIdList, const U2Region &preSelectedColumnsRegion, QWidget *p)
     : QDialog(p), msaObject(obj), selectedRowIds(preSelectedRowIdList), selectedColumnRegion(preSelectedColumnsRegion), saveController(nullptr) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60228058");
+    new HelpButton(this, buttonBox, "65929690");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Save"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

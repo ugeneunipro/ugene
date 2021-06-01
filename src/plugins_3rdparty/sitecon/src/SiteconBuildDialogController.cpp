@@ -55,7 +55,7 @@ SiteconBuildDialogController::SiteconBuildDialogController(SiteconPlugin* pl, QW
       saveController(NULL) {
     task = NULL;
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229170");
+    new HelpButton(this, buttonBox, "65930802");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Build"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
    

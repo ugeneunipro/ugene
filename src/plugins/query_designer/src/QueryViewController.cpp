@@ -1145,7 +1145,7 @@ void QueryViewController::enableSaveAction(bool enable) {
 AddConstraintDialog::AddConstraintDialog(QueryScene *_scene, QDDistanceType _kind, QDElement *defSrc, QDElement *defDst)
     : scene(_scene), kind(_kind) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60228995");
+    new HelpButton(this, buttonBox, "65930627");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

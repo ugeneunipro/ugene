@@ -72,7 +72,7 @@ DocumentProviderSelectorController::DocumentProviderSelectorController(const GUr
     setupUi(this);
 
     setObjectName("Select Document Format");
-    new HelpButton(this, buttonBox, "60228067");
+    new HelpButton(this, buttonBox, "65929699");
     gbFormats->setTitle(QString("Options for %1").arg(url.fileName()));
     buttonBox->button(QDialogButtonBox::Cancel)->setAutoDefault(false);
     buttonBox->button(QDialogButtonBox::Cancel)->setDefault(false);
