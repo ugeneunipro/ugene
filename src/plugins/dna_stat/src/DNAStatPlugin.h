@@ -49,6 +49,9 @@ protected slots:
 
 protected:
     void initViewContext(GObjectView *view) override;
+
+private:
+    static constexpr int GRID_PROFILE_LENGTH_LIMIT = 20000;
 };
 
 class DistanceMatrixMSAEditorContext : public GObjectViewWindowContext {
