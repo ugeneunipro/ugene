@@ -26,7 +26,7 @@
 
 #include "SQLiteObjectDbi.h"
 
-static const QString FDBI_FIELDS("f.id, f.class, f.type, f.parent, f.root, f.name, f.sequence, f.strand, f.start, f.len ");
+static const QString FDBI_FIELDS("f.id, f.class, f.type, f.parent, f.root, f.name, f.sequence, f.strand, f.start, f.len, f.end");
 
 namespace U2 {
 
@@ -47,7 +47,7 @@ void SQLiteFeatureDbi::initSqlSchema(U2OpStatus &os) {
     SQLiteWriteQuery("CREATE TABLE Feature (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "
                      "class INTEGER NOT NULL, type INTEGER NOT NULL, parent INTEGER, root INTEGER, nameHash INTEGER, name TEXT, "
                      "sequence INTEGER, strand INTEGER NOT NULL, "
-                     "start INTEGER NOT NULL DEFAULT 0, len INTEGER NOT NULL DEFAULT 0)",
+                     "start INTEGER NOT NULL DEFAULT 0, len INTEGER NOT NULL DEFAULT 0, end INTEGER NOT NULL DEFAULT 0)",
                      db,
                      os)
         .execute();
@@ -86,7 +86,7 @@ public:
 
     static U2Feature loadStatic(SQLiteQuery *q) {
         U2Feature res;
-        //class, type, parent, root, name, sequence, strand, start, len
+        //class, type, parent, root, name, sequence, strand, start, len, end
         res.id = q->getDataId(0, U2Type::Feature);
         res.featureClass = static_cast<U2Feature::FeatureClass>(q->getInt32(1));
         res.featureType = static_cast<U2FeatureType>(q->getInt32(2));
@@ -314,13 +314,13 @@ QSharedPointer<SQLiteQuery> SQLiteFeatureDbi::createFeatureQuery(const QString &
     if (useRegion) {
         if (!oneClosestFeature) {    //check if intersects
             if (1 != fq.intersectRegion.length) {
-                add(wherePart, QString("fr.id = f.id AND fr.start < ?%2 AND fr.end > ?%1").arg(n + 1).arg(n + 2), "", n);
+                add(wherePart, QString("f.start < ?%2 AND f.end > ?%1").arg(n + 1).arg(n + 2), "", n);
             } else {
                 add(wherePart, QString("f.start < ?%2 AND f.start + f.len > ?%1").arg(n + 1).arg(n + 2), "", n);
             }
             n += 2;
         } else {    //check if close
-            add(wherePart, QString("fr.id = f.id AND fr.start %1 ?%2").arg(toSqlCompareOp(fq.closestFeature)).arg(n + 1), "", n);
+            add(wherePart, QString("f.start %1 ?%2").arg(toSqlCompareOp(fq.closestFeature)).arg(n + 1), "", n);
             n++;
         }
     }
@@ -352,9 +352,9 @@ QSharedPointer<SQLiteQuery> SQLiteFeatureDbi::createFeatureQuery(const QString &
             wherePart += " ORDER BY fk.value";
         } else if (OrderOp_None != fq.startPosOrderOp && useRegion) {
             if (!oneClosestFeature) {
-                wherePart += " ORDER BY fr.start ";
+                wherePart += " ORDER BY f.start ";
             } else {
-                wherePart += QString(" ORDER BY fr.start %1 ")
+                wherePart += QString(" ORDER BY f.start %1 ")
                                  .arg(toSqlOrderOpFromCompareOp(fq.closestFeature));
             }
         }
@@ -533,8 +533,8 @@ void addFeatureKeys(const QList<U2FeatureKey> &keys, const U2DataId &featureId, 
 void SQLiteFeatureDbi::createFeature(U2Feature &feature, const QList<U2FeatureKey> &keys, U2OpStatus &os) {
     SQLiteTransaction t(db, os);
 
-    static const QString queryStringf("INSERT INTO Feature(class, type, parent, root, name, sequence, strand, start, len, nameHash) "
-                                      "VALUES(?1,    ?2,   ?3,     ?4,   ?5,   ?6,       ?7,     ?8,    ?9,   ?10)");
+    static const QString queryStringf("INSERT INTO Feature(class, type, parent, root, name, sequence, strand, start, len, end, nameHash) "
+                                      "VALUES(?1,    ?2,   ?3,     ?4,   ?5,   ?6,       ?7,     ?8,    ?9,   ?10, ?11)");
     QSharedPointer<SQLiteQuery> qf = t.getPreparedQuery(queryStringf, db, os);
 
     CHECK_OP(os, );
@@ -547,7 +547,8 @@ void SQLiteFeatureDbi::createFeature(U2Feature &feature, const QList<U2FeatureKe
     qf->bindInt32(7, feature.location.strand.getDirectionValue());
     qf->bindInt64(8, feature.location.region.startPos);
     qf->bindInt64(9, feature.location.region.length);
-    qf->bindInt32(10, qHash(feature.name));
+    qf->bindInt64(10, feature.location.region.endPos());
+    qf->bindInt32(11, qHash(feature.name));
     feature.id = qf->insert(U2Type::Feature);
     CHECK_OP(os, );
 
@@ -643,11 +644,12 @@ void SQLiteFeatureDbi::updateLocation(const U2DataId &featureId, const U2Feature
 
     SQLiteTransaction t(db, os);
 
-    SQLiteWriteQuery qf("UPDATE Feature SET strand = ?1, start = ?2, len = ?3 WHERE id = ?4", db, os);
+    SQLiteWriteQuery qf("UPDATE Feature SET strand = ?1, start = ?2, len = ?3, end = ?4 WHERE id = ?5", db, os);
     qf.bindInt32(1, location.strand.getDirectionValue());
     qf.bindInt64(2, location.region.startPos);
     qf.bindInt64(3, location.region.length);
-    qf.bindDataId(4, featureId);
+    qf.bindInt64(4, location.region.endPos());
+    qf.bindDataId(5, featureId);
     qf.execute();
     CHECK_OP(os, );
 }
@@ -750,8 +752,8 @@ U2DbiIterator<U2Feature> *SQLiteFeatureDbi::getFeaturesByRegion(const U2Region &
     SQLiteTransaction t(db, os);
 
     const bool selectByRoot = !rootId.isEmpty();
-    const QString queryByRegion = "SELECT " + FDBI_FIELDS + " FROM Feature AS f " +
-                                  (selectByRoot ? QString("f.root = ?3 AND ") : QString()) + (contains ? "fr.start >= ?1 AND fr.end <= ?2" : "fr.start <= ?2 AND fr.end >= ?1");
+    const QString queryByRegion = "SELECT " + FDBI_FIELDS + " FROM Feature AS f WHERE " +
+                                  (selectByRoot ? QString("f.root = ?3 AND ") : QString()) + (contains ? "f.start >= ?1 AND f.end <= ?2" : "f.start <= ?2 AND f.end >= ?1");
 
     QSharedPointer<SQLiteQuery> q = t.getPreparedQuery(queryByRegion, db, os);
 
