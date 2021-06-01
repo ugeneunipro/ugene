@@ -149,6 +149,7 @@ Section "Build"
 
     File "${ReleaseBuildDir}\transl_en.qm"
     File "${ReleaseBuildDir}\transl_ru.qm"
+    File "${ReleaseBuildDir}\transl_tr.qm"
     File "..\..\LICENSE.txt"
     File "..\..\LICENSE.3rd_party.txt"
     File "${PATH_TO_VS_BIN}\msvcp120.dll"

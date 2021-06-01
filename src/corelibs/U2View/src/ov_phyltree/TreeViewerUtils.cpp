@@ -69,6 +69,7 @@ void TreeViewerUtils::saveImageDialog(const QString &filters, QString &fileName,
 const QFont &TreeViewerUtils::getFont() {
     if (font == NULL) {
         font = new QFont();
+        font->setPointSize(8);
     }
     return *font;
 }
