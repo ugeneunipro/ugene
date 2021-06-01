@@ -43,13 +43,12 @@ TextSettingsDialog::TextSettingsDialog(QWidget *parent, const OptionsMap &settin
     colorButton->setStyle(buttonStyle);
 
     updateColorButton();
-    QFont curFont = qvariant_cast<QFont>(settings[LABEL_FONT]);
+    QFont curFont = qvariant_cast<QFont>(settings[LABEL_FONT_TYPE]);
     fontComboBox->setCurrentFont(curFont);
-    sizeSpinBox->setValue(curFont.pointSize());
-
-    boldToolButton->setChecked(curFont.bold());
-    italicToolButton->setChecked(curFont.italic());
-    underlineToolButton->setChecked(curFont.underline());
+    sizeSpinBox->setValue(qvariant_cast<int>(settings[LABEL_FONT_SIZE]));
+    boldToolButton->setChecked(qvariant_cast<bool>(settings[LABEL_FONT_BOLD]));
+    italicToolButton->setChecked(qvariant_cast<bool>(settings[LABEL_FONT_ITALIC]));
+    underlineToolButton->setChecked(qvariant_cast<bool>(settings[LABEL_FONT_UNDERLINE]));
     overlineToolButton->setChecked(curFont.overline());
 
     overlineToolButton->setVisible(false);
@@ -80,7 +79,11 @@ void TextSettingsDialog::accept() {
     curFont.setUnderline(underlineToolButton->isChecked());
     curFont.setOverline(overlineToolButton->isChecked());
 
-    updatedSettings[LABEL_FONT] = curFont;
+    updatedSettings[LABEL_FONT_TYPE] = curFont;
+    updatedSettings[LABEL_FONT_SIZE] = curFont.pointSize();
+    updatedSettings[LABEL_FONT_BOLD] = curFont.bold();
+    updatedSettings[LABEL_FONT_ITALIC] = curFont.italic();
+    updatedSettings[LABEL_FONT_UNDERLINE] = curFont.underline();
 
     QDialog::accept();
 }

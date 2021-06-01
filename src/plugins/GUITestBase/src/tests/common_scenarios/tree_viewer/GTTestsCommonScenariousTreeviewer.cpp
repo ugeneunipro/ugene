@@ -811,13 +811,14 @@ GUI_TEST_CLASS_DEFINITION(test_0011_2) {
         QGraphicsSimpleTextItem *textItem = qgraphicsitem_cast<QGraphicsSimpleTextItem *>(item);
         if (textItem && !textItem->text().contains("0.106") && !textItem->text().contains("0.007") &&
             !textItem->text().contains("0.103") && !textItem->text().contains("0") &&
-            !textItem->text().contains("Phaneroptera_falcata") && !textItem->text().contains("Isophya_altaica_EF540820")) {
+            !textItem->text().contains("Phaneroptera_falcata") && !textItem->text().contains("Isophya_altaica_EF540820") &&
+            !textItem->text().isEmpty()) {
             branchList.append(textItem);
         }
     }
 
     foreach (QGraphicsSimpleTextItem *item, branchList) {
-        CHECK_SET_ERR(!item->isVisible(), item->text() + " is visible");
+        CHECK_SET_ERR(!item->isVisible() || !item->text().isEmpty(), item->text() + " is visible");
     }
 
     //    Expected state: this node's branches has disappeared

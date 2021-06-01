@@ -24,6 +24,7 @@
 #include <base_dialogs/GTFileDialog.h>
 #include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
+#include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
@@ -1933,6 +1934,20 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::TreeSettings);
     GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, "default", 0, 0, true));
     GTWidget::click(os, GTWidget::findWidget(os, "BuildTreeButton"));
+    //Click to empty space near the node to reset selection
+    QList<GraphicsButtonItem *> nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
+    CHECK_SET_ERR(nodes.size() == 16,
+                  QString("Something goes wrong with building tree from COI.aln We are expect 16 nodes instead of: %1")
+                      .arg(QString::number(nodes.size())));
+    GTThread::waitForMainThread();
+    QGraphicsView *treeView = GTWidget::findExactWidget<QGraphicsView *>(os, "treeView");
+    CHECK_SET_ERR(treeView, "treeView not found");
+    QPointF sceneCoord = nodes[1]->mapToScene(nodes[1]->boundingRect().topLeft());
+    QPoint viewCord = treeView->mapFromScene(sceneCoord);
+    QPoint globalCoord = treeView->mapToGlobal(viewCord);
+    globalCoord += QPoint(nodes[1]->boundingRect().width() / 2 + 8, nodes[1]->boundingRect().height() / 2 + 8);
+    GTMouseDriver::moveTo(globalCoord);
+    GTMouseDriver::click();
 //    3. change branch color
 #ifndef Q_OS_DARWIN
     setBranchColor(os, 255, 0, 0);
@@ -1940,7 +1955,6 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     expandPenSettings(os);
 #endif
     //    Expected state: color changed
-    QGraphicsView *treeView = GTWidget::findExactWidget<QGraphicsView *>(os, "treeView");
     CHECK_SET_ERR(treeView != NULL, "tree view not found");
     QString colorName;
 #ifndef Q_OS_DARWIN

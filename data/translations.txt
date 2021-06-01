@@ -1,2 +1,3 @@
 EN English|transl_en
 RU Русский|transl_ru
+TR Türk|transl_tr
