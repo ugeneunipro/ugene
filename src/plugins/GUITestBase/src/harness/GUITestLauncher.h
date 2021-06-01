@@ -44,6 +44,9 @@ public:
     GUITestLauncher(int suiteNumber, bool noIgnored = false, QString iniFileTemplate = "");
     GUITestLauncher(QString pathToSuite = "", bool noIgnored = false, QString iniFileTemplate = "");
 
+    QString  getExcludeListPath();
+    bool setExcludeListPath(QString filePath);
+
     void run() override;
     QString generateReport() const override;
 
@@ -59,6 +62,7 @@ private:
     QString pathToSuite;
     QString testOutDir;
     QString iniFileTemplate;
+    QString pathToExcludeList;
 
     static QStringList getTestProcessArguments(const QString &testName);
     /**
@@ -81,6 +85,7 @@ private:
     bool renameTestLog(const QString &testName);
 
     bool initTestList();
+    QStringList getExcludeList();
     void updateProgress(int finishedCount);
 
     QString getScreenRecorderString(QString testName);

@@ -166,6 +166,7 @@ bool GUITestLauncher::initTestList() {
     // Label set to build a run-time test set is passed via environment variable.
     QString labelEnvVar = qgetenv("UGENE_GUI_TEST_LABEL");
     QStringList labelList = labelEnvVar.isEmpty() ? QStringList() : labelEnvVar.split(",");
+    QStringList excludeList = getExcludeList();
 
     if (suiteNumber != 0) {
         // If no label is provided 'Nightly' (UGUITestLabels::Nightly) label is used by default.
@@ -212,6 +213,7 @@ bool GUITestLauncher::initTestList() {
             if (testName.startsWith("#") || testName.isEmpty()) {
                 continue;    // comment line or empty line.
             }
+
             bool added = false;
             for (GUITest *test : qAsConst(allTestList)) {
                 QString fullTestName = test->getFullName();
@@ -237,7 +239,42 @@ bool GUITestLauncher::initTestList() {
         testList = guiTestBase->getTests(UGUITestBase::Normal, labelList);
     }
 
+    QMutableListIterator<GUITest *> mList(testList);
+    while (mList.hasNext()) {
+        GUITest *test = mList.next();
+        if (excludeList.contains(test->getFullName()) ||
+            excludeList.contains(test->getFullName().replace(':', '_')))
+        {
+            mList.remove();
+        }
+    }
+
     return true;
+}
+
+QStringList GUITestLauncher::getExcludeList() {
+    if (getExcludeListPath().isEmpty()) {
+        return QStringList();
+    }
+
+    QStringList excludeList = QStringList();
+    QString absPath = QDir().absoluteFilePath(getExcludeListPath());
+    QFile qFile(absPath);
+    if (!qFile.open(QFile::ReadOnly)) {
+        setError("Can't open exclude list file: " + absPath);
+        return excludeList;
+    }
+
+    char buf[1024];
+    while (qFile.readLine(buf, sizeof(buf)) != -1) {
+        QString testName = QString(buf).remove('\n').remove('\r').remove('\t').remove(' ');
+        if (testName.startsWith("#") || testName.isEmpty()) {
+            continue; // comment line or empty line.
+        }
+        excludeList.append(testName);
+    }
+    qFile.close();
+    return excludeList;
 }
 
 void GUITestLauncher::updateProgress(int finishedCount) {

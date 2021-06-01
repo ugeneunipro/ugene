@@ -43,6 +43,7 @@ const QString CMDLineCoreOptions::LAUNCH_GUI_TEST = "gui-test";
 const QString CMDLineCoreOptions::LAUNCH_GUI_TEST_NO_IGNORED = "gui-test-no-ignored";
 const QString CMDLineCoreOptions::LAUNCH_GUI_TEST_BATCH = "gui-test-batch";
 const QString CMDLineCoreOptions::LAUNCH_GUI_TEST_SUITE = "gui-test-suite";
+const QString CMDLineCoreOptions::LAUNCH_GUI_TEST_EXCLUDE_LIST = "gui-test-exclude-list";
 const QString CMDLineCoreOptions::LAUNCH_GUI_TEST_CRAZY_USER = "gui-test-crazy-user";
 const QString CMDLineCoreOptions::USAGE = "usage";
 const QString CMDLineCoreOptions::DOWNLOAD_DIR = "download-dir";

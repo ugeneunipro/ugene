@@ -186,6 +186,7 @@ Task *GUITestService::createTestSuiteLauncherTask() const {
     int suiteNumber = cmdLine->getParameterValue(CMDLineCoreOptions::LAUNCH_GUI_TEST_SUITE).toInt(&ok);
     bool useSameIni = cmdLine->hasParameter(CMDLineCoreOptions::USE_SAME_INI_FOR_TESTS);
     QString iniTemplate;
+    QString pathToExcludeList = cmdLine->getParameterValue(CMDLineCoreOptions::LAUNCH_GUI_TEST_EXCLUDE_LIST);
 
     if (useSameIni) {
         QString settingsFile = AppContext::getSettings()->fileName();
@@ -199,15 +200,34 @@ Task *GUITestService::createTestSuiteLauncherTask() const {
     }
     if (!ok) {
         QString pathToSuite = cmdLine->getParameterValue(CMDLineCoreOptions::LAUNCH_GUI_TEST_SUITE);
-        Task *task = !useSameIni ? new GUITestLauncher(pathToSuite) : new GUITestLauncher(pathToSuite, false, iniTemplate);
+        GUITestLauncher *task = !useSameIni ? new GUITestLauncher(pathToSuite)
+                                            : new GUITestLauncher(pathToSuite, false, iniTemplate);
         Q_ASSERT(task);
+        task->setExcludeListPath(pathToExcludeList);
         return task;
     }
 
-    Task *task = !useSameIni ? new GUITestLauncher(suiteNumber) : new GUITestLauncher(suiteNumber, false, iniTemplate);
+    GUITestLauncher *task = !useSameIni ? new GUITestLauncher(suiteNumber)
+                                        : new GUITestLauncher(suiteNumber, false, iniTemplate);
     Q_ASSERT(task);
+    task->setExcludeListPath(pathToExcludeList);
 
     return task;
+}
+
+QString GUITestLauncher::getExcludeListPath()
+{
+    return pathToExcludeList;
+}
+
+bool GUITestLauncher::setExcludeListPath(QString filePath)
+{
+    QFileInfo fileInfo(filePath);
+    if (fileInfo.isFile() && fileInfo.exists()) {
+        pathToExcludeList = fileInfo.absoluteFilePath();
+        return true;
+    }
+    return false;
 }
 
 void GUITestService::sl_allStartUpPluginsLoaded() {
