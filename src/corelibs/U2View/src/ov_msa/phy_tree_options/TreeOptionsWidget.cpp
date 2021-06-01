@@ -40,9 +40,9 @@
 
 #include <U2View/MSAEditor.h>
 
-#include "ov_msa/PhyTrees/MSAEditorMultiTreeViewer.h"
-#include "ov_msa/PhyTrees/MSAEditorTreeViewer.h"
-#include "ov_msa/PhyTrees/MsaEditorTreeTabArea.h"
+#include "ov_msa/phy_tree/MSAEditorMultiTreeViewer.h"
+#include "ov_msa/phy_tree/MSAEditorTreeViewer.h"
+#include "ov_msa/phy_tree/MsaEditorTreeTabArea.h"
 #include "ov_phyltree/TreeViewer.h"
 #include "phyltree/TreeSettingsDialog.h"
 

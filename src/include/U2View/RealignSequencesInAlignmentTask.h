@@ -1,1 +1,1 @@
-#include "../../corelibs/U2View/src/ov_msa/RealignSequencesInAlignment/RealignSequencesInAlignmentTask.h"
+#include "../../corelibs/U2View/src/ov_msa/realign_to_alignment/RealignSequencesInAlignmentTask.h"

@@ -27,7 +27,7 @@
 
 #include "MaEditor.h"
 #include "MsaEditorWgt.h"
-#include "PhyTrees/MSAEditorTreeManager.h"
+#include "phy_tree/MSAEditorTreeManager.h"
 
 namespace U2 {
 
@@ -122,7 +122,15 @@ protected slots:
     void sl_sortSequencesByName();
     void sl_sortSequencesByLength();
     void sl_sortSequencesByLeadingGap();
+
+    /** Converts from DNA to RNA alphabet and back. */
     void sl_convertBetweenDnaAndRnaAlphabets();
+
+    /** Converts from RAW to DNA alphabet. Replaces all unknown chars with 'N' and 'U' with 'T'. */
+    void sl_convertRawToDnaAlphabet();
+
+    /** Converts from RAW to Amino alphabet. Replaces all unknown chars with 'X'. */
+    void sl_convertRawToAminoAlphabet();
 
 protected:
     QWidget *createWidget() override;
@@ -146,8 +154,6 @@ protected:
     void updateActions() override;
 
     void initDragAndDropSupport();
-    void alignSequencesFromObjectsToAlignment(const QList<GObject *> &objects);
-    void alignSequencesFromFilesToAlignment();
 
 public:
     QAction *buildTreeAction = nullptr;
@@ -169,6 +175,8 @@ public:
 
     QAction *convertDnaToRnaAction = nullptr;
     QAction *convertRnaToDnaAction = nullptr;
+    QAction *convertRawToDnaAction = nullptr;
+    QAction *convertRawToAminoAction = nullptr;
 
 private:
     PairwiseAlignmentWidgetsSettings *pairwiseAlignmentWidgetsSettings = nullptr;
@@ -180,6 +188,9 @@ class U2VIEW_EXPORT MsaEditorMenuType : public GObjectViewMenuType {
 public:
     /** "Align" button menu identifier. */
     const static QString ALIGN;
+
+    /** "Align sequence(s) to this alignment" menu identifier. */
+    const static QString ALIGN_SEQUENCES_TO_ALIGNMENT;
 };
 
 }    // namespace U2

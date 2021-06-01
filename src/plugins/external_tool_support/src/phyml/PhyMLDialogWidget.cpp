@@ -39,7 +39,8 @@
 
 namespace U2 {
 
-const QString PhyMlSettingsPreffixes::ModelType(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_model_t");
+const QString PhyMlSettingsPreffixes::AminoAcidModelType(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_amino_acid_model_t");
+const QString PhyMlSettingsPreffixes::DnaModelType(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_dna_model_t");
 const QString PhyMlSettingsPreffixes::OptimiseEquilibriumFreq(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_eq_freq_flag");
 
 const QString PhyMlSettingsPreffixes::EstimateTtRatio(CreatePhyTreeWidget::getAppSettingsRoot() + "/phyml_est_trans_ratio");
@@ -146,7 +147,9 @@ void PhyMlWidget::makeTTRatioControlsAvailable(SubstModelTrRatioType ttRatioType
 
 void PhyMlWidget::createWidgetsControllers() {
     //Substitutional model
-    widgetControllers.addWidgetController(subModelCombo, PhyMlSettingsPreffixes::ModelType, "-m");
+    const QString subModelSettingsPath = isAminoAcid ? PhyMlSettingsPreffixes::AminoAcidModelType
+                                                     : PhyMlSettingsPreffixes::DnaModelType;
+    widgetControllers.addWidgetController(subModelCombo, subModelSettingsPath, "-m");
 
     //Number of substitution rate categories
     widgetControllers.addWidgetController(substitutionSpinBox, PhyMlSettingsPreffixes::SubRatesNumber, "-c");

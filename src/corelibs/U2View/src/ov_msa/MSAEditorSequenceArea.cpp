@@ -67,7 +67,7 @@
 #include <U2Gui/ProjectTreeController.h>
 #include <U2Gui/ProjectTreeItemSelectorDialog.h>
 
-#include "Clipboard/SubalignmentToClipboardTask.h"
+#include "clipboard/SubalignmentToClipboardTask.h"
 #include "CreateSubalignmentDialogController.h"
 #include "ExportSequencesTask.h"
 #include "MSAEditor.h"

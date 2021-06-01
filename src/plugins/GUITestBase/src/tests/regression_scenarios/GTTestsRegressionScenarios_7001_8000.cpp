@@ -23,8 +23,10 @@
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
+#include <primitives/GTComboBox.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
 #include <system/GTClipboard.h>
@@ -38,6 +40,7 @@
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsDocument.h"
 #include "GTUtilsMdi.h"
+#include "GTUtilsMcaEditor.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsOptionPanelMSA.h"
@@ -47,8 +50,12 @@
 #include "GTUtilsTaskTreeView.h"
 #include "api/GTMSAEditorStatusWidget.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
+#include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
 namespace U2 {
@@ -295,6 +302,46 @@ GUI_TEST_CLASS_DEFINITION(test_7106) {
     CHECK_SET_ERR(sequenceList2 == sequenceList1, "Sequence order must not change");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_7125) {
+    // Open data/samples/CLUSTALW/ty3.aln.gz
+    // Press the Build Tree button on the toolbar.
+    // In the "Build Phylogenetic Tree" dialog select the PhyML Maximum Likelihood method.
+    // Select CpREV substitution model.
+    // Press "Save Settings".
+    // Cancel the dialog.
+    // Open data/samples/CLUSTALW/COI.aln
+    // Press the Build Tree button on the toolbar.
+    // In the "Build Phylogenetic Tree" dialog select the PhyML Maximum Likelihood method.
+    // Press "Build".
+    //    Expected state: no crash.
+
+    class SaveSettingsScenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+
+            auto currentCombobox = GTWidget::findExactWidget<QComboBox *>(os, "algorithmBox", dialog);
+            GTComboBox::selectItemByText(os, currentCombobox, "PhyML Maximum Likelihood");
+
+            currentCombobox = GTWidget::findExactWidget<QComboBox *>(os, "subModelCombo", dialog);
+            GTComboBox::selectItemByText(os, currentCombobox, "CpREV");
+
+            GTWidget::click(os, GTWidget::findButtonByText(os, "Save Settings", dialog));
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/ty3.aln.gz");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, new SaveSettingsScenario));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
+
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFillerPhyML(os, false));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Build Tree");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_7127) {
     // Make an alignment ordered by tree and check that the row order shown in the status bar is correct.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
@@ -309,6 +356,50 @@ GUI_TEST_CLASS_DEFINITION(test_7127) {
         QString expectedRowNumber = QString::number(i + 1);
         CHECK_SET_ERR(rowNumber == expectedRowNumber, "Unexpected row number! Expected:  " + expectedRowNumber + ", got: " + rowNumber);
     }
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7151) {
+    // Open data/samples/ACE/BL060C3.ace as MSA.
+    // Close project, don't save. These steps are required for BL060C3.ace to appear in the Recent Files.
+    // Click Tools->Sanger data analysis->Map reads to reference...
+    // Set _common_data/sanger/reference.gb as reference.
+    // Add sanger_01.ab1-sanger_20.ab1 as reads.
+    // Click Map.
+    // While running Sanger, click BL060C3.ace from Recent Files on Start Page.
+    // Wait for the Sanger Reads Editor to appears.
+    // In Select Document Format dialog click OK.
+    //     Expected: no crash.
+
+    class WaitInSelectFormatDialog : public CustomScenario {
+    public:
+        void run(GUITestOpStatus &os) override {
+            GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
+
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, true));
+    GTFileDialog::openFileWithDialog(os, dataDir + "samples/ACE", "BL060C3.ace");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsProject::closeProject(os);
+
+    const QList<QLabel *> labels = GTWidget::findLabelByText(os, "- BL060C3.ace");
+    CHECK_SET_ERR(labels.size() > 0, "Expected recent files BL060C3.ace on Start Page")
+
+    AlignToReferenceBlastDialogFiller::Settings settings;
+    settings.referenceUrl = testDir + "_common_data/sanger/reference.gb";
+    for (int i = 1; i <= 20; i++) {
+        settings.readUrls << QString(testDir + "_common_data/sanger/sanger_%1.ab1").arg(i, 2, 10, QChar('0'));
+    }
+    settings.outAlignment = QFileInfo(sandBoxDir + "test_7151").absoluteFilePath();
+
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(settings, os));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
+
+    GTUtilsDialog::waitForDialog(os, new ImportACEFileFiller(os, new WaitInSelectFormatDialog));
+    GTWidget::click(os, labels.first());
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7152) {
@@ -388,6 +479,45 @@ GUI_TEST_CLASS_DEFINITION(test_7212) {
     GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
     GTWidget::click(os, GTUtilsOptionPanelMsa::getAlignButton(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7246) {
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/RAW.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Check that alphabet is RAW.
+    QWidget *tabWidget = GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    QString alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
+    CHECK_SET_ERR(alphabet.contains("Raw"), "Alphabet is not RAW/1: " + alphabet);
+
+    // Click convert to Amino button and check the the alphabet is 'Amino'.
+    GTWidget::click(os, GTWidget::findButtonByText(os, "Amino", tabWidget));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
+    CHECK_SET_ERR(alphabet.contains("amino"), "Alphabet is not Amino: " + alphabet);
+    QString sequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
+    CHECK_SET_ERR(sequence == "UTTSQDLQWLVXPTLIXSMAQSQGQPLASQPPAVDPYDMPGTSYSTPGLSAYSTGGASGS", "Not an Amino sequence: " + sequence);
+
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
+    CHECK_SET_ERR(alphabet.contains("Raw"), "Alphabet is not RAW/2: " + alphabet);
+
+    // Click convert to DNA button and check the the alphabet is 'DNA'.
+    GTWidget::click(os, GTWidget::findButtonByText(os, "DNA", tabWidget));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
+    CHECK_SET_ERR(alphabet.contains("DNA"), "Alphabet is not DNA: " + alphabet);
+    sequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
+    CHECK_SET_ERR(sequence == "TTTNNNNNNNNNNTNNNNNANNNGNNNANNNNANNNNNNNGTNNNTNGNNANNTGGANGN", "Not a DNA sequence: " + sequence);
+
+    // Click convert to RNA button and check the the alphabet is 'RNA'.
+    GTWidget::click(os, GTWidget::findButtonByText(os, "RNA", tabWidget));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    alphabet = GTUtilsOptionPanelMsa::getAlphabetLabelText(os);
+    CHECK_SET_ERR(alphabet.contains("RNA"), "Alphabet is not RNA: " + alphabet);
+    sequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
+    CHECK_SET_ERR(sequence == "UUUNNNNNNNNNNUNNNNNANNNGNNNANNNNANNNNNNNGUNNNUNGNNANNUGGANGN", "Not a RNA sequence: " + sequence);
 }
 
 }    // namespace GUITest_regression_scenarios

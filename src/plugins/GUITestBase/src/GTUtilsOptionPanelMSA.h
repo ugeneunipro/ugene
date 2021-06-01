@@ -68,7 +68,7 @@ public:
     static const QMap<Tabs, QString> innerWidgetNames;
 
     static void toggleTab(HI::GUITestOpStatus &os, Tabs tab);
-    static void openTab(HI::GUITestOpStatus &os, Tabs tab);
+    static QWidget* openTab(HI::GUITestOpStatus &os, Tabs tab);
     static void closeTab(HI::GUITestOpStatus &os, Tabs tab);
     static bool isTabOpened(HI::GUITestOpStatus &os, Tabs tab);
     static void checkTabIsOpened(HI::GUITestOpStatus &os, Tabs tab);
@@ -120,13 +120,16 @@ public:
     static void checkResultsText(HI::GUITestOpStatus &os, QString expectedText);
     static void setRegionType(HI::GUITestOpStatus &os, const QString &regionType);
     static void setRegion(HI::GUITestOpStatus &os, int from, int to);
-    static void setSearchContext(HI::GUITestOpStatus &os, const QString& context);
+    static void setSearchContext(HI::GUITestOpStatus &os, const QString &context);
 
     static void clickNext(HI::GUITestOpStatus &os);
     static void clickPrev(HI::GUITestOpStatus &os);
 
     static bool isSearchInShowHideWidgetOpened(HI::GUITestOpStatus &os);
     static void openSearchInShowHideWidget(HI::GUITestOpStatus &os, bool open = true);
+
+    /** Returns text of the label that shows alignment alphabet. Requies "General" options panel to be opened. */
+    static QString getAlphabetLabelText(HI::GUITestOpStatus &os);
 
 private:
     static QWidget *getWidget(HI::GUITestOpStatus &os, const QString &widgetName, int number);

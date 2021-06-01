@@ -39,8 +39,8 @@
 #include "TreeViewerFactory.h"
 #include "TreeViewerState.h"
 #include "ov_msa/MSAEditor.h"
-#include "ov_msa/PhyTrees/MSAEditorTreeManager.h"
-#include "ov_msa/PhyTrees/MSAEditorTreeViewer.h"
+#include "ov_msa/phy_tree/MSAEditorTreeManager.h"
+#include "ov_msa/phy_tree/MSAEditorTreeViewer.h"
 
 namespace U2 {
 

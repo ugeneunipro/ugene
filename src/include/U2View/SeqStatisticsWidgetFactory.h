@@ -1,1 +1,1 @@
-#include "../../corelibs/U2View/src/ov_msa/SeqStatistics/SeqStatisticsWidgetFactory.h"
+#include "../../corelibs/U2View/src/ov_msa/statistics/SeqStatisticsWidgetFactory.h"

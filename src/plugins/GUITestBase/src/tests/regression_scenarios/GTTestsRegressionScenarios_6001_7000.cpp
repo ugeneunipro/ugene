@@ -3500,10 +3500,7 @@ GUI_TEST_CLASS_DEFINITION(test_6581) {
 
     // 2. Click "Align sequence to this alignment" button on the toolbarand select attached sequence "Sequence.txt".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/scenarios/_regression/6581/Sequence.txt"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected result: the sequence has been aligned to the alignment.
@@ -3862,11 +3859,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_1) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/multifasta_with_gap_seq.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"seq2\", \"seq4\".");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected result : sequences made of gaps only are not aligned, i.e. "seq1", "seq3"and "seq5" are aligned.
@@ -3883,23 +3877,16 @@ GUI_TEST_CLASS_DEFINITION(test_6628_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6628_2) {
-    //1.  Open "COI.aln" file.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    //2. Remove the "MAFFT" external toos
-    GTUtilsExternalTools::removeTool(os, "MAFFT");
-
-    //3. Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
-    //4. Select "_common_data\empty_sequences\multifasta_with_gap_seq.fa".
+    // Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
+    // Select "_common_data\empty_sequences\multifasta_with_gap_seq.fa".
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/multifasta_with_gap_seq.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"seq2\", \"seq4\".");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected result : sequences made of gaps only are not aligned, i.e. "seq1", "seq3"and "seq5" are aligned.
@@ -3916,26 +3903,20 @@ GUI_TEST_CLASS_DEFINITION(test_6628_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6628_3) {
-    //1.  Open "COI.aln" file.
+    // Open "COI.aln" file.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    //2. Remove the "MAFFT" external toos
-    GTUtilsExternalTools::removeTool(os, "MAFFT");
-
-    //3. Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
-    //4. Select "_common_data\empty_sequences\gap_only_seq.fa".
+    // Click "Align sequence(s) to this alignment" button on the Alignment Editor toolbar.
+    // Select "_common_data\empty_sequences\gap_only_seq.fa".
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/gap_only_seq.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected result: the alignment is not modified.
+    // Expected result: the alignment is not modified.
     int sequenceNumberAfterAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     CHECK_SET_ERR(sequenceNumberAfterAlignment == sequenceNumberBeforeAlignment,
                   QString("Unexpected number of sequences, expected: %1, current: %2").arg(sequenceNumberBeforeAlignment).arg(sequenceNumberAfterAlignment));
@@ -3963,11 +3944,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_4) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/gap_only_seq.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "The following sequence(s) were not aligned as they do not contain meaningful characters: \"gap-only-sequence\".");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected result: the alignment is not modified.
@@ -3992,9 +3970,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_5) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/empty_file.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
     GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"empty_file.fa\" file can't be alignment to the \"COI\" alignment - the file is empty.");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsDialog::waitAllFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -4020,11 +3997,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_6) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/incorrect_fasta_header_only.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"incorrect_fasta_header_only.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid.");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitAllFinished(os);
 
@@ -4051,11 +4025,8 @@ GUI_TEST_CLASS_DEFINITION(test_6628_7) {
     int sequenceNumberBeforeAlignment = GTUtilsMsaEditor::getSequencesCount(os);
     GTLogTracer lt;
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/empty_sequences/incorrect_multifasta_with_empty_seq.fa"));
-    QAbstractButton *align = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(align != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-
     GTUtilsNotifications::waitForNotification(os, true, "'Load sequences and add to alignment task' task failed: Data from the \"incorrect_multifasta_with_empty_seq.fa\" file can't be alignment to the \"COI\" alignment - the file format is invalid.");
-    GTWidget::click(os, align);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected result: the COI alignment is not modified,
@@ -5650,7 +5621,7 @@ GUI_TEST_CLASS_DEFINITION(test_6751) {
     GTWidget::click(os, GTWidget::findWidget(os, "consensusLabel"));
     GTWidget::click(os, GTWidget::findWidget(os, "consensusLabel"));
 
-    // 3. Select "Align" -> "Align with MUSCLE..." and click on the "Align" button.
+    // 3. Select "Align" -> "Align with MUSCLE…" and click on the "Align" button.
 
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default, true, true));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseMouse));
@@ -5680,7 +5651,7 @@ GUI_TEST_CLASS_DEFINITION(test_6754) {
 
     // 1. open document samples/CLUSTALW/COI.aln
     GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
-    // 2. Click "Align > Align with MUSCLE..." and click "Align".
+    // 2. Click "Align > Align with MUSCLE…" and click "Align".
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os, MuscleDialogFiller::Default, true, true));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "Align with muscle", GTGlobals::UseMouse));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
@@ -6309,7 +6280,7 @@ GUI_TEST_CLASS_DEFINITION(test_6903) {
 
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_GENERAL"));
 
-    QToolButton *toDnaButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "convertAlphabetButton"));
+    QToolButton *toDnaButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "convertNucleicAlphabetButton"));
     GTWidget::click(os, toDnaButton);
 
     QComboBox *copyType = GTWidget::findExactWidget<QComboBox *>(os, "copyType");

@@ -98,17 +98,20 @@ public:
     PopupCheckerByText(GUITestOpStatus &os,
                        const QStringList &namePath,
                        PopupChecker::CheckOptions options = PopupChecker::CheckOptions(PopupChecker::IsEnabled),
-                       GTGlobals::UseMethod useMethod = GTGlobals::UseKey);    //UseKey is needed for Ubuntu
+                       GTGlobals::UseMethod useMethod = GTGlobals::UseKey,
+                       Qt::MatchFlag matchFlag = Qt::MatchExactly);    //UseKey is needed for Ubuntu
     PopupCheckerByText(GUITestOpStatus &os,
                        const QStringList &menuPath,
                        const QStringList &itemsNames,
                        PopupChecker::CheckOptions options = PopupChecker::CheckOptions(PopupChecker::IsEnabled),
-                       GTGlobals::UseMethod useMethod = GTGlobals::UseKey);
+                       GTGlobals::UseMethod useMethod = GTGlobals::UseKey,
+                       Qt::MatchFlag matchFlag = Qt::MatchExactly);
     PopupCheckerByText(GUITestOpStatus &os,
                        const QStringList &menuPath,
                        const QMap<QString, QKeySequence> &namesAndShortcuts,
                        PopupChecker::CheckOptions options = PopupChecker::CheckOptions(PopupChecker::IsEnabled),
-                       GTGlobals::UseMethod useMethod = GTGlobals::UseKey);
+                       GTGlobals::UseMethod useMethod = GTGlobals::UseKey,
+                       Qt::MatchFlag matchFlag = Qt::MatchExactly);
 
     void commonScenario() override;
 
@@ -118,6 +121,7 @@ protected:
     QList<QKeySequence> itemsShortcuts;
     PopupChecker::CheckOptions options;
     GTGlobals::UseMethod useMethod;
+    Qt::MatchFlag matchFlag = Qt::MatchExactly;
 };
 }    // namespace HI
 

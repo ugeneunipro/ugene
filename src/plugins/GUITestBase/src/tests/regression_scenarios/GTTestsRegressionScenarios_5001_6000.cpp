@@ -419,7 +419,7 @@ GUI_TEST_CLASS_DEFINITION(test_5039) {
 
     //3. Add an additional sequence from file : "test/_common_data/fasta/amino_ext.fa".
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/amino_ext.fa"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //4. Open the "Export consensus" OP tab.
@@ -484,8 +484,7 @@ GUI_TEST_CLASS_DEFINITION(test_5082) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // 2. Align it with MUSCLE.
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Align"
-                                                                              << "Align with MUSCLE..."));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Align", "Align with MUSCLE…"}));
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
@@ -609,9 +608,7 @@ GUI_TEST_CLASS_DEFINITION(test_5137) {
 
     // 2. Add a big sequence.
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/", "PF07724_full_family.fa"));
-    QAbstractButton *alignButton = GTAction::button(os, "Align sequence(s) to this alignment");
-    CHECK_SET_ERR(alignButton != nullptr, "MSA \"Align sequence(s) to this alignment\" action not found");
-    GTWidget::click(os, alignButton);
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "MAFFT");
 
     // 3. Delete the original alignment and wait for the error in the log.
     GTUtilsNotifications::waitForNotification(os, true, "A problem occurred during adding sequences. The multiple alignment is no more available.");
@@ -1688,7 +1685,6 @@ GUI_TEST_CLASS_DEFINITION(test_5447_1) {
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsProjectTreeView::dragAndDrop(os, annotationsTableObjectIndex, GTUtilsSequenceView::getSeqWidgetByNumber(os));
 
-
     //    Expected state: all annotations are doubled.
     const QStringList oldGroups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 features [murine.gb]");
     const QStringList newGroups = GTUtilsAnnotationsTreeView::getGroupNames(os, "NC_001363 features [test_5447_1.gb]");
@@ -2516,18 +2512,16 @@ GUI_TEST_CLASS_DEFINITION(test_5622) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5636) {
-    //1. Open File "\samples\CLUSTALW\COI.aln"
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Click Actions->Align->Align sequence to profile with MUSCLE...
-    //3. Select "\samples\CLUSTALW\COI.aln"
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Align sequences to profile with MUSCLE..."));
+    // Click Align sequences to alignment->Align sequence to profile with MUSCLE...
+    // Select "\samples\CLUSTALW\COI.aln"
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align");
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "Align sequences to alignment with MUSCLE");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected state: 18 sequences are added to the msa.
+    // Expected state: 18 sequences are added to the msa.
     CHECK_SET_ERR(GTUtilsMsaEditor::getSequencesCount(os) == 36, "Incorrect sequences count");
 }
 
@@ -4432,38 +4426,30 @@ GUI_TEST_CLASS_DEFINITION(test_5847) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5849) {
-    //CHECK_SET_ERR(!undoButton->isEnabled(), "'Undo' button is unexpectedly enabled");
-
-    // 1. Open "..\general_common_data\fasta\empty.fa".
-
     GTFileDialog::openFile(os, testDir + "_common_data/fasta", "empty.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // 2. Click the "Align sequence(s) to this alignment" button on the toolbar.
+    // Click the "Align sequence(s) to this alignment" button on the toolbar.
     // Expected state: the file selection dialog is opened.
     // Select "..\samples\CLUSTALW\COI.aln" in the dialog.
 
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, dataDir + "samples/CLUSTALW/COI.aln"));
-    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Align sequence(s) to this alignment");
+    GTUtilsMsaEditor::activateAlignSequencesToAlignmentMenu(os, "UGENE");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // 3. Select a sequence.
+    // Select a sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(2, 2));
     QAbstractButton *undoButton = GTAction::button(os, "msa_action_undo");
 
-    // 4. Click the "Undo" button.
+    // Click the "Undo" button.
     GTWidget::click(os, undoButton);
     QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
-    CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
 
     // Expected state: the selection has been cleared.
-    QLabel *line = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Line", msaEditorStatusBar));
-    CHECK_SET_ERR(line != NULL, "Line of MSAEditorStatusBar is NULL");
-    QLabel *column = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Column", msaEditorStatusBar));
-    CHECK_SET_ERR(column != NULL, "Column of MSAEditorStatusBar is NULL");
-    QLabel *position = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Position", msaEditorStatusBar));
-    CHECK_SET_ERR(position != NULL, "Position of MSAEditorStatusBar is NULL");
-    QLabel *selection = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Selection", msaEditorStatusBar));
-    CHECK_SET_ERR(selection != NULL, "Selection of MSAEditorStatusBar is NULL");
+    QLabel *line = GTWidget::findExactWidget<QLabel *>(os, "Line", msaEditorStatusBar);
+    QLabel *column = GTWidget::findExactWidget<QLabel *>(os, "Column", msaEditorStatusBar);
+    QLabel *position = GTWidget::findExactWidget<QLabel *>(os, "Position", msaEditorStatusBar);
+    QLabel *selection = GTWidget::findExactWidget<QLabel *>(os, "Selection", msaEditorStatusBar);
 
     CHECK_SET_ERR(line->text() == "Seq - / 0", "Sequence is " + line->text());
     CHECK_SET_ERR(column->text() == "Col - / 0", "Column is " + column->text());
@@ -4814,7 +4800,6 @@ GUI_TEST_CLASS_DEFINITION(test_5950) {
 
             U2Region sel = selection.first();
             CHECK_SET_ERR(sel.length != 0, "Selection length is 0");
-
         }
     }
 

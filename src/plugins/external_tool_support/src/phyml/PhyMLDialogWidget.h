@@ -36,7 +36,8 @@ namespace U2 {
 
 class PhyMlSettingsPreffixes {
 public:
-    static const QString ModelType;
+    static const QString AminoAcidModelType;
+    static const QString DnaModelType;
     static const QString OptimiseEquilibriumFreq;
 
     static const QString EstimateTtRatio;

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>178</width>
+    <width>248</width>
     <height>319</height>
    </rect>
   </property>
@@ -32,8 +32,8 @@
    <item>
     <widget class="QWidget" name="alignmentInfoWidget" native="true">
      <layout class="QGridLayout" name="alignmentInfoWidgetLayout">
-      <item row="1" column="1">
-       <widget class="QLabel" name="alignmentLength">
+      <item row="0" column="1">
+       <widget class="QLabel" name="alignmentAlphabet">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
@@ -58,6 +58,55 @@
         </property>
         <property name="text">
          <string>Length:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLabel" name="alignmentLength">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="alignmentHeightLabel">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Sequences:</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QToolButton" name="convertNucleicAlphabetButton">
+        <property name="toolTip">
+         <string/>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../../../../U2Gui/U2Gui.qrc">
+          <normaloff>:/core/images/goto.png</normaloff>:/core/images/goto.png</iconset>
+        </property>
+        <property name="toolButtonStyle">
+         <enum>Qt::ToolButtonTextBesideIcon</enum>
         </property>
        </widget>
       </item>
@@ -90,45 +139,10 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="alignmentAlphabet">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
+      <item row="0" column="3">
+       <widget class="QToolButton" name="convertAminoAlphabetButton">
         <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="alignmentHeightLabel">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Sequences:</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="QToolButton" name="convertAlphabetButton">
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="text">
-         <string/>
+         <string>Amino</string>
         </property>
         <property name="icon">
          <iconset resource="../../../../U2Gui/U2Gui.qrc">
@@ -174,7 +188,7 @@
   <customwidget>
    <class>U2::MaConsensusModeWidget</class>
    <extends>QWidget</extends>
-   <header>ov_msa/General/MaConsensusModeWidget.h</header>
+   <header>ov_msa/general/MaConsensusModeWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

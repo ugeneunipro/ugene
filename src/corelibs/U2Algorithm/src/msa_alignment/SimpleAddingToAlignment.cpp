@@ -48,7 +48,7 @@ SimpleAddToAlignmentTask::SimpleAddToAlignmentTask(const AlignSequencesToAlignme
 }
 
 void SimpleAddToAlignmentTask::prepare() {
-    algoLog.info(tr("Align sequences to an existing alignment by UGENE started"));
+    algoLog.info(tr("Align sequences to alignment with UGENE started"));
 
     MSAUtils::removeColumnsWithGaps(inputMsa, inputMsa->getNumRows());
 
@@ -216,7 +216,10 @@ AbstractAlignmentTask *SimpleAddToAlignmentTaskFactory::getTaskInstance(Abstract
 }
 
 SimpleAddToAlignmentAlgorithm::SimpleAddToAlignmentAlgorithm()
-    : AlignmentAlgorithm(AddToAlignment, BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE, new SimpleAddToAlignmentTaskFactory(), NULL) {
+    : AlignmentAlgorithm(AddToAlignment,
+                         BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE,
+                         AlignmentAlgorithmsRegistry::tr("Align sequences to alignment with UGENE…"),
+                         new SimpleAddToAlignmentTaskFactory()) {
 }
 
 }    // namespace U2

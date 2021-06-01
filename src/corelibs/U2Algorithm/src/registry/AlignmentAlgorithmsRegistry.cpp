@@ -65,8 +65,8 @@ QStringList AlignmentAlgorithmsRegistry::getAvailableAlgorithmIds(AlignmentAlgor
     return selectedAlgorithmIds;
 }
 
-AlignmentAlgorithm::AlignmentAlgorithm(AlignmentAlgorithmType alignmentType, const QString &_id, AbstractAlignmentTaskFactory *tf, AlignmentAlgorithmGUIExtensionFactory *guif, const QString &_realizationId)
-    : id(_id), alignmentType(alignmentType) {
+AlignmentAlgorithm::AlignmentAlgorithm(AlignmentAlgorithmType alignmentType, const QString &_id, const QString &_actionName, AbstractAlignmentTaskFactory *tf, AlignmentAlgorithmGUIExtensionFactory *guif, const QString &_realizationId)
+    : id(_id), actionName(_actionName), alignmentType(alignmentType) {
     realizations.insert(_realizationId, new AlgorithmRealization(_realizationId, tf, guif));
 }
 
@@ -89,6 +89,10 @@ AlignmentAlgorithmGUIExtensionFactory *AlignmentAlgorithm::getGUIExtFactory(cons
 
 const QString &AlignmentAlgorithm::getId() const {
     return id;
+}
+
+const QString &AlignmentAlgorithm::getActionName() const {
+    return actionName;
 }
 
 QStringList AlignmentAlgorithm::getRealizationsList() const {

@@ -23,20 +23,21 @@
 #include <QDirIterator>
 #include <QUuid>
 
+#include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
+#include <U2Algorithm/BaseAlignmentAlgorithmsIds.h>
 #include <U2Algorithm/CreateSubalignmentTask.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrlUtils.h>
-#include <U2Core/StateLockableDataModel.h>
 #include <U2Core/U2Dbi.h>
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/UserApplicationsSettings.h>
 
-#include "../AlignSequencesToAlignment/AlignSequencesToAlignmentTask.h"
-#include "../ExportSequencesTask.h"
+#include "ov_msa/align_to_alignment/AlignSequencesToAlignmentTask.h"
+#include "ov_msa/ExportSequencesTask.h"
 
 namespace U2 {
 
@@ -128,7 +129,13 @@ QList<Task *> RealignSequencesInAlignmentTask::onSubTaskFinished(Task *subTask) 
             sequenceFilesToAlign.append(it.next());
         }
 
-        auto task = new LoadSequencesAndAlignToAlignmentTask(msaObject, sequenceFilesToAlign);
+        AlignmentAlgorithmsRegistry *alignmentAlgorithmsRegistry = AppContext::getAlignmentAlgorithmsRegistry();
+        QStringList availableAlgorithmIds = alignmentAlgorithmsRegistry->getAvailableAlgorithmIds(AddToAlignment);
+        // TODO: make the algorithm be selectable by user.
+        QString algorithmId = availableAlgorithmIds.contains(BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT)
+                                  ? BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_MAFFT
+                                  : BaseAlignmentAlgorithmsIds::ALIGN_SEQUENCES_TO_ALIGNMENT_BY_UGENE;
+        auto task = new LoadSequencesAndAlignToAlignmentTask(msaObject, algorithmId, sequenceFilesToAlign);
         res.append(task);
     }
 

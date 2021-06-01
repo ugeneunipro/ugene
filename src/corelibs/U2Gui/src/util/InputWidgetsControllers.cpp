@@ -220,11 +220,20 @@ ComboBoxController::ComboBoxController(QComboBox *inputWidget, const QString &se
     : InputWidgetController(inputWidget, settingsPath, cmdLinePreffix, defaultValue),
       inputWidget(inputWidget),
       parameters(parameters) {
+    SAFE_POINT(inputWidget->count() > 0, QString("Combobox '%1' should be non-empty").arg(inputWidget->objectName()),)
 }
 
 void ComboBoxController::setWidgetValue(const QVariant &newValue) {
     if (!newValue.isNull()) {
         inputWidget->setCurrentIndex(newValue.toInt());
+    }
+    if (inputWidget->currentIndex() < 0) {
+        if (!defaultValue.isNull() && defaultValue.canConvert<int>()) {
+            inputWidget->setCurrentIndex(defaultValue.toInt());
+        }
+        if (inputWidget->currentIndex() < 0) {
+            inputWidget->setCurrentIndex(0);
+        }
     }
 }
 

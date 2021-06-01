@@ -28,6 +28,7 @@
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SelectionUtils.h>
 
+#include "align_to_alignment/AlignSequencesToAlignmentSupport.h"
 #include "MSAEditor.h"
 #include "MaEditorState.h"
 #include "MaEditorTasks.h"
@@ -170,6 +171,11 @@ OpenMaEditorTask *MsaEditorFactory::getOpenMaEditorTask(UnloadedObject *obj) {
 
 OpenMaEditorTask *MsaEditorFactory::getOpenMaEditorTask(Document *doc) {
     return new OpenMsaEditorTask(doc);
+}
+
+void MsaEditorFactory::registerMsaEditorViewFeatures() {
+    auto alignSequencesToAlignmentSupport = new AlignSequencesToAlignmentSupport(this);
+    alignSequencesToAlignmentSupport->init();
 }
 
 /************************************************************************/

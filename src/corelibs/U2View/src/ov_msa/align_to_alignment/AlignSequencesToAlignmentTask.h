@@ -100,15 +100,15 @@ private:
 class AlignSequencesToAlignmentTask : public Task {
     Q_OBJECT
 public:
-    AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject *obj, const SequenceObjectsExtractor &extractor);
+    AlignSequencesToAlignmentTask(MultipleSequenceAlignmentObject *obj,
+                                  const QString &algorithmId,
+                                  const SequenceObjectsExtractor &extractor);
 
     void prepare() override;
 
     ReportResult report() override;
 
 private:
-    void initSettingsWithDefaults();
-
     QPointer<MultipleSequenceAlignmentObject> maObjPointer;
     QStringList urls;
     StateLock *stateLock;
@@ -123,7 +123,9 @@ private:
 class LoadSequencesAndAlignToAlignmentTask : public Task {
     Q_OBJECT
 public:
-    LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject *obj, const QStringList &urls);
+    LoadSequencesAndAlignToAlignmentTask(MultipleSequenceAlignmentObject *obj,
+                                         const QString &algorithmId,
+                                         const QStringList &urls);
 
     void prepare() override;
     QList<Task *> onSubTaskFinished(Task *subTask) override;
@@ -131,6 +133,7 @@ public:
 
 private:
     QStringList urls;
+    QString algorithmId;
     QPointer<MultipleSequenceAlignmentObject> maObjPointer;
     LoadSequencesTask *loadSequencesTask;
 };

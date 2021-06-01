@@ -370,10 +370,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
     //3. Click "Align" button
     GTUtilsDialog::waitForDialog(os, new MuscleDialogFiller(os));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
-                                                << "Align"
-                                                << "Align with MUSCLE...",
-                              GTGlobals::UseMouse);
+    GTMenu::clickMainMenuItem(os, {"Actions", "Align", "Align with MUSCLE…"}, GTGlobals::UseMouse);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //4. Click on "Build tree" button on toolbar
@@ -381,11 +378,10 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTWidget::click(os, GTAction::button(os, "Build Tree"));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected state: "Create Philogenetic Tree" dialog appears
+    //Expected state: "Create Phylogenetic Tree" dialog appears
     //5. Set save path to _common_data/scenarios/sandbox/COI.nwk Click  OK button
-    QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found");
-    //Expected state: philogenetic tree appears
+    //Expected state: phylogenetic tree appears
+    GTWidget::findExactWidget<QGraphicsView *>(os, "treeView");
 }
 
 int getCoord(HI::GUITestOpStatus &os, QGraphicsSimpleTextItem *node) {
