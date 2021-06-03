@@ -31,6 +31,8 @@ namespace U2 {
 
 class MaEditorSequenceArea;
 class McaEditorSequenceArea;
+class MaEditorStatusBar;
+class McaEditorStatusBar;
 class MultipleAlignmentObject;
 class MultipleChromatogramAlignmentObject;
 
@@ -50,7 +52,9 @@ public:
      * Initialize object.
      * Call this function right after instance creation.
      */
-    void init(MultipleAlignmentObject* maObject, MaEditorSequenceArea* seqArea);
+    void init(MultipleAlignmentObject* maObject, MaEditorSequenceArea* seqArea, MaEditorStatusBar* statusBar);
+
+    static const QString getAlternativeMutationsCheckedId();
 
 private slots:
     /*
@@ -59,6 +63,7 @@ private slots:
     void sl_updateAlternativeMutations();
 
 private:
+    void showEvent(QShowEvent* event) override;
     /*
      * Update GUI with values from the database
      **/
@@ -70,6 +75,7 @@ private:
 
     McaEditorSequenceArea* seqArea = nullptr;
     MultipleChromatogramAlignmentObject* mcaObject = nullptr;
+    McaEditorStatusBar* statusBar = nullptr;
     U2IntegerAttribute checkedStateAttribute;
     U2IntegerAttribute thresholdAttribute;
     U2Object mcaDbiObj;

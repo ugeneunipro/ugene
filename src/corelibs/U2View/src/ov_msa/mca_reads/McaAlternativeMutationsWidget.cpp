@@ -22,6 +22,7 @@
 #include "McaAlternativeMutationsWidget.h"
 
 #include "../McaEditorSequenceArea.h"
+#include "../McaEditorStatusBar.h"
 
 #include <U2Core/McaDbiUtils.h>
 #include <U2Core/MsaDbiUtils.h>
@@ -42,9 +43,12 @@ McaAlternativeMutationsWidget::McaAlternativeMutationsWidget(QWidget* parent)
 
 }
 
-void McaAlternativeMutationsWidget::init(MultipleAlignmentObject* _maObject, MaEditorSequenceArea* _seqArea) {
+void McaAlternativeMutationsWidget::init(MultipleAlignmentObject* _maObject,
+                                         MaEditorSequenceArea* _seqArea,
+                                         MaEditorStatusBar* _statusBar) {
     SAFE_POINT(_seqArea != nullptr, "MaConsensusModeWidget can not be initialized: MaEditorSequenceArea is nullptr", );
     SAFE_POINT(_maObject != nullptr, "MaConsensusModeWidget can not be initialized: MultipleAlignmentObject is nullptr", );
+    SAFE_POINT(_statusBar != nullptr, "MaConsensusModeWidget can not be initialized: MaEditorStatusBar is nullptr", );
 
     seqArea = qobject_cast<McaEditorSequenceArea*>(_seqArea);
     SAFE_POINT(seqArea != nullptr, "MaConsensusModeWidget can not be initialized: McaEditorSequenceArea is nullptr", );
@@ -52,10 +56,11 @@ void McaAlternativeMutationsWidget::init(MultipleAlignmentObject* _maObject, MaE
     mcaObject = qobject_cast<MultipleChromatogramAlignmentObject*>(_maObject);
     SAFE_POINT(mcaObject != nullptr, "MaConsensusModeWidget can not be initialized: MultipleChromatogramAlignmentObject is nullptr", );
 
+    statusBar = qobject_cast<McaEditorStatusBar*>(_statusBar);
+    SAFE_POINT(mcaObject != nullptr, "MaConsensusModeWidget can not be initialized: McaEditorStatusBar is nullptr", );
+
     mutationsGroupBox->setChecked(false);
     mutationsThresholdSlider->setValue(99);
-
-    updateValuesFromDb();
 
     connect(mutationsGroupBox, SIGNAL(toggled(bool)), this, SLOT(sl_updateAlternativeMutations()));
     connect(updateMutationsPushButton, SIGNAL(pressed()), this, SLOT(sl_updateAlternativeMutations()));
@@ -71,6 +76,15 @@ void McaAlternativeMutationsWidget::sl_updateAlternativeMutations() {
 
     updateDb(os);
     CHECK_OP(os, );
+}
+
+const QString McaAlternativeMutationsWidget::getAlternativeMutationsCheckedId() {
+    return ALTERNATIVE_MUTATIONS_CHECKED;
+}
+
+inline void McaAlternativeMutationsWidget::showEvent(QShowEvent* event) {
+    updateValuesFromDb();
+    QWidget::showEvent(event);
 }
 
 void McaAlternativeMutationsWidget::updateValuesFromDb() {
@@ -141,6 +155,8 @@ void McaAlternativeMutationsWidget::updateDb(U2OpStatus& os) {
 
     updateAttribute(thresholdAttribute, mutationsThresholdSlider->value());
     CHECK_OP(os, );
+
+    statusBar->setMutationStatus(mutationsGroupBox->isChecked());
 }
 
 }

@@ -87,6 +87,10 @@ public:
         return offsetsViewController;
     }
 
+    MaEditorStatusBar* getStatusBar() const {
+        return statusBar;
+    }
+
     ScrollController *getScrollController() const {
         return scrollController;
     }

@@ -3847,6 +3847,38 @@ GUI_TEST_CLASS_DEFINITION(test_0045_2) {
     CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 2, pos 298) after AM unchecked, expected: C, current: %1").arg(ch));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0045_3) {
+    // Description: check "Alternative mutations" using spinbox to set threshold
+    // 0. Copy test file to sandbox
+    QString file = sandBoxDir + "test_0045_3.ugenedb";
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment_alternative_mutations.ugenedb", file);
+
+    // 1. Open "sandBoxDir + "test_0045_3.ugenedb""
+    GTFileDialog::openFile(os, file);
+
+    // 3. Open the "Reads" tab, check "Show alternative mutations", set threshold to 90 by spinbox and click "Update"
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, true, 90, true);
+
+    // 4. Open view it the other window
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view"
+                                                                              << "Open new view: Sanger Reads Editor",
+                                                            GTGlobals::UseMouse));
+    GTUtilsProjectTreeView::callContextMenu(os, "Mapped reads");
+
+    // 3. Open the "Reads" tab, check "Show alternative mutations", set threshold to 80 by spinbox and click "Update"
+    auto mcaEditorWidget = GTWidget::findExactWidget<QWidget *>(os, "Mapped reads [test_0045_3.ugenedb] 2");
+    CHECK_SET_ERR(mcaEditorWidget != nullptr, "Cant find \"Mapped reads [test_0045_3.ugenedb] 2\"");
+
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, true, 80, true, mcaEditorWidget);
+
+    // 4. Switch back to the first view and uncheck "Show alternative mutations"
+    GTUtilsMdi::clickTab(os, 1);
+    mcaEditorWidget = GTWidget::findExactWidget<QWidget *>(os, "Mapped reads [test_0045_3.ugenedb]");
+    CHECK_SET_ERR(mcaEditorWidget != nullptr, "Cant find \"Mapped reads [test_0045_3.ugenedb]\"");
+
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, false, 75, true, mcaEditorWidget);
+}
+
 }    //namespace GUITest_common_scenarios_mca_editor
 
 }    //namespace U2
