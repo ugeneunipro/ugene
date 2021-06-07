@@ -19,33 +19,36 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IMPORT_PRIMER_FROM_OBJECT_TASK_H_
-#define _U2_IMPORT_PRIMER_FROM_OBJECT_TASK_H_
+#ifndef _U2_PRIMER_LINE_EDIT_H_
+#define _U2_PRIMER_LINE_EDIT_H_
 
-#include <U2Core/Task.h>
+#include <QLineEdit>
+#include <QValidator>
 
-#include "Primer.h"
-#include "U2Gui/PrimerLineEdit.h"
+#include <U2Core/global.h>
 
 namespace U2 {
 
-class GObject;
-class U2SequenceObject;
-
-class ImportPrimerFromObjectTask : public Task {
+class U2GUI_EXPORT PrimerLineEdit : public QLineEdit {
     Q_OBJECT
 public:
-    ImportPrimerFromObjectTask(GObject *object);
+    PrimerLineEdit(QWidget *parent);
 
-    void run();
-    QString generateReport() const;
+    void setInvalidatedText(const QString &text);
+
+protected:
+    void paintEvent(QPaintEvent *event);
 
 private:
-    PrimerValidator validator;
-    U2SequenceObject *sequenceObject;
-    Primer primer;
+    QRect placeHolderRect() const;
+};
+
+class U2GUI_EXPORT PrimerValidator : public QRegExpValidator {
+public:
+    PrimerValidator(QObject *parent, bool allowExtended = true);
+    State validate(QString &input, int &pos) const;
 };
 
 }    // namespace U2
 
-#endif    // _U2_IMPORT_PRIMER_FROM_OBJECT_TASK_H_
+#endif    // _U2_PRIMER_LINE_EDIT_H_

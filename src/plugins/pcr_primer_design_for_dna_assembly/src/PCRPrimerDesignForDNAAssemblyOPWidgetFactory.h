@@ -19,33 +19,30 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IMPORT_PRIMER_FROM_OBJECT_TASK_H_
-#define _U2_IMPORT_PRIMER_FROM_OBJECT_TASK_H_
+#ifndef _U2_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY_OP_WIDGET_FACTORY_H_
+#define _U2_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY_OP_WIDGET_FACTORY_H_
 
-#include <U2Core/Task.h>
-
-#include "Primer.h"
-#include "U2Gui/PrimerLineEdit.h"
+#include <U2Gui/OPWidgetFactory.h>
 
 namespace U2 {
 
-class GObject;
-class U2SequenceObject;
-
-class ImportPrimerFromObjectTask : public Task {
+class PCRPrimerDesignForDNAAssemblyOPWidgetFactory : public OPWidgetFactory {
     Q_OBJECT
 public:
-    ImportPrimerFromObjectTask(GObject *object);
+    PCRPrimerDesignForDNAAssemblyOPWidgetFactory();
 
-    void run();
-    QString generateReport() const;
+    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
+
+    OPGroupParameters getOPGroupParameters() override;
+
+    bool passFiltration(OPFactoryFilterVisitorInterface* filter) override;
 
 private:
-    PrimerValidator validator;
-    U2SequenceObject *sequenceObject;
-    Primer primer;
+    static const QString GROUP_ID;
+    static const QString GROUP_ICON_STR;
+    static const QString GROUP_DOC_PAGE;
 };
 
 }    // namespace U2
 
-#endif    // _U2_IMPORT_PRIMER_FROM_OBJECT_TASK_H_
+#endif    // _U2_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY_OP_WIDGET_FACTORY_H_

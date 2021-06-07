@@ -20,7 +20,6 @@ HEADERS += src/EditPrimerDialog.h \
            src/PrimerLibraryTable.h \
            src/PrimerLibraryTableController.h \
            src/PrimerLibraryWidget.h \
-           src/PrimerLineEdit.h \
            src/PrimerStatistics.h \
            src/PrimersDetailsDialog.h \
            src/PrimersGrouperWorker.h \
@@ -62,7 +61,6 @@ SOURCES += src/EditPrimerDialog.cpp \
            src/PrimerLibraryTable.cpp \
            src/PrimerLibraryTableController.cpp \
            src/PrimerLibraryWidget.cpp \
-           src/PrimerLineEdit.cpp \
            src/PrimerStatistics.cpp \
            src/PrimersDetailsDialog.cpp \
            src/PrimersGrouperWorker.cpp \

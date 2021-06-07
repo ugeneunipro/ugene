@@ -19,34 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PRIMER_LINE_EDIT_H_
-#define _U2_PRIMER_LINE_EDIT_H_
+#ifndef _U2_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY_OP_SAVABLE_TAB_H_
+#define _U2_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY_OP_SAVABLE_TAB_H_
 
-#include <QLineEdit>
-#include <QValidator>
+#include <U2Gui/U2SavableWidget.h>
 
 namespace U2 {
 
-class PrimerLineEdit : public QLineEdit {
-    Q_OBJECT
+class PCRPrimerDesignForDNAAssemblyOPWidget;
+
+class PCRPrimerDesignForDNAAssemblyOPSavableTab : public U2SavableWidget {
 public:
-    PrimerLineEdit(QWidget *parent);
-
-    void setInvalidatedText(const QString &text);
-
-protected:
-    void paintEvent(QPaintEvent *event);
+    PCRPrimerDesignForDNAAssemblyOPSavableTab(QWidget *wrappedWidget, MWMDIWindow *contextWindow);
+    ~PCRPrimerDesignForDNAAssemblyOPSavableTab();
 
 private:
-    QRect placeHolderRect() const;
-};
-
-class PrimerValidator : public QRegExpValidator {
-public:
-    PrimerValidator(QObject *parent, bool allowExtended = true);
-    State validate(QString &input, int &pos) const;
+    PCRPrimerDesignForDNAAssemblyOPWidget* originalWrappedWidget = nullptr;
 };
 
 }    // namespace U2
 
-#endif    // _U2_PRIMER_LINE_EDIT_H_
+#endif    // _U2_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY_OP_SAVABLE_TAB_H_

@@ -19,33 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IMPORT_PRIMER_FROM_OBJECT_TASK_H_
-#define _U2_IMPORT_PRIMER_FROM_OBJECT_TASK_H_
+#ifndef _U2_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY_PLUGIN_H_
+#define _U2_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY_PLUGIN_H_
 
-#include <U2Core/Task.h>
-
-#include "Primer.h"
-#include "U2Gui/PrimerLineEdit.h"
+#include <U2Core/AppContext.h>
+#include <U2Core/PluginModel.h>
 
 namespace U2 {
 
-class GObject;
-class U2SequenceObject;
-
-class ImportPrimerFromObjectTask : public Task {
+class PCRPrimerDesignForDNAAssemblyPlugin : public Plugin {
     Q_OBJECT
 public:
-    ImportPrimerFromObjectTask(GObject *object);
+    PCRPrimerDesignForDNAAssemblyPlugin();
 
-    void run();
-    QString generateReport() const;
-
-private:
-    PrimerValidator validator;
-    U2SequenceObject *sequenceObject;
-    Primer primer;
 };
 
 }    // namespace U2
 
-#endif    // _U2_IMPORT_PRIMER_FROM_OBJECT_TASK_H_
+#endif    // _U2_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY_PLUGIN_H_
