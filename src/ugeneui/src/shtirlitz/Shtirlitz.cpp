@@ -35,6 +35,7 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/Counter.h>
+#include <U2Core/L10n.h>
 #include <U2Core/Log.h>
 #include <U2Core/NetworkConfiguration.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -82,9 +83,9 @@ QUuid Shtirlitz::getUniqueUgeneId() {
 }
 
 static QString getWhatsNewHtml() {
-    QString activeLanguage = AppContext::getSettings()->getValue("UGENE_CURR_TRANSL", "en").toString().toLower();
-    if (activeLanguage != "en" && activeLanguage != "ru") {
-        activeLanguage = "en";    // We do not have other variants of "Whats New?" file today.
+    QString activeLanguage = L10N::getActiveLanguageCode();
+    if (activeLanguage != "ru") {    // We have only Russian & English versions of "version_news_" files.
+        activeLanguage = "en";
     }
     QFile htmlFile(":/ugene/html/version_news_" + activeLanguage + ".html");
     if (!htmlFile.open(QFile::ReadOnly | QFile::Text)) {

@@ -78,7 +78,7 @@ class ShtirlitzTask : public Task {
     Q_OBJECT
 public:
     ShtirlitzTask(const QString &_report);
-    void run();
+    void run() override;
 
 private:
     QString report;
@@ -88,7 +88,7 @@ class ShtirlitzStartupTask : public Task {
     Q_OBJECT
 public:
     ShtirlitzStartupTask();
-    void prepare();
+    void prepare() override;
 };
 
 }    // namespace U2
