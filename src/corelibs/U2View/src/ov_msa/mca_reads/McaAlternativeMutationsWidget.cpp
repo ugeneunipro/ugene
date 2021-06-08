@@ -82,9 +82,9 @@ const QString McaAlternativeMutationsWidget::getAlternativeMutationsCheckedId() 
     return ALTERNATIVE_MUTATIONS_CHECKED;
 }
 
-inline void McaAlternativeMutationsWidget::showEvent(QShowEvent* event) {
+void McaAlternativeMutationsWidget::showEvent(QShowEvent* e) {
     updateValuesFromDb();
-    QWidget::showEvent(event);
+    QWidget::showEvent(e);
 }
 
 void McaAlternativeMutationsWidget::updateValuesFromDb() {

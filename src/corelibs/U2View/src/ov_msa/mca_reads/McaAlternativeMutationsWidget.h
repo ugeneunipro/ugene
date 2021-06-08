@@ -63,7 +63,7 @@ private slots:
     void sl_updateAlternativeMutations();
 
 private:
-    void showEvent(QShowEvent* event) override;
+    void showEvent(QShowEvent* e) override;
     /*
      * Update GUI with values from the database
      **/
