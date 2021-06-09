@@ -130,7 +130,7 @@ void ClustalWAlnFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QL
             valEndPos++;
         }
         if (valEndPos != len) {    //there were numbers trimmed -> trim spaces now
-            while (valEndPos > valStartPos && buf[valEndPos] == ' ') {
+            while (valEndPos > valStartPos && (buf[valEndPos] == ' ' || buf[valEndPos] == '\t')) {
                 valEndPos--;
             }
             valEndPos++;    //leave non-inclusive

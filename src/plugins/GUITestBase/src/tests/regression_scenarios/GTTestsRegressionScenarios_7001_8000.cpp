@@ -39,6 +39,7 @@
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsDocument.h"
+#include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMsaEditor.h"
@@ -518,6 +519,23 @@ GUI_TEST_CLASS_DEFINITION(test_7246) {
     CHECK_SET_ERR(alphabet.contains("RNA"), "Alphabet is not RNA: " + alphabet);
     sequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
     CHECK_SET_ERR(sequence == "UUUNNNNNNNNNNUNNNNNANNNGNNNANNNNANNNNNNNGUNNNUNGNNANNUGGANGN", "Not a RNA sequence: " + sequence);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7273) {
+    // Open _common_data/regression/7273/web-clustalo.aln.
+    // Select the symbol(1, 1).
+    // Click Del.
+    // Press Ctrl-Z(undo).
+    //     Expected: no errors in the log.
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/7273", "web-clustalo.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, {0, 0});
+    GTKeyboardDriver::keyPress(Qt::Key_Delete);
+
+    GTLogTracer lt;
+    GTUtilsMsaEditor::undo(os);
+    QStringList errors = GTUtilsLog::getErrors(os, lt);
+    CHECK_SET_ERR(errors.size() == 0, QString("Expected: no errors, current: errors in log:\n%1").arg(errors.join('\n')))
 }
 
 }    // namespace GUITest_regression_scenarios
