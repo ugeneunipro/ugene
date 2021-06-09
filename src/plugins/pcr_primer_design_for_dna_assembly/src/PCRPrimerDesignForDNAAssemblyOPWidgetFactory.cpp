@@ -38,9 +38,7 @@ PCRPrimerDesignForDNAAssemblyOPWidgetFactory::PCRPrimerDesignForDNAAssemblyOPWid
     objectViewOfWidget = ObjViewType_SequenceView;
 }
 
-QWidget* PCRPrimerDesignForDNAAssemblyOPWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& options) {
-    Q_UNUSED(options);
-
+QWidget* PCRPrimerDesignForDNAAssemblyOPWidgetFactory::createWidget(GObjectView* objView, const QVariantMap& ) {
     AnnotatedDNAView* annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
     SAFE_POINT(annotatedDnaView != nullptr, L10N::nullPointerError("AnnotatedDNAView"), nullptr);
 
@@ -56,9 +54,5 @@ bool PCRPrimerDesignForDNAAssemblyOPWidgetFactory::passFiltration(OPFactoryFilte
 
     return filter->typePass(getObjectViewType()) && filter->atLeastOneAlphabetPass(DNAAlphabet_NUCL);
 }
-
-
-
-
 
 }

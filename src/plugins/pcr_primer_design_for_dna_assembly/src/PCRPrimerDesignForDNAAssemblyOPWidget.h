@@ -51,12 +51,14 @@ private:
     AnnotatedDNAView* annDnaView = nullptr;
 
     QToolButton* smButton = nullptr;
-    QSpinBox* start = nullptr;
-    QSpinBox* end = nullptr;
+    QSpinBox* sbStartRegion = nullptr;
+    QSpinBox* sbEndRegion = nullptr;
     QMetaObject::Connection updateRegionConnection;
 
     PCRPrimerDesignForDNAAssemblyOPSavableTab savableWidget;
-    QMap<QSpinBox*, QSpinBox*> minMaxValuesSb;
+    //"Parameters of priming sequences" and "Parameters to exclude in whole primers" has set of parameters.
+    //This map contains spinboxes with minimum values as keys and spinboxes with maximum values as values.
+    QMap<QSpinBox*, QSpinBox*> parametersMinMaxSpinBoxes;
 
     static const QString USER_PRIMERS_SHOW_HIDE_ID;
     static const QString PARAMETERS_OF_PRIMING_SEQUENCES_SHOW_HIDE_ID;

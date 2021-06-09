@@ -24,8 +24,9 @@
 
 #include <U2Core/Task.h>
 
+#include <U2Gui/PrimerLineEdit.h>
+
 #include "Primer.h"
-#include "U2Gui/PrimerLineEdit.h"
 
 namespace U2 {
 

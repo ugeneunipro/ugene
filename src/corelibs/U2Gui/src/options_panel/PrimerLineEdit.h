@@ -29,24 +29,37 @@
 
 namespace U2 {
 
+/**
+ * @PrimerLineEdit
+ * Improved line edit for primers. Includes "5'" and "3'" labels and validatior for nucletide or amino characters.
+ * Promote @QLineEdit to @PrimerLineEdit to make it work.
+ */
 class U2GUI_EXPORT PrimerLineEdit : public QLineEdit {
     Q_OBJECT
 public:
     PrimerLineEdit(QWidget *parent);
 
+    /**
+     * Set text if it's valid. If not set empty string.
+     */
     void setInvalidatedText(const QString &text);
 
 protected:
     void paintEvent(QPaintEvent *event);
 
 private:
-    QRect placeHolderRect() const;
+    QRect getPlaceHolderRect() const;
 };
 
+/**
+ * @PrimerValidator
+ * QRegExpValidator improving for primers. Make possible to type nucleotide or amino charaters only.
+ */
 class U2GUI_EXPORT PrimerValidator : public QRegExpValidator {
 public:
     PrimerValidator(QObject *parent, bool allowExtended = true);
-    State validate(QString &input, int &pos) const;
+
+    State validate(QString &input, int &pos) const override;
 };
 
 }    // namespace U2

@@ -39,17 +39,11 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
 PCRPrimerDesignForDNAAssemblyPlugin::PCRPrimerDesignForDNAAssemblyPlugin()
     : Plugin(tr("PCR Primer Design for DNA assembly"), tr("PCR Primer Design for DNA assembly.")) {
 
-    if (NULL != AppContext::getMainWindow()) {
+    if (nullptr != AppContext::getMainWindow()) {
         OPWidgetFactoryRegistry* opRegistry = AppContext::getOPWidgetFactoryRegistry();
-        SAFE_POINT(opRegistry != NULL, L10N::nullPointerError("Options Panel Registry"), );
-        opRegistry->registerFactory(new PCRPrimerDesignForDNAAssemblyOPWidgetFactory());
+        SAFE_POINT(opRegistry != nullptr, L10N::nullPointerError("Options Panel Registry"), );
 
-        /*if (NULL != library) {
-            QAction* libraryAction = new QAction(QIcon(":/core/images/db/database_go.png"), tr("Primer library"), this);
-            libraryAction->setObjectName(ToolsMenu::PRIMER_LIBRARY);
-            connect(libraryAction, SIGNAL(triggered()), SLOT(sl_primerLibrary()));
-            ToolsMenu::addAction(ToolsMenu::PRIMER_MENU, libraryAction);
-        }*/
+        opRegistry->registerFactory(new PCRPrimerDesignForDNAAssemblyOPWidgetFactory());
     }
 }
 
