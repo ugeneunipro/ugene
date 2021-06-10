@@ -109,7 +109,10 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     sl_updateMaxValues();
     for (auto minSb : parametersMinMaxSpinBoxes.keys()) {
         connect(minSb, &QSpinBox::editingFinished, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_minValueChanged);
-        connect(parametersMinMaxSpinBoxes[minSb], &QSpinBox::editingFinished, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_maxValueChanged);
+        auto maxSb = parametersMinMaxSpinBoxes.value(minSb);
+        SAFE_POINT(maxSb != nullptr, L10N::nullPointerError("QSpinBox"), );
+
+        connect(maxSb, &QSpinBox::editingFinished, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_maxValueChanged);
     }
     connect(tbLoadBackbone, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_loadBackbone);
     connect(tbsaveRandomSequences, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_saveRandomSequences);
@@ -183,7 +186,9 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateMaxValues() {
 
     auto seqLength = activeSequenceContext->getSequenceLength();
     for (const auto& minSb : parametersMinMaxSpinBoxes.keys()) {
-        auto maxSb = parametersMinMaxSpinBoxes[minSb];
+        auto maxSb = parametersMinMaxSpinBoxes.value(minSb);
+        SAFE_POINT(maxSb != nullptr, L10N::nullPointerError("QSpinBox"), );
+
         minSb->setMaximum(maxSb->value() - 1);
         maxSb->setMinimum(minSb->value() + 1);
         maxSb->setMaximum(seqLength);
