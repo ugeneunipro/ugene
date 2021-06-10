@@ -22,11 +22,12 @@
 #ifndef _U2_IMPORT_PRIMER_FROM_OBJECT_TASK_H_
 #define _U2_IMPORT_PRIMER_FROM_OBJECT_TASK_H_
 
+#include <U2Core/Primer.h>
+#include <U2Core/PrimerValidator.h>
 #include <U2Core/Task.h>
 
 #include <U2Gui/PrimerLineEdit.h>
 
-#include "Primer.h"
 
 namespace U2 {
 

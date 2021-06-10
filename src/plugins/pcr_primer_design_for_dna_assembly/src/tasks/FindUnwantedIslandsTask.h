@@ -19,35 +19,42 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EXPORT_PRIMERS_TO_DATABASE_TASK_H_
-#define _U2_EXPORT_PRIMERS_TO_DATABASE_TASK_H_
+#ifndef _U2_FIND_UNWANTED_ISLANDS_TASK_H_
+#define _U2_FIND_UNWANTED_ISLANDS_TASK_H_
 
-#include <U2Core/Primer.h>
 #include <U2Core/Task.h>
-#include <U2Core/U2DbiUtils.h>
+
+#include "PCRPrimerDesignForDNAAssemblyTaskSettings.h"
 
 namespace U2 {
 
-class ExportPrimersToDatabaseTask : public Task {
-    Q_OBJECT
+class FindUnwantedIslandsTask : public Task {
 public:
-    ExportPrimersToDatabaseTask(const QList<Primer> &primers, const U2DbiRef &dbiRef, const QString &folder);
+    FindUnwantedIslandsTask(const PCRPrimerDesignForDNAAssemblyTaskSettings& settings, const QByteArray& sequence);
 
     void run() override;
-    ReportResult report() override;
 
-    const QMap<U2DataId, U2DataId> &getImportedObjectIds() const;
+    const QList<U2Region>& getRegionBetweenIslands() const;
 
 private:
-    const QList<Primer> primers;
-    const U2DbiRef dbiRef;
-    const QString folder;
+    static bool isUnwantedSelfDimer(const QByteArray& forwardSequence);
 
-    TmpDbiObjects dbiSequences;
-    TmpDbiObjects dbiAnnotations;
-    QMap<U2DataId, U2DataId> importedObjectIds;
+    bool hasUnwantedConnections(const U2Region& region) const;
+
+    PCRPrimerDesignForDNAAssemblyTaskSettings settings;
+    QByteArray sequence;
+
+    QList<U2Region> regionsBetweenIslands;
+
+    static constexpr int ISLAND_LENGTH = 8;
+    static constexpr int NUCLEOTIDE_PAIR_LENGTH = 2;
+
+    static constexpr double UNWANTED_MELTING_TEMPERATURE = 20;
+    static constexpr double UNWANTED_DELTA_G = -7;
+    static constexpr int UNWANTED_MAX_LENGTH = 4;
 };
 
-}    // namespace U2
 
-#endif    // _U2_EXPORT_PRIMERS_TO_DATABASE_TASK_H_
+}
+
+#endif

@@ -118,7 +118,7 @@
          </widget>
         </item>
         <item>
-         <widget class="U2::PrimerLineEdit" name="leForwardPrimer_2">
+         <widget class="U2::PrimerLineEdit" name="leForwardPrimer">
           <property name="text">
            <string/>
           </property>
@@ -145,7 +145,7 @@
          </widget>
         </item>
         <item>
-         <widget class="U2::PrimerLineEdit" name="leReversePrimer_2">
+         <widget class="U2::PrimerLineEdit" name="leReversePrimer">
           <property name="text">
            <string/>
           </property>
@@ -641,7 +641,7 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_6">
            <item>
-            <widget class="QRadioButton" name="radioButton">
+            <widget class="QRadioButton" name="backbone5">
              <property name="text">
               <string>5' insert to 5' backbone</string>
              </property>
@@ -651,7 +651,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QRadioButton" name="radioButton_2">
+            <widget class="QRadioButton" name="backbone3">
              <property name="text">
               <string>5' insert to 3' backbone</string>
              </property>
@@ -674,7 +674,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="spinBox"/>
+              <widget class="QSpinBox" name="sbBackbone5Length"/>
              </item>
             </layout>
            </item>
@@ -688,7 +688,7 @@
               </widget>
              </item>
              <item>
-              <widget class="QSpinBox" name="spinBox_2"/>
+              <widget class="QSpinBox" name="sbBackbone3Length"/>
              </item>
             </layout>
            </item>
