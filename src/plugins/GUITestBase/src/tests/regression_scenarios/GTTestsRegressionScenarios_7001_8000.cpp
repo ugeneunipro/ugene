@@ -534,10 +534,8 @@ GUI_TEST_CLASS_DEFINITION(test_7273) {
 
     GTLogTracer lt;
     GTUtilsMsaEditor::undo(os);
-    QStringList errors = GTUtilsLog::getErrors(os, lt);
-    int errorsNumber = errors.size();
-    CHECK_SET_ERR(errorsNumber == 0, QString("Expected: no errors in the log, current: %1 errors in the log:\n%2").
-        arg(errorsNumber).arg(errors.join('\n')))
+    CHECK_SET_ERR(!lt.hasErrors(), QString("Expected: no errors in the log, current: %1 errors in the log:\n%2").
+        arg(lt.errorsList.size()).arg(lt.getJoinedErrorString()))
 }
 
 }    // namespace GUITest_regression_scenarios
