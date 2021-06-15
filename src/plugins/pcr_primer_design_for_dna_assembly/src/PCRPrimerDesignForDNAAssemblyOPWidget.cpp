@@ -185,7 +185,8 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateMaxValues() {
     SAFE_POINT(activeSequenceContext != nullptr, L10N::nullPointerError("ADVSequenceObjectContext"), );
 
     auto seqLength = activeSequenceContext->getSequenceLength();
-    for (const auto& minSb : parametersMinMaxSpinBoxes.keys()) {
+    const auto& parametersMinMaxSpinBoxesKeys = parametersMinMaxSpinBoxes.keys();
+    for (const auto& minSb : qAsConst(parametersMinMaxSpinBoxesKeys)) {
         auto maxSb = parametersMinMaxSpinBoxes.value(minSb);
         SAFE_POINT(maxSb != nullptr, L10N::nullPointerError("QSpinBox"), );
 
