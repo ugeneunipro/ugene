@@ -39,7 +39,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
 PCRPrimerDesignForDNAAssemblyPlugin::PCRPrimerDesignForDNAAssemblyPlugin()
     : Plugin(tr("PCR Primer Design for DNA assembly"), tr("PCR Primer Design for DNA assembly.")) {
 
-    if (nullptr != AppContext::getMainWindow()) {
+    if (AppContext::getMainWindow() != nullptr) {
         OPWidgetFactoryRegistry* opRegistry = AppContext::getOPWidgetFactoryRegistry();
         SAFE_POINT(opRegistry != nullptr, L10N::nullPointerError("Options Panel Registry"), );
 

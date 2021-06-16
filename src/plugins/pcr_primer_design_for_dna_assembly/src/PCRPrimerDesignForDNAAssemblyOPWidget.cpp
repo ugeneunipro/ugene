@@ -87,10 +87,7 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
                                            wgtOtherSequencesInPcr,
                                            true);
 
-    auto activeSequenceContext = annDnaView->getActiveSequenceContext();
-    SAFE_POINT(activeSequenceContext != nullptr, L10N::nullPointerError("ADVSequenceObjectContext"), );
-
-    auto seqLength = activeSequenceContext->getSequenceLength();
+    auto seqLength = annDnaView->getActiveSequenceContext()->getSequenceLength();
 
     // Default values, have been provided by the customer
     // Left area: from "1" to "10% of sequence length"
@@ -106,8 +103,9 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
 
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
 
-    sl_updateMaxValues();
-    for (auto minSb : parametersMinMaxSpinBoxes.keys()) {
+    sl_updateParametersRanges();
+    const auto& parametersMinMaxSpinBoxesKeys = parametersMinMaxSpinBoxes.keys();
+    for (auto minSb : qAsConst(parametersMinMaxSpinBoxesKeys)) {
         connect(minSb, &QSpinBox::editingFinished, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_minValueChanged);
         auto maxSb = parametersMinMaxSpinBoxes.value(minSb);
         SAFE_POINT(maxSb != nullptr, L10N::nullPointerError("QSpinBox"), );
@@ -152,20 +150,12 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually() {
         sbStartRegion = sbRightAreaStart;
         sbEndRegion = sbRightAreaEnd;
     }
-    auto activeSequenceContext = annDnaView->getActiveSequenceContext();
-    SAFE_POINT(activeSequenceContext != nullptr, L10N::nullPointerError("ADVSequenceObjectContext"), );
-
-    auto sequenceSelection = activeSequenceContext->getSequenceSelection();
-    SAFE_POINT(sequenceSelection != nullptr, L10N::nullPointerError("DNASequenceSelection"), );
-
+    auto sequenceSelection = annDnaView->getActiveSequenceContext()->getSequenceSelection();
     updateRegionConnection = connect(sequenceSelection, &DNASequenceSelection::si_onSelectionChanged, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateRegion);
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateRegion() {
-    auto sequenceSelection = qobject_cast<DNASequenceSelection*>(sender());
-    SAFE_POINT(sequenceSelection != nullptr, L10N::nullPointerError("DNASequenceSelection"), );
-
-    const auto& selectedRegions = sequenceSelection->getSelectedRegions();
+    const auto& selectedRegions = qobject_cast<DNASequenceSelection*>(sender())->getSelectedRegions();
     CHECK(!selectedRegions.isEmpty(), );
 
     if (selectedRegions.size() > 1) {
@@ -180,11 +170,8 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateRegion() {
     sbEndRegion->setValue(region.endPos());
 }
 
-void PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateMaxValues() {
-    auto activeSequenceContext = annDnaView->getActiveSequenceContext();
-    SAFE_POINT(activeSequenceContext != nullptr, L10N::nullPointerError("ADVSequenceObjectContext"), );
-
-    auto seqLength = activeSequenceContext->getSequenceLength();
+void PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateParametersRanges() {
+    auto seqLength = annDnaView->getActiveSequenceContext()->getSequenceLength();
     const auto& parametersMinMaxSpinBoxesKeys = parametersMinMaxSpinBoxes.keys();
     for (const auto& minSb : qAsConst(parametersMinMaxSpinBoxesKeys)) {
         auto maxSb = parametersMinMaxSpinBoxes.value(minSb);

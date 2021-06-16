@@ -37,14 +37,44 @@ public:
     PCRPrimerDesignForDNAAssemblyOPWidget(AnnotatedDNAView* annDnaView);
 
 private slots:
+    /**
+     * Start calcultaion process.
+     * This slot is called when a user clicks on the "Start" button.
+     */
     void sl_start();
+    /**
+     * Activate "Select region manually" mode.
+     * When this mode is active, user may choose left or right search regin by selecting region manyally on sequence.
+     */
     void sl_selectManually();
+    /**
+     * When @DNASequenceSelection::si_onSelectionChanged is send, the region fields are about to be updated in this slot.
+     */
     void sl_updateRegion();
-    void sl_updateMaxValues();
+    /**
+     * This slot is used to update ranges of fields, which has a "pair".
+     * E.g. "Required delta G" has minimum and maximum, and minimum should not lesser, then maximum.
+     */
+    void sl_updateParametersRanges();
+    /**
+     * Update range of minimum limit of parameter, which have maximum.
+     */
     void sl_minValueChanged();
+    /**
+     * Update range of maximum limit of parameter, which have minimum.
+     */
     void sl_maxValueChanged();
+    /**
+     * Show the "Open file" dialog, choose a file with backbones and set path to the corresponding line edit.
+     */
     void sl_loadBackbone();
+    /**
+     * Show the "Save file" dialog, choose a place to save file with random sequences and set path to the corresponding line edit.
+     */
     void sl_saveRandomSequences();
+    /**
+     * Show the "Open file" dialog, choose a file with other PCR sequences and set path to the corresponding line edit.
+     */
     void sl_loadOtherSequenceInPcr();
 
 private:
