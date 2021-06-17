@@ -127,8 +127,8 @@ void McaAlternativeMutationsWidget::updateValuesFromDb() {
         auto thresholdIntAttribute = attributeDbi->getIntegerAttribute(thresholdAttribute.id, os);
         CHECK_OP(os, );
 
-        mutationsGroupBox->setChecked((bool)checkedIntAttribute.value);
         mutationsThresholdSlider->setValue(thresholdIntAttribute.value);
+        mutationsGroupBox->setChecked((bool)checkedIntAttribute.value);
     }
 }
 

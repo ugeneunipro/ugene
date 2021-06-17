@@ -27,6 +27,7 @@
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
+#include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTSpinBox.h>
@@ -3856,27 +3857,65 @@ GUI_TEST_CLASS_DEFINITION(test_0045_3) {
     // 1. Open "sandBoxDir + "test_0045_3.ugenedb""
     GTFileDialog::openFile(os, file);
 
-    // 3. Open the "Reads" tab, check "Show alternative mutations", set threshold to 90 by spinbox and click "Update"
+    // 2. Open the "Reads" tab, check "Show alternative mutations", set threshold to 90 by spinbox and click "Update"
     GTUtilsOptionPanelMca::showAlternativeMutations(os, true, 90, true);
 
-    // 4. Open view it the other window
+    // 3. Open view it the other window
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view"
                                                                               << "Open new view: Sanger Reads Editor",
                                                             GTGlobals::UseMouse));
     GTUtilsProjectTreeView::callContextMenu(os, "Mapped reads");
 
-    // 3. Open the "Reads" tab, check "Show alternative mutations", set threshold to 80 by spinbox and click "Update"
+    // 4. Open the "Reads" tab, check "Show alternative mutations", set threshold to 80 by spinbox and click "Update"
     auto mcaEditorWidget = GTWidget::findExactWidget<QWidget *>(os, "Mapped reads [test_0045_3.ugenedb] 2");
     CHECK_SET_ERR(mcaEditorWidget != nullptr, "Cant find \"Mapped reads [test_0045_3.ugenedb] 2\"");
 
     GTUtilsOptionPanelMca::showAlternativeMutations(os, true, 80, true, mcaEditorWidget);
 
-    // 4. Switch back to the first view and uncheck "Show alternative mutations"
+    // 5. Switch back to the first view and uncheck "Show alternative mutations"
     GTUtilsMdi::clickTab(os, 1);
     mcaEditorWidget = GTWidget::findExactWidget<QWidget *>(os, "Mapped reads [test_0045_3.ugenedb]");
     CHECK_SET_ERR(mcaEditorWidget != nullptr, "Cant find \"Mapped reads [test_0045_3.ugenedb]\"");
 
     GTUtilsOptionPanelMca::showAlternativeMutations(os, false, 75, true, mcaEditorWidget);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0045_4) {
+    // Description: check "Alternative mutations" using spinbox to set threshold
+    // 0. Copy test file to sandbox
+    QString file = sandBoxDir + "test_0045_4.ugenedb";
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment_alternative_mutations.ugenedb", file);
+
+    // 1. Open "sandBoxDir + "test_0045_4.ugenedb""
+    GTFileDialog::openFile(os, file);
+
+    // 2. Open the "Reads" tab, check "Show alternative mutations", set threshold to 8 by spinbox and click "Update"
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, true, 8, true);
+
+    // Expected: read 2, pos 308 - A
+    auto ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(307, 1));
+    CHECK_SET_ERR(ch == 'A', QString("Incorrect chararcter (read 2, pos 308), expected: A, current: %1").arg(ch));
+
+    // 3. Close the view
+    GTUtilsMdi::closeActiveWindow(os);
+
+    // 4. Open the same view again
+    GTUtilsProjectTreeView::openView(os);
+    GTUtilsProjectTreeView::doubleClickItem(os, "test_0045_4.ugenedb");
+
+    // 5. Open the "Reads" tab
+    GTUtilsOptionPanelMca::toggleTab(os, GTUtilsOptionPanelMca::Tabs::Reads);
+
+    // Expected: alternative mutations are ON, threshold at 8%
+    bool isChecked = GTGroupBox::getChecked(os, "mutationsGroupBox");
+    CHECK_SET_ERR(isChecked, "Alternative mutations should be turned ON");
+
+    auto amValue = GTSpinBox::getValue(os, "mutationsThresholdSpinBox");
+    CHECK_SET_ERR(amValue == 8, QString("Expected alternative mutations value: 8, current: %1").arg(amValue));
+
+    // Expected: read 2, pos 308 - A
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(307, 1));
+    CHECK_SET_ERR(ch == 'A', QString("Incorrect chararcter (read 2, pos 308), expected: A, current: %1").arg(ch));
 }
 
 }    //namespace GUITest_common_scenarios_mca_editor
