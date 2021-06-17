@@ -38,6 +38,7 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/Task.h>
 #include <U2Core/TaskSignalMapper.h>
+#include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/GUIUtils.h>
@@ -176,9 +177,19 @@ void KalignMSAEditorContext::sl_align() {
     assert(action != NULL);
     MSAEditor *ed = action->getMSAEditor();
     MultipleSequenceAlignmentObject *obj = ed->getMaObject();
-
+    
     KalignTaskSettings s;
     QObjectScopedPointer<KalignDialogController> dlg = new KalignDialogController(ed->getWidget(), obj->getMultipleAlignment(), s);
+    bool containAsterisk = false;
+
+    for (const MultipleSequenceAlignmentRow &row : obj->getMsa()->getMsaRows()) {
+        if (row->getData().contains("*")) {
+            dlg->alphabetWarningLabel->setText(tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr())
+                .arg(tr("Warning: multiple alignment contains '*', they will be replaced with 'X' during alignment.")));
+            break;
+        }
+    }
+
     const int rc = dlg->exec();
     CHECK(!dlg.isNull(), );
 

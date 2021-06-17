@@ -126,6 +126,7 @@
 #include "runnables/ugene/plugins/pcr/ImportPrimersDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
+#include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/primer3/Primer3DialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
@@ -2594,6 +2595,21 @@ GUI_TEST_CLASS_DEFINITION(test_5638) {
 
     U2MsaListGapModel finishGapModel = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getGapModel();
     CHECK_SET_ERR(finishGapModel == startGapModel, "Unexpected changes of alignment");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5657) {
+    //1. Open _common_data/clustal/COI_sub_asterisks.aln
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI_sub_asterisks.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //2. Align it with Kalign
+    //Expected state: there is no errors during alignment
+    GTLogTracer logTracer;
+    GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign"));
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsLog::check(os, logTracer);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5659) {

@@ -30,6 +30,7 @@
 #include <U2Core/MSAUtils.h>
 #include <U2Core/MultipleSequenceAlignmentImporter.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/U2AlphabetUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -148,6 +149,14 @@ SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString &task
     MultipleSequenceAlignment al = MSAUtils::createCopyWithIndexedRowNames(msaObjectPointer->getMultipleAlignment());
 
     MultipleSequenceAlignmentObject *msaObject = MultipleSequenceAlignmentImporter::createAlignment(msaObjectPointer->getEntityRef().dbiRef, al, os);
+    for (const MultipleSequenceAlignmentRow &row : al->getMsaRows()) {
+        if (row->getData().contains("*")) {
+            ioLog.info(tr("Symbols '*' has been replaced with 'X' during alignment."));
+            break;
+        }
+    }
+    msaObject->replaceAllCharacters('*', 'X');
+    U2AlphabetUtils::assignAlphabet(al);
     SAFE_POINT_OP(os, );
 
     SimpleInOutWorkflowTaskConfig sioConf;
