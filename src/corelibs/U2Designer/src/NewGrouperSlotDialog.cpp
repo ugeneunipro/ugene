@@ -35,7 +35,7 @@ namespace U2 {
 NewGrouperSlotDialog::NewGrouperSlotDialog(QWidget *parent, QList<Descriptor> &inSlots, QStringList &names)
     : QDialog(parent), inSlots(inSlots), names(names) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60228444");
+    new HelpButton(this, buttonBox, "65930076");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -102,7 +102,7 @@ ActionDialog *ActionDialog::getActionDialog(QWidget *parent, GrouperSlotAction *
 AnnsActionDialog::AnnsActionDialog(QWidget *parent, GrouperSlotAction *action, QStringList mergeSeqSlots)
     : ActionDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60228444");
+    new HelpButton(this, buttonBox, "65930076");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -148,7 +148,7 @@ GrouperSlotAction AnnsActionDialog::getAction() const {
 SequeceActionDialog::SequeceActionDialog(QWidget *parent, GrouperSlotAction *action)
     : ActionDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60228444");
+    new HelpButton(this, buttonBox, "65930076");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -212,7 +212,7 @@ GrouperSlotAction SequeceActionDialog::getAction() const {
 MsaActionDialog::MsaActionDialog(QWidget *parent, GrouperSlotAction *action)
     : ActionDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60228444");
+    new HelpButton(this, buttonBox, "65930076");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     if (NULL != action) {
@@ -245,7 +245,7 @@ GrouperSlotAction MsaActionDialog::getAction() const {
 StringActionDialog::StringActionDialog(QWidget *parent, GrouperSlotAction *action)
     : ActionDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60228444");
+    new HelpButton(this, buttonBox, "65930076");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     if (NULL != action) {

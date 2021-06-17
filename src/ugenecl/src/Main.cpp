@@ -163,7 +163,6 @@ static void setDataSearchPaths() {
     if (QDir(appDirPath + RELATIVE_DATA_DIR).exists()) {
         dataSearchPaths.push_back(appDirPath + RELATIVE_DATA_DIR);
     } else if (QDir(appDirPath + RELATIVE_DEV_DATA_DIR).exists()) {    //data location for developers
-        printf("ADDED PATH %s \n", qPrintable(appDirPath + RELATIVE_DEV_DATA_DIR));
         dataSearchPaths.push_back(appDirPath + RELATIVE_DEV_DATA_DIR);
 #ifdef Q_OS_DARWIN
     } else {

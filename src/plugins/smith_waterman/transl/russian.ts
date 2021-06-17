@@ -94,6 +94,14 @@
     </message>
 </context>
 <context>
+    <name>U2::AlignmentAlgorithmsRegistry</name>
+    <message>
+        <location filename="../src/SWAlgorithmPlugin.cpp" line="171"/>
+        <source>Smith-Waterman</source>
+        <translation>Поиск Смита-Ватермана</translation>
+    </message>
+</context>
+<context>
     <name>U2::GTest_SmithWatermnan</name>
     <message>
         <location filename="../src/SmithWatermanTests.cpp" line="216"/>

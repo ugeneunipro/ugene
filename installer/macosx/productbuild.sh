@@ -16,9 +16,27 @@ if [[ -z "$3" ]]; then
     exit -2
 fi
 
-productbuild \
-    --component "$1" \
-    /Applications/ \
+#productbuild \
+#    --component "$1" \
+#    /Applications/ \
+#    "$2"
+
+pkgbuild \
+    --analyze \
+    --root "$1" \
+    "Unipro UGENE-component.plist"
+
+plutil \
+    -replace BundleIsRelocatable \
+    -bool NO \
+    "Unipro UGENE-component.plist"
+
+pkgbuild \
+    --root "$1" \
+    --identifier net.ugene.ugene \
+    --version 39.0 \
+    --install-location /Applications/UGENE.app \
+    --component-plist "Unipro UGENE-component.plist" \
     "$2"
 
 productsign \

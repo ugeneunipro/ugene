@@ -31,7 +31,7 @@ BioStruct3DSettingsDialog::BioStruct3DSettingsDialog()
     : anaglyphStatus(NOT_AVAILABLE), anaglyphSettings(AnaglyphSettings::defaultSettings()) {
     setupUi(this);
 
-    new HelpButton(this, buttonBox, "60227905");
+    new HelpButton(this, buttonBox, "65929537");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

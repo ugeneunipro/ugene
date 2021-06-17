@@ -258,9 +258,15 @@ public:
         return getTreeLayout() == CIRCULAR_LAYOUT;
     }
 
+    GraphicsBranchItem* getLastUpdatedBranch() const;
+
     void onPhyTreeChanged();
 
     bool isOnlyLeafSelected() const;
+
+signals:
+    /* emits when branch settings is updated */
+    void si_updateBranch();
 
 protected:
     virtual void wheelEvent(QWheelEvent *e);
@@ -339,7 +345,7 @@ private:
 
     void updateLayout();
 
-    void updateTextSettings();
+    void updateTextSettings(TreeViewOption option);
 
     void updateBrachSettings();
 
@@ -372,6 +378,7 @@ private:
 
     PhyTreeObject *phyObject;
     GraphicsBranchItem *root;
+    GraphicsBranchItem *lastUpdatedBranch;
     qreal maxNameWidth;
     qreal verticalScale;
     qreal horizontalScale;
@@ -391,7 +398,7 @@ private:
     QAction *exportAction;
 
     OptionsMap settings;
-    bool updatingFromOP;
+    bool dontSendOptionChangedSignal;
 
 protected:
     GraphicsRectangularBranchItem *rectRoot;

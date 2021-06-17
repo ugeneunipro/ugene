@@ -52,7 +52,7 @@ namespace U2 {
 PrimerLibraryWidget::PrimerLibraryWidget(QWidget *parent)
     : QWidget(parent), editPrimerButton(NULL), removePrimersButton(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229151");
+    new HelpButton(this, buttonBox, "65930783");
 
     QPushButton *newPrimerButton = buttonBox->addButton(tr("New primer"), QDialogButtonBox::ActionRole);
     connect(newPrimerButton, SIGNAL(clicked()), SLOT(sl_newPrimer()));

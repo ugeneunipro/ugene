@@ -40,7 +40,7 @@ ExportConsensusVariationsDialog::ExportConsensusVariationsDialog(QWidget *p, con
     : QDialog(p), settings(settings_) {
     setupUi(this);
     setWindowTitle(tr("Export Consensus Variations"));
-    new HelpButton(this, buttonBox, "60228216");
+    new HelpButton(this, buttonBox, "65929848");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     //hide for this dialog

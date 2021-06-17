@@ -54,7 +54,7 @@ public:
     ClustalWSupportContext(QObject *p);
 
 protected slots:
-    void sl_align_with_ClustalW();
+    void sl_align();
 
 protected:
     void initViewContext(GObjectView *view) override;

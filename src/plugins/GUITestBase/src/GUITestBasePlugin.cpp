@@ -1200,6 +1200,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4160);
     REGISTER_TEST(GUITest_regression_scenarios::test_4164);
     REGISTER_TEST(GUITest_regression_scenarios::test_4170);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4177);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4177_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4179);
     REGISTER_TEST(GUITest_regression_scenarios::test_4188_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4188_2);
@@ -2378,6 +2380,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0016_1);
     REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0016_2);
     REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0016_3);
+    REGISTER_TEST(GUITest_common_scenarios_align_sequences_to_msa::test_0017);
 
     /////////////////////////////////////////////////////////////////////////
     // Common scenarios/msa_editor/colors

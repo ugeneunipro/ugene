@@ -63,20 +63,47 @@ void GraphicsBranchItem::updateChildSettings(const OptionsMap &newSettings) {
     }
 }
 
-void GraphicsBranchItem::updateTextSettings(const QFont &font, const QColor &color) {
-    QFont prevFont;
+void GraphicsBranchItem::updateTextProperty(TreeViewOption property, const QVariant &propertyVal) {
+    QFont dtFont = distanceText ? distanceText->font() : QFont();
+    QFont ntFont = nameText ? nameText->font() : QFont();
+    switch (property) {
+        case U2::LABEL_FONT_TYPE:
+            dtFont.setFamily(qvariant_cast<QFont>(propertyVal).family());
+            ntFont.setFamily(qvariant_cast<QFont>(propertyVal).family());            
+            break;
+        case U2::LABEL_FONT_SIZE:
+            dtFont.setPointSize(qvariant_cast<int>(propertyVal));
+            ntFont.setPointSize(qvariant_cast<int>(propertyVal));
+            break;
+        case U2::LABEL_FONT_BOLD:
+            dtFont.setBold(qvariant_cast<bool>(propertyVal));
+            ntFont.setBold(qvariant_cast<bool>(propertyVal));
+            break;
+        case U2::LABEL_FONT_ITALIC:
+            dtFont.setItalic(qvariant_cast<bool>(propertyVal));
+            ntFont.setItalic(qvariant_cast<bool>(propertyVal));
+            break;
+        case U2::LABEL_FONT_UNDERLINE:
+            dtFont.setUnderline(qvariant_cast<bool>(propertyVal));
+            ntFont.setUnderline(qvariant_cast<bool>(propertyVal));
+            break;
+        case U2::LABEL_COLOR:
+            if (distanceText) {
+                distanceText->setBrush(qvariant_cast<QColor>(propertyVal));
+            }
+            if (nameText) {
+                nameText->setBrush(qvariant_cast<QColor>(propertyVal));
+            }
+            break;
+        default:
+            break;
+    }
+
     if (distanceText) {
-        prevFont = distanceText->font();
-        distanceText->setFont(font);
-        distanceText->setBrush(color);
+        distanceText->setFont(dtFont);
     }
     if (nameText) {
-        prevFont = nameText->font();
-        nameText->setFont(font);
-        nameText->setBrush(color);
-    }
-    if (font != prevFont) {
-        setLabelPositions();
+        nameText->setFont(ntFont);
     }
 }
 
@@ -174,13 +201,7 @@ void GraphicsBranchItem::initText(qreal d) {
     if (str == "0") {
         str = "";
     }
-    //test
-    distanceText = new QGraphicsSimpleTextItem(str);
-    distanceText->setFont(TreeViewerUtils::getFont());
-    distanceText->setBrush(Qt::darkGray);
-    setLabelPositions();
-    distanceText->setParentItem(this);
-    distanceText->setZValue(1);
+    initDistanceText(str);
 }
 
 GraphicsBranchItem::GraphicsBranchItem(bool withButton, double nodeValue)
@@ -336,6 +357,15 @@ void GraphicsBranchItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
             nameItemSelection->hide();
         }
     }
+}
+
+void GraphicsBranchItem::initDistanceText(const QString &text) {
+    distanceText = new QGraphicsSimpleTextItem(text);
+    distanceText->setFont(TreeViewerUtils::getFont());
+    distanceText->setBrush(Qt::darkGray);
+    setLabelPositions();
+    distanceText->setParentItem(this);
+    distanceText->setZValue(1);
 }
 
 QRectF GraphicsBranchItem::visibleChildrenBoundingRect(const QTransform &viewTransform) const {

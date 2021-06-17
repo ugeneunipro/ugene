@@ -70,6 +70,7 @@ echo. > %OUTPUT_DIR%\UGENE.ini
 REM copy translations
 copy %RELEASE_DIR%\transl_en.qm %OUTPUT_DIR%
 copy %RELEASE_DIR%\transl_ru.qm %OUTPUT_DIR%
+copy %RELEASE_DIR%\transl_tr.qm %OUTPUT_DIR%
 
 REM copy data
 xcopy /I /S %U_ROOT%\data %OUTPUT_DIR%\data

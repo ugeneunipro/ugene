@@ -534,10 +534,6 @@
         <translation>Имя последовательности</translation>
     </message>
     <message>
-        <source>Document format:</source>
-        <translation type="vanished">Формат:</translation>
-    </message>
-    <message>
         <location filename="../src/util/CreateDocumentFromTextDialog.ui" line="65"/>
         <source>Save file immediately</source>
         <translation>Записать файл на диск</translation>
@@ -990,40 +986,32 @@
         <translation>Разделитель между частями</translation>
     </message>
     <message>
-        <source> bases</source>
-        <translation type="vanished"> символов</translation>
-    </message>
-    <message>
         <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="179"/>
         <source>Join into alignment</source>
         <translation>Соедить в выравнивание</translation>
     </message>
     <message>
-        <source>Number of unknown symbols (N - for nucleic or X - for amino) between parts:</source>
-        <translation type="vanished">Число неизвестных символов (N - для нуклеотидных или X - для амино) между частями:</translation>
-    </message>
-    <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="194"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="189"/>
         <source>Import ACE files as</source>
         <translation>Импортировать ACE файлы как</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="200"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="195"/>
         <source>Multiple sequence alignment</source>
         <translation>Множественное выравнивание</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="213"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="208"/>
         <source>Short reads assembly</source>
         <translation>Сборка коротких ридов</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="245"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="240"/>
         <source>Documents and objects options</source>
         <translation>Настройки документов и объектов</translation>
     </message>
     <message>
-        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="251"/>
+        <location filename="../src/util/shared_db/ImportOptionsWidget.ui" line="246"/>
         <source>Create a subfolder for each document</source>
         <translation>Создать подпапку для каждого документа</translation>
     </message>
@@ -2237,17 +2225,17 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::GObjectView</name>
     <message>
-        <location filename="../src/ObjectViewModel.cpp" line="126"/>
+        <location filename="../src/ObjectViewModel.cpp" line="128"/>
         <source>Can&apos;t add object: %1 to the closing view</source>
         <translation>Невозможно добавить объект: %1 в закрывающееся окно</translation>
     </message>
     <message>
-        <location filename="../src/ObjectViewModel.cpp" line="129"/>
+        <location filename="../src/ObjectViewModel.cpp" line="131"/>
         <source>Object is already added to view %1!</source>
         <translation>Объект уже добавлен в окно &quot;%1&quot;!</translation>
     </message>
     <message>
-        <location filename="../src/ObjectViewModel.cpp" line="143"/>
+        <location filename="../src/ObjectViewModel.cpp" line="145"/>
         <source>Can&apos;t add object: %1</source>
         <translation>Не удалось добавить объект: %1</translation>
     </message>
@@ -2301,7 +2289,7 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::HelpButton</name>
     <message>
-        <location filename="../src/util/HelpButton.cpp" line="35"/>
+        <location filename="../src/util/HelpButton.cpp" line="33"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
@@ -2594,17 +2582,17 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::Notification</name>
     <message>
-        <location filename="../src/Notification.cpp" line="168"/>
+        <location filename="../src/Notification.cpp" line="170"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/Notification.cpp" line="169"/>
+        <location filename="../src/Notification.cpp" line="171"/>
         <source>Remove notification after closing</source>
         <translation>Удалить уведомление после закрытия</translation>
     </message>
     <message>
-        <location filename="../src/Notification.cpp" line="185"/>
+        <location filename="../src/Notification.cpp" line="187"/>
         <source>Detailed message</source>
         <translation>Детальное сообщение</translation>
     </message>
@@ -2671,14 +2659,6 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::PasteFactory</name>
     <message>
-        <source>Unable to handle so huge data in clipboard.</source>
-        <translation type="vanished">Unable to handle so huge data in clipboard.</translation>
-    </message>
-    <message>
-        <source>UGENE can not recognize current clipboard content as one of supported formats.</source>
-        <translation type="vanished">UGENE can not recognize current clipboard content as one of supported formats.</translation>
-    </message>
-    <message>
         <location filename="../src/PasteController.cpp" line="119"/>
         <source>Data in clipboard is too large.</source>
         <translation>Двнные в буфере обмена слишком большие.</translation>
@@ -2695,18 +2675,14 @@ Are you sure you want to open all of them?</source>
 <context>
     <name>U2::PasteTextTask</name>
     <message>
-        <source>Cannot detect file format</source>
-        <translation type="vanished">Cannot detect file format</translation>
-    </message>
-    <message>
         <location filename="../src/PasteController.cpp" line="161"/>
         <source>Failed to detect pasted data format.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось распознать формат вставляемых данных.</translation>
     </message>
     <message>
         <location filename="../src/PasteController.cpp" line="169"/>
         <source>Failed to create tmp file for clipboard content: %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось создать временный файл для содержимого буфера обмена: %1.</translation>
     </message>
 </context>
 <context>
@@ -2733,7 +2709,7 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/util/PositionSelector.cpp" line="59"/>
         <source>Enter position</source>
-        <translation type="unfinished"></translation>
+        <translation>Ввести позицию</translation>
     </message>
     <message>
         <location filename="../src/util/PositionSelector.cpp" line="73"/>
@@ -2748,7 +2724,7 @@ Are you sure you want to open all of them?</source>
     <message>
         <location filename="../src/util/PositionSelector.cpp" line="97"/>
         <source>Help</source>
-        <translation type="unfinished">Помощь</translation>
+        <translation>Помощь</translation>
     </message>
 </context>
 <context>
@@ -3418,13 +3394,6 @@ check connection settings</translation>
         <location filename="../src/UnloadDocumentTask.cpp" line="160"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
-    </message>
-</context>
-<context>
-    <name>U2::WebViewControllerPrivate</name>
-    <message>
-        <source>Can not open a file for writing: </source>
-        <translation type="vanished">Can not open a file for writing: </translation>
     </message>
 </context>
 <context>

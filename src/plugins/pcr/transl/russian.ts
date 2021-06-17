@@ -274,7 +274,7 @@
         <translation>Экспорт праймеров</translation>
     </message>
     <message>
-        <location filename="../src/export/ExportPrimersToDatabaseTask.cpp" line="81"/>
+        <location filename="../src/export/ExportPrimersToDatabaseTask.cpp" line="85"/>
         <source>Unexpected objects count</source>
         <translation>Unexpected objects count</translation>
     </message>
@@ -282,7 +282,7 @@
 <context>
     <name>U2::ExportPrimersToLocalFileTask</name>
     <message>
-        <location filename="../src/export/ExportPrimersToLocalFileTask.cpp" line="40"/>
+        <location filename="../src/export/ExportPrimersToLocalFileTask.cpp" line="39"/>
         <source>Export primers</source>
         <translation>Экспорт праймеров</translation>
     </message>
@@ -659,17 +659,22 @@
         <translation>Generate In Silico PCR report</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="394"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="395"/>
         <source>Sequence name</source>
         <translation>Имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="410"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="411"/>
         <source>Products count table</source>
         <translation>Таблица продуктов</translation>
     </message>
     <message>
-        <location filename="../src/InSilicoPcrWorker.cpp" line="422"/>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="420"/>
+        <source>An error &apos;%1&apos; has occurred during processing file with primers &apos;%2&apos;</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/InSilicoPcrWorker.cpp" line="427"/>
         <source>Primer pair details</source>
         <translation>Информация о парах праймеров</translation>
     </message>
@@ -819,7 +824,7 @@
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="321"/>
         <source>The input file &quot;%1&quot; doesn&apos;t contain a valid sequence.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../src/InSilicoPcrWorker.cpp" line="325"/>
@@ -1076,65 +1081,70 @@ Use &quot;Tools -&gt; Primer -&gt; Primer Library&quot; for managing the library
     <message>
         <location filename="../src/PrimerStatistics.cpp" line="50"/>
         <source> Unable to calculate primer statistics.</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="227"/>
+        <location filename="../src/PrimerStatistics.cpp" line="139"/>
+        <source>Unexpected symbol: %1</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../src/PrimerStatistics.cpp" line="232"/>
         <source>low GC-content</source>
         <translation>low GC-content</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="228"/>
+        <location filename="../src/PrimerStatistics.cpp" line="233"/>
         <source>high GC-content</source>
         <translation>high GC-content</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="234"/>
+        <location filename="../src/PrimerStatistics.cpp" line="239"/>
         <source>low melting temperature</source>
         <translation>low melting temperature</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="235"/>
+        <location filename="../src/PrimerStatistics.cpp" line="240"/>
         <source>high melting temperature</source>
         <translation>high melting temperature</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="241"/>
+        <location filename="../src/PrimerStatistics.cpp" line="246"/>
         <source>low GC clamp</source>
         <translation>low GC clamp</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="247"/>
+        <location filename="../src/PrimerStatistics.cpp" line="252"/>
         <source>high base runs value</source>
         <translation>high base runs value</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="254"/>
+        <location filename="../src/PrimerStatistics.cpp" line="259"/>
         <source>forward primer has %1.</source>
         <translation>прямой праймер имеет %1.</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="256"/>
+        <location filename="../src/PrimerStatistics.cpp" line="261"/>
         <source>reverse primer has %1.</source>
         <translation>обратный праймер имеет %1.</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="324"/>
+        <location filename="../src/PrimerStatistics.cpp" line="333"/>
         <source>Criteria</source>
         <translation>Критерий</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="325"/>
+        <location filename="../src/PrimerStatistics.cpp" line="334"/>
         <source>Valid Values</source>
         <translation>Допустимые значения</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="326"/>
+        <location filename="../src/PrimerStatistics.cpp" line="335"/>
         <source>Forward</source>
         <translation>Прямой</translation>
     </message>
     <message>
-        <location filename="../src/PrimerStatistics.cpp" line="327"/>
+        <location filename="../src/PrimerStatistics.cpp" line="336"/>
         <source>Reverse</source>
         <translation>Обратный</translation>
     </message>

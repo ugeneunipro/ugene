@@ -34,10 +34,10 @@ namespace LocalWorkflow {
 class ClustalOPrompter : public PrompterBase<ClustalOPrompter> {
     Q_OBJECT
 public:
-    ClustalOPrompter(Actor *p = 0);
+    ClustalOPrompter(Actor *actor = nullptr);
 
 protected:
-    QString composeRichDoc();
+    QString composeRichDoc() override;
 };
 
 class ClustalOWorker : public BaseWorker {
@@ -45,9 +45,11 @@ class ClustalOWorker : public BaseWorker {
 public:
     ClustalOWorker(Actor *a);
 
-    virtual void init();
-    virtual Task *tick();
-    virtual void cleanup();
+    void init() override;
+
+    Task *tick() override;
+
+    void cleanup() override;
 
 private slots:
     void sl_taskFinished();
@@ -61,13 +63,12 @@ protected:
 class ClustalOWorkerFactory : public DomainFactory {
 public:
     static const QString ACTOR_ID;
+
     static void init();
-    ClustalOWorkerFactory()
-        : DomainFactory(ACTOR_ID) {
-    }
-    virtual Worker *createWorker(Actor *a) {
-        return new ClustalOWorker(a);
-    }
+
+    ClustalOWorkerFactory();
+
+    Worker *createWorker(Actor *actor) override;
 };
 
 }    // namespace LocalWorkflow

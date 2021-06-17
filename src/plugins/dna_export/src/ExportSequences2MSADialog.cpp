@@ -39,7 +39,7 @@ ExportSequences2MSADialog::ExportSequences2MSADialog(QWidget *p, const QString &
     : QDialog(p),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60227677");
+    new HelpButton(this, buttonBox, "65929308");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     okButton = buttonBox->button(QDialogButtonBox::Ok);

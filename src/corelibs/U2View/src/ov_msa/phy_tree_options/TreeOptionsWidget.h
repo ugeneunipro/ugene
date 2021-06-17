@@ -46,6 +46,20 @@ struct TreeOpWidgetViewSettings {
     bool showPenSettings;
 };
 
+class TreeOptionsSavableWidget: public U2SavableWidget {
+public:
+    TreeOptionsSavableWidget(QWidget *wrappedWidget, MWMDIWindow *contextWindow = nullptr);
+    ~TreeOptionsSavableWidget();
+
+    void disableSavingForWidgets(const QStringList &s);
+
+protected:
+    bool childCanBeSaved(QWidget *child) const override;
+
+private:
+    QStringList widgetsNotToSave;
+};
+
 class U2VIEW_EXPORT TreeOptionsWidget : public QWidget, private Ui_TreeOptionWidget {
     Q_OBJECT
 public:
@@ -61,14 +75,21 @@ signals:
 private slots:
     void sl_labelsColorButton();
     void sl_branchesColorButton();
-    void sl_fontChanged();
+    void sl_fontTypeChanged();
+    void sl_fontSizeChanged();
+    void sl_fontBoldChanged();
+    void sl_fontItalicChanged();
+    void sl_fontUnderlineChanged();
 
     void sl_onLblLinkActivated(const QString &link);
     void sl_valueChanged();
 
     void sl_onOptionChanged(TreeViewOption option, const QVariant &value);
+    /* Slot for handling scene selection changes */
+    void sl_selectionChanged();
 
 private:
+    QStringList getSaveDisabledWidgets() const;
     void initializeOptionsMap();
     void initColorButtonsStyle();
     void createGroups();
@@ -95,7 +116,7 @@ private:
 
     QWidget *contentWidget;
 
-    U2SavableWidget savableTab;
+    TreeOptionsSavableWidget savableTab;
 
     QMap<QString, TreeViewOption> optionsMap;
 

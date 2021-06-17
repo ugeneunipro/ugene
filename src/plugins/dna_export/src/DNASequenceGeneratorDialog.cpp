@@ -66,7 +66,7 @@ DNASequenceGeneratorDialog::DNASequenceGeneratorDialog(QWidget *p)
       percentMap(content),
       gcSkew(0) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229072");
+    new HelpButton(this, buttonBox, "65930704");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Generate"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
