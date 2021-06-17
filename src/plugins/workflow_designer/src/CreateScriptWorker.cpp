@@ -379,7 +379,7 @@ private:
 CreateScriptElementDialog::CreateScriptElementDialog(QWidget *p, ActorPrototype *proto)
     : QDialog(p), editing(false) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60228345");
+    new HelpButton(this, buttonBox, "65929977");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

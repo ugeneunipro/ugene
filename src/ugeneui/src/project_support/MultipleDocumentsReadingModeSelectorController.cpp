@@ -117,7 +117,7 @@ QString MultipleDocumentsReadingModeDialog::setupNewUrl() {
 bool MultipleDocumentsReadingModeDialog::setupGUI(QList<GUrl> &_urls, QVariantMap &props, const QMap<QString, qint64> &headerSequenceLengths) {
     setModal(true);
     setupUi(this);
-    new HelpButton(this, buttonBox, "60227817");
+    new HelpButton(this, buttonBox, "65929449");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

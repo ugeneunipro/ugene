@@ -1112,10 +1112,6 @@
         <translation>Экспорт выравнивания без хроматограмм...</translation>
     </message>
     <message>
-        <source>Export nucleic alignment to amino translation...</source>
-        <translation type="vanished">Экспорт нуклеотидной последовательности в амино трансляции...</translation>
-    </message>
-    <message>
         <location filename="../src/ExportProjectViewItems.cpp" line="103"/>
         <source>Export amino acid translation...</source>
         <translation>Экспорт в амино трансляции...</translation>
@@ -1485,7 +1481,7 @@
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="179"/>
         <source>Invalid translation frame : %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Некорректная рамка: %1</translation>
     </message>
     <message>
         <location filename="../src/DNAExportPluginTests.cpp" line="192"/>

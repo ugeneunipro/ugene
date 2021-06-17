@@ -50,7 +50,7 @@ namespace U2 {
 CreateFragmentDialog::CreateFragmentDialog(ADVSequenceObjectContext *ctx, QWidget *p)
     : QDialog(p), seqCtx(ctx) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229129");
+    new HelpButton(this, buttonBox, "65930761");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -69,7 +69,7 @@ CreateFragmentDialog::CreateFragmentDialog(ADVSequenceObjectContext *ctx, QWidge
 CreateFragmentDialog::CreateFragmentDialog(U2SequenceObject *obj, const U2Region &region, QWidget *p)
     : QDialog(p), seqCtx(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229129");
+    new HelpButton(this, buttonBox, "65930761");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
     seqObj = obj;

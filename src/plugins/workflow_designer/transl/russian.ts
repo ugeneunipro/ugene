@@ -707,7 +707,7 @@ p, li { white-space: pre-wrap; }
         <translation>число оснований</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="264"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="259"/>
         <source>Save annotations</source>
         <translation>Сохранить аннотации</translation>
     </message>
@@ -1168,7 +1168,7 @@ Would you like to apply the changes ? </source>
 <context>
     <name>U2::ExtendedProcStyle</name>
     <message>
-        <location filename="../src/ItemViewStyle.cpp" line="200"/>
+        <location filename="../src/ItemViewStyle.cpp" line="198"/>
         <source>Auto-resize to text</source>
         <translation>Динамический размер</translation>
     </message>
@@ -1245,17 +1245,17 @@ Would you like to apply the changes ? </source>
 <context>
     <name>U2::ItemViewStyle</name>
     <message>
-        <location filename="../src/ItemViewStyle.cpp" line="63"/>
+        <location filename="../src/ItemViewStyle.cpp" line="61"/>
         <source>Background color</source>
         <translation>Цвет фона</translation>
     </message>
     <message>
-        <location filename="../src/ItemViewStyle.cpp" line="66"/>
+        <location filename="../src/ItemViewStyle.cpp" line="64"/>
         <source>Font</source>
         <translation>Шрифт</translation>
     </message>
     <message>
-        <location filename="../src/ItemViewStyle.cpp" line="83"/>
+        <location filename="../src/ItemViewStyle.cpp" line="81"/>
         <source>Characters Font</source>
         <translation>Шрифт</translation>
     </message>
@@ -1412,10 +1412,6 @@ Would you like to apply the changes ? </source>
         <location filename="../src/library/AminoTranslationWorker.cpp" line="204"/>
         <source>Amino Acid Translation</source>
         <translation>Трансляция в амино</translation>
-    </message>
-    <message>
-        <source>Amino Translation</source>
-        <translation type="vanished">Трансляция</translation>
     </message>
     <message>
         <location filename="../src/library/AminoTranslationWorker.cpp" line="205"/>
@@ -4517,8 +4513,8 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>Выходные данные</translation>
     </message>
     <message>
-        <location filename="../src/library/ScriptWorker.cpp" line="214"/>
-        <location filename="../src/library/ScriptWorker.cpp" line="215"/>
+        <location filename="../src/library/ScriptWorker.cpp" line="210"/>
+        <location filename="../src/library/ScriptWorker.cpp" line="211"/>
         <source>no script text</source>
         <translation>нет текста скрипта</translation>
     </message>
@@ -4526,12 +4522,12 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::ScriptWorkerTask</name>
     <message>
-        <location filename="../src/library/ScriptWorker.cpp" line="81"/>
+        <location filename="../src/library/ScriptWorker.cpp" line="77"/>
         <source>Error in line </source>
         <translation>Ошибка в строке </translation>
     </message>
     <message>
-        <location filename="../src/library/ScriptWorker.cpp" line="63"/>
+        <location filename="../src/library/ScriptWorker.cpp" line="59"/>
         <source>Script worker task</source>
         <translation>Задача скриптового элемента</translation>
     </message>
@@ -5092,32 +5088,32 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
 <context>
     <name>U2::LocalWorkflow::WriteAnnotationsPrompter</name>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="512"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="507"/>
         <source>unset</source>
         <translation>не указан</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="525"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="520"/>
         <source>default file</source>
         <translation>файл по умолчанию</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="546"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="541"/>
         <source>Save all annotations from &lt;u&gt;%1&lt;/u&gt; to %2</source>
         <translation>Сохранить все аннотации из &lt;u&gt;%1&lt;/u&gt; в %2</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="549"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="544"/>
         <source> in %1 format.</source>
         <translation> в формат %1.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="549"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="544"/>
         <source> in the </source>
         <translation> в </translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="549"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="544"/>
         <source> database.</source>
         <translation> базе данных.</translation>
     </message>
@@ -5160,83 +5156,83 @@ TCCTTACTGTCTGAGCAATGGGATTCCATCTTTTACGATCTAGACATGGCT
         <translation>Annotations name not specified. Default value used: &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="259"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="254"/>
         <source>Nothing to write</source>
         <translation>Нет данных для записи</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="376"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="371"/>
         <source>Input annotations</source>
         <translation>Входные аннотации</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="376"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="371"/>
         <source>Input annotations which will be written to output file</source>
         <translation>Входные аннотации, которые будут записаны в выходной файл</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="415"/>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="440"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="410"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="435"/>
         <source>Merge annotation tables</source>
         <translation>Соединить таблицы аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="415"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="410"/>
         <source>If &lt;i&gt;true&lt;/i&gt; all annotation tables from dataset will be merged into one. The value of &lt;i&gt;Annotation table name&lt;/i&gt; parameter will be used as the name of result annotation table.</source>
         <translation>Если &lt;i&gt;true&lt;/i&gt; все таблицы аннотаций из набора данных будут соединены в один. Значение &lt;i&gt;Имя таблиицы аннотаций&lt;/i&gt; параметра будет использовано как имя результирующей таблицы аннотаций.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="427"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="422"/>
         <source>Annotation table name</source>
         <translation>Имя таблицы аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="427"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="422"/>
         <source>The name for the result annotation table that contains merged annotation data from file or dataset.</source>
         <translation>Имя таблицы аннотаций, которая содержит соединённые аннотации из файла или набора данных.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="440"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="435"/>
         <source>If &lt;i&gt;true&lt;/i&gt; all annotation tables from dataset will be merged into one annotation object. The value of &lt;i&gt;Annotation object name&lt;/i&gt; parameter will be used as the name of result annotation object.</source>
         <translation>Если &lt;i&gt;true&lt;/i&gt; все таблицы из набора данных будут соединены в одну аннотацию. The value of &lt;i&gt;Annotation object name&lt;/i&gt; parameter will be used as the name of result annotation object.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="471"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="466"/>
         <source>The element gets message(s) with annotations data and saves the data to the specified file(s) in one of the appropriate formats (GenBank, GTF, etc.).</source>
         <translation>Этот элемент сохраняет сообщения с данными аннотаций в файл в указанном формате (GenBank, GTF, и т. д.).</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="446"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="441"/>
         <source>Annotation object name</source>
         <translation>Имя объекта аннотации</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="446"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="441"/>
         <source>Name of the saved annotation object.</source>
         <translation>Имя аннотаций: имя для сохранения объекта аннотации.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="453"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="448"/>
         <source>CSV separator</source>
         <translation>Разделитель CSV</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="453"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="448"/>
         <source>String which separates values in CSV files.</source>
         <translation>символ, который разделяет значения в файлах CSV.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="459"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="454"/>
         <source>Write sequence names</source>
         <translation>Записать имена последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="459"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="454"/>
         <source>Add names of sequences into CSV file.</source>
         <translation>добавить имена последовательностей в CSV-файл.</translation>
     </message>
     <message>
-        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="470"/>
+        <location filename="../src/library/WriteAnnotationsWorker.cpp" line="465"/>
         <source>Write Annotations</source>
         <translation>Запись аннотаций</translation>
     </message>
@@ -6749,38 +6745,22 @@ Do you want to save changes?</source>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="112"/>
         <source>Output files</source>
-        <translation type="unfinished"></translation>
+        <translation>Выходные файлы</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="133"/>
         <source>Custom elements with script</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать элемент при помощи скрипта</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="154"/>
         <source>Custom elements with external tools</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать элемент при помощи внешних инструментов</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="175"/>
         <source>Included schema elements</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use directory for output files</source>
-        <translation type="vanished">Использовать папку для выходных файлов</translation>
-    </message>
-    <message>
-        <source>Directory for custom elements with scripts</source>
-        <translation type="vanished">Папка для элементов пользователя со скриптами</translation>
-    </message>
-    <message>
-        <source>Directory for custom elements with external tools</source>
-        <translation type="vanished">Папка для элементов пользователя с внешними инструментами</translation>
-    </message>
-    <message>
-        <source>Directory for included schema elements</source>
-        <translation type="vanished">Папка для включенных элементов схемы</translation>
+        <translation>Включенные элементы схемы</translation>
     </message>
     <message>
         <location filename="../src/WorkflowSettingsWidget.ui" line="26"/>

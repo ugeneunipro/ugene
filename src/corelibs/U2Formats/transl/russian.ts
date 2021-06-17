@@ -95,7 +95,7 @@
     </message>
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="271"/>
-        <location filename="../src/FastaFormat.cpp" line="313"/>
+        <location filename="../src/FastaFormat.cpp" line="301"/>
         <location filename="../src/FastqFormat.cpp" line="415"/>
         <source>Document sequences were merged</source>
         <translation>Последовательности были соединены</translation>
@@ -260,7 +260,7 @@
 <context>
     <name>U2::ASNFormat</name>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="51"/>
+        <location filename="../src/ASNFormat.cpp" line="118"/>
         <source>MMDB</source>
         <translation>MMDB</translation>
     </message>
@@ -275,33 +275,33 @@
         <translation>Ошибка загрузки трехмерной структуры: %1</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="52"/>
+        <location filename="../src/ASNFormat.cpp" line="119"/>
         <source>ASN is a format used my the Molecular Modeling Database (MMDB)</source>
         <translation>ASN это формат используемый Molecular Modeling Database (MMDB)</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="197"/>
-        <location filename="../src/ASNFormat.cpp" line="570"/>
+        <location filename="../src/ASNFormat.cpp" line="264"/>
+        <location filename="../src/ASNFormat.cpp" line="672"/>
         <source>Unknown error occurred</source>
         <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="556"/>
+        <location filename="../src/ASNFormat.cpp" line="658"/>
         <source>no root element</source>
         <translation>Отсутствует корневой элемент</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="562"/>
+        <location filename="../src/ASNFormat.cpp" line="664"/>
         <source>states stack is not empty</source>
         <translation>Стек состояний не пуст</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="585"/>
+        <location filename="../src/ASNFormat.cpp" line="687"/>
         <source>First line is too long</source>
         <translation>Первая строка слишком длинная</translation>
     </message>
     <message>
-        <location filename="../src/ASNFormat.cpp" line="73"/>
+        <location filename="../src/ASNFormat.cpp" line="140"/>
         <source>Standard residue dictionary not found</source>
         <translation>Стандартный словарь остатков не найден</translation>
     </message>
@@ -715,12 +715,12 @@
 <context>
     <name>U2::ClustalWAlnFormat</name>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="65"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="63"/>
         <source>Clustalw is a format for storing multiple sequence alignments</source>
         <translation>Clustalw это формат для сохранения множественных выравниваний</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="90"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="87"/>
         <source>Illegal header line</source>
         <translation>Неправильная строка заголовка</translation>
     </message>
@@ -730,27 +730,42 @@
         <translation>Ошибка разбора файла</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="123"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="122"/>
         <source>Invalid alignment format</source>
         <translation>Неверный формат выравнивания</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="161"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="160"/>
         <source>Incorrect number of sequences in block</source>
         <translation>Неверное количество последовательностей в блоке</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="167"/>
-        <source>Sequence names are not matched</source>
-        <translation>Встретилось непарное имя последовательности</translation>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="166"/>
+        <source>Sequence names are not matched: &apos;%1&apos; vs &apos;%2&apos;, row index: %3</source>
+        <translation>Имена последовательностей не совпадают:&apos;%1&apos; и &apos;%2&apos;, индекс: %3</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="191"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="296"/>
+        <source>No data to write</source>
+        <translation>Нет данных для записи</translation>
+    </message>
+    <message>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="296"/>
+        <source>Too many objects: %1</source>
+        <translation>Слишком много объектов: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="299"/>
+        <source>Not a multiple alignment object</source>
+        <translation>Объект не является выравниванием</translation>
+    </message>
+    <message>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="189"/>
         <source>Alphabet is unknown</source>
         <translation>Неизвестный алфавит</translation>
     </message>
     <message>
-        <location filename="../src/ClustalWAlnFormat.cpp" line="64"/>
+        <location filename="../src/ClustalWAlnFormat.cpp" line="62"/>
         <source>CLUSTALW</source>
         <translation>CLUSTALW</translation>
     </message>
@@ -891,7 +906,7 @@
     <name>U2::Document</name>
     <message>
         <location filename="../src/EMBLGenbankAbstractDocument.cpp" line="265"/>
-        <location filename="../src/FastaFormat.cpp" line="289"/>
+        <location filename="../src/FastaFormat.cpp" line="277"/>
         <location filename="../src/FastqFormat.cpp" line="401"/>
         <location filename="../src/PDWFormat.cpp" line="153"/>
         <source>Document is empty.</source>
@@ -1175,7 +1190,7 @@
     </message>
     <message>
         <location filename="../src/EMBLPlainTextFormat.cpp" line="228"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="250"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="266"/>
         <location filename="../src/SwissProtPlainTextFormat.cpp" line="229"/>
         <source>Record is truncated.</source>
         <translation>Данные повреждены.</translation>
@@ -1217,65 +1232,58 @@
 <context>
     <name>U2::FastaFormat</name>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="68"/>
+        <location filename="../src/FastaFormat.cpp" line="52"/>
         <source>FASTA format is a text-based format for representing either nucleotide sequences or peptide sequences, in which base pairs or amino acids are represented using single-letter codes. The format also allows for sequence names and comments to precede the sequences.</source>
         <translation>Формат FASTA является текстовым форматом для представления нуклеотидных или пептидных последовательностей, в котором пары оснований или аминокислоты представлены с использованием одно-буквенных кодов. Формат также позволяет задавать имена и комментарии к последовательностям.</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="188"/>
-        <location filename="../src/FastaFormat.cpp" line="425"/>
-        <source>Line is too long</source>
-        <translation>Слишком длинная строка</translation>
-    </message>
-    <message>
-        <location filename="../src/FastaFormat.cpp" line="191"/>
-        <location filename="../src/FastaFormat.cpp" line="427"/>
+        <location filename="../src/FastaFormat.cpp" line="144"/>
         <source>First line is not a FASTA header</source>
         <translation>Неправильный заголовок FASTA</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="253"/>
+        <location filename="../src/FastaFormat.cpp" line="241"/>
         <source>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</source>
         <translation>File &quot;%1&quot; contains too many sequences to be displayed. However, you can process these data using instruments from the menu &lt;i&gt;Tools -&gt; NGS data analysis&lt;/i&gt; or pipelines built with Workflow Designer.</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="281"/>
+        <location filename="../src/FastaFormat.cpp" line="269"/>
         <source>Sequence #%1 is processed</source>
         <translation>Sequence #%1 is processed</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="285"/>
+        <location filename="../src/FastaFormat.cpp" line="273"/>
         <source>The file format is invalid.</source>
         <translation>The file format is invalid.</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="295"/>
+        <location filename="../src/FastaFormat.cpp" line="283"/>
         <source>Loaded sequences: %1. 
 </source>
         <translation>Loaded sequences: %1. 
 </translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="296"/>
+        <location filename="../src/FastaFormat.cpp" line="284"/>
         <source>Skipped sequences: %1. 
 </source>
         <translation>Skipped sequences: %1. 
 </translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="297"/>
+        <location filename="../src/FastaFormat.cpp" line="285"/>
         <source>The following sequences are empty: 
 %1</source>
         <translation>The following sequences are empty: 
 %1</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="493"/>
+        <location filename="../src/FastaFormat.cpp" line="466"/>
         <source>Unreferenced sequence in the beginning of patterns: %1</source>
         <translation>Неиспользуемая последовательность в начале образцов: %1</translation>
     </message>
     <message>
-        <location filename="../src/FastaFormat.cpp" line="65"/>
+        <location filename="../src/FastaFormat.cpp" line="49"/>
         <source>FASTA</source>
         <translation>FASTA</translation>
     </message>
@@ -1644,15 +1652,15 @@
 <context>
     <name>U2::GenbankPlainTextFormat</name>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="392"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="629"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="634"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="640"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="786"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="815"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="822"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="829"/>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="839"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="408"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="645"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="650"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="656"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="802"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="831"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="838"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="845"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="855"/>
         <source>Error writing document</source>
         <translation>Ошибка записи</translation>
     </message>
@@ -1667,37 +1675,37 @@
         <translation>GenBank Flat File Format это формат для хранения последовательностей и их аннотаций</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="92"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="103"/>
         <source>LOCUS is not the first line</source>
         <translation>Строка локуса должна идти первой</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="107"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="123"/>
         <source>Error parsing LOCUS line</source>
         <translation>Ошибка чтения локуса</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="172"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="188"/>
         <source>incomplete SOURCE record</source>
         <translation>Данные повреждены: запись SOURCE</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="526"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="542"/>
         <source>There is no IOAdapter registry yet</source>
         <translation>There is no IOAdapter registry yet</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="528"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="544"/>
         <source>IOAdapterFactory is NULL</source>
         <translation>IOAdapterFactory is NULL</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="530"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="546"/>
         <source>IOAdapter is NULL</source>
         <translation>IOAdapter is NULL</translation>
     </message>
     <message>
-        <location filename="../src/GenbankPlainTextFormat.cpp" line="798"/>
+        <location filename="../src/GenbankPlainTextFormat.cpp" line="814"/>
         <source>Invalid annotation table!</source>
         <translation>Invalid annotation table!</translation>
     </message>
@@ -1806,37 +1814,27 @@
 <context>
     <name>U2::MSFFormat</name>
     <message>
-        <location filename="../src/MSFFormat.cpp" line="65"/>
+        <location filename="../src/MSFFormat.cpp" line="57"/>
         <source>MSF</source>
         <translation>MSF</translation>
     </message>
     <message>
-        <location filename="../src/MSFFormat.cpp" line="67"/>
+        <location filename="../src/MSFFormat.cpp" line="59"/>
         <source>MSF format is used to store multiple aligned sequences. Files include the sequence name and the sequence itself, which is usually aligned with other sequences in the file.</source>
         <translation>MSF формат используется для множественных выравниваний. Файлы включают имя последовательности и последовательность, которая выровнена с другими последовательностями в файле.</translation>
     </message>
     <message>
-        <location filename="../src/MSFFormat.cpp" line="138"/>
-        <source>Incorrect format</source>
-        <translation>Неверный формат</translation>
-    </message>
-    <message>
-        <location filename="../src/MSFFormat.cpp" line="159"/>
-        <source>Unexpected end of file</source>
-        <translation>Неожиданный конец файла</translation>
-    </message>
-    <message>
-        <location filename="../src/MSFFormat.cpp" line="195"/>
+        <location filename="../src/MSFFormat.cpp" line="160"/>
         <source>File check sum is incorrect: expected value: %1, current value %2</source>
         <translation>Контрольная сумма некорректна: ожидается значение %1, текущее значение %2</translation>
     </message>
     <message>
-        <location filename="../src/MSFFormat.cpp" line="269"/>
+        <location filename="../src/MSFFormat.cpp" line="232"/>
         <source>Unexpected check sum in the row number %1, name: %2; expected value: %3, current value %4</source>
         <translation>Некорректная контрольная сумма в ряду %1, имя: %2; ожидается значение: %3, текущее значение %4</translation>
     </message>
     <message>
-        <location filename="../src/MSFFormat.cpp" line="276"/>
+        <location filename="../src/MSFFormat.cpp" line="239"/>
         <source>Alphabet unknown</source>
         <translation>Неизвестный алфавит</translation>
     </message>
@@ -1985,7 +1983,7 @@
 <context>
     <name>U2::PDBFormat</name>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="202"/>
+        <location filename="../src/PDBFormat.cpp" line="203"/>
         <source>Line is too long</source>
         <translation>Слишком длинная строка</translation>
     </message>
@@ -1995,22 +1993,22 @@
         <translation>The Protein Data Bank (PDB) формат обеспечивает стандартное представление для данных высокомолекулярных структур, полученных из рентгеновской дифракции и исследований ЯМР.</translation>
     </message>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="261"/>
+        <location filename="../src/PDBFormat.cpp" line="262"/>
         <source>Some mandatory records are absent</source>
         <translation>Некоторые обязательные записи отсутствуют</translation>
     </message>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="399"/>
+        <location filename="../src/PDBFormat.cpp" line="403"/>
         <source>PDB warning: unknown residue name: %1</source>
         <translation>PDB предупреждение: неизвестное имя остатка: %1</translation>
     </message>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="484"/>
+        <location filename="../src/PDBFormat.cpp" line="488"/>
         <source>Invalid secondary structure record</source>
         <translation>Неверная запись вторичной структуры</translation>
     </message>
     <message>
-        <location filename="../src/PDBFormat.cpp" line="518"/>
+        <location filename="../src/PDBFormat.cpp" line="522"/>
         <source>Invalid SEQRES: less then 24 characters</source>
         <translation>Неверный SEQRES: меньше чем 24 символа</translation>
     </message>
@@ -2238,38 +2236,38 @@
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="493"/>
+        <location filename="../src/StockholmFormat.cpp" line="495"/>
         <source>invalid file: bad header line</source>
         <translation>Неверный заголовок</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="531"/>
+        <location filename="../src/StockholmFormat.cpp" line="533"/>
         <source>invalid file: empty sequence name</source>
         <translation>Не указано имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="534"/>
+        <location filename="../src/StockholmFormat.cpp" line="536"/>
         <source>invalid file: equal sequence names in one block</source>
         <translation>одинаковые имена последовательностей в блоке</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="545"/>
+        <location filename="../src/StockholmFormat.cpp" line="547"/>
         <source>invalid file: sequence names are not equal in blocks</source>
         <translation>Непарное имя последовательности в блоке</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="541"/>
-        <location filename="../src/StockholmFormat.cpp" line="551"/>
+        <location filename="../src/StockholmFormat.cpp" line="543"/>
+        <location filename="../src/StockholmFormat.cpp" line="553"/>
         <source>invalid file: sequences in block are not of equal size</source>
         <translation>Блок содержит последовательности разной длины</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="570"/>
+        <location filename="../src/StockholmFormat.cpp" line="572"/>
         <source>invalid file: empty sequence alignment</source>
         <translation>Выравнивание не содержит последовательностей</translation>
     </message>
     <message>
-        <location filename="../src/StockholmFormat.cpp" line="574"/>
+        <location filename="../src/StockholmFormat.cpp" line="576"/>
         <source>invalid file: unknown alphabet</source>
         <translation>Не удалось установить алфавит</translation>
     </message>
@@ -2408,6 +2406,24 @@
         <location filename="../src/util/TabulatedFormatReader.cpp" line="35"/>
         <source>IO adapter is not opened</source>
         <translation>IO adapter is not opened</translation>
+    </message>
+</context>
+<context>
+    <name>U2::TextDocumentFormat</name>
+    <message>
+        <location filename="../src/TextDocumentFormat.cpp" line="110"/>
+        <source>The document format does not support streaming reading mode: %1</source>
+        <translation>Формат документа не позволяет чтение в потоковом режиме: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/TextDocumentFormat.cpp" line="120"/>
+        <source>The document format does not support writing of documents: %1</source>
+        <translation>Формат документа не поддерживает запись документов: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/TextDocumentFormat.cpp" line="129"/>
+        <source>The document format does not support writing of documents in streaming mode: %1</source>
+        <translation>Формат документа не позволяет запись в потоковом режиме: %1</translation>
     </message>
 </context>
 <context>

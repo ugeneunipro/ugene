@@ -56,7 +56,7 @@ DownloadRemoteFileDialog::DownloadRemoteFileDialog(QWidget *p)
     : QDialog(p), isQueryDB(false) {
     ui = new Ui_DownloadRemoteFileDialog;
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "60227708");
+    new HelpButton(this, ui->buttonBox, "65929340");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -92,7 +92,7 @@ DownloadRemoteFileDialog::DownloadRemoteFileDialog(const QString &id, const QStr
     : QDialog(p), isQueryDB(false) {
     ui = new Ui_DownloadRemoteFileDialog;
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "60227704");
+    new HelpButton(this, ui->buttonBox, "65929336");
 
     ui->formatBox->addItem(GENBANK_FORMAT);
     ui->formatBox->addItem(FASTA_FORMAT);

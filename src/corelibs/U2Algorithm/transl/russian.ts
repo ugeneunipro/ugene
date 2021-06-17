@@ -138,6 +138,14 @@
     </message>
 </context>
 <context>
+    <name>U2::AlignmentAlgorithmsRegistry</name>
+    <message>
+        <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="221"/>
+        <source>Align sequences to alignment with UGENE…</source>
+        <translation>Добавить последовательности к выравниванию с UGENE...</translation>
+    </message>
+</context>
+<context>
     <name>U2::AssemblyConsensusAlgorithmFactoryDefault</name>
     <message>
         <location filename="../src/util_assembly_consensus/AssemblyConsensusAlgorithmDefault.cpp" line="40"/>
@@ -619,8 +627,8 @@ For every column selects the most rare symbol in the whole alignment with percen
     <name>U2::SimpleAddToAlignmentTask</name>
     <message>
         <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="51"/>
-        <source>Align sequences to an existing alignment by UGENE started</source>
-        <translation>Align sequences to an existing alignment by UGENE started</translation>
+        <source>Align sequences to alignment with UGENE started</source>
+        <translation>Align sequences to alignment with UGENE started</translation>
     </message>
     <message>
         <location filename="../src/msa_alignment/SimpleAddingToAlignment.cpp" line="136"/>

@@ -95,7 +95,7 @@ AppSettingsGUIPageWidget *DirectoriesSettingsPageController::createWidget(AppSet
     return r;
 }
 
-const QString DirectoriesSettingsPageController::helpPageId = QString("60227721");
+const QString DirectoriesSettingsPageController::helpPageId = QString("65929353");
 
 DirectoriesSettingsPageWidget::DirectoriesSettingsPageWidget(DirectoriesSettingsPageController * /*ctrl*/) {
     setupUi(this);

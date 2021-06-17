@@ -119,23 +119,14 @@ MAFFTSupportContext::MAFFTSupportContext(QObject *p)
 }
 
 void MAFFTSupportContext::initViewContext(GObjectView *view) {
-    MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
-    SAFE_POINT(msaEditor != NULL, "Invalid GObjectView", );
-    CHECK(msaEditor->getMaObject() != NULL, );
+    auto msaEditor = qobject_cast<MSAEditor *>(view);
+    SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
 
-    bool objLocked = msaEditor->getMaObject()->isStateLocked();
-    bool isMsaEmpty = msaEditor->isAlignmentEmpty();
-
-    auto alignAction = new AlignMsaAction(this, MAFFTSupport::ET_MAFFT_ID, view, tr("Align with MAFFT..."), 2000);
+    auto alignAction = new AlignMsaAction(this, MAFFTSupport::ET_MAFFT_ID, msaEditor, tr("Align with MAFFT..."), 2000);
     alignAction->setObjectName("Align with MAFFT");
     alignAction->setMenuTypes({MsaEditorMenuType::ALIGN});
-
-    addViewAction(alignAction);
-    alignAction->setEnabled(!objLocked && !isMsaEmpty);
-
-    connect(msaEditor->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
-    connect(msaEditor->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_MAFFT()));
+    addViewAction(alignAction);
 }
 
 void MAFFTSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {

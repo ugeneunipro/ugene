@@ -10,12 +10,6 @@ if [ -d "$1" ]; then
     fi
     contents_dir="$1/Contents"
 elif [ -f "$1" ]; then
-    if [ ! -f "$2" ]; then
-        echo "ERROR: Second arg must be entitlements file. Exit"
-    elif [ -z "$2" ]; then
-        echo "ERROR: Second arg must be entitlements file. Exit"
-    fi
-    entitlements="$2"
     echo "Signing file '$1'"
     codesign \
         --sign "Developer ID Application: Alteametasoft" \

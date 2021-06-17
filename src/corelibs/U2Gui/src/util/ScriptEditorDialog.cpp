@@ -41,7 +41,7 @@ namespace U2 {
 ScriptEditorDialog::ScriptEditorDialog(QWidget *w, const QString &roHeaderText, const QString &scriptText)
     : QDialog(w), ui(new Ui_ScriptEditorDialog()) {
     ui->setupUi(this);
-    new HelpButton(this, ui->buttonBox, "60228345");
+    new HelpButton(this, ui->buttonBox, "65929977");
     ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Done"));
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

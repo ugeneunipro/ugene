@@ -12,8 +12,8 @@ Makefile.Debug
 
 # Linux generated files
 *.[oa]
-*.so
-*.so.*
+src/*.so
+src/*.so.*
 
 # Doxygen generated files
 /html

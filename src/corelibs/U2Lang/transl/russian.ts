@@ -454,10 +454,6 @@
         <translation>Обнаружена ошибка в скрипте! Строка: %1, ошибка: %2</translation>
     </message>
     <message>
-        <source>The workflow contains a cycle</source>
-        <translation type="vanished">Схема содержит цикл</translation>
-    </message>
-    <message>
         <location filename="../src/support/WorkflowUtils.cpp" line="382"/>
         <source>&lt;empty&gt;</source>
         <translation>&lt;пустой&gt;</translation>
@@ -1451,7 +1447,7 @@
     <message>
         <location filename="../src/support/SimpleWorkflowTask.cpp" line="193"/>
         <source>MSA has incompatible changes during the alignment. Ignoring the alignment result: &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
+        <translation>MSA после выравнивания имеет несовместимые изменения. Игнорируемые результаты выравнивания: &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/support/SimpleWorkflowTask.cpp" line="214"/>
@@ -1894,48 +1890,48 @@
     <message>
         <location filename="../src/run/WorkflowMonitor.cpp" line="209"/>
         <source>An unexpected contentType: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>An unexpected contentType: %1</translation>
     </message>
 </context>
 <context>
     <name>U2::WorkflowIterationRunTask</name>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="160"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="161"/>
         <source>Workflow run</source>
         <translation>Запуск схемы</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="174"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="175"/>
         <source>Unknown domain %1</source>
         <translation>Неизвестное имя среды исполнения: %1</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="217"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="218"/>
         <source>Failed to preprocess the workflow. Some of included files are broken</source>
         <translation>Не удалось предварительно обработать схему. Некоторые из включенных файлов некорректны</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="225"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="226"/>
         <source>Failed to create worker %1 %2 in domain %3</source>
         <translation>Не удалось создать процесс %1 %2 для среды исполнения %3</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="235"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="236"/>
         <source>Failed to create connection %1 %2 in domain %3</source>
         <translation>Не удалось создать соединение процессов %1 %2 для среды исполнения %3</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="249"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="250"/>
         <source>Failed to create a workflow context</source>
         <translation>Невозможно создать контекст схемы</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="314"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="315"/>
         <source>No workers are ready, while not all workers are done. Workflow is broken?</source>
         <translation>Все процессы находятся в состоянии &quot;не готовы&quot; (обработали входные данные), но не все процессы находятся в состоянии &quot;завершил исполнение&quot;. Пожалуйста, проверьте схему?</translation>
     </message>
     <message>
-        <location filename="../src/support/WorkflowRunTask.cpp" line="255"/>
+        <location filename="../src/support/WorkflowRunTask.cpp" line="256"/>
         <source>Failed to create scheduler in domain %1</source>
         <translation>Не удалось создать планировщик для среды исполнения %1</translation>
     </message>
@@ -2048,7 +2044,7 @@
 <context>
     <name>U2::WorkflowSettings</name>
     <message>
-        <location filename="../src/support/WorkflowSettings.cpp" line="263"/>
+        <location filename="../src/support/WorkflowSettings.cpp" line="264"/>
         <source>Command line UGENE path not found, a possibility to run in separate process will be disabled</source>
         <translation>Command line UGENE path not found, a possibility to run in separate process will be disabled</translation>
     </message>
@@ -2068,7 +2064,7 @@
     <message>
         <location filename="../src/support/WorkflowUtils.cpp" line="288"/>
         <source>The schema contains loops</source>
-        <translation type="unfinished"></translation>
+        <translation>Схема содержит циклы</translation>
     </message>
     <message>
         <location filename="../src/support/WorkflowUtils.cpp" line="349"/>

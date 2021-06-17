@@ -243,7 +243,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="48"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="49"/>
         <source>UGENE Genome Aligner</source>
         <translation>Модуль сборки контигов UGENE</translation>
     </message>
@@ -489,64 +489,64 @@ Press &quot;Cancel&quot; to change this parameter or the index folder.</source>
 <context>
     <name>U2::GenomeAlignerTask</name>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="125"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="123"/>
         <source>Genome Aligner settings</source>
         <translation>Настройки модуля сборки контигов</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="126"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="124"/>
         <source>Index file name: %1</source>
         <translation>Имя индексного файла: %1</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="127"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="125"/>
         <source>Use prebuilt index: %2</source>
         <translation>Использовать индекс: %2</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="203"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="201"/>
         <source>Can not init short reads loader.</source>
         <translation>Невозможно загрузить короткие риды.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="346"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="344"/>
         <source>The aligning is finished.</source>
         <translation>Выравнивание завершено.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="347"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="345"/>
         <source>Whole working time = %1.</source>
         <translation>Время выполнения = %1.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="348"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="346"/>
         <source>%1% reads aligned.</source>
         <translation>%1% ридов было выровнено.</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="350"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="348"/>
         <source>Short-reads loading time = %1</source>
         <translation>Время загрузки ридов = %1</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="351"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="349"/>
         <source>Results writing time = %1</source>
         <translation>Время записи результатов = %1</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="353"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="351"/>
         <source>Index loading time = %1</source>
         <translation>Время загрузки индекса = %1</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="354"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="352"/>
         <source>Short-reads IO time = %1</source>
         <translation>Время IO коротких ридов = %1</translation>
     </message>
     <message>
-        <location filename="../src/GenomeAlignerTask.cpp" line="358"/>
+        <location filename="../src/GenomeAlignerTask.cpp" line="356"/>
         <source>Number of reads processed: </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>

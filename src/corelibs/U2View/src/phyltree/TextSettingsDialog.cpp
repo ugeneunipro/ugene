@@ -32,7 +32,7 @@ namespace U2 {
 TextSettingsDialog::TextSettingsDialog(QWidget *parent, const OptionsMap &settings)
     : BaseSettingsDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60228103");
+    new HelpButton(this, buttonBox, "65929735");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
