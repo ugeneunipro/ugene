@@ -1,9 +1,0 @@
-0) sudo apt-get install build-essentials
-1) check and update (if needed) the following:
-   - debian/changelog
-   - debian/control -- version, dependencies
-   - ./pack.sh -- version
-   - every version you know
-2) run pack.sh
-
-D71359B0

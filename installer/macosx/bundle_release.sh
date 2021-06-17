@@ -249,6 +249,10 @@ if [ ! "$1" ]; then
     echo Signing dmg-file...
     echo ./codesign.mac.sh ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg
     bash ./codesign.mac.sh ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg
+    
+    echo Notarize dmg-file
+    echo ./notarize.sh -n ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg
+    bash ./notarize.sh -n ugene-${UGENE_VERSION}-mac-${ARCHITECTURE}-r${BUILD_VCS_NUMBER_new_trunk}.dmg
 
     set +x
 fi
