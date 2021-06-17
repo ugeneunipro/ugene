@@ -403,7 +403,8 @@ bool ProjectLoaderImpl::detectFormat(const GUrl &url, QList<FormatDetectionResul
     CHECK(!formats.isEmpty(), false);
     int idx = 0;
     if (shouldFormatBeSelected(formats, hints.value(ProjectLoaderHint_ForceFormatOptions, false).toBool())) {
-        idx = DocumentFormatSelectorController::selectResult(url, formats.first().rawData, formats);
+        const FormatDetectionResult &result = formats.first();
+        idx = DocumentFormatSelectorController::selectResult(url, result.getRawDataPreviewText(), formats);
         if (idx >= 0) {
             selectedResult = formats[idx];
             return true;

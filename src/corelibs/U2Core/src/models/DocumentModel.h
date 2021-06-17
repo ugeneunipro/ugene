@@ -103,6 +103,9 @@ typedef QFlags<DocumentFormatFlag> DocumentFormatFlags;
 /*Contains length of sequence that was read from header of sequence file. Used in merge files option*/
 #define RawDataCheckResult_HeaderSequenceLength "header-sequence-length"
 
+/** Text decoded from the binary input data. Present only for text document formats. */
+#define RawDataCheckResult_RawTextData "raw-text-data"
+
 /** Set of hints that can be processed during document loading */
 #define DocumentReadingMode_SequenceMergeGapSize "merge-gap"
 #define DocumentReadingMode_SequenceMergingFinalSizeHint "merge-size"

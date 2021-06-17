@@ -35,12 +35,13 @@
 
 #include <QApplication>
 #include <QFileInfo>
+#include <QPlainTextEdit>
 #include <QRadioButton>
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsDocument.h"
-#include "GTUtilsMdi.h"
 #include "GTUtilsMcaEditor.h"
+#include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsOptionPanelMSA.h"
@@ -56,8 +57,8 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
+#include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
-
 namespace U2 {
 
 namespace GUITest_regression_scenarios {
@@ -518,6 +519,41 @@ GUI_TEST_CLASS_DEFINITION(test_7246) {
     CHECK_SET_ERR(alphabet.contains("RNA"), "Alphabet is not RNA: " + alphabet);
     sequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
     CHECK_SET_ERR(sequence == "UUUNNNNNNNNNNUNNNNNANNNGNNNANNNNANNNNNNNGUNNNUNGNNANNUGGANGN", "Not a RNA sequence: " + sequence);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7293) {
+    // Open a multi-byte unicode file that triggers format selection dialog with a raw data preview.
+    // Check that raw data is shown correctly for both Open... & Open As... dialog (these are 2 different dialogs).
+
+    class CheckDocumentReadingModeSelectorTextScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            auto textEdit = GTWidget::findExactWidget<QPlainTextEdit *>(os, "previewEdit", dialog);
+            QString previewText = textEdit->toPlainText();
+            CHECK_SET_ERR(previewText.contains("Первый"), "Expected text is not found in previewEdit");
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, new CheckDocumentReadingModeSelectorTextScenario()));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/utf16be.fa"));
+    GTMenu::clickMainMenuItem(os, {"File", "Open..."});
+    GTUtilsDialog::waitAllFinished(os);
+
+    // Now check preview text for the second dialog.
+    class CheckDocumentFormatSelectorTextScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            auto textEdit = GTWidget::findExactWidget<QPlainTextEdit *>(os, "previewEdit", dialog);
+            QString previewText = textEdit->toPlainText();
+            CHECK_SET_ERR(previewText.contains("Первый"), "Expected text is not found in previewEdit");
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new CheckDocumentFormatSelectorTextScenario()));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/utf16be.fa"));
+    GTMenu::clickMainMenuItem(os, {"File", "Open as..."});
 }
 
 }    // namespace GUITest_regression_scenarios

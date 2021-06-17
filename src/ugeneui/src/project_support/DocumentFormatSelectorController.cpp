@@ -23,10 +23,8 @@
 
 #include <QMessageBox>
 #include <QMouseEvent>
-#include <QPushButton>
 
 #include <U2Core/DocumentImport.h>
-#include <U2Core/DocumentModel.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -65,7 +63,7 @@ DocumentFormatSelectorController::DocumentFormatSelectorController(QList<FormatD
     setObjectName("DocumentFormatSelectorDialog");
 }
 
-int DocumentFormatSelectorController::selectResult(const GUrl &url, QByteArray &rawData, QList<FormatDetectionResult> &results) {
+int DocumentFormatSelectorController::selectResult(const GUrl &url, const QString &rawDataPreview, QList<FormatDetectionResult> &results) {
     SAFE_POINT(!results.isEmpty(), "Results list is empty!", -1);
     if (results.size() == 1) {
         return 0;
@@ -73,11 +71,7 @@ int DocumentFormatSelectorController::selectResult(const GUrl &url, QByteArray &
 
     QObjectScopedPointer<DocumentFormatSelectorController> d = new DocumentFormatSelectorController(results, QApplication::activeModalWidget());
     d->optionsBox->setTitle(tr("Options for %1").arg(url.fileName()));
-    QByteArray safeData = rawData;
-    if (TextUtils::contains(TextUtils::BINARY, safeData.constData(), safeData.size())) {
-        TextUtils::replace(safeData.data(), safeData.length(), TextUtils::BINARY, '?');
-    }
-    d->previewEdit->setPlainText(safeData);
+    d->previewEdit->setPlainText(rawDataPreview);
 
     QVBoxLayout *vbox = new QVBoxLayout();
     QList<DocumentFormatId> detectedIds;

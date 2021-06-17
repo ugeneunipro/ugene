@@ -51,7 +51,7 @@ class DocumentFormatSelectorController : public QDialog, public Ui_DocumentForma
     DocumentFormatSelectorController(QList<FormatDetectionResult> &results, QWidget *p);
 
 public:
-    static int selectResult(const GUrl &url, QByteArray &rawData, QList<FormatDetectionResult> &results);
+    static int selectResult(const GUrl &url, const QString &rawDataPreview, QList<FormatDetectionResult> &results);
     static QString score2Text(int score);
 
 private slots:

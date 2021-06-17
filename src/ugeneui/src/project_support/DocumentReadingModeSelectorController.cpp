@@ -93,7 +93,7 @@ bool DocumentReadingModeSelectorController::adjustReadingMode(FormatDetectionRes
     bool mostProbableIsMsa = sequenceWithGaps;
     ui.malignmentRB->setChecked(ui.malignmentRB->isEnabled() && mostProbableIsMsa);
 
-    ui.previewEdit->setPlainText(dr.rawData);
+    ui.previewEdit->setPlainText(dr.getRawDataPreviewText());
 
     const int rc = d->exec();
     CHECK(!d.isNull(), false);
