@@ -29,23 +29,21 @@
 
 namespace U2 {
 
-class U2FORMATS_EXPORT RawDNASequenceFormat : public TextDocumentFormatDeprecated {
+class U2FORMATS_EXPORT RawDNASequenceFormat : public TextDocumentFormat {
     Q_OBJECT
 public:
     RawDNASequenceFormat(QObject *p);
 
-    virtual void storeDocument(Document *d, IOAdapter *io, U2OpStatus &os);
+    void storeTextDocument(IOAdapterWriter &writer, Document *document, U2OpStatus &os) override;
 
-    virtual bool isStreamingSupport() {
-        return true;
-    }
+    bool isStreamingSupport() override;
 
-    virtual void storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os);
+    void storeTextEntry(IOAdapterWriter &writer, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) override;
 
 protected:
-    virtual FormatCheckResult checkRawTextData(const QByteArray &rawData, const GUrl & = GUrl()) const;
+    FormatCheckResult checkRawTextData(const QString &dataPrefix, const GUrl &originalDataUrl) const override;
 
-    virtual Document *loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os);
+    Document *loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) override;
 };
 
 }    // namespace U2
