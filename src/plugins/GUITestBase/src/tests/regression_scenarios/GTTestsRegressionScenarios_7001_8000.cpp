@@ -521,23 +521,6 @@ GUI_TEST_CLASS_DEFINITION(test_7246) {
     CHECK_SET_ERR(sequence == "UUUNNNNNNNNNNUNNNNNANNNGNNNANNNNANNNNNNNGUNNNUNGNNANNUGGANGN", "Not a RNA sequence: " + sequence);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_7273) {
-    // Open _common_data/regression/7273/web-clustalo.aln.
-    // Select the symbol(1, 1).
-    // Click Del.
-    // Press Ctrl-Z(undo).
-    //     Expected: no errors in the log.
-    GTFileDialog::openFile(os, testDir + "_common_data/regression/7273", "web-clustalo.aln");
-    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
-    GTUtilsMSAEditorSequenceArea::clickToPosition(os, {0, 0});
-    GTKeyboardDriver::keyPress(Qt::Key_Delete);
-
-    GTLogTracer lt;
-    GTUtilsMsaEditor::undo(os);
-    CHECK_SET_ERR(!lt.hasErrors(), QString("Expected: no errors in the log, current: %1 errors in the log:\n%2").
-        arg(lt.errorsList.size()).arg(lt.getJoinedErrorString()))
-}
-
 }    // namespace GUITest_regression_scenarios
 
 }    // namespace U2
