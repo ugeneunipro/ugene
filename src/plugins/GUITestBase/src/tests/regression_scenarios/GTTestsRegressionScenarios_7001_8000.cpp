@@ -39,7 +39,6 @@
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsDocument.h"
-#include "GTUtilsLog.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMsaEditor.h"
