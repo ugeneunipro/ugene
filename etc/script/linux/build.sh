@@ -10,7 +10,6 @@
 #
 
 #### Configure ####
-
 if [ ! -d "${QT_DIR}" ]; then
   echo "QT_DIR: ${QT_DIR} is not found."
   exit 1
