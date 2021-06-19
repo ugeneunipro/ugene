@@ -11,9 +11,6 @@
 
 #### Configure ####
 
-# TODO: override is for the testing period only
-export QT_DIR=/home/ugene/Qt/5.12.11/gcc_64
-
 if [ ! -d "${QT_DIR}" ]; then
   echo "QT_DIR: ${QT_DIR} is not found."
   exit 1
