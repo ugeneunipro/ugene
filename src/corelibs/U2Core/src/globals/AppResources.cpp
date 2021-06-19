@@ -40,9 +40,10 @@
 #endif
 
 #ifdef Q_OS_WIN
-#    include <Psapi.h>
-#    include <Winbase.h>    //for IsProcessorFeaturePresent
+// clang-format off
 #    include <windows.h>
+#    include <Psapi.h>
+// clang-format on
 #endif
 
 namespace U2 {

@@ -22,11 +22,6 @@
 #include <qglobal.h>
 
 #ifdef Q_OS_WIN
-#    include <Psapi.h>
-#    include <Winbase.h>    //for IsProcessorFeaturePresent
-#    include <intrin.h>
-#    include <windows.h>
-
 #    include "DetectWin10.h"
 #endif
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
