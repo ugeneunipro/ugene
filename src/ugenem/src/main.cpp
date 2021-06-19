@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
     bool useGui = true;
 #if defined(Q_OS_UNIX)
     useGui = (getenv("DISPLAY") != 0);
-    if (!useGui && argc==1) {
+    if (!useGui && argc == 1) {
         printf("Use \"ugeneui\" to start Unipro UGENE graphical interface or \"ugenecl\" to use the command-line interface.");
         return 1;
     }

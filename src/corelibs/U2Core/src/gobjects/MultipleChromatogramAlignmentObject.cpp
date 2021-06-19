@@ -238,15 +238,15 @@ void MultipleChromatogramAlignmentObject::trimRow(const int rowIndex, int curren
     int pos = 0;
     int count = 0;
     switch (edge) {
-    case Left:
-        pos = row->getCoreStart();
-        count = currentPos - pos;
-        break;
-    case Right:
-        pos = currentPos + 1;
-        int lengthWithoutTrailing = row->getRowLengthWithoutTrailing();
-        count = lengthWithoutTrailing - currentPos;
-        break;
+        case Left:
+            pos = row->getCoreStart();
+            count = currentPos - pos;
+            break;
+        case Right:
+            pos = currentPos + 1;
+            int lengthWithoutTrailing = row->getRowLengthWithoutTrailing();
+            count = lengthWithoutTrailing - currentPos;
+            break;
     }
     McaDbiUtils::removeRegion(entityRef, rowId, pos, count, os);
     U2Region region(rowIndex, 1);

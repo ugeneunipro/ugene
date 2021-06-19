@@ -67,14 +67,14 @@ AlignToReferenceBlastCmdlineTask::Settings::Settings()
 
 QString AlignToReferenceBlastCmdlineTask::Settings::getRowNamingPolicyString() const {
     switch (rowNaming) {
-    case SequenceName:
-        return LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_SEQUENCE_NAME_VALUE;
-        break;
-    case FileName:
-        return LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_FILE_NAME_VALUE;
-        break;
-    default:
-        FAIL("An unknown row naming policy", LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_SEQUENCE_NAME_VALUE);
+        case SequenceName:
+            return LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_SEQUENCE_NAME_VALUE;
+            break;
+        case FileName:
+            return LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_FILE_NAME_VALUE;
+            break;
+        default:
+            FAIL("An unknown row naming policy", LocalWorkflow::AlignToReferenceBlastWorkerFactory::ROW_NAMING_SEQUENCE_NAME_VALUE);
     }
 }
 

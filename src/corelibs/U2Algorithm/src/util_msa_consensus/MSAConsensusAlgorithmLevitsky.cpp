@@ -73,43 +73,43 @@ static void registerHit(int *data, char c) {
     int idx = uchar(c);
     data[idx]++;
     switch (c) {
-    case 'A':
-        data['W']++;
-        data['R']++;
-        data['M']++;
-        data['V']++;
-        data['H']++;
-        data['D']++;
-        data['N']++;
-        break;
-    case 'C':
-        data['M']++;
-        data['Y']++;
-        data['S']++;
-        data['B']++;
-        data['V']++;
-        data['H']++;
-        data['N']++;
-        break;
-    case 'G':
-        data['R']++;
-        data['K']++;
-        data['S']++;
-        data['B']++;
-        data['V']++;
-        data['D']++;
-        data['N']++;
-        break;
-    case 'T':
-    case 'U':
-        data['W']++;
-        data['K']++;
-        data['Y']++;
-        data['B']++;
-        data['H']++;
-        data['D']++;
-        data['N']++;
-        break;
+        case 'A':
+            data['W']++;
+            data['R']++;
+            data['M']++;
+            data['V']++;
+            data['H']++;
+            data['D']++;
+            data['N']++;
+            break;
+        case 'C':
+            data['M']++;
+            data['Y']++;
+            data['S']++;
+            data['B']++;
+            data['V']++;
+            data['H']++;
+            data['N']++;
+            break;
+        case 'G':
+            data['R']++;
+            data['K']++;
+            data['S']++;
+            data['B']++;
+            data['V']++;
+            data['D']++;
+            data['N']++;
+            break;
+        case 'T':
+        case 'U':
+            data['W']++;
+            data['K']++;
+            data['Y']++;
+            data['B']++;
+            data['H']++;
+            data['D']++;
+            data['N']++;
+            break;
     }
 }
 

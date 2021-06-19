@@ -155,7 +155,7 @@ void TreeOptionsWidget::sl_onOptionChanged(TreeViewOption option, const QVariant
     if (option == SHOW_LABELS) {
         alignLabelsCheck->setEnabled(value.toBool());
     }
-    if (option == LABEL_COLOR || option == LABEL_FONT_TYPE || option == LABEL_FONT_SIZE || 
+    if (option == LABEL_COLOR || option == LABEL_FONT_TYPE || option == LABEL_FONT_SIZE ||
         option == LABEL_FONT_BOLD || option == LABEL_FONT_ITALIC || option == LABEL_FONT_UNDERLINE) {
         updateFormatSettings();
         return;
@@ -443,7 +443,7 @@ void AddTreeWidget::sl_updateBuildTreeButtonState() {
     buildTreeButton->setDisabled(editor->getNumSequences() < 2 || editor->getMaObject()->isStateLocked());
 }
 
- TreeOptionsSavableWidget::TreeOptionsSavableWidget(QWidget *wrappedWidget, MWMDIWindow *contextWindow /*= nullptr*/)
+TreeOptionsSavableWidget::TreeOptionsSavableWidget(QWidget *wrappedWidget, MWMDIWindow *contextWindow /*= nullptr*/)
     : U2SavableWidget(wrappedWidget, contextWindow) {
 }
 

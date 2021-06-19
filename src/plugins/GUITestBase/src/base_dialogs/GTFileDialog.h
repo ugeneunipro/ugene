@@ -28,11 +28,17 @@
 namespace HI {
 
 class GTFileDialogUtils : public Filler {
-friend class GTFileDialogUtils_list;
+    friend class GTFileDialogUtils_list;
+
 public:
-    enum Button {Open, Cancel, Save, Choose};
-    enum ViewMode {List, Detail};
-    enum TextInput { Typing, CopyPaste };
+    enum Button { Open,
+                  Cancel,
+                  Save,
+                  Choose };
+    enum ViewMode { List,
+                    Detail };
+    enum TextInput { Typing,
+                     CopyPaste };
 
 #ifdef Q_OS_DARWIN
     GTFileDialogUtils(GUITestOpStatus &os, const QString &folderPath, const QString &fileName, Button b = Open, GTGlobals::UseMethod = GTGlobals::UseMouse, TextInput = CopyPaste);
@@ -80,7 +86,8 @@ private:
 
 class GTFileDialog {
 public:
-    enum Button {Open, Cancel};
+    enum Button { Open,
+                  Cancel };
 
     static void openFile(GUITestOpStatus &os, const QString &path, const QString &fileName, Button button = Open, GTGlobals::UseMethod m = GTGlobals::UseMouse);
 

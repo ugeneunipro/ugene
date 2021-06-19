@@ -43,11 +43,11 @@ public:
 
     void run() override;
 
-    const QString& getToolId() const {
+    const QString &getToolId() const {
         return toolId;
     }
 
-    const QStringList& getPaths() const {
+    const QStringList &getPaths() const {
         return toolPaths;
     }
 

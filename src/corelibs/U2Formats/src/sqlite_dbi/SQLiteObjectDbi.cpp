@@ -280,27 +280,27 @@ void SQLiteObjectDbi::removeObjectSpecificData(const U2DataId &objectId, U2OpSta
     }
 
     switch (type) {
-    case U2Type::Sequence:
-    case U2Type::VariantTrack:
-        // nothing has to be done for object of these types
-        break;
-    case U2Type::Mca:
-    case U2Type::Msa:
-        dbi->getSQLiteMsaDbi()->deleteRowsData(objectId, os);
-        break;
-    case U2Type::AnnotationTable:
-        dbi->getSQLiteFeatureDbi()->removeAnnotationTableData(objectId, os);
-        break;
-    case U2Type::Assembly:
-        dbi->getAssemblyDbi()->removeAssemblyData(objectId, os);
-        break;
-    case U2Type::CrossDatabaseReference:
-        dbi->getCrossDatabaseReferenceDbi()->removeCrossReferenceData(objectId, os);
-        break;
-    default:
-        if (!U2Type::isUdrObjectType(type)) {
-            os.setError(U2DbiL10n::tr("Unknown object type! Id: %1, type: %2").arg(U2DbiUtils::text(objectId)).arg(type));
-        }
+        case U2Type::Sequence:
+        case U2Type::VariantTrack:
+            // nothing has to be done for object of these types
+            break;
+        case U2Type::Mca:
+        case U2Type::Msa:
+            dbi->getSQLiteMsaDbi()->deleteRowsData(objectId, os);
+            break;
+        case U2Type::AnnotationTable:
+            dbi->getSQLiteFeatureDbi()->removeAnnotationTableData(objectId, os);
+            break;
+        case U2Type::Assembly:
+            dbi->getAssemblyDbi()->removeAssemblyData(objectId, os);
+            break;
+        case U2Type::CrossDatabaseReference:
+            dbi->getCrossDatabaseReferenceDbi()->removeCrossReferenceData(objectId, os);
+            break;
+        default:
+            if (!U2Type::isUdrObjectType(type)) {
+                os.setError(U2DbiL10n::tr("Unknown object type! Id: %1, type: %2").arg(U2DbiUtils::text(objectId)).arg(type));
+            }
     }
     CHECK_OP(os, );
 }

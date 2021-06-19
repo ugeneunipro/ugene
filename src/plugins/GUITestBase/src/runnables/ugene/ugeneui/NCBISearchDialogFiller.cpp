@@ -56,63 +56,63 @@ void NcbiSearchDialogFiller::commonScenario() {
 
     foreach (const Action &action, actions) {
         switch (action.first) {
-        case SetField:
-            setField(action.second);
-            break;
-        case SetTerm:
-            setTerm(action.second);
-            break;
-        case AddTerm:
-            addTerm();
-            break;
-        case RemoveTerm:
-            removeTerm(action.second);
-            break;
-        case SetDatabase:
-            setDatabase(action.second);
-            break;
-        case CheckQuery:
-            checkQuery(action.second);
-            break;
-        case ClickResultByNum:
-            clickResultByNum(action.second);
-            break;
-        case ClickResultById:
-            clickResultById(action.second);
-            break;
-        case ClickResultByDesc:
-            clickResultByDesc(action.second);
-            break;
-        case ClickResultBySize:
-            clickResultBySize(action.second);
-            break;
-        case SelectResultsByNumbers:
-            selectResultsByNumbers(action.second);
-            break;
-        case SelectResultsByIds:
-            selectResultsByIds(action.second);
-            break;
-        case SelectResultsByDescs:
-            selectResultsByDescs(action.second);
-            break;
-        case SelectResultsBySizes:
-            selectResultsBySizes(action.second);
-            break;
-        case SetResultLimit:
-            setResultLimit(action.second);
-            break;
-        case ClickSearch:
-            clickSearch();
-            break;
-        case ClickDownload:
-            clickDownload(action.second);
-            break;
-        case ClickClose:
-            clickClose();
-            break;
-        case WaitTasksFinish:
-            waitTasksFinish();
-            break;
+            case SetField:
+                setField(action.second);
+                break;
+            case SetTerm:
+                setTerm(action.second);
+                break;
+            case AddTerm:
+                addTerm();
+                break;
+            case RemoveTerm:
+                removeTerm(action.second);
+                break;
+            case SetDatabase:
+                setDatabase(action.second);
+                break;
+            case CheckQuery:
+                checkQuery(action.second);
+                break;
+            case ClickResultByNum:
+                clickResultByNum(action.second);
+                break;
+            case ClickResultById:
+                clickResultById(action.second);
+                break;
+            case ClickResultByDesc:
+                clickResultByDesc(action.second);
+                break;
+            case ClickResultBySize:
+                clickResultBySize(action.second);
+                break;
+            case SelectResultsByNumbers:
+                selectResultsByNumbers(action.second);
+                break;
+            case SelectResultsByIds:
+                selectResultsByIds(action.second);
+                break;
+            case SelectResultsByDescs:
+                selectResultsByDescs(action.second);
+                break;
+            case SelectResultsBySizes:
+                selectResultsBySizes(action.second);
+                break;
+            case SetResultLimit:
+                setResultLimit(action.second);
+                break;
+            case ClickSearch:
+                clickSearch();
+                break;
+            case ClickDownload:
+                clickDownload(action.second);
+                break;
+            case ClickClose:
+                clickClose();
+                break;
+            case WaitTasksFinish:
+                waitTasksFinish();
+                break;
         }
     }
 }

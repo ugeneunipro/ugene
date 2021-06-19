@@ -95,15 +95,15 @@ void GTUtilsProjectTreeView::toggleView(HI::GUITestOpStatus &os, GTGlobals::UseM
     //qmw->setFocus();
 
     switch (method) {
-    case GTGlobals::UseKey:
-    case GTGlobals::UseKeyBoard:
-        GTKeyboardDriver::keyClick('1', Qt::AltModifier);
-        break;
-    case GTGlobals::UseMouse:
-        GTWidget::click(os, GTWidget::findWidget(os, "doc_lable_project_view"));
-        break;
-    default:
-        break;
+        case GTGlobals::UseKey:
+        case GTGlobals::UseKeyBoard:
+            GTKeyboardDriver::keyClick('1', Qt::AltModifier);
+            break;
+        case GTGlobals::UseMouse:
+            GTWidget::click(os, GTWidget::findWidget(os, "doc_lable_project_view"));
+            break;
+        default:
+            break;
     }
 
     GTGlobals::sleep(100);
@@ -135,18 +135,18 @@ namespace {
 
 void editItemName(HI::GUITestOpStatus &os, const QString &newItemName, GTGlobals::UseMethod invokeMethod) {
     switch (invokeMethod) {
-    case GTGlobals::UseKey:
-        GTMouseDriver::click();
-        GTKeyboardDriver::keyClick(Qt::Key_F2);
-        break;
-    case GTGlobals::UseMouse:
-        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Rename", GTGlobals::UseMouse));
-        GTMouseDriver::click(Qt::RightButton);
-        GTGlobals::sleep(300);
-        break;
-    default:
-        os.setError("An unsupported way of a rename procedure invocation");
-        return;
+        case GTGlobals::UseKey:
+            GTMouseDriver::click();
+            GTKeyboardDriver::keyClick(Qt::Key_F2);
+            break;
+        case GTGlobals::UseMouse:
+            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Rename", GTGlobals::UseMouse));
+            GTMouseDriver::click(Qt::RightButton);
+            GTGlobals::sleep(300);
+            break;
+        default:
+            os.setError("An unsupported way of a rename procedure invocation");
+            return;
     }
 
     GTKeyboardDriver::keySequence(newItemName);

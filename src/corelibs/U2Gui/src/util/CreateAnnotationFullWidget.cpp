@@ -284,7 +284,7 @@ void CreateAnnotationFullWidget::sl_regionChanged() {
     isValidLocation = (startPos >= 1 && startPos <= seqLen && endPos >= 1 && endPos <= seqLen);
 
     U2Location location;
-    if (startPos > endPos) { // split (200..100) to (200..len,1..100)
+    if (startPos > endPos) {    // split (200..100) to (200..len,1..100)
         if (startPos <= seqLen && endPos >= 1) {
             location->regions << U2Region(startPos - 1, seqLen - startPos + 1);
         }

@@ -176,61 +176,61 @@ void ScrollController::stopSmoothScrolling() {
 
 void ScrollController::scrollStep(ScrollController::Direction direction) {
     switch (direction) {
-    case Up:
-        vScrollBar->triggerAction(QAbstractSlider::SliderSingleStepSub);
-        break;
-    case Down:
-        vScrollBar->triggerAction(QAbstractSlider::SliderSingleStepAdd);
-        break;
-    case Left:
-        hScrollBar->triggerAction(QAbstractSlider::SliderSingleStepSub);
-        break;
-    case Right:
-        hScrollBar->triggerAction(QAbstractSlider::SliderSingleStepAdd);
-        break;
-    default:
-        FAIL("An unknown direction", );
-        break;
+        case Up:
+            vScrollBar->triggerAction(QAbstractSlider::SliderSingleStepSub);
+            break;
+        case Down:
+            vScrollBar->triggerAction(QAbstractSlider::SliderSingleStepAdd);
+            break;
+        case Left:
+            hScrollBar->triggerAction(QAbstractSlider::SliderSingleStepSub);
+            break;
+        case Right:
+            hScrollBar->triggerAction(QAbstractSlider::SliderSingleStepAdd);
+            break;
+        default:
+            FAIL("An unknown direction", );
+            break;
     }
 }
 
 void ScrollController::scrollPage(ScrollController::Direction direction) {
     switch (direction) {
-    case Up:
-        vScrollBar->triggerAction(QAbstractSlider::SliderPageStepSub);
-        break;
-    case Down:
-        vScrollBar->triggerAction(QAbstractSlider::SliderPageStepAdd);
-        break;
-    case Left:
-        hScrollBar->triggerAction(QAbstractSlider::SliderPageStepSub);
-        break;
-    case Right:
-        hScrollBar->triggerAction(QAbstractSlider::SliderPageStepAdd);
-        break;
-    default:
-        FAIL("An unknown direction", );
-        break;
+        case Up:
+            vScrollBar->triggerAction(QAbstractSlider::SliderPageStepSub);
+            break;
+        case Down:
+            vScrollBar->triggerAction(QAbstractSlider::SliderPageStepAdd);
+            break;
+        case Left:
+            hScrollBar->triggerAction(QAbstractSlider::SliderPageStepSub);
+            break;
+        case Right:
+            hScrollBar->triggerAction(QAbstractSlider::SliderPageStepAdd);
+            break;
+        default:
+            FAIL("An unknown direction", );
+            break;
     }
 }
 
 void ScrollController::scrollToEnd(ScrollController::Direction direction) {
     switch (direction) {
-    case Up:
-        vScrollBar->triggerAction(QAbstractSlider::SliderToMinimum);
-        break;
-    case Down:
-        vScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
-        break;
-    case Left:
-        hScrollBar->triggerAction(QAbstractSlider::SliderToMinimum);
-        break;
-    case Right:
-        hScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
-        break;
-    default:
-        FAIL("An unknown direction", );
-        break;
+        case Up:
+            vScrollBar->triggerAction(QAbstractSlider::SliderToMinimum);
+            break;
+        case Down:
+            vScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
+            break;
+        case Left:
+            hScrollBar->triggerAction(QAbstractSlider::SliderToMinimum);
+            break;
+        case Right:
+            hScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
+            break;
+        default:
+            FAIL("An unknown direction", );
+            break;
     }
 }
 
@@ -247,49 +247,49 @@ void ScrollController::scrollToMovedSelection(ScrollController::Direction direct
     const QSize widgetWize = ui->getSequenceArea()->size();
 
     switch (direction) {
-    case Up:
-        fullyVisibleRegion = ui->getDrawHelper()->getVisibleViewRowsRegion(widgetWize.height(), false, false);
-        selectionRegion = selection.getYRegion();
-        selectionEdgePosition = static_cast<int>(selectionRegion.startPos);
-        break;
-    case Down:
-        fullyVisibleRegion = ui->getDrawHelper()->getVisibleViewRowsRegion(widgetWize.height(), false, false);
-        selectionRegion = selection.getYRegion();
-        selectionEdgePosition = static_cast<int>(selectionRegion.endPos() - 1);
-        break;
-    case Left:
-        fullyVisibleRegion = ui->getDrawHelper()->getVisibleBases(widgetWize.width(), false, false);
-        selectionRegion = selection.getXRegion();
-        selectionEdgePosition = static_cast<int>(selectionRegion.startPos);
-        break;
-    case Right:
-        fullyVisibleRegion = ui->getDrawHelper()->getVisibleBases(widgetWize.width(), false, false);
-        selectionRegion = selection.getXRegion();
-        selectionEdgePosition = static_cast<int>(selectionRegion.endPos() - 1);
-        break;
-    case None:
-        return;
-    default:
-        FAIL("An unknown direction", );
-        break;
-    }
-
-    const bool selectionEdgeIsFullyVisible = fullyVisibleRegion.contains(selectionEdgePosition);
-    if (!selectionEdgeIsFullyVisible) {
-        switch (direction) {
         case Up:
+            fullyVisibleRegion = ui->getDrawHelper()->getVisibleViewRowsRegion(widgetWize.height(), false, false);
+            selectionRegion = selection.getYRegion();
+            selectionEdgePosition = static_cast<int>(selectionRegion.startPos);
+            break;
         case Down:
-            scrollToViewRow(static_cast<int>(selectionEdgePosition), widgetWize.height());
+            fullyVisibleRegion = ui->getDrawHelper()->getVisibleViewRowsRegion(widgetWize.height(), false, false);
+            selectionRegion = selection.getYRegion();
+            selectionEdgePosition = static_cast<int>(selectionRegion.endPos() - 1);
             break;
         case Left:
+            fullyVisibleRegion = ui->getDrawHelper()->getVisibleBases(widgetWize.width(), false, false);
+            selectionRegion = selection.getXRegion();
+            selectionEdgePosition = static_cast<int>(selectionRegion.startPos);
+            break;
         case Right:
-            scrollToBase(static_cast<int>(selectionEdgePosition), widgetWize.width());
+            fullyVisibleRegion = ui->getDrawHelper()->getVisibleBases(widgetWize.width(), false, false);
+            selectionRegion = selection.getXRegion();
+            selectionEdgePosition = static_cast<int>(selectionRegion.endPos() - 1);
             break;
         case None:
             return;
         default:
             FAIL("An unknown direction", );
             break;
+    }
+
+    const bool selectionEdgeIsFullyVisible = fullyVisibleRegion.contains(selectionEdgePosition);
+    if (!selectionEdgeIsFullyVisible) {
+        switch (direction) {
+            case Up:
+            case Down:
+                scrollToViewRow(static_cast<int>(selectionEdgePosition), widgetWize.height());
+                break;
+            case Left:
+            case Right:
+                scrollToBase(static_cast<int>(selectionEdgePosition), widgetWize.width());
+                break;
+            case None:
+                return;
+            default:
+                FAIL("An unknown direction", );
+                break;
         }
     }
 }

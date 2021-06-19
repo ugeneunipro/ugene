@@ -84,16 +84,16 @@ void GTSequenceReadingModeDialogUtils::selectMode() {
 
     if (!radioButton->isChecked()) {
         switch (GTSequenceReadingModeDialog::useMethod) {
-        case GTGlobals::UseMouse:
-            GTRadioButton::click(os, radioButton);
-            break;
+            case GTGlobals::UseMouse:
+                GTRadioButton::click(os, radioButton);
+                break;
 
-        case GTGlobals::UseKey:
-            GTWidget::setFocus(os, radioButton);
-            GTKeyboardDriver::keyClick(Qt::Key_Space);
-            break;
-        default:
-            break;
+            case GTGlobals::UseKey:
+                GTWidget::setFocus(os, radioButton);
+                GTKeyboardDriver::keyClick(Qt::Key_Space);
+                break;
+            default:
+                break;
         }
     }
 
@@ -142,19 +142,19 @@ void GTSequenceReadingModeDialogUtils::selectSaveDocument() {
 
     if (GTSequenceReadingModeDialog::saveDocument != saveBox->isChecked()) {
         switch (GTSequenceReadingModeDialog::useMethod) {
-        case GTGlobals::UseMouse:
-            GTMouseDriver::moveTo(saveBox->mapToGlobal(QPoint(saveBox->rect().left() + 10, saveBox->rect().height() / 2)));
-            GTMouseDriver::click();
-            break;
+            case GTGlobals::UseMouse:
+                GTMouseDriver::moveTo(saveBox->mapToGlobal(QPoint(saveBox->rect().left() + 10, saveBox->rect().height() / 2)));
+                GTMouseDriver::click();
+                break;
 
-        case GTGlobals::UseKey:
-            while (!saveBox->hasFocus()) {
-                GTKeyboardDriver::keyClick(Qt::Key_Tab);
-                GTGlobals::sleep(100);
-            }
-            GTKeyboardDriver::keyClick(Qt::Key_Space);
-        default:
-            break;
+            case GTGlobals::UseKey:
+                while (!saveBox->hasFocus()) {
+                    GTKeyboardDriver::keyClick(Qt::Key_Tab);
+                    GTGlobals::sleep(100);
+                }
+                GTKeyboardDriver::keyClick(Qt::Key_Space);
+            default:
+                break;
         }
     }
 }
@@ -187,37 +187,37 @@ void GTSequenceReadingModeDialogUtils::changeSpinBoxValue(QSpinBox *sb, int val)
 
     if (sb->value() != val) {
         switch (GTSequenceReadingModeDialog::useMethod) {
-        case GTGlobals::UseMouse:
-            spinBoxRect = sb->rect();
-            if (val > sb->value()) {
-                arrowPos = QPoint(spinBoxRect.right() - 5, spinBoxRect.height() / 4);    // -5 it's needed that area under cursor was clickable
-            } else {
-                arrowPos = QPoint(spinBoxRect.right() - 5, spinBoxRect.height() * 3 / 4);
-            }
+            case GTGlobals::UseMouse:
+                spinBoxRect = sb->rect();
+                if (val > sb->value()) {
+                    arrowPos = QPoint(spinBoxRect.right() - 5, spinBoxRect.height() / 4);    // -5 it's needed that area under cursor was clickable
+                } else {
+                    arrowPos = QPoint(spinBoxRect.right() - 5, spinBoxRect.height() * 3 / 4);
+                }
 
-            GTMouseDriver::moveTo(sb->mapToGlobal(arrowPos));
-            while (sb->value() != val) {
-                GTMouseDriver::click();
-                GTGlobals::sleep(100);
-            }
-            break;
+                GTMouseDriver::moveTo(sb->mapToGlobal(arrowPos));
+                while (sb->value() != val) {
+                    GTMouseDriver::click();
+                    GTGlobals::sleep(100);
+                }
+                break;
 
-        case GTGlobals::UseKey: {
-            Qt::Key key;
-            if (val > sb->value()) {
-                key = Qt::Key_Up;
-            } else {
-                key = Qt::Key_Down;
-            }
+            case GTGlobals::UseKey: {
+                Qt::Key key;
+                if (val > sb->value()) {
+                    key = Qt::Key_Up;
+                } else {
+                    key = Qt::Key_Down;
+                }
 
-            GTWidget::setFocus(os, sb);
-            while (sb->value() != val) {
-                GTKeyboardDriver::keyClick(key);
-                GTGlobals::sleep(100);
+                GTWidget::setFocus(os, sb);
+                while (sb->value() != val) {
+                    GTKeyboardDriver::keyClick(key);
+                    GTGlobals::sleep(100);
+                }
             }
-        }
-        default:
-            break;
+            default:
+                break;
         }
     }
 }

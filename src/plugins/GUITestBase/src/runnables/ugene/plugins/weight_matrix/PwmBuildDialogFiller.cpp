@@ -52,21 +52,21 @@ void PwmBuildDialogFiller::commonScenario() {
 
     foreach (const Action &action, actions) {
         switch (action.first) {
-        case EnterInput:
-            enterInput(action.second);
-            break;
-        case SelectInput:
-            selectInput(action.second);
-            break;
-        case ExpectInvalidFile:
-            expectInvalidFile();
-            break;
-        case ClickCancel:
-            clickCancel();
-            break;
-        default:
-            os.setError("An unimplemented action");
-            FAIL(false, );
+            case EnterInput:
+                enterInput(action.second);
+                break;
+            case SelectInput:
+                selectInput(action.second);
+                break;
+            case ExpectInvalidFile:
+                expectInvalidFile();
+                break;
+            case ClickCancel:
+                clickCancel();
+                break;
+            default:
+                os.setError("An unimplemented action");
+                FAIL(false, );
         }
     }
 }

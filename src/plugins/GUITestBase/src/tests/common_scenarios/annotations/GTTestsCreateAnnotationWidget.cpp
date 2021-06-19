@@ -2667,7 +2667,6 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
             //    Expected state: Simple format checked, Genbank format unchecked.
             CHECK_SET_ERR(rbSimpleFormat->isChecked() && !rbGenbankFormat->isChecked(), "76. Unexpected switch between formats");
 
-
             //    24. Check if destination table widgets are enabled or disabled.
             //    Expected state:
             //        Existing table radio button - disabled

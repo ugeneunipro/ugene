@@ -50,8 +50,6 @@
 #include "MaEditorWgt.h"
 #include "SequenceAreaRenderer.h"
 #include "UndoRedoFramework.h"
-#include "ov_msa/highlighting/MSAHighlightingTabFactory.h"
-#include "ov_msa/highlighting/MsaSchemesMenuBuilder.h"
 #include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MaEditor.h"
 #include "ov_msa/MaEditorNameList.h"
@@ -60,6 +58,8 @@
 #include "ov_msa/helpers/DrawHelper.h"
 #include "ov_msa/helpers/RowHeightController.h"
 #include "ov_msa/helpers/ScrollController.h"
+#include "ov_msa/highlighting/MSAHighlightingTabFactory.h"
+#include "ov_msa/highlighting/MsaSchemesMenuBuilder.h"
 
 namespace U2 {
 

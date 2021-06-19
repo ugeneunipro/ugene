@@ -59,11 +59,11 @@ QMap<QString, QVariant> Bowtie2SettingsWidget::getDnaAssemblyCustomSettings() co
     QMap<QString, QVariant> settings;
 
     switch (modeComboBox->currentIndex()) {
-    case 0:
-        settings.insert(Bowtie2Task::OPTION_MODE, "--end-to-end");
-        break;
-    case 1:
-        settings.insert(Bowtie2Task::OPTION_MODE, "--local");
+        case 0:
+            settings.insert(Bowtie2Task::OPTION_MODE, "--end-to-end");
+            break;
+        case 1:
+            settings.insert(Bowtie2Task::OPTION_MODE, "--local");
     }
 
     settings.insert(Bowtie2Task::OPTION_MISMATCHES, mismatchesSpinBox->value());

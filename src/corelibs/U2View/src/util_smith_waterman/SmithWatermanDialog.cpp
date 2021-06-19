@@ -655,29 +655,29 @@ void SmithWatermanDialog::clearAll() {
 void SmithWatermanDialog::loadDialogConfig() {
     const SmithWatermanSearchType searchType = dialogConfig->searchType;
     switch (searchType) {
-    case (SmithWatermanSearchType_inSequence):
-        radioSequence->setChecked(true);
-        break;
-    case (SmithWatermanSearchType_inTranslation):
-        radioTranslation->setChecked(true);
-        break;
-    default:
-        break;
+        case (SmithWatermanSearchType_inSequence):
+            radioSequence->setChecked(true);
+            break;
+        case (SmithWatermanSearchType_inTranslation):
+            radioTranslation->setChecked(true);
+            break;
+        default:
+            break;
     }
 
     const StrandOption strand = dialogConfig->strand;
     switch (strand) {
-    case (StrandOption_DirectOnly):
-        radioDirect->setChecked(true);
-        break;
-    case (StrandOption_ComplementOnly):
-        radioComplement->setChecked(true);
-        break;
-    case (StrandOption_Both):
-        radioBoth->setChecked(true);
-        break;
-    default:
-        assert(0);
+        case (StrandOption_DirectOnly):
+            radioDirect->setChecked(true);
+            break;
+        case (StrandOption_ComplementOnly):
+            radioComplement->setChecked(true);
+            break;
+        case (StrandOption_Both):
+            radioBoth->setChecked(true);
+            break;
+        default:
+            assert(0);
     }
 
     const QByteArray &prevPattern = dialogConfig->ptrn;
@@ -754,19 +754,11 @@ void SmithWatermanDialog::saveDialogConfig() {
     dialogConfig->resultFilter = comboResultFilter->currentText();
     dialogConfig->minScoreInPercent = spinScorePercent->value();
 
-    dialogConfig->searchType = (radioSequence->isChecked()) ?
-                                   (SmithWatermanSearchType_inSequence) :
-                                   (SmithWatermanSearchType_inTranslation);
+    dialogConfig->searchType = (radioSequence->isChecked()) ? (SmithWatermanSearchType_inSequence) : (SmithWatermanSearchType_inTranslation);
 
-    dialogConfig->strand = (radioDirect->isChecked()) ?
-                               (StrandOption_DirectOnly) :
-                               (dialogConfig->strand);
-    dialogConfig->strand = (radioComplement->isChecked()) ?
-                               (StrandOption_ComplementOnly) :
-                               (dialogConfig->strand);
-    dialogConfig->strand = (radioBoth->isChecked()) ?
-                               (StrandOption_Both) :
-                               (dialogConfig->strand);
+    dialogConfig->strand = (radioDirect->isChecked()) ? (StrandOption_DirectOnly) : (dialogConfig->strand);
+    dialogConfig->strand = (radioComplement->isChecked()) ? (StrandOption_ComplementOnly) : (dialogConfig->strand);
+    dialogConfig->strand = (radioBoth->isChecked()) ? (StrandOption_Both) : (dialogConfig->strand);
 
     const qint32 checkResultView = config.getResultViewKeyForString(resultViewVariants->currentText());
     assert(STRING_HAS_NO_KEY_MESSAGE != checkResultView);

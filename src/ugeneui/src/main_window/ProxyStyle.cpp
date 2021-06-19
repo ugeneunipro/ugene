@@ -5,9 +5,7 @@
 namespace U2 {
 
 ProxyStyle::ProxyStyle(QStyle *style)
-    : QProxyStyle(style)
-{
-
+    : QProxyStyle(style) {
 }
 
 void ProxyStyle::polish(QWidget *widget) {
@@ -19,11 +17,11 @@ void ProxyStyle::polish(QWidget *widget) {
     auto *menu = qobject_cast<QMenu *>(widget);
     if (nullptr != menu) {
         const auto actions = menu->actions();
-        for (auto *action: qAsConst(actions)) {
+        for (auto *action : qAsConst(actions)) {
             action->setShortcutVisibleInContextMenu(true);
         }
     }
 #endif
 }
 
-} // namespace U2
+}    // namespace U2

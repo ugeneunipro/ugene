@@ -211,17 +211,19 @@ int SArrayIndex::vecswapBit(quint32 *x1, quint32 *x2, quint32 n) {
 quint32 SArrayIndex::med3(quint32 *x, quint32 a, quint32 b, quint32 c) {
     int bc = compare(x[b], x[c]);
     int ac = compare(x[a], x[c]);
-    return compare(x[a], x[b]) < 0 ?
-               (bc < 0 ? b : ac < 0 ? c : a) :
-               (bc > 0 ? b : ac > 0 ? c : a);
+    return compare(x[a], x[b]) < 0 ? (bc < 0 ? b : ac < 0 ? c
+                                                          : a)
+                                   : (bc > 0 ? b : ac > 0 ? c
+                                                          : a);
 }
 
 quint32 SArrayIndex::med3Bit(quint32 *x, quint32 a, quint32 b, quint32 c) {
     int bc = compareBit(x + b, x + c);
     int ac = compareBit(x + a, x + c);
-    return compareBit(x + a, x + b) < 0 ?
-               (bc < 0 ? b : ac < 0 ? c : a) :
-               (bc > 0 ? b : ac > 0 ? c : a);
+    return compareBit(x + a, x + b) < 0 ? (bc < 0 ? b : ac < 0 ? c
+                                                               : a)
+                                        : (bc > 0 ? b : ac > 0 ? c
+                                                               : a);
 }
 
 quint32 SArrayIndex::seq2val(const char *seq) const {

@@ -42,20 +42,20 @@ EditSettingsDialog::EditSettingsDialog(const EditSettings &settings, QWidget *pa
     ui->recalculateQuals->setChecked(settings.recalculateQualifiers);
 
     switch (settings.annotationStrategy) {
-    case U1AnnotationUtils::AnnotationStrategyForResize_Resize:
-        ui->resizeRadioButton->setChecked(true);
-        break;
-    case U1AnnotationUtils::AnnotationStrategyForResize_Remove:
-        ui->removeRadioButton->setChecked(true);
-        break;
-    case U1AnnotationUtils::AnnotationStrategyForResize_Split_To_Joined:
-        ui->splitRadioButton->setChecked(true);
-        break;
-    case U1AnnotationUtils::AnnotationStrategyForResize_Split_To_Separate:
-        ui->split_separateRadioButton->setChecked(true);
-        break;
-    default:
-        FAIL("Unexpected enum value", );
+        case U1AnnotationUtils::AnnotationStrategyForResize_Resize:
+            ui->resizeRadioButton->setChecked(true);
+            break;
+        case U1AnnotationUtils::AnnotationStrategyForResize_Remove:
+            ui->removeRadioButton->setChecked(true);
+            break;
+        case U1AnnotationUtils::AnnotationStrategyForResize_Split_To_Joined:
+            ui->splitRadioButton->setChecked(true);
+            break;
+        case U1AnnotationUtils::AnnotationStrategyForResize_Split_To_Separate:
+            ui->split_separateRadioButton->setChecked(true);
+            break;
+        default:
+            FAIL("Unexpected enum value", );
     }
 }
 

@@ -156,7 +156,7 @@ QString GTUtilsDashboard::getNotificationTypeFromHtml(HI::GUITestOpStatus &os, c
     QString type;
 
     int start = html.indexOf("<img class=\"");
-    int end = html.indexOf("\"", start + 12); // 12 = length of "<img class=\""
+    int end = html.indexOf("\"", start + 12);    // 12 = length of "<img class=\""
     GT_CHECK_RESULT(start >= 0 && end >= 0, "Dashboard notification type not found", type)
 
     start += 12;
@@ -167,8 +167,7 @@ QString GTUtilsDashboard::getNotificationTypeFromHtml(HI::GUITestOpStatus &os, c
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getNotificationCellText"
-QString GTUtilsDashboard::getNotificationCellText(HI::GUITestOpStatus &os, const QGridLayout &tableLayout,
-    const int row, const int col) {
+QString GTUtilsDashboard::getNotificationCellText(HI::GUITestOpStatus &os, const QGridLayout &tableLayout, const int row, const int col) {
     const QWidget *cellWidget = tableLayout.itemAtPosition(row, col)->widget();
     QString text;
 
@@ -182,7 +181,8 @@ QString GTUtilsDashboard::getNotificationCellText(HI::GUITestOpStatus &os, const
         }
     }
     GT_CHECK_RESULT(!text.isEmpty(),
-        QString("Error getting (%1,%2) cell of dashboard notification table").arg(row).arg(col), text)
+                    QString("Error getting (%1,%2) cell of dashboard notification table").arg(row).arg(col),
+                    text)
     return text;
 }
 #undef GT_METHOD_NAME
@@ -190,8 +190,7 @@ QString GTUtilsDashboard::getNotificationCellText(HI::GUITestOpStatus &os, const
 #define GT_METHOD_NAME "getNotifications"
 QList<GTUtilsDashboard::Notification> GTUtilsDashboard::getNotifications(GUITestOpStatus &os) {
     const QString notificationsWidgetName = "NotificationsDashboardWidget";
-    QWidget *const notificationsWidget = GTWidget::findWidget(os, notificationsWidgetName,
-        GTUtilsDashboard::getDashboard(os));
+    QWidget *const notificationsWidget = GTWidget::findWidget(os, notificationsWidgetName, GTUtilsDashboard::getDashboard(os));
     const auto tableLayout = qobject_cast<QGridLayout *>(notificationsWidget->layout());
     QList<Notification> notifications;
 
@@ -221,12 +220,12 @@ QString GTUtilsDashboard::getJoinedNotificationsString(GUITestOpStatus &os) {
 
 QString GTUtilsDashboard::getTabObjectName(Tabs tab) {
     switch (tab) {
-    case Overview:
-        return "overviewTabButton";
-    case Input:
-        return "inputTabButton";
-    case ExternalTools:
-        return "externalToolsTabButton";
+        case Overview:
+            return "overviewTabButton";
+        case Input:
+            return "inputTabButton";
+        case ExternalTools:
+            return "externalToolsTabButton";
     }
     return "unknown tab";
 }

@@ -22,6 +22,8 @@
 #ifndef _U2_GUI_TEST_BASE_H_
 #define _U2_GUI_TEST_BASE_H_
 
+#include <harness/UGUITest.h>
+
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/GObject.h>
 #include <U2Core/MultiTask.h>
@@ -30,8 +32,6 @@
 #include <U2Core/global.h>
 
 #include <U2Gui/MainWindow.h>
-
-#include <harness/UGUITest.h>
 
 #include <U2View/ADVSingleSequenceWidget.h>
 
@@ -76,7 +76,7 @@ public:
     QList<GUITest *> getTests(TestType testType = Normal, const QStringList &labelList = QStringList()) const;
 
     /** Returns UGUITestBase instance. There is only 1 instance of the database per application. */
-    static UGUITestBase* getInstance();
+    static UGUITestBase *getInstance();
 
 private:
     /** Normal tests. */

@@ -26,6 +26,7 @@
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTTreeWidget.h>
+#include <utils/GTThread.h>
 
 #include <QApplication>
 #include <QCheckBox>
@@ -58,8 +59,6 @@
 #include "system/GTFile.h"
 #include "utils/GTUtilsApp.h"
 #include "utils/GTUtilsToolTip.h"
-
-#include <utils/GTThread.h>
 
 namespace U2 {
 

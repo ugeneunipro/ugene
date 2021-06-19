@@ -34,8 +34,8 @@
 #include <U2Core/AddObjectsToDocumentTask.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/CMDLineRegistry.h>
 #include <U2Core/CMDLineCoreOptions.h>
+#include <U2Core/CMDLineRegistry.h>
 #include <U2Core/DeleteObjectsTask.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/L10n.h>

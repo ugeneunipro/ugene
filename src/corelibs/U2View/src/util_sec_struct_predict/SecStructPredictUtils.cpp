@@ -88,29 +88,29 @@ SecStructPredictViewAction::~SecStructPredictViewAction() {
 QString SecStructPredictUtils::getStructNameForCharTag(char tag) {
     SecondaryStructure::Type type = SecondaryStructure::Type_None;
     switch (tag) {
-    case 'H':
-        type = SecondaryStructure::Type_AlphaHelix;
-        break;
-    case 'G':
-        type = SecondaryStructure::Type_310Helix;
-        break;
-    case 'I':
-        type = SecondaryStructure::Type_PiHelix;
-        break;
-    case 'B':
-        type = SecondaryStructure::Type_BetaBridge;
-        break;
-    case 'E':
-        type = SecondaryStructure::Type_BetaStrand;
-        break;
-    case 'T':
-        type = SecondaryStructure::Type_Turn;
-        break;
-    case 'S':
-        type = SecondaryStructure::Type_BendRegion;
-        break;
-    default:
-        Q_ASSERT(0);
+        case 'H':
+            type = SecondaryStructure::Type_AlphaHelix;
+            break;
+        case 'G':
+            type = SecondaryStructure::Type_310Helix;
+            break;
+        case 'I':
+            type = SecondaryStructure::Type_PiHelix;
+            break;
+        case 'B':
+            type = SecondaryStructure::Type_BetaBridge;
+            break;
+        case 'E':
+            type = SecondaryStructure::Type_BetaStrand;
+            break;
+        case 'T':
+            type = SecondaryStructure::Type_Turn;
+            break;
+        case 'S':
+            type = SecondaryStructure::Type_BendRegion;
+            break;
+        default:
+            Q_ASSERT(0);
     }
 
     return BioStruct3D::getSecStructTypeName(type);

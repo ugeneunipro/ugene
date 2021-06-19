@@ -38,7 +38,7 @@ public:
 
     static bool hasClass(const QDomElement &element, const QString &className);
 
-    static QList<QDomElement> findChildElementsByClass(const QDomNode& node, const QString &className, int maxDepth = -1);
+    static QList<QDomElement> findChildElementsByClass(const QDomNode &node, const QString &className, int maxDepth = -1);
 
     static void findChildElementsByClass(const QDomNode &node, const QString &className, QList<QDomElement> &result, int maxDepth = -1);
 

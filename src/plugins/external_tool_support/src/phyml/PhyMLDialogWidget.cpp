@@ -111,37 +111,37 @@ void PhyMlWidget::makeTTRatioControlsAvailable(SubstModelTrRatioType ttRatioType
     makeTTRatioControlsAvailable(true);
 
     switch (ttRatioType) {
-    case ANY_TT_RATIO:
-        if (isTtRationFixed) {
+        case ANY_TT_RATIO:
+            if (isTtRationFixed) {
+                transFixedRb->setChecked(true);
+            } else {
+                transEstimatedRb->setChecked(true);
+            }
+            break;
+        case ONLY_FIXED_TT_RATIO:
+            if (shouldSavePreviousValue) {
+                isTtRationFixed = transFixedRb->isChecked();
+            }
             transFixedRb->setChecked(true);
-        } else {
+            transEstimatedRb->setEnabled(false);
+            transFixedRb->setEnabled(false);
+            break;
+        case ONLY_ESTIMATED_TT_RATIO:
+            if (shouldSavePreviousValue) {
+                isTtRationFixed = transFixedRb->isChecked();
+            }
             transEstimatedRb->setChecked(true);
-        }
-        break;
-    case ONLY_FIXED_TT_RATIO:
-        if (shouldSavePreviousValue) {
-            isTtRationFixed = transFixedRb->isChecked();
-        }
-        transFixedRb->setChecked(true);
-        transEstimatedRb->setEnabled(false);
-        transFixedRb->setEnabled(false);
-        break;
-    case ONLY_ESTIMATED_TT_RATIO:
-        if (shouldSavePreviousValue) {
-            isTtRationFixed = transFixedRb->isChecked();
-        }
-        transEstimatedRb->setChecked(true);
-        transEstimatedRb->setEnabled(false);
-        transFixedRb->setEnabled(false);
-        break;
-    case WITHOUT_TT_RATIO:
-        if (shouldSavePreviousValue) {
-            isTtRationFixed = transFixedRb->isChecked();
-        }
-        transFixedRb->setChecked(false);
-        transEstimatedRb->setChecked(false);
-        makeTTRatioControlsAvailable(false);
-        break;
+            transEstimatedRb->setEnabled(false);
+            transFixedRb->setEnabled(false);
+            break;
+        case WITHOUT_TT_RATIO:
+            if (shouldSavePreviousValue) {
+                isTtRationFixed = transFixedRb->isChecked();
+            }
+            transFixedRb->setChecked(false);
+            transEstimatedRb->setChecked(false);
+            makeTTRatioControlsAvailable(false);
+            break;
     }
 }
 
@@ -316,15 +316,15 @@ bool PhyMlWidget::checkSettings(QString &message, const CreatePhyTreeSettings &s
         CHECK(!msgBox.isNull(), false);
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return false;
-            break;
-        default:
-            SAFE_POINT(false, "Incorrect state of the message box", false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return false;
+                break;
+            default:
+                SAFE_POINT(false, "Incorrect state of the message box", false);
+                break;
         }
     }
 

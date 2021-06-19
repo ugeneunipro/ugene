@@ -75,41 +75,41 @@ void CreateElementWithCommandLineToolFiller::commonScenario() {
 
 QString CreateElementWithCommandLineToolFiller::dataTypeToString(const InOutType &type) const {
     switch (type) {
-    case Alignment:
-        return "Alignment";
-    case AnnotatedSequence:
-        return "Annotated Sequence";
-    case Annotations:
-        return "Annotations";
-    case Sequence:
-        return "Sequence";
-    case String:
-        return "String";
-    default:
-        return QString();
+        case Alignment:
+            return "Alignment";
+        case AnnotatedSequence:
+            return "Annotated Sequence";
+        case Annotations:
+            return "Annotations";
+        case Sequence:
+            return "Sequence";
+        case String:
+            return "String";
+        default:
+            return QString();
     }
 }
 
 QString CreateElementWithCommandLineToolFiller::dataTypeToString(const ParameterType &type) const {
     switch (type) {
-    case Boolean:
-        return "Boolean";
-    case Integer:
-        return "Integer";
-    case Double:
-        return "Double";
-    case ParameterString:
-        return "String";
-    case InputFileUrl:
-        return "Input file URL";
-    case InputFolderUrl:
-        return "Input folder URL";
-    case OutputFileUrl:
-        return "Output file URL";
-    case OutputFolderUrl:
-        return "Output folder URL";
-    default:
-        return QString();
+        case Boolean:
+            return "Boolean";
+        case Integer:
+            return "Integer";
+        case Double:
+            return "Double";
+        case ParameterString:
+            return "String";
+        case InputFileUrl:
+            return "Input file URL";
+        case InputFolderUrl:
+            return "Input folder URL";
+        case OutputFileUrl:
+            return "Output file URL";
+        case OutputFolderUrl:
+            return "Output folder URL";
+        default:
+            return QString();
     }
 }
 
@@ -162,37 +162,37 @@ bool CreateElementWithCommandLineToolFiller::processFirstPage(QWidget *dialog, Q
     }
 
     switch (settings.tooltype) {
-    case CommandLineToolType::ExecutablePath: {
-        QRadioButton *rbCustomTool = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rbCustomTool", dialog));
-        CHECK_EXT(nullptr != rbCustomTool, errorMessage = "rbCustomTool not found", false);
+        case CommandLineToolType::ExecutablePath: {
+            QRadioButton *rbCustomTool = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rbCustomTool", dialog));
+            CHECK_EXT(nullptr != rbCustomTool, errorMessage = "rbCustomTool not found", false);
 
-        GTRadioButton::click(os, rbCustomTool);
-        QLineEdit *leToolPath = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "leToolPath", dialog));
-        CHECK_EXT(nullptr != leToolPath, errorMessage = "leName not found", false);
+            GTRadioButton::click(os, rbCustomTool);
+            QLineEdit *leToolPath = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "leToolPath", dialog));
+            CHECK_EXT(nullptr != leToolPath, errorMessage = "leName not found", false);
 
-        GTLineEdit::setText(os, leToolPath, settings.tool);
-        break;
-    }
-    case CommandLineToolType::IntegratedExternalTool: {
-        QRadioButton *rbIntegratedTool = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rbIntegratedTool", dialog));
-        CHECK_EXT(nullptr != rbIntegratedTool, errorMessage = "rbIntegratedTool not found", false);
-
-        GTRadioButton::click(os, rbIntegratedTool);
-        if (!settings.tool.isEmpty()) {
-            QComboBox *cbIntegratedTools = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "cbIntegratedTools", dialog));
-            CHECK_EXT(nullptr != cbIntegratedTools, errorMessage = "cbIntegratedTools not found", false);
-
-            if (cbIntegratedTools->findText(settings.tool) == -1) {
-                GTComboBox::selectItemByText(os, cbIntegratedTools, "Show all tools");
-                GTKeyboardDriver::keyClick(Qt::Key_Escape);
-            }
-            GTComboBox::selectItemByText(os, cbIntegratedTools, settings.tool, HI::GTGlobals::UseKeyBoard);
+            GTLineEdit::setText(os, leToolPath, settings.tool);
+            break;
         }
-        break;
-    }
-    default:
-        CHECK_EXT(false, errorMessage = "Unexpected tool type", false);
-        break;
+        case CommandLineToolType::IntegratedExternalTool: {
+            QRadioButton *rbIntegratedTool = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rbIntegratedTool", dialog));
+            CHECK_EXT(nullptr != rbIntegratedTool, errorMessage = "rbIntegratedTool not found", false);
+
+            GTRadioButton::click(os, rbIntegratedTool);
+            if (!settings.tool.isEmpty()) {
+                QComboBox *cbIntegratedTools = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "cbIntegratedTools", dialog));
+                CHECK_EXT(nullptr != cbIntegratedTools, errorMessage = "cbIntegratedTools not found", false);
+
+                if (cbIntegratedTools->findText(settings.tool) == -1) {
+                    GTComboBox::selectItemByText(os, cbIntegratedTools, "Show all tools");
+                    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+                }
+                GTComboBox::selectItemByText(os, cbIntegratedTools, settings.tool, HI::GTGlobals::UseKeyBoard);
+            }
+            break;
+        }
+        default:
+            CHECK_EXT(false, errorMessage = "Unexpected tool type", false);
+            break;
     }
 
     //GTGlobals::sleep();
@@ -281,7 +281,7 @@ bool CreateElementWithCommandLineToolFiller::processSixthPage(QWidget *dialog, Q
     return true;
 }
 
-bool CreateElementWithCommandLineToolFiller::processSeventhPage(QWidget */*dialog*/, QString & /*errorMessage*/) {
+bool CreateElementWithCommandLineToolFiller::processSeventhPage(QWidget * /*dialog*/, QString & /*errorMessage*/) {
     MessageBoxDialogFiller *msbxFiller = new MessageBoxDialogFiller(os, settings.summaryDialogButton, "You have changed the structure of the element");
     GTUtilsDialog::waitForDialog(os, msbxFiller);
     GTUtilsWizard::clickButton(os, GTUtilsWizard::Finish);

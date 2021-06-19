@@ -250,38 +250,38 @@ QString GTUtilsSharedDatabaseDocument::getItemPath(HI::GUITestOpStatus &os, cons
 
     ProjectViewModel::Type itemType = ProjectViewModel::itemType(itemIndex);
     switch (itemType) {
-    case ProjectViewModel::DOCUMENT:
-        return U2ObjectDbi::ROOT_FOLDER;
+        case ProjectViewModel::DOCUMENT:
+            return U2ObjectDbi::ROOT_FOLDER;
 
-    case ProjectViewModel::FOLDER: {
-        Folder *folder = ProjectViewModel::toFolder(itemIndex);
-        GT_CHECK_RESULT(NULL != folder, "Can't convert item to folder", QString());
-        return folder->getFolderPath();
-    }
-
-    case ProjectViewModel::OBJECT: {
-        QString folderPath;
-        const QModelIndex parentItemIndex = itemIndex.parent();
-        GT_CHECK_RESULT(parentItemIndex.isValid(), "Parent item index of the object item is invalid", QString());
-
-        ProjectViewModel::Type parentItemType = ProjectViewModel::itemType(parentItemIndex);
-        if (ProjectViewModel::DOCUMENT == parentItemType) {
-            folderPath = U2ObjectDbi::ROOT_FOLDER;
-        } else if (ProjectViewModel::FOLDER == parentItemType) {
-            Folder *folder = ProjectViewModel::toFolder(parentItemIndex);
-            GT_CHECK_RESULT(NULL != folder, "Can't convert parent item to folder", QString());
-            folderPath = folder->getFolderPath();
-        } else {
-            GT_CHECK_RESULT(false, "Can't recognize the parent item", QString());
+        case ProjectViewModel::FOLDER: {
+            Folder *folder = ProjectViewModel::toFolder(itemIndex);
+            GT_CHECK_RESULT(NULL != folder, "Can't convert item to folder", QString());
+            return folder->getFolderPath();
         }
 
-        GObject *object = ProjectViewModel::toObject(itemIndex);
-        GT_CHECK_RESULT(NULL != object, "Can't convert item to object", QString());
-        return folderPath + U2ObjectDbi::PATH_SEP + object->getGObjectName();
-    }
+        case ProjectViewModel::OBJECT: {
+            QString folderPath;
+            const QModelIndex parentItemIndex = itemIndex.parent();
+            GT_CHECK_RESULT(parentItemIndex.isValid(), "Parent item index of the object item is invalid", QString());
 
-    default:
-        GT_CHECK_RESULT(false, "Can't recognize the item", QString());
+            ProjectViewModel::Type parentItemType = ProjectViewModel::itemType(parentItemIndex);
+            if (ProjectViewModel::DOCUMENT == parentItemType) {
+                folderPath = U2ObjectDbi::ROOT_FOLDER;
+            } else if (ProjectViewModel::FOLDER == parentItemType) {
+                Folder *folder = ProjectViewModel::toFolder(parentItemIndex);
+                GT_CHECK_RESULT(NULL != folder, "Can't convert parent item to folder", QString());
+                folderPath = folder->getFolderPath();
+            } else {
+                GT_CHECK_RESULT(false, "Can't recognize the parent item", QString());
+            }
+
+            GObject *object = ProjectViewModel::toObject(itemIndex);
+            GT_CHECK_RESULT(NULL != object, "Can't convert item to object", QString());
+            return folderPath + U2ObjectDbi::PATH_SEP + object->getGObjectName();
+        }
+
+        default:
+            GT_CHECK_RESULT(false, "Can't recognize the item", QString());
     }
 }
 #undef GT_METHOD_NAME

@@ -69,7 +69,7 @@ void GraphicsBranchItem::updateTextProperty(TreeViewOption property, const QVari
     switch (property) {
         case U2::LABEL_FONT_TYPE:
             dtFont.setFamily(qvariant_cast<QFont>(propertyVal).family());
-            ntFont.setFamily(qvariant_cast<QFont>(propertyVal).family());            
+            ntFont.setFamily(qvariant_cast<QFont>(propertyVal).family());
             break;
         case U2::LABEL_FONT_SIZE:
             dtFont.setPointSize(qvariant_cast<int>(propertyVal));

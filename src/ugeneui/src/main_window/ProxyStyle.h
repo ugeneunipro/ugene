@@ -1,7 +1,7 @@
 #ifndef PROXYSTYLE_H
-#define PROXYSTYLE_H
+#    define PROXYSTYLE_H
 
-#include <QProxyStyle>
+#    include <QProxyStyle>
 
 namespace U2 {
 
@@ -12,6 +12,6 @@ public:
     void polish(QWidget *widget) override;
 };
 
-#endif // PROXYSTYLE_H
+#endif    // PROXYSTYLE_H
 
-} // namespace U2
+}    // namespace U2

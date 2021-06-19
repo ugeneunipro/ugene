@@ -40,6 +40,6 @@ GUI_TEST_CLASS_DECLARATION(test_0006)
 #undef GUI_TEST_SUITE
 }    // namespace GUITest_common_scenarios_ngs_workflow_desingner
 
-}
+}    // namespace U2
 
 #endif    // GT_TESTS_NGS_WD

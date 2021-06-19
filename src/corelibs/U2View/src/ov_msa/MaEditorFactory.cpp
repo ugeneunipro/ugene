@@ -28,11 +28,11 @@
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SelectionUtils.h>
 
-#include "align_to_alignment/AlignSequencesToAlignmentSupport.h"
 #include "MSAEditor.h"
 #include "MaEditorState.h"
 #include "MaEditorTasks.h"
 #include "McaEditor.h"
+#include "align_to_alignment/AlignSequencesToAlignmentSupport.h"
 
 namespace U2 {
 

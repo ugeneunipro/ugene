@@ -19,8 +19,9 @@
  * MA 02110-1301, USA.
  */
 
-#include "GTUtilsMdi.h"
 #include "GTUtilsStartPage.h"
+
+#include "GTUtilsMdi.h"
 
 namespace U2 {
 #define GT_CLASS_NAME "GTUtilsStartPage"

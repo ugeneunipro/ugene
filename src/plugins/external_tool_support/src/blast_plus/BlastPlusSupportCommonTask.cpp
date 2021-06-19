@@ -438,15 +438,15 @@ void BlastPlusSupportCommonTask::parseXMLHsp(const QDomNode &xml, const QString 
 
     QString strandTag;
     switch (settings.strandSource) {
-    case BlastTaskSettings::HitFrame:
-        strandTag = "Hsp_hit-frame";
-        break;
-    case BlastTaskSettings::QueryFrame:
-        strandTag = "Hsp_query-frame";
-        break;
-    default:
-        SAFE_POINT_EXT(false, stateInfo.setError(tr("Unknown strand source setting")), );
-        break;
+        case BlastTaskSettings::HitFrame:
+            strandTag = "Hsp_hit-frame";
+            break;
+        case BlastTaskSettings::QueryFrame:
+            strandTag = "Hsp_query-frame";
+            break;
+        default:
+            SAFE_POINT_EXT(false, stateInfo.setError(tr("Unknown strand source setting")), );
+            break;
     }
     elem = xml.lastChildElement(strandTag);
     int frame = elem.text().toInt(&isOk);

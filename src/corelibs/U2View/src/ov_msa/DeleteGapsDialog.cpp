@@ -71,14 +71,14 @@ void DeleteGapsDialog::sl_onOkClicked() {
     deleteMode = ui->allRadioButton->isChecked() ? DeleteAll : (ui->relativeRadioButton->isChecked() ? DeleteByRelativeVal : DeleteByAbsoluteVal);
 
     switch (deleteMode) {
-    case DeleteByAbsoluteVal:
-        value = ui->absoluteSpinBox->value();
-        break;
-    case DeleteByRelativeVal:
-        value = ui->relativeSpinBox->value();
-        break;
-    default:
-        value = 0;
+        case DeleteByAbsoluteVal:
+            value = ui->absoluteSpinBox->value();
+            break;
+        case DeleteByRelativeVal:
+            value = ui->relativeSpinBox->value();
+            break;
+        default:
+            value = 0;
     }
 
     accept();

@@ -21,14 +21,15 @@
 
 #include "AppResources.h"
 
-#include <U2Core/AppContext.h>
-#include <U2Core/Settings.h>
-#include <U2Core/AppSettings.h>
-#include <U2Core/U2SafePoints.h>
-#include <U2Test/GTest.h>
-
-#include <QThread>
 #include <QProcess>
+#include <QThread>
+
+#include <U2Core/AppContext.h>
+#include <U2Core/AppSettings.h>
+#include <U2Core/Settings.h>
+#include <U2Core/U2SafePoints.h>
+
+#include <U2Test/GTest.h>
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_FREEBSD)
 #    include <stdio.h>
@@ -39,9 +40,9 @@
 #endif
 
 #ifdef Q_OS_WIN
-#include <windows.h>
-#include <Psapi.h>
-#include <Winbase.h> //for IsProcessorFeaturePresent
+#    include <Psapi.h>
+#    include <Winbase.h>    //for IsProcessorFeaturePresent
+#    include <windows.h>
 #endif
 
 namespace U2 {

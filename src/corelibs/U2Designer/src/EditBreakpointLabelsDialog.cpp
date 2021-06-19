@@ -78,14 +78,14 @@ void EditBreakpointLabelsDialog::sl_labelApplianceStateChanged(int state) {
     Q_ASSERT(NULL != labelApplianceController);
 
     switch (state) {
-    case Qt::Checked:
-        callingBreakpointLabels.append(applienceControlsForLabels[labelApplianceController]);
-        break;
-    case Qt::Unchecked:
-        callingBreakpointLabels.removeAll(applienceControlsForLabels[labelApplianceController]);
-        break;
-    default:
-        Q_ASSERT(false);
+        case Qt::Checked:
+            callingBreakpointLabels.append(applienceControlsForLabels[labelApplianceController]);
+            break;
+        case Qt::Unchecked:
+            callingBreakpointLabels.removeAll(applienceControlsForLabels[labelApplianceController]);
+            break;
+        default:
+            Q_ASSERT(false);
     }
 }
 

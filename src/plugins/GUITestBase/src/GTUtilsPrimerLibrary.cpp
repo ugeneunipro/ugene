@@ -55,20 +55,20 @@ void GTUtilsPrimerLibrary::clickButton(HI::GUITestOpStatus &os, Button button) {
 QAbstractButton *GTUtilsPrimerLibrary::getButton(HI::GUITestOpStatus &os, Button button) {
     QDialogButtonBox *box = GTUtilsDialog::buttonBox(os, GTWidget::findWidget(os, "PrimerLibraryWidget"));
     switch (button) {
-    case Add:
-        return box->buttons()[1];
-    case Edit:
-        return box->buttons()[2];
-    case Close:
-        return box->button(QDialogButtonBox::Close);
-    case Remove:
-        return box->buttons()[3];
-    case Import:
-        return box->buttons()[4];
-    case Export:
-        return box->buttons()[5];
-    default:
-        return NULL;
+        case Add:
+            return box->buttons()[1];
+        case Edit:
+            return box->buttons()[2];
+        case Close:
+            return box->button(QDialogButtonBox::Close);
+        case Remove:
+            return box->buttons()[3];
+        case Import:
+            return box->buttons()[4];
+        case Export:
+            return box->buttons()[5];
+        default:
+            return NULL;
     }
 }
 

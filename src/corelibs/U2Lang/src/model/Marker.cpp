@@ -185,18 +185,18 @@ QString Marker::getMarkingResult(const QVariant &object) {
 
         bool marked = false;
         switch (dataType) {
-        case INTEGER:
-            marked = getMarkerIntResult(object, expr);
-            break;
-        case FLOAT:
-            marked = getMarkerFloatResult(object, expr);
-            break;
-        case BOOLEAN:
-            // marked = getMarkerBooleanResult(object, expr);
-            break;
-        case STRING:
-            marked = getMarkerStringResult(object, expr);
-            break;
+            case INTEGER:
+                marked = getMarkerIntResult(object, expr);
+                break;
+            case FLOAT:
+                marked = getMarkerFloatResult(object, expr);
+                break;
+            case BOOLEAN:
+                // marked = getMarkerBooleanResult(object, expr);
+                break;
+            case STRING:
+                marked = getMarkerStringResult(object, expr);
+                break;
         }
         if (marked) {
             return values.value(val);

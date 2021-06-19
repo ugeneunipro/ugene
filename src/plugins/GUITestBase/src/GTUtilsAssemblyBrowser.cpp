@@ -180,17 +180,17 @@ bool GTUtilsAssemblyBrowser::isWelcomeScreenVisible(HI::GUITestOpStatus &os) {
 void GTUtilsAssemblyBrowser::zoomIn(HI::GUITestOpStatus &os, Method method) {
     checkAssemblyBrowserWindowIsActive(os);
     switch (method) {
-    case Button:
-        GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Zoom in");
-        break;
-    case Hotkey:
-        if (!GTWidget::findWidget(os, "assembly_reads_area")->hasFocus()) {
-            GTWidget::click(os, GTWidget::findWidget(os, "assembly_reads_area"));
-        }
-        GTKeyboardDriver::keyClick('+');
-        break;
-    default:
-        break;
+        case Button:
+            GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Zoom in");
+            break;
+        case Hotkey:
+            if (!GTWidget::findWidget(os, "assembly_reads_area")->hasFocus()) {
+                GTWidget::click(os, GTWidget::findWidget(os, "assembly_reads_area"));
+            }
+            GTKeyboardDriver::keyClick('+');
+            break;
+        default:
+            break;
     }
 }
 #undef GT_METHOD_NAME
@@ -246,12 +246,12 @@ void GTUtilsAssemblyBrowser::goToPosition(HI::GUITestOpStatus &os, qint64 positi
     GTLineEdit::setText(os, positionLineEdit, QString::number(position));
 
     switch (method) {
-    case Button:
-        GTWidget::click(os, GTWidget::findWidget(os, "Go!"));
-        break;
-    default:
-        GTKeyboardDriver::keyClick(Qt::Key_Enter);
-        break;
+        case Button:
+            GTWidget::click(os, GTWidget::findWidget(os, "Go!"));
+            break;
+        default:
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+            break;
     }
     GTGlobals::sleep(1000);
     GTThread::waitForMainThread();
@@ -263,18 +263,18 @@ void GTUtilsAssemblyBrowser::callContextMenu(HI::GUITestOpStatus &os, GTUtilsAss
     checkAssemblyBrowserWindowIsActive(os);
     QString widgetName;
     switch (area) {
-    case Consensus:
-        widgetName = "Consensus area";
-        break;
-    case Overview:
-        widgetName = "Zoomable assembly overview";
-        break;
-    case Reads:
-        widgetName = "assembly_reads_area";
-        break;
-    default:
-        os.setError("Can't find the area");
-        FAIL(false, );
+        case Consensus:
+            widgetName = "Consensus area";
+            break;
+        case Overview:
+            widgetName = "Zoomable assembly overview";
+            break;
+        case Reads:
+            widgetName = "assembly_reads_area";
+            break;
+        default:
+            os.setError("Can't find the area");
+            FAIL(false, );
     }
 
     GTWidget::click(os, GTWidget::findWidget(os, widgetName), Qt::RightButton);
@@ -287,19 +287,19 @@ void GTUtilsAssemblyBrowser::callExportCoverageDialog(HI::GUITestOpStatus &os, A
     checkAssemblyBrowserWindowIsActive(os);
 
     switch (area) {
-    case Consensus:
-        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export coverage"));
-        break;
-    case Overview:
-        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export coverage"));
-        break;
-    case Reads:
-        GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export"
-                                                                            << "Export coverage"));
-        break;
-    default:
-        os.setError("Can't call the dialog on this area");
-        FAIL(false, );
+        case Consensus:
+            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export coverage"));
+            break;
+        case Overview:
+            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export coverage"));
+            break;
+        case Reads:
+            GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Export"
+                                                                                << "Export coverage"));
+            break;
+        default:
+            os.setError("Can't call the dialog on this area");
+            FAIL(false, );
     }
 
     callContextMenu(os, area);

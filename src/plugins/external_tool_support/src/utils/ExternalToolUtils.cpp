@@ -62,14 +62,14 @@ void ExternalToolUtils::checkExtToolsPath(const QStringList &ids) {
         CHECK(!msgBox.isNull(), );
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return;
-        default:
-            assert(false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return;
+            default:
+                assert(false);
+                break;
         }
     }
 }

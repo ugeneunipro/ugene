@@ -207,16 +207,16 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &painter, c
 
 QColor SequenceWithChromatogramAreaRenderer::getBaseColor(char base) const {
     switch (base) {
-    case 'A':
-        return Qt::darkGreen;
-    case 'C':
-        return Qt::blue;
-    case 'G':
-        return Qt::black;
-    case 'T':
-        return Qt::red;
-    default:
-        return Qt::black;
+        case 'A':
+            return Qt::darkGreen;
+        case 'C':
+            return Qt::blue;
+        case 'G':
+            return Qt::black;
+        case 'T':
+            return Qt::red;
+        default:
+            return Qt::black;
     }
 }
 
@@ -410,18 +410,18 @@ void SequenceWithChromatogramAreaRenderer::drawQualityValues(const DNAChromatogr
     for (int i = visible.startPos; i < visible.endPos(); i++) {
         int xP = colWidth * (i - visible.startPos);
         switch (ba[i]) {
-        case 'A':
-            rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_A[i]);
-            break;
-        case 'C':
-            rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_C[i]);
-            break;
-        case 'G':
-            rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_G[i]);
-            break;
-        case 'T':
-            rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_T[i]);
-            break;
+            case 'A':
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_A[i]);
+                break;
+            case 'C':
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_C[i]);
+                break;
+            case 'G':
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_G[i]);
+                break;
+            case 'T':
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_T[i]);
+                break;
         }
         if (qAbs(rectangle.height()) > h / 100) {
             p.drawRoundedRect(rectangle, 1.0, 1.0);
@@ -447,24 +447,24 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const 
         bool drawBase = true;
         p.setPen(getBaseColor(ba[i]));
         switch (ba[i]) {
-        case 'A':
-            yRes = -qMin(static_cast<qreal>(chroma.A[temp]) * areaHeight / chromaMax, h);
-            drawBase = getSettings().drawTraceA;
-            break;
-        case 'C':
-            yRes = -qMin(static_cast<qreal>(chroma.C[temp]) * areaHeight / chromaMax, h);
-            drawBase = getSettings().drawTraceC;
-            break;
-        case 'G':
-            yRes = -qMin(static_cast<qreal>(chroma.G[temp]) * areaHeight / chromaMax, h);
-            drawBase = getSettings().drawTraceG;
-            break;
-        case 'T':
-            yRes = -qMin(static_cast<qreal>(chroma.T[temp]) * areaHeight / chromaMax, h);
-            drawBase = getSettings().drawTraceT;
-            break;
-        case 'N':
-            continue;
+            case 'A':
+                yRes = -qMin(static_cast<qreal>(chroma.A[temp]) * areaHeight / chromaMax, h);
+                drawBase = getSettings().drawTraceA;
+                break;
+            case 'C':
+                yRes = -qMin(static_cast<qreal>(chroma.C[temp]) * areaHeight / chromaMax, h);
+                drawBase = getSettings().drawTraceC;
+                break;
+            case 'G':
+                yRes = -qMin(static_cast<qreal>(chroma.G[temp]) * areaHeight / chromaMax, h);
+                drawBase = getSettings().drawTraceG;
+                break;
+            case 'T':
+                yRes = -qMin(static_cast<qreal>(chroma.T[temp]) * areaHeight / chromaMax, h);
+                drawBase = getSettings().drawTraceT;
+                break;
+            case 'N':
+                continue;
         };
         if (drawBase) {
             p.drawLine(x, 0, x, yRes);

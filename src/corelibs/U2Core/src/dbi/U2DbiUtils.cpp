@@ -199,9 +199,7 @@ QString U2DbiUtils::makeFolderCanonical(const QString &folder) {
         return folder;
     }
 
-    QString result = folder.startsWith(U2ObjectDbi::ROOT_FOLDER + U2ObjectDbi::PATH_SEP) ?
-                         folder :
-                         U2ObjectDbi::ROOT_FOLDER + U2ObjectDbi::PATH_SEP + folder;
+    QString result = folder.startsWith(U2ObjectDbi::ROOT_FOLDER + U2ObjectDbi::PATH_SEP) ? folder : U2ObjectDbi::ROOT_FOLDER + U2ObjectDbi::PATH_SEP + folder;
     result.replace(QRegExp(U2ObjectDbi::PATH_SEP + "+"), U2ObjectDbi::PATH_SEP);
 
     if (U2ObjectDbi::ROOT_FOLDER != result &&

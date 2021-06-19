@@ -31,24 +31,24 @@ const int U2AssemblyUtils::MAX_COVERAGE_VECTOR_SIZE = 1000 * 1000;
 U2CigarOp U2AssemblyUtils::char2Cigar(char c, QString &err) {
     char cu = TextUtils::UPPER_CASE_MAP[c];
     switch (cu) {
-    case 'D':
-        return U2CigarOp_D;    // deleted
-    case 'I':
-        return U2CigarOp_I;    // inserted
-    case 'H':
-        return U2CigarOp_H;    // hard-clipped
-    case 'M':
-        return U2CigarOp_M;    // matched
-    case 'N':
-        return U2CigarOp_N;    // skipped
-    case 'P':
-        return U2CigarOp_P;    // padded
-    case 'S':
-        return U2CigarOp_S;    // soft-clipped
-    case '=':
-        return U2CigarOp_EQ;    // sequence match
-    case 'X':
-        return U2CigarOp_X;    // sequence mismatch
+        case 'D':
+            return U2CigarOp_D;    // deleted
+        case 'I':
+            return U2CigarOp_I;    // inserted
+        case 'H':
+            return U2CigarOp_H;    // hard-clipped
+        case 'M':
+            return U2CigarOp_M;    // matched
+        case 'N':
+            return U2CigarOp_N;    // skipped
+        case 'P':
+            return U2CigarOp_P;    // padded
+        case 'S':
+            return U2CigarOp_S;    // soft-clipped
+        case '=':
+            return U2CigarOp_EQ;    // sequence match
+        case 'X':
+            return U2CigarOp_X;    // sequence mismatch
     }
     err = tr("Invalid CIGAR op: '%1'!").arg(c);
     return U2CigarOp_Invalid;
@@ -57,36 +57,36 @@ U2CigarOp U2AssemblyUtils::char2Cigar(char c, QString &err) {
 char U2AssemblyUtils::cigar2Char(U2CigarOp op) {
     char c;
     switch (op) {
-    case U2CigarOp_D:
-        c = 'D';
-        break;
-    case U2CigarOp_I:
-        c = 'I';
-        break;
-    case U2CigarOp_H:
-        c = 'H';
-        break;
-    case U2CigarOp_M:
-        c = 'M';
-        break;
-    case U2CigarOp_N:
-        c = 'N';
-        break;
-    case U2CigarOp_P:
-        c = 'P';
-        break;
-    case U2CigarOp_S:
-        c = 'S';
-        break;
-    case U2CigarOp_EQ:
-        c = '=';
-        break;
-    case U2CigarOp_X:
-        c = 'X';
-        break;
-    default:
-        assert(0);
-        c = '?';
+        case U2CigarOp_D:
+            c = 'D';
+            break;
+        case U2CigarOp_I:
+            c = 'I';
+            break;
+        case U2CigarOp_H:
+            c = 'H';
+            break;
+        case U2CigarOp_M:
+            c = 'M';
+            break;
+        case U2CigarOp_N:
+            c = 'N';
+            break;
+        case U2CigarOp_P:
+            c = 'P';
+            break;
+        case U2CigarOp_S:
+            c = 'S';
+            break;
+        case U2CigarOp_EQ:
+            c = '=';
+            break;
+        case U2CigarOp_X:
+            c = 'X';
+            break;
+        default:
+            assert(0);
+            c = '?';
     }
     return c;
 }
@@ -132,15 +132,15 @@ qint64 U2AssemblyUtils::getCigarExtraLength(const QList<U2CigarToken> &cigar) {
     qint64 res = 0;
     foreach (const U2CigarToken &t, cigar) {
         switch (t.op) {
-        case U2CigarOp_I:
-        case U2CigarOp_S:
-            res -= t.count;
-            break;
-        case U2CigarOp_D:
-        case U2CigarOp_N:
-            res += t.count;
-            break;
-        default:;
+            case U2CigarOp_I:
+            case U2CigarOp_S:
+                res -= t.count;
+                break;
+            case U2CigarOp_D:
+            case U2CigarOp_N:
+                res += t.count;
+                break;
+            default:;
         }
     }
     return res;

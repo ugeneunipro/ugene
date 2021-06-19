@@ -77,15 +77,15 @@ bool LocalFileAdapter::open(const GUrl &url, IOAdapterMode m) {
     f = new QFile(url.getURLString());
     QIODevice::OpenMode iomode;
     switch (m) {
-    case IOAdapterMode_Read:
-        iomode = QIODevice::ReadOnly;
-        break;
-    case IOAdapterMode_Write:
-        iomode = QIODevice::WriteOnly | QIODevice::Truncate;
-        break;
-    case IOAdapterMode_Append:
-        iomode = QIODevice::WriteOnly | QIODevice::Append;
-        break;
+        case IOAdapterMode_Read:
+            iomode = QIODevice::ReadOnly;
+            break;
+        case IOAdapterMode_Write:
+            iomode = QIODevice::WriteOnly | QIODevice::Truncate;
+            break;
+        case IOAdapterMode_Append:
+            iomode = QIODevice::WriteOnly | QIODevice::Append;
+            break;
     }
     bool res = f->open(iomode);
     if (!res) {

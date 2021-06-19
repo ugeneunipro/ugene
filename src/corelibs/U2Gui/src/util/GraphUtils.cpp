@@ -58,7 +58,7 @@ void GraphUtils::drawRuler(QPainter &p, const QPoint &pos, qint64 len, qint64 st
 
     p.setFont(font);
     QFontMetrics fm = p.fontMetrics();
-    int cw = fm.size(Qt::TextSingleLine,"0").width();
+    int cw = fm.size(Qt::TextSingleLine, "0").width();
     int ch = fm.height();
     QString st = FormatUtils::splitThousands(start);
     QString en = FormatUtils::splitThousands(end);
@@ -328,7 +328,8 @@ int GraphUtils::calculateChunk(qint64 start, qint64 end, qint64 len, const QPain
         }
         if (reqLen / 2 < len) {
             int cchunk = chunk * 2;
-            dN = cchunk > (1000 * 1000) ? cw * 2 : cchunk > 1000 ? cw * 2 : 0;
+            dN = cchunk > (1000 * 1000) ? cw * 2 : cchunk > 1000 ? cw * 2
+                                                                 : 0;
             qint64 reqLen2 = qint64((double(span) / cchunk) * (N - dN));
             if (reqLen2 < len) {
                 chunk = cchunk;
@@ -338,7 +339,8 @@ int GraphUtils::calculateChunk(qint64 start, qint64 end, qint64 len, const QPain
 
         if (reqLen / 5 < len) {
             int cchunk = chunk * 5;
-            dN = cchunk > (1000 * 1000) ? cw * 2 : cchunk > 1000 ? cw * 2 : 0;
+            dN = cchunk > (1000 * 1000) ? cw * 2 : cchunk > 1000 ? cw * 2
+                                                                 : 0;
             qint64 reqLen5 = qint64((double(span) / cchunk) * (N - dN));
             if (reqLen5 < len) {
                 chunk = cchunk;
@@ -378,22 +380,22 @@ void GraphUtils::drawArrow(QPainter &painter, const QRectF &rect, const ArrowCon
     QLineF line;
     QPolygonF arrowHead(3);
     switch (config.direction) {
-    case LeftToRight:
-        arrowHead[0] = QPointF(rect.left() + config.lineLength, rect.top() + config.arrowHeadWidth / 2);
-        arrowHead[1] = QPointF(rect.left() + config.lineLength - config.arrowHeadLength, rect.top());
-        arrowHead[2] = QPointF(rect.left() + config.lineLength - config.arrowHeadLength, rect.top() + config.arrowHeadWidth);
-        line.setP1(QPointF(rect.left(), rect.top() + config.arrowHeadWidth / 2));
-        line.setP2(QPointF(rect.left() + config.lineLength - config.arrowHeadLength, rect.top() + config.arrowHeadWidth / 2));
-        break;
-    case RightToLeft:
-        arrowHead[0] = QPointF(rect.left(), rect.top() + config.arrowHeadWidth / 2);
-        arrowHead[1] = QPointF(rect.left() + config.arrowHeadLength, rect.top());
-        arrowHead[2] = QPointF(rect.left() + config.arrowHeadLength, rect.top() + config.arrowHeadWidth);
-        line.setP1(QPointF(rect.left() + config.arrowHeadLength, rect.top() + config.arrowHeadWidth / 2));
-        line.setP2(QPointF(rect.left() + config.lineLength, rect.top() + config.arrowHeadWidth / 2));
-        break;
-    default:
-        FAIL("Not implemented", );
+        case LeftToRight:
+            arrowHead[0] = QPointF(rect.left() + config.lineLength, rect.top() + config.arrowHeadWidth / 2);
+            arrowHead[1] = QPointF(rect.left() + config.lineLength - config.arrowHeadLength, rect.top());
+            arrowHead[2] = QPointF(rect.left() + config.lineLength - config.arrowHeadLength, rect.top() + config.arrowHeadWidth);
+            line.setP1(QPointF(rect.left(), rect.top() + config.arrowHeadWidth / 2));
+            line.setP2(QPointF(rect.left() + config.lineLength - config.arrowHeadLength, rect.top() + config.arrowHeadWidth / 2));
+            break;
+        case RightToLeft:
+            arrowHead[0] = QPointF(rect.left(), rect.top() + config.arrowHeadWidth / 2);
+            arrowHead[1] = QPointF(rect.left() + config.arrowHeadLength, rect.top());
+            arrowHead[2] = QPointF(rect.left() + config.arrowHeadLength, rect.top() + config.arrowHeadWidth);
+            line.setP1(QPointF(rect.left() + config.arrowHeadLength, rect.top() + config.arrowHeadWidth / 2));
+            line.setP2(QPointF(rect.left() + config.lineLength, rect.top() + config.arrowHeadWidth / 2));
+            break;
+        default:
+            FAIL("Not implemented", );
     }
 
     painter.setRenderHint(QPainter::Antialiasing);

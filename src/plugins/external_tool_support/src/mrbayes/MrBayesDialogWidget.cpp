@@ -185,15 +185,15 @@ bool MrBayesWidget::checkSettings(QString &message, const CreatePhyTreeSettings 
         CHECK(!msgBox.isNull(), false);
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return false;
-            break;
-        default:
-            assert(false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return false;
+                break;
+            default:
+                assert(false);
+                break;
         }
     }
     if (path.isEmpty()) {

@@ -90,7 +90,7 @@ void NotificationsDashboardWidget::updateVisibility() {
 
 void NotificationsDashboardWidget::sl_newNotification(const WorkflowNotification &wdNotification, int count) {
     for (int i = 0; i < notificationList.size(); i++) {
-        NotificationsDashboardInfo& oldNotification = notificationList[i];
+        NotificationsDashboardInfo &oldNotification = notificationList[i];
         if (oldNotification.actorId == wdNotification.actorId &&
             oldNotification.type == wdNotification.type &&
             oldNotification.message == wdNotification.message) {
@@ -111,8 +111,7 @@ void NotificationsDashboardWidget::updateNotificationRow(int workerIndex) {
     QString messageWithCount = (info.count > 1 ? "(" + QString::number(info.count) + ") " : "") + info.message;
     bool isLastRow = workerIndex == notificationList.size() - 1;
     int rowIndex = workerIndex + 1;
-    QString iconHtml = info.type.isEmpty() ? "" : "<center><img class=\"" + info.type +
-        "\" src=\":/U2Lang/images/" + info.type + "_20px.png\"></center>";
+    QString iconHtml = info.type.isEmpty() ? "" : "<center><img class=\"" + info.type + "\" src=\":/U2Lang/images/" + info.type + "_20px.png\"></center>";
     QString rowId = QString::number(workerIndex);
     addTableCell(tableGridLayout, rowId, iconHtml, rowIndex, 0, isLastRow, false);
     addTableCell(tableGridLayout, rowId, info.actorName, rowIndex, 1, isLastRow, false);

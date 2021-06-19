@@ -51,7 +51,8 @@ class ExtractConsensusWizardScenario : public CustomScenario {
 
 public:
     ExtractConsensusWizardScenario(const QStringList &assembliesPath = QStringList(),
-        const QString &outputFileName = "consensus.fa") : inputPaths(), outFile(outputFileName) {
+                                   const QString &outputFileName = "consensus.fa")
+        : inputPaths(), outFile(outputFileName) {
         inputPaths.reserve(assembliesPath.size());
         for (const QString &path : qAsConst(assembliesPath)) {
             inputPaths << QFileInfo(path).absoluteFilePath();
@@ -62,8 +63,7 @@ public:
         QWidget *const dialog = GTWidget::getActiveModalWidget(os);
 
         // Dialog filling
-        GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "Assembly widget", dialog),
-            inputPaths.join(';'));
+        GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "Assembly widget", dialog), inputPaths.join(';'));
 
         GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "Output file widget", dialog), outFile);
 
@@ -90,8 +90,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_single_input) {
     //  Expected state: There should be no errors in the log
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     //  There should be no notifications in the dashboard
-    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Notifications in dashboard: " +
-        GTUtilsDashboard::getJoinedNotificationsString(os));
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Notifications in dashboard: " + GTUtilsDashboard::getJoinedNotificationsString(os));
 
     //  5. Return to workflow and call the Extract consensus wizard
     GTUtilsWorkflowDesigner::returnToWorkflow(os);
@@ -99,7 +98,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_single_input) {
     //  7. Click "Run"
     const auto ugenedbScenario =
         new ExtractConsensusWizardScenario(QStringList() << testDir + "_common_data/ugenedb/scerevisiae.bam.ugenedb",
-            "");
+                                           "");
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", ugenedbScenario));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Show wizard");
 
@@ -108,8 +107,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_single_input) {
     //  Expected state: There should be no errors in the log
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     //  There should be no notifications in the dashboard
-    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Notifications in dashboard: " +
-        GTUtilsDashboard::getJoinedNotificationsString(os));
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Notifications in dashboard: " + GTUtilsDashboard::getJoinedNotificationsString(os));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002_multiple_input) {
@@ -118,7 +116,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002_multiple_input) {
         QStringList inputPaths;
 
     public:
-        ExtractConsensusWizardWithAddScenario(const QStringList &assembliesPath = QStringList()) : inputPaths() {
+        ExtractConsensusWizardWithAddScenario(const QStringList &assembliesPath = QStringList())
+            : inputPaths() {
             inputPaths.reserve(assembliesPath.size());
             for (const QString &path : qAsConst(assembliesPath)) {
                 inputPaths << QFileInfo(path).absoluteFilePath();
@@ -129,8 +128,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_multiple_input) {
             QWidget *const dialog = GTWidget::getActiveModalWidget(os);
 
             // Dialog filling
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "Assembly widget", dialog),
-                inputPaths.join(';'));
+            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "Assembly widget", dialog), inputPaths.join(';'));
 
             GTWidget::findButtonByText(os, "Add", dialog)->click();
             GTUtilsDialog::waitForDialog(os,
@@ -148,8 +146,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002_multiple_input) {
     //  3. Add "_common_data/bam/small.bam.sorted.bam" to assemblies
     //  4. Click "Run"
     const auto multiInputScenario = new ExtractConsensusWizardScenario(QStringList()
-        << testDir + "_common_data/ugenedb/scerevisiae.bam.ugenedb"
-        << dataDir + "samples/Assembly/chrM.sorted.bam");
+                                                                       << testDir + "_common_data/ugenedb/scerevisiae.bam.ugenedb"
+                                                                       << dataDir + "samples/Assembly/chrM.sorted.bam");
 
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", multiInputScenario));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
@@ -161,8 +159,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_multiple_input) {
     //  Expected state: There should be no errors in the log
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
     //  There should be no notifications in the dashboard
-    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Notifications in dashboard: " +
-        GTUtilsDashboard::getJoinedNotificationsString(os));
+    CHECK_SET_ERR(!GTUtilsDashboard::hasNotifications(os), "Notifications in dashboard: " + GTUtilsDashboard::getJoinedNotificationsString(os));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0003_wrong_input) {
@@ -170,8 +167,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_wrong_input) {
     const QString dashboardErrMsg = "Unsupported document format: ";
 
     const auto hasDashboardNotification = [](HI::GUITestOpStatus &os, const QString &errMsg) {
-        QWidget *const notificationsWidget = GTWidget::findWidget(os, "NotificationsDashboardWidget",
-            GTUtilsDashboard::getDashboard(os));
+        QWidget *const notificationsWidget = GTWidget::findWidget(os, "NotificationsDashboardWidget", GTUtilsDashboard::getDashboard(os));
         return !GTWidget::findLabelByText(os, errMsg, notificationsWidget).isEmpty();
     };
 
@@ -181,8 +177,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003_wrong_input) {
     //  2. Set "samples/Assembly/chrM.sorted.bam" and "samples/Assembly/chrM.fa" as an input
     //  3. Click "Run"
     const auto wrongInputScenario = new ExtractConsensusWizardScenario(QStringList()
-        << dataDir + "samples/Assembly/chrM.sorted.bam"
-        << dataDir + "samples/Assembly/chrM.fa");
+                                                                       << dataDir + "samples/Assembly/chrM.sorted.bam"
+                                                                       << dataDir + "samples/Assembly/chrM.fa");
 
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Extract Consensus Wizard", wrongInputScenario));
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
@@ -195,7 +191,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_wrong_input) {
     GTUtilsLog::checkContainsError(os, lt, dashboardErrMsg);
     //  There should be a notification about this error in the dashboard
     CHECK_SET_ERR(hasDashboardNotification(os, dashboardErrMsg),
-        "Expected dashboard notification \"" + dashboardErrMsg + "\"");
+                  "Expected dashboard notification \"" + dashboardErrMsg + "\"");
 
     //  5. Return to workflow and call the Extract consensus wizard
     GTUtilsWorkflowDesigner::returnToWorkflow(os);
@@ -214,7 +210,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_wrong_input) {
     GTUtilsDialog::waitForDialog(os, new HI::MessageBoxDialogFiller(os, QMessageBox::Ok));
     //  Expected state: There should also be an error about missing required input parameter in the workflow
     GTUtilsWorkflowDesigner::checkErrorList(os,
-        "Read Assembly: Required parameter has no input urls specified: Input file(s)");
+                                            "Read Assembly: Required parameter has no input urls specified: Input file(s)");
 }
 
 }    // namespace GUITest_assembly_extract_consensus

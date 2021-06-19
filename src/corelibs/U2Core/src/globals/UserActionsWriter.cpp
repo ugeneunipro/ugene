@@ -115,17 +115,17 @@ void UserActionsWriter::generateMouseMessage(QMouseEvent *m) {
 QString UserActionsWriter::getMouseButtonInfo(QMouseEvent *m) {
     CHECK_EXT(m, userActLog.error(QString("MouseEvent is NULL %1:%2").arg(__FILE__).arg(__LINE__)), "");
     switch (m->button()) {
-    case Qt::RightButton: {
-        return QString("Right_button ");
-        break;
-    }
-    case Qt::LeftButton: {
-        return QString("Left_button ");
-        break;
-    }
-    default: {
-        return QString("Other_button ");
-    }
+        case Qt::RightButton: {
+            return QString("Right_button ");
+            break;
+        }
+        case Qt::LeftButton: {
+            return QString("Left_button ");
+            break;
+        }
+        default: {
+            return QString("Other_button ");
+        }
     }
 }
 

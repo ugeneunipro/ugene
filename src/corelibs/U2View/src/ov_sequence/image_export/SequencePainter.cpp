@@ -137,12 +137,12 @@ QSharedPointer<ExportImagePainter> SequencePainterFactory::createPainter(ADVSing
     SAFE_POINT(seqWidget != NULL, "SequenceWidget is NULL", QSharedPointer<ExportImagePainter>());
 
     switch (exportType) {
-    case ExportCurrentView:
-        return QSharedPointer<ExportImagePainter>(new CurrentViewPainter(seqWidget));
-    case ExportZoomedView:
-        return QSharedPointer<ExportImagePainter>(new ZoomedViewPainter(seqWidget->getPanView()));
-    case ExportDetailsView:
-        return QSharedPointer<ExportImagePainter>(new DetailsViewPainter(seqWidget->getDetView()));
+        case ExportCurrentView:
+            return QSharedPointer<ExportImagePainter>(new CurrentViewPainter(seqWidget));
+        case ExportZoomedView:
+            return QSharedPointer<ExportImagePainter>(new ZoomedViewPainter(seqWidget->getPanView()));
+        case ExportDetailsView:
+            return QSharedPointer<ExportImagePainter>(new DetailsViewPainter(seqWidget->getDetView()));
     }
     FAIL("Invalid sequence export type", QSharedPointer<ExportImagePainter>());
 }

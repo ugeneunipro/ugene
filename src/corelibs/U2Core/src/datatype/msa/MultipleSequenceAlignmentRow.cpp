@@ -368,7 +368,7 @@ bool MultipleSequenceAlignmentRowData::operator==(const MultipleSequenceAlignmen
 bool MultipleSequenceAlignmentRowData::operator==(const MultipleAlignmentRowData &maRowData) const {
     try {
         return (*this == dynamic_cast<const MultipleSequenceAlignmentRowData &>(maRowData));
-    } catch (std::bad_cast&) {
+    } catch (std::bad_cast &) {
         FAIL("Can't cast MultipleAlignmentRowData to MultipleSequenceAlignmentRowData", true);
     }
 }

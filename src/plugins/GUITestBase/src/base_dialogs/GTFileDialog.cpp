@@ -174,15 +174,15 @@ void GTFileDialogUtils_list::selectFile() {
 
 void GTFileDialogUtils::openFileDialog() {
     switch (method) {
-    case GTGlobals::UseMouse:
-        GTMenu::clickMainMenuItem(os, QStringList() << "File"
-                                                    << "Open...");
-        break;
-    case GTGlobals::UseKey:
-        GTKeyboardDriver::keyClick('O', Qt::ControlModifier);
-        break;
-    default:
-        break;
+        case GTGlobals::UseMouse:
+            GTMenu::clickMainMenuItem(os, QStringList() << "File"
+                                                        << "Open...");
+            break;
+        case GTGlobals::UseKey:
+            GTKeyboardDriver::keyClick('O', Qt::ControlModifier);
+            break;
+        default:
+            break;
     }
     GTGlobals::sleep(500);
 }
@@ -227,29 +227,29 @@ void GTFileDialogUtils::selectFile() {
     QPoint indexCenter;
 
     switch (method) {
-    case GTGlobals::UseKey: {
-        QLineEdit *lineEdit = fileDialog->findChild<QLineEdit *>(FILE_NAME_LINE_EDIT);
-        GT_CHECK(lineEdit != 0, QString("line edit \"1\" not found").arg(FILE_NAME_LINE_EDIT));
-        GTLineEdit::setText(os, lineEdit, fileName, false, textInput == CopyPaste);
+        case GTGlobals::UseKey: {
+            QLineEdit *lineEdit = fileDialog->findChild<QLineEdit *>(FILE_NAME_LINE_EDIT);
+            GT_CHECK(lineEdit != 0, QString("line edit \"1\" not found").arg(FILE_NAME_LINE_EDIT));
+            GTLineEdit::setText(os, lineEdit, fileName, false, textInput == CopyPaste);
 
-        GTWidget::click(os, lineEdit);
-        break;
-    }
+            GTWidget::click(os, lineEdit);
+            break;
+        }
 
-    case GTGlobals::UseMouse:
+        case GTGlobals::UseMouse:
 #ifdef Q_OS_DARWIN
-        w->scrollTo(index, QAbstractItemView::ScrollHint::PositionAtCenter);
+            w->scrollTo(index, QAbstractItemView::ScrollHint::PositionAtCenter);
 #else
-        w->scrollTo(index);
+            w->scrollTo(index);
 #endif
-        indexCenter = w->visualRect(index).center();
-        indexCenter.setY(indexCenter.y() + w->header()->rect().height());
-        indexCenter.setX(indexCenter.x() + 1);
-        GTMouseDriver::moveTo(w->mapToGlobal(indexCenter));
-        GTMouseDriver::click();
-        break;
-    default:
-        break;
+            indexCenter = w->visualRect(index).center();
+            indexCenter.setY(indexCenter.y() + w->header()->rect().height());
+            indexCenter.setX(indexCenter.x() + 1);
+            GTMouseDriver::moveTo(w->mapToGlobal(indexCenter));
+            GTMouseDriver::click();
+            break;
+        default:
+            break;
     }
 
     GTGlobals::sleep(100);
@@ -274,20 +274,20 @@ void GTFileDialogUtils::clickButton(Button btn) {
     GTGlobals::sleep(500);
 
     switch (method) {
-    case GTGlobals::UseKey:
-        while (!button_to_click->hasFocus()) {
-            GTKeyboardDriver::keyClick(Qt::Key_Tab);
-            GTGlobals::sleep(100);
-        }
-        GTKeyboardDriver::keyClick(Qt::Key_Enter);
-        break;
+        case GTGlobals::UseKey:
+            while (!button_to_click->hasFocus()) {
+                GTKeyboardDriver::keyClick(Qt::Key_Tab);
+                GTGlobals::sleep(100);
+            }
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+            break;
 
-    case GTGlobals::UseMouse:
-        GTGlobals::sleep(100);
-        GTWidget::click(os, button_to_click);
-        break;
-    default:
-        break;
+        case GTGlobals::UseMouse:
+            GTGlobals::sleep(100);
+            GTWidget::click(os, button_to_click);
+            break;
+        default:
+            break;
     }
 }
 #undef GT_METHOD_NAME
@@ -303,20 +303,20 @@ void GTFileDialogUtils::setViewMode(ViewMode v) {
     GT_CHECK(!w->isChecked(), );
 
     switch (method) {
-    case GTGlobals::UseMouse:
-        GTWidget::click(os, w);
-        break;
+        case GTGlobals::UseMouse:
+            GTWidget::click(os, w);
+            break;
 
-    case GTGlobals::UseKey:
-        while (!w->hasFocus()) {
-            GTKeyboardDriver::keyClick(Qt::Key_Tab);
-            GTGlobals::sleep(100);
-        }
-        GTKeyboardDriver::keyClick(Qt::Key_Space);
-        break;
+        case GTGlobals::UseKey:
+            while (!w->hasFocus()) {
+                GTKeyboardDriver::keyClick(Qt::Key_Tab);
+                GTGlobals::sleep(100);
+            }
+            GTKeyboardDriver::keyClick(Qt::Key_Space);
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     GTGlobals::sleep(100);

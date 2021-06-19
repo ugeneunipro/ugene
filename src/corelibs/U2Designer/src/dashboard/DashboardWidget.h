@@ -29,6 +29,7 @@
 #include <QWidget>
 
 #include <U2Core/global.h>
+
 #include <U2Lang/WorkflowMonitor.h>
 
 namespace U2 {

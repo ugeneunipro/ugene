@@ -160,8 +160,7 @@ void SearchQualifierDialog::SearchQualifier::searchInAnnotation(AVItem *annotati
         if (expected.isEmpty()) {
             return true;
         }
-        return isExactMatch ? current.compare(expected, Qt::CaseInsensitive) == 0 :
-                              current.contains(expected, Qt::CaseInsensitive);
+        return isExactMatch ? current.compare(expected, Qt::CaseInsensitive) == 0 : current.contains(expected, Qt::CaseInsensitive);
     };
 
     AVAnnotationItem *ai = static_cast<AVAnnotationItem *>(annotation);
@@ -238,23 +237,23 @@ SearchQualifierDialog::SearchQualifierDialog(QWidget *p, AnnotationsTreeView *tr
 
     AVItem *currentItem = static_cast<AVItem *>(treeView->tree->currentItem());
     switch (currentItem->type) {
-    case AVItemType_Group: {
-        groupToSearchIn = currentItem;
-        break;
-    }
-    case AVItemType_Annotation: {
-        parentAnnotationofPrevResult = currentItem;
-        groupToSearchIn = treeView->findGroupItem(currentItem->getAnnotationGroup());
-        break;
-    }
-    case AVItemType_Qualifier: {
-        AVItem *annotation = dynamic_cast<AVItem *>(currentItem->parent());
-        if (annotation && annotation->type == AVItemType_Annotation) {
-            parentAnnotationofPrevResult = annotation;
+        case AVItemType_Group: {
+            groupToSearchIn = currentItem;
+            break;
         }
-        groupToSearchIn = treeView->findGroupItem(currentItem->getAnnotationGroup());
-        break;
-    }
+        case AVItemType_Annotation: {
+            parentAnnotationofPrevResult = currentItem;
+            groupToSearchIn = treeView->findGroupItem(currentItem->getAnnotationGroup());
+            break;
+        }
+        case AVItemType_Qualifier: {
+            AVItem *annotation = dynamic_cast<AVItem *>(currentItem->parent());
+            if (annotation && annotation->type == AVItemType_Annotation) {
+                parentAnnotationofPrevResult = annotation;
+            }
+            groupToSearchIn = treeView->findGroupItem(currentItem->getAnnotationGroup());
+            break;
+        }
     }
     QString groupName = groupToSearchIn->getAnnotationGroup()->getName();
     if (groupName == AnnotationGroup::ROOT_GROUP_NAME) {

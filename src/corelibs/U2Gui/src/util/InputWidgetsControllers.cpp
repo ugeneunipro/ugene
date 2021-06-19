@@ -220,7 +220,7 @@ ComboBoxController::ComboBoxController(QComboBox *inputWidget, const QString &se
     : InputWidgetController(inputWidget, settingsPath, cmdLinePreffix, defaultValue),
       inputWidget(inputWidget),
       parameters(parameters) {
-    SAFE_POINT(inputWidget->count() > 0, QString("Combobox '%1' should be non-empty").arg(inputWidget->objectName()),)
+    SAFE_POINT(inputWidget->count() > 0, QString("Combobox '%1' should be non-empty").arg(inputWidget->objectName()), )
 }
 
 void ComboBoxController::setWidgetValue(const QVariant &newValue) {

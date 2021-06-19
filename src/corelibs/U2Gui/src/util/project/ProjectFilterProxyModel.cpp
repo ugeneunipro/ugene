@@ -59,14 +59,14 @@ bool ProjectFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex 
     const QModelIndex index = srcModel->index(sourceRow, 0, sourceParent);
     ProjectViewModel::Type itemType = srcModel->itemType(index);
     switch (itemType) {
-    case ProjectViewModel::DOCUMENT:
-        return settings.isDocumentShown(srcModel->toDocument(index));
-    case ProjectViewModel::FOLDER:
-        return filterAcceptsFolder(srcModel->toFolder(index));
-    case ProjectViewModel::OBJECT:
-        return settings.isObjectShown(srcModel->toObject(index));
-    default:
-        FAIL("Unexpected project item type", false);
+        case ProjectViewModel::DOCUMENT:
+            return settings.isDocumentShown(srcModel->toDocument(index));
+        case ProjectViewModel::FOLDER:
+            return filterAcceptsFolder(srcModel->toFolder(index));
+        case ProjectViewModel::OBJECT:
+            return settings.isObjectShown(srcModel->toObject(index));
+        default:
+            FAIL("Unexpected project item type", false);
     }
 }
 

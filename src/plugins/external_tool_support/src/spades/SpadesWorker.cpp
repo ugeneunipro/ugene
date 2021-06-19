@@ -46,7 +46,6 @@
 #include <U2Lang/WorkflowEnv.h>
 #include <U2Lang/WorkflowMonitor.h>
 
-
 #include "SpadesDelegate.h"
 #include "SpadesPortRelationDescriptor.h"
 #include "SpadesSlotRelationDescriptor.h"

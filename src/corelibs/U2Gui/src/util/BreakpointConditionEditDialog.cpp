@@ -49,14 +49,14 @@ BreakpointConditionEditDialog::BreakpointConditionEditDialog(QWidget *parent,
     ui->editorWidgetLayout->addWidget(scriptEdit);
 
     switch (initHitCondition) {
-    case CONDITION_IS_TRUE:
-        ui->isTrueButton->setChecked(true);
-        break;
-    case CONDITION_HAS_CHANGED:
-        ui->hasChangedButton->setChecked(true);
-        break;
-    default:
-        Q_ASSERT(false);
+        case CONDITION_IS_TRUE:
+            ui->isTrueButton->setChecked(true);
+            break;
+        case CONDITION_HAS_CHANGED:
+            ui->hasChangedButton->setChecked(true);
+            break;
+        default:
+            Q_ASSERT(false);
     }
 
     ui->conditionBox->setChecked(conditionEnabled);

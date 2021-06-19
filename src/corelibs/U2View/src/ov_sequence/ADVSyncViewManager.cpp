@@ -325,15 +325,15 @@ void ADVSyncViewManager::sync(bool lock, SyncMode m) {
         int offset = 0;
         ADVSingleSequenceWidget *seqW = seqs[i];
         switch (m) {
-        case SyncMode_Start:
-            offset = seqW->getVisibleRange().startPos;
-            break;
-        case SyncMode_SeqSel:
-            offset = offsetBySeqSel(seqW);
-            break;
-        case SyncMode_AnnSel:
-            offset = offsetByAnnSel(seqW);
-            break;
+            case SyncMode_Start:
+                offset = seqW->getVisibleRange().startPos;
+                break;
+            case SyncMode_SeqSel:
+                offset = offsetBySeqSel(seqW);
+                break;
+            case SyncMode_AnnSel:
+                offset = offsetByAnnSel(seqW);
+                break;
         }
         offsets[i] = offset;
         if (seqW == focusedW) {
@@ -507,14 +507,14 @@ void ADVSyncViewManager::sl_onSelectionChanged(LRegionsSelection *sel, const QVe
 
 void ADVSyncViewManager::toggleCheckedAction(SyncMode mode) {
     switch (mode) {
-    case SyncMode_AnnSel:
-        lockByAnnSelAction->toggle();
-        break;
-    case SyncMode_SeqSel:
-        lockBySeqSelAction->toggle();
-        break;
-    default:
-        lockByStartPosAction->toggle();
+        case SyncMode_AnnSel:
+            lockByAnnSelAction->toggle();
+            break;
+        case SyncMode_SeqSel:
+            lockBySeqSelAction->toggle();
+            break;
+        default:
+            lockByStartPosAction->toggle();
     }
 }
 

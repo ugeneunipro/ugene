@@ -189,10 +189,10 @@ static void findInAmino(FindAlgorithmResultsListener *rl,
 
             for (int j = 0; j < patternLen && !stopFlag; j++) {    //TODO: optimize -> specialize loops
                 int k = cycleIndex(seqLen, i);
-                char amino = ci == 0 ?
-                                 aminoTT->translate3to1(seq[k],
-                                                        seq[cycleIndex(seqLen, k + 1)],
-                                                        seq[cycleIndex(seqLen, k + 2)]) :    //direct amino
+                char amino = ci == 0 ? aminoTT->translate3to1(seq[k],
+                                                              seq[cycleIndex(seqLen, k + 1)],
+                                                              seq[cycleIndex(seqLen, k + 2)])
+                                     :    //direct amino
                                  aminoTT->translate3to1(complMap.at((quint8)seq[cycleIndex(seqLen, k + 2)]),
                                                         complMap.at((quint8)seq[cycleIndex(seqLen, k + 1)]),
                                                         complMap.at((quint8)seq[k]));    //compl amino

@@ -474,8 +474,8 @@ void test_9(HI::GUITestOpStatus &os, int i = 0) {
                                                             << "TAGCTTATTAA---"
                                                             << "AAGTCTTT---TAA"
                                                             << "A---AGAATAATTA"
-                                                            << "AAGCCTTTTAA---" :
-                                              QStringList() << "AAGACTTCTTTTA-A"
+                                                            << "AAGCCTTTTAA---"
+                                            : QStringList() << "AAGACTTCTTTTA-A"
                                                             << "AAGCTTACTAA----"
                                                             << "TAGT---TTATTAA-"
                                                             << "AAGTC---TATTAA-"

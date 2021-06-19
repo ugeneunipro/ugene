@@ -948,13 +948,9 @@ void GraphPointsUpdater::calculateWithExpand() {
     bool hasBeforeStep = alignedFirst + win2 < visibleRange.startPos;
     bool hasAfterStep = alignedLast + win2 >= visibleRange.endPos();
 
-    int firstBaseOffset = hasBeforeStep ?
-                              (step - (visibleRange.startPos - (alignedFirst + win2))) :
-                              (alignedFirst + win2 - visibleRange.startPos);
-    int lastBaseOffset = hasAfterStep ?
-                             (step - (alignedLast + win2 - visibleRange.endPos()))    //extra step on the right is available
-                             :
-                             (visibleRange.endPos() - (alignedLast + win2));    // no extra step available -> end of the sequence
+    int firstBaseOffset = hasBeforeStep ? (step - (visibleRange.startPos - (alignedFirst + win2))) : (alignedFirst + win2 - visibleRange.startPos);
+    int lastBaseOffset = hasAfterStep ? (step - (alignedLast + win2 - visibleRange.endPos()))    //extra step on the right is available
+                                      : (visibleRange.endPos() - (alignedLast + win2));    // no extra step available -> end of the sequence
 
     SAFE_POINT(firstBaseOffset >= 0 && lastBaseOffset >= 0, "Incorrect offset is detected", );
     SAFE_POINT(hasBeforeStep ? (firstBaseOffset < step && firstBaseOffset != 0) : firstBaseOffset <= win2, "Incorrect offset is detected", );

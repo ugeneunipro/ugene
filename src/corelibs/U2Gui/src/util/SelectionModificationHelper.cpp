@@ -46,53 +46,53 @@ SelectionModificationHelper::MovableSide SelectionModificationHelper::getMovable
 
     MovableSide border = NoMovableBorder;
     switch (shape) {
-    case Qt::SizeFDiagCursor: { /*    \      */
-        const QLineF fromMouseToLeftTop(QPoint(leftBorderPosition, topBorderPosition), globalMousePos);
-        const qreal distanceFromMouseToLeftTop = fromMouseToLeftTop.length();
-        const QLineF fromMouseToRightBottom(QPoint(rightBorderPosition, bottomBorderPosition), globalMousePos);
-        const qreal distanceFromMouseToRightBottom = fromMouseToRightBottom.length();
-        if (distanceFromMouseToLeftTop <= distanceFromMouseToRightBottom) {
-            border = LeftTopCorner;
-        } else {
-            border = RightBottomCorner;
+        case Qt::SizeFDiagCursor: { /*    \      */
+            const QLineF fromMouseToLeftTop(QPoint(leftBorderPosition, topBorderPosition), globalMousePos);
+            const qreal distanceFromMouseToLeftTop = fromMouseToLeftTop.length();
+            const QLineF fromMouseToRightBottom(QPoint(rightBorderPosition, bottomBorderPosition), globalMousePos);
+            const qreal distanceFromMouseToRightBottom = fromMouseToRightBottom.length();
+            if (distanceFromMouseToLeftTop <= distanceFromMouseToRightBottom) {
+                border = LeftTopCorner;
+            } else {
+                border = RightBottomCorner;
+            }
+            break;
         }
-        break;
-    }
-    case Qt::SizeBDiagCursor: { /*    /      */
-        const QLineF fromMouseToRightTop(QPoint(rightBorderPosition, topBorderPosition), globalMousePos);
-        const qreal distanceFromMouseToRightTop = fromMouseToRightTop.length();
-        const QLineF fromMouseToLeftBottom(QPoint(leftBorderPosition, bottomBorderPosition), globalMousePos);
-        const qreal distanceFromMouseToLeftBottom = fromMouseToLeftBottom.length();
-        if (distanceFromMouseToRightTop <= distanceFromMouseToLeftBottom) {
-            border = RightTopCorner;
-        } else {
-            border = LeftBottomCorner;
+        case Qt::SizeBDiagCursor: { /*    /      */
+            const QLineF fromMouseToRightTop(QPoint(rightBorderPosition, topBorderPosition), globalMousePos);
+            const qreal distanceFromMouseToRightTop = fromMouseToRightTop.length();
+            const QLineF fromMouseToLeftBottom(QPoint(leftBorderPosition, bottomBorderPosition), globalMousePos);
+            const qreal distanceFromMouseToLeftBottom = fromMouseToLeftBottom.length();
+            if (distanceFromMouseToRightTop <= distanceFromMouseToLeftBottom) {
+                border = RightTopCorner;
+            } else {
+                border = LeftBottomCorner;
+            }
+            break;
         }
-        break;
-    }
-    case Qt::SizeHorCursor: {
-        const double distanceFromMouseToLeft = qAbs(globalMousePos.x() - leftBorderPosition);
-        const double distanceFromMouseToRight = qAbs(globalMousePos.x() - rightBorderPosition);
-        if (distanceFromMouseToLeft <= distanceFromMouseToRight) {
-            border = LeftBorder;
-        } else {
-            border = RightBorder;
+        case Qt::SizeHorCursor: {
+            const double distanceFromMouseToLeft = qAbs(globalMousePos.x() - leftBorderPosition);
+            const double distanceFromMouseToRight = qAbs(globalMousePos.x() - rightBorderPosition);
+            if (distanceFromMouseToLeft <= distanceFromMouseToRight) {
+                border = LeftBorder;
+            } else {
+                border = RightBorder;
+            }
+            break;
         }
-        break;
-    }
-    case Qt::SizeVerCursor: {
-        const double distanceFromMouseToTop = qAbs(globalMousePos.y() - topBorderPosition);
-        const double distanceFromMouseToBottom = qAbs(globalMousePos.y() - bottomBorderPosition);
-        if (distanceFromMouseToTop <= distanceFromMouseToBottom) {
-            border = TopBorder;
-        } else {
-            border = BottomBorder;
+        case Qt::SizeVerCursor: {
+            const double distanceFromMouseToTop = qAbs(globalMousePos.y() - topBorderPosition);
+            const double distanceFromMouseToBottom = qAbs(globalMousePos.y() - bottomBorderPosition);
+            if (distanceFromMouseToTop <= distanceFromMouseToBottom) {
+                border = TopBorder;
+            } else {
+                border = BottomBorder;
+            }
+            break;
         }
-        break;
-    }
-    default:
-        assert(false);
-        break;
+        default:
+            assert(false);
+            break;
     }
 
     assert(border != NoMovableBorder);
@@ -151,25 +151,25 @@ Qt::CursorShape SelectionModificationHelper::getCursorShape(const QPoint &global
 Qt::CursorShape SelectionModificationHelper::getCursorShape(const SelectionModificationHelper::MovableSide border, const Qt::CursorShape currentShape) {
     Qt::CursorShape newShape = currentShape;
     switch (border) {
-    case RightTopCorner:
-    case LeftBottomCorner:
-        newShape = Qt::SizeBDiagCursor;
-        break;
-    case RightBottomCorner:
-    case LeftTopCorner:
-        newShape = Qt::SizeFDiagCursor;
-        break;
-    case LeftBorder:
-    case RightBorder:
-        newShape = Qt::SizeHorCursor;
-        break;
-    case TopBorder:
-    case BottomBorder:
-        newShape = Qt::SizeVerCursor;
-        break;
-    default:
-        newShape = Qt::ArrowCursor;
-        break;
+        case RightTopCorner:
+        case LeftBottomCorner:
+            newShape = Qt::SizeBDiagCursor;
+            break;
+        case RightBottomCorner:
+        case LeftTopCorner:
+            newShape = Qt::SizeFDiagCursor;
+            break;
+        case LeftBorder:
+        case RightBorder:
+            newShape = Qt::SizeHorCursor;
+            break;
+        case TopBorder:
+        case BottomBorder:
+            newShape = Qt::SizeVerCursor;
+            break;
+        default:
+            newShape = Qt::ArrowCursor;
+            break;
     }
 
     return newShape;
@@ -206,34 +206,34 @@ U2Region SelectionModificationHelper::getNewSelectionForBorderMoving(MovableSide
     const int numOfNewSelBase = qRound(tmp);
     U2Region resultSelection;
     switch (border) {
-    case LeftBorder:
-    case TopBorder: {
-        int diff = currentSelection.startPos - numOfNewSelBase;
-        int newLength = currentSelection.length + diff;
-        if (newLength < 0) {
-            resultSelection = U2Region(numOfNewSelBase + newLength, qAbs(newLength));
-            border = getOppositeBorder(border);
-        } else if (newLength == 0) {
-            resultSelection = U2Region(currentSelection.startPos, currentSelection.length);
-        } else {
-            resultSelection = U2Region(numOfNewSelBase, newLength);
+        case LeftBorder:
+        case TopBorder: {
+            int diff = currentSelection.startPos - numOfNewSelBase;
+            int newLength = currentSelection.length + diff;
+            if (newLength < 0) {
+                resultSelection = U2Region(numOfNewSelBase + newLength, qAbs(newLength));
+                border = getOppositeBorder(border);
+            } else if (newLength == 0) {
+                resultSelection = U2Region(currentSelection.startPos, currentSelection.length);
+            } else {
+                resultSelection = U2Region(numOfNewSelBase, newLength);
+            }
+            break;
         }
-        break;
-    }
-    case RightBorder:
-    case BottomBorder: {
-        int newLength = numOfNewSelBase - currentSelection.startPos;
-        if (newLength < 0) {
-            resultSelection = U2Region(numOfNewSelBase, qAbs(newLength));
-            border = getOppositeBorder(border);
-        } else {
-            newLength = qMax(1, newLength);
-            resultSelection = U2Region(currentSelection.startPos, newLength);
+        case RightBorder:
+        case BottomBorder: {
+            int newLength = numOfNewSelBase - currentSelection.startPos;
+            if (newLength < 0) {
+                resultSelection = U2Region(numOfNewSelBase, qAbs(newLength));
+                border = getOppositeBorder(border);
+            } else {
+                newLength = qMax(1, newLength);
+                resultSelection = U2Region(currentSelection.startPos, newLength);
+            }
+            break;
         }
-        break;
-    }
-    default:
-        return currentSelection;
+        default:
+            return currentSelection;
     }
 
     return resultSelection;
@@ -246,27 +246,27 @@ QRect SelectionModificationHelper::getNewSelection(MovableSide &movableSide, con
     QRect resultSelection;
 
     switch (movableSide) {
-    case LeftTopCorner:
-    case LeftBottomCorner:
-    case RightTopCorner:
-    case RightBottomCorner:
-        resultSelection = getNewSelectionForCornerMoving(movableSide, globalMousePos, baseSize, currentSelection);
-        break;
-    case LeftBorder:
-    case RightBorder: {
-        U2Region horizontalSelection = getNewSelectionForBorderMoving(movableSide, globalMousePos.x(), baseSize.width(), U2Region(currentSelection.x(), currentSelection.width()));
-        resultSelection = QRect(horizontalSelection.startPos, currentSelection.y(), horizontalSelection.length, currentSelection.height());
-        break;
-    }
-    case TopBorder:
-    case BottomBorder: {
-        U2Region verticalSelection = getNewSelectionForBorderMoving(movableSide, globalMousePos.y(), baseSize.height(), U2Region(currentSelection.y(), currentSelection.height()));
-        resultSelection = QRect(currentSelection.x(), verticalSelection.startPos, currentSelection.width(), verticalSelection.length);
-        break;
-    }
-    default:
-        assert(false);
-        break;
+        case LeftTopCorner:
+        case LeftBottomCorner:
+        case RightTopCorner:
+        case RightBottomCorner:
+            resultSelection = getNewSelectionForCornerMoving(movableSide, globalMousePos, baseSize, currentSelection);
+            break;
+        case LeftBorder:
+        case RightBorder: {
+            U2Region horizontalSelection = getNewSelectionForBorderMoving(movableSide, globalMousePos.x(), baseSize.width(), U2Region(currentSelection.x(), currentSelection.width()));
+            resultSelection = QRect(horizontalSelection.startPos, currentSelection.y(), horizontalSelection.length, currentSelection.height());
+            break;
+        }
+        case TopBorder:
+        case BottomBorder: {
+            U2Region verticalSelection = getNewSelectionForBorderMoving(movableSide, globalMousePos.y(), baseSize.height(), U2Region(currentSelection.y(), currentSelection.height()));
+            resultSelection = QRect(currentSelection.x(), verticalSelection.startPos, currentSelection.width(), verticalSelection.length);
+            break;
+        }
+        default:
+            assert(false);
+            break;
     }
 
     return resultSelection;
@@ -279,27 +279,27 @@ QRect SelectionModificationHelper::getNewSelectionForCornerMoving(MovableSide &c
     MovableSide horizontalBorder = NoMovableBorder;
     MovableSide verticalBorder = NoMovableBorder;
     switch (corner) {
-    case LeftTopCorner: {
-        horizontalBorder = LeftBorder;
-        verticalBorder = TopBorder;
-        break;
-    }
-    case LeftBottomCorner: {
-        horizontalBorder = LeftBorder;
-        verticalBorder = BottomBorder;
-        break;
-    }
-    case RightTopCorner: {
-        horizontalBorder = RightBorder;
-        verticalBorder = TopBorder;
-        break;
-    }
-    case RightBottomCorner:
-        horizontalBorder = RightBorder;
-        verticalBorder = BottomBorder;
-        break;
-    default:
-        return currentSelection;
+        case LeftTopCorner: {
+            horizontalBorder = LeftBorder;
+            verticalBorder = TopBorder;
+            break;
+        }
+        case LeftBottomCorner: {
+            horizontalBorder = LeftBorder;
+            verticalBorder = BottomBorder;
+            break;
+        }
+        case RightTopCorner: {
+            horizontalBorder = RightBorder;
+            verticalBorder = TopBorder;
+            break;
+        }
+        case RightBottomCorner:
+            horizontalBorder = RightBorder;
+            verticalBorder = BottomBorder;
+            break;
+        default:
+            return currentSelection;
     }
 
     CHECK(horizontalBorder != NoMovableBorder, QRect());
@@ -329,28 +329,28 @@ QList<U2Region> SelectionModificationHelper::getNewSelection(MovableSide &board,
     }
     int newEndBase = endBase;
     switch (board) {
-    case LeftBorder:
-        if (newEndBase < newSelEdge) {
-            board = RightBorder;
-            newStartBase = endBase;
-            newEndBase = newSelEdge;
-            isTwoRegions = !isTwoRegions;
-        } else {
-            newStartBase = newSelEdge;
-        }
-        break;
-    case RightBorder:
-        if (newStartBase > newSelEdge) {
-            board = LeftBorder;
-            newEndBase = startBase;
-            newStartBase = newSelEdge;
-            isTwoRegions = !isTwoRegions;
-        } else {
-            newEndBase = newSelEdge;
-        }
-        break;
-    default:
-        return QList<U2Region>();
+        case LeftBorder:
+            if (newEndBase < newSelEdge) {
+                board = RightBorder;
+                newStartBase = endBase;
+                newEndBase = newSelEdge;
+                isTwoRegions = !isTwoRegions;
+            } else {
+                newStartBase = newSelEdge;
+            }
+            break;
+        case RightBorder:
+            if (newStartBase > newSelEdge) {
+                board = LeftBorder;
+                newEndBase = startBase;
+                newStartBase = newSelEdge;
+                isTwoRegions = !isTwoRegions;
+            } else {
+                newEndBase = newSelEdge;
+            }
+            break;
+        default:
+            return QList<U2Region>();
     }
 
     if (newStartBase == newEndBase) {
@@ -390,20 +390,20 @@ void SelectionModificationHelper::calculateBordersPositions(const int selectionP
 SelectionModificationHelper::MovableSide SelectionModificationHelper::getOppositeBorder(const MovableSide border) {
     MovableSide oppositeBorder = NoMovableBorder;
     switch (border) {
-    case LeftBorder:
-        oppositeBorder = RightBorder;
-        break;
-    case RightBorder:
-        oppositeBorder = LeftBorder;
-        break;
-    case TopBorder:
-        oppositeBorder = BottomBorder;
-        break;
-    case BottomBorder:
-        oppositeBorder = TopBorder;
-        break;
-    default:
-        FAIL("An unexpected case", NoMovableBorder);
+        case LeftBorder:
+            oppositeBorder = RightBorder;
+            break;
+        case RightBorder:
+            oppositeBorder = LeftBorder;
+            break;
+        case TopBorder:
+            oppositeBorder = BottomBorder;
+            break;
+        case BottomBorder:
+            oppositeBorder = TopBorder;
+            break;
+        default:
+            FAIL("An unexpected case", NoMovableBorder);
     }
 
     assert(oppositeBorder != NoMovableBorder);

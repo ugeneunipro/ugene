@@ -144,110 +144,110 @@ QString CrashHandlerPrivateUnixNotMac::getExceptionText(const google_breakpad::E
     CHECK(NULL != crashContext, "C++ exception|" + exceptionText);
 
     switch (crashContext->siginfo.si_signo) {
-    case SIGBUS:
-        exceptionText = "Access to undefined portion of memory object";
-        switch (crashContext->siginfo.si_code) {
-        case BUS_ADRALN:
-            exceptionText += ": invalid address alignment.";
+        case SIGBUS:
+            exceptionText = "Access to undefined portion of memory object";
+            switch (crashContext->siginfo.si_code) {
+                case BUS_ADRALN:
+                    exceptionText += ": invalid address alignment.";
+                    break;
+                case BUS_ADRERR:
+                    exceptionText += ": non-existent physical address.";
+                    break;
+                case BUS_OBJERR:
+                    exceptionText += ": object-specific hardware error.";
+                    break;
+            }
             break;
-        case BUS_ADRERR:
-            exceptionText += ": non-existent physical address.";
-            break;
-        case BUS_OBJERR:
-            exceptionText += ": object-specific hardware error.";
-            break;
-        }
-        break;
 
-    case SIGFPE:
-        exceptionText = "Erroneous arithmetic operation";
-        switch (crashContext->siginfo.si_code) {
-        case FPE_INTDIV:
-            exceptionText += ": integer divide-by-zero.";
+        case SIGFPE:
+            exceptionText = "Erroneous arithmetic operation";
+            switch (crashContext->siginfo.si_code) {
+                case FPE_INTDIV:
+                    exceptionText += ": integer divide-by-zero.";
+                    break;
+                case FPE_INTOVF:
+                    exceptionText += ": integer overflow.";
+                    break;
+                case FPE_FLTDIV:
+                    exceptionText += ": floating point divide-by-zero.";
+                    break;
+                case FPE_FLTOVF:
+                    exceptionText += ": floating point overflow.";
+                    break;
+                case FPE_FLTUND:
+                    exceptionText += ": floating point underflow.";
+                    break;
+                case FPE_FLTRES:
+                    exceptionText += ": floating point inexact result.";
+                    break;
+                case FPE_FLTINV:
+                    exceptionText += ": invalid floating point operation.";
+                    break;
+                case FPE_FLTSUB:
+                    exceptionText += ": subscript out of range.";
+                    break;
+            }
             break;
-        case FPE_INTOVF:
-            exceptionText += ": integer overflow.";
-            break;
-        case FPE_FLTDIV:
-            exceptionText += ": floating point divide-by-zero.";
-            break;
-        case FPE_FLTOVF:
-            exceptionText += ": floating point overflow.";
-            break;
-        case FPE_FLTUND:
-            exceptionText += ": floating point underflow.";
-            break;
-        case FPE_FLTRES:
-            exceptionText += ": floating point inexact result.";
-            break;
-        case FPE_FLTINV:
-            exceptionText += ": invalid floating point operation.";
-            break;
-        case FPE_FLTSUB:
-            exceptionText += ": subscript out of range.";
-            break;
-        }
-        break;
 
-    case SIGILL:
-        exceptionText = "Illegal instruction";
-        switch (crashContext->siginfo.si_code) {
-        case ILL_ILLOPC:
-            exceptionText += ": illegal opcode.";
+        case SIGILL:
+            exceptionText = "Illegal instruction";
+            switch (crashContext->siginfo.si_code) {
+                case ILL_ILLOPC:
+                    exceptionText += ": illegal opcode.";
+                    break;
+                case ILL_ILLOPN:
+                    exceptionText += ": illegal operand.";
+                    break;
+                case ILL_ILLADR:
+                    exceptionText += ": illegal addressing mode.";
+                    break;
+                case ILL_ILLTRP:
+                    exceptionText += ": illegal trap.";
+                    break;
+                case ILL_PRVOPC:
+                    exceptionText += ": privileged opcode.";
+                    break;
+                case ILL_PRVREG:
+                    exceptionText += ": privileged register.";
+                    break;
+                case ILL_COPROC:
+                    exceptionText += ": coprocessor error.";
+                    break;
+                case ILL_BADSTK:
+                    exceptionText += ": internal stack error.";
+                    break;
+            }
             break;
-        case ILL_ILLOPN:
-            exceptionText += ": illegal operand.";
-            break;
-        case ILL_ILLADR:
-            exceptionText += ": illegal addressing mode.";
-            break;
-        case ILL_ILLTRP:
-            exceptionText += ": illegal trap.";
-            break;
-        case ILL_PRVOPC:
-            exceptionText += ": privileged opcode.";
-            break;
-        case ILL_PRVREG:
-            exceptionText += ": privileged register.";
-            break;
-        case ILL_COPROC:
-            exceptionText += ": coprocessor error.";
-            break;
-        case ILL_BADSTK:
-            exceptionText += ": internal stack error.";
-            break;
-        }
-        break;
 
-    case SIGSEGV:
-        exceptionText = "Segmentation fault";
-        switch (crashContext->siginfo.si_code) {
-        case SEGV_MAPERR:
-            exceptionText += ": address not mapped.";
+        case SIGSEGV:
+            exceptionText = "Segmentation fault";
+            switch (crashContext->siginfo.si_code) {
+                case SEGV_MAPERR:
+                    exceptionText += ": address not mapped.";
+                    break;
+                case SEGV_ACCERR:
+                    exceptionText += ": invalid permissions.";
+                    break;
+            }
             break;
-        case SEGV_ACCERR:
-            exceptionText += ": invalid permissions.";
+
+        case SIGSYS:
+            exceptionText = "Bad syscall";
             break;
-        }
-        break;
 
-    case SIGSYS:
-        exceptionText = "Bad syscall";
-        break;
+        case SIGXCPU:
+            exceptionText = "CPU time limit exceeded";
+            break;
 
-    case SIGXCPU:
-        exceptionText = "CPU time limit exceeded";
-        break;
+        case SIGXFSZ:
+            exceptionText = "File size limit exceeded";
+            break;
 
-    case SIGXFSZ:
-        exceptionText = "File size limit exceeded";
-        break;
+        case SIGABRT:
+            exceptionText = "Program has been aborted";
+            break;
 
-    case SIGABRT:
-        exceptionText = "Program has been aborted";
-        break;
-
-    default:;    // Do nothing
+        default:;    // Do nothing
     }
 
     return "C++ exception|" + exceptionText;

@@ -22,14 +22,13 @@
 #include "GTRandomGUIActionFactory.h"
 #include <base_dialogs/GTFileDialog.h>
 #include <core/GUITest.h>
+#include <harness/UGUITestBase.h>
 #include <primitives/GTWidget.h>
 
 #include <QDirIterator>
 #include <QFileDialog>
 
 #include <U2Core/U2SafePoints.h>
-
-#include <harness/UGUITestBase.h>
 
 namespace U2 {
 

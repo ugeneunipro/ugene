@@ -184,4 +184,3 @@ void CreatePhyTreeDialogController::initSaveController(const MultipleSequenceAli
 }
 
 }    // namespace U2
-
