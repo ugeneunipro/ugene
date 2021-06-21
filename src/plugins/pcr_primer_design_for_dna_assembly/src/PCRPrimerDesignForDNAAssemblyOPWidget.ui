@@ -231,16 +231,16 @@
            <string> kcal/mole</string>
           </property>
           <property name="prefix">
-           <string>-</string>
+           <string/>
           </property>
           <property name="minimum">
-           <number>0</number>
+           <number>-999999999</number>
           </property>
           <property name="maximum">
-           <number>999999999</number>
+           <number>0</number>
           </property>
           <property name="value">
-           <number>29</number>
+           <number>-35</number>
           </property>
          </widget>
         </item>
@@ -329,16 +329,16 @@
            <string> kcal/mole</string>
           </property>
           <property name="prefix">
-           <string>-</string>
+           <string/>
           </property>
           <property name="minimum">
-           <number>1</number>
+           <number>-999999999</number>
           </property>
           <property name="maximum">
-           <number>999999999</number>
+           <number>0</number>
           </property>
           <property name="value">
-           <number>35</number>
+           <number>-32</number>
           </property>
          </widget>
         </item>
@@ -399,8 +399,11 @@
        <height>0</height>
       </size>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_12">
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
       <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
        <number>0</number>
       </property>
       <property name="rightMargin">
@@ -449,7 +452,7 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_16">
         <item>
-         <widget class="QSpinBox" name="sbMinExcludeGibbs">
+         <widget class="QSpinBox" name="sbExcludeGibbs">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -460,21 +463,21 @@
            <string> kcal/mole</string>
           </property>
           <property name="prefix">
-           <string>-</string>
+           <string/>
           </property>
           <property name="minimum">
-           <number>0</number>
+           <number>-999999999</number>
           </property>
           <property name="maximum">
-           <number>999999999</number>
+           <number>0</number>
           </property>
           <property name="value">
-           <number>5</number>
+           <number>-7</number>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="spMinExcludeMeltingTeml">
+         <widget class="QSpinBox" name="spExcludeMeltingTeml">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -496,7 +499,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="spMinExcludeOverlapLength">
+         <widget class="QSpinBox" name="spExcludeOverlapLength">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -514,104 +517,6 @@
           </property>
           <property name="value">
            <number>3</number>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_15">
-        <item>
-         <widget class="QLabel" name="label_16">
-          <property name="text">
-           <string>-</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_17">
-          <property name="text">
-           <string>-</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_18">
-          <property name="text">
-           <string>-</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_14">
-        <item>
-         <widget class="QSpinBox" name="sbMaxExcludeGibbs">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="suffix">
-           <string> kcal/mole</string>
-          </property>
-          <property name="prefix">
-           <string>-</string>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>999999999</number>
-          </property>
-          <property name="value">
-           <number>7</number>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="spMaxExcludeMeltingTeml">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="suffix">
-           <string> °C</string>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>999999999</number>
-          </property>
-          <property name="value">
-           <number>25</number>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="spMaxExcludeOverlapLength">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="suffix">
-           <string> nt</string>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>999999999</number>
-          </property>
-          <property name="value">
-           <number>4</number>
           </property>
          </widget>
         </item>
@@ -931,7 +836,7 @@
   <customwidget>
    <class>U2::PrimerLineEdit</class>
    <extends>QLineEdit</extends>
-   <header>U2Gui/PrimerLineEdit.h</header>
+   <header location="global">U2Gui/PrimerLineEdit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

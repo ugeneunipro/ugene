@@ -40,9 +40,9 @@ struct PCRPrimerDesignForDNAAssemblyTaskSettings {
     U2Range<int> overlapLength;
 
     //Parameters to exclude in whole primers
-    U2Range<int> gibbsFreeEnergyExclude;
-    U2Range<int> meltingPointExclude;
-    U2Range<int> overlapLengthExclude;
+    int gibbsFreeEnergyExclude = 0;
+    int meltingPointExclude = 0;
+    int overlapLengthExclude = 0;
 
     //Areas fpr priming search
     //Insert to backbone bearings

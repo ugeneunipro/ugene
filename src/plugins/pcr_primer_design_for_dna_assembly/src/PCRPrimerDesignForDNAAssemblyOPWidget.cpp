@@ -59,9 +59,6 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     parametersMinMaxSpinBoxes = { { sbMinRequireGibbs, sbMaxRequireGibbs },
                                   { spMinRequireMeltingTeml, spMaxRequireMeltingTeml },
                                   { spMinRequireOverlapLength, spMaxRequireOverlapLength },
-                                  { sbMinExcludeGibbs, sbMaxExcludeGibbs },
-                                  { spMinExcludeMeltingTeml, spMaxExcludeMeltingTeml },
-                                  { spMinExcludeOverlapLength, spMaxExcludeOverlapLength },
                                   { sbLeftAreaStart, sbLeftAreaEnd },
                                   { sbRightAreaStart, sbRightAreaEnd } };
 
@@ -133,12 +130,9 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
     settings.overlapLength.minValue = spMinRequireOverlapLength->value();
     settings.overlapLength.maxValue = spMaxRequireOverlapLength->value();
 
-    settings.gibbsFreeEnergyExclude.minValue = sbMinExcludeGibbs->value();
-    settings.gibbsFreeEnergyExclude.maxValue = sbMaxExcludeGibbs->value();
-    settings.meltingPointExclude.minValue = spMinExcludeMeltingTeml->value();
-    settings.meltingPointExclude.maxValue = spMaxExcludeMeltingTeml->value();
-    settings.overlapLengthExclude.minValue = spMinExcludeOverlapLength->value();
-    settings.overlapLengthExclude.maxValue = spMaxExcludeOverlapLength->value();
+    settings.gibbsFreeEnergyExclude = sbExcludeGibbs->value();
+    settings.meltingPointExclude = spExcludeMeltingTeml->value();
+    settings.overlapLengthExclude = spExcludeOverlapLength->value();
 
     if (backbone5->isChecked()) {
         settings.insertTo = PCRPrimerDesignForDNAAssemblyTaskSettings::BackboneBearings::Backbone5;
