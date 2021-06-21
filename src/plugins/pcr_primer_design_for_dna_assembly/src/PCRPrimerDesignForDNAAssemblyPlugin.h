@@ -19,39 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PRIMER_LINE_EDIT_H_
-#define _U2_PRIMER_LINE_EDIT_H_
+#ifndef _U2_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY_PLUGIN_H_
+#define _U2_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY_PLUGIN_H_
 
-#include <QLineEdit>
-
-#include <U2Core/global.h>
-
-#include <U2Core/global.h>
+#include <U2Core/AppContext.h>
+#include <U2Core/PluginModel.h>
 
 namespace U2 {
 
-/**
- * @PrimerLineEdit
- * Improved line edit for primers. Includes "5'" and "3'" labels and validatior for nucletide or amino characters.
- * Promote @QLineEdit to @PrimerLineEdit to make it work.
- */
-class U2GUI_EXPORT PrimerLineEdit : public QLineEdit {
+class PCRPrimerDesignForDNAAssemblyPlugin : public Plugin {
     Q_OBJECT
 public:
-    PrimerLineEdit(QWidget *parent);
+    PCRPrimerDesignForDNAAssemblyPlugin();
 
-    /**
-     * Set text if it's valid. If not set empty string.
-     */
-    void setInvalidatedText(const QString &text);
-
-protected:
-    void paintEvent(QPaintEvent *event);
-
-private:
-    QRect getPlaceHolderRect() const;
 };
 
 }    // namespace U2
 
-#endif  // _U2_PRIMER_LINE_EDIT_H_
+#endif    // _U2_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY_PLUGIN_H_

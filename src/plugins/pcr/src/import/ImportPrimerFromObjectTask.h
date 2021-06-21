@@ -28,7 +28,6 @@
 
 #include <U2Gui/PrimerLineEdit.h>
 
-
 namespace U2 {
 
 class GObject;

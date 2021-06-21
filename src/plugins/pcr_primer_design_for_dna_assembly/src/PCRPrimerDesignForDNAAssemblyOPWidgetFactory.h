@@ -19,39 +19,30 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PRIMER_LINE_EDIT_H_
-#define _U2_PRIMER_LINE_EDIT_H_
+#ifndef _U2_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY_OP_WIDGET_FACTORY_H_
+#define _U2_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY_OP_WIDGET_FACTORY_H_
 
-#include <QLineEdit>
-
-#include <U2Core/global.h>
-
-#include <U2Core/global.h>
+#include <U2Gui/OPWidgetFactory.h>
 
 namespace U2 {
 
-/**
- * @PrimerLineEdit
- * Improved line edit for primers. Includes "5'" and "3'" labels and validatior for nucletide or amino characters.
- * Promote @QLineEdit to @PrimerLineEdit to make it work.
- */
-class U2GUI_EXPORT PrimerLineEdit : public QLineEdit {
+class PCRPrimerDesignForDNAAssemblyOPWidgetFactory : public OPWidgetFactory {
     Q_OBJECT
 public:
-    PrimerLineEdit(QWidget *parent);
+    PCRPrimerDesignForDNAAssemblyOPWidgetFactory();
 
-    /**
-     * Set text if it's valid. If not set empty string.
-     */
-    void setInvalidatedText(const QString &text);
+    QWidget* createWidget(GObjectView* objView, const QVariantMap& options) override;
 
-protected:
-    void paintEvent(QPaintEvent *event);
+    OPGroupParameters getOPGroupParameters() override;
+
+    bool passFiltration(OPFactoryFilterVisitorInterface* filter) override;
 
 private:
-    QRect getPlaceHolderRect() const;
+    static const QString GROUP_ID;
+    static const QString GROUP_ICON_STR;
+    static const QString GROUP_DOC_PAGE;
 };
 
 }    // namespace U2
 
-#endif  // _U2_PRIMER_LINE_EDIT_H_
+#endif    // _U2_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY_OP_WIDGET_FACTORY_H_
