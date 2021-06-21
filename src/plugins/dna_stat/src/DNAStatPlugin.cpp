@@ -93,14 +93,10 @@ void DNAStatMSAEditorContext::buildStaticOrContextMenu(GObjectView *v, QMenu *m)
 void DNAStatMSAEditorContext::sl_showMSAProfileDialog() {
     GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(sender());
     MSAEditor *msaEd = qobject_cast<MSAEditor *>(viewAction->getObjectView());
-    if (msaEd->getAlignmentLen() >= GRID_PROFILE_LENGTH_LIMIT) {
-        if (QMessageBox::question(msaEd->getWidget(), tr("Warning"), 
-            tr("Alignment is to big. Generated grid profile couldn't be shown properly or even will crash application. Continue?"), 
-            QMessageBox::Yes, QMessageBox::No) == QMessageBox::No) {
-            return;
-        }
-    }
     QObjectScopedPointer<DNAStatMSAProfileDialog> d = new DNAStatMSAProfileDialog(msaEd->getWidget(), msaEd);
+    if (msaEd->getAlignmentLen() >= GRID_PROFILE_LENGTH_LIMIT) {
+        d->alignmentIsTooBig();
+    }
     d->exec();
 }
 

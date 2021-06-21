@@ -54,6 +54,7 @@ public:
           format(NONE) {
     }
 
+    GenerateAlignmentProfileDialogFiller(HI::GUITestOpStatus &os, CustomScenario *customScenario);
     void commonScenario();
 
 private:

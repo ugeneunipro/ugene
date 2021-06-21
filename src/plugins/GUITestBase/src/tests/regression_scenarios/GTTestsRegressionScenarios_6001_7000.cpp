@@ -102,6 +102,7 @@
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
@@ -121,6 +122,7 @@
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
+
 
 namespace U2 {
 
@@ -5693,13 +5695,22 @@ GUI_TEST_CLASS_DEFINITION(test_6760) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6807) {
+    class CheckWarningScenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            QLabel *warningLabel = GTWidget::findExactWidget<QLabel *>(os, "warningLabel", dialog);
+            CHECK_SET_ERR(!warningLabel->text().isEmpty(), "Warning message is empty");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
     //1. Open document test/_common_data/clustal/big.aln
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "big.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //2. Do MSA area context menu->Statistics->generate grid profile
-    //Expected state: message box with warning appeared
+    //Expected state: grid profile dialog contains warning label
+    GTUtilsDialog::waitForDialog(os, new GenerateAlignmentProfileDialogFiller(os, new CheckWarningScenario()));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_STATISTICS << "Generate grid profile"));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::No));
     GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
 }
 

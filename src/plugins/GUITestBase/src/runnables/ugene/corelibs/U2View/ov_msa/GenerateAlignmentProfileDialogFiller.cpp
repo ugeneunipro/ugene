@@ -35,8 +35,22 @@
 
 namespace U2 {
 
+GenerateAlignmentProfileDialogFiller::GenerateAlignmentProfileDialogFiller(HI::GUITestOpStatus &os, CustomScenario *customScenario)
+    : Filler(os, "DNAStatMSAProfileDialog", customScenario),
+      counts(true),
+      gapScore(false),
+      symdolScore(false),
+      skipGaps(false),
+      format(NONE),
+      filePath("") {
+    checkBoxItems[NONE] = "NONE";
+    checkBoxItems[HTML] = "htmlRB";
+    checkBoxItems[CSV] = "csvRB";
+}
+
 #define GT_CLASS_NAME "GTUtilsDialog::GenerateAlignmentProfileDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
+
 void GenerateAlignmentProfileDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");

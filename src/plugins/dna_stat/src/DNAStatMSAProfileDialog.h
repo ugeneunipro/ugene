@@ -43,7 +43,7 @@ public:
     DNAStatMSAProfileDialog(QWidget *p, MSAEditor *ctx);
 
     void accept();
-
+    void alignmentIsTooBig();
 private slots:
     void sl_formatSelected();
     void sl_formatChanged(const QString &newFormat);

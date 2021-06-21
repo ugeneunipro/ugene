@@ -33,6 +33,7 @@
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/Theme.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
@@ -121,6 +122,14 @@ void DNAStatMSAProfileDialog::accept() {
     }
     AppContext::getTaskScheduler()->registerTopLevelTask(new DNAStatMSAProfileTask(s));
     QDialog::accept();
+}
+
+void DNAStatMSAProfileDialog::alignmentIsTooBig() {
+    warningLabel->setText(tr("<b><font color=%1>%2</font><br></br></b>")
+        .arg(Theme::errorColorLabelHtmlStr())
+        .arg(tr("Warning: Alignment is too big. Generated grid profile couldn't be shown properly or even will crash application.<br>You can open generated profile by your own.")));
+    saveBox->setChecked(true);
+    saveBox->setCheckable(false);
 }
 
 //////////////////////////////////////////////////////////////////////////
