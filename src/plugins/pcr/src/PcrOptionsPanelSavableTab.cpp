@@ -25,6 +25,7 @@
 #include <U2Core/U2ObjectDbi.h>
 #include <U2Core/U2OpStatusUtils.h>
 
+#include <U2Gui/PrimerLineEdit.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
 #include <U2View/ADVSequenceObjectContext.h>
@@ -34,7 +35,6 @@
 #include "InSilicoPcrOptionPanelWidget.h"
 #include "InSilicoPcrProductsTable.h"
 #include "PrimerGroupBox.h"
-#include "PrimerLineEdit.h"
 
 static const QString PCR_PRODUCTS_TABLE_NAME = "productsTable";
 static const QString WIDGET_ID_SEPARATOR = "__";

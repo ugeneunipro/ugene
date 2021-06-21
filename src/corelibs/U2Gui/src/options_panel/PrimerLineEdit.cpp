@@ -53,7 +53,7 @@ void PrimerLineEdit::paintEvent(QPaintEvent *event) {
     col.setAlpha(128);
     p.setPen(col);
 
-    QRect r = placeHolderRect();
+    QRect r = getPlaceHolderRect();
 
     QString left = fontMetrics().elidedText("5'", Qt::ElideRight, r.width());
     Qt::Alignment leftAlignment = QStyle::visualAlignment(Qt::LeftToRight, QFlag(Qt::AlignLeft));
@@ -64,7 +64,7 @@ void PrimerLineEdit::paintEvent(QPaintEvent *event) {
     p.drawText(r, rightAlignment, right);
 }
 
-QRect PrimerLineEdit::placeHolderRect() const {
+QRect PrimerLineEdit::getPlaceHolderRect() const {
     QStyleOptionFrame panel;
     initStyleOption(&panel);
     QRect r = style()->subElementRect(QStyle::SE_LineEditContents, &panel, this);

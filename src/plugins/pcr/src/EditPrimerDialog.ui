@@ -58,7 +58,7 @@
   <customwidget>
    <class>U2::PrimerLineEdit</class>
    <extends>QLineEdit</extends>
-   <header>PrimerLineEdit.h</header>
+   <header>U2Gui/PrimerLineEdit.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

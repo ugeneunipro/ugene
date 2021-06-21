@@ -19,34 +19,32 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_IMPORT_PRIMER_FROM_OBJECT_TASK_H_
-#define _U2_IMPORT_PRIMER_FROM_OBJECT_TASK_H_
+#include "PCRPrimerDesignForDNAAssemblyPlugin.h"
 
-#include <U2Core/Task.h>
+#include <U2Core/L10n.h>
+#include <U2Core/U2OpStatusUtils.h>
+#include <U2Core/U2SafePoints.h>
 
-#include <U2Gui/PrimerLineEdit.h>
+#include <U2Gui/MainWindow.h>
+#include <U2Gui/OPWidgetFactoryRegistry.h>
 
-#include "Primer.h"
+#include "PCRPrimerDesignForDNAAssemblyOPWidgetFactory.h"
 
 namespace U2 {
 
-class GObject;
-class U2SequenceObject;
+extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
+    return new PCRPrimerDesignForDNAAssemblyPlugin();
+}
 
-class ImportPrimerFromObjectTask : public Task {
-    Q_OBJECT
-public:
-    ImportPrimerFromObjectTask(GObject *object);
+PCRPrimerDesignForDNAAssemblyPlugin::PCRPrimerDesignForDNAAssemblyPlugin()
+    : Plugin(tr("PCR Primer Design for DNA assembly"), tr("PCR Primer Design for DNA assembly.")) {
 
-    void run();
-    QString generateReport() const;
+    if (AppContext::getMainWindow() != nullptr) {
+        OPWidgetFactoryRegistry* opRegistry = AppContext::getOPWidgetFactoryRegistry();
+        SAFE_POINT(opRegistry != nullptr, L10N::nullPointerError("Options Panel Registry"), );
 
-private:
-    PrimerValidator validator;
-    U2SequenceObject *sequenceObject;
-    Primer primer;
-};
+        opRegistry->registerFactory(new PCRPrimerDesignForDNAAssemblyOPWidgetFactory());
+    }
+}
 
 }    // namespace U2
-
-#endif    // _U2_IMPORT_PRIMER_FROM_OBJECT_TASK_H_

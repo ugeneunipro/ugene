@@ -14,7 +14,16 @@
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
-   <property name="margin">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
     <number>0</number>
    </property>
    <item>
@@ -72,7 +81,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../../../corelibs/U2Gui/U2Gui.qrc">
+        <iconset>
          <normaloff>:/core/images/show_compl.png</normaloff>:/core/images/show_compl.png</iconset>
        </property>
        <property name="autoRaise">
@@ -101,7 +110,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="../../../../corelibs/U2Gui/U2Gui.qrc">
+        <iconset>
          <normaloff>:/core/images/db/database_go.png</normaloff>:/core/images/db/database_go.png</iconset>
        </property>
        <property name="autoRaise">
@@ -141,7 +150,7 @@
   <customwidget>
    <class>U2::PrimerLineEdit</class>
    <extends>QLineEdit</extends>
-   <header>PrimerLineEdit.h</header>
+   <header>U2Gui/PrimerLineEdit.h</header>
   </customwidget>
  </customwidgets>
  <resources>
