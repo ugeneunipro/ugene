@@ -57,6 +57,7 @@ SUBDIRS += \
           src/plugins/linkdata_support \
           src/plugins/orf_marker \
           src/plugins/pcr \
+          src/plugins/pcr_primer_design_for_dna_assembly \
           src/plugins/perf_monitor \
           src/plugins/query_designer \
           src/plugins/remote_blast \

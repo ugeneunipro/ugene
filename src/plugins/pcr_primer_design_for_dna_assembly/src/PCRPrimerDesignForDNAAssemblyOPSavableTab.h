@@ -1,6 +1,6 @@
 /**
  * UGENE - Integrated Bioinformatics Tools.
- * Copyright (C) 2008-2022 UniPro <ugene@unipro.ru>
+ * Copyright (C) 2008-2021 UniPro <ugene@unipro.ru>
  * http://ugene.net
  *
  * This program is free software; you can redistribute it and/or
@@ -19,39 +19,24 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_PRIMER_LINE_EDIT_H_
-#define _U2_PRIMER_LINE_EDIT_H_
+#ifndef _U2_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY_OP_SAVABLE_TAB_H_
+#define _U2_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY_OP_SAVABLE_TAB_H_
 
-#include <QLineEdit>
-
-#include <U2Core/global.h>
-
-#include <U2Core/global.h>
+#include <U2Gui/U2SavableWidget.h>
 
 namespace U2 {
 
-/**
- * @PrimerLineEdit
- * Improved line edit for primers. Includes "5'" and "3'" labels and validatior for nucletide or amino characters.
- * Promote @QLineEdit to @PrimerLineEdit to make it work.
- */
-class U2GUI_EXPORT PrimerLineEdit : public QLineEdit {
-    Q_OBJECT
+class PCRPrimerDesignForDNAAssemblyOPWidget;
+
+class PCRPrimerDesignForDNAAssemblyOPSavableTab : public U2SavableWidget {
 public:
-    PrimerLineEdit(QWidget* parent);
-
-    /**
-     * Set text if it's valid. If not set empty string.
-     */
-    void setInvalidatedText(const QString& text);
-
-protected:
-    void paintEvent(QPaintEvent* event);
+    PCRPrimerDesignForDNAAssemblyOPSavableTab(QWidget *wrappedWidget, MWMDIWindow *contextWindow);
+    ~PCRPrimerDesignForDNAAssemblyOPSavableTab();
 
 private:
-    QRect getPlaceHolderRect() const;
+    PCRPrimerDesignForDNAAssemblyOPWidget* originalWrappedWidget = nullptr;
 };
 
-}  // namespace U2
+}    // namespace U2
 
-#endif  // _U2_PRIMER_LINE_EDIT_H_
+#endif    // _U2_PCR_PRIMER_DESIGN_FOR_DNA_ASSEMBLY_OP_SAVABLE_TAB_H_
