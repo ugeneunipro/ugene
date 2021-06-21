@@ -20,14 +20,12 @@
  */
 
 #include "GTTestsTrimmomaticElement.h"
-#include "GTUtilsWorkflowDesigner.h"
-
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTTableView.h>
 #include <primitives/GTWidget.h>
 
 #include "../../workflow_designer/src/WorkflowViewItems.h"
-
+#include "GTUtilsWorkflowDesigner.h"
 #include "runnables/ugene/plugins/external_tools/TrimmomaticDialogFiller.h"
 
 namespace U2 {
@@ -93,7 +91,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     steps.append(TrimmomaticAddSettings(TrimmomaticDialogFiller::TrimmomaticSteps::TRAILING, trailing));
 
     TrimmomaticDialogFiller *filler = new TrimmomaticDialogFiller(os, steps);
-
 
     GTUtilsDialog::waitForDialog(os, filler);
     TrimmomaticDialogFiller::openDialog(os, trimmomaticElement);

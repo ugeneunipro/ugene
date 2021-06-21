@@ -126,17 +126,17 @@ static void reorderingObjects(QList<GObject *> &objs) {
 static QString getSuffixByAlphabet(const DNAAlphabetType &alpType) {
     QString suffix;
     switch (alpType) {
-    case DNAAlphabet_AMINO:
-        suffix = "amino";
-        break;
-    case DNAAlphabet_NUCL:
-        suffix = "dna";
-        break;
-    case DNAAlphabet_RAW:
-        suffix = "raw";
-        break;
-    default:
-        assert(false && "Unknown alphabet");
+        case DNAAlphabet_AMINO:
+            suffix = "amino";
+            break;
+        case DNAAlphabet_NUCL:
+            suffix = "dna";
+            break;
+        case DNAAlphabet_RAW:
+            suffix = "raw";
+            break;
+        default:
+            assert(false && "Unknown alphabet");
     }
     return "_" + suffix;
 }

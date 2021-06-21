@@ -25,6 +25,7 @@
 
 #include <U2Core/CMDLineCoreOptions.h>
 #include <U2Core/CMDLineUtils.h>
+#include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/Log.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2SafePoints.h>
@@ -52,7 +53,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
 }
 
 TestRunnerPlugin::TestRunnerPlugin()
-    : Plugin(tr("test_runner_plug_name"), tr("test_runner_desc")) {
+    : Plugin(tr("Test Runner"), tr("Support for running runs XML tests from GUI & console interfaces.")) {
     if (AppContext::getCMDLineRegistry()->hasParameter(CMDLineCoreOptions::SUITE_URLS)) {
         connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), SLOT(sl_startTestRunner()));
     } else {
@@ -61,6 +62,12 @@ TestRunnerPlugin::TestRunnerPlugin()
 }
 
 void TestRunnerPlugin::sl_startTestRunner() {
+    // Wait until external tools validation is finished if needed.
+    ExternalToolManager *externalToolManager = AppContext::getExternalToolRegistry()->getManager();
+    if (externalToolManager != nullptr && externalToolManager->isInStartupValidationMode()) {
+        connect(externalToolManager, SIGNAL(si_startupValidationFinished()), SLOT(sl_startTestRunner()));
+        return;
+    }
     QStringList suiteUrls = CMDLineRegistryUtils::getParameterValuesByWords(CMDLineCoreOptions::SUITE_URLS);
 
     auto testRunnerService = new TestRunnerService();

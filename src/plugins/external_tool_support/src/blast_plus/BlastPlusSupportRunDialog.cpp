@@ -164,15 +164,15 @@ bool BlastPlusSupportRunDialog::checkToolPath() {
         CHECK(!msgBox.isNull(), false);
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return false;
-            break;
-        default:
-            assert(false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return false;
+                break;
+            default:
+                assert(false);
+                break;
         }
         if (!AppContext::getExternalToolRegistry()->getById(toolId)->getPath().isEmpty()) {
             return true;
@@ -438,15 +438,15 @@ bool BlastPlusWithExtFileSpecifySupportRunDialog::checkToolPath() {
         CHECK(!msgBox.isNull(), false);
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return false;
-            break;
-        default:
-            assert(false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return false;
+                break;
+            default:
+                assert(false);
+                break;
         }
         if (!AppContext::getExternalToolRegistry()->getById(toolId)->getPath().isEmpty()) {
             return true;

@@ -99,13 +99,13 @@ void SequenceAreaRenderer::drawSelection(QPainter &painter) const {
     painter.setPen(pen);
 
     switch (seqAreaWgt->maMode) {
-    case MaEditorSequenceArea::ViewMode:
-    case MaEditorSequenceArea::ReplaceCharMode:
-        painter.drawRect(selectionRect);
-        break;
-    case MaEditorSequenceArea::InsertCharMode:
-        painter.drawLine(selectionRect.left(), selectionRect.top(), selectionRect.left(), selectionRect.bottom());
-        break;
+        case MaEditorSequenceArea::ViewMode:
+        case MaEditorSequenceArea::ReplaceCharMode:
+            painter.drawRect(selectionRect);
+            break;
+        case MaEditorSequenceArea::InsertCharMode:
+            painter.drawLine(selectionRect.left(), selectionRect.top(), selectionRect.left(), selectionRect.bottom());
+            break;
     }
 }
 

@@ -185,7 +185,9 @@ DNASequence *ABIFormat::loadSequence(IOAdapter *io, U2OpStatus &os) {
 #define MODLLabel LABEL("MODL")
 #define BaseConfLabel LABEL("PCON")
 
-#define baseIndex(B) ((B) == 'C' ? 0 : (B) == 'A' ? 1 : (B) == 'G' ? 2 : 3)
+#define baseIndex(B) ((B) == 'C' ? 0 : (B) == 'A' ? 1 \
+                                   : (B) == 'G'   ? 2 \
+                                                  : 3)
 
 /*
 * Gets the offset of the ABI index.
@@ -619,44 +621,44 @@ bool ABIFormat::loadABIObjects(SeekableBuf *fp, DNASequence &dna, DNAChromatogra
             for (uint i = 0; i < numBases; i++) {
                 qualCodes[i] = DNAQuality::encode(conf[i], DNAQualityType_Sanger);
                 switch (sequence[i]) {
-                case 'A':
-                case 'a':
-                    cd.prob_A[i] = conf[i];
-                    cd.prob_C[i] = 0;
-                    cd.prob_G[i] = 0;
-                    cd.prob_T[i] = 0;
-                    break;
+                    case 'A':
+                    case 'a':
+                        cd.prob_A[i] = conf[i];
+                        cd.prob_C[i] = 0;
+                        cd.prob_G[i] = 0;
+                        cd.prob_T[i] = 0;
+                        break;
 
-                case 'C':
-                case 'c':
-                    cd.prob_A[i] = 0;
-                    cd.prob_C[i] = conf[i];
-                    cd.prob_G[i] = 0;
-                    cd.prob_T[i] = 0;
-                    break;
+                    case 'C':
+                    case 'c':
+                        cd.prob_A[i] = 0;
+                        cd.prob_C[i] = conf[i];
+                        cd.prob_G[i] = 0;
+                        cd.prob_T[i] = 0;
+                        break;
 
-                case 'G':
-                case 'g':
-                    cd.prob_A[i] = 0;
-                    cd.prob_C[i] = 0;
-                    cd.prob_G[i] = conf[i];
-                    cd.prob_T[i] = 0;
-                    break;
+                    case 'G':
+                    case 'g':
+                        cd.prob_A[i] = 0;
+                        cd.prob_C[i] = 0;
+                        cd.prob_G[i] = conf[i];
+                        cd.prob_T[i] = 0;
+                        break;
 
-                case 'T':
-                case 't':
-                    cd.prob_A[i] = 0;
-                    cd.prob_C[i] = 0;
-                    cd.prob_G[i] = 0;
-                    cd.prob_T[i] = conf[i];
-                    break;
+                    case 'T':
+                    case 't':
+                        cd.prob_A[i] = 0;
+                        cd.prob_C[i] = 0;
+                        cd.prob_G[i] = 0;
+                        cd.prob_T[i] = conf[i];
+                        break;
 
-                default:
-                    cd.prob_A[i] = 0;
-                    cd.prob_C[i] = 0;
-                    cd.prob_G[i] = 0;
-                    cd.prob_T[i] = 0;
-                    break;
+                    default:
+                        cd.prob_A[i] = 0;
+                        cd.prob_C[i] = 0;
+                        cd.prob_G[i] = 0;
+                        cd.prob_T[i] = 0;
+                        break;
                 }
             }
         }

@@ -66,23 +66,23 @@ QVariant ProjectViewModel::data(const QModelIndex &index, int role) const {
     CHECK(index.isValid(), QVariant());
 
     switch (itemType(index)) {
-    case DOCUMENT: {
-        Document *doc = toDocument(index);
-        SAFE_POINT(NULL != doc, "NULL document", QVariant());
-        return data(doc, role);
-    }
-    case FOLDER: {
-        Folder *folder = toFolder(index);
-        SAFE_POINT(NULL != folder, "NULL folder", QVariant());
-        return data(folder, role);
-    }
-    case OBJECT: {
-        GObject *obj = toObject(index);
-        SAFE_POINT(NULL != obj, "NULL object", QVariant());
-        return data(obj, role);
-    }
-    default:
-        FAIL("Unexpected item type", QVariant());
+        case DOCUMENT: {
+            Document *doc = toDocument(index);
+            SAFE_POINT(NULL != doc, "NULL document", QVariant());
+            return data(doc, role);
+        }
+        case FOLDER: {
+            Folder *folder = toFolder(index);
+            SAFE_POINT(NULL != folder, "NULL folder", QVariant());
+            return data(folder, role);
+        }
+        case OBJECT: {
+            GObject *obj = toObject(index);
+            SAFE_POINT(NULL != obj, "NULL object", QVariant());
+            return data(obj, role);
+        }
+        default:
+            FAIL("Unexpected item type", QVariant());
     }
 }
 
@@ -95,16 +95,16 @@ bool ProjectViewModel::setData(const QModelIndex &index, const QVariant &value, 
 
     QModelIndex newItemIndex;
     switch (itemType(index)) {
-    case DOCUMENT:
-        FAIL("Document cannot be renamed!", false);
-    case FOLDER:
-        newItemIndex = setFolderData(toFolder(index), newName);
-        break;
-    case OBJECT:
-        newItemIndex = setObjectData(toObject(index), newName);
-        break;
-    default:
-        FAIL("Unexpected project item type", false);
+        case DOCUMENT:
+            FAIL("Document cannot be renamed!", false);
+        case FOLDER:
+            newItemIndex = setFolderData(toFolder(index), newName);
+            break;
+        case OBJECT:
+            newItemIndex = setObjectData(toObject(index), newName);
+            break;
+        default:
+            FAIL("Unexpected project item type", false);
     }
     if (!newItemIndex.isValid()) {
         return false;
@@ -148,30 +148,30 @@ QModelIndex ProjectViewModel::index(int row, int column, const QModelIndex &pare
     }
 
     switch (itemType(parent)) {
-    case DOCUMENT: {
-        Document *doc = toDocument(parent);
-        SAFE_POINT(NULL != doc, "NULL document", QModelIndex());
-        QList<Folder *> subFolders = folders[doc]->getSubFolders(U2ObjectDbi::ROOT_FOLDER);
-        QList<GObject *> subObjects = folders[doc]->getObjects(U2ObjectDbi::ROOT_FOLDER);
-        if (row < subFolders.size()) {
-            return createIndex(row, column, subFolders[row]);
+        case DOCUMENT: {
+            Document *doc = toDocument(parent);
+            SAFE_POINT(NULL != doc, "NULL document", QModelIndex());
+            QList<Folder *> subFolders = folders[doc]->getSubFolders(U2ObjectDbi::ROOT_FOLDER);
+            QList<GObject *> subObjects = folders[doc]->getObjects(U2ObjectDbi::ROOT_FOLDER);
+            if (row < subFolders.size()) {
+                return createIndex(row, column, subFolders[row]);
+            }
+            SAFE_POINT(row < subFolders.size() + subObjects.size(), "Out of range object number", QModelIndex());
+            return createIndex(row, column, subObjects[row - subFolders.size()]);
         }
-        SAFE_POINT(row < subFolders.size() + subObjects.size(), "Out of range object number", QModelIndex());
-        return createIndex(row, column, subObjects[row - subFolders.size()]);
-    }
-    case FOLDER: {
-        Folder *folder = toFolder(parent);
-        SAFE_POINT(NULL != folder, "NULL folder", QModelIndex());
-        QList<Folder *> subFolders = folders[folder->getDocument()]->getSubFolders(folder->getFolderPath());
-        QList<GObject *> subObjects = folders[folder->getDocument()]->getObjects(folder->getFolderPath());
-        if (row < subFolders.size()) {
-            return createIndex(row, column, subFolders[row]);
+        case FOLDER: {
+            Folder *folder = toFolder(parent);
+            SAFE_POINT(NULL != folder, "NULL folder", QModelIndex());
+            QList<Folder *> subFolders = folders[folder->getDocument()]->getSubFolders(folder->getFolderPath());
+            QList<GObject *> subObjects = folders[folder->getDocument()]->getObjects(folder->getFolderPath());
+            if (row < subFolders.size()) {
+                return createIndex(row, column, subFolders[row]);
+            }
+            SAFE_POINT(row < subFolders.size() + subObjects.size(), "Out of range object number", QModelIndex());
+            return createIndex(row, column, subObjects[row - subFolders.size()]);
         }
-        SAFE_POINT(row < subFolders.size() + subObjects.size(), "Out of range object number", QModelIndex());
-        return createIndex(row, column, subObjects[row - subFolders.size()]);
-    }
-    default:
-        FAIL("Unexpected item type", QModelIndex());
+        default:
+            FAIL("Unexpected item type", QModelIndex());
     }
 }
 
@@ -179,27 +179,27 @@ QModelIndex ProjectViewModel::parent(const QModelIndex &index) const {
     CHECK(index.isValid(), QModelIndex());
 
     switch (itemType(index)) {
-    case DOCUMENT: {
-        return QModelIndex();    //  Documents are top level items
-    }
-    case FOLDER: {
-        Folder *folder = toFolder(index);
-        SAFE_POINT(NULL != folder, "NULL folder", QModelIndex());
+        case DOCUMENT: {
+            return QModelIndex();    //  Documents are top level items
+        }
+        case FOLDER: {
+            Folder *folder = toFolder(index);
+            SAFE_POINT(NULL != folder, "NULL folder", QModelIndex());
 
-        return getIndexForPath(folder->getDocument(), DocumentFolders::getParentFolder(folder->getFolderPath()));
-    }
-    case OBJECT: {
-        GObject *obj = toObject(index);
-        SAFE_POINT(NULL != obj, "NULL object", QModelIndex());
+            return getIndexForPath(folder->getDocument(), DocumentFolders::getParentFolder(folder->getFolderPath()));
+        }
+        case OBJECT: {
+            GObject *obj = toObject(index);
+            SAFE_POINT(NULL != obj, "NULL object", QModelIndex());
 
-        Document *doc = getObjectDocument(obj);
-        SAFE_POINT(NULL != doc, "NULL document", QModelIndex());
+            Document *doc = getObjectDocument(obj);
+            SAFE_POINT(NULL != doc, "NULL document", QModelIndex());
 
-        QString parentPath = folders[doc]->getObjectFolder(obj);
-        return getIndexForPath(doc, parentPath);
-    }
-    default:
-        FAIL("Unexpected item type", QModelIndex());
+            QString parentPath = folders[doc]->getObjectFolder(obj);
+            return getIndexForPath(doc, parentPath);
+        }
+        default:
+            FAIL("Unexpected item type", QModelIndex());
     }
 }
 
@@ -209,21 +209,21 @@ int ProjectViewModel::rowCount(const QModelIndex &parent) const {
     }
 
     switch (itemType(parent)) {
-    case DOCUMENT: {
-        Document *doc = toDocument(parent);
-        SAFE_POINT(NULL != doc, "NULL document", 0);
-        return getChildrenCount(doc, U2ObjectDbi::ROOT_FOLDER);
-    }
-    case FOLDER: {
-        Folder *folder = toFolder(parent);
-        SAFE_POINT(NULL != folder, "NULL folder", 0);
-        return getChildrenCount(folder->getDocument(), folder->getFolderPath());
-    }
-    case OBJECT: {
-        return 0;
-    }
-    default:
-        FAIL("Unexpected item type", 0);
+        case DOCUMENT: {
+            Document *doc = toDocument(parent);
+            SAFE_POINT(NULL != doc, "NULL document", 0);
+            return getChildrenCount(doc, U2ObjectDbi::ROOT_FOLDER);
+        }
+        case FOLDER: {
+            Folder *folder = toFolder(parent);
+            SAFE_POINT(NULL != folder, "NULL folder", 0);
+            return getChildrenCount(folder->getDocument(), folder->getFolderPath());
+        }
+        case OBJECT: {
+            return 0;
+        }
+        default:
+            FAIL("Unexpected item type", 0);
     }
 }
 
@@ -232,48 +232,48 @@ Qt::ItemFlags ProjectViewModel::flags(const QModelIndex &index) const {
     CHECK(index.isValid(), result);
 
     switch (itemType(index)) {
-    case DOCUMENT: {
-        Document *doc = toDocument(index);
-        SAFE_POINT(NULL != doc, "NULL document", result);
-        if (isDropEnabled(doc)) {
-            result |= Qt::ItemIsDropEnabled;
-        }
-        result |= Qt::ItemIsDragEnabled;
-        return result;
-    }
-    case FOLDER: {
-        Folder *folder = toFolder(index);
-        SAFE_POINT(NULL != folder, "NULL folder", result);
-        const QString path = folder->getFolderPath();
-        Document *doc = folder->getDocument();
-        if (!ProjectUtils::isFolderInRecycleBin(path) && isDropEnabled(doc)) {
-            result |= Qt::ItemIsDropEnabled;
-        }
-        if (ProjectUtils::RECYCLE_BIN_FOLDER_PATH != path) {
+        case DOCUMENT: {
+            Document *doc = toDocument(index);
+            SAFE_POINT(NULL != doc, "NULL document", result);
+            if (isDropEnabled(doc)) {
+                result |= Qt::ItemIsDropEnabled;
+            }
             result |= Qt::ItemIsDragEnabled;
+            return result;
         }
-        if (!ProjectUtils::isFolderInRecycleBinSubtree(path) && isWritableDoc(doc)) {
-            result |= Qt::ItemIsEditable;
+        case FOLDER: {
+            Folder *folder = toFolder(index);
+            SAFE_POINT(NULL != folder, "NULL folder", result);
+            const QString path = folder->getFolderPath();
+            Document *doc = folder->getDocument();
+            if (!ProjectUtils::isFolderInRecycleBin(path) && isDropEnabled(doc)) {
+                result |= Qt::ItemIsDropEnabled;
+            }
+            if (ProjectUtils::RECYCLE_BIN_FOLDER_PATH != path) {
+                result |= Qt::ItemIsDragEnabled;
+            }
+            if (!ProjectUtils::isFolderInRecycleBinSubtree(path) && isWritableDoc(doc)) {
+                result |= Qt::ItemIsEditable;
+            }
+            return result;
         }
-        return result;
-    }
-    case OBJECT: {
-        GObject *obj = toObject(index);
-        SAFE_POINT(NULL != obj, "NULL object", result);
-        Document *doc = obj->getDocument();
-        if ((GObjectTypes::UNLOADED == obj->getGObjectType()) && !settings.allowSelectUnloaded) {
-            result &= ~QFlags<Qt::ItemFlag>(Qt::ItemIsEnabled);
-        } else if (isWritableDoc(doc)) {
-            result |= QFlags<Qt::ItemFlag>(Qt::ItemIsEditable);
+        case OBJECT: {
+            GObject *obj = toObject(index);
+            SAFE_POINT(NULL != obj, "NULL object", result);
+            Document *doc = obj->getDocument();
+            if ((GObjectTypes::UNLOADED == obj->getGObjectType()) && !settings.allowSelectUnloaded) {
+                result &= ~QFlags<Qt::ItemFlag>(Qt::ItemIsEnabled);
+            } else if (isWritableDoc(doc)) {
+                result |= QFlags<Qt::ItemFlag>(Qt::ItemIsEditable);
+            }
+            if (isDropEnabled(obj->getDocument())) {
+                result |= Qt::ItemIsDropEnabled;
+            }
+            result |= Qt::ItemIsDragEnabled;
+            return result;
         }
-        if (isDropEnabled(obj->getDocument())) {
-            result |= Qt::ItemIsDropEnabled;
-        }
-        result |= Qt::ItemIsDragEnabled;
-        return result;
-    }
-    default:
-        FAIL("Unexpected item type", result);
+        default:
+            FAIL("Unexpected item type", result);
     }
 }
 
@@ -284,17 +284,17 @@ QMimeData *ProjectViewModel::mimeData(const QModelIndexList &indexes) const {
 
     foreach (const QModelIndex &index, indexes) {
         switch (itemType(index)) {
-        case DOCUMENT:
-            docs << toDocument(index);
-            break;
-        case FOLDER:
-            folders << *toFolder(index);
-            break;
-        case OBJECT:
-            objects << toObject(index);
-            break;
-        default:
-            FAIL("Unexpected item type", NULL);
+            case DOCUMENT:
+                docs << toDocument(index);
+                break;
+            case FOLDER:
+                folders << *toFolder(index);
+                break;
+            case OBJECT:
+                objects << toObject(index);
+                break;
+            default:
+                FAIL("Unexpected item type", NULL);
         }
     }
 
@@ -1064,18 +1064,18 @@ int ProjectViewModel::objectRow(GObject *obj) const {
 
 QVariant ProjectViewModel::data(Document *doc, int role) const {
     switch (role) {
-    case Qt::TextColorRole:
-        return getDocumentTextColorData(doc);
-    case Qt::FontRole:
-        return getDocumentFontData(doc);
-    case Qt::DisplayRole:
-        return getDocumentDisplayData(doc);
-    case Qt::DecorationRole:
-        return getDocumentDecorationData(doc);
-    case Qt::ToolTipRole:
-        return getDocumentToolTipData(doc);
-    default:
-        return QVariant();
+        case Qt::TextColorRole:
+            return getDocumentTextColorData(doc);
+        case Qt::FontRole:
+            return getDocumentFontData(doc);
+        case Qt::DisplayRole:
+            return getDocumentDisplayData(doc);
+        case Qt::DecorationRole:
+            return getDocumentDecorationData(doc);
+        case Qt::ToolTipRole:
+            return getDocumentToolTipData(doc);
+        default:
+            return QVariant();
     }
 }
 
@@ -1156,13 +1156,13 @@ QVariant ProjectViewModel::getDocumentToolTipData(Document *doc) const {
 
 QVariant ProjectViewModel::data(Folder *folder, int role) const {
     switch (role) {
-    case Qt::DecorationRole:
-        return getFolderDecorationData(folder);
-    case Qt::DisplayRole:
-    case Qt::EditRole:
-        return folder->getFolderName();
-    default:
-        return QVariant();
+        case Qt::DecorationRole:
+            return getFolderDecorationData(folder);
+        case Qt::DisplayRole:
+        case Qt::EditRole:
+            return folder->getFolderName();
+        default:
+            return QVariant();
     }
 }
 
@@ -1182,20 +1182,20 @@ QVariant ProjectViewModel::data(GObject *obj, int role) const {
     const bool itemIsEnabled = !ProjectUtils::isConnectedDatabaseDoc(parentDoc) || !ProjectUtils::isFolderInRecycleBinSubtree(folder);
 
     switch (role) {
-    case Qt::TextColorRole:
-        return getObjectTextColorData(obj);
-    case Qt::FontRole:
-        return getObjectFontData(obj, itemIsEnabled);
-    case Qt::ToolTipRole:
-        return getObjectToolTipData(obj, parentDoc);
-    case Qt::DisplayRole:
-        return getObjectDisplayData(obj, parentDoc);
-    case Qt::EditRole:
-        return obj->getGObjectName();
-    case Qt::DecorationRole:
-        return getObjectDecorationData(obj, itemIsEnabled);
-    default:
-        return QVariant();
+        case Qt::TextColorRole:
+            return getObjectTextColorData(obj);
+        case Qt::FontRole:
+            return getObjectFontData(obj, itemIsEnabled);
+        case Qt::ToolTipRole:
+            return getObjectToolTipData(obj, parentDoc);
+        case Qt::DisplayRole:
+            return getObjectDisplayData(obj, parentDoc);
+        case Qt::EditRole:
+            return obj->getGObjectName();
+        case Qt::DecorationRole:
+            return getObjectDecorationData(obj, itemIsEnabled);
+        default:
+            return QVariant();
     }
 }
 
@@ -1346,26 +1346,26 @@ Folder ProjectViewModel::getDropFolder(const QModelIndex &index) const {
     Document *doc = NULL;
     QString path;
     switch (itemType(index)) {
-    case DOCUMENT:
-        doc = toDocument(index);
-        path = U2ObjectDbi::ROOT_FOLDER;
-        break;
-    case FOLDER: {
-        Folder *folder = toFolder(index);
-        SAFE_POINT(NULL != folder, "NULL folder", Folder());
-        doc = folder->getDocument();
-        path = folder->getFolderPath();
-        break;
-    }
-    case OBJECT: {
-        GObject *obj = toObject(index);
-        SAFE_POINT(NULL != obj, "NULL object", Folder());
-        doc = obj->getDocument();
-        path = getObjectFolder(doc, obj);
-        break;
-    }
-    default:
-        FAIL("Unexpected item type", Folder());
+        case DOCUMENT:
+            doc = toDocument(index);
+            path = U2ObjectDbi::ROOT_FOLDER;
+            break;
+        case FOLDER: {
+            Folder *folder = toFolder(index);
+            SAFE_POINT(NULL != folder, "NULL folder", Folder());
+            doc = folder->getDocument();
+            path = folder->getFolderPath();
+            break;
+        }
+        case OBJECT: {
+            GObject *obj = toObject(index);
+            SAFE_POINT(NULL != obj, "NULL object", Folder());
+            doc = obj->getDocument();
+            path = getObjectFolder(doc, obj);
+            break;
+        }
+        default:
+            FAIL("Unexpected item type", Folder());
     }
     return Folder(doc, path);
 }

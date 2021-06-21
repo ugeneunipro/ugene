@@ -22,11 +22,11 @@
 #ifndef _U2_GUITESTBASE_PLUGIN_H_
 #define _U2_GUITESTBASE_PLUGIN_H_
 
+#include <harness/UGUITestBase.h>
+
 #include <QAction>
 
 #include <U2Core/PluginModel.h>
-
-#include <harness/UGUITestBase.h>
 
 #include "test_runner/GUITestRunner.h"
 

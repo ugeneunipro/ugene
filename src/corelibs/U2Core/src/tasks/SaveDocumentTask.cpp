@@ -162,7 +162,7 @@ void SaveDocumentTask::run() {
 
 Task::ReportResult SaveDocumentTask::report() {
     if (lock != nullptr) {
-        SAFE_POINT(!doc.isNull(), "document is null!",  ReportResult_Finished);
+        SAFE_POINT(!doc.isNull(), "document is null!", ReportResult_Finished);
         doc->unlockState(lock);
         delete lock;
         lock = nullptr;

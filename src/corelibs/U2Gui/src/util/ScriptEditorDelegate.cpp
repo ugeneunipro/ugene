@@ -48,14 +48,14 @@ AbstractScriptEditorDelegate *AbstractScriptEditorDelegate::createInstance(QWidg
                                                                            ScriptEditorType type) {
     AbstractScriptEditorDelegate *result = NULL;
     switch (type) {
-    case LINE_EDIT:
-        result = new LineEditDelegate(parent);
-        break;
-    case TEXT_EDIT:
-        result = new TextEditDelegate(parent);
-        break;
-    default:
-        Q_ASSERT(false);
+        case LINE_EDIT:
+            result = new LineEditDelegate(parent);
+            break;
+        case TEXT_EDIT:
+            result = new TextEditDelegate(parent);
+            break;
+        default:
+            Q_ASSERT(false);
     }
     return result;
 }

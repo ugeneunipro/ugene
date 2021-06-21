@@ -32,17 +32,17 @@ QString SWMulAlignExternalPropTag::expandTag(const QVariant & /*argument*/) cons
     QString tagExpansion;
 
     switch (type) {
-    case DATE:
-        tagExpansion = QDate::currentDate().toString(Qt::ISODate);
-        break;
-    case TIME:
-        tagExpansion = QTime::currentTime().toString(timeFormat);
-        break;
-    case COUNTER:
-        tagExpansion = QString::number(++counter);
-        break;
-    default:
-        assert(0);
+        case DATE:
+            tagExpansion = QDate::currentDate().toString(Qt::ISODate);
+            break;
+        case TIME:
+            tagExpansion = QTime::currentTime().toString(timeFormat);
+            break;
+        case COUNTER:
+            tagExpansion = QString::number(++counter);
+            break;
+        default:
+            assert(0);
     }
 
     return tagExpansion;

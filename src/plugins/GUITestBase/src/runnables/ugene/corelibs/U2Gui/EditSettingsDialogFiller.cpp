@@ -44,20 +44,20 @@ void EditSettingsDialogFiller::commonScenario() {
 
     QString radioButtonName;
     switch (policy) {
-    case ExpandOrCropAffectedAnnotation:
-        radioButtonName = "resizeRadioButton";
-        break;
-    case RemoveAffectedAnnotation:
-        radioButtonName = "removeRadioButton";
-        break;
-    case SplitJoinAnnotationParts:
-        radioButtonName = "splitRadioButton";
-        break;
-    case SplitSeparateAnnotationParts:
-        radioButtonName = "split_separateRadioButton";
-        break;
-    default:
-        GT_CHECK(false, "An unexpected AnnotationPolicy");
+        case ExpandOrCropAffectedAnnotation:
+            radioButtonName = "resizeRadioButton";
+            break;
+        case RemoveAffectedAnnotation:
+            radioButtonName = "removeRadioButton";
+            break;
+        case SplitJoinAnnotationParts:
+            radioButtonName = "splitRadioButton";
+            break;
+        case SplitSeparateAnnotationParts:
+            radioButtonName = "split_separateRadioButton";
+            break;
+        default:
+            GT_CHECK(false, "An unexpected AnnotationPolicy");
     }
 
     GTRadioButton::click(os, radioButtonName, dialog);

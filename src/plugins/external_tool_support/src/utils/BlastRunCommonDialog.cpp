@@ -57,12 +57,12 @@ BlastRunCommonDialog::BlastRunCommonDialog(QWidget *parent, BlastType blastType,
 
     QString hitsToolTip;
     switch (blastType) {
-    case BlastPlus:
-        hitsLabel->setText(BlastPlusWorkerFactory::getHitsName() + ":");
-        hitsToolTip = BlastPlusWorkerFactory::getHitsDescription();
-        break;
-    default:
-        FAIL("Unknown BLAST type", );
+        case BlastPlus:
+            hitsLabel->setText(BlastPlusWorkerFactory::getHitsName() + ":");
+            hitsToolTip = BlastPlusWorkerFactory::getHitsDescription();
+            break;
+        default:
+            FAIL("Unknown BLAST type", );
     }
     dbSelector = new BlastDBSelectorWidgetController(this);
     dbSelectorWidget->layout()->addWidget(dbSelector);

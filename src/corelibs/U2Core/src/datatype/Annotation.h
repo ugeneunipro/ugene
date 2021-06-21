@@ -69,7 +69,7 @@ public:
 
     void setLocation(const U2Location &location);
 
-    const QVector<U2Region>& getRegions() const;
+    const QVector<U2Region> &getRegions() const;
 
     qint64 getRegionsLen() const;
 

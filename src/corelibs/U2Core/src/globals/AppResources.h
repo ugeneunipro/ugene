@@ -126,37 +126,37 @@ public:
     virtual void acquire(int n, MemoryLockType lt = TaskMemory) {
         Q_UNUSED(lt);
         switch (n) {
-        case Read:
-            resource->lockForRead();
-            break;
-        case Write:
-            resource->lockForWrite();
-            break;
-        default:
-            break;
+            case Read:
+                resource->lockForRead();
+                break;
+            case Write:
+                resource->lockForWrite();
+                break;
+            default:
+                break;
         }
     }
 
     virtual bool tryAcquire(int n, MemoryLockType lt = TaskMemory) {
         Q_UNUSED(lt);
         switch (n) {
-        case Read:
-            return resource->tryLockForRead();
-        case Write:
-            return resource->tryLockForWrite();
-        default:
-            return false;
+            case Read:
+                return resource->tryLockForRead();
+            case Write:
+                return resource->tryLockForWrite();
+            default:
+                return false;
         }
     }
     virtual bool tryAcquire(int n, int timeout, MemoryLockType lt = TaskMemory) {
         Q_UNUSED(lt);
         switch (n) {
-        case Read:
-            return resource->tryLockForRead(timeout);
-        case Write:
-            return resource->tryLockForWrite(timeout);
-        default:
-            return false;
+            case Read:
+                return resource->tryLockForRead(timeout);
+            case Write:
+                return resource->tryLockForWrite(timeout);
+            default:
+                return false;
         }
     }
 

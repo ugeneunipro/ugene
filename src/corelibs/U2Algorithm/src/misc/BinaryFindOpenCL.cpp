@@ -269,21 +269,21 @@ NumberType *BinaryFindOpenCL::launch() {
 bool BinaryFindOpenCL::hasOPENCLError(int err, QString errorMessage) {
     if (err != 0) {
         switch (err) {
-        case CL_INVALID_BUFFER_SIZE:
-            algoLog.error(QString("OPENCL: %1; Error code %2 (Invalid buffer size)").arg(errorMessage).arg(err));
-            break;
-        case CL_MEM_OBJECT_ALLOCATION_FAILURE:
-            algoLog.error(QString("OPENCL: %1; Error code %2 (Memory object allocation failure)").arg(errorMessage).arg(err));
-            break;
-        case CL_OUT_OF_HOST_MEMORY:
-            algoLog.error(QString("OPENCL: %1; Error code %2 (Out of host memory)").arg(errorMessage).arg(err));
-            break;
-        case CL_OUT_OF_RESOURCES:
-            algoLog.error(QString("OPENCL: %1; Error code %2 (Out of resources)").arg(errorMessage).arg(err));
-            break;
-        default:
-            algoLog.error(QString("OPENCL: %1; Error code %2").arg(errorMessage).arg(err));
-            break;
+            case CL_INVALID_BUFFER_SIZE:
+                algoLog.error(QString("OPENCL: %1; Error code %2 (Invalid buffer size)").arg(errorMessage).arg(err));
+                break;
+            case CL_MEM_OBJECT_ALLOCATION_FAILURE:
+                algoLog.error(QString("OPENCL: %1; Error code %2 (Memory object allocation failure)").arg(errorMessage).arg(err));
+                break;
+            case CL_OUT_OF_HOST_MEMORY:
+                algoLog.error(QString("OPENCL: %1; Error code %2 (Out of host memory)").arg(errorMessage).arg(err));
+                break;
+            case CL_OUT_OF_RESOURCES:
+                algoLog.error(QString("OPENCL: %1; Error code %2 (Out of resources)").arg(errorMessage).arg(err));
+                break;
+            default:
+                algoLog.error(QString("OPENCL: %1; Error code %2").arg(errorMessage).arg(err));
+                break;
         }
         return true;
     } else {

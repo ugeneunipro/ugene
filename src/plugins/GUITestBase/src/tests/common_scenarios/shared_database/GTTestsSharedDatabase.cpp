@@ -1111,7 +1111,6 @@ GUI_TEST_CLASS_DEFINITION(import_test_0003) {
     QString folderPath = U2ObjectDbi::ROOT_FOLDER + U2ObjectDbi::PATH_SEP + folderName;
     QModelIndex folderItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, folderPath);
 
-
     // Import sequence and annotation objects into the DB.
     QModelIndex fileDocIndex = GTUtilsProjectTreeView::findIndex(os, QStringList() << "murine.gb");
 
@@ -1123,13 +1122,11 @@ GUI_TEST_CLASS_DEFINITION(import_test_0003) {
     GTUtilsProjectTreeView::dragAndDrop(os, fileAnnotationObjectIndex, folderItemIndex);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-
     // Open a sequence view for the imported sequence.
     GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened(os);
     QModelIndex databaseSequenceObjectItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, folderPath + U2ObjectDbi::PATH_SEP + "NC_001363");
     GTUtilsProjectTreeView::doubleClickItem(os, databaseSequenceObjectItemIndex);
     GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-
 
     // Link the annotations with the sequence object.
     QModelIndex databaseAnnotationObjectItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, folderPath + U2ObjectDbi::PATH_SEP + "NC_001363 features");
@@ -1143,7 +1140,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0003) {
     GTUtilsSharedDatabaseDocument::disconnectDatabase(os, databaseDoc);
     GTUtilsSequenceView::checkNoSequenceViewWindowIsOpened(os);
 
-    databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os, false); // false -> Do not remove TMP folders during connect.
+    databaseDoc = GTUtilsSharedDatabaseDocument::connectToTestDatabase(os, false);    // false -> Do not remove TMP folders during connect.
     databaseSequenceObjectItemIndex = GTUtilsSharedDatabaseDocument::getItemIndex(os, databaseDoc, folderPath + U2ObjectDbi::PATH_SEP + "NC_001363");
 
     // Open sequence object from the DB.

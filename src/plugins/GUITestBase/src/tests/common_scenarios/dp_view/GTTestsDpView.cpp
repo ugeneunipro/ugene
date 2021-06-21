@@ -284,22 +284,22 @@ GUI_TEST_CLASS_DEFINITION(test_0025) {
             CHECK_SET_ERR(includeRepeatCheckbox != NULL, "include_repeat_selection is NULL");
 
             switch (scenario) {
-            case 1:
-                CHECK_SET_ERR(!includeAreaCheckbox->isEnabled(), "include_area_selection checkbox is enabled!");
-                CHECK_SET_ERR(!includeRepeatCheckbox->isEnabled(), "include_repeat_selection checkbox is enabled!");
-                break;
-            case 2:
-                CHECK_SET_ERR(includeAreaCheckbox->isEnabled(), "include_area_selection checkbox is disabled!");
-                CHECK_SET_ERR(!includeRepeatCheckbox->isEnabled(), "include_repeat_selection checkbox is enabled!");
-                break;
-            case 3:
-                CHECK_SET_ERR(!includeAreaCheckbox->isEnabled(), "include_area_selection checkbox is enabled!");
-                CHECK_SET_ERR(includeRepeatCheckbox->isEnabled(), "include_repeat_selection checkbox is disabled!");
-                break;
-            case 4:
-                CHECK_SET_ERR(includeAreaCheckbox->isEnabled(), "include_area_selection checkbox is disabled!");
-                CHECK_SET_ERR(includeRepeatCheckbox->isEnabled(), "include_repeat_selection checkbox is disabled!");
-                break;
+                case 1:
+                    CHECK_SET_ERR(!includeAreaCheckbox->isEnabled(), "include_area_selection checkbox is enabled!");
+                    CHECK_SET_ERR(!includeRepeatCheckbox->isEnabled(), "include_repeat_selection checkbox is enabled!");
+                    break;
+                case 2:
+                    CHECK_SET_ERR(includeAreaCheckbox->isEnabled(), "include_area_selection checkbox is disabled!");
+                    CHECK_SET_ERR(!includeRepeatCheckbox->isEnabled(), "include_repeat_selection checkbox is enabled!");
+                    break;
+                case 3:
+                    CHECK_SET_ERR(!includeAreaCheckbox->isEnabled(), "include_area_selection checkbox is enabled!");
+                    CHECK_SET_ERR(includeRepeatCheckbox->isEnabled(), "include_repeat_selection checkbox is disabled!");
+                    break;
+                case 4:
+                    CHECK_SET_ERR(includeAreaCheckbox->isEnabled(), "include_area_selection checkbox is disabled!");
+                    CHECK_SET_ERR(includeRepeatCheckbox->isEnabled(), "include_repeat_selection checkbox is disabled!");
+                    break;
             }
 
             QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));

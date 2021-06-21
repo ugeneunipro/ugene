@@ -122,20 +122,20 @@ void TaskViewDockWidget::buildTree() {
     QStringList labels;
     for (int i = 0; i < TVColumns_NumCols; i++) {
         switch ((TVColumns)i) {
-        case TVColumns_Name:
-            labels << tr("Task name");
-            break;
-        case TVColumns_Desc:
-            labels << tr("Task state description");
-            break;
-        case TVColumns_Progress:
-            labels << tr("Task progress");
-            break;
-        case TVColumns_Actions:
-            labels << tr("Actions");
-            break;
-        case TVColumns_NumCols:
-            break;
+            case TVColumns_Name:
+                labels << tr("Task name");
+                break;
+            case TVColumns_Desc:
+                labels << tr("Task state description");
+                break;
+            case TVColumns_Progress:
+                labels << tr("Task progress");
+                break;
+            case TVColumns_Actions:
+                labels << tr("Actions");
+                break;
+            case TVColumns_NumCols:
+                break;
         }
     }
     tree->setColumnWidth(TVColumns_Actions, 50);
@@ -443,7 +443,8 @@ QString TVReportWindow::prepareReportHTML(Task *t) {
     report += "<tr><td>";
 
     report += "<table>";
-    QString status = t->hasError() ? tr("Failed") : t->isCanceled() ? tr("Canceled") : tr("Finished");
+    QString status = t->hasError() ? tr("Failed") : t->isCanceled() ? tr("Canceled")
+                                                                    : tr("Finished");
     report += "<tr><td width=200><b>" + tr("Status") + "</b></td><td>" + status + "</td></tr>";
     if (t->hasError()) {
         report += "<tr><td><b>" + tr("Error:") + "</b></td><td>" + t->getError().replace('|', "&#124;") + "</td></tr>";

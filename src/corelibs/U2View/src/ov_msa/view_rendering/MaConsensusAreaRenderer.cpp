@@ -345,16 +345,16 @@ ConsensusRenderSettings MaConsensusAreaRenderer::getScreenRenderSettings(const M
 
 int MaConsensusAreaRenderer::getYRangeLength(MaEditorConsElement element) const {
     switch (element) {
-    case MSAEditorConsElement_HISTOGRAM:
-        return 50;
-    case MSAEditorConsElement_CONSENSUS_TEXT:
-        return ui->getRowHeightController()->getSingleRowHeight();
-    case MSAEditorConsElement_RULER: {
-        QFontMetrics fm(area->getDrawSettings().getRulerFont());
-        return fm.height() + 2 * MaEditorConsensusAreaSettings::RULER_NOTCH_SIZE + 4;
-    }
-    default:
-        FAIL(false, 0);
+        case MSAEditorConsElement_HISTOGRAM:
+            return 50;
+        case MSAEditorConsElement_CONSENSUS_TEXT:
+            return ui->getRowHeightController()->getSingleRowHeight();
+        case MSAEditorConsElement_RULER: {
+            QFontMetrics fm(area->getDrawSettings().getRulerFont());
+            return fm.height() + 2 * MaEditorConsensusAreaSettings::RULER_NOTCH_SIZE + 4;
+        }
+        default:
+            FAIL(false, 0);
     }
 }
 

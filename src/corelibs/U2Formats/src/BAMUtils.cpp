@@ -192,7 +192,7 @@ void BAMUtils::convertToSamOrBam(const GUrl &samUrl, const GUrl &bamUrl, const C
         SAMTOOL_CHECK(NULL != in->header, headerError(sourceFileUrl.getURLString()), );
         if (options.samToBam && (0 == in->header->n_targets)) {
             os.addWarning(tr("There is no header in the SAM file \"%1\". The header information will be generated automatically.")
-                .arg(sourceFileUrl.getURLString()));
+                              .arg(sourceFileUrl.getURLString()));
             samclose(in);
             in = openSamWithFai(sourceFileUrl, os);
             CHECK_OP(os, );

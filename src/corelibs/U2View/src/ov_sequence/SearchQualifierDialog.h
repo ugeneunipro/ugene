@@ -40,16 +40,15 @@ class U2VIEW_EXPORT SearchQualifierDialog : public QDialog {
 private:
     // Qualifier search settings.
     struct SearchQualifierSettings {
-        SearchQualifierSettings(AVItem *groupToSearchIn, const QString &name, const QString &value, bool isExactMatch,
-            bool searchAll, AVItem *prevAnnotation, int prevIndex);
+        SearchQualifierSettings(AVItem *groupToSearchIn, const QString &name, const QString &value, bool isExactMatch, bool searchAll, AVItem *prevAnnotation, int prevIndex);
 
         AVItem *groupToSearchIn;
         QString name;
         QString value;
         bool isExactMatch;
         bool searchAll;
-        AVItem *prevAnnotation;     // Annotation containing the previously found qualifier.
-        int prevIndex;              // Index in `prevAnnotation` of the previously found qualifier.
+        AVItem *prevAnnotation;    // Annotation containing the previously found qualifier.
+        int prevIndex;    // Index in `prevAnnotation` of the previously found qualifier.
     };
 
     // Qualifier search algorithm. The class also expands found `AVItem`(s) in the Annotation Tree View.
@@ -71,8 +70,8 @@ private:
         // Outdated if `foundResult == false`.
         int resultInd;
 
-        QQueue<AVItem *> toExpand;                              // This queue is needed to expand items in main thread.
-        QList<QPair<AVAnnotationItem *, int>> foundQuals;       // This is needed to set found items as selected.
+        QQueue<AVItem *> toExpand;    // This queue is needed to expand items in main thread.
+        QList<QPair<AVAnnotationItem *, int>> foundQuals;    // This is needed to set found items as selected.
 
         // Expands found `AVItem`(s) in the Annotation Tree View.
         void showQualifier() const;

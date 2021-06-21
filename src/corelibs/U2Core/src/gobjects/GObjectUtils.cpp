@@ -394,35 +394,35 @@ GObject *GObjectUtils::createObject(const U2DbiRef &ref, const U2DataId &id, con
     const U2DataType type = con.dbi->getEntityTypeById(id);
 
     switch (type) {
-    case U2Type::Sequence:
-        return new U2SequenceObject(name, entityRef);
-    case U2Type::Mca:
-        return new MultipleChromatogramAlignmentObject(name, entityRef);
-    case U2Type::Msa:
-        return new MultipleSequenceAlignmentObject(name, entityRef);
-    case U2Type::Assembly:
-        return new AssemblyObject(name, entityRef);
-    case U2Type::VariantTrack:
-        return new VariantTrackObject(name, entityRef);
-    case U2Type::AnnotationTable:
-        return new AnnotationTableObject(name, entityRef);
-    case U2Type::Text:
-        return new TextObject(name, entityRef);
-    case U2Type::PhyTree:
-        return new PhyTreeObject(name, entityRef);
-    case U2Type::BioStruct3D:
-        return new BioStruct3DObject(name, entityRef);
-    case U2Type::Chromatogram:
-        return new DNAChromatogramObject(name, entityRef);
-    case U2Type::PFMatrix:
-        return new PFMatrixObject(name, entityRef);
-    case U2Type::PWMatrix:
-        return new PWMatrixObject(name, entityRef);
-    case U2Type::CrossDatabaseReference:
-        return NULL;
-    default:
-        coreLog.trace(QObject::tr("Unsupported object type: %1").arg(type));
-        return NULL;
+        case U2Type::Sequence:
+            return new U2SequenceObject(name, entityRef);
+        case U2Type::Mca:
+            return new MultipleChromatogramAlignmentObject(name, entityRef);
+        case U2Type::Msa:
+            return new MultipleSequenceAlignmentObject(name, entityRef);
+        case U2Type::Assembly:
+            return new AssemblyObject(name, entityRef);
+        case U2Type::VariantTrack:
+            return new VariantTrackObject(name, entityRef);
+        case U2Type::AnnotationTable:
+            return new AnnotationTableObject(name, entityRef);
+        case U2Type::Text:
+            return new TextObject(name, entityRef);
+        case U2Type::PhyTree:
+            return new PhyTreeObject(name, entityRef);
+        case U2Type::BioStruct3D:
+            return new BioStruct3DObject(name, entityRef);
+        case U2Type::Chromatogram:
+            return new DNAChromatogramObject(name, entityRef);
+        case U2Type::PFMatrix:
+            return new PFMatrixObject(name, entityRef);
+        case U2Type::PWMatrix:
+            return new PWMatrixObject(name, entityRef);
+        case U2Type::CrossDatabaseReference:
+            return NULL;
+        default:
+            coreLog.trace(QObject::tr("Unsupported object type: %1").arg(type));
+            return NULL;
     }
 
     return NULL;

@@ -2063,6 +2063,11 @@ The session database file is removed after closing of UGENE.</source>
         <translation>Требуемый</translation>
     </message>
     <message>
+        <location filename="../src/globals/L10n.h" line="152"/>
+        <source>ugene-active-translation-language-code</source>
+        <translation>ru</translation>
+    </message>
+    <message>
         <location filename="../src/globals/L10n.h" line="43"/>
         <source>Internal error, bad argument: %1</source>
         <translation>Внутренняя ошибка! Неверный аргумент: %1</translation>

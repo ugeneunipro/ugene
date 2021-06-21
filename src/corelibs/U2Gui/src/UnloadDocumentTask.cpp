@@ -100,8 +100,7 @@ QList<Task *> UnloadDocumentTask::runUnloadTaskHelper(const QList<Document *> &d
     QMap<Document *, QString> failedToUnload;
 
     // document can be unloaded if there are no active view with this doc + it's not state locked by user
-    TriState saveAll = sm == UnloadDocumentTask_SaveMode_Ask ? TriState_Unknown :
-                                                               (sm == UnloadDocumentTask_SaveMode_NotSave ? TriState_No : TriState_Yes);
+    TriState saveAll = sm == UnloadDocumentTask_SaveMode_Ask ? TriState_Unknown : (sm == UnloadDocumentTask_SaveMode_NotSave ? TriState_No : TriState_Yes);
 
     QList<Task *> result;
 

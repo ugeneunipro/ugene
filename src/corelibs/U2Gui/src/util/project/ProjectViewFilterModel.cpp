@@ -161,14 +161,14 @@ void ProjectViewFilterModel::clearFilterGroups() {
 
 QModelIndex ProjectViewFilterModel::mapToSource(const QModelIndex &proxyIndex) const {
     switch (getType(proxyIndex)) {
-    case GROUP:
-        return QModelIndex();
-    case OBJECT: {
-        WrappedObject *obj = toObject(proxyIndex);
-        return srcModel->getIndexForObject(obj->getObject());
-    }
-    default:
-        FAIL("Unexpected parent item type", QModelIndex());
+        case GROUP:
+            return QModelIndex();
+        case OBJECT: {
+            WrappedObject *obj = toObject(proxyIndex);
+            return srcModel->getIndexForObject(obj->getObject());
+        }
+        default:
+            FAIL("Unexpected parent item type", QModelIndex());
     }
 }
 
@@ -176,14 +176,14 @@ int ProjectViewFilterModel::rowCount(const QModelIndex &parent) const {
     CHECK(parent.isValid(), filterGroups.size());
 
     switch (getType(parent)) {
-    case GROUP: {
-        FilteredProjectGroup *parentFilterGroup = toGroup(parent);
-        return parentFilterGroup->getObjectsCount();
-    }
-    case OBJECT:
-        return 0;
-    default:
-        FAIL("Unexpected parent item type", 0);
+        case GROUP: {
+            FilteredProjectGroup *parentFilterGroup = toGroup(parent);
+            return parentFilterGroup->getObjectsCount();
+        }
+        case OBJECT:
+            return 0;
+        default:
+            FAIL("Unexpected parent item type", 0);
     }
 }
 
@@ -207,10 +207,10 @@ QModelIndex ProjectViewFilterModel::index(int row, int column, const QModelIndex
     }
 
     switch (getType(parent)) {
-    case GROUP:
-        return createIndex(row, column, toGroup(parent)->getWrappedObject(row));
-    default:
-        FAIL("Unexpected parent item type", QModelIndex());
+        case GROUP:
+            return createIndex(row, column, toGroup(parent)->getWrappedObject(row));
+        default:
+            FAIL("Unexpected parent item type", QModelIndex());
     }
 }
 
@@ -218,12 +218,12 @@ QModelIndex ProjectViewFilterModel::parent(const QModelIndex &index) const {
     CHECK(index.isValid(), QModelIndex());
 
     switch (getType(index)) {
-    case GROUP:
-        return QModelIndex();
-    case OBJECT:
-        return getIndexForGroup(toObject(index)->getParentGroup());
-    default:
-        FAIL("Unexpected parent item type", QModelIndex());
+        case GROUP:
+            return QModelIndex();
+        case OBJECT:
+            return getIndexForGroup(toObject(index)->getParentGroup());
+        default:
+            FAIL("Unexpected parent item type", QModelIndex());
     }
 }
 
@@ -231,14 +231,14 @@ Qt::ItemFlags ProjectViewFilterModel::flags(const QModelIndex &index) const {
     CHECK(index.isValid(), QAbstractItemModel::flags(index));
 
     switch (getType(index)) {
-    case GROUP:
-        return QAbstractItemModel::flags(index);
-    default: {
-        Qt::ItemFlags result = srcModel->flags(mapToSource(index));
-        result &= ~Qt::ItemIsEditable;
-        result &= ~Qt::ItemIsDropEnabled;
-        return result;
-    }
+        case GROUP:
+            return QAbstractItemModel::flags(index);
+        default: {
+            Qt::ItemFlags result = srcModel->flags(mapToSource(index));
+            result &= ~Qt::ItemIsEditable;
+            result &= ~Qt::ItemIsDropEnabled;
+            return result;
+        }
     }
 }
 
@@ -246,22 +246,22 @@ QVariant ProjectViewFilterModel::getGroupData(const QModelIndex &index, int role
     SAFE_POINT(0 <= index.row() && index.row() < filterGroups.size(), "Project group number out of range", QVariant());
 
     switch (role) {
-    case Qt::DisplayRole:
-        return filterGroups[index.row()]->getGroupName();
-    default:
-        return QVariant();
+        case Qt::DisplayRole:
+            return filterGroups[index.row()]->getGroupName();
+        default:
+            return QVariant();
     }
 }
 
 QVariant ProjectViewFilterModel::data(const QModelIndex &index, int role) const {
     const ItemType itemType = getType(index);
     switch (itemType) {
-    case GROUP:
-        return getGroupData(index, role);
-    case OBJECT:
-        return getObjectData(index, role);
-    default:
-        FAIL("Unexpected model item type", QVariant());
+        case GROUP:
+            return getGroupData(index, role);
+        case OBJECT:
+            return getObjectData(index, role);
+        default:
+            FAIL("Unexpected model item type", QVariant());
     }
 }
 
@@ -285,18 +285,18 @@ void ProjectViewFilterModel::sl_rowsAboutToBeRemoved(const QModelIndex &parent, 
     const QModelIndex removedIndex = srcModel->index(first, 0, parent);
     QList<GObject *> objectsBeingRemoved;
     switch (ProjectViewModel::itemType(removedIndex)) {
-    case ProjectViewModel::OBJECT:
-        objectsBeingRemoved.append(ProjectViewModel::toObject(removedIndex));
-        break;
-    case ProjectViewModel::FOLDER: {
-        Folder *folder = ProjectViewModel::toFolder(removedIndex);
-        objectsBeingRemoved.append(srcModel->getFolderObjects(folder->getDocument(), folder->getFolderPath()));
-    } break;
-    case ProjectViewModel::DOCUMENT:
-        objectsBeingRemoved.append(ProjectViewModel::toDocument(removedIndex)->getObjects());
-        break;
-    default:
-        FAIL("Unexpected project item type", );
+        case ProjectViewModel::OBJECT:
+            objectsBeingRemoved.append(ProjectViewModel::toObject(removedIndex));
+            break;
+        case ProjectViewModel::FOLDER: {
+            Folder *folder = ProjectViewModel::toFolder(removedIndex);
+            objectsBeingRemoved.append(srcModel->getFolderObjects(folder->getDocument(), folder->getFolderPath()));
+        } break;
+        case ProjectViewModel::DOCUMENT:
+            objectsBeingRemoved.append(ProjectViewModel::toDocument(removedIndex)->getObjects());
+            break;
+        default:
+            FAIL("Unexpected project item type", );
     }
 
     foreach (GObject *obj, objectsBeingRemoved) {

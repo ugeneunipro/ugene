@@ -142,6 +142,16 @@ public:
     static QString required() {
         return tr("Required");
     }
+
+    /**
+     * Returns active language code: 'en', 'ru', 'tr'.
+     * The string 'ugene-active-translation-language-code' must be correctly translated in the .ts file.
+     * If the string is not translated, 'en' is returned as the default.
+     */
+    static QString getActiveLanguageCode() {
+        QString code = tr("ugene-active-translation-language-code");
+        return code.isEmpty() || code == "ugene-active-translation-language-code" ? "en" : code;
+    }
 };
 
 }    // namespace U2

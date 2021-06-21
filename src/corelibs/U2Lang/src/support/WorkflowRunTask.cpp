@@ -338,9 +338,7 @@ Task::ReportResult WorkflowIterationRunTask::report() {
 WorkerState WorkflowIterationRunTask::getState(const ActorId &id) {
     if (scheduler) {
         const WorkerState currentState = scheduler->getWorkerState(rmap.value(id));
-        return (debugInfo->isPaused() && Workflow::WorkerRunning == currentState) ?
-                   Workflow::WorkerPaused :
-                   currentState;
+        return (debugInfo->isPaused() && Workflow::WorkerRunning == currentState) ? Workflow::WorkerPaused : currentState;
     }
     return WorkerWaiting;
 }

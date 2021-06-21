@@ -313,27 +313,27 @@ void ExportCoverageBedgraphTask::writeRegion() {
 
 QString ExportCoverageSettings::getFormat(ExportCoverageSettings::Format format) {
     switch (format) {
-    case Histogram:
-        return HISTOGRAM;
-    case PerBase:
-        return PER_BASE;
-    case Bedgraph:
-        return BEDGRAPH;
-    default:
-        return "";
+        case Histogram:
+            return HISTOGRAM;
+        case PerBase:
+            return PER_BASE;
+        case Bedgraph:
+            return BEDGRAPH;
+        default:
+            return "";
     }
 }
 
 QString ExportCoverageSettings::getFormatExtension(ExportCoverageSettings::Format format) {
     switch (format) {
-    case Histogram:
-        return HISTOGRAM_EXTENSION;
-    case PerBase:
-        return PER_BASE_EXTENSION;
-    case Bedgraph:
-        return BEDGRAPH_EXTENSION;
-    default:
-        return "";
+        case Histogram:
+            return HISTOGRAM_EXTENSION;
+        case PerBase:
+            return PER_BASE_EXTENSION;
+        case Bedgraph:
+            return BEDGRAPH_EXTENSION;
+        default:
+            return "";
     }
 }
 

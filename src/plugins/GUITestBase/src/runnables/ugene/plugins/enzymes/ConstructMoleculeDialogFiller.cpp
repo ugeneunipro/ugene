@@ -51,20 +51,20 @@ void ConstructMoleculeDialogFiller::commonScenario() {
         CHECK_OP(os, );
 
         switch (action.first) {
-        case AddAllFragments:
-            addAllFragments();
-            break;
-        case InvertAddedFragment:
-            invertAddedFragment(action.second);
-            break;
-        case ClickCancel:
-            clickCancel();
-            break;
-        case ClickOk:
-            clickOk();
-            break;
-        default:
-            GT_CHECK(false, "An unrecognized action type");
+            case AddAllFragments:
+                addAllFragments();
+                break;
+            case InvertAddedFragment:
+                invertAddedFragment(action.second);
+                break;
+            case ClickCancel:
+                clickCancel();
+                break;
+            case ClickOk:
+                clickOk();
+                break;
+            default:
+                GT_CHECK(false, "An unrecognized action type");
         }
     }
 }

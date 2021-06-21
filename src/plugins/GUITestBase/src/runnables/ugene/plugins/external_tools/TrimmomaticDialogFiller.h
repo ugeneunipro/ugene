@@ -24,8 +24,6 @@
 
 #include <base_dialogs/GTFileDialog.h>
 
-
-
 namespace U2 {
 
 using namespace HI;
@@ -103,7 +101,6 @@ private:
     Action a;
     static const QMap<TrimmomaticSteps, QString> STEPS;
     static const QMap<TrimmomaticValues, QString> VALUES;
-
 };
 
 }    // namespace U2

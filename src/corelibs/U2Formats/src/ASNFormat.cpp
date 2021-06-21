@@ -196,16 +196,16 @@ AsnNodeList ASNFormat::findNodesByName(AsnNode *root, const QString &nodeName, A
 
 QString ASNFormat::getAsnNodeTypeName(const AsnNode *node) {
     switch (node->kind) {
-    case ASN_NO_KIND:
-        return QString("ASN_NO_KIND");
-    case ASN_ROOT:
-        return QString("ASN_ROOT");
-    case ASN_SEQ:
-        return QString("ASN_SEQ");
-    case ASN_VALUE:
-        return QString("ASN_VALUE");
-    default:
-        Q_ASSERT(0);
+        case ASN_NO_KIND:
+            return QString("ASN_NO_KIND");
+        case ASN_ROOT:
+            return QString("ASN_ROOT");
+        case ASN_SEQ:
+            return QString("ASN_SEQ");
+        case ASN_VALUE:
+            return QString("ASN_VALUE");
+        default:
+            Q_ASSERT(0);
     }
     return QString("");
 }
@@ -858,17 +858,17 @@ void ASNFormat::AsnParser::dbgPrintCurrentState() {
     qDebug("\tbuffer: %s", buffer.trimmed().constData());
     qDebug("\tvalue: %s", curElementValue.constData());
     switch (curElementKind) {
-    case ASN_ROOT:
-        qDebug("\tkind: ASN_ROOT");
-        break;
-    case ASN_SEQ:
-        qDebug("\tkind: ASN_SEQ");
-        break;
-    case ASN_VALUE:
-        qDebug("\tkind: ASN_VALUE");
-        break;
-    default:
-        Q_ASSERT(0);
+        case ASN_ROOT:
+            qDebug("\tkind: ASN_ROOT");
+            break;
+        case ASN_SEQ:
+            qDebug("\tkind: ASN_SEQ");
+            break;
+        case ASN_VALUE:
+            qDebug("\tkind: ASN_VALUE");
+            break;
+        default:
+            Q_ASSERT(0);
     }
     if (haveErrors)
         qDebug("\terrors: yes");

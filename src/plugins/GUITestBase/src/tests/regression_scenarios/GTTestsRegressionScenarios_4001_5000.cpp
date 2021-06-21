@@ -1817,7 +1817,7 @@ GUI_TEST_CLASS_DEFINITION(test_4170) {
 GUI_TEST_CLASS_DEFINITION(test_4177) {
     class FontSettingsHelper {
     public:
-        static void changeFontAndSize(HI::GUITestOpStatus &os,  const QString &fontFamilyStr, int fontSize) {
+        static void changeFontAndSize(HI::GUITestOpStatus &os, const QString &fontFamilyStr, int fontSize) {
             QComboBox *fontComboBox = GTWidget::findExactWidget<QComboBox *>(os, "fontComboBox");
             GTComboBox::selectItemByText(os, fontComboBox, fontFamilyStr);
             GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox"), fontSize, GTGlobals::UseMouse);
@@ -1828,8 +1828,8 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
             CHECK_SET_ERR(comboText == expectedFamilyStr, "unexpected style: " + comboText);
             int actualSize = GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox"));
             CHECK_SET_ERR(actualSize == expectedSize, QString("unexpected point size: %1").arg(QString::number(actualSize)));
-        }        
-        
+        }
+
         static void getFontSettings(HI::GUITestOpStatus &os, QString &familyStr, int &size) {
             familyStr = GTComboBox::getCurrentText(os, "fontComboBox");
             size = GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox"));
@@ -1851,12 +1851,12 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
     QString defaultFontFamily;
     int defaultSize;
 
-    QList<GraphicsButtonItem *>  nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
-    CHECK_SET_ERR(nodes.size() == 16, 
-        QString("Something goes wrong with building tree from COI.aln We are expect 16 nodes instead of: %1")
-        .arg(QString::number(nodes.size())));
+    QList<GraphicsButtonItem *> nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
+    CHECK_SET_ERR(nodes.size() == 16,
+                  QString("Something goes wrong with building tree from COI.aln We are expect 16 nodes instead of: %1")
+                      .arg(QString::number(nodes.size())));
     //1. Open samples/CLUSTALW/COI.aln and build tree for it
-    GTUtilsPhyTree::clickNode(os, nodes[0]);//drop sticked ruler
+    GTUtilsPhyTree::clickNode(os, nodes[0]);    //drop sticked ruler
     //2. Select node, change font size to 16, also remember default parameters
     GTUtilsPhyTree::clickNode(os, nodes[1]);
     FontSettingsHelper::getFontSettings(os, defaultFontFamily, defaultSize);

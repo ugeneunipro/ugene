@@ -176,7 +176,6 @@ public:
     bool isGap(qint64 position) const;
     bool isLeadingOrTrailingGap(qint64 position) const;
 
-
     /** Length of the sequence without gaps */
     inline int getUngappedLength() const;
 

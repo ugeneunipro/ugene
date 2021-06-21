@@ -20,13 +20,12 @@
  */
 
 #include "GUITestBasePlugin.h"
+#include <harness/UGUITestBase.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ToolsMenu.h>
-
-#include <harness/UGUITestBase.h>
 
 #include "harness/GUITestService.h"
 #include "tests/PosteriorActions.h"
@@ -1745,6 +1744,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_regression_scenarios::test_7212);
     REGISTER_TEST(GUITest_regression_scenarios::test_7246);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7293);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/

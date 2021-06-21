@@ -71,9 +71,7 @@ void DNAQuality::setQualCodes(const QByteArray &qualCodes) {
 
 int DNAQuality::getValue(int pos) const {
     assert(pos >= 0 && pos < qualCodes.count());
-    return type == DNAQualityType_Sanger ?
-               ((int)qualCodes.at(pos) - 33) :
-               ((int)qualCodes.at(pos) - 64);
+    return type == DNAQualityType_Sanger ? ((int)qualCodes.at(pos) - 33) : ((int)qualCodes.at(pos) - 64);
 }
 
 char DNAQuality::encode(int val, DNAQualityType type) {
@@ -86,12 +84,12 @@ char DNAQuality::encode(int val, DNAQualityType type) {
 
 QString DNAQuality::getDNAQualityNameByType(DNAQualityType t) {
     switch (t) {
-    case DnaQualityType_Solexa:
-        return SOLEXA;
-    case DNAQualityType_Illumina:
-        return ILLUMINA;
-    default:
-        return SANGER;
+        case DnaQualityType_Solexa:
+            return SOLEXA;
+        case DNAQualityType_Illumina:
+            return ILLUMINA;
+        default:
+            return SANGER;
     }
 }
 

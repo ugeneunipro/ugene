@@ -936,8 +936,8 @@ U2ErrorType SchemeWrapper::getAttributeValuePositionFromRange(const QString &att
         valueStartPosition = quotesExist ? firstOpenQuotePos : firstValueSymbolPos;
         int valueEndPosition = quotesExist ? schemeContent.indexOf(Constants::QUOTE,
                                                                    firstOpenQuotePos + 1) +
-                                                 1 :
-                                             schemeContent.indexOf(Constants::SEMICOLON,
+                                                 1
+                                           : schemeContent.indexOf(Constants::SEMICOLON,
                                                                    valueStartPosition);
         CHECK(SUBSTRING_NOT_FOUND != valueEndPosition, U2_INVALID_SCHEME);
         *start = valueStartPosition;

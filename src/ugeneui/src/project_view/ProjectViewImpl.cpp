@@ -224,31 +224,31 @@ bool DocumentUpdater::makeDecision(Document *doc, QListIterator<Document *> &ite
     SAFE_POINT(NULL != activeProject, L10N::nullPointerError("Project"), false);
 
     switch (btn) {
-    case QMessageBox::Yes: {
-        QString saveFileFilter = doc->getDocumentFormat()->getSupportedDocumentFileExtensions().join(" *.").prepend("*.");
-        QString newFileUrl = U2FileDialog::getSaveFileName(dynamic_cast<QWidget *>(AppContext::getMainWindow()), tr("Save as"), doc->getURLString(), saveFileFilter);
-        CHECK(!newFileUrl.isEmpty(), false);
+        case QMessageBox::Yes: {
+            QString saveFileFilter = doc->getDocumentFormat()->getSupportedDocumentFileExtensions().join(" *.").prepend("*.");
+            QString newFileUrl = U2FileDialog::getSaveFileName(dynamic_cast<QWidget *>(AppContext::getMainWindow()), tr("Save as"), doc->getURLString(), saveFileFilter);
+            CHECK(!newFileUrl.isEmpty(), false);
 
-        activeProject->updateDocInRelations(doc->getURLString(), newFileUrl);
+            activeProject->updateDocInRelations(doc->getURLString(), newFileUrl);
 
-        Task *saveDoc = new SaveDocumentTask(doc, doc->getIOAdapterFactory(), newFileUrl);
-        AppContext::getTaskScheduler()->registerTopLevelTask(saveDoc);
+            Task *saveDoc = new SaveDocumentTask(doc, doc->getIOAdapterFactory(), newFileUrl);
+            AppContext::getTaskScheduler()->registerTopLevelTask(saveDoc);
 
-        doc->setURL(GUrl(newFileUrl));
-        break;
-    }
-    case QMessageBox::No:
-        removeDocFromProject(activeProject, doc);
-        break;
-    case QMessageBox::NoToAll:
-        removeDocFromProject(activeProject, doc);
-        while (iter.hasNext()) {
-            doc = iter.next();
-            removeDocFromProject(activeProject, doc);
+            doc->setURL(GUrl(newFileUrl));
+            break;
         }
-        break;
-    default:
-        FAIL("Unexpected user response", false);
+        case QMessageBox::No:
+            removeDocFromProject(activeProject, doc);
+            break;
+        case QMessageBox::NoToAll:
+            removeDocFromProject(activeProject, doc);
+            while (iter.hasNext()) {
+                doc = iter.next();
+                removeDocFromProject(activeProject, doc);
+            }
+            break;
+        default:
+            FAIL("Unexpected user response", false);
     }
     return true;
 }
@@ -280,8 +280,8 @@ void DocumentUpdater::notifyUserAndProcessRemovedDocuments(const QList<Document 
     if (!dbiDocs.isEmpty()) {
         const bool severalDocRemoved = dbiDocs.size() > 1;
         const QString warningMessageText = severalDocRemoved ? tr("Several documents were removed from their original folders. Therefore, they will be deleted from the current project. "
-                                                                  "Find the full list below.") :
-                                                               tr("The document '%1' was removed from its original folder. Therefore, it will be deleted from the current project.")
+                                                                  "Find the full list below.")
+                                                             : tr("The document '%1' was removed from its original folder. Therefore, it will be deleted from the current project.")
                                                                    .arg(dbiDocs.first()->getName());
 
         QObjectScopedPointer<QMessageBox> warningBox = new QMessageBox(dynamic_cast<QWidget *>(AppContext::getMainWindow()));
@@ -327,32 +327,32 @@ void DocumentUpdater::notifyUserAndReloadDocuments(const QList<Document *> &outd
             QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::NoToAll);
 
         switch (btn) {
-        case QMessageBox::Yes:
-            docs2Reload.append(doc);
-            break;
-
-        case QMessageBox::YesToAll:
-            docs2Reload.append(doc);
-            while (iter.hasNext()) {
-                doc = iter.next();
+            case QMessageBox::Yes:
                 docs2Reload.append(doc);
-            }
-            break;
+                break;
 
-        case QMessageBox::No:
-            doc->setLastUpdateTime();
-            break;
+            case QMessageBox::YesToAll:
+                docs2Reload.append(doc);
+                while (iter.hasNext()) {
+                    doc = iter.next();
+                    docs2Reload.append(doc);
+                }
+                break;
 
-        case QMessageBox::NoToAll:
-            doc->setLastUpdateTime();
-            while (iter.hasNext()) {
-                doc = iter.next();
+            case QMessageBox::No:
                 doc->setLastUpdateTime();
-            }
-            break;
+                break;
 
-        default:
-            assert(0);
+            case QMessageBox::NoToAll:
+                doc->setLastUpdateTime();
+                while (iter.hasNext()) {
+                    doc = iter.next();
+                    doc->setLastUpdateTime();
+                }
+                break;
+
+            default:
+                assert(0);
         }
     }
 
@@ -1061,9 +1061,7 @@ void ProjectViewImpl::buildViewMenu(QMenu &m) {
         }
     }
 
-    Document *docToOpen = projectTreeController->getDocsInSelection(true).size() == 1 ?
-                              projectTreeController->getDocsInSelection(true).toList().first() :
-                              NULL;
+    Document *docToOpen = projectTreeController->getDocsInSelection(true).size() == 1 ? projectTreeController->getDocsInSelection(true).toList().first() : NULL;
     if (docToOpen != NULL && !docToOpen->isDatabaseConnection()) {
         GUrl docUrl = docToOpen->getURL();
         if (docUrl.isLocalFile() || docUrl.isNetworkSource()) {
@@ -1184,15 +1182,11 @@ void ProjectViewImpl::sl_onToggleCircular() {
 }
 
 void ProjectViewImpl::sl_onOpenContainingFolder() {
-    Document *docToOpen = projectTreeController->getDocsInSelection(true).size() == 1 ?
-                              projectTreeController->getDocsInSelection(true).toList().first() :
-                              NULL;
+    Document *docToOpen = projectTreeController->getDocsInSelection(true).size() == 1 ? projectTreeController->getDocsInSelection(true).toList().first() : NULL;
     if (docToOpen != NULL && !docToOpen->isDatabaseConnection()) {
         GUrl docUrl = docToOpen->getURL();
         if (docUrl.isLocalFile() || docUrl.isNetworkSource()) {
-            QUrl url = docToOpen->getURL().isLocalFile() ?
-                           QUrl::fromLocalFile(docToOpen->getURL().dirPath()) :
-                           QUrl(docToOpen->getURL().dirPath());
+            QUrl url = docToOpen->getURL().isLocalFile() ? QUrl::fromLocalFile(docToOpen->getURL().dirPath()) : QUrl(docToOpen->getURL().dirPath());
             QDesktopServices::openUrl(url);
         }
     }

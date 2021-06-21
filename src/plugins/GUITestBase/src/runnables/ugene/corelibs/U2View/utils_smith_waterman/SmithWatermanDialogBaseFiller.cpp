@@ -140,14 +140,14 @@ void SmithWatermanDialogFiller::commonScenario() {
         QComboBox *comboRealization = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "comboRealization", dialog));
         QString realizationName;
         switch (realization) {
-        case CLASSIC:
-            realizationName = CLASSIC_SW_REALIZATION_NAME;
-            break;
-        case SSE2:
-            realizationName = SSE2_SW_REALIZATION_NAME;
-            break;
-        default:
-            Q_ASSERT(false);
+            case CLASSIC:
+                realizationName = CLASSIC_SW_REALIZATION_NAME;
+                break;
+            case SSE2:
+                realizationName = SSE2_SW_REALIZATION_NAME;
+                break;
+            default:
+                Q_ASSERT(false);
         }
 
         const int swRealizationIndex = comboRealization->findText(realizationName);

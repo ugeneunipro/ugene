@@ -100,7 +100,8 @@ void ExtractAnnotatedRegionTask::run() {
         } else {
             s.seq = seq;
         }
-        s.alphabet = aminoT ? aminoT->getDstAlphabet() : complT ? complT->getDstAlphabet() : inputSeq.alphabet;
+        s.alphabet = aminoT ? aminoT->getDstAlphabet() : complT ? complT->getDstAlphabet()
+                                                                : inputSeq.alphabet;
         if (aminoT != NULL) {
             s.alphabet = aminoT->getDstAlphabet();
         } else if (complT != NULL) {

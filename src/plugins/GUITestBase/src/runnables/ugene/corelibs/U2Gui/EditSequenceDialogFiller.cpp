@@ -66,18 +66,18 @@ void InsertSequenceFiller::commonScenario() {
 
     QString radioButtonName;
     switch (regionResolvingMode) {
-    case Resize:
-        radioButtonName = "resizeRB";
-        break;
-    case Remove:
-        radioButtonName = "removeRB";
-        break;
-    case SplitJoin:
-        radioButtonName = "splitRB";
-        break;
-    case SplitSeparate:
-        radioButtonName = "split_separateRB";
-        break;
+        case Resize:
+            radioButtonName = "resizeRB";
+            break;
+        case Remove:
+            radioButtonName = "removeRB";
+            break;
+        case SplitJoin:
+            radioButtonName = "splitRB";
+            break;
+        case SplitSeparate:
+            radioButtonName = "split_separateRB";
+            break;
     }
 
     GTCheckBox::setChecked(os, GTWidget::findExactWidget<QCheckBox *>(os, "recalculateQualsCheckBox"), recalculateQuals);
@@ -96,17 +96,17 @@ void InsertSequenceFiller::commonScenario() {
     if ((saveToNewFile && !checkButton->isChecked()) || (!saveToNewFile && checkButton->isChecked())) {
         QPoint checkPos;
         switch (useMethod) {
-        case GTGlobals::UseMouse:
-            checkPos = QPoint(checkButton->rect().left() + 12, checkButton->rect().top() + 12);
-            GTMouseDriver::moveTo(checkButton->mapToGlobal(checkPos));
-            GTMouseDriver::click();
-            break;
-        case GTGlobals::UseKey:
-            GTWidget::setFocus(os, checkButton);
-            GTKeyboardDriver::keyClick(Qt::Key_Space);
-            break;
-        default:
-            break;
+            case GTGlobals::UseMouse:
+                checkPos = QPoint(checkButton->rect().left() + 12, checkButton->rect().top() + 12);
+                GTMouseDriver::moveTo(checkButton->mapToGlobal(checkPos));
+                GTMouseDriver::click();
+                break;
+            case GTGlobals::UseKey:
+                GTWidget::setFocus(os, checkButton);
+                GTKeyboardDriver::keyClick(Qt::Key_Space);
+                break;
+            default:
+                break;
         }
     }
 

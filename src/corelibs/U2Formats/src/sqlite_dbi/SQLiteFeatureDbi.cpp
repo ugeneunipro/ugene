@@ -194,27 +194,27 @@ static void add(QString &buf, const QString &str, const QString &op, int &n) {
 static QString toSqlCompareOp(ComparisonOp op) {
     QString res;
     switch (op) {
-    case ComparisonOp_EQ:
-        res = "=";
-        break;
-    case ComparisonOp_NEQ:
-        res = "!=";
-        break;
-    case ComparisonOp_GT:
-        res = ">";
-        break;
-    case ComparisonOp_GET:
-        res = ">=";
-        break;
-    case ComparisonOp_LT:
-        res = "<";
-        break;
-    case ComparisonOp_LET:
-        res = "<=";
-        break;
-    default:
-        res = "?";
-        break;
+        case ComparisonOp_EQ:
+            res = "=";
+            break;
+        case ComparisonOp_NEQ:
+            res = "!=";
+            break;
+        case ComparisonOp_GT:
+            res = ">";
+            break;
+        case ComparisonOp_GET:
+            res = ">=";
+            break;
+        case ComparisonOp_LT:
+            res = "<";
+            break;
+        case ComparisonOp_LET:
+            res = "<=";
+            break;
+        default:
+            res = "?";
+            break;
     }
     return res;
 }
@@ -222,14 +222,14 @@ static QString toSqlCompareOp(ComparisonOp op) {
 static QString toSqlOrderOp(OrderOp op) {
     QString res;
     switch (op) {
-    case OrderOp_Asc:
-        res = "ASC";
-        break;
-    case OrderOp_Desc:
-        res = "DESC";
-        break;
-    default:
-        break;
+        case OrderOp_Asc:
+            res = "ASC";
+            break;
+        case OrderOp_Desc:
+            res = "DESC";
+            break;
+        default:
+            break;
     }
     return res;
 }
@@ -237,24 +237,24 @@ static QString toSqlOrderOp(OrderOp op) {
 static QString toSqlOrderOpFromCompareOp(ComparisonOp op) {
     QString res;
     switch (op) {
-    case ComparisonOp_EQ:
-        break;
-    case ComparisonOp_NEQ:
-        break;
-    case ComparisonOp_GT:
-        res = "ASC";
-        break;
-    case ComparisonOp_GET:
-        res = "ASC";
-        break;
-    case ComparisonOp_LT:
-        res = "DESC";
-        break;
-    case ComparisonOp_LET:
-        res = "DESC";
-        break;
-    default:
-        break;
+        case ComparisonOp_EQ:
+            break;
+        case ComparisonOp_NEQ:
+            break;
+        case ComparisonOp_GT:
+            res = "ASC";
+            break;
+        case ComparisonOp_GET:
+            res = "ASC";
+            break;
+        case ComparisonOp_LT:
+            res = "DESC";
+            break;
+        case ComparisonOp_LET:
+            res = "DESC";
+            break;
+        default:
+            break;
     }
     return res;
 }

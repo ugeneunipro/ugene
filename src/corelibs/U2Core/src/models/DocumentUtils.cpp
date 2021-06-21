@@ -29,9 +29,9 @@
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/ProjectModel.h>
 #include <U2Core/SequenceUtils.h>
+#include <U2Core/TextUtils.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/U2SafePoints.h>
-
 namespace U2 {
 
 QSet<QString> DocumentUtils::getURLs(const QList<Document *> &docs) {
@@ -104,7 +104,8 @@ QList<FormatDetectionResult> DocumentUtils::detectFormat(const QByteArray &rawDa
         FormatDetectionResult res;
         res.format = f;
         res.rawDataCheckResult = cr;
-        res.rawData = rawData;
+        res.rawBinaryData = rawData;
+        res.rawTextData = cr.properties[RawDataCheckResult_RawTextData].toString();
         res.url = url;
         res.extension = ext;
         placeOrderedByScore(res, result, conf);
@@ -119,7 +120,7 @@ QList<FormatDetectionResult> DocumentUtils::detectFormat(const QByteArray &rawDa
             FormatDetectionResult res;
             res.importer = i;
             res.rawDataCheckResult = cr;
-            res.rawData = rawData;
+            res.rawBinaryData = rawData;
             res.url = url;
             res.extension = ext;
             placeOrderedByScore(res, result, conf);
@@ -278,6 +279,22 @@ QString FormatDetectionResult::getFormatDescriptionText() const {
 QString FormatDetectionResult::getFormatOrImporterName() const {
     QString name = format == NULL ? importer->getImporterName() : format->getFormatName();
     return name;
+}
+
+int FormatDetectionResult::score() const {
+    return rawDataCheckResult.score;
+}
+
+QString FormatDetectionResult::getRawDataPreviewText() const {
+    if (!rawTextData.isEmpty()) {
+        return rawTextData;
+    }
+    // Original UGENE algorithm to visualize binary data. Unsafe for multi-byte unicode byte sequences.
+    QByteArray safeData = rawBinaryData;
+    if (TextUtils::contains(TextUtils::BINARY, safeData.constData(), safeData.size())) {
+        TextUtils::replace(safeData.data(), safeData.length(), TextUtils::BINARY, '?');
+    }
+    return QString::fromUtf8(safeData);
 }
 
 }    // namespace U2

@@ -91,12 +91,12 @@ protected:
             int l = get_value(x - 1, y);
             int insdelRes = 0;
             switch (strategy) {
-            case Strategy_Min:
-                insdelRes = qMin(l + scores.ins, u + scores.del);
-                res = qMin(insdelRes, res);
-                break;
-            default:
-                assert(false);
+                case Strategy_Min:
+                    insdelRes = qMin(l + scores.ins, u + scores.del);
+                    res = qMin(insdelRes, res);
+                    break;
+                default:
+                    assert(false);
             }
         }
         set_pair(x, y, res, ok);

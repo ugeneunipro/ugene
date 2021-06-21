@@ -346,12 +346,12 @@ Qt::ItemFlags MarkerListCfgModel::flags(const QModelIndex &index) const {
 QVariant MarkerListCfgModel::headerData(int section, Qt::Orientation orientation, int role) const {
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         switch (section) {
-        case 0:
-            return tr("Marker name");
-        case 1:
-            return tr("Marker value");
-        default:
-            assert(false);
+            case 0:
+                return tr("Marker name");
+            case 1:
+                return tr("Marker value");
+            default:
+                assert(false);
         }
     }
     // unreachable code
@@ -415,17 +415,17 @@ EditMarkerDialog::EditMarkerDialog(bool isNew, const QString &type, const QStrin
     if (!type.isEmpty()) {
         MarkerDataType dataType = MarkerTypes::getDataTypeById(type);
         switch (dataType) {
-        case INTEGER:
-            editWidget = new EditIntegerMarkerWidget(isNew, values, this);
-            break;
-        case FLOAT:
-            editWidget = new EditFloatMarkerWidget(isNew, values, this);
-            break;
-        case STRING:
-            editWidget = new EditStringMarkerWidget(isNew, values, this);
-            break;
-        default:
-            assert(0);
+            case INTEGER:
+                editWidget = new EditIntegerMarkerWidget(isNew, values, this);
+                break;
+            case FLOAT:
+                editWidget = new EditFloatMarkerWidget(isNew, values, this);
+                break;
+            case STRING:
+                editWidget = new EditStringMarkerWidget(isNew, values, this);
+                break;
+            default:
+                assert(0);
         }
         QVBoxLayout *layout = qobject_cast<QVBoxLayout *>(this->layout());
         layout->insertWidget(1, editWidget);

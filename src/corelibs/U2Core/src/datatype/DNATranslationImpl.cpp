@@ -189,60 +189,60 @@ qint64 DNATranslation1to3Impl::translate(const char *src, qint64 src_len, char *
     bool caseSensitive = srcAlphabet->isCaseSensitive();
     qint64 resLen = qMin(src_len * 3, dst_capacity);
     switch (mode) {
-    case USE_MOST_PROBABLE_CODONS: {
-        if (caseSensitive) {
-            for (int dstIdx = 0, srcIdx = 0; dstIdx < resLen; srcIdx++) {
-                TripletP curr = index.map[index.index[(int)*(src + srcIdx)]];
-                dst[dstIdx++] = curr.c[0];
-                dst[dstIdx++] = curr.c[1];
-                dst[dstIdx++] = curr.c[2];
-            }
-        } else {
-            char uc;
-            const QByteArray &ucMap = TextUtils::UPPER_CASE_MAP;
-            for (int dstIdx = 0, srcIdx = 0; dstIdx < resLen; srcIdx++) {
-                TextUtils::translate(ucMap, src + srcIdx, 1, &uc);
-                TripletP curr = index.map[index.index[(int)*(src + srcIdx)]];
-                dst[dstIdx++] = curr.c[0];
-                dst[dstIdx++] = curr.c[1];
-                dst[dstIdx++] = curr.c[2];
-            }
-        }
-        break;
-    }
-    case USE_FREQUENCE_DISTRIBUTION: {
-        if (caseSensitive) {
-            for (int dstIdx = 0, srcIdx = 0; dstIdx < resLen; srcIdx++) {
-                int p = qrand() % 100;
-                int pos = index.index[(int)*(src + srcIdx)];
-                while (index.map[pos].p <= p) {
-                    p -= index.map[pos++].p;
+        case USE_MOST_PROBABLE_CODONS: {
+            if (caseSensitive) {
+                for (int dstIdx = 0, srcIdx = 0; dstIdx < resLen; srcIdx++) {
+                    TripletP curr = index.map[index.index[(int)*(src + srcIdx)]];
+                    dst[dstIdx++] = curr.c[0];
+                    dst[dstIdx++] = curr.c[1];
+                    dst[dstIdx++] = curr.c[2];
                 }
-                TripletP curr = index.map[pos];
-                dst[dstIdx++] = curr.c[0];
-                dst[dstIdx++] = curr.c[1];
-                dst[dstIdx++] = curr.c[2];
-            }
-        } else {
-            char uc;
-            const QByteArray &ucMap = TextUtils::UPPER_CASE_MAP;
-            for (int dstIdx = 0, srcIdx = 0; dstIdx < resLen; srcIdx++) {
-                TextUtils::translate(ucMap, src + srcIdx, 1, &uc);
-                int p = qrand() % 100;
-                int pos = index.index[(int)*(src + srcIdx)];
-                while (index.map[pos].p <= p) {
-                    p -= index.map[pos++].p;
+            } else {
+                char uc;
+                const QByteArray &ucMap = TextUtils::UPPER_CASE_MAP;
+                for (int dstIdx = 0, srcIdx = 0; dstIdx < resLen; srcIdx++) {
+                    TextUtils::translate(ucMap, src + srcIdx, 1, &uc);
+                    TripletP curr = index.map[index.index[(int)*(src + srcIdx)]];
+                    dst[dstIdx++] = curr.c[0];
+                    dst[dstIdx++] = curr.c[1];
+                    dst[dstIdx++] = curr.c[2];
                 }
-                TripletP curr = index.map[pos];
-                dst[dstIdx++] = curr.c[0];
-                dst[dstIdx++] = curr.c[1];
-                dst[dstIdx++] = curr.c[2];
             }
+            break;
         }
-        break;
-    }
-    default:
-        break;
+        case USE_FREQUENCE_DISTRIBUTION: {
+            if (caseSensitive) {
+                for (int dstIdx = 0, srcIdx = 0; dstIdx < resLen; srcIdx++) {
+                    int p = qrand() % 100;
+                    int pos = index.index[(int)*(src + srcIdx)];
+                    while (index.map[pos].p <= p) {
+                        p -= index.map[pos++].p;
+                    }
+                    TripletP curr = index.map[pos];
+                    dst[dstIdx++] = curr.c[0];
+                    dst[dstIdx++] = curr.c[1];
+                    dst[dstIdx++] = curr.c[2];
+                }
+            } else {
+                char uc;
+                const QByteArray &ucMap = TextUtils::UPPER_CASE_MAP;
+                for (int dstIdx = 0, srcIdx = 0; dstIdx < resLen; srcIdx++) {
+                    TextUtils::translate(ucMap, src + srcIdx, 1, &uc);
+                    int p = qrand() % 100;
+                    int pos = index.index[(int)*(src + srcIdx)];
+                    while (index.map[pos].p <= p) {
+                        p -= index.map[pos++].p;
+                    }
+                    TripletP curr = index.map[pos];
+                    dst[dstIdx++] = curr.c[0];
+                    dst[dstIdx++] = curr.c[1];
+                    dst[dstIdx++] = curr.c[2];
+                }
+            }
+            break;
+        }
+        default:
+            break;
     }
     return resLen;
 }

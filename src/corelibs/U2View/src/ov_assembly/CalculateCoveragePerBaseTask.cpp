@@ -94,21 +94,21 @@ void CalculateCoveragePerBaseOnRegionTask::processRead(const U2AssemblyRead &rea
         CHECK_OP(stateInfo, );
 
         switch (cigarOp) {
-        case U2CigarOp_I:
-        case U2CigarOp_S:
-            // skip the insertion
-            continue;
-        case U2CigarOp_D:
-            // skip the deletion
-            deletionsCount++;
-            continue;
-        case U2CigarOp_N:
-            // skip the deletion
-            deletionsCount++;
-            continue;
-        default:
-            currentBase = read->readSequence[positionOffset - deletionsCount + insertionsCount];
-            break;
+            case U2CigarOp_I:
+            case U2CigarOp_S:
+                // skip the insertion
+                continue;
+            case U2CigarOp_D:
+                // skip the deletion
+                deletionsCount++;
+                continue;
+            case U2CigarOp_N:
+                // skip the deletion
+                deletionsCount++;
+                continue;
+            default:
+                currentBase = read->readSequence[positionOffset - deletionsCount + insertionsCount];
+                break;
         }
         info.basesCount[currentBase] = info.basesCount[currentBase] + 1;
         info.coverage++;

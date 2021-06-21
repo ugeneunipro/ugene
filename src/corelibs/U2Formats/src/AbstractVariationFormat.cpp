@@ -150,44 +150,44 @@ Document *AbstractVariationFormat::loadTextDocument(IOAdapter *io, const U2DbiRe
             const ColumnRole columnRole = columnRoles.value(columnNumber, ColumnRole_Unknown);
             const QString &columnData = columns[columnNumber];
             switch (columnRole) {
-            case ColumnRole_ChromosomeId:
-                seqName = columnData;
-                break;
-            case ColumnRole_StartPos:
-                v.startPos = columnData.toInt();
-                if (indexing == AbstractVariationFormat::OneBased) {
-                    v.startPos -= 1;
-                }
-                break;
-            case ColumnRole_EndPos:
-                v.endPos = columnData.toInt();
-                if (indexing == AbstractVariationFormat::OneBased) {
-                    v.endPos -= 1;
-                }
-                break;
-            case ColumnRole_RefData:
-                v.refData = columnData.toLatin1();
-                break;
-            case ColumnRole_ObsData:
-                if (splitting == AbstractVariationFormat::Split) {
-                    altAllele = columnData.trimmed().split(',');
-                } else {
-                    v.obsData = columnData.toLatin1();
-                }
-                break;
-            case ColumnRole_PublicId:
-                v.publicId = columnData.toLatin1();
-                break;
-            case ColumnRole_Info:
-                v.additionalInfo.insert(U2Variant::VCF4_INFO, columnData);
-                break;
-            case ColumnRole_Unknown:
-                v.additionalInfo.insert(columnNumber < header.size() ? header[columnNumber] : QString::number(columnNumber), columnData);
-                break;
-            default:
-                assert(0);
-                coreLog.trace(QString("Warning: unknown column role %1 (line %2, column %3)").arg(columnRole).arg(line).arg(columnNumber));
-                break;
+                case ColumnRole_ChromosomeId:
+                    seqName = columnData;
+                    break;
+                case ColumnRole_StartPos:
+                    v.startPos = columnData.toInt();
+                    if (indexing == AbstractVariationFormat::OneBased) {
+                        v.startPos -= 1;
+                    }
+                    break;
+                case ColumnRole_EndPos:
+                    v.endPos = columnData.toInt();
+                    if (indexing == AbstractVariationFormat::OneBased) {
+                        v.endPos -= 1;
+                    }
+                    break;
+                case ColumnRole_RefData:
+                    v.refData = columnData.toLatin1();
+                    break;
+                case ColumnRole_ObsData:
+                    if (splitting == AbstractVariationFormat::Split) {
+                        altAllele = columnData.trimmed().split(',');
+                    } else {
+                        v.obsData = columnData.toLatin1();
+                    }
+                    break;
+                case ColumnRole_PublicId:
+                    v.publicId = columnData.toLatin1();
+                    break;
+                case ColumnRole_Info:
+                    v.additionalInfo.insert(U2Variant::VCF4_INFO, columnData);
+                    break;
+                case ColumnRole_Unknown:
+                    v.additionalInfo.insert(columnNumber < header.size() ? header[columnNumber] : QString::number(columnNumber), columnData);
+                    break;
+                default:
+                    assert(0);
+                    coreLog.trace(QString("Warning: unknown column role %1 (line %2, column %3)").arg(columnRole).arg(line).arg(columnNumber));
+                    break;
             }
         }
 
@@ -303,20 +303,20 @@ FormatCheckResult AbstractVariationFormat::checkRawTextData(const QByteArray &da
             }
             QRegExp wordExp("\\D+");
             switch (role) {
-            case ColumnRole_StartPos:
-                col.toInt(&isCorrect);
-                break;
-            case ColumnRole_EndPos:
-                col.toInt(&isCorrect);
-                break;
-            case ColumnRole_RefData:
-                isCorrect = wordExp.exactMatch(col);
-                break;
-            case ColumnRole_ObsData:
-                isCorrect = wordExp.exactMatch(col);
-                break;
-            default:
-                break;
+                case ColumnRole_StartPos:
+                    col.toInt(&isCorrect);
+                    break;
+                case ColumnRole_EndPos:
+                    col.toInt(&isCorrect);
+                    break;
+                case ColumnRole_RefData:
+                    isCorrect = wordExp.exactMatch(col);
+                    break;
+                case ColumnRole_ObsData:
+                    isCorrect = wordExp.exactMatch(col);
+                    break;
+                default:
+                    break;
             }
             if (!isCorrect) {
                 mismatchesNumber++;
@@ -378,53 +378,53 @@ void AbstractVariationFormat::storeTrack(IOAdapter *io, const VariantTrackObject
 
             ColumnRole role = columnRoles.value(columnNumber, ColumnRole_Unknown);
             switch (role) {
-            case ColumnRole_ChromosomeId:
-                snpString += track.sequenceName;
-                break;
-            case ColumnRole_StartPos:
-                switch (indexing) {
-                case AbstractVariationFormat::OneBased:
-                    snpString += QByteArray::number(variant.startPos + 1);
+                case ColumnRole_ChromosomeId:
+                    snpString += track.sequenceName;
                     break;
-                case AbstractVariationFormat::ZeroBased:
-                    snpString += QByteArray::number(variant.startPos);
+                case ColumnRole_StartPos:
+                    switch (indexing) {
+                        case AbstractVariationFormat::OneBased:
+                            snpString += QByteArray::number(variant.startPos + 1);
+                            break;
+                        case AbstractVariationFormat::ZeroBased:
+                            snpString += QByteArray::number(variant.startPos);
+                            break;
+                        default:
+                            assert(0);
+                    }
                     break;
-                default:
-                    assert(0);
+                case ColumnRole_EndPos:
+                    switch (indexing) {
+                        case AbstractVariationFormat::OneBased:
+                            snpString += QByteArray::number(variant.endPos + 1);
+                            break;
+                        case AbstractVariationFormat::ZeroBased:
+                            snpString += QByteArray::number(variant.endPos);
+                            break;
+                        default:
+                            assert(0);
+                    }
+                    break;
+                case ColumnRole_RefData:
+                    snpString += variant.refData;
+                    break;
+                case ColumnRole_ObsData:
+                    snpString += variant.obsData;
+                    break;
+                case ColumnRole_PublicId:
+                    snpString += variant.publicId;
+                    break;
+                case ColumnRole_Info:
+                    snpString += variant.additionalInfo.value(U2Variant::VCF4_INFO, ".");
+                    break;
+                case ColumnRole_Unknown: {
+                    const QString columnTitle = columnNumber < header.size() ? header[columnNumber] : QString::number(columnNumber);
+                    snpString += variant.additionalInfo.value(columnTitle, ".");
+                    break;
                 }
-                break;
-            case ColumnRole_EndPos:
-                switch (indexing) {
-                case AbstractVariationFormat::OneBased:
-                    snpString += QByteArray::number(variant.endPos + 1);
-                    break;
-                case AbstractVariationFormat::ZeroBased:
-                    snpString += QByteArray::number(variant.endPos);
-                    break;
                 default:
-                    assert(0);
-                }
-                break;
-            case ColumnRole_RefData:
-                snpString += variant.refData;
-                break;
-            case ColumnRole_ObsData:
-                snpString += variant.obsData;
-                break;
-            case ColumnRole_PublicId:
-                snpString += variant.publicId;
-                break;
-            case ColumnRole_Info:
-                snpString += variant.additionalInfo.value(U2Variant::VCF4_INFO, ".");
-                break;
-            case ColumnRole_Unknown: {
-                const QString columnTitle = columnNumber < header.size() ? header[columnNumber] : QString::number(columnNumber);
-                snpString += variant.additionalInfo.value(columnTitle, ".");
-                break;
-            }
-            default:
-                coreLog.trace("Warning: unknown column role (%, line %, column %)");
-                break;
+                    coreLog.trace("Warning: unknown column role (%, line %, column %)");
+                    break;
             }
         }
 

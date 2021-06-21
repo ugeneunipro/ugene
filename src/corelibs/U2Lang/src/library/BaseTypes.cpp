@@ -211,20 +211,20 @@ U2DataType BaseTypes::toDataType(const QString &typeId) {
 
 QString BaseTypes::toTypeId(const U2DataType &dataType) {
     switch (dataType) {
-    case U2Type::Sequence:
-        return DNA_SEQUENCE_TYPE()->getId();
-    case U2Type::AnnotationTable:
-        return ANNOTATION_TABLE_TYPE()->getId();
-    case U2Type::Msa:
-        return MULTIPLE_ALIGNMENT_TYPE()->getId();
-    case U2Type::VariantTrack:
-        return VARIATION_TRACK_TYPE()->getId();
-    case U2Type::Assembly:
-        return ASSEMBLY_TYPE()->getId();
-    case U2Type::Text:
-        return STRING_TYPE()->getId();
-    default:
-        return ANY_TYPE()->getId();
+        case U2Type::Sequence:
+            return DNA_SEQUENCE_TYPE()->getId();
+        case U2Type::AnnotationTable:
+            return ANNOTATION_TABLE_TYPE()->getId();
+        case U2Type::Msa:
+            return MULTIPLE_ALIGNMENT_TYPE()->getId();
+        case U2Type::VariantTrack:
+            return VARIATION_TRACK_TYPE()->getId();
+        case U2Type::Assembly:
+            return ASSEMBLY_TYPE()->getId();
+        case U2Type::Text:
+            return STRING_TYPE()->getId();
+        default:
+            return ANY_TYPE()->getId();
     }
 }
 

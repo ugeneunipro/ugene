@@ -38,20 +38,20 @@ DNAChromatogram::DNAChromatogram()
 ushort DNAChromatogram::getValue(Trace trace, qint64 position) const {
     SAFE_POINT(0 <= position && position <= traceLength, "The position is out of trace boundaries", 0);
     switch (trace) {
-    case Trace_A:
-        SAFE_POINT(0 <= position && position <= A.length(), "The position is out of trace A boundaries", 0);
-        return A[position];
-    case Trace_C:
-        SAFE_POINT(0 <= position && position <= C.length(), "The position is out of trace C boundaries", 0);
-        return C[position];
-    case Trace_G:
-        SAFE_POINT(0 <= position && position <= G.length(), "The position is out of trace G boundaries", 0);
-        return G[position];
-    case Trace_T:
-        SAFE_POINT(0 <= position && position <= T.length(), "The position is out of trace T boundaries", 0);
-        return T[position];
-    default:
-        FAIL("An unknown trace", 0);
+        case Trace_A:
+            SAFE_POINT(0 <= position && position <= A.length(), "The position is out of trace A boundaries", 0);
+            return A[position];
+        case Trace_C:
+            SAFE_POINT(0 <= position && position <= C.length(), "The position is out of trace C boundaries", 0);
+            return C[position];
+        case Trace_G:
+            SAFE_POINT(0 <= position && position <= G.length(), "The position is out of trace G boundaries", 0);
+            return G[position];
+        case Trace_T:
+            SAFE_POINT(0 <= position && position <= T.length(), "The position is out of trace T boundaries", 0);
+            return T[position];
+        default:
+            FAIL("An unknown trace", 0);
     }
 }
 

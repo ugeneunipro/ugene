@@ -178,19 +178,19 @@ QStringList HmmerSearchTask::getArguments() const {
     }
 
     switch (settings.useBitCutoffs) {
-    case HmmerSearchSettings::None:
-        break;
-    case HmmerSearchSettings::p7H_GA:
-        arguments << "--cut_ga";
-        break;
-    case HmmerSearchSettings::p7H_TC:
-        arguments << "--cut_nc";
-        break;
-    case HmmerSearchSettings::p7H_NC:
-        arguments << "--cut_tc";
-        break;
-    default:
-        FAIL(tr("Unknown option controlling model-specific thresholding"), arguments);
+        case HmmerSearchSettings::None:
+            break;
+        case HmmerSearchSettings::p7H_GA:
+            arguments << "--cut_ga";
+            break;
+        case HmmerSearchSettings::p7H_TC:
+            arguments << "--cut_nc";
+            break;
+        case HmmerSearchSettings::p7H_NC:
+            arguments << "--cut_tc";
+            break;
+        default:
+            FAIL(tr("Unknown option controlling model-specific thresholding"), arguments);
     }
 
     if (settings.doMax) {

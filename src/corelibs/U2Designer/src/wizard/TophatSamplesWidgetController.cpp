@@ -424,12 +424,12 @@ void TophatSamples::selectSample(int selectedPos) {
 
 bool TophatSamples::isBorderCase(QListWidget *list, int datasetPos, Direction direction) const {
     switch (direction) {
-    case UP:
-        return (0 == datasetPos);
-    case DOWN:
-        return (list->count() - 1 == datasetPos);
-    default:
-        return false;
+        case UP:
+            return (0 == datasetPos);
+        case DOWN:
+            return (list->count() - 1 == datasetPos);
+        default:
+            return false;
     }
 }
 

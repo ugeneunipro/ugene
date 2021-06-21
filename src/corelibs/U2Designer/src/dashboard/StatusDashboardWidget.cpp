@@ -153,31 +153,31 @@ void StatusDashboardWidget::sl_progressChanged(int progress) {
 
 QString StatusDashboardWidget::state2StatusMessage(const Monitor::TaskState &state) {
     switch (state) {
-    case Monitor::RUNNING:
-        return tr("The workflow task is in progress…");
-    case Monitor::RUNNING_WITH_PROBLEMS:
-        return tr("The workflow task is in progress. There are problems…");
-    case Monitor::FINISHED_WITH_PROBLEMS:
-        return tr("The workflow task has been finished with warnings!");
-    case Monitor::FAILED:
-        return tr("The workflow task has been finished with errors!");
-    case Monitor::SUCCESS:
-        return tr("The workflow task has been finished successfully!");
-    default:
-        return tr("The workflow task has been canceled!");
+        case Monitor::RUNNING:
+            return tr("The workflow task is in progress…");
+        case Monitor::RUNNING_WITH_PROBLEMS:
+            return tr("The workflow task is in progress. There are problems…");
+        case Monitor::FINISHED_WITH_PROBLEMS:
+            return tr("The workflow task has been finished with warnings!");
+        case Monitor::FAILED:
+            return tr("The workflow task has been finished with errors!");
+        case Monitor::SUCCESS:
+            return tr("The workflow task has been finished successfully!");
+        default:
+            return tr("The workflow task has been canceled!");
     }
 }
 
 QString StatusDashboardWidget::state2LabelStyle(const Monitor::TaskState &state) {
     switch (state) {
-    case Monitor::RUNNING:
-        return STATUS_LABEL_COMMON_STYLE + STATUS_LABEL_INFO_STYLE;
-    case Monitor::FAILED:
-        return STATUS_LABEL_COMMON_STYLE + STATUS_LABEL_ERROR_STYLE;
-    case Monitor::SUCCESS:
-        return STATUS_LABEL_COMMON_STYLE + STATUS_LABEL_SUCCESS_STYLE;
-    default:
-        return STATUS_LABEL_COMMON_STYLE + STATUS_LABEL_DEFAULT_STYLE;
+        case Monitor::RUNNING:
+            return STATUS_LABEL_COMMON_STYLE + STATUS_LABEL_INFO_STYLE;
+        case Monitor::FAILED:
+            return STATUS_LABEL_COMMON_STYLE + STATUS_LABEL_ERROR_STYLE;
+        case Monitor::SUCCESS:
+            return STATUS_LABEL_COMMON_STYLE + STATUS_LABEL_SUCCESS_STYLE;
+        default:
+            return STATUS_LABEL_COMMON_STYLE + STATUS_LABEL_DEFAULT_STYLE;
     }
 }
 
@@ -196,12 +196,12 @@ bool StatusDashboardWidget::isValidDom(const QDomElement &dom) {
 
 static QString getClassByState(const Monitor::TaskState &state) {
     switch (state) {
-    case Monitor::FAILED:
-        return "alert-error";
-    case Monitor::SUCCESS:
-        return "alert-success";
-    default:
-        return "";
+        case Monitor::FAILED:
+            return "alert-error";
+        case Monitor::SUCCESS:
+            return "alert-success";
+        default:
+            return "";
     }
 }
 

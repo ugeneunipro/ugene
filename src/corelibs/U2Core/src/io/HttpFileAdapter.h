@@ -113,8 +113,7 @@ private:
         return chunk_list.size() == 1;
     }
     inline int firstChunkContains() const {
-        return (singleChunk() ? (isEmpty() ? 0 : end_ptr - begin_ptr) :
-                                CHUNKSIZE - begin_ptr);
+        return (singleChunk() ? (isEmpty() ? 0 : end_ptr - begin_ptr) : CHUNKSIZE - begin_ptr);
     }
     inline void Empty() {
         assert(singleChunk());

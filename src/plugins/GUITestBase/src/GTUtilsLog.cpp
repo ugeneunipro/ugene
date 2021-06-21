@@ -50,7 +50,7 @@ QList<LogMessage *> GTLogTracer::getMessages() {
     return LogCache::getAppGlobalInstance()->messages;
 }
 
-bool GTLogTracer::checkMessage(const QString& s) {
+bool GTLogTracer::checkMessage(const QString &s) {
     QList<LogMessage *> messages = getMessages();
     QList<QString> textMessages;
     foreach (LogMessage *message, messages) {

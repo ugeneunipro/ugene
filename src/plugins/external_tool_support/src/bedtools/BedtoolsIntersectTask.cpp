@@ -95,19 +95,19 @@ const QStringList BedtoolsIntersectTask::getParameters() const {
     res << "-b" << settings.inputB;
 
     switch (settings.report) {
-    case BedtoolsIntersectSettings::Report_OverlapedA:
-        if (settings.unique) {
-            res << "-u";
-        } else {
+        case BedtoolsIntersectSettings::Report_OverlapedA:
+            if (settings.unique) {
+                res << "-u";
+            } else {
+                res << "-f" << QString::number(settings.minOverlap, 'g', 9);
+            }
+            res << "-wa";
+            break;
+        case BedtoolsIntersectSettings::Report_NonOverlappedA:
+            res << "-v";
+            break;
+        case BedtoolsIntersectSettings::Report_Intervals:
             res << "-f" << QString::number(settings.minOverlap, 'g', 9);
-        }
-        res << "-wa";
-        break;
-    case BedtoolsIntersectSettings::Report_NonOverlappedA:
-        res << "-v";
-        break;
-    case BedtoolsIntersectSettings::Report_Intervals:
-        res << "-f" << QString::number(settings.minOverlap, 'g', 9);
     }
     return res;
 }
@@ -218,7 +218,7 @@ void BedtoolsIntersectAnnotationsByEntityTask::renameAnnotationsForBed(Annotatio
     if (isNumber) {
         group->setName(group->getName() + RENAME_STRING);
     }
-    foreach(AnnotationGroup* g, group->getSubgroups()) {
+    foreach (AnnotationGroup *g, group->getSubgroups()) {
         renameAnnotationsForBed(g);
     }
 }

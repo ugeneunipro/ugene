@@ -464,14 +464,14 @@ bool SharedConnectionsDialog::checkDbInitializationState(const U2DbiRef &ref, bo
         int userInput = QMessageBox::question(this, tr(NON_INITED_DB_MB_TITLE), tr(NON_INITED_DB_MB_TEXT), QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes);
         QMessageBox::StandardButton answer = static_cast<QMessageBox::StandardButton>(userInput);
         switch (answer) {
-        case QMessageBox::No:
-            initializationRequired = false;
-            break;
-        case QMessageBox::Yes:
-            initializationRequired = true;
-            break;
-        default:
-            FAIL("Unexpected user answer detected!", false);
+            case QMessageBox::No:
+                initializationRequired = false;
+                break;
+            case QMessageBox::Yes:
+                initializationRequired = true;
+                break;
+            default:
+                FAIL("Unexpected user answer detected!", false);
         }
         return false;
     }

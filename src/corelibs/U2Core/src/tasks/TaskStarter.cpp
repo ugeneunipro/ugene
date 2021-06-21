@@ -27,17 +27,17 @@ namespace U2 {
 
 void TaskStarter::registerTask() {
     switch (condition) {
-    case NoProject:
-        if (NULL != AppContext::getProject()) {
-            delete t;
-            t = NULL;
-            return;
-        }
-        break;
+        case NoProject:
+            if (NULL != AppContext::getProject()) {
+                delete t;
+                t = NULL;
+                return;
+            }
+            break;
 
-    case NoCondition:
-    default:
-        break;
+        case NoCondition:
+        default:
+            break;
     }
 
     if (t) {
