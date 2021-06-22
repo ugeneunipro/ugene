@@ -32,7 +32,7 @@ class WorkflowRunFromCMDLineBase : public Task {
     Q_OBJECT
 public:
     WorkflowRunFromCMDLineBase();
-    virtual ~WorkflowRunFromCMDLineBase();
+    virtual ~WorkflowRunFromCMDLineBase() = default;
     QList<Task *> onSubTaskFinished(Task *subTask);
     void run();
 
@@ -44,7 +44,7 @@ private:
     void processLoadSchemaTask(const QString &schemaName, int optionIdx);
 
 protected:
-    Schema *schema;
+    std::shared_ptr<Schema> schema;
     int optionsStartAt;
     LoadWorkflowTask *loadTask;
     Task *workflowRunTask;

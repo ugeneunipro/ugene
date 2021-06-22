@@ -43,14 +43,14 @@ public:
 class U2LANG_EXPORT SchemaEstimationTask : public Task {
     Q_OBJECT
 public:
-    SchemaEstimationTask(const Schema *schema, const Metadata *meta);
+    SchemaEstimationTask(std::shared_ptr<const Schema> schema, const Metadata *meta);
 
     void run();
 
     EstimationResult result() const;
 
 private:
-    const Schema *schema;
+    const std::shared_ptr<const Schema> schema;
     const Metadata *meta;
     EstimationResult er;
 };
@@ -58,7 +58,7 @@ private:
 class ExtimationsUtilsClass : public QObject {
     Q_OBJECT
 public:
-    ExtimationsUtilsClass(QScriptEngine &engine, const Schema *schema);
+    ExtimationsUtilsClass(QScriptEngine &engine, std::shared_ptr<const Schema> schema);
 
 public slots:
     QScriptValue attributeValue(const QString &attrStr);
@@ -76,7 +76,7 @@ private:
 
 private:
     QScriptEngine &engine;
-    const Schema *schema;
+    const std::shared_ptr<const Schema> schema;
 };
 
 }    // namespace Workflow

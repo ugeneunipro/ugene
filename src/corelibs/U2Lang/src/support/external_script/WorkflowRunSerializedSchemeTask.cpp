@@ -58,10 +58,6 @@ WorkflowRunSerializedSchemeTask::WorkflowRunSerializedSchemeTask(const QString &
     }
 }
 
-WorkflowRunSerializedSchemeTask::~WorkflowRunSerializedSchemeTask() {
-    delete scheme;
-}
-
 QList<Task *> WorkflowRunSerializedSchemeTask::onSubTaskFinished(Task *subtask) {
     Q_ASSERT(NULL != subtask);
     QList<Task *> res;
@@ -110,7 +106,7 @@ LoadWorkflowTask *WorkflowRunSerializedSchemeTask::createLoadSchemeTask() {
         return NULL;
     }
 
-    scheme = new Schema();
+    scheme = std::make_shared<Schema>();
     scheme->setDeepCopyFlag(true);
     return new LoadWorkflowTask(scheme, NULL, approvedPath);
 }

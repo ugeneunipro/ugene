@@ -40,25 +40,25 @@ public:
     static const QString SCHEMA_PATHS_SETTINGS_TAG;
 
 public:
-    SaveWorkflowSceneTask(Schema *schema, const Metadata &meta);
+    SaveWorkflowSceneTask(std::shared_ptr<Schema> schema, const Metadata &meta);
     virtual void run();
 
 private:
-    Schema *schema;
+    const std::shared_ptr<Schema> schema;
     Metadata meta;
 };
 
 class LoadWorkflowSceneTask : public Task {
     Q_OBJECT
 public:
-    LoadWorkflowSceneTask(Schema *schema, Metadata *meta, WorkflowScene *scene, const QString &url, bool noUrl = false, bool disableWizardAutorun = false);
+    LoadWorkflowSceneTask(std::shared_ptr<Schema> schema, Metadata *meta, WorkflowScene *scene, const QString &url, bool noUrl = false, bool disableWizardAutorun = false);
     virtual void run();
     virtual Task::ReportResult report();
 
 private:
     void resetSceneAndScheme();
 
-    Schema *schema;
+    const std::shared_ptr<Schema> schema;
     Metadata *meta;
     QPointer<WorkflowScene> scene;
     QString url;

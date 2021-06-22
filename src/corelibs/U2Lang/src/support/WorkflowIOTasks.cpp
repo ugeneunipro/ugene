@@ -38,9 +38,9 @@ using namespace Workflow;
 /************************************
  * LoadWorkflowTask
  ************************************/
-LoadWorkflowTask::LoadWorkflowTask(Schema *s, Workflow::Metadata *m, const QString &u)
+LoadWorkflowTask::LoadWorkflowTask(std::shared_ptr<Schema> s, Workflow::Metadata *m, const QString &u)
     : Task(tr("Loading workflow"), TaskFlag_None),
-      url(u), schema(s), meta(m) {
+      url(u), schema(move(s)), meta(m) {
     assert(schema != NULL);
 }
 
@@ -69,7 +69,7 @@ Task::ReportResult LoadWorkflowTask::report() {
 
     QString err;
     if (format == HR) {
-        err = HRSchemaSerializer::string2Schema(rawData, schema, meta, &remap);
+        err = HRSchemaSerializer::string2Schema(rawData, schema.get(), meta, &remap);
     } else if (format == XML) {
         setError(tr("Sorry! XML workflow format is obsolete and not supported. You can create new workflow in GUI mode"
                     " or write it by yourself. Check our documentation for details!"));

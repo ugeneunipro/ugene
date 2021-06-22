@@ -126,7 +126,7 @@ void WorkflowDocFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &) 
     assert(wo && wo->getView());
 
     const Metadata &meta = wo->getView()->getMeta();
-    const Schema *schema = wo->getView()->getSchema();
+    const std::shared_ptr<Schema> schema = wo->getView()->getSchema();
     QByteArray rawData = HRSchemaSerializer::schema2String(*schema, &meta).toUtf8();
     int nWritten = 0;
     int nTotal = rawData.size();
