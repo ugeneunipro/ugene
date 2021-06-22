@@ -33,6 +33,12 @@ class HI_EXPORT GTMainWindow {
 public:
     static QList<QMainWindow *> getMainWindows(GUITestOpStatus &os);
     static QList<QWidget *> getMainWindowsAsWidget(GUITestOpStatus &os);
+
+    /** Minimizes main window: calls QMainWindow->showMinimized safely. */
+    static void minimizeMainWindow(GUITestOpStatus &os, QMainWindow *mainWindow);
+
+    /** Maximizes main window: calls QMainWindow->showMaximized safely. */
+    static void maximizeMainWindow(GUITestOpStatus &os, QMainWindow *mainWindow);
 };
 
 }    // namespace HI

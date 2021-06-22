@@ -30,6 +30,7 @@
 #include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTListWidget.h>
+#include <primitives/GTMainWindow.h>
 #include <primitives/GTPlainTextEdit.h>
 #include <primitives/GTRadioButton.h>
 #include <primitives/GTSpinBox.h>
@@ -125,7 +126,6 @@
 #include "runnables/ugene/plugins/weight_matrix/PwmSearchDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/CreateElementWithCommandLineToolFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/CreateElementWithScriptDialogFiller.h"
-#include "runnables/ugene/plugins/workflow_designer/StartupDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/clustalw/ClustalWDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/kalign/KalignDialogFiller.h"
 #include "runnables/ugene/plugins_3rdparty/umuscle/MuscleDialogFiller.h"
@@ -3092,65 +3092,51 @@ GUI_TEST_CLASS_DEFINITION(test_0965) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0967_1) {
-    /* 1. Open any document
- *   Expected state: Project View showed.
- * 2. Minimize and then restore the main window.
- *   Expected state: Project View should be not hidden.
-*/
+    // 1. Open any document: Project View shown.
+    // 2. Minimize and then restore the main window:  Project View should stay visible.
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTUtilsProject::checkProject(os);
-    CHECK_SET_ERR(true == GTUtilsProjectTreeView::isVisible(os), "ProjectTreeView is not visible (check #1)");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    // Check that the project is visible.
+    CHECK_SET_ERR(GTUtilsProjectTreeView::isVisible(os), "ProjectTreeView is not visible (check #1)");
 
-    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
-    mw->showMinimized();
-    GTGlobals::sleep();
-    mw->showMaximized();
-    GTGlobals::sleep();
-    GTUtilsProject::checkProject(os);
-    CHECK_SET_ERR(true == GTUtilsProjectTreeView::isVisible(os), "ProjectTreeView is not visible (check #2)");
+    QMainWindow *mainWindow = AppContext::getMainWindow()->getQMainWindow();
+    GTMainWindow::minimizeMainWindow(os, mainWindow);
+    GTMainWindow::maximizeMainWindow(os, mainWindow);
+
+    // Check that the project is still visible.
+    CHECK_SET_ERR(GTUtilsProjectTreeView::isVisible(os), "ProjectTreeView is not visible (check #2)");
 }
+
 GUI_TEST_CLASS_DEFINITION(test_0967_2) {
-    /* 1. Open Log view
- *   Expected state: Log view showed.
- * 2. Minimize and then restore the main window.
- *   Expected state: Log view should be not hidden.
-*/
+    // 1. Open Log view: Log view shown.
+    // 2. Minimize and then restore the main window: log view should be not hidden.
+
     GTKeyboardDriver::keyClick('3', Qt::AltModifier);
-    GTGlobals::sleep();
     QWidget *logView = GTWidget::findWidget(os, "dock_log_view");
-    CHECK_SET_ERR(NULL != logView, "Log View is NULL (check #1)");
-    CHECK_SET_ERR(true == logView->isVisible(), "Log View is not visible (check #1)");
+    CHECK_SET_ERR(logView->isVisible(), "Log View is not visible (check #1)");
 
-    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
-    mw->showMinimized();
-    GTGlobals::sleep();
-    mw->showMaximized();
-    GTGlobals::sleep();
+    QMainWindow *mainWindow = AppContext::getMainWindow()->getQMainWindow();
+    GTMainWindow::minimizeMainWindow(os, mainWindow);
+    GTMainWindow::maximizeMainWindow(os, mainWindow);
+
     logView = GTWidget::findWidget(os, "dock_log_view");
-    CHECK_SET_ERR(NULL != logView, "Log View is NULL (check #2)");
-    CHECK_SET_ERR(true == logView->isVisible(), "Log View is not visible (check #2)");
+    CHECK_SET_ERR(logView->isVisible(), "Log View is not visible (check #2)");
 }
-GUI_TEST_CLASS_DEFINITION(test_0967_3) {
-    /* 1. Open Tasks view
- *   Expected state: Tasks view showed.
- * 2. Minimize and then restore the main window.
- *   Expected state: Tasks view should be not hidden
-*/
-    GTKeyboardDriver::keyClick('2', Qt::AltModifier);
-    GTGlobals::sleep();
-    QWidget *logView = GTWidget::findWidget(os, "taskViewTree");
-    CHECK_SET_ERR(NULL != logView, "taskViewTree is NULL (check #1)");
-    CHECK_SET_ERR(true == logView->isVisible(), "taskViewTree is not visible (check #1)");
 
-    QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
-    mw->showMinimized();
-    GTGlobals::sleep();
-    mw->showMaximized();
-    GTGlobals::sleep();
-    logView = GTWidget::findWidget(os, "taskViewTree");
-    CHECK_SET_ERR(NULL != logView, "taskViewTree is NULL (check #2)");
-    CHECK_SET_ERR(true == logView->isVisible(), "taskViewTree is not visible (check #2)");
+GUI_TEST_CLASS_DEFINITION(test_0967_3) {
+    // 1. Open Tasks view: expected state: Tasks View shown.
+    // 2. Minimize and then restore the main window:  Tasks View should be not hidden.
+
+    GTKeyboardDriver::keyClick('2', Qt::AltModifier);
+    QWidget *tasksView = GTWidget::findWidget(os, "taskViewTree");
+    CHECK_SET_ERR(tasksView->isVisible(), "taskViewTree is not visible (check #1)");
+
+    QMainWindow *mainWindow = AppContext::getMainWindow()->getQMainWindow();
+    GTMainWindow::minimizeMainWindow(os, mainWindow);
+    GTMainWindow::maximizeMainWindow(os, mainWindow);
+
+    tasksView = GTWidget::findWidget(os, "taskViewTree");
+    CHECK_SET_ERR(tasksView->isVisible(), "taskViewTree is not visible (check #2)");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0969) {
