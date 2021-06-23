@@ -17,6 +17,9 @@ export UGENE_TESTS_PATH="${SOURCE_DIR}/tests"
 export USE_CRASH_HANDLER=0
 export UGENE_DEV=1
 
+# Disable check for updates. TODO: rename.
+export UGENE_GUI_TEST=1
+
 # Make UGENE dump all logs to console.
 export UGENE_PRINT_TO_CONSOLE=true
 

@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Test that UTF-8 raw sequence file can be read correctly. -->
+    <load-document index="doc" url="fasta/utf8.fa" io="local_file" format="raw"/>
+
+    <check-num-objects doc="doc" value="1"/>
+    <check-document-object-types doc="doc" value="OT_SEQUENCE"/>
+
+    <find-object-by-name index="obj" doc="doc" name="utf8" type="OT_SEQUENCE"/>
+    <check-sequence-part obj="obj" value="ACCTTCTCTAAAGAGATGA" seqstart="0"/>
+</multi-test>

@@ -1,0 +1,10 @@
+<multi-test>
+    <!--
+        Open _common_data/regression/7273/web-clustalo.aln.
+        Check that 61st characters are not horizontal tabs.
+    -->
+    <load-document index="doc" url="regression/7273/web-clustalo.aln" io="local_file" format="clustal"/>
+    <find-object-by-name index="obj" doc="doc" name="web-clustalo" type="OT_MSA"/>
+    <check-Msequence-part obj="obj" value="--" seqstart="59" seqname="AZS07871.1"/>
+    <check-Msequence-part obj="obj" value="VS" seqstart="59" seqname="QHZ59726.1"/>
+</multi-test>

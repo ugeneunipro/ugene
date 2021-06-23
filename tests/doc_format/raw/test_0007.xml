@@ -1,0 +1,13 @@
+<multi-test>
+
+    <!-- Test that UTF-8 raw sequence file can be read correctly in split mode . -->
+    <load-document index="doc" url="fasta/utf8.fa" io="local_file" format="raw" sequence-mode="split"/>
+
+    <check-num-objects doc="doc" value="2"/>
+    <check-document-object-types doc="doc" value="OT_SEQUENCE,OT_SEQUENCE"/>
+
+    <find-object-by-name index="obj1" doc="doc" name="utf8" type="OT_SEQUENCE"/>
+    <find-object-by-name index="obj2" doc="doc" name="utf8_1" type="OT_SEQUENCE"/>
+    <check-sequence-part obj="obj1" value="ACCTTCTCTA" seqstart="0"/>
+    <check-sequence-part obj="obj2" value="AAGAGATGA" seqstart="0"/>
+</multi-test>
