@@ -49,7 +49,10 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
+#include "GTUtilsWizard.h"
+#include "GTUtilsWorkflowDesigner.h"
 #include "api/GTMSAEditorStatusWidget.h"
+#include "base_dialogs/MessageBoxFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
@@ -57,6 +60,8 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
 #include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 namespace U2 {
@@ -519,6 +524,33 @@ GUI_TEST_CLASS_DEFINITION(test_7246) {
     CHECK_SET_ERR(alphabet.contains("RNA"), "Alphabet is not RNA: " + alphabet);
     sequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
     CHECK_SET_ERR(sequence == "UUUNNNNNNNNNNUNNNNNANNNGNNNANNNNANNNNNNNGUNNNUNGNNANNUGGANGN", "Not a RNA sequence: " + sequence);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7247) {
+    // Open WD.
+    // Load scenario sample "Remote BLASTing".
+    // Add any fasta file as input.
+    // Click Next, Next, Apply.
+    // Close WD tab.
+    // Question appears: "The workflow has been modified. Do you want to save changes?". Click Save.
+    // In "Workflow properties" dialog add location. Click OK.
+    //    Expected: UGENE doesn't crash.
+    class RemoteBlastWizardScenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus &os) override {
+            GTUtilsWizard::setInputFiles(os, {{dataDir + "samples/FASTA/human_T1.fa"}});
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Apply);
+        }
+    };
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Remote BLASTing Wizard", new RemoteBlastWizardScenario()));
+    GTUtilsWorkflowDesigner::addSample(os, "Remote BLASTing");
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Save"));
+    GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os,
+        testDir + "_common_data/scenarios/sandbox/7247.uwl", "7247"));
+    GTUtilsMdi::click(os, GTGlobals::Close);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7293) {
