@@ -24,6 +24,7 @@
 #include "../McaEditorSequenceArea.h"
 #include "../McaEditorStatusBar.h"
 
+#include <U2Core/DocumentModel.h>
 #include <U2Core/McaDbiUtils.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
@@ -64,6 +65,7 @@ void McaAlternativeMutationsWidget::init(MultipleAlignmentObject* _maObject,
 
     connect(mutationsGroupBox, SIGNAL(toggled(bool)), this, SLOT(sl_updateAlternativeMutations()));
     connect(updateMutationsPushButton, SIGNAL(pressed()), this, SLOT(sl_updateAlternativeMutations()));
+    connect(mcaObject->getDocument(), SIGNAL(si_lockedStateChanged()), this, SLOT(sl_updateLockState()));
 }
 
 void McaAlternativeMutationsWidget::sl_updateAlternativeMutations() {
@@ -80,6 +82,10 @@ void McaAlternativeMutationsWidget::sl_updateAlternativeMutations() {
 
 const QString McaAlternativeMutationsWidget::getAlternativeMutationsCheckedId() {
     return ALTERNATIVE_MUTATIONS_CHECKED;
+}
+
+void McaAlternativeMutationsWidget::sl_updateLockState() {
+    mutationsGroupBox->setDisabled(mcaObject->getDocument()->isStateLocked());
 }
 
 void McaAlternativeMutationsWidget::showEvent(QShowEvent* e) {

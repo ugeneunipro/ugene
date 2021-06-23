@@ -59,13 +59,17 @@ public:
 private slots:
     /*
      * Update the sequence area and write new alternative mutations settings to the database
-     **/
+     */
     void sl_updateAlternativeMutations();
+    /*
+     * Lock widget if the document is locked, unlock otherwise
+     */
+    void sl_updateLockState();
 
 private:
     void showEvent(QShowEvent* e) override;
     /*
-     * Update GUI with values from the database
+     * Updates GUI with values from the database
      **/
     void updateValuesFromDb();
     /*

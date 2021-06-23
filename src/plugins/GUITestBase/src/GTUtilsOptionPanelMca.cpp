@@ -25,6 +25,7 @@
 #include <primitives/GTSlider.h>
 #include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
+#include <utils/GTThread.h>
 
 #include <QApplication>
 #include <QComboBox>
@@ -187,7 +188,7 @@ void GTUtilsOptionPanelMca::showAlternativeMutations(HI::GUITestOpStatus &os, bo
     GTUtilsOptionPanelMca::openTab(os, Tabs::Reads, parent);
     GTGroupBox::setChecked(os, "mutationsGroupBox", show, parent);
     if (!show) {
-        GTGlobals::sleep(1000);
+        GTThread::waitForMainThread();
         return;
     }
 
@@ -198,7 +199,7 @@ void GTUtilsOptionPanelMca::showAlternativeMutations(HI::GUITestOpStatus &os, bo
     }
 
     GTWidget::click(os, GTWidget::findExactWidget<QPushButton *>(os, "updateMutationsPushButton", parent));
-    GTGlobals::sleep(1000);
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 

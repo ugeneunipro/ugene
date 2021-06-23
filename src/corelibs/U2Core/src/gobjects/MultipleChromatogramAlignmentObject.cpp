@@ -274,7 +274,7 @@ void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAl
             }
 
             double minimumThresholdValue = (double)res.second.value / res.first.value * 100;
-            char newChar = 'A';
+            char newChar;
             if (minimumThresholdValue < threshold || !showAlternativeMutations) {
                 newChar = DNAChromatogram::TRACE_CHARACTER[res.first.trace];
             } else {

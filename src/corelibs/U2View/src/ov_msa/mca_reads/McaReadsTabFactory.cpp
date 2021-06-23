@@ -32,7 +32,7 @@
 namespace U2 {
 
 const QString McaReadsTabFactory::GROUP_ID = "OP_MCA_READS";
-const QString McaReadsTabFactory::GROUP_ICON_STR = ":core/images/todo.png";
+const QString McaReadsTabFactory::GROUP_ICON_STR = ":core/images/graphs.png";
 const QString McaReadsTabFactory::GROUP_DOC_PAGE = "TODO";
 
 McaReadsTabFactory::McaReadsTabFactory() {
@@ -54,12 +54,12 @@ QWidget* McaReadsTabFactory::createWidget(GObjectView* objView, const QVariantMa
     layout->setContentsMargins(0, 0, 0, 0);
     widget->setLayout(layout);
 
-    McaAlternativeMutationsWidget* alternativeMutationsWgt = new McaAlternativeMutationsWidget(widget);
+    auto alternativeMutationsWgt = new McaAlternativeMutationsWidget(widget);
     auto ui = ma->getUI();
     SAFE_POINT(ui != nullptr, "UI isn't found", nullptr);
 
     alternativeMutationsWgt->init(ma->getMaObject(), ui->getSequenceArea(), ui->getStatusBar());
-    ShowHideSubgroupWidget* alternativeMutations = new ShowHideSubgroupWidget("ALTERNATIVE_MUTATIONS_MODE", tr("Alternative mutations"), alternativeMutationsWgt, true);
+    auto alternativeMutations = new ShowHideSubgroupWidget("ALTERNATIVE_MUTATIONS_MODE", tr("Alternative mutations"), alternativeMutationsWgt, true);
     layout->addWidget(alternativeMutations);
 
     return widget;
