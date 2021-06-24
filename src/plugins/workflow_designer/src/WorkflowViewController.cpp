@@ -270,8 +270,7 @@ WorkflowView *WorkflowView::openWD(WorkflowGObject *go) {
 }
 
 WorkflowView::WorkflowView(WorkflowGObject *go)
-    : MWMDIWindow(tr("Workflow Designer")), running(false), sceneRecreation(false), go(go),
-      schema(QSharedPointer<Schema>::create()), currentProto(NULL), currentActor(NULL),
+    : MWMDIWindow(tr("Workflow Designer")), running(false), sceneRecreation(false), go(go), schema(std::make_shared<Schema>()), currentProto(NULL), currentActor(NULL),
       pasteCount(0), debugInfo(new WorkflowDebugStatus(this)), debugActions(), loadWorkflowSceneTask(nullptr) {
     scriptingMode = WorkflowSettings::getScriptingMode();
     elementsMenu = NULL;
@@ -2319,7 +2318,7 @@ void WorkflowView::sl_updateSchema() {
     schema->update();
 }
 
-QSharedPointer<Schema> WorkflowView::getSchema() const {
+std::shared_ptr<Schema> WorkflowView::getSchema() const {
     return schema;
 }
 

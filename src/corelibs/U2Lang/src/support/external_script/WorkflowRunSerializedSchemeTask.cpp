@@ -106,7 +106,7 @@ LoadWorkflowTask *WorkflowRunSerializedSchemeTask::createLoadSchemeTask() {
         return NULL;
     }
 
-    scheme = QSharedPointer<Schema>::create();
+    scheme = std::make_shared<Schema>();
     scheme->setDeepCopyFlag(true);
     return new LoadWorkflowTask(scheme, NULL, approvedPath);
 }

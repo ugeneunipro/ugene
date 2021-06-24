@@ -95,7 +95,7 @@ LoadWorkflowTask *WorkflowRunFromCMDLineBase::prepareLoadSchemaTask(const QStrin
         return NULL;
     }
 
-    schema = QSharedPointer<Schema>::create();
+    schema = std::make_shared<Schema>();
     schema->setDeepCopyFlag(true);
     return new LoadWorkflowTask(schema, NULL, pathToSchema);
 }
@@ -154,7 +154,7 @@ QList<Task *> WorkflowRunFromCMDLineBase::onSubTaskFinished(Task *subTask) {
     assert(!hasError());    // if error, we won't be here
 
     if (loadTask == subTask) {
-        const QSharedPointer<Schema> schema = loadTask->getSchema();
+        const std::shared_ptr<Schema> schema = loadTask->getSchema();
         assert(schema != NULL);
         remapping = loadTask->getRemapping();
 

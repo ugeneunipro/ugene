@@ -44,9 +44,7 @@ class WorkflowDebugStatus;
 class BreakpointManagerView : public QWidget {
     Q_OBJECT
 public:
-    BreakpointManagerView(WorkflowDebugStatus *initDebugInfo, const QSharedPointer<Schema> &initScheme,
-        QGraphicsScene *scene, QWidget *parent = NULL);
-
+    BreakpointManagerView(WorkflowDebugStatus *initDebugInfo, std::shared_ptr<Schema> initScheme, QGraphicsScene *scene, QWidget *parent = NULL);
     void onBreakpointReached(ActorId actor);
 
     QAction *getNewBreakpointAction() {
@@ -104,7 +102,7 @@ private:
 
     WorkflowDebugStatus *debugInfo;
     QGraphicsScene *scene;
-    const QSharedPointer<Schema> scheme;
+    const std::shared_ptr<Schema> scheme;
 
     QTreeWidget *breakpointsList;
     QMap<QTreeWidgetItem *, ActorId> actorConnections;

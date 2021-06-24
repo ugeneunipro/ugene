@@ -44,7 +44,7 @@ private:
     void processLoadSchemaTask(const QString &schemaName, int optionIdx);
 
 protected:
-    QSharedPointer<Schema> schema;
+    std::shared_ptr<Schema> schema;
     int optionsStartAt;
     LoadWorkflowTask *loadTask;
     Task *workflowRunTask;

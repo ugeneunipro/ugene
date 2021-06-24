@@ -37,10 +37,10 @@ using namespace Workflow;
 class U2LANG_EXPORT LoadWorkflowTask : public Task {
     Q_OBJECT
 public:
-    LoadWorkflowTask(const QSharedPointer<Schema> &schema, Metadata *meta, const QString &url);
+    LoadWorkflowTask(std::shared_ptr<Schema> schema, Metadata *meta, const QString &url);
     virtual void run();
     Task::ReportResult report();
-    QSharedPointer<Schema> getSchema() const {
+    std::shared_ptr<Schema> getSchema() const {
         return schema;
     }
     QString getURL() const {
@@ -62,7 +62,7 @@ public:
 
 protected:
     const QString url;
-    const QSharedPointer<Schema> schema;
+    const std::shared_ptr<Schema> schema;
     Metadata *meta;
     QString rawData;
     FileFormat format;

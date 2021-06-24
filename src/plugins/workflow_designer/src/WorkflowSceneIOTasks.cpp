@@ -44,8 +44,8 @@ using namespace Workflow;
  **********************************/
 const QString SaveWorkflowSceneTask::SCHEMA_PATHS_SETTINGS_TAG = "workflow_settings/schema_paths";
 
-SaveWorkflowSceneTask::SaveWorkflowSceneTask(const QSharedPointer<Schema> &s, const Metadata &m)
-    : Task(tr("Save workflow scene task"), TaskFlag_None), schema(s), meta(m) {
+SaveWorkflowSceneTask::SaveWorkflowSceneTask(std::shared_ptr<Schema> s, const Metadata &m)
+    : Task(tr("Save workflow scene task"), TaskFlag_None), schema(move(s)), meta(m) {
     GCOUNTER(cvar, "SaveWorkflowSceneTask");
     assert(schema != NULL);
 
@@ -67,10 +67,9 @@ void SaveWorkflowSceneTask::run() {
 /**********************************
  * LoadWorkflowSceneTask
  **********************************/
-LoadWorkflowSceneTask::LoadWorkflowSceneTask(const QSharedPointer<Schema> &_schema, Metadata *_meta,
-    WorkflowScene *_scene, const QString &_url, bool _noUrl, bool _disableWizardAutorun)
+LoadWorkflowSceneTask::LoadWorkflowSceneTask(std::shared_ptr<Schema> _schema, Metadata *_meta, WorkflowScene *_scene, const QString &_url, bool _noUrl, bool _disableWizardAutorun)
     : Task(tr("Load workflow scene"), TaskFlag_None),
-      schema(_schema),
+      schema(move(_schema)),
       meta(_meta),
       scene(_scene),
       url(_url),

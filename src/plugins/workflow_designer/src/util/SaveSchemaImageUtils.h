@@ -83,7 +83,7 @@ private:
 
 private:
     QString schemaPath;
-    QSharedPointer<Schema> schema;
+    std::shared_ptr<Schema> schema;
     Metadata meta;
     QString imageLink;
 

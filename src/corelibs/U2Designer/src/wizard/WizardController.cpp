@@ -66,11 +66,11 @@
 
 namespace U2 {
 
-WizardController::WizardController(const QSharedPointer<Schema> &s, const Wizard *w)
-    : QObject(), schema(s), wizard(w), runAfterApply(false) {
+WizardController::WizardController(std::shared_ptr<Schema> s, const Wizard *w)
+    : QObject(), schema(move(s)), wizard(w), runAfterApply(false) {
     rejected = false;
     broken = false;
-    currentActors = s->getProcesses();
+    currentActors = schema->getProcesses();
     vars = w->getVariables();
 }
 

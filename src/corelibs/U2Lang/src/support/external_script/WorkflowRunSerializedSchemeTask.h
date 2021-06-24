@@ -59,7 +59,7 @@ public:
 private:
     LoadWorkflowTask *createLoadSchemeTask();
 
-    QSharedPointer<Workflow::Schema> scheme;
+    std::shared_ptr<Workflow::Schema> scheme;
     LoadWorkflowTask *loadTask;
     WorkflowRunTask *runTask;
 };
