@@ -20,15 +20,19 @@
  */
 
 #include "PCRPrimerDesignForDNAAssemblyOPWidget.h"
+#include "tasks/PCRPrimerDesignForDNAAssemblyTask.h"
 
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/L10n.h>
+#include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/LastUsedDirHelper.h>
+#include <U2Gui/PrimerLineEdit.h>
 #include <U2Gui/U2FileDialog.h>
 #include <U2Gui/U2WidgetStateStorage.h>
 
@@ -55,9 +59,6 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     parametersMinMaxSpinBoxes = { { sbMinRequireGibbs, sbMaxRequireGibbs },
                                   { spMinRequireMeltingTeml, spMaxRequireMeltingTeml },
                                   { spMinRequireOverlapLength, spMaxRequireOverlapLength },
-                                  { sbMinExcludeGibbs, sbMaxExcludeGibbs },
-                                  { spMinExcludeMeltingTeml, spMaxExcludeMeltingTeml },
-                                  { spMinExcludeOverlapLength, spMaxExcludeOverlapLength },
                                   { sbLeftAreaStart, sbLeftAreaEnd },
                                   { sbRightAreaStart, sbRightAreaEnd } };
 
@@ -118,7 +119,55 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
-    //TODO
+    PCRPrimerDesignForDNAAssemblyTaskSettings settings;
+    settings.forwardUserPrimer = leForwardPrimer->text();
+    settings.reverseUserPrimer = leReversePrimer->text();
+
+    settings.gibbsFreeEnergy.minValue = sbMinRequireGibbs->value();
+    settings.gibbsFreeEnergy.maxValue = sbMaxRequireGibbs->value();
+    settings.meltingPoint.minValue = spMinRequireMeltingTeml->value();
+    settings.meltingPoint.maxValue = spMaxRequireMeltingTeml->value();
+    settings.overlapLength.minValue = spMinRequireOverlapLength->value();
+    settings.overlapLength.maxValue = spMaxRequireOverlapLength->value();
+
+    settings.gibbsFreeEnergyExclude = sbExcludeGibbs->value();
+    settings.meltingPointExclude = spExcludeMeltingTeml->value();
+    settings.overlapLengthExclude = spExcludeOverlapLength->value();
+
+    if (backbone5->isChecked()) {
+        settings.insertTo = PCRPrimerDesignForDNAAssemblyTaskSettings::BackboneBearings::Backbone5;
+    } else {
+        settings.insertTo = PCRPrimerDesignForDNAAssemblyTaskSettings::BackboneBearings::Backbone3;
+    }
+    settings.bachbone5Length = sbBackbone5Length->value();
+    settings.bachbone3Length = sbBackbone3Length->value();
+
+    settings.leftArea.startPos = (int)(sbLeftAreaStart->value()) - 1;
+    settings.leftArea.length = (int)sbLeftAreaEnd->value() - (int)sbLeftAreaStart->value();
+    settings.rightArea.startPos = (int)(sbRightAreaStart->value()) - 1;
+    settings.rightArea.length = (int)sbRightAreaEnd->value() - (int)sbRightAreaStart->value();
+
+    settings.backboneSequenceUrl = leBackboneFilePath->text();
+
+    settings.generateSequenceUrl = leRandomSequencesFilePath->text();
+
+    settings.otherSequencesInPcrUrl = leOtherSequencesInPcrFilePath->text();
+
+    auto activeSequenceContext = annDnaView->getActiveSequenceContext();
+    SAFE_POINT(activeSequenceContext != nullptr, L10N::nullPointerError("ADVSequenceObjectContext"), );
+
+    U2SequenceObject* sequenceObject = activeSequenceContext->getSequenceObject();
+    SAFE_POINT(NULL != sequenceObject, L10N::nullPointerError("Sequence Object"), );
+
+    U2OpStatus2Log os;
+    auto sequence = sequenceObject->getWholeSequenceData(os);
+    CHECK_OP(os, );
+
+    auto task = new PCRPrimerDesignForDNAAssemblyTask(settings, sequence);
+    auto ts = AppContext::getTaskScheduler();
+    SAFE_POINT(ts != nullptr, L10N::nullPointerError("TaskScheduler"), );
+
+    ts->registerTopLevelTask(task);
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually() {

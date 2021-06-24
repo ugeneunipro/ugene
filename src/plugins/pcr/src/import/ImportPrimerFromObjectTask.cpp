@@ -32,8 +32,6 @@
 #include <U2Core/U2DbiUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "PrimerLibrary.h"
-
 namespace U2 {
 
 ImportPrimerFromObjectTask::ImportPrimerFromObjectTask(GObject* object)
