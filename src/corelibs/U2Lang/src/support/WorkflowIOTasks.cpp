@@ -38,9 +38,9 @@ using namespace Workflow;
 /************************************
  * LoadWorkflowTask
  ************************************/
-LoadWorkflowTask::LoadWorkflowTask(std::shared_ptr<Schema> s, Workflow::Metadata *m, const QString &u)
+LoadWorkflowTask::LoadWorkflowTask(const QSharedPointer<Schema> &s, Workflow::Metadata *m, const QString &u)
     : Task(tr("Loading workflow"), TaskFlag_None),
-      url(u), schema(move(s)), meta(m) {
+      url(u), schema(s), meta(m) {
     assert(schema != NULL);
 }
 

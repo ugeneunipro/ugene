@@ -160,7 +160,7 @@ void DumpHelpTask::prepare() {
         }
 
         // will be deleted in sl_loadSchemaStateChanged
-        const std::shared_ptr<Schema> schema = std::make_shared<Schema>();
+        const QSharedPointer<Schema> schema = QSharedPointer<Schema>::create();
         Metadata *meta = new Metadata();
 
         schema->setDeepCopyFlag(true);
@@ -230,7 +230,7 @@ QList<Task *> DumpHelpTask::onSubTaskFinished(Task *subTask) {
     LoadWorkflowTask *loadTask = qobject_cast<LoadWorkflowTask *>(subTask);
     assert(loadTask != NULL);
 
-    const std::shared_ptr<Schema> schema = loadTask->getSchema();
+    const QSharedPointer<Schema> schema = loadTask->getSchema();
     Metadata *meta = loadTask->getMetadata();
 
     dumpSchemaMetadata(meta);

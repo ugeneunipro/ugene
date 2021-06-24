@@ -40,8 +40,8 @@ EstimationResult::EstimationResult() {
     cpuCount = -1;
 }
 
-SchemaEstimationTask::SchemaEstimationTask(std::shared_ptr<const Schema> _schema, const Metadata *_meta)
-    : Task(tr("Workflow estimation task"), TaskFlag_None), schema(move(_schema)), meta(_meta) {
+SchemaEstimationTask::SchemaEstimationTask(const QSharedPointer<const Schema> &_schema, const Metadata *_meta)
+    : Task(tr("Workflow estimation task"), TaskFlag_None), schema(_schema), meta(_meta) {
 }
 
 void SchemaEstimationTask::run() {
@@ -75,8 +75,8 @@ EstimationResult SchemaEstimationTask::result() const {
 /************************************************************************/
 /* Utils */
 /************************************************************************/
-ExtimationsUtilsClass::ExtimationsUtilsClass(QScriptEngine &_engine, std::shared_ptr<const Schema> _schema)
-    : engine(_engine), schema(move(_schema)) {
+ExtimationsUtilsClass::ExtimationsUtilsClass(QScriptEngine &_engine, const QSharedPointer<const Schema> &_schema)
+    : engine(_engine), schema(_schema) {
 }
 
 QStringList ExtimationsUtilsClass::parseTokens(const QString &attrStr, U2OpStatus &os) {

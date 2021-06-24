@@ -191,7 +191,7 @@ public:
     WorkflowScene *getScene() const {
         return scene;
     }
-    std::shared_ptr<Schema> getSchema() const;
+    QSharedPointer<Schema> getSchema() const;
     const Workflow::Metadata &getMeta();
     const Workflow::Metadata &updateMeta();
     Workflow::Metadata getMeta(const QList<WorkflowProcessItem *> &items);
@@ -330,7 +330,7 @@ private:
     bool running;
     bool sceneRecreation;
     WorkflowGObject *go;
-    const std::shared_ptr<Schema> schema;
+    const QSharedPointer<Schema> schema;
     Workflow::Metadata meta;
     ActorPrototype *currentProto;
     Actor *currentActor;
