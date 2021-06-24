@@ -24,12 +24,12 @@
 #include <QPainter>
 
 #include <U2Core/L10n.h>
+#include <U2Core/PrimerLibrary.h>
 #include <U2Core/PrimerStatistics.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "PrimerGroupBox.h"
-#include "PrimerLibrary.h"
 
 namespace U2 {
 

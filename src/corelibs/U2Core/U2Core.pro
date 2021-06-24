@@ -64,6 +64,7 @@ HEADERS += src/cmdline/CMDLineCoreOptions.h \
            src/datatype/msa/MultipleSequenceAlignmentRow.h \
            src/datatype/primers/Primer.h \
            src/datatype/primers/PrimerDimersFinder.h \
+           src/datatype/primers/PrimerLibrary.h \
            src/datatype/primers/PrimerStatistics.h \
            src/datatype/primers/PrimerValidator.h \
            src/dbi/DbiConnection.h \
@@ -324,6 +325,7 @@ SOURCES += src/cmdline/CMDLineCoreOptions.cpp \
            src/datatype/msa/MultipleSequenceAlignmentRow.cpp \
            src/datatype/primers/Primer.cpp \
            src/datatype/primers/PrimerDimersFinder.cpp \
+           src/datatype/primers/PrimerLibrary.cpp \
            src/datatype/primers/PrimerStatistics.cpp \
            src/datatype/primers/PrimerValidator.cpp \
            src/datatype/udr/RawDataUdrSchema.cpp \
