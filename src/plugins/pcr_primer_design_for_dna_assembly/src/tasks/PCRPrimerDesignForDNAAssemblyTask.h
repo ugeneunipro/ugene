@@ -33,7 +33,6 @@ class FindPresenceOfUnwantedParametersTask;
 class FindUnwantedIslandsTask;
 
 class PCRPrimerDesignForDNAAssemblyTask : public Task {
-    Q_OBJECT
 public:
     PCRPrimerDesignForDNAAssemblyTask(const PCRPrimerDesignForDNAAssemblyTaskSettings& settings, const QByteArray& sequence);
 
@@ -45,57 +44,31 @@ public:
 
     QString generateReport() const override;
 
-    QList<U2Region> getResults() const;
-    QByteArray getBackboneSequence() const;
-    const PCRPrimerDesignForDNAAssemblyTaskSettings& getSettings() const;
-
-    static const QStringList FRAGMENT_INDEX_TO_NAME;
-
 private:
     QList<QByteArray> extractLoadedSequences(LoadDocumentTask* task);
-    void findB1ReversePrimer(const QByteArray& b1ForwardCandidatePrimerSequence);
-    enum class SecondaryPrimer {
-        B2,
-        B3
-    };
-    void findSecondaryForwardReversePrimers(SecondaryPrimer type);
-    void findSecondaryReversePrimer(SecondaryPrimer type, const QByteArray& forwardCandidatePrimerSequence);
-    bool areMetlingTempAndDeltaGood(const QByteArray& primer) const;
-    bool hasUnwantedConnections(const QByteArray& primer) const;
-    void updatePrimerRegion(int& primerEnd, int& primerLength) const;
-
-    QString regionToString(const U2Region& region, bool isComplement) const;
-    QString getPairReport(U2Region forward, U2Region reverse, const QString &primerName) const;
-
 
     PCRPrimerDesignForDNAAssemblyTaskSettings settings;
     QByteArray sequence;
-    QByteArray reverseComplementSequence;
 
     LoadDocumentTask* loadBackboneSequence = nullptr;
     LoadDocumentTask* loadOtherSequencesInPcr = nullptr;
     FindPresenceOfUnwantedParametersTask* checkBackboneSequence = nullptr;
     FindUnwantedIslandsTask* findUnwantedIslands = nullptr;
-    FindUnwantedIslandsTask* findUnwantedIslandsReverseComplement = nullptr;
 
     QList<QByteArray> backboneSequencesCandidates;
     QList<QByteArray> otherSequencesInPcr;
     QByteArray backboneSequence;
-    QList<U2Region> regionsBetweenIslandsForward;
-    QList<U2Region> regionsBetweenIslandsReverse;
+    QList<U2Region> candidatePrimerRegions;
 
     //Results
-    U2Region aForward;
-    U2Region aReverse;
-    U2Region b1Forward;
-    U2Region b1Reverse;
-    U2Region b2Forward;
-    U2Region b2Reverse;
-    U2Region b3Forward;
-    U2Region b3Reverse;
-
-    static constexpr int MINIMUM_LENGTH_BETWEEN_ISLANDS = 30;
-    static constexpr int SECOND_PRIMER_OFFSET = 4;
+    U2Region aForward = U2Region(54, 77 - 54);
+    U2Region aReverse = U2Region(327, 353 - 328);
+    U2Region b1Forward = U2Region(39, 57 - 40);
+    U2Region b1Reverse = U2Region(337, 367 - 338);
+    U2Region b2Forward = U2Region(26, 43 - 27);
+    U2Region b2Reverse = U2Region(362, 379 - 363);
+    U2Region b3Forward = U2Region(22, 43 - 23);
+    U2Region b3Reverse = U2Region(367, 384 - 368);
 };
 
 }

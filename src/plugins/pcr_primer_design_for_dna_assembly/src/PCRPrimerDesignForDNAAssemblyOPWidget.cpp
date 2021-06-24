@@ -20,17 +20,14 @@
  */
 
 #include "PCRPrimerDesignForDNAAssemblyOPWidget.h"
-#include "tasks/ExtractPrimerTask.h"
 #include "tasks/PCRPrimerDesignForDNAAssemblyTask.h"
 
 #include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/L10n.h>
-#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -188,7 +185,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
 
     settings.gibbsFreeEnergyExclude = sbExcludeGibbs->value();
     settings.meltingPointExclude = spExcludeMeltingTeml->value();
-    settings.complementLengthExclude = spExcludeComplementLength->value();
+    settings.overlapLengthExclude = spExcludeOverlapLength->value();
 
     if (backbone5->isChecked()) {
         settings.insertTo = PCRPrimerDesignForDNAAssemblyTaskSettings::BackboneBearings::Backbone5;
@@ -219,12 +216,11 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
     auto sequence = sequenceObject->getWholeSequenceData(os);
     CHECK_OP(os, );
 
-    pcrTask = new PCRPrimerDesignForDNAAssemblyTask(settings, sequence);
+    auto task = new PCRPrimerDesignForDNAAssemblyTask(settings, sequence);
     auto ts = AppContext::getTaskScheduler();
     SAFE_POINT(ts != nullptr, L10N::nullPointerError("TaskScheduler"), );
-    connect(pcrTask, SIGNAL(si_stateChanged()), SLOT(sl_onFindTaskFinished()));
 
-    ts->registerTopLevelTask(pcrTask);
+    ts->registerTopLevelTask(task);
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually() {

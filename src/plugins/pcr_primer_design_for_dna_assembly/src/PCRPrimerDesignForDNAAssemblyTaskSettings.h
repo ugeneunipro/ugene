@@ -42,7 +42,7 @@ struct PCRPrimerDesignForDNAAssemblyTaskSettings {
     //Parameters to exclude in whole primers
     int gibbsFreeEnergyExclude = 0;
     int meltingPointExclude = 0;
-    int complementLengthExclude = 0;
+    int overlapLengthExclude = 0;
 
     //Areas fpr priming search
     //Insert to backbone bearings

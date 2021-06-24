@@ -50,7 +50,6 @@ private:
     QRect getPlaceHolderRect() const;
 };
 
-
 }    // namespace U2
 
 #endif  // _U2_PRIMER_LINE_EDIT_H_

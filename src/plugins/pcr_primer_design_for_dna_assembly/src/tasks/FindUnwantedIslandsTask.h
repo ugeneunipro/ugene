@@ -23,35 +23,33 @@
 #define _U2_FIND_UNWANTED_ISLANDS_TASK_H_
 
 #include <U2Core/Task.h>
-#include <U2Core/U2Type.h>
-#include <U2Core/U2Region.h>
+
+#include "PCRPrimerDesignForDNAAssemblyTaskSettings.h"
 
 namespace U2 {
 
 class FindUnwantedIslandsTask : public Task {
-    Q_OBJECT
 public:
-    FindUnwantedIslandsTask(const U2Region& searchArea, int possibleOverlap, const QByteArray& sequence, bool isComplement);
+    FindUnwantedIslandsTask(const PCRPrimerDesignForDNAAssemblyTaskSettings& settings, const QByteArray& sequence);
 
     void run() override;
 
     const QList<U2Region>& getRegionBetweenIslands() const;
 
 private:
-    bool hasUnwantedConnections(const U2Region& region) const;
-    QString regionToString(const U2Region& region) const;
+    static bool isUnwantedSelfDimer(const QByteArray& forwardSequence);
 
-    U2Region searchArea;
-    int possibleOverlap = 0;
+    bool hasUnwantedConnections(const U2Region& region) const;
+
+    PCRPrimerDesignForDNAAssemblyTaskSettings settings;
     QByteArray sequence;
-    bool isComplement = false;
 
     QList<U2Region> regionsBetweenIslands;
 
     static constexpr int ISLAND_LENGTH = 8;
     static constexpr int NUCLEOTIDE_PAIR_LENGTH = 2;
 
-    static constexpr double UNWANTED_MELTING_TEMPERATURE = 16;
+    static constexpr double UNWANTED_MELTING_TEMPERATURE = 20;
     static constexpr double UNWANTED_DELTA_G = -7;
     static constexpr int UNWANTED_MAX_LENGTH = 4;
 };

@@ -26,37 +26,23 @@
 #include <U2Core/PrimerStatistics.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "utils/UnwantedConnectionsUtils.h"
-
 namespace U2 {
 
-FindUnwantedIslandsTask::FindUnwantedIslandsTask(const U2Region& _searchArea, int _possibleOverlap, const QByteArray& _sequence, bool _isComplement)
-    : Task("Find Unwanted Islands Task", TaskFlags_FOSCOE),
-      searchArea(_searchArea),
-      possibleOverlap(_possibleOverlap),
-      sequence(_sequence),
-      isComplement(_isComplement) {}
+FindUnwantedIslandsTask::FindUnwantedIslandsTask(const PCRPrimerDesignForDNAAssemblyTaskSettings& _settings, const QByteArray& _sequence)
+    : Task("", TaskFlags_FOSCOE),
+      settings(_settings),
+      sequence(_sequence) {}
 
 void FindUnwantedIslandsTask::run() {
-    taskLog.details(tr("Searching of unwanted islands and areas between them "
-                       "in the region \"%1\" (+ %2 nucleotides to the %3, deep into the amplified fragment) has been started")
-                       .arg(regionToString(searchArea)).arg(possibleOverlap).arg(isComplement ? "left" : "right"));
-    taskLog.details(tr("The following unwanted parametes are used. Free Gibbs energy: %1 kj/mol, "
-                       "melting temperature: %2 C, maximum dimer length: %3 nt")
-                       .arg(UNWANTED_DELTA_G).arg(UNWANTED_MELTING_TEMPERATURE).arg(UNWANTED_MAX_LENGTH));
     /**
      * Index of the left nucleotide in the searching area.
      */
-    int leftNucleotide = searchArea.startPos;
+    int leftNucleotide = settings.leftArea.startPos;
     /**
      * Index of the right nucleotide in the searching area.
      * @settings.overlapLength.maxValue is the area extending deep into the amplified fragment.
      */
-    const int rightNucleotide = searchArea.endPos() + possibleOverlap;
-    auto text2LogAboutFoundRegion = [this](const U2Region& reg) {
-        taskLog.details(tr("The region between unwanted islands has been found: %1").arg(regionToString(reg)));
-    };
-
+    const int rightNucleotide = settings.leftArea.endPos() + settings.overlapLength.maxValue;
     int lengthBetweenIslands = 0;
     int startNucleotideNumber = leftNucleotide;
     regionsBetweenIslands.clear();
@@ -66,9 +52,7 @@ void FindUnwantedIslandsTask::run() {
         if (isIsland) {
             //The obvious limit - we don't need regions which couldn't fit the primer
             if (lengthBetweenIslands != 0/*>= overlap.minValue*/) {
-                U2Region newRegion(startNucleotideNumber, lengthBetweenIslands);
-                text2LogAboutFoundRegion(newRegion);
-                regionsBetweenIslands << newRegion;
+                regionsBetweenIslands << U2Region(startNucleotideNumber, lengthBetweenIslands);
             }
             startNucleotideNumber = leftNucleotide;
             lengthBetweenIslands = 0;
@@ -77,21 +61,7 @@ void FindUnwantedIslandsTask::run() {
         }
         leftNucleotide++;
     }
-    U2Region newRegion(startNucleotideNumber, lengthBetweenIslands);
-    text2LogAboutFoundRegion(newRegion);
     regionsBetweenIslands << U2Region(startNucleotideNumber, lengthBetweenIslands);
-
-    if (!regionsBetweenIslands.isEmpty()) {
-        QString regions;
-        for (const auto& region : regionsBetweenIslands) {
-            regions += QString("%1,").arg(regionToString(region));
-        }
-        regions = regions.left(regions.size() - 1);
-        taskLog.details(tr("The following regions are located between unwanted islands: %1").arg(regions));
-    } else {
-        taskLog.details(tr("The whole region is filled with unwanted islands, no regions between them has been found"));
-    }
-
     // Sort sequence FROM the amplified fragment
     std::sort(regionsBetweenIslands.begin(), regionsBetweenIslands.end(),
         [](const U2Region& first, const U2Region& second) -> bool {
@@ -103,6 +73,21 @@ const QList<U2Region>& FindUnwantedIslandsTask::getRegionBetweenIslands() const 
     return regionsBetweenIslands;
 }
 
+bool FindUnwantedIslandsTask::isUnwantedSelfDimer(const QByteArray& forwardSequence) {
+    PrimerStatisticsCalculator calc(forwardSequence, PrimerStatisticsCalculator::Direction::DoesntMatter, UNWANTED_DELTA_G);
+    auto dimersInfo = calc.getDimersInfo();
+    if (dimersInfo.dimersOverlap.isEmpty()) { // Self dimers aren't found
+        return false;
+    }
+
+    double dimerMeltingTemp = PrimerStatistics::getMeltingTemperature(dimersInfo.dimer.toLocal8Bit());
+    int dimerLength = dimersInfo.dimer.length();
+    bool goodMeltingTemperature = dimerMeltingTemp < UNWANTED_MELTING_TEMPERATURE;
+    bool goodLength = dimerLength < UNWANTED_MAX_LENGTH;
+
+    return dimersInfo.canBeFormed && goodMeltingTemperature && goodLength;
+}
+
 bool FindUnwantedIslandsTask::hasUnwantedConnections(const U2Region& region) const {
     /**
      * Sequence to find the unwanted connections in.
@@ -111,21 +96,24 @@ bool FindUnwantedIslandsTask::hasUnwantedConnections(const U2Region& region) con
     /**
      * It's reverse complement representation.
      */
-    //QByteArray revComRegionSequence = DNASequenceUtils::reverseComplement(regionSequence);
-    bool isUnwantedSelfDimer = UnwantedConnectionsUtils::isUnwantedSelfDimer(regionSequence,
-                                                                             UNWANTED_DELTA_G,
-                                                                             UNWANTED_MELTING_TEMPERATURE,
-                                                                             UNWANTED_MAX_LENGTH);
+    QByteArray revComRegionSequence = DNASequenceUtils::reverseComplement(regionSequence);
 
-    //TODO: hairpins
-    //TODO: find out if hetero-dimers are required
+    bool isSelfDimer = isUnwantedSelfDimer(regionSequence);
 
-    return isUnwantedSelfDimer;
-}
+    return isSelfDimer;
 
-QString FindUnwantedIslandsTask::regionToString(const U2Region& region) const {
-    U2Region regionToLog = isComplement ? DNASequenceUtils::reverseComplementRegion(region, sequence.size()) : region;
-    return QString("%1..%2").arg(regionToLog.startPos + 1).arg(regionToLog.endPos() + 1);
+    /*for (int i = 0; i < region.length - NUCLEOTIDE_PAIR_LENGTH; i++) {
+        const auto& possibleConnection = regionSequence.mid(i, NUCLEOTIDE_PAIR_LENGTH);
+        for (int j = 0; j < region.length - NUCLEOTIDE_PAIR_LENGTH; j++) {
+            CHECK_CONTINUE(i != region.length - (j + NUCLEOTIDE_PAIR_LENGTH));
+
+            const auto& revComppossibleConnection = revComRegionSequence.mid(j, NUCLEOTIDE_PAIR_LENGTH);
+            if (possibleConnection == revComppossibleConnection) {
+                return true;
+            }
+        }
+    */
+    //return false;
 }
 
 
