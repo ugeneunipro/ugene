@@ -27,10 +27,9 @@
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/L10n.h>
+#include <U2Core/Primer.h>
+#include <U2Core/PrimerStatistics.h>
 #include <U2Core/U2Msa.h>
-
-#include "Primer.h"
-#include "PrimerStatistics.h"
 
 namespace U2 {
 

@@ -19,34 +19,27 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EDIT_PRIMER_DIALOG_H_
-#define _U2_EDIT_PRIMER_DIALOG_H_
-
-#include <QDialog>
-
-#include <U2Core/Primer.h>
-
-#include "ui_EditPrimerDialog.h"
+#include "FindPresenceOfUnwantedParametersTask.h"
 
 namespace U2 {
 
-class EditPrimerDialog : public QDialog, private Ui_EditPrimerDialog {
-    Q_OBJECT
-public:
-    EditPrimerDialog(QWidget *parent);
-    EditPrimerDialog(QWidget *parent, const Primer &editPrimer);
+FindPresenceOfUnwantedParametersTask::FindPresenceOfUnwantedParametersTask(const QByteArray& _sequence,
+                                            const PCRPrimerDesignForDNAAssemblyTaskSettings& _settings)
+    : Task("Find Presence of Unwanted Parameters Task", TaskFlags_FOSCOE),
+      sequence(_sequence),
+      settings(_settings) {}
 
-    Primer getPrimer() const;
+void FindPresenceOfUnwantedParametersTask::run() {
+    //TODO
+}
 
-private slots:
-    void sl_onPrimerChanged(const QString &primerSequence);
-    void sl_validate();
+bool FindPresenceOfUnwantedParametersTask::hasUnwantedParameters() const {
+    //TODO
+    return false;
+}
 
-private:
-    void init();
-    void validate(bool isValid);
-};
+const QByteArray& FindPresenceOfUnwantedParametersTask::getSequence() const {
+    return sequence;
+}
 
-}    // namespace U2
-
-#endif    // _U2_EDIT_PRIMER_DIALOG_H_
+}

@@ -19,34 +19,25 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EDIT_PRIMER_DIALOG_H_
-#define _U2_EDIT_PRIMER_DIALOG_H_
+#ifndef _U2_PRIMER_VALIDATOR_H_
+#define _U2_PRIMER_VALIDATOR_H_
 
-#include <QDialog>
+#include <QValidator>
 
-#include <U2Core/Primer.h>
-
-#include "ui_EditPrimerDialog.h"
+#include <U2Core/global.h>
 
 namespace U2 {
-
-class EditPrimerDialog : public QDialog, private Ui_EditPrimerDialog {
-    Q_OBJECT
+/**
+ * @PrimerValidator
+ * QRegExpValidator improving for primers. Make possible to type nucleotide or amino charaters only.
+ */
+class U2CORE_EXPORT PrimerValidator : public QRegExpValidator {
 public:
-    EditPrimerDialog(QWidget *parent);
-    EditPrimerDialog(QWidget *parent, const Primer &editPrimer);
+    PrimerValidator(QObject *parent, bool allowExtended = true);
 
-    Primer getPrimer() const;
-
-private slots:
-    void sl_onPrimerChanged(const QString &primerSequence);
-    void sl_validate();
-
-private:
-    void init();
-    void validate(bool isValid);
+    State validate(QString &input, int &pos) const override;
 };
 
 }    // namespace U2
 
-#endif    // _U2_EDIT_PRIMER_DIALOG_H_
+#endif    // _U2_PRIMER_VALIDATOR_H_

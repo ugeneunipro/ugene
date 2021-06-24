@@ -26,11 +26,11 @@
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DNATranslation.h>
 #include <U2Core/L10n.h>
+#include <U2Core/Primer.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "Primer.h"
-#include "PrimerGroupBox.h"
+#include "PrimerValidator.h"
 
 namespace U2 {
 
@@ -113,8 +113,11 @@ const int PrimerStatisticsCalculator::CLAMP_BOTTOM = 1;
 const int PrimerStatisticsCalculator::RUNS_TOP = 4;
 const double PrimerStatisticsCalculator::DIMERS_ENERGY_THRESHOLD = -6.0;
 
-PrimerStatisticsCalculator::PrimerStatisticsCalculator(const QByteArray &sequence, Direction direction)
-    : sequence(sequence), direction(direction), nA(0), nC(0), nG(0), nT(0), maxRun(0) {
+PrimerStatisticsCalculator::PrimerStatisticsCalculator(const QByteArray &sequence,
+                                                       Direction direction,
+                                                       const qreal _energyThreshold)
+    : sequence(sequence), direction(direction), energyThreshold(_energyThreshold),
+      nA(0), nC(0), nG(0), nT(0), maxRun(0) {
     CHECK(!sequence.isEmpty(), );
 
     int currentRun = 0;
@@ -153,7 +156,7 @@ PrimerStatisticsCalculator::PrimerStatisticsCalculator(const QByteArray &sequenc
         maxRun = currentRun;
     }
 
-    HeteroDimersFinder dimersFinder(sequence, sequence);
+    HeteroDimersFinder dimersFinder(sequence, sequence, energyThreshold);
     dimersInfo = dimersFinder.getResult();
 }
 

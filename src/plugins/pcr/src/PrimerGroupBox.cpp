@@ -31,6 +31,7 @@
 #include <U2Core/DNASequenceUtils.h>
 #include <U2Core/DNATranslationImpl.h>
 #include <U2Core/L10n.h>
+#include <U2Core/PrimerStatistics.h>
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -42,7 +43,6 @@
 #include <U2View/AnnotatedDNAView.h>
 
 #include "PrimerLibrarySelector.h"
-#include "PrimerStatistics.h"
 
 namespace U2 {
 
