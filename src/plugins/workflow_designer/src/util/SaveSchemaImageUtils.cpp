@@ -57,7 +57,7 @@ void ProduceSchemaImageLinkTask::prepare() {
         return;
     }
 
-    schema = std::make_shared<Schema>();
+    schema = QSharedPointer<Schema>::create();
     schema->setDeepCopyFlag(true);
     addSubTask(new LoadWorkflowTask(schema, &meta, schemaPath));
 }
