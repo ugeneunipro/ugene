@@ -24,17 +24,17 @@
 
 #include <QMutex>
 
+#include <U2Core/Primer.h>
 #include <U2Core/U2OpStatus.h>
 #include <U2Core/UdrSchema.h>
-
-#include "Primer.h"
+#include <U2Core/global.h>
 
 namespace U2 {
 
 class DbiConnection;
 class UdrDbi;
 
-class PrimerLibrary : public QObject {
+class U2CORE_EXPORT PrimerLibrary : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(PrimerLibrary)
 public:

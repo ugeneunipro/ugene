@@ -26,9 +26,11 @@
 
 #include "PrimerDimersFinder.h"
 
+#include <U2Core/global.h>
+
 namespace U2 {
 
-class PrimerStatistics : public QObject {
+class U2CORE_EXPORT PrimerStatistics : public QObject {
     Q_OBJECT
 public:
     static QString checkPcrPrimersPair(const QByteArray &forward, const QByteArray &reverse, bool &isCriticalError);
@@ -42,12 +44,12 @@ public:
     static QString getDoubleStringValue(double value);
 };
 
-class PrimerStatisticsCalculator {
+class U2CORE_EXPORT PrimerStatisticsCalculator {
 public:
     enum Direction { Forward,
                      Reverse,
                      DoesntMatter };
-    PrimerStatisticsCalculator(const QByteArray &sequence, Direction direction = DoesntMatter);
+    PrimerStatisticsCalculator(const QByteArray &sequence, Direction direction = DoesntMatter, const qreal energyThreshold = -6);
 
     double getGC() const;
     double getTm() const;
@@ -80,6 +82,7 @@ private:
     DimerFinderResult dimersInfo;
     const QByteArray sequence;
     Direction direction;
+    qreal energyThreshold = 0.0;
     int nA;
     int nC;
     int nG;
@@ -89,7 +92,7 @@ private:
     QString initializationError;
 };
 
-class PrimersPairStatistics {
+class U2CORE_EXPORT PrimersPairStatistics {
 public:
     PrimersPairStatistics(const QByteArray &forward, const QByteArray &reverse);
 

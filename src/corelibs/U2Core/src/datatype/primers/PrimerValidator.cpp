@@ -19,34 +19,28 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_EDIT_PRIMER_DIALOG_H_
-#define _U2_EDIT_PRIMER_DIALOG_H_
+#include "PrimerValidator.h"
 
-#include <QDialog>
-
-#include <U2Core/Primer.h>
-
-#include "ui_EditPrimerDialog.h"
+#include <U2Core/AppContext.h>
+#include <U2Core/U2AlphabetUtils.h>
 
 namespace U2 {
 
-class EditPrimerDialog : public QDialog, private Ui_EditPrimerDialog {
-    Q_OBJECT
-public:
-    EditPrimerDialog(QWidget *parent);
-    EditPrimerDialog(QWidget *parent, const Primer &editPrimer);
+PrimerValidator::PrimerValidator(QObject *parent, bool allowExtended)
+    : QRegExpValidator(parent) {
+    const DNAAlphabet *alphabet = AppContext::getDNAAlphabetRegistry()->findById(
+        allowExtended ? BaseDNAAlphabetIds::NUCL_DNA_EXTENDED() : BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
+    QByteArray alphabetChars = alphabet->getAlphabetChars(true);
+    // Gaps are not allowed
+    alphabetChars.remove(alphabetChars.indexOf('-'), 1);
+    setRegExp(QRegExp(QString("[%1]+").arg(alphabetChars.constData())));
+}
 
-    Primer getPrimer() const;
-
-private slots:
-    void sl_onPrimerChanged(const QString &primerSequence);
-    void sl_validate();
-
-private:
-    void init();
-    void validate(bool isValid);
-};
+QValidator::State PrimerValidator::validate(QString &input, int &pos) const {
+    input = input.simplified();
+    input = input.toUpper();
+    input.remove(" ");
+    return QRegExpValidator::validate(input, pos);
+}
 
 }    // namespace U2
-
-#endif    // _U2_EDIT_PRIMER_DIALOG_H_

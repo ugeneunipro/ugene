@@ -25,11 +25,11 @@
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/LoadDocumentTask.h>
+#include <U2Core/PrimerStatistics.h>
 #include <U2Core/Theme.h>
 #include <U2Core/U2SafePoints.h>
 
 #include "ImportPrimerFromObjectTask.h"
-#include "PrimerStatistics.h"
 
 namespace U2 {
 

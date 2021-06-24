@@ -23,7 +23,6 @@
 #define _U2_PRIMER_LINE_EDIT_H_
 
 #include <QLineEdit>
-#include <QValidator>
 
 #include <U2Core/global.h>
 
@@ -49,17 +48,6 @@ protected:
 
 private:
     QRect getPlaceHolderRect() const;
-};
-
-/**
- * @PrimerValidator
- * QRegExpValidator improving for primers. Make possible to type nucleotide or amino charaters only.
- */
-class U2GUI_EXPORT PrimerValidator : public QRegExpValidator {
-public:
-    PrimerValidator(QObject *parent, bool allowExtended = true);
-
-    State validate(QString &input, int &pos) const override;
 };
 
 }    // namespace U2

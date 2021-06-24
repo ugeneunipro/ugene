@@ -24,8 +24,7 @@
 #include <QPainter>
 #include <QStyleOption>
 
-#include <U2Core/AppContext.h>
-#include <U2Core/U2AlphabetUtils.h>
+#include <U2Core/PrimerValidator.h>
 
 namespace U2 {
 
@@ -80,23 +79,6 @@ QRect PrimerLineEdit::getPlaceHolderRect() const {
     static const int horizontalMargin = 2;    // QLineEditPrivate::horizontalMargin
     QRect lineRect(r.x() + horizontalMargin, vscroll, r.width() - 2 * horizontalMargin, fm.height());
     return lineRect.adjusted(minLB, 0, -minRB, 0);
-}
-
-PrimerValidator::PrimerValidator(QObject *parent, bool allowExtended)
-    : QRegExpValidator(parent) {
-    const DNAAlphabet *alphabet = AppContext::getDNAAlphabetRegistry()->findById(
-        allowExtended ? BaseDNAAlphabetIds::NUCL_DNA_EXTENDED() : BaseDNAAlphabetIds::NUCL_DNA_DEFAULT());
-    QByteArray alphabetChars = alphabet->getAlphabetChars(true);
-    // Gaps are not allowed
-    alphabetChars.remove(alphabetChars.indexOf('-'), 1);
-    setRegExp(QRegExp(QString("[%1]+").arg(alphabetChars.constData())));
-}
-
-QValidator::State PrimerValidator::validate(QString &input, int &pos) const {
-    input = input.simplified();
-    input = input.toUpper();
-    input.remove(" ");
-    return QRegExpValidator::validate(input, pos);
 }
 
 }    // namespace U2
