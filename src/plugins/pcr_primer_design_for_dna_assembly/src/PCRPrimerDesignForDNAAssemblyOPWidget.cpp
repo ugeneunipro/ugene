@@ -188,7 +188,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
 
     settings.gibbsFreeEnergyExclude = sbExcludeGibbs->value();
     settings.meltingPointExclude = spExcludeMeltingTeml->value();
-    settings.complementLengthExclude = spExcludeComplementLength->value();
+    settings.overlapLengthExclude = spExcludeOverlapLength->value();
 
     if (backbone5->isChecked()) {
         settings.insertTo = PCRPrimerDesignForDNAAssemblyTaskSettings::BackboneBearings::Backbone5;
@@ -197,6 +197,34 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
     }
     settings.bachbone5Length = sbBackbone5Length->value();
     settings.bachbone3Length = sbBackbone3Length->value();
+
+    settings.leftArea.startPos = (int)(sbLeftAreaStart->value()) - 1;
+    settings.leftArea.length = (int)sbLeftAreaEnd->value() - (int)sbLeftAreaStart->value();
+    settings.rightArea.startPos = (int)(sbRightAreaStart->value()) - 1;
+    settings.rightArea.length = (int)sbRightAreaEnd->value() - (int)sbRightAreaStart->value();
+
+    settings.backboneSequenceUrl = leBackboneFilePath->text();
+
+    settings.generateSequenceUrl = leRandomSequencesFilePath->text();
+
+    settings.otherSequencesInPcrUrl = leOtherSequencesInPcrFilePath->text();
+
+    auto activeSequenceContext = annDnaView->getActiveSequenceContext();
+    SAFE_POINT(activeSequenceContext != nullptr, L10N::nullPointerError("ADVSequenceObjectContext"), );
+
+    U2SequenceObject* sequenceObject = activeSequenceContext->getSequenceObject();
+    SAFE_POINT(NULL != sequenceObject, L10N::nullPointerError("Sequence Object"), );
+
+    U2OpStatus2Log os;
+    auto sequence = sequenceObject->getWholeSequenceData(os);
+    CHECK_OP(os, );
+
+    auto task = new PCRPrimerDesignForDNAAssemblyTask(settings, sequence);
+    auto ts = AppContext::getTaskScheduler();
+    SAFE_POINT(ts != nullptr, L10N::nullPointerError("TaskScheduler"), );
+
+    ts->registerTopLevelTask(task);
+}
 
     settings.leftArea.startPos = (int)(sbLeftAreaStart->value()) - 1;
     settings.leftArea.length = (int)sbLeftAreaEnd->value() - (int)sbLeftAreaStart->value();
