@@ -215,9 +215,9 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus &os) {
 #define GT_METHOD_NAME "isTabbedLayout"
 bool GTUtilsMdi::isTabbedLayout(HI::GUITestOpStatus &os) {
     MainWindow *mainWindow = AppContext::getMainWindow();
-    GT_CHECK_RESULT(mainWindow != NULL, "MainWindow == NULL", NULL);
+    GT_CHECK_RESULT(mainWindow != NULL, "MainWindow == NULL", false);
     QMdiArea *mdiArea = GTWidget::findExactWidget<QMdiArea *>(os, "MDI_Area", mainWindow->getQMainWindow());
-    GT_CHECK_RESULT(mdiArea != NULL, "mdiArea == NULL", NULL);
+    GT_CHECK_RESULT(mdiArea != NULL, "mdiArea == NULL", false);
     return mdiArea->viewMode() == QMdiArea::TabbedView;
 }
 #undef GT_METHOD_NAME
