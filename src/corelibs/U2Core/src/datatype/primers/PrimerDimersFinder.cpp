@@ -103,12 +103,16 @@ void BaseDimersFinder::fillResultsForCurrentIteration(const QByteArray &homologo
         if (!homologousRegionEnded) {
             freeEnergy += ENERGY_MAP[curArray];
         }
-        if (homologousRegionEnded || i == homologousBases.size() - 2) {
+        bool reachedBasesEnd = i == homologousBases.size() - 2;
+        if (homologousRegionEnded || reachedBasesEnd) {
             if (freeEnergy < maximumDeltaG) {
                 maximumDeltaG = freeEnergy;
                 resHomologousRegion = homologousBases;
                 overlappingRegion.startPos = startPos;
-                overlappingRegion.length = i - startPos + 2;
+                overlappingRegion.length = i - startPos + 1;
+                if (!homologousRegionEnded && reachedBasesEnd) {
+                    overlappingRegion.length++;
+                }
                 dimersOverlap = getDimersOverlapping(overlapStartPos);
             }
             freeEnergy = 0.0;
