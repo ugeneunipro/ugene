@@ -8,7 +8,8 @@ QT += xml network script widgets
 TEMPLATE = app
 CONFIG +=qt dll thread debug_and_release console
 macx : CONFIG -= app_bundle
-unix:!macx: QMAKE_LFLAGS += --no-pie
+unix:!macx:g++: QMAKE_LFLAGS += --no-pie
+unix:!macx:clang: QMAKE_LFLAGS += -fno-pie
 DEFINES+= QT_DLL QT_FATAL_ASSERT
 INCLUDEPATH += src _tmp ../include ../corelibs/U2Private/src
 
