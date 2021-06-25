@@ -4237,6 +4237,65 @@ GUI_TEST_CLASS_DEFINITION(test_4674_2) {
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/4");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4676_1) {
+    // Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Do any change in the msa.
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(5, 5));
+    GTKeyboardDriver::keyClick(' ');
+
+    // Expected state: undo action is enabled, redo action is disabled.
+    QAbstractButton *undo1 = GTAction::button(os, "msa_action_undo");
+    CHECK_SET_ERR(undo1->isEnabled(), "Undo button should be enabled");
+
+    QAbstractButton *redo1 = GTAction::button(os, "msa_action_redo");
+    CHECK_SET_ERR(!redo1->isEnabled(), "Redo button should be disabled");
+
+    // Close the view.
+    GTUtilsMdi::click(os, GTGlobals::Close);
+
+    // Open the view again.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, { "Open View", "action_open_view"}));
+    GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
+
+    // Expected state: undo action is enabled.
+    QAbstractButton *undo2 = GTAction::button(os, "msa_action_undo");
+    CHECK_SET_ERR(undo2->isEnabled(), "Undo button should be enabled");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4676_2) {
+    // Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Do any change in the msa.
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(5, 5));
+    GTKeyboardDriver::keyClick(' ');
+
+    // Undo the modification.
+    GTKeyboardDriver::keyClick('z', Qt::ControlModifier);
+
+    // Expected state: undo action is disabled, redo action is enabled.
+    QAbstractButton *undo1 = GTAction::button(os, "msa_action_undo");
+    CHECK_SET_ERR(!undo1->isEnabled(), "Undo button should be disabled");
+
+    QAbstractButton *redo1 = GTAction::button(os, "msa_action_redo");
+    CHECK_SET_ERR(redo1->isEnabled(), "Redo button should be enabled");
+
+    // Close the view.
+    GTUtilsMdi::click(os, GTGlobals::Close);
+
+    // Open the view again.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "action_open_view"}));
+    GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
+
+    // Expected state: redo action is enabled.
+    QAbstractButton *redo2 = GTAction::button(os, "msa_action_redo");
+    CHECK_SET_ERR(redo2->isEnabled(), "Redo button should be enabled");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4687) {
     //1. Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
