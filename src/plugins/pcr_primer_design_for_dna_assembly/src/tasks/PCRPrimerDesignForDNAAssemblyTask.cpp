@@ -116,6 +116,12 @@ QString PCRPrimerDesignForDNAAssemblyTask::generateReport() const {
     return QString();
 }
 
+QList<U2Region> PCRPrimerDesignForDNAAssemblyTask::getResults() const {
+    QList<U2Region> results;
+    results << aForward << aReverse << b1Forward << b1Reverse << b2Forward << b2Reverse << b3Forward << b3Reverse;
+    return results;
+}
+
 QList<QByteArray> PCRPrimerDesignForDNAAssemblyTask::extractLoadedSequences(LoadDocumentTask* task) {
     auto doc = task->getDocument();
     CHECK_EXT(doc != nullptr, setError(tr("The file \"%1\" wasn't loaded").arg(task->getURL().getURLString())), { {} });

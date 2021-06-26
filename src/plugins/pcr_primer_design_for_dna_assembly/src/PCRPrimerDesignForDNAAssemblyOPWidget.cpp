@@ -54,7 +54,8 @@ const QString PCRPrimerDesignForDNAAssemblyOPWidget::OTHER_SEQUENCES_IN_PCR_REAC
 PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(AnnotatedDNAView* _annDnaView)
     : QWidget(nullptr),
       annDnaView(_annDnaView),
-      savableWidget(this, GObjectViewUtils::findViewByName(annDnaView->getName())) {
+      savableWidget(this, GObjectViewUtils::findViewByName(annDnaView->getName())),
+      pcrTask(nullptr) {
     setupUi(this);
     parametersMinMaxSpinBoxes = { { sbMinRequireGibbs, sbMaxRequireGibbs },
                                   { spMinRequireMeltingTeml, spMaxRequireMeltingTeml },
@@ -89,6 +90,9 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
                                            true);
 
     auto seqLength = annDnaView->getActiveSequenceContext()->getSequenceLength();
+
+    auto seqLength = activeSequenceContext->getSequenceLength();
+    productsTable->hide();
 
     // Default values, have been provided by the customer
     // Left area: from "1" to "10% of sequence length"
@@ -163,11 +167,12 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
     auto sequence = sequenceObject->getWholeSequenceData(os);
     CHECK_OP(os, );
 
-    auto task = new PCRPrimerDesignForDNAAssemblyTask(settings, sequence);
+    pcrTask = new PCRPrimerDesignForDNAAssemblyTask(settings, sequence);
     auto ts = AppContext::getTaskScheduler();
     SAFE_POINT(ts != nullptr, L10N::nullPointerError("TaskScheduler"), );
+    connect(pcrTask, SIGNAL(si_stateChanged()), SLOT(sl_onFindTaskFinished()));
 
-    ts->registerTopLevelTask(task);
+    ts->registerTopLevelTask(pcrTask);
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually() {
@@ -280,6 +285,26 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_loadOtherSequenceInPcr() {
 
     leOtherSequencesInPcrFilePath->setText(file);
 
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::sl_onFindTaskFinished() {
+    CHECK(sender() == pcrTask, );
+    SAFE_POINT(nullptr != pcrTask, L10N::nullPointerError("InSilicoPcrTask"), );
+    if (pcrTask->isCanceled() || pcrTask->hasError()) {
+        disconnect(pcrTask, SIGNAL(si_stateChanged()));
+        pcrTask = nullptr;
+        setEnabled(true);
+        return;
+    }
+    CHECK(pcrTask->isFinished(), );
+    showResults();
+    pcrTask = nullptr;
+    setEnabled(true);
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::showResults() {
+    productsTable->show();
+    productsTable->setCurrentProducts(pcrTask->getResults());
 }
 
 }

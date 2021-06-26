@@ -30,6 +30,7 @@
 namespace U2 {
 
 class AnnotatedDNAView;
+class PCRPrimerDesignForDNAAssemblyTask;
 
 class PCRPrimerDesignForDNAAssemblyOPWidget : public QWidget, private Ui_PCRPrimerDesignForDNAAssemblyOPWidget {
     Q_OBJECT
@@ -76,14 +77,19 @@ private slots:
      * Show the "Open file" dialog, choose a file with other PCR sequences and set path to the corresponding line edit.
      */
     void sl_loadOtherSequenceInPcr();
+    void sl_onFindTaskFinished();
 
 private:
+    void showResults();
+
     AnnotatedDNAView* annDnaView = nullptr;
 
     QToolButton* smButton = nullptr;
     QSpinBox* sbStartRegion = nullptr;
     QSpinBox* sbEndRegion = nullptr;
     QMetaObject::Connection updateRegionConnection;
+
+    PCRPrimerDesignForDNAAssemblyTask *pcrTask;
 
     PCRPrimerDesignForDNAAssemblyOPSavableTab savableWidget;
     //"Parameters of priming sequences" and "Parameters to exclude in whole primers" has set of parameters.

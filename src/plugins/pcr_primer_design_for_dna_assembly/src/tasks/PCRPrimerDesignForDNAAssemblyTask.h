@@ -44,6 +44,8 @@ public:
 
     QString generateReport() const override;
 
+    QList<U2Region> getResults() const;
+
 private:
     QList<QByteArray> extractLoadedSequences(LoadDocumentTask* task);
 
