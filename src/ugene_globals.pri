@@ -2,7 +2,6 @@ include (ugene_version.pri)
 
 UGENE_GLOBALS_DEFINED=1
 
-DEFINES+=U2_DISTRIBUTION_INFO=$${U2_DISTRIBUTION_INFO}
 DEFINES+=UGENE_VERSION=$${UGENE_VERSION}
 DEFINES+=UGENE_VER_MAJOR=$${UGENE_VER_MAJOR}
 DEFINES+=UGENE_VER_MINOR=$${UGENE_VER_MINOR}
@@ -57,6 +56,9 @@ clang {
     QMAKE_CXXFLAGS += -Wno-unknown-warning-option
     QMAKE_CXXFLAGS += -Wno-deprecated-declarations
     QMAKE_CXXFLAGS += -Wno-char-subscripts
+}
+
+macx {
     LIBS += -framework CoreFoundation
 }
 
