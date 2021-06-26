@@ -28,21 +28,22 @@
 
 namespace U2 {
 
-FindUnwantedIslandsTask::FindUnwantedIslandsTask(const PCRPrimerDesignForDNAAssemblyTaskSettings& _settings, const QByteArray& _sequence)
-    : Task("", TaskFlags_FOSCOE),
-      settings(_settings),
+FindUnwantedIslandsTask::FindUnwantedIslandsTask(const U2Region& _searchArea, int _possibleOverlap, const QByteArray& _sequence)
+    : Task("Find Unwanted Islands Task", TaskFlags_FOSCOE),
+      searchArea(_searchArea),
+      possibleOverlap(_possibleOverlap),
       sequence(_sequence) {}
 
 void FindUnwantedIslandsTask::run() {
     /**
      * Index of the left nucleotide in the searching area.
      */
-    int leftNucleotide = settings.leftArea.startPos;
+    int leftNucleotide = searchArea.startPos;
     /**
      * Index of the right nucleotide in the searching area.
      * @settings.overlapLength.maxValue is the area extending deep into the amplified fragment.
      */
-    const int rightNucleotide = settings.leftArea.endPos() + settings.overlapLength.maxValue;
+    const int rightNucleotide = searchArea.endPos() + possibleOverlap;
     int lengthBetweenIslands = 0;
     int startNucleotideNumber = leftNucleotide;
     regionsBetweenIslands.clear();
