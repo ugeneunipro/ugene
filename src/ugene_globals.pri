@@ -48,7 +48,7 @@ win32 : QMAKE_LFLAGS_RELEASE = /INCREMENTAL:NO /MAP /MAPINFO:EXPORTS /DEBUG
 win32 : LIBS += psapi.lib
 win32 : DEFINES += "PSAPI_VERSION=1"
 
-macx {
+clang {
     CONFIG -= warn_on
     #Ignore "'weak_import' attribute ignored" warning coming from OpenCL headers
     QMAKE_CXXFLAGS += -Wall
