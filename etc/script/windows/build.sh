@@ -1,3 +1,4 @@
+#!/bin/bash
 # The script builds release version of UGENE in 'ugene' folder
 # and adds all required QT libraries, data files, license files
 # Only 'tools' dir is not added.
