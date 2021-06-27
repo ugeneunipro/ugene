@@ -1,2 +1,5 @@
-# Declare files that will always have CRLF line endings on checkout.
+# Default is auto.
+* text=auto
+
+# Shell (cygwin) scripts use LF
 *.sh text eol=lf
