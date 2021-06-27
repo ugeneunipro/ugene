@@ -95,7 +95,7 @@ void DNAStatMSAEditorContext::sl_showMSAProfileDialog() {
     MSAEditor *msaEd = qobject_cast<MSAEditor *>(viewAction->getObjectView());
     QObjectScopedPointer<DNAStatMSAProfileDialog> d = new DNAStatMSAProfileDialog(msaEd->getWidget(), msaEd);
     if (msaEd->getAlignmentLen() >= GRID_PROFILE_LENGTH_LIMIT) {
-        d->alignmentIsTooBig();
+        d->showAlignmentIsTooBigWarning();
     }
     d->exec();
 }

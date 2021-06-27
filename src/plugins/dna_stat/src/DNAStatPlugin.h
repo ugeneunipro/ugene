@@ -51,6 +51,7 @@ protected:
     void initViewContext(GObjectView *view) override;
 
 private:
+    /* Alignment length limint for opening grid report in UGENE */
     static constexpr int GRID_PROFILE_LENGTH_LIMIT = 20000;
 };
 

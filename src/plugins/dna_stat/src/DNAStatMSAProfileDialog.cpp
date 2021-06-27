@@ -124,10 +124,10 @@ void DNAStatMSAProfileDialog::accept() {
     QDialog::accept();
 }
 
-void DNAStatMSAProfileDialog::alignmentIsTooBig() {
+void DNAStatMSAProfileDialog::showAlignmentIsTooBigWarning() {
     warningLabel->setText(tr("<b><font color=%1>%2</font><br></br></b>")
         .arg(Theme::errorColorLabelHtmlStr())
-        .arg(tr("Warning: Alignment is too big. Generated grid profile couldn't be shown properly or even will crash application.<br>You can open generated profile by your own.")));
+        .arg(tr("Warning: report is too big to be shown in UGENE.")));
     saveBox->setChecked(true);
     saveBox->setCheckable(false);
 }
