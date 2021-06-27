@@ -194,6 +194,16 @@ bool PCRPrimerDesignForDNAAssemblyTask::areMetlingTempAndDeltaGood(const QByteAr
 
 bool PCRPrimerDesignForDNAAssemblyTask::hasUnwantedConnections(const QByteArray& primer) const {
     bool isUnwantedSelfDimer = UnwantedConnectionsUtils::isUnwantedSelfDimer(primer, settings.gibbsFreeEnergyExclude, settings.meltingPointExclude, settings.complementLengthExclude);
+    bool hasUnwantedHeteroDimer = false;
+    hasUnwantedHeteroDimer |= UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer, sequence,
+        settings.gibbsFreeEnergyExclude, settings.meltingPointExclude, settings.complementLengthExclude);
+    hasUnwantedHeteroDimer |= UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer, reverseComplementSequence,
+        settings.gibbsFreeEnergyExclude, settings.meltingPointExclude, settings.complementLengthExclude);
+    for (const QByteArray& otherSeqInPcr : qAsConst(otherSequencesInPcr)) {
+        hasUnwantedHeteroDimer |= UnwantedConnectionsUtils::isUnwantedHeteroDimer(primer,
+            otherSeqInPcr, settings.gibbsFreeEnergyExclude, settings.meltingPointExclude, settings.complementLengthExclude);
+    }
+
     //TODO: hairpins and heterodimers
     return isUnwantedSelfDimer;
 }

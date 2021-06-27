@@ -113,6 +113,8 @@ public:
         return reverse;
     }
 
+    const DimerFinderResult& getDimersInfo() const;
+
     bool isHeteroDimers() {
         return dimersInfo.canBeFormed;
     }

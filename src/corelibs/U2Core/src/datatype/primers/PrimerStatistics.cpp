@@ -370,6 +370,10 @@ QString PrimersPairStatistics::getInitializationError() const {
     return initializationError;
 }
 
+const DimerFinderResult& U2::PrimersPairStatistics::getDimersInfo() const {
+    return dimersInfo;
+}
+
 void PrimersPairStatistics::addDimersToReport(QString &report) const {
     if (forward.getDimersInfo().canBeFormed || reverse.getDimersInfo().canBeFormed) {
         report += "<h4>Self-dimers: </h4>";

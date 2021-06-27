@@ -26,6 +26,8 @@
 #include <U2Core/PrimerStatistics.h>
 #include <U2Core/U2SafePoints.h>
 
+#include "utils/UnwantedConnectionsUtils.h"
+
 namespace U2 {
 
 FindUnwantedIslandsTask::FindUnwantedIslandsTask(const U2Region& _searchArea, int _possibleOverlap, const QByteArray& _sequence)
@@ -98,10 +100,13 @@ bool FindUnwantedIslandsTask::hasUnwantedConnections(const U2Region& region) con
      * It's reverse complement representation.
      */
     QByteArray revComRegionSequence = DNASequenceUtils::reverseComplement(regionSequence);
+    bool isUnwantedSelfDimer = UnwantedConnectionsUtils::isUnwantedSelfDimer(regionSequence,
+                                                                             UNWANTED_DELTA_G,
+                                                                             UNWANTED_MELTING_TEMPERATURE,
+                                                                             UNWANTED_MAX_LENGTH);
 
-    bool isSelfDimer = isUnwantedSelfDimer(regionSequence);
 
-    return isSelfDimer;
+    return isUnwantedSelfDimer;
 
     /*for (int i = 0; i < region.length - NUCLEOTIDE_PAIR_LENGTH; i++) {
         const auto& possibleConnection = regionSequence.mid(i, NUCLEOTIDE_PAIR_LENGTH);
