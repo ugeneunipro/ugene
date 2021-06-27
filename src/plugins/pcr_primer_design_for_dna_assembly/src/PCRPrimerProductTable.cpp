@@ -19,42 +19,74 @@
  * MA 02110-1301, USA.
  */
 
+#include <U2Core/AnnotationSelection.h>
+#include <U2Core/AnnotationTableObject.h>
+#include <U2Core/DNASequenceSelection.h>
 #include <U2Core/U2SafePoints.h>
 
+#include <U2View/ADVSequenceObjectContext.h>
+#include <U2View/AnnotatedDNAView.h>
+
 #include "PCRPrimerProductTable.h"
+#include "src/tasks/PCRPrimerDesignForDNAAssemblyTask.h"
 
 namespace U2 {
-
-const QStringList PCRPrimerProductTable::INDEX_TO_NAME = {
-    QObject::tr("A Forward"),
-    QObject::tr("A Reverse"),
-    QObject::tr("B1 Forward"),
-    QObject::tr("B1 Reverse"),
-    QObject::tr("B2 Forward"),
-    QObject::tr("B2 Reverse"),
-    QObject::tr("B3 Forward"),
-    QObject::tr("B3 Reverse")
-};
 
  PCRPrimerProductTable::PCRPrimerProductTable(QWidget *parent)
     : QTableWidget(parent) {
      setColumnCount(2);
      setRowCount(8);
      setHorizontalHeaderLabels(QStringList() << tr("Fragment") << tr("Region"));
+     setSelectionBehavior(QAbstractItemView::SelectRows);
+     setSelectionMode(QAbstractItemView::SingleSelection);
+     connect(selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), SLOT(sl_selectionChanged()));
+     connect(this, SIGNAL(clicked(const QModelIndex &)), SLOT(sl_selectionChanged()));
  }
 
-void PCRPrimerProductTable::setCurrentProducts(const QList<U2Region> &currentProducts) {
+void PCRPrimerProductTable::setCurrentProducts(const QList<U2Region> &currentProducts, AnnotatedDNAView *_associatedView) {
     SAFE_POINT(currentProducts.size() == 8, "Should be 8 results", );
     int index = 0;
     int row = 0;
     foreach (const U2Region &region, currentProducts) {
         if (region != U2Region()) {
-            setItem(row, 0, new QTableWidgetItem(INDEX_TO_NAME.at(index)));
+            setItem(row, 0, new QTableWidgetItem(PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME.at(index)));
             setItem(row, 1, new QTableWidgetItem(tr("%1-%2").arg(QString::number(region.startPos)).arg(QString::number(region.endPos()))));
             row++;
         }
         index++;
     }
+    associatedView = _associatedView;
+}
+
+void PCRPrimerProductTable::setAnnotationTableObject(AnnotationTableObject *ato) {
+    associatedTableObject = ato;
+}
+
+void PCRPrimerProductTable::sl_selectionChanged() {
+    QModelIndexList selectedIndexesList = selectedIndexes();
+    if (selectedIndexesList.isEmpty()) {
+        return;
+    }
+    //one row = 2 items
+    CHECK(selectedIndexesList.size() == 2, );
+    QTableWidgetItem *selectedItem = item(selectedIndexesList.first().row(), 0);
+    QString selectedFragmentName = selectedItem->text();
+    
+    Annotation *selectedAnnotation = nullptr;
+    for (auto a : associatedTableObject->getAnnotations()) {
+        if (a->getName() == selectedFragmentName) {
+            selectedAnnotation = a;
+            break;
+        }
+    }
+    CHECK(selectedAnnotation != nullptr, );
+    for (ADVSequenceObjectContext *context : associatedView->getSequenceContexts()) {
+        context->getAnnotationsSelection()->clear();
+        context->getSequenceSelection()->clear();
+        context->emitClearSelectedAnnotationRegions();
+        context->emitAnnotationActivated(selectedAnnotation, 0);
+    }
+    //associatedView->getAnnotationsView()->emitAnnotationActivated(selectedAnnotation);
 }
 
 }

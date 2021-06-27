@@ -81,8 +81,9 @@ private slots:
 
 private:
     void showResults();
+    void createResultAnnotations();
 
-    AnnotatedDNAView* annDnaView = nullptr;
+    AnnotatedDNAView *annDnaView = nullptr;
 
     QToolButton* smButton = nullptr;
     QSpinBox* sbStartRegion = nullptr;

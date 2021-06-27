@@ -28,15 +28,23 @@
 
 namespace U2 {
 
+class AnnotatedDNAView;
+class AnnotationTableObject;
+
 class PCRPrimerProductTable : public QTableWidget {
     Q_OBJECT
 public:
     PCRPrimerProductTable(QWidget *parent);
 
-    void setCurrentProducts(const QList<U2Region>& currentProducts);
+    void setCurrentProducts(const QList<U2Region> &currentProducts, AnnotatedDNAView *associatedView);
+    void setAnnotationTableObject(AnnotationTableObject *ato);
+
+private slots:
+    void sl_selectionChanged();
 
 private:
-    static const QStringList INDEX_TO_NAME;
+    AnnotatedDNAView *associatedView = nullptr;
+    AnnotationTableObject *associatedTableObject = nullptr;
 };
 
 }    // namespace U2
