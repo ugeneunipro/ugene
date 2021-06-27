@@ -177,7 +177,6 @@ void KalignMSAEditorContext::sl_align() {
     assert(action != NULL);
     MSAEditor *ed = action->getMSAEditor();
     MultipleSequenceAlignmentObject *obj = ed->getMaObject();
-    
     KalignTaskSettings s;
     QObjectScopedPointer<KalignDialogController> dlg = new KalignDialogController(ed->getWidget(), obj->getMultipleAlignment(), s);
     bool containAsterisk = false;
