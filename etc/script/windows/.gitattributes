@@ -1,0 +1,5 @@
+# Default is auto.
+* text=auto
+
+# Shell (cygwin) scripts use LF
+*.sh text eol=lf
