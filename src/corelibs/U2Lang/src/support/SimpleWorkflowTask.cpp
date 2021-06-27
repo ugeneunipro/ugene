@@ -151,11 +151,11 @@ SimpleMSAWorkflow4GObjectTask::SimpleMSAWorkflow4GObjectTask(const QString &task
     MultipleSequenceAlignmentObject *msaObject = MultipleSequenceAlignmentImporter::createAlignment(msaObjectPointer->getEntityRef().dbiRef, al, os);
     for (const MultipleSequenceAlignmentRow &row : al->getMsaRows()) {
         if (row->getData().contains("*")) {
+            msaObject->replaceAllCharacters('*', 'X');
             ioLog.info(tr("Symbols '*' has been replaced with 'X' during alignment."));
             break;
         }
     }
-    msaObject->replaceAllCharacters('*', 'X');
     U2AlphabetUtils::assignAlphabet(al);
     SAFE_POINT_OP(os, );
 
