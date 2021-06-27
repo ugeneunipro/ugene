@@ -1,3 +1,4 @@
+#!/bin/bash
 # The script builds release version of UGENE in 'ugene' folder
 # and adds all required QT libraries, data files, license files
 # Only 'tools' dir is not added.
@@ -7,53 +8,75 @@ TEAMCITY_WORK_DIR="$(cygpath -aw .)"
 echo "TEAMCITY_WORK_DIR $TEAMCITY_WORK_DIR"
 
 SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene"
+BUNDLE_DIR="${TEAMCITY_WORK_DIR}/bundle"
 BUILD_DIR="${SOURCE_DIR}/src/_release"
+
+rm -rf "${BUILD_DIR}"
 
 cd "${SOURCE_DIR}" || {
   echo "Can't change dir to '${SOURCE_DIR}'"
   exit 1
 }
 
+echo "##teamcity[blockOpened name='qmake']"
 echo "Running qmake"
-"${QT_DIR}/bin/qmake.exe" -r ugene.pro
+"${QT_DIR}/bin/qmake.exe" -r ugene.pro || {
+  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. qmake failed']"
+  exit 1
+}
+echo "##teamcity[blockClosed name='qmake']"
 
+echo "##teamcity[blockOpened name='nmake']"
 echo "Running nmake"
-nmake Release
+nmake Release || {
+  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. nmake failed']"
+  exit 1
+}
+echo "##teamcity[blockClosed name='nmake']"
+
+echo "##teamcity[blockOpened name='bundle']"
+rm -rf "${BUNDLE_DIR}"
+cp -r "${BUILD_DIR}" "${BUNDLE_DIR}"
+rm "${BUNDLE_DIR}/"*.lib
+rm "${BUNDLE_DIR}/"*.pdb
+rm "${BUNDLE_DIR}/plugins/"*.lib
+rm "${BUNDLE_DIR}/plugins/"*.pdb
 
 echo "Copy resources"
-cp "${SOURCE_DIR}/LICENSE.txt" "${BUILD_DIR}"
-cp "${SOURCE_DIR}/LICENSE.3rd_party.txt" "${BUILD_DIR}"
-cp -r "${SOURCE_DIR}/data" "${BUILD_DIR}"
-cp "${PATH_TO_INCLUDE_LIBS}/"* "${BUILD_DIR}"
+cp "${SOURCE_DIR}/LICENSE.txt" "${BUNDLE_DIR}"
+cp "${SOURCE_DIR}/LICENSE.3rd_party.txt" "${BUNDLE_DIR}"
+cp -r "${SOURCE_DIR}/data" "${BUNDLE_DIR}"
+cp "${PATH_TO_INCLUDE_LIBS}/"* "${BUNDLE_DIR}"
 
 echo copy Qt libraries
-cp "${QT_DIR}/bin/Qt5Core.dll" "${BUILD_DIR}"
-cp "${QT_DIR}/bin/Qt5Gui.dll" "${BUILD_DIR}"
-cp "${QT_DIR}/bin/Qt5Multimedia.dll" "${BUILD_DIR}"
-cp "${QT_DIR}/bin/Qt5MultimediaWidgets.dll" "${BUILD_DIR}"
-cp "${QT_DIR}/bin/Qt5Network.dll" "${BUILD_DIR}"
-cp "${QT_DIR}/bin/Qt5OpenGL.dll" "${BUILD_DIR}"
-cp "${QT_DIR}/bin/Qt5Positioning.dll" "${BUILD_DIR}"
-cp "${QT_DIR}/bin/Qt5PrintSupport.dll" "${BUILD_DIR}"
-cp "${QT_DIR}/bin/Qt5Qml.dll" "${BUILD_DIR}"
-cp "${QT_DIR}/bin/Qt5Quick.dll" "${BUILD_DIR}"
-cp "${QT_DIR}/bin/Qt5Script.dll" "${BUILD_DIR}"
-cp "${QT_DIR}/bin/Qt5ScriptTools.dll" "${BUILD_DIR}"
-cp "${QT_DIR}/bin/Qt5Sensors.dll" "${BUILD_DIR}"
-cp "${QT_DIR}/bin/Qt5Sql.dll" "${BUILD_DIR}"
-cp "${QT_DIR}/bin/Qt5Svg.dll" "${BUILD_DIR}"
-cp "${QT_DIR}/bin/Qt5Test.dll" "${BUILD_DIR}"
-cp "${QT_DIR}/bin/Qt5Widgets.dll" "${BUILD_DIR}"
-cp "${QT_DIR}/bin/Qt5Xml.dll" "${BUILD_DIR}"
+cp "${QT_DIR}/bin/Qt5Core.dll" "${BUNDLE_DIR}"
+cp "${QT_DIR}/bin/Qt5Gui.dll" "${BUNDLE_DIR}"
+cp "${QT_DIR}/bin/Qt5Multimedia.dll" "${BUNDLE_DIR}"
+cp "${QT_DIR}/bin/Qt5MultimediaWidgets.dll" "${BUNDLE_DIR}"
+cp "${QT_DIR}/bin/Qt5Network.dll" "${BUNDLE_DIR}"
+cp "${QT_DIR}/bin/Qt5OpenGL.dll" "${BUNDLE_DIR}"
+cp "${QT_DIR}/bin/Qt5Positioning.dll" "${BUNDLE_DIR}"
+cp "${QT_DIR}/bin/Qt5PrintSupport.dll" "${BUNDLE_DIR}"
+cp "${QT_DIR}/bin/Qt5Qml.dll" "${BUNDLE_DIR}"
+cp "${QT_DIR}/bin/Qt5Quick.dll" "${BUNDLE_DIR}"
+cp "${QT_DIR}/bin/Qt5Script.dll" "${BUNDLE_DIR}"
+cp "${QT_DIR}/bin/Qt5ScriptTools.dll" "${BUNDLE_DIR}"
+cp "${QT_DIR}/bin/Qt5Sensors.dll" "${BUNDLE_DIR}"
+cp "${QT_DIR}/bin/Qt5Sql.dll" "${BUNDLE_DIR}"
+cp "${QT_DIR}/bin/Qt5Svg.dll" "${BUNDLE_DIR}"
+cp "${QT_DIR}/bin/Qt5Test.dll" "${BUNDLE_DIR}"
+cp "${QT_DIR}/bin/Qt5Widgets.dll" "${BUNDLE_DIR}"
+cp "${QT_DIR}/bin/Qt5Xml.dll" "${BUNDLE_DIR}"
 
-mkdir "${BUILD_DIR}/sqldrivers"
-cp "${QT_DIR}/plugins/sqldrivers/qsqlmysql.dll" "${BUILD_DIR}/sqldrivers"
+mkdir "${BUNDLE_DIR}/sqldrivers"
+cp "${QT_DIR}/plugins/sqldrivers/qsqlmysql.dll" "${BUNDLE_DIR}/sqldrivers"
 
-mkdir "${BUILD_DIR}\imageformats"
-cp "${QT_DIR}/plugins/imageformats/qgif.dll" "${BUILD_DIR}/imageformats"
-cp "${QT_DIR}/plugins/imageformats/qjpeg.dll" "${BUILD_DIR}/imageformats"
-cp "${QT_DIR}/plugins/imageformats/qsvg.dll" "${BUILD_DIR}/imageformats"
-cp "${QT_DIR}/plugins/imageformats/qtiff.dll" "${BUILD_DIR}/imageformats"
+mkdir "${BUNDLE_DIR}\imageformats"
+cp "${QT_DIR}/plugins/imageformats/qgif.dll" "${BUNDLE_DIR}/imageformats"
+cp "${QT_DIR}/plugins/imageformats/qjpeg.dll" "${BUNDLE_DIR}/imageformats"
+cp "${QT_DIR}/plugins/imageformats/qsvg.dll" "${BUNDLE_DIR}/imageformats"
+cp "${QT_DIR}/plugins/imageformats/qtiff.dll" "${BUNDLE_DIR}/imageformats"
 
-mkdir "${BUILD_DIR}/platforms"
-cp "${QT_DIR}/plugins/platforms\qwindows.dll" "${BUILD_DIR}/platforms"
+mkdir "${BUNDLE_DIR}/platforms"
+cp "${QT_DIR}/plugins/platforms\qwindows.dll" "${BUNDLE_DIR}/platforms"
+echo "##teamcity[blockClosed name='bundle']"
