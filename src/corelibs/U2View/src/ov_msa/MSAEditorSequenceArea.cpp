@@ -23,7 +23,6 @@
 
 #include <QApplication>
 #include <QDialog>
-#include <QMessageBox>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QTextStream>
@@ -185,83 +184,11 @@ void MSAEditorSequenceArea::focusOutEvent(QFocusEvent *fe) {
     update();
 }
 
-// TODO: move this function into MSA?
-/* Compares sequences of 2 rows ignoring gaps. */
-static bool isEqualsIgnoreGaps(const MultipleAlignmentRowData *row1, const MultipleAlignmentRowData *row2) {
-    if (row1 == row2) {
-        return true;
-    }
-    if (row1->getUngappedLength() != row2->getUngappedLength()) {
-        return false;
-    }
-    return row1->getUngappedSequence().seq == row2->getUngappedSequence().seq;
-}
-
-// TODO: move this function into MSA?
-/* Groups rows by similarity. Two rows are considered equal if their sequences are equal with ignoring of gaps. */
-static QList<QList<int>> groupRowsBySimilarity(const QList<MultipleAlignmentRow> &msaRows) {
-    QList<QList<int>> rowGroups;
-    QSet<int> mappedRows;    // contains indexes of the already processed rows.
-    for (int i = 0; i < msaRows.size(); i++) {
-        if (mappedRows.contains(i)) {
-            continue;
-        }
-        const MultipleAlignmentRow &row = msaRows[i];
-        QList<int> rowGroup;
-        rowGroup << i;
-        for (int j = i + 1; j < msaRows.size(); j++) {
-            const MultipleAlignmentRow &next = msaRows[j];
-            if (!mappedRows.contains(j) && isEqualsIgnoreGaps(next.data(), row.data())) {
-                rowGroup << j;
-                mappedRows.insert(j);
-            }
-        }
-        rowGroups << rowGroup;
-    }
-    return rowGroups;
-}
-
 void MSAEditorSequenceArea::updateCollapseModel(const MaModificationInfo &modInfo) {
     if (!modInfo.rowContentChanged && !modInfo.rowListChanged) {
         return;
     }
-    MaCollapseModel *collapseModel = ui->getCollapseModel();
-    auto mode = editor->getRowOrderMode();
-    if (mode == MaEditorRowOrderMode::Original) {
-        // Synchronize collapsible model with a current alignment.
-        collapseModel->reset(getEditor()->getMaRowIds());
-        return;
-    } else if (mode == MaEditorRowOrderMode::Free) {
-        // Check if the modification is compatible with the current view state: all rows have view properties assigned. Reset to the Original order if not.
-        QSet<qint64> maRowIds = getEditor()->getMaRowIds().toSet();
-        QSet<qint64> viewModelRowIds = collapseModel->getAllRowIds();
-        if (viewModelRowIds != maRowIds) {
-            sl_toggleSequenceRowOrder(false);
-        }
-        return;
-    }
-
-    SAFE_POINT(mode == MaEditorRowOrderMode::Sequence, "Unexpected row order mode", );
-
-    // Order and group rows by sequence content.
-    MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
-    QList<QList<int>> rowGroups = groupRowsBySimilarity(msaObject->getRows());
-    QVector<MaCollapsibleGroup> newCollapseGroups;
-
-    QSet<qint64> maRowIdsOfNonCollapsedRowsBefore;
-    for (int i = 0; i < collapseModel->getGroupCount(); i++) {
-        const MaCollapsibleGroup *group = collapseModel->getCollapsibleGroup(i);
-        if (!group->isCollapsed) {
-            maRowIdsOfNonCollapsedRowsBefore += group->maRowIds.toSet();
-        }
-    }
-    for (int i = 0; i < rowGroups.size(); i++) {
-        const QList<int> &maRowsInGroup = rowGroups[i];
-        QList<qint64> maRowIdsInGroup = msaObject->getMultipleAlignment()->getRowIdsByRowIndexes(maRowsInGroup);
-        bool isCollapsed = !maRowIdsOfNonCollapsedRowsBefore.contains(maRowIdsInGroup[0]);
-        newCollapseGroups << MaCollapsibleGroup(maRowsInGroup, maRowIdsInGroup, isCollapsed);
-    }
-    collapseModel->update(newCollapseGroups);
+    getEditor()->updateCollapseModel();
 }
 
 void MSAEditorSequenceArea::sl_buildStaticToolbar(GObjectView *v, QToolBar *t) {
@@ -699,14 +626,7 @@ void MSAEditorSequenceArea::sl_toggleSequenceRowOrder(bool isOrderBySequence) {
     CHECK(editor->getRowOrderMode() != newMode, );
 
     editor->setRowOrderMode(newMode);
-    freeModeMasterMarkersSet.clear();
-
     updateRowOrderActionsState();
-    if (isOrderBySequence) {
-        sl_groupSequencesByContent();
-    } else {
-        ui->getCollapseModel()->reset(editor->getMaRowIds());
-    }
     setSelection(MaEditorSelection());
     ui->getScrollController()->updateVerticalScrollBar();
     emit si_collapsingModeChanged();
@@ -849,12 +769,13 @@ void MSAEditorSequenceArea::enableFreeRowOrderMode(QObject *marker, const QList<
         collapsibleGroupList << MaCollapsibleGroup(maRowIndexList, maRowIdList, isCollapsed);
     }
     editor->setRowOrderMode(MaEditorRowOrderMode::Free);
-    freeModeMasterMarkersSet.insert(marker);
+    getEditor()->getFreeModeMasterMarkersSet().insert(marker);
     updateRowOrderActionsState();
     ui->getCollapseModel()->update(collapsibleGroupList);
 }
 
 void MSAEditorSequenceArea::disableFreeRowOrderMode(QObject *marker) {
+    QSet<QObject *> &freeModeMasterMarkersSet = getEditor()->getFreeModeMasterMarkersSet();
     freeModeMasterMarkersSet.remove(marker);
     if (freeModeMasterMarkersSet.isEmpty() && editor->getRowOrderMode() == MaEditorRowOrderMode::Free) {
         // Switch back to the Original ordering.

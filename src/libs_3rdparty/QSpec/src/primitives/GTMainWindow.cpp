@@ -68,7 +68,7 @@ void GTMainWindow::maximizeMainWindow(GUITestOpStatus &os, QMainWindow *mainWind
             : mainWindow(mw) {
         }
         void run(HI::GUITestOpStatus &) override {
-            mainWindow->setWindowState(mainWindow->windowState() & ~Qt::WindowMinimized | Qt::WindowActive);
+            mainWindow->setWindowState(mainWindow->windowState() & (~Qt::WindowMinimized | Qt::WindowActive));
         }
         QMainWindow *mainWindow;
     };

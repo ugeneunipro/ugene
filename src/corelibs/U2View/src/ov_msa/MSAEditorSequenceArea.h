@@ -241,17 +241,6 @@ private:
     QAction *reverseComplementAction;
     QAction *reverseAction;
     QAction *complementAction;
-
-    /**
-     * Set of 'marker' objects from the 'master' components that requested Free ordering mode to be ON are responsible for the 'free' mode ordering.
-     * Free mode can be active only if there is at least one 'marker' in the set.
-     *
-     * When the last marker object is removed from the set the ordering automatically switches to the 'Original'.
-     * Example of master components: multiple synchronized phy-tree views that manage the order of MSA.
-     *
-     * MSAEditor can any time reset this set and switch to 'Original' or 'Sequence' mode.
-     */
-    QSet<QObject *> freeModeMasterMarkersSet;
 };
 
 // SANGER_TODO: move to EditorTasks?

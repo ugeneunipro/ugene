@@ -198,7 +198,7 @@ public:
      * Updates currently active row order mode.
      * This is a trivial method with no other actions/callbacks.
      */
-    void setRowOrderMode(MaEditorRowOrderMode mode);
+    virtual void setRowOrderMode(MaEditorRowOrderMode mode);
 
 signals:
     void si_fontChanged(const QFont &f);
