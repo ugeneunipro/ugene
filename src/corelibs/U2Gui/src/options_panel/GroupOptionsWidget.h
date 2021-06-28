@@ -69,7 +69,7 @@ private:
     QVBoxLayout *mainLayout;
 
     static const int TITLE_HEIGHT = 30;
-    static const int MIN_WIDGET_WIDTH = 360;
+    static const int MIN_WIDGET_WIDTH = 380;
     static const int MAX_WIDGET_WIDTH = 500;
 };
 
