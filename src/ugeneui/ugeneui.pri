@@ -9,7 +9,8 @@ QT += xml network script widgets
 TEMPLATE = app
 CONFIG +=qt dll thread debug_and_release
 macx : CONFIG -= app_bundle
-unix:!macx: QMAKE_LFLAGS += --no-pie
+unix:!macx:!clang:g++: QMAKE_LFLAGS += --no-pie
+unix:!macx:clang: QMAKE_LFLAGS += -fno-pie
 DEFINES+= QT_DLL QT_FATAL_ASSERT
 INCLUDEPATH += src _tmp ../include ../corelibs/U2Private/src
 macx : INCLUDEPATH += /System/Library/Frameworks/Security.framework/Headers
@@ -56,6 +57,7 @@ RCC_DIR=_tmp/rcc
 win32 {
     LIBS += -luser32    # to import CharToOemA with nmake build
     LIBS += -lole32     # to import CoCreateInstance with nmake build
+    LIBS += -lshell32   # to import SHGetSpecialFolderPathA with nmake build
     QMAKE_CXXFLAGS_WARN_ON = -W3
     QMAKE_CFLAGS_WARN_ON = -W3
     RC_FILE = ugeneui.rc
