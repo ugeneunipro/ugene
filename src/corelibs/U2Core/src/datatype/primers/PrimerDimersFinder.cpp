@@ -43,6 +43,32 @@ QString DimerFinderResult::getShortReport() const {
 /************************************************************************/
 /* DrimersFinder */
 /************************************************************************/
+
+const QMap<QByteArray, qreal> BaseDimersFinder::ENERGY_MAP = {
+        { "AA", -1.9 },
+        { "TT", -1.9 },
+
+        { "AT", -1.5 },
+        { "TA", -1.0 },
+
+        { "CA", -2.0 },
+        { "TG", -2.0 },
+
+        { "AC", -1.3 },
+        { "GT", -1.3 },
+
+        { "CT", -1.6 },
+        { "AG", -1.6 },
+        { "GA", -1.6 },
+        { "TC", -1.6 },
+
+        { "CG", -3.6 },
+        { "GC", -3.1 },
+
+        { "GG", -3.1 },
+        { "CC", -3.1 }
+};
+
 static QMap<QByteArray, qreal> initEnergyMap() {
     QMap<QByteArray, qreal> initializedEnergyMap;
 
