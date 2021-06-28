@@ -647,6 +647,27 @@ GUI_TEST_CLASS_DEFINITION(test_5138_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5149) {
+    // Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Copy a sequence which contains only gaps to the clipboard.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(41, 0), QPoint(43, 0));
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+
+    // Paste the clipboard data to the alignment.
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+
+    // Expected state: nothing happens, the undo/redo stack hasn't been modified.
+    QAbstractButton *undo = GTAction::button(os, "msa_action_undo");
+    CHECK_SET_ERR(!undo->isEnabled(), "Undo button should be disabled");
+
+    QAbstractButton *redo = GTAction::button(os, "msa_action_redo");
+    CHECK_SET_ERR(!redo->isEnabled(), "Redo button should be disabled");
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5199) {
     //    1. Open "data/samples/PDB/1CF7.PDB".
     GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
