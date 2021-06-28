@@ -33,10 +33,11 @@ namespace U2 {
 class U2CORE_EXPORT PrimerStatistics : public QObject {
     Q_OBJECT
 public:
-    static QString checkPcrPrimersPair(const QByteArray& forward, const QByteArray& reverse, bool& isCriticalError);
-    static double getMeltingTemperature(const QByteArray& sequence);
-    static double getMeltingTemperature(const QByteArray& initialPrimer, const QByteArray& alternativePrimer);
-    static double getAnnealingTemperature(const QByteArray& product, const QByteArray& forwardPrimer, const QByteArray& reversePrimer);
+    static QString checkPcrPrimersPair(const QByteArray &forward, const QByteArray &reverse, bool &isCriticalError);
+    static double getDeltaG(const QByteArray& sequence);
+    static double getMeltingTemperature(const QByteArray &sequence);
+    static double getMeltingTemperature(const QByteArray &initialPrimer, const QByteArray &alternativePrimer);
+    static double getAnnealingTemperature(const QByteArray &product, const QByteArray &forwardPrimer, const QByteArray &reversePrimer);
 
     static bool validate(const QByteArray& primer);
     static bool validatePrimerLength(const QByteArray& primer);
