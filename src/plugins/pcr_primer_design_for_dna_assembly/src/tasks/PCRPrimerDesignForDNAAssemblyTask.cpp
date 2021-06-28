@@ -39,6 +39,17 @@
 
 namespace U2 {
 
+const QStringList PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME = {
+    QObject::tr("A Forward"),
+    QObject::tr("A Reverse"),
+    QObject::tr("B1 Forward"),
+    QObject::tr("B1 Reverse"),
+    QObject::tr("B2 Forward"),
+    QObject::tr("B2 Reverse"),
+    QObject::tr("B3 Forward"),
+    QObject::tr("B3 Reverse")
+};
+
 PCRPrimerDesignForDNAAssemblyTask::PCRPrimerDesignForDNAAssemblyTask(const PCRPrimerDesignForDNAAssemblyTaskSettings& _settings, const QByteArray& _sequence)
     : Task("PCR Primer Design For DNA Assembly Task", TaskFlags_FOSCOE | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
       settings(_settings),
@@ -114,6 +125,12 @@ QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask)
 QString PCRPrimerDesignForDNAAssemblyTask::generateReport() const {
     //TODO - report
     return QString();
+}
+
+QList<U2Region> PCRPrimerDesignForDNAAssemblyTask::getResults() const {
+    QList<U2Region> results;
+    results << aForward << aReverse << b1Forward << b1Reverse << b2Forward << b2Reverse << b3Forward << b3Reverse;
+    return results;
 }
 
 QList<QByteArray> PCRPrimerDesignForDNAAssemblyTask::extractLoadedSequences(LoadDocumentTask* task) {

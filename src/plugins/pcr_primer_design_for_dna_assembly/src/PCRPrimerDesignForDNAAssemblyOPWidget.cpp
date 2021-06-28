@@ -27,6 +27,7 @@
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/L10n.h>
+#include <U2Core/U2DbiRegistry.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -50,6 +51,7 @@ const QString PCRPrimerDesignForDNAAssemblyOPWidget::SELECT_AREAS_FOR_PRIMING_SH
 const QString PCRPrimerDesignForDNAAssemblyOPWidget::OPEN_BACKBONE_SEQUENCE_SHOW_HIDE_ID = "open-backbone-sequence-show-hide-id";
 const QString PCRPrimerDesignForDNAAssemblyOPWidget::GENERATE_SEQUENCE_SHOW_HIDE_ID = "generate-sequence-show-hide-id";
 const QString PCRPrimerDesignForDNAAssemblyOPWidget::OTHER_SEQUENCES_IN_PCR_REACTION_SHOW_HIDE_ID = "other-sequences-in-pcr-reaction-show-hide-id";
+const QString PCRPrimerDesignForDNAAssemblyOPWidget::PCR_TABLE_OBJECT_NAME = QObject::tr("PCR Primer Design for DNA assembly");
 
 PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(AnnotatedDNAView* _annDnaView)
     : QWidget(nullptr),
@@ -89,6 +91,7 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
                                            true);
 
     auto seqLength = annDnaView->getActiveSequenceContext()->getSequenceLength();
+    productsTable->hide();
 
     // Default values, have been provided by the customer
     // Left area: from "1" to "10% of sequence length"
@@ -163,11 +166,12 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
     auto sequence = sequenceObject->getWholeSequenceData(os);
     CHECK_OP(os, );
 
-    auto task = new PCRPrimerDesignForDNAAssemblyTask(settings, sequence);
+    pcrTask = new PCRPrimerDesignForDNAAssemblyTask(settings, sequence);
     auto ts = AppContext::getTaskScheduler();
     SAFE_POINT(ts != nullptr, L10N::nullPointerError("TaskScheduler"), );
+    connect(pcrTask, SIGNAL(si_stateChanged()), SLOT(sl_onFindTaskFinished()));
 
-    ts->registerTopLevelTask(task);
+    ts->registerTopLevelTask(pcrTask);
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually() {
@@ -280,6 +284,69 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_loadOtherSequenceInPcr() {
 
     leOtherSequencesInPcrFilePath->setText(file);
 
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::sl_onFindTaskFinished() {
+    CHECK(sender() == pcrTask, );
+    SAFE_POINT(nullptr != pcrTask, L10N::nullPointerError("InSilicoPcrTask"), );
+    if (pcrTask->isCanceled() || pcrTask->hasError()) {
+        disconnect(pcrTask, SIGNAL(si_stateChanged()));
+        pcrTask = nullptr;
+        setEnabled(true);
+        return;
+    }
+    CHECK(pcrTask->isFinished(), );
+    //do nothing in case of empty result
+    auto results = pcrTask->getResults();
+    for (const U2Region &region : qAsConst(results)) {
+        if (region != U2Region()) {
+            showResults();
+            createResultAnnotations();
+            pcrTask = nullptr;
+            setEnabled(true);
+            return;
+        }
+    }
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::showResults() {
+    productsTable->show();
+    productsTable->setCurrentProducts(pcrTask->getResults(), annDnaView);
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
+    QStringList usedNames;
+    for (AnnotationTableObject *tableObject : annDnaView->getActiveSequenceContext()->getAnnotationObjects()) {
+        usedNames.append(tableObject->getGObjectName());
+    }
+    int counter = 1;
+    QString rolledName = PCR_TABLE_OBJECT_NAME;
+    while (usedNames.contains(rolledName)) {
+        rolledName = PCR_TABLE_OBJECT_NAME + QString(" %1").arg(counter);
+        counter++;
+    }
+
+    U2OpStatusImpl os;
+    const U2DbiRef localDbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
+    SAFE_POINT_OP(os, );
+    AnnotationTableObject *newDocAto = new AnnotationTableObject(rolledName, localDbiRef);
+    QList<SharedAnnotationData> annotations;
+    int index = 0;
+    auto results = pcrTask->getResults();
+    for (const U2Region &region : qAsConst(results)) {
+        if (region != U2Region()) {
+            SharedAnnotationData data(new AnnotationData());
+            data->setStrand(index % 2 == 0 ? U2Strand(U2Strand::Direct) : U2Strand(U2Strand::Complementary));
+            data->name = PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME.at(index);
+            data->location->regions.append(region);
+            annotations.append(data);
+        }
+        index++;
+    }
+    newDocAto->addAnnotations(annotations, PCR_TABLE_OBJECT_NAME);
+    newDocAto->addObjectRelation(annDnaView->getActiveSequenceContext()->getSequenceGObject(), ObjectRole_Sequence);
+    annDnaView->addObject(newDocAto);
+    productsTable->setAnnotationTableObject(newDocAto);
 }
 
 }
