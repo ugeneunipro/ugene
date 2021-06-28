@@ -152,12 +152,12 @@
 <context>
     <name>U2::KalignGObjectRunFromSchemaTask</name>
     <message>
-        <location filename="../src/KalignTask.cpp" line="251"/>
+        <location filename="../src/KalignTask.cpp" line="252"/>
         <source>Workflow wrapper &apos;%1&apos;</source>
         <translation>Workflow wrapper &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/KalignTask.cpp" line="261"/>
+        <location filename="../src/KalignTask.cpp" line="262"/>
         <source>KAlign align &apos;%1&apos;</source>
         <translation>Выравнивание с помощью Kalign &apos;%1&apos;</translation>
     </message>
@@ -181,19 +181,24 @@
 <context>
     <name>U2::KalignPlugin</name>
     <message>
-        <location filename="../src/KalignPlugin.cpp" line="71"/>
+        <location filename="../src/KalignPlugin.cpp" line="72"/>
         <source>Kalign</source>
         <translation>Kalign</translation>
     </message>
     <message>
-        <location filename="../src/KalignPlugin.cpp" line="72"/>
+        <location filename="../src/KalignPlugin.cpp" line="73"/>
         <source>A port of Kalign package for multiple sequence alignment. Check http://msa.sbc.su.se for the original version</source>
         <translation>Встроенный в UGENE программный пакет для множественного выравнивания последовательности. Здесь http://msa.sbc.su.se находится оригинальная версия</translation>
     </message>
     <message>
-        <location filename="../src/KalignPlugin.cpp" line="82"/>
+        <location filename="../src/KalignPlugin.cpp" line="81"/>
         <source>Align with Kalign...</source>
         <translation>Выравнивание с помощью Kalign...</translation>
+    </message>
+    <message>
+        <location filename="../src/KalignPlugin.cpp" line="208"/>
+        <source>Hirschberg (KAlign)</source>
+        <translation>Hirschberg (KAlign)</translation>
     </message>
 </context>
 <context>

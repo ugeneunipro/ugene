@@ -44,47 +44,47 @@
 <context>
     <name>U2::AddPluginTask</name>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="336"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="345"/>
         <source>Add plugin task: %1</source>
         <translation>Загрузка внешнего модуля: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="350"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="359"/>
         <source>Plugin is already loaded: %1</source>
         <translation>Модуль уже загружен: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="358"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="367"/>
         <source>Plugin %1 depends on %2 which is not loaded</source>
         <translation>Модуль %1 зависит от модуля %2, который не был загружен</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="362"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="371"/>
         <source>Plugin %1 depends on %2 which is available, but the version is too old</source>
         <translation>Модуль %1 зависит от модуля %2, который доступен, но версия которого устарела</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="373"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="382"/>
         <source>Plugin loading error: %1, Error string %2</source>
         <translation>Ошибка загрузки модуля: %1, строка %2</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="379"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="388"/>
         <source>Settings is NULL</source>
         <translation>Settings is NULL</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="434"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="443"/>
         <source>Plugin loading error: %1. Verification failed.</source>
         <translation>Plugin loading error: %1. Verification failed.</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="454"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="463"/>
         <source>Plugin initialization routine was not found: %1</source>
         <translation>Не найдена входная функция библиотеки модуля: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="460"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="469"/>
         <source>Plugin initialization failed: %1</source>
         <translation>Ошибка инициализации модуля: %1</translation>
     </message>
@@ -205,11 +205,7 @@ By default, loglevel=&quot;ERROR&quot;.</source>
     <message>
         <location filename="../src/ServiceRegistryImpl.cpp" line="226"/>
         <source>Required services are not enabled: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Required service is not enabled: %1</source>
-        <translation type="vanished">Не запущен обеспечивающий зависимость сервис: %1</translation>
+        <translation>Необходимые сервисы недоступны: %1</translation>
     </message>
     <message>
         <location filename="../src/ServiceRegistryImpl.cpp" line="174"/>
@@ -220,17 +216,17 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::LoadAllPluginsTask</name>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="78"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="79"/>
         <source>Loading start up plugins</source>
         <translation>Загрузка подключаемых модулей</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="108"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="109"/>
         <source>File not found: %1</source>
         <translation>Не найден внешний модуль: %1</translation>
     </message>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="113"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="114"/>
         <source>Invalid file format: %1</source>
         <translation>Некорректный файл библиотеки: %1</translation>
     </message>
@@ -467,7 +463,7 @@ By default, loglevel=&quot;ERROR&quot;.</source>
 <context>
     <name>U2::VerifyPluginTask</name>
     <message>
-        <location filename="../src/PluginSupportImpl.cpp" line="487"/>
+        <location filename="../src/PluginSupportImpl.cpp" line="496"/>
         <source>Verify plugin task: %1</source>
         <translation>Задача верификации модуля: %1</translation>
     </message>

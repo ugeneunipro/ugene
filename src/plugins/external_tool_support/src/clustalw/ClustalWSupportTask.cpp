@@ -24,13 +24,11 @@
 #include <QCoreApplication>
 #include <QDir>
 
-#include <U2Core/AddDocumentTask.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
 #include <U2Core/Counter.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DocumentModel.h>
-#include <U2Core/ExternalToolRegistry.h>
 #include <U2Core/GObjectUtils.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/LoadDocumentTask.h>
@@ -41,8 +39,6 @@
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 #include <U2Core/UserApplicationsSettings.h>
-
-#include <U2Gui/OpenViewTask.h>
 
 #include "ClustalWSupport.h"
 
@@ -112,7 +108,7 @@ void ClustalWSupportTask::prepare() {
         if (NULL != obj) {
             MultipleSequenceAlignmentObject *alObj = dynamic_cast<MultipleSequenceAlignmentObject *>(obj);
             SAFE_POINT(NULL != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", );
-            lock = new StateLock("ClustalWAligment");
+            lock = new StateLock("ClustalWAlignment");
             alObj->lockState(lock);
         }
     }
@@ -144,7 +140,7 @@ void ClustalWSupportTask::prepare() {
         return;
     }
 
-    saveTemporaryDocumentTask = new SaveAlignmentTask(MSAUtils::setUniqueRowNames(inputMsa), url, BaseDocumentFormats::CLUSTAL_ALN);
+    saveTemporaryDocumentTask = new SaveAlignmentTask(MSAUtils::createCopyWithIndexedRowNames(inputMsa), url, BaseDocumentFormats::CLUSTAL_ALN);
     saveTemporaryDocumentTask->setSubtaskProgressWeight(5);
     addSubTask(saveTemporaryDocumentTask);
 }
@@ -231,7 +227,7 @@ QList<Task *> ClustalWSupportTask::onSubTaskFinished(Task *subTask) {
         SAFE_POINT(newMAligmentObject != NULL, "newDocument->getObjects().first() is not a MultipleSequenceAlignmentObject", res);
 
         resultMA = newMAligmentObject->getMsaCopy();
-        bool renamed = MSAUtils::restoreRowNames(resultMA, inputMsa->getRowNames());
+        bool renamed = MSAUtils::restoreOriginalRowNamesFromIndexedNames(resultMA, inputMsa->getRowNames());
         SAFE_POINT(renamed, "Failed to restore initial row names!", res);
 
         // If an alignment object has been specified, save the result to it
@@ -241,13 +237,8 @@ QList<Task *> ClustalWSupportTask::onSubTaskFinished(Task *subTask) {
                 MultipleSequenceAlignmentObject *alObj = dynamic_cast<MultipleSequenceAlignmentObject *>(obj);
                 SAFE_POINT(NULL != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", res);
 
-                QList<qint64> rowsOrder = MSAUtils::compareRowsAfterAlignment(inputMsa, resultMA, stateInfo);
+                MSAUtils::assignOriginalDataIds(inputMsa, resultMA, stateInfo);
                 CHECK_OP(stateInfo, res);
-
-                if (rowsOrder.count() != inputMsa->getNumRows()) {
-                    stateInfo.setError("Unexpected number of rows in the result multiple alignment!");
-                    return res;
-                }
 
                 QMap<qint64, QList<U2MsaGap>> rowsGapModel;
                 for (int i = 0, n = resultMA->getNumRows(); i < n; ++i) {
@@ -279,8 +270,9 @@ QList<Task *> ClustalWSupportTask::onSubTaskFinished(Task *subTask) {
                     alObj->updateGapModel(stateInfo, rowsGapModel);
                     SAFE_POINT_OP(stateInfo, res);
 
-                    if (rowsOrder != inputMsa->getRowsIds()) {
-                        alObj->updateRowsOrder(stateInfo, rowsOrder);
+                    QList<qint64> resultRowIds = resultMA->getRowsIds();
+                    if (resultRowIds != inputMsa->getRowsIds()) {
+                        alObj->updateRowsOrder(stateInfo, resultRowIds);
                         SAFE_POINT_OP(stateInfo, res);
                     }
                 }
@@ -409,21 +401,21 @@ int ClustalWLogParser::getProgress() {
     }
     if (!lastPartOfLog.isEmpty()) {
         QString lastMessage = lastPartOfLog.last();
-        //0..10% progresss
+        // 0..10% progress.
         if (lastMessage.contains(QRegExp("Sequence \\d+:"))) {
             QRegExp rx("Sequence (\\d+):");
             rx.indexIn(lastMessage);
             CHECK(rx.captureCount() > 0, 0);
             return rx.cap(1).toInt() * 10 / countSequencesInMSA;
         }
-        //10..90% progresss
+        // 10..90% progress.
         if (lastMessage.contains(QRegExp("Sequences \\(\\d+:\\d+\\)"))) {
             QRegExp rx("Sequences \\((\\d+):\\d+\\)");
             rx.indexIn(lastMessage);
             CHECK(rx.captureCount() > 0, 0);
             return rx.cap(1).toInt() * 80 / countSequencesInMSA + 10;
         }
-        //90..100% progresss
+        // 90..100% progress.
         if (lastMessage.contains(QRegExp("Group \\d+:"))) {
             QRegExp rx("Group (\\d+):");
             rx.indexIn(lastMessage);

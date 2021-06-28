@@ -106,23 +106,14 @@ TCoffeeSupportContext::TCoffeeSupportContext(QObject *p)
 }
 
 void TCoffeeSupportContext::initViewContext(GObjectView *view) {
-    MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
+    auto msaEditor = qobject_cast<MSAEditor *>(view);
     SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
-    CHECK(msaEditor->getMaObject() != nullptr, );
 
-    bool objLocked = msaEditor->getMaObject()->isStateLocked();
-    bool isMsaEmpty = msaEditor->isAlignmentEmpty();
-
-    auto alignAction = new AlignMsaAction(this, TCoffeeSupport::ET_TCOFFEE_ID, view, tr("Align with T-Coffee..."), 2000);
+    auto alignAction = new AlignMsaAction(this, TCoffeeSupport::ET_TCOFFEE_ID, msaEditor, tr("Align with T-Coffee..."), 2000);
     alignAction->setObjectName("Align with T-Coffee");
     alignAction->setMenuTypes({MsaEditorMenuType::ALIGN});
-
-    addViewAction(alignAction);
-    alignAction->setEnabled(!objLocked && !isMsaEmpty);
-
-    connect(msaEditor->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
-    connect(msaEditor->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
     connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_TCoffee()));
+    addViewAction(alignAction);
 }
 
 void TCoffeeSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {

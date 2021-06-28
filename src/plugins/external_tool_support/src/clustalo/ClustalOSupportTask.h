@@ -34,63 +34,32 @@
 
 namespace U2 {
 
-/*Options for ClustalO
-Sequence Input:
-+  -i, --in, --infile={<file>,-} Multiple sequence input file (- for stdin)
-  --hmm-in=<file>           HMM input files
-  --dealign                 Dealign input sequences
-  --profile1, --p1=<file>   Pre-aligned multiple sequence file (aligned columns will be kept fix)
-  --profile2, --p2=<file>   Pre-aligned multiple sequence file (aligned columns will be kept fix)
-
-Clustering:
-  --distmat-in=<file>       Pairwise distance matrix input file (skips distance computation)
-  --distmat-out=<file>      Pairwise distance matrix output file
-  --guidetree-in=<file>     Guide tree input file (skips distance computation and guide-tree clustering step)
-  --guidetree-out=<file>    Guide tree output file
-  --full                    Use full distance matrix for guide-tree calculation (might be slow; mBed is default)
-  --full-iter               Use full distance matrix for guide-tree calculation during iteration (might be slowish; mBed is default)
-
-Alignment Output:
-  -o, --out, --outfile={file,-} Multiple sequence alignment output file (default: stdout)
-  --outfmt={a2m=fa[sta],clu[stal],msf,phy[lip],selex,st[ockholm],vie[nna]} MSA output file format (default: fasta)
-
-Iteration:
-+  --iterations, --iter=<n>  Number of (combined guide-tree/HMM) iterations
-+  --max-guidetree-iterations=<n> Maximum number guidetree iterations
-+  --max-hmm-iterations=<n>  Maximum number of HMM iterations
-
-Limits (will exit early, if exceeded):
-  --maxnumseq=<n>           Maximum allowed number of sequences
-  --maxseqlen=<l>           Maximum allowed sequence length
-
-Miscellaneous:
-+  --auto                    Set options automatically (might overwrite some of your options)
-+  --threads=<n>             Number of processors to use
-  -l, --log=<file>          Log all non-essential output to this file
-  -h, --help                Print this help and exit
-  -v, --verbose             Verbose output (increases if given multiple times)
-  --version                 Print version information and exit
-  --long-version            Print long version information and exit
-  --force                   Force file overwriting
-
-*/
-
 class LoadDocumentTask;
 
+/** ClustalO settings. See http://www.clustal.org/omega/README for details. */
 class ClustalOSupportTaskSettings {
 public:
-    ClustalOSupportTaskSettings() {
-        reset();
-    }
-    void reset();
+    ClustalOSupportTaskSettings();
 
-    int numIterations;    // --iterations, --iter=<n>       Number of (combined guide-tree/HMM) iterations
-    int maxGuidetreeIterations;    // --max-guidetree-iterations=<n> Maximum number guidetree iterations
-    int maxHMMIterations;    // --max-hmm-iterations=<n>       Maximum number of HMM iterations
+    /**  --iterations, --iter=<n>.  Number of (combined guide-tree/HMM) iterations. -1 -> no option. */
+    int numIterations = -1;
 
-    bool setAutoOptions;    // --auto                         Set options automatically (might overwrite some of your options)
-    int numberOfProcessors;    // --threads=<n>                  Number of processors to use
-    QString inputFilePath;    // -i, --in, --infile={<file>,-}  Multiple sequence input file (- for stdin)
+    /**  --max-guidetree-iterations=<n> Maximum number guidetree iterations. -1 -> no option. */
+    int maxGuideTreeIterations = -1;
+
+    /**  --max-hmm-iterations=<n> Maximum number of HMM iterations . -1 -> no option. */
+    int maxHMMIterations = -1;
+
+    /**  --auto. Set options automatically (might overwrite some of your options). */
+    bool setAutoOptions = false;
+
+    // --threads=<n>. Number of processors to use. <=0 -> no option. */
+    int numberOfProcessors = -1;
+
+    // -i, --in, --infile={<file>,-}. Multiple sequence input file.
+    QString inputFilePath;
+
+    /** -o, --out, --outfile={file,-}. Multiple sequence alignment output file.  */
     QString outputFilePath;
 };
 
@@ -98,27 +67,48 @@ class ClustalOSupportTask : public ExternalToolSupportTask {
     Q_OBJECT
     Q_DISABLE_COPY(ClustalOSupportTask)
 public:
-    ClustalOSupportTask(const MultipleSequenceAlignment &_inputMsa, const GObjectReference &_objRef, const ClustalOSupportTaskSettings &settings);
+    /** Initializes ClustalO task that calls ClustalO to align 'msa' and saves the result to 'objRef'. */
+    ClustalOSupportTask(const MultipleSequenceAlignment &inputMsa,
+                        const GObjectReference &objRef,
+                        const ClustalOSupportTaskSettings &settings);
+
+    /**
+     * Initializes ClustalO task that calls ClustalO to align 'msa' with another alignment from 'secondAlignmentFileUrl'
+     * and saves the result to 'objRef'.
+     */
+    ClustalOSupportTask(const MultipleSequenceAlignment &inputMsa,
+                        const GObjectReference &objRef,
+                        const QString &secondAlignmentFileUrl,
+                        const ClustalOSupportTaskSettings &settings);
+
     ~ClustalOSupportTask();
 
-    void prepare();
-    Task::ReportResult report();
+    void prepare() override;
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    Task::ReportResult report() override;
 
-    MultipleSequenceAlignment resultMA;
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
+
+    /** Returns result multiple alignment. The result is non-empty only for successfully finished task. */
+    const MultipleSequenceAlignment &getResultAlignment() const;
 
 private:
+    /** Removes all object locks set by the task.*/
+    void unlockMsaObject();
+
     MultipleSequenceAlignment inputMsa;
+    MultipleSequenceAlignment resultMsa;
     GObjectReference objRef;
     QPointer<Document> tmpDoc;
-    QString url;
 
-    SaveAlignmentTask *saveTemporaryDocumentTask;
-    ExternalToolRunTask *clustalOTask;
-    LoadDocumentTask *loadTemporyDocumentTask;
+    SaveAlignmentTask *saveTemporaryDocumentTask = nullptr;
+    ExternalToolRunTask *clustalOTask = nullptr;
+    LoadDocumentTask *loadTemporaryDocumentTask = nullptr;
     ClustalOSupportTaskSettings settings;
     QPointer<StateLock> lock;
+
+    QString inputMsaTmpFileUrl;
+    QString secondAlignmentFileUrl;
 };
 
 class ClustalOWithExtFileSpecifySupportTask : public Task {
@@ -127,19 +117,21 @@ class ClustalOWithExtFileSpecifySupportTask : public Task {
 public:
     ClustalOWithExtFileSpecifySupportTask(const ClustalOSupportTaskSettings &settings);
     ~ClustalOWithExtFileSpecifySupportTask();
-    void prepare();
-    Task::ReportResult report();
 
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    void prepare() override;
+
+    Task::ReportResult report() override;
+
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
 
 private:
-    MultipleSequenceAlignmentObject *mAObject;
-    Document *currentDocument;
-    bool cleanDoc;
+    MultipleSequenceAlignmentObject *mAObject = nullptr;
+    Document *currentDocument = nullptr;
+    bool cleanDoc = true;
 
-    SaveDocumentTask *saveDocumentTask;
-    LoadDocumentTask *loadDocumentTask;
-    ClustalOSupportTask *clustalOSupportTask;
+    SaveDocumentTask *saveDocumentTask = nullptr;
+    LoadDocumentTask *loadDocumentTask = nullptr;
+    ClustalOSupportTask *clustalOSupportTask = nullptr;
     ClustalOSupportTaskSettings settings;
 };
 
@@ -152,8 +144,6 @@ public:
 private:
     /* Last line printed to stdout */
     QString lastLine;
-    /* If any error occurred, this variable will be non-empty */
-    QString lastError;
 };
 
 }    // namespace U2

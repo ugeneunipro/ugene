@@ -44,7 +44,7 @@ namespace U2 {
 ClustalOSupportRunDialog::ClustalOSupportRunDialog(const MultipleSequenceAlignment &_ma, ClustalOSupportTaskSettings &_settings, QWidget *_parent)
     : QDialog(_parent), ma(_ma->getCopy()), settings(_settings) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60229301");
+    new HelpButton(this, buttonBox, "65930933");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
@@ -60,7 +60,7 @@ void ClustalOSupportRunDialog::accept() {
         settings.numIterations = iterationNumberSpinBox->value();
     }
     if (maxGTIterationsCheckBox->isChecked()) {
-        settings.maxGuidetreeIterations = maxGTIterationsSpinBox->value();
+        settings.maxGuideTreeIterations = maxGTIterationsSpinBox->value();
     }
     if (maxHMMIterationsCheckBox->isChecked()) {
         settings.maxHMMIterations = maxHMMIterationsSpinBox->value();
@@ -77,7 +77,7 @@ ClustalOWithExtFileSpecifySupportRunDialog::ClustalOWithExtFileSpecifySupportRun
       settings(_settings),
       saveController(NULL) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60227729");
+    new HelpButton(this, buttonBox, "65929361");
 
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Align"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -118,7 +118,7 @@ void ClustalOWithExtFileSpecifySupportRunDialog::accept() {
     }
 
     if (maxGTIterationsCheckBox->isChecked()) {
-        settings.maxGuidetreeIterations = maxGTIterationsSpinBox->value();
+        settings.maxGuideTreeIterations = maxGTIterationsSpinBox->value();
     }
 
     if (maxHMMIterationsCheckBox->isChecked()) {

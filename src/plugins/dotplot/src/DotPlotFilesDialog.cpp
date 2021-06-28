@@ -39,7 +39,7 @@ namespace U2 {
 DotPlotFilesDialog::DotPlotFilesDialog(QWidget *parent)
     : QDialog(parent) {
     setupUi(this);
-    new HelpButton(this, buttonBox, "60227951");
+    new HelpButton(this, buttonBox, "65929583");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Next"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

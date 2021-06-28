@@ -856,7 +856,7 @@ Choose another region.</translation>
         <translation>Создать продукт ПЦР...</translation>
     </message>
     <message>
-        <location filename="../src/EnzymesPlugin.cpp" line="217"/>
+        <location filename="../src/EnzymesPlugin.cpp" line="216"/>
         <source>Cloning</source>
         <translation>Клонирование</translation>
     </message>
@@ -1130,12 +1130,12 @@ To start ligation create a project or open an existing.</source>
     <message>
         <location filename="../src/FindEnzymesDialog.cpp" line="571"/>
         <source>Too many results to render. Please reduce the search region or number of selected enzymes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Слишком много результатов для отрисовки. Необходимо уменьшить регион поиска или число искомых ферментов.</translation>
     </message>
     <message>
         <location filename="../src/FindEnzymesDialog.cpp" line="572"/>
         <source>Warning!</source>
-        <translation type="unfinished"></translation>
+        <translation>Предупреждение!</translation>
     </message>
 </context>
 <context>

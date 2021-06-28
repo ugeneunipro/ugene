@@ -103,7 +103,7 @@ void KalignTask::doAlign() {
     CHECK(!hasError() && !isCanceled(), )
 
     resultMA = resultSubMA;
-    MSAUtils::compareRowsAfterAlignment(inputMA, resultMA, stateInfo);
+    MSAUtils::assignOriginalDataIds(inputMA, resultMA, stateInfo);
 }
 
 Task::ReportResult KalignTask::report() {
@@ -184,10 +184,10 @@ Task::ReportResult KalignGObjectTask::report() {
     const MultipleSequenceAlignment &inputMA = kalignTask->inputMA;
     MultipleSequenceAlignment resultMA = kalignTask->resultMA;
 
-    QList<qint64> rowsOrder = MSAUtils::compareRowsAfterAlignment(inputMA, resultMA, stateInfo);
+    MSAUtils::assignOriginalDataIds(inputMA, resultMA, stateInfo);
     CHECK_OP(stateInfo, ReportResult_Finished);
 
-    if (rowsOrder.count() != inputMA->getNumRows()) {
+    if (resultMA->getNumRows() != inputMA->getNumRows()) {
         stateInfo.setError("Unexpected number of rows in the result multiple alignment!");
         return ReportResult_Finished;
     }
@@ -221,8 +221,9 @@ Task::ReportResult KalignGObjectTask::report() {
         obj->updateGapModel(stateInfo, rowsGapModel);
         SAFE_POINT_OP(stateInfo, ReportResult_Finished);
 
-        if (rowsOrder != inputMA->getRowsIds()) {
-            obj->updateRowsOrder(stateInfo, rowsOrder);
+        QList<qint64> resultRowIds = resultMA->getRowsIds();
+        if (resultRowIds != inputMA->getRowsIds()) {
+            obj->updateRowsOrder(stateInfo, resultRowIds);
             SAFE_POINT_OP(stateInfo, ReportResult_Finished);
         }
     }

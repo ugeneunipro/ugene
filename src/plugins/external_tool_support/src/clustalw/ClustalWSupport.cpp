@@ -121,23 +121,14 @@ ClustalWSupportContext::ClustalWSupportContext(QObject *p)
 }
 
 void ClustalWSupportContext::initViewContext(GObjectView *view) {
-    MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
-    SAFE_POINT(msaEditor != NULL, "Invalid GObjectView", );
-    CHECK(msaEditor->getMaObject() != NULL, );
+    auto msaEditor = qobject_cast<MSAEditor *>(view);
+    SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
 
-    bool objLocked = msaEditor->getMaObject()->isStateLocked();
-    bool isMsaEmpty = msaEditor->isAlignmentEmpty();
-
-    auto alignAction = new AlignMsaAction(this, ClustalWSupport::ET_CLUSTAL_ID, view, tr("Align with ClustalW..."), 2000);
+    auto alignAction = new AlignMsaAction(this, ClustalWSupport::ET_CLUSTAL_ID, msaEditor, tr("Align with ClustalW..."), 2000);
     alignAction->setObjectName("Align with ClustalW");
     alignAction->setMenuTypes({MsaEditorMenuType::ALIGN});
-
+    connect(alignAction, SIGNAL(triggered()), SLOT(sl_align()));
     addViewAction(alignAction);
-    alignAction->setEnabled(!objLocked && !isMsaEmpty);
-
-    connect(msaEditor->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
-    connect(msaEditor->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
-    connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_ClustalW()));
 }
 
 void ClustalWSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
@@ -149,7 +140,7 @@ void ClustalWSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *
     }
 }
 
-void ClustalWSupportContext::sl_align_with_ClustalW() {
+void ClustalWSupportContext::sl_align() {
     //Check that Clustal and temporary folder path defined
     if (AppContext::getExternalToolRegistry()->getById(ClustalWSupport::ET_CLUSTAL_ID)->getPath().isEmpty()) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;

@@ -101,7 +101,7 @@ AppSettingsGUIPageWidget *UserApplicationsSettingsPageController::createWidget(A
     return r;
 }
 
-const QString UserApplicationsSettingsPageController::helpPageId = QString("60227712");
+const QString UserApplicationsSettingsPageController::helpPageId = QString("65929344");
 const QMap<QString, QString> UserApplicationsSettingsPageWidget::FIXED_CASE_QSTYLE_KEY_MAP =
                         { {"windowsvista", "WindowsVista"}, {"macintosh", "Macintosh"} };
 

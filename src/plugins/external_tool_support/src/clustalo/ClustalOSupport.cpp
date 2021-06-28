@@ -34,6 +34,7 @@
 #include <U2Core/UserApplicationsSettings.h>
 
 #include <U2Gui/GUIUtils.h>
+#include <U2Gui/LastUsedDirHelper.h>
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
@@ -56,13 +57,7 @@ ClustalOSupport::ClustalOSupport()
         grayIcon = QIcon(":external_tool_support/images/clustalo_gray.png");
         warnIcon = QIcon(":external_tool_support/images/clustalo_warn.png");
     }
-#ifdef Q_OS_WIN
-    executableFileName = "ClustalO.exe";
-#else
-#    if defined(Q_OS_UNIX)
-    executableFileName = "clustalo";
-#    endif
-#endif
+    executableFileName = isOsWindows() ? "ClustalO.exe" : "clustalo";
     validationArguments << "--help";
     validMessage = "Clustal Omega";
     description = tr("<i>Clustal Omega</i> is a free sequence alignment software for proteins.");
@@ -122,22 +117,19 @@ ClustalOSupportContext::ClustalOSupportContext(QObject *p)
 
 void ClustalOSupportContext::initViewContext(GObjectView *view) {
     MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
-    SAFE_POINT(msaEditor != NULL, "Invalid GObjectView", );
-    CHECK(msaEditor->getMaObject() != NULL, );
+    SAFE_POINT(msaEditor != nullptr, "Invalid GObjectView", );
 
-    bool objLocked = msaEditor->getMaObject()->isStateLocked();
-    bool isMsaEmpty = msaEditor->isAlignmentEmpty();
-
-    auto alignAction = new AlignMsaAction(this, ClustalOSupport::ET_CLUSTALO_ID, view, tr("Align with ClustalO..."), 2000);
+    auto alignAction = new AlignMsaAction(this, ClustalOSupport::ET_CLUSTALO_ID, msaEditor, tr("Align with ClustalO..."), 2000);
     alignAction->setObjectName("Align with ClustalO");
     alignAction->setMenuTypes({MsaEditorMenuType::ALIGN});
-
+    connect(alignAction, SIGNAL(triggered()), SLOT(sl_align()));
     addViewAction(alignAction);
-    alignAction->setEnabled(!objLocked && !isMsaEmpty);
 
-    connect(msaEditor->getMaObject(), SIGNAL(si_lockedStateChanged()), alignAction, SLOT(sl_updateState()));
-    connect(msaEditor->getMaObject(), SIGNAL(si_alignmentBecomesEmpty(bool)), alignAction, SLOT(sl_updateState()));
-    connect(alignAction, SIGNAL(triggered()), SLOT(sl_align_with_ClustalO()));
+    auto addAlignmentToAlignmentAction = new AlignMsaAction(this, ClustalOSupport::ET_CLUSTALO_ID, msaEditor, tr("Align alignment to alignment with ClustalO…"), 2000);
+    addAlignmentToAlignmentAction->setObjectName("align-alignment-to-alignment-clustalo");
+    addAlignmentToAlignmentAction->setMenuTypes({MsaEditorMenuType::ALIGN_SEQUENCES_TO_ALIGNMENT});
+    connect(addAlignmentToAlignmentAction, SIGNAL(triggered()), SLOT(sl_addAlignmentToAlignment()));
+    addViewAction(addAlignmentToAlignmentAction);
 }
 
 void ClustalOSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m) {
@@ -149,46 +141,24 @@ void ClustalOSupportContext::buildStaticOrContextMenu(GObjectView *view, QMenu *
     }
 }
 
-void ClustalOSupportContext::sl_align_with_ClustalO() {
-    //Check that Clustal and temporary folder path defined
-    if (AppContext::getExternalToolRegistry()->getById(ClustalOSupport::ET_CLUSTALO_ID)->getPath().isEmpty()) {
-        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox;
-        msgBox->setWindowTitle("ClustalO");
-        msgBox->setText(tr("Path for ClustalO tool is not selected."));
-        msgBox->setInformativeText(tr("Do you want to select it now?"));
-        msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        msgBox->setDefaultButton(QMessageBox::Yes);
-        const int ret = msgBox->exec();
-        CHECK(!msgBox.isNull(), );
-
-        switch (ret) {
-            case QMessageBox::Yes:
-                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-                break;
-            case QMessageBox::No:
-                return;
-            default:
-                assert(false);
-        }
-    }
-    if (AppContext::getExternalToolRegistry()->getById(ClustalOSupport::ET_CLUSTALO_ID)->getPath().isEmpty()) {
-        return;
-    }
+void ClustalOSupportContext::sl_align() {
     U2OpStatus2Log os(LogLevel_DETAILS);
-    ExternalToolSupportSettings::checkTemporaryDir(os);
+    checkClustalOSetup(os);
     CHECK_OP(os, );
 
     //Call run ClustalO align dialog
-    AlignMsaAction *action = qobject_cast<AlignMsaAction *>(sender());
+    auto action = qobject_cast<AlignMsaAction *>(sender());
     SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
-    MSAEditor *ed = action->getMsaEditor();
-    MultipleSequenceAlignmentObject *obj = ed->getMaObject();
+    MSAEditor *msaEditor = action->getMsaEditor();
+    MultipleSequenceAlignmentObject *obj = msaEditor->getMaObject();
     if (obj == nullptr || obj->isStateLocked()) {
         return;
     }
 
     ClustalOSupportTaskSettings settings;
-    QObjectScopedPointer<ClustalOSupportRunDialog> clustalORunDialog = new ClustalOSupportRunDialog(obj->getMultipleAlignment(), settings, AppContext::getMainWindow()->getQMainWindow());
+    QObjectScopedPointer<ClustalOSupportRunDialog> clustalORunDialog = new ClustalOSupportRunDialog(obj->getMultipleAlignment(),
+                                                                                                    settings,
+                                                                                                    AppContext::getMainWindow()->getQMainWindow());
     clustalORunDialog->exec();
     CHECK(!clustalORunDialog.isNull(), );
 
@@ -196,12 +166,62 @@ void ClustalOSupportContext::sl_align_with_ClustalO() {
         return;
     }
 
-    ClustalOSupportTask *clustalOSupportTask = new ClustalOSupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
+    auto clustalOSupportTask = new ClustalOSupportTask(obj->getMultipleAlignment(), GObjectReference(obj), settings);
     connect(obj, SIGNAL(destroyed()), clustalOSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalOSupportTask);
 
     // Turn off rows collapsing
-    ed->resetCollapsibleModel();
+    msaEditor->resetCollapsibleModel();
+}
+
+void ClustalOSupportContext::sl_addAlignmentToAlignment() {
+    U2OpStatus2Log os(LogLevel_DETAILS);
+    checkClustalOSetup(os);
+    CHECK_OP(os, );
+
+    //Call run ClustalO align dialog
+    auto action = qobject_cast<AlignMsaAction *>(sender());
+    SAFE_POINT(action != nullptr, "Sender is not 'AlignMsaAction'", );
+    MSAEditor *msaEditor = action->getMsaEditor();
+    MultipleSequenceAlignmentObject *msaObject = msaEditor->getMaObject();
+
+    DocumentFormatConstraints c;
+    QString f1 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, false);
+    QString f2 = DialogUtils::prepareDocumentsFileFilterByObjType(GObjectTypes::SEQUENCE, true);
+    QString filter = f2 + "\n" + f1;
+
+    LastUsedDirHelper lod;
+    lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Select file with another alignment"), lod, filter);
+    CHECK(!lod.url.isEmpty(), );
+
+    ClustalOSupportTaskSettings settings;
+    auto clustalOSupportTask = new ClustalOSupportTask(msaObject->getMultipleAlignment(), GObjectReference(msaObject), lod.url, settings);
+    connect(msaObject, SIGNAL(destroyed()), clustalOSupportTask, SLOT(cancel()));
+    AppContext::getTaskScheduler()->registerTopLevelTask(clustalOSupportTask);
+
+    // Turn off rows collapsing
+    msaEditor->resetCollapsibleModel();
+}
+
+void ClustalOSupportContext::checkClustalOSetup(U2OpStatus &os) {
+    QString pathToClustalO = AppContext::getExternalToolRegistry()->getById(ClustalOSupport::ET_CLUSTALO_ID)->getPath();
+    if (pathToClustalO.isEmpty()) {
+        QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox();
+        msgBox->setWindowTitle("ClustalO");
+        msgBox->setText(tr("Path for ClustalO tool is not selected."));
+        msgBox->setInformativeText(tr("Do you want to select it now?"));
+        msgBox->setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+        msgBox->setDefaultButton(QMessageBox::Yes);
+        int ret = msgBox->exec();
+        CHECK_EXT(!msgBox.isNull(), os.setError(tr("Can't validate ClustalO external tool")), );
+
+        if (ret == QMessageBox::Yes) {
+            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+            pathToClustalO = AppContext::getExternalToolRegistry()->getById(ClustalOSupport::ET_CLUSTALO_ID)->getPath();
+        }
+    }
+    CHECK_EXT(!pathToClustalO.isEmpty(), os.setError(tr("ClustalO external tool is not set up")), );
+    ExternalToolSupportSettings::checkTemporaryDir(os);
 }
 
 }    // namespace U2
