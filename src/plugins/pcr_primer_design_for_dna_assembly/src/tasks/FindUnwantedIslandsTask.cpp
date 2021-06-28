@@ -26,23 +26,26 @@
 #include <U2Core/PrimerStatistics.h>
 #include <U2Core/U2SafePoints.h>
 
+#include "utils/UnwantedConnectionsUtils.h"
+
 namespace U2 {
 
-FindUnwantedIslandsTask::FindUnwantedIslandsTask(const PCRPrimerDesignForDNAAssemblyTaskSettings& _settings, const QByteArray& _sequence)
-    : Task("", TaskFlags_FOSCOE),
-      settings(_settings),
+FindUnwantedIslandsTask::FindUnwantedIslandsTask(const U2Region& _searchArea, int _possibleOverlap, const QByteArray& _sequence)
+    : Task("Find Unwanted Islands Task", TaskFlags_FOSCOE),
+      searchArea(_searchArea),
+      possibleOverlap(_possibleOverlap),
       sequence(_sequence) {}
 
 void FindUnwantedIslandsTask::run() {
     /**
      * Index of the left nucleotide in the searching area.
      */
-    int leftNucleotide = settings.leftArea.startPos;
+    int leftNucleotide = searchArea.startPos;
     /**
      * Index of the right nucleotide in the searching area.
      * @settings.overlapLength.maxValue is the area extending deep into the amplified fragment.
      */
-    const int rightNucleotide = settings.leftArea.endPos() + settings.overlapLength.maxValue;
+    const int rightNucleotide = searchArea.endPos() + possibleOverlap;
     int lengthBetweenIslands = 0;
     int startNucleotideNumber = leftNucleotide;
     regionsBetweenIslands.clear();
@@ -97,10 +100,13 @@ bool FindUnwantedIslandsTask::hasUnwantedConnections(const U2Region& region) con
      * It's reverse complement representation.
      */
     QByteArray revComRegionSequence = DNASequenceUtils::reverseComplement(regionSequence);
+    bool isUnwantedSelfDimer = UnwantedConnectionsUtils::isUnwantedSelfDimer(regionSequence,
+                                                                             UNWANTED_DELTA_G,
+                                                                             UNWANTED_MELTING_TEMPERATURE,
+                                                                             UNWANTED_MAX_LENGTH);
 
-    bool isSelfDimer = isUnwantedSelfDimer(regionSequence);
 
-    return isSelfDimer;
+    return isUnwantedSelfDimer;
 
     /*for (int i = 0; i < region.length - NUCLEOTIDE_PAIR_LENGTH; i++) {
         const auto& possibleConnection = regionSequence.mid(i, NUCLEOTIDE_PAIR_LENGTH);
