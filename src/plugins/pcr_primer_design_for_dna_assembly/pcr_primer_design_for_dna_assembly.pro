@@ -8,6 +8,7 @@ HEADERS += src/tasks/FindPresenceOfUnwantedParametersTask.h \
            src/PCRPrimerDesignForDNAAssemblyOPWidgetFactory.h \
            src/PCRPrimerDesignForDNAAssemblyPlugin.h \
            src/PCRPrimerDesignForDNAAssemblyTaskSettings.h \
+           src/PCRPrimerProductTable.h \
 
 SOURCES += src/tasks/FindPresenceOfUnwantedParametersTask.cpp \
            src/tasks/FindUnwantedIslandsTask.cpp \
@@ -16,6 +17,7 @@ SOURCES += src/tasks/FindPresenceOfUnwantedParametersTask.cpp \
            src/PCRPrimerDesignForDNAAssemblyOPWidget.cpp \
            src/PCRPrimerDesignForDNAAssemblyOPWidgetFactory.cpp \
            src/PCRPrimerDesignForDNAAssemblyPlugin.cpp \
+           src/PCRPrimerProductTable.cpp \
 
 FORMS +=   src/PCRPrimerDesignForDNAAssemblyOPWidget.ui \
 
