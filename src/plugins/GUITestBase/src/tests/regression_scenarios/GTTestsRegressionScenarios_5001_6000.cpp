@@ -1068,6 +1068,25 @@ GUI_TEST_CLASS_DEFINITION(test_5314) {
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5334) {
+    // Open "_common_data/clustal/amino_ext.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/amino_ext.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Select any symbol 'A' in the alignmnet.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(19, 0), QPoint(19, 0));
+
+    // Click Ctrl + C.
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+
+    // Cick Ctrl + V.
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+
+    //Expected state: msa alphabet is still AMINO.
+    bool isAmino = GTUtilsMSAEditorSequenceArea::hasAminoAlphabet(os);
+    CHECK_SET_ERR(isAmino, "Aligment has wrong alphabet type");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5335) {
     //    1. Open "data/samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
