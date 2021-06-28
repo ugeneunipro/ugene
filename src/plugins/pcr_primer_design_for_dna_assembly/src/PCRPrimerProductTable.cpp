@@ -35,7 +35,6 @@ namespace U2 {
  PCRPrimerProductTable::PCRPrimerProductTable(QWidget *parent)
     : QTableWidget(parent) {
      setColumnCount(2);
-     setRowCount(8);
      setHorizontalHeaderLabels(QStringList() << tr("Fragment") << tr("Region"));
      setSelectionBehavior(QAbstractItemView::SelectRows);
      setSelectionMode(QAbstractItemView::SingleSelection);
@@ -47,6 +46,7 @@ void PCRPrimerProductTable::setCurrentProducts(const QList<U2Region> &currentPro
     SAFE_POINT(currentProducts.size() == 8, "Should be 8 results", );
     int index = 0;
     int row = 0;
+    setRowCount(8);
     for (const U2Region &region : currentProducts) {
         if (region != U2Region()) {
             setItem(row, 0, new QTableWidgetItem(PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME.at(index)));
