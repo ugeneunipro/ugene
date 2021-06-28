@@ -90,7 +90,7 @@ private:
     QSpinBox* sbEndRegion = nullptr;
     QMetaObject::Connection updateRegionConnection;
 
-    PCRPrimerDesignForDNAAssemblyTask *pcrTask;
+    PCRPrimerDesignForDNAAssemblyTask *pcrTask = nullptr;
 
     PCRPrimerDesignForDNAAssemblyOPSavableTab savableWidget;
     //"Parameters of priming sequences" and "Parameters to exclude in whole primers" has set of parameters.
@@ -104,7 +104,7 @@ private:
     static const QString OPEN_BACKBONE_SEQUENCE_SHOW_HIDE_ID;
     static const QString GENERATE_SEQUENCE_SHOW_HIDE_ID;
     static const QString OTHER_SEQUENCES_IN_PCR_REACTION_SHOW_HIDE_ID;
-
+    static const QString PCR_TABLE_OBJECT_NAME;
 };
 
 

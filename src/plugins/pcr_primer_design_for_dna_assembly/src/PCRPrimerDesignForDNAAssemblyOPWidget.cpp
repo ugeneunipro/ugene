@@ -51,12 +51,12 @@ const QString PCRPrimerDesignForDNAAssemblyOPWidget::SELECT_AREAS_FOR_PRIMING_SH
 const QString PCRPrimerDesignForDNAAssemblyOPWidget::OPEN_BACKBONE_SEQUENCE_SHOW_HIDE_ID = "open-backbone-sequence-show-hide-id";
 const QString PCRPrimerDesignForDNAAssemblyOPWidget::GENERATE_SEQUENCE_SHOW_HIDE_ID = "generate-sequence-show-hide-id";
 const QString PCRPrimerDesignForDNAAssemblyOPWidget::OTHER_SEQUENCES_IN_PCR_REACTION_SHOW_HIDE_ID = "other-sequences-in-pcr-reaction-show-hide-id";
+const QString PCRPrimerDesignForDNAAssemblyOPWidget::PCR_TABLE_OBJECT_NAME = QObject::tr("PCR Primer Design for DNA assembly");
 
 PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(AnnotatedDNAView* _annDnaView)
     : QWidget(nullptr),
       annDnaView(_annDnaView),
-      savableWidget(this, GObjectViewUtils::findViewByName(annDnaView->getName())),
-      pcrTask(nullptr) {
+      savableWidget(this, GObjectViewUtils::findViewByName(annDnaView->getName())) {
     setupUi(this);
     parametersMinMaxSpinBoxes = { { sbMinRequireGibbs, sbMaxRequireGibbs },
                                   { spMinRequireMeltingTeml, spMaxRequireMeltingTeml },
@@ -297,7 +297,8 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_onFindTaskFinished() {
     }
     CHECK(pcrTask->isFinished(), );
     //do nothing in case of empty result
-    foreach (const U2Region &region, pcrTask->getResults()) {
+    auto results = pcrTask->getResults();
+    for (const U2Region &region : qAsConst(results)) {
         if (region != U2Region()) {
             showResults();
             createResultAnnotations();
@@ -314,15 +315,14 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::showResults() {
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
-    QString pcrTableObjectName = tr("PCR Primer Design for DNA assembly");
     QStringList usedNames;
     for (AnnotationTableObject *tableObject : annDnaView->getActiveSequenceContext()->getAnnotationObjects()) {
         usedNames.append(tableObject->getGObjectName());
     }
     int counter = 1;
-    QString rolledName = pcrTableObjectName;
-    while (usedNames.contains(pcrTableObjectName)) {
-        rolledName = pcrTableObjectName + QString(" %1").arg(counter);
+    QString rolledName = PCR_TABLE_OBJECT_NAME;
+    while (usedNames.contains(rolledName)) {
+        rolledName = PCR_TABLE_OBJECT_NAME + QString(" %1").arg(counter);
         counter++;
     }
 
@@ -332,7 +332,8 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
     AnnotationTableObject *newDocAto = new AnnotationTableObject(rolledName, localDbiRef);
     QList<SharedAnnotationData> annotations;
     int index = 0;
-    foreach (const U2Region &region, pcrTask->getResults()) {
+    auto results = pcrTask->getResults();
+    for (const U2Region &region : qAsConst(results)) {
         if (region != U2Region()) {
             SharedAnnotationData data(new AnnotationData());
             data->setStrand(index % 2 == 0 ? U2Strand(U2Strand::Direct) : U2Strand(U2Strand::Complementary));
@@ -342,7 +343,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
         }
         index++;
     }
-    newDocAto->addAnnotations(annotations, tr("PCR Primer Design for DNA assembly"));
+    newDocAto->addAnnotations(annotations, PCR_TABLE_OBJECT_NAME);
     newDocAto->addObjectRelation(annDnaView->getActiveSequenceContext()->getSequenceGObject(), ObjectRole_Sequence);
     annDnaView->addObject(newDocAto);
     productsTable->setAnnotationTableObject(newDocAto);

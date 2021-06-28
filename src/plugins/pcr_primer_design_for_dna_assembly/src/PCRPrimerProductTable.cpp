@@ -47,7 +47,7 @@ void PCRPrimerProductTable::setCurrentProducts(const QList<U2Region> &currentPro
     SAFE_POINT(currentProducts.size() == 8, "Should be 8 results", );
     int index = 0;
     int row = 0;
-    foreach (const U2Region &region, currentProducts) {
+    for (const U2Region &region : currentProducts) {
         if (region != U2Region()) {
             setItem(row, 0, new QTableWidgetItem(PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME.at(index)));
             setItem(row, 1, new QTableWidgetItem(tr("%1-%2").arg(QString::number(region.startPos)).arg(QString::number(region.endPos()))));
@@ -55,6 +55,7 @@ void PCRPrimerProductTable::setCurrentProducts(const QList<U2Region> &currentPro
         }
         index++;
     }
+    setRowCount(row);
     associatedView = _associatedView;
 }
 
@@ -73,7 +74,8 @@ void PCRPrimerProductTable::sl_selectionChanged() {
     QString selectedFragmentName = selectedItem->text();
     
     Annotation *selectedAnnotation = nullptr;
-    for (auto a : associatedTableObject->getAnnotations()) {
+    auto annotations = associatedTableObject->getAnnotations();
+    for (auto a : qAsConst(annotations)) {
         if (a->getName() == selectedFragmentName) {
             selectedAnnotation = a;
             break;
@@ -86,7 +88,6 @@ void PCRPrimerProductTable::sl_selectionChanged() {
         context->emitClearSelectedAnnotationRegions();
         context->emitAnnotationActivated(selectedAnnotation, 0);
     }
-    //associatedView->getAnnotationsView()->emitAnnotationActivated(selectedAnnotation);
 }
 
 }
