@@ -44,6 +44,10 @@ public:
 
     QString generateReport() const override;
 
+    QList<U2Region> getResults() const;
+
+    static const QStringList FRAGMENT_INDEX_TO_NAME;
+
 private:
     QList<QByteArray> extractLoadedSequences(LoadDocumentTask* task);
 
