@@ -23,6 +23,7 @@
 #include "tasks/PCRPrimerDesignForDNAAssemblyTask.h"
 
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/GObjectTypes.h>
@@ -40,6 +41,15 @@
 #include <U2View/AnnotatedDNAView.h>
 
 #include <QVBoxLayout>
+
+// When a non-nucleotide sequence is selected, the widget should be disabled. But the groupbox titles continue to be
+// black as if they enabled. This code makes them gray.
+static void makeGroupboxTittleGrayIfDisable(QGroupBox *const gb) {
+    QPalette palette;
+    palette.setColor(QPalette::Disabled, QPalette::WindowText, QApplication::palette().color(QPalette::Disabled,
+        QPalette::WindowText));
+    gb->setPalette(palette);
+}
 
 namespace U2 {
 
@@ -98,6 +108,9 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     sbRightAreaStart->setValue(seqLength / 10 * 5);
     sbRightAreaEnd->setValue(seqLength / 10 * 6);
 
+    makeGroupboxTittleGrayIfDisable(groupBox);
+    makeGroupboxTittleGrayIfDisable(groupBox_2);
+
     connect(pbStart, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_start);
     connect(tbLeftAreaSelectManually, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually);
     connect(tbRightAreaSelectManually, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually);
@@ -116,6 +129,19 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     connect(tbLoadBackbone, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_loadBackbone);
     connect(tbsaveRandomSequences, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_saveRandomSequences);
     connect(tbLoadOtherSequencesInPcr, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_loadOtherSequenceInPcr);
+    connect(annDnaView, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_activeSequenceChanged()));
+    sl_activeSequenceChanged();
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::sl_activeSequenceChanged() {
+    ADVSequenceObjectContext *sequenceContext = annDnaView->getActiveSequenceContext();
+    CHECK(sequenceContext != nullptr,);
+    const DNAAlphabet *alphabet = sequenceContext->getAlphabet();
+    SAFE_POINT(alphabet != nullptr, L10N::nullPointerError("Alphabet"),);
+
+    bool isDna = alphabet->isDNA();
+    runPcrPrimerDesignWidget->setEnabled(isDna);
+    alphabetWarningLabel->setVisible(!isDna);
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {

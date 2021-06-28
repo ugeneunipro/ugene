@@ -38,6 +38,10 @@ public:
 
 private slots:
     /**
+     * Updates state of the widget to match the new active sequence.
+     */
+    void sl_activeSequenceChanged();
+    /**
      * Start calcultaion process.
      * This slot is called when a user clicks on the "Start" button.
      */
