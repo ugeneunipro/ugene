@@ -33,8 +33,14 @@ public:
     PCRPrimerDesignForDNAAssemblyOPSavableTab(QWidget *wrappedWidget, MWMDIWindow *contextWindow);
     ~PCRPrimerDesignForDNAAssemblyOPSavableTab();
 
+    void disableSavingForWidgets(const QStringList &s);
+
+protected:
+    bool childCanBeSaved(QWidget *child) const;
+
 private:
     PCRPrimerDesignForDNAAssemblyOPWidget* originalWrappedWidget = nullptr;
+    QStringList widgetsNotToSave;
 };
 
 }    // namespace U2

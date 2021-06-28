@@ -40,4 +40,16 @@ PCRPrimerDesignForDNAAssemblyOPSavableTab::~PCRPrimerDesignForDNAAssemblyOPSavab
     widgetStateSaved = true;
 }
 
+void PCRPrimerDesignForDNAAssemblyOPSavableTab::disableSavingForWidgets(const QStringList &s) {
+    widgetsNotToSave.append(s);
+}
+
+bool PCRPrimerDesignForDNAAssemblyOPSavableTab::childCanBeSaved(QWidget *child) const {
+    if (widgetsNotToSave.contains(child->objectName())) {
+        return false;
+    } else {
+        return U2SavableWidget::childCanBeSaved(child);
+    }
+}
+
 }    // namespace U2
