@@ -108,14 +108,14 @@ private:
     QList<U2Region> regionsBetweenIslandsReverse;
 
     //Results
-    U2Region aForward = U2Region(54, 77 - 54);
-    U2Region aReverse = U2Region(327, 353 - 328);
-    U2Region b1Forward = U2Region(39, 57 - 40);
-    U2Region b1Reverse = U2Region(337, 367 - 338);
-    U2Region b2Forward = U2Region(26, 43 - 27);
-    U2Region b2Reverse = U2Region(362, 379 - 363);
-    U2Region b3Forward = U2Region(22, 43 - 23);
-    U2Region b3Reverse = U2Region(367, 384 - 368);
+    U2Region aForward;
+    U2Region aReverse;
+    U2Region b1Forward;
+    U2Region b1Reverse;
+    U2Region b2Forward;
+    U2Region b2Reverse;
+    U2Region b3Forward;
+    U2Region b3Reverse;
 
     static constexpr int MINIMUM_LENGTH_BETWEEN_ISLANDS = 30;
     static constexpr int SECOND_PRIMER_OFFSET = 4;
