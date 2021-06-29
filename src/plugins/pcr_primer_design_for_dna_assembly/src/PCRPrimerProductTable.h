@@ -32,8 +32,8 @@ class AnnotatedDNAView;
 class AnnotationGroup;
 
 struct PCRPrimerProductTableData {
-    AnnotatedDNAView *associatedView;
-    AnnotationGroup *associatedGroup;
+    AnnotatedDNAView *associatedView = nullptr;
+    AnnotationGroup *associatedGroup = nullptr;
     QList<U2Region> currentProducts;
 };
 
