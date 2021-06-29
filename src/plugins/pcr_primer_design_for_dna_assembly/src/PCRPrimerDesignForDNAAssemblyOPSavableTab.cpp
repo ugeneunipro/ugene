@@ -27,6 +27,7 @@
 
 #include <U2Gui/U2WidgetStateStorage.h>
 
+Q_DECLARE_METATYPE(U2::PCRPrimerProductTableData)
 
 namespace U2 {
 
@@ -40,15 +41,26 @@ PCRPrimerDesignForDNAAssemblyOPSavableTab::~PCRPrimerDesignForDNAAssemblyOPSavab
     widgetStateSaved = true;
 }
 
-void PCRPrimerDesignForDNAAssemblyOPSavableTab::disableSavingForWidgets(const QStringList &s) {
-    widgetsNotToSave.append(s);
+QVariant PCRPrimerDesignForDNAAssemblyOPSavableTab::getChildValue(const QString &childId) const {
+    PCRPrimerProductTable *productTable = qobject_cast<PCRPrimerProductTable *>(getChildWidgetById(childId));
+    if (productTable != nullptr) {
+        return QVariant::fromValue<PCRPrimerProductTableData>(productTable->getPCRPrimerProductTableData());
+    } else {
+        return U2SavableWidget::getChildValue(childId);
+    }
 }
 
-bool PCRPrimerDesignForDNAAssemblyOPSavableTab::childCanBeSaved(QWidget *child) const {
-    if (widgetsNotToSave.contains(child->objectName())) {
-        return false;
+void PCRPrimerDesignForDNAAssemblyOPSavableTab::setChildValue(const QString &childId, const QVariant &value) {
+    PCRPrimerProductTable *productTable = qobject_cast<PCRPrimerProductTable *>(getChildWidgetById(childId));
+    if (productTable != nullptr) {
+        const PCRPrimerProductTableData data = value.value<PCRPrimerProductTableData>();
+        productTable->setCurrentProducts(data.currentProducts, data.associatedView);
+        productTable->setAnnotationGroup(data.associatedGroup);
+        if (data.currentProducts.count(U2Region()) < PCRPrimerProductTable::MAXIMUM_ROW_COUNT) {
+            productTable->show();
+        }
     } else {
-        return U2SavableWidget::childCanBeSaved(child);
+        return U2SavableWidget::setChildValue(childId, value);
     }
 }
 

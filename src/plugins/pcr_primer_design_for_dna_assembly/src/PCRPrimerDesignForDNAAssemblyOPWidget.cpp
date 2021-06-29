@@ -104,7 +104,6 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     connect(pbStart, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_start);
     connect(tbLeftAreaSelectManually, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually);
     connect(tbRightAreaSelectManually, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually);
-    savableWidget.disableSavingForWidgets(QStringList() << "productsTable");
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
 
     sl_updateParametersRanges();
@@ -355,10 +354,10 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
         rolledName = PCR_TABLE_OBJECT_NAME + QString(" %1").arg(counter);
         counter++;
     }
-    resultsTableObject->addAnnotations(annotations, rolledName);
+    auto addedAnnotations = resultsTableObject->addAnnotations(annotations, rolledName);
     resultsTableObject->addObjectRelation(annDnaView->getActiveSequenceContext()->getSequenceGObject(), ObjectRole_Sequence);
     annDnaView->addObject(resultsTableObject);
-    productsTable->setAnnotationTableObject(resultsTableObject);
+    productsTable->setAnnotationGroup(addedAnnotations.at(0)->getGroup());
 }
 
 }
