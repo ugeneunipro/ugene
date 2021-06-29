@@ -43,6 +43,7 @@
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsOptionPanelMSA.h"
+#include "GTUtilsOptionPanelSequenceView.h"
 #include "GTUtilsProject.h"
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
@@ -432,6 +433,45 @@ GUI_TEST_CLASS_DEFINITION(test_7212) {
     GTUtilsOptionPanelMsa::toggleTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
     GTWidget::click(os, GTUtilsOptionPanelMsa::getAlignButton(os));
     GTUtilsTaskTreeView::waitTaskFinished(os);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7325) {
+    // Open _common_data/fasta/fa1.fa.
+    //    Expected: there is PCR Primer Design tab.
+    // Open _common_data/fasta/amino_multy_ext.fa.
+    //    Expected: there isn't PCR Primer Design tab.
+    // Open _common_data/fasta/alphabet.fa.
+    // Click the PCR Primer Design tab of the Options Panel.
+    // Select Amino sequence.
+    //    Expected: all settings on the tab are disabled, a warning is displayed.
+    // Select Nucl sequence.
+    //    Expected: all settings on the tab are enabled, no warning.
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/fa1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTWidget::findWidget(os,
+                         GTUtilsOptionPanelSequenceView::tabsNames[GTUtilsOptionPanelSequenceView::PcrPrimerDesign]);
+
+    GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/fasta/amino_multy_ext.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    auto tab = GTWidget::findWidget(os,
+                             GTUtilsOptionPanelSequenceView::tabsNames[GTUtilsOptionPanelSequenceView::PcrPrimerDesign],
+                             GTUtilsSequenceView::getActiveSequenceViewWindow(os),
+                             GTGlobals::FindOptions(false));
+    CHECK_SET_ERR(tab == nullptr, "Expected: no PCR Primer Design tab")
+
+    GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/fasta/alphabet.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    GTUtilsOptionPanelSequenceView::toggleTab(os, GTUtilsOptionPanelSequenceView::PcrPrimerDesign);
+    auto mainWidget = GTWidget::findWidget(os, "runPcrPrimerDesignWidget");
+    auto warnLabel = GTWidget::findLabelByText(os, "Info: choose a nucleic sequence for running PCR Primer Design").first();
+
+    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os));
+    GTWidget::checkEnabled(os, mainWidget, false);
+    CHECK_SET_ERR(warnLabel->isVisible(), "Expected: warning label visible")
+
+    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os, 1));
+    GTWidget::checkEnabled(os, mainWidget);
+    CHECK_SET_ERR(!warnLabel->isVisible(), "Expected: warning label doesn't displayed")
 }
 
 }    // namespace GUITest_regression_scenarios

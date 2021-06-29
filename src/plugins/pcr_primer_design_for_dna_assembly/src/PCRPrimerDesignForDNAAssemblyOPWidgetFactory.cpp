@@ -42,7 +42,9 @@ QWidget* PCRPrimerDesignForDNAAssemblyOPWidgetFactory::createWidget(GObjectView*
     AnnotatedDNAView* annotatedDnaView = qobject_cast<AnnotatedDNAView*>(objView);
     SAFE_POINT(annotatedDnaView != nullptr, L10N::nullPointerError("AnnotatedDNAView"), nullptr);
 
-    return new PCRPrimerDesignForDNAAssemblyOPWidget(annotatedDnaView);
+    auto opWidget = new PCRPrimerDesignForDNAAssemblyOPWidget(annotatedDnaView);
+    opWidget->setObjectName("PcrPrimerDesignOpInnerWidget");
+    return opWidget;
 }
 
 OPGroupParameters PCRPrimerDesignForDNAAssemblyOPWidgetFactory::getOPGroupParameters() {
