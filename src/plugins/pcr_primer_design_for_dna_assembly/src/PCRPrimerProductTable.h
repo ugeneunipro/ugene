@@ -29,7 +29,13 @@
 namespace U2 {
 
 class AnnotatedDNAView;
-class AnnotationTableObject;
+class AnnotationGroup;
+
+struct PCRPrimerProductTableData {
+    AnnotatedDNAView *associatedView = nullptr;
+    AnnotationGroup *associatedGroup = nullptr;
+    QList<U2Region> currentProducts;
+};
 
 class PCRPrimerProductTable : public QTableWidget {
     Q_OBJECT
@@ -37,16 +43,17 @@ public:
     PCRPrimerProductTable(QWidget *parent);
 
     void setCurrentProducts(const QList<U2Region> &currentProducts, AnnotatedDNAView *associatedView);
-    void setAnnotationTableObject(AnnotationTableObject *ato);
-
+    void setAnnotationGroup(AnnotationGroup *associatedGroup);
+    PCRPrimerProductTableData getPCRPrimerProductTableData() const;
+    
+    static constexpr int MAXIMUM_ROW_COUNT = 8;
 private slots:
     void sl_selectionChanged();
 
 private:
-    static constexpr int MAXIMUM_ROW_COUNT = 8;
-
     AnnotatedDNAView *associatedView = nullptr;
-    AnnotationTableObject *associatedTableObject = nullptr;
+    AnnotationGroup *associatedGroup = nullptr;
+    QList<U2Region> currentProducts;
 };
 
 }    // namespace U2
