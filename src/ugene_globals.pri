@@ -72,7 +72,7 @@ linux-g++ {
     QMAKE_CXXFLAGS += -Wno-deprecated-copy
     QMAKE_CXXFLAGS += -Wno-deprecated-declarations
 
-    # These warnings must be errors:
+    # These warnings must be errors (all entries must be added to disable-warnings.h):
     QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
     QMAKE_CXXFLAGS += -Werror=parentheses
     QMAKE_CXXFLAGS += -Werror=return-type
