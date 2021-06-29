@@ -22,6 +22,7 @@
 #include "UnwantedConnectionsUtils.h"
 
 #include <U2Core/DNASequenceUtils.h>
+#include <U2Core/Log.h>
 #include <U2Core/PrimerStatistics.h>
 
 namespace U2 {
@@ -72,8 +73,18 @@ bool UnwantedConnectionsUtils::areUnwantedParametersPresentedInDimersInfo(const 
     bool isDeltaGUnwanted = dimersInfo.deltaG < unwantedDeltaG;
     bool isMeltingTemperatureUnwanted = unwantedMeltingTemperature < dimerMeltingTemp;
     bool isLengthUnwanted = unwantedDimerLength < dimerLength;
+    bool isUnwantedParameter = isDeltaGUnwanted && isMeltingTemperatureUnwanted && isLengthUnwanted;
+    if (isUnwantedParameter) {
+        for (const auto& str : dimersInfo.dimersOverlap.split('\n')) {
+            algoLog.details(str);
+        }
+    } else {
+        for (const auto& str : dimersInfo.dimersOverlap.split('\n')) {
+            algoLog.trace(str);
+        }
+    }
 
-    return isDeltaGUnwanted && isMeltingTemperatureUnwanted && isLengthUnwanted;
+    return isUnwantedParameter;
 }
 
 

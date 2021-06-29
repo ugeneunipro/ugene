@@ -39,6 +39,7 @@ public:
 private:
     static bool isUnwantedSelfDimer(const QByteArray& forwardSequence);
     bool hasUnwantedConnections(const U2Region& region) const;
+    QString regionToString(const U2Region& region) const;
 
     U2Region searchArea;
     int possibleOverlap = 0;

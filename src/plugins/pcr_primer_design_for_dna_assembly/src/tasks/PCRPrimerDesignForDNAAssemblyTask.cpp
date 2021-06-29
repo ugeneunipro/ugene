@@ -90,7 +90,6 @@ void PCRPrimerDesignForDNAAssemblyTask::prepare() {
     findUnwantedIslands = new FindUnwantedIslandsTask(settings.leftArea, settings.overlapLength.maxValue, sequence, false);
     addSubTask(findUnwantedIslands);
 
-    //U2Region reverseComplementArea(reverseComplementSequence.size() - settings.rightArea.endPos(), settings.rightArea.length);
     U2Region reverseComplementArea = DNASequenceUtils::reverseComplementRegion(settings.rightArea, reverseComplementSequence.size());
     findUnwantedIslandsReverseComplement = new FindUnwantedIslandsTask(reverseComplementArea, settings.overlapLength.maxValue, reverseComplementSequence, true);
     addSubTask(findUnwantedIslandsReverseComplement);
@@ -109,9 +108,9 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
                          b1Reverse, b2Reverse, b3Reverse);
     if (!b1Reverse.isEmpty()) {
         int sequenceSize = reverseComplementSequence.size();
-        b1Reverse = U2Region(sequenceSize - b1Reverse.endPos(), b1Reverse.length);
-        b2Reverse = U2Region(sequenceSize - b2Reverse.endPos(), b2Reverse.length);
-        b3Reverse = U2Region(sequenceSize - b3Reverse.endPos(), b3Reverse.length);
+        b1Reverse = DNASequenceUtils::reverseComplementRegion(b1Reverse, sequenceSize);
+        b2Reverse = DNASequenceUtils::reverseComplementRegion(b2Reverse, sequenceSize);
+        b3Reverse = DNASequenceUtils::reverseComplementRegion(b3Reverse, sequenceSize);
     }
 
     U2Region fake;
@@ -121,17 +120,17 @@ void PCRPrimerDesignForDNAAssemblyTask::run() {
 }
 
 QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask) {
-    CHECK_OP(stateInfo, { {} });
+    CHECK_OP(stateInfo, {});
 
     if (subTask == loadBackboneSequence || subTask == checkBackboneSequence) {
         if (subTask == loadBackboneSequence) {
             backboneSequencesCandidates = extractLoadedSequences(loadBackboneSequence);
-            CHECK_OP(stateInfo, { {} });
+            CHECK_OP(stateInfo, {});
         } else if (subTask == checkBackboneSequence) {
             if (!checkBackboneSequence->hasUnwantedParameters()) {
                 backboneSequence = checkBackboneSequence->getSequence();
                 taskLog.details(tr("The backbone sequence without unwanted hairpins, self- and hetero-dimers has ben found: %1").arg(QString(backboneSequence)));
-                return { {} };
+                return {};
             } else {
                 taskLog.details(tr("The following backbone sequence candidate contains parameters: %1").arg(QString(backboneSequence)));
             }
@@ -146,14 +145,14 @@ QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask)
         }
     } else if (subTask == loadOtherSequencesInPcr) {
         otherSequencesInPcr = extractLoadedSequences(loadOtherSequencesInPcr);
-        CHECK_OP(stateInfo, { {} });
+        CHECK_OP(stateInfo, {});
     } else if (subTask == findUnwantedIslands) {
         regionsBetweenIslandsForward = findUnwantedIslands->getRegionBetweenIslands();
     } else if (subTask == findUnwantedIslandsReverseComplement) {
         regionsBetweenIslandsReverse = findUnwantedIslandsReverseComplement->getRegionBetweenIslands();
     }
 
-    return { {} };
+    return {};
 }
 
 QString PCRPrimerDesignForDNAAssemblyTask::generateReport() const {
