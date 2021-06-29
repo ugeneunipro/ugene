@@ -3085,12 +3085,12 @@ GUI_TEST_CLASS_DEFINITION(test_5728) {
     // Expected state: the first character in the first row and the last character in the last row are gaps, the rest characters in the alignment are the same.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(0, 0));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    const QString selectionContent1 = GTClipboard::text(os);
+    QString selectionContent1 = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent1 == "-", QString("Incorrect selection content: expected - %1, received - %2").arg("-").arg(selectionContent1));
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(13, 9), QPoint(13, 9));
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    const QString selectionContent2 = GTClipboard::text(os);
+    QString selectionContent2 = GTClipboard::text(os);
     CHECK_SET_ERR(selectionContent2 == "-", QString("Incorrect selection content: expected - %1, received - %2").arg("-").arg(selectionContent2));
 
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) == 14, "Wrong msa length");
