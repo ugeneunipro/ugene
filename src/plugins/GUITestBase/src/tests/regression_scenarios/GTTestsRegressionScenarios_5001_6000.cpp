@@ -665,7 +665,6 @@ GUI_TEST_CLASS_DEFINITION(test_5149) {
 
     QAbstractButton *redo = GTAction::button(os, "msa_action_redo");
     CHECK_SET_ERR(!redo->isEnabled(), "Redo button should be disabled");
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5199) {
