@@ -32,22 +32,26 @@
 
 namespace U2 {
 
- PCRPrimerProductTable::PCRPrimerProductTable(QWidget *parent)
+PCRPrimerProductTable::PCRPrimerProductTable(QWidget *parent)
     : QTableWidget(parent) {
-     setColumnCount(2);
-     setHorizontalHeaderLabels(QStringList() << tr("Fragment") << tr("Region"));
-     setSelectionBehavior(QAbstractItemView::SelectRows);
-     setSelectionMode(QAbstractItemView::SingleSelection);
-     connect(selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), SLOT(sl_selectionChanged()));
-     connect(this, SIGNAL(clicked(const QModelIndex &)), SLOT(sl_selectionChanged()));
- }
+    for (int i = 0; i < MAXIMUM_ROW_COUNT; i++) {
+        currentProducts.append(U2Region());
+    }
+    setColumnCount(2);
+    setHorizontalHeaderLabels(QStringList() << tr("Fragment") << tr("Region"));
+    setSelectionBehavior(QAbstractItemView::SelectRows);
+    setSelectionMode(QAbstractItemView::SingleSelection);
+    connect(selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), SLOT(sl_selectionChanged()));
+    connect(this, SIGNAL(clicked(const QModelIndex &)), SLOT(sl_selectionChanged()));
+}
 
-void PCRPrimerProductTable::setCurrentProducts(const QList<U2Region> &currentProducts, AnnotatedDNAView *_associatedView) {
-    SAFE_POINT(currentProducts.size() == MAXIMUM_ROW_COUNT, "Should be 8 results", );
+void PCRPrimerProductTable::setCurrentProducts(const QList<U2Region> &_currentProducts, AnnotatedDNAView *_associatedView) {
+    SAFE_POINT(_currentProducts.size() == MAXIMUM_ROW_COUNT, "Should be 8 results", );
+    currentProducts = _currentProducts;
     int index = 0;
     int row = 0;
     setRowCount(MAXIMUM_ROW_COUNT);
-    for (const U2Region &region : currentProducts) {
+    for (const U2Region &region : _currentProducts) {
         if (region != U2Region()) {
             setItem(row, 0, new QTableWidgetItem(PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME.at(index)));
             setItem(row, 1, new QTableWidgetItem(tr("%1-%2").arg(QString::number(region.startPos)).arg(QString::number(region.endPos()))));
@@ -59,8 +63,16 @@ void PCRPrimerProductTable::setCurrentProducts(const QList<U2Region> &currentPro
     associatedView = _associatedView;
 }
 
-void PCRPrimerProductTable::setAnnotationTableObject(AnnotationTableObject *ato) {
-    associatedTableObject = ato;
+void PCRPrimerProductTable::setAnnotationGroup(AnnotationGroup *_associatedGroup) {
+    associatedGroup = _associatedGroup;
+}
+
+PCRPrimerProductTableData PCRPrimerProductTable::getPCRPrimerProductTableData() const {
+    PCRPrimerProductTableData data;
+    data.associatedGroup = associatedGroup;
+    data.associatedView = associatedView;
+    data.currentProducts = currentProducts;
+    return data;
 }
 
 void PCRPrimerProductTable::sl_selectionChanged() {
@@ -74,7 +86,7 @@ void PCRPrimerProductTable::sl_selectionChanged() {
     QString selectedFragmentName = selectedItem->text();
     
     Annotation *selectedAnnotation = nullptr;
-    auto annotations = associatedTableObject->getAnnotations();
+    auto annotations = associatedGroup->getAnnotations();
     for (auto a : qAsConst(annotations)) {
         if (a->getName() == selectedFragmentName) {
             selectedAnnotation = a;
