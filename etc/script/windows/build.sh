@@ -20,19 +20,21 @@ cd "${SOURCE_DIR}" || {
 
 echo "##teamcity[blockOpened name='qmake']"
 echo "Running qmake"
-"${QT_DIR}/bin/qmake.exe" -r ugene.pro || {
+#"${QT_DIR}/bin/qmake.exe" -r ugene.pro || {
+"${QT_DIR}/bin/qmake.exe" -r ugene.pro -tp vc || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. qmake failed']"
   exit 1
 }
 echo "##teamcity[blockClosed name='qmake']"
 
-echo "##teamcity[blockOpened name='nmake']"
-echo "Running nmake"
-nmake Release || {
-  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. nmake failed']"
+echo "##teamcity[blockOpened name='nmake/devenv']"
+echo "Running nmake/devenv"
+#nmake Release || {
+devenv ugene.sln /build Release /out "build.log" || {
+  echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. nmake/devenv failed']"
   exit 1
 }
-echo "##teamcity[blockClosed name='nmake']"
+echo "##teamcity[blockClosed name='nmake/devenv']"
 
 echo "##teamcity[blockOpened name='bundle']"
 rm -rf "${BUNDLE_DIR}"

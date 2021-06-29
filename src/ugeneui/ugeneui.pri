@@ -57,6 +57,7 @@ RCC_DIR=_tmp/rcc
 win32 {
     LIBS += -luser32    # to import CharToOemA with nmake build
     LIBS += -lole32     # to import CoCreateInstance with nmake build
+    LIBS += -lshell32   # to import SHGetSpecialFolderPathA with nmake build
     QMAKE_CXXFLAGS_WARN_ON = -W3
     QMAKE_CFLAGS_WARN_ON = -W3
     RC_FILE = ugeneui.rc
