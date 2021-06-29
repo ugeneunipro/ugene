@@ -4662,6 +4662,28 @@ GUI_TEST_CLASS_DEFINITION(test_5898) {
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5899) {
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "NM_001135099", 0));
+
+    GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."} ,GTGlobals::UseKey);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
+                                                                        << "primer3_action"));
+    Primer3DialogFiller::Primer3Settings settings;
+    settings.rtPcrDesign = true;
+
+    GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsAnnotationsTreeView::findItem(os, "pair 1  (0, 2)");
+    GTUtilsAnnotationsTreeView::findItem(os, "pair 2  (0, 2)");
+    GTUtilsAnnotationsTreeView::findItem(os, "pair 3  (0, 2)");
+    GTUtilsAnnotationsTreeView::findItem(os, "pair 4  (0, 2)");
+    GTUtilsAnnotationsTreeView::findItem(os, "pair 5  (0, 2)");
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5903) {
     //1. Open 'human_T1.fa'
     GTFileDialog::openFile(os, dataDir + "/samples/FASTA", "human_T1.fa");
