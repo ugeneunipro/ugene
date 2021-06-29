@@ -135,7 +135,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
 
     settings.gibbsFreeEnergyExclude = sbExcludeGibbs->value();
     settings.meltingPointExclude = spExcludeMeltingTeml->value();
-    settings.overlapLengthExclude = spExcludeOverlapLength->value();
+    settings.complementLengthExclude = spExcludeComplementLength->value();
 
     if (backbone5->isChecked()) {
         settings.insertTo = PCRPrimerDesignForDNAAssemblyTaskSettings::BackboneBearings::Backbone5;
