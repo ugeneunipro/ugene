@@ -315,21 +315,21 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::showResults() {
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
-    QStringList usedNames;
-    for (AnnotationTableObject *tableObject : annDnaView->getActiveSequenceContext()->getAnnotationObjects()) {
-        usedNames.append(tableObject->getGObjectName());
+    AnnotationTableObject *resultsTableObject = nullptr;
+    const QList<AnnotationTableObject *> atoList = annDnaView->getAnnotationObjects();
+    for (auto *ato : atoList) {
+        if (ato->getGObjectName() == PCR_TABLE_OBJECT_NAME) {
+            resultsTableObject = ato;
+            break;
+        }
     }
-    int counter = 1;
-    QString rolledName = PCR_TABLE_OBJECT_NAME;
-    while (usedNames.contains(rolledName)) {
-        rolledName = PCR_TABLE_OBJECT_NAME + QString(" %1").arg(counter);
-        counter++;
+    if (resultsTableObject == nullptr) {
+        U2OpStatusImpl os;
+        const U2DbiRef localDbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
+        SAFE_POINT_OP(os, );
+        resultsTableObject = new AnnotationTableObject(PCR_TABLE_OBJECT_NAME, localDbiRef);
     }
-
-    U2OpStatusImpl os;
-    const U2DbiRef localDbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
-    SAFE_POINT_OP(os, );
-    AnnotationTableObject *newDocAto = new AnnotationTableObject(rolledName, localDbiRef);
+    
     QList<SharedAnnotationData> annotations;
     int index = 0;
     auto results = pcrTask->getResults();
@@ -343,10 +343,22 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
         }
         index++;
     }
-    newDocAto->addAnnotations(annotations, PCR_TABLE_OBJECT_NAME);
-    newDocAto->addObjectRelation(annDnaView->getActiveSequenceContext()->getSequenceGObject(), ObjectRole_Sequence);
-    annDnaView->addObject(newDocAto);
-    productsTable->setAnnotationTableObject(newDocAto);
+    //roll group name if already exists
+    QStringList usedNames;
+    auto subgroups = resultsTableObject->getRootGroup()->getSubgroups();
+    for (auto subgroup : qAsConst(subgroups)) {
+        usedNames.append(subgroup->getName());
+    }
+    int counter = 1;
+    QString rolledName = PCR_TABLE_OBJECT_NAME;
+    while (usedNames.contains(rolledName)) {
+        rolledName = PCR_TABLE_OBJECT_NAME + QString(" %1").arg(counter);
+        counter++;
+    }
+    resultsTableObject->addAnnotations(annotations, rolledName);
+    resultsTableObject->addObjectRelation(annDnaView->getActiveSequenceContext()->getSequenceGObject(), ObjectRole_Sequence);
+    annDnaView->addObject(resultsTableObject);
+    productsTable->setAnnotationTableObject(resultsTableObject);
 }
 
 }
