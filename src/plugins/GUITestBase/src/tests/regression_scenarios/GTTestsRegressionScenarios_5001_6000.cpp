@@ -1085,18 +1085,18 @@ GUI_TEST_CLASS_DEFINITION(test_5334) {
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/amino_ext.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Select any symbol 'A' in the alignmnet.
+    //Select any symbol 'A' in the alignment.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(19, 0), QPoint(19, 0));
 
     // Click Ctrl + C.
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
 
-    // Cick Ctrl + V.
+    // Click Ctrl + V.
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
 
-    //Expected state: msa alphabet is still AMINO.
+    // Expected state: msa alphabet is still AMINO.
     bool isAmino = GTUtilsMSAEditorSequenceArea::hasAminoAlphabet(os);
-    CHECK_SET_ERR(isAmino, "Aligment has wrong alphabet type");
+    CHECK_SET_ERR(isAmino, "Alignment has wrong alphabet type");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5335) {
