@@ -51,9 +51,6 @@ protected:
     void fillResultsForCurrentIteration(const QByteArray &homologousBases, int overlapStartPos);
     virtual QString getDimersOverlapping(int dimerFormationPos) = 0;
 
-protected:
-    static QMap<QByteArray, qreal> energyMap;
-
     QByteArray forwardPrimer;
     QByteArray reversePrimer;
     QByteArray reverseComplementSequence;

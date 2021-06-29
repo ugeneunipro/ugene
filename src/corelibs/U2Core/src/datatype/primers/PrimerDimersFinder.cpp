@@ -69,40 +69,6 @@ const QMap<QByteArray, qreal> BaseDimersFinder::ENERGY_MAP = {
         { "CC", -3.1 }
 };
 
-static QMap<QByteArray, qreal> initEnergyMap() {
-    QMap<QByteArray, qreal> initializedEnergyMap;
-
-    /*The pairwise dG values for DNA are taken from article:
-    Breslauer, K.,J., Frank, R., Blocker, H., and Marky, L.A. (1986) Predicting DNA duplex
-    stability from the base sequence, Proc. Natl. Acad. Sci. USA 83:3746-3750.*/
-
-    initializedEnergyMap["AA"] = -1.9;
-    initializedEnergyMap["TT"] = -1.9;
-
-    initializedEnergyMap["AT"] = -1.5;
-    initializedEnergyMap["TA"] = -1.0;
-
-    initializedEnergyMap["CA"] = -2.0;
-    initializedEnergyMap["TG"] = -2.0;
-
-    initializedEnergyMap["AC"] = -1.3;
-    initializedEnergyMap["GT"] = -1.3;
-
-    initializedEnergyMap["CT"] = -1.6;
-    initializedEnergyMap["AG"] = -1.6;
-    initializedEnergyMap["GA"] = -1.6;
-    initializedEnergyMap["TC"] = -1.6;
-
-    initializedEnergyMap["CG"] = -3.6;
-    initializedEnergyMap["GC"] = -3.1;
-
-    initializedEnergyMap["GG"] = -3.1;
-    initializedEnergyMap["CC"] = -3.1;
-    return initializedEnergyMap;
-}
-
-QMap<QByteArray, qreal> BaseDimersFinder::energyMap = initEnergyMap();
-
 BaseDimersFinder::BaseDimersFinder(const QByteArray &forwardPrimer, const QByteArray &reversePrimer, double energyThreshold)
     : forwardPrimer(forwardPrimer), reversePrimer(reversePrimer), energyThreshold(energyThreshold), maximumDeltaG(0) {
     DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
@@ -127,9 +93,9 @@ void BaseDimersFinder::fillResultsForCurrentIteration(const QByteArray &homologo
         QByteArray curArray;
         curArray.append(homologousBases.at(i));
         curArray.append(homologousBases.at(i + 1));
-        bool homologousRegionEnded = !energyMap.contains(curArray);
+        bool homologousRegionEnded = !ENERGY_MAP.contains(curArray);
         if (!homologousRegionEnded) {
-            freeEnergy += energyMap[curArray];
+            freeEnergy += ENERGY_MAP[curArray];
         }
         bool reachedBasesEnd = i == homologousBases.size() - 2;
         if (homologousRegionEnded || reachedBasesEnd) {

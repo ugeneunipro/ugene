@@ -48,11 +48,25 @@ bool UnwantedConnectionsUtils::isUnwantedSelfDimer(const QByteArray& forwardSequ
                                                    double unwantedMeltingTemperature,
                                                    int unwantedDimerLength) {
     PrimerStatisticsCalculator calc(forwardSequence, PrimerStatisticsCalculator::Direction::DoesntMatter);
-    auto dimersInfo = calc.getDimersInfo();
-    if (dimersInfo.dimersOverlap.isEmpty()) { // Self dimers aren't found
+    return areUnwantedParametersPresentedInDimersInfo(calc.getDimersInfo(), unwantedDeltaG, unwantedMeltingTemperature, unwantedDimerLength);
+}
+
+bool UnwantedConnectionsUtils::isUnwantedHeteroDimer(const QByteArray& forwardSequence,
+                                                     const QByteArray& reverseSequence,
+                                                     double unwantedDeltaG,
+                                                     double unwantedMeltingTemperature,
+                                                     int unwantedDimerLength) {
+    PrimersPairStatistics calc(forwardSequence, reverseSequence);
+    return areUnwantedParametersPresentedInDimersInfo(calc.getDimersInfo(), unwantedDeltaG, unwantedMeltingTemperature, unwantedDimerLength);
+}
+
+bool UnwantedConnectionsUtils::areUnwantedParametersPresentedInDimersInfo(const DimerFinderResult& dimersInfo,
+                                                                          double unwantedDeltaG,
+                                                                          double unwantedMeltingTemperature,
+                                                                          int unwantedDimerLength) {
+    if (dimersInfo.dimersOverlap.isEmpty()) {
         return false;
     }
-
     double dimerMeltingTemp = PrimerStatistics::getMeltingTemperature(dimersInfo.dimer.toLocal8Bit());
     int dimerLength = dimersInfo.dimer.length();
     bool isDeltaGUnwanted = dimersInfo.deltaG < unwantedDeltaG;
@@ -60,16 +74,6 @@ bool UnwantedConnectionsUtils::isUnwantedSelfDimer(const QByteArray& forwardSequ
     bool isLengthUnwanted = unwantedDimerLength < dimerLength;
 
     return isDeltaGUnwanted && isMeltingTemperatureUnwanted && isLengthUnwanted;
-}
-
-bool UnwantedConnectionsUtils::isUnwantedHeteroDimer(const QByteArray& forwardSequence,
-                                                     const QByteArray& reverseSequence,
-                                                     double unwantedDeltaG,
-                                                     double unwantedMeltingTemperatur,
-                                                     int unwantedDimerLength) {
-    PrimersPairStatistics calc(forwardSequence, reverseSequence);
-    auto dimersInfo = calc.getDimersInfo();
-    return false;
 }
 
 

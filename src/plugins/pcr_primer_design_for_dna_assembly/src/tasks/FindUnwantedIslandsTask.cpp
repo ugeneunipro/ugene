@@ -30,13 +30,18 @@
 
 namespace U2 {
 
-FindUnwantedIslandsTask::FindUnwantedIslandsTask(const U2Region& _searchArea, int _possibleOverlap, const QByteArray& _sequence)
+FindUnwantedIslandsTask::FindUnwantedIslandsTask(const U2Region& _searchArea, int _possibleOverlap, const QByteArray& _sequence, bool _isComplement)
     : Task("Find Unwanted Islands Task", TaskFlags_FOSCOE),
       searchArea(_searchArea),
       possibleOverlap(_possibleOverlap),
-      sequence(_sequence) {}
+      sequence(_sequence),
+      isComplement(_isComplement) {}
 
 void FindUnwantedIslandsTask::run() {
+    U2Region searchReg = isComplement ? DNASequenceUtils::reverseComplementRegion(searchArea, sequence.size()) : searchArea;
+    taskLog.details(tr("Searching of unwanted islands and areas between them "
+                       "in the region \"%1..%2\" has been started")
+                        .arg(searchReg.startPos + 1).arg(searchReg.endPos()));
     /**
      * Index of the left nucleotide in the searching area.
      */
@@ -55,6 +60,8 @@ void FindUnwantedIslandsTask::run() {
         if (isIsland) {
             //The obvious limit - we don't need regions which couldn't fit the primer
             if (lengthBetweenIslands != 0/*>= overlap.minValue*/) {
+                taskLog.details(tr("The region between unwanted islands has been defined: %1..%2")
+                    .arg(startNucleotideNumber + 1).arg(startNucleotideNumber + lengthBetweenIslands));
                 regionsBetweenIslands << U2Region(startNucleotideNumber, lengthBetweenIslands);
             }
             startNucleotideNumber = leftNucleotide;

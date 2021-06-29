@@ -87,11 +87,12 @@ void PCRPrimerDesignForDNAAssemblyTask::prepare() {
         addSubTask(loadOtherSequencesInPcr);
     }
 
-    findUnwantedIslands = new FindUnwantedIslandsTask(settings.leftArea, settings.overlapLength.maxValue, sequence);
+    findUnwantedIslands = new FindUnwantedIslandsTask(settings.leftArea, settings.overlapLength.maxValue, sequence, false);
     addSubTask(findUnwantedIslands);
 
-    U2Region reverseComplementArea(reverseComplementSequence.size() - settings.rightArea.endPos(), settings.rightArea.length);
-    findUnwantedIslandsReverseComplement = new FindUnwantedIslandsTask(reverseComplementArea, settings.overlapLength.maxValue, reverseComplementSequence);
+    //U2Region reverseComplementArea(reverseComplementSequence.size() - settings.rightArea.endPos(), settings.rightArea.length);
+    U2Region reverseComplementArea = DNASequenceUtils::reverseComplementRegion(settings.rightArea, reverseComplementSequence.size());
+    findUnwantedIslandsReverseComplement = new FindUnwantedIslandsTask(reverseComplementArea, settings.overlapLength.maxValue, reverseComplementSequence, true);
     addSubTask(findUnwantedIslandsReverseComplement);
 
 
@@ -99,9 +100,11 @@ void PCRPrimerDesignForDNAAssemblyTask::prepare() {
 
 void PCRPrimerDesignForDNAAssemblyTask::run() {
     int amplifiedFragmentLeftEdge = settings.leftArea.endPos() - 1;
+    taskLog.details(tr("Looking for candidate primers B1, B2 and B3 in the left area"));
     findCandidatePrimers(regionsBetweenIslandsForward, amplifiedFragmentLeftEdge, false, b1Forward, b2Forward, b3Forward);
 
     int amplifiedFragmentRightEdgeReverseComplement = reverseComplementSequence.size() - settings.rightArea.startPos;
+    taskLog.details(tr("Looking for candidate primers B1, B2 and B3 in the right area"));
     findCandidatePrimers(regionsBetweenIslandsReverse, amplifiedFragmentRightEdgeReverseComplement, false,
                          b1Reverse, b2Reverse, b3Reverse);
     if (!b1Reverse.isEmpty()) {
@@ -124,9 +127,14 @@ QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask)
         if (subTask == loadBackboneSequence) {
             backboneSequencesCandidates = extractLoadedSequences(loadBackboneSequence);
             CHECK_OP(stateInfo, { {} });
-        } else if (subTask == checkBackboneSequence && !checkBackboneSequence->hasUnwantedParameters()) {
-            backboneSequence = checkBackboneSequence->getSequence();
-            return { {} };
+        } else if (subTask == checkBackboneSequence) {
+            if (!checkBackboneSequence->hasUnwantedParameters()) {
+                backboneSequence = checkBackboneSequence->getSequence();
+                taskLog.details(tr("The backbone sequence without unwanted hairpins, self- and hetero-dimers has ben found: %1").arg(QString(backboneSequence)));
+                return { {} };
+            } else {
+                taskLog.details(tr("The following backbone sequence candidate contains parameters: %1").arg(QString(backboneSequence)));
+            }
         }
 
         if (!backboneSequencesCandidates.isEmpty()) {
@@ -213,7 +221,6 @@ void PCRPrimerDesignForDNAAssemblyTask::updatePrimerRegion(int& primerEnd, int& 
     //If primer length is too big, reset it and decrease primer end
     primerLength++;
     if (primerLength > settings.overlapLength.maxValue) {
-        //auto offset = primerLength - settings.overlapLength.minValue;
         primerLength = settings.overlapLength.minValue;
         primerEnd--;
     }

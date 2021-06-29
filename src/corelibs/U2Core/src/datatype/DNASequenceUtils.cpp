@@ -176,4 +176,12 @@ U2Region DNASequenceUtils::trimByQuality(DNASequence &sequence, int qualityThres
     return U2Region(beginPosition, endPosition - beginPosition + 1);
 }
 
+int DNASequenceUtils::reverseComplementPos(int directPos, int length) {
+    return length - directPos;
+}
+
+U2Region DNASequenceUtils::reverseComplementRegion(const U2Region& directRegion, int length) {
+    return U2Region (length - directRegion.endPos(), directRegion.length);
+}
+
 }    // namespace U2

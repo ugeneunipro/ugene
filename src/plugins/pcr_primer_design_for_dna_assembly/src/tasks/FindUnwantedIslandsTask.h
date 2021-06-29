@@ -23,13 +23,14 @@
 #define _U2_FIND_UNWANTED_ISLANDS_TASK_H_
 
 #include <U2Core/Task.h>
+#include <U2Core/U2Type.h>
 #include <U2Core/U2Region.h>
 
 namespace U2 {
 
 class FindUnwantedIslandsTask : public Task {
 public:
-    FindUnwantedIslandsTask(const U2Region& searchArea, int possibleOverlap, const QByteArray& sequence);
+    FindUnwantedIslandsTask(const U2Region& searchArea, int possibleOverlap, const QByteArray& sequence, bool isComplement);
 
     void run() override;
 
@@ -42,6 +43,7 @@ private:
     U2Region searchArea;
     int possibleOverlap = 0;
     QByteArray sequence;
+    bool isComplement = false;
 
     QList<U2Region> regionsBetweenIslands;
 
