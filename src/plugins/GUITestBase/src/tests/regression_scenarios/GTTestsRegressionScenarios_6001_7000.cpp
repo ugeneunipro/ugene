@@ -785,6 +785,24 @@ GUI_TEST_CLASS_DEFINITION(test_6102) {
     CHECK_SET_ERR(isAlphabetAmino, "Alphabet is not amino");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6104) {
+    // Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Build a phylogenetic tree. Check that the tree is synchronized with the alignment.
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_6104/COI.nwk", 0, 0, true));
+    GTWidget::click(os, GTAction::button(os, "Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/1");
+    CHECK_SET_ERR(syncModeButton->isEnabled(), "Sync mode must be enabled/1");
+
+    // Rename the first to "1".
+    GTUtilsMSAEditorSequenceArea::renameSequence(os, "Isophya_altaica_EF540820", "1");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6118) {
     //1. Open WD
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
