@@ -43,6 +43,8 @@ private slots:
     void sl_selectionChanged();
 
 private:
+    static constexpr int MAXIMUM_ROW_COUNT = 8;
+
     AnnotatedDNAView *associatedView = nullptr;
     AnnotationTableObject *associatedTableObject = nullptr;
 };
