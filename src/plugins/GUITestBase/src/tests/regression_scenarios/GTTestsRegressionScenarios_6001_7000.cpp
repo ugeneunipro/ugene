@@ -127,6 +127,37 @@ namespace U2 {
 namespace GUITest_regression_scenarios {
 using namespace HI;
 
+GUI_TEST_CLASS_DEFINITION(test_6008) {
+    // Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Click to the "Tettigonia_viridissima" row name in the name list.
+    GTUtilsMsaEditor::clickSequence(os, 9);
+
+    // Click to the second base of the second row in the sequence area.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1,1), QPoint(1, 1));
+
+    // Expected state: "Isophya_altaica_EF540820" is selected in the name list.
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceSelected(os, QString("Isophya_altaica_EF540820")),
+                  "Expected sequence is not selected");
+
+    // Click to the name list with the right mouse button to set the focus on it.
+    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi", Qt::RightButton);
+
+    // Click Escape key to close the context menu.
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+    // Press the down arrow key.
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+
+    // Expected state: "Bicolorana_bicolor_EF540830" is selected in the name list. The whole row data is selected.
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceSelected(os, QString("Bicolorana_bicolor_EF540830")),
+                  "Expected sequence is not selected");
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 2, 604, 1));
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6031) {
     //1. Open samples/APR/gyrA.apr in read-only mode
     GTUtilsDialog::waitForDialog(os, new ImportAPRFileFiller(os, true));
