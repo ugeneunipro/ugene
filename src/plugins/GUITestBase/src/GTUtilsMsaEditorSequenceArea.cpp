@@ -315,16 +315,18 @@ bool GTUtilsMSAEditorSequenceArea::hasSequencesWithNames(GUITestOpStatus &os, co
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getVisibleNames"
-QStringList GTUtilsMSAEditorSequenceArea::getVisibleNames(GUITestOpStatus &os) {
+QStringList GTUtilsMSAEditorSequenceArea::getVisibleNames(GUITestOpStatus &os, bool asShownInNameList) {
     MSAEditor *editor = GTUtilsMsaEditor::getEditor(os);
     MaEditorNameList *nameListArea = GTUtilsMsaEditor::getNameListArea(os);
     CHECK_SET_ERR_RESULT(nameListArea != nullptr, "MSA Editor name list area is NULL", QStringList());
 
     const QList<int> visibleRowsIndexes = editor->getUI()->getDrawHelper()->getVisibleMaRowIndexes(nameListArea->height());
+    const MultipleSequenceAlignmentObject *msaObject = editor->getMaObject();
 
     QStringList visibleRowNames;
-    foreach (const int rowIndex, visibleRowsIndexes) {
-        visibleRowNames << editor->getMaObject()->getRow(rowIndex)->getName();
+    for (int rowIndex : qAsConst(visibleRowsIndexes)) {
+        QString name = asShownInNameList ? nameListArea->getTextForRow(rowIndex) : msaObject->getRow(rowIndex)->getName();
+        visibleRowNames << name;
     }
     return visibleRowNames;
 }
