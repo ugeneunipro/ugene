@@ -58,7 +58,7 @@ const QString GTUtilsAnnotationsTreeView::widgetName = "annotations_tree_widget"
 
 #define GT_METHOD_NAME "getTreeWidget"
 QTreeWidget *GTUtilsAnnotationsTreeView::getTreeWidget(HI::GUITestOpStatus &os) {
-    QWidget* sequenceView = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
+    QWidget *sequenceView = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
     QWidget *widget = GTWidget::findWidget(os, widgetName, sequenceView);
     QTreeWidget *treeWidget = qobject_cast<QTreeWidget *>(widget);
     GT_CHECK_RESULT(treeWidget != nullptr, QString("QTreeWidget '%1' not found").arg(widgetName), nullptr);
@@ -79,30 +79,30 @@ QString GTUtilsAnnotationsTreeView::getAVItemName(HI::GUITestOpStatus &os, AVIte
     GT_CHECK_RESULT(avItem != NULL, "avItem is NULL", "");
 
     switch (avItem->type) {
-    case AVItemType_Annotation: {
-        AVAnnotationItem *avAnnotationItem = (AVAnnotationItem *)avItem;
-        GT_CHECK_RESULT(avAnnotationItem != NULL, "avAnnotationItem is NULL", "");
+        case AVItemType_Annotation: {
+            AVAnnotationItem *avAnnotationItem = (AVAnnotationItem *)avItem;
+            GT_CHECK_RESULT(avAnnotationItem != NULL, "avAnnotationItem is NULL", "");
 
-        Annotation *annotation = avAnnotationItem->annotation;
-        return annotation->getName();
-    } break;
+            Annotation *annotation = avAnnotationItem->annotation;
+            return annotation->getName();
+        } break;
 
-    case AVItemType_Group: {
-        AVGroupItem *avGroupItem = (AVGroupItem *)avItem;
-        GT_CHECK_RESULT(avGroupItem != NULL, "avAnnotationItem is NULL", "");
+        case AVItemType_Group: {
+            AVGroupItem *avGroupItem = (AVGroupItem *)avItem;
+            GT_CHECK_RESULT(avGroupItem != NULL, "avAnnotationItem is NULL", "");
 
-        AnnotationGroup *group = avGroupItem->group;
-        return group->getName();
-    } break;
+            AnnotationGroup *group = avGroupItem->group;
+            return group->getName();
+        } break;
 
-    case AVItemType_Qualifier: {
-        AVQualifierItem *avQualifierItem = (AVQualifierItem *)avItem;
-        GT_CHECK_RESULT(avQualifierItem != NULL, "avQualifierItem is NULL", "");
-        return avQualifierItem->qName;
-    } break;
+        case AVItemType_Qualifier: {
+            AVQualifierItem *avQualifierItem = (AVQualifierItem *)avItem;
+            GT_CHECK_RESULT(avQualifierItem != NULL, "avQualifierItem is NULL", "");
+            return avQualifierItem->qName;
+        } break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return "";

@@ -60,20 +60,20 @@ void GTUtilsMdi::click(HI::GUITestOpStatus &os, GTGlobals::WindowAction action) 
 
 #ifndef Q_OS_DARWIN
     switch (action) {
-    case GTGlobals::Close: {
+        case GTGlobals::Close: {
 #    ifdef Q_OS_UNIX
-        GTMenu::clickMainMenuItem(os, QStringList() << "Window"
-                                                    << "Close active view");
+            GTMenu::clickMainMenuItem(os, QStringList() << "Window"
+                                                        << "Close active view");
 #    else
-        GTKeyboardDriver::keyPress(Qt::Key_Control);
-        GTKeyboardDriver::keyClick(Qt::Key_F4);
-        GTKeyboardDriver::keyRelease(Qt::Key_Control);
+            GTKeyboardDriver::keyPress(Qt::Key_Control);
+            GTKeyboardDriver::keyClick(Qt::Key_F4);
+            GTKeyboardDriver::keyRelease(Qt::Key_Control);
 #    endif
-        break;
-    }
-    default:
-        GTMenuBar::clickCornerMenu(os, mainWindow->menuBar(), action);
-        break;
+            break;
+        }
+        default:
+            GTMenuBar::clickCornerMenu(os, mainWindow->menuBar(), action);
+            break;
     }
 #else
     MWMDIWindow *mdiWindow = mw->getMDIManager()->getActiveWindow();
@@ -81,20 +81,20 @@ void GTUtilsMdi::click(HI::GUITestOpStatus &os, GTGlobals::WindowAction action) 
 
     // TODO: make click on button
     switch (action) {
-    case GTGlobals::Maximize:
-        GTWidget::showMaximized(os, mdiWindow);
-        break;
-    case GTGlobals::Close: {
-        int left = mdiWindow->rect().left();
-        int top = mdiWindow->rect().top();
-        QPoint p(left + 15, top - 10);
-        GTMouseDriver::moveTo(mdiWindow->mapToGlobal(p));
-        GTMouseDriver::click();
-        break;
-    }
-    default:
-        assert(false);
-        break;
+        case GTGlobals::Maximize:
+            GTWidget::showMaximized(os, mdiWindow);
+            break;
+        case GTGlobals::Close: {
+            int left = mdiWindow->rect().left();
+            int top = mdiWindow->rect().top();
+            QPoint p(left + 15, top - 10);
+            GTMouseDriver::moveTo(mdiWindow->mapToGlobal(p));
+            GTMouseDriver::click();
+            break;
+        }
+        default:
+            assert(false);
+            break;
     }
 #endif
 }
@@ -114,20 +114,20 @@ QWidget *GTUtilsMdi::findWindow(HI::GUITestOpStatus &os, const QString &windowNa
         foreach (MWMDIWindow *window, mdiWindows) {
             QString mdiTitle = window->windowTitle();
             switch (options.matchPolicy) {
-            case Qt::MatchExactly:
-                if (mdiTitle == windowName) {
-                    GTThread::waitForMainThread();
-                    return window;
-                }
-                break;
-            case Qt::MatchContains:
-                if (mdiTitle.contains(windowName, Qt::CaseInsensitive)) {
-                    GTThread::waitForMainThread();
-                    return window;
-                }
-                break;
-            default:
-                GT_CHECK_RESULT(false, "Not implemented", nullptr);
+                case Qt::MatchExactly:
+                    if (mdiTitle == windowName) {
+                        GTThread::waitForMainThread();
+                        return window;
+                    }
+                    break;
+                case Qt::MatchContains:
+                    if (mdiTitle.contains(windowName, Qt::CaseInsensitive)) {
+                        GTThread::waitForMainThread();
+                        return window;
+                    }
+                    break;
+                default:
+                    GT_CHECK_RESULT(false, "Not implemented", nullptr);
             }
         }
         if (!options.failIfNotFound) {
@@ -215,9 +215,9 @@ void GTUtilsMdi::closeAllWindows(HI::GUITestOpStatus &os) {
 #define GT_METHOD_NAME "isTabbedLayout"
 bool GTUtilsMdi::isTabbedLayout(HI::GUITestOpStatus &os) {
     MainWindow *mainWindow = AppContext::getMainWindow();
-    GT_CHECK_RESULT(mainWindow != NULL, "MainWindow == NULL", NULL);
+    GT_CHECK_RESULT(mainWindow != NULL, "MainWindow == NULL", false);
     QMdiArea *mdiArea = GTWidget::findExactWidget<QMdiArea *>(os, "MDI_Area", mainWindow->getQMainWindow());
-    GT_CHECK_RESULT(mdiArea != NULL, "mdiArea == NULL", NULL);
+    GT_CHECK_RESULT(mdiArea != NULL, "mdiArea == NULL", false);
     return mdiArea->viewMode() == QMdiArea::TabbedView;
 }
 #undef GT_METHOD_NAME

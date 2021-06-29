@@ -1885,7 +1885,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../src/ETSSettingsWidget.ui" line="267"/>
         <source>Import</source>
-        <translation>Испорт</translation>
+        <translation>Импорт</translation>
     </message>
     <message>
         <location filename="../src/ETSSettingsWidget.ui" line="277"/>

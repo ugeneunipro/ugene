@@ -30,11 +30,21 @@ namespace U2 {
 
 class U2CORE_EXPORT DNAChromatogram {
 public:
-    enum Trace {
+    enum class Trace {
         Trace_A,
         Trace_C,
         Trace_G,
         Trace_T,
+    };
+
+    /* Chromatogram trace and the corresponding peak height */
+    struct ChromatogramTraceAndValue {
+        ChromatogramTraceAndValue(Trace t, int v) : trace(t), value(v) {}
+
+        // Chromatogram trace
+        Trace trace = Trace::Trace_A;
+        //Height of the @trace peak
+        int value = 0;
     };
 
     DNAChromatogram();
@@ -59,6 +69,8 @@ public:
 
     static const ushort INVALID_VALUE;
     static const char DEFAULT_PROBABILITY;
+    /* The "U2::DNAChromatogram::Trace" enum and the corresponding "char" symbol */
+    static const QMap<Trace, char> TRACE_CHARACTER;
 };
 
 }    // namespace U2

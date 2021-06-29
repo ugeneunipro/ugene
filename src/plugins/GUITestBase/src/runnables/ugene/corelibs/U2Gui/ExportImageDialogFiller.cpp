@@ -167,15 +167,15 @@ void ExportSequenceImage::commonScenario() {
 
     QString radioButtonName;
     switch (settings.type) {
-    case CurrentView:
-        radioButtonName = "currentViewButton";
-        break;
-    case ZoomedView:
-        radioButtonName = "zoomButton";
-        break;
-    case DetailsView:
-        radioButtonName = "detailsButton";
-        break;
+        case CurrentView:
+            radioButtonName = "currentViewButton";
+            break;
+        case ZoomedView:
+            radioButtonName = "zoomButton";
+            break;
+        case DetailsView:
+            radioButtonName = "detailsButton";
+            break;
     }
 
     QRadioButton *radioButton = dialog->findChild<QRadioButton *>(radioButtonName);

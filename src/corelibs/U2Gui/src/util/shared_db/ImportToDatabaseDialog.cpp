@@ -564,16 +564,16 @@ void ImportToDatabaseDialog::setFileTooltip(QTreeWidgetItem *item) {
     }
 
     switch (currentOptions.multiSequencePolicy) {
-    case ImportToDatabaseOptions::SEPARATE:
-        tooltip += "\n" + tr("If file contains more than one sequence, they will imported as separate objects");
-        break;
-    case ImportToDatabaseOptions::MERGE:
-        tooltip += "\n" + tr("If file contains more than one sequence, they will imported as single sequence with several 'Unknown' bases as separator") +
-                   "\n" + tr("Size of separator: %1").arg(currentOptions.mergeMultiSequencePolicySeparatorSize);
-        break;
-    case ImportToDatabaseOptions::MALIGNMENT:
-        tooltip += "\n" + tr("If file contains more than one sequence, they will be joined into the multiple alignment");
-        break;
+        case ImportToDatabaseOptions::SEPARATE:
+            tooltip += "\n" + tr("If file contains more than one sequence, they will imported as separate objects");
+            break;
+        case ImportToDatabaseOptions::MERGE:
+            tooltip += "\n" + tr("If file contains more than one sequence, they will imported as single sequence with several 'Unknown' bases as separator") +
+                       "\n" + tr("Size of separator: %1").arg(currentOptions.mergeMultiSequencePolicySeparatorSize);
+            break;
+        case ImportToDatabaseOptions::MALIGNMENT:
+            tooltip += "\n" + tr("If file contains more than one sequence, they will be joined into the multiple alignment");
+            break;
     }
 
     item->setToolTip(COLUMN_ITEM_TEXT, tooltip);
@@ -608,16 +608,16 @@ void ImportToDatabaseDialog::setFolderTooltip(QTreeWidgetItem *item) {
     }
 
     switch (currentOptions.multiSequencePolicy) {
-    case ImportToDatabaseOptions::SEPARATE:
-        tooltip += "\n" + tr("If file contains more than one sequence, they will imported as separate objects");
-        break;
-    case ImportToDatabaseOptions::MERGE:
-        tooltip += "\n" + tr("If file contains more than one sequence, they will imported as single sequence with several 'Unknown' bases as separator") +
-                   "\n" + tr("Size of separator: %1").arg(currentOptions.mergeMultiSequencePolicySeparatorSize);
-        break;
-    case ImportToDatabaseOptions::MALIGNMENT:
-        tooltip += "\n" + tr("If file contains more than one sequence, they will be joined into the multiple alignment");
-        break;
+        case ImportToDatabaseOptions::SEPARATE:
+            tooltip += "\n" + tr("If file contains more than one sequence, they will imported as separate objects");
+            break;
+        case ImportToDatabaseOptions::MERGE:
+            tooltip += "\n" + tr("If file contains more than one sequence, they will imported as single sequence with several 'Unknown' bases as separator") +
+                       "\n" + tr("Size of separator: %1").arg(currentOptions.mergeMultiSequencePolicySeparatorSize);
+            break;
+        case ImportToDatabaseOptions::MALIGNMENT:
+            tooltip += "\n" + tr("If file contains more than one sequence, they will be joined into the multiple alignment");
+            break;
     }
 
     item->setToolTip(COLUMN_ITEM_TEXT, tooltip);

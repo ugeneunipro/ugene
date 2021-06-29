@@ -20,6 +20,9 @@
  */
 
 #include "GUITestRunner.h"
+#include <harness/GUITestService.h>
+#include <harness/GUITestThread.h>
+#include <harness/UGUITestBase.h>
 
 #include <QMessageBox>
 #include <QTreeView>
@@ -27,10 +30,6 @@
 
 #include <U2Core/AppContext.h>
 #include <U2Core/Settings.h>
-
-#include <harness/GUITestService.h>
-#include <harness/GUITestThread.h>
-#include <harness/UGUITestBase.h>
 
 namespace U2 {
 

@@ -109,14 +109,14 @@ qint64 MaIterator::getNextPosition() const {
     qint64 nextPosition = position;
     const int step = getStep(nextPosition);
     switch (direction) {
-    case Forward:
-        nextPosition += step;
-        break;
-    case Backward:
-        nextPosition -= step;
-        break;
-    default:
-        FAIL("An unknown direction", INVALID_POSITION);
+        case Forward:
+            nextPosition += step;
+            break;
+        case Backward:
+            nextPosition -= step;
+            break;
+        default:
+            FAIL("An unknown direction", INVALID_POSITION);
     }
 
     if (isCircular) {
@@ -135,12 +135,12 @@ int MaIterator::getStep(qint64 position) const {
     const MultipleAlignmentRow row = ma->getRow(rowsIndexes[rowNumber]);
     CHECK(!row->isTrailingOrLeadingGap(columnNumber), 1);
     switch (direction) {
-    case Forward:
-        return row->getCoreEnd() <= columnNumber ? ma->getLength() - columnNumber : 1;
-    case Backward:
-        return row->getCoreStart() >= columnNumber ? ma->getLength() - columnNumber : 1;
-    default:
-        FAIL("An unknown direction", 1);
+        case Forward:
+            return row->getCoreEnd() <= columnNumber ? ma->getLength() - columnNumber : 1;
+        case Backward:
+            return row->getCoreStart() >= columnNumber ? ma->getLength() - columnNumber : 1;
+        default:
+            FAIL("An unknown direction", 1);
     }
 }
 

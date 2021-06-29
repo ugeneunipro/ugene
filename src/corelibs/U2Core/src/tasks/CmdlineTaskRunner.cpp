@@ -79,16 +79,16 @@ inline int getLogNameCandidate(const QString &line, QString &nameCandidate) {
 
 QString getLogLevelName(LogLevel l) {
     switch (l) {
-    case LogLevel_TRACE:
-        return "TRACE";
-    case LogLevel_DETAILS:
-        return "DETAILS";
-    case LogLevel_INFO:
-        return "INFO";
-    case LogLevel_ERROR:
-        return "ERROR";
-    default:
-        assert(0);
+        case LogLevel_TRACE:
+            return "TRACE";
+        case LogLevel_DETAILS:
+            return "DETAILS";
+        case LogLevel_INFO:
+            return "INFO";
+        case LogLevel_ERROR:
+            return "ERROR";
+        default:
+            assert(0);
     }
     return "";
 }
@@ -336,20 +336,20 @@ QString CmdlineTaskRunner::readStdout() {
 void CmdlineTaskRunner::sl_onError(QProcess::ProcessError error) {
     QString msg;
     switch (error) {
-    case QProcess::FailedToStart:
-        msg = tr("The process '%1' failed to start. Either the invoked program is missing, "
-                 "or you may have insufficient permissions to invoke the program")
-                  .arg(CMDLineRegistryUtils::getCmdlineUgenePath());
-        break;
-    case QProcess::Crashed:
-        msg = tr("The process '%1' crashed some time after starting successfully").arg(CMDLineRegistryUtils::getCmdlineUgenePath());
-        break;
-    case QProcess::WriteError:
-    case QProcess::ReadError:
-        msg = tr("Error occurred while reading from or writing to channel");
-        break;
-    default:
-        msg = tr("Unknown error occurred");
+        case QProcess::FailedToStart:
+            msg = tr("The process '%1' failed to start. Either the invoked program is missing, "
+                     "or you may have insufficient permissions to invoke the program")
+                      .arg(CMDLineRegistryUtils::getCmdlineUgenePath());
+            break;
+        case QProcess::Crashed:
+            msg = tr("The process '%1' crashed some time after starting successfully").arg(CMDLineRegistryUtils::getCmdlineUgenePath());
+            break;
+        case QProcess::WriteError:
+        case QProcess::ReadError:
+            msg = tr("Error occurred while reading from or writing to channel");
+            break;
+        default:
+            msg = tr("Unknown error occurred");
     }
     setError(msg);
 }

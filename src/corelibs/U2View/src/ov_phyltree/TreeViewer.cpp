@@ -691,7 +691,7 @@ void TreeViewerUI::updateTextSettings(TreeViewOption option) {
                         }
                     }
                 }
-            } 
+            }
             if (option == LABEL_COLOR || option == LABEL_FONT_TYPE || option == LABEL_FONT_SIZE ||
                 option == LABEL_FONT_BOLD || option == LABEL_FONT_ITALIC || option == LABEL_FONT_UNDERLINE) {
                 branchItem->updateTextProperty(option, getOptionValue(option));

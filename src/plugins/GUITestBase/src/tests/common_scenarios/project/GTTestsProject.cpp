@@ -1160,7 +1160,7 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
 
 //ann
 GUI_TEST_CLASS_DEFINITION(test_0072) {
-    Q_UNUSED(os); // TODO: fix the test.
+    Q_UNUSED(os);    // TODO: fix the test.
     //Ctrl+Shift+V в GUI-test?
     //UGENE-4907
     /*
@@ -1176,7 +1176,7 @@ GUI_TEST_CLASS_DEFINITION(test_0072) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0073) {
-    Q_UNUSED(os); // TODO: fix the test!
+    Q_UNUSED(os);    // TODO: fix the test!
     //Ctrl+Shift+V в GUI-test?
     /*
     GTUtilsProject::openFiles(os, dataDir + "samples/Genbank/murine.gb");

@@ -39,10 +39,10 @@
 #include <U2Gui/OptionsPanel.h>
 
 // SANGER_TODO: remove relative paths
-#include "../general/MSAGeneralTabFactory.h"
 #include "../MSAEditor.h"
 #include "../MSAEditorConsensusArea.h"
 #include "../MSAEditorSequenceArea.h"
+#include "../general/MSAGeneralTabFactory.h"
 #include "../helpers/BaseWidthController.h"
 #include "../helpers/ScrollController.h"
 #include "../view_rendering/MaConsensusAreaRenderer.h"

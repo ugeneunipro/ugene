@@ -22,6 +22,7 @@
 #ifndef _U2_IO_ADAPTER_TEXT_STREAM_H_
 #define _U2_IO_ADAPTER_TEXT_STREAM_H_
 
+#include <QBitArray>
 #include <QObject>
 #include <QTextStream>
 
@@ -106,7 +107,12 @@ public:
      * Clears the 'result' buffer first before reading.
      * Returns number of characters read, same as result.length().
      */
-    int read(U2OpStatus &os, QString &result, int maxLength, const QBitArray &terminators, IOAdapter::TerminatorHandling terminatorMode, bool *terminatorFound = nullptr);
+    int read(U2OpStatus &os,
+             QString &result,
+             int maxLength,
+             const QBitArray &terminators = QBitArray(),
+             IOAdapter::TerminatorHandling terminatorMode = IOAdapter::Term_Include,
+             bool *terminatorFound = nullptr);
 
     /**
      * Reads a single line (until '\n' character) from the text stream into the 'result' buffer.

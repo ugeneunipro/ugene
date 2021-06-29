@@ -543,25 +543,25 @@ void addUniqueWarning(U2OpStatus &si, const QString &warning) {
 
 AnnotationProcessStatus processParsingResult(const U2Location &location, Genbank::LocationParser::ParsingResult parsingResult, const QStringList &parsingMessages, U2OpStatus &si) {
     switch (parsingResult) {
-    case Genbank::LocationParser::Success:
-        return ProcessAnnotation;
-    case Genbank::LocationParser::ParsedWithWarnings:
-        foreach (const QString &message, parsingMessages) {
-            if (message.contains(Genbank::LocationParser::REMOTE_ENTRY_WARNING)) {
-                addUniqueWarning(si, EMBLGenbankAbstractDocument::REMOTE_ENTRY_WARNING_MESSAGE);
-            } else if (message.contains(Genbank::LocationParser::JOIN_COMPLEMENT_WARNING)) {
-                addUniqueWarning(si, EMBLGenbankAbstractDocument::JOIN_COMPLEMENT_WARNING_MESSAGE);
-            } else {
-                si.addWarning(message);
+        case Genbank::LocationParser::Success:
+            return ProcessAnnotation;
+        case Genbank::LocationParser::ParsedWithWarnings:
+            foreach (const QString &message, parsingMessages) {
+                if (message.contains(Genbank::LocationParser::REMOTE_ENTRY_WARNING)) {
+                    addUniqueWarning(si, EMBLGenbankAbstractDocument::REMOTE_ENTRY_WARNING_MESSAGE);
+                } else if (message.contains(Genbank::LocationParser::JOIN_COMPLEMENT_WARNING)) {
+                    addUniqueWarning(si, EMBLGenbankAbstractDocument::JOIN_COMPLEMENT_WARNING_MESSAGE);
+                } else {
+                    si.addWarning(message);
+                }
             }
-        }
-        return location->isEmpty() ? SkipAnnotation : ProcessAnnotation;
-    case Genbank::LocationParser::Failure:
-        si.setError(parsingMessages.isEmpty() ? EMBLGenbankAbstractDocument::LOCATION_PARSING_ERROR_MESSAGE : parsingMessages.last());
-        return SkipAnnotation;
-    default:
-        assert(false);
-        return ProcessAnnotation;
+            return location->isEmpty() ? SkipAnnotation : ProcessAnnotation;
+        case Genbank::LocationParser::Failure:
+            si.setError(parsingMessages.isEmpty() ? EMBLGenbankAbstractDocument::LOCATION_PARSING_ERROR_MESSAGE : parsingMessages.last());
+            return SkipAnnotation;
+        default:
+            assert(false);
+            return ProcessAnnotation;
     }
 }
 

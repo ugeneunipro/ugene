@@ -594,11 +594,11 @@ void SQLiteAssemblyUtils::calculateCoverage(SQLiteReadQuery &q, const U2Region &
         int lastCoverageIdx = (int)((readCroppedRegion.startPos + readCroppedRegion.length - r.startPos) / basesPerRange) - 1;
         for (int i = firstCoverageIdx; i <= lastCoverageIdx && i < csize; i++) {
             switch (cigarVector[(i - firstCoverageIdx) * basesPerRange]) {
-            case U2CigarOp_D:    // skip the deletion
-            case U2CigarOp_N:    // skip the skiped
-                continue;
-            default:
-                coverage[i]++;
+                case U2CigarOp_D:    // skip the deletion
+                case U2CigarOp_N:    // skip the skiped
+                    continue;
+                default:
+                    coverage[i]++;
             }
         }
     }
@@ -632,11 +632,11 @@ void SQLiteAssemblyUtils::addToCoverage(U2AssemblyCoverageImportInfo &ii, const 
     int *coverageData = ii.coverage.data();
     for (int i = startPos; i <= endPos && i < csize; i++) {
         switch (cigarVector[(i - startPos) * ii.coverageBasesPerPoint]) {
-        case U2CigarOp_D:    // skip the deletion
-        case U2CigarOp_N:    // skip the skiped
-            continue;
-        default:
-            coverageData[i]++;
+            case U2CigarOp_D:    // skip the deletion
+            case U2CigarOp_N:    // skip the skiped
+                continue;
+            default:
+                coverageData[i]++;
         }
     }
 }

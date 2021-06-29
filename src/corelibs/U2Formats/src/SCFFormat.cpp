@@ -935,9 +935,7 @@ int fwrite_scf(Scf *scf, FILE *fp) {
      *     Private
      */
     scf->header.samples_offset = (uint)sizeof(Header);
-    size = scf->header.samples * (scf->header.sample_size == 1 ?
-                                      sizeof(Samples1) :
-                                      sizeof(Samples2));
+    size = scf->header.samples * (scf->header.sample_size == 1 ? sizeof(Samples1) : sizeof(Samples2));
     scf->header.bases_offset = (uint)(scf->header.samples_offset +
                                       size);
     size = scf->header.bases * sizeof(Bases);

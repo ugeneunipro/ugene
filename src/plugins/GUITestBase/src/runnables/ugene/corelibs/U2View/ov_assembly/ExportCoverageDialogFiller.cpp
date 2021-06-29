@@ -54,65 +54,65 @@ void ExportCoverageDialogFiller::commonScenario() {
 
     foreach (const Action &action, actions) {
         switch (action.first) {
-        case EnterFilePath:
-            enterFilePath(action.second);
-            break;
-        case SelectFile:
-            selectFile(action.second);
-            break;
-        case SetFormat:
-            setFormat(action.second);
-            break;
-        case SetCompress:
-            setCompress(action.second);
-            break;
-        case SetExportCoverage:
-            setExportCoverage(action.second);
-            break;
-        case SetExportBasesQuantity:
-            setExportBasesQuantity(action.second);
-            break;
-        case SetThreshold:
-            setThreshold(action.second);
-            break;
-        case CheckFilePath:
-            checkFilePath(action.second);
-            break;
-        case CheckFormat:
-            checkFormat(action.second);
-            break;
-        case CheckCompress:
-            checkCompress(action.second);
-            break;
-        case CheckOptionsVisibility:
-            checkOptionsVisibility(action.second);
-            break;
-        case CheckExportCoverage:
-            checkExportCoverage(action.second);
-            break;
-        case CheckExportBasesQuantity:
-            checkExportBasesQuantity(action.second);
-            break;
-        case CheckThreshold:
-            checkThreshold(action.second);
-            break;
-        case CheckThresholdBounds:
-            checkThresholdBounds(action.second);
-            break;
-        case ExpectMessageBox:
-            expectMessageBox();
-            break;
-        case ClickOk:
-            clickOk();
-            break;
-        case ClickCancel: {
-            clickCancel();
-            break;
-        }
-        default:
-            os.setError("An unexpected dialog action");
-            clickCancel();
-            break;
+            case EnterFilePath:
+                enterFilePath(action.second);
+                break;
+            case SelectFile:
+                selectFile(action.second);
+                break;
+            case SetFormat:
+                setFormat(action.second);
+                break;
+            case SetCompress:
+                setCompress(action.second);
+                break;
+            case SetExportCoverage:
+                setExportCoverage(action.second);
+                break;
+            case SetExportBasesQuantity:
+                setExportBasesQuantity(action.second);
+                break;
+            case SetThreshold:
+                setThreshold(action.second);
+                break;
+            case CheckFilePath:
+                checkFilePath(action.second);
+                break;
+            case CheckFormat:
+                checkFormat(action.second);
+                break;
+            case CheckCompress:
+                checkCompress(action.second);
+                break;
+            case CheckOptionsVisibility:
+                checkOptionsVisibility(action.second);
+                break;
+            case CheckExportCoverage:
+                checkExportCoverage(action.second);
+                break;
+            case CheckExportBasesQuantity:
+                checkExportBasesQuantity(action.second);
+                break;
+            case CheckThreshold:
+                checkThreshold(action.second);
+                break;
+            case CheckThresholdBounds:
+                checkThresholdBounds(action.second);
+                break;
+            case ExpectMessageBox:
+                expectMessageBox();
+                break;
+            case ClickOk:
+                clickOk();
+                break;
+            case ClickCancel: {
+                clickCancel();
+                break;
+            }
+            default:
+                os.setError("An unexpected dialog action");
+                clickCancel();
+                break;
         }
     }
 }

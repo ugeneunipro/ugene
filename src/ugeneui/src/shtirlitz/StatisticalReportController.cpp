@@ -60,7 +60,7 @@ ContentSizeHtmlViewer::ContentSizeHtmlViewer(QWidget *parent, const QString &htm
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setHtml(html);
-//    connect(this, SIGNAL(textChanged()), this, SLOT(sl_updateSize()));
+    //    connect(this, SIGNAL(textChanged()), this, SLOT(sl_updateSize()));
 }
 
 QSize ContentSizeHtmlViewer::sizeHint() {

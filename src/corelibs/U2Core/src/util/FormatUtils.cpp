@@ -89,32 +89,32 @@ QString FormatUtils::insertSeparators(int num) {
 
 QString FormatUtils::getShortMonthName(int num) {
     switch (num) {
-    case 1:
-        return QString("JAN");
-    case 2:
-        return QString("FEB");
-    case 3:
-        return QString("MAR");
-    case 4:
-        return QString("APR");
-    case 5:
-        return QString("MAY");
-    case 6:
-        return QString("JUN");
-    case 7:
-        return QString("JUL");
-    case 8:
-        return QString("AUG");
-    case 9:
-        return QString("SEP");
-    case 10:
-        return QString("OCT");
-    case 11:
-        return QString("NOV");
-    case 12:
-        return QString("DEC");
-    default:
-        return QString();
+        case 1:
+            return QString("JAN");
+        case 2:
+            return QString("FEB");
+        case 3:
+            return QString("MAR");
+        case 4:
+            return QString("APR");
+        case 5:
+            return QString("MAY");
+        case 6:
+            return QString("JUN");
+        case 7:
+            return QString("JUL");
+        case 8:
+            return QString("AUG");
+        case 9:
+            return QString("SEP");
+        case 10:
+            return QString("OCT");
+        case 11:
+            return QString("NOV");
+        case 12:
+            return QString("DEC");
+        default:
+            return QString();
     }
 }
 

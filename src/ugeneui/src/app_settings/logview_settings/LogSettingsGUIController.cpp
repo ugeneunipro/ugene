@@ -147,7 +147,8 @@ void LogSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
 
     for (int i = 0; i < LogLevel_NumLevels; i++) {
         LogSettingsTopLineWidget *tw = qobject_cast<LogSettingsTopLineWidget *>(tableWidget->cellWidget(0, i + 1));
-        tw->cb->setCheckState(nEqual[i] == 0 ? Qt::Unchecked : nEqual[i] == settings.getLoggerSettings().size() ? Qt::Checked : Qt::PartiallyChecked);
+        tw->cb->setCheckState(nEqual[i] == 0 ? Qt::Unchecked : nEqual[i] == settings.getLoggerSettings().size() ? Qt::Checked
+                                                                                                                : Qt::PartiallyChecked);
     }
 
     tableWidget->resizeRowsToContents();

@@ -1505,7 +1505,7 @@ Double-click to collapse the branch</source>
     <message>
         <location filename="../src/ov_msa/highlighting/MSAHighlightingTabFactory.cpp" line="54"/>
         <source>Highlighting</source>
-        <translation>Выделение</translation>
+        <translation>Подсветка</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/pairwise_alignment/PairAlignFactory.cpp" line="52"/>
@@ -5597,7 +5597,7 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="338"/>
         <source>Colors</source>
-        <translation>Раскраска</translation>
+        <translation>Цветовая схема</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="347"/>
@@ -5607,7 +5607,7 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="365"/>
         <source>Highlighting</source>
-        <translation>Выделение</translation>
+        <translation>Подсветка</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="379"/>
@@ -5919,12 +5919,12 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/highlighting/MSAHighlightingTab.cpp" line="176"/>
         <source>Color</source>
-        <translation>Цвет</translation>
+        <translation>Цветовая схема</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/highlighting/MSAHighlightingTab.cpp" line="179"/>
         <source>Highlighting</source>
-        <translation>Выделение</translation>
+        <translation>Подсветка</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/highlighting/MSAHighlightingTab.cpp" line="275"/>
@@ -6553,7 +6553,7 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/overview/MaOverviewContextMenu.cpp" line="164"/>
         <source>Highlighting</source>
-        <translation>Выделение</translation>
+        <translation>Подсветка</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/overview/MaOverviewContextMenu.cpp" line="191"/>

@@ -170,22 +170,22 @@ const SharedResidue BioStruct3D::getResidueById(int chainIndex, ResidueIndex res
 
 const QString BioStruct3D::getSecStructTypeName(SecondaryStructure::Type type) {
     switch (type) {
-    case SecondaryStructure::Type_AlphaHelix:
-        return BioStruct3D::AlphaHelixAnnotationTag;
-    case SecondaryStructure::Type_PiHelix:
-        return "pi_helix";
-    case SecondaryStructure::Type_310Helix:
-        return "310_helix";
-    case SecondaryStructure::Type_BetaStrand:
-        return BioStruct3D::BetaStrandAnnotationTag;
-    case SecondaryStructure::Type_BetaBridge:
-        return "beta_bridge";
-    case SecondaryStructure::Type_Turn:
-        return BioStruct3D::TurnAnnotationTag;
-    case SecondaryStructure::Type_BendRegion:
-        return "bend_region";
-    default:
-        return QString("unknown");
+        case SecondaryStructure::Type_AlphaHelix:
+            return BioStruct3D::AlphaHelixAnnotationTag;
+        case SecondaryStructure::Type_PiHelix:
+            return "pi_helix";
+        case SecondaryStructure::Type_310Helix:
+            return "310_helix";
+        case SecondaryStructure::Type_BetaStrand:
+            return BioStruct3D::BetaStrandAnnotationTag;
+        case SecondaryStructure::Type_BetaBridge:
+            return "beta_bridge";
+        case SecondaryStructure::Type_Turn:
+            return BioStruct3D::TurnAnnotationTag;
+        case SecondaryStructure::Type_BendRegion:
+            return "bend_region";
+        default:
+            return QString("unknown");
     }
 }
 

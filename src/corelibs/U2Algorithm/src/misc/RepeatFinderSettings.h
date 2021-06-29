@@ -71,7 +71,8 @@ public:
         return !(*this == r);
     }
     bool operator<(const RFResult &r) const {
-        return (x != r.x) ? x < r.x : (y != r.y) ? y < r.y : (l < r.l);
+        return (x != r.x) ? x < r.x : (y != r.y) ? y < r.y
+                                                 : (l < r.l);
     }
 
     QString fragment;

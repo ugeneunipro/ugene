@@ -170,18 +170,18 @@ void MaOverviewContextMenu::initCalculationMethodMenu() {
     highlightingMethodAction->setObjectName("Highlighting");
 
     switch (graphOverview->getCurrentCalculationMethod()) {
-    case Strict:
-        strictMethodAction->setChecked(true);
-        break;
-    case Gaps:
-        gapMethodAction->setChecked(true);
-        break;
-    case Clustal:
-        clustalMethodAction->setChecked(true);
-        break;
-    case Highlighting:
-        highlightingMethodAction->setChecked(true);
-        break;
+        case Strict:
+            strictMethodAction->setChecked(true);
+            break;
+        case Gaps:
+            gapMethodAction->setChecked(true);
+            break;
+        case Clustal:
+            clustalMethodAction->setChecked(true);
+            break;
+        case Highlighting:
+            highlightingMethodAction->setChecked(true);
+            break;
     }
 
     calculationMethodMenu->addActions(calculationMethodActionGroup->actions());
@@ -201,14 +201,14 @@ void MaOverviewContextMenu::initGraphTypeSubmenu() {
     areaGraphAction->setObjectName("Area graph");
 
     switch (graphOverview->getCurrentGraphType()) {
-    case MaGraphOverviewDisplaySettings::Hystogram:
-        histogramGraphAction->setChecked(true);
-        break;
-    case MaGraphOverviewDisplaySettings::Line:
-        lineGraphAction->setChecked(true);
-        break;
-    default:
-        areaGraphAction->setChecked(true);
+        case MaGraphOverviewDisplaySettings::Hystogram:
+            histogramGraphAction->setChecked(true);
+            break;
+        case MaGraphOverviewDisplaySettings::Line:
+            lineGraphAction->setChecked(true);
+            break;
+        default:
+            areaGraphAction->setChecked(true);
     }
 
     graphTypeMenu->addActions(graphTypeActionGroup->actions());

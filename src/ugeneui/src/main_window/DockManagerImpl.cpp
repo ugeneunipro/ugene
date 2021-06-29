@@ -119,14 +119,14 @@ void MWDockManagerImpl::saveLastActiveDocksState() {
 
 QToolBar *MWDockManagerImpl::getDockBar(MWDockArea a) const {
     switch (a) {
-    case MWDockArea_Left:
-        return dockLeft;
-    case MWDockArea_Right:
-        return dockRight;
-    case MWDockArea_Bottom:
-        return dockBottom;
-    default:
-        break;
+        case MWDockArea_Left:
+            return dockLeft;
+        case MWDockArea_Right:
+            return dockRight;
+        case MWDockArea_Bottom:
+            return dockBottom;
+        default:
+            break;
     }
     return NULL;
 }
@@ -273,8 +273,8 @@ void MWDockManagerImpl::openDock(DockData *d) {
     activeDocks[d->area] = d;
     connect(d->dock, SIGNAL(visibilityChanged(bool)), SLOT(sl_dockVisibilityChanged(bool)));
 
-    Qt::DockWidgetArea mwarea = d->area == MWDockArea_Left ? Qt::LeftDockWidgetArea :
-                                                             d->area == MWDockArea_Right ? Qt::RightDockWidgetArea : Qt::BottomDockWidgetArea;
+    Qt::DockWidgetArea mwarea = d->area == MWDockArea_Left ? Qt::LeftDockWidgetArea : d->area == MWDockArea_Right ? Qt::RightDockWidgetArea
+                                                                                                                  : Qt::BottomDockWidgetArea;
 
     d->dock->setAttribute(Qt::WA_DeleteOnClose);
 

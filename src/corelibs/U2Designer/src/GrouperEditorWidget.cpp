@@ -296,12 +296,12 @@ Qt::ItemFlags GrouperSlotsCfgModel::flags(const QModelIndex &) const {
 QVariant GrouperSlotsCfgModel::headerData(int section, Qt::Orientation orientation, int role) const {
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         switch (section) {
-        case 0:
-            return tr("Output slot name");
-        case 1:
-            return tr("Source data slot");
-        default:
-            assert(false);
+            case 0:
+                return tr("Output slot name");
+            case 1:
+                return tr("Source data slot");
+            default:
+                assert(false);
         }
     }
     // unreachable code

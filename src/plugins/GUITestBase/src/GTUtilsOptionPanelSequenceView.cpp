@@ -87,7 +87,6 @@ void GTUtilsOptionPanelSequenceView::enterPattern(HI::GUITestOpStatus &os, QStri
     } else {
         GTTextEdit::setText(os, patternEdit, pattern);
     }
-
 }
 
 #undef GT_METHOD_NAME

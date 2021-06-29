@@ -176,12 +176,12 @@ Qt::ItemFlags MarkerGroupListCfgModel::flags(const QModelIndex &) const {
 QVariant MarkerGroupListCfgModel::headerData(int section, Qt::Orientation orientation, int role) const {
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         switch (section) {
-        case 0:
-            return tr("Marker Group");
-        case 1:
-            return tr("Marker Value");
-        default:
-            assert(false);
+            case 0:
+                return tr("Marker Group");
+            case 1:
+                return tr("Marker Value");
+            default:
+                assert(false);
         }
     }
     // unreachable code

@@ -634,30 +634,30 @@ GrouperSlotAction HRSchemaSerializer::parseAction(Tokenizer &tokenizer) {
         bool b = false;
         int num = 0;
         switch (pType) {
-        case ActionParameters::INTEGER:
-            num = param.toInt(&ok);
-            if (!ok) {
-                throw ReadFailed(tr("Grouper out slot action: bad int '%1' at parameter %2")
-                                     .arg(param)
-                                     .arg(paramId));
-            }
-            var = num;
-            break;
-        case ActionParameters::BOOLEAN:
-            if ("true" == param) {
-                b = true;
-            } else if ("false" == param) {
-                b = false;
-            } else {
-                throw ReadFailed(tr("Grouper out slot action: bad bool '%1' at parameter %2")
-                                     .arg(param)
-                                     .arg(paramId));
-            }
-            var = b;
-            break;
-        case ActionParameters::STRING:
-            var = param;
-            break;
+            case ActionParameters::INTEGER:
+                num = param.toInt(&ok);
+                if (!ok) {
+                    throw ReadFailed(tr("Grouper out slot action: bad int '%1' at parameter %2")
+                                         .arg(param)
+                                         .arg(paramId));
+                }
+                var = num;
+                break;
+            case ActionParameters::BOOLEAN:
+                if ("true" == param) {
+                    b = true;
+                } else if ("false" == param) {
+                    b = false;
+                } else {
+                    throw ReadFailed(tr("Grouper out slot action: bad bool '%1' at parameter %2")
+                                         .arg(param)
+                                         .arg(paramId));
+                }
+                var = b;
+                break;
+            case ActionParameters::STRING:
+                var = param;
+                break;
         }
 
         result.setParameterValue(paramId, var);

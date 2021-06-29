@@ -1817,7 +1817,7 @@ GUI_TEST_CLASS_DEFINITION(test_4170) {
 GUI_TEST_CLASS_DEFINITION(test_4177) {
     class FontSettingsHelper {
     public:
-        static void changeFontAndSize(HI::GUITestOpStatus &os,  const QString &fontFamilyStr, int fontSize) {
+        static void changeFontAndSize(HI::GUITestOpStatus &os, const QString &fontFamilyStr, int fontSize) {
             QComboBox *fontComboBox = GTWidget::findExactWidget<QComboBox *>(os, "fontComboBox");
             GTComboBox::selectItemByText(os, fontComboBox, fontFamilyStr);
             GTSpinBox::setValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox"), fontSize, GTGlobals::UseMouse);
@@ -1828,8 +1828,8 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
             CHECK_SET_ERR(comboText == expectedFamilyStr, "unexpected style: " + comboText);
             int actualSize = GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox"));
             CHECK_SET_ERR(actualSize == expectedSize, QString("unexpected point size: %1").arg(QString::number(actualSize)));
-        }        
-        
+        }
+
         static void getFontSettings(HI::GUITestOpStatus &os, QString &familyStr, int &size) {
             familyStr = GTComboBox::getCurrentText(os, "fontComboBox");
             size = GTSpinBox::getValue(os, GTWidget::findExactWidget<QSpinBox *>(os, "fontSizeSpinBox"));
@@ -1851,12 +1851,12 @@ GUI_TEST_CLASS_DEFINITION(test_4177) {
     QString defaultFontFamily;
     int defaultSize;
 
-    QList<GraphicsButtonItem *>  nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
-    CHECK_SET_ERR(nodes.size() == 16, 
-        QString("Something goes wrong with building tree from COI.aln We are expect 16 nodes instead of: %1")
-        .arg(QString::number(nodes.size())));
+    QList<GraphicsButtonItem *> nodes = GTUtilsPhyTree::getOrderedRectangularNodes(os);
+    CHECK_SET_ERR(nodes.size() == 16,
+                  QString("Something goes wrong with building tree from COI.aln We are expect 16 nodes instead of: %1")
+                      .arg(QString::number(nodes.size())));
     //1. Open samples/CLUSTALW/COI.aln and build tree for it
-    GTUtilsPhyTree::clickNode(os, nodes[0]);//drop sticked ruler
+    GTUtilsPhyTree::clickNode(os, nodes[0]);    //drop sticked ruler
     //2. Select node, change font size to 16, also remember default parameters
     GTUtilsPhyTree::clickNode(os, nodes[1]);
     FontSettingsHelper::getFontSettings(os, defaultFontFamily, defaultSize);
@@ -4237,6 +4237,65 @@ GUI_TEST_CLASS_DEFINITION(test_4674_2) {
     CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/4");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_4676_1) {
+    // Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Do any change in the msa.
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(5, 5));
+    GTKeyboardDriver::keyClick(' ');
+
+    // Expected state: undo action is enabled, redo action is disabled.
+    QAbstractButton *undo1 = GTAction::button(os, "msa_action_undo");
+    CHECK_SET_ERR(undo1->isEnabled(), "Undo button should be enabled");
+
+    QAbstractButton *redo1 = GTAction::button(os, "msa_action_redo");
+    CHECK_SET_ERR(!redo1->isEnabled(), "Redo button should be disabled");
+
+    // Close the view.
+    GTUtilsMdi::click(os, GTGlobals::Close);
+
+    // Open the view again.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, { "Open View", "action_open_view"}));
+    GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
+
+    // Expected state: undo action is enabled.
+    QAbstractButton *undo2 = GTAction::button(os, "msa_action_undo");
+    CHECK_SET_ERR(undo2->isEnabled(), "Undo button should be enabled");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4676_2) {
+    // Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Do any change in the msa.
+    GTUtilsMSAEditorSequenceArea::clickToPosition(os, QPoint(5, 5));
+    GTKeyboardDriver::keyClick(' ');
+
+    // Undo the modification.
+    GTKeyboardDriver::keyClick('z', Qt::ControlModifier);
+
+    // Expected state: undo action is disabled, redo action is enabled.
+    QAbstractButton *undo1 = GTAction::button(os, "msa_action_undo");
+    CHECK_SET_ERR(!undo1->isEnabled(), "Undo button should be disabled");
+
+    QAbstractButton *redo1 = GTAction::button(os, "msa_action_redo");
+    CHECK_SET_ERR(redo1->isEnabled(), "Redo button should be enabled");
+
+    // Close the view.
+    GTUtilsMdi::click(os, GTGlobals::Close);
+
+    // Open the view again.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Open View", "action_open_view"}));
+    GTUtilsProjectTreeView::click(os, "COI.aln", Qt::RightButton);
+
+    // Expected state: redo action is enabled.
+    QAbstractButton *redo2 = GTAction::button(os, "msa_action_redo");
+    CHECK_SET_ERR(redo2->isEnabled(), "Redo button should be enabled");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_4687) {
     //1. Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
@@ -5246,6 +5305,23 @@ GUI_TEST_CLASS_DEFINITION(test_4795) {
     QComboBox *highlightingScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
     GTComboBox::checkCurrentValue(os, colorScheme, "UGENE    ");
     GTComboBox::checkCurrentValue(os, highlightingScheme, "No highlighting    ");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_4799) {
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/amino_ext.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // In the context menu of the sequences area select "Add->Sequence from current project".
+    GTUtilsDialog::waitForDialog(os, new ProjectTreeItemSelectorDialogFiller(os, "amino_ext.fa", "amino_ext"));
+    GTMenu::clickMainMenuItem(os, {"Actions", "Add", "Sequence from current project..."});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Check the result.
+    QStringList names = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(names.size() == 19, QString("Sequence count mismatch. Expected: 19. Actual: %1").arg(names.size()));
+    CHECK_SET_ERR(names.last() == "amino_ext", QString("Inserted sequence name mismatch. Expected: amino_ext. Actual: %1").arg(names.last()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4803_1) {

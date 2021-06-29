@@ -238,15 +238,15 @@ void MultipleChromatogramAlignmentObject::trimRow(const int rowIndex, int curren
     int pos = 0;
     int count = 0;
     switch (edge) {
-    case Left:
-        pos = row->getCoreStart();
-        count = currentPos - pos;
-        break;
-    case Right:
-        pos = currentPos + 1;
-        int lengthWithoutTrailing = row->getRowLengthWithoutTrailing();
-        count = lengthWithoutTrailing - currentPos;
-        break;
+        case Left:
+            pos = row->getCoreStart();
+            count = currentPos - pos;
+            break;
+        case Right:
+            pos = currentPos + 1;
+            int lengthWithoutTrailing = row->getRowLengthWithoutTrailing();
+            count = lengthWithoutTrailing - currentPos;
+            break;
     }
     McaDbiUtils::removeRegion(entityRef, rowId, pos, count, os);
     U2Region region(rowIndex, 1);
@@ -258,6 +258,44 @@ void MultipleChromatogramAlignmentObject::trimRow(const int rowIndex, int curren
     modificationInfo.rowContentChanged = true;
     modificationInfo.rowListChanged = false;
     updateCachedMultipleAlignment(modificationInfo);
+}
+
+void MultipleChromatogramAlignmentObject::updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus& os) {
+    for (int i = 0; i < getNumRows(); i++) {
+        const MultipleChromatogramAlignmentRow& mcaRow = static_cast<const MultipleChromatogramAlignmentRow&>(getRow(i));
+        qint64 ungappedLength = mcaRow->getUngappedLength();
+
+        QHash<qint64, char> newCharList;
+        for (int j = 0; j < ungappedLength; j++) {
+            bool ok = false;
+            auto res = mcaRow->getTwoHighestPeaks(j, ok);
+            if (!ok) {
+                continue;
+            }
+
+            double minimumThresholdValue = (double)res.second.value / res.first.value * 100;
+            char newChar;
+            if (minimumThresholdValue < threshold || !showAlternativeMutations) {
+                newChar = DNAChromatogram::TRACE_CHARACTER[res.first.trace];
+            } else {
+                newChar = DNAChromatogram::TRACE_CHARACTER[res.second.trace];
+            }
+
+            auto gappedPos = mcaRow->getGappedPosition(j);
+            char currentChar = mcaRow->charAt(gappedPos);
+            if (currentChar == newChar) {
+                continue;
+            }
+
+            newCharList.insert(gappedPos, newChar);
+        }
+
+        const MultipleAlignment& ma = getMultipleAlignment();
+        qint64 modifiedRowId = ma->getRow(i)->getRowId();
+        McaDbiUtils::replaceCharactersInRow(getEntityRef(), modifiedRowId, newCharList, os);
+        SAFE_POINT_OP(os, );
+    }
+    updateCachedMultipleAlignment();
 }
 
 void MultipleChromatogramAlignmentObject::loadAlignment(U2OpStatus &os) {

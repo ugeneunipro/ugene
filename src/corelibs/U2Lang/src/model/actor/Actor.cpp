@@ -453,23 +453,23 @@ static bool validateUrlAttribute(Attribute *attr, UrlAttributeType urlType, Noti
 
     bool res;
     switch (urlType) {
-    case DatasetAttr:
-        res = WorkflowUtils::validateDatasets(attr->getAttributePureValue().value<QList<Dataset>>(), infoList);
-        break;
-    case InputFile:
-        res = WorkflowUtils::validateInputFiles(urls, infoList);
-        break;
-    case InputDir:
-        res = WorkflowUtils::validateInputDirs(urls, infoList);
-        break;
-    case OutputFile:
-        res = WorkflowUtils::validateOutputFile(urls, infoList);
-        break;
-    case OutputDir:
-        res = WorkflowUtils::validateOutputDir(urls, infoList);
-        break;
-    default:
-        FAIL("Unexpected value of the URL attribute!", false);
+        case DatasetAttr:
+            res = WorkflowUtils::validateDatasets(attr->getAttributePureValue().value<QList<Dataset>>(), infoList);
+            break;
+        case InputFile:
+            res = WorkflowUtils::validateInputFiles(urls, infoList);
+            break;
+        case InputDir:
+            res = WorkflowUtils::validateInputDirs(urls, infoList);
+            break;
+        case OutputFile:
+            res = WorkflowUtils::validateOutputFile(urls, infoList);
+            break;
+        case OutputDir:
+            res = WorkflowUtils::validateOutputDir(urls, infoList);
+            break;
+        default:
+            FAIL("Unexpected value of the URL attribute!", false);
     }
     return res;
 }

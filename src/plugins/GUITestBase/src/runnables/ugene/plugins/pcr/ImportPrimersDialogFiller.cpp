@@ -62,14 +62,14 @@ void ImportPrimersDialogFiller::commonScenario() {
 #define GT_METHOD_NAME "setImportTarget"
 void ImportPrimersDialogFiller::setImportTarget(HI::GUITestOpStatus &os, ImportSource importSource) {
     switch (importSource) {
-    case LocalFiles:
-        GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbSource", getDialog(os)), "Local file(s)");
-        break;
-    case SharedDb:
-        GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbSource", getDialog(os)), "Shared database");
-        break;
-    default:
-        os.setError("Unexpected import source");
+        case LocalFiles:
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbSource", getDialog(os)), "Local file(s)");
+            break;
+        case SharedDb:
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbSource", getDialog(os)), "Shared database");
+            break;
+        default:
+            os.setError("Unexpected import source");
     }
 }
 #undef GT_METHOD_NAME

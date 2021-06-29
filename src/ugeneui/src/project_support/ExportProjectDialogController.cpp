@@ -91,8 +91,7 @@ const QString ExportProjectDialogController::getProjectFile() const {
 
 void ExportProjectDialogController::sl_onFileSelectButton() {
     LastUsedDirHelper h;
-    QString path = U2FileDialog::getSaveFileName(this, tr("Save file"), h.dir, 
-        tr("Project files") + DIALOG_FILTER_PROJECT_EXT);
+    QString path = U2FileDialog::getSaveFileName(this, tr("Save file"), h.dir, tr("Project files") + DIALOG_FILTER_PROJECT_EXT);
     if (path.isEmpty()) {
         return;
     }

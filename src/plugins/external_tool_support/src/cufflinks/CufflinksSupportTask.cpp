@@ -216,12 +216,12 @@ QList<Task *> CufflinksSupportTask::onSubTaskFinished(Task *subTask) {
 
 DocumentFormatId CufflinksSupportTask::getFormatId(CufflinksOutputFormat format) {
     switch (format) {
-    case CufflinksOutputFpkm:
-        return BaseDocumentFormats::FPKM_TRACKING_FORMAT;
-    case CufflinksOutputGtf:
-        return BaseDocumentFormats::GTF;
-    default:
-        FAIL("Internal error: unexpected format of the Cufflinks output!", "");
+        case CufflinksOutputFpkm:
+            return BaseDocumentFormats::FPKM_TRACKING_FORMAT;
+        case CufflinksOutputGtf:
+            return BaseDocumentFormats::GTF;
+        default:
+            FAIL("Internal error: unexpected format of the Cufflinks output!", "");
     }
 }
 

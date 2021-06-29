@@ -55,7 +55,8 @@ CreateSArrayIndexTask::CreateSArrayIndexTask(const U2SequenceObject *obj, int wi
     size = seqArray.length();
     seq = seqArray.constData();
     DNAAlphabetType seqType = obj->getAlphabet()->getType();
-    unknownChar = seqType == DNAAlphabet_AMINO ? 'X' : seqType == DNAAlphabet_NUCL ? 'N' : '\0';
+    unknownChar = seqType == DNAAlphabet_AMINO ? 'X' : seqType == DNAAlphabet_NUCL ? 'N'
+                                                                                   : '\0';
     if (useBitMask) {
         bitTable = bt.getBitMaskCharBits(seqType);
         bitCharLen = bt.getBitMaskCharBitsNum(seqType);

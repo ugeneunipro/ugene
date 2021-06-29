@@ -21,7 +21,6 @@
 
 #include "CreateDesktopShortcutTask.h"
 
-
 #if defined(Q_OS_WIN)
 // clang-format off
 #include <Windows.h>
@@ -29,16 +28,16 @@
 #include <ShlObj.h>
 // clang-format on
 #elif defined(Q_OS_LINUX)
-#include <QCoreApplication>
-#include <QDir>
-#include <QFile>
+#    include <QCoreApplication>
+#    include <QDir>
+#    include <QFile>
 #elif defined(Q_OS_DARWIN)
-#include <QCoreApplication>
-#include <QDir>
-#include <QFileInfo>
-#include <QProcess>
-#include <QTemporaryFile>
-#endif // Q_OS_WIN || Q_OS_LINUX || Q_OS_DARWIN
+#    include <QCoreApplication>
+#    include <QDir>
+#    include <QFileInfo>
+#    include <QProcess>
+#    include <QTemporaryFile>
+#endif    // Q_OS_WIN || Q_OS_LINUX || Q_OS_DARWIN
 
 #include <QMainWindow>
 #include <QMessageBox>
@@ -176,8 +175,8 @@ Task::ReportResult CreateDesktopShortcutTask::report() {
 
 CreateDesktopShortcutTask::Answer CreateDesktopShortcutTask::getAnswer() {
     QMessageBox::information(AppContext::getMainWindow()->getQMainWindow(),
-        tr("Desktop shortcut"),
-        tr("A new shortcut to the UGENE application was created on the desktop."));
+                             tr("Desktop shortcut"),
+                             tr("A new shortcut to the UGENE application was created on the desktop."));
     return CreateDesktopShortcutTask::DoNothing;
 }
 

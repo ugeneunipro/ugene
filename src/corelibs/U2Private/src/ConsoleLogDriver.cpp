@@ -108,16 +108,16 @@ void ConsoleLogDriver::setLogCmdlineHelp() {
 
 QString ConsoleLogDriver::getLevelName(int i) const {
     switch (i) {
-    case 0:
-        return "TRACE";
-    case 1:
-        return "DETAILS";
-    case 2:
-        return "INFO";
-    case 3:
-        return "ERROR";
-    default:
-        return "";
+        case 0:
+            return "TRACE";
+        case 1:
+            return "DETAILS";
+        case 2:
+            return "INFO";
+        case 3:
+            return "ERROR";
+        default:
+            return "";
     }
 }
 

@@ -22,6 +22,7 @@
 #include "GTTestsMetaPhlAn2.h"
 #include <GTUtilsTaskTreeView.h>
 #include <base_dialogs/MessageBoxFiller.h>
+#include <harness/UGUITest.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTWidget.h>
@@ -35,8 +36,6 @@
 #include <U2Core/AppContext.h>
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
-
-#include <harness/UGUITest.h>
 
 #include "GTUtilsWorkflowDesigner.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"

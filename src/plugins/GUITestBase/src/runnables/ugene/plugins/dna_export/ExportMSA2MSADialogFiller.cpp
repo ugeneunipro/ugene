@@ -51,7 +51,6 @@ void ExportMSA2MSADialogFiller::commonScenario() {
     GT_CHECK(dialog != NULL, "dialog not found");
 
     if (!path.isEmpty()) {
-
         QLineEdit *fileNameEdit = GTWidget::findExactWidget<QLineEdit *>(os, "fileNameEdit", dialog);
         GTLineEdit::setText(os, fileNameEdit, path);
     }
@@ -84,7 +83,6 @@ void ExportMSA2MSADialogFiller::commonScenario() {
         GT_CHECK(false, "incorrect frame");
     }
     GTRadioButton::click(os, widgetName, dialog);
-
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

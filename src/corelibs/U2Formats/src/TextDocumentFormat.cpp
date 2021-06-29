@@ -86,7 +86,9 @@ FormatCheckResult TextDocumentFormat::checkRawData(const QByteArray &rawBinaryDa
     if (isBinaryData) {
         return FormatDetection_NotMatched;
     }
-    return checkRawTextData(text, url);
+    FormatCheckResult result = checkRawTextData(text, url);
+    result.properties[RawDataCheckResult_RawTextData] = text;
+    return result;
 }
 
 Document *TextDocumentFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {

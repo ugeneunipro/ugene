@@ -92,6 +92,10 @@ QWidget *MaEditorWgt::createHeaderLabelWidget(const QString &text, Qt::Alignment
                              proxyMouseEventsToNameList);
 }
 
+MaEditorStatusBar* MaEditorWgt::getStatusBar() const {
+    return statusBar;
+}
+
 QAction *MaEditorWgt::getUndoAction() const {
     QAction *a = undoFWK->getUndoAction();
     a->setObjectName("msa_action_undo");

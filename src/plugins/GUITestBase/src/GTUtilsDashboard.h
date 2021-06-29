@@ -42,11 +42,11 @@ public:
     // Dashboard notification class. Contains the type of notification (info/warning/error), the name of the workflow
     // element to which the notification relates and the notification message
     struct Notification {
-        Notification() = delete; // No default dashboard notification
+        Notification() = delete;    // No default dashboard notification
 
-        QString type; // The type of dashboard notification (info/warning/error)
-        QString element; // The name of workflow element to which the dashboard notification relates
-        QString message; // The dashboard notification message
+        QString type;    // The type of dashboard notification (info/warning/error)
+        QString element;    // The name of workflow element to which the dashboard notification relates
+        QString message;    // The dashboard notification message
 
         // Returns the notification as a string
         QString toString() const;

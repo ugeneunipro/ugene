@@ -262,18 +262,18 @@ void MsaEditorAlignmentDependentWidget::sl_onUpdateButonPressed() {
 void MsaEditorAlignmentDependentWidget::sl_onDataStateChanged(DataState newState) {
     state = DataIsValid;
     switch (newState) {
-    case DataIsValid:
-        statusBar.setText(DataIsValidMessage);
-        updateButton.setEnabled(false);
-        break;
-    case DataIsBeingUpdated:
-        statusBar.setText(DataIsBeingUpdatedMessage);
-        updateButton.setEnabled(false);
-        break;
-    case DataIsOutdated:
-        statusBar.setText(DataIsOutdatedMessage);
-        updateButton.setEnabled(true);
-        break;
+        case DataIsValid:
+            statusBar.setText(DataIsValidMessage);
+            updateButton.setEnabled(false);
+            break;
+        case DataIsBeingUpdated:
+            statusBar.setText(DataIsBeingUpdatedMessage);
+            updateButton.setEnabled(false);
+            break;
+        case DataIsOutdated:
+            statusBar.setText(DataIsOutdatedMessage);
+            updateButton.setEnabled(true);
+            break;
     }
 }
 

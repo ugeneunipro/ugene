@@ -89,7 +89,7 @@ bool GenbankPlainTextFormat::readIdLine(ParserState *st) {
     if (!st->hasKey(LOCUS)) {
         QByteArray rawData(st->buff);
         int locusStartPos = rawData.indexOf("\n" + LOCUS);
-        if (locusStartPos != -1) { //We are here if the "GenBank" file has some pre-description (see UGENE-4463)
+        if (locusStartPos != -1) {    //We are here if the "GenBank" file has some pre-description (see UGENE-4463)
             while (locusStartPos >= st->len) {
                 st->readNextLine();
                 rawData = QByteArray(st->buff);

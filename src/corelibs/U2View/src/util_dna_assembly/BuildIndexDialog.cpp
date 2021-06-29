@@ -193,15 +193,15 @@ void BuildIndexDialog::accept() {
             CHECK(!msgBox.isNull(), );
 
             switch (ret) {
-            case QMessageBox::Yes:
-                AppContext::getAppSettingsGUI()->showSettingsDialog(APP_SETTINGS_EXTERNAL_TOOLS);
-                break;
-            case QMessageBox::No:
-                return;
-                break;
-            default:
-                assert(false);
-                break;
+                case QMessageBox::Yes:
+                    AppContext::getAppSettingsGUI()->showSettingsDialog(APP_SETTINGS_EXTERNAL_TOOLS);
+                    break;
+                case QMessageBox::No:
+                    return;
+                    break;
+                default:
+                    assert(false);
+                    break;
             }
             if (AppContext::getExternalToolRegistry()->getById(externalToolId)->getPath().isEmpty()) {
                 return;

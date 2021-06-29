@@ -300,7 +300,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006_1) {
@@ -328,7 +327,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, name));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {

@@ -58,48 +58,48 @@ void DownloadRemoteFileDialogFiller::commonScenario() {
 
     foreach (const Action &action, actions) {
         switch (action.first) {
-        case SetResourceIds:
-            setResourceIds(action.second);
-            break;
-        case SetDatabase:
-            setDatabase(action.second);
-            break;
-        case EnterSaveToDirectoryPath:
-            enterSaveToDirectoryPath(action.second);
-            break;
-        case SelectSaveToDirectoryPath:
-            selectSaveToDirectoryPath(action.second);
-            break;
-        case SetOutputFormat:
-            setOutputFormat(action.second);
-            break;
-        case SetForceSequenceDownload:
-            setForceSequenceDownload(action.second);
-            break;
-        case CheckDatabase:
-            checkDatabase(action.second);
-            break;
-        case CheckDatabasesCount:
-            checkDatabasesCount(action.second);
-            break;
-        case CheckOutputFormatVisibility:
-            checkOutputFormatVisibility(action.second);
-            break;
-        case CheckOutputFormat:
-            checkOutputFormat(action.second);
-            break;
-        case CheckForceSequenceDownloadVisibility:
-            checkForceSequenceDownloadVisibility(action.second);
-            break;
-        case CheckForceSequenceDownload:
-            checkForceSequenceDownload(action.second);
-            break;
-        case ClickOk:
-            clickOk();
-            break;
-        case ClickCancel:
-            clickCancel();
-            break;
+            case SetResourceIds:
+                setResourceIds(action.second);
+                break;
+            case SetDatabase:
+                setDatabase(action.second);
+                break;
+            case EnterSaveToDirectoryPath:
+                enterSaveToDirectoryPath(action.second);
+                break;
+            case SelectSaveToDirectoryPath:
+                selectSaveToDirectoryPath(action.second);
+                break;
+            case SetOutputFormat:
+                setOutputFormat(action.second);
+                break;
+            case SetForceSequenceDownload:
+                setForceSequenceDownload(action.second);
+                break;
+            case CheckDatabase:
+                checkDatabase(action.second);
+                break;
+            case CheckDatabasesCount:
+                checkDatabasesCount(action.second);
+                break;
+            case CheckOutputFormatVisibility:
+                checkOutputFormatVisibility(action.second);
+                break;
+            case CheckOutputFormat:
+                checkOutputFormat(action.second);
+                break;
+            case CheckForceSequenceDownloadVisibility:
+                checkForceSequenceDownloadVisibility(action.second);
+                break;
+            case CheckForceSequenceDownload:
+                checkForceSequenceDownload(action.second);
+                break;
+            case ClickOk:
+                clickOk();
+                break;
+            case ClickCancel:
+                clickCancel();
+                break;
         }
     }
 }

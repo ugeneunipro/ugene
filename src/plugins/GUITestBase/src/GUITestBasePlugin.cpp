@@ -20,13 +20,12 @@
  */
 
 #include "GUITestBasePlugin.h"
+#include <harness/UGUITestBase.h>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/U2SafePoints.h>
 
 #include <U2Gui/ToolsMenu.h>
-
-#include <harness/UGUITestBase.h>
 
 #include "harness/GUITestService.h"
 #include "tests/PosteriorActions.h"
@@ -1283,6 +1282,8 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4674);
     REGISTER_TEST(GUITest_regression_scenarios::test_4674_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4674_2);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4676_1);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4676_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_4687);
     REGISTER_TEST(GUITest_regression_scenarios::test_4689_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4689_2);
@@ -1318,6 +1319,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_regression_scenarios::test_4785_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4785_2);
     REGISTER_TEST(GUITest_regression_scenarios::test_4795);
+    REGISTER_TEST(GUITest_regression_scenarios::test_4799);
 
     REGISTER_TEST(GUITest_regression_scenarios::test_4803_1);
     REGISTER_TEST(GUITest_regression_scenarios::test_4803_2);
@@ -1746,6 +1748,7 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
 
     REGISTER_TEST(GUITest_regression_scenarios::test_7212);
     REGISTER_TEST(GUITest_regression_scenarios::test_7246);
+    REGISTER_TEST(GUITest_regression_scenarios::test_7293);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/project/
@@ -2577,6 +2580,10 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0042);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0043);
     REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0044);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0045_1);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0045_2);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0045_3);
+    REGISTER_TEST(GUITest_common_scenarios_mca_editor::test_0045_4);
 
     //////////////////////////////////////////////////////////////////////////
     // Common scenarios/document_from_text/

@@ -102,10 +102,10 @@ static QVariant toRelativeRelations(const QList<GObjectRelation> &absRelations, 
             QString relDocUrl = relRel.getDocURL();
             QFileInfo fi(relDocUrl);
             QString absolutePath = fi.absoluteFilePath();
-#ifdef Q_OS_WIN
+#    ifdef Q_OS_WIN
             absolutePath = absolutePath.toLower();
             relDocUrl = relDocUrl.toLower();
-#endif
+#    endif
             assert(absolutePath.isEmpty() || absolutePath == relDocUrl);
 #endif
 

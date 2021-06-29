@@ -165,7 +165,7 @@ void Annotation::setLocation(const U2Location &location) {
     parentObject->emit_onAnnotationsModified(md);
 }
 
-const QVector<U2Region>& Annotation::getRegions() const {
+const QVector<U2Region> &Annotation::getRegions() const {
     return data->getRegions();
 }
 

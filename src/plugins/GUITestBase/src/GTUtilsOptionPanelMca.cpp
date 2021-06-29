@@ -20,9 +20,12 @@
 */
 
 #include <primitives/GTComboBox.h>
+#include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTSlider.h>
+#include <primitives/GTSpinBox.h>
 #include <primitives/GTWidget.h>
+#include <utils/GTThread.h>
 
 #include <QApplication>
 #include <QComboBox>
@@ -35,37 +38,27 @@
 namespace U2 {
 using namespace HI;
 
-QMap<GTUtilsOptionPanelMca::Tabs, QString> GTUtilsOptionPanelMca::initNames() {
-    QMap<Tabs, QString> result;
-    result.insert(General, "OP_MCA_GENERAL");
-    result.insert(Consensus, "OP_CONSENSUS");
-    return result;
-}
-
-QMap<GTUtilsOptionPanelMca::Tabs, QString> GTUtilsOptionPanelMca::initInnerWidgetNames() {
-    QMap<Tabs, QString> result;
-    result.insert(General, "McaGeneralTab");
-    result.insert(Consensus, "ExportConsensusWidget");
-    return result;
-}
-
-const QMap<GTUtilsOptionPanelMca::Tabs, QString> GTUtilsOptionPanelMca::tabsNames = initNames();
-const QMap<GTUtilsOptionPanelMca::Tabs, QString> GTUtilsOptionPanelMca::innerWidgetNames = initInnerWidgetNames();
+const QMap<GTUtilsOptionPanelMca::Tabs, QString> GTUtilsOptionPanelMca::tabsNames = { {General, "OP_MCA_GENERAL"},
+                                                                                      {Consensus, "OP_CONSENSUS"},
+                                                                                      {Reads, "OP_MCA_READS"} };
+const QMap<GTUtilsOptionPanelMca::Tabs, QString> GTUtilsOptionPanelMca::innerWidgetNames = { {General, "McaGeneralTab"},
+                                                                                             {Consensus, "ExportConsensusWidget"},
+                                                                                             {Reads, "McaAlternativeMutationsWidget"} };
 
 #define GT_CLASS_NAME "GTUtilsOptionPanelMca"
 
 #define GT_METHOD_NAME "toggleTab"
-void GTUtilsOptionPanelMca::toggleTab(HI::GUITestOpStatus &os, Tabs tab) {
+void GTUtilsOptionPanelMca::toggleTab(HI::GUITestOpStatus &os, Tabs tab, QWidget *parent) {
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
-    GTWidget::click(os, GTWidget::findWidget(os, tabsNames[tab]));
+    GTWidget::click(os, GTWidget::findWidget(os, tabsNames[tab], parent));
     GTGlobals::sleep(500);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "openTab"
-void GTUtilsOptionPanelMca::openTab(HI::GUITestOpStatus &os, Tabs tab) {
-    if (!isTabOpened(os, tab)) {
-        toggleTab(os, tab);
+void GTUtilsOptionPanelMca::openTab(HI::GUITestOpStatus &os, Tabs tab, QWidget *parent) {
+    if (!isTabOpened(os, tab, parent)) {
+        toggleTab(os, tab, parent);
     }
 }
 #undef GT_METHOD_NAME
@@ -79,11 +72,11 @@ void GTUtilsOptionPanelMca::closeTab(HI::GUITestOpStatus &os, Tabs tab) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "isTabOpened"
-bool GTUtilsOptionPanelMca::isTabOpened(HI::GUITestOpStatus &os, Tabs tab) {
+bool GTUtilsOptionPanelMca::isTabOpened(HI::GUITestOpStatus &os, Tabs tab, QWidget *parent) {
     GTGlobals::FindOptions options;
     options.failIfNotFound = false;
-    QWidget *innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], NULL, options);
-    return NULL != innerTabWidget && innerTabWidget->isVisible();
+    QWidget *innerTabWidget = GTWidget::findWidget(os, innerWidgetNames[tab], parent, options);
+    return nullptr != innerTabWidget && innerTabWidget->isVisible();
 }
 #undef GT_METHOD_NAME
 
@@ -187,6 +180,26 @@ void GTUtilsOptionPanelMca::pushExportButton(HI::GUITestOpStatus &os) {
     openTab(os, Consensus);
     QToolButton *result = GTWidget::findExactWidget<QToolButton *>(os, "exportBtn");
     result->click();
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "showAlternativeMutations"
+void GTUtilsOptionPanelMca::showAlternativeMutations(HI::GUITestOpStatus &os, bool show, int value, bool withSpinbox, QWidget *parent) {
+    GTUtilsOptionPanelMca::openTab(os, Tabs::Reads, parent);
+    GTGroupBox::setChecked(os, "mutationsGroupBox", show, parent);
+    if (!show) {
+        GTThread::waitForMainThread();
+        return;
+    }
+
+    if (withSpinbox) {
+        GTSpinBox::setValue(os, "mutationsThresholdSpinBox", value, parent);
+    } else {
+        GTSlider::setValue(os, GTWidget::findExactWidget<QSlider *>(os, "mutationsThresholdSlider", parent), value);
+    }
+
+    GTWidget::click(os, GTWidget::findExactWidget<QPushButton *>(os, "updateMutationsPushButton", parent));
+    GTThread::waitForMainThread();
 }
 #undef GT_METHOD_NAME
 

@@ -33,22 +33,22 @@ TaskSignalMapper::TaskSignalMapper(Task *t)
 void TaskSignalMapper::sl_taskStateChanged() {
     if (NULL != task) {
         switch (task->getState()) {
-        case Task::State_Prepared:
-            emit si_taskPrepared(task);
-            break;
-        case Task::State_Running:
-            emit si_taskRunning(task);
-            break;
-        case Task::State_Finished:
-            emit si_taskFinished(task);
-            if (task->hasError() || task->hasSubtasksWithErrors()) {
-                emit si_taskFailed(task);
-            } else {
-                emit si_taskSucceeded(task);
-            }
-            break;
-        case Task::State_New:
-            break;
+            case Task::State_Prepared:
+                emit si_taskPrepared(task);
+                break;
+            case Task::State_Running:
+                emit si_taskRunning(task);
+                break;
+            case Task::State_Finished:
+                emit si_taskFinished(task);
+                if (task->hasError() || task->hasSubtasksWithErrors()) {
+                    emit si_taskFailed(task);
+                } else {
+                    emit si_taskSucceeded(task);
+                }
+                break;
+            case Task::State_New:
+                break;
         }
     }
 }

@@ -41,24 +41,24 @@
 static U2::DocumentFormatId toDocumentFormatId(FileFormat format) {
     U2::DocumentFormatId result;
     switch (format) {
-    case CLUSTAL_ALN:
-        result = U2::BaseDocumentFormats::CLUSTAL_ALN;
-        break;
-    case FASTA:
-        result = U2::BaseDocumentFormats::FASTA;
-        break;
-    case FASTQ:
-        result = U2::BaseDocumentFormats::FASTQ;
-        break;
-    case GENBANK:
-        result = U2::BaseDocumentFormats::PLAIN_GENBANK;
-        break;
-    case PLAIN_TEXT:
-        result = U2::BaseDocumentFormats::PLAIN_TEXT;
-        break;
-    case RAW:
-        result = U2::BaseDocumentFormats::RAW_DNA_SEQUENCE;
-        break;
+        case CLUSTAL_ALN:
+            result = U2::BaseDocumentFormats::CLUSTAL_ALN;
+            break;
+        case FASTA:
+            result = U2::BaseDocumentFormats::FASTA;
+            break;
+        case FASTQ:
+            result = U2::BaseDocumentFormats::FASTQ;
+            break;
+        case GENBANK:
+            result = U2::BaseDocumentFormats::PLAIN_GENBANK;
+            break;
+        case PLAIN_TEXT:
+            result = U2::BaseDocumentFormats::PLAIN_TEXT;
+            break;
+        case RAW:
+            result = U2::BaseDocumentFormats::RAW_DNA_SEQUENCE;
+            break;
     }
     return result;
 }

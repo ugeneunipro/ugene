@@ -172,14 +172,14 @@ SmithWatermanReportCallbackMAImpl::SmithWatermanReportCallbackMAImpl(
 
 QString SmithWatermanReportCallbackMAImpl::report(const QList<SmithWatermanResult> &_results) {
     switch (plan) {
-    case SequenceView_Search:
-        return planFor_SequenceView_Search(_results);
-    case MSA_Alignment_InNewWindow:
-        return planFor_MSA_Alignment_InNewWindow(_results);
-    case MSA_Alignment_InCurrentWindow:
-        return planFor_MSA_Alignment_InCurrentWindow(_results);
-    default:
-        FAIL("Unexpected algorithm mode!", QString());
+        case SequenceView_Search:
+            return planFor_SequenceView_Search(_results);
+        case MSA_Alignment_InNewWindow:
+            return planFor_MSA_Alignment_InNewWindow(_results);
+        case MSA_Alignment_InCurrentWindow:
+            return planFor_MSA_Alignment_InCurrentWindow(_results);
+        default:
+            FAIL("Unexpected algorithm mode!", QString());
     }
 }
 
@@ -415,21 +415,21 @@ void SmithWatermanReportCallbackMAImpl::alignSequences(QByteArray &refSequence, 
 
     for (qint32 i = 0; i < pairwiseAlignment.length(); ++i) {
         switch (pairwiseAlignment[i]) {
-        case SmithWatermanResult::DIAG:
-            --refSeqCurrentPosition;
-            --ptrnSeqCurrentPosition;
-            continue;
-            break;
-        case SmithWatermanResult::UP:
-            ptrnSequence.insert(ptrnSeqCurrentPosition, U2Msa::GAP_CHAR);
-            --refSeqCurrentPosition;
-            break;
-        case SmithWatermanResult::LEFT:
-            refSequence.insert(refSeqCurrentPosition, U2Msa::GAP_CHAR);
-            --ptrnSeqCurrentPosition;
-            break;
-        default:
-            FAIL("Unexpected pairwise alignment direction!", );
+            case SmithWatermanResult::DIAG:
+                --refSeqCurrentPosition;
+                --ptrnSeqCurrentPosition;
+                continue;
+                break;
+            case SmithWatermanResult::UP:
+                ptrnSequence.insert(ptrnSeqCurrentPosition, U2Msa::GAP_CHAR);
+                --refSeqCurrentPosition;
+                break;
+            case SmithWatermanResult::LEFT:
+                refSequence.insert(refSeqCurrentPosition, U2Msa::GAP_CHAR);
+                --ptrnSeqCurrentPosition;
+                break;
+            default:
+                FAIL("Unexpected pairwise alignment direction!", );
         }
     }
 }
@@ -441,40 +441,40 @@ void SmithWatermanReportCallbackMAImpl::alignSequences(QList<U2MsaGap> &refSeque
     quint32 intervalEnd = 0;
     for (quint32 i = 0; i < static_cast<quint32>(pairwiseAlignment.length()); ++i) {
         switch (pairwiseAlignment[i]) {
-        case SmithWatermanResult::DIAG:
-            if (lastSymbolIsGapRef) {
-                intervalStart = i;
-                refSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
-                lastSymbolIsGapRef = false;
-            }
-            if (lastSymbolIsGapPtrn) {
-                intervalStart = i;
-                ptrnSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
-                lastSymbolIsGapPtrn = false;
-            }
-            break;
-        case SmithWatermanResult::UP:
-            if (lastSymbolIsGapRef) {
-                refSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
-                lastSymbolIsGapRef = false;
-            }
-            if (!lastSymbolIsGapPtrn) {
-                intervalEnd = i;
-            }
-            lastSymbolIsGapPtrn = true;
-            break;
-        case SmithWatermanResult::LEFT:
-            if (lastSymbolIsGapPtrn) {
-                ptrnSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
-                lastSymbolIsGapPtrn = false;
-            }
-            if (!lastSymbolIsGapRef) {
-                intervalEnd = i;
-            }
-            lastSymbolIsGapRef = true;
-            break;
-        default:
-            FAIL("Unexpected pairwise alignment direction!", );
+            case SmithWatermanResult::DIAG:
+                if (lastSymbolIsGapRef) {
+                    intervalStart = i;
+                    refSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
+                    lastSymbolIsGapRef = false;
+                }
+                if (lastSymbolIsGapPtrn) {
+                    intervalStart = i;
+                    ptrnSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
+                    lastSymbolIsGapPtrn = false;
+                }
+                break;
+            case SmithWatermanResult::UP:
+                if (lastSymbolIsGapRef) {
+                    refSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
+                    lastSymbolIsGapRef = false;
+                }
+                if (!lastSymbolIsGapPtrn) {
+                    intervalEnd = i;
+                }
+                lastSymbolIsGapPtrn = true;
+                break;
+            case SmithWatermanResult::LEFT:
+                if (lastSymbolIsGapPtrn) {
+                    ptrnSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
+                    lastSymbolIsGapPtrn = false;
+                }
+                if (!lastSymbolIsGapRef) {
+                    intervalEnd = i;
+                }
+                lastSymbolIsGapRef = true;
+                break;
+            default:
+                FAIL("Unexpected pairwise alignment direction!", );
         }
     }
 }

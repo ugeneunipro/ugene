@@ -166,19 +166,19 @@ WorkerState LastReadyScheduler::getWorkerState(const ActorId &id) {
         foreach (Actor *a, actors) {
             WorkerState state = getWorkerState(a);
             switch (state) {
-            case WorkerRunning:
-                return WorkerRunning;
-            case WorkerWaiting:
-                someWaiting = true;
-                break;
-            case WorkerDone:
-                someDone = true;
-                break;
-            case WorkerReady:
-                someReady = true;
-                break;
-            default:
-                break;
+                case WorkerRunning:
+                    return WorkerRunning;
+                case WorkerWaiting:
+                    someWaiting = true;
+                    break;
+                case WorkerDone:
+                    someDone = true;
+                    break;
+                case WorkerReady:
+                    someReady = true;
+                    break;
+                default:
+                    break;
             }
         }
         if (someWaiting) {

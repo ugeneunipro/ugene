@@ -973,14 +973,14 @@ QString BedtoolsIntersectPrompter::composeRichDoc() {
     BedtoolsIntersectSettings::Report r = (BedtoolsIntersectSettings::Report)target->getParameter(REPORT)->getAttributePureValue().toInt();
     QString reportHyperlinkText;
     switch (r) {
-    case BedtoolsIntersectSettings::Report_Intervals:
-        reportHyperlinkText = "intervals shared between annotations from <b>set A</b> and <b>set B</b>.";
-        break;
-    case BedtoolsIntersectSettings::Report_OverlapedA:
-        reportHyperlinkText = "overlapped annotations from <b>set A</b>.";
-        break;
-    case BedtoolsIntersectSettings::Report_NonOverlappedA:
-        reportHyperlinkText = "non-overlapped annotations from <b>set A</b>.";
+        case BedtoolsIntersectSettings::Report_Intervals:
+            reportHyperlinkText = "intervals shared between annotations from <b>set A</b> and <b>set B</b>.";
+            break;
+        case BedtoolsIntersectSettings::Report_OverlapedA:
+            reportHyperlinkText = "overlapped annotations from <b>set A</b>.";
+            break;
+        case BedtoolsIntersectSettings::Report_NonOverlappedA:
+            reportHyperlinkText = "non-overlapped annotations from <b>set A</b>.";
     }
 
     if (target->getParameter(UNIQUE)->getAttributePureValue().toBool() && r == BedtoolsIntersectSettings::Report_OverlapedA) {

@@ -105,13 +105,13 @@ void ProjectTreeItemSelectorDialogFiller::commonScenario() {
     }
 
     switch (mode) {
-    case Separate:
-        GTKeyboardDriver::keyClick(Qt::Key_Control);
-        break;
-    case Continuous:
-        GTKeyboardDriver::keyClick(Qt::Key_Shift);
-        break;
-    default:;    // empty default section to avoid GCC warning
+        case Separate:
+            GTKeyboardDriver::keyClick(Qt::Key_Control);
+            break;
+        case Continuous:
+            GTKeyboardDriver::keyClick(Qt::Key_Shift);
+            break;
+        default:;    // empty default section to avoid GCC warning
     }
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);

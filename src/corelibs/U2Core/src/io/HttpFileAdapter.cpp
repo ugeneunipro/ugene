@@ -248,8 +248,7 @@ void HttpFileAdapter::add_data() {
 }
 
 qint64 HttpFileAdapter::stored() const {
-    return (singleChunk() ? firstChunkContains() :
-                            firstChunkContains() + end_ptr + (chunk_list.size() - 2) * CHUNKSIZE);
+    return (singleChunk() ? firstChunkContains() : firstChunkContains() + end_ptr + (chunk_list.size() - 2) * CHUNKSIZE);
 }
 
 void HttpFileAdapter::readFromChunk(char *data, int size) {

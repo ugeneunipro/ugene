@@ -68,7 +68,7 @@ public:
     static const QMap<Tabs, QString> innerWidgetNames;
 
     static void toggleTab(HI::GUITestOpStatus &os, Tabs tab);
-    static QWidget* openTab(HI::GUITestOpStatus &os, Tabs tab);
+    static QWidget *openTab(HI::GUITestOpStatus &os, Tabs tab);
     static void closeTab(HI::GUITestOpStatus &os, Tabs tab);
     static bool isTabOpened(HI::GUITestOpStatus &os, Tabs tab);
     static void checkTabIsOpened(HI::GUITestOpStatus &os, Tabs tab);

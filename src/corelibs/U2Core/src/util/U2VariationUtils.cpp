@@ -97,14 +97,14 @@ QList<U2Variant> U2VariationUtils::getSNPFromSequences(const QByteArray &refSeq,
 
         if (!(ignoreGaps && (refChar == '-' || obsChar == '-'))) {
             switch (mode) {
-            case Mode_Variations:
-                addVariation = (refChar != obsChar);
-                break;
-            case Mode_Similar:
-                addVariation = (refChar == obsChar);
-                break;
-            case Mode_All:
-                addVariation = true;
+                case Mode_Variations:
+                    addVariation = (refChar != obsChar);
+                    break;
+                case Mode_Similar:
+                    addVariation = (refChar == obsChar);
+                    break;
+                case Mode_All:
+                    addVariation = true;
             }
         }
 

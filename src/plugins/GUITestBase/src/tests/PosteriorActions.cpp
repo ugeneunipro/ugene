@@ -42,9 +42,8 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsTaskTreeView.h"
 #include "PosteriorActions.h"
-#include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/AnyDialogFiller.h"
-
+#include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "utils/GTUtilsMac.h"
 
 namespace U2 {
@@ -79,11 +78,10 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
 
     QWidget *popupWidget = QApplication::activePopupWidget();
     while (popupWidget != NULL) {
-
 #ifdef Q_OS_DARWIN
-    GTUtilsMac fakeClock;
-    fakeClock.startWorkaroundForMacCGEvents(1, true);
-    fakeClock.startWorkaroundForMacCGEvents(16000, false);
+        GTUtilsMac fakeClock;
+        fakeClock.startWorkaroundForMacCGEvents(1, true);
+        fakeClock.startWorkaroundForMacCGEvents(16000, false);
 #endif
         GTWidget::close(os, popupWidget);
         popupWidget = QApplication::activePopupWidget();
@@ -91,7 +89,6 @@ POSTERIOR_ACTION_DEFINITION(post_action_0001) {
 
     QWidget *modalWidget = QApplication::activeModalWidget();
     while (modalWidget != NULL) {
-
 #ifdef Q_OS_DARWIN
         GTUtilsMac fakeClock;
         fakeClock.startWorkaroundForMacCGEvents(1, true);
@@ -122,13 +119,9 @@ POSTERIOR_ACTION_DEFINITION(post_action_0002) {
         GTKeyboardDriver::keyClick('a', Qt::ControlModifier);
         GTGlobals::sleep(100);
 
-        GTUtilsDialog::waitForDialog(os, new AnyDialogFiller(os,
-                                                             nullptr,
-                                                             QDialogButtonBox::No));
+        GTUtilsDialog::waitForDialog(os, new AnyDialogFiller(os, nullptr, QDialogButtonBox::No));
         // Need to close second dialog on Mac
-        GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new AnyDialogFiller(os,
-                                                                             nullptr,
-                                                                             QDialogButtonBox::No));
+        GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new AnyDialogFiller(os, nullptr, QDialogButtonBox::No));
 
         GTKeyboardDriver::keyClick(Qt::Key_Delete);
         GTGlobals::sleep(500);
@@ -198,7 +191,7 @@ POSTERIOR_ACTION_DEFINITION(post_action_0004) {
         GTFile::setReadWrite(os, sandBoxDir, true);
         QDir sandBox(sandBoxDir);
         const QStringList entryList = sandBox.entryList(QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot | QDir::NoSymLinks | QDir::Hidden);
-        for (const QString &path: qAsConst(entryList)) {
+        for (const QString &path : qAsConst(entryList)) {
             GTFile::removeDir(sandBox.absolutePath() + "/" + path);
         }
     }

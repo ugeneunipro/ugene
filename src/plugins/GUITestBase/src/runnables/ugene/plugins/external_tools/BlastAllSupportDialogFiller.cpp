@@ -20,13 +20,12 @@
  */
 
 #include <base_dialogs/GTFileDialog.h>
+#include <harness/UGUITestBase.h>
 #include <primitives/GTComboBox.h>
 #include <primitives/GTWidget.h>
 
 #include <QApplication>
 #include <QComboBox>
-
-#include <harness/UGUITestBase.h>
 
 #include "BlastAllSupportDialogFiller.h"
 #include "GTUtilsTaskTreeView.h"

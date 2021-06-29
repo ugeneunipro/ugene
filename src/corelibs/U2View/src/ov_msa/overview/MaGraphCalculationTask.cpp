@@ -180,14 +180,14 @@ int MaClustalOverviewCalculationTask::getGraphValue(int pos) const {
     char c = algorithm->getConsensusChar(ma, pos);
 
     switch (c) {
-    case '*':
-        return 100;
-    case ':':
-        return 60;
-    case '.':
-        return 30;
-    default:
-        return 0;
+        case '*':
+            return 100;
+        case ':':
+            return 60;
+        case '.':
+            return 30;
+        default:
+            return 0;
     }
 }
 

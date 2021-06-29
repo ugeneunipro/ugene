@@ -317,18 +317,18 @@ void CreateAnnotationWidgetController::updateModel(bool forValidation) {
 
 void CreateAnnotationWidgetController::createWidget(CreateAnnotationWidgetController::AnnotationWidgetMode layoutMode) {
     switch (layoutMode) {
-    case Full:
-        w = new CreateAnnotationFullWidget(model.sequenceLen);
-        break;
-    case Normal:
-        w = new CreateAnnotationNormalWidget();
-        break;
-    case OptionsPanel:
-        w = new CreateAnnotationOptionsPanelWidget();
-        break;
-    default:
-        w = nullptr;
-        FAIL("Unexpected widget type", );
+        case Full:
+            w = new CreateAnnotationFullWidget(model.sequenceLen);
+            break;
+        case Normal:
+            w = new CreateAnnotationNormalWidget();
+            break;
+        case OptionsPanel:
+            w = new CreateAnnotationOptionsPanelWidget();
+            break;
+        default:
+            w = nullptr;
+            FAIL("Unexpected widget type", );
     }
 }
 

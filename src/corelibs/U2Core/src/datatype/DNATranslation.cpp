@@ -41,39 +41,39 @@ DNATranslation::DNATranslation(const QString &_id, const QString &_name, const D
 
     if (srcType == DNAAlphabet_NUCL) {
         switch (dstType) {
-        case DNAAlphabet_NUCL:
-            type = dstAlphabet == srcAlphabet ? DNATranslationType_NUCL_2_COMPLNUCL : DNATranslationType_NUCL_2_NUCL;
-            break;
-        case DNAAlphabet_AMINO:
-            type = DNATranslationType_NUCL_2_AMINO;
-            break;
-        default:
-            assert(0);
-            break;
+            case DNAAlphabet_NUCL:
+                type = dstAlphabet == srcAlphabet ? DNATranslationType_NUCL_2_COMPLNUCL : DNATranslationType_NUCL_2_NUCL;
+                break;
+            case DNAAlphabet_AMINO:
+                type = DNATranslationType_NUCL_2_AMINO;
+                break;
+            default:
+                assert(0);
+                break;
         }
     } else if (srcType == DNAAlphabet_AMINO) {
         switch (dstType) {
-        case DNAAlphabet_AMINO:
-            type = DNATranslationType_AMINO_2_AMINO;
-            break;
-        case DNAAlphabet_NUCL:
-            type = DNATranslationType_AMINO_2_NUCL;
-            break;
-        default:
-            assert(0);
-            break;
+            case DNAAlphabet_AMINO:
+                type = DNATranslationType_AMINO_2_AMINO;
+                break;
+            case DNAAlphabet_NUCL:
+                type = DNATranslationType_AMINO_2_NUCL;
+                break;
+            default:
+                assert(0);
+                break;
         }
     } else if (srcType == DNAAlphabet_RAW) {
         switch (dstType) {
-        case DNAAlphabet_NUCL:
-            type = DNATranslationType_RAW_2_NUCL;
-            break;
-        case DNAAlphabet_AMINO:
-            type = DNATranslationType_RAW_2_AMINO;
-            break;
-        default:
-            assert(0);
-            break;
+            case DNAAlphabet_NUCL:
+                type = DNATranslationType_RAW_2_NUCL;
+                break;
+            case DNAAlphabet_AMINO:
+                type = DNATranslationType_RAW_2_AMINO;
+                break;
+            default:
+                assert(0);
+                break;
         }
     }
     assert(type != DNATranslationType_UNKNOWN);

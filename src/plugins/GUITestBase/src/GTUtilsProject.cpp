@@ -60,14 +60,14 @@ namespace U2 {
 
 void GTUtilsProject::openFiles(HI::GUITestOpStatus &os, const QList<QUrl> &urls, const OpenFileSettings &s, ProjectCheckType checkType) {
     switch (s.openMethod) {
-    case OpenFileSettings::DragDrop:
-        openFilesDrop(os, urls);
-        break;
-    case OpenFileSettings::Dialog:
-        openFilesWithDialog(os, urls);
-        break;
+        case OpenFileSettings::DragDrop:
+            openFilesDrop(os, urls);
+            break;
+        case OpenFileSettings::Dialog:
+            openFilesWithDialog(os, urls);
+            break;
     }
-     checkProject(os, checkType);
+    checkProject(os, checkType);
 }
 
 void GTUtilsProject::openFile(HI::GUITestOpStatus &os, const GUrl &path, const OpenFileSettings &s, ProjectCheckType checkType) {

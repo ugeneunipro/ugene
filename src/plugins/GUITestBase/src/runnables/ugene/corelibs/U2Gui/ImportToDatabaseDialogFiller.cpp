@@ -78,41 +78,41 @@ void ImportToDatabaseDialogFiller::commonScenario() {
 
     foreach (const Action &action, actions) {
         switch (action.type) {
-        case Action::ADD_FILES:
-            addFiles(action);
-            break;
-        case Action::ADD_DIRS:
-            addDirs(action);
-            break;
-        case Action::ADD_PROJECT_ITEMS:
-            addProjectItems(action);
-            break;
-        case Action::SELECT_ITEMS:
-            selectItems(action);
-            break;
-        case Action::EDIT_DESTINATION_FOLDER:
-            editDestinationFolder(action);
-            break;
-        case Action::EDIT_GENERAL_OPTIONS:
-            editGeneralOptions(action);
-            break;
-        case Action::EDIT_PRIVATE_OPTIONS:
-            editPrivateOptions(action);
-            break;
-        case Action::RESET_PRIVATE_OPTIONS:
-            resetPrivateOptions(action);
-            break;
-        case Action::REMOVE:
-            remove(action);
-            break;
-        case Action::IMPORT:
-            import(action);
-            break;
-        case Action::CANCEL:
-            cancel(action);
-            break;
-        default:
-            GT_CHECK(false, "An unrecognized action");
+            case Action::ADD_FILES:
+                addFiles(action);
+                break;
+            case Action::ADD_DIRS:
+                addDirs(action);
+                break;
+            case Action::ADD_PROJECT_ITEMS:
+                addProjectItems(action);
+                break;
+            case Action::SELECT_ITEMS:
+                selectItems(action);
+                break;
+            case Action::EDIT_DESTINATION_FOLDER:
+                editDestinationFolder(action);
+                break;
+            case Action::EDIT_GENERAL_OPTIONS:
+                editGeneralOptions(action);
+                break;
+            case Action::EDIT_PRIVATE_OPTIONS:
+                editPrivateOptions(action);
+                break;
+            case Action::RESET_PRIVATE_OPTIONS:
+                resetPrivateOptions(action);
+                break;
+            case Action::REMOVE:
+                remove(action);
+                break;
+            case Action::IMPORT:
+                import(action);
+                break;
+            case Action::CANCEL:
+                cancel(action);
+                break;
+            default:
+                GT_CHECK(false, "An unrecognized action");
         }
         CHECK_OP(os, );
         GTGlobals::sleep(200);

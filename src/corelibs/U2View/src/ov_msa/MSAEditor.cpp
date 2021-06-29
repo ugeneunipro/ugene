@@ -50,9 +50,9 @@
 #include "MaEditorFactory.h"
 #include "MaEditorNameList.h"
 #include "MaEditorTasks.h"
-#include "realign_to_alignment/RealignSequencesInAlignmentTask.h"
 #include "highlighting/MsaSchemesMenuBuilder.h"
 #include "overview/MaEditorOverviewArea.h"
+#include "realign_to_alignment/RealignSequencesInAlignmentTask.h"
 #include "view_rendering/MaEditorConsensusArea.h"
 #include "view_rendering/MaEditorSequenceArea.h"
 

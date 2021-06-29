@@ -315,13 +315,13 @@ bool Document::removeObject(GObject *obj, DocumentObjectRemovalMode removalMode)
     SAFE_POINT(df->isObjectOpSupported(this, DocumentFormat::DocObjectOp_Remove, obj->getGObjectType()), "Unsupported format operation", false);
 
     switch (removalMode) {
-    case DocumentObjectRemovalMode_Deallocate:
-        return _removeObject(obj, true);
-    case DocumentObjectRemovalMode_OnlyNotify:
-        emit si_objectRemoved(obj);
-        break;
-    case DocumentObjectRemovalMode_Release:
-        return _removeObject(obj, false);
+        case DocumentObjectRemovalMode_Deallocate:
+            return _removeObject(obj, true);
+        case DocumentObjectRemovalMode_OnlyNotify:
+            emit si_objectRemoved(obj);
+            break;
+        case DocumentObjectRemovalMode_Release:
+            return _removeObject(obj, false);
     }
 
     return true;

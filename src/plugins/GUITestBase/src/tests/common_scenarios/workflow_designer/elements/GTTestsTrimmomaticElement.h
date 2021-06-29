@@ -35,7 +35,6 @@ GUI_TEST_CLASS_DECLARATION(test_0001)
 GUI_TEST_CLASS_DECLARATION(test_0002)
 GUI_TEST_CLASS_DECLARATION(test_0003)
 
-
 #undef GUI_TEST_SUITE
 }    // namespace GUITest_common_scenarios_trimmomatic_element
 

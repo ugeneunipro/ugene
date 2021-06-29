@@ -121,25 +121,25 @@ void ImportOptionsWidgetFiller::setMultiSequencePolicy(HI::GUITestOpStatus &os, 
 
     ImportToDatabaseOptions::MultiSequencePolicy policy = static_cast<ImportToDatabaseOptions::MultiSequencePolicy>(data.value(ImportToDatabaseOptions::MULTI_SEQUENCE_POLICY).toInt());
     switch (policy) {
-    case ImportToDatabaseOptions::SEPARATE: {
-        QRadioButton *separate = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rbSeparate", optionsWidget));
-        GT_CHECK(NULL != separate, "separate is NULL");
-        GTRadioButton::click(os, separate);
-        break;
-    }
-    case ImportToDatabaseOptions::MERGE: {
-        QRadioButton *merge = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rbMerge", optionsWidget));
-        GT_CHECK(NULL != merge, "merge is NULL");
-        GTRadioButton::click(os, merge);
-        setMergeMultiSequencePolicySeparatorSize(os, optionsWidget, data);
-        break;
-    }
-    case ImportToDatabaseOptions::MALIGNMENT: {
-        QRadioButton *malignment = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rbMalignment", optionsWidget));
-        GT_CHECK(NULL != malignment, "malignment is NULL");
-        GTRadioButton::click(os, malignment);
-        break;
-    }
+        case ImportToDatabaseOptions::SEPARATE: {
+            QRadioButton *separate = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rbSeparate", optionsWidget));
+            GT_CHECK(NULL != separate, "separate is NULL");
+            GTRadioButton::click(os, separate);
+            break;
+        }
+        case ImportToDatabaseOptions::MERGE: {
+            QRadioButton *merge = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rbMerge", optionsWidget));
+            GT_CHECK(NULL != merge, "merge is NULL");
+            GTRadioButton::click(os, merge);
+            setMergeMultiSequencePolicySeparatorSize(os, optionsWidget, data);
+            break;
+        }
+        case ImportToDatabaseOptions::MALIGNMENT: {
+            QRadioButton *malignment = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "rbMalignment", optionsWidget));
+            GT_CHECK(NULL != malignment, "malignment is NULL");
+            GTRadioButton::click(os, malignment);
+            break;
+        }
     }
 }
 #undef GT_METHOD_NAME

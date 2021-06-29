@@ -70,7 +70,6 @@ public:
 
     void showWorkerParameters(int workerIndex);
 
-
 public slots:
     void sl_workerLabelClicked();
 

@@ -66,11 +66,10 @@ GzipUtil::GzipUtil(IOAdapter *io, bool doCompression)
     strm.next_in = Z_NULL;
 
     int ret = doCompression ?
-                  /* write a simple gzip header and trailer around the compressed data */
+                            /* write a simple gzip header and trailer around the compressed data */
                   deflateInit2(&strm, Z_DEFAULT_COMPRESSION, Z_DEFLATED, 16 + 15, 8, Z_DEFAULT_STRATEGY)
-                  /* enable zlib and gzip decoding with automatic header detection */
-                  :
-                  inflateInit2(&strm, 32 + 15);
+                            /* enable zlib and gzip decoding with automatic header detection */
+                            : inflateInit2(&strm, 32 + 15);
     assert(ret == Z_OK);
     Q_UNUSED(ret);
 }
@@ -113,22 +112,22 @@ qint64 GzipUtil::uncompress(char *outBuff, qint64 outSize) {
         int ret = inflate(&strm, Z_SYNC_FLUSH);
         assert(ret != Z_STREAM_ERROR); /* state not clobbered */
         switch (ret) {
-        case Z_NEED_DICT:
-        case Z_DATA_ERROR:
-        case Z_MEM_ERROR:
-            return -1;
-        case Z_STREAM_END: {
-            qint64 readBytes = 0;
-            readBytes = outSize - strm.avail_out;
-            inflateReset(&strm);
-            inflateInit2(&strm, 32 + 15);
+            case Z_NEED_DICT:
+            case Z_DATA_ERROR:
+            case Z_MEM_ERROR:
+                return -1;
+            case Z_STREAM_END: {
+                qint64 readBytes = 0;
+                readBytes = outSize - strm.avail_out;
+                inflateReset(&strm);
+                inflateInit2(&strm, 32 + 15);
 
-            return readBytes;
-        }
-        case Z_BUF_ERROR:
-        case Z_FINISH:
-            curPos += outSize - strm.avail_out;
-            return outSize - strm.avail_out;
+                return readBytes;
+            }
+            case Z_BUF_ERROR:
+            case Z_FINISH:
+                curPos += outSize - strm.avail_out;
+                return outSize - strm.avail_out;
         }
         if (strm.avail_out != 0 && strm.avail_in != 0) {
             assert(0);
