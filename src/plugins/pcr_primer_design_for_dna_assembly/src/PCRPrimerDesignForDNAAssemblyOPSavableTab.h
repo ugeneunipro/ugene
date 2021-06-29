@@ -33,6 +33,9 @@ public:
     PCRPrimerDesignForDNAAssemblyOPSavableTab(QWidget *wrappedWidget, MWMDIWindow *contextWindow);
     ~PCRPrimerDesignForDNAAssemblyOPSavableTab();
 
+    QVariant getChildValue(const QString &childId) const override;
+    void setChildValue(const QString &childId, const QVariant &value) override;
+
 private:
     PCRPrimerDesignForDNAAssemblyOPWidget* originalWrappedWidget = nullptr;
 };
