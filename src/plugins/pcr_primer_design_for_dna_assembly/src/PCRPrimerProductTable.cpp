@@ -43,10 +43,10 @@ namespace U2 {
  }
 
 void PCRPrimerProductTable::setCurrentProducts(const QList<U2Region> &currentProducts, AnnotatedDNAView *_associatedView) {
-    SAFE_POINT(currentProducts.size() == 8, "Should be 8 results", );
+    SAFE_POINT(currentProducts.size() == MAXIMUM_ROW_COUNT, "Should be 8 results", );
     int index = 0;
     int row = 0;
-    setRowCount(8);
+    setRowCount(MAXIMUM_ROW_COUNT);
     for (const U2Region &region : currentProducts) {
         if (region != U2Region()) {
             setItem(row, 0, new QTableWidgetItem(PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME.at(index)));
