@@ -2724,10 +2724,8 @@ GUI_TEST_CLASS_DEFINITION(test_5696) {
     GTUtilsNotifications::waitForNotification(os, true, "No new rows were inserted: selection contains no valid sequences.");
     GTUtilsDialog::waitAllFinished(os);
 
-    // TODO: can't use Russian text today: PasteController uses UTF-8 to save the text, but TextFormat uses local8Bit to read it and fails.
-    // This makes 2 concurrent popups to appear.
-    // GTClipboard::setText(os, "фыва...");
-    GTClipboard::setText(os, "#$%^&*(");
+    GTClipboard::setText(os, "фыва...");
+    //GTClipboard::setText(os, "#$%^&*(");
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);    // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
 
     GTUtilsNotifications::waitForNotification(os, true, "No new rows were inserted: selection contains no valid sequences.");
