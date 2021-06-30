@@ -562,7 +562,8 @@ void ChromatogramViewRenderArea::setAreaHeight(int newH) {
     areaHeight = newH;
 }
 
-qint64 ChromatogramViewRenderArea::coordXToPos(int x) const {
+qint64 ChromatogramViewRenderArea::coordToPos(const QPoint &coord) const {
+    int x = coord.x();
     const U2Region &visibleRange = view->getVisibleRange();
     qreal lastBaseCall = kLinearTransformTrace * chroma.baseCalls[chroma.seqLength - 1] + bLinearTransformTrace;
     if (visibleRange.startPos + visibleRange.length == chroma.seqLength && x > lastBaseCall) {
