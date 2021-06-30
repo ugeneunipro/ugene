@@ -775,7 +775,14 @@ void MaEditorNameList::drawCollapsePrimitive(QPainter &p, bool collapsed, const 
 }
 
 QString MaEditorNameList::getTextForRow(int maRowIndex) {
-    return editor->getMaObject()->getRow(maRowIndex)->getName();
+    QString rowName = editor->getMaObject()->getRow(maRowIndex)->getName();
+    QString rowNamePrefix = "";
+    MaCollapseModel *collapseModel = editor->getUI()->getCollapseModel();
+    const MaCollapsibleGroup *group = collapseModel->getCollapsibleGroupByMaRow(maRowIndex);
+    if (group != nullptr && group->maRows.size() > 1 && group->maRows.first() == maRowIndex) {
+        rowNamePrefix = "[" + QString::number(group->maRows.size()) + "] ";
+    }
+    return rowNamePrefix + rowName;
 }
 
 void MaEditorNameList::drawSelection(QPainter &painter) {

@@ -1817,45 +1817,17 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QStringList preList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
+    QStringList nameListWithNoGroups = GTUtilsMSAEditorSequenceArea::getVisibleNames(os, true);
+    CHECK_SET_ERR(nameListWithNoGroups.size() == 18, "Wrong sequence count in original mode: " + QString::number(nameListWithNoGroups.size()));
+
     // 2. Press button Enable collapsing
     GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     // Expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ folded together
-    QStringList postList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
-    CHECK_SET_ERR(preList.size() == postList.size() + 1, "Name lists differs not by 1");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0019_1) {
-    // UGENE-79 In MSA editor support rows collapsing mode
-    //
-    // 1. open document samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    QStringList preList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
-    // 2. Press button Enable collapsing
-    GTUtilsMsaEditor::toggleCollapsingMode(os);
-
-    // Expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ folded together
-    QStringList postList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
-    CHECK_SET_ERR(preList.size() == postList.size() + 1, "Name lists differs not by 1");
-}
-
-GUI_TEST_CLASS_DEFINITION(test_0019_2) {
-    // UGENE-79 In MSA editor support rows collapsing mode
-    //
-    // 1. open document samples/CLUSTALW/COI.aln
-    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    QStringList preList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
-    // 2. Press button Enable collapsing
-    GTUtilsMsaEditor::toggleCollapsingMode(os);
-
-    // Expected state: Mecopoda_elongata__Ishigaki__J and Mecopoda_elongata__Sumatra_ folded together
-    QStringList postList = GTUtilsMSAEditorSequenceArea::getVisibleNames(os);
-    CHECK_SET_ERR(preList.size() == postList.size() + 1, "Name lists differs not by 1");
+    QStringList nameListWithCollapsedGroup = GTUtilsMSAEditorSequenceArea::getVisibleNames(os, true);
+    CHECK_SET_ERR(nameListWithCollapsedGroup.size() == 17, "Wrong sequence count in collapsed mode: " + QString::number(nameListWithCollapsedGroup.size()));
+    QString groupName = nameListWithCollapsedGroup[13];
+    CHECK_SET_ERR(groupName == "[2] Mecopoda_elongata__Ishigaki__J", "Collapsed group has no 'count' badge: " + groupName);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0020) {

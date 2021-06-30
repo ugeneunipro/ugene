@@ -79,8 +79,9 @@ public:
         matrix = _matrix;
     }
 
+    QString getTextForRow(int maRowIndex) override;
+
 protected:
-    QString getTextForRow(int s);
     QString getSeqName(int s);
     void updateScrollBar();
 

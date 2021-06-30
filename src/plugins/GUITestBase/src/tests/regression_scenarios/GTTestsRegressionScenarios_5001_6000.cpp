@@ -1068,6 +1068,19 @@ GUI_TEST_CLASS_DEFINITION(test_5314) {
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5330) {
+    // Open "_common_data/scenarios/msa/ma2_gapped.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Enable collapsing mode.
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // Expected state: The MSA object is not marked as modified.
+    GTUtilsProjectTreeView::itemModificationCheck(os, GTUtilsProjectTreeView::findIndex(os, "ma2_gapped.aln"), false);
+
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5335) {
     //    1. Open "data/samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
