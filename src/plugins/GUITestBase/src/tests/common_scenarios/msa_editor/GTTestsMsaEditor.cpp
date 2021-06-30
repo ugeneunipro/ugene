@@ -4650,7 +4650,7 @@ GUI_TEST_CLASS_DEFINITION(test_0094) {
     CHECK_SET_ERR(originalNames[13] == expectedGroupName, "Group is not found at index 13. Found: " + expectedGroupName[13]);
 
     QStringList originalNamesWithNoGroup = originalNames;
-    originalNames.removeAt(13);
+    originalNamesWithNoGroup.removeAt(13);
 
     // Sort by group size ascending.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_SORT, "action_sort_groups_by_size_ascending"}));
@@ -4662,7 +4662,9 @@ GUI_TEST_CLASS_DEFINITION(test_0094) {
     // Check that order of other sequences is not changed.
     QStringList ascendingNamesWithNoGroup = ascendingNames;
     ascendingNamesWithNoGroup.removeAt(16);
-    CHECK_SET_ERR(ascendingNamesWithNoGroup == originalNamesWithNoGroup, "Ascending order was changed for non-group sequences");
+    CHECK_SET_ERR(ascendingNamesWithNoGroup == originalNamesWithNoGroup,
+                  "Ascending order was changed for non-group sequences : " + ascendingNamesWithNoGroup.join(",") +
+                      " Original: " + originalNamesWithNoGroup.join(","));
 
     // Sort by group size descending.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_SORT, "action_sort_groups_by_size_descending"}));
@@ -4674,7 +4676,9 @@ GUI_TEST_CLASS_DEFINITION(test_0094) {
     // Check that order of other sequences is not changed.
     QStringList descendingNamesWithNoGroup = descendingNames;
     descendingNamesWithNoGroup.removeAt(0);
-    CHECK_SET_ERR(descendingNamesWithNoGroup == originalNamesWithNoGroup, "Descending order was changed for non-group sequences");
+    CHECK_SET_ERR(descendingNamesWithNoGroup == originalNamesWithNoGroup,
+                  "Descending order was changed for non-group sequences: " + descendingNamesWithNoGroup.join(",") +
+                      " Original: " + originalNamesWithNoGroup.join(","));
 }
 
 }    // namespace GUITest_common_scenarios_msa_editor
