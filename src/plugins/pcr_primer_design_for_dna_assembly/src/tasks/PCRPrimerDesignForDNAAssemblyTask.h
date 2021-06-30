@@ -44,31 +44,81 @@ public:
 
     QString generateReport() const override;
 
+    QList<U2Region> getResults() const;
+
+    static const QStringList FRAGMENT_INDEX_TO_NAME;
+
 private:
     QList<QByteArray> extractLoadedSequences(LoadDocumentTask* task);
+    bool areMetlingTempAndDeltaGood(const QByteArray& primer) const;
+    bool hasUnwantedConnections(const QByteArray& primer) const;
+    void updatePrimerRegion(int& primerEnd, int& primerLength) const;
+    void findCandidatePrimers(const QList<U2Region>& regionsBetweenIslands, int amplifiedFragmentEdge,
+                              bool findFirstOnly, U2Region& b1, U2Region& b2, U2Region& b3) const;
+
+    template<class WhileCondition>
+    U2Region findCandidatePrimer(int primerEnd, int amplifiedFragmentEdge, WhileCondition cond) const {
+        int primerLength = settings.overlapLength.minValue;
+        U2Region foundPrimerRegion;
+        while (cond(primerEnd, primerLength)) { //While we are in the region between islands
+            const U2Region candidatePrimerRegion(primerEnd - primerLength, primerLength);
+            if ((amplifiedFragmentEdge/*settings.leftArea.endPos() - 1*/) < candidatePrimerRegion.startPos) {
+                primerEnd--;
+                continue;
+            }
+            auto candidatePrimerSequence = sequence.mid(candidatePrimerRegion.startPos, candidatePrimerRegion.length);
+            //Check if candidate primer melting temperature and deltaG fit to settings
+            bool areSettingsGood = areMetlingTempAndDeltaGood(candidatePrimerSequence);
+            if (!areSettingsGood) {
+                updatePrimerRegion(primerEnd, primerLength);
+                continue;
+            } else {
+                //If melt temp and delta G are good - add backbone and check unwanted connections
+                candidatePrimerSequence = backboneSequence + candidatePrimerSequence;
+                bool hasUnwanted = hasUnwantedConnections(candidatePrimerSequence);
+                if (!hasUnwanted) {
+                    //If there are no unwanted connections - we are found primer region
+                    foundPrimerRegion = candidatePrimerRegion;
+                    break;
+                } else {
+                    updatePrimerRegion(primerEnd, primerLength);
+                    continue;
+                }
+            }
+        }
+
+        return foundPrimerRegion;
+    }
+
 
     PCRPrimerDesignForDNAAssemblyTaskSettings settings;
     QByteArray sequence;
+    QByteArray reverseComplementSequence;
 
     LoadDocumentTask* loadBackboneSequence = nullptr;
     LoadDocumentTask* loadOtherSequencesInPcr = nullptr;
     FindPresenceOfUnwantedParametersTask* checkBackboneSequence = nullptr;
     FindUnwantedIslandsTask* findUnwantedIslands = nullptr;
+    FindUnwantedIslandsTask* findUnwantedIslandsReverseComplement = nullptr;
 
     QList<QByteArray> backboneSequencesCandidates;
     QList<QByteArray> otherSequencesInPcr;
     QByteArray backboneSequence;
-    QList<U2Region> candidatePrimerRegions;
+    QList<U2Region> regionsBetweenIslandsForward;
+    QList<U2Region> regionsBetweenIslandsReverse;
 
     //Results
-    U2Region aForward = U2Region(54, 77 - 54);
-    U2Region aReverse = U2Region(327, 353 - 328);
-    U2Region b1Forward = U2Region(39, 57 - 40);
-    U2Region b1Reverse = U2Region(337, 367 - 338);
-    U2Region b2Forward = U2Region(26, 43 - 27);
-    U2Region b2Reverse = U2Region(362, 379 - 363);
-    U2Region b3Forward = U2Region(22, 43 - 23);
-    U2Region b3Reverse = U2Region(367, 384 - 368);
+    U2Region aForward;
+    U2Region aReverse;
+    U2Region b1Forward;
+    U2Region b1Reverse;
+    U2Region b2Forward;
+    U2Region b2Reverse;
+    U2Region b3Forward;
+    U2Region b3Reverse;
+
+    static constexpr int MINIMUM_LENGTH_BETWEEN_ISLANDS = 30;
+    static constexpr int SECOND_PRIMER_OFFSET = 4;
 };
 
 }
