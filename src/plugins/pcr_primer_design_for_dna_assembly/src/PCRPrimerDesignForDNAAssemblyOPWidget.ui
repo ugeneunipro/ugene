@@ -6,26 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>352</width>
-    <height>758</height>
+    <width>367</width>
+    <height>808</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_22">
-   <property name="leftMargin">
-    <number>0</number>
-   </property>
-   <property name="topMargin">
-    <number>0</number>
-   </property>
-   <property name="rightMargin">
-    <number>0</number>
-   </property>
-   <property name="bottomMargin">
-    <number>0</number>
-   </property>
    <item>
     <widget class="QWidget" name="runPcrPrimerDesignWidget" native="true">
      <layout class="QVBoxLayout" name="verticalLayout_1">
@@ -255,7 +243,7 @@
               <number>0</number>
              </property>
              <property name="value">
-              <number>-35</number>
+              <number>-40</number>
              </property>
             </widget>
            </item>
@@ -277,7 +265,7 @@
               <number>999999999</number>
              </property>
              <property name="value">
-              <number>54</number>
+              <number>57</number>
              </property>
             </widget>
            </item>
@@ -299,7 +287,7 @@
               <number>999999999</number>
              </property>
              <property name="value">
-              <number>15</number>
+              <number>18</number>
              </property>
             </widget>
            </item>
@@ -353,7 +341,7 @@
               <number>0</number>
              </property>
              <property name="value">
-              <number>-32</number>
+              <number>-30</number>
              </property>
             </widget>
            </item>
@@ -375,7 +363,7 @@
               <number>999999999</number>
              </property>
              <property name="value">
-              <number>60</number>
+              <number>65</number>
              </property>
             </widget>
            </item>
@@ -397,7 +385,7 @@
               <number>999999999</number>
              </property>
              <property name="value">
-              <number>18</number>
+              <number>25</number>
              </property>
             </widget>
            </item>
@@ -458,7 +446,7 @@
            <item>
             <widget class="QLabel" name="label_4">
              <property name="text">
-              <string>Overlap length</string>
+              <string>Max complementary motifs length</string>
              </property>
             </widget>
            </item>
@@ -514,7 +502,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QSpinBox" name="spExcludeOverlapLength">
+            <widget class="QSpinBox" name="spExcludeComplementLength">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -839,6 +827,22 @@
         </layout>
        </widget>
       </item>
+      <item>
+       <widget class="U2::PCRPrimerProductTable" name="productsTable">
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <property name="tabKeyNavigation">
+         <bool>false</bool>
+        </property>
+        <property name="showDropIndicator" stdset="0">
+         <bool>false</bool>
+        </property>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -872,6 +876,11 @@ font-weight: 600;</string>
    <class>U2::PrimerLineEdit</class>
    <extends>QLineEdit</extends>
    <header location="global">U2Gui/PrimerLineEdit.h</header>
+  </customwidget>
+  <customwidget>
+   <class>U2::PCRPrimerProductTable</class>
+   <extends>QTableWidget</extends>
+   <header>PCRPrimerProductTable.h</header>
   </customwidget>
  </customwidgets>
  <resources/>
