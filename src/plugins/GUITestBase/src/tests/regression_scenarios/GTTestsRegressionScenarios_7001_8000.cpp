@@ -19,6 +19,7 @@
  * MA 02110-1301, USA.
  */
 
+#include <base_dialogs/MessageBoxFiller.h>
 #include <drivers/GTKeyboardDriver.h>
 #include <drivers/GTMouseDriver.h>
 #include <primitives/GTAction.h>
@@ -436,42 +437,79 @@ GUI_TEST_CLASS_DEFINITION(test_7212) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_7325) {
-    // Open _common_data/fasta/fa1.fa.
-    //    Expected: there is PCR Primer Design tab.
-    // Open _common_data/fasta/amino_multy_ext.fa.
-    //    Expected: there isn't PCR Primer Design tab.
     // Open _common_data/fasta/alphabet.fa.
     // Click the PCR Primer Design tab of the Options Panel.
     // Select Amino sequence.
     //    Expected: all settings on the tab are disabled, a warning is displayed.
     // Select Nucl sequence.
     //    Expected: all settings on the tab are enabled, no warning.
-    GTFileDialog::openFile(os, testDir + "_common_data/fasta/fa1.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-    GTWidget::findWidget(os,
-                         GTUtilsOptionPanelSequenceView::tabsNames[GTUtilsOptionPanelSequenceView::PcrPrimerDesign]);
-
-    GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/fasta/amino_multy_ext.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
-    auto tab = GTWidget::findWidget(os,
-                             GTUtilsOptionPanelSequenceView::tabsNames[GTUtilsOptionPanelSequenceView::PcrPrimerDesign],
-                             GTUtilsSequenceView::getActiveSequenceViewWindow(os),
-                             GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(tab == nullptr, "Expected: no PCR Primer Design tab")
-
-    GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/fasta/alphabet.fa");
-    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+    QList<ADVSingleSequenceWidget *> seqWidgets = GTUtilsProject::openFileExpectSequences(os,
+                                                                                        testDir + "_common_data/fasta/",
+                                                                                        "alphabet.fa",
+                                                                                        {"Amino", "Nucl"});
     GTUtilsOptionPanelSequenceView::toggleTab(os, GTUtilsOptionPanelSequenceView::PcrPrimerDesign);
     auto mainWidget = GTWidget::findWidget(os, "runPcrPrimerDesignWidget");
-    auto warnLabel = GTWidget::findLabelByText(os, "Info: choose a nucleic sequence for running PCR Primer Design").first();
+    auto warnLabel =
+        GTWidget::findLabelByText(os, "Info: choose a nucleic sequence for running PCR Primer Design").first();
 
-    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os));
+    GTWidget::click(os, seqWidgets.first());
     GTWidget::checkEnabled(os, mainWidget, false);
     CHECK_SET_ERR(warnLabel->isVisible(), "Expected: warning label visible")
 
-    GTWidget::click(os, GTUtilsSequenceView::getPanOrDetView(os, 1));
+    GTWidget::click(os, seqWidgets.last());
     GTWidget::checkEnabled(os, mainWidget);
     CHECK_SET_ERR(!warnLabel->isVisible(), "Expected: warning label doesn't displayed")
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7325_1) {
+    using Op = GTUtilsOptionPanelSequenceView;
+    auto checkExpectedTabs = [&os](const QSet<Op::Tabs> &tabs) {
+        // Tabs that should be.
+        for (const auto tab : qAsConst(tabs)) {
+            GTWidget::findWidget(os, Op::tabsNames[tab], GTUtilsSequenceView::getActiveSequenceViewWindow(os));
+        }
+        // Tabs that shouldn't be.
+        for (const auto tab : Op::tabsNames.keys().toSet() - tabs) {
+            auto opWidget = GTWidget::findWidget(os, Op::tabsNames[tab],
+                GTUtilsSequenceView::getActiveSequenceViewWindow(os), GTGlobals::FindOptions(false));
+            CHECK_SET_ERR(opWidget == nullptr, QString("Expected: there is no %1 tab").arg(Op::tabsNames[tab]))
+        }
+    };
+    // DNA: _common_data/fasta/fa1.fa.
+    //    Expected: all option panel tabs (6) are present.
+    // RNA: _common_data/fasta/RNA_1_seq.fa.
+    //    Expected: all option panel tabs without PCR Primer Design are present.
+    // Amino: _common_data/fasta/AMINO.fa.
+    //    Expected: yes: Search, Highlight, Statistics, no: PCR Primer Design, In Silico, Circular.
+    // All alphabets: _common_data/fasta/all_and_raw_alphabets.fa.
+    //    Expected: all option panel tabs.
+    // 2 RNA: _common_data/fasta/RNA.fa.
+    //    Expected: all option panel tabs without PCR Primer Design.
+    // Aminos: _common_data/fasta/amino_multy_ext.fa.
+    //    Expected: yes: Search, Highlight, Statistics, no: PCR Primer Design, In Silico, Circular.
+
+    const QSet<Op::Tabs> all = Op::tabsNames.keys().toSet();
+    const QSet<Op::Tabs> withoutPcr = all - QSet<Op::Tabs> {Op::PcrPrimerDesign};
+    const QSet<Op::Tabs> three = {Op::Search, Op::AnnotationsHighlighting, Op::Statistics};
+
+    GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/fasta/fa1.fa", "fasta file part 1");
+    checkExpectedTabs(all);
+
+    GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/fasta/RNA_1_seq.fa", "AB000263");
+    checkExpectedTabs(withoutPcr);
+
+    GTUtilsProject::openFileExpectSequence(os, testDir + "_common_data/fasta/AMINO.fa", "AMINO263");
+    checkExpectedTabs(three);
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/fasta/all_and_raw_alphabets.fa");
+    checkExpectedTabs(all);
+
+    GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/fasta/RNA.fa");
+    checkExpectedTabs(withoutPcr);
+
+    GTUtilsProject::openMultiSequenceFileAsSequences(os, testDir + "_common_data/fasta/amino_multy_ext.fa");
+    checkExpectedTabs(three);
 }
 
 }    // namespace GUITest_regression_scenarios
