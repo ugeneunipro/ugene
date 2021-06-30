@@ -367,8 +367,7 @@ QMap<QString, QString> QDDocument::string2attributesMap(const QString &str) {
 }
 
 QList<QString> QDDocument::idsFromString(const QString &str) {
-    QStringList l = str.split(QRegExp("\\s*--\\s*"));
-    return l;
+    return str.split(QRegExp("\\s*--\\s*"));
 }
 
 QString QDDocument::definedIn(const QString &id) {

@@ -379,7 +379,7 @@ void BaseDocWriter::reportNoDataReceivedWarning() {
     monitor()->addError(tr("Nothing to write"), getActorId(), WorkflowNotification::U2_WARNING);
 }
 
-QSet<GObject *> BaseDocWriter::getObjectsToWrite(const QVariantMap &data) const {
+QSet<GObject *> BaseDocWriter::getObjectsToWriteBaseImpl(const QVariantMap &data) const {
     QSet<GObject *> result = getObjectsToWrite(data);
     result.remove(NULL);    // eliminate invalid objects
     return result;
@@ -387,7 +387,7 @@ QSet<GObject *> BaseDocWriter::getObjectsToWrite(const QVariantMap &data) const 
 
 Task *BaseDocWriter::createWriteToSharedDbTask(const QVariantMap &data) {
     QList<Task *> tasks;
-    foreach (GObject *obj, BaseDocWriter::getObjectsToWrite(data)) {
+    foreach (GObject *obj, getObjectsToWriteBaseImpl(data)) {
         if (NULL == obj) {
             reportError(tr("Unable to fetch data from a message"));
             continue;

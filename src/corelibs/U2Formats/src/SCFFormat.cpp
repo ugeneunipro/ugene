@@ -319,7 +319,7 @@ void scf_delta_samples2(ushort samples[], int num_samples, int job) {
     do the reverse
     */
 
-    register int i;
+    int i;
 
     if (DELTA_IT == job) {
 #ifdef CLEAR_BUT_SLOW

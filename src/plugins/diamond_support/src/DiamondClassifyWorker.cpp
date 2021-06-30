@@ -97,7 +97,6 @@ void DiamondClassifyWorker::sl_taskFinished(Task *task) {
     output->put(Message(output->getBusType(), data));
     context->getMonitor()->addOutputFile(classificationUrl, getActor()->getId());
 
-    LocalWorkflow::TaxonomyClassificationResult::const_iterator it;
     int classifiedCount = NgsReadsClassificationUtils::countClassified(classificationResult);
     context->getMonitor()->addInfo(tr("There were %1 input reads, %2 reads were classified.").arg(QString::number(classificationResult.size())).arg(QString::number(classifiedCount)), getActor()->getId(), WorkflowNotification::U2_INFO);
 }

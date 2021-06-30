@@ -35,6 +35,7 @@
 #    pragma GCC diagnostic ignored "-Wbool-compare"
 #    pragma GCC diagnostic ignored "-Wdeprecated"
 #    pragma GCC diagnostic ignored "-Wimplicit-fallthrough"
+#    pragma GCC diagnostic ignored "-Wimplicit-int-float-conversion"
 #    pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
 #    pragma GCC diagnostic ignored "-Wmisleading-indentation"
 #    pragma GCC diagnostic ignored "-Wparentheses"

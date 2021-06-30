@@ -562,17 +562,17 @@ void ChromatogramViewRenderArea::setAreaHeight(int newH) {
     areaHeight = newH;
 }
 
-qint64 ChromatogramViewRenderArea::coordToPos(int c) const {
+qint64 ChromatogramViewRenderArea::coordXToPos(int x) const {
     const U2Region &visibleRange = view->getVisibleRange();
     qreal lastBaseCall = kLinearTransformTrace * chroma.baseCalls[chroma.seqLength - 1] + bLinearTransformTrace;
-    if (visibleRange.startPos + visibleRange.length == chroma.seqLength && c > lastBaseCall) {
+    if (visibleRange.startPos + visibleRange.length == chroma.seqLength && x > lastBaseCall) {
         return chroma.seqLength;
     }
     qreal nearestPos = visibleRange.startPos;
     while (nearestPos < chroma.seqLength - 1) {
         qreal leftBaseCallPos = kLinearTransformTrace * chroma.baseCalls[nearestPos] + bLinearTransformTrace;
         qreal rightBaseCallPos = kLinearTransformTrace * chroma.baseCalls[nearestPos + 1] + bLinearTransformTrace;
-        CHECK_BREAK((leftBaseCallPos + rightBaseCallPos) / 2 < c + (rightBaseCallPos - leftBaseCallPos) / 2);
+        CHECK_BREAK((leftBaseCallPos + rightBaseCallPos) / 2 < x + (rightBaseCallPos - leftBaseCallPos) / 2);
         nearestPos++;
     }
     return qint64(nearestPos);

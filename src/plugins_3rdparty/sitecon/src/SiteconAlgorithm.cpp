@@ -33,8 +33,6 @@
 #include <U2Core/TextUtils.h>
 #include <QFile>
 
-#include <math.h>
-
 namespace U2 {
 
 bool SiteconModel::operator !=(const SiteconModel& model) const {
@@ -64,7 +62,7 @@ bool SiteconModel::operator !=(const SiteconModel& model) const {
     return !eq;
 }
 
-QVector<PositionStats> SiteconAlgorithm::calculateDispersionAndAverage(const MultipleSequenceAlignment& ma, const SiteconBuildSettings& config, TaskStateInfo& ts) 
+QVector<PositionStats> SiteconAlgorithm::calculateDispersionAndAverage(const MultipleSequenceAlignment& ma, const SiteconBuildSettings& config, TaskStateInfo& ts)
 {
     const QList<DiPropertySitecon*>& props = config.props;
     assert(!props.isEmpty());
@@ -73,13 +71,13 @@ QVector<PositionStats> SiteconAlgorithm::calculateDispersionAndAverage(const Mul
     for (int i = 0, n = ma->getLength()-1; i < n && !ts.cancelFlag; i++) { //for every di-nucl
         PositionStats posResult;
         foreach(DiPropertySitecon* p, props) { // for every property
-            float average = 0; //average in a column
+            qreal average = 0; //average in a column
             foreach(const MultipleSequenceAlignmentRow& row, ma->getMsaRows()) { // collect di-position stat for all sequence in alignment
                 average+=p->getOriginal(row->charAt(i), row->charAt(i+1));
             }
             average/=N;
 
-            float dispersion = 0; // dispersion in a column
+            qreal dispersion = 0; // dispersion in a column
             for (int j = 0; j < ma->getNumRows(); j++) {// collect di-position stat for all sequence in alignment
                 const MultipleSequenceAlignmentRow row = ma->getMsaRow(j);
                 char c1 = row->charAt(i);
@@ -88,21 +86,21 @@ QVector<PositionStats> SiteconAlgorithm::calculateDispersionAndAverage(const Mul
                 dispersion+=(average - v)*(average - v);
             }
             dispersion/=(N-1);
-            float sdeviation= sqrt(dispersion);
+            qreal sdeviation= sqrt(dispersion);
 
-            posResult.append(DiStat(p, sdeviation, average));
+            posResult.append(DiStat(p, (float)sdeviation, (float)average));
         }
         matrix.append(posResult);
     }
     if (ts.cancelFlag || ts.hasError()) {
         matrix.clear();
         return matrix;
-    } 
+    }
     assert(matrix.size() == ma->getLength() - 1);
     return matrix;
 }
 
-float SiteconAlgorithm::calculatePSum(const char* seq, int len, const QVector<PositionStats>& normalizedMatrix, 
+float SiteconAlgorithm::calculatePSum(const char* seq, int len, const QVector<PositionStats>& normalizedMatrix,
                                       const SiteconBuildSettings& config, float devThreshold, DNATranslation* complMap) {
     Q_UNUSED(config);
     assert(len == config.windowSize);
@@ -110,7 +108,7 @@ float SiteconAlgorithm::calculatePSum(const char* seq, int len, const QVector<Po
     QByteArray complMapper = complement ? complMap->getOne2OneMapper() : QByteArray();
     float pSum = 0.0f;
     float sdevDeltasSum = 0.0f;
-    for (int i = 0; i < len-1; i++) { 
+    for (int i = 0; i < len-1; i++) {
         char c1 = seq[i];
         char c2 = seq[i+1];
         if (complement) {
@@ -182,14 +180,14 @@ QVector<float> SiteconAlgorithm::calculateFirstTypeError(const MultipleSequenceA
 }
 
 
-QVector<float> SiteconAlgorithm::calculateSecondTypeError(const QVector<PositionStats>& matrix, 
-                                                          const SiteconBuildSettings& settings, 
+QVector<float> SiteconAlgorithm::calculateSecondTypeError(const QVector<PositionStats>& matrix,
+                                                          const SiteconBuildSettings& settings,
                                                           TaskStateInfo& si) {
     float devThresh = (float)critchi(settings.chisquare, settings.numSequencesInAlignment - 1) / settings.numSequencesInAlignment;
-    
+
     qsrand(settings.randomSeed);
     QByteArray randomSequence = generateRandomSequence(settings.acgtContent, settings.secondTypeErrorCalibrationLen, si);
-    
+
     int dProgress = 100-si.progress;
     int nuclsPerProgress = randomSequence.size() / dProgress;
     int progressI = nuclsPerProgress;
@@ -223,7 +221,7 @@ QVector<PositionStats> SiteconAlgorithm::normalize(const QVector<PositionStats>&
     Q_UNUSED(settings); //TODO: remove this arg
 
     //calculate scale average and deviation
-    //normalize initial model by scale: 
+    //normalize initial model by scale:
     //    model_ave = (model_ave - scale_ave) / scale_dev
     //    model_dev =  model_dev / scale_dev
 
@@ -286,7 +284,7 @@ QByteArray SiteconAlgorithm::generateRandomSequence(const int* acgtContent, int 
 
     for (int i=0; i < seqLen; i++) {
         int r = qrand();
-        float perc = 100 * (float(r) / RAND_MAX);
+        qreal perc = 100 * (r / (qreal)RAND_MAX);
         char c = 'T';
         if (perc <= aPercentRange) {
             c = 'A';
@@ -338,9 +336,9 @@ static void dumpWeights(const QString& url, const PWVector& weights, const Sitec
 }
 #endif
 
-int SiteconAlgorithm::calculateWeights(const MultipleSequenceAlignment& ma, QVector<PositionStats>& origMatrix, 
+int SiteconAlgorithm::calculateWeights(const MultipleSequenceAlignment& ma, QVector<PositionStats>& origMatrix,
                                        const SiteconBuildSettings& settings, bool matrixIsNormalized,
-                                       TaskStateInfo& si) 
+                                       TaskStateInfo& si)
 {
     int   modelSize = settings.windowSize - 1;
     if (settings.weightAlg == SiteconWeightAlg_None) {
@@ -357,7 +355,7 @@ int SiteconAlgorithm::calculateWeights(const MultipleSequenceAlignment& ma, QVec
     assert(settings.weightAlg == SiteconWeightAlg_Alg2);
 
     //to calculate weights by algorithm2
-    //1. generate ~modelLen*seqNums + 10 sequence with ACGT content == model content and 
+    //1. generate ~modelLen*seqNums + 10 sequence with ACGT content == model content and
     //1  for every prop calculate average weight
     //2. for every pos select max weight per props only for di-nucls in model
     //3. calculate diff = W2_max - W1_ave
@@ -379,7 +377,7 @@ int SiteconAlgorithm::calculateWeights(const MultipleSequenceAlignment& ma, QVec
     if (!matrixIsNormalized) {
         normMatrix = normalize(origMatrix, settings);
     }
-    
+
     float devThreshold = (float)critchi(settings.chisquare, settings.numSequencesInAlignment - 1) / settings.numSequencesInAlignment;
 
     //Part1
@@ -387,7 +385,7 @@ int SiteconAlgorithm::calculateWeights(const MultipleSequenceAlignment& ma, QVec
     int rndSeqLen = modelSize * ma->getNumRows() + 10;
     QByteArray rndSeqArray = generateRandomSequence(settings.acgtContent, rndSeqLen, si);
     const char* rndSeq = rndSeqArray.constData();
-    
+
     //init weights with default val
     PWVector aveWeightMatrix(modelSize);
     PWVector maxWeightMatrix(modelSize);
@@ -395,7 +393,7 @@ int SiteconAlgorithm::calculateWeights(const MultipleSequenceAlignment& ma, QVec
         aveWeightMatrix[i].fill(0, settings.props.size());
         maxWeightMatrix[i].fill(0, settings.props.size());
     }
-    
+
     //sum all psums for nSamples and create average vals per (pos, prop)
     int nSamples = rndSeqLen - modelSize;
     for (int i=0 ; i < nSamples && !si.cancelFlag; i++) {
@@ -427,7 +425,7 @@ int SiteconAlgorithm::calculateWeights(const MultipleSequenceAlignment& ma, QVec
     }
 #ifdef _SITECON_ALG_DEBUG_
     dumpWeights("mave.txt", aveWeightMatrix, settings);
-#endif    
+#endif
     if (si.cancelFlag) {
         return 0;
     }
@@ -464,7 +462,7 @@ int SiteconAlgorithm::calculateWeights(const MultipleSequenceAlignment& ma, QVec
 
 #ifdef _SITECON_ALG_DEBUG_
     dumpWeights("mmax.txt", maxWeightMatrix, settings);
-#endif    
+#endif
 
     //select MAX_WEIGHTS properties
     for(int i=0; i < modelSize; i++) {
@@ -478,7 +476,7 @@ int SiteconAlgorithm::calculateWeights(const MultipleSequenceAlignment& ma, QVec
             float diff = maxPropWeight - avePropWeight;
             diffs.append(diff);
         }
-        
+
         PositionStats& psNorm = normMatrix[i];
         PositionStats& psOrig = origMatrix[i];
         for (int x = 0; x < MAX_WEIGHTS_ALG2; x++) {
@@ -539,7 +537,7 @@ bool SiteconModel::checkState(bool doAssert) const {
     if (settings.numSequencesInAlignment <= 1) {
         return false;
     }
-    
+
     //2 check model
     assert(!doAssert || matrix.size() == settings.windowSize -1);
     if (matrix.size() != settings.windowSize-1) {
@@ -560,7 +558,7 @@ bool SiteconModel::checkState(bool doAssert) const {
                 return false;
             }
         }
-        
+
         if (settings.weightAlg == SiteconWeightAlg_None) {
             assert(!doAssert || nWeights == settings.props.size());
             if (nWeights != settings.props.size()) {

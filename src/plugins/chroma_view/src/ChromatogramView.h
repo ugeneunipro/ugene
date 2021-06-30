@@ -118,7 +118,7 @@ public:
         return heightAreaBC;
     }
     void setAreaHeight(int newH);
-    virtual qint64 coordToPos(int x) const;
+    virtual qint64 coordXToPos(int x) const;
     virtual int posToCoord(qint64 p, bool useVirtualSpace = false) const;
     QRectF posToRect(int p) const;
     QRectF selRect;
