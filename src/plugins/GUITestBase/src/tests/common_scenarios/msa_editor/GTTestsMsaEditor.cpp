@@ -4636,5 +4636,46 @@ GUI_TEST_CLASS_DEFINITION(test_0093_2) {
     CHECK_SET_ERR(clipboardText == expectedMSA, QString("Expected: %1, current: %2").arg(expectedMSA).arg(clipboardText));
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0094) {
+    // Check that sort by group size works correctly.
+
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsMsaEditor::toggleCollapsingMode(os);
+
+    // Check that group is in the middle (original).
+    QStringList originalNames = GTUtilsMSAEditorSequenceArea::getVisibleNames(os, true);
+    CHECK_SET_ERR(originalNames.size() == 17, "Wrong sequence count in collapsed mode: " + QString::number(originalNames.size()));
+    QString expectedGroupName = "[2] Mecopoda_elongata__Ishigaki__J";
+    CHECK_SET_ERR(originalNames[13] == expectedGroupName, "Group is not found at index 13. Found: " + expectedGroupName[13]);
+
+    QStringList originalNamesWithNoGroup = originalNames;
+    originalNames.removeAt(13);
+
+    // Sort by group size ascending.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_SORT, "action_sort_groups_by_size_ascending"}));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
+    QStringList ascendingNames = GTUtilsMSAEditorSequenceArea::getVisibleNames(os, true);
+    CHECK_SET_ERR(ascendingNames.size() == 17, "Wrong sequence count after ascending sort: " + QString::number(ascendingNames.size()));
+    CHECK_SET_ERR(ascendingNames[16] == expectedGroupName, "Group is not found at index 16. Found: " + ascendingNames[16]);
+
+    // Check that order of other sequences is not changed.
+    QStringList ascendingNamesWithNoGroup = ascendingNames;
+    ascendingNamesWithNoGroup.removeAt(16);
+    CHECK_SET_ERR(ascendingNamesWithNoGroup == originalNamesWithNoGroup, "Ascending order was changed for non-group sequences");
+
+    // Sort by group size descending.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_SORT, "action_sort_groups_by_size_descending"}));
+    GTMenu::showContextMenu(os, GTUtilsMSAEditorSequenceArea::getSequenceArea(os));
+    QStringList descendingNames = GTUtilsMSAEditorSequenceArea::getVisibleNames(os, true);
+    CHECK_SET_ERR(descendingNames.size() == 17, "Wrong sequence count after descending sort: " + QString::number(descendingNames.size()));
+    CHECK_SET_ERR(descendingNames[0] == expectedGroupName, "Group is not found at index 0. Found: " + descendingNames[0]);
+
+    // Check that order of other sequences is not changed.
+    QStringList descendingNamesWithNoGroup = descendingNames;
+    descendingNamesWithNoGroup.removeAt(0);
+    CHECK_SET_ERR(descendingNamesWithNoGroup == originalNamesWithNoGroup, "Descending order was changed for non-group sequences");
+}
+
 }    // namespace GUITest_common_scenarios_msa_editor
 }    // namespace U2
