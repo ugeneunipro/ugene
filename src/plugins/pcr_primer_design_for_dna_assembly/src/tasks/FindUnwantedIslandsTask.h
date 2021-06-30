@@ -37,7 +37,6 @@ public:
     const QList<U2Region>& getRegionBetweenIslands() const;
 
 private:
-    static bool isUnwantedSelfDimer(const QByteArray& forwardSequence);
     bool hasUnwantedConnections(const U2Region& region) const;
     QString regionToString(const U2Region& region) const;
 

@@ -75,13 +75,7 @@ bool UnwantedConnectionsUtils::areUnwantedParametersPresentedInDimersInfo(const 
     bool isLengthUnwanted = unwantedDimerLength < dimerLength;
     bool isUnwantedParameter = isDeltaGUnwanted && isMeltingTemperatureUnwanted && isLengthUnwanted;
     if (isUnwantedParameter) {
-        for (const auto& str : dimersInfo.dimersOverlap.split('\n')) {
-            algoLog.details(str);
-        }
-    } else {
-        for (const auto& str : dimersInfo.dimersOverlap.split('\n')) {
-            algoLog.trace(str);
-        }
+        algoLog.details(QObject::tr(dimersInfo.getFullReport().toLocal8Bit()));
     }
 
     return isUnwantedParameter;

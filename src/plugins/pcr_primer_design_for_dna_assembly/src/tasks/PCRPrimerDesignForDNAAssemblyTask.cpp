@@ -100,23 +100,40 @@ void PCRPrimerDesignForDNAAssemblyTask::prepare() {
 void PCRPrimerDesignForDNAAssemblyTask::run() {
     int amplifiedFragmentLeftEdge = settings.leftArea.endPos() - 1;
     taskLog.details(tr("Looking for candidate primers B1, B2 and B3 in the left area"));
-    findCandidatePrimers(regionsBetweenIslandsForward, amplifiedFragmentLeftEdge, false, b1Forward, b2Forward, b3Forward);
+    findCandidatePrimers(regionsBetweenIslandsForward,
+                         amplifiedFragmentLeftEdge,
+                         false,
+                         false,
+                         b1Forward, b2Forward, b3Forward);
 
     int amplifiedFragmentRightEdgeReverseComplement = reverseComplementSequence.size() - settings.rightArea.startPos;
     taskLog.details(tr("Looking for candidate primers B1, B2 and B3 in the right area"));
-    findCandidatePrimers(regionsBetweenIslandsReverse, amplifiedFragmentRightEdgeReverseComplement, false,
+    findCandidatePrimers(regionsBetweenIslandsReverse,
+                         amplifiedFragmentRightEdgeReverseComplement,
+                         false,
+                         true,
                          b1Reverse, b2Reverse, b3Reverse);
     if (!b1Reverse.isEmpty()) {
         int sequenceSize = reverseComplementSequence.size();
         b1Reverse = DNASequenceUtils::reverseComplementRegion(b1Reverse, sequenceSize);
-        b2Reverse = DNASequenceUtils::reverseComplementRegion(b2Reverse, sequenceSize);
-        b3Reverse = DNASequenceUtils::reverseComplementRegion(b3Reverse, sequenceSize);
+        if (!b2Reverse.isEmpty()) {
+            b2Reverse = DNASequenceUtils::reverseComplementRegion(b2Reverse, sequenceSize);
+        }
+        if (!b3Reverse.isEmpty()) {
+            b3Reverse = DNASequenceUtils::reverseComplementRegion(b3Reverse, sequenceSize);
+        }
     }
 
     U2Region fake;
-    findCandidatePrimers(regionsBetweenIslandsForward, amplifiedFragmentLeftEdge, true, aForward, fake, fake);
+    taskLog.details(tr("Looking for the candidate primer A in the left area"));
+    findCandidatePrimers(regionsBetweenIslandsForward, amplifiedFragmentLeftEdge, true, false, aForward, fake, fake);
 
-    findCandidatePrimers(regionsBetweenIslandsReverse, amplifiedFragmentRightEdgeReverseComplement, true, aReverse, fake, fake);
+    taskLog.details(tr("Looking for the candidate primer A in the right area"));
+    findCandidatePrimers(regionsBetweenIslandsReverse, amplifiedFragmentRightEdgeReverseComplement, true, true, aReverse, fake, fake);
+    if (!aReverse.isEmpty()) {
+        int sequenceSize = reverseComplementSequence.size();
+        aReverse = DNASequenceUtils::reverseComplementRegion(aReverse, sequenceSize);
+    }
 }
 
 QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask) {
@@ -212,7 +229,7 @@ bool PCRPrimerDesignForDNAAssemblyTask::hasUnwantedConnections(const QByteArray&
     }
 
     //TODO: hairpins and heterodimers
-    return isUnwantedSelfDimer;
+    return isUnwantedSelfDimer || hasUnwantedHeteroDimer;
 }
 
 void PCRPrimerDesignForDNAAssemblyTask::updatePrimerRegion(int& primerEnd, int& primerLength) const {
@@ -228,6 +245,7 @@ void PCRPrimerDesignForDNAAssemblyTask::updatePrimerRegion(int& primerEnd, int& 
 void PCRPrimerDesignForDNAAssemblyTask::findCandidatePrimers(const QList<U2Region>& regionsBetweenIslands,
                                                              int amplifiedFragmentEdge,
                                                              bool findFirstOnly,
+                                                             bool isComplement,
                                                              U2Region& first,
                                                              U2Region& second,
                                                              U2Region& third) const {
@@ -243,34 +261,48 @@ void PCRPrimerDesignForDNAAssemblyTask::findCandidatePrimers(const QList<U2Regio
             return primerEnd - primerLength > regionBetweenIslands.startPos;
         };
         int firstCandidatePrimerEnd = regionBetweenIslands.endPos();
-        first = findCandidatePrimer(firstCandidatePrimerEnd, amplifiedFragmentEdge, firstCandidatePrimerWhileCondition);
+        first = findCandidatePrimer(firstCandidatePrimerEnd, amplifiedFragmentEdge, isComplement, firstCandidatePrimerWhileCondition);
 
         //If we didn't find primer - check another region between islands
         if (first.isEmpty()) {
             continue;
         } else if (findFirstOnly) {
+            taskLog.details(tr("A %1 primer has been found").arg(isComplement ? "reverse" : "forvard"));
             break;
         }
+        taskLog.details(tr("B1 %1 primer has been found").arg(isComplement ? "reverse" : "forvard"));
 
         auto secondCandidatePrimerWhileCondition = [&](int primerEnd, int) {
             return primerEnd == first.startPos + SECOND_PRIMER_OFFSET;
         };
         int secondCandidatePrimerEnd = first.startPos + SECOND_PRIMER_OFFSET;
-        second = findCandidatePrimer(secondCandidatePrimerEnd, amplifiedFragmentEdge, secondCandidatePrimerWhileCondition);
+        second = findCandidatePrimer(secondCandidatePrimerEnd, amplifiedFragmentEdge, isComplement, secondCandidatePrimerWhileCondition);
+        if (!second.isEmpty()) {
+            taskLog.details(tr("B2 %1 primer has been found").arg(isComplement ? "reverse" : "forvard"));
+        }
 
         auto thirdCandidatePrimerWhileCondition = [&](int primerEnd, int) {
             return primerEnd == first.startPos;
         };
         int thirdCandidatePrimerEnd = first.startPos;
-        third = findCandidatePrimer(thirdCandidatePrimerEnd, amplifiedFragmentEdge, thirdCandidatePrimerWhileCondition);
+        third = findCandidatePrimer(thirdCandidatePrimerEnd, amplifiedFragmentEdge, isComplement, thirdCandidatePrimerWhileCondition);
+        if (!third.isEmpty()) {
+            taskLog.details(tr("B3 %1 primer has been found").arg(isComplement ? "reverse" : "forvard"));
+        }
 
         // If we didn't find at least one additional primer - clear reasults and try again
         if (second.isEmpty() && third.isEmpty()) {
+            taskLog.details(tr("B2 and B3 %1 primers haven't been found, search again").arg(isComplement ? "reverse" : "forvard"));
             first = U2Region();
         } else {
             break;
         }
     }
+}
+
+QString PCRPrimerDesignForDNAAssemblyTask::regionToString(const U2Region& region, bool isComplement) const {
+    U2Region regionToLog = isComplement ? DNASequenceUtils::reverseComplementRegion(region, sequence.size()) : region;
+    return QString("%1..%2").arg(regionToLog.startPos + 1).arg(regionToLog.endPos());
 }
 
 }

@@ -103,21 +103,6 @@ const QList<U2Region>& FindUnwantedIslandsTask::getRegionBetweenIslands() const 
     return regionsBetweenIslands;
 }
 
-bool FindUnwantedIslandsTask::isUnwantedSelfDimer(const QByteArray& forwardSequence) {
-    PrimerStatisticsCalculator calc(forwardSequence, PrimerStatisticsCalculator::Direction::DoesntMatter, UNWANTED_DELTA_G);
-    auto dimersInfo = calc.getDimersInfo();
-    if (dimersInfo.dimersOverlap.isEmpty()) { // Self dimers aren't found
-        return false;
-    }
-
-    double dimerMeltingTemp = PrimerStatistics::getMeltingTemperature(dimersInfo.dimer.toLocal8Bit());
-    int dimerLength = dimersInfo.dimer.length();
-    bool goodMeltingTemperature = dimerMeltingTemp < UNWANTED_MELTING_TEMPERATURE;
-    bool goodLength = dimerLength < UNWANTED_MAX_LENGTH;
-
-    return dimersInfo.canBeFormed && goodMeltingTemperature && goodLength;
-}
-
 bool FindUnwantedIslandsTask::hasUnwantedConnections(const U2Region& region) const {
     /**
      * Sequence to find the unwanted connections in.
