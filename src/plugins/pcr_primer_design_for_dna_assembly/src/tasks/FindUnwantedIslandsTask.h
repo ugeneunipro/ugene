@@ -23,26 +23,26 @@
 #define _U2_FIND_UNWANTED_ISLANDS_TASK_H_
 
 #include <U2Core/Task.h>
-
-#include "PCRPrimerDesignForDNAAssemblyTaskSettings.h"
+#include <U2Core/U2Type.h>
+#include <U2Core/U2Region.h>
 
 namespace U2 {
 
 class FindUnwantedIslandsTask : public Task {
 public:
-    FindUnwantedIslandsTask(const PCRPrimerDesignForDNAAssemblyTaskSettings& settings, const QByteArray& sequence);
+    FindUnwantedIslandsTask(const U2Region& searchArea, int possibleOverlap, const QByteArray& sequence, bool isComplement);
 
     void run() override;
 
     const QList<U2Region>& getRegionBetweenIslands() const;
 
 private:
-    static bool isUnwantedSelfDimer(const QByteArray& forwardSequence);
-
     bool hasUnwantedConnections(const U2Region& region) const;
+    QString regionToString(const U2Region& region) const;
 
     PCRPrimerDesignForDNAAssemblyTaskSettings settings;
     QByteArray sequence;
+    bool isComplement = false;
 
     QList<U2Region> regionsBetweenIslands;
 

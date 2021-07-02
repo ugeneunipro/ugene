@@ -63,6 +63,12 @@ private:
                                                            int unwantedDimerLength,
                                                            QString &report);
 
+private:
+    static bool areUnwantedParametersPresentedInDimersInfo(const DimerFinderResult& dimersInfo,
+                                                           double unwantedDeltaG,
+                                                           double unwantedMeltingTemperature,
+                                                           int unwantedDimerLength);
+
 
 
 };

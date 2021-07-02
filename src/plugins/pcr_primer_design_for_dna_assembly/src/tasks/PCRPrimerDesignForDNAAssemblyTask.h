@@ -46,6 +46,60 @@ public:
 
 private:
     QList<QByteArray> extractLoadedSequences(LoadDocumentTask* task);
+    bool areMetlingTempAndDeltaGood(const QByteArray& primer) const;
+    bool hasUnwantedConnections(const QByteArray& primer) const;
+    void updatePrimerRegion(int& primerEnd, int& primerLength) const;
+    void findCandidatePrimers(const QList<U2Region>& regionsBetweenIslands, int amplifiedFragmentEdge,
+                              bool findFirstOnly, bool isComplement,
+                              U2Region& b1, U2Region& b2, U2Region& b3) const;
+
+    template<class WhileCondition>
+    U2Region findCandidatePrimer(int primerEnd, int amplifiedFragmentEdge, bool isComplement, WhileCondition cond) const {
+        int primerLength = settings.overlapLength.minValue;
+        U2Region foundPrimerRegion;
+        while (cond(primerEnd, primerLength)) { //While we are in the region between islands
+            const U2Region candidatePrimerRegion(primerEnd - primerLength, primerLength);
+            if ((amplifiedFragmentEdge/*settings.leftArea.endPos() - 1*/) < candidatePrimerRegion.startPos) {
+                primerEnd--;
+                continue;
+            }
+            QByteArray candidatePrimerSequence;
+            if (!isComplement) {
+                candidatePrimerSequence = sequence.mid(candidatePrimerRegion.startPos, candidatePrimerRegion.length);
+            } else {
+                candidatePrimerSequence = reverseComplementSequence.mid(candidatePrimerRegion.startPos, candidatePrimerRegion.length);
+            }
+
+            //Check if candidate primer melting temperature and deltaG fit to settings
+            bool areSettingsGood = areMetlingTempAndDeltaGood(candidatePrimerSequence);
+            if (!areSettingsGood) {
+                updatePrimerRegion(primerEnd, primerLength);
+                continue;
+            } else {
+                //If melt temp and delta G are good - add backbone and check unwanted connections
+                QString candidatePrimerRegionString = regionToString(candidatePrimerRegion, isComplement);
+                taskLog.details(tr("The candidate primer region \"%1\" fits to \"Parameters of priming sequences\" values, check for unwanted connections")
+                                .arg(candidatePrimerRegionString));
+                candidatePrimerSequence = backboneSequence + candidatePrimerSequence;
+                bool hasUnwanted = hasUnwantedConnections(candidatePrimerSequence);
+                if (!hasUnwanted) {
+                    //If there are no unwanted connections - we are found primer region
+                    foundPrimerRegion = candidatePrimerRegion;
+                    break;
+                } else {
+                    taskLog.details(tr("The candidate primer region \"%1\" contains unwanted connections")
+                        .arg(candidatePrimerRegionString));
+                    updatePrimerRegion(primerEnd, primerLength);
+                    continue;
+                }
+            }
+        }
+
+        return foundPrimerRegion;
+    }
+
+    QString PCRPrimerDesignForDNAAssemblyTask::regionToString(const U2Region& region, bool isComplement) const;
+
 
     PCRPrimerDesignForDNAAssemblyTaskSettings settings;
     QByteArray sequence;

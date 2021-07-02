@@ -28,12 +28,20 @@
 
 namespace U2 {
 
-FindUnwantedIslandsTask::FindUnwantedIslandsTask(const PCRPrimerDesignForDNAAssemblyTaskSettings& _settings, const QByteArray& _sequence)
-    : Task("", TaskFlags_FOSCOE),
-      settings(_settings),
-      sequence(_sequence) {}
+FindUnwantedIslandsTask::FindUnwantedIslandsTask(const U2Region& _searchArea, int _possibleOverlap, const QByteArray& _sequence, bool _isComplement)
+    : Task("Find Unwanted Islands Task", TaskFlags_FOSCOE),
+      searchArea(_searchArea),
+      possibleOverlap(_possibleOverlap),
+      sequence(_sequence),
+      isComplement(_isComplement) {}
 
 void FindUnwantedIslandsTask::run() {
+    taskLog.details(tr("Searching of unwanted islands and areas between them "
+                       "in the region \"%1\" (+ %2 nucleotides to the %3, deep into the amplified fragment) has been started")
+                       .arg(regionToString(searchArea)).arg(possibleOverlap).arg(isComplement ? "left" : "right"));
+    taskLog.details(tr("The following unwanted parametes are used. Free Gibbs energy: %1 kj/mol, "
+                       "melting temperature: %2 C, maximum dimer length: %3 nt")
+                       .arg(UNWANTED_DELTA_G).arg(UNWANTED_MELTING_TEMPERATURE).arg(UNWANTED_MAX_LENGTH));
     /**
      * Index of the left nucleotide in the searching area.
      */
@@ -42,7 +50,11 @@ void FindUnwantedIslandsTask::run() {
      * Index of the right nucleotide in the searching area.
      * @settings.overlapLength.maxValue is the area extending deep into the amplified fragment.
      */
-    const int rightNucleotide = settings.leftArea.endPos() + settings.overlapLength.maxValue;
+    const int rightNucleotide = searchArea.endPos() + possibleOverlap;
+    auto text2LogAboutFoundRegion = [this](const U2Region& reg) {
+        taskLog.details(tr("The region between unwanted islands has been found: %1").arg(regionToString(reg)));
+    };
+
     int lengthBetweenIslands = 0;
     int startNucleotideNumber = leftNucleotide;
     regionsBetweenIslands.clear();
@@ -52,7 +64,9 @@ void FindUnwantedIslandsTask::run() {
         if (isIsland) {
             //The obvious limit - we don't need regions which couldn't fit the primer
             if (lengthBetweenIslands != 0/*>= overlap.minValue*/) {
-                regionsBetweenIslands << U2Region(startNucleotideNumber, lengthBetweenIslands);
+                U2Region newRegion(startNucleotideNumber, lengthBetweenIslands);
+                text2LogAboutFoundRegion(newRegion);
+                regionsBetweenIslands << newRegion;
             }
             startNucleotideNumber = leftNucleotide;
             lengthBetweenIslands = 0;
@@ -61,7 +75,21 @@ void FindUnwantedIslandsTask::run() {
         }
         leftNucleotide++;
     }
+    U2Region newRegion(startNucleotideNumber, lengthBetweenIslands);
+    text2LogAboutFoundRegion(newRegion);
     regionsBetweenIslands << U2Region(startNucleotideNumber, lengthBetweenIslands);
+
+    if (!regionsBetweenIslands.isEmpty()) {
+        QString regions;
+        for (const auto& region : regionsBetweenIslands) {
+            regions += QString("%1,").arg(regionToString(region));
+        }
+        regions = regions.left(regions.size() - 1);
+        taskLog.details(tr("The following regions are located between unwanted islands: %1").arg(regions));
+    } else {
+        taskLog.details(tr("The whole region is filled with unwanted islands, no regions between them has been found"));
+    }
+
     // Sort sequence FROM the amplified fragment
     std::sort(regionsBetweenIslands.begin(), regionsBetweenIslands.end(),
         [](const U2Region& first, const U2Region& second) -> bool {
@@ -71,21 +99,6 @@ void FindUnwantedIslandsTask::run() {
 
 const QList<U2Region>& FindUnwantedIslandsTask::getRegionBetweenIslands() const {
     return regionsBetweenIslands;
-}
-
-bool FindUnwantedIslandsTask::isUnwantedSelfDimer(const QByteArray& forwardSequence) {
-    PrimerStatisticsCalculator calc(forwardSequence, PrimerStatisticsCalculator::Direction::DoesntMatter, UNWANTED_DELTA_G);
-    auto dimersInfo = calc.getDimersInfo();
-    if (dimersInfo.dimersOverlap.isEmpty()) { // Self dimers aren't found
-        return false;
-    }
-
-    double dimerMeltingTemp = PrimerStatistics::getMeltingTemperature(dimersInfo.dimer.toLocal8Bit());
-    int dimerLength = dimersInfo.dimer.length();
-    bool goodMeltingTemperature = dimerMeltingTemp < UNWANTED_MELTING_TEMPERATURE;
-    bool goodLength = dimerLength < UNWANTED_MAX_LENGTH;
-
-    return dimersInfo.canBeFormed && goodMeltingTemperature && goodLength;
 }
 
 bool FindUnwantedIslandsTask::hasUnwantedConnections(const U2Region& region) const {
@@ -114,6 +127,11 @@ bool FindUnwantedIslandsTask::hasUnwantedConnections(const U2Region& region) con
         }
     */
     //return false;
+}
+
+QString FindUnwantedIslandsTask::regionToString(const U2Region& region) const {
+    U2Region regionToLog = isComplement ? DNASequenceUtils::reverseComplementRegion(region, sequence.size()) : region;
+    return QString("%1..%2").arg(regionToLog.startPos + 1).arg(regionToLog.endPos() + 1);
 }
 
 
