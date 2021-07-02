@@ -203,6 +203,9 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually() {
         sbEndRegion = sbRightAreaEnd;
     }
     auto sequenceSelection = annDnaView->getActiveSequenceContext()->getSequenceSelection();
+    int startRegionValue = sbStartRegion->value();
+    int endRegionValue = sbEndRegion->value();
+    sequenceSelection->setSelectedRegions({ U2Region(startRegionValue, endRegionValue - startRegionValue) });
     updateRegionConnection = connect(sequenceSelection, &DNASequenceSelection::si_onSelectionChanged, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateRegion);
 }
 
