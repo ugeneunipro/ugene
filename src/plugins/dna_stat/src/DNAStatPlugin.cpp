@@ -24,6 +24,7 @@
 #include <QAction>
 #include <QMap>
 #include <QMenu>
+#include <QtWidgets/QMessageBox>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/QObjectScopedPointer.h>
@@ -93,6 +94,9 @@ void DNAStatMSAEditorContext::sl_showMSAProfileDialog() {
     GObjectViewAction *viewAction = qobject_cast<GObjectViewAction *>(sender());
     MSAEditor *msaEd = qobject_cast<MSAEditor *>(viewAction->getObjectView());
     QObjectScopedPointer<DNAStatMSAProfileDialog> d = new DNAStatMSAProfileDialog(msaEd->getWidget(), msaEd);
+    if (msaEd->getAlignmentLen() >= GRID_PROFILE_LENGTH_LIMIT) {
+        d->showAlignmentIsTooBigWarning();
+    }
     d->exec();
 }
 

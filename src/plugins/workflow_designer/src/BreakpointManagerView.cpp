@@ -73,7 +73,8 @@ namespace U2 {
 QMap<BreakpointConditionParameter, HitCondition>
     BreakpointManagerView::conditionParametertranslations = QMap<BreakpointConditionParameter, HitCondition>();
 
-BreakpointManagerView::BreakpointManagerView(WorkflowDebugStatus *initDebugInfo, Schema *initScheme, QGraphicsScene *scene, QWidget *parent)
+BreakpointManagerView::BreakpointManagerView(WorkflowDebugStatus *initDebugInfo,
+    const QSharedPointer<Schema> &initScheme, QGraphicsScene *scene, QWidget *parent)
     : QWidget(parent),
       debugInfo(initDebugInfo),
       scene(scene),

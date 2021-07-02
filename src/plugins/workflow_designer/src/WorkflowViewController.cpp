@@ -270,11 +270,11 @@ WorkflowView *WorkflowView::openWD(WorkflowGObject *go) {
 }
 
 WorkflowView::WorkflowView(WorkflowGObject *go)
-    : MWMDIWindow(tr("Workflow Designer")), running(false), sceneRecreation(false), go(go), currentProto(NULL), currentActor(NULL),
+    : MWMDIWindow(tr("Workflow Designer")), running(false), sceneRecreation(false), go(go),
+      schema(QSharedPointer<Schema>::create()), currentProto(NULL), currentActor(NULL),
       pasteCount(0), debugInfo(new WorkflowDebugStatus(this)), debugActions(), loadWorkflowSceneTask(nullptr) {
     scriptingMode = WorkflowSettings::getScriptingMode();
     elementsMenu = NULL;
-    schema = new Schema();
     schema->setDeepCopyFlag(true);
 
     setupScene();
@@ -313,11 +313,11 @@ WorkflowView::~WorkflowView() {
     WorkflowSettings::setScriptingMode(scriptingMode);
     delete currentActor;
     delete scene;
-    delete schema;
+    delete breakpointView;
 }
 
 void WorkflowView::setupScene() {
-    SceneCreator sc(schema, meta);
+    SceneCreator sc(schema.get(), meta);
     scene = sc.createScene(this);
 
     sceneView = new GlassView(scene);
@@ -382,12 +382,12 @@ void WorkflowView::loadSceneFromObject() {
     go->setView(this);
     QString err;
     if (format == LoadWorkflowTask::HR) {
-        err = HRSchemaSerializer::string2Schema(go->getSceneRawData(), schema, &meta);
+        err = HRSchemaSerializer::string2Schema(go->getSceneRawData(), schema.get(), &meta);
     } else if (format == LoadWorkflowTask::XML) {
         QDomDocument xml;
         QMap<ActorId, ActorId> remapping;
         xml.setContent(go->getSceneRawData().toUtf8());
-        err = SchemaSerializer::xml2schema(xml.documentElement(), schema, remapping);
+        err = SchemaSerializer::xml2schema(xml.documentElement(), schema.get(), remapping);
         SchemaSerializer::readMeta(&meta, xml.documentElement());
         scene->setModified(false);
         if (err.isEmpty()) {
@@ -406,7 +406,7 @@ void WorkflowView::loadSceneFromObject() {
         sl_newScene();
         coreLog.error(err);
     } else {
-        SceneCreator sc(schema, meta);
+        SceneCreator sc(schema.get(), meta);
         sc.recreateScene(scene);
         if (go->getDocument()) {
             meta.url = go->getDocument()->getURLString();
@@ -1399,7 +1399,6 @@ void WorkflowView::localHostLaunch() {
         GCounter::increment(meta.name, "WDSample:run");
     }
 
-    const Schema *s = getSchema();
     foreach (const Actor *actor, schema->getProcesses()) {
         if (WorkflowEnv::getExternalCfgRegistry()->getConfigById(actor->getId()) != nullptr) {
             GCOUNTER(cvar, "Element(s) with command line tool is present in the launched workflow");
@@ -1407,7 +1406,7 @@ void WorkflowView::localHostLaunch() {
         }
     }
     debugInfo->setMessageParser(new WorkflowDebugMessageParserImpl());
-    WorkflowAbstractRunner *t = new WorkflowRunTask(*s, ActorMap(), debugInfo);
+    WorkflowAbstractRunner *t = new WorkflowRunTask(*schema, ActorMap(), debugInfo);
 
     t->setReportingEnabled(true);
     if (WorkflowSettings::monitorRun()) {
@@ -1854,7 +1853,7 @@ void WorkflowView::sl_pasteItems(const QString &s, bool updateSchemaInfo) {
         uiLog.error("Paste issues: " + msg);
         return;
     }
-    renamePastedSchemaActors(pastedS, pastedM, schema);
+    renamePastedSchemaActors(pastedS, pastedM, schema.get());
     if (schema->getProcesses().isEmpty()) {
         schema->setWizards(pastedS.takeWizards());
     }
@@ -1888,7 +1887,7 @@ void WorkflowView::sl_pasteItems(const QString &s, bool updateSchemaInfo) {
 
 void WorkflowView::recreateScene() {
     sceneRecreation = true;
-    SceneCreator sc(schema, meta);
+    SceneCreator sc(schema.get(), meta);
     sc.recreateScene(scene);
     sceneRecreation = false;
 }
@@ -2045,7 +2044,7 @@ void WorkflowView::loadWizardResult(const QString &result) {
     schema->reset();
     meta.reset();
     U2OpStatus2Log os;
-    WorkflowUtils::schemaFromFile(url, schema, &meta, os);
+    WorkflowUtils::schemaFromFile(url, schema.get(), &meta, os);
     recreateScene();
     sl_onSceneLoaded();
     if (!schema->getWizards().isEmpty() && !schema->getWizards().first()->isAutoRun()) {
@@ -2320,7 +2319,7 @@ void WorkflowView::sl_updateSchema() {
     schema->update();
 }
 
-Workflow::Schema *WorkflowView::getSchema() const {
+QSharedPointer<Schema> WorkflowView::getSchema() const {
     return schema;
 }
 

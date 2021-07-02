@@ -40,7 +40,7 @@ EstimationResult::EstimationResult() {
     cpuCount = -1;
 }
 
-SchemaEstimationTask::SchemaEstimationTask(const Schema *_schema, const Metadata *_meta)
+SchemaEstimationTask::SchemaEstimationTask(const QSharedPointer<const Schema> &_schema, const Metadata *_meta)
     : Task(tr("Workflow estimation task"), TaskFlag_None), schema(_schema), meta(_meta) {
 }
 
@@ -75,7 +75,7 @@ EstimationResult SchemaEstimationTask::result() const {
 /************************************************************************/
 /* Utils */
 /************************************************************************/
-ExtimationsUtilsClass::ExtimationsUtilsClass(QScriptEngine &_engine, const Schema *_schema)
+ExtimationsUtilsClass::ExtimationsUtilsClass(QScriptEngine &_engine, const QSharedPointer<const Schema> &_schema)
     : engine(_engine), schema(_schema) {
 }
 

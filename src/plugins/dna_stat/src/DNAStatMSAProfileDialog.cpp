@@ -33,6 +33,7 @@
 #include <U2Core/FileAndDirectoryUtils.h>
 #include <U2Core/GUrlUtils.h>
 #include <U2Core/MultipleSequenceAlignmentObject.h>
+#include <U2Core/Theme.h>
 
 #include <U2Gui/HelpButton.h>
 #include <U2Gui/LastUsedDirHelper.h>
@@ -121,6 +122,14 @@ void DNAStatMSAProfileDialog::accept() {
     }
     AppContext::getTaskScheduler()->registerTopLevelTask(new DNAStatMSAProfileTask(s));
     QDialog::accept();
+}
+
+void DNAStatMSAProfileDialog::showAlignmentIsTooBigWarning() {
+    warningLabel->setText(tr("<b><font color=%1>%2</font><br></br></b>")
+        .arg(Theme::errorColorLabelHtmlStr())
+        .arg(tr("Warning: report is too big to be shown in UGENE.")));
+    saveBox->setChecked(true);
+    saveBox->setCheckable(false);
 }
 
 //////////////////////////////////////////////////////////////////////////

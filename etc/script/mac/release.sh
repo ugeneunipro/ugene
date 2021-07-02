@@ -1,10 +1,10 @@
 #!/bin/bash
-
-# Creates final UGENE DMG package for MacOS  from the pre-built bundle.
+# Creates a final UGENE DMG package for MacOS  from the pre-built bundle.
 # - Takes a pre-built version of UGENE (See build.sh + bundle.sh)
 # - Adds external tools.
 # - Removes test plugins and libs.
 # - Checks that result can be run: calls "ugenecl --help".
+# - Validates list of files in the final bundle.
 # - Packs everything into dmg file.
 # - Build symbols.tar.gz for all our libs/executables.
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This script runs XML tests suite.
+# This script runs XML tests suite on Windows.
 # The script expects UGENE binaries to be present in 'ugene' folder, tests in the 'ugene_git/tests',
 # test data in 'test_data' and external tools in 'tools'.
 
@@ -35,7 +35,10 @@ export UGENE_DEV=1
 export UGENE_TESTS_PATH="${SOURCE_DIR}/tests"
 
 # XML tests search data in this dir.
-if [ -z "${COMMON_DATA_DIR}" ]; then export COMMON_DATA_DIR="${TEAMCITY_WORK_DIR}/test_data/_common_data"; fi
+export COMMON_DATA_DIR="${TEAMCITY_WORK_DIR}/test_data/_common_data"
+
+# TMP dir for tests
+export TEMP_DATA_DIR="${UGENE_OUTPUT_DIR}/tmp"
 
 echo "##teamcity[blockOpened name='Environment']"
 echo "Work dir: '${TEAMCITY_WORK_DIR}', UGENE_DIR: '${UGENE_DIR}', test suite path: '${UGENE_TESTS_PATH}/${UGENE_TEST_SUITE}', test data dir: '${COMMON_DATA_DIR}'"
@@ -45,8 +48,8 @@ echo "##teamcity[blockClosed name='Environment']"
 echo "##teamcity[blockOpened name='Running tests: ${UGENE_TEST_SUITE}']"
 
 # Kill any existing ugene instances that may left in a hanging state since the previous run.
-killall -q -9 ugeneui.exe
-killall -q -9 ugenecl.exe
+taskkill.exe /f /im ugeneui.exe
+taskkill.exe /f /im ugenecl.exe
 
 rm -rf "${UGENE_OUTPUT_DIR}"
 
@@ -57,10 +60,6 @@ echo "${UGENE_DIR}/ugeneui.exe --test-suite=${UGENE_TESTS_PATH}/${UGENE_TEST_SUI
   --ini-file="${UGENE_OUTPUT_DIR}\ugene.ini"
 
 EXIT_CODE=$?
-
-# Kill all bad UGENE instances copies that left, so no files are blocked.
-killall -q -9 ugeneui.exe
-killall -q -9 ugenecl.exe
 
 if [ ${EXIT_CODE} -ne 0 ]; then
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Testing failed, exit code: ${EXIT_CODE}']"

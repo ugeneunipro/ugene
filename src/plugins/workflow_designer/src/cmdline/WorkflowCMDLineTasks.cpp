@@ -95,13 +95,9 @@ LoadWorkflowTask *WorkflowRunFromCMDLineBase::prepareLoadSchemaTask(const QStrin
         return NULL;
     }
 
-    schema = new Schema();
+    schema = QSharedPointer<Schema>::create();
     schema->setDeepCopyFlag(true);
     return new LoadWorkflowTask(schema, NULL, pathToSchema);
-}
-
-WorkflowRunFromCMDLineBase::~WorkflowRunFromCMDLineBase() {
-    delete schema;
 }
 
 static void setSchemaCMDLineOptions(Schema *schema, int optionsStartAtIdx) {
@@ -158,11 +154,11 @@ QList<Task *> WorkflowRunFromCMDLineBase::onSubTaskFinished(Task *subTask) {
     assert(!hasError());    // if error, we won't be here
 
     if (loadTask == subTask) {
-        Schema *schema = loadTask->getSchema();
+        const QSharedPointer<Schema> schema = loadTask->getSchema();
         assert(schema != NULL);
         remapping = loadTask->getRemapping();
 
-        setSchemaCMDLineOptions(schema, optionsStartAt);
+        setSchemaCMDLineOptions(schema.get(), optionsStartAt);
         if (schema->getDomain().isEmpty()) {
             QList<QString> domainsId = WorkflowEnv::getDomainRegistry()->getAllIds();
             assert(!domainsId.isEmpty());

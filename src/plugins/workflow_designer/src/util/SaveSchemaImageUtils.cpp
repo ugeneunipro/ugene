@@ -52,16 +52,12 @@ ProduceSchemaImageLinkTask::ProduceSchemaImageLinkTask(const QString &schemaName
     }
 }
 
-ProduceSchemaImageLinkTask::~ProduceSchemaImageLinkTask() {
-    delete schema;
-}
-
 void ProduceSchemaImageLinkTask::prepare() {
     if (hasError() || isCanceled()) {
         return;
     }
 
-    schema = new Schema();
+    schema = QSharedPointer<Schema>::create();
     schema->setDeepCopyFlag(true);
     addSubTask(new LoadWorkflowTask(schema, &meta, schemaPath));
 }
@@ -75,7 +71,7 @@ QList<Task *> ProduceSchemaImageLinkTask::onSubTaskFinished(Task *subTask) {
         return res;
     }
 
-    GoogleChartImage googleImg(schema, meta);
+    GoogleChartImage googleImg(schema.get(), meta);
     imageLink = googleImg.getImageUrl();
 
     return res;

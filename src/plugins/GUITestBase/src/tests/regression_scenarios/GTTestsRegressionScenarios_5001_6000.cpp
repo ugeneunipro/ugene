@@ -647,6 +647,26 @@ GUI_TEST_CLASS_DEFINITION(test_5138_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5149) {
+    // Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Copy a sequence which contains only gaps to the clipboard.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(41, 0), QPoint(43, 0));
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+
+    // Paste the clipboard data to the alignment.
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+
+    // Expected state: nothing happens, the undo/redo stack hasn't been modified.
+    QAbstractButton *undo = GTAction::button(os, "msa_action_undo");
+    CHECK_SET_ERR(!undo->isEnabled(), "Undo button should be disabled");
+
+    QAbstractButton *redo = GTAction::button(os, "msa_action_redo");
+    CHECK_SET_ERR(!redo->isEnabled(), "Redo button should be disabled");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5199) {
     //    1. Open "data/samples/PDB/1CF7.PDB".
     GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");
@@ -1078,7 +1098,25 @@ GUI_TEST_CLASS_DEFINITION(test_5330) {
 
     // Expected state: The MSA object is not marked as modified.
     GTUtilsProjectTreeView::itemModificationCheck(os, GTUtilsProjectTreeView::findIndex(os, "ma2_gapped.aln"), false);
+}
 
+GUI_TEST_CLASS_DEFINITION(test_5334) {
+    // Open "_common_data/clustal/amino_ext.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/amino_ext.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    //Select any symbol 'A' in the alignment.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(19, 0), QPoint(19, 0));
+
+    // Click Ctrl + C.
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+
+    // Click Ctrl + V.
+    GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
+
+    // Expected state: msa alphabet is still AMINO.
+    bool isAmino = GTUtilsMSAEditorSequenceArea::hasAminoAlphabet(os);
+    CHECK_SET_ERR(isAmino, "Alignment has wrong alphabet type");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5335) {
@@ -2737,10 +2775,8 @@ GUI_TEST_CLASS_DEFINITION(test_5696) {
     GTUtilsNotifications::waitForNotification(os, true, "No new rows were inserted: selection contains no valid sequences.");
     GTUtilsDialog::waitAllFinished(os);
 
-    // TODO: can't use Russian text today: PasteController uses UTF-8 to save the text, but TextFormat uses local8Bit to read it and fails.
-    // This makes 2 concurrent popups to appear.
-    // GTClipboard::setText(os, "фыва...");
-    GTClipboard::setText(os, "#$%^&*(");
+    GTClipboard::setText(os, "фыва...");
+    //GTClipboard::setText(os, "#$%^&*(");
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);    // Qt::ControlModifier is for Cmd on Mac and for Ctrl on other systems
 
     GTUtilsNotifications::waitForNotification(os, true, "No new rows were inserted: selection contains no valid sequences.");
@@ -3073,6 +3109,40 @@ GUI_TEST_CLASS_DEFINITION(test_5718) {
     int lengthAfterGapColumnsRemoving = GTUtilsOptionPanelMca::getLength(os);
     GTUtilsOptionPanelMca::closeTab(os, GTUtilsOptionPanelMca::General);
     CHECK_SET_ERR(lengthAfterGapColumnsRemoving < lengthBeforeGapColumnsRemoving, QString("Expected: before gap column removig > after gap column removig, current: before %1, after %2").arg(QString::number(lengthBeforeGapColumnsRemoving)).arg(QString::number(lengthAfterGapColumnsRemoving)));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5728) {
+    // Open "_common_data/scenarios/msa/ma2_gapped.aln".
+    GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/ma2_gapped.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Select the first character in the first row.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(0, 0));
+
+    // Enter the character replacement mode.
+    GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
+
+    // Press the Space key.
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+
+    // Select the last character in the last row.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(13, 9), QPoint(13, 9));
+
+    // Press the Delete key (to cause the alignment updating and redrawing).
+    GTKeyboardDriver::keyClick(Qt::Key_Delete);
+
+    // Expected state: the first character in the first row and the last character in the last row are gaps, the rest characters in the alignment are the same.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(0, 0));
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    QString selectionContent1 = GTClipboard::text(os);
+    CHECK_SET_ERR(selectionContent1 == "-", QString("Incorrect selection content: expected - %1, received - %2").arg("-").arg(selectionContent1));
+
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(13, 9), QPoint(13, 9));
+    GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
+    QString selectionContent2 = GTClipboard::text(os);
+    CHECK_SET_ERR(selectionContent2 == "-", QString("Incorrect selection content: expected - %1, received - %2").arg("-").arg(selectionContent2));
+
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLength(os) == 14, "Wrong msa length");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5739) {
@@ -4660,6 +4730,28 @@ GUI_TEST_CLASS_DEFINITION(test_5898) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
+}
+
+GUI_TEST_CLASS_DEFINITION(test_5899) {
+    GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "NM_001135099", 0));
+
+    GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."} ,GTGlobals::UseKey);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
+                                                                        << "primer3_action"));
+    Primer3DialogFiller::Primer3Settings settings;
+    settings.rtPcrDesign = true;
+
+    GTUtilsDialog::waitForDialog(os, new Primer3DialogFiller(os, settings));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsAnnotationsTreeView::findItem(os, "pair 1  (0, 2)");
+    GTUtilsAnnotationsTreeView::findItem(os, "pair 2  (0, 2)");
+    GTUtilsAnnotationsTreeView::findItem(os, "pair 3  (0, 2)");
+    GTUtilsAnnotationsTreeView::findItem(os, "pair 4  (0, 2)");
+    GTUtilsAnnotationsTreeView::findItem(os, "pair 5  (0, 2)");
+
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5903) {
