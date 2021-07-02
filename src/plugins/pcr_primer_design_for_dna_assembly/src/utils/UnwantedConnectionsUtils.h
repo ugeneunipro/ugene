@@ -24,6 +24,8 @@
 
 #include <QByteArray>
 
+#include <U2Core/PrimerDimersFinder.h>
+
 namespace U2 {
 
 class UnwantedConnectionsUtils {
@@ -45,6 +47,12 @@ public:
                                       double unwantedDeltaG,
                                       double unwantedMeltingTemperature,
                                       int unwantedDimerLength);
+
+private:
+    static bool areUnwantedParametersPresentedInDimersInfo(const DimerFinderResult& dimersInfo,
+                                                           double unwantedDeltaG,
+                                                           double unwantedMeltingTemperature,
+                                                           int unwantedDimerLength);
 
 
 
