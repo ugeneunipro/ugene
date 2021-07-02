@@ -128,5 +128,10 @@ QString FindUnwantedIslandsTask::regionToString(const U2Region& region) const {
     return QString("%1..%2").arg(regionToLog.startPos + 1).arg(regionToLog.endPos() + 1);
 }
 
+QString FindUnwantedIslandsTask::regionToString(const U2Region& region) const {
+    U2Region regionToLog = isComplement ? DNASequenceUtils::reverseComplementRegion(region, sequence.size()) : region;
+    return QString("%1..%2").arg(regionToLog.startPos + 1).arg(regionToLog.endPos() + 1);
+}
+
 
 }

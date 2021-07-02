@@ -67,6 +67,8 @@ private:
     QString regionToString(const U2Region& region, bool isComplement) const;
     QString getPairReport(U2Region forward, U2Region reverse, const QString &primerName) const;
 
+    QString PCRPrimerDesignForDNAAssemblyTask::regionToString(const U2Region& region, bool isComplement) const;
+
 
     PCRPrimerDesignForDNAAssemblyTaskSettings settings;
     QByteArray sequence;

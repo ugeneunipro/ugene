@@ -569,5 +569,4 @@ QString PCRPrimerDesignForDNAAssemblyTask::getPairReport(U2Region forward,
 }
 
 
-
 }
