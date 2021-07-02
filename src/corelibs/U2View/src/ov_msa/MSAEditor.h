@@ -119,11 +119,14 @@ public:
 
     void setRowOrderMode(MaEditorRowOrderMode mode) override;
 
-    /**
-     * Returns modifiable instance of the 'freeModeMasterMarkersSet'.
-     * TODO: change signature to return const reference.
-     */
-    QSet<QObject *> &getFreeModeMasterMarkersSet();
+    /** Returns current set of free-mode markers. */
+    const QSet<QObject *> &getFreeModeMasterMarkersSet() const;
+
+    /** Adds new marker object into freeModeMasterMarkersSet. */
+    void addFreeModeMasterMarker(QObject *marker);
+
+    /** Removes the given marker object from the freeModeMasterMarkersSet. */
+    void removeFreeModeMasterMarker(QObject *marker);
 
 protected slots:
     void sl_onContextMenuRequested(const QPoint &pos);

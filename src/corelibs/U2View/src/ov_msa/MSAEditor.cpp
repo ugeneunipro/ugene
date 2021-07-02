@@ -816,18 +816,6 @@ void MSAEditor::sl_sortGroupsBySize() {
 }
 
 // TODO: move this function into MSA?
-/* Compares sequences of 2 rows ignoring gaps. */
-static bool isEqualsIgnoreGaps(const MultipleAlignmentRowData *row1, const MultipleAlignmentRowData *row2) {
-    if (row1 == row2) {
-        return true;
-    }
-    if (row1->getUngappedLength() != row2->getUngappedLength()) {
-        return false;
-    }
-    return row1->getUngappedSequence().seq == row2->getUngappedSequence().seq;
-}
-
-// TODO: move this function into MSA?
 /* Groups rows by similarity. Two rows are considered equal if their sequences are equal with ignoring of gaps. */
 static QList<QList<int>> groupRowsBySimilarity(const QList<MultipleAlignmentRow> &msaRows) {
     QList<QList<int>> rowGroups;
@@ -841,7 +829,7 @@ static QList<QList<int>> groupRowsBySimilarity(const QList<MultipleAlignmentRow>
         rowGroup << i;
         for (int j = i + 1; j < msaRows.size(); j++) {
             const MultipleAlignmentRow &next = msaRows[j];
-            if (!mappedRows.contains(j) && isEqualsIgnoreGaps(next.data(), row.data())) {
+            if (!mappedRows.contains(j) && MultipleAlignmentRowData::isEqualsIgnoreGaps(next.data(), row.data())) {
                 rowGroup << j;
                 mappedRows.insert(j);
             }
@@ -908,8 +896,15 @@ void MSAEditor::setRowOrderMode(MaEditorRowOrderMode mode) {
     updateActions();
 }
 
-QSet<QObject *> &MSAEditor::getFreeModeMasterMarkersSet() {
+const QSet<QObject *> &MSAEditor::getFreeModeMasterMarkersSet() const {
     return freeModeMasterMarkersSet;
 }
 
+void MSAEditor::addFreeModeMasterMarker(QObject *marker) {
+    freeModeMasterMarkersSet.insert(marker);
+}
+
+void MSAEditor::removeFreeModeMasterMarker(QObject *marker) {
+    freeModeMasterMarkersSet.remove(marker);
+}
 }    // namespace U2

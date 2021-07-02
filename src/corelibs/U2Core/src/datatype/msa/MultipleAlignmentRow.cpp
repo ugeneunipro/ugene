@@ -95,7 +95,16 @@ U2Region MultipleAlignmentRowData::getUngappedRegion(const U2Region &gappedRegio
     return MsaRowUtils::getUngappedRegion(gaps, noTrailingGapsRegion);
 }
 
-MultipleAlignmentRowData::~MultipleAlignmentRowData() {
+/* Compares sequences of 2 rows ignoring gaps. */
+bool MultipleAlignmentRowData::isEqualsIgnoreGaps(const MultipleAlignmentRowData *row1, const MultipleAlignmentRowData *row2) {
+    SAFE_POINT(row1 != nullptr && row2 != nullptr, "One of the rows is nullptr!", false);
+    if (row1 == row2) {
+        return true;
+    }
+    if (row1->getUngappedLength() != row2->getUngappedLength()) {
+        return false;
+    }
+    return row1->getUngappedSequence().seq == row2->getUngappedSequence().seq;
 }
 
 }    // namespace U2
