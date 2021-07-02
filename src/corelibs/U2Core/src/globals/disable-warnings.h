@@ -32,6 +32,7 @@
 
 #ifdef __GNUC__
 #    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wpragmas"
 #    pragma GCC diagnostic ignored "-Wbool-compare"
 #    pragma GCC diagnostic ignored "-Wdeprecated"
 #    pragma GCC diagnostic ignored "-Wimplicit-fallthrough"

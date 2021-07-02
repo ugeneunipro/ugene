@@ -22,12 +22,13 @@
 #ifndef _U2_SITECON_PLUGIN_H_
 #define _U2_SITECON_PLUGIN_H_
 
-#include "DIPropertiesSitecon.h"
+#include <QMenu>
 
 #include <U2Core/PluginModel.h>
+
 #include <U2Gui/ObjectViewModel.h>
 
-#include <QMenu>
+#include "DIPropertiesSitecon.h"
 
 namespace U2 {
 
@@ -40,35 +41,36 @@ public:
     SiteconPlugin();
     ~SiteconPlugin();
 
-    static QList<DiPropertySitecon*> getDinucleotiteProperties() {return dp.getProperties();}
+    static QList<DiPropertySitecon *> getDinucleotiteProperties() {
+        return dp.getProperties();
+    }
 
 protected slots:
     void sl_build();
     void sl_search();
 
 private:
-    SiteconADVContext*                  ctxADV;
+    SiteconADVContext *ctxADV;
     static DinucleotitePropertyRegistry dp;
 };
 
-
-class SiteconADVContext: public GObjectViewWindowContext {
+class SiteconADVContext : public GObjectViewWindowContext {
     Q_OBJECT
 public:
-    SiteconADVContext(QObject* p);
+    SiteconADVContext(QObject *p);
 
 protected slots:
     void sl_search();
 
 protected:
-    void initViewContext(GObjectView* view) override;
+    void initViewContext(GObjectView *view) override;
 };
 
 class SiteconAlgorithmTests {
 public:
-    static QList<XMLTestFactory*> createTestFactories();
+    static QList<XMLTestFactory *> createTestFactories();
 };
 
-} //namespace
+}    // namespace U2
 
 #endif

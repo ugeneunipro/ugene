@@ -22,12 +22,13 @@
 #ifndef _U2_SITECON_ALG_TEST_H_
 #define _U2_SITECON_ALG_TEST_H_
 
-#include "SiteconAlgorithm.h"
-#include "SiteconSearchTask.h"
-#include <U2Test/XMLTestUtils.h>
 #include <U2Core/GObject.h>
 #include <U2Core/MultipleSequenceAlignment.h>
 
+#include <U2Test/XMLTestUtils.h>
+
+#include "SiteconAlgorithm.h"
+#include "SiteconSearchTask.h"
 
 namespace U2 {
 
@@ -36,9 +37,10 @@ class GTest_CalculateACGTContent : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_CalculateACGTContent, "sitecon-calculateACGTContent", TaskFlags_FOSCOE);
 
-    void prepare();
-    void run();
-    Task::ReportResult report();
+    void prepare() override;
+    void run() override;
+    Task::ReportResult report() override;
+
 private:
     QString docName;
     SiteconBuildSettings s;
@@ -49,18 +51,20 @@ private:
 class GTest_CalculateDispersionAndAverage : public XmlTest {
     Q_OBJECT
     typedef QVector<int> ResultVector;
+
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_CalculateDispersionAndAverage, "sitecon-calculateDispersionAndAverage", TaskFlags_FOSCOE);
 
-    void prepare();
-    void run();
-    Task::ReportResult report();
+    void prepare() override;
+    void run() override;
+    Task::ReportResult report() override;
+
 private:
     QString docName;
     SiteconBuildSettings s;
     MultipleSequenceAlignment ma;
     QVector<PositionStats> result;
-    QVector<ResultVector> expectedResults;    
+    QVector<ResultVector> expectedResults;
 };
 
 class GTest_CalculateFirstTypeError : public XmlTest {
@@ -68,16 +72,17 @@ class GTest_CalculateFirstTypeError : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_CalculateFirstTypeError, "sitecon-calculateFirstTypeError", TaskFlags_FOSCOE);
 
-    void prepare();
-    void run();
-    Task::ReportResult report();
+    void prepare() override;
+    void run() override;
+    Task::ReportResult report() override;
+
 private:
     QString docName;
     int offset;
     SiteconBuildSettings s;
     MultipleSequenceAlignment ma;
-    QVector<float> result;
-    QVector<int> expectedResult;    
+    QVector<qreal> result;
+    QVector<int> expectedResult;
 };
 
 class GTest_CalculateSecondTypeError : public XmlTest {
@@ -85,16 +90,17 @@ class GTest_CalculateSecondTypeError : public XmlTest {
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY_EXT(GTest_CalculateSecondTypeError, "sitecon-calculateSecondTypeError", TaskFlags_FOSCOE);
 
-    void prepare();
-    void run();
-    Task::ReportResult report();
+    void prepare() override;
+    void run() override;
+    Task::ReportResult report() override;
+
 private:
     QString docName;
     int offset;
     SiteconBuildSettings s;
     MultipleSequenceAlignment ma;
-    QVector<float> result;
-    QVector<int> expectedResult;    
+    QVector<qreal> result;
+    QVector<int> expectedResult;
 };
 
 class GTest_SiteconSearchTask : public XmlTest {
@@ -103,10 +109,10 @@ public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_SiteconSearchTask, "sitecon-search_task");
 
     void init();
-    void prepare();
-    Task::ReportResult report();
+    void prepare() override;
+    Task::ReportResult report() override;
+
 private:
-    
     SiteconSearchTask *task;
     QString seqName;
     int tresh;
@@ -114,22 +120,20 @@ private:
     bool isNeedCompliment;
     bool complOnly;
     QByteArray seqData;
-    QList<SiteconSearchResult>  results;
-    QList<SiteconSearchResult>  expectedResults;
+    QList<SiteconSearchResult> results;
+    QList<SiteconSearchResult> expectedResults;
 };
 
-
-class GTest_CompareSiteconModels: public XmlTest {
+class GTest_CompareSiteconModels : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CompareSiteconModels, "compare-sitecon-models");
-    Task::ReportResult report();
+    Task::ReportResult report() override;
 
 public:
-    QString             doc1ContextName;
-    QString             doc2ContextName;
-
+    QString doc1ContextName;
+    QString doc2ContextName;
 };
 
-}//namespace
+}    // namespace U2
 #endif
