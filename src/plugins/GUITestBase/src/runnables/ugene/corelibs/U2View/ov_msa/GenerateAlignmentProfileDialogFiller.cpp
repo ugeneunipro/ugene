@@ -37,6 +37,7 @@ namespace U2 {
 
 #define GT_CLASS_NAME "GTUtilsDialog::GenerateAlignmentProfileDialogFiller"
 #define GT_METHOD_NAME "commonScenario"
+
 void GenerateAlignmentProfileDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
     GT_CHECK(dialog, "activeModalWidget is NULL");

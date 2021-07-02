@@ -102,6 +102,7 @@
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
+#include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/utils_smith_waterman/SmithWatermanDialogBaseFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSelectedSequenceFromAlignmentDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
@@ -122,10 +123,42 @@
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
+
 namespace U2 {
 
 namespace GUITest_regression_scenarios {
 using namespace HI;
+
+GUI_TEST_CLASS_DEFINITION(test_6008) {
+    // Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Click to the "Tettigonia_viridissima" row name in the name list.
+    GTUtilsMsaEditor::clickSequence(os, 9);
+
+    // Click to the second base of the second row in the sequence area.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1,1), QPoint(1, 1));
+
+    // Expected state: "Isophya_altaica_EF540820" is selected in the name list.
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceSelected(os, QString("Isophya_altaica_EF540820")),
+                  "Expected sequence is not selected");
+
+    // Click to the name list with the right mouse button to set the focus on it.
+    GTUtilsMsaEditor::clickSequenceName(os, "Zychia_baranovi", Qt::RightButton);
+
+    // Click Escape key to close the context menu.
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+    // Press the down arrow key.
+    GTKeyboardDriver::keyClick(Qt::Key_Down);
+
+    // Expected state: "Bicolorana_bicolor_EF540830" is selected in the name list. The whole row data is selected.
+    CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceSelected(os, QString("Bicolorana_bicolor_EF540830")),
+                  "Expected sequence is not selected");
+    GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 2, 604, 1));
+
+}
 
 GUI_TEST_CLASS_DEFINITION(test_6031) {
     //1. Open samples/APR/gyrA.apr in read-only mode
@@ -783,6 +816,24 @@ GUI_TEST_CLASS_DEFINITION(test_6102) {
 
     const bool isAlphabetAmino = GTUtilsMsaEditor::getEditor(os)->getMaObject()->getAlphabet()->isAmino();
     CHECK_SET_ERR(isAlphabetAmino, "Alphabet is not amino");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6104) {
+    // Open "data/samples/CLUSTALW/COI.aln".
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Build a phylogenetic tree. Check that the tree is synchronized with the alignment.
+    GTUtilsDialog::waitForDialog(os, new BuildTreeDialogFiller(os, sandBoxDir + "test_6104/COI.nwk", 0, 0, true));
+    GTWidget::click(os, GTAction::button(os, "Build Tree"));
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QAbstractButton *syncModeButton = GTAction::button(os, "sync_msa_action");
+    CHECK_SET_ERR(syncModeButton->isChecked(), "Sync mode must be ON/1");
+    CHECK_SET_ERR(syncModeButton->isEnabled(), "Sync mode must be enabled/1");
+
+    // Rename the first to "1".
+    GTUtilsMSAEditorSequenceArea::renameSequence(os, "Isophya_altaica_EF540820", "1");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6118) {
@@ -5565,6 +5616,27 @@ GUI_TEST_CLASS_DEFINITION(test_6760) {
     //Expected result: the annotation is present in another sequence view too.
     GTUtilsAnnotationsTreeView::findItem(os, "5_prime_UTR_intron");
 }
+
+GUI_TEST_CLASS_DEFINITION(test_6807) {
+    class CheckWarningScenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            QLabel *warningLabel = GTWidget::findExactWidget<QLabel *>(os, "warningLabel", dialog);
+            CHECK_SET_ERR(!warningLabel->text().isEmpty(), "Warning message is empty");
+
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+    //1. Open document test/_common_data/clustal/big.aln
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "big.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //2. Do MSA area context menu->Statistics->generate grid profile
+    //Expected state: grid profile dialog contains warning label
+    GTUtilsDialog::waitForDialog(os, new GenerateAlignmentProfileDialogFiller(os, new CheckWarningScenario()));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_STATISTICS << "Generate grid profile"));
+    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6808) {
     // Open "COI.aln".
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
