@@ -47,7 +47,7 @@ typedef QFlags<StateLockFlag> StateLockFlags;
  */
 class U2CORE_EXPORT StateLocker {
 public:
-    StateLocker(StateLockableItem *lockableItem, StateLock *lock = NULL);
+    StateLocker(StateLockableItem *lockableItem, StateLock *lock = nullptr);
     ~StateLocker();
 
 private:
@@ -84,7 +84,7 @@ private:
 class U2CORE_EXPORT StateLockableItem : public QObject {
     Q_OBJECT
 public:
-    StateLockableItem(QObject *p = NULL);
+    StateLockableItem(QObject *p = nullptr);
     virtual ~StateLockableItem();
 
     int getStateLocksCount() const {

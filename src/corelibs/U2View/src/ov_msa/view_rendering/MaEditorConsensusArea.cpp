@@ -125,7 +125,7 @@ bool MaEditorConsensusArea::event(QEvent *e) {
 void MaEditorConsensusArea::initCache() {
     MSAConsensusAlgorithmFactory *algo = getConsensusAlgorithmFactory();
     GCounter::increment(QString("'%1' consensus type is selected on view opening").arg(algo->getName()), editor->getFactoryId());
-    consensusCache = QSharedPointer<MSAEditorConsensusCache>(new MSAEditorConsensusCache(NULL, editor->getMaObject(), algo));
+    consensusCache = QSharedPointer<MSAEditorConsensusCache>(new MSAEditorConsensusCache(nullptr, editor->getMaObject(), algo));
     connect(consensusCache->getConsensusAlgorithm(), SIGNAL(si_thresholdChanged(int)), SLOT(sl_onConsensusThresholdChanged(int)));
     restoreLastUsedConsensusThreshold();
 }
@@ -208,7 +208,7 @@ MSAConsensusAlgorithmFactory *MaEditorConsensusArea::getConsensusAlgorithmFactor
         algo = reg->getAlgorithmFactory(getDefaultAlgorithmId());
         if ((algo->getFlags() & alphaFlags) != alphaFlags) {
             QList<MSAConsensusAlgorithmFactory *> algorithms = reg->getAlgorithmFactories(MSAConsensusAlgorithmFactory::getAphabetFlags(al));
-            SAFE_POINT(algorithms.count() > 0, "There are no consensus algorithms for the current alphabet.", NULL);
+            SAFE_POINT(algorithms.count() > 0, "There are no consensus algorithms for the current alphabet.", nullptr);
             algo = algorithms.first();
         }
         AppContext::getSettings()->setValue(lastUsedAlgoKey, algo->getId());

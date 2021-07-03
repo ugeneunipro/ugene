@@ -42,9 +42,9 @@ CreateObjectRelationDialogController::CreateObjectRelationDialogController(GObje
                                                                            bool rd,
                                                                            const QString &relationHint,
                                                                            QWidget *p)
-    : QDialog(p), selectedObject(NULL), assObj(_assObj), objects(_objects), role(_role), removeDuplicates(rd), relationIsSet(false) {
+    : QDialog(p), selectedObject(nullptr), assObj(_assObj), objects(_objects), role(_role), removeDuplicates(rd), relationIsSet(false) {
     assert(!objects.isEmpty());
-    assert(assObj != NULL);
+    assert(assObj != nullptr);
     ui = new Ui_CreateObjectRelationDialog;
 
     ui->setupUi(this);

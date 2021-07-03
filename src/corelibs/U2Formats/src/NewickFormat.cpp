@@ -52,7 +52,7 @@ static QList<GObject *> parseTrees(IOAdapter *io, const U2DbiRef &dbiRef, const 
 
 Document *NewickFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
     QList<GObject *> objects = parseTrees(io, dbiRef, fs, os);
-    CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
+    CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
     Document *d = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs);
     return d;
 }
@@ -63,7 +63,7 @@ void NewickFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
 
     foreach (GObject *obj, d->getObjects()) {
         PhyTreeObject *phyObj = qobject_cast<PhyTreeObject *>(obj);
-        if (phyObj != NULL) {
+        if (phyObj != nullptr) {
             QByteArray data = NewickPhyTreeSerializer::serialize(phyObj->getTree());
             io->writeBlock(data.constData(), data.size());
         }

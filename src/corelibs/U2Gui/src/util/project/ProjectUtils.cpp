@@ -38,7 +38,7 @@ const QString ProjectUtils::RECYCLE_BIN_FOLDER_PATH = U2ObjectDbi::ROOT_FOLDER +
 QList<Document *> ProjectUtils::getConnectedSharedDatabases() {
     QList<Document *> result;
     Project *proj = AppContext::getProject();
-    CHECK(NULL != proj, result);
+    CHECK(nullptr != proj, result);
 
     foreach (Document *doc, proj->getDocuments()) {
         if (doc->isDatabaseConnection()) {
@@ -54,12 +54,12 @@ bool ProjectUtils::areSharedDatabasesAvailable() {
 }
 
 bool ProjectUtils::isConnectedDatabaseDoc(const Document *doc) {
-    CHECK(NULL != doc, false);
+    CHECK(nullptr != doc, false);
     return (BaseDocumentFormats::DATABASE_CONNECTION == doc->getDocumentFormatId()) && (doc->isLoaded());
 }
 
 bool ProjectUtils::isDatabaseDoc(const Document *doc) {
-    CHECK(NULL != doc, false);
+    CHECK(nullptr != doc, false);
     return BaseDocumentFormats::DATABASE_CONNECTION == doc->getDocumentFormatId();
 }
 
@@ -77,25 +77,25 @@ bool ProjectUtils::isSystemFolder(const QString &folderPath) {
 
 Document *ProjectUtils::findDocument(const QString &url) {
     Project *project = AppContext::getProject();
-    CHECK(NULL != project, NULL);
+    CHECK(nullptr != project, nullptr);
     return project->findDocumentByURL(url);
 }
 
 bool ProjectUtils::hasLoadedDocument(const QString &url) {
     const Document *doc = findDocument(url);
-    CHECK(NULL != doc, false);
+    CHECK(nullptr != doc, false);
     return doc->isLoaded();
 }
 
 bool ProjectUtils::hasUnloadedDocument(const QString &url) {
     const Document *doc = findDocument(url);
-    CHECK(NULL != doc, false);
+    CHECK(nullptr != doc, false);
     return !doc->isLoaded();
 }
 
 LoadUnloadedDocumentTask *ProjectUtils::findLoadTask(const QString &url) {
     Document *doc = findDocument(url);
-    CHECK(NULL != doc, NULL);
+    CHECK(nullptr != doc, nullptr);
     return LoadUnloadedDocumentTask::findActiveLoadingTask(doc);
 }
 

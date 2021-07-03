@@ -28,7 +28,7 @@
 namespace U2 {
 
 PairedDatasetsController::PairedDatasetsController(WizardController *wc, PairedReadsWidget *_widget)
-    : WidgetController(wc), widget(_widget), dsc(NULL) {
+    : WidgetController(wc), widget(_widget), dsc(nullptr) {
 }
 
 PairedDatasetsController::~PairedDatasetsController() {
@@ -38,7 +38,7 @@ PairedDatasetsController::~PairedDatasetsController() {
 QWidget *PairedDatasetsController::createGUI(U2OpStatus &os) {
     if (2 != widget->getInfos().size()) {
         os.setError("Only 2 datasets are supported");
-        return NULL;
+        return nullptr;
     }
 
     AttributeInfo info1 = widget->getInfos().at(0);
@@ -48,7 +48,7 @@ QWidget *PairedDatasetsController::createGUI(U2OpStatus &os) {
     QList<Dataset> sets1 = value1.value<QList<Dataset>>();
     QList<Dataset> sets2 = value2.value<QList<Dataset>>();
 
-    if (NULL != dsc) {
+    if (nullptr != dsc) {
         delete dsc;
     }
     dsc = new PairedReadsController(sets1, sets2, info1.hints[AttributeInfo::LABEL].toString(), info2.hints[AttributeInfo::LABEL].toString());

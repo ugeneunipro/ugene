@@ -57,7 +57,7 @@ const float MaEditor::zoomMult = 1.25;
 
 MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObject *obj)
     : GObjectView(factoryId, viewName),
-      ui(NULL),
+      ui(nullptr),
       resizeMode(ResizeMode_FontAndContent),
       minimumFontPointSize(6),
       maximumFontPointSize(24),
@@ -65,8 +65,8 @@ MaEditor::MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObj
       cachedColumnWidth(0),
       cursorPosition(QPoint(0, 0)),
       rowOrderMode(MaEditorRowOrderMode::Original),
-      exportHighlightedAction(NULL),
-      clearSelectionAction(NULL) {
+      exportHighlightedAction(nullptr),
+      clearSelectionAction(nullptr) {
     GCOUNTER(cvar, factoryId);
 
     maObject = qobject_cast<MultipleAlignmentObject *>(obj);
@@ -315,7 +315,7 @@ void MaEditor::sl_saveAlignment() {
 
 void MaEditor::sl_saveAlignmentAs() {
     Document *srcDoc = maObject->getDocument();
-    if (srcDoc == NULL) {
+    if (srcDoc == nullptr) {
         return;
     }
     if (!srcDoc->isLoaded()) {
@@ -386,14 +386,14 @@ void MaEditor::initActions() {
 
 void MaEditor::initZoom() {
     Settings *s = AppContext::getSettings();
-    SAFE_POINT(s != NULL, "AppContext is NULL", );
+    SAFE_POINT(s != nullptr, "AppContext is NULL", );
     zoomFactor = s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_ZOOM_FACTOR, MOBJECT_DEFAULT_ZOOM_FACTOR).toFloat();
     updateResizeMode();
 }
 
 void MaEditor::initFont() {
     Settings *s = AppContext::getSettings();
-    SAFE_POINT(s != NULL, "AppContext is NULL", );
+    SAFE_POINT(s != nullptr, "AppContext is NULL", );
     font.setFamily(s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_FAMILY, MOBJECT_DEFAULT_FONT_FAMILY).toString());
     font.setPointSize(s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_SIZE, MOBJECT_DEFAULT_FONT_SIZE).toInt());
     font.setItalic(s->getValue(getSettingsRoot() + MOBJECT_SETTINGS_FONT_ITALIC, false).toBool());

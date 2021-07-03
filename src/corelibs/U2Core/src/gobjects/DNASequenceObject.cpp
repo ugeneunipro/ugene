@@ -49,13 +49,13 @@ U2SequenceObjectConstraints::U2SequenceObjectConstraints(QObject *p)
 // U2SequenceObject
 
 U2SequenceObject::U2SequenceObject(const QString &name, const U2EntityRef &seqRef, const QVariantMap &hintsMap)
-    : GObject(GObjectTypes::SEQUENCE, name, hintsMap), cachedAlphabet(NULL), cachedLength(-1), cachedCircular(TriState_Unknown) {
+    : GObject(GObjectTypes::SEQUENCE, name, hintsMap), cachedAlphabet(nullptr), cachedLength(-1), cachedCircular(TriState_Unknown) {
     entityRef = seqRef;
 }
 
 bool U2SequenceObject::checkConstraints(const GObjectConstraints *c) const {
     const U2SequenceObjectConstraints *dnac = qobject_cast<const U2SequenceObjectConstraints *>(c);
-    SAFE_POINT(dnac != NULL, "Not a U2SequenceObjectConstraints!", false);
+    SAFE_POINT(dnac != nullptr, "Not a U2SequenceObjectConstraints!", false);
 
     if (dnac->sequenceSize != NO_LENGTH_CONSTRAINT) {
         qint64 seqLen = getSequenceLength();
@@ -65,7 +65,7 @@ bool U2SequenceObject::checkConstraints(const GObjectConstraints *c) const {
     }
     if (dnac->alphabetType != DNAAlphabet_RAW) {
         const DNAAlphabet *dalphabet = getAlphabet();
-        SAFE_POINT(dalphabet != NULL, "U2SequenceObject::no alphabet", false);
+        SAFE_POINT(dalphabet != nullptr, "U2SequenceObject::no alphabet", false);
         DNAAlphabetType aType = dalphabet->getType();
         if (dnac->alphabetType != aType) {
             return false;
@@ -142,7 +142,7 @@ bool U2SequenceObject::isCircular() const {
 }
 
 const DNAAlphabet *U2SequenceObject::getAlphabet() const {
-    if (cachedAlphabet == NULL) {
+    if (cachedAlphabet == nullptr) {
         updateCachedValues();
     }
     return cachedAlphabet;
@@ -192,7 +192,7 @@ bool U2SequenceObject::isValidDbiObject(U2OpStatus &os) {
     CHECK_OP(os, false);
     U2Sequence s = con.dbi->getSequenceDbi()->getSequenceObject(entityRef.entityId, os);
     CHECK_OP(os, false);
-    if (U2AlphabetUtils::getById(s.alphabet) == NULL) {
+    if (U2AlphabetUtils::getById(s.alphabet) == nullptr) {
         os.setError(tr("Internal error, sequence alphabet id '%1' is invalid").arg(s.alphabet.id));
         return false;
     }
@@ -205,7 +205,7 @@ void U2SequenceObject::replaceRegion(const U2Region &region, const DNASequence &
 
 void U2SequenceObject::replaceRegion(const U2DataId &masterId, const U2Region &region, const DNASequence &seq, U2OpStatus &os) {
     // seq.alphabet == NULL - for tests.
-    CHECK_EXT(seq.alphabet == getAlphabet() || seq.seq.isEmpty() || seq.alphabet == NULL,
+    CHECK_EXT(seq.alphabet == getAlphabet() || seq.seq.isEmpty() || seq.alphabet == nullptr,
               os.setError(tr("Modified sequence & region have different alphabet")), );
 
     DbiConnection con(entityRef.dbiRef, os);
@@ -227,24 +227,24 @@ void U2SequenceObject::removeRegion(U2OpStatus &os, const U2Region &region) {
 GObject *U2SequenceObject::clone(const U2DbiRef &dbiRef, U2OpStatus &os, const QVariantMap &hints) const {
     DbiOperationsBlock opBlock(dbiRef, os);
     Q_UNUSED(opBlock);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     DbiConnection srcCon(this->entityRef.dbiRef, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     DbiConnection dstCon(dbiRef, true, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     GHintsDefaultImpl gHints(getGHintsMap());
     gHints.setAll(hints);
     const QString &dstFolder = gHints.get(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
     U2Sequence seq = U2SequenceUtils::copySequence(entityRef, dbiRef, dstFolder, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     U2SequenceObject *res = new U2SequenceObject(seq.visualName, U2EntityRef(dbiRef, seq.id), gHints.getMap());
 
     U2AttributeUtils::copyObjectAttributes(entityRef.entityId, seq.id, srcCon.dbi->getAttributeDbi(), dstCon.dbi->getAttributeDbi(), os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     return res;
 }
@@ -405,7 +405,7 @@ void U2SequenceObject::updateCachedValues() const {
     cachedAlphabet = U2AlphabetUtils::getById(seq.alphabet);
     cachedCircular = seq.circular ? TriState_Yes : TriState_No;
 
-    SAFE_POINT(cachedAlphabet != NULL, "Invalid sequence alphabet", );
+    SAFE_POINT(cachedAlphabet != nullptr, "Invalid sequence alphabet", );
 }
 
 void U2SequenceObject::sl_resetDataCaches() {

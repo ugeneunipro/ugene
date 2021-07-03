@@ -34,7 +34,7 @@ namespace U2 {
 /* PropertyWizardController */
 /************************************************************************/
 PropertyWizardController::PropertyWizardController(WizardController *wc, AttributeWidget *_widget)
-    : WidgetController(wc), widget(_widget), _tags(NULL) {
+    : WidgetController(wc), widget(_widget), _tags(nullptr) {
     actor = WorkflowUtils::actorById(wc->getCurrentActors(), widget->getActorId());
     wc->addPropertyController(widget->getInfo(), this);
 }
@@ -66,7 +66,7 @@ DelegateTags *PropertyWizardController::tags() const {
 /* InUrlDatasetsController */
 /************************************************************************/
 InUrlDatasetsController::InUrlDatasetsController(WizardController *wc, AttributeWidget *widget)
-    : PropertyWizardController(wc, widget), dsc(NULL) {
+    : PropertyWizardController(wc, widget), dsc(nullptr) {
 }
 
 InUrlDatasetsController::~InUrlDatasetsController() {
@@ -74,7 +74,7 @@ InUrlDatasetsController::~InUrlDatasetsController() {
 }
 
 QWidget *InUrlDatasetsController::createGUI(U2OpStatus & /*os*/) {
-    if (NULL != dsc) {
+    if (nullptr != dsc) {
         delete dsc;
     }
     QList<Dataset> sets;
@@ -87,8 +87,8 @@ QWidget *InUrlDatasetsController::createGUI(U2OpStatus & /*os*/) {
         sets << Dataset();
     }
     URLAttribute *attr = dynamic_cast<URLAttribute *>(attribute());
-    SAFE_POINT(NULL != attr, "Unexpected attribute value", NULL);
-    const QSet<GObjectType> compatibleObjTypes = NULL != attr ? attr->getCompatibleObjectTypes() : QSet<GObjectType>();
+    SAFE_POINT(nullptr != attr, "Unexpected attribute value", nullptr);
+    const QSet<GObjectType> compatibleObjTypes = nullptr != attr ? attr->getCompatibleObjectTypes() : QSet<GObjectType>();
     dsc = new AttributeDatasetsController(sets, compatibleObjTypes);
     connect(dsc, SIGNAL(si_attributeChanged()), SLOT(sl_datasetsChanged()));
     return dsc->getWigdet();
@@ -111,10 +111,10 @@ DefaultPropertyController::~DefaultPropertyController() {
 QWidget *DefaultPropertyController::createGUI(U2OpStatus &os) {
     CHECK_EXT(AttributeInfo::DEFAULT == widget->getProperty(AttributeInfo::TYPE),
               os.setError("Widget type is not default"),
-              NULL);
+              nullptr);
 
     PropertyWidget *propWidget = createPropertyWidget(os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     connect(propWidget, SIGNAL(si_valueChanged(const QVariant &)), SLOT(sl_valueChanged(const QVariant &)));
     connect(this, SIGNAL(si_updateGUI(const QVariant &)), propWidget, SLOT(processDelegateTags()));
     connect(this, SIGNAL(si_updateGUI(const QVariant &)), propWidget, SLOT(setValue(const QVariant &)));
@@ -125,7 +125,7 @@ QWidget *DefaultPropertyController::createGUI(U2OpStatus &os) {
     if (label.isEmpty()) {
         label = attribute()->getDisplayName();
     }
-    LabeledPropertyWidget *result = new LabeledPropertyWidget(label, propWidget, NULL);
+    LabeledPropertyWidget *result = new LabeledPropertyWidget(label, propWidget, nullptr);
     if (labelSize >= 0) {
         result->setLabelWidth(labelSize);
     }
@@ -139,29 +139,29 @@ QWidget *DefaultPropertyController::createGUI(U2OpStatus &os) {
 }
 
 PropertyWidget *DefaultPropertyController::createPropertyWidget(U2OpStatus &os) {
-    PropertyWidget *result = NULL;
-    PropertyDelegate *delegate = NULL;
+    PropertyWidget *result = nullptr;
+    PropertyDelegate *delegate = nullptr;
     {
         ConfigurationEditor *editor = actor->getEditor();
-        if (NULL != editor) {
+        if (nullptr != editor) {
             delegate = editor->getDelegate(widget->getAttributeId());
         }
     }
 
-    if (NULL != delegate) {
+    if (nullptr != delegate) {
         if (noDelegate) {
             result = new DefaultPropertyWidget();
         } else {
-            result = delegate->createWizardWidget(os, NULL);
+            result = delegate->createWizardWidget(os, nullptr);
         }
 
         _tags = wc->getTagsWithoutController(widget->getInfo());
-        if (_tags == NULL) {
+        if (_tags == nullptr) {
             _tags = new DelegateTags(*delegate->tags());
         }
 
         result->setDelegateTags(tags());
-        CHECK_OP(os, NULL);
+        CHECK_OP(os, nullptr);
     } else if (BaseTypes::BOOL_TYPE() == attribute()->getAttributeType()) {
         result = ComboBoxWidget::createBooleanWidget();
     } else if (BaseTypes::URL_DATASETS_TYPE() == attribute()->getAttributeType()) {

@@ -57,16 +57,16 @@ WorkflowRunTask::WorkflowRunTask(const Schema &sh, const QMap<ActorId, ActorId> 
                              TaskFlags(TaskFlag_NoRun) | TaskFlag_ReportingIsSupported | TaskFlag_OnlyNotificationReport),
       rmap(remap), flows(sh.getFlows()) {
     GCOUNTER(cvar, "WorkflowRunTask");
-    if (NULL == debugInfo) {
+    if (nullptr == debugInfo) {
         debugInfo = new WorkflowDebugStatus;
     }
-    if (NULL == debugInfo->parent()) {
+    if (nullptr == debugInfo->parent()) {
         debugInfo->setParent(this);
     }
 
     WorkflowIterationRunTask *t = new WorkflowIterationRunTask(sh, debugInfo);
     WorkflowMonitor *m = t->getMonitor();
-    if (NULL != m) {
+    if (nullptr != m) {
         monitors << m;
     }
     connect(t, SIGNAL(si_ticked()), SIGNAL(si_ticked()));
@@ -160,7 +160,7 @@ WorkflowIterationRunTask::WorkflowIterationRunTask(const Schema &sh,
                                                    WorkflowDebugStatus *initDebugInfo)
     : WorkflowAbstractIterationRunner(tr("Workflow run"),
                                       (getAdditionalFlags() | TaskFlag_CancelOnSubtaskCancel | TaskFlag_FailOnSubtaskError)),
-      context(NULL), schema(new Schema()), scheduler(NULL), debugInfo(initDebugInfo),
+      context(nullptr), schema(new Schema()), scheduler(nullptr), debugInfo(initDebugInfo),
       nextTickRestoring(false), contextInitialized(false) {
     rmap = HRSchemaSerializer::deepCopy(sh, schema, stateInfo);
     SAFE_POINT_OP(stateInfo, );
@@ -201,7 +201,7 @@ WorkflowIterationRunTask::~WorkflowIterationRunTask() {
     if (df) {
         df->destroy(scheduler, schema);
     }
-    scheduler = NULL;
+    scheduler = nullptr;
     // make all signals to be delivered to GUI before the scheme is destroyed
     QCoreApplication::processEvents();
     delete schema;
@@ -219,7 +219,7 @@ void WorkflowIterationRunTask::prepare() {
         return;
     }
     DomainFactory *df = WorkflowEnv::getDomainRegistry()->getById(schema->getDomain());
-    assert(df != NULL);    // checked in constructor
+    assert(df != nullptr);    // checked in constructor
     foreach (Actor *a, schema->getProcesses()) {
         Worker *w = df->createWorker(a);
         if (!w) {
@@ -278,7 +278,7 @@ QList<Task *> WorkflowIterationRunTask::onSubTaskFinished(Task *subTask) {
     if (scheduler->isReady() && nextTickRestoring) {
         Task *replayingTask = scheduler->replayLastWorkerTick();
         nextTickRestoring = false;
-        if (NULL != replayingTask) {
+        if (nullptr != replayingTask) {
             tasks << replayingTask;
             emit si_ticked();
             return tasks;
@@ -359,7 +359,7 @@ inline static bool isSourceActor(const QString &actor, const QString &key) {
 }
 
 WorkflowMonitor *WorkflowIterationRunTask::getMonitor() const {
-    CHECK(NULL != context, NULL);
+    CHECK(nullptr != context, nullptr);
     return context->getMonitor();
 }
 
@@ -373,7 +373,7 @@ int WorkflowIterationRunTask::getMsgNum(const Link *l) {
 
 int WorkflowIterationRunTask::getMsgPassed(const Link *l) {
     CommunicationChannel *cc = lmap.value(getKey(l));
-    if (cc != NULL) {
+    if (cc != nullptr) {
         return cc->takenMessages();
     }
     return 0;
@@ -417,10 +417,10 @@ void WorkflowIterationRunTask::sl_pauseStateChanged(bool isPaused) {
 void WorkflowIterationRunTask::sl_busInvestigationIsRequested(const Workflow::Link *bus,
                                                               int messageNumber) {
     CommunicationChannel *channel = lmap.value(getKey(bus));
-    if (NULL != channel && debugInfo->isPaused()) {
+    if (nullptr != channel && debugInfo->isPaused()) {
         QQueue<Message> messages = channel->getMessages(messageNumber, messageNumber);
         WorkflowDebugMessageParser *parser = debugInfo->getMessageParser();
-        SAFE_POINT(NULL != parser, "Invalid debug message parser!", );
+        SAFE_POINT(nullptr != parser, "Invalid debug message parser!", );
         parser->setSourceData(messages);
         WorkflowInvestigationData data = parser->getAllMessageValues();
         debugInfo->respondToInvestigator(data, bus);
@@ -442,11 +442,11 @@ void WorkflowIterationRunTask::sl_convertMessages2Documents(const Workflow::Link
                                                             int messageNumber,
                                                             const QString &schemeName) {
     CommunicationChannel *channel = lmap.value(getKey(bus));
-    if (NULL != channel && debugInfo->isPaused()) {
+    if (nullptr != channel && debugInfo->isPaused()) {
         QQueue<Message> messages = channel->getMessages(messageNumber, messageNumber);
         if (!messages.isEmpty()) {
             WorkflowDebugMessageParser *parser = debugInfo->getMessageParser();
-            SAFE_POINT(NULL != parser, "Invalid debug message parser!", );
+            SAFE_POINT(nullptr != parser, "Invalid debug message parser!", );
             parser->setSourceData(messages);
             parser->convertMessagesToDocuments(messageType, schemeName, messageNumber);
         }

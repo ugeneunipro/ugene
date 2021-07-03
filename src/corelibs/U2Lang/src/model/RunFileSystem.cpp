@@ -36,7 +36,7 @@ namespace U2 {
 /* FSItem */
 /************************************************************************/
 FSItem::FSItem()
-    : parentItem(NULL), dir(false) {
+    : parentItem(nullptr), dir(false) {
 }
 
 FSItem::FSItem(const QString &name, bool isDirectory, FSItem *parent)
@@ -65,21 +65,21 @@ FSItem *FSItem::parent() const {
 }
 
 FSItem *FSItem::child(int pos) const {
-    SAFE_POINT(isDir(), "Files can not have children", NULL);
+    SAFE_POINT(isDir(), "Files can not have children", nullptr);
     if (pos >= items.size() || pos < 0) {
-        return NULL;
+        return nullptr;
     }
     return items[pos];
 }
 
 int FSItem::row() const {
-    CHECK(NULL != parentItem, 0);
+    CHECK(nullptr != parentItem, 0);
     return parentItem->items.indexOf(const_cast<FSItem *>(this));
 }
 
 bool FSItem::contains(const QString &name) const {
     SAFE_POINT(isDir(), "Files can not have children", false);
-    return (NULL != getItem(children(), name));
+    return (nullptr != getItem(children(), name));
 }
 
 void FSItem::rename(const QString &newName) {
@@ -116,7 +116,7 @@ int FSItem::posToInsert(FSItem *item) const {
 void FSItem::removeChild(const QString &name, U2OpStatus &os) {
     SAFE_POINT(isDir(), "Files can not have children", );
     FSItem *item = FSItem::getItem(children(), name);
-    SAFE_POINT(NULL != item, "No child with the name " + name, );
+    SAFE_POINT(nullptr != item, "No child with the name " + name, );
 
     if (item->isDir() && !item->children().isEmpty()) {
         os.setError(item->name() + " is not empty");
@@ -131,12 +131,12 @@ FSItem *FSItem::getItem(const QVector<FSItem *> &items, const QString &name) {
             return item;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void FSItem::noChildren() {
     foreach (FSItem *item, items) {
-        item->parentItem = NULL;
+        item->parentItem = nullptr;
     }
     items.clear();
 }
@@ -169,7 +169,7 @@ bool RunFileSystem::canAdd(const QString &pathStr, bool isDirectory) {
     foreach (const QString &dirName, parentPath) {
         CHECK(current->isDir(), false);
         FSItem *item = FSItem::getItem(current->children(), dirName);
-        CHECK(NULL != item, true);
+        CHECK(nullptr != item, true);
         current = item;
     }
 
@@ -230,7 +230,7 @@ FSItem *RunFileSystem::find(const QStringList &path, bool &found) {
         }
 
         FSItem *item = FSItem::getItem(current->children(), name);
-        if (NULL == item) {
+        if (nullptr == item) {
             found = false;
             break;
         }
@@ -244,7 +244,7 @@ FSItem *RunFileSystem::createPath(const QStringList &path, U2OpStatus &os) {
     QString pathStr = root->name();
     foreach (const QString &dirName, path) {
         FSItem *item = FSItem::getItem(current->children(), dirName);
-        if (NULL == item) {
+        if (nullptr == item) {
             item = new FSItem(dirName, true);
             current->addChild(item);
         }
@@ -338,9 +338,9 @@ void RFSUtils::initRFS(RunFileSystem &rfs, const QList<Workflow::Actor *> &actor
 
 bool RFSUtils::isOutUrlAttribute(Attribute *attr, Workflow::Actor *actor, bool &dir) {
     ConfigurationEditor *editor = actor->getEditor();
-    CHECK(NULL != editor, false);
+    CHECK(nullptr != editor, false);
     PropertyDelegate *delegate = editor->getDelegate(attr->getId());
-    CHECK(NULL != delegate, false);
+    CHECK(nullptr != delegate, false);
 
     dir = (PropertyDelegate::OUTPUT_DIR == delegate->type());
     if (dir) {

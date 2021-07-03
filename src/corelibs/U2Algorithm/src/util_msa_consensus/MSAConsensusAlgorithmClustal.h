@@ -30,7 +30,7 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryClustal : public MSAConsensusAlgorithmFactory {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmFactoryClustal(QObject *p = NULL)
+    MSAConsensusAlgorithmFactoryClustal(QObject *p = nullptr)
         : MSAConsensusAlgorithmFactory(BuiltInConsensusAlgorithms::CLUSTAL_ALGO, ConsensusAlgorithmFlags_AllAlphabets, p) {
     }
 
@@ -60,7 +60,7 @@ public:
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmClustal : public MSAConsensusAlgorithm {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmClustal(MSAConsensusAlgorithmFactoryClustal *f, bool ignoreTrailingLeadingGaps, QObject *p = NULL)
+    MSAConsensusAlgorithmClustal(MSAConsensusAlgorithmFactoryClustal *f, bool ignoreTrailingLeadingGaps, QObject *p = nullptr)
         : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p) {
     }
 

@@ -384,7 +384,7 @@ QSharedPointer<SQLiteQuery> SQLiteFeatureDbi::createFeatureQuery(const QString &
     }
 
     QSharedPointer<SQLiteQuery> q;
-    if (NULL == trans) {
+    if (nullptr == trans) {
         q = QSharedPointer<SQLiteReadQuery>(new SQLiteReadQuery(fullQuery, db, os));
     } else {
         q = trans->getPreparedQuery(fullQuery, db, os);
@@ -448,8 +448,8 @@ qint64 SQLiteFeatureDbi::countFeatures(const FeatureQuery &fq, U2OpStatus &os) {
 
 U2DbiIterator<U2Feature> *SQLiteFeatureDbi::getFeatures(const FeatureQuery &fq, U2OpStatus &os) {
     QSharedPointer<SQLiteQuery> q = createFeatureQuery("SELECT " + FDBI_FIELDS, fq, true, os);
-    CHECK_OP(os, NULL);
-    return new SQLiteResultSetIterator<U2Feature>(q, new SqlFeatureRSLoader(), NULL, U2Feature(), os);
+    CHECK_OP(os, nullptr);
+    return new SQLiteResultSetIterator<U2Feature>(q, new SqlFeatureRSLoader(), nullptr, U2Feature(), os);
 }
 
 QList<U2FeatureKey> SQLiteFeatureDbi::getFeatureKeys(const U2DataId &featureId, U2OpStatus &os) {
@@ -521,7 +521,7 @@ void addFeatureKeys(const QList<U2FeatureKey> &keys, const U2DataId &featureId, 
     CHECK_OP(os, );
 
     if (fullQueryPresents) {
-        SAFE_POINT(NULL != fullQuery.data(), "Invalid database query detected", );
+        SAFE_POINT(nullptr != fullQuery.data(), "Invalid database query detected", );
         for (int currentFullQuery = 0; currentFullQuery < fullBindQueryCount && !os.isCoR(); ++currentFullQuery) {
             const int firstBindingPos = residualBindQueryCount + currentFullQuery * maximumBoundKeysNumber;
             const int lastBindingPos = residualBindQueryCount + (currentFullQuery + 1) * maximumBoundKeysNumber;
@@ -714,7 +714,7 @@ void SQLiteFeatureDbi::removeFeaturesByParent(const U2DataId &parentId, U2OpStat
 namespace {
 
 void executeDeleteFeaturesByParentsQuery(const QList<U2DataId> &parentIds, DbRef *db, U2OpStatus &os) {
-    SAFE_POINT(NULL != db, "Invalid database handler", );
+    SAFE_POINT(nullptr != db, "Invalid database handler", );
 
     QString idsList = "(";
     for (int i = 1, n = parentIds.count(); i <= n; i++) {
@@ -787,7 +787,7 @@ U2DbiIterator<U2Feature> *SQLiteFeatureDbi::getFeaturesByRegion(const U2Region &
         q->bindDataId(3, rootId);
     }
 
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     return new SQLiteResultSetIterator<U2Feature>(q, new SqlFeatureRSLoader(), new SqlFeatureFilter(featureName, seqId), U2Feature(), os);
 }
 
@@ -799,8 +799,8 @@ U2DbiIterator<U2Feature> *SQLiteFeatureDbi::getFeaturesBySequence(const QString 
 
     q->bindDataId(1, seqId);
     q->bindString(2, featureName);
-    CHECK_OP(os, NULL);
-    return new SQLiteResultSetIterator<U2Feature>(q, new SqlFeatureRSLoader(), NULL, U2Feature(), os);
+    CHECK_OP(os, nullptr);
+    return new SQLiteResultSetIterator<U2Feature>(q, new SqlFeatureRSLoader(), nullptr, U2Feature(), os);
 }
 
 U2DbiIterator<U2Feature> *SQLiteFeatureDbi::getFeaturesByParent(const U2DataId &parentId, const QString &featureName, const U2DataId &seqId, U2OpStatus &os, SubfeatureSelectionMode mode) {
@@ -815,7 +815,7 @@ U2DbiIterator<U2Feature> *SQLiteFeatureDbi::getFeaturesByParent(const U2DataId &
     if (includeParent) {
         q->bindDataId(2, parentId);
     }
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     return new SQLiteResultSetIterator<U2Feature>(q, new SqlFeatureRSLoader(), new SqlFeatureFilter(featureName, seqId), U2Feature(), os);
 }
 
@@ -827,7 +827,7 @@ U2DbiIterator<U2Feature> *SQLiteFeatureDbi::getFeaturesByRoot(const U2DataId &ro
     QSharedPointer<SQLiteQuery> q = t.getPreparedQuery(queryStringk, db, os);
 
     q->bindDataId(1, rootId);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     return new SQLiteResultSetIterator<U2Feature>(q, new SqlFeatureRSLoader(), new SqlFeatureFilter(QString(), U2DataId()), U2Feature(), os);
 }
 
@@ -840,7 +840,7 @@ U2DbiIterator<U2Feature> *SQLiteFeatureDbi::getFeaturesByName(const U2DataId &ro
 
     q->bindDataId(1, rootId);
     q->bindInt32(2, qHash(name));
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     return new SQLiteResultSetIterator<U2Feature>(q, new SqlFeatureRSLoader(), new SqlFeatureFilter(QString(), U2DataId()), U2Feature(), os);
 }
 

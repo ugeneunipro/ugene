@@ -45,7 +45,7 @@ static QMap<Descriptor, DataTypePtr> getBusMap(Port *inPort) {
         Port *src = links.keys().first();
         assert(src->isOutput());
         IntegralBusPort *bus = dynamic_cast<IntegralBusPort *>(src);
-        assert(NULL != bus);
+        assert(nullptr != bus);
         DataTypePtr type = bus->getType();
         busMap = type->getDatatypesMap();
     }
@@ -197,7 +197,7 @@ void GrouperEditorWidget::sl_onAddButtonClicked() {
         DataTypePtr type = busMap.value(inSlotId);
         inSlotId = GrouperOutSlot::busMap2readable(inSlotId);
 
-        QObjectScopedPointer<ActionDialog> aDlg = ActionDialog::getActionDialog(this, NULL, type, grouperModel);
+        QObjectScopedPointer<ActionDialog> aDlg = ActionDialog::getActionDialog(this, nullptr, type, grouperModel);
         CHECK(!aDlg.isNull(), );
         const int dialogResult = aDlg->exec();
         CHECK(!aDlg.isNull(), );
@@ -208,7 +208,7 @@ void GrouperEditorWidget::sl_onAddButtonClicked() {
             newSlot.setAction(action);
 
             GrouperSlotsCfgModel *model = dynamic_cast<GrouperSlotsCfgModel *>(grouperModel);
-            assert(NULL != model);
+            assert(nullptr != model);
             model->addGrouperSlot(newSlot);
         }
     }
@@ -226,7 +226,7 @@ void GrouperEditorWidget::sl_onEditButtonClicked() {
     QModelIndex rightIdx = leftIdx.child(leftIdx.row(), 1);
 
     GrouperSlotsCfgModel *model = dynamic_cast<GrouperSlotsCfgModel *>(grouperModel);
-    assert(NULL != model);
+    assert(nullptr != model);
     QString outSlotName = model->data(leftIdx).toString();
     QString inSlotId = GrouperOutSlot::readable2busMap(model->data(rightIdx).toString());
     GrouperSlotAction *action = model->getSlotAction(outSlotName);
@@ -348,7 +348,7 @@ GrouperSlotAction *GrouperSlotsCfgModel::getSlotAction(const QString &outSlotNam
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void GrouperSlotsCfgModel::addGrouperSlot(const GrouperOutSlot &newSlot) {

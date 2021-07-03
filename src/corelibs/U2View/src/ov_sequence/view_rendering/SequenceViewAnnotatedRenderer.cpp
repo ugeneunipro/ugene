@@ -131,7 +131,7 @@ void SequenceViewAnnotatedRenderer::drawAnnotationSelection(QPainter &p, const Q
 
 void SequenceViewAnnotatedRenderer::drawAnnotation(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, Annotation *a, const AnnotationDisplaySettings &displaySettings, bool selected, const AnnotationSettings *as) {
     const SharedAnnotationData &aData = a->getData();
-    if (as == NULL) {
+    if (as == nullptr) {
         AnnotationSettingsRegistry *asr = AppContext::getAnnotationsSettingsRegistry();
         as = asr->getAnnotationSettings(aData);
     }

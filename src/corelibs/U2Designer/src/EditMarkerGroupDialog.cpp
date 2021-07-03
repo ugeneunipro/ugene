@@ -41,7 +41,7 @@ namespace U2 {
 /* EditMarkerGroupDialog */
 /************************************************************************/
 EditMarkerGroupDialog::EditMarkerGroupDialog(bool isNew, Marker *marker, Workflow::MarkerGroupListCfgModel *_allModel, QWidget *parent)
-    : QDialog(parent), isNew(isNew), marker(NULL), allModel(_allModel), currentTypeIndex(-1) {
+    : QDialog(parent), isNew(isNew), marker(nullptr), allModel(_allModel), currentTypeIndex(-1) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930090");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
@@ -397,7 +397,7 @@ void MarkerListCfgModel::addMarker(const QString &valueString, const QString &na
 /* EditMarkerDialog */
 /************************************************************************/
 EditMarkerDialog::EditMarkerDialog(bool isNew, const QString &type, const QString &name, const QVariantList &values, QWidget *parent)
-    : QDialog(parent), isNew(isNew), type(type), name(name), values(values), editWidget(NULL) {
+    : QDialog(parent), isNew(isNew), type(type), name(name), values(values), editWidget(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930090");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
@@ -438,7 +438,7 @@ void EditMarkerDialog::accept() {
         QString message;
         QString valueString;
         QVariantList newVals;
-        if (NULL == editWidget) {
+        if (nullptr == editWidget) {
             newVals << MarkerUtils::REST_OPERATION;
         } else {
             newVals = editWidget->getValues();
@@ -458,7 +458,7 @@ void EditMarkerDialog::accept() {
         }
     }
 
-    if (NULL != editWidget) {
+    if (nullptr != editWidget) {
         values = editWidget->getValues();
     }
     name = markerNameEdit->text().trimmed();

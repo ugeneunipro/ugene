@@ -63,8 +63,8 @@ FormatCheckResult SCFFormat::checkRawData(const QByteArray &rawData, const GUrl 
 
 Document *SCFFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
     Document *doc = parseSCF(dbiRef, io, fs, os);
-    CHECK_OP(os, NULL);
-    CHECK_EXT(doc != NULL, os.setError(tr("Failed to parse SCF file: %1").arg(io->getURL().getURLString())), NULL);
+    CHECK_OP(os, nullptr);
+    CHECK_EXT(doc != nullptr, os.setError(tr("Failed to parse SCF file: %1").arg(io->getURL().getURLString())), nullptr);
 
     return doc;
 }
@@ -528,13 +528,13 @@ static uchar getMaxProb(uchar probA, uchar probC, uchar probG, uchar probT) {
 
 Document *SCFFormat::parseSCF(const U2DbiRef &dbiRef, IOAdapter *io, const QVariantMap &fs, U2OpStatus &os) {
     DbiOperationsBlock opBlock(dbiRef, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     Q_UNUSED(opBlock);
 
     DNASequence dna;
     DNAChromatogram cd;
     if (!loadSCFObjects(io, dna, cd, os)) {
-        return NULL;
+        return nullptr;
     }
 
     const QString seqObjName = dna.getName().isEmpty() ? "Sequence" : dna.getName() + " sequence";
@@ -546,12 +546,12 @@ Document *SCFFormat::parseSCF(const U2DbiRef &dbiRef, IOAdapter *io, const QVari
     hints.insert(DBI_FOLDER_HINT, folder);
     U2EntityRef ref = U2SequenceUtils::import(os, dbiRef, folder, dna);
     U2SequenceObject *seqObj = new U2SequenceObject(seqObjName, ref);
-    CHECK_OP(os, NULL);
-    SAFE_POINT(seqObj != NULL, "DocumentFormatUtils::addSequenceObject returned NULL but didn't set error", NULL);
+    CHECK_OP(os, nullptr);
+    SAFE_POINT(seqObj != nullptr, "DocumentFormatUtils::addSequenceObject returned NULL but didn't set error", nullptr);
     seqObj->setQuality(dna.quality);
 
     DNAChromatogramObject *chromObj = DNAChromatogramObject::createInstance(cd, chromaObjName, dbiRef, os, hints);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     QList<GObject *> objects;
     objects.append(chromObj);
@@ -986,8 +986,8 @@ int fwrite_scf(Scf *scf, FILE *fp) {
 
 static void saveChromatogramToSCF(const DNAChromatogram &c, const QByteArray &seq, FILE *fp) {
     Scf scf;
-    scf.comments = NULL;
-    scf.private_data = NULL;
+    scf.comments = nullptr;
+    scf.private_data = nullptr;
 
     scf.header.bases = c.seqLength;
     scf.header.samples = c.traceLength;
@@ -1037,7 +1037,7 @@ void SCFFormat::exportDocumentToSCF(const QString &fileName, const DNAChromatogr
         file.close();
     }
 
-    FILE *fp = NULL;
+    FILE *fp = nullptr;
 #ifdef Q_OS_WIN
     errno_t err = fopen_s(&fp, qPrintable(fileName), "wb+");
     if (err != 0) {
@@ -1048,7 +1048,7 @@ void SCFFormat::exportDocumentToSCF(const QString &fileName, const DNAChromatogr
     fp = fopen(qPrintable(fileName), "wb+");
 #endif
 
-    if (fp == NULL) {
+    if (fp == nullptr) {
         ts.setError(L10N::errorOpeningFileWrite(fileName));
         return;
     }
@@ -1226,7 +1226,7 @@ bool SCFFormat::loadSCFObjects(IOAdapter *io, DNASequence &dna, DNAChromatogram 
 
 DNASequence *SCFFormat::loadSequence(IOAdapter *io, U2OpStatus &os) {
     if (io->isEof()) {
-        return NULL;
+        return nullptr;
     }
 
     DNASequence *seq = new DNASequence();

@@ -109,7 +109,7 @@ QList<long> CmdlineTaskRunner::getChildrenProcesses(qint64 processId, bool fullT
     QList<long> children;
 
 #if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN)
-    char *buff = NULL;
+    char *buff = nullptr;
     size_t len = 255;
     char command[256] = {0};
 
@@ -144,7 +144,7 @@ QList<long> CmdlineTaskRunner::getChildrenProcesses(qint64 processId, bool fullT
     do {
         if (pe32.th32ParentProcessID == processId) {
             hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pe32.th32ProcessID);
-            if (hProcess != NULL) {
+            if (hProcess != nullptr) {
                 CloseHandle(hProcess);
                 children << pe32.th32ProcessID;
             }
@@ -213,7 +213,7 @@ int CmdlineTaskRunner::killProcess(qint64 processId) {
     DWORD dwDesiredAccess = PROCESS_TERMINATE;
     BOOL bInheritHandle = FALSE;
     HANDLE hProcess = OpenProcess(dwDesiredAccess, bInheritHandle, processId);
-    if (hProcess != NULL) {
+    if (hProcess != nullptr) {
         result = TerminateProcess(hProcess, 1);
         CloseHandle(hProcess);
     }
@@ -222,7 +222,7 @@ int CmdlineTaskRunner::killProcess(qint64 processId) {
 }
 
 CmdlineTaskRunner::CmdlineTaskRunner(const CmdlineTaskConfig &config)
-    : Task(tr("Run UGENE command line: %1").arg(config.command), TaskFlag_NoRun), config(config), process(NULL) {
+    : Task(tr("Run UGENE command line: %1").arg(config.command), TaskFlag_NoRun), config(config), process(nullptr) {
     tpm = Progress_Manual;
 }
 
@@ -261,7 +261,7 @@ void CmdlineTaskRunner::prepare() {
     coreLog.details("Starting UGENE command line: " + cmdlineUgenePath + " " + args.join(" "));
     process->start(cmdlineUgenePath, args);
 #if (defined(Q_OS_WIN32) || defined(Q_OS_WINCE))
-    QString processId = NULL != process->pid() ? QString::number(process->pid()->dwProcessId) : "unknown";
+    QString processId = nullptr != process->pid() ? QString::number(process->pid()->dwProcessId) : "unknown";
     processLogPrefix = QString("process:%1>").arg(processId);
 #else
     processLogPrefix = QString("process:%1>").arg(process->pid());
@@ -271,7 +271,7 @@ void CmdlineTaskRunner::prepare() {
 }
 
 Task::ReportResult CmdlineTaskRunner::report() {
-    CHECK(NULL != process, ReportResult_Finished);
+    CHECK(nullptr != process, ReportResult_Finished);
     if (hasError()) {
         return ReportResult_Finished;
     }

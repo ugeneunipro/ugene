@@ -151,7 +151,7 @@ U2DbiIterator<U2DataId> *MysqlObjectDbi::getObjectsByVisualName(const QString &v
         q->bindType(":type", type);
     }
 
-    return new MysqlRSIterator<U2DataId>(q, new MysqlDataIdRSLoaderEx(), NULL, U2DataId(), os);
+    return new MysqlRSIterator<U2DataId>(q, new MysqlDataIdRSLoaderEx(), nullptr, U2DataId(), os);
 }
 
 //////////////////////////////////////////////////////////////////////////

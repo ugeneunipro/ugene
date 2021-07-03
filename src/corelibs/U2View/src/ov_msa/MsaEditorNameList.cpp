@@ -42,11 +42,11 @@ void MsaEditorNameList::sl_buildMenu(GObjectView *, QMenu *menu, const QString &
 
 void MsaEditorNameList::buildMenu(QMenu *menu) {
     QMenu *editMenu = GUIUtils::findSubMenu(menu, MSAE_MENU_EDIT);
-    SAFE_POINT(editMenu != NULL, "editMenu not found", );
+    SAFE_POINT(editMenu != nullptr, "editMenu not found", );
 
     editMenu->insertAction(editMenu->actions().last(), removeSequenceAction);
 
-    CHECK(qobject_cast<MSAEditor *>(editor) != NULL, );
+    CHECK(qobject_cast<MSAEditor *>(editor) != nullptr, );
     CHECK(rect().contains(mapFromGlobal(QCursor::pos())), );
 
     editMenu->insertAction(editMenu->actions().first(), editSequenceNameAction);

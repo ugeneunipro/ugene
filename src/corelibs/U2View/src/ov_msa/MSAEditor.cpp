@@ -326,7 +326,7 @@ void MSAEditor::addSortMenu(QMenu *m) {
 void MSAEditor::addExportMenu(QMenu *m) {
     MaEditor::addExportMenu(m);
     QMenu *em = GUIUtils::findSubMenu(m, MSAE_MENU_EXPORT);
-    SAFE_POINT(em != NULL, "Export menu not found", );
+    SAFE_POINT(em != nullptr, "Export menu not found", );
     em->addAction(saveScreenshotAction);
 }
 
@@ -384,7 +384,7 @@ void MSAEditor::addColorsMenu(QMenu *m) {
 }
 
 void MSAEditor::addHighlightingMenu(QMenu *m) {
-    QMenu *highlightSchemeMenu = new QMenu(tr("Highlighting"), NULL);
+    QMenu *highlightSchemeMenu = new QMenu(tr("Highlighting"), nullptr);
 
     highlightSchemeMenu->menuAction()->setObjectName("Highlighting");
 
@@ -435,7 +435,7 @@ MsaEditorWgt *MSAEditor::getUI() const {
 }
 
 QWidget *MSAEditor::createWidget() {
-    Q_ASSERT(ui == NULL);
+    Q_ASSERT(ui == nullptr);
     ui = new MsaEditorWgt(this);
 
     QString objName = "msa_editor_" + maObject->getGObjectName();
@@ -597,7 +597,7 @@ bool MSAEditor::eventFilter(QObject *, QEvent *e) {
             CHECK(!maObject->isStateLocked(), false)
             U2SequenceObject *dnaObj = qobject_cast<U2SequenceObject *>(gomd->objPtr.data());
             if (dnaObj != nullptr) {
-                if (U2AlphabetUtils::deriveCommonAlphabet(dnaObj->getAlphabet(), maObject->getAlphabet()) == NULL) {
+                if (U2AlphabetUtils::deriveCommonAlphabet(dnaObj->getAlphabet(), maObject->getAlphabet()) == nullptr) {
                     return false;
                 }
                 if (e->type() == QEvent::DragEnter) {

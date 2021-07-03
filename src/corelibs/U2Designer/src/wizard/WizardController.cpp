@@ -147,7 +147,7 @@ WizardPage *WizardController::findPage(QWizardPage *wPage) {
             return ctrl->getPage();
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void WizardController::run() {
@@ -162,7 +162,7 @@ public:
     }
     void visit(AttributeWidget *aw) {
         Attribute *attr = wc->getAttribute(aw->getInfo());
-        CHECK(NULL != attr, );
+        CHECK(nullptr != attr, );
         wc->setAttributeValue(aw->getInfo(), attr->getDefaultPureValue());
     }
     void visit(WidgetsArea *wa) {
@@ -181,14 +181,14 @@ public:
     void visit(PairedReadsWidget *prw) {
         foreach (const AttributeInfo &info, prw->getInfos()) {
             Attribute *attr = wc->getAttribute(info);
-            CHECK(NULL != attr, );
+            CHECK(nullptr != attr, );
             wc->setAttributeValue(info, attr->getDefaultPureValue());
         }
     }
     void visit(UrlAndDatasetWidget *udw) {
         foreach (const AttributeInfo &info, udw->getInfos()) {
             Attribute *attr = wc->getAttribute(info);
-            CHECK(NULL != attr, );
+            CHECK(nullptr != attr, );
             wc->setAttributeValue(info, attr->getDefaultPureValue());
         }
     }
@@ -198,11 +198,11 @@ public:
     }
     void visit(BowtieWidget *bw) {
         Attribute *dirAttr = wc->getAttribute(bw->idxDir);
-        CHECK(NULL != dirAttr, );
+        CHECK(nullptr != dirAttr, );
         wc->setAttributeValue(bw->idxDir, dirAttr->getDefaultPureValue());
 
         Attribute *nameAttr = wc->getAttribute(bw->idxName);
-        CHECK(NULL != nameAttr, );
+        CHECK(nullptr != nameAttr, );
         wc->setAttributeValue(bw->idxName, nameAttr->getDefaultPureValue());
     }
 
@@ -238,7 +238,7 @@ private:
 
 void WizardController::defaults(QWizardPage *wPage) {
     WizardPage *page = findPage(wPage);
-    CHECK(NULL != page, );
+    CHECK(nullptr != page, );
     TemplatedPageContent *content = page->getContent();
 
     PageDefaulter defaulter(this);
@@ -251,7 +251,7 @@ void WizardController::sl_customButtonClicked(int which) {
         run();
     } else if (QWizard::CustomButton2 == which) {
         QWizard *w = dynamic_cast<QWizard *>(sender());
-        CHECK(NULL != w, );
+        CHECK(nullptr != w, );
         defaults(w->currentPage());
     }
 }
@@ -260,23 +260,23 @@ void WizardController::sl_pageChanged(int num) {
     CHECK(-1 != num, );
 
     QWizard *wizard = dynamic_cast<QWizard *>(sender());
-    CHECK(NULL != wizard, );
+    CHECK(nullptr != wizard, );
 
     QWizardPage *page = wizard->currentPage();
-    CHECK(NULL != page, );
+    CHECK(nullptr != page, );
 
     page->cleanupPage();
     page->initializePage();
 }
 
 bool WizardController::eventFilter(QObject *watched, QEvent *event) {
-    CHECK(NULL != event, false);
+    CHECK(nullptr != event, false);
 
     if (event->type() == QEvent::Close) {    // if close button is pressed
         rejected = true;
     } else if (event->type() == QEvent::KeyPress) {    // if ESC is pressed
         QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
-        CHECK(NULL != keyEvent, QObject::eventFilter(watched, event));
+        CHECK(nullptr != keyEvent, QObject::eventFilter(watched, event));
 
         if ((keyEvent->key() == Qt::Key_Escape) && (keyEvent->modifiers() == Qt::NoModifier)) {
             rejected = true;
@@ -290,7 +290,7 @@ void WizardController::assignParameters() {
         U2OpStatus2Log os;
         AttributeInfo info = AttributeInfo::fromString(attrId, os);
         Attribute *attr = getAttribute(info);
-        if (NULL == attr) {
+        if (nullptr == attr) {
             continue;
         }
         attr->setAttributeValue(values[attrId]);
@@ -316,15 +316,15 @@ void WizardController::saveDelegateTags() {
         U2OpStatus2Log os;
         AttributeInfo info = AttributeInfo::fromString(attrId, os);
         DelegateTags *tags = propertyControllers[attrId]->tags();
-        if (NULL == tags) {
+        if (nullptr == tags) {
             continue;
         }
         Actor *actor = WorkflowUtils::actorById(currentActors, info.actorId);
-        if (NULL == actor->getEditor()) {
+        if (nullptr == actor->getEditor()) {
             continue;
         }
         PropertyDelegate *delegate = actor->getEditor()->getDelegate(info.attrId);
-        if (NULL == delegate) {
+        if (nullptr == delegate) {
             continue;
         }
         delegate->tags()->set(*tags);
@@ -342,7 +342,7 @@ DelegateTags *WizardController::getTags(const AttributeInfo &info, bool returnNe
             tagsWithoutController[info.toString()] = t;
             return t;
         } else {
-            return NULL;
+            return nullptr;
         }
     }
 
@@ -350,14 +350,14 @@ DelegateTags *WizardController::getTags(const AttributeInfo &info, bool returnNe
 }
 
 DelegateTags *WizardController::getTagsWithoutController(const AttributeInfo &info) const {
-    CHECK(tagsWithoutController.contains(info.toString()), NULL);
+    CHECK(tagsWithoutController.contains(info.toString()), nullptr);
     return tagsWithoutController[info.toString()];
 }
 
 Attribute *WizardController::getAttribute(const AttributeInfo &info) const {
     U2OpStatusImpl os;
     info.validate(currentActors, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     Actor *actor = WorkflowUtils::actorById(currentActors, info.actorId);
     return actor->getParameter(info.attrId);
 }
@@ -433,9 +433,9 @@ void WizardController::replaceCurrentActor(const QString &actorId, const QString
         WIZARD_SAFE_POINT(false, QObject::tr("Unknown actors selector: %1").arg(actorId), );
     }
     Actor *currentA = WorkflowUtils::actorById(currentActors, actorId);
-    WIZARD_SAFE_POINT(NULL != currentA, QObject::tr("Unknown actor id: %1").arg(actorId), );
+    WIZARD_SAFE_POINT(nullptr != currentA, QObject::tr("Unknown actor id: %1").arg(actorId), );
     Actor *newA = selectors[actorId].getActor(selectorValue);
-    WIZARD_SAFE_POINT(NULL != newA, QObject::tr("Unknown actors selector value id: %1").arg(selectorValue), );
+    WIZARD_SAFE_POINT(nullptr != newA, QObject::tr("Unknown actors selector value id: %1").arg(selectorValue), );
 
     int idx = currentActors.indexOf(currentA);
     currentActors.replace(idx, newA);
@@ -501,7 +501,7 @@ QVariant WizardController::getAttributeValue(const AttributeInfo &info) const {
         return values[info.toString()];
     }
     Attribute *attr = getAttribute(info);
-    CHECK(NULL != attr, QVariant());
+    CHECK(nullptr != attr, QVariant());
 
     return attr->getAttributePureValue();
 }
@@ -512,7 +512,7 @@ void WizardController::setAttributeValue(const AttributeInfo &info, const QVaria
     Actor *actor = WorkflowUtils::actorById(currentActors, info.actorId);
     // Check attribute relations
     Attribute *attr = getAttribute(info);
-    CHECK(NULL != attr, );
+    CHECK(nullptr != attr, );
     foreach (const AttributeRelation *relation, attr->getRelations()) {
         if (!relation->valueChangingRelation()) {
             continue;
@@ -560,11 +560,11 @@ void WizardController::setAttributeValue(const AttributeInfo &info, const QVaria
 /* WidgetCreator */
 /************************************************************************/
 WidgetCreator::WidgetCreator(WizardController *_wc)
-    : wc(_wc), labelSize(0), result(NULL), layout(NULL), widgetsArea(NULL), fullWidth(false) {
+    : wc(_wc), labelSize(0), result(nullptr), layout(nullptr), widgetsArea(nullptr), fullWidth(false) {
 }
 
 WidgetCreator::WidgetCreator(WizardController *_wc, int _labelSize)
-    : wc(_wc), labelSize(_labelSize), result(NULL), layout(NULL), widgetsArea(NULL), fullWidth(false) {
+    : wc(_wc), labelSize(_labelSize), result(nullptr), layout(nullptr), widgetsArea(nullptr), fullWidth(false) {
 }
 
 bool WidgetCreator::hasFullWidth() {
@@ -573,7 +573,7 @@ bool WidgetCreator::hasFullWidth() {
 
 void WidgetCreator::visit(AttributeWidget *aw) {
     QString type = aw->getProperty(AttributeInfo::TYPE);
-    PropertyWizardController *controller = NULL;
+    PropertyWizardController *controller = nullptr;
 
     if (AttributeInfo::DEFAULT == type) {
         controller = new DefaultPropertyController(wc, aw, labelSize);
@@ -604,7 +604,7 @@ void WidgetCreator::visit(WidgetsArea *wa) {
 #endif
         WidgetCreator wcr(wc, labelSize);
         w->accept(&wcr);
-        if (NULL != wcr.getResult()) {
+        if (nullptr != wcr.getResult()) {
             if (!wcr.hasFullWidth()) {
                 wcr.getResult()->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Maximum);
             } else {
@@ -635,7 +635,7 @@ void WidgetCreator::visit(GroupWidget *gw) {
     visit((WidgetsArea *)gw);
     result = widgetsArea->takeWidget();
     delete widgetsArea;
-    widgetsArea = NULL;
+    widgetsArea = nullptr;
 
     bool collapsible = (gw->getType() == GroupWidget::HIDEABLE);
     GroupBox *gb = new GroupBox(collapsible, gw->getTitle(), fullWidth);
@@ -761,7 +761,7 @@ void WidgetCreator::setGroupBoxLayout(GroupBox *gb) {
 /* PageContentCreator */
 /************************************************************************/
 PageContentCreator::PageContentCreator(WizardController *_wc)
-    : wc(_wc), result(NULL), pageTitle(NULL), pageSubtitle(NULL) {
+    : wc(_wc), result(nullptr), pageTitle(nullptr), pageSubtitle(nullptr) {
 }
 
 void PageContentCreator::visit(DefaultPageContent *content) {
@@ -774,7 +774,7 @@ void PageContentCreator::visit(DefaultPageContent *content) {
     {    // create logo
         WidgetCreator logoWC(wc);
         content->getLogoArea()->accept(&logoWC);
-        if (NULL != logoWC.getResult()) {
+        if (nullptr != logoWC.getResult()) {
             paramsHeight = logoWC.getResult()->height();
             paramsWidth -= logoWC.getResult()->width();
             layout->addWidget(logoWC.getResult());
@@ -789,8 +789,8 @@ void PageContentCreator::visit(DefaultPageContent *content) {
     {    // create parameters
         WidgetCreator paramsWC(wc);
         content->getParamsArea()->accept(&paramsWC);
-        if (NULL != paramsWC.getResult()) {
-            if (NULL != paramsWC.getLayout() && !paramsWC.hasFullWidth()) {
+        if (nullptr != paramsWC.getResult()) {
+            if (nullptr != paramsWC.getLayout() && !paramsWC.hasFullWidth()) {
                 QSpacerItem *spacer = new QSpacerItem(0, 0, QSizePolicy::Maximum, QSizePolicy::MinimumExpanding);
                 paramsWC.getLayout()->addSpacerItem(spacer);
             }
@@ -813,7 +813,7 @@ void PageContentCreator::visit(DefaultPageContent *content) {
 }
 
 void PageContentCreator::setPageTitle(const QString &title) {
-    if (NULL != pageTitle && false == title.isEmpty()) {
+    if (nullptr != pageTitle && false == title.isEmpty()) {
         pageTitle->setText(title);
         pageTitle->show();
         pageTitle->setObjectName("pageTitle");
@@ -821,7 +821,7 @@ void PageContentCreator::setPageTitle(const QString &title) {
 }
 
 void PageContentCreator::setPageSubtitle(const QString &subtitle) {
-    if (NULL != pageSubtitle && false == subtitle.isEmpty()) {
+    if (nullptr != pageSubtitle && false == subtitle.isEmpty()) {
         pageSubtitle->setText(subtitle);
         pageSubtitle->show();
     }
@@ -862,7 +862,7 @@ void PageContentCreator::createSubTitle(QVBoxLayout *contentLayout) {
 const int GroupBox::MARGIN = 5;
 
 GroupBox::GroupBox(bool collapsible, const QString &title, bool fullWidth)
-    : QGroupBox(title), hLayout(NULL), tip(NULL), showHideButton(NULL) {
+    : QGroupBox(title), hLayout(nullptr), tip(nullptr), showHideButton(nullptr) {
     ui = new QWidget(this);
     QSizePolicy::Policy vPolicy = fullWidth ? QSizePolicy::MinimumExpanding : QSizePolicy::Maximum;
     ui->setSizePolicy(QSizePolicy::Minimum, vPolicy);
@@ -929,10 +929,10 @@ void GroupBox::sl_onCheck() {
 }
 
 void GroupBox::changeView(const QString &buttonText, const QString &showHide) {
-    CHECK(NULL != showHideButton, );
+    CHECK(nullptr != showHideButton, );
     showHideButton->setText(buttonText);
 
-    CHECK(NULL != tip, );
+    CHECK(nullptr != tip, );
     QString parametersStr = tr("additional");
     if (!title().isEmpty()) {
         parametersStr = title().toLower();
@@ -940,7 +940,7 @@ void GroupBox::changeView(const QString &buttonText, const QString &showHide) {
     tip->setText(showHide + " " + parametersStr + tr(" settings"));
     showHideButton->setToolTip(tip->text());
 
-    CHECK(NULL != hLayout, );
+    CHECK(nullptr != hLayout, );
     if (!title().isEmpty()) {
         QMargins m = layout()->contentsMargins();
         m.setTop(0);

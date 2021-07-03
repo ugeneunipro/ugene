@@ -30,7 +30,7 @@
 namespace U2 {
 
 UrlAndDatasetWizardController::UrlAndDatasetWizardController(WizardController *wc, UrlAndDatasetWidget *_widget)
-    : WidgetController(wc), widget(_widget), dsc(NULL) {
+    : WidgetController(wc), widget(_widget), dsc(nullptr) {
 }
 
 UrlAndDatasetWizardController::~UrlAndDatasetWizardController() {
@@ -40,7 +40,7 @@ UrlAndDatasetWizardController::~UrlAndDatasetWizardController() {
 QWidget *UrlAndDatasetWizardController::createGUI(U2OpStatus &os) {
     if (2 != widget->getInfos().count()) {
         os.setError("Invalid info");
-        return NULL;
+        return nullptr;
     }
 
     AttributeInfo info1 = widget->getInfos().at(0);
@@ -50,7 +50,7 @@ QWidget *UrlAndDatasetWizardController::createGUI(U2OpStatus &os) {
     QList<Dataset> urls = value1.value<QList<Dataset>>();
     QList<Dataset> sets = value2.value<QList<Dataset>>();
 
-    if (NULL != dsc) {
+    if (nullptr != dsc) {
         delete dsc;
     }
     dsc = new UrlAndDatasetController(urls, sets, info1.hints[AttributeInfo::LABEL].toString(), info2.hints[AttributeInfo::LABEL].toString());

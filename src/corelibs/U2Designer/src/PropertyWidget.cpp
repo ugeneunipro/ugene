@@ -138,7 +138,7 @@ void SpinBoxWidget::setValue(const QVariant &value) {
 }
 
 void SpinBoxWidget::processDelegateTags() {
-    CHECK(_tags != NULL, );
+    CHECK(_tags != nullptr, );
 
     if (_tags->get("minimum") != QVariant()) {
         spinBox->setMinimum(_tags->get("minimum").toInt());
@@ -340,12 +340,12 @@ void ComboBoxWithUrlWidget::sl_browse() {
 
     QString name;
     if (isPath) {
-        lod.dir = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder"), lastDir);
+        lod.dir = name = U2FileDialog::getExistingDirectory(nullptr, tr("Select a folder"), lastDir);
         if (!name.isEmpty()) {
             setValue(name);
         }
     } else {
-        lod.url = name = U2FileDialog::getOpenFileName(NULL, tr("Select a file"), lastDir);
+        lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), lastDir);
         if (!name.isEmpty()) {
             setValue(name);
         }
@@ -568,7 +568,7 @@ void URLWidget::sl_browse() {
         return;
     }
     RunFileSystem *rfs = getRFS();
-    if (NULL == rfs) {
+    if (nullptr == rfs) {
         urlLine->sl_onBrowse();
     } else {
         QObjectScopedPointer<OutputFileDialog> d = new OutputFileDialog(rfs, urlLine->isPath, urlLine->getCompletionFillerInstance(), this);
@@ -586,7 +586,7 @@ void URLWidget::sl_browse() {
 
 void URLWidget::sl_finished() {
     RunFileSystem *rfs = getRFS();
-    if (NULL != rfs) {
+    if (nullptr != rfs) {
         QString result = urlLine->text();
         if ((result != initialValue) && RFSUtils::isCorrectUrl(result)) {
             if (rfs->canAdd(result, urlLine->isPath)) {
@@ -603,7 +603,7 @@ void URLWidget::sl_finished() {
 }
 
 RunFileSystem *URLWidget::getRFS() {
-    CHECK(NULL != schemaConfig, NULL);
+    CHECK(nullptr != schemaConfig, nullptr);
     return schemaConfig->getRFS();
 }
 
@@ -623,13 +623,13 @@ static const QString FILE_TAG("file");
 QString NoFileURLWidget::finalyze(const QString &url, DelegateTags *tags) {
     QFileInfo info(url);
     if (url.isEmpty() || info.isDir() || info.isRelative() || !info.exists()) {
-        if (NULL != tags) {
+        if (nullptr != tags) {
             tags->set(FILE_TAG, "");
         }
         return url;
     }
 
-    if (NULL != tags) {
+    if (nullptr != tags) {
         tags->set(FILE_TAG, info.fileName());
     }
     return info.dir().absolutePath();

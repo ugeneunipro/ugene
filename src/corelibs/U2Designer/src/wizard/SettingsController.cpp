@@ -35,14 +35,14 @@ namespace U2 {
 const QString SettingsController::TYPE_URL = "url";
 
 SettingsController::SettingsController(WizardController *wc, SettingsWidget *_sw)
-    : WidgetController(wc), sw(_sw), lineEdit(NULL) {
+    : WidgetController(wc), sw(_sw), lineEdit(nullptr) {
 }
 
 SettingsController::~SettingsController() {
 }
 
 QWidget *SettingsController::createGUI(U2OpStatus &os) {
-    QWidget *result = NULL;
+    QWidget *result = nullptr;
 
     if (sw->type() == TYPE_URL) {
         result = createUrlSettingsWidget(os);

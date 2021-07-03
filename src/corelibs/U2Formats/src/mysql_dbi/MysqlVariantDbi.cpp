@@ -52,7 +52,7 @@ public:
 class SimpleVariantTrackLoader : public MysqlRSLoader<U2VariantTrack> {
     U2VariantTrack load(U2SqlQuery *q) {
         U2VariantTrack track;
-        SAFE_POINT(NULL != q, "Query pointer is NULL", track);
+        SAFE_POINT(nullptr != q, "Query pointer is NULL", track);
 
         track.id = q->getDataId(0, U2Type::VariantTrack);
         track.sequence = q->getDataId(1, U2Type::Sequence);
@@ -128,7 +128,7 @@ U2DbiIterator<U2VariantTrack> *MysqlVariantDbi::getVariantTracks(const U2DataId 
     QSharedPointer<U2SqlQuery> q(new U2SqlQuery(queryString, db, os));
     q->bindDataId(":sequence", seqId);
 
-    return new MysqlRSIterator<U2VariantTrack>(q, new SimpleVariantTrackLoader(), NULL, U2VariantTrack(), os);
+    return new MysqlRSIterator<U2VariantTrack>(q, new SimpleVariantTrackLoader(), nullptr, U2VariantTrack(), os);
 }
 
 U2DbiIterator<U2VariantTrack> *MysqlVariantDbi::getVariantTracks(const U2DataId &seqId, VariantTrackType trackType, U2OpStatus &os) {
@@ -269,7 +269,7 @@ U2DbiIterator<U2Variant> *MysqlVariantDbi::getVariants(const U2DataId &trackId, 
         QSharedPointer<U2SqlQuery> q(new U2SqlQuery(wholeRegionString, db, os));
         q->bindDataId(":track", trackId);
 
-        return new MysqlRSIterator<U2Variant>(q, new MysqlVariantLoader(), NULL, U2Variant(), os);
+        return new MysqlRSIterator<U2Variant>(q, new MysqlVariantLoader(), nullptr, U2Variant(), os);
     }
 
     static const QString localRegionString = "SELECT id, startPos, endPos, refData, obsData, publicId, additionalInfo FROM Variant "
@@ -279,11 +279,11 @@ U2DbiIterator<U2Variant> *MysqlVariantDbi::getVariants(const U2DataId &trackId, 
     q->bindInt64(":regionStart", region.startPos);
     q->bindInt64(":regionEnd", region.endPos());
 
-    return new MysqlRSIterator<U2Variant>(q, new MysqlVariantLoader(), NULL, U2Variant(), os);
+    return new MysqlRSIterator<U2Variant>(q, new MysqlVariantLoader(), nullptr, U2Variant(), os);
 }
 
 U2DbiIterator<U2Variant> *MysqlVariantDbi::getVariantsRange(const U2DataId &track, int offset, int limit, U2OpStatus &os) {
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     static const QString queryString = "SELECT id, startPos, endPos, refData, obsData, publicId, additionalInfo FROM Variant "
                                        "WHERE track = :track LIMIT :limit OFFSET :offset";
@@ -292,7 +292,7 @@ U2DbiIterator<U2Variant> *MysqlVariantDbi::getVariantsRange(const U2DataId &trac
     q->bindInt64(":limit", limit);
     q->bindInt64(":offset", offset);
 
-    return new MysqlRSIterator<U2Variant>(q, new MysqlVariantLoader(), NULL, U2Variant(), os);
+    return new MysqlRSIterator<U2Variant>(q, new MysqlVariantLoader(), nullptr, U2Variant(), os);
 }
 
 int MysqlVariantDbi::getVariantCount(const U2DataId &trackId, U2OpStatus &os) {

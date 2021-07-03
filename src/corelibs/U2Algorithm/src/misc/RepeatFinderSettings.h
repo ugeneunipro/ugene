@@ -90,9 +90,9 @@ public:
 
 struct RepeatFinderSettings {
     RepeatFinderSettings()
-        : l(NULL), seqX(NULL), sizeX(0), inverted(false),
-          seqY(NULL), sizeY(0),
-          al(NULL), w(0), mismatches(0),
+        : l(nullptr), seqX(nullptr), sizeX(0), inverted(false),
+          seqY(nullptr), sizeY(0),
+          al(nullptr), w(0), mismatches(0),
           alg(RFAlgorithm_Auto), nThreads(0) {
     }
 

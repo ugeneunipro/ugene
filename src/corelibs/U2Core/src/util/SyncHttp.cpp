@@ -29,7 +29,7 @@
 namespace U2 {
 
 SyncHttp::SyncHttp(U2OpStatus &os, QObject *parent)
-    : QNetworkAccessManager(parent), loop(NULL), errString(""),
+    : QNetworkAccessManager(parent), loop(nullptr), errString(""),
       os(os) {
     connect(this, SIGNAL(finished(QNetworkReply *)), SLOT(finished(QNetworkReply *)));
 }

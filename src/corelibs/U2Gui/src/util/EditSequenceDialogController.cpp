@@ -64,7 +64,7 @@ EditSequenceDialogController::EditSequenceDialogController(const EditSequencDial
     : QDialog(p),
       filter(""),
       pos(1),
-      saveController(NULL),
+      saveController(nullptr),
       config(cfg) {
     ui = new Ui_EditSequenceDialog;
     ui->setupUi(this);

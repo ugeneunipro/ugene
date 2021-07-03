@@ -36,7 +36,7 @@ MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow()
 
 MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(const MultipleAlignmentRow &maRow)
     : MultipleAlignmentRow(maRow) {
-    SAFE_POINT(NULL != maRowData.dynamicCast<MultipleSequenceAlignmentRowData>(), "Can't cast MultipleAlignmentRow to MultipleSequenceAlignmentRow", );
+    SAFE_POINT(nullptr != maRowData.dynamicCast<MultipleSequenceAlignmentRowData>(), "Can't cast MultipleAlignmentRow to MultipleSequenceAlignmentRow", );
 }
 
 MultipleSequenceAlignmentRow::MultipleSequenceAlignmentRow(MultipleSequenceAlignmentData *msaData)
@@ -100,7 +100,7 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const U2MsaRo
     : MultipleAlignmentRowData(sequence, gaps),
       alignment(msaData),
       initialRowInDb(rowInDb) {
-    SAFE_POINT(alignment != NULL, "Parent MultipleSequenceAlignmentData are NULL", );
+    SAFE_POINT(alignment != nullptr, "Parent MultipleSequenceAlignmentData are NULL", );
     removeTrailingGaps();
 }
 
@@ -119,7 +119,7 @@ MultipleSequenceAlignmentRowData::MultipleSequenceAlignmentRowData(const Multipl
     : MultipleAlignmentRowData(row->sequence, row->gaps),
       alignment(msaData),
       initialRowInDb(row->initialRowInDb) {
-    SAFE_POINT(alignment != NULL, "Parent MultipleSequenceAlignmentData are NULL", );
+    SAFE_POINT(alignment != nullptr, "Parent MultipleSequenceAlignmentData are NULL", );
 }
 
 MultipleSequenceAlignmentRowData::~MultipleSequenceAlignmentRowData() {
@@ -193,7 +193,7 @@ QByteArray MultipleSequenceAlignmentRowData::toByteArray(U2OpStatus &os, qint64 
 }
 
 int MultipleSequenceAlignmentRowData::getRowLength() const {
-    SAFE_POINT(alignment != NULL, "Parent MAlignment is NULL", getRowLengthWithoutTrailing());
+    SAFE_POINT(alignment != nullptr, "Parent MAlignment is NULL", getRowLengthWithoutTrailing());
     return alignment->getLength();
 }
 
@@ -526,7 +526,7 @@ QByteArray MultipleSequenceAlignmentRowData::joinCharsAndGaps(bool keepOffset, b
         gapsBytes.fill(U2Msa::GAP_CHAR, gaps[i].gap);
         bytes.insert(gaps[i].offset - beginningOffset, gapsBytes);
     }
-    SAFE_POINT(alignment != NULL, "Parent MAlignment is NULL", QByteArray());
+    SAFE_POINT(alignment != nullptr, "Parent MAlignment is NULL", QByteArray());
     if (keepTrailingGaps && bytes.size() < alignment->getLength()) {
         QByteArray gapsBytes;
         gapsBytes.fill(U2Msa::GAP_CHAR, alignment->getLength() - bytes.size());

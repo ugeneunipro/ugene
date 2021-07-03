@@ -40,7 +40,7 @@ namespace U2 {
 
 QList<QByteArray> U1SequenceUtils::translateRegions(const QList<QByteArray> &origParts, const DNATranslation *aminoTT, bool join) {
     QList<QByteArray> resParts;
-    assert(aminoTT != NULL);
+    assert(aminoTT != nullptr);
     if (join) {
         resParts.append(U1SequenceUtils::joinRegions(origParts));
     } else {
@@ -64,7 +64,7 @@ static QList<QByteArray> _extractRegions(const QByteArray &seq, const QVector<U2
 
     for (int i = 0, n = safeLocation.size(); i < n; i++) {
         const U2Region &oReg = safeLocation.at(i);
-        if (complTT == NULL) {
+        if (complTT == nullptr) {
             QByteArray part = seq.mid(oReg.startPos, oReg.length);
             res.append(part);
         } else {
@@ -89,7 +89,7 @@ QList<QByteArray> U1SequenceUtils::extractRegions(const QByteArray &seq, const Q
             res[0] = lastS.append(firstS);
         }
     }
-    if (aminoTT != NULL) {
+    if (aminoTT != nullptr) {
         res = translateRegions(res, aminoTT, join);
     }
 
@@ -148,21 +148,21 @@ static bool isGenbankHeaderUsed(const QVariantMap &hints, const QString &urlGenb
 static U2SequenceObject *storeSequenceUseGenbankHeader(const QVariantMap &hints, const QString &urlGenbank, const QString &seqName, U2OpStatus &os) {
     qint64 sequenceLength = hints[RawDataCheckResult_HeaderSequenceLength + urlGenbank].toLongLong();
     const U2DbiRef dbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     const QString folder = hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
 
     U2SequenceImporter seqImport;
     seqImport.startSequence(os, dbiRef, folder, seqName, false);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     QByteArray symbolsOfNotExistingSequence(sequenceLength, 'N');
 
     seqImport.addBlock(symbolsOfNotExistingSequence.data(), sequenceLength, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     U2Sequence u2seq = seqImport.finalizeSequenceAndValidate(os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     return new U2SequenceObject(u2seq.visualName, U2EntityRef(dbiRef, u2seq.id));
 }
@@ -217,15 +217,15 @@ void processOldObjects(const QList<GObject *> &objs,
                        const QString &fileName,
                        const QVariantMap &hints,
                        U2OpStatus &os) {
-    U2SequenceObject *seqObj = NULL;
+    U2SequenceObject *seqObj = nullptr;
     int currentObject = -1;
 
     foreach (GObject *obj, objs) {
         currentObject++;
         AnnotationTableObject *annObj = qobject_cast<AnnotationTableObject *>(obj);
-        if (NULL == annObj) {
+        if (nullptr == annObj) {
             seqObj = qobject_cast<U2SequenceObject *>(obj);
-            CHECK_EXT(NULL != seqObj, os.setError("No sequence and annotations are found"), );
+            CHECK_EXT(nullptr != seqObj, os.setError("No sequence and annotations are found"), );
             const DNAAlphabet *seqAl = seqObj->getAlphabet();
             mapObjects2Alphabets[seqAl->getType()].append(seqObj);
 

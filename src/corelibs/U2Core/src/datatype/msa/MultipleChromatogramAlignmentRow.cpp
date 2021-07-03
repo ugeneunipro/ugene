@@ -42,7 +42,7 @@ MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow()
 
 MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(const MultipleAlignmentRow &maRow)
     : MultipleAlignmentRow(maRow) {
-    SAFE_POINT(NULL != maRowData.dynamicCast<MultipleChromatogramAlignmentRowData>(), "Can't cast MultipleAlignmentRow to MultipleChromatogramAlignmentRow", );
+    SAFE_POINT(nullptr != maRowData.dynamicCast<MultipleChromatogramAlignmentRowData>(), "Can't cast MultipleAlignmentRow to MultipleChromatogramAlignmentRow", );
 }
 
 MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(MultipleChromatogramAlignmentData *mcaData)
@@ -116,7 +116,7 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
       alignment(mcaData),
       chromatogram(chromatogram),
       initialRowInDb(rowInDb) {
-    SAFE_POINT(alignment != NULL, "Parent MultipleChromatogramAlignmentData are NULL", );
+    SAFE_POINT(alignment != nullptr, "Parent MultipleChromatogramAlignmentData are NULL", );
     removeTrailingGaps();
 }
 
@@ -142,7 +142,7 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
       chromatogram(row->chromatogram),
       initialRowInDb(row->initialRowInDb),
       additionalInfo(row->additionalInfo) {
-    SAFE_POINT(alignment != NULL, "Parent MultipleChromatogramAlignmentData are NULL", );
+    SAFE_POINT(alignment != nullptr, "Parent MultipleChromatogramAlignmentData are NULL", );
 }
 
 QString MultipleChromatogramAlignmentRowData::getName() const {
@@ -226,7 +226,7 @@ QByteArray MultipleChromatogramAlignmentRowData::toByteArray(U2OpStatus &os, qin
 }
 
 int MultipleChromatogramAlignmentRowData::getRowLength() const {
-    SAFE_POINT(alignment != NULL, "Parent MultipleAlignment is NULL", getRowLengthWithoutTrailing());
+    SAFE_POINT(alignment != nullptr, "Parent MultipleAlignment is NULL", getRowLengthWithoutTrailing());
     return alignment->getLength();
 }
 
@@ -655,7 +655,7 @@ QByteArray MultipleChromatogramAlignmentRowData::joinCharsAndGaps(bool keepOffse
         gapsBytes.fill(U2Msa::GAP_CHAR, gaps[i].gap);
         bytes.insert(gaps[i].offset - beginningOffset, gapsBytes);
     }
-    SAFE_POINT(alignment != NULL, "Parent MAlignment is NULL", QByteArray());
+    SAFE_POINT(alignment != nullptr, "Parent MAlignment is NULL", QByteArray());
     if (keepTrailingGaps && bytes.size() < alignment->getLength()) {
         QByteArray gapsBytes;
         gapsBytes.fill(U2Msa::GAP_CHAR, alignment->getLength() - bytes.size());

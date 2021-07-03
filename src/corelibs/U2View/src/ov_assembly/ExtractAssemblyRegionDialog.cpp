@@ -49,7 +49,7 @@ ExtractAssemblyRegionDialog::ExtractAssemblyRegionDialog(QWidget *p, ExtractAsse
     initSaveController();
 
     QList<RegionPreset> presets = QList<RegionPreset>() << RegionPreset(tr("Visible"), settings->regionToExtract);
-    regionSelector = new RegionSelector(this, settings->assemblyLength, false, NULL, false, presets);
+    regionSelector = new RegionSelector(this, settings->assemblyLength, false, nullptr, false, presets);
     regionSelector->setCurrentPreset(tr("Visible"));
     regionSelector->removePreset(RegionSelector::WHOLE_SEQUENCE);
     regionSelectorWidget->layout()->addWidget(regionSelector);

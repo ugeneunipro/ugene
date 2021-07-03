@@ -87,9 +87,9 @@ void McaEditorStatusBar::updateLabels() {
     updateMutationsLabel();
 
     McaEditor *editor = qobject_cast<McaEditor *>(seqArea->getEditor());
-    SAFE_POINT(editor->getReferenceContext() != NULL, "Reference context is NULL", );
+    SAFE_POINT(editor->getReferenceContext() != nullptr, "Reference context is NULL", );
     DNASequenceSelection *selection = editor->getReferenceContext()->getSequenceSelection();
-    SAFE_POINT(selection != NULL, "Reference selection is NULL", );
+    SAFE_POINT(selection != nullptr, "Reference selection is NULL", );
 
     QString ungappedRefLen = QString::number(refCharController->getUngappedLength());
     if (selection->isEmpty()) {

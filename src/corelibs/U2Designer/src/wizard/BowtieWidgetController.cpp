@@ -61,9 +61,9 @@ QWidget *BowtieWidgetController::createGUI(U2OpStatus &os) {
     hl->addLayout(vl);
 
     vl->addWidget(dirCtrl->createGUI(os));
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     vl->addWidget(nameCtrl->createGUI(os));
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     QPushButton *browseButton = new QPushButton(tr("Select\nbowtie index file"), result.data());
     browseButton->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
@@ -76,7 +76,7 @@ QWidget *BowtieWidgetController::createGUI(U2OpStatus &os) {
 void BowtieWidgetController::sl_browse() {
     LastUsedDirHelper lod;
     QString lastDir = lod.dir;
-    QString url = U2FileDialog::getOpenFileName(NULL, tr("Select one of Bowtie index files"), lastDir);
+    QString url = U2FileDialog::getOpenFileName(nullptr, tr("Select one of Bowtie index files"), lastDir);
     if (url.isEmpty()) {
         return;
     }

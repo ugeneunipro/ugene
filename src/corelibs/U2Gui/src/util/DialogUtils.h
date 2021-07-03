@@ -38,7 +38,7 @@ class TaskStateInfo;
 class U2GUI_EXPORT DialogUtils : public QObject {
     Q_OBJECT
 public:
-    static void showProjectIsLockedWarning(QWidget *p = NULL);
+    static void showProjectIsLockedWarning(QWidget *p = nullptr);
 
     static QString prepareFileFilter(const QString &name, const QStringList &exts, bool any = true, const QStringList &extraExts = QStringList(".gz"));
 

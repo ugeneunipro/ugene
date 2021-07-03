@@ -57,7 +57,7 @@ public:
     static void parseHeader(Tokenizer &tokenizer, Metadata *meta);
     static void parseIncludes(Tokenizer &tokenizer, QList<QString> includedUrls);
     static void parseBodyHeader(Tokenizer &tokenizer, Metadata *meta, bool needName = true);
-    static Actor *parseElementsDefinition(Tokenizer &tokenizer, const QString &actorName, QMap<QString, Actor *> &actorMap, QMap<ActorId, ActorId> *idMap = NULL);
+    static Actor *parseElementsDefinition(Tokenizer &tokenizer, const QString &actorName, QMap<QString, Actor *> &actorMap, QMap<ActorId, ActorId> *idMap = nullptr);
     static ValidatorDesc parseValidator(const QString &desc, U2OpStatus &os);
     static void parseGrouperOutSlots(Actor *proc, const QStringList &outSlots, const QString &attrId);
     static QPair<Port *, Port *> parseDataflow(Tokenizer &tokenizer, const QString &srcTok, const QMap<QString, Actor *> &actorMap);
@@ -81,7 +81,7 @@ public:
     // if slot has no val-> add it to binding
     static void addEmptyValsToBindings(const QList<Actor *> &procs);
     // idMap not null in copy mode
-    static QString string2Schema(const QString &data, Schema *schema, Metadata *meta = NULL, QMap<ActorId, ActorId> *idMap = NULL, QList<QString> includedUrls = QList<QString>());
+    static QString string2Schema(const QString &data, Schema *schema, Metadata *meta = nullptr, QMap<ActorId, ActorId> *idMap = nullptr, QList<QString> includedUrls = QList<QString>());
     // the method checks port relations:
     // if the attribute has port relation and the port has a link - the value of attribute must be set to the value that allows port enabling
     static void postProcessing(Schema *schema);

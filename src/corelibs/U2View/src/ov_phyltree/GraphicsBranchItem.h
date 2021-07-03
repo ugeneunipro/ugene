@@ -60,7 +60,7 @@ protected:
 
     GraphicsBranchItem(const QString &name);
     GraphicsBranchItem(qreal d, bool withButton = true, double nodeValue = -1.0);
-    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = NULL);
+    virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
 
     virtual void setLabelPositions();
 

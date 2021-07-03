@@ -51,7 +51,7 @@ ExportConsensusVariationsDialog::ExportConsensusVariationsDialog(QWidget *p, con
 
     U2OpStatus2Log os;
     QList<RegionPreset> presets = QList<RegionPreset>() << RegionPreset(tr("Visible"), visibleRegion);
-    regionSelector = new RegionSelector(this, settings.model->getModelLength(os), false, NULL, false, presets);
+    regionSelector = new RegionSelector(this, settings.model->getModelLength(os), false, nullptr, false, presets);
 
     int insertPos = verticalLayout->count() - 3;
     verticalLayout->insertWidget(insertPos, regionSelector);
@@ -90,7 +90,7 @@ void ExportConsensusVariationsDialog::accept() {
     QString algoId = algorithmComboBox->currentText();
     if (algoId != settings.consensusAlgorithm->getId()) {
         AssemblyConsensusAlgorithmFactory *f = AppContext::getAssemblyConsensusAlgorithmRegistry()->getAlgorithmFactory(algoId);
-        SAFE_POINT(f != NULL, QString("ExportConsensusDialog: consensus algorithm factory %1 not found").arg(algoId), );
+        SAFE_POINT(f != nullptr, QString("ExportConsensusDialog: consensus algorithm factory %1 not found").arg(algoId), );
         settings.consensusAlgorithm = QSharedPointer<AssemblyConsensusAlgorithm>(f->createAlgorithm());
     }
 

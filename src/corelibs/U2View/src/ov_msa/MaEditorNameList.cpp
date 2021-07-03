@@ -50,7 +50,7 @@
 namespace U2 {
 
 MaEditorNameList::MaEditorNameList(MaEditorWgt *_ui, QScrollBar *_nhBar)
-    : labels(NULL),
+    : labels(nullptr),
       ui(_ui),
       nhBar(_nhBar),
       changeTracker(nullptr),
@@ -375,7 +375,7 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
     }
 
     const MaCollapsibleGroup *group = getCollapsibleGroupByExpandCollapsePoint(mousePressPoint);
-    if (group != NULL) {
+    if (group != nullptr) {
         collapseModel->toggle(viewRow);
         return;
     }
@@ -449,7 +449,7 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
         dragging = false;
     }
     U2Region nameListRegion(0, maxRows);
-    if (isClick && getCollapsibleGroupByExpandCollapsePoint(mousePressPoint) != NULL) {
+    if (isClick && getCollapsibleGroupByExpandCollapsePoint(mousePressPoint) != nullptr) {
         // Do nothing. Expand collapse is processed as a part of MousePress.
     } else if (dragging) {
         int shift;
@@ -526,17 +526,17 @@ const MaCollapsibleGroup *MaEditorNameList::getCollapsibleGroupByExpandCollapseP
     RowHeightController *heightController = ui->getRowHeightController();
     int viewRow = heightController->getViewRowIndexByScreenYPosition(point.y());
     if (viewRow < 0 || viewRow >= collapseModel->getViewRowCount()) {
-        return NULL;
+        return nullptr;
     }
     const MaCollapsibleGroup *group = collapseModel->getCollapsibleGroupByViewRow(viewRow);
     int minRowsInGroupToExpandCollapse = ui->isCollapsingOfSingleRowGroupsEnabled() ? 1 : 2;
-    if (group == NULL || group->size() < minRowsInGroupToExpandCollapse) {
-        return NULL;
+    if (group == nullptr || group->size() < minRowsInGroupToExpandCollapse) {
+        return nullptr;
     }
     U2Region yRange = heightController->getScreenYRegionByViewRowIndex(viewRow);
     QRect textRect = calculateTextRect(yRange, getSelection().contains(viewRow));
     QRect buttonRect = calculateExpandCollapseButtonRect(textRect);
-    return buttonRect.contains(point) ? group : NULL;
+    return buttonRect.contains(point) ? group : nullptr;
 }
 
 void MaEditorNameList::clearSelection() {
@@ -697,7 +697,7 @@ void MaEditorNameList::drawContent(QPainter &painter) {
         bool isSelected = selection.contains(viewRow);
         bool isReference = maRow == referenceIndex;
         QString text = getTextForRow(maRow);
-        if (group != NULL && group->size() >= minRowsInGroupToExpandCollapse) {
+        if (group != nullptr && group->size() >= minRowsInGroupToExpandCollapse) {
             QRect rect = calculateTextRect(yRange, isSelected);
             // SANGER_TODO: check reference
             if (group->maRows[0] == maRow) {
@@ -717,7 +717,7 @@ void MaEditorNameList::drawSequenceItem(QPainter &painter, const QString &text, 
     QRect rect = calculateTextRect(yRange, isSelected);
 
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    CHECK(maObj != NULL, );
+    CHECK(maObj != nullptr, );
     drawBackground(painter, text, rect, isReference);
     drawText(painter, text, rect, isSelected);
 }
@@ -725,7 +725,7 @@ void MaEditorNameList::drawSequenceItem(QPainter &painter, const QString &text, 
 void MaEditorNameList::drawSequenceItem(QPainter &painter, int rowIndex, const U2Region &yRange, const QString &text, bool isSelected) {
     // SANGER_TODO: simplify getting the reference status - no reference here!
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    CHECK(maObj != NULL, );
+    CHECK(maObj != nullptr, );
     U2OpStatusImpl os;
     bool isReference = (rowIndex == maObj->getMultipleAlignment()->getRowIndexByRowId(editor->getReferenceRowId(), os));
     drawSequenceItem(painter, text, yRange, isSelected, isReference);

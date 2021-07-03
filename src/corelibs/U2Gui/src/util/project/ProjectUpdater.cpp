@@ -119,9 +119,9 @@ void ProjectUpdater::readData() {
 
 void ProjectUpdater::fetchObjectsInUse(const U2DbiRef &dbiRef, U2OpStatus &os) {
     DbiConnection connection(dbiRef, os);
-    SAFE_POINT(NULL != connection.dbi, "Invalid database connection", );
+    SAFE_POINT(nullptr != connection.dbi, "Invalid database connection", );
     U2ObjectDbi *oDbi = connection.dbi->getObjectDbi();
-    SAFE_POINT(NULL != oDbi, "Invalid database connection", );
+    SAFE_POINT(nullptr != oDbi, "Invalid database connection", );
 
     const QSet<U2DataId> usedObjects = oDbi->getAllObjectsInUse(os).toSet();
     CHECK_OP(os, );
@@ -139,7 +139,7 @@ void ProjectUpdater::updateAccessedObjects() {
     foreach (GObjectViewWindow *view, activeViews) {
         foreach (GObject *object, view->getObjects()) {
             Document *doc = object->getDocument();
-            if (NULL != doc && doc->isStateLocked()) {
+            if (nullptr != doc && doc->isStateLocked()) {
                 continue;
             }
             const U2EntityRef ref = object->getEntityRef();
@@ -148,7 +148,7 @@ void ProjectUpdater::updateAccessedObjects() {
                 CHECK_CONTINUE(!os.hasError());
             }
             DbiConnection *con = dbiRef2Connections.value(ref.dbiRef);
-            SAFE_POINT(con->dbi != NULL, "Error: connection is NULL!", );
+            SAFE_POINT(con->dbi != nullptr, "Error: connection is NULL!", );
             con->dbi->getObjectDbi()->updateObjectAccessTime(ref.entityId, os);
         }
     }

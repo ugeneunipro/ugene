@@ -103,7 +103,7 @@ U2DbiIterator<U2AssemblyRead> *RTreeAssemblyAdapter::getReads(const U2Region &r,
     QSharedPointer<SQLiteReadQuery> q(new SQLiteReadQuery(qStr, db, os));
     q->bindInt64(1, r.endPos());
     q->bindInt64(2, r.startPos);
-    return new SQLiteResultSetIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), NULL, U2AssemblyRead(), os);
+    return new SQLiteResultSetIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), nullptr, U2AssemblyRead(), os);
 }
 
 U2DbiIterator<U2AssemblyRead> *RTreeAssemblyAdapter::getReadsByRow(const U2Region &r, qint64 minRow, qint64 maxRow, U2OpStatus &os) {
@@ -116,7 +116,7 @@ U2DbiIterator<U2AssemblyRead> *RTreeAssemblyAdapter::getReadsByRow(const U2Regio
     q->bindInt64(2, r.startPos);
     q->bindInt64(3, minRow);
     q->bindInt64(4, maxRow);
-    return new SQLiteResultSetIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), NULL, U2AssemblyRead(), os);
+    return new SQLiteResultSetIterator<U2AssemblyRead>(q, new SimpleAssemblyReadLoader(), nullptr, U2AssemblyRead(), os);
 }
 
 U2DbiIterator<U2AssemblyRead> *RTreeAssemblyAdapter::getReadsByName(const QByteArray &name, U2OpStatus &os) {
@@ -223,7 +223,7 @@ void RTreeAssemblyAdapter::calculateCoverage(const U2Region &r, U2AssemblyCovera
 
 U2DbiIterator<PackAlgorithmData> *RTreePackAlgorithmAdapter::selectAllReads(U2OpStatus &os) {
     QSharedPointer<SQLiteReadQuery> q(new SQLiteReadQuery("SELECT id, gstart, gend - gstart FROM " + indexTable + " ORDER BY gstart", db, os));
-    return new SQLiteResultSetIterator<PackAlgorithmData>(q, new SimpleAssemblyReadPackedDataLoader(), NULL, PackAlgorithmData(), os);
+    return new SQLiteResultSetIterator<PackAlgorithmData>(q, new SimpleAssemblyReadPackedDataLoader(), nullptr, PackAlgorithmData(), os);
 }
 
 RTreePackAlgorithmAdapter::~RTreePackAlgorithmAdapter() {
@@ -231,7 +231,7 @@ RTreePackAlgorithmAdapter::~RTreePackAlgorithmAdapter() {
 }
 
 void RTreePackAlgorithmAdapter::assignProw(const U2DataId &readId, qint64 prow, U2OpStatus &os) {
-    if (updateQuery == NULL) {
+    if (updateQuery == nullptr) {
         updateQuery = new SQLiteWriteQuery("UPDATE " + indexTable + " SET prow1 = ?1, prow2=?1 WHERE id = ?2", db, os);
     }
     updateQuery->setOpStatus(os);

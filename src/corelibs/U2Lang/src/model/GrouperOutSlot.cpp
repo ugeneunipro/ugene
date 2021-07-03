@@ -165,14 +165,14 @@ Descriptor GroupOperations::BY_ID() {
 /* GrouperOutSlot */
 /************************************************************************/
 GrouperOutSlot::GrouperOutSlot(const QString &outSlotId, const QString &inSlotStr)
-    : outSlotId(outSlotId), inSlotStr(inSlotStr), action(NULL) {
+    : outSlotId(outSlotId), inSlotStr(inSlotStr), action(nullptr) {
 }
 
 GrouperOutSlot::GrouperOutSlot(const GrouperOutSlot &another) {
     outSlotId = another.outSlotId;
     inSlotStr = another.inSlotStr;
-    if (NULL == another.action) {
-        action = NULL;
+    if (nullptr == another.action) {
+        action = nullptr;
     } else {
         action = new GrouperSlotAction(*another.action);
     }

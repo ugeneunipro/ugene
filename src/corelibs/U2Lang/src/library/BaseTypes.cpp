@@ -229,7 +229,7 @@ QString BaseTypes::toTypeId(const U2DataType &dataType) {
 }
 
 static void setIfNotNull(bool *to, bool val) {
-    if (to != NULL) {
+    if (to != nullptr) {
         *to = val;
     }
 }

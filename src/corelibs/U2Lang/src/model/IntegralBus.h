@@ -88,7 +88,7 @@ public:
     virtual void transit();
     virtual int hasMessage() const;
     virtual int takenMessages() const;
-    virtual int hasRoom(const DataType *t = NULL) const;
+    virtual int hasRoom(const DataType *t = nullptr) const;
     virtual bool isEnded() const;
     virtual void setEnded();
     virtual int capacity() const {

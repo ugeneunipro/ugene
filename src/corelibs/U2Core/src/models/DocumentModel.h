@@ -189,7 +189,7 @@ public:
     */
     virtual DNASequence *loadSequence(IOAdapter *io, U2OpStatus &ti);
 
-    virtual void storeDocument(Document *d, U2OpStatus &os, IOAdapterFactory *io = NULL, const GUrl &newDocURL = GUrl());
+    virtual void storeDocument(Document *d, U2OpStatus &os, IOAdapterFactory *io = nullptr, const GUrl &newDocURL = GUrl());
 
     /* io - opened IOAdapter
      * so you can store many documents to this file
@@ -298,7 +298,7 @@ class DocumentImportersRegistry;
 class U2CORE_EXPORT DocumentFormatRegistry : public QObject {
     Q_OBJECT
 public:
-    DocumentFormatRegistry(QObject *p = NULL)
+    DocumentFormatRegistry(QObject *p = nullptr)
         : QObject(p) {
     }
 
@@ -451,7 +451,7 @@ public:
     void propagateModLocks(Document *doc) const;
 
     bool hasUserModLock() const {
-        return modLocks[DocumentModLock_USER] != NULL;
+        return modLocks[DocumentModLock_USER] != nullptr;
     }
 
     void setUserModLock(bool v);

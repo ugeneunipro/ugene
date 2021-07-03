@@ -37,7 +37,7 @@ class BuildIndexDialog : public QDialog, private Ui_BuildIndexFromRefDialog {
     Q_OBJECT
 
 public:
-    BuildIndexDialog(const DnaAssemblyAlgRegistry *registry, QWidget *p = NULL);
+    BuildIndexDialog(const DnaAssemblyAlgRegistry *registry, QWidget *p = nullptr);
     const GUrl getRefSeqUrl();
     const QString getAlgorithmName();
     const QString getIndexFileName();

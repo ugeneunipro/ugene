@@ -70,14 +70,14 @@ void OpenAssemblyBrowserTask::open() {
         if (unloadedObjRef.isValid()) {
             //To do: replace the object finding to "GObject* obj = doc->findGObjectByName(unloadedObjRef.objName);" after fixing of UGENE-4904
             QList<GObject *> objs = doc->findGObjectByType(unloadedObjRef.objType);
-            GObject *obj = NULL;
+            GObject *obj = nullptr;
             foreach (GObject *curObj, objs) {
                 if (curObj->getGObjectName() == unloadedObjRef.objName) {
                     obj = curObj;
                     break;
                 }
             }
-            if (obj != NULL && obj->getGObjectType() == GObjectTypes::ASSEMBLY) {
+            if (obj != nullptr && obj->getGObjectType() == GObjectTypes::ASSEMBLY) {
                 selectedObjects.append(qobject_cast<AssemblyObject *>(obj));
             }
         } else {
@@ -105,7 +105,7 @@ void OpenAssemblyBrowserTask::open() {
 void OpenAssemblyBrowserTask::updateTitle(AssemblyBrowser *ab) {
     const QString &oldViewName = ab->getName();
     GObjectViewWindow *w = GObjectViewUtils::findViewByName(oldViewName);
-    if (w != NULL) {
+    if (w != nullptr) {
         AssemblyObject *aObj = ab->getAssemblyObject();
         QString newViewName = GObjectViewUtils::genUniqueViewName(aObj->getDocument(), aObj);
         ab->setName(newViewName);
@@ -118,7 +118,7 @@ AssemblyBrowser *OpenAssemblyBrowserTask::openBrowserForObject(AssemblyObject *o
     U2OpStatus2Notification os;
     if (!v->checkValid(os)) {
         delete v;
-        return NULL;
+        return nullptr;
     }
     GObjectViewWindow *w = new GObjectViewWindow(v, viewName, persistent);
     AppContext::getMainWindow()->getMDIManager()->addMDIWindow(w);
@@ -134,7 +134,7 @@ OpenSavedAssemblyBrowserTask::OpenSavedAssemblyBrowserTask(const QString &viewNa
     AssemblyBrowserState state(stateData);
     GObjectReference ref = state.getGObjectRef();
     Document *doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         doc = createDocumentAndAddToProject(ref.docUrl, AppContext::getProject(), stateInfo);
         CHECK_OP_EXT(stateInfo, stateIsIllegal = true, );
     }
@@ -149,12 +149,12 @@ void OpenSavedAssemblyBrowserTask::open() {
     AssemblyBrowserState state(stateData);
     GObjectReference ref = state.getGObjectRef();
     Document *doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateIsIllegal = true;
         stateInfo.setError(L10N::errorDocumentNotFound(ref.docUrl));
         return;
     }
-    GObject *obj = NULL;
+    GObject *obj = nullptr;
     if (doc->isDatabaseConnection() && ref.entityRef.isValid()) {
         obj = doc->getObjectById(ref.entityRef.entityId);
     } else {
@@ -167,16 +167,16 @@ void OpenSavedAssemblyBrowserTask::open() {
             }
         }
     }
-    if (obj == NULL || obj->getGObjectType() != GObjectTypes::ASSEMBLY) {
+    if (obj == nullptr || obj->getGObjectType() != GObjectTypes::ASSEMBLY) {
         stateIsIllegal = true;
         stateInfo.setError(tr("Assembly object not found: %1").arg(ref.objName));
         return;
     }
     AssemblyObject *asmObj = qobject_cast<AssemblyObject *>(obj);
-    SAFE_POINT(asmObj != NULL, "Object has type ASSEMBLY, but cannot cast to AssemblyObject", );
+    SAFE_POINT(asmObj != nullptr, "Object has type ASSEMBLY, but cannot cast to AssemblyObject", );
 
     AssemblyBrowser *ab = OpenAssemblyBrowserTask::openBrowserForObject(asmObj, viewName, true);
-    CHECK(ab != NULL, );
+    CHECK(ab != nullptr, );
     state.restoreState(ab);
 }
 
@@ -190,7 +190,7 @@ void UpdateAssemblyBrowserTask::update() {
     }
 
     AssemblyBrowser *ab = qobject_cast<AssemblyBrowser *>(view.data());
-    SAFE_POINT(ab != NULL, "UpdateAssemblyBrowserTask::update: view is not AssemblyBrowser", );
+    SAFE_POINT(ab != nullptr, "UpdateAssemblyBrowserTask::update: view is not AssemblyBrowser", );
 
     AssemblyBrowserState(stateData).restoreState(ab);
 }

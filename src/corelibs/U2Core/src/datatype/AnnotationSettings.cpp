@@ -80,13 +80,13 @@ AnnotationSettings *AnnotationSettingsRegistry::getAnnotationSettings(const Shar
 AnnotationSettings *AnnotationSettingsRegistry::getAnnotationSettings(const QString &name) {
     //Search in persistent settings:
     AnnotationSettings *s = persistentMap.value(name);
-    if (s != NULL) {
+    if (s != nullptr) {
         return s;
     }
 
     //search in transient cache:
     s = transientMap.value(name);
-    if (s != NULL) {
+    if (s != nullptr) {
         return s;
     }
     s = new AnnotationSettings();
@@ -107,7 +107,7 @@ void AnnotationSettingsRegistry::read() {
     QList<AnnotationSettings *> list;
     foreach (const QString &name, annotations) {
         AnnotationSettings *as = transientMap.value(name);
-        if (as == NULL) {
+        if (as == nullptr) {
             as = new AnnotationSettings();
             as->name = name;
         }

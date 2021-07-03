@@ -47,10 +47,10 @@ void ConnectSharedDatabaseTask::run() {
     }
 
     IOAdapterFactory *ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::DATABASE_CONNECTION);
-    SAFE_POINT_EXT(NULL != ioAdapterFactory, setError("Database connection IO adapter factory is NULL"), );
+    SAFE_POINT_EXT(nullptr != ioAdapterFactory, setError("Database connection IO adapter factory is NULL"), );
 
     DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::DATABASE_CONNECTION);
-    SAFE_POINT_EXT(NULL != format, setError("Database connection format is NULL"), );
+    SAFE_POINT_EXT(nullptr != format, setError("Database connection format is NULL"), );
 
     resultDocument = format->loadDocument(ioAdapterFactory, getUrlFromRef(dbiRef), QVariantMap(), stateInfo);
     CHECK_OP(stateInfo, );

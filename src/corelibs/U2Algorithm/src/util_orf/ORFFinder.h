@@ -106,8 +106,8 @@ enum ORFAlgorithmStrand {
 class U2ALGORITHM_EXPORT ORFAlgorithmSettings {
 public:
     ORFAlgorithmSettings(ORFAlgorithmStrand strand = ORFAlgorithmStrand_Both,
-                         DNATranslation *complementTT = NULL,
-                         DNATranslation *proteinTT = NULL,
+                         DNATranslation *complementTT = nullptr,
+                         DNATranslation *proteinTT = nullptr,
                          const U2Region &searchRegion = U2Region(),
                          int minLen = 0,
                          bool mustFit = false,

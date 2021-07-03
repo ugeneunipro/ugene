@@ -78,7 +78,7 @@ void RoundHint::unmark() {
 }
 
 GraphLabel::GraphLabel()
-    : attachedLabel(NULL), text(new TextLabel(NULL)), image(new RoundHint()), position(-1), value(0.0), coord(-1, -1), radius(defaultRadius) {
+    : attachedLabel(nullptr), text(new TextLabel(nullptr)), image(new RoundHint()), position(-1), value(0.0), coord(-1, -1), radius(defaultRadius) {
     text->setLineWidth(3);
     text->setAlignment(Qt::AlignCenter);
     text->setFrameStyle(QFrame::WinPanel | QFrame::Raised);
@@ -86,7 +86,7 @@ GraphLabel::GraphLabel()
     image->installEventFilter(this);
 }
 GraphLabel::GraphLabel(float pos, QWidget *parent, int _radius)
-    : attachedLabel(NULL), text(new TextLabel(parent)), image(new RoundHint(parent)), position(pos), value(0.0), coord(0, 0), radius(_radius) {
+    : attachedLabel(nullptr), text(new TextLabel(parent)), image(new RoundHint(parent)), position(pos), value(0.0), coord(0, 0), radius(_radius) {
     text->setLineWidth(3);
     text->setAlignment(Qt::AlignCenter);
     text->setFrameStyle(QFrame::WinPanel | QFrame::Raised);
@@ -105,7 +105,7 @@ GraphLabel::~GraphLabel() {
 bool GraphLabel::eventFilter(QObject *target, QEvent *e) {
     if (target == text || target == image) {
         QMouseEvent *me = static_cast<QMouseEvent *>(e);
-        CHECK(me != NULL, false);
+        CHECK(me != nullptr, false);
         if (me->type() == QEvent::MouseButtonPress && me->button() == Qt::LeftButton) {
             emit si_onHintDeleted(this);
             return true;
@@ -218,7 +218,7 @@ void MultiLabel::sl_deleteLabel(GraphLabel *label) {
 
 bool MultiLabel::removeLabel(float xPos) {
     GraphLabel *label = findLabelByPosition(xPos);
-    CHECK(NULL != label, false)
+    CHECK(nullptr != label, false)
     removeLabel(label);
     return true;
 }
@@ -233,7 +233,7 @@ GraphLabel *MultiLabel::findLabelByPosition(float xPos) const {
             return currentLabel;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 GraphLabel &MultiLabel::getMovingLabel() {

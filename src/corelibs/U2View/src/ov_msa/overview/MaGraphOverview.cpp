@@ -48,13 +48,13 @@ MaGraphOverview::MaGraphOverview(MaEditorWgt *ui)
       isBlocked(false),
       lastDrawnVersion(-1),
       method(Strict),
-      graphCalculationTask(NULL) {
+      graphCalculationTask(nullptr) {
     setFixedHeight(FIXED_HEIGHT);
 
     displaySettings = new MaGraphOverviewDisplaySettings();
 
     Settings *s = AppContext::getSettings();
-    CHECK(s != NULL, );
+    CHECK(s != nullptr, );
     if (s->contains(MSA_GRAPH_OVERVIEW_COLOR_KEY)) {
         displaySettings->color = s->getValue(MSA_GRAPH_OVERVIEW_COLOR_KEY).value<QColor>();
     }

@@ -209,9 +209,9 @@ const QString &BestPositionFindTask::getSequenceId() const {
 
 AbstractAlignmentTask *SimpleAddToAlignmentTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings *_settings) const {
     AlignSequencesToAlignmentTaskSettings *addSettings = dynamic_cast<AlignSequencesToAlignmentTaskSettings *>(_settings);
-    SAFE_POINT(addSettings != NULL,
+    SAFE_POINT(addSettings != nullptr,
                "Add sequences to alignment: incorrect settings",
-               NULL);
+               nullptr);
     return new SimpleAddToAlignmentTask(*addSettings);
 }
 

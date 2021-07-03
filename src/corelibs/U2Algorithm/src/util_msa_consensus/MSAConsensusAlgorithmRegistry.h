@@ -34,7 +34,7 @@ class U2ALGORITHM_EXPORT MSAConsensusAlgorithmRegistry : public QObject {
     Q_OBJECT
 
 public:
-    MSAConsensusAlgorithmRegistry(QObject *p = NULL);
+    MSAConsensusAlgorithmRegistry(QObject *p = nullptr);
 
     ~MSAConsensusAlgorithmRegistry();
 

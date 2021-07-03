@@ -77,12 +77,12 @@ void CreateRulerDialogController::sl_colorButtonClicked() {
 void CreateRulerDialogController::accept() {
     QString n = nameEdit->text();
     if (n.isEmpty()) {
-        QMessageBox::critical(NULL, tr("Error"), tr("Ruler name is empty!"));
+        QMessageBox::critical(nullptr, tr("Error"), tr("Ruler name is empty!"));
         nameEdit->setFocus();
         return;
     }
     if (filter.contains(n)) {
-        QMessageBox::critical(NULL, tr("Error"), tr("Ruler with the same name is already exists!"));
+        QMessageBox::critical(nullptr, tr("Error"), tr("Ruler with the same name is already exists!"));
         nameEdit->setFocus();
         return;
     }

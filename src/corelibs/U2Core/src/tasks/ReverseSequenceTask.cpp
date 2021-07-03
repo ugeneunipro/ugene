@@ -41,7 +41,7 @@ ReverseComplementSequenceTask::ReverseComplementSequenceTask(U2SequenceObject *d
       aObjs(annotations),
       selection(s),
       complTT(transl) {
-    SAFE_POINT_EXT(seqObj != NULL, setError(L10N::nullPointerError("sequence object")), );
+    SAFE_POINT_EXT(seqObj != nullptr, setError(L10N::nullPointerError("sequence object")), );
     addSubTask(new ReverseSequenceTask(seqObj, aObjs, selection));
     addSubTask(new ComplementSequenceTask(seqObj, aObjs, selection, complTT));
 }
@@ -51,7 +51,7 @@ ReverseSequenceTask::ReverseSequenceTask(U2SequenceObject *seqObj, const QList<A
       seqObj(seqObj),
       aObjs(annotations),
       selection(selection) {
-    SAFE_POINT_EXT(seqObj != NULL, setError(L10N::nullPointerError("sequence object")), );
+    SAFE_POINT_EXT(seqObj != nullptr, setError(L10N::nullPointerError("sequence object")), );
 }
 
 Task::ReportResult ReverseSequenceTask::report() {
@@ -119,7 +119,7 @@ Task::ReportResult ReverseSequenceTask::report() {
 
     const int len = seqObj->getSequenceLength();
     // mirror selection
-    if (NULL != selection) {
+    if (nullptr != selection) {
         QVector<U2Region> regions = selection->getSelectedRegions();
         U2Region::mirror(len, regions);
         U2Region::reverse(regions);
@@ -148,8 +148,8 @@ ComplementSequenceTask::ComplementSequenceTask(U2SequenceObject *seqObj,
       aObjs(annotations),
       selection(selection),
       complTT(complTT) {
-    SAFE_POINT_EXT(seqObj != NULL, setError(L10N::nullPointerError("sequence object")), );
-    SAFE_POINT_EXT(complTT != NULL,
+    SAFE_POINT_EXT(seqObj != nullptr, setError(L10N::nullPointerError("sequence object")), );
+    SAFE_POINT_EXT(complTT != nullptr,
                    setError(L10N::nullPointerError("DNA translation table")), );
 }
 

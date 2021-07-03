@@ -69,7 +69,7 @@ QVariant FileExtensionRelation::getAffectResult(const QVariant &influencingValue
     }
 
     QString extension;
-    if (NULL == newFormat) {
+    if (nullptr == newFormat) {
         extension = newFormatId;
     } else {
         extension = newFormat->getSupportedDocumentFileExtensions().first();
@@ -95,11 +95,11 @@ QVariant FileExtensionRelation::getAffectResult(const QVariant &influencingValue
     bool foundExt = false;
     if (0 == QString::compare(lastSuffix, "csv", Qt::CaseInsensitive)) {
         foundExt = true;
-    } else if (NULL == currentFormat) {
+    } else if (nullptr == currentFormat) {
         foundExt = (lastSuffix == currentFormatId);
     } else {
         QStringList extensions(currentFormat->getSupportedDocumentFileExtensions());
-        if (NULL == newFormat) {
+        if (nullptr == newFormat) {
             extensions << newFormatId;
         } else {
             extensions << newFormat->getSupportedDocumentFileExtensions();
@@ -129,10 +129,10 @@ QVariant FileExtensionRelation::getAffectResult(const QVariant &influencingValue
 void FileExtensionRelation::updateDelegateTags(const QVariant &influencingValue, DelegateTags *dependentTags) const {
     QString newFormatId = influencingValue.toString();
     DocumentFormat *newFormat = AppContext::getDocumentFormatRegistry()->getFormatById(newFormatId);
-    if (NULL != dependentTags) {
+    if (nullptr != dependentTags) {
         dependentTags->set("format", newFormatId);
         QString filter = newFormatId + " files (*." + newFormatId + ")";
-        if (NULL != newFormat) {
+        if (nullptr != newFormat) {
             filter = FormatUtils::prepareDocumentsFileFilter(newFormatId, true);
         }
         dependentTags->set("filter", filter);

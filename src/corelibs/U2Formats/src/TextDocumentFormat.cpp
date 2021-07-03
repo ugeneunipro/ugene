@@ -59,7 +59,7 @@ Document *TextDocumentFormatDeprecated::loadDocument(IOAdapter *io, const U2DbiR
 DNASequence *TextDocumentFormatDeprecated::loadTextSequence(IOAdapter *io, U2OpStatus &ti) {
     Q_UNUSED(io);
     ti.setError("This document format does not support streaming reading mode");
-    return NULL;
+    return nullptr;
 }
 
 ///////////////////////////////////////////

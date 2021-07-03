@@ -282,14 +282,14 @@ const QString WorkflowSettings::getIncludedElementsDirectory() {
 
 bool WorkflowSettings::isShowLoadButtonHint() {
     Settings *s = AppContext::getSettings();
-    SAFE_POINT(NULL != s, "NULL settings!", false);
+    SAFE_POINT(nullptr != s, "NULL settings!", false);
 
     return s->getValue(SHOW_LOAD_BUTTON_HINT, QVariant(true)).toBool();
 }
 
 void WorkflowSettings::setShowLoadButtonHint(bool value) {
     Settings *s = AppContext::getSettings();
-    SAFE_POINT(NULL != s, "NULL settings!", );
+    SAFE_POINT(nullptr != s, "NULL settings!", );
 
     s->setValue(SHOW_LOAD_BUTTON_HINT, value);
 }

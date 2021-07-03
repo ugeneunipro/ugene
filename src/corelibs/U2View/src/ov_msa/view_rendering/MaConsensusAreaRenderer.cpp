@@ -42,7 +42,7 @@ namespace U2 {
 ConsensusRenderSettings::ConsensusRenderSettings()
     : columnWidth(0),
       drawSelection(true),
-      colorScheme(NULL),
+      colorScheme(nullptr),
       resizeMode(MaEditor::ResizeMode_FontAndContent),
       highlightMismatches(false),
       rulerWidth(0),
@@ -101,7 +101,7 @@ void MaConsensusAreaRenderer::drawContent(QPainter &painter,
                                           const MaEditorConsensusAreaSettings &consensusSettings,
                                           const ConsensusRenderSettings &renderSettings) {
     SAFE_POINT(consensusRenderData.isValid(), "Incorrect consensus data to draw", );
-    SAFE_POINT(NULL != renderSettings.colorScheme, "Color scheme is NULL", );
+    SAFE_POINT(nullptr != renderSettings.colorScheme, "Color scheme is NULL", );
 
     if (consensusSettings.isVisible(MSAEditorConsElement_CONSENSUS_TEXT)) {
         drawConsensus(painter, consensusRenderData, renderSettings);

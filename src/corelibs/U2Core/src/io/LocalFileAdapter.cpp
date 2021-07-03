@@ -49,13 +49,13 @@ IOAdapter *GzippedLocalFileAdapterFactory::createIOAdapter() {
 const quint64 LocalFileAdapter::BUF_SIZE = DocumentFormat::READ_BUFF_SIZE;
 
 LocalFileAdapter::LocalFileAdapter(LocalFileAdapterFactory *factory, QObject *o, bool b)
-    : IOAdapter(factory, o), f(NULL), fileSize(0), bufferOptimization(b) {
+    : IOAdapter(factory, o), f(nullptr), fileSize(0), bufferOptimization(b) {
     bufferOptimization = true;
     if (bufferOptimization) {
         buffer = QByteArray(BUF_SIZE, '\0');
         bufData = buffer.data();
     } else {
-        bufData = NULL;
+        bufData = nullptr;
     }
     bufLen = 0;
     currentPos = 0;
@@ -69,7 +69,7 @@ LocalFileAdapter::~LocalFileAdapter() {
 
 bool LocalFileAdapter::open(const GUrl &url, IOAdapterMode m) {
     SAFE_POINT(!isOpen(), "Adapter is already opened!", false);
-    SAFE_POINT(f == NULL, "QFile is not null!", false);
+    SAFE_POINT(f == nullptr, "QFile is not null!", false);
 
     if (url.isEmpty()) {
         return false;
@@ -90,7 +90,7 @@ bool LocalFileAdapter::open(const GUrl &url, IOAdapterMode m) {
     bool res = f->open(iomode);
     if (!res) {
         delete f;
-        f = NULL;
+        f = nullptr;
         return false;
     }
     fileSize = f->size();
@@ -98,14 +98,14 @@ bool LocalFileAdapter::open(const GUrl &url, IOAdapterMode m) {
 }
 
 bool LocalFileAdapter::isOpen() const {
-    return f != NULL;
+    return f != nullptr;
 }
 
 void LocalFileAdapter::close() {
     SAFE_POINT(isOpen(), "Adapter is not opened!", );
     f->close();
     delete f;
-    f = NULL;
+    f = nullptr;
     fileSize = 0;
 }
 

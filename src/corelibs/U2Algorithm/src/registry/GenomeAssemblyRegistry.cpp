@@ -91,7 +91,7 @@ GenomeAssemblyAlgorithmEnv *GenomeAssemblyAlgRegistry::unregisterAlgorithm(const
     QMutexLocker locker(&mutex);
 
     if (!algorithms.contains(id)) {
-        return NULL;
+        return nullptr;
     }
     GenomeAssemblyAlgorithmEnv *res = algorithms.value(id);
     algorithms.remove(id);

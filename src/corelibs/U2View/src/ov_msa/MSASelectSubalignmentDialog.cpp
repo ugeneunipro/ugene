@@ -39,7 +39,7 @@ SelectSubalignmentDialog::SelectSubalignmentDialog(MaEditor *editor, const U2Reg
       editor(editor),
       window(region),
       selectedIndexes(_selectedIndexes) {
-    SAFE_POINT(editor != NULL, L10N::nullPointerError("MaEditor"), );
+    SAFE_POINT(editor != nullptr, L10N::nullPointerError("MaEditor"), );
 
     if (region.isEmpty() && selectedIndexes.isEmpty()) {
         int startSeq = -1;
@@ -117,7 +117,7 @@ void SelectSubalignmentDialog::sl_noneButtonClicked() {
 }
 
 void SelectSubalignmentDialog::init() {
-    SAFE_POINT(editor != NULL, tr("Ma Editor is NULL"), );
+    SAFE_POINT(editor != nullptr, tr("Ma Editor is NULL"), );
 
     setupUi(this);
     new HelpButton(this, buttonBox, "65929694");
@@ -128,7 +128,7 @@ void SelectSubalignmentDialog::init() {
     connect(invertButton, SIGNAL(clicked()), SLOT(sl_invertButtonClicked()));
 
     MultipleAlignmentObject *mobj = editor->getMaObject();
-    SAFE_POINT(mobj != NULL, tr("MSA Object is NULL"), );
+    SAFE_POINT(mobj != nullptr, tr("MSA Object is NULL"), );
 
     int rowNumber = mobj->getNumRows();
     int alignLength = mobj->getLength();

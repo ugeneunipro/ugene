@@ -31,7 +31,7 @@ namespace U2 {
 class UpdatedWidgetSettings {
 public:
     UpdatedWidgetSettings()
-        : ma(NULL), ui(NULL), autoUpdate(true) {
+        : ma(nullptr), ui(nullptr), autoUpdate(true) {
     }
     const MultipleSequenceAlignmentObject *ma;
     MsaEditorWgt *ui;

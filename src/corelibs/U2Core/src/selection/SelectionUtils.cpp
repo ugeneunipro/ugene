@@ -38,12 +38,12 @@ static void removeDuplicatesPointersFromList(QList<T *> &list) {
     for (int i = 0, n = list.size(); i < n; i++) {
         const T *val = list.at(i);
         if (tracked.contains(val)) {
-            list[i] = NULL;
+            list[i] = nullptr;
         } else {
             tracked.insert(val);
         }
     }
-    list.removeAll(NULL);
+    list.removeAll(nullptr);
 }
 
 QList<GObject *> SelectionUtils::findObjects(GObjectType t, const MultiGSelection *ms, UnloadedObjectFilter f) {

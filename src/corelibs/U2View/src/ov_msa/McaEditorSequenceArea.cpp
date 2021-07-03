@@ -122,7 +122,7 @@ McaEditorSequenceArea::McaEditorSequenceArea(McaEditorWgt *ui, GScrollBar *hb, G
     addAction(scaleBar->getMinusAction());
     GUIUtils::updateButtonToolTip(scaleBar->getMinusButton(), scaleBar->getMinusAction()->shortcut());
 
-    scaleAction = NULL;
+    scaleAction = nullptr;
 
     ambiguousCharactersController = new MaAmbiguousCharactersController(ui);
     addAction(ambiguousCharactersController->getPreviousAction());
@@ -284,7 +284,7 @@ void McaEditorSequenceArea::sl_setRenderAreaHeight(int k) {
 }
 
 void McaEditorSequenceArea::sl_buildStaticToolbar(GObjectView * /*v*/, QToolBar *t) {
-    if (scaleAction != NULL) {
+    if (scaleAction != nullptr) {
         t->addAction(scaleAction);
     } else {
         scaleAction = t->addWidget(scaleBar);
@@ -335,7 +335,7 @@ void McaEditorSequenceArea::sl_trimRightEnd() {
 
 void McaEditorSequenceArea::sl_updateActions() {
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    SAFE_POINT(NULL != maObj, "MaObj is NULL", );
+    SAFE_POINT(nullptr != maObj, "MaObj is NULL", );
 
     const bool readOnly = maObj->isStateLocked();
     const bool canEditAlignment = !readOnly && !isAlignmentEmpty();
@@ -397,7 +397,7 @@ void McaEditorSequenceArea::initRenderer() {
 
 void McaEditorSequenceArea::drawBackground(QPainter &painter) {
     SequenceWithChromatogramAreaRenderer *r = qobject_cast<SequenceWithChromatogramAreaRenderer *>(renderer);
-    SAFE_POINT(r != NULL, "Wrong renderer: fail to cast renderer to SequenceWithChromatogramAreaRenderer", );
+    SAFE_POINT(r != nullptr, "Wrong renderer: fail to cast renderer to SequenceWithChromatogramAreaRenderer", );
     r->drawReferenceSelection(painter);
     r->drawNameListSelection(painter);
 }
@@ -419,14 +419,14 @@ QAction *McaEditorSequenceArea::createToggleTraceAction(const QString &actionNam
 
 void McaEditorSequenceArea::insertChar(char newCharacter) {
     CHECK(maMode == InsertCharMode, );
-    CHECK(getEditor() != NULL, );
+    CHECK(getEditor() != nullptr, );
     CHECK(!selection.isEmpty(), );
 
     assert(isInRange(selection.topLeft()));
     assert(isInRange(QPoint(selection.x() + selection.width() - 1, selection.y() + selection.height() - 1)));
 
     MultipleChromatogramAlignmentObject *maObj = getEditor()->getMaObject();
-    CHECK(maObj != NULL && !maObj->isStateLocked(), );
+    CHECK(maObj != nullptr && !maObj->isStateLocked(), );
 
     // if this method was invoked during a region shifting
     // then shifting should be canceled

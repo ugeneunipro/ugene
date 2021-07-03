@@ -69,7 +69,7 @@ Derived MultipleAlignmentRow::dynamicCast() const {
 template<class Derived>
 Derived MultipleAlignmentRow::dynamicCast(U2OpStatus &os) const {
     Derived derived(*this);
-    if (NULL == derived.maRowData) {
+    if (nullptr == derived.maRowData) {
         assert(false);
         os.setError("Can't cast MultipleAlignmentRow to a derived class");
     }

@@ -34,21 +34,21 @@ CloneObjectTask::CloneObjectTask(GObject *srcObj, Document *dstDoc, const QStrin
     : Task(tr("Copy object"), TaskFlag_None),
       srcObj(srcObj),
       dstDoc(dstDoc),
-      dstDbiRef(NULL != dstDoc ? dstDoc->getDbiRef() : U2DbiRef()),
+      dstDbiRef(nullptr != dstDoc ? dstDoc->getDbiRef() : U2DbiRef()),
       dstFolder(dstFolder),
-      dstObj(NULL) {
-    CHECK_EXT(NULL != srcObj, setError(tr("Invalid source object")), );
-    CHECK_EXT(NULL != dstDoc, setError(tr("Invalid destination document")), );
+      dstObj(nullptr) {
+    CHECK_EXT(nullptr != srcObj, setError(tr("Invalid source object")), );
+    CHECK_EXT(nullptr != dstDoc, setError(tr("Invalid destination document")), );
     setTaskName(getTaskName() + ": " + srcObj->getGObjectName());
     tpm = Progress_Manual;
 }
 
 CloneObjectTask::CloneObjectTask(GObject *srcObj, const U2DbiRef &dstDbiRef, const QString &dstFolder)
-    : Task(tr("Copy object %1").arg(NULL != srcObj ? srcObj->getGObjectName() : ""), TaskFlag_None),
+    : Task(tr("Copy object %1").arg(nullptr != srcObj ? srcObj->getGObjectName() : ""), TaskFlag_None),
       srcObj(srcObj),
       dstDbiRef(dstDbiRef),
       dstFolder(dstFolder),
-      dstObj(NULL) {
+      dstObj(nullptr) {
     CHECK_EXT(dstDbiRef.isValid(), setError(tr("Invalid destination database reference")), );
     tpm = Progress_Manual;
 }
@@ -60,7 +60,7 @@ CloneObjectTask::~CloneObjectTask() {
 void CloneObjectTask::run() {
     DbiConnection con(dstDbiRef, stateInfo);
     CHECK_OP(stateInfo, );
-    SAFE_POINT_EXT(NULL != con.dbi, setError(tr("Error! No DBI")), );
+    SAFE_POINT_EXT(nullptr != con.dbi, setError(tr("Error! No DBI")), );
 
     QVariantMap hints;
     hints[DocumentFormat::DBI_FOLDER_HINT] = dstFolder;
@@ -73,7 +73,7 @@ void CloneObjectTask::run() {
 
 GObject *CloneObjectTask::takeResult() {
     GObject *result = dstObj;
-    dstObj = NULL;
+    dstObj = nullptr;
     return result;
 }
 

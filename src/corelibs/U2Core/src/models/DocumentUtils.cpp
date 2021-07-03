@@ -45,7 +45,7 @@ QSet<QString> DocumentUtils::getURLs(const QList<Document *> &docs) {
 QSet<QString> DocumentUtils::getNewDocFileNameExcludesHint() {
     QSet<QString> excludeFileNames;
     Project *p = AppContext::getProject();
-    if (p != NULL) {
+    if (p != nullptr) {
         excludeFileNames = DocumentUtils::getURLs(p->getDocuments());
     }
     return excludeFileNames;
@@ -145,7 +145,7 @@ QList<FormatDetectionResult> DocumentUtils::detectFormat(const GUrl &url, const 
 
 QList<FormatDetectionResult> DocumentUtils::detectFormat(IOAdapter *io, const FormatDetectionConfig &conf) {
     QList<FormatDetectionResult> result;
-    if (io == NULL || !io->isOpen()) {
+    if (io == nullptr || !io->isOpen()) {
         return result;
     }
     QByteArray rawData = IOAdapterUtils::readFileHeader(io);
@@ -163,10 +163,10 @@ DocumentUtils::Detection DocumentUtils::detectFormat(const GUrl &url, QString &r
 
     DocumentFormat *format = formats.first().format;
     DocumentImporter *importer = formats.first().importer;
-    if (NULL != format) {
+    if (nullptr != format) {
         resultId = format->getFormatId();
         return FORMAT;
-    } else if (NULL != importer) {
+    } else if (nullptr != importer) {
         resultId = importer->getId();
         return IMPORTER;
     } else {
@@ -177,7 +177,7 @@ DocumentUtils::Detection DocumentUtils::detectFormat(const GUrl &url, QString &r
 QList<DocumentFormat *> DocumentUtils::toFormats(const QList<FormatDetectionResult> &infos) {
     QList<DocumentFormat *> result;
     foreach (const FormatDetectionResult &info, infos) {
-        if (info.format != NULL) {
+        if (info.format != nullptr) {
             result << info.format;
         }
     }
@@ -196,7 +196,7 @@ bool DocumentUtils::canAddGObjectsToDocument(Document *doc, const GObjectType &t
 bool DocumentUtils::canRemoveGObjectFromDocument(GObject *obj) {
     Document *doc = obj->getDocument();
 
-    if (NULL == doc || !doc->isLoaded() || doc->isStateLocked()) {
+    if (nullptr == doc || !doc->isLoaded() || doc->isStateLocked()) {
         return false;
     }
 
@@ -211,8 +211,8 @@ bool DocumentUtils::canRemoveGObjectFromDocument(GObject *obj) {
 void DocumentUtils::removeDocumentsContainigGObjectFromProject(GObject *obj) {
     // no results found -> delete empty annotation document
     Project *proj = AppContext::getProject();
-    if (proj != NULL) {
-        Document *toDelete = NULL;
+    if (proj != nullptr) {
+        Document *toDelete = nullptr;
         QList<Document *> docs = proj->getDocuments();
         foreach (Document *doc, docs) {
             if (doc->getObjects().contains(obj)) {
@@ -220,7 +220,7 @@ void DocumentUtils::removeDocumentsContainigGObjectFromProject(GObject *obj) {
                 break;
             }
         }
-        if (toDelete != NULL) {
+        if (toDelete != nullptr) {
             proj->removeDocument(toDelete);
         }
     }
@@ -231,17 +231,17 @@ QFile::Permissions DocumentUtils::getPermissions(Document *doc) {
 }
 
 Document *DocumentUtils::createCopyRestructuredWithHints(Document *doc, U2OpStatus &os, bool shallowCopy) {
-    Document *resultDoc = NULL;
+    Document *resultDoc = nullptr;
     QVariantMap hints = doc->getGHintsMap();
 
     if (hints.value(ProjectLoaderHint_MultipleFilesMode_Flag, false).toBool()) {
-        return NULL;
+        return nullptr;
     }
 
     if (hints.value(DocumentReadingMode_SequenceAsAlignmentHint, false).toBool()) {
         MultipleSequenceAlignmentObject *maObj = MSAUtils::seqObjs2msaObj(doc->getObjects(), hints, os, shallowCopy, true);
-        CHECK_OP(os, NULL);
-        CHECK(maObj != NULL, resultDoc);
+        CHECK_OP(os, nullptr);
+        CHECK(maObj != nullptr, resultDoc);
         QList<GObject *> objects;
         objects << maObj;
 
@@ -255,7 +255,7 @@ Document *DocumentUtils::createCopyRestructuredWithHints(Document *doc, U2OpStat
     } else if (hints.contains(DocumentReadingMode_SequenceMergeGapSize)) {
         int mergeGap = hints.value(DocumentReadingMode_SequenceMergeGapSize).toInt();
         if (mergeGap < 0 || doc->findGObjectByType(GObjectTypes::SEQUENCE, UOF_LoadedOnly).count() <= 1) {
-            return NULL;
+            return nullptr;
         }
 
         QList<GObject *> objects = U1SequenceUtils::mergeSequences(doc, doc->getDbiRef(), hints, os);
@@ -264,7 +264,7 @@ Document *DocumentUtils::createCopyRestructuredWithHints(Document *doc, U2OpStat
 
         if (os.hasError()) {
             delete resultDoc;
-            resultDoc = NULL;
+            resultDoc = nullptr;
         }
     }
 
@@ -272,12 +272,12 @@ Document *DocumentUtils::createCopyRestructuredWithHints(Document *doc, U2OpStat
 }
 
 QString FormatDetectionResult::getFormatDescriptionText() const {
-    QString text = format == NULL ? importer->getImporterDescription() : format->getFormatDescription();
+    QString text = format == nullptr ? importer->getImporterDescription() : format->getFormatDescription();
     return text;
 }
 
 QString FormatDetectionResult::getFormatOrImporterName() const {
-    QString name = format == NULL ? importer->getImporterName() : format->getFormatName();
+    QString name = format == nullptr ? importer->getImporterName() : format->getFormatName();
     return name;
 }
 

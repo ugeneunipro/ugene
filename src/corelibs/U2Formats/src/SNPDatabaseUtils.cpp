@@ -31,7 +31,7 @@ namespace U2 {
 #define S3_DATABASE_KEY "s3-database"
 
 Database *SNPDatabaseUtils::openDatabase(const QString &path) {
-    Database *res = NULL;
+    Database *res = nullptr;
 
     if (QFile::exists(path)) {
         U2OpStatusImpl os;
@@ -47,7 +47,7 @@ U2DataId SNPDatabaseUtils::getSequenceId(const QString &sequenceName, U2ObjectDb
     if (sequenceName.isEmpty()) {
         return seqId;
     }
-    SAFE_POINT(objectDbi != NULL, "object Dbi is NULL", seqId);
+    SAFE_POINT(objectDbi != nullptr, "object Dbi is NULL", seqId);
 
     U2OpStatusImpl os;
     QScopedPointer<U2DbiIterator<U2DataId>> it(objectDbi->getObjectsByVisualName(sequenceName, U2Type::Sequence, os));

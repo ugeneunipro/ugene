@@ -47,7 +47,7 @@ MultipleChromatogramAlignmentObject::MultipleChromatogramAlignmentObject(const Q
                                                                          const U2EntityRef &mcaRef,
                                                                          const QVariantMap &hintsMap,
                                                                          const MultipleChromatogramAlignment &mca)
-    : MultipleAlignmentObject(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT, name, mcaRef, hintsMap, mca), referenceObj(NULL) {
+    : MultipleAlignmentObject(GObjectTypes::MULTIPLE_CHROMATOGRAM_ALIGNMENT, name, mcaRef, hintsMap, mca), referenceObj(nullptr) {
 }
 
 MultipleChromatogramAlignmentObject::~MultipleChromatogramAlignmentObject() {
@@ -57,7 +57,7 @@ MultipleChromatogramAlignmentObject::~MultipleChromatogramAlignmentObject() {
 GObject *MultipleChromatogramAlignmentObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
     Q_UNUSED(opBlock);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     QScopedPointer<GHintsDefaultImpl> gHints(new GHintsDefaultImpl(getGHintsMap()));
     gHints->setAll(hints);
@@ -65,18 +65,18 @@ GObject *MultipleChromatogramAlignmentObject::clone(const U2DbiRef &dstDbiRef, U
 
     MultipleChromatogramAlignment mca = getMcaCopy();
     MultipleChromatogramAlignmentObject *clonedObject = MultipleChromatogramAlignmentImporter::createAlignment(os, dstDbiRef, dstFolder, mca);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     QScopedPointer<MultipleChromatogramAlignmentObject> p(clonedObject);
 
     DbiConnection srcCon(getEntityRef().dbiRef, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     DbiConnection dstCon(dstDbiRef, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     U2Sequence referenceCopy = U2SequenceUtils::copySequence(getReferenceObj()->getEntityRef(), dstDbiRef, dstFolder, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     U2ByteArrayAttribute attribute;
     U2Object obj;
@@ -86,7 +86,7 @@ GObject *MultipleChromatogramAlignmentObject::clone(const U2DbiRef &dstDbiRef, U
     U2AttributeUtils::init(attribute, obj, MultipleChromatogramAlignmentObject::MCAOBJECT_REFERENCE);
     attribute.value = referenceCopy.id;
     dstCon.dbi->getAttributeDbi()->createByteArrayAttribute(attribute, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     clonedObject->setGHints(gHints.take());
     clonedObject->setIndexInfo(getIndexInfo());
@@ -94,13 +94,13 @@ GObject *MultipleChromatogramAlignmentObject::clone(const U2DbiRef &dstDbiRef, U
 }
 
 U2SequenceObject *MultipleChromatogramAlignmentObject::getReferenceObj() const {
-    if (referenceObj == NULL) {
+    if (referenceObj == nullptr) {
         U2OpStatus2Log status;
         DbiConnection con(getEntityRef().dbiRef, status);
-        CHECK_OP(status, NULL);
+        CHECK_OP(status, nullptr);
 
         U2ByteArrayAttribute attribute = U2AttributeUtils::findByteArrayAttribute(con.dbi->getAttributeDbi(), getEntityRef().entityId, MCAOBJECT_REFERENCE, status);
-        CHECK_OP(status, NULL);
+        CHECK_OP(status, nullptr);
 
         GObject *obj = GObjectUtils::createObject(con.dbi->getDbiRef(), attribute.value, "reference object");
 
@@ -165,7 +165,7 @@ void MultipleChromatogramAlignmentObject::replaceCharacter(int startPos, int row
     if (newChar != ' ' && !msa->getAlphabet()->contains(newChar)) {
         const DNAAlphabet *alp = U2AlphabetUtils::findBestAlphabet(QByteArray(1, newChar));
         const DNAAlphabet *newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(alp, msa->getAlphabet());
-        SAFE_POINT(NULL != newAlphabet, "Common alphabet is NULL", );
+        SAFE_POINT(nullptr != newAlphabet, "Common alphabet is NULL", );
 
         if (newAlphabet->getId() != msa->getAlphabet()->getId()) {
             MaDbiUtils::updateMaAlphabet(entityRef, newAlphabet->getId(), os);

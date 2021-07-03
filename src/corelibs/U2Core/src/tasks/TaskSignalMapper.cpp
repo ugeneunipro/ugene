@@ -31,7 +31,7 @@ TaskSignalMapper::TaskSignalMapper(Task *t)
 }
 
 void TaskSignalMapper::sl_taskStateChanged() {
-    if (NULL != task) {
+    if (nullptr != task) {
         switch (task->getState()) {
             case Task::State_Prepared:
                 emit si_taskPrepared(task);

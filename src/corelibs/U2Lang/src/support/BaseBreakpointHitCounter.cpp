@@ -65,7 +65,7 @@ void BaseBreakpointHitCounter::reset() {
 BaseBreakpointHitCounter *BaseBreakpointHitCounter::createInstance(
     BreakpointHitCountCondition kindOfCondition,
     const QVariant &hitCounterParameter) {
-    BaseBreakpointHitCounter *result = NULL;
+    BaseBreakpointHitCounter *result = nullptr;
     bool conversionResult = true;
     switch (kindOfCondition) {
         case ALWAYS:
@@ -86,7 +86,7 @@ BaseBreakpointHitCounter *BaseBreakpointHitCounter::createInstance(
         default:
             Q_ASSERT(false);
     }
-    Q_ASSERT(NULL != result);
+    Q_ASSERT(nullptr != result);
     Q_ASSERT(conversionResult);
 
     return result;

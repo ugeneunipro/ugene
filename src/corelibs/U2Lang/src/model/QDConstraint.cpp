@@ -175,8 +175,8 @@ U2Region QDConstraintController::matchLocation(QDDistanceConstraint *dc, const Q
     int start = 0;
     int end = 0;
 
-    QDSchemeUnit *src = NULL;
-    QDSchemeUnit *dst = NULL;
+    QDSchemeUnit *src = nullptr;
+    QDSchemeUnit *dst = nullptr;
     QDDistanceType type = dc->distanceType();
     int minDist = dc->getMin();
     int maxDist = dc->getMax();

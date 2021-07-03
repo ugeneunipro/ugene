@@ -44,8 +44,8 @@ MaConsensusMismatchController::MaConsensusMismatchController(QObject *p,
     : QObject(p),
       consCache(consCache),
       editor(editor),
-      nextMismatch(NULL),
-      prevMismatch(NULL) {
+      nextMismatch(nullptr),
+      prevMismatch(nullptr) {
     mismatchCache = QBitArray(editor->getAlignmentLen(), false);
     connect(consCache.data(), SIGNAL(si_cachedItemUpdated(int, char)), SLOT(sl_updateItem(int, char)));
     connect(consCache.data(), SIGNAL(si_cacheResized(int)), SLOT(sl_resize(int)));
@@ -98,7 +98,7 @@ void MaConsensusMismatchController::sl_prev() {
 
 void MaConsensusMismatchController::selectNextMismatch(NavigationDirection direction) {
     McaEditor *mcaEditor = qobject_cast<McaEditor *>(editor);
-    CHECK(mcaEditor != NULL, );
+    CHECK(mcaEditor != nullptr, );
 
     SequenceObjectContext *ctx = mcaEditor->getReferenceContext();
     int initialPos = -1;

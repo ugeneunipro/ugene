@@ -144,7 +144,7 @@ void MaSimpleOverview::drawOverview(QPainter &p) {
     QString highlightingSchemeId = sequenceArea->getCurrentHighlightingScheme()->getFactory()->getId();
 
     MultipleAlignmentObject *mAlignmentObj = editor->getMaObject();
-    SAFE_POINT(NULL != mAlignmentObj, tr("Incorrect multiple alignment object!"), );
+    SAFE_POINT(nullptr != mAlignmentObj, tr("Incorrect multiple alignment object!"), );
     const MultipleAlignment ma = mAlignmentObj->getMultipleAlignment();
 
     U2OpStatusImpl os;

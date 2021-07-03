@@ -80,10 +80,10 @@ RefSeqCommonWidgetFactory::~RefSeqCommonWidgetFactory() {
 }
 
 QWidget *RefSeqCommonWidgetFactory::createWidget(GObjectView *objView, const QVariantMap & /*options*/) {
-    SAFE_POINT(objView != NULL, QString("NULL object view!"), NULL);
+    SAFE_POINT(objView != nullptr, QString("NULL object view!"), nullptr);
 
     MSAEditor *msa = qobject_cast<MSAEditor *>(objView);
-    SAFE_POINT(msa != NULL, QString("Not MSAEditor!"), NULL);
+    SAFE_POINT(msa != nullptr, QString("Not MSAEditor!"), nullptr);
 
     return new RefSeqCommonWidget(msa);
 }

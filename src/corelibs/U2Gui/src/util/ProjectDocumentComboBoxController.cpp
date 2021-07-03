@@ -27,7 +27,7 @@ namespace U2 {
 
 ProjectDocumentComboBoxController::ProjectDocumentComboBoxController(Project *_p, QComboBox *_cb, QObject *parent, const DocumentFilter *f)
     : QObject(parent), p(_p), cb(_cb), filter(f) {
-    assert(filter != NULL);
+    assert(filter != nullptr);
     cb->setInsertPolicy(QComboBox::InsertAlphabetically);
 
     connect(p, SIGNAL(si_documentAdded(Document *)), SLOT(sl_onDocumentAdded(Document *)));
@@ -78,7 +78,7 @@ void ProjectDocumentComboBoxController::selectDocument(Document *d) {
 Document *ProjectDocumentComboBoxController::getDocument() const {
     QString url = cb->currentText();
     if (url.isEmpty()) {
-        return NULL;
+        return nullptr;
     }
     Document *doc = p->findDocumentByURL(url);
     assert(doc);

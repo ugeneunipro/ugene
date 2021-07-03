@@ -31,7 +31,7 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryDefault : public MSAConsensusAlgorithmFactory {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmFactoryDefault(QObject *p = NULL);
+    MSAConsensusAlgorithmFactoryDefault(QObject *p = nullptr);
 
     virtual MSAConsensusAlgorithm *createAlgorithm(const MultipleAlignment &ma, bool ignoreTrailingLeadingGaps, QObject *parent);
 
@@ -63,7 +63,7 @@ public:
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmDefault : public MSAConsensusAlgorithm {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmDefault(MSAConsensusAlgorithmFactoryDefault *f, bool ignoreTrailingLeadingGaps, QObject *p = NULL)
+    MSAConsensusAlgorithmDefault(MSAConsensusAlgorithmFactoryDefault *f, bool ignoreTrailingLeadingGaps, QObject *p = nullptr)
         : MSAConsensusAlgorithm(f, ignoreTrailingLeadingGaps, p) {
     }
 

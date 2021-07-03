@@ -33,7 +33,7 @@ template<class T>
 class IdRegistry {
 public:
     virtual T *getById(const QString &id) {
-        return registry.value(id, NULL);
+        return registry.value(id, nullptr);
     }
     virtual bool registerEntry(T *t) {
         if (registry.contains(t->getId())) {
@@ -44,7 +44,7 @@ public:
         }
     }
     virtual T *unregisterEntry(const QString &id) {
-        return registry.contains(id) ? registry.take(id) : NULL;
+        return registry.contains(id) ? registry.take(id) : nullptr;
     }
     virtual ~IdRegistry() {
         qDeleteAll(registry.values());

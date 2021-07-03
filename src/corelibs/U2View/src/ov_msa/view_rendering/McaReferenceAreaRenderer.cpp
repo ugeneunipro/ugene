@@ -44,7 +44,7 @@ namespace U2 {
 McaReferenceAreaRenderer::McaReferenceAreaRenderer(PanView *panView, SequenceObjectContext *ctx, MaEditor *maEditor)
     : PanViewRenderer(panView, ctx),
       maEditor(maEditor) {
-    SAFE_POINT(NULL != maEditor, "MA Editor is NULL", );
+    SAFE_POINT(nullptr != maEditor, "MA Editor is NULL", );
     setFont(maEditor->getFont());
 }
 
@@ -73,11 +73,11 @@ void McaReferenceAreaRenderer::drawSequence(QPainter &p, const QSize & /*canvasS
     p.setPen(Qt::black);
     p.setFont(commonMetrics.sequenceFont);
 
-    SAFE_POINT(maEditor->getUI() != NULL, "MaEditorWgt is NULL", );
+    SAFE_POINT(maEditor->getUI() != nullptr, "MaEditorWgt is NULL", );
     MaEditorSequenceArea *seqArea = maEditor->getUI()->getSequenceArea();
-    SAFE_POINT(seqArea != NULL, "MaEditorSequenceArea is NULL", );
+    SAFE_POINT(seqArea != nullptr, "MaEditorSequenceArea is NULL", );
     MsaColorScheme *scheme = seqArea->getCurrentColorScheme();
-    SAFE_POINT(scheme != NULL, "MsaColorScheme is NULL", );
+    SAFE_POINT(scheme != nullptr, "MsaColorScheme is NULL", );
 
     for (int position = region.startPos; position < region.endPos(); position++) {
         const U2Region baseXRange = maEditor->getUI()->getBaseWidthController()->getBaseScreenRange(position);

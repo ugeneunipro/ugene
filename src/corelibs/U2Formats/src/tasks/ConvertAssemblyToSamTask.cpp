@@ -47,22 +47,22 @@ ConvertAssemblyToSamTask::ConvertAssemblyToSamTask(GUrl db, GUrl sam)
     : Task("ConvertAssemblyToSamTask", TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
       dbFileUrl(db),
       samFileUrl(sam),
-      handle(NULL) {
+      handle(nullptr) {
 }
 
 ConvertAssemblyToSamTask::ConvertAssemblyToSamTask(const DbiConnection *h, GUrl sam)
     : Task("ConvertAssemblyToSamTask", TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
-      dbFileUrl(NULL),
+      dbFileUrl(nullptr),
       samFileUrl(sam),
       handle(h) {
 }
 
 ConvertAssemblyToSamTask::ConvertAssemblyToSamTask(const U2EntityRef &entityRef, GUrl sam)
     : Task("ConvertAssemblyToSamTask", TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
-      dbFileUrl(NULL),
+      dbFileUrl(nullptr),
       samFileUrl(sam),
       assemblyEntityRef(entityRef),
-      handle(NULL) {
+      handle(nullptr) {
 }
 
 void ConvertAssemblyToSamTask::run() {
@@ -70,7 +70,7 @@ void ConvertAssemblyToSamTask::run() {
     // Init assembly objects
     QSharedPointer<DbiConnection> dbiHandle;
 
-    if (NULL == handle) {
+    if (nullptr == handle) {
         if (assemblyEntityRef.isValid()) {
             dbiHandle = QSharedPointer<DbiConnection>(
                 new DbiConnection(assemblyEntityRef.dbiRef,
@@ -85,7 +85,7 @@ void ConvertAssemblyToSamTask::run() {
         handle = dbiHandle.data();
     }
 
-    if (handle->dbi == NULL) {
+    if (handle->dbi == nullptr) {
         setError(tr("Given file is not valid UGENE database file"));
         return;
     }

@@ -48,7 +48,7 @@ public:
                                          const QString &annotationGroup,
                                          const QString &annDescription,
                                          bool addPatternSubseqToQual,
-                                         QObject *pOwn = NULL);
+                                         QObject *pOwn = nullptr);
 
     QString report(const QList<SmithWatermanResult> &result);
     const QList<SharedAnnotationData> &getAnotations() const;
@@ -97,7 +97,7 @@ public:
                                       const QString &refSeqName,
                                       const QString &patternName,
                                       const DNAAlphabet *alphabet,
-                                      const DNATranslation *amitoTT = NULL,
+                                      const DNATranslation *amitoTT = nullptr,
                                       WhatDoYouWantFromMe plan = SequenceView_Search);
 
     //Smith-Waterman alignment in MSA Editor (in new window)

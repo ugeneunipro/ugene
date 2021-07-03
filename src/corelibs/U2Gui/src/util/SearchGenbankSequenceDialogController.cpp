@@ -41,7 +41,7 @@
 namespace U2 {
 
 SearchGenbankSequenceDialogController::SearchGenbankSequenceDialogController(QWidget *p)
-    : QDialog(p), searchTask(NULL), summaryTask(NULL) {
+    : QDialog(p), searchTask(nullptr), summaryTask(nullptr) {
     ui = new Ui_SearchGenbankSequenceDialog();
     ui->setupUi(this);
     new HelpButton(this, ui->buttonBox, "65929336");
@@ -69,10 +69,10 @@ SearchGenbankSequenceDialogController::SearchGenbankSequenceDialogController(QWi
 
 SearchGenbankSequenceDialogController::~SearchGenbankSequenceDialogController() {
     // if dialog was closed during query execution
-    if (NULL != summaryTask && !summaryTask->isFinished()) {
+    if (nullptr != summaryTask && !summaryTask->isFinished()) {
         summaryTask->cancel();
     }
-    if (NULL != searchTask && !searchTask->isFinished()) {
+    if (nullptr != searchTask && !searchTask->isFinished()) {
         searchTask->cancel();
     }
 }
@@ -91,7 +91,7 @@ void SearchGenbankSequenceDialogController::setQueryText(const QString &queryTex
 }
 
 void SearchGenbankSequenceDialogController::prepareSummaryRequestTask(const QStringList &results) {
-    summaryTask = NULL;
+    summaryTask = nullptr;
     SAFE_POINT(!results.isEmpty(), "There are no search results to process", );
     if (results.size() <= MAX_IDS_PER_QUERY) {
         QString ids = results.join(",");
@@ -135,15 +135,15 @@ QList<EntrezSummary> SearchGenbankSequenceDialogController::getSummaryResults() 
     QList<EntrezSummary> results;
     EntrezQueryTask *singleTask = qobject_cast<EntrezQueryTask *>(summaryTask);
     MultiTask *multiTask = qobject_cast<MultiTask *>(summaryTask);
-    if (NULL != singleTask) {
-        SAFE_POINT(NULL != summaryResultHandler, L10N::nullPointerError("summary results handler"), results);
+    if (nullptr != singleTask) {
+        SAFE_POINT(nullptr != summaryResultHandler, L10N::nullPointerError("summary results handler"), results);
         results << summaryResultHandler->getResults();
-    } else if (NULL != multiTask) {
+    } else if (nullptr != multiTask) {
         foreach (const QPointer<Task> &subtask, multiTask->getSubtasks()) {
             EntrezQueryTask *summarySubtask = qobject_cast<EntrezQueryTask *>(subtask.data());
-            SAFE_POINT(NULL != summarySubtask, L10N::internalError(tr("an unexpected subtask")), results);
+            SAFE_POINT(nullptr != summarySubtask, L10N::internalError(tr("an unexpected subtask")), results);
             const ESummaryResultHandler *resultHandler = dynamic_cast<const ESummaryResultHandler *>(summarySubtask->getResultHandler());
-            SAFE_POINT(NULL != resultHandler, L10N::nullPointerError("ESummaryResultHandler"), results);
+            SAFE_POINT(nullptr != resultHandler, L10N::nullPointerError("ESummaryResultHandler"), results);
             results << resultHandler->getResults();
             delete resultHandler;
         }
@@ -179,11 +179,11 @@ void SearchGenbankSequenceDialogController::sl_taskStateChanged(Task *task) {
                 ui->searchButton->setEnabled(true);
             } else {
                 prepareSummaryRequestTask(results);
-                if (NULL != summaryTask) {
+                if (nullptr != summaryTask) {
                     AppContext::getTaskScheduler()->registerTopLevelTask(summaryTask);
                 }
             }
-            searchTask = NULL;
+            searchTask = nullptr;
         } else if (task == summaryTask) {
             QList<EntrezSummary> results = getSummaryResults();
 
@@ -194,7 +194,7 @@ void SearchGenbankSequenceDialogController::sl_taskStateChanged(Task *task) {
                 item->setText(2, QString("%1").arg(desc.size));
                 ui->treeWidget->addTopLevelItem(item);
             }
-            summaryTask = NULL;
+            summaryTask = nullptr;
             ui->searchButton->setEnabled(true);
         }
     }
@@ -219,7 +219,7 @@ void SearchGenbankSequenceDialogController::sl_itemSelectionChanged() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 QueryBlockWidget::QueryBlockWidget(QueryBuilderController *controller, bool first)
-    : conditionBox(NULL), termBox(NULL), queryEdit(NULL) {
+    : conditionBox(nullptr), termBox(nullptr), queryEdit(nullptr) {
     QBoxLayout *layout = new QBoxLayout(QBoxLayout::LeftToRight, this);
     layout->setMargin(0);
 

@@ -32,7 +32,7 @@ class MultipleAlignmentObject;
 class MaConsensusModeWidget : public QWidget, public Ui_MaConsensusModeWidget {
     Q_OBJECT
 public:
-    MaConsensusModeWidget(QWidget *parent = NULL);
+    MaConsensusModeWidget(QWidget *parent = nullptr);
     void init(MultipleAlignmentObject *maObject, MaEditorConsensusArea *consArea);
 
     void updateState();

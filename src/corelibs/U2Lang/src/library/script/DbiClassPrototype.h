@@ -58,7 +58,7 @@ private:
 class DbiClassPrototype : public QObject, public QScriptable {
     Q_OBJECT
 public:
-    DbiClassPrototype(QObject *parent = NULL);
+    DbiClassPrototype(QObject *parent = nullptr);
     virtual ~DbiClassPrototype();
 
 public:

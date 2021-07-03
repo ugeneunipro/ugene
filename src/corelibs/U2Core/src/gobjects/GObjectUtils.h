@@ -72,9 +72,9 @@ public:
 
     static DNATranslation *findComplementTT(const DNAAlphabet *al);
 
-    static DNATranslation *findAminoTT(U2SequenceObject *so, bool fromHintsOnly, const QString &table = NULL);
+    static DNATranslation *findAminoTT(U2SequenceObject *so, bool fromHintsOnly, const QString &table = nullptr);
 
-    static DNATranslation *findBackTranslationTT(U2SequenceObject *so, const QString &table = NULL);
+    static DNATranslation *findBackTranslationTT(U2SequenceObject *so, const QString &table = nullptr);
 
     //checks object type for both loaded and unloaded states
     static bool hasType(GObject *obj, const GObjectType &type);

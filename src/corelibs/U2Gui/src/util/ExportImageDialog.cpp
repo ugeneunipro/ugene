@@ -68,7 +68,7 @@ ExportImageDialog::ExportImageDialog(ImageExportController *factory,
       filename(file),
       origFilename(file),
       source(invoSource) {
-    SAFE_POINT(exportController != NULL, tr("Image export task factory is NULL"), );
+    SAFE_POINT(exportController != nullptr, tr("Image export task factory is NULL"), );
     init();
 }
 
@@ -208,7 +208,7 @@ void ExportImageDialog::init() {
     }
 
     QWidget *settingsWidget = exportController->getSettingsWidget();
-    if (settingsWidget == NULL) {
+    if (settingsWidget == nullptr) {
         ui->settingsGroupBox->hide();
     } else {
         ui->settingsLayout->addWidget(settingsWidget);

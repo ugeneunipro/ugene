@@ -220,8 +220,8 @@ SearchQualifierDialog::SearchQualifierDialog(QWidget *p, AnnotationsTreeView *tr
     : QDialog(p),
       treeView(treeView),
       ui(new Ui_SearchQualifierDialog),
-      groupToSearchIn(NULL),
-      parentAnnotationofPrevResult(NULL),
+      groupToSearchIn(nullptr),
+      parentAnnotationofPrevResult(nullptr),
       indexOfPrevResult(-1) {
     ui->setupUi(this);
     new HelpButton(this, ui->buttonBox, "65929489");
@@ -231,7 +231,7 @@ SearchQualifierDialog::SearchQualifierDialog(QWidget *p, AnnotationsTreeView *tr
 
     ui->valueEdit->installEventFilter(this);
 
-    SAFE_POINT(treeView != NULL, "Tree Veiw is NULL", );
+    SAFE_POINT(treeView != nullptr, "Tree Veiw is NULL", );
 
     clearPrevResults();
 
@@ -317,7 +317,7 @@ void SearchQualifierDialog::sl_searchNext() {
 }
 
 void SearchQualifierDialog::clearPrevResults() {
-    parentAnnotationofPrevResult = NULL;
+    parentAnnotationofPrevResult = nullptr;
     indexOfPrevResult = -1;
 }
 

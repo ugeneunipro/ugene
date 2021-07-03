@@ -60,13 +60,13 @@ void CrashHandlerPrivateWin::setupHandler() {
         crashDirWasSucessfullyCreated = QDir().mkpath(dumpDir);
     }
 
-    breakpadHandler = new google_breakpad::ExceptionHandler(dumpDir.toStdWString(), NULL, breakpadCallback, this, google_breakpad::ExceptionHandler::HANDLER_ALL);
+    breakpadHandler = new google_breakpad::ExceptionHandler(dumpDir.toStdWString(), nullptr, breakpadCallback, this, google_breakpad::ExceptionHandler::HANDLER_ALL);
 #    endif
 }
 
 void CrashHandlerPrivateWin::shutdown() {
     delete breakpadHandler;
-    breakpadHandler = NULL;
+    breakpadHandler = nullptr;
 }
 
 QString CrashHandlerPrivateWin::getStackTrace() const {
@@ -123,7 +123,7 @@ void CrashHandlerPrivateWin::walkStack(EXCEPTION_POINTERS *exinfo) {
 
 QString CrashHandlerPrivateWin::getExceptionText(EXCEPTION_POINTERS *exinfo) {
     QString exceptionText = "Unhandled exception";
-    CHECK(NULL != exinfo, "C++ exception|" + exceptionText);
+    CHECK(nullptr != exinfo, "C++ exception|" + exceptionText);
 
     switch (exinfo->ExceptionRecord->ExceptionCode) {
         case EXCEPTION_ACCESS_VIOLATION:

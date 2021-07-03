@@ -56,7 +56,7 @@ MaExportConsensusWidget::MaExportConsensusWidget(MaEditor *ma_, QWidget *parent)
     : QWidget(parent),
       ma(ma_),
       savableWidget(this, GObjectViewUtils::findViewByName(ma_->getName())),
-      saveController(NULL) {
+      saveController(nullptr) {
     setupUi(this);
 
     hintLabel->setStyleSheet(Theme::infoHintStyleSheet());
@@ -107,7 +107,7 @@ void MaExportConsensusWidget::showHint(bool showHint) {
 
 void MaExportConsensusWidget::sl_consensusChanged(const QString &algoId) {
     MSAConsensusAlgorithmFactory *consAlgorithmFactory = AppContext::getMSAConsensusAlgorithmRegistry()->getAlgorithmFactory(algoId);
-    SAFE_POINT(consAlgorithmFactory != NULL, "Fetched consensus algorithm factory is NULL", );
+    SAFE_POINT(consAlgorithmFactory != nullptr, "Fetched consensus algorithm factory is NULL", );
 
     if (consAlgorithmFactory->isSequenceLikeResult()) {
         if (formatCb->count() == 1) {    //only text
@@ -132,7 +132,7 @@ void MaExportConsensusWidget::sl_consensusChanged(const QString &algoId) {
 
 void MaExportConsensusWidget::sl_exportTaskStateChanged() {
     ExportMaConsensusTask *exportTask = qobject_cast<ExportMaConsensusTask *>(sender());
-    SAFE_POINT(exportTask != NULL, "ExportMaConsensusTask object is unexpectedly NULL", );
+    SAFE_POINT(exportTask != nullptr, "ExportMaConsensusTask object is unexpectedly NULL", );
 
     if (exportTask->getState() == Task::State_Finished) {
         exportTaskUrls.remove(exportTask->getConsensusUrl());

@@ -61,7 +61,7 @@ McaEditor::McaEditor(const QString &viewName,
     }
 
     U2SequenceObject *referenceObj = obj->getReferenceObj();
-    SAFE_POINT(NULL != referenceObj, "Trying to open McaEditor without a reference", );
+    SAFE_POINT(nullptr != referenceObj, "Trying to open McaEditor without a reference", );
     referenceCtx = new SequenceObjectContext(referenceObj, this);
 }
 
@@ -153,13 +153,13 @@ void McaEditor::sl_showGeneralTab() {
 
 void McaEditor::sl_showConsensusTab() {
     OptionsPanel *optionsPanel = getOptionsPanel();
-    SAFE_POINT(NULL != optionsPanel, "Internal error: options panel is NULL"
+    SAFE_POINT(nullptr != optionsPanel, "Internal error: options panel is NULL"
                                      " when msaconsensustab opening was initiated", );
     optionsPanel->openGroupById(McaExportConsensusTabFactory::getGroupId());
 }
 
 QWidget *McaEditor::createWidget() {
-    Q_ASSERT(ui == NULL);
+    Q_ASSERT(ui == nullptr);
     ui = new McaEditorWgt(this);
 
     QString objName = "mca_editor_" + maObject->getGObjectName();
@@ -191,7 +191,7 @@ void McaEditor::initActions() {
     MaEditor::initActions();
 
     Settings *s = AppContext::getSettings();
-    SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
+    SAFE_POINT(s != nullptr, "AppContext::settings is NULL", );
 
     zoomInAction->setText(tr("Zoom in"));
     zoomInAction->setShortcut(QKeySequence::ZoomIn);
@@ -247,13 +247,13 @@ void McaEditor::updateActions() {
 
 void McaEditor::sl_saveOverviewState() {
     Settings *s = AppContext::getSettings();
-    SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
+    SAFE_POINT(s != nullptr, "AppContext::settings is NULL", );
     s->setValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_OVERVIEW, showOverviewAction->isChecked());
 }
 
 void McaEditor::sl_saveChromatogramState() {
     Settings *s = AppContext::getSettings();
-    SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
+    SAFE_POINT(s != nullptr, "AppContext::settings is NULL", );
     s->setValue(getSettingsRoot() + MCAE_SETTINGS_SHOW_CHROMATOGRAMS, showChromatogramsAction->isChecked());
 }
 
@@ -275,7 +275,7 @@ void McaEditor::addAppearanceMenu(QMenu *menu) {
     appearanceMenu->addAction(showChromatogramsAction);
     appearanceMenu->addMenu(sequenceArea->getTraceActionsMenu());
     appearanceMenu->addAction(showOverviewAction);
-    if (offsetsController != NULL) {
+    if (offsetsController != nullptr) {
         appearanceMenu->addAction(offsetsController->toggleColumnsViewAction);
     }
     appearanceMenu->addAction(ui->getToggleColumnsAction());

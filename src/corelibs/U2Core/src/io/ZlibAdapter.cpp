@@ -76,7 +76,7 @@ GzipUtil::GzipUtil(IOAdapter *io, bool doCompression)
 
 GzipUtil::~GzipUtil() {
     if (doCompression) {
-        int ret = compress(NULL, 0, true);
+        int ret = compress(nullptr, 0, true);
         if (-1 != ret) {
             assert(ret == 0);
             Q_UNUSED(ret);
@@ -179,7 +179,7 @@ bool GzipUtil::skip(const GZipIndexAccessPoint &here, qint64 offset) {
     char discard[GZipIndex::WINSIZE];
 
     LocalFileAdapter *localIO = qobject_cast<LocalFileAdapter *>(io);
-    if (NULL == localIO) {
+    if (nullptr == localIO) {
         return false;
     }
     bool ok = localIO->skip(here.in - (here.bits ? 1 : 0));
@@ -221,7 +221,7 @@ bool GzipUtil::skip(const GZipIndexAccessPoint &here, qint64 offset) {
 }
 
 ZlibAdapter::ZlibAdapter(IOAdapter *io)
-    : IOAdapter(io->getFactory()), io(io), z(NULL), buf(NULL), rewinded(0) {
+    : IOAdapter(io->getFactory()), io(io), z(nullptr), buf(nullptr), rewinded(0) {
 }
 
 ZlibAdapter::~ZlibAdapter() {
@@ -235,11 +235,11 @@ bool ZlibAdapter::isOpen() const {
 
 void ZlibAdapter::close() {
     delete z;
-    z = NULL;
+    z = nullptr;
     if (buf) {
         delete[] buf->rawData();
         delete buf;
-        buf = NULL;
+        buf = nullptr;
     }
     if (io->isOpen())
         io->close();
@@ -328,7 +328,7 @@ bool ZlibAdapter::skip(qint64 nBytes) {
 }
 
 bool ZlibAdapter::skip(const GZipIndexAccessPoint &point, qint64 offset) {
-    if (NULL == z) {
+    if (nullptr == z) {
         return false;
     }
     if (!point.window.size() || 0 > offset) {

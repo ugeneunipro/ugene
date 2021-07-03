@@ -37,7 +37,7 @@ class RegionSelector;
 class U2VIEW_EXPORT SecStructDialog : public QDialog, private Ui_SecStructDialog {
     Q_OBJECT
 public:
-    SecStructDialog(ADVSequenceObjectContext *ctx, QWidget *p = NULL);
+    SecStructDialog(ADVSequenceObjectContext *ctx, QWidget *p = nullptr);
 
 private slots:
     void sl_onStartPredictionClicked();

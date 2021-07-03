@@ -45,9 +45,9 @@ const static char *SETTINGS_UGENE_UID = "shtirlitz/uid";
 
 namespace U2 {
 
-CrashHandlerPrivate *CrashHandler::crashHandlerPrivate = NULL;
-char *CrashHandler::buffer = NULL;
-LogCache *CrashHandler::crashLogCache = NULL;
+CrashHandlerPrivate *CrashHandler::crashHandlerPrivate = nullptr;
+char *CrashHandler::buffer = nullptr;
+LogCache *CrashHandler::crashLogCache = nullptr;
 bool CrashHandler::sendCrashReports = true;
 
 bool CrashHandler::isEnabled() {
@@ -84,7 +84,7 @@ void CrashHandler::handleException(const QString &exceptionType, const QString &
         return;
     }
 
-    if (NULL != crashHandlerPrivate) {
+    if (nullptr != crashHandlerPrivate) {
         crashHandlerPrivate->storeStackTrace();
     }
 
@@ -96,17 +96,17 @@ void CrashHandler::handleException(const QString &exceptionType, const QString &
 }
 
 void CrashHandler::preallocateReservedSpace() {
-    assert(buffer == NULL);
+    assert(buffer == nullptr);
     buffer = new char[10 * 1024 * 1024];
 }
 
 void CrashHandler::releaseReserve() {
     delete[] buffer;
-    buffer = NULL;
+    buffer = nullptr;
 }
 
 void CrashHandler::setupLogCache() {
-    assert(crashLogCache == NULL);
+    assert(crashLogCache == nullptr);
     crashLogCache = new CrashLogCache();
     crashLogCache->filter.filters.append(LogFilterItem(ULOG_CAT_TASKS, LogLevel_TRACE));
     crashLogCache->filter.filters.append(LogFilterItem(ULOG_CAT_CORE_SERVICES, LogLevel_TRACE));
@@ -120,7 +120,7 @@ void CrashHandler::setupLogCache() {
 }
 
 void CrashHandler::setupPrivateHandler() {
-    assert(crashHandlerPrivate == NULL);
+    assert(crashHandlerPrivate == nullptr);
 #if defined(Q_OS_DARWIN)
     crashHandlerPrivate = new CrashHandlerPrivateMac;
 #elif defined(Q_OS_UNIX) && !defined(Q_OS_DARWIN)
@@ -128,7 +128,7 @@ void CrashHandler::setupPrivateHandler() {
 #elif defined(Q_OS_WIN)
     crashHandlerPrivate = new CrashHandlerPrivateWin;
 #endif
-    SAFE_POINT(NULL != crashHandlerPrivate, "Crash handler was not initialized: an unrecognized OS", );
+    SAFE_POINT(nullptr != crashHandlerPrivate, "Crash handler was not initialized: an unrecognized OS", );
     crashHandlerPrivate->setupHandler();
 }
 
@@ -139,7 +139,7 @@ QString CrashHandler::generateReport(const QString &exceptionType, int maxReport
     reportText += "|";
 
     Settings *settings = AppContext::getSettings();
-    if (settings != NULL) {
+    if (settings != nullptr) {
         QVariant uuidQvar = settings->getValue(SETTINGS_UGENE_UID, "None");
         reportText += uuidQvar.toString() + "|";
     } else {
@@ -153,10 +153,10 @@ QString CrashHandler::generateReport(const QString &exceptionType, int maxReport
         reportText += activeWindow + "|";
     }
 
-    const QString handlerAdditionalInfo = (crashHandlerPrivate == NULL ? "" : crashHandlerPrivate->getAdditionalInfo());
+    const QString handlerAdditionalInfo = (crashHandlerPrivate == nullptr ? "" : crashHandlerPrivate->getAdditionalInfo());
     reportText += (handlerAdditionalInfo.isEmpty() ? "None" : handlerAdditionalInfo) + "|";
 
-    QList<LogMessage *> logMessages = crashLogCache == NULL ? QList<LogMessage *>() : crashLogCache->messages;
+    QList<LogMessage *> logMessages = crashLogCache == nullptr ? QList<LogMessage *>() : crashLogCache->messages;
     QString messageLog;
     if (!logMessages.isEmpty()) {
         QList<LogMessage *>::iterator it;
@@ -180,7 +180,7 @@ QString CrashHandler::generateReport(const QString &exceptionType, int maxReport
 
     QString taskList;
     TaskScheduler *ts = AppContext::getTaskScheduler();
-    QList<Task *> topTasks = ts != NULL ? ts->getTopLevelTasks() : QList<Task *>();
+    QList<Task *> topTasks = ts != nullptr ? ts->getTopLevelTasks() : QList<Task *>();
     foreach (Task *t, topTasks) {
         if (t->getState() != Task::State_Finished) {
             QString state;
@@ -203,7 +203,7 @@ QString CrashHandler::generateReport(const QString &exceptionType, int maxReport
         reportText += "None";
     }
 
-    const QString stackTrace = (NULL != crashHandlerPrivate ? crashHandlerPrivate->getStackTrace() : "");
+    const QString stackTrace = (nullptr != crashHandlerPrivate ? crashHandlerPrivate->getStackTrace() : "");
     reportText += "|" + (stackTrace.isEmpty() ? "None" : stackTrace);
 
     return reportText;

@@ -36,7 +36,7 @@ class OpenSimpleTextObjectViewTask;
 class U2VIEW_EXPORT SimpleTextObjectViewFactory : public GObjectViewFactory {
     Q_OBJECT
 public:
-    SimpleTextObjectViewFactory(QObject *p = NULL);
+    SimpleTextObjectViewFactory(QObject *p = nullptr);
 
     static const GObjectViewFactoryId ID;
 

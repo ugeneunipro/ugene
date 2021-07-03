@@ -68,7 +68,7 @@ private:
 class TophatSamples : public QWidget {
     Q_OBJECT
 public:
-    TophatSamples(const QList<TophatSample> &samples, TophatSamplesWidgetController *ctrl, QWidget *parent = NULL);
+    TophatSamples(const QList<TophatSample> &samples, TophatSamplesWidgetController *ctrl, QWidget *parent = nullptr);
 
     bool rename(QLineEdit *nameEdit);
 

@@ -37,7 +37,7 @@ class U2Region;
 class U2CORE_EXPORT MultipleSequenceAlignment : public MultipleAlignment {
 public:
     MultipleSequenceAlignment(const QString &name = QString(),
-                              const DNAAlphabet *alphabet = NULL,
+                              const DNAAlphabet *alphabet = nullptr,
                               const QList<MultipleSequenceAlignmentRow> &rows = QList<MultipleSequenceAlignmentRow>());
     MultipleSequenceAlignment(const MultipleAlignment &ma);
     MultipleSequenceAlignment(MultipleSequenceAlignmentData *msaData);
@@ -73,7 +73,7 @@ protected:
      * The name must be provided if this is not default alignment.
      */
     MultipleSequenceAlignmentData(const QString &name = QString(),
-                                  const DNAAlphabet *alphabet = NULL,
+                                  const DNAAlphabet *alphabet = nullptr,
                                   const QList<MultipleSequenceAlignmentRow> &rows = QList<MultipleSequenceAlignmentRow>());
     MultipleSequenceAlignmentData(const MultipleSequenceAlignmentData &msaData);
 

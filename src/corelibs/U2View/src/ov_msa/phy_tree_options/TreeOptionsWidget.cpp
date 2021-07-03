@@ -61,9 +61,9 @@ static inline QVBoxLayout *initLayout(QWidget *w) {
 }
 
 TreeOptionsWidget::TreeOptionsWidget(MSAEditor *msaEditor, const TreeOpWidgetViewSettings &viewSettings)
-    : editor(msaEditor), treeViewer(NULL), viewSettings(viewSettings), showFontSettings(false), showPenSettings(false),
+    : editor(msaEditor), treeViewer(nullptr), viewSettings(viewSettings), showFontSettings(false), showPenSettings(false),
       savableTab(this, GObjectViewUtils::findViewByName(msaEditor->getName())), isUpdating(false) {
-    SAFE_POINT(NULL != editor, QString("Invalid parameter were passed into constructor TreeOptionsWidget"), );
+    SAFE_POINT(nullptr != editor, QString("Invalid parameter were passed into constructor TreeOptionsWidget"), );
 
     contentWidget = new QWidget();
     setupUi(contentWidget);
@@ -76,9 +76,9 @@ TreeOptionsWidget::TreeOptionsWidget(MSAEditor *msaEditor, const TreeOpWidgetVie
 }
 
 TreeOptionsWidget::TreeOptionsWidget(TreeViewer *tree, const TreeOpWidgetViewSettings &viewSettings)
-    : editor(NULL), treeViewer(tree->getTreeViewerUI()), viewSettings(viewSettings), showFontSettings(false), showPenSettings(false),
+    : editor(nullptr), treeViewer(tree->getTreeViewerUI()), viewSettings(viewSettings), showFontSettings(false), showPenSettings(false),
       savableTab(this, GObjectViewUtils::findViewByName(tree->getName())), isUpdating(false) {
-    SAFE_POINT(NULL != treeViewer, QString("Invalid parameter were passed into constructor TreeOptionsWidget"), );
+    SAFE_POINT(nullptr != treeViewer, QString("Invalid parameter were passed into constructor TreeOptionsWidget"), );
 
     contentWidget = new QWidget();
     setupUi(contentWidget);

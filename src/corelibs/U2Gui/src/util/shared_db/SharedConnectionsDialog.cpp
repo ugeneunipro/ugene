@@ -107,7 +107,7 @@ void SharedConnectionsDialog::sl_itemDoubleClicked(const QModelIndex &index) {
 
 void SharedConnectionsDialog::sl_connectClicked() {
     QListWidgetItem *selectedItem = ui->lwConnections->currentItem();
-    SAFE_POINT(NULL != selectedItem, "Invalid list item detected", );
+    SAFE_POINT(nullptr != selectedItem, "Invalid list item detected", );
     const QString connectionName = selectedItem->data(Qt::DisplayRole).toString();
     QString fullDbiUrl = getCurrentFullDbiUrl();
 
@@ -142,7 +142,7 @@ void SharedConnectionsDialog::sl_disconnectClicked() {
     cancelConnection(ui->lwConnections->currentItem());
 
     Document *doc = AppContext::getProject()->findDocumentByURL(fullDbiUrl);
-    if (NULL != doc) {
+    if (nullptr != doc) {
         AppContext::getProject()->removeDocument(doc);
     }
 
@@ -197,7 +197,7 @@ void SharedConnectionsDialog::sl_addClicked() {
     if (QDialog::Accepted == dialogResult) {
         checkDbConnectionDuplicate(editDialog->getShortDbiUrl(), editDialog->getUserName());
         QListWidgetItem *item = insertConnection(editDialog->getName(), editDialog->getShortDbiUrl(), editDialog->getUserName());
-        CHECK(NULL != item, );
+        CHECK(nullptr != item, );
         ui->lwConnections->setCurrentItem(item);
         saveRecentConnection(item);
         findUpgradeTasks();
@@ -228,15 +228,15 @@ void SharedConnectionsDialog::sl_connectionComplete() {
         return;
     }
 
-    connectionTasks.remove(connectionTasks.key(task, NULL));
+    connectionTasks.remove(connectionTasks.key(task, nullptr));
     updateState();
     emit si_connectionCompleted();
 }
 
 void SharedConnectionsDialog::sl_upgradeComplete(Task *upgradeTask) {
-    SAFE_POINT(NULL != upgradeTask, L10N::nullPointerError("upgradeTask"), );
+    SAFE_POINT(nullptr != upgradeTask, L10N::nullPointerError("upgradeTask"), );
 
-    upgradeTasks.remove(upgradeTasks.key(upgradeTask, NULL));
+    upgradeTasks.remove(upgradeTasks.key(upgradeTask, nullptr));
     updateState();
 
     if (upgradeTask->hasError()) {
@@ -271,7 +271,7 @@ void SharedConnectionsDialog::updateState() {
 
 void SharedConnectionsDialog::updateButtonsState() {
     QListWidgetItem *currentItem = ui->lwConnections->currentItem();
-    const bool isSomethingSelected = (NULL != currentItem);
+    const bool isSomethingSelected = (nullptr != currentItem);
     const bool isCurrentConnected = isConnected(currentItem);
     const bool isCurrentUpgradedNow = upgradeTasks.contains(currentItem);
 
@@ -349,14 +349,14 @@ bool SharedConnectionsDialog::checkDatabaseAvailability(const U2DbiRef &ref, boo
 }
 
 bool SharedConnectionsDialog::isConnected(QListWidgetItem *item) const {
-    CHECK(NULL != item, false);
-    CHECK(NULL != AppContext::getProject(), false);
+    CHECK(nullptr != item, false);
+    CHECK(nullptr != AppContext::getProject(), false);
 
     bool connectionIsInProcess = connectionTasks.contains(item);
 
     Document *connectionDoc = AppContext::getProject()->findDocumentByURL(GUrl(getFullDbiUrl(item), GUrl_Network));
 
-    return ((NULL != connectionDoc) && (connectionDoc->isLoaded())) || connectionIsInProcess;
+    return ((nullptr != connectionDoc) && (connectionDoc->isLoaded())) || connectionIsInProcess;
 }
 
 void SharedConnectionsDialog::setUpgradedMark(QListWidgetItem *item, bool isUpgraded) {
@@ -392,8 +392,8 @@ QListWidgetItem *SharedConnectionsDialog::insertConnection(const QString &prefer
 }
 
 void SharedConnectionsDialog::cancelConnection(QListWidgetItem *item) {
-    Task *connectionTask = connectionTasks.value(item, NULL);
-    if (NULL != connectionTask) {
+    Task *connectionTask = connectionTasks.value(item, nullptr);
+    if (nullptr != connectionTask) {
         connectionTask->cancel();
         connectionTasks.remove(item);
     }
@@ -428,10 +428,10 @@ void SharedConnectionsDialog::findUpgradeTasks() {
     const QList<Task *> tasks = AppContext::getTaskScheduler()->getTopLevelTasks();
     foreach (Task *task, tasks) {
         MysqlUpgradeTask *upgradeTask = qobject_cast<MysqlUpgradeTask *>(task);
-        if (NULL != upgradeTask) {
+        if (nullptr != upgradeTask) {
             const QString dbiUrl = U2DbiUtils::ref2Url(upgradeTask->getDbiRef());
             QListWidgetItem *item = findItemByDbiUrl(dbiUrl);
-            if (NULL != item) {
+            if (nullptr != item) {
                 upgradeTasks.insert(item, upgradeTask);
             }
         }
@@ -445,7 +445,7 @@ QListWidgetItem *SharedConnectionsDialog::findItemByDbiUrl(const QString &dbiUrl
             return item;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 bool SharedConnectionsDialog::checkDbInitializationState(const U2DbiRef &ref, bool &initializationRequired) {

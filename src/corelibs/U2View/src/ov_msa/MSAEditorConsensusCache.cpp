@@ -32,7 +32,7 @@
 namespace U2 {
 
 MSAEditorConsensusCache::MSAEditorConsensusCache(QObject *p, MultipleAlignmentObject *o, MSAConsensusAlgorithmFactory *factory)
-    : QObject(p), curCacheSize(0), aliObj(o), algorithm(NULL) {
+    : QObject(p), curCacheSize(0), aliObj(o), algorithm(nullptr) {
     setConsensusAlgorithm(factory);
 
     connect(aliObj, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_alignmentChanged()));
@@ -45,13 +45,13 @@ MSAEditorConsensusCache::MSAEditorConsensusCache(QObject *p, MultipleAlignmentOb
 
 MSAEditorConsensusCache::~MSAEditorConsensusCache() {
     delete algorithm;
-    algorithm = NULL;
+    algorithm = nullptr;
 }
 
 void MSAEditorConsensusCache::setConsensusAlgorithm(MSAConsensusAlgorithmFactory *factory) {
     delete algorithm;
-    algorithm = NULL;
-    algorithm = factory->createAlgorithm(aliObj->getMultipleAlignment(), qobject_cast<MultipleChromatogramAlignmentObject *>(aliObj) != NULL);
+    algorithm = nullptr;
+    algorithm = factory->createAlgorithm(aliObj->getMultipleAlignment(), qobject_cast<MultipleChromatogramAlignmentObject *>(aliObj) != nullptr);
     connect(algorithm, SIGNAL(si_thresholdChanged(int)), SLOT(sl_thresholdChanged(int)));
     updateMap.fill(false);
 }
@@ -79,7 +79,7 @@ void MSAEditorConsensusCache::sl_alignmentChanged() {
 }
 
 void MSAEditorConsensusCache::updateCacheItem(int pos) {
-    if (!updateMap.at(pos) && aliObj != NULL) {
+    if (!updateMap.at(pos) && aliObj != nullptr) {
         const MultipleAlignment ma = aliObj->getMultipleAlignment();
 
         QString errorMessage = tr("Can not update consensus chache item");
@@ -132,7 +132,7 @@ void MSAEditorConsensusCache::sl_thresholdChanged(int newValue) {
 }
 
 void MSAEditorConsensusCache::sl_invalidateAlignmentObject() {
-    aliObj = NULL;
+    aliObj = nullptr;
 }
 
 }    // namespace U2

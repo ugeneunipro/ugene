@@ -45,13 +45,13 @@ QFormLayout *buildFormLayout(QWidget *w) {
     return layout;
 }
 
-QLabel *buildLabel(QString text, QWidget *p = NULL) {
+QLabel *buildLabel(QString text, QWidget *p = nullptr) {
     text = QString("<b>%1:&nbsp;&nbsp;</b>").arg(text);
     QLabel *label = new QLabel(text, p);
     return label;
 }
 
-QLineEdit *buildLineEdit(QString text, QWidget *p = NULL, const QString &objectName = QString()) {
+QLineEdit *buildLineEdit(QString text, QWidget *p = nullptr, const QString &objectName = QString()) {
     QLineEdit *lineEdit = new QLineEdit(text, p);
     lineEdit->setStyleSheet("border: none; background-color: transparent;");
     lineEdit->setReadOnly(true);

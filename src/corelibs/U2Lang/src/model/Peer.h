@@ -35,7 +35,7 @@ namespace Workflow {
 class U2LANG_EXPORT Peer {
 public:
     Peer()
-        : peer(NULL) {
+        : peer(nullptr) {
     }
     virtual ~Peer() {
     }

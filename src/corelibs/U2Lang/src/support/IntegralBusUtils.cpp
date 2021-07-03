@@ -34,7 +34,7 @@ namespace Workflow {
 
 IntegralBusUtils::SplitResult IntegralBusUtils::splitCandidates(const QList<Descriptor> &candidates, const Descriptor &toDesc, DataTypePtr toDatatype) {
     CandidatesSplitter *splitter = CandidatesSplitterRegistry::instance()->findSplitter(toDesc, toDatatype);
-    SAFE_POINT(NULL != splitter, "NULL splitter", SplitResult());
+    SAFE_POINT(nullptr != splitter, "NULL splitter", SplitResult());
     return splitter->splitCandidates(candidates);
 }
 
@@ -240,9 +240,9 @@ const QString &CandidatesSplitter::getId() const {
 /************************************************************************/
 /* CandidatesSplitterRegistry */
 /************************************************************************/
-CandidatesSplitterRegistry *CandidatesSplitterRegistry::_instance = NULL;
+CandidatesSplitterRegistry *CandidatesSplitterRegistry::_instance = nullptr;
 CandidatesSplitterRegistry *CandidatesSplitterRegistry::instance() {
-    if (NULL == _instance) {
+    if (nullptr == _instance) {
         _instance = new CandidatesSplitterRegistry();
     }
     return _instance;
@@ -254,7 +254,7 @@ CandidatesSplitter *CandidatesSplitterRegistry::findSplitter(const Descriptor &t
             return splitter;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 CandidatesSplitter *CandidatesSplitterRegistry::findSplitter(const QString &id) {
@@ -263,7 +263,7 @@ CandidatesSplitter *CandidatesSplitterRegistry::findSplitter(const QString &id) 
             return splitter;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void CandidatesSplitterRegistry::registerSplitter(CandidatesSplitter *splitter) {
@@ -274,7 +274,7 @@ void CandidatesSplitterRegistry::registerSplitter(CandidatesSplitter *splitter) 
 
 void CandidatesSplitterRegistry::unregisterSplitter(const QString &id) {
     CandidatesSplitter *splitter = findSplitter(id);
-    CHECK(NULL != splitter, );
+    CHECK(nullptr != splitter, );
     splitters.removeAll(splitter);
     delete splitter;
 }

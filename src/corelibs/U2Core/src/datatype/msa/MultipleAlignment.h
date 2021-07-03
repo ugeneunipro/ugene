@@ -91,7 +91,7 @@ protected:
      * The name must be provided if this is not default alignment.
      */
     MultipleAlignmentData(const QString &name = QString(),
-                          const DNAAlphabet *alphabet = NULL,
+                          const DNAAlphabet *alphabet = nullptr,
                           const QList<MultipleAlignmentRow> &rows = QList<MultipleAlignmentRow>());
 
 public:

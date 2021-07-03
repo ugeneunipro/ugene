@@ -121,13 +121,13 @@ StateLockableTreeItem::~StateLockableTreeItem() {
 
 bool StateLockableTreeItem::isStateLocked() const {
     StateLockableTreeItem *parentItem = qobject_cast<StateLockableTreeItem *>(parent());
-    return StateLockableItem::isStateLocked() || (parentItem != NULL ? parentItem->isStateLocked() : false);
+    return StateLockableItem::isStateLocked() || (parentItem != nullptr ? parentItem->isStateLocked() : false);
 }
 
 bool StateLockableTreeItem::isMainThreadModificationOnly() const {
     StateLockableTreeItem *parentItem = qobject_cast<StateLockableTreeItem *>(parent());
     return StateLockableItem::isMainThreadModificationOnly() ||
-           (NULL != parentItem && parentItem->isMainThreadModificationOnly());
+           (nullptr != parentItem && parentItem->isMainThreadModificationOnly());
 }
 
 void StateLockableTreeItem::setModificationTrack(bool track) {
@@ -205,12 +205,12 @@ void StateLockableTreeItem::onParentStateUnlocked() {
 
 void StateLockableTreeItem::setParentStateLockItem(StateLockableTreeItem *newParent) {
     StateLockableTreeItem *parentStateLockItem = qobject_cast<StateLockableTreeItem *>(parent());
-    SAFE_POINT(parentStateLockItem == NULL || newParent == NULL, "Parent item is already assigned", );
-    SAFE_POINT(newParent == NULL || newParent->isModificationAllowed(StateLockModType_AddChild),
+    SAFE_POINT(parentStateLockItem == nullptr || newParent == nullptr, "Parent item is already assigned", );
+    SAFE_POINT(newParent == nullptr || newParent->isModificationAllowed(StateLockModType_AddChild),
                "Add-child modification is not allowed for new parent item!", );
-    SAFE_POINT(parentStateLockItem == NULL || parentStateLockItem->isModificationAllowed(StateLockModType_AddChild),
+    SAFE_POINT(parentStateLockItem == nullptr || parentStateLockItem->isModificationAllowed(StateLockModType_AddChild),
                "Add-child modification is not allowed for old parent item!", );
-    SAFE_POINT((NULL == newParent) || (newParent->thread() == thread()),
+    SAFE_POINT((nullptr == newParent) || (newParent->thread() == thread()),
                "Parent item has a different thread", );
 
     StateLockableTreeItem *oldParent = parentStateLockItem;
@@ -218,7 +218,7 @@ void StateLockableTreeItem::setParentStateLockItem(StateLockableTreeItem *newPar
     setParent(newParent);
 
     bool treeMod = isTreeItemModified();
-    if (newParent != NULL) {
+    if (newParent != nullptr) {
         setMainThreadModificationOnly(newParent->isMainThreadModificationOnly());
         setModificationTrack(newParent->isModificationTracked());
         checkThread(this);
@@ -228,7 +228,7 @@ void StateLockableTreeItem::setParentStateLockItem(StateLockableTreeItem *newPar
             newParent->increaseNumModifiedChilds(numModifiedChildren + 1);
         }
 
-    } else if (oldParent != NULL) {
+    } else if (oldParent != nullptr) {
         oldParent->childItems.remove(this);
         oldParent->setModified(true, StateLockModType_AddChild);
         if (treeMod) {
@@ -251,7 +251,7 @@ void StateLockableTreeItem::setModified(bool newModifiedState, const QString &mo
     itemIsModified = newModifiedState;
 
     StateLockableTreeItem *parentStateLockItem = qobject_cast<StateLockableTreeItem *>(parent());
-    bool parentUpdate = (NULL != parentStateLockItem && numModifiedChildren == 0);
+    bool parentUpdate = (nullptr != parentStateLockItem && numModifiedChildren == 0);
 
     if (itemIsModified && parentUpdate) {    // let parent become modified first
         parentStateLockItem->increaseNumModifiedChilds(1);
@@ -279,7 +279,7 @@ void StateLockableTreeItem::increaseNumModifiedChilds(int n) {
 
     bool becomeModified = numModifiedChildren == n && !itemIsModified;
     StateLockableTreeItem *parentStateLockItem = qobject_cast<StateLockableTreeItem *>(parent());
-    if (NULL != parentStateLockItem) {
+    if (nullptr != parentStateLockItem) {
         parentStateLockItem->increaseNumModifiedChilds(n + (becomeModified ? 1 : 0));
     }
     if (becomeModified) {
@@ -297,7 +297,7 @@ void StateLockableTreeItem::decreaseNumModifiedChilds(int n) {
     bool becomeClean = numModifiedChildren == 0 && !itemIsModified;
 
     StateLockableTreeItem *parentStateLockItem = qobject_cast<StateLockableTreeItem *>(parent());
-    if (NULL != parentStateLockItem) {
+    if (nullptr != parentStateLockItem) {
         parentStateLockItem->decreaseNumModifiedChilds(n + (becomeClean ? 1 : 0));
     }
 
@@ -320,7 +320,7 @@ QList<StateLock *> StateLockableTreeItem::findLocks(StateLockableTreeItemBranchF
     }
 
     StateLockableTreeItem *parentStateLockItem = qobject_cast<StateLockableTreeItem *>(parent());
-    if (tf.testFlag(StateLockableTreeItemBranch_Parents) && parentStateLockItem != NULL) {
+    if (tf.testFlag(StateLockableTreeItemBranch_Parents) && parentStateLockItem != nullptr) {
         StateLockableTreeItemBranchFlags tflags(StateLockableTreeItemBranch_Parents | StateLockableTreeItemBranch_Item);
         res += parentStateLockItem->findLocks(tflags, lf);
     }
@@ -337,9 +337,9 @@ QList<StateLock *> StateLockableTreeItem::findLocks(StateLockableTreeItemBranchF
 
 StateLocker::StateLocker(StateLockableItem *lockableItem, StateLock *lock)
     : lockableItem(lockableItem),
-      lock(NULL == lock ? lock = new StateLock() : lock) {
-    SAFE_POINT(NULL != lockableItem, L10N::nullPointerError("StateLockableItem"), );
-    SAFE_POINT(NULL != lock, L10N::nullPointerError("StateLock"), );
+      lock(nullptr == lock ? lock = new StateLock() : lock) {
+    SAFE_POINT(nullptr != lockableItem, L10N::nullPointerError("StateLockableItem"), );
+    SAFE_POINT(nullptr != lock, L10N::nullPointerError("StateLock"), );
     lockableItem->lockState(lock);
 }
 

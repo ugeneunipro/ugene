@@ -50,12 +50,12 @@ PhylipFormat::PhylipFormat(QObject *p, const DocumentFormatId &id)
 }
 
 void PhylipFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
-    CHECK_EXT(d != NULL, os.setError(L10N::badArgument("doc")), );
-    CHECK_EXT(io != NULL && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), );
+    CHECK_EXT(d != nullptr, os.setError(L10N::badArgument("doc")), );
+    CHECK_EXT(io != nullptr && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), );
 
-    MultipleSequenceAlignmentObject *obj = NULL;
+    MultipleSequenceAlignmentObject *obj = nullptr;
     CHECK_EXT(d->getObjects().size() == 1, os.setError("Incorrect number of objects in document"), );
-    CHECK_EXT((obj = qobject_cast<MultipleSequenceAlignmentObject *>(d->getObjects().first())) != NULL, os.setError("No data to write"), );
+    CHECK_EXT((obj = qobject_cast<MultipleSequenceAlignmentObject *>(d->getObjects().first())) != nullptr, os.setError("No data to write"), );
 
     QList<GObject *> als;
     als << obj;
@@ -66,19 +66,19 @@ void PhylipFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &os) {
 }
 
 MultipleSequenceAlignmentObject *PhylipFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
-    SAFE_POINT(io != NULL, "IO adapter is NULL!", NULL);
+    SAFE_POINT(io != nullptr, "IO adapter is NULL!", nullptr);
 
     MultipleSequenceAlignment al = parse(io, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     MSAUtils::checkPackedModelSymmetry(al, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     U2AlphabetUtils::assignAlphabet(al);
-    CHECK_EXT(al->getAlphabet() != NULL, os.setError(PhylipFormat::tr("Alphabet is unknown")), NULL);
+    CHECK_EXT(al->getAlphabet() != nullptr, os.setError(PhylipFormat::tr("Alphabet is unknown")), nullptr);
 
     const QString folder = fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
     MultipleSequenceAlignmentObject *obj = MultipleSequenceAlignmentImporter::createAlignment(dbiRef, folder, al, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     return obj;
 }
 
@@ -98,10 +98,10 @@ void PhylipFormat::removeSpaces(QByteArray &data) const {
 }
 
 Document *PhylipFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
-    SAFE_POINT(io != NULL, "IO adapter is NULL!", NULL);
+    SAFE_POINT(io != nullptr, "IO adapter is NULL!", nullptr);
     QList<GObject *> objects;
     objects.append(load(io, dbiRef, fs, os));
-    CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
+    CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
     assert(objects.size() == 1);
     return new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs);
 }
@@ -120,13 +120,13 @@ PhylipSequentialFormat::PhylipSequentialFormat(QObject *p)
 }
 
 void PhylipSequentialFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) {
-    SAFE_POINT(io != NULL, "IO adapter is NULL!", );
+    SAFE_POINT(io != nullptr, "IO adapter is NULL!", );
     SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), "PHYLIP entry storing: no alignment", );
     const QList<GObject *> &als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(1 == als.size(), "PHYLIP entry storing: alignment objects count error", );
 
     const MultipleSequenceAlignmentObject *obj = dynamic_cast<MultipleSequenceAlignmentObject *>(als.first());
-    SAFE_POINT(NULL != obj, "PHYLIP entry storing: NULL alignment object", );
+    SAFE_POINT(nullptr != obj, "PHYLIP entry storing: NULL alignment object", );
 
     const MultipleSequenceAlignment msa = obj->getMultipleAlignment();
 
@@ -188,7 +188,7 @@ FormatCheckResult PhylipSequentialFormat::checkRawTextData(const QByteArray &raw
 }
 
 MultipleSequenceAlignment PhylipSequentialFormat::parse(IOAdapter *io, U2OpStatus &os) const {
-    SAFE_POINT(io != NULL, "IO adapter is NULL!", MultipleSequenceAlignment());
+    SAFE_POINT(io != nullptr, "IO adapter is NULL!", MultipleSequenceAlignment());
     QByteArray readBuffer(READ_BUFF_SIZE, '\0');
     char *buff = readBuffer.data();
     QString objName = io->getURL().baseFileName();
@@ -240,13 +240,13 @@ PhylipInterleavedFormat::PhylipInterleavedFormat(QObject *p)
 }
 
 void PhylipInterleavedFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) {
-    SAFE_POINT(io != NULL, "IO adapter is NULL!", );
+    SAFE_POINT(io != nullptr, "IO adapter is NULL!", );
     SAFE_POINT(objectsMap.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT), "PHYLIP entry storing: no alignment", );
     const QList<GObject *> &als = objectsMap[GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT];
     SAFE_POINT(1 == als.size(), "PHYLIP entry storing: alignment objects count error", );
 
     const MultipleSequenceAlignmentObject *obj = dynamic_cast<MultipleSequenceAlignmentObject *>(als.first());
-    SAFE_POINT(NULL != obj, "PHYLIP entry storing: NULL alignment object", );
+    SAFE_POINT(nullptr != obj, "PHYLIP entry storing: NULL alignment object", );
 
     const MultipleSequenceAlignment msa = obj->getMultipleAlignment();
 
@@ -322,7 +322,7 @@ FormatCheckResult PhylipInterleavedFormat::checkRawTextData(const QByteArray &ra
 }
 
 MultipleSequenceAlignment PhylipInterleavedFormat::parse(IOAdapter *io, U2OpStatus &os) const {
-    SAFE_POINT(io != NULL, "IO adapter is NULL!", MultipleSequenceAlignment());
+    SAFE_POINT(io != nullptr, "IO adapter is NULL!", MultipleSequenceAlignment());
 
     QByteArray readBuffer(READ_BUFF_SIZE, '\0');
     char *buff = readBuffer.data();

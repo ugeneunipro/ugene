@@ -41,7 +41,7 @@ class ProjectViewFilterModel : public QAbstractItemModel {
     Q_OBJECT
     Q_DISABLE_COPY(ProjectViewFilterModel)
 public:
-    ProjectViewFilterModel(ProjectViewModel *srcModel, const ProjectTreeControllerModeSettings &settings, QObject *p = NULL);
+    ProjectViewFilterModel(ProjectViewModel *srcModel, const ProjectTreeControllerModeSettings &settings, QObject *p = nullptr);
     ~ProjectViewFilterModel();
 
     void updateSettings(const ProjectTreeControllerModeSettings &settings);

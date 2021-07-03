@@ -98,7 +98,7 @@ bool SharedDbUrlUtils::validateDbUrl(const QString &dbUrl) {
 
 QString SharedDbUrlUtils::createDbFolderUrl(const Folder &folder, const U2DataType &compatibleType) {
     Document *doc = folder.getDocument();
-    CHECK(NULL != doc, QString());
+    CHECK(nullptr != doc, QString());
     const U2DbiRef dbiRef = doc->getDbiRef();
     CHECK(dbiRef.isValid(), QString());
 
@@ -135,7 +135,7 @@ bool SharedDbUrlUtils::isDbFolderUrl(const QString &url) {
 }
 
 QString SharedDbUrlUtils::createDbObjectUrl(const GObject *obj) {
-    SAFE_POINT(NULL != obj, "Invalid object", QString());
+    SAFE_POINT(nullptr != obj, "Invalid object", QString());
     const U2EntityRef entityRef = obj->getEntityRef();
     return createDbObjectUrl(entityRef.dbiRef, entityRef.entityId, obj->getGObjectName());
 }

@@ -130,7 +130,7 @@ MsaHighlightingSchemeFactory *MsaHighlightingSchemeRegistry::getSchemeFactoryByI
             return factory;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 MsaHighlightingSchemeFactory *MsaHighlightingSchemeRegistry::getEmptySchemeFactory() const {

@@ -41,7 +41,7 @@ using namespace Workflow;
 LoadWorkflowTask::LoadWorkflowTask(const QSharedPointer<Schema> &s, Workflow::Metadata *m, const QString &u)
     : Task(tr("Loading workflow"), TaskFlag_None),
       url(u), schema(s), meta(m) {
-    assert(schema != NULL);
+    assert(schema != nullptr);
 }
 
 void LoadWorkflowTask::run() {
@@ -108,7 +108,7 @@ LoadWorkflowTask::FileFormat LoadWorkflowTask::detectFormat(const QString &rawDa
  ************************************/
 SaveWorkflowTask::SaveWorkflowTask(Schema *schema, const Metadata &meta, bool copyMode)
     : Task(tr("Save workflow task"), TaskFlag_None), url(meta.url) {
-    assert(schema != NULL);
+    assert(schema != nullptr);
     rawData = HRSchemaSerializer::schema2String(*schema, &meta, copyMode);
 }
 

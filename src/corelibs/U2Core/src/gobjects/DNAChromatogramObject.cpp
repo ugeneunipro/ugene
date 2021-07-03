@@ -96,7 +96,7 @@ GObject *DNAChromatogramObject::clone(const U2DbiRef &dstRef, U2OpStatus &os, co
 
     U2Chromatogram dstObject;
     RawDataUdrSchema::cloneObject(entityRef, dstRef, dstFolder, dstObject, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     U2EntityRef dstEntRef(dstRef, dstObject.id);
     DNAChromatogramObject *dst = new DNAChromatogramObject(getGObjectName(), dstEntRef, gHints.getMap());

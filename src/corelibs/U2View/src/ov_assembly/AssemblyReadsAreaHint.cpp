@@ -182,7 +182,7 @@ void AssemblyReadsAreaHint::setData(U2AssemblyRead r, QList<U2AssemblyRead> mate
 
 bool AssemblyReadsAreaHint::eventFilter(QObject *, QEvent *event) {
     QMouseEvent *e = dynamic_cast<QMouseEvent *>(event);
-    if (e != NULL) {
+    if (e != nullptr) {
         QWidget *p = qobject_cast<QWidget *>(parent());
         QMouseEvent eventToParent(e->type(), p->mapFromGlobal(QCursor::pos()), e->button(), e->buttons(), e->modifiers());
         QApplication::sendEvent(p, &eventToParent);

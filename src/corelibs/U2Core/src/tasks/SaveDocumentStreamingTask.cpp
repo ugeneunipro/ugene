@@ -28,12 +28,12 @@
 namespace U2 {
 
 SaveDocumentStreamingTask::SaveDocumentStreamingTask(Document *d, IOAdapter *i)
-    : Task(tr("Save document"), TaskFlags(TaskFlag_None)), lock(NULL), doc(d), io(i) {
-    if (NULL == doc) {
+    : Task(tr("Save document"), TaskFlags(TaskFlag_None)), lock(nullptr), doc(d), io(i) {
+    if (nullptr == doc) {
         stateInfo.setError(L10N::badArgument("doc"));
         return;
     }
-    if (NULL == io || !io->isOpen()) {
+    if (nullptr == io || !io->isOpen()) {
         stateInfo.setError(L10N::badArgument("IO adapter"));
         return;
     }
@@ -42,7 +42,7 @@ SaveDocumentStreamingTask::SaveDocumentStreamingTask(Document *d, IOAdapter *i)
 }
 
 SaveDocumentStreamingTask::~SaveDocumentStreamingTask() {
-    assert(NULL == lock);
+    assert(nullptr == lock);
 }
 
 void SaveDocumentStreamingTask::prepare() {
@@ -61,13 +61,13 @@ void SaveDocumentStreamingTask::run() {
 }
 
 Task::ReportResult SaveDocumentStreamingTask::report() {
-    if (NULL != doc) {
+    if (nullptr != doc) {
         doc->makeClean();
         doc->unlockState(lock);
     }
-    if (NULL != lock) {
+    if (nullptr != lock) {
         delete lock;
-        lock = NULL;
+        lock = nullptr;
     }
     return ReportResult_Finished;
 }

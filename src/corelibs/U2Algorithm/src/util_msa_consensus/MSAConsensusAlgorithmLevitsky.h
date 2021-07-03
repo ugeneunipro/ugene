@@ -35,7 +35,7 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactoryLevitsky : public MSAConsensusAlgorithmFactory {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmFactoryLevitsky(QObject *p = NULL);
+    MSAConsensusAlgorithmFactoryLevitsky(QObject *p = nullptr);
 
     virtual MSAConsensusAlgorithm *createAlgorithm(const MultipleAlignment &ma, bool ignoreTrailingLeadingGaps, QObject *parent);
 
@@ -67,7 +67,7 @@ public:
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmLevitsky : public MSAConsensusAlgorithm {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky *f, const MultipleAlignment &ma, bool ignoreTrailingLeadingGaps, QObject *p = NULL);
+    MSAConsensusAlgorithmLevitsky(MSAConsensusAlgorithmFactoryLevitsky *f, const MultipleAlignment &ma, bool ignoreTrailingLeadingGaps, QObject *p = nullptr);
 
     virtual char getConsensusChar(const MultipleAlignment &ma, int column, QVector<int> seqIdx = QVector<int>()) const;
 

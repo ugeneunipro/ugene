@@ -63,8 +63,8 @@ bool DnaAssemblyDialog::samOutput = false;
 DnaAssemblyDialog::DnaAssemblyDialog(QWidget *p, const QStringList &shortReadsUrls, const QString &refSeqUrl)
     : QDialog(p),
       assemblyRegistry(AppContext::getDnaAssemblyAlgRegistry()),
-      customGUI(NULL),
-      saveController(NULL) {
+      customGUI(nullptr),
+      saveController(nullptr) {
     setupUi(this);
     QMap<QString, QString> helpPagesMap;
     helpPagesMap.insert("BWA", "65930870");
@@ -112,7 +112,7 @@ DnaAssemblyDialog::DnaAssemblyDialog(QWidget *p, const QStringList &shortReadsUr
     if (!activeRefSeqUrl.isEmpty()) {
         refSeqEdit->setText(activeRefSeqUrl);
         buildResultUrl(activeRefSeqUrl);
-        if (NULL != customGUI) {
+        if (nullptr != customGUI) {
             QString error;
             customGUI->buildIndexUrl(lastRefSeqUrl, prebuiltIndex, error);
             customGUI->validateReferenceSequence(activeRefSeqUrl);
@@ -158,7 +158,7 @@ void DnaAssemblyDialog::sl_onAddRefButtonClicked() {
     refSeqEdit->setText(lod.url);
     buildResultUrl(lod.url);
 
-    if (NULL != customGUI) {
+    if (nullptr != customGUI) {
         QString error;
         if (!customGUI->buildIndexUrl(lod.url, prebuiltIndex, error)) {
             QMessageBox::information(this, "DNA Assembly", error);
@@ -168,7 +168,7 @@ void DnaAssemblyDialog::sl_onAddRefButtonClicked() {
 }
 
 void DnaAssemblyDialog::accept() {
-    if (NULL != customGUI) {
+    if (nullptr != customGUI) {
         QString error;
         if (!customGUI->isParametersOk(error)) {
             if (!error.isEmpty()) {
@@ -315,12 +315,12 @@ bool DnaAssemblyDialog::isSamOutput() const {
 }
 
 bool DnaAssemblyDialog::isPrebuiltIndex() const {
-    CHECK(NULL != customGUI, false);
+    CHECK(nullptr != customGUI, false);
     return customGUI->isIndex(refSeqEdit->text());
 }
 
 QMap<QString, QVariant> DnaAssemblyDialog::getCustomSettings() {
-    if (customGUI != NULL) {
+    if (customGUI != nullptr) {
         return customGUI->getDnaAssemblyCustomSettings();
     } else {
         return QMap<QString, QVariant>();
@@ -333,18 +333,18 @@ void DnaAssemblyDialog::addGuiExtension() {
     int macFixDelta = 50;
 
     // cleanup previous extension
-    if (customGUI != NULL) {
+    if (customGUI != nullptr) {
         layout()->removeWidget(customGUI);
         setMinimumHeight(minimumHeight() - customGUI->minimumHeight());
         delete customGUI;
-        customGUI = NULL;
+        customGUI = nullptr;
         macFixDelta = 0;
     }
 
     // insert new extension widget
     DnaAssemblyAlgorithmEnv *env = assemblyRegistry->getAlgorithm(methodNamesBox->currentText());
 
-    if (NULL == env) {
+    if (nullptr == env) {
         adjustSize();
         return;
     }
@@ -367,7 +367,7 @@ void DnaAssemblyDialog::addGuiExtension() {
         samBox->setEnabled(true);
     }
     DnaAssemblyGUIExtensionsFactory *gui = env->getGUIExtFactory();
-    if (gui != NULL && gui->hasMainWidget()) {
+    if (gui != nullptr && gui->hasMainWidget()) {
         customGUI = gui->createMainWidget(this);
         int extensionMinWidth = customGUI->sizeHint().width();
         int extensionMinHeight = customGUI->sizeHint().height();
@@ -424,7 +424,7 @@ void DnaAssemblyDialog::sl_formatChanged(const QString &newFormat) {
 
 DnaAssemblyToRefTaskSettings DnaAssemblyGUIUtils::getSettings(DnaAssemblyDialog *dialog) {
     DnaAssemblyToRefTaskSettings s;
-    SAFE_POINT(NULL != dialog, "NULL dialog", s);
+    SAFE_POINT(nullptr != dialog, "NULL dialog", s);
     s.samOutput = dialog->isSamOutput();
     s.refSeqUrl = dialog->getRefSeqUrl();
     s.algName = dialog->getAlgorithmName();

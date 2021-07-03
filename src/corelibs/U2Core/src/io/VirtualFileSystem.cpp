@@ -54,7 +54,7 @@ bool VirtualFileSystem::createFile(const QString &filename, const QByteArray &da
 
 bool VirtualFileSystem::mapFile(const QString &filename, const QString &filePath) {
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filePath));
-    SAFE_POINT(iof != NULL, QString("Failed to find IO adapter factory: %1").arg(filePath), false);
+    SAFE_POINT(iof != nullptr, QString("Failed to find IO adapter factory: %1").arg(filePath), false);
 
     QScopedPointer<IOAdapter> io(iof->createIOAdapter());
     if (!io->open(filePath, IOAdapterMode_Read)) {
@@ -84,7 +84,7 @@ bool VirtualFileSystem::mapBack(const QString &filename, const QString &filePath
     }
 
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filePath));
-    SAFE_POINT(iof != NULL, QString("Failed to find IO adapter factory: %1").arg(filePath), false);
+    SAFE_POINT(iof != nullptr, QString("Failed to find IO adapter factory: %1").arg(filePath), false);
 
     QScopedPointer<IOAdapter> io(iof->createIOAdapter());
     if (!io->open(filePath, IOAdapterMode_Write)) {
@@ -146,7 +146,7 @@ VirtualFileSystemRegistry::~VirtualFileSystemRegistry() {
 }
 
 bool VirtualFileSystemRegistry::registerFileSystem(VirtualFileSystem *entry) {
-    SAFE_POINT(entry != NULL, "FS is NULL!", false);
+    SAFE_POINT(entry != nullptr, "FS is NULL!", false);
 
     QString id = entry->getId();
     if (registry.contains(id)) {

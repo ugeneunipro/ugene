@@ -95,12 +95,12 @@ void addStringAttribute(U2OpStatus &os, U2Dbi *dbi, const U2VariantTrack &varian
 
 Document *AbstractVariationFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
     DbiConnection con(dbiRef, os);
-    SAFE_POINT_OP(os, NULL);
+    SAFE_POINT_OP(os, nullptr);
     U2Dbi *dbi = con.dbi;
 
-    SAFE_POINT(dbi->getVariantDbi(), "Variant DBI is NULL!", NULL);
-    SAFE_POINT(io, "IO adapter is NULL!", NULL);
-    SAFE_POINT(io->isOpen(), QString("IO adapter is not open %1").arg(io->getURL().getURLString()), NULL);
+    SAFE_POINT(dbi->getVariantDbi(), "Variant DBI is NULL!", nullptr);
+    SAFE_POINT(io, "IO adapter is NULL!", nullptr);
+    SAFE_POINT(io->isOpen(), QString("IO adapter is not open %1").arg(io->getURL().getURLString()), nullptr);
 
     QByteArray readBuff(LOCAL_READ_BUFF_SIZE + 1, 0);
     char *buff = readBuff.data();
@@ -117,7 +117,7 @@ Document *AbstractVariationFormat::loadTextDocument(IOAdapter *io, const U2DbiRe
     do {
         os.setProgress(io->getProgress());
         QString line = readLine(io, buff, LOCAL_READ_BUFF_SIZE, os);
-        CHECK_OP(os, NULL);
+        CHECK_OP(os, nullptr);
 
         lineNumber++;
         if (line.isEmpty()) {
@@ -211,7 +211,7 @@ Document *AbstractVariationFormat::loadTextDocument(IOAdapter *io, const U2DbiRe
         }
 
     } while (!io->isEof());
-    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), NULL);
+    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), nullptr);
 
     GAutoDeleteList<GObject> objects;
     QSet<QString> names;
@@ -222,12 +222,12 @@ Document *AbstractVariationFormat::loadTextDocument(IOAdapter *io, const U2DbiRe
         U2VariantTrack track;
         track.sequenceName = "unknown";
         dbi->getVariantDbi()->createVariantTrack(track, TrackType_All, folder, os);
-        CHECK_OP(os, NULL);
+        CHECK_OP(os, nullptr);
 
         addStringAttribute(os, dbi, track, U2VariantTrack::META_INFO_ATTIBUTE, metaInfo);
-        CHECK_OP(os, NULL);
+        CHECK_OP(os, nullptr);
         addStringAttribute(os, dbi, track, U2VariantTrack::HEADER_ATTIBUTE, StrPackUtils::packStringList(header));
-        CHECK_OP(os, NULL);
+        CHECK_OP(os, nullptr);
 
         U2EntityRef trackRef(dbiRef, track.id);
         QString objName = TextUtils::variate(track.sequenceName, "_", names);
@@ -241,17 +241,17 @@ Document *AbstractVariationFormat::loadTextDocument(IOAdapter *io, const U2DbiRe
         track.visualName = "Variant track";
         track.sequenceName = seqName;
         dbi->getVariantDbi()->createVariantTrack(track, TrackType_All, folder, os);
-        CHECK_OP(os, NULL);
+        CHECK_OP(os, nullptr);
 
         addStringAttribute(os, dbi, track, U2VariantTrack::META_INFO_ATTIBUTE, metaInfo);
-        CHECK_OP(os, NULL);
+        CHECK_OP(os, nullptr);
         addStringAttribute(os, dbi, track, U2VariantTrack::HEADER_ATTIBUTE, StrPackUtils::packStringList(header));
-        CHECK_OP(os, NULL);
+        CHECK_OP(os, nullptr);
 
         const QList<U2Variant> &vars = snpsMap.value(seqName);
         BufferedDbiIterator<U2Variant> bufIter(vars);
         dbi->getVariantDbi()->addVariantsToTrack(track, &bufIter, os);
-        CHECK_OP(os, NULL);
+        CHECK_OP(os, nullptr);
 
         U2EntityRef trackRef(dbiRef, track.id);
         QString objName = TextUtils::variate(track.sequenceName, "_", names);
@@ -340,7 +340,7 @@ void AbstractVariationFormat::storeDocument(Document *doc, IOAdapter *io, U2OpSt
 
     foreach (GObject *obj, variantTrackObjects) {
         VariantTrackObject *trackObj = qobject_cast<VariantTrackObject *>(obj);
-        SAFE_POINT_EXT(NULL != trackObj, os.setError("Can't cast GObject to VariantTrackObject"), );
+        SAFE_POINT_EXT(nullptr != trackObj, os.setError("Can't cast GObject to VariantTrackObject"), );
         storeTrack(io, trackObj, os);
     }
 }
@@ -351,13 +351,13 @@ void AbstractVariationFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, 
     SAFE_POINT(1 == vars.size(), "Variation entry storing: variation objects count error", );
 
     VariantTrackObject *trackObj = dynamic_cast<VariantTrackObject *>(vars.first());
-    SAFE_POINT(NULL != trackObj, "Variation entry storing: NULL variation object", );
+    SAFE_POINT(nullptr != trackObj, "Variation entry storing: NULL variation object", );
 
     storeTrack(io, trackObj, os);
 }
 
 void AbstractVariationFormat::storeTrack(IOAdapter *io, const VariantTrackObject *trackObj, U2OpStatus &os) {
-    CHECK(NULL != trackObj, );
+    CHECK(nullptr != trackObj, );
     U2VariantTrack track = trackObj->getVariantTrack(os);
     CHECK_OP(os, );
     QScopedPointer<U2DbiIterator<U2Variant>> varsIter(trackObj->getVariants(U2_REGION_MAX, os));
@@ -446,12 +446,12 @@ void AbstractVariationFormat::storeTrack(IOAdapter *io, const VariantTrackObject
 
 void AbstractVariationFormat::storeHeader(GObject *obj, IOAdapter *io, U2OpStatus &os) {
     CHECK(isSupportHeader, );
-    SAFE_POINT_EXT(NULL != obj, os.setError("NULL object"), );
+    SAFE_POINT_EXT(nullptr != obj, os.setError("NULL object"), );
 
     SAFE_POINT_EXT(GObjectTypes::VARIANT_TRACK == obj->getGObjectType(), os.setError("Invalid GObjectType"), );
 
     VariantTrackObject *trackObj = qobject_cast<VariantTrackObject *>(obj);
-    SAFE_POINT_EXT(NULL != trackObj, os.setError("Can't cast GObject to VariantTrackObject"), );
+    SAFE_POINT_EXT(nullptr != trackObj, os.setError("Can't cast GObject to VariantTrackObject"), );
 
     const QString metaInfo = getMetaInfo(trackObj, os);
     CHECK_OP(os, );

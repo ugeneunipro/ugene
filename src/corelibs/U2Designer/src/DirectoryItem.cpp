@@ -37,7 +37,7 @@ DirectoryItem::DirectoryItem(const QString &url, QListWidget *parent)
 }
 
 DirectoryItem::~DirectoryItem() {
-    options->setParent(NULL);
+    options->setParent(nullptr);
     delete options;
 }
 

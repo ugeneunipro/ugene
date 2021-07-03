@@ -51,7 +51,7 @@ public:
     /**
      * Updates tags of delegates
      */
-    virtual QVariant getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue, DelegateTags *infTags = NULL, DelegateTags *depTags = NULL) const = 0;
+    virtual QVariant getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue, DelegateTags *infTags = nullptr, DelegateTags *depTags = nullptr) const = 0;
     virtual RelationType getType() const = 0;
     virtual void updateDelegateTags(const QVariant &influencingValue, DelegateTags *dependentTags) const;
     QString getRelatedAttrId() const {

@@ -59,16 +59,16 @@ SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(MaEdi
     heightQuality = charHeight;
 
     Settings *s = AppContext::getSettings();
-    SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
-    SAFE_POINT(ui->getEditor() != NULL, "MaEditor is NULL", );
+    SAFE_POINT(s != nullptr, "AppContext::settings is NULL", );
+    SAFE_POINT(ui->getEditor() != nullptr, "MaEditor is NULL", );
     maxTraceHeight = s->getValue(ui->getEditor()->getSettingsRoot() + MCAE_SETTINGS_PEAK_HEIGHT, heightPD - heightBC).toInt();
 }
 
 void SequenceWithChromatogramAreaRenderer::drawReferenceSelection(QPainter &painter) const {
     McaEditor *editor = getSeqArea()->getEditor();
-    SAFE_POINT(editor != NULL, "McaEditor is NULL", );
+    SAFE_POINT(editor != nullptr, "McaEditor is NULL", );
     DNASequenceSelection *selection = editor->getReferenceContext()->getSequenceSelection();
-    SAFE_POINT(selection != NULL, "DNASequenceSelection is NULL", );
+    SAFE_POINT(selection != nullptr, "DNASequenceSelection is NULL", );
     SAFE_POINT(selection->regions.size() <= 1, "Unexpected multiselection", );
     CHECK(!selection->regions.isEmpty(), );
 
@@ -83,11 +83,11 @@ void SequenceWithChromatogramAreaRenderer::drawReferenceSelection(QPainter &pain
 
 void SequenceWithChromatogramAreaRenderer::drawNameListSelection(QPainter &painter) const {
     McaEditor *editor = getSeqArea()->getEditor();
-    SAFE_POINT(editor != NULL, "McaEditor is NULL", );
-    SAFE_POINT(editor->getUI() != NULL, "McaEditor UI is NULL", );
+    SAFE_POINT(editor != nullptr, "McaEditor is NULL", );
+    SAFE_POINT(editor->getUI() != nullptr, "McaEditor UI is NULL", );
 
     MaEditorNameList *nameList = editor->getUI()->getEditorNameList();
-    SAFE_POINT(nameList != NULL, "MaEditorNameList is NULL", );
+    SAFE_POINT(nameList != nullptr, "MaEditorNameList is NULL", );
     U2Region selection = nameList->getSelection();
     CHECK(!selection.isEmpty(), );
     U2Region selectionPxl = ui->getRowHeightController()->getScreenYRegionByViewRowsRegion(selection);
@@ -102,8 +102,8 @@ void SequenceWithChromatogramAreaRenderer::setAreaHeight(int h) {
     maxTraceHeight = h;
 
     Settings *s = AppContext::getSettings();
-    SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
-    SAFE_POINT(ui->getEditor() != NULL, "MaEditor is NULL", );
+    SAFE_POINT(s != nullptr, "AppContext::settings is NULL", );
+    SAFE_POINT(ui->getEditor() != nullptr, "MaEditor is NULL", );
     s->setValue(ui->getEditor()->getSettingsRoot() + MCAE_SETTINGS_PEAK_HEIGHT, maxTraceHeight);
 }
 
@@ -123,7 +123,7 @@ int SequenceWithChromatogramAreaRenderer::drawRow(QPainter &painter, const Multi
     bool ok = SequenceAreaRenderer::drawRow(painter, mca, rowIndex, region, xStart, yStart);
     CHECK(ok, -1);
 
-    SAFE_POINT(getSeqArea() != NULL, "seqAreaWgt is NULL", -1);
+    SAFE_POINT(getSeqArea() != nullptr, "seqAreaWgt is NULL", -1);
     const int width = getSeqArea()->width();
     const int seqRowHeight = editor->getUI()->getRowHeightController()->getSingleRowHeight();
     if (editor->isChromatogramRowExpanded(rowIndex)) {
@@ -162,7 +162,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &painter, c
 
     if (regionToDraw.startPos > visibleRegion.startPos) {
         MaEditor *editor = seqAreaWgt->getEditor();
-        SAFE_POINT(editor != NULL, "MaEditor is NULL", );
+        SAFE_POINT(editor != nullptr, "MaEditor is NULL", );
         const int emptySpaceWidth = ui->getBaseWidthController()->getBasesWidth(regionToDraw.startPos - visibleRegion.startPos);
         painter.translate(emptySpaceWidth, 0);
     }

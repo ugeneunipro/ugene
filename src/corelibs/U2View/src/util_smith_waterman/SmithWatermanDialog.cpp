@@ -103,7 +103,7 @@ SmithWatermanDialog::SmithWatermanDialog(QWidget *w, ADVSequenceObjectContext *c
     }
 
     tagsRegistry = AppContext::getSWMulAlignResultNamesTagsRegistry();
-    if (NULL == tagsRegistry) {
+    if (nullptr == tagsRegistry) {
         coreLog.error(tr("No result names tag registry found."));
         QDialog::done(-1);
         return;
@@ -199,7 +199,7 @@ void SmithWatermanDialog::sl_templateButtonPressed() {
     const QString buttonText = senderButton->text();
     QLineEdit *editInFocus = dynamic_cast<QLineEdit *>(QApplication::focusWidget());
 
-    assert(NULL != senderButton && NULL != editInFocus);
+    assert(nullptr != senderButton && nullptr != editInFocus);
 
     const QString buttonTag = buttonText.left(buttonText.indexOf(SHORTHAND_AND_LABEL_SEPARATOR));
     editInFocus->setText(editInFocus->text().append(buttonTag));
@@ -330,7 +330,7 @@ void SmithWatermanDialog::setParameters() {
         radioTranslation->setEnabled(true);
 
     radioDirect->setEnabled(true);
-    if (ctxSeq->getComplementTT() != NULL) {
+    if (ctxSeq->getComplementTT() != nullptr) {
         radioComplement->setEnabled(true);
         radioBoth->setEnabled(true);
         radioBoth->setChecked(true);
@@ -355,7 +355,7 @@ void SmithWatermanDialog::initResultDirPath() {
     if (lastDir.isEmpty() || !QDir(lastDir).exists()) {
         lastDir = QDir::homePath();
         const Project *curProject = AppContext::getProject();
-        if (curProject != NULL) {
+        if (curProject != nullptr) {
             const QString &curProjectUrl = curProject->getProjectURL();
             if (!curProjectUrl.isEmpty()) {
                 QFileInfo fi(curProjectUrl);
@@ -587,7 +587,7 @@ bool SmithWatermanDialog::readResultFilter() {
 bool SmithWatermanDialog::readPattern(DNATranslation *aminoTT) {
     const DNAAlphabet *al = 0;
     if (0 == aminoTT) {
-        assert(config.pSm.getAlphabet() != NULL);
+        assert(config.pSm.getAlphabet() != nullptr);
         al = config.pSm.getAlphabet();
     } else
         al = aminoTT->getDstAlphabet();

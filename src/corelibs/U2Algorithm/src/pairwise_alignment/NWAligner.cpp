@@ -32,7 +32,7 @@
 namespace U2 {
 
 NWAligner::NWAligner(const QByteArray &seq1, const QByteArray &seq2)
-    : PairwiseAligner(seq1, seq2), fMatrix(NULL) {
+    : PairwiseAligner(seq1, seq2), fMatrix(nullptr) {
     GTIMER(cvar, tvar, "NWAligner::NWAligner");
     const DNAAlphabet *alphabet = U2AlphabetUtils::findBestAlphabet(seq1 + seq2);
     if (alphabet->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()) {
@@ -135,7 +135,7 @@ MultipleSequenceAlignment NWAligner::align() {
 /* FMatrix */
 /************************************************************************/
 FMatrix::FMatrix(const SMatrix &_sMatrix, float _gapPenalty)
-    : sMatrix(_sMatrix), gapPenalty(_gapPenalty), f(NULL), h(0), w(0) {
+    : sMatrix(_sMatrix), gapPenalty(_gapPenalty), f(nullptr), h(0), w(0) {
     GTIMER(cvar, tvar, "FMatrix::FMatrix");
 }
 
@@ -168,11 +168,11 @@ void FMatrix::calculate(const QByteArray &seq1, const QByteArray &seq2) {
 }
 
 void FMatrix::cleanup() {
-    if (NULL == f) {
+    if (nullptr == f) {
         return;
     }
     delete f;
-    f = NULL;
+    f = nullptr;
 }
 
 void FMatrix::init(const QByteArray &seq1, const QByteArray &seq2) {

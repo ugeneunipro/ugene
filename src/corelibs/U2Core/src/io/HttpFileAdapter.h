@@ -38,7 +38,7 @@ namespace U2 {
 class U2CORE_EXPORT HttpFileAdapterFactory : public IOAdapterFactory {
     Q_OBJECT
 public:
-    HttpFileAdapterFactory(QObject *p = NULL);
+    HttpFileAdapterFactory(QObject *p = nullptr);
 
     virtual IOAdapter *createIOAdapter();
 
@@ -77,7 +77,7 @@ public:
 class U2CORE_EXPORT HttpFileAdapter : public IOAdapter {
     Q_OBJECT
 public:
-    HttpFileAdapter(HttpFileAdapterFactory *f, QObject *o = NULL);
+    HttpFileAdapter(HttpFileAdapterFactory *f, QObject *o = nullptr);
     ~HttpFileAdapter();
 
     virtual bool open(const GUrl &url, IOAdapterMode m);

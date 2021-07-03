@@ -37,11 +37,11 @@ DNASequence *StreamSequenceReader::getNextSequenceObject() {
         lookupPerformed = false;
         return result;
     }
-    return NULL;
+    return nullptr;
 }
 
 StreamSequenceReader::StreamSequenceReader()
-    : currentReaderIndex(-1), currentSeq(NULL), lookupPerformed(false) {
+    : currentReaderIndex(-1), currentSeq(nullptr), lookupPerformed(false) {
 }
 
 bool StreamSequenceReader::hasNext() {
@@ -61,7 +61,7 @@ bool StreamSequenceReader::hasNext() {
                 errorMessage = taskInfo.getError();
             }
             currentSeq.reset(newSeq);
-            if (NULL == newSeq) {
+            if (nullptr == newSeq) {
                 ++currentReaderIndex;
             } else {
                 lookupPerformed = true;
@@ -120,7 +120,7 @@ const IOAdapter *StreamSequenceReader::getIO() const {
         ReaderContext ctx = readers.at(currentReaderIndex);
         return ctx.io;
     }
-    return NULL;
+    return nullptr;
 }
 
 DocumentFormat *StreamSequenceReader::getFormat() const {
@@ -128,7 +128,7 @@ DocumentFormat *StreamSequenceReader::getFormat() const {
         ReaderContext ctx = readers.at(currentReaderIndex);
         return ctx.format;
     }
-    return NULL;
+    return nullptr;
 }
 
 QString StreamSequenceReader::getErrorMessage() {
@@ -152,7 +152,7 @@ int StreamSequenceReader::getProgress() {
 StreamSequenceReader::~StreamSequenceReader() {
     for (int i = 0; i < readers.size(); ++i) {
         delete readers[i].io;
-        readers[i].io = NULL;
+        readers[i].io = nullptr;
     }
 }
 

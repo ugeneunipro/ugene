@@ -61,7 +61,7 @@ void CrashHandlerPrivateUnixNotMac::setupHandler() {
     }
 
     const google_breakpad::MinidumpDescriptor destDirDescriptor(dumpDir.toStdString());
-    breakpadHandler = new google_breakpad::ExceptionHandler(destDirDescriptor, NULL, breakpadCallback, this, true, -1);
+    breakpadHandler = new google_breakpad::ExceptionHandler(destDirDescriptor, nullptr, breakpadCallback, this, true, -1);
 
     breakpadHandler->set_crash_handler(crashContextCallback);
 #    endif
@@ -69,7 +69,7 @@ void CrashHandlerPrivateUnixNotMac::setupHandler() {
 
 void CrashHandlerPrivateUnixNotMac::shutdown() {
     delete breakpadHandler;
-    breakpadHandler = NULL;
+    breakpadHandler = nullptr;
 }
 
 void CrashHandlerPrivateUnixNotMac::storeStackTrace() {
@@ -80,7 +80,7 @@ void CrashHandlerPrivateUnixNotMac::storeStackTrace() {
     char name_buf[512];
     name_buf[readlink(path.toLatin1().data(), name_buf, 511)] = 0;
     FILE *fp = fopen(STACKTRACE_FILE_PATH.toLocal8Bit().constData(), "w+");
-    stacktraceFileSucessfullyCreated = (NULL != fp);
+    stacktraceFileSucessfullyCreated = (nullptr != fp);
     void *stackTrace[1024];
     int frames = backtrace(stackTrace, 1024);
     backtrace_symbols_fd(stackTrace, frames, fileno(fp));
@@ -141,7 +141,7 @@ bool CrashHandlerPrivateUnixNotMac::crashContextCallback(const void *crash_conte
 
 QString CrashHandlerPrivateUnixNotMac::getExceptionText(const google_breakpad::ExceptionHandler::CrashContext *crashContext) {
     QString exceptionText = "Unhandled exception";
-    CHECK(NULL != crashContext, "C++ exception|" + exceptionText);
+    CHECK(nullptr != crashContext, "C++ exception|" + exceptionText);
 
     switch (crashContext->siginfo.si_signo) {
         case SIGBUS:

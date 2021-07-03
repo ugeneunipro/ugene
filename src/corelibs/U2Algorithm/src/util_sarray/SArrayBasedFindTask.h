@@ -38,7 +38,7 @@ class SArrayIndex;
 struct U2ALGORITHM_EXPORT SArrayBasedSearchSettings {
     SArrayBasedSearchSettings()
         : query(""), useBitMask(false), unknownChar('\0'),
-          bitMask(NULL), ptMismatches(0), nMismatches(0), absMismatches(true) {
+          bitMask(nullptr), ptMismatches(0), nMismatches(0), absMismatches(true) {
     }
     QByteArray query;
     bool useBitMask;

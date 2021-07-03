@@ -454,9 +454,9 @@ qint64 MysqlFeatureDbi::countFeatures(const FeatureQuery &fq, U2OpStatus &os) {
 
 U2DbiIterator<U2Feature> *MysqlFeatureDbi::getFeatures(const FeatureQuery &fq, U2OpStatus &os) {
     QSharedPointer<U2SqlQuery> q = createFeatureQuery("SELECT " + getFeatureFields(), fq, true, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
-    return new MysqlRSIterator<U2Feature>(q, new MysqlFeatureRSLoader(), NULL, U2Feature(), os);
+    return new MysqlRSIterator<U2Feature>(q, new MysqlFeatureRSLoader(), nullptr, U2Feature(), os);
 }
 
 QList<U2FeatureKey> MysqlFeatureDbi::getFeatureKeys(const U2DataId &featureId, U2OpStatus &os) {
@@ -718,7 +718,7 @@ void MysqlFeatureDbi::removeFeaturesByParent(const U2DataId &parentId, U2OpStatu
 namespace {
 
 void executeDeleteFeaturesByParentsQuery(const QList<U2DataId> &parentIds, MysqlDbRef *db, U2OpStatus &os) {
-    SAFE_POINT(NULL != db, "Invalid database handler", );
+    SAFE_POINT(nullptr != db, "Invalid database handler", );
 
     QString idsList = "(";
     for (int i = 1, n = parentIds.count(); i <= n; i++) {
@@ -798,7 +798,7 @@ U2DbiIterator<U2Feature> *MysqlFeatureDbi::getFeaturesBySequence(const QString &
     q->bindDataId(":sequence", seqId);
     q->bindString(":name", featureName);
 
-    return new MysqlRSIterator<U2Feature>(q, new MysqlFeatureRSLoader(), NULL, U2Feature(), os);
+    return new MysqlRSIterator<U2Feature>(q, new MysqlFeatureRSLoader(), nullptr, U2Feature(), os);
 }
 
 U2DbiIterator<U2Feature> *MysqlFeatureDbi::getFeaturesByParent(const U2DataId &parentId,
@@ -838,7 +838,7 @@ U2DbiIterator<U2Feature> *MysqlFeatureDbi::getFeaturesByName(const U2DataId &roo
 
     q->bindDataId(":root", rootId);
     q->bindInt32(":nameHash", qHash(name));
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     return new MysqlRSIterator<U2Feature>(q, new MysqlFeatureRSLoader(), new MysqlFeatureFilter(QString(), U2DataId()), U2Feature(), os);
 }
 

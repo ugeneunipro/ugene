@@ -44,9 +44,9 @@ class MSAEditorTreeManager;
 class OpenTreeViewerTask : public ObjectViewTask {
     Q_OBJECT
 public:
-    OpenTreeViewerTask(PhyTreeObject *obj, QObject *_parent = NULL);
-    OpenTreeViewerTask(UnloadedObject *obj, QObject *_parent = NULL);
-    OpenTreeViewerTask(Document *doc, QObject *_parent = NULL);
+    OpenTreeViewerTask(PhyTreeObject *obj, QObject *_parent = nullptr);
+    OpenTreeViewerTask(UnloadedObject *obj, QObject *_parent = nullptr);
+    OpenTreeViewerTask(Document *doc, QObject *_parent = nullptr);
     virtual ~OpenTreeViewerTask();
 
     virtual void open();

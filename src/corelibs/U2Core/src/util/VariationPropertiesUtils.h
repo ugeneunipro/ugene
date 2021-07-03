@@ -82,7 +82,7 @@ public:
 
     static float getDEffectValue(char aa, int aaPos, const QByteArray &compressedMatrix, int matrixLen);
 
-    static QByteArray varyTriplet(const QByteArray &tripl, const U2Variant &var, int codonPos, DNATranslation *complTransl = NULL);
+    static QByteArray varyTriplet(const QByteArray &tripl, const U2Variant &var, int codonPos, DNATranslation *complTransl = nullptr);
 
     static QByteArray getCodingSequence(const Gene &gene, const U2DataId &seqId, U2SequenceDbi *dbi, U2OpStatus &os);
 

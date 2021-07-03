@@ -53,7 +53,7 @@
 namespace U2 {
 
 SecStructDialog::SecStructDialog(ADVSequenceObjectContext *_ctx, QWidget *p)
-    : QDialog(p), ctx(_ctx), task(NULL) {
+    : QDialog(p), ctx(_ctx), task(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930792");
 
@@ -90,7 +90,7 @@ void SecStructDialog::connectGUI() {
 }
 
 void SecStructDialog::updateState() {
-    bool haveActiveTask = task != NULL;
+    bool haveActiveTask = task != nullptr;
     bool haveResults = !results.isEmpty();
 
     algorithmComboBox->setEnabled(!haveActiveTask);
@@ -102,10 +102,10 @@ void SecStructDialog::updateState() {
 }
 
 void SecStructDialog::sl_onStartPredictionClicked() {
-    SAFE_POINT(task == NULL, "Found pending prediction task!", );
+    SAFE_POINT(task == nullptr, "Found pending prediction task!", );
 
     SecStructPredictTaskFactory *factory = sspr->getAlgorithm(algorithmComboBox->currentText());
-    SAFE_POINT(NULL != factory, "Unregistered factory name", );
+    SAFE_POINT(nullptr != factory, "Unregistered factory name", );
 
     //Check license
     QString algorithm = algorithmComboBox->currentText();
@@ -150,7 +150,7 @@ void SecStructDialog::sl_onTaskFinished(Task *t) {
         SharedAnnotationData &ad = it_ad.next();
         U2Region::shift(region.startPos, ad->location->regions);
     }
-    task = NULL;
+    task = nullptr;
     updateState();
 }
 

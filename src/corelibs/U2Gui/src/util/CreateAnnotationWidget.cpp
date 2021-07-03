@@ -38,7 +38,7 @@ CreateAnnotationWidget::CreateAnnotationWidget(QWidget *parent)
 }
 
 QPair<QWidget *, QWidget *> CreateAnnotationWidget::getTabOrderEntryAndExitPoints() const {
-    return QPair<QWidget *, QWidget *>(NULL, NULL);
+    return QPair<QWidget *, QWidget *>(nullptr, nullptr);
 }
 
 void CreateAnnotationWidget::sl_selectExistingTableRequest() {

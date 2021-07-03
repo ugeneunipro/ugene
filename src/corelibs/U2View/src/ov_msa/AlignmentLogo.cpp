@@ -114,7 +114,7 @@ void AlignmentLogoRenderArea::paintEvent(QPaintEvent *e) {
             int charHeight = heights[(int)uchar(ch)][pos] * bitHeight;
             QColor charColor = settings.colorScheme[(int)uchar(ch)];
             AlignmentLogoItem *logoItem = new AlignmentLogoItem(ch, baseline, bitWidth, charHeight, charFont, charColor);
-            logoItem->paint(&p, NULL, this);
+            logoItem->paint(&p, nullptr, this);
             yLevel -= charHeight + SPACER;
         }
     }

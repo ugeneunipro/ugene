@@ -49,7 +49,7 @@ PhyTreeGenerator *PhyTreeGeneratorRegistry::getGenerator(const QString &gen_id) 
     if (genMap.contains(gen_id)) {
         return genMap.value(gen_id);
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 

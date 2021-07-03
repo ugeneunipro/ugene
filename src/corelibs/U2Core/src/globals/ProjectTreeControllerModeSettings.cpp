@@ -43,7 +43,7 @@ bool ProjectTreeControllerModeSettings::isDocumentShown(Document *doc) const {
     //filter by readonly state
     //TODO: revise readonly filters;
     //if the only lock is unloaded state lock -> not show it
-    bool isReadonly = !(doc->getStateLocks().size() == 1 && doc->getDocumentModLock(DocumentModLock_UNLOADED_STATE) != NULL);
+    bool isReadonly = !(doc->getStateLocks().size() == 1 && doc->getDocumentModLock(DocumentModLock_UNLOADED_STATE) != nullptr);
     bool res = readOnlyFilter == TriState_Unknown ? true : (readOnlyFilter == TriState_Yes && !isReadonly) || (readOnlyFilter == TriState_No && isReadonly);
     if (!res) {
         return false;
@@ -76,7 +76,7 @@ bool ProjectTreeControllerModeSettings::isDocumentShown(Document *doc) const {
     }
 
     // check custom filter
-    if (documentFilter != NULL && documentFilter->filter(doc)) {
+    if (documentFilter != nullptr && documentFilter->filter(doc)) {
         return false;
     }
 
@@ -128,7 +128,7 @@ bool ProjectTreeControllerModeSettings::isObjectShown(GObject *o) const {
     }
 
     // check custom filter
-    if (objectFilter != NULL && objectFilter->filter(o)) {
+    if (objectFilter != nullptr && objectFilter->filter(o)) {
         return false;
     }
 
@@ -152,7 +152,7 @@ bool ProjectTreeControllerModeSettings::isTypeShown(GObjectType t) const {
 }
 
 bool ProjectTreeControllerModeSettings::isObjectFilterActive() const {
-    return !tokensToShow.isEmpty() || !objectConstraints.isEmpty() || !excludeObjectList.isEmpty() || !objectTypesToShow.isEmpty() || NULL != objectFilter;
+    return !tokensToShow.isEmpty() || !objectConstraints.isEmpty() || !excludeObjectList.isEmpty() || !objectTypesToShow.isEmpty() || nullptr != objectFilter;
 }
 
 }    // namespace U2

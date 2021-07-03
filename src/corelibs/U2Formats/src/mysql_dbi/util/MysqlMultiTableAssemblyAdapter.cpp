@@ -136,7 +136,7 @@ qint64 MysqlMultiTableAssemblyAdapter::getMaxPackedRow(const U2Region &r, U2OpSt
         QVector<MysqlMtaSingleTableAdapter *> elenAdapters = adaptersGrid.at(rowPos);
         for (int elenPos = 0, nElens = elenAdapters.size(); elenPos < nElens; elenPos++) {
             MysqlMtaSingleTableAdapter *a = elenAdapters.at(elenPos);
-            if (a == NULL) {
+            if (a == nullptr) {
                 continue;
             }
 
@@ -168,7 +168,7 @@ U2DbiIterator<U2AssemblyRead> *MysqlMultiTableAssemblyAdapter::getReads(const U2
 
     foreach (MysqlMtaSingleTableAdapter *a, adapters) {
         iterators << a->singleTableAdapter->getReads(r, os, sortedHint);
-        CHECK_OP_EXT(os, qDeleteAll(iterators), NULL);
+        CHECK_OP_EXT(os, qDeleteAll(iterators), nullptr);
     }
 
     return new MysqlMtaReadsIterator(iterators, idExtras, sortedHint);
@@ -186,7 +186,7 @@ U2DbiIterator<U2AssemblyRead> *MysqlMultiTableAssemblyAdapter::getReadsByRow(con
         }
 
         iterators << a->singleTableAdapter->getReadsByRow(r, minRow, maxRow, os);
-        CHECK_OP_EXT(os, qDeleteAll(iterators), NULL);
+        CHECK_OP_EXT(os, qDeleteAll(iterators), nullptr);
         selectedIdExtras << a->idExtra;
     }
 
@@ -198,7 +198,7 @@ U2DbiIterator<U2AssemblyRead> *MysqlMultiTableAssemblyAdapter::getReadsByName(co
 
     foreach (MysqlMtaSingleTableAdapter *a, adapters) {
         iterators << a->singleTableAdapter->getReadsByName(name, os);
-        CHECK_OP_EXT(os, qDeleteAll(iterators), NULL);
+        CHECK_OP_EXT(os, qDeleteAll(iterators), nullptr);
     }
 
     return new MysqlMtaReadsIterator(iterators, idExtras, false);
@@ -286,7 +286,7 @@ void MysqlMultiTableAssemblyAdapter::removeReads(const QList<U2DataId> &readIds,
         int elenPos = getElenRangePosById(readId);
         MysqlMtaSingleTableAdapter *a = getAdapterByRowAndElenRange(rowPos, elenPos, false, os);
 
-        SAFE_POINT(a != NULL, QString("No table adapter was found. row: %1, elen: %2").arg(rowPos).arg(elenPos), );
+        SAFE_POINT(a != nullptr, QString("No table adapter was found. row: %1, elen: %2").arg(rowPos).arg(elenPos), );
 
         if (!readsByAdapter.contains(a)) {
             readsByAdapter[a] = QList<U2DataId>();
@@ -304,7 +304,7 @@ void MysqlMultiTableAssemblyAdapter::removeReads(const QList<U2DataId> &readIds,
 void MysqlMultiTableAssemblyAdapter::dropReadsTables(U2OpStatus &os) {
     foreach (QVector<MysqlMtaSingleTableAdapter *> adaptersVector, adaptersGrid) {
         foreach (MysqlMtaSingleTableAdapter *adapter, adaptersVector) {
-            if (NULL != adapter) {
+            if (nullptr != adapter) {
                 adapter->singleTableAdapter->dropReadsTables(os);
             }
         }
@@ -404,9 +404,9 @@ MysqlDbRef *MysqlMultiTableAssemblyAdapter::getDbRef() const {
 
 MysqlMtaSingleTableAdapter *MysqlMultiTableAssemblyAdapter::getAdapterByRowAndElenRange(int rowPos, int elenPos, bool createIfNotExits, U2OpStatus &os) {
     int nElens = elenRanges.size();
-    SAFE_POINT(elenPos < nElens, "Out of range", NULL);
+    SAFE_POINT(elenPos < nElens, "Out of range", nullptr);
     if (rowPos >= adaptersGrid.size()) {
-        SAFE_POINT(createIfNotExits, "Adapter is not exists", NULL);
+        SAFE_POINT(createIfNotExits, "Adapter is not exists", nullptr);
         int oldRowSize = adaptersGrid.size();
         int newRowSize = rowPos + 1;
         adaptersGrid.resize(newRowSize);
@@ -416,9 +416,9 @@ MysqlMtaSingleTableAdapter *MysqlMultiTableAssemblyAdapter::getAdapterByRowAndEl
     }
 
     QVector<MysqlMtaSingleTableAdapter *> elenAdapters = adaptersGrid.at(rowPos);
-    SAFE_POINT(elenAdapters.size() == nElens, "Invalid adapters array", NULL);
+    SAFE_POINT(elenAdapters.size() == nElens, "Invalid adapters array", nullptr);
     MysqlMtaSingleTableAdapter *adapter = elenAdapters.at(elenPos);
-    if (adapter == NULL && createIfNotExits) {
+    if (adapter == nullptr && createIfNotExits) {
         adapter = createAdapter(rowPos, elenPos, os);
     }
 
@@ -589,9 +589,9 @@ void MysqlMultiTableAssemblyAdapter::clearTableAdaptersInfo() {
 }
 
 MysqlMtaSingleTableAdapter *MysqlMultiTableAssemblyAdapter::createAdapter(int rowPos, int elenPos, U2OpStatus &os) {
-    SAFE_POINT(0 <= rowPos && rowPos < adaptersGrid.size(), "Out of range", NULL);
-    SAFE_POINT(0 <= elenPos && elenPos < adaptersGrid.at(rowPos).size(), "Out of range", NULL);
-    SAFE_POINT(NULL == adaptersGrid.at(rowPos).at(elenPos), "Adapter is already created", NULL);
+    SAFE_POINT(0 <= rowPos && rowPos < adaptersGrid.size(), "Out of range", nullptr);
+    SAFE_POINT(0 <= elenPos && elenPos < adaptersGrid.at(rowPos).size(), "Out of range", nullptr);
+    SAFE_POINT(nullptr == adaptersGrid.at(rowPos).at(elenPos), "Adapter is already created", nullptr);
 
     const QString suffix = getTableSuffix(rowPos, elenPos);
     const U2Region &elenRange = elenRanges.at(elenPos);
@@ -614,7 +614,7 @@ void MysqlMultiTableAssemblyAdapter::initAdaptersGrid(int nRows, int nElens) {
 
     adaptersGrid.resize(nRows);
     for (int i = 0; i < nRows; i++) {
-        adaptersGrid[i] = QVector<MysqlMtaSingleTableAdapter *>(nElens, NULL);
+        adaptersGrid[i] = QVector<MysqlMtaSingleTableAdapter *>(nElens, nullptr);
     }
 }
 
@@ -623,7 +623,7 @@ void MysqlMultiTableAssemblyAdapter::initAdaptersGrid(int nRows, int nElens) {
 
 MysqlReadTableMigrationData::MysqlReadTableMigrationData()
     : readId(-1),
-      oldTable(NULL),
+      oldTable(nullptr),
       newProw(-1) {
 }
 
@@ -675,7 +675,7 @@ void MysqlMultiTablePackAlgorithmAdapter::assignProw(const U2DataId &readId, qin
     int oldRowPos = multiTableAdapter->getRowRangePosById(readId);
     int newRowPos = multiTableAdapter->getRowRangePosByRow(prow);
 
-    MysqlSingleTablePackAlgorithmAdapter *sa = NULL;
+    MysqlSingleTablePackAlgorithmAdapter *sa = nullptr;
     if (newRowPos == oldRowPos) {
         sa = packAdaptersGrid[oldRowPos][elenPos];
         sa->assignProw(readId, prow, os);
@@ -687,11 +687,11 @@ void MysqlMultiTablePackAlgorithmAdapter::assignProw(const U2DataId &readId, qin
     MysqlMtaSingleTableAdapter *oldA = multiTableAdapter->getAdapterByRowAndElenRange(oldRowPos, elenPos, false, os);
     MysqlMtaSingleTableAdapter *newA = multiTableAdapter->getAdapterByRowAndElenRange(newRowPos, elenPos, true, os);
 
-    SAFE_POINT(oldA != NULL, QString("Can't find reads table adapter: row: %1, elen: %2").arg(oldRowPos).arg(elenPos), );
-    SAFE_POINT(newA != NULL, QString("Can't find reads table adapter: row: %1, elen: %2").arg(newRowPos).arg(elenPos), );
+    SAFE_POINT(oldA != nullptr, QString("Can't find reads table adapter: row: %1, elen: %2").arg(oldRowPos).arg(elenPos), );
+    SAFE_POINT(newA != nullptr, QString("Can't find reads table adapter: row: %1, elen: %2").arg(newRowPos).arg(elenPos), );
     SAFE_POINT_OP(os, );
 
-    if (sa == NULL) {
+    if (sa == nullptr) {
         sa = new MysqlSingleTablePackAlgorithmAdapter(multiTableAdapter->getDbRef(), newA->singleTableAdapter->getReadsTableName());
         packAdapters << sa;
         packAdaptersGrid[newRowPos][elenPos] = sa;
@@ -874,20 +874,20 @@ U2AssemblyRead MysqlMtaReadsIterator::next() {
     U2AssemblyRead res;
     if (sortedHint) {
         qint64 minPos = LLONG_MAX;
-        U2DbiIterator<U2AssemblyRead> *minIt = NULL;
+        U2DbiIterator<U2AssemblyRead> *minIt = nullptr;
         foreach (U2DbiIterator<U2AssemblyRead> *it, iterators) {
             if (it->hasNext()) {
                 U2AssemblyRead candidate = it->peek();
-                SAFE_POINT(NULL != candidate.data(), "NULL assembly read", candidate);
+                SAFE_POINT(nullptr != candidate.data(), "NULL assembly read", candidate);
                 if (candidate->leftmostPos < minPos) {
                     minIt = it;
                     minPos = candidate->leftmostPos;
                 }
             }
         }
-        if (NULL != minIt) {
+        if (nullptr != minIt) {
             res = minIt->next();
-            SAFE_POINT(NULL != res.data(), "NULL assembly read", res);
+            SAFE_POINT(nullptr != res.data(), "NULL assembly read", res);
             int currentIt = iterators.indexOf(minIt);
             const QByteArray &idExtra = idExtras.at(currentIt);
             res->id = addTable2Id(res->id, idExtra);
@@ -899,7 +899,7 @@ U2AssemblyRead MysqlMtaReadsIterator::next() {
                 U2DbiIterator<U2AssemblyRead> *it = iterators[currentRange];
                 if (it->hasNext()) {
                     res = it->next();
-                    SAFE_POINT(NULL != res.data(), "NULL assembly read", res);
+                    SAFE_POINT(nullptr != res.data(), "NULL assembly read", res);
                     const QByteArray &idExtra = idExtras.at(currentRange);
                     res->id = addTable2Id(res->id, idExtra);
                     break;
@@ -915,20 +915,20 @@ U2AssemblyRead MysqlMtaReadsIterator::peek() {
     U2AssemblyRead res;
     if (sortedHint) {
         qint64 minPos = LLONG_MAX;
-        U2DbiIterator<U2AssemblyRead> *minIt = NULL;
+        U2DbiIterator<U2AssemblyRead> *minIt = nullptr;
         foreach (U2DbiIterator<U2AssemblyRead> *it, iterators) {
             if (it->hasNext()) {
                 U2AssemblyRead candidate = it->peek();
-                SAFE_POINT(NULL != candidate.data(), "NULL assembly read", candidate);
+                SAFE_POINT(nullptr != candidate.data(), "NULL assembly read", candidate);
                 if (candidate->leftmostPos < minPos) {
                     minIt = it;
                     minPos = candidate->leftmostPos;
                 }
             }
         }
-        if (NULL != minIt) {
+        if (nullptr != minIt) {
             res = minIt->next();
-            SAFE_POINT(NULL != res.data(), "NULL assembly read", res);
+            SAFE_POINT(nullptr != res.data(), "NULL assembly read", res);
             int currentIt = iterators.indexOf(minIt);
             const QByteArray &idExtra = idExtras.at(currentIt);
             res->id = addTable2Id(res->id, idExtra);
@@ -940,7 +940,7 @@ U2AssemblyRead MysqlMtaReadsIterator::peek() {
                 U2DbiIterator<U2AssemblyRead> *it = iterators[currentRange];
                 if (it->hasNext()) {
                     res = it->peek();
-                    SAFE_POINT(NULL != res.data(), "NULL assembly read", res);
+                    SAFE_POINT(nullptr != res.data(), "NULL assembly read", res);
                     const QByteArray &idExtra = idExtras.at(currentRange);
                     res->id = addTable2Id(res->id, idExtra);
                     break;

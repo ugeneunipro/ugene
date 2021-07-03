@@ -38,7 +38,7 @@ namespace U2 {
 
 DnaAssemblyMultiTask::DnaAssemblyMultiTask(const DnaAssemblyToRefTaskSettings &s, bool view, bool _justBuildIndex)
     : ExternalToolSupportTask("DnaAssemblyMultiTask", TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled), settings(s),
-      assemblyToRefTask(NULL), shortReadSets(s.shortReadSets), openView(view), justBuildIndex(_justBuildIndex) {
+      assemblyToRefTask(nullptr), shortReadSets(s.shortReadSets), openView(view), justBuildIndex(_justBuildIndex) {
 }
 
 void DnaAssemblyMultiTask::prepare() {
@@ -46,7 +46,7 @@ void DnaAssemblyMultiTask::prepare() {
     QString algName = settings.algName;
     DnaAssemblyAlgorithmEnv *env = AppContext::getDnaAssemblyAlgRegistry()->getAlgorithm(algName);
     assert(env);
-    if (env == NULL) {
+    if (env == nullptr) {
         setError(QString("Algorithm %1 is not found").arg(algName));
         return;
     }
@@ -73,13 +73,13 @@ QList<Task *> DnaAssemblyMultiTask::onSubTaskFinished(Task *subTask) {
     if (subTask == assemblyToRefTask && settings.openView) {
         if (assemblyToRefTask->hasResult()) {
             Task *openTask = AppContext::getProjectLoader()->openWithProjectTask(settings.resultFileName);
-            if (openTask != NULL) {
+            if (openTask != nullptr) {
                 subTasks << openTask;
             }
         } else {
             QString message = tr("The short reads can't be mapped to the reference sequence!");
             coreLog.info(message);
-            if (NULL != AppContext::getMainWindow()) {
+            if (nullptr != AppContext::getMainWindow()) {
                 QMessageBox::information(AppContext::getMainWindow()->getQMainWindow(), L10N::warningTitle(), message);
             }
         }

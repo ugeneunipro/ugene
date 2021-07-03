@@ -40,17 +40,17 @@ namespace U2 {
 namespace Workflow {
 
 Actor::Actor(const ActorId &actorId, ActorPrototype *proto, AttributeScript *_script)
-    : id(actorId), proto(proto), doc(NULL), script(_script), condition(new AttributeScript()) {
-    if (script == NULL) {
+    : id(actorId), proto(proto), doc(nullptr), script(_script), condition(new AttributeScript()) {
+    if (script == nullptr) {
         if (proto->isScriptFlagSet()) {
             script = new AttributeScript();
             script->setScriptText("");
         } else {
-            script = NULL;
+            script = nullptr;
         }
     }
 
-    if (script != NULL) {
+    if (script != nullptr) {
         setupVariablesForPort(script);
         setupVariablesForAttribute(script);
     }
@@ -111,7 +111,7 @@ void Actor::setupVariablesForPort(AttributeScript *_script, bool inputOnly) {
 
 void Actor::setupVariablesForAttribute(AttributeScript *_script) {
     foreach (Attribute *attribute, proto->getAttributes()) {
-        assert(attribute != NULL);
+        assert(attribute != nullptr);
         QString attrVarName = attribute->getDisplayName();
         _script->setScriptVar(Descriptor(attribute->getId().replace(".", "_"), attrVarName.replace(".", "_"), attribute->getDocumentation()), QVariant());
     }
@@ -241,7 +241,7 @@ ActorDocument *Actor::getDescription() const {
 }
 
 void Actor::setDescription(ActorDocument *d) {
-    assert(d != NULL);
+    assert(d != nullptr);
     doc = d;
 }
 
@@ -390,11 +390,11 @@ void Actor::replaceActor(Actor *oldActor, Actor *newActor, const QList<PortMappi
 }
 
 void Actor::updateDelegateTags() {
-    CHECK(NULL != editor, );
+    CHECK(nullptr != editor, );
     foreach (Attribute *influencing, getAttributes()) {
         foreach (const AttributeRelation *rel, influencing->getRelations()) {
             PropertyDelegate *dependentDelegate = editor->getDelegate(rel->getRelatedAttrId());
-            if (NULL == dependentDelegate) {
+            if (nullptr == dependentDelegate) {
                 continue;
             }
             rel->updateDelegateTags(influencing->getAttributePureValue(), dependentDelegate->tags());
@@ -411,14 +411,14 @@ void Actor::updateItemsAvailability() {
 void Actor::updateItemsAvailability(const Attribute *influencingAttribute) {
     foreach (PortRelationDescriptor *rel, influencingAttribute->getPortRelations()) {
         Port *dependentPort = getPort(rel->getPortId());
-        CHECK_CONTINUE(dependentPort != NULL);
+        CHECK_CONTINUE(dependentPort != nullptr);
 
         dependentPort->setEnabled(rel->isPortEnabled(influencingAttribute->getAttributePureValue()));
     }
 
     foreach (SlotRelationDescriptor *rel, influencingAttribute->getSlotRelations()) {
         Port *dependentPort = getPort(rel->portId);
-        CHECK_CONTINUE(dependentPort != NULL);
+        CHECK_CONTINUE(dependentPort != nullptr);
 
         const bool isEnabled = rel->isSlotEnabled(influencingAttribute->getAttributePureValue());
         dependentPort->setVisibleSlot(rel->slotId, isEnabled);
@@ -439,7 +439,7 @@ const QList<ValidatorDesc> &Actor::getCustomValidators() const {
  * Attributes with value "Default" (case-insensitive) are ignored.
  */
 static bool validateUrlAttribute(Attribute *attr, UrlAttributeType urlType, NotificationsList &infoList) {
-    SAFE_POINT(NULL != attr, "NULL attribute!", false);
+    SAFE_POINT(nullptr != attr, "NULL attribute!", false);
     SAFE_POINT(NotAnUrl != urlType, "Can't pass not an URL to the method!", false);
 
     if (!attr->getAttributeScript().isEmpty()) {
@@ -490,7 +490,7 @@ static bool validateCodePage(const QString &url) {
  *   - both QString must be equal
  */
 static bool validateCodePage(Attribute *attr, NotificationsList &infoList) {
-    SAFE_POINT(NULL != attr, "NULL attribute!", false);
+    SAFE_POINT(nullptr != attr, "NULL attribute!", false);
 
     QStringList urlsList = WorkflowUtils::getAttributeUrls(attr);
     if (urlsList.isEmpty()) {
@@ -512,7 +512,7 @@ bool Actor::validate(NotificationsList &notificationList) const {
     bool result = Configuration::validate(notificationList);
     foreach (const ValidatorDesc &desc, customValidators) {
         ActorValidator *v = WorkflowEnv::getActorValidatorRegistry()->findValidator(desc.type);
-        if (NULL != v) {
+        if (nullptr != v) {
             result &= v->validate(this, notificationList, desc.options);
         }
     }
@@ -520,7 +520,7 @@ bool Actor::validate(NotificationsList &notificationList) const {
     // Validate URL and Numeric parameters
     bool urlsRes = true;
     foreach (Attribute *attr, getParameters()) {
-        SAFE_POINT(NULL != attr, "NULL attribute!", false);
+        SAFE_POINT(nullptr != attr, "NULL attribute!", false);
         if (!isAttributeVisible(attr)) {
             continue;
         }

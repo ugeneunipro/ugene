@@ -39,12 +39,12 @@ namespace U2 {
 OpenSimpleTextObjectViewTask::OpenSimpleTextObjectViewTask(const QList<GObject *> &_objects)
     : ObjectViewTask(SimpleTextObjectViewFactory::ID), objects(_objects) {
     foreach (GObject *obj, objects) {
-        CHECK_EXT(NULL != obj, stateInfo.setError(tr("Invalid object detected!")), );
+        CHECK_EXT(nullptr != obj, stateInfo.setError(tr("Invalid object detected!")), );
         CHECK_EXT(GObjectTypes::TEXT == obj->getGObjectType(),
                   stateInfo.setError(tr("Invalid object type detected!")), );
 
         Document *doc = obj->getDocument();
-        CHECK_EXT(NULL != doc, stateInfo.setError(tr("Invalid document detected!")), );
+        CHECK_EXT(nullptr != doc, stateInfo.setError(tr("Invalid document detected!")), );
         if (!documentsToLoad.contains(doc) && !doc->isLoaded()) {
             documentsToLoad.append(doc);
         }
@@ -52,7 +52,7 @@ OpenSimpleTextObjectViewTask::OpenSimpleTextObjectViewTask(const QList<GObject *
 }
 
 OpenSavedTextObjectViewTask::OpenSavedTextObjectViewTask(const QString &vname, const QVariantMap &stateData)
-    : ObjectViewTask(SimpleTextObjectViewFactory::ID, vname, stateData), doc(NULL) {
+    : ObjectViewTask(SimpleTextObjectViewFactory::ID, vname, stateData), doc(nullptr) {
     QString documentUrl = SimpleTextObjectView::getDocumentUrl(stateData);
     doc = AppContext::getProject()->findDocumentByURL(documentUrl);
     if (doc.isNull()) {
@@ -96,12 +96,12 @@ void OpenSimpleTextObjectViewTask::open() {
         CHECK_EXT(doc->isLoaded(), stateInfo.setError(tr("Document is not loaded!")), );
 
         TextObject *to = qobject_cast<TextObject *>(obj);
-        CHECK_EXT(NULL != obj, stateInfo.setError(tr("Invalid object detected!")), );
+        CHECK_EXT(nullptr != obj, stateInfo.setError(tr("Invalid object detected!")), );
 
         const QString viewName = GObjectViewUtils::genUniqueViewName(doc, to);
         SimpleTextObjectView *v = new SimpleTextObjectView(viewName, to, stateData);
         GObjectViewWindow *w = new GObjectViewWindow(v, viewName, !stateData.isEmpty());
-        if (NULL == v->parent()) {
+        if (nullptr == v->parent()) {
             stateInfo.setError("Could not open view");
             delete v;
             delete w;
@@ -124,7 +124,7 @@ void UpdateSimpleTextObjectViewTask::update() {
         return;
     }
     SimpleTextObjectView *tv = qobject_cast<SimpleTextObjectView *>(view);
-    if (tv == NULL) {
+    if (tv == nullptr) {
         return;
     }
     tv->updateView(stateData);

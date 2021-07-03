@@ -32,7 +32,7 @@ class DirectoryOptions;
 class DirectoryItem : public UrlItem {
     Q_OBJECT
 public:
-    DirectoryItem(const QString &url, QListWidget *parent = NULL);
+    DirectoryItem(const QString &url, QListWidget *parent = nullptr);
     virtual ~DirectoryItem();
 
     virtual void accept(UrlItemVisitor *visitor);
@@ -53,7 +53,7 @@ private:
 class DirectoryOptions : public QWidget, public Ui_DirectoryOptions {
     Q_OBJECT
 public:
-    DirectoryOptions(QWidget *parent = NULL);
+    DirectoryOptions(QWidget *parent = nullptr);
 
     void setIncludeFilter(const QString &value);
     void setExcludeFilter(const QString &value);

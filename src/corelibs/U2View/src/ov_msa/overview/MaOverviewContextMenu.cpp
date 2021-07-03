@@ -42,8 +42,8 @@ MaOverviewContextMenu::MaOverviewContextMenu(QWidget *parent, MaSimpleOverview *
     : QMenu(parent),
       simpleOverview(sOverview),
       graphOverview(gOverview) {
-    SAFE_POINT(simpleOverview != NULL, tr("Overview is NULL"), );
-    SAFE_POINT(graphOverview != NULL, tr("Graph overview is NULL"), );
+    SAFE_POINT(simpleOverview != nullptr, tr("Overview is NULL"), );
+    SAFE_POINT(graphOverview != nullptr, tr("Graph overview is NULL"), );
 
     setObjectName("msa_overview_context_menu");
 
@@ -237,7 +237,7 @@ QAction *MaOverviewContextMenu::createCheckableAction(const QString &text, QActi
     QAction *a = new QAction(text, this);
     a->setCheckable(true);
 
-    if (group != NULL) {
+    if (group != nullptr) {
         group->addAction(a);
     }
 

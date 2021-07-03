@@ -402,7 +402,7 @@ void ScrollController::zoomVerticalScrollBarPrivate() {
 }
 
 void ScrollController::updateHorizontalScrollBarPrivate() {
-    SAFE_POINT(NULL != hScrollBar, "Horizontal scrollbar is not initialized", );
+    SAFE_POINT(nullptr != hScrollBar, "Horizontal scrollbar is not initialized", );
     SignalBlocker signalBlocker(hScrollBar);
     Q_UNUSED(signalBlocker);
 
@@ -423,7 +423,7 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
 }
 
 void ScrollController::updateVerticalScrollBarPrivate() {
-    SAFE_POINT(NULL != vScrollBar, "Vertical scrollbar is not initialized", );
+    SAFE_POINT(nullptr != vScrollBar, "Vertical scrollbar is not initialized", );
     SignalBlocker signalBlocker(vScrollBar);
     Q_UNUSED(signalBlocker);
 

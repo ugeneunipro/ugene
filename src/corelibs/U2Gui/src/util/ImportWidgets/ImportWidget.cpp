@@ -31,7 +31,7 @@
 namespace U2 {
 
 ImportWidget::ImportWidget()
-    : QWidget(), saveController(NULL) {
+    : QWidget(), saveController(nullptr) {
 }
 
 ImportWidget::~ImportWidget() {

@@ -41,7 +41,7 @@ namespace U2 {
 
 MsaEditorSimilarityColumn::MsaEditorSimilarityColumn(MsaEditorWgt *ui, QScrollBar *nhBar, const SimilarityStatisticsSettings *_settings)
     : MaEditorNameList(ui, nhBar),
-      matrix(NULL),
+      matrix(nullptr),
       newSettings(*_settings),
       curSettings(*_settings),
       autoUpdate(true) {
@@ -50,12 +50,12 @@ MsaEditorSimilarityColumn::MsaEditorSimilarityColumn(MsaEditorWgt *ui, QScrollBa
 }
 
 MsaEditorSimilarityColumn::~MsaEditorSimilarityColumn() {
-    CHECK(NULL != matrix, );
+    CHECK(nullptr != matrix, );
     delete matrix;
 }
 
 QString MsaEditorSimilarityColumn::getTextForRow(int s) {
-    if (NULL == matrix || state == DataIsBeingUpdated) {
+    if (nullptr == matrix || state == DataIsBeingUpdated) {
         return tr("-");
     }
 
@@ -86,7 +86,7 @@ void MsaEditorSimilarityColumn::updateScrollBar() {
 
 void MsaEditorSimilarityColumn::setSettings(const UpdatedWidgetSettings *_settings) {
     const SimilarityStatisticsSettings *set = static_cast<const SimilarityStatisticsSettings *>(_settings);
-    CHECK(NULL != set, );
+    CHECK(nullptr != set, );
     autoUpdate = set->autoUpdate;
     if (curSettings.algoId != set->algoId) {
         state = DataIsOutdated;
@@ -95,7 +95,7 @@ void MsaEditorSimilarityColumn::setSettings(const UpdatedWidgetSettings *_settin
         state = DataIsOutdated;
     }
     if (curSettings.usePercents != set->usePercents) {
-        if (NULL != matrix) {
+        if (nullptr != matrix) {
             matrix->setPercentSimilarity(set->usePercents);
             sl_completeRedraw();
         }
@@ -140,13 +140,13 @@ void MsaEditorSimilarityColumn::onAlignmentChanged(const MultipleSequenceAlignme
 
 void MsaEditorSimilarityColumn::sl_createMatrixTaskFinished(Task *t) {
     CreateDistanceMatrixTask *task = qobject_cast<CreateDistanceMatrixTask *>(t);
-    bool finishedSuccessfully = NULL != task && !task->hasError() && !task->isCanceled();
+    bool finishedSuccessfully = nullptr != task && !task->hasError() && !task->isCanceled();
     if (finishedSuccessfully) {
-        if (NULL != matrix) {
+        if (nullptr != matrix) {
             delete matrix;
         }
         matrix = task->getResult();
-        if (NULL != matrix) {
+        if (nullptr != matrix) {
             matrix->setPercentSimilarity(newSettings.usePercents);
         }
     }
@@ -163,15 +163,15 @@ void MsaEditorSimilarityColumn::sl_createMatrixTaskFinished(Task *t) {
 CreateDistanceMatrixTask::CreateDistanceMatrixTask(const SimilarityStatisticsSettings &_s)
     : BackgroundTask<MSADistanceMatrix *>(tr("Generate distance matrix"), TaskFlags_NR_FOSE_COSC),
       s(_s),
-      resMatrix(NULL) {
-    SAFE_POINT(NULL != s.ma, QString("Incorrect MultipleSequenceAlignment in MsaEditorSimilarityColumnTask ctor!"), );
-    SAFE_POINT(NULL != s.ui, QString("Incorrect MSAEditorUI in MsaEditorSimilarityColumnTask ctor!"), );
+      resMatrix(nullptr) {
+    SAFE_POINT(nullptr != s.ma, QString("Incorrect MultipleSequenceAlignment in MsaEditorSimilarityColumnTask ctor!"), );
+    SAFE_POINT(nullptr != s.ui, QString("Incorrect MSAEditorUI in MsaEditorSimilarityColumnTask ctor!"), );
     setVerboseLogMode(true);
 }
 
 void CreateDistanceMatrixTask::prepare() {
     MSADistanceAlgorithmFactory *factory = AppContext::getMSADistanceAlgorithmRegistry()->getAlgorithmFactory(s.algoId);
-    CHECK(NULL != factory, );
+    CHECK(nullptr != factory, );
     if (s.excludeGaps) {
         factory->setFlag(DistanceAlgorithmFlag_ExcludeGaps);
     } else {
@@ -179,7 +179,7 @@ void CreateDistanceMatrixTask::prepare() {
     }
 
     MSADistanceAlgorithm *algo = factory->createAlgorithm(s.ma->getMultipleAlignment());
-    CHECK(NULL != algo, );
+    CHECK(nullptr != algo, );
     addSubTask(algo);
 }
 
@@ -195,7 +195,7 @@ QList<Task *> CreateDistanceMatrixTask::onSubTaskFinished(Task *subTask) {
 
 MsaEditorAlignmentDependentWidget::MsaEditorAlignmentDependentWidget(UpdatedWidgetInterface *_contentWidget)
     : contentWidget(_contentWidget), automaticUpdating(true) {
-    SAFE_POINT(NULL != _contentWidget, QString("Argument is NULL in constructor MsaEditorAlignmentDependentWidget()"), );
+    SAFE_POINT(nullptr != _contentWidget, QString("Argument is NULL in constructor MsaEditorAlignmentDependentWidget()"), );
 
     DataIsOutdatedMessage = QString("<FONT COLOR=#FF0000>%1</FONT>").arg(tr("Data are outdated"));
     DataIsValidMessage = QString("<FONT COLOR=#00FF00>%1</FONT>").arg(tr("Data are valid"));

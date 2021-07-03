@@ -254,7 +254,7 @@ QList<Task *> CreateSubalignmentAndOpenViewTask::onSubTaskFinished(Task *subTask
 
     if ((subTask == csTask) && csTask->getSettings().addToProject) {
         Document *doc = csTask->takeDocument();
-        assert(doc != NULL);
+        assert(doc != nullptr);
         res.append(new AddDocumentAndOpenViewTask(doc));
     }
 

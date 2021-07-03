@@ -57,7 +57,7 @@ public:
 /** Additional reads info used during reads import into assembly */
 class U2AssemblyReadsImportInfo {
 public:
-    U2AssemblyReadsImportInfo(U2AssemblyReadsImportInfo *parentInfo = NULL)
+    U2AssemblyReadsImportInfo(U2AssemblyReadsImportInfo *parentInfo = nullptr)
         : nReads(0), packed(false), parentInfo(parentInfo) {
     }
     virtual ~U2AssemblyReadsImportInfo() {
@@ -75,7 +75,7 @@ public:
     U2AssemblyCoverageImportInfo coverageInfo;
 
     virtual void onReadImported() {
-        if (NULL != parentInfo) {
+        if (nullptr != parentInfo) {
             parentInfo->onReadImported();
         }
     }

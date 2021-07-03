@@ -32,7 +32,7 @@
 namespace U2 {
 
 MaSavedState::MaSavedState()
-    : lastState(NULL) {
+    : lastState(nullptr) {
 }
 
 MaSavedState::~MaSavedState() {
@@ -40,18 +40,18 @@ MaSavedState::~MaSavedState() {
 }
 
 bool MaSavedState::hasState() const {
-    return NULL != lastState;
+    return nullptr != lastState;
 }
 
 const MultipleAlignment MaSavedState::takeState() {
     const MultipleAlignment state = *lastState;
     delete lastState;
-    lastState = NULL;
+    lastState = nullptr;
     return state;
 }
 
 void MaSavedState::setState(const MultipleAlignment &ma) {
-    if (NULL != lastState) {
+    if (nullptr != lastState) {
         delete lastState;
     }
     lastState = new MultipleAlignment(ma->getCopy());
@@ -82,7 +82,7 @@ void MultipleAlignmentObject::setTrackMod(U2OpStatus &os, U2TrackModType trackMo
     CHECK_OP(os, );
 
     U2ObjectDbi *objectDbi = con.dbi->getObjectDbi();
-    SAFE_POINT(NULL != objectDbi, "NULL Object Dbi", );
+    SAFE_POINT(nullptr != objectDbi, "NULL Object Dbi", );
 
     // Set the new status
     objectDbi->setTrackModType(entityRef.entityId, trackMod, os);

@@ -33,8 +33,8 @@ class DNAAlphabet;
 
 class U2CORE_EXPORT DNASequence {
 public:
-    DNASequence(const QString &name, const QByteArray &s = QByteArray(), const DNAAlphabet *a = NULL);
-    DNASequence(const QByteArray &s = QByteArray(), const DNAAlphabet *a = NULL);
+    DNASequence(const QString &name, const QByteArray &s = QByteArray(), const DNAAlphabet *a = nullptr);
+    DNASequence(const QByteArray &s = QByteArray(), const DNAAlphabet *a = nullptr);
 
     QVariantMap info;
     QByteArray seq;

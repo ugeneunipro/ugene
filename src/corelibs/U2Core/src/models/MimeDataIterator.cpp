@@ -33,22 +33,22 @@ namespace U2 {
 MimeDataIterator::MimeDataIterator(const QMimeData *md)
     : docIdx(0), objectIdx(0), folderIdx(0) {
     const DocumentMimeData *dmd = dynamic_cast<const DocumentMimeData *>(md);
-    if (NULL != dmd) {
+    if (nullptr != dmd) {
         docs << dmd->objPtr;
     }
 
     const GObjectMimeData *gomd = dynamic_cast<const GObjectMimeData *>(md);
-    if (NULL != gomd) {
+    if (nullptr != gomd) {
         objects << gomd->objPtr;
     }
 
     const FolderMimeData *fmd = dynamic_cast<const FolderMimeData *>(md);
-    if (NULL != fmd) {
+    if (nullptr != fmd) {
         folders << fmd->folder;
     }
 
     const BunchMimeData *bmd = dynamic_cast<const BunchMimeData *>(md);
-    if (NULL != bmd) {
+    if (nullptr != bmd) {
         docs << bmd->docs;
         objects << bmd->objects;
         folders << bmd->folders;
@@ -60,7 +60,7 @@ bool MimeDataIterator::hasNextDocument() const {
 }
 
 Document *MimeDataIterator::nextDocument() {
-    CHECK(hasNextDocument(), NULL);
+    CHECK(hasNextDocument(), nullptr);
     docIdx++;
     return docs[docIdx - 1];
 }
@@ -70,7 +70,7 @@ bool MimeDataIterator::hasNextObject() const {
 }
 
 GObject *MimeDataIterator::nextObject() {
-    CHECK(hasNextObject(), NULL);
+    CHECK(hasNextObject(), nullptr);
     objectIdx++;
     return objects[objectIdx - 1];
 }

@@ -46,16 +46,16 @@ void McaDbiUtils::updateMca(U2OpStatus &os, const U2EntityRef &mcaRef, const Mul
     CHECK_OP(os, );
 
     U2AttributeDbi *attributeDbi = connection.dbi->getAttributeDbi();
-    SAFE_POINT_EXT(NULL != attributeDbi, os.setError("NULL Attribute Dbi"), );
+    SAFE_POINT_EXT(nullptr != attributeDbi, os.setError("NULL Attribute Dbi"), );
 
     U2MsaDbi *msaDbi = connection.dbi->getMsaDbi();
-    SAFE_POINT_EXT(NULL != msaDbi, os.setError("NULL Msa Dbi"), );
+    SAFE_POINT_EXT(nullptr != msaDbi, os.setError("NULL Msa Dbi"), );
 
     U2SequenceDbi *sequenceDbi = connection.dbi->getSequenceDbi();
-    SAFE_POINT_EXT(NULL != sequenceDbi, os.setError("NULL Sequence Dbi"), );
+    SAFE_POINT_EXT(nullptr != sequenceDbi, os.setError("NULL Sequence Dbi"), );
 
     const DNAAlphabet *alphabet = mca->getAlphabet();
-    SAFE_POINT_EXT(NULL != alphabet, os.setError("The alignment alphabet is NULL"), );
+    SAFE_POINT_EXT(nullptr != alphabet, os.setError("The alignment alphabet is NULL"), );
 
     //// UPDATE MCA
     U2Msa dbMca;
@@ -175,7 +175,7 @@ void McaDbiUtils::addRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint64 posIn
     CHECK_OP(os, );
 
     U2MsaDbi *msaDbi = connection.dbi->getMsaDbi();
-    SAFE_POINT_EXT(NULL != msaDbi, os.setError("NULL Msa dbi"), );
+    SAFE_POINT_EXT(nullptr != msaDbi, os.setError("NULL Msa dbi"), );
 
     msaDbi->addRow(mcaRef.entityId, posInMca, row, os);
     CHECK_OP(os, );
@@ -195,7 +195,7 @@ QList<U2McaRow> McaDbiUtils::getMcaRows(U2OpStatus &os, const U2EntityRef &mcaRe
     CHECK_OP(os, mcaRows);
 
     U2MsaDbi *msaDbi = connection.dbi->getMsaDbi();
-    SAFE_POINT_EXT(NULL != msaDbi, os.setError("MSA dbi is NULL"), mcaRows);
+    SAFE_POINT_EXT(nullptr != msaDbi, os.setError("MSA dbi is NULL"), mcaRows);
 
     const QList<U2MsaRow> msaRows = msaDbi->getRows(mcaRef.entityId, os);
     CHECK_OP(os, mcaRows);
@@ -215,7 +215,7 @@ U2McaRow McaDbiUtils::getMcaRow(U2OpStatus &os, const U2EntityRef &mcaRef, qint6
     CHECK_OP(os, U2McaRow());
 
     U2MsaDbi *msaDbi = connection.dbi->getMsaDbi();
-    SAFE_POINT_EXT(NULL != msaDbi, os.setError("MSA dbi is NULL"), U2McaRow());
+    SAFE_POINT_EXT(nullptr != msaDbi, os.setError("MSA dbi is NULL"), U2McaRow());
 
     const U2MsaRow msaRow = msaDbi->getRow(mcaRef.entityId, rowId, os);
     CHECK_OP(os, U2McaRow());
@@ -233,7 +233,7 @@ void McaDbiUtils::removeRow(const U2EntityRef &mcaRef, qint64 rowId, U2OpStatus 
     CHECK_OP(os, );
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "NULL Msa Dbi!", );
+    SAFE_POINT(nullptr != msaDbi, "NULL Msa Dbi!", );
 
     // Remove the row
     msaDbi->removeRow(mcaRef.entityId, rowId, os);

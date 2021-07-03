@@ -47,7 +47,7 @@ public:
 
     //constructs empty anonymous matrix
     SMatrix() {
-        alphabet = NULL, minChar = 0;
+        alphabet = nullptr, minChar = 0;
         maxChar = 0;
         charsInRow = 0;
     }

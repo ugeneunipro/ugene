@@ -27,38 +27,38 @@
 namespace U2 {
 namespace Workflow {
 
-IncludedProtoFactory *IncludedProtoFactory::instance = NULL;
+IncludedProtoFactory *IncludedProtoFactory::instance = nullptr;
 
 void IncludedProtoFactory::init(IncludedProtoFactory *protoMaker) {
     instance = protoMaker;
 }
 
 ActorPrototype *IncludedProtoFactory::getScriptProto(QList<DataTypePtr> input, QList<DataTypePtr> output, QList<Attribute *> attrs, const QString &name, const QString &description, const QString &actorFilePath, bool isAliasName) {
-    if (NULL != instance) {
+    if (nullptr != instance) {
         return instance->_getScriptProto(input, output, attrs, name, description, actorFilePath, isAliasName);
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 
 ActorPrototype *IncludedProtoFactory::getExternalToolProto(ExternalProcessConfig *cfg) {
-    if (NULL != instance) {
+    if (nullptr != instance) {
         return instance->_getExternalToolProto(cfg);
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 
 ActorPrototype *IncludedProtoFactory::getSchemaActorProto(Schema *schema, const QString &name, const QString &actorFilePath) {
-    if (NULL != instance) {
+    if (nullptr != instance) {
         return instance->_getSchemaActorProto(schema, name, actorFilePath);
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 
 bool IncludedProtoFactory::registerExternalToolWorker(ExternalProcessConfig *cfg) {
-    if (NULL != instance) {
+    if (nullptr != instance) {
         return instance->_registerExternalToolWorker(cfg);
     } else {
         return false;
@@ -66,7 +66,7 @@ bool IncludedProtoFactory::registerExternalToolWorker(ExternalProcessConfig *cfg
 }
 
 void IncludedProtoFactory::registerScriptWorker(const QString &actorName) {
-    if (NULL != instance) {
+    if (nullptr != instance) {
         return instance->_registerScriptWorker(actorName);
     } else {
         return;
@@ -92,7 +92,7 @@ ExternalProcessConfig *IncludedProtoFactory::unregisterExternalToolWorker(const 
 bool IncludedProtoFactory::isRegistered(const QString &actorName) {
     ActorPrototype *proto = WorkflowEnv::getProtoRegistry()->getProto(actorName);
 
-    if (NULL == proto) {
+    if (nullptr == proto) {
         return false;
     } else {
         return true;
@@ -101,7 +101,7 @@ bool IncludedProtoFactory::isRegistered(const QString &actorName) {
 
 bool IncludedProtoFactory::isRegisteredTheSameProto(const QString &actorId, ActorPrototype *proto) {
     ActorPrototype *regProto = WorkflowEnv::getProtoRegistry()->getProto(actorId);
-    assert(NULL != proto);
+    assert(nullptr != proto);
 
     // compare simple proto parameters
     if (regProto->isScriptFlagSet() != proto->isScriptFlagSet()) {

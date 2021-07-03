@@ -28,9 +28,9 @@ namespace U2 {
 void TaskStarter::registerTask() {
     switch (condition) {
         case NoProject:
-            if (NULL != AppContext::getProject()) {
+            if (nullptr != AppContext::getProject()) {
                 delete t;
-                t = NULL;
+                t = nullptr;
                 return;
             }
             break;
@@ -42,7 +42,7 @@ void TaskStarter::registerTask() {
 
     if (t) {
         AppContext::getTaskScheduler()->registerTopLevelTask(t);
-        t = NULL;
+        t = nullptr;
     }
 
     deleteLater();

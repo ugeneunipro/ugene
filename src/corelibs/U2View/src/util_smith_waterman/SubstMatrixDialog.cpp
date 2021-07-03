@@ -119,11 +119,11 @@ void SubstMatrixDialog::sl_mouseOnCell(int row, int column) {
     //update mid-cell
     if (row != 0 && column != 0 && !(column == hlInnerColumn && row == hlInnerRow)) {
         QTableWidgetItem *prevItem = tableMatrix->item(hlInnerRow, hlInnerColumn);
-        if (prevItem != NULL) {
+        if (prevItem != nullptr) {
             prevItem->setBackgroundColor(DEFAULT_INNER_CELL_COLOR);
         }
         QTableWidgetItem *newItem = tableMatrix->item(row, column);
-        if (newItem != NULL) {
+        if (newItem != nullptr) {
             newItem->setBackgroundColor(HIGHLIGHT_INNER_CELL_COLOR);
         }
         hlInnerColumn = column;
@@ -133,11 +133,11 @@ void SubstMatrixDialog::sl_mouseOnCell(int row, int column) {
     //update row header
     if (row != hlBorderRow && row != 0) {
         QTableWidgetItem *pw = tableMatrix->item(row, 0);
-        if (pw != NULL) {
+        if (pw != nullptr) {
             pw->setBackgroundColor(HIGHLIGHT_BORDER_CELL_COLOR);
         }
         pw = tableMatrix->item(hlBorderRow, 0);
-        if (pw != NULL) {
+        if (pw != nullptr) {
             pw->setBackgroundColor(DEFAULT_BORDER_CELL_COLOR);
         }
 
@@ -147,11 +147,11 @@ void SubstMatrixDialog::sl_mouseOnCell(int row, int column) {
     //update column header
     if (column != hlBorderColumn && column != 0) {
         QTableWidgetItem *pw = tableMatrix->item(0, column);
-        if (pw != NULL) {
+        if (pw != nullptr) {
             pw->setBackgroundColor(HIGHLIGHT_BORDER_CELL_COLOR);
         }
         pw = tableMatrix->item(0, hlBorderColumn);
-        if (pw != NULL) {
+        if (pw != nullptr) {
             pw->setBackgroundColor(DEFAULT_BORDER_CELL_COLOR);
         }
 

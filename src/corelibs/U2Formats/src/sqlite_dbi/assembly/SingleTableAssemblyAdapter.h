@@ -86,7 +86,7 @@ protected:
 class SingleTablePackAlgorithmAdapter : public PackAlgorithmAdapter {
 public:
     SingleTablePackAlgorithmAdapter(DbRef *_db, const QString &_readsTable)
-        : db(_db), readsTable(_readsTable), updateQuery(NULL) {
+        : db(_db), readsTable(_readsTable), updateQuery(nullptr) {
     }
     ~SingleTablePackAlgorithmAdapter();
 

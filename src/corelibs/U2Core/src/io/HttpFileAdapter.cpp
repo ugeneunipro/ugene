@@ -65,7 +65,7 @@ QNetworkProxy HttpFileAdapterFactory::getProxyByUrl(const QUrl &url) const {
 
 HttpFileAdapter::HttpFileAdapter(HttpFileAdapterFactory *factory, QObject *o)
     : IOAdapter(factory, o), is_cached(false), begin_ptr(-1), end_ptr(0),
-      reply(NULL), badstate(false), is_downloaded(false), downloaded(0), total(0) {
+      reply(nullptr), badstate(false), is_downloaded(false), downloaded(0), total(0) {
     chunk_list.push_back(QByteArray(CHUNKSIZE, char(0)));
     netManager = new QNetworkAccessManager(this);
 }
@@ -73,7 +73,7 @@ HttpFileAdapter::~HttpFileAdapter() {
     if (isOpen())
         close();
     delete netManager;
-    netManager = NULL;
+    netManager = nullptr;
 }
 bool HttpFileAdapter::open(const GUrl &url_, IOAdapterMode m) {
     SAFE_POINT(m == IOAdapterMode_Read, QString("Illegal IO mode: %1").arg(m), false);
@@ -136,7 +136,7 @@ void HttpFileAdapter::close() {
     assert(reply);
     reply->abort();
     delete reply;
-    reply = NULL;
+    reply = nullptr;
     gurl = GUrl();
     init();
 }
@@ -207,7 +207,7 @@ qint64 HttpFileAdapter::left() const {
 }
 
 void HttpFileAdapter::init() {
-    reply = NULL;
+    reply = nullptr;
     badstate = false;
     is_downloaded = false;
     is_cached = false;

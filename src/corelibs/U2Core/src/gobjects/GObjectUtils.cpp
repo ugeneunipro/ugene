@@ -65,12 +65,12 @@ QList<GObject *> GObjectUtils::select(const QList<GObject *> &objs, GObjectType 
 
 GObject *GObjectUtils::selectOne(const QList<GObject *> &objects, GObjectType type, UnloadedObjectFilter f) {
     QList<GObject *> res = select(objects, type, f);
-    return res.isEmpty() ? NULL : res.first();
+    return res.isEmpty() ? nullptr : res.first();
 }
 
 QList<GObject *> GObjectUtils::findAllObjects(UnloadedObjectFilter f, GObjectType t) {
     QList<GObject *> res;
-    SAFE_POINT(AppContext::getProject() != NULL, "No active project found", res);
+    SAFE_POINT(AppContext::getProject() != nullptr, "No active project found", res);
 
     foreach (Document *doc, AppContext::getProject()->getDocuments()) {
         if (t.isEmpty()) {
@@ -92,7 +92,7 @@ QList<GObject *> GObjectUtils::selectRelations(GObject *obj, GObjectType type, G
             continue;
         }
         GObject *obj = selectObjectByReference(r.ref, fromObjects, f);
-        if (obj != NULL) {
+        if (obj != nullptr) {
             res.append(obj);
         }
     }
@@ -103,19 +103,19 @@ QList<GObject *> GObjectUtils::selectRelationsFromParentDoc(const GObject *obj, 
     QList<GObject *> result;
 
     Document *parentDoc = obj->getDocument();
-    SAFE_POINT(NULL != parentDoc, "Invalid parent document detected", result);
+    SAFE_POINT(nullptr != parentDoc, "Invalid parent document detected", result);
 
     U2OpStatus2Log os;
     DbiConnection con(parentDoc->getDbiRef(), os);
     U2ObjectRelationsDbi *relationsDbi = con.dbi->getObjectRelationsDbi();
-    SAFE_POINT(NULL != relationsDbi, "Invalid object relations DBI", result);
+    SAFE_POINT(nullptr != relationsDbi, "Invalid object relations DBI", result);
 
     const QList<U2ObjectRelation> relations = relationsDbi->getObjectRelations(obj->getEntityRef().entityId, os);
     CHECK_OP(os, result);
     foreach (const U2ObjectRelation &relation, relations) {
         if (type == relation.referencedType && relationRole == relation.relationRole) {
             GObject *referenceObj = parentDoc->getObjectById(relation.referencedObject);
-            if (NULL != referenceObj) {
+            if (nullptr != referenceObj) {
                 result.append(referenceObj);
             } else {
                 os.setError(QString("Reference object with ID '%1' and name '%2' not found in the document")
@@ -145,7 +145,7 @@ QList<GObject *> findRelatedObjectsForUnloadedObjects(const GObjectReference &ob
 }
 
 bool objectHasInMemoryRelationToReference(GObject *object, const GObjectReference &reference, GObjectRelationRole role) {
-    SAFE_POINT(NULL != object && reference.isValid(), "Invalid object reference detected", false);
+    SAFE_POINT(nullptr != object && reference.isValid(), "Invalid object reference detected", false);
     return object->getGHints()->get(GObjectHint_RelatedObjects).value<QList<GObjectRelation>>().contains(GObjectRelation(reference, role));
 }
 
@@ -156,7 +156,7 @@ QList<GObject *> findRelatedObjectsForLoadedObjects(const GObjectReference &obj,
     QHash<Document *, U2DbiRef> doc2DbiRef;
     foreach (GObject *object, fromObjects) {
         Document *doc = object->getDocument();
-        SAFE_POINT(NULL != doc, "Invalid parent document detected", res);
+        SAFE_POINT(nullptr != doc, "Invalid parent document detected", res);
         if (!doc->isDatabaseConnection()) {
             if (object->hasObjectRelation(objRelation)) {    // this 'if' branch has to be distinctive from the enclosing one
                 res.append(object);
@@ -180,7 +180,7 @@ QList<GObject *> findRelatedObjectsForLoadedObjects(const GObjectReference &obj,
         }
         DbiConnection con(dbiRef, os);
         U2ObjectRelationsDbi *relationsDbi = con.dbi->getObjectRelationsDbi();
-        SAFE_POINT(NULL != relationsDbi, "Invalid object relations DBI", res);
+        SAFE_POINT(nullptr != relationsDbi, "Invalid object relations DBI", res);
 
         const QList<U2DataId> relatedIds = relationsDbi->getReferenceRelatedObjects(obj.entityRef.entityId, role, os);
         SAFE_POINT_OP(os, res);
@@ -244,8 +244,8 @@ QList<GObject *> GObjectUtils::selectObjectsWithRelation(const QList<GObject *> 
             }
             if (availableObjectsOnly) {
                 Document *doc = AppContext::getProject()->findDocumentByURL(r.ref.docUrl);
-                GObject *refObj = doc == NULL ? NULL : doc->findGObjectByName(r.ref.objName);
-                if (refObj == NULL || (f == UOF_LoadedOnly && refObj->getGObjectType() == GObjectTypes::UNLOADED)) {
+                GObject *refObj = doc == nullptr ? nullptr : doc->findGObjectByName(r.ref.objName);
+                if (refObj == nullptr || (f == UOF_LoadedOnly && refObj->getGObjectType() == GObjectTypes::UNLOADED)) {
                     continue;
                 }
             }
@@ -260,16 +260,16 @@ GObject *GObjectUtils::selectObjectByReference(const GObjectReference &r, Unload
 }
 
 GObject *GObjectUtils::selectObjectByReference(const GObjectReference &r, const QList<GObject *> &fromObjects, UnloadedObjectFilter f) {
-    GObject *firstMatchedByName = NULL;
+    GObject *firstMatchedByName = nullptr;
     foreach (GObject *o, fromObjects) {
         Document *parentDoc = o->getDocument();
-        if (r.entityRef.isValid() && !(r.entityRef == o->getEntityRef()) && (parentDoc == NULL || parentDoc->isDatabaseConnection())) {
+        if (r.entityRef.isValid() && !(r.entityRef == o->getEntityRef()) && (parentDoc == nullptr || parentDoc->isDatabaseConnection())) {
             continue;
         }
         if (o->getGObjectName() != r.objName) {
             continue;
         }
-        if ((parentDoc == NULL && !r.docUrl.isEmpty()) || (parentDoc->getURL().getURLString() != r.docUrl)) {
+        if ((parentDoc == nullptr && !r.docUrl.isEmpty()) || (parentDoc->getURL().getURLString() != r.docUrl)) {
             continue;
         }
         if (r.objType != o->getGObjectType()) {
@@ -286,7 +286,7 @@ GObject *GObjectUtils::selectObjectByReference(const GObjectReference &r, const 
         }
         if (r.entityRef.isValid() && r.entityRef == o->getEntityRef()) {
             return o;    // matched by entityRef
-        } else if (firstMatchedByName == NULL) {
+        } else if (firstMatchedByName == nullptr) {
             firstMatchedByName = o;
         }
     }
@@ -296,23 +296,23 @@ GObject *GObjectUtils::selectObjectByReference(const GObjectReference &r, const 
 
 DNATranslation *GObjectUtils::findComplementTT(const DNAAlphabet *al) {
     if (!al || !al->isNucleic()) {
-        return NULL;
+        return nullptr;
     }
     return AppContext::getDNATranslationRegistry()->lookupComplementTranslation(al);
 }
 
 DNATranslation *GObjectUtils::findAminoTT(U2SequenceObject *so, bool fromHintsOnly, const QString &table) {
     if (!so || !so->getAlphabet() || !so->getAlphabet()->isNucleic()) {
-        return NULL;
+        return nullptr;
     }
     DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
     QString tid = so->getGHints()->get(AMINO_TT_GOBJECT_HINT).toString();
-    if (table != NULL) {
+    if (table != nullptr) {
         DNATranslation *res = tr->lookupTranslation(so->getAlphabet(), DNATranslationType_NUCL_2_AMINO, table);
         return res;
     }
     DNATranslation *res = tr->lookupTranslation(so->getAlphabet(), DNATranslationType_NUCL_2_AMINO, tid);
-    if (res != NULL || fromHintsOnly) {
+    if (res != nullptr || fromHintsOnly) {
         return res;
     }
     QList<DNATranslation *> aminoTs = tr->lookupTranslation(so->getAlphabet(), DNATranslationType_NUCL_2_AMINO);
@@ -324,15 +324,15 @@ DNATranslation *GObjectUtils::findAminoTT(U2SequenceObject *so, bool fromHintsOn
 
 DNATranslation *GObjectUtils::findBackTranslationTT(U2SequenceObject *so, const QString &table) {
     if (!so || !so->getAlphabet() || !so->getAlphabet()->isAmino()) {
-        return NULL;
+        return nullptr;
     }
     DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
-    if (table != NULL) {
+    if (table != nullptr) {
         DNATranslation *res = tr->lookupTranslation(so->getAlphabet(), DNATranslationType_AMINO_2_NUCL, table);
         return res;
     }
     QList<DNATranslation *> dnaTs = tr->lookupTranslation(so->getAlphabet(), DNATranslationType_AMINO_2_NUCL);
-    DNATranslation *res = NULL;
+    DNATranslation *res = nullptr;
     if (!dnaTs.empty()) {
         res = dnaTs.first();
     }
@@ -389,7 +389,7 @@ GObject *GObjectUtils::createObject(const U2DbiRef &ref, const U2DataId &id, con
 
     U2OpStatus2Log os;
     DbiConnection con(ref, os);
-    SAFE_POINT_OP(os, NULL);
+    SAFE_POINT_OP(os, nullptr);
 
     const U2DataType type = con.dbi->getEntityTypeById(id);
 
@@ -419,13 +419,13 @@ GObject *GObjectUtils::createObject(const U2DbiRef &ref, const U2DataId &id, con
         case U2Type::PWMatrix:
             return new PWMatrixObject(name, entityRef);
         case U2Type::CrossDatabaseReference:
-            return NULL;
+            return nullptr;
         default:
             coreLog.trace(QObject::tr("Unsupported object type: %1").arg(type));
-            return NULL;
+            return nullptr;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 }    // namespace U2

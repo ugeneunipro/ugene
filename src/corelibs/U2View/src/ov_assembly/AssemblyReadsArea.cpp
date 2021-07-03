@@ -70,7 +70,7 @@ AssemblyReadsArea::AssemblyReadsArea(AssemblyBrowserUi *ui_, QScrollBar *hBar_, 
       browser(ui_->getWindow()),
       model(ui_->getModel()),
       redraw(true),
-      cellRenderer(NULL),
+      cellRenderer(nullptr),
       coveredRegionsLabel(browser, this),
       hBar(hBar_),
       vBar(vBar_),
@@ -147,7 +147,7 @@ void AssemblyReadsArea::createMenu() {
 
         const QString DEFAULT_CELL_RENDERER = AssemblyCellRendererFactory::DIFF_NUCLEOTIDES;
         AssemblyCellRendererFactory *selectedFactory = browser->getCellRendererRegistry()->getFactoryById(DEFAULT_CELL_RENDERER);
-        SAFE_POINT(selectedFactory != NULL, QString("Cannot create cell renderer: factory %1 not found").arg(DEFAULT_CELL_RENDERER), );
+        SAFE_POINT(selectedFactory != nullptr, QString("Cannot create cell renderer: factory %1 not found").arg(DEFAULT_CELL_RENDERER), );
         cellRenderer.reset(selectedFactory->create());
 
         foreach (AssemblyCellRendererFactory *f, factories) {
@@ -504,7 +504,7 @@ bool AssemblyReadsArea::findReadOnPos(const QPoint &pos, U2AssemblyRead &read) {
     QListIterator<U2AssemblyRead> it(cachedReads.data);
     while (it.hasNext()) {
         const U2AssemblyRead &r = it.next();
-        SAFE_POINT(NULL != r.data(), "NULL assembly read", false);
+        SAFE_POINT(nullptr != r.data(), "NULL assembly read", false);
         if (r->packedViewRow == asmY && asmX >= r->leftmostPos && asmX < r->leftmostPos + U2AssemblyUtils::getEffectiveReadLength(r)) {
             read = r;
             found = true;
@@ -905,10 +905,10 @@ void AssemblyReadsArea::exportReads(const QList<U2AssemblyRead> &reads) {
         ExportReadsDialogModel model = dlg->getModel();
         SAFE_POINT(!model.filepath.isEmpty(), "Result file path is empty", );
         DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(model.format);
-        SAFE_POINT(NULL != df, L10N::nullPointerError("document format"), );
+        SAFE_POINT(nullptr != df, L10N::nullPointerError("document format"), );
 
         IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(model.filepath));
-        SAFE_POINT(NULL != iof, L10N::nullPointerError("I/O adapter"), );
+        SAFE_POINT(nullptr != iof, L10N::nullPointerError("I/O adapter"), );
 
         U2OpStatus2Log os;
         Document *doc = df->createNewLoadedDocument(iof, model.filepath, os);
@@ -1010,11 +1010,11 @@ void AssemblyReadsArea::sl_onShadowingJump() {
 
 void AssemblyReadsArea::sl_changeCellRenderer() {
     QAction *action = qobject_cast<QAction *>(sender());
-    SAFE_POINT(action != NULL, "changing cell renderer invoked not by action, ignoring request", );
+    SAFE_POINT(action != nullptr, "changing cell renderer invoked not by action, ignoring request", );
 
     QString id = action->data().toString();
     AssemblyCellRendererFactory *f = browser->getCellRendererRegistry()->getFactoryById(id);
-    SAFE_POINT(f != NULL, "cannot change cell renderer, bad id", );
+    SAFE_POINT(f != nullptr, "cannot change cell renderer, bad id", );
 
     cellRenderer.reset(f->create());
 

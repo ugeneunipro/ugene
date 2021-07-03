@@ -33,7 +33,7 @@ namespace Workflow {
 
 bool ActorValidator::validate(const Configuration *cfg, NotificationsList &notificationList) const {
     const Actor *actor = static_cast<const Actor *>(cfg);
-    SAFE_POINT(NULL != actor, "NULL actor", false);
+    SAFE_POINT(nullptr != actor, "NULL actor", false);
     QMap<QString, QString> options;
     return validate(actor, notificationList, options);
 }
@@ -57,7 +57,7 @@ bool ActorValidatorRegistry::addValidator(const QString &id, ActorValidator *val
 
 ActorValidator *ActorValidatorRegistry::findValidator(const QString &id) {
     QMutexLocker lock(&mutex);
-    return validators.value(id, NULL);
+    return validators.value(id, nullptr);
 }
 
 }    // namespace Workflow

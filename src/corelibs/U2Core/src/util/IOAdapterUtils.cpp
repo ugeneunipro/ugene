@@ -74,7 +74,7 @@ QByteArray IOAdapterUtils::readFileHeader(const GUrl &url, int size) {
 
 QByteArray IOAdapterUtils::readFileHeader(IOAdapter *io, int sz) {
     QByteArray data;
-    if (NULL == io || !io->isOpen()) {
+    if (nullptr == io || !io->isOpen()) {
         return data;
     }
     data.resize(sz);
@@ -93,22 +93,22 @@ QByteArray IOAdapterUtils::readFileHeader(IOAdapter *io, int sz) {
 IOAdapter *IOAdapterUtils::open(const GUrl &url, U2OpStatus &os, IOAdapterMode mode, IOAdapterFactory *_iof) {
     IOAdapterFactory *iof = _iof;
 
-    if (NULL == iof || (iof->getAdapterId() != BaseIOAdapters::LOCAL_FILE && iof->getAdapterId() != BaseIOAdapters::GZIPPED_LOCAL_FILE)) {
+    if (nullptr == iof || (iof->getAdapterId() != BaseIOAdapters::LOCAL_FILE && iof->getAdapterId() != BaseIOAdapters::GZIPPED_LOCAL_FILE)) {
         IOAdapterId ioId = IOAdapterUtils::url2io(url);
         iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
     }
-    if (iof == NULL) {
+    if (iof == nullptr) {
         os.setError(L10N::tr("Failed to detect IO adapter for %1").arg(url.getURLString()));
-        return NULL;
+        return nullptr;
     }
     IOAdapter *io = iof->createIOAdapter();
-    SAFE_POINT(io != NULL, "IO adapter is NULL!", NULL);
+    SAFE_POINT(io != nullptr, "IO adapter is NULL!", nullptr);
 
     bool ok = io->open(url, mode);
     if (!ok) {
         os.setError(L10N::tr("Failed to detect IO adapter for %1").arg(url.getURLString()));
         delete io;
-        return NULL;
+        return nullptr;
     }
     return io;
 }

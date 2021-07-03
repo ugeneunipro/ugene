@@ -34,7 +34,7 @@ ReadDbObjActorPrototype::ReadDbObjActorPrototype(const Descriptor &desc, const Q
 void ReadDbObjActorPrototype::setCompatibleDbObjectTypes(const QSet<GObjectType> &types) {
     foreach (Attribute *a, attrs) {
         URLAttribute *urlAttr = dynamic_cast<URLAttribute *>(a);
-        if (NULL != urlAttr) {
+        if (nullptr != urlAttr) {
             urlAttr->setCompatibleObjectTypes(types);
             break;
         }

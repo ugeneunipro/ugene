@@ -29,7 +29,7 @@ namespace U2 {
 
 class U2CORE_EXPORT FolderSelection : public GSelection {
 public:
-    FolderSelection(QObject *p = NULL);
+    FolderSelection(QObject *p = nullptr);
 
     bool isEmpty() const;
     void clear();

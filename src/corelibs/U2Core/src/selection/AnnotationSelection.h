@@ -37,7 +37,7 @@ class U2OpStatus;
 class U2CORE_EXPORT AnnotationSelection : public GSelection {
     Q_OBJECT
 public:
-    AnnotationSelection(QObject *p = NULL);
+    AnnotationSelection(QObject *p = nullptr);
 
     const QList<Annotation *> &getAnnotations() const;
 
@@ -77,7 +77,7 @@ private:
 class U2CORE_EXPORT AnnotationGroupSelection : public GSelection {
     Q_OBJECT
 public:
-    AnnotationGroupSelection(QObject *p = NULL);
+    AnnotationGroupSelection(QObject *p = nullptr);
 
     const QList<AnnotationGroup *> &getSelection() const;
 

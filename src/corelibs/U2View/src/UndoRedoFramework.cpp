@@ -39,7 +39,7 @@ MsaUndoRedoFramework::MsaUndoRedoFramework(QObject *p, MultipleAlignmentObject *
       stateComplete(true),
       undoStepsAvailable(0),
       redoStepsAvailable(0) {
-    SAFE_POINT(maObj != NULL, "NULL MSA Object!", );
+    SAFE_POINT(maObj != nullptr, "NULL MSA Object!", );
 
     undoAction = new QAction(this);
     undoAction->setText(tr("Undo"));
@@ -71,7 +71,7 @@ void MsaUndoRedoFramework::sl_updateUndoRedoState() {
 }
 
 void MsaUndoRedoFramework::checkUndoRedoEnabled() {
-    SAFE_POINT(maObj != NULL, "NULL MSA Object!", );
+    SAFE_POINT(maObj != nullptr, "NULL MSA Object!", );
 
     if (maObj->isStateLocked() || !stateComplete) {
         undoAction->setEnabled(false);
@@ -84,7 +84,7 @@ void MsaUndoRedoFramework::checkUndoRedoEnabled() {
     SAFE_POINT_OP(os, );
 
     U2ObjectDbi *objDbi = con.dbi->getObjectDbi();
-    SAFE_POINT(NULL != objDbi, "NULL Object Dbi!", );
+    SAFE_POINT(nullptr != objDbi, "NULL Object Dbi!", );
 
     bool enableUndo = objDbi->canUndo(maObj->getEntityRef().entityId, os);
     SAFE_POINT_OP(os, );
@@ -96,7 +96,7 @@ void MsaUndoRedoFramework::checkUndoRedoEnabled() {
 }
 
 void MsaUndoRedoFramework::sl_undo() {
-    SAFE_POINT(maObj != NULL, "NULL MSA Object!", );
+    SAFE_POINT(maObj != nullptr, "NULL MSA Object!", );
 
     U2OpStatus2Log os;
     U2EntityRef msaRef = maObj->getEntityRef();
@@ -108,7 +108,7 @@ void MsaUndoRedoFramework::sl_undo() {
     SAFE_POINT_OP(os, );
 
     U2ObjectDbi *objDbi = con.dbi->getObjectDbi();
-    SAFE_POINT(NULL != objDbi, "NULL Object Dbi!", );
+    SAFE_POINT(nullptr != objDbi, "NULL Object Dbi!", );
 
     objDbi->undo(msaRef.entityId, os);
     SAFE_POINT_OP(os, );
@@ -119,7 +119,7 @@ void MsaUndoRedoFramework::sl_undo() {
 }
 
 void MsaUndoRedoFramework::sl_redo() {
-    SAFE_POINT(maObj != NULL, "NULL MSA Object!", );
+    SAFE_POINT(maObj != nullptr, "NULL MSA Object!", );
 
     U2OpStatus2Log os;
     U2EntityRef msaRef = maObj->getEntityRef();
@@ -131,7 +131,7 @@ void MsaUndoRedoFramework::sl_redo() {
     SAFE_POINT_OP(os, );
 
     U2ObjectDbi *objDbi = con.dbi->getObjectDbi();
-    SAFE_POINT(NULL != objDbi, "NULL Object Dbi!", );
+    SAFE_POINT(nullptr != objDbi, "NULL Object Dbi!", );
 
     objDbi->redo(msaRef.entityId, os);
     SAFE_POINT_OP(os, );

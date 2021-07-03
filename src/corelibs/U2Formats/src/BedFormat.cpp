@@ -102,11 +102,11 @@ BedFormat::BedFormat(QObject *p)
 }
 
 Document *BedFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
-    CHECK_EXT(io != NULL && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), NULL);
+    CHECK_EXT(io != nullptr && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), nullptr);
     QList<GObject *> objects;
 
     load(io, objects, dbiRef, os, fs);
-    CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
+    CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
 
     Document *doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects);
     return doc;
@@ -125,7 +125,7 @@ void BedFormat::load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &d
 
     foreach (const QString &sequenceName, annotationsHash.keys()) {
         const QString annotTableName = sequenceName + FEATURES_TAG;
-        AnnotationTableObject *annotTable = NULL;
+        AnnotationTableObject *annotTable = nullptr;
         foreach (GObject *object, objects) {
             if (object->getGObjectName() == annotTableName) {
                 annotTable = dynamic_cast<AnnotationTableObject *>(object);
@@ -320,7 +320,7 @@ FormatCheckResult BedFormat::checkRawTextData(const QByteArray &rawData, const G
 }
 
 QList<SharedAnnotationData> BedFormat::getAnnotData(IOAdapter *io, U2OpStatus &os) {
-    BedFormat bedFormat(NULL);
+    BedFormat bedFormat(nullptr);
     QString annotName = "misc_feature";
     QList<SharedAnnotationData> res;
     BedFormatParser parser(io, annotName, os);
@@ -397,8 +397,8 @@ bool parseTrackLine(const QString &trackLine, QString &trackName, QString &track
 }
 
 void BedFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
-    SAFE_POINT(NULL != doc, "Internal error: NULL document was provided to BEDFormat::storeDocument!", );
-    SAFE_POINT(NULL != io, "Internal error: NULL IO adapter was provided to BEDFormat::storeDocument!", );
+    SAFE_POINT(nullptr != doc, "Internal error: NULL document was provided to BEDFormat::storeDocument!", );
+    SAFE_POINT(nullptr != io, "Internal error: NULL IO adapter was provided to BEDFormat::storeDocument!", );
 
     ioLog.trace(tr("Starting BED saving: '%1'").arg(doc->getURLString()));
 
@@ -411,7 +411,7 @@ void BedFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
 
     foreach (GObject *annotTableGObject, annotTables) {
         AnnotationTableObject *annotTable = qobject_cast<AnnotationTableObject *>(annotTableGObject);
-        SAFE_POINT_EXT(annotTable != NULL, os.setError(tr("Can not convert GObject to AnnotationTableObject")), );
+        SAFE_POINT_EXT(annotTable != nullptr, os.setError(tr("Can not convert GObject to AnnotationTableObject")), );
 
         QString chromName;
         QList<GObjectRelation> relations = annotTable->findRelatedObjectsByType(GObjectTypes::SEQUENCE);

@@ -76,7 +76,7 @@ class U2CORE_EXPORT MultipleChromatogramAlignmentRowData : public MultipleAlignm
 
 protected:
     /** Do NOT create a row without an alignment! */
-    MultipleChromatogramAlignmentRowData(MultipleChromatogramAlignmentData *mcaData = NULL);
+    MultipleChromatogramAlignmentRowData(MultipleChromatogramAlignmentData *mcaData = nullptr);
 
     /** Creates a row in memory. */
     MultipleChromatogramAlignmentRowData(const U2McaRow &rowInDb, const DNAChromatogram &chromatogram, const DNASequence &sequence, const QList<U2MsaGap> &gaps, MultipleChromatogramAlignmentData *mcaData);

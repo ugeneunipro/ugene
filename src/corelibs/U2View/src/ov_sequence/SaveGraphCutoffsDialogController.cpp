@@ -165,7 +165,7 @@ bool SaveGraphCutoffsDialogController::validate() {
 
 void SaveGraphCutoffsDialogController::tryAddObject(AnnotationTableObject *annotationTableObject) {
     ADVSequenceObjectContext *advContext = qobject_cast<ADVSequenceObjectContext *>(ctx);
-    CHECK(NULL != advContext, );
+    CHECK(nullptr != advContext, );
     advContext->getAnnotatedDNAView()->tryAddObject(annotationTableObject);
 }
 

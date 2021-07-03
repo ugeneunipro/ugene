@@ -70,7 +70,7 @@ typedef QMap<ActorId, ActorId> ActorMap;
 class U2LANG_EXPORT WorkflowRunTask : public WorkflowAbstractRunner {
     Q_OBJECT
 public:
-    WorkflowRunTask(const Schema &, const ActorMap &rmap = ActorMap(), WorkflowDebugStatus *debugInfo = NULL);
+    WorkflowRunTask(const Schema &, const ActorMap &rmap = ActorMap(), WorkflowDebugStatus *debugInfo = nullptr);
     virtual QList<WorkerState> getState(Actor *);
     virtual int getMsgNum(const Link *);
     virtual int getMsgPassed(const Link *);

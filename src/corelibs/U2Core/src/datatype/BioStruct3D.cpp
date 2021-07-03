@@ -154,7 +154,7 @@ const SharedAtom BioStruct3D::getAtomById(int atomIndex, int modelIndex) const {
         }
     }
 
-    return SharedAtom(NULL);
+    return SharedAtom(nullptr);
 }
 
 const SharedResidue BioStruct3D::getResidueById(int chainIndex, ResidueIndex residueIndex) const {
@@ -165,7 +165,7 @@ const SharedResidue BioStruct3D::getResidueById(int chainIndex, ResidueIndex res
         }
     }
 
-    return SharedResidue(NULL);
+    return SharedResidue(nullptr);
 }
 
 const QString BioStruct3D::getSecStructTypeName(SecondaryStructure::Type type) {
@@ -195,7 +195,7 @@ void BioStruct3D::generateSecStructureAnnotations(QMap<int, QList<SharedAnnotati
         return;
 
     foreach (const SharedSecondaryStructure &struc, secondaryStructures) {
-        SharedAnnotationData sd(NULL);
+        SharedAnnotationData sd(nullptr);
         int chainId = struc->chainIndex;
         assert(chainId != 0);
         int initResidueId = moleculeMap.value(chainId)->residueMap.constBegin().key().toInt();

@@ -45,7 +45,7 @@ namespace U2 {
 QString BuildIndexDialog::genomePath;
 
 BuildIndexDialog::BuildIndexDialog(const DnaAssemblyAlgRegistry *registry, QWidget *p)
-    : QDialog(p), assemblyRegistry(registry), customGUI(NULL) {
+    : QDialog(p), assemblyRegistry(registry), customGUI(nullptr) {
     setupUi(this);
     QMap<QString, QString> helpPagesMap;
     helpPagesMap.insert("BWA", "65930872");
@@ -72,7 +72,7 @@ BuildIndexDialog::BuildIndexDialog(const DnaAssemblyAlgRegistry *registry, QWidg
     if (!genomePath.isEmpty()) {
         refSeqEdit->setText(genomePath);
         buildIndexUrl(genomePath);
-        SAFE_POINT(NULL != customGUI, "Build Index dialog referenced null pointer", );
+        SAFE_POINT(nullptr != customGUI, "Build Index dialog referenced null pointer", );
         customGUI->validateReferenceSequence(genomePath);
     }
 }
@@ -90,7 +90,7 @@ void BuildIndexDialog::sl_onAddRefButtonClicked() {
         return;
     }
 
-    if (NULL != customGUI) {
+    if (nullptr != customGUI) {
         customGUI->validateReferenceSequence(GUrl(lod.url));
     }
     refSeqEdit->setText(lod.url);
@@ -102,7 +102,7 @@ void BuildIndexDialog::sl_onSetIndexFileNameButtonClicked() {
     lod.url = U2FileDialog::getSaveFileName(this, tr("Set index file name"), lod.dir);
     if (!lod.url.isEmpty()) {
         GUrl index = lod.url;
-        if (index.lastFileSuffix().isEmpty() && customGUI != NULL) {
+        if (index.lastFileSuffix().isEmpty() && customGUI != nullptr) {
             QString extension = customGUI->getIndexFileExtension();
             if (extension.isEmpty()) {
                 index = QString("%1").arg(index.getURLString());
@@ -124,21 +124,21 @@ void BuildIndexDialog::updateState() {
 
 void BuildIndexDialog::addGuiExtension() {
     // cleanup previous extension
-    if (customGUI != NULL) {
+    if (customGUI != nullptr) {
         layout()->removeWidget(customGUI);
         setMinimumHeight(minimumHeight() - customGUI->minimumHeight());
         delete customGUI;
-        customGUI = NULL;
+        customGUI = nullptr;
     }
 
     // insert new extension widget
     DnaAssemblyAlgorithmEnv *env = assemblyRegistry->getAlgorithm(methodNamesBox->currentText());
-    if (NULL == env) {
+    if (nullptr == env) {
         adjustSize();
         return;
     }
     DnaAssemblyGUIExtensionsFactory *gui = env->getGUIExtFactory();
-    if (gui != NULL && gui->hasBuildIndexWidget()) {
+    if (gui != nullptr && gui->hasBuildIndexWidget()) {
         customGUI = gui->createBuildIndexWidget(this);
         int insertPos = verticalLayout->count() - 1;
         verticalLayout->insertWidget(insertPos, customGUI);
@@ -154,7 +154,7 @@ void BuildIndexDialog::addGuiExtension() {
 void BuildIndexDialog::buildIndexUrl(const GUrl &refUrl) {
     QString extension("");
     GUrl url;
-    if (NULL != customGUI) {
+    if (nullptr != customGUI) {
         extension = customGUI->getIndexFileExtension();
         url = customGUI->buildIndexUrl(refUrl);
     }
@@ -233,7 +233,7 @@ const QString BuildIndexDialog::getIndexFileName() {
 }
 
 QMap<QString, QVariant> BuildIndexDialog::getCustomSettings() {
-    if (customGUI != NULL) {
+    if (customGUI != nullptr) {
         return customGUI->getBuildIndexCustomSettings();
     } else {
         return QMap<QString, QVariant>();

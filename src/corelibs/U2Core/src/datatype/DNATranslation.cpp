@@ -33,7 +33,7 @@ DNATranslation::DNATranslation(const QString &_id, const QString &_name, const D
     srcAlphabet = src;
     dstAlphabet = dst;
 
-    assert(srcAlphabet != NULL && dstAlphabet != NULL);
+    assert(srcAlphabet != nullptr && dstAlphabet != nullptr);
 
     DNAAlphabetType srcType = srcAlphabet->getType();
     DNAAlphabetType dstType = dstAlphabet->getType();
@@ -142,7 +142,7 @@ DNATranslation *DNATranslationRegistry::getStandardGeneticCodeTranslation(const 
     if (srcAlphabet->isNucleic()) {
         return lookupTranslation(srcAlphabet, DNATranslationID(1));
     }
-    FAIL("Standard genetic code is used only with source nucleic alphabet", NULL);
+    FAIL("Standard genetic code is used only with source nucleic alphabet", nullptr);
 }
 
 DNATranslation *DNATranslationRegistry::lookupTranslation(const DNAAlphabet *srcAlphabet,
@@ -153,7 +153,7 @@ DNATranslation *DNATranslationRegistry::lookupTranslation(const DNAAlphabet *src
             return t;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 DNATranslation *DNATranslationRegistry::lookupTranslation(const DNAAlphabet *srcAlphabet, const QString &id) {
@@ -162,7 +162,7 @@ DNATranslation *DNATranslationRegistry::lookupTranslation(const DNAAlphabet *src
             return t;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 DNATranslation *DNATranslationRegistry::lookupTranslation(const QString &id) {
@@ -171,7 +171,7 @@ DNATranslation *DNATranslationRegistry::lookupTranslation(const QString &id) {
             return t;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 DNATranslation *DNATranslationRegistry::lookupComplementTranslation(const DNAAlphabet *srcAlphabet) {
@@ -185,7 +185,7 @@ DNATranslation *DNATranslationRegistry::lookupComplementTranslation(const DNAAlp
     } else if (srcAlphabet->getId() == BaseDNAAlphabetIds ::NUCL_RNA_EXTENDED()) {
         return lookupTranslation(BaseDNATranslationIds::NUCL_RNA_EXTENDED_COMPLEMENT);
     } else {
-        FAIL("Complement translation not supported for alphabet", NULL);
+        FAIL("Complement translation not supported for alphabet", nullptr);
     }
 }
 
@@ -195,7 +195,7 @@ DNACodon *DNATranslationRegistry::lookupCodon(char symbol) {
             return c;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 }    // namespace U2

@@ -59,7 +59,7 @@ bool SequenceAreaRenderer::drawContent(QPainter &painter, const U2Region &column
     painter.setFont(editor->getFont());
 
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    SAFE_POINT(maObj != NULL, tr("Alignment object is NULL"), false);
+    SAFE_POINT(maObj != nullptr, tr("Alignment object is NULL"), false);
     const MultipleAlignment &ma = maObj->getMultipleAlignment();
 
     //Use dots to draw regions, which are similar to reference sequence

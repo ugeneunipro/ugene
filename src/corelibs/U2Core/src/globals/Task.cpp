@@ -59,7 +59,7 @@ Task::Task(const QString &_name, TaskFlags f) {
     flags = f;
     setVerboseOnTaskCancel(true);
     taskId = genTaskId();
-    parentTask = NULL;
+    parentTask = nullptr;
     progressWeightAsSubtask = 1;
     maxParallelSubtasks = MAX_PARALLEL_SUBTASKS_SERIAL;
     insidePrepare = false;
@@ -99,8 +99,8 @@ QList<Task *> Task::getPureSubtasks() const {
 }
 
 void Task::addSubTask(Task *sub) {
-    SAFE_POINT(sub != NULL, "Trying to add NULL subtask", );
-    SAFE_POINT(sub->parentTask == NULL, "Task already has a parent!", );
+    SAFE_POINT(sub != nullptr, "Trying to add NULL subtask", );
+    SAFE_POINT(sub->parentTask == nullptr, "Task already has a parent!", );
     SAFE_POINT(state == State_New, "Parents can be assigned to tasks in NEW state only!", );
 
     sub->parentTask = this;
@@ -134,7 +134,7 @@ Task *Task::getSubtaskWithErrors() const {
             return sub.data();
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 QList<Task *> Task::onSubTaskFinished(Task *) {
@@ -189,9 +189,9 @@ void Task::setCollectChildrensWarningsFlag(bool v) {
 // task scheduler
 
 void TaskScheduler::addSubTask(Task *t, Task *sub) {
-    SAFE_POINT(t != NULL, "When adding subtask to TaskScheduler, the parent task is NULL", );
-    SAFE_POINT(sub != NULL, "When adding subtask to TaskScheduler, the subtask is NULL", );
-    SAFE_POINT(sub->getParentTask() == NULL, "Task already has a parent!", );
+    SAFE_POINT(t != nullptr, "When adding subtask to TaskScheduler, the parent task is NULL", );
+    SAFE_POINT(sub != nullptr, "When adding subtask to TaskScheduler, the subtask is NULL", );
+    SAFE_POINT(sub->getParentTask() == nullptr, "Task already has a parent!", );
 
     if (t->hasFlags(TaskFlag_CollectChildrenWarnings)) {
         sub->setCollectChildrensWarningsFlag(true);

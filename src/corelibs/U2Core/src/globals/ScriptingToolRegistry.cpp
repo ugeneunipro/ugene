@@ -35,10 +35,10 @@ ScriptingTool::ScriptingTool(const QString &_id, const QString &_name, const QSt
 
 void ScriptingTool::onPathChanged(ExternalTool *tool, const QStringList &runParams) {
     ScriptingToolRegistry *reg = AppContext::getScriptingToolRegistry();
-    CHECK(NULL != reg, );
+    CHECK(nullptr != reg, );
 
     if (tool->isValid()) {
-        if (NULL != reg->getById(tool->getId())) {
+        if (nullptr != reg->getById(tool->getId())) {
             reg->unregisterEntry(tool->getId());
         }
         if (!tool->getPath().isEmpty()) {
@@ -56,7 +56,7 @@ ScriptingToolRegistry::~ScriptingToolRegistry() {
 }
 
 ScriptingTool *ScriptingToolRegistry::getById(const QString &id) {
-    return registry.value(id, NULL);
+    return registry.value(id, nullptr);
 }
 
 bool ScriptingToolRegistry::registerEntry(ScriptingTool *t) {

@@ -221,16 +221,16 @@ MSAHighlightingTab::MSAHighlightingTab(MSAEditor *m)
 
 void MSAHighlightingTab::sl_sync() {
     MsaColorScheme *s = seqArea->getCurrentColorScheme();
-    SAFE_POINT(s != NULL, "Current scheme is NULL", );
-    SAFE_POINT(s->getFactory() != NULL, "Current scheme color factory is NULL", );
+    SAFE_POINT(s != nullptr, "Current scheme is NULL", );
+    SAFE_POINT(s->getFactory() != nullptr, "Current scheme color factory is NULL", );
 
     colorSchemeController->getComboBox()->blockSignals(true);
     colorSchemeController->setCurrentItemById(s->getFactory()->getId());
     colorSchemeController->getComboBox()->blockSignals(false);
 
     MsaHighlightingScheme *sh = seqArea->getCurrentHighlightingScheme();
-    SAFE_POINT(sh != NULL, "Current highlighting scheme is NULL!", );
-    SAFE_POINT(sh->getFactory() != NULL, "Current highlighting scheme factory is NULL!", );
+    SAFE_POINT(sh != nullptr, "Current highlighting scheme is NULL!", );
+    SAFE_POINT(sh->getFactory() != nullptr, "Current highlighting scheme factory is NULL!", );
 
     highlightingSchemeController->getComboBox()->blockSignals(true);
     highlightingSchemeController->setCurrentItemById(sh->getFactory()->getId());
@@ -246,7 +246,7 @@ void MSAHighlightingTab::sl_sync() {
 
 void MSAHighlightingTab::sl_updateHint() {
     MsaHighlightingScheme *s = seqArea->getCurrentHighlightingScheme();
-    SAFE_POINT(s->getFactory() != NULL, "Highlighting factory is NULL!", );
+    SAFE_POINT(s->getFactory() != nullptr, "Highlighting factory is NULL!", );
 
     QVariantMap highlightingSettings;
     if (s->getFactory()->isNeedThreshold()) {
@@ -294,10 +294,10 @@ void MSAHighlightingTab::sl_updateHint() {
 
 void MSAHighlightingTab::sl_updateColorSchemeWidgets() {
     MsaColorScheme *currentColorScheme = seqArea->getCurrentColorScheme();
-    SAFE_POINT(currentColorScheme != NULL, "Current Color Scheme is NULL!", );
+    SAFE_POINT(currentColorScheme != nullptr, "Current Color Scheme is NULL!", );
 
     const MsaColorSchemeFactory *factory = currentColorScheme->getFactory();
-    SAFE_POINT(factory != NULL, "Current Color Scheme factory is NULL!", );
+    SAFE_POINT(factory != nullptr, "Current Color Scheme factory is NULL!", );
 
     if (factory->isThresholdNeeded()) {
         colorThresholdLabel->show();
@@ -330,7 +330,7 @@ void MSAHighlightingTab::sl_colorParametersChanged() {
         colorThresholdSlider->setValue(sliderNewValue);
     }
     MsaColorScheme *currentColorScheme = seqArea->getCurrentColorScheme();
-    SAFE_POINT(currentColorScheme != NULL, "Current Color Scheme is NULL!", );
+    SAFE_POINT(currentColorScheme != nullptr, "Current Color Scheme is NULL!", );
 
     QVariantMap settings;
     settings.insert(MsaColorScheme::THRESHOLD_PARAMETER_NAME, thresholdValue);

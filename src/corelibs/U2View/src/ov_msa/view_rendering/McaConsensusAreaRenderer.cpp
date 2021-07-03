@@ -31,15 +31,15 @@ namespace U2 {
 McaConsensusAreaRenderer::McaConsensusAreaRenderer(MaEditorConsensusArea *area)
     : MaConsensusAreaRenderer(area) {
     McaEditorWgt *wgt = qobject_cast<McaEditorWgt *>(area->getEditorWgt());
-    SAFE_POINT(wgt != NULL, "McaEditorWgt is NULL", );
+    SAFE_POINT(wgt != nullptr, "McaEditorWgt is NULL", );
     refCharController = wgt->getRefCharController();
 }
 
 void McaConsensusAreaRenderer::drawRuler(QPainter &painter, const ConsensusRenderSettings &renderSettings) {
     McaEditorConsensusArea *mcaConsArea = qobject_cast<McaEditorConsensusArea *>(area);
-    SAFE_POINT(mcaConsArea != NULL, "Failed to cast consensus area to MCA consensus area", );
+    SAFE_POINT(mcaConsArea != nullptr, "Failed to cast consensus area to MCA consensus area", );
     McaEditorWgt *wgt = qobject_cast<McaEditorWgt *>(mcaConsArea->getEditorWgt());
-    SAFE_POINT(wgt != NULL, "Failed to cast!", );
+    SAFE_POINT(wgt != nullptr, "Failed to cast!", );
     OffsetRegions charRegions = refCharController->getCharRegions(U2Region(renderSettings.firstNotchedBasePosition,
                                                                            renderSettings.lastNotchedBasePosition - renderSettings.firstNotchedBasePosition + 1));
     ConsensusRenderSettings cutRenderSettings = renderSettings;

@@ -120,7 +120,7 @@ bool MysqlDbiUtils::isDbInitialized(const U2DbiRef &dbiRef, U2OpStatus &os) {
 
 void MysqlDbiUtils::renameObject(MysqlDbi *dbi, U2Object &object, const QString &newName, U2OpStatus &os) {
     CHECK_OP(os, );
-    SAFE_POINT(NULL != dbi, "NULL dbi", );
+    SAFE_POINT(nullptr != dbi, "NULL dbi", );
     MysqlTransaction t(dbi->getDbRef(), os);
     Q_UNUSED(t);
 
@@ -137,7 +137,7 @@ void MysqlDbiUtils::renameObject(MysqlDbi *dbi, U2Object &object, const QString 
 
 void MysqlDbiUtils::renameObject(MysqlModificationAction &updateAction, MysqlDbi *dbi, U2Object &object, const QString &newName, U2OpStatus &os) {
     CHECK_OP(os, );
-    SAFE_POINT(NULL != dbi, "NULL dbi", );
+    SAFE_POINT(nullptr != dbi, "NULL dbi", );
     MysqlTransaction t(dbi->getDbRef(), os);
     Q_UNUSED(t);
 
@@ -158,7 +158,7 @@ void MysqlDbiUtils::upgrade(const U2DbiRef &dbiRef, U2OpStatus &os) {
     CHECK_OP(os, );
 
     MysqlDbi *mysqlDbi = dynamic_cast<MysqlDbi *>(con.dbi);
-    SAFE_POINT_EXT(NULL != mysqlDbi, os.setError("The proposed dbi reference doesn't corresponds a mysql database"), );
+    SAFE_POINT_EXT(nullptr != mysqlDbi, os.setError("The proposed dbi reference doesn't corresponds a mysql database"), );
 
     mysqlDbi->upgrade(os);
 }

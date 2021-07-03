@@ -142,7 +142,7 @@ GroupOptionsWidget *OptionsPanelWidget::createOptionsWidget(const QString &group
                                                             const QString &documentationPage,
                                                             QWidget *mainWidget,
                                                             QList<QWidget *> commonWidgets) {
-    SAFE_POINT(mainWidget != nullptr, "NULL main widget!", NULL);
+    SAFE_POINT(mainWidget != nullptr, "NULL main widget!", nullptr);
     QWidget *innerWidgets = new QWidget;
     QVBoxLayout *layout = new QVBoxLayout;
     layout->setContentsMargins(0, 0, 0, 0);

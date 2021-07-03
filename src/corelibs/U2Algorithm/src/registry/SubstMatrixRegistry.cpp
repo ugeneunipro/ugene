@@ -134,7 +134,7 @@ SMatrix SubstMatrixRegistry::parseMatrix(const QString &name, const QByteArray &
     QByteArray alphaRow;
     QList<SScore> charScores;
     QString description;
-    const DNAAlphabet *alphabet = NULL;
+    const DNAAlphabet *alphabet = nullptr;
     QByteArray mappedAlphas;    //cache of mapped characters. Used to check that no character is mapped twice
     // put comments into description
     for (int i = 0; i < lines.length(); i++) {
@@ -209,7 +209,7 @@ SMatrix SubstMatrixRegistry::parseMatrix(const QString &name, const QByteArray &
             }
         }
     }
-    if (alphabet == NULL) {
+    if (alphabet == nullptr) {
         error = tr("Unexpected end of file!");
         return SMatrix();
     }

@@ -57,7 +57,7 @@ class GenomeAssemblyDialog : public QDialog, public Ui_GenomeAssemblyDialog {
     Q_OBJECT
 
 public:
-    GenomeAssemblyDialog(QWidget *p = NULL);
+    GenomeAssemblyDialog(QWidget *p = nullptr);
     const QString getAlgorithmName();
     const QString getOutDir();
     QList<AssemblyReads> getReads();

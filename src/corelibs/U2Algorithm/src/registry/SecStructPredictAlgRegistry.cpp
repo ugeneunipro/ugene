@@ -55,7 +55,7 @@ SecStructPredictTaskFactory *SecStructPredictAlgRegistry::getAlgorithm(const QSt
     if (algMap.contains(algId)) {
         return algMap.value(algId);
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 

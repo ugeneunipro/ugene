@@ -35,12 +35,12 @@ const QString AnnotationGroup::ROOT_GROUP_NAME("/");
 const QChar AnnotationGroup::GROUP_PATH_SEPARATOR('/');
 
 AnnotationGroup::AnnotationGroup()
-    : U2Entity(), parentObject(NULL), parentGroup(NULL) {
+    : U2Entity(), parentObject(nullptr), parentGroup(nullptr) {
 }
 
 AnnotationGroup::AnnotationGroup(const U2DataId &featureId, const QString &name, AnnotationGroup *parentGroup, AnnotationTableObject *parentObject)
     : U2Entity(featureId), parentObject(parentObject), name(name), parentGroup(parentGroup) {
-    SAFE_POINT(NULL != parentObject && hasValidId(), "Invalid feature table detected", );
+    SAFE_POINT(nullptr != parentObject && hasValidId(), "Invalid feature table detected", );
 }
 
 AnnotationGroup::~AnnotationGroup() {
@@ -155,7 +155,7 @@ void AnnotationGroup::removeAnnotations(const QList<Annotation *> &anns) {
 
     QList<U2DataId> annotationsIds;
     foreach (Annotation *a, anns) {
-        SAFE_POINT(NULL != a && a->getGroup() == this, "Unexpected annotation group", );
+        SAFE_POINT(nullptr != a && a->getGroup() == this, "Unexpected annotation group", );
         annotationsIds.append(a->id);
     }
     U2FeatureUtils::removeFeatures(annotationsIds, parentObject->getEntityRef().dbiRef, os);
@@ -174,7 +174,7 @@ QList<AnnotationGroup *> AnnotationGroup::getSubgroups() const {
 }
 
 void AnnotationGroup::removeSubgroup(AnnotationGroup *g) {
-    SAFE_POINT(g != NULL, L10N::nullPointerError("annotation group"), );
+    SAFE_POINT(g != nullptr, L10N::nullPointerError("annotation group"), );
     SAFE_POINT(g->getParentGroup() == this, "Attempting to remove group belonging to different group", );
 
     parentObject->emit_onGroupRemoved(this, g);
@@ -210,9 +210,9 @@ void AnnotationGroup::setName(const QString &newName) {
 }
 
 QString AnnotationGroup::getGroupPath() const {
-    if (NULL == parentGroup) {
+    if (nullptr == parentGroup) {
         return QString();
-    } else if (NULL == parentGroup->getParentGroup()) {
+    } else if (nullptr == parentGroup->getParentGroup()) {
         return name;
     } else {
         return parentGroup->getGroupPath() + GROUP_PATH_SEPARATOR + name;
@@ -234,7 +234,7 @@ AnnotationGroup *AnnotationGroup::getSubgroup(const QString &path, bool create) 
     const int separatorFirstPosition = path.indexOf(GROUP_PATH_SEPARATOR);
     const QString subgroupName = (0 > separatorFirstPosition) ? path : ((0 == separatorFirstPosition) ? path.mid(1) : path.left(separatorFirstPosition));
 
-    AnnotationGroup *subgroup = NULL;
+    AnnotationGroup *subgroup = nullptr;
     foreach (AnnotationGroup *g, subgroups) {
         if (g->getName() == subgroupName) {
             subgroup = g;
@@ -242,7 +242,7 @@ AnnotationGroup *AnnotationGroup::getSubgroup(const QString &path, bool create) 
         }
     }
 
-    if (NULL == subgroup && create) {
+    if (nullptr == subgroup && create) {
         U2OpStatusImpl os;
         const U2DbiRef dbiRef = parentObject->getEntityRef().dbiRef;
         const U2Feature subgroupFeature = U2FeatureUtils::exportAnnotationGroupToFeature(subgroupName,
@@ -257,14 +257,14 @@ AnnotationGroup *AnnotationGroup::getSubgroup(const QString &path, bool create) 
 
         parentObject->emit_onGroupCreated(subgroup);
     }
-    if (separatorFirstPosition <= 0 || NULL == subgroup) {
+    if (separatorFirstPosition <= 0 || nullptr == subgroup) {
         return subgroup;
     }
     return subgroup->getSubgroup(path.mid(separatorFirstPosition + 1), create);
 }
 
 AnnotationGroup *AnnotationGroup::addSubgroup(const U2Feature &feature) {
-    SAFE_POINT(feature.hasValidId() && feature.featureClass == U2Feature::Group, "Unexpected feature provided", NULL);
+    SAFE_POINT(feature.hasValidId() && feature.featureClass == U2Feature::Group, "Unexpected feature provided", nullptr);
 
     if (feature.parentFeatureId == id) {
         AnnotationGroup *result = new AnnotationGroup(feature.id, feature.name, this, parentObject);
@@ -273,29 +273,29 @@ AnnotationGroup *AnnotationGroup::addSubgroup(const U2Feature &feature) {
         return result;
     } else {
         AnnotationGroup *parentGroup = findSubgroupById(feature.parentFeatureId);
-        SAFE_POINT(NULL != parentGroup, L10N::nullPointerError("annotation group"), NULL);
+        SAFE_POINT(nullptr != parentGroup, L10N::nullPointerError("annotation group"), nullptr);
         return parentGroup->addSubgroup(feature);
     }
 }
 
 Annotation *AnnotationGroup::findAnnotationById(const U2DataId &featureId) const {
-    SAFE_POINT(!featureId.isEmpty(), "Unexpected feature provided", NULL);
+    SAFE_POINT(!featureId.isEmpty(), "Unexpected feature provided", nullptr);
 
     if (annotationById.contains(featureId)) {
         return annotationById[featureId];
     } else {
         foreach (AnnotationGroup *g, subgroups) {
             Annotation *result = g->findAnnotationById(featureId);
-            if (NULL != result) {
+            if (nullptr != result) {
                 return result;
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 AnnotationGroup *AnnotationGroup::findSubgroupById(const U2DataId &featureId) const {
-    SAFE_POINT(!featureId.isEmpty(), "Unexpected feature provided", NULL);
+    SAFE_POINT(!featureId.isEmpty(), "Unexpected feature provided", nullptr);
 
     foreach (AnnotationGroup *g, subgroups) {
         if (g->id == featureId) {
@@ -303,11 +303,11 @@ AnnotationGroup *AnnotationGroup::findSubgroupById(const U2DataId &featureId) co
         }
 
         AnnotationGroup *result = g->findSubgroupById(featureId);
-        if (NULL != result) {
+        if (nullptr != result) {
             return result;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void AnnotationGroup::getSubgroupPaths(QStringList &res) const {
@@ -336,7 +336,7 @@ bool AnnotationGroup::isParentOf(AnnotationGroup *g) const {
     if (g->getGObject() != parentObject || g == this) {
         return false;
     }
-    for (AnnotationGroup *pg = g->getParentGroup(); pg != NULL; pg = pg->getParentGroup()) {
+    for (AnnotationGroup *pg = g->getParentGroup(); pg != nullptr; pg = pg->getParentGroup()) {
         if (pg == this) {
             return true;
         }
@@ -345,11 +345,11 @@ bool AnnotationGroup::isParentOf(AnnotationGroup *g) const {
 }
 
 bool AnnotationGroup::isRootGroup() const {
-    return NULL == parentGroup;
+    return nullptr == parentGroup;
 }
 
 bool AnnotationGroup::isTopLevelGroup() const {
-    return parentGroup != NULL && parentGroup->isRootGroup();
+    return parentGroup != nullptr && parentGroup->isRootGroup();
 }
 
 bool AnnotationGroup::operator==(const AnnotationGroup &other) const {

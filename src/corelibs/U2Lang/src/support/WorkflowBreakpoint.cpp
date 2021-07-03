@@ -94,12 +94,12 @@ quint32 WorkflowBreakpoint::getHitCount() const {
 }
 
 bool WorkflowBreakpoint::hit(const AttributeScript *conditionContext) {
-    Q_ASSERT(NULL != hitCounter);
+    Q_ASSERT(nullptr != hitCounter);
     return (conditionChecker.evaluateCondition(conditionContext) && hitCounter->hit());
 }
 
 void WorkflowBreakpoint::resetHitCounter() {
-    Q_ASSERT(NULL != hitCounter);
+    Q_ASSERT(nullptr != hitCounter);
     hitCounter->reset();
 }
 

@@ -93,7 +93,7 @@ void AddNewDocumentDialogImpl::accept() {
 void AddNewDocumentDialogController::run(QWidget *p, AddNewDocumentDialogModel &m, const DocumentFormatConstraints &c) {
     Project *proj = AppContext::getProject();
     if (proj->isStateLocked()) {
-        QMessageBox::critical(NULL, L10N::errorTitle(), AddNewDocumentDialogImpl::tr("Project is locked"));
+        QMessageBox::critical(nullptr, L10N::errorTitle(), AddNewDocumentDialogImpl::tr("Project is locked"));
         m.successful = false;
         return;
     }
@@ -103,7 +103,7 @@ void AddNewDocumentDialogController::run(QWidget *p, AddNewDocumentDialogModel &
     CHECK(!d.isNull(), );
 
     m = d->model;
-    assert(proj->findDocumentByURL(m.url) == NULL);
+    assert(proj->findDocumentByURL(m.url) == nullptr);
 }
 
 }    // namespace U2

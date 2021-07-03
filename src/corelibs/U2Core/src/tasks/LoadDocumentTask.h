@@ -50,7 +50,7 @@ public:
 
 class U2CORE_EXPORT LoadDocumentTaskConfig {
 public:
-    LoadDocumentTaskConfig(bool _createDoc = false, const GObjectReference &_ref = GObjectReference(), LDTObjectFactory *_f = NULL)
+    LoadDocumentTaskConfig(bool _createDoc = false, const GObjectReference &_ref = GObjectReference(), LDTObjectFactory *_f = nullptr)
         : createDoc(_createDoc), checkObjRef(_ref), objFactory(_f) {
     }
 

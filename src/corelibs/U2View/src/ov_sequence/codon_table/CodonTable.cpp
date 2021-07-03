@@ -108,7 +108,7 @@ CodonTableView::CodonTableView(AnnotatedDNAView *view)
     QList<ADVSequenceObjectContext *> list = view->getSequenceContexts();
     foreach (ADVSequenceObjectContext *ctx, list) {
         // find first with translation table
-        if (ctx->getAminoTT() != NULL) {
+        if (ctx->getAminoTT() != nullptr) {
             setAminoTranslation(ctx->getAminoTT()->getTranslationId());
             return;
         }
@@ -124,33 +124,33 @@ void CodonTableView::sl_setVisible() {
 
 void CodonTableView::sl_setAminoTranslation() {
     QAction *a = qobject_cast<QAction *>(sender());
-    if (a != NULL) {
+    if (a != nullptr) {
         QString tid = a->data().toString();
         setAminoTranslation(tid);
     }
 }
 
 void CodonTableView::sl_onActiveSequenceChanged(ADVSequenceWidget * /*from*/, ADVSequenceWidget *to) {
-    CHECK(to != NULL, );
+    CHECK(to != nullptr, );
 
     const QList<ADVSequenceObjectContext *> ctx = to->getSequenceContexts();
-    CHECK(ctx.first() != NULL, );
-    CHECK(ctx.first()->getAminoTT() != NULL, );
+    CHECK(ctx.first() != nullptr, );
+    CHECK(ctx.first()->getAminoTT() != nullptr, );
 
     setAminoTranslation(ctx.first()->getAminoTT()->getTranslationId());
 }
 
 void CodonTableView::setAminoTranslation(const QString &trId) {
     DNATranslationRegistry *trReg = AppContext::getDNATranslationRegistry();
-    SAFE_POINT(trReg != NULL, "DNATranslationRegistry is NULL!", );
+    SAFE_POINT(trReg != nullptr, "DNATranslationRegistry is NULL!", );
 
     DNAAlphabetRegistry *alphReg = AppContext::getDNAAlphabetRegistry();
-    SAFE_POINT(alphReg != NULL, "DNAAlphabetRegistry is NULL!", );
+    SAFE_POINT(alphReg != nullptr, "DNAAlphabetRegistry is NULL!", );
     const DNAAlphabet *alph = alphReg->findById(BaseDNAAlphabetIds::NUCL_RNA_DEFAULT());
-    SAFE_POINT(alph != NULL, "Standard RNA alphabet not found!", );
+    SAFE_POINT(alph != nullptr, "Standard RNA alphabet not found!", );
 
     DNATranslation *tr = trReg->lookupTranslation(alph, trId);
-    SAFE_POINT(tr != NULL, "No translation found!", );
+    SAFE_POINT(tr != nullptr, "No translation found!", );
 
     QList<char> nucleobases;
     nucleobases << 'U' << 'C' << 'A' << 'G';
@@ -177,7 +177,7 @@ void CodonTableView::spanEqualCells() {
         table->setSpan(1, 1 + 2 * i, 1, 2);
         int rowSpan = 1;
         for (int j = 2; j < table->rowCount() - 1; j++) {
-            if ((table->cellWidget(j, 2 + i * 2) == NULL) || (table->cellWidget(j + 1, 2 + i * 2) == NULL)) {
+            if ((table->cellWidget(j, 2 + i * 2) == nullptr) || (table->cellWidget(j + 1, 2 + i * 2) == nullptr)) {
                 continue;
             }
 
@@ -258,7 +258,7 @@ void CodonTableView::addItemToTable(int row, int column, const QString &text, co
 }
 
 void CodonTableView::addItemToTable(int row, int column, DNACodon *codon) {
-    CHECK(codon != NULL, )
+    CHECK(codon != nullptr, )
     addItemToTable(row, column, codon->getFullName() + " (" + codon->getTreeLetterCode() + (codon->getFullName() != "Stop codon" ? QString(", ") + QChar(codon->getSymbol()) : "") + ")", getColor(codon->getCodonGroup()), codon->getLink());
 }
 

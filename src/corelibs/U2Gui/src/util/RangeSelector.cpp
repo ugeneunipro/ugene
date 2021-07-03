@@ -44,7 +44,7 @@ void RangeSelector::init() {
     int w = qMax(((int)log10((double)rangeEnd)) * 10, 70);
     startEdit = new QLineEdit(this);
     startEdit->setValidator(new QIntValidator(1, len, startEdit));
-    if (dialog == NULL) {
+    if (dialog == nullptr) {
         startEdit->setFixedWidth(w);
     } else {
         startEdit->setMinimumWidth(w);
@@ -56,7 +56,7 @@ void RangeSelector::init() {
 
     endEdit = new QLineEdit(this);
     endEdit->setValidator(new QIntValidator(1, len, endEdit));
-    if (dialog == NULL) {
+    if (dialog == nullptr) {
         endEdit->setFixedWidth(w);
     } else {
         endEdit->setMinimumWidth(w);
@@ -74,13 +74,13 @@ void RangeSelector::init() {
     maxButton->setText(tr("Max"));
     connect(maxButton, SIGNAL(clicked(bool)), SLOT(sl_onMaxButtonClicked(bool)));
 
-    if (dialog != NULL) {
+    if (dialog != nullptr) {
         minButton->setShortcut(QKeySequence(Qt::ALT | Qt::Key_Z));
         maxButton->setShortcut(QKeySequence(Qt::ALT | Qt::Key_X));
     }
 
     QHBoxLayout *l = new QHBoxLayout(this);
-    if (dialog == NULL) {
+    if (dialog == nullptr) {
         l->setContentsMargins(5, 0, 5, 0);
         l->setSizeConstraint(QLayout::SetFixedSize);
     } else {
@@ -107,8 +107,8 @@ void RangeSelector::init() {
 }
 
 RangeSelector::RangeSelector(QDialog *dialog, int rangeStart, int rangeEnd, int len, bool autoClose)
-    : QWidget(dialog), rangeStart(rangeStart), rangeEnd(rangeEnd), len(len), startEdit(NULL), endEdit(NULL),
-      minButton(NULL), maxButton(NULL), rangeLabel(NULL), dialog(dialog), autoClose(autoClose) {
+    : QWidget(dialog), rangeStart(rangeStart), rangeEnd(rangeEnd), len(len), startEdit(nullptr), endEdit(nullptr),
+      minButton(nullptr), maxButton(nullptr), rangeLabel(nullptr), dialog(dialog), autoClose(autoClose) {
     init();
 
     QPushButton *okButton = new QPushButton(this);
@@ -128,7 +128,7 @@ RangeSelector::RangeSelector(QDialog *dialog, int rangeStart, int rangeEnd, int 
     l3->addWidget(okButton);
     l3->addWidget(cancelButton);
 
-    assert(dialog != NULL);
+    assert(dialog != nullptr);
     QVBoxLayout *l2 = new QVBoxLayout();
     l2->addWidget(this);
     l2->addStretch();
@@ -161,7 +161,7 @@ void RangeSelector::exec() {
 
     emit si_rangeChanged(v1, v2);
 
-    if (dialog != NULL && autoClose) {
+    if (dialog != nullptr && autoClose) {
         dialog->accept();
     }
 }
@@ -354,7 +354,7 @@ void MultipleRangeSelector::sl_multipleButtonToggled(bool toggleState) {
         v->validate(toValidate, size);
     } else {
         delete ui->multipleRegionEdit->validator();
-        ui->multipleRegionEdit->setValidator(NULL);
+        ui->multipleRegionEdit->setValidator(nullptr);
     }
 }
 

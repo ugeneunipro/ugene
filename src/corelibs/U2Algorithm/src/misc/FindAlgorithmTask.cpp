@@ -46,10 +46,10 @@ FindAlgorithmTask::FindAlgorithmTask(const FindAlgorithmTaskSettings &s)
         GCOUNTER(cvar, "FindAlgorithmTask");
     }
     tpm = Progress_Manual;
-    assert(config.strand == FindAlgorithmStrand_Direct || config.complementTT != NULL);
+    assert(config.strand == FindAlgorithmStrand_Direct || config.complementTT != nullptr);
 
     addTaskResource(TaskResourceUsage(RESOURCE_MEMORY,
-                                      FindAlgorithm::estimateRamUsageInMbytes(config.patternSettings, config.proteinTT != NULL, config.pattern.length(), config.maxErr),
+                                      FindAlgorithm::estimateRamUsageInMbytes(config.patternSettings, config.proteinTT != nullptr, config.pattern.length(), config.maxErr),
                                       true));
 }
 
@@ -113,13 +113,13 @@ Document *LoadPatternsFileTask::getDocumentFromFilePath() {
     QList<FormatDetectionResult> formats = DocumentUtils::detectFormat(filePath);
     if (formats.isEmpty()) {
         stateInfo.setError(tr("Detecting format error for file %1").arg(filePath));
-        return NULL;
+        return nullptr;
     }
 
     DocumentFormat *format = formats.first().format;
     if (format->getFormatId() == BaseDocumentFormats::RAW_DNA_SEQUENCE) {
         isRawSequence = true;
-        return NULL;
+        return nullptr;
     }
     Q_ASSERT(format);
 
@@ -129,7 +129,7 @@ Document *LoadPatternsFileTask::getDocumentFromFilePath() {
     QVariantMap hints;
     Document *doc = format->loadDocument(iof, fileUrl, hints, stateInfo);
 
-    CHECK_OP(stateInfo, NULL);
+    CHECK_OP(stateInfo, nullptr);
 
     return doc;
 }
@@ -138,12 +138,12 @@ void LoadPatternsFileTask::run() {
     typedef QPair<QString, QString> NamePattern;
 
     Document *doc = getDocumentFromFilePath();
-    if (doc != NULL && !isRawSequence) {
+    if (doc != nullptr && !isRawSequence) {
         const QList<GObject *> &objectsFromDoc = doc->findGObjectByType(GObjectTypes::SEQUENCE);
 
         foreach (GObject *object, objectsFromDoc) {
             U2SequenceObject *sequenceObject = qobject_cast<U2SequenceObject *>(object);
-            assert(sequenceObject != NULL);
+            assert(sequenceObject != nullptr);
             QByteArray sequence = sequenceObject->getWholeSequenceData(stateInfo);
             CHECK_OP(stateInfo, );
             QString seqName = sequenceObject->getSequenceName();

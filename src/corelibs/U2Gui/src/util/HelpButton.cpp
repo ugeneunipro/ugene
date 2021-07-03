@@ -36,7 +36,7 @@ HelpButton::HelpButton(QObject *parent, QDialogButtonBox *b, const QString &_pag
 }
 
 HelpButton::HelpButton(QObject *parent, QAbstractButton *hb, const QString &_pageId)
-    : QObject(parent), pageId(_pageId), helpButton(NULL), dialogBox(NULL) {
+    : QObject(parent), pageId(_pageId), helpButton(nullptr), dialogBox(nullptr) {
     connect(hb, SIGNAL(clicked()), SLOT(sl_buttonClicked()));
 }
 

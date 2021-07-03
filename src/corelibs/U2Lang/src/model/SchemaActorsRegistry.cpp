@@ -43,21 +43,21 @@ bool SchemaActorsRegistry::registerSchema(const QString &protoId, Schema *schema
 
 Schema *SchemaActorsRegistry::unregisterSchema(const QString &protoId) {
     QMutexLocker lock(&mutex);
-    Schema *res = schemas.value(protoId, NULL);
+    Schema *res = schemas.value(protoId, nullptr);
     schemas.remove(protoId);
     return res;
 }
 
 Schema *SchemaActorsRegistry::getSchema(const QString &protoId) {
     QMutexLocker lock(&mutex);
-    Schema *schema = schemas.value(protoId, NULL);
-    if (NULL == schema) {
-        return NULL;
+    Schema *schema = schemas.value(protoId, nullptr);
+    if (nullptr == schema) {
+        return nullptr;
     }
     Schema *copy = new Schema();
     U2OpStatusImpl os;
     HRSchemaSerializer::deepCopy(*schema, copy, os);
-    SAFE_POINT_EXT(!os.isCoR(), copy->reset(), NULL);
+    SAFE_POINT_EXT(!os.isCoR(), copy->reset(), nullptr);
     return copy;
 }
 

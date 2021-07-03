@@ -90,7 +90,7 @@ CreateAnnotationModel::CreateAnnotationModel()
 AnnotationTableObject *CreateAnnotationModel::getAnnotationObject() const {
     GObject *res = GObjectUtils::selectObjectByReference(annotationObjectRef, UOF_LoadedOnly);
     AnnotationTableObject *aobj = qobject_cast<AnnotationTableObject *>(res);
-    SAFE_POINT(NULL != aobj, "Invalid annotation table detected!", NULL);
+    SAFE_POINT(nullptr != aobj, "Invalid annotation table detected!", nullptr);
     return aobj;
 }
 
@@ -102,11 +102,11 @@ CreateAnnotationWidgetController::CreateAnnotationWidgetController(const CreateA
                                                                    AnnotationWidgetMode layoutMode)
     : QObject(p),
       model(m),
-      saveController(NULL) {
+      saveController(nullptr) {
     GROUP_NAME_AUTO = tr("<auto>");
 
     this->setObjectName("CreateAnnotationWidgetController");
-    assert(AppContext::getProject() != NULL);
+    assert(AppContext::getProject() != nullptr);
     assert(model.sequenceObjectRef.isValid());
 
     createWidget(layoutMode);
@@ -202,7 +202,7 @@ void CreateAnnotationWidgetController::commonWidgetUpdate(const CreateAnnotation
 
 class PTCAnnotationObjectFilter : public PTCObjectRelationFilter {
 public:
-    PTCAnnotationObjectFilter(const GObjectRelation &_rel, bool _allowUnloaded, QObject *p = NULL)
+    PTCAnnotationObjectFilter(const GObjectRelation &_rel, bool _allowUnloaded, QObject *p = nullptr)
         : PTCObjectRelationFilter(_rel, p), allowUnloaded(_allowUnloaded) {
     }
 
@@ -213,7 +213,7 @@ public:
         if (obj->isUnloaded()) {
             return !allowUnloaded;
         }
-        SAFE_POINT(NULL != qobject_cast<AnnotationTableObject *>(obj), "Invalid annotation table object!", false);
+        SAFE_POINT(nullptr != qobject_cast<AnnotationTableObject *>(obj), "Invalid annotation table object!", false);
         return obj->isStateLocked();
     }
     bool allowUnloaded;
@@ -242,7 +242,7 @@ QString CreateAnnotationWidgetController::validate() {
         if (model.newDocUrl.isEmpty()) {
             return tr("Select annotation saving parameters");
         }
-        if (AppContext::getProject()->findDocumentByURL(model.newDocUrl) != NULL) {
+        if (AppContext::getProject()->findDocumentByURL(model.newDocUrl) != nullptr) {
             return tr("Document is already added to the project: '%1'").arg(model.newDocUrl);
         }
         QString dirUrl = QFileInfo(saveController->getSaveFileName()).absoluteDir().absolutePath();
@@ -337,7 +337,7 @@ QString CreateAnnotationWidgetController::defaultDir() {
     if (dir.isEmpty() || !QDir(dir).exists()) {
         dir = GUrlUtils::getDefaultDataPath();
         Project *prj = AppContext::getProject();
-        if (prj != NULL) {
+        if (prj != nullptr) {
             const QString &prjUrl = prj->getProjectURL();
             if (!prjUrl.isEmpty()) {
                 QFileInfo fi(prjUrl);
@@ -375,7 +375,7 @@ bool CreateAnnotationWidgetController::prepareAnnotationObject() {
     QString v = validate();
     if ((w->isExistingTableOptionSelected()) && isAnnotationsTableVirtual()) {
         Document *d = AppContext::getProject()->findDocumentByURL(model.sequenceObjectRef.docUrl);
-        SAFE_POINT(d != NULL, "cannot create a annotation table in same document", false);
+        SAFE_POINT(d != nullptr, "cannot create a annotation table in same document", false);
         U2OpStatusImpl os;
         const U2DbiRef localDbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
         SAFE_POINT_OP(os, false);
@@ -388,7 +388,7 @@ bool CreateAnnotationWidgetController::prepareAnnotationObject() {
     SAFE_POINT(v.isEmpty(), "Annotation model is not valid", false);
     if (!model.annotationObjectRef.isValid() && w->isNewTableOptionSelected()) {
         SAFE_POINT(!model.newDocUrl.isEmpty(), "newDocUrl is empty", false);
-        SAFE_POINT(AppContext::getProject()->findDocumentByURL(model.newDocUrl) == NULL, "cannot create a document that is already in the project", false);
+        SAFE_POINT(AppContext::getProject()->findDocumentByURL(model.newDocUrl) == nullptr, "cannot create a document that is already in the project", false);
         IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
         DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
         U2OpStatus2Log os;
@@ -410,7 +410,7 @@ void CreateAnnotationWidgetController::sl_groupName() {
     GObject *obj = occ->getSelectedObject();
     QStringList groupNames;
     groupNames << GROUP_NAME_AUTO;
-    if (NULL != obj && !obj->isUnloaded() && !isAnnotationsTableVirtual()) {
+    if (nullptr != obj && !obj->isUnloaded() && !isAnnotationsTableVirtual()) {
         AnnotationTableObject *ao = qobject_cast<AnnotationTableObject *>(obj);
         ao->getRootGroup()->getSubgroupPaths(groupNames);
     }

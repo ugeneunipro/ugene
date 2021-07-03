@@ -42,7 +42,7 @@ namespace U2 {
 ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt *msaui_, QWidget *p)
     : QDialog(p),
       msaui(msaui_),
-      saveController(NULL),
+      saveController(nullptr),
       ui(new Ui_ExportHighlightedDialog()) {
     ui->setupUi(this);
     new HelpButton(this, ui->buttonBox, "65929627");

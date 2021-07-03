@@ -49,7 +49,7 @@ static inline QVBoxLayout *initLayout(QWidget *w) {
 SeqStatisticsWidget::SeqStatisticsWidget(MSAEditor *m)
     : msa(m), savableTab(this, GObjectViewUtils::findViewByName(m->getName())) {
     setObjectName("SequenceStatisticsOptionsPanelTab");
-    SAFE_POINT(NULL != m, QString("Invalid parameter were passed into constructor SeqStatisticsWidget"), );
+    SAFE_POINT(nullptr != m, QString("Invalid parameter were passed into constructor SeqStatisticsWidget"), );
 
     copySettings();
 
@@ -70,9 +70,9 @@ SeqStatisticsWidget::SeqStatisticsWidget(MSAEditor *m)
 void SeqStatisticsWidget::copySettings() {
     const MsaEditorAlignmentDependentWidget *similarityWidget = msa->getUI()->getSimilarityWidget();
     statisticsIsShown = false;
-    if (NULL != similarityWidget) {
+    if (nullptr != similarityWidget) {
         const SimilarityStatisticsSettings *s = static_cast<const SimilarityStatisticsSettings *>(similarityWidget->getSettings());
-        if (NULL != s) {
+        if (nullptr != s) {
             settings = new SimilarityStatisticsSettings(*s);
         } else {
             settings = new SimilarityStatisticsSettings();

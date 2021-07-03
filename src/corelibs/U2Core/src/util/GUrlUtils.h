@@ -72,7 +72,7 @@ public:
     static QString insertSuffix(const QString &originalUrl, const QString &suffix);
 
     // renames actual file by rolling its name
-    static bool renameFileWithNameRoll(const QString &url, TaskStateInfo &ti, const QSet<QString> &excludeList = QSet<QString>(), Logger *log = NULL);
+    static bool renameFileWithNameRoll(const QString &url, TaskStateInfo &ti, const QSet<QString> &excludeList = QSet<QString>(), Logger *log = nullptr);
 
     // converts GUrl to QUrl
     static QUrl gUrl2qUrl(const GUrl &gurl);
