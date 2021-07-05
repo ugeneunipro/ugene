@@ -82,8 +82,7 @@ KalignTask::KalignTask(const MultipleSequenceAlignment &ma, const KalignTaskSett
 
 void KalignTask::_run() {
     SAFE_POINT_EXT(inputMA->getAlphabet() != NULL, stateInfo.setError("The alphabet is NULL"), );
-    if (inputMA->getAlphabet()->getId() == BaseDNAAlphabetIds::RAW() ||
-        inputMA->getAlphabet()->getId() == BaseDNAAlphabetIds::AMINO_EXTENDED()) {
+    if (!isAlphabetSupported(inputMA->getAlphabet())) {
         setError(tr("Unsupported alphabet: %1").arg(inputMA->getAlphabet()->getName()));
         return;
     }
@@ -110,6 +109,11 @@ Task::ReportResult KalignTask::report() {
     KalignContext *ctx = static_cast<KalignContext *>(taskContext);
     delete ctx->d;
     return ReportResult_Finished;
+}
+
+bool KalignTask::isAlphabetSupported(const DNAAlphabet *alphabet) {
+    return !(alphabet->getId() == BaseDNAAlphabetIds::RAW() ||
+             alphabet->getId() == BaseDNAAlphabetIds::AMINO_EXTENDED());
 }
 
 TLSContext *KalignTask::createContextInstance() {
@@ -248,7 +252,10 @@ void KalignGObjectRunFromSchemaTask::prepare() {
     conf.schemaArgs << QString("--gap-ext-penalty=%1").arg(config.gapExtenstionPenalty);
     conf.schemaArgs << QString("--gap-open-penalty=%1").arg(config.gapOpenPenalty);
     conf.schemaArgs << QString("--gap-terminal-penalty=%1").arg(config.termGapPenalty);
-
+    if (!KalignTask::isAlphabetSupported(obj->getAlphabet())) {
+        setError(tr("Unsupported alphabet: %1").arg(obj->getAlphabet()->getName()));
+        return;
+    }
     addSubTask(new SimpleMSAWorkflow4GObjectTask(tr("Workflow wrapper '%1'").arg(getTaskName()), obj, conf));
 }
 

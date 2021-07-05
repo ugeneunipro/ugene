@@ -72,6 +72,8 @@ public:
     void doAlign();
     ReportResult report();
 
+    static bool isAlphabetSupported(const DNAAlphabet *alphabet);
+
     KalignTaskSettings config;
     MultipleSequenceAlignment inputMA;
     MultipleSequenceAlignment resultMA;
