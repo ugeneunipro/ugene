@@ -23,6 +23,7 @@
 #include "tasks/PCRPrimerDesignForDNAAssemblyTask.h"
 
 #include <U2Core/BaseDocumentFormats.h>
+#include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
 #include <U2Core/GObjectTypes.h>
@@ -41,6 +42,17 @@
 #include <U2View/AnnotatedDNAView.h>
 
 #include <QVBoxLayout>
+
+namespace {
+// When a non-nucleotide sequence is selected, the widget should be disabled. But the groupbox titles continue to be
+// black as if they enabled. This code makes them gray.
+void makeGroupboxTittleGrayIfDisable(QGroupBox *const gb) {
+    QPalette palette;
+    palette.setColor(QPalette::Disabled, QPalette::WindowText, QApplication::palette().color(QPalette::Disabled,
+        QPalette::WindowText));
+    gb->setPalette(palette);
+}
+}    // namespace
 
 namespace U2 {
 
@@ -100,6 +112,10 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     sbRightAreaStart->setValue(seqLength / 10 * 5);
     sbRightAreaEnd->setValue(seqLength / 10 * 6);
 
+    makeGroupboxTittleGrayIfDisable(groupBox);
+    makeGroupboxTittleGrayIfDisable(groupBox_2);
+    makeWarningInvisibleIfDna();
+
     connect(pbStart, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_start);
     connect(tbLeftAreaSelectManually, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually);
     connect(tbRightAreaSelectManually, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_selectManually);
@@ -117,6 +133,42 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     connect(tbLoadBackbone, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_loadBackbone);
     connect(tbsaveRandomSequences, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_saveRandomSequences);
     connect(tbLoadOtherSequencesInPcr, &QAbstractButton::clicked, this, &PCRPrimerDesignForDNAAssemblyOPWidget::sl_loadOtherSequenceInPcr);
+    connect(annDnaView, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_activeSequenceChanged()));
+    connect(annDnaView, &AnnotatedDNAView::si_sequenceModified, this,
+        &PCRPrimerDesignForDNAAssemblyOPWidget::sl_sequenceModified);
+    connect(annDnaView->getActiveSequenceContext()->getSequenceObject(), &U2SequenceObject::si_sequenceChanged, this,
+        &PCRPrimerDesignForDNAAssemblyOPWidget::sl_sequenceModified);
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::sl_activeSequenceChanged() {
+    makeWarningInvisibleIfDna();
+    sl_sequenceModified();
+
+    // Release "Select manually" buttons.
+    tbLeftAreaSelectManually->setChecked(false);
+    tbRightAreaSelectManually->setChecked(false);
+    smButton = nullptr;
+    sbStartRegion = nullptr;
+    sbEndRegion = nullptr;
+    disconnect(updateRegionConnection);
+    updateRegionConnection = QMetaObject::Connection();
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::sl_sequenceModified() {
+    const ADVSequenceObjectContext *sequenceContext = annDnaView->getActiveSequenceContext();
+    CHECK(sequenceContext != nullptr, )
+    const qint64 seqLength = sequenceContext->getSequenceLength();
+
+    // End spinbox maximum value is the previous sequence length. If it has changed, need to update spinboxes.
+    if (seqLength != sbLeftAreaEnd->maximum()) {
+        int start = sbLeftAreaStart->value() - 1;
+        int len = sbLeftAreaEnd->value() - start;
+        setRegion(sbLeftAreaStart, {start, len});
+
+        start = sbRightAreaStart->value() - 1;
+        len = sbRightAreaEnd->value() - start;
+        setRegion(sbRightAreaStart, {start, len});
+    }
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_start() {
@@ -218,10 +270,7 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateRegion() {
     const auto& region = selectedRegions.first();
     SAFE_POINT(sbStartRegion != nullptr, L10N::nullPointerError("QSpinBox"), );
 
-    sbStartRegion->setValue(region.startPos + 1);
-    SAFE_POINT(sbEndRegion != nullptr, L10N::nullPointerError("QSpinBox"), );
-
-    sbEndRegion->setValue(region.endPos());
+    setRegion(sbStartRegion, region);
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_updateParametersRanges() {
@@ -354,4 +403,29 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
     productsTable->setAnnotationGroup(addedAnnotations.at(0)->getGroup());
 }
 
+void PCRPrimerDesignForDNAAssemblyOPWidget::makeWarningInvisibleIfDna() {
+    ADVSequenceObjectContext *sequenceContext = annDnaView->getActiveSequenceContext();
+    CHECK(sequenceContext != nullptr, )
+    const DNAAlphabet *alphabet = sequenceContext->getAlphabet();
+    SAFE_POINT(alphabet != nullptr, L10N::nullPointerError("Alphabet"), )
+
+    bool isDna = alphabet->isDNA();
+    runPcrPrimerDesignWidget->setEnabled(isDna);
+    alphabetWarningLabel->setVisible(!isDna);
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::setRegion(QSpinBox *start, U2Region region) {
+    QSpinBox *end = parametersMinMaxSpinBoxes[start];
+    const ADVSequenceObjectContext *sequenceContext = annDnaView->getActiveSequenceContext();
+    SAFE_POINT(start != nullptr && end != nullptr, L10N::nullPointerError("QSpinBox"), )
+    CHECK(sequenceContext != nullptr, )
+
+    const qint64 seqLength = sequenceContext->getSequenceLength();
+    start->setRange(1, seqLength);
+    end->setRange(1, seqLength);
+
+    start->setValue(region.startPos + 1);
+    end->setValue(region.endPos());
+    sl_updateParametersRanges();
+}
 }

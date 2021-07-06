@@ -28,6 +28,8 @@
 
 namespace U2 {
 
+class DNAAlphabet;
+
 enum ObjectViewType {
     ObjViewType_SequenceView,
     ObjViewType_AlignmentEditor,
@@ -69,6 +71,8 @@ public:
     virtual bool typePass(ObjectViewType factoryViewType) = 0;
     virtual bool alphabetPass(DNAAlphabetType factoryAlphabetType) = 0;
     virtual bool atLeastOneAlphabetPass(DNAAlphabetType factoryAlphabetType) = 0;
+    // Returns true, if there is a DNA alphabet (default or extended).
+    virtual bool atLeastOneDnaPass() const = 0;
 };
 
 class U2GUI_EXPORT OPFactoryFilterVisitor : public OPFactoryFilterVisitorInterface {
@@ -85,6 +89,7 @@ public:
     OPFactoryFilterVisitor(ObjectViewType _objectViewType, QList<DNAAlphabetType> _objectListAlphabet)
         : OPFactoryFilterVisitorInterface(), objectViewType(_objectViewType), objectAlphabetType(DNAAlphabet_RAW), objectAlphabets(_objectListAlphabet) {
     }
+    OPFactoryFilterVisitor(ObjectViewType _objectViewType, const QList<const DNAAlphabet *> &_objectListAlphabet);
 
     virtual bool typePass(ObjectViewType factoryViewType) {
         return factoryViewType == objectViewType;
@@ -93,11 +98,13 @@ public:
         return factoryAlphabetType == objectAlphabetType;
     }
     virtual bool atLeastOneAlphabetPass(DNAAlphabetType factoryAlphabetType);
+    bool atLeastOneDnaPass() const override;
 
 private:
     ObjectViewType objectViewType;
     DNAAlphabetType objectAlphabetType;
     QList<DNAAlphabetType> objectAlphabets;
+    QList<const DNAAlphabet *> alphabets;    // To check DNA.
 };
 
 class U2GUI_EXPORT OPWidgetFactory : public QObject {
