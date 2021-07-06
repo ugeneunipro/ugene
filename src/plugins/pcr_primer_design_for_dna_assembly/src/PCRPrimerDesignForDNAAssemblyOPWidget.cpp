@@ -141,6 +141,42 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
     connect(annDnaView->getActiveSequenceContext()->getSequenceObject(), &U2SequenceObject::si_sequenceChanged, this,
         &PCRPrimerDesignForDNAAssemblyOPWidget::sl_sequenceModified);
     connect(productsTable, SIGNAL(doubleClicked(const QModelIndex &)), SLOT(sl_extractProduct()));
+    connect(annDnaView, SIGNAL(si_activeSequenceWidgetChanged(ADVSequenceWidget *, ADVSequenceWidget *)), SLOT(sl_activeSequenceChanged()));
+    connect(annDnaView, &AnnotatedDNAView::si_sequenceModified, this,
+        &PCRPrimerDesignForDNAAssemblyOPWidget::sl_sequenceModified);
+    connect(annDnaView->getActiveSequenceContext()->getSequenceObject(), &U2SequenceObject::si_sequenceChanged, this,
+        &PCRPrimerDesignForDNAAssemblyOPWidget::sl_sequenceModified);
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::sl_activeSequenceChanged() {
+    makeWarningInvisibleIfDna();
+    sl_sequenceModified();
+
+    // Release "Select manually" buttons.
+    tbLeftAreaSelectManually->setChecked(false);
+    tbRightAreaSelectManually->setChecked(false);
+    smButton = nullptr;
+    sbStartRegion = nullptr;
+    sbEndRegion = nullptr;
+    disconnect(updateRegionConnection);
+    updateRegionConnection = QMetaObject::Connection();
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::sl_sequenceModified() {
+    const ADVSequenceObjectContext *sequenceContext = annDnaView->getActiveSequenceContext();
+    CHECK(sequenceContext != nullptr, )
+    const qint64 seqLength = sequenceContext->getSequenceLength();
+
+    // End spinbox maximum value is the previous sequence length. If it has changed, need to update spinboxes.
+    if (seqLength != sbLeftAreaEnd->maximum()) {
+        int start = sbLeftAreaStart->value() - 1;
+        int len = sbLeftAreaEnd->value() - start;
+        setRegion(sbLeftAreaStart, {start, len});
+
+        start = sbRightAreaStart->value() - 1;
+        len = sbRightAreaEnd->value() - start;
+        setRegion(sbRightAreaStart, {start, len});
+    }
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_activeSequenceChanged() {
