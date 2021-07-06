@@ -22,7 +22,6 @@
 #include "ExportHighlightedDialogController.h"
 
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -60,14 +59,15 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt
     int alignLength = editor->getAlignmentLen();
     const MaEditorSelection &selection = editor->getSelection();
 
-    int startPos = -1;
-    int endPos = -1;
-    if (selection.isEmpty() || selection.width() == 1) {
+    int startPos;
+    int endPos;
+    QRect selectionRect = selection.toRect();
+    if (selectionRect.isEmpty() || selectionRect.width() == 1) {
         startPos = 1;
         endPos = alignLength;
     } else {
-        startPos = selection.x() + 1;
-        endPos = selection.x() + selection.width();
+        startPos = selectionRect.x() + 1;
+        endPos = selectionRect.x() + selectionRect.width();
     }
 
     ui->startLineEdit->setMinimum(1);

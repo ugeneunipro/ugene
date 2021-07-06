@@ -154,7 +154,7 @@ void McaEditor::sl_showGeneralTab() {
 void McaEditor::sl_showConsensusTab() {
     OptionsPanel *optionsPanel = getOptionsPanel();
     SAFE_POINT(nullptr != optionsPanel, "Internal error: options panel is NULL"
-                                     " when msaconsensustab opening was initiated", );
+                                        " when msaconsensustab opening was initiated", );
     optionsPanel->openGroupById(McaExportConsensusTabFactory::getGroupId());
 }
 
@@ -242,7 +242,7 @@ void McaEditor::initActions() {
 void McaEditor::updateActions() {
     MaEditor::updateActions();
     MaEditorSelection selection = getSelection();
-    gotoSelectedReadAction->setEnabled(selection.height() > 0);
+    gotoSelectedReadAction->setEnabled(!selection.isEmpty());
 }
 
 void McaEditor::sl_saveOverviewState() {
@@ -346,8 +346,9 @@ void McaEditor::addEditMenu(QMenu *menu) {
 void McaEditor::sl_gotoSelectedRead() {
     GCOUNTER(cvar, "MCAEditor:gotoSelectedRead");
     MaEditorSelection selection = getSelection();
-    int rowIndex = selection.y();
-    CHECK(selection.height() > 0 && rowIndex >= 0 && rowIndex < maObject->getNumRows(), );
+    QRect selectionRect = selection.toRect();
+    int rowIndex = selectionRect.y();
+    CHECK(selectionRect.height() > 0 && rowIndex >= 0 && rowIndex < maObject->getNumRows(), );
 
     MultipleChromatogramAlignmentRow mcaRow = getMaObject()->getMcaRow(rowIndex);
     int rowStartPos = mcaRow->isComplemented() ? mcaRow->getCoreEnd() : mcaRow->getCoreStart();

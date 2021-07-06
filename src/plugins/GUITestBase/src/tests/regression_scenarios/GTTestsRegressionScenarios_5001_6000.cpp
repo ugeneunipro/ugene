@@ -4626,7 +4626,7 @@ GUI_TEST_CLASS_DEFINITION(test_5854) {
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "Mecopoda_elongata__Ishigaki__J");
 
     MSAEditorSequenceArea *seqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
-    MaEditorSelection sel = seqArea->getSelection();
+    QRect sel = seqArea->getSelection().toRect();
     int index = seqArea->getRowIndex(sel.y()) + 1;
 
     //Expected:: current index 14
@@ -4636,7 +4636,7 @@ GUI_TEST_CLASS_DEFINITION(test_5854) {
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "Mecopoda_sp.__Malaysia_");
 
     //Expected:: current index 16
-    sel = seqArea->getSelection();
+    sel = seqArea->getSelection().toRect();
     index = seqArea->getRowIndex(sel.y()) + 1;
     CHECK_SET_ERR(index == 16, QString("Unexpected index, expected: 16, current: %1").arg(index));
 }

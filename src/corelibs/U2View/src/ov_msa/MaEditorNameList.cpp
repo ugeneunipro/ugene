@@ -149,7 +149,7 @@ QAction *MaEditorNameList::getRemoveSequenceAction() const {
 
 U2Region MaEditorNameList::getSelection() const {
     const MaEditorSelection &selection = ui->getSequenceArea()->getSelection();
-    return U2Region(selection.y(), selection.height());
+    return U2Region::fromYRange(selection.toRect());
 }
 
 void MaEditorNameList::setSelection(int startSeq, int count) {
@@ -494,8 +494,9 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
         if (newSelectionLen > 0) {
             if (hasCtrlModifier && selection.length > 0) {    // with Ctrl we copy X range to the new selection.
                 const MaEditorSelection &maSelection = ui->getSequenceArea()->getSelection();
-                MaEditorSelection newSelection(maSelection.x(), newSelectionStart, maSelection.width(), newSelectionLen);
-                ui->getSequenceArea()->setSelection(newSelection);
+                QRect selectionRect = maSelection.toRect();
+                QRect newSelectionRect(selectionRect.x(), newSelectionStart, selectionRect.width(), newSelectionLen);
+                ui->getSequenceArea()->setSelectionRect(newSelectionRect);
             } else {
                 setSelection(newSelectionStart, newSelectionLen);
             }
@@ -544,7 +545,9 @@ void MaEditorNameList::clearSelection() {
 }
 
 void MaEditorNameList::sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &prev) {
-    if (current.y() == prev.y() && current.height() == prev.height()) {
+    QRect prevRect = prev.toRect();
+    QRect currentRect = current.toRect();
+    if (currentRect.y() == prevRect.y() && currentRect.height() == prevRect.height()) {
         return;
     }
     completeRedraw = true;

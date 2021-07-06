@@ -136,9 +136,9 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
     const int rowHeight = ui->getRowHeightController()->getSingleRowHeight();
     const int baseWidth = ui->getBaseWidthController()->getBaseWidth();
 
-    const MaEditorSelection &selection = seqAreaWgt->getSelection();
-    U2Region selectionXRegion = selection.getXRegion();
-    U2Region selectionYRegion = selection.getYRegion();
+    QRect selectionRect = seqAreaWgt->getSelection().toRect();
+    U2Region selectionXRegion = U2Region::fromXRange(selectionRect);
+    U2Region selectionYRegion = U2Region::fromYRange(selectionRect);
     int viewRow = ui->getCollapseModel()->getViewRowIndexByMaRowIndex(maRow);
 
     const QPen backupPen = painter.pen();

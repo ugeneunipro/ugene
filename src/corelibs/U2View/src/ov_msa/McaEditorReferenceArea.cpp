@@ -95,8 +95,8 @@ void McaEditorReferenceArea::sl_visibleRangeChanged() {
 }
 
 void McaEditorReferenceArea::sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &) {
-    U2Region selection(current.x(), current.width());
-    setSelection(selection);
+    QRect currentRect = current.toRect();
+    setSelection(U2Region(currentRect.x(), currentRect.width()));
 }
 
 void McaEditorReferenceArea::sl_clearSelection() {

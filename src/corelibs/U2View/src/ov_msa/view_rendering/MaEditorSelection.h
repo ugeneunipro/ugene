@@ -28,44 +28,44 @@
 
 namespace U2 {
 
-/************************************************************************/
-/* MaEditorSelection */
-/************************************************************************/
+/** Data model for selection in MSA editor: list of visual non-overlapping rectangles. */
 class U2VIEW_EXPORT MaEditorSelection {
 public:
-    MaEditorSelection();
-    MaEditorSelection(int left, int top, int width, int height);
-    MaEditorSelection(const QPoint &topLeft, int width, int height);
-    MaEditorSelection(const QPoint &topLeft, const QPoint &bottomRight);
+    /** Creates a new empty MSA editor selection first and calls addRect() for every rect in the list. */
+    MaEditorSelection(const QList<QRect> &rectList = QList<QRect>());
 
-    /* Returns true if the selection contains no bases or gaps: have width or height <= 0. */
+    /**
+     * Adds rect to the selection. Does not change the selection if the new rect area is already in the selection.
+     * Returns 'true' if selection was changed.
+     *
+     * Only rect with height > 0 can be added to the selection.
+     * If 'height' of the rect is <= 0 no rect will be added and SAFE_POINT will be triggered (see 'rectList' for more details).
+     */
+    bool addRect(const QRect &rect);
+
+    /* Returns true if the selection contains no rects. */
     bool isEmpty() const;
 
-    QPoint topLeft() const;
-    QPoint bottomRight() const;
-
-    /** Returns rect under select. This rect is always valid. For the empty selection returns Rect(0, 0, 0, 0); */
+    /**
+     * Returns selection state as a rect.
+     * The returned rect is a bounding rect for all rects in the 'rectList'.
+     * If 'rectList' is empty the method returns an empty (0, 0, 0, 0) rect.
+     */
     QRect toRect() const;
 
-    int x() const;
-    int y() const;
+    /** Returns list of selected rects. */
+    const QList<QRect> &getRectList() const;
 
-    int width() const;
-    int height() const;
-
-    int right() const;
-    int bottom() const;
-
-    U2Region getXRegion() const;
-    U2Region getYRegion() const;
-
+    /** Compares 2 selection. Two selections are equal if they have equal list of rects with the same order. */
     bool operator==(const MaEditorSelection &other) const;
 
-    MaEditorSelection intersected(const MaEditorSelection &selection) const;
-
 private:
-    explicit MaEditorSelection(QRect &rect);
-    QRect selArea;
+    /**
+     * Unsorted list of visual non-overlapping on-screen rectangles.
+     * The list may contain only valid rectangles with x>=0, y>=0, height>0 and width>=0.
+     * Width equal to 0 is allowed by historical reasons (see MCA editor) and is processed as a 'whole row' selection.
+     */
+    QList<QRect> rectList;
 };
 
 }    // namespace U2
