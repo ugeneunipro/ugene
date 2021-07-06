@@ -20,76 +20,7 @@
       <property name="leftMargin">
        <number>0</number>
       </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_4">
-        <item>
-         <widget class="QLabel" name="lblForwardUP_2">
-          <property name="text">
-           <string>Forward user primer:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="U2::PrimerLineEdit" name="leForwardPrimer">
-          <property name="text">
-           <string/>
-          </property>
-          <property name="maxLength">
-           <number>1000</number>
-          </property>
-          <property name="placeholderText">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_3">
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <item>
-         <widget class="QLabel" name="lblReverseUP_2">
-          <property name="text">
-           <string>Reverse user primer:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="U2::PrimerLineEdit" name="leReversePrimer">
-          <property name="text">
-           <string/>
-          </property>
-          <property name="maxLength">
-           <number>1000</number>
-          </property>
-          <property name="placeholderText">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QWidget" name="wgtParametersOfPrimingSequences" native="true">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_11">
-      <property name="leftMargin">
+      <property name="topMargin">
        <number>0</number>
       </property>
       <property name="rightMargin">
@@ -102,269 +33,72 @@
        <widget class="U2::ShowHideSubgroupWidget" name="userPrimersShowHideGroup" native="true"/>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_11">
-        <item>
-         <widget class="QSpinBox" name="sbMinRequireGibbs">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="suffix">
-           <string> kcal/mole</string>
-          </property>
-          <property name="prefix">
-           <string/>
-          </property>
-          <property name="minimum">
-           <number>-999999999</number>
-          </property>
-          <property name="maximum">
-           <number>0</number>
-          </property>
-          <property name="value">
-           <number>-35</number>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="spMinRequireMeltingTeml">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="suffix">
-           <string> °C</string>
-          </property>
-          <property name="minimum">
-           <number>0</number>
-          </property>
-          <property name="maximum">
-           <number>999999999</number>
-          </property>
-          <property name="value">
-           <number>54</number>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="spMinRequireOverlapLength">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="suffix">
-           <string> nt</string>
-          </property>
-          <property name="minimum">
-           <number>0</number>
-          </property>
-          <property name="maximum">
-           <number>999999999</number>
-          </property>
-          <property name="value">
-           <number>15</number>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="U2::ShowHideSubgroupWidget" name="parametersOfPrimingSequencesShowHideGroup" native="true"/>
       </item>
       <item>
        <widget class="U2::ShowHideSubgroupWidget" name="parameters2ExcludeInWholePrimersShowHideGroup" native="true"/>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_9">
-        <item>
-         <widget class="QSpinBox" name="sbMaxRequireGibbs">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="suffix">
-           <string> kcal/mole</string>
-          </property>
-          <property name="prefix">
-           <string/>
-          </property>
-          <property name="minimum">
-           <number>-999999999</number>
-          </property>
-          <property name="maximum">
-           <number>0</number>
-          </property>
-          <property name="value">
-           <number>-32</number>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="spMaxRequireMeltingTeml">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="suffix">
-           <string> °C</string>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>999999999</number>
-          </property>
-          <property name="value">
-           <number>60</number>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="spMaxRequireOverlapLength">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="suffix">
-           <string> nt</string>
-          </property>
-          <property name="minimum">
-           <number>1</number>
-          </property>
-          <property name="maximum">
-           <number>999999999</number>
-          </property>
-          <property name="value">
-           <number>18</number>
-          </property>
-         </widget>
-        </item>
-       </layout>
+       <widget class="U2::ShowHideSubgroupWidget" name="areasForPrimingShowHideGroup" native="true"/>
       </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QWidget" name="wgtParameters2ExcludeInWholePrimers" native="true">
-     <property name="minimumSize">
-      <size>
-       <width>0</width>
-       <height>0</height>
-      </size>
-     </property>
-     <layout class="QHBoxLayout" name="horizontalLayout_5">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
       <item>
        <widget class="U2::ShowHideSubgroupWidget" name="openBackboneSequenceShowHideGroup" native="true"/>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_16">
+       <widget class="U2::ShowHideSubgroupWidget" name="generateSequenceShowHideGroup" native="true"/>
+      </item>
+      <item>
+       <widget class="U2::ShowHideSubgroupWidget" name="otherSequencesInPCRShowHideGroup" native="true"/>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_10">
         <item>
-         <widget class="QSpinBox" name="sbExcludeGibbs">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-          <property name="suffix">
-           <string> kcal/mole</string>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
           </property>
-          <property name="prefix">
-           <string/>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pbStart">
+          <property name="minimumSize">
+           <size>
+            <width>198</width>
+            <height>0</height>
+           </size>
           </property>
-          <property name="minimum">
-           <number>-999999999</number>
+          <property name="maximumSize">
+           <size>
+            <width>198</width>
+            <height>16777215</height>
+           </size>
           </property>
-          <property name="maximum">
-           <number>0</number>
-          </property>
-          <property name="value">
-           <number>-7</number>
+          <property name="text">
+           <string>Start</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="spExcludeMeltingTeml">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-          <property name="suffix">
-           <string> °C</string>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
           </property>
-          <property name="minimum">
-           <number>0</number>
-          </property>
-          <property name="maximum">
-           <number>999999999</number>
-          </property>
-          <property name="value">
-           <number>20</number>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QSpinBox" name="spExcludeOverlapLength">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="suffix">
-           <string> nt</string>
-          </property>
-          <property name="minimum">
-           <number>0</number>
-          </property>
-          <property name="maximum">
-           <number>999999999</number>
-          </property>
-          <property name="value">
-           <number>3</number>
-          </property>
-         </widget>
+         </spacer>
         </item>
        </layout>
       </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QWidget" name="wgtAreasForPriming" native="true">
-     <layout class="QVBoxLayout" name="verticalLayout_10">
-      <property name="leftMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
       <item>
        <widget class="QWidget" name="wgtUserPrimers" native="true">
         <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -380,14 +114,14 @@
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_4">
            <item>
-            <widget class="QRadioButton" name="backbone5">
+            <widget class="QLabel" name="lblForwardUP_2">
              <property name="text">
               <string>Forward user primer:</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QRadioButton" name="backbone3">
+            <widget class="U2::PrimerLineEdit" name="leForwardPrimer">
              <property name="text">
               <string/>
              </property>
@@ -407,32 +141,24 @@
             <number>0</number>
            </property>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_8">
-             <item>
-              <widget class="QLabel" name="label_9">
-               <property name="text">
-                <string>5' backbone length:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QSpinBox" name="sbBackbone5Length"/>
-             </item>
-            </layout>
+            <widget class="QLabel" name="lblReverseUP_2">
+             <property name="text">
+              <string>Reverse user primer:</string>
+             </property>
+            </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_9">
-             <item>
-              <widget class="QLabel" name="label_12">
-               <property name="text">
-                <string>3' backbone length:</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QSpinBox" name="sbBackbone3Length"/>
-             </item>
-            </layout>
+            <widget class="U2::PrimerLineEdit" name="leReversePrimer">
+             <property name="text">
+              <string/>
+             </property>
+             <property name="maxLength">
+              <number>1000</number>
+             </property>
+             <property name="placeholderText">
+              <string/>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>
