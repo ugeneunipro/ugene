@@ -80,7 +80,6 @@ private slots:
     void sl_onFindTaskFinished();
 
 private:
-    void showResults();
     void createResultAnnotations();
 
     AnnotatedDNAView *annDnaView = nullptr;

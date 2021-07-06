@@ -91,7 +91,6 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
                                            true);
 
     auto seqLength = annDnaView->getActiveSequenceContext()->getSequenceLength();
-    productsTable->hide();
 
     // Default values, have been provided by the customer
     // Left area: from "1" to "10% of sequence length"
@@ -291,32 +290,38 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_loadOtherSequenceInPcr() {
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_onFindTaskFinished() {
     CHECK(sender() == pcrTask, );
     SAFE_POINT(nullptr != pcrTask, L10N::nullPointerError("InSilicoPcrTask"), );
+    setEnabled(true);
     if (pcrTask->isCanceled() || pcrTask->hasError()) {
         disconnect(pcrTask, SIGNAL(si_stateChanged()));
         pcrTask = nullptr;
-        setEnabled(true);
         return;
     }
     CHECK(pcrTask->isFinished(), );
-    //do nothing in case of empty result
-    auto results = pcrTask->getResults();
-    for (const U2Region &region : qAsConst(results)) {
-        if (region != U2Region()) {
-            showResults();
-            createResultAnnotations();
-            pcrTask = nullptr;
-            setEnabled(true);
-            return;
-        }
-    }
-}
-
-void PCRPrimerDesignForDNAAssemblyOPWidget::showResults() {
-    productsTable->show();
     productsTable->setCurrentProducts(pcrTask->getResults(), annDnaView);
+    createResultAnnotations();
+    pcrTask = nullptr;
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
+    QList<SharedAnnotationData> annotations;
+    int index = 0;
+    auto results = pcrTask->getResults();
+    bool emptyResults = true;
+    for (const U2Region &region : qAsConst(results)) {
+        if (region != U2Region()) {
+            SharedAnnotationData data(new AnnotationData());
+            data->setStrand(index % 2 == 0 ? U2Strand(U2Strand::Direct) : U2Strand(U2Strand::Complementary));
+            data->name = PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME.at(index);
+            data->location->regions.append(region);
+            annotations.append(data);
+            emptyResults = false;
+        }
+        index++;
+    }
+    if (emptyResults) {
+        return;
+    }
+
     AnnotationTableObject *resultsTableObject = nullptr;
     const QList<AnnotationTableObject *> atoList = annDnaView->getAnnotationObjects();
     for (auto *ato : atoList) {
@@ -330,20 +335,6 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
         const U2DbiRef localDbiRef = AppContext::getDbiRegistry()->getSessionTmpDbiRef(os);
         SAFE_POINT_OP(os, );
         resultsTableObject = new AnnotationTableObject(PCR_TABLE_OBJECT_NAME, localDbiRef);
-    }
-    
-    QList<SharedAnnotationData> annotations;
-    int index = 0;
-    auto results = pcrTask->getResults();
-    for (const U2Region &region : qAsConst(results)) {
-        if (region != U2Region()) {
-            SharedAnnotationData data(new AnnotationData());
-            data->setStrand(index % 2 == 0 ? U2Strand(U2Strand::Direct) : U2Strand(U2Strand::Complementary));
-            data->name = PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME.at(index);
-            data->location->regions.append(region);
-            annotations.append(data);
-        }
-        index++;
     }
     //roll group name if already exists
     QStringList usedNames;
