@@ -43,6 +43,10 @@ private slots:
      */
     void sl_activeSequenceChanged();
     /**
+     * Update regions when sequence length changes.
+     */
+    void sl_sequenceModified();
+    /**
      * Start calcultaion process.
      * This slot is called when a user clicks on the "Start" button.
      */
@@ -86,6 +90,17 @@ private slots:
 private:
     void showResults();
     void createResultAnnotations();
+    /**
+     * Check that active sequence is DNA and enable all widgets except warning label. Otherwise, disable widgets except
+     * warning label.
+     */
+    void makeWarningInvisibleIfDna();
+    /**
+     * Set region to starting spinbox and paired with it. If region is beyond the sequence length, bound it. Adjust
+     * maximum and minimum of spinboxes in accordance with the current values and active sequence length.
+     * start must be non-null.
+     */
+    void setRegion(QSpinBox *start, U2Region region);
 
     AnnotatedDNAView *annDnaView = nullptr;
 

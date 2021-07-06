@@ -71,7 +71,6 @@ public:
     virtual bool typePass(ObjectViewType factoryViewType) = 0;
     virtual bool alphabetPass(DNAAlphabetType factoryAlphabetType) = 0;
     virtual bool atLeastOneAlphabetPass(DNAAlphabetType factoryAlphabetType) = 0;
-
     // Returns true, if there is a DNA alphabet (default or extended).
     virtual bool atLeastOneDnaPass() const = 0;
 };
