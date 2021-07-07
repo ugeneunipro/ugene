@@ -4226,6 +4226,7 @@ GUI_TEST_CLASS_DEFINITION(test_6652_1) {
     // 4. The same region (but shifted to the right) is selected.
     GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(8, 3), QPoint(13, 7), selection1);
 }
+
 GUI_TEST_CLASS_DEFINITION(test_6654) {
     // 1. Open "COI.aln" sample alignment.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
@@ -4233,15 +4234,17 @@ GUI_TEST_CLASS_DEFINITION(test_6654) {
     GTUtilsMsaEditor::moveToSequenceName(os, "Roeseliana_roeseli");
     GTMouseDriver::click();
 
-    const MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
+    MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
     QRect selection = msaEditor->getSelection().toRect();
 
-    CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
-    CHECK_SET_ERR(selection.width() == 604, QString("Expected selection width: 604, actual: %1").arg(selection.width()));
+    CHECK_SET_ERR(selection.x() == 0, QString("1. Expected selection x: 0, actual: %1").arg(selection.x()));
+    CHECK_SET_ERR(selection.width() == 604, QString("1. Expected selection width: 604, actual: %1").arg(selection.width()));
 
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(5, 18));
-    CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
-    CHECK_SET_ERR(selection.width() == 0, QString("Expected selection width: 0, actual: %1").arg(selection.width()));
+
+    selection = msaEditor->getSelection().toRect();
+    CHECK_SET_ERR(selection.x() == 0, QString("2. Expected selection x: 0, actual: %1").arg(selection.x()));
+    CHECK_SET_ERR(selection.width() == 0, QString("2. Expected selection width: 0, actual: %1").arg(selection.width()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6655) {

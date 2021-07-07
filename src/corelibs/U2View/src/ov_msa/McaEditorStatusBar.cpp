@@ -23,8 +23,8 @@
 
 #include <QHBoxLayout>
 
-#include <U2Core/DbiConnection.h>
 #include <U2Core/DNASequenceSelection.h>
+#include <U2Core/DbiConnection.h>
 #include <U2Core/MsaDbiUtils.h>
 #include <U2Core/MultipleChromatogramAlignmentObject.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -41,8 +41,8 @@
 
 namespace U2 {
 
-const QMap<bool, const char*> McaEditorStatusBar::MUTATION_MODE_ON_OFF_STATE_MAP = { {true,  QT_TR_NOOP("Mutations mode: alternative")},
-                                                                                     {false, QT_TR_NOOP("Mutations mode: normal")} };
+const QMap<bool, const char *> McaEditorStatusBar::MUTATION_MODE_ON_OFF_STATE_MAP = {{true, QT_TR_NOOP("Mutations mode: alternative")},
+                                                                                     {false, QT_TR_NOOP("Mutations mode: normal")}};
 
 McaEditorStatusBar::McaEditorStatusBar(MultipleAlignmentObject *mobj,
                                        MaEditorSequenceArea *seqArea,
@@ -109,10 +109,10 @@ void McaEditorStatusBar::updateLineLabel() {
 
 void McaEditorStatusBar::updatePositionLabel() {
     QPair<QString, QString> positions = QPair<QString, QString>(NONE_MARK, NONE_MARK);
-    if (!seqArea->getSelection().isEmpty()) {
+    if (seqArea->getSelection().toRect().width() == 1) {
         positions = getGappedPositionInfo();
     } else {
-        const U2Region rowsSelection = nameList->getSelection();
+        U2Region rowsSelection = nameList->getSelection();
         if (!rowsSelection.isEmpty()) {
             const MultipleAlignmentRow row = seqArea->getEditor()->getMaObject()->getRow(rowsSelection.startPos);
             const QString rowLength = QString::number(row->getUngappedLength());
@@ -132,8 +132,7 @@ void McaEditorStatusBar::updateMutationsLabel() {
     SAFE_POINT(attributeDbi != nullptr, "attributeDbi not found", );
 
     auto attributeId = McaAlternativeMutationsWidget::getAlternativeMutationsCheckedId();
-    auto objectAttributes
-        = attributeDbi->getObjectAttributes(aliObj->getEntityRef().entityId, attributeId, os);
+    auto objectAttributes = attributeDbi->getObjectAttributes(aliObj->getEntityRef().entityId, attributeId, os);
     CHECK_OP(os, );
     SAFE_POINT(objectAttributes.size() == 0 || objectAttributes.size() == 1,
                QString("Unexpected %1 objectAttributes size").arg(attributeId), );
