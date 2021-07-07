@@ -184,7 +184,13 @@ bool MaEditorSequenceArea::isInRange(const QPoint &point) const {
 }
 
 bool MaEditorSequenceArea::isInRange(const QRect &rect) const {
-    return isPosInRange(rect.x()) && isPosInRange(rect.right()) && isSeqInRange(rect.y()) && isSeqInRange(rect.bottom());
+    if (!isSeqInRange(rect.y()) || !isSeqInRange(rect.bottom())) {
+        return false;
+    }
+    if (rect.x() == 0 && rect.width() == 0) {    // Handle a special 'full-row' mode separately.
+        return true;
+    }
+    return isPosInRange(rect.x()) && isPosInRange(rect.right());
 }
 
 QPoint MaEditorSequenceArea::boundWithVisibleRange(const QPoint &point) const {
@@ -195,6 +201,15 @@ QPoint MaEditorSequenceArea::boundWithVisibleRange(const QPoint &point) const {
 
 QRect MaEditorSequenceArea::boundWithVisibleRange(const QRect &rect) const {
     QRect visibleRect(0, 0, editor->getAlignmentLen(), ui->getCollapseModel()->getViewRowCount());
+    if (rect.x() == 0 && rect.width() == 0) {    // H// Handle a special 'full-row' mode separately.
+        QRect fullWidthRect = rect;
+        fullWidthRect.setWidth(editor->getAlignmentLen());
+        QRect resultRect = fullWidthRect.intersected(visibleRect);
+        if (resultRect.isValid()) {
+            resultRect.setWidth(0);    // Make width equal to 0 (set 'full-row' mode ON) again.
+        }
+        return resultRect;
+    }
     return rect.intersected(visibleRect);
 }
 
@@ -221,7 +236,9 @@ QFont MaEditorSequenceArea::getFont() const {
 
 void MaEditorSequenceArea::setSelectionRect(const QRect &newSelectionRect) {
     QRect safeRect = boundWithVisibleRange(newSelectionRect);
-    if (!safeRect.isValid()) {    // 'newSelectionRect' is out of bounds - reset selection to empty.
+    // Make a special check for valid rect: handle 'width=0' mode.
+    bool isSafeRectValid = safeRect.isValid() || (safeRect.height() > 0 && safeRect.x() == 0 && safeRect.width() == 0);
+    if (!isSafeRectValid) {    // 'newSelectionRect' is out of bounds - reset selection to empty.
         setSelection(MaEditorSelection());
         return;
     }
