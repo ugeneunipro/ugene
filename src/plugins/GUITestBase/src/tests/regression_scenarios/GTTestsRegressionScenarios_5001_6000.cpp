@@ -2603,7 +2603,7 @@ GUI_TEST_CLASS_DEFINITION(test_5657) {
     //2. Try to align it with Kalign
     //Expected state: there is messagebox about incompatible alphabet
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign"));
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Unable to align this Multiple alignment with Kalign.\r\nPlease, convert alignment from Raw alphabet to supported one and try again."));
     GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
 }
 

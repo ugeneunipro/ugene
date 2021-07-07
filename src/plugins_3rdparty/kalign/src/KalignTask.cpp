@@ -82,7 +82,7 @@ KalignTask::KalignTask(const MultipleSequenceAlignment &ma, const KalignTaskSett
 
 void KalignTask::_run() {
     SAFE_POINT_EXT(inputMA->getAlphabet() != NULL, stateInfo.setError("The alphabet is NULL"), );
-    if (!isAlphabetSupported(inputMA->getAlphabet())) {
+    if (!isAlphabetSupported(inputMA->getAlphabet()->getId())) {
         setError(tr("Unsupported alphabet: %1").arg(inputMA->getAlphabet()->getName()));
         return;
     }
@@ -111,9 +111,9 @@ Task::ReportResult KalignTask::report() {
     return ReportResult_Finished;
 }
 
-bool KalignTask::isAlphabetSupported(const DNAAlphabet *alphabet) {
-    return !(alphabet->getId() == BaseDNAAlphabetIds::RAW() ||
-             alphabet->getId() == BaseDNAAlphabetIds::AMINO_EXTENDED());
+bool KalignTask::isAlphabetSupported(const QString &alphabetId) {
+    return !(alphabetId == BaseDNAAlphabetIds::RAW() ||
+             alphabetId == BaseDNAAlphabetIds::AMINO_EXTENDED());
 }
 
 TLSContext *KalignTask::createContextInstance() {
@@ -252,7 +252,7 @@ void KalignGObjectRunFromSchemaTask::prepare() {
     conf.schemaArgs << QString("--gap-ext-penalty=%1").arg(config.gapExtenstionPenalty);
     conf.schemaArgs << QString("--gap-open-penalty=%1").arg(config.gapOpenPenalty);
     conf.schemaArgs << QString("--gap-terminal-penalty=%1").arg(config.termGapPenalty);
-    if (!KalignTask::isAlphabetSupported(obj->getAlphabet())) {
+    if (!KalignTask::isAlphabetSupported(obj->getAlphabet()->getId())) {
         setError(tr("Unsupported alphabet: %1").arg(obj->getAlphabet()->getName()));
         return;
     }

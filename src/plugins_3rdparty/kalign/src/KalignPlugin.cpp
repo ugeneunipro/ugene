@@ -177,7 +177,7 @@ void KalignMSAEditorContext::sl_align() {
     assert(action != NULL);
     MSAEditor *ed = action->getMSAEditor();
     MultipleSequenceAlignmentObject *obj = ed->getMaObject();
-    if (!KalignTask::isAlphabetSupported(obj->getAlphabet())) {
+    if (!KalignTask::isAlphabetSupported(obj->getAlphabet()->getId())) {
         QMessageBox::information(ed->getWidget(), 
             tr("Unable to align with Kalign"), 
             tr("Unable to align this Multiple alignment with Kalign.\r\nPlease, convert alignment from %1 alphabet to supported one and try again.")
@@ -216,10 +216,6 @@ KalignPairwiseAligmnentAlgorithm::KalignPairwiseAligmnentAlgorithm()
                          new PairwiseAlignmentHirschbergTaskFactory(),
                          new PairwiseAlignmentHirschbergGUIExtensionFactory(),
                          "KAlign") {
-}
-
-bool KalignPairwiseAligmnentAlgorithm::checkAlphabet(const DNAAlphabet *al) const {
-    return !(al->isRaw() || (al->isAmino() && al->isExtended()));
 }
 
 }    // namespace U2
