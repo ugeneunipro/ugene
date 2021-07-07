@@ -100,6 +100,7 @@
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
@@ -123,7 +124,6 @@
 #include "runnables/ugene/ugeneui/SaveProjectDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
 
-
 namespace U2 {
 
 namespace GUITest_regression_scenarios {
@@ -138,7 +138,7 @@ GUI_TEST_CLASS_DEFINITION(test_6008) {
     GTUtilsMsaEditor::clickSequence(os, 9);
 
     // Click to the second base of the second row in the sequence area.
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1,1), QPoint(1, 1));
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(1, 1), QPoint(1, 1));
 
     // Expected state: "Isophya_altaica_EF540820" is selected in the name list.
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceSelected(os, QString("Isophya_altaica_EF540820")),
@@ -157,7 +157,6 @@ GUI_TEST_CLASS_DEFINITION(test_6008) {
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceSelected(os, QString("Bicolorana_bicolor_EF540830")),
                   "Expected sequence is not selected");
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 2, 604, 1));
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6031) {
@@ -2798,7 +2797,6 @@ GUI_TEST_CLASS_DEFINITION(test_6488_1) {
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new CheckScenario()));
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit configuration..."}));
     GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 1", QPoint(), Qt::RightButton);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6488_2) {
@@ -2885,7 +2883,6 @@ GUI_TEST_CLASS_DEFINITION(test_6488_2) {
     GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Edit configuration..."}));
     GTUtilsDialog::waitForDialog(os, new CreateElementWithCommandLineToolFiller(os, new CheckScenario()));
     GTUtilsWorkflowDesigner::click(os, "UGENE-6488 test element 2", QPoint(), Qt::RightButton);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6490) {
@@ -5091,6 +5088,32 @@ GUI_TEST_CLASS_DEFINITION(test_6707) {
                               GTGlobals::UseMouse);
     //Expected result: the file is still in the folder and is not removed/modified.
     CHECK_SET_ERR(IOAdapterUtils::readTextFile(sandBoxDir + "test_6707/file.txt") == "Hello!", "The file was removed or modified");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6709) {
+    // Open “_common_data\cmdline\DNA_circular.gb”
+    GTFileDialog::openFile(os, testDir + "_common_data/cmdline/DNA_circular.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Click "Show/hide amino acid translations > Translation selection"
+    QWidget *translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
+    CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "translate_selection_radiobutton"));
+    GTWidget::click(os, translationsMenuToolbarButton);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+    // Select the following region "1..10, 740..744".
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, "1..10, 740..744"));
+    GTKeyboardDriver::keyClick('A', Qt::ControlModifier);
+
+    // Expected result: the selected strand translation is "LS*LP".
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
+                                                                              << "Copy amino acids"));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
+
+    QString text = GTClipboard::text(os);
+    CHECK_SET_ERR("LS*LP" == text, QString("Unexpected text in the clipboard, expected: LS*LP, current: %1").arg(text));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6710) {
