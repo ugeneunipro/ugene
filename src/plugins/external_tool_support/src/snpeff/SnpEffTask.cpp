@@ -178,10 +178,10 @@ QString SnpEffTask::getResFileUrl() {
 }
 
 QString SnpEffTask::getDataPath() const {
-    CHECK(NULL != AppContext::getAppSettings(), QString());
-    CHECK(NULL != AppContext::getAppSettings()->getUserAppsSettings(), QString());
-    CHECK(NULL != AppContext::getExternalToolRegistry(), QString());
-    CHECK(NULL != AppContext::getExternalToolRegistry()->getById(SnpEffSupport::ET_SNPEFF_ID), QString());
+    CHECK(nullptr != AppContext::getAppSettings(), QString());
+    CHECK(nullptr != AppContext::getAppSettings()->getUserAppsSettings(), QString());
+    CHECK(nullptr != AppContext::getExternalToolRegistry(), QString());
+    CHECK(nullptr != AppContext::getExternalToolRegistry()->getById(SnpEffSupport::ET_SNPEFF_ID), QString());
 
     // The next part is for VEME conferention
     // It is done instead of UGENE-5318 resolving

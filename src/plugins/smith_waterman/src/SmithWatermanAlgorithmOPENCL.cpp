@@ -46,12 +46,12 @@ int SmithWatermanAlgorithmOPENCL::MAX_BLOCKS_NUMBER = 0;
 const int SmithWatermanAlgorithmOPENCL::MAX_SHARED_VECTOR_LENGTH = 32;
 
 SmithWatermanAlgorithmOPENCL::SmithWatermanAlgorithmOPENCL()
-    : clEvent(NULL), clKernel(NULL), clProgram(NULL),
-      clCommandQueue(NULL), clContext(NULL), queryProfBuf(NULL),
-      seqLibProfBuf(NULL), hDataMaxBuf(NULL), hDataUpBufTmp(NULL),
-      hDataRecBufTmp(NULL), fDataUpBuf(NULL), directionsUpBufTmp(NULL),
-      directionsRecBufTmp(NULL), directionsMaxBuf(NULL), directionsMatrix(NULL),
-      backtraceBegins(NULL) {
+    : clEvent(nullptr), clKernel(nullptr), clProgram(nullptr),
+      clCommandQueue(nullptr), clContext(nullptr), queryProfBuf(nullptr),
+      seqLibProfBuf(nullptr), hDataMaxBuf(nullptr), hDataUpBufTmp(nullptr),
+      hDataRecBufTmp(nullptr), fDataUpBuf(nullptr), directionsUpBufTmp(nullptr),
+      directionsRecBufTmp(nullptr), directionsMaxBuf(nullptr), directionsMatrix(nullptr),
+      backtraceBegins(nullptr) {
 }
 
 quint64 SmithWatermanAlgorithmOPENCL::estimateNeededGpuMemory(const SMatrix &sm, const QByteArray &_patternSeq, const QByteArray &_searchSeq) {
@@ -153,7 +153,7 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
     //alphChars is sorted
     const QByteArray &alphChars = sm.getAlphabet()->getAlphabetChars();
     qint64 profLen = subLen * (queryLength + 1) * (alphChars[alphChars.size() - 1] + 1);
-    ScoreType *queryProfile = NULL;
+    ScoreType *queryProfile = nullptr;
     queryProfile = new ScoreType[profLen];
 
     gauto_array<ScoreType> qpm(queryProfile);    // to ensure the data is deallocated correctly
@@ -176,7 +176,7 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
     cl_device_id deviceId = (cl_device_id)AppContext::getOpenCLGpuRegistry()->getEnabledGpu()->getId();
 
     const OpenCLHelper *openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
-    SAFE_POINT(NULL != openCLHelper, "OpenCL support plugin does not loaded", );
+    SAFE_POINT(nullptr != openCLHelper, "OpenCL support plugin does not loaded", );
     if (!openCLHelper->isLoaded()) {
         coreLog.error(openCLHelper->getErrorString());
         return;
@@ -184,7 +184,7 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
 
     algoLog.trace("Creating a context");
 
-    clContext = openCLHelper->clCreateContext_p(0, clNumDevices, &deviceId, NULL, NULL, &err);
+    clContext = openCLHelper->clCreateContext_p(0, clNumDevices, &deviceId, nullptr, nullptr, &err);
     if (hasOPENCLError(err, "cl::Context() failed"))
         return;
 
@@ -205,10 +205,10 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
 
     qint64 sizeRow = calcSizeRow(partsNumber, partSeqSize);
 
-    ScoreType *g_HdataTmp = NULL;
-    ScoreType *g_directionsRec = NULL;
-    int *g_directionsMatrix = NULL;
-    int *g_backtraceBegins = NULL;
+    ScoreType *g_HdataTmp = nullptr;
+    ScoreType *g_directionsRec = nullptr;
+    int *g_directionsMatrix = nullptr;
+    int *g_backtraceBegins = nullptr;
 
     g_HdataTmp = new ScoreType[sizeRow];
     g_directionsRec = new ScoreType[sizeRow];
@@ -222,7 +222,7 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
     gauto_array<int> g_directionsMatrixPtr(g_directionsMatrix);
     gauto_array<int> g_backtraceBeginsPtr(g_backtraceBegins);
 
-    if (NULL != g_directionsMatrix && NULL != g_backtraceBegins) {
+    if (nullptr != g_directionsMatrix && nullptr != g_backtraceBegins) {
         memset(static_cast<void *>(g_directionsMatrix), 0, searchLen * queryLength * sizeof(int));
         memset(static_cast<void *>(g_backtraceBegins), 0, 2 * sizeRow * sizeof(int));
     }
@@ -252,7 +252,7 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
         return;
     cl_mem *hDataRecBuf = &hDataRecBufTmp;
 
-    cl_mem *hDataTmpBuf = NULL;
+    cl_mem *hDataTmpBuf = nullptr;
 
     fDataUpBuf = openCLHelper->clCreateBuffer_p(clContext, CL_MEM_READ_WRITE | CL_MEM_COPY_HOST_PTR, sizeof(ScoreType) * (sizeRow), g_HdataTmp, &err);
     if (hasOPENCLError(err, QString("Can't allocate %1 MB memory in GPU buffer").arg(QString::number(sizeof(ScoreType) * (sizeRow) / B_TO_MB_FACTOR))))
@@ -272,13 +272,13 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
     if (hasOPENCLError(err, QString("Can't allocate %1 MB memory in GPU buffer").arg(QString::number(sizeof(ScoreType) * (sizeRow) / B_TO_MB_FACTOR))))
         return;
 
-    if (NULL != g_directionsMatrix) {
+    if (nullptr != g_directionsMatrix) {
         directionsMatrix = openCLHelper->clCreateBuffer_p(clContext, CL_MEM_READ_WRITE | CL_MEM_USE_HOST_PTR, sizeof(int) * queryLength * searchLen, g_directionsMatrix, &err);
         if (hasOPENCLError(err, QString("Can't allocate %1 MB memory in GPU buffer").arg(QString::number(sizeof(int) * queryLength * searchLen / B_TO_MB_FACTOR))))
             return;
     }
 
-    if (NULL != g_backtraceBegins) {
+    if (nullptr != g_backtraceBegins) {
         backtraceBegins = openCLHelper->clCreateBuffer_p(clContext, CL_MEM_READ_WRITE | CL_MEM_USE_HOST_PTR, sizeof(int) * 2 * sizeRow, g_backtraceBegins, &err);
         if (hasOPENCLError(err, QString("Can't allocate %1 MB memory in GPU buffer").arg(QString::number(sizeof(int) * sizeRow * 2 / B_TO_MB_FACTOR))))
             return;
@@ -348,12 +348,12 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
         return;
 
     //9: g_directionsMatrix
-    err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_mem), (NULL != directionsMatrix) ? static_cast<void *>(&directionsMatrix) : NULL);
+    err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_mem), (nullptr != directionsMatrix) ? static_cast<void *>(&directionsMatrix) : nullptr);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
     //10: g_patternSubseqs
-    err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_mem), (NULL != backtraceBegins) ? static_cast<void *>(&backtraceBegins) : NULL);
+    err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_mem), (nullptr != backtraceBegins) ? static_cast<void *>(&backtraceBegins) : nullptr);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
@@ -426,17 +426,17 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
         return;
 
     //24: shared_E
-    err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_int) * partQuerySize, NULL);
+    err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_int) * partQuerySize, nullptr);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
     //25: shared_direction
-    err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_int) * partQuerySize, NULL);
+    err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_int) * partQuerySize, nullptr);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
     //26: shared_direction
-    err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_int) * partQuerySize, NULL);
+    err = openCLHelper->clSetKernelArg_p(clKernel, n++, sizeof(cl_int) * partQuerySize, nullptr);
     if (hasOPENCLError(err, QObject::tr("Kernel::setArg(%1) failed").arg(n)))
         return;
 
@@ -460,11 +460,11 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
             clCommandQueue,
             clKernel,
             1,
-            NULL,
+            nullptr,
             &szGlobalWorkSize,
             &szLocalWorkSize,
             0,
-            NULL,
+            nullptr,
             &clEvent);
         if (hasOPENCLError(err, "CommandQueue::enqueueNDRangeKernel() failed"))
             return;
@@ -516,7 +516,7 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
     }
 
     //copy from platform to host
-    err = openCLHelper->clEnqueueReadBuffer_p(clCommandQueue, hDataMaxBuf, CL_FALSE, 0, sizeof(cl_int) * (sizeRow), g_HdataTmp, 0, NULL, &clEvent);
+    err = openCLHelper->clEnqueueReadBuffer_p(clCommandQueue, hDataMaxBuf, CL_FALSE, 0, sizeof(cl_int) * (sizeRow), g_HdataTmp, 0, nullptr, &clEvent);
     if (hasOPENCLError(err, "clEnqueueReadBuffer failed"))
         return;
 
@@ -530,7 +530,7 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
             return;
     }
 
-    err = openCLHelper->clEnqueueReadBuffer_p(clCommandQueue, directionsMaxBuf, CL_FALSE, 0, sizeof(ScoreType) * (sizeRow), g_directionsRec, 0, NULL, &clEvent);
+    err = openCLHelper->clEnqueueReadBuffer_p(clCommandQueue, directionsMaxBuf, CL_FALSE, 0, sizeof(ScoreType) * (sizeRow), g_directionsRec, 0, nullptr, &clEvent);
     if (hasOPENCLError(err, "clEnqueueReadBuffer failed"))
         return;
 
@@ -543,8 +543,8 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
         if (hasOPENCLError(err, "clReleaseEvent 3 failed"))
             return;
     }
-    if (NULL != g_directionsMatrix) {
-        err = openCLHelper->clEnqueueReadBuffer_p(clCommandQueue, directionsMatrix, CL_FALSE, 0, sizeof(int) * queryLength * searchLen, g_directionsMatrix, 0, NULL, &clEvent);
+    if (nullptr != g_directionsMatrix) {
+        err = openCLHelper->clEnqueueReadBuffer_p(clCommandQueue, directionsMatrix, CL_FALSE, 0, sizeof(int) * queryLength * searchLen, g_directionsMatrix, 0, nullptr, &clEvent);
         if (hasOPENCLError(err, "clEnqueueReadBuffer failed"))
             return;
 
@@ -558,8 +558,8 @@ void SmithWatermanAlgorithmOPENCL::launch(const SMatrix &sm, const QByteArray &_
                 return;
         }
     }
-    if (NULL != g_backtraceBegins) {
-        err = openCLHelper->clEnqueueReadBuffer_p(clCommandQueue, backtraceBegins, CL_FALSE, 0, sizeof(int) * 2 * sizeRow, g_backtraceBegins, 0, NULL, &clEvent);
+    if (nullptr != g_backtraceBegins) {
+        err = openCLHelper->clEnqueueReadBuffer_p(clCommandQueue, backtraceBegins, CL_FALSE, 0, sizeof(int) * 2 * sizeRow, g_backtraceBegins, 0, nullptr, &clEvent);
         if (hasOPENCLError(err, "clEnqueueReadBuffer failed"))
             return;
 
@@ -655,7 +655,7 @@ SmithWatermanAlgorithmOPENCL::~SmithWatermanAlgorithmOPENCL() {
     algoLog.details(QObject::tr("Starting cleanup OpenCL resources"));
 
     const OpenCLHelper *openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
-    SAFE_POINT(NULL != openCLHelper, "OpenCL support plugin does not loaded", );
+    SAFE_POINT(nullptr != openCLHelper, "OpenCL support plugin does not loaded", );
 
     cl_int err = CL_SUCCESS;
 

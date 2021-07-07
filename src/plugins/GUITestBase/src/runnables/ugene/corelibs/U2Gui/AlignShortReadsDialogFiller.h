@@ -211,7 +211,7 @@ public:
         CHECK_SET_ERR(parameters, "Invalid filler parameters: NULL pointer");
     }
     AlignShortReadsFiller(HI::GUITestOpStatus &os, CustomScenario *c)
-        : Filler(os, "AssemblyToRefDialog", c), parameters(NULL) {
+        : Filler(os, "AssemblyToRefDialog", c), parameters(nullptr) {
     }
 
     virtual void commonScenario();

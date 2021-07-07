@@ -365,7 +365,7 @@ void CoreLib::initUsersWorkers() {
 
         QString error;
         ActorPrototype *proto = ScriptWorkerSerializer::string2actor(content, QString(), error, url);
-        if (NULL == proto) {
+        if (nullptr == proto) {
             coreLog.error(error);
             return;
         }
@@ -428,17 +428,17 @@ void CoreLib::initIncludedWorkers() {
         urlList << url;
         Schema *schema = new Schema();
         QMap<ActorId, ActorId> procMap;
-        QString error = HRSchemaSerializer::string2Schema(data, schema, NULL, &procMap, urlList);
+        QString error = HRSchemaSerializer::string2Schema(data, schema, nullptr, &procMap, urlList);
 
         // generate proto from schema
-        ActorPrototype *proto = NULL;
+        ActorPrototype *proto = nullptr;
         QString actorName;
         if (error.isEmpty()) {
             actorName = schema->getTypeName();
             proto = IncludedProtoFactory::getSchemaActorProto(schema, actorName, url);
         }
 
-        if (NULL != proto) {
+        if (nullptr != proto) {
             // register the new proto
             if (IncludedProtoFactory::isRegistered(actorName)) {
                 bool isEqualProtos = IncludedProtoFactory::isRegisteredTheSameProto(actorName, proto);

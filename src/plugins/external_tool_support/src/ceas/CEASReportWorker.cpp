@@ -67,7 +67,7 @@ static const QString GROUP_NAMES_ATTR_ID("group-names");
 /* Worker */
 /************************************************************************/
 CEASReportWorker::CEASReportWorker(Actor *p)
-    : BaseWorker(p), inChannel(NULL) {
+    : BaseWorker(p), inChannel(nullptr) {
 }
 
 void CEASReportWorker::init() {
@@ -90,7 +90,7 @@ Task *CEASReportWorker::tick() {
     if (inChannel->isEnded()) {
         setDone();
     }
-    return NULL;
+    return nullptr;
 }
 
 void CEASReportWorker::cleanup() {
@@ -198,7 +198,7 @@ QString CeasComboBoxWithUrlsDelegate::getAttributeName() {
 /************************************************************************/
 void CEASReportWorkerFactory::init() {
     //init data path
-    U2DataPath *dataPath = NULL;
+    U2DataPath *dataPath = nullptr;
     U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
     if (dpr) {
         U2DataPath *dp = dpr->getDataPathByName(CEASSupport::REF_GENES_DATA_NAME);
@@ -287,7 +287,7 @@ void CEASReportWorkerFactory::init() {
         attrs << new Attribute(imageFileDesc, BaseTypes::STRING_TYPE(), true);
         //attrs << new Attribute(formatDesc, BaseTypes::STRING_TYPE(), false, CEASTaskSettings::PDF_FORMAT);
         attrs << new Attribute(annsDesc, BaseTypes::STRING_TYPE(), true);
-        Attribute *annGrAttr = NULL;
+        Attribute *annGrAttr = nullptr;
         if (dataPath) {
             const QList<QString> &dataNames = dataPath->getDataNames();
             if (!dataNames.isEmpty()) {

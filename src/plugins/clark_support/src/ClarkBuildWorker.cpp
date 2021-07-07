@@ -83,7 +83,7 @@ bool ClarkBuildValidator::validate(const Actor *actor, NotificationsList &notifi
 
 bool ClarkBuildValidator::validateTaxonomy(const Actor *actor, NotificationsList &notificationList) const {
     U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
-    CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(),
+    CHECK_EXT(nullptr != taxonomyDataPath && taxonomyDataPath->isValid(),
               notificationList << WorkflowNotification(tr("Taxonomy classification data from NCBI data are not available."), actor->getId()),
               false);
 
@@ -215,12 +215,12 @@ void ClarkBuildWorkerFactory::cleanup() {
 /* ClarkBuildWorker */
 /************************************************************************/
 ClarkBuildWorker::ClarkBuildWorker(Actor *a)
-    : BaseWorker(a), output(NULL) {
+    : BaseWorker(a), output(nullptr) {
 }
 
 void ClarkBuildWorker::init() {
     output = ports.value(OUTPUT_PORT);
-    SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(OUTPUT_PORT), );
+    SAFE_POINT(nullptr != output, QString("Port with id '%1' is NULL").arg(OUTPUT_PORT), );
 }
 
 Task *ClarkBuildWorker::tick() {
@@ -230,7 +230,7 @@ Task *ClarkBuildWorker::tick() {
         QStringList genUrls;
 
         U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
-        CHECK(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), new FailTask(tr("Taxonomy classification data from NCBI are not available.")));
+        CHECK(nullptr != taxonomyDataPath && taxonomyDataPath->isValid(), new FailTask(tr("Taxonomy classification data from NCBI are not available.")));
         QString taxdataUrl = taxonomyDataPath->getPath();
 
         const QList<Dataset> datasets = getValue<QList<Dataset>>(GENOMIC_LIBRARY);
@@ -245,12 +245,12 @@ Task *ClarkBuildWorker::tick() {
         setDone();
         return task;
     }
-    return NULL;
+    return nullptr;
 }
 
 void ClarkBuildWorker::sl_taskFinished(Task *t) {
     ClarkBuildTask *task = qobject_cast<ClarkBuildTask *>(t);
-    SAFE_POINT(NULL != task, "Invalid task is encountered", );
+    SAFE_POINT(nullptr != task, "Invalid task is encountered", );
     if (!task->isFinished() || task->hasError() || task->isCanceled()) {
         return;
     }

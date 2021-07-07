@@ -75,9 +75,9 @@ void SmithWatermanDialogFiller::commonScenario() {
 
     if (button == Cancel) {
         QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-        GT_CHECK(box != NULL, "buttonBox is NULL");
+        GT_CHECK(box != nullptr, "buttonBox is NULL");
         QPushButton *button = box->button(QDialogButtonBox::Cancel);
-        GT_CHECK(button != NULL, "cancel button is NULL");
+        GT_CHECK(button != nullptr, "cancel button is NULL");
         GTWidget::click(os, button);
         return;
     }
@@ -97,7 +97,7 @@ void SmithWatermanDialogFiller::commonScenario() {
     GTComboBox::selectItemByIndex(os, resultViewVariants, resultViewIndex);
 
     if (!resultFilesPath.isEmpty()) {
-        QLineEdit *resultFilePathContainer = NULL;
+        QLineEdit *resultFilePathContainer = nullptr;
         if (SmithWatermanSettings::MULTIPLE_ALIGNMENT == resultView) {
             resultFilePathContainer = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "alignmentFilesPath", dialog));
         } else if (SmithWatermanSettings::ANNOTATIONS == resultView) {
@@ -106,7 +106,7 @@ void SmithWatermanDialogFiller::commonScenario() {
             resultFilePathContainer = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "leNewTablePath", dialog));
             resultFilesPath += ANNOTATION_RESULT_FILE_NAME;
         }
-        assert(NULL != resultFilePathContainer);
+        assert(nullptr != resultFilePathContainer);
         GTLineEdit::setText(os, resultFilePathContainer, resultFilesPath);
     }
 

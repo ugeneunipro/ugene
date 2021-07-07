@@ -160,7 +160,7 @@ JasparGroupTreeItem::JasparGroupTreeItem(const QString &_s)
 }
 
 bool JasparGroupTreeItem::operator<(const QTreeWidgetItem &other) const {
-    if (other.parent() != NULL) {
+    if (other.parent() != nullptr) {
         return true;
     }
     int col = treeWidget()->sortColumn();

@@ -84,7 +84,7 @@ public:
 class ConservationPlotPrompter : public PrompterBase<ConservationPlotPrompter> {
     Q_OBJECT
 public:
-    ConservationPlotPrompter(Actor *p = NULL)
+    ConservationPlotPrompter(Actor *p = nullptr)
         : PrompterBase<ConservationPlotPrompter>(p) {
     }
 

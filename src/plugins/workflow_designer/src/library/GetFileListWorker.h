@@ -34,7 +34,7 @@ namespace LocalWorkflow {
 class GetFileListPrompter : public PrompterBase<GetFileListPrompter> {
     Q_OBJECT
 public:
-    GetFileListPrompter(Actor *p = NULL)
+    GetFileListPrompter(Actor *p = nullptr)
         : PrompterBase<GetFileListPrompter>(p) {
     }
 

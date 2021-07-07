@@ -45,7 +45,7 @@ class U2SequenceObject;
 
 CollocationsDialogController::CollocationsDialogController(QStringList _names, ADVSequenceObjectContext *_ctx)
     : allNames(_names), ctx(_ctx) {
-    task = NULL;
+    task = nullptr;
     std::sort(allNames.begin(), allNames.end());
     setupUi(this);
     new HelpButton(this, buttonBox, "65930692");
@@ -86,7 +86,7 @@ CollocationsDialogController::CollocationsDialogController(QStringList _names, A
 }
 
 void CollocationsDialogController::updateState() {
-    bool hasActiveTask = task != NULL;
+    bool hasActiveTask = task != nullptr;
     searchButton->setEnabled(!hasActiveTask);
     bool readyToSearch = usedNames.size() >= 2;
     searchButton->setEnabled(!hasActiveTask && readyToSearch);
@@ -97,7 +97,7 @@ void CollocationsDialogController::updateState() {
 }
 
 void CollocationsDialogController::updateStatus() {
-    if (task != NULL) {
+    if (task != nullptr) {
         statusBar->setText(tr("Searching... found %1 regions. Progress: %2%").arg(resultsList->count()).arg(task->getProgress()));
     } else if (resultsList->count() > 0) {
         statusBar->setText(tr("Found %1 regions").arg(resultsList->count()));
@@ -107,7 +107,7 @@ void CollocationsDialogController::updateStatus() {
 }
 
 void CollocationsDialogController::sl_plusClicked() {
-    if (task != NULL) {
+    if (task != nullptr) {
         return;
     }
     QMenu m;
@@ -165,7 +165,7 @@ void CollocationsDialogController::sl_addName() {
 }
 
 void CollocationsDialogController::sl_minusClicked() {
-    if (task != NULL) {
+    if (task != nullptr) {
         return;
     }
 
@@ -190,7 +190,7 @@ void CollocationsDialogController::sl_searchClicked() {
     assert(usedNames.size() >= 2);
     CollocationsAlgorithmSettings cfg;
     cfg.distance = regionSpin->value();
-    assert(task == NULL);
+    assert(task == nullptr);
     const QList<AnnotationTableObject *> &aObjects = ctx->getAnnotationObjects().toList();
     cfg.searchRegion = U2Region(0, ctx->getSequenceLength());
     if (!wholeAnnotationsBox->isChecked()) {
@@ -250,7 +250,7 @@ void CollocationsDialogController::sl_saveClicked() {
 }
 
 void CollocationsDialogController::reject() {
-    if (task != NULL) {
+    if (task != nullptr) {
         task->cancel();
     }
     QDialog::reject();
@@ -266,13 +266,13 @@ void CollocationsDialogController::sl_onTaskFinished(Task *t) {
         return;
     }
     importResults();
-    task = NULL;
+    task = nullptr;
     updateState();
     timer->stop();
 }
 
 void CollocationsDialogController::importResults() {
-    if (task == NULL) {
+    if (task == nullptr) {
         return;
     }
 
@@ -296,7 +296,7 @@ void CollocationsDialogController::importResults() {
 }
 
 void CollocationsDialogController::sl_onResultActivated(QListWidgetItem *item) {
-    assert(item != NULL);
+    assert(item != nullptr);
     CDCResultItem *ri = static_cast<CDCResultItem *>(item);
     Q_UNUSED(ri);
     //todo: add to selection?

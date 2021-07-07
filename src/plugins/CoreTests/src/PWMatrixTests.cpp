@@ -147,7 +147,7 @@ void GTest_PFMCreateTest::init(XMLTestFormat *tf, const QDomElement &el) {
 Task::ReportResult GTest_PFMCreateTest::report() {
     if (objType == "alignment") {
         Document *doc = getContext<Document>(this, objContextName);
-        if (doc == NULL) {
+        if (doc == nullptr) {
             stateInfo.setError(GTest::tr("context not found %1").arg(objContextName));
             return ReportResult_Finished;
         }
@@ -170,7 +170,7 @@ Task::ReportResult GTest_PFMCreateTest::report() {
         }
     } else if (objType == "sequences") {
         Document *doc = getContext<Document>(this, objContextName);
-        if (doc == NULL) {
+        if (doc == nullptr) {
             stateInfo.setError(GTest::tr("context not found %1").arg(objContextName));
             return ReportResult_Finished;
         }
@@ -304,12 +304,12 @@ void GTest_PWMCreateTest::init(XMLTestFormat *tf, const QDomElement &el) {
 
 Task::ReportResult GTest_PWMCreateTest::report() {
     PWMConversionAlgorithmFactory *fact = AppContext::getPWMConversionAlgorithmRegistry()->getAlgorithmFactory(algo);
-    if (fact == NULL) {
+    if (fact == nullptr) {
         stateInfo.setError(GTest::tr("algorithm not found %1").arg(algo));
         return ReportResult_Finished;
     }
     PWMConversionAlgorithm *algorithm = fact->createAlgorithm();
-    if (algorithm == NULL) {
+    if (algorithm == nullptr) {
         stateInfo.setError(GTest::tr("unable to create algorithm %1").arg(algo));
         return ReportResult_Finished;
     }
@@ -317,7 +317,7 @@ Task::ReportResult GTest_PWMCreateTest::report() {
     PFMatrixType pftype = (type == PWM_MONONUCLEOTIDE) ? PFM_MONONUCLEOTIDE : PFM_DINUCLEOTIDE;
     if (objType == "alignment") {
         Document *doc = getContext<Document>(this, objContextName);
-        if (doc == NULL) {
+        if (doc == nullptr) {
             stateInfo.setError(GTest::tr("context not found %1").arg(objContextName));
             return ReportResult_Finished;
         }
@@ -335,7 +335,7 @@ Task::ReportResult GTest_PWMCreateTest::report() {
 
     } else if (objType == "sequences") {
         Document *doc = getContext<Document>(this, objContextName);
-        if (doc == NULL) {
+        if (doc == nullptr) {
             stateInfo.setError(GTest::tr("context not found %1").arg(objContextName));
             return ReportResult_Finished;
         }

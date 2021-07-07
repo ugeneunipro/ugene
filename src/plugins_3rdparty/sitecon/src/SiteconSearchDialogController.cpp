@@ -93,12 +93,12 @@ SiteconSearchDialogController::SiteconSearchDialogController(ADVSequenceObjectCo
     pbSearch = buttonBox->button(QDialogButtonBox::Ok);
     pbClose = buttonBox->button(QDialogButtonBox::Cancel);
 
-    model = NULL;
+    model = nullptr;
 
     //props = _props;
 
     ctx = _ctx;
-    task = NULL;
+    task = nullptr;
 
     initialSelection = ctx->getSequenceSelection()->isEmpty() ? U2Region() : ctx->getSequenceSelection()->getSelectedRegions().first();
     int seqLen = ctx->getSequenceLength();
@@ -116,9 +116,9 @@ SiteconSearchDialogController::SiteconSearchDialogController(ADVSequenceObjectCo
 }
 
 SiteconSearchDialogController::~SiteconSearchDialogController() {
-    if (model != NULL) {
+    if (model != nullptr) {
         delete model;
-        model = NULL;
+        model = nullptr;
     }
 }
 
@@ -137,8 +137,8 @@ void SiteconSearchDialogController::connectGUI() {
 }
 
 void SiteconSearchDialogController::updateState() {
-    bool hasActiveTask = task != NULL;
-    bool hasCompl = ctx->getComplementTT() != NULL;
+    bool hasActiveTask = task != nullptr;
+    bool hasCompl = ctx->getComplementTT() != nullptr;
 
     bool hasResults = resultsTree->topLevelItemCount() > 0;
     //bool hasModel = false;//TODO
@@ -158,7 +158,7 @@ void SiteconSearchDialogController::updateState() {
 
 void SiteconSearchDialogController::updateStatus() {
     QString message;
-    if (task != NULL) {
+    if (task != nullptr) {
         message = tr("Progress: %1% ").arg(qMax(0, task->getProgress()));
     }
     message += tr("%1 results found").arg(resultsTree->topLevelItemCount());
@@ -170,7 +170,7 @@ bool SiteconSearchDialogController::eventFilter(QObject *obj, QEvent *ev) {
         QKeyEvent *ke = (QKeyEvent *)ev;
         if (ke->key() == Qt::Key_Space) {
             SiteconResultItem *item = static_cast<SiteconResultItem *>(resultsTree->currentItem());
-            if (item != NULL) {
+            if (item != nullptr) {
                 sl_onResultActivated(item, 0);
             }
         }
@@ -200,9 +200,9 @@ void SiteconSearchDialogController::sl_selectModelFile() {
 }
 
 void SiteconSearchDialogController::updateModel(const SiteconModel &m) {
-    if (model != NULL) {
+    if (model != nullptr) {
         delete model;
-        model = NULL;
+        model = nullptr;
     }
     model = new SiteconModel();
     *model = m;
@@ -280,7 +280,7 @@ void SiteconSearchDialogController::sl_onSearch() {
 }
 
 void SiteconSearchDialogController::reject() {
-    if (task != NULL) {
+    if (task != nullptr) {
         task->cancel();
     }
     QDialog::reject();
@@ -291,8 +291,8 @@ void SiteconSearchDialogController::sl_onClose() {
 }
 
 void SiteconSearchDialogController::runTask() {
-    assert(task == NULL);
-    if (model == NULL) {
+    assert(task == nullptr);
+    if (model == nullptr) {
         QMessageBox::critical(this, tr("Error"), tr("No model selected"));
         return;
     }
@@ -311,7 +311,7 @@ void SiteconSearchDialogController::runTask() {
     CHECK_OP_EXT(os, QMessageBox::critical(QApplication::activeWindow(), L10N::errorTitle(), os.getError()), );
 
     SiteconSearchCfg cfg;
-    cfg.complTT = rbBoth->isChecked() || rbComplement->isChecked() ? ctx->getComplementTT() : NULL;
+    cfg.complTT = rbBoth->isChecked() || rbComplement->isChecked() ? ctx->getComplementTT() : nullptr;
     cfg.complOnly = rbComplement->isChecked();
     cfg.minPSUM = errLevelBox->itemData(errLevelBox->currentIndex()).toInt();
     if (cfg.minPSUM == 0) {
@@ -336,7 +336,7 @@ void SiteconSearchDialogController::sl_onTaskFinished() {
     }
     timer->stop();
     importResults();
-    task = NULL;
+    task = nullptr;
     updateState();
 }
 

@@ -30,7 +30,7 @@ class GetSequenceByIdDialog : public QDialog, public Ui_getSequenceByIdDialog {
     Q_OBJECT
 
 public:
-    GetSequenceByIdDialog(QWidget *w = NULL);
+    GetSequenceByIdDialog(QWidget *w = nullptr);
     void accept();
     bool isAddToProject() const {
         return addToProject;

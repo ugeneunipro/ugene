@@ -32,7 +32,7 @@ const QString TopHatSettings::INDEX = "Index";
 const QString TopHatSettings::SEQUENCE = "Sequence";
 
 TopHatInputData::TopHatInputData()
-    : paired(false), fromFiles(false), workflowContext(NULL) {
+    : paired(false), fromFiles(false), workflowContext(nullptr) {
 }
 
 int TopHatInputData::size() const {
@@ -74,15 +74,15 @@ Workflow::WorkflowContext *TopHatSettings::workflowContext() const {
 }
 
 Workflow::DbiDataStorage *TopHatSettings::storage() const {
-    CHECK(NULL != workflowContext(), NULL);
+    CHECK(nullptr != workflowContext(), nullptr);
     return workflowContext()->getDataStorage();
 }
 
 uint TopHatSettings::getThreadsCount() {
     AppSettings *settings = AppContext::getAppSettings();
-    SAFE_POINT(NULL != settings, "NULL settings", 1);
+    SAFE_POINT(nullptr != settings, "NULL settings", 1);
     AppResourcePool *pool = settings->getAppResourcePool();
-    SAFE_POINT(NULL != pool, "NULL resource pool", 1);
+    SAFE_POINT(nullptr != pool, "NULL resource pool", 1);
 
     uint threads = pool->getIdealThreadCount();
     CHECK(0 != threads, 1);

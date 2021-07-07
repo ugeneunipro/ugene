@@ -30,7 +30,7 @@ namespace LocalWorkflow {
 class StringtieGeneAbundanceReportPrompter : public PrompterBase<StringtieGeneAbundanceReportPrompter> {
     Q_OBJECT
 public:
-    StringtieGeneAbundanceReportPrompter(Actor *actor = NULL);
+    StringtieGeneAbundanceReportPrompter(Actor *actor = nullptr);
 
 private:
     QString composeRichDoc();

@@ -32,7 +32,7 @@ namespace U2 {
 
 FindGapsInSequenceCallback::FindGapsInSequenceCallback(U2SequenceObject *const sequenceObject)
     : sequenceObject(sequenceObject) {
-    SAFE_POINT(NULL != sequenceObject, "Sequence object is NULL", );
+    SAFE_POINT(nullptr != sequenceObject, "Sequence object is NULL", );
 }
 
 void FindGapsInSequenceCallback::onRegion(SequenceDbiWalkerSubtask *subtask, TaskStateInfo &stateInfo) {
@@ -65,8 +65,8 @@ RemoveGapsFromSequenceTask::RemoveGapsFromSequenceTask(U2SequenceObject *const s
     : Task(tr("Remove gaps from the sequence"), TaskFlags_FOSE_COSC),
       sequenceObject(sequenceObject),
       callback(sequenceObject),
-      findGapsTask(NULL) {
-    SAFE_POINT_EXT(NULL != sequenceObject, setError("Sequence object is NULL"), );
+      findGapsTask(nullptr) {
+    SAFE_POINT_EXT(nullptr != sequenceObject, setError("Sequence object is NULL"), );
 }
 
 void RemoveGapsFromSequenceTask::prepare() {

@@ -70,7 +70,7 @@ public:
 class GffreadPrompter : public PrompterBase<GffreadPrompter> {
     Q_OBJECT
 public:
-    GffreadPrompter(Actor *a = NULL)
+    GffreadPrompter(Actor *a = nullptr)
         : PrompterBase<GffreadPrompter>(a) {
     }
 

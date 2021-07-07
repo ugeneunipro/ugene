@@ -53,7 +53,7 @@ static const QString SECOND_PROFILE_SLOT_ID("second-msa");
 /* Worker */
 /************************************************************************/
 ProfileToProfileWorker::ProfileToProfileWorker(Actor *a)
-: BaseWorker(a), inPort(NULL), outPort(NULL)
+: BaseWorker(a), inPort(nullptr), outPort(nullptr)
 {
 
 }
@@ -70,12 +70,12 @@ Task * ProfileToProfileWorker::tick() {
         QVariantMap qm = m.getData().toMap();
         SharedDbiDataHandler masterMsaId = qm.value(MASTER_PROFILE_SLOT_ID).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> masterMsaObj(StorageUtils::getMsaObject(context->getDataStorage(), masterMsaId));
-        SAFE_POINT(!masterMsaObj.isNull(), "NULL MSA Object!", NULL);
+        SAFE_POINT(!masterMsaObj.isNull(), "NULL MSA Object!", nullptr);
         const MultipleSequenceAlignment masterMsa = masterMsaObj->getMultipleAlignment();
 
         SharedDbiDataHandler secondMsaId = qm.value(SECOND_PROFILE_SLOT_ID).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> secondMsaObj(StorageUtils::getMsaObject(context->getDataStorage(), secondMsaId));
-        SAFE_POINT(!secondMsaObj.isNull(), "NULL MSA Object!", NULL);
+        SAFE_POINT(!secondMsaObj.isNull(), "NULL MSA Object!", nullptr);
         const MultipleSequenceAlignment secondMsa = secondMsaObj->getMultipleAlignment();
 
         Task *t = new ProfileToProfileTask(masterMsa, secondMsa);
@@ -85,7 +85,7 @@ Task * ProfileToProfileWorker::tick() {
         setDone();
         outPort->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void ProfileToProfileWorker::cleanup() {
@@ -171,7 +171,7 @@ const MultipleSequenceAlignment & ProfileToProfileTask::getResult() {
 void ProfileToProfileTask::appendResult(Task *task) {
     subtaskCount--;
     MuscleTask *t = dynamic_cast<MuscleTask*>(task);
-    SAFE_POINT(NULL != t, "NULL Muscle task!",);
+    SAFE_POINT(nullptr != t, "NULL Muscle task!",);
 
     const QList<MultipleSequenceAlignmentRow> newRows = t->resultMA->getMsaRows();
     if (newRows.size() == masterMsa->getMsaRows().size() + 1) {

@@ -31,8 +31,8 @@ class AppSettingsDialogController;
 class AppSettingsDialogTree : public QTreeWidget {
     Q_OBJECT
 public:
-    AppSettingsDialogTree(QWidget *w = NULL)
-        : QTreeWidget(w), controller(NULL) {
+    AppSettingsDialogTree(QWidget *w = nullptr)
+        : QTreeWidget(w), controller(nullptr) {
     }
     void setController(U2::AppSettingsDialogController *c) {
         controller = c;

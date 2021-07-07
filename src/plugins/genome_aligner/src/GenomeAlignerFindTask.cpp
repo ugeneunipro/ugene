@@ -164,7 +164,7 @@ DataBunch *GenomeAlignerFindTask::waitForDataBunch() {
     alignContext->listM.unlock();
 
     if (nextElementToGive > lastDataBunchesIndex) {
-        return NULL;
+        return nullptr;
     } else {
         DataBunch *dataBunch = alignContext->data.at(nextElementToGive++);
         return dataBunch;
@@ -191,15 +191,15 @@ ShortReadAlignerCPU::ShortReadAlignerCPU(int taskNo, GenomeAlignerIndex *i, Alig
 }
 
 void ShortReadAlignerCPU::run() {
-    SAFE_POINT_EXT(NULL != alignContext, setError("Align context error"), );
+    SAFE_POINT_EXT(nullptr != alignContext, setError("Align context error"), );
     assert(!alignContext->openCL);
 
     GenomeAlignerFindTask *parent = static_cast<GenomeAlignerFindTask *>(getParentTask());
-    SAFE_POINT_EXT(NULL != parent, setError("Aligner parent error"), );
+    SAFE_POINT_EXT(nullptr != parent, setError("Aligner parent error"), );
 
     QVector<int> binarySearchResults;
 
-    SAFE_POINT_EXT(NULL != index, setError("Aligner index error"), );
+    SAFE_POINT_EXT(nullptr != index, setError("Aligner index error"), );
     for (int part = 0; part < index->getPartCount(); part++) {
         if (isCanceled()) {
             break;
@@ -285,13 +285,13 @@ ShortReadAlignerOpenCL::ShortReadAlignerOpenCL(int taskNo, GenomeAlignerIndex *i
 
 void ShortReadAlignerOpenCL::run() {
 #ifdef OPENCL_SUPPORT
-    SAFE_POINT_EXT(NULL != alignContext, setError("Align context error"), );
+    SAFE_POINT_EXT(nullptr != alignContext, setError("Align context error"), );
     assert(alignContext->openCL);
 
     GenomeAlignerFindTask *parent = static_cast<GenomeAlignerFindTask *>(getParentTask());
-    SAFE_POINT_EXT(NULL != parent, setError("Aligner parent error"), );
+    SAFE_POINT_EXT(nullptr != parent, setError("Aligner parent error"), );
 
-    SAFE_POINT_EXT(NULL != index, setError("Aligner index error"), );
+    SAFE_POINT_EXT(nullptr != index, setError("Aligner index error"), );
     for (int part = 0; part < index->getPartCount(); part++) {
         if (isCanceled()) {
             break;
@@ -325,7 +325,7 @@ void ShortReadAlignerOpenCL::run() {
 
             BinarySearchResult *binarySearchResults = index->bitMaskBinarySearchOpenCL(dataBunch->bitValuesV.constData(), dataBunch->bitValuesV.size(), dataBunch->windowSizes.constData());
             SAFE_POINT_EXT(
-                NULL != binarySearchResults, {alignContext->listM.unlock(); setError("OpenCL binary find error"); }, );
+                nullptr != binarySearchResults, {alignContext->listM.unlock(); setError("OpenCL binary find error"); }, );
 
             stateInfo.setProgress(stateInfo.getProgress() + 50 / index->getPartCount());
             t0 = GTimer::currentTimeMicros();
@@ -339,7 +339,7 @@ void ShortReadAlignerOpenCL::run() {
                     continue;
                 }
 
-                SAFE_POINT_EXT(NULL != binarySearchResults, setError("OpenCL binary find error"), );
+                SAFE_POINT_EXT(nullptr != binarySearchResults, setError("OpenCL binary find error"), );
                 BinarySearchResult bmr = binarySearchResults[i];
                 index->alignShortRead(srData.shortRead, srData.bv, srData.pos, bmr, alignContext, srData.currentBitFilter, srData.currentW);
 
@@ -354,7 +354,7 @@ void ShortReadAlignerOpenCL::run() {
             }
             algoLog.trace(QString("[%1] Skipped: %2, tried to align %3 in %4 ms").arg(taskNo).arg(skipped).arg(length - skipped).arg((GTimer::currentTimeMicros() - t0) / double(1000), 0, 'f', 3));
             delete[] binarySearchResults;
-            binarySearchResults = NULL;
+            binarySearchResults = nullptr;
         } while (true);
     }
     if (isCanceled() || hasError()) {

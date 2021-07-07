@@ -68,7 +68,7 @@ QAbstractButton *GTUtilsPrimerLibrary::getButton(HI::GUITestOpStatus &os, Button
         case Export:
             return box->buttons()[5];
         default:
-            return NULL;
+            return nullptr;
     }
 }
 

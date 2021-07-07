@@ -442,7 +442,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: there are 3 annotations in the exported document: 2 primers and center 51..150.
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", GTGlobals::FindOptions(false)) == NULL, "Unexpected annotation 1");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", GTGlobals::FindOptions(false)) == nullptr, "Unexpected annotation 1");
     CHECK_SET_ERR("complement(51..150)" == GTUtilsAnnotationsTreeView::getAnnotationRegionString(os, "center"), "Wrong region 1");
 
     //8. Choose "All annotations" annotation extraction.
@@ -472,8 +472,8 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     //Expected: there are only 2 primers annotations in the exported document.
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", GTGlobals::FindOptions(false)) == NULL, "Unexpected annotation 2");
-    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "center", GTGlobals::FindOptions(false)) == NULL, "Unexpected annotation 3");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "middle", GTGlobals::FindOptions(false)) == nullptr, "Unexpected annotation 2");
+    CHECK_SET_ERR(GTUtilsAnnotationsTreeView::findItem(os, "center", GTGlobals::FindOptions(false)) == nullptr, "Unexpected annotation 3");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0011) {
@@ -529,7 +529,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     CHECK_SET_ERR(GTUtilsPcr::getPrimerInfo(os, U2Strand::Complementary).contains("N/A"), "The temperature is configured");
 
     QLabel *warningLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "warningLabel"));
-    CHECK_SET_ERR(warningLabel != NULL, "Cannot find warningLabel");
+    CHECK_SET_ERR(warningLabel != nullptr, "Cannot find warningLabel");
     CHECK_SET_ERR(warningLabel->text().contains("The primers contain a character from the Extended DNA alphabet."), "Incorrect warning message");
 }
 
@@ -583,7 +583,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     GTWidget::click(os, GTWidget::findWidget(os, "reverseComplementButton", GTUtilsPcr::primerBox(os, U2Strand::Direct)));
 
     QLineEdit *primerLineEdit = GTWidget::findExactWidget<QLineEdit *>(os, "primerEdit", GTUtilsPcr::primerBox(os, U2Strand::Direct));
-    CHECK_SET_ERR(primerLineEdit != NULL, "Forward primerEdit is NULL");
+    CHECK_SET_ERR(primerLineEdit != nullptr, "Forward primerEdit is NULL");
 
     CHECK_SET_ERR(primerLineEdit->text() == "XNVHDBMRSWYKACGT", "Incorrect reverse-complement primer translation");
 }
@@ -646,7 +646,7 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
 
     // Expected state: '-' pressing is ignored
     QLineEdit *primerEdit = dynamic_cast<QLineEdit *>(GTWidget::findWidget(os, "primerEdit", GTUtilsPcr::primerBox(os, U2Strand::Direct)));
-    CHECK_SET_ERR(primerEdit != NULL, "Cannot find primer line edit");
+    CHECK_SET_ERR(primerEdit != nullptr, "Cannot find primer line edit");
     CHECK_SET_ERR(primerEdit->text().isEmpty(), "There are unexpected characters in PrimerLineEdit");
 }
 

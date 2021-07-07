@@ -53,22 +53,22 @@ void ProjectViewImpl::unregisterBuiltInObjectViews() {
     GObjectViewFactoryRegistry *reg = AppContext::getObjectViewFactoryRegistry();
 
     GObjectViewFactory *f = reg->getFactoryById(SimpleTextObjectViewFactory::ID);
-    assert(f != NULL);
+    assert(f != nullptr);
     reg->unregisterGObjectViewFactory(f);
     delete f;
 
     f = reg->getFactoryById(AnnotatedDNAViewFactory::ID);
-    assert(f != NULL);
+    assert(f != nullptr);
     reg->unregisterGObjectViewFactory(f);
     delete f;
 
     f = reg->getFactoryById(MsaEditorFactory::ID);
-    assert(f != NULL);
+    assert(f != nullptr);
     reg->unregisterGObjectViewFactory(f);
     delete f;
 
     f = reg->getFactoryById(TreeViewerFactory::ID);
-    assert(f != NULL);
+    assert(f != nullptr);
     reg->unregisterGObjectViewFactory(f);
     delete f;
 }

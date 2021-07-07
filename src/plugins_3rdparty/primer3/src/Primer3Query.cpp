@@ -56,7 +56,7 @@ QString QDPrimerActor::getText() const {
 }
 
 Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/ ) {
-    Task* t = NULL;
+    Task* t = nullptr;
     const DNASequence& dnaSeq = scheme->getSequence();
     settings.setSequence(dnaSeq.seq);
 
@@ -70,7 +70,7 @@ Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/ ) {
         settings.setExcludedRegion(list);
     } else {
         algoLog.error(tr("%1 invalid input. Excluded regions.").arg(cfg->getLabel()));
-        return NULL;
+        return nullptr;
     }
 
     const QString& targetsStr = cfg->getParameter(TARGETS_ATTR)->getAttributeValueWithoutScript<QString>();
@@ -79,7 +79,7 @@ Task* QDPrimerActor::getAlgorithmTask(const QVector<U2Region>& /*location*/ ) {
         settings.setTarget(list);
     } else {
         algoLog.error(tr("%1 invalid input. Targets.").arg(cfg->getLabel()));
-        return NULL;
+        return nullptr;
     }
 
     const QString& sizeRangesAttr = cfg->getParameter(SIZE_RANGES_ATTR)->getAttributeValueWithoutScript<QString>();
@@ -127,7 +127,7 @@ void QDPrimerActor::sl_onAlgorithmTaskFinished(Task* t) {
         QList<SharedAnnotationData> annotations;
         Primer* leftPrimer = pair.getLeftPrimer();
         Primer* rightPrimer = pair.getRightPrimer();
-        if (leftPrimer!=NULL && rightPrimer!=NULL) {
+        if (leftPrimer!=nullptr && rightPrimer!=nullptr) {
             QDResultUnit ru1(new QDResultUnitData);
             ru1->strand = U2Strand::Direct;
             ru1->region = U2Region(leftPrimer->getStart(), leftPrimer->getLength());

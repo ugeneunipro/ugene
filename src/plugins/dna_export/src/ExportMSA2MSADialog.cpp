@@ -41,7 +41,7 @@ namespace U2 {
 
 ExportMSA2MSADialog::ExportMSA2MSADialog(const QString &defaultFileName, const DocumentFormatId &defaultFormatId, bool wholeAlignmentOnly, QWidget *p)
     : QDialog(p),
-      saveController(NULL) {
+      saveController(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929314");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));

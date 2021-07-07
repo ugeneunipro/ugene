@@ -291,7 +291,7 @@ void HmmerMsaEditorContext::buildStaticOrContextMenu(GObjectView *view, QMenu *m
     MSAEditor *msaEditor = qobject_cast<MSAEditor *>(view);
     SAFE_POINT(msaEditor != nullptr, "Msa Editor is NULL", );
     SAFE_POINT(menu != nullptr, "Menu is NULL", );
-    CHECK(NULL != msaEditor->getMaObject(), );
+    CHECK(nullptr != msaEditor->getMaObject(), );
 
     QList<GObjectViewAction *> list = getViewActions(view);
     SAFE_POINT(list.size() == 1, "List size is incorrect", );
@@ -346,18 +346,18 @@ void HmmerAdvContext::sl_search() {
 
 QWidget *HmmerAdvContext::getParentWidget(QObject *sender) {
     GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender);
-    SAFE_POINT(action != nullptr, "action is NULL", NULL);
+    SAFE_POINT(action != nullptr, "action is NULL", nullptr);
     AnnotatedDNAView *adv = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
-    SAFE_POINT(adv != nullptr, "AnnotatedDNAView is NULL", NULL);
+    SAFE_POINT(adv != nullptr, "AnnotatedDNAView is NULL", nullptr);
 
     return adv->getWidget() ? adv->getWidget() : AppContext::getMainWindow()->getQMainWindow();
 }
 
 U2SequenceObject *HmmerAdvContext::getSequenceInFocus(QObject *sender) {
     GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender);
-    SAFE_POINT(action != nullptr, "action is NULL", NULL);
+    SAFE_POINT(action != nullptr, "action is NULL", nullptr);
     AnnotatedDNAView *adv = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
-    SAFE_POINT(adv != nullptr, "AnnotatedDNAView is NULL", NULL);
+    SAFE_POINT(adv != nullptr, "AnnotatedDNAView is NULL", nullptr);
     ADVSequenceObjectContext *seqCtx = adv->getActiveSequenceContext();
     if (seqCtx == nullptr) {
         return nullptr;

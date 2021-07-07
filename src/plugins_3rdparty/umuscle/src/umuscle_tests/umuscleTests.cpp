@@ -85,7 +85,7 @@ void GTest_uMuscle::init(XMLTestFormat *tf, const QDomElement& el) {
     Q_UNUSED(tf);
 
     ctxAdded = false;
-    ma_result = NULL;
+    ma_result = nullptr;
     refineOnly = false;
     maxIters = -1;
     alignRegion = false;
@@ -141,11 +141,11 @@ void GTest_uMuscle::init(XMLTestFormat *tf, const QDomElement& el) {
 }
 
 void GTest_uMuscle::prepare() {
-    mTask = NULL;
-    ma_result = NULL;
+    mTask = nullptr;
+    ma_result = nullptr;
 
     doc = getContext<Document>(this, inputDocCtxName);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateInfo.setError(  QString("context not found %1").arg(inputDocCtxName) );
         return;
     }
@@ -157,13 +157,13 @@ void GTest_uMuscle::prepare() {
     }
 
     GObject *obj = list.first();
-    if(obj==NULL){
+    if(obj==nullptr){
         stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
         return;
     }
-    assert(obj!=NULL);
+    assert(obj!=nullptr);
     MultipleSequenceAlignmentObject* ma = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
-    if(ma==NULL){
+    if(ma==nullptr){
         stateInfo.setError(  QString("error can't cast to multiple alignment from GObject") );
         return;
     }
@@ -232,12 +232,12 @@ void GTest_CompareMAlignment::init(XMLTestFormat *tf, const QDomElement& el) {
 
 Task::ReportResult GTest_CompareMAlignment::report() {
     Document* doc1 = getContext<Document>(this, doc1CtxName);
-    if (doc1 == NULL) {
+    if (doc1 == nullptr) {
         stateInfo.setError(  QString("document not found %1").arg(doc1CtxName) );
         return ReportResult_Finished;
     }
     Document* doc2 = getContext<Document>(this, doc2CtxName);
-    if (doc2 == NULL) {
+    if (doc2 == nullptr) {
         stateInfo.setError(  QString("document not found %1").arg(doc2CtxName) );
         return ReportResult_Finished;
     }
@@ -289,7 +289,7 @@ Task::ReportResult GTest_CompareMAlignment::report() {
 
 void GTest_uMuscleAddUnalignedSequenceToProfile::init(XMLTestFormat */*tf*/, const QDomElement& el) {
     origAliSeqs = 0;
-    aliObj = NULL;
+    aliObj = nullptr;
     resultAliSeqs = 0;
     aliDocName = el.attribute("ali-doc");
     if (aliDocName.isEmpty()) {
@@ -335,12 +335,12 @@ void GTest_uMuscleAddUnalignedSequenceToProfile::prepare() {
         return;
     }
     Document* aliDoc = getContext<Document>(this, aliDocName);
-    if (aliDoc == NULL) {
+    if (aliDoc == nullptr) {
         stateInfo.setError(  QString("alignment document not found in context: %1").arg(aliDocName) );
         return;
     }
     Document* seqDoc = getContext<Document>(this, seqDocName);
-    if (seqDoc == NULL) {
+    if (seqDoc == nullptr) {
         stateInfo.setError(  QString("sequence document not found in context: %1").arg(seqDocName) );
         return;
     }
@@ -431,11 +431,11 @@ void GTest_Muscle_Load_Align_QScore::init(XMLTestFormat *tf, const QDomElement& 
     Q_UNUSED(tf);
     inFileURL = el.attribute(IN_FILE_NAME_ATTR);
     stateInfo.progress = 0;
-    loadTask1 = NULL;
-    loadTask2 = NULL;
-    muscleTask = NULL;
-    ma1 = NULL;
-    ma2 = NULL;
+    loadTask1 = nullptr;
+    loadTask2 = nullptr;
+    muscleTask = nullptr;
+    ma1 = nullptr;
+    ma2 = nullptr;
 
     if (inFileURL.isEmpty()) {
         failMissingValue(IN_FILE_NAME_ATTR);
@@ -511,7 +511,7 @@ MultipleSequenceAlignment GTest_Muscle_Load_Align_QScore::dna_to_ma(QList<GObjec
     MultipleSequenceAlignment ma("Alignment", seq->getAlphabet());
     for(int i=0; i<seqCount; i++) {
         seq = qobject_cast<U2SequenceObject *>(dnaSeqs[i]);
-        if(seq == NULL) {
+        if(seq == nullptr) {
             stateInfo.setError(  QString("Can't cast GObject to U2SequenceObject") );
             return ma;
         }
@@ -534,7 +534,7 @@ QList<Task*> GTest_Muscle_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
         if(loadTask1->hasError()) {
             return res;
         }
-        assert(doc!=NULL);
+        assert(doc!=nullptr);
 
         QList<GObject*> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
 
@@ -551,7 +551,7 @@ QList<Task*> GTest_Muscle_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
         ma1 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
-        if(ma1 == NULL){
+        if(ma1 == nullptr){
             stateInfo.setError(  QString("can't convert dna sequences to MultipleSequenceAlignment") );
             return res;
         }
@@ -567,7 +567,7 @@ QList<Task*> GTest_Muscle_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
         }
 
         MuscleTask * localMuscle = qobject_cast<MuscleTask*>( subTask );
-        assert( NULL != localMuscle );
+        assert( nullptr != localMuscle );
         ma1->setMultipleAlignment( localMuscle->resultMA );
 
     }
@@ -579,7 +579,7 @@ QList<Task*> GTest_Muscle_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
         if(loadTask2->hasError()) {
             return res;
         }
-        assert(doc!=NULL);
+        assert(doc!=nullptr);
 
         QList<GObject*> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
 
@@ -596,7 +596,7 @@ QList<Task*> GTest_Muscle_Load_Align_QScore::onSubTaskFinished(Task* subTask) {
         ma2 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
-        if(ma2 == NULL){
+        if(ma2 == nullptr){
             stateInfo.setError(  QString("can't convert dna sequences to MultipleSequenceAlignment") );
             return res;
         }
@@ -625,17 +625,17 @@ GTest_Muscle_Load_Align_QScore::~GTest_Muscle_Load_Align_QScore() {
 
 Muscle_Load_Align_Compare_Task::Muscle_Load_Align_Compare_Task( QString inFileURL, QString patFileURL,
                                                                 MuscleTaskSettings& _config, QString _name)
-: Task(_name, TaskFlags_FOSCOE), str_inFileURL(inFileURL), str_patFileURL(patFileURL),muscleTask(NULL), config(_config)
+: Task(_name, TaskFlags_FOSCOE), str_inFileURL(inFileURL), str_patFileURL(patFileURL),muscleTask(nullptr), config(_config)
 {
     //QFileInfo fInf(inFileURL);
     //setTaskName("Muscle_Load_Align_Compare_Task: " + fInf.fileName());
     setUseDescriptionFromSubtask(true);
     stateInfo.progress = 0;
-    loadTask1 = NULL;
-    loadTask2 = NULL;
-    muscleTask = NULL;
-    ma1 = NULL;
-    ma2 = NULL;
+    loadTask1 = nullptr;
+    loadTask2 = nullptr;
+    muscleTask = nullptr;
+    ma1 = nullptr;
+    ma2 = nullptr;
 }
 
 void Muscle_Load_Align_Compare_Task::prepare() {
@@ -656,7 +656,7 @@ MultipleSequenceAlignment Muscle_Load_Align_Compare_Task::dna_to_ma(QList<GObjec
     MultipleSequenceAlignment ma("Alignment",seq->getAlphabet());
     for(int i=0; i<seqCount; i++) {
         seq = qobject_cast<U2SequenceObject *>(dnaSeqs[i]);
-        if(seq == NULL) {
+        if(seq == nullptr) {
             stateInfo.setError(  QString("Can't cast GObject to U2SequenceObject") );
             return ma;
         }
@@ -678,7 +678,7 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
         if(loadTask1->hasError()) {
             return res;
         }
-        assert(doc!=NULL);
+        assert(doc!=nullptr);
 
         QList<GObject*> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
 
@@ -695,7 +695,7 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
         ma1 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
-        if(ma1 == NULL){
+        if(ma1 == nullptr){
             stateInfo.setError(  QString("can't convert dna sequences to MultipleSequenceAlignment") );
             return res;
         }
@@ -711,7 +711,7 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
             return res;
         }
         MuscleTask * localMuscle = qobject_cast<MuscleTask*>( subTask );
-        assert( NULL != localMuscle );
+        assert( nullptr != localMuscle );
         ma1->setMultipleAlignment( localMuscle->resultMA );
 
     }
@@ -723,7 +723,7 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
         if(loadTask2->hasError()) {
             return res;
         }
-        assert(doc!=NULL);
+        assert(doc!=nullptr);
 
         QList<GObject*> list = doc->findGObjectByType(GObjectTypes::SEQUENCE);
 
@@ -740,7 +740,7 @@ QList<Task*> Muscle_Load_Align_Compare_Task::onSubTaskFinished(Task* subTask) {
         ma2 = MultipleSequenceAlignmentImporter::createAlignment(doc->getDbiRef(), malign, stateInfo);
         CHECK_OP(stateInfo, res);
 
-        if(ma2 == NULL){
+        if(ma2 == nullptr){
             stateInfo.setError(  QString("can't convert dna sequences to MultipleSequenceAlignment") );
             return res;
         }
@@ -779,8 +779,8 @@ void Muscle_Load_Align_Compare_Task::run() {
 void Muscle_Load_Align_Compare_Task::cleanup() {
     delete ma1;
     delete ma2;
-    ma1 = NULL;
-    ma2 = NULL;
+    ma1 = nullptr;
+    ma2 = nullptr;
 }
 
 Task::ReportResult Muscle_Load_Align_Compare_Task::report() {

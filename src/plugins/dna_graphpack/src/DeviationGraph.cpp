@@ -142,7 +142,7 @@ void DeviationGraphAlgorithm::sequenceStrategyWithMemorize(QVector<float> &res, 
 }
 
 void DeviationGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, const U2Region &vr, const GSequenceGraphWindowData *d, U2OpStatus &os) {
-    assert(d != NULL);
+    assert(d != nullptr);
     int nSteps = GSequenceGraphUtils::getNumSteps(vr, d->window, d->step);
     res.reserve(nSteps);
 

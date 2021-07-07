@@ -25,8 +25,8 @@ namespace U2 {
 
 BlastTaskSettings::BlastTaskSettings() {
     offsInGlobalSeq = 0;
-    aobj = NULL;
-    alphabet = NULL;
+    aobj = nullptr;
+    alphabet = nullptr;
     isNucleotideSeq = false;
     numberOfHits = 0;
     isDefaultMatrix = true;
@@ -65,7 +65,7 @@ void BlastTaskSettings::reset() {
     isDefaultThreshold = true;
     isSequenceCircular = false;
     directStrand = TriState_Unknown;
-    querySequenceObject = NULL;
+    querySequenceObject = nullptr;
 }
 
 }    // namespace U2

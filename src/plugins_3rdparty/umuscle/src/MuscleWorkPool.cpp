@@ -25,9 +25,9 @@
 namespace U2 {
 
     MuscleWorkPool::MuscleWorkPool(MuscleContext *_ctx, const MuscleTaskSettings  &_config, TaskStateInfo& _ti, int _nThreads, const MultipleSequenceAlignment& _ma, MultipleSequenceAlignment& _res, bool _mhack)
-        :ctx(_ctx), config(_config), ma(_ma->getCopy()), res(_res), mhack(_mhack), Weights(NULL), ProgNodes(NULL), ph(NULL), ti(_ti),
-        treeNodeStatus(NULL), treeNodeIndexes(NULL), nThreads(_nThreads), uJoin(0), ptrbOscillating(NULL), bAnyAccepted(false), InternalNodeIndexes(NULL), uInternalNodeCount(0),
-        bReversed(false), bRight(false), History(NULL), bLockLeft(NULL), bLockRight(false), msaIn(NULL)
+        :ctx(_ctx), config(_config), ma(_ma->getCopy()), res(_res), mhack(_mhack), Weights(nullptr), ProgNodes(nullptr), ph(nullptr), ti(_ti),
+        treeNodeStatus(nullptr), treeNodeIndexes(nullptr), nThreads(_nThreads), uJoin(0), ptrbOscillating(nullptr), bAnyAccepted(false), InternalNodeIndexes(nullptr), uInternalNodeCount(0),
+        bReversed(false), bRight(false), History(nullptr), bLockLeft(nullptr), bLockRight(false), msaIn(nullptr)
     {
         refineConstructor();
     }
@@ -36,8 +36,8 @@ namespace U2 {
         delete[] ProgNodes;
         delete[] treeNodeStatus;
         delete[] treeNodeIndexes;
-        Weights = NULL;
-        ProgNodes = NULL;
+        Weights = nullptr;
+        ProgNodes = nullptr;
         refineClear();
     }
 
@@ -91,7 +91,7 @@ namespace U2 {
     // Refine
     ////////////////////////////
     void MuscleWorkPool::refineConstructor() {
-        refineTI = NULL;
+        refineTI = nullptr;
         uRangeCount = 1;
         uRangeIndex = 0;
         uIter = 0;
@@ -99,7 +99,7 @@ namespace U2 {
         needRestart = new bool[nThreads];
         workerStartPos = new unsigned[nThreads];
         currentNodeIndex = new unsigned[nThreads];
-        refineNodeStatuses = NULL;
+        refineNodeStatuses = nullptr;
         lastAcceptedIndex = 0;
         refineDone = true;
         oscillatingIter = NULL_NEIGHBOR;
@@ -114,11 +114,11 @@ namespace U2 {
         delete[] workerStartPos;
         delete[] currentNodeIndex;
         delete[] needRestart;
-        refineTI = NULL;
-        workerStartPos = NULL;
-        currentNodeIndex = NULL;
-        needRestart = NULL;
-        refineNodeStatuses = NULL;
+        refineTI = nullptr;
+        workerStartPos = nullptr;
+        currentNodeIndex = nullptr;
+        needRestart = nullptr;
+        refineNodeStatuses = nullptr;
     }
     void MuscleWorkPool::reset() {
         for (unsigned n = 0; n < uInternalNodeCount; ++n) {

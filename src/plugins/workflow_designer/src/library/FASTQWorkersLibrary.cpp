@@ -507,11 +507,11 @@ MergeFastqWorker::MergeFastqWorker(Actor *a)
 Task *MergeFastqWorker::tick() {
     while (inputUrlPort->hasMessage()) {
         const QString url = takeUrl();
-        CHECK(!url.isEmpty(), NULL);
+        CHECK(!url.isEmpty(), nullptr);
         inputUrls.append(url);
     }
     if (!inputUrlPort->isEnded()) {
-        return NULL;
+        return nullptr;
     }
 
     if (!inputUrls.isEmpty()) {
@@ -534,7 +534,7 @@ Task *MergeFastqWorker::tick() {
         setDone();
         outputUrlPort->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 QVariantMap MergeFastqWorker::getCustomParameters() const {

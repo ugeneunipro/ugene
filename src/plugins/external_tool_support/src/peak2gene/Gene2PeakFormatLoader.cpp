@@ -35,7 +35,7 @@ Gene2PeakFormatLoader::Gene2PeakFormatLoader(U2OpStatus &os, IOAdapter *ioAdapte
       ioAdapter(ioAdapter),
       skipLine(false),
       currentLineNumber(0) {
-    CHECK_EXT(NULL != ioAdapter, os.setError(L10N::nullPointerError("IO adapter")), );
+    CHECK_EXT(nullptr != ioAdapter, os.setError(L10N::nullPointerError("IO adapter")), );
     CHECK_EXT(ioAdapter->isOpen(), os.setError(L10N::errorReadingFile(ioAdapter->getURL())), );
 }
 

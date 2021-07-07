@@ -123,7 +123,7 @@ float GeneByGeneComparator::parseBlastQual(const QString &ident) {
 //////////////////////////////////////////////////////////////////////////
 //GeneByGeneReportIO
 GeneByGeneReportIO::GeneByGeneReportIO(const QString &_outFile, const QString &_existingMode)
-    : outFile(_outFile), existingMode(_existingMode), io(NULL), mergedGenomesSize(0) {
+    : outFile(_outFile), existingMode(_existingMode), io(nullptr), mergedGenomesSize(0) {
 }
 
 GeneByGeneReportIO::~GeneByGeneReportIO() {
@@ -137,10 +137,10 @@ GeneByGeneReportIO::~GeneByGeneReportIO() {
         writeRow(toWrite);
     }
 
-    if (io != NULL) {
+    if (io != nullptr) {
         io->close();
         delete io;
-        io = NULL;
+        io = nullptr;
     }
 }
 
@@ -159,14 +159,14 @@ void GeneByGeneReportIO::prepareOutputFile(U2OpStatus &os) {
 
     io = IOAdapterUtils::open(outFile, os, IOAdapterMode_Write);
     if (os.hasError()) {
-        io = NULL;
+        io = nullptr;
         return;
     }
     writeHeader(io);
 }
 
 void GeneByGeneReportIO::writeTableItem(const QString &geneName, const QString &identicalString, U2OpStatus &os) {
-    if (io == NULL) {
+    if (io == nullptr) {
         os.setError("Gene by gene writer has not prepared an output file");
         return;
     }
@@ -240,7 +240,7 @@ void GeneByGeneReportIO::readMergedTable(const QString &filePath, U2OpStatus &os
 }
 
 void GeneByGeneReportIO::writeHeader(IOAdapter *io) {
-    if (io == NULL) {
+    if (io == nullptr) {
         return;
     }
 
@@ -259,7 +259,7 @@ void GeneByGeneReportIO::writeHeader(IOAdapter *io) {
 }
 
 void GeneByGeneReportIO::writeRow(const QList<QString> &rowData) {
-    if (io == NULL) {
+    if (io == nullptr) {
         return;
     }
 

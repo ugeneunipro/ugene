@@ -67,7 +67,7 @@ void TCoffeeSupportRunDialog::accept() {
 TCoffeeWithExtFileSpecifySupportRunDialog::TCoffeeWithExtFileSpecifySupportRunDialog(TCoffeeSupportTaskSettings &_settings, QWidget *_parent)
     : QDialog(_parent),
       settings(_settings),
-      saveController(NULL) {
+      saveController(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930847");
 

@@ -198,7 +198,7 @@ QString QDRepeatActor::getText() const {
 
 Task *QDRepeatActor::getAlgorithmTask(const QVector<U2Region> &location) {
     assert(scheme);
-    Task *t = NULL;
+    Task *t = nullptr;
 
     settings.algo = RFAlgorithm(cfg->getParameter(ALGO_ATTR)->getAttributeValueWithoutScript<int>());
     settings.minLen = cfg->getParameter(LEN_ATTR)->getAttributeValueWithoutScript<int>();

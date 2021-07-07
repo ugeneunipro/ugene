@@ -300,7 +300,7 @@ bool PhyMlWidget::checkSettings(QString &message, const CreatePhyTreeSettings &s
     //Check that PhyMl and tempory folder path defined
     ExternalToolRegistry *reg = AppContext::getExternalToolRegistry();
     ExternalTool *phyml = reg->getById(PhyMLSupport::PHYML_ID);
-    SAFE_POINT(NULL != phyml, "External tool PHyML is not registered", false);
+    SAFE_POINT(nullptr != phyml, "External tool PHyML is not registered", false);
 
     const QString &path = phyml->getPath();
     const QString &name = phyml->getName();

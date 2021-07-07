@@ -78,14 +78,14 @@ const QString RenameChomosomeInVariationWorkerFactory::ACTOR_ID("rename-chromoso
 
 RenameChomosomeInVariationWorker::RenameChomosomeInVariationWorker(Actor *actor)
     : BaseThroughWorker(actor, INPUT_PORT, OUTPUT_PORT),
-      inputUrlPort(NULL),
-      outputUrlPort(NULL) {
+      inputUrlPort(nullptr),
+      outputUrlPort(nullptr) {
 }
 
 QList<Message> RenameChomosomeInVariationWorker::fetchResult(Task *task, U2OpStatus &os) {
     QList<Message> messages;
     RenameChromosomeInVariationFileTask *renameTask = qobject_cast<RenameChromosomeInVariationFileTask *>(task);
-    SAFE_POINT_EXT(NULL != renameTask, os.setError(tr("An unexpected task type")), messages);
+    SAFE_POINT_EXT(nullptr != renameTask, os.setError(tr("An unexpected task type")), messages);
 
     const QString resultFileUrl = renameTask->getDstFileUrl();
     monitor()->addOutputFile(resultFileUrl, actor->getId(), false);
@@ -104,7 +104,7 @@ Task *RenameChomosomeInVariationWorker::createTask(const Message &message, U2OpS
 
     const QVariantMap dataMap = message.getData().toMap();
     const QString srcFileUrl = dataMap.value(BaseSlots::URL_SLOT().getId()).toString();
-    CHECK_EXT(!srcFileUrl.isEmpty(), os.setError(tr("Source file URL is empty")), NULL);
+    CHECK_EXT(!srcFileUrl.isEmpty(), os.setError(tr("Source file URL is empty")), nullptr);
 
     if (dstFileUrl.isEmpty()) {
         dstFileUrl = monitor()->outputDir() + QFileInfo(srcFileUrl).fileName();

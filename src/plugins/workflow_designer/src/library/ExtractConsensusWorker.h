@@ -86,7 +86,7 @@ public:
 class ExtractConsensusWorkerPrompter : public PrompterBase<ExtractConsensusWorkerPrompter> {
     Q_OBJECT
 public:
-    ExtractConsensusWorkerPrompter(Actor *actor = NULL);
+    ExtractConsensusWorkerPrompter(Actor *actor = nullptr);
 
 protected:
     QString composeRichDoc();

@@ -41,7 +41,7 @@ class SiteconBuildDialogController : public QDialog, public Ui_SiteconBuildDialo
     Q_OBJECT
 
 public:
-    SiteconBuildDialogController(SiteconPlugin *p, QWidget *w = NULL);
+    SiteconBuildDialogController(SiteconPlugin *p, QWidget *w = nullptr);
 
 public slots:
     virtual void reject();

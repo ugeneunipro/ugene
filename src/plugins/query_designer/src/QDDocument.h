@@ -63,7 +63,7 @@ class QDElementStatement : public QDDocStatement {
 
 public:
     QDElementStatement(const QString &_id, QDStatementType _type)
-        : id(_id), type(_type), document(NULL) {
+        : id(_id), type(_type), document(nullptr) {
     }
     const QString &getId() const {
         return id;
@@ -92,7 +92,7 @@ class QDLinkStatement : public QDDocStatement {
 
 public:
     QDLinkStatement(const QList<QString> &ids)
-        : elementIds(ids), document(NULL) {
+        : elementIds(ids), document(nullptr) {
     }
     const QList<QString> &getElementIds() const {
         return elementIds;
@@ -127,7 +127,7 @@ public:
     }
     bool addElement(QDElementStatement *el);
     void addLink(QDLinkStatement *lnk) {
-        assert(lnk->document == NULL);
+        assert(lnk->document == nullptr);
         links.append(lnk);
         lnk->document = this;
     }

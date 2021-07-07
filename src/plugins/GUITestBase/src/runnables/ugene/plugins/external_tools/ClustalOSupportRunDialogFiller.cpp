@@ -33,7 +33,7 @@ ClustalOSupportRunDialogFiller::ClustalOSupportRunDialogFiller(HI::GUITestOpStat
 #define GT_METHOD_NAME "commonScenario"
 void ClustalOSupportRunDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(NULL != dialog, "Actiove modal widget is NULL");
+    GT_CHECK(nullptr != dialog, "Actiove modal widget is NULL");
 
     GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
 }

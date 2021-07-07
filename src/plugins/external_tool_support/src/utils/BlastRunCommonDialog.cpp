@@ -48,7 +48,7 @@ using namespace LocalWorkflow;
 ////////////////////////////////////////
 //BlastAllSupportRunCommonDialog
 BlastRunCommonDialog::BlastRunCommonDialog(QWidget *parent, BlastType blastType, bool useCompValues, QStringList compValues)
-    : QDialog(parent), ca_c(NULL), useCompValues(useCompValues), compValues(compValues) {
+    : QDialog(parent), ca_c(nullptr), useCompValues(useCompValues), compValues(compValues) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930723");
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Restore to default"));

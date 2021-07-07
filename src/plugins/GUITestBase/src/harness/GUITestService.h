@@ -51,7 +51,7 @@ public:
                          CREATE_GUI_TEST,
                          RUN_ALL_TESTS_NO_IGNORED };
 
-    GUITestService(QObject *parent = NULL);
+    GUITestService(QObject *parent = nullptr);
     ~GUITestService();
 
     void runTest(HI::GUITests testsToRun);

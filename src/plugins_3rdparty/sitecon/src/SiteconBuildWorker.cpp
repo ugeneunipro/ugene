@@ -133,7 +133,7 @@ Task *SiteconBuildWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         cfg.props = SiteconPlugin::getDinucleotiteProperties();
         cfg.randomSeed = actor->getParameter(SEED_ATTR)->getAttributeValue<int>(context);
@@ -156,7 +156,7 @@ Task *SiteconBuildWorker::tick() {
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
-        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
+        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
         const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
         Task *t = new SiteconBuildTask(cfg, msa, url);
@@ -166,7 +166,7 @@ Task *SiteconBuildWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void SiteconBuildWorker::sl_taskFinished() {

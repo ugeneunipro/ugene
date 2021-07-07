@@ -51,7 +51,7 @@ protected slots:
     void customization();
 
 private:
-    U2Region getActiveRange(bool *ok = NULL) const;
+    U2Region getActiveRange(bool *ok = nullptr) const;
     void saveState();
     QStringList getAvailableAnnotationNames() const;
     bool getRegions(QCheckBox *cb, QLineEdit *le, QVector<U2Region> &res);

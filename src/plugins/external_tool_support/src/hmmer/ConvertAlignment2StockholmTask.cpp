@@ -39,8 +39,8 @@ namespace U2 {
 
 ConvertAlignment2Stockholm::ConvertAlignment2Stockholm(const QString &msaUrl, const QString &workingDir)
     : Task(tr("Convert alignment to Stockholm format"), TaskFlags_NR_FOSE_COSC),
-      loadTask(NULL),
-      saveTask(NULL),
+      loadTask(nullptr),
+      saveTask(nullptr),
       msaUrl(msaUrl),
       workingDir(workingDir) {
     SAFE_POINT_EXT(!msaUrl.isEmpty(), setError("Msa URL is empty"), );

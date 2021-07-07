@@ -50,7 +50,7 @@ PhmmerSearchSettings::PhmmerSearchSettings()
       popen(0.02),
       pextend(0.4),
       seed(42),
-      annotationTable(NULL) {
+      annotationTable(nullptr) {
 }
 
 bool PhmmerSearchSettings::validate() const {
@@ -71,7 +71,7 @@ bool PhmmerSearchSettings::validate() const {
     CHECK(0 <= pextend && pextend < 1, false);
     CHECK(0 <= seed, false);
     CHECK(!querySequenceUrl.isEmpty(), false);
-    CHECK(!targetSequenceUrl.isEmpty() || NULL != targetSequence, false);
+    CHECK(!targetSequenceUrl.isEmpty() || nullptr != targetSequence, false);
 
     return true;
 }

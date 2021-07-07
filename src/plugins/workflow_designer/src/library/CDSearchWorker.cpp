@@ -141,12 +141,12 @@ Task *CDSearchWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         SharedDbiDataHandler seqId = inputMessage.getData().toMap().value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
         if (seqObj.isNull()) {
-            return NULL;
+            return nullptr;
         }
         U2OpStatusImpl os;
         DNASequence seq = seqObj->getWholeSequence(os);
@@ -163,7 +163,7 @@ Task *CDSearchWorker::tick() {
         settings.dbName = actor->getParameter(DATABASE_ATTR)->getAttributeValue<QString>(context);
 
         bool local = actor->getParameter(LOCAL_ATTR)->getAttributePureValue().toBool();
-        CDSearchFactory *factory = NULL;
+        CDSearchFactory *factory = nullptr;
         if (local) {
             factory = AppContext::getCDSFactoryRegistry()->getFactory(CDSearchFactoryRegistry::LocalSearch);
             if (!factory) {
@@ -186,15 +186,15 @@ Task *CDSearchWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void CDSearchWorker::sl_taskFinished(Task *t) {
-    SAFE_POINT(NULL != t, "Invalid task is encountered", );
+    SAFE_POINT(nullptr != t, "Invalid task is encountered", );
     if (t->isCanceled()) {
         return;
     }
-    if (NULL != output) {
+    if (nullptr != output) {
         QList<SharedAnnotationData> res = cds->getCDSResults();
         QString annName = actor->getParameter(ANNOTATION_ATTR)->getAttributeValue<QString>(context);
         if (!annName.isEmpty()) {
@@ -206,7 +206,7 @@ void CDSearchWorker::sl_taskFinished(Task *t) {
         output->put(Message(BaseTypes::ANNOTATION_TABLE_TYPE(), qVariantFromValue<SharedDbiDataHandler>(tableId)));
     }
     delete cds;
-    cds = NULL;
+    cds = nullptr;
 }
 
 }    // namespace LocalWorkflow

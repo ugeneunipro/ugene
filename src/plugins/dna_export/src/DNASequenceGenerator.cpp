@@ -163,16 +163,16 @@ EvaluateBaseContentTask *DNASequenceGeneratorTask::createEvaluationTask(Document
         return new EvaluateBaseContentTask(gobjects.first());
     }
     err = tr("Reference for sequence generator has to be a sequence or an alignment");
-    return NULL;
+    return nullptr;
 }
 
 DNASequenceGeneratorTask::DNASequenceGeneratorTask(const DNASequenceGeneratorConfig &cfg)
     : Task(tr("Generate sequence task"), TaskFlag_NoRun),
       cfg(cfg),
-      loadRefTask(NULL),
-      evalTask(NULL),
-      generateTask(NULL),
-      saveTask(NULL) {
+      loadRefTask(nullptr),
+      evalTask(nullptr),
+      generateTask(nullptr),
+      saveTask(nullptr) {
     GCOUNTER(cvar, "DNASequenceGeneratorTask");
     if (cfg.useReference()) {
         // do not load reference file if it is already in project and has loaded state
@@ -278,7 +278,7 @@ QList<Task *> DNASequenceGeneratorTask::onGenerateTaskFinished() {
         resultTasks << saveTask;
     } else {    // TODO: avoid high memory consumption here
         const DNAAlphabet *alp = cfg.getAlphabet();
-        SAFE_POINT(NULL != alp, "Generated sequence has invalid alphabet", resultTasks);
+        SAFE_POINT(nullptr != alp, "Generated sequence has invalid alphabet", resultTasks);
         const U2DbiRef dbiRef = generateTask->getDbiRef();
         const QString baseSeqName = cfg.getSequenceName();
         QList<U2Sequence> seqs = generateTask->getResults();
@@ -301,10 +301,10 @@ void DNASequenceGeneratorTask::addSequencesToMsaDoc(Document *source) {
     const QSet<QString> &supportedFormats = source->getDocumentFormat()->getSupportedObjectTypes();
     SAFE_POINT(supportedFormats.contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT),
                "Invalid document format", );
-    SAFE_POINT(NULL != generateTask, "Invalid generate task", );
+    SAFE_POINT(nullptr != generateTask, "Invalid generate task", );
     const U2DbiRef dbiRef = generateTask->getDbiRef();
     const DNAAlphabet *alp = cfg.alphabet;
-    SAFE_POINT(NULL != alp, "Generated sequence has invalid alphabet", );
+    SAFE_POINT(nullptr != alp, "Generated sequence has invalid alphabet", );
     const QString baseSeqName = cfg.getSequenceName();
     const QList<U2Sequence> seqs = generateTask->getResults();
 
@@ -327,7 +327,7 @@ void DNASequenceGeneratorTask::addSequencesToMsaDoc(Document *source) {
 void DNASequenceGeneratorTask::addSequencesToSeqDoc(Document *source) {
     const QSet<QString> &supportedFormats = source->getDocumentFormat()->getSupportedObjectTypes();
     SAFE_POINT(supportedFormats.contains(GObjectTypes::SEQUENCE), "Invalid document format", );
-    SAFE_POINT(NULL != generateTask, "Invalid generate task", );
+    SAFE_POINT(nullptr != generateTask, "Invalid generate task", );
     const U2DbiRef dbiRef = generateTask->getDbiRef();
     const QString baseSeqName = cfg.getSequenceName();
     const QList<U2Sequence> seqs = generateTask->getResults();
@@ -351,7 +351,7 @@ QList<Task *> DNASequenceGeneratorTask::onSaveTaskFinished() {
         Project *prj = AppContext::getProject();
         if (prj) {
             Document *d = prj->findDocumentByURL(doc->getURL());
-            if (d == NULL) {
+            if (d == nullptr) {
                 prj->addDocument(doc);
                 resultTasks << new OpenViewTask(doc);
             } else {
@@ -362,7 +362,7 @@ QList<Task *> DNASequenceGeneratorTask::onSaveTaskFinished() {
             }
         } else {
             Task *openWithProjectTask = AppContext::getProjectLoader()->openWithProjectTask(QList<GUrl>() << doc->getURL());
-            if (openWithProjectTask != NULL) {
+            if (openWithProjectTask != nullptr) {
                 resultTasks << openWithProjectTask;
             }
             // open project task will load supplied url
@@ -375,7 +375,7 @@ QList<Task *> DNASequenceGeneratorTask::onSaveTaskFinished() {
 
 // EvaluateBaseContentTask
 EvaluateBaseContentTask::EvaluateBaseContentTask(GObject *obj)
-    : Task(tr("Evaluate base content task"), TaskFlag_None), _obj(obj), alp(NULL) {
+    : Task(tr("Evaluate base content task"), TaskFlag_None), _obj(obj), alp(nullptr) {
 }
 
 void EvaluateBaseContentTask::run() {

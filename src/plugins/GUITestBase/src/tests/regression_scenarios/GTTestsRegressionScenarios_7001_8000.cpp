@@ -140,7 +140,7 @@ GUI_TEST_CLASS_DEFINITION(test_7022) {
 
     // 2. Turn on "Wrap mode" and click on the firts annotation in DetView
     QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
-    CHECK_SET_ERR(wrapMode != NULL, "Cannot find Wrap sequence action");
+    CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     if (!wrapMode->isChecked()) {
         GTWidget::click(os, GTAction::button(os, wrapMode));
     }

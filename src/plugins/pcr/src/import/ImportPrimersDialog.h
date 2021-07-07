@@ -34,7 +34,7 @@ class ImportPrimersMultiTask;
 class ImportPrimersDialog : public QDialog, private Ui_ImportPrimersDialog {
     Q_OBJECT
 public:
-    ImportPrimersDialog(QWidget *parent = NULL);
+    ImportPrimersDialog(QWidget *parent = nullptr);
 
 private slots:
     void sl_updateState();

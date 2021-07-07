@@ -98,7 +98,7 @@ void WriteBAMWorker::takeParameters(U2OpStatus &os) {
     BaseWriteAssemblyWorker::takeParameters(os);
 
     Attribute *indexAttr = actor->getParameter(INDEX_ATTRIBUTE_ID);
-    CHECK(NULL != indexAttr, );
+    CHECK(nullptr != indexAttr, );
     buildIndex = indexAttr->getAttributePureValue().toBool();
 }
 
@@ -118,7 +118,7 @@ WriteBAMTask::WriteBAMTask(Document *_doc, bool _buildIndex, const SaveDocFlags 
 }
 
 void WriteBAMTask::run() {
-    CHECK_EXT(NULL != doc, stateInfo.setError("NULL document"), );
+    CHECK_EXT(nullptr != doc, stateInfo.setError("NULL document"), );
 
     if (flags.testFlag(SaveDoc_Roll)) {
         QSet<QString> excludeFileNames = DocumentUtils::getNewDocFileNameExcludesHint();
@@ -171,7 +171,7 @@ void WriteAssemblyWorkerFactory::init() {
     }
 
     QList<Attribute *> attrs;
-    Attribute *docFormatAttr = NULL;
+    Attribute *docFormatAttr = nullptr;
     {
         docFormatAttr = new Attribute(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE(), BaseTypes::STRING_TYPE(), false, format);
         docFormatAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));

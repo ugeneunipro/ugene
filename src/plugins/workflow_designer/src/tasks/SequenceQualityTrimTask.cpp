@@ -39,10 +39,10 @@ SequenceQualityTrimTaskSettings::SequenceQualityTrimTaskSettings()
 SequenceQualityTrimTask::SequenceQualityTrimTask(const SequenceQualityTrimTaskSettings &settings)
     : Task(tr("Trim sequence by quality"), TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled),
       settings(settings),
-      trimmedSequenceObject(NULL),
-      trimmedChromatogramObject(NULL),
+      trimmedSequenceObject(nullptr),
+      trimmedChromatogramObject(nullptr),
       isFilteredOut(false) {
-    SAFE_POINT_EXT(NULL != settings.sequenceObject, setError("Sequence object is NULL"), );
+    SAFE_POINT_EXT(nullptr != settings.sequenceObject, setError("Sequence object is NULL"), );
 }
 
 SequenceQualityTrimTask::~SequenceQualityTrimTask() {
@@ -52,7 +52,7 @@ SequenceQualityTrimTask::~SequenceQualityTrimTask() {
 
 U2SequenceObject *SequenceQualityTrimTask::takeTrimmedSequence() {
     U2SequenceObject *result = trimmedSequenceObject;
-    trimmedSequenceObject = NULL;
+    trimmedSequenceObject = nullptr;
     return result;
 }
 
@@ -100,8 +100,8 @@ void SequenceQualityTrimTask::cloneChromatogram() {
 }
 
 void SequenceQualityTrimTask::restoreRelation() {
-    CHECK(NULL != trimmedChromatogramObject, );
-    SAFE_POINT_EXT(NULL != trimmedSequenceObject, setError("Cloned sequence object is NULL"), );
+    CHECK(nullptr != trimmedChromatogramObject, );
+    SAFE_POINT_EXT(nullptr != trimmedSequenceObject, setError("Cloned sequence object is NULL"), );
 
     U2ObjectRelation dbRelation;
     dbRelation.id = trimmedChromatogramObject->getEntityRef().entityId;
@@ -128,7 +128,7 @@ U2Region SequenceQualityTrimTask::trimSequence() {
 }
 
 void SequenceQualityTrimTask::trimChromatogram(const U2Region &regionToCrop) {
-    CHECK(NULL != trimmedChromatogramObject, );
+    CHECK(nullptr != trimmedChromatogramObject, );
     DNAChromatogram chromatogram = trimmedChromatogramObject->getChromatogram();
     ChromatogramUtils::crop(chromatogram, regionToCrop.startPos, regionToCrop.length);
     trimmedChromatogramObject->setChromatogram(stateInfo, chromatogram);

@@ -58,7 +58,7 @@ void GffreadSupportTask::checkFormat(const QString &url, const DocumentFormatId 
         return;
     }
     foreach (const FormatDetectionResult &r, result) {
-        SAFE_POINT(NULL != r.format, "NULL doc format", );
+        SAFE_POINT(nullptr != r.format, "NULL doc format", );
         if (r.format->getFormatId() == target) {
             return;
         }

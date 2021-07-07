@@ -57,7 +57,7 @@ private slots:
 class TrimmomaticPropertyWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    TrimmomaticPropertyWidget(QWidget *parent = NULL, DelegateTags *tags = NULL);
+    TrimmomaticPropertyWidget(QWidget *parent = nullptr, DelegateTags *tags = nullptr);
 
     QVariant value();
 

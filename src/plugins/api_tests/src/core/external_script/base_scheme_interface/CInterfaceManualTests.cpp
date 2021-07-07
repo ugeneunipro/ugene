@@ -40,8 +40,8 @@ namespace U2 {
 IMPLEMENT_TEST(CInterfaceManualTests, basic_align) {
     wchar_t readMsa[MAX_ELEMENT_NAME_LENGTH], muscle[MAX_ELEMENT_NAME_LENGTH],
         writeMsa[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
     error = addElementToScheme(scheme, L"read-msa", MAX_ELEMENT_NAME_LENGTH, readMsa);
     CHECK_U2_ERROR(error);
@@ -77,8 +77,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, faqual2fastq) {
     wchar_t readSequence[MAX_ELEMENT_NAME_LENGTH], importPhredQualities[MAX_ELEMENT_NAME_LENGTH],
         writeSequence[MAX_ELEMENT_NAME_LENGTH];
 
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
     error = addElementToScheme(scheme, L"read-sequence", MAX_ELEMENT_NAME_LENGTH, readSequence);
     CHECK_U2_ERROR(error);
@@ -114,8 +114,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, faqual2fastq) {
 
 IMPLEMENT_TEST(CInterfaceManualTests, msa2clustal) {
     wchar_t readMsa[MAX_ELEMENT_NAME_LENGTH], writeMsa[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
     error = addElementToScheme(scheme, L"read-msa", MAX_ELEMENT_NAME_LENGTH, readMsa);
     CHECK_U2_ERROR(error);
@@ -144,8 +144,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, query2alignment) {
     wchar_t readSequence[MAX_ELEMENT_NAME_LENGTH], query[MAX_ELEMENT_NAME_LENGTH],
         extractAnnotatedSequence[MAX_ELEMENT_NAME_LENGTH], sequencesToMsa[MAX_ELEMENT_NAME_LENGTH],
         writeMsa[MAX_ELEMENT_NAME_LENGTH], filterAnnotations[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
     error = addElementToScheme(scheme, L"read-sequence", MAX_ELEMENT_NAME_LENGTH, readSequence);
     CHECK_U2_ERROR(error);
@@ -215,8 +215,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, query2alignment) {
 
 IMPLEMENT_TEST(CInterfaceManualTests, seq2gen) {
     wchar_t readSequence[MAX_ELEMENT_NAME_LENGTH], writeSequence[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
 
     error = addElementToScheme(scheme, L"read-sequence", MAX_ELEMENT_NAME_LENGTH, readSequence);
@@ -257,8 +257,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, tfbs) {
         multiplexer[MAX_ELEMENT_NAME_LENGTH], siteconSearch[MAX_ELEMENT_NAME_LENGTH],
         wmatrixSearch[MAX_ELEMENT_NAME_LENGTH], siteconRead[MAX_ELEMENT_NAME_LENGTH],
         wmatrixRead[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
 
     error = addElementToScheme(scheme, L"read-sequence", MAX_ELEMENT_NAME_LENGTH, readSequence);
@@ -330,8 +330,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, build_test_HMM) {
     wchar_t readSequence[MAX_ELEMENT_NAME_LENGTH], readMsa[MAX_ELEMENT_NAME_LENGTH],
         hmm2Build[MAX_ELEMENT_NAME_LENGTH], hmm2WriteProfile[MAX_ELEMENT_NAME_LENGTH],
         hmm2Search[MAX_ELEMENT_NAME_LENGTH], writeSequence[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
 
     error = addElementToScheme(scheme, L"read-sequence", MAX_ELEMENT_NAME_LENGTH, readSequence);
@@ -419,8 +419,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, build_test_HMM) {
 IMPLEMENT_TEST(CInterfaceManualTests, search_HMM) {
     wchar_t readSequence[MAX_ELEMENT_NAME_LENGTH], hmm2ReadProfile[MAX_ELEMENT_NAME_LENGTH],
         hmm2Search[MAX_ELEMENT_NAME_LENGTH], writeSequence[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
 
     error = addElementToScheme(scheme, L"read-sequence", MAX_ELEMENT_NAME_LENGTH, readSequence);
@@ -480,8 +480,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, search_TFBS) {
         siteconSearch[MAX_ELEMENT_NAME_LENGTH], siteconSearch1[MAX_ELEMENT_NAME_LENGTH],
         siteconSearch2[MAX_ELEMENT_NAME_LENGTH], siteconRead[MAX_ELEMENT_NAME_LENGTH],
         siteconRead1[MAX_ELEMENT_NAME_LENGTH], siteconRead2[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
 
     error = addElementToScheme(scheme, L"read-sequence", MAX_ELEMENT_NAME_LENGTH, readSequence);
@@ -563,8 +563,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, call_variants) {
     wchar_t readSequence[MAX_ELEMENT_NAME_LENGTH], readAssembly[MAX_ELEMENT_NAME_LENGTH],
         callVariants[MAX_ELEMENT_NAME_LENGTH],
         convertSequence[MAX_ELEMENT_NAME_LENGTH], convertBam[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
 
     error = addElementToScheme(scheme, L"get-file-list", MAX_ELEMENT_NAME_LENGTH, readSequence);
@@ -627,8 +627,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, chip_seq) {
         seqPosId[MAX_ELEMENT_NAME_LENGTH], peak2GeneId[MAX_ELEMENT_NAME_LENGTH],
         conductGoId[MAX_ELEMENT_NAME_LENGTH], writeAnnotations[MAX_ELEMENT_NAME_LENGTH],
         writeAnnotations1[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
 
     error = addElementToScheme(scheme, L"get-file-list", MAX_ELEMENT_NAME_LENGTH, readAnnotations);
@@ -723,8 +723,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, chip_seq_with_control) {
         peak2GeneId[MAX_ELEMENT_NAME_LENGTH], conductGoId[MAX_ELEMENT_NAME_LENGTH],
         multiplexer[MAX_ELEMENT_NAME_LENGTH], writeAnnotations[MAX_ELEMENT_NAME_LENGTH],
         writeAnnotations1[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
 
     error = addElementToScheme(scheme, L"get-file-list", MAX_ELEMENT_NAME_LENGTH, readAnnotations1);
@@ -828,8 +828,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, tuxedo_main) {
     wchar_t getFileList[MAX_ELEMENT_NAME_LENGTH], topHat[MAX_ELEMENT_NAME_LENGTH],
         cufflinks[MAX_ELEMENT_NAME_LENGTH], cuffmerge[MAX_ELEMENT_NAME_LENGTH],
         cuffdiff[MAX_ELEMENT_NAME_LENGTH], filesConversion[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
 
     error = addElementToScheme(scheme, L"get-file-list", MAX_ELEMENT_NAME_LENGTH, getFileList);
@@ -906,8 +906,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, tuxedo_main_paired) {
         cuffmerge[MAX_ELEMENT_NAME_LENGTH], cuffdiff[MAX_ELEMENT_NAME_LENGTH],
         multiplexer[MAX_ELEMENT_NAME_LENGTH], filesConversion1[MAX_ELEMENT_NAME_LENGTH],
         filesConversion2[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
 
     error = addElementToScheme(scheme, L"get-file-list", MAX_ELEMENT_NAME_LENGTH, getFileList1);
@@ -1009,8 +1009,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, tuxedo_multiple_dataset) {
     wchar_t getFileList[MAX_ELEMENT_NAME_LENGTH], readAnnotations[MAX_ELEMENT_NAME_LENGTH],
         topHat[MAX_ELEMENT_NAME_LENGTH], cuffdiff[MAX_ELEMENT_NAME_LENGTH],
         filesConversion[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
 
     error = addElementToScheme(scheme, L"get-file-list", MAX_ELEMENT_NAME_LENGTH, getFileList);
@@ -1075,8 +1075,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, tuxedo_multiple_dataset_paired) {
         readAnnotations[MAX_ELEMENT_NAME_LENGTH], topHat[MAX_ELEMENT_NAME_LENGTH],
         cuffdiff[MAX_ELEMENT_NAME_LENGTH], multiplexer[MAX_ELEMENT_NAME_LENGTH],
         filesConversion1[MAX_ELEMENT_NAME_LENGTH], filesConversion2[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
 
     error = addElementToScheme(scheme, L"get-file-list", MAX_ELEMENT_NAME_LENGTH, getFileList1);
@@ -1164,8 +1164,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, tuxedo_multiple_dataset_paired) {
 IMPLEMENT_TEST(CInterfaceManualTests, tuxedo_single_dataset) {
     wchar_t getFileList[MAX_ELEMENT_NAME_LENGTH], topHat[MAX_ELEMENT_NAME_LENGTH],
         cufflinks[MAX_ELEMENT_NAME_LENGTH], filesConversion[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
 
     error = addElementToScheme(scheme, L"get-file-list", MAX_ELEMENT_NAME_LENGTH, getFileList);
@@ -1220,8 +1220,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, tuxedo_single_dataset_paired) {
         topHat[MAX_ELEMENT_NAME_LENGTH], cufflinks[MAX_ELEMENT_NAME_LENGTH],
         multiplexer[MAX_ELEMENT_NAME_LENGTH], filesConversion1[MAX_ELEMENT_NAME_LENGTH],
         filesConversion2[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
 
     error = addElementToScheme(scheme, L"get-file-list", MAX_ELEMENT_NAME_LENGTH, getFileList1);
@@ -1297,8 +1297,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, tuxedo_single_dataset_paired) {
 IMPLEMENT_TEST(CInterfaceManualTests, find_sequences) {
     wchar_t readSequence[MAX_ELEMENT_NAME_LENGTH], search[MAX_ELEMENT_NAME_LENGTH],
         writeSequence[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
 
     error = addElementToScheme(scheme, L"read-sequence", MAX_ELEMENT_NAME_LENGTH, readSequence);
@@ -1347,8 +1347,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, find_sequences) {
 IMPLEMENT_TEST(CInterfaceManualTests, gene_by_gene_report) {
     wchar_t readSequence[MAX_ELEMENT_NAME_LENGTH], geneByGeneReportId[MAX_ELEMENT_NAME_LENGTH],
         blast[MAX_ELEMENT_NAME_LENGTH], writeSequence[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
 
     error = addElementToScheme(scheme, L"read-sequence", MAX_ELEMENT_NAME_LENGTH, readSequence);
@@ -1401,8 +1401,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, gene_by_gene_report) {
 IMPLEMENT_TEST(CInterfaceManualTests, merge_sequence_annotation) {
     wchar_t readAnnotations[MAX_ELEMENT_NAME_LENGTH], readSequence[MAX_ELEMENT_NAME_LENGTH],
         multiplexer[MAX_ELEMENT_NAME_LENGTH], writeSequence[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
 
     error = addElementToScheme(scheme, L"read-annotations", MAX_ELEMENT_NAME_LENGTH, readAnnotations);
@@ -1450,8 +1450,8 @@ IMPLEMENT_TEST(CInterfaceManualTests, consensus) {
     wchar_t readAssembly[MAX_ELEMENT_NAME_LENGTH];
     wchar_t extractConsensus[MAX_ELEMENT_NAME_LENGTH];
     wchar_t writeSequence[MAX_ELEMENT_NAME_LENGTH];
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createScheme(NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createScheme(nullptr, &scheme);
     CHECK_U2_ERROR(error);
 
     error = addElementToScheme(scheme, L"read-assembly", MAX_ELEMENT_NAME_LENGTH, readAssembly);

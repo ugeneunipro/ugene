@@ -53,7 +53,7 @@ PropertyWidget *GenomicLibraryDelegate::createWizardWidget(U2OpStatus &, QWidget
 void GenomicLibraryDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
     const QVariant value = index.model()->data(index, ConfigurationEditor::ItemValueRole);
     GenomicLibraryPropertyWidget *propertyWidget = qobject_cast<GenomicLibraryPropertyWidget *>(editor);
-    SAFE_POINT(NULL != editor, L10N::nullPointerError("GenomicLibraryPropertyWidget"), );
+    SAFE_POINT(nullptr != editor, L10N::nullPointerError("GenomicLibraryPropertyWidget"), );
     propertyWidget->setValue(value);
 }
 
@@ -68,7 +68,7 @@ PropertyDelegate *GenomicLibraryDelegate::clone() {
 
 void GenomicLibraryDelegate::sl_commit() {
     GenomicLibraryPropertyWidget *editor = qobject_cast<GenomicLibraryPropertyWidget *>(sender());
-    CHECK(editor != NULL, );
+    CHECK(editor != nullptr, );
     emit commitData(editor);
 }
 

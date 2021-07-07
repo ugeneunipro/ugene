@@ -72,7 +72,7 @@ void DotPlotFilesDialog::sl_mergeSecond() {
 // open first file button clicked
 void DotPlotFilesDialog::sl_openFirstFile() {
     LastUsedDirHelper lod("DotPlot first file");
-    lod.url = U2FileDialog::getOpenFileName(NULL, tr("Open first file"), lod.dir, filter);
+    lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Open first file"), lod.dir, filter);
 
     SAFE_POINT(firstFileEdit, "firstFileEdit is NULL", );
     if (!lod.url.isEmpty()) {
@@ -103,7 +103,7 @@ void DotPlotFilesDialog::sl_openSecondFile() {
 
         lod.dir = lodFirst.dir;
     }
-    lod.url = U2FileDialog::getOpenFileName(NULL, tr("Open second file"), lod.dir, filter);
+    lod.url = U2FileDialog::getOpenFileName(nullptr, tr("Open second file"), lod.dir, filter);
 
     SAFE_POINT(secondFileEdit, "secondFileEdit is NULL", );
     if (!lod.url.isEmpty()) {

@@ -49,7 +49,7 @@ namespace U2 {
 QMutex NeighborJoinCalculateTreeTask::runLock;
 
 void createPhyTreeFromPhylipTree(const MultipleSequenceAlignment &ma, node *p, double m, boolean njoin, node *start, PhyNode *root, int bootstrap_repl) {
-    PhyNode *current = NULL;
+    PhyNode *current = nullptr;
 
     if (p == start) {
         current = root;
@@ -116,7 +116,7 @@ void NeighborJoinCalculateTreeTask::run() {
 
     GCOUNTER(cvar, "PhylipNeigborJoin");
 
-    PhyTree phyTree(NULL);
+    PhyTree phyTree(nullptr);
 
     if (inputMA->getNumRows() < 3) {
         setError("Neighbor-Joining runs must have at least 3 species");

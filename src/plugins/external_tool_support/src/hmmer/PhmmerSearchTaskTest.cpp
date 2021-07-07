@@ -60,12 +60,12 @@ static void setDoubleOption(double &to, const QString &str, TaskStateInfo &ti) {
 void GTest_UHMM3Phmmer::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
-    phmmerTask = NULL;
+    phmmerTask = nullptr;
     queryFilename = el.attribute(QUERY_FILENAME_TAG);
     dbFilename = el.attribute(DB_FILENAME_TAG);
 
     setSearchTaskSettings(searchSettings, el, stateInfo);
-    searchSettings.annotationTable = NULL;
+    searchSettings.annotationTable = nullptr;
 
     setDoubleOption(searchSettings.popen, el.attribute(GAP_OPEN_PROBAB_OPTION_TAG), stateInfo);
 
@@ -171,7 +171,7 @@ void GTest_UHMM3Phmmer::setSearchTaskSettings(PhmmerSearchSettings &settings, co
 }
 
 void GTest_UHMM3Phmmer::prepare() {
-    assert(!hasError() && NULL == phmmerTask);
+    assert(!hasError() && nullptr == phmmerTask);
     setAndCheckArgs();
     if (hasError()) {
         return;
@@ -188,7 +188,7 @@ QList<Task *> GTest_UHMM3Phmmer::onSubTaskFinished(Task *subTask) {
     QList<Task *> res;
     if (subTask == phmmerTask) {
         OutputCollector *collector = dynamic_cast<OutputCollector *>(phmmerTask->getListener(0));
-        if (collector != NULL) {
+        if (collector != nullptr) {
             QString hmmSearchLog = collector->getLog();
             //TODO: check non empty log and file existence after writing
             QFile file(searchSettings.workingDir + "/output.txt");

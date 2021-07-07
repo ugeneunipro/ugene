@@ -3248,13 +3248,13 @@ GUI_TEST_CLASS_DEFINITION(test_0040_1) {
 
     // chrom show/hide
     QAbstractButton *showChromsButton = GTAction::button(os, "chromatograms");
-    CHECK_SET_ERR(showChromsButton != NULL, "show/hide chromatograms button was not found");
+    CHECK_SET_ERR(showChromsButton != nullptr, "show/hide chromatograms button was not found");
     GTWidget::click(os, showChromsButton);
     bool chromCheckedState = showChromsButton->isChecked();
 
     // overview show/hide
     QAbstractButton *showOverviewButton = GTAction::button(os, "overview");
-    CHECK_SET_ERR(showOverviewButton != NULL, "overview button was not found");
+    CHECK_SET_ERR(showOverviewButton != nullptr, "overview button was not found");
     GTWidget::click(os, showOverviewButton);
     bool overviewCheckedState = showOverviewButton->isChecked();
 
@@ -3277,15 +3277,15 @@ GUI_TEST_CLASS_DEFINITION(test_0040_1) {
 
     // check saved states
     showChromsButton = GTAction::button(os, "chromatograms");
-    CHECK_SET_ERR(showChromsButton != NULL, "show/hide chromatograms button was not found");
+    CHECK_SET_ERR(showChromsButton != nullptr, "show/hide chromatograms button was not found");
     CHECK_SET_ERR(chromCheckedState == showChromsButton->isChecked(), "Show/hide chromatograms button state was not saved");
 
     showOverviewButton = GTAction::button(os, "overview");
-    CHECK_SET_ERR(showOverviewButton != NULL, "overview button was not found");
+    CHECK_SET_ERR(showOverviewButton != nullptr, "overview button was not found");
     CHECK_SET_ERR(overviewCheckedState == showOverviewButton->isChecked(), "Show/hide overview button state was not saved");
 
     offsetAction = GTUtilsMcaEditor::getOffsetAction(os);
-    CHECK_SET_ERR(offsetAction != NULL, "overview button was not found");
+    CHECK_SET_ERR(offsetAction != nullptr, "overview button was not found");
     CHECK_SET_ERR(offsetCheckedState == offsetAction->isChecked(), "Show/hide offset button state was not saved");
 }
 

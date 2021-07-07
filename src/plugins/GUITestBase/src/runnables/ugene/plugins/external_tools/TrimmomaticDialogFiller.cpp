@@ -107,7 +107,7 @@ TrimmomaticDialogFiller::TrimmomaticDialogFiller(HI::GUITestOpStatus &os, Custom
 #define GT_METHOD_NAME "run"
 void TrimmomaticDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "Dialog not found");
+    GT_CHECK(dialog != nullptr, "Dialog not found");
 
     switch (a) {
         case U2::TrimmomaticDialogFiller::Action::AddSteps:
@@ -126,7 +126,7 @@ void TrimmomaticDialogFiller::commonScenario() {
 
 void TrimmomaticDialogFiller::addSteps() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "Dialog not found");
+    GT_CHECK(dialog != nullptr, "Dialog not found");
 
     for (auto step : qAsConst(addValues)) {
         auto stepString = STEPS.value(step.first);
@@ -176,7 +176,7 @@ void TrimmomaticDialogFiller::addSteps() {
                     GTWidget::click(os, GTWidget::findExactWidget<QPushButton *>(os, "pushButton"));
                     GTGlobals::sleep(200);
                     QWidget *addSettingsDialog = QApplication::activeModalWidget();
-                    GT_CHECK(addSettingsDialog != NULL, "Dialog not found");
+                    GT_CHECK(addSettingsDialog != nullptr, "Dialog not found");
 
                     if (keys.contains(U2::TrimmomaticDialogFiller::TrimmomaticValues::ProvideOptionalSettings)) {
                         auto provide = settings[U2::TrimmomaticDialogFiller::TrimmomaticValues::ProvideOptionalSettings];
@@ -212,7 +212,7 @@ void TrimmomaticDialogFiller::addSteps() {
 
 void TrimmomaticDialogFiller::moveSteps() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "Dialog not found");
+    GT_CHECK(dialog != nullptr, "Dialog not found");
 
     for (auto step : qAsConst(moveValues)) {
         auto stepString = STEPS.value(step.first.first);
@@ -238,7 +238,7 @@ void TrimmomaticDialogFiller::moveSteps() {
 
 void TrimmomaticDialogFiller::removeSteps() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "Dialog not found");
+    GT_CHECK(dialog != nullptr, "Dialog not found");
 
     for (auto step : qAsConst(removeValues)) {
         auto stepString = STEPS.value(step.first);

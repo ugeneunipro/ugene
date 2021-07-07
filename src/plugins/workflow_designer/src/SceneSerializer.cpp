@@ -126,12 +126,12 @@ QString SceneSerializer::xml2scene(const QDomElement &projectElement, WorkflowSc
             return WorkflowView::tr("Invalid content: unknown process type %1").arg(name);
         }
 
-        Actor *proc = proto->createInstance(id, NULL);
+        Actor *proc = proto->createInstance(id, nullptr);
         actorMap[id] = proc;
         proc->setLabel(procElement.attribute(NAME_ATTR));
-        if (NULL != proto->getEditor()) {
+        if (nullptr != proto->getEditor()) {
             ActorConfigurationEditor *actorEd = dynamic_cast<ActorConfigurationEditor *>(proto->getEditor());
-            if (NULL != actorEd) {
+            if (nullptr != actorEd) {
                 ActorConfigurationEditor *editor = dynamic_cast<ActorConfigurationEditor *>(proto->getEditor()->clone());
                 editor->setConfiguration(proc);
                 proc->setEditor(editor);
@@ -153,9 +153,9 @@ QString SceneSerializer::xml2scene(const QDomElement &projectElement, WorkflowSc
     }
     foreach (Actor *proc, actorMap) {
         ActorPrototype *proto = proc->getProto();
-        if (NULL != proto->getEditor()) {
+        if (nullptr != proto->getEditor()) {
             ActorConfigurationEditor *actorEd = dynamic_cast<ActorConfigurationEditor *>(proto->getEditor());
-            if (NULL != actorEd) {
+            if (nullptr != actorEd) {
                 ActorConfigurationEditor *editor = dynamic_cast<ActorConfigurationEditor *>(proto->getEditor()->clone());
                 editor->setConfiguration(proc);
                 proc->setEditor(editor);

@@ -32,7 +32,7 @@ using namespace HI;
 
 #define GT_METHOD_NAME "setRegion"
 void GTRegionSelector::setRegion(HI::GUITestOpStatus &os, RegionSelector *regionSelector, const RegionSelectorSettings &s) {
-    GT_CHECK(regionSelector != NULL, "RegionSelector is NULL");
+    GT_CHECK(regionSelector != nullptr, "RegionSelector is NULL");
 
     CHECK_EXT(!s.isUnset(), uiLog.trace("GT_DEBUG_MESSAGE RegionSelectorSettings isUnset, returning"), );
 

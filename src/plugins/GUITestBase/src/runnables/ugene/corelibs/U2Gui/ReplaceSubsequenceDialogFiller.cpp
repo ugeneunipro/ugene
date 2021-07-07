@@ -54,10 +54,10 @@ ReplaceSubsequenceDialogFiller::ReplaceSubsequenceDialogFiller(HI::GUITestOpStat
 #define GT_METHOD_NAME "commonScenario"
 void ReplaceSubsequenceDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     QPlainTextEdit *plainText = dialog->findChild<QPlainTextEdit *>("sequenceEdit");
-    GT_CHECK(plainText != NULL, "plain text not found");
+    GT_CHECK(plainText != nullptr, "plain text not found");
     //GTKeyboardDriver::keyClick( GTKeyboardDriver::key["a"], Qt::ControlModifier);
     //GTGlobals::sleep();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);

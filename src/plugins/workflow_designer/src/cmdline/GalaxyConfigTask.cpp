@@ -383,7 +383,7 @@ void GalaxyConfigTask::writeToolUnit() {
 ActorPrototype *GalaxyConfigTask::getElementFromActorPrototypeRegistry(const QString &elementName) {
     U2::Workflow::ActorPrototypeRegistry *prototypeRegistry =
         U2::Workflow::WorkflowEnv::getProtoRegistry();
-    assert(NULL != prototypeRegistry);
+    assert(nullptr != prototypeRegistry);
     return prototypeRegistry->getProto(elementName);
 }
 
@@ -406,7 +406,7 @@ bool GalaxyConfigTask::divideElementsByType() {
         const QString attributeName = elementProperties.value().at(0);
 
         ActorPrototype *currElement = getElementFromActorPrototypeRegistry(elementName);
-        assert(NULL != currElement);
+        assert(nullptr != currElement);
 
         const QList<Attribute *> elementAttributes = currElement->getAttributes();
         if (elementAttributes.isEmpty()) {
@@ -480,7 +480,7 @@ void GalaxyConfigTask::getConstraint(const QString &typeName, QString &resultTyp
 
 bool GalaxyConfigTask::getResultType(const ActorPrototype &currElement, QString &resultType) {
     PortDescriptor *port = currElement.getPortDesciptors().first();
-    assert(NULL != port);
+    assert(nullptr != port);
 
     const QString formatType = port->getId();
     getConstraint(formatType, resultType);
@@ -493,7 +493,7 @@ bool GalaxyConfigTask::getResultType(const ActorPrototype &currElement, QString 
 
 void GalaxyConfigTask::writeFormatAttribute(const QString &resultType) {
     DocumentFormatRegistry *docFormatRegistry = AppContext::getDocumentFormatRegistry();
-    assert(NULL != docFormatRegistry);
+    assert(nullptr != docFormatRegistry);
 
     DocumentFormatConstraints constraint;
     constraint.supportedObjectTypes.insert(resultType);
@@ -546,7 +546,7 @@ bool GalaxyConfigTask::writeInputElements() {
         galaxyConfigOutput.writeAttribute(Constants::TYPE_ATTR, DATA);
 
         ActorPrototype *currElement = getElementFromActorPrototypeRegistry(elementName);
-        assert(NULL != currElement);
+        assert(nullptr != currElement);
 
         QString resultType = QString();
         CHECK(getResultType(*currElement, resultType), false);
@@ -561,7 +561,7 @@ bool GalaxyConfigTask::writeInputElements() {
 
 bool GalaxyConfigTask::isDelegateComboBox(PropertyDelegate *pd) {
     ComboBoxDelegate *cbd = dynamic_cast<ComboBoxDelegate *>(pd);
-    if (cbd != NULL) {
+    if (cbd != nullptr) {
         return true;
     }
     return false;
@@ -569,7 +569,7 @@ bool GalaxyConfigTask::isDelegateComboBox(PropertyDelegate *pd) {
 
 bool GalaxyConfigTask::isDelegateComboBoxWithChecks(PropertyDelegate *pd) {
     ComboBoxWithChecksDelegate *cbwcd = dynamic_cast<ComboBoxWithChecksDelegate *>(pd);
-    if (cbwcd != NULL) {
+    if (cbwcd != nullptr) {
         return true;
     }
     return false;
@@ -577,11 +577,11 @@ bool GalaxyConfigTask::isDelegateComboBoxWithChecks(PropertyDelegate *pd) {
 
 bool GalaxyConfigTask::isDelegateSpinBox(PropertyDelegate *pd) {
     SpinBoxDelegate *sbd = dynamic_cast<SpinBoxDelegate *>(pd);
-    if (sbd != NULL) {
+    if (sbd != nullptr) {
         return true;
     }
     DoubleSpinBoxDelegate *dsbd = dynamic_cast<DoubleSpinBoxDelegate *>(pd);
-    if (dsbd != NULL) {
+    if (dsbd != nullptr) {
         return true;
     }
     return false;
@@ -589,14 +589,14 @@ bool GalaxyConfigTask::isDelegateSpinBox(PropertyDelegate *pd) {
 
 bool GalaxyConfigTask::isDelegateStringList(PropertyDelegate *pd) {
     StringListDelegate *sld = dynamic_cast<StringListDelegate *>(pd);
-    if (sld != NULL) {
+    if (sld != nullptr) {
         return true;
     }
     return false;
 }
 
 bool GalaxyConfigTask::tryToWriteSimpleType(const PropertyDelegate *pd, QString &attributeType) {
-    if (pd != NULL) {
+    if (pd != nullptr) {
         return false;
     }
     if (attributeType == BaseTypes::BOOL_TYPE()->getId()) {
@@ -656,7 +656,7 @@ void GalaxyConfigTask::writeMinAndMaxAttributes(const PropertyDelegate &pd) {
 
 bool GalaxyConfigTask::tryToWriteComplexType(PropertyDelegate *pd, const QString & /*attributeName*/) {
     QString attributeType = QString();
-    assert(pd != NULL);
+    assert(pd != nullptr);
     if (isDelegateComboBox(pd)) {
         attributeType = "select";
         galaxyConfigOutput.writeAttribute(Constants::TYPE_ATTR, attributeType);
@@ -693,11 +693,11 @@ bool GalaxyConfigTask::tryToWriteComplexType(PropertyDelegate *pd, const QString
 bool GalaxyConfigTask::writeTypeForOptionElement(const QStringList &elementParameters, const ActorPrototype &element) {
     const QString attributeName = elementParameters.at(0);
     Attribute *elementAttribute = element.getAttribute(attributeName);
-    assert(elementAttribute != NULL);
+    assert(elementAttribute != nullptr);
 
     ConfigurationEditor *editor = element.getEditor();
-    PropertyDelegate *pd = NULL;
-    if (editor != NULL) {
+    PropertyDelegate *pd = nullptr;
+    if (editor != nullptr) {
         pd = editor->getDelegate(attributeName);
     }
 
@@ -727,7 +727,7 @@ bool GalaxyConfigTask::writeOptionElements() {
         galaxyConfigOutput.writeAttribute(Constants::NAME_ATTR, aliasName);
 
         ActorPrototype *currElement = getElementFromActorPrototypeRegistry(elementName);
-        assert(NULL != currElement);
+        assert(nullptr != currElement);
 
         writeLabelAttribute((currAliasIterator).value(), *currElement);
         CHECK(writeTypeForOptionElement((currAliasIterator).value(), *currElement), false);
@@ -748,7 +748,7 @@ bool GalaxyConfigTask::writeInputsUnit() {
 
 void GalaxyConfigTask::writeFormatAttributeForOutputElement(const QString &resultType) {
     DocumentFormatRegistry *docFormatRegistry = AppContext::getDocumentFormatRegistry();
-    assert(NULL != docFormatRegistry);
+    assert(nullptr != docFormatRegistry);
 
     DocumentFormatConstraints constraint;
     constraint.supportedObjectTypes.insert(resultType);
@@ -770,9 +770,9 @@ bool GalaxyConfigTask::checkDocumentFormatAttribute(const ActorPrototype &elemen
 void GalaxyConfigTask::writeChangeFormatAttribute(const QString &aliasName, const ActorPrototype &element) {
     galaxyConfigOutput.writeStartElement(CHANGE_FORMAT);
 
-    CHECK(NULL != element.getEditor(), );
+    CHECK(nullptr != element.getEditor(), );
     PropertyDelegate *pd = element.getEditor()->getDelegate(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
-    assert(NULL != pd);
+    assert(nullptr != pd);
 
     QVariantMap items;
     pd->getItems(items);
@@ -827,7 +827,7 @@ bool GalaxyConfigTask::writeOutputsUnit() {
                       aliasName = (currAliasIterator).value().at(1);
 
         ActorPrototype *currElement = getElementFromActorPrototypeRegistry(elementName);
-        assert(NULL != currElement);
+        assert(nullptr != currElement);
 
         QString resultType = QString();
         CHECK(getResultType(*currElement, resultType), false);

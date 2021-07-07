@@ -71,7 +71,7 @@ void GalaxyConfigConfigurationDialogImpl::sl_destinationToolButtonClicked() {
 
 bool GalaxyConfigConfigurationDialogImpl::createGalaxyConfigTask() {
     Task *task = new GalaxyConfigTask(schemePath, ugenePathLineEdit->text(), galaxyPathLineEdit->text(), destinationPathLineEdit->text());
-    if (task != NULL) {
+    if (task != nullptr) {
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
         return true;
     }

@@ -66,7 +66,7 @@ static const QString WIDTH("width");
 /* Worker */
 /************************************************************************/
 ConservationPlotWorker::ConservationPlotWorker(Actor *p)
-    : BaseWorker(p), inChannel(NULL) {
+    : BaseWorker(p), inChannel(nullptr) {
 }
 
 void ConservationPlotWorker::init() {
@@ -89,7 +89,7 @@ Task *ConservationPlotWorker::tick() {
     }
 
     if (!inChannel->isEnded()) {
-        return NULL;
+        return nullptr;
     }
 
     ConservationPlotSettings settings = createConservationPlotSettings(os);
@@ -106,7 +106,7 @@ Task *ConservationPlotWorker::tick() {
         setDone();
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void ConservationPlotWorker::cleanup() {
@@ -162,7 +162,7 @@ QString ConservationPlotComboBoxWithUrlsDelegate::getAttributeName() {
 
 void ConservationPlotWorkerFactory::init() {
     //init data path
-    U2DataPath *dataPath = NULL;
+    U2DataPath *dataPath = nullptr;
     U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
     if (dpr) {
         U2DataPath *dp = dpr->getDataPathByName(ConservationPlotSupport::CONSERVATION_DATA_NAME);
@@ -214,7 +214,7 @@ void ConservationPlotWorkerFactory::init() {
         attrs << new Attribute(outFile, BaseTypes::STRING_TYPE(), true, QVariant(""));
         attrs << new Attribute(titleDescr, BaseTypes::STRING_TYPE(), true, QVariant("Average Phastcons around the Center of Sites"));
         attrs << new Attribute(labelDescr, BaseTypes::STRING_TYPE(), true, QVariant("Conservation_at_peak_summits"));
-        Attribute *assemblyVerAttr = NULL;
+        Attribute *assemblyVerAttr = nullptr;
         if (dataPath) {
             const QList<QString> &dataNames = dataPath->getDataNames();
             if (!dataNames.isEmpty()) {

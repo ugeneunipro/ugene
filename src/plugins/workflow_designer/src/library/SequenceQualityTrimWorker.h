@@ -35,7 +35,7 @@ typedef PrompterBase<SequenceQualityTrimPrompter> SequenceQualityTrimBase;
 class SequenceQualityTrimPrompter : public SequenceQualityTrimBase {
     Q_OBJECT
 public:
-    SequenceQualityTrimPrompter(Actor *actor = NULL);
+    SequenceQualityTrimPrompter(Actor *actor = nullptr);
 
 private:
     QString composeRichDoc();

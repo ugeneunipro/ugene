@@ -32,7 +32,7 @@ namespace Workflow {
 class GalaxyConfigConfigurationDialogImpl : public QDialog, public Ui_GalaxyConfigConfigurationDialog {
     Q_OBJECT
 public:
-    GalaxyConfigConfigurationDialogImpl(const QString &schemePath, QWidget *p = NULL);
+    GalaxyConfigConfigurationDialogImpl(const QString &schemePath, QWidget *p = nullptr);
     bool createGalaxyConfigTask();
 
 private:

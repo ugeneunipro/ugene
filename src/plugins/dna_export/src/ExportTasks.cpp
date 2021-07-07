@@ -55,7 +55,7 @@ namespace U2 {
 
 AddExportedDocumentAndOpenViewTask::AddExportedDocumentAndOpenViewTask(DocumentProviderTask *t)
     : Task("Export sequence to document", TaskFlags_NR_FOSCOE),
-      loadTask(NULL) {
+      loadTask(nullptr) {
     exportTask = t;
     addSubTask(exportTask);
 }
@@ -75,7 +75,7 @@ QList<Task *> AddExportedDocumentAndOpenViewTask::onSubTaskFinished(Task *subTas
             }
         }
         loadTask = LoadDocumentTask::getDefaultLoadDocTask(doc->getURL());
-        CHECK_EXT(NULL != loadTask, setError(tr("Can't create load task")), subTasks);
+        CHECK_EXT(nullptr != loadTask, setError(tr("Can't create load task")), subTasks);
         subTasks << loadTask;
     }
     if (subTask == loadTask) {
@@ -223,15 +223,15 @@ void ExportMSA2MSATask::run() {
 
 ExportDNAChromatogramTask::ExportDNAChromatogramTask(DNAChromatogramObject *_obj, const ExportChromatogramTaskSettings &_settings)
     : DocumentProviderTask(tr("Export chromatogram to SCF"), TaskFlags_NR_FOSCOE),
-      cObj(_obj), settings(_settings), loadTask(NULL) {
+      cObj(_obj), settings(_settings), loadTask(nullptr) {
     GCOUNTER(cvar, "ExportDNAChromatogramTask");
     setVerboseLogMode(true);
 }
 
 void ExportDNAChromatogramTask::prepare() {
     Document *d = cObj->getDocument();
-    assert(d != NULL);
-    if (d == NULL) {
+    assert(d != nullptr);
+    if (d == nullptr) {
         stateInfo.setError("Chromatogram object document is not found!");
         return;
     }
@@ -245,7 +245,7 @@ void ExportDNAChromatogramTask::prepare() {
 
     GObject *resObj = d->findGObjectByName(seqObjName);
     U2SequenceObject *sObj = qobject_cast<U2SequenceObject *>(resObj);
-    assert(sObj != NULL);
+    assert(sObj != nullptr);
 
     DNAChromatogram cd = cObj->getChromatogram();
     QByteArray seq = sObj->getWholeSequenceData(stateInfo);

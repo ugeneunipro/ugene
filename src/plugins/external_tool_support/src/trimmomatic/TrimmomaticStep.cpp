@@ -42,7 +42,7 @@ const QString &TrimmomaticStepFactory::getId() const {
 }
 
 TrimmomaticStepsRegistry *TrimmomaticStepsRegistry::getInstance() {
-    if (NULL == instance) {
+    if (nullptr == instance) {
         instance.reset(new TrimmomaticStepsRegistry());
     }
     return instance.data();
@@ -54,7 +54,7 @@ void TrimmomaticStepsRegistry::releaseInstance() {
 
 TrimmomaticStep::TrimmomaticStep(const QString &_id)
     : id(_id),
-      settingsWidget(NULL) {
+      settingsWidget(nullptr) {
 }
 
 TrimmomaticStep::~TrimmomaticStep() {
@@ -89,7 +89,7 @@ bool TrimmomaticStep::validate() const {
 }
 
 TrimmomaticStepSettingsWidget *TrimmomaticStep::getSettingsWidget() const {
-    if (NULL == settingsWidget) {
+    if (nullptr == settingsWidget) {
         settingsWidget = createWidget();
         settingsWidget->setState(widgetState);
         settingsWidget->setVisible(false);
@@ -100,7 +100,7 @@ TrimmomaticStepSettingsWidget *TrimmomaticStep::getSettingsWidget() const {
 }
 
 void TrimmomaticStep::sl_widgetDestroyed() {
-    settingsWidget = NULL;
+    settingsWidget = nullptr;
 }
 
 void TrimmomaticStep::sl_widgetIsAboutToBeDestroyed(const QVariantMap &state) {
@@ -108,7 +108,7 @@ void TrimmomaticStep::sl_widgetIsAboutToBeDestroyed(const QVariantMap &state) {
 }
 
 TrimmomaticStepSettingsWidget::TrimmomaticStepSettingsWidget()
-    : QWidget(NULL) {
+    : QWidget(nullptr) {
 }
 
 }    // namespace LocalWorkflow

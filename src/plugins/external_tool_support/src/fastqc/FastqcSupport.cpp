@@ -77,10 +77,10 @@ void FastQCSupport::sl_javaPathChanged() {
 
 ExternalTool *FastQCSupport::getJava() {
     ExternalToolRegistry *registry = AppContext::getExternalToolRegistry();
-    SAFE_POINT(registry != nullptr, L10N::nullPointerError("External tool registry"), NULL);
+    SAFE_POINT(registry != nullptr, L10N::nullPointerError("External tool registry"), nullptr);
 
     ExternalTool *java = registry->getById(JavaSupport::ET_JAVA_ID);
-    SAFE_POINT(java != nullptr, L10N::nullPointerError("Java tool"), NULL);
+    SAFE_POINT(java != nullptr, L10N::nullPointerError("Java tool"), nullptr);
 
     return java;
 }

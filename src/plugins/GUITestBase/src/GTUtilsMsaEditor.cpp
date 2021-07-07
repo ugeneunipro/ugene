@@ -114,7 +114,7 @@ MsaEditorWgt *GTUtilsMsaEditor::getEditorUi(GUITestOpStatus &os) {
 MaGraphOverview *GTUtilsMsaEditor::getGraphOverview(GUITestOpStatus &os) {
     QWidget *activeWindow = getActiveMsaEditorWindow(os);
     MaGraphOverview *result = GTWidget::findExactWidget<MaGraphOverview *>(os, MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME + QString("_graph"), activeWindow);
-    GT_CHECK_RESULT(NULL != result, "MaGraphOverview is not found", NULL);
+    GT_CHECK_RESULT(nullptr != result, "MaGraphOverview is not found", nullptr);
     return result;
 }
 #undef GT_METHOD_NAME
@@ -123,7 +123,7 @@ MaGraphOverview *GTUtilsMsaEditor::getGraphOverview(GUITestOpStatus &os) {
 MaSimpleOverview *GTUtilsMsaEditor::getSimpleOverview(GUITestOpStatus &os) {
     QWidget *activeWindow = getActiveMsaEditorWindow(os);
     MaSimpleOverview *result = GTWidget::findExactWidget<MaSimpleOverview *>(os, MSAEditorOverviewArea::OVERVIEW_AREA_OBJECT_NAME + QString("_simple"), activeWindow);
-    GT_CHECK_RESULT(NULL != result, "MaSimpleOverview is not found", NULL);
+    GT_CHECK_RESULT(nullptr != result, "MaSimpleOverview is not found", nullptr);
     return result;
 }
 #undef GT_METHOD_NAME
@@ -184,11 +184,11 @@ QRect GTUtilsMsaEditor::getSequenceNameRect(GUITestOpStatus &os, int viewRowInde
 #define GT_METHOD_NAME "getColumnHeaderRect"
 QRect GTUtilsMsaEditor::getColumnHeaderRect(GUITestOpStatus &os, int column) {
     MSAEditorConsensusArea *consensusArea = getConsensusArea(os);
-    GT_CHECK_RESULT(NULL != consensusArea, "Consensus area is NULL", QRect());
+    GT_CHECK_RESULT(nullptr != consensusArea, "Consensus area is NULL", QRect());
     MSAEditorSequenceArea *sequenceArea = getSequenceArea(os);
-    GT_CHECK_RESULT(NULL != sequenceArea, "Sequence area is NULL", QRect());
+    GT_CHECK_RESULT(nullptr != sequenceArea, "Sequence area is NULL", QRect());
     MSAEditor *editor = getEditor(os);
-    GT_CHECK_RESULT(NULL != editor, "MSA Editor is NULL", QRect());
+    GT_CHECK_RESULT(nullptr != editor, "MSA Editor is NULL", QRect());
 
     BaseWidthController *baseWidthController = editor->getUI()->getBaseWidthController();
     return QRect(consensusArea->mapToGlobal(QPoint(baseWidthController->getBaseScreenOffset(column),

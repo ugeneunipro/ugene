@@ -176,8 +176,8 @@ void glDrawHalfWorm(const Vector3D &p0, const Vector3D &p1, const Vector3D &p2, 
     int i, j, k, m, offset = 0;
     Vector3D R1, R2, Qt, p, dQt, H, V;
     double len, MG[4][3], T[4], t, prevlen = 0.0, cosj, sinj;
-    GLfloat *Nx = NULL, *Ny = NULL, *Nz = NULL, *Cx = NULL, *Cy = NULL, *Cz = NULL,
-            *pNx = NULL, *pNy = NULL, *pNz = NULL, *pCx = NULL, *pCy = NULL, *pCz = NULL, *tmp;
+    GLfloat *Nx = nullptr, *Ny = nullptr, *Nz = nullptr, *Cx = nullptr, *Cy = nullptr, *Cz = nullptr,
+            *pNx = nullptr, *pNy = nullptr, *pNz = nullptr, *pCx = nullptr, *pCy = nullptr, *pCz = nullptr, *tmp;
 
     /*
     * The Hermite matrix Mh.
@@ -206,7 +206,7 @@ void glDrawHalfWorm(const Vector3D &p0, const Vector3D &p1, const Vector3D &p2, 
     }
     */
 
-    GLfloat *fblock = NULL;
+    GLfloat *fblock = nullptr;
 
     /* First, calculate the coordinate points of the center of the worm,
     * using the Kochanek-Bartels variant of the Hermite curve.

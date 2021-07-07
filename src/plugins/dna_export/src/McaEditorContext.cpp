@@ -38,9 +38,9 @@ McaEditorContext::McaEditorContext(QObject *parent)
 
 void McaEditorContext::sl_exportMca2Msa() {
     GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender());
-    SAFE_POINT(NULL != action, "action is NULL", );
+    SAFE_POINT(nullptr != action, "action is NULL", );
     McaEditor *mcaEditor = qobject_cast<McaEditor *>(action->getObjectView());
-    SAFE_POINT(NULL != mcaEditor, "Mca Editor is NULL", );
+    SAFE_POINT(nullptr != mcaEditor, "Mca Editor is NULL", );
 
     MultipleChromatogramAlignmentObject *mcaObject = mcaEditor->getMaObject();
     ExportUtils::launchExportMca2MsaTask(mcaObject);
@@ -48,8 +48,8 @@ void McaEditorContext::sl_exportMca2Msa() {
 
 void McaEditorContext::initViewContext(GObjectView *view) {
     McaEditor *mcaEditor = qobject_cast<McaEditor *>(view);
-    SAFE_POINT(NULL != mcaEditor, "Mca Editor is NULL", );
-    CHECK(NULL != mcaEditor->getMaObject(), );
+    SAFE_POINT(nullptr != mcaEditor, "Mca Editor is NULL", );
+    CHECK(nullptr != mcaEditor->getMaObject(), );
 
     GObjectViewAction *action = new GObjectViewAction(this, view, tr("Export alignment without chromatograms..."));
     connect(action, SIGNAL(triggered()), SLOT(sl_exportMca2Msa()));
@@ -58,14 +58,14 @@ void McaEditorContext::initViewContext(GObjectView *view) {
 
 void McaEditorContext::buildStaticOrContextMenu(GObjectView *view, QMenu *menu) {
     McaEditor *mcaEditor = qobject_cast<McaEditor *>(view);
-    SAFE_POINT(NULL != mcaEditor, "Mca Editor is NULL", );
-    SAFE_POINT(NULL != menu, "Menu is NULL", );
-    CHECK(NULL != mcaEditor->getMaObject(), );
+    SAFE_POINT(nullptr != mcaEditor, "Mca Editor is NULL", );
+    SAFE_POINT(nullptr != menu, "Menu is NULL", );
+    CHECK(nullptr != mcaEditor->getMaObject(), );
 
     QList<GObjectViewAction *> list = getViewActions(view);
     SAFE_POINT(1 == list.size(), "List size is incorrect", );
     QMenu *alignmentMenu = GUIUtils::findSubMenu(menu, MCAE_MENU_ALIGNMENT);
-    SAFE_POINT(alignmentMenu != NULL, "menu 'Alignment' is NULL", );
+    SAFE_POINT(alignmentMenu != nullptr, "menu 'Alignment' is NULL", );
     alignmentMenu->addAction(list.first());
 }
 

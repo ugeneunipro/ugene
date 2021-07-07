@@ -231,7 +231,7 @@ Task *CustomPatternAutoAnnotationUpdater::createAutoAnnotationsUpdateTask(const 
 }
 
 bool CustomPatternAutoAnnotationUpdater::checkConstraints(const AutoAnnotationConstraints &constraints) {
-    if (constraints.alphabet == NULL) {
+    if (constraints.alphabet == nullptr) {
         return false;
     }
 

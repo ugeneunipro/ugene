@@ -180,10 +180,10 @@ void EnsembleClassificationWorkerFactory::cleanup() {
 /************************************************************************/
 EnsembleClassificationWorker::EnsembleClassificationWorker(Actor *a)
     : BaseWorker(a, false),
-      input1(NULL),
-      input2(NULL),
-      input3(NULL),
-      output(NULL),
+      input1(nullptr),
+      input2(nullptr),
+      input3(nullptr),
+      output(nullptr),
       tripleInput(false) {
 }
 
@@ -228,10 +228,10 @@ void EnsembleClassificationWorker::init() {
     input3 = ports.value(INPUT_PORT3);
     output = ports.value(OUTPUT_PORT);
 
-    SAFE_POINT(NULL != input1, QString("Port with id '%1' is NULL").arg(INPUT_PORT1), );
-    SAFE_POINT(NULL != input2, QString("Port with id '%1' is NULL").arg(INPUT_PORT2), );
-    SAFE_POINT(NULL != input3, QString("Port with id '%1' is NULL").arg(INPUT_PORT3), );
-    SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(OUTPUT_PORT), );
+    SAFE_POINT(nullptr != input1, QString("Port with id '%1' is NULL").arg(INPUT_PORT1), );
+    SAFE_POINT(nullptr != input2, QString("Port with id '%1' is NULL").arg(INPUT_PORT2), );
+    SAFE_POINT(nullptr != input3, QString("Port with id '%1' is NULL").arg(INPUT_PORT3), );
+    SAFE_POINT(nullptr != output, QString("Port with id '%1' is NULL").arg(OUTPUT_PORT), );
 
     tripleInput = getValue<int>(NUMBER_OF_TOOLS) == 3;
 }
@@ -325,12 +325,12 @@ Task *EnsembleClassificationWorker::tick() {
         return new FailTask(error);
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void EnsembleClassificationWorker::sl_taskFinished(Task *t) {
     EnsembleClassificationTask *task = qobject_cast<EnsembleClassificationTask *>(t);
-    SAFE_POINT(NULL != task, "Invalid task is encountered", );
+    SAFE_POINT(nullptr != task, "Invalid task is encountered", );
     if (!task->isFinished() || task->hasError() || task->isCanceled()) {
         return;
     }

@@ -49,7 +49,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
         TestRunnerPlugin *plug = new TestRunnerPlugin();
         return plug;
     }
-    return NULL;
+    return nullptr;
 }
 
 TestRunnerPlugin::TestRunnerPlugin()
@@ -143,9 +143,9 @@ void TestRunnerPlugin::sl_startTestRunner() {
 //////////////////////////////////////////////////////////////////////////
 // service
 TestRunnerService::TestRunnerService()
-    : Service(Service_TestRunner, tr("Test runner"), tr("Service to support UGENE embedded testing")), env(NULL) {
-    windowAction = NULL;
-    view = NULL;
+    : Service(Service_TestRunner, tr("Test runner"), tr("Service to support UGENE embedded testing")), env(nullptr) {
+    windowAction = nullptr;
+    view = nullptr;
 }
 
 TestRunnerService::~TestRunnerService() {
@@ -180,26 +180,26 @@ void TestRunnerService::serviceStateChangedCallback(ServiceState oldState, bool 
         connect(windowAction, SIGNAL(triggered()), SLOT(sl_showWindow()));
         AppContext::getMainWindow()->getTopLevelMenu(MWMENU_TOOLS)->addAction(windowAction);
     } else {
-        assert(windowAction != NULL);
+        assert(windowAction != nullptr);
         delete windowAction;
-        windowAction = NULL;
+        windowAction = nullptr;
 
         saveSuites();
         saveEnv();
         deallocateSuites();
         delete env;
-        env = NULL;
+        env = nullptr;
 
-        if (view != NULL) {
+        if (view != nullptr) {
             AppContext::getMainWindow()->getMDIManager()->closeMDIWindow(view);
-            assert(view == NULL);
+            assert(view == nullptr);
         }
     }
 }
 
 void TestRunnerService::sl_showWindow() {
     assert(isEnabled());
-    if (view == NULL) {
+    if (view == nullptr) {
         view = new TestViewController(this);
         view->installEventFilter(this);
         AppContext::getMainWindow()->getMDIManager()->addMDIWindow(view);
@@ -209,7 +209,7 @@ void TestRunnerService::sl_showWindow() {
 
 bool TestRunnerService::eventFilter(QObject *obj, QEvent *event) {
     if (event->type() == QEvent::Close && obj == view) {
-        view = NULL;
+        view = nullptr;
     }
     return QObject::eventFilter(obj, event);
 }
@@ -251,7 +251,7 @@ GTestSuite *TestRunnerService::findTestSuiteByURL(const QString &url) {
             return t;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void TestRunnerService::readBuiltInVars() {

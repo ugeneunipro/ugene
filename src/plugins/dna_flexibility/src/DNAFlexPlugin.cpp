@@ -66,7 +66,7 @@ void DNAFlexViewContext::sl_showDNAFlexDialog() {
     assert(annotView);
 
     ADVSequenceObjectContext *seqCtx = annotView->getActiveSequenceContext();
-    SAFE_POINT(seqCtx != NULL, "no sequence to perform flex search", );
+    SAFE_POINT(seqCtx != nullptr, "no sequence to perform flex search", );
 
     const DNAAlphabet *alphabet = seqCtx->getAlphabet();
     SAFE_POINT(alphabet->isNucleic(), "alphabet is not nucleic, dialog should not have been invoked", );
@@ -105,7 +105,7 @@ void DNAFlexViewContext::initViewContext(GObjectView *view) {
 
 void DNAFlexViewContext::sl_sequenceWidgetAdded(ADVSequenceWidget *_sequenceWidget) {
     ADVSingleSequenceWidget *sequenceWidget = qobject_cast<ADVSingleSequenceWidget *>(_sequenceWidget);
-    if (sequenceWidget == NULL || sequenceWidget->getSequenceObject() == NULL) {
+    if (sequenceWidget == nullptr || sequenceWidget->getSequenceObject() == nullptr) {
         return;
     }
 

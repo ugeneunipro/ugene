@@ -55,7 +55,7 @@ ExportProjectDialogController::ExportProjectDialogController(QWidget *p, const Q
     projectFilePath = fixProjectFile(defaultProjectFilePath);
     projectFilePathEdit->setText(projectFilePath);
     Project *proj = AppContext::getProject();
-    if (proj == NULL || !proj->isItemModified() || proj->getProjectURL().isEmpty()) {
+    if (proj == nullptr || !proj->isItemModified() || proj->getProjectURL().isEmpty()) {
         warningLabel->setVisible(false);
     }
     connect(fileSelectButton, SIGNAL(clicked()), this, SLOT(sl_onFileSelectButton()));

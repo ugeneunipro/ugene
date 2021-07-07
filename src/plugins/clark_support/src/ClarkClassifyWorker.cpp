@@ -129,12 +129,12 @@ bool ClarkClassifyValidator::validateRefseqAvailability(const Actor *actor, Noti
     const QString databaseUrl = actor->getParameter(ClarkClassifyWorkerFactory::DB_URL)->getAttributeValueWithoutScript<QString>();
 
     U2DataPath *clarkBacteriaViralDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_DATA_ID);
-    if (NULL != clarkBacteriaViralDataPath && clarkBacteriaViralDataPath->isValid()) {
+    if (nullptr != clarkBacteriaViralDataPath && clarkBacteriaViralDataPath->isValid()) {
         isDefaultBacterialViralDatabase = (databaseUrl == clarkBacteriaViralDataPath->getPathByName(NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_ITEM_ID));
     }
 
     U2DataPath *clarkViralDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_DATA_ID);
-    if (NULL != clarkViralDataPath && clarkViralDataPath->isValid()) {
+    if (nullptr != clarkViralDataPath && clarkViralDataPath->isValid()) {
         isDefaultViralDatabase = (databaseUrl == clarkViralDataPath->getPathByName(NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_ITEM_ID));
     }
 
@@ -152,7 +152,7 @@ bool ClarkClassifyValidator::validateRefseqAvailability(const Actor *actor, Noti
 
 bool ClarkClassifyValidator::checkRefseqAvailability(const Actor *actor, NotificationsList &notificationList, const QString &dataPathId) const {
     U2DataPath *refseqDataPath = AppContext::getDataPathRegistry()->getDataPathByName(dataPathId);
-    const bool isValid = (NULL != refseqDataPath && refseqDataPath->isValid());
+    const bool isValid = (nullptr != refseqDataPath && refseqDataPath->isValid());
     if (!isValid) {
         notificationList << WorkflowNotification(tr("Reference database for these CLARK settings is not available. RefSeq data are required to build it."), actor->getId());
     }
@@ -297,11 +297,11 @@ void ClarkClassifyWorkerFactory::init() {
 
         QString clarkDatabasePath;
         U2DataPath *clarkBacteriaViralDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_DATA_ID);
-        if (NULL != clarkBacteriaViralDataPath && clarkBacteriaViralDataPath->isValid()) {
+        if (nullptr != clarkBacteriaViralDataPath && clarkBacteriaViralDataPath->isValid()) {
             clarkDatabasePath = clarkBacteriaViralDataPath->getPathByName(NgsReadsClassificationPlugin::CLARK_BACTERIAL_VIRAL_DATABASE_ITEM_ID);
         } else {
             U2DataPath *clarkViralDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_DATA_ID);
-            if (NULL != clarkViralDataPath && clarkViralDataPath->isValid()) {
+            if (nullptr != clarkViralDataPath && clarkViralDataPath->isValid()) {
                 clarkDatabasePath = clarkViralDataPath->getPathByName(NgsReadsClassificationPlugin::CLARK_VIRAL_DATABASE_ITEM_ID);
             }
         }
@@ -410,7 +410,7 @@ void ClarkClassifyWorkerFactory::cleanup() {
 /* ClarkClassifyWorker */
 /************************************************************************/
 ClarkClassifyWorker::ClarkClassifyWorker(Actor *a)
-    : BaseWorker(a, false), input(NULL), output(NULL), paired(false) {
+    : BaseWorker(a, false), input(nullptr), output(nullptr), paired(false) {
 }
 
 void ClarkClassifyWorker::init() {
@@ -419,8 +419,8 @@ void ClarkClassifyWorker::init() {
     input = ports.value(/*paired ? PAIRED_INPUT_PORT :*/ ClarkClassifyWorkerFactory::INPUT_PORT);
     output = ports.value(ClarkClassifyWorkerFactory::OUTPUT_PORT);
 
-    SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(ClarkClassifyWorkerFactory::INPUT_PORT), );
-    SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(ClarkClassifyWorkerFactory::OUTPUT_PORT), );
+    SAFE_POINT(nullptr != input, QString("Port with id '%1' is NULL").arg(ClarkClassifyWorkerFactory::INPUT_PORT), );
+    SAFE_POINT(nullptr != output, QString("Port with id '%1' is NULL").arg(ClarkClassifyWorkerFactory::OUTPUT_PORT), );
 
     output->addComplement(input);
     input->addComplement(output);
@@ -491,12 +491,12 @@ Task *ClarkClassifyWorker::tick() {
         output->setEnded();
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void ClarkClassifyWorker::sl_taskFinished(Task *t) {
     ClarkClassifyTask *task = qobject_cast<ClarkClassifyTask *>(t);
-    SAFE_POINT(NULL != task, "Invalid task is encountered", );
+    SAFE_POINT(nullptr != task, "Invalid task is encountered", );
     if (!task->isFinished() || task->hasError() || task->isCanceled()) {
         return;
     }

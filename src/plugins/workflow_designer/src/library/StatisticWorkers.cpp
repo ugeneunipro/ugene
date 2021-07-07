@@ -112,13 +112,13 @@ Task *DNAStatWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler seqId = qm.value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        if (NULL == seqObj.data()) {
-            return NULL;
+        if (nullptr == seqObj.data()) {
+            return nullptr;
         }
         U2OpStatusImpl os;
         DNASequence dna = seqObj->getWholeSequence(os);
@@ -167,7 +167,7 @@ Task *DNAStatWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 float DNAStatWorker::calcGCContent(const QByteArray &seq) {

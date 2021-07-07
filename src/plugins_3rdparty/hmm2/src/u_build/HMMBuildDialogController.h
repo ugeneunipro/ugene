@@ -41,7 +41,7 @@ class SaveDocumentController;
 class HMMBuildDialogController : public QDialog, public Ui_HMMBuildDialog {
     Q_OBJECT
 public:
-    HMMBuildDialogController(const QString& profileName, const MultipleSequenceAlignment& ma, QWidget* p = NULL);
+    HMMBuildDialogController(const QString& profileName, const MultipleSequenceAlignment& ma, QWidget* p = nullptr);
     
 public slots:
     void reject();

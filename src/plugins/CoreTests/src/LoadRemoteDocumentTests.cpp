@@ -39,7 +39,7 @@ void GTest_LoadRemoteDocumentTask::init(XMLTestFormat *tf, const QDomElement &el
     dbName.clear();
     docId.clear();
     expectedDoc.clear();
-    t = NULL;
+    t = nullptr;
 
     QString tmp = el.attribute(DB_ATTR);
 
@@ -82,7 +82,7 @@ void GTest_LoadRemoteDocumentTask::prepare() {
 }
 
 Task::ReportResult GTest_LoadRemoteDocumentTask::report() {
-    if (t != NULL) {
+    if (t != nullptr) {
         if (!t->hasError()) {
             QFile expectedFile(expectedDoc), actualFile(t->getLocalUrl());
             expectedFile.open(QIODevice::ReadOnly), actualFile.open(QIODevice::ReadOnly);

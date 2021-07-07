@@ -36,13 +36,13 @@ namespace U2 {
 
 PwmBuildDialogFiller::PwmBuildDialogFiller(HI::GUITestOpStatus &os, const QList<Action> &actions)
     : Filler(os, "PWMBuildDialog"),
-      dialog(NULL),
+      dialog(nullptr),
       actions(actions) {
 }
 
 PwmBuildDialogFiller::PwmBuildDialogFiller(HI::GUITestOpStatus &os, CustomScenario *c)
     : Filler(os, "PWMBuildDialog", c),
-      dialog(NULL) {
+      dialog(nullptr) {
 }
 
 #define GT_METHOD_NAME "run"

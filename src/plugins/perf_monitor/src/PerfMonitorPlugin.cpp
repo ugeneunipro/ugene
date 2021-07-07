@@ -36,7 +36,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
         PerfMonitorPlugin *plug = new PerfMonitorPlugin();
         return plug;
     }
-    return NULL;
+    return nullptr;
 }
 
 PerfMonitorPlugin::PerfMonitorPlugin()
@@ -54,7 +54,7 @@ PerfMonitorPlugin::PerfMonitorPlugin()
 void PerfMonitorPlugin::sl_openWindow() {
     MWMDIManager *mdi = AppContext::getMainWindow()->getMDIManager();
     MWMDIWindow *mdiWindow = mdi->getWindowById(windowId);
-    if (mdiWindow == NULL) {
+    if (mdiWindow == nullptr) {
         mdiWindow = new PerfMonitorView();
         mdiWindow->setWindowIcon(QIcon(":perf_monitor/images/mon.png"));
         windowId = mdiWindow->getId();

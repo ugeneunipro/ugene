@@ -112,7 +112,7 @@ void ImportPrimersDialogFiller::addObjects(HI::GUITestOpStatus &os, const QMap<Q
 QWidget *ImportPrimersDialogFiller::getDialog(HI::GUITestOpStatus &os) {
     Q_UNUSED(os);
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK_RESULT(NULL != dialog, "Active modal dialog is NULL", NULL);
+    GT_CHECK_RESULT(nullptr != dialog, "Active modal dialog is NULL", nullptr);
     return dialog;
 }
 #undef GT_METHOD_NAME

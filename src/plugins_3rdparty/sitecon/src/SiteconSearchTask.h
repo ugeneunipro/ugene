@@ -71,7 +71,7 @@ public:
 class SiteconSearchCfg {
 public:
     SiteconSearchCfg()
-        : minPSUM(0), minE1(0.), maxE2(1.), complTT(NULL), complOnly(false) {
+        : minPSUM(0), minE1(0.), maxE2(1.), complTT(nullptr), complOnly(false) {
     }
     int minPSUM;
     float minE1;

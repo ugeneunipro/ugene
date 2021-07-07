@@ -35,7 +35,7 @@ typedef PrompterBase<RenameChomosomeInVariationPrompter> RenameChomosomeInVariat
 class RenameChomosomeInVariationPrompter : public RenameChomosomeInVariationBase {
     Q_OBJECT
 public:
-    RenameChomosomeInVariationPrompter(Actor *actor = NULL);
+    RenameChomosomeInVariationPrompter(Actor *actor = nullptr);
 
 private:
     QString composeRichDoc();

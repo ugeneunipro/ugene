@@ -35,12 +35,12 @@
 
 namespace U2 {
 
-QScopedPointer<UgeneUpdater> UgeneUpdater::instance(NULL);
+QScopedPointer<UgeneUpdater> UgeneUpdater::instance(nullptr);
 QMutex UgeneUpdater::mutex;
 
 UgeneUpdater *UgeneUpdater::getInstance() {
     QMutexLocker lock(&mutex);
-    if (NULL != instance.data()) {
+    if (nullptr != instance.data()) {
         return instance.data();
     }
     instance.reset(new UgeneUpdater());

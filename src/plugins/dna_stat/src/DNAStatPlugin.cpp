@@ -47,7 +47,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
         DNAStatPlugin *plug = new DNAStatPlugin();
         return plug;
     }
-    return NULL;
+    return nullptr;
 }
 
 DNAStatPlugin::DNAStatPlugin()
@@ -67,7 +67,7 @@ DNAStatMSAEditorContext::DNAStatMSAEditorContext(QObject *p)
 
 void DNAStatMSAEditorContext::initViewContext(GObjectView *v) {
     MSAEditor *msaed = qobject_cast<MSAEditor *>(v);
-    if (msaed != NULL && !msaed->getMaObject())
+    if (msaed != nullptr && !msaed->getMaObject())
         return;
 
     GObjectViewAction *profileAction = new GObjectViewAction(this, v, tr("Generate grid profile..."));
@@ -79,12 +79,12 @@ void DNAStatMSAEditorContext::initViewContext(GObjectView *v) {
 
 void DNAStatMSAEditorContext::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
     MSAEditor *msaed = qobject_cast<MSAEditor *>(v);
-    if (msaed != NULL && !msaed->getMaObject())
+    if (msaed != nullptr && !msaed->getMaObject())
         return;
 
     QList<GObjectViewAction *> actions = getViewActions(v);
     QMenu *statMenu = GUIUtils::findSubMenu(m, MSAE_MENU_STATISTICS);
-    SAFE_POINT(statMenu != NULL, "statMenu", );
+    SAFE_POINT(statMenu != nullptr, "statMenu", );
     foreach (GObjectViewAction *a, actions) {
         statMenu->addAction(a);
     }
@@ -108,7 +108,7 @@ DistanceMatrixMSAEditorContext::DistanceMatrixMSAEditorContext(QObject *p)
 
 void DistanceMatrixMSAEditorContext::initViewContext(GObjectView *v) {
     MSAEditor *msaed = qobject_cast<MSAEditor *>(v);
-    if (msaed != NULL && !msaed->getMaObject())
+    if (msaed != nullptr && !msaed->getMaObject())
         return;
 
     GObjectViewAction *profileAction = new GObjectViewAction(this, v, tr("Generate distance matrix..."));
@@ -119,12 +119,12 @@ void DistanceMatrixMSAEditorContext::initViewContext(GObjectView *v) {
 
 void DistanceMatrixMSAEditorContext::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
     MSAEditor *msaed = qobject_cast<MSAEditor *>(v);
-    if (msaed != NULL && !msaed->getMaObject())
+    if (msaed != nullptr && !msaed->getMaObject())
         return;
 
     QList<GObjectViewAction *> actions = getViewActions(v);
     QMenu *statMenu = GUIUtils::findSubMenu(m, MSAE_MENU_STATISTICS);
-    SAFE_POINT(statMenu != NULL, "statMenu", );
+    SAFE_POINT(statMenu != nullptr, "statMenu", );
     foreach (GObjectViewAction *a, actions) {
         statMenu->addAction(a);
     }

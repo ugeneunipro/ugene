@@ -35,7 +35,7 @@ namespace LocalWorkflow {
 class GetReadsListPrompter : public PrompterBase<GetReadsListPrompter> {
     Q_OBJECT
 public:
-    GetReadsListPrompter(Actor *p = NULL)
+    GetReadsListPrompter(Actor *p = nullptr)
         : PrompterBase<GetReadsListPrompter>(p) {
     }
 

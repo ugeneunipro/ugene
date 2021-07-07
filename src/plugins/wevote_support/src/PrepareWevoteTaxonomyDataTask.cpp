@@ -45,10 +45,10 @@ PrepareWevoteTaxonomyDataTask::PrepareWevoteTaxonomyDataTask(FileStorage::Workfl
       workflowProcess(_workflowProcess),
       removeDestinationFiles(false) {
     U2DataPathRegistry *dataPathRegistry = AppContext::getDataPathRegistry();
-    SAFE_POINT_EXT(NULL != dataPathRegistry, setError("U2DataPathRegistry is NULL"), );
+    SAFE_POINT_EXT(nullptr != dataPathRegistry, setError("U2DataPathRegistry is NULL"), );
 
     U2DataPath *taxonomyDataPath = dataPathRegistry->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
-    SAFE_POINT_EXT(NULL != taxonomyDataPath, setError("Taxonomy data path is not registered"), );
+    SAFE_POINT_EXT(nullptr != taxonomyDataPath, setError("Taxonomy data path is not registered"), );
     CHECK_EXT(taxonomyDataPath->isValid(), setError(tr("Taxonomy data are missed")), );
 
     taxonomyNamesUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NAMES_ITEM_ID);

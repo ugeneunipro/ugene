@@ -40,7 +40,7 @@ AppSettingsDialogController::AppSettingsDialogController(const QString &pageId, 
     : QDialog(p) {
     setupUi(this);
 
-    currentPage = NULL;
+    currentPage = nullptr;
     helpButton = new HelpButton(this, buttonBox, QString());
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
@@ -58,23 +58,23 @@ AppSettingsDialogController::AppSettingsDialogController(const QString &pageId, 
     if (tree->topLevelItemCount() > 0) {
         if (!pageId.isEmpty()) {
             AppSettingsTreeItem *item = findPageItem(pageId);
-            if (item != NULL) {
+            if (item != nullptr) {
                 tree->setCurrentItem(item);
             }
         }
-        if (tree->currentItem() == NULL) {
+        if (tree->currentItem() == nullptr) {
             tree->setCurrentItem(tree->topLevelItem(0));
         }
     }
 }
 
 bool AppSettingsDialogController::checkCurrentState(bool saveStateInItem, bool showError) {
-    if (currentPage == NULL) {
+    if (currentPage == nullptr) {
         return true;
     }
     QString err;
     currentPage->pageState = currentPage->pageWidget->getState(err);
-    if (currentPage->pageState == NULL) {
+    if (currentPage->pageState == nullptr) {
         if (showError) {
             if (err.isEmpty()) {
                 err = tr("Error");
@@ -85,7 +85,7 @@ bool AppSettingsDialogController::checkCurrentState(bool saveStateInItem, bool s
     }
     if (!saveStateInItem) {
         delete currentPage->pageState;
-        currentPage->pageState = NULL;
+        currentPage->pageState = nullptr;
     } else {
         currentPage->pageState->setParent(this);
     }
@@ -93,29 +93,29 @@ bool AppSettingsDialogController::checkCurrentState(bool saveStateInItem, bool s
 }
 
 bool AppSettingsDialogController::turnPage(AppSettingsTreeItem *page) {
-    assert(page == NULL || page->pageWidget == NULL);
+    assert(page == nullptr || page->pageWidget == nullptr);
 
-    if (currentPage != NULL) {
-        assert(currentPage->pageWidget != NULL);
-        assert(currentPage->pageState == NULL);
+    if (currentPage != nullptr) {
+        assert(currentPage->pageWidget != nullptr);
+        assert(currentPage->pageState == nullptr);
         if (!checkCurrentState(true, false)) {
             return false;
         }
-        assert(currentPage->pageState != NULL);
+        assert(currentPage->pageState != nullptr);
         settingsBox->setTitle("");
         delete currentPage->pageWidget;
-        currentPage->pageWidget = NULL;
-        currentPage = NULL;
+        currentPage->pageWidget = nullptr;
+        currentPage = nullptr;
     }
-    if (page != NULL) {
-        assert(currentPage == NULL);
+    if (page != nullptr) {
+        assert(currentPage == nullptr);
         settingsBox->setTitle(page->pageController->getPageName());
-        page->pageState = page->pageState == NULL ? page->pageController->getSavedState() : page->pageState;
+        page->pageState = page->pageState == nullptr ? page->pageController->getSavedState() : page->pageState;
         page->pageState->setParent(this);
         page->pageWidget = page->pageController->createWidget(page->pageState);
         settingsBox->layout()->addWidget(page->pageWidget);
         delete page->pageState;
-        page->pageState = NULL;
+        page->pageState = nullptr;
 
         currentPage = page;
         helpButton->updatePageId(currentPage->pageController->getHelpPageId());
@@ -125,7 +125,7 @@ bool AppSettingsDialogController::turnPage(AppSettingsTreeItem *page) {
 }
 
 void AppSettingsDialogController::registerPage(AppSettingsGUIPageController *page) {
-    assert(findPageItem(page->getPageId()) == NULL);
+    assert(findPageItem(page->getPageId()) == nullptr);
     tree->addTopLevelItem(new AppSettingsTreeItem(page));
 }
 
@@ -136,7 +136,7 @@ AppSettingsTreeItem *AppSettingsDialogController::findPageItem(const QString &id
             return item;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void AppSettingsDialogController::accept() {
@@ -144,10 +144,10 @@ void AppSettingsDialogController::accept() {
         return;
     }
 
-    turnPage(NULL);    //make current state saved in item
+    turnPage(nullptr);    //make current state saved in item
     for (int i = 0, n = tree->topLevelItemCount(); i < n; i++) {
         AppSettingsTreeItem *item = static_cast<AppSettingsTreeItem *>(tree->topLevelItem(i));
-        if (item->pageState != NULL) {
+        if (item->pageState != nullptr) {
             item->pageController->saveState(item->pageState);
         }
     }
@@ -175,7 +175,7 @@ void AppSettingsDialogController::sl_currentItemChanged(QTreeWidgetItem *current
     if (page == currentPage) {
         return;
     }
-    if (page == NULL || !checkCurrentState(false, true)) {
+    if (page == nullptr || !checkCurrentState(false, true)) {
         startTimer(0);
         return;
     }
@@ -183,7 +183,7 @@ void AppSettingsDialogController::sl_currentItemChanged(QTreeWidgetItem *current
 }
 
 AppSettingsTreeItem::AppSettingsTreeItem(AppSettingsGUIPageController *p)
-    : pageController(p), pageState(NULL), pageWidget(NULL) {
+    : pageController(p), pageState(nullptr), pageWidget(nullptr) {
     setText(0, "  " + p->getPageName());
 }
 

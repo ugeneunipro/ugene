@@ -57,9 +57,9 @@ public:
     }
 };
 
-static TaskFlags flagsFromString(QString str, bool *ok = NULL) {
+static TaskFlags flagsFromString(QString str, bool *ok = nullptr) {
     TaskFlags taskFlags = TaskFlags(TaskFlag_None);
-    if (ok != NULL)
+    if (ok != nullptr)
         *ok = false;
     if (!str.isEmpty()) {
         QRegExp rx("([^\\|]+)");
@@ -79,16 +79,16 @@ static TaskFlags flagsFromString(QString str, bool *ok = NULL) {
             }
             taskFlags |= flag;
         }
-        if (ok != NULL) {
+        if (ok != nullptr) {
             *ok = true;
         }
     }
     return taskFlags;
 }
 
-static Task::State stateFromString(QString str, bool *ok = NULL) {
+static Task::State stateFromString(QString str, bool *ok = nullptr) {
     Task::State taskState = Task::State_New;
-    if (ok != NULL)
+    if (ok != nullptr)
         *ok = false;
     if (!str.isEmpty()) {
         QHash<QString, Task::State> hash;
@@ -100,7 +100,7 @@ static Task::State stateFromString(QString str, bool *ok = NULL) {
         if (taskState == static_cast<Task::State>(-1)) {
             return taskState;
         }
-        if (ok != NULL) {
+        if (ok != nullptr) {
             *ok = true;
         }
     }
@@ -234,13 +234,13 @@ void GTest_TaskAddSubtaskTest::init(U2::XMLTestFormat *tf, const QDomElement &el
 
 Task::ReportResult GTest_TaskAddSubtaskTest::report() {
     Task *task = getContext<Task>(this, taskContextName);
-    if (task == NULL) {
+    if (task == nullptr) {
         stateInfo.setError(QString("invalid context: %1").arg(taskContextName));
         return ReportResult_Finished;
     }
 
     Task *subtask = getContext<Task>(this, subtaskContextName);
-    if (subtask == NULL) {
+    if (subtask == nullptr) {
         stateInfo.setError(QString("invalid context: %1").arg(subtaskContextName));
         return ReportResult_Finished;
     }
@@ -270,11 +270,11 @@ void GTest_TaskCancelTest::init(XMLTestFormat *tf, const QDomElement &el) {
 
 Task::ReportResult GTest_TaskCancelTest::report() {
     QObject *obj = getContext(objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("invalid object context"));
         return ReportResult_Finished;
     }
-    assert(obj != NULL);
+    assert(obj != nullptr);
     Task *task = qobject_cast<Task *>(obj);
     task->cancel();
     if (!task->getStateInfo().cancelFlag) {
@@ -306,11 +306,11 @@ void GTest_TaskCheckFlag::init(XMLTestFormat *tf, const QDomElement &el) {
 
 Task::ReportResult GTest_TaskCheckFlag::report() {
     QObject *obj = getContext(taskContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("invalid object context"));
         return ReportResult_Finished;
     }
-    assert(obj != NULL);
+    assert(obj != nullptr);
     Task *task = qobject_cast<Task *>(obj);
     if (task->getFlags().operator&(flag) == 0) {
         stateInfo.setError(QString("task flags not matched %1, expected %2").arg(task->getFlags()).arg(flag));
@@ -369,7 +369,7 @@ void GTest_TaskCheckState::init(XMLTestFormat *tf, const QDomElement &el) {
 
 Task::ReportResult GTest_TaskCheckState::report() {
     Task *task = getContext<Task>(this, taskContextName);
-    if (task == NULL) {
+    if (task == nullptr) {
         stateInfo.setError(QString("invalid context %1").arg(taskContextName));
         return ReportResult_Finished;
     }
@@ -405,7 +405,7 @@ void GTest_TaskExec::init(XMLTestFormat *tf, const QDomElement &el) {
 
 void GTest_TaskExec::prepare() {
     Task *task = getContext<Task>(this, taskContextName);
-    if (task == NULL) {
+    if (task == nullptr) {
         stateInfo.setError(QString("invalid context %1").arg(taskContextName));
         return;
     }
@@ -597,7 +597,7 @@ void GTest_Wait::init(U2::XMLTestFormat *tf, const QDomElement &el) {
 void GTest_Wait::prepare() {
     if (!objContextName.isEmpty()) {
         Task *task = getContext<Task>(this, objContextName);
-        if (task == NULL) {
+        if (task == nullptr) {
             stateInfo.setError(QString("invalid context %1").arg(objContextName));
             return;
         }
@@ -607,7 +607,7 @@ void GTest_Wait::prepare() {
 
 void GTest_Wait::sl_WaitCond_StateChanged() {
     Task *task = getContext<Task>(this, objContextName);
-    if (task == NULL) {
+    if (task == nullptr) {
         stateInfo.setError(QString("invalid context %1").arg(objContextName));
         return;
     }
@@ -620,7 +620,7 @@ void GTest_Wait::sl_WaitCond_StateChanged() {
 void GTest_Wait::run() {
     if (!objContextName.isEmpty()) {
         Task *task = getContext<Task>(this, objContextName);
-        if (task == NULL) {
+        if (task == nullptr) {
             stateInfo.setError(QString("invalid context %1").arg(objContextName));
             return;
         }

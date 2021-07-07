@@ -197,7 +197,7 @@ QString ClustalWPrompter::composeRichDoc() {
 * ClustalWWorker
 ****************************/
 ClustalWWorker::ClustalWWorker(Actor *a)
-    : BaseWorker(a), input(NULL), output(NULL) {
+    : BaseWorker(a), input(nullptr), output(nullptr) {
 }
 
 void ClustalWWorker::init() {
@@ -210,7 +210,7 @@ Task *ClustalWWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         cfg.gapOpenPenalty = actor->getParameter(GAP_OPEN_PENALTY)->getAttributeValue<float>(context);
         cfg.gapExtenstionPenalty = actor->getParameter(GAP_EXT_PENALTY)->getAttributeValue<float>(context);
@@ -256,12 +256,12 @@ Task *ClustalWWorker::tick() {
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
-        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
+        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
         const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
         if (msa->isEmpty()) {
             algoLog.error(tr("An empty MSA '%1' has been supplied to ClustalW.").arg(msa->getName()));
-            return NULL;
+            return nullptr;
         }
         ClustalWSupportTask *supportTask = new ClustalWSupportTask(msa, GObjectReference(), cfg);
         supportTask->addListeners(createLogListeners());
@@ -272,7 +272,7 @@ Task *ClustalWWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void ClustalWWorker::sl_taskFinished() {
@@ -287,7 +287,7 @@ void ClustalWWorker::sl_taskFinished() {
         return;
     }
 
-    SAFE_POINT(NULL != output, "NULL output!", );
+    SAFE_POINT(nullptr != output, "NULL output!", );
     send(t->resultMA);
     algoLog.info(tr("Aligned %1 with ClustalW").arg(t->resultMA->getName()));
 }
@@ -296,7 +296,7 @@ void ClustalWWorker::cleanup() {
 }
 
 void ClustalWWorker::send(const MultipleSequenceAlignment &msa) {
-    SAFE_POINT(NULL != output, "NULL output!", );
+    SAFE_POINT(nullptr != output, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(msa);
     QVariantMap m;
     m[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(msaId);

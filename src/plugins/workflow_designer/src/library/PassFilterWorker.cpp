@@ -41,7 +41,7 @@ const QString PassFilterWorkerFactory::ACTOR_ID("filter-by-values");
  * FilterSequenceWorker
  *******************************/
 PassFilterWorker::PassFilterWorker(Actor *p)
-    : BaseWorker(p), inChannel(NULL), outChannel(NULL) {
+    : BaseWorker(p), inChannel(nullptr), outChannel(nullptr) {
 }
 
 void PassFilterWorker::init() {
@@ -71,7 +71,7 @@ Task *PassFilterWorker::tick() {
         outChannel->setEnded();
         setDone();
     }
-    return NULL;
+    return nullptr;
 }
 
 void PassFilterWorker::cleanup() {

@@ -83,7 +83,7 @@ private:
 
     void importResults();
 
-    U2Region getCompleteSearchRegion(bool *ok = NULL) const;
+    U2Region getCompleteSearchRegion(bool *ok = nullptr) const;
     ORFAlgorithmStrand getAlgStrand() const;
 
 private:

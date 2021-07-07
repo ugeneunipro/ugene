@@ -57,7 +57,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
 }
 
 ORFMarkerPlugin::ORFMarkerPlugin()
-    : Plugin(tr("ORF Marker"), tr("Searches for open reading frames (ORF) in a DNA sequence.")), viewCtx(NULL) {
+    : Plugin(tr("ORF Marker"), tr("Searches for open reading frames (ORF) in a DNA sequence.")), viewCtx(nullptr) {
     if (AppContext::getMainWindow()) {
         viewCtx = new ORFViewContext(this);
         viewCtx->init();
@@ -72,7 +72,7 @@ ORFMarkerPlugin::ORFMarkerPlugin()
     //ORFMarker test
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
-    assert(xmlTestFormat != NULL);
+    assert(xmlTestFormat != nullptr);
 
     GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = ORFMarkerTests::createTestFactories();

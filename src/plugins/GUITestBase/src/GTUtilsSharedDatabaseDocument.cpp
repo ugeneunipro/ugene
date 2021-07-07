@@ -120,7 +120,7 @@ Document *GTUtilsSharedDatabaseDocument::connectToTestDatabase(HI::GUITestOpStat
         removeTempContentFromOtherTests(os, document);
     }
 
-    CHECK_SET_ERR_RESULT(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString(), NULL);
+    CHECK_SET_ERR_RESULT(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString(), nullptr);
     return document;
 }
 #undef GT_METHOD_NAME
@@ -138,7 +138,7 @@ Document *GTUtilsSharedDatabaseDocument::connectToUgenePublicDatabase(HI::GUITes
     GTMenu::clickMainMenuItem(os, QStringList() << "File"
                                                 << "Connect to UGENE shared database...");
 
-    CHECK_SET_ERR_RESULT(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString(), NULL);
+    CHECK_SET_ERR_RESULT(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString(), nullptr);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsDialog::waitAllFinished(os);
     return GTUtilsSharedDatabaseDocument::getDatabaseDocumentByName(os, conName);
@@ -148,10 +148,10 @@ Document *GTUtilsSharedDatabaseDocument::connectToUgenePublicDatabase(HI::GUITes
 #define GT_METHOD_NAME "getDatabaseDocumentByName"
 Document *GTUtilsSharedDatabaseDocument::getDatabaseDocumentByName(HI::GUITestOpStatus &os, const QString &name) {
     Q_UNUSED(os);
-    GT_CHECK_RESULT(!name.isEmpty(), "Name is empty", NULL);
+    GT_CHECK_RESULT(!name.isEmpty(), "Name is empty", nullptr);
 
     const QModelIndex databaseDocIndex = GTUtilsProjectTreeView::findIndex(os, name);
-    GT_CHECK_RESULT(databaseDocIndex.isValid(), QString("Can't find the document with name '%1'").arg(name), NULL);
+    GT_CHECK_RESULT(databaseDocIndex.isValid(), QString("Can't find the document with name '%1'").arg(name), nullptr);
 
     return ProjectViewModel::toDocument(databaseDocIndex);
 }
@@ -209,7 +209,7 @@ QModelIndex GTUtilsSharedDatabaseDocument::getItemIndex(HI::GUITestOpStatus &os,
 #define GT_METHOD_NAME "createFolder"
 void GTUtilsSharedDatabaseDocument::createFolder(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &parentFolderPath, const QString &newFolderName) {
     Q_UNUSED(os);
-    GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
+    GT_CHECK(nullptr != databaseDoc, "databaseDoc is NULL");
     GT_CHECK(!parentFolderPath.isEmpty(), "Parent folder path is empty");
     GT_CHECK(!newFolderName.isEmpty(), "New folder's name is empty");
     GT_CHECK(!newFolderName.contains(U2ObjectDbi::PATH_SEP), "New folder's name contains invalid characters");
@@ -228,7 +228,7 @@ void GTUtilsSharedDatabaseDocument::createFolder(HI::GUITestOpStatus &os, Docume
 #define GT_METHOD_NAME "createPath"
 void GTUtilsSharedDatabaseDocument::createPath(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &path) {
     Q_UNUSED(os);
-    GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
+    GT_CHECK(nullptr != databaseDoc, "databaseDoc is NULL");
     GT_CHECK(path.startsWith(U2ObjectDbi::ROOT_FOLDER), "Path is not in the canonical form");
 
     QString parentFolder = U2ObjectDbi::ROOT_FOLDER;
@@ -255,7 +255,7 @@ QString GTUtilsSharedDatabaseDocument::getItemPath(HI::GUITestOpStatus &os, cons
 
         case ProjectViewModel::FOLDER: {
             Folder *folder = ProjectViewModel::toFolder(itemIndex);
-            GT_CHECK_RESULT(NULL != folder, "Can't convert item to folder", QString());
+            GT_CHECK_RESULT(nullptr != folder, "Can't convert item to folder", QString());
             return folder->getFolderPath();
         }
 
@@ -269,14 +269,14 @@ QString GTUtilsSharedDatabaseDocument::getItemPath(HI::GUITestOpStatus &os, cons
                 folderPath = U2ObjectDbi::ROOT_FOLDER;
             } else if (ProjectViewModel::FOLDER == parentItemType) {
                 Folder *folder = ProjectViewModel::toFolder(parentItemIndex);
-                GT_CHECK_RESULT(NULL != folder, "Can't convert parent item to folder", QString());
+                GT_CHECK_RESULT(nullptr != folder, "Can't convert parent item to folder", QString());
                 folderPath = folder->getFolderPath();
             } else {
                 GT_CHECK_RESULT(false, "Can't recognize the parent item", QString());
             }
 
             GObject *object = ProjectViewModel::toObject(itemIndex);
-            GT_CHECK_RESULT(NULL != object, "Can't convert item to object", QString());
+            GT_CHECK_RESULT(nullptr != object, "Can't convert item to object", QString());
             return folderPath + U2ObjectDbi::PATH_SEP + object->getGObjectName();
         }
 
@@ -323,7 +323,7 @@ void GTUtilsSharedDatabaseDocument::expantToItem(HI::GUITestOpStatus &os, Docume
 
 #define GT_METHOD_NAME "doubleClickItem"
 void GTUtilsSharedDatabaseDocument::doubleClickItem(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &itemPath) {
-    GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
+    GT_CHECK(nullptr != databaseDoc, "databaseDoc is NULL");
     GT_CHECK(!itemPath.isEmpty(), "Item path is empty");
 
     expantToItem(os, databaseDoc, itemPath);
@@ -334,7 +334,7 @@ void GTUtilsSharedDatabaseDocument::doubleClickItem(HI::GUITestOpStatus &os, Doc
 
 #define GT_METHOD_NAME "doubleClickItem"
 void GTUtilsSharedDatabaseDocument::doubleClickItem(HI::GUITestOpStatus &os, Document *databaseDoc, const QModelIndex &itemIndex) {
-    GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
+    GT_CHECK(nullptr != databaseDoc, "databaseDoc is NULL");
     GT_CHECK(itemIndex.isValid(), "Item index is invalid");
 
     expantToItem(os, databaseDoc, itemIndex);
@@ -344,7 +344,7 @@ void GTUtilsSharedDatabaseDocument::doubleClickItem(HI::GUITestOpStatus &os, Doc
 
 #define GT_METHOD_NAME "openView"
 void GTUtilsSharedDatabaseDocument::openView(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &itemPath) {
-    GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
+    GT_CHECK(nullptr != databaseDoc, "databaseDoc is NULL");
     GT_CHECK(!itemPath.isEmpty(), "Item path is empty");
 
     doubleClickItem(os, databaseDoc, itemPath);
@@ -357,7 +357,7 @@ void GTUtilsSharedDatabaseDocument::openView(HI::GUITestOpStatus &os, Document *
 #define GT_METHOD_NAME "openView"
 void GTUtilsSharedDatabaseDocument::openView(HI::GUITestOpStatus &os, Document *databaseDoc, const QModelIndex &itemIndex) {
     Q_UNUSED(os);
-    GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
+    GT_CHECK(nullptr != databaseDoc, "databaseDoc is NULL");
     GT_CHECK(itemIndex.isValid(), "Item index is invalid");
 
     doubleClickItem(os, databaseDoc, itemIndex);
@@ -370,7 +370,7 @@ void GTUtilsSharedDatabaseDocument::openView(HI::GUITestOpStatus &os, Document *
 #define GT_METHOD_NAME "callImportDialog"
 void GTUtilsSharedDatabaseDocument::callImportDialog(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &itemPath) {
     Q_UNUSED(os);
-    GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
+    GT_CHECK(nullptr != databaseDoc, "databaseDoc is NULL");
     GT_CHECK(!itemPath.isEmpty(), "Item path is empty");
 
     QModelIndex itemIndex = getItemIndex(os, databaseDoc, itemPath);
@@ -418,7 +418,7 @@ void GTUtilsSharedDatabaseDocument::checkThereAreNoItemsExceptListed(HI::GUITest
 #define GT_METHOD_NAME "importFiles"
 void GTUtilsSharedDatabaseDocument::importFiles(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &dstFolderPath, const QStringList &filesPaths, const QVariantMap &options) {
     Q_UNUSED(os);
-    GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
+    GT_CHECK(nullptr != databaseDoc, "databaseDoc is NULL");
     GT_CHECK(!filesPaths.isEmpty(), "Files paths are not provided");
 
     QList<ImportToDatabaseDialogFiller::Action> actions;
@@ -447,7 +447,7 @@ void GTUtilsSharedDatabaseDocument::importFiles(HI::GUITestOpStatus &os, Documen
 #define GT_METHOD_NAME "importDirs"
 void GTUtilsSharedDatabaseDocument::importDirs(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &dstFolderPath, const QStringList &dirsPaths, const QVariantMap &options) {
     Q_UNUSED(os);
-    GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
+    GT_CHECK(nullptr != databaseDoc, "databaseDoc is NULL");
     GT_CHECK(!dirsPaths.isEmpty(), "Dirs paths are not provided");
 
     QList<ImportToDatabaseDialogFiller::Action> actions;
@@ -474,7 +474,7 @@ void GTUtilsSharedDatabaseDocument::importDirs(HI::GUITestOpStatus &os, Document
 
 #define GT_METHOD_NAME "importProjectItems"
 void GTUtilsSharedDatabaseDocument::importProjectItems(HI::GUITestOpStatus &os, Document *databaseDoc, const QString &dstFolderPath, const QMap<QString, QStringList> &projectItems, const QVariantMap &options) {
-    GT_CHECK(NULL != databaseDoc, "databaseDoc is NULL");
+    GT_CHECK(nullptr != databaseDoc, "databaseDoc is NULL");
     GT_CHECK(!projectItems.isEmpty(), "Project items are not provided");
 
     QList<ImportToDatabaseDialogFiller::Action> actions;

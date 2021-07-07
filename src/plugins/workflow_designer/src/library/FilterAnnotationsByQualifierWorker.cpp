@@ -63,7 +63,7 @@ Task *FilterAnnotationsByQualifierWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
 
         QVariantMap qm = inputMessage.getData().toMap();
@@ -81,7 +81,7 @@ Task *FilterAnnotationsByQualifierWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void FilterAnnotationsByQualifierWorker::sl_taskFinished(Task *t) {

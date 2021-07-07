@@ -52,8 +52,8 @@ const QString GUITestService::GUITESTING_REPORT_PREFIX = "GUITesting";
 
 GUITestService::GUITestService(QObject *)
     : Service(Service_GUITesting, tr("GUI test viewer"), tr("Service to support UGENE GUI testing")),
-      runTestsAction(NULL),
-      testLauncher(NULL),
+      runTestsAction(nullptr),
+      testLauncher(nullptr),
       isTeamcityLogOn(false) {
     connect(AppContext::getPluginSupport(), SIGNAL(si_allStartUpPluginsLoaded()), SLOT(sl_allStartUpPluginsLoaded()));
 }
@@ -64,7 +64,7 @@ GUITestService::~GUITestService() {
 
 GUITestService *GUITestService::getGuiTestService() {
     QList<Service *> services = AppContext::getServiceRegistry()->findServices(Service_GUITesting);
-    return services.isEmpty() ? NULL : qobject_cast<GUITestService *>(services.first());
+    return services.isEmpty() ? nullptr : qobject_cast<GUITestService *>(services.first());
 }
 
 void GUITestService::sl_registerService() {
@@ -163,7 +163,7 @@ void GUITestService::registerAllTestsTaskNoIgnored() {
 }
 
 Task *GUITestService::createTestLauncherTask(int suiteNumber, bool noIgnored) const {
-    SAFE_POINT(NULL == testLauncher, "", NULL);
+    SAFE_POINT(nullptr == testLauncher, "", nullptr);
 
     Task *task = new GUITestLauncher(suiteNumber, noIgnored);
     return task;
@@ -345,7 +345,7 @@ void GUITestService::sl_taskStateChanged(Task *t) {
         return;
     }
 
-    testLauncher = NULL;
+    testLauncher = nullptr;
     AppContext::getTaskScheduler()->disconnect(this);
 
     LaunchOptions launchedFor = getLaunchOptions(AppContext::getCMDLineRegistry());
@@ -400,9 +400,9 @@ void GUITestService::removeDir(QString dirName) {
 
 void GUITestService::sl_testThreadFinish() {
     GUITestThread *testThread = qobject_cast<GUITestThread *>(sender());
-    SAFE_POINT(NULL != testThread, "testThread is NULL", );
+    SAFE_POINT(nullptr != testThread, "testThread is NULL", );
     HI::GUITest *test = testThread->getTest();
-    SAFE_POINT(NULL != test, "GUITest is NULL", );
+    SAFE_POINT(nullptr != test, "GUITest is NULL", );
     if (isTeamcityLogOn) {
         QString testNameForTeamCity = test->suite + "_" + test->name;
         GUITestTeamcityLogger::teamCityLogResult(testNameForTeamCity, testThread->getTestResult(), -1);

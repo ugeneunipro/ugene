@@ -71,7 +71,7 @@ void ProxyDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, con
     if (handlePropertyValueList(name, expanded)) {
         return;
     }*/
-    QVariant val = model->data(index, (propertyDelegate == NULL) ? (int)Qt::EditRole : (int)ConfigurationEditor::ItemValueRole);
+    QVariant val = model->data(index, (propertyDelegate == nullptr) ? (int)Qt::EditRole : (int)ConfigurationEditor::ItemValueRole);
     if (val != old) {
         QString name = model->data(index, DescriptorRole).value<Descriptor>().getId();
         if (handlePropertyValueList(name, expanded)) {

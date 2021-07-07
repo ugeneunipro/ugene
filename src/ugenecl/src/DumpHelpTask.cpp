@@ -95,7 +95,7 @@ void DumpHelpTask::dumpHelp() {
     QString prevSectionName;
     QList<CMDLineHelpProvider *> helpProviders = AppContext::getCMDLineRegistry()->listCMDLineHelpProviders();
     foreach (CMDLineHelpProvider *hProvider, helpProviders) {
-        assert(hProvider != NULL);
+        assert(hProvider != nullptr);
         const QString &sectionName = hProvider->getHelpSectionNames();
         if (sectionName != prevSectionName) {
             dumpSectionName(sectionName);
@@ -130,7 +130,7 @@ void DumpHelpTask::dumpHelp() {
 
 void DumpHelpTask::prepare() {
     CMDLineRegistry *cmdlineRegistry = AppContext::getCMDLineRegistry();
-    assert(cmdlineRegistry != NULL);
+    assert(cmdlineRegistry != nullptr);
     if (cmdlineRegistry->hasParameter(CMDLineCoreOptions::USAGE)) {
         dumpProgramNameAndUsage();
         return;
@@ -199,21 +199,21 @@ void DumpHelpTask::prepare() {
 }
 
 static void dumpSchemaMetadata(Metadata *meta) {
-    assert(meta != NULL);
+    assert(meta != nullptr);
     printStringToConsole("\n%s\n", meta->comment);
 }
 
 static void dumpSchemaCmdlineParameters(Schema *schema) {
-    assert(schema != NULL);
+    assert(schema != nullptr);
     printStringToConsole("%s", "Parameters:\n");
     foreach (Actor *actor, schema->getProcesses()) {
-        assert(actor != NULL);
+        assert(actor != nullptr);
         QMap<QString, QString>::const_iterator it = actor->getParamAliases().constBegin();
         while (it != actor->getParamAliases().constEnd()) {
             QString alias = it.value();
             dumpSectionName(alias);
             Attribute *attr = actor->getParameter(it.key());
-            assert(attr != NULL);
+            assert(attr != nullptr);
             if (actor->getAliasHelp().contains(alias)) {
                 dumpSectionContent(QString("%1 [%2]").arg(actor->getAliasHelp().value(alias)).arg(attr->getAttributeType()->getDisplayName()));
             } else {
@@ -228,7 +228,7 @@ static void dumpSchemaCmdlineParameters(Schema *schema) {
 
 QList<Task *> DumpHelpTask::onSubTaskFinished(Task *subTask) {
     LoadWorkflowTask *loadTask = qobject_cast<LoadWorkflowTask *>(subTask);
-    assert(loadTask != NULL);
+    assert(loadTask != nullptr);
 
     const QSharedPointer<Schema> schema = loadTask->getSchema();
     Metadata *meta = loadTask->getMetadata();

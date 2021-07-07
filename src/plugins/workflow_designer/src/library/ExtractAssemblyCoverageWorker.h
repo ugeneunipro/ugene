@@ -68,7 +68,7 @@ public:
 class ExtractAssemblyCoverageWorkerPrompter : public PrompterBase<ExtractAssemblyCoverageWorkerPrompter> {
     Q_OBJECT
 public:
-    ExtractAssemblyCoverageWorkerPrompter(Actor *actor = NULL);
+    ExtractAssemblyCoverageWorkerPrompter(Actor *actor = nullptr);
 
 protected:
     QString composeRichDoc();

@@ -41,7 +41,7 @@ public:
 class DirectoriesSettingsPageController : public AppSettingsGUIPageController {
     Q_OBJECT
 public:
-    DirectoriesSettingsPageController(QObject *p = NULL);
+    DirectoriesSettingsPageController(QObject *p = nullptr);
 
     virtual AppSettingsGUIPageState *getSavedState();
 

@@ -54,10 +54,10 @@ ConvertSnpeffVariationsToAnnotationsPrompter::ConvertSnpeffVariationsToAnnotatio
 
 QString ConvertSnpeffVariationsToAnnotationsPrompter::composeRichDoc() {
     IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(IN_VARIATIONS_URL_PORT_ID));
-    SAFE_POINT(NULL != input, "No input port", "");
+    SAFE_POINT(nullptr != input, "No input port", "");
     const Actor *producer = input->getProducer(BaseSlots::URL_SLOT().getId());
     const QString unsetStr = "<font color='red'>" + tr("unset") + "</font>";
-    const QString producerName = (NULL != producer) ? producer->getLabel() : unsetStr;
+    const QString producerName = (nullptr != producer) ? producer->getLabel() : unsetStr;
     return tr("Parses information in variations from <u>%1</u> into annotations.").arg(producerName);
 }
 
@@ -104,7 +104,7 @@ void ConvertSnpeffVariationsToAnnotationsFactory::init() {
                     ConvertSnpeffVariationsToAnnotationsWorker::tr("Convert SnpEff Variations to Annotations"),
                     ConvertSnpeffVariationsToAnnotationsWorker::tr("Parses information, added to variations by SnpEff, into standard annotations."));
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
-    proto->setPrompter(new ConvertSnpeffVariationsToAnnotationsPrompter(NULL));
+    proto->setPrompter(new ConvertSnpeffVariationsToAnnotationsPrompter(nullptr));
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_VARIATION_ANALYSIS(), proto);
 
     QMap<QString, PropertyDelegate *> delegates;
@@ -127,7 +127,7 @@ void ConvertSnpeffVariationsToAnnotationsFactory::init() {
 
 ConvertSnpeffVariationsToAnnotationsWorker::ConvertSnpeffVariationsToAnnotationsWorker(Actor *actor)
     : BaseWorker(actor),
-      input(NULL) {
+      input(nullptr) {
 }
 
 void ConvertSnpeffVariationsToAnnotationsWorker::init() {
@@ -140,7 +140,7 @@ Task *ConvertSnpeffVariationsToAnnotationsWorker::tick() {
     } else if (input->isEnded()) {
         setDone();
     }
-    return NULL;
+    return nullptr;
 }
 
 void ConvertSnpeffVariationsToAnnotationsWorker::cleanup() {
@@ -148,7 +148,7 @@ void ConvertSnpeffVariationsToAnnotationsWorker::cleanup() {
 
 void ConvertSnpeffVariationsToAnnotationsWorker::sl_taskFinished(Task *task) {
     LoadConvertAndSaveSnpeffVariationsToAnnotationsTask *convertTask = qobject_cast<LoadConvertAndSaveSnpeffVariationsToAnnotationsTask *>(task);
-    SAFE_POINT(NULL != convertTask, L10N::nullPointerError("LoadConvertAndSaveSnpeffVariationsToAnnotationsTask"), );
+    SAFE_POINT(nullptr != convertTask, L10N::nullPointerError("LoadConvertAndSaveSnpeffVariationsToAnnotationsTask"), );
     CHECK(!convertTask->hasError() && !convertTask->isCanceled(), );
     monitor()->addOutputFile(convertTask->getResultUrl(), getActorId());
 }

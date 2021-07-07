@@ -90,10 +90,10 @@ CreateDocumentFiller::CreateDocumentFiller(HI::GUITestOpStatus &os, CustomScenar
 #define GT_METHOD_NAME "commonScenario"
 void CreateDocumentFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     QPlainTextEdit *plainText = dialog->findChild<QPlainTextEdit *>("sequenceEdit");
-    GT_CHECK(plainText != NULL, "plain text not found");
+    GT_CHECK(plainText != nullptr, "plain text not found");
     GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
     GTGlobals::sleep();
 
@@ -102,7 +102,7 @@ void CreateDocumentFiller::commonScenario() {
         GTGroupBox::setChecked(os, customSettingsCheckBox, true);
 
         QComboBox *alphabetComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "alphabetBox", dialog));
-        GT_CHECK(alphabetComboBox != NULL, "ComboBox not found");
+        GT_CHECK(alphabetComboBox != nullptr, "ComboBox not found");
 
         if (skipUnknownSymbols) {
             QRadioButton *skipUnknownSymbols = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "skipRB", dialog));
@@ -112,7 +112,7 @@ void CreateDocumentFiller::commonScenario() {
             replaceUnknownSymbols->setChecked(true);
 
             QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("symbolToReplaceEdit");
-            GT_CHECK(lineEdit != NULL, "line edit not found");
+            GT_CHECK(lineEdit != nullptr, "line edit not found");
             GTLineEdit::setText(os, lineEdit, symbol);
         } else {
             assert(false);    // replase skipUnknownSymbols and replaceUnknownSymbols variables with enum
@@ -125,11 +125,11 @@ void CreateDocumentFiller::commonScenario() {
     }
 
     QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("filepathEdit");
-    GT_CHECK(lineEdit != NULL, "line edit not found");
+    GT_CHECK(lineEdit != nullptr, "line edit not found");
     GTLineEdit::setText(os, lineEdit, documentLocation);
 
     QComboBox *comboBox = dialog->findChild<QComboBox *>();
-    GT_CHECK(comboBox != NULL, "ComboBox not found");
+    GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
@@ -137,7 +137,7 @@ void CreateDocumentFiller::commonScenario() {
     GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
     QLineEdit *lineEditName = dialog->findChild<QLineEdit *>("nameEdit");
-    GT_CHECK(lineEditName != NULL, "line edit not found");
+    GT_CHECK(lineEditName != nullptr, "line edit not found");
     GTLineEdit::setText(os, lineEditName, sequenceName);
 
     if (saveFile) {
@@ -172,10 +172,10 @@ CancelCreateDocumentFiller::CancelCreateDocumentFiller(HI::GUITestOpStatus &_os,
 #define GT_METHOD_NAME "commonScenario"
 void CancelCreateDocumentFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     QPlainTextEdit *plainText = dialog->findChild<QPlainTextEdit *>("sequenceEdit");
-    GT_CHECK(plainText != NULL, "plain text not found");
+    GT_CHECK(plainText != nullptr, "plain text not found");
     GTPlainTextEdit::setPlainText(os, plainText, pasteDataHere);
 
     if (customSettings) {
@@ -183,7 +183,7 @@ void CancelCreateDocumentFiller::commonScenario() {
         customSettingsCheckBox->setChecked(true);
 
         QComboBox *alphabetComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "alphabetBox", dialog));
-        GT_CHECK(alphabetComboBox != NULL, "ComboBox not found");
+        GT_CHECK(alphabetComboBox != nullptr, "ComboBox not found");
 
         if (skipUnknownSymbols) {
             QRadioButton *skipUnknownSymbols = qobject_cast<QRadioButton *>(GTWidget::findWidget(os, "skipRB", dialog));
@@ -193,7 +193,7 @@ void CancelCreateDocumentFiller::commonScenario() {
             replaceUnknownSymbols->setChecked(true);
 
             QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("symbolToReplaceEdit");
-            GT_CHECK(lineEdit != NULL, "line edit not found");
+            GT_CHECK(lineEdit != nullptr, "line edit not found");
             GTLineEdit::setText(os, lineEdit, symbol);
         } else {
             assert(false);    // replase skipUnknownSymbols and replaceUnknownSymbols variables with enum
@@ -206,11 +206,11 @@ void CancelCreateDocumentFiller::commonScenario() {
     }
 
     QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("filepathEdit");
-    GT_CHECK(lineEdit != NULL, "line edit not found");
+    GT_CHECK(lineEdit != nullptr, "line edit not found");
     GTLineEdit::setText(os, lineEdit, documentLocation);
 
     QComboBox *comboBox = dialog->findChild<QComboBox *>();
-    GT_CHECK(comboBox != NULL, "ComboBox not found");
+    GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
@@ -218,7 +218,7 @@ void CancelCreateDocumentFiller::commonScenario() {
     GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
     QLineEdit *lineEditName = dialog->findChild<QLineEdit *>("nameEdit");
-    GT_CHECK(lineEditName != NULL, "line edit not found");
+    GT_CHECK(lineEditName != nullptr, "line edit not found");
     GTLineEdit::setText(os, lineEditName, sequenceName);
 
     if (saveFile) {
@@ -227,9 +227,9 @@ void CancelCreateDocumentFiller::commonScenario() {
     }
 
     QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != NULL, "buttonBox is NULL");
+    GT_CHECK(box != nullptr, "buttonBox is NULL");
     QPushButton *button = box->button(QDialogButtonBox::Cancel);
-    GT_CHECK(button != NULL, "cancel button is NULL");
+    GT_CHECK(button != nullptr, "cancel button is NULL");
     GTWidget::click(os, button);
 }
 

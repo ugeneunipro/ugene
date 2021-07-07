@@ -103,9 +103,9 @@ void CircularViewExportImage::commonScenario() {
     }
 
     QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != NULL, "buttonBox is NULL");
+    GT_CHECK(box != nullptr, "buttonBox is NULL");
     QPushButton *button = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(button != NULL, "Ok button is NULL");
+    GT_CHECK(button != nullptr, "Ok button is NULL");
     GTWidget::click(os, button);
 }
 #undef GT_METHOD_NAME
@@ -150,9 +150,9 @@ void ExportMsaImage::commonScenario() {
     }
 
     QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != NULL, "buttonBox is NULL");
+    GT_CHECK(box != nullptr, "buttonBox is NULL");
     QPushButton *button = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(button != NULL, "ok button is NULL");
+    GT_CHECK(button != nullptr, "ok button is NULL");
     GTWidget::click(os, button);
 }
 #undef GT_METHOD_NAME
@@ -204,9 +204,9 @@ void ExportSequenceImage::commonScenario() {
     }
 
     QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != NULL, "buttonBox is NULL");
+    GT_CHECK(box != nullptr, "buttonBox is NULL");
     QPushButton *button = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(button != NULL, "ok button is NULL");
+    GT_CHECK(button != nullptr, "ok button is NULL");
     GTWidget::click(os, button);
 }
 #undef GT_METHOD_NAME
@@ -219,19 +219,19 @@ void SelectSubalignmentFiller::commonScenario() {
     GT_CHECK(dialog, "activeModalWidget is NULL");
 
     QSpinBox *startLineEdit = dialog->findChild<QSpinBox *>("startLineEdit");
-    GT_CHECK(startLineEdit != NULL, "startLineEdit is NULL");
+    GT_CHECK(startLineEdit != nullptr, "startLineEdit is NULL");
     GTSpinBox::setValue(os, startLineEdit, msaRegion.region.startPos, GTGlobals::UseKeyBoard);
 
     QSpinBox *endLineEdit = dialog->findChild<QSpinBox *>("endLineEdit");
-    GT_CHECK(endLineEdit != NULL, "endPoxBox is NULL");
+    GT_CHECK(endLineEdit != nullptr, "endPoxBox is NULL");
     GTSpinBox::setValue(os, endLineEdit, msaRegion.region.endPos(), GTGlobals::UseKeyBoard);
 
     QWidget *noneButton = dialog->findChild<QWidget *>("noneButton");
-    GT_CHECK(noneButton != NULL, "noneButton is NULL");
+    GT_CHECK(noneButton != nullptr, "noneButton is NULL");
     GTWidget::click(os, noneButton);
 
     QTableWidget *table = dialog->findChild<QTableWidget *>("sequencesTableWidget");
-    GT_CHECK(table != NULL, "tableWidget is NULL");
+    GT_CHECK(table != nullptr, "tableWidget is NULL");
 
     QPoint p = table->geometry().topRight();
     p.setX(p.x() - 2);
@@ -251,9 +251,9 @@ void SelectSubalignmentFiller::commonScenario() {
     }
 
     QDialogButtonBox *box = dialog->findChild<QDialogButtonBox *>("buttonBox");
-    GT_CHECK(box != NULL, "buttonBox is NULL");
+    GT_CHECK(box != nullptr, "buttonBox is NULL");
     QPushButton *ok = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(ok != NULL, "ok button is NULL");
+    GT_CHECK(ok != nullptr, "ok button is NULL");
     GTWidget::click(os, ok);
 }
 #undef GT_METHOD_NAME
@@ -279,9 +279,9 @@ void ImageExportFormFiller::commonScenario() {
     GTComboBox::selectItemByText(os, formatsBox, parameters.format);
 
     QDialogButtonBox *box = dialog->findChild<QDialogButtonBox *>("buttonBox");
-    GT_CHECK(box != NULL, "buttonBox is NULL");
+    GT_CHECK(box != nullptr, "buttonBox is NULL");
     QPushButton *ok = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(ok != NULL, "ok button is NULL");
+    GT_CHECK(ok != nullptr, "ok button is NULL");
     GTWidget::click(os, ok);
 }
 

@@ -40,7 +40,7 @@ EditSettingsDialogFiller::EditSettingsDialogFiller(HI::GUITestOpStatus &_os,
 #define GT_METHOD_NAME "commonScenario"
 void EditSettingsDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     QString radioButtonName;
     switch (policy) {

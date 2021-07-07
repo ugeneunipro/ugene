@@ -88,7 +88,7 @@ void ImportPrimersDialog::sl_addFileClicked() {
                                                                 tr("Select primers to import"),
                                                                 dirHelper.dir,
                                                                 filter,
-                                                                NULL,
+                                                                nullptr,
                                                                 QFileDialog::DontConfirmOverwrite | QFileDialog::ReadOnly | additionalOptions);
     CHECK(!fileList.isEmpty(), );
     dirHelper.url = QFileInfo(fileList.last()).absoluteFilePath();
@@ -145,7 +145,7 @@ void ImportPrimersDialog::sl_removeObjectClicked() {
 
 void ImportPrimersDialog::sl_connectionComplete() {
     SharedConnectionsDialog *connectionDialog = qobject_cast<SharedConnectionsDialog *>(sender());
-    if (Q_LIKELY(NULL != connectionDialog)) {
+    if (Q_LIKELY(nullptr != connectionDialog)) {
         connectionDialog->deleteLater();
     } else {
         coreLog.error("ImportPrimersDialog::sl_connectionComplete(): an unexpected slot caller");

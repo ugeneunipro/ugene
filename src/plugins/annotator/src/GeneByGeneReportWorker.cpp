@@ -59,7 +59,7 @@ static const QString ANN_NAME("annotation_name");
 /* Worker */
 /************************************************************************/
 GeneByGeneReportWorker::GeneByGeneReportWorker(Actor *p)
-    : BaseWorker(p), inChannel(NULL) {
+    : BaseWorker(p), inChannel(nullptr) {
 }
 
 void GeneByGeneReportWorker::init() {
@@ -86,8 +86,8 @@ Task *GeneByGeneReportWorker::tick() {
 
         SharedDbiDataHandler seqId = data.value(SEQ_SLOT_ID).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        if (NULL == seqObj.data()) {
-            return NULL;
+        if (nullptr == seqObj.data()) {
+            return nullptr;
         }
         DNASequence seq = seqObj->getWholeSequence(os);
         CHECK_OP(os, new FailTask(os.getError()));
@@ -96,7 +96,7 @@ Task *GeneByGeneReportWorker::tick() {
     }
 
     if (!inChannel->isEnded()) {
-        return NULL;
+        return nullptr;
     }
 
     GeneByGeneReportSettings settings;

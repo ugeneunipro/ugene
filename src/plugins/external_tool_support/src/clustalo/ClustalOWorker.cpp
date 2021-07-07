@@ -146,7 +146,7 @@ QString ClustalOPrompter::composeRichDoc() {
 * ClustalOWorker
 ****************************/
 ClustalOWorker::ClustalOWorker(Actor *a)
-    : BaseWorker(a), input(NULL), output(NULL) {
+    : BaseWorker(a), input(nullptr), output(nullptr) {
 }
 
 void ClustalOWorker::init() {
@@ -159,7 +159,7 @@ Task *ClustalOWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         cfg.numIterations = actor->getParameter(NUM_ITERATIONS)->getAttributeValue<int>(context);
         cfg.maxGuideTreeIterations = actor->getParameter(MAX_GT_ITERATIONS)->getAttributeValue<int>(context);
@@ -178,12 +178,12 @@ Task *ClustalOWorker::tick() {
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
-        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
+        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
         const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
         if (msa->isEmpty()) {
             algoLog.error(tr("An empty MSA '%1' has been supplied to ClustalO.").arg(msa->getName()));
-            return NULL;
+            return nullptr;
         }
         ClustalOSupportTask *supportTask = new ClustalOSupportTask(msa, GObjectReference(), cfg);
         supportTask->addListeners(createLogListeners());
@@ -194,7 +194,7 @@ Task *ClustalOWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void ClustalOWorker::sl_taskFinished() {

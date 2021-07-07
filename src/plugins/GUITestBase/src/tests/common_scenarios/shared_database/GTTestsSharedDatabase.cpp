@@ -74,9 +74,9 @@ namespace {
 QListWidgetItem *getConnectionItem(HI::GUITestOpStatus &os, const QString &connectionName) {
     QWidget *dialog = GTWidget::getActiveModalWidget(os);
     QListWidget *list = GTWidget::findExactWidget<QListWidget *>(os, "lwConnections", dialog);
-    CHECK_SET_ERR_RESULT(NULL != list, "Connections list widget is NULL", NULL);
+    CHECK_SET_ERR_RESULT(nullptr != list, "Connections list widget is NULL", nullptr);
     const QList<QListWidgetItem *> items = list->findItems(connectionName, Qt::MatchExactly);
-    CHECK_SET_ERR_RESULT(1 == items.size(), QString("List item '%1'' not found").arg(connectionName), NULL);
+    CHECK_SET_ERR_RESULT(1 == items.size(), QString("List item '%1'' not found").arg(connectionName), nullptr);
 
     return items.first();
 }
@@ -86,7 +86,7 @@ void checkButtonStateForConnectionItem(HI::GUITestOpStatus &os, const QString &c
     GTListWidget::click(os, GTWidget::findExactWidget<QListWidget *>(os, "lwConnections", dialog), connectionName);
 
     QWidget *button = GTWidget::findButtonByText(os, buttonText, dialog);
-    CHECK_SET_ERR(NULL != button, "Button is NULL");
+    CHECK_SET_ERR(nullptr != button, "Button is NULL");
     CHECK_SET_ERR(isEnabled == button->isEnabled(), QString("Button '%1' has an incorrect state").arg(buttonText));
 }
 
@@ -605,7 +605,7 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0013) {
     //          3) There are no errors in the log.
     //          4) The "Edit" button is enabled.
     GTLogTracer lt;
-    if (GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != NULL) {
+    if (GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != nullptr) {
         GTUtilsMdi::click(os, GTGlobals::Close);
     }
     QString conName = "cm_test_0013: new shared database";
@@ -673,13 +673,13 @@ GUI_TEST_CLASS_DEFINITION(cm_test_0014) {
                 QWidget *lePassword = GTWidget::findWidget(os, "lePassword", dialog);
                 QWidget *cbRememberMe = GTWidget::findWidget(os, "cbRemember", dialog);
 
-                CHECK_SET_ERR(NULL != leName, "Connection name field is NULL");
-                CHECK_SET_ERR(NULL != leHost, "Host field is NULL");
-                CHECK_SET_ERR(NULL != lePort, "Port field is NULL");
-                CHECK_SET_ERR(NULL != leDatabase, "Database name field is NULL");
-                CHECK_SET_ERR(NULL != leLogin, "Login field is NULL");
-                CHECK_SET_ERR(NULL != lePassword, "Password field is NULL");
-                CHECK_SET_ERR(NULL != cbRememberMe, "Remember me checkbox is NULL");
+                CHECK_SET_ERR(nullptr != leName, "Connection name field is NULL");
+                CHECK_SET_ERR(nullptr != leHost, "Host field is NULL");
+                CHECK_SET_ERR(nullptr != lePort, "Port field is NULL");
+                CHECK_SET_ERR(nullptr != leDatabase, "Database name field is NULL");
+                CHECK_SET_ERR(nullptr != leLogin, "Login field is NULL");
+                CHECK_SET_ERR(nullptr != lePassword, "Password field is NULL");
+                CHECK_SET_ERR(nullptr != cbRememberMe, "Remember me checkbox is NULL");
 
                 CHECK_SET_ERR(!leName->isEnabled(), "Connection name field is unexpectedly enabled");
                 CHECK_SET_ERR(!leHost->isEnabled(), "Host field is unexpectedly enabled");
@@ -831,7 +831,7 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0005) {
     CHECK_OP(os, );
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
     QAbstractItemModel *model = treeView->model();
 
     {    // drag'n'drop
@@ -877,7 +877,7 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0006) {
     GTUtilsSharedDatabaseDocument::connectToTestDatabase(os);
     CHECK_OP(os, );
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
     QAbstractItemModel *model = treeView->model();
 
     {    // drag'n'drop
@@ -915,14 +915,14 @@ GUI_TEST_CLASS_DEFINITION(proj_test_0007) {
     CHECK_OP(os, );
 
     QLineEdit *filterEdit = dynamic_cast<QLineEdit *>(GTWidget::findWidget(os, "nameFilterEdit"));
-    CHECK(NULL != filterEdit, );
+    CHECK(nullptr != filterEdit, );
 
     GTLineEdit::setText(os, filterEdit, "pt0007");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
     QAbstractItemModel *model = treeView->model();
 
     GTGlobals::sleep();
@@ -1613,7 +1613,7 @@ GUI_TEST_CLASS_DEFINITION(import_test_0011) {
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseSequenceObjectPath);
     QWidget *seqView = GTWidget::findWidget(os, sequenceVisibleWidgetName);
-    CHECK_SET_ERR(NULL != seqView, "View wasn't opened");
+    CHECK_SET_ERR(nullptr != seqView, "View wasn't opened");
 
     QTreeWidgetItem *annotationTable = GTUtilsAnnotationsTreeView::findItem(os, someFeatureName);
     CHECK_SET_ERR(annotationTable != nullptr, "Annotation table is NULL");
@@ -2172,7 +2172,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0002) {
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseMalignmentObjectPath);
     QWidget *msaView = GTWidget::findWidget(os, malignmentVisibleNameWidget);
-    CHECK_SET_ERR(NULL != msaView, "View wasn't opened");
+    CHECK_SET_ERR(nullptr != msaView, "View wasn't opened");
 
     GTUtilsMSAEditorSequenceArea::clickToPosition(os, position);
 
@@ -2204,7 +2204,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0003) {
         }
     }
     QWidget *assemblyView = GTWidget::findWidget(os, assemblyVisibleNameWidget);
-    CHECK_SET_ERR(NULL != assemblyView, "View wasn't opened");
+    CHECK_SET_ERR(nullptr != assemblyView, "View wasn't opened");
 
     bool hasReference = GTUtilsAssemblyBrowser::hasReference(os, assemblyView);
     CHECK_SET_ERR(hasReference, "Reference is not found");
@@ -2232,7 +2232,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0004) {
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseTextObjectPath);
     QWidget *textView = GTWidget::findWidget(os, textVisibleNameWidget);
-    CHECK_SET_ERR(NULL != textView, "View wasn't opened");
+    CHECK_SET_ERR(nullptr != textView, "View wasn't opened");
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -2257,10 +2257,10 @@ GUI_TEST_CLASS_DEFINITION(view_test_0005) {
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseChromatogramObjectPath);
 
     QWidget *seqView = GTWidget::findWidget(os, sequenceVisibleName);
-    CHECK_SET_ERR(NULL != seqView, "Sequence view wasn't opened");
+    CHECK_SET_ERR(nullptr != seqView, "Sequence view wasn't opened");
 
     QWidget *chromaView = seqView->findChild<QWidget *>("chromatogram_view_" + sequenceObjectName);
-    CHECK_SET_ERR(NULL != chromaView, "Chromatogram view wasn't opened");
+    CHECK_SET_ERR(nullptr != chromaView, "Chromatogram view wasn't opened");
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -2283,7 +2283,7 @@ GUI_TEST_CLASS_DEFINITION(view_test_0006) {
 
     GTUtilsSharedDatabaseDocument::openView(os, databaseDoc, databaseTreeObjectPath);
     QWidget *treeView = GTWidget::findWidget(os, treeVisibleNameWidget);
-    CHECK_SET_ERR(NULL != treeView, "View wasn't opened");
+    CHECK_SET_ERR(nullptr != treeView, "View wasn't opened");
 
     CHECK_SET_ERR(!lt.hasErrors(), "Errors in log: " + lt.getJoinedErrorString());
 }
@@ -2334,7 +2334,7 @@ GUI_TEST_CLASS_DEFINITION(del_test_0002) {
     CHECK_OP(os, );
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
     QAbstractItemModel *model = treeView->model();
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "dt0002_human_T1"));
@@ -2351,10 +2351,10 @@ GUI_TEST_CLASS_DEFINITION(del_test_0002) {
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
 
-    QWidget *seqView = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", NULL, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(NULL == seqView, "Sequence view is not closed");
-    QWidget *msaView = GTWidget::findWidget(os, "msa_editor_dt0002_COI", NULL, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(NULL == msaView, "MSA Editor is not closed");
+    QWidget *seqView = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", nullptr, GTGlobals::FindOptions(false));
+    CHECK_SET_ERR(nullptr == seqView, "Sequence view is not closed");
+    QWidget *msaView = GTWidget::findWidget(os, "msa_editor_dt0002_COI", nullptr, GTGlobals::FindOptions(false));
+    CHECK_SET_ERR(nullptr == msaView, "MSA Editor is not closed");
 
     const QModelIndex rbItem = GTUtilsProjectTreeView::findIndex(os, "Recycle bin");
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, rbItem));
@@ -2401,7 +2401,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0001) {
     CHECK_OP(os, );
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0001_sequence"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));
@@ -2425,7 +2425,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0002) {
     CHECK_OP(os, );
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0002_features"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << "ep_exportAnnotations2CSV"));
@@ -2448,7 +2448,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0003) {
     CHECK_OP(os, );
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0003_alignment"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_OBJECT));
@@ -2471,7 +2471,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0004) {
     CHECK_OP(os, );
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0004_assembly"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_OBJECT));
@@ -2496,7 +2496,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0005) {
     CHECK_OP(os, );
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0005_variations"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_OBJECT));
@@ -2519,7 +2519,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0006) {
     CHECK_OP(os, );
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0006_text"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_OBJECT));
@@ -2543,7 +2543,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0007) {
     CHECK_OP(os, );
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0007_chroma"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_CHROMATOGRAM));
@@ -2566,7 +2566,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0008) {
     CHECK_OP(os, );
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "et0008_tree"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_OBJECT));
@@ -2589,7 +2589,7 @@ GUI_TEST_CLASS_DEFINITION(export_test_0009) {
     CHECK_OP(os, );
 
     QTreeView *treeView = GTUtilsProjectTreeView::getTreeView(os);
-    CHECK_SET_ERR(NULL != treeView, "Invalid project tree view");
+    CHECK_SET_ERR(nullptr != treeView, "Invalid project tree view");
 
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "long name with bad symbols : /?/=+\\|*"));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__EXPORT_IMPORT_MENU_ACTION << ACTION_EXPORT_SEQUENCE));

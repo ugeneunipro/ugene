@@ -32,7 +32,7 @@ class DNAStatWorker : public BaseWorker {
     Q_OBJECT
 public:
     DNAStatWorker(Actor *a)
-        : BaseWorker(a), input(NULL), output(NULL) {
+        : BaseWorker(a), input(nullptr), output(nullptr) {
     }
 
     virtual void init();

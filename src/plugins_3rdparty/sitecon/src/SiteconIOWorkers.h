@@ -76,7 +76,7 @@ class SiteconReader : public BaseWorker {
     Q_OBJECT
 public:
     static const QString ACTOR_ID;
-    SiteconReader(Actor* a) : BaseWorker(a), output(NULL) {}
+    SiteconReader(Actor* a) : BaseWorker(a), output(nullptr) {}
     virtual void init();
     virtual Task* tick();
     virtual void cleanup() {}
@@ -94,7 +94,7 @@ class SiteconWriter : public BaseWorker {
     Q_OBJECT
 public:
     static const QString ACTOR_ID;
-    SiteconWriter(Actor* a) : BaseWorker(a), input(NULL), done(false), fileMode(SaveDoc_Overwrite) {}
+    SiteconWriter(Actor* a) : BaseWorker(a), input(nullptr), done(false), fileMode(SaveDoc_Overwrite) {}
     virtual void init();
     virtual Task* tick();
     virtual void cleanup() {}

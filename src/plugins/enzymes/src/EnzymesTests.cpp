@@ -42,7 +42,7 @@ namespace U2 {
 
 void GTest_FindEnzymes::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
-    loadTask = NULL;
+    loadTask = nullptr;
     contextIsAdded = false;
 
     seqObjCtx = el.attribute("sequence");
@@ -60,7 +60,7 @@ void GTest_FindEnzymes::init(XMLTestFormat *tf, const QDomElement &el) {
     SAFE_POINT_OP(os, );
     aObj = new AnnotationTableObject(aObjName, dbiRef);
 
-    SAFE_POINT(AppContext::getIOAdapterRegistry() != NULL, "IOAdapter registry is NULL", );
+    SAFE_POINT(AppContext::getIOAdapterRegistry() != nullptr, "IOAdapter registry is NULL", );
     IOAdapterFactory *ioFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     QTemporaryFile *t = new QTemporaryFile(this);
     Document *doc = new Document(new GenbankPlainTextFormat(this), ioFactory, GUrl(QFileInfo(*t).absoluteFilePath()), dbiRef, QList<GObject *>() << aObj);
@@ -146,7 +146,7 @@ void GTest_FindEnzymes::prepare() {
 
     //get sequence object
     seqObj = getContext<U2SequenceObject>(this, seqObjCtx);
-    if (seqObj == NULL) {
+    if (seqObj == nullptr) {
         stateInfo.setError(QString("Sequence context not found %1").arg(seqObjCtx));
         return;
     }
@@ -169,7 +169,7 @@ QList<Task *> GTest_FindEnzymes::onSubTaskFinished(Task *subTask) {
     QList<SEnzymeData> enzymesToSearch;
     foreach (const QString &enzymeId, enzymeNames) {
         SEnzymeData enzyme = EnzymesIO::findEnzymeById(enzymeId, loadTask->enzymes);
-        if (enzyme.constData() == NULL) {
+        if (enzyme.constData() == nullptr) {
             stateInfo.setError(QString("Enzyme not found: %1").arg(enzymeId));
             return res;
         }
@@ -195,7 +195,7 @@ Task::ReportResult GTest_FindEnzymes::report() {
     foreach (const QString &enzymeId, resultsPerEnzyme.keys()) {
         QList<U2Region> regions = resultsPerEnzyme.values(enzymeId);
         AnnotationGroup *ag = aObj->getRootGroup()->getSubgroup(enzymeId, false);
-        if (NULL == ag) {
+        if (nullptr == ag) {
             stateInfo.setError(QString("Group not found %1").arg(enzymeId));
             break;
         }
@@ -223,7 +223,7 @@ Task::ReportResult GTest_FindEnzymes::report() {
 }
 
 void GTest_FindEnzymes::cleanup() {
-    if (aObj != NULL) {
+    if (aObj != nullptr) {
         if (contextIsAdded) {
             removeContext(aObjName);
         }
@@ -237,7 +237,7 @@ void GTest_FindEnzymes::cleanup() {
 
 void GTest_DigestIntoFragments::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
-    loadTask = NULL;
+    loadTask = nullptr;
 
     seqObjCtx = el.attribute("sequence");
     if (seqObjCtx.isEmpty()) {
@@ -281,13 +281,13 @@ void GTest_DigestIntoFragments::prepare() {
 
     //get sequence object
     seqObj = getContext<U2SequenceObject>(this, seqObjCtx);
-    if (seqObj == NULL) {
+    if (seqObj == nullptr) {
         stateInfo.setError(QString("Sequence context not found %1").arg(seqObjCtx));
         return;
     }
 
     aObj = getContext<AnnotationTableObject>(this, aObjCtx);
-    if (aObj == NULL) {
+    if (aObj == nullptr) {
         stateInfo.setError(QString("Annotation context not found %1").arg(aObjCtx));
         return;
     }
@@ -308,7 +308,7 @@ QList<Task *> GTest_DigestIntoFragments::onSubTaskFinished(Task *subTask) {
     QList<SEnzymeData> enzymesToSearch;
     foreach (const QString &enzymeId, enzymeNames) {
         SEnzymeData enzyme = EnzymesIO::findEnzymeById(enzymeId, loadTask->enzymes);
-        if (enzyme.constData() == NULL) {
+        if (enzyme.constData() == nullptr) {
             stateInfo.setError(QString("Enzyme not found: %1").arg(enzymeId));
             return res;
         }
@@ -330,7 +330,7 @@ QList<Task *> GTest_DigestIntoFragments::onSubTaskFinished(Task *subTask) {
 void GTest_LigateFragments::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
-    ligateTask = NULL;
+    ligateTask = nullptr;
     contextAdded = false;
 
     resultDocName = el.attribute("index");
@@ -374,7 +374,7 @@ void GTest_LigateFragments::prepare() {
 
     foreach (const QString &seqObjCtx, seqObjNames) {
         GObject *seqObj = getContext<U2SequenceObject>(this, seqObjCtx);
-        if (seqObj == NULL) {
+        if (seqObj == nullptr) {
             stateInfo.setError(QString("Sequence object context not found %1").arg(seqObjCtx));
             return;
         }
@@ -383,7 +383,7 @@ void GTest_LigateFragments::prepare() {
 
     foreach (const QString &aObjCtx, annObjNames) {
         GObject *aObj = getContext<AnnotationTableObject>(this, aObjCtx);
-        if (aObj == NULL) {
+        if (aObj == nullptr) {
             stateInfo.setError(QString("Annotation context not found %1").arg(aObjCtx));
             return;
         }
@@ -440,7 +440,7 @@ Task::ReportResult GTest_LigateFragments::report() {
         return ReportResult_Finished;
     }
 
-    if (ligateTask != NULL && ligateTask->hasError()) {
+    if (ligateTask != nullptr && ligateTask->hasError()) {
         stateInfo.setError(ligateTask->getError());
     } else if (!resultDocName.isEmpty()) {
         addContext(resultDocName, ligateTask->getResultDocument());

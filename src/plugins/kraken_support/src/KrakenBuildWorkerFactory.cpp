@@ -222,7 +222,7 @@ void KrakenBuildWorkerFactory::init() {
 
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setPrompter(new KrakenBuildPrompter(NULL));
+    proto->setPrompter(new KrakenBuildPrompter(nullptr));
     proto->addExternalTool(KrakenSupport::BUILD_TOOL_ID);
     proto->setValidator(new KrakenBuildValidator());
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);

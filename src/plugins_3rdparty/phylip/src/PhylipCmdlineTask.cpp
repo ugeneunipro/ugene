@@ -49,7 +49,7 @@ const QString PhylipCmdlineTask::FRACTION_ARG = "fraction";
 const QString PhylipCmdlineTask::CONSENSUS_ARG = "consensus";
 
 PhylipCmdlineTask::PhylipCmdlineTask(const MultipleSequenceAlignment &msa, const CreatePhyTreeSettings &settings)
-: PhyTreeGeneratorTask(msa, settings), cmdlineTask(NULL), msaObject(NULL), treeObject(NULL)
+: PhyTreeGeneratorTask(msa, settings), cmdlineTask(nullptr), msaObject(nullptr), treeObject(nullptr)
 {
     setTaskName(tr("PHYLIP command line wrapper task"));
     tpm = Progress_SubTasksBased;

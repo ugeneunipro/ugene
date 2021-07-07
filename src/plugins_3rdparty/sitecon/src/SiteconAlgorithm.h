@@ -95,7 +95,7 @@ class SiteconAlgorithm : public QObject {
 public:
     static QVector<PositionStats> calculateDispersionAndAverage(const MultipleSequenceAlignment &ma, const SiteconBuildSettings &s, TaskStateInfo &ts);
 
-    static qreal calculatePSum(const char *seq, int len, const QVector<PositionStats> &normalizedMatrix, const SiteconBuildSettings &settings, qreal devThreshold, DNATranslation *complMap = NULL);
+    static qreal calculatePSum(const char *seq, int len, const QVector<PositionStats> &normalizedMatrix, const SiteconBuildSettings &settings, qreal devThreshold, DNATranslation *complMap = nullptr);
 
     static QVector<qreal> calculateFirstTypeError(const MultipleSequenceAlignment &ma, const SiteconBuildSettings &s, TaskStateInfo &ts);
 

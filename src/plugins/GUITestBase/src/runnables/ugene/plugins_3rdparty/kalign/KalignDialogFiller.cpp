@@ -40,7 +40,7 @@ KalignDialogFiller::KalignDialogFiller(HI::GUITestOpStatus &_os, int _gapOpenVal
 #define GT_METHOD_NAME "commonScenario"
 void KalignDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     if (gapOpenVal) {
         QCheckBox *gapOpenCheckBox = dialog->findChild<QCheckBox *>("gapOpenCheckBox");

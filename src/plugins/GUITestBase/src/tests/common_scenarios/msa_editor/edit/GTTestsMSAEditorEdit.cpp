@@ -817,7 +817,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
             //Expected state: Create subaligniment dialog has appeared, all sequences are checked
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QTableWidget *table = GTWidget::findExactWidget<QTableWidget *>(os, "sequencesTableWidget", dialog);
-            CHECK_SET_ERR(NULL != table, "tableWidget is NULL");
+            CHECK_SET_ERR(nullptr != table, "tableWidget is NULL");
 
             for (int i = 0; i < table->rowCount(); i++) {
                 QCheckBox *box = qobject_cast<QCheckBox *>(table->cellWidget(i, 0));

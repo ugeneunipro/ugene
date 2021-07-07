@@ -103,7 +103,7 @@ void QDSamplesWidget::addSample(const QDSample &sample) {
 
 void QDSamplesWidget::sl_onItemChanged(QListWidgetItem *item) {
     if (item && !item->data(DATA_ROLE).isValid()) {
-        item = NULL;
+        item = nullptr;
     }
     assert(glass);
     glass->setItem(item);
@@ -119,15 +119,15 @@ void QDSamplesWidget::sl_onItemSelected(QListWidgetItem *item) {
 void QDSamplesWidget::sl_cancel() {
     selectionModel()->clear();
     if (isHidden()) {
-        emit setupGlass(NULL);
-        glass->setItem(NULL);
+        emit setupGlass(nullptr);
+        glass->setItem(nullptr);
     } else {
         emit setupGlass(glass);
     }
 }
 
 QDSamplePane::QDSamplePane(QueryScene *_scene)
-    : scene(_scene), current(NULL) {
+    : scene(_scene), current(nullptr) {
 }
 
 void QDSamplePane::paint(QPainter *painter) {
@@ -143,7 +143,7 @@ void QDSamplePane::paint(QPainter *painter) {
 }
 
 void QDSamplePane::mouseDoubleClickEvent(QMouseEvent *e) {
-    if (current == NULL) {
+    if (current == nullptr) {
         return;
     }
     QTextDocument *doc = current->data(DOC_ROLE).value<QTextDocument *>();
@@ -161,7 +161,7 @@ void QDSamplePane::mouseDoubleClickEvent(QMouseEvent *e) {
     if (textRect.contains(position)) {
         emit itemActivated(current);
     } else {
-        current = NULL;
+        current = nullptr;
         scene->update();
     }
 }

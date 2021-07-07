@@ -84,7 +84,7 @@ static const QString INDEX_BASENAME("index-basename");
 /************************************************************************/
 
 GenomeAlignerWorker::GenomeAlignerWorker(Actor *a)
-    : BaseWorker(a, false), inChannel(NULL), output(NULL) {
+    : BaseWorker(a, false), inChannel(nullptr), output(nullptr) {
 }
 
 void GenomeAlignerWorker::init() {
@@ -97,7 +97,7 @@ Task *GenomeAlignerWorker::tick() {
         U2OpStatus2Log os;
         if (inChannel->isEnded()) {
             algoLog.error(GenomeAlignerWorker::tr("Short reads list is empty."));
-            return NULL;
+            return nullptr;
         }
         Message m = getMessageAndSetupScriptValues(inChannel);
         QVariantMap data = m.getData().toMap();
@@ -127,7 +127,7 @@ Task *GenomeAlignerWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void GenomeAlignerWorker::cleanup() {
@@ -412,7 +412,7 @@ void GenomeAlignerWorkerFactory::init() {
         delegates[REFERENCE_INPUT_TYPE] = new ComboBoxDelegate(rip);
 
         delegates[REFERENCE_GENOME] = new URLDelegate("", "", false, false, false);
-        delegates[INDEX_DIR] = new URLDelegate("", "", false, true, false, NULL, "", true);
+        delegates[INDEX_DIR] = new URLDelegate("", "", false, true, false, nullptr, "", true);
 
         delegates[OUTPUT_DIR] = new URLDelegate("", "", false, true);
         delegates[ABS_OR_PERC_MISMATCHES_ATTR] = new ComboBoxWithBoolsDelegate();
