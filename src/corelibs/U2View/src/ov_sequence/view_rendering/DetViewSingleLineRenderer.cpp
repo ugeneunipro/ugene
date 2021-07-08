@@ -582,12 +582,8 @@ void DetViewSingleLineRenderer::drawSequenceSelection(QPainter &p, const QSize &
             if (translLine >= 0 && visibleSelectedRegion.length >= 3) {
                 qint64 frameStart = visibleSelectedRegion.startPos;
                 qint64 frameLength = visibleSelectedRegion.length;
-                if (selectedRegion.startPos == visibleSelectedRegion.startPos) {
-                    frameStart += 1;
-                    frameLength -= 1;
-                }
                 if (selectedRegion.endPos() == visibleSelectedRegion.endPos()) {
-                    frameLength -= 1;
+                    frameLength -= (visibleSelectedRegion.endPos() - selectedRegion.startPos) % 3;
                 }
                 U2Region frameRegion(frameStart, frameLength);
                 highlight(p, frameRegion, translLine, canvasSize, visibleRange);
@@ -597,12 +593,8 @@ void DetViewSingleLineRenderer::drawSequenceSelection(QPainter &p, const QSize &
                 if (complTransLine >= 0 && visibleSelectedRegion.length >= 3) {
                     qint64 frameEnd = visibleSelectedRegion.endPos();
                     qint64 frameLength = visibleSelectedRegion.length;
-                    if (selectedRegion.endPos() == visibleSelectedRegion.endPos()) {
-                        frameEnd -= 1;
-                        frameLength -= 1;
-                    }
                     if (selectedRegion.startPos == visibleSelectedRegion.startPos) {
-                        frameLength -= 1;
+                        frameLength -= (selectedRegion.endPos() - visibleSelectedRegion.startPos) % 3;
                     }
                     U2Region frameRegion(frameEnd - frameLength, frameLength);
                     highlight(p, frameRegion, complTransLine, canvasSize, visibleRange);
