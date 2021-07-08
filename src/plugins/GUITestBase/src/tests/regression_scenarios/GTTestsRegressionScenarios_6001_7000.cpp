@@ -5102,7 +5102,7 @@ GUI_TEST_CLASS_DEFINITION(test_6709) {
     QWidget *translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
     CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "translate_selection_radiobutton"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"translate_selection_radiobutton"}));
     GTWidget::click(os, translationsMenuToolbarButton);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
