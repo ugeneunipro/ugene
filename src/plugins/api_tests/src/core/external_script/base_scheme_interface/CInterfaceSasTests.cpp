@@ -52,15 +52,15 @@ static const QString WD_SCHEMES_PATH = getCommonDataDir() + "cmdline/wd-sas-sche
 
 static U2ErrorType getActorDisplayName(const QString &actorId, QString &actorName) {
     U2::Workflow::ActorPrototypeRegistry *prototypeRegistry = U2::Workflow::WorkflowEnv::getProtoRegistry();
-    CHECK(NULL != prototypeRegistry, U2_INVALID_CALL);
+    CHECK(nullptr != prototypeRegistry, U2_INVALID_CALL);
     U2::Workflow::ActorPrototype *prototype = prototypeRegistry->getProto(actorId);
-    CHECK(NULL != prototype, U2_UNKNOWN_ELEMENT);
+    CHECK(nullptr != prototype, U2_UNKNOWN_ELEMENT);
     actorName = prototype->getDisplayName();
     return U2_OK;
 }
 
 static wchar_t *toDisposableWString(const QString &source) {
-    CHECK(!source.isEmpty(), NULL);
+    CHECK(!source.isEmpty(), nullptr);
     wchar_t *result = new wchar_t[source.size() + 1];
     source.toWCharArray(result);
     result[source.size()] = '\0';
@@ -72,8 +72,8 @@ namespace U2 {
 /////////////   TESTS IMPLEMENTATION   ///////////////////////////////////////////////////////
 
 IMPLEMENT_TEST(CInterfaceSasTests, align_with_clustalO_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"ClustalO", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"ClustalO", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-msa", readerName);
@@ -91,8 +91,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, align_with_clustalO_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, align_with_clustalW_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"clustalw", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"clustalw", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-msa", readerName);
@@ -110,8 +110,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, align_with_clustalW_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, align_with_kalign_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"kalign", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"kalign", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-msa", readerName);
@@ -129,8 +129,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, align_with_kalign_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, align_with_mafft_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"mafft", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"mafft", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-msa", readerName);
@@ -148,8 +148,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, align_with_mafft_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, align_with_muscle_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"muscle", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"muscle", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-msa", readerName);
@@ -167,8 +167,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, align_with_muscle_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, align_with_tcoffee_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"tcoffee", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"tcoffee", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-msa", readerName);
@@ -186,8 +186,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, align_with_tcoffee_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, annotate_with_uql_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"query", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"query", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-sequence", readerName);
@@ -206,8 +206,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, annotate_with_uql_sas) {
 }
 
 IMPLEMENT_TEST(CInterfaceSasTests, basic_align_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"muscle", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"muscle", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString writerName;
     error = getActorDisplayName("write-msa", writerName);
@@ -226,8 +226,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, basic_align_sas) {
 }
 
 IMPLEMENT_TEST(CInterfaceSasTests, build_weight_matrix_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"wmatrix-build", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"wmatrix-build", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-msa", readerName);
@@ -245,8 +245,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, build_weight_matrix_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, cd_search_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"cd-search", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"cd-search", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-sequence", readerName);
@@ -264,8 +264,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, cd_search_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, dna_statistics_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"dna-stats", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"dna-stats", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-sequence", readerName);
@@ -284,8 +284,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, dna_statistics_sas) {
 }
 
 IMPLEMENT_TEST(CInterfaceSasTests, faqual2fastq_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"import-phred-qualities", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"import-phred-qualities", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("write-sequence", readerName);
@@ -304,8 +304,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, faqual2fastq_sas) {
 }
 
 IMPLEMENT_TEST(CInterfaceSasTests, filter_annotations_by_name_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"filter-annotations", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"filter-annotations", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-annotations", readerName);
@@ -323,8 +323,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, filter_annotations_by_name_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, find_repeats_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"repeats-search", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"repeats-search", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-sequence", readerName);
@@ -364,8 +364,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, find_repeats_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, hmm2_build_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"hmm2-build", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"hmm2-build", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-msa", readerName);
@@ -383,8 +383,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, hmm2_build_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, import_phred_qualities_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"import-phred-qualities", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"import-phred-qualities", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     CHECK_U2_ERROR(error);
@@ -404,8 +404,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, import_phred_qualities_sas) {
 }
 
 IMPLEMENT_TEST(CInterfaceSasTests, join_sequences_into_alignment_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"sequences-to-msa", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"sequences-to-msa", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-sequence", readerName);
@@ -424,8 +424,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, join_sequences_into_alignment_sas) {
 }
 
 IMPLEMENT_TEST(CInterfaceSasTests, local_blast_plus_search_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"blast-plus", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"blast-plus", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-sequence", readerName);
@@ -443,8 +443,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, local_blast_plus_search_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, merge_annotations_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"import-annotations", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"import-annotations", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-annotations", readerName);
@@ -462,8 +462,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, merge_annotations_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, merge_assemblies_with_cuffmerge_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"cuffmerge", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"cuffmerge", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-annotations", readerName);
@@ -481,8 +481,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, merge_assemblies_with_cuffmerge_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, orf_marker_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"orf-search", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"orf-search", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-sequence", readerName);
@@ -500,8 +500,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, orf_marker_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, remote_blast_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"blast-ncbi", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"blast-ncbi", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-sequence", readerName);
@@ -519,8 +519,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, remote_blast_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, reverse_complement_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"reverse-complement", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"reverse-complement", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-sequence", readerName);
@@ -538,8 +538,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, reverse_complement_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, split_alignment_into_sequences_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"convert-alignment-to-sequence", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"convert-alignment-to-sequence", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-msa", readerName);
@@ -557,8 +557,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, split_alignment_into_sequences_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, split_assembly_into_sequences_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"assembly-to-sequences", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"assembly-to-sequences", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-assembly", readerName);
@@ -576,8 +576,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, split_assembly_into_sequences_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, text2sequence_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"convert-text-to-sequence", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"convert-text-to-sequence", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-text", readerName);
@@ -595,8 +595,8 @@ IMPLEMENT_TEST(CInterfaceSasTests, text2sequence_sas) {
     releaseScheme(scheme);
 }
 IMPLEMENT_TEST(CInterfaceSasTests, extract_consensus_sas) {
-    SchemeHandle scheme = NULL;
-    U2ErrorType error = createSas(L"extract-consensus", NULL, NULL, &scheme);
+    SchemeHandle scheme = nullptr;
+    U2ErrorType error = createSas(L"extract-consensus", nullptr, nullptr, &scheme);
     CHECK_U2_ERROR(error);
     QString readerName;
     error = getActorDisplayName("read-assembly", readerName);

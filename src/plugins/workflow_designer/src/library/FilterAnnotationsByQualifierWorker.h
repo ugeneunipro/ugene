@@ -45,7 +45,7 @@ class FilterAnnotationsByQualifierWorker : public BaseWorker {
     Q_OBJECT
 public:
     FilterAnnotationsByQualifierWorker(Actor *a)
-        : BaseWorker(a), input(NULL), output(NULL) {};
+        : BaseWorker(a), input(nullptr), output(nullptr) {};
 
     virtual void init();
     virtual Task *tick();

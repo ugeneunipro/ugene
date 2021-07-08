@@ -57,7 +57,7 @@ ActorPrototype *IncludedProtoFactoryImpl::_getScriptProto(QList<DataTypePtr> inp
     foreach (const DataTypePtr &tptr, input) {
         if (!tptr || tptr == DataTypePtr()) {
             coreLog.error(LocalWorkflow::ScriptWorker::tr("For input port was set empty data type"));
-            return NULL;
+            return nullptr;
         }
         map[WorkflowUtils::getSlotDescOfDatatype(tptr)] = tptr;
     }
@@ -71,7 +71,7 @@ ActorPrototype *IncludedProtoFactoryImpl::_getScriptProto(QList<DataTypePtr> inp
     foreach (const DataTypePtr &tptr, output) {
         if (!tptr || tptr == DataTypePtr()) {
             coreLog.error(LocalWorkflow::ScriptWorker::tr("For output port was set empty data type"));
-            return NULL;
+            return nullptr;
         }
         map[WorkflowUtils::getSlotDescOfDatatype(tptr)] = tptr;
     }
@@ -225,7 +225,7 @@ ActorPrototype *IncludedProtoFactoryImpl::_getSchemaActorProto(Schema *schema, c
 
                 attrs << new Attribute(attrDesc, origAttr->getAttributeType(), origAttr->getFlags(), origAttr->getAttributePureValue());
                 PropertyDelegate *d = ed->getDelegate(attrId);
-                if (NULL != d) {
+                if (nullptr != d) {
                     delegateMap[attrDesc.getId()] = d->clone();
                 }
             }

@@ -56,7 +56,7 @@ const QString DigestSequenceDialog::WAIT_MESSAGE(QObject::tr("The restrictions s
 const QString DigestSequenceDialog::HINT_MESSAGE(QObject::tr("Hint: there are no available enzymes. Use \"Analyze->Find Restrictions Sites\" feature to find them."));
 
 DigestSequenceDialog::DigestSequenceDialog(ADVSequenceObjectContext *ctx, QWidget *p)
-    : QDialog(p), seqCtx(ctx), timer(NULL), animationCounter(0) {
+    : QDialog(p), seqCtx(ctx), timer(nullptr), animationCounter(0) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930758");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
@@ -66,8 +66,8 @@ DigestSequenceDialog::DigestSequenceDialog(ADVSequenceObjectContext *ctx, QWidge
     tabWidget->setCurrentIndex(0);
 
     dnaObj = qobject_cast<U2SequenceObject *>(ctx->getSequenceGObject());
-    sourceObj = NULL;
-    assert(dnaObj != NULL);
+    sourceObj = nullptr;
+    assert(dnaObj != nullptr);
     hintLabel->setText(QString());
 
     addAnnotationWidget();
@@ -146,7 +146,7 @@ void DigestSequenceDialog::accept() {
     }
     const CreateAnnotationModel &m = ac->getModel();
     AnnotationTableObject *aObj = m.getAnnotationObject();
-    SAFE_POINT(aObj != NULL, "Invalid annotation table detected!", );
+    SAFE_POINT(aObj != nullptr, "Invalid annotation table detected!", );
 
     DigestSequenceTaskConfig cfg;
     cfg.enzymeData = resultEnzymes;
@@ -166,7 +166,7 @@ void DigestSequenceDialog::accept() {
             cfg.conservedRegions.insertMulti(aName, region);
         }
     }
-    if (seqCtx != NULL) {
+    if (seqCtx != nullptr) {
         seqCtx->getAnnotatedDNAView()->tryAddObject(aObj);
     }
 
@@ -201,7 +201,7 @@ void DigestSequenceDialog::searchForAnnotatedEnzymes(ADVSequenceObjectContext *c
 
     foreach (AnnotationTableObject *a, relatedAnns) {
         AnnotationGroup *grp = a->getRootGroup()->getSubgroup(ANNOTATION_GROUP_ENZYME, false);
-        if (NULL == grp) {
+        if (nullptr == grp) {
             continue;
         }
         sourceObj = a;
@@ -313,7 +313,7 @@ void DigestSequenceDialog::sl_timerUpdate() {
 
 void DigestSequenceDialog::sl_taskStateChanged() {
     Task *task = qobject_cast<Task *>(sender());
-    SAFE_POINT(task != NULL, tr("Auto-annotations update task is NULL."), );
+    SAFE_POINT(task != nullptr, tr("Auto-annotations update task is NULL."), );
 
     if (task->getState() == Task::State_Finished) {
         timer->stop();

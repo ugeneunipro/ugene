@@ -31,7 +31,7 @@ namespace LocalWorkflow {
 class PassFilterPrompter : public PrompterBase<PassFilterPrompter> {
     Q_OBJECT
 public:
-    PassFilterPrompter(Actor *p = NULL)
+    PassFilterPrompter(Actor *p = nullptr)
         : PrompterBase<PassFilterPrompter>(p) {
     }
 

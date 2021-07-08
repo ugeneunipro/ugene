@@ -386,7 +386,7 @@ QString CAP3Prompter::composeRichDoc() {
 //////////////////////////////////////////////////////////////////////////
 
 CAP3Worker::CAP3Worker(Actor *a)
-    : BaseWorker(a), input(NULL), datasetNumber(0) {
+    : BaseWorker(a), input(nullptr), datasetNumber(0) {
 }
 
 void CAP3Worker::initSettings() {
@@ -464,7 +464,7 @@ Task *CAP3Worker::tick() {
 
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
-        SAFE_POINT(!inputMessage.isEmpty(), "NULL message!", NULL);
+        SAFE_POINT(!inputMessage.isEmpty(), "NULL message!", nullptr);
 
         QVariantMap data = inputMessage.getData().toMap();
         if (!data.contains(IN_URL_SLOT_ID)) {
@@ -501,12 +501,12 @@ Task *CAP3Worker::tick() {
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void CAP3Worker::sl_taskFinished() {
     CAP3SupportTask *capTask = qobject_cast<CAP3SupportTask *>(sender());
-    SAFE_POINT(NULL != capTask, "NULL task!", );
+    SAFE_POINT(nullptr != capTask, "NULL task!", );
 
     if (!capTask->isFinished()) {
         return;

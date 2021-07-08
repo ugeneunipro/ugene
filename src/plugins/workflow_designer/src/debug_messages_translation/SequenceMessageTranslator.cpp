@@ -42,7 +42,7 @@ SequenceMessageTranslator::SequenceMessageTranslator(const QVariant &atomicMessa
     SAFE_POINT(source.canConvert<SharedDbiDataHandler>(), "Invalid sequence data supplied!", );
     SharedDbiDataHandler sequenceId = source.value<SharedDbiDataHandler>();
     sequenceObject = StorageUtils::getSequenceObject(context->getDataStorage(), sequenceId);
-    SAFE_POINT(NULL != sequenceObject, "Invalid sequence object!", );
+    SAFE_POINT(nullptr != sequenceObject, "Invalid sequence object!", );
 }
 
 QString SequenceMessageTranslator::getTranslation() const {

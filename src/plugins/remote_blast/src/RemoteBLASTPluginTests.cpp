@@ -31,8 +31,8 @@ namespace U2 {
 void GTest_RemoteBLAST::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
-    ao = NULL;
-    task = NULL;
+    ao = nullptr;
+    task = nullptr;
     sequence = el.attribute(SEQUENCE_ATTR);
     if (sequence.isEmpty()) {
         failMissingValue(SEQUENCE_ATTR);
@@ -200,8 +200,8 @@ void GTest_RemoteBLAST::prepare() {
     ao = new AnnotationTableObject("aaa", dbiRef);
     RemoteBLASTTaskSettings cfg;
     cfg.dbChoosen = algoritm;
-    cfg.aminoT = NULL;
-    cfg.complT = NULL;
+    cfg.aminoT = nullptr;
+    cfg.complT = nullptr;
     cfg.query = query;
     cfg.retries = 600;
     cfg.filterResult = 0;
@@ -217,7 +217,7 @@ Task::ReportResult GTest_RemoteBLAST::report() {
         stateInfo.setError("");
         return ReportResult_Finished;
     }
-    if (ao != NULL) {
+    if (ao != nullptr) {
         QList<Annotation *> alist(ao->getAnnotations());
         foreach (Annotation *an, alist) {
             foreach (const U2Qualifier &q, an->getQualifiers()) {
@@ -260,9 +260,9 @@ Task::ReportResult GTest_RemoteBLAST::report() {
 }
 
 void GTest_RemoteBLAST::cleanup() {
-    if (ao != NULL) {
+    if (ao != nullptr) {
         delete ao;
-        ao = NULL;
+        ao = nullptr;
     }
 
     XmlTest::cleanup();

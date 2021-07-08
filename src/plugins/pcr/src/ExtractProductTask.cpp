@@ -62,7 +62,7 @@ QString ExtractProductTask::getProductName(const QString &sequenceName, qint64 s
 }
 
 ExtractProductTask::ExtractProductTask(const InSilicoPcrProduct &product, const ExtractProductSettings &settings)
-    : Task(tr("Extract PCR product"), TaskFlags_FOSE_COSC), product(product), settings(settings), wholeSequenceLength(0), result(NULL) {
+    : Task(tr("Extract PCR product"), TaskFlags_FOSE_COSC), product(product), settings(settings), wholeSequenceLength(0), result(nullptr) {
     GCOUNTER(cvar, "ExtractProductTask");
 }
 
@@ -81,9 +81,9 @@ DNASequence ExtractProductTask::extractTargetSequence() {
     DNASequence result("", "");
     DbiConnection connection(settings.sequenceRef.dbiRef, stateInfo);
     CHECK_OP(stateInfo, result);
-    SAFE_POINT_EXT(NULL != connection.dbi, setError(L10N::nullPointerError("DBI")), result);
+    SAFE_POINT_EXT(nullptr != connection.dbi, setError(L10N::nullPointerError("DBI")), result);
     U2SequenceDbi *sequenceDbi = connection.dbi->getSequenceDbi();
-    SAFE_POINT_EXT(NULL != sequenceDbi, setError(L10N::nullPointerError("Sequence DBI")), result);
+    SAFE_POINT_EXT(nullptr != sequenceDbi, setError(L10N::nullPointerError("Sequence DBI")), result);
 
     U2Sequence sequence = sequenceDbi->getSequenceObject(settings.sequenceRef.entityId, stateInfo);
     CHECK_OP(stateInfo, result);
@@ -216,10 +216,10 @@ SharedAnnotationData ExtractProductTask::getPrimerAnnotation(int matchLengh, U2S
 
 void ExtractProductTask::run() {
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    SAFE_POINT_EXT(NULL != iof, setError(L10N::nullPointerError("IOAdapterFactory")), );
+    SAFE_POINT_EXT(nullptr != iof, setError(L10N::nullPointerError("IOAdapterFactory")), );
 
     DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
-    SAFE_POINT_EXT(NULL != format, setError(L10N::nullPointerError("Genbank Format")), );
+    SAFE_POINT_EXT(nullptr != format, setError(L10N::nullPointerError("Genbank Format")), );
     QVariantMap hints;
     if (settings.targetDbiRef.isValid()) {
         hints[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(settings.targetDbiRef);
@@ -253,12 +253,12 @@ void ExtractProductTask::run() {
 }
 
 Document *ExtractProductTask::takeResult() {
-    CHECK(NULL != result, NULL);
+    CHECK(nullptr != result, nullptr);
     if (result->thread() != QCoreApplication::instance()->thread()) {
         result->moveToThread(QCoreApplication::instance()->thread());
     }
     Document *returnValue = result;
-    result = NULL;
+    result = nullptr;
     return returnValue;
 }
 
@@ -270,7 +270,7 @@ const InSilicoPcrProduct &ExtractProductTask::getProduct() const {
 /* ExtractProductWrapperTask */
 /************************************************************************/
 ExtractProductWrapperTask::ExtractProductWrapperTask(const InSilicoPcrProduct &product, const QString &sequenceName, qint64 sequenceLength, const ExtractProductSettings &settings)
-    : Task(tr("Extract PCR product and open document"), TaskFlags_NR_FOSE_COSC), extractTask(NULL), settings(settings) {
+    : Task(tr("Extract PCR product and open document"), TaskFlags_NR_FOSE_COSC), extractTask(nullptr), settings(settings) {
     prepareUrl(product, sequenceName, sequenceLength);
     CHECK_OP(stateInfo, );
     extractTask = new ExtractProductTask(product, this->settings);

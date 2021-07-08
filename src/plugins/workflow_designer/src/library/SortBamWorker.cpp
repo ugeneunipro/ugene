@@ -145,7 +145,7 @@ void SortBamWorkerFactory::init() {
 /* SortBamWorker */
 /************************************************************************/
 SortBamWorker::SortBamWorker(Actor *a)
-    : BaseWorker(a), inputUrlPort(NULL), outputUrlPort(NULL), outUrls("") {
+    : BaseWorker(a), inputUrlPort(nullptr), outputUrlPort(nullptr), outUrls("") {
 }
 
 void SortBamWorker::init() {
@@ -156,12 +156,12 @@ void SortBamWorker::init() {
 Task *SortBamWorker::tick() {
     if (inputUrlPort->hasMessage()) {
         const QString url = takeUrl();
-        CHECK(!url.isEmpty(), NULL);
+        CHECK(!url.isEmpty(), nullptr);
 
         const QString detectedFormat = FileAndDirectoryUtils::detectFormat(url);
         if (detectedFormat.isEmpty()) {
             coreLog.info(tr("Unknown file format: ") + url);
-            return NULL;
+            return nullptr;
         }
 
         if (detectedFormat == BaseDocumentFormats::BAM) {
@@ -183,7 +183,7 @@ Task *SortBamWorker::tick() {
         setDone();
         outputUrlPort->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void SortBamWorker::cleanup() {
@@ -194,7 +194,7 @@ namespace {
 QString getTargetUrl(Task *task) {
     SamtoolsSortTask *sortTask = dynamic_cast<SamtoolsSortTask *>(task);
 
-    if (NULL != sortTask) {
+    if (nullptr != sortTask) {
         return sortTask->getResult();
     }
     return "";

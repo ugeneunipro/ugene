@@ -271,7 +271,7 @@ void MaEditor::sl_zoomToSelection() {
     if (selection.isEmpty()) {
         return;
     }
-    int selectionWidth = selection.width();
+    int selectionWidth = selection.toRect().width();
     float pixelsPerBase = (seqAreaWidth / float(selectionWidth)) * zoomMult;
     int fontPointSize = int(pixelsPerBase / fontPixelToPointSize);
     if (fontPointSize >= minimumFontPointSize) {
@@ -288,8 +288,9 @@ void MaEditor::sl_zoomToSelection() {
         setZoomFactor(pixelsPerBase / (minimumFontPointSize * fontPixelToPointSize));
         resizeMode = ResizeMode_OnlyContent;
     }
-    ui->getScrollController()->setFirstVisibleBase(selection.x());
-    ui->getScrollController()->setFirstVisibleViewRow(selection.y());
+    QRect selectionRect = selection.toRect();
+    ui->getScrollController()->setFirstVisibleBase(selectionRect.x());
+    ui->getScrollController()->setFirstVisibleViewRow(selectionRect.y());
 
     updateActions();
 
@@ -517,8 +518,7 @@ QList<qint64> MaEditor::getMaRowIds() const {
 }
 
 void MaEditor::selectRows(int firstViewRowIndex, int numberOfRows) {
-    MaEditorSelection selection(0, firstViewRowIndex, getAlignmentLen(), numberOfRows);
-    ui->getSequenceArea()->setSelection(selection);
+    ui->getSequenceArea()->setSelectionRect(QRect(0, firstViewRowIndex, getAlignmentLen(), numberOfRows));
 }
 
 QRect MaEditor::getUnifiedSequenceFontCharRect(const QFont &sequenceFont) const {

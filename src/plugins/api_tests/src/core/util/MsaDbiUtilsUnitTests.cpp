@@ -36,45 +36,45 @@ namespace U2 {
 const QString MsaDbiUtilsTestUtils::alignmentName = QString("MsaDbiUtils test alignment");
 TestDbiProvider MsaDbiUtilsTestUtils::dbiProvider = TestDbiProvider();
 const QString &MsaDbiUtilsTestUtils::MSA_DB_URL("msa-dbi-utils.ugenedb");
-U2MsaDbi *MsaDbiUtilsTestUtils::msaDbi = NULL;
-U2SequenceDbi *MsaDbiUtilsTestUtils::sequenceDbi = NULL;
+U2MsaDbi *MsaDbiUtilsTestUtils::msaDbi = nullptr;
+U2SequenceDbi *MsaDbiUtilsTestUtils::sequenceDbi = nullptr;
 
 void MsaDbiUtilsTestUtils::init() {
-    SAFE_POINT(NULL == msaDbi, "msaDbi has been already initialized!", );
-    SAFE_POINT(NULL == sequenceDbi, "sequenceDbi has been already initialized!", );
+    SAFE_POINT(nullptr == msaDbi, "msaDbi has been already initialized!", );
+    SAFE_POINT(nullptr == sequenceDbi, "sequenceDbi has been already initialized!", );
 
     bool ok = dbiProvider.init(MSA_DB_URL, true);
     SAFE_POINT(ok, "Dbi provider failed to initialize in MsaTestData::init()!", );
 
     U2Dbi *dbi = dbiProvider.getDbi();
     msaDbi = dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "Failed to get msaDbi!", );
+    SAFE_POINT(nullptr != msaDbi, "Failed to get msaDbi!", );
 
     sequenceDbi = dbi->getSequenceDbi();
-    SAFE_POINT(NULL != sequenceDbi, "Failed to get sequenceDbi!", );
+    SAFE_POINT(nullptr != sequenceDbi, "Failed to get sequenceDbi!", );
 }
 
 void MsaDbiUtilsTestUtils::shutdown() {
-    if (NULL != msaDbi) {
-        SAFE_POINT(NULL != sequenceDbi, "sequenceDbi must also be not NULL on this step!", );
+    if (nullptr != msaDbi) {
+        SAFE_POINT(nullptr != sequenceDbi, "sequenceDbi must also be not NULL on this step!", );
 
         U2OpStatusImpl os;
         dbiProvider.close();
-        msaDbi = NULL;
-        sequenceDbi = NULL;
+        msaDbi = nullptr;
+        sequenceDbi = nullptr;
         SAFE_POINT_OP(os, );
     }
 }
 
 U2MsaDbi *MsaDbiUtilsTestUtils::getMsaDbi() {
-    if (NULL == msaDbi) {
+    if (nullptr == msaDbi) {
         init();
     }
     return msaDbi;
 }
 
 U2SequenceDbi *MsaDbiUtilsTestUtils::getSequenceDbi() {
-    if (NULL == sequenceDbi) {
+    if (nullptr == sequenceDbi) {
         init();
     }
     return sequenceDbi;
@@ -84,8 +84,8 @@ U2EntityRef MsaDbiUtilsTestUtils::initTestAlignment(const qint64 rowCount) {
     getMsaDbi();
     getSequenceDbi();
 
-    SAFE_POINT(NULL != msaDbi, "MsaDbi is NULL", U2EntityRef());
-    SAFE_POINT(NULL != sequenceDbi, "SequenceDbi is NULL", U2EntityRef());
+    SAFE_POINT(nullptr != msaDbi, "MsaDbi is NULL", U2EntityRef());
+    SAFE_POINT(nullptr != sequenceDbi, "SequenceDbi is NULL", U2EntityRef());
 
     U2OpStatusImpl os;
     U2DataId msaId = msaDbi->createMsaObject("", MsaDbiUtilsTestUtils::alignmentName, BaseDNAAlphabetIds::NUCL_DNA_DEFAULT(), os);
@@ -119,8 +119,8 @@ U2EntityRef MsaDbiUtilsTestUtils::initTestAlignment(const QStringList &rowsData 
     getMsaDbi();
     getSequenceDbi();
 
-    SAFE_POINT(NULL != msaDbi, "MsaDbi is NULL", U2EntityRef());
-    SAFE_POINT(NULL != sequenceDbi, "SequenceDbi is NULL", U2EntityRef());
+    SAFE_POINT(nullptr != msaDbi, "MsaDbi is NULL", U2EntityRef());
+    SAFE_POINT(nullptr != sequenceDbi, "SequenceDbi is NULL", U2EntityRef());
 
     U2OpStatusImpl os;
     U2DataId msaId = msaDbi->createMsaObject("", MsaDbiUtilsTestUtils::alignmentName, BaseDNAAlphabetIds::NUCL_DNA_DEFAULT(), os);
@@ -164,8 +164,8 @@ U2EntityRef MsaDbiUtilsTestUtils::initTestAlignment(QList<U2MsaRow> &rows) {
     getMsaDbi();
     getSequenceDbi();
 
-    SAFE_POINT(NULL != msaDbi, "MsaDbi is NULL", U2EntityRef());
-    SAFE_POINT(NULL != sequenceDbi, "SequenceDbi is NULL", U2EntityRef());
+    SAFE_POINT(nullptr != msaDbi, "MsaDbi is NULL", U2EntityRef());
+    SAFE_POINT(nullptr != sequenceDbi, "SequenceDbi is NULL", U2EntityRef());
 
     U2OpStatusImpl os;
     U2DataId msaId = msaDbi->createMsaObject("", MsaDbiUtilsTestUtils::alignmentName, BaseDNAAlphabetIds::NUCL_DNA_DEFAULT(), os);
@@ -222,14 +222,14 @@ U2MsaRow MsaDbiUtilsTestUtils::addRow(const QByteArray &name, const QByteArray &
 U2EntityRef MsaDbiUtilsTestUtils::removeRegionTestAlignment(U2OpStatus &os) {
     U2MsaDbi *msaDbi = getMsaDbi();
     U2SequenceDbi *sequenceDbi = getSequenceDbi();
-    SAFE_POINT(NULL != msaDbi, "MsaDbi is NULL", U2EntityRef());
-    SAFE_POINT(NULL != sequenceDbi, "SequenceDbi is NULL", U2EntityRef());
+    SAFE_POINT(nullptr != msaDbi, "MsaDbi is NULL", U2EntityRef());
+    SAFE_POINT(nullptr != sequenceDbi, "SequenceDbi is NULL", U2EntityRef());
 
     U2DataId msaId = msaDbi->createMsaObject("", MsaDbiUtilsTestUtils::alignmentName, BaseDNAAlphabetIds::NUCL_DNA_DEFAULT(), os);
     CHECK_OP(os, U2EntityRef());
 
     U2Dbi *dbi = msaDbi->getRootDbi();
-    SAFE_POINT(NULL != dbi, "Root dbi is NULL", U2EntityRef());
+    SAFE_POINT(nullptr != dbi, "Root dbi is NULL", U2EntityRef());
 
     Utils::addRow(dbi, msaId, "1", "TAAGACTTCTAA", QList<U2MsaGap>() << U2MsaGap(12, 2), os);
     Utils::addRow(dbi, msaId, "2", "TAAGCTTACTA", QList<U2MsaGap>() << U2MsaGap(11, 3), os);

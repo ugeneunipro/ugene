@@ -144,7 +144,7 @@ bool ReadQualityScoresTask::checkRawData() {
 //////////////////////////////////////////////////////////////////////////
 
 ImportPhredQualityScoresTask::ImportPhredQualityScoresTask(const QList<U2SequenceObject *> &sequences, ImportQualityScoresConfig &cfg)
-    : Task("ImportPhredQualityScores", TaskFlags_NR_FOSCOE), readQualitiesTask(NULL), config(cfg), seqList(sequences) {
+    : Task("ImportPhredQualityScores", TaskFlags_NR_FOSCOE), readQualitiesTask(nullptr), config(cfg), seqList(sequences) {
 }
 
 void ImportPhredQualityScoresTask::prepare() {

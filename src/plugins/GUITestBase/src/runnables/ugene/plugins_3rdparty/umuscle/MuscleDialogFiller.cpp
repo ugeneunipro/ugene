@@ -41,10 +41,10 @@ MuscleDialogFiller::MuscleDialogFiller(HI::GUITestOpStatus &os, Mode _mode, bool
 #define GT_METHOD_NAME "commonScenario"
 void MuscleDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     QComboBox *modeBox = dialog->findChild<QComboBox *>("confBox");
-    GT_CHECK(modeBox != NULL, "combobox not found");
+    GT_CHECK(modeBox != nullptr, "combobox not found");
     GTComboBox::selectItemByIndex(os, modeBox, mode);
 
     QCheckBox *stableCB = dialog->findChild<QCheckBox *>("stableCB");

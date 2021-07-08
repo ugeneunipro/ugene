@@ -72,12 +72,12 @@ Document *QDDocFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &targetDb,
         rawData.append(block.data(), blockLen);
         os.setProgress(io->getProgress());
     }
-    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), NULL);
+    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), nullptr);
 
     if (checkRawData(rawData).score != FormatDetection_Matched) {
         os.setError(tr("Invalid header. %1 expected").arg(QDDocument::HEADER_LINE));
         rawData.clear();
-        return NULL;
+        return nullptr;
     }
 
     QList<GObject *> objects;
@@ -128,12 +128,12 @@ bool QDViewFactory::canCreateView(const MultiGSelection &multiSelection) {
 Task *QDViewFactory::createViewTask(const MultiGSelection &multiSelection, bool single /* = false*/) {
     QSet<Document *> documents = SelectionUtils::findDocumentsWithObjects(QDGObject::TYPE, &multiSelection, UOF_LoadedAndUnloaded, true);
     if (documents.size() == 0) {
-        return NULL;
+        return nullptr;
     }
-    Task *result = (single || documents.size() == 1) ? NULL : new Task(tr("Open multiple views"), TaskFlag_NoRun);
+    Task *result = (single || documents.size() == 1) ? nullptr : new Task(tr("Open multiple views"), TaskFlag_NoRun);
     foreach (Document *d, documents) {
         Task *t = new OpenQDViewTask(d);
-        if (result == NULL) {
+        if (result == nullptr) {
             return t;
         }
         result->addSubTask(t);

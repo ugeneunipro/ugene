@@ -29,7 +29,7 @@
 namespace U2 {
 
 AddPrimerDialogFiller::Parameters::Parameters()
-    : primer(""), name(""), scenario(NULL) {
+    : primer(""), name(""), scenario(nullptr) {
 }
 
 AddPrimerDialogFiller::AddPrimerDialogFiller(HI::GUITestOpStatus &os, const Parameters &parameters)

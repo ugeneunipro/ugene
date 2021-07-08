@@ -37,13 +37,13 @@ ImportPrimersFromFileTask::ImportPrimersFromFileTask(const QString &filePath)
     : Task(tr("Import primers from local file: %1").arg(filePath),
            TaskFlags(TaskFlag_NoRun | TaskFlag_CancelOnSubtaskCancel | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported)),
       filePath(filePath),
-      loadTask(NULL) {
+      loadTask(nullptr) {
     SAFE_POINT_EXT(!filePath.isEmpty(), setError("File path is empty"), );
 }
 
 void ImportPrimersFromFileTask::prepare() {
     loadTask = LoadDocumentTask::getCommonLoadDocTask(GUrl(filePath));
-    CHECK_EXT(NULL != loadTask, setError(tr("Internal error: can't load the file '%1'").arg(filePath)), );
+    CHECK_EXT(nullptr != loadTask, setError(tr("Internal error: can't load the file '%1'").arg(filePath)), );
     addSubTask(loadTask);
 }
 
@@ -53,7 +53,7 @@ QList<Task *> ImportPrimersFromFileTask::onSubTaskFinished(Task *subTask) {
     CHECK_OP(stateInfo, result);
 
     Document *document = loadTask->getDocument();
-    SAFE_POINT_EXT(NULL != document, setError(tr("Document wasn't loaded")), result);
+    SAFE_POINT_EXT(nullptr != document, setError(tr("Document wasn't loaded")), result);
     QList<GObject *> objects = document->findGObjectByType(GObjectTypes::SEQUENCE);
     CHECK_EXT(!objects.isEmpty(), setError(tr("There are no sequence objects in the file '%1' to convert them to primers").arg(filePath)), result);
     foreach (GObject *object, objects) {

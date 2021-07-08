@@ -41,16 +41,16 @@ VcfConsensusSupportTask::VcfConsensusSupportTask(const GUrl &inputFA, const GUrl
       inputFA(inputFA),
       inputVcf(inputVcf),
       output(output),
-      tabixTask(NULL),
-      vcfTask(NULL) {
+      tabixTask(nullptr),
+      vcfTask(nullptr) {
 }
 
 void VcfConsensusSupportTask::prepare() {
     algoLog.details(tr("VcfConsensus started"));
 
-    SAFE_POINT_EXT(AppContext::getAppSettings() != NULL, setError(tr("AppSettings is NULL")), );
+    SAFE_POINT_EXT(AppContext::getAppSettings() != nullptr, setError(tr("AppSettings is NULL")), );
     const UserAppsSettings *userAS = AppContext::getAppSettings()->getUserAppsSettings();
-    SAFE_POINT_EXT(userAS != NULL, setError(tr("UserAppsSettings is NULL")), );
+    SAFE_POINT_EXT(userAS != nullptr, setError(tr("UserAppsSettings is NULL")), );
     QString tmpDirPath(userAS->getCurrentProcessTemporaryDirPath(VcfConsensusSupport::VCF_CONSENSUS_TMP_DIR));
     SAFE_POINT_EXT(!tmpDirPath.isEmpty(), setError(tr("Temporary folder is not set!")), );
     GUrl tmp(tmpDirPath + "/" + inputVcf.fileName() + ".gz");
@@ -105,7 +105,7 @@ const GUrl &VcfConsensusSupportTask::getResultUrl() {
 }
 
 QString VcfConsensusSupportTask::getPath(ExternalTool *et) {
-    if (et == NULL) {
+    if (et == nullptr) {
         setError(tr("Trying to get path of NULL external tool"));
         return QString();
     }

@@ -136,7 +136,7 @@ QString MusclePrompter::composeRichDoc() {
 /****************************
 * MuscleWorker
 ****************************/
-MuscleWorker::MuscleWorker(Actor* a) : BaseWorker(a), input(NULL), output(NULL) {
+MuscleWorker::MuscleWorker(Actor* a) : BaseWorker(a), input(nullptr), output(nullptr) {
 }
 
 void MuscleWorker::init() {
@@ -149,7 +149,7 @@ Task* MuscleWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         int mode = actor->getParameter(MODE_ATTR)->getAttributeValue<int>(context);
         switch(mode) {
@@ -166,12 +166,12 @@ Task* MuscleWorker::tick() {
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
-        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
+        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
         const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
         if( msa->isEmpty() ) {
             algoLog.error(tr("An empty MSA '%1' has been supplied to MUSCLE.").arg(msa->getName()));
-            return NULL;
+            return nullptr;
         }
         QString range = actor->getParameter(RANGE_ATTR)->getAttributeValue<QString>(context);
         if( range.isEmpty() || range == RANGE_ATTR_DEFAULT_VALUE ) {
@@ -209,7 +209,7 @@ Task* MuscleWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void MuscleWorker::sl_taskFinished() {
@@ -223,7 +223,7 @@ void MuscleWorker::sl_taskFinished() {
         return;
     }
 
-    SAFE_POINT(NULL != output, "NULL output!", );
+    SAFE_POINT(nullptr != output, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(t->resultMA);
     QVariantMap msgData;
     msgData[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(msaId);

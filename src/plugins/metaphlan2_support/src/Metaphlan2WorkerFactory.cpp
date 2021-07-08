@@ -216,7 +216,7 @@ void Metaphlan2WorkerFactory::init() {
 
         QString databasePath;
         U2DataPath *metaphlan2DataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::METAPHLAN2_DATABASE_DATA_ID);
-        if (NULL != metaphlan2DataPath && metaphlan2DataPath->isValid()) {
+        if (nullptr != metaphlan2DataPath && metaphlan2DataPath->isValid()) {
             databasePath = metaphlan2DataPath->getPathByName(NgsReadsClassificationPlugin::METAPHLAN2_DATABASE_ITEM_ID);
         }
         Attribute *databaseAttribute = new Attribute(databaseDescriptor,

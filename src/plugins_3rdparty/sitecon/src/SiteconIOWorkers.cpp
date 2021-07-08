@@ -171,7 +171,7 @@ void SiteconWorkerFactory::init() {
 }
 
 Worker *SiteconWorkerFactory::createWorker(Actor *a) {
-    BaseWorker *w = NULL;
+    BaseWorker *w = nullptr;
     if (SiteconReader::ACTOR_ID == a->getProto()->getId()) {
         w = new SiteconReader(a);
     } else if (SiteconWriter::ACTOR_ID == a->getProto()->getId()) {
@@ -191,7 +191,7 @@ QString SiteconReadPrompter::composeRichDoc() {
 
 QString SiteconWritePrompter::composeRichDoc() {
     IntegralBusPort *input = qobject_cast<IntegralBusPort *>(target->getPort(SITECON_IN_PORT_ID));
-    SAFE_POINT(NULL != input, "NULL input port", "");
+    SAFE_POINT(nullptr != input, "NULL input port", "");
     QString from = getProducersOrUnset(SITECON_IN_PORT_ID, SiteconWorkerFactory::SITECON_SLOT.getId());
     QString url = getScreenedURL(input, BaseAttributes::URL_OUT_ATTRIBUTE().getId(), BaseSlots::URL_SLOT().getId());
     url = getHyperlink(BaseAttributes::URL_OUT_ATTRIBUTE().getId(), url);
@@ -214,7 +214,7 @@ Task *SiteconReader::tick() {
         tasks.append(t);
         return t;
     }
-    return NULL;
+    return nullptr;
 }
 
 void SiteconReader::sl_taskFinished() {
@@ -242,7 +242,7 @@ Task *SiteconWriter::tick() {
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
-            return NULL;
+            return nullptr;
         }
         url = getValue<QString>(BaseAttributes::URL_OUT_ATTRIBUTE().getId());
         fileMode = actor->getParameter(BaseAttributes::FILE_MODE_ATTRIBUTE().getId())->getAttributeValue<uint>(context);
@@ -275,7 +275,7 @@ Task *SiteconWriter::tick() {
     } else if (input->isEnded()) {
         setDone();
     }
-    return NULL;
+    return nullptr;
 }
 
 }    //namespace LocalWorkflow

@@ -35,7 +35,7 @@ namespace U2 {
 class NetworkSettingsPageController : public AppSettingsGUIPageController {
     Q_OBJECT
 public:
-    NetworkSettingsPageController(QObject *p = NULL);
+    NetworkSettingsPageController(QObject *p = nullptr);
 
     virtual AppSettingsGUIPageState *getSavedState();
 

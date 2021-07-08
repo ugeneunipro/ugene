@@ -91,7 +91,7 @@ bool PrimerStatistics::validate(const QByteArray &primer) {
 }
 
 bool PrimerStatistics::validate(QString primer) {
-    PrimerValidator pv(NULL, false);
+    PrimerValidator pv(nullptr, false);
     int pos = 0;
     return pv.validate(primer, pos) == QValidator::Acceptable;
 }

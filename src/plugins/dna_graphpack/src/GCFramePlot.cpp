@@ -107,7 +107,7 @@ void GCFramePlotAlgorithm::windowStrategyWithoutMemorize(QVector<float> &res, co
 }
 
 void GCFramePlotAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, const U2Region &vr, const GSequenceGraphWindowData *d, U2OpStatus &os) {
-    assert(d != NULL);
+    assert(d != nullptr);
     int nSteps = GSequenceGraphUtils::getNumSteps(vr, d->window, d->step);
     res.reserve(nSteps);
     const QByteArray &seq = getSequenceData(o, os);

@@ -39,7 +39,7 @@ namespace U2 {
 
 MrBayesPrepareDataForCalculation::MrBayesPrepareDataForCalculation(const MultipleSequenceAlignment &_ma, const CreatePhyTreeSettings &s, const QString &url)
     : Task(tr("Generating input file for MrBayes"), TaskFlags_NR_FOSCOE), ma(_ma), settings(s), tmpDirUrl(url) {
-    saveDocumentTask = NULL;
+    saveDocumentTask = nullptr;
 }
 void MrBayesPrepareDataForCalculation::prepare() {
     inputFileForMrBayes = tmpDirUrl + "/" + TMPFILENAME;
@@ -90,9 +90,9 @@ MrBayesSupportTask::MrBayesSupportTask(const MultipleSequenceAlignment &_ma, con
 
     tpm = Task::Progress_SubTasksBased;
 
-    prepareDataTask = NULL;
-    mrBayesTask = NULL;
-    getTreeTask = NULL;
+    prepareDataTask = nullptr;
+    mrBayesTask = nullptr;
+    getTreeTask = nullptr;
 }
 
 void MrBayesSupportTask::prepare() {
@@ -193,8 +193,8 @@ int MrBayesLogParser::getProgress() {
 MrBayesGetCalculatedTreeTask::MrBayesGetCalculatedTreeTask(const QString &url)
     : Task(tr("Generating output trees from MrBayes"), TaskFlags_NR_FOSCOE),
       baseFileName(url),
-      loadTmpDocumentTask(NULL),
-      phyObject(NULL) {
+      loadTmpDocumentTask(nullptr),
+      phyObject(nullptr) {
 }
 
 void MrBayesGetCalculatedTreeTask::prepare() {
@@ -223,7 +223,7 @@ QList<Task *> MrBayesGetCalculatedTreeTask::onSubTaskFinished(Task *subTask) {
     }
     if (subTask == loadTmpDocumentTask) {
         Document *doc = loadTmpDocumentTask->getDocument();
-        SAFE_POINT(doc != NULL, "Failed loading result document", res);
+        SAFE_POINT(doc != nullptr, "Failed loading result document", res);
 
         if (doc->getObjects().size() == 0) {
             // TODO: delete new file?

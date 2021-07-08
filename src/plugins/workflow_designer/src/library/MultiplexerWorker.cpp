@@ -48,7 +48,7 @@ static const QString RULE_ID("multiplexing-rule");
  * MultiplexerWorker
  *******************************/
 MultiplexerWorker::MultiplexerWorker(Actor *p)
-    : BaseWorker(p, false), inChannel1(NULL), inChannel2(NULL), outChannel(NULL), rule(ONE_TO_ONE),
+    : BaseWorker(p, false), inChannel1(nullptr), inChannel2(nullptr), outChannel(nullptr), rule(ONE_TO_ONE),
       hasMultiData(false), multiMetadataId(-1), messagesInited(false) {
 }
 
@@ -119,7 +119,7 @@ Task *MultiplexerWorker::tick() {
         multiplexManyMode();
     } else if (ONE_TO_ONE == rule) {
         if (checkIfEnded()) {
-            return NULL;
+            return nullptr;
         }
 
         bool bothData = inChannel1->hasMessage() && inChannel2->hasMessage();
@@ -128,7 +128,7 @@ Task *MultiplexerWorker::tick() {
                 monitor()->addError(getMessagesMismatchError(), getActorId(), WorkflowNotification::U2_INFO);
             }
             shutDown();
-            return NULL;
+            return nullptr;
         }
 
         QVariantMap m1, m2;
@@ -165,7 +165,7 @@ Task *MultiplexerWorker::tick() {
         }
         checkIfEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void MultiplexerWorker::multiplexManyMode() {
@@ -230,7 +230,7 @@ void MultiplexerWorker::multiplexManyMode() {
 
 QString MultiplexerWorker::getInputActorName(IntegralBus *bus) const {
     Port *port = actor->getPort(bus->getPortId());
-    SAFE_POINT(NULL != port, L10N::nullPointerError("Port"), "");
+    SAFE_POINT(nullptr != port, L10N::nullPointerError("Port"), "");
     SAFE_POINT(!port->getLinks().isEmpty(), "No input links", "");
     Port *inputPort = port->getLinks().keys().first();
     return inputPort->owner()->getLabel();

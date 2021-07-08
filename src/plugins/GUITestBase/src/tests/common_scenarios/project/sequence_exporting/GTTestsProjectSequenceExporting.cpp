@@ -86,7 +86,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //     1) Project view with document "1.gb" and "2.gb" is opened, both documents are unloaded
     Document *doc1 = GTUtilsDocument::getDocument(os, "1.gb");
     Document *doc2 = GTUtilsDocument::getDocument(os, "2.gb");
-    CHECK_SET_ERR(doc1 != NULL && doc2 != NULL, "there are no documents 1.gb and 2.gb");
+    CHECK_SET_ERR(doc1 != nullptr && doc2 != nullptr, "there are no documents 1.gb and 2.gb");
 
     CHECK_SET_ERR(!doc1->isLoaded(), "1.gb is loaded");
     CHECK_SET_ERR(!doc2->isLoaded(), "2.gb is loaded");
@@ -120,7 +120,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, testDir + "_common_data/scenarios/sandbox/", "exp.fasta"));
 
     QWidget *activeWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(activeWindow != NULL, "there is no active MDI window");
+    CHECK_SET_ERR(activeWindow != nullptr, "there is no active MDI window");
 
     QPoint p = activeWindow->mapToGlobal(activeWindow->rect().center());
     GTMouseDriver::moveTo(QPoint(p.x(), 200));
@@ -314,7 +314,7 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     GTUtilsDocument::checkDocument(os, "1.gb", AnnotatedDNAViewFactory::ID);
 
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "C");
-    CHECK_SET_ERR(item != NULL, "AnnotationsTreeView is NULL");
+    CHECK_SET_ERR(item != nullptr, "AnnotationsTreeView is NULL");
 
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "C"));
     GTMouseDriver::doubleClick();

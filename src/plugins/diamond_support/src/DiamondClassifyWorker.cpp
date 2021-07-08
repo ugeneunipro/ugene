@@ -43,16 +43,16 @@ const QString DiamondClassifyWorker::DIAMOND_DIR = "DIAMOND";
 
 DiamondClassifyWorker::DiamondClassifyWorker(Actor *actor)
     : BaseWorker(actor, false),
-      input(NULL),
-      output(NULL) {
+      input(nullptr),
+      output(nullptr) {
 }
 
 void DiamondClassifyWorker::init() {
     input = ports.value(DiamondClassifyWorkerFactory::INPUT_PORT_ID);
     output = ports.value(DiamondClassifyWorkerFactory::OUTPUT_PORT_ID);
 
-    SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(DiamondClassifyWorkerFactory::INPUT_PORT_ID), );
-    SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(DiamondClassifyWorkerFactory::OUTPUT_PORT_ID), );
+    SAFE_POINT(nullptr != input, QString("Port with id '%1' is NULL").arg(DiamondClassifyWorkerFactory::INPUT_PORT_ID), );
+    SAFE_POINT(nullptr != output, QString("Port with id '%1' is NULL").arg(DiamondClassifyWorkerFactory::OUTPUT_PORT_ID), );
 
     output->addComplement(input);
     input->addComplement(output);
@@ -77,7 +77,7 @@ Task *DiamondClassifyWorker::tick() {
         output->setEnded();
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void DiamondClassifyWorker::cleanup() {

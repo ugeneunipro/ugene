@@ -51,7 +51,7 @@ const QString ConductGOTask::BASE_SUBDIR_NAME("ConductGO");
 const QString ConductGOTask::TREAT_NAME("treatment");
 
 ConductGOTask::ConductGOTask(const ConductGOSettings &settings)
-    : ExternalToolSupportTask("ConductGO annotation", TaskFlag_CollectChildrenWarnings), settings(settings), etTask(NULL) {
+    : ExternalToolSupportTask("ConductGO annotation", TaskFlag_CollectChildrenWarnings), settings(settings), etTask(nullptr) {
     GCOUNTER(cvar, "NGS:ConductGOTask");
 }
 
@@ -81,7 +81,7 @@ void ConductGOTask::prepare() {
     settings.treatUrl = workingDir + "/" + QFileInfo(settings.treatUrl).fileName();
 
     ExternalTool *rTool = AppContext::getExternalToolRegistry()->getById(RSupport::ET_R_ID);
-    SAFE_POINT_EXT(NULL != rTool, setError("R script tool wasn't found in the registry"), );
+    SAFE_POINT_EXT(nullptr != rTool, setError("R script tool wasn't found in the registry"), );
     const QString rDir = QFileInfo(rTool->getPath()).dir().absolutePath();
 
     etTask = new ExternalToolRunTask(ConductGOSupport::ET_GO_ANALYSIS_ID, settings.getArguments(), new ExternalToolLogParser(), getSettings().outDir, QStringList() << rDir);

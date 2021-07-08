@@ -70,7 +70,7 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectC
     connect(ui->getConsensusArea(), SIGNAL(si_mismatchRedrawRequired()), SLOT(completeUpdate()));
     connect(scrollBar, SIGNAL(valueChanged(int)), ui->getScrollController()->getHorizontalScrollBar(), SLOT(setValue(int)));
     connect(ui->getScrollController()->getHorizontalScrollBar(), SIGNAL(valueChanged(int)), scrollBar, SLOT(setValue(int)));
-    connect(ui, SIGNAL(si_clearSelection()), SLOT(sl_clearSelection()));
+    connect(editor, SIGNAL(si_clearSelection()), SLOT(sl_clearSelection()));
     connect(ui->getSequenceArea(), SIGNAL(si_clearReferenceSelection()), SLOT(sl_clearSelection()));
     connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(MaEditorSelection, MaEditorSelection)), SLOT(sl_selectionChanged(MaEditorSelection, MaEditorSelection)));
 
@@ -95,8 +95,8 @@ void McaEditorReferenceArea::sl_visibleRangeChanged() {
 }
 
 void McaEditorReferenceArea::sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &) {
-    U2Region selection(current.x(), current.width());
-    setSelection(selection);
+    QRect currentRect = current.toRect();
+    setSelection(U2Region(currentRect.x(), currentRect.width()));
 }
 
 void McaEditorReferenceArea::sl_clearSelection() {

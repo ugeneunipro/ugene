@@ -253,7 +253,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
+    CHECK_SET_ERR(mdiWindow != nullptr, "MDI window == NULL");
     GTMenu::clickMainMenuItem(os, QStringList() << "Actions"
                                                 << "Appearance"
                                                 << "Show offsets");
@@ -265,7 +265,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002_3) {
     GTGlobals::sleep(1000);
 
     mdiWindow = GTUtilsMdi::activeWindow(os, false);
-    CHECK_SET_ERR(mdiWindow == NULL, "There is an MDI window");
+    CHECK_SET_ERR(mdiWindow == nullptr, "There is an MDI window");
 
     QPoint p = GTUtilsProjectTreeView::getItemCenter(os, "revcompl");
     GTMouseDriver::moveTo(p);
@@ -383,7 +383,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_1) {
     GTGlobals::sleep(1000);
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
+    CHECK_SET_ERR(mdiWindow != nullptr, "MDI window == NULL");
 
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
@@ -408,7 +408,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004_2) {
     GTGlobals::sleep(1000);
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
+    CHECK_SET_ERR(mdiWindow != nullptr, "MDI window == NULL");
 
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 6));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
@@ -441,12 +441,12 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os) == 13, "Wrong last base idx");
 
     QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
-    CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
+    CHECK_SET_ERR(msaEditorStatusBar != nullptr, "MSAEditorStatusBar is NULL");
 
     QLabel *line = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Line", msaEditorStatusBar));
-    CHECK_SET_ERR(line != NULL, "Line of MSAEditorStatusBar is NULL");
+    CHECK_SET_ERR(line != nullptr, "Line of MSAEditorStatusBar is NULL");
     QLabel *column = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Column", msaEditorStatusBar));
-    CHECK_SET_ERR(column != NULL, "Column of MSAEditorStatusBar is NULL");
+    CHECK_SET_ERR(column != nullptr, "Column of MSAEditorStatusBar is NULL");
 
     // 2. Put cursor in 5th symbol for Tettigonia_virdissima sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(4, 3));
@@ -481,12 +481,12 @@ GUI_TEST_CLASS_DEFINITION(test_0005_1) {
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os) == 13, "Wrong last base idx");
 
     QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
-    CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
+    CHECK_SET_ERR(msaEditorStatusBar != nullptr, "MSAEditorStatusBar is NULL");
 
     QLabel *line = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Line", msaEditorStatusBar));
-    CHECK_SET_ERR(line != NULL, "Line of MSAEditorStatusBar is NULL");
+    CHECK_SET_ERR(line != nullptr, "Line of MSAEditorStatusBar is NULL");
     QLabel *column = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Column", msaEditorStatusBar));
-    CHECK_SET_ERR(column != NULL, "Column of MSAEditorStatusBar is NULL");
+    CHECK_SET_ERR(column != nullptr, "Column of MSAEditorStatusBar is NULL");
 
     // CHANGES: click order changed
     // 3. Put cursor in 2nd symbol for Podisma_sapporensis sequence.
@@ -522,12 +522,12 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os) == 13, "Wrong last base idx");
 
     QWidget *msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
-    CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
+    CHECK_SET_ERR(msaEditorStatusBar != nullptr, "MSAEditorStatusBar is NULL");
 
     QLabel *line = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Line", msaEditorStatusBar));
-    CHECK_SET_ERR(line != NULL, "Line of MSAEditorStatusBar is NULL");
+    CHECK_SET_ERR(line != nullptr, "Line of MSAEditorStatusBar is NULL");
     QLabel *column = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Column", msaEditorStatusBar));
-    CHECK_SET_ERR(column != NULL, "Column of MSAEditorStatusBar is NULL");
+    CHECK_SET_ERR(column != nullptr, "Column of MSAEditorStatusBar is NULL");
 
     // 2. Put cursor in 5th symbol for Tettigonia_virdissima sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(4, 3));
@@ -547,12 +547,12 @@ GUI_TEST_CLASS_DEFINITION(test_0005_2) {
     GTGlobals::sleep();
 
     msaEditorStatusBar = GTWidget::findWidget(os, "msa_editor_status_bar");
-    CHECK_SET_ERR(msaEditorStatusBar != NULL, "MSAEditorStatusBar is NULL");
+    CHECK_SET_ERR(msaEditorStatusBar != nullptr, "MSAEditorStatusBar is NULL");
 
     line = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Line", msaEditorStatusBar));
-    CHECK_SET_ERR(line != NULL, "Line of MSAEditorStatusBar is NULL");
+    CHECK_SET_ERR(line != nullptr, "Line of MSAEditorStatusBar is NULL");
     column = qobject_cast<QLabel *>(GTWidget::findWidget(os, "Column", msaEditorStatusBar));
-    CHECK_SET_ERR(column != NULL, "Column of MSAEditorStatusBar is NULL");
+    CHECK_SET_ERR(column != nullptr, "Column of MSAEditorStatusBar is NULL");
 
     // 3. Put cursor in 2nd symbol for Podisma_sapporensis sequence.
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(1, 8));
@@ -574,7 +574,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTGlobals::sleep(1000);
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
+    CHECK_SET_ERR(mdiWindow != nullptr, "MDI window == NULL");
 
     //Expected state: Aligniment length 14, left offset 1, right offset 14
 
@@ -613,7 +613,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_1) {
     GTGlobals::sleep(1000);
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
+    CHECK_SET_ERR(mdiWindow != nullptr, "MDI window == NULL");
 
     //Expected state: Aligniment length 14, left offset 1, right offset 14
 
@@ -651,7 +651,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
     GTGlobals::sleep(1000);
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
+    CHECK_SET_ERR(mdiWindow != nullptr, "MDI window == NULL");
 
     //Expected state: Aligniment length 14, left offset 1, right offset 14
 
@@ -688,7 +688,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_3) {
     GTGlobals::sleep(1000);
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
+    CHECK_SET_ERR(mdiWindow != nullptr, "MDI window == NULL");
 
     //Expected state: Aligniment length 14, left offset 1, right offset 14
 
@@ -725,7 +725,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007_4) {
     GTGlobals::sleep(1000);
 
     QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(mdiWindow != NULL, "MDI window == NULL");
+    CHECK_SET_ERR(mdiWindow != nullptr, "MDI window == NULL");
 
     //Expected state: Aligniment length 14, left offset 1, right offset 14
 
@@ -817,7 +817,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 
     //     Expected state: start bookmark isn't present
     QTreeWidgetItem *startBookmark = GTUtilsBookmarksTreeView::findItem(os, "start bookmark", GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(startBookmark == NULL, "Start bookmark is not deleted");
+    CHECK_SET_ERR(startBookmark == nullptr, "Start bookmark is not deleted");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008_1) {    //CHANGES: default names used
@@ -882,7 +882,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008_1) {    //CHANGES: default names used
 
     //     Expected state: start bookmark doesn't present
     QTreeWidgetItem *startBookmark = GTUtilsBookmarksTreeView::findItem(os, "New bookmark", GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(startBookmark == NULL, "bookmark wasn't deleted");
+    CHECK_SET_ERR(startBookmark == nullptr, "bookmark wasn't deleted");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008_2) {
@@ -2625,7 +2625,7 @@ GUI_TEST_CLASS_DEFINITION(test_0036) {
     //    Distanse matrix model: F84(Kimura/Jukes-Cantor/LogDet)
     //    Press "Build"
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found")
+    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
     //Expected state: tree appeared
 }
 
@@ -2645,7 +2645,7 @@ GUI_TEST_CLASS_DEFINITION(test_0036_1) {
 
     //Expected state: tree appeared
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found")
+    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0036_2) {
@@ -2663,7 +2663,7 @@ GUI_TEST_CLASS_DEFINITION(test_0036_2) {
     //    Distanse matrix model: F84(Kimura/Jukes-Cantor/LogDet)
     //    Press "Build"
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found")
+    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
     //Expected state: tree appeared
 }
 
@@ -2682,7 +2682,7 @@ GUI_TEST_CLASS_DEFINITION(test_0036_3) {
     //    Distanse matrix model: F84(Kimura/Jukes-Cantor/LogDet)
     //    Press "Build"
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found")
+    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
     //Expected state: tree appeared
 }
 
@@ -2703,7 +2703,7 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
     //    Coefficient of variation: 0.50(50.00/99.00)
     //    Press "Build"
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found")
+    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
     //Expected state: tree appeared
 }
 
@@ -2724,7 +2724,7 @@ GUI_TEST_CLASS_DEFINITION(test_0037_1) {
     //    Coefficient of variation: 0.50(50.00/99.00)
     //    Press "Build"
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found")
+    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
     //Expected state: tree appeared
 }
 
@@ -2745,7 +2745,7 @@ GUI_TEST_CLASS_DEFINITION(test_0037_2) {
     //    Coefficient of variation: 0.50(50.00/99.00)
     //    Press "Build"
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found")
+    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
     //Expected state: tree appeared
 }
 
@@ -2770,7 +2770,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     //    Consensus type: Majority Rule extended(Strict/Majority Rule/M1)
     //    Press "Build"
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found")
+    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
     //Expected state: tree appeared
 }
 
@@ -2795,7 +2795,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1) {
     //    Consensus type: Majority Rule extended(Strict/Majority Rule/M1)
     //    Press "Build"
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found")
+    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
     //Expected state: tree appeared
 }
 
@@ -2822,7 +2822,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_2) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found")
+    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
     //Expected state: tree appeared
 }
 
@@ -2847,7 +2847,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_3) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found")
+    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
     //Expected state: tree appeared
 }
 
@@ -2873,7 +2873,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_4) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR(treeView != NULL, "TreeView not found")
+    CHECK_SET_ERR(treeView != nullptr, "TreeView not found")
     //Expected state: tree appeared
 }
 
@@ -3138,16 +3138,16 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
         void run() override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QDialogButtonBox *box = dialog->findChild<QDialogButtonBox *>("buttonBox");
-            CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
+            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
             QPushButton *ok = box->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(ok != NULL, "ok button is NULL");
+            CHECK_SET_ERR(ok != nullptr, "ok button is NULL");
 
             QSpinBox *startLineEdit = dialog->findChild<QSpinBox *>("startLineEdit");
-            CHECK_SET_ERR(startLineEdit != NULL, "startLineEdit is NULL");
+            CHECK_SET_ERR(startLineEdit != nullptr, "startLineEdit is NULL");
             GTSpinBox::setValue(os, startLineEdit, 10);
 
             QSpinBox *endLineEdit = dialog->findChild<QSpinBox *>("endLineEdit");
-            CHECK_SET_ERR(endLineEdit != NULL, "endLineEdit is NULL");
+            CHECK_SET_ERR(endLineEdit != nullptr, "endLineEdit is NULL");
             GTSpinBox::setValue(os, endLineEdit, 5);
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
@@ -3155,7 +3155,7 @@ GUI_TEST_CLASS_DEFINITION(test_0047) {
 
             GTSpinBox::setValue(os, endLineEdit, 15);
             QWidget *noneButton = dialog->findChild<QWidget *>("noneButton");
-            CHECK_SET_ERR(noneButton != NULL, "noneButton is NULL");
+            CHECK_SET_ERR(noneButton != nullptr, "noneButton is NULL");
             GTWidget::click(os, noneButton);
 
             GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok));
@@ -3205,17 +3205,17 @@ GUI_TEST_CLASS_DEFINITION(test_0048) {
         void run() override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QComboBox *exportType = dialog->findChild<QComboBox *>("comboBox");
-            CHECK_SET_ERR(exportType != NULL, "Cannot find comboBox");
+            CHECK_SET_ERR(exportType != nullptr, "Cannot find comboBox");
             CHECK_SET_ERR(exportType->currentText() == "Whole alignment", "Wrong combo box text!");
 
             QLabel *hintLabel = dialog->findChild<QLabel *>("hintLabel");
-            CHECK_SET_ERR(hintLabel != NULL, "Cannot find hintLabel");
+            CHECK_SET_ERR(hintLabel != nullptr, "Cannot find hintLabel");
             CHECK_SET_ERR(hintLabel->isVisible(), "Warning message is hidden!");
 
             QDialogButtonBox *buttonBox = dialog->findChild<QDialogButtonBox *>("buttonBox");
-            CHECK_SET_ERR(buttonBox != NULL, "Cannot find buttonBox");
+            CHECK_SET_ERR(buttonBox != nullptr, "Cannot find buttonBox");
             QPushButton *exportButton = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(exportButton != NULL, "Cannot find Export button");
+            CHECK_SET_ERR(exportButton != nullptr, "Cannot find Export button");
             CHECK_SET_ERR(!exportButton->isEnabled(), "Export button is enabled");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
@@ -3312,17 +3312,17 @@ GUI_TEST_CLASS_DEFINITION(test_0052) {
         void run() override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QComboBox *exportType = dialog->findChild<QComboBox *>("comboBox");
-            CHECK_SET_ERR(exportType != NULL, "Cannot find comboBox");
+            CHECK_SET_ERR(exportType != nullptr, "Cannot find comboBox");
             CHECK_SET_ERR(exportType->currentText() == "Whole alignment", "Wrong combo box text!");
 
             QLabel *hintLabel = dialog->findChild<QLabel *>("hintLabel");
-            CHECK_SET_ERR(hintLabel != NULL, "Cannot find hintLabel");
+            CHECK_SET_ERR(hintLabel != nullptr, "Cannot find hintLabel");
             CHECK_SET_ERR(hintLabel->isVisible(), "Warning message is hidden!");
 
             QDialogButtonBox *buttonBox = dialog->findChild<QDialogButtonBox *>("buttonBox");
-            CHECK_SET_ERR(buttonBox != NULL, "Cannot find buttonBox");
+            CHECK_SET_ERR(buttonBox != nullptr, "Cannot find buttonBox");
             QPushButton *exportButton = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(exportButton != NULL, "Cannot find Export button");
+            CHECK_SET_ERR(exportButton != nullptr, "Cannot find Export button");
             CHECK_SET_ERR(!exportButton->isEnabled(), "Export button is enabled");
 
             GTUtilsDialog::waitForDialog(os,
@@ -3385,7 +3385,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_1) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
     QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
-    CHECK_SET_ERR(copyType != NULL, "copy combobox not found");
+    CHECK_SET_ERR(copyType != nullptr, "copy combobox not found");
 
     GTComboBox::selectItemByText(os, copyType, "Mega");
 
@@ -3461,7 +3461,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_4) {
     GTGlobals::sleep();
 
     QWidget *w = GTToolbar::getWidgetForActionObjectName(os, GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI), "copy_formatted");
-    CHECK_SET_ERR(w != NULL, "no copy action on the toolbar");
+    CHECK_SET_ERR(w != nullptr, "no copy action on the toolbar");
     CHECK_SET_ERR(w->isEnabled() == false, "selection is empty but the action is enabled");
 }
 
@@ -3480,7 +3480,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_5) {
     GTGlobals::sleep(200);
 
     QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
-    CHECK_SET_ERR(copyType != NULL, "copy combobox not found");
+    CHECK_SET_ERR(copyType != nullptr, "copy combobox not found");
 
     GTComboBox::selectItemByText(os, copyType, "Rich text (HTML)");
 

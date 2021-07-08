@@ -66,7 +66,7 @@ public:
 class ConductGOPrompter : public PrompterBase<ConductGOPrompter> {
     Q_OBJECT
 public:
-    ConductGOPrompter(Actor *p = NULL)
+    ConductGOPrompter(Actor *p = nullptr)
         : PrompterBase<ConductGOPrompter>(p) {
     }
 

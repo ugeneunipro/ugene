@@ -47,7 +47,7 @@ using namespace HI;
 
 void checkColor(HI::GUITestOpStatus &os, const QPoint &p, const QString &expectedColor, int Xmove = 0, int Ymove = 0) {
     QWidget *seq = GTWidget::findWidget(os, "msa_editor_sequence_area");
-    CHECK_SET_ERR(seq != NULL, "msa_editor_sequence_area widget is NULL");
+    CHECK_SET_ERR(seq != nullptr, "msa_editor_sequence_area widget is NULL");
 
     GTUtilsMSAEditorSequenceArea::click(os, p);
     QPoint p1 = GTMouseDriver::getMousePosition();

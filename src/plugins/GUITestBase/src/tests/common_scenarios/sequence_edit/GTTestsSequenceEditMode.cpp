@@ -64,13 +64,13 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0001) {
 
     //2. Uncheck "Wrap sequence" and "Show compliment strans" button
     QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
-    CHECK_SET_ERR(wrapMode != NULL, "Cannot find Wrap sequence action");
+    CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     if (wrapMode->isChecked()) {
         GTWidget::click(os, GTAction::button(os, wrapMode));
     }
 
     QAction *compStrand = GTAction::findActionByText(os, "Show complementary strand");
-    CHECK_SET_ERR(compStrand != NULL, "Cannot find Wrap sequence action");
+    CHECK_SET_ERR(compStrand != nullptr, "Cannot find Wrap sequence action");
     if (compStrand->isChecked()) {
         GTWidget::click(os, GTAction::button(os, compStrand));
     }
@@ -116,13 +116,13 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0002) {
 
     //2. Uncheck "Wrap sequence" and "Show compliment strans" button
     QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
-    CHECK_SET_ERR(wrapMode != NULL, "Cannot find Wrap sequence action");
+    CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     if (wrapMode->isChecked()) {
         GTWidget::click(os, GTAction::button(os, wrapMode));
     }
 
     QAction *compStrand = GTAction::findActionByText(os, "Show complementary strand");
-    CHECK_SET_ERR(compStrand != NULL, "Cannot find Wrap sequence action");
+    CHECK_SET_ERR(compStrand != nullptr, "Cannot find Wrap sequence action");
     if (compStrand->isChecked()) {
         GTWidget::click(os, GTAction::button(os, compStrand));
     }
@@ -153,13 +153,13 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0003) {
 
     //2. Uncheck "Wrap sequence" and "Show compliment strans" button
     QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
-    CHECK_SET_ERR(wrapMode != NULL, "Cannot find Wrap sequence action");
+    CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     if (wrapMode->isChecked()) {
         GTWidget::click(os, GTAction::button(os, wrapMode));
     }
 
     QAction *compStrand = GTAction::findActionByText(os, "Show complementary strand");
-    CHECK_SET_ERR(compStrand != NULL, "Cannot find Wrap sequence action");
+    CHECK_SET_ERR(compStrand != nullptr, "Cannot find Wrap sequence action");
     if (compStrand->isChecked()) {
         GTWidget::click(os, GTAction::button(os, compStrand));
     }
@@ -229,13 +229,13 @@ GUI_TEST_CLASS_DEFINITION(without_anns_test_0004) {
 
     //2. Uncheck "Wrap sequence" and "Show compliment strans" button
     QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
-    CHECK_SET_ERR(wrapMode != NULL, "Cannot find Wrap sequence action");
+    CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     if (wrapMode->isChecked()) {
         GTWidget::click(os, GTAction::button(os, wrapMode));
     }
 
     QAction *compStrand = GTAction::findActionByText(os, "Show complementary strand");
-    CHECK_SET_ERR(compStrand != NULL, "Cannot find Wrap sequence action");
+    CHECK_SET_ERR(compStrand != nullptr, "Cannot find Wrap sequence action");
     if (compStrand->isChecked()) {
         GTWidget::click(os, GTAction::button(os, compStrand));
     }

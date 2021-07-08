@@ -57,12 +57,12 @@ void ImportAPRFileFiller::commonScenario() {
 
     if (isReadOnly) {
         QRadioButton *rb = GTWidget::findExactWidget<QRadioButton *>(os, "0_radio", dialog);
-        CHECK_SET_ERR(rb != NULL, "Radio Button not found");
+        CHECK_SET_ERR(rb != nullptr, "Radio Button not found");
         GTRadioButton::click(os, rb);
         GTGlobals::sleep();
     } else {
         QRadioButton *rb = GTWidget::findExactWidget<QRadioButton *>(os, "1_radio", dialog);
-        CHECK_SET_ERR(rb != NULL, "Radio Button not found");
+        CHECK_SET_ERR(rb != nullptr, "Radio Button not found");
         GTRadioButton::click(os, rb);
         GTGlobals::sleep();
 
@@ -72,7 +72,7 @@ void ImportAPRFileFiller::commonScenario() {
 
         if (!format.isEmpty()) {
             QComboBox *cb = GTWidget::findExactWidget<QComboBox *>(os, "formatCombo", dialog);
-            CHECK_SET_ERR(cb != NULL, "Radio Button not found");
+            CHECK_SET_ERR(cb != nullptr, "Radio Button not found");
             GTComboBox::selectItemByText(os, cb, format);
         }
     }

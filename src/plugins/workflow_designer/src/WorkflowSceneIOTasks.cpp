@@ -47,11 +47,11 @@ const QString SaveWorkflowSceneTask::SCHEMA_PATHS_SETTINGS_TAG = "workflow_setti
 SaveWorkflowSceneTask::SaveWorkflowSceneTask(const QSharedPointer<Schema> &s, const Metadata &m)
     : Task(tr("Save workflow scene task"), TaskFlag_None), schema(s), meta(m) {
     GCOUNTER(cvar, "SaveWorkflowSceneTask");
-    assert(schema != NULL);
+    assert(schema != nullptr);
 
     // add ( name, path ) pair to settings. need for running schemas in cmdline by name
     Settings *settings = AppContext::getSettings();
-    assert(settings != NULL);
+    assert(settings != nullptr);
     QVariantMap pathsMap = settings->getValue(SCHEMA_PATHS_SETTINGS_TAG).toMap();
     pathsMap.insert(meta.name, meta.url);
     settings->setValue(SCHEMA_PATHS_SETTINGS_TAG, pathsMap);
@@ -77,9 +77,9 @@ LoadWorkflowSceneTask::LoadWorkflowSceneTask(const QSharedPointer<Schema> &_sche
       noUrl(_noUrl),
       disableWizardAutorun(_disableWizardAutorun) {
     GCOUNTER(cvar, "LoadWorkflowSceneTask");
-    assert(schema != NULL);
-    assert(meta != NULL);
-    assert(scene != NULL);
+    assert(schema != nullptr);
+    assert(meta != nullptr);
+    assert(scene != nullptr);
 }
 
 void LoadWorkflowSceneTask::run() {

@@ -142,7 +142,7 @@ void MergeBamWorkerFactory::init() {
 /* MergeBamWorker */
 /************************************************************************/
 MergeBamWorker::MergeBamWorker(Actor *a)
-    : BaseWorker(a), inputUrlPort(NULL), outputUrlPort(NULL), outputDir("") {
+    : BaseWorker(a), inputUrlPort(nullptr), outputUrlPort(nullptr), outputDir("") {
 }
 
 void MergeBamWorker::init() {
@@ -153,12 +153,12 @@ void MergeBamWorker::init() {
 Task *MergeBamWorker::tick() {
     while (inputUrlPort->hasMessage()) {
         const QString url = takeUrl();
-        CHECK(!url.isEmpty(), NULL);
+        CHECK(!url.isEmpty(), nullptr);
 
         const QString detectedFormat = FileAndDirectoryUtils::detectFormat(url);
         if (detectedFormat.isEmpty()) {
             coreLog.info(tr("Unknown file format: ") + url);
-            return NULL;
+            return nullptr;
         }
 
         if (detectedFormat == BaseDocumentFormats::BAM) {
@@ -170,12 +170,12 @@ Task *MergeBamWorker::tick() {
     }
 
     if (!inputUrlPort->isEnded()) {
-        return NULL;
+        return nullptr;
     }
 
     if (!urls.isEmpty()) {
         const QString targetName = getOutputName(urls.first());
-        CHECK(!targetName.isEmpty(), NULL);
+        CHECK(!targetName.isEmpty(), nullptr);
 
         Task *t = new MergeBamTask(urls, outputDir, targetName);
         connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_taskFinished(Task *)));
@@ -187,7 +187,7 @@ Task *MergeBamWorker::tick() {
         setDone();
         outputUrlPort->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void MergeBamWorker::cleanup() {
@@ -199,7 +199,7 @@ namespace {
 QString getTargetUrl(Task *task) {
     MergeBamTask *mergeTask = dynamic_cast<MergeBamTask *>(task);
 
-    if (NULL != mergeTask) {
+    if (nullptr != mergeTask) {
         return mergeTask->getResult();
     }
     return "";

@@ -76,7 +76,7 @@ public:
 class WeightMatrixSearchCfg {
 public:
     WeightMatrixSearchCfg()
-        : minPSUM(0), modelName(""), complTT(NULL), complOnly(false), algo("") {
+        : minPSUM(0), modelName(""), complTT(nullptr), complOnly(false), algo("") {
     }
     int minPSUM;
     QString modelName;

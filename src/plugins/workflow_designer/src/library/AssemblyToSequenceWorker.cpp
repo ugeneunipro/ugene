@@ -45,7 +45,7 @@ const QString AssemblyToSequencesWorkerFactory::ACTOR_ID("assembly-to-sequences"
 /* Worker */
 /************************************************************************/
 AssemblyToSequencesWorker::AssemblyToSequencesWorker(Actor *p)
-    : BaseWorker(p), converter(NULL), inChannel(NULL), outChannel(NULL) {
+    : BaseWorker(p), converter(nullptr), inChannel(nullptr), outChannel(nullptr) {
 }
 
 void AssemblyToSequencesWorker::init() {
@@ -54,8 +54,8 @@ void AssemblyToSequencesWorker::init() {
 }
 
 Task *AssemblyToSequencesWorker::tick() {
-    SAFE_POINT(inChannel != NULL, "NULL input channel", NULL);
-    SAFE_POINT(outChannel != NULL, "NULL output channel", NULL);
+    SAFE_POINT(inChannel != nullptr, "NULL input channel", nullptr);
+    SAFE_POINT(outChannel != nullptr, "NULL output channel", nullptr);
 
     if (inChannel->hasMessage()) {
         Message m = getMessageAndSetupScriptValues(inChannel);
@@ -95,7 +95,7 @@ void AssemblyToSequencesTask::run() {
     // 2. get assembly from the data
     SharedDbiDataHandler handler = data[BaseSlots::ASSEMBLY_SLOT().getId()].value<SharedDbiDataHandler>();
     QScopedPointer<AssemblyObject> assemblyObj(StorageUtils::getAssemblyObject(storage, handler));
-    SAFE_POINT(NULL != assemblyObj.data(), "Error: assembly object error", );
+    SAFE_POINT(nullptr != assemblyObj.data(), "Error: assembly object error", );
 
     // 3. get assembly reads
     U2OpStatusImpl os;
@@ -109,7 +109,7 @@ void AssemblyToSequencesTask::run() {
     U2Region wholeAssembly(0, length);
     QScopedPointer<U2DbiIterator<U2AssemblyRead>> iter(dbi->getReads(assemblyId, wholeAssembly, os));
     SAFE_POINT_OP(os, );
-    CHECK(NULL != iter.data(), );
+    CHECK(nullptr != iter.data(), );
 
     // 4. export reads to sequences and send messages
     const DNAAlphabet *alphabet = AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::NUCL_DNA_EXTENDED());

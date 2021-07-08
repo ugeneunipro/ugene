@@ -41,7 +41,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
 KrakenSupportPlugin::KrakenSupportPlugin()
     : Plugin(PLUGIN_NAME, PLUGIN_DESCRIPRION) {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
-    CHECK(NULL != etRegistry, );
+    CHECK(nullptr != etRegistry, );
 
     etRegistry->registerEntry(new KrakenSupport(KrakenSupport::BUILD_TOOL_ID, KrakenSupport::BUILD_TOOL));
     etRegistry->registerEntry(new KrakenSupport(KrakenSupport::CLASSIFY_TOOL_ID, KrakenSupport::CLASSIFY_TOOL));
@@ -53,7 +53,7 @@ KrakenSupportPlugin::KrakenSupportPlugin()
 
 KrakenSupportPlugin::~KrakenSupportPlugin() {
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
-    CHECK(NULL != etRegistry, );
+    CHECK(nullptr != etRegistry, );
     etRegistry->unregisterEntry(KrakenSupport::BUILD_TOOL_ID);
     etRegistry->unregisterEntry(KrakenSupport::CLASSIFY_TOOL_ID);
 }

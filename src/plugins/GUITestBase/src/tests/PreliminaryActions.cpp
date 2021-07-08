@@ -79,7 +79,7 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0002) {
 
     Q_UNUSED(os);
     QMainWindow *mainWindow = AppContext::getMainWindow()->getQMainWindow();
-    CHECK_SET_ERR(mainWindow != NULL, "main window is NULL");
+    CHECK_SET_ERR(mainWindow != nullptr, "main window is NULL");
 
     if (!mainWindow->isMaximized()) {
         GTWidget::showMaximized(os, mainWindow);
@@ -120,7 +120,7 @@ PRELIMINARY_ACTION_DEFINITION(pre_action_0005) {
     // Click somewhere to the main window in mac to be sure that the focus is on the application
 
     QMainWindow *mw = AppContext::getMainWindow()->getQMainWindow();
-    CHECK_SET_ERR(mw != NULL, "main window is NULL");
+    CHECK_SET_ERR(mw != nullptr, "main window is NULL");
 #ifdef Q_OS_DARWIN
     GTWidget::click(os, mw, Qt::LeftButton, QPoint(200, 200));
 #endif

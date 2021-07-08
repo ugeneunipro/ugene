@@ -108,9 +108,9 @@ void Dbi::init(const QHash<QString, QString> &properties, const QVariantMap & /*
         objectDbi.reset();
         reader.reset();
         ioAdapter.reset();
-        if (NULL != dbRef.handle) {
+        if (nullptr != dbRef.handle) {
             sqlite3_close(dbRef.handle);
-            dbRef.handle = NULL;
+            dbRef.handle = nullptr;
         }
         assert(sqliteUrl.isLocalFile());
         QFile::remove(sqliteUrl.getURLString());
@@ -128,9 +128,9 @@ QVariantMap Dbi::shutdown(U2OpStatus &os) {
         objectDbi.reset();
         reader.reset();
         ioAdapter.reset();
-        if (NULL != dbRef.handle) {
+        if (nullptr != dbRef.handle) {
             sqlite3_close(dbRef.handle);
-            dbRef.handle = NULL;
+            dbRef.handle = nullptr;
         }
         state = U2DbiState_Void;
         return QVariantMap();
@@ -171,7 +171,7 @@ U2ObjectDbi *Dbi::getObjectDbi() {
     if (U2DbiState_Ready == state) {
         return objectDbi.data();
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -179,7 +179,7 @@ U2AssemblyDbi *Dbi::getAssemblyDbi() {
     if (U2DbiState_Ready == state) {
         return assemblyDbi.data();
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -538,7 +538,7 @@ qint64 ObjectDbi::getFolderGlobalVersion(const QString &folder, U2OpStatus &os) 
 
 U2DbiIterator<U2DataId> *ObjectDbi::getObjectsByVisualName(const QString &, U2DataType, U2OpStatus &) {
     //todo:
-    return NULL;
+    return nullptr;
 }
 
 void ObjectDbi::renameObject(const U2DataId & /*id*/, const QString & /*newName*/, U2OpStatus &os) {
@@ -652,7 +652,7 @@ U2DbiIterator<U2AssemblyRead> *AssemblyDbi::getReads(const U2DataId &assemblyId,
         return new BufferedDbiIterator<U2AssemblyRead>(result, U2AssemblyRead());
     } catch (const Exception &e) {
         os.setError(e.getMessage());
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -755,13 +755,13 @@ U2DbiIterator<U2AssemblyRead> *AssemblyDbi::getReadsByRow(const U2DataId &assemb
         return new BufferedDbiIterator<U2AssemblyRead>(result, U2AssemblyRead());
     } catch (const Exception &e) {
         os.setError(e.getMessage());
-        return NULL;
+        return nullptr;
     }
 }
 
 U2DbiIterator<U2AssemblyRead> *AssemblyDbi::getReadsByName(const U2DataId &, const QByteArray &, U2OpStatus &os) {
     os.setError("Operation not supported: BAM::AssemblyDbi::getReadsByName");
-    return NULL;
+    return nullptr;
 }
 
 qint64 AssemblyDbi::getMaxEndPos(const U2DataId &assemblyId, U2OpStatus &os) {

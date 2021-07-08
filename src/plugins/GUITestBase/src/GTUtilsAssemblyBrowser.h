@@ -56,7 +56,7 @@ public:
     static void addRefFromProject(HI::GUITestOpStatus &os, QString docName, QModelIndex parent = QModelIndex());
 
     static bool hasReference(HI::GUITestOpStatus &os, const QString &viewTitle);
-    static bool hasReference(HI::GUITestOpStatus &os, QWidget *view = NULL);
+    static bool hasReference(HI::GUITestOpStatus &os, QWidget *view = nullptr);
     static bool hasReference(HI::GUITestOpStatus &os, AssemblyBrowserUi *assemblyBrowser);
 
     static qint64 getLength(HI::GUITestOpStatus &os);

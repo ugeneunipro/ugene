@@ -42,7 +42,7 @@ PhyMLPrepareDataForCalculation::PhyMLPrepareDataForCalculation(const MultipleSeq
       ma(ma),
       settings(s),
       tmpDirUrl(url),
-      saveDocumentTask(NULL) {
+      saveDocumentTask(nullptr) {
 }
 void PhyMLPrepareDataForCalculation::prepare() {
     inputFileForPhyML = tmpDirUrl + '/' + PhyMLSupportTask::TMP_FILE_NAME;
@@ -64,7 +64,7 @@ QList<Task *> PhyMLPrepareDataForCalculation::onSubTaskFinished(Task *subTask) {
     }
 
     if (subTask == saveDocumentTask) {
-        SAFE_POINT_EXT(NULL != saveDocumentTask->getDocument(), setError(tr("Internal UGENE error")), res);
+        SAFE_POINT_EXT(nullptr != saveDocumentTask->getDocument(), setError(tr("Internal UGENE error")), res);
 
         QString fileUrl = saveDocumentTask->getDocument()->getURLString();
 
@@ -82,9 +82,9 @@ QList<Task *> PhyMLPrepareDataForCalculation::onSubTaskFinished(Task *subTask) {
 
 PhyMLSupportTask::PhyMLSupportTask(const MultipleSequenceAlignment &ma, const CreatePhyTreeSettings &s)
     : PhyTreeGeneratorTask(ma, s),
-      prepareDataTask(NULL),
-      phyMlTask(NULL),
-      getTreeTask(NULL),
+      prepareDataTask(nullptr),
+      phyMlTask(nullptr),
+      getTreeTask(nullptr),
       sequencesNumber(0) {
     GCOUNTER(cvar, "PhyMLSupportTask");
 
@@ -140,7 +140,7 @@ QList<Task *> PhyMLSupportTask::onSubTaskFinished(Task *subTask) {
         res.append(getTreeTask);
     } else if (subTask == getTreeTask) {
         PhyTreeObject *phyObj = getTreeTask->getPhyObject();
-        SAFE_POINT_EXT(NULL != phyObj, setError(tr("UGENE internal error")), QList<Task *>());
+        SAFE_POINT_EXT(nullptr != phyObj, setError(tr("UGENE internal error")), QList<Task *>());
         result = phyObj->getTree();
     }
 
@@ -148,7 +148,7 @@ QList<Task *> PhyMLSupportTask::onSubTaskFinished(Task *subTask) {
 }
 
 void PhyMLSupportTask::onExternalToolFailed(const QString &err) {
-    if (NULL != phyMlTask) {
+    if (nullptr != phyMlTask) {
         phyMlTask->setError(err);
     }
 }
@@ -192,8 +192,8 @@ PhyMLGetCalculatedTreeTask::PhyMLGetCalculatedTreeTask(const QString &url)
     : Task(tr("Generating output trees from PhyML"),
            TaskFlags_NR_FOSE_COSC),
       baseFileName(url),
-      loadTmpDocumentTask(NULL),
-      phyObject(NULL) {
+      loadTmpDocumentTask(nullptr),
+      phyObject(nullptr) {
 }
 
 void PhyMLGetCalculatedTreeTask::prepare() {
@@ -221,7 +221,7 @@ QList<Task *> PhyMLGetCalculatedTreeTask::onSubTaskFinished(Task *subTask) {
     }
     if (subTask == loadTmpDocumentTask) {
         Document *doc = loadTmpDocumentTask->getDocument();
-        SAFE_POINT(doc != NULL, "Failed loading result document", res);
+        SAFE_POINT(doc != nullptr, "Failed loading result document", res);
 
         if (doc->getObjects().size() == 0) {
             setError(tr("No trees are found"));
@@ -235,7 +235,7 @@ QList<Task *> PhyMLGetCalculatedTreeTask::onSubTaskFinished(Task *subTask) {
             index = 0;
         }
         phyObject = qobject_cast<PhyTreeObject *>(treeList.at(index));
-        SAFE_POINT_EXT(NULL != phyObject, setError(tr("No result tree in PhyML output")), res);
+        SAFE_POINT_EXT(nullptr != phyObject, setError(tr("No result tree in PhyML output")), res);
     }
 
     return res;

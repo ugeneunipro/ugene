@@ -217,7 +217,7 @@ GUI_TEST_CLASS_DEFINITION(test_6038_1) {
         GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
 
         QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
+        CHECK_SET_ERR(nullptr != inputPortTable, "inputPortTable is NULL");
 
         QStringList inputSlotsNames;
         for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
@@ -228,7 +228,7 @@ GUI_TEST_CLASS_DEFINITION(test_6038_1) {
         CHECK_SET_ERR(inputSlotsNames.contains("Input FASTQ URL 2"), QString("'Input FASTQ URL 2' slot not found in element '%1'").arg(trimmomaticName));
 
         QTableWidget *outputPortTable = GTUtilsWorkflowDesigner::getOutputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != outputPortTable, "outputPortTable is NULL");
+        CHECK_SET_ERR(nullptr != outputPortTable, "outputPortTable is NULL");
 
         QStringList outputSlotsNames;
         for (int i = 0; i < GTTableView::rowCount(os, outputPortTable); i++) {
@@ -247,7 +247,7 @@ GUI_TEST_CLASS_DEFINITION(test_6038_1) {
         GTUtilsWorkflowDesigner::setParameter(os, "Input data", "SE reads", GTUtilsWorkflowDesigner::comboValue);
 
         QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
+        CHECK_SET_ERR(nullptr != inputPortTable, "inputPortTable is NULL");
 
         QStringList inputSlotsNames;
         for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
@@ -258,7 +258,7 @@ GUI_TEST_CLASS_DEFINITION(test_6038_1) {
         CHECK_SET_ERR(!inputSlotsNames.contains("Input FASTQ URL 2"), QString("'Input FASTQ URL 2' slot unexpectedly found in element '%1'").arg(trimmomaticName));
 
         QTableWidget *outputPortTable = GTUtilsWorkflowDesigner::getOutputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != outputPortTable, "outputPortTable is NULL");
+        CHECK_SET_ERR(nullptr != outputPortTable, "outputPortTable is NULL");
 
         QStringList outputSlotsNames;
         for (int i = 0; i < GTTableView::rowCount(os, outputPortTable); i++) {
@@ -299,7 +299,7 @@ GUI_TEST_CLASS_DEFINITION(test_6038_2) {
 
     {
         QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(inputPortTable != NULL, "inputPortTable is NULL");
+        CHECK_SET_ERR(inputPortTable != nullptr, "inputPortTable is NULL");
 
         QStringList inputSlotsNames;
         for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
@@ -369,7 +369,7 @@ GUI_TEST_CLASS_DEFINITION(test_6038_4) {
         GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
 
         QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
+        CHECK_SET_ERR(nullptr != inputPortTable, "inputPortTable is NULL");
 
         QStringList inputSlotsNames;
         for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
@@ -380,7 +380,7 @@ GUI_TEST_CLASS_DEFINITION(test_6038_4) {
         CHECK_SET_ERR(inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot not found in element '%1'").arg(filterName));
 
         QTableWidget *outputPortTable = GTUtilsWorkflowDesigner::getOutputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != outputPortTable, "outputPortTable is NULL");
+        CHECK_SET_ERR(nullptr != outputPortTable, "outputPortTable is NULL");
 
         QStringList outputSlotsNames;
         for (int i = 0; i < GTTableView::rowCount(os, outputPortTable); i++) {
@@ -400,7 +400,7 @@ GUI_TEST_CLASS_DEFINITION(test_6038_4) {
         GTUtilsWorkflowDesigner::setParameter(os, "Input data", "SE reads or contigs", GTUtilsWorkflowDesigner::comboValue);
 
         QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
+        CHECK_SET_ERR(nullptr != inputPortTable, "inputPortTable is NULL");
 
         QStringList inputSlotsNames;
         for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
@@ -411,7 +411,7 @@ GUI_TEST_CLASS_DEFINITION(test_6038_4) {
         CHECK_SET_ERR(!inputSlotsNames.contains("Input URL 2"), QString("'Input URL 2' slot unexpectedly found in element '%1'").arg(filterName));
 
         QTableWidget *outputPortTable = GTUtilsWorkflowDesigner::getOutputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != outputPortTable, "outputPortTable is NULL");
+        CHECK_SET_ERR(nullptr != outputPortTable, "outputPortTable is NULL");
 
         QStringList outputSlotsNames;
         for (int i = 0; i < GTTableView::rowCount(os, outputPortTable); i++) {
@@ -450,7 +450,7 @@ GUI_TEST_CLASS_DEFINITION(test_6038_3) {
         GTUtilsWorkflowDesigner::setParameter(os, "Input data", "PE reads", GTUtilsWorkflowDesigner::comboValue);
 
         QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
+        CHECK_SET_ERR(nullptr != inputPortTable, "inputPortTable is NULL");
 
         QStringList inputSlotsNames;
         for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
@@ -470,7 +470,7 @@ GUI_TEST_CLASS_DEFINITION(test_6038_3) {
         GTUtilsWorkflowDesigner::setParameter(os, "Input data", "SE reads or contigs", GTUtilsWorkflowDesigner::comboValue);
 
         QTableWidget *inputPortTable = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-        CHECK_SET_ERR(NULL != inputPortTable, "inputPortTable is NULL");
+        CHECK_SET_ERR(nullptr != inputPortTable, "inputPortTable is NULL");
 
         QStringList inputSlotsNames;
         for (int i = 0; i < GTTableView::rowCount(os, inputPortTable); i++) {
@@ -635,11 +635,11 @@ GUI_TEST_CLASS_DEFINITION(test_6062) {
 
     QTableWidget *inputPortTable1 = GTUtilsWorkflowDesigner::getInputPortsTable(innerOs, 0);
     CHECK_OP_SET_ERR(innerOs, "Table for the first input port not found");
-    CHECK_SET_ERR(NULL != inputPortTable1, "inputPortTable1 is NULL");
+    CHECK_SET_ERR(nullptr != inputPortTable1, "inputPortTable1 is NULL");
 
     QTableWidget *inputPortTable2 = GTUtilsWorkflowDesigner::getInputPortsTable(innerOs, 1);
     CHECK_SET_ERR(innerOs.hasError(), "Table for the second input port unexpectedly found");
-    CHECK_SET_ERR(NULL == inputPortTable2, "Table for the second input port unexpectedly found");
+    CHECK_SET_ERR(nullptr == inputPortTable2, "Table for the second input port unexpectedly found");
 
     innerOs.reset();
 
@@ -649,11 +649,11 @@ GUI_TEST_CLASS_DEFINITION(test_6062) {
     //    Expected state: there are two tables in 'Input data' widget.
     inputPortTable1 = GTUtilsWorkflowDesigner::getInputPortsTable(innerOs, 0);
     CHECK_OP_SET_ERR(innerOs, "Table for the first input port not found");
-    CHECK_SET_ERR(NULL != inputPortTable1, "inputPortTable1 is NULL");
+    CHECK_SET_ERR(nullptr != inputPortTable1, "inputPortTable1 is NULL");
 
     inputPortTable2 = GTUtilsWorkflowDesigner::getInputPortsTable(innerOs, 1);
     CHECK_OP_SET_ERR(innerOs, "Table for the second input port not found");
-    CHECK_SET_ERR(NULL != inputPortTable2, "Table for the second input port not found");
+    CHECK_SET_ERR(nullptr != inputPortTable2, "Table for the second input port not found");
 
     //    4. Set 'Library' attribute value to 'Single-end'.
     GTUtilsWorkflowDesigner::clickParameter(os, "Output folder");
@@ -662,11 +662,11 @@ GUI_TEST_CLASS_DEFINITION(test_6062) {
     //    Expected state: there is one table in 'Input data' widget.
     inputPortTable1 = GTUtilsWorkflowDesigner::getInputPortsTable(innerOs, 0);
     CHECK_OP_SET_ERR(innerOs, "Table for the first input port not found");
-    CHECK_SET_ERR(NULL != inputPortTable1, "inputPortTable1 is NULL");
+    CHECK_SET_ERR(nullptr != inputPortTable1, "inputPortTable1 is NULL");
 
     inputPortTable2 = GTUtilsWorkflowDesigner::getInputPortsTable(innerOs, 1);
     CHECK_SET_ERR(innerOs.hasError(), "Table for the second input port unexpectedly found");
-    CHECK_SET_ERR(NULL == inputPortTable2, "Table for the second input port unexpectedly found");
+    CHECK_SET_ERR(nullptr == inputPortTable2, "Table for the second input port unexpectedly found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6066) {
@@ -979,12 +979,12 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QTreeWidget *tree = GTWidget::findExactWidget<QTreeWidget *>(os, "tree", dialog);
-            CHECK_SET_ERR(tree != NULL, "QTreeWidget unexpectedly not found");
+            CHECK_SET_ERR(tree != nullptr, "QTreeWidget unexpectedly not found");
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::WorkflowDesigner);
 
             QLineEdit *workflowOutputEdit = GTWidget::findExactWidget<QLineEdit *>(os, "workflowOutputEdit", dialog);
-            CHECK_SET_ERR(workflowOutputEdit != NULL, "QLineEdit unexpectedly not found");
+            CHECK_SET_ERR(workflowOutputEdit != nullptr, "QLineEdit unexpectedly not found");
 
             GTLineEdit::setText(os, workflowOutputEdit, sandBoxDir);
 
@@ -1009,7 +1009,7 @@ GUI_TEST_CLASS_DEFINITION(test_6167) {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QToolButton *addButton = GTWidget::findExactWidget<QToolButton *>(os, "buttonAdd", dialog);
-            CHECK_SET_ERR(addButton != NULL, "addButton unexpectedly not found");
+            CHECK_SET_ERR(addButton != nullptr, "addButton unexpectedly not found");
 
             GTWidget::click(os, addButton);
             for (int i = 0; i < 4; i++) {
@@ -1109,7 +1109,7 @@ GUI_TEST_CLASS_DEFINITION(test_6212) {
     GTUtilsWorkflowDesigner::connect(os, readFileNameElement, trimmomaticElement);
     GTUtilsWorkflowDesigner::click(os, trimmomaticName);
     QTableWidget *table1 = GTUtilsWorkflowDesigner::getInputPortsTable(os, 0);
-    CHECK_SET_ERR(table1 != NULL, "QTableWidget isn't found");
+    CHECK_SET_ERR(table1 != nullptr, "QTableWidget isn't found");
 
     GTUtilsWorkflowDesigner::setTableValue(os, "Input FASTQ URL 1", "Dataset name (by Read File URL(s))", GTUtilsWorkflowDesigner::comboValue, table1);
 
@@ -1118,10 +1118,10 @@ GUI_TEST_CLASS_DEFINITION(test_6212) {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QDialogButtonBox *buttonBox = GTWidget::findExactWidget<QDialogButtonBox *>(os, "buttonBox", dialog);
-            CHECK_SET_ERR(buttonBox != NULL, "QDialogButtonBox unexpectedly not found");
+            CHECK_SET_ERR(buttonBox != nullptr, "QDialogButtonBox unexpectedly not found");
 
             QPushButton *buttonOk = buttonBox->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(buttonOk != NULL, "buttonOk unexpectedly not found");
+            CHECK_SET_ERR(buttonOk != nullptr, "buttonOk unexpectedly not found");
             CHECK_SET_ERR(!buttonOk->isEnabled(), "buttonOk should be disabled");
 
             //4. Close the dialog
@@ -1362,7 +1362,7 @@ GUI_TEST_CLASS_DEFINITION(test_6233) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
             QLabel *selectToolPackLabel = GTWidget::findExactWidget<QLabel *>(os, "selectToolPackLabel");
-            CHECK_SET_ERR(selectToolPackLabel != NULL, "selectToolPackLabel unexpectedly not found");
+            CHECK_SET_ERR(selectToolPackLabel != nullptr, "selectToolPackLabel unexpectedly not found");
 
             QPoint pos(selectToolPackLabel->pos().x(), selectToolPackLabel->pos().y());
             QPoint globalPos = selectToolPackLabel->mapToGlobal(pos);
@@ -1570,7 +1570,7 @@ GUI_TEST_CLASS_DEFINITION(test_6235_4) {
     public:
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = QApplication::activeModalWidget();
-            CHECK_SET_ERR(NULL != dialog, "activeModalWidget is NULL");
+            CHECK_SET_ERR(nullptr != dialog, "activeModalWidget is NULL");
 
             GTWidget::click(os, GTWidget::findWidget(os, "addAllButton", dialog));
 
@@ -1653,7 +1653,7 @@ GUI_TEST_CLASS_DEFINITION(test_6240) {
     public:
         void run(HI::GUITestOpStatus &os) {
             QWidget *wizard = GTWidget::getActiveModalWidget(os);
-            CHECK_SET_ERR(wizard != NULL, "Wizard isn't found");
+            CHECK_SET_ERR(wizard != nullptr, "Wizard isn't found");
 
             GTUtilsWizard::setParameter(os, "Input file(s)", dataDir + "samples/Assembly/chrM.sam");
             GTUtilsWizard::clickButton(os, GTUtilsWizard::Run);
@@ -1972,13 +1972,13 @@ GUI_TEST_CLASS_DEFINITION(test_6279) {
         virtual void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QLineEdit *lineEdit = dialog->findChild<QLineEdit *>("leAnnotationName");
-            CHECK_SET_ERR(lineEdit != NULL, "line edit leAnnotationName not found");
+            CHECK_SET_ERR(lineEdit != nullptr, "line edit leAnnotationName not found");
 
             QRadioButton *gbFormatLocation = dialog->findChild<QRadioButton *>("rbGenbankFormat");
-            CHECK_SET_ERR(gbFormatLocation != NULL, "radio button rbGenbankFormat not found");
+            CHECK_SET_ERR(gbFormatLocation != nullptr, "radio button rbGenbankFormat not found");
 
             QLineEdit *lineEdit1 = dialog->findChild<QLineEdit *>("leLocation");
-            CHECK_SET_ERR(lineEdit1 != NULL, "line edit leLocation not found");
+            CHECK_SET_ERR(lineEdit1 != nullptr, "line edit leLocation not found");
 
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
@@ -2064,9 +2064,9 @@ GUI_TEST_CLASS_DEFINITION(test_6298) {
 #ifdef Q_OS_DARWIN
     //hack for mac
     MainWindow *mw = AppContext::getMainWindow();
-    CHECK_SET_ERR(mw != NULL, "MainWindow is NULL");
+    CHECK_SET_ERR(mw != nullptr, "MainWindow is NULL");
     QMainWindow *mainWindow = mw->getQMainWindow();
-    CHECK_SET_ERR(mainWindow != NULL, "QMainWindow is NULL");
+    CHECK_SET_ERR(mainWindow != nullptr, "QMainWindow is NULL");
     QWidget *w = qobject_cast<QWidget *>(mainWindow);
     GTWidget::click(os, w, Qt::LeftButton, QPoint(5, 5));
 #endif
@@ -2116,9 +2116,9 @@ GUI_TEST_CLASS_DEFINITION(test_6309) {
         void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-            CHECK_SET_ERR(box != NULL, "buttonBox is NULL");
+            CHECK_SET_ERR(box != nullptr, "buttonBox is NULL");
             QPushButton *pushButton = box->button(QDialogButtonBox::Ok);
-            CHECK_SET_ERR(pushButton != NULL, "pushButton is NULL");
+            CHECK_SET_ERR(pushButton != nullptr, "pushButton is NULL");
 
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
             QString tabixPath = AppSettingsDialogFiller::getExternalToolPath(os, "Tabix");
@@ -3038,7 +3038,7 @@ GUI_TEST_CLASS_DEFINITION(test_6544) {
     // 3. Input a pattern that contains a character of the extended DNA alphabet, e.g. "ACWT".
 
     QWidget *patternInputLine = QApplication::focusWidget();
-    CHECK_SET_ERR(NULL != patternInputLine && patternInputLine->objectName() == "textPattern", "Focus is not on FindPattern widget");
+    CHECK_SET_ERR(nullptr != patternInputLine && patternInputLine->objectName() == "textPattern", "Focus is not on FindPattern widget");
 
     GTKeyboardDriver::keySequence("ACWT");
 
@@ -3073,7 +3073,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546) {
     GTMouseDriver::click();
 
     const MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const MaEditorSelection &selection = msaEditor->getSelection();
+    QRect selection = msaEditor->getSelection().toRect();
     CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 4, QString("Expected selection y: 4, actual: %1").arg(selection.y()));
@@ -3094,7 +3094,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_1) {
     GTMouseDriver::click();
 
     const MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const MaEditorSelection &selection = msaEditor->getSelection();
+    QRect selection = msaEditor->getSelection().toRect();
     CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 4, QString("Expected selection y: 4, actual: %1").arg(selection.y()));
@@ -3115,7 +3115,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_2) {
     GTMouseDriver::click();
 
     const MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const MaEditorSelection &selection = msaEditor->getSelection();
+    QRect selection = msaEditor->getSelection().toRect();
     CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 4, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 4, QString("Expected selection y: 4, actual: %1").arg(selection.y()));
@@ -3136,7 +3136,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_3) {
     GTMouseDriver::click();
 
     const MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const MaEditorSelection &selection = msaEditor->getSelection();
+    QRect selection = msaEditor->getSelection().toRect();
     CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 4, QString("Expected selection y: 4, actual: %1").arg(selection.y()));
@@ -3159,7 +3159,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_4) {
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     const MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const MaEditorSelection &selection = msaEditor->getSelection();
+    QRect selection = msaEditor->getSelection().toRect();
     CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 4, QString("Expected selection y: 4, actual: %1").arg(selection.y()));
@@ -3182,7 +3182,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_5) {
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     const MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const MaEditorSelection &selection = msaEditor->getSelection();
+    QRect selection = msaEditor->getSelection().toRect();
     CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 1, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
@@ -3205,7 +3205,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_6) {
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     const MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const MaEditorSelection &selection = msaEditor->getSelection();
+    QRect selection = msaEditor->getSelection().toRect();
     CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 1, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
@@ -3228,7 +3228,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_7) {
     GTKeyboardDriver::keyRelease(Qt::Key_Control);
 
     const MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const MaEditorSelection &selection = msaEditor->getSelection();
+    QRect selection = msaEditor->getSelection().toRect();
     CHECK_SET_ERR(selection.x() == 1, QString("Expected selection x: 1, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 3, QString("Expected selection width: 3, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 2, QString("Expected selection y: 2, actual: %1").arg(selection.y()));
@@ -3249,7 +3249,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_8) {
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     const MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const MaEditorSelection &selection = msaEditor->getSelection();
+    QRect selection = msaEditor->getSelection().toRect();
     CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 604, QString("Expected selection width: 604, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 1, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
@@ -3270,7 +3270,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_9) {
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     const MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const MaEditorSelection &selection = msaEditor->getSelection();
+    QRect selection = msaEditor->getSelection().toRect();
     CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 604, QString("Expected selection width: 604, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 1, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
@@ -3291,7 +3291,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_10) {
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     const MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const MaEditorSelection &selection = msaEditor->getSelection();
+    QRect selection = msaEditor->getSelection().toRect();
     CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 604, QString("Expected selection width: 604, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 1, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
@@ -3312,7 +3312,7 @@ GUI_TEST_CLASS_DEFINITION(test_6546_11) {
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     const MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const MaEditorSelection &selection = msaEditor->getSelection();
+    QRect selection = msaEditor->getSelection().toRect();
     CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 604, QString("Expected selection width: 604, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 2, QString("Expected selection y: 1, actual: %1").arg(selection.y()));
@@ -3414,7 +3414,7 @@ GUI_TEST_CLASS_DEFINITION(test_6564) {
 
     // 5. Sequences 1,2,3 selected (because _Shift_ was used)
     const MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const MaEditorSelection &selection = msaEditor->getSelection();
+    QRect selection = msaEditor->getSelection().toRect();
     CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
     CHECK_SET_ERR(selection.width() == 14, QString("Expected selection width: 14, actual: %1").arg(selection.width()));
     CHECK_SET_ERR(selection.y() == 0, QString("Expected selection y: 0, actual: %1").arg(selection.y()));
@@ -4227,6 +4227,7 @@ GUI_TEST_CLASS_DEFINITION(test_6652_1) {
     // 4. The same region (but shifted to the right) is selected.
     GTUtilsMSAEditorSequenceArea::checkSelection(os, QPoint(8, 3), QPoint(13, 7), selection1);
 }
+
 GUI_TEST_CLASS_DEFINITION(test_6654) {
     // 1. Open "COI.aln" sample alignment.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
@@ -4234,15 +4235,17 @@ GUI_TEST_CLASS_DEFINITION(test_6654) {
     GTUtilsMsaEditor::moveToSequenceName(os, "Roeseliana_roeseli");
     GTMouseDriver::click();
 
-    const MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
-    const MaEditorSelection &selection = msaEditor->getSelection();
+    MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
+    QRect selection = msaEditor->getSelection().toRect();
 
-    CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
-    CHECK_SET_ERR(selection.width() == 604, QString("Expected selection width: 604, actual: %1").arg(selection.width()));
+    CHECK_SET_ERR(selection.x() == 0, QString("1. Expected selection x: 0, actual: %1").arg(selection.x()));
+    CHECK_SET_ERR(selection.width() == 604, QString("1. Expected selection width: 604, actual: %1").arg(selection.width()));
 
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(5, 18));
-    CHECK_SET_ERR(selection.x() == 0, QString("Expected selection x: 0, actual: %1").arg(selection.x()));
-    CHECK_SET_ERR(selection.width() == 0, QString("Expected selection width: 0, actual: %1").arg(selection.width()));
+
+    selection = msaEditor->getSelection().toRect();
+    CHECK_SET_ERR(selection.x() == 0, QString("2. Expected selection x: 0, actual: %1").arg(selection.x()));
+    CHECK_SET_ERR(selection.width() == 0, QString("2. Expected selection width: 0, actual: %1").arg(selection.width()));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6655) {
@@ -4282,11 +4285,11 @@ GUI_TEST_CLASS_DEFINITION(test_6659) {
     // 2. Open the "General" tab on the options panel.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_GENERAL"));
     QLineEdit *sequencelineEdit = (QLineEdit *)GTWidget::findWidget(os, "sequenceLineEdit");
-    CHECK(NULL != sequencelineEdit, );
+    CHECK(nullptr != sequencelineEdit, );
 
     // 3. The "Copy" button is disabled.
     QToolButton *copyButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "copyButton"));
-    CHECK_SET_ERR(copyButton != NULL, "copyButton not found");
+    CHECK_SET_ERR(copyButton != nullptr, "copyButton not found");
     CHECK_SET_ERR(!copyButton->isEnabled(), "copyButton is unexpectidly enabled");
 
     // 4. Select any region and press ctrl+c
@@ -6202,7 +6205,7 @@ GUI_TEST_CLASS_DEFINITION(test_6899_1) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
     QComboBox *copyType = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "copyType"));
-    CHECK_SET_ERR(copyType != NULL, "copy combobox not found");
+    CHECK_SET_ERR(copyType != nullptr, "copy combobox not found");
 
     GTComboBox::selectItemByText(os, copyType, "Plain text");
 

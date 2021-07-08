@@ -61,7 +61,7 @@ struct RemoteBLASTTaskSettings {
     int filterResult;
     bool useEval;
     RemoteBLASTTaskSettings()
-        : retries(0), aminoT(NULL), complT(NULL),
+        : retries(0), aminoT(nullptr), complT(nullptr),
           isCircular(false), filterResult(0), useEval(false) {
     }
 };

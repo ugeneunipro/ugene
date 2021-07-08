@@ -70,7 +70,7 @@ private:
 class IlluminaClipAdditionalSettingsDialog : public QDialog, public Ui_IlluminaClipAdditionalSettingsDialog {
     Q_OBJECT
 public:
-    IlluminaClipAdditionalSettingsDialog(const QVariantMap &widgetState, QWidget *parent = NULL);
+    IlluminaClipAdditionalSettingsDialog(const QVariantMap &widgetState, QWidget *parent = nullptr);
 
     static QVariantMap extractState(const QVariantMap &fromState);
     QVariantMap getState() const;

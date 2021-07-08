@@ -78,7 +78,7 @@ public:
 class AssemblyToSequencesPrompter : public PrompterBase<AssemblyToSequencesPrompter> {
     Q_OBJECT
 public:
-    AssemblyToSequencesPrompter(Actor *p = NULL)
+    AssemblyToSequencesPrompter(Actor *p = nullptr)
         : PrompterBase<AssemblyToSequencesPrompter>(p) {
     }
 

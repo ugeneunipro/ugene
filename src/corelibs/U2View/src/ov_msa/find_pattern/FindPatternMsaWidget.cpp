@@ -975,8 +975,8 @@ void FindPatternMsaWidget::selectCurrentResult() {
     CHECK(currentResultIndex >= 0 && currentResultIndex < visibleSearchResults.length(), );
     const FindPatternWidgetResult &result = visibleSearchResults[currentResultIndex];
     MaEditorSequenceArea *seqArea = msaEditor->getUI()->getSequenceArea();
-    MaEditorSelection selection(result.region.startPos, result.viewRowIndex, result.region.length, 1);
-    seqArea->setSelection(selection);
+    QRect selection(result.region.startPos, result.viewRowIndex, result.region.length, 1);
+    seqArea->setSelectionRect(selection);
     seqArea->centerPos(selection.topLeft());
     updateCurrentResultLabel();
 }
@@ -1052,13 +1052,14 @@ void FindPatternMsaWidget::resortResultsByViewState() {
 
 int FindPatternMsaWidget::findCurrentResultIndexFromSelection() const {
     const MaEditorSelection &selection = msaEditor->getSelection();
-    if (visibleSearchResults.isEmpty() || selection.isEmpty() || selection.height() != 1) {
+    QRect selectionRect = selection.toRect();
+    if (visibleSearchResults.isEmpty() || selection.isEmpty() || selectionRect.height() != 1) {
         return -1;
     }
-    U2Region selectedXRegion = selection.getXRegion();
+    U2Region selectedXRegion = U2Region::fromXRange(selectionRect);
     for (int i = 0; i < visibleSearchResults.size(); i++) {
         const FindPatternWidgetResult &result = visibleSearchResults[i];
-        if (result.viewRowIndex == selection.y() && result.region == selectedXRegion) {
+        if (result.viewRowIndex == selectionRect.y() && result.region == selectedXRegion) {
             return i;
         }
     }
@@ -1075,8 +1076,9 @@ int FindPatternMsaWidget::getNextOrPrevResultIndexFromSelection(bool isNext) {
     int resultIndex = 0;
     for (; resultIndex < resultsCount; resultIndex++) {
         const FindPatternWidgetResult &result = visibleSearchResults[resultIndex];
-        bool inTheNextRow = result.viewRowIndex > selection.y();
-        bool inTheSameRowAndNext = result.viewRowIndex == selection.y() && result.region.startPos >= selection.x();
+        QRect selectionRect = selection.toRect();
+        bool inTheNextRow = result.viewRowIndex > selectionRect.y();
+        bool inTheSameRowAndNext = result.viewRowIndex == selectionRect.y() && result.region.startPos >= selectionRect.x();
         if (inTheNextRow || inTheSameRowAndNext) {
             break;
         }
@@ -1090,11 +1092,12 @@ int FindPatternMsaWidget::getNextOrPrevResultIndexFromSelection(bool isNext) {
 
 bool FindPatternMsaWidget::isResultSelected() const {
     const MaEditorSelection &selection = msaEditor->getSelection();
-    if (selection.height() != 1 || currentResultIndex < 0 || currentResultIndex >= visibleSearchResults.size()) {
+    QRect selectionRect = selection.toRect();
+    if (selectionRect.height() != 1 || currentResultIndex < 0 || currentResultIndex >= visibleSearchResults.size()) {
         return false;
     }
     const FindPatternWidgetResult &result = visibleSearchResults[currentResultIndex];
-    return selection.y() == result.viewRowIndex && result.region == selection.getXRegion();
+    return selectionRect.y() == result.viewRowIndex && result.region == U2Region(selectionRect.x(), selectionRect.width());
 }
 
 void FindPatternMsaWidget::updateCurrentResultLabel() {

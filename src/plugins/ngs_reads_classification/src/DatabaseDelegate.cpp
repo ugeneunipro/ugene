@@ -61,13 +61,13 @@ DatabaseDelegate::DatabaseDelegate(const QString &_actorPrototypeId,
 void DatabaseDelegate::update() {
     QString dataPathItemId;
     U2DataPath *dataPath = getDataPath(dataPathItemId);
-    CHECK(NULL != dataPath && dataPath->isValid() && !dataPathItemId.isEmpty(), );
+    CHECK(nullptr != dataPath && dataPath->isValid() && !dataPathItemId.isEmpty(), );
 
     Workflow::ActorPrototype *proto = Workflow::WorkflowEnv::getProtoRegistry()->getProto(actorPrototypeId);
     DelegateEditor *editor = qobject_cast<DelegateEditor *>(proto->getEditor());
-    if (NULL != editor && NULL != editor->getDelegate(attributeName)) {
+    if (nullptr != editor && nullptr != editor->getDelegate(attributeName)) {
         Attribute *attribute = proto->getAttribute(attributeName);
-        if (NULL != attribute && attribute->getAttributePureValue().toString().isEmpty()) {
+        if (nullptr != attribute && attribute->getAttributePureValue().toString().isEmpty()) {
             attribute->setAttributeValue(dataPath->getPathByName(dataPathItemId));
         }
     }
@@ -77,18 +77,18 @@ U2DataPath *DatabaseDelegate::getDataPath(QString &appropriateDataPathItemId) co
     appropriateDataPathItemId = QString();
 
     U2DataPathRegistry *dataPathRegistry = AppContext::getDataPathRegistry();
-    SAFE_POINT(dataPathRegistry, "U2DataPathRegistry is NULL", NULL);
+    SAFE_POINT(dataPathRegistry, "U2DataPathRegistry is NULL", nullptr);
 
     for (int i = 0; i < dataPathItems.size(); i++) {
         U2DataPath *dataPath = dataPathRegistry->getDataPathByName(dataPathItems[i].first);
-        if (NULL != dataPath &&
+        if (nullptr != dataPath &&
             dataPath->isValid() &&
             !dataPath->getPathByName(dataPathItems[i].second).isEmpty()) {
             appropriateDataPathItemId = dataPathItems[i].second;
             return dataPath;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 }    // namespace LocalWorkflow

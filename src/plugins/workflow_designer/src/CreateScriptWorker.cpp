@@ -163,7 +163,7 @@ class CfgListModel : public QAbstractListModel {
 public:
     // Hint for row height. We use non-default row to make combo-boxes fit.
     int itemHeight;
-    CfgListModel(int rowHeightHint, QObject *obj = NULL)
+    CfgListModel(int rowHeightHint, QObject *obj = nullptr)
         : QAbstractListModel(obj), itemHeight(rowHeightHint) {
         items.append(new CfgListItem(DelegateForPort));
     }
@@ -262,7 +262,7 @@ private:
 
 class CfgTableModel : public QAbstractTableModel {
 public:
-    CfgTableModel(QObject *obj = NULL)
+    CfgTableModel(QObject *obj = nullptr)
         : QAbstractTableModel(obj) {
         //attrs.append(new CfgListItem());
     }

@@ -83,7 +83,7 @@ public:
         COLUMNS_COUNT = COLUMN_DESCRIPTION + 1    // elements count
     };
 
-    CfgExternalToolModel(ModelType modelType, QObject *obj = NULL);
+    CfgExternalToolModel(ModelType modelType, QObject *obj = nullptr);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;

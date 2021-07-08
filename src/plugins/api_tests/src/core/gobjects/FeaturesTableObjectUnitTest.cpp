@@ -51,7 +51,7 @@ namespace {
 const QString FEATURE_DB_URL("feature-dbi.ugenedb");
 }
 
-U2FeatureDbi *FeaturesTableObjectTestData::featureDbi = NULL;
+U2FeatureDbi *FeaturesTableObjectTestData::featureDbi = nullptr;
 TestDbiProvider FeaturesTableObjectTestData::dbiProvider;
 
 void FeaturesTableObjectTestData::init() {
@@ -59,11 +59,11 @@ void FeaturesTableObjectTestData::init() {
     SAFE_POINT(ok, "dbi provider failed to initialize", );
 
     featureDbi = dbiProvider.getDbi()->getFeatureDbi();
-    SAFE_POINT(NULL != featureDbi, "feature database not loaded", );
+    SAFE_POINT(nullptr != featureDbi, "feature database not loaded", );
 }
 
 U2FeatureDbi *FeaturesTableObjectTestData::getFeatureDbi() {
-    if (NULL == featureDbi) {
+    if (nullptr == featureDbi) {
         init();
     }
     return featureDbi;
@@ -74,10 +74,10 @@ static U2DbiRef getDbiRef() {
 }
 
 void FeaturesTableObjectTestData::shutdown() {
-    if (NULL != featureDbi) {
+    if (nullptr != featureDbi) {
         U2OpStatusImpl opStatus;
         dbiProvider.close();
-        featureDbi = NULL;
+        featureDbi = nullptr;
         SAFE_POINT_OP(opStatus, );
     }
 }

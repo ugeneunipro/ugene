@@ -45,7 +45,7 @@ AboutDialogController::AboutDialogController(QAction *visitWebAction, QWidget *p
     l->addStretch(1);
     frame->setContentsMargins(0, 0, 0, 0);
     frame->setLayout(l);
-    tWidget = NULL;
+    tWidget = nullptr;
     installAWidget();
     connect(web_page_button, SIGNAL(clicked(bool)), visitWebAction, SLOT(trigger()));
 
@@ -55,7 +55,7 @@ AboutDialogController::AboutDialogController(QAction *visitWebAction, QWidget *p
 }
 
 void AboutDialogController::installAWidget() {
-    assert(tWidget == NULL);
+    assert(tWidget == nullptr);
     AWidget *aWidget = new AWidget();
     QVBoxLayout *l = (QVBoxLayout *)frame->layout();
     l->insertWidget(0, aWidget);
@@ -63,7 +63,7 @@ void AboutDialogController::installAWidget() {
 }
 
 void AboutDialogController::installTWidget() {
-    assert(tWidget == NULL);
+    assert(tWidget == nullptr);
     tWidget = new TBoard();
     QLabel *npLabel = new NextPieceLabel(tWidget);
     tWidget->setNextPieceLabel(npLabel);
@@ -100,15 +100,15 @@ void AboutDialogController::installTWidget() {
 }
 
 void AboutDialogController::switchPages() {
-    QLayoutItem *li = NULL;
+    QLayoutItem *li = nullptr;
     QLayout *l = frame->layout();
     while ((li = l->takeAt(0)) && li->widget()) {
         li->widget()->deleteLater();
     }
-    if (tWidget == NULL) {
+    if (tWidget == nullptr) {
         installTWidget();
     } else {
-        tWidget = NULL;
+        tWidget = nullptr;
         installAWidget();
     }
     updateTitle();
@@ -123,7 +123,7 @@ void AboutDialogController::sl_levelChanged(int level) {
 }
 
 void AboutDialogController::updateTitle() {
-    if (tWidget == NULL) {
+    if (tWidget == nullptr) {
         setWindowTitle(tr("About UGENE"));
     } else {
         setWindowTitle(tr("Have fun ;-)"));
@@ -133,7 +133,7 @@ void AboutDialogController::updateTitle() {
 void AboutDialogController::keyPressEvent(QKeyEvent *e) {
     if (e->key() == Qt::Key_T) {
         switchPages();
-    } else if (tWidget != NULL && (e->key() == Qt::Key_P || e->key() == Qt::Key_Pause)) {
+    } else if (tWidget != nullptr && (e->key() == Qt::Key_P || e->key() == Qt::Key_Pause)) {
         tWidget->pause();
     }
     QDialog::keyPressEvent(e);

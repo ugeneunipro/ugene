@@ -54,7 +54,7 @@ QString VariationTrackMessageTranslator::getTranslation() const {
     SAFE_POINT_OP(os, QString());
 
     U2VariantDbi *dbi = connection.dbi->getVariantDbi();
-    SAFE_POINT(NULL != dbi, "Invalid variation DBI!", QString());
+    SAFE_POINT(nullptr != dbi, "Invalid variation DBI!", QString());
     const U2DataId variantId = variantTrackRef.entityId;
     const int variantCount = dbi->getVariantCount(variantId, os);
     SAFE_POINT_OP(os, QString());

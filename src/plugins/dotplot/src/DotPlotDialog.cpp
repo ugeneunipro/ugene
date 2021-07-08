@@ -48,14 +48,14 @@
 namespace U2 {
 
 DotPlotDialog::DotPlotDialog(QWidget *parent, AnnotatedDNAView *currentADV, int minLen, int identity, ADVSequenceObjectContext *sequenceX, ADVSequenceObjectContext *sequenceY, bool dir, bool inv, const QColor &dColor, const QColor &iColor, bool hideLoadSequences)
-    : QDialog(parent), xSeq(sequenceX), ySeq(sequenceY), adv(currentADV), directColor(dColor), invertedColor(iColor), openSequenceTask(NULL) {
+    : QDialog(parent), xSeq(sequenceX), ySeq(sequenceY), adv(currentADV), directColor(dColor), invertedColor(iColor), openSequenceTask(nullptr) {
     setupUi(this);
 
     new HelpButton(this, buttonBox, "65929583");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
-    SAFE_POINT(adv != NULL, "DotPlotDialog called without view context!", );
+    SAFE_POINT(adv != nullptr, "DotPlotDialog called without view context!", );
 
     directCheckBox->setChecked(dir);
     invertedCheckBox->setChecked(inv);
@@ -324,7 +324,7 @@ void DotPlotDialog::sl_loadSequenceButton() {
         hints[ProjectLoaderHint_LoadWithoutView] = false;
         hints[ProjectLoaderHint_LoadUnloadedDocument] = true;
         openSequenceTask = AppContext::getProjectLoader()->openWithProjectTask(lod.url, hints);
-        if (openSequenceTask == NULL) {
+        if (openSequenceTask == nullptr) {
             return;
         }
         tasks->addSubTask(openSequenceTask);
@@ -337,7 +337,7 @@ void DotPlotDialog::sl_loadSequenceButton() {
 
 void DotPlotDialog::sl_loadTaskStateChanged(Task *t) {
     DotPlotLoadDocumentsTask *loadTask = qobject_cast<DotPlotLoadDocumentsTask *>(t);
-    if (loadTask == NULL) {
+    if (loadTask == nullptr) {
         return;
     }
     if (loadTask->getStateInfo().hasError()) {
@@ -352,14 +352,14 @@ void DotPlotDialog::updateColors() {
 }
 
 bool DotPlotDialog::isObjectInADV(GObject *obj) {
-    SAFE_POINT(obj != NULL, "Object is NULL in DotPlotDialog::isObjectInADV(GObject* obj)", false);
+    SAFE_POINT(obj != nullptr, "Object is NULL in DotPlotDialog::isObjectInADV(GObject* obj)", false);
 
     return adv->containsObject(obj);
 }
 
 GObject *DotPlotDialog::getGObjectByName(const QString &gObjectName) {
     QList<GObject *> allSequences = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::SEQUENCE);
-    GObject *obj = NULL;
+    GObject *obj = nullptr;
     foreach (GObject *s, allSequences) {
         if (gObjectName == s->getGObjectName()) {
             obj = s;

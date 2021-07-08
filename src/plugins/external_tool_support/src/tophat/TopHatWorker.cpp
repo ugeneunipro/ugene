@@ -493,7 +493,7 @@ void TopHatWorkerFactory::init() {
     }
 
     delegates[OUT_DIR] = new URLDelegate("", "", false, true /*path*/);
-    delegates[BOWTIE_INDEX_DIR] = new URLDelegate("", "", false, true, false, NULL, "", true);
+    delegates[BOWTIE_INDEX_DIR] = new URLDelegate("", "", false, true, false, nullptr, "", true);
     delegates[BOWTIE_TOOL_PATH] = new URLDelegate("", "executable", false, false, false);
     delegates[SAMTOOLS_TOOL_PATH] = new URLDelegate("", "executable", false, false, false);
     delegates[REF_SEQ] = new URLDelegate(DialogUtils::prepareDocumentsFileFilter(true), "", false, false, false);
@@ -550,16 +550,16 @@ QString TopHatPrompter::composeRichDoc() {
  *****************************/
 TopHatWorker::TopHatWorker(Actor *actor)
     : BaseWorker(actor, false /*autoTransit*/),
-      input(NULL),
-      output(NULL) {
+      input(nullptr),
+      output(nullptr) {
 }
 
 QList<Actor *> TopHatWorker::getProducers(const QString &slotId) const {
     Port *port = actor->getPort(BasePorts::IN_SEQ_PORT_ID());
-    SAFE_POINT(NULL != port, "Internal error during initializing TopHatWorker: port is NULL!", QList<Actor *>());
+    SAFE_POINT(nullptr != port, "Internal error during initializing TopHatWorker: port is NULL!", QList<Actor *>());
 
     IntegralBusPort *bus = dynamic_cast<IntegralBusPort *>(port);
-    SAFE_POINT(NULL != bus, "Internal error during initializing TopHatWorker: bus is NULL!", QList<Actor *>());
+    SAFE_POINT(nullptr != bus, "Internal error during initializing TopHatWorker: bus is NULL!", QList<Actor *>());
 
     return bus->getProducers(slotId);
 }
@@ -701,7 +701,7 @@ Task *TopHatWorker::runTophat() {
 
 Task *TopHatWorker::tick() {
     if (!settingsAreCorrect) {
-        return NULL;
+        return nullptr;
     }
 
     readsFetcher.processInputMessage();
@@ -731,7 +731,7 @@ Task *TopHatWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void TopHatWorker::sl_topHatTaskFinished() {
@@ -828,7 +828,7 @@ BowtieFilesRelation::BowtieFilesRelation(const QString &indexNameAttrId)
 }
 
 QVariant BowtieFilesRelation::getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue, DelegateTags *infTags, DelegateTags *) const {
-    CHECK(NULL != infTags, dependentValue);
+    CHECK(nullptr != infTags, dependentValue);
     QString bwtDir = influencingValue.toString();
     QString bwtFile = infTags->get(FILE_TAG).toString();
 
@@ -882,7 +882,7 @@ BowtieVersionRelation::BowtieVersionRelation(const QString &bwtVersionAttrId)
 }
 
 QVariant BowtieVersionRelation::getAffectResult(const QVariant &influencingValue, const QVariant &dependentValue, DelegateTags *infTags, DelegateTags *) const {
-    CHECK(NULL != infTags, dependentValue);
+    CHECK(nullptr != infTags, dependentValue);
     QString bwtDir = influencingValue.toString();
     QString bwtFile = infTags->get(FILE_TAG).toString();
 

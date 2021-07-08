@@ -48,7 +48,7 @@ void StartupDialogFiller::commonScenario() {
 
     if (path != UGUITest::sandBoxDir) {
         QLineEdit *pathEdit = GTWidget::findExactWidget<QLineEdit *>(os, "pathEdit", dialog);
-        CHECK(NULL != pathEdit, );
+        CHECK(nullptr != pathEdit, );
 
         const QString rightPath = GTLineEdit::getText(os, pathEdit);
         GTLineEdit::setText(os, pathEdit, path);

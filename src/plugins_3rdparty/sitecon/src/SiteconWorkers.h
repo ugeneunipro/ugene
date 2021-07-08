@@ -61,7 +61,7 @@ public:
     static void registerProto();
 
     SiteconBuildWorker(Actor *a)
-        : BaseWorker(a), input(NULL), output(NULL) {
+        : BaseWorker(a), input(nullptr), output(nullptr) {
     }
     virtual void init();
     virtual Task *tick();
@@ -84,7 +84,7 @@ public:
 
     SiteconSearchWorker(Actor *a)
         : BaseWorker(a, false),    //FIXME??
-          modelPort(NULL), dataPort(NULL), output(NULL), strand(0) {
+          modelPort(nullptr), dataPort(nullptr), output(nullptr), strand(0) {
     }
     virtual void init();
     virtual bool isReady() const;

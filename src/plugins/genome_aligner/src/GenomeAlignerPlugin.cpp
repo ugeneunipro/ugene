@@ -83,7 +83,7 @@ GenomeAlignerPlugin::GenomeAlignerPlugin()
     DnaAssemblyAlgRegistry *registry = AppContext::getDnaAssemblyAlgRegistry();
 
     bool guiMode = AppContext::getMainWindow();
-    DnaAssemblyGUIExtensionsFactory *guiFactory = guiMode ? new GenomeAlignerGuiExtFactory() : NULL;
+    DnaAssemblyGUIExtensionsFactory *guiFactory = guiMode ? new GenomeAlignerGuiExtFactory() : nullptr;
     QStringList referenceFormats(BaseDocumentFormats::FASTA);
     referenceFormats << BaseDocumentFormats::PLAIN_GENBANK;
     referenceFormats << BaseDocumentFormats::FASTQ;
@@ -107,7 +107,7 @@ GenomeAlignerPlugin::~GenomeAlignerPlugin() {
 
 void GenomeAlignerPlugin::processCMDLineOptions() {
     CMDLineRegistry *cmdlineReg = AppContext::getCMDLineRegistry();
-    assert(cmdlineReg != NULL);
+    assert(cmdlineReg != nullptr);
 
     if (cmdlineReg->hasParameter(RUN_GENOME_ALIGNER)) {
         Task *t = new GenomeAlignerCMDLineTask();
@@ -117,7 +117,7 @@ void GenomeAlignerPlugin::processCMDLineOptions() {
 
 void GenomeAlignerPlugin::registerCMDLineHelp() {
     CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
-    assert(NULL != cmdLineRegistry);
+    assert(nullptr != cmdLineRegistry);
 
     CMDLineHelpProvider *taskSection = new CMDLineHelpProvider(
         RUN_GENOME_ALIGNER,

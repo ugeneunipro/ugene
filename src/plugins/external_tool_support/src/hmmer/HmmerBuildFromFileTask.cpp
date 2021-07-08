@@ -32,8 +32,8 @@ namespace U2 {
 
 HmmerBuildFromFileTask::HmmerBuildFromFileTask(const HmmerBuildSettings &settings, const QString &msaUrl)
     : ExternalToolSupportTask(tr("Build HMMER profile from file"), TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported),
-      convertTask(NULL),
-      buildTask(NULL),
+      convertTask(nullptr),
+      buildTask(nullptr),
       settings(settings),
       msaUrl(msaUrl) {
     SAFE_POINT_EXT(!msaUrl.isEmpty(), tr("Msa URL is empty"), );
@@ -68,7 +68,7 @@ QList<Task *> HmmerBuildFromFileTask::onSubTaskFinished(Task *subTask) {
 }
 
 Task::ReportResult HmmerBuildFromFileTask::report() {
-    if (NULL != convertTask) {
+    if (nullptr != convertTask) {
         QFile(convertTask->getResultUrl()).remove();
     }
     return ReportResult_Finished;

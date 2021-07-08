@@ -32,17 +32,17 @@
 namespace U2 {
 
 IndexPart::IndexPart() {
-    sArray = NULL;
-    bitMask = NULL;
-    seq = NULL;
+    sArray = nullptr;
+    bitMask = nullptr;
+    seq = nullptr;
     partCount = 0;
     currentPart = -1;
-    seqStarts = NULL;
-    seqLengths = NULL;
-    saLengths = NULL;
+    seqStarts = nullptr;
+    seqLengths = nullptr;
+    saLengths = nullptr;
 
-    refFile = NULL;
-    partFiles = NULL;
+    refFile = nullptr;
+    partFiles = nullptr;
 }
 
 IndexPart::~IndexPart() {
@@ -53,13 +53,13 @@ IndexPart::~IndexPart() {
     delete[] seqLengths;
     delete[] saLengths;
 
-    if (NULL != refFile) {
+    if (nullptr != refFile) {
         refFile->close();
     }
     delete refFile;
 
     for (int i = 0; i < partCount; i++) {
-        if (NULL != partFiles[i]) {
+        if (nullptr != partFiles[i]) {
             partFiles[i]->close();
         }
         delete partFiles[i];
@@ -96,7 +96,7 @@ bool IndexPart::load(int part) {
     }
     partFiles[part]->seek(0);
 
-    char *buff = NULL;
+    char *buff = nullptr;
 
     size_t needRead = 0;
 

@@ -187,7 +187,7 @@ ExportSelectedSeqRegionsTask::ExportSelectedSeqRegionsTask(U2SequenceObject *seq
     CHECK(isSeqObjectValid(seqObject, stateInfo), );
 
     foreach (AnnotationTableObject *aObj, connectedAts) {
-        if (NULL == aObj) {
+        if (nullptr == aObj) {
             stateInfo.setError(tr("Invalid annotation table detected"));
             return;
         } else {
@@ -207,13 +207,13 @@ QList<Task *> ExportSelectedSeqRegionsTask::onSubTaskFinished(Task *subTask) {
     CHECK(!subTask->hasError() && !subTask->isCanceled(), resultTasks);
 
     CreateExportItemsFromSeqRegionsTask *createExportItemsTask = qobject_cast<CreateExportItemsFromSeqRegionsTask *>(subTask);
-    if (NULL != createExportItemsTask) {
+    if (nullptr != createExportItemsTask) {
         resultTasks.append(new ExportSequenceTask(createExportItemsTask->getExportSettings()));
         return resultTasks;
     }
 
     ExportSequenceTask *exportSeqTask = qobject_cast<ExportSequenceTask *>(subTask);
-    if (NULL != exportSeqTask) {
+    if (nullptr != exportSeqTask) {
         resultDocument = exportSeqTask->takeDocument();
     }
     return resultTasks;

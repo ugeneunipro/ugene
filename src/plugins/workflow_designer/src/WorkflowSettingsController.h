@@ -33,7 +33,7 @@ namespace U2 {
 class WorkflowSettingsPageController : public AppSettingsGUIPageController {
     Q_OBJECT
 public:
-    WorkflowSettingsPageController(QObject *p = NULL);
+    WorkflowSettingsPageController(QObject *p = nullptr);
 
     virtual AppSettingsGUIPageState *getSavedState();
 

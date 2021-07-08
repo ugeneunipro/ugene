@@ -53,8 +53,8 @@ namespace U2 {
 SiteconBuildDialogController::SiteconBuildDialogController(SiteconPlugin *pl, QWidget *w)
     : QDialog(w),
       plug(pl),
-      saveController(NULL) {
-    task = NULL;
+      saveController(nullptr) {
+    task = nullptr;
     setupUi(this);
     new HelpButton(this, buttonBox, "65930802");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Build"));
@@ -81,7 +81,7 @@ void SiteconBuildDialogController::sl_inFileButtonClicked() {
 }
 
 void SiteconBuildDialogController::sl_okButtonClicked() {
-    if (task != NULL) {
+    if (task != nullptr) {
         accept();    //go to background
         return;
     }
@@ -131,7 +131,7 @@ void SiteconBuildDialogController::sl_okButtonClicked() {
 
 void SiteconBuildDialogController::sl_onStateChanged() {
     Task *t = qobject_cast<Task *>(sender());
-    assert(task != NULL);
+    assert(task != nullptr);
     if (task != t || t->getState() != Task::State_Finished) {
         return;
     }
@@ -146,7 +146,7 @@ void SiteconBuildDialogController::sl_onStateChanged() {
     }
     okButton->setText(tr("Build"));
     cancelButton->setText(tr("Close"));
-    task = NULL;
+    task = nullptr;
 }
 
 void SiteconBuildDialogController::sl_onProgressChanged() {
@@ -170,7 +170,7 @@ void SiteconBuildDialogController::initSaveController() {
 }
 
 void SiteconBuildDialogController::reject() {
-    if (task != NULL) {
+    if (task != nullptr) {
         task->cancel();
     }
     QDialog::reject();
@@ -244,7 +244,7 @@ void SiteconBuildTask::run() {
 }
 
 SiteconBuildToFileTask::SiteconBuildToFileTask(const QString &inFile, const QString &_outFile, const SiteconBuildSettings &s)
-    : Task(tr("Build SITECON model to file"), TaskFlag_NoRun), loadTask(NULL), buildTask(NULL), outFile(_outFile), settings(s) {
+    : Task(tr("Build SITECON model to file"), TaskFlag_NoRun), loadTask(nullptr), buildTask(nullptr), outFile(_outFile), settings(s) {
     tpm = Task::Progress_SubTasksBased;
 
     DocumentFormatConstraints c;
@@ -278,7 +278,7 @@ QList<Task *> SiteconBuildToFileTask::onSubTaskFinished(Task *subTask) {
     if (subTask == loadTask) {
         setUseDescriptionFromSubtask(true);
         Document *d = loadTask->getDocument();
-        assert(d != NULL);
+        assert(d != nullptr);
         QList<GObject *> mobjs = d->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
         if (mobjs.isEmpty()) {
             stateInfo.setError(tr("No alignment found"));

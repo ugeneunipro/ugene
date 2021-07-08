@@ -242,29 +242,28 @@ void ScrollController::scrollToMovedSelection(int deltaX, int deltaY) {
 void ScrollController::scrollToMovedSelection(ScrollController::Direction direction) {
     U2Region fullyVisibleRegion;
     U2Region selectionRegion;
-    const MaEditorSelection selection = ui->getSequenceArea()->getSelection();
-    int selectionEdgePosition = 0;
-    const QSize widgetWize = ui->getSequenceArea()->size();
-
+    int selectionEdgePosition;
+    QSize widgetSize = ui->getSequenceArea()->size();
+    QRect selectionRect = ui->getSequenceArea()->getSelection().toRect();
     switch (direction) {
         case Up:
-            fullyVisibleRegion = ui->getDrawHelper()->getVisibleViewRowsRegion(widgetWize.height(), false, false);
-            selectionRegion = selection.getYRegion();
+            fullyVisibleRegion = ui->getDrawHelper()->getVisibleViewRowsRegion(widgetSize.height(), false, false);
+            selectionRegion = U2Region(selectionRect.y(), selectionRect.height());
             selectionEdgePosition = static_cast<int>(selectionRegion.startPos);
             break;
         case Down:
-            fullyVisibleRegion = ui->getDrawHelper()->getVisibleViewRowsRegion(widgetWize.height(), false, false);
-            selectionRegion = selection.getYRegion();
+            fullyVisibleRegion = ui->getDrawHelper()->getVisibleViewRowsRegion(widgetSize.height(), false, false);
+            selectionRegion = U2Region(selectionRect.y(), selectionRect.height());
             selectionEdgePosition = static_cast<int>(selectionRegion.endPos() - 1);
             break;
         case Left:
-            fullyVisibleRegion = ui->getDrawHelper()->getVisibleBases(widgetWize.width(), false, false);
-            selectionRegion = selection.getXRegion();
+            fullyVisibleRegion = ui->getDrawHelper()->getVisibleBases(widgetSize.width(), false, false);
+            selectionRegion = U2Region(selectionRect.x(), selectionRect.width());
             selectionEdgePosition = static_cast<int>(selectionRegion.startPos);
             break;
         case Right:
-            fullyVisibleRegion = ui->getDrawHelper()->getVisibleBases(widgetWize.width(), false, false);
-            selectionRegion = selection.getXRegion();
+            fullyVisibleRegion = ui->getDrawHelper()->getVisibleBases(widgetSize.width(), false, false);
+            selectionRegion = U2Region(selectionRect.x(), selectionRect.width());
             selectionEdgePosition = static_cast<int>(selectionRegion.endPos() - 1);
             break;
         case None:
@@ -279,11 +278,11 @@ void ScrollController::scrollToMovedSelection(ScrollController::Direction direct
         switch (direction) {
             case Up:
             case Down:
-                scrollToViewRow(static_cast<int>(selectionEdgePosition), widgetWize.height());
+                scrollToViewRow(static_cast<int>(selectionEdgePosition), widgetSize.height());
                 break;
             case Left:
             case Right:
-                scrollToBase(static_cast<int>(selectionEdgePosition), widgetWize.width());
+                scrollToBase(static_cast<int>(selectionEdgePosition), widgetSize.width());
                 break;
             case None:
                 return;

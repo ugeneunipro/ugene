@@ -29,7 +29,7 @@ namespace U2 {
 class BlastDBSelectorWidgetController : public QWidget, public Ui_BlastDBSelectorWidget {
     Q_OBJECT
 public:
-    BlastDBSelectorWidgetController(QWidget *parent = NULL);
+    BlastDBSelectorWidgetController(QWidget *parent = nullptr);
 
     bool isNuclDatabase() const;
     bool isInputDataValid() const;

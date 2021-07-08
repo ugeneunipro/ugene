@@ -70,7 +70,7 @@ Task *GffreadWorker::tick() {
     } else if (noMoreData()) {
         finalize();
     }
-    return NULL;
+    return nullptr;
 }
 
 void GffreadWorker::sl_taskFinished() {
@@ -234,7 +234,7 @@ Worker *GffreadWorkerFactory::createWorker(Actor *a) {
 /************************************************************************/
 QString GffreadPrompter::composeRichDoc() {
     IntegralBusPort *in = qobject_cast<IntegralBusPort *>(target->getPort(IN_PORT_ID));
-    SAFE_POINT(NULL != in, "NULL input port", "");
+    SAFE_POINT(nullptr != in, "NULL input port", "");
     QString genome = getProducersOrUnset(IN_PORT_ID, GENOME_URL_SLOT_ID);
     QString transc = getProducersOrUnset(IN_PORT_ID, TRANSCRIPTS_URL_SLOT_ID);
     QString url = getHyperlink(OUT_URL_ATTR_ID, getURL(OUT_URL_ATTR_ID));

@@ -232,8 +232,10 @@ void MaSimpleOverview::recalculateSelection() {
 
     const MaEditorSelection &selection = sequenceArea->getSelection();
 
-    const U2Region selectionBasesRegion = ui->getBaseWidthController()->getBasesGlobalRange(selection.x(), selection.width());
-    const U2Region selectionRowsRegion = ui->getRowHeightController()->getGlobalYRegionByViewRowsRegion(selection.getYRegion());
+    QRect selectionRect = selection.toRect();
+    U2Region selectionBasesRegion = ui->getBaseWidthController()->getBasesGlobalRange(selectionRect.x(), selectionRect.width());
+    U2Region yRegion(selectionRect.y(), selectionRect.height());
+    U2Region selectionRowsRegion = ui->getRowHeightController()->getGlobalYRegionByViewRowsRegion(yRegion);
 
     cachedSelection.setX(qRound(selectionBasesRegion.startPos / stepX));
     cachedSelection.setY(qRound(selectionRowsRegion.startPos / stepY));

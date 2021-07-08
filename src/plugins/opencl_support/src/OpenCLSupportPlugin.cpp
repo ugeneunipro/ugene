@@ -93,11 +93,11 @@ OpenCLSupportPlugin::OpenCLSupportPlugin()
 }
 OpenCLSupportPlugin::~OpenCLSupportPlugin() {
     OpenCLGpuRegistry *registry = AppContext::getOpenCLGpuRegistry();
-    CHECK(NULL != registry, );
+    CHECK(nullptr != registry, );
     registry->saveGpusSettings();
     unregisterAvailableGpus();
     AppResourcePool::instance()->unregisterResource(RESOURCE_OPENCL_GPU);
-    registry->setOpenCLHelper(NULL);
+    registry->setOpenCLHelper(nullptr);
 }
 
 OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::getError() const {
@@ -241,7 +241,7 @@ OpenCLSupportPlugin::OpenCLSupportError OpenCLSupportPlugin::obtainGpusInfo(QStr
                 return Error_OpenCLError;
             }
 
-            cl_context deviceContext = openCLHelper.clCreateContext_p(0, 1, &deviceId, NULL, NULL, &errCode);
+            cl_context deviceContext = openCLHelper.clCreateContext_p(0, 1, &deviceId, nullptr, nullptr, &errCode);
             if (hasOPENCLError(errCode, errStr)) {
                 return Error_OpenCLError;
             }

@@ -67,7 +67,7 @@ CreateFragmentDialog::CreateFragmentDialog(ADVSequenceObjectContext *ctx, QWidge
 }
 
 CreateFragmentDialog::CreateFragmentDialog(U2SequenceObject *obj, const U2Region &region, QWidget *p)
-    : QDialog(p), seqCtx(NULL) {
+    : QDialog(p), seqCtx(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930761");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
@@ -79,7 +79,7 @@ CreateFragmentDialog::CreateFragmentDialog(U2SequenceObject *obj, const U2Region
 
     foreach (GObject *obj, related) {
         AnnotationTableObject *aObj = qobject_cast<AnnotationTableObject *>(obj);
-        assert(aObj != NULL);
+        assert(aObj != nullptr);
         relatedAnnotations.append(aObj);
     }
 
@@ -133,7 +133,7 @@ void CreateFragmentDialog::accept() {
     const CreateAnnotationModel &m = ac->getModel();
     AnnotationTableObject *obj = m.getAnnotationObject();
     QString groupName = m.groupName;
-    SAFE_POINT(!groupName.isEmpty() && obj != NULL, "Invalid annotation data!", );
+    SAFE_POINT(!groupName.isEmpty() && obj != nullptr, "Invalid annotation data!", );
 
     SharedAnnotationData ad(new AnnotationData);
     ad->location->regions.append(reg);
@@ -165,7 +165,7 @@ void CreateFragmentDialog::accept() {
     obj->addAnnotations(QList<SharedAnnotationData>() << ad, groupName);
     dnaFragment = DNAFragment(ad, seqObj, relatedAnnotations);
 
-    if (seqCtx != NULL) {
+    if (seqCtx != nullptr) {
         seqCtx->getAnnotatedDNAView()->tryAddObject(obj);
     }
 

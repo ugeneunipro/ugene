@@ -57,9 +57,9 @@ DigestSequenceTask::DigestSequenceTask(U2SequenceObject *so, AnnotationTableObje
       sourceObj(source), destObj(dest), dnaObj(so), cfg(config) {
     GCOUNTER(cvar, "DigestSequenceIntoFragments");
 
-    SAFE_POINT_EXT(sourceObj != NULL, setError(L10N::nullPointerError("source object")), );
-    SAFE_POINT_EXT(destObj != NULL, setError(L10N::nullPointerError("destination object")), );
-    SAFE_POINT_EXT(dnaObj != NULL, setError(L10N::nullPointerError("sequence object")), );
+    SAFE_POINT_EXT(sourceObj != nullptr, setError(L10N::nullPointerError("source object")), );
+    SAFE_POINT_EXT(destObj != nullptr, setError(L10N::nullPointerError("destination object")), );
+    SAFE_POINT_EXT(dnaObj != nullptr, setError(L10N::nullPointerError("sequence object")), );
     isCircular = cfg.forceCircular;
 }
 
@@ -388,7 +388,7 @@ QByteArray DigestSequenceTask::getOverhang(const U2Region &region) const {
 
 LigateFragmentsTask::LigateFragmentsTask(const QList<DNAFragment> &fragments, const LigateFragmentsTaskConfig &config)
     : Task("LigateFragmentsTask", TaskFlags_NR_FOSCOE), fragmentList(fragments), cfg(config),
-      resultDoc(NULL), resultAlphabet(NULL) {
+      resultDoc(nullptr), resultAlphabet(nullptr) {
     GCOUNTER(cvar, "LigateFragments");
 }
 
@@ -454,10 +454,10 @@ void LigateFragmentsTask::prepare() {
 
         // check alphabet consistency
         const DNAAlphabet *fragmentAlphabet = dnaFragment.getAlphabet();
-        if (resultAlphabet == NULL) {
+        if (resultAlphabet == nullptr) {
             resultAlphabet = fragmentAlphabet;
         } else if (resultAlphabet != fragmentAlphabet) {
-            if (fragmentAlphabet == NULL) {
+            if (fragmentAlphabet == nullptr) {
                 stateInfo.setError(tr("Unknown DNA alphabet in fragment %1 of %2")
                                        .arg(dnaFragment.getName())
                                        .arg(dnaFragment.getSequenceName()));
@@ -688,7 +688,7 @@ void LigateFragmentsTask::createDocument(const QByteArray &seq, const QList<Shar
     CHECK_OP(stateInfo, );
 
     U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, resultDoc->getDbiRef(), dna);
-    CHECK_OP_EXT(stateInfo, delete resultDoc; resultDoc = NULL, );
+    CHECK_OP_EXT(stateInfo, delete resultDoc; resultDoc = nullptr, );
 
     U2SequenceObject *dnaObj = new U2SequenceObject(seqName, seqRef);
     resultDoc->addObject(dnaObj);

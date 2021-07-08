@@ -45,7 +45,7 @@ WevoteTask::WevoteTask(const WevoteTaskSettings &_settings, WorkflowProcess &_wo
     : ExternalToolSupportTask(tr("Improve classification with WEVOTE"), TaskFlags_FOSE_COSC),
       settings(_settings),
       workflowProcess(_workflowProcess),
-      prepareTaxonomyTask(NULL),
+      prepareTaxonomyTask(nullptr),
       wevotePrefix(settings.workingDir + "/" + QFileInfo(settings.outputFileUrl).completeBaseName()) {
     checkSettings();
     CHECK_OP(stateInfo, );
@@ -105,7 +105,7 @@ QStringList WevoteTask::getArguments() {
     arguments << "-i" << settings.inputFileUrl;
     arguments << "-p" << wevotePrefix;
 
-    SAFE_POINT_EXT(NULL != prepareTaxonomyTask, setError("prepareTaxonomyTask is NULL"), arguments);
+    SAFE_POINT_EXT(nullptr != prepareTaxonomyTask, setError("prepareTaxonomyTask is NULL"), arguments);
     const QString wevoteTaxonomyDir = prepareTaxonomyTask->getWevoteTaxonomyDir();
     CHECK_EXT(!wevoteTaxonomyDir.isEmpty(), setError(tr("Can't find prepared taxonomy for WEVOTE")), arguments);
     arguments << "-d" << prepareTaxonomyTask->getWevoteTaxonomyDir();

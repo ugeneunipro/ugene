@@ -30,7 +30,7 @@ namespace LocalWorkflow {
 class WevotePrompter : public PrompterBase<WevotePrompter> {
     Q_OBJECT
 public:
-    WevotePrompter(Actor *actor = NULL);
+    WevotePrompter(Actor *actor = nullptr);
 
 private:
     QString composeRichDoc();

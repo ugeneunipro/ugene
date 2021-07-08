@@ -249,7 +249,7 @@ void ClassificationFilterWorkerFactory::cleanup() {
 /* ClassificationFilterWorker */
 /************************************************************************/
 ClassificationFilterWorker::ClassificationFilterWorker(Actor *a)
-    : BaseWorker(a, false), input(NULL), /*pairedOutput(NULL),*/ output(NULL) {
+    : BaseWorker(a, false), input(nullptr), /*pairedOutput(NULL),*/ output(nullptr) {
 }
 
 void ClassificationFilterWorker::init() {
@@ -257,9 +257,9 @@ void ClassificationFilterWorker::init() {
     //    pairedOutput = ports.value(OUTPUT_PORT2);
     output = ports.value(ClassificationFilterWorkerFactory::OUTPUT_PORT);
 
-    SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(ClassificationFilterWorkerFactory::INPUT_PORT), );
+    SAFE_POINT(nullptr != input, QString("Port with id '%1' is NULL").arg(ClassificationFilterWorkerFactory::INPUT_PORT), );
     //    SAFE_POINT(NULL != pairedOutput, QString("Port with id '%1' is NULL").arg(OUTPUT_PORT2), );
-    SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(ClassificationFilterWorkerFactory::OUTPUT_PORT), );
+    SAFE_POINT(nullptr != output, QString("Port with id '%1' is NULL").arg(ClassificationFilterWorkerFactory::OUTPUT_PORT), );
 
     output->addComplement(input);
     input->addComplement(output);
@@ -318,12 +318,12 @@ Task *ClassificationFilterWorker::tick() {
         //        pairedOutput->setEnded();
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void ClassificationFilterWorker::sl_taskFinished(Task *t) {
     ClassificationFilterTask *task = qobject_cast<ClassificationFilterTask *>(t);
-    SAFE_POINT(NULL != task, "Invalid task is encountered", );
+    SAFE_POINT(nullptr != task, "Invalid task is encountered", );
     if (!task->isFinished() || task->hasError() || task->isCanceled()) {
         return;
     }

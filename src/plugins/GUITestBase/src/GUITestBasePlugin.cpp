@@ -199,7 +199,7 @@ GUITestBasePlugin::GUITestBasePlugin()
 }
 
 void GUITestBasePlugin::sl_showWindow() {
-    if (view == NULL) {
+    if (view == nullptr) {
         view = new GUITestRunner(UGUITestBase::getInstance());
         view->show();
     } else {

@@ -65,7 +65,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsPrimerLibrary::clickButton(os, GTUtilsPrimerLibrary::Close);
     //Expected: The window is closed.
     QWidget *libraryMdi3 = GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(NULL == libraryMdi3, "Library MDI is not closed");
+    CHECK_SET_ERR(nullptr == libraryMdi3, "Library MDI is not closed");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {

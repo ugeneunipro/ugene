@@ -297,8 +297,7 @@ void MSAEditor::addCopyPasteMenu(QMenu *m) {
     copyMenu->addAction(nameList->copyCurrentSequenceAction);
 
     //TODO: trigger action update on selection change, not in the menu activation code!
-    int selectedMaRowIndex = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(selection.y());
-    nameList->copyCurrentSequenceAction->setDisabled(selectedMaRowIndex == -1);
+    nameList->copyCurrentSequenceAction->setEnabled(!selection.isEmpty());
 }
 
 void MSAEditor::addEditMenu(QMenu *m) {
@@ -653,12 +652,11 @@ void MSAEditor::sl_searchInSequenceNames() {
 
 void MSAEditor::sl_realignSomeSequences() {
     const MaEditorSelection &selection = getSelection();
-    int startSeq = selection.y();
-    int endSeq = selection.y() + selection.height() - 1;
     MaCollapseModel *model = ui->getCollapseModel();
     const MultipleAlignment &ma = ui->getEditor()->getMaObject()->getMultipleAlignment();
     QSet<qint64> rowIds;
-    for (int i = startSeq; i <= endSeq; i++) {
+    QRect selectionRect = selection.toRect();
+    for (int i = selectionRect.y(); i <= selectionRect.bottom(); i++) {
         rowIds.insert(ma->getRow(model->getMaRowIndexByViewRowIndex(i))->getRowId());
     }
     Task *realignTask = new RealignSequencesInAlignmentTask(getMaObject(), rowIds);
@@ -698,8 +696,9 @@ void MSAEditor::sl_updateRealignAction() {
         return;
     }
     const MaEditorSelection &selection = getSelection();
-    bool isWholeSequenceSelection = selection.width() == maObject->getLength() && selection.height() >= 1;
-    bool isAllRowsSelection = selection.height() == ui->getCollapseModel()->getViewRowCount();
+    QRect selectionRect = selection.toRect();
+    bool isWholeSequenceSelection = selectionRect.width() == maObject->getLength() && selectionRect.height() >= 1;
+    bool isAllRowsSelection = selectionRect.height() == ui->getCollapseModel()->getViewRowCount();
     realignSomeSequenceAction->setEnabled(isWholeSequenceSelection && !isAllRowsSelection);
 }
 
@@ -734,7 +733,8 @@ void MSAEditor::sortSequences(const MultipleAlignment::SortType &sortType, const
 
     MultipleSequenceAlignment msa = msaObject->getMultipleAlignmentCopy();
     const MaEditorSelection &selection = getSelection();
-    U2Region sortRange = selection.height() <= 1 ? U2Region() : U2Region(selection.y(), selection.height());
+    QRect selectionRect = selection.toRect();
+    U2Region sortRange = selectionRect.height() <= 1 ? U2Region() : U2Region(selectionRect.y(), selectionRect.height());
     msa->sortRows(sortType, sortOrder, sortRange);
 
     // Switch into 'Original' ordering mode.

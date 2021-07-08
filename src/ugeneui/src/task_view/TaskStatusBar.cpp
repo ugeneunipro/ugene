@@ -38,8 +38,8 @@ namespace U2 {
 TaskStatusBar::TaskStatusBar() {
     nReports = 0;
     tvConnected = false;
-    taskToTrack = NULL;
-    taskProgressBar = NULL;
+    taskToTrack = nullptr;
+    taskProgressBar = nullptr;
 
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     l = new QHBoxLayout();
@@ -115,7 +115,7 @@ NotificationType getNotificationType(const U2OpStatus &os) {
 }    // namespace
 
 void TaskStatusBar::sl_newReport(Task *task) {
-    Notification *t = NULL;
+    Notification *t = nullptr;
     if (task->isReportingEnabled()) {
         NotificationType nType = getNotificationType(task->getStateInfo());
         if (task->isNotificationReport()) {
@@ -135,7 +135,7 @@ void TaskStatusBar::sl_newReport(Task *task) {
                                  warnings.join("\n"),
                              Warning_Not);
     }
-    if (NULL != t) {
+    if (nullptr != t) {
         nStack->addNotification(t);
     }
 }
@@ -166,7 +166,7 @@ void TaskStatusBar::sl_showReport() {
 
 void TaskStatusBar::updateState() {
     QString reportsString = nReports == 0 ? QString("") : tr("Reports: %1").arg(nReports);
-    if (taskToTrack == NULL) {
+    if (taskToTrack == nullptr) {
         taskInfoLabel->setText("");
         taskProgressBar->setVisible(false);
         if (nReports == 0) {
@@ -208,7 +208,7 @@ void TaskStatusBar::updateState() {
 }
 
 void TaskStatusBar::sl_taskStateChanged(Task *t) {
-    assert(taskToTrack == NULL);
+    assert(taskToTrack == nullptr);
     if (t->isFinished()) {
         return;
     }
@@ -218,9 +218,9 @@ void TaskStatusBar::sl_taskStateChanged(Task *t) {
 }
 
 void TaskStatusBar::setTaskToTrack(Task *t) {
-    assert(taskToTrack == NULL);
-    if (Q_UNLIKELY(NULL != taskToTrack)) {
-        disconnect(taskToTrack, NULL, this, NULL);
+    assert(taskToTrack == nullptr);
+    if (Q_UNLIKELY(nullptr != taskToTrack)) {
+        disconnect(taskToTrack, nullptr, this, nullptr);
     }
     taskToTrack = t;
     connect(taskToTrack, SIGNAL(si_stateChanged()), SLOT(sl_taskStateChanged()));
@@ -232,7 +232,7 @@ void TaskStatusBar::setTaskToTrack(Task *t) {
 void TaskStatusBar::sl_taskStateChanged() {
     if (!tvConnected) {
         QWidget *w = AppContext::getMainWindow()->getDockManager()->findWidget(DOCK_TASK_VIEW);
-        if (w != NULL) {
+        if (w != nullptr) {
             TaskViewDockWidget *twd = qobject_cast<TaskViewDockWidget *>(w);
             nReports = twd->countAvailableReports();
             connect(twd, SIGNAL(si_reportsCountChanged()), SLOT(sl_reportsCountChanged()));
@@ -245,7 +245,7 @@ void TaskStatusBar::sl_taskStateChanged() {
         return;
     }
     taskToTrack->disconnect(this);
-    taskToTrack = NULL;
+    taskToTrack = nullptr;
     taskProgressBar->setValue(false);
 
     foreach (Task *newT, AppContext::getTaskScheduler()->getTopLevelTasks()) {
@@ -254,7 +254,7 @@ void TaskStatusBar::sl_taskStateChanged() {
             break;
         }
     }
-    if (taskToTrack == NULL) {
+    if (taskToTrack == nullptr) {
         connect(AppContext::getTaskScheduler(), SIGNAL(si_stateChanged(Task *)), SLOT(sl_taskStateChanged(Task *)));
     }
     updateState();
@@ -277,9 +277,9 @@ bool TaskStatusBar::eventFilter(QObject *o, QEvent *e) {
 }
 
 void TaskStatusBar::mouseDoubleClickEvent(QMouseEvent *e) {
-    if (taskToTrack != NULL) {
+    if (taskToTrack != nullptr) {
         QWidget *w = AppContext::getMainWindow()->getDockManager()->activateDock(DOCK_TASK_VIEW);
-        if (w != NULL) {
+        if (w != nullptr) {
             TaskViewDockWidget *twd = qobject_cast<TaskViewDockWidget *>(w);
             twd->selectTask(taskToTrack);
         }
@@ -313,7 +313,7 @@ void TaskStatusBar::sl_notificationChanged() {
 }
 
 void TaskStatusBar::sl_taskProgressChanged() {
-    CHECK(sender() != NULL, );
+    CHECK(sender() != nullptr, );
     SAFE_POINT(taskToTrack == sender(), tr("Wrong signal sender!"), );
     updateState();
 }

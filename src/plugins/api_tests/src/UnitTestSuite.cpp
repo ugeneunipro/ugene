@@ -104,7 +104,7 @@ void UnitTestSuite::prepare() {
 
 void UnitTestSuite::runTest(const QString &testName) {
     UnitTest *t = (UnitTest *)QMetaType::create(QMetaType::type(testName.toStdString().c_str()));
-    if (t != NULL) {
+    if (t != nullptr) {
         t->SetUp();
         t->Test();
         if (!t->GetError().isEmpty()) {

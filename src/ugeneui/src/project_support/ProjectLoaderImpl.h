@@ -172,7 +172,7 @@ private:
 class AD2P_DocumentInfo {
 public:
     AD2P_DocumentInfo()
-        : iof(NULL), openView(false), loadDocuments(false), markLoadedAsModified(false) {
+        : iof(nullptr), openView(false), loadDocuments(false), markLoadedAsModified(false) {
     }
     GUrl url;
     DocumentFormatId formatId;
@@ -186,7 +186,7 @@ public:
 class AD2P_ProviderInfo {
 public:
     AD2P_ProviderInfo()
-        : dp(NULL), openView(false) {
+        : dp(nullptr), openView(false) {
     }
     DocumentProviderTask *dp;
     bool openView;

@@ -53,9 +53,9 @@ static const QString OUT_FASTA_URL_ID("consensus-url");
 
 VcfConsensusWorker::VcfConsensusWorker(Actor *a)
     : BaseWorker(a),
-      inputFA(NULL),
-      inputVcfBgzip(NULL),
-      outputFA(NULL) {
+      inputFA(nullptr),
+      inputVcfBgzip(nullptr),
+      outputFA(nullptr) {
 }
 
 void VcfConsensusWorker::init() {
@@ -69,7 +69,7 @@ Task *VcfConsensusWorker::tick() {
         const Message inputMessage = getMessageAndSetupScriptValues(inputFA);
         if (inputMessage.isEmpty()) {
             outputFA->transit();
-            return NULL;
+            return nullptr;
         }
         const QVariantMap data = inputMessage.getData().toMap();
         if (!data.contains(IN_FASTA_URL_SLOT_ID)) {
@@ -83,7 +83,7 @@ Task *VcfConsensusWorker::tick() {
         GUrl vcfURL(data.value(IN_VCF_URL_SLOT_ID).toString());
         GUrl outputURL(getValue<QString>(OUT_FASTA_URL_ID));
 
-        VcfConsensusSupportTask *t = NULL;
+        VcfConsensusSupportTask *t = nullptr;
         t = new VcfConsensusSupportTask(fastaURL, vcfURL, outputURL);
         t->addListeners(createLogListeners(2));
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
@@ -93,7 +93,7 @@ Task *VcfConsensusWorker::tick() {
         setDone();
         outputFA->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void VcfConsensusWorker::cleanup() {
@@ -101,7 +101,7 @@ void VcfConsensusWorker::cleanup() {
 
 void VcfConsensusWorker::sl_taskFinished() {
     VcfConsensusSupportTask *t = dynamic_cast<VcfConsensusSupportTask *>(sender());
-    CHECK(t != NULL, );
+    CHECK(t != nullptr, );
     CHECK(t->isFinished() && !t->hasError(), );
 
     if (t->isCanceled()) {
@@ -157,17 +157,17 @@ void VcfConsensusWorkerFactory::init() {
     proto->addExternalTool(VcfConsensusSupport::ET_VCF_CONSENSUS_ID);
     proto->addExternalTool(TabixSupport::ET_TABIX_ID);
 
-    SAFE_POINT(WorkflowEnv::getProtoRegistry() != NULL, "Workflow proto registry is NULL", );
+    SAFE_POINT(WorkflowEnv::getProtoRegistry() != nullptr, "Workflow proto registry is NULL", );
     WorkflowEnv::getProtoRegistry()->registerProto(BaseActorCategories::CATEGORY_VARIATION_ANALYSIS(), proto);
 
-    SAFE_POINT(WorkflowEnv::getDomainRegistry() != NULL, "Workflow domain registry is NULL", );
+    SAFE_POINT(WorkflowEnv::getDomainRegistry() != nullptr, "Workflow domain registry is NULL", );
     DomainFactory *localDomain = WorkflowEnv::getDomainRegistry()->getById(LocalDomainFactory::ID);
     localDomain->registerEntry(new VcfConsensusWorkerFactory());
 }
 
 QString VcfConsensusPrompter::composeRichDoc() {
     IntegralBusPort *in = qobject_cast<IntegralBusPort *>(target->getPort(IN_PORT_ID));
-    SAFE_POINT(in != NULL, "NULL input port", "");
+    SAFE_POINT(in != nullptr, "NULL input port", "");
     QString fasta = getProducersOrUnset(IN_PORT_ID, IN_FASTA_URL_SLOT_ID);
     QString vcf = getProducersOrUnset(IN_PORT_ID, IN_VCF_URL_SLOT_ID);
     QString out = getHyperlink(OUT_FASTA_URL_ID, getURL(OUT_FASTA_URL_ID));

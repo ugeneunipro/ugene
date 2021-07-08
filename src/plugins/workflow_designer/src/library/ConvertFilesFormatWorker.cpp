@@ -96,7 +96,7 @@ QVariantMap getFormatsMap(MapType mapType) {
     QVariantMap result;
     foreach (const DocumentFormatId &fid, allFormats) {
         const DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(fid);
-        if (NULL == format || format->checkFlags(DocumentFormatFlag_CannotBeCreated)) {
+        if (nullptr == format || format->checkFlags(DocumentFormatFlag_CannotBeCreated)) {
             continue;
         }
         if (format->checkFlags(DocumentFormatFlag_SupportWriting) || (BOOLEANS == mapType)) {
@@ -180,7 +180,7 @@ void ConvertFilesFormatWorkerFactory::init() {
 /* ConvertFilesFormatWorker */
 /************************************************************************/
 ConvertFilesFormatWorker::ConvertFilesFormatWorker(Actor *a)
-    : BaseWorker(a), inputUrlPort(NULL), outputUrlPort(NULL) {
+    : BaseWorker(a), inputUrlPort(nullptr), outputUrlPort(nullptr) {
 }
 
 void ConvertFilesFormatWorker::init() {
@@ -201,16 +201,16 @@ bool ConvertFilesFormatWorker::ensureFileExists(const QString &url) {
 Task *ConvertFilesFormatWorker::tick() {
     if (inputUrlPort->hasMessage()) {
         const QString url = takeUrl();
-        CHECK(!url.isEmpty(), NULL);
-        CHECK(ensureFileExists(url), NULL);
+        CHECK(!url.isEmpty(), nullptr);
+        CHECK(ensureFileExists(url), nullptr);
 
         const QString detectedFormat = detectFormat(url);
-        CHECK(!detectedFormat.isEmpty(), NULL);
+        CHECK(!detectedFormat.isEmpty(), nullptr);
 
         // without conversion
         if ((targetFormat == detectedFormat) || (excludedFormats.contains(detectedFormat))) {
             sendResult(url);
-            return NULL;
+            return nullptr;
         }
 
         Task *t = getConvertTask(detectedFormat, url);
@@ -220,7 +220,7 @@ Task *ConvertFilesFormatWorker::tick() {
         setDone();
         outputUrlPort->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void ConvertFilesFormatWorker::cleanup() {
@@ -230,7 +230,7 @@ namespace {
 QString getTargetUrl(Task *task) {
     ConvertFileTask *convertFileTask = dynamic_cast<ConvertFileTask *>(task);
 
-    if (NULL != convertFileTask) {
+    if (nullptr != convertFileTask) {
         return convertFileTask->getResult();
     }
     return "";
@@ -289,10 +289,10 @@ QString ConvertFilesFormatWorker::createWorkingDir(const QString &fileUrl) {
 
 namespace {
 QString getFormatId(const FormatDetectionResult &r) {
-    if (NULL != r.format) {
+    if (nullptr != r.format) {
         return r.format->getFormatId();
     }
-    if (NULL != r.importer) {
+    if (nullptr != r.importer) {
         return r.importer->getId();
     }
     return "";
@@ -334,9 +334,9 @@ Task *ConvertFilesFormatWorker::getConvertTask(const QString &detectedFormat, co
     QString workingDir = createWorkingDir(url);
 
     ConvertFactoryRegistry *r = AppContext::getConvertFactoryRegistry();
-    SAFE_POINT(r != NULL, "ConvertFilesFormatWorker::getConvertTask ConvertFactoryRegistry is NULL", NULL);
+    SAFE_POINT(r != nullptr, "ConvertFilesFormatWorker::getConvertTask ConvertFactoryRegistry is NULL", nullptr);
     ConvertFileFactory *f = r->getFactoryByFormats(detectedFormat, targetFormat);
-    SAFE_POINT(f != NULL, "ConvertFilesFormatWorker::getConvertTask ConvertFileFactory is NULL", NULL);
+    SAFE_POINT(f != nullptr, "ConvertFilesFormatWorker::getConvertTask ConvertFileFactory is NULL", nullptr);
 
     return f->getTask(url, detectedFormat, targetFormat, workingDir);
 }

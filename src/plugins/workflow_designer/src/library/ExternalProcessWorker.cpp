@@ -94,11 +94,11 @@ static U2SequenceObject *toSequence(const QVariantMap &data, WorkflowContext *co
     QString slot = BaseSlots::DNA_SEQUENCE_SLOT().getId();
     if (!data.contains(slot)) {
         os.setError(QObject::tr("Empty sequence slot"));
-        return NULL;
+        return nullptr;
     }
     SharedDbiDataHandler seqId = data[slot].value<SharedDbiDataHandler>();
     U2SequenceObject *seqObj = StorageUtils::getSequenceObject(context->getDataStorage(), seqId);
-    if (NULL == seqObj) {
+    if (nullptr == seqObj) {
         os.setError(QObject::tr("Error with sequence object"));
     }
     return seqObj;
@@ -108,7 +108,7 @@ static AnnotationTableObject *toAnotations(const QVariantMap &data, WorkflowCont
     QString slot = BaseSlots::ANNOTATION_TABLE_SLOT().getId();
     if (!data.contains(slot)) {
         os.setError(QObject::tr("Empty annotations slot"));
-        return NULL;
+        return nullptr;
     }
     const QVariant annotationsData = data[slot];
     const QList<SharedAnnotationData> annList = StorageUtils::getAnnotationTable(context->getDataStorage(), annotationsData);
@@ -123,11 +123,11 @@ static MultipleSequenceAlignmentObject *toAlignment(const QVariantMap &data, Wor
     QString slot = BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId();
     if (!data.contains(slot)) {
         os.setError(QObject::tr("Empty alignment slot"));
-        return NULL;
+        return nullptr;
     }
     SharedDbiDataHandler msaId = data[slot].value<SharedDbiDataHandler>();
     MultipleSequenceAlignmentObject *msaObj = StorageUtils::getMsaObject(context->getDataStorage(), msaId);
-    if (NULL == msaObj) {
+    if (nullptr == msaObj) {
         os.setError(QObject::tr("Error with alignment object"));
     }
     return msaObj;
@@ -137,7 +137,7 @@ static TextObject *toText(const QVariantMap &data, WorkflowContext *context, U2O
     QString slot = BaseSlots::TEXT_SLOT().getId();
     if (!data.contains(slot)) {
         os.setError(QObject::tr("Empty text slot"));
-        return NULL;
+        return nullptr;
     }
     QString text = data[slot].value<QString>();
     return TextObject::createInstance(text, "tmp_text_object", context->getDataStorage()->getDbiRef(), os);
@@ -156,7 +156,7 @@ static QString generateAndCreateURL(const QString &extention, const QString &nam
 
 static DocumentFormat *getFormat(const DataConfig &dataCfg, U2OpStatus &os) {
     DocumentFormat *f = AppContext::getDocumentFormatRegistry()->getFormatById(dataCfg.format);
-    if (NULL == f) {
+    if (nullptr == f) {
         os.setError(QObject::tr("Unknown document format: %1").arg(dataCfg.format));
     }
     return f;
@@ -164,26 +164,26 @@ static DocumentFormat *getFormat(const DataConfig &dataCfg, U2OpStatus &os) {
 
 static Document *createDocument(const DataConfig &dataCfg, U2OpStatus &os) {
     DocumentFormat *f = getFormat(dataCfg, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     QString url = generateAndCreateURL(f->getSupportedDocumentFileExtensions().first(), dataCfg.attrName);
     QScopedPointer<Document> d(f->createNewLoadedDocument(iof, url, os));
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     d->setDocumentOwnsDbiResources(false);
     return d.take();
 }
 
 static Document *loadDocument(const QString &url, const DataConfig &dataCfg, WorkflowContext *context, U2OpStatus &os) {
     DocumentFormat *f = getFormat(dataCfg, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     QVariantMap hints;
     U2DbiRef dbiRef = context->getDataStorage()->getDbiRef();
     hints.insert(DocumentFormat::DBI_REF_HINT, qVariantFromValue(dbiRef));
     QScopedPointer<Document> d(f->loadDocument(iof, url, hints, os));
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     d->setDocumentOwnsDbiResources(false);
     return d.take();
 }
@@ -422,7 +422,7 @@ static GObject *getObject(Document *d, GObjectType t, U2OpStatus &os) {
     QList<GObject *> objs = d->findGObjectByType(t, UOF_LoadedAndUnloaded);
     if (objs.isEmpty()) {
         os.setError(QObject::tr("No target objects in the file: %1").arg(d->getURLString()));
-        return NULL;
+        return nullptr;
     }
     return objs.first();
 }
@@ -432,7 +432,7 @@ static SharedDbiDataHandler getAlignment(Document *d, WorkflowContext *context, 
     CHECK_OP(os, SharedDbiDataHandler());
 
     MultipleSequenceAlignmentObject *msaObj = static_cast<MultipleSequenceAlignmentObject *>(obj);
-    if (NULL == msaObj) {
+    if (nullptr == msaObj) {
         os.setError(QObject::tr("Error with alignment object"));
         return SharedDbiDataHandler();
     }
@@ -444,7 +444,7 @@ static SharedDbiDataHandler getAnnotations(Document *d, WorkflowContext *context
     CHECK_OP(os, SharedDbiDataHandler());
 
     AnnotationTableObject *annsObj = static_cast<AnnotationTableObject *>(obj);
-    if (NULL == annsObj) {
+    if (nullptr == annsObj) {
         os.setError(QObject::tr("Error with annotations object"));
         return SharedDbiDataHandler();
     }

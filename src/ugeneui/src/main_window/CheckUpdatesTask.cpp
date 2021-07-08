@@ -166,7 +166,7 @@ VersionMessage::VersionMessage(const Version &newVersion) {
 
     dialog = new QMessageBox(QMessageBox::Information, title, message, QMessageBox::NoButton, parent);
     dialog->addButton(QMessageBox::Ok);
-    updateButton = NULL;
+    updateButton = nullptr;
     if (Version::appVersion() < newVersion) {
         updateButton = dialog->addButton(tr("Update Now"), QMessageBox::ActionRole);
     }

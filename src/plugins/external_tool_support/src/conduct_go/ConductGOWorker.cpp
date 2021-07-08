@@ -61,7 +61,7 @@ static const QString GENE_UNIVERSE("gene-universe");
 /* Worker */
 /************************************************************************/
 ConductGOWorker::ConductGOWorker(Actor *p)
-    : BaseWorker(p), inChannel(NULL) {
+    : BaseWorker(p), inChannel(nullptr) {
 }
 
 void ConductGOWorker::init() {
@@ -89,7 +89,7 @@ Task *ConductGOWorker::tick() {
     } else if (inChannel->isEnded()) {
         setDone();
     }
-    return NULL;
+    return nullptr;
 }
 
 void ConductGOWorker::cleanup() {

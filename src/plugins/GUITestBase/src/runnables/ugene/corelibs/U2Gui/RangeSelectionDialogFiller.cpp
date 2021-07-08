@@ -53,7 +53,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOp
     minVal = 0;
     maxVal = 0;
     length = 0;
-    len = NULL;
+    len = nullptr;
     multipleRange = QString();
     circular = false;
 }
@@ -66,7 +66,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOp
     minVal = _minVal;
     maxVal = _maxVal;
     length = 0;
-    len = NULL;
+    len = nullptr;
     multipleRange = QString();
     circular = false;
 }
@@ -79,7 +79,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOp
     minVal = 0;
     maxVal = 0;
     length = 0;
-    len = NULL;
+    len = nullptr;
     multipleRange = range;
     circular = false;
 }
@@ -92,7 +92,7 @@ SelectSequenceRegionDialogFiller::SelectSequenceRegionDialogFiller(HI::GUITestOp
     minVal = 0;
     maxVal = 0;
     length = _length;
-    len = NULL;
+    len = nullptr;
     multipleRange = QString();
     circular = false;
 }
@@ -105,22 +105,22 @@ void SelectSequenceRegionDialogFiller::setCircular(bool v) {
 void SelectSequenceRegionDialogFiller::commonScenario() {
     GTGlobals::sleep(500);
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     if (selectAll) {
         QToolButton *min = dialog->findChild<QToolButton *>("minButton");
         QToolButton *max = dialog->findChild<QToolButton *>("maxButton");
-        GT_CHECK(min != NULL, "Min button not found");
-        GT_CHECK(max != NULL, "Max button not found");
+        GT_CHECK(min != nullptr, "Min button not found");
+        GT_CHECK(max != nullptr, "Max button not found");
 
         GTWidget::click(os, min);
         GTGlobals::sleep(500);
         GTWidget::click(os, max);
         GTGlobals::sleep(500);
 
-        if (len != NULL) {
+        if (len != nullptr) {
             QLineEdit *endEdit = dialog->findChild<QLineEdit *>("endEdit");
-            GT_CHECK(endEdit != NULL, "QLineEdit \"endEdit\" not found");
+            GT_CHECK(endEdit != nullptr, "QLineEdit \"endEdit\" not found");
             *len = endEdit->text().toInt();
         }
     } else if (rangeType == Single) {
@@ -128,8 +128,8 @@ void SelectSequenceRegionDialogFiller::commonScenario() {
 
         QLineEdit *startEdit = dialog->findChild<QLineEdit *>("startEdit");
         QLineEdit *endEdit = dialog->findChild<QLineEdit *>("endEdit");
-        GT_CHECK(startEdit != NULL, "QLineEdit \"startEdit\" not found");
-        GT_CHECK(endEdit != NULL, "QLineEdit \"endEdit\" not found");
+        GT_CHECK(startEdit != nullptr, "QLineEdit \"startEdit\" not found");
+        GT_CHECK(endEdit != nullptr, "QLineEdit \"endEdit\" not found");
 
         if (length == 0) {
             GTLineEdit::setText(os, startEdit, QString::number(minVal));
@@ -151,11 +151,11 @@ void SelectSequenceRegionDialogFiller::commonScenario() {
         GT_CHECK(!multipleRange.isEmpty(), "Range is empty");
 
         QRadioButton *multipleButton = dialog->findChild<QRadioButton *>("miltipleButton");
-        GT_CHECK(multipleButton != NULL, "RadioButton \"miltipleButton\" not found");
+        GT_CHECK(multipleButton != nullptr, "RadioButton \"miltipleButton\" not found");
         GTRadioButton::click(os, multipleButton);
 
         QLineEdit *regionEdit = dialog->findChild<QLineEdit *>("multipleRegionEdit");
-        GT_CHECK(regionEdit != NULL, "QLineEdit \"multipleRegionEdit\" not foud");
+        GT_CHECK(regionEdit != nullptr, "QLineEdit \"multipleRegionEdit\" not foud");
         GTLineEdit::setText(os, regionEdit, multipleRange);
     }
 

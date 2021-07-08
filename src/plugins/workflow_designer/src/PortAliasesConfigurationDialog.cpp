@@ -54,9 +54,9 @@ PortAliasesConfigurationDialog::PortAliasesConfigurationDialog(const Schema &sch
     portAliasesTableWidget->horizontalHeader()->setStretchLastSection(true);
 
     foreach (Actor *actor, schema.getProcesses()) {
-        assert(NULL != actor);
+        assert(nullptr != actor);
         foreach (Port *port, actor->getPorts()) {
-            assert(NULL != port);
+            assert(nullptr != port);
             // show only output and free input ports
             if (port->isInput()) {
                 if (!port->getLinks().isEmpty()) {
@@ -94,7 +94,7 @@ void PortAliasesConfigurationDialog::sl_portSelected(int row) {
 
     assert(row >= 0 && row < portListWidget->count());
     Port *currentPort = portListMap.value(row);
-    assert(NULL != currentPort);
+    assert(nullptr != currentPort);
 
     int rowInd = 0;
     QMap<Descriptor, QString> aliasMap = model.aliases.value(currentPort);
@@ -131,7 +131,7 @@ void PortAliasesConfigurationDialog::sl_onDataChange(int row, int col) {
     }
 
     Port *port = portListMap.value(portListWidget->currentRow());
-    assert(NULL != port);
+    assert(nullptr != port);
 
     Descriptor desc = portAliasesTableWidget->item(row, 0)->data(Qt::UserRole).value<Descriptor>();
     assert(model.aliases.value(port).contains(desc));
@@ -153,9 +153,9 @@ void PortAliasesConfigurationDialog::sl_portDescriptionChanged(const QString &ne
 
 void PortAliasesConfigurationDialog::initializeModel(const Schema &schema) {
     foreach (Actor *actor, schema.getProcesses()) {
-        assert(NULL != actor);
+        assert(nullptr != actor);
         foreach (Port *port, actor->getPorts()) {
-            assert(NULL != port);
+            assert(nullptr != port);
             if (port->isInput()) {
                 if (!port->getLinks().isEmpty()) {
                     continue;

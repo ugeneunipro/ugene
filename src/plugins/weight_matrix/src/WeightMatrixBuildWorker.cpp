@@ -127,7 +127,7 @@ Task *PWMatrixBuildWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         mtype = PWMatrixWorkerFactory::WEIGHT_MATRIX_MODEL_TYPE();
         cfg.algo = actor->getParameter(ALG_ATTR)->getAttributeValue<QString>(context);
@@ -136,7 +136,7 @@ Task *PWMatrixBuildWorker::tick() {
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
-        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
+        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
 
         Task *t = new PWMatrixBuildTask(cfg, msaObj->getMultipleAlignment());
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
@@ -145,7 +145,7 @@ Task *PWMatrixBuildWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void PWMatrixBuildWorker::sl_taskFinished() {
@@ -214,7 +214,7 @@ Task *PFMatrixBuildWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         mtype = PFMatrixWorkerFactory::FREQUENCY_MATRIX_MODEL_TYPE();
         QVariantMap data = inputMessage.getData().toMap();
@@ -223,7 +223,7 @@ Task *PFMatrixBuildWorker::tick() {
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
-        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
+        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
 
         Task *t = new PFMatrixBuildTask(cfg, msaObj->getMultipleAlignment());
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
@@ -232,7 +232,7 @@ Task *PFMatrixBuildWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void PFMatrixBuildWorker::sl_taskFinished() {
@@ -315,7 +315,7 @@ Task *PFMatrixConvertWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         mtype = PFMatrixWorkerFactory::FREQUENCY_MATRIX_MODEL_TYPE();
         QVariantMap data = inputMessage.getData().toMap();
@@ -331,7 +331,7 @@ Task *PFMatrixConvertWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void PFMatrixConvertWorker::sl_taskFinished() {

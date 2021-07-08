@@ -43,8 +43,8 @@ SpideyAlignmentTask::SpideyAlignmentTask(const SplicedAlignmentTaskConfig &setti
       annDescription(annDescription) {
     GCOUNTER(cvar, "SpideySupportTask");
     setMaxParallelSubtasks(1);
-    spideyTask = NULL;
-    prepareDataForSpideyTask = NULL;
+    spideyTask = nullptr;
+    prepareDataForSpideyTask = nullptr;
 }
 
 void SpideyAlignmentTask::prepare() {
@@ -81,7 +81,7 @@ QList<Task *> SpideyAlignmentTask::onSubTaskFinished(Task *subTask) {
                 stateInfo.setError(tr("Output file not found"));
             } else {
                 ExternalTool *spideyTool = AppContext::getExternalToolRegistry()->getById(SpideySupport::ET_SPIDEY_ID);
-                SAFE_POINT(NULL != spideyTool, "Invalid Spidey tool!", res);
+                SAFE_POINT(nullptr != spideyTool, "Invalid Spidey tool!", res);
                 stateInfo.setError(
                     tr("Output file not found. May be %1 tool path '%2' not valid?")
                         .arg(spideyTool->getName())
@@ -243,7 +243,7 @@ QList<Task *> SpideySupportTask::onSubTaskFinished(Task *subTask) {
         if (results.isEmpty()) {
             setError(tr("Failed to align mRNA to genomic sequence: no alignment is found."));
             DocumentUtils::removeDocumentsContainigGObjectFromProject(aObj);
-            aObj = NULL;
+            aObj = nullptr;
         } else {
             aObj->addAnnotations(results);
         }

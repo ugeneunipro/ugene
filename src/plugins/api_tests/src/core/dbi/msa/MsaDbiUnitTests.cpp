@@ -33,45 +33,45 @@ namespace U2 {
 
 TestDbiProvider MsaTestData::dbiProvider = TestDbiProvider();
 const QString &MsaTestData::MSA_DB_URL("msa-dbi.ugenedb");
-U2MsaDbi *MsaTestData::msaDbi = NULL;
-U2SequenceDbi *MsaTestData::sequenceDbi = NULL;
+U2MsaDbi *MsaTestData::msaDbi = nullptr;
+U2SequenceDbi *MsaTestData::sequenceDbi = nullptr;
 
 void MsaTestData::init() {
-    SAFE_POINT(NULL == msaDbi, "msaDbi has been already initialized!", );
-    SAFE_POINT(NULL == sequenceDbi, "sequenceDbi has been already initialized!", );
+    SAFE_POINT(nullptr == msaDbi, "msaDbi has been already initialized!", );
+    SAFE_POINT(nullptr == sequenceDbi, "sequenceDbi has been already initialized!", );
 
     bool ok = dbiProvider.init(MSA_DB_URL, false);
     SAFE_POINT(ok, "Dbi provider failed to initialize in MsaTestData::init()!", );
 
     U2Dbi *dbi = dbiProvider.getDbi();
     msaDbi = dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "Failed to get msaDbi!", );
+    SAFE_POINT(nullptr != msaDbi, "Failed to get msaDbi!", );
 
     sequenceDbi = dbi->getSequenceDbi();
-    SAFE_POINT(NULL != sequenceDbi, "Failed to get sequenceDbi!", );
+    SAFE_POINT(nullptr != sequenceDbi, "Failed to get sequenceDbi!", );
 }
 
 void MsaTestData::shutdown() {
-    if (NULL != msaDbi) {
-        SAFE_POINT(NULL != sequenceDbi, "sequenceDbi must also be not NULL on this step!", );
+    if (nullptr != msaDbi) {
+        SAFE_POINT(nullptr != sequenceDbi, "sequenceDbi must also be not NULL on this step!", );
 
         U2OpStatusImpl os;
         dbiProvider.close();
-        msaDbi = NULL;
-        sequenceDbi = NULL;
+        msaDbi = nullptr;
+        sequenceDbi = nullptr;
         SAFE_POINT_OP(os, );
     }
 }
 
 U2MsaDbi *MsaTestData::getMsaDbi() {
-    if (NULL == msaDbi) {
+    if (nullptr == msaDbi) {
         init();
     }
     return msaDbi;
 }
 
 U2SequenceDbi *MsaTestData::getSequenceDbi() {
-    if (NULL == sequenceDbi) {
+    if (nullptr == sequenceDbi) {
         init();
     }
     return sequenceDbi;

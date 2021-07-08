@@ -29,7 +29,7 @@ using namespace HI;
 
 class DashboardsManagerDialogFiller : public Filler {
 public:
-    DashboardsManagerDialogFiller(HI::GUITestOpStatus &os, CustomScenario *_c = NULL)
+    DashboardsManagerDialogFiller(HI::GUITestOpStatus &os, CustomScenario *_c = nullptr)
         : Filler(os, "DashboardsManagerDialog", _c) {
     }
 

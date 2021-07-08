@@ -36,14 +36,14 @@ namespace U2 {
 CircularViewSettingsWidget::CircularViewSettingsWidget(CircularViewSettings *s, CircularViewSplitter *cv)
     : circularViewSplitter(cv),
       settings(s),
-      settingsWidget(NULL),
+      settingsWidget(nullptr),
       savableWidget(this, GObjectViewUtils::getActiveObjectViewWindow()) {
-    SAFE_POINT(s != NULL, tr("Circular view settings is NULL"), );
+    SAFE_POINT(s != nullptr, tr("Circular view settings is NULL"), );
     setupUi(this);
 
     initLayout();
-    openCvWidget->setVisible(cv == NULL);
-    settingsWidget->setVisible(cv != NULL);
+    openCvWidget->setVisible(cv == nullptr);
+    settingsWidget->setVisible(cv != nullptr);
     connectSlots();
 
     U2WidgetStateStorage::restoreWidgetState(savableWidget);
@@ -74,7 +74,7 @@ void CircularViewSettingsWidget::sl_modifySettings() {
         settings->labelMode = CircularViewSettings::None;
     }
 
-    if (circularViewSplitter != NULL) {
+    if (circularViewSplitter != nullptr) {
         circularViewSplitter->updateViews();
     }
 }
@@ -84,7 +84,7 @@ void CircularViewSettingsWidget::sl_cvSplitterWasCreatedOrRemoved(CircularViewSp
         return;
     }
     circularViewSplitter = splitter;
-    bool showSettings = splitter != NULL;
+    bool showSettings = splitter != nullptr;
     settingsWidget->setVisible(showSettings);
     openCvWidget->setVisible(!showSettings);
 }

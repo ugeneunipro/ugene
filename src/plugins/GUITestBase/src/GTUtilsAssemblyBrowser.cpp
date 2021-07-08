@@ -90,7 +90,7 @@ void GTUtilsAssemblyBrowser::addRefFromProject(HI::GUITestOpStatus &os, QString 
 #define GT_METHOD_NAME "hasReference"
 bool GTUtilsAssemblyBrowser::hasReference(HI::GUITestOpStatus &os, const QString &viewTitle) {
     AssemblyBrowserUi *view = getView(os, viewTitle);
-    GT_CHECK_RESULT(NULL != view, "Assembly browser wasn't found", false);
+    GT_CHECK_RESULT(nullptr != view, "Assembly browser wasn't found", false);
     return hasReference(os, view);
 }
 #undef GT_METHOD_NAME
@@ -316,7 +316,7 @@ QScrollBar *GTUtilsAssemblyBrowser::getScrollBar(GUITestOpStatus &os, Qt::Orient
         }
     }
 
-    GT_CHECK_RESULT(false, QString("Scrollbar with orientation %1 not found").arg(orientation), NULL);
+    GT_CHECK_RESULT(false, QString("Scrollbar with orientation %1 not found").arg(orientation), nullptr);
 }
 #undef GT_METHOD_NAME
 

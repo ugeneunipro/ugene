@@ -43,7 +43,7 @@ HmmerSearchSettings::HmmerSearchSettings()
       noNull2(false),
       noali(true),
       seed(42),
-      annotationTable(NULL) {
+      annotationTable(nullptr) {
 }
 
 bool HmmerSearchSettings::validate() const {
@@ -55,7 +55,7 @@ bool HmmerSearchSettings::validate() const {
     CHECK(0 < domZ || OPTION_NOT_SET == domZ, false);
     CHECK(0 <= seed, false);
     CHECK(!hmmProfileUrl.isEmpty(), false);
-    CHECK(!sequenceUrl.isEmpty() || NULL != sequence, false);
+    CHECK(!sequenceUrl.isEmpty() || nullptr != sequence, false);
 
     return true;
 }

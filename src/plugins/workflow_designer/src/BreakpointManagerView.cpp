@@ -79,26 +79,26 @@ BreakpointManagerView::BreakpointManagerView(WorkflowDebugStatus *initDebugInfo,
       debugInfo(initDebugInfo),
       scene(scene),
       scheme(initScheme),
-      breakpointsList(NULL),
+      breakpointsList(nullptr),
       actorConnections(),
       breakpointStateControls(),
       allExistingLabels(),
-      lastReachedBreakpoint(NULL),
-      newBreakpointAction(NULL),
-      deleteSelectedBreakpointAction(NULL),
-      deleteAllBreakpointsAction(NULL),
-      disableAllBreakpointsAction(NULL),
-      highlightItemWithBreakpoint(NULL),
-      hitCountAction(NULL),
-      editLabelsAction(NULL),
-      setConditionAction(NULL) {
-    Q_ASSERT(NULL != debugInfo && NULL != scheme);
+      lastReachedBreakpoint(nullptr),
+      newBreakpointAction(nullptr),
+      deleteSelectedBreakpointAction(nullptr),
+      deleteAllBreakpointsAction(nullptr),
+      disableAllBreakpointsAction(nullptr),
+      highlightItemWithBreakpoint(nullptr),
+      hitCountAction(nullptr),
+      editLabelsAction(nullptr),
+      setConditionAction(nullptr) {
+    Q_ASSERT(nullptr != debugInfo && nullptr != scheme);
 
     createActions();
-    Q_ASSERT(NULL != newBreakpointAction && NULL != deleteAllBreakpointsAction && NULL != deleteSelectedBreakpointAction && NULL != disableAllBreakpointsAction && NULL != hitCountAction && NULL != editLabelsAction && NULL != setConditionAction);
+    Q_ASSERT(nullptr != newBreakpointAction && nullptr != deleteAllBreakpointsAction && nullptr != deleteSelectedBreakpointAction && nullptr != disableAllBreakpointsAction && nullptr != hitCountAction && nullptr != editLabelsAction && nullptr != setConditionAction);
 
     initBreakpointsList();
-    Q_ASSERT(NULL != breakpointsList);
+    Q_ASSERT(nullptr != breakpointsList);
 
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     QVBoxLayout *contentLayout = new QVBoxLayout(this);
@@ -188,7 +188,7 @@ QToolBar *BreakpointManagerView::initToolBar() {
 }
 
 void BreakpointManagerView::initBreakpointsList() {
-    Q_ASSERT(NULL == breakpointsList);
+    Q_ASSERT(nullptr == breakpointsList);
 
     breakpointsList = new QTreeWidget(this);
     breakpointsList->setObjectName("breakpoints list");
@@ -250,7 +250,7 @@ void BreakpointManagerView::sl_newBreakpoint() {
         foreach (QGraphicsItem *item, scene->selectedItems()) {
             if (WorkflowProcessItemType == item->type()) {
                 WorkflowProcessItem *processItem = qgraphicsitem_cast<WorkflowProcessItem *>(item);
-                SAFE_POINT(NULL != processItem, "WorkflowProcessItem is NULL!", );
+                SAFE_POINT(nullptr != processItem, "WorkflowProcessItem is NULL!", );
                 if (processItem->isBreakpointInserted() && !processItem->isBreakpointEnabled()) {
                     processItem->toggleBreakpointState();
                     debugInfo->setBreakpointEnabled(processItem->getProcess()->getId(), true);
@@ -299,11 +299,11 @@ void BreakpointManagerView::sl_deleteAllBreakpoints() {
 
 void BreakpointManagerView::sl_disableAllBreakpoints() {
     QCheckBox *firstController = qobject_cast<QCheckBox *>(breakpointStateControls.begin().key());
-    Q_ASSERT(NULL != firstController);
+    Q_ASSERT(nullptr != firstController);
     const bool currentState = (Qt::Checked == firstController->checkState());
     foreach (QWidget *breakpointStateController, breakpointStateControls.keys()) {
         QCheckBox *checkBox = qobject_cast<QCheckBox *>(breakpointStateController);
-        Q_ASSERT(NULL != checkBox);
+        Q_ASSERT(nullptr != checkBox);
         checkBox->setChecked(!currentState);
     }
 }
@@ -316,7 +316,7 @@ void BreakpointManagerView::removeBreakpointFromList(QTreeWidgetItem *item) {
 
     if (1 == removedActorsCount) {
         if (lastReachedBreakpoint == item) {
-            lastReachedBreakpoint = NULL;
+            lastReachedBreakpoint = nullptr;
         }
         delete item;
     }
@@ -338,7 +338,7 @@ void BreakpointManagerView::sl_breakpointsSelectionChanged() {
 void BreakpointManagerView::sl_breakpointStateChanged(int state) {
     QObject *activator = sender();
     QWidget *stateAssigner = qobject_cast<QWidget *>(activator);
-    Q_ASSERT(NULL != stateAssigner);
+    Q_ASSERT(nullptr != stateAssigner);
     QTreeWidgetItem *breakpointItem = breakpointStateControls[stateAssigner];
 
     bool isBreakpointBeingEnabled = (Qt::Checked == state);
@@ -358,7 +358,7 @@ void BreakpointManagerView::sl_highlightItem() {
 }
 
 void BreakpointManagerView::sl_breakpointDoubleClicked(QTreeWidgetItem *item, int column) {
-    if (NULL != item) {
+    if (nullptr != item) {
         switch (column) {
         case BREAKPOINT_LABELS_COLUMN_NUMBER:
             sl_editLabels();
@@ -387,35 +387,35 @@ void BreakpointManagerView::sl_labelAddedToCurrentBreakpoint(QStringList newLabe
 
 void BreakpointManagerView::sl_breakpointEnabled(const ActorId &actor) {
     QCheckBox *stateAssigner = dynamic_cast<QCheckBox *>(getBreakpointStateController(actor));
-    Q_ASSERT(NULL != stateAssigner);
+    Q_ASSERT(nullptr != stateAssigner);
     stateAssigner->setChecked(true);
 }
 
 void BreakpointManagerView::sl_breakpointDisabled(const ActorId &actor) {
     QCheckBox *stateAssigner = dynamic_cast<QCheckBox *>(getBreakpointStateController(actor));
-    Q_ASSERT(NULL != stateAssigner);
+    Q_ASSERT(nullptr != stateAssigner);
     stateAssigner->setChecked(false);
 }
 
 QWidget *BreakpointManagerView::getBreakpointStateController(const ActorId &actor) {
-    QTreeWidgetItem *actorViewItem = actorConnections.key(actor, NULL);
-    Q_ASSERT(NULL != actorViewItem);
+    QTreeWidgetItem *actorViewItem = actorConnections.key(actor, nullptr);
+    Q_ASSERT(nullptr != actorViewItem);
     QCheckBox *stateController = dynamic_cast<QCheckBox *>(breakpointStateControls.key(actorViewItem,
-                                                                                       NULL));
-    Q_ASSERT(NULL != stateController);
+                                                                                       nullptr));
+    Q_ASSERT(nullptr != stateController);
     return stateController;
 }
 
 void BreakpointManagerView::sl_resetHitCount() {
     QTreeWidgetItem *currentItem = breakpointsList->currentItem();
-    Q_ASSERT(NULL != currentItem);
+    Q_ASSERT(nullptr != currentItem);
     debugInfo->resetHitCounterForActor(actorConnections[currentItem]);
     updateCurrentHitCountLabels(true);
 }
 
 void BreakpointManagerView::sl_hitCounterAssigned(const QString &hitCounterCondition, quint32 parameter) {
     QTreeWidgetItem *currentItem = breakpointsList->currentItem();
-    Q_ASSERT(NULL != currentItem);
+    Q_ASSERT(nullptr != currentItem);
     if (hitCounterCondition != currentItem->text(BREAKPOINT_HIT_COUNT_COLUMN_NUMBER)) {
         QString hitCounterLabel = hitCounterCondition;
         if (hitCounterCondition != getNamesOfHitCounters()[ALWAYS]) {
@@ -429,7 +429,7 @@ void BreakpointManagerView::sl_hitCounterAssigned(const QString &hitCounterCondi
 }
 
 void BreakpointManagerView::sl_contextMenuForBreakpointListRequested(const QPoint &pos) {
-    if (NULL != breakpointsList->currentItem() && NULL != breakpointsList->itemAt(pos)) {
+    if (nullptr != breakpointsList->currentItem() && nullptr != breakpointsList->itemAt(pos)) {
         QMenu contextMenu;
         contextMenu.addAction(deleteSelectedBreakpointAction);
         contextMenu.addSeparator();
@@ -529,9 +529,9 @@ void BreakpointManagerView::sl_conditionParameterChanged(HitCondition newParamet
 
 void BreakpointManagerView::sl_pauseStateChanged(bool paused) {
     updateCurrentHitCountLabels(paused);
-    if (!paused && NULL != lastReachedBreakpoint) {
+    if (!paused && nullptr != lastReachedBreakpoint) {
         setBreakpointBackgroundColor(lastReachedBreakpoint, BREAKPOINT_DEFAULT_COLOR);
-        lastReachedBreakpoint = NULL;
+        lastReachedBreakpoint = nullptr;
     }
 }
 
@@ -550,9 +550,9 @@ void BreakpointManagerView::updateCurrentHitCountLabels(bool show) const {
 }
 
 void BreakpointManagerView::onBreakpointReached(ActorId actor) {
-    QTreeWidgetItem *item = actorConnections.key(actor, NULL);
-    Q_ASSERT(NULL != item);
-    if (NULL != lastReachedBreakpoint) {
+    QTreeWidgetItem *item = actorConnections.key(actor, nullptr);
+    Q_ASSERT(nullptr != item);
+    if (nullptr != lastReachedBreakpoint) {
         setBreakpointBackgroundColor(lastReachedBreakpoint, BREAKPOINT_DEFAULT_COLOR);
     }
     setBreakpointBackgroundColor(item, BREAKPOINT_HIGHLIGHTING_COLOR);
@@ -560,10 +560,10 @@ void BreakpointManagerView::onBreakpointReached(ActorId actor) {
 }
 
 bool BreakpointManagerView::eventFilter(QObject * /*object*/, QEvent *event) {
-    CHECK(NULL != event, false);
+    CHECK(nullptr != event, false);
     if (event->type() == QEvent::KeyPress) {
         QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-        CHECK(NULL != keyEvent, false);
+        CHECK(nullptr != keyEvent, false);
 
         bool shiftPressed = keyEvent->modifiers().testFlag(Qt::ShiftModifier);
         if (shiftPressed && keyEvent->key() == Qt::Key_Delete) {

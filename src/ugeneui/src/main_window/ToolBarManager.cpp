@@ -56,7 +56,7 @@ QToolBar *MWToolBarManagerImpl::getToolbar(const QString &sysName) const {
             return tb;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 QToolBar *MWToolBarManagerImpl::createToolBar(const QString &sysName) {

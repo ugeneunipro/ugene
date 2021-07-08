@@ -48,7 +48,7 @@ public:
 class HmmerBuildDialog : public QDialog, public Ui_HmmerBuildDialog {
     Q_OBJECT
 public:
-    HmmerBuildDialog(const MultipleSequenceAlignment &ma, QWidget *parent = NULL);
+    HmmerBuildDialog(const MultipleSequenceAlignment &ma, QWidget *parent = nullptr);
 
     static const QString MA_FILES_DIR_ID;
     static const QString HMM_FILES_DIR_ID;

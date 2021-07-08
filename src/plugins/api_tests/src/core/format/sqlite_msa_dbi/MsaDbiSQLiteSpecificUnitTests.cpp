@@ -36,12 +36,12 @@ namespace U2 {
 
 TestDbiProvider MsaSQLiteSpecificTestData::dbiProvider = TestDbiProvider();
 const QString &MsaSQLiteSpecificTestData::SQLITE_MSA_DB_URL("sqlite-msa-dbi.ugenedb");
-SQLiteDbi *MsaSQLiteSpecificTestData::sqliteDbi = NULL;
+SQLiteDbi *MsaSQLiteSpecificTestData::sqliteDbi = nullptr;
 
 const QString MsaSQLiteSpecificTestData::TEST_MSA_NAME = "Test alignment";
 
 void MsaSQLiteSpecificTestData::init() {
-    SAFE_POINT(NULL == sqliteDbi, "sqliteDbi has already been initialized!", );
+    SAFE_POINT(nullptr == sqliteDbi, "sqliteDbi has already been initialized!", );
 
     // Get URL
     bool ok = dbiProvider.init(SQLITE_MSA_DB_URL, false);
@@ -65,17 +65,17 @@ void MsaSQLiteSpecificTestData::init() {
 }
 
 void MsaSQLiteSpecificTestData::shutdown() {
-    if (NULL != sqliteDbi) {
+    if (nullptr != sqliteDbi) {
         U2OpStatusImpl os;
         sqliteDbi->shutdown(os);
         SAFE_POINT_OP(os, );
         delete sqliteDbi;
-        sqliteDbi = NULL;
+        sqliteDbi = nullptr;
     }
 }
 
 SQLiteDbi *MsaSQLiteSpecificTestData::getSQLiteDbi() {
-    if (NULL == sqliteDbi) {
+    if (nullptr == sqliteDbi) {
         init();
     }
     return sqliteDbi;

@@ -81,7 +81,7 @@ void EditPrimerDialog::sl_validate() {
 
 void EditPrimerDialog::validate(bool isValid) {
     QPushButton *okButton = buttonBox->button(QDialogButtonBox::Ok);
-    SAFE_POINT(NULL != okButton, L10N::nullPointerError("OK button"), );
+    SAFE_POINT(nullptr != okButton, L10N::nullPointerError("OK button"), );
     okButton->setEnabled(isValid);
 }
 

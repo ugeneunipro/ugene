@@ -51,12 +51,12 @@ const QString TopHatSupportTask::outSubDirBaseName("tophat_out");
 TopHatSupportTask::TopHatSupportTask(const TopHatSettings &_settings)
     : ExternalToolSupportTask(tr("Running TopHat task"), TaskFlags_NR_FOSE_COSC),
       settings(_settings),
-      tmpDoc(NULL),
-      tmpDocPaired(NULL),
-      topHatExtToolTask(NULL),
+      tmpDoc(nullptr),
+      tmpDocPaired(nullptr),
+      topHatExtToolTask(nullptr),
       tmpDocSaved(false),
       tmpDocPairedSaved(false),
-      bowtieIndexTask(NULL) {
+      bowtieIndexTask(nullptr) {
     GCOUNTER(cvar, "NGS:TopHatTask");
 }
 
@@ -109,8 +109,8 @@ ExternalToolSupportTask *TopHatSupportTask::createIndexTask() {
         if (!indexDir.exists()) {
             if (!indexDir.mkpath(indexDir.absolutePath())) {
                 stateInfo.setError(tr("Can't create directory for index files "));
-                bowtieIndexTask = NULL;
-                return NULL;
+                bowtieIndexTask = nullptr;
+                return nullptr;
             }
         }
         settings.buildIndexPathAndBasename = indexDir.absolutePath() + "/" + referenceGenome.baseName();
@@ -125,7 +125,7 @@ ExternalToolSupportTask *TopHatSupportTask::createIndexTask() {
 
         return bowtieIndexTask;
     }
-    return NULL;
+    return nullptr;
 }
 
 void TopHatSupportTask::prepare() {
@@ -140,7 +140,7 @@ void TopHatSupportTask::prepare() {
 
     ExternalToolSupportTask *indexTask = createIndexTask();
     CHECK_OP(stateInfo, );
-    if (indexTask != NULL) {
+    if (indexTask != nullptr) {
         addSubTask(indexTask);
         return;
     }
@@ -170,17 +170,17 @@ void TopHatSupportTask::prepare() {
 SaveDocumentTask *TopHatSupportTask::createSaveTask(const QString &url, QPointer<Document> &doc, const QList<Workflow::SharedDbiDataHandler> &seqs) {
     DocumentFormat *docFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::FASTQ);
     doc = docFormat->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), GUrl(url), stateInfo);
-    CHECK_OP(stateInfo, NULL);
+    CHECK_OP(stateInfo, nullptr);
     doc->setDocumentOwnsDbiResources(false);
 
     // Add all sequence objects to the document
     foreach (Workflow::SharedDbiDataHandler seqId, seqs) {
         U2SequenceObject *seqObj(Workflow::StorageUtils::getSequenceObject(settings.storage(), seqId));
 
-        if (NULL == seqObj) {
+        if (nullptr == seqObj) {
             stateInfo.setError(tr("An unexpected error has occurred during preparing the TopHat task!"));
             taskLog.trace(tr("Preparing TopHatSupportTask internal error: unable to get a sequence object!"));
-            return NULL;
+            return nullptr;
         }
 
         doc->addObject(seqObj);
@@ -243,14 +243,14 @@ ExternalToolRunTask *TopHatSupportTask::runTophat() {
     arguments << settings.bowtieIndexPathAndBasename;
     arguments << settings.data.urls.join(",");
     if (settings.data.paired) {
-        SAFE_POINT(settings.data.urls.size() == settings.data.pairedUrls.size(), "Not equal files count", NULL);
+        SAFE_POINT(settings.data.urls.size() == settings.data.pairedUrls.size(), "Not equal files count", nullptr);
         arguments << settings.data.pairedUrls.join(",");
     }
 
     // Add Bowtie, samtools an python to the PATH environment variable
     QStringList additionalPaths;
     ExternalTool *pythonTool = AppContext::getExternalToolRegistry()->getById(PythonSupport::ET_PYTHON_ID);
-    if (NULL != pythonTool) {
+    if (nullptr != pythonTool) {
         additionalPaths << QFileInfo(pythonTool->getPath()).dir().absolutePath();
     }
 
@@ -291,7 +291,7 @@ QList<Task *> TopHatSupportTask::onSubTaskFinished(Task *subTask) {
             if (settings.referenceInputType == TopHatSettings::SEQUENCE) {
                 ExternalToolSupportTask *indexTask = createIndexTask();
                 CHECK_OP(stateInfo, result);
-                if (indexTask != NULL) {
+                if (indexTask != nullptr) {
                     result.append(indexTask);
                 }
             } else {
@@ -313,19 +313,19 @@ QList<Task *> TopHatSupportTask::onSubTaskFinished(Task *subTask) {
 
         // Get assembly output
         Workflow::WorkflowTasksRegistry *registry = Workflow::WorkflowEnv::getWorkflowTasksRegistry();
-        SAFE_POINT(NULL != registry, "Internal error during parsing TopHat output: NULL WorkflowTasksRegistry", result);
+        SAFE_POINT(nullptr != registry, "Internal error during parsing TopHat output: NULL WorkflowTasksRegistry", result);
         Workflow::ReadDocumentTaskFactory *factory = registry->getReadDocumentTaskFactory(Workflow::ReadFactories::READ_ASSEMBLY);
-        SAFE_POINT(NULL != factory, QString("Internal error during parsing TopHat output:"
+        SAFE_POINT(nullptr != factory, QString("Internal error during parsing TopHat output:"
                                             " NULL WorkflowTasksRegistry: %1")
                                         .arg(Workflow::ReadFactories::READ_ASSEMBLY),
                    result);
-        SAFE_POINT(NULL != settings.workflowContext(), "Internal error during parsing TopHat output: NULL workflow context!", result);
+        SAFE_POINT(nullptr != settings.workflowContext(), "Internal error during parsing TopHat output: NULL workflow context!", result);
 
         readAssemblyOutputTask = factory->createTask(outputFiles.value(ACCEPTED_HITS), QVariantMap(), settings.workflowContext());
         result.append(readAssemblyOutputTask);
     } else if (subTask == readAssemblyOutputTask) {
         Workflow::ReadDocumentTask *readDocTask = qobject_cast<Workflow::ReadDocumentTask *>(subTask);
-        SAFE_POINT(NULL != readDocTask, "Internal error during parsing TopHat output: NULL read document task!", result);
+        SAFE_POINT(nullptr != readDocTask, "Internal error during parsing TopHat output: NULL read document task!", result);
 
         QList<Workflow::SharedDbiDataHandler> acceptedHitsResults;
         acceptedHitsResults = readDocTask->takeResult();

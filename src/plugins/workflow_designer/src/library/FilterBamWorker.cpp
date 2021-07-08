@@ -213,7 +213,7 @@ void FilterBamWorkerFactory::init() {
 /* FilterBamWorker */
 /************************************************************************/
 FilterBamWorker::FilterBamWorker(Actor *a)
-    : BaseWorker(a), inputUrlPort(NULL), outputUrlPort(NULL) {
+    : BaseWorker(a), inputUrlPort(nullptr), outputUrlPort(nullptr) {
 }
 
 void FilterBamWorker::init() {
@@ -224,12 +224,12 @@ void FilterBamWorker::init() {
 Task *FilterBamWorker::tick() {
     if (inputUrlPort->hasMessage()) {
         const QString url = takeUrl();
-        CHECK(!url.isEmpty(), NULL);
+        CHECK(!url.isEmpty(), nullptr);
 
         const QString detectedFormat = FileAndDirectoryUtils::detectFormat(url);
         if (detectedFormat.isEmpty()) {
             coreLog.info(tr("Unknown file format: ") + url);
-            return NULL;
+            return nullptr;
         }
         if (detectedFormat == BaseDocumentFormats::BAM || detectedFormat == BaseDocumentFormats::SAM) {
             const QString outputDir = FileAndDirectoryUtils::createWorkingDir(url, getValue<int>(OUT_MODE_ID), getValue<QString>(CUSTOM_DIR_ID), context->workingDir());
@@ -256,7 +256,7 @@ Task *FilterBamWorker::tick() {
         setDone();
         outputUrlPort->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void FilterBamWorker::cleanup() {
@@ -267,7 +267,7 @@ namespace {
 QString getTargetUrl(Task *task) {
     SamtoolsViewFilterTask *filterTask = dynamic_cast<SamtoolsViewFilterTask *>(task);
 
-    if (NULL != filterTask) {
+    if (nullptr != filterTask) {
         return filterTask->getResult();
     }
     return "";

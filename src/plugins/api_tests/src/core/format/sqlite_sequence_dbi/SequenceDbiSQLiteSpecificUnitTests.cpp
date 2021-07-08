@@ -34,12 +34,12 @@ namespace U2 {
 
 TestDbiProvider SequenceSQLiteSpecificTestData::dbiProvider = TestDbiProvider();
 const QString &SequenceSQLiteSpecificTestData::SQLITE_SEQUENCE_DB_URL("sqlite-sequence-dbi.ugenedb");
-SQLiteDbi *SequenceSQLiteSpecificTestData::sqliteDbi = NULL;
+SQLiteDbi *SequenceSQLiteSpecificTestData::sqliteDbi = nullptr;
 
 const QString SequenceSQLiteSpecificTestData::TEST_SEQUENCE_NAME = "Test sequence";
 
 void SequenceSQLiteSpecificTestData::init() {
-    SAFE_POINT(NULL == sqliteDbi, "sqliteDbi has already been initialized!", );
+    SAFE_POINT(nullptr == sqliteDbi, "sqliteDbi has already been initialized!", );
 
     // Get URL
     bool ok = dbiProvider.init(SQLITE_SEQUENCE_DB_URL, false);
@@ -63,17 +63,17 @@ void SequenceSQLiteSpecificTestData::init() {
 }
 
 void SequenceSQLiteSpecificTestData::shutdown() {
-    if (NULL != sqliteDbi) {
+    if (nullptr != sqliteDbi) {
         U2OpStatusImpl os;
         sqliteDbi->shutdown(os);
         SAFE_POINT_OP(os, );
         delete sqliteDbi;
-        sqliteDbi = NULL;
+        sqliteDbi = nullptr;
     }
 }
 
 SQLiteDbi *SequenceSQLiteSpecificTestData::getSQLiteDbi() {
-    if (NULL == sqliteDbi) {
+    if (nullptr == sqliteDbi) {
         init();
     }
     return sqliteDbi;

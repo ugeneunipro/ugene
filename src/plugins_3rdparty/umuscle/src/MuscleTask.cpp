@@ -83,7 +83,7 @@ MuscleTask::MuscleTask(const MultipleSequenceAlignment &ma, const MuscleTaskSett
     ctx->params.g_bStable = config.stableMode;
     ctx->params.g_uMaxIters = config.maxIterations;
     ctx->params.g_ulMaxSecs = config.maxSecs;
-    parallelSubTask = NULL;
+    parallelSubTask = nullptr;
 
     //todo: make more precise estimation, use config.op mode
     int aliLen = ma->getLength();
@@ -136,7 +136,7 @@ void MuscleTask::run() {
             break;
     }
     if (!hasError() && !isCanceled()) {
-        SAFE_POINT_EXT(NULL != resultMA->getAlphabet(),
+        SAFE_POINT_EXT(nullptr != resultMA->getAlphabet(),
                        stateInfo.setError("The alphabet of result alignment is null"), );
     }
     TaskLocalData::detachMuscleTLSContext();
@@ -147,7 +147,7 @@ void MuscleTask::run() {
 }
 
 void MuscleTask::doAlign(bool refine) {
-    if (parallelSubTask == NULL) {    //align in this thread
+    if (parallelSubTask == nullptr) {    //align in this thread
         SAFE_POINT_EXT(resultSubMA->isEmpty(), stateInfo.setError("Incorrect result state"), );
         if (refine) {
             MuscleAdapter::refine(inputSubMA, resultSubMA, stateInfo);
@@ -236,7 +236,7 @@ void MuscleTask::doProfile2Profile() {
 
 Task::ReportResult MuscleTask::report() {
     delete ctx;
-    ctx = NULL;
+    ctx = nullptr;
     return ReportResult_Finished;
 }
 
@@ -288,15 +288,15 @@ QList<Task *> MuscleAddSequencesToProfileTask::onSubTaskFinished(Task *subTask) 
 
     QList<GObject *> seqObjects = loadTask->getDocument()->findGObjectByType(GObjectTypes::SEQUENCE);
     //todo: move to utility alphabet reduction
-    const DNAAlphabet *al = NULL;
+    const DNAAlphabet *al = nullptr;
     foreach (GObject *obj, seqObjects) {
         U2SequenceObject *dnaObj = qobject_cast<U2SequenceObject *>(obj);
         const DNAAlphabet *objAl = dnaObj->getAlphabet();
-        if (al == NULL) {
+        if (al == nullptr) {
             al = objAl;
         } else if (al != objAl) {
             al = U2AlphabetUtils::deriveCommonAlphabet(al, objAl);
-            CHECK_EXT(al != NULL, setError(tr("Sequences in file have different alphabets %1").arg(loadTask->getDocument()->getURLString())), res);
+            CHECK_EXT(al != nullptr, setError(tr("Sequences in file have different alphabets %1").arg(loadTask->getDocument()->getURLString())), res);
         }
         QByteArray seqData = dnaObj->getWholeSequenceData(stateInfo);
         CHECK_OP(stateInfo, res);
@@ -337,9 +337,9 @@ Task::ReportResult MuscleAddSequencesToProfileTask::report() {
 // MuscleGObjectTask
 
 MuscleGObjectTask::MuscleGObjectTask(MultipleSequenceAlignmentObject *_obj, const MuscleTaskSettings &_config)
-    : AlignGObjectTask("", TaskFlags_NR_FOSCOE, _obj), lock(NULL), muscleTask(NULL), config(_config) {
+    : AlignGObjectTask("", TaskFlags_NR_FOSCOE, _obj), lock(nullptr), muscleTask(nullptr), config(_config) {
     QString aliName;
-    if (NULL == obj->getDocument()) {
+    if (nullptr == obj->getDocument()) {
         aliName = MA_OBJECT_NAME;
     } else {
         aliName = obj->getDocument()->getName();
@@ -374,7 +374,7 @@ MuscleGObjectTask::~MuscleGObjectTask() {
                 obj->unlockState(lock);
             }
             delete lock;
-            lock = NULL;
+            lock = nullptr;
         }
     }
 }
@@ -400,7 +400,7 @@ Task::ReportResult MuscleGObjectTask::report() {
     if (!lock.isNull()) {
         obj->unlockState(lock);
         delete lock;
-        lock = NULL;
+        lock = nullptr;
     } else {
         if (!stateInfo.isCoR()) {
             stateInfo.setError(tr("MultipleSequenceAlignment object has been changed"));
@@ -480,11 +480,11 @@ Task::ReportResult MuscleGObjectTask::report() {
 MuscleWithExtFileSpecifySupportTask::MuscleWithExtFileSpecifySupportTask(const MuscleTaskSettings &_config)
     : Task("Run Muscle alignment task", TaskFlags_NR_FOSCOE),
       config(_config) {
-    mAObject = NULL;
-    currentDocument = NULL;
-    saveDocumentTask = NULL;
-    loadDocumentTask = NULL;
-    muscleGObjectTask = NULL;
+    mAObject = nullptr;
+    currentDocument = nullptr;
+    saveDocumentTask = nullptr;
+    loadDocumentTask = nullptr;
+    muscleGObjectTask = nullptr;
     cleanDoc = true;
 }
 
@@ -527,10 +527,10 @@ QList<Task *> MuscleWithExtFileSpecifySupportTask::onSubTaskFinished(Task *subTa
     }
     if (subTask == loadDocumentTask) {
         currentDocument = loadDocumentTask->takeDocument();
-        SAFE_POINT(currentDocument != NULL, QString("Failed loading document: %1").arg(loadDocumentTask->getURLString()), res);
+        SAFE_POINT(currentDocument != nullptr, QString("Failed loading document: %1").arg(loadDocumentTask->getURLString()), res);
         SAFE_POINT(currentDocument->getObjects().length() == 1, QString("Number of objects != 1 : %1").arg(loadDocumentTask->getURLString()), res);
         mAObject = qobject_cast<MultipleSequenceAlignmentObject *>(currentDocument->getObjects().first());
-        SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
+        SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
         if (config.alignRegion) {
             if ((config.regionToAlign.startPos > mAObject->getLength()) || ((config.regionToAlign.startPos + config.regionToAlign.length) > mAObject->getLength())) {
                 config.alignRegion = false;
@@ -547,7 +547,7 @@ QList<Task *> MuscleWithExtFileSpecifySupportTask::onSubTaskFinished(Task *subTa
         res.append(saveDocumentTask);
     } else if (subTask == saveDocumentTask) {
         Task *openTask = AppContext::getProjectLoader()->openWithProjectTask(config.outputFilePath);
-        if (openTask != NULL) {
+        if (openTask != nullptr) {
             res << openTask;
         }
     }
@@ -583,9 +583,9 @@ void MuscleGObjectRunFromSchemaTask::prepare() {
 }
 
 void MuscleGObjectRunFromSchemaTask::setMAObject(MultipleSequenceAlignmentObject *maobj) {
-    SAFE_POINT_EXT(maobj != NULL, setError("Invalid MSA object detected"), );
+    SAFE_POINT_EXT(maobj != nullptr, setError("Invalid MSA object detected"), );
     const Document *maDoc = maobj->getDocument();
-    SAFE_POINT_EXT(NULL != maDoc, setError("Invalid MSA document detected"), );
+    SAFE_POINT_EXT(nullptr != maDoc, setError("Invalid MSA document detected"), );
     const QString objName = maDoc->getName();
     SAFE_POINT_EXT(!objName.isEmpty(), setError("Invalid MSA object name detected"), );
     AlignGObjectTask::setMAObject(maobj);

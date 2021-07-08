@@ -120,7 +120,7 @@ Task *SequenceSplitWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(seqPort);
         if (inputMessage.isEmpty()) {
             outPort->transit();
-            return NULL;
+            return nullptr;
         }
         cfg.translate = actor->getParameter(TRANSLATE_ATTR)->getAttributeValue<bool>(context);
         cfg.complement = actor->getParameter(COMPLEMENT_ATTR)->getAttributeValue<bool>(context);
@@ -133,7 +133,7 @@ Task *SequenceSplitWorker::tick() {
 
         SharedDbiDataHandler seqId = qm.value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        CHECK(NULL != seqObj.data(), NULL);
+        CHECK(nullptr != seqObj.data(), nullptr);
         U2OpStatusImpl os;
         DNASequence inputSeq = seqObj->getWholeSequence(os);
         CHECK_OP(os, new FailTask(os.getError()));
@@ -152,7 +152,7 @@ Task *SequenceSplitWorker::tick() {
             if (seqPort->isEnded()) {
                 outPort->setEnded();
             }
-            return NULL;
+            return nullptr;
         }
 
         ssTasks.clear();
@@ -172,7 +172,7 @@ Task *SequenceSplitWorker::tick() {
         setDone();
         outPort->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void SequenceSplitWorker::cleanup() {

@@ -64,7 +64,7 @@ Task *FilterAnnotationsWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
 
         QVariantMap qm = inputMessage.getData().toMap();
@@ -82,12 +82,12 @@ Task *FilterAnnotationsWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void FilterAnnotationsWorker::sl_taskFinished(Task *t) {
     FilterAnnotationsTask *task = dynamic_cast<FilterAnnotationsTask *>(t);
-    CHECK(NULL != task, );
+    CHECK(nullptr != task, );
     CHECK(!task->getStateInfo().isCoR(), );
 
     const SharedDbiDataHandler tableId = context->getDataStorage()->putAnnotationTable(task->takeResult());

@@ -51,7 +51,7 @@ void GTUtilsQueryDesigner::openQueryDesigner(HI::GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "findTreeItem"
 QTreeWidgetItem *GTUtilsQueryDesigner::findAlgorithm(HI::GUITestOpStatus &os, QString itemName) {
-    QTreeWidgetItem *foundItem = NULL;
+    QTreeWidgetItem *foundItem = nullptr;
     QTreeWidget *w = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "palette"));
 
     QList<QTreeWidgetItem *> outerList = w->findItems("", Qt::MatchContains);
@@ -69,7 +69,7 @@ QTreeWidgetItem *GTUtilsQueryDesigner::findAlgorithm(HI::GUITestOpStatus &os, QS
             }
         }
     }
-    CHECK_SET_ERR_RESULT(foundItem != NULL, "Item is null", NULL);
+    CHECK_SET_ERR_RESULT(foundItem != nullptr, "Item is null", nullptr);
     return foundItem;
 }
 #undef GT_METHOD_NAME
@@ -77,7 +77,7 @@ QTreeWidgetItem *GTUtilsQueryDesigner::findAlgorithm(HI::GUITestOpStatus &os, QS
 void GTUtilsQueryDesigner::addAlgorithm(HI::GUITestOpStatus &os, QString algName) {
     QTreeWidgetItem *w = findAlgorithm(os, algName);
     GTGlobals::sleep(500);
-    CHECK_SET_ERR(w != NULL, "algorithm is NULL");
+    CHECK_SET_ERR(w != nullptr, "algorithm is NULL");
 
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, w));
 

@@ -107,7 +107,7 @@ void SWAlgorithmTask::setupTask(int maxScore) {
     algoLog.details(QString("Strand: %1 ").arg(c.strandToWalk));
 
     quint64 overlapSize = calculateMatrixLength(sWatermanConfig.sqnc.length(),
-                                                sWatermanConfig.ptrn.length() * (sWatermanConfig.aminoTT == NULL ? 1 : 3),
+                                                sWatermanConfig.ptrn.length() * (sWatermanConfig.aminoTT == nullptr ? 1 : 3),
                                                 sWatermanConfig.gapModel.scoreGapOpen,
                                                 sWatermanConfig.gapModel.scoreGapExtd,
                                                 maxScore,
@@ -149,8 +149,8 @@ void SWAlgorithmTask::setupTask(int maxScore) {
     if (c.chunkSize <= overlapSize) {
         c.chunkSize = overlapSize + 1;
     }
-    if (c.chunkSize < (quint64)sWatermanConfig.ptrn.length() * (sWatermanConfig.aminoTT == NULL ? 1 : 3)) {
-        c.chunkSize = sWatermanConfig.ptrn.length() * (sWatermanConfig.aminoTT == NULL ? 1 : 3);
+    if (c.chunkSize < (quint64)sWatermanConfig.ptrn.length() * (sWatermanConfig.aminoTT == nullptr ? 1 : 3)) {
+        c.chunkSize = sWatermanConfig.ptrn.length() * (sWatermanConfig.aminoTT == nullptr ? 1 : 3);
     }
 
     c.overlapSize = overlapSize;
@@ -266,7 +266,7 @@ void SWAlgorithmTask::onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti) {
     int regionLen = t->getRegionSequenceLen();
     QByteArray localSeq(t->getRegionSequence(), regionLen);
 
-    SmithWatermanAlgorithm *sw = NULL;
+    SmithWatermanAlgorithm *sw = nullptr;
     if (algType == SW_sse2) {
         sw = new SmithWatermanAlgorithmSSE2;
     } else if (algType == SW_cuda) {
@@ -302,7 +302,7 @@ void SWAlgorithmTask::onRegion(SequenceWalkerSubtask *t, TaskStateInfo &ti) {
         algName = "Classic";
     }
     QString testName;
-    if (getParentTask() != NULL) {
+    if (getParentTask() != nullptr) {
         testName = getParentTask()->getTaskName();
     } else {
         testName = "SW alg";
@@ -477,9 +477,9 @@ void SWResultsPostprocessingTask::run() {
 
 PairwiseAlignmentSmithWatermanTaskSettings::PairwiseAlignmentSmithWatermanTaskSettings(const PairwiseAlignmentTaskSettings &s)
     : PairwiseAlignmentTaskSettings(s),
-      reportCallback(NULL),
-      resultListener(NULL),
-      resultFilter(NULL),
+      reportCallback(nullptr),
+      resultListener(nullptr),
+      resultFilter(nullptr),
       gapOpen(0),
       gapExtd(0),
       percentOfScore(0) {
@@ -509,7 +509,7 @@ PairwiseAlignmentSmithWatermanTask::PairwiseAlignmentSmithWatermanTask(PairwiseA
     : PairwiseAlignmentTask(TaskFlag_NoRun), settings(_settings) {
     GCOUNTER(cvar, "SWAlgorithmTask");
 
-    assert(settings != NULL);
+    assert(settings != nullptr);
     bool isValid = settings->convertCustomSettings();
     assert(isValid == true);
     Q_UNUSED(isValid);
@@ -528,8 +528,8 @@ PairwiseAlignmentSmithWatermanTask::PairwiseAlignmentSmithWatermanTask(PairwiseA
     CHECK_OP(os, );
     con.close(os);
 
-    sqnc = NULL;
-    ptrn = NULL;
+    sqnc = nullptr;
+    ptrn = nullptr;
     if (first.length() < second.length()) {
         sqnc = &second;
         ptrn = &first;
@@ -577,7 +577,7 @@ void PairwiseAlignmentSmithWatermanTask::onRegion(SequenceWalkerSubtask *t, Task
     int regionLen = t->getRegionSequenceLen();
     QByteArray localSeq(t->getRegionSequence(), regionLen);
 
-    SmithWatermanAlgorithm *sw = NULL;
+    SmithWatermanAlgorithm *sw = nullptr;
     if (algType == SW_sse2) {
         sw = new SmithWatermanAlgorithmSSE2;
     } else if (algType == SW_cuda) {
@@ -608,7 +608,7 @@ void PairwiseAlignmentSmithWatermanTask::onRegion(SequenceWalkerSubtask *t, Task
         algName = "Classic";
     }
     QString testName;
-    if (getParentTask() != NULL) {
+    if (getParentTask() != nullptr) {
         testName = getParentTask()->getTaskName();
     } else {
         testName = "SW alg";
@@ -669,8 +669,8 @@ void PairwiseAlignmentSmithWatermanTask::setupTask() {
     c.seq = *sqnc;
     c.seqSize = sqnc->size();
     c.range = U2Region(0, sqnc->size());
-    c.complTrans = NULL;
-    c.aminoTrans = NULL;
+    c.complTrans = nullptr;
+    c.aminoTrans = nullptr;
     c.strandToWalk = StrandOption_DirectOnly;
 
     quint64 overlapSize = calculateMatrixLength(*sqnc, *ptrn, settings->gapOpen, settings->gapExtd, maxScore, minScore);
@@ -835,7 +835,7 @@ Task::ReportResult PairwiseAlignmentSmithWatermanTask::report() {
 #endif
     }
 
-    assert(settings->resultListener != NULL);
+    assert(settings->resultListener != nullptr);
     QList<SmithWatermanResult> resultList = settings->resultListener->getResults();
 
     int resultsNum = resultList.size();

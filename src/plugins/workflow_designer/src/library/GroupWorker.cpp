@@ -51,7 +51,7 @@ static const QString OPER_ATTR_ID("group-op");
 /* GroupWorker */
 /************************************************************************/
 GroupWorker::GroupWorker(Actor *p)
-    : BaseWorker(p, false), inChannel(NULL), outChannel(NULL), produceOneGroup(false) {
+    : BaseWorker(p, false), inChannel(nullptr), outChannel(nullptr), produceOneGroup(false) {
 }
 
 void GroupWorker::init() {
@@ -151,7 +151,7 @@ Task *GroupWorker::tick() {
         outChannel->setEnded();
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void GroupWorker::cleanup() {
@@ -232,7 +232,7 @@ QString GroupPrompter::composeRichDoc() {
     if (input->getLinks().size() > 0) {
         Port *src = input->getLinks().keys().first();
         IntegralBusPort *bus = dynamic_cast<IntegralBusPort *>(src);
-        assert(NULL != bus);
+        assert(nullptr != bus);
         DataTypePtr type = bus->getType();
         QMap<Descriptor, DataTypePtr> busMap = type->getDatatypesMap();
 

@@ -87,7 +87,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTWidget::click(os, button);
     //    Expected state: overview is hidden.
     QWidget *overview = GTWidget::findWidget(os, "msa_overview_area");
-    CHECK_SET_ERR(overview != NULL, "overview is NULL");
+    CHECK_SET_ERR(overview != nullptr, "overview is NULL");
     CHECK_SET_ERR(!overview->isVisible(), "overview is visiable");
     //    3. Click on "Overview" button again.
     GTWidget::click(os, button);
@@ -376,7 +376,7 @@ GUI_TEST_CLASS_DEFINITION(test_0014) {
     //    2. Go to Highlighting tab on Options panel.
     GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_HIGHLIGHTING"));
     QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "colorScheme"));
-    CHECK_SET_ERR(combo != NULL, "colorScheme not found!");
+    CHECK_SET_ERR(combo != nullptr, "colorScheme not found!");
     GTComboBox::selectItemByText(os, combo, "No colors");
 
     //    3. Change Color Scheme.
@@ -433,7 +433,7 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
 
     //    5. Select Highlighting to "Gaps"
     QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
-    CHECK_SET_ERR(combo != NULL, "highlightingScheme not found!");
+    CHECK_SET_ERR(combo != nullptr, "highlightingScheme not found!");
     GTComboBox::selectItemByText(os, combo, "Gaps");
 
     //    6. Go to MSA overview context menu (right click on MSA Overview).
@@ -471,7 +471,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
 
     //    5. Change Highlighting.
     QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
-    CHECK_SET_ERR(combo != NULL, "highlightingScheme not found!");
+    CHECK_SET_ERR(combo != nullptr, "highlightingScheme not found!");
     GTComboBox::selectItemByText(os, combo, "Agreements");
 
     //    Expected state: graph displays percent of highlighted cells in column.

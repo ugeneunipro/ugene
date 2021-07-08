@@ -143,11 +143,11 @@ void DiamondClassifyWorkerFactory::init() {
 
         QString diamondDatabasePath;
         U2DataPath *uniref50DataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_50_DATABASE_DATA_ID);
-        if (NULL != uniref50DataPath && uniref50DataPath->isValid()) {
+        if (nullptr != uniref50DataPath && uniref50DataPath->isValid()) {
             diamondDatabasePath = uniref50DataPath->getPathByName(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_50_DATABASE_ITEM_ID);
         } else {
             U2DataPath *clarkViralDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_90_DATABASE_DATA_ID);
-            if (NULL != clarkViralDataPath && clarkViralDataPath->isValid()) {
+            if (nullptr != clarkViralDataPath && clarkViralDataPath->isValid()) {
                 diamondDatabasePath = clarkViralDataPath->getPathByName(NgsReadsClassificationPlugin::DIAMOND_UNIPROT_90_DATABASE_ITEM_ID);
             }
         }
@@ -286,7 +286,7 @@ void DiamondClassifyWorkerFactory::init() {
 
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setPrompter(new DiamondClassifyPrompter(NULL));
+    proto->setPrompter(new DiamondClassifyPrompter(nullptr));
     proto->addExternalTool(DiamondSupport::TOOL_ID);
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);
 

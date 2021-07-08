@@ -73,7 +73,7 @@ public:
         setAcceptDrops(true);
     }
     virtual QMenu *createPopupMenu() {
-        return NULL;
+        return nullptr;
     }    //todo: decide if we do really need this menu and fix it if yes?
 protected:
     virtual void closeEvent(QCloseEvent *e);
@@ -87,7 +87,7 @@ protected:
 };
 
 void MWStub::closeEvent(QCloseEvent *e) {
-    if (owner->getMDIManager() == NULL) {
+    if (owner->getMDIManager() == nullptr) {
         QMainWindow::closeEvent(e);
     } else {
         owner->runClosingTask();
@@ -110,7 +110,7 @@ void MWStub::dropEvent(QDropEvent *event) {
 }
 
 void MainWindowDragNDrop::dropEvent(QDropEvent *event) {
-    if (event->source() == NULL) {
+    if (event->source() == nullptr) {
         QList<GUrl> urls;
         if (event->mimeData()->hasUrls()) {
             urls = GUrlUtils::qUrls2gUrls(event->mimeData()->urls());
@@ -154,13 +154,13 @@ void MWStub::dragMoveEvent(QDragMoveEvent *event) {
 
 void MainWindowDragNDrop::dragMoveEvent(QDragMoveEvent *event) {
     MainWindow *mainWindow = AppContext::getMainWindow();
-    SAFE_POINT(NULL != mainWindow, L10N::nullPointerError("Main Window"), );
+    SAFE_POINT(nullptr != mainWindow, L10N::nullPointerError("Main Window"), );
 
     if (event->mimeData()->hasUrls())
         return;
-    if (event->source() != NULL) {
+    if (event->source() != nullptr) {
         QObject *par = event->source()->parent();
-        while (par != NULL) {
+        while (par != nullptr) {
             if (par == mainWindow->getQMainWindow()) {
                 return;
             }
@@ -174,29 +174,29 @@ void MainWindowDragNDrop::dragMoveEvent(QDragMoveEvent *event) {
 // MainWindowController
 //////////////////////////////////////////////////////////////////////////
 MainWindowImpl::MainWindowImpl() {
-    mw = NULL;
-    mdi = NULL;
-    menuManager = NULL;
-    toolbarManager = NULL;
-    mdiManager = NULL;
-    dockManager = NULL;
-    exitAction = NULL;
-    visitWebAction = NULL;
-    viewOnlineDocumentation = NULL;
-    checkUpdateAction = NULL;
+    mw = nullptr;
+    mdi = nullptr;
+    menuManager = nullptr;
+    toolbarManager = nullptr;
+    mdiManager = nullptr;
+    dockManager = nullptr;
+    exitAction = nullptr;
+    visitWebAction = nullptr;
+    viewOnlineDocumentation = nullptr;
+    checkUpdateAction = nullptr;
     createDesktopShortcutAction = nullptr;
-    aboutAction = NULL;
-    welcomePageAction = NULL;
-    crashUgeneAction = NULL;
+    aboutAction = nullptr;
+    welcomePageAction = nullptr;
+    crashUgeneAction = nullptr;
     shutDownInProcess = false;
 #ifdef _INSTALL_TO_PATH_ACTION
-    installToPathAction = NULL;
+    installToPathAction = nullptr;
 #endif
-    nStack = NULL;
+    nStack = nullptr;
 }
 
 MainWindowImpl::~MainWindowImpl() {
-    assert(mw == NULL);
+    assert(mw == nullptr);
 }
 
 void MainWindowImpl::prepare() {
@@ -210,35 +210,35 @@ void MainWindowImpl::close() {
     AppContext::getSettings()->setValue(SETTINGS_DIR + "geometry", mw->geometry());
 
     dockManager->deleteLater();
-    dockManager = NULL;
+    dockManager = nullptr;
 
     menuManager->deleteLater();
-    menuManager = NULL;
+    menuManager = nullptr;
 
     toolbarManager->deleteLater();
-    toolbarManager = NULL;
+    toolbarManager = nullptr;
 
     mdiManager->deleteLater();
-    mdiManager = NULL;
+    mdiManager = nullptr;
 
     nStack->deleteLater();
-    nStack = NULL;
+    nStack = nullptr;
 
     mdi->deleteLater();
-    mdi = NULL;
+    mdi = nullptr;
 
     mw->close();
     mw->deleteLater();
-    mw = NULL;
+    mw = nullptr;
 }
 
 bool MainWindowImpl::eventFilter(QObject *object, QEvent *event) {
     CHECK(mw == object, false);
-    CHECK(NULL != event, false);
+    CHECK(nullptr != event, false);
     CHECK(event->type() == QEvent::KeyPress, false);
 
     QKeyEvent *keyEvent = dynamic_cast<QKeyEvent *>(event);
-    CHECK(NULL != keyEvent, false);
+    CHECK(nullptr != keyEvent, false);
 
     if (keyEvent->matches(QKeySequence::Paste)) {
         uiLog.details(tr("Application paste shortcut is triggered"));
@@ -430,25 +430,25 @@ void MainWindowImpl::sl_installToPathAction() {
           << "ugenecl";
 
     AuthorizationRef auth;
-    if (AuthorizationCreate(NULL, kAuthorizationEmptyEnvironment, kAuthorizationFlagDefaults, &auth) == errAuthorizationSuccess) {
+    if (AuthorizationCreate(nullptr, kAuthorizationEmptyEnvironment, kAuthorizationFlagDefaults, &auth) == errAuthorizationSuccess) {
         foreach (QString tool, tools) {
             QByteArray executable = (exePath + tool).toUtf8();
             QByteArray installPath = installationPath.toUtf8();
             QString symlink = installationPath + tool;
-            char const *arguments[] = {"-f", "-s", executable.constData(), installPath.constData(), NULL};
+            char const *arguments[] = {"-f", "-s", executable.constData(), installPath.constData(), nullptr};
             char const *helperTool = "/bin/ln";
 
-            if (AuthorizationExecuteWithPrivileges(auth, helperTool, kAuthorizationFlagDefaults, (char **)arguments, NULL) == errAuthorizationSuccess) {
+            if (AuthorizationExecuteWithPrivileges(auth, helperTool, kAuthorizationFlagDefaults, (char **)arguments, nullptr) == errAuthorizationSuccess) {
                 // HACK: sleep because otherwise QFileInfo::exists might return false
                 sleep(100);
-                wait(NULL);
+                wait(nullptr);
                 if (!QFileInfo(symlink).exists()) {
-                    QMessageBox::critical(NULL, tr("Installation failed"), tr("Failed to enable terminal usage: couldn't install '%1'").arg(symlink));
+                    QMessageBox::critical(nullptr, tr("Installation failed"), tr("Failed to enable terminal usage: couldn't install '%1'").arg(symlink));
                     success = false;
                     break;
                 }
             } else {
-                QMessageBox::critical(NULL, tr("Installation failed"), tr("Failed to enable terminal usage: not authorized"));
+                QMessageBox::critical(nullptr, tr("Installation failed"), tr("Failed to enable terminal usage: not authorized"));
                 success = false;
                 break;
             }
@@ -456,12 +456,12 @@ void MainWindowImpl::sl_installToPathAction() {
 
         AuthorizationFree(auth, kAuthorizationFlagDefaults);
     } else {
-        QMessageBox::critical(NULL, tr("Installation failed"), tr("Failed to enable terminal usage: authorization failure"));
+        QMessageBox::critical(nullptr, tr("Installation failed"), tr("Failed to enable terminal usage: authorization failure"));
         success = false;
     }
 
     if (success) {
-        QMessageBox::information(NULL, tr("Installation successful"), tr("Terminal usage successfully enabled.\n\nNow you can type ugene in command line to start UGENE."));
+        QMessageBox::information(nullptr, tr("Installation successful"), tr("Terminal usage successfully enabled.\n\nNow you can type ugene in command line to start UGENE."));
     }
 }
 #endif    // #ifdef _INSTALL_TO_PATH_ACTION
@@ -542,7 +542,7 @@ void FixedMdiArea::tileSubWindows() {
     }
 
     QMainWindow *mainWindow = AppContext::getMainWindow()->getQMainWindow();
-    SAFE_POINT_EXT(NULL != mainWindow, QMdiArea::tileSubWindows(), );
+    SAFE_POINT_EXT(nullptr != mainWindow, QMdiArea::tileSubWindows(), );
 
     QPoint topLeft = mainWindow->mapToGlobal(QPoint(0, 0));
     static QPoint compensationOffset = QPoint(0, -22);    // I think, it is a menu bar. I'm not sure that it has constant height.
@@ -565,7 +565,7 @@ void MainWindowImpl::sl_show() {
     bool maximized = AppContext::getSettings()->getValue(SETTINGS_DIR + "maximized", false).toBool();
     QRect geom = AppContext::getSettings()->getValue(SETTINGS_DIR + "geometry", QRect()).toRect();
 
-    if (mw != NULL) {
+    if (mw != nullptr) {
         if (maximized) {
             mw->showMaximized();
         } else {
@@ -588,7 +588,7 @@ void MainWindowImpl::sl_show() {
 }
 
 void MainWindowImpl::sl_crashUgene() {
-    volatile int *killer = NULL;
+    volatile int *killer = nullptr;
     *killer = 0;
 }
 

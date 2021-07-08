@@ -49,7 +49,7 @@ struct ExternalToolInfo {
 class ExternalToolSupportSettingsPageController : public AppSettingsGUIPageController {
     Q_OBJECT
 public:
-    ExternalToolSupportSettingsPageController(QObject *p = NULL);
+    ExternalToolSupportSettingsPageController(QObject *p = nullptr);
 
     AppSettingsGUIPageState *getSavedState();
     void saveState(AppSettingsGUIPageState *s);

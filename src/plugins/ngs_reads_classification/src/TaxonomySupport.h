@@ -167,7 +167,7 @@ private slots:
 class TaxonomyPropertyWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    TaxonomyPropertyWidget(QWidget *parent = NULL, DelegateTags *tags = NULL);
+    TaxonomyPropertyWidget(QWidget *parent = nullptr, DelegateTags *tags = nullptr);
 
     QVariant value();
 

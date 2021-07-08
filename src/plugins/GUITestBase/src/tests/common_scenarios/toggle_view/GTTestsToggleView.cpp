@@ -60,13 +60,13 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: views for se2 sequence has been closed
-    QWidget *sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1", NULL, false);
+    QWidget *sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1", nullptr, false);
     CHECK_SET_ERR(sequenceWidget2 == nullptr, "sequenceWidget is present");
 
-    QWidget *overViewSe2 = GTWidget::findWidget(os, "overview_se2", NULL, false);
-    QWidget *detailsViewSe2 = GTWidget::findWidget(os, "det_view_se2", NULL, false);
-    QWidget *zoomViewSe2 = GTWidget::findWidget(os, "pan_view_se2", NULL, false);
-    QWidget *toolBarSe2 = GTWidget::findWidget(os, "tool_bar_se2", NULL, false);
+    QWidget *overViewSe2 = GTWidget::findWidget(os, "overview_se2", nullptr, false);
+    QWidget *detailsViewSe2 = GTWidget::findWidget(os, "det_view_se2", nullptr, false);
+    QWidget *zoomViewSe2 = GTWidget::findWidget(os, "pan_view_se2", nullptr, false);
+    QWidget *toolBarSe2 = GTWidget::findWidget(os, "tool_bar_se2", nullptr, false);
     CHECK_SET_ERR(overViewSe2 == nullptr && detailsViewSe2 == nullptr && zoomViewSe2 == nullptr && toolBarSe2 == nullptr, "there are widgets of ADV_single_sequence_widget");
 }
 
@@ -82,13 +82,13 @@ GUI_TEST_CLASS_DEFINITION(test_0001_1) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected state: views for se1 sequence has been closed
-    QWidget *sequenceWidget1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", NULL, false);
+    QWidget *sequenceWidget1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", nullptr, false);
     CHECK_SET_ERR(sequenceWidget1 == nullptr, "sequenceWidget is present");
 
-    QWidget *overViewSe1 = GTWidget::findWidget(os, "overview_se1", NULL, false);
-    QWidget *detailsViewSe1 = GTWidget::findWidget(os, "det_view_se1", NULL, false);
-    QWidget *zoomViewSe1 = GTWidget::findWidget(os, "pan_view_se1", NULL, false);
-    QWidget *toolBarSe1 = GTWidget::findWidget(os, "tool_bar_se1", NULL, false);
+    QWidget *overViewSe1 = GTWidget::findWidget(os, "overview_se1", nullptr, false);
+    QWidget *detailsViewSe1 = GTWidget::findWidget(os, "det_view_se1", nullptr, false);
+    QWidget *zoomViewSe1 = GTWidget::findWidget(os, "pan_view_se1", nullptr, false);
+    QWidget *toolBarSe1 = GTWidget::findWidget(os, "tool_bar_se1", nullptr, false);
     CHECK_SET_ERR(overViewSe1 == nullptr && detailsViewSe1 == nullptr && zoomViewSe1 == nullptr && toolBarSe1 == nullptr, "there are widgets of ADV_single_sequence_widget");
 }
 
@@ -103,14 +103,14 @@ GUI_TEST_CLASS_DEFINITION(test_0001_2) {
     GTWidget::click(os, GTWidget::findWidget(os, "remove_sequence", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget *sequenceWidget1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", NULL, false);
+    QWidget *sequenceWidget1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", nullptr, false);
     CHECK_SET_ERR(sequenceWidget1 == nullptr, "sequenceWidget is present");
 
     toolbar = GTWidget::findWidget(os, "views_tool_bar_se2");
     GTWidget::click(os, GTWidget::findWidget(os, "remove_sequence", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget *sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1", NULL, false);
+    QWidget *sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1", nullptr, false);
     CHECK_SET_ERR(sequenceWidget2 == nullptr, "sequenceWidget is present");
 
     QWidget *activeMDIWindow = GTUtilsMdi::activeWindow(os, false);
@@ -129,7 +129,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_3) {
     GTWidget::click(os, GTWidget::findWidget(os, "remove_sequence", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget *sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1", NULL, false);
+    QWidget *sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1", nullptr, false);
     CHECK_SET_ERR(sequenceWidget2 == nullptr, "sequenceWidget is present");
     toolbar = GTWidget::findWidget(os, "views_tool_bar_se1");
     GTWidget::click(os, GTWidget::findWidget(os, "remove_sequence", toolbar));
@@ -151,14 +151,14 @@ GUI_TEST_CLASS_DEFINITION(test_0001_4) {
     GTWidget::click(os, GTWidget::findWidget(os, "remove_sequence", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget *sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1", NULL, false);
+    QWidget *sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1", nullptr, false);
     CHECK_SET_ERR(sequenceWidget2 == nullptr, "sequenceWidget is present");
 
     toolbar = GTWidget::findWidget(os, "views_tool_bar_se1");
     GTWidget::click(os, GTWidget::findWidget(os, "remove_sequence", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    QWidget *sequenceWidget1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", NULL, false);
+    QWidget *sequenceWidget1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0", nullptr, false);
     CHECK_SET_ERR(sequenceWidget1 == nullptr, "sequenceWidget is present");
 
     QWidget *activeMDIWindow = GTUtilsMdi::activeWindow(os, false);
@@ -172,7 +172,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001_4) {
     GTWidget::click(os, GTWidget::findWidget(os, "remove_sequence", toolbar));
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1", NULL, false);
+    sequenceWidget2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1", nullptr, false);
     CHECK_SET_ERR(sequenceWidget2 == nullptr, "sequenceWidget is present");
 
     activeMDIWindow = GTUtilsMdi::activeWindow(os, false);

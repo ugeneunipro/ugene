@@ -33,7 +33,7 @@ namespace U2 {
 
 void CAP3SupportDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     foreach (QString file, input) {
         int num = file.lastIndexOf('/');

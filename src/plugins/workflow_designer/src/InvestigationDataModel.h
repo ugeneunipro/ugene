@@ -39,7 +39,7 @@ using namespace Workflow;
 class InvestigationDataModel : public QAbstractTableModel {
     Q_OBJECT
 public:
-    InvestigationDataModel(const Workflow::Link *bus, QObject *parent = NULL);
+    InvestigationDataModel(const Workflow::Link *bus, QObject *parent = nullptr);
     ~InvestigationDataModel();
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const;

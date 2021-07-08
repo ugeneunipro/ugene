@@ -65,20 +65,20 @@ static void updateMinMaxReadLengths(AlignContext &alignContext, int l) {
 }
 
 static SearchQuery *createRevComplQuery(SearchQuery *query, DNATranslation *transl) {
-    SAFE_POINT(query != NULL, "Query is null", NULL);
-    SAFE_POINT(transl != NULL, "Transl is null", NULL);
+    SAFE_POINT(query != nullptr, "Query is null", nullptr);
+    SAFE_POINT(transl != nullptr, "Transl is null", nullptr);
 
     QByteArray reversed(query->constSequence());
     TextUtils::reverse(reversed.data(), reversed.count());
 
-    DNASequence dnaSeq(QString("%1_rev").arg(query->getName()), reversed, NULL);
+    DNASequence dnaSeq(QString("%1_rev").arg(query->getName()), reversed, nullptr);
     SearchQuery *rQu = new SearchQuery(&dnaSeq, query);
     transl->translate(const_cast<char *>(rQu->constData()), rQu->length());
 
     if (rQu->constSequence() == query->constSequence()) {
         delete rQu;
-        rQu = NULL;
-        return NULL;
+        rQu = nullptr;
+        return nullptr;
     }
 
     query->setRevCompl(rQu);
@@ -91,14 +91,14 @@ ReadShortReadsSubTask::ReadShortReadsSubTask(GenomeAlignerReader *_seqReader,
                                              qint64 m)
     : Task("ReadShortReadsSubTask", TaskFlag_None),
       seqReader(_seqReader), settings(_settings), alignContext(_alignContext),
-      freeMemorySize(m), prevMemoryHint(0), dataBunch(NULL) {
+      freeMemorySize(m), prevMemoryHint(0), dataBunch(nullptr) {
 }
 
 void ReadShortReadsSubTask::readingFinishedWakeAll() {
     taskLog.trace("Wake all");
 
     delete dataBunch;
-    dataBunch = NULL;
+    dataBunch = nullptr;
 
     QMutexLocker lock(&alignContext.readingStatusMutex);
     alignContext.isReadingFinished = true;
@@ -150,7 +150,7 @@ void ReadShortReadsSubTask::run() {
             return;
         }
         SearchQuery *query = seqReader->read();
-        if (NULL == query) {
+        if (nullptr == query) {
             if (!seqReader->isEnd()) {
                 setError("Short-reads object type must be a sequence, but not a multiple alignment");
                 readingFinishedWakeAll();
@@ -186,7 +186,7 @@ void ReadShortReadsSubTask::run() {
             break;
         }
 
-        SAFE_POINT(NULL != dataBunch, "No dataBunch", );
+        SAFE_POINT(nullptr != dataBunch, "No dataBunch", );
         if (dataBunch->bitValuesV.size() > DROP_BUNCH_DATA_SIZE) {
             dropToAlignContext();
             readNum = 0;
@@ -199,8 +199,8 @@ void ReadShortReadsSubTask::run() {
 }
 
 inline bool ReadShortReadsSubTask::add(int &CMAX, int &W, int &q, int &readNum, SearchQuery *query, GenomeAlignerTask *parent) {
-    SAFE_POINT(NULL != dataBunch, "No dataBunch", false);
-    SAFE_POINT(NULL != query, "No query", false);
+    SAFE_POINT(nullptr != dataBunch, "No dataBunch", false);
+    SAFE_POINT(nullptr != query, "No query", false);
 
     W = query->length();
     if (!alignContext.absMismatches) {
@@ -210,7 +210,7 @@ inline bool ReadShortReadsSubTask::add(int &CMAX, int &W, int &q, int &readNum, 
     CHECK_EXT(0 != q, , false);
 
     const char *querySeq = query->constData();
-    SAFE_POINT(NULL != querySeq, "No querySeq", false);
+    SAFE_POINT(nullptr != querySeq, "No querySeq", false);
 
     int win = query->length() < GenomeAlignerTask::MIN_SHORT_READ_LENGTH ?
                   GenomeAlignerTask::calculateWindowSize(alignContext.absMismatches,

@@ -57,7 +57,7 @@ void FormatDBSubTask::prepare() {
     QScopedPointer<U2SequenceObject> refObject(StorageUtils::getSequenceObject(storage, referenceDbHandler));
     CHECK_EXT(!refObject.isNull(), setError(L10N::nullPointerError("U2SequenceObject")), );
 
-    CHECK_EXT(refObject->getAlphabet() != NULL, setError(L10N::nullPointerError("DNAAlphabet")), );
+    CHECK_EXT(refObject->getAlphabet() != nullptr, setError(L10N::nullPointerError("DNAAlphabet")), );
     settings.isInputAmino = refObject->getAlphabet()->isAmino();
     settings.databaseTitle = refObject->getSequenceName();
 

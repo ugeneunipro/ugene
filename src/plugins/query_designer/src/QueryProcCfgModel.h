@@ -41,7 +41,7 @@ private:
 
 public:
     QueryProcCfgModel(QObject *parent)
-        : QAbstractTableModel(parent), editor(NULL), cfg(NULL) {
+        : QAbstractTableModel(parent), editor(nullptr), cfg(nullptr) {
     }
 
     QModelIndex modelIndexById(const QString &id) {
@@ -62,7 +62,7 @@ public:
             editor = cfg->getEditor();
             attrs = cfg->getAttributes();
         } else {
-            editor = NULL;
+            editor = nullptr;
             attrs.clear();
         }
         endResetModel();
@@ -125,7 +125,7 @@ public:
             }
         }
         QVariant val = item->getAttributePureValue();
-        PropertyDelegate *pd = editor ? editor->getDelegate(item->getId()) : NULL;
+        PropertyDelegate *pd = editor ? editor->getDelegate(item->getId()) : nullptr;
         switch (role) {
         case Qt::DisplayRole:
         case Qt::ToolTipRole: {

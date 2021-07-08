@@ -81,7 +81,7 @@ class PWMatrixReader : public BaseWorker {
 public:
     static const QString ACTOR_ID;
     PWMatrixReader(Actor *a)
-        : BaseWorker(a), output(NULL) {
+        : BaseWorker(a), output(nullptr) {
     }
     virtual void init();
     virtual Task *tick();
@@ -102,7 +102,7 @@ class PWMatrixWriter : public BaseWorker {
 public:
     static const QString ACTOR_ID;
     PWMatrixWriter(Actor *a)
-        : BaseWorker(a), input(NULL), done(false), fileMode(SaveDoc_Overwrite) {
+        : BaseWorker(a), input(nullptr), done(false), fileMode(SaveDoc_Overwrite) {
     }
     virtual void init();
     virtual Task *tick();
@@ -167,7 +167,7 @@ class PFMatrixReader : public BaseWorker {
 public:
     static const QString ACTOR_ID;
     PFMatrixReader(Actor *a)
-        : BaseWorker(a), output(NULL) {
+        : BaseWorker(a), output(nullptr) {
     }
     virtual void init();
     virtual Task *tick();
@@ -188,7 +188,7 @@ class PFMatrixWriter : public BaseWorker {
 public:
     static const QString ACTOR_ID;
     PFMatrixWriter(Actor *a)
-        : BaseWorker(a), input(NULL), done(false), fileMode(SaveDoc_Overwrite) {
+        : BaseWorker(a), input(nullptr), done(false), fileMode(SaveDoc_Overwrite) {
     }
     virtual void init();
     virtual Task *tick();

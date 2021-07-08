@@ -80,7 +80,7 @@ static int getIndex(char nucl) {
 static const float FLOAT_MIN = 0.000000001f;
 
 KarlinGraphAlgorithm::KarlinGraphAlgorithm()
-    : global_relative_abundance_values(NULL) {
+    : global_relative_abundance_values(nullptr) {
 }
 
 KarlinGraphAlgorithm::~KarlinGraphAlgorithm() {
@@ -88,7 +88,7 @@ KarlinGraphAlgorithm::~KarlinGraphAlgorithm() {
 }
 
 void KarlinGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, const U2Region &vr, const GSequenceGraphWindowData *d, U2OpStatus &os) {
-    assert(d != NULL);
+    assert(d != nullptr);
     int nSteps = GSequenceGraphUtils::getNumSteps(vr, d->window, d->step);
     res.reserve(nSteps);
 
@@ -97,7 +97,7 @@ void KarlinGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, c
 
     DNATranslationRegistry *tr = AppContext::getDNATranslationRegistry();
     DNATranslation *complT = tr->lookupComplementTranslation(al);
-    assert(complT != NULL);
+    assert(complT != nullptr);
 
     DNATranslation *complTrans = complT;
     mapTrans = complTrans->getOne2OneMapper();
@@ -106,7 +106,7 @@ void KarlinGraphAlgorithm::calculate(QVector<float> &res, U2SequenceObject *o, c
     CHECK_OP(os, );
     int seqLen = seq.size();
     const char *seqc = seq.constData();
-    if (global_relative_abundance_values == NULL) {
+    if (global_relative_abundance_values == nullptr) {
         global_relative_abundance_values = new float[16];
         calculateRelativeAbundance(seqc, seqLen, global_relative_abundance_values, os);
         CHECK_OP(os, );

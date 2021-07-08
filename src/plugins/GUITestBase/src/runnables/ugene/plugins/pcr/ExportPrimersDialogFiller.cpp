@@ -49,7 +49,7 @@ void ExportPrimersDialogFiller::commonScenario() {
 #define GT_METHOD_NAME "getDialog"
 QWidget *ExportPrimersDialogFiller::getDialog(HI::GUITestOpStatus &os) {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK_RESULT(NULL != dialog, "Active modal dialog is NULL", NULL);
+    GT_CHECK_RESULT(nullptr != dialog, "Active modal dialog is NULL", nullptr);
     return dialog;
 }
 #undef GT_METHOD_NAME
@@ -84,7 +84,7 @@ void ExportPrimersDialogFiller::setFilePath(HI::GUITestOpStatus &os, const QStri
 #define GT_METHOD_NAME "setDatabase"
 void ExportPrimersDialogFiller::setDatabase(HI::GUITestOpStatus &os, const QString &database) {
     QComboBox *cbDatabase = GTWidget::findExactWidget<QComboBox *>(os, "cbDatabase", getDialog(os));
-    GT_CHECK(NULL != cbDatabase, "Database combobox is NULL");
+    GT_CHECK(nullptr != cbDatabase, "Database combobox is NULL");
     if (-1 == cbDatabase->findText(database)) {
         QList<SharedConnectionsDialogFiller::Action> actions;
         actions << SharedConnectionsDialogFiller::Action(SharedConnectionsDialogFiller::Action::CLICK, database);

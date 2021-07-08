@@ -60,13 +60,13 @@ PairwiseAlignmentSmithWatermanTaskFactory::~PairwiseAlignmentSmithWatermanTaskFa
 
 AbstractAlignmentTask *PairwiseAlignmentSmithWatermanTaskFactory::getTaskInstance(AbstractAlignmentTaskSettings *_settings) const {
     PairwiseAlignmentTaskSettings *pairwiseSettings = dynamic_cast<PairwiseAlignmentTaskSettings *>(_settings);
-    SAFE_POINT(pairwiseSettings != NULL,
+    SAFE_POINT(pairwiseSettings != nullptr,
                "Pairwise alignment: incorrect settings",
-               NULL);
+               nullptr);
     PairwiseAlignmentSmithWatermanTaskSettings *settings = new PairwiseAlignmentSmithWatermanTaskSettings(*pairwiseSettings);
     SAFE_POINT(false == settings->inNewWindow || false == settings->resultFileName.isEmpty(),
                "Pairwise alignment: incorrect settings, empty output file name",
-               NULL);
+               nullptr);
     if (settings->inNewWindow == true) {
         settings->reportCallback = new SmithWatermanReportCallbackMAImpl(settings->resultFileName.dirPath() + "/",
                                                                          settings->resultFileName.baseFileName(),
@@ -83,13 +83,13 @@ AbstractAlignmentTask *PairwiseAlignmentSmithWatermanTaskFactory::getTaskInstanc
 
     settings->resultListener = new SmithWatermanResultListener;
     SWResultFilterRegistry *resFilterReg = AppContext::getSWResultFilterRegistry();
-    SAFE_POINT(NULL != resFilterReg, "SWResultFilterRegistry is NULL.", NULL);
+    SAFE_POINT(nullptr != resFilterReg, "SWResultFilterRegistry is NULL.", nullptr);
     settings->resultFilter = resFilterReg->getFilter(PairwiseAlignmentSmithWatermanTaskSettings::PA_SW_DEFAULT_RESULT_FILTER);
     settings->percentOfScore = PairwiseAlignmentSmithWatermanTaskSettings::PA_SW_DEFAULT_PERCENT_OF_SCORE;
     if (settings->convertCustomSettings()) {
         return new PairwiseAlignmentSmithWatermanTask(settings, algType);
     }
-    return NULL;
+    return nullptr;
 }
 
 }    // namespace U2

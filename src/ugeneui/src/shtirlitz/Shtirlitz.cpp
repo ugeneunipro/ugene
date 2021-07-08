@@ -127,7 +127,7 @@ QList<Task *> Shtirlitz::wakeup() {
     // Do not ask to enable it twice for different versions!
     if (minorVersionFirstLaunch) {
         MainWindow *mainWindow = AppContext::getMainWindow();
-        CHECK(NULL != mainWindow, result);
+        CHECK(nullptr != mainWindow, result);
         QObjectScopedPointer<StatisticalReportController> dialog = new StatisticalReportController(getWhatsNewHtml(), mainWindow->getQMainWindow());
         dialog->exec();
         CHECK(!dialog.isNull(), result);

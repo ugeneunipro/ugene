@@ -402,7 +402,7 @@ void SamReader::readHeader() {
                     header.setSortingOrder(Header::Unknown);
                 }
             } else if ("SQ" == recordTag) {
-                Header::Reference *reference = NULL;
+                Header::Reference *reference = nullptr;
                 QByteArray name;
                 if (fields.contains("SN")) {
                     name = fields["SN"];
@@ -424,7 +424,7 @@ void SamReader::readHeader() {
                 } else {
                     throw InvalidFormatException(BAMDbiPlugin::tr("SQ record without LN field"));
                 }
-                assert(NULL != reference);
+                assert(nullptr != reference);
                 if (fields.contains("AS")) {
                     reference->setAssemblyId(fields["AS"]);
                 }

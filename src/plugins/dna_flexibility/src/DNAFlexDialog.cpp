@@ -110,7 +110,7 @@ void DNAFlexDialog::accept() {
     QString annotName = annotModel.data->name;
     QString annotGroup = annotModel.groupName;
 
-    if (ctx != NULL) {
+    if (ctx != nullptr) {
         ctx->getAnnotatedDNAView()->tryAddObject(annotModel.getAnnotationObject());
     }
 
