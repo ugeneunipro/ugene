@@ -766,6 +766,25 @@ GUI_TEST_CLASS_DEFINITION(test_6083) {
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6084) {
+    // Check that modification in an alignment marks the object as 'modified' and 'undo' makes it 'non-modified' again.
+    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Insert gap and check that object is modified.
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(10, 10));
+    GTKeyboardDriver::keyPress(Qt::Key_Space);
+    GTUtilsProjectTreeView::itemModificationCheck(os, "COI", true);
+
+    // Undo and check that object is not modified.
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsProjectTreeView::itemModificationCheck(os, "COI", false);
+
+    // Redo and check that object is modified again.
+    GTUtilsMsaEditor::redo(os);
+    GTUtilsProjectTreeView::itemModificationCheck(os, "COI", true);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6087) {
     //1. Open  samples/MMDB/1CRN.prt
     GTFileDialog::openFile(os, dataDir + "samples/MMDB/1CRN.prt");
