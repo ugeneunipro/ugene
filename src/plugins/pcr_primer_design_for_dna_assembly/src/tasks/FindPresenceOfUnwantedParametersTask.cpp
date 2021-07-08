@@ -51,21 +51,23 @@ void FindPresenceOfUnwantedParametersTask::run() {
     if (!report.isEmpty()) {
         unwantedStructures = "<strong>5' homodimers:</strong><br><br>";
         unwantedStructures += report;
+        unwantedStructures += "<br>";
         report.clear();
     }
 
     UnwantedConnectionsUtils::isUnwantedSelfDimer(reverse, settings.gibbsFreeEnergyExclude,
         settings.meltingPointExclude, settings.complementLengthExclude, report);
     if (!report.isEmpty()) {
-        unwantedStructures += "<br><strong>3' homodimers:</strong><br><br>";
+        unwantedStructures += "<strong>3' homodimers:</strong><br><br>";
         unwantedStructures += report;
+        unwantedStructures += "<br>";
         report.clear();
     }
 
     UnwantedConnectionsUtils::isUnwantedHeteroDimer(forward, reverse, settings.gibbsFreeEnergyExclude,
         settings.meltingPointExclude, settings.complementLengthExclude, report);
     if (!report.isEmpty()) {
-        unwantedStructures += "<br><strong>Heterodimers:</strong><br><br>";
+        unwantedStructures += "<strong>Heterodimers:</strong><br><br>";
         unwantedStructures += report;
     }
 }
