@@ -5111,12 +5111,11 @@ GUI_TEST_CLASS_DEFINITION(test_6709) {
     GTKeyboardDriver::keyClick('A', Qt::ControlModifier);
 
     // Expected result: the selected strand translation is "LS*LP".
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy amino acids"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy amino acids"}));
     GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
 
     QString text = GTClipboard::text(os);
-    CHECK_SET_ERR("LS*LP" == text, QString("Unexpected text in the clipboard, expected: LS*LP, current: %1").arg(text));
+    CHECK_SET_ERR(text == "LS*LP", QString("Unexpected text in the clipboard, expected: LS*LP, current: %1").arg(text));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6710) {
