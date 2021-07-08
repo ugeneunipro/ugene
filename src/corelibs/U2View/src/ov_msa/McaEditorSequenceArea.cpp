@@ -190,9 +190,9 @@ QAction *McaEditorSequenceArea::getTrimRightEndAction() const {
 }
 
 void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel) {
-    // Its only possible to select 1 character (width = 1) or multiple rows with no character (width = 0).
+    // Its only possible to select 1 character (width = 1) or multiple rows with no character (width = alignment length).
     QRect selectionRect = sel.toRect();
-    CHECK((selectionRect.width() == 1 && selectionRect.height() == 1) || selectionRect.width() == 0, );
+    CHECK((selectionRect.width() == 1 && selectionRect.height() == 1) || selectionRect.width() == editor->getAlignmentLen(), );
     if (selectionRect.width() == 1 && getEditor()->getMaObject()->getMca()->isTrailingOrLeadingGap(selectionRect.y(), selectionRect.x())) {
         // clear selection if gap is clicked
         emit si_clearReferenceSelection();

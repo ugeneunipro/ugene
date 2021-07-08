@@ -78,7 +78,7 @@ void McaEditorNameList::drawCollapsibleSequenceItem(QPainter &painter, int rowIn
 }
 
 void McaEditorNameList::setSelection(int startSeq, int count) {
-    ui->getSequenceArea()->setSelectionRect(QRect(0, startSeq, 0, count));
+    ui->getSequenceArea()->setSelectionRect(QRect(0, startSeq, editor->getAlignmentLen(), count));
 }
 
 McaEditor *McaEditorNameList::getEditor() const {
