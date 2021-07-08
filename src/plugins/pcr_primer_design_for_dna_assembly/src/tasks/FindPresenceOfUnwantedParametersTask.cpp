@@ -21,6 +21,8 @@
 
 #include "FindPresenceOfUnwantedParametersTask.h"
 
+#include <utils/UnwantedConnectionsUtils.h>
+
 namespace U2 {
 
 FindPresenceOfUnwantedParametersTask::FindPresenceOfUnwantedParametersTask(const QByteArray& _sequence,
@@ -30,16 +32,53 @@ FindPresenceOfUnwantedParametersTask::FindPresenceOfUnwantedParametersTask(const
       settings(_settings) {}
 
 void FindPresenceOfUnwantedParametersTask::run() {
-    //TODO
+    if (settings.bachbone5Length < 0 || settings.bachbone3Length < 0) {
+        setError("Backbone length must be greater than 0");
+        return;
+    }
+    if (sequence.length() < settings.bachbone5Length) {
+        stateInfo.addWarning("Sequence length is less than backbone5Length, the entire sequence is used");
+    }
+    if (sequence.length() < settings.bachbone3Length) {
+        stateInfo.addWarning("Sequence length is less than backbone3Length, the entire sequence is used");
+    }
+    QByteArray forward = sequence.left(settings.bachbone5Length);
+    QByteArray reverse = sequence.right(settings.bachbone3Length);
+    QString report;
+
+    UnwantedConnectionsUtils::isUnwantedSelfDimer(forward, settings.gibbsFreeEnergyExclude,
+        settings.meltingPointExclude, settings.complementLengthExclude, report);
+    if (!report.isEmpty()) {
+        unwantedStructures = "<strong>5' homodimers:</strong><br><br>";
+        unwantedStructures += report;
+        report.clear();
+    }
+
+    UnwantedConnectionsUtils::isUnwantedSelfDimer(reverse, settings.gibbsFreeEnergyExclude,
+        settings.meltingPointExclude, settings.complementLengthExclude, report);
+    if (!report.isEmpty()) {
+        unwantedStructures += "<br><strong>3' homodimers:</strong><br><br>";
+        unwantedStructures += report;
+        report.clear();
+    }
+
+    UnwantedConnectionsUtils::isUnwantedHeteroDimer(forward, reverse, settings.gibbsFreeEnergyExclude,
+        settings.meltingPointExclude, settings.complementLengthExclude, report);
+    if (!report.isEmpty()) {
+        unwantedStructures += "<br><strong>Heterodimers:</strong><br><br>";
+        unwantedStructures += report;
+    }
 }
 
 bool FindPresenceOfUnwantedParametersTask::hasUnwantedParameters() const {
-    //TODO
-    return false;
+    return !unwantedStructures.isEmpty();
 }
 
 const QByteArray& FindPresenceOfUnwantedParametersTask::getSequence() const {
     return sequence;
 }
 
+const QString &FindPresenceOfUnwantedParametersTask::getUnwantedStructures() const {
+    return unwantedStructures;
+}
 }
