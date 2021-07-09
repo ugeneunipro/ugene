@@ -76,17 +76,34 @@ function dump_symbols() {
 
   FILE_HEAD=$(head -n 1 "${SYMBOL_FILE}")
   FILE_HASH=$(echo "${FILE_HEAD}" | awk '{ print $4 }')
-  FILE_NAME=$(echo "${FILE_HEAD}" | awk '{ print $5 }')
+  FILE_NAME=$(echo "${FILE_HEAD}" | awk '{ print $5 }' | tr -d "\r")
 
   DEST_PATH="${SYMBOLS_DIR}/${FILE_NAME}/${FILE_HASH}"
   mkdir -p "${DEST_PATH}"
   mv "${SYMBOL_FILE}" "${DEST_PATH}/${FILE_NAME}.sym"
 }
 
-find "${APP_BUNDLE_DIR}" | sed 's/.*\/tools\/.*$//g' | grep -e ugeneui -e ugenecl -e .dll$ | while read -r BINARY_FILE; do
+find "${APP_BUNDLE_DIR_NAME}" | sed 's/.*\/tools\/.*$//g' | grep -e ugeneui.exe -e ugenecl.exe -e .dll$ | grep -v vcruntime | while read -r BINARY_FILE; do
   dump_symbols "${BINARY_FILE}"
 done
 echo "##teamcity[blockClosed name='Dump symbols']"
+
+echo "##teamcity[blockOpened name='Sign']"
+function code_sign() {
+  FILE_TO_SIGN=$1
+  echo "Signing ${FILE_TO_SIGN}"
+  if signtool.exe sign /a /t http://timestamp.digicert.com /s MY /n "Novosibirsk Center of Information Technologies UNIPRO Ltd." /debug /v "${FILE_TO_SIGN}"; then
+    echo "File is signed successfully: ${FILE_TO_SIGN}"
+  else
+    echo "Failed to sign ${FILE_TO_SIGN}"
+    exit 1
+  fi
+}
+
+find "${APP_BUNDLE_DIR_NAME}" | grep -e .exe$ -e .dll$ | grep -v vcruntime | while read -r BINARY_FILE; do
+  code_sign "${BINARY_FILE}"
+done
+echo "##teamcity[blockClosed name='Sign']"
 
 echo "##teamcity[blockOpened name='Build archive']"
 
