@@ -100,6 +100,7 @@
 #include "runnables/ugene/corelibs/U2Gui/EditSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/FindRepeatsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportAPRFileDialogFiller.h"
+#include "runnables/ugene/corelibs/U2Gui/RangeSelectionDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/ExtractSelectedAsMSADialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/GenerateAlignmentProfileDialogFiller.h"
@@ -5109,6 +5110,31 @@ GUI_TEST_CLASS_DEFINITION(test_6707) {
                               GTGlobals::UseMouse);
     //Expected result: the file is still in the folder and is not removed/modified.
     CHECK_SET_ERR(IOAdapterUtils::readTextFile(sandBoxDir + "test_6707/file.txt") == "Hello!", "The file was removed or modified");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6709) {
+    // Open “_common_data\cmdline\DNA_circular.gb”
+    GTFileDialog::openFile(os, testDir + "_common_data/cmdline/DNA_circular.gb");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Click "Show/hide amino acid translations > Translation selection"
+    QWidget *translationsMenuToolbarButton = GTWidget::findWidget(os, "translationsMenuToolbarButton");
+    CHECK_SET_ERR(translationsMenuToolbarButton != nullptr, "Cannot find translationsMenuToolbarButton");
+
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"translate_selection_radiobutton"}));
+    GTWidget::click(os, translationsMenuToolbarButton);
+    GTKeyboardDriver::keyClick(Qt::Key_Escape);
+
+    // Select the following region "1..10, 740..744".
+    GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, "1..10, 740..744"));
+    GTKeyboardDriver::keyClick('A', Qt::ControlModifier);
+
+    // Expected result: the selected strand translation is "LS*LP".
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy amino acids"}));
+    GTMenu::showContextMenu(os, GTUtilsSequenceView::getPanOrDetView(os));
+
+    QString text = GTClipboard::text(os);
+    CHECK_SET_ERR(text == "LS*LP", QString("Unexpected text in the clipboard, expected: LS*LP, current: %1").arg(text));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6710) {
