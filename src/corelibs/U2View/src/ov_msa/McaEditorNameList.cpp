@@ -26,6 +26,7 @@
 #include <U2Gui/GraphUtils.h>
 
 #include "McaEditor.h"
+#include "McaEditorReferenceArea.h"
 #include "McaEditorSequenceArea.h"
 #include "helpers/RowHeightController.h"
 #include "view_rendering/MaEditorSelection.h"
@@ -79,6 +80,8 @@ void McaEditorNameList::drawCollapsibleSequenceItem(QPainter &painter, int rowIn
 
 void McaEditorNameList::setSelection(int startSeq, int count) {
     ui->getSequenceArea()->setSelectionRect(QRect(0, startSeq, editor->getAlignmentLen(), count));
+    // Whole sequence selection in the name list should not trigger reference selection.
+    getEditor()->getUI()->getReferenceArea()->clearSelection();
 }
 
 McaEditor *McaEditorNameList::getEditor() const {

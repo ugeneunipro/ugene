@@ -375,10 +375,9 @@ void MaEditor::initActions() {
 
     clearSelectionAction = new QAction(tr("Clear selection"), this);
     clearSelectionAction->setShortcut(Qt::Key_Escape);
-    connect(clearSelectionAction, SIGNAL(triggered()), SIGNAL(si_clearSelection()));
+    clearSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
+    connect(clearSelectionAction, SIGNAL(triggered()), ui->getSequenceArea(), SLOT(sl_cancelSelection()));
     ui->addAction(clearSelectionAction);
-
-    connect(this, SIGNAL(si_clearSelection()), ui->getSequenceArea(), SLOT(sl_cancelSelection()));
 
     connect(ui->getSequenceArea(),
             SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),

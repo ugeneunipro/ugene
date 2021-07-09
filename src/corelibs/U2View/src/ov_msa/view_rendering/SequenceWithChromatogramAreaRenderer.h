@@ -36,6 +36,7 @@ class SequenceWithChromatogramAreaRenderer : public SequenceAreaRenderer {
 public:
     SequenceWithChromatogramAreaRenderer(MaEditorWgt *ui, McaEditorSequenceArea *seqAreaWgt);
 
+    void drawSelection(QPainter &painter) const override;
     void drawReferenceSelection(QPainter &painter) const;
     void drawNameListSelection(QPainter &painter) const;
 
@@ -48,7 +49,7 @@ public:
     static const int CHROMATOGRAM_MAX_HEIGHT;
 
 private:
-    int drawRow(QPainter &painter, const MultipleAlignment &mca, int rowIndex, const U2Region &region, int xStart, int yStart) const;
+    int drawRow(QPainter &painter, const MultipleAlignment &mca, int rowIndex, const U2Region &region, int xStart, int yStart) const override;
 
     void drawChromatogram(QPainter &painter, const MultipleChromatogramAlignmentRow &row, const U2Region &visibleRange, int xStart) const;
 

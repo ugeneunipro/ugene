@@ -36,6 +36,7 @@
 
 #include <U2Gui/GUIUtils.h>
 
+#include "McaEditorReferenceArea.h"
 #include "helpers/MaAmbiguousCharactersController.h"
 #include "helpers/RowHeightController.h"
 #include "helpers/ScrollController.h"
@@ -189,21 +190,29 @@ QAction *McaEditorSequenceArea::getTrimRightEndAction() const {
     return trimRightEndAction;
 }
 
-void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel) {
+void McaEditorSequenceArea::setSelection(const MaEditorSelection &newSelection) {
     // Its only possible to select 1 character (width = 1) or multiple rows with no character (width = alignment length).
-    QRect selectionRect = sel.toRect();
-    CHECK((selectionRect.width() == 1 && selectionRect.height() == 1) || selectionRect.width() == editor->getAlignmentLen(), );
-    if (selectionRect.width() == 1 && getEditor()->getMaObject()->getMca()->isTrailingOrLeadingGap(selectionRect.y(), selectionRect.x())) {
-        // clear selection if gap is clicked
-        emit si_clearReferenceSelection();
+    QRect selectionRect = newSelection.toRect();
+    if (selectionRect.isEmpty()) {
         MaEditorSequenceArea::setSelection(MaEditorSelection());
+        getEditor()->getUI()->getReferenceArea()->clearSelection();
         return;
     }
-    if (sel.isEmpty()) {
-        emit si_clearReferenceSelection();
+    if (selectionRect.width() == 1 && getEditor()->getMaObject()->getMca()->isTrailingOrLeadingGap(selectionRect.y(), selectionRect.x())) {
+        // Clear selection if gap is clicked.
+        MaEditorSequenceArea::setSelection(MaEditorSelection());
+        getEditor()->getUI()->getReferenceArea()->clearSelection();
+        return;
     }
-    MaEditorSequenceArea::setSelection(sel);
+    MaEditorSequenceArea::setSelection(newSelection);
 }
+
+
+void McaEditorSequenceArea::sl_cancelSelection() {
+    MaEditorSequenceArea::sl_cancelSelection();
+    getEditor()->getUI()->getReferenceArea()->clearSelection();
+}
+
 
 void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
     QRect selectionRect = selection.toRect();
@@ -399,10 +408,10 @@ void McaEditorSequenceArea::initRenderer() {
 }
 
 void McaEditorSequenceArea::drawBackground(QPainter &painter) {
-    SequenceWithChromatogramAreaRenderer *r = qobject_cast<SequenceWithChromatogramAreaRenderer *>(renderer);
-    SAFE_POINT(r != nullptr, "Wrong renderer: fail to cast renderer to SequenceWithChromatogramAreaRenderer", );
-    r->drawReferenceSelection(painter);
-    r->drawNameListSelection(painter);
+    auto mcaRenderer = qobject_cast<SequenceWithChromatogramAreaRenderer *>(renderer);
+    SAFE_POINT(mcaRenderer != nullptr, "Wrong renderer: fail to cast renderer to SequenceWithChromatogramAreaRenderer", );
+    mcaRenderer->drawReferenceSelection(painter);
+    mcaRenderer->drawNameListSelection(painter);
 }
 
 void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid) {
@@ -411,7 +420,7 @@ void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &h
 }
 
 QAction *McaEditorSequenceArea::createToggleTraceAction(const QString &actionName) {
-    QAction *showTraceAction = new QAction(actionName, this);
+    auto showTraceAction = new QAction(actionName, this);
     showTraceAction->setCheckable(true);
     showTraceAction->setChecked(true);
     showTraceAction->setEnabled(true);
