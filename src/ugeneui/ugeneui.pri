@@ -65,7 +65,7 @@ win32 {
 
 macx {
     RC_FILE = images/ugeneui.icns
-    QMAKE_INFO_PLIST = ../../installer/macosx/Info.plist
+    QMAKE_INFO_PLIST = ../../etc/script/mac/dmg/Info.plist
     QMAKE_RPATHDIR += @executable_path/
 }
 
@@ -73,22 +73,4 @@ unix {
     target.path = $$UGENE_INSTALL_DIR/
     INSTALLS += target
     !macx: QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
-}
-
-# Prepare version info for NSIS installer
-win32 {
-    !debug_and_release|build_pass {
-        CONFIG(release, debug|release) {
-            NSIS_LINE = "!define ProductVersion $${UGENE_VERSION}"
-            NSIS_FILE = $${DESTDIR}/version.nsis
-                        
-            NSIS_LINE = $$replace(NSIS_LINE, "\\.","_")
-            NSIS_LINE = $$replace(NSIS_LINE, "\\-","_")
-            
-            system (echo $${NSIS_LINE} > $${NSIS_FILE})
-            
-            NSIS_LINE = "!define PrintableVersion $${UGENE_VERSION}"
-            system (echo $${NSIS_LINE} >> $${NSIS_FILE})
-        }
-    }
 }
