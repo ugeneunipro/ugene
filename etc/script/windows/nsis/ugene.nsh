@@ -8,8 +8,7 @@
 !define CompanyName "Unipro"
 !define ProductName "UGENE"
 !define FullProductName "${CompanyName} ${ProductName}"
-!define TargetPlatform x86
-
+!define TargetPlatform x64
 
 # Compressor
     SetCompressor /SOLID /FINAL lzma
@@ -19,9 +18,9 @@
     !define MUI_ABORTWARNING
     !define MUI_LANGDLL_ALLLANGUAGES        
     !define MUI_HEADERIMAGE
-    !define MUI_HEADERIMAGE_BITMAP "images\header.bmp"
+    !define MUI_HEADERIMAGE_BITMAP "ugene\etc\script\windows\nsis\images\header.bmp"
     !define MUI_SPECIALIMAGE
-    !define MUI_WELCOMEFINISHPAGE_BITMAP "images\welcome.bmp"
+    !define MUI_WELCOMEFINISHPAGE_BITMAP "ugene\etc\script\windows\nsis\images\welcome.bmp"
     !define MUI_FINISHPAGE_RUN "$INSTDIR\ugeneui.exe"
 
 ;--------------------------------
@@ -34,7 +33,7 @@
 
 # Pages
     !insertmacro MUI_PAGE_WELCOME
-    !insertmacro MUI_PAGE_LICENSE ../_common_data/LICENSE
+    !insertmacro MUI_PAGE_LICENSE ugene\LICENSE.txt
     !define MUI_PAGE_CUSTOMFUNCTION_LEAVE checkInstDir
     !insertmacro MUI_PAGE_DIRECTORY
     !insertmacro MUI_PAGE_INSTFILES
@@ -58,36 +57,42 @@
 
 Function "checkInstDir"
    CreateDirectory $INSTDIR
+   ClearErrors
+   CreateDirectory $INSTDIR
    Iferrors 0 +3
    MessageBox MB_ICONEXCLAMATION 'The directory "$INSTDIR" is not available for writing. Please choose another directory.'
-   abort
+   Abort
 FunctionEnd
 
 !include ugene_extensions.nsh
-
+!include "x64.nsh"
 !define MUI_LANGDLL_WINDOWTITLE "Select Language"
 
 Function .onInit
+${IfNot} ${RunningX64}
+    MessageBox MB_OK|MB_ICONEXCLAMATION "This installer can only be run on 64-bit windows"
+    Abort
+${EndIf}
+
     !insertmacro MUI_LANGDLL_DISPLAY
 FunctionEnd
 
+
 ################################################################
 # Installer options
-    !define ReleaseBuildDir "..\..\src\_release"
-    !include ${ReleaseBuildDir}\version.nsis
+    !define ReleaseBuildDir "${UGENE_BUNDLE_DIR}"
     !ifndef ProductVersion
     !define ProductVersion "unknown"
     !endif
 
-
     Name    "${FullProductName}"
-    InstallDir "$PROGRAMFILES\${FullProductName}"
+    InstallDir "$PROGRAMFILES64\${FullProductName}"
     InstallDirRegKey HKCU "Software\${CompanyName}\${ProductName}" ""
     DirText "Please select the folder below"
     BrandingText "${FullProductName}"
     UninstallText "This will uninstall ${FullProductName} from your system"
-    Icon "images/install.ico"
-    UninstallIcon "images/uninstall.ico"
+    Icon "ugene\etc\script\windows\nsis\images\install.ico"
+    UninstallIcon "ugene\etc\script\windows\nsis\images\uninstall.ico"
     ;BGGradient 000000 400040 FFFFFF
     SetFont "Tahoma" 9
     CRCCheck On
@@ -121,122 +126,15 @@ FunctionEnd
 Section "Build"
     !include "FileFunc.nsh"
 
+SetRegView 64
     SectionIn 1 2 RO
     SetOutPath $INSTDIR
     
     # Remove old install
-    RMDir /r "$INSTDIR\plugins"
-    Delete "$INSTDIR\ugene.exe"
-    Delete "$INSTDIR\ugenecl.exe"
+    RMDir /r "$INSTDIR"
 
-    !insertmacro AddExecutable ugeneui
-    !insertmacro AddExecutable ugenecl
-    !insertmacro AddExecutable ugenem
-    !insertmacro AddExecutable plugins_checker
-
-    !insertmacro AddLibrary U2Algorithm
-    !insertmacro AddLibrary U2Core
-    !insertmacro AddLibrary U2Designer
-    !insertmacro AddLibrary U2Formats
-    !insertmacro AddLibrary U2Gui
-    !insertmacro AddLibrary U2Lang
-    !insertmacro AddLibrary U2Private
-    !insertmacro AddLibrary U2Script
-    !insertmacro AddLibrary U2Test
-    !insertmacro AddLibrary U2View
-    !insertmacro AddLibrary ugenedb
-    !insertmacro AddLibrary breakpad
-
-    File "${ReleaseBuildDir}\transl_en.qm"
-    File "${ReleaseBuildDir}\transl_ru.qm"
-    File "${ReleaseBuildDir}\transl_tr.qm"
-    File "..\..\LICENSE.txt"
-    File "..\..\LICENSE.3rd_party.txt"
-    File "${PATH_TO_VS_BIN}\msvcp120.dll"
-    File "${PATH_TO_VS_BIN}\msvcr120.dll"
-    File "${PATH_TO_INCLUDE_LIBS}\*.*"
-    File "${PATH_TO_QT_LIBS}\Qt5Core.dll"
-    File "${PATH_TO_QT_LIBS}\Qt5Gui.dll"
-    File "${PATH_TO_QT_LIBS}\Qt5Multimedia.dll"
-    File "${PATH_TO_QT_LIBS}\Qt5MultimediaWidgets.dll"
-    File "${PATH_TO_QT_LIBS}\Qt5Network.dll"
-    File "${PATH_TO_QT_LIBS}\Qt5OpenGL.dll"
-    File "${PATH_TO_QT_LIBS}\Qt5Positioning.dll"
-    File "${PATH_TO_QT_LIBS}\Qt5PrintSupport.dll"
-    File "${PATH_TO_QT_LIBS}\Qt5Qml.dll"
-    File "${PATH_TO_QT_LIBS}\Qt5Quick.dll"
-    File "${PATH_TO_QT_LIBS}\Qt5Script.dll"
-    File "${PATH_TO_QT_LIBS}\Qt5ScriptTools.dll"
-    File "${PATH_TO_QT_LIBS}\Qt5Sensors.dll"
-    File "${PATH_TO_QT_LIBS}\Qt5Sql.dll"
-    File "${PATH_TO_QT_LIBS}\Qt5Svg.dll"
-    File "${PATH_TO_QT_LIBS}\Qt5Test.dll"
-    File "${PATH_TO_QT_LIBS}\Qt5Widgets.dll"
-    File "${PATH_TO_QT_LIBS}\Qt5Xml.dll"
-    File "${PATH_TO_QT_LIBS}\icu*"
-
-    SetOutPath $INSTDIR\sqldrivers
-    File "${PATH_TO_QT_LIBS}\..\plugins\sqldrivers\qsqlmysql.dll"
-
-    SetOutPath $INSTDIR\imageformats
-    File "${PATH_TO_QT_LIBS}\..\plugins\imageformats\qgif.dll"
-    File "${PATH_TO_QT_LIBS}\..\plugins\imageformats\qjpeg.dll"
-    File "${PATH_TO_QT_LIBS}\..\plugins\imageformats\qsvg.dll"
-    File "${PATH_TO_QT_LIBS}\..\plugins\imageformats\qtiff.dll"
-
-    SetOutPath $INSTDIR\platforms
-    File "${PATH_TO_QT_LIBS}\..\plugins\platforms\qwindows.dll"
-
-    SetOutPath $INSTDIR\data
-    File /r /x .svn "..\..\data\*.*"
-
-    !ifdef ExternalTools
-    SetOutPath $INSTDIR\tools
-    File /r /x .svn "..\..\src\_release\tools\*.*"
-    !endif
-
-    SetOutPath $INSTDIR\plugins
-    !insertmacro AddPlugin annotator
-    !insertmacro AddPlugin ball
-    !insertmacro AddPlugin biostruct3d_view
-    !insertmacro AddPlugin chroma_view
-    !insertmacro AddPlugin circular_view
-    !insertmacro AddPlugin clark_support
-    !insertmacro AddPlugin cuda_support
-    !insertmacro AddPlugin dbi_bam
-    !insertmacro AddPlugin diamond_support
-    !insertmacro AddPlugin dna_export
-    !insertmacro AddPlugin dna_flexibility
-    !insertmacro AddPlugin dna_graphpack
-    !insertmacro AddPlugin dna_stat
-    !insertmacro AddPlugin dotplot
-    !insertmacro AddPlugin enzymes
-    !insertmacro AddPlugin external_tool_support
-    !insertmacro AddPlugin genome_aligner
-    !insertmacro AddPlugin gor4
-    !insertmacro AddPlugin hmm2
-    !insertmacro AddPlugin kalign
-    !insertmacro AddPlugin kraken_support
-    !insertmacro AddPlugin linkdata_support
-    !insertmacro AddPlugin metaphlan2_support
-    !insertmacro AddPlugin ngs_reads_classification
-    !insertmacro AddPlugin opencl_support
-    !insertmacro AddPlugin orf_marker
-    !insertmacro AddPlugin pcr
-    !insertmacro AddPlugin phylip
-    !insertmacro AddPlugin primer3
-    !insertmacro AddPlugin psipred
-    !insertmacro AddPlugin ptools
-    !insertmacro AddPlugin query_designer
-    !insertmacro AddPlugin remote_blast
-    !insertmacro AddPlugin repeat_finder
-    !insertmacro AddPlugin sitecon
-    !insertmacro AddPlugin smith_waterman
-    !insertmacro AddPlugin umuscle
-    !insertmacro AddPlugin variants
-    !insertmacro AddPlugin weight_matrix
-    !insertmacro AddPlugin wevote_support
-    !insertmacro AddPlugin workflow_designer
+    # Include the whole bundle as is.
+    File /r "${ReleaseBuildDir}\*"
 
     SetOutPath $INSTDIR
     
@@ -259,16 +157,11 @@ Section "Build"
 
     WriteUninstaller "$INSTDIR\Uninst.exe"
 
-
     Iferrors 0 +2
     StrCpy $warnText "$warnText$\r$\nWarning: cannot create uninstaller!"
 
     # Write language param in ini file
     Call languageUGENEIni
-
-    # Remove old config
-    # Delete $APPDATA\${CompanyName}\${ProductName}.ini
-
 
 SectionEnd
 
@@ -284,8 +177,7 @@ Section "Add Shortcuts"
     ClearErrors
     CreateDirectory "$SMPROGRAMS\${FullProductName}"
     CreateShortCut "$SMPROGRAMS\${FullProductName}\Launch UGENE.lnk" "$INSTDIR\ugeneui.exe" "" "$INSTDIR\ugeneui.exe" 0
-    CreateShortCut "$SMPROGRAMS\${FullProductName}\Download User Manual.lnk" "$INSTDIR\download_manual.url" "" "$INSTDIR\download_manual.url" 0
-    # make sure uninstall shortcut will be last item in Start menu
+    # Make sure uninstall shortcut will be last item in Start menu
 #    nsisStartMenu::RegenerateFolder "${FullProductName}"
     CreateShortCut "$SMPROGRAMS\${FullProductName}\Uninstall.lnk" "$INSTDIR\Uninst.exe" "" "$INSTDIR\Uninst.exe" 0
     CreateShortCut "$DESKTOP\${FullProductName}.lnk" "$INSTDIR\ugeneui.exe" "" "$INSTDIR\ugeneui.exe" 0
@@ -310,6 +202,7 @@ Section Uninstall
     # Delete Uninstaller And Unistall Registry Entries
     Delete "$INSTDIR\Uninst.exe"
     RMDir /r "$INSTDIR"
+	SetRegView 64
     DeleteRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\${FullProductName}"
     DeleteRegKey HKCU "Software\${CompanyName}\${ProductName}"
 SectionEnd

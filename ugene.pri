@@ -1,15 +1,13 @@
 include( src/ugene_globals.pri )
 
-# Check the Qt version. If QT_VERSION is not set, it is probably Qt 3.
 isEmpty(QT_VERSION) {
-    error("QT_VERSION not defined. Unipro UGENE does not work with Qt 3.")
+    error("QT_VERSION is not defined.")
 }
 
 !minQtVersion(5, 3, 2) {
     message("Cannot build Unipro UGENE with Qt version $${QT_VERSION}")
     error("Use at least Qt 5.3.2.")
 }
-
 
 TEMPLATE = subdirs
 
@@ -26,8 +24,7 @@ mkpath($$OUT_PWD/src/_debug/plugins)
 mkpath($$OUT_PWD/src/_release/plugins)
 
 !win32 {
-    system( cp ./installer/_common_data/ugene $$OUT_PWD/src/_release/ugene )
-    system( cp ./installer/_common_data/ugened $$OUT_PWD/src/_debug/ugened )
+    system( cp ./etc/shared/ugene $$OUT_PWD/src/_release/ugene )
 }
 
 
@@ -77,19 +74,19 @@ unix {
     data.files += data/*
     data.path = $$UGENE_INSTALL_DATA
 
-    desktop.files += installer/_common_data/ugene.desktop
+    desktop.files += etc/share/ugene.desktop
     desktop.path = $$UGENE_INSTALL_DESKTOP
 
-    pixmaps.files += installer/_common_data/ugene.png installer/_common_data/ugene.xpm
+    pixmaps.files += etc/shared/ugene.png etc/shared/ugene.xpm
     pixmaps.path = $$UGENE_INSTALL_PIXMAPS
 
-    manual.files += installer/_common_data/ugene.1.gz
+    manual.files += etc/shared/ugene.1.gz
     manual.path = $$UGENE_INSTALL_MAN
 
-    mime.files += installer/_common_data/application-x-ugene.xml
+    mime.files += etc/shared/application-x-ugene.xml
     mime.path = $$UGENE_INSTALL_MIME
 
-    icons.files += installer/_common_data/application-x-ugene-ext.png
+    icons.files += etc/shared/application-x-ugene-ext.png
     icons.path = $$UGENE_INSTALL_ICONS/hicolor/32x32/mimetypes/
 
 

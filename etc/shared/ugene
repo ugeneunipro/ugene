@@ -1,0 +1,28 @@
+#!/bin/bash
+
+APP_NAME=ugenecl
+
+# Check if '-ui' parameter is present.
+# If it does exclude it from the list of parameters
+# and use ugeneui instead of ugenecl
+
+params=()
+
+while [[ $# -gt 0 ]]; do
+  if [ "$1" = "-ui" ]; then
+    APP_NAME=ugeneui
+  else
+    params+=("$1")
+  fi
+  shift
+done
+
+APP_DIR=$(APP_DIR "$(readlink -f "$0")")
+
+tmp="${APP_DIR#?}"
+
+if [ "${APP_DIR%$tmp}" != "/" ]; then
+  APP_DIR="${PWD}/${APP_DIR}"
+fi
+
+"${APP_DIR}/${APP_NAME}" "${params[@]}"
