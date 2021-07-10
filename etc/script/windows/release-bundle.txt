@@ -1544,4 +1544,3 @@ ugeneui.exe
 ugeneui.map
 vcruntime140.dll
 vcruntime140_1.dll
-version.nsis
