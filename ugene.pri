@@ -25,6 +25,7 @@ mkpath($$OUT_PWD/src/_release/plugins)
 
 !win32 {
     system( cp ./etc/shared/ugene $$OUT_PWD/src/_release/ugene )
+    system( cp ./etc/shared/ugened $$OUT_PWD/src/_debug/ugened )
 }
 
 

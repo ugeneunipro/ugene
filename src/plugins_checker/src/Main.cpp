@@ -99,9 +99,6 @@ int main(int argc, char **argv) {
     appContext->setGUIMode(true);
 
     QCoreApplication::addLibraryPath(AppContext::getWorkingDirectoryPath());
-    QString devPluginsPath = QDir(AppContext::getWorkingDirectoryPath() + "/../../installer/windows").absolutePath();
-    QCoreApplication::addLibraryPath(devPluginsPath);    //dev version
-
     // parse all cmdline arguments
     CMDLineRegistry *cmdLineRegistry = new CMDLineRegistry(app.arguments());
     appContext->setCMDLineRegistry(cmdLineRegistry);
