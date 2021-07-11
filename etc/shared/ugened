@@ -1,6 +1,6 @@
 #!/bin/bash
 
-appname=ugenecl
+appname=ugenecld
 
 # Check if '-ui' parameter is present.
 # If it does exclude it from the list of parameters and use ugeneui instead of ugenecl
@@ -9,7 +9,7 @@ params=()
 
 while [[ $# -gt 0 ]]; do
   if [ "$1" = "-ui" ]; then
-    appname=ugeneui
+    appname=ugeneuid
   else
     params+=("$1")
   fi

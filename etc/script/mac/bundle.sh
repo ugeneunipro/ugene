@@ -30,7 +30,7 @@ mkdir "${TARGET_PLUGINS_DIR}"
 echo Copying icons
 cp "${SOURCE_DIR}/src/ugeneui/images/ugene-doc.icns" "${TARGET_APP_DIR}/Contents/Resources"
 cp "${SOURCE_DIR}/src/ugeneui/images/ugeneui.icns" "${TARGET_APP_DIR}/Contents/Resources"
-cp "${SOURCE_DIR}/ugene/etc/script/mac/dmg/Info.plist" "${TARGET_APP_DIR}/Contents"
+cp "${SOURCE_DIR}/etc/script/mac/dmg/Info.plist" "${TARGET_APP_DIR}/Contents"
 
 echo Copying translations
 cp "${BUILD_DIR}"/transl_*.qm "${TARGET_EXE_DIR}"

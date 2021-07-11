@@ -230,9 +230,6 @@ int main(int argc, char **argv) {
     appContext->setWorkingDirectoryPath(QCoreApplication::applicationDirPath());
 
     QCoreApplication::addLibraryPath(AppContext::getWorkingDirectoryPath());
-    QString devPluginsPath = QDir(AppContext::getWorkingDirectoryPath() + "/../../installer/windows").absolutePath();
-    QCoreApplication::addLibraryPath(devPluginsPath);    //dev version
-
     setSearchPaths();
 
     // parse all cmdline arguments
