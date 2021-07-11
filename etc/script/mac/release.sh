@@ -10,7 +10,7 @@
 
 TEAMCITY_WORK_DIR=$(pwd)
 SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene_git"
-SCRIPTS_DIR="${SOURCE_DIR}/etc/script/mac"
+export SCRIPTS_DIR="${SOURCE_DIR}/etc/script/mac"
 APP_BUNDLE_DIR_NAME="ugene_app"
 APP_BUNDLE_DIR="${TEAMCITY_WORK_DIR}/${APP_BUNDLE_DIR_NAME}"
 APP_NAME="Unipro UGENE.app"
@@ -48,7 +48,7 @@ rm -rf "${APP_EXE_DIR}/plugins/"*perf_monitor*
 rm -rf "${APP_EXE_DIR}/plugins/"*test_runner*
 
 # Copy UGENE files & tools into 'bundle' dir.
-rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}"/tools "${APP_EXE_DIR}" || {
+rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"
 }
 echo "##teamcity[blockClosed name='Copy files']"
@@ -95,11 +95,24 @@ tar cfz "${SYMBOLS_DIR_NAME}.tar.gz" "${SYMBOLS_DIR_NAME}"
 
 echo "##teamcity[blockClosed name='Dump symbols']"
 
-echo "##teamcity[blockOpened name='Build DMG']"
+echo "##teamcity[blockOpened name='Sign bundle content']"
+  "${SOURCE_DIR}/etc/script/mac/codesign.sh" "${APP_DIR}"
+echo "##teamcity[blockClosed name='Sign bundle content']"
+
+echo "##teamcity[blockOpened name='Pack DMG']"
 echo pkg-dmg running...
 RELEASE_FILE_NAME=ugene-"${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-b${TEAMCITY_UGENE_BUILD_COUNTER}-mac-${ARCHITECTURE_FILE_SUFFIX}.dmg"
 "${SOURCE_DIR}/etc/script/mac/pkg-dmg" --source "${APP_BUNDLE_DIR_NAME}" \
   --target "${RELEASE_FILE_NAME}" \
   --volname "Unipro UGENE ${VERSION}" --symlink /Applications
 
-echo "##teamcity[blockClosed name='Build DMG']"
+echo "##teamcity[blockClosed name='Pack DMG']"
+
+echo "##teamcity[blockOpened name='Sign DMG']"
+ "${SOURCE_DIR}/etc/script/mac/codesign.sh" "${RELEASE_FILE_NAME}"
+echo "##teamcity[blockClosed name='Sign DMG']"
+
+echo "##teamcity[blockOpened name='Notarize DMG']"
+bash "${SOURCE_DIR}/etc/script/mac/notarize.sh" -n "${RELEASE_FILE_NAME}"
+echo "##teamcity[blockClosed name='Notarize DMG']"
+
