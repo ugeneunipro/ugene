@@ -112,8 +112,11 @@ Task::ReportResult KalignTask::report() {
 }
 
 bool KalignTask::isAlphabetSupported(const QString &alphabetId) {
-    return !(alphabetId == BaseDNAAlphabetIds::RAW() ||
-             alphabetId == BaseDNAAlphabetIds::AMINO_EXTENDED());
+    return (alphabetId == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT() ||
+            alphabetId == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT() ||
+            alphabetId == BaseDNAAlphabetIds::NUCL_DNA_EXTENDED() ||
+            alphabetId == BaseDNAAlphabetIds::NUCL_RNA_EXTENDED() ||
+            alphabetId == BaseDNAAlphabetIds::AMINO_DEFAULT());
 }
 
 TLSContext *KalignTask::createContextInstance() {
