@@ -69,16 +69,16 @@ namespace U2 {
 
 PairAlign::PairAlign(MSAEditor *_msa)
     : msa(_msa), pairwiseAlignmentWidgetsSettings(_msa->getPairwiseAlignmentWidgetsSettings()),
-      distanceCalcTask(NULL), settingsWidget(NULL),
-      showHideSequenceWidget(NULL), showHideSettingsWidget(NULL), showHideOutputWidget(NULL),
-      saveController(NULL), savableTab(this, GObjectViewUtils::findViewByName(_msa->getName())),
+      distanceCalcTask(nullptr), settingsWidget(nullptr),
+      showHideSequenceWidget(nullptr), showHideSettingsWidget(nullptr), showHideOutputWidget(nullptr),
+      saveController(nullptr), savableTab(this, GObjectViewUtils::findViewByName(_msa->getName())),
       showSequenceWidget(_msa->getPairwiseAlignmentWidgetsSettings()->showSequenceWidget),
       showAlgorithmWidget(_msa->getPairwiseAlignmentWidgetsSettings()->showAlgorithmWidget),
       showOutputWidget(_msa->getPairwiseAlignmentWidgetsSettings()->showOutputWidget),
       firstSequenceSelectionOn(false), secondSequenceSelectionOn(false),
       sequencesChanged(true), sequenceNamesIsOk(false), alphabetIsOk(false) {
-    SAFE_POINT(NULL != msa, "MSA Editor is NULL.", );
-    SAFE_POINT(NULL != pairwiseAlignmentWidgetsSettings, "pairwiseAlignmentWidgetsSettings is NULL.", );
+    SAFE_POINT(nullptr != msa, "MSA Editor is NULL.", );
+    SAFE_POINT(nullptr != pairwiseAlignmentWidgetsSettings, "pairwiseAlignmentWidgetsSettings is NULL.", );
 
     setupUi(this);
 
@@ -117,8 +117,9 @@ bool PairAlign::isValidSequenceId(qint64 sequenceId) const {
 
 void PairAlign::initParameters() {
     const MaEditorSelection &selection = msa->getSelection();
-    if (selection.height() == 2) {
-        int selectionPos = selection.y();
+    QRect selectionRect = selection.toRect();
+    if (selectionRect.height() == 2) {
+        int selectionPos = selectionRect.y();
         qint64 firstRowId = msa->getRowByViewRowIndex(selectionPos)->getRowId();
         firstSeqSelectorWC->setSequenceId(firstRowId);
         qint64 secondRowId = msa->getRowByViewRowIndex(selectionPos + 1)->getRowId();
@@ -226,16 +227,16 @@ void PairAlign::sl_checkState() {
 
 void PairAlign::sl_alignmentChanged() {
     const DNAAlphabet *dnaAlphabet = msa->getMaObject()->getAlphabet();
-    SAFE_POINT(dnaAlphabet != NULL, "Alignment alphabet is not defined.", );
+    SAFE_POINT(dnaAlphabet != nullptr, "Alignment alphabet is not defined.", );
 
     pairwiseAlignmentWidgetsSettings->customSettings.insert("alphabet", dnaAlphabet->getId());
 
     QString curAlgorithmId = pairwiseAlignmentWidgetsSettings->algorithmName;
     AlignmentAlgorithm *alg = getAlgorithmById(curAlgorithmId);
-    SAFE_POINT(alg != NULL, QString("Algorithm %1 not found.").arg(curAlgorithmId), );
+    SAFE_POINT(alg != nullptr, QString("Algorithm %1 not found.").arg(curAlgorithmId), );
     alphabetIsOk = alg->checkAlphabet(dnaAlphabet);
 
-    if (settingsWidget != NULL) {
+    if (settingsWidget != nullptr) {
         settingsWidget->updateWidget();
     }
     checkState();
@@ -292,9 +293,9 @@ void PairAlign::updatePercentOfSimilarity() {
     }
 
     MSADistanceAlgorithmRegistry *distanceReg = AppContext::getMSADistanceAlgorithmRegistry();
-    SAFE_POINT(distanceReg != NULL, "MSADistanceAlgorithmRegistry is NULL.", );
+    SAFE_POINT(distanceReg != nullptr, "MSADistanceAlgorithmRegistry is NULL.", );
     MSADistanceAlgorithmFactory *distanceFactory = distanceReg->getAlgorithmFactory(BuiltInDistanceAlgorithms::SIMILARITY_ALGO);
-    SAFE_POINT(distanceFactory != NULL, QString("%1 algorithm factory not found.").arg(BuiltInDistanceAlgorithms::SIMILARITY_ALGO), );
+    SAFE_POINT(distanceFactory != nullptr, QString("%1 algorithm factory not found.").arg(BuiltInDistanceAlgorithms::SIMILARITY_ALGO), );
 
     U2OpStatusImpl os;
     MultipleSequenceAlignment ma;
@@ -314,23 +315,23 @@ bool PairAlign::checkSequenceNames() {
 
 AlignmentAlgorithm *PairAlign::getAlgorithmById(const QString &algorithmId) {
     AlignmentAlgorithmsRegistry *par = AppContext::getAlignmentAlgorithmsRegistry();
-    SAFE_POINT(par != NULL, "AlignmentAlgorithmsRegistry is NULL.", NULL);
+    SAFE_POINT(par != nullptr, "AlignmentAlgorithmsRegistry is NULL.", nullptr);
     return par->getAlgorithm(algorithmId);
 }
 
 void PairAlign::sl_algorithmSelected(const QString &algorithmName) {
-    if (settingsWidget != NULL) {
+    if (settingsWidget != nullptr) {
         delete settingsWidget;
-        settingsWidget = NULL;
+        settingsWidget = nullptr;
     }
 
     AlignmentAlgorithm *alg = getAlgorithmById(algorithmName);
-    SAFE_POINT(alg != NULL, QString("Algorithm %1 not found.").arg(algorithmName), );
+    SAFE_POINT(alg != nullptr, QString("Algorithm %1 not found.").arg(algorithmName), );
     QString firstAlgorithmRealization = alg->getRealizationsList().first();
     alphabetIsOk = alg->checkAlphabet(msa->getMaObject()->getAlphabet());
 
     AlignmentAlgorithmGUIExtensionFactory *algGUIFactory = alg->getGUIExtFactory(firstAlgorithmRealization);
-    SAFE_POINT(algGUIFactory != NULL, QString("Algorithm %1 GUI factory not found.").arg(firstAlgorithmRealization), );
+    SAFE_POINT(algGUIFactory != nullptr, QString("Algorithm %1 GUI factory not found.").arg(firstAlgorithmRealization), );
     settingsWidget = algGUIFactory->createMainWidget(this, &pairwiseAlignmentWidgetsSettings->customSettings);
     connect(msa, SIGNAL(destroyed()), settingsWidget, SLOT(sl_externSettingsInvalide()));
     settingsContainerWidgetLayout->addWidget(settingsWidget);
@@ -407,12 +408,12 @@ void PairAlign::sl_alignButtonPressed() {
     }
 
     AlignmentAlgorithmsRegistry *par = AppContext::getAlignmentAlgorithmsRegistry();
-    SAFE_POINT(par != NULL, "AlignmentAlgorithmsRegistry is NULL.", );
+    SAFE_POINT(par != nullptr, "AlignmentAlgorithmsRegistry is NULL.", );
     AbstractAlignmentTaskFactory *factory = par->getAlgorithm(settings.algorithmId)->getFactory(settings.realizationName);
-    SAFE_POINT(factory != NULL, QString("Task factory for algorithm %1, realization %2 not found.").arg(settings.algorithmId, settings.realizationName), );
+    SAFE_POINT(factory != nullptr, QString("Task factory for algorithm %1, realization %2 not found.").arg(settings.algorithmId, settings.realizationName), );
 
     PairwiseAlignmentTask *task = qobject_cast<PairwiseAlignmentTask *>(factory->getTaskInstance(&settings));
-    SAFE_POINT(task != NULL, "Task is null!", );
+    SAFE_POINT(task != nullptr, "Task is null!", );
     connect(task, SIGNAL(si_stateChanged()), SLOT(sl_alignComplete()));
     pairwiseAlignmentWidgetsSettings->pairwiseAlignmentTask = task;
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
@@ -429,14 +430,14 @@ void PairAlign::sl_outputFileChanged() {
 }
 
 void PairAlign::sl_distanceCalculated() {
-    if (distanceCalcTask == NULL) {
+    if (distanceCalcTask == nullptr) {
         return;
     }
     if (distanceCalcTask->isFinished()) {
         const MSADistanceMatrix &distanceMatrix = distanceCalcTask->getMatrix();
         similarityValueLabel->setText(QString::number(distanceMatrix.getSimilarity(0, 1, true)) + "%");
         similarityWidget->setVisible(true);
-        distanceCalcTask = NULL;
+        distanceCalcTask = nullptr;
     }
 }
 

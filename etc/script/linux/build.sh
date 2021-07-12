@@ -109,7 +109,7 @@ patchelf --force-rpath --set-rpath '$ORIGIN' "${BUILD_DIR}/ugeneui"
 rm -rf "${BUILD_DIR}/data"
 cp -r ./data "${BUILD_DIR}"
 
-cp "${UGENE_DIR}/installer/_common_data/ugene.png" "${BUILD_DIR}/"
+cp "${UGENE_DIR}/etc/shared/ugene.png" "${BUILD_DIR}/"
 cp "${UGENE_DIR}/LICENSE.txt" "${BUILD_DIR}/"
 cp "${UGENE_DIR}/LICENSE.3rd_party.txt" "${BUILD_DIR}/"
 

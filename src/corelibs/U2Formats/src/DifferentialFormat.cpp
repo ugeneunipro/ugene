@@ -177,11 +177,11 @@ QList<SharedAnnotationData> DifferentialFormat::parseAnnotations(const ColumnDat
 
 Document *DifferentialFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &targetDb, const QVariantMap &hints, U2OpStatus &os) {
     DbiOperationsBlock opBlock(targetDb, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     Q_UNUSED(opBlock);
 
     QList<SharedAnnotationData> anns = parseAnnotations(io, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     QVariantMap objectHints;
     objectHints.insert(DBI_FOLDER_HINT, hints.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
@@ -253,7 +253,7 @@ QList<ColumnDataParser::Column> DifferentialFormat::getHeaderColumns(const QList
     }
 
     AnnotationTableObject *annObj = dynamic_cast<AnnotationTableObject *>(annObjs.first());
-    if (NULL == annObj) {
+    if (nullptr == annObj) {
         os.setError("NULL annotation object");
         return result;
     }
@@ -290,7 +290,7 @@ void DifferentialFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &o
     writeHeader(io, columns);
     foreach (GObject *obj, anns) {
         AnnotationTableObject *annObj = dynamic_cast<AnnotationTableObject *>(obj);
-        SAFE_POINT(NULL != annObj, "NULL annotation object", );
+        SAFE_POINT(nullptr != annObj, "NULL annotation object", );
         foreach (Annotation *ann, annObj->getAnnotations()) {
             bool first = true;
             QString line;

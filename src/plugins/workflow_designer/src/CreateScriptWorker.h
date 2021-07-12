@@ -43,7 +43,7 @@ class CreateScriptElementDialog : public QDialog, public Ui_CreateScriptBlockDia
     Q_OBJECT
 public:
     //CreateScriptElementDialog(QWidget* p = NULL);
-    CreateScriptElementDialog(QWidget *p = NULL, ActorPrototype *proto = NULL);
+    CreateScriptElementDialog(QWidget *p = nullptr, ActorPrototype *proto = nullptr);
     QList<DataTypePtr> getInput() const;
     QList<DataTypePtr> getOutput() const;
     QList<Attribute *> getAttributes() const;

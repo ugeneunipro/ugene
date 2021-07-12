@@ -30,7 +30,7 @@ namespace U2 {
 
 class U2VIEW_EXPORT PhyTreeDisplayOptionsWidget : public CreatePhyTreeWidget {
 public:
-    PhyTreeDisplayOptionsWidget(QWidget *parent = NULL);
+    PhyTreeDisplayOptionsWidget(QWidget *parent = nullptr);
     ~PhyTreeDisplayOptionsWidget();
 
     void fillSettings(CreatePhyTreeSettings &settings);

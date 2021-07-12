@@ -40,8 +40,8 @@ MaOverviewImageExportToBitmapTask::MaOverviewImageExportToBitmapTask(MaSimpleOve
       simpleOverview(simpleOverview),
       graphOverview(graphOverview),
       overviewSettings(overviewSettings) {
-    SAFE_POINT_EXT(simpleOverview != NULL, setError(tr("Overview is NULL")), );
-    SAFE_POINT_EXT(graphOverview != NULL, setError(tr("Graph overview is NULL")), );
+    SAFE_POINT_EXT(simpleOverview != nullptr, setError(tr("Overview is NULL")), );
+    SAFE_POINT_EXT(graphOverview != nullptr, setError(tr("Graph overview is NULL")), );
     CHECK_EXT(overviewSettings.exportGraphOverview || overviewSettings.exportSimpleOverview,
               setError(tr("Nothing to export. ") + EXPORT_FAIL_MESSAGE.arg(settings.fileName)), );
 }
@@ -71,8 +71,8 @@ MaOverviewImageExportController::MaOverviewImageExportController(MaSimpleOvervie
     : ImageExportController(),
       simpleOverview(simpleOverview),
       graphOverview(graphOverview) {
-    SAFE_POINT(simpleOverview != NULL, QObject::tr("Overview is NULL"), );
-    SAFE_POINT(graphOverview != NULL, QObject::tr("Graph overview is NULL"), );
+    SAFE_POINT(simpleOverview != nullptr, QObject::tr("Overview is NULL"), );
+    SAFE_POINT(graphOverview != nullptr, QObject::tr("Graph overview is NULL"), );
     shortDescription = tr("Alignment overview");
     initSettingsWidget();
 }

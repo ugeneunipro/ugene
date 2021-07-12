@@ -48,7 +48,7 @@ namespace U2 {
 class ItemWidgetCreator : public URLContainerVisitor {
 public:
     ItemWidgetCreator()
-        : urlItem(NULL) {
+        : urlItem(nullptr) {
     }
 
     virtual void visit(FileUrlContainer *url) {
@@ -84,20 +84,20 @@ private:
 class URLContainerUpdateHelper : public UrlItemVisitor {
 public:
     URLContainerUpdateHelper(FileUrlContainer * /*url*/)
-        : dirUrl(NULL), dbFolderUrl(NULL) {
+        : dirUrl(nullptr), dbFolderUrl(nullptr) {
     }
     URLContainerUpdateHelper(DirUrlContainer *url)
-        : dirUrl(url), dbFolderUrl(NULL) {
+        : dirUrl(url), dbFolderUrl(nullptr) {
     }
     URLContainerUpdateHelper(DbObjUrlContainer * /*url*/)
-        : dirUrl(NULL), dbFolderUrl(NULL) {
+        : dirUrl(nullptr), dbFolderUrl(nullptr) {
     }
     URLContainerUpdateHelper(DbFolderUrlContainer *url)
-        : dirUrl(NULL), dbFolderUrl(url) {
+        : dirUrl(nullptr), dbFolderUrl(url) {
     }
 
     virtual void visit(DirectoryItem *item) {
-        SAFE_POINT(NULL != dirUrl, "NULL folder url", );
+        SAFE_POINT(nullptr != dirUrl, "NULL folder url", );
         dirUrl->setIncludeFilter(item->getIncludeFilter());
         dirUrl->setExcludeFilter(item->getExcludeFilter());
         dirUrl->setRecursive(item->isRecursive());
@@ -110,7 +110,7 @@ public:
     }
 
     virtual void visit(DbFolderItem *item) {
-        SAFE_POINT(NULL != dbFolderUrl, "NULL folder url", );
+        SAFE_POINT(nullptr != dbFolderUrl, "NULL folder url", );
         dbFolderUrl->setRecursive(item->isRecursive());
     }
 
@@ -189,7 +189,7 @@ const QSet<GObjectType> &DatasetsController::getCompatibleObjTypes() const {
 /* AttributeDatasetsController */
 /************************************************************************/
 AttributeDatasetsController::AttributeDatasetsController(QList<Dataset> &_sets, const QSet<GObjectType> &compatibleObjTypes)
-    : DatasetsController(compatibleObjTypes), datasetsWidget(NULL) {
+    : DatasetsController(compatibleObjTypes), datasetsWidget(nullptr) {
     initSets(_sets);
     initialize();
 }
@@ -210,7 +210,7 @@ void AttributeDatasetsController::initialize() {
 }
 
 AttributeDatasetsController::~AttributeDatasetsController() {
-    datasetsWidget->setParent(NULL);
+    datasetsWidget->setParent(nullptr);
     delete datasetsWidget;
     qDeleteAll(sets);
     sets.clear();
@@ -237,7 +237,7 @@ void AttributeDatasetsController::deleteDataset(int dsNum) {
     SAFE_POINT(dsNum < sets.size(), "Datasets: out of range", );
 
     Dataset *dSet = sets.at(dsNum);
-    SAFE_POINT(NULL != dSet, "NULL dataset", );
+    SAFE_POINT(nullptr != dSet, "NULL dataset", );
 
     sets.removeOne(dSet);
 
@@ -265,7 +265,7 @@ void AttributeDatasetsController::renameDataset(int dsNum, const QString &newNam
     SAFE_POINT(dsNum < sets.size(), "Datasets: out of range", );
 
     Dataset *dSet = sets.at(dsNum);
-    SAFE_POINT(NULL != dSet, "NULL dataset", );
+    SAFE_POINT(nullptr != dSet, "NULL dataset", );
 
     checkName(newName, os, dSet->getName());
     CHECK_OP(os, );
@@ -289,7 +289,7 @@ void AttributeDatasetsController::onUrlAdded(URLListController * /*ctrl*/, URLCo
 /* PairedController */
 /************************************************************************/
 PairedReadsController::PairedReadsController(const QList<Dataset> &sets1, const QList<Dataset> &sets2, const QString &_label1, const QString &_label2)
-    : DatasetsController(), label1(_label1), label2(_label2), datasetsWidget(NULL) {
+    : DatasetsController(), label1(_label1), label2(_label2), datasetsWidget(nullptr) {
     initSets(sets1, sets2);
     initialize();
 }
@@ -351,7 +351,7 @@ QWidget *PairedReadsController::createDatasetWidget(const SetsPair &pair) {
 }
 
 PairedReadsController::~PairedReadsController() {
-    datasetsWidget->setParent(NULL);
+    datasetsWidget->setParent(nullptr);
     delete datasetsWidget;
     foreach (const SetsPair &p, sets) {
         delete p.first;
@@ -367,7 +367,7 @@ QWidget *PairedReadsController::getWigdet() {
 QList<Dataset> PairedReadsController::getDatasets(int num) {
     QList<Dataset> result;
     foreach (const SetsPair &p, sets) {
-        Dataset *d = NULL;
+        Dataset *d = nullptr;
         if (0 == num) {
             d = p.first;
         } else {
@@ -471,7 +471,7 @@ void PairedReadsController::onUrlAdded(URLListController *ctrl, URLContainer *ur
     CHECK(QFile::exists(mateUrl), );
 
     URLListController *targetCtrl = pairedCtrl(ctrl);
-    CHECK(NULL != targetCtrl, );
+    CHECK(nullptr != targetCtrl, );
     CHECK(!targetCtrl->dataset()->contains(mateUrl), );
 
     bool add = askAboutAdding(mateUrl);
@@ -494,7 +494,7 @@ int PairedReadsController::pairNumByCtrl(URLListController *ctrl) const {
 
 URLListController *PairedReadsController::pairedCtrl(URLListController *ctrl) const {
     int dsNum = pairNumByCtrl(ctrl);
-    SAFE_POINT(-1 != dsNum, "Unregistered url list controller", NULL);
+    SAFE_POINT(-1 != dsNum, "Unregistered url list controller", nullptr);
 
     CtrlsPair cp = ctrls[dsNum];
     if (cp.first == ctrl) {
@@ -508,7 +508,7 @@ URLListController *PairedReadsController::pairedCtrl(URLListController *ctrl) co
 /* UrlAndDatasetController */
 /************************************************************************/
 UrlAndDatasetController::UrlAndDatasetController(const QList<Dataset> &_urls, const QList<Dataset> &_sets, const QString &_urlLabel, const QString &_datasetLabel)
-    : DatasetsController(), urlLabel(_urlLabel), datasetLabel(_datasetLabel), datasetsWidget(NULL) {
+    : DatasetsController(), urlLabel(_urlLabel), datasetLabel(_datasetLabel), datasetsWidget(nullptr) {
     initSets(_urls, _sets);
     initialize();
     update();
@@ -577,7 +577,7 @@ QWidget *UrlAndDatasetController::createDatasetPageWidget(Dataset *set) {
 }
 
 QWidget *UrlAndDatasetController::createUrlWidget(URLDelegate *ctrl, const QString &value) {
-    URLWidget *urlWidget = qobject_cast<URLWidget *>(ctrl->createEditor(NULL, QStyleOptionViewItem(), QModelIndex()));
+    URLWidget *urlWidget = qobject_cast<URLWidget *>(ctrl->createEditor(nullptr, QStyleOptionViewItem(), QModelIndex()));
     urlWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     urlWidget->setValue(value);
 
@@ -607,7 +607,7 @@ QWidget *UrlAndDatasetController::createDatasetWidget(URLListController *ctrl) {
 }
 
 UrlAndDatasetController::~UrlAndDatasetController() {
-    datasetsWidget->setParent(NULL);
+    datasetsWidget->setParent(nullptr);
     delete datasetsWidget;
 
     qDeleteAll(sets);
@@ -709,11 +709,11 @@ QString UrlAndDatasetController::getUrlByDataset(Dataset *set) const {
 /* URLListController */
 /************************************************************************/
 URLListController::URLListController(DatasetsController *parent, Dataset *_set)
-    : QObject(parent), widget(NULL), controller(parent), set(_set) {
+    : QObject(parent), widget(nullptr), controller(parent), set(_set) {
 }
 
 URLListWidget *URLListController::getWidget() {
-    if (NULL == widget) {
+    if (nullptr == widget) {
         createWidget();
     }
     return widget;
@@ -742,7 +742,7 @@ void URLListController::addItemWidget(URLContainer *url) {
 
 void URLListController::updateUrl(UrlItem *item) {
     URLContainer *url = urlMap[item];
-    SAFE_POINT(NULL != url, "NULL url container", );
+    SAFE_POINT(nullptr != url, "NULL url container", );
 
     URLContainerUpdater updater(item);
     url->accept(&updater);
@@ -751,7 +751,7 @@ void URLListController::updateUrl(UrlItem *item) {
 
 void URLListController::replaceUrl(int pos, int newPos) {
     URLContainer *url = getUrl(pos);
-    CHECK(NULL != url, );
+    CHECK(nullptr != url, );
 
     SAFE_POINT(newPos >= 0 && newPos < set->getUrls().size(),
                "New url position is out of range", );
@@ -777,7 +777,7 @@ void URLListController::addUrl(const QString &url, U2OpStatus &os) {
 
 void URLListController::deleteUrl(int pos) {
     URLContainer *url = getUrl(pos);
-    CHECK(NULL != url, );
+    CHECK(nullptr != url, );
 
     set->removeUrl(url);
     delete url;
@@ -785,9 +785,9 @@ void URLListController::deleteUrl(int pos) {
 }
 
 URLContainer *URLListController::getUrl(int pos) {
-    SAFE_POINT(pos < set->getUrls().size(), "Urls: out of range", NULL);
+    SAFE_POINT(pos < set->getUrls().size(), "Urls: out of range", nullptr);
     URLContainer *url = set->getUrls().at(pos);
-    SAFE_POINT(NULL != url, "NULL url container", NULL);
+    SAFE_POINT(nullptr != url, "NULL url container", nullptr);
     return url;
 }
 

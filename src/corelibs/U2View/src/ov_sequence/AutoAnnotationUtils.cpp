@@ -84,7 +84,7 @@ void AutoAnnotationsADVAction::updateMenu() {
         int totalLen = 0;
 
         AnnotatedDNAView *view = seqWidget->getAnnotatedDNAView();
-        if (view != NULL) {
+        if (view != nullptr) {
             const QList<ADVSequenceObjectContext *> &ctxList = view->getSequenceContexts();
             foreach (const ADVSequenceObjectContext *ctx, ctxList) {
                 totalLen += ctx->getSequenceLength();
@@ -117,11 +117,11 @@ void AutoAnnotationsADVAction::updateMenu() {
 
 void AutoAnnotationsADVAction::sl_toggle(bool toggled) {
     QAction *action = qobject_cast<QAction *>(sender());
-    if (action == NULL) {
+    if (action == nullptr) {
         return;
     }
     AutoAnnotationsUpdater *updater = AppContext::getAutoAnnotationsSupport()->findUpdaterByName(action->text());
-    if (updater != NULL) {
+    if (updater != nullptr) {
         QString groupName = updater->getGroupName();
         aaObj->setGroupEnabled(groupName, toggled);
         aaObj->updateGroup(groupName);
@@ -150,7 +150,7 @@ void AutoAnnotationsADVAction::sl_onDeselectAll() {
 AutoAnnotationsADVAction::~AutoAnnotationsADVAction() {
     menu->clear();
     delete menu;
-    menu = NULL;
+    menu = nullptr;
 }
 
 QList<QAction *> AutoAnnotationsADVAction::getToggleActions() {
@@ -164,7 +164,7 @@ QAction *AutoAnnotationsADVAction::findToggleAction(const QString &groupName) {
             return tAction;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void AutoAnnotationsADVAction::addUpdaterToMenu(AutoAnnotationsUpdater *updater) {
@@ -207,11 +207,11 @@ void AutoAnnotationsADVAction::sl_autoAnnotationUpdateFinished() {
 QAction *AutoAnnotationUtils::findAutoAnnotationsToggleAction(ADVSequenceObjectContext *ctx, const QString &groupName) {
     foreach (ADVSequenceWidget *w, ctx->getSequenceWidgets()) {
         ADVSequenceWidgetAction *advAction = w->getADVSequenceWidgetAction(AutoAnnotationsADVAction::ACTION_NAME);
-        if (advAction == NULL) {
+        if (advAction == nullptr) {
             continue;
         }
         AutoAnnotationsADVAction *aaAction = qobject_cast<AutoAnnotationsADVAction *>(advAction);
-        assert(aaAction != NULL);
+        assert(aaAction != nullptr);
         QList<QAction *> toggleActions = aaAction->getToggleActions();
         foreach (QAction *tAction, toggleActions) {
             if (tAction->property(AUTO_ANNOTATION_GROUP_NAME) == groupName) {
@@ -220,20 +220,20 @@ QAction *AutoAnnotationUtils::findAutoAnnotationsToggleAction(ADVSequenceObjectC
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void AutoAnnotationUtils::triggerAutoAnnotationsUpdate(ADVSequenceObjectContext *ctx, const QString &aaGroupName) {
     AutoAnnotationsADVAction *aaAction = findAutoAnnotationADVAction(ctx);
 
-    if (aaAction != NULL && !aaAction->isEnabled()) {
+    if (aaAction != nullptr && !aaAction->isEnabled()) {
         return;
     }
 
-    assert(aaAction != NULL);
+    assert(aaAction != nullptr);
     if (aaAction) {
         QAction *updateAction = aaAction->findToggleAction(aaGroupName);
-        assert(updateAction != NULL);
+        assert(updateAction != nullptr);
 
         if (!updateAction) {
             return;
@@ -243,7 +243,7 @@ void AutoAnnotationUtils::triggerAutoAnnotationsUpdate(ADVSequenceObjectContext 
             updateAction->trigger();
         } else {
             AutoAnnotationsUpdater *updater = AppContext::getAutoAnnotationsSupport()->findUpdaterByGroupName(aaGroupName);
-            if (updater != NULL) {
+            if (updater != nullptr) {
                 aaAction->getAAObj()->updateGroup(aaGroupName);
             }
         }
@@ -253,14 +253,14 @@ void AutoAnnotationUtils::triggerAutoAnnotationsUpdate(ADVSequenceObjectContext 
 AutoAnnotationsADVAction *AutoAnnotationUtils::findAutoAnnotationADVAction(ADVSequenceObjectContext *ctx) {
     foreach (ADVSequenceWidget *w, ctx->getSequenceWidgets()) {
         ADVSequenceWidgetAction *advAction = w->getADVSequenceWidgetAction(AutoAnnotationsADVAction::ACTION_NAME);
-        if (advAction == NULL) {
+        if (advAction == nullptr) {
             continue;
         } else {
             return qobject_cast<AutoAnnotationsADVAction *>(advAction);
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 QList<QAction *> AutoAnnotationUtils::getAutoAnnotationToggleActions(ADVSequenceObjectContext *ctx) {
@@ -268,11 +268,11 @@ QList<QAction *> AutoAnnotationUtils::getAutoAnnotationToggleActions(ADVSequence
 
     foreach (ADVSequenceWidget *w, ctx->getSequenceWidgets()) {
         ADVSequenceWidgetAction *advAction = w->getADVSequenceWidgetAction(AutoAnnotationsADVAction::ACTION_NAME);
-        if (advAction == NULL) {
+        if (advAction == nullptr) {
             continue;
         }
         AutoAnnotationsADVAction *aaAction = qobject_cast<AutoAnnotationsADVAction *>(advAction);
-        assert(aaAction != NULL);
+        assert(aaAction != nullptr);
         res = aaAction->getToggleActions();
 
         int selectedCount = 0;
@@ -302,9 +302,9 @@ ExportAutoAnnotationsGroupTask::ExportAutoAnnotationsGroupTask(AnnotationGroup *
       aGroup(ag),
       aRef(ref),
       seqCtx(ctx),
-      createTask(NULL),
+      createTask(nullptr),
       annDescription(annDescription) {
-    SAFE_POINT_EXT(NULL != ag, stateInfo.setError(tr("Invalid annotation group provided")), );
+    SAFE_POINT_EXT(nullptr != ag, stateInfo.setError(tr("Invalid annotation group provided")), );
 }
 
 void ExportAutoAnnotationsGroupTask::prepare() {
@@ -334,7 +334,7 @@ QList<Task *> ExportAutoAnnotationsGroupTask::onSubTaskFinished(Task *subTask) {
 
     if (subTask == createTask) {
         QAction *toggleAction = AutoAnnotationUtils::findAutoAnnotationsToggleAction(seqCtx, aGroup->getName());
-        if (toggleAction != NULL && toggleAction->isChecked()) {
+        if (toggleAction != nullptr && toggleAction->isChecked()) {
             toggleAction->trigger();
         }
     }

@@ -29,8 +29,8 @@
 
 #include <U2View/MSAEditor.h>
 
-#include "ov_msa/general/MaConsensusModeWidget.h"
 #include "MaExportConsensusWidget.h"
+#include "ov_msa/general/MaConsensusModeWidget.h"
 
 namespace U2 {
 

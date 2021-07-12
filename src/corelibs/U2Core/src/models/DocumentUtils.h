@@ -31,27 +31,43 @@ namespace U2 {
 class DocumentImporter;
 
 /**
-    Result of the format detection.
-    contains score and ( format or importer ) instance pointer
-    */
+ * Result of the format detection.
+ * Contains format detection score and a pointer to a format or to a data importer.
+ */
 class U2CORE_EXPORT FormatDetectionResult {
 public:
-    FormatDetectionResult()
-        : format(NULL), importer(NULL) {
-    }
-    DocumentFormat *format;
-    DocumentImporter *importer;
-    QByteArray rawData;
+    /** Detected document format. */
+    DocumentFormat *format = nullptr;
+
+    /** DocumentImporter that can be used to import the data. */
+    DocumentImporter *importer = nullptr;
+
+    /** Raw binary data from the URL. Present for all formats. For text formats this may be raw unicode bytes. */
+    QByteArray rawBinaryData;
+
+    /** Raw text data. Present only for text formats. */
+    QString rawTextData;
+
+    /** Url of the tested resource. */
     GUrl url;
+
+    /** File extension. May be used by the format detection algorithm as an additional hint. */
     QString extension;
 
     FormatCheckResult rawDataCheckResult;
 
     QString getFormatDescriptionText() const;
+
     QString getFormatOrImporterName() const;
-    int score() const {
-        return rawDataCheckResult.score;
-    }
+
+    /**
+     * Returns textual representation of the raw data.
+     * Tries to re-use rawTextData or fall-backs to the pre-formatted rawBinaryData.
+     */
+    QString getRawDataPreviewText() const;
+
+    /** Returns format detection score. */
+    int score() const;
 };
 
 class U2CORE_EXPORT FormatDetectionConfig {

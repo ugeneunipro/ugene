@@ -60,13 +60,13 @@ void CrashHandlerPrivateWin::setupHandler() {
         crashDirWasSucessfullyCreated = QDir().mkpath(dumpDir);
     }
 
-    breakpadHandler = new google_breakpad::ExceptionHandler(dumpDir.toStdWString(), NULL, breakpadCallback, this, google_breakpad::ExceptionHandler::HANDLER_ALL);
+    breakpadHandler = new google_breakpad::ExceptionHandler(dumpDir.toStdWString(), nullptr, breakpadCallback, this, google_breakpad::ExceptionHandler::HANDLER_ALL);
 #    endif
 }
 
 void CrashHandlerPrivateWin::shutdown() {
     delete breakpadHandler;
-    breakpadHandler = NULL;
+    breakpadHandler = nullptr;
 }
 
 QString CrashHandlerPrivateWin::getStackTrace() const {
@@ -123,79 +123,79 @@ void CrashHandlerPrivateWin::walkStack(EXCEPTION_POINTERS *exinfo) {
 
 QString CrashHandlerPrivateWin::getExceptionText(EXCEPTION_POINTERS *exinfo) {
     QString exceptionText = "Unhandled exception";
-    CHECK(NULL != exinfo, "C++ exception|" + exceptionText);
+    CHECK(nullptr != exinfo, "C++ exception|" + exceptionText);
 
     switch (exinfo->ExceptionRecord->ExceptionCode) {
-    case EXCEPTION_ACCESS_VIOLATION:
-        exceptionText = "Access violation";
-        break;
-    case EXCEPTION_DATATYPE_MISALIGNMENT:
-        exceptionText = "Data type misalignment";
-        break;
-    case EXCEPTION_BREAKPOINT:
-        exceptionText = "Break point";
-        break;
-    case EXCEPTION_SINGLE_STEP:
-        exceptionText = "Single step";
-        break;
-    case EXCEPTION_ARRAY_BOUNDS_EXCEEDED:
-        exceptionText = "Array bounds exceeded";
-        break;
-    case EXCEPTION_FLT_DENORMAL_OPERAND:
-        exceptionText = "Float denormal operand";
-        break;
-    case EXCEPTION_FLT_DIVIDE_BY_ZERO:
-        exceptionText = "Float divide by zero";
-        break;
-    case EXCEPTION_FLT_INEXACT_RESULT:
-        exceptionText = "Float inexact result";
-        break;
-    case EXCEPTION_FLT_INVALID_OPERATION:
-        exceptionText = "Float invalid operation";
-        break;
-    case EXCEPTION_FLT_OVERFLOW:
-        exceptionText = "Float overflow";
-        break;
-    case EXCEPTION_FLT_STACK_CHECK:
-        exceptionText = "Float check stack";
-        break;
-    case EXCEPTION_FLT_UNDERFLOW:
-        exceptionText = "Float underflow";
-        break;
-    case EXCEPTION_INT_DIVIDE_BY_ZERO:
-        exceptionText = "Int divide by zero";
-        break;
-    case EXCEPTION_INT_OVERFLOW:
-        exceptionText = "Int overflow";
-        break;
-    case EXCEPTION_PRIV_INSTRUCTION:
-        exceptionText = "Privileged instruction";
-        break;
-    case EXCEPTION_IN_PAGE_ERROR:
-        exceptionText = "In page error";
-        break;
-    case EXCEPTION_ILLEGAL_INSTRUCTION:
-        exceptionText = "Illegal instruction";
-        break;
-    case EXCEPTION_NONCONTINUABLE_EXCEPTION:
-        exceptionText = "Noncontinuable exception";
-        break;
-    case EXCEPTION_STACK_OVERFLOW:
-        exceptionText = "Stack overflow";
-        break;
-    case EXCEPTION_INVALID_DISPOSITION:
-        exceptionText = "Invalid disposition";
-        break;
-    case EXCEPTION_GUARD_PAGE:
-        exceptionText = "Guard page violation";
-        break;
-    case EXCEPTION_INVALID_HANDLE:
-        exceptionText = "Invalid handle";
-        break;
-    case CONTROL_C_EXIT:
-        exceptionText = "Control C exit";
-        break;
-    default:;    // Do nothing
+        case EXCEPTION_ACCESS_VIOLATION:
+            exceptionText = "Access violation";
+            break;
+        case EXCEPTION_DATATYPE_MISALIGNMENT:
+            exceptionText = "Data type misalignment";
+            break;
+        case EXCEPTION_BREAKPOINT:
+            exceptionText = "Break point";
+            break;
+        case EXCEPTION_SINGLE_STEP:
+            exceptionText = "Single step";
+            break;
+        case EXCEPTION_ARRAY_BOUNDS_EXCEEDED:
+            exceptionText = "Array bounds exceeded";
+            break;
+        case EXCEPTION_FLT_DENORMAL_OPERAND:
+            exceptionText = "Float denormal operand";
+            break;
+        case EXCEPTION_FLT_DIVIDE_BY_ZERO:
+            exceptionText = "Float divide by zero";
+            break;
+        case EXCEPTION_FLT_INEXACT_RESULT:
+            exceptionText = "Float inexact result";
+            break;
+        case EXCEPTION_FLT_INVALID_OPERATION:
+            exceptionText = "Float invalid operation";
+            break;
+        case EXCEPTION_FLT_OVERFLOW:
+            exceptionText = "Float overflow";
+            break;
+        case EXCEPTION_FLT_STACK_CHECK:
+            exceptionText = "Float check stack";
+            break;
+        case EXCEPTION_FLT_UNDERFLOW:
+            exceptionText = "Float underflow";
+            break;
+        case EXCEPTION_INT_DIVIDE_BY_ZERO:
+            exceptionText = "Int divide by zero";
+            break;
+        case EXCEPTION_INT_OVERFLOW:
+            exceptionText = "Int overflow";
+            break;
+        case EXCEPTION_PRIV_INSTRUCTION:
+            exceptionText = "Privileged instruction";
+            break;
+        case EXCEPTION_IN_PAGE_ERROR:
+            exceptionText = "In page error";
+            break;
+        case EXCEPTION_ILLEGAL_INSTRUCTION:
+            exceptionText = "Illegal instruction";
+            break;
+        case EXCEPTION_NONCONTINUABLE_EXCEPTION:
+            exceptionText = "Noncontinuable exception";
+            break;
+        case EXCEPTION_STACK_OVERFLOW:
+            exceptionText = "Stack overflow";
+            break;
+        case EXCEPTION_INVALID_DISPOSITION:
+            exceptionText = "Invalid disposition";
+            break;
+        case EXCEPTION_GUARD_PAGE:
+            exceptionText = "Guard page violation";
+            break;
+        case EXCEPTION_INVALID_HANDLE:
+            exceptionText = "Invalid handle";
+            break;
+        case CONTROL_C_EXIT:
+            exceptionText = "Control C exit";
+            break;
+        default:;    // Do nothing
     }
 
     return "C++ exception|" + exceptionText;

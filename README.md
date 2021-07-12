@@ -48,8 +48,6 @@ Also you need to add "libeay.dll" and "ssleay.dll" from OpenSSL ToolKit. Put the
    However, on certain platforms default target is debug.
    To enforce release build use `make release` or `make all`.
 
-Some more information you can see in installer/_common_data/README file.
-
 ### Build with CUDA
 
 1. Download and install required software from http://www.nvidia.com/object/cuda_get.html for your OS

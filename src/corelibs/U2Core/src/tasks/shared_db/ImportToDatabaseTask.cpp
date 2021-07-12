@@ -60,13 +60,13 @@ void ImportToDatabaseTask::sortSubtasks() const {
         ImportFileToDatabaseTask *fileSubtask = qobject_cast<ImportFileToDatabaseTask *>(subtask.data());
         ImportObjectToDatabaseTask *objectSubtask = qobject_cast<ImportObjectToDatabaseTask *>(subtask.data());
 
-        if (NULL != dirSubtask) {
+        if (nullptr != dirSubtask) {
             dirSubtasks << dirSubtask;
-        } else if (NULL != documentSubtask) {
+        } else if (nullptr != documentSubtask) {
             documentSubtasks << documentSubtask;
-        } else if (NULL != fileSubtask) {
+        } else if (nullptr != fileSubtask) {
             fileSubtasks << fileSubtask;
-        } else if (NULL != objectSubtask) {
+        } else if (nullptr != objectSubtask) {
             objectSubtasks << objectSubtask;
         }
     }
@@ -166,7 +166,7 @@ QString ImportToDatabaseTask::sayAboutImportedDocuments() const {
 
     foreach (ImportDocumentToDatabaseTask *documentSubtask, documentSubtasks) {
         Document *document = documentSubtask->getSourceDocument();
-        if (NULL == document) {
+        if (nullptr == document) {
             continue;
         }
 
@@ -196,7 +196,7 @@ QString ImportToDatabaseTask::sayAboutImportedObjects() const {
         }
 
         GObject *object = objectSubtask->getSourceObject();
-        if (NULL != object) {
+        if (nullptr != object) {
             result += object->getGObjectName() + "<br>";
         }
     }
@@ -257,7 +257,7 @@ QString ImportToDatabaseTask::sayAboutSkippedDocuments() const {
 
     foreach (ImportDocumentToDatabaseTask *documentSubtask, documentSubtasks) {
         Document *document = documentSubtask->getSourceDocument();
-        if (NULL == document) {
+        if (nullptr == document) {
             continue;
         }
 
@@ -287,7 +287,7 @@ QString ImportToDatabaseTask::sayAboutSkippedObjects() const {
         }
 
         GObject *object = objectSubtask->getSourceObject();
-        if (NULL != object) {
+        if (nullptr != object) {
             result += object->getGObjectName() + "<br>";
         }
     }

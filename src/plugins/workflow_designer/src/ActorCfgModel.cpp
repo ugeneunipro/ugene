@@ -46,7 +46,7 @@ static const int VALUE_COLUMN = 1;
 static const int SCRIPT_COLUMN = 2;
 
 ActorCfgModel::ActorCfgModel(QObject *parent, SchemaConfig *_schemaConfig)
-    : QAbstractTableModel(parent), schemaConfig(_schemaConfig), subject(NULL), scriptMode(false) {
+    : QAbstractTableModel(parent), schemaConfig(_schemaConfig), subject(nullptr), scriptMode(false) {
     scriptDelegate = new AttributeScriptDelegate();
 }
 
@@ -58,15 +58,15 @@ void ActorCfgModel::setActor(Actor *cfg) {
     listValues.clear();
     attrs.clear();
     subject = cfg;
-    if (NULL != cfg) {
+    if (nullptr != cfg) {
         attrs = cfg->getAttributes();
         setupAttributesScripts();
 
         ConfigurationEditor *editor = subject->getEditor();
-        if (NULL != editor) {
+        if (nullptr != editor) {
             foreach (Attribute *attr, attrs) {
                 PropertyDelegate *delegate = editor->getDelegate(attr->getId());
-                if (NULL != delegate) {
+                if (nullptr != delegate) {
                     delegate->setSchemaConfig(schemaConfig);
                 }
             }
@@ -84,7 +84,7 @@ void dumpDescriptors(const QList<Descriptor> &descriptors) {
 
 void ActorCfgModel::setupAttributesScripts() {
     foreach (Attribute *attribute, attrs) {
-        assert(attribute != NULL);
+        assert(attribute != nullptr);
         attribute->getAttributeScript().clearScriptVars();
 
         DataTypePtr attributeType = attribute->getAttributeType();
@@ -158,8 +158,8 @@ int ActorCfgModel::rowCount(const QModelIndex &parent) const {
 }
 
 bool ActorCfgModel::isVisible(Attribute *a) const {
-    CHECK(NULL != subject, true);
-    if (NULL != dynamic_cast<URLAttribute *>(a)) {
+    CHECK(nullptr != subject, true);
+    if (nullptr != dynamic_cast<URLAttribute *>(a)) {
         return false;
     }
     return subject->isAttributeVisible(a);
@@ -170,7 +170,7 @@ Qt::ItemFlags ActorCfgModel::flags(const QModelIndex &index) const {
     int row = index.row();
 
     Attribute *currentAttribute = getAttributeByRow(row);
-    SAFE_POINT(NULL != currentAttribute, "Unexpected attribute", Qt::NoItemFlags);
+    SAFE_POINT(nullptr != currentAttribute, "Unexpected attribute", Qt::NoItemFlags);
     if (!isVisible(currentAttribute)) {
         return Qt::NoItemFlags;
     }
@@ -217,7 +217,7 @@ QVariant ActorCfgModel::headerData(int section, Qt::Orientation orientation, int
 }
 
 bool ActorCfgModel::setAttributeValue(const Attribute *attr, QVariant &attrValue) const {
-    assert(attr != NULL);
+    assert(attr != nullptr);
     bool isDefaultVal = attr->isDefaultValue();
 
     attrValue = attr->getAttributePureValue();
@@ -225,14 +225,14 @@ bool ActorCfgModel::setAttributeValue(const Attribute *attr, QVariant &attrValue
 }
 
 Attribute *ActorCfgModel::getAttributeByRow(int row) const {
-    SAFE_POINT(row < attrs.size(), "Unexpected row requested", NULL);
+    SAFE_POINT(row < attrs.size(), "Unexpected row requested", nullptr);
     return attrs.at(row);
 }
 
 QModelIndex ActorCfgModel::modelIndexById(const QString &id) const {
     for (int i = 0; i < attrs.size(); i++) {
         Attribute *a = getAttributeByRow(i);
-        if (NULL != a && a->getId() == id) {
+        if (nullptr != a && a->getId() == id) {
             QModelIndex modelIndex = index(i, 1);
             return modelIndex;
         }
@@ -242,7 +242,7 @@ QModelIndex ActorCfgModel::modelIndexById(const QString &id) const {
 
 QVariant ActorCfgModel::data(const QModelIndex &index, int role) const {
     const Attribute *currentAttribute = getAttributeByRow(index.row());
-    SAFE_POINT(NULL != currentAttribute, "Invalid attribute", QVariant());
+    SAFE_POINT(nullptr != currentAttribute, "Invalid attribute", QVariant());
     if (role == DescriptorRole) {    // descriptor that will be shown in under editor. 'propDoc' in WorkflowEditor
         return qVariantFromValue<Descriptor>(*currentAttribute);
     }
@@ -274,7 +274,7 @@ QVariant ActorCfgModel::data(const QModelIndex &index, int role) const {
         QVariant attributeValue;
         bool isDefaultVal = setAttributeValue(currentAttribute, attributeValue);
         ConfigurationEditor *confEditor = subject->getEditor();
-        PropertyDelegate *propertyDelegate = confEditor ? confEditor->getDelegate(currentAttribute->getId()) : NULL;
+        PropertyDelegate *propertyDelegate = confEditor ? confEditor->getDelegate(currentAttribute->getId()) : nullptr;
         switch (role) {
         case Qt::DisplayRole:
         case Qt::ToolTipRole: {
@@ -316,7 +316,7 @@ QVariant ActorCfgModel::data(const QModelIndex &index, int role) const {
         case Qt::ForegroundRole:
             return currentAttribute->getAttributeScript().isEmpty() ? QVariant(QColor(Qt::gray)) : QVariant();
         case DelegateRole:
-            assert(scriptDelegate != NULL);
+            assert(scriptDelegate != nullptr);
             return qVariantFromValue<PropertyDelegate *>(scriptDelegate);
         case Qt::EditRole:
         case ConfigurationEditor::ItemValueRole:
@@ -345,9 +345,9 @@ namespace {
 
 DelegateTags *getTags(Actor *subject, const QString &attrId) {
     ConfigurationEditor *editor = subject->getEditor();
-    CHECK(NULL != editor, NULL);
+    CHECK(nullptr != editor, nullptr);
     PropertyDelegate *delegate = editor->getDelegate(attrId);
-    CHECK(NULL != delegate, NULL);
+    CHECK(nullptr != delegate, nullptr);
     return delegate->tags();
 }
 
@@ -383,7 +383,7 @@ void ActorCfgModel::checkIfAttributeVisibilityChanged(const QMap<Attribute *, bo
 bool ActorCfgModel::setData(const QModelIndex &index, const QVariant &value, int role) {
     int col = index.column();
     Attribute *editingAttribute = getAttributeByRow(index.row());
-    SAFE_POINT(editingAttribute != NULL, "Invalid attribute detected", false);
+    SAFE_POINT(editingAttribute != nullptr, "Invalid attribute detected", false);
 
     switch (col) {
     case VALUE_COLUMN: {

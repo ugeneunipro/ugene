@@ -335,7 +335,7 @@ IMPLEMENT_TEST(AnnotationGroupUnitTest, getSet_Subgroups) {
     CHECK_TRUE(subSubgroups3.isEmpty(), "Unexpected subgroups");
 
     AnnotationGroup *nonExistentGroup = subgroup3->getSubgroup("123/456", false);
-    CHECK_TRUE(nonExistentGroup == NULL, "Unexpected subgroup ID");
+    CHECK_TRUE(nonExistentGroup == nullptr, "Unexpected subgroup ID");
     subSubgroups3 = subgroup3->getSubgroups();
     CHECK_TRUE(subSubgroups3.isEmpty(), "Unexpected subgroups");
 

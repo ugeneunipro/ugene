@@ -28,7 +28,7 @@ namespace U2 {
 
 class U2PRIVATE_EXPORT IOAdapterRegistryImpl : public IOAdapterRegistry {
 public:
-    IOAdapterRegistryImpl(QObject *p = NULL)
+    IOAdapterRegistryImpl(QObject *p = nullptr)
         : IOAdapterRegistry(p) {
         init();
     }

@@ -71,7 +71,7 @@ FormatDBSupportRunDialog::FormatDBSupportRunDialog(const QString &_name, FormatD
 void FormatDBSupportRunDialog::sl_onBrowseInputFiles() {
     LastUsedDirHelper lod("");
     QString name;
-    QStringList lst = U2FileDialog::getOpenFileNames(NULL, tr("Select file(s)"), lod.dir, "");
+    QStringList lst = U2FileDialog::getOpenFileNames(nullptr, tr("Select file(s)"), lod.dir, "");
     name = lst.join(";");
     if (!lst.isEmpty()) {
         lod.url = lst.first();
@@ -94,7 +94,7 @@ void FormatDBSupportRunDialog::sl_onBrowseInputDir() {
     LastUsedDirHelper lod("");
 
     QString name;
-    lod.url = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder with input files"), lod.dir);
+    lod.url = name = U2FileDialog::getExistingDirectory(nullptr, tr("Select a folder with input files"), lod.dir);
     if (!name.isEmpty()) {
         inputDirLineEdit->setText(name);
     }
@@ -105,7 +105,7 @@ void FormatDBSupportRunDialog::sl_onBrowseDatabasePath() {
     LastUsedDirHelper lod("Database folder");
 
     QString name;
-    lod.url = name = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder to save database files"), lod.dir);
+    lod.url = name = U2FileDialog::getExistingDirectory(nullptr, tr("Select a folder to save database files"), lod.dir);
     if (!name.isEmpty()) {
         databasePathLineEdit->setText(name);
     }

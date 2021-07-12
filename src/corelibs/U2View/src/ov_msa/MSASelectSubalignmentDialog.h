@@ -34,7 +34,7 @@ class MaEditor;
 class SelectSubalignmentDialog : public QDialog, Ui_SelectSubalignmentDialog {
     Q_OBJECT
 public:
-    SelectSubalignmentDialog(MaEditor *editor, const U2Region &region = U2Region(), const QList<int> &selectedIndexes = QList<int>(), QWidget *p = NULL);
+    SelectSubalignmentDialog(MaEditor *editor, const U2Region &region = U2Region(), const QList<int> &selectedIndexes = QList<int>(), QWidget *p = nullptr);
 
     void accept();
 

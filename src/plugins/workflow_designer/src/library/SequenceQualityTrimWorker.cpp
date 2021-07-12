@@ -67,7 +67,7 @@ Task *SequenceQualityTrimWorker::createTask(const Message &message, U2OpStatus &
     const QVariantMap dataMap = message.getData().toMap();
     const SharedDbiDataHandler sequenceHandler = dataMap[BaseSlots::DNA_SEQUENCE_SLOT().getId()].value<SharedDbiDataHandler>();
     settings.sequenceObject = StorageUtils::getSequenceObject(context->getDataStorage(), sequenceHandler);
-    CHECK_EXT(NULL != settings.sequenceObject, os.setError(tr("There is no sequence object in the message")), NULL);
+    CHECK_EXT(nullptr != settings.sequenceObject, os.setError(tr("There is no sequence object in the message")), nullptr);
 
     return new SequenceQualityTrimTask(settings);
 }
@@ -75,10 +75,10 @@ Task *SequenceQualityTrimWorker::createTask(const Message &message, U2OpStatus &
 QList<Message> SequenceQualityTrimWorker::fetchResult(Task *task, U2OpStatus &os) {
     QList<Message> messages;
     SequenceQualityTrimTask *trimTask = qobject_cast<SequenceQualityTrimTask *>(task);
-    SAFE_POINT_EXT(NULL != trimTask, os.setError(tr("An unexpected task type")), messages);
+    SAFE_POINT_EXT(nullptr != trimTask, os.setError(tr("An unexpected task type")), messages);
 
     QScopedPointer<U2SequenceObject> trimmedSequenceObject(trimTask->takeTrimmedSequence());
-    SAFE_POINT_EXT(NULL != trimmedSequenceObject, os.setError("Sequence trim task didn't produce any object without any errors"), messages);
+    SAFE_POINT_EXT(nullptr != trimmedSequenceObject, os.setError("Sequence trim task didn't produce any object without any errors"), messages);
     if (0 == trimmedSequenceObject->getSequenceLength()) {
         monitor()->addError(tr("Sequence was filtered out by quality"), actor->getId(), WorkflowNotification::U2_WARNING);
         return messages;

@@ -1,0 +1,11 @@
+<multi-test>
+
+    <!-- Test that UTF-8 text file can be read correctly. -->
+    <load-document index="doc" url="fasta/utf8.fa" io="local_file" format="text"/>
+
+    <check-num-objects doc="doc" value="1"/>
+    <check-document-object-types doc="doc" value="OT_TEXT"/>
+
+    <find-object-by-name index="obj" doc="doc" name="utf8" type="OT_TEXT"/>
+    <check-string-exists obj="obj" string=">Первый" must_exist="true" whole_line="true"/>
+</multi-test>

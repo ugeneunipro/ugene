@@ -59,7 +59,7 @@ void GTest_CheckStringExists::init(XMLTestFormat *tf, const QDomElement &el) {
 
 Task::ReportResult GTest_CheckStringExists::report() {
     TextObject *obj = getContext<TextObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("invalid object context"));
         return ReportResult_Finished;
     }

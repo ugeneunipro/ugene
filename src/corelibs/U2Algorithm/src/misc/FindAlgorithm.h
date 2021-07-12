@@ -95,9 +95,9 @@ class U2ALGORITHM_EXPORT FindAlgorithmSettings {
 public:
     FindAlgorithmSettings(const QByteArray &pattern = QByteArray(),
                           FindAlgorithmStrand strand = FindAlgorithmStrand_Direct,
-                          DNATranslation *complementTT = NULL,
-                          DNATranslation *proteinTT = NULL,
-                          const DNAAlphabet *sequenceAlphabet = NULL,
+                          DNATranslation *complementTT = nullptr,
+                          DNATranslation *proteinTT = nullptr,
+                          const DNAAlphabet *sequenceAlphabet = nullptr,
                           const U2Region &searchRegion = U2Region(),
                           int maxErr = 0,
                           FindAlgorithmPatternSettings _patternSettings = FindAlgorithmPatternSettings_Subst,

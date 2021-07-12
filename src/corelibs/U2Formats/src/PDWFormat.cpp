@@ -125,7 +125,7 @@ void PDWFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &f
             objects << seqObj;
 
             GObjectReference sequenceRef(io->getURL().getURLString(), seqName, GObjectTypes::SEQUENCE);
-            U1AnnotationUtils::addAnnotations(objects, seqImporter.getCaseAnnotations(), sequenceRef, NULL, fs);
+            U1AnnotationUtils::addAnnotations(objects, seqImporter.getCaseAnnotations(), sequenceRef, nullptr, fs);
 
             break;
         } else if (readBuff.startsWith(PDW_CIRCULAR_TAG)) {
@@ -154,19 +154,19 @@ void PDWFormat::load(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &f
 }
 
 Document *PDWFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &fs, U2OpStatus &os) {
-    U2SequenceObject *seqObj = NULL;
-    AnnotationTableObject *annObj = NULL;
-    CHECK_EXT(NULL != io && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), NULL);
+    U2SequenceObject *seqObj = nullptr;
+    AnnotationTableObject *annObj = nullptr;
+    CHECK_EXT(nullptr != io && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), nullptr);
     QList<GObject *> objects;
 
     load(io, dbiRef, fs, io->getURL(), objects, os, seqObj, annObj);
 
-    CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
+    CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
 
     QString lockReason = QObject::tr("The document is not created by UGENE");
     Document *doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs, lockReason);
 
-    if (NULL != seqObj && NULL != annObj) {
+    if (nullptr != seqObj && nullptr != annObj) {
         annObj->addObjectRelation(seqObj, ObjectRole_Sequence);
     }
     return doc;

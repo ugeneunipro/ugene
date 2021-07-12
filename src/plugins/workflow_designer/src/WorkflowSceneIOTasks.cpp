@@ -44,14 +44,14 @@ using namespace Workflow;
  **********************************/
 const QString SaveWorkflowSceneTask::SCHEMA_PATHS_SETTINGS_TAG = "workflow_settings/schema_paths";
 
-SaveWorkflowSceneTask::SaveWorkflowSceneTask(Schema *s, const Metadata &m)
+SaveWorkflowSceneTask::SaveWorkflowSceneTask(const QSharedPointer<Schema> &s, const Metadata &m)
     : Task(tr("Save workflow scene task"), TaskFlag_None), schema(s), meta(m) {
     GCOUNTER(cvar, "SaveWorkflowSceneTask");
-    assert(schema != NULL);
+    assert(schema != nullptr);
 
     // add ( name, path ) pair to settings. need for running schemas in cmdline by name
     Settings *settings = AppContext::getSettings();
-    assert(settings != NULL);
+    assert(settings != nullptr);
     QVariantMap pathsMap = settings->getValue(SCHEMA_PATHS_SETTINGS_TAG).toMap();
     pathsMap.insert(meta.name, meta.url);
     settings->setValue(SCHEMA_PATHS_SETTINGS_TAG, pathsMap);
@@ -61,13 +61,14 @@ void SaveWorkflowSceneTask::run() {
     if (hasError()) {
         return;
     }
-    HRSchemaSerializer::saveSchema(schema, &meta, meta.url, stateInfo);
+    HRSchemaSerializer::saveSchema(schema.get(), &meta, meta.url, stateInfo);
 }
 
 /**********************************
  * LoadWorkflowSceneTask
  **********************************/
-LoadWorkflowSceneTask::LoadWorkflowSceneTask(Schema *_schema, Metadata *_meta, WorkflowScene *_scene, const QString &_url, bool _noUrl, bool _disableWizardAutorun)
+LoadWorkflowSceneTask::LoadWorkflowSceneTask(const QSharedPointer<Schema> &_schema, Metadata *_meta,
+    WorkflowScene *_scene, const QString &_url, bool _noUrl, bool _disableWizardAutorun)
     : Task(tr("Load workflow scene"), TaskFlag_None),
       schema(_schema),
       meta(_meta),
@@ -76,9 +77,9 @@ LoadWorkflowSceneTask::LoadWorkflowSceneTask(Schema *_schema, Metadata *_meta, W
       noUrl(_noUrl),
       disableWizardAutorun(_disableWizardAutorun) {
     GCOUNTER(cvar, "LoadWorkflowSceneTask");
-    assert(schema != NULL);
-    assert(meta != NULL);
-    assert(scene != NULL);
+    assert(schema != nullptr);
+    assert(meta != nullptr);
+    assert(scene != nullptr);
 }
 
 void LoadWorkflowSceneTask::run() {
@@ -108,7 +109,7 @@ Task::ReportResult LoadWorkflowSceneTask::report() {
         resetSceneAndScheme();
     }
     if (format == LoadWorkflowTask::HR) {
-        err = HRSchemaSerializer::string2Schema(rawData, schema, meta);
+        err = HRSchemaSerializer::string2Schema(rawData, schema.get(), meta);
     } else if (format == LoadWorkflowTask::XML) {
         QDomDocument xml;
         QMap<ActorId, ActorId> remapping;
@@ -132,7 +133,7 @@ Task::ReportResult LoadWorkflowSceneTask::report() {
         schema->getWizards().first()->setAutoRun(false);
     }
 
-    SceneCreator sc(schema, *meta);
+    SceneCreator sc(schema.get(), *meta);
     sc.recreateScene(scene);
     scene->setModified(false);
     scene->connectConfigurationEditors();

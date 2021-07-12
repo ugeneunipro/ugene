@@ -107,7 +107,7 @@ void Dataset::clear() {
 /* DatasetFilesIterator */
 /************************************************************************/
 DatasetFilesIterator::DatasetFilesIterator(const QList<Dataset> &_sets)
-    : FilesIterator(), currentIter(NULL) {
+    : FilesIterator(), currentIter(nullptr) {
     foreach (const Dataset &dSet, _sets) {
         sets << dSet;
     }
@@ -121,7 +121,7 @@ QString DatasetFilesIterator::getNextFile() {
     if (!hasNext()) {
         return "";
     }
-    if (NULL != currentIter) {
+    if (nullptr != currentIter) {
         assert(!sets.isEmpty());
         lastDatasetName = sets.first().getName();
         return currentIter->getNextFile();
@@ -135,7 +135,7 @@ bool DatasetFilesIterator::hasNext() {
     }
 
     do {
-        if (NULL != currentIter && currentIter->hasNext()) {
+        if (nullptr != currentIter && currentIter->hasNext()) {
             return true;
         }
         while (!sets.isEmpty() && sets.first().getUrls().isEmpty()) {
@@ -151,7 +151,7 @@ bool DatasetFilesIterator::hasNext() {
         currentIter = url->getFileUrls();
     } while (!currentIter->hasNext());
 
-    return (NULL != currentIter && currentIter->hasNext());
+    return (nullptr != currentIter && currentIter->hasNext());
 }
 
 QString DatasetFilesIterator::getLastDatasetName() const {

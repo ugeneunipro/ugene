@@ -56,7 +56,7 @@ class DNAAlphabet;
 class U2ALGORITHM_EXPORT CDSearchSettings {
 public:
     CDSearchSettings()
-        : ev(0.01f), alp(NULL) {
+        : ev(0.01f), alp(nullptr) {
     }
     float ev;
     const DNAAlphabet *alp;

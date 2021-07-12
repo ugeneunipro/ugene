@@ -61,7 +61,7 @@ namespace U2 {
 
 ImportAnnotationsFromCSVDialog::ImportAnnotationsFromCSVDialog(QWidget *w)
     : QDialog(w),
-      saveController(NULL) {
+      saveController(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929493");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Run"));

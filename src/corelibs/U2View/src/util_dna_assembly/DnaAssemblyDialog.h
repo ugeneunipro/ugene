@@ -57,7 +57,7 @@ class DnaAssemblyDialog : public QDialog, private Ui_AssemblyToRefDialog {
     Q_OBJECT
 
 public:
-    DnaAssemblyDialog(QWidget *p = NULL, const QStringList &shortReadsUrls = QStringList(), const QString &refSeqUrl = QString());
+    DnaAssemblyDialog(QWidget *p = nullptr, const QStringList &shortReadsUrls = QStringList(), const QString &refSeqUrl = QString());
     const GUrl getRefSeqUrl();
     const QList<ShortReadSet> getShortReadSets();
     const QString getAlgorithmName();

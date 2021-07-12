@@ -46,7 +46,7 @@ GObject *AssemblyObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const 
     gHints.setAll(hints);
 
     U2EntityRef dstEntityRef = AssemblyObject::dbi2dbiClone(this, dstDbiRef, os, gHints.getMap());
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     AssemblyObject *dstObj = new AssemblyObject(this->getGObjectName(), dstEntityRef, gHints.getMap());
 
     return dstObj;
@@ -55,7 +55,7 @@ GObject *AssemblyObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const 
 class CloneInfo : public U2AssemblyReadsImportInfo {
 public:
     CloneInfo(qint64 readsCount, U2OpStatus &os)
-        : U2AssemblyReadsImportInfo(NULL), os(os), readsCount(readsCount), addedCount(0), currentChunkSize(0) {
+        : U2AssemblyReadsImportInfo(nullptr), os(os), readsCount(readsCount), addedCount(0), currentChunkSize(0) {
         chunkSize = readsCount / 100;
     }
 
@@ -77,13 +77,13 @@ private:
 };
 
 void copyReadsUnrelatedAttributes(const U2DataId &srcObjId, const U2DataId &dstObjId, U2AttributeDbi *srcAttributeDbi, U2AttributeDbi *dstAttributeDbi, U2OpStatus &os) {
-    CHECK_EXT(NULL != srcAttributeDbi, os.setError("NULL source attribute dbi"), );
-    CHECK_EXT(NULL != dstAttributeDbi, os.setError("NULL destination attribute dbi"), );
+    CHECK_EXT(nullptr != srcAttributeDbi, os.setError("NULL source attribute dbi"), );
+    CHECK_EXT(nullptr != dstAttributeDbi, os.setError("NULL destination attribute dbi"), );
 
     U2Dbi *dstDbi = dstAttributeDbi->getRootDbi();
     U2Dbi *srcDbi = srcAttributeDbi->getRootDbi();
-    CHECK_EXT(NULL != srcDbi, os.setError("NULL source root dbi"), );
-    CHECK_EXT(NULL != dstDbi, os.setError("NULL destination root dbi"), );
+    CHECK_EXT(nullptr != srcDbi, os.setError("NULL source root dbi"), );
+    CHECK_EXT(nullptr != dstDbi, os.setError("NULL destination root dbi"), );
 
     if (!dstDbi->getFeatures().contains(U2DbiFeature_WriteAttributes)) {
         os.setError("Destination dbi does not support writing");
@@ -146,13 +146,13 @@ U2EntityRef AssemblyObject::dbi2dbiExtractRegion(const AssemblyObject *const src
 
     U2ObjectDbi *dstObjectDbi = dstCon.dbi->getObjectDbi();
     U2ObjectDbi *srcObjectDbi = srcCon.dbi->getObjectDbi();
-    SAFE_POINT_EXT(NULL != dstObjectDbi, os.setError("NULL destination object dbi"), U2EntityRef());
-    SAFE_POINT_EXT(NULL != srcObjectDbi, os.setError("NULL source object dbi"), U2EntityRef());
+    SAFE_POINT_EXT(nullptr != dstObjectDbi, os.setError("NULL destination object dbi"), U2EntityRef());
+    SAFE_POINT_EXT(nullptr != srcObjectDbi, os.setError("NULL source object dbi"), U2EntityRef());
 
     U2AssemblyDbi *dstAssemblyDbi = dstCon.dbi->getAssemblyDbi();
     U2AssemblyDbi *srcAssemblyDbi = srcCon.dbi->getAssemblyDbi();
-    SAFE_POINT_EXT(NULL != dstAssemblyDbi, os.setError("NULL destination assembly dbi"), U2EntityRef());
-    SAFE_POINT_EXT(NULL != srcAssemblyDbi, os.setError("NULL source assembly dbi"), U2EntityRef());
+    SAFE_POINT_EXT(nullptr != dstAssemblyDbi, os.setError("NULL destination assembly dbi"), U2EntityRef());
+    SAFE_POINT_EXT(nullptr != srcAssemblyDbi, os.setError("NULL source assembly dbi"), U2EntityRef());
 
     // prepare reads
     CHECK_OP(os, U2EntityRef());

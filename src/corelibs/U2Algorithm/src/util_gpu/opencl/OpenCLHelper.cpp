@@ -254,18 +254,18 @@ OpenCLHelper::~OpenCLHelper() {
 
 QString OpenCLHelper::getErrorString() const {
     switch (status) {
-    case Error_NoDriverLib: {
-        return QObject::tr("Cannot load library: %1").arg(OPENCL_DRIVER_LIB);
-    }
-    case Error_BadDriverLib: {
-        return QObject::tr("Some errors occurs in library: %1").arg(OPENCL_DRIVER_LIB);
-    }
-    case Error_NoError: {
-        return "";
-    }
-    default: {
-        return "";
-    }
+        case Error_NoDriverLib: {
+            return QObject::tr("Cannot load library: %1").arg(OPENCL_DRIVER_LIB);
+        }
+        case Error_BadDriverLib: {
+            return QObject::tr("Some errors occurs in library: %1").arg(OPENCL_DRIVER_LIB);
+        }
+        case Error_NoError: {
+            return "";
+        }
+        default: {
+            return "";
+        }
     }
 }
 }    // namespace U2

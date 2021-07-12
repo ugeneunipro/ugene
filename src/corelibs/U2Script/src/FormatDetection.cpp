@@ -63,7 +63,7 @@ extern "C" {
 U2SCRIPT_EXPORT U2ErrorType detectFileFormat(const wchar_t *_pathToFile, U2Format *format) {
     const QString pathToFile = QString::fromWCharArray(_pathToFile);
     QFileInfo info(pathToFile);
-    if (NULL == pathToFile || !info.isFile() || !info.exists()) {
+    if (nullptr == pathToFile || !info.isFile() || !info.exists()) {
         return U2_INVALID_PATH;
     }
     *format = U2_UNSUPPORTED;

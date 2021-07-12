@@ -190,7 +190,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
     QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
-    CHECK_SET_ERR(statisticsLabel != NULL, "No Common Statistics label");
+    CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics label");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -209,7 +209,7 @@ GUI_TEST_CLASS_DEFINITION(test_0003_1) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
     QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
-    CHECK_SET_ERR(statisticsLabel != NULL, "No Common Statistics label");
+    CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics label");
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -300,7 +300,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "Annotations"));
     QTreeWidgetItem *item = GTUtilsAnnotationsTreeView::findItem(os, "Misc. Feature");
     GTMouseDriver::moveTo(GTTreeWidget::getItemCenter(os, item));
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006_1) {
@@ -328,7 +327,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, name));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << ACTION_PROJECT__REMOVE_SELECTED));
     GTMouseDriver::click(Qt::RightButton);
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
@@ -339,7 +337,7 @@ GUI_TEST_CLASS_DEFINITION(test_0007) {
     GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Statistics);
 
     QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
-    CHECK_SET_ERR(statisticsLabel != NULL, "No Common Statistics widget");
+    CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics widget");
 
     QString s = QString("<table cellspacing=5>"
                         "<tr><td>Length: </td><td>200 nt</td></tr>"
@@ -372,7 +370,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
-    CHECK_SET_ERR(statisticsLabel != NULL, "No Common Statistics widget");
+    CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics widget");
 
     QString s = QString("Length: </td><td>199 950 nt");
     QString s1 = QString("GC content: </td><td>38.84%");
@@ -415,7 +413,7 @@ GUI_TEST_CLASS_DEFINITION(test_0009) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
-    CHECK_SET_ERR(statisticsLabel != NULL, "No Common Statistics widget");
+    CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics widget");
 
     QString s = QString("<table cellspacing=5>"
                         "<tr><td>Length: </td><td>26 926 aa</td></tr>"
@@ -434,7 +432,7 @@ GUI_TEST_CLASS_DEFINITION(test_0010) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
-    CHECK_SET_ERR(statisticsLabel != NULL, "No Common Statistics widget");
+    CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics widget");
     GTUtilsOptionsPanel::resizeToMaximum(os);
     QString labelText = statisticsLabel->text();
 
@@ -484,7 +482,7 @@ GUI_TEST_CLASS_DEFINITION(test_0011) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
-    CHECK_SET_ERR(statisticsLabel != NULL, "No Common Statistics widget");
+    CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics widget");
 
     QString s = QString("<table cellspacing=5>"
                         "<tr><td>Length: </td><td>230 </td></tr>"
@@ -504,10 +502,10 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QLabel *statisticsLabel = GTWidget::findExactWidget<QLabel *>(os, "Common Statistics");
-    CHECK_SET_ERR(statisticsLabel != NULL, "No Common Statistics widget");
+    CHECK_SET_ERR(statisticsLabel != nullptr, "No Common Statistics widget");
 
     QWidget *w0 = GTWidget::findWidget(os, "ADV_single_sequence_widget_0");
-    CHECK_SET_ERR(w0 != NULL, "ADV single sequence widget 0 is NULL");
+    CHECK_SET_ERR(w0 != nullptr, "ADV single sequence widget 0 is NULL");
     GTWidget::click(os, w0);
     QString s = QString("<table cellspacing=5>"
                         "<tr><td>Length: </td><td>70 </td></tr>"
@@ -515,7 +513,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     CHECK_SET_ERR(statisticsLabel->text() == s, "Statistics is wrong!");
 
     QWidget *w1 = GTWidget::findWidget(os, "ADV_single_sequence_widget_1");
-    CHECK_SET_ERR(w1 != NULL, "ADV single sequence widget 1 is NULL");
+    CHECK_SET_ERR(w1 != nullptr, "ADV single sequence widget 1 is NULL");
     GTWidget::click(os, w1);
     s = QString("<table cellspacing=5>"
                 "<tr><td>Length: </td><td>70 nt</td></tr>"
@@ -537,7 +535,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012) {
     CHECK_SET_ERR(statisticsLabel->text() == s, "Statistics is wrong!");
 
     QWidget *w2 = GTWidget::findWidget(os, "ADV_single_sequence_widget_2");
-    CHECK_SET_ERR(w2 != NULL, "ADV single sequence widget 2 is NULL");
+    CHECK_SET_ERR(w2 != nullptr, "ADV single sequence widget 2 is NULL");
     GTWidget::click(os, w2);
     s = QString("<table cellspacing=5>"
                 "<tr><td>Length: </td><td>70 aa</td></tr>"
@@ -556,7 +554,7 @@ GUI_TEST_CLASS_DEFINITION(test_0013) {
 
     // 3. Check the hint: it is visible
     QWidget *openCvWidget = GTWidget::findWidget(os, "openCvWidget");
-    CHECK_SET_ERR(openCvWidget != NULL, "No hint widget");
+    CHECK_SET_ERR(openCvWidget != nullptr, "No hint widget");
     CHECK_SET_ERR(openCvWidget->isVisible(), "Hint label and OpenCV button should be visible");
 
     // 4. Open CV
@@ -601,7 +599,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
 
     // 4. Select each available label position option
     QComboBox *positionComboBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "labelPositionComboBox"));
-    CHECK_SET_ERR(positionComboBox != NULL, "Position comboBox is NULL");
+    CHECK_SET_ERR(positionComboBox != nullptr, "Position comboBox is NULL");
     CHECK_SET_ERR(positionComboBox->count() == 4, "Wrong amount of available label position");
     GTComboBox::selectItemByIndex(os, positionComboBox, 0);
     GTComboBox::selectItemByIndex(os, positionComboBox, 1);
@@ -622,9 +620,9 @@ GUI_TEST_CLASS_DEFINITION(test_0016) {
     QSpinBox *rulerFontSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "rulerFontSizeSpinBox"));
     QSpinBox *annotFontSpinBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "labelFontSizeSpinBox"));
 
-    CHECK_SET_ERR(titleFontSpinBox != NULL, "Title font size spinBox is NULL");
-    CHECK_SET_ERR(rulerFontSpinBox != NULL, "Ruler font size spinBox is NULL");
-    CHECK_SET_ERR(annotFontSpinBox != NULL, "Annotation font size spinBox is NULL");
+    CHECK_SET_ERR(titleFontSpinBox != nullptr, "Title font size spinBox is NULL");
+    CHECK_SET_ERR(rulerFontSpinBox != nullptr, "Ruler font size spinBox is NULL");
+    CHECK_SET_ERR(annotFontSpinBox != nullptr, "Annotation font size spinBox is NULL");
 
     GTSpinBox::checkLimits(os, titleFontSpinBox, 7, 48);
     GTSpinBox::checkLimits(os, rulerFontSpinBox, 7, 24);
@@ -645,10 +643,10 @@ GUI_TEST_CLASS_DEFINITION(test_0017) {
     QCheckBox *rulerLineCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "rulerLineCheckBox"));
     QCheckBox *rulerCoordsCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "rulerCoordsCheckBox"));
 
-    CHECK_SET_ERR(titleCheckBox != NULL, "Show/hide title checkBox is NULL");
-    CHECK_SET_ERR(lengthCheckBox != NULL, "Show/hide seqeuence length checkBox is NULL");
-    CHECK_SET_ERR(rulerLineCheckBox != NULL, "Show/hide ruler line checkBox is NULL");
-    CHECK_SET_ERR(rulerCoordsCheckBox != NULL, "Show/hide ruler coordinates checkBox is NULL");
+    CHECK_SET_ERR(titleCheckBox != nullptr, "Show/hide title checkBox is NULL");
+    CHECK_SET_ERR(lengthCheckBox != nullptr, "Show/hide seqeuence length checkBox is NULL");
+    CHECK_SET_ERR(rulerLineCheckBox != nullptr, "Show/hide ruler line checkBox is NULL");
+    CHECK_SET_ERR(rulerCoordsCheckBox != nullptr, "Show/hide ruler coordinates checkBox is NULL");
 
     CHECK_SET_ERR(titleCheckBox->isChecked(), "Show/hide title checkBox is unchecked");
     CHECK_SET_ERR(lengthCheckBox->isChecked(), "Show/hide sequence length checkBox is unchecked");
@@ -672,12 +670,12 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
 
     // 3. Check font combobox and bold attribute button
     QWidget *boldButton = GTWidget::findWidget(os, "boldButton");
-    CHECK_SET_ERR(boldButton != NULL, "Bold button is NULL");
+    CHECK_SET_ERR(boldButton != nullptr, "Bold button is NULL");
     GTWidget::click(os, boldButton);
     CHECK_SET_ERR(qobject_cast<QPushButton *>(boldButton)->isChecked(), "Bold button is not checked");
 
     QFontComboBox *fontComboBox = qobject_cast<QFontComboBox *>(GTWidget::findWidget(os, "fontComboBox"));
-    CHECK_SET_ERR(fontComboBox != NULL, "Font comboBox is NULL");
+    CHECK_SET_ERR(fontComboBox != nullptr, "Font comboBox is NULL");
 #ifdef Q_OS_LINUX
     GTComboBox::selectItemByText(os, fontComboBox, "Serif");
 #else
@@ -701,7 +699,7 @@ GUI_TEST_CLASS_DEFINITION(test_0019) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_CV_SETTINGS"));
 
     QWidget *openCvWidget = GTWidget::findWidget(os, "openCvWidget");
-    CHECK_SET_ERR(openCvWidget != NULL, "No hint widget");
+    CHECK_SET_ERR(openCvWidget != nullptr, "No hint widget");
     CHECK_SET_ERR(openCvWidget->isVisible(), "Hint label and OpenCV button should be visible");
 
     GTWidget::click(os, GTWidget::findWidget(os, "openCvButton"));
@@ -730,7 +728,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     GTWidget::click(os, GTWidget::findWidget(os, "OP_CV_SETTINGS"));
 
     QWidget *openCvWidget1 = GTWidget::findWidget(os, "openCvWidget");
-    CHECK_SET_ERR(openCvWidget1 != NULL, "No hint widget");
+    CHECK_SET_ERR(openCvWidget1 != nullptr, "No hint widget");
     CHECK_SET_ERR(openCvWidget1->isVisible(), "Hint label and OpenCV button should be visible");
 
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "NC_014267.1.gb");
@@ -743,7 +741,7 @@ GUI_TEST_CLASS_DEFINITION(test_0020) {
     QWidget *parent = GTWidget::findWidget(os, "NC_014267 [NC_014267.1.gb]");
     GTWidget::click(os, GTWidget::findWidget(os, "OP_CV_SETTINGS", parent));
     QWidget *openCvWidget2 = GTWidget::findWidget(os, "openCvWidget", parent);
-    CHECK_SET_ERR(openCvWidget2 != NULL, "No hint widget");
+    CHECK_SET_ERR(openCvWidget2 != nullptr, "No hint widget");
     CHECK_SET_ERR(openCvWidget2->isHidden(), "Hint label and OpenCV button should be hidden");
 }
 

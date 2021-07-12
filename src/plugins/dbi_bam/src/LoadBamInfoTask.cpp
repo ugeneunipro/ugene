@@ -71,7 +71,7 @@ void LoadInfoTask::run() {
             hasIndex = ioIndexAdapter->open(baiUrl, IOAdapterMode_Read);
         }
 
-        QScopedPointer<Reader> reader(NULL);
+        QScopedPointer<Reader> reader(nullptr);
         if (sam) {
             reader.reset(new SamReader(*ioAdapter));
         } else {

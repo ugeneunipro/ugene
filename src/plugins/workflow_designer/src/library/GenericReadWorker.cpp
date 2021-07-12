@@ -95,7 +95,7 @@ Task *GenericDocReader::tick() {
         setDone();
         ch->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 Task *GenericDocReader::createReadTask(const QString &url, const QString &datasetName) {
@@ -106,7 +106,7 @@ Task *GenericDocReader::createReadTask(const QString &url, const QString &datase
         return wrapper;
     } else {
         readObjectFromDb(url, datasetName);
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -149,7 +149,7 @@ bool GenericDocReader::isDone() const {
 
 void GenericDocReader::sl_taskFinished() {
     NoFailTaskWrapper *wrapper = qobject_cast<NoFailTaskWrapper *>(sender());
-    SAFE_POINT(NULL != wrapper, "NULL wrapper task", );
+    SAFE_POINT(nullptr != wrapper, "NULL wrapper task", );
     Task *t = wrapper->originalTask();
     CHECK(t->isFinished(), );
     if (t->hasError()) {
@@ -221,7 +221,7 @@ void LoadMSATask::run() {
         stateInfo.setError(tr("File '%1' not exists").arg(url));
         return;
     }
-    DocumentFormat *format = NULL;
+    DocumentFormat *format = nullptr;
     QList<DocumentFormat *> fs = DocumentUtils::toFormats(DocumentUtils::detectFormat(url));
     foreach (DocumentFormat *f, fs) {
         if (f->getSupportedObjectTypes().contains(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT)) {
@@ -229,7 +229,7 @@ void LoadMSATask::run() {
             break;
         }
     }
-    if (format == NULL) {
+    if (format == nullptr) {
         foreach (DocumentFormat *f, fs) {
             if (f->getSupportedObjectTypes().contains(GObjectTypes::SEQUENCE)) {
                 format = f;
@@ -237,7 +237,7 @@ void LoadMSATask::run() {
             }
         }
     }
-    if (format == NULL) {
+    if (format == nullptr) {
         stateInfo.setError(tr("Unsupported document format: %1").arg(url));
         return;
     }
@@ -335,14 +335,14 @@ void LoadSeqTask::prepare() {
             break;
         }
     }
-    if (format == NULL) {
+    if (format == nullptr) {
         stateInfo.setError(tr("Unsupported document format: %1").arg(url));
         return;
     }
 }
 
 void LoadSeqTask::run() {
-    CHECK(NULL != format, );
+    CHECK(nullptr != format, );
     ioLog.info(tr("Reading sequences from %1 [%2]").arg(url).arg(format->getFormatName()));
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
     cfg[DocumentFormat::DBI_REF_HINT] = qVariantFromValue(storage->getDbiRef());
@@ -358,7 +358,7 @@ void LoadSeqTask::run() {
         QList<GObject *> annObjs = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
         QList<GObject *> allLoadedAnnotations = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
         foreach (GObject *go, seqObjs) {
-            SAFE_POINT(NULL != go, "Invalid object encountered!", );
+            SAFE_POINT(nullptr != go, "Invalid object encountered!", );
             if (!selector->objectMatches(static_cast<U2SequenceObject *>(go))) {
                 continue;
             }
@@ -387,7 +387,7 @@ void LoadSeqTask::run() {
         foreach (GObject *annObj, annObjs) {
             AnnotationTableObject *att = qobject_cast<AnnotationTableObject *>(annObj);
             if (att->findRelatedObjectsByRole(ObjectRole_Sequence).isEmpty()) {
-                SAFE_POINT(NULL != att, "Invalid annotation table object encountered!", );
+                SAFE_POINT(nullptr != att, "Invalid annotation table object encountered!", );
                 QVariantMap m;
                 m.insert(BaseSlots::URL_SLOT().getId(), url);
 

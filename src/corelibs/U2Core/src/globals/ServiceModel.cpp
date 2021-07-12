@@ -34,13 +34,13 @@ Service::Service(ServiceType t, const QString &_name, const QString &_desc, cons
     : type(t), name(_name), description(_desc), parentServices(_parentServices), state(ServiceState_Disabled_New), flags(f) {
     //Register service resource
     AppSettings *settings = AppContext::getAppSettings();
-    SAFE_POINT(NULL != settings, "Can not get application settings", );
+    SAFE_POINT(nullptr != settings, "Can not get application settings", );
     AppResourcePool *resourcePool = settings->getAppResourcePool();
-    SAFE_POINT(NULL != resourcePool, "Can not get resource pool", );
+    SAFE_POINT(nullptr != resourcePool, "Can not get resource pool", );
 
     AppResource *resource = resourcePool->getResource(t.id);
 
-    if (NULL == resource) {
+    if (nullptr == resource) {
         AppResourceSemaphore *serviceResource = new AppResourceSemaphore(t.id, 1, _name);
         resourcePool->registerResource(serviceResource);
     } else {

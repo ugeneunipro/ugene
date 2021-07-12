@@ -29,7 +29,7 @@ namespace U2 {
 template<class T>
 class QObjectScopedPointer {
 public:
-    QObjectScopedPointer(T *dialog = NULL)
+    QObjectScopedPointer(T *dialog = nullptr)
         : pointer(dialog) {
     }
     ~QObjectScopedPointer() {

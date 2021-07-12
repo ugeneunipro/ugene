@@ -57,7 +57,7 @@ MarkerEditorWidget::MarkerEditorWidget(QAbstractTableModel *markerModel, QWidget
 
 void MarkerEditorWidget::sl_onAddButtonClicked() {
     Workflow::MarkerGroupListCfgModel *model = dynamic_cast<Workflow::MarkerGroupListCfgModel *>(markerTable->model());
-    QObjectScopedPointer<EditMarkerGroupDialog> dlg = new EditMarkerGroupDialog(true, NULL, model, this);
+    QObjectScopedPointer<EditMarkerGroupDialog> dlg = new EditMarkerGroupDialog(true, nullptr, model, this);
     const int dialogResult = dlg->exec();
     CHECK(!dlg.isNull(), );
 

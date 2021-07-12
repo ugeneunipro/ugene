@@ -191,7 +191,7 @@ U2DbiIterator<U2Variant> *SQLiteVariantDbi::getVariants(const U2DataId &trackId,
         static QString queryString("SELECT id, startPos, endPos, refData, obsData, publicId, additionalInfo FROM Variant WHERE track = ?1 ORDER BY startPos");
         QSharedPointer<SQLiteReadQuery> q(new SQLiteReadQuery(queryString, db, os));
         q->bindDataId(1, trackId);
-        return new SQLiteResultSetIterator<U2Variant>(q, new SqliteVariantLoader(), NULL, U2Variant(), os);
+        return new SQLiteResultSetIterator<U2Variant>(q, new SqliteVariantLoader(), nullptr, U2Variant(), os);
     }
 
     QSharedPointer<SQLiteReadQuery> q(new SQLiteReadQuery("SELECT id, startPos, endPos, refData, obsData, publicId, additionalInfo FROM Variant \
@@ -201,7 +201,7 @@ U2DbiIterator<U2Variant> *SQLiteVariantDbi::getVariants(const U2DataId &trackId,
     q->bindDataId(1, trackId);
     q->bindInt64(2, region.startPos);
     q->bindInt64(3, region.endPos());
-    return new SQLiteResultSetIterator<U2Variant>(q, new SqliteVariantLoader(), NULL, U2Variant(), os);
+    return new SQLiteResultSetIterator<U2Variant>(q, new SqliteVariantLoader(), nullptr, U2Variant(), os);
 }
 
 class SimpleVariantTrackLoader : public SQLiteResultSetLoader<U2VariantTrack> {
@@ -241,7 +241,7 @@ U2DbiIterator<U2VariantTrack> *SQLiteVariantDbi::getVariantTracks(const U2DataId
 
     q->bindDataId(1, seqId);
 
-    return new SQLiteResultSetIterator<U2VariantTrack>(q, new SimpleVariantTrackLoader(), NULL, U2VariantTrack(), os);
+    return new SQLiteResultSetIterator<U2VariantTrack>(q, new SimpleVariantTrackLoader(), nullptr, U2VariantTrack(), os);
 }
 
 U2DbiIterator<U2VariantTrack> *SQLiteVariantDbi::getVariantTracks(const U2DataId &seqId, VariantTrackType trackType, U2OpStatus &os) {
@@ -264,7 +264,7 @@ U2DbiIterator<U2Variant> *SQLiteVariantDbi::getVariantsRange(const U2DataId &tra
     q->bindDataId(1, track);
     q->bindInt64(2, limit);
     q->bindInt64(3, offset);
-    return new SQLiteResultSetIterator<U2Variant>(q, new SqliteVariantLoader(), NULL, U2Variant(), os);
+    return new SQLiteResultSetIterator<U2Variant>(q, new SqliteVariantLoader(), nullptr, U2Variant(), os);
 }
 
 int SQLiteVariantDbi::getVariantCount(const U2DataId &trackId, U2OpStatus &os) {

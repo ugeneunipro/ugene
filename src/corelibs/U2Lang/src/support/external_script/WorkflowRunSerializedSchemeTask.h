@@ -53,14 +53,13 @@ public:
     WorkflowRunSerializedSchemeTask(const QString &pathToScheme,
                                     ScriptableScheduler *scheduler,
                                     QStringList &outputFiles);
-    ~WorkflowRunSerializedSchemeTask();
     QList<Task *> onSubTaskFinished(Task *subTask);
     QStringList getWorkflowOutputFiles() const;
 
 private:
     LoadWorkflowTask *createLoadSchemeTask();
 
-    Workflow::Schema *scheme;
+    QSharedPointer<Workflow::Schema> scheme;
     LoadWorkflowTask *loadTask;
     WorkflowRunTask *runTask;
 };

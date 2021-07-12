@@ -147,7 +147,8 @@ void LogSettingsPageWidget::setState(AppSettingsGUIPageState *s) {
 
     for (int i = 0; i < LogLevel_NumLevels; i++) {
         LogSettingsTopLineWidget *tw = qobject_cast<LogSettingsTopLineWidget *>(tableWidget->cellWidget(0, i + 1));
-        tw->cb->setCheckState(nEqual[i] == 0 ? Qt::Unchecked : nEqual[i] == settings.getLoggerSettings().size() ? Qt::Checked : Qt::PartiallyChecked);
+        tw->cb->setCheckState(nEqual[i] == 0 ? Qt::Unchecked : nEqual[i] == settings.getLoggerSettings().size() ? Qt::Checked
+                                                                                                                : Qt::PartiallyChecked);
     }
 
     tableWidget->resizeRowsToContents();
@@ -203,7 +204,7 @@ AppSettingsGUIPageState *LogSettingsPageWidget::getState(QString &err) const {
         bool writeble = file.open(QIODevice::WriteOnly);
         file.close();
         if (!writeble || lf.fileName().isEmpty()) {
-            QMessageBox::warning(NULL, tr("Warning"), tr("Unable to open log file for writing, log writing to file disabled"), QMessageBox::Ok);
+            QMessageBox::warning(nullptr, tr("Warning"), tr("Unable to open log file for writing, log writing to file disabled"), QMessageBox::Ok);
             fileOutCB->setChecked(false);
         }
     }
@@ -258,7 +259,7 @@ void LogSettingsPageWidget::sl_catItemStateChanged(QTableWidgetItem *item) {
     int nEqual = 0;
     for (int row = 1; row < tableWidget->rowCount(); row++) {
         QTableWidgetItem *catItem = tableWidget->item(row, column);
-        assert(catItem != NULL);
+        assert(catItem != nullptr);
         nEqual += catItem->checkState() == item->checkState() ? 1 : 0;
     }
     if (nEqual == tableWidget->rowCount() - 1) {

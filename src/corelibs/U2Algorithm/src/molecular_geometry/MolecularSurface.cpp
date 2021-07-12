@@ -137,9 +137,9 @@ void MolecularSurfaceCalcTask::run() {
 }
 
 MolecularSurface *MolecularSurfaceCalcTask::getCalculatedSurface() {
-    SAFE_POINT(molSurface != NULL, "Invalid molecular surface object detected!", NULL);
+    SAFE_POINT(molSurface != nullptr, "Invalid molecular surface object detected!", nullptr);
     MolecularSurface *returnValue = molSurface;
-    molSurface = NULL;
+    molSurface = nullptr;
 
     return returnValue;
 }

@@ -119,7 +119,7 @@ SMatrix SMatrix::fromQVariant(const QVariant &v) {
         m.scores[i] = float(list.at(n++).toDouble());
     }
 
-    if (m.name.isEmpty() || m.alphabet == NULL || m.validCharacters.isEmpty() || !m.validCharacters.contains(m.minChar) || !m.validCharacters.contains(m.maxChar) || m.maxChar - m.minChar + 1 != m.charsInRow) {
+    if (m.name.isEmpty() || m.alphabet == nullptr || m.validCharacters.isEmpty() || !m.validCharacters.contains(m.minChar) || !m.validCharacters.contains(m.maxChar) || m.maxChar - m.minChar + 1 != m.charsInRow) {
         coreLog.error("Error during substitution matrix deserialization!");
         return SMatrix();
     }

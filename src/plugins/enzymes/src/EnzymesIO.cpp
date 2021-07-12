@@ -47,7 +47,7 @@ QList<SEnzymeData> EnzymesIO::readEnzymes(const QString &url, TaskStateInfo &ti)
 
     IOAdapterId ioId = IOAdapterUtils::url2io(url);
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
-    if (iof == NULL) {
+    if (iof == nullptr) {
         ti.setError(tr("Unsupported URI type"));
         return res;
     }
@@ -73,7 +73,7 @@ QList<SEnzymeData> EnzymesIO::readEnzymes(const QString &url, TaskStateInfo &ti)
             algoLog.trace(tr("The enzyme '%1' has unknown sequence").arg(d->id));
             resToDelete.append(d);
         } else {
-            if (d->alphabet == NULL) {
+            if (d->alphabet == nullptr) {
                 d->alphabet = U2AlphabetUtils::findBestAlphabet(d->seq);
                 if (!d->alphabet) {
                     algoLog.error(tr("No enzyme alphabet: '%1', sequence '%2'")
@@ -100,14 +100,14 @@ QList<SEnzymeData> EnzymesIO::readEnzymes(const QString &url, TaskStateInfo &ti)
 void EnzymesIO::writeEnzymes(const QString &url, const QString &source, const QSet<QString> &enzymes, TaskStateInfo &ti) {
     IOAdapterId ioId = IOAdapterUtils::url2io(url);
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
-    if (iof == NULL) {
+    if (iof == nullptr) {
         ti.setError(tr("Unsupported URI type"));
         return;
     }
 
     IOAdapterId srcioId = IOAdapterUtils::url2io(source);
     IOAdapterFactory *srciof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(srcioId);
-    if (srciof == NULL) {
+    if (srciof == nullptr) {
         ti.setError(tr("Unsupported URI type"));
         return;
     }

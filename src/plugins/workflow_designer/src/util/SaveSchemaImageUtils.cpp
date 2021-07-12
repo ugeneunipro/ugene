@@ -44,7 +44,7 @@ static Logger log("Save workflow image task");
  * ProduceSchemaImageLinkTask
  ********************************/
 ProduceSchemaImageLinkTask::ProduceSchemaImageLinkTask(const QString &schemaName)
-    : Task(tr("Save workflow image"), TaskFlags_NR_FOSCOE), schema(NULL) {
+    : Task(tr("Save workflow image"), TaskFlags_NR_FOSCOE), schema(nullptr) {
     schemaPath = WorkflowUtils::findPathToSchemaFile(schemaName);
     if (schemaPath.isEmpty()) {
         setError(tr("Cannot find workflow: %1").arg(schemaName));
@@ -52,30 +52,26 @@ ProduceSchemaImageLinkTask::ProduceSchemaImageLinkTask(const QString &schemaName
     }
 }
 
-ProduceSchemaImageLinkTask::~ProduceSchemaImageLinkTask() {
-    delete schema;
-}
-
 void ProduceSchemaImageLinkTask::prepare() {
     if (hasError() || isCanceled()) {
         return;
     }
 
-    schema = new Schema();
+    schema = QSharedPointer<Schema>::create();
     schema->setDeepCopyFlag(true);
     addSubTask(new LoadWorkflowTask(schema, &meta, schemaPath));
 }
 
 QList<Task *> ProduceSchemaImageLinkTask::onSubTaskFinished(Task *subTask) {
     LoadWorkflowTask *loadTask = qobject_cast<LoadWorkflowTask *>(subTask);
-    assert(loadTask != NULL);
+    assert(loadTask != nullptr);
 
     QList<Task *> res;
     if (loadTask->hasError() || loadTask->isCanceled()) {
         return res;
     }
 
-    GoogleChartImage googleImg(schema, meta);
+    GoogleChartImage googleImg(schema.get(), meta);
     imageLink = googleImg.getImageUrl();
 
     return res;
@@ -102,7 +98,7 @@ const QString GoogleChartImage::GOOGLE_CHART_BASE_URL = "http://chart.apis.googl
 
 GoogleChartImage::GoogleChartImage(Schema *sc, const Metadata &m)
     : chartSize(CHART_SIZE_DEFAULT), schema(sc), meta(m) {
-    assert(schema != NULL);
+    assert(schema != nullptr);
 }
 
 QString GoogleChartImage::getImageUrl() const {
@@ -129,7 +125,7 @@ static QString makeArgumentPair(const QString &argName, const QString &value) {
 //}
 
 static QString getSchemaGraphInExtendedDotNotation(Schema *schema, const Metadata &meta) {
-    assert(schema != NULL);
+    assert(schema != nullptr);
     QString graph = "digraph{";
     graph += QString("label=\"Workflow %1\";").arg(meta.name);
     graph += QString("compound=true;");
@@ -177,7 +173,7 @@ QPixmap SaveSchemaImageUtils::generateSchemaSnapshot(const QString &data) {
         return QPixmap();
     }
     SceneCreator sc(&schema, meta);
-    QScopedPointer<WorkflowScene> scene(sc.createScene(NULL));
+    QScopedPointer<WorkflowScene> scene(sc.createScene(nullptr));
 
     QRectF bounds = scene->itemsBoundingRect();
     CHECK(!bounds.isEmpty(), QPixmap());

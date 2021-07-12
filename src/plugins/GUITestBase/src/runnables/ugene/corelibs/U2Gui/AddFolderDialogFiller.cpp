@@ -46,13 +46,13 @@ void AddFolderDialogFiller::commonScenario() {
     GTLineEdit::setText(os, nameEdit, folderName);
 
     switch (acceptMethod) {
-    case GTGlobals::UseMouse:
-        GTWidget::click(os, GTWidget::findButtonByText(os, "OK", dialog));
-        break;
-    case GTGlobals::UseKey:
-    case GTGlobals::UseKeyBoard:
-        GTKeyboardDriver::keyClick(Qt::Key_Enter);
-        break;
+        case GTGlobals::UseMouse:
+            GTWidget::click(os, GTWidget::findButtonByText(os, "OK", dialog));
+            break;
+        case GTGlobals::UseKey:
+        case GTGlobals::UseKeyBoard:
+            GTKeyboardDriver::keyClick(Qt::Key_Enter);
+            break;
     }
 }
 

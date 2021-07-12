@@ -33,7 +33,7 @@ namespace U2 {
 class U2GUI_EXPORT AuthenticationWidget : public QWidget, public Ui_AuthenticationWidget {
     Q_OBJECT
 public:
-    AuthenticationWidget(QWidget *parent = NULL);
+    AuthenticationWidget(QWidget *parent = nullptr);
 
     void setLogin(const QString &login);
     void setPassword(const QString &password);

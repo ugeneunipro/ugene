@@ -140,7 +140,7 @@ QString TCoffeePrompter::composeRichDoc() {
 * TCoffeeWorker
 ****************************/
 TCoffeeWorker::TCoffeeWorker(Actor *a)
-    : BaseWorker(a), input(NULL), output(NULL) {
+    : BaseWorker(a), input(nullptr), output(nullptr) {
 }
 
 void TCoffeeWorker::init() {
@@ -153,7 +153,7 @@ Task *TCoffeeWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         cfg.gapOpenPenalty = actor->getParameter(GAP_OPEN_PENALTY)->getAttributeValue<float>(context);
         cfg.gapExtenstionPenalty = actor->getParameter(GAP_EXT_PENALTY)->getAttributeValue<float>(context);
@@ -171,12 +171,12 @@ Task *TCoffeeWorker::tick() {
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
-        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
+        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
         const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
         if (msa->isEmpty()) {
             algoLog.error(tr("An empty MSA '%1' has been supplied to T-Coffee.").arg(msa->getName()));
-            return NULL;
+            return nullptr;
         }
         TCoffeeSupportTask *supportTask = new TCoffeeSupportTask(msa, GObjectReference(), cfg);
         supportTask->addListeners(createLogListeners());
@@ -187,7 +187,7 @@ Task *TCoffeeWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void TCoffeeWorker::sl_taskFinished() {
@@ -202,7 +202,7 @@ void TCoffeeWorker::sl_taskFinished() {
         return;
     }
 
-    SAFE_POINT(NULL != output, "NULL output!", );
+    SAFE_POINT(nullptr != output, "NULL output!", );
     SharedDbiDataHandler msaId = context->getDataStorage()->putAlignment(t->resultMA);
     QVariantMap msgData;
     msgData[BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(msaId);

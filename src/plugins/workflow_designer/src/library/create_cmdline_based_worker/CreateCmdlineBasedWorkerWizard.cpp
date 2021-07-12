@@ -798,7 +798,7 @@ bool CreateCmdlineBasedWorkerWizardCommandPage::validatePage() {
     msgBox->setWindowTitle(tr("Create Element"));
     msgBox->setText(tr("You don't use listed parameters in template string. Continue?"));
     msgBox->setDetailedText(parameters);
-    QAbstractButton *detailsButton = NULL;
+    QAbstractButton *detailsButton = nullptr;
     foreach (QAbstractButton *button, msgBox->buttons()) {
         if (msgBox->buttonRole(button) == QMessageBox::ActionRole) {
             QString buttoText = button->text();

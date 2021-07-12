@@ -56,7 +56,7 @@ class U2CORE_EXPORT U2DbiRegistry : public QObject {
     };
 
 public:
-    U2DbiRegistry(QObject *parent = NULL);
+    U2DbiRegistry(QObject *parent = nullptr);
     ~U2DbiRegistry();
 
     virtual bool registerDbiFactory(U2DbiFactory *factory);
@@ -123,7 +123,7 @@ private:
 class U2CORE_EXPORT U2DbiPool : public QObject {
     Q_OBJECT
 public:
-    U2DbiPool(QObject *p = NULL);
+    U2DbiPool(QObject *p = nullptr);
     virtual ~U2DbiPool();
 
     U2Dbi *openDbi(const U2DbiRef &ref, bool create, U2OpStatus &os, const QHash<QString, QString> &properties = (QHash<QString, QString>()));

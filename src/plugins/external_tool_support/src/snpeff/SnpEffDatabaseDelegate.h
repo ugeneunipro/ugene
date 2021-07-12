@@ -56,7 +56,7 @@ private:
 class SnpEffDatabasePropertyWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    SnpEffDatabasePropertyWidget(QWidget *parent = NULL, DelegateTags *tags = NULL);
+    SnpEffDatabasePropertyWidget(QWidget *parent = nullptr, DelegateTags *tags = nullptr);
     virtual QVariant value();
 
 public slots:

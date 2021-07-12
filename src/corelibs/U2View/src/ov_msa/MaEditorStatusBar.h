@@ -38,7 +38,7 @@ class MaEditorStatusBar : public QFrame {
 protected:
     class TwoArgPatternLabel : public QLabel {
     public:
-        TwoArgPatternLabel(QString textPattern, QString tooltipPattern, QString objectName, QWidget *parent = NULL);
+        TwoArgPatternLabel(QString textPattern, QString tooltipPattern, QString objectName, QWidget *parent = nullptr);
         void setPatterns(QString textPattern, QString tooltipPattern);
 
         void update(QString firstArg, int minWidth);

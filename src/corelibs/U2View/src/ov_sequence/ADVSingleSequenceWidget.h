@@ -78,10 +78,10 @@ public:
         return detView;
     }
 
-    virtual void centerPosition(int pos, QWidget *skipView = NULL);
+    virtual void centerPosition(int pos, QWidget *skipView = nullptr);
 
     ADVSequenceObjectContext *getActiveSequenceContext() const {
-        return (seqContexts.isEmpty()) ? NULL : seqContexts.first();
+        return (seqContexts.isEmpty()) ? nullptr : seqContexts.first();
     }
     ADVSequenceObjectContext *getSequenceContext() const {
         return getActiveSequenceContext();
@@ -95,7 +95,7 @@ public:
 
     int getSequenceLength() const;
 
-    virtual void addSequenceView(GSequenceLineView *v, QWidget *after = NULL);
+    virtual void addSequenceView(GSequenceLineView *v, QWidget *after = nullptr);
 
     virtual void removeSequenceView(GSequenceLineView *v, bool deleteView = true);
 

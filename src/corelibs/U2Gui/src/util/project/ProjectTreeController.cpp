@@ -34,8 +34,8 @@
 #include <U2Core/AddObjectsToDocumentTask.h>
 #include <U2Core/AppContext.h>
 #include <U2Core/BaseDocumentFormats.h>
-#include <U2Core/CMDLineRegistry.h>
 #include <U2Core/CMDLineCoreOptions.h>
+#include <U2Core/CMDLineRegistry.h>
 #include <U2Core/DeleteObjectsTask.h>
 #include <U2Core/DocumentUtils.h>
 #include <U2Core/L10n.h>
@@ -71,15 +71,15 @@ ProjectTreeController::ProjectTreeController(EditableTreeView *tree, const Proje
     : QObject(parent),
       tree(tree),
       settings(settings),
-      updater(NULL),
-      model(NULL),
-      filterModel(NULL),
-      previousItemDelegate(NULL),
-      proxyModel(NULL),
-      markActiveView(NULL),
-      objectIsBeingRecycled(NULL) {
+      updater(nullptr),
+      model(nullptr),
+      filterModel(nullptr),
+      previousItemDelegate(nullptr),
+      proxyModel(nullptr),
+      markActiveView(nullptr),
+      objectIsBeingRecycled(nullptr) {
     Project *project = AppContext::getProject();
-    SAFE_POINT(NULL != project, "NULL project", );
+    SAFE_POINT(nullptr != project, "NULL project", );
 
     model = new ProjectViewModel(settings, this);
     if (settings.isObjectFilterActive()) {
@@ -99,7 +99,7 @@ ProjectTreeController::ProjectTreeController(EditableTreeView *tree, const Proje
     connect(project, SIGNAL(si_documentRemoved(Document *)), SLOT(sl_onDocumentRemoved(Document *)));
 
     tree->setDragDropMode(QAbstractItemView::InternalMove);
-    tree->setModel(NULL == proxyModel ? qobject_cast<QAbstractItemModel *>(model) : qobject_cast<QAbstractItemModel *>(proxyModel));
+    tree->setModel(nullptr == proxyModel ? qobject_cast<QAbstractItemModel *>(model) : qobject_cast<QAbstractItemModel *>(proxyModel));
     updater->start();
     timer->start();
 
@@ -114,7 +114,7 @@ ProjectTreeController::ProjectTreeController(EditableTreeView *tree, const Proje
     connect(model, SIGNAL(si_documentContentChanged(Document *)), SLOT(sl_documentContentChanged(Document *)));
     connect(model, SIGNAL(si_projectItemRenamed(const QModelIndex &)), SLOT(sl_onProjectItemRenamed(const QModelIndex &)));
 
-    if (NULL != filterModel) {
+    if (nullptr != filterModel) {
         connect(filterModel, SIGNAL(si_filterGroupAdded(const QModelIndex &)), SLOT(sl_filterGroupAdded(const QModelIndex &)));
         connect(filterModel, SIGNAL(si_filteringStarted()), SIGNAL(si_filteringStarted()));
         connect(filterModel, SIGNAL(si_filteringFinished()), SIGNAL(si_filteringFinished()));
@@ -140,7 +140,7 @@ ProjectTreeController::ProjectTreeController(EditableTreeView *tree, const Proje
 }
 
 ProjectTreeController::~ProjectTreeController() {
-    if (NULL != updater) {
+    if (nullptr != updater) {
         updater->stop();
         // TODO
         //delete updater;
@@ -157,7 +157,7 @@ const GObjectSelection *ProjectTreeController::getGObjectSelection() const {
 
 bool ProjectTreeController::isObjectInRecycleBin(GObject *obj) const {
     Document *doc = obj->getDocument();
-    CHECK(NULL != doc && ProjectUtils::isConnectedDatabaseDoc(doc), false);
+    CHECK(nullptr != doc && ProjectUtils::isConnectedDatabaseDoc(doc), false);
 
     const QString objectPath = model->getObjectFolder(doc, obj);
     return ProjectUtils::isFolderInRecycleBinSubtree(objectPath);
@@ -168,8 +168,8 @@ const ProjectTreeControllerModeSettings &ProjectTreeController::getModeSettings(
 }
 
 QModelIndex ProjectTreeController::getIndexForDoc(Document *doc) const {
-    SAFE_POINT(NULL != doc, L10N::nullPointerError("document"), QModelIndex());
-    return proxyModel == NULL ? model->getIndexForDoc(doc) : proxyModel->getIndexForDoc(doc);
+    SAFE_POINT(nullptr != doc, L10N::nullPointerError("document"), QModelIndex());
+    return proxyModel == nullptr ? model->getIndexForDoc(doc) : proxyModel->getIndexForDoc(doc);
 }
 
 void ProjectTreeController::highlightItem(Document *doc) {
@@ -179,7 +179,7 @@ void ProjectTreeController::highlightItem(Document *doc) {
 }
 
 void ProjectTreeController::refreshObject(GObject *object) {
-    SAFE_POINT(NULL != object, L10N::nullPointerError("object"), );
+    SAFE_POINT(nullptr != object, L10N::nullPointerError("object"), );
     model->updateData(model->getIndexForObject(object));
 }
 
@@ -197,12 +197,12 @@ void ProjectTreeController::updateSettings(const ProjectTreeControllerModeSettin
     settings = newSettings;
     model->updateSettings(newSettings);
 
-    if (NULL != filterModel) {
+    if (nullptr != filterModel) {
         filterModel->updateSettings(newSettings);
         if (objectFilterChanged) {
             disconnect(tree->selectionModel(), SIGNAL(selectionChanged(const QItemSelection &, const QItemSelection &)), this, SLOT(sl_updateSelection()));
 
-            QAbstractItemDelegate *itemDelegateToBeSet = NULL == previousItemDelegate ? new FilteredProjectItemDelegate(filterModel) : previousItemDelegate;
+            QAbstractItemDelegate *itemDelegateToBeSet = nullptr == previousItemDelegate ? new FilteredProjectItemDelegate(filterModel) : previousItemDelegate;
             previousItemDelegate = tree->itemDelegate();
             tree->setModel(newSettings.isObjectFilterActive() ? qobject_cast<QAbstractItemModel *>(filterModel) : qobject_cast<QAbstractItemModel *>(model));
             tree->setUniformRowHeights(!newSettings.isObjectFilterActive());
@@ -220,7 +220,7 @@ void ProjectTreeController::updateSettings(const ProjectTreeControllerModeSettin
             }
         }
     } else {
-        SAFE_POINT(NULL != proxyModel, L10N::nullPointerError("Project proxy model"), );
+        SAFE_POINT(nullptr != proxyModel, L10N::nullPointerError("Project proxy model"), );
         proxyModel->updateSettings(newSettings);
     }
 
@@ -340,7 +340,7 @@ void ProjectTreeController::sl_updateActions() {
         if (!isObjectInRecycleBin(obj) && allObjectsAreInRecycleBin) {
             allObjectsAreInRecycleBin = false;
         }
-        selectedModifiableObjectsExist &= (NULL != obj->getDocument() && !obj->getDocument()->isStateLocked());
+        selectedModifiableObjectsExist &= (nullptr != obj->getDocument() && !obj->getDocument()->isStateLocked());
         if (!canRemoveObjectFromDocument && !allObjectsAreInRecycleBin && !selectedModifiableObjectsExist) {
             break;
         }
@@ -415,7 +415,7 @@ void ProjectTreeController::updateRenameAction() {
     if (selItems.size() == 1 && !AppContext::getProject()->isStateLocked()) {
         if (!objectSelection.isEmpty()) {
             GObject *selectedObj = objectSelection.getSelectedObjects().first();
-            const bool parentDocLocked = NULL != selectedObj->getDocument() && selectedObj->getDocument()->isStateLocked();
+            const bool parentDocLocked = nullptr != selectedObj->getDocument() && selectedObj->getDocument()->isStateLocked();
             renameIsOk = !isObjectInRecycleBin(selectedObj) && !parentDocLocked && !settings.isObjectFilterActive();
         } else {
             renameIsOk = canRenameFolder();
@@ -452,7 +452,7 @@ void ProjectTreeController::sl_doubleClicked(const QModelIndex &index) {
 
 void ProjectTreeController::sl_documentContentChanged(Document *doc) {
     updater->invalidate(doc);
-    if (NULL != proxyModel) {
+    if (nullptr != proxyModel) {
         proxyModel->invalidate();
     }
 }
@@ -499,7 +499,7 @@ void ProjectTreeController::sl_onLoadSelectedDocuments() {
     QSet<Document *> docsInSelection = getDocsInSelection(true);
     QList<Document *> docsToLoad;
     foreach (Document *doc, docsInSelection) {
-        if (!doc->isLoaded() && (NULL == LoadUnloadedDocumentTask::findActiveLoadingTask(doc))) {
+        if (!doc->isLoaded() && (nullptr == LoadUnloadedDocumentTask::findActiveLoadingTask(doc))) {
             docsToLoad << doc;
         }
     }
@@ -545,7 +545,7 @@ void ProjectTreeController::sl_onContextMenuRequested(const QPoint &) {
 
     const bool addActionsExist = addObjectToDocumentAction->isEnabled() || createFolderAction->isEnabled();
 
-    if (NULL != pv && addActionsExist) {
+    if (nullptr != pv && addActionsExist) {
         QMenu *addMenu = m.addMenu(tr("Add"));
         addMenu->menuAction()->setObjectName(ACTION_PROJECT__ADD_MENU);
         if (addObjectToDocumentAction->isEnabled()) {
@@ -574,7 +574,7 @@ void ProjectTreeController::sl_onContextMenuRequested(const QPoint &) {
         m.addAction(removeSelectedItemsAction);
     }
 
-    if (pv != NULL && renameAction->isEnabled()) {
+    if (pv != nullptr && renameAction->isEnabled()) {
         m.addAction(renameAction);
     }
 
@@ -605,7 +605,7 @@ void ProjectTreeController::sl_onContextMenuRequested(const QPoint &) {
 
 void ProjectTreeController::sl_onDocumentLoadedStateChanged() {
     Document *doc = qobject_cast<Document *>(sender());
-    SAFE_POINT(NULL != doc, "NULL document", );
+    SAFE_POINT(nullptr != doc, "NULL document", );
 
     if (doc->isLoaded()) {
         updater->addDocument(doc);
@@ -633,14 +633,14 @@ void ProjectTreeController::sl_onRename() {
     const QModelIndexList selection = tree->selectionModel()->selectedIndexes();
     CHECK(selection.size() == 1, );
 
-    const QModelIndex selectedIndex = NULL == proxyModel ? selection.first() : proxyModel->mapToSource(selection.first());
+    const QModelIndex selectedIndex = nullptr == proxyModel ? selection.first() : proxyModel->mapToSource(selection.first());
     CHECK(ProjectViewModel::DOCUMENT != ProjectViewModel::itemType(selectedIndex), );
 
     tree->edit(selectedIndex);
 }
 
 void ProjectTreeController::sl_onProjectItemRenamed(const QModelIndex &index) {
-    Document *doc = NULL;
+    Document *doc = nullptr;
     switch (ProjectViewModel::itemType(index)) {
         case ProjectViewModel::OBJECT:
             doc = ProjectViewModel::toObject(index)->getDocument();
@@ -656,7 +656,7 @@ void ProjectTreeController::sl_onProjectItemRenamed(const QModelIndex &index) {
     }
     updater->invalidate(doc);
 
-    tree->selectionModel()->setCurrentIndex(NULL == proxyModel ? index : proxyModel->mapFromSource(index), QItemSelectionModel::Select);
+    tree->selectionModel()->setCurrentIndex(nullptr == proxyModel ? index : proxyModel->mapFromSource(index), QItemSelectionModel::Select);
     tree->setFocus();
 }
 
@@ -669,7 +669,7 @@ void ProjectTreeController::sl_onEmptyRecycleBin() {
     const QList<Folder> selectedFolders = getSelectedFolders();
     SAFE_POINT(!selectedFolders.isEmpty(), "No selected folders found!", );
     Document *doc = selectedFolders.first().getDocument();
-    SAFE_POINT(NULL != doc, "Invalid document detected!", );
+    SAFE_POINT(nullptr != doc, "Invalid document detected!", );
 
     QModelIndex rbIndex = model->getIndexForPath(doc, ProjectUtils::RECYCLE_BIN_FOLDER_PATH);
     CHECK(rbIndex.isValid(), );
@@ -715,7 +715,7 @@ void ProjectTreeController::restoreSelectedObjects() {
             continue;
         }
         Document *doc = obj->getDocument();
-        SAFE_POINT(NULL != doc, "Invalid parent document detected!", );
+        SAFE_POINT(nullptr != doc, "Invalid parent document detected!", );
         if (model->restoreObjectItemFromRecycleBin(doc, obj)) {
             docs.insert(doc);
         } else {
@@ -748,7 +748,7 @@ void ProjectTreeController::restoreSelectedFolders() {
         }
 
         Document *doc = folder.getDocument();
-        SAFE_POINT(NULL != doc, "Invalid parent document detected!", );
+        SAFE_POINT(nullptr != doc, "Invalid parent document detected!", );
 
         if (model->restoreFolderItemFromRecycleBin(doc, oldFolderPath)) {
             docs.insert(doc);
@@ -806,7 +806,7 @@ void ProjectTreeController::sl_onRemoveSelectedItems() {
 
 void ProjectTreeController::sl_onLockedStateChanged() {
     Document *doc = qobject_cast<Document *>(sender());
-    SAFE_POINT(NULL != doc, "NULL document", );
+    SAFE_POINT(nullptr != doc, "NULL document", );
 
     if (settings.readOnlyFilter != TriState_Unknown) {
         bool remove = (doc->isStateLocked() && settings.readOnlyFilter == TriState_Yes) || (!doc->isStateLocked() && settings.readOnlyFilter == TriState_No);
@@ -823,13 +823,13 @@ void ProjectTreeController::sl_onImportToDatabase() {
     QList<Folder> selectedFolders = getSelectedFolders();
     bool folderIsSelected = (1 == selectedFolders.size());
 
-    Document *doc = NULL;
+    Document *doc = nullptr;
     if (folderIsSelected) {
         doc = selectedFolders.first().getDocument();
     } else if (1 == selectedDocuments.size()) {
         doc = selectedDocuments.values().first();
     }
-    SAFE_POINT(doc != NULL, tr("Select a database to import anything"), );
+    SAFE_POINT(doc != nullptr, tr("Select a database to import anything"), );
 
     QWidget *mainWindow = qobject_cast<QWidget *>(AppContext::getMainWindow()->getQMainWindow());
     QObjectScopedPointer<ImportToDatabaseDialog> importDialog = new ImportToDatabaseDialog(doc, selectedFolders.first().getFolderPath(), mainWindow);
@@ -851,7 +851,7 @@ void ProjectTreeController::sl_windowActivated(MWMDIWindow *w) {
     }
 
     GObjectViewWindow *ow = qobject_cast<GObjectViewWindow *>(w);
-    CHECK(NULL != ow, );
+    CHECK(nullptr != ow, );
     uiLog.trace(QString("Project view now listens object events in '%1' view").arg(ow->windowTitle()));
     markActiveView = ow->getObjectView();
     connect(markActiveView, SIGNAL(si_objectAdded(GObjectView *, GObject *)), SLOT(sl_objectAddedToActiveView(GObjectView *, GObject *)));
@@ -863,58 +863,58 @@ void ProjectTreeController::sl_windowActivated(MWMDIWindow *w) {
 
 void ProjectTreeController::sl_windowDeactivated(MWMDIWindow *w) {
     GObjectViewWindow *ow = qobject_cast<GObjectViewWindow *>(w);
-    CHECK(NULL != ow, );
+    CHECK(nullptr != ow, );
     foreach (GObject *obj, ow->getObjects()) {
         updateObjectActiveStateVisual(obj);
     }
 }
 
 void ProjectTreeController::sl_objectAddedToActiveView(GObjectView *, GObject *obj) {
-    SAFE_POINT(NULL != obj, tr("No object to add to view"), );
+    SAFE_POINT(nullptr != obj, tr("No object to add to view"), );
     uiLog.trace(QString("Processing object add to active view in project tree: %1").arg(obj->getGObjectName()));
     updateObjectActiveStateVisual(obj);
 }
 
 void ProjectTreeController::sl_objectRemovedFromActiveView(GObjectView *, GObject *obj) {
-    SAFE_POINT(NULL != obj, tr("No object to remove from view"), );
+    SAFE_POINT(nullptr != obj, tr("No object to remove from view"), );
     uiLog.trace(QString("Processing object remove form active view in project tree: %1").arg(obj->getGObjectName()));
     updateObjectActiveStateVisual(obj);
 }
 
 void ProjectTreeController::sl_onResourceUserRegistered(const QString & /*res*/, Task *t) {
     LoadUnloadedDocumentTask *lut = qobject_cast<LoadUnloadedDocumentTask *>(t);
-    CHECK(NULL != lut, );
+    CHECK(nullptr != lut, );
     CHECK(model->hasDocument(lut->getDocument()), );
     connect(lut, SIGNAL(si_progressChanged()), SLOT(sl_onLoadingDocumentProgressChanged()));
 }
 
 void ProjectTreeController::sl_onResourceUserUnregistered(const QString & /*res*/, Task *t) {
     LoadUnloadedDocumentTask *lut = qobject_cast<LoadUnloadedDocumentTask *>(t);
-    CHECK(NULL != lut, );
+    CHECK(nullptr != lut, );
     lut->disconnect(this);
 
     Document *doc = lut->getDocument();
-    CHECK(NULL != doc, );
+    CHECK(nullptr != doc, );
     CHECK(model->hasDocument(doc), );
     updateLoadingState(doc);
 }
 
 void ProjectTreeController::sl_onLoadingDocumentProgressChanged() {
     LoadUnloadedDocumentTask *lut = qobject_cast<LoadUnloadedDocumentTask *>(sender());
-    CHECK(NULL != lut, );
+    CHECK(nullptr != lut, );
     Document *doc = lut->getDocument();
-    CHECK(NULL != doc, );
+    CHECK(nullptr != doc, );
     updateLoadingState(doc);
 }
 
 bool ProjectTreeController::eventFilter(QObject *o, QEvent *e) {
     EditableTreeView *tree = dynamic_cast<EditableTreeView *>(o);
-    CHECK(NULL != tree, false);
+    CHECK(nullptr != tree, false);
     CHECK(tree == this->tree, false);
 
     if (QEvent::KeyPress == e->type()) {
         QKeyEvent *kEvent = dynamic_cast<QKeyEvent *>(e);
-        CHECK(NULL != kEvent, false);
+        CHECK(nullptr != kEvent, false);
         int key = kEvent->key();
         bool hasSelection = !documentSelection.isEmpty() || !objectSelection.isEmpty() || !folderSelection.isEmpty();
         if ((key == Qt::Key_Return || key == Qt::Key_Enter) && hasSelection) {
@@ -1045,7 +1045,7 @@ void ProjectTreeController::updateLoadingState(Document *doc) {
 
 void ProjectTreeController::runLoadDocumentTasks(const QList<Document *> &docs) const {
     QList<Task *> tasks;
-    if (NULL != settings.loadTaskProvider) {
+    if (nullptr != settings.loadTaskProvider) {
         tasks = settings.loadTaskProvider->createLoadDocumentTasks(docs);
     } else {
         foreach (Document *doc, docs) {
@@ -1063,7 +1063,7 @@ QSet<Document *> ProjectTreeController::getDocsInSelection(bool deriveFromObject
     if (deriveFromObjects) {
         foreach (GObject *obj, objectSelection.getSelectedObjects()) {
             Document *doc = obj->getDocument();
-            SAFE_POINT(NULL != doc, "NULL document", result);
+            SAFE_POINT(nullptr != doc, "NULL document", result);
             result << doc;
         }
     }
@@ -1127,9 +1127,9 @@ bool ProjectTreeController::isSubFolder(const QList<Folder> &folders, const Fold
 
 bool ProjectTreeController::isObjectInFolder(GObject *obj, const Folder &folder) const {
     Document *objDoc = obj->getDocument();
-    SAFE_POINT(NULL != objDoc, "Invalid parent document", false);
+    SAFE_POINT(nullptr != objDoc, "Invalid parent document", false);
     Document *folderDoc = folder.getDocument();
-    SAFE_POINT(NULL != folderDoc, "Invalid parent document", false);
+    SAFE_POINT(nullptr != folderDoc, "Invalid parent document", false);
     if (objDoc != folderDoc) {
         return false;
     }
@@ -1144,7 +1144,7 @@ bool ProjectTreeController::removeObjects(const QList<GObject *> &objs, const QL
 
     foreach (GObject *obj, objs) {
         Document *doc = obj->getDocument();
-        SAFE_POINT(NULL != doc, "Invalid parent document detected!", false);
+        SAFE_POINT(nullptr != doc, "Invalid parent document detected!", false);
 
         const Folder curFolder(doc, model->getObjectFolder(doc, obj));
         bool parentFolderSelected = isSubFolder(excludedFolders, curFolder, true);
@@ -1165,7 +1165,7 @@ bool ProjectTreeController::removeObjects(const QList<GObject *> &objs, const QL
             objectIsBeingRecycled = obj;
             model->moveObject(doc, obj, ProjectUtils::RECYCLE_BIN_FOLDER_PATH);
             QCoreApplication::processEvents();
-            objectIsBeingRecycled = NULL;
+            objectIsBeingRecycled = nullptr;
         }
         updater->invalidate(doc);
     }
@@ -1188,7 +1188,7 @@ bool ProjectTreeController::removeFolders(const QList<Folder> &folders, const QL
     QSet<Document *> relatedDocs;
     foreach (const Folder &folder, folders) {
         Document *doc = folder.getDocument();
-        SAFE_POINT(NULL != doc, "Invalid parent document detected!", false);
+        SAFE_POINT(nullptr != doc, "Invalid parent document detected!", false);
         bool parentFolderSelected = isSubFolder(folders, folder, false);
         bool parentDocSelected = excludedDocs.contains(doc);
 
@@ -1224,7 +1224,7 @@ bool ProjectTreeController::removeFolders(const QList<Folder> &folders, const QL
 
 void ProjectTreeController::sl_onObjRemovalTaskFinished() {
     Task *removalTask = qobject_cast<Task *>(sender());
-    if (NULL != removalTask && removalTask->isFinished()) {
+    if (nullptr != removalTask && removalTask->isFinished()) {
         SAFE_POINT(task2ObjectsBeingDeleted.contains(removalTask), "Invalid object removal task detected", );
         QHash<Document *, QSet<U2DataId>> &doc2ObjIds = task2ObjectsBeingDeleted[removalTask];
         foreach (Document *doc, doc2ObjIds.keys()) {
@@ -1243,7 +1243,7 @@ void ProjectTreeController::sl_filterGroupAdded(const QModelIndex &groupIndex) {
 
 void ProjectTreeController::sl_onFolderRemovalTaskFinished() {
     Task *removalTask = qobject_cast<Task *>(sender());
-    if (NULL != removalTask && removalTask->isFinished()) {
+    if (nullptr != removalTask && removalTask->isFinished()) {
         SAFE_POINT(task2FoldersBeingDeleted.contains(removalTask), "Invalid folder removal task detected", );
         QHash<Document *, QSet<QString>> &doc2Paths = task2FoldersBeingDeleted[removalTask];
         foreach (Document *doc, doc2Paths.keys()) {
@@ -1255,13 +1255,13 @@ void ProjectTreeController::sl_onFolderRemovalTaskFinished() {
 }
 
 void ProjectTreeController::startTrackingRemovedObjects(Task *deleteTask, const QHash<GObject *, Document *> &objs2Docs) {
-    SAFE_POINT(NULL != deleteTask && !objs2Docs.isEmpty(), "Incorrect objects removal", );
+    SAFE_POINT(nullptr != deleteTask && !objs2Docs.isEmpty(), "Incorrect objects removal", );
 
     task2ObjectsBeingDeleted.insert(deleteTask, QHash<Document *, QSet<U2DataId>>());
     QHash<Document *, QSet<U2DataId>> &doc2ObjIds = task2ObjectsBeingDeleted[deleteTask];
     foreach (GObject *o, objs2Docs.keys()) {
         Document *parentDoc = objs2Docs[o];
-        SAFE_POINT(NULL != parentDoc, "Invalid parent document detected", );
+        SAFE_POINT(nullptr != parentDoc, "Invalid parent document detected", );
         if (!doc2ObjIds.contains(parentDoc)) {
             doc2ObjIds.insert(parentDoc, QSet<U2DataId>());
         }
@@ -1270,13 +1270,13 @@ void ProjectTreeController::startTrackingRemovedObjects(Task *deleteTask, const 
 }
 
 void ProjectTreeController::startTrackingRemovedFolders(Task *deleteTask, const QList<Folder> &folders) {
-    SAFE_POINT(NULL != deleteTask && !folders.isEmpty(), "Incorrect folders removal", );
+    SAFE_POINT(nullptr != deleteTask && !folders.isEmpty(), "Incorrect folders removal", );
 
     task2FoldersBeingDeleted.insert(deleteTask, QHash<Document *, QSet<QString>>());
     QHash<Document *, QSet<QString>> &doc2Folders = task2FoldersBeingDeleted[deleteTask];
     foreach (const Folder &f, folders) {
         Document *parentDoc = f.getDocument();
-        SAFE_POINT(NULL != parentDoc, "Invalid parent document detected", );
+        SAFE_POINT(nullptr != parentDoc, "Invalid parent document detected", );
         if (!doc2Folders.contains(parentDoc)) {
             doc2Folders.insert(parentDoc, QSet<QString>());
         }
@@ -1285,11 +1285,11 @@ void ProjectTreeController::startTrackingRemovedFolders(Task *deleteTask, const 
 }
 
 bool ProjectTreeController::isObjectRemovable(GObject *object) {
-    SAFE_POINT(NULL != object, "object is NULL", false);
+    SAFE_POINT(nullptr != object, "object is NULL", false);
     Document *document = object->getDocument();
-    CHECK(NULL != document, false);
+    CHECK(nullptr != document, false);
     DocumentFormat *format = document->getDocumentFormat();
-    SAFE_POINT(NULL != format, "Document format is NULL", false);
+    SAFE_POINT(nullptr != format, "Document format is NULL", false);
 
     const bool isOperationSupported = format->isObjectOpSupported(document, DocumentFormat::DocObjectOp_Remove, object->getGObjectType());
     return !document->isStateLocked() && isOperationSupported;
@@ -1297,7 +1297,7 @@ bool ProjectTreeController::isObjectRemovable(GObject *object) {
 
 bool ProjectTreeController::isFolderRemovable(const Folder &folder) {
     Document *document = folder.getDocument();
-    CHECK(NULL != document, false);
+    CHECK(nullptr != document, false);
     return !document->isStateLocked() && !ProjectUtils::isSystemFolder(folder.getFolderPath());
 }
 
@@ -1346,7 +1346,7 @@ void ProjectTreeController::removeDocuments(const QList<Document *> &docs) {
 }
 
 void ProjectTreeController::updateObjectActiveStateVisual(GObject *obj) {
-    SAFE_POINT(NULL != obj, "ProjectTreeController::updateObjectActiveStateVisual. Object is NULL", );
+    SAFE_POINT(nullptr != obj, "ProjectTreeController::updateObjectActiveStateVisual. Object is NULL", );
     CHECK(objectIsBeingRecycled != obj, );
     if (ProjectTreeGroupMode_ByDocument == settings.groupMode) {
         Document *parentDoc = obj->getDocument();

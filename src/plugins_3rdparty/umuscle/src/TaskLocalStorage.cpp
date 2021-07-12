@@ -40,17 +40,17 @@ QThreadStorage<MuscleContextTLSRef*> TaskLocalData::tls;
 
 class MuscleContext* TaskLocalData::current(){
     MuscleContextTLSRef* ref = tls.localData();
-    if (ref!=NULL) {
-        assert(ref->ctx!=NULL);
+    if (ref!=nullptr) {
+        assert(ref->ctx!=nullptr);
         return ref->ctx;
     }
     assert(0);
-    return NULL;
+    return nullptr;
 }
 
 unsigned TaskLocalData::currentWorkerID() {
     MuscleContextTLSRef* ref = tls.localData();
-    if (ref!=NULL) {
+    if (ref!=nullptr) {
         return ref->workerID;
     }
     assert(0);
@@ -59,16 +59,16 @@ unsigned TaskLocalData::currentWorkerID() {
 }
 
 void TaskLocalData::bindToMuscleTLSContext(MuscleContext *ctx, int workerID) {
-    assert(ctx!=NULL);
+    assert(ctx!=nullptr);
     assert(!tls.hasLocalData());
     tls.setLocalData(new MuscleContextTLSRef(ctx, workerID));
 }
 
 void TaskLocalData::detachMuscleTLSContext() {
     MuscleContextTLSRef* ref = tls.localData();
-    assert(ref!=NULL && ref->ctx!=NULL);
-    ref->ctx = NULL;
-    tls.setLocalData(NULL);
+    assert(ref!=nullptr && ref->ctx!=nullptr);
+    ref->ctx = nullptr;
+    tls.setLocalData(nullptr);
 }
 
 

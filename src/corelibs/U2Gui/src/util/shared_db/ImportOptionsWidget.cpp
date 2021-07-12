@@ -51,16 +51,16 @@ void ImportOptionsWidget::init(const QString &baseFolder, const ImportToDatabase
     ui->cbCreateSubfoldersforDocs->setChecked(options.createSubfolderForEachDocument);
 
     switch (options.multiSequencePolicy) {
-    case ImportToDatabaseOptions::SEPARATE:
-        ui->rbSeparate->setChecked(true);
-        break;
-    case ImportToDatabaseOptions::MERGE:
-        ui->rbMerge->setChecked(true);
-        ui->sbMerge->setValue(options.mergeMultiSequencePolicySeparatorSize);
-        break;
-    case ImportToDatabaseOptions::MALIGNMENT:
-        ui->rbMalignment->setChecked(true);
-        break;
+        case ImportToDatabaseOptions::SEPARATE:
+            ui->rbSeparate->setChecked(true);
+            break;
+        case ImportToDatabaseOptions::MERGE:
+            ui->rbMerge->setChecked(true);
+            ui->sbMerge->setValue(options.mergeMultiSequencePolicySeparatorSize);
+            break;
+        case ImportToDatabaseOptions::MALIGNMENT:
+            ui->rbMalignment->setChecked(true);
+            break;
     }
 
     foreach (const QString &formatId, options.preferredFormats) {

@@ -123,11 +123,11 @@ DocumentProviderTask *BAMImporter::createImportTask(const FormatDetectionResult 
 
 BAMImporterTask::BAMImporterTask(const GUrl &url, bool _useGui, const QVariantMap &hints)
     : DocumentProviderTask(tr("BAM/SAM file import: %1").arg(url.fileName()), TaskFlags_NR_FOSCOE),
-      loadInfoTask(NULL),
-      loadBamInfoTask(NULL),
-      prepareToImportTask(NULL),
-      convertTask(NULL),
-      loadDocTask(NULL),
+      loadInfoTask(nullptr),
+      loadBamInfoTask(nullptr),
+      prepareToImportTask(nullptr),
+      convertTask(nullptr),
+      loadDocTask(nullptr),
       isSqliteDbTransit(false),
       useGui(_useGui),
       sam(hints.value(SAM_HINT, false).toBool()),
@@ -159,19 +159,19 @@ QList<Task *> BAMImporterTask::onSubTaskFinished(Task *subTask) {
 
     if (loadInfoTask == subTask) {
         initPrepareToImportTask();
-        CHECK(NULL != prepareToImportTask, res);
+        CHECK(nullptr != prepareToImportTask, res);
         res << prepareToImportTask;
     }
 
     else if (prepareToImportTask == subTask && prepareToImportTask->isNewURL()) {
         initLoadBamInfoTask();
-        CHECK(NULL != loadBamInfoTask, res);
+        CHECK(nullptr != loadBamInfoTask, res);
         res << loadBamInfoTask;
     }
 
     else if (loadBamInfoTask == subTask || prepareToImportTask == subTask) {
         initConvertToSqliteTask();
-        CHECK(NULL != convertTask, res);
+        CHECK(nullptr != convertTask, res);
         res << convertTask;
     }
 
@@ -183,19 +183,19 @@ QList<Task *> BAMImporterTask::onSubTaskFinished(Task *subTask) {
 
     else if (!isSqliteDbTransit && convertTask == subTask) {
         initLoadDocumentTask();
-        CHECK(NULL != loadDocTask, res);
+        CHECK(nullptr != loadDocTask, res);
         res << loadDocTask;
     }
 
     else if ((isSqliteDbTransit && cloneTasks.contains(subTask))) {
         cloneTasks.removeOne(subTask);
         CloneObjectTask *cloneTask = qobject_cast<CloneObjectTask *>(subTask);
-        SAFE_POINT_EXT(NULL != cloneTask, setError("Unexpected task type: CloneObjectTask expected"), res);
+        SAFE_POINT_EXT(nullptr != cloneTask, setError("Unexpected task type: CloneObjectTask expected"), res);
         delete cloneTask->getSourceObject();
 
         if (cloneTasks.isEmpty()) {
             initLoadDocumentTask();
-            CHECK(NULL != loadDocTask, res);
+            CHECK(nullptr != loadDocTask, res);
             res << loadDocTask;
         }
     }
@@ -300,7 +300,7 @@ void BAMImporterTask::initCloneObjectTasks() {
 void BAMImporterTask::initLoadDocumentTask() {
     if (hints.value(BAMImporter::LOAD_RESULT_DOCUMENT, true).toBool()) {
         loadDocTask = LoadDocumentTask::getDefaultLoadDocTask(convertTask->getDestinationUrl());
-        if (loadDocTask == NULL) {
+        if (loadDocTask == nullptr) {
             setError(tr("Failed to get load task for : %1").arg(convertTask->getDestinationUrl().getURLString()));
         }
     }

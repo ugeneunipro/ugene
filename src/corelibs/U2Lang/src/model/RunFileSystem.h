@@ -41,7 +41,7 @@ class U2LANG_EXPORT FSItem {
 
 public:
     FSItem();
-    FSItem(const QString &name, bool isDirectory, FSItem *parent = NULL);
+    FSItem(const QString &name, bool isDirectory, FSItem *parent = nullptr);
     ~FSItem();
 
     FSItem *parent() const;
@@ -71,7 +71,7 @@ private:
 class U2LANG_EXPORT RunFileSystem : public QObject {
     Q_OBJECT
 public:
-    RunFileSystem(QObject *parent = NULL);
+    RunFileSystem(QObject *parent = nullptr);
     ~RunFileSystem();
 
     bool contains(const QString &path);

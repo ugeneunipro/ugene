@@ -120,7 +120,7 @@ NgsReadsClassificationPlugin::NgsReadsClassificationPlugin()
 
     // Pre-load taxonomy data
     TaskScheduler *scheduler = AppContext::getTaskScheduler();
-    CHECK(NULL != scheduler, );
+    CHECK(nullptr != scheduler, );
     scheduler->registerTopLevelTask(new LoadTaxonomyTreeTask);
 }
 
@@ -146,7 +146,7 @@ void NgsReadsClassificationPlugin::registerData(const QString &dataId, const QSt
 
 void NgsReadsClassificationPlugin::unregisterData(const QString &dataId) {
     U2DataPathRegistry *dataPathRegistry = AppContext::getDataPathRegistry();
-    CHECK(NULL != dataPathRegistry, );
+    CHECK(nullptr != dataPathRegistry, );
     dataPathRegistry->unregisterEntry(dataId);
     registeredData.removeAll(dataId);
 }

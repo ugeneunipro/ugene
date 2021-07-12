@@ -119,12 +119,12 @@ void WorkflowProcess::unuseFiles() {
 /* AppFileStorage */
 /************************************************************************/
 AppFileStorage::AppFileStorage()
-    : storage(NULL) {
+    : storage(nullptr) {
 }
 
 void AppFileStorage::init(U2OpStatus &os) {
     UserAppsSettings *settings = AppContext::getAppSettings()->getUserAppsSettings();
-    CHECK_EXT(NULL != settings, os.setError("NULL user application settings"), );
+    CHECK_EXT(nullptr != settings, os.setError("NULL user application settings"), );
 
     storageDir = settings->getFileStorageDir();
 
@@ -140,7 +140,7 @@ void AppFileStorage::init(U2OpStatus &os) {
 }
 
 AppFileStorage::~AppFileStorage() {
-    if (NULL != storage) {
+    if (nullptr != storage) {
         U2OpStatusImpl os;
         storage->shutdown(os);
         if (os.isCoR()) {

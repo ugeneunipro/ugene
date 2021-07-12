@@ -63,7 +63,7 @@ const Descriptor GetReadsListWorkerFactory::PE_SLOT() {
 /* Worker */
 /************************************************************************/
 GetReadsListWorker::GetReadsListWorker(Actor *p)
-    : BaseWorker(p), outChannel(NULL), files(NULL), pairedFiles(NULL) {
+    : BaseWorker(p), outChannel(nullptr), files(nullptr), pairedFiles(nullptr) {
 }
 
 void GetReadsListWorker::init() {
@@ -84,13 +84,13 @@ Task *GetReadsListWorker::tick() {
         QVariantMap m;
         QString url = files->getNextFile();
         m[GetReadsListWorkerFactory::SE_SLOT_ID] = url;
-        if (pairedFiles != NULL) {
+        if (pairedFiles != nullptr) {
             if (pairedFiles->hasNext()) {
                 QString url2 = pairedFiles->getNextFile();
                 m[GetReadsListWorkerFactory::PE_SLOT_ID] = url2;
             } else {
                 reportError(tr("Missing right PE read for the left read: %1").arg(url));
-                return NULL;
+                return nullptr;
             }
         }
         QString datasetName = files->getLastDatasetName();
@@ -98,14 +98,14 @@ Task *GetReadsListWorker::tick() {
         context->getMetadataStorage().put(metadata);
         outChannel->put(Message(outChannel->getBusType(), m, metadata.getId()));
     } else {
-        if (pairedFiles != NULL && pairedFiles->hasNext()) {
+        if (pairedFiles != nullptr && pairedFiles->hasNext()) {
             reportError(tr("Missing left PE read for the right read: %1").arg(pairedFiles->getNextFile()));
         } else {
             setDone();
             outChannel->setEnded();
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void GetReadsListWorker::cleanup() {

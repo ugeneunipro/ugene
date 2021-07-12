@@ -20,10 +20,11 @@
  */
 
 #include "GTTestsNGS_WD.h"
-
 #include <GTUtilsTaskTreeView.h>
 #include <base_dialogs/DefaultDialogFiller.h>
 #include <base_dialogs/MessageBoxFiller.h>
+#include <drivers/GTKeyboardDriver.h>
+#include <harness/UGUITest.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTWidget.h>
@@ -38,16 +39,12 @@
 #include <U2Core/AppResources.h>
 #include <U2Core/AppSettings.h>
 
-#include <harness/UGUITest.h>
-
-#include "utils/GTUtilsDialog.h"
+#include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/ConfigurationWizardFiller.h"
 #include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
-
-#include <drivers/GTKeyboardDriver.h>
-#include "GTUtilsWizard.h"
+#include "utils/GTUtilsDialog.h"
 
 namespace U2 {
 
@@ -56,16 +53,16 @@ using namespace HI;
 
 GUI_TEST_CLASS_DEFINITION(test_0001) {
     class TrimmomaticScenario : public CustomScenario {
-         void run(HI::GUITestOpStatus &os) {
-             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-             QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-             GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
-             GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+            QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
+            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
-             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-         }
-     };
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
 
     class custom : public CustomScenario {
     public:
@@ -90,7 +87,6 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         }
     };
 
-
     //1. Click Tools -> NGS data analysis -> Metagenomics classification.... Choose Parallel reads classification and Single-end
     //2. Set "samples/FASTQ/eas.fastq" as input
     //3. Add "ILLUMINACLIP" step
@@ -98,9 +94,8 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
     //5. Wait for workflow finished
     //Expected state: no errors
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os,
-                                                                    "Configure NGS Reads Classification Workflow",
-                                                                    QStringList() << "Parallel reads classification" << "Single-end"));
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure NGS Reads Classification Workflow", QStringList() << "Parallel reads classification"
+                                                                                                                                    << "Single-end"));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "SE Reads Parallel Classification Wizard", new custom()));
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
@@ -112,18 +107,17 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0002) {
-
     class TrimmomaticScenario : public CustomScenario {
-         void run(HI::GUITestOpStatus &os) {
-             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-             QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-             GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
-             GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+            QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
+            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
-             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-         }
-     };
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
 
     class custom : public CustomScenario {
     public:
@@ -148,7 +142,6 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
         }
     };
 
-
     //1. Click Tools -> NGS data analysis -> Metagenomics classification.... Choose Parallel reads classification and Paired-end
     //2. Set "_common_data/metagenomics/workflow_designer/4R-WGA_S31_L001_R1_001.fastq" and _common_data/metagenomics/workflow_designer/4R-WGA_S31_L001_R2_001.fastq as input
     //3. Add "ILLUMINACLIP" step
@@ -156,9 +149,8 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
     //5. Wait for workflow finished
     //Expected state: no errors
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os,
-                                                                    "Configure NGS Reads Classification Workflow",
-                                                                    QStringList() << "Parallel reads classification" << "Paired-end"));
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure NGS Reads Classification Workflow", QStringList() << "Parallel reads classification"
+                                                                                                                                    << "Paired-end"));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "PE Reads Parallel Classification Wizard", new custom()));
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
@@ -171,16 +163,16 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
 
 GUI_TEST_CLASS_DEFINITION(test_0003) {
     class TrimmomaticScenario : public CustomScenario {
-         void run(HI::GUITestOpStatus &os) {
-             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-             QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-             GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
-             GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+            QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
+            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
-             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-         }
-     };
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
 
     class custom : public CustomScenario {
     public:
@@ -203,7 +195,6 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
         }
     };
 
-
     //1. Click Tools -> NGS data analysis -> Metagenomics classification.... Choose Serial reads classification and Single-end
     //2. Set "samples/FASTQ/eas.fastq" as input
     //3. Add "ILLUMINACLIP" step
@@ -211,9 +202,8 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
     //5. Wait for workflow finished
     //Expected state: no errors
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os,
-                                                                    "Configure NGS Reads Classification Workflow",
-                                                                    QStringList() << "Serial reads classification" << "Single-end"));
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure NGS Reads Classification Workflow", QStringList() << "Serial reads classification"
+                                                                                                                                    << "Single-end"));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "SE Reads Serial Classification Wizard", new custom()));
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
@@ -226,16 +216,16 @@ GUI_TEST_CLASS_DEFINITION(test_0003) {
 
 GUI_TEST_CLASS_DEFINITION(test_0004) {
     class TrimmomaticScenario : public CustomScenario {
-         void run(HI::GUITestOpStatus &os) {
-             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-             QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-             GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
-             GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+            QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
+            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
-             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-         }
-     };
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
 
     class custom : public CustomScenario {
     public:
@@ -258,7 +248,6 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
         }
     };
 
-
     //1. Click Tools -> NGS data analysis -> Metagenomics classification.... Choose Serial reads classification and Paired-end
     //2. Set "_common_data/metagenomics/workflow_designer/4R-WGA_S31_L001_R1_001.fastq" and _common_data/metagenomics/workflow_designer/4R-WGA_S31_L001_R2_001.fastq as input
     //3. Add "ILLUMINACLIP" step
@@ -266,9 +255,8 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     //5. Wait for workflow finished
     //Expected state: no errors
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os,
-                                                                    "Configure NGS Reads Classification Workflow",
-                                                                    QStringList() << "Serial reads classification"  << "Paired-end"));
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure NGS Reads Classification Workflow", QStringList() << "Serial reads classification"
+                                                                                                                                    << "Paired-end"));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "PE Reads Serial Classification Wizard", new custom()));
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
@@ -281,16 +269,16 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
 
 GUI_TEST_CLASS_DEFINITION(test_0005) {
     class TrimmomaticScenario : public CustomScenario {
-         void run(HI::GUITestOpStatus &os) {
-             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-             QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-             GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
-             GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+            QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
+            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
-             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-         }
-     };
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
 
     class custom : public CustomScenario {
     public:
@@ -312,7 +300,6 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
         }
     };
 
-
     //1. Click Tools -> NGS data analysis -> Metagenomics classification.... Choose Serial reads classification and Single-end
     //2. Set "samples/FASTQ/eas.fastq" as input
     //3. Add "ILLUMINACLIP" step
@@ -320,9 +307,8 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
     //5. Wait for workflow finished
     //Expected state: no errors
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os,
-                                                                    "Configure NGS Reads Classification Workflow",
-                                                                    QStringList() << "Reads de novo assembly and contigs classification" << "Single-end"));
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure NGS Reads Classification Workflow", QStringList() << "Reads de novo assembly and contigs classification"
+                                                                                                                                    << "Single-end"));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "SE Reads Assembly and Classification Wizard", new custom()));
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
@@ -335,16 +321,16 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
     class TrimmomaticScenario : public CustomScenario {
-         void run(HI::GUITestOpStatus &os) {
-             QWidget *dialog = GTWidget::getActiveModalWidget(os);
-             GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
-             QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
-             GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
-             GTKeyboardDriver::keyClick(Qt::Key_Escape);
+        void run(HI::GUITestOpStatus &os) {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTWidget::click(os, GTWidget::findWidget(os, "buttonAdd"));
+            QMenu *menu = qobject_cast<QMenu *>(GTWidget::findWidget(os, "stepsMenu"));
+            GTMenu::clickMenuItemByName(os, menu, QStringList() << "ILLUMINACLIP");
+            GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
-             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
-         }
-     };
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+    };
 
     class custom : public CustomScenario {
     public:
@@ -367,7 +353,6 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
         }
     };
 
-
     //1. Click Tools -> NGS data analysis -> Metagenomics classification.... Choose Serial reads classification and Single-end
     //2. Set "samples/FASTQ/eas.fastq" as input
     //3. Add "ILLUMINACLIP" step
@@ -375,9 +360,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     //5. Wait for workflow finished
     //Expected state: no errors
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
-    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os,
-                                                                    "Configure NGS Reads Classification Workflow",
-                                                                    QStringList() << "Reads de novo assembly and contigs classification" << "Paired-end"));
+    GTUtilsDialog::waitForDialog(os, new ConfigurationWizardFiller(os, "Configure NGS Reads Classification Workflow", QStringList() << "Reads de novo assembly and contigs classification"
+                                                                                                                                    << "Paired-end"));
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "PE Reads Assembly and Classification Wizard", new custom()));
 
     GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
@@ -390,4 +374,4 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 
 }    // namespace GUITest_common_scenarios_ngs_workflow_desingner
 
-}
+}    // namespace U2

@@ -382,7 +382,7 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapter *io, U2OpStatus &si
         }
         if (si.isCoR()) {
             delete rd;
-            rd = NULL;
+            rd = nullptr;
             break;
         }
         si.setProgress(io->getProgress());
@@ -617,7 +617,7 @@ inline SharedAtom unpack(const uchar *data, int length, int &offset, U2OpStatus 
     int num = unpackNum<int>(data, length, offset, os);
     CHECK_OP(os, SharedAtom());
     if (num < ctx.atoms.size()) {
-        return ctx.atoms.value(ctx.atomByPosition.value(num, NULL));
+        return ctx.atoms.value(ctx.atomByPosition.value(num, nullptr));
     }
     SAFE_POINT_EXT(num == ctx.atoms.size(), os.setError("Unexpected atom number"), SharedAtom());
     AtomData atom = unpack<AtomData>(data, length, offset, os);

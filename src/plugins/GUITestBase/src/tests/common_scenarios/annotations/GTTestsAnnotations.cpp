@@ -960,7 +960,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_2) {
 
     QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "scaffold_90 features");
     QWidget *sequence = GTUtilsSequenceView::getPanOrDetView(os);
-    CHECK_SET_ERR(sequence != NULL, "Sequence widget not found");
+    CHECK_SET_ERR(sequence != nullptr, "Sequence widget not found");
 
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsProjectTreeView::dragAndDrop(os, idx, sequence);
@@ -1011,7 +1011,7 @@ GUI_TEST_CLASS_DEFINITION(test_0012_3) {
 
     QModelIndex idx = GTUtilsProjectTreeView::findIndex(os, "scaffold_90 features");
     QWidget *sequence = GTUtilsSequenceView::getPanOrDetView(os);
-    CHECK_SET_ERR(sequence != NULL, "Sequence widget not found");
+    CHECK_SET_ERR(sequence != nullptr, "Sequence widget not found");
 
     GTUtilsDialog::waitForDialog(os, new CreateObjectRelationDialogFiller(os));
     GTUtilsProjectTreeView::dragAndDrop(os, idx, sequence);

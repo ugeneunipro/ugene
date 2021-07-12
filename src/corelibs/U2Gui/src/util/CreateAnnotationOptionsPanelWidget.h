@@ -32,7 +32,7 @@ class ShowHideSubgroupWidget;
 class CreateAnnotationOptionsPanelWidget : public CreateAnnotationWidget, private Ui_CreateAnnotationOptionsPanelWidget {
     Q_OBJECT
 public:
-    CreateAnnotationOptionsPanelWidget(QWidget *parent = NULL);
+    CreateAnnotationOptionsPanelWidget(QWidget *parent = nullptr);
 
     void setGroupNameVisible(bool visible);
     void setLocationVisible(bool visible);

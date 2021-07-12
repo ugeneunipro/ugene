@@ -35,7 +35,7 @@ class MWMDIWindow;
 
 class U2GUI_EXPORT U2SavableWidget {
 public:
-    U2SavableWidget(QWidget *wrappedWidget, MWMDIWindow *contextWindow = NULL);
+    U2SavableWidget(QWidget *wrappedWidget, MWMDIWindow *contextWindow = nullptr);
     virtual ~U2SavableWidget();
 
     virtual QString getWidgetId() const;

@@ -35,7 +35,7 @@ const QString EnzymeSettings::COMMON_ENZYMES("ClaI,BamHI,BglII,DraI,EcoRI,EcoRV,
 EnzymeData::EnzymeData() {
     cutDirect = ENZYME_CUT_UNKNOWN;
     cutComplement = ENZYME_CUT_UNKNOWN;
-    alphabet = NULL;
+    alphabet = nullptr;
 }
 
 }    // namespace U2

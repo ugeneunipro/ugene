@@ -69,13 +69,13 @@ Task *ExtractConsensusWorker::tick() {
         return createTask(assembly);
     } else {
         finish();
-        return NULL;
+        return nullptr;
     }
 }
 
 void ExtractConsensusWorker::sl_taskFinished() {
     ExtractConsensusTaskHelper *t = dynamic_cast<ExtractConsensusTaskHelper *>(sender());
-    CHECK(NULL != t, );
+    CHECK(nullptr != t, );
     CHECK(t->isFinished() && !t->hasError(), );
     CHECK(!t->isCanceled(), );
 
@@ -87,7 +87,7 @@ void ExtractConsensusWorker::cleanup() {
 
 bool ExtractConsensusWorker::hasAssembly() const {
     const IntegralBus *port = ports[BasePorts::IN_ASSEMBLY_PORT_ID()];
-    SAFE_POINT(NULL != port, "NULL assembly port", false);
+    SAFE_POINT(nullptr != port, "NULL assembly port", false);
     return port->hasMessage();
 }
 
@@ -100,7 +100,7 @@ U2EntityRef ExtractConsensusWorker::takeAssembly(U2OpStatus &os) {
     }
     const SharedDbiDataHandler dbiId = data[BaseSlots::ASSEMBLY_SLOT().getId()].value<SharedDbiDataHandler>();
     const AssemblyObject *obj = StorageUtils::getAssemblyObject(context->getDataStorage(), dbiId);
-    if (NULL == obj) {
+    if (nullptr == obj) {
         os.setError(tr("Error with assembly object"));
         return U2EntityRef();
     }
@@ -117,10 +117,10 @@ Task *ExtractConsensusWorker::createTask(const U2EntityRef &assembly) {
 
 void ExtractConsensusWorker::finish() {
     IntegralBus *inPort = ports[BasePorts::IN_ASSEMBLY_PORT_ID()];
-    SAFE_POINT(NULL != inPort, "NULL assembly port", );
+    SAFE_POINT(nullptr != inPort, "NULL assembly port", );
     SAFE_POINT(inPort->isEnded(), "The assembly is not ended", );
     IntegralBus *outPort = ports[BasePorts::OUT_SEQ_PORT_ID()];
-    SAFE_POINT(NULL != outPort, "NULL sequence port", );
+    SAFE_POINT(nullptr != outPort, "NULL sequence port", );
 
     outPort->setEnded();
     setDone();
@@ -130,7 +130,7 @@ void ExtractConsensusWorker::sendResult(const SharedDbiDataHandler &seqId) {
     QVariantMap data;
     data[BaseSlots::DNA_SEQUENCE_SLOT().getId()] = qVariantFromValue<SharedDbiDataHandler>(seqId);
     IntegralBus *outPort = ports[BasePorts::OUT_SEQ_PORT_ID()];
-    SAFE_POINT(NULL != outPort, "NULL sequence port", );
+    SAFE_POINT(nullptr != outPort, "NULL sequence port", );
 
     outPort->put(Message(outPort->getBusType(), data));
 }
@@ -144,7 +144,7 @@ ExtractConsensusTaskHelper::ExtractConsensusTaskHelper(const QString &algoId, bo
       keepGaps(keepGaps),
       assembly(assembly),
       targetDbi(targetDbi),
-      exportTask(NULL) {
+      exportTask(nullptr) {
 }
 
 void ExtractConsensusTaskHelper::prepare() {
@@ -168,7 +168,7 @@ void ExtractConsensusTaskHelper::prepare() {
 }
 
 U2EntityRef ExtractConsensusTaskHelper::getResult() const {
-    SAFE_POINT(NULL != exportTask, "NULL export task", U2EntityRef());
+    SAFE_POINT(nullptr != exportTask, "NULL export task", U2EntityRef());
     const U2Sequence seq = exportTask->getResult();
     const U2EntityRef ref(targetDbi, seq.id);
     return ref;
@@ -176,12 +176,12 @@ U2EntityRef ExtractConsensusTaskHelper::getResult() const {
 
 AssemblyConsensusAlgorithm *ExtractConsensusTaskHelper::createAlgorithm() {
     AssemblyConsensusAlgorithmRegistry *reg = AppContext::getAssemblyConsensusAlgorithmRegistry();
-    SAFE_POINT_EXT(NULL != reg, setError("NULL registry"), NULL);
+    SAFE_POINT_EXT(nullptr != reg, setError("NULL registry"), nullptr);
 
     AssemblyConsensusAlgorithmFactory *f = reg->getAlgorithmFactory(algoId);
-    if (NULL == f) {
+    if (nullptr == f) {
         setError(tr("Unknown consensus algorithm: ") + algoId);
-        return NULL;
+        return nullptr;
     }
 
     return f->createAlgorithm();
@@ -189,13 +189,13 @@ AssemblyConsensusAlgorithm *ExtractConsensusTaskHelper::createAlgorithm() {
 
 AssemblyModel *ExtractConsensusTaskHelper::createModel() {
     const DbiConnection con(assembly.dbiRef, stateInfo);
-    CHECK_OP(stateInfo, NULL);
+    CHECK_OP(stateInfo, nullptr);
 
     U2AssemblyDbi *dbi = con.dbi->getAssemblyDbi();
-    SAFE_POINT_EXT(NULL != dbi, setError("NULL assembly dbi"), NULL);
+    SAFE_POINT_EXT(nullptr != dbi, setError("NULL assembly dbi"), nullptr);
 
     const U2Assembly object = dbi->getAssemblyObject(assembly.entityId, stateInfo);
-    CHECK_OP(stateInfo, NULL);
+    CHECK_OP(stateInfo, nullptr);
 
     AssemblyModel *model = new AssemblyModel(con);
     model->setAssembly(dbi, object);
@@ -216,7 +216,7 @@ Worker *ExtractConsensusWorkerFactory::createWorker(Actor *actor) {
 
 void ExtractConsensusWorkerFactory::init() {
     AssemblyConsensusAlgorithmRegistry *reg = AppContext::getAssemblyConsensusAlgorithmRegistry();
-    SAFE_POINT(NULL != reg, "NULL registry", );
+    SAFE_POINT(nullptr != reg, "NULL registry", );
 
     const Descriptor desc(ACTOR_ID,
                           QObject::tr("Extract Consensus from Assembly"),

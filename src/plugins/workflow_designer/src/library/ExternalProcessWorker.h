@@ -87,7 +87,7 @@ public:
 class ExternalProcessWorkerPrompter : public PrompterBase<ExternalProcessWorkerPrompter> {
     Q_OBJECT
 public:
-    ExternalProcessWorkerPrompter(Actor *p = NULL)
+    ExternalProcessWorkerPrompter(Actor *p = nullptr)
         : PrompterBase<ExternalProcessWorkerPrompter>(p) {
     }
     QString composeRichDoc();

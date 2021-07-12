@@ -70,7 +70,7 @@ SnpEffDatabaseDialog::SnpEffDatabaseDialog(QWidget *parent)
 
 QString SnpEffDatabaseDialog::getDatabase() const {
     QItemSelectionModel *model = tableView->selectionModel();
-    SAFE_POINT(model != NULL, "Selection model is NULL", QString());
+    SAFE_POINT(model != nullptr, "Selection model is NULL", QString());
     QModelIndexList selection = model->selectedRows();
     SAFE_POINT(selection.size() == 1, "Invalid selection state", QString());
     QModelIndex index = proxyModel->mapToSource(selection.first());
@@ -116,8 +116,8 @@ void SnpEffDatabasePropertyWidget::sl_showDialog() {
     // snpEff database list is available only if there is a valid tool!
     ExternalTool *java = AppContext::getExternalToolRegistry()->getById(JavaSupport::ET_JAVA_ID);
     ExternalTool *snpEff = AppContext::getExternalToolRegistry()->getById(SnpEffSupport::ET_SNPEFF_ID);
-    CHECK(java != NULL, );
-    CHECK(snpEff != NULL, );
+    CHECK(java != nullptr, );
+    CHECK(snpEff != nullptr, );
     if (!(java->isValid() && snpEff->isValid())) {
         QObjectScopedPointer<QMessageBox> msgBox = new QMessageBox(this);
         msgBox->setWindowTitle(tr("%1 and %2").arg(snpEff->getName()).arg(java->getName()));
@@ -129,14 +129,14 @@ void SnpEffDatabasePropertyWidget::sl_showDialog() {
         CHECK(!msgBox.isNull(), );
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return;
-        default:
-            assert(false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return;
+            default:
+                assert(false);
+                break;
         }
         return;
     }
@@ -186,7 +186,7 @@ PropertyDelegate *SnpEffDatabaseDelegate::clone() {
 
 void SnpEffDatabaseDelegate::sl_commit() {
     SnpEffDatabasePropertyWidget *editor = static_cast<SnpEffDatabasePropertyWidget *>(sender());
-    CHECK(editor != NULL, );
+    CHECK(editor != nullptr, );
     emit commitData(editor);
 }
 

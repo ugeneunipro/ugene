@@ -85,7 +85,7 @@ protected:
 class GenomeAlignerReaderContainer {
 public:
     GenomeAlignerReaderContainer()
-        : reader(NULL) {
+        : reader(nullptr) {
     }
     GenomeAlignerReaderContainer(GenomeAlignerReader *reader) {
         this->reader = reader;
@@ -96,7 +96,7 @@ public:
 class GenomeAlignerWriterContainer {
 public:
     GenomeAlignerWriterContainer()
-        : writer(NULL) {
+        : writer(nullptr) {
     }
     GenomeAlignerWriterContainer(GenomeAlignerWriter *writer) {
         this->writer = writer;

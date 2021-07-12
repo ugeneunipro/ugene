@@ -63,7 +63,7 @@ DocumentFoldersUpdate::DocumentFoldersUpdate(const U2DbiRef &dbiRef, U2OpStatus 
 }
 
 DocumentFolders::DocumentFolders()
-    : doc(NULL) {
+    : doc(nullptr) {
 }
 
 void DocumentFolders::init(Document *doc, U2OpStatus &os) {
@@ -104,8 +104,8 @@ bool DocumentFolders::hasFolder(const QString &path) const {
 }
 
 Folder *DocumentFolders::getFolder(const QString &path) const {
-    SAFE_POINT(U2ObjectDbi::ROOT_FOLDER != path, "Unexpected folder path", NULL);
-    SAFE_POINT(foldersMap.contains(path), "Unknown path", NULL);
+    SAFE_POINT(U2ObjectDbi::ROOT_FOLDER != path, "Unexpected folder path", nullptr);
+    SAFE_POINT(foldersMap.contains(path), "Unknown path", nullptr);
     return foldersMap[path];
 }
 
@@ -142,7 +142,7 @@ void DocumentFolders::renameFolder(const QString &oldPath, const QString &newPat
     const int oldPathLength = oldPath.length();
     while (!foldersToRename.isEmpty()) {
         Folder *folder = getFolder(foldersToRename.takeLast());
-        if (NULL == folder) {
+        if (nullptr == folder) {
             continue;
         }
         const QString folderPrevPath = folder->getFolderPath();
@@ -176,7 +176,7 @@ void DocumentFolders::removeFolder(const QString &path) {
 
     while (!foldersToRemove.isEmpty()) {
         Folder *folder = getFolder(foldersToRemove.takeLast());
-        if (NULL == folder) {
+        if (nullptr == folder) {
             continue;
         }
         const QString folderPath = folder->getFolderPath();
@@ -239,7 +239,7 @@ QList<Folder *> DocumentFolders::getSubFoldersNatural(const QString &parentPath)
     foreach (const QString &name, subFoldersNames) {
         QString path = Folder::createPath(parentPath, name);
         Folder *f = getFolder(path);
-        if (NULL != f) {
+        if (nullptr != f) {
             result << f;
         }
     }
@@ -297,7 +297,7 @@ QList<Folder *> &DocumentFolders::cacheSubFoldersNames(const QString &parentPath
     foreach (const QString &name, subFoldersNames) {
         QString path = Folder::createPath(parentPath, name);
         Folder *f = getFolder(path);
-        if (NULL != f) {
+        if (nullptr != f) {
             result << f;
         }
     }
@@ -348,8 +348,8 @@ bool FolderObjectTreeStorage::hasObject(const U2DataId &id) const {
 }
 
 GObject *FolderObjectTreeStorage::getObject(const U2DataId &id) const {
-    SAFE_POINT(hasObject(id), "Unknown object id", NULL);
-    return objectsIds.value(id, NULL);
+    SAFE_POINT(hasObject(id), "Unknown object id", nullptr);
+    return objectsIds.value(id, nullptr);
 }
 
 namespace {

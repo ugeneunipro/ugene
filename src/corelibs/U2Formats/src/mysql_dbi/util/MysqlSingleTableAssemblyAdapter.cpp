@@ -157,7 +157,7 @@ U2DbiIterator<U2AssemblyRead> *MysqlSingleTableAssemblyAdapter::getReads(const U
 
     QSharedPointer<U2SqlQuery> q(new U2SqlQuery(qStr.arg(readsTable).arg(rangeConditionCheck) + (sortedHint ? SORTED_READS : ""), db, os));
     bindRegion(*q, r);
-    return new MysqlRSIterator<U2AssemblyRead>(q, new MysqlSimpleAssemblyReadLoader(), NULL, U2AssemblyRead(), os);
+    return new MysqlRSIterator<U2AssemblyRead>(q, new MysqlSimpleAssemblyReadLoader(), nullptr, U2AssemblyRead(), os);
 }
 
 U2DbiIterator<U2AssemblyRead> *MysqlSingleTableAssemblyAdapter::getReadsByRow(const U2Region &r, qint64 minRow, qint64 maxRow, U2OpStatus &os) {
@@ -166,7 +166,7 @@ U2DbiIterator<U2AssemblyRead> *MysqlSingleTableAssemblyAdapter::getReadsByRow(co
     bindRegion(*q, r);
     q->bindInt64(":minRow", minRow);
     q->bindInt64(":maxRow", maxRow);
-    return new MysqlRSIterator<U2AssemblyRead>(q, new MysqlSimpleAssemblyReadLoader(), NULL, U2AssemblyRead(), os);
+    return new MysqlRSIterator<U2AssemblyRead>(q, new MysqlSimpleAssemblyReadLoader(), nullptr, U2AssemblyRead(), os);
 }
 
 U2DbiIterator<U2AssemblyRead> *MysqlSingleTableAssemblyAdapter::getReadsByName(const QByteArray &name, U2OpStatus &os) {
@@ -323,7 +323,7 @@ void MysqlSingleTableAssemblyAdapter::bindRegion(U2SqlQuery &q, const U2Region &
 MysqlSingleTablePackAlgorithmAdapter::MysqlSingleTablePackAlgorithmAdapter(MysqlDbRef *db, const QString &readsTable)
     : db(db),
       readsTable(readsTable),
-      updateQuery(NULL) {
+      updateQuery(nullptr) {
 }
 
 MysqlSingleTablePackAlgorithmAdapter::~MysqlSingleTablePackAlgorithmAdapter() {
@@ -332,11 +332,11 @@ MysqlSingleTablePackAlgorithmAdapter::~MysqlSingleTablePackAlgorithmAdapter() {
 
 U2DbiIterator<PackAlgorithmData> *MysqlSingleTablePackAlgorithmAdapter::selectAllReads(U2OpStatus &os) {
     QSharedPointer<U2SqlQuery> q(new U2SqlQuery("SELECT id, gstart, elen FROM " + readsTable + " ORDER BY gstart", db, os));
-    return new MysqlRSIterator<PackAlgorithmData>(q, new MysqlSimpleAssemblyReadPackedDataLoader(), NULL, PackAlgorithmData(), os);
+    return new MysqlRSIterator<PackAlgorithmData>(q, new MysqlSimpleAssemblyReadPackedDataLoader(), nullptr, PackAlgorithmData(), os);
 }
 
 void MysqlSingleTablePackAlgorithmAdapter::assignProw(const U2DataId &readId, qint64 prow, U2OpStatus &os) {
-    if (updateQuery != NULL) {
+    if (updateQuery != nullptr) {
         delete updateQuery;
     }
 
@@ -348,7 +348,7 @@ void MysqlSingleTablePackAlgorithmAdapter::assignProw(const U2DataId &readId, qi
 
 void MysqlSingleTablePackAlgorithmAdapter::releaseDbResources() {
     delete updateQuery;
-    updateQuery = NULL;
+    updateQuery = nullptr;
 }
 
 }    // namespace U2

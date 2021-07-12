@@ -140,7 +140,7 @@ class U2DESIGNER_EXPORT SpinBoxDelegate : public PropertyDelegate {
     Q_OBJECT
 public:
     SpinBoxDelegate(const QVariantMap &props = QVariantMap(), QObject *parent = 0)
-        : PropertyDelegate(parent), spinProperties(props), currentEditor(NULL) {
+        : PropertyDelegate(parent), spinProperties(props), currentEditor(nullptr) {
     }
     virtual ~SpinBoxDelegate() {
     }
@@ -300,7 +300,7 @@ protected:
 class U2DESIGNER_EXPORT ComboBoxWithDbUrlsDelegate : public PropertyDelegate {
     Q_OBJECT
 public:
-    ComboBoxWithDbUrlsDelegate(QObject *parent = NULL);
+    ComboBoxWithDbUrlsDelegate(QObject *parent = nullptr);
 
     QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     virtual PropertyWidget *createWizardWidget(U2OpStatus &os, QWidget *parent) const;
@@ -403,7 +403,7 @@ signals:
 class ScriptSelectionWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    ScriptSelectionWidget(QWidget *parent = NULL);
+    ScriptSelectionWidget(QWidget *parent = nullptr);
     QVariant value();
 
 public slots:
@@ -461,7 +461,7 @@ private slots:
 class StingListWidget : public PropertyWidget {
     Q_OBJECT
 public:
-    StingListWidget(QWidget *parent = NULL);
+    StingListWidget(QWidget *parent = nullptr);
     virtual QVariant value();
     virtual void setValue(const QVariant &value);
     virtual void setRequired();
@@ -478,7 +478,7 @@ class U2DESIGNER_EXPORT StringListDelegate : public PropertyDelegate {
 
 public:
     StringListDelegate(QObject *parent = 0)
-        : PropertyDelegate(parent), currentEditor(NULL) {
+        : PropertyDelegate(parent), currentEditor(nullptr) {
     }
     virtual ~StringListDelegate() {
     }
@@ -509,8 +509,8 @@ public:
 class U2DESIGNER_EXPORT StringSelectorDelegate : public PropertyDelegate {
     Q_OBJECT
 public:
-    StringSelectorDelegate(const QString &_initValue, SelectorDialogHandler *_f, QObject *o = NULL)
-        : PropertyDelegate(o), valueEdit(NULL), currentEditor(NULL), initValue(_initValue), multipleSelection(false), f(_f) {
+    StringSelectorDelegate(const QString &_initValue, SelectorDialogHandler *_f, QObject *o = nullptr)
+        : PropertyDelegate(o), valueEdit(nullptr), currentEditor(nullptr), initValue(_initValue), multipleSelection(false), f(_f) {
     }
     virtual ~StringSelectorDelegate() {
     }

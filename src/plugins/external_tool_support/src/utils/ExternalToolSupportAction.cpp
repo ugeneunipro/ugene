@@ -35,7 +35,7 @@ ExternalToolSupportAction::ExternalToolSupportAction(QObject *p, GObjectView *v,
 }
 
 ExternalToolSupportAction::ExternalToolSupportAction(const QString &_text, QObject *p, const QStringList &_toolIds)
-    : GObjectViewAction(p, NULL, _text),
+    : GObjectViewAction(p, nullptr, _text),
       toolIds(_toolIds) {
     bool isAnyToolConfigured = checkTools(true);
     setState(isAnyToolConfigured);

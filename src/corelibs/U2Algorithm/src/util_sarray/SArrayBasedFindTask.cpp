@@ -159,7 +159,7 @@ void SArrayBasedFindTask::runSearchWithMismatches() {
 
 void SArrayBasedFindTask::cleanup() {
     delete config;
-    config = NULL;
+    config = nullptr;
 }
 
 }    // namespace U2

@@ -116,7 +116,7 @@ public:
         : controller(c) {
     }
     bool isRootItem() {
-        return parent() == NULL;
+        return parent() == nullptr;
     }
     virtual bool isViewItem() const {
         return false;

@@ -132,7 +132,7 @@ void ReadVariationTask::run() {
         return;
     }
     QList<DocumentFormat *> fs = DocumentUtils::toFormats(DocumentUtils::detectFormat(url));
-    DocumentFormat *format = NULL;
+    DocumentFormat *format = nullptr;
 
     foreach (DocumentFormat *f, fs) {
         const QSet<GObjectType> &types = f->getSupportedObjectTypes();
@@ -142,7 +142,7 @@ void ReadVariationTask::run() {
         }
     }
 
-    if (format == NULL) {
+    if (format == nullptr) {
         stateInfo.setError(tr("Unsupported document format: %1").arg(url));
         return;
     }
@@ -159,7 +159,7 @@ void ReadVariationTask::run() {
 
     foreach (GObject *go, doc->findGObjectByType(GObjectTypes::VARIANT_TRACK)) {
         VariantTrackObject *trackObj = dynamic_cast<VariantTrackObject *>(go);
-        CHECK_EXT(NULL != trackObj, taskLog.error(tr("Incorrect track object in %1").arg(url)), )
+        CHECK_EXT(nullptr != trackObj, taskLog.error(tr("Incorrect track object in %1").arg(url)), )
 
         QVariantMap m;
         m[BaseSlots::URL_SLOT().getId()] = url;

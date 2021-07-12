@@ -40,24 +40,24 @@ EditSettingsDialogFiller::EditSettingsDialogFiller(HI::GUITestOpStatus &_os,
 #define GT_METHOD_NAME "commonScenario"
 void EditSettingsDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     QString radioButtonName;
     switch (policy) {
-    case ExpandOrCropAffectedAnnotation:
-        radioButtonName = "resizeRadioButton";
-        break;
-    case RemoveAffectedAnnotation:
-        radioButtonName = "removeRadioButton";
-        break;
-    case SplitJoinAnnotationParts:
-        radioButtonName = "splitRadioButton";
-        break;
-    case SplitSeparateAnnotationParts:
-        radioButtonName = "split_separateRadioButton";
-        break;
-    default:
-        GT_CHECK(false, "An unexpected AnnotationPolicy");
+        case ExpandOrCropAffectedAnnotation:
+            radioButtonName = "resizeRadioButton";
+            break;
+        case RemoveAffectedAnnotation:
+            radioButtonName = "removeRadioButton";
+            break;
+        case SplitJoinAnnotationParts:
+            radioButtonName = "splitRadioButton";
+            break;
+        case SplitSeparateAnnotationParts:
+            radioButtonName = "split_separateRadioButton";
+            break;
+        default:
+            GT_CHECK(false, "An unexpected AnnotationPolicy");
     }
 
     GTRadioButton::click(os, radioButtonName, dialog);

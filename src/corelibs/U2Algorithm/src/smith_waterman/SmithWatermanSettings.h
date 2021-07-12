@@ -58,9 +58,9 @@ struct SmithWatermanSettings {
     };
 
     SmithWatermanSettings()
-        : searchCircular(false), percentOfScore(0), complTT(NULL), aminoTT(NULL),
-          resultListener(NULL), resultFilter(NULL),
-          resultCallback(NULL), resultView(ANNOTATIONS), includePatternContent(false)
+        : searchCircular(false), percentOfScore(0), complTT(nullptr), aminoTT(nullptr),
+          resultListener(nullptr), resultFilter(nullptr),
+          resultCallback(nullptr), resultView(ANNOTATIONS), includePatternContent(false)
     /* @resultView is initialized with SWResultView::ANNOTATIONS
             for successful tests passing's sake, so when using
             in code @resultView should be assigned explicitly*/
@@ -112,10 +112,10 @@ struct SmithWatermanSettings {
         return STRING_HAS_NO_KEY_MESSAGE;
     }
 
-    static QHash<SWResultView, const char *> &getResultViewNames(const char *newResultName = NULL, SWResultView key = static_cast<SWResultView>(0)) {
+    static QHash<SWResultView, const char *> &getResultViewNames(const char *newResultName = nullptr, SWResultView key = static_cast<SWResultView>(0)) {
         static QHash<SWResultView, const char *> resultViewNames;
 
-        if (NULL != newResultName && static_cast<SWResultView>(0) != key) {
+        if (nullptr != newResultName && static_cast<SWResultView>(0) != key) {
             if (!resultViewNames.contains(key)) {
                 resultViewNames[key] = newResultName;
             }

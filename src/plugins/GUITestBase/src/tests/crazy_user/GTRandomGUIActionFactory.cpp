@@ -22,14 +22,13 @@
 #include "GTRandomGUIActionFactory.h"
 #include <base_dialogs/GTFileDialog.h>
 #include <core/GUITest.h>
+#include <harness/UGUITestBase.h>
 #include <primitives/GTWidget.h>
 
 #include <QDirIterator>
 #include <QFileDialog>
 
 #include <U2Core/U2SafePoints.h>
-
-#include <harness/UGUITestBase.h>
 
 namespace U2 {
 
@@ -40,23 +39,23 @@ int randInt(int low, int high) {
 }
 
 GTAbstractGUIAction *GTRandomGUIActionFactory::create(QObject *obj) {
-    SAFE_POINT(NULL != obj, "", NULL);
+    SAFE_POINT(nullptr != obj, "", nullptr);
 
-    GTAbstractGUIAction *action = NULL;
-    for (const QMetaObject *metaObj = obj->metaObject(); metaObj != NULL; metaObj = metaObj->superClass()) {
+    GTAbstractGUIAction *action = nullptr;
+    for (const QMetaObject *metaObj = obj->metaObject(); metaObj != nullptr; metaObj = metaObj->superClass()) {
         QString className = metaObj->className();
         uiLog.trace(QString("Searching GTAbstractGUIAction for %1").arg(className));
 
         GTAbstractGUIActionMap::const_iterator mappedIterator = actionMap.constFind(className);
-        const GTAbstractGUIAction *mappedAction = actionMap.constEnd() == mappedIterator ? NULL : actionMap[className];
-        if (NULL != mappedAction) {
+        const GTAbstractGUIAction *mappedAction = actionMap.constEnd() == mappedIterator ? nullptr : actionMap[className];
+        if (nullptr != mappedAction) {
             uiLog.trace(QString("Found GUIAction for %1").arg(className));
             action = mappedAction->clone();
             action->init(obj);
             break;
         }
     }
-    if (NULL == action) {
+    if (nullptr == action) {
         uiLog.trace("Not found GUIAction");
     }
     uiLog.trace("-----------------------");
@@ -72,7 +71,7 @@ public:
     }
     virtual void run() {
         QWidget *objCasted = qobject_cast<QWidget *>(obj);
-        SAFE_POINT(NULL != objCasted, "", );
+        SAFE_POINT(nullptr != objCasted, "", );
 
         GTWidget::click(os, objCasted);
     }
@@ -90,7 +89,7 @@ public:
     }
     virtual void run() {
         QFileDialog *objCasted = qobject_cast<QFileDialog *>(obj);
-        SAFE_POINT(NULL != objCasted, "", );
+        SAFE_POINT(nullptr != objCasted, "", );
 
         QString findPath = UGUITest::dataDir;
         QDir dir(findPath);

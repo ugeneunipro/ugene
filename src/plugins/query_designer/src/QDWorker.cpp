@@ -148,7 +148,7 @@ QString QDPrompter::composeRichDoc() {
 * QDWorker
 ******************************/
 QDWorker::QDWorker(Actor *a)
-    : BaseWorker(a), input(NULL), output(NULL), scheme(NULL) {
+    : BaseWorker(a), input(nullptr), output(nullptr), scheme(nullptr) {
 }
 
 void QDWorker::init() {
@@ -183,7 +183,7 @@ Task *QDWorker::tick() {
 
     bool res = doc.setContent(content);
     if (!res) {
-        return NULL;
+        return nullptr;
     }
 
     scheme = new QDScheme;
@@ -192,20 +192,20 @@ Task *QDWorker::tick() {
     docs << &doc;
     bool ok = QDSceneSerializer::doc2scheme(docs, scheme);
     if (!ok) {
-        return NULL;
+        return nullptr;
     }
 
     if (input->hasMessage()) {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         QVariantMap map = inputMessage.getData().toMap();
         SharedDbiDataHandler seqId = map.value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
         if (seqObj.isNull()) {
-            return NULL;
+            return nullptr;
         }
         U2OpStatusImpl os;
         DNASequence seq = seqObj->getWholeSequence(os);
@@ -234,7 +234,7 @@ Task *QDWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void QDWorker::cleanup() {
@@ -249,7 +249,7 @@ void annObjToAnnDataList(AnnotationTableObject *annObj, QList<SharedAnnotationDa
 
 void QDWorker::sl_taskFinished(Task *t) {
     delete scheme;
-    SAFE_POINT(NULL != t, "Invalid task is encountered", );
+    SAFE_POINT(nullptr != t, "Invalid task is encountered", );
     if (t->isCanceled()) {
         return;
     }

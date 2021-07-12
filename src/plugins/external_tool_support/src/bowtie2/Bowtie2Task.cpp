@@ -239,9 +239,9 @@ const QStringList Bowtie2Task::largeIndexSuffixes = QStringList() << ".1.bt2l"
 
 Bowtie2Task::Bowtie2Task(const DnaAssemblyToRefTaskSettings &settings, bool justBuildIndex)
     : DnaAssemblyToReferenceTask(settings, TaskFlags_NR_FOSE_COSC, justBuildIndex),
-      buildIndexTask(NULL),
-      alignTask(NULL),
-      unzipTask(NULL) {
+      buildIndexTask(nullptr),
+      alignTask(nullptr),
+      unzipTask(nullptr) {
 }
 
 void Bowtie2Task::prepare() {
@@ -276,7 +276,7 @@ void Bowtie2Task::prepare() {
         alignTask->addListeners(QList<ExternalToolListener *>() << getListener(1));
     }
 
-    if (unzipTask != NULL) {
+    if (unzipTask != nullptr) {
         addSubTask(unzipTask);
     } else if (!settings.prebuiltIndex) {
         addSubTask(buildIndexTask);

@@ -35,13 +35,13 @@ LabelClickTransmitter::LabelClickTransmitter(QLabel *label, QAbstractButton *but
 }
 
 bool LabelClickTransmitter::eventFilter(QObject *object, QEvent *event) {
-    CHECK(NULL != label, false);
-    CHECK(NULL != button, false);
+    CHECK(nullptr != label, false);
+    CHECK(nullptr != button, false);
     CHECK(label == object, false);
 
     CHECK(QEvent::MouseButtonRelease == event->type(), false);
     QMouseEvent *mouseEvent = dynamic_cast<QMouseEvent *>(event);
-    CHECK(NULL != event, false);
+    CHECK(nullptr != event, false);
     CHECK(Qt::LeftButton == mouseEvent->button(), false);
 
     button->toggle();

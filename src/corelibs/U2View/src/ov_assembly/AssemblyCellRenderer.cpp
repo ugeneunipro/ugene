@@ -549,11 +549,11 @@ AssemblyCellRendererFactory *AssemblyCellRendererFactoryRegistry::getFactoryById
             return f;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void AssemblyCellRendererFactoryRegistry::addFactory(AssemblyCellRendererFactory *f) {
-    assert(getFactoryById(f->getId()) == NULL);
+    assert(getFactoryById(f->getId()) == nullptr);
     factories << f;
 }
 

@@ -38,12 +38,12 @@ namespace U2 {
 /* MaSplitterController */
 /************************************************************************/
 MaSplitterController::MaSplitterController()
-    : seqArea(NULL) {
+    : seqArea(nullptr) {
     splitter = new QSplitter(Qt::Horizontal);
     splitter->setObjectName("msa_editor_horizontal_splitter");
 }
 MaSplitterController::MaSplitterController(QSplitter *spliter)
-    : seqArea(NULL),
+    : seqArea(nullptr),
       splitter(spliter) {
 }
 
@@ -96,7 +96,7 @@ void MaSplitterController::removeWidget(QWidget *wgt) {
         wgt->disconnect(curObj);
     }
     widgets.removeAll(wgt);
-    wgt->setParent(NULL);
+    wgt->setParent(nullptr);
     splitter->setSizes(widgetSizes);
 }
 

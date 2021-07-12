@@ -126,19 +126,19 @@ public:
     virtual void setVisibleRange(const U2Region &reg, bool signal = true);
 
     virtual QAction *getZoomInAction() const {
-        return coherentRangeView == NULL ? NULL : coherentRangeView->getZoomInAction();
+        return coherentRangeView == nullptr ? nullptr : coherentRangeView->getZoomInAction();
     }
 
     virtual QAction *getZoomOutAction() const {
-        return coherentRangeView == NULL ? NULL : coherentRangeView->getZoomOutAction();
+        return coherentRangeView == nullptr ? nullptr : coherentRangeView->getZoomOutAction();
     }
 
     virtual QAction *getZoomToSelectionAction() const {
-        return coherentRangeView == NULL ? NULL : coherentRangeView->getZoomToSelectionAction();
+        return coherentRangeView == nullptr ? nullptr : coherentRangeView->getZoomToSelectionAction();
     }
 
     virtual QAction *getZoomToSequenceAction() const {
-        return coherentRangeView == NULL ? NULL : coherentRangeView->getZoomToSequenceAction();
+        return coherentRangeView == nullptr ? nullptr : coherentRangeView->getZoomToSequenceAction();
     }
 
     virtual U2SequenceObject *getSequenceObject() const;

@@ -57,7 +57,7 @@ void DotPlotImageExportToBitmapTask::run() {
 DotPlotImageExportController::DotPlotImageExportController(DotPlotWidget *wgt)
     : ImageExportController(),
       dotplotWidget(wgt) {
-    SAFE_POINT(dotplotWidget != NULL, tr("Dotplot widget is NULL"), );
+    SAFE_POINT(dotplotWidget != nullptr, tr("Dotplot widget is NULL"), );
     shortDescription = tr("Dotplot");
     initSettingsWidget();
 }
@@ -85,7 +85,7 @@ void DotPlotImageExportController::initSettingsWidget() {
     includeRepeatSelection->setChecked(false);
 
     includeAreaSelection->setEnabled(dotplotWidget->hasSelectedArea());
-    includeRepeatSelection->setEnabled(dotplotWidget->nearestRepeat != NULL);
+    includeRepeatSelection->setEnabled(dotplotWidget->nearestRepeat != nullptr);
 
     layout->addWidget(includeAreaSelection);
     layout->addWidget(includeRepeatSelection);

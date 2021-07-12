@@ -49,7 +49,7 @@ typedef QPair<QString, QString> QStrStrPair;
 
 ModifySequenceContentTask::ModifySequenceContentTask(const DocumentFormatId &dfId, U2SequenceObject *seqObj, const U2Region &regionTodelete, const DNASequence &seq2Insert, bool recalculateQualifiers, U1AnnotationUtils::AnnotationStrategyForResize str, const GUrl &url, bool mergeAnnotations)
     : Task(tr("Modify sequence task"), TaskFlags(TaskFlag_NoRun) | TaskFlag_ReportingIsSupported), resultFormatId(dfId),
-      mergeAnnotations(mergeAnnotations), recalculateQualifiers(recalculateQualifiers), curDoc(seqObj->getDocument()), newDoc(NULL), url(url), strat(str),
+      mergeAnnotations(mergeAnnotations), recalculateQualifiers(recalculateQualifiers), curDoc(seqObj->getDocument()), newDoc(nullptr), url(url), strat(str),
       seqObj(seqObj), regionToReplace(regionTodelete), sequence2Insert(seq2Insert) {
     GCOUNTER(cvar, "Modify sequence task");
     inplaceMod = url == curDoc->getURL() || url.isEmpty();
@@ -66,7 +66,7 @@ Task::ReportResult ModifySequenceContentTask::report() {
     }
 
     Project *p = AppContext::getProject();
-    if (p != NULL) {
+    if (p != nullptr) {
         if (p->isStateLocked()) {
             return ReportResult_CallMeAgain;
         }
@@ -93,7 +93,7 @@ Task::ReportResult ModifySequenceContentTask::report() {
         IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
         tasks.append(new SaveDocumentTask(seqObj->getDocument(), iof, url.getURLString()));
         Project *p = AppContext::getProject();
-        if (p != NULL) {
+        if (p != nullptr) {
             tasks.append(new AddDocumentTask(newDoc));
         }
         AppContext::getTaskScheduler()->registerTopLevelTask(new MultiTask("Save document and add it to project (optional)", tasks));
@@ -157,10 +157,10 @@ qint64 ModifySequenceContentTask::getSequenceLengthDelta() const {
 void ModifySequenceContentTask::cloneSequenceAndAnnotations() {
     IOAdapterRegistry *ioReg = AppContext::getIOAdapterRegistry();
     IOAdapterFactory *iof = ioReg->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    CHECK(NULL != iof, );
+    CHECK(nullptr != iof, );
     DocumentFormatRegistry *dfReg = AppContext::getDocumentFormatRegistry();
     DocumentFormat *df = dfReg->getFormatById(resultFormatId);
-    SAFE_POINT(NULL != df, "Invalid document format!", );
+    SAFE_POINT(nullptr != df, "Invalid document format!", );
 
     U2SequenceObject *oldSeqObj = seqObj;
     U2OpStatus2Log os;
@@ -193,7 +193,7 @@ void ModifySequenceContentTask::cloneSequenceAndAnnotations() {
             // use only sequence-doc annotations
             foreach (GObject *o, curDoc->getObjects()) {
                 AnnotationTableObject *aObj = qobject_cast<AnnotationTableObject *>(o);
-                if (NULL != aObj) {
+                if (nullptr != aObj) {
                     U2OpStatus2Log os;
                     GObject *cl = aObj->clone(newDoc->getDbiRef(), os);
                     newDoc->addObject(cl);

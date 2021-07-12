@@ -73,7 +73,7 @@ Handle<Value> ActorWrap::newObject(const Arguments &args) {
         return scope.Close(Undefined());
     }
     const Workflow::Actor *actor = reinterpret_cast<Workflow::Actor *>(args[0]->IntegerValue());
-    Q_ASSERT(NULL != actor);
+    Q_ASSERT(nullptr != actor);
     ActorWrap *obj = new ActorWrap(actor);
     obj->Wrap(args.This());
     return args.This();
@@ -104,7 +104,7 @@ Handle<Value> ActorWrap::isDone(const Arguments &args) {
     }
     ActorWrap *obj = ObjectWrap::Unwrap<ActorWrap>(args.This());
     LocalWorkflow::BaseWorker *worker = obj->actor->castPeer<LocalWorkflow::BaseWorker>();
-    Q_ASSERT(NULL != worker);
+    Q_ASSERT(nullptr != worker);
     return scope.Close(Boolean::New(worker->isDone()));
 }
 
@@ -115,7 +115,7 @@ Handle<Value> ActorWrap::isReady(const Arguments &args) {
     }
     ActorWrap *obj = ObjectWrap::Unwrap<ActorWrap>(args.This());
     LocalWorkflow::BaseWorker *worker = obj->actor->castPeer<LocalWorkflow::BaseWorker>();
-    Q_ASSERT(NULL != worker);
+    Q_ASSERT(nullptr != worker);
     return scope.Close(Boolean::New(worker->isReady()));
 }
 

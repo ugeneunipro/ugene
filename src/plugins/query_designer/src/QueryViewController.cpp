@@ -72,7 +72,7 @@ const QSizeF QueryScene::DEFAULT_SCENE_SIZE(1000, 1000);
 
 QueryScene::QueryScene(QueryViewController *parent /* =0 */)
     : QGraphicsScene(parent),
-      dropCandidateLeft(NULL), dropCandidateRight(NULL), view(parent), rowsNum(3),
+      dropCandidateLeft(nullptr), dropCandidateRight(nullptr), view(parent), rowsNum(3),
       showSchemeLbl(false), showDesc(true), showOrder(true), modified(false) {
     setSceneRect(0, 0, DEFAULT_SCENE_SIZE.width(), DEFAULT_SCENE_SIZE.height());
     setItemIndexMethod(NoIndex);
@@ -322,7 +322,7 @@ QDElement *QueryScene::getUnitView(QDSchemeUnit *su) const {
             return el;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 #define MAX_ROWS_NUMBER 200
@@ -410,7 +410,7 @@ void QueryScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event) {
         const QList<QGraphicsItem *> &annItemsToRight = getElements(rightArea);
 
         qreal delta = sceneRect().width() * sceneRect().width() + sceneRect().height() * sceneRect().height();
-        QDElement *src = NULL, *dst = NULL;
+        QDElement *src = nullptr, *dst = nullptr;
         foreach (QGraphicsItem *itLeft, annItemsToLeft) {
             QDElement *leftAnn = qgraphicsitem_cast<QDElement *>(itLeft);
             assert(leftAnn);
@@ -470,8 +470,8 @@ void QueryScene::dropEvent(QGraphicsSceneDragDropEvent *event) {
     if (dropCandidateRight) {
         dropCandidateRight->highlighted = false;
     }
-    dropCandidateLeft = NULL;
-    dropCandidateRight = NULL;
+    dropCandidateLeft = nullptr;
+    dropCandidateRight = nullptr;
 }
 
 void QueryScene::setupDistanceDialog(QDDistanceType kind) {
@@ -663,7 +663,7 @@ enum { ElementsTab,
 #define PALETTE_STATE "query_palette_settings"
 
 QueryViewController::QueryViewController()
-    : MWMDIWindow(tr("Query Designer")), currentActor(NULL) {
+    : MWMDIWindow(tr("Query Designer")), currentActor(nullptr) {
     GCOUNTER(cvar, "OpenQDWindow");
     scene = new QueryScene(this);
 
@@ -1037,11 +1037,11 @@ void QueryViewController::sl_elementSelected(QDActorPrototype *proto) {
     if (!proto) {
         scene->views().at(0)->unsetCursor();
         scene->views().at(0)->setCursor(Qt::ArrowCursor);
-        currentActor = NULL;
+        currentActor = nullptr;
     } else {
         scene->views().at(0)->setCursor(Qt::CrossCursor);
         delete currentActor;
-        currentActor = NULL;
+        currentActor = nullptr;
         currentActor = proto->createInstance();
     }
 }
@@ -1086,7 +1086,7 @@ void QueryViewController::sl_setGlobalStrand(QAction *a) {
 }
 
 void QueryViewController::sl_itemAdded() {
-    currentActor = NULL;
+    currentActor = nullptr;
 
     palette->resetSelection();
     assert(scene->views().size() == 1);

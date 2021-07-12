@@ -85,7 +85,7 @@ const QString FILTER_UNPAIRED = "filter-unpaired";
 //////////////////////////////////////////////////////////////////////////
 //BaseShortReadsAlignerWorker
 BaseShortReadsAlignerWorker::BaseShortReadsAlignerWorker(Actor *a, const QString &algName)
-    : BaseWorker(a, false), algName(algName), inChannel(NULL), inPairedChannel(NULL), output(NULL), pairedReadsInput(false), filterUnpaired(true) {
+    : BaseWorker(a, false), algName(algName), inChannel(nullptr), inPairedChannel(nullptr), output(nullptr), pairedReadsInput(false), filterUnpaired(true) {
 }
 
 void BaseShortReadsAlignerWorker::init() {
@@ -178,7 +178,7 @@ Task *BaseShortReadsAlignerWorker::tick() {
             return new FailTask(error);
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void BaseShortReadsAlignerWorker::cleanup() {
@@ -277,9 +277,9 @@ bool ShortReadsAlignerSlotsValidator::validate(const IntegralBusPort *port, Noti
 //BaseShortReadsAlignerWorkerFactory
 int BaseShortReadsAlignerWorkerFactory::getThreadsCount() {
     AppSettings *settings = AppContext::getAppSettings();
-    CHECK(NULL != settings, 1);
+    CHECK(nullptr != settings, 1);
     AppResourcePool *pool = settings->getAppResourcePool();
-    CHECK(NULL != pool, 1);
+    CHECK(nullptr != pool, 1);
 
     int threads = pool->getIdealThreadCount();
     CHECK(0 != threads, 1);
@@ -354,7 +354,7 @@ void BaseShortReadsAlignerWorkerFactory::addCommonAttributes(QList<Attribute *> 
         delegates[REFERENCE_INPUT_TYPE] = new ComboBoxDelegate(rip);
 
         delegates[REFERENCE_GENOME] = new URLDelegate("", "", false, false, false);
-        delegates[INDEX_DIR] = new URLDelegate("", "", false, true, false, NULL, "", true);
+        delegates[INDEX_DIR] = new URLDelegate("", "", false, true, false, nullptr, "", true);
 
         delegates[OUTPUT_DIR] = new URLDelegate("", "", false, true);
 

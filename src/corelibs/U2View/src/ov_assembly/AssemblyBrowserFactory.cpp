@@ -86,14 +86,14 @@ Task *AssemblyBrowserFactory::createViewTask(const MultiGSelection &multiSelecti
             if (o->getGObjectType() == GObjectTypes::UNLOADED) {
                 resTasks.append(new OpenAssemblyBrowserTask(qobject_cast<UnloadedObject *>(o)));
             } else {
-                SAFE_POINT(o->getGObjectType() == GObjectTypes::ASSEMBLY, "Invalid assembly object!", NULL);
+                SAFE_POINT(o->getGObjectType() == GObjectTypes::ASSEMBLY, "Invalid assembly object!", nullptr);
                 resTasks.append(new OpenAssemblyBrowserTask(qobject_cast<AssemblyObject *>(o)));
             }
         }
     }
 
     if (resTasks.isEmpty()) {
-        return NULL;
+        return nullptr;
     }
 
     if (resTasks.size() == 1 || single) {
@@ -115,7 +115,7 @@ bool AssemblyBrowserFactory::isStateInSelection(const MultiGSelection &multiSele
     }
     GObjectReference ref = state.getGObjectRef();
     Document *doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
-    if (doc == NULL) {    //todo: accept to use invalid state removal routines of ObjectViewTask ???
+    if (doc == nullptr) {    //todo: accept to use invalid state removal routines of ObjectViewTask ???
         return false;
     }
     //check that document is in selection
@@ -126,7 +126,7 @@ bool AssemblyBrowserFactory::isStateInSelection(const MultiGSelection &multiSele
     //check that object is in selection
     QList<GObject *> selectedObjects = SelectionUtils::getSelectedObjects(multiSelection);
     GObject *obj = doc->findGObjectByName(ref.objName);
-    bool res = obj != NULL && selectedObjects.contains(obj);
+    bool res = obj != nullptr && selectedObjects.contains(obj);
     return res;
 }
 

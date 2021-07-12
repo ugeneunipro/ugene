@@ -59,7 +59,7 @@ Document *TextDocumentFormatDeprecated::loadDocument(IOAdapter *io, const U2DbiR
 DNASequence *TextDocumentFormatDeprecated::loadTextSequence(IOAdapter *io, U2OpStatus &ti) {
     Q_UNUSED(io);
     ti.setError("This document format does not support streaming reading mode");
-    return NULL;
+    return nullptr;
 }
 
 ///////////////////////////////////////////
@@ -86,7 +86,9 @@ FormatCheckResult TextDocumentFormat::checkRawData(const QByteArray &rawBinaryDa
     if (isBinaryData) {
         return FormatDetection_NotMatched;
     }
-    return checkRawTextData(text, url);
+    FormatCheckResult result = checkRawTextData(text, url);
+    result.properties[RawDataCheckResult_RawTextData] = text;
+    return result;
 }
 
 Document *TextDocumentFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {

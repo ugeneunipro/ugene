@@ -56,7 +56,7 @@ ActorPrototype *ActorPrototypeRegistry::unregisterProto(const QString &id) {
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 ActorPrototype *ActorPrototypeRegistry::getProto(const QString &id) const {
@@ -67,7 +67,7 @@ ActorPrototype *ActorPrototypeRegistry::getProto(const QString &id) const {
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 ActorPrototypeRegistry::~ActorPrototypeRegistry() {

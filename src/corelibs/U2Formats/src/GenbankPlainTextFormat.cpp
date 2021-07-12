@@ -89,7 +89,7 @@ bool GenbankPlainTextFormat::readIdLine(ParserState *st) {
     if (!st->hasKey(LOCUS)) {
         QByteArray rawData(st->buff);
         int locusStartPos = rawData.indexOf("\n" + LOCUS);
-        if (locusStartPos != -1) { //We are here if the "GenBank" file has some pre-description (see UGENE-4463)
+        if (locusStartPos != -1) {    //We are here if the "GenBank" file has some pre-description (see UGENE-4463)
             while (locusStartPos >= st->len) {
                 st->readNextLine();
                 rawData = QByteArray(st->buff);
@@ -412,12 +412,12 @@ bool GenbankPlainTextFormat::writeKeyword(IOAdapter *io, U2OpStatus &os, const Q
 }
 
 void GenbankPlainTextFormat::storeDocument(Document *doc, IOAdapter *io, U2OpStatus &os) {
-    SAFE_POINT(doc != NULL, "GenbankPlainTextFormat::storeDocument::no document", );
+    SAFE_POINT(doc != nullptr, "GenbankPlainTextFormat::storeDocument::no document", );
     QList<GObject *> seqs = doc->findGObjectByType(GObjectTypes::SEQUENCE);
     QList<GObject *> anns = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
 
     while (!seqs.isEmpty() || !anns.isEmpty()) {
-        U2SequenceObject *so = seqs.isEmpty() ? NULL : static_cast<U2SequenceObject *>(seqs.takeFirst());
+        U2SequenceObject *so = seqs.isEmpty() ? nullptr : static_cast<U2SequenceObject *>(seqs.takeFirst());
         QList<GObject *> aos;
         if (so) {
             if (!anns.isEmpty()) {
@@ -437,7 +437,7 @@ void GenbankPlainTextFormat::storeDocument(Document *doc, IOAdapter *io, U2OpSta
 
         QMap<GObjectType, QList<GObject *>> objectsMap;
         {
-            if (NULL != so) {
+            if (nullptr != so) {
                 QList<GObject *> seqs;
                 seqs << so;
                 objectsMap[GObjectTypes::SEQUENCE] = seqs;
@@ -452,20 +452,20 @@ void GenbankPlainTextFormat::storeDocument(Document *doc, IOAdapter *io, U2OpSta
 }
 
 void GenbankPlainTextFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, QList<GObject *>> &objectsMap, U2OpStatus &os) {
-    U2SequenceObject *seq = NULL;
+    U2SequenceObject *seq = nullptr;
     QList<GObject *> anns;
     if (objectsMap.contains(GObjectTypes::SEQUENCE)) {
         const QList<GObject *> &seqs = objectsMap[GObjectTypes::SEQUENCE];
         SAFE_POINT(1 >= seqs.size(), "Genbank entry storing: sequence objects count error", );
         if (1 == seqs.size()) {
             seq = dynamic_cast<U2SequenceObject *>(seqs.first());
-            SAFE_POINT(NULL != seq, "Genbank entry storing: NULL sequence object", );
+            SAFE_POINT(nullptr != seq, "Genbank entry storing: NULL sequence object", );
         }
     }
     if (objectsMap.contains(GObjectTypes::ANNOTATION_TABLE)) {
         anns = objectsMap[GObjectTypes::ANNOTATION_TABLE];
     }
-    SAFE_POINT(NULL != seq || !anns.isEmpty(), "Store entry: nothing to write", );
+    SAFE_POINT(nullptr != seq || !anns.isEmpty(), "Store entry: nothing to write", );
 
     //reading header attribute
     QString locusFromAttributes;
@@ -501,7 +501,7 @@ void GenbankPlainTextFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, Q
     //write tool mark
     QList<GObject *> annsAndSeqObjs;
     annsAndSeqObjs << anns;
-    if (seq != NULL) {
+    if (seq != nullptr) {
         annsAndSeqObjs << seq;
     }
     if (!annsAndSeqObjs.isEmpty()) {
@@ -539,17 +539,17 @@ void GenbankPlainTextFormat::storeEntry(IOAdapter *io, const QMap<GObjectType, Q
 }
 
 bool GenbankPlainTextFormat::checkCircularity(const GUrl &filePath, U2OpStatus &os) {
-    SAFE_POINT_EXT(AppContext::getIOAdapterRegistry() != NULL, os.setError(tr("There is no IOAdapter registry yet")), false);
+    SAFE_POINT_EXT(AppContext::getIOAdapterRegistry() != nullptr, os.setError(tr("There is no IOAdapter registry yet")), false);
     IOAdapterFactory *factory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    SAFE_POINT_EXT(factory != NULL, os.setError(tr("IOAdapterFactory is NULL")), false);
+    SAFE_POINT_EXT(factory != nullptr, os.setError(tr("IOAdapterFactory is NULL")), false);
     IOAdapter *io = factory->createIOAdapter();
-    SAFE_POINT_EXT(io != NULL, os.setError(tr("IOAdapter is NULL")), false);
+    SAFE_POINT_EXT(io != nullptr, os.setError(tr("IOAdapter is NULL")), false);
     io->setFormatMode(IOAdapter::TextMode);
     bool ok = io->open(filePath, IOAdapterMode_Read);
     CHECK_EXT(ok, os.setError(L10N::errorOpeningFileRead(filePath)), false);
 
     QByteArray readBuffer(READ_BUFF_SIZE, '\0');
-    ParserState st(12, io, NULL, os);
+    ParserState st(12, io, nullptr, os);
     st.buff = readBuffer.data();
     EMBLGenbankDataEntry data;
     st.entry = &data;
@@ -579,7 +579,7 @@ static QString padToLen(const QString &s, int width) {
 
 static QString detectTopology(const QString &savedTopology, U2SequenceObject *so) {
     CHECK(!savedTopology.isEmpty(), QString());
-    SAFE_POINT(so != NULL, "U2SequenceObject is NULL", QString());
+    SAFE_POINT(so != nullptr, "U2SequenceObject is NULL", QString());
 
     if (savedTopology == EMBLGenbankAbstractDocument::LOCUS_TAG_LINEAR) {
         if (so->isCircular()) {
@@ -811,7 +811,7 @@ void GenbankPlainTextFormat::writeAnnotations(IOAdapter *io, const QList<GObject
     QList<Annotation *> sortedAnnotations;
     foreach (GObject *o, aos) {
         AnnotationTableObject *ao = qobject_cast<AnnotationTableObject *>(o);
-        CHECK_EXT(NULL != ao, si.setError(tr("Invalid annotation table!")), );
+        CHECK_EXT(nullptr != ao, si.setError(tr("Invalid annotation table!")), );
         sortedAnnotations += ao->getAnnotations();
     }
 
@@ -891,7 +891,7 @@ void GenbankPlainTextFormat::writeSequence(IOAdapter *io, U2SequenceObject *ao, 
 
     QByteArray seq;
     qint64 slen = ao->getSequenceLength();
-    const char *sequence = NULL;
+    const char *sequence = nullptr;
     const char *spaces = TextUtils::SPACE_LINE.constData();
     QByteArray num;
     bool ok = true;

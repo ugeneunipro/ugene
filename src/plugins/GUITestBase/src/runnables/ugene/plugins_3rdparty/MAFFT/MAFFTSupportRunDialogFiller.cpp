@@ -54,7 +54,7 @@ MAFFTSupportRunDialogFiller::MAFFTSupportRunDialogFiller(GUITestOpStatus &os, MA
 
 MAFFTSupportRunDialogFiller::MAFFTSupportRunDialogFiller(GUITestOpStatus &os, CustomScenario *scenario)
     : Filler(os, "MAFFTSupportRunDialog", scenario),
-      parameters(NULL) {
+      parameters(nullptr) {
 }
 
 #define GT_METHOD_NAME "commonScenario"

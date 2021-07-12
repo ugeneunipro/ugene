@@ -36,13 +36,13 @@ namespace GUITest_crazy_user {
 
 void GTCrazyUserMonitor::checkActiveWidget() {
     QWidget *widget = QApplication::activePopupWidget();
-    if (NULL == widget || 0 == qrand() % 20) {
+    if (nullptr == widget || 0 == qrand() % 20) {
         widget = QApplication::activeModalWidget();
-        if (NULL == widget) {
+        if (nullptr == widget) {
             widget = QApplication::activeWindow();
         }
     }
-    SAFE_POINT(NULL != widget, "", );
+    SAFE_POINT(nullptr != widget, "", );
 
     U2OpStatus2Log os;
 
@@ -58,7 +58,7 @@ void GTCrazyUserMonitor::checkActiveWidget() {
         uiLog.trace(QString("Action for %1 with priority %2").arg(a->objectClassName()).arg(a->getPriority()));
     }
 
-    GTAbstractGUIAction *action = NULL;
+    GTAbstractGUIAction *action = nullptr;
     if (GTAbstractGUIAction::Priority_High == actionList.first()->getPriority()) {
         action = actionList.first();
     } else {
@@ -68,7 +68,7 @@ void GTCrazyUserMonitor::checkActiveWidget() {
         action = actionList.at(randListId);
     }
 
-    SAFE_POINT(NULL != action, "", );
+    SAFE_POINT(nullptr != action, "", );
     action->run();
 
     qDeleteAll(actionList);
@@ -77,14 +77,14 @@ void GTCrazyUserMonitor::checkActiveWidget() {
 
 QList<GTAbstractGUIAction *> GTCrazyUserMonitor::formGUIActions(QWidget *widget) const {
     QList<GTAbstractGUIAction *> actionList;
-    SAFE_POINT(NULL != widget, "", actionList);
+    SAFE_POINT(nullptr != widget, "", actionList);
 
     QObjectList objectList = widget->findChildren<QObject *>();
     objectList.append(widget);
 
     foreach (QObject *o, objectList) {
         GTAbstractGUIAction *guiAction = GTRandomGUIActionFactory::create(o);
-        if (NULL != guiAction) {
+        if (nullptr != guiAction) {
             actionList.append(guiAction);
         }
     }

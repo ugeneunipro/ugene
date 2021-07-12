@@ -66,6 +66,7 @@ public:
     }
 
     QString whiteSpacesAfterLastToken;
+
 private:
     IOAdapter *io;
     QString next;

@@ -37,7 +37,7 @@ namespace U2 {
 
 ExportSequences2MSADialog::ExportSequences2MSADialog(QWidget *p, const QString &defaultUrl)
     : QDialog(p),
-      saveController(NULL) {
+      saveController(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929308");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));

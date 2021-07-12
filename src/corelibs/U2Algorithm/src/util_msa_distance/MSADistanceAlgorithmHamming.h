@@ -37,7 +37,7 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MSADistanceAlgorithmFactoryHamming : public MSADistanceAlgorithmFactory {
     Q_OBJECT
 public:
-    MSADistanceAlgorithmFactoryHamming(QObject *p = NULL);
+    MSADistanceAlgorithmFactoryHamming(QObject *p = nullptr);
 
     virtual MSADistanceAlgorithm *createAlgorithm(const MultipleSequenceAlignment &ma, QObject *parent);
 

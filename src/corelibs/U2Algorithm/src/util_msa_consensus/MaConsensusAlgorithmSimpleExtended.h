@@ -120,7 +120,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(MaConsensusAlgorithmSimpleExtended::Characters)
 class MaConsensusAlgorithmFactorySimpleExtended : public MSAConsensusAlgorithmFactory {
     Q_OBJECT
 public:
-    MaConsensusAlgorithmFactorySimpleExtended(QObject *parent = NULL);
+    MaConsensusAlgorithmFactorySimpleExtended(QObject *parent = nullptr);
 
     MSAConsensusAlgorithm *createAlgorithm(const MultipleAlignment &ma, bool ignoreTrailingLeadingGaps, QObject *parent);
 

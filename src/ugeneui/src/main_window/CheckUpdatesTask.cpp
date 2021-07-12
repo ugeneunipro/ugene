@@ -48,13 +48,13 @@ CheckUpdatesTask::CheckUpdatesTask(bool startUp)
 
 #define SITE_URL QString("ugene.net")
 #ifdef Q_OS_WIN
-#define PAGE_NAME QString("/current_version_win.html")
+#    define PAGE_NAME QString("/current_version_win.html")
 #elif defined(Q_OS_DARWIN)
-#define PAGE_NAME QString("/current_version_mac.html")
+#    define PAGE_NAME QString("/current_version_mac.html")
 #elif defined(Q_OS_LINUX)
-#define PAGE_NAME QString("/current_version_linux.html")
+#    define PAGE_NAME QString("/current_version_linux.html")
 #else
-#define PAGE_NAME QString("/current_version.html")
+#    define PAGE_NAME QString("/current_version.html")
 #endif
 
 void CheckUpdatesTask::run() {
@@ -111,15 +111,15 @@ Task::ReportResult CheckUpdatesTask::report() {
     }
 
     switch (answer) {
-    case Update:
-        UgeneUpdater::getInstance()->update();
-        break;
-    case Skip:
-        UgeneUpdater::skipUpdate(siteVersion);
-        break;
-    case DoNothing:
-    default:
-        break;
+        case Update:
+            UgeneUpdater::getInstance()->update();
+            break;
+        case Skip:
+            UgeneUpdater::skipUpdate(siteVersion);
+            break;
+        case DoNothing:
+        default:
+            break;
     }
     return ReportResult_Finished;
 }
@@ -166,7 +166,7 @@ VersionMessage::VersionMessage(const Version &newVersion) {
 
     dialog = new QMessageBox(QMessageBox::Information, title, message, QMessageBox::NoButton, parent);
     dialog->addButton(QMessageBox::Ok);
-    updateButton = NULL;
+    updateButton = nullptr;
     if (Version::appVersion() < newVersion) {
         updateButton = dialog->addButton(tr("Update Now"), QMessageBox::ActionRole);
     }

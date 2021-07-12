@@ -46,7 +46,7 @@ struct TreeOpWidgetViewSettings {
     bool showPenSettings;
 };
 
-class TreeOptionsSavableWidget: public U2SavableWidget {
+class TreeOptionsSavableWidget : public U2SavableWidget {
 public:
     TreeOptionsSavableWidget(QWidget *wrappedWidget, MWMDIWindow *contextWindow = nullptr);
     ~TreeOptionsSavableWidget();

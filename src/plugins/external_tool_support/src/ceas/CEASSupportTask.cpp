@@ -55,7 +55,7 @@ const QString CEASTaskSettings::PDF_FORMAT("PDF");
 const QString CEASTaskSettings::PNG_FORMAT("PNG");
 
 CEASTaskSettings::CEASTaskSettings()
-    : storage(NULL) {
+    : storage(nullptr) {
 }
 
 CEASTaskSettings::CEASTaskSettings(const CEASSettings &_ceas, Workflow::DbiDataStorage *storage, const QList<Workflow::SharedDbiDataHandler> &_bedData, const QString &_wigData)
@@ -89,10 +89,10 @@ const QString CEASSupportTask::BASE_DIR_NAME("ceas_report");
 
 CEASSupportTask::CEASSupportTask(const CEASTaskSettings &_settings)
     : ExternalToolSupportTask("Running CEAS report task", TaskFlag_None),
-      settings(_settings), bedDoc(NULL),
-      bedTask(NULL), wigTask(NULL), etTask(NULL), activeSubtasks(0) {
+      settings(_settings), bedDoc(nullptr),
+      bedTask(nullptr), wigTask(nullptr), etTask(nullptr), activeSubtasks(0) {
     GCOUNTER(cvar, "NGS:CEASTask");
-    SAFE_POINT_EXT(NULL != settings.getStorage() || settings.getBedData().isEmpty(), setError(L10N::nullPointerError("workflow data storage")), );
+    SAFE_POINT_EXT(nullptr != settings.getStorage() || settings.getBedData().isEmpty(), setError(L10N::nullPointerError("workflow data storage")), );
 }
 
 CEASSupportTask::~CEASSupportTask() {
@@ -101,7 +101,7 @@ CEASSupportTask::~CEASSupportTask() {
 
 void CEASSupportTask::cleanup() {
     delete bedDoc;
-    bedDoc = NULL;
+    bedDoc = nullptr;
 
     //remove tmp files
     QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(BASE_DIR_NAME);
@@ -136,12 +136,12 @@ void CEASSupportTask::prepare() {
 
 void CEASSupportTask::createBedDoc() {
     if (settings.getBedData().isEmpty()) {
-        bedDoc = NULL;
+        bedDoc = nullptr;
     } else {
         QString bedUrl = workingDir + "/" + "tmp.bed";
 
         DocumentFormat *bedFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::BED);
-        CHECK_EXT(NULL != bedFormat, stateInfo.setError("NULL bed format"), );
+        CHECK_EXT(nullptr != bedFormat, stateInfo.setError("NULL bed format"), );
 
         bedDoc = bedFormat->createNewLoadedDocument(
             IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), bedUrl, stateInfo);
@@ -169,7 +169,7 @@ Task *CEASSupportTask::createETTask() {
     QStringList args = settings.getCeasSettings().getArgumentList();
 
     ExternalTool *rTool = AppContext::getExternalToolRegistry()->getById(RSupport::ET_R_ID);
-    SAFE_POINT(NULL != rTool, "R script tool wasn't found in the registry", new FailTask("R script tool wasn't found in the registry"));
+    SAFE_POINT(nullptr != rTool, "R script tool wasn't found in the registry", new FailTask("R script tool wasn't found in the registry"));
     const QString rDir = QFileInfo(rTool->getPath()).dir().absolutePath();
 
     ExternalToolRunTask *runTask = new ExternalToolRunTask(CEASSupport::ET_CEAS_ID, args, new CEASLogParser(), workingDir, QStringList() << rDir);

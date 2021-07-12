@@ -35,7 +35,7 @@ class U2Region;
 class SequenceExportSettingsWidget : public QWidget, public Ui_SequenceExportSettingsWidget {
     Q_OBJECT
 public:
-    SequenceExportSettingsWidget(U2SequenceObject *seqObj, QSharedPointer<CustomExportSettings> settings, DNASequenceSelection *selection = NULL);
+    SequenceExportSettingsWidget(U2SequenceObject *seqObj, QSharedPointer<CustomExportSettings> settings, DNASequenceSelection *selection = nullptr);
 
 signals:
     void si_regionChanged(U2Region region);

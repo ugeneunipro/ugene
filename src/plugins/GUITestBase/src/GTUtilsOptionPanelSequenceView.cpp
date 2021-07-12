@@ -87,7 +87,6 @@ void GTUtilsOptionPanelSequenceView::enterPattern(HI::GUITestOpStatus &os, QStri
     } else {
         GTTextEdit::setText(os, patternEdit, pattern);
     }
-
 }
 
 #undef GT_METHOD_NAME
@@ -215,7 +214,7 @@ int GTUtilsOptionPanelSequenceView::getTitleFontSize(HI::GUITestOpStatus &os) {
 void GTUtilsOptionPanelSequenceView::setForwardPrimer(HI::GUITestOpStatus &os, const QString &primer) {
     openTab(os, InSilicoPcr);
     QWidget *primerContainer = GTWidget::findWidget(os, "forwardPrimerBox");
-    GT_CHECK(NULL != primerContainer, "Forward primer container widget is NULL");
+    GT_CHECK(nullptr != primerContainer, "Forward primer container widget is NULL");
     GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "primerEdit", primerContainer), primer);
 }
 #undef GT_METHOD_NAME
@@ -224,10 +223,10 @@ void GTUtilsOptionPanelSequenceView::setForwardPrimer(HI::GUITestOpStatus &os, c
 void GTUtilsOptionPanelSequenceView::setForwardPrimerMismatches(HI::GUITestOpStatus &os, const int mismatches) {
     openTab(os, InSilicoPcr);
     QWidget *primerContainer = GTWidget::findWidget(os, "forwardPrimerBox");
-    GT_CHECK(NULL != primerContainer, "Forward primer container widget is NULL");
+    GT_CHECK(nullptr != primerContainer, "Forward primer container widget is NULL");
 
     QSpinBox *mismatchesSpinBox = GTWidget::findExactWidget<QSpinBox *>(os, "mismatchesSpinBox", primerContainer);
-    GT_CHECK(NULL != primerContainer, "Forward primer mismatches SpinBox is NULL");
+    GT_CHECK(nullptr != primerContainer, "Forward primer mismatches SpinBox is NULL");
 
     GTSpinBox::setValue(os, mismatchesSpinBox, mismatches, GTGlobals::UseKey);
 }
@@ -237,7 +236,7 @@ void GTUtilsOptionPanelSequenceView::setForwardPrimerMismatches(HI::GUITestOpSta
 void GTUtilsOptionPanelSequenceView::setReversePrimer(HI::GUITestOpStatus &os, const QString &primer) {
     openTab(os, InSilicoPcr);
     QWidget *primerContainer = GTWidget::findWidget(os, "reversePrimerBox");
-    GT_CHECK(NULL != primerContainer, "Reverse primer container widget is NULL");
+    GT_CHECK(nullptr != primerContainer, "Reverse primer container widget is NULL");
     GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "primerEdit", primerContainer), primer);
 }
 #undef GT_METHOD_NAME
@@ -246,10 +245,10 @@ void GTUtilsOptionPanelSequenceView::setReversePrimer(HI::GUITestOpStatus &os, c
 void GTUtilsOptionPanelSequenceView::setReversePrimerMismatches(HI::GUITestOpStatus &os, const int mismatches) {
     openTab(os, InSilicoPcr);
     QWidget *primerContainer = GTWidget::findWidget(os, "reversePrimerBox");
-    GT_CHECK(NULL != primerContainer, "Reverse primer container widget is NULL");
+    GT_CHECK(nullptr != primerContainer, "Reverse primer container widget is NULL");
 
     QSpinBox *mismatchesSpinBox = GTWidget::findExactWidget<QSpinBox *>(os, "mismatchesSpinBox", primerContainer);
-    GT_CHECK(NULL != primerContainer, "Reverse primer mismatches SpinBox is NULL");
+    GT_CHECK(nullptr != primerContainer, "Reverse primer mismatches SpinBox is NULL");
 
     GTSpinBox::setValue(os, mismatchesSpinBox, mismatches, GTGlobals::UseKey);
 }
@@ -259,7 +258,7 @@ void GTUtilsOptionPanelSequenceView::setReversePrimerMismatches(HI::GUITestOpSta
 int GTUtilsOptionPanelSequenceView::productsCount(HI::GUITestOpStatus &os) {
     openTab(os, InSilicoPcr);
     QTableWidget *tableWidget = qobject_cast<QTableWidget *>(GTWidget::findWidget(os, "productsTable"));
-    GT_CHECK_RESULT(NULL != tableWidget, "In Silico PCR Products Table is not found", -1);
+    GT_CHECK_RESULT(nullptr != tableWidget, "In Silico PCR Products Table is not found", -1);
 
     return tableWidget->rowCount();
 }
@@ -277,7 +276,7 @@ void GTUtilsOptionPanelSequenceView::showPrimersDetails(HI::GUITestOpStatus &os)
 void GTUtilsOptionPanelSequenceView::pressFindProducts(HI::GUITestOpStatus &os) {
     openTab(os, InSilicoPcr);
     QPushButton *findProducts = qobject_cast<QPushButton *>(GTWidget::findWidget(os, "findProductButton"));
-    GT_CHECK(NULL != findProducts, "Find Product(s) buttons is not found");
+    GT_CHECK(nullptr != findProducts, "Find Product(s) buttons is not found");
 
     GTWidget::click(os, findProducts);
 }
@@ -287,7 +286,7 @@ void GTUtilsOptionPanelSequenceView::pressFindProducts(HI::GUITestOpStatus &os) 
 void GTUtilsOptionPanelSequenceView::pressExtractProduct(HI::GUITestOpStatus &os) {
     openTab(os, InSilicoPcr);
     QPushButton *extractProduct = qobject_cast<QPushButton *>(GTWidget::findWidget(os, "extractProductButton"));
-    GT_CHECK(NULL != extractProduct, "Extract Product buttons is not found");
+    GT_CHECK(nullptr != extractProduct, "Extract Product buttons is not found");
     GT_CHECK(extractProduct->isEnabled(), "Extract Product buttons is unexpectably disabled");
 
     GTWidget::click(os, extractProduct);
@@ -297,7 +296,7 @@ void GTUtilsOptionPanelSequenceView::pressExtractProduct(HI::GUITestOpStatus &os
 #define GT_METHOD_NAME "isSearchAlgorithmShowHideWidgetOpened"
 bool GTUtilsOptionPanelSequenceView::isSearchAlgorithmShowHideWidgetOpened(HI::GUITestOpStatus &os) {
     QWidget *algorithmInnerWidget = GTWidget::findWidget(os, "widgetAlgorithm");
-    GT_CHECK_RESULT(NULL != algorithmInnerWidget, "algorithmInnerWidget is NULL", false);
+    GT_CHECK_RESULT(nullptr != algorithmInnerWidget, "algorithmInnerWidget is NULL", false);
     return algorithmInnerWidget->isVisible();
 }
 #undef GT_METHOD_NAME
@@ -305,7 +304,7 @@ bool GTUtilsOptionPanelSequenceView::isSearchAlgorithmShowHideWidgetOpened(HI::G
 #define GT_METHOD_NAME "isSearchInShowHideWidgetOpened"
 bool GTUtilsOptionPanelSequenceView::isSearchInShowHideWidgetOpened(HI::GUITestOpStatus &os) {
     QWidget *searchInInnerWidget = GTWidget::findWidget(os, "widgetSearchIn");
-    GT_CHECK_RESULT(NULL != searchInInnerWidget, "searchInInnerWidget is NULL", false);
+    GT_CHECK_RESULT(nullptr != searchInInnerWidget, "searchInInnerWidget is NULL", false);
     return searchInInnerWidget->isVisible();
 }
 #undef GT_METHOD_NAME
@@ -313,7 +312,7 @@ bool GTUtilsOptionPanelSequenceView::isSearchInShowHideWidgetOpened(HI::GUITestO
 #define GT_METHOD_NAME "isOtherSettingsShowHideWidgetOpened"
 bool GTUtilsOptionPanelSequenceView::isOtherSettingsShowHideWidgetOpened(HI::GUITestOpStatus &os) {
     QWidget *otherSettingsInnerWidget = GTWidget::findWidget(os, "widgetOther");
-    GT_CHECK_RESULT(NULL != otherSettingsInnerWidget, "otherSettingsInnerWidget is NULL", false);
+    GT_CHECK_RESULT(nullptr != otherSettingsInnerWidget, "otherSettingsInnerWidget is NULL", false);
     return otherSettingsInnerWidget->isVisible();
 }
 #undef GT_METHOD_NAME
@@ -321,9 +320,9 @@ bool GTUtilsOptionPanelSequenceView::isOtherSettingsShowHideWidgetOpened(HI::GUI
 #define GT_METHOD_NAME "isSaveAnnotationToShowHideWidgetOpened"
 bool GTUtilsOptionPanelSequenceView::isSaveAnnotationToShowHideWidgetOpened(HI::GUITestOpStatus &os) {
     QWidget *annotationsWidget = GTWidget::findWidget(os, "annotationsWidget");
-    GT_CHECK_RESULT(NULL != annotationsWidget, "annotationsWidget is NULL", false);
+    GT_CHECK_RESULT(nullptr != annotationsWidget, "annotationsWidget is NULL", false);
     QWidget *saveAnnotationsToInnerWidget = GTWidget::findWidget(os, "saveAnnotationsInnerWidget", annotationsWidget);
-    GT_CHECK_RESULT(NULL != saveAnnotationsToInnerWidget, "saveAnnotationsInnerWidget is NULL", false);
+    GT_CHECK_RESULT(nullptr != saveAnnotationsToInnerWidget, "saveAnnotationsInnerWidget is NULL", false);
     return saveAnnotationsToInnerWidget->isVisible();
 }
 #undef GT_METHOD_NAME
@@ -331,9 +330,9 @@ bool GTUtilsOptionPanelSequenceView::isSaveAnnotationToShowHideWidgetOpened(HI::
 #define GT_METHOD_NAME "isAnnotationParametersShowHideWidgetOpened"
 bool GTUtilsOptionPanelSequenceView::isAnnotationParametersShowHideWidgetOpened(HI::GUITestOpStatus &os) {
     QWidget *annotationsWidget = GTWidget::findWidget(os, "annotationsWidget");
-    GT_CHECK_RESULT(NULL != annotationsWidget, "annotationsWidget is NULL", false);
+    GT_CHECK_RESULT(nullptr != annotationsWidget, "annotationsWidget is NULL", false);
     QWidget *annotationsParametersInnerWidget = GTWidget::findWidget(os, "annotationParametersInnerWidget", annotationsWidget);
-    GT_CHECK_RESULT(NULL != annotationsParametersInnerWidget, "annotationsParametersInnerWidget is NULL", false);
+    GT_CHECK_RESULT(nullptr != annotationsParametersInnerWidget, "annotationsParametersInnerWidget is NULL", false);
     return annotationsParametersInnerWidget->isVisible();
 }
 #undef GT_METHOD_NAME
@@ -410,8 +409,8 @@ void GTUtilsOptionPanelSequenceView::enterPatternFromFile(HI::GUITestOpStatus &o
 #define GT_METHOD_NAME "setStrand"
 
 void GTUtilsOptionPanelSequenceView::setStrand(HI::GUITestOpStatus &os, QString strandStr) {
-    QComboBox *strand = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxStrand", NULL, GTGlobals::FindOptions(false)));
-    GT_CHECK(strand != NULL, "combobox is NULL");
+    QComboBox *strand = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxStrand", nullptr, GTGlobals::FindOptions(false)));
+    GT_CHECK(strand != nullptr, "combobox is NULL");
 
     if (!strand->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
@@ -439,7 +438,7 @@ void GTUtilsOptionPanelSequenceView::setRegion(HI::GUITestOpStatus &os, int from
 #define GT_METHOD_NAME "enterFilepathForSavingAnnotations"
 void GTUtilsOptionPanelSequenceView::enterFilepathForSavingAnnotations(HI::GUITestOpStatus &os, QString filepath) {
     QLineEdit *leFilePath = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "leNewTablePath"));
-    GT_CHECK(leFilePath != NULL, "File path line edit is NULL");
+    GT_CHECK(leFilePath != nullptr, "File path line edit is NULL");
     QDir().mkpath(QFileInfo(filepath).dir().absolutePath());
     GTLineEdit::setText(os, leFilePath, filepath);
 }
@@ -449,7 +448,7 @@ void GTUtilsOptionPanelSequenceView::enterFilepathForSavingAnnotations(HI::GUITe
 #define GT_METHOD_NAME "setAlgorithm"
 void GTUtilsOptionPanelSequenceView::setAlgorithm(HI::GUITestOpStatus &os, QString algorithm) {
     QComboBox *algoBox = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxAlgorithm"));
-    GT_CHECK(algoBox != NULL, "algoBox is NULL");
+    GT_CHECK(algoBox != nullptr, "algoBox is NULL");
 
     if (!algoBox->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search algorithm"));
@@ -462,7 +461,7 @@ void GTUtilsOptionPanelSequenceView::setAlgorithm(HI::GUITestOpStatus &os, QStri
 #define GT_METHOD_NAME "getMatchPercentage"
 int GTUtilsOptionPanelSequenceView::getMatchPercentage(HI::GUITestOpStatus &os) {
     QSpinBox *spinMatchBox = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "spinBoxMatch"));
-    GT_CHECK_RESULT(NULL != spinMatchBox, "Match percentage spinbox is NULL", -1);
+    GT_CHECK_RESULT(nullptr != spinMatchBox, "Match percentage spinbox is NULL", -1);
     return spinMatchBox->value();
 }
 #undef GT_METHOD_NAME
@@ -471,7 +470,7 @@ int GTUtilsOptionPanelSequenceView::getMatchPercentage(HI::GUITestOpStatus &os) 
 QString GTUtilsOptionPanelSequenceView::getRegionType(HI::GUITestOpStatus &os) {
     openSearchInShowHideWidget(os);
     QComboBox *cbRegionType = GTWidget::findExactWidget<QComboBox *>(os, "boxRegion");
-    GT_CHECK_RESULT(NULL != cbRegionType, "Region type combobox is NULL", "");
+    GT_CHECK_RESULT(nullptr != cbRegionType, "Region type combobox is NULL", "");
     return cbRegionType->currentText();
 }
 #undef GT_METHOD_NAME
@@ -497,7 +496,7 @@ QPair<int, int> GTUtilsOptionPanelSequenceView::getRegion(HI::GUITestOpStatus &o
 #define GT_METHOD_NAME "getHintText"
 const QString GTUtilsOptionPanelSequenceView::getHintText(HI::GUITestOpStatus &os) {
     QLabel *lblHint = GTWidget::findExactWidget<QLabel *>(os, "lblErrorMessage");
-    GT_CHECK_RESULT(NULL != lblHint, "Hintlabel is NULL", "");
+    GT_CHECK_RESULT(nullptr != lblHint, "Hintlabel is NULL", "");
     CHECK(lblHint->isVisible(), "");
     return lblHint->text();
 }
@@ -521,8 +520,8 @@ void GTUtilsOptionPanelSequenceView::setUsePatternName(HI::GUITestOpStatus &os, 
 
 #define GT_METHOD_NAME "setSearchInTranslation"
 void GTUtilsOptionPanelSequenceView::setSearchInTranslation(HI::GUITestOpStatus &os, bool inTranslation /* = true*/) {
-    QComboBox *searchIn = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxSeqTransl", NULL, GTGlobals::FindOptions(false)));
-    GT_CHECK(searchIn != NULL, "combobox is NULL");
+    QComboBox *searchIn = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxSeqTransl", nullptr, GTGlobals::FindOptions(false)));
+    GT_CHECK(searchIn != nullptr, "combobox is NULL");
 
     if (!searchIn->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
@@ -538,8 +537,8 @@ void GTUtilsOptionPanelSequenceView::setSearchInTranslation(HI::GUITestOpStatus 
 
 #define GT_METHOD_NAME "setSearchInLocation"
 void GTUtilsOptionPanelSequenceView::setSearchInLocation(HI::GUITestOpStatus &os, QString locationStr) {
-    QComboBox *region = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxRegion", NULL, GTGlobals::FindOptions(false)));
-    GT_CHECK(region != NULL, "combobox is NULL");
+    QComboBox *region = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "boxRegion", nullptr, GTGlobals::FindOptions(false)));
+    GT_CHECK(region != nullptr, "combobox is NULL");
 
     if (!region->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Search in"));
@@ -551,8 +550,8 @@ void GTUtilsOptionPanelSequenceView::setSearchInLocation(HI::GUITestOpStatus &os
 
 #define GT_METHOD_NAME "setSetMaxResults"
 void GTUtilsOptionPanelSequenceView::setSetMaxResults(HI::GUITestOpStatus &os, int maxResults) {
-    QSpinBox *limit = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "boxMaxResult", NULL, GTGlobals::FindOptions(false)));
-    GT_CHECK(limit != NULL, "spinbox is NULL");
+    QSpinBox *limit = qobject_cast<QSpinBox *>(GTWidget::findWidget(os, "boxMaxResult", nullptr, GTGlobals::FindOptions(false)));
+    GT_CHECK(limit != nullptr, "spinbox is NULL");
 
     if (!limit->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "ArrowHeader_Other settings"));

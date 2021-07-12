@@ -46,8 +46,8 @@ static int PROCESSING_PROGRESS_WEIGHT(80);
 QDScheduler::QDScheduler(const QDRunSettings &_settings)
     : Task(tr("QDScheduler"), TaskFlags_NR_FOSCOE), settings(_settings) {
     GCOUNTER(cvar, "QueryDesignerScheduler");
-    loadTask = NULL;
-    createAnnsTask = NULL;
+    loadTask = nullptr;
+    createAnnsTask = nullptr;
     linker = new QDResultLinker(this);
     settings.scheme->adaptActorsOrder();
     currentStep = new QDStep(settings.scheme);
@@ -57,16 +57,16 @@ QDScheduler::QDScheduler(const QDRunSettings &_settings)
     // if annotation table is not added to project
     // annotations will be added in subtask thread
     // => leave some progress bar space for it
-    Document *annObjDoc = settings.annotationsObj == NULL ? NULL : settings.annotationsObj->getDocument();
+    Document *annObjDoc = settings.annotationsObj == nullptr ? nullptr : settings.annotationsObj->getDocument();
     if (annObjDoc) {
         progressDelta = 100 / settings.scheme->getActors().size();
     } else {
         progressDelta = PROCESSING_PROGRESS_WEIGHT / settings.scheme->getActors().size();
     }
 
-    if (settings.annotationsObj == NULL) {
+    if (settings.annotationsObj == nullptr) {
         GObject *ao = GObjectUtils::selectObjectByReference(settings.annotationsObjRef, UOF_LoadedAndUnloaded);
-        if (ao == NULL) {
+        if (ao == nullptr) {
             setError(tr("Can't find annotation object: %1 in document: %2").arg(settings.annotationsObjRef.objName).arg(settings.annotationsObjRef.docUrl));
             return;
         }
@@ -99,7 +99,7 @@ QList<Task *> QDScheduler::onSubTaskFinished(Task *subTask) {
         settings.annotationsObj = qobject_cast<AnnotationTableObject *>(loadTask->getDocument()->findGObjectByName(settings.annotationsObjRef.objName));
         return subs;
     }
-    if (settings.annotationsObj == NULL) {
+    if (settings.annotationsObj == nullptr) {
         setError(tr("Annotation object is not available"));
         return subs;
     }
@@ -135,7 +135,7 @@ Task::ReportResult QDScheduler::report() {
     // last task is finished, add annotation table object to view if needed
     if (!settings.viewName.isEmpty()) {
         GObjectViewWindow *viewWindow = GObjectViewUtils::findViewByName(settings.viewName);
-        if (viewWindow != NULL) {
+        if (viewWindow != nullptr) {
             viewWindow->getObjectView()->addObject(settings.annotationsObj);
         }
     }
@@ -146,13 +146,13 @@ Task::ReportResult QDScheduler::report() {
 //QDResultLinker
 //////////////////////////////////////////////////////////////////////////
 QDResultLinker::QDResultLinker(QDScheduler *_sched)
-    : scheme(_sched->getSettings().scheme), sched(_sched), cancelled(false), currentStep(NULL),
+    : scheme(_sched->getSettings().scheme), sched(_sched), cancelled(false), currentStep(nullptr),
       needInit(true), maxMemorySizeInMB(-1) {
     const AppSettings *appSettings = AppContext::getAppSettings();
-    SAFE_POINT_EXT(NULL != appSettings, taskLog.error(QDScheduler::tr("Invalid applications settings detected")), );
+    SAFE_POINT_EXT(nullptr != appSettings, taskLog.error(QDScheduler::tr("Invalid applications settings detected")), );
 
     AppResourcePool *appResourcePool = appSettings->getAppResourcePool();
-    SAFE_POINT_EXT(NULL != appResourcePool, taskLog.error(QDScheduler::tr("Invalid users applications settings detected")), );
+    SAFE_POINT_EXT(nullptr != appResourcePool, taskLog.error(QDScheduler::tr("Invalid users applications settings detected")), );
     maxMemorySizeInMB = AppContext::getAppSettings()->getAppResourcePool()->getMaxMemorySizeInMB();
 }
 
@@ -484,7 +484,7 @@ void QDResultLinker::updateCandidates(int &progress) {
                 }
             }
         }
-        candidates.replace(candidates.indexOf(candidate), NULL);
+        candidates.replace(candidates.indexOf(candidate), nullptr);
         delete candidate;
         progress = 100 * ++i / candidates.size();
     }
@@ -584,7 +584,7 @@ void QDResultLinker::createAnnotations(const QString &groupPrefix) {
             groupAnns.append(a);
         }
         annotations[grpName] = groupAnns;
-        candidates.replace(candidates.indexOf(candidate), NULL);
+        candidates.replace(candidates.indexOf(candidate), nullptr);
         delete candidate;
     }
     candidates.clear();
@@ -615,7 +615,7 @@ void QDResultLinker::createMergedAnnotations(const QString &groupPrefix) {
         ad->name = groupPrefix;
         ad->location->regions.append(r);
         anns.append(ad);
-        candidates.replace(candidates.indexOf(candidate), NULL);
+        candidates.replace(candidates.indexOf(candidate), nullptr);
         delete candidate;
     }
     candidates.clear();
@@ -625,7 +625,7 @@ void QDResultLinker::createMergedAnnotations(const QString &groupPrefix) {
 void QDResultLinker::pushToTable() {
     const QDRunSettings &settings = sched->getSettings();
     AnnotationTableObject *ao = settings.annotationsObj;
-    SAFE_POINT(NULL != ao, "Invalid annotation table detected!", );
+    SAFE_POINT(nullptr != ao, "Invalid annotation table detected!", );
 
     AnnotationGroup *root = ao->getRootGroup();
     if (!settings.groupName.isEmpty()) {
@@ -746,7 +746,7 @@ bool QDStep::hasPrev() const {
 //QDTask
 //////////////////////////////////////////////////////////////////////////
 QDTask::QDTask(QDStep *_step, QDResultLinker *_linker)
-    : Task(tr("Query task: %1").arg(_step->getActor()->getParameters()->getLabel()), TaskFlag_NoRun), step(_step), linker(_linker), runTask(NULL) {
+    : Task(tr("Query task: %1").arg(_step->getActor()->getParameters()->getLabel()), TaskFlag_NoRun), step(_step), linker(_linker), runTask(nullptr) {
     tpm = Progress_Manual;
     stateInfo.progress = 0;
 

@@ -59,16 +59,16 @@ SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(MaEdi
     heightQuality = charHeight;
 
     Settings *s = AppContext::getSettings();
-    SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
-    SAFE_POINT(ui->getEditor() != NULL, "MaEditor is NULL", );
+    SAFE_POINT(s != nullptr, "AppContext::settings is NULL", );
+    SAFE_POINT(ui->getEditor() != nullptr, "MaEditor is NULL", );
     maxTraceHeight = s->getValue(ui->getEditor()->getSettingsRoot() + MCAE_SETTINGS_PEAK_HEIGHT, heightPD - heightBC).toInt();
 }
 
 void SequenceWithChromatogramAreaRenderer::drawReferenceSelection(QPainter &painter) const {
     McaEditor *editor = getSeqArea()->getEditor();
-    SAFE_POINT(editor != NULL, "McaEditor is NULL", );
+    SAFE_POINT(editor != nullptr, "McaEditor is NULL", );
     DNASequenceSelection *selection = editor->getReferenceContext()->getSequenceSelection();
-    SAFE_POINT(selection != NULL, "DNASequenceSelection is NULL", );
+    SAFE_POINT(selection != nullptr, "DNASequenceSelection is NULL", );
     SAFE_POINT(selection->regions.size() <= 1, "Unexpected multiselection", );
     CHECK(!selection->regions.isEmpty(), );
 
@@ -83,11 +83,11 @@ void SequenceWithChromatogramAreaRenderer::drawReferenceSelection(QPainter &pain
 
 void SequenceWithChromatogramAreaRenderer::drawNameListSelection(QPainter &painter) const {
     McaEditor *editor = getSeqArea()->getEditor();
-    SAFE_POINT(editor != NULL, "McaEditor is NULL", );
-    SAFE_POINT(editor->getUI() != NULL, "McaEditor UI is NULL", );
+    SAFE_POINT(editor != nullptr, "McaEditor is NULL", );
+    SAFE_POINT(editor->getUI() != nullptr, "McaEditor UI is NULL", );
 
     MaEditorNameList *nameList = editor->getUI()->getEditorNameList();
-    SAFE_POINT(nameList != NULL, "MaEditorNameList is NULL", );
+    SAFE_POINT(nameList != nullptr, "MaEditorNameList is NULL", );
     U2Region selection = nameList->getSelection();
     CHECK(!selection.isEmpty(), );
     U2Region selectionPxl = ui->getRowHeightController()->getScreenYRegionByViewRowsRegion(selection);
@@ -102,8 +102,8 @@ void SequenceWithChromatogramAreaRenderer::setAreaHeight(int h) {
     maxTraceHeight = h;
 
     Settings *s = AppContext::getSettings();
-    SAFE_POINT(s != NULL, "AppContext::settings is NULL", );
-    SAFE_POINT(ui->getEditor() != NULL, "MaEditor is NULL", );
+    SAFE_POINT(s != nullptr, "AppContext::settings is NULL", );
+    SAFE_POINT(ui->getEditor() != nullptr, "MaEditor is NULL", );
     s->setValue(ui->getEditor()->getSettingsRoot() + MCAE_SETTINGS_PEAK_HEIGHT, maxTraceHeight);
 }
 
@@ -123,7 +123,7 @@ int SequenceWithChromatogramAreaRenderer::drawRow(QPainter &painter, const Multi
     bool ok = SequenceAreaRenderer::drawRow(painter, mca, rowIndex, region, xStart, yStart);
     CHECK(ok, -1);
 
-    SAFE_POINT(getSeqArea() != NULL, "seqAreaWgt is NULL", -1);
+    SAFE_POINT(getSeqArea() != nullptr, "seqAreaWgt is NULL", -1);
     const int width = getSeqArea()->width();
     const int seqRowHeight = editor->getUI()->getRowHeightController()->getSingleRowHeight();
     if (editor->isChromatogramRowExpanded(rowIndex)) {
@@ -162,7 +162,7 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &painter, c
 
     if (regionToDraw.startPos > visibleRegion.startPos) {
         MaEditor *editor = seqAreaWgt->getEditor();
-        SAFE_POINT(editor != NULL, "MaEditor is NULL", );
+        SAFE_POINT(editor != nullptr, "MaEditor is NULL", );
         const int emptySpaceWidth = ui->getBaseWidthController()->getBasesWidth(regionToDraw.startPos - visibleRegion.startPos);
         painter.translate(emptySpaceWidth, 0);
     }
@@ -207,16 +207,16 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogram(QPainter &painter, c
 
 QColor SequenceWithChromatogramAreaRenderer::getBaseColor(char base) const {
     switch (base) {
-    case 'A':
-        return Qt::darkGreen;
-    case 'C':
-        return Qt::blue;
-    case 'G':
-        return Qt::black;
-    case 'T':
-        return Qt::red;
-    default:
-        return Qt::black;
+        case 'A':
+            return Qt::darkGreen;
+        case 'C':
+            return Qt::blue;
+        case 'G':
+            return Qt::black;
+        case 'T':
+            return Qt::red;
+        default:
+            return Qt::black;
     }
 }
 
@@ -410,18 +410,18 @@ void SequenceWithChromatogramAreaRenderer::drawQualityValues(const DNAChromatogr
     for (int i = visible.startPos; i < visible.endPos(); i++) {
         int xP = colWidth * (i - visible.startPos);
         switch (ba[i]) {
-        case 'A':
-            rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_A[i]);
-            break;
-        case 'C':
-            rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_C[i]);
-            break;
-        case 'G':
-            rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_G[i]);
-            break;
-        case 'T':
-            rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_T[i]);
-            break;
+            case 'A':
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_A[i]);
+                break;
+            case 'C':
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_C[i]);
+                break;
+            case 'G':
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_G[i]);
+                break;
+            case 'T':
+                rectangle.setCoords(xP, 0, xP + charWidth, -h / 100 * chroma.prob_T[i]);
+                break;
         }
         if (qAbs(rectangle.height()) > h / 100) {
             p.drawRoundedRect(rectangle, 1.0, 1.0);
@@ -447,24 +447,24 @@ void SequenceWithChromatogramAreaRenderer::drawChromatogramBaseCallsLines(const 
         bool drawBase = true;
         p.setPen(getBaseColor(ba[i]));
         switch (ba[i]) {
-        case 'A':
-            yRes = -qMin(static_cast<qreal>(chroma.A[temp]) * areaHeight / chromaMax, h);
-            drawBase = getSettings().drawTraceA;
-            break;
-        case 'C':
-            yRes = -qMin(static_cast<qreal>(chroma.C[temp]) * areaHeight / chromaMax, h);
-            drawBase = getSettings().drawTraceC;
-            break;
-        case 'G':
-            yRes = -qMin(static_cast<qreal>(chroma.G[temp]) * areaHeight / chromaMax, h);
-            drawBase = getSettings().drawTraceG;
-            break;
-        case 'T':
-            yRes = -qMin(static_cast<qreal>(chroma.T[temp]) * areaHeight / chromaMax, h);
-            drawBase = getSettings().drawTraceT;
-            break;
-        case 'N':
-            continue;
+            case 'A':
+                yRes = -qMin(static_cast<qreal>(chroma.A[temp]) * areaHeight / chromaMax, h);
+                drawBase = getSettings().drawTraceA;
+                break;
+            case 'C':
+                yRes = -qMin(static_cast<qreal>(chroma.C[temp]) * areaHeight / chromaMax, h);
+                drawBase = getSettings().drawTraceC;
+                break;
+            case 'G':
+                yRes = -qMin(static_cast<qreal>(chroma.G[temp]) * areaHeight / chromaMax, h);
+                drawBase = getSettings().drawTraceG;
+                break;
+            case 'T':
+                yRes = -qMin(static_cast<qreal>(chroma.T[temp]) * areaHeight / chromaMax, h);
+                drawBase = getSettings().drawTraceT;
+                break;
+            case 'N':
+                continue;
         };
         if (drawBase) {
             p.drawLine(x, 0, x, yRes);

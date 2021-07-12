@@ -36,12 +36,12 @@ namespace LocalWorkflow {
 
 KrakenBuildWorker::KrakenBuildWorker(Actor *actor)
     : BaseWorker(actor, false),
-      output(NULL) {
+      output(nullptr) {
 }
 
 void KrakenBuildWorker::init() {
     output = ports.value(KrakenBuildWorkerFactory::OUTPUT_PORT_ID);
-    SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(KrakenBuildWorkerFactory::OUTPUT_PORT_ID), );
+    SAFE_POINT(nullptr != output, QString("Port with id '%1' is NULL").arg(KrakenBuildWorkerFactory::OUTPUT_PORT_ID), );
 }
 
 Task *KrakenBuildWorker::tick() {

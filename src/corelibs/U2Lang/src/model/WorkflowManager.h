@@ -52,7 +52,7 @@ namespace Workflow {
 class U2LANG_EXPORT Worker {
 public:
     Worker()
-        : context(NULL) {
+        : context(nullptr) {
     }
     virtual ~Worker() {
     }
@@ -97,7 +97,7 @@ enum WorkerState {
 class U2LANG_EXPORT Scheduler : public Worker {
 public:
     Scheduler(Schema *sch)
-        : schema(sch), lastTask(NULL) {
+        : schema(sch), lastTask(nullptr) {
     }
     virtual WorkerState getWorkerState(const ActorId &) = 0;
     virtual Task *replayLastWorkerTick() = 0;
@@ -105,7 +105,7 @@ public:
     virtual bool cancelCurrentTaskIfAllowed() = 0;
     virtual void makeOneTick(const ActorId &) = 0;
     virtual void setDebugInfo(WorkflowDebugStatus *newDebugInfo) {
-        Q_ASSERT(NULL != newDebugInfo);
+        Q_ASSERT(nullptr != newDebugInfo);
         debugInfo = newDebugInfo;
     }
 
@@ -141,10 +141,10 @@ public:
 
     // execution domain
     virtual CommunicationChannel *createConnection(Link *) {
-        return NULL;
+        return nullptr;
     }
     virtual Scheduler *createScheduler(Schema *) {
-        return NULL;
+        return nullptr;
     }
     virtual void destroy(Scheduler *, Schema *) {
     }

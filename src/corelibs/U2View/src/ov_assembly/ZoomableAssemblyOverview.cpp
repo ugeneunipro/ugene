@@ -177,15 +177,15 @@ void ZoomableAssemblyOverview::drawBackground(QPainter &p) {
     static double logMax = .0;
     double readsPerYPixel = .0;
     switch (scaleType) {
-    case AssemblyBrowserSettings::Scale_Linear:
-        readsPerYPixel = double(ci.maxCoverage) / widgetHeight;
-        break;
-    case AssemblyBrowserSettings::Scale_Logarithmic:
-        logMax = log((double)ci.maxCoverage);
-        readsPerYPixel = double(logMax) / widgetHeight;
-        break;
-    default:
-        assert(false);
+        case AssemblyBrowserSettings::Scale_Linear:
+            readsPerYPixel = double(ci.maxCoverage) / widgetHeight;
+            break;
+        case AssemblyBrowserSettings::Scale_Logarithmic:
+            logMax = log((double)ci.maxCoverage);
+            readsPerYPixel = double(logMax) / widgetHeight;
+            break;
+        default:
+            assert(false);
     }
 
     p.fillRect(rect(), Qt::white);
@@ -196,18 +196,18 @@ void ZoomableAssemblyOverview::drawBackground(QPainter &p) {
         double grayCoeffD = 0.;
         if (!ci.coverageInfo.isEmpty()) {
             switch (scaleType) {
-            case AssemblyBrowserSettings::Scale_Linear:
-                if (ci.maxCoverage != 0) {
-                    grayCoeffD = double(ci.coverageInfo[i]) / ci.maxCoverage;
-                }
-                columnPixels = qint64(double(ci.coverageInfo[i]) / readsPerYPixel + 0.5);
-                //grayCoeff = 255 - int(double(255) / ci.maxCoverage * ci.coverageInfo[i] + 0.5);
-                break;
-            case AssemblyBrowserSettings::Scale_Logarithmic:
-                grayCoeffD = log((double)ci.coverageInfo[i]) / logMax;
-                columnPixels = qint64(double(log((double)ci.coverageInfo[i])) / readsPerYPixel + 0.5);
-                //grayCoeff = 255 - int(double(255) / logMax * log((double)ci.coverageInfo[i]) + 0.5);
-                break;
+                case AssemblyBrowserSettings::Scale_Linear:
+                    if (ci.maxCoverage != 0) {
+                        grayCoeffD = double(ci.coverageInfo[i]) / ci.maxCoverage;
+                    }
+                    columnPixels = qint64(double(ci.coverageInfo[i]) / readsPerYPixel + 0.5);
+                    //grayCoeff = 255 - int(double(255) / ci.maxCoverage * ci.coverageInfo[i] + 0.5);
+                    break;
+                case AssemblyBrowserSettings::Scale_Logarithmic:
+                    grayCoeffD = log((double)ci.coverageInfo[i]) / logMax;
+                    columnPixels = qint64(double(log((double)ci.coverageInfo[i])) / readsPerYPixel + 0.5);
+                    //grayCoeff = 255 - int(double(255) / logMax * log((double)ci.coverageInfo[i]) + 0.5);
+                    break;
             }
         }
 

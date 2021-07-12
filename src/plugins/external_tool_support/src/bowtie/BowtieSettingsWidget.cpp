@@ -60,12 +60,12 @@ QMap<QString, QVariant> BowtieSettingsWidget::getDnaAssemblyCustomSettings() con
     QMap<QString, QVariant> settings;
 
     switch (mismatchesComboBox->currentIndex()) {
-    case 0:
-        settings.insert(BowtieTask::OPTION_N_MISMATCHES, mismatchesSpinBox->value());
-        break;
-    case 1:
-        settings.insert(BowtieTask::OPTION_V_MISMATCHES, mismatchesSpinBox->value());
-        break;
+        case 0:
+            settings.insert(BowtieTask::OPTION_N_MISMATCHES, mismatchesSpinBox->value());
+            break;
+        case 1:
+            settings.insert(BowtieTask::OPTION_V_MISMATCHES, mismatchesSpinBox->value());
+            break;
     }
 
     if (maqerrCheckBox->isChecked()) {

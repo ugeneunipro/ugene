@@ -26,7 +26,7 @@ namespace U2 {
 RFSArrayWKAlgorithm::RFSArrayWKAlgorithm(RFResultsListener *rl, const char *seqX, int sizeX, const char *seqY, int sizeY, DNAAlphabetType seqType, int w, int k)
     : RFAlgorithmBase(rl, seqX, sizeX, seqY, sizeY, seqType, w, k, TaskFlags_NR_FOSCOE) {
     q = WINDOW_SIZE / (C + 1);
-    indexTask = NULL;
+    indexTask = nullptr;
     if (sizeX > sizeY) {
         arrayIsX = false;
         SEARCH_SIZE = sizeX;

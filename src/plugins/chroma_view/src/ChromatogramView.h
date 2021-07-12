@@ -118,8 +118,11 @@ public:
         return heightAreaBC;
     }
     void setAreaHeight(int newH);
-    virtual qint64 coordToPos(int x) const;
-    virtual int posToCoord(qint64 p, bool useVirtualSpace = false) const;
+
+    qint64 coordToPos(const QPoint &coord) const override;
+
+    int posToCoord(qint64 p, bool useVirtualSpace = false) const override;
+
     QRectF posToRect(int p) const;
     QRectF selRect;
     bool hasSel;
@@ -128,7 +131,7 @@ public:
     qreal addUpIfQVL;
 
 protected:
-    virtual void drawAll(QPaintDevice *pd);
+    void drawAll(QPaintDevice *pd) override;
 
 private:
     QColor getBaseColor(char base);

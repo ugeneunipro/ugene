@@ -29,7 +29,7 @@ namespace U2 {
 class ActorCfgFilterProxyModel : public QSortFilterProxyModel {
     Q_OBJECT
 public:
-    ActorCfgFilterProxyModel(QObject *p = NULL);
+    ActorCfgFilterProxyModel(QObject *p = nullptr);
 
 protected:
     virtual bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const;

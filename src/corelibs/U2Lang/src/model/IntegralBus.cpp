@@ -200,13 +200,13 @@ static QMap<QString, QStringList> getListMappings(const StrStrMap &busMap, const
 }
 
 IntegralBus::IntegralBus(Port *p)
-    : busType(p->getType()), contextMetadataId(-1), complement(NULL), portId(p->getId()), takenMsgs(0), workflowContext(NULL) {
+    : busType(p->getType()), contextMetadataId(-1), complement(nullptr), portId(p->getId()), takenMsgs(0), workflowContext(nullptr) {
     actorId = p->owner()->getId();
     QString name = p->owner()->getLabel() + "[" + p->owner()->getId() + "]";
     contextMutex = new QMutex();
     if (p->isInput()) {
         Attribute *a = p->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID);
-        if (a == NULL) {
+        if (a == nullptr) {
             assert(false);
             return;
         }
@@ -287,7 +287,7 @@ Message IntegralBus::get() {
             if (printSlots.contains(key)) {
                 QString slotString = actorId + "." + portId + "." + key;
                 DataTypePtr type = busType->getDatatypesMap().value(key, DataTypePtr());
-                if (NULL != type.data()) {
+                if (nullptr != type.data()) {
                     WorkflowUtils::print(slotString, result.value(key), type, workflowContext);
                 }
             }
@@ -312,7 +312,7 @@ QQueue<Message> IntegralBus::getMessages(int startIndex, int endIndex) const {
 
     QMap<CommunicationChannel *, QQueue<Message>> messagesFromChannels;
     foreach (CommunicationChannel *channel, outerChannels) {
-        assert(channel != NULL);
+        assert(channel != nullptr);
         QQueue<Message> channelMessages = channel->getMessages(startIndex, endIndex);
         messagesFromChannels[channel] = channelMessages;
     }
@@ -341,7 +341,7 @@ Message IntegralBus::look() const {
     QVariantMap result;
     int metadataId = -1;
     foreach (CommunicationChannel *channel, outerChannels) {
-        assert(channel != NULL);
+        assert(channel != nullptr);
         Message message = channel->look();
         assert(message.getData().type() == QVariant::Map);
         result.unite(message.getData().toMap());
@@ -393,7 +393,7 @@ void IntegralBus::put(const Message &m, bool isMessageRestored) {
                 QString slotString = actorId + "." + portId + "." + key;
                 IntegralBusSlot slot(key, portId, actorId);
                 DataTypePtr type = busType->getDatatypesMap().value(slot.toString(), DataTypePtr());
-                if (NULL != type.data()) {
+                if (nullptr != type.data()) {
                     WorkflowUtils::print(slotString, map.value(key), type, workflowContext);
                 }
             }

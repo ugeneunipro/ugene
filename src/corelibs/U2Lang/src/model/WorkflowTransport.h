@@ -77,7 +77,7 @@ public:
     // how many messages taken from channel
     virtual int takenMessages() const = 0;
     //
-    virtual int hasRoom(const DataType *t = NULL) const = 0;
+    virtual int hasRoom(const DataType *t = nullptr) const = 0;
     // user can set 'ended' flag to channel
     // it means that no other data will be supplied to it
     virtual bool isEnded() const = 0;

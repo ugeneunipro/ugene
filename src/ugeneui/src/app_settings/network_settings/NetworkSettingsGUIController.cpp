@@ -161,7 +161,7 @@ AppSettingsGUIPageState *NetworkSettingsPageWidget::getState(QString &err) const
             webBrowserEdit->setFocus();
             err = tr("File not exists");
             delete state;
-            return NULL;
+            return nullptr;
         }
         state->webBrowserUrl = wbUrl;
         state->useDefaultWebBrowser = false;

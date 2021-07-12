@@ -72,7 +72,7 @@ Task *ExtractAssemblyCoverageWorker::tick() {
         return createTask(assembly);
     } else {
         finish();
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -81,7 +81,7 @@ void ExtractAssemblyCoverageWorker::cleanup() {
 
 void ExtractAssemblyCoverageWorker::sl_taskFinished() {
     ExportCoverageTask *task = dynamic_cast<ExportCoverageTask *>(sender());
-    CHECK(NULL != task, );
+    CHECK(nullptr != task, );
     CHECK(task->isFinished() && !task->hasError() && !task->isCanceled(), );
 
     monitor()->addOutputFile(task->getUrl(), getActorId());
@@ -89,7 +89,7 @@ void ExtractAssemblyCoverageWorker::sl_taskFinished() {
 
 bool ExtractAssemblyCoverageWorker::hasAssembly() const {
     const IntegralBus *port = ports[BasePorts::IN_ASSEMBLY_PORT_ID()];
-    SAFE_POINT(NULL != port, "NULL assembly port", false);
+    SAFE_POINT(nullptr != port, "NULL assembly port", false);
     return port->hasMessage();
 }
 
@@ -103,7 +103,7 @@ U2EntityRef ExtractAssemblyCoverageWorker::takeAssembly(U2OpStatus &os) {
 
     const SharedDbiDataHandler dbiId = data[BaseSlots::ASSEMBLY_SLOT().getId()].value<SharedDbiDataHandler>();
     const AssemblyObject *obj = StorageUtils::getAssemblyObject(context->getDataStorage(), dbiId);
-    if (NULL == obj) {
+    if (nullptr == obj) {
         os.setError(tr("Error with assembly object"));
         return U2EntityRef();
     }
@@ -123,7 +123,7 @@ ExportCoverageSettings ExtractAssemblyCoverageWorker::getSettings() const {
 
 Task *ExtractAssemblyCoverageWorker::createTask(const U2EntityRef &assembly) {
     const ExportCoverageSettings::Format format = static_cast<ExportCoverageSettings::Format>(getValue<int>(FORMAT_ATTR_ID));
-    Task *task = NULL;
+    Task *task = nullptr;
     switch (format) {
     case ExportCoverageSettings::Histogram:
         task = new ExportCoverageHistogramTask(assembly.dbiRef, assembly.entityId, getSettings());
@@ -142,7 +142,7 @@ Task *ExtractAssemblyCoverageWorker::createTask(const U2EntityRef &assembly) {
 
 void ExtractAssemblyCoverageWorker::finish() {
     IntegralBus *inPort = ports[BasePorts::IN_ASSEMBLY_PORT_ID()];
-    SAFE_POINT(NULL != inPort, "NULL assembly port", );
+    SAFE_POINT(nullptr != inPort, "NULL assembly port", );
     SAFE_POINT(inPort->isEnded(), "The assembly is not ended", );
 
     setDone();
@@ -202,7 +202,7 @@ void ExtractAssemblyCoverageWorkerFactory::init() {
         DelegateTags tags;
         tags.set("filter", filter);
         tags.set("extensions", QStringList() << ExportCoverageSettings::BEDGRAPH_EXTENSION << ExportCoverageSettings::BEDGRAPH_EXTENSION + ExportCoverageSettings::COMPRESSED_EXTENSION);
-        delegates[BaseAttributes::URL_OUT_ATTRIBUTE().getId()] = new URLDelegate(tags, "", false, false, true, NULL);
+        delegates[BaseAttributes::URL_OUT_ATTRIBUTE().getId()] = new URLDelegate(tags, "", false, false, true, nullptr);
 
         QVariantMap formats;
         formats.insert(ExportCoverageSettings::HISTOGRAM, ExportCoverageSettings::Histogram);
@@ -298,7 +298,7 @@ QVariant ExtractAssemblyCoverageFileExtensionRelation::getAffectResult(const QVa
 
 void ExtractAssemblyCoverageFileExtensionRelation::updateDelegateTags(const QVariant &influencingValue, DelegateTags *dependentTags) const {
     const ExportCoverageSettings::Format newFormat = static_cast<ExportCoverageSettings::Format>(influencingValue.toInt());
-    if (NULL != dependentTags) {
+    if (nullptr != dependentTags) {
         dependentTags->set("extensions", QStringList() << ExportCoverageSettings::getFormatExtension(newFormat) << ExportCoverageSettings::getFormatExtension(newFormat) + ExportCoverageSettings::COMPRESSED_EXTENSION);
         const QString filter = FormatUtils::prepareFileFilter(ExportCoverageSettings::getFormat(newFormat) + " coverage files", QStringList() << ExportCoverageSettings::getFormatExtension(newFormat));
         dependentTags->set("filter", filter);

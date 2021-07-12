@@ -39,7 +39,7 @@ public:
         const QSet<QString> &namesToFilter,
         /** Ruler offset selected by default */
         int defaultOffset,
-        QWidget *p = NULL);
+        QWidget *p = nullptr);
 
     virtual void accept();
 

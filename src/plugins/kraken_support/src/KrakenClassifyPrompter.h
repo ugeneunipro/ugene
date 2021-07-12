@@ -30,7 +30,7 @@ namespace LocalWorkflow {
 class KrakenClassifyPrompter : public PrompterBase<KrakenClassifyPrompter> {
     Q_OBJECT
 public:
-    KrakenClassifyPrompter(Actor *actor = NULL);
+    KrakenClassifyPrompter(Actor *actor = nullptr);
 
 private:
     QString composeRichDoc();

@@ -85,18 +85,18 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         const QStringList sequencesNameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
         CHECK_SET_ERR(2 == sequencesNameList.length(), seqNumberMismatchErrorMessage + expectedFileName);
         switch (i) {
-        case 1:
-            CHECK_SET_ERR(sequencesNameList[0] == "S_2_15_test]" && sequencesNameList[1] == "P1_4_16",
-                          seqNameMismatchErrorMessage + expectedFileName);
-            break;
+            case 1:
+                CHECK_SET_ERR(sequencesNameList[0] == "S_2_15_test]" && sequencesNameList[1] == "P1_4_16",
+                              seqNameMismatchErrorMessage + expectedFileName);
+                break;
 
-        case 2:
-            CHECK_SET_ERR(sequencesNameList[0] == "S_34_42_test]" && sequencesNameList[1] == "P1_5_13",
-                          seqNameMismatchErrorMessage + expectedFileName);
-            break;
+            case 2:
+                CHECK_SET_ERR(sequencesNameList[0] == "S_34_42_test]" && sequencesNameList[1] == "P1_5_13",
+                              seqNameMismatchErrorMessage + expectedFileName);
+                break;
 
-        default:
-            assert(0);
+            default:
+                assert(0);
         }
         GTUtilsMdi::click(os, GTGlobals::Close);
         GTMouseDriver::click();

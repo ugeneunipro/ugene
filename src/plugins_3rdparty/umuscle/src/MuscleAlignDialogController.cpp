@@ -80,11 +80,11 @@ void MuscleAlignDialogController::accept() {
     assert(n >=0 && n < presets.qlist.size());
     const MuscleAlignPreset* p = presets.qlist[n];
     p->apply(settings);
-    if(dynamic_cast<const DefaultModePreset*>(p) != NULL) {
+    if(dynamic_cast<const DefaultModePreset*>(p) != nullptr) {
         settings.mode = Default;
-    } else if(dynamic_cast<const LargeModePreset*>(p) != NULL) {
+    } else if(dynamic_cast<const LargeModePreset*>(p) != nullptr) {
         settings.mode = Large;
-    } else if(dynamic_cast<const RefineModePreset*>(p) != NULL) {
+    } else if(dynamic_cast<const RefineModePreset*>(p) != nullptr) {
         settings.mode = Refine;
     } else {
         assert(false);
@@ -100,7 +100,7 @@ void MuscleAlignDialogController::accept() {
         int startPos = rangeStartSB->value() - 1;
         int endPos = rangeEndSB->value() - 1;
         if (endPos - startPos < 2) {
-            QMessageBox::critical(NULL, tr("Error"), tr("Illegal alignment region"));
+            QMessageBox::critical(nullptr, tr("Error"), tr("Illegal alignment region"));
             rangeStartSB->setFocus();
             return;
         }
@@ -130,7 +130,7 @@ void MuscleAlignDialogController::sl_onPresetChanged(int newPreset) {
 MuscleAlignWithExtFileSpecifyDialogController::MuscleAlignWithExtFileSpecifyDialogController(QWidget* w, MuscleTaskSettings& _settings)
     : QDialog(w),
       settings(_settings),
-      saveController(NULL)
+      saveController(nullptr)
 {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930832");
@@ -189,11 +189,11 @@ void MuscleAlignWithExtFileSpecifyDialogController::accept() {
     assert(n >=0 && n < presets.qlist.size());
     const MuscleAlignPreset* p = presets.qlist[n];
     p->apply(settings);
-    if(dynamic_cast<const DefaultModePreset*>(p) != NULL) {
+    if(dynamic_cast<const DefaultModePreset*>(p) != nullptr) {
         settings.mode = Default;
-    } else if(dynamic_cast<const LargeModePreset*>(p) != NULL) {
+    } else if(dynamic_cast<const LargeModePreset*>(p) != nullptr) {
         settings.mode = Large;
-    } else if(dynamic_cast<const RefineModePreset*>(p) != NULL) {
+    } else if(dynamic_cast<const RefineModePreset*>(p) != nullptr) {
         settings.mode = Refine;
     } else {
         assert(false);
@@ -207,7 +207,7 @@ void MuscleAlignWithExtFileSpecifyDialogController::accept() {
         int startPos = rangeStartSB->value() - 1;
         int endPos = rangeEndSB->value();
         if (endPos - startPos < 2) {
-            QMessageBox::critical(NULL, tr("Error"), tr("Illegal alignment region"));
+            QMessageBox::critical(nullptr, tr("Error"), tr("Illegal alignment region"));
             rangeStartSB->setFocus();
             return;
         }

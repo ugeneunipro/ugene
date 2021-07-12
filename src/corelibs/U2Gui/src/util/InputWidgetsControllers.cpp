@@ -72,7 +72,7 @@ void InputWidgetController::addParameterToCmdLineSettings(QStringList &settings)
 }
 
 void InputWidgetController::setWidgetEnabled(bool isEnabled) {
-    if (NULL != baseWidget) {
+    if (nullptr != baseWidget) {
         baseWidget->setEnabled(isEnabled);
     }
 }
@@ -220,7 +220,7 @@ ComboBoxController::ComboBoxController(QComboBox *inputWidget, const QString &se
     : InputWidgetController(inputWidget, settingsPath, cmdLinePreffix, defaultValue),
       inputWidget(inputWidget),
       parameters(parameters) {
-    SAFE_POINT(inputWidget->count() > 0, QString("Combobox '%1' should be non-empty").arg(inputWidget->objectName()),)
+    SAFE_POINT(inputWidget->count() > 0, QString("Combobox '%1' should be non-empty").arg(inputWidget->objectName()), )
 }
 
 void ComboBoxController::setWidgetValue(const QVariant &newValue) {
@@ -303,7 +303,7 @@ InputWidgetController *WidgetControllersContainer::addWidgetController(QLineEdit
 }
 
 InputWidgetController *WidgetControllersContainer::addWidget(InputWidgetController *inputWidget) {
-    SAFE_POINT(NULL != inputWidget, "Null pointer argument 'inputWidget' in function addWidgetController()", NULL);
+    SAFE_POINT(nullptr != inputWidget, "Null pointer argument 'inputWidget' in function addWidgetController()", nullptr);
     widgetControllers.append(inputWidget);
     return inputWidget;
 }

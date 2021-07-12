@@ -30,9 +30,9 @@ namespace U2 {
 class U2CORE_EXPORT AnnotationTableObjectConstraints : public GObjectConstraints {
     Q_OBJECT
 public:
-    AnnotationTableObjectConstraints(QObject *p = NULL);
+    AnnotationTableObjectConstraints(QObject *p = nullptr);
     AnnotationTableObjectConstraints(const AnnotationTableObjectConstraints &c,
-                                     QObject *p = NULL);
+                                     QObject *p = nullptr);
 
     qint64 sequenceSizeToFit;
 };

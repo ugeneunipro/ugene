@@ -24,11 +24,10 @@ k
 #define _U2_GT_TESTS_OPTION_PANEL_H_
 
 #include <drivers/GTKeyboardDriver.h>
+#include <harness/UGUITestBase.h>
 #include <primitives/GTWidget.h>
 
 #include <QApplication>
-
-#include <harness/UGUITestBase.h>
 
 #include "utils/GTUtilsDialog.h"
 

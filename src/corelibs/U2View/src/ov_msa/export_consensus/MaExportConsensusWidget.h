@@ -35,7 +35,7 @@ class ExportMaConsensusTask;
 class MaExportConsensusWidget : public QWidget, private Ui_ExportConsensusWidget {
     Q_OBJECT
 public:
-    MaExportConsensusWidget(MaEditor *ma_, QWidget *parent = NULL);
+    MaExportConsensusWidget(MaEditor *ma_, QWidget *parent = nullptr);
 
     void showHint(bool showHint);
 

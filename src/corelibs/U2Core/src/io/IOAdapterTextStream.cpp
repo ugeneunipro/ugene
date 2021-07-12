@@ -124,11 +124,12 @@ int IOAdapterReader::read(U2OpStatus &os, QString &result, int maxLength, const 
     result.clear();
     textForUndo.clear();
     bool isReadingTerminatorSequence = false;
+    int maxTerminatorIndex = terminators.size() - 1;
     while (!atEnd() && result.length() != maxLength) {
         QChar unicodeChar = readChar(os);
         CHECK_OP(os, 0);
         uchar latin1Char = unicodeChar.toLatin1();
-        bool isTerminatorChar = terminators.at(latin1Char);
+        bool isTerminatorChar = latin1Char <= maxTerminatorIndex && terminators.at(latin1Char);
         if (isTerminatorChar) {
             isReadingTerminatorSequence = true;
             if (terminatorFound != nullptr) {

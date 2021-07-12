@@ -75,7 +75,7 @@ public:
 class SeqPosComboBoxWithChecksWidget : public ComboBoxWithChecksWidget {
     Q_OBJECT
 public:
-    SeqPosComboBoxWithChecksWidget(const QVariantMap &items, QWidget *parent = NULL);
+    SeqPosComboBoxWithChecksWidget(const QVariantMap &items, QWidget *parent = nullptr);
 
     void setValue(const QVariant &value);
     void setHint(const QString &hint) {
@@ -122,7 +122,7 @@ public:
 class SeqPosPrompter : public PrompterBase<SeqPosPrompter> {
     Q_OBJECT
 public:
-    SeqPosPrompter(Actor *p = NULL)
+    SeqPosPrompter(Actor *p = nullptr)
         : PrompterBase<SeqPosPrompter>(p) {
     }
 

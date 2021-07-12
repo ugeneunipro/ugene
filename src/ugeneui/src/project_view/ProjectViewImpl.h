@@ -46,7 +46,7 @@ class ExportDocumentDialogController;
 class DocumentUpdater : public QObject {
     Q_OBJECT
 public:
-    DocumentUpdater(QObject *p = NULL);
+    DocumentUpdater(QObject *p = nullptr);
     void reloadDocuments(QList<Document *> docs2Reload);    //reload and reopen views for given documents
 
 private slots:

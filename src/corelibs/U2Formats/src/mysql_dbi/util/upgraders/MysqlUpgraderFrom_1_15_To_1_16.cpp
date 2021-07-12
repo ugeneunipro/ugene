@@ -74,7 +74,7 @@ void MysqlUpgraderFrom_1_15_To_1_16::upgradeFeatureDbi(U2OpStatus &os, MysqlDbRe
     }
 
     U2FeatureDbi *featureDbi = dbi->getFeatureDbi();
-    SAFE_POINT_EXT(NULL != featureDbi, os.setError(L10N::nullPointerError("feature dbi")), );
+    SAFE_POINT_EXT(nullptr != featureDbi, os.setError(L10N::nullPointerError("feature dbi")), );
 
     U2DbiIterator<U2Feature> *dbIterator = featureDbi->getFeatures(FeatureQuery(), os);
     CHECK_OP(os, );

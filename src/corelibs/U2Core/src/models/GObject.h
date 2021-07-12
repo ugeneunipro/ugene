@@ -173,7 +173,7 @@ private:
 class GObjectConstraints : public QObject {
     Q_OBJECT
 public:
-    GObjectConstraints(const GObjectType &t, QObject *parent = NULL)
+    GObjectConstraints(const GObjectType &t, QObject *parent = nullptr)
         : QObject(parent), objectType(t) {
     }
     const GObjectType objectType;

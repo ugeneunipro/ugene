@@ -72,9 +72,9 @@ const QString ADVSingleSequenceWidget::OVERVIEW_COLLAPSED = SEQUENCE_SETTINGS + 
 
 ADVSingleSequenceWidget::ADVSingleSequenceWidget(ADVSequenceObjectContext *seqCtx, AnnotatedDNAView *ctx)
     : ADVSequenceWidget(ctx),
-      detView(NULL),
-      panView(NULL),
-      overview(NULL) {
+      detView(nullptr),
+      panView(nullptr),
+      overview(nullptr) {
     seqContexts.append(seqCtx);
 
     toggleViewAction = new QAction(this);
@@ -248,15 +248,15 @@ ADVSingleSequenceWidget::~ADVSingleSequenceWidget() {
 }
 
 QToolButton *ADVSingleSequenceWidget::addButtonWithActionToToolbar(QAction *buttonAction, QToolBar *toolBar, int position) const {
-    SAFE_POINT(NULL != buttonAction, "buttonAction is NULL", NULL);
-    SAFE_POINT(NULL != toolBar, "toolBar is NULL", NULL);
-    SAFE_POINT(!buttonAction->objectName().isEmpty(), "Action's object name is empty", NULL);
+    SAFE_POINT(nullptr != buttonAction, "buttonAction is NULL", nullptr);
+    SAFE_POINT(nullptr != toolBar, "toolBar is NULL", nullptr);
+    SAFE_POINT(!buttonAction->objectName().isEmpty(), "Action's object name is empty", nullptr);
 
     if (position == -1) {
         toolBar->addAction(buttonAction);
     } else {
         QAction *before = toolBar->actions().at(position);
-        if (before != NULL) {
+        if (before != nullptr) {
             toolBar->insertAction(before, buttonAction);
         } else {
             toolBar->addAction(buttonAction);
@@ -265,9 +265,9 @@ QToolButton *ADVSingleSequenceWidget::addButtonWithActionToToolbar(QAction *butt
     QToolButton *button = qobject_cast<QToolButton *>(toolBar->widgetForAction(buttonAction));
     button->setFixedHeight(ADV_HEADER_HEIGHT - ADV_HEADER_TOP_BOTTOM_INDENT);
 
-    SAFE_POINT(button, QString("ToolButton for %1 is NULL").arg(buttonAction->objectName()), NULL);
+    SAFE_POINT(button, QString("ToolButton for %1 is NULL").arg(buttonAction->objectName()), nullptr);
     button->setObjectName(buttonAction->objectName());
-    if (buttonAction->menu() != NULL) {
+    if (buttonAction->menu() != nullptr) {
         button->setPopupMode(QToolButton::InstantPopup);
     }
 
@@ -355,7 +355,7 @@ void ADVSingleSequenceWidget::setOverviewCollapsed(bool collapsed) {
 void ADVSingleSequenceWidget::addSequenceView(GSequenceLineView *v, QWidget *after) {
     assert(!lineViews.contains(v));
     lineViews.append(v);
-    if (after == NULL) {
+    if (after == nullptr) {
         linesSplitter->insertWidget(1, v);
     } else {
         int after_ = linesSplitter->indexOf(after);
@@ -423,36 +423,36 @@ void ADVSingleSequenceWidget::updateMinMaxHeight() {
 
 void ADVSingleSequenceWidget::addZoomMenu(const QPoint &globalPos, QMenu *m) {
     GSequenceLineView *lineView = findSequenceViewByPos(globalPos);
-    if (lineView == NULL) {
+    if (lineView == nullptr) {
         return;
     }
 
-    QAction *first = m->actions().isEmpty() ? NULL : m->actions().first();
+    QAction *first = m->actions().isEmpty() ? nullptr : m->actions().first();
 
     QAction *zoomInAction = lineView->getZoomInAction();
     QAction *zoomOutAction = lineView->getZoomOutAction();
     QAction *zoomToSelection = lineView->getZoomToSelectionAction();
     QAction *zoomToSequence = lineView->getZoomToSequenceAction();
 
-    if (zoomInAction == NULL && zoomOutAction == NULL && zoomToSelection == NULL && zoomToSequence == NULL) {
+    if (zoomInAction == nullptr && zoomOutAction == nullptr && zoomToSelection == nullptr && zoomToSequence == nullptr) {
         return;
     }
 
     QMenu *zm = m->addMenu(tr("Zoom"));
 
-    if (zoomInAction != NULL) {
+    if (zoomInAction != nullptr) {
         zm->insertAction(first, zoomInAction);
     }
-    if (zoomOutAction != NULL) {
+    if (zoomOutAction != nullptr) {
         zm->insertAction(first, zoomOutAction);
     }
-    if (zoomToSelection != NULL) {
+    if (zoomToSelection != nullptr) {
         zm->insertAction(first, zoomToSelection);
     }
     if (lineView == panView || lineView->getConherentRangeView() == panView) {
         zm->insertAction(first, zoomToRangeAction);
     }
-    if (zoomToSequence != NULL) {
+    if (zoomToSequence != nullptr) {
         zm->insertAction(first, zoomToSequence);
     }
     zm->menuAction()->setObjectName(ADV_MENU_ZOOM);
@@ -462,7 +462,7 @@ void ADVSingleSequenceWidget::addZoomMenu(const QPoint &globalPos, QMenu *m) {
 GSequenceLineView *ADVSingleSequenceWidget::findSequenceViewByPos(const QPoint &globalPos) const {
     Q_UNUSED(globalPos);
     assert(0);
-    return NULL;
+    return nullptr;
 }
 
 int ADVSingleSequenceWidget::getSequenceLength() const {
@@ -792,7 +792,7 @@ void ADVSingleSequenceWidget::saveState(QVariantMap &m) {
     foreach (GSequenceLineView *view, lineViews) {
         QList<QVariant> positions;
         GSequenceGraphView *graphView = dynamic_cast<GSequenceGraphView *>(view);
-        if (NULL != graphView) {
+        if (nullptr != graphView) {
             graphNames.append(graphView->getGraphViewName());
             graphView->getLabelPositions(positions);
             myData[graphView->getGraphViewName()] = positions;

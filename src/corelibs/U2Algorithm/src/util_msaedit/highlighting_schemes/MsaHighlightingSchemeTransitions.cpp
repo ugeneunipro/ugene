@@ -31,24 +31,24 @@ MsaHighlightingSchemeTransitions::MsaHighlightingSchemeTransitions(QObject *pare
 
 void MsaHighlightingSchemeTransitions::process(const char refChar, char &seqChar, QColor &color, bool &highlight, int refCharColumn, int refCharRow) const {
     switch (refChar) {
-    case 'N':
-        highlight = true;
-        break;
-    case 'A':
-        highlight = (seqChar == 'G');
-        break;
-    case 'C':
-        highlight = (seqChar == 'T');
-        break;
-    case 'G':
-        highlight = (seqChar == 'A');
-        break;
-    case 'T':
-        highlight = (seqChar == 'C');
-        break;
-    default:
-        highlight = false;
-        break;
+        case 'N':
+            highlight = true;
+            break;
+        case 'A':
+            highlight = (seqChar == 'G');
+            break;
+        case 'C':
+            highlight = (seqChar == 'T');
+            break;
+        case 'G':
+            highlight = (seqChar == 'A');
+            break;
+        case 'T':
+            highlight = (seqChar == 'C');
+            break;
+        default:
+            highlight = false;
+            break;
     }
 
     if (!highlight) {

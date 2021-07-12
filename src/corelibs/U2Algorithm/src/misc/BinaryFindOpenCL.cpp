@@ -70,7 +70,7 @@ BinaryFindOpenCL::~BinaryFindOpenCL() {
     algoLog.trace(QObject::tr("clear OpenCL resources"));
     cl_int err = CL_SUCCESS;
     const OpenCLHelper *openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
-    SAFE_POINT(NULL != openCLHelper, "OpenCL support plugin does not loaded", );
+    SAFE_POINT(nullptr != openCLHelper, "OpenCL support plugin does not loaded", );
 
     if (binaryFindKernel) {
         err = openCLHelper->clReleaseKernel_p(binaryFindKernel);
@@ -109,7 +109,7 @@ BinaryFindOpenCL::~BinaryFindOpenCL() {
 int BinaryFindOpenCL::initOpenCL() {
     // the number of needles a particular kernel execution should search for
     const OpenCLHelper *openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
-    SAFE_POINT(NULL != openCLHelper, "OpenCL support plugin does not loaded", -1);
+    SAFE_POINT(nullptr != openCLHelper, "OpenCL support plugin does not loaded", -1);
     if (!openCLHelper->isLoaded()) {
         coreLog.error(openCLHelper->getErrorString());
         return -1;
@@ -138,7 +138,7 @@ int BinaryFindOpenCL::initOpenCL() {
 
 int BinaryFindOpenCL::checkCreateBuffer(const QString &bufferName, cl_mem &buf, cl_mem_flags flags, size_t thisBufferSize, void *ptr, size_t &usageGPUMem) {
     const OpenCLHelper *openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
-    SAFE_POINT(NULL != openCLHelper, "OpenCL support plugin is not loaded", -1);
+    SAFE_POINT(nullptr != openCLHelper, "OpenCL support plugin is not loaded", -1);
     if (!openCLHelper->isLoaded()) {
         coreLog.error(openCLHelper->getErrorString());
         return -1;
@@ -158,7 +158,7 @@ int BinaryFindOpenCL::checkCreateBuffer(const QString &bufferName, cl_mem &buf, 
 
 int BinaryFindOpenCL::createBuffers() {
     const OpenCLHelper *openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
-    SAFE_POINT(NULL != openCLHelper, "OpenCL support plugin is not loaded", -1);
+    SAFE_POINT(nullptr != openCLHelper, "OpenCL support plugin is not loaded", -1);
     if (!openCLHelper->isLoaded()) {
         coreLog.error(openCLHelper->getErrorString());
         return -1;
@@ -177,7 +177,7 @@ int BinaryFindOpenCL::createBuffers() {
 
 int BinaryFindOpenCL::runBinaryFindKernel() {
     const OpenCLHelper *openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
-    SAFE_POINT(NULL != openCLHelper, "OpenCL support plugin is not loaded", -1);
+    SAFE_POINT(nullptr != openCLHelper, "OpenCL support plugin is not loaded", -1);
     if (!openCLHelper->isLoaded()) {
         coreLog.error(openCLHelper->getErrorString());
         return -1;
@@ -208,11 +208,11 @@ int BinaryFindOpenCL::runBinaryFindKernel() {
         clCommandQueue,
         binaryFindKernel,
         1,
-        NULL,
+        nullptr,
         &globalWorkSize,
-        NULL,
+        nullptr,
         0,
-        NULL,
+        nullptr,
         &clEvent1);
     if (hasOPENCLError(err, "clEnqueueNDRangeKernel"))
         return err;
@@ -234,7 +234,7 @@ NumberType *BinaryFindOpenCL::launch() {
 
     // the number of needles a particular kernel execution should search for
     const OpenCLHelper *openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
-    SAFE_POINT(NULL != openCLHelper, "OpenCL support plugin does not loaded", NULL);
+    SAFE_POINT(nullptr != openCLHelper, "OpenCL support plugin does not loaded", nullptr);
     if (!openCLHelper->isLoaded()) {
         coreLog.error(openCLHelper->getErrorString());
         return 0;
@@ -252,7 +252,7 @@ NumberType *BinaryFindOpenCL::launch() {
         return 0;
 
     NumberType *outputArray = new NumberType[needlesSize];
-    err = openCLHelper->clEnqueueReadBuffer_p(clCommandQueue, buf_needlesArray, CL_TRUE, 0, sizeof(NumberType) * needlesSize, outputArray, 0, NULL, &clEvent2);
+    err = openCLHelper->clEnqueueReadBuffer_p(clCommandQueue, buf_needlesArray, CL_TRUE, 0, sizeof(NumberType) * needlesSize, outputArray, 0, nullptr, &clEvent2);
     if (hasOPENCLError(err, "clEnqueueReadBuffer")) {
         delete[] outputArray;
         outputArray = 0;
@@ -269,21 +269,21 @@ NumberType *BinaryFindOpenCL::launch() {
 bool BinaryFindOpenCL::hasOPENCLError(int err, QString errorMessage) {
     if (err != 0) {
         switch (err) {
-        case CL_INVALID_BUFFER_SIZE:
-            algoLog.error(QString("OPENCL: %1; Error code %2 (Invalid buffer size)").arg(errorMessage).arg(err));
-            break;
-        case CL_MEM_OBJECT_ALLOCATION_FAILURE:
-            algoLog.error(QString("OPENCL: %1; Error code %2 (Memory object allocation failure)").arg(errorMessage).arg(err));
-            break;
-        case CL_OUT_OF_HOST_MEMORY:
-            algoLog.error(QString("OPENCL: %1; Error code %2 (Out of host memory)").arg(errorMessage).arg(err));
-            break;
-        case CL_OUT_OF_RESOURCES:
-            algoLog.error(QString("OPENCL: %1; Error code %2 (Out of resources)").arg(errorMessage).arg(err));
-            break;
-        default:
-            algoLog.error(QString("OPENCL: %1; Error code %2").arg(errorMessage).arg(err));
-            break;
+            case CL_INVALID_BUFFER_SIZE:
+                algoLog.error(QString("OPENCL: %1; Error code %2 (Invalid buffer size)").arg(errorMessage).arg(err));
+                break;
+            case CL_MEM_OBJECT_ALLOCATION_FAILURE:
+                algoLog.error(QString("OPENCL: %1; Error code %2 (Memory object allocation failure)").arg(errorMessage).arg(err));
+                break;
+            case CL_OUT_OF_HOST_MEMORY:
+                algoLog.error(QString("OPENCL: %1; Error code %2 (Out of host memory)").arg(errorMessage).arg(err));
+                break;
+            case CL_OUT_OF_RESOURCES:
+                algoLog.error(QString("OPENCL: %1; Error code %2 (Out of resources)").arg(errorMessage).arg(err));
+                break;
+            default:
+                algoLog.error(QString("OPENCL: %1; Error code %2").arg(errorMessage).arg(err));
+                break;
         }
         return true;
     } else {
@@ -293,7 +293,7 @@ bool BinaryFindOpenCL::hasOPENCLError(int err, QString errorMessage) {
 
 void BinaryFindOpenCL::logProfilingInfo(const cl_event &event, const QString &msgPrefix) {
     const OpenCLHelper *openCLHelper = AppContext::getOpenCLGpuRegistry()->getOpenCLHelper();
-    SAFE_POINT(NULL != openCLHelper, "OpenCL support plugin does not loaded", );
+    SAFE_POINT(nullptr != openCLHelper, "OpenCL support plugin does not loaded", );
     if (!openCLHelper->isLoaded()) {
         coreLog.error(openCLHelper->getErrorString());
         return;
@@ -301,7 +301,7 @@ void BinaryFindOpenCL::logProfilingInfo(const cl_event &event, const QString &ms
 
     cl_int err;
     cl_ulong clt1 = 0, clt2 = 0, clt3 = 0, clt4 = 0;
-    if ((err = openCLHelper->clGetEventProfilingInfo_p(event, CL_PROFILING_COMMAND_QUEUED, sizeof(cl_ulong), &clt1, NULL)) != 0 || (err = openCLHelper->clGetEventProfilingInfo_p(event, CL_PROFILING_COMMAND_SUBMIT, sizeof(cl_ulong), &clt2, NULL)) != 0 || (err = openCLHelper->clGetEventProfilingInfo_p(event, CL_PROFILING_COMMAND_START, sizeof(cl_ulong), &clt3, NULL)) != 0 || (err = openCLHelper->clGetEventProfilingInfo_p(event, CL_PROFILING_COMMAND_END, sizeof(cl_ulong), &clt4, NULL)) != 0) {
+    if ((err = openCLHelper->clGetEventProfilingInfo_p(event, CL_PROFILING_COMMAND_QUEUED, sizeof(cl_ulong), &clt1, nullptr)) != 0 || (err = openCLHelper->clGetEventProfilingInfo_p(event, CL_PROFILING_COMMAND_SUBMIT, sizeof(cl_ulong), &clt2, nullptr)) != 0 || (err = openCLHelper->clGetEventProfilingInfo_p(event, CL_PROFILING_COMMAND_START, sizeof(cl_ulong), &clt3, nullptr)) != 0 || (err = openCLHelper->clGetEventProfilingInfo_p(event, CL_PROFILING_COMMAND_END, sizeof(cl_ulong), &clt4, nullptr)) != 0) {
         algoLog.trace(QString("OpenCL profiling info unavailable (%1)").arg(err));
     } else {
         algoLog.trace(QString("%1: %2/%3/%4 ms (since queued/submitted/execution started)").arg(msgPrefix).arg((clt4 - clt1) / (double)1000000, 0, 'f', 2).arg((clt4 - clt2) / (double)1000000, 0, 'f', 2).arg((clt4 - clt3) / (double)1000000, 0, 'f', 2));

@@ -62,8 +62,8 @@ bool DashboardsManagerDialogFiller::isDashboardPresent(HI::GUITestOpStatus &os, 
     GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", false);
 
     QTreeWidget *listWidget = GTWidget::findExactWidget<QTreeWidget *>(os, "listWidget", dialog);
-    QTreeWidgetItem *item = GTTreeWidget::findItem(os, listWidget, name, NULL, 0, GTGlobals::FindOptions(false));
-    return item != NULL;
+    QTreeWidgetItem *item = GTTreeWidget::findItem(os, listWidget, name, nullptr, 0, GTGlobals::FindOptions(false));
+    return item != nullptr;
 }
 #undef GT_METHOD_NAME
 

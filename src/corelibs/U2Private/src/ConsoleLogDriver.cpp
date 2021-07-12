@@ -74,7 +74,7 @@ void ConsoleLogDriver::setLogCmdlineHelp() {
     helpRegistered = true;
 
     CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
-    assert(NULL != cmdLineRegistry);
+    assert(nullptr != cmdLineRegistry);
 
     CMDLineHelpProvider *logFormat = new CMDLineHelpProvider(
         CMDLineCoreOptions::LOG_FORMAT,
@@ -108,16 +108,16 @@ void ConsoleLogDriver::setLogCmdlineHelp() {
 
 QString ConsoleLogDriver::getLevelName(int i) const {
     switch (i) {
-    case 0:
-        return "TRACE";
-    case 1:
-        return "DETAILS";
-    case 2:
-        return "INFO";
-    case 3:
-        return "ERROR";
-    default:
-        return "";
+        case 0:
+            return "TRACE";
+        case 1:
+            return "DETAILS";
+        case 2:
+            return "INFO";
+        case 3:
+            return "ERROR";
+        default:
+            return "";
     }
 }
 
@@ -221,9 +221,9 @@ void ConsoleLogDriver::setLogSettings() {
 
 void ConsoleLogDriver::setCmdLineSettings() {
     CMDLineRegistry *cmdLineRegistry = AppContext::getCMDLineRegistry();
-    assert(NULL != cmdLineRegistry);
+    assert(nullptr != cmdLineRegistry);
     Settings *settings = AppContext::getSettings();
-    assert(NULL != settings);
+    assert(nullptr != settings);
 
     if (cmdLineRegistry->hasParameter(COLOR_OUTPUT_CMD_OPTION)) {
         colored = true;

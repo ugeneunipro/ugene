@@ -187,7 +187,7 @@ void Notification::mousePressEvent(QMouseEvent *ev) {
             dlg->setWindowTitle(tr("Detailed message"));
 
             NotificationStack *notificationStack = AppContext::getMainWindow()->getNotificationStack();
-            if (NULL != notificationStack) {
+            if (nullptr != notificationStack) {
                 notificationStack->setFixed(true);
             }
 
@@ -200,7 +200,7 @@ void Notification::mousePressEvent(QMouseEvent *ev) {
                 }
             }
 
-            if (NULL != notificationStack) {
+            if (nullptr != notificationStack) {
                 notificationStack->setFixed(false);
             }
         }

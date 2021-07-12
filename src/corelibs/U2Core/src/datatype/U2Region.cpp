@@ -35,15 +35,15 @@ QString U2Region::toString(Format format) const {
     QString halfLength = FormatUtils::splitThousands(length / 2);
 
     switch (format) {
-    case FormatDash:
-        return QString("%1 - %2").arg(start, end);
-    case FormatPlusMinus:
-        return QString("%1 &plusmn; %2").arg(middle, halfLength);
-    case FormatDots:
-        return QString("%1..%2").arg(start, FormatUtils::splitThousands(endPos() - 1));
-    case FormatBrackets:
-    default:
-        return QString("[%1, %2)").arg(start, end);
+        case FormatDash:
+            return QString("%1 - %2").arg(start, end);
+        case FormatPlusMinus:
+            return QString("%1 &plusmn; %2").arg(middle, halfLength);
+        case FormatDots:
+            return QString("%1..%2").arg(start, FormatUtils::splitThousands(endPos() - 1));
+        case FormatBrackets:
+        default:
+            return QString("[%1, %2)").arg(start, end);
     }
 }
 
@@ -171,6 +171,14 @@ int U2Region::findOverlappingRegion(const QVector<U2Region> &rs) const {
         }
     }
     return -1;
+}
+
+U2Region U2Region::fromXRange(const QRect &rect) {
+    return U2Region(rect.x(), rect.width());
+}
+
+U2Region U2Region::fromYRange(const QRect &rect) {
+    return U2Region(rect.y(), rect.height());
 }
 
 static bool _registerMeta() {

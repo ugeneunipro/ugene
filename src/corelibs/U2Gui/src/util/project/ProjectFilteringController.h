@@ -35,7 +35,7 @@ class ProjectTreeControllerModeSettings;
 class ProjectFilteringController : public QObject {
     Q_OBJECT
 public:
-    ProjectFilteringController(QObject *p = NULL);
+    ProjectFilteringController(QObject *p = nullptr);
 
     void startFiltering(const ProjectTreeControllerModeSettings &settings, const QList<QPointer<Document>> &docs);
     void stopFiltering();

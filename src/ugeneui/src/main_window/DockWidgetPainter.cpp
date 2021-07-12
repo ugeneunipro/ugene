@@ -71,7 +71,7 @@ void DockWidgetPainter::updateLabel(DockData *d, bool active) {
 }
 
 QString DockWidgetPainter::findKeyPrefix(const QAction *action) {
-    const QKeySequence ks = action == NULL ? QKeySequence() : action->shortcut();
+    const QKeySequence ks = action == nullptr ? QKeySequence() : action->shortcut();
     if (ks.count() == 1) {
         for (int k = (int)Qt::Key_0; k <= (int)Qt::Key_9; k++) {
             if (ks[0] == (k | (int)Qt::ALT)) {

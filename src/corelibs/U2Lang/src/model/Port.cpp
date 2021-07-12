@@ -187,7 +187,7 @@ void Port::setEnabled(bool _enabled) {
 * Link
 **************************/
 Link::Link()
-    : src(NULL), dest(NULL) {
+    : src(nullptr), dest(nullptr) {
 }
 
 Link::Link(Port *p1, Port *p2) {
@@ -216,7 +216,7 @@ void Link::connect(Port *p1, Port *p2) {
 }
 
 void Link::disconnect() {
-    if (NULL != src && NULL != dest) {
+    if (nullptr != src && nullptr != dest) {
         src->removeLink(this);
         dest->removeLink(this);
     }

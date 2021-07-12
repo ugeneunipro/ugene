@@ -47,7 +47,7 @@ namespace U2 {
 
 CreateSubalignmentTask::CreateSubalignmentTask(MultipleSequenceAlignmentObject *maObj, const CreateSubalignmentSettings &settings)
     : DocumentProviderTask(tr("Create sub-alignment: %1").arg(maObj->getDocument()->getName()), TaskFlags_NR_FOSCOE),
-      origMAObj(maObj), resultMAObj(NULL), cfg(settings) {
+      origMAObj(maObj), resultMAObj(nullptr), cfg(settings) {
     origDoc = maObj->getDocument();
     createCopy = cfg.url != origDoc->getURL() || cfg.url.isEmpty();
 }

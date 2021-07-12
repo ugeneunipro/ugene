@@ -66,13 +66,13 @@ void GTest_DNASequenceSize::init(XMLTestFormat *tf, const QDomElement &el) {
 
 Task::ReportResult GTest_DNASequenceSize::report() {
     GObject *obj = getContext<GObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
     U2SequenceObject *mySequence = qobject_cast<U2SequenceObject *>(obj);
-    if (mySequence == NULL) {
+    if (mySequence == nullptr) {
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
@@ -101,19 +101,19 @@ void GTest_DNASequenceAlphabet::init(XMLTestFormat *tf, const QDomElement &el) {
 
 Task::ReportResult GTest_DNASequenceAlphabet::report() {
     GObject *obj = getContext<GObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
     U2SequenceObject *mySequence = qobject_cast<U2SequenceObject *>(obj);
-    if (mySequence == NULL) {
+    if (mySequence == nullptr) {
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(name));
         return ReportResult_Finished;
     }
 
     const DNAAlphabet *tempAlphabet = mySequence->getAlphabet();
-    assert(tempAlphabet != NULL);
+    assert(tempAlphabet != nullptr);
 
     if (tempAlphabet->getId() != alphabetId) {
         stateInfo.setError(QString("Alphabet not matched: %1, expected %2 ").arg(tempAlphabet->getId()).arg(alphabetId));
@@ -151,13 +151,13 @@ void GTest_DNASequencePart::init(XMLTestFormat *tf, const QDomElement &el) {
 
 Task::ReportResult GTest_DNASequencePart::report() {
     GObject *obj = getContext<GObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
     U2SequenceObject *objSequence = qobject_cast<U2SequenceObject *>(obj);
-    if (objSequence == NULL) {
+    if (objSequence == nullptr) {
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
@@ -206,13 +206,13 @@ void GTest_DNASequenceAlphabetType::init(XMLTestFormat *tf, const QDomElement &e
 }
 Task::ReportResult GTest_DNASequenceAlphabetType::report() {
     GObject *obj = getContext<GObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
     U2SequenceObject *mySequence = qobject_cast<U2SequenceObject *>(obj);
-    if (mySequence == NULL) {
+    if (mySequence == nullptr) {
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
@@ -240,13 +240,13 @@ void GTest_DNASequenceAlphabetId::init(XMLTestFormat *tf, const QDomElement &el)
 }
 Task::ReportResult GTest_DNASequenceAlphabetId::report() {
     GObject *obj = getContext<GObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
     U2SequenceObject *mySequence = qobject_cast<U2SequenceObject *>(obj);
-    if (mySequence == NULL) {
+    if (mySequence == nullptr) {
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
@@ -276,21 +276,21 @@ void GTest_DNAcompareSequencesNamesInTwoObjects::init(XMLTestFormat *tf, const Q
 
 Task::ReportResult GTest_DNAcompareSequencesNamesInTwoObjects::report() {
     Document *doc = getContext<Document>(this, docContextName);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(docContextName));
         return ReportResult_Finished;
     }
     Document *doc2 = getContext<Document>(this, secondDocContextName);
-    if (doc2 == NULL) {
+    if (doc2 == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(secondDocContextName));
         return ReportResult_Finished;
     }
 
     const QList<GObject *> &objs = doc->getObjects();
     const QList<GObject *> &objs2 = doc2->getObjects();
-    GObject *obj = NULL;
-    U2SequenceObject *mySequence = NULL;
-    U2SequenceObject *mySequence2 = NULL;
+    GObject *obj = nullptr;
+    U2SequenceObject *mySequence = nullptr;
+    U2SequenceObject *mySequence2 = nullptr;
 
     for (int i = 0; (i != objs.size()) && (i != objs2.size()); i++) {
         obj = objs.at(i);
@@ -298,12 +298,12 @@ Task::ReportResult GTest_DNAcompareSequencesNamesInTwoObjects::report() {
 
         if ((obj->getGObjectType() == GObjectTypes::SEQUENCE) && (obj2->getGObjectType() == GObjectTypes::SEQUENCE)) {
             mySequence = qobject_cast<U2SequenceObject *>(obj);
-            if (mySequence == NULL) {
+            if (mySequence == nullptr) {
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj->getGObjectName()).arg(i));
                 return ReportResult_Finished;
             }
             mySequence2 = qobject_cast<U2SequenceObject *>(obj2);
-            if (mySequence2 == NULL) {
+            if (mySequence2 == nullptr) {
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj2->getGObjectName()).arg(i));
                 return ReportResult_Finished;
             }
@@ -345,21 +345,21 @@ void GTest_DNAcompareSequencesInTwoObjects::init(XMLTestFormat *tf, const QDomEl
 
 Task::ReportResult GTest_DNAcompareSequencesInTwoObjects::report() {
     Document *doc = getContext<Document>(this, docContextName);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(docContextName));
         return ReportResult_Finished;
     }
     Document *doc2 = getContext<Document>(this, secondDocContextName);
-    if (doc2 == NULL) {
+    if (doc2 == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(secondDocContextName));
         return ReportResult_Finished;
     }
 
     const QList<GObject *> &objs = doc->getObjects();
     const QList<GObject *> &objs2 = doc2->getObjects();
-    GObject *obj = NULL;
-    U2SequenceObject *mySequence = NULL;
-    U2SequenceObject *mySequence2 = NULL;
+    GObject *obj = nullptr;
+    U2SequenceObject *mySequence = nullptr;
+    U2SequenceObject *mySequence2 = nullptr;
 
     for (int i = 0; (i != objs.size()) && (i != objs2.size()); i++) {
         obj = objs.at(i);
@@ -367,12 +367,12 @@ Task::ReportResult GTest_DNAcompareSequencesInTwoObjects::report() {
 
         if ((obj->getGObjectType() == GObjectTypes::SEQUENCE) && (obj2->getGObjectType() == GObjectTypes::SEQUENCE)) {
             mySequence = qobject_cast<U2SequenceObject *>(obj);
-            if (mySequence == NULL) {
+            if (mySequence == nullptr) {
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj->getGObjectName()).arg(i));
                 return ReportResult_Finished;
             }
             mySequence2 = qobject_cast<U2SequenceObject *>(obj2);
-            if (mySequence2 == NULL) {
+            if (mySequence2 == nullptr) {
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj2->getGObjectName()).arg(i));
                 return ReportResult_Finished;
             }
@@ -416,21 +416,21 @@ void GTest_DNAcompareSequencesAlphabetsInTwoObjects::init(XMLTestFormat *tf, con
 
 Task::ReportResult GTest_DNAcompareSequencesAlphabetsInTwoObjects::report() {
     Document *doc = getContext<Document>(this, docContextName);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(docContextName));
         return ReportResult_Finished;
     }
     Document *doc2 = getContext<Document>(this, secondDocContextName);
-    if (doc2 == NULL) {
+    if (doc2 == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(secondDocContextName));
         return ReportResult_Finished;
     }
 
     const QList<GObject *> &objs = doc->getObjects();
     const QList<GObject *> &objs2 = doc2->getObjects();
-    GObject *obj = NULL;
-    U2SequenceObject *mySequence = NULL;
-    U2SequenceObject *mySequence2 = NULL;
+    GObject *obj = nullptr;
+    U2SequenceObject *mySequence = nullptr;
+    U2SequenceObject *mySequence2 = nullptr;
 
     for (int i = 0; (i != objs.size()) && (i != objs2.size()); i++) {
         obj = objs.at(i);
@@ -438,12 +438,12 @@ Task::ReportResult GTest_DNAcompareSequencesAlphabetsInTwoObjects::report() {
 
         if ((obj->getGObjectType() == GObjectTypes::SEQUENCE) && (obj2->getGObjectType() == GObjectTypes::SEQUENCE)) {
             mySequence = qobject_cast<U2SequenceObject *>(obj);
-            if (mySequence == NULL) {
+            if (mySequence == nullptr) {
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj->getGObjectName()).arg(i));
                 return ReportResult_Finished;
             }
             mySequence2 = qobject_cast<U2SequenceObject *>(obj2);
-            if (mySequence2 == NULL) {
+            if (mySequence2 == nullptr) {
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj2->getGObjectName()).arg(i));
                 return ReportResult_Finished;
             }
@@ -485,13 +485,13 @@ void GTest_DNAMulSequenceAlphabetId::init(XMLTestFormat *tf, const QDomElement &
 }
 Task::ReportResult GTest_DNAMulSequenceAlphabetId::report() {
     GObject *obj = getContext<GObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
     MultipleSequenceAlignmentObject *myMSequence = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
-    if (myMSequence == NULL) {
+    if (myMSequence == nullptr) {
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
@@ -527,13 +527,13 @@ void GTest_DNAMulSequenceSize::init(XMLTestFormat *tf, const QDomElement &el) {
 
 Task::ReportResult GTest_DNAMulSequenceSize::report() {
     GObject *obj = getContext<GObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
     MultipleSequenceAlignmentObject *myMSequence = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
-    if (myMSequence == NULL) {
+    if (myMSequence == nullptr) {
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
@@ -581,13 +581,13 @@ void GTest_DNAMulSequencePart::init(XMLTestFormat *tf, const QDomElement &el) {
 
 Task::ReportResult GTest_DNAMulSequencePart::report() {
     GObject *obj = getContext<GObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
     MultipleSequenceAlignmentObject *myMSequence = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
-    if (myMSequence == NULL) {
+    if (myMSequence == nullptr) {
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
@@ -639,7 +639,7 @@ void GTest_DNAMulSequenceName::init(XMLTestFormat *tf, const QDomElement &el) {
 
 Task::ReportResult GTest_DNAMulSequenceName::report() {
     GObject *obj = getContext<GObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
@@ -685,13 +685,13 @@ void GTest_DNAMulSequenceQuality::init(XMLTestFormat *tf, const QDomElement &el)
 
 Task::ReportResult GTest_DNAMulSequenceQuality::report() {
     GObject *obj = getContext<GObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("wrong object name: %1").arg(objContextName));
         return ReportResult_Finished;
     }
 
     MultipleSequenceAlignmentObject *myMSequence = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
-    if (myMSequence == NULL) {
+    if (myMSequence == nullptr) {
         stateInfo.setError(QString("Can not cast to alignment from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
@@ -740,13 +740,13 @@ void GTest_DNASequencInMulSequence::init(XMLTestFormat *tf, const QDomElement &e
 
 Task::ReportResult GTest_DNASequencInMulSequence::report() {
     GObject *obj = getContext<GObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
     MultipleSequenceAlignmentObject *myMSequence = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
-    if (myMSequence == NULL) {
+    if (myMSequence == nullptr) {
         stateInfo.setError(QString("can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
@@ -777,12 +777,12 @@ void GTest_DNAcompareMulSequencesInTwoObjects::init(XMLTestFormat *tf, const QDo
 
 Task::ReportResult GTest_DNAcompareMulSequencesInTwoObjects::report() {
     Document *doc = getContext<Document>(this, docContextName);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(docContextName));
         return ReportResult_Finished;
     }
     Document *doc2 = getContext<Document>(this, secondDocContextName);
-    if (doc2 == NULL) {
+    if (doc2 == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(secondDocContextName));
         return ReportResult_Finished;
     }
@@ -798,14 +798,14 @@ Task::ReportResult GTest_DNAcompareMulSequencesInTwoObjects::report() {
 
         if (obj->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
             myMSequence = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
-            if (myMSequence == NULL) {
+            if (myMSequence == nullptr) {
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj->getGObjectName()).arg(i));
                 return ReportResult_Finished;
             }
         }
         if (obj2->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
             myMSequence2 = qobject_cast<MultipleSequenceAlignmentObject *>(obj2);
-            if (myMSequence2 == NULL) {
+            if (myMSequence2 == nullptr) {
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj2->getGObjectName()).arg(i));
                 return ReportResult_Finished;
             }
@@ -866,20 +866,20 @@ void GTest_DNAcompareMulSequencesNamesInTwoObjects::init(XMLTestFormat *tf, cons
 
 Task::ReportResult GTest_DNAcompareMulSequencesNamesInTwoObjects::report() {
     Document *doc = getContext<Document>(this, docContextName);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(docContextName));
         return ReportResult_Finished;
     }
     Document *doc2 = getContext<Document>(this, secondDocContextName);
-    if (doc2 == NULL) {
+    if (doc2 == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(secondDocContextName));
         return ReportResult_Finished;
     }
 
     const QList<GObject *> &objs = doc->getObjects();
     const QList<GObject *> &objs2 = doc2->getObjects();
-    GObject *obj = NULL;
-    GObject *obj2 = NULL;
+    GObject *obj = nullptr;
+    GObject *obj2 = nullptr;
     MultipleSequenceAlignmentObject *myMSequence = 0;
     MultipleSequenceAlignmentObject *myMSequence2 = 0;
 
@@ -889,14 +889,14 @@ Task::ReportResult GTest_DNAcompareMulSequencesNamesInTwoObjects::report() {
 
         if (obj->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
             myMSequence = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
-            if (myMSequence == NULL) {
+            if (myMSequence == nullptr) {
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj->getGObjectName()).arg(i));
                 return ReportResult_Finished;
             }
         }
         if (obj2->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
             myMSequence2 = qobject_cast<MultipleSequenceAlignmentObject *>(obj2);
-            if (myMSequence2 == NULL) {
+            if (myMSequence2 == nullptr) {
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj2->getGObjectName()).arg(i));
                 return ReportResult_Finished;
             }
@@ -951,13 +951,13 @@ void GTest_DNASequenceQualityScores::init(XMLTestFormat *tf, const QDomElement &
 
 Task::ReportResult GTest_DNASequenceQualityScores::report() {
     GObject *obj = getContext<GObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
     U2SequenceObject *mySequence = qobject_cast<U2SequenceObject *>(obj);
-    if (mySequence == NULL) {
+    if (mySequence == nullptr) {
         stateInfo.setError(QString("Can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
@@ -1015,13 +1015,13 @@ void GTest_DNASequenceQualityValue::init(XMLTestFormat *tf, const QDomElement &e
 
 Task::ReportResult GTest_DNASequenceQualityValue::report() {
     GObject *obj = getContext<GObject>(this, objContextName);
-    if (obj == NULL) {
+    if (obj == nullptr) {
         stateInfo.setError(QString("wrong value: %1").arg(OBJ_ATTR));
         return ReportResult_Finished;
     }
 
     U2SequenceObject *mySequence = qobject_cast<U2SequenceObject *>(obj);
-    if (mySequence == NULL) {
+    if (mySequence == nullptr) {
         stateInfo.setError(QString("Can't cast to sequence from: %1").arg(obj->getGObjectName()));
         return ReportResult_Finished;
     }
@@ -1060,26 +1060,26 @@ void GTest_CompareDNASequenceQualityInTwoObjects::init(XMLTestFormat *tf, const 
 }
 
 static U2SequenceObject *getSeqObj(Document *doc) {
-    if (doc == NULL) {
-        return NULL;
+    if (doc == nullptr) {
+        return nullptr;
     }
 
     QList<GObject *> seqObjs = doc->findGObjectByType(GObjectTypes::SEQUENCE);
     if (seqObjs.isEmpty()) {
-        return NULL;
+        return nullptr;
     }
     return qobject_cast<U2SequenceObject *>(seqObjs.first());
 }
 
 Task::ReportResult GTest_CompareDNASequenceQualityInTwoObjects::report() {
     U2SequenceObject *seq1Obj = getSeqObj(getContext<Document>(this, doc1CtxName));
-    if (seq1Obj == NULL) {
+    if (seq1Obj == nullptr) {
         setError(QString("Cannot find sequence object at '%1' document").arg(doc1CtxName));
         return ReportResult_Finished;
     }
 
     U2SequenceObject *seq2Obj = getSeqObj(getContext<Document>(this, doc2CtxName));
-    if (seq2Obj == NULL) {
+    if (seq2Obj == nullptr) {
         setError(QString("Cannot find sequence object at '%1' document").arg(doc2CtxName));
         return ReportResult_Finished;
     }
@@ -1117,19 +1117,19 @@ void GTest_DNAcompareMulSequencesAlphabetIdInTwoObjects::init(XMLTestFormat *tf,
 
 Task::ReportResult GTest_DNAcompareMulSequencesAlphabetIdInTwoObjects::report() {
     Document *doc = getContext<Document>(this, docContextName);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(docContextName));
         return ReportResult_Finished;
     }
     Document *doc2 = getContext<Document>(this, secondDocContextName);
-    if (doc2 == NULL) {
+    if (doc2 == nullptr) {
         stateInfo.setError(QString("document not found %1").arg(secondDocContextName));
         return ReportResult_Finished;
     }
 
     const QList<GObject *> &objs = doc->getObjects();
     const QList<GObject *> &objs2 = doc2->getObjects();
-    GObject *obj = NULL;
+    GObject *obj = nullptr;
     MultipleSequenceAlignmentObject *myMSequence = 0;
     MultipleSequenceAlignmentObject *myMSequence2 = 0;
 
@@ -1139,14 +1139,14 @@ Task::ReportResult GTest_DNAcompareMulSequencesAlphabetIdInTwoObjects::report() 
 
         if (obj->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
             myMSequence = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
-            if (myMSequence == NULL) {
+            if (myMSequence == nullptr) {
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj->getGObjectName()).arg(i));
                 return ReportResult_Finished;
             }
         }
         if (obj2->getGObjectType() == GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) {
             myMSequence2 = qobject_cast<MultipleSequenceAlignmentObject *>(obj2);
-            if (myMSequence2 == NULL) {
+            if (myMSequence2 == nullptr) {
                 stateInfo.setError(QString("can't cast to sequence from: %1 in position %2").arg(obj2->getGObjectName()).arg(i));
                 return ReportResult_Finished;
             }

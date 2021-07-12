@@ -86,13 +86,13 @@ void FileLineEdit::sl_onBrowse() {
 
     QString name;
     if (multi) {
-        QStringList lst = U2FileDialog::getOpenFileNames(NULL, tr("Select file(s)"), lod.dir, FileFilter, NULL, options);
+        QStringList lst = U2FileDialog::getOpenFileNames(nullptr, tr("Select file(s)"), lod.dir, FileFilter, nullptr, options);
         name = lst.join(";");
         if (!lst.isEmpty()) {
             lod.url = lst.first();
         }
     } else {
-        lod.url = name = U2FileDialog::getOpenFileName(NULL, tr("Select file(s)"), lod.dir, FileFilter, NULL, options);
+        lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select file(s)"), lod.dir, FileFilter, nullptr, options);
     }
     if (!name.isEmpty()) {
         setText(name);

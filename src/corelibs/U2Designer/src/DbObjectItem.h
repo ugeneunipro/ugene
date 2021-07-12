@@ -29,7 +29,7 @@ namespace U2 {
 class DbObjectItem : public FileItem {
     Q_OBJECT
 public:
-    DbObjectItem(const QString &url, QListWidget *parent = NULL);
+    DbObjectItem(const QString &url, QListWidget *parent = nullptr);
 };
 
 }    // namespace U2

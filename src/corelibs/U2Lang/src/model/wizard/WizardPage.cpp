@@ -37,7 +37,7 @@ WizardPage::~WizardPage() {
 }
 
 void WizardPage::validate(const QList<Workflow::Actor *> &actors, U2OpStatus &os) const {
-    if (NULL == content) {
+    if (nullptr == content) {
         os.setError(QObject::tr("NULL page content"));
         return;
     }
@@ -119,7 +119,7 @@ TemplatedPageContent *PageContentFactory::createContent(const QString &id, U2OpS
         return new DefaultPageContent();
     }
     os.setError(QObject::tr("Unknown page template id: %1").arg(id));
-    return NULL;
+    return nullptr;
 }
 
 /**********************************
@@ -146,11 +146,11 @@ void DefaultPageContent::accept(TemplatedPageVisitor *visitor) {
 }
 
 void DefaultPageContent::validate(const QList<Workflow::Actor *> &actors, U2OpStatus &os) const {
-    if (NULL == logoArea) {
+    if (nullptr == logoArea) {
         os.setError(QObject::tr("NULL logo area"));
         return;
     }
-    if (NULL == paramsArea) {
+    if (nullptr == paramsArea) {
         os.setError(QObject::tr("NULL parameters area"));
         return;
     }

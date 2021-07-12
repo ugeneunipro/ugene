@@ -39,13 +39,13 @@ SelectSubalignmentDialog::SelectSubalignmentDialog(MaEditor *editor, const U2Reg
       editor(editor),
       window(region),
       selectedIndexes(_selectedIndexes) {
-    SAFE_POINT(editor != NULL, L10N::nullPointerError("MaEditor"), );
+    SAFE_POINT(editor != nullptr, L10N::nullPointerError("MaEditor"), );
 
     if (region.isEmpty() && selectedIndexes.isEmpty()) {
-        int startSeq = -1;
-        int endSeq = -1;
-        int startPos = -1;
-        int endPos = -1;
+        int startSeq;
+        int endSeq;
+        int startPos;
+        int endPos;
         const MaEditorSelection &selection = editor->getSelection();
         if (selection.isEmpty()) {
             startPos = 0;
@@ -53,10 +53,11 @@ SelectSubalignmentDialog::SelectSubalignmentDialog(MaEditor *editor, const U2Reg
             startSeq = 0;
             endSeq = editor->getNumSequences();
         } else {
-            startSeq = selection.y();
-            endSeq = selection.y() + selection.height();
-            startPos = selection.x();
-            endPos = selection.x() + selection.width();
+            QRect selectionREct = selection.toRect();
+            startSeq = selectionREct.y();
+            endSeq = selectionREct.y() + selectionREct.height();
+            startPos = selectionREct.x();
+            endPos = selectionREct.x() + selectionREct.width();
         }
         window = U2Region(startPos, endPos - startPos);
         for (int i = startSeq; i <= endSeq; i++) {
@@ -117,7 +118,7 @@ void SelectSubalignmentDialog::sl_noneButtonClicked() {
 }
 
 void SelectSubalignmentDialog::init() {
-    SAFE_POINT(editor != NULL, tr("Ma Editor is NULL"), );
+    SAFE_POINT(editor != nullptr, tr("Ma Editor is NULL"), );
 
     setupUi(this);
     new HelpButton(this, buttonBox, "65929694");
@@ -128,7 +129,7 @@ void SelectSubalignmentDialog::init() {
     connect(invertButton, SIGNAL(clicked()), SLOT(sl_invertButtonClicked()));
 
     MultipleAlignmentObject *mobj = editor->getMaObject();
-    SAFE_POINT(mobj != NULL, tr("MSA Object is NULL"), );
+    SAFE_POINT(mobj != nullptr, tr("MSA Object is NULL"), );
 
     int rowNumber = mobj->getNumRows();
     int alignLength = mobj->getLength();

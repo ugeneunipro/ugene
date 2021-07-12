@@ -136,8 +136,8 @@ void substractRegions(QVector<U2Region> &regionsToProcess, const QVector<U2Regio
 }    // namespace
 
 void PVRowsManager::removeAnnotation(Annotation *a) {
-    PVRowData *row = rowByAnnotation.value(a, NULL);
-    CHECK(NULL != row, );    // annotation may present in a DB, but has not been added to the panview yet
+    PVRowData *row = rowByAnnotation.value(a, nullptr);
+    CHECK(nullptr != row, );    // annotation may present in a DB, but has not been added to the panview yet
     rowByAnnotation.remove(a);
     rowByName.remove(a->getName());
     row->annotations.removeOne(a);
@@ -154,8 +154,8 @@ void PVRowsManager::removeAnnotation(Annotation *a) {
 }
 
 int PVRowsManager::getAnnotationRowIdx(Annotation *a) const {
-    PVRowData *row = rowByAnnotation.value(a, NULL);
-    if (NULL == row) {
+    PVRowData *row = rowByAnnotation.value(a, nullptr);
+    if (nullptr == row) {
         return -1;
     } else {
         return rows.indexOf(row);
@@ -177,14 +177,14 @@ bool PVRowsManager::contains(const QString &key) const {
 }
 
 PVRowData *PVRowsManager::getAnnotationRow(Annotation *a) const {
-    return rowByAnnotation.value(a, NULL);
+    return rowByAnnotation.value(a, nullptr);
 }
 
 PVRowData *PVRowsManager::getRow(int row) const {
     if (row >= 0 && row < rows.size()) {
         return rows.at(row);
     }
-    return NULL;
+    return nullptr;
 }
 
 }    // namespace U2

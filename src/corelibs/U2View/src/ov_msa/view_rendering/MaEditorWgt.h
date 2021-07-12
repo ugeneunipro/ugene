@@ -60,7 +60,7 @@ public:
 
     QWidget *createHeaderLabelWidget(const QString &text = QString(),
                                      Qt::Alignment ali = Qt::AlignCenter,
-                                     QWidget *heightTarget = NULL,
+                                     QWidget *heightTarget = nullptr,
                                      bool proxyMouseEventsToNameList = true);
 
     MaEditor *getEditor() const {
@@ -86,6 +86,8 @@ public:
     MSAEditorOffsetsViewController *getOffsetsViewController() const {
         return offsetsViewController;
     }
+
+    MaEditorStatusBar* getStatusBar() const;
 
     ScrollController *getScrollController() const {
         return scrollController;

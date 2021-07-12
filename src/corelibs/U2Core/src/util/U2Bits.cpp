@@ -29,7 +29,9 @@ namespace U2 {
 //    return len == 0 ? 3 : len < 0XFF ? 0 : len < 0xFFFF ? 1 : 2;
 //}
 static int getLenBitsSize(int len) {
-    return len == 0 ? 0 : len < 0XFF ? 8 : len < 0xFFFF ? 16 : 32;
+    return len == 0 ? 0 : len < 0XFF ? 8
+                      : len < 0xFFFF ? 16
+                                     : 32;
 }
 
 static void writeLength(uchar *bits, int len, int lenBitsLen) {
@@ -200,7 +202,10 @@ QVector<int> U2BitCompression::prepareCharNumsMask(const QByteArray &alphabetCha
 // bits helper
 
 int U2Bits::getNumberOfBitsPerChar(int nChars) {
-    int bitsPerChar = nChars <= 2 ? 1 : (nChars <= 4) ? 2 : (nChars <= 8) ? 3 : (nChars <= 16) ? 4 : 5;
+    int bitsPerChar = nChars <= 2 ? 1 : (nChars <= 4) ? 2
+                                    : (nChars <= 8)   ? 3
+                                    : (nChars <= 16)  ? 4
+                                                      : 5;
     return bitsPerChar;
 }
 

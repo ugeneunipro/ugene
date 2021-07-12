@@ -30,7 +30,7 @@
 namespace U2 {
 
 bool IOAdapterRegistryImpl::registerIOAdapter(IOAdapterFactory *io) {
-    if (getIOAdapterFactoryById(io->getAdapterId()) != NULL) {
+    if (getIOAdapterFactoryById(io->getAdapterId()) != nullptr) {
         return false;
     }
     adapters.push_back(io);
@@ -48,7 +48,7 @@ IOAdapterFactory *IOAdapterRegistryImpl::getIOAdapterFactoryById(IOAdapterId id)
             return io;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void IOAdapterRegistryImpl::init() {

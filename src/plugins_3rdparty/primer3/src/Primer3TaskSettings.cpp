@@ -80,38 +80,38 @@ Primer3TaskSettings &Primer3TaskSettings::operator=(const Primer3TaskSettings &s
 }
 
 Primer3TaskSettings::~Primer3TaskSettings() {
-    if (NULL != seqArgs.error.data) {
+    if (nullptr != seqArgs.error.data) {
         std::free(seqArgs.error.data);
-        seqArgs.error.data = NULL;
+        seqArgs.error.data = nullptr;
     }
-    if (NULL != primerArgs.glob_err.data) {
+    if (nullptr != primerArgs.glob_err.data) {
         std::free(primerArgs.glob_err.data);
-        primerArgs.glob_err.data = NULL;
+        primerArgs.glob_err.data = nullptr;
     }
-    if (NULL != seqArgs.trimmed_seq) {
+    if (nullptr != seqArgs.trimmed_seq) {
         std::free(seqArgs.trimmed_seq);
-        seqArgs.trimmed_seq = NULL;
+        seqArgs.trimmed_seq = nullptr;
     }
-    if (NULL != seqArgs.trimmed_orig_seq) {
+    if (nullptr != seqArgs.trimmed_orig_seq) {
         std::free(seqArgs.trimmed_orig_seq);
-        seqArgs.trimmed_orig_seq = NULL;
+        seqArgs.trimmed_orig_seq = nullptr;
     }
 
-    if (NULL != seqArgs.upcased_seq) {
+    if (nullptr != seqArgs.upcased_seq) {
         std::free(seqArgs.upcased_seq);
-        seqArgs.upcased_seq = NULL;
+        seqArgs.upcased_seq = nullptr;
     }
-    if (NULL != seqArgs.upcased_seq_r) {
+    if (nullptr != seqArgs.upcased_seq_r) {
         std::free(seqArgs.upcased_seq_r);
-        seqArgs.upcased_seq_r = NULL;
+        seqArgs.upcased_seq_r = nullptr;
     }
-    if (NULL != seqArgs.error.data) {
+    if (nullptr != seqArgs.error.data) {
         std::free(seqArgs.error.data);
-        seqArgs.error.data = NULL;
+        seqArgs.error.data = nullptr;
     }
-    if (NULL != seqArgs.warning.data) {
+    if (nullptr != seqArgs.warning.data) {
         std::free(seqArgs.warning.data);
-        seqArgs.warning.data = NULL;
+        seqArgs.warning.data = nullptr;
     }
 
     free_seq_lib(&primerArgs.repeat_lib);
@@ -269,7 +269,7 @@ void Primer3TaskSettings::setSequenceName(const QByteArray &value) {
     if (!value.isEmpty()) {
         seqArgs.sequence_name = sequenceName.constData();
     } else {
-        seqArgs.sequence_name = NULL;
+        seqArgs.sequence_name = nullptr;
     }
 }
 
@@ -325,7 +325,7 @@ void Primer3TaskSettings::setLeftInput(const QByteArray &value) {
     if (!value.isEmpty()) {
         seqArgs.left_input = leftInput.constData();
     } else {
-        seqArgs.left_input = NULL;
+        seqArgs.left_input = nullptr;
     }
 }
 
@@ -334,7 +334,7 @@ void Primer3TaskSettings::setRightInput(const QByteArray &value) {
     if (!value.isEmpty()) {
         seqArgs.right_input = rightInput.constData();
     } else {
-        seqArgs.right_input = NULL;
+        seqArgs.right_input = nullptr;
     }
 }
 
@@ -343,7 +343,7 @@ void Primer3TaskSettings::setInternalInput(const QByteArray &value) {
     if (!value.isEmpty()) {
         seqArgs.internal_input = internalInput.constData();
     } else {
-        seqArgs.internal_input = NULL;
+        seqArgs.internal_input = nullptr;
     }
 }
 
@@ -373,7 +373,7 @@ void Primer3TaskSettings::setSequenceQuality(const QVector<int> &value) {
     if (!value.isEmpty()) {
         seqArgs.quality = sequenceQuality.constData();
     } else {
-        seqArgs.quality = NULL;
+        seqArgs.quality = nullptr;
     }
 }
 

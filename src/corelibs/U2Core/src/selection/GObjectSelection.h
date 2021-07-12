@@ -33,7 +33,7 @@ class GObject;
 class U2CORE_EXPORT GObjectSelection : public GSelection {
     Q_OBJECT
 public:
-    GObjectSelection(QObject *p = NULL);
+    GObjectSelection(QObject *p = nullptr);
 
     const QList<GObject *> &getSelectedObjects() const {
         return selectedObjects;

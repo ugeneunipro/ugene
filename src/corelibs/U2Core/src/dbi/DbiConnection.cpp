@@ -31,12 +31,12 @@
 namespace U2 {
 
 DbiConnection::DbiConnection(const U2DbiRef &ref, U2OpStatus &os)
-    : dbi(NULL) {
+    : dbi(nullptr) {
     open(ref, os);
 }
 
 DbiConnection::DbiConnection(const U2DbiRef &ref, bool create, U2OpStatus &os, const QHash<QString, QString> &properties)
-    : dbi(NULL) {
+    : dbi(nullptr) {
     open(ref, create, os, properties);
 }
 
@@ -56,10 +56,10 @@ void DbiConnection::open(const U2DbiRef &ref, U2OpStatus &os) {
 namespace {
 U2DbiPool *getDbiPool(U2OpStatus &os) {
     U2DbiRegistry *dbiReg = AppContext::getDbiRegistry();
-    CHECK_EXT(NULL != dbiReg, os.setError("DBI registry is not initialized"), NULL);
+    CHECK_EXT(nullptr != dbiReg, os.setError("DBI registry is not initialized"), nullptr);
 
     U2DbiPool *pool = dbiReg->getGlobalDbiPool();
-    CHECK_EXT(NULL != pool, os.setError("DBI pool is not initialized"), NULL);
+    CHECK_EXT(nullptr != pool, os.setError("DBI pool is not initialized"), nullptr);
     return pool;
 }
 }    // namespace
@@ -72,16 +72,16 @@ void DbiConnection::open(const U2DbiRef &ref, bool create, U2OpStatus &os, const
 }
 
 void DbiConnection::close(U2OpStatus &os) {
-    if (dbi != NULL) {
+    if (dbi != nullptr) {
         U2DbiPool *pool = getDbiPool(os);
         SAFE_POINT_OP(os, );
         pool->releaseDbi(dbi, os);
-        dbi = NULL;
+        dbi = nullptr;
     }
 }
 
 bool DbiConnection::isOpen() const {
-    return dbi != NULL;
+    return dbi != nullptr;
 }
 
 DbiConnection &DbiConnection::operator=(DbiConnection const &dbiConnection) {
@@ -97,7 +97,7 @@ DbiConnection &DbiConnection::operator=(DbiConnection const &dbiConnection) {
 
 void DbiConnection::copy(DbiConnection const &dbiConnection) {
     dbi = dbiConnection.dbi;
-    if (dbiConnection.dbi != NULL) {
+    if (dbiConnection.dbi != nullptr) {
         U2OpStatus2Log os;
         U2DbiPool *pool = getDbiPool(os);
         SAFE_POINT_OP(os, );
@@ -106,7 +106,7 @@ void DbiConnection::copy(DbiConnection const &dbiConnection) {
 }
 
 DbiConnection::DbiConnection()
-    : dbi(NULL) {
+    : dbi(nullptr) {
 }
 
 }    // namespace U2

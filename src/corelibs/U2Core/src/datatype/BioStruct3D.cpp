@@ -154,7 +154,7 @@ const SharedAtom BioStruct3D::getAtomById(int atomIndex, int modelIndex) const {
         }
     }
 
-    return SharedAtom(NULL);
+    return SharedAtom(nullptr);
 }
 
 const SharedResidue BioStruct3D::getResidueById(int chainIndex, ResidueIndex residueIndex) const {
@@ -165,27 +165,27 @@ const SharedResidue BioStruct3D::getResidueById(int chainIndex, ResidueIndex res
         }
     }
 
-    return SharedResidue(NULL);
+    return SharedResidue(nullptr);
 }
 
 const QString BioStruct3D::getSecStructTypeName(SecondaryStructure::Type type) {
     switch (type) {
-    case SecondaryStructure::Type_AlphaHelix:
-        return BioStruct3D::AlphaHelixAnnotationTag;
-    case SecondaryStructure::Type_PiHelix:
-        return "pi_helix";
-    case SecondaryStructure::Type_310Helix:
-        return "310_helix";
-    case SecondaryStructure::Type_BetaStrand:
-        return BioStruct3D::BetaStrandAnnotationTag;
-    case SecondaryStructure::Type_BetaBridge:
-        return "beta_bridge";
-    case SecondaryStructure::Type_Turn:
-        return BioStruct3D::TurnAnnotationTag;
-    case SecondaryStructure::Type_BendRegion:
-        return "bend_region";
-    default:
-        return QString("unknown");
+        case SecondaryStructure::Type_AlphaHelix:
+            return BioStruct3D::AlphaHelixAnnotationTag;
+        case SecondaryStructure::Type_PiHelix:
+            return "pi_helix";
+        case SecondaryStructure::Type_310Helix:
+            return "310_helix";
+        case SecondaryStructure::Type_BetaStrand:
+            return BioStruct3D::BetaStrandAnnotationTag;
+        case SecondaryStructure::Type_BetaBridge:
+            return "beta_bridge";
+        case SecondaryStructure::Type_Turn:
+            return BioStruct3D::TurnAnnotationTag;
+        case SecondaryStructure::Type_BendRegion:
+            return "bend_region";
+        default:
+            return QString("unknown");
     }
 }
 
@@ -195,7 +195,7 @@ void BioStruct3D::generateSecStructureAnnotations(QMap<int, QList<SharedAnnotati
         return;
 
     foreach (const SharedSecondaryStructure &struc, secondaryStructures) {
-        SharedAnnotationData sd(NULL);
+        SharedAnnotationData sd(nullptr);
         int chainId = struc->chainIndex;
         assert(chainId != 0);
         int initResidueId = moleculeMap.value(chainId)->residueMap.constBegin().key().toInt();

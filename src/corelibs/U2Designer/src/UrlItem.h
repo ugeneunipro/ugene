@@ -31,7 +31,7 @@ class UrlItemVisitor;
 class UrlItem : public QObject, public QListWidgetItem {
     Q_OBJECT
 public:
-    UrlItem(const QString &url, QListWidget *parent = NULL);
+    UrlItem(const QString &url, QListWidget *parent = nullptr);
     virtual ~UrlItem() {
     }
 

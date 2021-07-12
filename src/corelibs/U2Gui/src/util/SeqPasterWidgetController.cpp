@@ -53,7 +53,7 @@ SeqPasterWidgetController::SeqPasterWidgetController(QWidget *p, const QByteArra
     connect(ui->alphabetBox, SIGNAL(currentIndexChanged(const QString &)), SLOT(sl_currentIndexChanged(const QString &)));
 }
 QByteArray SeqPasterWidgetController::getNormSequence(const DNAAlphabet *alph, const QByteArray &seq, bool replace, QChar replaceChar) {
-    assert(alph != NULL);
+    assert(alph != nullptr);
     QByteArray ret;
     if (alph->getId() == BaseDNAAlphabetIds::RAW()) {
         foreach (QChar c, seq) {
@@ -124,13 +124,13 @@ void SeqPasterWidgetController::sl_currentIndexChanged(const QString &newText) {
 QString SeqPasterWidgetController::addSequence(const QString &name, QString data) {
     QByteArray seq = data.remove(QRegExp("\\s")).toLatin1();
 
-    const DNAAlphabet *alph = NULL;
+    const DNAAlphabet *alph = nullptr;
     if (ui->groupBox->isChecked()) {
         alph = U2AlphabetUtils::getById((ui->alphabetBox->itemData(ui->alphabetBox->currentIndex())).toString());
     } else {
-        alph = NULL != preferred ? preferred : U2AlphabetUtils::findBestAlphabet(seq);
+        alph = nullptr != preferred ? preferred : U2AlphabetUtils::findBestAlphabet(seq);
     }
-    CHECK(NULL != alph, tr("Alphabet not detected"));
+    CHECK(nullptr != alph, tr("Alphabet not detected"));
 
     bool replace = ui->replaceRB->isChecked();
     if (replace) {
@@ -188,7 +188,7 @@ void SeqPasterWidgetController::selectText() {
 }
 
 void SeqPasterWidgetController::setEventFilter(QObject *evFilter) {
-    if (evFilter == NULL) {
+    if (evFilter == nullptr) {
         return;
     }
     ui->sequenceEdit->installEventFilter(evFilter);

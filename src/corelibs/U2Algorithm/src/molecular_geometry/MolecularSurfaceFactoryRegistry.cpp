@@ -52,7 +52,7 @@ MolecularSurfaceFactory *MolecularSurfaceFactoryRegistry::getSurfaceFactory(cons
     if (surfMap.contains(surfId)) {
         return surfMap.value(surfId);
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 

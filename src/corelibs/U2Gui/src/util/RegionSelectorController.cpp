@@ -45,7 +45,7 @@ RegionSelectorSettings::RegionSelectorSettings(qint64 maxLen,
       circular(isCircularSelectionAvailable),
       presetRegions(_presetRegions),
       defaultPreset(defaultPreset) {
-    if (selection != NULL && !selection->isEmpty()) {
+    if (selection != nullptr && !selection->isEmpty()) {
         U2Region region = getOneRegionFromSelection();
         presetRegions.prepend(RegionPreset(SELECTED_REGION, region));
     }
@@ -81,13 +81,13 @@ RegionSelectorController::RegionSelectorController(RegionSelectorGui gui, Region
 }
 
 U2Region RegionSelectorController::getRegion(bool *_ok) const {
-    SAFE_POINT_EXT(gui.startLineEdit != NULL && gui.endLineEdit != NULL, *_ok = false, U2Region());
+    SAFE_POINT_EXT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, *_ok = false, U2Region());
 
     bool ok = false;
     qint64 v1 = gui.startLineEdit->text().toLongLong(&ok) - 1;
 
     if (!ok || v1 < 0 || v1 > settings.maxLen) {
-        if (_ok != NULL) {
+        if (_ok != nullptr) {
             *_ok = false;
         }
         return U2Region();
@@ -96,20 +96,20 @@ U2Region RegionSelectorController::getRegion(bool *_ok) const {
     int v2 = gui.endLineEdit->text().toLongLong(&ok);
 
     if (!ok || v2 <= 0 || v2 > settings.maxLen) {
-        if (_ok != NULL) {
+        if (_ok != nullptr) {
             *_ok = false;
         }
         return U2Region();
     }
 
     if (v1 > v2 && !settings.circular) {    // start > end
-        if (_ok != NULL) {
+        if (_ok != nullptr) {
             *_ok = false;
         }
         return U2Region();
     }
 
-    if (_ok != NULL) {
+    if (_ok != nullptr) {
         *_ok = true;
     }
 
@@ -140,12 +140,12 @@ void RegionSelectorController::setRegion(const U2Region &region) {
 }
 
 QString RegionSelectorController::getPresetName() const {
-    SAFE_POINT(gui.presetsComboBox != NULL, tr("Cannot get preset name, ComboBox is NULL"), QString());
+    SAFE_POINT(gui.presetsComboBox != nullptr, tr("Cannot get preset name, ComboBox is NULL"), QString());
     return gui.presetsComboBox->currentText();
 }
 
 void RegionSelectorController::setPreset(const QString &preset) {
-    SAFE_POINT(gui.presetsComboBox != NULL, tr("Cannot set preset, ComboBox is NULL"), );
+    SAFE_POINT(gui.presetsComboBox != nullptr, tr("Cannot set preset, ComboBox is NULL"), );
     gui.presetsComboBox->setCurrentText(preset);
 }
 
@@ -162,7 +162,7 @@ void RegionSelectorController::removePreset(const QString &preset) {
 }
 
 void RegionSelectorController::reset() {
-    SAFE_POINT(gui.presetsComboBox != NULL, tr("Cannot set preset, ComboBox is NULL"), );
+    SAFE_POINT(gui.presetsComboBox != nullptr, tr("Cannot set preset, ComboBox is NULL"), );
     gui.presetsComboBox->setCurrentText(settings.defaultPreset);
 }
 
@@ -220,7 +220,7 @@ void RegionSelectorController::sl_regionChanged() {
 }
 
 void RegionSelectorController::sl_onRegionChanged() {
-    SAFE_POINT(gui.startLineEdit != NULL && gui.endLineEdit != NULL, tr("Region lineEdit is NULL"), );
+    SAFE_POINT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, tr("Region lineEdit is NULL"), );
 
     bool ok = false;
 
@@ -248,7 +248,7 @@ void RegionSelectorController::sl_onRegionChanged() {
 }
 
 void RegionSelectorController::sl_onSelectionChanged(GSelection *selection) {
-    CHECK(gui.presetsComboBox != NULL, );    // no combobox - no selection dependency
+    CHECK(gui.presetsComboBox != nullptr, );    // no combobox - no selection dependency
 
     SAFE_POINT(settings.selection == selection, "Invalid sequence selection", );
     int selectedRegionIndex = gui.presetsComboBox->findText(RegionSelectorSettings::SELECTED_REGION);
@@ -267,7 +267,7 @@ void RegionSelectorController::sl_onSelectionChanged(GSelection *selection) {
 }
 
 void RegionSelectorController::sl_onValueEdited() {
-    SAFE_POINT(gui.startLineEdit != NULL && gui.endLineEdit != NULL, tr("Region lineEdit is NULL"), );
+    SAFE_POINT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, tr("Region lineEdit is NULL"), );
 
     if (gui.startLineEdit->text().isEmpty() || gui.endLineEdit->text().isEmpty()) {
         GUIUtils::setWidgetWarning(gui.startLineEdit, gui.startLineEdit->text().isEmpty());
@@ -281,7 +281,7 @@ void RegionSelectorController::sl_onValueEdited() {
 }
 
 void RegionSelectorController::init() {
-    SAFE_POINT(gui.startLineEdit != NULL && gui.endLineEdit != NULL, tr("Region lineEdit is NULL"), );
+    SAFE_POINT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, tr("Region lineEdit is NULL"), );
 
     int w = qMax(((int)log10((double)settings.maxLen)) * 10, 50);
 
@@ -297,7 +297,7 @@ void RegionSelectorController::init() {
 }
 
 void RegionSelectorController::setupPresets() {
-    CHECK(gui.presetsComboBox != NULL, );
+    CHECK(gui.presetsComboBox != nullptr, );
 
     bool foundDefaultPreset = false;
     foreach (const RegionPreset &presetRegion, settings.presetRegions) {
@@ -316,7 +316,7 @@ void RegionSelectorController::setupPresets() {
 }
 
 void RegionSelectorController::connectSlots() {
-    SAFE_POINT(gui.startLineEdit != NULL && gui.endLineEdit != NULL, tr("Region lineEdit is NULL"), );
+    SAFE_POINT(gui.startLineEdit != nullptr && gui.endLineEdit != nullptr, tr("Region lineEdit is NULL"), );
 
     connect(gui.startLineEdit, SIGNAL(editingFinished()), SLOT(sl_onRegionChanged()));
     connect(gui.startLineEdit, SIGNAL(textEdited(const QString &)), SLOT(sl_onValueEdited()));
@@ -326,12 +326,12 @@ void RegionSelectorController::connectSlots() {
     connect(gui.endLineEdit, SIGNAL(textEdited(const QString &)), SLOT(sl_onValueEdited()));
     connect(gui.endLineEdit, SIGNAL(textChanged(QString)), SLOT(sl_onRegionChanged()));
 
-    if (gui.presetsComboBox != NULL) {
+    if (gui.presetsComboBox != nullptr) {
         connect(gui.presetsComboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_onPresetChanged(int)));
         connect(this, SIGNAL(si_regionChanged(U2Region)), this, SLOT(sl_regionChanged()));
     }
 
-    if (settings.selection != NULL) {
+    if (settings.selection != nullptr) {
         connect(settings.selection, SIGNAL(si_onSelectionChanged(GSelection *)), SLOT(sl_onSelectionChanged(GSelection *)));
     }
 }

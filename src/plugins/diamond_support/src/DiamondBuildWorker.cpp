@@ -44,12 +44,12 @@ const QString DiamondBuildWorker::DIAMOND_BUILD_DIR = "diamond_build";
 
 DiamondBuildWorker::DiamondBuildWorker(Actor *actor)
     : BaseWorker(actor, false),
-      output(NULL) {
+      output(nullptr) {
 }
 
 void DiamondBuildWorker::init() {
     output = ports.value(DiamondBuildWorkerFactory::OUTPUT_PORT_ID);
-    SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(DiamondBuildWorkerFactory::OUTPUT_PORT_ID), );
+    SAFE_POINT(nullptr != output, QString("Port with id '%1' is NULL").arg(DiamondBuildWorkerFactory::OUTPUT_PORT_ID), );
 }
 
 Task *DiamondBuildWorker::tick() {
@@ -107,10 +107,10 @@ DiamondBuildTaskSettings DiamondBuildWorker::getSettings(U2OpStatus &os) {
     CHECK_OP(os, settings);
 
     U2DataPathRegistry *dataPathRegistry = AppContext::getDataPathRegistry();
-    SAFE_POINT_EXT(NULL != dataPathRegistry, os.setError("U2DataPathRegistry is NULL"), settings);
+    SAFE_POINT_EXT(nullptr != dataPathRegistry, os.setError("U2DataPathRegistry is NULL"), settings);
 
     U2DataPath *taxonomyDataPath = dataPathRegistry->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
-    CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), os.setError(tr("Taxonomy classification data from NCBI are not available.")), settings);
+    CHECK_EXT(nullptr != taxonomyDataPath && taxonomyDataPath->isValid(), os.setError(tr("Taxonomy classification data from NCBI are not available.")), settings);
     settings.taxonMapUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_PROT_ACCESSION_2_TAXID_ITEM_ID);
     settings.taxonNodesUrl = taxonomyDataPath->getPathByName(NgsReadsClassificationPlugin::TAXON_NODES_ITEM_ID);
 

@@ -55,7 +55,7 @@ public:
     };
 
 public:
-    WizardController(Schema *s, const Wizard *w);
+    WizardController(const QSharedPointer<Schema> &s, const Wizard *w);
     virtual ~WizardController();
 
     QWizard *createGui();
@@ -100,7 +100,7 @@ public:
 private:
     bool rejected;
     bool broken;
-    Schema *schema;
+    const QSharedPointer<Schema> schema;
     const Wizard *wizard;
     QList<WizardPageController *> pageControllers;
     QList<Actor *> currentActors;

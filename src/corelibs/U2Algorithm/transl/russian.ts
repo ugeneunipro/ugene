@@ -420,7 +420,7 @@ For every column selects the most rare symbol in the whole alignment with percen
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="576"/>
         <source>Jalview</source>
-        <translation>Раскраска Jalview</translation>
+        <translation>Jalview</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/color_schemes/MsaColorScheme.cpp" line="578"/>
@@ -490,7 +490,7 @@ For every column selects the most rare symbol in the whole alignment with percen
     <message>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="114"/>
         <source>No highlighting</source>
-        <translation>Без выделения</translation>
+        <translation>Без подсветки</translation>
     </message>
     <message>
         <location filename="../src/util_msaedit/highlighting_schemes/MsaHighlightingScheme.cpp" line="115"/>

@@ -39,8 +39,8 @@
 namespace U2 {
 
 CopyDocumentTask::CopyDocumentTask(Document *_srcDoc, const DocumentFormatId &_formatId, const QString &_dstUrl, bool _addToProject)
-    : Task("Copy document", TaskFlag_NoRun), srcDoc(_srcDoc), dstDoc(NULL), formatId(_formatId),
-      dstUrl(_dstUrl), addToProject(_addToProject), cloneTask(NULL), saveTask(NULL) {
+    : Task("Copy document", TaskFlag_NoRun), srcDoc(_srcDoc), dstDoc(nullptr), formatId(_formatId),
+      dstUrl(_dstUrl), addToProject(_addToProject), cloneTask(nullptr), saveTask(nullptr) {
 }
 
 CopyDocumentTask::~CopyDocumentTask() {
@@ -57,10 +57,10 @@ void CopyDocumentTask::prepare() {
         return;
     }
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(dstUrl));
-    CHECK_EXT(iof != NULL, stateInfo.setError(QString("Can not create IO factory for %1").arg(dstUrl)), );
+    CHECK_EXT(iof != nullptr, stateInfo.setError(QString("Can not create IO factory for %1").arg(dstUrl)), );
     DocumentFormatRegistry *dfr = AppContext::getDocumentFormatRegistry();
     DocumentFormat *df = dfr->getFormatById(formatId);
-    CHECK_EXT(df != NULL, stateInfo.setError(QString("Unknown document format IO factory: %1").arg(formatId)), );
+    CHECK_EXT(df != nullptr, stateInfo.setError(QString("Unknown document format IO factory: %1").arg(formatId)), );
 
     QVariantMap hints = srcDoc->getGHintsMap();
     U2DbiRef dstDbiRef(DEFAULT_DBI_ID, U2DbiId(dstUrl));
@@ -89,7 +89,7 @@ QList<Task *> CopyDocumentTask::onSubTaskFinished(Task *subTask) {
         }
         if (addToProject) {
             Project *p = AppContext::getProject();
-            if (NULL != p) {
+            if (nullptr != p) {
                 dstDoc->setModified(true);
                 p->addDocument(dstDoc);
             }
@@ -110,13 +110,13 @@ void CopyDocumentTask::sl_onCopySaved() {
 
 CloneObjectsTask::CloneObjectsTask(Document *_srcDoc, Document *_dstDoc)
     : Task("Clone objects", TaskFlag_None), srcDoc(_srcDoc), dstDoc(_dstDoc) {
-    CHECK_EXT(NULL != srcDoc, stateInfo.setError("NULL source document"), );
-    CHECK_EXT(NULL != dstDoc, stateInfo.setError("NULL destination document"), );
+    CHECK_EXT(nullptr != srcDoc, stateInfo.setError("NULL source document"), );
+    CHECK_EXT(nullptr != dstDoc, stateInfo.setError("NULL destination document"), );
 }
 
 void CloneObjectsTask::run() {
     DocumentFormat *df = dstDoc->getDocumentFormat();
-    CHECK_EXT(NULL != df, stateInfo.setError("NULL document format"), );
+    CHECK_EXT(nullptr != df, stateInfo.setError("NULL document format"), );
 
     QList<GObject *> objs = srcDoc->getObjects();
     foreach (GObject *srcObj, objs) {

@@ -258,7 +258,7 @@ public:
         return getTreeLayout() == CIRCULAR_LAYOUT;
     }
 
-    GraphicsBranchItem* getLastUpdatedBranch() const;
+    GraphicsBranchItem *getLastUpdatedBranch() const;
 
     void onPhyTreeChanged();
 

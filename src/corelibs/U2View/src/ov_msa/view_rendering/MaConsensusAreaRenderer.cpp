@@ -42,7 +42,7 @@ namespace U2 {
 ConsensusRenderSettings::ConsensusRenderSettings()
     : columnWidth(0),
       drawSelection(true),
-      colorScheme(NULL),
+      colorScheme(nullptr),
       resizeMode(MaEditor::ResizeMode_FontAndContent),
       highlightMismatches(false),
       rulerWidth(0),
@@ -101,7 +101,7 @@ void MaConsensusAreaRenderer::drawContent(QPainter &painter,
                                           const MaEditorConsensusAreaSettings &consensusSettings,
                                           const ConsensusRenderSettings &renderSettings) {
     SAFE_POINT(consensusRenderData.isValid(), "Incorrect consensus data to draw", );
-    SAFE_POINT(NULL != renderSettings.colorScheme, "Color scheme is NULL", );
+    SAFE_POINT(nullptr != renderSettings.colorScheme, "Color scheme is NULL", );
 
     if (consensusSettings.isVisible(MSAEditorConsElement_CONSENSUS_TEXT)) {
         drawConsensus(painter, consensusRenderData, renderSettings);
@@ -117,9 +117,10 @@ void MaConsensusAreaRenderer::drawContent(QPainter &painter,
 }
 
 ConsensusRenderData MaConsensusAreaRenderer::getConsensusRenderData(const QList<int> &seqIdx, const U2Region &region) const {
+    QRect selectionRect = ui->getSequenceArea()->getSelection().toRect();
     ConsensusRenderData consensusRenderData;
     consensusRenderData.region = region;
-    consensusRenderData.selectedRegion = ui->getSequenceArea()->getSelection().getXRegion();
+    consensusRenderData.selectedRegion = U2Region::fromXRange(selectionRect);
     consensusRenderData.mismatches.resize(static_cast<int>(region.length));
 
     MSAConsensusAlgorithm *algorithm = area->getConsensusAlgorithm();
@@ -304,8 +305,9 @@ ConsensusRenderData MaConsensusAreaRenderer::getScreenDataToRender() const {
 
     ConsensusRenderData consensusRenderData;
     consensusRenderData.region = ui->getDrawHelper()->getVisibleBases(area->width());
-    const MaEditorSelection selection = ui->getSequenceArea()->getSelection();
-    consensusRenderData.selectedRegion = U2Region(selection.x(), selection.width());
+    const MaEditorSelection &selection = ui->getSequenceArea()->getSelection();
+    QRect selectionRect = selection.toRect();
+    consensusRenderData.selectedRegion = U2Region(selectionRect.x(), selectionRect.width());
     consensusRenderData.data = consensusCache->getConsensusLine(consensusRenderData.region, true);
     consensusRenderData.percentage << consensusCache->getConsensusPercents(consensusRenderData.region);
 
@@ -345,16 +347,16 @@ ConsensusRenderSettings MaConsensusAreaRenderer::getScreenRenderSettings(const M
 
 int MaConsensusAreaRenderer::getYRangeLength(MaEditorConsElement element) const {
     switch (element) {
-    case MSAEditorConsElement_HISTOGRAM:
-        return 50;
-    case MSAEditorConsElement_CONSENSUS_TEXT:
-        return ui->getRowHeightController()->getSingleRowHeight();
-    case MSAEditorConsElement_RULER: {
-        QFontMetrics fm(area->getDrawSettings().getRulerFont());
-        return fm.height() + 2 * MaEditorConsensusAreaSettings::RULER_NOTCH_SIZE + 4;
-    }
-    default:
-        FAIL(false, 0);
+        case MSAEditorConsElement_HISTOGRAM:
+            return 50;
+        case MSAEditorConsElement_CONSENSUS_TEXT:
+            return ui->getRowHeightController()->getSingleRowHeight();
+        case MSAEditorConsElement_RULER: {
+            QFontMetrics fm(area->getDrawSettings().getRulerFont());
+            return fm.height() + 2 * MaEditorConsensusAreaSettings::RULER_NOTCH_SIZE + 4;
+        }
+        default:
+            FAIL(false, 0);
     }
 }
 

@@ -64,8 +64,9 @@ int DrawHelper::getVisibleBasesCount(int widgetWidth, bool countFirstClippedBase
 QRect DrawHelper::getSelectionScreenRect(const MaEditorSelection &selection) const {
     CHECK(!selection.isEmpty(), QRect());
 
-    U2Region xRange = ui->getBaseWidthController()->getBasesScreenRange(selection.getXRegion());
-    U2Region yRange = ui->getRowHeightController()->getScreenYRegionByViewRowsRegion(selection.getYRegion());
+    QRect selectionRect = selection.toRect();
+    U2Region xRange = ui->getBaseWidthController()->getBasesScreenRange(U2Region::fromXRange(selectionRect));
+    U2Region yRange = ui->getRowHeightController()->getScreenYRegionByViewRowsRegion(U2Region::fromYRange(selectionRect));
     return QRect(xRange.startPos, yRange.startPos, xRange.length, yRange.length);
 }
 

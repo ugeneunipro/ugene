@@ -20,13 +20,13 @@
  */
 
 #include "MaConsensusAlgorithmSimpleExtended.h"
+#include <math.h>
 
 #include <QMetaEnum>
 
 #include <U2Core/U2SafePoints.h>
 
 #include "BuiltInConsensusAlgorithms.h"
-#include <math.h>
 
 namespace U2 {
 
@@ -36,79 +36,79 @@ MaConsensusAlgorithmSimpleExtended::MaConsensusAlgorithmSimpleExtended(MaConsens
 
 MaConsensusAlgorithmSimpleExtended::Character MaConsensusAlgorithmSimpleExtended::character2Flag(char character) {
     switch (character) {
-    case '-':
-        return Gap;
-    case 'A':
-        return A;
-    case 'C':
-        return C;
-    case 'G':
-        return G;
-    case 'T':
-        return T;
-    case 'W':
-        return W;
-    case 'R':
-        return R;
-    case 'M':
-        return M;
-    case 'K':
-        return K;
-    case 'Y':
-        return Y;
-    case 'S':
-        return S;
-    case 'B':
-        return B;
-    case 'V':
-        return V;
-    case 'H':
-        return H;
-    case 'D':
-        return D;
-    case 'N':
-        return N;
-    default:
-        return None;
+        case '-':
+            return Gap;
+        case 'A':
+            return A;
+        case 'C':
+            return C;
+        case 'G':
+            return G;
+        case 'T':
+            return T;
+        case 'W':
+            return W;
+        case 'R':
+            return R;
+        case 'M':
+            return M;
+        case 'K':
+            return K;
+        case 'Y':
+            return Y;
+        case 'S':
+            return S;
+        case 'B':
+            return B;
+        case 'V':
+            return V;
+        case 'H':
+            return H;
+        case 'D':
+            return D;
+        case 'N':
+            return N;
+        default:
+            return None;
     }
 }
 
 char MaConsensusAlgorithmSimpleExtended::flag2Character(Character flag) {
     switch (flag) {
-    case Gap:
-        return '-';
-    case A:
-        return 'A';
-    case C:
-        return 'C';
-    case G:
-        return 'G';
-    case T:
-        return 'T';
-    case W:
-        return 'W';
-    case R:
-        return 'R';
-    case M:
-        return 'M';
-    case K:
-        return 'K';
-    case Y:
-        return 'Y';
-    case S:
-        return 'S';
-    case B:
-        return 'B';
-    case V:
-        return 'V';
-    case H:
-        return 'H';
-    case D:
-        return 'D';
-    case N:
-        return 'N';
-    default:
-        return MaConsensusAlgorithmSimpleExtended::INVALID_CONS_CHAR;
+        case Gap:
+            return '-';
+        case A:
+            return 'A';
+        case C:
+            return 'C';
+        case G:
+            return 'G';
+        case T:
+            return 'T';
+        case W:
+            return 'W';
+        case R:
+            return 'R';
+        case M:
+            return 'M';
+        case K:
+            return 'K';
+        case Y:
+            return 'Y';
+        case S:
+            return 'S';
+        case B:
+            return 'B';
+        case V:
+            return 'V';
+        case H:
+            return 'H';
+        case D:
+            return 'D';
+        case N:
+            return 'N';
+        default:
+            return MaConsensusAlgorithmSimpleExtended::INVALID_CONS_CHAR;
     }
 }
 

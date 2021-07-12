@@ -38,7 +38,7 @@ struct SchemaAliasesCfgDlgModel {
 class SchemaAliasesConfigurationDialogImpl : public QDialog, public Ui_SchemaAliasesConfigurationDialog {
     Q_OBJECT
 public:
-    SchemaAliasesConfigurationDialogImpl(const Schema &sc, QWidget *p = NULL);
+    SchemaAliasesConfigurationDialogImpl(const Schema &sc, QWidget *p = nullptr);
     // remove empty aliases from model
     SchemaAliasesCfgDlgModel getModel() const;
     // aliases for schema should be different

@@ -46,7 +46,7 @@ protected:
 
 class LabeledPropertyWidget : public QWidget {
 public:
-    LabeledPropertyWidget(const QString &labelText, PropertyWidget *widget, QWidget *parent = NULL);
+    LabeledPropertyWidget(const QString &labelText, PropertyWidget *widget, QWidget *parent = nullptr);
 
     void setLabelWidth(int width);
 

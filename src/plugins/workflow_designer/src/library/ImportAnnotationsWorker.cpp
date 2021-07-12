@@ -75,7 +75,7 @@ Task *ImportAnnotationsWorker::tick() {
         QList<Task *> loadTasks;
         foreach (const QString &url, urls) {
             LoadDocumentTask *loadDocTask = LoadDocumentTask::getDefaultLoadDocTask(url);
-            if (loadDocTask == NULL) {
+            if (loadDocTask == nullptr) {
                 qDeleteAll(loadTasks);
                 return new FailTask(L10N::errorOpeningFileRead(url));
             }
@@ -90,7 +90,7 @@ Task *ImportAnnotationsWorker::tick() {
         setDone();
         outPort->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void ImportAnnotationsWorker::addTaskAnnotations(const QVariant &data, Task *t) {
@@ -104,13 +104,13 @@ void ImportAnnotationsWorker::addTaskAnnotations(const QVariant &data, Task *t) 
 
 static QList<SharedAnnotationData> getAnnsFromDoc(Document *doc) {
     QList<SharedAnnotationData> ret;
-    if (NULL == doc) {
+    if (nullptr == doc) {
         return ret;
     }
     QList<GObject *> objs = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
     foreach (GObject *obj, objs) {
         AnnotationTableObject *annObj = qobject_cast<AnnotationTableObject *>(obj);
-        if (NULL == annObj) {
+        if (nullptr == annObj) {
             continue;
         }
         foreach (Annotation *a, annObj->getAnnotations()) {
@@ -122,7 +122,7 @@ static QList<SharedAnnotationData> getAnnsFromDoc(Document *doc) {
 
 void ImportAnnotationsWorker::sl_docsLoaded(Task *ta) {
     MultiTask *t = qobject_cast<MultiTask *>(ta);
-    if (NULL == t || t->hasError()) {
+    if (nullptr == t || t->hasError()) {
         return;
     }
 
@@ -130,7 +130,7 @@ void ImportAnnotationsWorker::sl_docsLoaded(Task *ta) {
     QList<Task *> loadSubs = t->getTasks();
     foreach (Task *s, loadSubs) {
         LoadDocumentTask *sub = qobject_cast<LoadDocumentTask *>(s);
-        if (NULL == sub || sub->hasError()) {
+        if (nullptr == sub || sub->hasError()) {
             continue;
         }
         anns.append(getAnnsFromDoc(sub->getDocument()));

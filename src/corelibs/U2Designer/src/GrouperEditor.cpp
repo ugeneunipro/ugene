@@ -36,7 +36,7 @@ namespace Workflow {
 /* GrouperEditor */
 /************************************************************************/
 GrouperEditor::GrouperEditor()
-    : ActorConfigurationEditor(), grouperModel(NULL) {
+    : ActorConfigurationEditor(), grouperModel(nullptr) {
 }
 
 GrouperEditor::~GrouperEditor() {
@@ -47,8 +47,8 @@ QWidget *GrouperEditor::getWidget() {
 }
 
 QWidget *GrouperEditor::createGUI() {
-    if (NULL == grouperModel) {
-        return NULL;
+    if (nullptr == grouperModel) {
+        return nullptr;
     }
 
     GrouperEditorWidget *gui = new GrouperEditorWidget(grouperModel, cfg);
@@ -61,20 +61,20 @@ void GrouperEditor::setConfiguration(Actor *actor) {
     ActorConfigurationEditor::setConfiguration(actor);
     QMap<QString, Attribute *> attrs = cfg->getParameters();
 
-    GrouperOutSlotAttribute *gAttr = NULL;
+    GrouperOutSlotAttribute *gAttr = nullptr;
     foreach (QString key, attrs.keys()) {
         Attribute *attr = attrs.value(key);
         if (GROUPER_SLOT_GROUP == attr->getGroup()) {
-            if (NULL != gAttr) {
+            if (nullptr != gAttr) {
                 assert(0);
-                gAttr = NULL;
+                gAttr = nullptr;
                 break;
             }
             gAttr = dynamic_cast<GrouperOutSlotAttribute *>(attr);
         }
     }
 
-    if (NULL == gAttr) {
+    if (nullptr == gAttr) {
         return;
     }
 

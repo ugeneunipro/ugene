@@ -40,7 +40,7 @@ public:
 class NeighborJoinWidget : public CreatePhyTreeWidget, public Ui_NeighborJoinWidget {
     Q_OBJECT
 public:
-    NeighborJoinWidget(const MultipleSequenceAlignment &ma, QWidget *parent = NULL);
+    NeighborJoinWidget(const MultipleSequenceAlignment &ma, QWidget *parent = nullptr);
 
     void fillSettings(CreatePhyTreeSettings &settings);
     void storeSettings();

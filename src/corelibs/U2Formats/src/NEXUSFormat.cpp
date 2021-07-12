@@ -48,7 +48,7 @@ namespace U2 {
 
 NEXUSFormat::NEXUSFormat(QObject *p)
     : TextDocumentFormatDeprecated(p, BaseDocumentFormats::NEXUS, DocumentFormatFlags(DocumentFormatFlag_SupportWriting) | DocumentFormatFlag_OnlyOneObject, QStringList() << "nex"
-                                                                                                                                                                 << "nxs")    // disable streaming for now
+                                                                                                                                                                           << "nxs")    // disable streaming for now
 {
     formatName = tr("NEXUS");
     formatDescription = tr("Nexus is a multiple alignment and phylogenetic trees file format");
@@ -466,7 +466,7 @@ bool NEXUSParser::readDataContents(Context &ctx) {
             if (ctx.contains("missing")) {
                 char missing = ctx["missing"].toLatin1()[0];
                 U2AlphabetUtils::assignAlphabet(ma, missing);
-                CHECK_EXT(ma->getAlphabet() != NULL, errors.append("Unknown alphabet"), false);
+                CHECK_EXT(ma->getAlphabet() != nullptr, errors.append("Unknown alphabet"), false);
 
                 char ourMissing = ma->getAlphabet()->getDefaultSymbol();
 
@@ -476,7 +476,7 @@ bool NEXUSParser::readDataContents(Context &ctx) {
                 }
             } else {
                 U2AlphabetUtils::assignAlphabet(ma);
-                CHECK_EXT(ma->getAlphabet() != NULL, errors.append("Unknown alphabet"), false);
+                CHECK_EXT(ma->getAlphabet() != nullptr, errors.append("Unknown alphabet"), false);
             }
 
             if (ma->getAlphabet() == 0) {
@@ -745,7 +745,7 @@ Document *NEXUSFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, c
     assert(io && "IO must exist");
 
     QList<GObject *> objects = loadObjects(io, dbiRef, fs, os);
-    CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
+    CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
 
     Document *d = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects, fs);
     return d;
@@ -918,7 +918,7 @@ void writePhyTree(const PhyTree &pt, IOAdapter *io, U2OpStatus &ti) {
 }
 
 void NEXUSFormat::storeObjects(QList<GObject *> objects, bool simpleNames, IOAdapter *io, U2OpStatus &ti) {
-    SAFE_POINT(NULL != io, L10N::nullPointerError("I/O Adapter"), );
+    SAFE_POINT(nullptr != io, L10N::nullPointerError("I/O Adapter"), );
     writeHeader(io, ti);
 
     foreach (GObject *object, objects) {

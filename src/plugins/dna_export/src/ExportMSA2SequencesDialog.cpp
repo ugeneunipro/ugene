@@ -39,7 +39,7 @@ ExportMSA2SequencesDialog::ExportMSA2SequencesDialog(const QString &defaultDir, 
     : QDialog(p),
       defaultDir(defaultDir),
       defaultFileName(defaultFileName),
-      saveController(NULL) {
+      saveController(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929311");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));

@@ -74,10 +74,10 @@ void ExportAnnotations2CSVTask::run() {
 
     IOAdapterId ioAdapterId = IOAdapterUtils::url2io(url);
     IOAdapterRegistry *ioRegistry = AppContext::getIOAdapterRegistry();
-    CHECK_EXT(NULL != ioRegistry,
+    CHECK_EXT(nullptr != ioRegistry,
               stateInfo.setError(tr("Invalid I/O environment!").arg(url)), );
     IOAdapterFactory *ioAdapterFactory = ioRegistry->getIOAdapterFactoryById(ioAdapterId);
-    CHECK_EXT(NULL != ioAdapterFactory,
+    CHECK_EXT(nullptr != ioAdapterFactory,
               stateInfo.setError(tr("No IO adapter found for URL: %1").arg(url)), );
     ioAdapter.reset(ioAdapterFactory->createIOAdapter());
 
@@ -140,7 +140,7 @@ void ExportAnnotations2CSVTask::run() {
             if (exportSequence) {
                 QByteArray sequencePart = sequence.mid(region.startPos, region.length);
                 if (isComplementary) {
-                    if (complementTranslation != NULL) {
+                    if (complementTranslation != nullptr) {
                         complementTranslation->translate(sequencePart.data(), sequencePart.size());
                         TextUtils::reverse(sequencePart.data(), sequencePart.size());
                     } else {

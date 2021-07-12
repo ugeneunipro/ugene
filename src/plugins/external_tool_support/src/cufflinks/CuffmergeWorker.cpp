@@ -186,8 +186,8 @@ QString CuffmergePrompter::composeRichDoc() {
  *****************************/
 CuffmergeWorker::CuffmergeWorker(Actor *actor)
     : BaseWorker(actor, false /*autoTransit*/),
-      input(NULL),
-      output(NULL) {
+      input(nullptr),
+      output(nullptr) {
 }
 
 void CuffmergeWorker::init() {
@@ -207,7 +207,7 @@ Task *CuffmergeWorker::tick() {
         connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));
         return t;
     }
-    return NULL;
+    return nullptr;
 }
 
 void CuffmergeWorker::sl_taskFinished() {

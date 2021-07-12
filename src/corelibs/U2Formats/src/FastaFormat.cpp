@@ -262,7 +262,7 @@ static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariant
             objects << new U2SequenceObject(seq.visualName, U2EntityRef(dbiRef, seq.id));
             CHECK_OP_BREAK(os);
 
-            U1AnnotationUtils::addAnnotations(objects, seqImporter.getCaseAnnotations(), sequenceRef, NULL, hints);
+            U1AnnotationUtils::addAnnotations(objects, seqImporter.getCaseAnnotations(), sequenceRef, nullptr, hints);
         }
         sequenceStart += sequenceLen;
         sequenceNumber++;
@@ -294,7 +294,7 @@ static void load(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariant
     CHECK_OP(os, );
     sequenceRef.entityRef = U2EntityRef(dbiRef, seq.id);
 
-    U1AnnotationUtils::addAnnotations(objects, seqImporter.getCaseAnnotations(), sequenceRef, NULL, hints);
+    U1AnnotationUtils::addAnnotations(objects, seqImporter.getCaseAnnotations(), sequenceRef, nullptr, hints);
     objects << new U2SequenceObject(seq.visualName, U2EntityRef(dbiRef, seq.id));
     objects << DocumentFormatUtils::addAnnotationsForMergedU2Sequence(sequenceRef, dbiRef, headers, mergedMapping, hints);
     if (headers.size() > 1) {

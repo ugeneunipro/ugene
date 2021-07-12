@@ -69,7 +69,6 @@ class ProduceSchemaImageLinkTask : public Task {
     Q_OBJECT
 public:
     ProduceSchemaImageLinkTask(const QString &schemaName);
-    ~ProduceSchemaImageLinkTask();
 
     virtual void prepare();
     virtual ReportResult report();
@@ -84,7 +83,7 @@ private:
 
 private:
     QString schemaPath;
-    Schema *schema;
+    QSharedPointer<Schema> schema;
     Metadata meta;
     QString imageLink;
 

@@ -42,7 +42,7 @@ AppContextImpl *AppContextImpl::getApplicationContext() {
 
 void AppContextImpl::_registerGlobalObject(AppGlobalObject *go) {
     const QString &id = go->getId();
-    assert(_getGlobalObjectById(id) == NULL);
+    assert(_getGlobalObjectById(id) == nullptr);
     Q_UNUSED(id);
     appGlobalObjects.append(go);
 }
@@ -63,7 +63,7 @@ AppGlobalObject *AppContextImpl::_getGlobalObjectById(const QString &id) const {
             return obj;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 }    // namespace U2

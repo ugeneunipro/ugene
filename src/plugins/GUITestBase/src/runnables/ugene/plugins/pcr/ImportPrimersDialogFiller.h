@@ -33,7 +33,7 @@ public:
                         SharedDb };
 
     ImportPrimersDialogFiller(HI::GUITestOpStatus &os, const QStringList &fileList);
-    ImportPrimersDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario = NULL);
+    ImportPrimersDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario = nullptr);
 
     void commonScenario();
 

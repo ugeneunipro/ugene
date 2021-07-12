@@ -108,13 +108,13 @@ private:
 class U2CORE_EXPORT AppResourceReadWriteLock : public AppResource {
 public:
     AppResourceReadWriteLock(int id, const QString &_name, const QString &_suffix = QString())
-        : AppResource(id, Write, _name, _suffix), resource(NULL) {
+        : AppResource(id, Write, _name, _suffix), resource(nullptr) {
         resource = new QReadWriteLock;
     }
 
     virtual ~AppResourceReadWriteLock() {
         delete resource;
-        resource = NULL;
+        resource = nullptr;
     }
 
     enum UseType {
@@ -126,37 +126,37 @@ public:
     virtual void acquire(int n, MemoryLockType lt = TaskMemory) {
         Q_UNUSED(lt);
         switch (n) {
-        case Read:
-            resource->lockForRead();
-            break;
-        case Write:
-            resource->lockForWrite();
-            break;
-        default:
-            break;
+            case Read:
+                resource->lockForRead();
+                break;
+            case Write:
+                resource->lockForWrite();
+                break;
+            default:
+                break;
         }
     }
 
     virtual bool tryAcquire(int n, MemoryLockType lt = TaskMemory) {
         Q_UNUSED(lt);
         switch (n) {
-        case Read:
-            return resource->tryLockForRead();
-        case Write:
-            return resource->tryLockForWrite();
-        default:
-            return false;
+            case Read:
+                return resource->tryLockForRead();
+            case Write:
+                return resource->tryLockForWrite();
+            default:
+                return false;
         }
     }
     virtual bool tryAcquire(int n, int timeout, MemoryLockType lt = TaskMemory) {
         Q_UNUSED(lt);
         switch (n) {
-        case Read:
-            return resource->tryLockForRead(timeout);
-        case Write:
-            return resource->tryLockForWrite(timeout);
-        default:
-            return false;
+            case Read:
+                return resource->tryLockForRead(timeout);
+            case Write:
+                return resource->tryLockForWrite(timeout);
+            default:
+                return false;
         }
     }
 
@@ -177,12 +177,12 @@ private:
 class U2CORE_EXPORT AppResourceSemaphore : public AppResource {
 public:
     AppResourceSemaphore(int id, int _maxUse, const QString &_name, const QString &_suffix = QString())
-        : AppResource(id, _maxUse, _name, _suffix), resource(NULL) {
+        : AppResource(id, _maxUse, _name, _suffix), resource(nullptr) {
         resource = new QSemaphore(_maxUse);
     }
     virtual ~AppResourceSemaphore() {
         delete resource;
-        resource = NULL;
+        resource = nullptr;
     }
 
     void acquire(int n = 1, MemoryLockType lt = TaskMemory) {
@@ -329,18 +329,18 @@ public:
           preLockMB(preLockMB > 0 ? preLockMB : 0),
           lockedMB(0),
           needBytes(0),
-          resource(NULL),
+          resource(nullptr),
           memoryLockType(memoryLockType) {
         resource = AppResourcePool::instance()->getResource(RESOURCE_MEMORY);
         tryAcquire(0);
     }
 
     MemoryLocker(int preLockMB = 10, AppResource::MemoryLockType memoryLockType = AppResource::TaskMemory)
-        : os(NULL),
+        : os(nullptr),
           preLockMB(preLockMB > 0 ? preLockMB : 0),
           lockedMB(0),
           needBytes(0),
-          resource(NULL),
+          resource(nullptr),
           memoryLockType(memoryLockType) {
         resource = AppResourcePool::instance()->getResource(RESOURCE_MEMORY);
         tryAcquire(0);
@@ -349,13 +349,13 @@ public:
     MemoryLocker(MemoryLocker &other) {
         resource = other.resource;
         memoryLockType = other.memoryLockType;
-        os = NULL;
+        os = nullptr;
         preLockMB = other.preLockMB;
         lockedMB = other.lockedMB;
         other.lockedMB = 0;
         needBytes = other.needBytes;
         other.needBytes = 0;
-        resource = NULL;
+        resource = nullptr;
         errorMessage = "";
     }
 
@@ -371,13 +371,13 @@ public:
         int needMB = needBytes / (1000 * 1000) + preLockMB;
         if (needMB > lockedMB) {
             int diff = needMB - lockedMB;
-            CHECK_EXT(NULL != resource, if (os) os->setError("MemoryLocker - Resource error"), false);
+            CHECK_EXT(nullptr != resource, if (os) os->setError("MemoryLocker - Resource error"), false);
             bool ok = resource->tryAcquire(diff, memoryLockType);
             if (ok) {
                 lockedMB = needMB;
             } else {
                 errorMessage = QString("MemoryLocker - Not enough memory error, %1 megabytes are required").arg(needMB);
-                if (NULL != os) {
+                if (nullptr != os) {
                     os->setError(errorMessage);
                 }
             }
@@ -387,7 +387,7 @@ public:
     }
 
     void release() {
-        CHECK_EXT(NULL != resource, if (os) os->setError("MemoryLocker - Resource error"), );
+        CHECK_EXT(nullptr != resource, if (os) os->setError("MemoryLocker - Resource error"), );
         if (lockedMB > 0) {
             resource->release(lockedMB, memoryLockType);
         }

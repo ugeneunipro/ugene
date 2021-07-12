@@ -47,7 +47,7 @@ AssemblyImporter::~AssemblyImporter() {
 
 void AssemblyImporter::createAssembly(const U2DbiRef &dbiRef, const QString &folder, U2Assembly &assembly) {
     U2AssemblyReadsImportInfo importInfo;
-    createAssembly(dbiRef, folder, NULL, importInfo, assembly);
+    createAssembly(dbiRef, folder, nullptr, importInfo, assembly);
 }
 
 void AssemblyImporter::createAssembly(const U2DbiRef &dbiRef, const QString &folder, U2DbiIterator<U2AssemblyRead> *readsIterator, U2AssemblyReadsImportInfo &importInfo, U2Assembly &assembly) {
@@ -62,7 +62,7 @@ void AssemblyImporter::createAssembly(const U2DbiRef &dbiRef, const QString &fol
     CHECK(!os.isCanceled(), );
     SAFE_POINT(connection.isOpen(), "Connection is closed", );
     U2AssemblyDbi *assemblyDbi = connection.dbi->getAssemblyDbi();
-    SAFE_POINT(NULL != assemblyDbi, L10N::nullPointerError("assembly dbi"), );
+    SAFE_POINT(nullptr != assemblyDbi, L10N::nullPointerError("assembly dbi"), );
 
     assemblyDbi->createAssemblyObject(assembly, canonicalFolder, readsIterator, importInfo, os);
 
@@ -80,7 +80,7 @@ void AssemblyImporter::addReads(U2DbiIterator<U2AssemblyRead> *readsIterator) {
     CHECK(!os.isCanceled(), );
     SAFE_POINT(connection.isOpen(), "Connection is closed", );
     U2AssemblyDbi *assemblyDbi = connection.dbi->getAssemblyDbi();
-    SAFE_POINT(NULL != assemblyDbi, L10N::nullPointerError("assembly dbi"), );
+    SAFE_POINT(nullptr != assemblyDbi, L10N::nullPointerError("assembly dbi"), );
 
     assemblyDbi->addReads(assembly.id, readsIterator, os);
 }
@@ -97,7 +97,7 @@ void AssemblyImporter::packReads(U2AssemblyReadsImportInfo &importInfo) {
     CHECK(!os.isCanceled(), );
     SAFE_POINT(connection.isOpen(), "Connection is closed", );
     U2AssemblyDbi *assemblyDbi = connection.dbi->getAssemblyDbi();
-    SAFE_POINT(NULL != assemblyDbi, L10N::nullPointerError("assembly dbi"), );
+    SAFE_POINT(nullptr != assemblyDbi, L10N::nullPointerError("assembly dbi"), );
 
     U2AssemblyPackStat stat;
     assemblyDbi->pack(assembly.id, stat, os);
@@ -126,7 +126,7 @@ void AssemblyImporter::finalizeAssembly() {
     }
 
     U2AssemblyDbi *assemblyDbi = connection.dbi->getAssemblyDbi();
-    SAFE_POINT(NULL != assemblyDbi, L10N::nullPointerError("assembly dbi"), );
+    SAFE_POINT(nullptr != assemblyDbi, L10N::nullPointerError("assembly dbi"), );
     assemblyDbi->finalizeAssemblyObject(assembly, os);
 }
 

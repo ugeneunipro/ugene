@@ -39,7 +39,7 @@ GraphicsUnrootedBranchItem *CreateUnrootedBranchesTask::getBranch(GraphicsRectan
     GraphicsUnrootedBranchItem *res = new GraphicsUnrootedBranchItem(parent, coef * from->getHeight(), from, from->getNodeLabel());
     foreach (QGraphicsItem *item, from->childItems()) {
         GraphicsRectangularBranchItem *ri = dynamic_cast<GraphicsRectangularBranchItem *>(item);
-        if (ri != NULL) {
+        if (ri != nullptr) {
             getBranch(ri, res);
         }
     }
@@ -49,7 +49,7 @@ GraphicsUnrootedBranchItem *CreateUnrootedBranchesTask::getBranch(GraphicsRectan
 
 void CreateUnrootedBranchesTask::run() {
     coef = 360.0 / root1->childrenBoundingRect().height();
-    root = getBranch(root1, NULL);
+    root = getBranch(root1, nullptr);
 }
 
 }    // namespace U2

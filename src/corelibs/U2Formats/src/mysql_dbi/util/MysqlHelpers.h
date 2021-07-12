@@ -286,7 +286,7 @@ private:
                 return;
             }
             nextResult = loader->load(query.data());
-        } while (filter != NULL && !filter->filter(nextResult));
+        } while (filter != nullptr && !filter->filter(nextResult));
     }
 
     QSharedPointer<U2SqlQuery> query;

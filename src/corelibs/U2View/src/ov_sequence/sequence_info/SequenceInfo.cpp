@@ -236,12 +236,12 @@ QString getValue(const QString &value, bool isValid) {
 
 void SequenceInfo::updateCommonStatisticsData(const DNAStatistics &commonStatistics) {
     ADVSequenceWidget *wgt = annotatedDnaView->getActiveSequenceWidget();
-    CHECK(wgt != NULL, );
+    CHECK(wgt != nullptr, );
     ADVSequenceObjectContext *ctx = wgt->getActiveSequenceContext();
-    SAFE_POINT(ctx != NULL, tr("Sequence context is NULL"), );
+    SAFE_POINT(ctx != nullptr, tr("Sequence context is NULL"), );
 
     const DNAAlphabet *alphabet = ctx->getAlphabet();
-    SAFE_POINT(alphabet != NULL, tr("Sequence alphabet is NULL"), );
+    SAFE_POINT(alphabet != nullptr, tr("Sequence alphabet is NULL"), );
 
     int availableSpace = getAvailableSpace(alphabet->getType());
 
@@ -678,25 +678,25 @@ QString SequenceInfo::formTableRow(const QString &caption, const QString &value,
 
 StatisticsCache<DNAStatistics> *SequenceInfo::getCommonStatisticsCache() const {
     ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
-    SAFE_POINT(sequenceContext != nullptr, "A sequence context is NULL!", NULL);
+    SAFE_POINT(sequenceContext != nullptr, "A sequence context is NULL!", nullptr);
     return sequenceContext->getCommonStatisticsCache();
 }
 
 StatisticsCache<CharactersOccurrence> *SequenceInfo::getCharactersOccurrenceCache() const {
     ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
-    SAFE_POINT(sequenceContext != nullptr, "A sequence context is NULL!", NULL);
+    SAFE_POINT(sequenceContext != nullptr, "A sequence context is NULL!", nullptr);
     return sequenceContext->getCharactersOccurrenceCache();
 }
 
 StatisticsCache<DinucleotidesOccurrence> *SequenceInfo::getDinucleotidesOccurrenceCache() const {
     ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
-    SAFE_POINT(sequenceContext != nullptr, "A sequence context is NULL!", NULL);
+    SAFE_POINT(sequenceContext != nullptr, "A sequence context is NULL!", nullptr);
     return sequenceContext->getDinucleotidesOccurrenceCache();
 }
 
 StatisticsCache<QMap<QByteArray, qint64>> *SequenceInfo::getCodonsOccurrenceCache() const {
     ADVSequenceObjectContext *sequenceContext = annotatedDnaView->getActiveSequenceContext();
-    SAFE_POINT(sequenceContext != nullptr, "A sequence context is NULL!", NULL);
+    SAFE_POINT(sequenceContext != nullptr, "A sequence context is NULL!", nullptr);
     return sequenceContext->getCodonsOccurrenceCache();
 }
 

@@ -50,8 +50,8 @@ public slots:
     void sl_linkActivated(const QString &link);
 
 public:
-    DownloadRemoteFileDialog(QWidget *p = NULL);
-    DownloadRemoteFileDialog(const QString &ids, const QString &dbId, QWidget *p = NULL);
+    DownloadRemoteFileDialog(QWidget *p = nullptr);
+    DownloadRemoteFileDialog(const QString &ids, const QString &dbId, QWidget *p = nullptr);
     ~DownloadRemoteFileDialog();
     QString getDBId() const;
     QString getResourceId() const;

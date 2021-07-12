@@ -197,7 +197,7 @@ ReadAnnotationsTask::ReadAnnotationsTask(const QString &url, const QString &data
       mergeAnnotations(mergeAnnotations),
       mergedAnnTableName(mergedAnnTableName),
       context(context) {
-    SAFE_POINT(NULL != context, "Invalid workflow context encountered!", );
+    SAFE_POINT(nullptr != context, "Invalid workflow context encountered!", );
 }
 
 void ReadAnnotationsTask::prepare() {
@@ -221,7 +221,7 @@ void ReadAnnotationsTask::run() {
     QFileInfo fi(url);
     CHECK_EXT(fi.exists(), stateInfo.setError(tr("File '%1' does not exist").arg(url)), );
 
-    DocumentFormat *format = NULL;
+    DocumentFormat *format = nullptr;
     QList<DocumentFormat *> fs = DocumentUtils::toFormats(DocumentUtils::detectFormat(url));
     foreach (DocumentFormat *f, fs) {
         if (f->getSupportedObjectTypes().contains(GObjectTypes::ANNOTATION_TABLE)) {
@@ -229,7 +229,7 @@ void ReadAnnotationsTask::run() {
             break;
         }
     }
-    CHECK_EXT(NULL != format, stateInfo.setError(tr("Unsupported document format: %1").arg(url)), );
+    CHECK_EXT(nullptr != format, stateInfo.setError(tr("Unsupported document format: %1").arg(url)), );
 
     ioLog.info(tr("Reading annotations from %1 [%2]").arg(url).arg(format->getFormatName()));
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
@@ -248,7 +248,7 @@ void ReadAnnotationsTask::run() {
 
     foreach (GObject *go, annsObjList) {
         AnnotationTableObject *annsObj = dynamic_cast<AnnotationTableObject *>(go);
-        CHECK_EXT(NULL != annsObj, stateInfo.setError("NULL annotations object"), );
+        CHECK_EXT(nullptr != annsObj, stateInfo.setError("NULL annotations object"), );
 
         if (!mergeAnnotations || annsObjList.size() == 1) {
             doc->removeObject(go, DocumentObjectRemovalMode_Release);

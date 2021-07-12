@@ -108,7 +108,7 @@ DownloadRemoteFileDialog::DownloadRemoteFileDialog(const QString &id, const QStr
     ui->idLineEdit->setReadOnly(true);
 
     delete ui->hintLabel;
-    ui->hintLabel = NULL;
+    ui->hintLabel = nullptr;
     setMinimumSize(500, 0);
 
     connect(ui->saveFilenameToolButton, SIGNAL(clicked()), SLOT(sl_saveFilenameButtonClicked()));
@@ -255,7 +255,7 @@ void DownloadRemoteFileDialog::sl_linkActivated(const QString &link) {
 }
 
 void DownloadRemoteFileDialog::setupHintText(const QString &text) {
-    SAFE_POINT(NULL != ui && NULL != ui->hintLabel, "Invalid dialog content!", );
+    SAFE_POINT(nullptr != ui && nullptr != ui->hintLabel, "Invalid dialog content!", );
     const QString hintStart(tr("Hint: "));
     const QString hintSample = (text.isEmpty() ? tr("Use database unique identifier.") : text) + "<br>";
     const QString hintEnd(tr("You can download multiple items by separating IDs with space "

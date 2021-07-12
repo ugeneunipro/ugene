@@ -280,7 +280,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Expected: Sequence view has opened
-    CHECK_SET_ERR(NULL != GTUtilsMdi::findWindow(os, "NC_001363"), "Sequence view hasn't opened");
+    CHECK_SET_ERR(nullptr != GTUtilsMdi::findWindow(os, "NC_001363"), "Sequence view hasn't opened");
 
     // 6. Close sequence view.
     GTUtilsMdi::closeWindow(os, "NC_001363");
@@ -292,7 +292,7 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
     GTMouseDriver::click(Qt::RightButton);
 
     // Expected: Sequence view has opened
-    CHECK_SET_ERR(NULL != GTUtilsMdi::findWindow(os, "NC_001363"), "Sequence view hasn't opened");
+    CHECK_SET_ERR(nullptr != GTUtilsMdi::findWindow(os, "NC_001363"), "Sequence view hasn't opened");
 }
 
 namespace {

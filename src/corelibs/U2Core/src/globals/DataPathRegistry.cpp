@@ -168,7 +168,7 @@ U2DataPathRegistry::~U2DataPathRegistry() {
 }
 
 U2DataPath *U2DataPathRegistry::getDataPathByName(const QString &name) {
-    return registry.value(name, NULL);
+    return registry.value(name, nullptr);
 }
 
 bool U2DataPathRegistry::registerEntry(U2DataPath *dp) {

@@ -34,7 +34,7 @@ class GrouperSlotsCfgModel;
 class GrouperEditorWidget : public QWidget, public Ui_GrouperEditorWidget {
     Q_OBJECT
 public:
-    GrouperEditorWidget(GrouperSlotsCfgModel *gouperModel, Workflow::Actor *grouper, QWidget *parent = NULL);
+    GrouperEditorWidget(GrouperSlotsCfgModel *gouperModel, Workflow::Actor *grouper, QWidget *parent = nullptr);
 
 signals:
     void si_grouperCfgChanged();

@@ -46,7 +46,7 @@ public:
     };
 
     /** Returns opened assembly browser window. Fails if not found. */
-    static QWidget* getActiveAssemblyBrowserWindow(HI::GUITestOpStatus &os);
+    static QWidget *getActiveAssemblyBrowserWindow(HI::GUITestOpStatus &os);
 
     /** Checks that assembly browser view is opened and is active and fails if not. */
     static void checkAssemblyBrowserWindowIsActive(HI::GUITestOpStatus &os);
@@ -56,7 +56,7 @@ public:
     static void addRefFromProject(HI::GUITestOpStatus &os, QString docName, QModelIndex parent = QModelIndex());
 
     static bool hasReference(HI::GUITestOpStatus &os, const QString &viewTitle);
-    static bool hasReference(HI::GUITestOpStatus &os, QWidget *view = NULL);
+    static bool hasReference(HI::GUITestOpStatus &os, QWidget *view = nullptr);
     static bool hasReference(HI::GUITestOpStatus &os, AssemblyBrowserUi *assemblyBrowser);
 
     static qint64 getLength(HI::GUITestOpStatus &os);

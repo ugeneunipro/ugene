@@ -92,7 +92,7 @@ bool DotPlotSplitter::onCloseEvent() {
 
 QAction *DotPlotSplitter::createAction(const QIcon &ic, const QString &toolTip, const char *slot, bool checkable) {
     QAction *a = new QAction(this);
-    if (a != NULL) {
+    if (a != nullptr) {
         a->setIcon(ic);
         a->setToolTip(toolTip);
         a->setCheckable(checkable);
@@ -276,7 +276,7 @@ void DotPlotSplitter::sl_toggleHand() {
 }
 
 void DotPlotSplitter::sl_dotPlotChanged(ADVSequenceObjectContext *sequenceX, ADVSequenceObjectContext *sequenceY, float shiftX, float shiftY, QPointF zoom) {
-    SAFE_POINT(sequenceX != NULL && sequenceY != NULL, tr("One of the sequences in dotplot is NULL"), );
+    SAFE_POINT(sequenceX != nullptr && sequenceY != nullptr, tr("One of the sequences in dotplot is NULL"), );
 
     checkLockButtonState();
 

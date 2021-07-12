@@ -111,13 +111,13 @@ void GTest_AddSharedDbUrl::init(XMLTestFormat *, const QDomElement &el) {
 
 Task::ReportResult GTest_AddSharedDbUrl::report() {
     Settings *settings = AppContext::getSettings();
-    CHECK_EXT(NULL != settings, stateInfo.setError("Invalid application settings"), ReportResult_Finished);
+    CHECK_EXT(nullptr != settings, stateInfo.setError("Invalid application settings"), ReportResult_Finished);
     const QString fullDbUrl = U2DbiUtils::createFullDbiUrl(userName, dbUrl);
     settings->setValue("/shared_database/recent_connections/" + customDbName, fullDbUrl);
 
     if (passwordIsSet) {
         PasswordStorage *passStorage = AppContext::getPasswordStorage();
-        CHECK_EXT(NULL != passStorage, stateInfo.setError("Invalid shared DB passwords storage"), ReportResult_Finished);
+        CHECK_EXT(nullptr != passStorage, stateInfo.setError("Invalid shared DB passwords storage"), ReportResult_Finished);
         passStorage->addEntry(fullDbUrl, password, true);
     }
 

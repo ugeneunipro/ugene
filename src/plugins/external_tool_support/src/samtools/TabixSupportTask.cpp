@@ -38,9 +38,9 @@ TabixSupportTask::TabixSupportTask(const GUrl &fileUrl, const GUrl &outputUrl)
     : ExternalToolSupportTask(tr("Generate index with Tabix task"), TaskFlags_NR_FOSE_COSC),
       fileUrl(fileUrl),
       bgzfUrl(outputUrl),
-      bgzipTask(NULL),
-      copyTask(NULL),
-      tabixTask(NULL) {
+      bgzipTask(nullptr),
+      copyTask(nullptr),
+      tabixTask(nullptr) {
 }
 
 void TabixSupportTask::prepare() {

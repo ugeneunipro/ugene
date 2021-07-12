@@ -120,11 +120,11 @@ LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::LoadConvertAndSaveSnpeffVar
       dstDbiRef(dstDbiRef),
       dstUrl(dstUrl),
       formatId(formatId),
-      loadTask(NULL),
-      convertTask(NULL),
-      saveTask(NULL),
-      loadedVariationsDocument(NULL),
-      annotationsDocument(NULL) {
+      loadTask(nullptr),
+      convertTask(nullptr),
+      saveTask(nullptr),
+      loadedVariationsDocument(nullptr),
+      annotationsDocument(nullptr) {
     SAFE_POINT_EXT(!variationsUrl.isEmpty(), setError("Source VCF file URL is empty"), );
     SAFE_POINT_EXT(dstDbiRef.isValid(), setError("Destination DBI reference is invalid"), );
     SAFE_POINT_EXT(!dstUrl.isEmpty(), setError("Destination file URL is empty"), );
@@ -154,7 +154,7 @@ QList<Task *> LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::onSubTaskFini
 
     if (loadTask == subTask) {
         loadedVariationsDocument = loadTask->takeDocument();
-        CHECK_EXT(NULL != loadedVariationsDocument, setError(tr("'%1' load failed, the result document is NULL").arg(variationsUrl)), newSubtasks);
+        CHECK_EXT(nullptr != loadedVariationsDocument, setError(tr("'%1' load failed, the result document is NULL").arg(variationsUrl)), newSubtasks);
         loadedVariationsDocument->setDocumentOwnsDbiResources(false);
 
         QList<GObject *> objects = loadedVariationsDocument->findGObjectByType(GObjectTypes::VARIANT_TRACK);
@@ -163,7 +163,7 @@ QList<Task *> LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::onSubTaskFini
         QList<VariantTrackObject *> variantTrackObjects;
         foreach (GObject *object, objects) {
             VariantTrackObject *variantTrackObject = qobject_cast<VariantTrackObject *>(object);
-            SAFE_POINT_EXT(NULL != variantTrackObject, setError("Can't cast GObject to VariantTrackObject"), newSubtasks);
+            SAFE_POINT_EXT(nullptr != variantTrackObject, setError("Can't cast GObject to VariantTrackObject"), newSubtasks);
             variantTrackObjects << variantTrackObject;
         }
 
@@ -190,14 +190,14 @@ QList<Task *> LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::onSubTaskFini
             newSubtasks << saveTask;
             newSubtasks << new DeleteObjectsTask(loadedVariationsDocument->getObjects());
             delete loadedVariationsDocument;
-            loadedVariationsDocument = NULL;
+            loadedVariationsDocument = nullptr;
         }
     }
 
     if (saveTask == subTask) {
         newSubtasks << new DeleteObjectsTask(annotationsDocument->getObjects());
         delete annotationsDocument;
-        annotationsDocument = NULL;
+        annotationsDocument = nullptr;
     }
 
     return newSubtasks;
@@ -205,15 +205,15 @@ QList<Task *> LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::onSubTaskFini
 
 Document *LoadConvertAndSaveSnpeffVariationsToAnnotationsTask::prepareDocument() {
     DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
-    SAFE_POINT_EXT(NULL != format, setError(QString("Document format '%1' not found in the registry").arg(formatId)), NULL);
+    SAFE_POINT_EXT(nullptr != format, setError(QString("Document format '%1' not found in the registry").arg(formatId)), nullptr);
     IOAdapterFactory *ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(dstUrl));
-    SAFE_POINT_EXT(NULL != ioAdapterFactory, setError(L10N::nullPointerError("ioAdapterFactory")), NULL);
+    SAFE_POINT_EXT(nullptr != ioAdapterFactory, setError(L10N::nullPointerError("ioAdapterFactory")), nullptr);
 
     QVariantMap hints;
     hints[DocumentFormat::DBI_REF_HINT] = QVariant::fromValue<U2DbiRef>(dstDbiRef);
 
     Document *document = format->createNewLoadedDocument(ioAdapterFactory, dstUrl, stateInfo, hints);
-    CHECK_OP(stateInfo, NULL);
+    CHECK_OP(stateInfo, nullptr);
     document->setDocumentOwnsDbiResources(false);
 
     foreach (AnnotationTableObject *annotationTableObject, annotationTableObjects) {

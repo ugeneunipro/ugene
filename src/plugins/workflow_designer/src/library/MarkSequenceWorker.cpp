@@ -57,7 +57,7 @@ const QString MARKER_ATTR_ID("marker");
  * MarkSequenceWorker
  *******************************/
 MarkSequenceWorker::MarkSequenceWorker(Actor *p)
-    : BaseWorker(p), inChannel(NULL), outChannel(NULL) {
+    : BaseWorker(p), inChannel(nullptr), outChannel(nullptr) {
 }
 
 void MarkSequenceWorker::init() {
@@ -76,8 +76,8 @@ Task *MarkSequenceWorker::tick() {
         QVariantMap data = inputMessage.getData().toMap();
         SharedDbiDataHandler seqId = data.value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        if (NULL == seqObj.data()) {
-            return NULL;
+        if (nullptr == seqObj.data()) {
+            return nullptr;
         }
         U2OpStatusImpl os;
         DNASequence seq = seqObj->getWholeSequence(os);
@@ -111,7 +111,7 @@ Task *MarkSequenceWorker::tick() {
         setDone();
         outChannel->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 /*******************************

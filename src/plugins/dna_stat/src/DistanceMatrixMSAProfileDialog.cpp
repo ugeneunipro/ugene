@@ -55,7 +55,7 @@ const QString DistanceMatrixMSAProfileDialog::CSV = "csv";
 DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget *p, MSAEditor *_c)
     : QDialog(p),
       ctx(_c),
-      saveController(NULL) {
+      saveController(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929706");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Generate"));
@@ -67,7 +67,7 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget *p, MSAEd
     }
 
     MultipleSequenceAlignmentObject *msaObj = ctx->getMaObject();
-    if (msaObj != NULL) {
+    if (msaObj != nullptr) {
         QVector<U2Region> unitedRows;
         MultipleSequenceAlignment ma = msaObj->getMsaCopy();
         ma->sortRowsBySimilarity(unitedRows);
@@ -80,7 +80,7 @@ DistanceMatrixMSAProfileDialog::DistanceMatrixMSAProfileDialog(QWidget *p, MSAEd
 
 void DistanceMatrixMSAProfileDialog::initSaveController() {
     MultipleSequenceAlignmentObject *msaObj = ctx->getMaObject();
-    if (msaObj == NULL) {
+    if (msaObj == nullptr) {
         return;
     }
     QString domain = "plugin_dna_stat";
@@ -110,7 +110,7 @@ void DistanceMatrixMSAProfileDialog::initSaveController() {
 void DistanceMatrixMSAProfileDialog::accept() {
     DistanceMatrixMSAProfileTaskSettings s;
     MultipleSequenceAlignmentObject *msaObj = ctx->getMaObject();
-    if (msaObj == NULL) {
+    if (msaObj == nullptr) {
         return;
     }
     s.profileName = msaObj->getGObjectName();
@@ -162,7 +162,7 @@ void DistanceMatrixMSAProfileTask::prepare() {
         factory->resetFlag(DistanceAlgorithmFlag_ExcludeGaps);
     }
     MSADistanceAlgorithm *algo = factory->createAlgorithm(s.ma);
-    if (algo == NULL) {
+    if (algo == nullptr) {
         return;
     }
     addSubTask(algo);
@@ -171,7 +171,7 @@ void DistanceMatrixMSAProfileTask::prepare() {
 QList<Task *> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task *subTask) {
     MSADistanceAlgorithm *algo = qobject_cast<MSADistanceAlgorithm *>(subTask);
     QList<Task *> res;
-    if (algo != NULL) {
+    if (algo != nullptr) {
         if (algo->hasError() || algo->isCanceled()) {
             setError(algo->getError());
             return res;
@@ -180,7 +180,7 @@ QList<Task *> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task *subTask) {
             setError(tr("No output file name specified"));
             return res;
         }
-        QFile *f = NULL;
+        QFile *f = nullptr;
         if (s.outFormat == DistanceMatrixMSAProfileOutputFormat_Show || s.outFormat == DistanceMatrixMSAProfileOutputFormat_HTML) {
             if (s.outFormat == DistanceMatrixMSAProfileOutputFormat_HTML) {
                 f = new QFile(s.outURL);
@@ -299,7 +299,7 @@ QList<Task *> DistanceMatrixMSAProfileTask::onSubTaskFinished(Task *subTask) {
             }
         }
 
-        if (f != NULL) {
+        if (f != nullptr) {
             f->write(resultText.toLocal8Bit());
             f->close();
             delete f;
@@ -399,7 +399,7 @@ DistanceMatrixMSAProfileTaskSettings::DistanceMatrixMSAProfileTaskSettings()
       excludeGaps(false),
       showGroupStatistic(false),
       outFormat(DistanceMatrixMSAProfileOutputFormat_Show),
-      ctx(NULL) {
+      ctx(nullptr) {
 }
 
 }    // namespace U2

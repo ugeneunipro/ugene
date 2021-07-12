@@ -54,9 +54,9 @@ const QString Peak2GeneTask::BASE_SUBDIR_NAME("peak2gene");
 const QString Peak2GeneTask::TREAT_NAME("treatment");
 
 Peak2GeneTask::Peak2GeneTask(const Peak2GeneSettings &settings, Workflow::DbiDataStorage *storage, const QList<Workflow::SharedDbiDataHandler> &treatAnn)
-    : ExternalToolSupportTask("Peak2gene annotation", TaskFlag_CollectChildrenWarnings), settings(settings), storage(storage), treatAnn(treatAnn), treatDoc(NULL), genesAto(NULL), peaksAto(NULL), treatTask(NULL), etTask(NULL) {
+    : ExternalToolSupportTask("Peak2gene annotation", TaskFlag_CollectChildrenWarnings), settings(settings), storage(storage), treatAnn(treatAnn), treatDoc(nullptr), genesAto(nullptr), peaksAto(nullptr), treatTask(nullptr), etTask(nullptr) {
     GCOUNTER(cvar, "NGS:Peak2GeneTask");
-    SAFE_POINT_EXT(NULL != storage, setError(L10N::nullPointerError("workflow data storage")), );
+    SAFE_POINT_EXT(nullptr != storage, setError(L10N::nullPointerError("workflow data storage")), );
 }
 
 Peak2GeneTask::~Peak2GeneTask() {
@@ -67,11 +67,11 @@ void Peak2GeneTask::cleanup() {
     treatAnn.clear();
 
     delete treatDoc;
-    treatDoc = NULL;
+    treatDoc = nullptr;
     delete genesAto;
-    genesAto = NULL;
+    genesAto = nullptr;
     delete peaksAto;
-    peaksAto = NULL;
+    peaksAto = nullptr;
 
     //remove tmp files
     QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(BASE_DIR_NAME);
@@ -96,12 +96,12 @@ void Peak2GeneTask::prepare() {
 }
 
 Document *Peak2GeneTask::createDoc(const QList<Workflow::SharedDbiDataHandler> &annData, const QString &name) {
-    Document *doc = NULL;
+    Document *doc = nullptr;
 
     QString docUrl = workingDir + "/" + name + ".bed";
 
     DocumentFormat *bedFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::BED);
-    CHECK_EXT(NULL != bedFormat, stateInfo.setError("NULL bed format"), doc);
+    CHECK_EXT(nullptr != bedFormat, stateInfo.setError("NULL bed format"), doc);
 
     doc = bedFormat->createNewLoadedDocument(
         IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), docUrl, stateInfo);

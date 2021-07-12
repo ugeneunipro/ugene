@@ -67,7 +67,7 @@ SQLiteDbi::SQLiteDbi()
 }
 
 SQLiteDbi::~SQLiteDbi() {
-    SAFE_POINT(NULL == db->handle, "Invalid DB handle detected!", );
+    SAFE_POINT(nullptr == db->handle, "Invalid DB handle detected!", );
 
     delete udrDbi;
     delete objectDbi;
@@ -229,9 +229,9 @@ bool SQLiteDbi::isInitialized(U2OpStatus &os) {
 
 #define CT(table, fields) \
     { \
-        char *err = NULL; \
+        char *err = nullptr; \
         QByteArray query = QByteArray("CREATE TABLE ") + table + " (" + fields + ");"; \
-        int rc = sqlite3_exec(db->handle, query, NULL, NULL, &err); \
+        int rc = sqlite3_exec(db->handle, query, nullptr, nullptr, &err); \
         if (rc != SQLITE_OK) { \
             os.setError(U2DbiL10n::tr("Error creating table: %1, error: %2").arg(table).arg(err)); \
             sqlite3_free(err); \
@@ -317,12 +317,12 @@ void SQLiteDbi::setState(U2DbiState s) {
 }
 
 QString SQLiteDbi::getLastErrorMessage(int rc) {
-    QString err = db->handle == NULL ? QString(" error-code: %1").arg(rc) : QString(sqlite3_errmsg(db->handle));
+    QString err = db->handle == nullptr ? QString(" error-code: %1").arg(rc) : QString(sqlite3_errmsg(db->handle));
     return err;
 }
 
 void SQLiteDbi::init(const QHash<QString, QString> &props, const QVariantMap &, U2OpStatus &os) {
-    if (db->handle != NULL) {
+    if (db->handle != nullptr) {
         os.setError(U2DbiL10n::tr("Database is already opened!"));
         return;
     }
@@ -344,7 +344,7 @@ void SQLiteDbi::init(const QHash<QString, QString> &props, const QVariantMap &, 
             flags |= SQLITE_OPEN_CREATE;
         }
         QByteArray file = url.toUtf8();
-        int rc = sqlite3_open_v2(file.constData(), &db->handle, flags, NULL);
+        int rc = sqlite3_open_v2(file.constData(), &db->handle, flags, nullptr);
         if (rc != SQLITE_OK) {
             QString err = getLastErrorMessage(rc);
             os.setError(U2DbiL10n::tr("Error opening SQLite database: %1!").arg(err));
@@ -390,7 +390,7 @@ void SQLiteDbi::init(const QHash<QString, QString> &props, const QVariantMap &, 
 
     if (os.hasError()) {
         sqlite3_close(db->handle);
-        db->handle = NULL;
+        db->handle = nullptr;
         setState(U2DbiState_Void);
         return;
     }
@@ -398,7 +398,7 @@ void SQLiteDbi::init(const QHash<QString, QString> &props, const QVariantMap &, 
 }
 
 QVariantMap SQLiteDbi::shutdown(U2OpStatus &os) {
-    if (db == NULL) {
+    if (db == nullptr) {
         os.setError(U2DbiL10n::tr("Database is already closed!"));
         return QVariantMap();
     }
@@ -433,7 +433,7 @@ QVariantMap SQLiteDbi::shutdown(U2OpStatus &os) {
 
     ioLog.trace(QString("SQLite: shutting down: %1\n").arg(url));
 
-    db->handle = NULL;
+    db->handle = nullptr;
     url.clear();
     initProperties.clear();
 

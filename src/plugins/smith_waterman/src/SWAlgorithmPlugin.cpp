@@ -80,7 +80,7 @@ SWAlgorithmPlugin::SWAlgorithmPlugin()
     //Smith-Waterman algorithm tests
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
-    assert(xmlTestFormat != NULL);
+    assert(xmlTestFormat != nullptr);
 
     U2::GAutoDeleteList<U2::XMLTestFactory> *l = new U2::GAutoDeleteList<U2::XMLTestFactory>(this);
     l->qlist = SWAlgorithmTests::createTestFactories();
@@ -143,7 +143,7 @@ SWAlgorithmADVContext::SWAlgorithmADVContext(QObject *p)
 
 void SWAlgorithmADVContext::initViewContext(GObjectView *view) {
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(view);
-    assert(av != NULL);
+    assert(av != nullptr);
     ADVGlobalAction *a = new ADVGlobalAction(av, QIcon(":core/images/sw.png"), tr("Find pattern [Smith-Waterman]..."), 15);
     a->setObjectName("find_pattern_smith_waterman_action");
 
@@ -159,7 +159,7 @@ void SWAlgorithmADVContext::sl_search() {
     assert(0 != action);
 
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
-    assert(av != NULL);
+    assert(av != nullptr);
 
     ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
     SmithWatermanDialogController::run(av->getWidget(), seqCtx, &dialogConfig);
@@ -175,7 +175,7 @@ SWPairwiseAlignmentAlgorithm::SWPairwiseAlignmentAlgorithm()
 }
 
 bool SWPairwiseAlignmentAlgorithm::checkAlphabet(const DNAAlphabet *alphabet) const {
-    SAFE_POINT(NULL != alphabet, "Alphabet is NULL.", false);
+    SAFE_POINT(nullptr != alphabet, "Alphabet is NULL.", false);
     SubstMatrixRegistry *matrixReg = AppContext::getSubstMatrixRegistry();
     SAFE_POINT(matrixReg, "SubstMatrixRegistry is NULL.", false);
     QStringList matrixList = matrixReg->selectMatrixNamesByAlphabet(alphabet);

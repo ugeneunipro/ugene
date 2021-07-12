@@ -36,7 +36,7 @@ SequenceTextEdit::SequenceTextEdit(QWidget *p)
 
 void SequenceTextEdit::insertFromMimeData(const QMimeData *source) {
     try {
-        SAFE_POINT(source != NULL, tr("Invalid mimedata"), );
+        SAFE_POINT(source != nullptr, tr("Invalid mimedata"), );
         QString data = source->text();
         if (data.size() > NO_QUESTION_LIMIT && QMessageBox::question(this,
                                                                      tr("Pasting large data"),

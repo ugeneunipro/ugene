@@ -43,12 +43,12 @@ const QPoint MaAmbiguousCharactersController::INVALID_POINT = QPoint(-1, -1);
 
 MaAmbiguousCharactersController::MaAmbiguousCharactersController(MaEditorWgt *maEditorWgt)
     : QObject(maEditorWgt),
-      maEditor(NULL != maEditorWgt ? maEditorWgt->getEditor() : NULL),
+      maEditor(nullptr != maEditorWgt ? maEditorWgt->getEditor() : nullptr),
       maEditorWgt(maEditorWgt),
-      nextAction(NULL),
-      previousAction(NULL) {
-    SAFE_POINT(NULL != maEditorWgt, "maEditorWgt is NULL", );
-    SAFE_POINT(NULL != maEditor, "maEditor is NULL", );
+      nextAction(nullptr),
+      previousAction(nullptr) {
+    SAFE_POINT(nullptr != maEditorWgt, "maEditorWgt is NULL", );
+    SAFE_POINT(nullptr != maEditor, "maEditor is NULL", );
 
     nextAction = new QAction(QIcon(":core/images/amb_forward.png"), tr("Jump to next ambiguous character"), this);
     nextAction->setShortcut(QKeySequence(Qt::CTRL + Qt::ALT + Qt::Key_A));
@@ -92,7 +92,7 @@ void MaAmbiguousCharactersController::scrollToNextAmbiguous(NavigationDirection 
     QPoint nextAmbiguous = findNextAmbiguous(direction);
     if (nextAmbiguous != INVALID_POINT) {
         maEditorWgt->getScrollController()->centerPoint(nextAmbiguous, maEditorWgt->getSequenceArea()->size());
-        maEditorWgt->getSequenceArea()->setSelection(MaEditorSelection(nextAmbiguous, 1, 1));
+        maEditorWgt->getSequenceArea()->setSelectionRect(QRect(nextAmbiguous.x(), nextAmbiguous.y(), 1, 1));
     } else {
         // no mismatches - show notification
         NotificationStack::addNotification(tr("There are no ambiguous characters in the alignment."), Info_Not);
@@ -102,7 +102,7 @@ void MaAmbiguousCharactersController::scrollToNextAmbiguous(NavigationDirection 
 QPoint MaAmbiguousCharactersController::getStartPosition() const {
     const MaEditorSelection selection = maEditorWgt->getSequenceArea()->getSelection();
     if (!selection.isEmpty()) {
-        return selection.topLeft();
+        return selection.toRect().topLeft();
     }
 
     return QPoint(maEditorWgt->getScrollController()->getFirstVisibleBase(),
@@ -127,7 +127,7 @@ QPoint MaAmbiguousCharactersController::findNextAmbiguous(NavigationDirection di
 
     const QPoint startPosition = getStartPosition();
     prepareIterator(direction, startPosition);
-    SAFE_POINT(NULL != cachedIterator, "MaIterator is not valid", INVALID_POINT);
+    SAFE_POINT(nullptr != cachedIterator, "MaIterator is not valid", INVALID_POINT);
 
     while (cachedIterator->hasNext()) {
         if (ambiguousCharacters[cachedIterator->next()]) {
@@ -140,7 +140,7 @@ QPoint MaAmbiguousCharactersController::findNextAmbiguous(NavigationDirection di
 }
 
 void MaAmbiguousCharactersController::prepareIterator(NavigationDirection direction, const QPoint &startPosition) const {
-    if (NULL == cachedIterator) {
+    if (nullptr == cachedIterator) {
         cachedIterator.reset(new MaIterator(maEditor->getMaObject()->getMultipleAlignment(),
                                             direction,
                                             maEditorWgt->getCollapseModel()->getMaRowsIndexesWithViewRowIndexes()));

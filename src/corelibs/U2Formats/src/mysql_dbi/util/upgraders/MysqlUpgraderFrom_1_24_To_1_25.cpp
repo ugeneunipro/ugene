@@ -63,7 +63,7 @@ void MysqlUpgraderFrom_1_24_To_1_25::upgradeCoverageAttribute(U2OpStatus &os) co
     CHECK(!assemblyIds.isEmpty(), );
 
     U2AttributeDbi *attributeDbi = dbi->getAttributeDbi();
-    CHECK_EXT(attributeDbi != NULL, os.setError("Attribute dbi is NULL"), );
+    CHECK_EXT(attributeDbi != nullptr, os.setError("Attribute dbi is NULL"), );
 
     foreach (const U2DataId &id, assemblyIds) {
         //find and remove coverage attribute from ByteArrayAttribute table
@@ -75,7 +75,7 @@ void MysqlUpgraderFrom_1_24_To_1_25::upgradeCoverageAttribute(U2OpStatus &os) co
 
         //calculate new coverage
         U2AssemblyDbi *assemblyDbi = dbi->getAssemblyDbi();
-        CHECK_EXT(attributeDbi != NULL, os.setError("Assembly dbi is NULL"), );
+        CHECK_EXT(attributeDbi != nullptr, os.setError("Assembly dbi is NULL"), );
         U2Assembly assembly = assemblyDbi->getAssemblyObject(id, os);
         CHECK_OP(os, );
 

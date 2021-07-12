@@ -33,7 +33,7 @@ namespace U2 {
 
 RFSArrayWAlgorithm::RFSArrayWAlgorithm(RFResultsListener *rl, const char *seqX, int sizeX, const char *seqY, int sizeY, const DNAAlphabet *al, int w)
     : RFAlgorithmBase(rl, seqX, sizeX, seqY, sizeY, al->getType(), w, w, TaskFlags_FOSCOE) {
-    indexTask = NULL;
+    indexTask = nullptr;
     nThreads = 1;
     int maxSize = qMax(SIZE_X, SIZE_Y);
     int minSize = qMin(SIZE_X, SIZE_Y);
@@ -72,7 +72,7 @@ RFSArrayWAlgorithm::RFSArrayWAlgorithm(RFResultsListener *rl, const char *seqX, 
     if ((al->getId() == BaseDNAAlphabetIds::NUCL_DNA_DEFAULT()) || (al->getId() == BaseDNAAlphabetIds::NUCL_RNA_DEFAULT())) {
         bitMask = bt.getBitMaskCharBits(al->getType());
     } else {
-        bitMask = NULL;
+        bitMask = nullptr;
     }
     //single thread approximation (re-estimated in some algorithms)
     arrayPercent = int((ARRAY_SIZE / double(ARRAY_SIZE + SEARCH_SIZE)) * 100 / 5);    //array creation time ~5 times faster than search
@@ -150,9 +150,9 @@ void RFSArrayWAlgorithm::calculate(RFSArrayWSubtask *t) {
     for (int i = 0; i < chains.size(); i++) {
         chains[i] = new CheckEdge();
     }
-    bool _useBitMask = bitMask != NULL;
+    bool _useBitMask = bitMask != nullptr;
     SArrayIndex *index = indexTask->index;
-    assert(index != NULL);
+    assert(index != nullptr);
 
     quint32 bitValue = 0xFFFFFFFF;
     quint32 charBitsNum = bitMaskCharBitsNum;
@@ -171,7 +171,7 @@ void RFSArrayWAlgorithm::calculate(RFSArrayWSubtask *t) {
 
         //validate edges from prev steps
         CheckEdge *chain = chains[chainIdx];
-        for (CheckEdge *edge = chain->next, *next = NULL; edge->lastS < posS && edge != chain; edge = next) {
+        for (CheckEdge *edge = chain->next, *next = nullptr; edge->lastS < posS && edge != chain; edge = next) {
             next = edge->next;
             edge->fromChain();
             // now extend result forward
@@ -268,7 +268,7 @@ void RFSArrayWAlgorithm::calculate(RFSArrayWSubtask *t) {
     }
     for (chainIdx = 0; chainIdx < chains.size(); chainIdx++) {
         CheckEdge *chain = chains[chainIdx];
-        for (CheckEdge *edge = chain->next, *next = NULL; edge != chain; edge = next) {    //expand forward
+        for (CheckEdge *edge = chain->next, *next = nullptr; edge != chain; edge = next) {    //expand forward
             next = edge->next;
             const char *lastS = edge->lastS;
             const char *lastA = dataA + (lastS - dataS) + edge->diag;

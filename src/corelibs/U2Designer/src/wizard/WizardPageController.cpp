@@ -31,7 +31,7 @@
 namespace U2 {
 
 WizardPageController::WizardPageController(WizardController *wc, WizardPage *page)
-    : wPage(NULL), wc(wc), page(page) {
+    : wPage(nullptr), wc(wc), page(page) {
 }
 
 WizardPageController::~WizardPageController() {
@@ -92,10 +92,10 @@ QList<QLayout *> removeOneLayoutContent(QLayout *l) {
 
     while (l->count() > 0) {
         QLayoutItem *item = l->takeAt(0);
-        if (NULL != item->widget()) {
-            item->widget()->setParent(NULL);
+        if (nullptr != item->widget()) {
+            item->widget()->setParent(nullptr);
             delete item;
-        } else if (NULL != item->layout()) {
+        } else if (nullptr != item->layout()) {
             result << item->layout();
         } else {
             delete item;
@@ -106,7 +106,7 @@ QList<QLayout *> removeOneLayoutContent(QLayout *l) {
 }    // namespace
 
 void WizardPageController::removeLayout(QLayout *l) {
-    CHECK(NULL != l, );
+    CHECK(nullptr != l, );
     QList<QLayout *> layouts;
     QList<QLayout *> layoutStack;
     layouts << l;

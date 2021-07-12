@@ -37,7 +37,7 @@ DocumentImporter *DocumentImportersRegistry::getDocumentImporter(const QString &
             return i;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void DocumentImportersRegistry::addDocumentImporter(DocumentImporter *i) {

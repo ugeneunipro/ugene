@@ -58,13 +58,13 @@ BlastPlusSupportCommonTask::BlastPlusSupportCommonTask(const BlastTaskSettings &
     : ExternalToolSupportTask("Run NCBI Blast+ task", TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported),
       settings(_settings) {
     GCOUNTER(cvar, "BlastPlusSupportCommonTask");
-    blastPlusTask = NULL;
-    tmpDoc = NULL;
-    saveTemporaryDocumentTask = NULL;
-    sequenceObject = NULL;
+    blastPlusTask = nullptr;
+    tmpDoc = nullptr;
+    saveTemporaryDocumentTask = nullptr;
+    sequenceObject = nullptr;
     circularization = new U2PseudoCircularization(this, settings.isSequenceCircular, settings.querySequence);
     addTaskResource(TaskResourceUsage(RESOURCE_THREAD, settings.numberOfProcessors));
-    if (NULL != settings.querySequenceObject) {
+    if (nullptr != settings.querySequenceObject) {
         TaskWatchdog::trackResourceExistence(settings.querySequenceObject, this, tr("A problem occurred during doing BLAST+. The sequence is no more available."));
     }
 }
@@ -438,15 +438,15 @@ void BlastPlusSupportCommonTask::parseXMLHsp(const QDomNode &xml, const QString 
 
     QString strandTag;
     switch (settings.strandSource) {
-    case BlastTaskSettings::HitFrame:
-        strandTag = "Hsp_hit-frame";
-        break;
-    case BlastTaskSettings::QueryFrame:
-        strandTag = "Hsp_query-frame";
-        break;
-    default:
-        SAFE_POINT_EXT(false, stateInfo.setError(tr("Unknown strand source setting")), );
-        break;
+        case BlastTaskSettings::HitFrame:
+            strandTag = "Hsp_hit-frame";
+            break;
+        case BlastTaskSettings::QueryFrame:
+            strandTag = "Hsp_query-frame";
+            break;
+        default:
+            SAFE_POINT_EXT(false, stateInfo.setError(tr("Unknown strand source setting")), );
+            break;
     }
     elem = xml.lastChildElement(strandTag);
     int frame = elem.text().toInt(&isOk);
@@ -560,7 +560,7 @@ void BlastPlusSupportCommonTask::parseXMLHsp(const QDomNode &xml, const QString 
 //BlastPlusSupportMultiTask
 BlastPlusSupportMultiTask::BlastPlusSupportMultiTask(QList<BlastTaskSettings> &_settingsList, QString &_url)
     : Task("Run NCBI BlastAll multitask", TaskFlags_NR_FOSCOE | TaskFlag_ReportingIsSupported),
-      settingsList(_settingsList), doc(NULL), url(_url) {
+      settingsList(_settingsList), doc(nullptr), url(_url) {
 }
 void BlastPlusSupportMultiTask::prepare() {
     //create document
@@ -572,7 +572,7 @@ void BlastPlusSupportMultiTask::prepare() {
 
     foreach (BlastTaskSettings settings, settingsList) {
         settings.needCreateAnnotations = false;
-        Task *t = NULL;
+        Task *t = nullptr;
         if (settings.programName == "blastn") {
             t = new BlastNPlusSupportTask(settings);
         } else if (settings.programName == "blastp" || settings.programName == "gpu-blastp") {
@@ -599,9 +599,9 @@ QList<Task *> BlastPlusSupportMultiTask::onSubTaskFinished(Task *subTask) {
         return res;
     }
     BlastPlusSupportCommonTask *s = qobject_cast<BlastPlusSupportCommonTask *>(subTask);
-    if (s != NULL) {
+    if (s != nullptr) {
         BlastTaskSettings settings = s->getSettings();
-        assert(settings.aobj != NULL);
+        assert(settings.aobj != nullptr);
         QList<SharedAnnotationData> result = s->getResultedAnnotations();
         if (!result.isEmpty()) {
             doc->addObject(settings.aobj);

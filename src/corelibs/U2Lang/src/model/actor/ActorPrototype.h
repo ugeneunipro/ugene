@@ -72,9 +72,9 @@ public:
     void setPortValidator(const QString &id, ConfigurationValidator *v);
 
     // for drag'n'drop purposes
-    virtual bool isAcceptableDrop(const QMimeData *, QVariantMap * = NULL) const;
+    virtual bool isAcceptableDrop(const QMimeData *, QVariantMap * = nullptr) const;
 
-    virtual Actor *createInstance(const ActorId &actorId, AttributeScript *script = NULL, const QVariantMap &params = QVariantMap());
+    virtual Actor *createInstance(const ActorId &actorId, AttributeScript *script = nullptr, const QVariantMap &params = QVariantMap());
 
     void setDisplayName(const QString &n) override;
 

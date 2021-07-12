@@ -28,12 +28,12 @@ namespace U2 {
 NoFailTaskWrapper::NoFailTaskWrapper(Task *task)
     : Task("Wrapper", TaskFlags(TaskFlag_CancelOnSubtaskCancel) | TaskFlag_NoRun),
       subTask(task) {
-    SAFE_POINT_EXT(NULL != subTask, setError("NULL task"), );
+    SAFE_POINT_EXT(nullptr != subTask, setError("NULL task"), );
     setTaskName(tr("Wrapper task for: \"%1\"").arg(subTask->getTaskName()));
 }
 
 void NoFailTaskWrapper::prepare() {
-    CHECK(NULL != subTask, );
+    CHECK(nullptr != subTask, );
     addSubTask(subTask);
 }
 
@@ -42,12 +42,12 @@ Task *NoFailTaskWrapper::originalTask() const {
 }
 
 bool NoFailTaskWrapper::hasWarning() const {
-    SAFE_POINT(subTask != NULL, tr("SubTask is NULL"), false);
+    SAFE_POINT(subTask != nullptr, tr("SubTask is NULL"), false);
     return subTask->hasWarning();
 }
 
 QStringList NoFailTaskWrapper::getWarnings() const {
-    SAFE_POINT(subTask != NULL, tr("SubTask is NULL"), QStringList());
+    SAFE_POINT(subTask != nullptr, tr("SubTask is NULL"), QStringList());
     return subTask->getWarnings();
 }
 

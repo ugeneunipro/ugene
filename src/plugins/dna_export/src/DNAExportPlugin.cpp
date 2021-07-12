@@ -60,7 +60,7 @@ DNAExportPlugin::DNAExportPlugin()
     //tests
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
-    assert(xmlTestFormat != NULL);
+    assert(xmlTestFormat != nullptr);
 
     GAutoDeleteList<XMLTestFactory> *l = new GAutoDeleteList<XMLTestFactory>(this);
     l->qlist = DNAExportPluginTests::createTestFactories();
@@ -86,10 +86,10 @@ void DNAExportPlugin::sl_generateSequence() {
 // Service
 DNAExportService::DNAExportService()
     : Service(Service_DNAExport, tr("DNA export service"), tr("Export and import support for DNA & protein sequences"), QList<ServiceType>() << Service_ProjectView) {
-    projectViewController = NULL;
-    sequenceViewController = NULL;
-    alignmentViewController = NULL;
-    mcaEditorContext = NULL;
+    projectViewController = nullptr;
+    sequenceViewController = nullptr;
+    alignmentViewController = nullptr;
+    mcaEditorContext = nullptr;
 }
 
 void DNAExportService::serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged) {
@@ -111,16 +111,16 @@ void DNAExportService::serviceStateChangedCallback(ServiceState oldState, bool e
         mcaEditorContext->init();
     } else {
         delete projectViewController;
-        projectViewController = NULL;
+        projectViewController = nullptr;
 
         delete sequenceViewController;
-        sequenceViewController = NULL;
+        sequenceViewController = nullptr;
 
         delete alignmentViewController;
-        alignmentViewController = NULL;
+        alignmentViewController = nullptr;
 
         delete mcaEditorContext;
-        mcaEditorContext = NULL;
+        mcaEditorContext = nullptr;
     }
 }
 

@@ -87,7 +87,7 @@ void SpadesDelegate::setModelData(QWidget *editor,
 void SpadesDelegate::sl_commit() {
     SpadesPropertyWidget *editor =
         qobject_cast<SpadesPropertyWidget *>(sender());
-    CHECK(editor != NULL, );
+    CHECK(editor != nullptr, );
     emit commitData(editor);
 }
 

@@ -160,8 +160,7 @@ void SearchQualifierDialog::SearchQualifier::searchInAnnotation(AVItem *annotati
         if (expected.isEmpty()) {
             return true;
         }
-        return isExactMatch ? current.compare(expected, Qt::CaseInsensitive) == 0 :
-                              current.contains(expected, Qt::CaseInsensitive);
+        return isExactMatch ? current.compare(expected, Qt::CaseInsensitive) == 0 : current.contains(expected, Qt::CaseInsensitive);
     };
 
     AVAnnotationItem *ai = static_cast<AVAnnotationItem *>(annotation);
@@ -221,8 +220,8 @@ SearchQualifierDialog::SearchQualifierDialog(QWidget *p, AnnotationsTreeView *tr
     : QDialog(p),
       treeView(treeView),
       ui(new Ui_SearchQualifierDialog),
-      groupToSearchIn(NULL),
-      parentAnnotationofPrevResult(NULL),
+      groupToSearchIn(nullptr),
+      parentAnnotationofPrevResult(nullptr),
       indexOfPrevResult(-1) {
     ui->setupUi(this);
     new HelpButton(this, ui->buttonBox, "65929489");
@@ -232,29 +231,29 @@ SearchQualifierDialog::SearchQualifierDialog(QWidget *p, AnnotationsTreeView *tr
 
     ui->valueEdit->installEventFilter(this);
 
-    SAFE_POINT(treeView != NULL, "Tree Veiw is NULL", );
+    SAFE_POINT(treeView != nullptr, "Tree Veiw is NULL", );
 
     clearPrevResults();
 
     AVItem *currentItem = static_cast<AVItem *>(treeView->tree->currentItem());
     switch (currentItem->type) {
-    case AVItemType_Group: {
-        groupToSearchIn = currentItem;
-        break;
-    }
-    case AVItemType_Annotation: {
-        parentAnnotationofPrevResult = currentItem;
-        groupToSearchIn = treeView->findGroupItem(currentItem->getAnnotationGroup());
-        break;
-    }
-    case AVItemType_Qualifier: {
-        AVItem *annotation = dynamic_cast<AVItem *>(currentItem->parent());
-        if (annotation && annotation->type == AVItemType_Annotation) {
-            parentAnnotationofPrevResult = annotation;
+        case AVItemType_Group: {
+            groupToSearchIn = currentItem;
+            break;
         }
-        groupToSearchIn = treeView->findGroupItem(currentItem->getAnnotationGroup());
-        break;
-    }
+        case AVItemType_Annotation: {
+            parentAnnotationofPrevResult = currentItem;
+            groupToSearchIn = treeView->findGroupItem(currentItem->getAnnotationGroup());
+            break;
+        }
+        case AVItemType_Qualifier: {
+            AVItem *annotation = dynamic_cast<AVItem *>(currentItem->parent());
+            if (annotation && annotation->type == AVItemType_Annotation) {
+                parentAnnotationofPrevResult = annotation;
+            }
+            groupToSearchIn = treeView->findGroupItem(currentItem->getAnnotationGroup());
+            break;
+        }
     }
     QString groupName = groupToSearchIn->getAnnotationGroup()->getName();
     if (groupName == AnnotationGroup::ROOT_GROUP_NAME) {
@@ -318,7 +317,7 @@ void SearchQualifierDialog::sl_searchNext() {
 }
 
 void SearchQualifierDialog::clearPrevResults() {
-    parentAnnotationofPrevResult = NULL;
+    parentAnnotationofPrevResult = nullptr;
     indexOfPrevResult = -1;
 }
 

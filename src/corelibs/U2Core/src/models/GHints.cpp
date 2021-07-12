@@ -73,7 +73,7 @@ int ModTrackHints::remove(const QString &key) {
 
 void ModTrackHints::setModified() {
     StateLockableTreeItem *modItem = p;
-    while (modItem->getParentStateLockItem() != NULL && topParentMode) {
+    while (modItem->getParentStateLockItem() != nullptr && topParentMode) {
         modItem = modItem->getParentStateLockItem();
     }
     if (!modItem->isStateLocked()) {    //TODO: use isModificationAllowed here!

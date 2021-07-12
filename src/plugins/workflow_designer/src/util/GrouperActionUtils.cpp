@@ -38,7 +38,7 @@ namespace Workflow {
 /************************************************************************/
 ActionPerformer *GrouperActionUtils::getActionPerformer(const GrouperOutSlot &slot, WorkflowContext *context, const PerformersMap &perfs) {
     GrouperSlotAction *actionPtr = slot.getAction();
-    SAFE_POINT(NULL != actionPtr, "GrouperActionUtils::getActionPerformer - action is null", NULL);
+    SAFE_POINT(nullptr != actionPtr, "GrouperActionUtils::getActionPerformer - action is null", nullptr);
 
     GrouperSlotAction action(*actionPtr);
     QString type = action.getType();
@@ -82,7 +82,7 @@ ActionPerformer *GrouperActionUtils::getActionPerformer(const GrouperOutSlot &sl
         return map;
     }
     assert(false);
-    return NULL;
+    return nullptr;
 }
 
 bool GrouperActionUtils::equalData(const QString &groupOp, const QVariant &data1, const QVariant &data2, DataTypePtr dataType, WorkflowContext *context) {
@@ -119,10 +119,10 @@ bool GrouperActionUtils::equalData(const QString &groupOp, const QVariant &data1
         SharedDbiDataHandler alId2 = data2.value<SharedDbiDataHandler>();
 
         QScopedPointer<MultipleSequenceAlignmentObject> alObj1(StorageUtils::getMsaObject(context->getDataStorage(), alId1));
-        SAFE_POINT(NULL != alObj1.data(), "NULL MSA Object!", false);
+        SAFE_POINT(nullptr != alObj1.data(), "NULL MSA Object!", false);
 
         QScopedPointer<MultipleSequenceAlignmentObject> alObj2(StorageUtils::getMsaObject(context->getDataStorage(), alId2));
-        SAFE_POINT(NULL != alObj2.data(), "NULL MSA Object!", false);
+        SAFE_POINT(nullptr != alObj2.data(), "NULL MSA Object!", false);
 
         const MultipleSequenceAlignment al1 = alObj1->getMultipleAlignment();
         const MultipleSequenceAlignment al2 = alObj2->getMultipleAlignment();
@@ -158,7 +158,7 @@ void GrouperActionUtils::applyActions(WorkflowContext *context, QList<GrouperOut
         if (mData.keys().contains(key)) {
             if (!perfs.contains(slot.getOutSlotId())) {
                 ActionPerformer *p = getActionPerformer(slot, context, perfs);
-                SAFE_POINT(NULL != p, "GrouperActionUtils::applyActions - performer is NULL", );
+                SAFE_POINT(nullptr != p, "GrouperActionUtils::applyActions - performer is NULL", );
 
                 perfs[slot.getOutSlotId()] = p;
             }
@@ -170,14 +170,14 @@ void GrouperActionUtils::applyActions(WorkflowContext *context, QList<GrouperOut
         foreach (const GrouperOutSlot &slot, outSlots) {
             QString key = slot.getBusMapInSlotId();
             if (mData.keys().contains(key)) {
-                ActionPerformer *p = perfs.value(slot.getOutSlotId(), NULL);
+                ActionPerformer *p = perfs.value(slot.getOutSlotId(), nullptr);
                 ActionPerformer *parent = p->getParentPerformer();
                 if (perfList.contains(parent)) {
                     continue;
                 }
 
                 QVariant newData = mData.value(key);
-                if (NULL != parent) {
+                if (nullptr != parent) {
                     QVariantMap params = parent->getParameters();
                     p->setParameters(params);
                 }
@@ -193,7 +193,7 @@ void GrouperActionUtils::applyActions(WorkflowContext *context, QList<GrouperOut
 /* Action performers */
 /************************************************************************/
 ActionPerformer::ActionPerformer(const QString &outSlot, const GrouperSlotAction &action, WorkflowContext *context)
-    : outSlot(outSlot), action(action), context(context), started(false), parent(NULL) {
+    : outSlot(outSlot), action(action), context(context), started(false), parent(nullptr) {
 }
 
 QString ActionPerformer::getOutSlot() const {
@@ -269,7 +269,7 @@ Sequence2MSAPerformer::Sequence2MSAPerformer(const QString &outSlot, const Group
 bool Sequence2MSAPerformer::applyAction(const QVariant &newData) {
     SharedDbiDataHandler seqId = newData.value<SharedDbiDataHandler>();
     QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-    if (NULL == seqObj.data()) {
+    if (nullptr == seqObj.data()) {
         return false;
     }
 
@@ -321,7 +321,7 @@ MergerMSAPerformer::MergerMSAPerformer(const QString &outSlot, const GrouperSlot
 bool MergerMSAPerformer::applyAction(const QVariant &newData) {
     SharedDbiDataHandler newAlId = newData.value<SharedDbiDataHandler>();
     QScopedPointer<MultipleSequenceAlignmentObject> newAlObj(StorageUtils::getMsaObject(context->getDataStorage(), newAlId));
-    SAFE_POINT(NULL != newAlObj.data(), "NULL MSA Object!", false);
+    SAFE_POINT(nullptr != newAlObj.data(), "NULL MSA Object!", false);
     const MultipleSequenceAlignment newAl = newAlObj->getMultipleAlignment();
 
     if (!started) {

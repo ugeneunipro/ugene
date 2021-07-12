@@ -81,7 +81,7 @@ CreateSubalignmentDialogController::CreateSubalignmentDialogController(MultipleS
     if (selectedColumnRegion.isEmpty()) {
         selectedColumnRegion = U2Region(0, msaLength);
     }
-    startLineEdit->setText(QString::number(selectedColumnRegion.startPos + 1)); // Visual range starts with 1, not 0.
+    startLineEdit->setText(QString::number(selectedColumnRegion.startPos + 1));    // Visual range starts with 1, not 0.
     endLineEdit->setText(QString::number(selectedColumnRegion.endPos()));
 
     const MultipleSequenceAlignment msa = msaObject->getMsa();
@@ -254,7 +254,7 @@ QList<Task *> CreateSubalignmentAndOpenViewTask::onSubTaskFinished(Task *subTask
 
     if ((subTask == csTask) && csTask->getSettings().addToProject) {
         Document *doc = csTask->takeDocument();
-        assert(doc != NULL);
+        assert(doc != nullptr);
         res.append(new AddDocumentAndOpenViewTask(doc));
     }
 

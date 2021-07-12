@@ -51,7 +51,7 @@ class CollocationWorker : public BaseWorker {
     Q_OBJECT
 public:
     CollocationWorker(Actor *a)
-        : BaseWorker(a), input(NULL), output(NULL) {
+        : BaseWorker(a), input(nullptr), output(nullptr) {
     }
     virtual ~CollocationWorker() {
     }

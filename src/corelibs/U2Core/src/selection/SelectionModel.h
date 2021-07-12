@@ -33,7 +33,7 @@ typedef QString GSelectionType;
 class U2CORE_EXPORT GSelection : public QObject {
     Q_OBJECT
 public:
-    GSelection(GSelectionType _type, QObject *p = NULL)
+    GSelection(GSelectionType _type, QObject *p = nullptr)
         : QObject(p), type(_type) {
     }
 
@@ -68,7 +68,7 @@ public:
     void removeSelection(const GSelection *s);
 
     bool contains(GSelectionType t) const {
-        return findSelectionByType(t) != NULL;
+        return findSelectionByType(t) != nullptr;
     }
 
     const GSelection *findSelectionByType(GSelectionType t) const;

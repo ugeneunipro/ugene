@@ -51,7 +51,7 @@ static const QString URL_ATTR("url-in");
 /* Worker */
 /************************************************************************/
 GetFileListWorker::GetFileListWorker(Actor *p)
-    : BaseWorker(p), outChannel(NULL), files(NULL) {
+    : BaseWorker(p), outChannel(nullptr), files(nullptr) {
 }
 
 void GetFileListWorker::init() {
@@ -75,7 +75,7 @@ Task *GetFileListWorker::tick() {
         setDone();
         outChannel->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void GetFileListWorker::cleanup() {

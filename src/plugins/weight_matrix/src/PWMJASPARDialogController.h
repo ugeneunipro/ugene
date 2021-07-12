@@ -38,7 +38,7 @@ class PWMJASPARDialogController : public QDialog, public Ui_SearchJASPARDatabase
     Q_OBJECT
 
 public:
-    PWMJASPARDialogController(QWidget *w = NULL);
+    PWMJASPARDialogController(QWidget *w = nullptr);
     QString fileName;
 
 private slots:

@@ -52,7 +52,7 @@ namespace U2 {
 ConstructMoleculeDialog::ConstructMoleculeDialog(const QList<DNAFragment> &fragmentList, QWidget *p)
     : QDialog(p),
       fragments(fragmentList),
-      saveController(NULL) {
+      saveController(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930763");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("OK"));
@@ -156,7 +156,7 @@ void ConstructMoleculeDialog::sl_onClearButtonClicked() {
 
 void ConstructMoleculeDialog::sl_onUpButtonClicked() {
     QTreeWidgetItem *item = molConstructWidget->currentItem();
-    if (item == NULL || selected.size() == 1) {
+    if (item == nullptr || selected.size() == 1) {
         return;
     }
 
@@ -172,7 +172,7 @@ void ConstructMoleculeDialog::sl_onUpButtonClicked() {
 
 void ConstructMoleculeDialog::sl_onDownButtonClicked() {
     QTreeWidgetItem *item = molConstructWidget->currentItem();
-    if (item == NULL || selected.size() == 1) {
+    if (item == nullptr || selected.size() == 1) {
         return;
     }
 
@@ -188,7 +188,7 @@ void ConstructMoleculeDialog::sl_onDownButtonClicked() {
 
 void ConstructMoleculeDialog::sl_onRemoveButtonClicked() {
     QTreeWidgetItem *item = molConstructWidget->currentItem();
-    if (item == NULL) {
+    if (item == nullptr) {
         return;
     }
     int index = molConstructWidget->indexOfTopLevelItem(item);
@@ -202,8 +202,8 @@ void ConstructMoleculeDialog::update() {
 
     foreach (int index, selected) {
         QListWidgetItem *item = fragmentListWidget->item(index);
-        assert(item != NULL);
-        if (item != NULL) {
+        assert(item != nullptr);
+        if (item != nullptr) {
             QTreeWidgetItem *newItem = new QTreeWidgetItem(molConstructWidget);
             const DNAFragment &fragment = fragments.at(index);
             if (fragment.getLeftTerminus().type == OVERHANG_TYPE_STICKY) {
@@ -230,11 +230,11 @@ void ConstructMoleculeDialog::update() {
     bool checkTermsConsistency = !makeBluntBox->isChecked();
 
     if (checkTermsConsistency) {
-        QTreeWidgetItem *prevItem = NULL;
+        QTreeWidgetItem *prevItem = nullptr;
         int count = molConstructWidget->topLevelItemCount();
         for (int i = 0; i < count; ++i) {
             QTreeWidgetItem *item = molConstructWidget->topLevelItem(i);
-            if (prevItem != NULL) {
+            if (prevItem != nullptr) {
                 QStringList prevItems = prevItem->text(2).split(" ");
                 QString prevOverhang = prevItems.at(0);
                 QString prevStrand = prevItems.count() > 1 ? prevItems.at(1) : QString();
@@ -297,7 +297,7 @@ void ConstructMoleculeDialog::sl_forceBluntBoxClicked() {
 
 void ConstructMoleculeDialog::sl_onEditFragmentButtonClicked() {
     QTreeWidgetItem *item = molConstructWidget->currentItem();
-    if (item == NULL) {
+    if (item == nullptr) {
         return;
     }
 

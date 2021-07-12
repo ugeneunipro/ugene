@@ -61,7 +61,7 @@ void WorkflowGObject::setView(WorkflowView *_view) {
 }
 
 void WorkflowGObject::setSceneRawData(const QString &data) {
-    assert(view != NULL);
+    assert(view != nullptr);
     assert(!view->getScene()->isModified());
     serializedScene = data;
 }
@@ -103,12 +103,12 @@ Document *WorkflowDocFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &tar
         rawData.append(block.data(), blockLen);
         os.setProgress(io->getProgress());
     }
-    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), NULL);
+    CHECK_EXT(!io->hasError(), os.setError(io->errorString()), nullptr);
 
     if (checkRawData(rawData).score != FormatDetection_Matched) {
         os.setError(tr("Invalid header. %1 expected").arg(Constants::HEADER_LINE));
         rawData.clear();
-        return NULL;
+        return nullptr;
     }
     //todo: check file-readonly status?
 
@@ -126,7 +126,7 @@ void WorkflowDocFormat::storeDocument(Document *d, IOAdapter *io, U2OpStatus &) 
     assert(wo && wo->getView());
 
     const Metadata &meta = wo->getView()->getMeta();
-    const Schema *schema = wo->getView()->getSchema();
+    const QSharedPointer<const Schema> schema = wo->getView()->getSchema();
     QByteArray rawData = HRSchemaSerializer::schema2String(*schema, &meta).toUtf8();
     int nWritten = 0;
     int nTotal = rawData.size();
@@ -157,12 +157,12 @@ bool WorkflowViewFactory::canCreateView(const MultiGSelection &multiSelection) {
 Task *WorkflowViewFactory::createViewTask(const MultiGSelection &multiSelection, bool single) {
     QSet<Document *> documents = SelectionUtils::findDocumentsWithObjects(WorkflowGObject::TYPE, &multiSelection, UOF_LoadedAndUnloaded, true);
     if (documents.size() == 0) {
-        return NULL;
+        return nullptr;
     }
-    Task *result = (single || documents.size() == 1) ? NULL : new Task(tr("Open multiple views"), TaskFlag_NoRun);
+    Task *result = (single || documents.size() == 1) ? nullptr : new Task(tr("Open multiple views"), TaskFlag_NoRun);
     foreach (Document *d, documents) {
         Task *t = new OpenWorkflowViewTask(d);
-        if (result == NULL) {
+        if (result == nullptr) {
             return t;
         }
         result->addSubTask(t);

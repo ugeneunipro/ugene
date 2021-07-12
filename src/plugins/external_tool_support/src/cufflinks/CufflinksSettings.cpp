@@ -27,7 +27,7 @@ CufflinksSettings::CufflinksSettings()
     : multiReadCorrect(false),
       minIsoformFraction(0),
       preMrnaFraction(0),
-      storage(NULL),
+      storage(nullptr),
       fromFile(false) {
 }
 

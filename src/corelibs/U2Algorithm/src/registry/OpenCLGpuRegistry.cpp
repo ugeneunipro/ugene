@@ -33,7 +33,7 @@
 namespace U2 {
 
 OpenCLGpuRegistry::OpenCLGpuRegistry()
-    : openCLHelper(NULL) {
+    : openCLHelper(nullptr) {
 }
 
 OpenCLGpuRegistry::~OpenCLGpuRegistry() {

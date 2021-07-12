@@ -75,29 +75,29 @@ namespace U2 {
 
 TreeViewer::TreeViewer(const QString &viewName, GObject *obj, GraphicsRectangularBranchItem *_root, qreal s)
     : GObjectView(TreeViewerFactory::ID, viewName),
-      treeSettingsAction(NULL),
-      layoutGroup(NULL),
-      rectangularLayoutAction(NULL),
-      circularLayoutAction(NULL),
-      unrootedLayoutAction(NULL),
-      branchesSettingsAction(NULL),
-      nameLabelsAction(NULL),
-      nodeLabelsAction(NULL),
-      distanceLabelsAction(NULL),
-      textSettingsAction(NULL),
-      contAction(NULL),
-      zoomToSelAction(NULL),
-      zoomToAllAction(NULL),
-      zoomOutAction(NULL),
-      printAction(NULL),
-      captureTreeAction(NULL),
-      exportAction(NULL),
-      collapseAction(NULL),
-      rerootAction(NULL),
-      swapAction(NULL),
+      treeSettingsAction(nullptr),
+      layoutGroup(nullptr),
+      rectangularLayoutAction(nullptr),
+      circularLayoutAction(nullptr),
+      unrootedLayoutAction(nullptr),
+      branchesSettingsAction(nullptr),
+      nameLabelsAction(nullptr),
+      nodeLabelsAction(nullptr),
+      distanceLabelsAction(nullptr),
+      textSettingsAction(nullptr),
+      contAction(nullptr),
+      zoomToSelAction(nullptr),
+      zoomToAllAction(nullptr),
+      zoomOutAction(nullptr),
+      printAction(nullptr),
+      captureTreeAction(nullptr),
+      exportAction(nullptr),
+      collapseAction(nullptr),
+      rerootAction(nullptr),
+      swapAction(nullptr),
       root(_root),
       scale(s),
-      ui(NULL) {
+      ui(nullptr) {
     GCOUNTER(cvar, "PhylTreeViewer");
     phyObject = qobject_cast<PhyTreeObject *>(obj);
     objects.append(phyObject);
@@ -350,7 +350,7 @@ void TreeViewer::buildMenu(QMenu *m, const QString &type) {
 }
 
 QWidget *TreeViewer::createWidget() {
-    assert(ui == NULL);
+    assert(ui == nullptr);
     ui = new TreeViewerUI(this);
 
     optionsPanel = new OptionsPanel(this);
@@ -679,7 +679,7 @@ void TreeViewerUI::updateTextSettings(TreeViewOption option) {
     }
     for (QGraphicsItem *graphItem : qAsConst(updatingItems)) {
         GraphicsBranchItem *branchItem = dynamic_cast<GraphicsBranchItem *>(graphItem);
-        if (branchItem != NULL) {
+        if (branchItem != nullptr) {
             if (option == LABEL_COLOR) {
                 if (updatingItems.isEmpty()) {
                     updatingItems = items();
@@ -691,7 +691,7 @@ void TreeViewerUI::updateTextSettings(TreeViewOption option) {
                         }
                     }
                 }
-            } 
+            }
             if (option == LABEL_COLOR || option == LABEL_FONT_TYPE || option == LABEL_FONT_SIZE ||
                 option == LABEL_FONT_BOLD || option == LABEL_FONT_ITALIC || option == LABEL_FONT_UNDERLINE) {
                 branchItem->updateTextProperty(option, getOptionValue(option));
@@ -731,7 +731,7 @@ void TreeViewerUI::updateScene(bool fitSceneToView) {
 
         foreach (QGraphicsItem *ci, item->childItems()) {
             GraphicsBranchItem *gbi = dynamic_cast<GraphicsBranchItem *>(ci);
-            if (gbi != NULL) {
+            if (gbi != nullptr) {
                 stack.push(gbi);
                 gbi->setLenghtCoef(qMax(1, item->getBranchLength() - gbi->getBranchLength()));
             }
@@ -749,19 +749,19 @@ void TreeViewerUI::updateScene(bool fitSceneToView) {
 
             switch (type) {
                 case DEFAULT:
-                    if (item->getDistanceText() != NULL) {
+                    if (item->getDistanceText() != nullptr) {
                         if (item->getDistanceText()->text() == "") {
                             item->setDistanceText("0");
                         }
                     }
-                    if (item->getNameText() == NULL) {
+                    if (item->getNameText() == nullptr) {
                         item->setWidth(avgW * getScale() * coef * item->getLengthCoef());
                     } else {
                         item->setWidth(0);
                     }
                     break;
                 case PHYLOGRAM:
-                    if (item->getDistanceText() != NULL) {
+                    if (item->getDistanceText() != nullptr) {
                         if (item->getDistanceText()->text() == "0") {
                             item->setDistanceText("");
                         }
@@ -769,12 +769,12 @@ void TreeViewerUI::updateScene(bool fitSceneToView) {
                     item->setWidth(qAbs(item->getDist()) * getScale() * coef);
                     break;
                 case CLADOGRAM:
-                    if (item->getDistanceText() != NULL) {
+                    if (item->getDistanceText() != nullptr) {
                         if (item->getDistanceText()->text() == "") {
                             item->setDistanceText("0");
                         }
                     }
-                    if (item->getNameText() == NULL) {
+                    if (item->getNameText() == nullptr) {
                         item->setWidth(avgW * getScale() * coef);
                     } else {
                         item->setWidth(0);
@@ -813,7 +813,7 @@ void TreeViewerUI::determineBranchLengths() {
 
         foreach (QGraphicsItem *ci, item->childItems()) {
             GraphicsBranchItem *gbi = dynamic_cast<GraphicsBranchItem *>(ci);
-            if (gbi != NULL) {
+            if (gbi != nullptr) {
                 stack.push(gbi);
                 childsCounter++;
             }
@@ -832,7 +832,7 @@ void TreeViewerUI::determineBranchLengths() {
     while (!childQueue.isEmpty()) {
         GraphicsBranchItem *item = childQueue.dequeue();
         GraphicsBranchItem *parentItem = dynamic_cast<GraphicsBranchItem *>(item->getParentItem());
-        if (NULL == parentItem) {
+        if (nullptr == parentItem) {
             continue;
         }
 
@@ -850,7 +850,7 @@ QVariantMap TreeViewerUI::getSettingsState() const {
     int i = 0;
     foreach (QGraphicsItem *graphItem, items()) {
         GraphicsBranchItem *branchItem = dynamic_cast<GraphicsBranchItem *>(graphItem);
-        if (branchItem != NULL) {
+        if (branchItem != nullptr) {
             OptionsMap branchSettings = branchItem->getSettings();
             m[branchColor] = qvariant_cast<QColor>(branchSettings[BRANCH_COLOR]);
             m[branchThisckness + i] = branchSettings[BRANCH_THICKNESS].toInt();
@@ -1023,10 +1023,10 @@ void TreeViewerUI::paint(QPainter &painter) {
 }
 
 void TreeViewerUI::updateRect() {
-    SAFE_POINT(NULL != root, "Pointer to tree root is NULL", );
+    SAFE_POINT(nullptr != root, "Pointer to tree root is NULL", );
     QTransform viewTransform = transform();
     // the workaround for UGENE-3504
-    if (qobject_cast<MSAEditorTreeViewerUI *>(this) != NULL && (qobject_cast<MSAEditorTreeViewerUI *>(this))->isCurTreeViewerSynchronized()) {
+    if (qobject_cast<MSAEditorTreeViewerUI *>(this) != nullptr && (qobject_cast<MSAEditorTreeViewerUI *>(this))->isCurTreeViewerSynchronized()) {
         viewTransform = QTransform();
     }
     QRectF rect = root->visibleChildrenBoundingRect(viewTransform) | root->sceneBoundingRect();
@@ -1262,7 +1262,7 @@ void TreeViewerUI::sl_rectLayoutRecomputed() {
     CHECK(!taskIsFailed, );
 
     GraphicsRectangularBranchItem *rootNode = dynamic_cast<GraphicsRectangularBranchItem *>(layoutTask->getResult());
-    CHECK(NULL != rootNode, );
+    CHECK(nullptr != rootNode, );
     disconnect(rectRoot, SIGNAL(si_branchCollapsed(GraphicsRectangularBranchItem *)), this, SLOT(sl_onBranchCollapsed(GraphicsRectangularBranchItem *)));
     rectRoot = rootNode;
     connect(rectRoot, SIGNAL(si_branchCollapsed(GraphicsRectangularBranchItem *)), SLOT(sl_onBranchCollapsed(GraphicsRectangularBranchItem *)));
@@ -1356,19 +1356,19 @@ void TreeViewerUI::showLabels(LabelTypes labelTypes) {
     while (!stack.isEmpty()) {
         GraphicsBranchItem *node = stack.pop();
         if (labelTypes.testFlag(LabelType_SequenceName)) {
-            if (node->getNameText() != NULL) {
+            if (node->getNameText() != nullptr) {
                 node->setVisible(getOptionValue(SHOW_LABELS).toBool());
                 maxNameWidth = qMax(maxNameWidth, node->getNameText()->sceneBoundingRect().width());
             }
         }
         if (labelTypes.testFlag(LabelType_Distance)) {
-            if (node->getDistanceText() != NULL) {
+            if (node->getDistanceText() != nullptr) {
                 node->getDistanceText()->setVisible(getOptionValue(SHOW_DISTANCES).toBool());
             }
         }
         foreach (QGraphicsItem *item, node->childItems()) {
             GraphicsBranchItem *bitem = dynamic_cast<GraphicsBranchItem *>(item);
-            if (bitem != NULL) {
+            if (bitem != nullptr) {
                 stack.push(bitem);
             }
         }
@@ -1432,10 +1432,10 @@ void TreeViewerUI::sl_textSettingsTriggered() {
             }
             while (!stack.empty()) {
                 GraphicsBranchItem *item = stack.pop();
-                if (item->getNameText() == NULL) {
+                if (item->getNameText() == nullptr) {
                     foreach (QGraphicsItem *citem, item->childItems()) {
                         GraphicsBranchItem *gbi = dynamic_cast<GraphicsBranchItem *>(citem);
-                        if (gbi != NULL) {
+                        if (gbi != nullptr) {
                             stack.push(gbi);
                         }
                     }
@@ -1598,10 +1598,10 @@ void TreeViewerUI::updateLabelsAlignment() {
     while (!stack.empty()) {
         GraphicsBranchItem *item = stack.pop();
         QGraphicsSimpleTextItem *nameText = item->getNameText();
-        if (nameText == NULL) {
+        if (nameText == nullptr) {
             foreach (QGraphicsItem *citem, item->childItems()) {
                 GraphicsBranchItem *gbi = dynamic_cast<GraphicsBranchItem *>(citem);
-                if (gbi != NULL) {
+                if (gbi != nullptr) {
                     stack.push(gbi);
                 }
             }

@@ -88,7 +88,7 @@ public:
     TaskInfo(Task *t, TaskInfo *p)
         : task(t), parentTaskInfo(p), wasPrepared(false), subtasksWereCanceled(false), selfRunFinished(false),
           hasLockedPrepareResources(false), hasLockedRunResources(false),
-          prevProgress(0), numPreparedSubtasks(0), numRunningSubtasks(0), numFinishedSubtasks(0), thread(NULL) {
+          prevProgress(0), numPreparedSubtasks(0), numRunningSubtasks(0), numFinishedSubtasks(0), thread(nullptr) {
     }
 
     virtual ~TaskInfo();

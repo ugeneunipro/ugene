@@ -121,7 +121,7 @@ static QList<TVTestItem *> getFailedTests(TVTSItem *Root) {
 }
 
 static bool cleanupRunResultRichTextHtml(QString *runResult) {
-    if (runResult == NULL) {
+    if (runResult == nullptr) {
         return false;
     }
 
@@ -231,7 +231,7 @@ static QString generateErrorsListBlock(QTreeWidget *tree) {
 
 void TestViewReporter::saveReportToFileAndOpenBrowser(QTreeWidget *tree, int runTime) {
     QString dir = AppContext::getSettings()->getValue(SETTINGS_ROOT + "lastDir", QString()).toString();
-    QString fileName = U2FileDialog::getSaveFileName(NULL, "Select save location for the report", dir + "/UGENE_test_runner_report.html", "*.html");
+    QString fileName = U2FileDialog::getSaveFileName(nullptr, "Select save location for the report", dir + "/UGENE_test_runner_report.html", "*.html");
     if (fileName.isEmpty()) {
         return;
     }
@@ -247,7 +247,7 @@ void TestViewReporter::saveReportToFileAndOpenBrowser(QTreeWidget *tree, int run
 
 QString TestViewReporter::generateHtmlReport(QTreeWidget *tree, int runTime) {
     QString html;
-    if (tree == NULL) {
+    if (tree == nullptr) {
         html = "treeRoot is Empty";
     } else {
         int totalPassed = 0;

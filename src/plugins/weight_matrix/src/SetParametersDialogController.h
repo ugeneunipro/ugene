@@ -34,7 +34,7 @@ class SetParametersDialogController : public QDialog, public Ui_SetDefaultParame
     Q_OBJECT
 
 public:
-    SetParametersDialogController(QWidget *w = NULL);
+    SetParametersDialogController(QWidget *w = nullptr);
 
 private slots:
     void sl_onOkButton();

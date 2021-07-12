@@ -65,13 +65,13 @@ bool SimpleTextObjectViewFactory::isStateInSelection(const MultiGSelection &mult
 Task *SimpleTextObjectViewFactory::createViewTask(const MultiGSelection &multiSelection, bool single) {
     const QList<GObject *> objects = SelectionUtils::findObjects(GObjectTypes::TEXT, &multiSelection, UOF_LoadedAndUnloaded);
     if (objects.isEmpty()) {
-        return NULL;
+        return nullptr;
     }
 
-    Task *result = (single || objects.size() == 1) ? NULL : new Task(tr("Open multiple views task"), TaskFlag_NoRun);
+    Task *result = (single || objects.size() == 1) ? nullptr : new Task(tr("Open multiple views task"), TaskFlag_NoRun);
     Task *t = new OpenSimpleTextObjectViewTask(objects);
 
-    if (result == NULL) {
+    if (result == nullptr) {
         return t;
     } else {
         //todo: limit number of views?
@@ -91,7 +91,7 @@ Task *SimpleTextObjectViewFactory::createViewTask(const QString &viewName, const
 SimpleTextObjectView::SimpleTextObjectView(const QString &name, TextObject *to, const QVariantMap &_state)
     : GObjectView(SimpleTextObjectViewFactory::ID, name), textObject(to), openState(_state), selection(to) {
     GCOUNTER(cvar, "SimpleTextView");
-    textEdit = NULL;
+    textEdit = nullptr;
     firstShow = true;
     assert(to);
     objects.append(to);
@@ -99,7 +99,7 @@ SimpleTextObjectView::SimpleTextObjectView(const QString &name, TextObject *to, 
 }
 
 QWidget *SimpleTextObjectView::createWidget() {
-    assert(textEdit == NULL);
+    assert(textEdit == nullptr);
     textEdit = new QPlainTextEdit();
     textEdit->setLineWrapMode(QPlainTextEdit::NoWrap);
     textEdit->setWordWrapMode(QTextOption::NoWrap);
@@ -107,7 +107,7 @@ QWidget *SimpleTextObjectView::createWidget() {
         textEdit->setPlainText(textObject->getText());
     } catch (std::bad_alloc &) {
         coreLog.error("Not enough memory for loading text data");
-        return NULL;
+        return nullptr;
     }
     if (textObject->isStateLocked()) {
         textEdit->setReadOnly(true);

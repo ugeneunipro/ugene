@@ -101,9 +101,9 @@ private:
     }
     bool isPatternSlotBinded(const Configuration *cfg) const {
         const Workflow::Actor *a = dynamic_cast<const Workflow::Actor *>(cfg);
-        SAFE_POINT(NULL != a, "NULL actor", false);
+        SAFE_POINT(nullptr != a, "NULL actor", false);
         Workflow::Port *p = a->getPort(BasePorts::IN_SEQ_PORT_ID());
-        SAFE_POINT(NULL != p, "NULL port", false);
+        SAFE_POINT(nullptr != p, "NULL port", false);
         QVariant busMap = p->getParameter(Workflow::IntegralBusPort::BUS_MAP_ATTR_ID)->getAttributePureValue();
         QString slotValue = busMap.value<StrStrMap>().value(BaseSlots::TEXT_SLOT().getId());
         return !slotValue.isEmpty();
@@ -294,7 +294,7 @@ QString FindPrompter::composeRichDoc() {
 
     QString patternStr;
     Actor *patternProd = input->getProducer(BaseSlots::TEXT_SLOT().getId());
-    if (NULL == patternProd) {
+    if (nullptr == patternProd) {
         QString pattern = getHyperlink(PATTERN_ATTR, getRequiredParam(PATTERN_ATTR));
         patternStr = tr("<u>%1</u> pattern(s)").arg(pattern);
     } else {
@@ -332,7 +332,7 @@ QString FindPrompter::composeRichDoc() {
  * FindWorker
  ***************************/
 FindWorker::FindWorker(Actor *a)
-    : BaseWorker(a), input(NULL), output(NULL), patternFileLoaded(false), useNames(false) {
+    : BaseWorker(a), input(nullptr), output(nullptr), patternFileLoaded(false), useNames(false) {
 }
 
 void FindWorker::init() {
@@ -359,7 +359,7 @@ Task *FindWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         FindAlgorithmTaskSettings cfg;
 
@@ -367,8 +367,8 @@ Task *FindWorker::tick() {
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler seqId = qm.value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
-        if (NULL == seqObj.data()) {
-            return NULL;
+        if (nullptr == seqObj.data()) {
+            return nullptr;
         }
         U2OpStatusImpl os;
         DNASequence seq = seqObj->getWholeSequence(os);
@@ -391,11 +391,11 @@ Task *FindWorker::tick() {
         // translations
         cfg.strand = getStrand(actor->getParameter(BaseAttributes::STRAND_ATTRIBUTE().getId())->getAttributeValue<QString>(context));
         if (cfg.strand != FindAlgorithmStrand_Direct) {
-            DNATranslation *compTT = NULL;
+            DNATranslation *compTT = nullptr;
             if (seq.alphabet->isNucleic()) {
                 compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(seq.alphabet);
             }
-            if (compTT != NULL) {
+            if (compTT != nullptr) {
                 cfg.complementTT = compTT;
             } else {
                 cfg.strand = FindAlgorithmStrand_Direct;
@@ -451,12 +451,12 @@ Task *FindWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void FindWorker::sl_taskFinished(Task *t) {
     MultiTask *multiFind = qobject_cast<MultiTask *>(t);
-    SAFE_POINT(NULL != multiFind, "Invalid task encountered!", );
+    SAFE_POINT(nullptr != multiFind, "Invalid task encountered!", );
     QList<Task *> subs = multiFind->getTasks();
     SAFE_POINT(!subs.isEmpty(), "No subtasks found!", );
     QStringList ptrns;
@@ -466,7 +466,7 @@ void FindWorker::sl_taskFinished(Task *t) {
     int seqLen = -1;
     foreach (Task *sub, subs) {
         FindAlgorithmTask *findTask = qobject_cast<FindAlgorithmTask *>(sub);
-        if (NULL != findTask) {
+        if (nullptr != findTask) {
             if (findTask->isCanceled() || findTask->hasError()) {
                 return;
             }
@@ -499,20 +499,20 @@ void FindWorker::sl_taskFinished(Task *t) {
                         qDebug() << annotation->name << "---" << qual.name << " : " << qual.value;
                     }
                 }
-                if (NULL != output) {
+                if (nullptr != output) {
                     algoLog.info(tr("Found %1 matches of pattern '%2'").arg(result.size()).arg(QString(filePatterns.value(findTask).second)));
                 }
             }
 
         } else {
             LoadPatternsFileTask *loadTask = qobject_cast<LoadPatternsFileTask *>(sub);
-            if (NULL != loadTask) {
+            if (nullptr != loadTask) {
                 namesPatterns = loadTask->getNamesPatterns();
             }
             return;
         }
     }
-    if (NULL != output) {
+    if (nullptr != output) {
         if (result.isEmpty()) {
             result << FindAlgorithmResult::toTable(annData, resultName, isCircular, seqLen);
         }

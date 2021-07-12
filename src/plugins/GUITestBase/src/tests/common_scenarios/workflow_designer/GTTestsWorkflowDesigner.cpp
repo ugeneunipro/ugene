@@ -488,11 +488,11 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     WorkflowProcessItem *item = GTUtilsWorkflowDesigner::addElement(os, "Call Variants with SAMtools");
-    CHECK_SET_ERR(item != NULL, "Failed to add Call variants element");
+    CHECK_SET_ERR(item != nullptr, "Failed to add Call variants element");
     GTUtilsWorkflowDesigner::click(os, "Call Variants with SAMtools");
 
     WorkflowPortItem *port = GTUtilsWorkflowDesigner::getPortById(os, item, "in-sequence");
-    CHECK_SET_ERR(port != NULL, "Cannot get in-sequence port 1");
+    CHECK_SET_ERR(port != nullptr, "Cannot get in-sequence port 1");
     CHECK_SET_ERR(!port->isVisible(), "In-sequence port is unexpectedly visible");
     CHECK_SET_ERR(GTUtilsWorkflowDesigner::isParameterVisible(os, "Reference"), "Reference parameter is not visible");
 
@@ -501,9 +501,9 @@ GUI_TEST_CLASS_DEFINITION(test_0061) {
     GTUtilsWorkflowDesigner::click(os, "Call Variants");
     CHECK_SET_ERR(!GTUtilsWorkflowDesigner::isParameterVisible(os, "Reference"), "Reference parameter is unexpectedly visible");
     item = GTUtilsWorkflowDesigner::getWorker(os, "Call Variants");
-    CHECK_SET_ERR(item != NULL, "Cannot find Call variants with SAMtools element");
+    CHECK_SET_ERR(item != nullptr, "Cannot find Call variants with SAMtools element");
     port = GTUtilsWorkflowDesigner::getPortById(os, item, "in-sequence");
-    CHECK_SET_ERR(port != NULL, "Cannot get in-sequence port 2");
+    CHECK_SET_ERR(port != nullptr, "Cannot get in-sequence port 2");
     CHECK_SET_ERR(port->isVisible(), "In-sequence port is enexpectedly not visible");
 
     GTUtilsWorkflowDesigner::removeItem(os, "Read Sequence");
@@ -531,7 +531,7 @@ GUI_TEST_CLASS_DEFINITION(test_0062) {
     GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
 
     WorkflowProcessItem *snpEffItem = GTUtilsWorkflowDesigner::addElement(os, "SnpEff Annotation and Filtration");
-    CHECK_SET_ERR(snpEffItem != NULL, "Failed to add SnpEff Annotation and Filtration element");
+    CHECK_SET_ERR(snpEffItem != nullptr, "Failed to add SnpEff Annotation and Filtration element");
 
     GTUtilsDialog::waitForDialog(os, new SnpEffDatabaseDialogFiller(os, "hg19"));
     GTUtilsWorkflowDesigner::setParameter(os, "Genome", QVariant(), GTUtilsWorkflowDesigner::customDialogSelector);

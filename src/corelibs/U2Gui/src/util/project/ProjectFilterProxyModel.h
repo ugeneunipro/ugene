@@ -31,7 +31,7 @@ namespace U2 {
 class ProjectFilterProxyModel : public QSortFilterProxyModel {
     Q_OBJECT
 public:
-    ProjectFilterProxyModel(const ProjectTreeControllerModeSettings &settings, QObject *p = NULL);
+    ProjectFilterProxyModel(const ProjectTreeControllerModeSettings &settings, QObject *p = nullptr);
 
     ProjectViewModel *sourceModel() const;
 

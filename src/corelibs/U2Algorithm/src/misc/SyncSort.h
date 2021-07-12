@@ -130,9 +130,10 @@ template<class T, class S>
 quint32 SyncSort<T, S>::med3(T *x, quint32 a, quint32 b, quint32 c) {
     qint64 bc = compare(x + b, x + c);
     qint64 ac = compare(x + a, x + c);
-    return compare(x + a, x + b) < 0 ?
-               (bc < 0 ? b : ac < 0 ? c : a) :
-               (bc > 0 ? b : ac > 0 ? c : a);
+    return compare(x + a, x + b) < 0 ? (bc < 0 ? b : ac < 0 ? c
+                                                            : a)
+                                     : (bc > 0 ? b : ac > 0 ? c
+                                                            : a);
 }
 
 template<class T, class S>

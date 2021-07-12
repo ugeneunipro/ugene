@@ -27,20 +27,20 @@
 namespace U2 {
 
 SequenceWalkerConfig::SequenceWalkerConfig()
-    : seq(NULL), seqSize(0), complTrans(NULL), aminoTrans(NULL),
+    : seq(nullptr), seqSize(0), complTrans(nullptr), aminoTrans(nullptr),
       chunkSize(0), lastChunkExtraLen(0), overlapSize(0), nThreads(MAX_PARALLEL_SUBTASKS_SERIAL),
       walkCircular(false), walkCircularDistance(0) {
-    strandToWalk = (complTrans != NULL) ? StrandOption_Both : StrandOption_DirectOnly;
+    strandToWalk = (complTrans != nullptr) ? StrandOption_Both : StrandOption_DirectOnly;
 }
 
 SequenceWalkerTask::SequenceWalkerTask(const SequenceWalkerConfig &c, SequenceWalkerCallback *cb, const QString &name, TaskFlags tf)
     : Task(name, tf),
       config(c),
       callback(cb),
-      tempBuffer(NULL) {
+      tempBuffer(nullptr) {
     assert(config.chunkSize > static_cast<uint>(config.overlapSize));    // if chunk == overlap -> infinite loop occurs
-    assert(cb != NULL);
-    assert(config.strandToWalk == StrandOption_DirectOnly || config.complTrans != NULL);
+    assert(cb != nullptr);
+    assert(config.strandToWalk == StrandOption_DirectOnly || config.complTrans != nullptr);
 
     maxParallelSubtasks = config.nThreads;
     QList<SequenceWalkerSubtask *> subs = prepareSubtasks();
@@ -64,13 +64,13 @@ QList<SequenceWalkerSubtask *> SequenceWalkerTask::prepareSubtasks() {
     if (config.walkCircular && static_cast<quint64>(config.range.length) == config.seqSize) {
         tempBuffer.clear();
         tempBuffer.append(QByteArray(config.seq, config.seqSize));
-        tempBuffer.append(QByteArray(config.seq).left(config.walkCircularDistance * (config.aminoTrans == NULL ? 1 : 3)));
+        tempBuffer.append(QByteArray(config.seq).left(config.walkCircularDistance * (config.aminoTrans == nullptr ? 1 : 3)));
 
         config.seq = tempBuffer.constData();
-        config.range.length += config.walkCircularDistance * (config.aminoTrans == NULL ? 1 : 3);
+        config.range.length += config.walkCircularDistance * (config.aminoTrans == nullptr ? 1 : 3);
     }
 
-    if (config.aminoTrans == NULL) {
+    if (config.aminoTrans == nullptr) {
         //try walk direct and complement strands
         QVector<U2Region> chunks = splitRange(config.range, config.chunkSize, config.overlapSize, config.lastChunkExtraLen, false);
 
@@ -79,7 +79,7 @@ QList<SequenceWalkerSubtask *> SequenceWalkerTask::prepareSubtasks() {
             res += directTasks;
         }
         if (config.strandToWalk == StrandOption_Both || config.strandToWalk == StrandOption_ComplementOnly) {
-            assert(config.complTrans != NULL);
+            assert(config.complTrans != nullptr);
             QList<SequenceWalkerSubtask *> complTasks = createSubs(chunks, true, false);
             res += complTasks;
         }
@@ -99,7 +99,7 @@ QList<SequenceWalkerSubtask *> SequenceWalkerTask::prepareSubtasks() {
             }
         }
         if (config.strandToWalk == StrandOption_Both || config.strandToWalk == StrandOption_ComplementOnly) {
-            assert(config.complTrans != NULL);
+            assert(config.complTrans != nullptr);
             for (int i = 0; i < 3; i++) {
                 U2Region strandRange(config.range.startPos, config.range.length - i);
                 QVector<U2Region> chunks = splitRange(strandRange, config.chunkSize, config.overlapSize, config.lastChunkExtraLen, true);
@@ -184,13 +184,13 @@ void SequenceWalkerSubtask::prepareLocalRegion() {
     QByteArray res(localSeq, localLen);
     if (doCompl) {
         //do complement;
-        assert(t->getConfig().complTrans != NULL);
+        assert(t->getConfig().complTrans != nullptr);
         const QByteArray &complementMap = t->getConfig().complTrans->getOne2OneMapper();
         TextUtils::translate(complementMap, res.data(), res.length());
         TextUtils::reverse(res.data(), res.length());
     }
     if (doAmino) {
-        assert(t->getConfig().aminoTrans != NULL && t->getConfig().aminoTrans->isThree2One());
+        assert(t->getConfig().aminoTrans != nullptr && t->getConfig().aminoTrans->isThree2One());
         t->getConfig().aminoTrans->translate(res.data(), res.length(), res.data(), res.length());
         int newLen = res.length() / 3;
         res.resize(newLen);

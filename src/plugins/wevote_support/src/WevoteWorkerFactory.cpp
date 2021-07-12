@@ -156,7 +156,7 @@ void WevoteWorkerFactory::init() {
                                                                                                            "DNA reads classifier based on an ensemble of other classification methods (Kraken, CLARK, etc.)."));
     ActorPrototype *proto = new IntegralBusActorPrototype(desc, ports, attributes);
     proto->setEditor(new DelegateEditor(delegates));
-    proto->setPrompter(new WevotePrompter(NULL));
+    proto->setPrompter(new WevotePrompter(nullptr));
     proto->addExternalTool(WevoteSupport::TOOL_ID);
     proto->setValidator(new WevoteValidator());
     WorkflowEnv::getProtoRegistry()->registerProto(NgsReadsClassificationPlugin::WORKFLOW_ELEMENTS_GROUP, proto);

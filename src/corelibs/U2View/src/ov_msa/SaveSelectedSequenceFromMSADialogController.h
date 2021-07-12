@@ -28,7 +28,6 @@
 
 #include <U2Gui/SaveDocumentController.h>
 
-
 namespace U2 {
 
 class Ui_SaveSelectedSequenceFromMSADialog;

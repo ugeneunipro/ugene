@@ -42,12 +42,12 @@
 namespace U2 {
 
 McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectContext *ctx)
-    : PanView(ui, ctx, McaEditorReferenceRenderAreaFactory(ui, NULL != ui ? ui->getEditor() : NULL)),
-      editor(NULL != ui ? ui->getEditor() : NULL),
+    : PanView(ui, ctx, McaEditorReferenceRenderAreaFactory(ui, nullptr != ui ? ui->getEditor() : nullptr)),
+      editor(nullptr != ui ? ui->getEditor() : nullptr),
       ui(ui),
       renderer(dynamic_cast<McaReferenceAreaRenderer *>(getRenderArea()->getRenderer())),
       firstPressedSelectionPosition(-1) {
-    SAFE_POINT(NULL != renderer, "Renderer is NULL", );
+    SAFE_POINT(nullptr != renderer, "Renderer is NULL", );
 
     setObjectName("mca_editor_reference_area");
     singleBaseSelection = true;
@@ -70,7 +70,7 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectC
     connect(ui->getConsensusArea(), SIGNAL(si_mismatchRedrawRequired()), SLOT(completeUpdate()));
     connect(scrollBar, SIGNAL(valueChanged(int)), ui->getScrollController()->getHorizontalScrollBar(), SLOT(setValue(int)));
     connect(ui->getScrollController()->getHorizontalScrollBar(), SIGNAL(valueChanged(int)), scrollBar, SLOT(setValue(int)));
-    connect(ui, SIGNAL(si_clearSelection()), SLOT(sl_clearSelection()));
+    connect(editor, SIGNAL(si_clearSelection()), SLOT(sl_clearSelection()));
     connect(ui->getSequenceArea(), SIGNAL(si_clearReferenceSelection()), SLOT(sl_clearSelection()));
     connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(MaEditorSelection, MaEditorSelection)), SLOT(sl_selectionChanged(MaEditorSelection, MaEditorSelection)));
 
@@ -95,8 +95,8 @@ void McaEditorReferenceArea::sl_visibleRangeChanged() {
 }
 
 void McaEditorReferenceArea::sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &) {
-    U2Region selection(current.x(), current.width());
-    setSelection(selection);
+    QRect currentRect = current.toRect();
+    setSelection(U2Region(currentRect.x(), currentRect.width()));
 }
 
 void McaEditorReferenceArea::sl_clearSelection() {
@@ -143,7 +143,7 @@ void McaEditorReferenceArea::keyPressEvent(QKeyEvent *event) {
     const int key = event->key();
     bool accepted = false;
     DNASequenceSelection *const selection = ctx->getSequenceSelection();
-    U2Region selectedRegion = (NULL != selection && !selection->isEmpty() ? selection->getSelectedRegions().first() : U2Region());
+    U2Region selectedRegion = (nullptr != selection && !selection->isEmpty() ? selection->getSelectedRegions().first() : U2Region());
     const qint64 selectionEndPos = selectedRegion.endPos() - 1;
     Qt::KeyboardModifiers km = QApplication::keyboardModifiers();
     const bool isShiftPressed = km.testFlag(Qt::ShiftModifier);

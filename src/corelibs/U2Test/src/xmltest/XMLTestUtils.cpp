@@ -218,7 +218,7 @@ void XMLMultiTest::init(XMLTestFormat *tf, const QDomElement &el) {
 Task::ReportResult XMLMultiTest::report() {
     if (!hasError()) {
         Task *t = getSubtaskWithErrors();
-        if (t != NULL) {
+        if (t != nullptr) {
             stateInfo.setError(t->getError());
         }
     }

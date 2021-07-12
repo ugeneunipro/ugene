@@ -69,9 +69,9 @@ void GObject::setGObjectName(const QString &newName) {
         U2OpStatus2Log os;
         DbiConnection con(entityRef.dbiRef, os);
         CHECK_OP(os, );
-        CHECK(NULL != con.dbi, );
+        CHECK(nullptr != con.dbi, );
         U2ObjectDbi *oDbi = con.dbi->getObjectDbi();
-        CHECK(NULL != oDbi, );
+        CHECK(nullptr != oDbi, );
 
         oDbi->renameObject(entityRef.entityId, newName, os);
         CHECK_OP(os, );
@@ -91,13 +91,13 @@ void GObject::setGObjectNameNotDbi(const QString &newName) {
 }
 
 QList<GObjectRelation> GObject::getObjectRelations() const {
-    SAFE_POINT(hints != NULL, "Object hints is NULL", QList<GObjectRelation>());
+    SAFE_POINT(hints != nullptr, "Object hints is NULL", QList<GObjectRelation>());
     QList<GObjectRelation> res = hints->get(GObjectHint_RelatedObjects).value<QList<GObjectRelation>>();
 
     // fetch permanent object relations from DB
     // only for the first time for objects from shared DBs
     Document *parentDoc = getDocument();
-    if (!arePermanentRelationsFetched && !isUnloaded() && !(NULL != parentDoc && !parentDoc->isDatabaseConnection())) {
+    if (!arePermanentRelationsFetched && !isUnloaded() && !(nullptr != parentDoc && !parentDoc->isDatabaseConnection())) {
         fetchPermanentGObjectRelations(res);
     }
 
@@ -107,14 +107,14 @@ QList<GObjectRelation> GObject::getObjectRelations() const {
 void GObject::fetchPermanentGObjectRelations(QList<GObjectRelation> &res) const {
     Document *parentDoc = getDocument();
     // take into account the case when the object was not added to document
-    CHECK(NULL != parentDoc && entityRef.dbiRef.isValid(), );
+    CHECK(nullptr != parentDoc && entityRef.dbiRef.isValid(), );
 
     U2OpStatusImpl os;
     DbiConnection con(entityRef.dbiRef, os);
     SAFE_POINT_OP(os, );
 
     U2ObjectRelationsDbi *rDbi = con.dbi->getObjectRelationsDbi();
-    SAFE_POINT(rDbi != NULL, "Invalid object relations DBI detected!", );
+    SAFE_POINT(rDbi != nullptr, "Invalid object relations DBI detected!", );
 
     const QList<U2ObjectRelation> rawDbRelations = rDbi->getObjectRelations(entityRef.entityId, os);
     SAFE_POINT_OP(os, );
@@ -122,7 +122,7 @@ void GObject::fetchPermanentGObjectRelations(QList<GObjectRelation> &res) const 
     const QString docUrl = parentDoc->getURLString();
     QList<GObjectRelation> dbRelations;
     foreach (const U2ObjectRelation &relation, rawDbRelations) {
-        if (NULL != parentDoc->findGObjectByName(relation.referencedName)) {
+        if (nullptr != parentDoc->findGObjectByName(relation.referencedName)) {
             GObjectReference reference(docUrl, relation.referencedName, relation.referencedType);
             reference.entityRef = U2EntityRef(entityRef.dbiRef, relation.referencedObject);
             const GObjectRelation relationFromDb(reference, relation.relationRole);
@@ -161,7 +161,7 @@ void GObject::setRelationsInDb(QList<GObjectRelation> &list) const {
     DbiConnection con(entityRef.dbiRef, os);
     SAFE_POINT_OP(os, );
     U2ObjectRelationsDbi *rDbi = con.dbi->getObjectRelationsDbi();
-    SAFE_POINT(rDbi != NULL, "Invalid object relations DBI detected!", );
+    SAFE_POINT(rDbi != nullptr, "Invalid object relations DBI detected!", );
     rDbi->removeReferencesForObject(entityRef.entityId, os);
     SAFE_POINT_OP(os, );
     U2ObjectDbi *oDbi = con.dbi->getObjectDbi();
@@ -264,7 +264,7 @@ bool relationsAreEqualExceptDbId(const GObjectRelation &f, const GObjectRelation
 
 bool GObject::hasObjectRelation(const GObjectRelation &r) const {
     Document *parentDoc = getDocument();
-    if (NULL != parentDoc && !parentDoc->isDatabaseConnection()) {
+    if (nullptr != parentDoc && !parentDoc->isDatabaseConnection()) {
         foreach (const GObjectRelation &rel, getObjectRelations()) {
             if (relationsAreEqualExceptDbId(rel, r)) {
                 return true;
@@ -286,7 +286,7 @@ bool GObject::isUnloaded() const {
 }
 
 StateLock *GObject::getGObjectModLock(GObjectModLock type) const {
-    return modLocks.value(type, NULL);
+    return modLocks.value(type, nullptr);
 }
 
 void GObject::relatedObjectRelationChanged() {
@@ -365,7 +365,7 @@ void GObject::setParentStateLockItem(StateLockableTreeItem *p) {
 
 void GObject::checkIfBelongToSharedDatabase(StateLockableTreeItem *parent) {
     Document *parentDoc = qobject_cast<Document *>(parent);
-    CHECK(NULL != parentDoc, );
+    CHECK(nullptr != parentDoc, );
 
     if (parentDoc->isDatabaseConnection()) {
         if (!modLocks.contains(GObjectModLock_IO)) {

@@ -49,11 +49,11 @@ AssemblyVariantRow::AssemblyVariantRow(QWidget *parent, VariantTrackObject *_tra
 
     AssemblyCellRendererFactoryRegistry *factories = browser->getCellRendererRegistry();
     AssemblyCellRendererFactory *f = factories->getFactoryById(AssemblyCellRendererFactory::ALL_NUCLEOTIDES);
-    SAFE_POINT(f != NULL, QString("AssemblyCellRendererFactory with id '%1' not found!").arg(AssemblyCellRendererFactory::ALL_NUCLEOTIDES), );
+    SAFE_POINT(f != nullptr, QString("AssemblyCellRendererFactory with id '%1' not found!").arg(AssemblyCellRendererFactory::ALL_NUCLEOTIDES), );
     nuclRenderer.reset(f->create());
 
     f = factories->getFactoryById(AssemblyCellRendererFactory::ALL_NUCLEOTIDES);
-    SAFE_POINT(f != NULL, QString("AssemblyCellRendererFactory with id '%1' not found!").arg(AssemblyCellRendererFactory::ALL_NUCLEOTIDES), );
+    SAFE_POINT(f != nullptr, QString("AssemblyCellRendererFactory with id '%1' not found!").arg(AssemblyCellRendererFactory::ALL_NUCLEOTIDES), );
     snpRenderer.reset(f->create());
 
     currentData.updateHint = false;
@@ -281,13 +281,13 @@ void AssemblyVariantRowManager::sl_trackRemoved(VariantTrackObject *objToRemove)
 
     QLayout *layout = annsArea->layout();
     QVBoxLayout *vertLayout = qobject_cast<QVBoxLayout *>(layout);
-    SAFE_POINT(NULL != vertLayout, "Internal error: layout problems", );
+    SAFE_POINT(nullptr != vertLayout, "Internal error: layout problems", );
 
     for (int i = 0; i < vertLayout->count(); i++) {
         QLayoutItem *it = vertLayout->itemAt(i);
         QWidget *w = it->widget();
         AssemblyVariantRow *row = dynamic_cast<AssemblyVariantRow *>(w);
-        if (NULL == row) {
+        if (nullptr == row) {
             continue;
         }
         VariantTrackObject *trackObj = row->getTrackObject();
@@ -304,7 +304,7 @@ void AssemblyVariantRowManager::sl_trackAdded(VariantTrackObject *newTrackObj) {
 
     QLayout *layout = annsArea->layout();
     QVBoxLayout *vertLayout = qobject_cast<QVBoxLayout *>(layout);
-    SAFE_POINT(NULL != vertLayout, "Internal error: layout problems", );
+    SAFE_POINT(nullptr != vertLayout, "Internal error: layout problems", );
 
     AssemblyVariantRow *row = new AssemblyVariantRow(annsArea, newTrackObj, browser);
     vertLayout->addWidget(row);
@@ -318,7 +318,7 @@ void AssemblyVariantRowManager::sl_trackAdded(VariantTrackObject *newTrackObj) {
 void AssemblyVariantRowManager::sl_removeRow() {
     QObject *s = sender();
     AssemblyVariantRow *row = dynamic_cast<AssemblyVariantRow *>(s);
-    SAFE_POINT(NULL != row, "Internal error: NULL row widget", );
+    SAFE_POINT(nullptr != row, "Internal error: NULL row widget", );
 
     model->sl_trackObjRemoved(row->getTrackObject());
 }

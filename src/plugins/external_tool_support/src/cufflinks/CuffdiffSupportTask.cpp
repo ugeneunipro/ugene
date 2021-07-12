@@ -42,8 +42,8 @@ const QString CuffdiffSupportTask::outSubDirBaseName("cuffdiff_out");
 CuffdiffSupportTask::CuffdiffSupportTask(const CuffdiffSettings &_settings)
     : ExternalToolSupportTask(tr("Running Cuffdiff task"), TaskFlags_NR_FOSE_COSC),
       settings(_settings),
-      diffTask(NULL) {
-    SAFE_POINT_EXT(NULL != settings.storage, setError(tr("Workflow data storage is NULL")), );
+      diffTask(nullptr) {
+    SAFE_POINT_EXT(nullptr != settings.storage, setError(tr("Workflow data storage is NULL")), );
 }
 
 namespace {
@@ -110,7 +110,7 @@ QList<Task *> CuffdiffSupportTask::onSubTaskFinished(Task *subTask) {
         saveTasks.removeOne(subTask);
     }
     if (saveTasks.isEmpty()) {
-        if (NULL == diffTask) {
+        if (nullptr == diffTask) {
             tasks << createCuffdiffTask();
         } else {
             addOutFiles();
@@ -126,7 +126,7 @@ Task::ReportResult CuffdiffSupportTask::report() {
 
 Task *CuffdiffSupportTask::createTranscriptTask() {
     createTranscriptDoc();
-    CHECK_OP(stateInfo, NULL);
+    CHECK_OP(stateInfo, nullptr);
 
     SaveDocumentTask *t = new SaveDocumentTask(transcriptDoc.data(), transcriptDoc->getIOAdapterFactory(), transcriptUrl);
     saveTasks << t;
@@ -237,10 +237,10 @@ void CuffdiffSupportTask::addOutFiles() {
 
 void CuffdiffSupportTask::createTranscriptDoc() {
     DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::GTF);
-    SAFE_POINT_EXT(NULL != format, setError(L10N::nullPointerError("GTF format")), );
+    SAFE_POINT_EXT(nullptr != format, setError(L10N::nullPointerError("GTF format")), );
 
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    SAFE_POINT_EXT(NULL != iof, setError(L10N::nullPointerError("I/O adapter factory")), );
+    SAFE_POINT_EXT(nullptr != iof, setError(L10N::nullPointerError("I/O adapter factory")), );
 
     transcriptUrl = workingDir + "/transcripts.gtf";
     transcriptDoc.reset(format->createNewLoadedDocument(iof, transcriptUrl, stateInfo));
@@ -279,7 +279,7 @@ void CuffdiffSupportTask::LogParser::parseErrOutput(const QString &partOfLog) {
 /* CuffdiffSettings */
 /************************************************************************/
 CuffdiffSettings::CuffdiffSettings()
-    : storage(NULL) {
+    : storage(nullptr) {
     timeSeriesAnalysis = false;
     upperQuartileNorm = false;
     hitsNorm = Compatible;

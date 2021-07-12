@@ -22,7 +22,6 @@
 #include "ExportHighlightedDialogController.h"
 
 #include <QMessageBox>
-#include <QPushButton>
 
 #include <U2Core/AppContext.h>
 #include <U2Core/AppSettings.h>
@@ -42,7 +41,7 @@ namespace U2 {
 ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt *msaui_, QWidget *p)
     : QDialog(p),
       msaui(msaui_),
-      saveController(NULL),
+      saveController(nullptr),
       ui(new Ui_ExportHighlightedDialog()) {
     ui->setupUi(this);
     new HelpButton(this, ui->buttonBox, "65929627");
@@ -60,14 +59,15 @@ ExportHighligtingDialogController::ExportHighligtingDialogController(MaEditorWgt
     int alignLength = editor->getAlignmentLen();
     const MaEditorSelection &selection = editor->getSelection();
 
-    int startPos = -1;
-    int endPos = -1;
-    if (selection.isEmpty() || selection.width() == 1) {
+    int startPos;
+    int endPos;
+    QRect selectionRect = selection.toRect();
+    if (selectionRect.isEmpty() || selectionRect.width() == 1) {
         startPos = 1;
         endPos = alignLength;
     } else {
-        startPos = selection.x() + 1;
-        endPos = selection.x() + selection.width();
+        startPos = selectionRect.x() + 1;
+        endPos = selectionRect.x() + selectionRect.width();
     }
 
     ui->startLineEdit->setMinimum(1);

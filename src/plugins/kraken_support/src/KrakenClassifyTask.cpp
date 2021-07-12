@@ -45,7 +45,7 @@ KrakenClassifyTaskSettings::KrakenClassifyTaskSettings()
 KrakenClassifyTask::KrakenClassifyTask(const KrakenClassifyTaskSettings &settings)
     : ExternalToolSupportTask(tr("Classify reads with Kraken"), TaskFlags_FOSE_COSC),
       settings(settings),
-      classifyTask(NULL) {
+      classifyTask(nullptr) {
     GCOUNTER(cvar, "KrakenClassifyTask");
 
     SAFE_POINT_EXT(!settings.readsUrl.isEmpty(), setError("Reads URL is empty"), );

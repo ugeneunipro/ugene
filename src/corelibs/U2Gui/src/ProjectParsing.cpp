@@ -102,10 +102,10 @@ static QVariant toRelativeRelations(const QList<GObjectRelation> &absRelations, 
             QString relDocUrl = relRel.getDocURL();
             QFileInfo fi(relDocUrl);
             QString absolutePath = fi.absoluteFilePath();
-#ifdef Q_OS_WIN
+#    ifdef Q_OS_WIN
             absolutePath = absolutePath.toLower();
             relDocUrl = relDocUrl.toLower();
-#endif
+#    endif
             assert(absolutePath.isEmpty() || absolutePath == relDocUrl);
 #endif
 
@@ -159,7 +159,7 @@ void ProjectFileUtils::saveProjectFile(U2OpStatus &ts, Project *project, const Q
         docElement.setAttribute("format", formatId);
         docElement.setAttribute("readonly", gbDoc->hasUserModLock() ? 1 : 0);
         StateLock *l = gbDoc->getDocumentModLock(DocumentModLock_FORMAT_AS_INSTANCE);
-        if (l != NULL) {
+        if (l != nullptr) {
             docElement.setAttribute("format-lock", 1);
         }
 
@@ -282,7 +282,7 @@ ProjectParser *ProjectParserRegistry::getProjectParserByVersion(const QString &i
             return p;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 ProjectParserRegistry *ProjectParserRegistry::instance() {
@@ -369,7 +369,7 @@ Project *ProjectParser10::createProjectFromXMLModel(const QString &pURL, const Q
         bool instanceLock = docElement.attribute("format-lock").toInt() != 0;
         IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioAdapterId);
         DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(format);
-        if (df == NULL) {    // this can happen when close ugene on startup
+        if (df == nullptr) {    // this can happen when close ugene on startup
             continue;
         }
         QVariantMap fs = string2Map(docElement.text(), true);
@@ -407,7 +407,7 @@ Project *ProjectParser10::createProjectFromXMLModel(const QString &pURL, const Q
         }
         QString lockReason = instanceLock ? tr("The last loaded state was locked by format") : QString();
         Document *d = df->createNewUnloadedDocument(iof, getUrl(docUrl, format), os, fs, unloadedObjects, lockReason);
-        CHECK_OP_EXT(os, qDeleteAll(documents), NULL);
+        CHECK_OP_EXT(os, qDeleteAll(documents), nullptr);
         d->setUserModLock(readonly);
         documents.append(d);
     }

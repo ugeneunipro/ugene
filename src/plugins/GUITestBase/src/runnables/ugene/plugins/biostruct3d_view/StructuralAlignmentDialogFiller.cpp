@@ -35,11 +35,11 @@ StructuralAlignmentDialogFiller::StructuralAlignmentDialogFiller(HI::GUITestOpSt
 #define GT_METHOD_NAME "commonScenario"
 void StructuralAlignmentDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     if (!chainIndexes.isEmpty()) {
         QComboBox *combo = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "chainCombo", dialog));
-        CHECK_SET_ERR(combo != NULL, "chainCombo not found!");
+        CHECK_SET_ERR(combo != nullptr, "chainCombo not found!");
         foreach (const QString &curString, chainIndexes) {
             int index = combo->findText(curString, Qt::MatchContains);
             GT_CHECK(index != -1, "Index '" + curString + "' was not found");

@@ -151,70 +151,70 @@ private:
             inputChar = input.peek();
         }
         switch (input.peek()) {
-        case '\0':
-            return Token("<end>", Token::END_OF_INPUT);
-        case '(':
-            return Token(QByteArray(1, input.next()), Token::LEFT_PARENTHESIS);
-        case ')':
-            return Token(QByteArray(1, input.next()), Token::RIGHT_PARENTHESIS);
-        case '^':
-            return Token(QByteArray(1, input.next()), Token::CARET);
-        case '<':
-            return Token(QByteArray(1, input.next()), Token::LESS);
-        case '>':
-            return Token(QByteArray(1, input.next()), Token::GREATER);
-        case ':':
-            return Token(QByteArray(1, input.next()), Token::COLON);
-        case ',':
-            return Token(QByteArray(1, input.next()), Token::COMMA);
-        case '.': {
-            QByteArray tokenString(1, input.next());
-            if ('.' == input.peek()) {
-                tokenString.append(input.next());
-                return Token(tokenString, Token::DOUBLE_PERIOD);
-            }
-            return Token(tokenString, Token::PERIOD);
-        }
-        default: {
-            const QBitArray &NUMS = TextUtils::NUMS;
-            QByteArray tokenString;
-            if (NUMS.testBit(input.peek()) || '-' == input.peek()) {
-                if ('-' == input.peek()) {
+            case '\0':
+                return Token("<end>", Token::END_OF_INPUT);
+            case '(':
+                return Token(QByteArray(1, input.next()), Token::LEFT_PARENTHESIS);
+            case ')':
+                return Token(QByteArray(1, input.next()), Token::RIGHT_PARENTHESIS);
+            case '^':
+                return Token(QByteArray(1, input.next()), Token::CARET);
+            case '<':
+                return Token(QByteArray(1, input.next()), Token::LESS);
+            case '>':
+                return Token(QByteArray(1, input.next()), Token::GREATER);
+            case ':':
+                return Token(QByteArray(1, input.next()), Token::COLON);
+            case ',':
+                return Token(QByteArray(1, input.next()), Token::COMMA);
+            case '.': {
+                QByteArray tokenString(1, input.next());
+                if ('.' == input.peek()) {
                     tokenString.append(input.next());
+                    return Token(tokenString, Token::DOUBLE_PERIOD);
                 }
-                while (NUMS.testBit(input.peek())) {
-                    tokenString.append(input.next());
-                }
-                if ("-" == QString(tokenString)) {
-                    tokenString = "";
-                    input.prev();
-                } else if (!isNameCharacter(input.peek())) {
-                    return Token(tokenString, Token::NUMBER);
-                }
+                return Token(tokenString, Token::PERIOD);
             }
-            if (isNameCharacter(input.peek())) {
-                while (isNameCharacter(input.peek())) {
-                    tokenString.append(input.next());
+            default: {
+                const QBitArray &NUMS = TextUtils::NUMS;
+                QByteArray tokenString;
+                if (NUMS.testBit(input.peek()) || '-' == input.peek()) {
+                    if ('-' == input.peek()) {
+                        tokenString.append(input.next());
+                    }
+                    while (NUMS.testBit(input.peek())) {
+                        tokenString.append(input.next());
+                    }
+                    if ("-" == QString(tokenString)) {
+                        tokenString = "";
+                        input.prev();
+                    } else if (!isNameCharacter(input.peek())) {
+                        return Token(tokenString, Token::NUMBER);
+                    }
                 }
-                if ("join" == tokenString) {
-                    return Token(tokenString, Token::JOIN);
+                if (isNameCharacter(input.peek())) {
+                    while (isNameCharacter(input.peek())) {
+                        tokenString.append(input.next());
+                    }
+                    if ("join" == tokenString) {
+                        return Token(tokenString, Token::JOIN);
+                    }
+                    if ("order" == tokenString) {
+                        return Token(tokenString, Token::ORDER);
+                    }
+                    if ("complement" == tokenString) {
+                        return Token(tokenString, Token::COMPLEMENT);
+                    }
+                    if ("bond" == tokenString) {
+                        return Token(tokenString, Token::BOND);
+                    }
+                    return Token(tokenString, Token::NAME);
                 }
-                if ("order" == tokenString) {
-                    return Token(tokenString, Token::ORDER);
-                }
-                if ("complement" == tokenString) {
-                    return Token(tokenString, Token::COMPLEMENT);
-                }
-                if ("bond" == tokenString) {
-                    return Token(tokenString, Token::BOND);
-                }
-                return Token(tokenString, Token::NAME);
+                ioLog.trace(QString("GENBANK LOCATION PARSER: Invalid token (ascii code): %1, next token (ascii)").arg(static_cast<int>(input.peek())));
+                char nextChar = input.next();
+                ioLog.trace(QString("GENBANK LOCATION PARSER: Next token after invalid (ascii code)").arg(static_cast<int>(nextChar)));
+                return Token(QByteArray(1, nextChar), Token::INVALID);
             }
-            ioLog.trace(QString("GENBANK LOCATION PARSER: Invalid token (ascii code): %1, next token (ascii)").arg(static_cast<int>(input.peek())));
-            char nextChar = input.next();
-            ioLog.trace(QString("GENBANK LOCATION PARSER: Next token after invalid (ascii code)").arg(static_cast<int>(nextChar)));
-            return Token(QByteArray(1, nextChar), Token::INVALID);
-        }
         }
     }
 

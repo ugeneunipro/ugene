@@ -42,39 +42,39 @@ void ProjectFilterProxyModel::updateSettings(const ProjectTreeControllerModeSett
 
 ProjectViewModel *ProjectFilterProxyModel::sourceModel() const {
     ProjectViewModel *srcModel = qobject_cast<ProjectViewModel *>(QSortFilterProxyModel::sourceModel());
-    SAFE_POINT(NULL != srcModel, L10N::nullPointerError("project view model"), NULL);
+    SAFE_POINT(nullptr != srcModel, L10N::nullPointerError("project view model"), nullptr);
     return srcModel;
 }
 
 QModelIndex ProjectFilterProxyModel::getIndexForDoc(Document *doc) const {
     ProjectViewModel *srcModel = sourceModel();
-    CHECK(NULL != srcModel, QModelIndex());
+    CHECK(nullptr != srcModel, QModelIndex());
     return mapFromSource(srcModel->getIndexForDoc(doc));
 }
 
 bool ProjectFilterProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const {
     ProjectViewModel *srcModel = sourceModel();
-    CHECK(NULL != srcModel, false);
+    CHECK(nullptr != srcModel, false);
 
     const QModelIndex index = srcModel->index(sourceRow, 0, sourceParent);
     ProjectViewModel::Type itemType = srcModel->itemType(index);
     switch (itemType) {
-    case ProjectViewModel::DOCUMENT:
-        return settings.isDocumentShown(srcModel->toDocument(index));
-    case ProjectViewModel::FOLDER:
-        return filterAcceptsFolder(srcModel->toFolder(index));
-    case ProjectViewModel::OBJECT:
-        return settings.isObjectShown(srcModel->toObject(index));
-    default:
-        FAIL("Unexpected project item type", false);
+        case ProjectViewModel::DOCUMENT:
+            return settings.isDocumentShown(srcModel->toDocument(index));
+        case ProjectViewModel::FOLDER:
+            return filterAcceptsFolder(srcModel->toFolder(index));
+        case ProjectViewModel::OBJECT:
+            return settings.isObjectShown(srcModel->toObject(index));
+        default:
+            FAIL("Unexpected project item type", false);
     }
 }
 
 bool ProjectFilterProxyModel::filterAcceptsFolder(const Folder *folder) const {
-    SAFE_POINT(NULL != folder, "Invalid folder detected", false);
+    SAFE_POINT(nullptr != folder, "Invalid folder detected", false);
 
     ProjectViewModel *srcModel = sourceModel();
-    CHECK(NULL != srcModel, true);
+    CHECK(nullptr != srcModel, true);
 
     const QString path = folder->getFolderPath();
 

@@ -25,7 +25,7 @@
 
 namespace U2 {
 
-DocumentFormatComboboxController::DocumentFormatComboboxController(QObject *p, QComboBox *cb, const DocumentFormatConstraints &_c, const DocumentFormatId& active)
+DocumentFormatComboboxController::DocumentFormatComboboxController(QObject *p, QComboBox *cb, const DocumentFormatConstraints &_c, const DocumentFormatId &active)
     : QObject(p), combo(cb), c(_c) {
     assert(combo->count() == 0);
 

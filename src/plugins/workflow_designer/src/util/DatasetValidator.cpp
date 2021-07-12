@@ -33,7 +33,7 @@ namespace Workflow {
 bool DatasetValidator::validate(const Actor *actor, NotificationsList &notificationList, const QMap<QString, QString> & /*options*/) const {
     // If parameter is incorrect, return true and skip validation: it is only a warning
     Attribute *urlAttr = actor->getParameter(BaseAttributes::URL_IN_ATTRIBUTE().getId());
-    SAFE_POINT(urlAttr != NULL, "Attribute is NULL", true);
+    SAFE_POINT(urlAttr != nullptr, "Attribute is NULL", true);
 
     QList<Dataset> sets = urlAttr->getAttributeValueWithoutScript<QList<Dataset>>();
     QScopedPointer<DatasetFilesIterator> filesIt(new DatasetFilesIterator(sets));

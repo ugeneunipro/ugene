@@ -131,16 +131,16 @@ QList<AnnotationSettings *> DocumentFormatUtils::predefinedSettings() {
 
 QList<DNASequence> DocumentFormatUtils::toSequences(const GObject *obj) {
     QList<DNASequence> res;
-    SAFE_POINT(obj != NULL, "Gobject is NULL", res);
+    SAFE_POINT(obj != nullptr, "Gobject is NULL", res);
     const U2SequenceObject *seqObj = qobject_cast<const U2SequenceObject *>(obj);
     U2OpStatus2Log os;
-    if (seqObj != NULL) {
+    if (seqObj != nullptr) {
         res << seqObj->getWholeSequence(os);
         CHECK_OP_EXT(os, res.removeLast(), res);
         return res;
     }
     const MultipleSequenceAlignmentObject *maObj = qobject_cast<const MultipleSequenceAlignmentObject *>(obj);
-    CHECK(maObj != NULL, res);    //MultipleSequenceAlignmentObject is NULL
+    CHECK(maObj != nullptr, res);    //MultipleSequenceAlignmentObject is NULL
     const DNAAlphabet *al = maObj->getAlphabet();
     qint64 alLen = maObj->getMsa()->getLength();
     foreach (const MultipleSequenceAlignmentRow &row, maObj->getMsa()->getMsaRows()) {
@@ -188,9 +188,9 @@ void DocumentFormatUtils::updateFormatHints(QList<GObject *> &objects, QVariantM
 
 QString DocumentFormatUtils::getFormatNameById(const DocumentFormatId &formatId) {
     DocumentFormatRegistry *registry = AppContext::getDocumentFormatRegistry();
-    SAFE_POINT(NULL != registry, L10N::nullPointerError("document format registry"), "");
+    SAFE_POINT(nullptr != registry, L10N::nullPointerError("document format registry"), "");
     DocumentFormat *format = registry->getFormatById(formatId);
-    SAFE_POINT(NULL != format, QString("Document format '%1' is not registered").arg(formatId), "");
+    SAFE_POINT(nullptr != format, QString("Document format '%1' is not registered").arg(formatId), "");
     return format->getFormatName();
 }
 

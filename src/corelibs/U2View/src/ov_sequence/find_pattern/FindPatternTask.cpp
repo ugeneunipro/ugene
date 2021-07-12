@@ -35,7 +35,7 @@ FindPatternTask::FindPatternTask(const FindAlgorithmTaskSettings &settings, bool
     : Task(tr("Searching a pattern in sequence task"), TaskFlags_NR_FOSE_COSC),
       settings(settings),
       removeOverlaps(removeOverlaps),
-      findAlgorithmTask(NULL),
+      findAlgorithmTask(nullptr),
       noResults(false) {
 }
 
@@ -127,7 +127,7 @@ FindPatternListTask::FindPatternListTask(const FindAlgorithmTaskSettings &settin
 QList<Task *> FindPatternListTask::onSubTaskFinished(Task *subTask) {
     QList<Task *> res;
     FindPatternTask *task = qobject_cast<FindPatternTask *>(subTask);
-    SAFE_POINT(NULL != task, "Failed to cast FindPatternTask!", QList<Task *>());
+    SAFE_POINT(nullptr != task, "Failed to cast FindPatternTask!", QList<Task *>());
     if (!task->hasNoResults()) {
         noResults = false;
     }

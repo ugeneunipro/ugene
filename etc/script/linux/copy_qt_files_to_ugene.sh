@@ -56,7 +56,7 @@ patchelf --force-rpath --set-rpath '$ORIGIN/..' "${UGENE_DIR}/platforms"/*.so
 # SQL drivers.
 rm -rf "${UGENE_DIR}/sqldrivers"
 mkdir "${UGENE_DIR}/sqldrivers"
-cp -r "${EXTRA_LIBS_DIR}/sqldrivers/libqsqlmysql.so" "${UGENE_DIR}/sqldrivers"
+cp -r "${QT_DIR}/plugins/sqldrivers/libqsqlmysql.so" "${UGENE_DIR}/sqldrivers"
 # shellcheck disable=SC2016
 patchelf --force-rpath --set-rpath '$ORIGIN/..' "${UGENE_DIR}/sqldrivers"/*.so
 cp "${EXTRA_LIBS_DIR}/libmysqlclient.so.21" "${UGENE_DIR}/"

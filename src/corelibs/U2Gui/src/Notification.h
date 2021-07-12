@@ -104,7 +104,7 @@ class U2GUI_EXPORT NotificationStack : public QObject {
     Q_OBJECT
 
 public:
-    NotificationStack(QObject *o = NULL);
+    NotificationStack(QObject *o = nullptr);
     ~NotificationStack();
 
     void addNotification(Notification *t);

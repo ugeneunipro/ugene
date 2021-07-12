@@ -85,47 +85,47 @@ public:
     }
 
     virtual U2SequenceDbi *getSequenceDbi() {
-        return NULL;
+        return nullptr;
     }
 
     virtual U2FeatureDbi *getFeatureDbi() {
-        return NULL;
+        return nullptr;
     }
 
     virtual U2MsaDbi *getMsaDbi() {
-        return NULL;
+        return nullptr;
     }
 
     virtual U2AssemblyDbi *getAssemblyDbi() {
-        return NULL;
+        return nullptr;
     }
 
     virtual U2AttributeDbi *getAttributeDbi() {
-        return NULL;
+        return nullptr;
     }
 
     virtual U2ObjectDbi *getObjectDbi() {
-        return NULL;
+        return nullptr;
     }
 
     virtual U2ObjectRelationsDbi *getObjectRelationsDbi() {
-        return NULL;
+        return nullptr;
     }
 
     virtual U2VariantDbi *getVariantDbi() {
-        return NULL;
+        return nullptr;
     }
 
     virtual U2ModDbi *getModDbi() {
-        return NULL;
+        return nullptr;
     }
 
     virtual U2CrossDatabaseReferenceDbi *getCrossDatabaseReferenceDbi() {
-        return NULL;
+        return nullptr;
     }
 
     virtual UdrDbi *getUdrDbi() {
-        return NULL;
+        return nullptr;
     }
 
     virtual U2DataType getEntityTypeById(const U2DataId &) const {

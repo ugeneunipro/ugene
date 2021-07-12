@@ -68,7 +68,7 @@ public:
 class GeneByGeneReportPrompter : public PrompterBase<GeneByGeneReportPrompter> {
     Q_OBJECT
 public:
-    GeneByGeneReportPrompter(Actor *p = NULL)
+    GeneByGeneReportPrompter(Actor *p = nullptr)
         : PrompterBase<GeneByGeneReportPrompter>(p) {
     }
 

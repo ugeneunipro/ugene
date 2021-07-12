@@ -47,16 +47,16 @@ StringAdapter::StringAdapter(const QByteArray &data, StringAdapterFactory *f)
 bool StringAdapter::open(const GUrl &_url, IOAdapterMode m) {
     url = _url;
     switch (m) {
-    case IOAdapterMode_Write:
-        buffer.clear();
-        pos = 0;
-        break;
-    case IOAdapterMode_Read:
-        pos = 0;
-        break;
-    case IOAdapterMode_Append:
-        pos = buffer.length();
-        break;
+        case IOAdapterMode_Write:
+            buffer.clear();
+            pos = 0;
+            break;
+        case IOAdapterMode_Read:
+            pos = 0;
+            break;
+        case IOAdapterMode_Append:
+            pos = buffer.length();
+            break;
     }
     opened = true;
 

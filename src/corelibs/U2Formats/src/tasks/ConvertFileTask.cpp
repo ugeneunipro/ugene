@@ -75,20 +75,20 @@ void ConvertFileTask::run() {
 //DefaultConvertFileTask
 DefaultConvertFileTask::DefaultConvertFileTask(const GUrl &sourceUrl, const QString &detectedFormat, const QString &targetFormat, const QString &dir)
     : ConvertFileTask(sourceUrl, detectedFormat, targetFormat, dir),
-      loadTask(NULL),
-      saveTask(NULL) {
+      loadTask(nullptr),
+      saveTask(nullptr) {
 }
 
 DefaultConvertFileTask::DefaultConvertFileTask(const GUrl &sourceUrl, const QString &detectedFormat, const QString &targetUrl, const QString &targetFormat, const QString &dir)
     : ConvertFileTask(sourceUrl, detectedFormat, targetFormat, dir),
-      loadTask(NULL),
-      saveTask(NULL) {
+      loadTask(nullptr),
+      saveTask(nullptr) {
     this->targetUrl = targetUrl;
 }
 
 void DefaultConvertFileTask::prepare() {
     loadTask = LoadDocumentTask::getDefaultLoadDocTask(sourceURL);
-    if (NULL == loadTask) {
+    if (nullptr == loadTask) {
         coreLog.info(QString("Cannot load file %1").arg(sourceURL.getURLString()));
         return;
     }
@@ -107,11 +107,11 @@ QList<Task *> DefaultConvertFileTask::onSubTaskFinished(Task *subTask) {
 
     bool mainThread = false;
     Document *srcDoc = loadTask->getDocument(mainThread);
-    SAFE_POINT_EXT(NULL != srcDoc, setError("NULL document"), result);
+    SAFE_POINT_EXT(nullptr != srcDoc, setError("NULL document"), result);
 
     DocumentFormatRegistry *dfr = AppContext::getDocumentFormatRegistry();
     DocumentFormat *df = dfr->getFormatById(targetFormat);
-    SAFE_POINT_EXT(NULL != df, setError("NULL document format"), result);
+    SAFE_POINT_EXT(nullptr != df, setError("NULL document format"), result);
 
     QSet<GObjectType> selectedFormatObjectsTypes = df->getSupportedObjectTypes();
     QSet<GObjectType> inputFormatObjectTypes;
@@ -197,7 +197,7 @@ ConvertFactoryRegistry::ConvertFactoryRegistry(QObject *o)
 ConvertFactoryRegistry::~ConvertFactoryRegistry() {
     foreach (const ConvertFileFactory *f, factories) {
         delete f;
-        f = NULL;
+        f = nullptr;
     }
     factories.clear();
 }
@@ -217,7 +217,7 @@ ConvertFileFactory *ConvertFactoryRegistry::getFactoryByFormats(const QString &d
             return f;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void ConvertFactoryRegistry::unregisterConvertFactory(ConvertFileFactory *f) {

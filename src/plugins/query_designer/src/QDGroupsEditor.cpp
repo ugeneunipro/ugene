@@ -111,11 +111,11 @@ void QDGroupsEditor::sl_addGroup() {
         return;
     }
     if (scheme->getActorGroups().contains(text)) {
-        QMessageBox::critical(NULL, QObject::tr("Query Designer"), tr("Group '%1' already exists!").arg(text));
+        QMessageBox::critical(nullptr, QObject::tr("Query Designer"), tr("Group '%1' already exists!").arg(text));
         return;
     }
     if (!scheme->validateGroupName(text)) {
-        QMessageBox::critical(NULL, QObject::tr("Query Designer"), tr("Invalid group name!"));
+        QMessageBox::critical(nullptr, QObject::tr("Query Designer"), tr("Invalid group name!"));
         return;
     }
     scheme->createActorGroup(text);

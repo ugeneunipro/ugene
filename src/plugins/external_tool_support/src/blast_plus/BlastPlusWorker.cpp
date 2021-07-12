@@ -257,7 +257,7 @@ QString BlastPlusPrompter::composeRichDoc() {
 * BlastPlusWorker
 ****************************/
 BlastPlusWorker::BlastPlusWorker(Actor *a)
-    : BaseWorker(a), input(NULL), output(NULL) {
+    : BaseWorker(a), input(nullptr), output(nullptr) {
 }
 
 void BlastPlusWorker::init() {
@@ -270,7 +270,7 @@ Task *BlastPlusWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         cfg.programName = getValue<QString>(BLASTPLUS_PROGRAM_NAME);
         cfg.databaseNameAndPath = getValue<QString>(BLASTPLUS_DATABASE_PATH) + "/" + getValue<QString>(BLASTPLUS_DATABASE_NAME);
@@ -311,7 +311,7 @@ Task *BlastPlusWorker::tick() {
         SharedDbiDataHandler seqId = inputMessage.getData().toMap().value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
         if (seqObj.isNull()) {
-            return NULL;
+            return nullptr;
         }
         U2OpStatusImpl os;
         DNASequence seq = seqObj->getWholeSequence(os);
@@ -393,7 +393,7 @@ Task *BlastPlusWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void BlastPlusWorker::sl_taskFinished() {
@@ -402,7 +402,7 @@ void BlastPlusWorker::sl_taskFinished() {
         return;
     }
 
-    if (NULL != output) {
+    if (nullptr != output) {
         QList<SharedAnnotationData> res = t->getResultedAnnotations();
         QString annName = actor->getParameter(BLASTPLUS_GROUP_NAME)->getAttributeValue<QString>(context);
         if (!annName.isEmpty()) {

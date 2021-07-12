@@ -30,7 +30,7 @@ namespace U2 {
 
 class U2CORE_EXPORT UnloadedObjectInfo {
 public:
-    UnloadedObjectInfo(GObject *obj = NULL);
+    UnloadedObjectInfo(GObject *obj = nullptr);
     QString name;
     GObjectType type;
     QVariantMap hints;

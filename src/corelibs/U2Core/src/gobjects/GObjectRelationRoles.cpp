@@ -34,16 +34,16 @@ const QString REFERENCE_SEQUENCE("reference_sequence");
 
 QString GObjectRelationRoleCompatibility::toString(GObjectRelationRole role) {
     switch (role) {
-    case ObjectRole_Sequence:
-        return SEQUENCE;
-    case ObjectRole_AnnotationTable:
-        return ANNOTATION_TABLE;
-    case ObjectRole_PhylogeneticTree:
-        return PHYLOGENETIC_TREE;
-    case ObjectRole_ReferenceSequence:
-        return REFERENCE_SEQUENCE;
-    default:
-        FAIL("Unknown role", "");
+        case ObjectRole_Sequence:
+            return SEQUENCE;
+        case ObjectRole_AnnotationTable:
+            return ANNOTATION_TABLE;
+        case ObjectRole_PhylogeneticTree:
+            return PHYLOGENETIC_TREE;
+        case ObjectRole_ReferenceSequence:
+            return REFERENCE_SEQUENCE;
+        default:
+            FAIL("Unknown role", "");
     }
 }
 

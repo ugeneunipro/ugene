@@ -585,7 +585,7 @@ void BioStruct3DGLWidget::sl_selectModels() {
 }
 
 void BioStruct3DGLWidget::writeImage2DToFile(int format, int options, int nbcol, const char *fileName) {
-    FILE *fp = NULL;
+    FILE *fp = nullptr;
     const char *FOPEN_ARGS = "wb";
     const QByteArray title(fileName);
     int state = GL2PS_OVERFLOW, buffsize = 0;
@@ -611,7 +611,7 @@ void BioStruct3DGLWidget::writeImage2DToFile(int format, int options, int nbcol,
 
     while (state == GL2PS_OVERFLOW) {
         buffsize += 2048 * 2048;
-        gl2psBeginPage(title.constData(), "Unipro UGENE BioStruct3D Viewer plugin", viewport, format, sort, options, GL_RGBA, 0, NULL, nbcol, nbcol, nbcol, buffsize, fp, fileName);
+        gl2psBeginPage(title.constData(), "Unipro UGENE BioStruct3D Viewer plugin", viewport, format, sort, options, GL_RGBA, 0, nullptr, nbcol, nbcol, nbcol, buffsize, fp, fileName);
         paintGL();
         state = gl2psEndPage();
     }
@@ -684,7 +684,7 @@ void BioStruct3DGLWidget::setUnselectedShadingLevel(int shading) {
 }
 
 QMenu *BioStruct3DGLWidget::getDisplayMenu() {
-    assert(displayMenu != NULL);
+    assert(displayMenu != nullptr);
     return displayMenu;
 }
 
@@ -725,7 +725,7 @@ void BioStruct3DGLWidget::wheelEvent(QWheelEvent *event) {
 }
 
 void BioStruct3DGLWidget::createActions() {
-    QAction *action = NULL;
+    QAction *action = nullptr;
 
     animationTimer = new QTimer(this);
     animationTimer->setInterval(20);    // fixed interval

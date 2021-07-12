@@ -95,19 +95,19 @@ const QStringList BedtoolsIntersectTask::getParameters() const {
     res << "-b" << settings.inputB;
 
     switch (settings.report) {
-    case BedtoolsIntersectSettings::Report_OverlapedA:
-        if (settings.unique) {
-            res << "-u";
-        } else {
+        case BedtoolsIntersectSettings::Report_OverlapedA:
+            if (settings.unique) {
+                res << "-u";
+            } else {
+                res << "-f" << QString::number(settings.minOverlap, 'g', 9);
+            }
+            res << "-wa";
+            break;
+        case BedtoolsIntersectSettings::Report_NonOverlappedA:
+            res << "-v";
+            break;
+        case BedtoolsIntersectSettings::Report_Intervals:
             res << "-f" << QString::number(settings.minOverlap, 'g', 9);
-        }
-        res << "-wa";
-        break;
-    case BedtoolsIntersectSettings::Report_NonOverlappedA:
-        res << "-v";
-        break;
-    case BedtoolsIntersectSettings::Report_Intervals:
-        res << "-f" << QString::number(settings.minOverlap, 'g', 9);
     }
     return res;
 }
@@ -117,9 +117,9 @@ const QStringList BedtoolsIntersectTask::getParameters() const {
 BedtoolsIntersectAnnotationsByEntityTask::BedtoolsIntersectAnnotationsByEntityTask(const BedtoolsIntersectByEntityRefSettings &settings)
     : ExternalToolSupportTask(tr("Intersect annotations task"), TaskFlags_NR_FOSE_COSC),
       settings(settings),
-      saveAnnotationsTask(NULL),
-      intersectTask(NULL),
-      loadResultTask(NULL) {
+      saveAnnotationsTask(nullptr),
+      intersectTask(nullptr),
+      loadResultTask(nullptr) {
 }
 
 void BedtoolsIntersectAnnotationsByEntityTask::prepare() {
@@ -141,10 +141,10 @@ void BedtoolsIntersectAnnotationsByEntityTask::prepare() {
         b->close();
 
         Document *docA = createAnnotationsDocument(tmpUrlA, settings.entitiesA);
-        CHECK(docA != NULL, );
+        CHECK(docA != nullptr, );
 
         Document *docB = createAnnotationsDocument(tmpUrlB, settings.entitiesB);
-        CHECK(docB != NULL, );
+        CHECK(docB != nullptr, );
 
         docs << docA << docB;
     }
@@ -172,14 +172,14 @@ QList<Task *> BedtoolsIntersectAnnotationsByEntityTask::onSubTaskFinished(Task *
 
     if (subTask == intersectTask) {
         IOAdapterFactory *ioFactory = IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE);
-        CHECK_EXT(ioFactory != NULL, setError(tr("Failed to get IOAdapterFactory")), res);
+        CHECK_EXT(ioFactory != nullptr, setError(tr("Failed to get IOAdapterFactory")), res);
 
         loadResultTask = new LoadDocumentTask(BaseDocumentFormats::GFF, GUrl(tmpUrlResult), ioFactory);
         res << loadResultTask;
     }
     if (subTask == loadResultTask) {
         Document *resultDoc = loadResultTask->getDocument();
-        CHECK_EXT(resultDoc != NULL, setError(tr("Result document is NULL")), res);
+        CHECK_EXT(resultDoc != nullptr, setError(tr("Result document is NULL")), res);
         result = resultDoc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
         CHECK_EXT(!result.isEmpty(), setError(tr("No annotation tables resultDoc")), res);
         AnnotationTableObject *ato = qobject_cast<AnnotationTableObject *>(result.first());
@@ -189,17 +189,17 @@ QList<Task *> BedtoolsIntersectAnnotationsByEntityTask::onSubTaskFinished(Task *
 }
 
 Document *BedtoolsIntersectAnnotationsByEntityTask::createAnnotationsDocument(const QString &url, const QList<U2EntityRef> &entities) {
-    CHECK(!entities.isEmpty(), NULL);
+    CHECK(!entities.isEmpty(), nullptr);
 
     DocumentFormat *bed = BaseDocumentFormats::get(BaseDocumentFormats::GFF);
-    CHECK_EXT(bed != NULL, setError(tr("Failed to get BED format")), NULL);
+    CHECK_EXT(bed != nullptr, setError(tr("Failed to get BED format")), nullptr);
 
     IOAdapterFactory *ioFactory = IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE);
-    CHECK_EXT(ioFactory != NULL, setError(tr("Failed to get IOAdapterFactory")), NULL);
+    CHECK_EXT(ioFactory != nullptr, setError(tr("Failed to get IOAdapterFactory")), nullptr);
 
     U2OpStatusImpl os;
     Document *doc = new Document(bed, ioFactory, GUrl(url), AppContext::getDbiRegistry()->getSessionTmpDbiRef(os));
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     foreach (const U2EntityRef &enRef, entities) {
         U2AnnotationTable t = U2FeatureUtils::getAnnotationTable(enRef, os);
@@ -218,7 +218,7 @@ void BedtoolsIntersectAnnotationsByEntityTask::renameAnnotationsForBed(Annotatio
     if (isNumber) {
         group->setName(group->getName() + RENAME_STRING);
     }
-    foreach(AnnotationGroup* g, group->getSubgroups()) {
+    foreach (AnnotationGroup *g, group->getSubgroups()) {
         renameAnnotationsForBed(g);
     }
 }

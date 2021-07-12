@@ -74,13 +74,13 @@ void GTest_ImportPhredQualityScoresTask::init(XMLTestFormat *tf, const QDomEleme
 void GTest_ImportPhredQualityScoresTask::prepare() {
     foreach (const QString &seqName, seqNameList) {
         GObject *obj = getContext<GObject>(this, seqName);
-        if (obj == NULL) {
+        if (obj == nullptr) {
             stateInfo.setError(QString("wrong sequence name: %1").arg(seqName));
             return;
         }
 
         U2SequenceObject *mySequence = qobject_cast<U2SequenceObject *>(obj);
-        if (mySequence == NULL) {
+        if (mySequence == nullptr) {
             stateInfo.setError(QString("Can't cast to sequence from: %1").arg(obj->getGObjectName()));
             return;
         }
@@ -188,7 +188,7 @@ void GTest_ExportNucleicToAminoAlignmentTask::prepare() {
         return;
     }
     Document *doc = getContext<Document>(this, inputFile);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateInfo.setError(GTest::tr(" context not found %1").arg(inputFile));
         return;
     }
@@ -235,7 +235,7 @@ QList<Task *> GTest_ExportNucleicToAminoAlignmentTask::onSubTaskFinished(Task *s
     } else if (subTask == resultLoadTask) {
         Document *resdoc = resultLoadTask->getDocument();
 
-        if (resdoc == NULL) {
+        if (resdoc == nullptr) {
             stateInfo.setError(GTest::tr("context  not found %1").arg(outputFileName));
             return res;
         }
@@ -258,7 +258,7 @@ Task::ReportResult GTest_ExportNucleicToAminoAlignmentTask::report() {
     }
 
     Document *expdoc = getContext<Document>(this, expectedOutputFile);
-    if (expdoc == NULL) {
+    if (expdoc == nullptr) {
         stateInfo.setError(GTest::tr("context not  found %1").arg(expectedOutputFile));
         return ReportResult_Finished;
     }

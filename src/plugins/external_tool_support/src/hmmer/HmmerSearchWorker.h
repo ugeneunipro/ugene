@@ -34,7 +34,7 @@ namespace LocalWorkflow {
 class HmmerSearchPrompter : public PrompterBase<HmmerSearchPrompter> {
     Q_OBJECT
 public:
-    HmmerSearchPrompter(Actor *p = NULL);
+    HmmerSearchPrompter(Actor *p = nullptr);
 
 protected:
     QString composeRichDoc();

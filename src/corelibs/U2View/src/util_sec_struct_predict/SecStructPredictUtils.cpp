@@ -52,13 +52,13 @@ SecStructPredictViewAction::SecStructPredictViewAction(AnnotatedDNAView *v)
 void SecStructPredictViewAction::sl_execute() {
     QAction *a = dynamic_cast<QAction *>(sender());
     GObjectViewAction *viewAction = dynamic_cast<GObjectViewAction *>(a);
-    SAFE_POINT(NULL != viewAction, "NULL action", );
+    SAFE_POINT(nullptr != viewAction, "NULL action", );
 
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(viewAction->getObjectView());
-    SAFE_POINT(NULL != av, "NULL dna view", );
+    SAFE_POINT(nullptr != av, "NULL dna view", );
 
     SecStructPredictAlgRegistry *sspar = AppContext::getSecStructPredictAlgRegistry();
-    SAFE_POINT(NULL != sspar, "NULL SecStructPredictAlgRegistry", );
+    SAFE_POINT(nullptr != sspar, "NULL SecStructPredictAlgRegistry", );
 
     if (sspar->getAlgNameList().isEmpty()) {
         QMessageBox::information(av->getWidget(),
@@ -68,8 +68,8 @@ void SecStructPredictViewAction::sl_execute() {
     }
 
     ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
-    SAFE_POINT(NULL != seqCtx, "NULL sequence context", );
-    SAFE_POINT(NULL != seqCtx->getAlphabet(), "NULL alphabet", );
+    SAFE_POINT(nullptr != seqCtx, "NULL sequence context", );
+    SAFE_POINT(nullptr != seqCtx->getAlphabet(), "NULL alphabet", );
     SAFE_POINT(seqCtx->getAlphabet()->isAmino(), "Wrong alphabet", );
 
     QObjectScopedPointer<SecStructDialog> secStructDialog = new SecStructDialog(seqCtx, av->getWidget());
@@ -88,29 +88,29 @@ SecStructPredictViewAction::~SecStructPredictViewAction() {
 QString SecStructPredictUtils::getStructNameForCharTag(char tag) {
     SecondaryStructure::Type type = SecondaryStructure::Type_None;
     switch (tag) {
-    case 'H':
-        type = SecondaryStructure::Type_AlphaHelix;
-        break;
-    case 'G':
-        type = SecondaryStructure::Type_310Helix;
-        break;
-    case 'I':
-        type = SecondaryStructure::Type_PiHelix;
-        break;
-    case 'B':
-        type = SecondaryStructure::Type_BetaBridge;
-        break;
-    case 'E':
-        type = SecondaryStructure::Type_BetaStrand;
-        break;
-    case 'T':
-        type = SecondaryStructure::Type_Turn;
-        break;
-    case 'S':
-        type = SecondaryStructure::Type_BendRegion;
-        break;
-    default:
-        Q_ASSERT(0);
+        case 'H':
+            type = SecondaryStructure::Type_AlphaHelix;
+            break;
+        case 'G':
+            type = SecondaryStructure::Type_310Helix;
+            break;
+        case 'I':
+            type = SecondaryStructure::Type_PiHelix;
+            break;
+        case 'B':
+            type = SecondaryStructure::Type_BetaBridge;
+            break;
+        case 'E':
+            type = SecondaryStructure::Type_BetaStrand;
+            break;
+        case 'T':
+            type = SecondaryStructure::Type_Turn;
+            break;
+        case 'S':
+            type = SecondaryStructure::Type_BendRegion;
+            break;
+        default:
+            Q_ASSERT(0);
     }
 
     return BioStruct3D::getSecStructTypeName(type);

@@ -34,12 +34,12 @@ namespace U2 {
 BreakpointConditionChecker::BreakpointConditionChecker(const QString &initConditionText,
                                                        Workflow::WorkflowContext *context)
     : conditionText(initConditionText),
-      engine((NULL == context) ? NULL : new WorkflowScriptEngine(context)),
+      engine((nullptr == context) ? nullptr : new WorkflowScriptEngine(context)),
       enabled(false),
       parameter(IS_TRUE),
       lastConditionEvaluation(DEFAULT_CONDITION_EVAL_RESULT),
       engineGuard() {
-    if (NULL != engine) {
+    if (nullptr != engine) {
         WorkflowScriptLibrary::initEngine(engine);
     }
 }
@@ -50,21 +50,21 @@ BreakpointConditionChecker::~BreakpointConditionChecker() {
 
 void BreakpointConditionChecker::setContext(Workflow::WorkflowContext *context) {
     QMutexLocker lock(&engineGuard);
-    if (NULL == context) {
+    if (nullptr == context) {
         delete engine;
-        engine = NULL;
-    } else if (NULL == engine) {
+        engine = nullptr;
+    } else if (nullptr == engine) {
         engine = new WorkflowScriptEngine(context);
         WorkflowScriptLibrary::initEngine(engine);
     }
 }
 
 bool BreakpointConditionChecker::evaluateCondition(const AttributeScript *conditionContext) {
-    Q_ASSERT(NULL != conditionContext);
+    Q_ASSERT(nullptr != conditionContext);
 
     QMutexLocker lock(&engineGuard);
 
-    if (NULL == engine || NULL == engine->getWorkflowContext()) {
+    if (nullptr == engine || nullptr == engine->getWorkflowContext()) {
         return false;
     }
     if (conditionText.isEmpty() || !enabled) {

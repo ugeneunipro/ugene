@@ -68,13 +68,13 @@ void CrashHandlerPrivateMac::setupHandler() {
         stacktraceFileWasSucessfullyRemoved = QFile(stacktraceFilePath).remove();
     }
 
-    breakpadHandler = new google_breakpad::ExceptionHandler(dumpDir.toStdString(), NULL, breakpadCallback, this, true, NULL);
+    breakpadHandler = new google_breakpad::ExceptionHandler(dumpDir.toStdString(), nullptr, breakpadCallback, this, true, nullptr);
 #    endif
 }
 
 void CrashHandlerPrivateMac::shutdown() {
     delete breakpadHandler;
-    breakpadHandler = NULL;
+    breakpadHandler = nullptr;
 }
 
 void CrashHandlerPrivateMac::storeStackTrace() {
@@ -85,7 +85,7 @@ void CrashHandlerPrivateMac::storeStackTrace() {
     char name_buf[512];
     name_buf[readlink(path.toLatin1().constData(), name_buf, 511)] = 0;
     FILE *fp = fopen(stacktraceFilePath.toLocal8Bit().constData(), "w+");
-    stacktraceFileSucessfullyCreated = (NULL != fp);
+    stacktraceFileSucessfullyCreated = (nullptr != fp);
     void *stackTrace[1024];
     int frames = backtrace(stackTrace, 1024);
     backtrace_symbols_fd(stackTrace, frames, fileno(fp));

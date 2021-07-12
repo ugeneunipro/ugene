@@ -36,15 +36,15 @@ namespace U2 {
 Database *Database::loadDatabase(const QString &url, U2OpStatus &os) {
     U2DbiRef dbiRef(SQLiteDbiFactory::ID, url);
     DbiConnection dbHandle(dbiRef, os);
-    SAFE_POINT_OP(os, NULL);
+    SAFE_POINT_OP(os, nullptr);
 
     // ensure that DBI is a valid Session DBI
     QString val = dbHandle.dbi->getProperty(S3_DATABASE_KEY, "", os);
-    SAFE_POINT_OP(os, NULL);
+    SAFE_POINT_OP(os, nullptr);
 
     if (val != U2DbiOptions::U2_DBI_VALUE_ON) {
         os.setError(tr("Not a valid S3-database file: %1").arg(url));
-        return NULL;
+        return nullptr;
     }
 
     return new Database(dbHandle);

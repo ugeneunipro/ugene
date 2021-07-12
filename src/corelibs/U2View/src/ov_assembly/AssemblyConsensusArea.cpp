@@ -45,7 +45,7 @@
 namespace U2 {
 
 AssemblyConsensusArea::AssemblyConsensusArea(AssemblyBrowserUi *ui)
-    : AssemblySequenceArea(ui, AssemblyConsensusAlgorithm::EMPTY_CHAR), consensusAlgorithmMenu(NULL), consensusAlgorithm(NULL), canceled(false) {
+    : AssemblySequenceArea(ui, AssemblyConsensusAlgorithm::EMPTY_CHAR), consensusAlgorithmMenu(nullptr), consensusAlgorithm(nullptr), canceled(false) {
     setToolTip(tr("Consensus sequence"));
     setObjectName("Consensus area");
     connect(&consensusTaskRunner, SIGNAL(si_finished()), SLOT(sl_consensusReady()));
@@ -53,7 +53,7 @@ AssemblyConsensusArea::AssemblyConsensusArea(AssemblyBrowserUi *ui)
     AssemblyConsensusAlgorithmRegistry *registry = AppContext::getAssemblyConsensusAlgorithmRegistry();
     QString defaultId = BuiltInAssemblyConsensusAlgorithms::DEFAULT_ALGO;
     AssemblyConsensusAlgorithmFactory *f = registry->getAlgorithmFactory(defaultId);
-    SAFE_POINT(f != NULL, QString("consensus algorithm factory %1 not found").arg(defaultId), );
+    SAFE_POINT(f != nullptr, QString("consensus algorithm factory %1 not found").arg(defaultId), );
     consensusAlgorithm = QSharedPointer<AssemblyConsensusAlgorithm>(f->createAlgorithm());
 
     setDiffCellRenderer();
@@ -167,7 +167,7 @@ void AssemblyConsensusArea::drawSequence(QPainter &p) {
 }
 
 QMenu *AssemblyConsensusArea::getConsensusAlgorithmMenu() {
-    if (consensusAlgorithmMenu == NULL) {
+    if (consensusAlgorithmMenu == nullptr) {
         consensusAlgorithmMenu = new QMenu(tr("Consensus algorithm"));
 
         AssemblyConsensusAlgorithmRegistry *registry = AppContext::getAssemblyConsensusAlgorithmRegistry();
@@ -195,7 +195,7 @@ void AssemblyConsensusArea::sl_consensusAlgorithmChanged(QAction *action) {
     QString id = action->data().toString();
     AssemblyConsensusAlgorithmRegistry *registry = AppContext::getAssemblyConsensusAlgorithmRegistry();
     AssemblyConsensusAlgorithmFactory *f = registry->getAlgorithmFactory(id);
-    SAFE_POINT(f != NULL, QString("cannot change consensus algorithm, invalid id %1").arg(id), );
+    SAFE_POINT(f != nullptr, QString("cannot change consensus algorithm, invalid id %1").arg(id), );
 
     consensusAlgorithm = QSharedPointer<AssemblyConsensusAlgorithm>(f->createAlgorithm());
 
@@ -236,7 +236,7 @@ void AssemblyConsensusArea::sl_consensusReady() {
 
 void AssemblyConsensusArea::sl_exportConsensus() {
     const DocumentFormat *defaultFormat = BaseDocumentFormats::get(BaseDocumentFormats::FASTA);
-    SAFE_POINT(defaultFormat != NULL, "Internal: couldn't find default document format for consensus", );
+    SAFE_POINT(defaultFormat != nullptr, "Internal: couldn't find default document format for consensus", );
 
     ExportConsensusTaskSettings settings;
     settings.region = getModel()->getGlobalRegion();
@@ -262,7 +262,7 @@ void AssemblyConsensusArea::sl_exportConsensus() {
 }
 void AssemblyConsensusArea::sl_exportConsensusVariations() {
     const DocumentFormat *defaultFormat = BaseDocumentFormats::get(BaseDocumentFormats::SNP);
-    SAFE_POINT(defaultFormat != NULL, "Internal: couldn't find default document format for consensus variations", );
+    SAFE_POINT(defaultFormat != nullptr, "Internal: couldn't find default document format for consensus variations", );
 
     ExportConsensusVariationsTaskSettings settings;
     settings.region = getModel()->getGlobalRegion();

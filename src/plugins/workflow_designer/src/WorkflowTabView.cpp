@@ -82,17 +82,17 @@ WorkflowTabView::WorkflowTabView(WorkflowView *_parent)
 
 void WorkflowTabView::sl_showDashboard(int idx) {
     Dashboard *db = dynamic_cast<Dashboard *>(widget(idx));
-    CHECK(NULL != db, );
+    CHECK(nullptr != db, );
     db->onShow();
 }
 
 void WorkflowTabView::sl_workflowStateChanged(bool isRunning) {
     QWidget *db = dynamic_cast<QWidget *>(sender());
-    SAFE_POINT(NULL != db, "NULL dashboard", );
+    SAFE_POINT(nullptr != db, "NULL dashboard", );
     int idx = indexOf(db);
     CHECK(-1 != idx, );
     CloseButton *closeButton = dynamic_cast<CloseButton *>(tabBar()->tabButton(idx, QTabBar::RightSide));
-    SAFE_POINT(NULL != db, "NULL close button", );
+    SAFE_POINT(nullptr != db, "NULL close button", );
     closeButton->setEnabled(!isRunning);
 }
 
@@ -146,7 +146,7 @@ void WorkflowTabView::sl_closeTab() {
     Q_UNUSED(registryConnectionBlocker);
 
     CloseButton *button = dynamic_cast<CloseButton *>(sender());
-    SAFE_POINT(NULL != button, "NULL close button", );
+    SAFE_POINT(nullptr != button, "NULL close button", );
     int idx = indexOf(button->content());
     Dashboard *db = dynamic_cast<Dashboard *>(widget(idx));
     db->setClosed();

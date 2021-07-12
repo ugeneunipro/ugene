@@ -35,12 +35,13 @@
 
 #include <QApplication>
 #include <QFileInfo>
+#include <QPlainTextEdit>
 #include <QRadioButton>
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsDocument.h"
-#include "GTUtilsMdi.h"
 #include "GTUtilsMcaEditor.h"
+#include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
 #include "GTUtilsMsaEditorSequenceArea.h"
 #include "GTUtilsOptionPanelMSA.h"
@@ -48,7 +49,10 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsTaskTreeView.h"
+#include "GTUtilsWizard.h"
+#include "GTUtilsWorkflowDesigner.h"
 #include "api/GTMSAEditorStatusWidget.h"
+#include "base_dialogs/MessageBoxFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
 #include "runnables/ugene/corelibs/U2View/ov_msa/BuildTreeDialogFiller.h"
@@ -56,8 +60,10 @@
 #include "runnables/ugene/corelibs/U2View/ov_msa/LicenseAgreementDialogFiller.h"
 #include "runnables/ugene/plugins/dna_export/ExportSequencesDialogFiller.h"
 #include "runnables/ugene/plugins/external_tools/AlignToReferenceBlastDialogFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/WizardFiller.h"
+#include "runnables/ugene/plugins/workflow_designer/WorkflowMetadialogFiller.h"
+#include "runnables/ugene/ugeneui/DocumentFormatSelectorDialogFiller.h"
 #include "runnables/ugene/ugeneui/SequenceReadingModeSelectorDialogFiller.h"
-
 namespace U2 {
 
 namespace GUITest_regression_scenarios {
@@ -134,7 +140,7 @@ GUI_TEST_CLASS_DEFINITION(test_7022) {
 
     // 2. Turn on "Wrap mode" and click on the firts annotation in DetView
     QAction *wrapMode = GTAction::findActionByText(os, "Wrap sequence");
-    CHECK_SET_ERR(wrapMode != NULL, "Cannot find Wrap sequence action");
+    CHECK_SET_ERR(wrapMode != nullptr, "Cannot find Wrap sequence action");
     if (!wrapMode->isChecked()) {
         GTWidget::click(os, GTAction::button(os, wrapMode));
     }
@@ -518,6 +524,68 @@ GUI_TEST_CLASS_DEFINITION(test_7246) {
     CHECK_SET_ERR(alphabet.contains("RNA"), "Alphabet is not RNA: " + alphabet);
     sequence = GTUtilsMSAEditorSequenceArea::getSequenceData(os, 0);
     CHECK_SET_ERR(sequence == "UUUNNNNNNNNNNUNNNNNANNNGNNNANNNNANNNNNNNGUNNNUNGNNANNUGGANGN", "Not a RNA sequence: " + sequence);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7247) {
+    // Open WD.
+    // Load scenario sample "Remote BLASTing".
+    // Add any fasta file as input.
+    // Click Next, Next, Apply.
+    // Close WD tab.
+    // Question appears: "The workflow has been modified. Do you want to save changes?". Click Save.
+    // In "Workflow properties" dialog add location. Click OK.
+    //    Expected: UGENE doesn't crash.
+    class RemoteBlastWizardScenario : public CustomScenario {
+    public:
+        void run(GUITestOpStatus &os) override {
+            GTUtilsWizard::setInputFiles(os, {{dataDir + "samples/FASTA/human_T1.fa"}});
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Next);
+            GTUtilsWizard::clickButton(os, GTUtilsWizard::Apply);
+        }
+    };
+    GTUtilsWorkflowDesigner::openWorkflowDesigner(os);
+    GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Remote BLASTing Wizard", new RemoteBlastWizardScenario()));
+    GTUtilsWorkflowDesigner::addSample(os, "Remote BLASTing");
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Save"));
+    GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os,
+        testDir + "_common_data/scenarios/sandbox/7247.uwl", "7247"));
+    GTUtilsMdi::click(os, GTGlobals::Close);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7293) {
+    // Open a multi-byte unicode file that triggers format selection dialog with a raw data preview.
+    // Check that raw data is shown correctly for both Open... & Open As... dialog (these are 2 different dialogs).
+
+    class CheckDocumentReadingModeSelectorTextScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            auto textEdit = GTWidget::findExactWidget<QPlainTextEdit *>(os, "previewEdit", dialog);
+            QString previewText = textEdit->toPlainText();
+            CHECK_SET_ERR(previewText.contains("Первый"), "Expected text is not found in previewEdit");
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, new CheckDocumentReadingModeSelectorTextScenario()));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/utf16be.fa"));
+    GTMenu::clickMainMenuItem(os, {"File", "Open..."});
+    GTUtilsDialog::waitAllFinished(os);
+
+    // Now check preview text for the second dialog.
+    class CheckDocumentFormatSelectorTextScenario : public CustomScenario {
+    public:
+        void run(HI::GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            auto textEdit = GTWidget::findExactWidget<QPlainTextEdit *>(os, "previewEdit", dialog);
+            QString previewText = textEdit->toPlainText();
+            CHECK_SET_ERR(previewText.contains("Первый"), "Expected text is not found in previewEdit");
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Cancel);
+        }
+    };
+    GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new CheckDocumentFormatSelectorTextScenario()));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/utf16be.fa"));
+    GTMenu::clickMainMenuItem(os, {"File", "Open as..."});
 }
 
 }    // namespace GUITest_regression_scenarios

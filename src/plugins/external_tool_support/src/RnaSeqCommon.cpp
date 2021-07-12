@@ -44,14 +44,14 @@ bool RnaSeqLibraryType::setLibraryType(int val) {
 
 QString RnaSeqLibraryType::getLibraryTypeAsStr() {
     switch (libraryType) {
-    case 0:
-        return frUnstranded;
-    case 1:
-        return frFirstStrand;
-    case 2:
-        return frSecondStrand;
-    default:
-        FAIL(QObject::tr("Unexpected value '%1' of the library type").arg(libraryType), frUnstranded);
+        case 0:
+            return frUnstranded;
+        case 1:
+            return frFirstStrand;
+        case 2:
+            return frSecondStrand;
+        default:
+            FAIL(QObject::tr("Unexpected value '%1' of the library type").arg(libraryType), frUnstranded);
     }
 }
 

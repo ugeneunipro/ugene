@@ -52,14 +52,14 @@ CaseAnnotationsMode FormatAppsSettings::getCaseAnnotationsMode() {
 void FormatAppsSettings::setCaseAnnotationsMode(CaseAnnotationsMode mode) {
     QString modeStr;
     switch (mode) {
-    case LOWER_CASE:
-        modeStr = LOWER_CASE_MODE;
-        break;
-    case UPPER_CASE:
-        modeStr = UPPER_CASE_MODE;
-        break;
-    case NO_CASE_ANNS:
-        modeStr = NO_CASE_MODE;
+        case LOWER_CASE:
+            modeStr = LOWER_CASE_MODE;
+            break;
+        case UPPER_CASE:
+            modeStr = UPPER_CASE_MODE;
+            break;
+        case NO_CASE_ANNS:
+            modeStr = NO_CASE_MODE;
     }
     AppContext::getSettings()->setValue(SETTINGS_ROOT + CASE_ANNS_MODE, modeStr);
 }

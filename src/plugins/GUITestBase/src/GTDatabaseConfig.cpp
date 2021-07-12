@@ -20,6 +20,7 @@
  */
 
 #include "GTDatabaseConfig.h"
+#include <harness/UGUITestBase.h>
 
 #include <QSettings>
 
@@ -27,8 +28,6 @@
 #include <U2Core/PasswordStorage.h>
 #include <U2Core/Settings.h>
 #include <U2Core/U2DbiUtils.h>
-
-#include <harness/UGUITestBase.h>
 
 namespace U2 {
 
@@ -48,7 +47,7 @@ const QString READ_ONLY_LOGIN = "read_only_login";
 const QString PASSWORD = "password";
 
 QVariant getSetting(const QString &key) {
-    QString customDatabaseIniPath =  qgetenv("UGENE_TESTS_DATABASE_INI_PATH");
+    QString customDatabaseIniPath = qgetenv("UGENE_TESTS_DATABASE_INI_PATH");
     QString databaseIniPath = customDatabaseIniPath.isEmpty() ? UGUITest::testDir + "_common_data/database.ini" : customDatabaseIniPath;
     QSettings settings(databaseIniPath, QSettings::IniFormat);
     return settings.value(SETTINGS_ROOT + key);

@@ -96,7 +96,7 @@ private slots:
 class U2GUI_EXPORT SearchGenbankSequenceDialogController : public QDialog {
     Q_OBJECT
 public:
-    SearchGenbankSequenceDialogController(QWidget *p = NULL);
+    SearchGenbankSequenceDialogController(QWidget *p = nullptr);
     ~SearchGenbankSequenceDialogController();
     void addQueryBlockWidget(QWidget *w);
     void removeQueryBlockWidget(QWidget *w);

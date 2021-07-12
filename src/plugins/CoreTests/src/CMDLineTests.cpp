@@ -217,7 +217,7 @@ Task::ReportResult GTest_RunCMDLine::report() {
     if (hasError() || isCanceled()) {
         return ReportResult_Finished;
     }
-    assert(proc != NULL);
+    assert(proc != nullptr);
     if (proc->state() != QProcess::NotRunning) {
         return ReportResult_CallMeAgain;
     }

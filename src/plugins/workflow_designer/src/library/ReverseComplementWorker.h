@@ -43,7 +43,7 @@ class RCWorker : public BaseWorker {
     Q_OBJECT
 public:
     RCWorker(Actor *a)
-        : BaseWorker(a), input(NULL), output(NULL) {
+        : BaseWorker(a), input(nullptr), output(nullptr) {
     }
 
     virtual void init();

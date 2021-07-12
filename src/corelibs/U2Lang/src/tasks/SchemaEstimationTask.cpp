@@ -40,7 +40,7 @@ EstimationResult::EstimationResult() {
     cpuCount = -1;
 }
 
-SchemaEstimationTask::SchemaEstimationTask(const Schema *_schema, const Metadata *_meta)
+SchemaEstimationTask::SchemaEstimationTask(const QSharedPointer<const Schema> &_schema, const Metadata *_meta)
     : Task(tr("Workflow estimation task"), TaskFlag_None), schema(_schema), meta(_meta) {
 }
 
@@ -75,7 +75,7 @@ EstimationResult SchemaEstimationTask::result() const {
 /************************************************************************/
 /* Utils */
 /************************************************************************/
-ExtimationsUtilsClass::ExtimationsUtilsClass(QScriptEngine &_engine, const Schema *_schema)
+ExtimationsUtilsClass::ExtimationsUtilsClass(QScriptEngine &_engine, const QSharedPointer<const Schema> &_schema)
     : engine(_engine), schema(_schema) {
 }
 
@@ -89,18 +89,18 @@ QStringList ExtimationsUtilsClass::parseTokens(const QString &attrStr, U2OpStatu
 
 Attribute *ExtimationsUtilsClass::getAttribute(const QString &attrStr, U2OpStatus &os) {
     QStringList tokens = parseTokens(attrStr, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     Actor *actor = schema->actorById(tokens[0]);
-    if (NULL == actor) {
+    if (nullptr == actor) {
         os.setError("Unknown actor id: " + tokens[0]);
-        return NULL;
+        return nullptr;
     }
 
     Attribute *attr = actor->getParameter(tokens[1]);
-    if (NULL == attr) {
+    if (nullptr == attr) {
         os.setError("Wrong attribute string: " + attrStr);
-        return NULL;
+        return nullptr;
     }
     return attr;
 }
@@ -179,10 +179,10 @@ QString ExtimationsUtilsClass::fileFormat(const QString &url) {
     CHECK_JS(!result.isEmpty(), tr("Unknown file format: %1").arg(url), "");
 
     FormatDetectionResult r = result.first();
-    if (NULL != r.format) {
+    if (nullptr != r.format) {
         return r.format->getFormatId();
     } else {
-        CHECK_JS(NULL != r.importer, "NULL importer", "");
+        CHECK_JS(nullptr != r.importer, "NULL importer", "");
         return r.importer->getId();
     }
 }
@@ -224,13 +224,13 @@ bool ExtimationsUtilsClass::testAttr(const QString &attrStr) {
     CHECK_OP(os, false);
 
     Actor *actor = schema->actorById(tokens[0]);
-    if (NULL == actor) {
+    if (nullptr == actor) {
         os.setError("Unknown actor id: " + tokens[0]);
         return false;
     }
 
     Attribute *attr = actor->getParameter(tokens[1]);
-    if (NULL == attr) {
+    if (nullptr == attr) {
         os.setError("Wrong attribute string: " + attrStr);
         return false;
     }

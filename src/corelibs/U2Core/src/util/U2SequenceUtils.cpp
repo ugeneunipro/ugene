@@ -51,7 +51,7 @@ DNAAlphabetType U2SequenceUtils::alphabetType(const U2EntityRef &ref, U2OpStatus
     CHECK_OP(os, res);
 
     const DNAAlphabet *al = AppContext::getDNAAlphabetRegistry()->findById(seq.alphabet.id);
-    CHECK_EXT(al != NULL, os.setError(tr("Alphabet is not found!")), res);
+    CHECK_EXT(al != nullptr, os.setError(tr("Alphabet is not found!")), res);
 
     return al->getType();
 }
@@ -98,7 +98,7 @@ U2Sequence U2SequenceUtils::copySequence(const U2EntityRef &srcSeq, const U2DbiR
     CHECK_OP(os, res);
 
     U2SequenceDbi *srcSeqDbi = srcCon.dbi->getSequenceDbi();
-    SAFE_POINT_EXT(NULL != srcSeqDbi, os.setError(tr("Invalid sequence DBI")), res);
+    SAFE_POINT_EXT(nullptr != srcSeqDbi, os.setError(tr("Invalid sequence DBI")), res);
     U2Sequence seq = srcSeqDbi->getSequenceObject(srcSeq.entityId, os);
     CHECK_OP(os, res);
 
@@ -114,7 +114,7 @@ U2Sequence U2SequenceUtils::copySequence(const U2EntityRef &srcSeq, const U2DbiR
     DbiConnection dstCon(dstDbi, os);
     CHECK_OP(os, res);
     U2SequenceDbi *dstSeqDbi = dstCon.dbi->getSequenceDbi();
-    SAFE_POINT_EXT(NULL != dstSeqDbi, os.setError(tr("Invalid sequence DBI")), res);
+    SAFE_POINT_EXT(nullptr != dstSeqDbi, os.setError(tr("Invalid sequence DBI")), res);
     dstSeqDbi->createSequenceObject(res, dstFolder, os);
     CHECK_OP(os, res);
 
@@ -168,7 +168,7 @@ static QList<QByteArray> _extractRegions(const U2EntityRef &seqRef, const QVecto
 
     for (int i = 0, n = safeLocation.size(); i < n; i++) {
         const U2Region &oReg = safeLocation.at(i);
-        if (complTT == NULL) {
+        if (complTT == nullptr) {
             QByteArray part = seqDbi->getSequenceData(seq.id, U2Region(oReg.startPos, oReg.length), os);
             CHECK_OP(os, QList<QByteArray>());
             res.append(part);
@@ -204,7 +204,7 @@ QList<QByteArray> U2SequenceUtils::extractRegions(const U2EntityRef &seqRef, con
             res[0] = lastS.append(firstS);
         }
     }
-    if (aminoTT != NULL) {
+    if (aminoTT != nullptr) {
         res = U1SequenceUtils::translateRegions(res, aminoTT, join);
     }
 
@@ -353,7 +353,7 @@ U2Sequence U2SequenceUtils::getSequenceDbInfo(U2SequenceObject *seqObj) {
 
     seq.id = seqObj->getEntityRef().entityId;
     seq.dbiId = seqObj->getEntityRef().dbiRef.dbiId;
-    if (NULL != seqObj->getAlphabet()) {
+    if (nullptr != seqObj->getAlphabet()) {
         seq.alphabet.id = seqObj->getAlphabet()->getId();
     }
     seq.circular = seqObj->isCircular();
@@ -453,11 +453,11 @@ void U2SequenceImporter::startSequence(U2OpStatus &os,
 void U2SequenceImporter::addBlock(const char *data, qint64 len, U2OpStatus &os) {
     // derive common alphabet
     const DNAAlphabet *blockAl = U2AlphabetUtils::findBestAlphabet(data, len);
-    CHECK_EXT(blockAl != NULL, os.setError("Failed to match sequence alphabet!"), );
+    CHECK_EXT(blockAl != nullptr, os.setError("Failed to match sequence alphabet!"), );
 
     const DNAAlphabet *oldAl = U2AlphabetUtils::getById(sequence.alphabet);
     const DNAAlphabet *resAl = blockAl;
-    if (oldAl != NULL) {
+    if (oldAl != nullptr) {
         if (oldAl->getType() == DNAAlphabet_AMINO && resAl->getType() == DNAAlphabet_NUCL) {
             resAl = oldAl;
         } else if (resAl->getType() == DNAAlphabet_AMINO && oldAl->getType() == DNAAlphabet_NUCL) {
@@ -465,7 +465,7 @@ void U2SequenceImporter::addBlock(const char *data, qint64 len, U2OpStatus &os) 
         } else {
             resAl = U2AlphabetUtils::deriveCommonAlphabet(blockAl, oldAl);
         }
-        CHECK_EXT(resAl != NULL, os.setError(U2SequenceUtils::tr("Failed to derive sequence alphabet!")), );
+        CHECK_EXT(resAl != nullptr, os.setError(U2SequenceUtils::tr("Failed to derive sequence alphabet!")), );
     }
 
     if (resAl != U2AlphabetUtils::getById(sequence.alphabet)) {
@@ -499,7 +499,7 @@ void U2SequenceImporter::addSequenceBlock(const U2EntityRef &sequenceRef, const 
 void U2SequenceImporter::addDefaultSymbolsBlock(int n, U2OpStatus &os) {
     SAFE_POINT(n >= 0, QString("Invalid number of symbols: %1").arg(n), );
     const DNAAlphabet *al = AppContext::getDNAAlphabetRegistry()->findById(sequence.alphabet.id);
-    if (NULL == al) {
+    if (nullptr == al) {
         os.setError(QObject::tr("Unable to detect sequence alphabet. Probably, this is because some of merged sequences are empty."));
         return;
     }
@@ -629,11 +629,11 @@ void U2MemorySequenceImporter::addBlock(const char *data, qint64 len, U2OpStatus
 
     // derive common alphabet
     const DNAAlphabet *blockAl = U2AlphabetUtils::findBestAlphabet(data, len);
-    CHECK_EXT(blockAl != NULL, os.setError("Failed to match sequence alphabet!"), );
+    CHECK_EXT(blockAl != nullptr, os.setError("Failed to match sequence alphabet!"), );
 
     const DNAAlphabet *oldAl = U2AlphabetUtils::getById(sequence.alphabet);
     const DNAAlphabet *resAl = blockAl;
-    if (oldAl != NULL) {
+    if (oldAl != nullptr) {
         if (oldAl->getType() == DNAAlphabet_AMINO && resAl->getType() == DNAAlphabet_NUCL) {
             resAl = oldAl;
         } else if (resAl->getType() == DNAAlphabet_AMINO && oldAl->getType() == DNAAlphabet_NUCL) {
@@ -641,7 +641,7 @@ void U2MemorySequenceImporter::addBlock(const char *data, qint64 len, U2OpStatus
         } else {
             resAl = U2AlphabetUtils::deriveCommonAlphabet(blockAl, oldAl);
         }
-        CHECK_EXT(resAl != NULL, os.setError(U2SequenceUtils::tr("Failed to derive sequence alphabet!")), );
+        CHECK_EXT(resAl != nullptr, os.setError(U2SequenceUtils::tr("Failed to derive sequence alphabet!")), );
     }
 
     if (resAl != U2AlphabetUtils::getById(sequence.alphabet)) {

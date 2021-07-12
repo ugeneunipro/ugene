@@ -36,8 +36,8 @@
 
 namespace U2 {
 
-IOAdapter *FastqFormatTestData::ioAdapter = NULL;
-FastqFormat *FastqFormatTestData::format = NULL;
+IOAdapter *FastqFormatTestData::ioAdapter = nullptr;
+FastqFormat *FastqFormatTestData::format = nullptr;
 
 void FastqFormatTestData::init() {
     TestRunnerSettings *trs = AppContext::getAppSettings()->getTestRunnerSettings();
@@ -52,7 +52,7 @@ void FastqFormatTestData::init() {
 }
 
 IMPLEMENT_TEST(FasqUnitTests, checkRawData) {
-    if (FastqFormatTestData::format == NULL) {
+    if (FastqFormatTestData::format == nullptr) {
         FastqFormatTestData::init();
     }
     QByteArray rawData = "@SEQ_ID\nGATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT\n+\n!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65\n";
@@ -68,7 +68,7 @@ IMPLEMENT_TEST(FasqUnitTests, checkRawData) {
 }
 
 IMPLEMENT_TEST(FasqUnitTests, checkRawDataMultiple) {
-    if (FastqFormatTestData::format == NULL) {
+    if (FastqFormatTestData::format == nullptr) {
         FastqFormatTestData::init();
     }
     QByteArray rawData = "@SEQ_ID\nGATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT\n+\n!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65\n";
@@ -86,7 +86,7 @@ IMPLEMENT_TEST(FasqUnitTests, checkRawDataMultiple) {
 }
 
 IMPLEMENT_TEST(FasqUnitTests, checkRawDataInvalidHeaderStartWith) {
-    if (FastqFormatTestData::format == NULL) {
+    if (FastqFormatTestData::format == nullptr) {
         FastqFormatTestData::init();
     }
     QByteArray rawData = "SEQ_ID\nGATTTGGGGTTCAAAGCAGTATCGATCAAATAGTAAATCCATTTGTTCAACTCACAGTTT\n+\n!''*((((***+))%%%++)(%%%%).1***-+*''))**55CCF>>>>>>CCCCCCC65\n";
@@ -95,7 +95,7 @@ IMPLEMENT_TEST(FasqUnitTests, checkRawDataInvalidHeaderStartWith) {
 }
 
 IMPLEMENT_TEST(FasqUnitTests, checkRawDataInvalidQualityHeaderStartWith) {
-    if (FastqFormatTestData::format == NULL) {
+    if (FastqFormatTestData::format == nullptr) {
         FastqFormatTestData::init();
     }
     QByteArray rawData = "@SEQ_ID\nGGGTGATGGCCGCTGCCGATGGCGTCAAATCCCACC\n-\nIIIIIIIIIIIIIIIIIIIIIIIIIIIIII9IG9IC\n";
