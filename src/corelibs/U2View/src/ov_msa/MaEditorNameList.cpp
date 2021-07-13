@@ -43,6 +43,7 @@
 #include "helpers/DrawHelper.h"
 #include "helpers/RowHeightController.h"
 #include "helpers/ScrollController.h"
+#include "ov_msa/view_rendering/MaEditorSelection.h"
 #include "view_rendering/MaEditorSequenceArea.h"
 #include "view_rendering/MaEditorWgt.h"
 #include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
@@ -89,10 +90,10 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt *_ui, QScrollBar *_nhBar)
     connect(this, SIGNAL(si_startMaChanging()), ui, SIGNAL(si_startMaChanging()));
     connect(this, SIGNAL(si_stopMaChanging(bool)), ui, SIGNAL(si_stopMaChanging(bool)));
 
-    if (ui->getSequenceArea()) {
-        connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)), SLOT(sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)));
-        connect(ui->getEditor(), SIGNAL(si_fontChanged(const QFont &)), SLOT(sl_completeUpdate()));
-    }
+    connect(editor->getSelectionController(),
+            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
+            SLOT(sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)));
+    connect(editor, SIGNAL(si_fontChanged(const QFont &)), SLOT(sl_completeUpdate()));
     connect(ui->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_completeUpdate()));
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_completeRedraw()));
     connect(editor, SIGNAL(si_cursorPositionChanged(const QPoint &)), SLOT(sl_completeRedraw()));
@@ -148,7 +149,7 @@ QAction *MaEditorNameList::getRemoveSequenceAction() const {
 }
 
 U2Region MaEditorNameList::getSelection() const {
-    const MaEditorSelection &selection = ui->getSequenceArea()->getSelection();
+    const MaEditorSelection &selection = editor->getSelection();
     return U2Region::fromYRange(selection.toRect());
 }
 
@@ -333,7 +334,7 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
             ui->getScrollController()->scrollPage(ScrollController::Down);
             break;
         case Qt::Key_Escape:
-            ui->getSequenceArea()->sl_cancelSelection();
+            editor->getSelectionController()->clearSelection();
             break;
         case Qt::Key_Delete:
             if (removeSequenceAction->isEnabled()) {
@@ -493,7 +494,7 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
         }
         if (newSelectionLen > 0) {
             if (hasCtrlModifier && selection.length > 0) {    // with Ctrl we copy X range to the new selection.
-                const MaEditorSelection &maSelection = ui->getSequenceArea()->getSelection();
+                const MaEditorSelection &maSelection = editor->getSelection();
                 QRect selectionRect = maSelection.toRect();
                 QRect newSelectionRect(selectionRect.x(), newSelectionStart, selectionRect.width(), newSelectionLen);
                 ui->getSequenceArea()->setSelectionRect(newSelectionRect);
@@ -502,7 +503,7 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
             }
         }
     } else {
-        clearSelection();
+        editor->getSelectionController()->clearSelection();
     }
 
     rubberBand->hide();
@@ -538,10 +539,6 @@ const MaCollapsibleGroup *MaEditorNameList::getCollapsibleGroupByExpandCollapseP
     QRect textRect = calculateTextRect(yRange, getSelection().contains(viewRow));
     QRect buttonRect = calculateExpandCollapseButtonRect(textRect);
     return buttonRect.contains(point) ? group : nullptr;
-}
-
-void MaEditorNameList::clearSelection() {
-    ui->getSequenceArea()->setSelection(MaEditorSelection());
 }
 
 void MaEditorNameList::sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &prev) {

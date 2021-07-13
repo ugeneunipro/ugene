@@ -30,6 +30,7 @@
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/RowHeightController.h"
 #include "ov_msa/helpers/ScrollController.h"
+#include "ov_msa/view_rendering/MaEditorSelection.h"
 
 namespace U2 {
 
@@ -41,7 +42,9 @@ MaOverview::MaOverview(MaEditorWgt *ui)
       stepX(0),
       stepY(0) {
     connect(sequenceArea, SIGNAL(si_visibleRangeChanged()), this, SLOT(sl_visibleRangeChanged()));
-    connect(sequenceArea, SIGNAL(si_selectionChanged(MaEditorSelection, MaEditorSelection)), SLOT(sl_selectionChanged()));
+    connect(editor->getSelectionController(),
+            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
+            SLOT(sl_selectionChanged()));
     connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_redraw()));
     connect(ui->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
     connect(ui->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_redraw()));

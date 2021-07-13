@@ -30,6 +30,7 @@
 #include "RowHeightController.h"
 #include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MaEditor.h"
+#include "ov_msa/view_rendering/MaEditorSelection.h"
 #include "ov_msa/view_rendering/MaEditorSequenceArea.h"
 #include "ov_msa/view_rendering/MaEditorWgt.h"
 
@@ -244,7 +245,7 @@ void ScrollController::scrollToMovedSelection(ScrollController::Direction direct
     U2Region selectionRegion;
     int selectionEdgePosition;
     QSize widgetSize = ui->getSequenceArea()->size();
-    QRect selectionRect = ui->getSequenceArea()->getSelection().toRect();
+    QRect selectionRect = ui->getEditor()->getSelection().toRect();
     switch (direction) {
         case Up:
             fullyVisibleRegion = ui->getDrawHelper()->getVisibleViewRowsRegion(widgetSize.height(), false, false);

@@ -31,6 +31,7 @@
 #include <U2View/MSAEditorSequenceArea.h>
 
 #include "MaEditorWgt.h"
+#include "ov_msa/view_rendering/MaEditorSelection.h"
 
 namespace U2 {
 
@@ -126,7 +127,7 @@ void MaUtilsWidget::setHeightMargin(int _heightMargin) {
 }
 
 void MaUtilsWidget::mousePressEvent(QMouseEvent *) {
-    ui->getSequenceArea()->sl_cancelSelection();
+    ui->getEditor()->getSelectionController()->clearSelection();
 }
 void MaUtilsWidget::paintEvent(QPaintEvent *) {
     QPainter p(this);

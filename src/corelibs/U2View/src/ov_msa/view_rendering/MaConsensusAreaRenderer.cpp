@@ -35,6 +35,7 @@
 #include "ov_msa/helpers/DrawHelper.h"
 #include "ov_msa/helpers/RowHeightController.h"
 #include "ov_msa/helpers/ScrollController.h"
+#include "ov_msa/view_rendering/MaEditorSelection.h"
 #include "ov_msa/view_rendering/MaEditorSequenceArea.h"
 
 namespace U2 {
@@ -117,7 +118,7 @@ void MaConsensusAreaRenderer::drawContent(QPainter &painter,
 }
 
 ConsensusRenderData MaConsensusAreaRenderer::getConsensusRenderData(const QList<int> &seqIdx, const U2Region &region) const {
-    QRect selectionRect = ui->getSequenceArea()->getSelection().toRect();
+    QRect selectionRect = editor->getSelection().toRect();
     ConsensusRenderData consensusRenderData;
     consensusRenderData.region = region;
     consensusRenderData.selectedRegion = U2Region::fromXRange(selectionRect);
@@ -305,7 +306,7 @@ ConsensusRenderData MaConsensusAreaRenderer::getScreenDataToRender() const {
 
     ConsensusRenderData consensusRenderData;
     consensusRenderData.region = ui->getDrawHelper()->getVisibleBases(area->width());
-    const MaEditorSelection &selection = ui->getSequenceArea()->getSelection();
+    const MaEditorSelection &selection = editor->getSelection();
     QRect selectionRect = selection.toRect();
     consensusRenderData.selectedRegion = U2Region(selectionRect.x(), selectionRect.width());
     consensusRenderData.data = consensusCache->getConsensusLine(consensusRenderData.region, true);

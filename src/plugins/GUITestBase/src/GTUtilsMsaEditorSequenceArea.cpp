@@ -41,6 +41,7 @@
 #include <U2View/MsaEditorSimilarityColumn.h>
 #include <U2View/RowHeightController.h>
 #include <U2View/ScrollController.h>
+#include <U2View/MaEditorSelection.h>
 
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
@@ -265,10 +266,10 @@ void GTUtilsMSAEditorSequenceArea::clickToPosition(GUITestOpStatus &os, const QP
 
 #define GT_METHOD_NAME "checkSelectedRect"
 void GTUtilsMSAEditorSequenceArea::checkSelectedRect(GUITestOpStatus &os, const QRect &expectedRect) {
-    MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    auto msaEditArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area"));
     CHECK_SET_ERR(msaEditArea != nullptr, "MsaEditorSequenceArea not found");
 
-    QRect msaEditRegion = msaEditArea->getSelection().toRect();
+    QRect msaEditRegion = msaEditArea->getEditor()->getSelection().toRect();
     CHECK_SET_ERR(expectedRect == msaEditRegion, QString("Unexpected selection region. Expected: [(%1,%2) (%3,%4)]. Actual: [(%5,%6) (%7,%8)]").arg(expectedRect.topLeft().x()).arg(expectedRect.topLeft().y()).arg(expectedRect.bottomRight().x()).arg(expectedRect.bottomRight().y()).arg(msaEditRegion.topLeft().x()).arg(msaEditRegion.topLeft().y()).arg(msaEditRegion.bottomRight().x()).arg(msaEditRegion.bottomRight().y()));
 }
 #undef GT_METHOD_NAME
@@ -429,10 +430,10 @@ int GTUtilsMSAEditorSequenceArea::getNumVisibleBases(GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "getSelectedRect"
 QRect GTUtilsMSAEditorSequenceArea::getSelectedRect(GUITestOpStatus &os) {
-    MSAEditorSequenceArea *msaEditArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area"));
+    auto msaEditArea = qobject_cast<MSAEditorSequenceArea *>(GTWidget::findWidget(os, "msa_editor_sequence_area"));
     GT_CHECK_RESULT(msaEditArea != nullptr, "MsaEditorSequenceArea not found", QRect());
 
-    return msaEditArea->getSelection().toRect();
+    return msaEditArea->getEditor()->getSelection().toRect();
 }
 #undef GT_METHOD_NAME
 

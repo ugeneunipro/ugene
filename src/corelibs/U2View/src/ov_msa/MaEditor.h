@@ -58,6 +58,7 @@ namespace U2 {
 class MaEditorWgt;
 class MultipleAlignmentObject;
 class MaEditorSelection;
+class MaEditorSelectionController;
 class MultipleAlignment;
 class MaModificationInfo;
 
@@ -143,14 +144,11 @@ public:
 
     bool isAlignmentEmpty() const;
 
+    /* Returns current selection controller. */
+    virtual MaEditorSelectionController *getSelectionController() const = 0;
+
     /* Returns current selection. */
     const MaEditorSelection &getSelection() const;
-
-    /*
-     * Shortcut for getSelection().toRect().
-     * Note: this method is useful because we have no "MaEditorSelection" type available outside of the U2View today.
-     */
-    QRect getSelectionRect() const;
 
     virtual int getRowContentIndent(int rowId) const;
     int getSequenceRowHeight() const;    // SANGER_TODO: order the methods

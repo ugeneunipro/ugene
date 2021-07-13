@@ -150,8 +150,6 @@ protected:
 
     virtual void drawCollapsePrimitive(QPainter &p, bool collapsed, const QRect &rect);
 
-    void clearSelection();
-
     /*
      * Triggers expand collapse on the currently selected set of collapse group headers.
      *

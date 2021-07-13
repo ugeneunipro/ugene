@@ -39,6 +39,7 @@
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
+#include <U2View/MaEditorSelection.h>
 //#include <U2View/ma
 
 #include "ExportAlignmentViewItems.h"
@@ -104,7 +105,9 @@ void MSAExportContext::sl_exportNucleicMsaToAmino() {
     GUrl msaUrl = editor->getMaObject()->getDocument()->getURL();
     QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(msaUrl, editor->getMaObject()->getGObjectName(), BaseDocumentFormats::CLUSTAL_ALN, "_transl");
 
-    QObjectScopedPointer<ExportMSA2MSADialog> d = new ExportMSA2MSADialog(defaultUrl, BaseDocumentFormats::CLUSTAL_ALN, editor->getSelectionRect().height() < 1, AppContext::getMainWindow()->getQMainWindow());
+    int selectionHeight = editor->getSelection().toRect().height();
+    bool isWholeAlignmentMode = selectionHeight == 0;
+    QObjectScopedPointer<ExportMSA2MSADialog> d = new ExportMSA2MSADialog(defaultUrl, BaseDocumentFormats::CLUSTAL_ALN, isWholeAlignmentMode, AppContext::getMainWindow()->getQMainWindow());
     d->setWindowTitle(tr("Export Amino Translation"));
     const int rc = d->exec();
     CHECK(!d.isNull(), );
@@ -116,8 +119,8 @@ void MSAExportContext::sl_exportNucleicMsaToAmino() {
     QList<DNATranslation *> trans;
     trans << AppContext::getDNATranslationRegistry()->lookupTranslation(d->translationTable);
 
-    int offset = d->exportWholeAlignment ? 0 : editor->getSelectionRect().top();
-    int len = d->exportWholeAlignment ? ma->getNumRows() : editor->getSelectionRect().height();
+    int offset = d->exportWholeAlignment ? 0 : editor->getSelection().toRect().top();
+    int len = d->exportWholeAlignment ? ma->getNumRows() : editor->getSelection().toRect().height();
 
     bool convertUnknowToGaps = d->unknownAmino == ExportMSA2MSADialog::UnknownAmino::Gap;
     bool reverseComplement = d->translationFrame < 0;

@@ -46,6 +46,7 @@
 #include "MaEditorState.h"
 #include "MaEditorTasks.h"
 #include "helpers/ScrollController.h"
+#include "view_rendering/MaEditorSelection.h"
 
 namespace U2 {
 
@@ -159,11 +160,7 @@ bool MaEditor::isAlignmentEmpty() const {
 }
 
 const MaEditorSelection &MaEditor::getSelection() const {
-    return ui->getSequenceArea()->getSelection();
-}
-
-QRect MaEditor::getSelectionRect() const {
-    return getSelection().toRect();
+    return getSelectionController()->getSelection();
 }
 
 int MaEditor::getRowContentIndent(int) const {
@@ -267,7 +264,7 @@ void MaEditor::sl_zoomOut() {
 void MaEditor::sl_zoomToSelection() {
     ResizeMode oldMode = resizeMode;
     int seqAreaWidth = ui->getSequenceArea()->width();
-    MaEditorSelection selection = ui->getSequenceArea()->getSelection();
+    const MaEditorSelection &selection = getSelection();
     if (selection.isEmpty()) {
         return;
     }
@@ -373,13 +370,14 @@ void MaEditor::initActions() {
     connect(showOverviewAction, SIGNAL(triggered()), ui->getOverviewArea(), SLOT(sl_show()));
     ui->addAction(showOverviewAction);
 
+    MaEditorSelectionController *selectionController = getSelectionController();
     clearSelectionAction = new QAction(tr("Clear selection"), this);
     clearSelectionAction->setShortcut(Qt::Key_Escape);
     clearSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
-    connect(clearSelectionAction, SIGNAL(triggered()), ui->getSequenceArea(), SLOT(sl_cancelSelection()));
+    connect(clearSelectionAction, SIGNAL(triggered()), selectionController, SLOT(clearSelection()));
     ui->addAction(clearSelectionAction);
 
-    connect(ui->getSequenceArea(),
+    connect(selectionController,
             SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
             SLOT(sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)));
 }
