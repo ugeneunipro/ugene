@@ -497,7 +497,7 @@ QWidget *MSAEditor::createWidget() {
 
     connect(realignSomeSequenceAction, SIGNAL(triggered()), this, SLOT(sl_realignSomeSequences()));
     connect(maObject, SIGNAL(si_alphabetChanged(const MaModificationInfo &, const DNAAlphabet *)), SLOT(sl_updateRealignAction()));
-    connect(ui->getEditor()->getSelectionController(),
+    connect(getSelectionController(),
             SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
             SLOT(sl_updateRealignAction()));
 

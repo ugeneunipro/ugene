@@ -432,8 +432,6 @@ void MSAEditorSequenceArea::sl_createSubalignment() {
 }
 
 void MSAEditorSequenceArea::sl_saveSequence() {
-    CHECK(getEditor() != nullptr, );
-
     QWidget *parentWidget = (QWidget *)AppContext::getMainWindow()->getQMainWindow();
     QString suggestedFileName = editor->getMaObject()->getGObjectName() + "_sequence";
     QObjectScopedPointer<SaveSelectedSequenceFromMSADialogController> d = new SaveSelectedSequenceFromMSADialogController(parentWidget, suggestedFileName);
@@ -571,7 +569,6 @@ void MSAEditorSequenceArea::sl_cutSelection() {
 }
 
 void MSAEditorSequenceArea::sl_addSeqFromFile() {
-    CHECK(getEditor() != nullptr, );
     MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
     if (msaObject->isStateLocked()) {
         return;
@@ -601,7 +598,6 @@ void MSAEditorSequenceArea::sl_addSeqFromFile() {
 }
 
 void MSAEditorSequenceArea::sl_addSeqFromProject() {
-    CHECK(getEditor() != nullptr, );
     MultipleSequenceAlignmentObject *msaObject = getEditor()->getMaObject();
     if (msaObject->isStateLocked()) {
         return;
@@ -628,7 +624,6 @@ void MSAEditorSequenceArea::sl_addSeqFromProject() {
 }
 
 void MSAEditorSequenceArea::sl_toggleSequenceRowOrder(bool isOrderBySequence) {
-    CHECK(getEditor() != nullptr, );
     GCOUNTER(cvar, "Switch collapsing mode");
 
     MaEditorRowOrderMode newMode = isOrderBySequence ? MaEditorRowOrderMode::Sequence : MaEditorRowOrderMode::Original;

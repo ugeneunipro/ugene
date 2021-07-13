@@ -63,9 +63,8 @@ public:
                                      QWidget *heightTarget = nullptr,
                                      bool proxyMouseEventsToNameList = true);
 
-    MaEditor *getEditor() const {
-        return editor;
-    }
+    /** Returns MA editor instance. The instance is always defined and is never null. */
+    MaEditor *getEditor() const;
 
     MaEditorSequenceArea *getSequenceArea() const {
         return sequenceArea;
