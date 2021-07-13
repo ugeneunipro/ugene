@@ -86,7 +86,7 @@ public:
         return offsetsViewController;
     }
 
-    MaEditorStatusBar* getStatusBar() const;
+    MaEditorStatusBar *getStatusBar() const;
 
     ScrollController *getScrollController() const {
         return scrollController;
@@ -148,7 +148,7 @@ protected:
     virtual void initStatusBar() = 0;
 
 protected:
-    MaEditor *editor;
+    MaEditor *const editor;
     MaEditorSequenceArea *sequenceArea;
     MaEditorNameList *nameList;
     MaEditorConsensusArea *consensusArea;

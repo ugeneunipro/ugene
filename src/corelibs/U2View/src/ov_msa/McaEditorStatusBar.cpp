@@ -63,7 +63,7 @@ McaEditorStatusBar::McaEditorStatusBar(MultipleAlignmentObject *mobj,
     selectionLabel->hide();
 
     connect(seqArea->getEditor()->getSelectionController(),
-            SIGNAL(si_selectionChanged(MaEditorSelection, MaEditorSelection)),
+            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
             SLOT(sl_update()));
 
     connect(refCharController, SIGNAL(si_cacheUpdated()), SLOT(sl_update()));

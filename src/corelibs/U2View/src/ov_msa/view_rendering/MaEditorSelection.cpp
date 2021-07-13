@@ -103,7 +103,6 @@ void MaEditorSelectionController::clearSelection() {
 void MaEditorSelectionController::setSelection(const MaEditorSelection &newSelection) {
     CHECK(!editor->isAlignmentEmpty() || newSelection.isEmpty(), );
     CHECK(newSelection != selection, );
-    QStringList selectedRowNames;
     MaEditorSelection oldSelection = selection;
     selection = newSelection;
     emit si_selectionChanged(selection, oldSelection);

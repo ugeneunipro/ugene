@@ -71,8 +71,8 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectC
     connect(scrollBar, SIGNAL(valueChanged(int)), ui->getScrollController()->getHorizontalScrollBar(), SLOT(setValue(int)));
     connect(ui->getScrollController()->getHorizontalScrollBar(), SIGNAL(valueChanged(int)), scrollBar, SLOT(setValue(int)));
     connect(editor->getSelectionController(),
-            SIGNAL(si_selectionChanged(MaEditorSelection, MaEditorSelection)),
-            SLOT(sl_selectionChanged(MaEditorSelection, MaEditorSelection)));
+            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
+            SLOT(sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)));
 
     setMouseTracking(false);
 
