@@ -30,11 +30,11 @@ mkdir "${TARGET_PLUGINS_DIR}"
 echo Copying icons
 cp "${SOURCE_DIR}/src/ugeneui/images/ugene-doc.icns" "${TARGET_APP_DIR}/Contents/Resources"
 cp "${SOURCE_DIR}/src/ugeneui/images/ugeneui.icns" "${TARGET_APP_DIR}/Contents/Resources"
-cp "${SOURCE_DIR}/installer/macosx/Info.plist" "${TARGET_APP_DIR}/Contents"
+cp "${SOURCE_DIR}/etc/script/mac/dmg/Info.plist" "${TARGET_APP_DIR}/Contents"
 
 echo Copying translations
 cp "${BUILD_DIR}"/transl_*.qm "${TARGET_EXE_DIR}"
-cp -R "${SOURCE_DIR}/installer/macosx/qt_menu.nib" "${TARGET_APP_DIR}/Contents/Resources"
+cp -R "${SOURCE_DIR}/etc/script/mac/dmg/qt_menu.nib" "${TARGET_APP_DIR}/Contents/Resources"
 
 echo Copying data dir
 cp -R "${SOURCE_DIR}/data" "${TARGET_EXE_DIR}/"
@@ -94,7 +94,7 @@ add-binary ugeneui
 add-binary ugenem
 add-binary ugenecl
 add-binary plugins_checker
-cp "${SOURCE_DIR}/installer/macosx/ugene" "${TARGET_EXE_DIR}"
+cp "${SOURCE_DIR}/etc/script/mac/dmg/ugene" "${TARGET_EXE_DIR}"
 
 echo Copying core libs
 add-library QSpec
@@ -174,4 +174,4 @@ echo Copying extra libraries with mysql driver
 cp "${QT_DIR}"/extra_libs/* "${TARGET_APP_DIR}/Contents/Frameworks"
 
 echo Copying readme.txt file
-cp "${SOURCE_DIR}/installer/macosx/readme.txt" "${BUNDLE_DIR}/readme.txt"
+cp "${SOURCE_DIR}/etc/script/mac/dmg/readme.txt" "${BUNDLE_DIR}/readme.txt"

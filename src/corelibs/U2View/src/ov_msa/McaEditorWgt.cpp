@@ -142,4 +142,8 @@ void McaEditorWgt::initStatusBar() {
     statusBar = new McaEditorStatusBar(editor->getMaObject(), sequenceArea, getEditorNameList(), refCharController);
 }
 
+McaEditorReferenceArea *McaEditorWgt::getReferenceArea() const {
+    return refArea;
+}
+
 }    // namespace U2

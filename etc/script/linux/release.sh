@@ -71,7 +71,7 @@ function dump_symbols() {
   BASE_NAME=$(basename "${1}")
   SYMBOL_FILE="${SYMBOLS_DIR}/${BASE_NAME}.sym"
 
-  "$SOURCE_DIR"/etc/bin/linux/dump_syms "$1" >"${SYMBOLS_DIR}/${BASE_NAME}.sym" 2>"${SYMBOLS_LOG}"
+  "$SOURCE_DIR"/etc/script/linux/dump_syms "$1" >"${SYMBOLS_DIR}/${BASE_NAME}.sym" 2>"${SYMBOLS_LOG}"
 
   FILE_HEAD=$(head -n 1 "${SYMBOL_FILE}")
   FILE_HASH=$(echo "${FILE_HEAD}" | awk '{ print $4 }')
@@ -82,7 +82,7 @@ function dump_symbols() {
   mv "${SYMBOL_FILE}" "${DEST_PATH}/${FILE_NAME}.sym"
 }
 
-find "${APP_DIR}" | sed 's/.*\/tools\/.*$//g' | grep -e ugeneui -e ugenecl -e lib.*.so.* | while read -r BINARY_FILE; do
+find "${APP_BUNDLE_DIR}" | sed 's/.*\/tools\/.*$//g' | grep -e ugeneui -e ugenecl -e lib.*.so.* | while read -r BINARY_FILE; do
   dump_symbols "${BINARY_FILE}"
 done
 echo "##teamcity[blockClosed name='Dump symbols']"

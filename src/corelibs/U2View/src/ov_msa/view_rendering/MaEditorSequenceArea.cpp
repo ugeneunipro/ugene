@@ -184,13 +184,7 @@ bool MaEditorSequenceArea::isInRange(const QPoint &point) const {
 }
 
 bool MaEditorSequenceArea::isInRange(const QRect &rect) const {
-    if (!isSeqInRange(rect.y()) || !isSeqInRange(rect.bottom())) {
-        return false;
-    }
-    if (rect.x() == 0 && rect.width() == 0) {    // Handle a special 'full-row' mode separately.
-        return true;
-    }
-    return isPosInRange(rect.x()) && isPosInRange(rect.right());
+    return isSeqInRange(rect.y()) && isSeqInRange(rect.bottom()) && isPosInRange(rect.x()) && isPosInRange(rect.right());
 }
 
 QPoint MaEditorSequenceArea::boundWithVisibleRange(const QPoint &point) const {
@@ -201,15 +195,6 @@ QPoint MaEditorSequenceArea::boundWithVisibleRange(const QPoint &point) const {
 
 QRect MaEditorSequenceArea::boundWithVisibleRange(const QRect &rect) const {
     QRect visibleRect(0, 0, editor->getAlignmentLen(), ui->getCollapseModel()->getViewRowCount());
-    if (rect.x() == 0 && rect.width() == 0) {    // H// Handle a special 'full-row' mode separately.
-        QRect fullWidthRect = rect;
-        fullWidthRect.setWidth(editor->getAlignmentLen());
-        QRect resultRect = fullWidthRect.intersected(visibleRect);
-        if (resultRect.isValid()) {
-            resultRect.setWidth(0);    // Make width equal to 0 (set 'full-row' mode ON) again.
-        }
-        return resultRect;
-    }
     return rect.intersected(visibleRect);
 }
 
@@ -236,9 +221,7 @@ QFont MaEditorSequenceArea::getFont() const {
 
 void MaEditorSequenceArea::setSelectionRect(const QRect &newSelectionRect) {
     QRect safeRect = boundWithVisibleRange(newSelectionRect);
-    // Make a special check for valid rect: handle 'width=0' mode.
-    bool isSafeRectValid = safeRect.isValid() || (safeRect.height() > 0 && safeRect.x() == 0 && safeRect.width() == 0);
-    if (!isSafeRectValid) {    // 'newSelectionRect' is out of bounds - reset selection to empty.
+    if (!safeRect.isValid()) {    // 'newSelectionRect' is out of bounds - reset selection to empty.
         setSelection(MaEditorSelection());
         return;
     }
@@ -325,24 +308,22 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
     // then shifting should be canceled
     cancelShiftTracking();
 
-    // Selection width may be equal to 0 (for example in MCA) -> this means that the whole row is selected.
     int numColumns = editor->getAlignmentLen();
     QRect selectionRect = selection.toRect();
-    int effectiveWidth = selectionRect.x() == 0 && selectionRect.width() == 0 ? numColumns : selectionRect.width();
-    bool isWholeRowRemoved = effectiveWidth == numColumns;
+    bool isWholeRowRemoved = selectionRect.width() == numColumns;
 
     if (isWholeRowRemoved) {    // Reuse code of the name list.
         ui->getEditorNameList()->sl_removeSelectedRows();
         return;
     }
 
-    Q_ASSERT(isInRange(QPoint(selectionRect.x() + effectiveWidth - 1, selectionRect.y() + selectionRect.height() - 1)));
+    Q_ASSERT(isInRange(QPoint(selectionRect.x() + selectionRect.width() - 1, selectionRect.y() + selectionRect.height() - 1)));
 
     QList<int> selectedMaRows = getSelectedMaRowIndexes();
     int numRows = (int)maObj->getNumRows();
     if (selectedMaRows.size() == numRows) {
         bool isResultAlignmentEmpty = true;
-        U2Region xRegion(selectionRect.x(), effectiveWidth);
+        U2Region xRegion = U2Region::fromXRange(selectionRect);
         for (int i = 0; i < selectedMaRows.size() && isResultAlignmentEmpty; i++) {
             int maRow = selectedMaRows[i];
             isResultAlignmentEmpty = maObj->isRegionEmpty(0, maRow, xRegion.startPos, 1) &&
@@ -357,7 +338,7 @@ void MaEditorSequenceArea::deleteCurrentSelection() {
     U2UseCommonUserModStep userModStep(maObj->getEntityRef(), os);
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
-    maObj->removeRegion(selectedMaRows, selection.toRect().x(), effectiveWidth, true);
+    maObj->removeRegion(selectedMaRows, selectionRect.x(), selectionRect.width(), true);
     GCounter::increment("Delete current selection", editor->getFactoryId());
 }
 

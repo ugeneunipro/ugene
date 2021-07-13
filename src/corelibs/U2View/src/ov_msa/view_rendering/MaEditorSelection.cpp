@@ -36,7 +36,7 @@ MaEditorSelection::MaEditorSelection(const QList<QRect> &rects) {
 }
 
 bool MaEditorSelection::addRect(const QRect &rect) {
-    SAFE_POINT(rect.x() >= 0 && rect.width() >= 0 && rect.y() >= 0 && rect.height() > 0,
+    SAFE_POINT(rect.x() >= 0 && rect.width() >= 0 && rect.y() >= 0 && rect.height() >= 0,
                QString("Invalid MSA selection rect: x:%1 y:%2 w:%3 h:%4").arg(rect.x()).arg(rect.y()).arg(rect.width()).arg(rect.height()),
                false);
     for (const QRect &oldRect : qAsConst(rectList)) {

@@ -32,14 +32,13 @@ namespace U2 {
 class U2VIEW_EXPORT MaEditorSelection {
 public:
     /** Creates a new empty MSA editor selection first and calls addRect() for every rect in the list. */
-    MaEditorSelection(const QList<QRect> &rectList = QList<QRect>());
+    explicit MaEditorSelection(const QList<QRect> &rectList = QList<QRect>());
 
     /**
      * Adds rect to the selection. Does not change the selection if the new rect area is already in the selection.
      * Returns 'true' if selection was changed.
      *
-     * Only rect with height > 0 can be added to the selection.
-     * If 'height' of the rect is <= 0 no rect will be added and SAFE_POINT will be triggered (see 'rectList' for more details).
+     * Only rect with width and height > 0 can be added to the selection.
      */
     bool addRect(const QRect &rect);
 

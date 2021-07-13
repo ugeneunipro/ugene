@@ -75,7 +75,7 @@ function dump_symbols() {
   BASE_NAME=$(basename "${1}")
   SYMBOL_FILE="${SYMBOLS_DIR}/${BASE_NAME}.sym"
 
-  "${SOURCE_DIR}/installer/macosx/dump_syms_x86_64" "${1}" >"${SYMBOLS_DIR}/${BASE_NAME}.sym" 2>"${SYMBOLS_LOG}"
+  "${SOURCE_DIR}/etc/script/mac/dump_syms_x86_64" "${1}" >"${SYMBOLS_DIR}/${BASE_NAME}.sym" 2>"${SYMBOLS_LOG}"
 
   FILE_HEAD=$(head -n 1 "${SYMBOL_FILE}")
   FILE_HASH=$(echo "${FILE_HEAD}" | awk '{ print $4 }')
@@ -98,7 +98,7 @@ echo "##teamcity[blockClosed name='Dump symbols']"
 echo "##teamcity[blockOpened name='Build DMG']"
 echo pkg-dmg running...
 RELEASE_FILE_NAME=ugene-"${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-b${TEAMCITY_UGENE_BUILD_COUNTER}-mac-${ARCHITECTURE_FILE_SUFFIX}.dmg"
-"${SOURCE_DIR}/installer/macosx/pkg-dmg" --source "${APP_BUNDLE_DIR_NAME}" \
+"${SOURCE_DIR}/etc/script/mac/pkg-dmg" --source "${APP_BUNDLE_DIR_NAME}" \
   --target "${RELEASE_FILE_NAME}" \
   --volname "Unipro UGENE ${VERSION}" --symlink /Applications
 

@@ -93,6 +93,9 @@ void MsaUndoRedoFramework::checkUndoRedoEnabled() {
 
     undoAction->setEnabled(enableUndo);
     redoAction->setEnabled(enableRedo);
+    if (!enableUndo) {
+        maObj->setModified(false);
+    }
 }
 
 void MsaUndoRedoFramework::sl_undo() {
