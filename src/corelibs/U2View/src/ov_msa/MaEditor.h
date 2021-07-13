@@ -222,6 +222,7 @@ protected slots:
     void sl_lockedStateChanged();
 
     void sl_exportHighlighted();
+    void sl_onClearActionTriggered();
 
     /** The slot is called each time alignment is changed. By default calls 'updateActions'. */
     virtual void sl_onAlignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
@@ -293,7 +294,10 @@ public:
     QAction *resetZoomAction;
     QAction *saveScreenshotAction;
     QAction *exportHighlightedAction;
+
+    /** Clears selection in normal mode or exits from editing mode in the edit mode. */
     QAction *clearSelectionAction;
+
     QAction *copyConsensusAction;
     QAction *copyConsensusWithGapsAction;
 };

@@ -1500,13 +1500,12 @@ void MaEditorSequenceArea::replaceChar(char newCharacter) {
 }
 
 void MaEditorSequenceArea::exitFromEditCharacterMode() {
-    if (maMode != ViewMode) {
-        editModeAnimationTimer.stop();
-        selectionColor = Qt::black;
-        maMode = ViewMode;
-        sl_updateActions();
-        update();
-    }
+    CHECK(maMode != ViewMode, );
+    editModeAnimationTimer.stop();
+    selectionColor = Qt::black;
+    maMode = ViewMode;
+    sl_updateActions();
+    update();
 }
 
 bool MaEditorSequenceArea::isCharacterAcceptable(const QString &text) const {
@@ -1529,7 +1528,7 @@ void MaEditorSequenceArea::deleteOldCustomSchemes() {
 void MaEditorSequenceArea::updateCollapseModel(const MaModificationInfo &) {
 }
 
-MaEditorSequenceArea::MaMode MaEditorSequenceArea::getModInfo() {
+MaEditorSequenceArea::MaMode MaEditorSequenceArea::getMode() const {
     return maMode;
 }
 

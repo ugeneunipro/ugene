@@ -374,7 +374,7 @@ void MaEditor::initActions() {
     clearSelectionAction = new QAction(tr("Clear selection"), this);
     clearSelectionAction->setShortcut(Qt::Key_Escape);
     clearSelectionAction->setShortcutContext(Qt::WidgetWithChildrenShortcut);
-    connect(clearSelectionAction, SIGNAL(triggered()), selectionController, SLOT(clearSelection()));
+    connect(clearSelectionAction, SIGNAL(triggered()), SLOT(sl_onClearActionTriggered()));
     ui->addAction(clearSelectionAction);
 
     connect(selectionController,
@@ -529,6 +529,15 @@ MaEditorRowOrderMode MaEditor::getRowOrderMode() const {
 
 void MaEditor::setRowOrderMode(MaEditorRowOrderMode mode) {
     rowOrderMode = mode;
+}
+
+void MaEditor::sl_onClearActionTriggered() {
+    MaEditorSequenceArea *sequenceArea = ui->getSequenceArea();
+    if (sequenceArea->getMode() != MaEditorSequenceArea::ViewMode) {
+        sequenceArea->exitFromEditCharacterMode();
+        return;
+    }
+    getSelectionController()->clearSelection();
 }
 
 }    // namespace U2

@@ -276,7 +276,6 @@ protected:
     void replaceChar(char newCharacter);
     virtual void insertChar(char) {
     }
-    void exitFromEditCharacterMode();
     virtual bool isCharacterAcceptable(const QString &text) const;
     virtual const QString &getInacceptableCharacterErrorMessage() const;
 
@@ -289,15 +288,18 @@ protected:
      */
     virtual void updateCollapseModel(const MaModificationInfo &maModificationInfo);
 
-protected:
+public:
     enum MaMode {
         ViewMode,
         ReplaceCharMode,
         InsertCharMode
     };
 
-public:
-    MaMode getModInfo();
+    /** Returns current mode of the sequence area: viewing or editing. */
+    MaMode getMode() const;
+
+    /** Swithes sequence area into the ViewMode. */
+    void exitFromEditCharacterMode();
 
 protected:
     MaEditor *const editor;

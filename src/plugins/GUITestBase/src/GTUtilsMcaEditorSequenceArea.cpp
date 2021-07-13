@@ -359,10 +359,7 @@ void GTUtilsMcaEditorSequenceArea::moveCursorToReferencePositionCenter(GUITestOp
 #define GT_METHOD_NAME "getCharacterModificationMode"
 short GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(GUITestOpStatus &os) {
     McaEditorSequenceArea *mcaSeqArea = GTUtilsMcaEditorSequenceArea::getSequenceArea(os);
-    GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor sequence area is not found", 3);
-
-    short mod = mcaSeqArea->getModInfo();
-    return mod;
+    return (short)mcaSeqArea->getMode();
 }
 #undef GT_METHOD_NAME
 
