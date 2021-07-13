@@ -753,7 +753,7 @@ GUI_TEST_CLASS_DEFINITION(test_6078) {
 
 GUI_TEST_CLASS_DEFINITION(test_6083) {
     //    1. open document samples/CLUSTALW/COI.aln
-    GTUtilsProject::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     //    2. Select first sequence
     GTUtilsMSAEditorSequenceArea::click(os, QPoint(0, 0));
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save sequence", GTGlobals::UseKey));
@@ -765,6 +765,25 @@ GUI_TEST_CLASS_DEFINITION(test_6083) {
 
     GTUtilsProjectTreeView::click(os, "Phaneroptera_falcata.ugenedb");
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6084) {
+    // Check that modification in an alignment marks the object as 'modified' and 'undo' makes it 'non-modified' again.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Insert gap and check that object is modified.
+    GTUtilsMSAEditorSequenceArea::click(os, QPoint(10, 10));
+    GTKeyboardDriver::keyClick(Qt::Key_Space);
+    GTUtilsProjectTreeView::itemModificationCheck(os, "COI", true);
+
+    // Undo and check that object is not modified.
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsProjectTreeView::itemModificationCheck(os, "COI", false);
+
+    // Redo and check that object is modified again.
+    GTUtilsMsaEditor::redo(os);
+    GTUtilsProjectTreeView::itemModificationCheck(os, "COI", true);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6087) {
