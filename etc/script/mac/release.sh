@@ -10,7 +10,7 @@
 
 TEAMCITY_WORK_DIR=$(pwd)
 SOURCE_DIR="${TEAMCITY_WORK_DIR}/ugene_git"
-export SCRIPTS_DIR="${SOURCE_DIR}/etc/script/mac"
+SCRIPTS_DIR="${SOURCE_DIR}/etc/script/mac"
 APP_BUNDLE_DIR_NAME="ugene_app"
 APP_BUNDLE_DIR="${TEAMCITY_WORK_DIR}/${APP_BUNDLE_DIR_NAME}"
 APP_NAME="Unipro UGENE.app"
@@ -21,6 +21,7 @@ SYMBOLS_DIR="${TEAMCITY_WORK_DIR}/$SYMBOLS_DIR_NAME"
 SYMBOLS_LOG="${TEAMCITY_WORK_DIR}/symbols.log"
 export ARCHITECTURE=x86_64
 ARCHITECTURE_FILE_SUFFIX=x86-64
+set SIGN_IDENTITY="Developer ID Application: Alteametasoft"
 
 rm -rf "${SYMBOLS_DIR}"
 rm -rf "${SYMBOLS_LOG}"
@@ -102,7 +103,9 @@ tar cfz "${SYMBOLS_DIR_NAME}.tar.gz" "${SYMBOLS_DIR_NAME}"
 echo "##teamcity[blockClosed name='Dump symbols']"
 
 echo "##teamcity[blockOpened name='Sign bundle content']"
-"${SOURCE_DIR}/etc/script/mac/codesign.sh" "${APP_DIR}" || exit 1
+codesign --deep --sign "${SIGN_IDENTITY}" --timestamp --options runtime --strict \
+  --entitlements "${SCRIPTS_DIR}/dmg/Entitlements-tools.plist" \
+  "${APP_EXE_DIR}/ugeneui" || exit 1
 echo "##teamcity[blockClosed name='Sign bundle content']"
 
 echo "##teamcity[blockOpened name='Pack DMG']"
@@ -116,6 +119,7 @@ echo "##teamcity[blockClosed name='Pack DMG']"
 
 echo "##teamcity[blockOpened name='Sign DMG']"
 "${SOURCE_DIR}/etc/script/mac/codesign.sh" "${RELEASE_FILE_NAME}" || exit 1
+codesign --sign "${SIGN_IDENTITY}" --timestamp --force "${RELEASE_FILE_NAME}" || exit 1
 echo "##teamcity[blockClosed name='Sign DMG']"
 
 echo "##teamcity[blockOpened name='Notarize DMG']"

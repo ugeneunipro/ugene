@@ -52,6 +52,7 @@ find "${CONTENTS_DIR}/PlugIns" -name '*.dylib' \
 
 echo "============= Sign ugeneui & all dependencies with relaxed entitlements  ============="
 codesign \
+  --deep \
   --sign "Developer ID Application: Alteametasoft" \
   --timestamp \
   --options runtime \
