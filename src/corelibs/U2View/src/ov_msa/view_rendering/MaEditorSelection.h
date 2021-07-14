@@ -95,11 +95,12 @@ public slots:
     virtual void clearSelection();
 
 protected:
-    /** MSA/MCA editor instance. Never null. */
-    MaEditor *const editor;
-
     /** Current selection with view rows/column coordinates. */
     MaEditorSelection selection;
+
+private:
+    /** MSA/MCA editor instance. Never null. */
+    MaEditor *const editor;
 };
 
 /**
