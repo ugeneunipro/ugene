@@ -604,12 +604,6 @@ void MaEditorNameList::sl_completeRedraw() {
     update();
 }
 
-void MaEditorNameList::sl_onGroupColorsChanged(const GroupColorSchema &colors) {
-    groupColors = colors;
-    completeRedraw = true;
-    update();
-}
-
 //////////////////////////////////////////////////////////////////////////
 // draw methods
 QFont MaEditorNameList::getFont(bool selected) const {
@@ -747,18 +741,12 @@ void MaEditorNameList::drawChildSequenceItem(QPainter &painter, const QString &n
     painter.translate(-CROSS_SIZE * 2 - CHILDREN_OFFSET, 0);
 }
 
-void MaEditorNameList::drawBackground(QPainter &p, const QString &name, const QRect &rect, bool isReference) {
+void MaEditorNameList::drawBackground(QPainter &p, const QString &, const QRect &rect, bool isReference) {
     if (isReference) {
         p.fillRect(rect, QColor("#9999CC"));    // SANGER_TODO: create the const, reference  color
         return;
     }
-
     p.fillRect(rect, Qt::white);
-    if (groupColors.contains(name)) {
-        if (QColor(Qt::black) != groupColors[name]) {
-            p.fillRect(rect, groupColors[name]);
-        }
-    }
 }
 
 void MaEditorNameList::drawText(QPainter &p, const QString &name, const QRect &rect, bool selected) {
@@ -847,10 +835,6 @@ qint64 MaEditorNameList::sequenceIdAtPos(const QPoint &p) {
     CHECK(rowIndex >= 0, U2MsaRow::INVALID_ROW_ID);
     MultipleAlignmentObject *maObj = editor->getMaObject();
     return maObj->getMultipleAlignment()->getRow(ui->getCollapseModel()->getMaRowIndexByViewRowIndex(rowIndex))->getRowId();
-}
-
-void MaEditorNameList::clearGroupsColors() {
-    groupColors.clear();
 }
 
 void MaEditorNameList::moveSelection(int offset) {
