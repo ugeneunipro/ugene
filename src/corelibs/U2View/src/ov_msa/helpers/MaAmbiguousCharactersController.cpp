@@ -34,6 +34,7 @@
 #include "ScrollController.h"
 #include "ov_msa/MaCollapseModel.h"
 #include "ov_msa/MaEditor.h"
+#include "ov_msa/view_rendering/MaEditorSelection.h"
 #include "ov_msa/view_rendering/MaEditorSequenceArea.h"
 #include "ov_msa/view_rendering/MaEditorWgt.h"
 
@@ -100,7 +101,7 @@ void MaAmbiguousCharactersController::scrollToNextAmbiguous(NavigationDirection 
 }
 
 QPoint MaAmbiguousCharactersController::getStartPosition() const {
-    const MaEditorSelection selection = maEditorWgt->getSequenceArea()->getSelection();
+    const MaEditorSelection &selection = maEditorWgt->getEditor()->getSelection();
     if (!selection.isEmpty()) {
         return selection.toRect().topLeft();
     }

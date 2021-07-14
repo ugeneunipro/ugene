@@ -51,8 +51,8 @@ namespace U2 {
 /************************************************************************/
 /* MaEditorWgt */
 /************************************************************************/
-MaEditorWgt::MaEditorWgt(MaEditor *editor)
-    : editor(editor),
+MaEditorWgt::MaEditorWgt(MaEditor *_editor)
+    : editor(_editor),
       sequenceArea(nullptr),
       nameList(nullptr),
       consensusArea(nullptr),
@@ -76,6 +76,7 @@ MaEditorWgt::MaEditorWgt(MaEditor *editor)
       pasteAction(nullptr),
       pasteBeforeAction(nullptr),
       cutSelectionAction(nullptr) {
+    SAFE_POINT(editor != nullptr, "MaEditor is null!", );
     undoFWK = new MsaUndoRedoFramework(this, editor->getMaObject());
     setFocusPolicy(Qt::ClickFocus);
 
@@ -92,7 +93,7 @@ QWidget *MaEditorWgt::createHeaderLabelWidget(const QString &text, Qt::Alignment
                              proxyMouseEventsToNameList);
 }
 
-MaEditorStatusBar* MaEditorWgt::getStatusBar() const {
+MaEditorStatusBar *MaEditorWgt::getStatusBar() const {
     return statusBar;
 }
 
@@ -293,6 +294,10 @@ void MaEditorWgt::sl_countUndo() {
 
 void MaEditorWgt::sl_countRedo() {
     GCounter::increment("Redo", editor->getFactoryId());
+}
+
+MaEditor *MaEditorWgt::getEditor() const {
+    return editor;
 }
 
 }    // namespace U2

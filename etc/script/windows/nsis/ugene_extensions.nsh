@@ -18,7 +18,6 @@ SectionEnd
 !macro AssociateExtSectionGroup un
 SectionGroup "${un}Associate file extensions"
 
-
 ;Project file
   !insertmacro AssociateExtSection "${un}" ".uprj"   "Unipro UGENE project file"    "0"
 
@@ -57,7 +56,7 @@ SectionGroup "${un}Associate file extensions"
   !insertmacro AssociateExtSection "${un}" ".genbank" "Genbank plain text file"     "1"
 
 ;GFF format
-  !insertmacro AssociateExtSection "${un}" ".gff"     "GFF firmat"                  "1"
+  !insertmacro AssociateExtSection "${un}" ".gff"     "GFF format"                  "1"
 
 ;MSF format
   !insertmacro AssociateExtSection "${un}" ".msf"     "MSF multiple sequence file"  "1"
@@ -131,28 +130,3 @@ Restore:
   DeleteRegKey HKCR $3 ;Delete key with association settings
 NoOwn:
 FunctionEnd
-
-
-!macro DumpSymbols binary filename
-    !system '"dump_syms.exe" "${binary}" > "${SYMBOLS_DIR}/${filename}.sym" 2>> ${DUMP_SYMBOLS_LOG}'
-!macroend
-
-!macro AddExecutable executable
-    File "${ReleaseBuildDir}\${executable}.exe"
-    File "${ReleaseBuildDir}\${executable}.map"
-    !insertmacro DumpSymbols "${ReleaseBuildDir}\${executable}.exe" ${executable}
-!macroend
-
-!macro AddLibrary library
-    File "${ReleaseBuildDir}\${library}.dll"
-    File "${ReleaseBuildDir}\${library}.map"
-    !insertmacro DumpSymbols "${ReleaseBuildDir}\${library}.dll" ${library}
-!macroend
-
-!macro AddPlugin plugin
-    File "${ReleaseBuildDir}\plugins\${plugin}.dll"
-    File "${ReleaseBuildDir}\plugins\${plugin}.plugin"
-    File "${ReleaseBuildDir}\plugins\${plugin}.license"
-    File "${ReleaseBuildDir}\plugins\${plugin}.map"
-    !insertmacro DumpSymbols "${ReleaseBuildDir}\plugins\${plugin}.dll" ${plugin}
-!macroend

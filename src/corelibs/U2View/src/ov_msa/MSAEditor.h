@@ -89,7 +89,10 @@ public:
         return qobject_cast<MultipleSequenceAlignmentObject *>(maObject);
     }
 
-    virtual void buildStaticToolbar(QToolBar *tb) override;
+    /** Returns selection controller instance. The instance is always defined and is never null. */
+    MaEditorSelectionController *getSelectionController() const override;
+
+    void buildStaticToolbar(QToolBar *tb) override;
 
     void buildMenu(QMenu *m, const QString &type) override;
 
@@ -242,6 +245,9 @@ private:
     * MSAEditor can any time reset this set and switch to 'Original' or 'Sequence' mode.
     */
     QSet<QObject *> freeModeMasterMarkersSet;
+
+    /** Selection state controller. */
+    MaEditorSelectionController *selectionController;
 };
 
 /** Set of custom menu actions in MSA editor. */

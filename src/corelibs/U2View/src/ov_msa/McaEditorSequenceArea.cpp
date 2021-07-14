@@ -36,6 +36,7 @@
 
 #include <U2Gui/GUIUtils.h>
 
+#include "McaEditorReferenceArea.h"
 #include "helpers/MaAmbiguousCharactersController.h"
 #include "helpers/RowHeightController.h"
 #include "helpers/ScrollController.h"
@@ -189,24 +190,8 @@ QAction *McaEditorSequenceArea::getTrimRightEndAction() const {
     return trimRightEndAction;
 }
 
-void McaEditorSequenceArea::setSelection(const MaEditorSelection &sel) {
-    // Its only possible to select 1 character (width = 1) or multiple rows with no character (width = 0).
-    QRect selectionRect = sel.toRect();
-    CHECK((selectionRect.width() == 1 && selectionRect.height() == 1) || selectionRect.width() == 0, );
-    if (selectionRect.width() == 1 && getEditor()->getMaObject()->getMca()->isTrailingOrLeadingGap(selectionRect.y(), selectionRect.x())) {
-        // clear selection if gap is clicked
-        emit si_clearReferenceSelection();
-        MaEditorSequenceArea::setSelection(MaEditorSelection());
-        return;
-    }
-    if (sel.isEmpty()) {
-        emit si_clearReferenceSelection();
-    }
-    MaEditorSequenceArea::setSelection(sel);
-}
-
 void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
-    QRect selectionRect = selection.toRect();
+    QRect selectionRect = editor->getSelection().toRect();
     CHECK(selectionRect.width() == 1 && selectionRect.height() == 1, );
 
     const MultipleChromatogramAlignment mca = getEditor()->getMaObject()->getMca();
@@ -337,6 +322,7 @@ void McaEditorSequenceArea::sl_trimRightEnd() {
 void McaEditorSequenceArea::sl_updateActions() {
     MultipleAlignmentObject *maObj = editor->getMaObject();
     SAFE_POINT(maObj != nullptr, "MaObj is NULL", );
+    const MaEditorSelection& selection = editor->getSelection();
     QRect selectionRect = selection.toRect();
 
     const bool readOnly = maObj->isStateLocked();
@@ -367,8 +353,9 @@ void McaEditorSequenceArea::trimRowEnd(MultipleChromatogramAlignmentObject::Trim
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
-    SAFE_POINT(!getSelection().isEmpty(), "selection is empty", );
-    int currentPos = getSelection().toRect().x();
+    const MaEditorSelection& selection = editor->getSelection();
+    SAFE_POINT(!selection.isEmpty(), "selection is empty", );
+    int currentPos = selection.toRect().x();
 
     mcaObj->trimRow(maRowIndex, currentPos, os, edge);
     CHECK_OP(os, );
@@ -385,7 +372,7 @@ void McaEditorSequenceArea::updateTrimActions(bool isEnabled) {
     MultipleAlignmentRow row = editor->getMaObject()->getRow(maRowIndex);
     int start = row->getCoreStart();
     int end = row->getCoreEnd();
-    int currentSelection = getSelection().toRect().x();
+    int currentSelection = editor->getSelection().toRect().x();
     if (start == currentSelection) {
         trimLeftEndAction->setEnabled(false);
     }
@@ -399,10 +386,10 @@ void McaEditorSequenceArea::initRenderer() {
 }
 
 void McaEditorSequenceArea::drawBackground(QPainter &painter) {
-    SequenceWithChromatogramAreaRenderer *r = qobject_cast<SequenceWithChromatogramAreaRenderer *>(renderer);
-    SAFE_POINT(r != nullptr, "Wrong renderer: fail to cast renderer to SequenceWithChromatogramAreaRenderer", );
-    r->drawReferenceSelection(painter);
-    r->drawNameListSelection(painter);
+    auto mcaRenderer = qobject_cast<SequenceWithChromatogramAreaRenderer *>(renderer);
+    SAFE_POINT(mcaRenderer != nullptr, "Wrong renderer: fail to cast renderer to SequenceWithChromatogramAreaRenderer", );
+    mcaRenderer->drawReferenceSelection(painter);
+    mcaRenderer->drawNameListSelection(painter);
 }
 
 void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &hsid) {
@@ -411,7 +398,7 @@ void McaEditorSequenceArea::getColorAndHighlightingIds(QString &csid, QString &h
 }
 
 QAction *McaEditorSequenceArea::createToggleTraceAction(const QString &actionName) {
-    QAction *showTraceAction = new QAction(actionName, this);
+    auto showTraceAction = new QAction(actionName, this);
     showTraceAction->setCheckable(true);
     showTraceAction->setChecked(true);
     showTraceAction->setEnabled(true);
@@ -423,6 +410,7 @@ QAction *McaEditorSequenceArea::createToggleTraceAction(const QString &actionNam
 void McaEditorSequenceArea::insertChar(char newCharacter) {
     CHECK(maMode == InsertCharMode, );
     CHECK(getEditor() != nullptr, );
+    const MaEditorSelection& selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
 
     SAFE_POINT(isInRange(selection.toRect()), "Selection rect is not in range!", );

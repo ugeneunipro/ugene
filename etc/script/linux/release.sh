@@ -71,7 +71,7 @@ function dump_symbols() {
   BASE_NAME=$(basename "${1}")
   SYMBOL_FILE="${SYMBOLS_DIR}/${BASE_NAME}.sym"
 
-  "$SOURCE_DIR"/etc/bin/linux/dump_syms "$1" >"${SYMBOLS_DIR}/${BASE_NAME}.sym" 2>"${SYMBOLS_LOG}"
+  "$SOURCE_DIR"/etc/script/linux/dump_syms "$1" >"${SYMBOLS_DIR}/${BASE_NAME}.sym" 2>"${SYMBOLS_LOG}"
 
   FILE_HEAD=$(head -n 1 "${SYMBOL_FILE}")
   FILE_HASH=$(echo "${FILE_HEAD}" | awk '{ print $4 }')

@@ -40,9 +40,6 @@ protected slots:
 private slots:
     void sl_updateActions() override;
 
-signals:
-    void si_selectionChanged();
-
 protected:
     /** Processes special MCA-editor only name-list keyboard actions. */
     void keyPressEvent(QKeyEvent *e) override;

@@ -37,6 +37,9 @@ class U2VIEW_EXPORT McaEditorReferenceArea : public PanView {
 public:
     McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectContext *ctx);
 
+    /** Clears reference area selection. */
+    void clearSelection();
+
 signals:
     void si_selectionChanged();
 
@@ -47,7 +50,6 @@ private slots:
     void sl_visibleRangeChanged();
     void sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &prev);
     void sl_onSelectionChanged(LRegionsSelection *selection, const QVector<U2Region> &addedRegions, const QVector<U2Region> &removedRegions);
-    void sl_clearSelection();
     void sl_fontChanged(const QFont &newFont);
 
 private:

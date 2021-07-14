@@ -63,9 +63,8 @@ public:
                                      QWidget *heightTarget = nullptr,
                                      bool proxyMouseEventsToNameList = true);
 
-    MaEditor *getEditor() const {
-        return editor;
-    }
+    /** Returns MA editor instance. The instance is always defined and is never null. */
+    MaEditor *getEditor() const;
 
     MaEditorSequenceArea *getSequenceArea() const {
         return sequenceArea;
@@ -87,7 +86,7 @@ public:
         return offsetsViewController;
     }
 
-    MaEditorStatusBar* getStatusBar() const;
+    MaEditorStatusBar *getStatusBar() const;
 
     ScrollController *getScrollController() const {
         return scrollController;
@@ -149,7 +148,7 @@ protected:
     virtual void initStatusBar() = 0;
 
 protected:
-    MaEditor *editor;
+    MaEditor *const editor;
     MaEditorSequenceArea *sequenceArea;
     MaEditorNameList *nameList;
     MaEditorConsensusArea *consensusArea;

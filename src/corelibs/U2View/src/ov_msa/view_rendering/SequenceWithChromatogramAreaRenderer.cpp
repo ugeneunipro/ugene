@@ -38,6 +38,7 @@
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/RowHeightController.h"
 #include "ov_msa/helpers/ScrollController.h"
+#include "ov_msa/view_rendering/MaEditorSelection.h"
 
 namespace U2 {
 
@@ -64,38 +65,25 @@ SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(MaEdi
     maxTraceHeight = s->getValue(ui->getEditor()->getSettingsRoot() + MCAE_SETTINGS_PEAK_HEIGHT, heightPD - heightBC).toInt();
 }
 
+void SequenceWithChromatogramAreaRenderer::drawSelection(QPainter &) const {
+    // Selection in MCA is drawn as a part of background.
+}
+
 void SequenceWithChromatogramAreaRenderer::drawReferenceSelection(QPainter &painter) const {
     McaEditor *editor = getSeqArea()->getEditor();
-    SAFE_POINT(editor != nullptr, "McaEditor is NULL", );
     DNASequenceSelection *selection = editor->getReferenceContext()->getSequenceSelection();
-    SAFE_POINT(selection != nullptr, "DNASequenceSelection is NULL", );
-    SAFE_POINT(selection->regions.size() <= 1, "Unexpected multiselection", );
     CHECK(!selection->regions.isEmpty(), );
-
     U2Region region = selection->regions.first();
-    const U2Region xRange = ui->getBaseWidthController()->getBasesScreenRange(region);
-
-    painter.save();
-
-    painter.fillRect(xRange.startPos, 0, xRange.length, seqAreaWgt->height(), Theme::selectionBackgroundColor());
-    painter.restore();
+    U2Region xRange = ui->getBaseWidthController()->getBasesScreenRange(region);
+    painter.fillRect((int)xRange.startPos, 0, (int)xRange.length, seqAreaWgt->height(), Theme::selectionBackgroundColor());
 }
 
 void SequenceWithChromatogramAreaRenderer::drawNameListSelection(QPainter &painter) const {
-    McaEditor *editor = getSeqArea()->getEditor();
-    SAFE_POINT(editor != nullptr, "McaEditor is NULL", );
-    SAFE_POINT(editor->getUI() != nullptr, "McaEditor UI is NULL", );
-
-    MaEditorNameList *nameList = editor->getUI()->getEditorNameList();
-    SAFE_POINT(nameList != nullptr, "MaEditorNameList is NULL", );
-    U2Region selection = nameList->getSelection();
-    CHECK(!selection.isEmpty(), );
-    U2Region selectionPxl = ui->getRowHeightController()->getScreenYRegionByViewRowsRegion(selection);
-    painter.save();
-
-    painter.fillRect(0, selectionPxl.startPos, seqAreaWgt->width(), selectionPxl.length, Theme::selectionBackgroundColor());
-
-    painter.restore();
+    QRect selectionRect = getSeqArea()->getEditor()->getSelection().toRect();
+    CHECK(!selectionRect.isEmpty(), );
+    U2Region selectedRowsRegion = U2Region::fromYRange(selectionRect);
+    U2Region selectionPxl = ui->getRowHeightController()->getScreenYRegionByViewRowsRegion(selectedRowsRegion);
+    painter.fillRect(0, (int)selectionPxl.startPos, seqAreaWgt->width(), (int)selectionPxl.length, Theme::selectionBackgroundColor());
 }
 
 void SequenceWithChromatogramAreaRenderer::setAreaHeight(int h) {

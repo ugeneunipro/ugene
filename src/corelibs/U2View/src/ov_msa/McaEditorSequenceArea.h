@@ -62,8 +62,6 @@ public:
         return showQVAction->isChecked();
     }
 
-    void setSelection(const MaEditorSelection &sel);
-
     void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
     virtual void adjustReferenceLength(U2OpStatus &os);
@@ -79,9 +77,6 @@ public:
     QAction *getRemoveColumnsOfGapsAction() const;
     QAction *getTrimLeftEndAction() const;
     QAction *getTrimRightEndAction() const;
-
-signals:
-    void si_clearReferenceSelection();
 
 public slots:
     void sl_backgroundSelectionChanged();

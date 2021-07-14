@@ -56,6 +56,8 @@
 #include <U2View/MSAEditorSequenceArea.h>
 #include <U2View/MaEditorNameList.h>
 
+#include "ov_msa/view_rendering/MaEditorSelection.h"
+
 #define BadAlphabetWarning 0
 #define DuplicateSequenceWarning 1
 
