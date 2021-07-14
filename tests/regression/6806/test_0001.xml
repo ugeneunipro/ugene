@@ -1,0 +1,8 @@
+<!DOCTYPE UGENE_TEST_FRAMEWORK_TEST>
+<multi-test>
+    <load-document index="doc" url="regression/6806/6806.gb" io="local_file" format="genbank"/>
+
+    <find-object-by-name index="obj" doc="doc" name="NC_004718 features" type="OT_ANNOTATIONS"/>
+    <find-annotation-by-location index="annot" obj="obj" name="misc_feature" location="2147472137..2147498345" complement="false"/>
+    <check-annotation-qualifier annotation="annot" qualifier="note" value="transcription regulatory sequence leader TRS"/>
+</multi-test>
