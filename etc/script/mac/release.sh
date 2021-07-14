@@ -51,6 +51,12 @@ rm -rf "${APP_EXE_DIR}/plugins/"*test_runner*
 rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"
 }
+
+# These tools can't be signed today, so remove them from the bundle until fixed.
+rm -rf "${APP_EXE_DIR}/tools/cistrome"
+rm -rf "${APP_EXE_DIR}/tools/java8"
+rm -rf "${APP_EXE_DIR}/tools/python2"
+
 echo "##teamcity[blockClosed name='Copy files']"
 
 echo "##teamcity[blockOpened name='Validate bundle content']"
@@ -96,7 +102,7 @@ tar cfz "${SYMBOLS_DIR_NAME}.tar.gz" "${SYMBOLS_DIR_NAME}"
 echo "##teamcity[blockClosed name='Dump symbols']"
 
 echo "##teamcity[blockOpened name='Sign bundle content']"
-  "${SOURCE_DIR}/etc/script/mac/codesign.sh" "${APP_DIR}"
+"${SOURCE_DIR}/etc/script/mac/codesign.sh" "${APP_DIR}" || exit 1
 echo "##teamcity[blockClosed name='Sign bundle content']"
 
 echo "##teamcity[blockOpened name='Pack DMG']"
@@ -104,15 +110,14 @@ echo pkg-dmg running...
 RELEASE_FILE_NAME=ugene-"${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-b${TEAMCITY_UGENE_BUILD_COUNTER}-mac-${ARCHITECTURE_FILE_SUFFIX}.dmg"
 "${SOURCE_DIR}/etc/script/mac/pkg-dmg" --source "${APP_BUNDLE_DIR_NAME}" \
   --target "${RELEASE_FILE_NAME}" \
-  --volname "Unipro UGENE ${VERSION}" --symlink /Applications
+  --volname "Unipro UGENE ${VERSION}" --symlink /Applications || exit 1
 
 echo "##teamcity[blockClosed name='Pack DMG']"
 
 echo "##teamcity[blockOpened name='Sign DMG']"
- "${SOURCE_DIR}/etc/script/mac/codesign.sh" "${RELEASE_FILE_NAME}"
+"${SOURCE_DIR}/etc/script/mac/codesign.sh" "${RELEASE_FILE_NAME}" || exit 1
 echo "##teamcity[blockClosed name='Sign DMG']"
 
 echo "##teamcity[blockOpened name='Notarize DMG']"
-bash "${SOURCE_DIR}/etc/script/mac/notarize.sh" -n "${RELEASE_FILE_NAME}"
+bash "${SOURCE_DIR}/etc/script/mac/notarize.sh" -n "${RELEASE_FILE_NAME}" || exit 1
 echo "##teamcity[blockClosed name='Notarize DMG']"
-

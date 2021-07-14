@@ -17,62 +17,47 @@ else
   exit 1
 fi
 
-#SPECIAL_TOOLS="cutadapt java8 python2 wevote"
-
-#echo "============= Sign files in ${CONTENTS_DIR}/MacOS/tools dir, except ${SPECIAL_TOOLS} ============="
-#find "$CONTENTS_DIR/MacOS/tools" -not \( \
-#    -path "${CONTENTS_DIR}/MacOS/tools/cutadapt" -prune -o \
-#    -path "${CONTENTS_DIR}/MacOS/tools/java8" -prune -o \
-#    -path "${CONTENTS_DIR}/MacOS/tools/python2" -prune -o \
-#    -path "${CONTENTS_DIR}/MacOS/tools/wevote" -prune \
-#\) -type f \
-#-exec echo "Signing file '${}'" \
-#-exec codesign \
-#    --sign "Developer ID Application: Alteametasoft" \
-#    --timestamp \
-#    --force \
-#    --options runtime \
-#    --strict \
-#    --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
-#    "{}" \; \
-#|| exit 1
-
-#for TOOL_DIR_NAME in ${SPECIAL_TOOLS}; do
-#    echo "============= Sign special files in ${CONTENTS_DIR}/MacOS/tools/${TOOL_DIR_NAME} dir ============="
-#    find "${CONTENTS_DIR}/MacOS/tools/${TOOL_DIR_NAME}" -type f \
-#    -exec echo "Signing file '${}'" \
-#    -exec codesign \
-#        --sign "Developer ID Application: Alteametasoft" \
-#        --timestamp \
-#        --force \
-#        --options runtime \
-#        --strict \
-#        --entitlements "${SCRIPTS_DIR}/dmg/Entitlements-${TOOL_DIR_NAME}.plist" \
-#        "{}" \; \
-#    || exit 1
-#done
-
-echo "============= Sign Qt framework in ${CONTENTS_DIR}/Frameworks dir ============="
-codesign \
+echo "============= Sign Qt frameworks in ${CONTENTS_DIR}/Frameworks dir ============="
+find "${CONTENTS_DIR}/Frameworks" -name 'Current' \
+  -exec codesign \
   --sign "Developer ID Application: Alteametasoft" \
   --timestamp \
   --force \
   --options runtime \
   --strict \
   --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
-  "${CONTENTS_DIR}/Frameworks/"* ||
-  exit 1
+  "{}" \; || exit 1
 
-echo "============= Sign Qt plugins in ${CONTENTS_DIR}/PlugIns dir ============="
-codesign \
+echo "============= Sign all *.dylib files in ${CONTENTS_DIR}/Frameworks dir ============="
+find "${CONTENTS_DIR}/Frameworks" -name '*.dylib' \
+  -exec codesign \
   --sign "Developer ID Application: Alteametasoft" \
   --timestamp \
   --force \
   --options runtime \
   --strict \
   --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
-  "${CONTENTS_DIR}/PlugIns/"* ||
-  exit 1
+  "{}" \; || exit 1
+
+echo "============= Sign all *.dylib files in ${CONTENTS_DIR}/PlugIns dir ============="
+find "${CONTENTS_DIR}/PlugIns" -name '*.dylib' \
+  -exec codesign \
+  --sign "Developer ID Application: Alteametasoft" \
+  --timestamp \
+  --force \
+  --options runtime \
+  --strict \
+  --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
+  "{}" \; || exit 1
+
+echo "============= Sign ugeneui & all dependencies with relaxed entitlements  ============="
+codesign \
+  --sign "Developer ID Application: Alteametasoft" \
+  --timestamp \
+  --options runtime \
+  --strict \
+  --entitlements "${SCRIPTS_DIR}/dmg/Entitlements-tools.plist" \
+  "${CONTENTS_DIR}/MacOS/ugeneui" || exit 1
 
 echo "============= Sign all *.dylib files in ${CONTENTS_DIR}/MacOS dir ============="
 find "${CONTENTS_DIR}/MacOS" -name '*.dylib' -maxdepth 1 \
@@ -83,8 +68,7 @@ find "${CONTENTS_DIR}/MacOS" -name '*.dylib' -maxdepth 1 \
   --options runtime \
   --strict \
   --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
-  "{}" \; ||
-  exit 1
+  "{}" \; || exit 1
 
 echo "============= Sign all *.qm files in ${CONTENTS_DIR}/MacOS dir ============="
 find "${CONTENTS_DIR}/MacOS" -name '*.qm' -maxdepth 1 \
@@ -95,8 +79,7 @@ find "${CONTENTS_DIR}/MacOS" -name '*.qm' -maxdepth 1 \
   --options runtime \
   --strict \
   --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
-  "{}" \; ||
-  exit 1
+  "{}" \; || exit 1
 
 echo "============= Sign all *.dylib files in ${CONTENTS_DIR}/MacOS/plugins dir ============="
 find "${CONTENTS_DIR}/MacOS/plugins" -name '*.dylib' -maxdepth 1 \
@@ -107,8 +90,7 @@ find "${CONTENTS_DIR}/MacOS/plugins" -name '*.dylib' -maxdepth 1 \
   --options runtime \
   --strict \
   --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
-  "{}" \; ||
-  exit 1
+  "{}" \; || exit 1
 
 echo "============= Sign plugin_checker  ============="
 codesign \
@@ -118,8 +100,7 @@ codesign \
   --options runtime \
   --strict \
   --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
-  "${CONTENTS_DIR}"/MacOS/plugins_checker ||
-  exit 1
+  "${CONTENTS_DIR}"/MacOS/plugins_checker || exit 1
 
 echo "============= Sign ugenem  ============="
 codesign \
@@ -129,8 +110,7 @@ codesign \
   --options runtime \
   --strict \
   --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
-  "${CONTENTS_DIR}/MacOS/ugenem" ||
-  exit 1
+  "${CONTENTS_DIR}/MacOS/ugenem" || exit 1
 
 echo "============= Sign ugenecl  ============="
 codesign \
@@ -140,8 +120,7 @@ codesign \
   --options runtime \
   --strict \
   --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
-  "${CONTENTS_DIR}/MacOS/ugenecl" ||
-  exit 1
+  "${CONTENTS_DIR}/MacOS/ugenecl" || exit 1
 
 echo "============= Sign ugeneui  ============="
 codesign \
@@ -151,5 +130,4 @@ codesign \
   --options runtime \
   --strict \
   --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
-  "${CONTENTS_DIR}/MacOS/ugeneui" ||
-  exit 1
+  "${CONTENTS_DIR}/MacOS/ugeneui" || exit 1

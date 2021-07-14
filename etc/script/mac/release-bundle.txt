@@ -1543,7 +1543,6 @@ Unipro UGENE.app/Contents/MacOS/tools/bowtie1
 Unipro UGENE.app/Contents/MacOS/tools/bowtie2
 Unipro UGENE.app/Contents/MacOS/tools/bwa
 Unipro UGENE.app/Contents/MacOS/tools/cap3
-Unipro UGENE.app/Contents/MacOS/tools/cistrome
 Unipro UGENE.app/Contents/MacOS/tools/clark
 Unipro UGENE.app/Contents/MacOS/tools/clustalo
 Unipro UGENE.app/Contents/MacOS/tools/clustalw
@@ -1552,13 +1551,11 @@ Unipro UGENE.app/Contents/MacOS/tools/cutadapt
 Unipro UGENE.app/Contents/MacOS/tools/diamond
 Unipro UGENE.app/Contents/MacOS/tools/fastqc
 Unipro UGENE.app/Contents/MacOS/tools/hmmer3
-Unipro UGENE.app/Contents/MacOS/tools/java8
 Unipro UGENE.app/Contents/MacOS/tools/kraken
 Unipro UGENE.app/Contents/MacOS/tools/mafft
 Unipro UGENE.app/Contents/MacOS/tools/metaphlan2
 Unipro UGENE.app/Contents/MacOS/tools/mrbayes
 Unipro UGENE.app/Contents/MacOS/tools/phyml
-Unipro UGENE.app/Contents/MacOS/tools/python2
 Unipro UGENE.app/Contents/MacOS/tools/samtools
 Unipro UGENE.app/Contents/MacOS/tools/snpeff
 Unipro UGENE.app/Contents/MacOS/tools/spades
