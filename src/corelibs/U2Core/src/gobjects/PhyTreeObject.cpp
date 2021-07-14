@@ -57,17 +57,17 @@ PhyTreeObject *PhyTreeObject::createInstance(const PhyTree &tree, const QString 
 
     const QString folder = hintsMap.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
     RawDataUdrSchema::createObject(dbiRef, folder, object, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     U2EntityRef entRef(dbiRef, object.id);
     commit(tree, entRef, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     return new PhyTreeObject(tree, objectName, entRef, hintsMap);
 }
 
 void PhyTreeObject::commit(const PhyTree &tree, const U2EntityRef &treeRef, U2OpStatus &os) {
-    CHECK_EXT(NULL != tree.data(), os.setError("NULL tree data"), );
+    CHECK_EXT(nullptr != tree.data(), os.setError("NULL tree data"), );
     QByteArray data = NewickPhyTreeSerializer::serialize(tree);
     RawDataUdrSchema::writeContent(data, treeRef, os);
 }
@@ -117,7 +117,7 @@ const PhyTree &PhyTreeObject::getTree() const {
 GObject *PhyTreeObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
     Q_UNUSED(opBlock);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     ensureDataLoaded();
 
@@ -125,7 +125,7 @@ GObject *PhyTreeObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const Q
     gHints.setAll(hints);
 
     PhyTreeObject *cln = createInstance(tree, getGObjectName(), dstDbiRef, os, gHints.getMap());
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     cln->setIndexInfo(getIndexInfo());
     return cln;
 }
@@ -179,7 +179,7 @@ const PhyNode *PhyTreeObject::findPhyNodeByName(const QString &name) {
             return node;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 }    // namespace U2

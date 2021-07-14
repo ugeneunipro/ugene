@@ -43,7 +43,7 @@ namespace U2 {
 
 ColorSchemaDialogController::ColorSchemaDialogController(QMap<char, QColor> &colors)
     : QDialog(),
-      alphabetColorsView(NULL),
+      alphabetColorsView(nullptr),
       newColors(colors),
       storedColors(colors) {
 }
@@ -425,7 +425,7 @@ void ColorSchemaSettingsPageWidget::sl_onChangeColorSchema() {
     QMap<char, QColor> alpColors;
 
     QListWidgetItem *item = colorSchemas->currentItem();
-    if (item == NULL) {
+    if (item == nullptr) {
         return;
     }
 
@@ -454,7 +454,7 @@ void ColorSchemaSettingsPageWidget::sl_onChangeColorSchema() {
 
 void ColorSchemaSettingsPageWidget::sl_onDeleteColorSchema() {
     QListWidgetItem *item = colorSchemas->currentItem();
-    SAFE_POINT(item != NULL, "current item for deletion is NULL", );
+    SAFE_POINT(item != nullptr, "current item for deletion is NULL", );
 
     QString schemaName = item->text();
     for (int i = 0; i < customSchemas.size(); ++i) {

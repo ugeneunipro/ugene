@@ -71,11 +71,11 @@ void WizardFiller::commonScenario() {
 
 #define GT_METHOD_NAME "WizardFiller::getExpandButton"
 QToolButton *WizardFiller::getExpandButton(HI::GUITestOpStatus &os) {
-    QToolButton *expandButton = NULL;
+    QToolButton *expandButton = nullptr;
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", NULL);
+    GT_CHECK_RESULT(dialog, "activeModalWidget is NULL", nullptr);
     QWizard *wizard = qobject_cast<QWizard *>(dialog);
-    GT_CHECK_RESULT(wizard, "activeModalWidget is not of wizard type", NULL);
+    GT_CHECK_RESULT(wizard, "activeModalWidget is not of wizard type", nullptr);
 
     QList<QWidget *> widList = wizard->currentPage()->findChildren<QWidget *>();
     QList<QToolButton *> plusList;

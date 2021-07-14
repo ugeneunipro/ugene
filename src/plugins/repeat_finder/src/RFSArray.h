@@ -96,7 +96,7 @@ public:
 
 class CheckEdge {
 public:
-    CheckEdge(const char *_posS = NULL, const char *_lastS = NULL, qint32 _diag = 0)
+    CheckEdge(const char *_posS = nullptr, const char *_lastS = nullptr, qint32 _diag = 0)
         : posS(_posS), lastS(_lastS), diag(_diag) {
         next = this;
         prev = this;
@@ -141,9 +141,9 @@ public:
             edge->posS = posS;
             edge->lastS = lastS;
             edge->diag = diag;
-            edge->next = NULL;
+            edge->next = nullptr;
             edge->prev = edge;
-            pool[nAvailable] = NULL;
+            pool[nAvailable] = nullptr;
             return edge;
         }
         return new CheckEdge(posS, lastS, diag);
@@ -152,7 +152,7 @@ public:
     void returnEdge(CheckEdge *e) {
         if (nAvailable != pool.size()) {
             assert(nAvailable < pool.size() && nAvailable >= 0);
-            assert(pool[nAvailable] == NULL);
+            assert(pool[nAvailable] == nullptr);
             pool[nAvailable++] = e;
         } else {
             delete e;

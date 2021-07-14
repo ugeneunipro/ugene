@@ -88,7 +88,7 @@ QList<OPCommonWidgetFactory *> OPCommonWidgetFactoryRegistry::getRegisteredFacto
     QList<OPCommonWidgetFactory *> result;
 
     foreach (OPCommonWidgetFactory *factory, factories) {
-        SAFE_POINT(NULL != factory, "NULL factory!", result);
+        SAFE_POINT(nullptr != factory, "NULL factory!", result);
         if (factory->isInGroup(groupId)) {
             result.append(factory);
         }

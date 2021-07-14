@@ -76,7 +76,7 @@ class QDSchemeUnit;
 class U2LANG_EXPORT QDResultUnitData : public QSharedData {
 public:
     QDResultUnitData()
-        : owner(NULL) {
+        : owner(nullptr) {
     }
 
     QDSchemeUnit *owner;
@@ -125,7 +125,7 @@ class QDActor;
 class U2LANG_EXPORT QDActorPrototype {
 public:
     QDActorPrototype()
-        : editor(NULL) {
+        : editor(nullptr) {
     }
     virtual ~QDActorPrototype();
     const QList<Attribute *> &getParameters() const {
@@ -283,7 +283,7 @@ private:
 class U2LANG_EXPORT QDPath {
 public:
     QDPath()
-        : pathSrc(NULL), pathDst(NULL), overallConstraint(NULL) {
+        : pathSrc(nullptr), pathDst(nullptr), overallConstraint(nullptr) {
     }
     ~QDPath();
     QDPath *clone() const;

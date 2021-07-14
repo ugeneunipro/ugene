@@ -69,7 +69,7 @@ public:
 
     void setLocation(const U2Location &location);
 
-    const QVector<U2Region>& getRegions() const;
+    const QVector<U2Region> &getRegions() const;
 
     qint64 getRegionsLen() const;
 
@@ -99,7 +99,7 @@ public:
      */
     QString findFirstQualifierValue(const QString &name) const;
 
-    static QString getQualifiersTip(const SharedAnnotationData &data, int maxRows, U2SequenceObject *seqObj = NULL, DNATranslation *complTT = NULL, DNATranslation *aminoTT = NULL);
+    static QString getQualifiersTip(const SharedAnnotationData &data, int maxRows, U2SequenceObject *seqObj = nullptr, DNATranslation *complTT = nullptr, DNATranslation *aminoTT = nullptr);
 
     bool isCaseAnnotation() const;
 

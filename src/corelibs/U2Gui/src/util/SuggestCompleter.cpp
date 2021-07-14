@@ -86,27 +86,27 @@ bool BaseCompleter::eventFilter(QObject *obj, QEvent *ev) {
     if (eventType == QEvent::KeyPress || eventType == QEvent::ShortcutOverride) {
         int key = static_cast<QKeyEvent *>(ev)->key();
         switch (key) {
-        case Qt::Key_Enter:
-        case Qt::Key_Return:
-        case Qt::Key_Escape:
-            isConsumed = true;
-            if (key == Qt::Key_Enter || key == Qt::Key_Return) {
-                doneCompletion();
-            }
-            popup->hide();
-            editor->setFocus();
-            emit si_completerClosed();
-            break;
-        case Qt::Key_Up:
-        case Qt::Key_Down:
-        case Qt::Key_Home:
-        case Qt::Key_End:
-        case Qt::Key_PageUp:
-        case Qt::Key_PageDown:
-            break;
-        default:
-            editor->setFocus();
-            editor->event(ev);
+            case Qt::Key_Enter:
+            case Qt::Key_Return:
+            case Qt::Key_Escape:
+                isConsumed = true;
+                if (key == Qt::Key_Enter || key == Qt::Key_Return) {
+                    doneCompletion();
+                }
+                popup->hide();
+                editor->setFocus();
+                emit si_completerClosed();
+                break;
+            case Qt::Key_Up:
+            case Qt::Key_Down:
+            case Qt::Key_Home:
+            case Qt::Key_End:
+            case Qt::Key_PageUp:
+            case Qt::Key_PageDown:
+                break;
+            default:
+                editor->setFocus();
+                editor->event(ev);
         }
     }
     return isConsumed;

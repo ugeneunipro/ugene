@@ -215,7 +215,7 @@ bool FindPatternEventFilter::eventFilter(QObject *obj, QEvent *event) {
         }
     } else if (eventType == QEvent::Show) {
         QWidget *watched = dynamic_cast<QWidget *>(obj);
-        if (NULL != watched) {
+        if (nullptr != watched) {
             watched->setFocus();
         }
     }
@@ -801,7 +801,7 @@ void FindPatternWidget::sl_onSearchPatternChanged() {
 void FindPatternWidget::sl_onMaxResultChanged(int newMaxResult) {
     bool limitResult = !findPatternResults.isEmpty() && newMaxResult < findPatternResults.size();
     bool widenResult = newMaxResult > previousMaxResult && findPatternResults.size() == previousMaxResult;
-    bool prevSearchIsNotComplete = findPatternResults.isEmpty() && searchTask != NULL;
+    bool prevSearchIsNotComplete = findPatternResults.isEmpty() && searchTask != nullptr;
     if (limitResult || widenResult || prevSearchIsNotComplete) {
         sl_activateNewSearch();
     }
@@ -1035,7 +1035,7 @@ QList<QPair<QString, QString>> FindPatternWidget::getPatternsFromTextPatternFiel
 
 void FindPatternWidget::updateAnnotationsWidget() {
     // Updating the annotations widget
-    SAFE_POINT(annotatedDnaView->getActiveSequenceContext() != NULL,
+    SAFE_POINT(annotatedDnaView->getActiveSequenceContext() != nullptr,
                "There is no sequence in focus to update the annotations widget on the 'Search in Sequence' tab.", );
     CreateAnnotationModel annotationModel = createAnnotationController->getModel();
 

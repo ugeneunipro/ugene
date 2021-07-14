@@ -54,7 +54,7 @@ static const QString DIR_HELPER_DOMAIN("ConvertToSQLiteDialog");
 
 ConvertToSQLiteDialog::ConvertToSQLiteDialog(const GUrl &_sourceUrl, BAMInfo &_bamInfo, bool sam)
     : QDialog(QApplication::activeWindow()),
-      saveController(NULL),
+      saveController(nullptr),
       sourceUrl(_sourceUrl),
       bamInfo(_bamInfo) {
     ui.setupUi(this);
@@ -364,9 +364,9 @@ void ConvertToSQLiteDialog::accept() {
         }
 
         Project *prj = AppContext::getProject();
-        if (prj != NULL) {
+        if (prj != nullptr) {
             Document *destDoc = prj->findDocumentByURL(destinationUrl);
-            if (destDoc != NULL && destDoc->isLoaded() && !GObjectViewUtils::findViewsWithAnyOfObjects(destDoc->getObjects()).isEmpty()) {
+            if (destDoc != nullptr && destDoc->isLoaded() && !GObjectViewUtils::findViewsWithAnyOfObjects(destDoc->getObjects()).isEmpty()) {
                 QMessageBox::critical(this, windowTitle(), BAMDbiPlugin::tr("There is opened view with destination file.\n"
                                                                             "Close it or choose different file"));
                 ui.destinationUrlEdit->setFocus(Qt::OtherFocusReason);

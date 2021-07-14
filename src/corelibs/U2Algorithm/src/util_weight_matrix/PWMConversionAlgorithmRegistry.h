@@ -34,7 +34,7 @@ class U2ALGORITHM_EXPORT PWMConversionAlgorithmRegistry : public QObject {
     Q_OBJECT
 
 public:
-    PWMConversionAlgorithmRegistry(QObject *p = NULL);
+    PWMConversionAlgorithmRegistry(QObject *p = nullptr);
 
     ~PWMConversionAlgorithmRegistry();
 

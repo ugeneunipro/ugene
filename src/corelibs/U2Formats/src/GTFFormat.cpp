@@ -105,11 +105,11 @@ GTFFormat::GTFFormat(QObject *parent)
 }
 
 Document *GTFFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
-    CHECK_EXT(io != NULL && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), NULL);
+    CHECK_EXT(io != nullptr && io->isOpen(), os.setError(L10N::badArgument("IO adapter")), nullptr);
     QList<GObject *> objects;
 
     load(io, objects, dbiRef, hints, os);
-    CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
+    CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
 
     Document *doc = new Document(this, io->getFactory(), io->getURL(), dbiRef, objects);
     return doc;
@@ -263,14 +263,14 @@ void GTFFormat::load(IOAdapter *io, QList<GObject *> &objects, const U2DbiRef &d
 
         // Get or create the annotations table
         QString annotTableName = sequenceName + FEATURES_TAG;
-        AnnotationTableObject *annotTable = NULL;
+        AnnotationTableObject *annotTable = nullptr;
         foreach (GObject *object, objects) {
             if (object->getGObjectName() == annotTableName) {
                 annotTable = dynamic_cast<AnnotationTableObject *>(object);
                 break;
             }
         }
-        if (NULL == annotTable) {
+        if (nullptr == annotTable) {
             if (objectsCountLimit > 0 && objects.size() >= objectsCountLimit) {
                 os.setError(tr("File \"%1\" contains too many annotation tables to be displayed. "
                                "However, you can process these data using pipelines built with Workflow Designer.")

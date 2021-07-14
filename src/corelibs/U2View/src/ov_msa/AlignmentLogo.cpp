@@ -49,19 +49,19 @@ AlignmentLogoRenderArea::AlignmentLogoRenderArea(const AlignmentLogoSettings &_s
 
     acceptableChars = new QVector<char>();
     switch (settings.sequenceType) {
-    case NA:
-        acceptableChars = &bases;
-        s = 4.0;
-        break;
-    default:
-        QByteArray chars = settings.ma->getAlphabet()->getAlphabetChars();
-        foreach (char ch, chars) {
-            if (ch != U2Msa::GAP_CHAR)
-                acceptableChars->append(ch);
-        }
-        s = 20.0;
-        acceptableChars = &aminoacids;
-        break;
+        case NA:
+            acceptableChars = &bases;
+            s = 4.0;
+            break;
+        default:
+            QByteArray chars = settings.ma->getAlphabet()->getAlphabetChars();
+            foreach (char ch, chars) {
+                if (ch != U2Msa::GAP_CHAR)
+                    acceptableChars->append(ch);
+            }
+            s = 20.0;
+            acceptableChars = &aminoacids;
+            break;
     }
 
     evaluateHeights();
@@ -73,19 +73,19 @@ void AlignmentLogoRenderArea::replaceSettings(const AlignmentLogoSettings &_s) {
 
     acceptableChars = new QVector<char>();
     switch (settings.sequenceType) {
-    case NA:
-        acceptableChars = &bases;
-        s = 4.0;
-        break;
-    default:
-        QByteArray chars = settings.ma->getAlphabet()->getAlphabetChars();
-        foreach (char ch, chars) {
-            if (ch != U2Msa::GAP_CHAR)
-                acceptableChars->append(ch);
-        }
-        s = 20.0;
-        acceptableChars = &aminoacids;
-        break;
+        case NA:
+            acceptableChars = &bases;
+            s = 4.0;
+            break;
+        default:
+            QByteArray chars = settings.ma->getAlphabet()->getAlphabetChars();
+            foreach (char ch, chars) {
+                if (ch != U2Msa::GAP_CHAR)
+                    acceptableChars->append(ch);
+            }
+            s = 20.0;
+            acceptableChars = &aminoacids;
+            break;
     }
     columns.clear();
     for (int i = 0; i < 256; i++) {
@@ -114,7 +114,7 @@ void AlignmentLogoRenderArea::paintEvent(QPaintEvent *e) {
             int charHeight = heights[(int)uchar(ch)][pos] * bitHeight;
             QColor charColor = settings.colorScheme[(int)uchar(ch)];
             AlignmentLogoItem *logoItem = new AlignmentLogoItem(ch, baseline, bitWidth, charHeight, charFont, charColor);
-            logoItem->paint(&p, NULL, this);
+            logoItem->paint(&p, nullptr, this);
             yLevel -= charHeight + SPACER;
         }
     }

@@ -40,7 +40,7 @@ static QString LINKDATA_USERDATA_OBJ_NAME = "userdata";
 
 LinkDataRequestHandler::LinkDataRequestHandler(QEventLoop *_eventLoop)
     : eventLoop(_eventLoop), error("") {
-    assert(eventLoop != NULL);
+    assert(eventLoop != nullptr);
 }
 
 bool LinkDataRequestHandler::hasError() const {

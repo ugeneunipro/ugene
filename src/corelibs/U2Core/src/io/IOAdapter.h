@@ -57,7 +57,7 @@ public:
 class U2CORE_EXPORT IOAdapter : public QObject {
     Q_OBJECT
 public:
-    IOAdapter(IOAdapterFactory *f, QObject *o = NULL)
+    IOAdapter(IOAdapterFactory *f, QObject *o = nullptr)
         : QObject(o), formatMode(BinaryMode), factory(f) {
     }
 
@@ -164,7 +164,7 @@ private:
 
 class U2CORE_EXPORT IOAdapterRegistry : public QObject {
 public:
-    IOAdapterRegistry(QObject *p = NULL)
+    IOAdapterRegistry(QObject *p = nullptr)
         : QObject(p) {
     }
 

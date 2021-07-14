@@ -71,11 +71,11 @@ BaseWorker::BaseWorker(Actor *a, bool autoTransitBus)
 BaseWorker::~BaseWorker() {
     foreach (Port *p, actor->getPorts()) {
         if (qobject_cast<IntegralBusPort *>(p)) {
-            p->setPeer(NULL);
+            p->setPeer(nullptr);
         }
     }
     qDeleteAll(ports.values());
-    actor->setPeer(NULL);
+    actor->setPeer(nullptr);
 }
 
 QStringList BaseWorker::getOutputFiles() {
@@ -108,7 +108,7 @@ ActorId BaseWorker::getActorId() const {
 }
 
 Message BaseWorker::getMessageAndSetupScriptValues(CommunicationChannel *channel) {
-    assert(channel != NULL);
+    assert(channel != nullptr);
     assert(channel->hasMessage());
     bindScriptValues();
     Message currentMessage = channel->get();
@@ -120,13 +120,13 @@ Message BaseWorker::getMessageAndSetupScriptValues(CommunicationChannel *channel
 
 void BaseWorker::bindScriptValues() {
     foreach (IntegralBus *bus, ports.values()) {
-        assert(bus != NULL);
+        assert(bus != nullptr);
         if (!bus->hasMessage()) {    // means that it is bus for output port
             continue;
         }
 
         foreach (Attribute *attribute, actor->getParameters().values()) {
-            assert(attribute != NULL);
+            assert(attribute != nullptr);
             setScriptVariableFromBus(&attribute->getAttributeScript(), bus);
 
             if (actor->getCondition()->hasVarWithId(attribute->getId())) {
@@ -151,10 +151,10 @@ void BaseWorker::setScriptVariableFromBus(AttributeScript *script, IntegralBus *
         QString attrId = IntegralBusType::parseAttributeIdFromSlotDesc(slotDesc);
         QString portId = bus->getPortId();
         IntegralBusPort *busPort = qobject_cast<IntegralBusPort *>(actor->getPort(portId));
-        assert(busPort != NULL);
+        assert(busPort != nullptr);
 
         Actor *bindedAttrOwner = busPort->getLinkedActorById(actorId);
-        if (bindedAttrOwner == NULL) {
+        if (bindedAttrOwner == nullptr) {
             continue;
         }
         //attrId.replace(".", "_");
@@ -209,12 +209,12 @@ void BaseWorker::saveCurrentChannelsStateAndRestorePrevious() {
 }
 
 WorkflowMonitor *BaseWorker::monitor() const {
-    CHECK(NULL != context, NULL);
+    CHECK(nullptr != context, nullptr);
     return context->getMonitor();
 }
 
 void BaseWorker::reportError(const QString &message) {
-    CHECK(NULL != monitor(), );
+    CHECK(nullptr != monitor(), );
     monitor()->addError(message, getActorId());
 }
 
@@ -241,7 +241,7 @@ bool BaseWorker::canTaskBeCanceled(Task * /*workerTask*/) const {
 
 Task *BaseWorker::tick(bool &canResultBeCanceled) {
     Task *result = tick();
-    if (NULL != result) {
+    if (nullptr != result) {
         canResultBeCanceled = canTaskBeCanceled(result);
     }
 
@@ -387,7 +387,7 @@ static CommunicationSubject *setupBus(Port *p) {
 }
 
 Worker *LocalDomainFactory::createWorker(Actor *a) {
-    Worker *w = NULL;
+    Worker *w = nullptr;
     DomainFactory *f = getById(a->getProto()->getId());
     if (f) {
         w = f->createWorker(a);
@@ -403,7 +403,7 @@ Worker *LocalDomainFactory::createWorker(Actor *a) {
 }
 
 CommunicationChannel *LocalDomainFactory::createConnection(Link *l) {
-    SimpleQueue *cc = NULL;
+    SimpleQueue *cc = nullptr;
     QString srcId = l->source()->getId();
     QString dstId = l->destination()->getId();
     CommunicationSubject *src = setupBus(l->source());
@@ -425,7 +425,7 @@ Scheduler *LocalDomainFactory::createScheduler(Schema *sh) {
 void LocalDomainFactory::destroy(Scheduler *sh, Schema *schema) {
     foreach (Link *l, schema->getFlows()) {
         delete l->castPeer<SimpleQueue>();
-        l->setPeer(NULL);
+        l->setPeer(nullptr);
     }
 
     foreach (Actor *a, schema->getProcesses()) {

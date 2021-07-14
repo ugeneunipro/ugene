@@ -24,7 +24,7 @@
 namespace U2 {
 
 AlignmentAlgorithmMainWidget::AlignmentAlgorithmMainWidget(QWidget *parent, QVariantMap *s)
-    : QWidget(parent), externSettings(s), externSettingsExists(s != NULL) {
+    : QWidget(parent), externSettings(s), externSettingsExists(s != nullptr) {
 }
 
 AlignmentAlgorithmMainWidget::~AlignmentAlgorithmMainWidget() {

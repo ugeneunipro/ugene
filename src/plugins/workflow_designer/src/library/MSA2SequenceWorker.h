@@ -31,7 +31,7 @@ namespace LocalWorkflow {
 class Alignment2SequencePrompter : public PrompterBase<Alignment2SequencePrompter> {
     Q_OBJECT
 public:
-    Alignment2SequencePrompter(Actor *p = NULL)
+    Alignment2SequencePrompter(Actor *p = nullptr)
         : PrompterBase<Alignment2SequencePrompter>(p) {
     }
 
@@ -47,7 +47,7 @@ public:
 
 public:
     Alignment2SequenceWorker(Actor *p)
-        : BaseWorker(p), input(NULL), output(NULL) {
+        : BaseWorker(p), input(nullptr), output(nullptr) {
     }
 
     virtual void init();

@@ -45,7 +45,7 @@ const QString BlastDbCmdSupport::ET_BLASTDBCMD_ID = "USUPP_BLAST_DB_CMD";
 
 BlastDbCmdSupport::BlastDbCmdSupport(const QString &path)
     : ExternalTool(ET_BLASTDBCMD_ID, "blast", ET_BLASTDBCMD, path) {
-    if (AppContext::getMainWindow() != NULL) {
+    if (AppContext::getMainWindow() != nullptr) {
         icon = QIcon(":external_tool_support/images/ncbi.png");
         grayIcon = QIcon(":external_tool_support/images/ncbi_gray.png");
         warnIcon = QIcon(":external_tool_support/images/ncbi_warn.png");

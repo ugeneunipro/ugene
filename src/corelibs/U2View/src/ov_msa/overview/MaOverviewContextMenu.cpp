@@ -42,8 +42,8 @@ MaOverviewContextMenu::MaOverviewContextMenu(QWidget *parent, MaSimpleOverview *
     : QMenu(parent),
       simpleOverview(sOverview),
       graphOverview(gOverview) {
-    SAFE_POINT(simpleOverview != NULL, tr("Overview is NULL"), );
-    SAFE_POINT(graphOverview != NULL, tr("Graph overview is NULL"), );
+    SAFE_POINT(simpleOverview != nullptr, tr("Overview is NULL"), );
+    SAFE_POINT(graphOverview != nullptr, tr("Graph overview is NULL"), );
 
     setObjectName("msa_overview_context_menu");
 
@@ -170,18 +170,18 @@ void MaOverviewContextMenu::initCalculationMethodMenu() {
     highlightingMethodAction->setObjectName("Highlighting");
 
     switch (graphOverview->getCurrentCalculationMethod()) {
-    case Strict:
-        strictMethodAction->setChecked(true);
-        break;
-    case Gaps:
-        gapMethodAction->setChecked(true);
-        break;
-    case Clustal:
-        clustalMethodAction->setChecked(true);
-        break;
-    case Highlighting:
-        highlightingMethodAction->setChecked(true);
-        break;
+        case Strict:
+            strictMethodAction->setChecked(true);
+            break;
+        case Gaps:
+            gapMethodAction->setChecked(true);
+            break;
+        case Clustal:
+            clustalMethodAction->setChecked(true);
+            break;
+        case Highlighting:
+            highlightingMethodAction->setChecked(true);
+            break;
     }
 
     calculationMethodMenu->addActions(calculationMethodActionGroup->actions());
@@ -201,14 +201,14 @@ void MaOverviewContextMenu::initGraphTypeSubmenu() {
     areaGraphAction->setObjectName("Area graph");
 
     switch (graphOverview->getCurrentGraphType()) {
-    case MaGraphOverviewDisplaySettings::Hystogram:
-        histogramGraphAction->setChecked(true);
-        break;
-    case MaGraphOverviewDisplaySettings::Line:
-        lineGraphAction->setChecked(true);
-        break;
-    default:
-        areaGraphAction->setChecked(true);
+        case MaGraphOverviewDisplaySettings::Hystogram:
+            histogramGraphAction->setChecked(true);
+            break;
+        case MaGraphOverviewDisplaySettings::Line:
+            lineGraphAction->setChecked(true);
+            break;
+        default:
+            areaGraphAction->setChecked(true);
     }
 
     graphTypeMenu->addActions(graphTypeActionGroup->actions());
@@ -237,7 +237,7 @@ QAction *MaOverviewContextMenu::createCheckableAction(const QString &text, QActi
     QAction *a = new QAction(text, this);
     a->setCheckable(true);
 
-    if (group != NULL) {
+    if (group != nullptr) {
         group->addAction(a);
     }
 

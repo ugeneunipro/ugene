@@ -33,7 +33,7 @@ namespace U2 {
 
 //factory method
 RFAlgorithmBase *RFAlgorithmBase::createTask(RFResultsListener *l, const char *seqX, int sizeX, const char *seqY, int sizeY, const DNAAlphabet *al, int w, int mismatches, RFAlgorithm alg, int nThreads) {
-    assert(l != NULL);
+    assert(l != nullptr);
     assert(mismatches < w);
     algoLog.trace(QString("Repeat finder: sizex=%1, sizey=%2, alphabet=%3, w=%4, mismatches=%5, threads=%6")
                       .arg(sizeX)
@@ -43,7 +43,7 @@ RFAlgorithmBase *RFAlgorithmBase::createTask(RFResultsListener *l, const char *s
                       .arg(mismatches)
                       .arg(nThreads));
 
-    RFAlgorithmBase *res = NULL;
+    RFAlgorithmBase *res = nullptr;
     if (alg == RFAlgorithm_Auto) {
         //alg = RFAlgorithm_Diagonal; //the slowest but tested better
         alg = RFAlgorithm_Suffix;
@@ -99,11 +99,11 @@ void RFAlgorithmBase::addToResults(const RFResult &r) {
 #ifdef _DEBUG
     checkResult(r);
 #endif
-    CHECK_EXT(NULL != resultsListener, cancel(), );
+    CHECK_EXT(nullptr != resultsListener, cancel(), );
     resultsListener->onResult(r);
     if (reflective && reportReflected) {
         assert(r.x != r.y);
-        CHECK_EXT(NULL != resultsListener, cancel(), );
+        CHECK_EXT(nullptr != resultsListener, cancel(), );
         resultsListener->onResult(RFResult(r.y, r.x, r.l, r.c));
     }
 }
@@ -113,7 +113,7 @@ void RFAlgorithmBase::addToResults(const QVector<RFResult> &results) {
 #ifdef _DEBUG
     checkResults(results);
 #endif
-    CHECK_EXT(NULL != resultsListener, cancel(), );
+    CHECK_EXT(nullptr != resultsListener, cancel(), );
     resultsListener->onResults(results);
     if (reflective && reportReflected) {
         QVector<RFResult> complResults;
@@ -130,7 +130,7 @@ void RFAlgorithmBase::addToResults(const QVector<RFResult> &results) {
             }
             complResults.append(RFResult(r.y, r.x, r.l, r.c));
         }
-        CHECK_EXT(NULL != resultsListener, cancel(), );
+        CHECK_EXT(nullptr != resultsListener, cancel(), );
         resultsListener->onResults(complResults);
     }
 }
@@ -142,7 +142,7 @@ void RFAlgorithmBase::prepare() {
     }
     if (reflective && reportReflected) {
         assert(SIZE_X == SIZE_Y);
-        CHECK_EXT(NULL != resultsListener, cancel(), );
+        CHECK_EXT(nullptr != resultsListener, cancel(), );
         resultsListener->onResult(RFResult(0, 0, SIZE_X));
     }
 }

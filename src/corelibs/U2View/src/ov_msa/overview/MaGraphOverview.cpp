@@ -48,13 +48,13 @@ MaGraphOverview::MaGraphOverview(MaEditorWgt *ui)
       isBlocked(false),
       lastDrawnVersion(-1),
       method(Strict),
-      graphCalculationTask(NULL) {
+      graphCalculationTask(nullptr) {
     setFixedHeight(FIXED_HEIGHT);
 
     displaySettings = new MaGraphOverviewDisplaySettings();
 
     Settings *s = AppContext::getSettings();
-    CHECK(s != NULL, );
+    CHECK(s != nullptr, );
     if (s->contains(MSA_GRAPH_OVERVIEW_COLOR_KEY)) {
         displaySettings->color = s->getValue(MSA_GRAPH_OVERVIEW_COLOR_KEY).value<QColor>();
     }
@@ -167,34 +167,34 @@ void MaGraphOverview::sl_drawGraph() {
     graphCalculationTaskRunner.cancel();
 
     switch (method) {
-    case Strict:
-        graphCalculationTask = new MaConsensusOverviewCalculationTask(editor->getMaObject(),
-                                                                      width(),
-                                                                      FIXED_HEIGHT);
-        break;
-    case Gaps:
-        graphCalculationTask = new MaGapOverviewCalculationTask(editor->getMaObject(),
-                                                                width(),
-                                                                FIXED_HEIGHT);
-        break;
-    case Clustal:
-        graphCalculationTask = new MaClustalOverviewCalculationTask(editor->getMaObject(),
+        case Strict:
+            graphCalculationTask = new MaConsensusOverviewCalculationTask(editor->getMaObject(),
+                                                                          width(),
+                                                                          FIXED_HEIGHT);
+            break;
+        case Gaps:
+            graphCalculationTask = new MaGapOverviewCalculationTask(editor->getMaObject(),
                                                                     width(),
                                                                     FIXED_HEIGHT);
-        break;
-    case Highlighting:
-        MsaHighlightingScheme *hScheme = sequenceArea->getCurrentHighlightingScheme();
-        QString hSchemeId = hScheme->getFactory()->getId();
+            break;
+        case Clustal:
+            graphCalculationTask = new MaClustalOverviewCalculationTask(editor->getMaObject(),
+                                                                        width(),
+                                                                        FIXED_HEIGHT);
+            break;
+        case Highlighting:
+            MsaHighlightingScheme *hScheme = sequenceArea->getCurrentHighlightingScheme();
+            QString hSchemeId = hScheme->getFactory()->getId();
 
-        MsaColorScheme *cScheme = sequenceArea->getCurrentColorScheme();
-        QString cSchemeId = cScheme->getFactory()->getId();
+            MsaColorScheme *cScheme = sequenceArea->getCurrentColorScheme();
+            QString cSchemeId = cScheme->getFactory()->getId();
 
-        graphCalculationTask = new MaHighlightingOverviewCalculationTask(editor,
-                                                                         cSchemeId,
-                                                                         hSchemeId,
-                                                                         width(),
-                                                                         FIXED_HEIGHT);
-        break;
+            graphCalculationTask = new MaHighlightingOverviewCalculationTask(editor,
+                                                                             cSchemeId,
+                                                                             hSchemeId,
+                                                                             width(),
+                                                                             FIXED_HEIGHT);
+            break;
     }
 
     connect(graphCalculationTask, SIGNAL(si_calculationStarted()), SLOT(sl_startRendering()));

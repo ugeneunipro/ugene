@@ -68,13 +68,13 @@ SnpEffSupport::SnpEffSupport()
 QStringList SnpEffSupport::getToolRunnerAdditionalOptions() const {
     QStringList result;
     AppResourcePool *s = AppContext::getAppSettings()->getAppResourcePool();
-    CHECK(s != NULL, result);
+    CHECK(s != nullptr, result);
     //java VM can't allocate whole free memory, Xmx size should be lesser than free memory
     int memSize = s->getMaxMemorySizeInMB();
 #if (defined(Q_OS_WIN) || defined(Q_OS_LINUX))
     ExternalToolRegistry *etRegistry = AppContext::getExternalToolRegistry();
     JavaSupport *java = qobject_cast<JavaSupport *>(etRegistry->getById(JavaSupport::ET_JAVA_ID));
-    CHECK(java != NULL, result);
+    CHECK(java != nullptr, result);
     if (java->getArchitecture() == JavaSupport::x32) {
         memSize = memSize > 1212 ? 1212 : memSize;
     }
@@ -93,7 +93,7 @@ void SnpEffSupport::sl_validationStatusChanged(bool isValid) {
 
 void SnpEffSupport::sl_databaseListIsReady() {
     SnpEffDatabaseListTask *task = dynamic_cast<SnpEffDatabaseListTask *>(sender());
-    SAFE_POINT(task != NULL, "SnpEffDatabaseListTask is NULL: wrong sender", );
+    SAFE_POINT(task != nullptr, "SnpEffDatabaseListTask is NULL: wrong sender", );
     if (task->isCanceled() || task->hasError() || !task->isFinished()) {
         return;
     }

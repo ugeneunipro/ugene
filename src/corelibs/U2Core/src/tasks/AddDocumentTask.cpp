@@ -30,11 +30,11 @@
 namespace U2 {
 
 AddDocumentTask::AddDocumentTask(Document *_d, const AddDocumentTaskConfig &_conf)
-    : Task("Add document task", TaskFlags_NR_FOSE_COSC), document(_d), dpt(NULL), conf(_conf) {
-    CHECK_EXT(_d != NULL, setError("Document pointer ]is NULL"), );
+    : Task("Add document task", TaskFlags_NR_FOSE_COSC), document(_d), dpt(nullptr), conf(_conf) {
+    CHECK_EXT(_d != nullptr, setError("Document pointer ]is NULL"), );
     SAFE_POINT(document->isMainThreadObject(), QString("Document added to the project does not belong to the main application thread: %1 !").arg(document->getURLString()), );
     setTaskName(tr("Adding document to project: %1").arg(_d->getURLString()));
-    if (AppContext::getProject() == NULL) {
+    if (AppContext::getProject() == nullptr) {
         addSubTask(AppContext::getProjectLoader()->createNewProjectTask());
     } else {
         setSubtaskProgressWeight(0);
@@ -42,8 +42,8 @@ AddDocumentTask::AddDocumentTask(Document *_d, const AddDocumentTaskConfig &_con
 }
 
 AddDocumentTask::AddDocumentTask(DocumentProviderTask *_dpt, const AddDocumentTaskConfig &c)
-    : Task("Add document task", TaskFlags_NR_FOSE_COSC), document(NULL), dpt(_dpt), conf(c) {
-    CHECK_EXT(_dpt != NULL, setError("Document provider task pointer is NULL"), );
+    : Task("Add document task", TaskFlags_NR_FOSE_COSC), document(nullptr), dpt(_dpt), conf(c) {
+    CHECK_EXT(_dpt != nullptr, setError("Document provider task pointer is NULL"), );
     setTaskName(tr("Adding document to project: %1").arg(_dpt->getDocumentDescription()));
     addSubTask(dpt);
 }
@@ -54,16 +54,16 @@ QList<Task *> AddDocumentTask::onSubTaskFinished(Task *subTask) {
         return res;
     }
 
-    if (subTask == dpt && dpt != NULL) {
+    if (subTask == dpt && dpt != nullptr) {
         if (dpt->isCanceled()) {
             return res;
         }
         document = dpt->takeDocument();
-        if (AppContext::getProject() == NULL) {
+        if (AppContext::getProject() == nullptr) {
             res << AppContext::getProjectLoader()->createNewProjectTask();
         } else if (conf.unloadExistingDocument) {
             Document *oldDoc = AppContext::getProject()->findDocumentByURL(document->getURL());
-            if (oldDoc != NULL && oldDoc != document) {
+            if (oldDoc != nullptr && oldDoc != document) {
                 res << new RemoveMultipleDocumentsTask(AppContext::getProject(), QList<Document *>() << oldDoc, false, false);
             }
         }
@@ -73,7 +73,7 @@ QList<Task *> AddDocumentTask::onSubTaskFinished(Task *subTask) {
 
 Task::ReportResult AddDocumentTask::report() {
     Project *p = AppContext::getProject();
-    if (p == NULL) {    // no project is opened
+    if (p == nullptr) {    // no project is opened
         if (!hasError()) {
             setError(tr("No project is opened"));
         }
@@ -82,9 +82,9 @@ Task::ReportResult AddDocumentTask::report() {
 
     if (p->isStateLocked()) {
         return ReportResult_CallMeAgain;
-    } else if (document != NULL) {
+    } else if (document != nullptr) {
         Document *sameURLDoc = p->findDocumentByURL(document->getURL());
-        if (sameURLDoc != NULL) {
+        if (sameURLDoc != nullptr) {
             stateInfo.setError(tr("Document is already added to the project %1").arg(document->getURL().getURLString()));
         } else {
             p->addDocument(document);

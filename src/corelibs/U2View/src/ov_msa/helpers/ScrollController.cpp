@@ -176,61 +176,61 @@ void ScrollController::stopSmoothScrolling() {
 
 void ScrollController::scrollStep(ScrollController::Direction direction) {
     switch (direction) {
-    case Up:
-        vScrollBar->triggerAction(QAbstractSlider::SliderSingleStepSub);
-        break;
-    case Down:
-        vScrollBar->triggerAction(QAbstractSlider::SliderSingleStepAdd);
-        break;
-    case Left:
-        hScrollBar->triggerAction(QAbstractSlider::SliderSingleStepSub);
-        break;
-    case Right:
-        hScrollBar->triggerAction(QAbstractSlider::SliderSingleStepAdd);
-        break;
-    default:
-        FAIL("An unknown direction", );
-        break;
+        case Up:
+            vScrollBar->triggerAction(QAbstractSlider::SliderSingleStepSub);
+            break;
+        case Down:
+            vScrollBar->triggerAction(QAbstractSlider::SliderSingleStepAdd);
+            break;
+        case Left:
+            hScrollBar->triggerAction(QAbstractSlider::SliderSingleStepSub);
+            break;
+        case Right:
+            hScrollBar->triggerAction(QAbstractSlider::SliderSingleStepAdd);
+            break;
+        default:
+            FAIL("An unknown direction", );
+            break;
     }
 }
 
 void ScrollController::scrollPage(ScrollController::Direction direction) {
     switch (direction) {
-    case Up:
-        vScrollBar->triggerAction(QAbstractSlider::SliderPageStepSub);
-        break;
-    case Down:
-        vScrollBar->triggerAction(QAbstractSlider::SliderPageStepAdd);
-        break;
-    case Left:
-        hScrollBar->triggerAction(QAbstractSlider::SliderPageStepSub);
-        break;
-    case Right:
-        hScrollBar->triggerAction(QAbstractSlider::SliderPageStepAdd);
-        break;
-    default:
-        FAIL("An unknown direction", );
-        break;
+        case Up:
+            vScrollBar->triggerAction(QAbstractSlider::SliderPageStepSub);
+            break;
+        case Down:
+            vScrollBar->triggerAction(QAbstractSlider::SliderPageStepAdd);
+            break;
+        case Left:
+            hScrollBar->triggerAction(QAbstractSlider::SliderPageStepSub);
+            break;
+        case Right:
+            hScrollBar->triggerAction(QAbstractSlider::SliderPageStepAdd);
+            break;
+        default:
+            FAIL("An unknown direction", );
+            break;
     }
 }
 
 void ScrollController::scrollToEnd(ScrollController::Direction direction) {
     switch (direction) {
-    case Up:
-        vScrollBar->triggerAction(QAbstractSlider::SliderToMinimum);
-        break;
-    case Down:
-        vScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
-        break;
-    case Left:
-        hScrollBar->triggerAction(QAbstractSlider::SliderToMinimum);
-        break;
-    case Right:
-        hScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
-        break;
-    default:
-        FAIL("An unknown direction", );
-        break;
+        case Up:
+            vScrollBar->triggerAction(QAbstractSlider::SliderToMinimum);
+            break;
+        case Down:
+            vScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
+            break;
+        case Left:
+            hScrollBar->triggerAction(QAbstractSlider::SliderToMinimum);
+            break;
+        case Right:
+            hScrollBar->triggerAction(QAbstractSlider::SliderToMaximum);
+            break;
+        default:
+            FAIL("An unknown direction", );
+            break;
     }
 }
 
@@ -242,54 +242,53 @@ void ScrollController::scrollToMovedSelection(int deltaX, int deltaY) {
 void ScrollController::scrollToMovedSelection(ScrollController::Direction direction) {
     U2Region fullyVisibleRegion;
     U2Region selectionRegion;
-    const MaEditorSelection selection = ui->getSequenceArea()->getSelection();
-    int selectionEdgePosition = 0;
-    const QSize widgetWize = ui->getSequenceArea()->size();
-
+    int selectionEdgePosition;
+    QSize widgetSize = ui->getSequenceArea()->size();
+    QRect selectionRect = ui->getSequenceArea()->getSelection().toRect();
     switch (direction) {
-    case Up:
-        fullyVisibleRegion = ui->getDrawHelper()->getVisibleViewRowsRegion(widgetWize.height(), false, false);
-        selectionRegion = selection.getYRegion();
-        selectionEdgePosition = static_cast<int>(selectionRegion.startPos);
-        break;
-    case Down:
-        fullyVisibleRegion = ui->getDrawHelper()->getVisibleViewRowsRegion(widgetWize.height(), false, false);
-        selectionRegion = selection.getYRegion();
-        selectionEdgePosition = static_cast<int>(selectionRegion.endPos() - 1);
-        break;
-    case Left:
-        fullyVisibleRegion = ui->getDrawHelper()->getVisibleBases(widgetWize.width(), false, false);
-        selectionRegion = selection.getXRegion();
-        selectionEdgePosition = static_cast<int>(selectionRegion.startPos);
-        break;
-    case Right:
-        fullyVisibleRegion = ui->getDrawHelper()->getVisibleBases(widgetWize.width(), false, false);
-        selectionRegion = selection.getXRegion();
-        selectionEdgePosition = static_cast<int>(selectionRegion.endPos() - 1);
-        break;
-    case None:
-        return;
-    default:
-        FAIL("An unknown direction", );
-        break;
-    }
-
-    const bool selectionEdgeIsFullyVisible = fullyVisibleRegion.contains(selectionEdgePosition);
-    if (!selectionEdgeIsFullyVisible) {
-        switch (direction) {
         case Up:
+            fullyVisibleRegion = ui->getDrawHelper()->getVisibleViewRowsRegion(widgetSize.height(), false, false);
+            selectionRegion = U2Region(selectionRect.y(), selectionRect.height());
+            selectionEdgePosition = static_cast<int>(selectionRegion.startPos);
+            break;
         case Down:
-            scrollToViewRow(static_cast<int>(selectionEdgePosition), widgetWize.height());
+            fullyVisibleRegion = ui->getDrawHelper()->getVisibleViewRowsRegion(widgetSize.height(), false, false);
+            selectionRegion = U2Region(selectionRect.y(), selectionRect.height());
+            selectionEdgePosition = static_cast<int>(selectionRegion.endPos() - 1);
             break;
         case Left:
+            fullyVisibleRegion = ui->getDrawHelper()->getVisibleBases(widgetSize.width(), false, false);
+            selectionRegion = U2Region(selectionRect.x(), selectionRect.width());
+            selectionEdgePosition = static_cast<int>(selectionRegion.startPos);
+            break;
         case Right:
-            scrollToBase(static_cast<int>(selectionEdgePosition), widgetWize.width());
+            fullyVisibleRegion = ui->getDrawHelper()->getVisibleBases(widgetSize.width(), false, false);
+            selectionRegion = U2Region(selectionRect.x(), selectionRect.width());
+            selectionEdgePosition = static_cast<int>(selectionRegion.endPos() - 1);
             break;
         case None:
             return;
         default:
             FAIL("An unknown direction", );
             break;
+    }
+
+    const bool selectionEdgeIsFullyVisible = fullyVisibleRegion.contains(selectionEdgePosition);
+    if (!selectionEdgeIsFullyVisible) {
+        switch (direction) {
+            case Up:
+            case Down:
+                scrollToViewRow(static_cast<int>(selectionEdgePosition), widgetSize.height());
+                break;
+            case Left:
+            case Right:
+                scrollToBase(static_cast<int>(selectionEdgePosition), widgetSize.width());
+                break;
+            case None:
+                return;
+            default:
+                FAIL("An unknown direction", );
+                break;
         }
     }
 }
@@ -402,7 +401,7 @@ void ScrollController::zoomVerticalScrollBarPrivate() {
 }
 
 void ScrollController::updateHorizontalScrollBarPrivate() {
-    SAFE_POINT(NULL != hScrollBar, "Horizontal scrollbar is not initialized", );
+    SAFE_POINT(nullptr != hScrollBar, "Horizontal scrollbar is not initialized", );
     SignalBlocker signalBlocker(hScrollBar);
     Q_UNUSED(signalBlocker);
 
@@ -423,7 +422,7 @@ void ScrollController::updateHorizontalScrollBarPrivate() {
 }
 
 void ScrollController::updateVerticalScrollBarPrivate() {
-    SAFE_POINT(NULL != vScrollBar, "Vertical scrollbar is not initialized", );
+    SAFE_POINT(nullptr != vScrollBar, "Vertical scrollbar is not initialized", );
     SignalBlocker signalBlocker(vScrollBar);
     Q_UNUSED(signalBlocker);
 

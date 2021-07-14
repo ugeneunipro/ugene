@@ -33,11 +33,11 @@ namespace U2 {
 
 ExportMca2MsaDialog::ExportMca2MsaDialog(const QString &defaultFilePath, QWidget *parent)
     : QDialog(parent),
-      saveController(NULL) {
+      saveController(nullptr) {
     setupUi(this);
     GCOUNTER(cvar, "'Export Alignment without Chromatograms' dialog opening");
 
-    new HelpButton(this, buttonBox, "65929314");
+    new HelpButton(this, buttonBox, "65929791");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));
     buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 

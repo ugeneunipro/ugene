@@ -80,11 +80,9 @@ public:
     QAction *getTrimLeftEndAction() const;
     QAction *getTrimRightEndAction() const;
 
-signals:
-    void si_clearReferenceSelection();
-
 public slots:
     void sl_backgroundSelectionChanged();
+    void sl_cancelSelection() override;
 
 private slots:
     void sl_showHideTrace();

@@ -137,7 +137,7 @@ Document *ASNFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const Q
     BioStruct3D bioStruct;
 
     const StdResidueDictionary *stdResidueDict = StdResidueDictionary::getStandardDictionary();
-    CHECK_EXT(stdResidueDict != NULL, os.setError(tr("Standard residue dictionary not found")), NULL);
+    CHECK_EXT(stdResidueDict != nullptr, os.setError(tr("Standard residue dictionary not found")), nullptr);
 
     AsnParser asnParser(io, os);
     ioLog.trace("ASN: Parsing: " + io->toString());
@@ -153,7 +153,7 @@ Document *ASNFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const Q
     }
     os.setProgress(80);
 
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     ioLog.trace(QString("BioStruct3D loaded from ASN tree (%1)").arg(io->toString()));
 
     bioStruct.calcCenterAndMaxDistance();
@@ -174,12 +174,12 @@ AsnNode *ASNFormat::findFirstNodeByName(AsnNode *rootElem, const QString &nodeNa
 
     foreach (AsnNode *node, rootElem->children) {
         AsnNode *child = findFirstNodeByName(node, nodeName);
-        if (child != NULL) {
+        if (child != nullptr) {
             return child;
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 AsnNodeList ASNFormat::findNodesByName(AsnNode *root, const QString &nodeName, AsnNodeList &nodes) {
@@ -196,23 +196,23 @@ AsnNodeList ASNFormat::findNodesByName(AsnNode *root, const QString &nodeName, A
 
 QString ASNFormat::getAsnNodeTypeName(const AsnNode *node) {
     switch (node->kind) {
-    case ASN_NO_KIND:
-        return QString("ASN_NO_KIND");
-    case ASN_ROOT:
-        return QString("ASN_ROOT");
-    case ASN_SEQ:
-        return QString("ASN_SEQ");
-    case ASN_VALUE:
-        return QString("ASN_VALUE");
-    default:
-        Q_ASSERT(0);
+        case ASN_NO_KIND:
+            return QString("ASN_NO_KIND");
+        case ASN_ROOT:
+            return QString("ASN_ROOT");
+        case ASN_SEQ:
+            return QString("ASN_SEQ");
+        case ASN_VALUE:
+            return QString("ASN_VALUE");
+        default:
+            Q_ASSERT(0);
     }
     return QString("");
 }
 
 void ASNFormat::BioStructLoader::loadBioStructPdbId(AsnNode *rootNode, BioStruct3D &struc) {
     AsnNode *nameNode = ASNFormat::findFirstNodeByName(rootNode, "name");
-    SAFE_POINT(nameNode != NULL, "nameNode == NULL?", );
+    SAFE_POINT(nameNode != nullptr, "nameNode == NULL?", );
     struc.pdbId = nameNode->value;
 }
 
@@ -233,20 +233,20 @@ void ASNFormat::BioStructLoader::loadBioStructFromAsnTree(AsnNode *rootNode, Bio
 
         //Load biostruct molecules
         AsnNode *graphNode = findFirstNodeByName(rootNode, "chemical-graph");
-        if (graphNode == NULL) {
+        if (graphNode == nullptr) {
             throw AsnBioStructError("models not found");
         }
         loadBioStructGraph(graphNode, struc);
 
         //Load secondary structure
         AsnNode *featureSetNode = findFirstNodeByName(rootNode, "features");
-        if (featureSetNode != NULL) {
+        if (featureSetNode != nullptr) {
             loadBioStructSecondaryStruct(featureSetNode, struc);
         }
 
         // Load biostruct models (coordinates)
         AsnNode *modelsNode = findFirstNodeByName(rootNode, "model");
-        if (modelsNode == NULL) {
+        if (modelsNode == nullptr) {
             throw AsnBioStructError("models not found");
         }
         loadBioStructModels(modelsNode->children, struc);
@@ -366,7 +366,7 @@ const StdResidue ASNFormat::BioStructLoader::loadResidueFromNode(AsnNode *resNod
     */
 
     AsnNode *resGraphPntrNode = resNode->getChildById(2);
-    const StdResidueDictionary *dictionary = NULL;
+    const StdResidueDictionary *dictionary = nullptr;
     int stdResidueId = 0;
     bool ok = false;
     if ((resGraphPntrNode->kind == ASN_VALUE) && (resGraphPntrNode->value.contains("local"))) {
@@ -667,10 +667,10 @@ AsnNode *ASNFormat::AsnParser::loadAsnTree() {
 
     } catch (const AsnBaseException &ex) {
         ts.setError(ex.msg);
-        return NULL;
+        return nullptr;
     } catch (...) {
         ts.setError(ASNFormat::tr("Unknown error occurred"));
-        return NULL;
+        return nullptr;
     }
 }
 
@@ -858,17 +858,17 @@ void ASNFormat::AsnParser::dbgPrintCurrentState() {
     qDebug("\tbuffer: %s", buffer.trimmed().constData());
     qDebug("\tvalue: %s", curElementValue.constData());
     switch (curElementKind) {
-    case ASN_ROOT:
-        qDebug("\tkind: ASN_ROOT");
-        break;
-    case ASN_SEQ:
-        qDebug("\tkind: ASN_SEQ");
-        break;
-    case ASN_VALUE:
-        qDebug("\tkind: ASN_VALUE");
-        break;
-    default:
-        Q_ASSERT(0);
+        case ASN_ROOT:
+            qDebug("\tkind: ASN_ROOT");
+            break;
+        case ASN_SEQ:
+            qDebug("\tkind: ASN_SEQ");
+            break;
+        case ASN_VALUE:
+            qDebug("\tkind: ASN_VALUE");
+            break;
+        default:
+            Q_ASSERT(0);
     }
     if (haveErrors)
         qDebug("\terrors: yes");
@@ -905,7 +905,7 @@ AsnNode *AsnNode::findChildByName(const QByteArray &name) {
         if (child->name == name)
             return child;
     }
-    return NULL;
+    return nullptr;
 }
 
 AsnNode *AsnNode::getChildById(int id) {

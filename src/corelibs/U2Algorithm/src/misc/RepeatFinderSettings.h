@@ -71,7 +71,8 @@ public:
         return !(*this == r);
     }
     bool operator<(const RFResult &r) const {
-        return (x != r.x) ? x < r.x : (y != r.y) ? y < r.y : (l < r.l);
+        return (x != r.x) ? x < r.x : (y != r.y) ? y < r.y
+                                                 : (l < r.l);
     }
 
     QString fragment;
@@ -89,9 +90,9 @@ public:
 
 struct RepeatFinderSettings {
     RepeatFinderSettings()
-        : l(NULL), seqX(NULL), sizeX(0), inverted(false),
-          seqY(NULL), sizeY(0),
-          al(NULL), w(0), mismatches(0),
+        : l(nullptr), seqX(nullptr), sizeX(0), inverted(false),
+          seqY(nullptr), sizeY(0),
+          al(nullptr), w(0), mismatches(0),
           alg(RFAlgorithm_Auto), nThreads(0) {
     }
 

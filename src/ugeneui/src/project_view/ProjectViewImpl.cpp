@@ -98,11 +98,11 @@ DocumentUpdater::DocumentUpdater(QObject *p)
     connect(timer, SIGNAL(timeout()), this, SLOT(sl_update()));
     timer->start(UPDATER_TIMEOUT);
     recursion = false;
-    updateTask = NULL;
+    updateTask = nullptr;
 }
 
 void DocumentUpdater::sl_update() {
-    if (recursion || updateTask != NULL) {
+    if (recursion || updateTask != nullptr) {
         return;
     }
     recursion = true;
@@ -119,7 +119,7 @@ static bool hasActiveDialogs(QObject *o) {
         }
     }
     QDialog *d = qobject_cast<QDialog *>(o);
-    if (d != NULL && d->isVisible()) {
+    if (d != nullptr && d->isVisible()) {
         //coreLog.trace(QString("Rejecting dialog %1").arg(o->metaObject()->className()));
         return true;
     }
@@ -129,7 +129,7 @@ static bool hasActiveDialogs(QObject *o) {
 void DocumentUpdater::update() {
     // This check is necessary, because if a document is removed from the project
     // while a modal dialog is active, it can lead to invalid pointers to GObjects.
-    CHECK(NULL == QApplication::activeModalWidget(), );
+    CHECK(nullptr == QApplication::activeModalWidget(), );
     Project *prj = AppContext::getProject();
     assert(prj);
 
@@ -141,7 +141,7 @@ void DocumentUpdater::update() {
     QList<Document *> outdatedDocs;
     QList<Document *> removedDocs;
     foreach (Document *doc, docs2check) {
-        SAFE_POINT(doc != NULL, tr("Project contains NULL document"), );
+        SAFE_POINT(doc != nullptr, tr("Project contains NULL document"), );
 
         if (!doc->isLoaded()) {
             continue;
@@ -203,8 +203,8 @@ bool DocumentUpdater::isAnyDialogOpened() const {
 namespace {
 
 void removeDocFromProject(Project *proj, Document *doc) {
-    SAFE_POINT(NULL != proj, L10N::nullPointerError("Project"), );
-    SAFE_POINT(NULL != doc, L10N::nullPointerError("Document"), );
+    SAFE_POINT(nullptr != proj, L10N::nullPointerError("Project"), );
+    SAFE_POINT(nullptr != doc, L10N::nullPointerError("Document"), );
 
     proj->removeRelations(doc->getURLString());
     proj->removeDocument(doc);
@@ -221,34 +221,34 @@ bool DocumentUpdater::makeDecision(Document *doc, QListIterator<Document *> &ite
                                                             QMessageBox::Yes | QMessageBox::No | QMessageBox::NoToAll);
 
     Project *activeProject = AppContext::getProject();
-    SAFE_POINT(NULL != activeProject, L10N::nullPointerError("Project"), false);
+    SAFE_POINT(nullptr != activeProject, L10N::nullPointerError("Project"), false);
 
     switch (btn) {
-    case QMessageBox::Yes: {
-        QString saveFileFilter = doc->getDocumentFormat()->getSupportedDocumentFileExtensions().join(" *.").prepend("*.");
-        QString newFileUrl = U2FileDialog::getSaveFileName(dynamic_cast<QWidget *>(AppContext::getMainWindow()), tr("Save as"), doc->getURLString(), saveFileFilter);
-        CHECK(!newFileUrl.isEmpty(), false);
+        case QMessageBox::Yes: {
+            QString saveFileFilter = doc->getDocumentFormat()->getSupportedDocumentFileExtensions().join(" *.").prepend("*.");
+            QString newFileUrl = U2FileDialog::getSaveFileName(dynamic_cast<QWidget *>(AppContext::getMainWindow()), tr("Save as"), doc->getURLString(), saveFileFilter);
+            CHECK(!newFileUrl.isEmpty(), false);
 
-        activeProject->updateDocInRelations(doc->getURLString(), newFileUrl);
+            activeProject->updateDocInRelations(doc->getURLString(), newFileUrl);
 
-        Task *saveDoc = new SaveDocumentTask(doc, doc->getIOAdapterFactory(), newFileUrl);
-        AppContext::getTaskScheduler()->registerTopLevelTask(saveDoc);
+            Task *saveDoc = new SaveDocumentTask(doc, doc->getIOAdapterFactory(), newFileUrl);
+            AppContext::getTaskScheduler()->registerTopLevelTask(saveDoc);
 
-        doc->setURL(GUrl(newFileUrl));
-        break;
-    }
-    case QMessageBox::No:
-        removeDocFromProject(activeProject, doc);
-        break;
-    case QMessageBox::NoToAll:
-        removeDocFromProject(activeProject, doc);
-        while (iter.hasNext()) {
-            doc = iter.next();
-            removeDocFromProject(activeProject, doc);
+            doc->setURL(GUrl(newFileUrl));
+            break;
         }
-        break;
-    default:
-        FAIL("Unexpected user response", false);
+        case QMessageBox::No:
+            removeDocFromProject(activeProject, doc);
+            break;
+        case QMessageBox::NoToAll:
+            removeDocFromProject(activeProject, doc);
+            while (iter.hasNext()) {
+                doc = iter.next();
+                removeDocFromProject(activeProject, doc);
+            }
+            break;
+        default:
+            FAIL("Unexpected user response", false);
     }
     return true;
 }
@@ -280,8 +280,8 @@ void DocumentUpdater::notifyUserAndProcessRemovedDocuments(const QList<Document 
     if (!dbiDocs.isEmpty()) {
         const bool severalDocRemoved = dbiDocs.size() > 1;
         const QString warningMessageText = severalDocRemoved ? tr("Several documents were removed from their original folders. Therefore, they will be deleted from the current project. "
-                                                                  "Find the full list below.") :
-                                                               tr("The document '%1' was removed from its original folder. Therefore, it will be deleted from the current project.")
+                                                                  "Find the full list below.")
+                                                             : tr("The document '%1' was removed from its original folder. Therefore, it will be deleted from the current project.")
                                                                    .arg(dbiDocs.first()->getName());
 
         QObjectScopedPointer<QMessageBox> warningBox = new QMessageBox(dynamic_cast<QWidget *>(AppContext::getMainWindow()));
@@ -300,7 +300,7 @@ void DocumentUpdater::notifyUserAndProcessRemovedDocuments(const QList<Document 
         CHECK(!warningBox.isNull(), );
 
         Project *activeProject = AppContext::getProject();
-        SAFE_POINT(NULL != activeProject, L10N::nullPointerError("Project"), );
+        SAFE_POINT(nullptr != activeProject, L10N::nullPointerError("Project"), );
         foreach (Document *doc, dbiDocs) {
             removeDocFromProject(activeProject, doc);
         }
@@ -327,32 +327,32 @@ void DocumentUpdater::notifyUserAndReloadDocuments(const QList<Document *> &outd
             QMessageBox::Yes | QMessageBox::YesToAll | QMessageBox::No | QMessageBox::NoToAll);
 
         switch (btn) {
-        case QMessageBox::Yes:
-            docs2Reload.append(doc);
-            break;
-
-        case QMessageBox::YesToAll:
-            docs2Reload.append(doc);
-            while (iter.hasNext()) {
-                doc = iter.next();
+            case QMessageBox::Yes:
                 docs2Reload.append(doc);
-            }
-            break;
+                break;
 
-        case QMessageBox::No:
-            doc->setLastUpdateTime();
-            break;
+            case QMessageBox::YesToAll:
+                docs2Reload.append(doc);
+                while (iter.hasNext()) {
+                    doc = iter.next();
+                    docs2Reload.append(doc);
+                }
+                break;
 
-        case QMessageBox::NoToAll:
-            doc->setLastUpdateTime();
-            while (iter.hasNext()) {
-                doc = iter.next();
+            case QMessageBox::No:
                 doc->setLastUpdateTime();
-            }
-            break;
+                break;
 
-        default:
-            assert(0);
+            case QMessageBox::NoToAll:
+                doc->setLastUpdateTime();
+                while (iter.hasNext()) {
+                    doc = iter.next();
+                    doc->setLastUpdateTime();
+                }
+                break;
+
+            default:
+                assert(0);
         }
     }
 
@@ -366,9 +366,9 @@ void DocumentUpdater::notifyUserAndReloadDocuments(const QList<Document *> &outd
 }
 
 void DocumentUpdater::sl_updateTaskStateChanged() {
-    SAFE_POINT(updateTask != NULL, "updateTask is NULL?", );
+    SAFE_POINT(updateTask != nullptr, "updateTask is NULL?", );
     if (updateTask->isFinished()) {
-        updateTask = NULL;
+        updateTask = nullptr;
     }
 }
 
@@ -412,7 +412,7 @@ void DocumentUpdater::reloadDocuments(QList<Document *> docs2Reload) {
 
     foreach (GObjectViewState *state, states) {
         GObjectViewWindow *view = GObjectViewUtils::findViewByName(state->getViewName());
-        if (view != NULL) {
+        if (view != nullptr) {
             assert(view->isPersistent());
             AppContext::getMainWindow()->getMDIManager()->activateWindow(view);
             updateViewTask->addSubTask(view->getObjectView()->updateViewTask(state->getStateName(), state->getStateData()));
@@ -455,13 +455,13 @@ static void saveGroupMode(ProjectTreeGroupMode m) {
 // ProjectViewImpl
 ProjectViewImpl::ProjectViewImpl()
     : ProjectView(tr("ProjectView"), tr("ProjectView service provides basic project visualization and manipulation functionality")) {
-    w = NULL;
-    projectTreeController = NULL;
-    objectViewController = NULL;
-    saveSelectedDocsAction = NULL;
-    relocateDocumentAction = NULL;
-    toggleCircularAction = NULL;
-    openContainingFolder = NULL;
+    w = nullptr;
+    projectTreeController = nullptr;
+    objectViewController = nullptr;
+    saveSelectedDocsAction = nullptr;
+    relocateDocumentAction = nullptr;
+    toggleCircularAction = nullptr;
+    openContainingFolder = nullptr;
     saveProjectOnClose = false;
 
     //todo: move it somewhere else -> object views could be openend without project view service active
@@ -492,7 +492,7 @@ void ProjectViewImpl::enable() {
     MWMDIManager *mdi = AppContext::getMainWindow()->getMDIManager();
     connect(mdi, SIGNAL(si_windowAdded(MWMDIWindow *)), SLOT(sl_onMDIWindowAdded(MWMDIWindow *)));
 
-    SAFE_POINT(w == NULL, "Project widget is already initialized", );
+    SAFE_POINT(w == nullptr, "Project widget is already initialized", );
     w = new ProjectViewWidget();
 
     saveSelectedDocsAction = new QAction(QIcon(":ugene/images/save_selected_documents.png"), tr("Save selected documents"), w);
@@ -537,7 +537,7 @@ void ProjectViewImpl::enable() {
 
 void ProjectViewImpl::disable() {
     MainWindow *mw = AppContext::getMainWindow();
-    if (w != NULL) {
+    if (w != nullptr) {
         saveWidgetState(w);
         saveGroupMode(projectTreeController->getModeSettings().groupMode);
     }
@@ -546,10 +546,10 @@ void ProjectViewImpl::disable() {
     pr->disconnect(this);
 
     //All these QObjects are autodeleted when 'w' is deleted;
-    projectTreeController = NULL;
-    objectViewController = NULL;
+    projectTreeController = nullptr;
+    objectViewController = nullptr;
 
-    AppContextImpl::getApplicationContext()->setProjectView(NULL);
+    AppContextImpl::getApplicationContext()->setProjectView(nullptr);
 
     // close all views;
     MWMDIManager *mdiManager = mw->getMDIManager();
@@ -560,7 +560,7 @@ void ProjectViewImpl::disable() {
     mw->setWindowTitle("");
 
     delete w;
-    w = NULL;
+    w = nullptr;
 }
 
 void ProjectViewImpl::saveWidgetState(ProjectViewWidget *w) {
@@ -576,7 +576,7 @@ void ProjectViewImpl::restoreWidgetState(ProjectViewWidget *w) {
 }
 
 void ProjectViewImpl::initView() {
-    assert(projectTreeController == NULL);
+    assert(projectTreeController == nullptr);
     ProjectTreeControllerModeSettings s;
     s.groupMode = getLastGroupMode();
     s.loadTaskProvider = this;
@@ -595,7 +595,7 @@ void ProjectViewImpl::initView() {
     connect(w->nameFilterEdit, SIGNAL(textChanged(const QString &)), SLOT(sl_filterTextChanged(const QString &)));
     w->nameFilterEdit->installEventFilter(this);
 
-    assert(objectViewController == NULL);
+    assert(objectViewController == nullptr);
     objectViewController = new ObjectViewTreeController(w->viewTreeWidget);
 
     restoreWidgetState(w);
@@ -608,7 +608,7 @@ bool ProjectViewImpl::eventFilter(QObject *obj, QEvent *event) {
         if (ov->isPersistent()) {
             saveViewState(ov, GObjectViewState::APP_CLOSING_STATE_NAME);
         }
-    } else if (w != NULL && w->nameFilterEdit == obj) {
+    } else if (w != nullptr && w->nameFilterEdit == obj) {
         if (event->type() == QEvent::KeyPress) {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
             if (keyEvent->modifiers() == Qt::NoModifier && keyEvent->key() == Qt::Key_Escape) {
@@ -627,7 +627,7 @@ void ProjectViewImpl::saveViewState(GObjectViewWindow *v, const QString &stateNa
     if (stateData.isEmpty()) {
         return;
     }
-    if (state == NULL) {
+    if (state == nullptr) {
         state = new GObjectViewState(id, v->getViewName(), stateName, stateData);
         p->addGObjectViewState(state);
     } else {
@@ -700,7 +700,7 @@ QList<Task *> ProjectViewImpl::createLoadDocumentTasks(const QList<Document *> &
     bool openViews = docs.size() <= MAX_DOCS_TO_OPEN_VIEWS;
     QList<Task *> res;
     foreach (Document *doc, docs) {
-        Task *t = NULL;
+        Task *t = nullptr;
         if (openViews && !ProjectUtils::isDatabaseDoc(doc)) {
             t = new LoadUnloadedDocumentAndOpenViewTask(doc);
         } else {
@@ -715,16 +715,16 @@ QList<Task *> ProjectViewImpl::createLoadDocumentTasks(const QList<Document *> &
 class OpenViewContext : public QObject {
 public:
     OpenViewContext()
-        : state(NULL), factory(NULL) {
+        : state(nullptr), factory(nullptr) {
     }
     OpenViewContext(QObject *p, const MultiGSelection &s, GObjectViewFactory *f)
-        : QObject(p), selection(s), state(NULL), factory(f) {
+        : QObject(p), selection(s), state(nullptr), factory(f) {
     }
     OpenViewContext(QObject *p, const GObjectViewState *s, GObjectViewFactory *f)
         : QObject(p), state(s), factory(f) {
     }
     OpenViewContext(QObject *p, const QString &_viewName)
-        : QObject(p), state(NULL), factory(NULL), viewName(_viewName) {
+        : QObject(p), state(nullptr), factory(nullptr), viewName(_viewName) {
     }
 
     MultiGSelection selection;
@@ -746,7 +746,7 @@ public:
 };
 
 void ProjectViewImpl::sl_onActivated(GObject *o) {
-    SAFE_POINT(o != NULL, "No double-clicked object found", );
+    SAFE_POINT(o != nullptr, "No double-clicked object found", );
 
     CHECK(!projectTreeController->isObjectInRecycleBin(o), );
 
@@ -755,7 +755,7 @@ void ProjectViewImpl::sl_onActivated(GObject *o) {
     MultiGSelection ms;
     ms.addSelection(&os);
 
-    QMenu activeViewsMenu(tr("Active views"), NULL);
+    QMenu activeViewsMenu(tr("Active views"), nullptr);
     QList<QAction *> openActions;
     QList<GObjectViewFactory *> fs = AppContext::getObjectViewFactoryRegistry()->getAllFactories();
     foreach (GObjectViewFactory *f, fs) {
@@ -780,7 +780,7 @@ void ProjectViewImpl::sl_onActivated(GObject *o) {
 }
 
 void ProjectViewImpl::sl_onActivated(Document *d) {
-    SAFE_POINT(d != NULL, "No double-clicked document found", );
+    SAFE_POINT(d != nullptr, "No double-clicked document found", );
     CHECK(!ProjectUtils::isDatabaseDoc(d), );
 
     MultiGSelection ms;
@@ -797,7 +797,7 @@ void ProjectViewImpl::sl_onActivated(Document *d) {
         ms.addSelection(&ds);
     }
 
-    QMenu activeViewsMenu(tr("Active views"), NULL);
+    QMenu activeViewsMenu(tr("Active views"), nullptr);
     QList<QAction *> openActions;
     QList<GObjectViewFactory *> fs = AppContext::getObjectViewFactoryRegistry()->getAllFactories();
     foreach (GObjectViewFactory *f, fs) {
@@ -828,14 +828,14 @@ QList<QAction *> ProjectViewImpl::selectOpenViewActions(GObjectViewFactory *f, c
     QList<MWMDIWindow *> windows = AppContext::getMainWindow()->getMDIManager()->getWindows();
     const GObjectSelection *objectsSelection = static_cast<const GObjectSelection *>(ms.findSelectionByType(GSelectionTypes::GOBJECTS));
     const DocumentSelection *docSelection = static_cast<const DocumentSelection *>(ms.findSelectionByType(GSelectionTypes::DOCUMENTS));
-    if (NULL != docSelection) {
+    if (nullptr != docSelection) {
         foreach (Document *selectedDoc, docSelection->getSelectedDocuments()) {
             if (ProjectUtils::isDatabaseDoc(selectedDoc)) {
                 return res;
             }
         }
     }
-    if (NULL != objectsSelection) {
+    if (nullptr != objectsSelection) {
         QSet<GObject *> objectsInSelection = objectsSelection->getSelectedObjects().toSet();
         foreach (GObject *obj, objectsInSelection) {
             if (projectTreeController->isObjectInRecycleBin(obj)) {
@@ -845,7 +845,7 @@ QList<QAction *> ProjectViewImpl::selectOpenViewActions(GObjectViewFactory *f, c
 
         foreach (MWMDIWindow *w, windows) {
             GObjectViewWindow *ov = qobject_cast<GObjectViewWindow *>(w);
-            if (ov == NULL) {
+            if (ov == nullptr) {
                 continue;
             }
             if (ov->getViewFactoryId() != f->getId()) {
@@ -922,11 +922,11 @@ void ProjectViewImpl::buildOpenViewMenu(const MultiGSelection &ms, QMenu *m) {
 
 void ProjectViewImpl::buildAddToViewMenu(const MultiGSelection &ms, QMenu *m) {
     MWMDIWindow *w = AppContext::getMainWindow()->getMDIManager()->getActiveWindow();
-    if (w == NULL) {
+    if (w == nullptr) {
         return;
     }
     GObjectViewWindow *ow = qobject_cast<GObjectViewWindow *>(w);
-    if (ow == NULL) {
+    if (ow == nullptr) {
         return;
     }
     QList<GObject *> objects = SelectionUtils::getSelectedObjects(ms);
@@ -989,8 +989,8 @@ void ProjectViewImpl::buildViewMenu(QMenu &m) {
     const DocumentSelection *docsSelection = getDocumentSelection();
     const GObjectSelection *objsSelection = getGObjectSelection();
 
-    SAFE_POINT(docsSelection != NULL, "Document selection is NULL", );
-    SAFE_POINT(objsSelection != NULL, "Object selection is NULL", );
+    SAFE_POINT(docsSelection != nullptr, "Document selection is NULL", );
+    SAFE_POINT(objsSelection != nullptr, "Object selection is NULL", );
 
     MultiGSelection multiSelection;
     if (!objsSelection->isEmpty()) {
@@ -1061,10 +1061,8 @@ void ProjectViewImpl::buildViewMenu(QMenu &m) {
         }
     }
 
-    Document *docToOpen = projectTreeController->getDocsInSelection(true).size() == 1 ?
-                              projectTreeController->getDocsInSelection(true).toList().first() :
-                              NULL;
-    if (docToOpen != NULL && !docToOpen->isDatabaseConnection()) {
+    Document *docToOpen = projectTreeController->getDocsInSelection(true).size() == 1 ? projectTreeController->getDocsInSelection(true).toList().first() : nullptr;
+    if (docToOpen != nullptr && !docToOpen->isDatabaseConnection()) {
         GUrl docUrl = docToOpen->getURL();
         if (docUrl.isLocalFile() || docUrl.isNetworkSource()) {
             m.addAction(openContainingFolder);
@@ -1077,7 +1075,7 @@ void ProjectViewImpl::sl_activateView() {
     OpenViewContext *c = static_cast<OpenViewContext *>(action->data().value<void *>());
     assert(!c->viewName.isEmpty());
     GObjectViewWindow *ov = GObjectViewUtils::findViewByName(c->viewName);
-    if (ov != NULL) {
+    if (ov != nullptr) {
         AppContext::getMainWindow()->getMDIManager()->activateWindow(ov);
     }
 }
@@ -1087,7 +1085,7 @@ void ProjectViewImpl::sl_openNewView() {
     OpenViewContext *c = static_cast<OpenViewContext *>(action->data().value<void *>());
     SAFE_POINT(c->factory->canCreateView(c->selection), "Invalid object view factory!", );
     Task *openViewTask = c->factory->createViewTask(c->selection);
-    if (NULL != openViewTask) {
+    if (nullptr != openViewTask) {
         AppContext::getTaskScheduler()->registerTopLevelTask(openViewTask);
     }
 }
@@ -1097,14 +1095,14 @@ void ProjectViewImpl::sl_addToView() {
     QAction *action = (QAction *)sender();
     AddToViewContext *ac = static_cast<AddToViewContext *>(action->data().value<void *>());
     GObjectView *view = ac->view;
-    if (view == NULL) {
+    if (view == nullptr) {
         return;
     }
     foreach (GObject *o, ac->objects) {
-        if (o != NULL) {
+        if (o != nullptr) {
             QString err = view->addObject(o);
             if (!err.isEmpty()) {
-                QMessageBox::critical(NULL, tr("Error"), err);
+                QMessageBox::critical(nullptr, tr("Error"), err);
             }
         }
     }
@@ -1118,18 +1116,18 @@ void ProjectViewImpl::sl_openStateView() {
 
     //todo: 70% of code duplication with ObjectViewTreeController::sl_activateView -> create util
     GObjectViewWindow *view = GObjectViewUtils::findViewByName(state->getViewName());
-    if (view != NULL) {
+    if (view != nullptr) {
         assert(view->isPersistent());
         AppContext::getTaskScheduler()->registerTopLevelTask(view->getObjectView()->updateViewTask(state->getStateName(), state->getStateData()));
     } else {
         GObjectViewFactory *f = AppContext::getObjectViewFactoryRegistry()->getFactoryById(state->getViewFactoryId());
-        assert(f != NULL);
+        assert(f != nullptr);
         AppContext::getTaskScheduler()->registerTopLevelTask(f->createViewTask(state->getViewName(), state->getStateData()));
     }
 }
 
 void ProjectViewImpl::sl_filterTextChanged(const QString &str) {
-    SAFE_POINT(NULL != projectTreeController, "NULL controller", );
+    SAFE_POINT(nullptr != projectTreeController, "NULL controller", );
 
     ProjectTreeControllerModeSettings settings = projectTreeController->getModeSettings();
     settings.tokensToShow = str.split(QRegExp("\\s+"), QString::SkipEmptyParts);
@@ -1138,8 +1136,8 @@ void ProjectViewImpl::sl_filterTextChanged(const QString &str) {
 
 void ProjectViewImpl::sl_relocate() {
     const DocumentSelection *ds = getDocumentSelection();
-    Document *d = ds->isEmpty() ? NULL : ds->getSelectedDocuments().first();
-    if (d == NULL) {
+    Document *d = ds->isEmpty() ? nullptr : ds->getSelectedDocuments().first();
+    if (d == nullptr) {
         return;
     }
     if (d->isLoaded()) {    //TODO: support loaded docs relocation?
@@ -1155,8 +1153,8 @@ void ProjectViewImpl::sl_relocate() {
 
 void ProjectViewImpl::sl_exportDocument() {
     const DocumentSelection *ds = getDocumentSelection();
-    Document *srcDoc = ds->isEmpty() ? NULL : ds->getSelectedDocuments().first();
-    if (srcDoc == NULL) {
+    Document *srcDoc = ds->isEmpty() ? nullptr : ds->getSelectedDocuments().first();
+    if (srcDoc == nullptr) {
         return;
     }
     if (!srcDoc->isLoaded()) {
@@ -1184,15 +1182,11 @@ void ProjectViewImpl::sl_onToggleCircular() {
 }
 
 void ProjectViewImpl::sl_onOpenContainingFolder() {
-    Document *docToOpen = projectTreeController->getDocsInSelection(true).size() == 1 ?
-                              projectTreeController->getDocsInSelection(true).toList().first() :
-                              NULL;
-    if (docToOpen != NULL && !docToOpen->isDatabaseConnection()) {
+    Document *docToOpen = projectTreeController->getDocsInSelection(true).size() == 1 ? projectTreeController->getDocsInSelection(true).toList().first() : nullptr;
+    if (docToOpen != nullptr && !docToOpen->isDatabaseConnection()) {
         GUrl docUrl = docToOpen->getURL();
         if (docUrl.isLocalFile() || docUrl.isNetworkSource()) {
-            QUrl url = docToOpen->getURL().isLocalFile() ?
-                           QUrl::fromLocalFile(docToOpen->getURL().dirPath()) :
-                           QUrl(docToOpen->getURL().dirPath());
+            QUrl url = docToOpen->getURL().isLocalFile() ? QUrl::fromLocalFile(docToOpen->getURL().dirPath()) : QUrl(docToOpen->getURL().dirPath());
             QDesktopServices::openUrl(url);
         }
     }
@@ -1208,7 +1202,7 @@ EnableProjectViewTask::EnableProjectViewTask(ProjectViewImpl *_pvi)
 }
 
 Task::ReportResult EnableProjectViewTask::report() {
-    assert(AppContext::getProject() != NULL);
+    assert(AppContext::getProject() != nullptr);
     pvi->enable();
     return ReportResult_Finished;
 }

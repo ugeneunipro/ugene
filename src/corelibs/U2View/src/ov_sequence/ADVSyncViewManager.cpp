@@ -95,8 +95,8 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView *v)
     connect(syncButton, SIGNAL(clicked()), SLOT(sl_sync()));
     syncButton->setDefaultAction(syncMenu->menuAction());
 
-    lockButtonTBAction = NULL;
-    syncButtonTBAction = NULL;
+    lockButtonTBAction = nullptr;
+    syncButtonTBAction = nullptr;
 
     // auto-annotations highlighting ops
 
@@ -109,7 +109,7 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView *v)
     toggleAutoAnnotationsButton->setDefaultAction(toggleAutoAnnotationsMenu->menuAction());
     toggleAutoAnnotationsButton->setPopupMode(QToolButton::InstantPopup);
 
-    toggleAutoAnnotationsAction = NULL;
+    toggleAutoAnnotationsAction = nullptr;
 
     // visual mode ops
     toggleAllAction = new QAction("Toggle All sequence views", this);
@@ -128,7 +128,7 @@ ADVSyncViewManager::ADVSyncViewManager(AnnotatedDNAView *v)
     toggleDetAction->setObjectName("toggleDetailsView");
     connect(toggleDetAction, SIGNAL(triggered()), SLOT(sl_toggleVisualMode()));
 
-    toggleViewButtonAction = NULL;
+    toggleViewButtonAction = nullptr;
     toggleViewButtonMenu = new QMenu(tr("Toggle views"));
     toggleViewButtonMenu->setIcon(QIcon(":core/images/adv_widget_menu.png"));
 
@@ -163,7 +163,7 @@ ADVSyncViewManager::~ADVSyncViewManager() {
 }
 
 void ADVSyncViewManager::updateToolbar1(QToolBar *tb) {
-    if (lockButtonTBAction == NULL) {
+    if (lockButtonTBAction == nullptr) {
         lockButtonTBAction = tb->addWidget(lockButton);
         syncButtonTBAction = tb->addWidget(syncButton);
     } else {
@@ -173,14 +173,14 @@ void ADVSyncViewManager::updateToolbar1(QToolBar *tb) {
 }
 
 void ADVSyncViewManager::updateToolbar2(QToolBar *tb) {
-    if (toggleAutoAnnotationsAction == NULL) {
+    if (toggleAutoAnnotationsAction == nullptr) {
         updateAutoAnnotationActions();
         toggleAutoAnnotationsAction = tb->addWidget(toggleAutoAnnotationsButton);
     } else {
         tb->addAction(toggleAutoAnnotationsAction);
     }
 
-    if (toggleViewButtonAction == NULL) {
+    if (toggleViewButtonAction == nullptr) {
         toggleViewButtonAction = tb->addWidget(toggleViewButton);
     } else {
         tb->addAction(toggleViewButtonAction);
@@ -195,18 +195,18 @@ void ADVSyncViewManager::updateEnabledState() {
 
 void ADVSyncViewManager::sl_sequenceWidgetAdded(ADVSequenceWidget *w) {
     ADVSingleSequenceWidget *sw = qobject_cast<ADVSingleSequenceWidget *>(w);
-    if (sw == NULL) {
+    if (sw == nullptr) {
         return;
     }
     unlock();
-    if (toggleAutoAnnotationsAction != NULL) {
+    if (toggleAutoAnnotationsAction != nullptr) {
         updateAutoAnnotationActions();
     }
 }
 
 void ADVSyncViewManager::sl_sequenceWidgetRemoved(ADVSequenceWidget *w) {
     ADVSingleSequenceWidget *sw = qobject_cast<ADVSingleSequenceWidget *>(w);
-    if (sw == NULL) {
+    if (sw == nullptr) {
         return;
     }
     unlock();
@@ -226,7 +226,7 @@ QList<ADVSingleSequenceWidget *> ADVSyncViewManager::getViewsFromADV() const {
     QList<ADVSingleSequenceWidget *> res;
     foreach (ADVSequenceWidget *w, adv->getSequenceWidgets()) {
         ADVSingleSequenceWidget *sw = qobject_cast<ADVSingleSequenceWidget *>(w);
-        if (sw != NULL) {
+        if (sw != nullptr) {
             res.append(sw);
         }
     }
@@ -283,14 +283,14 @@ void ADVSyncViewManager::sl_lock() {
 
     if (buttonClicked) {
         QAction *checkedAction = lockActionGroup->checkedAction();
-        if (NULL == checkedAction) {
+        if (nullptr == checkedAction) {
             toggleCheckedAction(m);
         } else {
             checkedAction->toggle();
         }
         lockButton->toggle();
     } else {
-        lockButton->setChecked(lockActionGroup->checkedAction() != NULL);
+        lockButton->setChecked(lockActionGroup->checkedAction() != nullptr);
     }
 }
 
@@ -310,7 +310,7 @@ void ADVSyncViewManager::sl_sync() {
 
 void ADVSyncViewManager::sync(bool lock, SyncMode m) {
     ADVSingleSequenceWidget *focusedW = qobject_cast<ADVSingleSequenceWidget *>(adv->getActiveSequenceWidget());
-    if (focusedW == NULL) {
+    if (focusedW == nullptr) {
         return;
     }
 
@@ -325,15 +325,15 @@ void ADVSyncViewManager::sync(bool lock, SyncMode m) {
         int offset = 0;
         ADVSingleSequenceWidget *seqW = seqs[i];
         switch (m) {
-        case SyncMode_Start:
-            offset = seqW->getVisibleRange().startPos;
-            break;
-        case SyncMode_SeqSel:
-            offset = offsetBySeqSel(seqW);
-            break;
-        case SyncMode_AnnSel:
-            offset = offsetByAnnSel(seqW);
-            break;
+            case SyncMode_Start:
+                offset = seqW->getVisibleRange().startPos;
+                break;
+            case SyncMode_SeqSel:
+                offset = offsetBySeqSel(seqW);
+                break;
+            case SyncMode_AnnSel:
+                offset = offsetByAnnSel(seqW);
+                break;
         }
         offsets[i] = offset;
         if (seqW == focusedW) {
@@ -392,7 +392,7 @@ int ADVSyncViewManager::findSelectedAnnotationPos(ADVSingleSequenceWidget *w) co
 
 ADVSyncViewManager::SyncMode ADVSyncViewManager::detectSyncMode() const {
     ADVSingleSequenceWidget *focusedW = qobject_cast<ADVSingleSequenceWidget *>(adv->getActiveSequenceWidget());
-    assert(focusedW != NULL);
+    assert(focusedW != nullptr);
     QList<ADVSingleSequenceWidget *> seqs = getViewsFromADV();
 
     //if current sequence + any other sequence have annotation selection -> sync by annotation
@@ -472,7 +472,7 @@ void ADVSyncViewManager::sl_onSelectionChanged(LRegionsSelection *sel, const QVe
     selectionRecursion = true;
 
     ADVSingleSequenceWidget *focusedW = qobject_cast<ADVSingleSequenceWidget *>(adv->getActiveSequenceWidget());
-    if (focusedW == NULL) {
+    if (focusedW == nullptr) {
         return;
     }
     for (int i = 0; i < views.size(); ++i) {
@@ -507,14 +507,14 @@ void ADVSyncViewManager::sl_onSelectionChanged(LRegionsSelection *sel, const QVe
 
 void ADVSyncViewManager::toggleCheckedAction(SyncMode mode) {
     switch (mode) {
-    case SyncMode_AnnSel:
-        lockByAnnSelAction->toggle();
-        break;
-    case SyncMode_SeqSel:
-        lockBySeqSelAction->toggle();
-        break;
-    default:
-        lockByStartPosAction->toggle();
+        case SyncMode_AnnSel:
+            lockByAnnSelAction->toggle();
+            break;
+        case SyncMode_SeqSel:
+            lockBySeqSelAction->toggle();
+            break;
+        default:
+            lockByStartPosAction->toggle();
     }
 }
 
@@ -527,7 +527,7 @@ void ADVSyncViewManager::updateAutoAnnotationActions() {
         bool active = false;
         foreach (ADVSequenceWidgetAction *action, actions) {
             AutoAnnotationsADVAction *aaAction = qobject_cast<AutoAnnotationsADVAction *>(action);
-            if (aaAction != NULL) {
+            if (aaAction != nullptr) {
                 QList<QAction *> aaToggleActions = aaAction->getToggleActions();
                 foreach (QAction *toggleAction, aaToggleActions) {
                     if (toggleAction->isEnabled()) {
@@ -556,7 +556,7 @@ void ADVSyncViewManager::updateAutoAnnotationActions() {
 
 void ADVSyncViewManager::sl_toggleAutoAnnotationHighlighting() {
     QAction *menuAction = qobject_cast<QAction *>(sender());
-    if (menuAction == NULL) {
+    if (menuAction == nullptr) {
         return;
     }
     QVariant val = menuAction->property(HAVE_ENABLED_AUTOANNOTATIONS);

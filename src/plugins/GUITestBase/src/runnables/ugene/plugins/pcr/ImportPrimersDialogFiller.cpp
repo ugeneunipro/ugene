@@ -62,14 +62,14 @@ void ImportPrimersDialogFiller::commonScenario() {
 #define GT_METHOD_NAME "setImportTarget"
 void ImportPrimersDialogFiller::setImportTarget(HI::GUITestOpStatus &os, ImportSource importSource) {
     switch (importSource) {
-    case LocalFiles:
-        GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbSource", getDialog(os)), "Local file(s)");
-        break;
-    case SharedDb:
-        GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbSource", getDialog(os)), "Shared database");
-        break;
-    default:
-        os.setError("Unexpected import source");
+        case LocalFiles:
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbSource", getDialog(os)), "Local file(s)");
+            break;
+        case SharedDb:
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "cbSource", getDialog(os)), "Shared database");
+            break;
+        default:
+            os.setError("Unexpected import source");
     }
 }
 #undef GT_METHOD_NAME
@@ -112,7 +112,7 @@ void ImportPrimersDialogFiller::addObjects(HI::GUITestOpStatus &os, const QMap<Q
 QWidget *ImportPrimersDialogFiller::getDialog(HI::GUITestOpStatus &os) {
     Q_UNUSED(os);
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK_RESULT(NULL != dialog, "Active modal dialog is NULL", NULL);
+    GT_CHECK_RESULT(nullptr != dialog, "Active modal dialog is NULL", nullptr);
     return dialog;
 }
 #undef GT_METHOD_NAME

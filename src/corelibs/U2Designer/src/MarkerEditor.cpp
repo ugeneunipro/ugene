@@ -41,7 +41,7 @@ namespace Workflow {
  * MarkerEditor
  * ***********************************************************************/
 MarkerEditor::MarkerEditor()
-    : ActorConfigurationEditor(), markerModel(NULL) {
+    : ActorConfigurationEditor(), markerModel(nullptr) {
 }
 
 MarkerEditor::~MarkerEditor() {
@@ -52,8 +52,8 @@ QWidget *MarkerEditor::getWidget() {
 }
 
 QWidget *MarkerEditor::createGUI() {
-    if (NULL == markerModel) {
-        return NULL;
+    if (nullptr == markerModel) {
+        return nullptr;
     }
 
     return new MarkerEditorWidget(markerModel);
@@ -63,20 +63,20 @@ void MarkerEditor::setConfiguration(Actor *actor) {
     ActorConfigurationEditor::setConfiguration(actor);
     QMap<QString, Attribute *> attrs = cfg->getParameters();
 
-    MarkerAttribute *mAttr = NULL;
+    MarkerAttribute *mAttr = nullptr;
     foreach (QString key, attrs.keys()) {
         Attribute *attr = attrs.value(key);
         if (MARKER_GROUP == attr->getGroup()) {
-            if (NULL != mAttr) {
+            if (nullptr != mAttr) {
                 assert(0);
-                mAttr = NULL;
+                mAttr = nullptr;
                 break;
             }
             mAttr = dynamic_cast<MarkerAttribute *>(attr);
         }
     }
 
-    if (NULL == mAttr) {
+    if (nullptr == mAttr) {
         return;
     }
 
@@ -88,7 +88,7 @@ void MarkerEditor::setConfiguration(Actor *actor) {
 
 void MarkerEditor::sl_onMarkerEdited(const QString &newMarkerName, const QString &oldMarkerName) {
     Marker *marker = markerModel->getMarker(newMarkerName);
-    SAFE_POINT(NULL != marker, "NULL marker", );
+    SAFE_POINT(nullptr != marker, "NULL marker", );
 
     {    // TODO: make common way to get marked object output port
         assert(1 == cfg->getOutputPorts().size());
@@ -107,7 +107,7 @@ void MarkerEditor::sl_onMarkerEdited(const QString &newMarkerName, const QString
 
 void MarkerEditor::sl_onMarkerAdded(const QString &markerName) {
     Marker *marker = markerModel->getMarker(markerName);
-    SAFE_POINT(NULL != marker, "NULL marker", );
+    SAFE_POINT(nullptr != marker, "NULL marker", );
 
     {    // TODO: make common way to get marked object output port
         assert(1 == cfg->getOutputPorts().size());
@@ -146,7 +146,7 @@ MarkerGroupListCfgModel::MarkerGroupListCfgModel(QObject *parent, QList<Marker *
 QVariant MarkerGroupListCfgModel::data(const QModelIndex &index, int role) const {
     if (Qt::DisplayRole == role || Qt::ToolTipRole == role) {
         Marker *m = *(markers.begin() + index.row());
-        if (NULL == m) {
+        if (nullptr == m) {
             return QVariant();
         }
 
@@ -176,12 +176,12 @@ Qt::ItemFlags MarkerGroupListCfgModel::flags(const QModelIndex &) const {
 QVariant MarkerGroupListCfgModel::headerData(int section, Qt::Orientation orientation, int role) const {
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         switch (section) {
-        case 0:
-            return tr("Marker Group");
-        case 1:
-            return tr("Marker Value");
-        default:
-            assert(false);
+            case 0:
+                return tr("Marker Group");
+            case 1:
+                return tr("Marker Value");
+            default:
+                assert(false);
         }
     }
     // unreachable code
@@ -211,7 +211,7 @@ bool MarkerGroupListCfgModel::removeRows(int row, int count, const QModelIndex &
 }
 
 Marker *MarkerGroupListCfgModel::getMarker(int row) const {
-    SAFE_POINT(row < markers.size(), "Markers: out of range", NULL);
+    SAFE_POINT(row < markers.size(), "Markers: out of range", nullptr);
     return markers.at(row);
 }
 
@@ -221,7 +221,7 @@ Marker *MarkerGroupListCfgModel::getMarker(const QString &markerName) const {
             return marker;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 QList<Marker *> &MarkerGroupListCfgModel::getMarkers() {
@@ -238,7 +238,7 @@ void MarkerGroupListCfgModel::addMarker(Marker *newMarker) {
 
 void MarkerGroupListCfgModel::replaceMarker(int row, Marker *newMarker) {
     Marker *oldMarker = getMarker(row);
-    CHECK(NULL != oldMarker, );
+    CHECK(nullptr != oldMarker, );
 
     beginRemoveRows(QModelIndex(), row, row);
     markers.removeAt(row);

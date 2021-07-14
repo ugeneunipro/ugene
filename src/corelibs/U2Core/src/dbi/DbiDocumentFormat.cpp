@@ -67,17 +67,17 @@ Document *DbiDocumentFormat::loadDocument(IOAdapter *io, const U2DbiRef &dstDbiR
     QString url = io->getURL().getURLString();
     U2DbiRef srcDbiRef(id, url);
     DbiConnection handle(srcDbiRef, true, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     U2ObjectDbi *odbi = handle.dbi->getObjectDbi();
     QList<U2DataId> objectIds = odbi->getObjects(U2ObjectDbi::ROOT_FOLDER, 0, U2DbiOptions::U2_DBI_NO_LIMIT, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     QList<GObject *> objects = prepareObjects(handle, objectIds);
     if (fs.value(DEEP_COPY_OBJECT, false).toBool()) {
         QList<GObject *> clonedObjects = cloneObjects(objects, dstDbiRef, fs, os);
         qDeleteAll(objects);
-        CHECK_OP_EXT(os, qDeleteAll(clonedObjects), NULL);
+        CHECK_OP_EXT(os, qDeleteAll(clonedObjects), nullptr);
         objects = clonedObjects;
     } else {
         renameObjectsIfNamesEqual(objects);
@@ -117,17 +117,17 @@ QList<GObject *> DbiDocumentFormat::prepareObjects(DbiConnection &handle, const 
         objects << gobject;
     }
 
-    if (handle.dbi->getObjectRelationsDbi() != NULL) {
+    if (handle.dbi->getObjectRelationsDbi() != nullptr) {
         const QList<U2DataId> matchKeys = match.keys();
         for (const U2DataId &dataId : qAsConst(matchKeys)) {
             U2OpStatus2Log status;
-            GObject *srcObj = match.value(dataId, NULL);
-            SAFE_POINT(srcObj != NULL, "Source object is NULL", QList<GObject *>());
+            GObject *srcObj = match.value(dataId, nullptr);
+            SAFE_POINT(srcObj != nullptr, "Source object is NULL", QList<GObject *>());
             QList<GObjectRelation> gRelations;
             QList<U2ObjectRelation> relations = handle.dbi->getObjectRelationsDbi()->getObjectRelations(dataId, status);
             foreach (const U2ObjectRelation &r, relations) {
                 GObject *relatedObject = match[r.referencedObject];
-                if (relatedObject == NULL) {
+                if (relatedObject == nullptr) {
                     continue;
                 }
                 // SANGER_TODO: dbiId - url, should not be left like this
@@ -206,7 +206,7 @@ void DbiDocumentFormat::storeDocument(Document *d, IOAdapter *ioAdapter, U2OpSta
 
 FormatCheckResult DbiDocumentFormat::checkRawData(const QByteArray &rawData, const GUrl &url) const {
     U2DbiFactory *f = AppContext::getDbiRegistry()->getDbiFactoryById(id);
-    if (f != NULL) {
+    if (f != nullptr) {
         QHash<QString, QString> props;
         props[U2DbiOptions::U2_DBI_OPTION_URL] = url.getURLString();
         U2OpStatusImpl os;

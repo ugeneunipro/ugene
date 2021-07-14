@@ -49,7 +49,7 @@ class GenomeAlignerBuildWorker : public BaseWorker {
     Q_OBJECT
 public:
     GenomeAlignerBuildWorker(Actor *a)
-        : BaseWorker(a), output(NULL), done(false) {
+        : BaseWorker(a), output(nullptr), done(false) {
     }
     virtual void init();
     virtual bool isReady() const;
@@ -98,7 +98,7 @@ class GenomeAlignerIndexReaderWorker : public BaseWorker {
     Q_OBJECT
 public:
     GenomeAlignerIndexReaderWorker(Actor *a)
-        : BaseWorker(a), output(NULL), done(false) {
+        : BaseWorker(a), output(nullptr), done(false) {
     }
     virtual void init();
     virtual bool isReady() const;

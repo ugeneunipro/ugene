@@ -80,7 +80,7 @@ QString ExportUtils::genUniqueName(const QSet<QString> &names, QString prefix) {
 }
 
 void ExportUtils::launchExportMca2MsaTask(MultipleChromatogramAlignmentObject *mcaObject) {
-    SAFE_POINT(NULL != mcaObject, "Can't cast the object to MultipleChromatogramAlignmentObject", );
+    SAFE_POINT(nullptr != mcaObject, "Can't cast the object to MultipleChromatogramAlignmentObject", );
 
     Document *document = mcaObject->getDocument();
     QString defaultUrl = GUrlUtils::getNewLocalUrlByFormat(document->getURL(), mcaObject->getGObjectName(), BaseDocumentFormats::UGENEDB, "");

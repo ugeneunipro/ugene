@@ -62,7 +62,7 @@ OpenTreeViewerTask::OpenTreeViewerTask(UnloadedObject *_obj, QObject *_parent)
 }
 
 OpenTreeViewerTask::OpenTreeViewerTask(Document *doc, QObject *_parent)
-    : ObjectViewTask(TreeViewerFactory::ID), phyObject(NULL), parent(_parent), createMDIWindow(false) {
+    : ObjectViewTask(TreeViewerFactory::ID), phyObject(nullptr), parent(_parent), createMDIWindow(false) {
     assert(!doc->isLoaded());
     documentsToLoad.append(doc);
 }
@@ -79,12 +79,12 @@ void OpenTreeViewerTask::open() {
         QList<GObject *> objects;
         if (unloadedReference.isValid()) {
             GObject *obj = doc->findGObjectByName(unloadedReference.objName);
-            if (obj != NULL && obj->getGObjectType() == GObjectTypes::PHYLOGENETIC_TREE) {
+            if (obj != nullptr && obj->getGObjectType() == GObjectTypes::PHYLOGENETIC_TREE) {
                 phyObject = qobject_cast<PhyTreeObject *>(obj);
             }
         } else {
             QList<GObject *> objects = doc->findGObjectByType(GObjectTypes::PHYLOGENETIC_TREE, UOF_LoadedAndUnloaded);
-            phyObject = objects.isEmpty() ? NULL : qobject_cast<PhyTreeObject *>(objects.first());
+            phyObject = objects.isEmpty() ? nullptr : qobject_cast<PhyTreeObject *>(objects.first());
         }
         if (phyObject.isNull()) {
             stateInfo.setError(tr("Phylogenetic tree object not found"));
@@ -106,7 +106,7 @@ void OpenTreeViewerTask::createTreeViewer() {
 void OpenTreeViewerTask::updateTitle(TreeViewer *tv) {
     const QString &oldViewName = tv->getName();
     GObjectViewWindow *w = GObjectViewUtils::findViewByName(oldViewName);
-    if (w != NULL) {
+    if (w != nullptr) {
         PhyTreeObject *phyObj = tv->getPhyObject();
         QString newViewName = GObjectViewUtils::genUniqueViewName(phyObj->getDocument(), phyObj);
         tv->setName(newViewName);
@@ -122,7 +122,7 @@ OpenSavedTreeViewerTask::OpenSavedTreeViewerTask(const QString &viewName, const 
     TreeViewerState state(stateData);
     GObjectReference ref = state.getPhyObject();
     Document *doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         doc = createDocumentAndAddToProject(ref.docUrl, AppContext::getProject(), stateInfo);
         CHECK_OP_EXT(stateInfo, stateIsIllegal = true, );
     }
@@ -138,24 +138,24 @@ void OpenSavedTreeViewerTask::open() {
     TreeViewerState state(stateData);
     GObjectReference ref = state.getPhyObject();
     Document *doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateIsIllegal = true;
         stateInfo.setError(L10N::errorDocumentNotFound(ref.docUrl));
         return;
     }
-    GObject *obj = NULL;
+    GObject *obj = nullptr;
     if (doc->isDatabaseConnection() && ref.entityRef.isValid()) {
         obj = doc->getObjectById(ref.entityRef.entityId);
     } else {
         obj = doc->findGObjectByName(ref.objName);
     }
-    if (obj == NULL || obj->getGObjectType() != GObjectTypes::PHYLOGENETIC_TREE) {
+    if (obj == nullptr || obj->getGObjectType() != GObjectTypes::PHYLOGENETIC_TREE) {
         stateIsIllegal = true;
         stateInfo.setError(tr("Phylogeny tree object not found: %1").arg(ref.objName));
         return;
     }
     PhyTreeObject *phyObject = qobject_cast<PhyTreeObject *>(obj);
-    SAFE_POINT(phyObject != NULL, "Invalid tree object detected", );
+    SAFE_POINT(phyObject != nullptr, "Invalid tree object detected", );
 
     Task *createTask = new CreateTreeViewerTask(viewName, phyObject, stateData);
     TaskScheduler *scheduler = AppContext::getTaskScheduler();
@@ -191,7 +191,7 @@ void UpdateTreeViewerTask::update() {
     }
 
     TreeViewer *phyView = qobject_cast<TreeViewer *>(view.data());
-    assert(phyView != NULL);
+    assert(phyView != nullptr);
 
     OpenSavedTreeViewerTask::updateRanges(stateData, phyView);
 }
@@ -203,11 +203,11 @@ CreateMSAEditorTreeViewerTask::CreateMSAEditorTreeViewerTask(const QString &name
     : Task("Open tree viewer", TaskFlag_NoRun),
       viewName(name),
       phyObj(obj),
-      subTask(NULL),
+      subTask(nullptr),
       stateData(sData),
-      view(NULL),
-      tempTree(NULL == phyObj ? PhyTree() : phyObj->getTree()) {
-    SAFE_POINT(phyObj != NULL, "Invalid tree object detected", );
+      view(nullptr),
+      tempTree(nullptr == phyObj ? PhyTree() : phyObj->getTree()) {
+    SAFE_POINT(phyObj != nullptr, "Invalid tree object detected", );
     connect(obj.data(), SIGNAL(destroyed(QObject *)), SLOT(cancel()));
 }
 
@@ -238,10 +238,10 @@ CreateTreeViewerTask::CreateTreeViewerTask(const QString &name, const QPointer<P
     : Task(tr("Open tree viewer"), TaskFlag_NoRun),
       viewName(name),
       phyObj(obj),
-      subTask(NULL),
+      subTask(nullptr),
       stateData(sData),
-      tempTree(NULL == phyObj ? PhyTree() : phyObj->getTree()) {
-    SAFE_POINT_EXT(phyObj != NULL, setError(tr("Invalid tree object detected")), );
+      tempTree(nullptr == phyObj ? PhyTree() : phyObj->getTree()) {
+    SAFE_POINT_EXT(phyObj != nullptr, setError(tr("Invalid tree object detected")), );
     connect(obj.data(), SIGNAL(destroyed(QObject *)), SLOT(cancel()));
 }
 

@@ -30,7 +30,7 @@ namespace U2 {
 class U2PRIVATE_EXPORT DocumentFormatRegistryImpl : public DocumentFormatRegistry {
     Q_OBJECT
 public:
-    DocumentFormatRegistryImpl(QObject *p = NULL)
+    DocumentFormatRegistryImpl(QObject *p = nullptr)
         : DocumentFormatRegistry(p) {
         init();
     }

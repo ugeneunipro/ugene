@@ -32,16 +32,16 @@ inline char index2char(int index) {
 
 inline int char2index(char c) {
     switch (toupper(c)) {
-    case 'A':
-        return 0;
-    case 'C':
-        return 1;
-    case 'G':
-        return 2;
-    case 'T':
-        return 3;
-    default:
-        return -1;
+        case 'A':
+            return 0;
+        case 'C':
+            return 1;
+        case 'G':
+            return 2;
+        case 'T':
+            return 3;
+        default:
+            return -1;
     }
 }
 }    // namespace

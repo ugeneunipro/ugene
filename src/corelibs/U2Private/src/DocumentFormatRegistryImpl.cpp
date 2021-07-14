@@ -70,7 +70,7 @@ DocumentFormatRegistryImpl::~DocumentFormatRegistryImpl() {
 }
 
 bool DocumentFormatRegistryImpl::registerFormat(DocumentFormat *f) {
-    SAFE_POINT(getFormatById(f->getFormatId()) == NULL, "Existing format", false);
+    SAFE_POINT(getFormatById(f->getFormatId()) == nullptr, "Existing format", false);
     formats.push_back(f);
     emit si_documentFormatRegistered(f);
     if (f->getFormatDescription().isEmpty()) {
@@ -93,7 +93,7 @@ DocumentFormat *DocumentFormatRegistryImpl::selectFormatByFileExtension(const QS
             return df;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 QList<DocumentFormatId> DocumentFormatRegistryImpl::selectFormats(const DocumentFormatConstraints &c) const {
@@ -121,7 +121,7 @@ DocumentFormat *DocumentFormatRegistryImpl::getFormatById(DocumentFormatId id) c
             return f;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void DocumentFormatRegistryImpl::init() {

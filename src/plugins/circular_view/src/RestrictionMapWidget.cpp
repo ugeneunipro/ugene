@@ -87,7 +87,7 @@ void EnzymeFolderItem::removeEnzymeItem(Annotation *enzAnn) {
 
 RestrctionMapWidget::RestrctionMapWidget(ADVSequenceObjectContext *context, QWidget *p)
     : QWidget(p), ctx(context) {
-    assert(context != NULL);
+    assert(context != nullptr);
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->setContentsMargins(0, 0, 0, 0);
 
@@ -169,7 +169,7 @@ EnzymeFolderItem *RestrctionMapWidget::findEnzymeFolderByName(const QString &enz
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void RestrctionMapWidget::sl_itemSelectionChanged() {

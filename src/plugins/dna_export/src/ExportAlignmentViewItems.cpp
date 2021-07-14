@@ -57,7 +57,7 @@ ExportAlignmentViewItemsController::ExportAlignmentViewItemsController(QObject *
 
 void ExportAlignmentViewItemsController::initViewContext(GObjectView *v) {
     MSAEditor *msaed = qobject_cast<MSAEditor *>(v);
-    SAFE_POINT(msaed != NULL, "Invalid GObjectView", );
+    SAFE_POINT(msaed != nullptr, "Invalid GObjectView", );
     MSAExportContext *mc = new MSAExportContext(msaed);
     addViewResource(msaed, mc);
 }
@@ -67,7 +67,7 @@ void ExportAlignmentViewItemsController::buildStaticOrContextMenu(GObjectView *v
     assert(resources.size() == 1);
     QObject *r = resources.first();
     MSAExportContext *mc = qobject_cast<MSAExportContext *>(r);
-    assert(mc != NULL);
+    assert(mc != nullptr);
     mc->buildMenu(m);
 }
 

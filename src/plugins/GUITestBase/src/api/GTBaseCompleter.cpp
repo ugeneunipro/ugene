@@ -36,7 +36,7 @@ void GTBaseCompleter::click(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor
     QTreeWidget *tree = getCompleter(os, widgetCompleterFor);
     GT_CHECK(tree != nullptr, "tree widget is NULL");
     QTreeWidgetItem *item = GTTreeWidget::findItem(os, tree, seqName);
-    GT_CHECK(item != NULL, "item not found");
+    GT_CHECK(item != nullptr, "item not found");
     tree->scrollToItem(item);
     GTGlobals::sleep(100);
     QRect itemRect = tree->visualItemRect(item);
@@ -49,7 +49,7 @@ void GTBaseCompleter::click(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor
 #define GT_METHOD_NAME "getNames"
 QStringList GTBaseCompleter::getNames(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor) {
     QTreeWidget *tree = getCompleter(os, widgetCompleterFor);
-    GT_CHECK_RESULT(tree != NULL, "tree widget is NULL", QStringList());
+    GT_CHECK_RESULT(tree != nullptr, "tree widget is NULL", QStringList());
     QStringList result;
     QList<QTreeWidgetItem *> items = GTTreeWidget::getItems(tree->invisibleRootItem());
     foreach (QTreeWidgetItem *item, items) {
@@ -62,7 +62,7 @@ QStringList GTBaseCompleter::getNames(HI::GUITestOpStatus &os, QWidget *widgetCo
 #define GT_METHOD_NAME "isEmpty"
 bool GTBaseCompleter::isEmpty(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor) {
     QTreeWidget *tree = getCompleter(os, widgetCompleterFor);
-    GT_CHECK_RESULT(tree != NULL, "tree widget is NULL", true);
+    GT_CHECK_RESULT(tree != nullptr, "tree widget is NULL", true);
     QStringList items = getNames(os, widgetCompleterFor);
     bool result = (items.count() == 1) && (items.at(0) == "");
     return result;
@@ -71,9 +71,9 @@ bool GTBaseCompleter::isEmpty(HI::GUITestOpStatus &os, QWidget *widgetCompleterF
 
 #define GT_METHOD_NAME "getCompleter"
 QTreeWidget *GTBaseCompleter::getCompleter(HI::GUITestOpStatus &os, QWidget *widgetCompleterFor) {
-    GT_CHECK_RESULT(widgetCompleterFor != NULL, "Widget associated with completer not found", NULL);
+    GT_CHECK_RESULT(widgetCompleterFor != nullptr, "Widget associated with completer not found", nullptr);
     QTreeWidget *completer = widgetCompleterFor->findChild<QTreeWidget *>();
-    GT_CHECK_RESULT(completer != NULL, "auto completer widget not found", NULL);
+    GT_CHECK_RESULT(completer != nullptr, "auto completer widget not found", nullptr);
     return completer;
 }
 #undef GT_METHOD_NAME

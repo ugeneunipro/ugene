@@ -125,7 +125,7 @@ void MaEditorStatusBar::updateLineLabel() {
     QString currentLineText = NONE_MARK;
     MaEditorSelection selection = seqArea->getSelection();
     if (!selection.isEmpty()) {
-        qint64 firstSelectedViewRowIndex = selection.y();
+        qint64 firstSelectedViewRowIndex = selection.toRect().y();
         currentLineText = QString::number(firstSelectedViewRowIndex + 1);
     }
     qint64 viewRowCount = seqArea->getViewRowCount();
@@ -139,20 +139,20 @@ void MaEditorStatusBar::updatePositionLabel() {
 }
 
 void MaEditorStatusBar::updateColumnLabel() {
-    MaEditorSelection selection = seqArea->getSelection();
-    const QPoint &pos = selection.topLeft();
-
+    const MaEditorSelection &selection = seqArea->getSelection();
+    qint64 x = selection.toRect().x();
     qint64 alignmentLen = aliObj->getLength();
-    columnLabel->update(selection.isEmpty() ? NONE_MARK : QString::number(pos.x() + 1), QString::number(alignmentLen));
+    columnLabel->update(selection.isEmpty() ? NONE_MARK : QString::number(x + 1), QString::number(alignmentLen));
 }
 
 void MaEditorStatusBar::updateSelectionLabel() {
-    MaEditorSelection selection = seqArea->getSelection();
+    const MaEditorSelection &selection = seqArea->getSelection();
     QString selSize;
     if (selection.isEmpty()) {
         selSize = QObject::tr("none");
     } else {
-        selSize = QString::number(selection.width()) + "x" + QString::number(selection.height());
+        QRect selectionRect = selection.toRect();
+        selSize = QString::number(selectionRect.width()) + "x" + QString::number(selectionRect.height());
     }
     QFontMetrics fm(lineLabel->font(), this);
     int maxSelLength = fm.width(selectionPattern.arg(QString::number(aliObj->getLength()) + "x" + QString::number(aliObj->getNumRows())));

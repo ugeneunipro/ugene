@@ -122,7 +122,7 @@ QString CMDLineRegistryUtils::getCmdlineUgenePath() {
 
 void CMDLineRegistryUtils::setCMDLineParams(QList<StrStrPair> &to) {
     CMDLineRegistry *cmdlineRegistry = AppContext::getCMDLineRegistry();
-    if (cmdlineRegistry != NULL) {
+    if (cmdlineRegistry != nullptr) {
         to = cmdlineRegistry->getParameters();
     }
 }

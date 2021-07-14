@@ -1505,7 +1505,7 @@ Double-click to collapse the branch</source>
     <message>
         <location filename="../src/ov_msa/highlighting/MSAHighlightingTabFactory.cpp" line="54"/>
         <source>Highlighting</source>
-        <translation>Выделение</translation>
+        <translation>Подсветка</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/pairwise_alignment/PairAlignFactory.cpp" line="52"/>
@@ -5597,7 +5597,7 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="338"/>
         <source>Colors</source>
-        <translation>Раскраска</translation>
+        <translation>Цветовая схема</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="347"/>
@@ -5607,7 +5607,7 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="365"/>
         <source>Highlighting</source>
-        <translation>Выделение</translation>
+        <translation>Подсветка</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditor.cpp" line="379"/>
@@ -5746,7 +5746,7 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="345"/>
         <source>The alignment has been modified, so that its alphabet has been switched from &quot;%1&quot; to &quot;%2&quot;. Use &quot;Undo&quot;, if you&apos;d like to restore the original alignment.</source>
-        <translation>Выравнивание было изменено. Алфавит переключен с &quot;%1&quot; на &quot;%2&quot;. Используйте опцию &quot;Назад&quot; если хотите вернуться к исходному выравниванию.</translation>
+        <translation>Выравнивание было изменено. Алфавит переключен с &quot;%1&quot; на &quot;%2&quot;. Используйте опцию &quot;Отменить&quot; если хотите вернуться к исходному выравниванию.</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MSAEditorSequenceArea.cpp" line="652"/>
@@ -5919,12 +5919,12 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/highlighting/MSAHighlightingTab.cpp" line="176"/>
         <source>Color</source>
-        <translation>Цвет</translation>
+        <translation>Цветовая схема</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/highlighting/MSAHighlightingTab.cpp" line="179"/>
         <source>Highlighting</source>
-        <translation>Выделение</translation>
+        <translation>Подсветка</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/highlighting/MSAHighlightingTab.cpp" line="275"/>
@@ -6553,7 +6553,7 @@ Directory Path: %1</source>
     <message>
         <location filename="../src/ov_msa/overview/MaOverviewContextMenu.cpp" line="164"/>
         <source>Highlighting</source>
-        <translation>Выделение</translation>
+        <translation>Подсветка</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/overview/MaOverviewContextMenu.cpp" line="191"/>

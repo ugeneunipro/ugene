@@ -47,7 +47,7 @@ LabeledPropertyWidget::LabeledPropertyWidget(const QString &labelText, PropertyW
     label = new QLabel(labelText, this);
     label->setObjectName(labelText + " label");
     QWidget *mainWidget = widget->findChild<QWidget *>("mainWidget");
-    if (mainWidget != NULL) {
+    if (mainWidget != nullptr) {
         mainWidget->setObjectName(labelText + " widget");
     }
     layout->addWidget(label);
@@ -60,7 +60,7 @@ LabeledPropertyWidget::LabeledPropertyWidget(const QString &labelText, PropertyW
 }
 
 void LabeledPropertyWidget::setLabelWidth(int width) {
-    SAFE_POINT(NULL != label, "NULL label", );
+    SAFE_POINT(nullptr != label, "NULL label", );
     label->setFixedWidth(width);
 }
 

@@ -38,7 +38,7 @@ namespace U2 {
 class ComboBoxSignalHandler : public QObject {
     Q_OBJECT
 public:
-    ComboBoxSignalHandler(QWidget *parent = NULL)
+    ComboBoxSignalHandler(QWidget *parent = nullptr)
         : QObject(parent) {
         comboBox = new QComboBox(parent);
         comboBox->setItemDelegate(new GroupedComboBoxDelegate(comboBox));
@@ -61,7 +61,7 @@ protected:
 template<class Factory, class Registry>
 class MsaSchemeComboBoxController : public ComboBoxSignalHandler {
 public:
-    MsaSchemeComboBoxController(MSAEditor *msa, Registry *registry, QWidget *parent = NULL);
+    MsaSchemeComboBoxController(MSAEditor *msa, Registry *registry, QWidget *parent = nullptr);
     void init();
     void setCurrentItemById(const QString &id);
 
@@ -81,7 +81,7 @@ MsaSchemeComboBoxController<Factory, Registry>::MsaSchemeComboBoxController(MSAE
 
 template<class Factory, class Registry>
 void MsaSchemeComboBoxController<Factory, Registry>::init() {
-    CHECK(registry != NULL, );
+    CHECK(registry != nullptr, );
 
     bool isAlphabetRaw = msa->getMaObject()->getAlphabet()->getType() == DNAAlphabet_RAW;
 
@@ -131,8 +131,8 @@ void MsaSchemeComboBoxController<Factory, Registry>::createAndFillGroup(QList<Fa
     CHECK(!rawSchemesFactories.isEmpty(), );
     GroupedComboBoxDelegate *schemeDelegate = qobject_cast<GroupedComboBoxDelegate *>(comboBox->itemDelegate());
     QStandardItemModel *schemeModel = qobject_cast<QStandardItemModel *>(comboBox->model());
-    CHECK(schemeDelegate != NULL, );
-    CHECK(schemeModel != NULL, );
+    CHECK(schemeDelegate != nullptr, );
+    CHECK(schemeModel != nullptr, );
     schemeDelegate->addParentItem(schemeModel, groupName);
     foreach (Factory *factory, rawSchemesFactories) {
         schemeDelegate->addChildItem(schemeModel, factory->getName(), factory->getId());

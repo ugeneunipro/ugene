@@ -31,7 +31,7 @@ namespace U2 {
 
 MysqlBlobInputStream::MysqlBlobInputStream(MysqlDbRef *db, const QByteArray &tableId, const QByteArray &columnId, const U2DataId &rowId, U2OpStatus &os)
     : size(0), offset(0) {
-    CHECK_EXT(NULL != db, os.setError("Invalid database handler detected!"), );
+    CHECK_EXT(nullptr != db, os.setError("Invalid database handler detected!"), );
 
     U2SqlQuery q(QString("SELECT %1 FROM %2 WHERE %3 = :%3").arg(QString(columnId), QString(tableId), QString(UdrSchema::RECORD_ID_FIELD_NAME)), db, os);
 
@@ -50,7 +50,7 @@ void MysqlBlobInputStream::close() {
 }
 
 int MysqlBlobInputStream::read(char *buffer, int length, U2OpStatus &os) {
-    SAFE_POINT_EXT(NULL != buffer, os.setError("Invalid data buffer detected!"), -1);
+    SAFE_POINT_EXT(nullptr != buffer, os.setError("Invalid data buffer detected!"), -1);
 
     int targetLength = (offset + length < size) ? length : (size - offset);
     if (0 == targetLength) {

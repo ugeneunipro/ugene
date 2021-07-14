@@ -374,7 +374,7 @@ public:
     virtual void cleanup();
 
     virtual bool hasSubtasksWithErrors() const {
-        return getSubtaskWithErrors() != NULL;
+        return getSubtaskWithErrors() != nullptr;
     }
 
     virtual bool propagateSubtaskError();

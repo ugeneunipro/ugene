@@ -56,7 +56,7 @@ public:
 */
 class StringTypeValueFactory : public DataTypeValueFactory {
 public:
-    virtual QVariant getValueFromString(const QString &str, bool *ok = NULL) const;
+    virtual QVariant getValueFromString(const QString &str, bool *ok = nullptr) const;
     virtual QString getId() const {
         return BaseTypes::STRING_TYPE()->getId();
     }
@@ -68,7 +68,7 @@ public:
 */
 class StringListTypeValueFactory : public DataTypeValueFactory {
 public:
-    virtual QVariant getValueFromString(const QString &str, bool *ok = NULL) const;
+    virtual QVariant getValueFromString(const QString &str, bool *ok = nullptr) const;
     virtual QString getId() const {
         return BaseTypes::STRING_LIST_TYPE()->getId();
     }
@@ -80,7 +80,7 @@ public:
 */
 class MapTypeValueFactory : public DataTypeValueFactory {
 public:
-    virtual QVariant getValueFromString(const QString &str, bool *ok = NULL) const;
+    virtual QVariant getValueFromString(const QString &str, bool *ok = nullptr) const;
     virtual QString getId() const {
         return BaseTypes::MAP_TYPE()->getId();
     }
@@ -100,7 +100,7 @@ public:
     static const QString NIL_STR;
 
 public:
-    virtual QVariant getValueFromString(const QString &str, bool *ok = NULL) const;
+    virtual QVariant getValueFromString(const QString &str, bool *ok = nullptr) const;
     virtual QString getId() const {
         return BaseTypes::BOOL_TYPE()->getId();
     }
@@ -112,7 +112,7 @@ public:
 */
 class NumTypeValueFactory : public DataTypeValueFactory {
 public:
-    virtual QVariant getValueFromString(const QString &str, bool *ok = NULL) const;
+    virtual QVariant getValueFromString(const QString &str, bool *ok = nullptr) const;
     virtual QString getId() const {
         return BaseTypes::NUM_TYPE()->getId();
     }
@@ -124,7 +124,7 @@ public:
 */
 class UrlTypeValueFactory : public DataTypeValueFactory {
 public:
-    virtual QVariant getValueFromString(const QString &str, bool *ok = NULL) const;
+    virtual QVariant getValueFromString(const QString &str, bool *ok = nullptr) const;
     virtual QString getId() const;
 };    // UrlTypeValueFactory
 

@@ -19,6 +19,8 @@
  * MA 02110-1301, USA.
  */
 
+#include "SiteconAlgorithmTests.h"
+
 #include <QDomElement>
 #include <QFileInfo>
 
@@ -32,7 +34,6 @@
 #include <U2Core/MultipleSequenceAlignmentObject.h>
 #include <U2Core/U2SafePoints.h>
 
-#include "SiteconAlgorithmTests.h"
 #include "DIPropertiesSitecon.h"
 #include "SiteconIO.h"
 
@@ -45,7 +46,7 @@ namespace U2 {
 #define DOC1_ATTR "model1"
 #define DOC2_ATTR "model2"
 #define SEQNAME_ATTR "sequence"
-#define EXPECTED_RESULTS_ATTR  "expected_results"
+#define EXPECTED_RESULTS_ATTR "expected_results"
 #define DINUCLEOTIDE_POSITIONS "di_positions"
 #define PROPERTIES_INDEXES "props_indexes"
 #define OFFSET_ATTR "offset"
@@ -53,7 +54,7 @@ namespace U2 {
 #define STRAND_ATTR "strand"
 #define TRESH_ATTR "treshhold"
 
-void GTest_CalculateACGTContent::init(XMLTestFormat *tf, const QDomElement& el) {
+void GTest_CalculateACGTContent::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
     docName = el.attribute(DOC_ATTR);
@@ -63,47 +64,47 @@ void GTest_CalculateACGTContent::init(XMLTestFormat *tf, const QDomElement& el) 
     }
 
     QString expected = el.attribute(EXPECTED_RESULTS_ATTR);
-    QStringList expectedList = expected.split(QRegExp("\\,")); //may be QRegExp("\\,")
+    QStringList expectedList = expected.split(QRegExp("\\,"));    //may be QRegExp("\\,")
     if (expectedList.size() != 4) {
-        stateInfo.setError(  QString("here must be 4 items in %1").arg(EXPECTED_RESULTS_ATTR) );
+        stateInfo.setError(QString("here must be 4 items in %1").arg(EXPECTED_RESULTS_ATTR));
         return;
     }
     int i = 0, sum = 0;
-    foreach(QString str, expectedList) {
+    foreach (QString str, expectedList) {
         bool isOk;
         int m = str.toInt(&isOk);
-        if(!isOk) {
-            stateInfo.setError(  QString("Wrong conversion to the integer for one of the %1").arg(EXPECTED_RESULTS_ATTR) );
+        if (!isOk) {
+            stateInfo.setError(QString("Wrong conversion to the integer for one of the %1").arg(EXPECTED_RESULTS_ATTR));
             return;
         }
         expectedACGT[i++] = m;
         sum += m;
     }
-    if(sum < 100 || sum > 102) {
-        stateInfo.setError(  QString("Wrong %1 values").arg(EXPECTED_RESULTS_ATTR) );
+    if (sum < 100 || sum > 102) {
+        stateInfo.setError(QString("Wrong %1 values").arg(EXPECTED_RESULTS_ATTR));
         return;
     }
 }
 
-void GTest_CalculateACGTContent::prepare(){
-    Document* doc = getContext<Document>(this, docName);
-    if (doc == NULL) {
-        stateInfo.setError(  QString("context not found %1").arg(docName) );
+void GTest_CalculateACGTContent::prepare() {
+    Document *doc = getContext<Document>(this, docName);
+    if (doc == nullptr) {
+        stateInfo.setError(QString("context not found %1").arg(docName));
         return;
     }
-    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
+        stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
     GObject *obj = list.first();
-    if(obj==NULL){
-        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
+    if (obj == nullptr) {
+        stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
-    if(mao==NULL){
-        stateInfo.setError(  QString("error can't cast to MultipleSequenceAlignmentObject from GObject") );
+    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
+    if (mao == nullptr) {
+        stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
     }
     ma = mao->getMsaCopy();
@@ -113,17 +114,17 @@ void GTest_CalculateACGTContent::run() {
     SiteconAlgorithm::calculateACGTContent(ma, s);
 }
 
-Task::ReportResult GTest_CalculateACGTContent::report(){
-    for(int i = 0; i < 4; i++) {
+Task::ReportResult GTest_CalculateACGTContent::report() {
+    for (int i = 0; i < 4; i++) {
         if (expectedACGT[i] != s.acgtContent[i]) {
-            stateInfo.setError(  QString("Actual results not equal with expected") );
+            stateInfo.setError(QString("Actual results not equal with expected"));
             return ReportResult_Finished;
         }
     }
     return ReportResult_Finished;
 }
 
-void GTest_CalculateDispersionAndAverage::init(XMLTestFormat *tf, const QDomElement& el) {
+void GTest_CalculateDispersionAndAverage::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
     QStringList propsList = el.attribute(PROPERTIES_INDEXES).split(QRegExp("\\,")),
@@ -131,42 +132,42 @@ void GTest_CalculateDispersionAndAverage::init(XMLTestFormat *tf, const QDomElem
                 expectedStrList = el.attribute(EXPECTED_RESULTS_ATTR).split(QRegExp("\\,"));
     QStringList::Iterator expResIt;
     expResIt = expectedStrList.begin();
-    foreach(QString posStr, diPosStrList) {
+    foreach (QString posStr, diPosStrList) {
         bool isOk;
         int pos = posStr.toInt(&isOk);
-        if(!isOk) {
-            stateInfo.setError(  QString("Wrong conversion to the integer for one of the %1").arg(DINUCLEOTIDE_POSITIONS) );
+        if (!isOk) {
+            stateInfo.setError(QString("Wrong conversion to the integer for one of the %1").arg(DINUCLEOTIDE_POSITIONS));
             return;
         }
-        foreach(QString propStr, propsList) {
+        foreach (QString propStr, propsList) {
             int propIndex = propStr.toInt(&isOk);
-            if(!isOk) {
-                stateInfo.setError(  QString("Wrong conversion to the integer for one of the %1").arg(PROPERTIES_INDEXES) );
+            if (!isOk) {
+                stateInfo.setError(QString("Wrong conversion to the integer for one of the %1").arg(PROPERTIES_INDEXES));
                 return;
             }
             ResultVector r;
             r.push_back(pos);
             r.push_back(propIndex);
             int exp = qRound((*expResIt).toFloat(&isOk) * 10000);
-            if(!isOk) {
-                stateInfo.setError(  QString("Wrong conversion to the integer for one of the %1").arg(EXPECTED_RESULTS_ATTR) );
+            if (!isOk) {
+                stateInfo.setError(QString("Wrong conversion to the integer for one of the %1").arg(EXPECTED_RESULTS_ATTR));
                 return;
             }
             r.push_back(exp);
-            if(expResIt == expectedStrList.end()){
-                stateInfo.setError(  QString("Too less items in %1").arg(EXPECTED_RESULTS_ATTR) );
+            if (expResIt == expectedStrList.end()) {
+                stateInfo.setError(QString("Too less items in %1").arg(EXPECTED_RESULTS_ATTR));
                 return;
             }
             expResIt++;
             exp = qRound((*expResIt).toFloat(&isOk) * 10000);
-            if(!isOk) {
-                stateInfo.setError(  QString("Wrong conversion to the integer for one of the %1").arg(EXPECTED_RESULTS_ATTR) );
+            if (!isOk) {
+                stateInfo.setError(QString("Wrong conversion to the integer for one of the %1").arg(EXPECTED_RESULTS_ATTR));
                 return;
             }
             r.push_back(exp);
             expectedResults.push_back(ResultVector(r));
-            if(expResIt == expectedStrList.end()){
-                stateInfo.setError(  QString("Too less items in %1").arg(EXPECTED_RESULTS_ATTR) );
+            if (expResIt == expectedStrList.end()) {
+                stateInfo.setError(QString("Too less items in %1").arg(EXPECTED_RESULTS_ATTR));
                 return;
             }
             expResIt++;
@@ -181,24 +182,24 @@ void GTest_CalculateDispersionAndAverage::init(XMLTestFormat *tf, const QDomElem
 }
 
 void GTest_CalculateDispersionAndAverage::prepare() {
-    Document* doc = getContext<Document>(this, docName);
-    if (doc == NULL) {
-        stateInfo.setError(  QString("context not found %1").arg(docName) );
+    Document *doc = getContext<Document>(this, docName);
+    if (doc == nullptr) {
+        stateInfo.setError(QString("context not found %1").arg(docName));
         return;
     }
-    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
+        stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
     GObject *obj = list.first();
-    if(obj==NULL){
-        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
+    if (obj == nullptr) {
+        stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
-    if(mao==NULL){
-        stateInfo.setError(  QString("error can't cast to MultipleSequenceAlignmentObject from GObject") );
+    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
+    if (mao == nullptr) {
+        stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
     }
     ma = mao->getMsaCopy();
@@ -214,7 +215,7 @@ void GTest_CalculateDispersionAndAverage::run() {
 }
 
 Task::ReportResult GTest_CalculateDispersionAndAverage::report() {
-    foreach(ResultVector rv, expectedResults){
+    foreach (ResultVector rv, expectedResults) {
         int i = rv[0];
         int j = rv[1];
         PositionStats vec = result[i];
@@ -224,19 +225,18 @@ Task::ReportResult GTest_CalculateDispersionAndAverage::report() {
             expAve = rv[2],
             expSdev = rv[3];
         if (sdev != expSdev) {
-            stateInfo.setError(  QString("Expected and Actual 'SDev' values are different: %1 %2").arg(expSdev/10000).arg(sdev/10000) );
+            stateInfo.setError(QString("Expected and Actual 'SDev' values are different: %1 %2").arg(expSdev / 10000).arg(sdev / 10000));
             return ReportResult_Finished;
         }
         if (average != expAve) {
-            stateInfo.setError(  QString("Expected and Actual 'Average' values are different: %1 %2").arg(expAve/10000).arg(average/10000) );
+            stateInfo.setError(QString("Expected and Actual 'Average' values are different: %1 %2").arg(expAve / 10000).arg(average / 10000));
             return ReportResult_Finished;
         }
-
     }
     return ReportResult_Finished;
 }
 
-void GTest_CalculateFirstTypeError::init(XMLTestFormat *tf, const QDomElement& el) {
+void GTest_CalculateFirstTypeError::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
     docName = el.attribute(DOC_ATTR);
@@ -253,15 +253,15 @@ void GTest_CalculateFirstTypeError::init(XMLTestFormat *tf, const QDomElement& e
     bool isOk;
     offset = windowSizeStr.toInt(&isOk);
     if (!isOk) {
-        stateInfo.setError(  QString("Wrong conversion to the integer for one of the %1").arg(OFFSET_ATTR) );
+        stateInfo.setError(QString("Wrong conversion to the integer for one of the %1").arg(OFFSET_ATTR));
         return;
     }
 
     QStringList expectedStrList = el.attribute(EXPECTED_RESULTS_ATTR).split(QRegExp("\\,"));
-    foreach(QString str, expectedStrList){
+    foreach (QString str, expectedStrList) {
         int exp = qRound(str.toFloat(&isOk) * 10000);
-        if(!isOk) {
-            stateInfo.setError(  QString("Wrong conversion to the integer for one of the %1").arg(EXPECTED_RESULTS_ATTR) );
+        if (!isOk) {
+            stateInfo.setError(QString("Wrong conversion to the integer for one of the %1").arg(EXPECTED_RESULTS_ATTR));
             return;
         }
         expectedResult.push_back(exp);
@@ -269,24 +269,24 @@ void GTest_CalculateFirstTypeError::init(XMLTestFormat *tf, const QDomElement& e
 }
 
 void GTest_CalculateFirstTypeError::prepare() {
-    Document* doc = getContext<Document>(this, docName);
-    if (doc == NULL) {
-        stateInfo.setError(  QString("context not found %1").arg(docName) );
+    Document *doc = getContext<Document>(this, docName);
+    if (doc == nullptr) {
+        stateInfo.setError(QString("context not found %1").arg(docName));
         return;
     }
-    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
+        stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
     GObject *obj = list.first();
-    if(obj==NULL){
-        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
+    if (obj == nullptr) {
+        stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
-    if(mao==NULL){
-        stateInfo.setError(  QString("error can't cast to MultipleSequenceAlignmentObject from GObject") );
+    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
+    if (mao == nullptr) {
+        stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
     }
     ma = mao->getMsaCopy();
@@ -304,12 +304,12 @@ void GTest_CalculateFirstTypeError::run() {
 
 Task::ReportResult GTest_CalculateFirstTypeError::report() {
     int i = offset + 1;
-    foreach(int exp, expectedResult) {
+    foreach (int exp, expectedResult) {
         int act = qRound(result[i] * 10000);
         //printf("Expected: %i", exp);
         //printf(" Actual: %i \r\n", act);
-        if(act != exp){
-            stateInfo.setError(  QString("Expected and Actual values are different: %1 %2").arg(exp).arg(act) );
+        if (act != exp) {
+            stateInfo.setError(QString("Expected and Actual values are different: %1 %2").arg(exp).arg(act));
             return ReportResult_Finished;
         }
         i++;
@@ -317,7 +317,7 @@ Task::ReportResult GTest_CalculateFirstTypeError::report() {
     return ReportResult_Finished;
 }
 
-void GTest_CalculateSecondTypeError::init(XMLTestFormat *tf, const QDomElement& el) {
+void GTest_CalculateSecondTypeError::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
     docName = el.attribute(DOC_ATTR);
@@ -334,15 +334,15 @@ void GTest_CalculateSecondTypeError::init(XMLTestFormat *tf, const QDomElement& 
     bool isOk;
     offset = windowSizeStr.toInt(&isOk);
     if (!isOk) {
-        stateInfo.setError(  QString("Wrong conversion to the integer for one of the %1").arg(OFFSET_ATTR) );
+        stateInfo.setError(QString("Wrong conversion to the integer for one of the %1").arg(OFFSET_ATTR));
         return;
     }
 
     QStringList expectedStrList = el.attribute(EXPECTED_RESULTS_ATTR).split(QRegExp("\\,"));
-    foreach(QString str, expectedStrList){
+    foreach (QString str, expectedStrList) {
         int exp = str.toInt(&isOk);
-        if(!isOk) {
-            stateInfo.setError(  QString("Wrong conversion to the integer for one of the %1").arg(EXPECTED_RESULTS_ATTR) );
+        if (!isOk) {
+            stateInfo.setError(QString("Wrong conversion to the integer for one of the %1").arg(EXPECTED_RESULTS_ATTR));
             return;
         }
         expectedResult.push_back(exp);
@@ -350,24 +350,24 @@ void GTest_CalculateSecondTypeError::init(XMLTestFormat *tf, const QDomElement& 
 }
 
 void GTest_CalculateSecondTypeError::prepare() {
-    Document* doc = getContext<Document>(this, docName);
-    if (doc == NULL) {
-        stateInfo.setError(  QString("context not found %1").arg(docName) );
+    Document *doc = getContext<Document>(this, docName);
+    if (doc == nullptr) {
+        stateInfo.setError(QString("context not found %1").arg(docName));
         return;
     }
-    QList<GObject*> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
+    QList<GObject *> list = doc->findGObjectByType(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT);
     if (list.size() == 0) {
-        stateInfo.setError(  QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
+        stateInfo.setError(QString("container of object with type \"%1\" is empty").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
     GObject *obj = list.first();
-    if(obj==NULL){
-        stateInfo.setError(  QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT) );
+    if (obj == nullptr) {
+        stateInfo.setError(QString("object with type \"%1\" not found").arg(GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT));
         return;
     }
-    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject*>(obj);
-    if(mao==NULL){
-        stateInfo.setError(  QString("error can't cast to MultipleSequenceAlignmentObject from GObject") );
+    MultipleSequenceAlignmentObject *mao = qobject_cast<MultipleSequenceAlignmentObject *>(obj);
+    if (mao == nullptr) {
+        stateInfo.setError(QString("error can't cast to MultipleSequenceAlignmentObject from GObject"));
         return;
     }
     ma = mao->getMsaCopy();
@@ -393,12 +393,12 @@ void GTest_CalculateSecondTypeError::run() {
 
 Task::ReportResult GTest_CalculateSecondTypeError::report() {
     int i = offset + 1;
-    foreach(int exp, expectedResult) {
-        int act = qRound(1/result[i]);
+    foreach (int exp, expectedResult) {
+        int act = qRound(1 / result[i]);
         printf("Expected: %i", exp);
         printf(" Actual: %i \r\n", act);
-        if(act != exp){
-            stateInfo.setError(  QString("Expected and Actual values are different: %1 %2").arg(exp).arg(act) );
+        if (act != exp) {
+            stateInfo.setError(QString("Expected and Actual values are different: %1 %2").arg(exp).arg(act));
             return ReportResult_Finished;
         }
         i++;
@@ -406,7 +406,7 @@ Task::ReportResult GTest_CalculateSecondTypeError::report() {
     return ReportResult_Finished;
 }
 
-void GTest_SiteconSearchTask::init(XMLTestFormat *tf, const QDomElement& el) {
+void GTest_SiteconSearchTask::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
 
     seqName = el.attribute(SEQNAME_ATTR);
@@ -416,7 +416,7 @@ void GTest_SiteconSearchTask::init(XMLTestFormat *tf, const QDomElement& el) {
     }
 
     QString modelPath = el.attribute(MODEL_ATTR);
-    IOAdapterFactory* iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
+    IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
     QString url = env->getVar("COMMON_DATA_DIR") + "/" + modelPath;
     model = SiteconIO::readModel(iof, url, stateInfo);
 
@@ -428,14 +428,14 @@ void GTest_SiteconSearchTask::init(XMLTestFormat *tf, const QDomElement& el) {
     if (strandStr == "direct") {
         complOnly = false;
         isNeedCompliment = false;
-    }else if(strandStr == "compliment") {
+    } else if (strandStr == "compliment") {
         complOnly = true;
         isNeedCompliment = true;
-    }else if(strandStr == "both"){
+    } else if (strandStr == "both") {
         complOnly = false;
         isNeedCompliment = true;
-    }else {
-        stateInfo.setError(  QString("%1 has incorrect value").arg(STRAND_ATTR) );
+    } else {
+        stateInfo.setError(QString("%1 has incorrect value").arg(STRAND_ATTR));
         return;
     }
 
@@ -446,20 +446,20 @@ void GTest_SiteconSearchTask::init(XMLTestFormat *tf, const QDomElement& el) {
         return;
     }
     tresh = tre.toInt(&isOk);
-    if(!isOk){
-        stateInfo.setError(  QString("unable to convert %1 to integer").arg(TRESH_ATTR) );
+    if (!isOk) {
+        stateInfo.setError(QString("unable to convert %1 to integer").arg(TRESH_ATTR));
         return;
     }
 
     QString expected = el.attribute(EXPECTED_RESULTS_ATTR);
     if (!expected.isEmpty()) {
         QStringList expectedList = expected.split(QRegExp("\\;"));
-        foreach(QString propsArray, expectedList) {
+        foreach (QString propsArray, expectedList) {
             QStringList props = propsArray.split(QRegExp("\\,"));
             QString middleStr = props[0], scoreStr = props[1], strStr = props[2];
             int middle = middleStr.toInt(&isOk);
-            if(!isOk){
-                stateInfo.setError(  QString("unable to convert %1 to integer").arg(EXPECTED_RESULTS_ATTR) );
+            if (!isOk) {
+                stateInfo.setError(QString("unable to convert %1 to integer").arg(EXPECTED_RESULTS_ATTR));
                 return;
             }
             U2Strand strand;
@@ -467,22 +467,22 @@ void GTest_SiteconSearchTask::init(XMLTestFormat *tf, const QDomElement& el) {
             reg.length = model.settings.windowSize;
             if (strStr == "direct") {
                 strand = U2Strand::Direct;
-                reg.startPos = middle - (int)(model.settings.windowSize/2);
-            } else if(strStr == "compliment") {
+                reg.startPos = middle - (int)(model.settings.windowSize / 2);
+            } else if (strStr == "compliment") {
                 strand = U2Strand::Complementary;
-                reg.startPos = middle - (int)(model.settings.windowSize/2) + 1;
+                reg.startPos = middle - (int)(model.settings.windowSize / 2) + 1;
                 /*
                 if(model.settings.weightAlg == SiteconWeightAlg_Alg2){
                     reg.startPos++;
                 }
                 */
             } else {
-                stateInfo.setError(  QString("%1 has incorrect value").arg(STRAND_ATTR) );
+                stateInfo.setError(QString("%1 has incorrect value").arg(STRAND_ATTR));
                 return;
             }
             float psum = scoreStr.toFloat(&isOk);
-            if(!isOk){
-                stateInfo.setError(  QString("unable to convert %1 to float").arg(EXPECTED_RESULTS_ATTR) );
+            if (!isOk) {
+                stateInfo.setError(QString("unable to convert %1 to float").arg(EXPECTED_RESULTS_ATTR));
                 return;
             }
             SiteconSearchResult ssr;
@@ -495,13 +495,13 @@ void GTest_SiteconSearchTask::init(XMLTestFormat *tf, const QDomElement& el) {
 }
 
 void GTest_SiteconSearchTask::prepare() {
-    U2SequenceObject * mySequence = getContext<U2SequenceObject>(this, seqName);
-    CHECK_EXT(mySequence != NULL, setError( QString("error can't cast to sequence from GObject")), );
+    U2SequenceObject *mySequence = getContext<U2SequenceObject>(this, seqName);
+    CHECK_EXT(mySequence != nullptr, setError(QString("error can't cast to sequence from GObject")), );
 
     SiteconSearchCfg cfg;
     cfg.complOnly = complOnly;
     cfg.minPSUM = tresh;
-    if (isNeedCompliment){
+    if (isNeedCompliment) {
         cfg.complTT = GObjectUtils::findComplementTT(mySequence->getAlphabet());
     }
     QByteArray seqData = mySequence->getWholeSequenceData(stateInfo);
@@ -533,29 +533,27 @@ Task::ReportResult GTest_SiteconSearchTask::report() {
         }
     }
     */
-    if(results.size() != expectedResults.size()){
-        stateInfo.setError(  QString("expected and equal result lists not equal by size, expected: %1, actual: %2").arg(expectedResults.size()).arg(results.size()) );
+    if (results.size() != expectedResults.size()) {
+        stateInfo.setError(QString("expected and equal result lists not equal by size, expected: %1, actual: %2").arg(expectedResults.size()).arg(results.size()));
         return ReportResult_Finished;
     }
     /**/
-    foreach(SiteconSearchResult exp, expectedResults) {
-        foreach(SiteconSearchResult act, results) {
+    foreach (SiteconSearchResult exp, expectedResults) {
+        foreach (SiteconSearchResult act, results) {
             int ePsum = qRound(exp.psum * 10), aPsum = qRound(act.psum * 10);
             if (exp.region == act.region && aPsum == ePsum && exp.strand == act.strand) {
                 matchesCount++;
             }
         }
     }
-    if(matchesCount != expectedResults.size()){
-        stateInfo.setError(  QString("expected and equal result lists not equal") );
+    if (matchesCount != expectedResults.size()) {
+        stateInfo.setError(QString("expected and equal result lists not equal"));
         return ReportResult_Finished;
     }
     return ReportResult_Finished;
 }
 
-
-
-void GTest_CompareSiteconModels::init(XMLTestFormat *, const QDomElement& el) {
+void GTest_CompareSiteconModels::init(XMLTestFormat *, const QDomElement &el) {
     doc1ContextName = el.attribute(DOC1_ATTR);
     if (doc1ContextName.isEmpty()) {
         failMissingValue(DOC1_ATTR);
@@ -573,21 +571,21 @@ Task::ReportResult GTest_CompareSiteconModels::report() {
     //SiteconModel model1 = getContext<SiteconModel>(doc1ContextName);
     //SiteconModel model2 = getContext<SiteconModel>(doc2ContextName);
     Document *doc1 = getContext<Document>(this, doc1ContextName);
-    if (doc1 == NULL) {
-        stateInfo.setError(  QString("document not found %1").arg(doc1ContextName) );
+    if (doc1 == nullptr) {
+        stateInfo.setError(QString("document not found %1").arg(doc1ContextName));
         return ReportResult_Finished;
     }
-    Document* doc2 = getContext<Document>(this, doc2ContextName);
-    if (doc2 == NULL) {
-        stateInfo.setError(  QString("document not found %1").arg(doc2ContextName) );
+    Document *doc2 = getContext<Document>(this, doc2ContextName);
+    if (doc2 == nullptr) {
+        stateInfo.setError(QString("document not found %1").arg(doc2ContextName));
         return ReportResult_Finished;
     }
     SiteconModel model1 = SiteconIO::readModel(doc1->getIOAdapterFactory(), doc1->getURLString(), stateInfo);
     SiteconModel model2 = SiteconIO::readModel(doc2->getIOAdapterFactory(), doc2->getURLString(), stateInfo);
-    if(model1 != model2) {
+    if (model1 != model2) {
         stateInfo.setError(tr("Models not equal"));
     }
     return ReportResult_Finished;
 }
 
-}//namespace
+}    // namespace U2

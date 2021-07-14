@@ -75,7 +75,7 @@ Document *EMBLGenbankAbstractDocument::loadTextDocument(IOAdapter *io, const U2D
     QString writeLockReason;
     load(dbiRef, io, objects, fs, os, writeLockReason);
 
-    CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
+    CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
 
     DocumentFormatUtils::updateFormatHints(objects, fs);
     fs[DocumentReadingMode_LoadAsModified] = os.hasWarnings() && checkFlags(DocumentFormatFlag_SupportWriting);
@@ -99,7 +99,7 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef &dbiRef, IOAdapter *io, QL
     int gapSize = qBound(-1, DocumentFormatUtils::getMergeGap(fs), 1000 * 1000);
     bool merge = gapSize != -1;
 
-    QScopedPointer<AnnotationTableObject> mergedAnnotations(NULL);
+    QScopedPointer<AnnotationTableObject> mergedAnnotations(nullptr);
     QStringList contigs;
     QVector<U2Region> mergedMapping;
 
@@ -112,7 +112,7 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef &dbiRef, IOAdapter *io, QL
     GObjectReference sequenceRef(GObjectReference(io->getURL().getURLString(), "", GObjectTypes::SEQUENCE));
 
     QByteArray readBuffer(ParserState::LOCAL_READ_BUFFER_SIZE, '\0');
-    ParserState st(isNcbiLikeFormat() ? 12 : 5, io, NULL, os);
+    ParserState st(isNcbiLikeFormat() ? 12 : 5, io, nullptr, os);
     st.buff = readBuffer.data();
 
     TmpDbiObjects dbiObjects(dbiRef, os);
@@ -168,14 +168,14 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef &dbiRef, IOAdapter *io, QL
             CHECK_EXT(!st.io->hasError(), os.setError(st.io->errorString()), );
         }
 
-        AnnotationTableObject *annotationsObject = NULL;
+        AnnotationTableObject *annotationsObject = nullptr;
 
         if (data.hasAnnotationObjectFlag) {
             QString annotationName = genObjectName(usedNames, data.name, data.tags, i + 1, GObjectTypes::ANNOTATION_TABLE);
 
             QVariantMap hints;
             hints.insert(DBI_FOLDER_HINT, fs.value(DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER));
-            if (Q_UNLIKELY(merge && NULL == mergedAnnotations)) {
+            if (Q_UNLIKELY(merge && nullptr == mergedAnnotations)) {
                 mergedAnnotations.reset(new AnnotationTableObject(annotationName, dbiRef, hints));
             }
             annotationsObject = merge ? mergedAnnotations.data() : new AnnotationTableObject(annotationName, dbiRef, hints);
@@ -218,7 +218,7 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef &dbiRef, IOAdapter *io, QL
 
         if (!os.isCoR()) {
             QString sequenceName = genObjectName(usedNames, data.name, data.tags, i + 1, GObjectTypes::SEQUENCE);
-            if (merge && sequenceSize == 0 && annotationsObject != NULL) {
+            if (merge && sequenceSize == 0 && annotationsObject != nullptr) {
                 os.setError(tr("Merge error: found annotations without sequence"));
                 break;
             } else if (merge) {
@@ -245,11 +245,11 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef &dbiRef, IOAdapter *io, QL
                     objects << seqObj;
                     dbiObjects.objects << u2seq.id;
 
-                    SAFE_POINT(seqObj != NULL, "DocumentFormatUtils::addSequenceObject returned NULL but didn't set error", );
+                    SAFE_POINT(seqObj != nullptr, "DocumentFormatUtils::addSequenceObject returned NULL but didn't set error", );
 
                     sequenceRef.objName = seqObj->getGObjectName();
                     sequenceRef.entityRef = seqObj->getEntityRef();
-                    if (annotationsObject != NULL) {
+                    if (annotationsObject != nullptr) {
                         annotationsObject->addObjectRelation(GObjectRelation(sequenceRef, ObjectRole_Sequence));
                     }
                     U1AnnotationUtils::addAnnotations(objects, seqImporter.getCaseAnnotations(), sequenceRef, annotationsObject, fs);
@@ -287,7 +287,7 @@ void EMBLGenbankAbstractDocument::load(const U2DbiRef &dbiRef, IOAdapter *io, QL
     objects << so;
     objects << DocumentFormatUtils::addAnnotationsForMergedU2Sequence(sequenceRef, dbiRef, contigs, mergedMapping, fs);
     AnnotationTableObject *mergedAnnotationsPtr = mergedAnnotations.take();
-    if (NULL != mergedAnnotationsPtr) {
+    if (nullptr != mergedAnnotationsPtr) {
         sequenceRef.entityRef = U2EntityRef(dbiRef, u2seq.id);
         mergedAnnotationsPtr->addObjectRelation(GObjectRelation(sequenceRef, ObjectRole_Sequence));
         objects.append(mergedAnnotationsPtr);
@@ -301,7 +301,7 @@ DNASequence *EMBLGenbankAbstractDocument::loadTextSequence(IOAdapter *io, U2OpSt
     QByteArray sequenceData;
     U2MemorySequenceImporter seqImporter(sequenceData);
     QByteArray readBuffer(ParserState::LOCAL_READ_BUFFER_SIZE, '\0');
-    ParserState st(isNcbiLikeFormat() ? 12 : 5, io, NULL, os);
+    ParserState st(isNcbiLikeFormat() ? 12 : 5, io, nullptr, os);
     st.buff = readBuffer.data();
 
     int sequenceSize = 0;
@@ -315,7 +315,7 @@ DNASequence *EMBLGenbankAbstractDocument::loadTextSequence(IOAdapter *io, U2OpSt
     int offset = 0;
     bool merge = false;
     if (!readEntry(&st, seqImporter, sequenceSize, fullSequenceSize, merge, offset, os)) {
-        return NULL;
+        return nullptr;
     }
 
     // tolerate blank lines between records
@@ -323,15 +323,15 @@ DNASequence *EMBLGenbankAbstractDocument::loadTextSequence(IOAdapter *io, U2OpSt
     bool b;
     while ((b = st.io->getChar(&ch)) && (ch == '\n' || ch == '\r')) {
     }
-    CHECK_EXT(!st.io->hasError(), os.setError(st.io->errorString()), NULL);
+    CHECK_EXT(!st.io->hasError(), os.setError(st.io->errorString()), nullptr);
 
     if (b) {
         st.io->skip(-1);
-        CHECK_EXT(!st.io->hasError(), os.setError(st.io->errorString()), NULL);
+        CHECK_EXT(!st.io->hasError(), os.setError(st.io->errorString()), nullptr);
     }
 
     if (os.isCoR()) {
-        return NULL;
+        return nullptr;
     }
     QString sequenceName = genObjectName(usedNames, data.name, data.tags, 1, GObjectTypes::SEQUENCE);
 
@@ -340,7 +340,7 @@ DNASequence *EMBLGenbankAbstractDocument::loadTextSequence(IOAdapter *io, U2OpSt
         return seq;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 //column annotation data starts with
@@ -543,25 +543,25 @@ void addUniqueWarning(U2OpStatus &si, const QString &warning) {
 
 AnnotationProcessStatus processParsingResult(const U2Location &location, Genbank::LocationParser::ParsingResult parsingResult, const QStringList &parsingMessages, U2OpStatus &si) {
     switch (parsingResult) {
-    case Genbank::LocationParser::Success:
-        return ProcessAnnotation;
-    case Genbank::LocationParser::ParsedWithWarnings:
-        foreach (const QString &message, parsingMessages) {
-            if (message.contains(Genbank::LocationParser::REMOTE_ENTRY_WARNING)) {
-                addUniqueWarning(si, EMBLGenbankAbstractDocument::REMOTE_ENTRY_WARNING_MESSAGE);
-            } else if (message.contains(Genbank::LocationParser::JOIN_COMPLEMENT_WARNING)) {
-                addUniqueWarning(si, EMBLGenbankAbstractDocument::JOIN_COMPLEMENT_WARNING_MESSAGE);
-            } else {
-                si.addWarning(message);
+        case Genbank::LocationParser::Success:
+            return ProcessAnnotation;
+        case Genbank::LocationParser::ParsedWithWarnings:
+            foreach (const QString &message, parsingMessages) {
+                if (message.contains(Genbank::LocationParser::REMOTE_ENTRY_WARNING)) {
+                    addUniqueWarning(si, EMBLGenbankAbstractDocument::REMOTE_ENTRY_WARNING_MESSAGE);
+                } else if (message.contains(Genbank::LocationParser::JOIN_COMPLEMENT_WARNING)) {
+                    addUniqueWarning(si, EMBLGenbankAbstractDocument::JOIN_COMPLEMENT_WARNING_MESSAGE);
+                } else {
+                    si.addWarning(message);
+                }
             }
-        }
-        return location->isEmpty() ? SkipAnnotation : ProcessAnnotation;
-    case Genbank::LocationParser::Failure:
-        si.setError(parsingMessages.isEmpty() ? EMBLGenbankAbstractDocument::LOCATION_PARSING_ERROR_MESSAGE : parsingMessages.last());
-        return SkipAnnotation;
-    default:
-        assert(false);
-        return ProcessAnnotation;
+            return location->isEmpty() ? SkipAnnotation : ProcessAnnotation;
+        case Genbank::LocationParser::Failure:
+            si.setError(parsingMessages.isEmpty() ? EMBLGenbankAbstractDocument::LOCATION_PARSING_ERROR_MESSAGE : parsingMessages.last());
+            return SkipAnnotation;
+        default:
+            assert(false);
+            return ProcessAnnotation;
     }
 }
 
@@ -720,7 +720,7 @@ void EMBLGenbankAbstractDocument::readAnnotations(ParserState *st, int offset) {
         }
         //parsing feature;
         SharedAnnotationData f = readAnnotation(st->io, st->buff, st->len, ParserState::LOCAL_READ_BUFFER_SIZE, st->si, offset, st->entry->seqLen);
-        if (f == NULL) {
+        if (f == nullptr) {
             continue;
         }
         st->entry->features.push_back(f);

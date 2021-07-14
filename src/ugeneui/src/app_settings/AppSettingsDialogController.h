@@ -41,7 +41,7 @@ class AppSettingsDialogController : public QDialog, public Ui_AppSettingsDialog 
     Q_OBJECT
 
 public:
-    AppSettingsDialogController(const QString &pageId = QString(), QWidget *p = NULL);
+    AppSettingsDialogController(const QString &pageId = QString(), QWidget *p = nullptr);
 
 public slots:
     virtual void accept();

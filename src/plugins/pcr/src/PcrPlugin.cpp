@@ -51,12 +51,12 @@ PcrPlugin::PcrPlugin()
     PrimerLibrary *library = PrimerLibrary::getInstance(os);
 
     // Init GUI elements
-    if (NULL != AppContext::getMainWindow()) {
+    if (nullptr != AppContext::getMainWindow()) {
         OPWidgetFactoryRegistry *opRegistry = AppContext::getOPWidgetFactoryRegistry();
-        SAFE_POINT(opRegistry != NULL, L10N::nullPointerError("Options Panel Registry"), );
+        SAFE_POINT(opRegistry != nullptr, L10N::nullPointerError("Options Panel Registry"), );
         opRegistry->registerFactory(new InSilicoPcrOPWidgetFactory());
 
-        if (NULL != library) {
+        if (nullptr != library) {
             QAction *libraryAction = new QAction(QIcon(":/core/images/db/database_go.png"), tr("Primer library"), this);
             libraryAction->setObjectName(ToolsMenu::PRIMER_LIBRARY);
             connect(libraryAction, SIGNAL(triggered()), SLOT(sl_primerLibrary()));

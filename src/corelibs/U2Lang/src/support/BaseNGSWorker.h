@@ -109,7 +109,7 @@ protected:
     /**
      * Don't delete customParser, it will be deleted automatically.
      */
-    virtual ExternalToolRunTask *getExternalToolTask(const QString &toolId, ExternalToolLogParser *customParser = NULL);
+    virtual ExternalToolRunTask *getExternalToolTask(const QString &toolId, ExternalToolLogParser *customParser = nullptr);
     virtual QStringList getParameters(U2OpStatus &os) = 0;
 
 protected:

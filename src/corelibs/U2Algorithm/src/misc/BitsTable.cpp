@@ -68,11 +68,13 @@ BitsTable::BitsTable() {
 }
 
 quint32 BitsTable::getBitMaskCharBitsNum(DNAAlphabetType al) const {
-    return al == DNAAlphabet_NUCL ? NUCL_BITS_SIZE : al == DNAAlphabet_AMINO ? PROTEIN_BITS_SIZE : RAW_BITS_SIZE;
+    return al == DNAAlphabet_NUCL ? NUCL_BITS_SIZE : al == DNAAlphabet_AMINO ? PROTEIN_BITS_SIZE
+                                                                             : RAW_BITS_SIZE;
 }
 
 const quint32 *BitsTable::getBitMaskCharBits(DNAAlphabetType al) const {
-    return al == DNAAlphabet_NUCL ? NUCL_BITS : al == DNAAlphabet_AMINO ? PROTEIN_BITS : RAW_BITS;
+    return al == DNAAlphabet_NUCL ? NUCL_BITS : al == DNAAlphabet_AMINO ? PROTEIN_BITS
+                                                                        : RAW_BITS;
 }
 
 }    // namespace U2

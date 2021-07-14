@@ -42,7 +42,7 @@ SingleDatasetController::SingleDatasetController(const Dataset &dataset, QObject
 }
 
 SingleDatasetController::~SingleDatasetController() {
-    widgetController->setParent(NULL);
+    widgetController->setParent(nullptr);
     delete widgetController;
 }
 

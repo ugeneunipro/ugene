@@ -31,7 +31,7 @@ namespace U2 {
 class U2CORE_EXPORT LocalFileAdapterFactory : public IOAdapterFactory {
     Q_OBJECT
 public:
-    LocalFileAdapterFactory(QObject *p = NULL);
+    LocalFileAdapterFactory(QObject *p = nullptr);
 
     virtual IOAdapter *createIOAdapter();
 
@@ -59,7 +59,7 @@ protected:
 class U2CORE_EXPORT GzippedLocalFileAdapterFactory : public LocalFileAdapterFactory {
     Q_OBJECT
 public:
-    GzippedLocalFileAdapterFactory(QObject *p = NULL);
+    GzippedLocalFileAdapterFactory(QObject *p = nullptr);
 
     virtual IOAdapter *createIOAdapter();
 
@@ -71,7 +71,7 @@ public:
 class U2CORE_EXPORT LocalFileAdapter : public IOAdapter {
     Q_OBJECT
 public:
-    LocalFileAdapter(LocalFileAdapterFactory *f, QObject *o = NULL, bool bufferOptimization = false);
+    LocalFileAdapter(LocalFileAdapterFactory *f, QObject *o = nullptr, bool bufferOptimization = false);
     ~LocalFileAdapter();
 
     virtual bool open(const GUrl &url, IOAdapterMode m);

@@ -120,7 +120,7 @@ QList<Task *> FormatsMsaClipboardTask::onSubTaskFinished(Task *subTask) {
 
     if (subTask == createSubalignmentTask) {
         Document *doc = createSubalignmentTask->getDocument();
-        SAFE_POINT_EXT(doc != NULL, setError(tr("No temporary document.")), subTasks);
+        SAFE_POINT_EXT(doc != nullptr, setError(tr("No temporary document.")), subTasks);
         QScopedPointer<LocalFileAdapterFactory> factory(new LocalFileAdapterFactory());
         QScopedPointer<IOAdapter> io(factory->createIOAdapter());
         if (!io->open(doc->getURL(), IOAdapterMode_Read)) {
@@ -147,10 +147,10 @@ QList<Task *> FormatsMsaClipboardTask::onSubTaskFinished(Task *subTask) {
 CreateSubalignmentSettings FormatsMsaClipboardTask::createSettings(const QStringList &names, const U2Region &window, const DocumentFormatId &formatId, U2OpStatus &os) {
     //Create temporal document for the workflow run task
     const AppSettings *appSettings = AppContext::getAppSettings();
-    SAFE_POINT_EXT(appSettings != NULL, os.setError(tr("Invalid applications settings detected")), CreateSubalignmentSettings());
+    SAFE_POINT_EXT(appSettings != nullptr, os.setError(tr("Invalid applications settings detected")), CreateSubalignmentSettings());
 
     UserAppsSettings *usersSettings = appSettings->getUserAppsSettings();
-    SAFE_POINT_EXT(usersSettings != NULL, os.setError(tr("Invalid users applications settings detected")), CreateSubalignmentSettings());
+    SAFE_POINT_EXT(usersSettings != nullptr, os.setError(tr("Invalid users applications settings detected")), CreateSubalignmentSettings());
     const QString tmpDirPath = usersSettings->getCurrentProcessTemporaryDirPath();
     GUrl path = GUrlUtils::prepareTmpFileLocation(tmpDirPath, "clipboard", "tmp", os);
 
@@ -170,9 +170,7 @@ void RichTextMsaClipboardTask::prepare() {
     SAFE_POINT(appSettings != nullptr, "RTFMSA entry storing: NULL settings object", );
 
     MsaColorSchemeRegistry *colorSchemeRegistry = AppContext::getMsaColorSchemeRegistry();
-    QString colorSchemeId = al->getType() == DNAAlphabet_AMINO ?
-                                appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_AMINO, MsaColorScheme::UGENE_AMINO).toString() :
-                                appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_NUCL, MsaColorScheme::UGENE_NUCL).toString();
+    QString colorSchemeId = al->getType() == DNAAlphabet_AMINO ? appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_AMINO, MsaColorScheme::UGENE_AMINO).toString() : appSettings->getValue(MSAE_SETTINGS_ROOT + MOBJECT_SETTINGS_COLOR_NUCL, MsaColorScheme::UGENE_NUCL).toString();
 
     MsaColorSchemeFactory *colorSchemeFactory = colorSchemeRegistry->getSchemeFactoryById(colorSchemeId);
     if (colorSchemeFactory == nullptr) {

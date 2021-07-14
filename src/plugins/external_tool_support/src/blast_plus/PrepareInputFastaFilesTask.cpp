@@ -69,13 +69,13 @@ QList<Task *> PrepareInputFastaFilesTask::onSubTaskFinished(Task *subTask) {
     CHECK_OP(stateInfo, newSubTasks);
 
     DefaultConvertFileTask *convertTask = qobject_cast<DefaultConvertFileTask *>(subTask);
-    if (NULL != convertTask) {
+    if (nullptr != convertTask) {
         fastaFiles << convertTask->getResult();
         tempFiles << convertTask->getResult();
     }
 
     CopyFileTask *copyTask = qobject_cast<CopyFileTask *>(subTask);
-    if (NULL != copyTask) {
+    if (nullptr != copyTask) {
         fastaFiles << copyTask->getTargetFilePath();
         tempFiles << copyTask->getTargetFilePath();
     }
@@ -89,7 +89,7 @@ QString PrepareInputFastaFilesTask::getBestFormatId(const QString &filePath) {
         stateInfo.addWarning(tr("File '%1' was skipped. Cannot detect the file format.").arg(filePath));
         return "";
     }
-    SAFE_POINT_EXT(NULL != formats.first().format, setError("An incorrect format found. An importer?"), "");
+    SAFE_POINT_EXT(nullptr != formats.first().format, setError("An incorrect format found. An importer?"), "");
     return formats.first().format->getFormatId();
 }
 

@@ -29,7 +29,7 @@ namespace U2 {
 class U2CORE_EXPORT StringAdapterFactory : public IOAdapterFactory {
     Q_OBJECT
 public:
-    StringAdapterFactory(QObject *p = NULL);
+    StringAdapterFactory(QObject *p = nullptr);
 
     virtual IOAdapter *createIOAdapter();
 
@@ -58,7 +58,7 @@ protected:
 class U2CORE_EXPORT StringAdapterFactoryWithStringData : public StringAdapterFactory {
     Q_OBJECT
 public:
-    StringAdapterFactoryWithStringData(const QString &data, QObject *parent = NULL);
+    StringAdapterFactoryWithStringData(const QString &data, QObject *parent = nullptr);
 
     virtual IOAdapter *createIOAdapter();
 
@@ -69,14 +69,14 @@ private:
 class U2CORE_EXPORT StringAdapter : public IOAdapter {
     Q_OBJECT
 public:
-    StringAdapter(StringAdapterFactory *f, QObject *o = NULL);
+    StringAdapter(StringAdapterFactory *f, QObject *o = nullptr);
     ~StringAdapter() {
         if (isOpen())
             close();
     }
 
     /** Creates opened adapter */
-    StringAdapter(const QByteArray &data, StringAdapterFactory *f = NULL);
+    StringAdapter(const QByteArray &data, StringAdapterFactory *f = nullptr);
 
     virtual bool open(const GUrl &url, IOAdapterMode m);
 

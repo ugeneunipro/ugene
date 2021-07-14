@@ -43,7 +43,7 @@ class GenerateDNAWorker : public BaseWorker {
     Q_OBJECT
 public:
     GenerateDNAWorker(Actor *a)
-        : BaseWorker(a), ch(NULL) {
+        : BaseWorker(a), ch(nullptr) {
     }
 
     virtual void init();

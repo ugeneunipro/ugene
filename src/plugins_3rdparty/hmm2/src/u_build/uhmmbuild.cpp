@@ -30,8 +30,8 @@ plan7_s *UHMMBuild::build(msa_struct *msa, int atype, const UHMMBuildSettings &s
     float swexit = 0.5;    // S/W aggregate exit probability
     int do_eff = TRUE;    // TRUE to set an effective seq number
     int pbswitch = 1000;    // nseq >= this, switchover to PB weights
-    p7trace_s **trace = NULL;    // fake tracebacks for aseq's
-    plan7_s *hmm = NULL;    //result
+    p7trace_s **trace = nullptr;    // fake tracebacks for aseq's
+    plan7_s *hmm = nullptr;    //result
 
     //get HMMERTaskLocalData
     HMMERTaskLocalData *tld = getHMMERTaskLocalData();
@@ -152,9 +152,9 @@ plan7_s *UHMMBuild::build(msa_struct *msa, int atype, const UHMMBuildSettings &s
     // the HMM. This typically only works for Stockholm or SELEX format
     //  alignments, so these things are conditional/optional.
 
-    if (msa->acc != NULL)
+    if (msa->acc != nullptr)
         Plan7SetAccession(hmm, msa->acc);
-    if (msa->desc != NULL)
+    if (msa->desc != nullptr)
         Plan7SetDescription(hmm, msa->desc);
 
     if (msa->cutoff_is_set[MSA_CUTOFF_GA1] && msa->cutoff_is_set[MSA_CUTOFF_GA2]) {

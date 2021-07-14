@@ -47,12 +47,12 @@ class DbiHelper {
 
 public:
     DbiHelper(const U2DbiRef &dbiRef, U2OpStatus &os)
-        : dbi(NULL) {
+        : dbi(nullptr) {
         con = new DbiConnection(dbiRef, os);
         CHECK_OP(os, );
-        SAFE_POINT_EXT(NULL != con->dbi, os.setError("NULL DBI"), );
+        SAFE_POINT_EXT(nullptr != con->dbi, os.setError("NULL DBI"), );
         dbi = con->dbi->getUdrDbi();
-        SAFE_POINT_EXT(NULL != dbi, os.setError("NULL source UDR DBI"), );
+        SAFE_POINT_EXT(nullptr != dbi, os.setError("NULL source UDR DBI"), );
     }
 
     ~DbiHelper() {

@@ -48,7 +48,7 @@ Workflow::ActorPrototype *ScriptWorkerSerializer::string2actor(const QString dat
     QDomDocument xml;
     xml.setContent(data, false, &error);
     if (!error.isEmpty()) {
-        return NULL;
+        return nullptr;
     }
     QDomElement doc = xml.documentElement();
     DataTypeRegistry *dtr = Workflow::WorkflowEnv::getDataTypeRegistry();
@@ -100,9 +100,9 @@ Workflow::ActorPrototype *ScriptWorkerSerializer::string2actor(const QString dat
 
     Workflow::ActorPrototype *proto = Workflow::IncludedProtoFactory::getScriptProto(inputTypes, outputTypes, attrs, newActorName, actorDesc, actorFilePath, isAliasName);
 
-    if (NULL == proto) {
+    if (nullptr == proto) {
         error = QObject::tr("UGENE external error. Please, try again");
-        return NULL;
+        return nullptr;
     }
 
     return proto;

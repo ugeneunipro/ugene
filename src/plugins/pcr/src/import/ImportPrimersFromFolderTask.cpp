@@ -34,7 +34,7 @@ ImportPrimersFromFolderTask::ImportPrimersFromFolderTask(const Folder &folder)
     : Task(tr("Import primers from the shared database folder: %1").arg(folder.getFolderPath()),
            TaskFlags(TaskFlag_NoRun | TaskFlag_ReportingIsEnabled | TaskFlag_ReportingIsSupported)),
       folder(folder) {
-    SAFE_POINT_EXT(NULL != folder.getDocument(), setError(L10N::nullPointerError("folder's document")), );
+    SAFE_POINT_EXT(nullptr != folder.getDocument(), setError(L10N::nullPointerError("folder's document")), );
 }
 
 void ImportPrimersFromFolderTask::prepare() {
@@ -64,7 +64,7 @@ QStringList ImportPrimersFromFolderTask::getDirectSubfolders() {
     DbiConnection connection(document->getDbiRef(), stateInfo);
     CHECK_OP(stateInfo, directSubfolders);
     U2ObjectDbi *objectDbi = connection.dbi->getObjectDbi();
-    SAFE_POINT_EXT(NULL != objectDbi, setError(L10N::nullPointerError("object DBI")), directSubfolders);
+    SAFE_POINT_EXT(nullptr != objectDbi, setError(L10N::nullPointerError("object DBI")), directSubfolders);
 
     const QStringList parentFolderPathParts = folder.getFolderPath().split(U2ObjectDbi::PATH_SEP, QString::SkipEmptyParts);
     const QStringList folderPaths = objectDbi->getFolders(stateInfo);
@@ -87,7 +87,7 @@ QList<GObject *> ImportPrimersFromFolderTask::getSubobjects() {
     DbiConnection connection(document->getDbiRef(), stateInfo);
     CHECK_OP(stateInfo, subobjects);
     U2ObjectDbi *objectDbi = connection.dbi->getObjectDbi();
-    SAFE_POINT_EXT(NULL != objectDbi, setError(L10N::nullPointerError("object DBI")), subobjects);
+    SAFE_POINT_EXT(nullptr != objectDbi, setError(L10N::nullPointerError("object DBI")), subobjects);
 
     const QString folderPath = folder.getFolderPath();
     const QList<U2DataId> objectsIds = objectDbi->getObjects(folderPath, 0, U2DbiOptions::U2_DBI_NO_LIMIT, stateInfo);

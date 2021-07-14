@@ -62,8 +62,8 @@ MapDatatypeEditor::MapDatatypeEditor(Configuration *cfg,
       propertyName(prop),
       from(from),
       to(to),
-      table(NULL),
-      doc(NULL) {
+      table(nullptr),
+      doc(nullptr) {
 }
 
 QWidget *MapDatatypeEditor::getWidget() {
@@ -101,7 +101,7 @@ int getMinimumHeight(QTableWidget *table) {
 QWidget *MapDatatypeEditor::createGUI(DataTypePtr from, DataTypePtr to) {
     if (!from || !to || !from->isMap() || !to->isMap()) {
         assert(false);
-        return NULL;
+        return nullptr;
     }
 
     bool infoMode = (to == from);
@@ -204,7 +204,7 @@ QMap<QString, QString> MapDatatypeEditor::getBindingsMap() {
 }
 
 int MapDatatypeEditor::getOptimalHeight() {
-    return NULL != table ? table->minimumHeight() : 0;
+    return nullptr != table ? table->minimumHeight() : 0;
 }
 
 static QString formatDoc(const Descriptor &s, const Descriptor &d) {
@@ -235,8 +235,8 @@ void MapDatatypeEditor::sl_showDoc() {
 }
 
 void MapDatatypeEditor::sl_widgetDestroyed() {
-    mainWidget = NULL;
-    table = NULL;
+    mainWidget = nullptr;
+    table = nullptr;
 }
 
 void MapDatatypeEditor::commit() {
@@ -325,7 +325,7 @@ QMap<QString, QString> BusPortEditor::getBindingsMap() {
 }
 
 bool BusPortEditor::isEmpty() const {
-    if (NULL != table) {
+    if (nullptr != table) {
         int rows = table->model()->rowCount();
         return (0 == rows);
     } else {

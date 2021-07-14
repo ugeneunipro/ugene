@@ -77,14 +77,14 @@ void ElementSelectorWidget::validate(const QList<Actor *> &actors, U2OpStatus &o
 }
 
 Workflow::Actor *ElementSelectorWidget::validateActorId(QList<Workflow::Actor *> actors, U2OpStatus &os) const {
-    Workflow::Actor *result = NULL;
+    Workflow::Actor *result = nullptr;
     foreach (Workflow::Actor *actor, actors) {
         if (actor->getId() == actorId) {
             result = actor;
             break;
         }
     }
-    if (NULL == result) {
+    if (nullptr == result) {
         os.setError(QObject::tr("The workflow does not contain an element with this id: %1").arg(actorId));
     }
     return result;

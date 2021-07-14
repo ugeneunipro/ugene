@@ -41,7 +41,7 @@ namespace U2 {
 
 GTest::GTest(const QString &taskName, GTest *cp, const GTestEnvironment *_env, TaskFlags flags, const QList<GTest *> &subtasks)
     : Task(taskName, flags), contextProvider(cp), env(_env) {
-    assert(env != NULL);
+    assert(env != nullptr);
 
     foreach (Task *t, subtasks) {
         addSubTask(t);
@@ -49,18 +49,18 @@ GTest::GTest(const QString &taskName, GTest *cp, const GTestEnvironment *_env, T
 }
 
 QObject *GTest::getContext(const QString &name) const {
-    assert(contextProvider != NULL);
+    assert(contextProvider != nullptr);
     return contextProvider->subtestsContext.value(name);
 }
 
 void GTest::addContext(const QString &name, QObject *v) {
-    assert(contextProvider != NULL);
+    assert(contextProvider != nullptr);
     assert(!contextProvider->subtestsContext.contains(name));
     contextProvider->subtestsContext[name] = v;
 }
 
 void GTest::removeContext(const QString &name) {
-    assert(contextProvider != NULL);
+    assert(contextProvider != nullptr);
     assert(contextProvider->subtestsContext.contains(name));
     contextProvider->subtestsContext.remove(name);
 }
@@ -184,7 +184,7 @@ GTestSuite *GTestSuite::readTestSuite(const QString &url, QString &err) {
         QString varName = varEl.attribute("name");
         if (varName.isEmpty()) {
             err = "var_tag_without_name: " + url;
-            return NULL;
+            return nullptr;
         }
         QString varVal = varEl.attribute("value");
         suiteEnv.setVar(varName, varVal);

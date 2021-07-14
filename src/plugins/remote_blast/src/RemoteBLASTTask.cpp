@@ -75,15 +75,15 @@ QList<Task *> RemoteBLASTToAnnotationsTask::onSubTaskFinished(Task *subTask) {
     // Query was finished
 
     RemoteBLASTTask *rrTask = qobject_cast<RemoteBLASTTask *>(queryTask);
-    SAFE_POINT(NULL != rrTask, "Invalid remote BLAST task!", res);
+    SAFE_POINT(nullptr != rrTask, "Invalid remote BLAST task!", res);
     QList<SharedAnnotationData> anns = rrTask->getResultedAnnotations();
     if (anns.isEmpty()) {
         return res;
     }
 
-    if (aobj->getDocument() == NULL && !url.isEmpty()) {    // create new document if object has no document and url is not empty
+    if (aobj->getDocument() == nullptr && !url.isEmpty()) {    // create new document if object has no document and url is not empty
         Document *d = AppContext::getProject()->findDocumentByURL(url);
-        if (d == NULL) {
+        if (d == nullptr) {
             IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
             DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::PLAIN_GENBANK);
             d = df->createNewLoadedDocument(iof, url, stateInfo);
@@ -111,8 +111,8 @@ QList<Task *> RemoteBLASTToAnnotationsTask::onSubTaskFinished(Task *subTask) {
 RemoteBLASTTask::RemoteBLASTTask(const RemoteBLASTTaskSettings &cfg_)
     : Task(tr("RemoteBLASTTask"), TaskFlags_NR_FOSE_COSC),
       cfg(cfg_),
-      httpBlastTask(NULL),
-      createAnnotTask(NULL) {
+      httpBlastTask(nullptr),
+      createAnnotTask(nullptr) {
     httpBlastTask = new RemoteBlastHttpRequestTask(cfg);
     addSubTask(httpBlastTask);
 }
@@ -161,7 +161,7 @@ void RemoteBlastHttpRequestTask::prepare() {
     algoLog.trace("Sequences prepared");
     for (QList<Query>::iterator it = queries.begin(), end = queries.end(); it != end; it++) {
         DataBaseFactory *dbf = AppContext::getDataBaseRegistry()->getFactoryById(cfg.dbChoosen);
-        if (dbf == NULL) {
+        if (dbf == nullptr) {
             stateInfo.setError(tr("Incorrect database"));
             return;
         }
@@ -248,7 +248,7 @@ void CreateAnnotationsFromHttpBlastResultTask::prepare() {
 
 void CreateAnnotationsFromHttpBlastResultTask::createAnnotations(const RemoteBlastHttpRequestTask::HttpBlastRequestTaskResult &result) {
     HttpRequest *t = result.request;
-    SAFE_POINT_EXT(t != NULL, setError(tr("HttpRequest is NULL!")), );
+    SAFE_POINT_EXT(t != nullptr, setError(tr("HttpRequest is NULL!")), );
     RemoteBlastHttpRequestTask::Query q = result.query;
     QList<SharedAnnotationData> annotations = t->getAnnotations();
     {
@@ -512,7 +512,7 @@ QList<Task *> CreateAnnotationsFromHttpBlastResultTask::onSubTaskFinished(Task *
     }
 
     CheckNCBISequenceCircularityTask *checkCircTask = qobject_cast<CheckNCBISequenceCircularityTask *>(subTask);
-    if (checkCircTask == NULL) {
+    if (checkCircTask == nullptr) {
         return res;
     }
 
@@ -535,7 +535,7 @@ QList<Task *> CreateAnnotationsFromHttpBlastResultTask::onSubTaskFinished(Task *
 CheckNCBISequenceCircularityTask::CheckNCBISequenceCircularityTask(const QString &id)
     : Task(tr("Check NCBI sequence circularity"), TaskFlags_NR_FOSE_COSC),
       seqId(id),
-      loadTask(NULL),
+      loadTask(nullptr),
       result(false) {
     SAFE_POINT_EXT(!seqId.isEmpty(), setError(tr("ID is empty")), );
 

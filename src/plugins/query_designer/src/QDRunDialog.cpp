@@ -77,7 +77,7 @@ const QString QDRunDialog::OUTPUT_FILE_DIR_DOMAIN = "qd_run_dialog/output_file";
 QDRunDialog::QDRunDialog(QDScheme *_scheme, QWidget *parent, const QString &defaultIn, const QString &defaultOut)
     : QDialog(parent),
       scheme(_scheme),
-      saveController(NULL) {
+      saveController(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930653");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Run"));
@@ -108,14 +108,14 @@ void QDRunDialog::sl_selectInputFile() {
     if (!dir.url.isEmpty()) {
         inFileEdit->setText(dir.url);
         QueryViewController *view = qobject_cast<QueryViewController *>(parentWidget());
-        SAFE_POINT(NULL != view, "View is NULL", );
+        SAFE_POINT(nullptr != view, "View is NULL", );
         view->setDefaultInFile(dir.url);
     }
 }
 
 void QDRunDialog::sl_outputFileChanged() {
     QueryViewController *view = qobject_cast<QueryViewController *>(parentWidget());
-    SAFE_POINT(NULL != view, "View is NULL", );
+    SAFE_POINT(nullptr != view, "View is NULL", );
     view->setDefaultOutFile(saveController->getSaveFileName());
 }
 
@@ -158,8 +158,8 @@ void QDRunDialog::sl_run() {
 
 QDRunDialogTask::QDRunDialogTask(QDScheme *_scheme, const QString &_inUri, const QString &outUri, bool addToProject)
     : Task(tr("Query Designer"), TaskFlags_NR_FOSCOE), scheme(_scheme), inUri(_inUri), output(outUri),
-      addToProject(addToProject), openProjTask(NULL), loadTask(NULL), scheduler(NULL),
-      docWithSequence(NULL), annObj(NULL) {
+      addToProject(addToProject), openProjTask(nullptr), loadTask(nullptr), scheduler(nullptr),
+      docWithSequence(nullptr), annObj(nullptr) {
     tpm = Progress_Manual;
     stateInfo.progress = 0;
     if (addToProject && !AppContext::getProject()) {
@@ -180,11 +180,11 @@ void QDRunDialogTask::sl_updateProgress() {
 
 QList<Task *> QDRunDialogTask::init() {
     QList<Task *> res;
-    if (AppContext::getProject() != NULL) {
+    if (AppContext::getProject() != nullptr) {
         docWithSequence = AppContext::getProject()->findDocumentByURL(inUri);
     }
 
-    if (docWithSequence != NULL) {
+    if (docWithSequence != nullptr) {
         if (!docWithSequence->isLoaded()) {
             loadTask = new LoadUnloadedDocumentTask(docWithSequence);
             res.append(loadTask);
@@ -241,7 +241,7 @@ QList<Task *> QDRunDialogTask::onSubTaskFinished(Task *subTask) {
     if (subTask == openProjTask) {
         res << init();
     } else if (subTask == loadTask) {
-        if (docWithSequence == NULL) {
+        if (docWithSequence == nullptr) {
             docWithSequence = loadTask->takeDocument();
         }
         setupQuery();
@@ -265,7 +265,7 @@ QList<Task *> QDRunDialogTask::onSubTaskFinished(Task *subTask) {
             SaveDocumentTask *saveTask = new SaveDocumentTask(docWithAnnotations, SaveDoc_DestroyAfter, QSet<QString>());
             res.append(saveTask);
         } else {
-            SAFE_POINT(proj != NULL, "Project is null", res);
+            SAFE_POINT(proj != nullptr, "Project is null", res);
             Document *sameUrlDoc = proj->findDocumentByURL(url);
             if (sameUrlDoc) {
                 proj->removeDocument(sameUrlDoc);
@@ -290,7 +290,7 @@ QList<Task *> QDRunDialogTask::onSubTaskFinished(Task *subTask) {
 /************************************************************************/
 
 QDDialog::QDDialog(ADVSequenceObjectContext *_ctx)
-    : QDialog(_ctx->getAnnotatedDNAView()->getWidget()), ctx(_ctx), scheme(NULL), txtDoc(NULL) {
+    : QDialog(_ctx->getAnnotatedDNAView()->getWidget()), ctx(_ctx), scheme(nullptr), txtDoc(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930656");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Search"));
@@ -332,7 +332,7 @@ void QDDialog::connectGUI() {
 
 void QDDialog::sl_selectScheme() {
     delete scheme;
-    scheme = NULL;
+    scheme = nullptr;
     LastUsedDirHelper dir(QUERY_DESIGNER_ID);
     dir.url = U2FileDialog::getOpenFileName(this, tr("Select query"), dir, QString("*.%1").arg(QUERY_SCHEME_EXTENSION));
     if (dir.url.isEmpty()) {
@@ -416,7 +416,7 @@ void QDDialog::sl_okBtnClicked() {
     const CreateAnnotationModel &m = cawc->getModel();
 
     U2SequenceObject *seqObj = ctx->getSequenceObject();
-    SAFE_POINT(NULL != seqObj, "NULL sequence object", );
+    SAFE_POINT(nullptr != seqObj, "NULL sequence object", );
     U2OpStatusImpl os;
     DNASequence sequence = seqObj->getWholeSequence(os);
     CHECK_OP_EXT(os, QMessageBox::critical(this, L10N::errorTitle(), os.getError()), );

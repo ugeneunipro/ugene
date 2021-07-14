@@ -74,7 +74,7 @@ void HRVisualParser::parse(U2OpStatus &os) {
 }
 
 void HRVisualParser::parseScale(const QString &scaleStr) {
-    CHECK(NULL != data.meta, );
+    CHECK(nullptr != data.meta, );
     bool ok = false;
     int scale = scaleStr.toInt(&ok);
     CHECK(ok, );
@@ -116,7 +116,7 @@ void HRVisualParser::parseVisualActorParams(const QString &actorId) {
         if (list.size() == 2 && list.at(1) == PORT_ANGLE) {
             QString portId = list.at(0);
             Port *port = data.actorMap[actorId]->getPort(portId);
-            if (port == NULL) {
+            if (port == nullptr) {
                 throw ReadFailed(HRVisualParser::tr("Cannot find port '%1' at %2 element").arg(portId).arg(actorId));
             }
             bool ok = false;
@@ -137,23 +137,23 @@ void HRVisualParser::parseLinkVisualBlock(const QString &from, const QString &to
     bool hasBlock = data.tokenizer.look() == Constants::BLOCK_START;
     QString srcActorId = HRSchemaSerializer::parseAt(from, 0);
     Actor *srcActor = data.actorMap.value(srcActorId);
-    if (srcActor == NULL) {
+    if (srcActor == nullptr) {
         throw ReadFailed(HRVisualParser::tr("Undefined element id: '%1'").arg(srcActorId));
     }
     QString srcPortId = HRSchemaSerializer::parseAt(from, 1);
     Port *srcPort = srcActor->getPort(srcPortId);
-    if (srcPort == NULL) {
+    if (srcPort == nullptr) {
         throw ReadFailed(HRVisualParser::tr("Cannot find '%1' port at '%2'").arg(srcPortId).arg(srcActorId));
     }
 
     QString dstActorId = HRSchemaSerializer::parseAt(to, 0);
     Actor *dstActor = data.actorMap.value(dstActorId);
-    if (dstActor == NULL) {
+    if (dstActor == nullptr) {
         throw ReadFailed(HRVisualParser::tr("Undefined element id: '%1'").arg(dstActorId));
     }
     QString dstPortId = HRSchemaSerializer::parseAt(to, 1);
     Port *dstPort = dstActor->getPort(dstPortId);
-    if (dstPort == NULL) {
+    if (dstPort == nullptr) {
         throw ReadFailed(HRVisualParser::tr("Cannot find '%1' port at '%2'").arg(dstPortId).arg(dstActorId));
     }
 

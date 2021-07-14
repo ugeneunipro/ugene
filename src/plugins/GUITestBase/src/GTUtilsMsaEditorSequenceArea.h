@@ -53,7 +53,14 @@ public:
     static QStringList getCurrentRowNames(GUITestOpStatus &os);
 
     static bool hasSequencesWithNames(GUITestOpStatus &os, const QStringList &names);
-    static QStringList getVisibleNames(GUITestOpStatus &os);
+
+    /**
+     * Returns list of visible row names.
+     * Uses original MSA row names if 'asShownInNameList' is false (default) or the final rendered
+     * row text if 'asShownInNameList' is true.
+     */
+    static QStringList getVisibleNames(GUITestOpStatus &os, bool asShownInNameList = false);
+
     static QString getSimilarityValue(GUITestOpStatus &os, int row);
     static void clickCollapseTriangle(GUITestOpStatus &os, QString seqName);
     static bool isCollapsed(GUITestOpStatus &os, QString seqName);

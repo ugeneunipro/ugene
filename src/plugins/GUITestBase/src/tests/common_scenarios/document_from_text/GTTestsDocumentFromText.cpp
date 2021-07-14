@@ -1231,7 +1231,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015) {
     CHECK_SET_ERR(complement->isEnabled() == false, "button is not disabled");
 
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_result");
-    CHECK_SET_ERR(toolbar != NULL, "Cannot find views_tool_bar_result");
+    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_result");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_details_view", toolbar));
 
     QAbstractButton *complement1 = GTAction::button(os, "complement_action");
@@ -1265,7 +1265,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_1) {
     CHECK_SET_ERR(complement->isEnabled() == false, "button is not disabled");
 
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_result");
-    CHECK_SET_ERR(toolbar != NULL, "Cannot find views_tool_bar_result");
+    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_result");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_details_view", toolbar));
 
     QAbstractButton *complement1 = GTAction::button(os, "complement_action");
@@ -1299,7 +1299,7 @@ GUI_TEST_CLASS_DEFINITION(test_0015_2) {
     CHECK_SET_ERR(complement->isEnabled() == false, "button is not disabled");
 
     QWidget *toolbar = GTWidget::findWidget(os, "views_tool_bar_result");
-    CHECK_SET_ERR(toolbar != NULL, "Cannot find views_tool_bar_result");
+    CHECK_SET_ERR(toolbar != nullptr, "Cannot find views_tool_bar_result");
     GTWidget::click(os, GTWidget::findWidget(os, "show_hide_details_view", toolbar));
 
     QAbstractButton *complement1 = GTAction::button(os, "complement_action");

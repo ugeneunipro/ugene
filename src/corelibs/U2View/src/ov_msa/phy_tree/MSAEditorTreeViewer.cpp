@@ -488,7 +488,7 @@ void MSAEditorTreeViewerUI::highlightBranches() {
             collapsedRootItemList.append(node);
             continue;
         }
-        if (node2Pos > subgroupSelectorPos && node1Pos < subgroupSelectorPos && node->getNameText() == NULL) {
+        if (node2Pos > subgroupSelectorPos && node1Pos < subgroupSelectorPos && node->getNameText() == nullptr) {
             groupRootItemList.append(node);
             continue;
         }
@@ -512,7 +512,7 @@ void MSAEditorTreeViewerUI::highlightBranches() {
     QMap<PhyNode *, QColor> colorSchema;
 
     for (GraphicsRectangularBranchItem *branchItem : qAsConst(groupRootItemList)) {
-        PhyNode *secondNode = NULL;
+        PhyNode *secondNode = nullptr;
         if (branchItem->getPhyBranch() != nullptr) {
             secondNode = branchItem->getPhyBranch()->node2;
         } else {

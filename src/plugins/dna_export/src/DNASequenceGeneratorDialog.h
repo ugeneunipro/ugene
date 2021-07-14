@@ -31,7 +31,7 @@ class SaveDocumentController;
 class DNASequenceGeneratorDialog : public QDialog, public Ui_DNASequenceGeneratorDialog {
     Q_OBJECT
 public:
-    DNASequenceGeneratorDialog(QWidget *p = NULL);
+    DNASequenceGeneratorDialog(QWidget *p = nullptr);
 
 private slots:
     void sl_browseReference();

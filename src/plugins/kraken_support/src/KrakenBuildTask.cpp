@@ -125,7 +125,7 @@ void KrakenBuildTask::checkSettings() {
 
 void KrakenBuildTask::checkTaxonomy() {
     U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
-    CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), setError(tr("Taxonomy data are not set")), );
+    CHECK_EXT(nullptr != taxonomyDataPath && taxonomyDataPath->isValid(), setError(tr("Taxonomy data are not set")), );
 }
 
 QList<Task *> KrakenBuildTask::prepareTaxonomyData() {
@@ -140,7 +140,7 @@ QList<Task *> KrakenBuildTask::prepareTaxonomyData() {
     CHECK_OP(stateInfo, copyTasks);
 
     U2DataPath *taxonomyDataPath = AppContext::getDataPathRegistry()->getDataPathByName(NgsReadsClassificationPlugin::TAXONOMY_DATA_ID);
-    CHECK_EXT(NULL != taxonomyDataPath && taxonomyDataPath->isValid(), setError(tr("Cannot find taxonomy data")), copyTasks);
+    CHECK_EXT(nullptr != taxonomyDataPath && taxonomyDataPath->isValid(), setError(tr("Cannot find taxonomy data")), copyTasks);
     const QString sourceDirUrl = taxonomyDataPath->getPath();
 
     foreach (const QString &fileName, QDir(sourceDirUrl).entryList(QDir::Files | QDir::NoDotAndDotDot)) {

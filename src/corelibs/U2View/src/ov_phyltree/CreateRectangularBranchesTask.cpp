@@ -37,7 +37,7 @@ CreateRectangularBranchesTask::CreateRectangularBranchesTask(const PhyNode *n)
 
 GraphicsRectangularBranchItem *CreateRectangularBranchesTask::getBranch(const PhyNode *node) {
     if (isCanceled() || stateInfo.hasError())
-        return NULL;
+        return nullptr;
 
     int branches = node->branchCount();
     if (branches == 1 && (node->getName() == "" || node->getName() == "ROOT")) {
@@ -50,34 +50,34 @@ GraphicsRectangularBranchItem *CreateRectangularBranchesTask::getBranch(const Ph
         int ind = -1;
         for (int i = 0; i < branches; ++i) {
             if (isCanceled() || stateInfo.hasError()) {
-                return NULL;
+                return nullptr;
             }
             if (node->getSecondNodeOfBranch(i) != node) {
                 GraphicsRectangularBranchItem *item = getBranch(node->getSecondNodeOfBranch(i));
                 items.append(item);
             } else {
-                items.append(NULL);
+                items.append(nullptr);
                 ind = i;
             }
         }
 
-        GraphicsRectangularBranchItem *item = NULL;
+        GraphicsRectangularBranchItem *item = nullptr;
         if (ind < 0) {
             item = new GraphicsRectangularBranchItem();
         } else {
             const PhyBranch *parentBranch = node->getParentBranch();
-            if (parentBranch != NULL) {
+            if (parentBranch != nullptr) {
                 item = new GraphicsRectangularBranchItem(node->getBranchesDistance(ind), node->getBranch(ind), parentBranch->nodeValue);
             }
         }
-        SAFE_POINT_EXT(NULL != item, setError(tr("An internal error: a tree is in an incorrect state, can't create a branch")), NULL);
+        SAFE_POINT_EXT(nullptr != item, setError(tr("An internal error: a tree is in an incorrect state, can't create a branch")), nullptr);
         int size = items.size();
         assert(size > 0);
 
         {
             int xmin = 0, ymin = items[0] ? items[0]->pos().y() : items[1]->pos().y(), ymax = 0;
             for (int i = 0; i < size; ++i) {
-                if (items[i] == NULL) {
+                if (items[i] == nullptr) {
                     continue;
                 }
                 QPointF pos1 = items[i]->pos();
@@ -94,11 +94,11 @@ GraphicsRectangularBranchItem *CreateRectangularBranchesTask::getBranch(const Ph
             item->setPos(xmin, y);
 
             for (int i = 0; i < size; ++i) {
-                if (items[i] == NULL) {
+                if (items[i] == nullptr) {
                     continue;
                 }
                 if (isCanceled() || stateInfo.hasError()) {
-                    return NULL;
+                    return nullptr;
                 }
                 qreal dist = qAbs(node->getBranchesDistance(i));
                 if (minDistance > -1) {
@@ -118,7 +118,7 @@ GraphicsRectangularBranchItem *CreateRectangularBranchesTask::getBranch(const Ph
         return item;
     } else {
         int y = (current++ + 0.5) * GraphicsRectangularBranchItem::DEFAULT_HEIGHT;
-        GraphicsRectangularBranchItem *item = NULL;
+        GraphicsRectangularBranchItem *item = nullptr;
         if (branches != 1) {
             item = new GraphicsRectangularBranchItem(0, y, node->getName());
         } else {
@@ -136,7 +136,7 @@ void CreateRectangularBranchesTask::run() {
     minDistance = -2;
     maxDistance = 0;
     GraphicsRectangularBranchItem *item = getBranch(node);    // modifies minDistance and maxDistance
-    CHECK(item != NULL, );
+    CHECK(item != nullptr, );
     item->setWidthW(0);
     item->setDist(0);
     item->setHeightW(0);
@@ -160,7 +160,7 @@ void CreateRectangularBranchesTask::run() {
         item->setWidth(item->getWidth() * scale);
         foreach (QGraphicsItem *ci, item->childItems()) {
             GraphicsRectangularBranchItem *gbi = dynamic_cast<GraphicsRectangularBranchItem *>(ci);
-            if (gbi != NULL) {
+            if (gbi != nullptr) {
                 stack.push(gbi);
             }
         }

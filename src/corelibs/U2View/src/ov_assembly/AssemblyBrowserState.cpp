@@ -67,7 +67,7 @@ int AssemblyBrowserState::getYOffset() const {
 void AssemblyBrowserState::saveState(const AssemblyBrowser *ab) {
     stateData[VIEW_ID] = AssemblyBrowserFactory::ID;
     AssemblyObject *gObj = ab->getAssemblyObject();
-    if (gObj != NULL) {
+    if (gObj != nullptr) {
         setGObjectRef(GObjectReference(gObj));
     }
 
@@ -76,7 +76,7 @@ void AssemblyBrowserState::saveState(const AssemblyBrowser *ab) {
 }
 
 void AssemblyBrowserState::restoreState(AssemblyBrowser *ab) const {
-    if (NULL != ab->getMainWidget() && ab->getMainWidget()->isCorrectView()) {
+    if (nullptr != ab->getMainWidget() && ab->getMainWidget()->isCorrectView()) {
         ab->navigateToRegion(getVisibleBasesRegion());
         ab->setYOffsetInAssembly(getYOffset());
     }

@@ -40,20 +40,20 @@ MSAImageExportTask::MSAImageExportTask(MaEditorWgt *ui,
     : ImageExportTask(settings),
       ui(ui),
       msaSettings(msaSettings) {
-    SAFE_POINT_EXT(ui != NULL, setError(tr("MSA Editor UI is NULL")), );
+    SAFE_POINT_EXT(ui != nullptr, setError(tr("MSA Editor UI is NULL")), );
 }
 
 void MSAImageExportTask::paintSequencesNames(QPainter &painter) {
     CHECK(msaSettings.includeSeqNames, );
     MaEditorNameList *namesArea = ui->getEditorNameList();
-    SAFE_POINT_EXT(ui->getEditor() != NULL, setError(tr("MSA Editor is NULL")), );
+    SAFE_POINT_EXT(ui->getEditor() != nullptr, setError(tr("MSA Editor is NULL")), );
     namesArea->drawNames(painter, msaSettings.seqIdx);
 }
 
 void MSAImageExportTask::paintConsensus(QPainter &painter) {
     CHECK(msaSettings.includeConsensus || msaSettings.includeRuler, );
     MaEditorConsensusArea *consensusArea = ui->getConsensusArea();
-    SAFE_POINT_EXT(consensusArea != NULL, setError(tr("MSA Consensus area is NULL")), );
+    SAFE_POINT_EXT(consensusArea != nullptr, setError(tr("MSA Consensus area is NULL")), );
 
     MaEditorConsensusAreaSettings consensusSettings = consensusArea->getDrawSettings();
     consensusSettings.visibleElements = MaEditorConsElements();
@@ -70,7 +70,7 @@ void MSAImageExportTask::paintConsensus(QPainter &painter) {
 void MSAImageExportTask::paintRuler(QPainter &painter) {
     CHECK(msaSettings.includeRuler, );
     MaEditorConsensusArea *consensusArea = ui->getConsensusArea();
-    SAFE_POINT_EXT(consensusArea != NULL, setError(tr("MSA Consensus area is NULL")), );
+    SAFE_POINT_EXT(consensusArea != nullptr, setError(tr("MSA Consensus area is NULL")), );
 
     MaEditorConsensusAreaSettings consensusSettings = consensusArea->getDrawSettings();
     consensusSettings.visibleElements = MSAEditorConsElement_RULER;
@@ -95,9 +95,9 @@ void MSAImageExportToBitmapTask::run() {
     SAFE_POINT_EXT(settings.isBitmapFormat(),
                    setError(WRONG_FORMAT_MESSAGE.arg(settings.format).arg("MSAImageExportToBitmapTask")), );
 
-    SAFE_POINT_EXT(ui->getEditor() != NULL, setError(L10N::nullPointerError("MSAEditor")), );
+    SAFE_POINT_EXT(ui->getEditor() != nullptr, setError(L10N::nullPointerError("MSAEditor")), );
     MultipleAlignmentObject *mObj = ui->getEditor()->getMaObject();
-    SAFE_POINT_EXT(mObj != NULL, setError(L10N::nullPointerError("MultipleAlignmentObject")), );
+    SAFE_POINT_EXT(mObj != nullptr, setError(L10N::nullPointerError("MultipleAlignmentObject")), );
     StateLock *lock = new StateLock();
     mObj->lockState(lock);
 
@@ -193,9 +193,9 @@ void MSAImageExportToSvgTask::run() {
                    setError(WRONG_FORMAT_MESSAGE.arg(settings.format).arg("MSAImageExportToSvgTask")), );
 
     MaEditor *editor = ui->getEditor();
-    SAFE_POINT_EXT(editor != NULL, setError(L10N::nullPointerError("MSAEditor")), );
+    SAFE_POINT_EXT(editor != nullptr, setError(L10N::nullPointerError("MSAEditor")), );
     MultipleAlignmentObject *mObj = editor->getMaObject();
-    SAFE_POINT_EXT(mObj != NULL, setError(L10N::nullPointerError("MultipleAlignmentObject")), );
+    SAFE_POINT_EXT(mObj != nullptr, setError(L10N::nullPointerError("MultipleAlignmentObject")), );
 
     StateLocker stateLocker(mObj);
     Q_UNUSED(stateLocker);
@@ -212,9 +212,9 @@ void MSAImageExportToSvgTask::run() {
     generator.setFileName(settings.fileName);
 
     MaEditorNameList *nameListArea = ui->getEditorNameList();
-    SAFE_POINT_EXT(nameListArea != NULL, setError(L10N::nullPointerError("MSAEditorNameList")), );
+    SAFE_POINT_EXT(nameListArea != nullptr, setError(L10N::nullPointerError("MSAEditorNameList")), );
     MaEditorConsensusArea *consArea = ui->getConsensusArea();
-    SAFE_POINT_EXT(consArea != NULL, setError(L10N::nullPointerError("MSAEditorConsensusArea")), );
+    SAFE_POINT_EXT(consArea != nullptr, setError(L10N::nullPointerError("MSAEditorConsensusArea")), );
 
     MaEditorConsElements visibleConsensusElements;
     if (msaSettings.includeConsensus) {
@@ -257,7 +257,7 @@ void MSAImageExportToSvgTask::run() {
 MSAImageExportController::MSAImageExportController(MaEditorWgt *ui)
     : ImageExportController(ExportImageFormatPolicy(EnableRasterFormats | SupportSvg)),
       ui(ui) {
-    SAFE_POINT(ui != NULL, L10N::nullPointerError("MSAEditorUI"), );
+    SAFE_POINT(ui != nullptr, L10N::nullPointerError("MSAEditorUI"), );
     shortDescription = tr("Alignment");
     initSettingsWidget();
     checkRegionToExport();
@@ -306,12 +306,12 @@ void MSAImageExportController::initSettingsWidget() {
     connect(settingsUi->selectRegionButton, SIGNAL(clicked()), SLOT(sl_showSelectRegionDialog()));
     connect(settingsUi->comboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_regionChanged()));
 
-    MaEditorSelection selection = ui->getSequenceArea()->getSelection();
-    CHECK(!selection.isEmpty(), );
-    msaSettings.region = U2Region(selection.x(), selection.width());
+    QRect selectionRect = ui->getSequenceArea()->getSelection().toRect();
+    CHECK(!selectionRect.isEmpty(), );
+    msaSettings.region = U2Region(selectionRect.x(), selectionRect.width());
     msaSettings.seqIdx.clear();
     MaCollapseModel *model = ui->getCollapseModel();
-    for (qint64 viewRowIndex = selection.y(); viewRowIndex <= selection.bottom(); viewRowIndex++) {
+    for (qint64 viewRowIndex = selectionRect.y(); viewRowIndex <= selectionRect.bottom(); viewRowIndex++) {
         int maRowIndex = model->getMaRowIndexByViewRowIndex(viewRowIndex);
         msaSettings.seqIdx.append(maRowIndex);
     }
@@ -362,7 +362,7 @@ const qint64 MaxSvgImageSize = 40000000;
 
 bool MSAImageExportController::fitsInLimits() const {
     MaEditor *editor = ui->getEditor();
-    SAFE_POINT(editor != NULL, L10N::nullPointerError("MSAEditor"), false);
+    SAFE_POINT(editor != nullptr, L10N::nullPointerError("MSAEditor"), false);
     qint64 imageWidth = (msaSettings.exportAll ? editor->getAlignmentLen() : msaSettings.region.length) * editor->getColumnWidth();
     qint64 imageHeight = msaSettings.exportAll ? ui->getRowHeightController()->getTotalAlignmentHeight() : ui->getRowHeightController()->getSumOfRowHeightsByMaIndexes(msaSettings.seqIdx);
     if (imageWidth > IMAGE_SIZE_LIMIT || imageHeight > IMAGE_SIZE_LIMIT) {
@@ -376,7 +376,7 @@ bool MSAImageExportController::fitsInLimits() const {
 
 bool MSAImageExportController::canExportToSvg() const {
     MaEditor *editor = ui->getEditor();
-    SAFE_POINT(editor != NULL, L10N::nullPointerError("MSAEditor"), false);
+    SAFE_POINT(editor != nullptr, L10N::nullPointerError("MSAEditor"), false);
     int charactersNumber = msaSettings.exportAll ? (editor->getNumSequences() * editor->getAlignmentLen()) : (msaSettings.region.length * msaSettings.seqIdx.size());
     return charactersNumber < MaxSvgCharacters;
 }

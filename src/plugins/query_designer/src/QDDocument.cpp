@@ -158,7 +158,7 @@ QDElementStatement *QDDocument::getElement(const QString &id) const {
             return stmt;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 QList<QDElementStatement *> QDDocument::getElements(QDStatementType type) const {
@@ -273,7 +273,7 @@ bool QDDocument::addElement(QDElementStatement *el) {
         }
     }
     elements.append(el);
-    assert(el->document == NULL);
+    assert(el->document == nullptr);
     el->document = this;
     return true;
 }
@@ -367,8 +367,7 @@ QMap<QString, QString> QDDocument::string2attributesMap(const QString &str) {
 }
 
 QList<QString> QDDocument::idsFromString(const QString &str) {
-    QStringList l = str.split(QRegExp("\\s*--\\s*"));
-    return l;
+    return str.split(QRegExp("\\s*--\\s*"));
 }
 
 QString QDDocument::definedIn(const QString &id) {

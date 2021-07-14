@@ -67,7 +67,7 @@ void U2Dbi::populateDefaultSchema(U2OpStatus &) {
 }
 
 U2ObjectRelationsDbi *U2Dbi::getObjectRelationsDbi() {
-    return NULL;
+    return nullptr;
 }
 
 void U2Dbi::startOperationsBlock(U2OpStatus &) {
@@ -77,7 +77,7 @@ void U2Dbi::stopOperationBlock(U2OpStatus &) {
 }
 
 QMutex *U2Dbi::getDbMutex() const {
-    return NULL;
+    return nullptr;
 }
 
 void U2Dbi::setVersionProperties(const Version &minVersion, U2OpStatus &os) {

@@ -86,7 +86,7 @@ public:
     }
 
     bool isRootItem() {
-        return parent() == NULL;
+        return parent() == nullptr;
     }
     virtual void updateVisual() = 0;
     virtual bool isPluginItem() const {

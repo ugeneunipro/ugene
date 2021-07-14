@@ -34,8 +34,8 @@ SequenceExportSettingsWidget::SequenceExportSettingsWidget(U2SequenceObject *seq
     : seqObject(seqObject) {
     setupUi(this);
     settings = qSharedPointerCast<SequenceExportSettings>(s);
-    SAFE_POINT(settings != NULL, tr("Cannot cast CustomExportSettings to SequenceExportSettings"), );
-    SAFE_POINT(seqObject != NULL, tr("Sequence Object is NULL"), );
+    SAFE_POINT(settings != nullptr, tr("Cannot cast CustomExportSettings to SequenceExportSettings"), );
+    SAFE_POINT(seqObject != nullptr, tr("Sequence Object is NULL"), );
 
     regionSelector = new RegionSelector(this, seqObject->getSequenceLength(), true, selection);
     regionLayout->addWidget(regionSelector);

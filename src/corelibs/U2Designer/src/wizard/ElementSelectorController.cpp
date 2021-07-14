@@ -46,7 +46,7 @@ QWidget *ElementSelectorController::createGUI(U2OpStatus & /*os*/) {
     connect(cb, SIGNAL(si_valueChanged(const QVariant &)), SLOT(sl_valueChanged(const QVariant &)));
     cb->setValue(wc->getSelectorValue(widget));
 
-    LabeledPropertyWidget *result = new LabeledPropertyWidget(widget->getLabel(), cb, NULL);
+    LabeledPropertyWidget *result = new LabeledPropertyWidget(widget->getLabel(), cb, nullptr);
     if (labelSize >= 0) {
         result->setLabelWidth(labelSize);
     }

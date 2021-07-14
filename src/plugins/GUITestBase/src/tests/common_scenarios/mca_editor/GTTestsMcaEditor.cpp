@@ -27,6 +27,7 @@
 #include <primitives/GTAction.h>
 #include <primitives/GTCheckBox.h>
 #include <primitives/GTComboBox.h>
+#include <primitives/GTGroupBox.h>
 #include <primitives/GTLineEdit.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTSpinBox.h>
@@ -3247,13 +3248,13 @@ GUI_TEST_CLASS_DEFINITION(test_0040_1) {
 
     // chrom show/hide
     QAbstractButton *showChromsButton = GTAction::button(os, "chromatograms");
-    CHECK_SET_ERR(showChromsButton != NULL, "show/hide chromatograms button was not found");
+    CHECK_SET_ERR(showChromsButton != nullptr, "show/hide chromatograms button was not found");
     GTWidget::click(os, showChromsButton);
     bool chromCheckedState = showChromsButton->isChecked();
 
     // overview show/hide
     QAbstractButton *showOverviewButton = GTAction::button(os, "overview");
-    CHECK_SET_ERR(showOverviewButton != NULL, "overview button was not found");
+    CHECK_SET_ERR(showOverviewButton != nullptr, "overview button was not found");
     GTWidget::click(os, showOverviewButton);
     bool overviewCheckedState = showOverviewButton->isChecked();
 
@@ -3276,15 +3277,15 @@ GUI_TEST_CLASS_DEFINITION(test_0040_1) {
 
     // check saved states
     showChromsButton = GTAction::button(os, "chromatograms");
-    CHECK_SET_ERR(showChromsButton != NULL, "show/hide chromatograms button was not found");
+    CHECK_SET_ERR(showChromsButton != nullptr, "show/hide chromatograms button was not found");
     CHECK_SET_ERR(chromCheckedState == showChromsButton->isChecked(), "Show/hide chromatograms button state was not saved");
 
     showOverviewButton = GTAction::button(os, "overview");
-    CHECK_SET_ERR(showOverviewButton != NULL, "overview button was not found");
+    CHECK_SET_ERR(showOverviewButton != nullptr, "overview button was not found");
     CHECK_SET_ERR(overviewCheckedState == showOverviewButton->isChecked(), "Show/hide overview button state was not saved");
 
     offsetAction = GTUtilsMcaEditor::getOffsetAction(os);
-    CHECK_SET_ERR(offsetAction != NULL, "overview button was not found");
+    CHECK_SET_ERR(offsetAction != nullptr, "overview button was not found");
     CHECK_SET_ERR(offsetCheckedState == offsetAction->isChecked(), "Show/hide offset button state was not saved");
 }
 
@@ -3736,6 +3737,185 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
 
         GTUtilsMcaEditor::zoomOut(os);
     }
+}
+
+
+GUI_TEST_CLASS_DEFINITION(test_0045_1) {
+    // Description: check "Alternative mutations" using slider to set threshold
+    // 0. Copy test file to sandbox
+    QString file = sandBoxDir + "test_0045_1.ugenedb";
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment_alternative_mutations.ugenedb", file);
+
+    // 1. Open "sandBoxDir + "test_0045_1.ugenedb""
+    GTFileDialog::openFile(os, file);
+
+    // 1. Scroll to 298 base
+    GTUtilsMcaEditorSequenceArea::scrollToBase(os, 297);
+
+    // Expected: read 1, pos 298 - C
+    char ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 0));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 1, pos 298), expected: C, current: %1").arg(ch));
+
+    // Expected: read 2, pos 298 - C
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 1));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 2, pos 298), expected: C, current: %1").arg(ch));
+
+    // 3. Open the "Reads" tab, check "Show alternative mutations", set threshold to 85 by slider and click "Update"
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, true, 85, false);
+
+    // Expected: read 1, pos 298 - T
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 0));
+    CHECK_SET_ERR(ch == 'T', QString("Incorrect chararcter (read 1, pos 298) with AM threshold 85, expected: T, current: %1").arg(ch));
+
+    // Expected: read 2, pos 298 - C
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 1));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 2, pos 298), expected: C, current: %1").arg(ch));
+
+    // 4. Set threshold to 70 by slider and click "Update"
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, true, 70, false);
+
+    // Expected: read 1, pos 298 - T
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 0));
+    CHECK_SET_ERR(ch == 'T', QString("Incorrect chararcter (read 1, pos 298) with AM threshold 70, expected: T, current: %1").arg(ch));
+
+    // Expected: read 2, pos 298 - T
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 1));
+    CHECK_SET_ERR(ch == 'T', QString("Incorrect chararcter (read 2, pos 298) with AM threshold 70, expected: T, current: %1").arg(ch));
+
+    // 5. Uncheck "Show alternative mutations"
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, false);
+
+    // Expected: read 1, pos 298 - C
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 0));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 1, pos 298) after AM unchecked, expected: C, current: %1").arg(ch));
+
+    // Expected: read 2, pos 298 - C
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 1));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 2, pos 298) after AM unchecked, expected: C, current: %1").arg(ch));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0045_2) {
+    // Description: check "Alternative mutations" using spinbox to set threshold
+    // 0. Copy test file to sandbox
+    QString file = sandBoxDir + "test_0045_2.ugenedb";
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment_alternative_mutations.ugenedb", file);
+
+    // 1. Open "sandBoxDir + "test_0045_2.ugenedb""
+    GTFileDialog::openFile(os, file);
+
+    // 1. Scroll to 298 base
+    GTUtilsMcaEditorSequenceArea::scrollToBase(os, 297);
+
+    // Expected: read 1, pos 298 - C
+    char ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 0));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 1, pos 298), expected: C, current: %1").arg(ch));
+
+    // Expected: read 2, pos 298 - C
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 1));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 2, pos 298), expected: C, current: %1").arg(ch));
+
+    // 3. Open the "Reads" tab, check "Show alternative mutations", set threshold to 85 by spinbox and click "Update"
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, true, 85, true);
+
+    // Expected: read 1, pos 298 - T
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 0));
+    CHECK_SET_ERR(ch == 'T', QString("Incorrect chararcter (read 1, pos 298) with AM threshold 85, expected: T, current: %1").arg(ch));
+
+    // Expected: read 2, pos 298 - C
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 1));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 2, pos 298), expected: C, current: %1").arg(ch));
+
+    // 4. Set threshold to 70 by spinbox and click "Update"
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, true, 70, true);
+
+    // Expected: read 1, pos 298 - T
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 0));
+    CHECK_SET_ERR(ch == 'T', QString("Incorrect chararcter (read 1, pos 298) with AM threshold 70, expected: T, current: %1").arg(ch));
+
+    // Expected: read 2, pos 298 - T
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 1));
+    CHECK_SET_ERR(ch == 'T', QString("Incorrect chararcter (read 2, pos 298) with AM threshold 70, expected: T, current: %1").arg(ch));
+
+    // 5. Uncheck "Show alternative mutations"
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, false);
+
+    // Expected: read 1, pos 298 - C
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 0));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 1, pos 298) after AM unchecked, expected: C, current: %1").arg(ch));
+
+    // Expected: read 2, pos 298 - C
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(297, 1));
+    CHECK_SET_ERR(ch == 'C', QString("Incorrect chararcter (read 2, pos 298) after AM unchecked, expected: C, current: %1").arg(ch));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0045_3) {
+    // Description: check "Alternative mutations" using spinbox to set threshold
+    // 0. Copy test file to sandbox
+    QString file = sandBoxDir + "test_0045_3.ugenedb";
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment_alternative_mutations.ugenedb", file);
+
+    // 1. Open "sandBoxDir + "test_0045_3.ugenedb""
+    GTFileDialog::openFile(os, file);
+
+    // 2. Open the "Reads" tab, check "Show alternative mutations", set threshold to 90 by spinbox and click "Update"
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, true, 90, true);
+
+    // 3. Open view it the other window
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Open view"
+                                                                              << "Open new view: Sanger Reads Editor",
+                                                            GTGlobals::UseMouse));
+    GTUtilsProjectTreeView::callContextMenu(os, "Mapped reads");
+
+    // 4. Open the "Reads" tab, check "Show alternative mutations", set threshold to 80 by spinbox and click "Update"
+    auto mcaEditorWidget = GTWidget::findExactWidget<QWidget *>(os, "Mapped reads [test_0045_3.ugenedb] 2");
+    CHECK_SET_ERR(mcaEditorWidget != nullptr, "Cant find \"Mapped reads [test_0045_3.ugenedb] 2\"");
+
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, true, 80, true, mcaEditorWidget);
+
+    // 5. Switch back to the first view and uncheck "Show alternative mutations"
+    GTUtilsMdi::clickTab(os, 1);
+    mcaEditorWidget = GTWidget::findExactWidget<QWidget *>(os, "Mapped reads [test_0045_3.ugenedb]");
+    CHECK_SET_ERR(mcaEditorWidget != nullptr, "Cant find \"Mapped reads [test_0045_3.ugenedb]\"");
+
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, false, 75, true, mcaEditorWidget);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_0045_4) {
+    // Description: check "Alternative mutations" using spinbox to set threshold
+    // 0. Copy test file to sandbox
+    QString file = sandBoxDir + "test_0045_4.ugenedb";
+    GTFile::copy(os, testDir + "_common_data/sanger/alignment_alternative_mutations.ugenedb", file);
+
+    // 1. Open "sandBoxDir + "test_0045_4.ugenedb""
+    GTFileDialog::openFile(os, file);
+
+    // 2. Open the "Reads" tab, check "Show alternative mutations", set threshold to 8 by spinbox and click "Update"
+    GTUtilsOptionPanelMca::showAlternativeMutations(os, true, 8, true);
+
+    // Expected: read 2, pos 308 - A
+    auto ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(307, 1));
+    CHECK_SET_ERR(ch == 'A', QString("Incorrect chararcter (read 2, pos 308), expected: A, current: %1").arg(ch));
+
+    // 3. Close the view
+    GTUtilsMdi::closeActiveWindow(os);
+
+    // 4. Open the same view again
+    GTUtilsProjectTreeView::openView(os);
+    GTUtilsProjectTreeView::doubleClickItem(os, "test_0045_4.ugenedb");
+
+    // 5. Open the "Reads" tab
+    GTUtilsOptionPanelMca::toggleTab(os, GTUtilsOptionPanelMca::Tabs::Reads);
+
+    // Expected: alternative mutations are ON, threshold at 8%
+    bool isChecked = GTGroupBox::getChecked(os, "mutationsGroupBox");
+    CHECK_SET_ERR(isChecked, "Alternative mutations should be turned ON");
+
+    auto amValue = GTSpinBox::getValue(os, "mutationsThresholdSpinBox");
+    CHECK_SET_ERR(amValue == 8, QString("Expected alternative mutations value: 8, current: %1").arg(amValue));
+
+    // Expected: read 2, pos 308 - A
+    ch = GTUtilsMcaEditorSequenceArea::getReadCharByPos(os, QPoint(307, 1));
+    CHECK_SET_ERR(ch == 'A', QString("Incorrect chararcter (read 2, pos 308), expected: A, current: %1").arg(ch));
 }
 
 }    //namespace GUITest_common_scenarios_mca_editor

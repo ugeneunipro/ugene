@@ -74,7 +74,7 @@ qint64 IOAdapter::readUntil(char *buf, qint64 maxSize, const QBitArray &readTerm
         Q_UNUSED(b);
     }
 
-    if (terminatorFound != NULL) {
+    if (terminatorFound != nullptr) {
         *terminatorFound = found;
     }
 

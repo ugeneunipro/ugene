@@ -98,7 +98,7 @@ void StreamShortReadWriter::close() {
 StreamGzippedShortReadWriter::StreamGzippedShortReadWriter()
     : StreamShortReadWriter() {
     delete io;
-    io = NULL;
+    io = nullptr;
 
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::GZIPPED_LOCAL_FILE);
     io = iof->createIOAdapter();

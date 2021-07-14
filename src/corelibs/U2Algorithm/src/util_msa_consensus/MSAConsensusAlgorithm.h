@@ -47,9 +47,9 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(ConsensusAlgorithmFlags)
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithmFactory : public QObject {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithmFactory(const QString &algoId, ConsensusAlgorithmFlags flags, QObject *p = NULL);
+    MSAConsensusAlgorithmFactory(const QString &algoId, ConsensusAlgorithmFlags flags, QObject *p = nullptr);
 
-    virtual MSAConsensusAlgorithm *createAlgorithm(const MultipleAlignment &ma, bool ignoreTrailingLeadingGaps = false, QObject *parent = NULL) = 0;
+    virtual MSAConsensusAlgorithm *createAlgorithm(const MultipleAlignment &ma, bool ignoreTrailingLeadingGaps = false, QObject *parent = nullptr) = 0;
 
     QString getId() const {
         return algorithmId;
@@ -90,7 +90,7 @@ private:
 class U2ALGORITHM_EXPORT MSAConsensusAlgorithm : public QObject {
     Q_OBJECT
 public:
-    MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory *factory, bool ignoreTrailingLeadingGaps, QObject *p = NULL);
+    MSAConsensusAlgorithm(MSAConsensusAlgorithmFactory *factory, bool ignoreTrailingLeadingGaps, QObject *p = nullptr);
     MSAConsensusAlgorithm(const MSAConsensusAlgorithm &algorithm);
 
     /**

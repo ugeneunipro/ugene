@@ -64,7 +64,7 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
         void commonScenario() {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QRadioButton *btn = dialog->findChild<QRadioButton *>("rbExistingTable");
-            GT_CHECK(btn != NULL, "Radio button not found");
+            GT_CHECK(btn != nullptr, "Radio button not found");
 
             if (!btn->isEnabled()) {
                 GTMouseDriver::moveTo(btn->mapToGlobal(btn->rect().topLeft()));
@@ -72,14 +72,14 @@ GUI_TEST_CLASS_DEFINITION(test_0001) {
             }
 
             QComboBox *comboBox = dialog->findChild<QComboBox *>();
-            GT_CHECK(comboBox != NULL, "ComboBox not found");
+            GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
             GT_CHECK(comboBox->count() == 0, "ComboBox is not empty");
 
             QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-            GT_CHECK(box != NULL, "buttonBox is NULL");
+            GT_CHECK(box != nullptr, "buttonBox is NULL");
             QPushButton *button = box->button(QDialogButtonBox::Cancel);
-            GT_CHECK(button != NULL, "cancel button is NULL");
+            GT_CHECK(button != nullptr, "cancel button is NULL");
             GTWidget::click(os, button);
         }
 
@@ -117,7 +117,7 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
         void commonScenario() {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QRadioButton *btn = dialog->findChild<QRadioButton *>("rbExistingTable");
-            GT_CHECK(btn != NULL, "Radio button not found");
+            GT_CHECK(btn != nullptr, "Radio button not found");
 
             if (!btn->isEnabled()) {
                 GTMouseDriver::moveTo(btn->mapToGlobal(btn->rect().topLeft()));
@@ -125,14 +125,14 @@ GUI_TEST_CLASS_DEFINITION(test_0002) {
             }
 
             QComboBox *comboBox = dialog->findChild<QComboBox *>();
-            GT_CHECK(comboBox != NULL, "ComboBox not found");
+            GT_CHECK(comboBox != nullptr, "ComboBox not found");
 
             GT_CHECK(comboBox->count() != 0, "ComboBox is empty");
 
             QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-            GT_CHECK(box != NULL, "buttonBox is NULL");
+            GT_CHECK(box != nullptr, "buttonBox is NULL");
             QPushButton *button = box->button(QDialogButtonBox::Cancel);
-            GT_CHECK(button != NULL, "cancel button is NULL");
+            GT_CHECK(button != nullptr, "cancel button is NULL");
             GTWidget::click(os, button);
         }
 

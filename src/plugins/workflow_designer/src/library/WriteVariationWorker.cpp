@@ -61,7 +61,7 @@ void WriteVariationWorker::data2doc(Document *doc, const QVariantMap &data) {
 void WriteVariationWorker::storeEntry(IOAdapter *io, const QVariantMap &data, int entryNum) {
     CHECK(hasDataToWrite(data), );
     U2OpStatusImpl os;
-    QScopedPointer<VariantTrackObject> trackObj(NULL);
+    QScopedPointer<VariantTrackObject> trackObj(nullptr);
     {
         SharedDbiDataHandler objId = data.value(BaseSlots::VARIATION_TRACK_SLOT().getId())
                                          .value<SharedDbiDataHandler>();
@@ -77,7 +77,7 @@ void WriteVariationWorker::storeEntry(IOAdapter *io, const QVariantMap &data, in
     }
     if (1 == entryNum) {
         AbstractVariationFormat *variationFormat = qobject_cast<AbstractVariationFormat *>(format);
-        if (NULL != variationFormat) {
+        if (nullptr != variationFormat) {
             variationFormat->storeHeader(trackObj.data(), io, os);
             SAFE_POINT_OP(os, );
         }
@@ -131,7 +131,7 @@ void WriteVariationWorkerFactory::init() {
         }
 
         QList<Attribute *> attrs;
-        Attribute *docFormatAttr = NULL;
+        Attribute *docFormatAttr = nullptr;
         {
             Attribute *accumulateAttr = new Attribute(BaseAttributes::ACCUMULATE_OBJS_ATTRIBUTE(), BaseTypes::BOOL_TYPE(), false, true);
             accumulateAttr->addRelation(new VisibilityRelation(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId(), BaseAttributes::LOCAL_FS_DATA_STORAGE()));

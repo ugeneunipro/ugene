@@ -54,7 +54,7 @@ void WidgetWithLocalToolbar::setContentLayout(QLayout *l) {
 }
 
 QToolButton *WidgetWithLocalToolbar::addActionToLocalToolbar(QAction *action) {
-    SAFE_POINT(action != NULL, "Trying to add NULL action to toolbar", NULL);
+    SAFE_POINT(action != nullptr, "Trying to add NULL action to toolbar", nullptr);
     toolBar->addAction(action);
     update();
 

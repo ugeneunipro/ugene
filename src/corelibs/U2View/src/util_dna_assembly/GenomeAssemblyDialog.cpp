@@ -51,7 +51,7 @@ QString GenomeAssemblyDialog::library;
 GenomeAssemblyDialog::GenomeAssemblyDialog(QWidget *p)
     : QDialog(p),
       assemblyRegistry(AppContext::getGenomeAssemblyAlgRegistry()),
-      customGUI(NULL) {
+      customGUI(nullptr) {
     setupUi(this);
 
     QMap<QString, QString> helpPagesMap;
@@ -158,7 +158,7 @@ void GenomeAssemblyDialog::addReads(QStringList fileNames, QTreeWidget *readsWid
 }
 
 void GenomeAssemblyDialog::sl_onAddShortReadsButtonClicked() {
-    QTreeWidget *readsWidget = NULL;
+    QTreeWidget *readsWidget = nullptr;
     QObject *obj = sender();
     if (obj == addLeftButton) {
         readsWidget = leftReadsTable;
@@ -186,7 +186,7 @@ void GenomeAssemblyDialog::sl_onAddShortReadsButtonClicked() {
 
 void GenomeAssemblyDialog::accept() {
     bool validated = true;
-    if (NULL != customGUI) {
+    if (nullptr != customGUI) {
         QString error;
         if (!customGUI->isParametersOk(error)) {
             if (!error.isEmpty()) {
@@ -238,7 +238,7 @@ void GenomeAssemblyDialog::accept() {
             }
 
             GenomeAssemblyAlgorithmEnv *env = AppContext::getGenomeAssemblyAlgRegistry()->getAlgorithm(methodNamesBox->currentText());
-            SAFE_POINT(NULL != env, "Unknown algorithm: " + methodNamesBox->currentText(), );
+            SAFE_POINT(nullptr != env, "Unknown algorithm: " + methodNamesBox->currentText(), );
             QStringList formats = env->getReadsFormats();
 
             foreach (const QString &r, reads) {
@@ -303,7 +303,7 @@ QList<AssemblyReads> GenomeAssemblyDialog::getReads() {
 }
 
 void GenomeAssemblyDialog::sl_onRemoveShortReadsButtonClicked() {
-    QTreeWidget *readsWidget = NULL;
+    QTreeWidget *readsWidget = nullptr;
     QObject *obj = sender();
     if (obj == removeLeftButton) {
         readsWidget = leftReadsTable;
@@ -336,7 +336,7 @@ void GenomeAssemblyDialog::sl_onAlgorithmChanged(const QString &text) {
 }
 
 QMap<QString, QVariant> GenomeAssemblyDialog::getCustomSettings() {
-    if (customGUI != NULL) {
+    if (customGUI != nullptr) {
         return customGUI->getGenomeAssemblyCustomSettings();
     } else {
         return QMap<QString, QVariant>();
@@ -349,24 +349,24 @@ void GenomeAssemblyDialog::addGuiExtension() {
     int macFixDelta = 50;
 
     // cleanup previous extension
-    if (customGUI != NULL) {
+    if (customGUI != nullptr) {
         layout()->removeWidget(customGUI);
         setMinimumHeight(minimumHeight() - customGUI->minimumHeight());
         delete customGUI;
-        customGUI = NULL;
+        customGUI = nullptr;
         macFixDelta = 0;
     }
 
     // insert new extension widget
     GenomeAssemblyAlgorithmEnv *env = assemblyRegistry->getAlgorithm(methodNamesBox->currentText());
 
-    if (NULL == env) {
+    if (nullptr == env) {
         adjustSize();
         return;
     }
 
     GenomeAssemblyGUIExtensionsFactory *gui = env->getGUIExtFactory();
-    if (gui != NULL && gui->hasMainWidget()) {
+    if (gui != nullptr && gui->hasMainWidget()) {
         customGUI = gui->createMainWidget(this);
         int extensionMinWidth = customGUI->sizeHint().width();
         int extensionMinHeight = customGUI->sizeHint().height();

@@ -73,7 +73,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001) {
     //    Expected state:
     //    reference sequence line edit is empty
     QLineEdit *sequenceLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "sequenceLineEdit"));
-    CHECK_SET_ERR(sequenceLineEdit != NULL, "sequenceLineEdit not found");
+    CHECK_SET_ERR(sequenceLineEdit != nullptr, "sequenceLineEdit not found");
     QString text = sequenceLineEdit->text();
     CHECK_SET_ERR(text == seqName, QString("sequenceLineEdit contains %1, expected: %2").arg(text).arg(seqName));
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(os, seqName), "sequence not highlighted");
@@ -102,7 +102,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0001_1) {
     //    Expected state:
     //    reference sequence line edit contains Phaneroptera_falcata
     QLineEdit *sequenceLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "sequenceLineEdit"));
-    CHECK_SET_ERR(sequenceLineEdit != NULL, "sequenceLineEdit not found");
+    CHECK_SET_ERR(sequenceLineEdit != nullptr, "sequenceLineEdit not found");
     QString text = sequenceLineEdit->text();
     CHECK_SET_ERR(text == seqName, QString("sequenceLineEdit contains %1, expected: %2").arg(text).arg(seqName));
     CHECK_SET_ERR(GTUtilsMSAEditorSequenceArea::isSequenceHighlighted(os, seqName), "sequence not highlighted");
@@ -127,7 +127,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0002) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
     //3. Type "phan" in reference line edit
     QLineEdit *sequenceLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "sequenceLineEdit"));
-    CHECK_SET_ERR(sequenceLineEdit != NULL, "sequenceLineEdit not found");
+    CHECK_SET_ERR(sequenceLineEdit != nullptr, "sequenceLineEdit not found");
     GTLineEdit::setText(os, sequenceLineEdit, "phan");
     QStringList names = GTBaseCompleter::getNames(os, sequenceLineEdit);
     //Expected state: popup helper contains Phaneroptera_falcata.(case insensitivity is checked)
@@ -147,7 +147,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0003) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
     //    3. Type some string which is not part some sequence's name
     QLineEdit *sequenceLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "sequenceLineEdit"));
-    CHECK_SET_ERR(sequenceLineEdit != NULL, "sequenceLineEdit not found");
+    CHECK_SET_ERR(sequenceLineEdit != nullptr, "sequenceLineEdit not found");
     GTLineEdit::setText(os, sequenceLineEdit, "wrong name");
     //    Expected state: empty popup helper appeared
     bool empty = GTBaseCompleter::isEmpty(os, sequenceLineEdit);
@@ -165,7 +165,7 @@ GUI_TEST_CLASS_DEFINITION(general_test_0004) {
     GTUtilsMSAEditorSequenceArea::renameSequence(os, "Isophya_altaica_EF540820", "Phaneroptera_falcata");
     //    4. Type "phan" in reference line edit
     QLineEdit *sequenceLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "sequenceLineEdit"));
-    CHECK_SET_ERR(sequenceLineEdit != NULL, "sequenceLineEdit not found");
+    CHECK_SET_ERR(sequenceLineEdit != nullptr, "sequenceLineEdit not found");
     GTLineEdit::setText(os, sequenceLineEdit, "Phan");
     QStringList completerList = GTBaseCompleter::getNames(os, sequenceLineEdit);
     //    Expected state: two sequence names "Phaneroptera_falcata" appeared in popup helper
@@ -882,7 +882,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0006) {
 namespace {
 void setHighlightingType(HI::GUITestOpStatus &os, const QString &type) {
     QComboBox *highlightingScheme = qobject_cast<QComboBox *>(GTWidget::findWidget(os, "highlightingScheme"));
-    CHECK_SET_ERR(highlightingScheme != NULL, "highlightingScheme not found");
+    CHECK_SET_ERR(highlightingScheme != nullptr, "highlightingScheme not found");
     GTComboBox::selectItemByText(os, highlightingScheme, type);
 }
 }    // namespace
@@ -1079,7 +1079,7 @@ GUI_TEST_CLASS_DEFINITION(highlighting_test_0013) {
     //3. Check "use dots" checkbox
     setHighlightingType(os, "Agreements");
     QCheckBox *useDots = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "useDots"));
-    CHECK_SET_ERR(useDots != NULL, "use dots checkbox not found");
+    CHECK_SET_ERR(useDots != nullptr, "use dots checkbox not found");
     GTCheckBox::setChecked(os, useDots, true);
 
     //Expected state: no effect
@@ -1104,14 +1104,14 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0001) {
     GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "Phaneroptera_falcata");
     //    Expected state: align button is disabled
     QPushButton *alignButton = qobject_cast<QPushButton *>(GTWidget::findWidget(os, "alignButton"));
-    CHECK_SET_ERR(alignButton != NULL, "alignButton not found");
+    CHECK_SET_ERR(alignButton != nullptr, "alignButton not found");
     CHECK_SET_ERR(!alignButton->isEnabled(), "alignButton is unexpectidly enabled");
     //    4. Add Isophya_altaica_EF540820 sequence
     GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Isophya_altaica_EF540820");
     //    Expected state: Similarity label appeared. Similarity is 43%. Align button enabled
     CHECK_SET_ERR(alignButton->isEnabled(), "align button is unexpectibly disabled");
     QLabel *similarityValueLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "similarityValueLabel"));
-    CHECK_SET_ERR(similarityValueLabel != NULL, "similarityValueLabel not found");
+    CHECK_SET_ERR(similarityValueLabel != nullptr, "similarityValueLabel not found");
     QString percent = similarityValueLabel->text();
     CHECK_SET_ERR(percent == "43%", QString("unexpected percent: %1").arg(percent));
     //    (branches: amino, raw alphabets)
@@ -1128,11 +1128,11 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0002) {
     GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Phaneroptera_falcata");
     //    Expected state: Similarity label appeared. Similarity is 100%. Align button disabled
     QPushButton *alignButton = qobject_cast<QPushButton *>(GTWidget::findWidget(os, "alignButton"));
-    CHECK_SET_ERR(alignButton != NULL, "alignButton not found");
+    CHECK_SET_ERR(alignButton != nullptr, "alignButton not found");
     CHECK_SET_ERR(!alignButton->isEnabled(), "align button is unexpectibly disabled");
 
     QLabel *similarityValueLabel = qobject_cast<QLabel *>(GTWidget::findWidget(os, "similarityValueLabel"));
-    CHECK_SET_ERR(similarityValueLabel != NULL, "similarityValueLabel not found");
+    CHECK_SET_ERR(similarityValueLabel != nullptr, "similarityValueLabel not found");
     QString percent = similarityValueLabel->text();
     CHECK_SET_ERR(percent == "100%", QString("unexpected percent: %1").arg(percent));
     //    (branches: amino, raw alphabets)
@@ -1148,13 +1148,13 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0003) {
     //    Expected state: sequence added
     GTUtilsOptionPanelMsa::addFirstSeqToPA(os, "Phaneroptera_falcata", GTUtilsOptionPanelMsa::Completer);
     QLineEdit *line1 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 1);
-    CHECK_SET_ERR(line1 != NULL, "lineEdit 1 not found");
+    CHECK_SET_ERR(line1 != nullptr, "lineEdit 1 not found");
     CHECK_SET_ERR(line1->text() == "Phaneroptera_falcata", QString("unexpected lineEdit 1 text: %1").arg(line1->text()));
     //    4. Add Isophya_altaica_EF540820 sequence with popup helper
     //    Expected state: sequence added
     GTUtilsOptionPanelMsa::addSecondSeqToPA(os, "Isophya_altaica_EF540820", GTUtilsOptionPanelMsa::Completer);
     QLineEdit *line2 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 2);
-    CHECK_SET_ERR(line2 != NULL, "lineEdit 2 not found");
+    CHECK_SET_ERR(line2 != nullptr, "lineEdit 2 not found");
     CHECK_SET_ERR(line2->text() == "Isophya_altaica_EF540820", QString("unexpected lineEdit 2 text: %1").arg(line2->text()));
     //    5. Remove Phaneroptera_falcata with button
     GTWidget::click(os, GTUtilsOptionPanelMsa::getDeleteButton(os, 1));
@@ -1172,14 +1172,14 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0004) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
     //    3. Type wrong names in sequences' line edits.
     QLineEdit *line1 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 1);
-    CHECK_SET_ERR(line1 != NULL, "lineEdit 1 not found");
+    CHECK_SET_ERR(line1 != nullptr, "lineEdit 1 not found");
     GTLineEdit::setText(os, line1, "wrong name");
     CHECK_SET_ERR(GTBaseCompleter::isEmpty(os, line1), "Completer is not empty");
 
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     QLineEdit *line2 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 2);
-    CHECK_SET_ERR(line2 != NULL, "lineEdit 2 not found");
+    CHECK_SET_ERR(line2 != nullptr, "lineEdit 2 not found");
     GTLineEdit::setText(os, line2, "wrong name");
     CHECK_SET_ERR(GTBaseCompleter::isEmpty(os, line2), "Completer is not empty");
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -1199,8 +1199,8 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0005) {
     //    Expected state: sequenseq added
     QLineEdit *line1 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 1);
     QLineEdit *line2 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 2);
-    CHECK_SET_ERR(line1 != NULL, "line edit1 not found");
-    CHECK_SET_ERR(line2 != NULL, "line edit2 not found");
+    CHECK_SET_ERR(line1 != nullptr, "line edit1 not found");
+    CHECK_SET_ERR(line2 != nullptr, "line edit2 not found");
     CHECK_SET_ERR(line1->text() == "CfT-1_Cladosporium_fulvum", QString("wrong text in line edit1: %1").arg(line1->text()));
     CHECK_SET_ERR(line2->text() == "AspOryTy3-2", QString("wrong text in line edit2: %1").arg(line2->text()));
     //    4. Remove sequenses
@@ -1219,7 +1219,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0005_1) {
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::PairwiseAlignment);
     //    Expected state: wrong alphabet hint appeared
     QLabel *lblMessage = qobject_cast<QLabel *>(GTWidget::findWidget(os, "lblMessage"));
-    CHECK_SET_ERR(lblMessage != NULL, "lblMessage not found");
+    CHECK_SET_ERR(lblMessage != nullptr, "lblMessage not found");
     CHECK_SET_ERR(lblMessage->text() == "Pairwise alignment is not available for alignments with \"Raw\" alphabet.",
                   QString("wrong label text: %1").arg(lblMessage->text()));
     //    3. Add two sequences to PA line edits
@@ -1228,8 +1228,8 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0005_1) {
     //    Expected state: sequenseq added
     QLineEdit *line1 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 1);
     QLineEdit *line2 = GTUtilsOptionPanelMsa::getSeqLineEdit(os, 2);
-    CHECK_SET_ERR(line1 != NULL, "line edit1 not found");
-    CHECK_SET_ERR(line2 != NULL, "line edit2 not found");
+    CHECK_SET_ERR(line1 != nullptr, "line edit1 not found");
+    CHECK_SET_ERR(line2 != nullptr, "line edit2 not found");
     CHECK_SET_ERR(line1->text() == "seq7_1", QString("wrong text in line edit1: %1").arg(line1->text()));
     CHECK_SET_ERR(line2->text() == "seq7", QString("wrong text in line edit2: %1").arg(line2->text()));
     //    4. Remove sequenses
@@ -1246,7 +1246,7 @@ namespace {
 
 void expandSettings(HI::GUITestOpStatus &os, const QString &widgetName, const QString &arrowName) {
     QWidget *widget = GTWidget::findWidget(os, widgetName);
-    CHECK_SET_ERR(widget != NULL, QString("%1 not found").arg(widgetName));
+    CHECK_SET_ERR(widget != nullptr, QString("%1 not found").arg(widgetName));
     if (widget->isHidden()) {
         GTWidget::click(os, GTWidget::findWidget(os, arrowName));
     }
@@ -1293,7 +1293,7 @@ namespace {
 void setSpinValue(HI::GUITestOpStatus &os, double value, const QString &spinName) {
     expandAlgoSettings(os);
     QDoubleSpinBox *spinBox = qobject_cast<QDoubleSpinBox *>(GTWidget::findWidget(os, spinName));
-    CHECK_SET_ERR(spinBox != NULL, spinName + " spinbox not found");
+    CHECK_SET_ERR(spinBox != nullptr, spinName + " spinbox not found");
     GTDoubleSpinbox::setValue(os, spinBox, value, GTGlobals::UseKeyBoard);
 }
 
@@ -1316,7 +1316,7 @@ void setBonusScore(HI::GUITestOpStatus &os, double value) {
 void inNewWindow(HI::GUITestOpStatus &os, bool inNew) {
     expandOutputSettings(os);
     QCheckBox *inNewWindowCheckBox = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "inNewWindowCheckBox"));
-    CHECK_SET_ERR(inNewWindowCheckBox != NULL, "inNewWindowCheckBox not found");
+    CHECK_SET_ERR(inNewWindowCheckBox != nullptr, "inNewWindowCheckBox not found");
     GTCheckBox::setChecked(os, inNewWindowCheckBox, inNew);
 }
 
@@ -1398,7 +1398,7 @@ namespace {
 void setOutputPath(HI::GUITestOpStatus &os, const QString &path, const QString &name) {
     expandOutputSettings(os);
     QWidget *outputFileSelectButton = GTWidget::findWidget(os, "outputFileSelectButton");
-    CHECK_SET_ERR(outputFileSelectButton != NULL, "outputFileSelectButton not found");
+    CHECK_SET_ERR(outputFileSelectButton != nullptr, "outputFileSelectButton not found");
     GTUtilsDialog::waitForDialogWhichMayRunOrNot(os, new MessageBoxDialogFiller(os, QMessageBox::Yes));
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, path, name, GTFileDialogUtils::Save));
     GTWidget::click(os, outputFileSelectButton);
@@ -1513,7 +1513,7 @@ GUI_TEST_CLASS_DEFINITION(pairwise_alignment_test_0011) {
     //5. Use empty path in output settings
     expandOutputSettings(os);
     QLineEdit *outputFileLineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "outputFileLineEdit"));
-    CHECK_SET_ERR(outputFileLineEdit != NULL, "outputFileLineEdit not found");
+    CHECK_SET_ERR(outputFileLineEdit != nullptr, "outputFileLineEdit not found");
     QString initialText = outputFileLineEdit->text();
     CHECK_SET_ERR(!initialText.isEmpty(), "line edit is empty");
     GTWidget::click(os, outputFileLineEdit);
@@ -1666,11 +1666,11 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QCheckBox *showNamesCheck = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "showNamesCheck"));
-    CHECK_SET_ERR(showNamesCheck != NULL, "showNamesCheck not found");
+    CHECK_SET_ERR(showNamesCheck != nullptr, "showNamesCheck not found");
     QCheckBox *showDistancesCheck = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "showDistancesCheck"));
-    CHECK_SET_ERR(showDistancesCheck != NULL, "showDistancesCheck not found");
+    CHECK_SET_ERR(showDistancesCheck != nullptr, "showDistancesCheck not found");
     QCheckBox *alignLabelsCheck = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "alignLabelsCheck"));
-    CHECK_SET_ERR(alignLabelsCheck != NULL, "alignLabelsCheck not found");
+    CHECK_SET_ERR(alignLabelsCheck != nullptr, "alignLabelsCheck not found");
     QWidget *parent = GTWidget::findWidget(os, "COI [COI.aln]_SubWindow");
     QWidget *parent2 = GTWidget::findWidget(os, "COI [COI.aln]", parent);
     QGraphicsView *treeView = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView", parent2));
@@ -1714,7 +1714,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
     //saving init image
     GTCheckBox::setChecked(os, alignLabelsCheck, false);
     QWidget *w = GTWidget::findWidget(os, "treeView");
-    CHECK_SET_ERR(w != NULL, "tree view not found");
+    CHECK_SET_ERR(w != nullptr, "tree view not found");
     QImage initImg = GTWidget::getImage(os, w);    //initial state
 
     GTCheckBox::setChecked(os, alignLabelsCheck, true);
@@ -1734,7 +1734,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0005) {
 namespace {
 void expandFontSettings(HI::GUITestOpStatus &os) {
     QWidget *labelsColorButton = GTWidget::findWidget(os, "labelsColorButton");
-    CHECK_SET_ERR(labelsColorButton != NULL, "labelsColorButton not found");
+    CHECK_SET_ERR(labelsColorButton != nullptr, "labelsColorButton not found");
     if (!labelsColorButton->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "lblFontSettings"));
     }
@@ -1749,7 +1749,7 @@ void setLabelsColor(HI::GUITestOpStatus &os, int r, int g, int b) {
 
 bool checkLabelColor(HI::GUITestOpStatus &os, const QString &expectedColorName) {
     QGraphicsView *w = qobject_cast<QGraphicsView *>(GTWidget::findWidget(os, "treeView"));
-    CHECK_SET_ERR_RESULT(w != NULL, "tree view not found", false);
+    CHECK_SET_ERR_RESULT(w != nullptr, "tree view not found", false);
     QList<QGraphicsSimpleTextItem *> labels = GTUtilsPhyTree::getVisibleLabels(os, w);
     CHECK_SET_ERR_RESULT(!labels.isEmpty(), "there are no visiable labels", false);
 
@@ -1805,7 +1805,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0006) {
     CHECK_SET_ERR(family == "Serif", "unexpected style: " + family);
     //    5. Change labels size
     QWidget *fontSizeSpinBox = GTWidget::findWidget(os, "fontSizeSpinBox");
-    CHECK_SET_ERR(fontSizeSpinBox != NULL, "fontSizeSpinBox not found");
+    CHECK_SET_ERR(fontSizeSpinBox != nullptr, "fontSizeSpinBox not found");
 
     QLineEdit *fontLineedit = fontSizeSpinBox->findChild<QLineEdit *>();
     GTLineEdit::setText(os, fontLineedit, "20");
@@ -1888,7 +1888,7 @@ namespace {
 
 void expandPenSettings(HI::GUITestOpStatus &os) {
     QWidget *branchesColorButton = GTWidget::findWidget(os, "branchesColorButton");
-    CHECK_SET_ERR(branchesColorButton != NULL, "branchesColorButton not found");
+    CHECK_SET_ERR(branchesColorButton != nullptr, "branchesColorButton not found");
     if (!branchesColorButton->isVisible()) {
         GTWidget::click(os, GTWidget::findWidget(os, "lblPenSettings"));
     }
@@ -1955,7 +1955,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
     expandPenSettings(os);
 #endif
     //    Expected state: color changed
-    CHECK_SET_ERR(treeView != NULL, "tree view not found");
+    CHECK_SET_ERR(treeView != nullptr, "tree view not found");
     QString colorName;
 #ifndef Q_OS_DARWIN
     colorName = "#ff0000";
@@ -1975,7 +1975,7 @@ GUI_TEST_CLASS_DEFINITION(tree_settings_test_0008) {
 namespace {
 void setConsensusOutputPath(HI::GUITestOpStatus &os, const QString &path) {
     QLineEdit *pathLe = GTWidget::findExactWidget<QLineEdit *>(os, "pathLe");
-    CHECK_SET_ERR(pathLe != NULL, "pathLe not found");
+    CHECK_SET_ERR(pathLe != nullptr, "pathLe not found");
     GTLineEdit::setText(os, pathLe, path);
 }
 }    // namespace
@@ -2119,7 +2119,7 @@ GUI_TEST_CLASS_DEFINITION(statistics_test_0001) {
     GTCheckBox::setChecked(os, showDistancesColumnCheck, true);
     //    4. Check reference hint
     QLabel *refSeqWarning = GTWidget::findExactWidget<QLabel *>(os, "refSeqWarning");
-    CHECK_SET_ERR(refSeqWarning != NULL, "refSeqWarning");
+    CHECK_SET_ERR(refSeqWarning != nullptr, "refSeqWarning");
     CHECK_SET_ERR(refSeqWarning->text() == "Hint: select a reference above", QString("Unexpected hint: %1").arg(refSeqWarning->text()));
     //    5. Add Phaneroptera_falcata as reference
     GTUtilsOptionPanelMsa::addReference(os, "Phaneroptera_falcata");
@@ -2198,7 +2198,7 @@ GUI_TEST_CLASS_DEFINITION(statistics_test_0003) {
     CHECK_SET_ERR(s1 == "69%", QString("(1)Unexpected similarity at line 2: %1").arg(s1));
 
     QWidget *updateButton = GTWidget::findWidget(os, "updateButton");
-    CHECK_SET_ERR(updateButton != NULL, "updateButton not found");
+    CHECK_SET_ERR(updateButton != nullptr, "updateButton not found");
     CHECK_SET_ERR(!updateButton->isEnabled(), "updateButton is unexpectidly enabled");
     //    6. Undo. Uncheck automatic update checkbox
     GTWidget::click(os, GTAction::button(os, "msa_action_undo"));

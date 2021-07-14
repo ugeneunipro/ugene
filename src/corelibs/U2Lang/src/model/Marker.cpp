@@ -122,7 +122,7 @@ const QString MarkerPorts::OUT_MARKER_SEQ_PORT() {
 }
 
 Marker *MarkerFactory::createInstanse(const QString &type, const QVariant &additionalParam) {
-    Marker *m = NULL;
+    Marker *m = nullptr;
     if (type == MarkerTypes::QUAL_INT_VALUE_MARKER_ID || type == MarkerTypes::QUAL_TEXT_VALUE_MARKER_ID || type == MarkerTypes::QUAL_FLOAT_VALUE_MARKER_ID) {
         m = new QualifierMarker(type, "NewQualMarker", additionalParam.toString());
     } else if (MarkerTypes::ANNOTATION_LENGTH_MARKER_ID == type || MarkerTypes::ANNOTATION_COUNT_MARKER_ID == type) {
@@ -185,18 +185,18 @@ QString Marker::getMarkingResult(const QVariant &object) {
 
         bool marked = false;
         switch (dataType) {
-        case INTEGER:
-            marked = getMarkerIntResult(object, expr);
-            break;
-        case FLOAT:
-            marked = getMarkerFloatResult(object, expr);
-            break;
-        case BOOLEAN:
-            // marked = getMarkerBooleanResult(object, expr);
-            break;
-        case STRING:
-            marked = getMarkerStringResult(object, expr);
-            break;
+            case INTEGER:
+                marked = getMarkerIntResult(object, expr);
+                break;
+            case FLOAT:
+                marked = getMarkerFloatResult(object, expr);
+                break;
+            case BOOLEAN:
+                // marked = getMarkerBooleanResult(object, expr);
+                break;
+            case STRING:
+                marked = getMarkerStringResult(object, expr);
+                break;
         }
         if (marked) {
             return values.value(val);

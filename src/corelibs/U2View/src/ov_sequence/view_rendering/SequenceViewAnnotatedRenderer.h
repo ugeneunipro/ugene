@@ -95,7 +95,7 @@ public:
     virtual void drawAnnotationSelection(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, const AnnotationDisplaySettings &displaySettings);
 
 protected:
-    virtual void drawAnnotation(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, Annotation *a, const AnnotationDisplaySettings &displaySettings, bool selected = false, const AnnotationSettings *as = NULL);
+    virtual void drawAnnotation(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange, Annotation *a, const AnnotationDisplaySettings &displaySettings, bool selected = false, const AnnotationSettings *as = nullptr);
 
     /**
      * Returns visible Y range of the annotation region.

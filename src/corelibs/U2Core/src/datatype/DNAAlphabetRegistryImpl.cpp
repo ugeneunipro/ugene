@@ -49,7 +49,7 @@ static bool alphabetComplexityComparator(const DNAAlphabet *a1, const DNAAlphabe
 }
 
 bool DNAAlphabetRegistryImpl::registerAlphabet(const DNAAlphabet *a) {
-    if (findById(a->getId()) != NULL) {
+    if (findById(a->getId()) != nullptr) {
         return false;
     }
     alphabets.push_back(a);
@@ -70,7 +70,7 @@ const DNAAlphabet *DNAAlphabetRegistryImpl::findById(const QString &id) const {
             return al;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 }    // namespace U2

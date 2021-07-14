@@ -107,7 +107,7 @@ const QList<Actor *> &Schema::getProcesses() const {
 }
 
 void Schema::addProcess(Actor *a) {
-    assert(a != NULL);
+    assert(a != nullptr);
     procs.append(a);
 }
 
@@ -116,7 +116,7 @@ QList<Link *> Schema::getFlows() const {
 }
 
 void Schema::addFlow(Link *l) {
-    assert(l != NULL);
+    assert(l != nullptr);
     graph.addBinding(l->source(), l->destination());
 }
 
@@ -193,7 +193,7 @@ bool Schema::recursiveExpand(QList<QString> &schemaIds) {
         }
 
         Schema *schema = WorkflowEnv::getSchemaActorsRegistry()->getSchema(proto->getId());
-        if (NULL == schema) {
+        if (nullptr == schema) {
             return false;
         }
 
@@ -464,7 +464,7 @@ ActorId Schema::uniqueActorId(const QString &id, const QList<Actor *> &procs) {
 
 void Schema::renameProcess(const ActorId &oldId, const ActorId &newId) {
     Actor *actor = actorById(oldId);
-    CHECK(NULL != actor, );
+    CHECK(nullptr != actor, );
 
     actor->setId(newId);
     QMap<ActorId, ActorId> m;

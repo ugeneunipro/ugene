@@ -59,7 +59,7 @@ PFMatrixObject *PFMatrixObject::createInstance(const PFMatrix &matrix, const QSt
                                                                                           dstFolder,
                                                                                           object,
                                                                                           os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     return new PFMatrixObject(matrix, objectName, entRef, hintsMap);
 }
 
@@ -85,7 +85,7 @@ const PFMatrix &PFMatrixObject::getMatrix() const {
 GObject *PFMatrixObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
     Q_UNUSED(opBlock);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     GHintsDefaultImpl gHints(getGHintsMap());
     gHints.setAll(hints);
@@ -93,7 +93,7 @@ GObject *PFMatrixObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const 
 
     U2PFMatrix dstObject;
     RawDataUdrSchema::cloneObject(entityRef, dstDbiRef, dstFolder, dstObject, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     const U2EntityRef dstEntRef(dstDbiRef, dstObject.id);
     PFMatrixObject *dst = new PFMatrixObject(getGObjectName(), dstEntRef, gHints.getMap());

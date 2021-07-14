@@ -76,7 +76,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
         BioStruct3DViewPlugin *plug = new BioStruct3DViewPlugin();
         return plug;
     }
-    return NULL;
+    return nullptr;
 }
 
 extern "C" Q_DECL_EXPORT bool U2_PLUGIN_VERIFY_FUNC() {
@@ -118,7 +118,7 @@ void BioStruct3DViewContext::initViewContext(GObjectView *v) {
     QList<ADVSequenceWidget *> seqWidgets = av->getSequenceWidgets();
     foreach (ADVSequenceWidget *w, seqWidgets) {
         ADVSingleSequenceWidget *aw = qobject_cast<ADVSingleSequenceWidget *>(w);
-        if (aw != NULL) {
+        if (aw != nullptr) {
             aw->setDetViewCollapsed(true);
             aw->setOverviewCollapsed(true);
         }
@@ -130,7 +130,7 @@ void BioStruct3DViewContext::initViewContext(GObjectView *v) {
 
 bool BioStruct3DViewContext::canHandle(GObjectView *v, GObject *o) {
     Q_UNUSED(v);
-    bool res = qobject_cast<BioStruct3DObject *>(o) != NULL;
+    bool res = qobject_cast<BioStruct3DObject *>(o) != nullptr;
     return res;
 }
 
@@ -138,12 +138,12 @@ void BioStruct3DViewContext::onObjectAdded(GObjectView *view, GObject *obj) {
     //todo: add sequence & all objects associated with sequence to the view?
 
     BioStruct3DObject *obj3d = qobject_cast<BioStruct3DObject *>(obj);
-    if (obj3d == NULL || view == NULL) {
+    if (obj3d == nullptr || view == nullptr) {
         return;
     }
 
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(view);
-    BioStruct3DSplitter *splitter = NULL;
+    BioStruct3DSplitter *splitter = nullptr;
     if (splitterMap.contains(view)) {
         splitter = splitterMap.value(view);
     } else {
@@ -157,7 +157,7 @@ void BioStruct3DViewContext::onObjectAdded(GObjectView *view, GObject *obj) {
 
 void BioStruct3DViewContext::onObjectRemoved(GObjectView *v, GObject *obj) {
     BioStruct3DObject *obj3d = qobject_cast<BioStruct3DObject *>(obj);
-    if (obj3d == NULL) {
+    if (obj3d == nullptr) {
         return;
     }
     BioStruct3DSplitter *splitter = splitterMap.value(v);
@@ -181,7 +181,7 @@ QAction *BioStruct3DViewContext::getClose3DViewAction(GObjectView *view) {
     QList<QObject *> resources = viewResources.value(view);
     foreach (QObject *r, resources) {
         GObjectViewAction *a = qobject_cast<GObjectViewAction *>(r);
-        if (a != NULL) {
+        if (a != nullptr) {
             return a;
         }
     }

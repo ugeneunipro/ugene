@@ -134,7 +134,7 @@ protected:
 class U2CORE_EXPORT U2SequenceObjectConstraints : public GObjectConstraints {
     Q_OBJECT
 public:
-    U2SequenceObjectConstraints(QObject *p = NULL);
+    U2SequenceObjectConstraints(QObject *p = nullptr);
     qint64 sequenceSize;
     DNAAlphabetType alphabetType;
 };

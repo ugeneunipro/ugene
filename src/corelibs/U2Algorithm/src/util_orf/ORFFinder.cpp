@@ -65,7 +65,7 @@ void ORFFindAlgorithm::find(
     QByteArray sequence("");
 
     DNATranslation3to1Impl *aTT = dynamic_cast<DNATranslation3to1Impl *>(cfg.proteinTT);
-    SAFE_POINT(aTT != NULL, "Cannot convert DNATranslation to DNATranslation3to1Impl!", );
+    SAFE_POINT(aTT != nullptr, "Cannot convert DNATranslation to DNATranslation3to1Impl!", );
     bool mustFit = cfg.mustFit;
     bool mustInit = cfg.mustInit;
     bool allowAltStart = cfg.allowAltStart;
@@ -332,7 +332,7 @@ void ORFFindAlgorithm::addStartCodonsFromJunction(const U2SequenceObject &dnaSeq
 
     for (int i = 1; i <= 2; i++) {
         tmp = getCodonFromJunction(dnaSeq, strand, i);
-        SAFE_POINT(tmp != NULL, "Incorrect codon!", );
+        SAFE_POINT(tmp != nullptr, "Incorrect codon!", );
         if (strand == ORFAlgorithmStrand_Complement) {
             cfg.complementTT->translate(tmp, 3);
         }
@@ -355,12 +355,12 @@ void ORFFindAlgorithm::checkStopCodonOnJunction(const U2SequenceObject &dnaSeq, 
     qint64 seqLen = dnaSeq.getSequenceLength();
     int regLen = cfg.searchRegion.length;
     DNATranslation3to1Impl *aTT = dynamic_cast<DNATranslation3to1Impl *>(cfg.proteinTT);
-    CHECK_EXT(aTT != NULL, os.setError("Cannot convert DNATranslation to DNATranslation3to1Impl!"), );
+    CHECK_EXT(aTT != nullptr, os.setError("Cannot convert DNATranslation to DNATranslation3to1Impl!"), );
     if (strand == ORFAlgorithmStrand_Direct) {
         int end = cfg.searchRegion.endPos();
         for (int i = 1; i <= 2; i++) {
             char *tmp = getCodonFromJunction(dnaSeq, strand, i);
-            CHECK_EXT(tmp != NULL, os.setError("Incorrect codon"), );
+            CHECK_EXT(tmp != nullptr, os.setError("Incorrect codon"), );
 
             if (aTT->isStopCodon(tmp)) {
                 int startFrame = (seqLen - i) % 3;
@@ -388,7 +388,7 @@ void ORFFindAlgorithm::checkStopCodonOnJunction(const U2SequenceObject &dnaSeq, 
     if (strand == ORFAlgorithmStrand_Complement) {
         for (int i = 1; i <= 2; i++) {
             char *tmp = getCodonFromJunction(dnaSeq, strand, i);
-            SAFE_POINT(tmp != NULL, "Incorrect codon", );
+            SAFE_POINT(tmp != nullptr, "Incorrect codon", );
             cfg.complementTT->translate(tmp, 3);
 
             if (aTT->isStopCodon(tmp)) {
@@ -416,8 +416,8 @@ void ORFFindAlgorithm::checkStopCodonOnJunction(const U2SequenceObject &dnaSeq, 
 }
 
 char *ORFFindAlgorithm::getCodonFromJunction(const U2SequenceObject &dnaSeq, ORFAlgorithmStrand strand, int symbolsFromEnd) {
-    SAFE_POINT(strand != ORFAlgorithmStrand_Both, "Invalid strand: direct or complement are the only possible variants!", NULL);
-    SAFE_POINT(symbolsFromEnd == 1 || symbolsFromEnd == 2, "Codon can be split only in two places: after the first or the second symbol!", NULL);
+    SAFE_POINT(strand != ORFAlgorithmStrand_Both, "Invalid strand: direct or complement are the only possible variants!", nullptr);
+    SAFE_POINT(symbolsFromEnd == 1 || symbolsFromEnd == 2, "Codon can be split only in two places: after the first or the second symbol!", nullptr);
 
     char *tmp = new char[3];
     int seqLen = dnaSeq.getSequenceLength();

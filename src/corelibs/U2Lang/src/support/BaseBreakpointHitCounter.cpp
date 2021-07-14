@@ -65,28 +65,28 @@ void BaseBreakpointHitCounter::reset() {
 BaseBreakpointHitCounter *BaseBreakpointHitCounter::createInstance(
     BreakpointHitCountCondition kindOfCondition,
     const QVariant &hitCounterParameter) {
-    BaseBreakpointHitCounter *result = NULL;
+    BaseBreakpointHitCounter *result = nullptr;
     bool conversionResult = true;
     switch (kindOfCondition) {
-    case ALWAYS:
-        result = new BaseBreakpointHitCounter(kindOfCondition);
-        break;
-    case HIT_COUNT_EQUAL:
-        result = new BreakpointEqualHitCounter(kindOfCondition,
-                                               hitCounterParameter.toUInt(&conversionResult));
-        break;
-    case HIT_COUNT_MULTIPLE:
-        result = new BreakpointMultipleHitCounter(kindOfCondition,
-                                                  hitCounterParameter.toUInt(&conversionResult));
-        break;
-    case HIT_COUNT_GREATER_OR_EQUAL:
-        result = new BreakpointGreaterOrEqualHitCounter(kindOfCondition,
-                                                        hitCounterParameter.toUInt(&conversionResult));
-        break;
-    default:
-        Q_ASSERT(false);
+        case ALWAYS:
+            result = new BaseBreakpointHitCounter(kindOfCondition);
+            break;
+        case HIT_COUNT_EQUAL:
+            result = new BreakpointEqualHitCounter(kindOfCondition,
+                                                   hitCounterParameter.toUInt(&conversionResult));
+            break;
+        case HIT_COUNT_MULTIPLE:
+            result = new BreakpointMultipleHitCounter(kindOfCondition,
+                                                      hitCounterParameter.toUInt(&conversionResult));
+            break;
+        case HIT_COUNT_GREATER_OR_EQUAL:
+            result = new BreakpointGreaterOrEqualHitCounter(kindOfCondition,
+                                                            hitCounterParameter.toUInt(&conversionResult));
+            break;
+        default:
+            Q_ASSERT(false);
     }
-    Q_ASSERT(NULL != result);
+    Q_ASSERT(nullptr != result);
     Q_ASSERT(conversionResult);
 
     return result;

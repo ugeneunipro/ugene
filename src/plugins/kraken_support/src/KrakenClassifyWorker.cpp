@@ -42,9 +42,9 @@ const QString KrakenClassifyWorker::KRAKEN_DIR = "Kraken";
 
 KrakenClassifyWorker::KrakenClassifyWorker(Actor *actor)
     : BaseWorker(actor, false),
-      input(NULL),
+      input(nullptr),
       //      pairedInput(NULL),
-      output(NULL),
+      output(nullptr),
       pairedReadsInput(false) {
 }
 
@@ -52,8 +52,8 @@ void KrakenClassifyWorker::init() {
     input = ports.value(KrakenClassifyWorkerFactory::INPUT_PORT_ID);
     output = ports.value(KrakenClassifyWorkerFactory::OUTPUT_PORT_ID);
 
-    SAFE_POINT(NULL != input, QString("Port with id '%1' is NULL").arg(KrakenClassifyWorkerFactory::INPUT_PORT_ID), );
-    SAFE_POINT(NULL != output, QString("Port with id '%1' is NULL").arg(KrakenClassifyWorkerFactory::OUTPUT_PORT_ID), );
+    SAFE_POINT(nullptr != input, QString("Port with id '%1' is NULL").arg(KrakenClassifyWorkerFactory::INPUT_PORT_ID), );
+    SAFE_POINT(nullptr != output, QString("Port with id '%1' is NULL").arg(KrakenClassifyWorkerFactory::OUTPUT_PORT_ID), );
 
     pairedReadsInput = (getValue<QString>(KrakenClassifyWorkerFactory::INPUT_DATA_ATTR_ID) == KrakenClassifyTaskSettings::PAIRED_END);
 
@@ -81,7 +81,7 @@ Task *KrakenClassifyWorker::tick() {
         output->setEnded();
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void KrakenClassifyWorker::cleanup() {
@@ -101,7 +101,6 @@ void KrakenClassifyWorker::sl_taskFinished(Task *task) {
     output->put(Message(output->getBusType(), data));
     context->getMonitor()->addOutputFile(rawClassificationUrl, getActor()->getId());
 
-    LocalWorkflow::TaxonomyClassificationResult::const_iterator it;
     int classifiedCount = NgsReadsClassificationUtils::countClassified(classificationResult);
     context->getMonitor()->addInfo(tr("There were %1 input reads, %2 reads were classified.").arg(QString::number(classificationResult.size())).arg(QString::number(classifiedCount)), getActor()->getId(), WorkflowNotification::U2_INFO);
 }

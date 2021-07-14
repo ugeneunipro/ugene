@@ -45,7 +45,7 @@ class SequencesToMSAWorker : public BaseWorker {
     Q_OBJECT
 public:
     SequencesToMSAWorker(Actor *p)
-        : BaseWorker(p), inPort(NULL), outPort(NULL) {};
+        : BaseWorker(p), inPort(nullptr), outPort(nullptr) {};
 
     virtual void init();
     virtual Task *tick();

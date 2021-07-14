@@ -51,9 +51,9 @@ const QString SeqPosTask::BASE_SUBDIR_NAME("SeqPos");
 const QString SeqPosTask::TREAT_NAME("treatment");
 
 SeqPosTask::SeqPosTask(const SeqPosSettings &_settings, Workflow::DbiDataStorage *storage, const QList<Workflow::SharedDbiDataHandler> &_treatAnn)
-    : ExternalToolSupportTask("SeqPos annotation", TaskFlag_CollectChildrenWarnings), settings(_settings), storage(storage), treatAnn(_treatAnn), treatDoc(NULL), treatTask(NULL), etTask(NULL) {
+    : ExternalToolSupportTask("SeqPos annotation", TaskFlag_CollectChildrenWarnings), settings(_settings), storage(storage), treatAnn(_treatAnn), treatDoc(nullptr), treatTask(nullptr), etTask(nullptr) {
     GCOUNTER(cvar, "NGS:SeqPosTask");
-    SAFE_POINT_EXT(NULL != storage, setError(L10N::nullPointerError("workflow data storage")), );
+    SAFE_POINT_EXT(nullptr != storage, setError(L10N::nullPointerError("workflow data storage")), );
 }
 
 SeqPosTask::~SeqPosTask() {
@@ -62,7 +62,7 @@ SeqPosTask::~SeqPosTask() {
 
 void SeqPosTask::cleanup() {
     delete treatDoc;
-    treatDoc = NULL;
+    treatDoc = nullptr;
 
     //remove tmp files
     QString tmpDirPath = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath(BASE_DIR_NAME);
@@ -98,12 +98,12 @@ void SeqPosTask::prepare() {
 }
 
 Document *SeqPosTask::createDoc(const QList<Workflow::SharedDbiDataHandler> &annTableHandlers, const QString &name) {
-    Document *doc = NULL;
+    Document *doc = nullptr;
 
     QString docUrl = workingDir + "/" + name + ".bed";
 
     DocumentFormat *bedFormat = AppContext::getDocumentFormatRegistry()->getFormatById(BaseDocumentFormats::BED);
-    CHECK_EXT(NULL != bedFormat, stateInfo.setError("NULL bed format"), doc);
+    CHECK_EXT(nullptr != bedFormat, stateInfo.setError("NULL bed format"), doc);
 
     doc = bedFormat->createNewLoadedDocument(
         IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), docUrl, stateInfo);
@@ -127,7 +127,7 @@ QList<Task *> SeqPosTask::onSubTaskFinished(Task *subTask) {
         QStringList args = settings.getArguments(treatDoc->getURLString());
 
         ExternalTool *rTool = AppContext::getExternalToolRegistry()->getById(RSupport::ET_R_ID);
-        SAFE_POINT(NULL != rTool, "R script tool wasn't found in the registry", result);
+        SAFE_POINT(nullptr != rTool, "R script tool wasn't found in the registry", result);
         const QString rDir = QFileInfo(rTool->getPath()).dir().absolutePath();
 
         etTask = new ExternalToolRunTask(SeqPosSupport::ET_SEQPOS_ID, args, new ExternalToolLogParser(), getSettings().outDir, QStringList() << rDir);

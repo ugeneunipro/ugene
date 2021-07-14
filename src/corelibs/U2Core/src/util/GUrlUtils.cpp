@@ -77,11 +77,11 @@ bool GUrlUtils::containSpaces(const QString &string) {
 GUrl GUrlUtils::changeFileExt(const GUrl &url, const DocumentFormatId &oldFormatId, const DocumentFormatId &newFormatId) {
     CHECK(url.isLocalFile(), GUrl());
     DocumentFormatRegistry *dfRegistry = AppContext::getDocumentFormatRegistry();
-    CHECK(NULL != dfRegistry, GUrl());
+    CHECK(nullptr != dfRegistry, GUrl());
     DocumentFormat *oldFormat = dfRegistry->getFormatById(oldFormatId);
-    CHECK(NULL != oldFormat, GUrl());
+    CHECK(nullptr != oldFormat, GUrl());
     DocumentFormat *newFormat = dfRegistry->getFormatById(newFormatId);
-    CHECK(NULL != newFormat, GUrl());
+    CHECK(nullptr != newFormat, GUrl());
 
     const QString dirPath = url.dirPath();
     const QString baseFileName = url.baseFileName();
@@ -114,9 +114,9 @@ GUrl GUrlUtils::changeFileExt(const GUrl &url, const DocumentFormatId &oldFormat
 GUrl GUrlUtils::changeFileExt(const GUrl &url, const DocumentFormatId &newFormatId) {
     CHECK(url.isLocalFile(), GUrl());
     DocumentFormatRegistry *dfRegistry = AppContext::getDocumentFormatRegistry();
-    CHECK(NULL != dfRegistry, GUrl());
+    CHECK(nullptr != dfRegistry, GUrl());
     DocumentFormat *newFormat = dfRegistry->getFormatById(newFormatId);
-    CHECK(NULL != newFormat, GUrl());
+    CHECK(nullptr != newFormat, GUrl());
 
     const QString dirPath = url.dirPath();
     const QString baseFileName = url.baseFileName();
@@ -433,10 +433,10 @@ QString GUrlUtils::createDirectory(const QString &path, const QString &suffix, U
 namespace {
 QString getDotExtension(const DocumentFormatId &formatId) {
     DocumentFormatRegistry *dfr = AppContext::getDocumentFormatRegistry();
-    SAFE_POINT(NULL != dfr, "NULL document format registry", "");
+    SAFE_POINT(nullptr != dfr, "NULL document format registry", "");
 
     DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
-    CHECK(NULL != format, "");
+    CHECK(nullptr != format, "");
 
     QStringList results = format->getSupportedDocumentFileExtensions();
     CHECK(!results.isEmpty(), "");

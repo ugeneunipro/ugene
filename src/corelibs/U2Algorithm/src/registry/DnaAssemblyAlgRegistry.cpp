@@ -71,7 +71,7 @@ DnaAssemblyAlgorithmEnv *DnaAssemblyAlgRegistry::unregisterAlgorithm(const QStri
     QMutexLocker locker(&mutex);
 
     if (!algorithms.contains(id)) {
-        return NULL;
+        return nullptr;
     }
     DnaAssemblyAlgorithmEnv *res = algorithms.value(id);
     algorithms.remove(id);

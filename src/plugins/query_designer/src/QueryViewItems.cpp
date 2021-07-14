@@ -370,8 +370,8 @@ void QDElement::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
         a->setData(qVariantFromValue(i));
     }
 
-    QAction *removeFromGroupAction = NULL;
-    QAction *addToGroupAction = NULL;
+    QAction *removeFromGroupAction = nullptr;
+    QAction *addToGroupAction = nullptr;
     if (!scheme->getActorGroups().isEmpty()) {
         if (!scheme->getActorGroup(getActor()).isEmpty()) {
             removeFromGroupAction = menu.addAction(tr("Remove from group"));
@@ -393,7 +393,7 @@ void QDElement::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
     if (action == addToGroupAction) {
         bool ok;
 
-        QString sel = QInputDialog::getItem(NULL,
+        QString sel = QInputDialog::getItem(nullptr,
                                             tr("Add '%1' to group").arg(getActor()->getParameters()->getLabel()),
                                             tr("Group:"),
                                             scheme->getActorGroups(),
@@ -625,7 +625,7 @@ QVariant QDElement::itemChange(GraphicsItemChange change, const QVariant &value)
         //value is the new position
         QPointF newPos = value.toPointF();
         QueryScene *qs = qobject_cast<QueryScene *>(scene());
-        if (qs == NULL) {
+        if (qs == nullptr) {
             return newPos;
         }
         // Adjust position for item to fit in row
@@ -688,7 +688,7 @@ QVariant QDElement::itemChange(GraphicsItemChange change, const QVariant &value)
     } break;
     case ItemPositionHasChanged: {
         QueryScene *qs = qobject_cast<QueryScene *>(scene());
-        if (qs == NULL) {
+        if (qs == nullptr) {
             return QGraphicsItem::itemChange(change, value);
         }
         qs->sl_adaptRowsNumber();
@@ -707,7 +707,7 @@ QVariant QDElement::itemChange(GraphicsItemChange change, const QVariant &value)
         qs->setModified(true);
     } break;
     case ItemSceneChange:
-        if ((value.value<QGraphicsScene *>()) == NULL) {
+        if ((value.value<QGraphicsScene *>()) == nullptr) {
             foreach (Footnote *fn, links) {
                 scene()->removeItem(fn);
                 delete fn;
@@ -715,7 +715,7 @@ QVariant QDElement::itemChange(GraphicsItemChange change, const QVariant &value)
         }
         break;
     case ItemSceneHasChanged:
-        if ((value.value<QGraphicsScene *>()) != NULL) {
+        if ((value.value<QGraphicsScene *>()) != nullptr) {
             sl_refresh();
             adaptSize();
             QueryScene *qs = qobject_cast<QueryScene *>(scene());
@@ -893,7 +893,7 @@ QVariant Footnote::itemChange(GraphicsItemChange change, const QVariant &value) 
             scene()->addItem(rightRef);
         }
     } else if (change == ItemSceneChange) {
-        if ((value.value<QGraphicsScene *>()) == NULL) {
+        if ((value.value<QGraphicsScene *>()) == nullptr) {
             scene()->removeItem(leftRef);
             scene()->removeItem(rightRef);
             delete leftRef;
@@ -990,7 +990,7 @@ QDElement *Footnote::adjacent(QDElement *uv) const {
     if (uv == to) {
         return from;
     }
-    return NULL;
+    return nullptr;
 }
 
 /************************************************************************/

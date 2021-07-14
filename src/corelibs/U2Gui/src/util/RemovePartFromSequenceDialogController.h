@@ -36,7 +36,7 @@ class SaveDocumentController;
 class U2GUI_EXPORT RemovePartFromSequenceDialogController : public QDialog {
     Q_OBJECT
 public:
-    RemovePartFromSequenceDialogController(U2Region _toDelete, U2Region _source, const QString &docUrl, QWidget *p = NULL);
+    RemovePartFromSequenceDialogController(U2Region _toDelete, U2Region _source, const QString &docUrl, QWidget *p = nullptr);
     ~RemovePartFromSequenceDialogController();
     void accept();
 

@@ -61,7 +61,7 @@ ExportSequencesTask::ExportSequencesTask(const MultipleSequenceAlignment &msa, c
       format(format),
       extension(extension),
       customFileName(customFileName),
-      prepareObjectsTask(NULL) {
+      prepareObjectsTask(nullptr) {
     prepareObjectsTask = new PrepareSequenceObjectsTask(msa, rowIds, trimGaps);
     addSubTask(prepareObjectsTask);
 }
@@ -88,7 +88,7 @@ QList<Task *> ExportSequencesTask::onSubTaskFinished(Task *subTask) {
             GUrl url(filePath);
             IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
             DocumentFormat *df = AppContext::getDocumentFormatRegistry()->getFormatById(format);
-            SAFE_POINT(df != NULL, "Cant get DocuemtFormat by given DocumentFormatId", res);
+            SAFE_POINT(df != nullptr, "Cant get DocuemtFormat by given DocumentFormatId", res);
             QScopedPointer<Document> doc(df->createNewLoadedDocument(iof, filePath, stateInfo));
             CHECK_OP(stateInfo, res);
             QVariantMap hints;

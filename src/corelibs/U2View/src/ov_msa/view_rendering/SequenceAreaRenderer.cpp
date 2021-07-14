@@ -59,7 +59,7 @@ bool SequenceAreaRenderer::drawContent(QPainter &painter, const U2Region &column
     painter.setFont(editor->getFont());
 
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    SAFE_POINT(maObj != NULL, tr("Alignment object is NULL"), false);
+    SAFE_POINT(maObj != nullptr, tr("Alignment object is NULL"), false);
     const MultipleAlignment &ma = maObj->getMultipleAlignment();
 
     //Use dots to draw regions, which are similar to reference sequence
@@ -99,13 +99,13 @@ void SequenceAreaRenderer::drawSelection(QPainter &painter) const {
     painter.setPen(pen);
 
     switch (seqAreaWgt->maMode) {
-    case MaEditorSequenceArea::ViewMode:
-    case MaEditorSequenceArea::ReplaceCharMode:
-        painter.drawRect(selectionRect);
-        break;
-    case MaEditorSequenceArea::InsertCharMode:
-        painter.drawLine(selectionRect.left(), selectionRect.top(), selectionRect.left(), selectionRect.bottom());
-        break;
+        case MaEditorSequenceArea::ViewMode:
+        case MaEditorSequenceArea::ReplaceCharMode:
+            painter.drawRect(selectionRect);
+            break;
+        case MaEditorSequenceArea::InsertCharMode:
+            painter.drawLine(selectionRect.left(), selectionRect.top(), selectionRect.left(), selectionRect.bottom());
+            break;
     }
 }
 
@@ -136,9 +136,9 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
     const int rowHeight = ui->getRowHeightController()->getSingleRowHeight();
     const int baseWidth = ui->getBaseWidthController()->getBaseWidth();
 
-    const MaEditorSelection &selection = seqAreaWgt->getSelection();
-    U2Region selectionXRegion = selection.getXRegion();
-    U2Region selectionYRegion = selection.getYRegion();
+    QRect selectionRect = seqAreaWgt->getSelection().toRect();
+    U2Region selectionXRegion = U2Region::fromXRange(selectionRect);
+    U2Region selectionYRegion = U2Region::fromYRange(selectionRect);
     int viewRow = ui->getCollapseModel()->getViewRowIndexByMaRowIndex(maRow);
 
     const QPen backupPen = painter.pen();

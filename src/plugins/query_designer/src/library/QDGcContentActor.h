@@ -40,7 +40,7 @@ public:
     DNATranslation *complTT;
     QDStrandOption strand;
     FindGcRegionsSettings()
-        : gcRangeInPercents(20, 40), minLen(0), offset(0), complTT(NULL) {
+        : gcRangeInPercents(20, 40), minLen(0), offset(0), complTT(nullptr) {
     }
 };
 

@@ -49,15 +49,8 @@ namespace U2 {
 /************************
  * GTest_RunCMDLine
  ************************/
-#ifndef _DEBUG
-const QString GTest_RunCMDLine::UGENECL_PATH = "/ugenecl";
-#else
-const QString GTest_RunCMDLine::UGENECL_PATH = "/ugenecld";
-#endif    // _DEBUG
-
 void GTest_RunCMDLine::init(XMLTestFormat *tf, const QDomElement &el) {
     Q_UNUSED(tf);
-    customIniSet = false;
     setUgeneclPath();
     setArgs(el);
     proc = new QProcess(this);
@@ -73,70 +66,57 @@ void GTest_RunCMDLine::init(XMLTestFormat *tf, const QDomElement &el) {
     if (workingDir.isEmpty()) {
         workingDir = GUrlUtils::rollFileName(env->getVar(TEMP_DATA_DIR_ENV_ID) + "/workingDir", "_");
         autoRemoveWorkingDir = true;
-        taskLog.trace(QString("Working dir is not defined, the foolowing dir will be used as working: %1").arg(workingDir));
+        taskLog.trace(QString("Working dir is not defined, the following dir will be used as working: %1").arg(workingDir));
     }
 
-    QString protosPath = env->getVar(COMMON_DATA_DIR_ENV_ID) + "/" + env->getVar(CONFIG_PROTOTYPE);
-    QDir protoDir(protosPath), userScriptsDir(WorkflowSettings::getUserDirectory());
-    QStringList filters;
-    filters << "*.usa";
-    protoDir.setNameFilters(filters);
-
-    QFileInfoList list = protoDir.entryInfoList();
-    for (int i = 0; i < list.size(); ++i) {
-        QFileInfo fIdest = list.at(i);
-        QFileInfo fItarget(userScriptsDir.path() + "/" + fIdest.fileName());
-        if (!fItarget.exists()) {
-            QFile::copy(fIdest.absoluteFilePath(), fItarget.absoluteFilePath());
-        } else if (fIdest.size() != fItarget.size()) {
-            QFile::copy(fIdest.absoluteFilePath(), fItarget.absoluteFilePath());
+    QDir userScriptsDir(WorkflowSettings::getUserDirectory());
+    QString protoPath = env->getVar(COMMON_DATA_DIR_ENV_ID) + "/" + env->getVar(CONFIG_PROTOTYPE);
+    QDir protoDir(protoPath);
+    protoDir.setNameFilters({"*.usa"});
+    QFileInfoList protoScriptFiles = protoDir.entryInfoList();
+    for (const QFileInfo &protoScriptFile : qAsConst(protoScriptFiles)) {
+        QFileInfo targetScriptFile(userScriptsDir.path() + "/" + protoScriptFile.fileName());
+        if (!targetScriptFile.exists() || protoScriptFile.size() != targetScriptFile.size()) {
+            QFile::copy(protoScriptFile.absoluteFilePath(), targetScriptFile.absoluteFilePath());
         }
     }
 }
 
 void GTest_RunCMDLine::setArgs(const QDomElement &el) {
-    QString commandLine;
-    QDomNamedNodeMap map = el.attributes();
-    int mapSz = map.length();
-    for (int i = 0; i < mapSz; ++i) {
-        QDomNode node = map.item(i);
-        if (node.nodeName() == "message") {
-            expectedMessage = node.nodeValue();
-            continue;
-        }
-        if (node.nodeName() == "nomessage") {
-            unexpectedMessage = node.nodeValue();
-            continue;
-        }
-        if (node.nodeName() == WORKING_DIR_ATTR) {
-            continue;
-        }
-        if (node.nodeName() == CMDLineCoreOptions::INI_FILE) {
-            customIniSet = true;
-        }
-
-        QString argument = "--" + node.nodeName() + "=" + getVal(node.nodeValue());
-        if (argument.startsWith("--task")) {
-            args.prepend(argument);
-            commandLine.prepend(argument + " ");
-        } else {
-            args.append(argument);
-            commandLine.append(argument + " ");
-        }
-    }
-
-    if (!customIniSet) {
-        args.append("--" + CMDLineCoreOptions::INI_FILE + "=" + AppContext::getSettings()->fileName());
-    }
-
     args.append("--log-level-details");
     args.append("--lang=en");
     args.append("--log-no-task-progress");
-    commandLine.append(QString(" --log-level-details --lang=en --log-no-task-progress"));
-    cmdLog.info(commandLine);
+    args.append("--" + CMDLineCoreOptions::INI_FILE + "=" + AppContext::getSettings()->fileName());
+
+    QStringList argsFromXml;
+    QDomNamedNodeMap attributeMap = el.attributes();
+    int attributeCount = attributeMap.length();
+    for (int i = 0; i < attributeCount; ++i) {
+        QDomNode node = attributeMap.item(i);
+        QString nodeName = node.nodeName();
+        if (nodeName == "message") {
+            expectedMessage = node.nodeValue();
+            continue;
+        }
+        if (nodeName == "nomessage") {
+            unexpectedMessage = node.nodeValue();
+            continue;
+        }
+        if (nodeName == WORKING_DIR_ATTR) {
+            continue;
+        }
+        QString argument = "--" + nodeName + "=" + getVal(node.nodeValue());
+        if (argument.startsWith("--task")) {
+            argsFromXml.prepend(argument);    // '--task' attribute must go first.
+        } else {
+            argsFromXml.append(argument);
+        }
+    }
+    args << argsFromXml;
+    cmdLog.info(args.join(" "));
 }
 
-QString GTest_RunCMDLine::splitVal(const QString &val, QString prefValue, const QString &prefix, bool isTmp) {
+QString GTest_RunCMDLine::splitVal(const QString &val, const QString &prefValue, const QString &prefix, bool isTmp) {
     int midSize = prefValue.size();
     const QString splitter = WorkflowUtils::getDatasetSplitter(val);
     QStringList dsVals = val.split(splitter + splitter);
@@ -188,9 +168,14 @@ QString GTest_RunCMDLine::getVal(const QString &val) {
 }
 
 void GTest_RunCMDLine::setUgeneclPath() {
-    ugeneclPath = AppContext::getMainWindow() ? QApplication::applicationDirPath() : QCoreApplication::applicationDirPath();
-    assert(!ugeneclPath.isEmpty());
-    ugeneclPath += UGENECL_PATH;
+    ugeneclPath = AppContext::getMainWindow() != nullptr ? QApplication::applicationDirPath() : QCoreApplication::applicationDirPath();
+    SAFE_POINT(!ugeneclPath.isEmpty(), "FAILED to get applicationDirPath", );
+#ifndef _DEBUG
+    QString ugeneclName = "ugenecl";
+#else
+    QString ugeneclName = "ugenecld";
+#endif
+    ugeneclPath += "/" + ugeneclName;
 }
 
 void GTest_RunCMDLine::prepare() {
@@ -217,7 +202,6 @@ Task::ReportResult GTest_RunCMDLine::report() {
     if (hasError() || isCanceled()) {
         return ReportResult_Finished;
     }
-    assert(proc != NULL);
     if (proc->state() != QProcess::NotRunning) {
         return ReportResult_CallMeAgain;
     }
@@ -264,7 +248,7 @@ void GTest_RunCMDLine::cleanup() {
         }
 
         if (autoRemoveWorkingDir) {
-            taskLog.trace(QString("Temporary working dir autoremoved: %1").arg(workingDir));
+            taskLog.trace(QString("Temporary working dir auto-removed: %1").arg(workingDir));
             QDir(workingDir).removeRecursively();
         }
     }

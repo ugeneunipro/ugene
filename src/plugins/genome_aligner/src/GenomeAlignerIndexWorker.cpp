@@ -105,11 +105,11 @@ bool GenomeAlignerBuildWorker::isReady() const {
 Task *GenomeAlignerBuildWorker::tick() {
     if (refSeqUrl.isEmpty()) {
         algoLog.trace(GenomeAlignerBuildWorker::tr("Reference sequence URL is empty"));
-        return NULL;
+        return nullptr;
     }
     if (indexUrl.isEmpty()) {
         algoLog.trace(GenomeAlignerBuildWorker::tr("Result index URL is empty"));
-        return NULL;
+        return nullptr;
     }
 
     settings.refSeqUrl = refSeqUrl;
@@ -193,7 +193,7 @@ bool GenomeAlignerIndexReaderWorker::isReady() const {
 Task *GenomeAlignerIndexReaderWorker::tick() {
     if (indexUrl.isEmpty()) {
         algoLog.trace(GenomeAlignerIndexReaderWorker::tr("Index URL is empty"));
-        return NULL;
+        return nullptr;
     }
     Task *t = new Task("Genome aligner index reader", TaskFlags_NR_FOSCOE);
     connect(t, SIGNAL(si_stateChanged()), SLOT(sl_taskFinished()));

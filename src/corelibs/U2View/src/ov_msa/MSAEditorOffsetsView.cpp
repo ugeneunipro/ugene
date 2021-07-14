@@ -57,7 +57,7 @@ MSAEditorOffsetsViewController::MSAEditorOffsetsViewController(MaEditorWgt *maEd
     connect(editor, SIGNAL(si_fontChanged(const QFont &)), SLOT(sl_updateOffsets()));
 
     MultipleAlignmentObject *mobj = editor->getMaObject();
-    SAFE_POINT(NULL != mobj, L10N::nullPointerError("multiple alignment object"), );
+    SAFE_POINT(nullptr != mobj, L10N::nullPointerError("multiple alignment object"), );
     connect(mobj, SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)), SLOT(sl_updateOffsets()));
 
     seqArea->installEventFilter(this);
@@ -91,12 +91,12 @@ bool MSAEditorOffsetsViewController::eventFilter(QObject *o, QEvent *e) {
 void MSAEditorOffsetsViewController::sl_showOffsets(bool show) {
     updateOffsets();
     Settings *s = AppContext::getSettings();
-    SAFE_POINT(s != NULL, "AppContext settings is NULL", );
+    SAFE_POINT(s != nullptr, "AppContext settings is NULL", );
     s->setValue(editor->getSettingsRoot() + SETTINGS_SHOW_OFFSETS, show);
 }
 
 void MSAEditorOffsetsViewController::updateOffsets() {
-    if (leftWidget->parentWidget() != NULL) {
+    if (leftWidget->parentWidget() != nullptr) {
         const bool vis = toggleColumnsViewAction->isChecked();
         leftWidget->setVisible(vis);
         rightWidget->setVisible(vis);

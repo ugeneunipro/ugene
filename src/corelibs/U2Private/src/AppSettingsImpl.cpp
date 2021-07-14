@@ -51,11 +51,11 @@ AppSettingsImpl::~AppSettingsImpl() {
 
 void AppSettingsImpl::addPublicDbCredentials2Settings() {
     Settings *settings = AppContext::getSettings();
-    SAFE_POINT(NULL != settings, "Invalid application settings", );
+    SAFE_POINT(nullptr != settings, "Invalid application settings", );
     settings->setValue("/shared_database/recent_connections/" + U2DbiUtils::PUBLIC_DATABASE_NAME, U2DbiUtils::PUBLIC_DATABASE_URL);
 
     PasswordStorage *passStorage = AppContext::getPasswordStorage();
-    SAFE_POINT(NULL != passStorage, "Invalid shared DB passwords storage", );
+    SAFE_POINT(nullptr != passStorage, "Invalid shared DB passwords storage", );
     passStorage->addEntry(U2DbiUtils::PUBLIC_DATABASE_URL, U2DbiUtils::PUBLIC_DATABASE_PASSWORD, true);
 }
 

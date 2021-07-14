@@ -50,12 +50,12 @@ GraphicsUnrootedBranchItem::GraphicsUnrootedBranchItem(QGraphicsItem *parent, qr
     //    setTransformOriginPoint(-w, 0);
     //    setRotation(angle);
 
-    if (from->getNameText() != NULL) {
+    if (from->getNameText() != nullptr) {
         nameText = new QGraphicsSimpleTextItem(from->getNameText()->text(), this);
         nameText->setFont(from->getNameText()->font());
         nameText->setBrush(from->getNameText()->brush());
     }
-    if (from->getDistanceText() != NULL) {
+    if (from->getDistanceText() != nullptr) {
         distanceText = new QGraphicsSimpleTextItem(from->getDistanceText()->text(), this);
         distanceText->setFont(from->getDistanceText()->font());
         distanceText->setBrush(from->getDistanceText()->brush());
@@ -65,7 +65,7 @@ GraphicsUnrootedBranchItem::GraphicsUnrootedBranchItem(QGraphicsItem *parent, qr
 }
 
 void GraphicsUnrootedBranchItem::setLabelPositions() {
-    if (nameText != NULL) {
+    if (nameText != nullptr) {
         QRectF rect = nameText->boundingRect();
         qreal h = rect.height();
         nameText->setPos(GraphicsBranchItem::TextSpace, -h * 0.5);
@@ -74,7 +74,7 @@ void GraphicsUnrootedBranchItem::setLabelPositions() {
             nameText->setTransform(QTransform().translate(p.x(), p.y()).rotate(180).translate(-p.x(), -p.y()));
         }
     }
-    if (distanceText != NULL) {
+    if (distanceText != nullptr) {
         QRectF rect = distanceText->boundingRect();
         if (distanceText->scenePos().x() < 0) {
             QPointF p(rect.center().x(), rect.height());

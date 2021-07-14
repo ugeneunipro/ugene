@@ -57,32 +57,32 @@ TCoffeeSupportTask::TCoffeeSupportTask(const MultipleSequenceAlignment &_inputMs
       inputMsa(_inputMsa->getExplicitCopy()),
       objRef(_objRef),
       settings(_settings),
-      lock(NULL) {
+      lock(nullptr) {
     GCOUNTER(cvar, "TCoffeeSupportTask");
-    saveTemporaryDocumentTask = NULL;
-    loadTmpDocumentTask = NULL;
-    tCoffeeTask = NULL;
-    tmpDoc = NULL;
+    saveTemporaryDocumentTask = nullptr;
+    loadTmpDocumentTask = nullptr;
+    tCoffeeTask = nullptr;
+    tmpDoc = nullptr;
     resultMA->setAlphabet(inputMsa->getAlphabet());
     resultMA->setName(inputMsa->getName());
 }
 
 TCoffeeSupportTask::~TCoffeeSupportTask() {
-    if (NULL != tmpDoc) {
+    if (nullptr != tmpDoc) {
         delete tmpDoc;
     }
     //Unlock the alignment object if the task has been failed
     if (!lock.isNull()) {
         if (objRef.isValid()) {
             GObject *obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
-            if (NULL != obj) {
+            if (nullptr != obj) {
                 MultipleSequenceAlignmentObject *alObj = dynamic_cast<MultipleSequenceAlignmentObject *>(obj);
-                CHECK(NULL != alObj, );
+                CHECK(nullptr != alObj, );
                 if (alObj->isStateLocked()) {
                     alObj->unlockState(lock);
                 }
                 delete lock;
-                lock = NULL;
+                lock = nullptr;
             }
         }
     }
@@ -99,9 +99,9 @@ void TCoffeeSupportTask::prepare() {
 
     if (objRef.isValid()) {
         GObject *obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
-        if (NULL != obj) {
+        if (nullptr != obj) {
             MultipleSequenceAlignmentObject *alObj = dynamic_cast<MultipleSequenceAlignmentObject *>(obj);
-            SAFE_POINT(NULL != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", );
+            SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", );
             lock = new StateLock("ClustalWAlignment");
             alObj->lockState(lock);
         }
@@ -201,7 +201,7 @@ QList<Task *> TCoffeeSupportTask::onSubTaskFinished(Task *subTask) {
         res.append(loadTmpDocumentTask);
     } else if (subTask == loadTmpDocumentTask) {
         tmpDoc = loadTmpDocumentTask->takeDocument();
-        SAFE_POINT(tmpDoc != NULL, QString("output document '%1' not loaded").arg(tmpDoc->getURLString()), res);
+        SAFE_POINT(tmpDoc != nullptr, QString("output document '%1' not loaded").arg(tmpDoc->getURLString()), res);
         SAFE_POINT(tmpDoc->getObjects().length() != 0, QString("no objects in output document '%1'").arg(tmpDoc->getURLString()), res);
 
         // Get the result alignment
@@ -209,7 +209,7 @@ QList<Task *> TCoffeeSupportTask::onSubTaskFinished(Task *subTask) {
         SAFE_POINT(!newDocumentObjects.empty(), "No objects in the temporary document!", res);
 
         MultipleSequenceAlignmentObject *newMAligmentObject = qobject_cast<MultipleSequenceAlignmentObject *>(newDocumentObjects.first());
-        SAFE_POINT(NULL != newMAligmentObject, "Failed to cast object from temporary document to an alignment!", res);
+        SAFE_POINT(nullptr != newMAligmentObject, "Failed to cast object from temporary document to an alignment!", res);
 
         resultMA = newMAligmentObject->getMsaCopy();
         bool renamed = MSAUtils::restoreOriginalRowNamesFromIndexedNames(resultMA, inputMsa->getRowNames());
@@ -218,9 +218,9 @@ QList<Task *> TCoffeeSupportTask::onSubTaskFinished(Task *subTask) {
         // If an alignment object has been specified, save the result to it
         if (objRef.isValid()) {
             GObject *obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
-            if (NULL != obj) {
+            if (nullptr != obj) {
                 MultipleSequenceAlignmentObject *alObj = dynamic_cast<MultipleSequenceAlignmentObject *>(obj);
-                SAFE_POINT(NULL != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying TCoffee results!", res);
+                SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying TCoffee results!", res);
 
                 MSAUtils::assignOriginalDataIds(inputMsa, resultMA, stateInfo);
                 CHECK_OP(stateInfo, res);
@@ -239,7 +239,7 @@ QList<Task *> TCoffeeSupportTask::onSubTaskFinished(Task *subTask) {
                             alObj->unlockState(lock);
                         }
                         delete lock;
-                        lock = NULL;
+                        lock = nullptr;
                     } else {
                         stateInfo.setError("MultipleSequenceAlignment object has been changed");
                         return res;
@@ -263,7 +263,7 @@ QList<Task *> TCoffeeSupportTask::onSubTaskFinished(Task *subTask) {
                 }
 
                 Document *currentDocument = alObj->getDocument();
-                SAFE_POINT(NULL != currentDocument, "Document is NULL!", res);
+                SAFE_POINT(nullptr != currentDocument, "Document is NULL!", res);
                 currentDocument->setModified(true);
             } else {
                 algoLog.error(tr("Failed to apply the result of TCoffee: alignment object is not available!"));
@@ -297,11 +297,11 @@ TCoffeeWithExtFileSpecifySupportTask::TCoffeeWithExtFileSpecifySupportTask(const
     : Task("Run T-Coffee alignment task", TaskFlags_NR_FOSCOE),
       settings(_settings) {
     GCOUNTER(cvar, "TCoffeeSupportTask");
-    mAObject = NULL;
-    currentDocument = NULL;
-    saveDocumentTask = NULL;
-    loadDocumentTask = NULL;
-    tCoffeeSupportTask = NULL;
+    mAObject = nullptr;
+    currentDocument = nullptr;
+    saveDocumentTask = nullptr;
+    loadDocumentTask = nullptr;
+    tCoffeeSupportTask = nullptr;
     cleanDoc = true;
 }
 TCoffeeWithExtFileSpecifySupportTask::~TCoffeeWithExtFileSpecifySupportTask() {
@@ -341,10 +341,10 @@ QList<Task *> TCoffeeWithExtFileSpecifySupportTask::onSubTaskFinished(Task *subT
     }
     if (subTask == loadDocumentTask) {
         currentDocument = loadDocumentTask->takeDocument();
-        SAFE_POINT(currentDocument != NULL, QString("Failed loading document: %1").arg(loadDocumentTask->getURLString()), res);
+        SAFE_POINT(currentDocument != nullptr, QString("Failed loading document: %1").arg(loadDocumentTask->getURLString()), res);
         SAFE_POINT(currentDocument->getObjects().length() == 1, QString("Number of objects != 1 : %1").arg(loadDocumentTask->getURLString()), res);
         mAObject = qobject_cast<MultipleSequenceAlignmentObject *>(currentDocument->getObjects().first());
-        SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
+        SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
 
         // Launch the task, objRef is empty - the input document maybe not in project
         tCoffeeSupportTask = new TCoffeeSupportTask(mAObject->getMultipleAlignment(), GObjectReference(), settings);
@@ -352,7 +352,7 @@ QList<Task *> TCoffeeWithExtFileSpecifySupportTask::onSubTaskFinished(Task *subT
     } else if (subTask == tCoffeeSupportTask) {
         // Set the result alignment to the alignment object of the current document
         mAObject = qobject_cast<MultipleSequenceAlignmentObject *>(currentDocument->getObjects().first());
-        SAFE_POINT(mAObject != NULL, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
+        SAFE_POINT(mAObject != nullptr, QString("MA object not found!: %1").arg(loadDocumentTask->getURLString()), res);
         mAObject->updateGapModel(tCoffeeSupportTask->resultMA->getMsaRows());
 
         // Save the current document
@@ -362,7 +362,7 @@ QList<Task *> TCoffeeWithExtFileSpecifySupportTask::onSubTaskFinished(Task *subT
         res.append(saveDocumentTask);
     } else if (subTask == saveDocumentTask) {
         Task *openTask = AppContext::getProjectLoader()->openWithProjectTask(settings.outputFilePath);
-        if (openTask != NULL) {
+        if (openTask != nullptr) {
             res << openTask;
         }
     }

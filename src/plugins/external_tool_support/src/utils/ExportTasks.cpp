@@ -134,9 +134,9 @@ SaveSequenceTask::SaveSequenceTask(const QPointer<U2SequenceObject> &sequence, c
       sequence(sequence),
       url(url),
       formatId(formatId),
-      locker(NULL),
-      cloneTask(NULL) {
-    SAFE_POINT_EXT(NULL != sequence, setError("Sequence is NULL"), );
+      locker(nullptr),
+      cloneTask(nullptr) {
+    SAFE_POINT_EXT(nullptr != sequence, setError("Sequence is NULL"), );
     SAFE_POINT_EXT(!url.isEmpty(), setError("URL is empty"), );
 }
 
@@ -153,21 +153,21 @@ QList<Task *> SaveSequenceTask::onSubTaskFinished(Task *subTask) {
 
     if (subTask == cloneTask) {
         delete locker;
-        locker = NULL;
+        locker = nullptr;
     }
 
     CHECK_OP(stateInfo, result);
 
     if (subTask == cloneTask) {
         DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
-        SAFE_POINT_EXT(NULL != format, setError(tr("'%' format is not registered").arg(formatId)), result);
+        SAFE_POINT_EXT(nullptr != format, setError(tr("'%' format is not registered").arg(formatId)), result);
 
         Document *document = format->createNewLoadedDocument(IOAdapterUtils::get(BaseIOAdapters::LOCAL_FILE), url, stateInfo);
         CHECK_OP(stateInfo, result);
         document->setDocumentOwnsDbiResources(true);
         document->addObject(cloneTask->takeResult());
 
-        SaveDocumentTask *saveTask = new SaveDocumentTask(document, NULL, GUrl(), SaveDocFlags(SaveDoc_Overwrite) | SaveDoc_DestroyAfter);
+        SaveDocumentTask *saveTask = new SaveDocumentTask(document, nullptr, GUrl(), SaveDocFlags(SaveDoc_Overwrite) | SaveDoc_DestroyAfter);
         saveTask->setSubtaskProgressWeight(50);
         result << saveTask;
     }

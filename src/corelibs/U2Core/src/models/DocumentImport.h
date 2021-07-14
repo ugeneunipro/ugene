@@ -69,7 +69,7 @@ class U2CORE_EXPORT DocumentImportersRegistry : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(DocumentImportersRegistry)
 public:
-    DocumentImportersRegistry(QObject *p = NULL)
+    DocumentImportersRegistry(QObject *p = nullptr)
         : QObject(p) {
     }
     ~DocumentImportersRegistry();
@@ -92,8 +92,8 @@ class U2CORE_EXPORT DocumentImporter : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(DocumentImporter)
 public:
-    DocumentImporter(const QString &_id, const QString &_name, QObject *o = NULL)
-        : QObject(o), id(_id), name(_name), widgetFactory(NULL) {
+    DocumentImporter(const QString &_id, const QString &_name, QObject *o = nullptr)
+        : QObject(o), id(_id), name(_name), widgetFactory(nullptr) {
     }
 
     virtual ~DocumentImporter() {

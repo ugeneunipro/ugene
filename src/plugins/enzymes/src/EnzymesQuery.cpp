@@ -51,7 +51,7 @@ static const QString MAX_ATTR = "max";
 
 QDEnzymesActor::QDEnzymesActor(QDActorPrototype const *proto)
     : QDActor(proto) {
-    selectorFactory = NULL;
+    selectorFactory = nullptr;
     cfg->setAnnotationKey("<rsite>");
     units["enzyme"] = new QDSchemeUnit(this);
 }
@@ -61,7 +61,7 @@ QString QDEnzymesActor::getText() const {
 }
 
 Task *QDEnzymesActor::getAlgorithmTask(const QVector<U2Region> &location) {
-    Task *t = NULL;
+    Task *t = nullptr;
 
     bool circular = cfg->getParameter(CIRC_ATTR)->getAttributePureValue().toBool();
 

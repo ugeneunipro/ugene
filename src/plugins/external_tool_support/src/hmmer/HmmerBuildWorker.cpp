@@ -134,8 +134,8 @@ QString HmmerBuildPrompter::composeRichDoc() {
 ******************************/
 HmmerBuildWorker::HmmerBuildWorker(Actor *a)
     : BaseWorker(a),
-      input(NULL),
-      output(NULL) {
+      input(nullptr),
+      output(nullptr) {
 }
 
 void HmmerBuildWorker::init() {
@@ -156,14 +156,14 @@ Task *HmmerBuildWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         cfg.seed = actor->getParameter(SEED_ATTR)->getAttributeValue<int>(context);
 
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
-        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
+        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
         const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
         cfg.profileUrl = monitor()->outputDir() + "hmmer_build/" + QFileInfo(context->getMetadataStorage().get(inputMessage.getMetadataId()).getFileUrl()).baseName() + ".hmm";
@@ -175,12 +175,12 @@ Task *HmmerBuildWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void HmmerBuildWorker::sl_taskFinished(Task *task) {
     HmmerBuildFromMsaTask *buildTask = qobject_cast<HmmerBuildFromMsaTask *>(task);
-    SAFE_POINT(NULL != task, "Invalid task is encountered", );
+    SAFE_POINT(nullptr != task, "Invalid task is encountered", );
     if (task->isCanceled()) {
         return;
     }

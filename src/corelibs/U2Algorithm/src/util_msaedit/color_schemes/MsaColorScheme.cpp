@@ -188,7 +188,7 @@ MsaColorSchemeCustomFactory *MsaColorSchemeRegistry::getCustomSchemeFactoryById(
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 MsaColorSchemeFactory *MsaColorSchemeRegistry::getSchemeFactoryById(const QString &id) const {
@@ -206,7 +206,7 @@ MsaColorSchemeFactory *MsaColorSchemeRegistry::getEmptySchemeFactory() const {
 }
 
 void MsaColorSchemeRegistry::addCustomScheme(const ColorSchemeData &scheme) {
-    addMsaCustomColorSchemeFactory(new MsaColorSchemeCustomFactory(NULL, scheme));
+    addMsaCustomColorSchemeFactory(new MsaColorSchemeCustomFactory(nullptr, scheme));
 }
 
 namespace {
@@ -218,13 +218,13 @@ bool compareNames(const MsaColorSchemeFactory *a1, const MsaColorSchemeFactory *
 }    // namespace
 
 void MsaColorSchemeRegistry::addMsaColorSchemeFactory(MsaColorSchemeFactory *commonFactory) {
-    assert(getSchemeFactoryById(commonFactory->getId()) == NULL);
+    assert(getSchemeFactoryById(commonFactory->getId()) == nullptr);
     colorers.append(commonFactory);
     std::stable_sort(colorers.begin(), colorers.end(), compareNames);
 }
 
 void MsaColorSchemeRegistry::addMsaCustomColorSchemeFactory(MsaColorSchemeCustomFactory *customFactory) {
-    assert(getSchemeFactoryById(customFactory->getId()) == NULL);
+    assert(getSchemeFactoryById(customFactory->getId()) == nullptr);
     customColorers.append(customFactory);
     std::stable_sort(colorers.begin(), colorers.end(), compareNames);
 }
@@ -235,7 +235,7 @@ void MsaColorSchemeRegistry::sl_onCustomSettingsChanged() {
     QList<MsaColorSchemeCustomFactory *> factoriesToRemove = customColorers;
     foreach (const ColorSchemeData &scheme, ColorSchemeUtils::getSchemas()) {
         MsaColorSchemeCustomFactory *customSchemeFactory = getCustomSchemeFactoryById(scheme.name);
-        if (NULL == customSchemeFactory) {
+        if (nullptr == customSchemeFactory) {
             addCustomScheme(scheme);
             schemesListChanged = true;
         } else {

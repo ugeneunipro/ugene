@@ -47,12 +47,12 @@ AnnotationTableObject::AnnotationTableObject(const QString &objectName, const U2
     SAFE_POINT_OP(os, );
 
     entityRef = U2EntityRef(dbiRef, table.id);
-    rootGroup = new AnnotationGroup(table.rootFeature, AnnotationGroup::ROOT_GROUP_NAME, NULL, this);
+    rootGroup = new AnnotationGroup(table.rootFeature, AnnotationGroup::ROOT_GROUP_NAME, nullptr, this);
     dataLoaded = true;
 }
 
 AnnotationTableObject::AnnotationTableObject(const QString &objectName, const U2EntityRef &tableRef, const QVariantMap &hintsMap)
-    : GObject(GObjectTypes::ANNOTATION_TABLE, objectName, hintsMap), rootGroup(NULL) {
+    : GObject(GObjectTypes::ANNOTATION_TABLE, objectName, hintsMap), rootGroup(nullptr) {
     entityRef = tableRef;
 }
 
@@ -126,7 +126,7 @@ GObject *AnnotationTableObject::clone(const U2DbiRef &ref, U2OpStatus &os, const
 
     DbiOperationsBlock opBlock(ref, os);
     Q_UNUSED(opBlock);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     AnnotationTableObject *cln = new AnnotationTableObject(getGObjectName(), ref, gHints.getMap());
     cln->setIndexInfo(getIndexInfo());
@@ -136,7 +136,7 @@ GObject *AnnotationTableObject::clone(const U2DbiRef &ref, U2OpStatus &os, const
     AnnotationGroup *clonedRootGroup = cln->getRootGroup();
     foreach (const QString &groupPath, subgroupPaths) {
         AnnotationGroup *originalGroup = rootGroup->getSubgroup(groupPath, false);
-        SAFE_POINT(originalGroup != NULL, L10N::nullPointerError("annotation group"), NULL);
+        SAFE_POINT(originalGroup != nullptr, L10N::nullPointerError("annotation group"), nullptr);
 
         AnnotationGroup *clonedGroup = clonedRootGroup->getSubgroup(groupPath, true);
         QList<SharedAnnotationData> groupData;
@@ -166,7 +166,7 @@ QList<Annotation *> AnnotationTableObject::getAnnotationsByName(const QString &n
 namespace {
 
 bool annotationIntersectsRange(const Annotation *a, const U2Region &range, bool contains) {
-    SAFE_POINT(NULL != a, L10N::nullPointerError("annotation"), false);
+    SAFE_POINT(nullptr != a, L10N::nullPointerError("annotation"), false);
     if (!contains) {
         foreach (const U2Region &r, a->getRegions()) {
             if (r.intersects(range)) {
@@ -216,7 +216,7 @@ QList<Annotation *> AnnotationTableObject::getAnnotationsByType(const U2FeatureT
 
 bool AnnotationTableObject::checkConstraints(const GObjectConstraints *c) const {
     const AnnotationTableObjectConstraints *ac = qobject_cast<const AnnotationTableObjectConstraints *>(c);
-    SAFE_POINT(NULL != ac, "Invalid feature constraints", false);
+    SAFE_POINT(nullptr != ac, "Invalid feature constraints", false);
 
     ensureDataLoaded();
 
@@ -279,7 +279,7 @@ void AnnotationTableObject::emit_onAnnotationsInGroupRemoved(const QList<Annotat
 }
 
 void AnnotationTableObject::loadDataCore(U2OpStatus &os) {
-    SAFE_POINT(NULL == rootGroup, "Annotation table is initialized unexpectedly", );
+    SAFE_POINT(nullptr == rootGroup, "Annotation table is initialized unexpectedly", );
 
     U2AnnotationTable table = U2FeatureUtils::getAnnotationTable(entityRef, os);
     CHECK_OP(os, );

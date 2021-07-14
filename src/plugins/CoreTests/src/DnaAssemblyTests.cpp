@@ -107,8 +107,8 @@ void GTest_DnaAssemblyToReferenceTask::init(XMLTestFormat *, const QDomElement &
     foreach (const QString &url, shortReadList) {
         shortReadUrls.append(GUrl(env->getVar("COMMON_DATA_DIR") + "/" + url));
     }
-    loadResultTask = NULL;
-    assemblyMultiTask = NULL;
+    loadResultTask = nullptr;
+    assemblyMultiTask = nullptr;
 }
 
 void GTest_DnaAssemblyToReferenceTask::prepare() {

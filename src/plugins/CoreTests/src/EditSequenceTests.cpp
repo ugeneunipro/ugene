@@ -88,12 +88,12 @@ void GTest_AddPartToSequenceTask::init(XMLTestFormat *tf, const QDomElement &el)
 
 void GTest_AddPartToSequenceTask::prepare() {
     Document *loadedDocument = getContext<Document>(this, docName);
-    if (loadedDocument == NULL) {
+    if (loadedDocument == nullptr) {
         stateInfo.setError(GTest::tr("context not found %1").arg(docName));
         return;
     }
     dnaso = (U2SequenceObject *)loadedDocument->findGObjectByName(seqName);
-    if (dnaso == NULL) {
+    if (dnaso == nullptr) {
         stateInfo.setError(GTest::tr("Sequence %1 not found").arg(seqName));
     } else {
         QList<Document *> docList;
@@ -223,12 +223,12 @@ void GTest_RemovePartFromSequenceTask::init(XMLTestFormat *tf, const QDomElement
 
 void GTest_RemovePartFromSequenceTask::prepare() {
     Document *loadedDocument = getContext<Document>(this, docName);
-    if (loadedDocument == NULL) {
+    if (loadedDocument == nullptr) {
         stateInfo.setError(GTest::tr("context not found %1").arg(docName));
         return;
     }
     dnaso = (U2SequenceObject *)loadedDocument->findGObjectByName(seqName);
-    if (dnaso == NULL) {
+    if (dnaso == nullptr) {
         stateInfo.setError(GTest::tr("Sequence %1 not found").arg(seqName));
     } else {
         QList<Document *> docList;
@@ -351,12 +351,12 @@ void GTest_ReplacePartOfSequenceTask::init(XMLTestFormat *tf, const QDomElement 
 
 void GTest_ReplacePartOfSequenceTask::prepare() {
     Document *loadedDocument = getContext<Document>(this, docName);
-    if (loadedDocument == NULL) {
+    if (loadedDocument == nullptr) {
         stateInfo.setError(GTest::tr("Context not found %1").arg(docName));
         return;
     }
     dnaso = (U2SequenceObject *)loadedDocument->findGObjectByName(seqName);
-    if (dnaso == NULL) {
+    if (dnaso == nullptr) {
         stateInfo.setError(GTest::tr("Sequence %1 not found").arg(seqName));
     } else {
         QList<Document *> docList;

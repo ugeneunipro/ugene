@@ -38,28 +38,25 @@ class GTest_RunCMDLine : public XmlTest {
     Q_OBJECT
 public:
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_RunCMDLine, "run-cmdline");
-    virtual void prepare();
-    virtual ReportResult report();
-    virtual void cleanup();
+    void prepare() override;
+    ReportResult report() override;
+    void cleanup() override;
 
 private:
     void setUgeneclPath();
     void setArgs(const QDomElement &owner);
     QString getVal(const QString &val);
-    QString splitVal(const QString &val, QString prefValue, const QString &prefix, bool isTmp);
+    QString splitVal(const QString &val, const QString &prefValue, const QString &prefix, bool isTmp);
 
 private:
     QString expectedMessage;
     QString unexpectedMessage;
     QStringList args;
-    QProcess *proc;
+    QProcess *proc = nullptr;
     QString ugeneclPath;
     QStringList tmpFiles;
     QString workingDir;
-    bool autoRemoveWorkingDir;
-    bool customIniSet;
-
-    static const QString UGENECL_PATH;
+    bool autoRemoveWorkingDir = false;
 };    // GTest_RunCMDLine
 
 class CMDLineTests {

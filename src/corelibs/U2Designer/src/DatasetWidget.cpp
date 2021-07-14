@@ -114,9 +114,9 @@ void URLListWidget::sl_addFileButton() {
     LastUsedDirHelper lod;
     QStringList files;
     if (qgetenv(ENV_GUI_TEST).toInt() == 1 && qgetenv(ENV_USE_NATIVE_DIALOGS).toInt() == 0) {
-        files = U2FileDialog::getOpenFileNames(NULL, tr("Select file"), lod.dir, "", 0, QFileDialog::DontUseNativeDialog);
+        files = U2FileDialog::getOpenFileNames(nullptr, tr("Select file"), lod.dir, "", 0, QFileDialog::DontUseNativeDialog);
     } else {
-        files = U2FileDialog::getOpenFileNames(NULL, tr("Select file"), lod.dir);
+        files = U2FileDialog::getOpenFileNames(nullptr, tr("Select file"), lod.dir);
     }
     for (const QString &file : qAsConst(files)) {
         lod.url = file;
@@ -126,7 +126,7 @@ void URLListWidget::sl_addFileButton() {
 
 void URLListWidget::sl_addDirButton() {
     LastUsedDirHelper lod;
-    QString dir = U2FileDialog::getExistingDirectory(NULL, tr("Select a folder"), lod.dir);
+    QString dir = U2FileDialog::getExistingDirectory(nullptr, tr("Select a folder"), lod.dir);
     if (!dir.isEmpty()) {
         lod.dir = dir;
         addUrl(dir);
@@ -140,7 +140,7 @@ ProjectTreeControllerModeSettings createProjectTreeSettings(const QSet<GObjectTy
     settings.objectTypesToShow += compatibleObjTypes;
 
     Project *proj = AppContext::getProject();
-    SAFE_POINT(NULL != proj, "Invalid project", settings);
+    SAFE_POINT(nullptr != proj, "Invalid project", settings);
 
     foreach (Document *doc, proj->getDocuments()) {
         if (!doc->isDatabaseConnection()) {
@@ -271,14 +271,14 @@ bool URLListWidget::eventFilter(QObject *obj, QEvent *event) {
 
         QContextMenuEvent *e = static_cast<QContextMenuEvent *>(event);
         QListWidgetItem *item = ui->itemsArea->itemAt(e->pos());
-        CHECK(NULL != item, false);
+        CHECK(nullptr != item, false);
         CHECK(item->isSelected(), false);
 
         UrlItem *urlItem = static_cast<UrlItem *>(item);
-        CHECK(NULL != urlItem, false);
+        CHECK(nullptr != urlItem, false);
 
         QWidget *options = urlItem->getOptionsWidget();
-        if (NULL != options) {
+        if (nullptr != options) {
             popup->showOptions(options, ui->itemsArea->mapToGlobal(e->pos()));
         }
         return true;
@@ -321,8 +321,8 @@ void OptionsPopup::showOptions(QWidget *options, const QPoint &p) {
 
 void OptionsPopup::removeOptions() {
     QLayoutItem *child;
-    while (NULL != (child = l->takeAt(0))) {
-        child->widget()->setParent(NULL);
+    while (nullptr != (child = l->takeAt(0))) {
+        child->widget()->setParent(nullptr);
         delete child;
     }
 }

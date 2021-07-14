@@ -70,7 +70,7 @@ void ItemViewStyle::selectBGColor() {
     if (res.isValid()) {
         bgColor = res;
         WorkflowScene *sc = qobject_cast<WorkflowScene *>(owner->scene());
-        if (sc != NULL) {
+        if (sc != nullptr) {
             sc->setModified(true);
         }
     }
@@ -82,7 +82,7 @@ void ItemViewStyle::selectFont() {
     if (ok) {
         defFont = res;
         WorkflowScene *sc = qobject_cast<WorkflowScene *>(owner->scene());
-        if (sc != NULL) {
+        if (sc != nullptr) {
             sc->setModified(true);
         }
     }
@@ -391,7 +391,7 @@ bool ExtendedProcStyle::sceneEventFilter(QGraphicsItem *watched, QEvent *event) 
                 setFixedBounds(b2);
 
                 WorkflowScene *sc = qobject_cast<WorkflowScene *>(owner->scene());
-                if (sc != NULL) {
+                if (sc != nullptr) {
                     sc->setModified(true);
                 }
             }

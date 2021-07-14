@@ -62,7 +62,7 @@ class WorkflowGObject : public GObject {
 public:
     static const GObjectType TYPE;
     WorkflowGObject(const QString &objectName, const QString &s, const QVariantMap &map = QVariantMap())
-        : GObject(TYPE, objectName), serializedScene(s), view(NULL) {
+        : GObject(TYPE, objectName), serializedScene(s), view(nullptr) {
         Q_UNUSED(map);
     }
 
@@ -86,7 +86,7 @@ class WorkflowViewFactory : public GObjectViewFactory {
     Q_OBJECT
 public:
     static const GObjectViewFactoryId ID;
-    WorkflowViewFactory(QObject *p = NULL)
+    WorkflowViewFactory(QObject *p = nullptr)
         : GObjectViewFactory(ID, tr("Workflow Designer"), p) {
     }
 

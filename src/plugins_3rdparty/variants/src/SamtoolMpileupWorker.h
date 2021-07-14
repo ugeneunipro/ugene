@@ -105,7 +105,7 @@ private:
 
 class ScientificDoubleDelegate : public PropertyDelegate {
 public:
-    ScientificDoubleDelegate(QObject *parent = NULL);
+    ScientificDoubleDelegate(QObject *parent = nullptr);
 
     // PropertyDelegate
     virtual QVariant getDisplayValue(const QVariant &v) const;

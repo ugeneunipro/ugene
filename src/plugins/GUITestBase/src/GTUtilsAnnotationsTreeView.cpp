@@ -58,7 +58,7 @@ const QString GTUtilsAnnotationsTreeView::widgetName = "annotations_tree_widget"
 
 #define GT_METHOD_NAME "getTreeWidget"
 QTreeWidget *GTUtilsAnnotationsTreeView::getTreeWidget(HI::GUITestOpStatus &os) {
-    QWidget* sequenceView = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
+    QWidget *sequenceView = GTUtilsSequenceView::getActiveSequenceViewWindow(os);
     QWidget *widget = GTWidget::findWidget(os, widgetName, sequenceView);
     QTreeWidget *treeWidget = qobject_cast<QTreeWidget *>(widget);
     GT_CHECK_RESULT(treeWidget != nullptr, QString("QTreeWidget '%1' not found").arg(widgetName), nullptr);
@@ -76,33 +76,33 @@ void GTUtilsAnnotationsTreeView::addAnnotationsTableFromProject(HI::GUITestOpSta
 
 #define GT_METHOD_NAME "getAVItemName"
 QString GTUtilsAnnotationsTreeView::getAVItemName(HI::GUITestOpStatus &os, AVItem *avItem) {
-    GT_CHECK_RESULT(avItem != NULL, "avItem is NULL", "");
+    GT_CHECK_RESULT(avItem != nullptr, "avItem is NULL", "");
 
     switch (avItem->type) {
-    case AVItemType_Annotation: {
-        AVAnnotationItem *avAnnotationItem = (AVAnnotationItem *)avItem;
-        GT_CHECK_RESULT(avAnnotationItem != NULL, "avAnnotationItem is NULL", "");
+        case AVItemType_Annotation: {
+            AVAnnotationItem *avAnnotationItem = (AVAnnotationItem *)avItem;
+            GT_CHECK_RESULT(avAnnotationItem != nullptr, "avAnnotationItem is NULL", "");
 
-        Annotation *annotation = avAnnotationItem->annotation;
-        return annotation->getName();
-    } break;
+            Annotation *annotation = avAnnotationItem->annotation;
+            return annotation->getName();
+        } break;
 
-    case AVItemType_Group: {
-        AVGroupItem *avGroupItem = (AVGroupItem *)avItem;
-        GT_CHECK_RESULT(avGroupItem != NULL, "avAnnotationItem is NULL", "");
+        case AVItemType_Group: {
+            AVGroupItem *avGroupItem = (AVGroupItem *)avItem;
+            GT_CHECK_RESULT(avGroupItem != nullptr, "avAnnotationItem is NULL", "");
 
-        AnnotationGroup *group = avGroupItem->group;
-        return group->getName();
-    } break;
+            AnnotationGroup *group = avGroupItem->group;
+            return group->getName();
+        } break;
 
-    case AVItemType_Qualifier: {
-        AVQualifierItem *avQualifierItem = (AVQualifierItem *)avItem;
-        GT_CHECK_RESULT(avQualifierItem != NULL, "avQualifierItem is NULL", "");
-        return avQualifierItem->qName;
-    } break;
+        case AVItemType_Qualifier: {
+            AVQualifierItem *avQualifierItem = (AVQualifierItem *)avItem;
+            GT_CHECK_RESULT(avQualifierItem != nullptr, "avQualifierItem is NULL", "");
+            return avQualifierItem->qName;
+        } break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     return "";
@@ -130,12 +130,12 @@ QList<U2Region> GTUtilsAnnotationsTreeView::getAnnotatedRegions(HI::GUITestOpSta
     QList<U2Region> res;
 
     QTreeWidget *treeWidget = getTreeWidget(os);
-    GT_CHECK_RESULT(treeWidget != NULL, "Tree widget is NULL", res);
+    GT_CHECK_RESULT(treeWidget != nullptr, "Tree widget is NULL", res);
 
     QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
     foreach (QTreeWidgetItem *item, treeItems) {
         AVAnnotationItem *annotationItem = dynamic_cast<AVAnnotationItem *>(item);
-        CHECK_OPERATION(annotationItem != NULL, continue);
+        CHECK_OPERATION(annotationItem != nullptr, continue);
 
         Annotation *ann = annotationItem->annotation;
         res.append(ann->getRegions().toList());
@@ -149,12 +149,12 @@ QList<U2Region> GTUtilsAnnotationsTreeView::getSelectedAnnotatedRegions(HI::GUIT
     QList<U2Region> res;
 
     QTreeWidget *treeWidget = getTreeWidget(os);
-    GT_CHECK_RESULT(treeWidget != NULL, "Tree widget is NULL", res);
+    GT_CHECK_RESULT(treeWidget != nullptr, "Tree widget is NULL", res);
 
     QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
     foreach (QTreeWidgetItem *item, treeItems) {
         AVAnnotationItem *annotationItem = dynamic_cast<AVAnnotationItem *>(item);
-        CHECK_OPERATION(annotationItem != NULL, continue);
+        CHECK_OPERATION(annotationItem != nullptr, continue);
         CHECK_CONTINUE(annotationItem->isSelected());
 
         Annotation *ann = annotationItem->annotation;
@@ -167,7 +167,7 @@ QList<U2Region> GTUtilsAnnotationsTreeView::getSelectedAnnotatedRegions(HI::GUIT
 #define GT_METHOD_NAME "getAnnotationRegionString"
 QString GTUtilsAnnotationsTreeView::getAnnotationRegionString(HI::GUITestOpStatus &os, const QString &annotationName) {
     QTreeWidgetItem *annotationItem = findItem(os, annotationName);
-    GT_CHECK_RESULT(NULL != annotationItem, "Annotation item is NULL", "");
+    GT_CHECK_RESULT(nullptr != annotationItem, "Annotation item is NULL", "");
     return annotationItem->text(AnnotationsTreeView::COLUMN_VALUE);
 }
 #undef GT_METHOD_NAME
@@ -175,7 +175,7 @@ QString GTUtilsAnnotationsTreeView::getAnnotationRegionString(HI::GUITestOpStatu
 #define GT_METHOD_NAME "getAnnotationType"
 QString GTUtilsAnnotationsTreeView::getAnnotationType(HI::GUITestOpStatus &os, const QString &annotationName) {
     QTreeWidgetItem *annotationItem = findItem(os, annotationName);
-    GT_CHECK_RESULT(NULL != annotationItem, "Annotation item is NULL", "");
+    GT_CHECK_RESULT(nullptr != annotationItem, "Annotation item is NULL", "");
     return annotationItem->text(AnnotationsTreeView::COLUMN_TYPE);
 }
 #undef GT_METHOD_NAME
@@ -183,18 +183,18 @@ QString GTUtilsAnnotationsTreeView::getAnnotationType(HI::GUITestOpStatus &os, c
 #define GT_METHOD_NAME "findFirstAnnotation"
 QTreeWidgetItem *GTUtilsAnnotationsTreeView::findFirstAnnotation(HI::GUITestOpStatus &os, const GTGlobals::FindOptions &options) {
     QTreeWidget *treeWidget = getTreeWidget(os);
-    GT_CHECK_RESULT(treeWidget != NULL, "Tree widget is NULL", NULL);
+    GT_CHECK_RESULT(treeWidget != nullptr, "Tree widget is NULL", nullptr);
 
     QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
     foreach (QTreeWidgetItem *item, treeItems) {
         AVItem *avItem = dynamic_cast<AVItem *>(item);
-        GT_CHECK_RESULT(NULL != avItem, "Cannot convert QTreeWidgetItem to AVItem", NULL);
+        GT_CHECK_RESULT(nullptr != avItem, "Cannot convert QTreeWidgetItem to AVItem", nullptr);
         if (avItem->type == AVItemType_Annotation) {
             return item;
         }
     }
-    GT_CHECK_RESULT(options.failIfNotFound == false, "No items in tree widget", NULL);
-    return NULL;
+    GT_CHECK_RESULT(options.failIfNotFound == false, "No items in tree widget", nullptr);
+    return nullptr;
 }
 #undef GT_METHOD_NAME
 
@@ -217,10 +217,10 @@ QTreeWidgetItem *GTUtilsAnnotationsTreeView::findItem(HI::GUITestOpStatus &os, c
 
 #define GT_METHOD_NAME "findItem"
 QTreeWidgetItem *GTUtilsAnnotationsTreeView::findItemWithIndex(HI::GUITestOpStatus &os, const QString &itemName, const int index) {
-    GT_CHECK_RESULT(itemName.isEmpty() == false, "Item name is empty", NULL);
+    GT_CHECK_RESULT(itemName.isEmpty() == false, "Item name is empty", nullptr);
 
     QTreeWidget *treeWidget = getTreeWidget(os);
-    GT_CHECK_RESULT(treeWidget != NULL, "Tree widget is NULL", NULL);
+    GT_CHECK_RESULT(treeWidget != nullptr, "Tree widget is NULL", nullptr);
 
     QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
     int i = 0;
@@ -234,7 +234,7 @@ QTreeWidgetItem *GTUtilsAnnotationsTreeView::findItemWithIndex(HI::GUITestOpStat
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 #undef GT_METHOD_NAME
 
@@ -251,7 +251,7 @@ QTreeWidgetItem *GTUtilsAnnotationsTreeView::findItem(HI::GUITestOpStatus &os, c
             return item;
         }
     }
-    GT_CHECK_RESULT(!options.failIfNotFound, "Item " + itemName + " not found in tree widget", NULL);
+    GT_CHECK_RESULT(!options.failIfNotFound, "Item " + itemName + " not found in tree widget", nullptr);
     return nullptr;
 }
 
@@ -263,7 +263,7 @@ QList<QTreeWidgetItem *> GTUtilsAnnotationsTreeView::findItems(HI::GUITestOpStat
     GT_CHECK_RESULT(itemName.isEmpty() == false, "Item name is empty", result);
 
     QTreeWidget *treeWidget = getTreeWidget(os);
-    GT_CHECK_RESULT(treeWidget != NULL, "Tree widget is NULL", result);
+    GT_CHECK_RESULT(treeWidget != nullptr, "Tree widget is NULL", result);
 
     QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
     foreach (QTreeWidgetItem *item, treeItems) {
@@ -309,7 +309,7 @@ QStringList GTUtilsAnnotationsTreeView::getAnnotationNamesOfGroup(HI::GUITestOpS
     QTreeWidgetItem *groupItem = findItem(os, groupName);
     for (int i = 0; i < groupItem->childCount(); i++) {
         AVItem *avItem = dynamic_cast<AVItem *>(groupItem->child(i));
-        GT_CHECK_RESULT(NULL != avItem, "Cannot convert QTreeWidgetItem to AVItem", QStringList());
+        GT_CHECK_RESULT(nullptr != avItem, "Cannot convert QTreeWidgetItem to AVItem", QStringList());
         names << getAVItemName(os, avItem);
     }
     return names;
@@ -321,12 +321,12 @@ QList<U2Region> GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(HI::GUITe
     Q_UNUSED(os);
     QList<U2Region> regions;
     QTreeWidgetItem *groupItem = findItem(os, groupName);
-    GT_CHECK_RESULT(groupItem != NULL, QString("Cannot find group item '%1'").arg(groupName), regions);
+    GT_CHECK_RESULT(groupItem != nullptr, QString("Cannot find group item '%1'").arg(groupName), regions);
     for (int i = 0; i < groupItem->childCount(); i++) {
         AVItem *avItem = dynamic_cast<AVItem *>(groupItem->child(i));
-        GT_CHECK_RESULT(NULL != avItem, "Cannot convert QTreeWidgetItem to AVItem", QList<U2Region>());
+        GT_CHECK_RESULT(nullptr != avItem, "Cannot convert QTreeWidgetItem to AVItem", QList<U2Region>());
         AVAnnotationItem *item = (AVAnnotationItem *)avItem;
-        GT_CHECK_RESULT(item != NULL, "sdf", regions);
+        GT_CHECK_RESULT(item != nullptr, "sdf", regions);
         regions << item->annotation->getRegions().toList();
     }
     return regions;
@@ -338,7 +338,7 @@ QList<U2Region> GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(HI::GUITe
     Q_UNUSED(os);
     QList<U2Region> regions;
     QTreeWidgetItem *parentItem = findItem(os, parentName);
-    GT_CHECK_RESULT(parentItem != NULL, "Parent item not found!", regions);
+    GT_CHECK_RESULT(parentItem != nullptr, "Parent item not found!", regions);
 
     QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(parentItem);
     foreach (QTreeWidgetItem *childItem, treeItems) {
@@ -346,9 +346,9 @@ QList<U2Region> GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(HI::GUITe
         if (treeItemName == groupName) {
             for (int i = 0; i < childItem->childCount(); i++) {
                 AVItem *avItem = dynamic_cast<AVItem *>(childItem->child(i));
-                GT_CHECK_RESULT(NULL != avItem, "Cannot convert QTreeWidgetItem to AVItem", QList<U2Region>());
+                GT_CHECK_RESULT(nullptr != avItem, "Cannot convert QTreeWidgetItem to AVItem", QList<U2Region>());
                 AVAnnotationItem *item = (AVAnnotationItem *)avItem;
-                GT_CHECK_RESULT(item != NULL, "sdf", regions);
+                GT_CHECK_RESULT(item != nullptr, "sdf", regions);
                 regions << item->annotation->getRegions().toList();
             }
         }
@@ -360,7 +360,7 @@ QList<U2Region> GTUtilsAnnotationsTreeView::getAnnotatedRegionsOfGroup(HI::GUITe
 #define GT_METHOD_NAME "findRegion"
 bool GTUtilsAnnotationsTreeView::findRegion(HI::GUITestOpStatus &os, const QString &itemName, const U2Region &r) {
     AVAnnotationItem *item = (AVAnnotationItem *)GTUtilsAnnotationsTreeView::findItem(os, itemName);
-    CHECK_SET_ERR_RESULT(item != NULL, "Item " + itemName + " not found", false);
+    CHECK_SET_ERR_RESULT(item != nullptr, "Item " + itemName + " not found", false);
     Annotation *ann = item->annotation;
 
     U2Region neededRegion(r.startPos - 1, r.length - r.startPos + 1);
@@ -381,7 +381,7 @@ bool GTUtilsAnnotationsTreeView::findRegion(HI::GUITestOpStatus &os, const QStri
 #define GT_METHOD_NAME "getSelectedItem"
 QString GTUtilsAnnotationsTreeView::getSelectedItem(HI::GUITestOpStatus &os) {
     QTreeWidget *treeWidget = getTreeWidget(os);
-    GT_CHECK_RESULT(treeWidget != NULL, "Tree widget is NULL", NULL);
+    GT_CHECK_RESULT(treeWidget != nullptr, "Tree widget is NULL", nullptr);
 
     QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
     foreach (QTreeWidgetItem *item, treeItems) {
@@ -399,7 +399,7 @@ QList<QTreeWidgetItem *> GTUtilsAnnotationsTreeView::getAllSelectedItems(HI::GUI
     QList<QTreeWidgetItem *> res;
 
     QTreeWidget *treeWidget = getTreeWidget(os);
-    GT_CHECK_RESULT(treeWidget != NULL, "Tree widget is NULL", res);
+    GT_CHECK_RESULT(treeWidget != nullptr, "Tree widget is NULL", res);
 
     QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
     foreach (QTreeWidgetItem *item, treeItems) {
@@ -446,7 +446,7 @@ void GTUtilsAnnotationsTreeView::selectItems(HI::GUITestOpStatus &os, const QStr
         GTMouseDriver::moveTo(p);
 
         QTreeWidgetItem *treeItem = findItem(os, item);
-        GT_CHECK_RESULT(treeItem != NULL, "Tree item is NULL", );
+        GT_CHECK_RESULT(treeItem != nullptr, "Tree item is NULL", );
         if (!treeItem->isSelected()) {
             GTMouseDriver::click();
         }
@@ -470,7 +470,7 @@ void GTUtilsAnnotationsTreeView::selectItems(HI::GUITestOpStatus &os, const QLis
         const QPoint p = GTTreeWidget::getItemCenter(os, item);
         GTMouseDriver::moveTo(p);
 
-        GT_CHECK_RESULT(item != NULL, "Tree item is NULL", );
+        GT_CHECK_RESULT(item != nullptr, "Tree item is NULL", );
         if (!item->isSelected()) {
             GTMouseDriver::click();
         }
@@ -485,7 +485,7 @@ void GTUtilsAnnotationsTreeView::clickItem(HI::GUITestOpStatus &os, const QStrin
     GT_CHECK_RESULT(!item.isEmpty(), "Empty item name", );
 
     QTreeWidgetItem *wgtItem = findItemWithIndex(os, item, numOfItem);
-    GT_CHECK_RESULT(wgtItem != NULL, "Item " + item + " is NULL", );
+    GT_CHECK_RESULT(wgtItem != nullptr, "Item " + item + " is NULL", );
 
     QPoint p = GTTreeWidget::getItemCenter(os, wgtItem);
     GTMouseDriver::moveTo(p);
@@ -501,7 +501,7 @@ void GTUtilsAnnotationsTreeView::clickItem(HI::GUITestOpStatus &os, const QStrin
 #define GT_METHOD_NAME "createAnnotation"
 void GTUtilsAnnotationsTreeView::createAnnotation(HI::GUITestOpStatus &os, const QString &groupName, const QString &annotationName, const QString &location, bool createNewTable, const QString &saveTo) {
     QTreeWidget *annotationsTreeView = getTreeWidget(os);
-    GT_CHECK(NULL != annotationsTreeView, "No annotation tree view");
+    GT_CHECK(nullptr != annotationsTreeView, "No annotation tree view");
     GTWidget::click(os, annotationsTreeView);
 
     GTUtilsDialog::waitForDialog(os, new CreateAnnotationWidgetFiller(os, createNewTable, groupName, annotationName, location, saveTo));
@@ -517,7 +517,7 @@ void GTUtilsAnnotationsTreeView::deleteItem(HI::GUITestOpStatus &os, const QStri
 
 #define GT_METHOD_NAME "deleteItem"
 void GTUtilsAnnotationsTreeView::deleteItem(HI::GUITestOpStatus &os, QTreeWidgetItem *item) {
-    GT_CHECK(item != NULL, "Item is NULL");
+    GT_CHECK(item != nullptr, "Item is NULL");
     selectItems(os, QList<QTreeWidgetItem *>() << item);
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
     GTGlobals::sleep(100);

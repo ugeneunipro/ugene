@@ -32,7 +32,7 @@ class AssemblyBrowser;
 class AssemblyInfoWidget : public QWidget {
     Q_OBJECT
 public:
-    AssemblyInfoWidget(AssemblyBrowser *browser, QWidget *p = NULL);
+    AssemblyInfoWidget(AssemblyBrowser *browser, QWidget *p = nullptr);
 
 private:
     U2SavableWidget savableTab;

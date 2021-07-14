@@ -59,8 +59,8 @@ static const QString &ADD_READ = "add_read";
 
 const QString &AssemblyTestData::ASS_DB_URL("assembly-dbi.ugenedb");
 
-U2AssemblyDbi *AssemblyTestData::assemblyDbi = NULL;
-QList<U2DataId> *AssemblyTestData::assemblyIds = NULL;
+U2AssemblyDbi *AssemblyTestData::assemblyDbi = nullptr;
+QList<U2DataId> *AssemblyTestData::assemblyIds = nullptr;
 TestDbiProvider AssemblyTestData::dbiProvider = TestDbiProvider();
 
 static bool registerTests() {
@@ -103,21 +103,21 @@ void AssemblyTestData::init() {
     SAFE_POINT_OP(opStatus, );
 
     assemblyDbi = dbi->getAssemblyDbi();
-    SAFE_POINT(NULL != assemblyDbi, "assembly database not loaded", );
+    SAFE_POINT(nullptr != assemblyDbi, "assembly database not loaded", );
 }
 
 U2AssemblyDbi *AssemblyTestData::getAssemblyDbi() {
-    if (assemblyDbi == NULL) {
+    if (assemblyDbi == nullptr) {
         AssemblyTestData::init();
     }
     return assemblyDbi;
 }
 
 void AssemblyTestData::shutdown() {
-    if (assemblyDbi != NULL) {
+    if (assemblyDbi != nullptr) {
         U2OpStatusImpl opStatus;
         dbiProvider.close();
-        assemblyDbi = NULL;
+        assemblyDbi = nullptr;
         SAFE_POINT_OP(opStatus, );
     }
 }
@@ -433,7 +433,7 @@ void AssemblyDbiUnitTests_createAssemblyObject::Test() {
     U2AssemblyReadsImportInfo importInfo;
     U2OpStatusImpl os;
 
-    assemblyDbi->createAssemblyObject(assembly, "/", NULL, importInfo, os);
+    assemblyDbi->createAssemblyObject(assembly, "/", nullptr, importInfo, os);
     CHECK_NO_ERROR(os);
 
     U2Assembly res = assemblyDbi->getAssemblyObject(assembly.id, os);

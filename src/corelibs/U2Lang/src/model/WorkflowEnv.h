@@ -53,7 +53,7 @@ public:
     static bool init(WorkflowEnv *instance);
     static void shutdown() {
         delete instance;
-        instance = NULL;
+        instance = nullptr;
     }
 
     static DataTypeRegistry *getDataTypeRegistry() {

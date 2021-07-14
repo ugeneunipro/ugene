@@ -32,12 +32,12 @@ namespace U2 {
 #define GT_METHOD_NAME "commonScenario"
 void ZoomToRangeDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     QLineEdit *from = dialog->findChild<QLineEdit *>("start_edit_line");
     QLineEdit *to = dialog->findChild<QLineEdit *>("end_edit_line");
-    GT_CHECK(from != NULL, "\"start_edit_line\" to  not found");
-    GT_CHECK(to != NULL, "\"end_edit_line\" to  not found");
+    GT_CHECK(from != nullptr, "\"start_edit_line\" to  not found");
+    GT_CHECK(to != nullptr, "\"end_edit_line\" to  not found");
 
     if (minVal != -1) {
         GTLineEdit::setText(os, from, QString::number(minVal));

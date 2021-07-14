@@ -221,21 +221,21 @@ void SQLiteAttributeDbi::removeAttributes(const QList<U2DataId> &attributeIds, U
     foreach (const U2DataId &id, attributeIds) {
         U2DataType type = U2DbiUtils::toType(id);
         switch (type) {
-        case U2Type::AttributeInteger:
-            removeAttribute(qi.data(), id);
-            break;
-        case U2Type::AttributeReal:
-            removeAttribute(qr.data(), id);
-            break;
-        case U2Type::AttributeString:
-            removeAttribute(qs.data(), id);
-            break;
-        case U2Type::AttributeByteArray:
-            removeAttribute(qb.data(), id);
-            break;
-        default:
-            os.setError(U2DbiL10n::tr("Unsupported attribute type: %1").arg(type));
-            break;
+            case U2Type::AttributeInteger:
+                removeAttribute(qi.data(), id);
+                break;
+            case U2Type::AttributeReal:
+                removeAttribute(qr.data(), id);
+                break;
+            case U2Type::AttributeString:
+                removeAttribute(qs.data(), id);
+                break;
+            case U2Type::AttributeByteArray:
+                removeAttribute(qb.data(), id);
+                break;
+            default:
+                os.setError(U2DbiL10n::tr("Unsupported attribute type: %1").arg(type));
+                break;
         }
         CHECK_OP(os, );
 

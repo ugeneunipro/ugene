@@ -69,13 +69,13 @@ Handle<Value> launchSchemeWithScheduler(const Arguments &args) {
         return scope.Close(Undefined());
     }
     Local<Function> schedulerCallback = Local<Function>::Cast(args[1]);
-    JsScheduler *scheduler = new JsScheduler(NULL, schedulerCallback);
+    JsScheduler *scheduler = new JsScheduler(nullptr, schedulerCallback);
 
     const String::Utf8Value pathToScheme(args[0]->ToString());
     const String::Utf8Value workingDir(args[2]->ToString());
     Handle<Value> result;
     initContext(*workingDir);
-    SchemeHandle *scheme = NULL;
+    SchemeHandle *scheme = nullptr;
     U2ErrorType error = createScheme(*pathToScheme, scheme);
     CHECK(U2_OK == error, scope.Close(Undefined()));
     result = scope.Close(Number::New(launchScheme(scheme)));
@@ -89,7 +89,7 @@ Handle<Value> topologicalSortedGraph(const Arguments &args) {
         return scope.Close(Undefined());
     }
     ScriptContext *scriptContext = NodeApiUtils::getScriptContext();
-    if (NULL == scriptContext) {
+    if (nullptr == scriptContext) {
         return scope.Close(Undefined());
     }
     QMap<int, QList<Actor *>> topologicalSortedGraph = scriptContext->getTopologicalSortedGraph();
@@ -121,10 +121,10 @@ Handle<Value> tick(const Arguments &args) {
     }
     const String::Utf8Value actorId(args[0]->ToString());
     ScriptContext *scriptContext = NodeApiUtils::getScriptContext();
-    if (NULL == scriptContext) {
+    if (nullptr == scriptContext) {
         return scope.Close(Undefined());
     }
-    if (NULL == scriptContext->getActorById(*actorId)) {
+    if (nullptr == scriptContext->getActorById(*actorId)) {
         ThrowException(Exception::TypeError(String::New(ACTOR_NOT_FOUND_MESSAGE)));
         return scope.Close(Undefined());
     }
@@ -138,12 +138,12 @@ Handle<Value> debugStatus(const Arguments &args) {
         return scope.Close(Undefined());
     }
     ScriptContext *scriptContext = NodeApiUtils::getScriptContext();
-    if (NULL == scriptContext) {
+    if (nullptr == scriptContext) {
         return scope.Close(Undefined());
     }
     Handle<Value> wrappedDebugInfo;
     WorkflowDebugStatus *debugInfo = scriptContext->getDebugStatus();
-    if (NULL != debugInfo) {
+    if (nullptr != debugInfo) {
         Handle<Value> debugInfoInitData[] = {Integer::New(reinterpret_cast<int>(debugInfo))};
         wrappedDebugInfo = DebugStatusWrap::newInstance(1, debugInfoInitData);
     } else {

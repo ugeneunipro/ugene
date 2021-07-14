@@ -108,9 +108,9 @@ QVariantMap MaEditorState::saveState(MaEditor *v) {
     }
 
     MaEditorWgt *wgt = v->getUI();
-    SAFE_POINT(wgt != NULL, "MaEditorWgt is NULL", QVariantMap());
+    SAFE_POINT(wgt != nullptr, "MaEditorWgt is NULL", QVariantMap());
     ScrollController *scrollController = wgt->getScrollController();
-    SAFE_POINT(scrollController != NULL, "ScrollController is NULL", QVariantMap());
+    SAFE_POINT(scrollController != nullptr, "ScrollController is NULL", QVariantMap());
 
     int firstBase = scrollController->getFirstVisibleBase();
     int firstSeq = scrollController->getFirstVisibleMaRowIndex();

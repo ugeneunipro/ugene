@@ -58,7 +58,7 @@ U2Region RegionSelectorWithExludedRegion::getExcludeRegion(bool *ok) const {
     if (ui->excludeCheckBox->isChecked()) {
         return excludeController->getRegion(ok);
     } else {
-        if (ok != NULL) {
+        if (ok != nullptr) {
             *ok = true;
         }
         return U2Region();

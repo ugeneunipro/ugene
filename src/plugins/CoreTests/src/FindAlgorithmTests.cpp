@@ -194,7 +194,7 @@ void GTest_FindAlgorithmTest::init(XMLTestFormat *tf, const QDomElement &el) {
 
 void GTest_FindAlgorithmTest::prepare() {
     Document *doc = getContext<Document>(this, docName);
-    if (doc == NULL) {
+    if (doc == nullptr) {
         stateInfo.setError(GTest::tr("context not found %1").arg(docName));
         return;
     }

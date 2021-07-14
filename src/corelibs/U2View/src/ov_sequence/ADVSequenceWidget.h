@@ -62,7 +62,7 @@ public:
 
     virtual ADVSequenceObjectContext *getActiveSequenceContext() const = 0;
 
-    virtual void centerPosition(int pos, QWidget *skipView = NULL) = 0;
+    virtual void centerPosition(int pos, QWidget *skipView = nullptr) = 0;
 
     virtual void buildPopupMenu(QMenu &m);
 
@@ -104,7 +104,7 @@ class U2VIEW_EXPORT ADVSequenceWidgetAction : public QAction {
     Q_OBJECT
 public:
     ADVSequenceWidgetAction(const QString &objName, const QString &text)
-        : QAction(text, NULL), addToBar(false), addToMenu(false), seqWidget(NULL) {
+        : QAction(text, nullptr), addToBar(false), addToMenu(false), seqWidget(nullptr) {
         setObjectName(objName);
     }
 

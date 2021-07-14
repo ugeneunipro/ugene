@@ -58,7 +58,7 @@ ClustalOSupportTask::ClustalOSupportTask(const MultipleSequenceAlignment &_input
       settings(_settings),
       lock(nullptr) {
     GCOUNTER(cvar, "ClustalOSupportTask");
-    tmpDoc = NULL;
+    tmpDoc = nullptr;
     resultMsa->setName(inputMsa->getName());
     resultMsa->setAlphabet(inputMsa->getAlphabet());
 }
@@ -89,9 +89,9 @@ void ClustalOSupportTask::prepare() {
 
     if (objRef.isValid()) {
         GObject *obj = GObjectUtils::selectObjectByReference(objRef, UOF_LoadedOnly);
-        if (NULL != obj) {
+        if (nullptr != obj) {
             MultipleSequenceAlignmentObject *alObj = dynamic_cast<MultipleSequenceAlignmentObject *>(obj);
-            SAFE_POINT(NULL != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", );
+            SAFE_POINT(nullptr != alObj, "Failed to convert GObject to MultipleSequenceAlignmentObject during applying ClustalW results!", );
             lock = new StateLock("ClustalO");
             alObj->lockState(lock);
         }

@@ -126,7 +126,7 @@ QString ImportPhredQualityPrompter::composeRichDoc() {
  * ImportPhredQualityWorker
  *************************************/
 ImportPhredQualityWorker::ImportPhredQualityWorker(Actor *a)
-    : BaseWorker(a), input(NULL), output(NULL), readTask(NULL) {
+    : BaseWorker(a), input(nullptr), output(nullptr), readTask(nullptr) {
 }
 
 void ImportPhredQualityWorker::init() {
@@ -142,18 +142,18 @@ void ImportPhredQualityWorker::init() {
 
 Task *ImportPhredQualityWorker::tick() {
     if (input->hasMessage()) {
-        if (readTask == NULL) {
+        if (readTask == nullptr) {
             readTask = new ReadQualityScoresTask(fileName, type, format);
             return readTask;
         } else if (readTask->getState() != Task::State_Finished) {
-            return NULL;
+            return nullptr;
         }
 
         Message inputMessage = getMessageAndSetupScriptValues(input);
         SharedDbiDataHandler seqId = inputMessage.getData().toMap().value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
         if (seqObj.isNull()) {
-            return NULL;
+            return nullptr;
         }
         const QMap<QString, DNAQuality> &qualities = readTask->getResult();
 
@@ -177,7 +177,7 @@ Task *ImportPhredQualityWorker::tick() {
         algoLog.trace(tr("Import of qualities is finished."));
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void ImportPhredQualityWorker::cleanup() {

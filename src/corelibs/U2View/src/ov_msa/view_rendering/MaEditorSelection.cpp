@@ -21,91 +21,58 @@
 
 #include "MaEditorSelection.h"
 
-namespace U2 {
+#include <U2Core/U2SafePoints.h>
 
-static QRect makeSafeRect(const QPoint &p1, const QPoint &p2) {
-    QPoint topLeft(qMin(p1.x(), p2.x()), qMin(p1.y(), p2.y()));
-    QPoint bottomRight(qMax(p1.x(), p2.x()), qMax(p1.y(), p2.y()));
-    return QRect(topLeft, bottomRight);
-}
+namespace U2 {
 
 /************************************************************************/
 /* MaEditorSelection */
 /************************************************************************/
-MaEditorSelection::MaEditorSelection() {
+
+MaEditorSelection::MaEditorSelection(const QList<QRect> &rects) {
+    for (const QRect &rect : qAsConst(rects)) {
+        addRect(rect);
+    }
 }
 
-MaEditorSelection::MaEditorSelection(int left, int top, int width, int height)
-    : MaEditorSelection(QPoint(left, top), width, height) {
-}
-
-MaEditorSelection::MaEditorSelection(const QPoint &topLeft, int width, int height)
-    : selArea(topLeft, QSize(width, height)) {
-}
-
-MaEditorSelection::MaEditorSelection(const QPoint &topLeft, const QPoint &bottomRight) {
-    selArea = makeSafeRect(topLeft, bottomRight);
+bool MaEditorSelection::addRect(const QRect &rect) {
+    SAFE_POINT(rect.x() >= 0 && rect.width() >= 0 && rect.y() >= 0 && rect.height() >= 0,
+               QString("Invalid MSA selection rect: x:%1 y:%2 w:%3 h:%4").arg(rect.x()).arg(rect.y()).arg(rect.width()).arg(rect.height()),
+               false);
+    for (const QRect &oldRect : qAsConst(rectList)) {
+        if (oldRect.contains(rect)) {
+            return false;
+        }
+        SAFE_POINT(!oldRect.intersects(rect), "Unsupported mode: selection rects must not intersect!", false);
+    }
+    rectList << rect;
+    return true;
 }
 
 bool MaEditorSelection::isEmpty() const {
-    return selArea.width() <= 0 || selArea.height() <= 0;
-}
-
-QPoint MaEditorSelection::topLeft() const {
-    return selArea.topLeft();
-}
-
-QPoint MaEditorSelection::bottomRight() const {
-    return selArea.bottomRight();
+    return rectList.isEmpty();
 }
 
 QRect MaEditorSelection::toRect() const {
-    return isEmpty() ? QRect(0, 0, 0, 0) : selArea;
+    if (rectList.isEmpty()) {
+        return {0, 0, 0, 0};
+    }
+    QRect boundingRect = rectList[0];
+    for (int i = 1; i < rectList.length(); i++) {
+        const QRect &rect = rectList[i];
+        QPoint topLeft(qMin(rect.x(), boundingRect.x()), qMin(rect.y(), boundingRect.y()));
+        QPoint bottomRight(qMax(rect.right(), boundingRect.right()), qMax(rect.bottom(), boundingRect.bottom()));
+        boundingRect = QRect(topLeft, bottomRight);
+    }
+    return boundingRect;
 }
 
-int MaEditorSelection::x() const {
-    return selArea.x();
-}
-
-int MaEditorSelection::y() const {
-    return selArea.y();
-}
-
-int MaEditorSelection::width() const {
-    return selArea.width();
-}
-
-int MaEditorSelection::height() const {
-    return selArea.height();
-}
-
-int MaEditorSelection::right() const {
-    return selArea.right();
-}
-
-int MaEditorSelection::bottom() const {
-    return selArea.bottom();
-}
-
-U2Region MaEditorSelection::getXRegion() const {
-    return U2Region(selArea.x(), selArea.width());
-}
-
-U2Region MaEditorSelection::getYRegion() const {
-    return U2Region(selArea.y(), selArea.height());
+const QList<QRect> &MaEditorSelection::getRectList() const {
+    return rectList;
 }
 
 bool MaEditorSelection::operator==(const MaEditorSelection &other) const {
-    return selArea == other.selArea;
-}
-
-MaEditorSelection MaEditorSelection::intersected(const MaEditorSelection &selection) const {
-    QRect r = selArea.intersected(selection.selArea);
-    return MaEditorSelection(r);
-}
-
-MaEditorSelection::MaEditorSelection(QRect &rect)
-    : selArea(rect) {
+    return other.getRectList() == rectList;
 }
 
 }    // namespace U2

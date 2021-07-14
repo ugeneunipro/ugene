@@ -39,7 +39,7 @@ const GSelection *MultiGSelection::findSelectionByType(GSelectionType t) const {
             return s;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 void GSelection::sl_selectionChanged() {

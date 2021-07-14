@@ -31,7 +31,7 @@ namespace U2 {
 class ImportSchemaDialog : public QDialog, public Ui_ImportSchemaDialog {
     Q_OBJECT
 public:
-    ImportSchemaDialog(QWidget *p = NULL);
+    ImportSchemaDialog(QWidget *p = nullptr);
 
     QString getTypeName();
 

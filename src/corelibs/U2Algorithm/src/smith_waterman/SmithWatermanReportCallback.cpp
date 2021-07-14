@@ -56,7 +56,7 @@ SmithWatermanReportCallback::~SmithWatermanReportCallback() {
 
 SmithWatermanReportCallbackAnnotImpl::SmithWatermanReportCallbackAnnotImpl(AnnotationTableObject *_aobj, U2FeatureType annotationType, const QString &_annotationName, const QString &_annotationGroup, const QString &annDescription, bool _addPatternSubseqToQual, QObject *pOwn)
     : QObject(pOwn), annotationType(annotationType), annotationName(_annotationName), annotationGroup(_annotationGroup),
-      annDescription(annDescription), aObj(_aobj), autoReport(_aobj != NULL), addPatternSubseqToQual(_addPatternSubseqToQual) {
+      annDescription(annDescription), aObj(_aobj), autoReport(_aobj != nullptr), addPatternSubseqToQual(_addPatternSubseqToQual) {
 }
 
 QString SmithWatermanReportCallbackAnnotImpl::report(const QList<SmithWatermanResult> &results) {
@@ -93,13 +93,13 @@ const QList<SharedAnnotationData> &SmithWatermanReportCallbackAnnotImpl::getAnot
 // SmithWatermanReportCallbackMAImpl realization //////////////////////////////////////////////////////////////////////////
 
 SmithWatermanReportCallbackMAImpl::TagExpansionPossibleData::TagExpansionPossibleData()
-    : curProcessingSubseq(NULL) {
+    : curProcessingSubseq(nullptr) {
 }
 
 SmithWatermanReportCallbackMAImpl::TagExpansionPossibleData::TagExpansionPossibleData(
     const QString &_refSequenceName,
     const QString &_patternName)
-    : refSequenceName(_refSequenceName), patternName(_patternName), curProcessingSubseq(NULL) {
+    : refSequenceName(_refSequenceName), patternName(_patternName), curProcessingSubseq(nullptr) {
 }
 
 const quint8 SmithWatermanReportCallbackMAImpl::countOfSimultLoadedMADocs = 5;
@@ -137,12 +137,12 @@ SmithWatermanReportCallbackMAImpl::SmithWatermanReportCallbackMAImpl(
     CHECK_OP(os, );
 
     U2MsaDbi *msaDbi = sourceMsaConnection.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "Invalid MSA DBI detected!", );
+    SAFE_POINT(nullptr != msaDbi, "Invalid MSA DBI detected!", );
     const U2AlphabetId alphabetId = msaDbi->getMsaObject(sourceMsaRef.entityId, os).alphabet;
     CHECK_OP(os, );
     alphabet = U2AlphabetUtils::getById(alphabetId);
-    aminoTT = NULL;
-    SAFE_POINT(NULL != alphabet, "Invalid alphabet detected!", );
+    aminoTT = nullptr;
+    SAFE_POINT(nullptr != alphabet, "Invalid alphabet detected!", );
 }
 
 SmithWatermanReportCallbackMAImpl::SmithWatermanReportCallbackMAImpl(
@@ -160,26 +160,26 @@ SmithWatermanReportCallbackMAImpl::SmithWatermanReportCallbackMAImpl(
     }
 
     U2MsaDbi *msaDbi = sourceMsaConnection.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "Invalid MSA DBI detected!", );
+    SAFE_POINT(nullptr != msaDbi, "Invalid MSA DBI detected!", );
     const U2AlphabetId alphabetId = msaDbi->getMsaObject(sourceMsaRef.entityId, os).alphabet;
     if (os.isCoR()) {
         return;
     }
     alphabet = U2AlphabetUtils::getById(alphabetId);
-    SAFE_POINT(NULL != alphabet, "Invalid alphabet detected!", );
-    aminoTT = NULL;
+    SAFE_POINT(nullptr != alphabet, "Invalid alphabet detected!", );
+    aminoTT = nullptr;
 }
 
 QString SmithWatermanReportCallbackMAImpl::report(const QList<SmithWatermanResult> &_results) {
     switch (plan) {
-    case SequenceView_Search:
-        return planFor_SequenceView_Search(_results);
-    case MSA_Alignment_InNewWindow:
-        return planFor_MSA_Alignment_InNewWindow(_results);
-    case MSA_Alignment_InCurrentWindow:
-        return planFor_MSA_Alignment_InCurrentWindow(_results);
-    default:
-        FAIL("Unexpected algorithm mode!", QString());
+        case SequenceView_Search:
+            return planFor_SequenceView_Search(_results);
+        case MSA_Alignment_InNewWindow:
+            return planFor_MSA_Alignment_InNewWindow(_results);
+        case MSA_Alignment_InCurrentWindow:
+            return planFor_MSA_Alignment_InCurrentWindow(_results);
+        default:
+            FAIL("Unexpected algorithm mode!", QString());
     }
 }
 
@@ -197,7 +197,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_SequenceView_Search(const QLi
 
         DocumentFormat *format = AppContext::getDocumentFormatRegistry()
                                      ->getFormatById(BaseDocumentFormats::CLUSTAL_ALN);
-        Document *alignmentDoc = NULL;
+        Document *alignmentDoc = nullptr;
 
         const QString newFileName = tagsRegistry->parseStringWithTags(mobjectNamesTemplate, expansionInfo);
         QString newFileUrl = resultDirPath + newFileName + '.' + format->getSupportedDocumentFileExtensions().first();
@@ -209,7 +209,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_SequenceView_Search(const QLi
 
         QByteArray curResultRefSubseq = refSequenceData.mid(pairAlignSeqs.refSubseq.startPos, pairAlignSeqs.refSubseq.length);
         const DNAAlphabet *msaAlphabet = alphabet;
-        if (aminoTT != NULL) {
+        if (aminoTT != nullptr) {
             int buflen = curResultRefSubseq.length() / 3;
             QByteArray buf(buflen, '\0');
             aminoTT->translate(curResultRefSubseq.constData(), curResultRefSubseq.length(), buf.data(), buflen);
@@ -235,7 +235,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_SequenceView_Search(const QLi
         currentProject->addDocument(alignmentDoc);
 
         SaveDocFlags flags = SaveDoc_Overwrite;
-        Task *saveMADocument = NULL;
+        Task *saveMADocument = nullptr;
 
         if (countOfLoadedDocs < SmithWatermanReportCallbackMAImpl::countOfSimultLoadedMADocs) {
             ++countOfLoadedDocs;
@@ -275,7 +275,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InNewWindow(
 
     DocumentFormat *format = AppContext::getDocumentFormatRegistry()
                                  ->getFormatById(BaseDocumentFormats::CLUSTAL_ALN);
-    Document *alignmentDoc = NULL;
+    Document *alignmentDoc = nullptr;
 
     QString newFileUrl = resultDirPath + mobjectName + '.' + format->getSupportedDocumentFileExtensions().first();
     changeGivenUrlIfDocumentExists(newFileUrl, currentProject);
@@ -284,7 +284,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InNewWindow(
     CHECK_OP(stateInfo, tr("SmithWatermanReportCallback failed to create new MA document."));
 
     U2SequenceDbi *seqDbi = sourceMsaConnection.dbi->getSequenceDbi();
-    SAFE_POINT(NULL != seqDbi, "Invalid sequence DBI detected!", QString());
+    SAFE_POINT(nullptr != seqDbi, "Invalid sequence DBI detected!", QString());
 
     U2Sequence firstSequence = seqDbi->getSequenceObject(firstSequenceRef.entityId, os);
     CHECK_OP(os, tr("Failed to get the sequence object."));
@@ -320,7 +320,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InNewWindow(
 
     SaveDocFlags flags = SaveDoc_Overwrite;
     flags |= SaveDoc_OpenAfter;
-    Task *saveMADocument = NULL;
+    Task *saveMADocument = nullptr;
 
     if (countOfLoadedDocs < SmithWatermanReportCallbackMAImpl::countOfSimultLoadedMADocs) {
         ++countOfLoadedDocs;
@@ -346,7 +346,7 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InCurrentWindow
     SAFE_POINT(!(0 == pairAlignSeqs.ptrnSubseq.startPos && 0 == pairAlignSeqs.ptrnSubseq.length) && !(0 == pairAlignSeqs.refSubseq.startPos && pairAlignSeqs.refSubseq.length == 0), "Invalid SW algorithm result detected!", QString());
 
     U2SequenceDbi *seqDbi = sourceMsaConnection.dbi->getSequenceDbi();
-    SAFE_POINT(NULL != seqDbi, "Invalid sequence DBI detected!", QString());
+    SAFE_POINT(nullptr != seqDbi, "Invalid sequence DBI detected!", QString());
 
     U2Sequence firstSequence = seqDbi->getSequenceObject(firstSequenceRef.entityId, os);
     CHECK_OP(os, tr("Failed to get the sequence object."));
@@ -375,13 +375,13 @@ QString SmithWatermanReportCallbackMAImpl::planFor_MSA_Alignment_InCurrentWindow
     alignSequences(refSequenceData, ptrnSequenceData, pairAlignSeqs.pairAlignment);
 
     U2MsaDbi *msaDbi = sourceMsaConnection.dbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "Invalid MSA DBI detected!", QString());
+    SAFE_POINT(nullptr != msaDbi, "Invalid MSA DBI detected!", QString());
 
     QList<U2MsaRow> rows = msaDbi->getRows(sourceMsaRef.entityId, os);
     CHECK_OP(os, tr("Failed to get msa from dbi"));
 
-    U2MsaRow *refRow = NULL;
-    U2MsaRow *ptrnRow = NULL;
+    U2MsaRow *refRow = nullptr;
+    U2MsaRow *ptrnRow = nullptr;
 
     for (int i = 0; i < rows.length(); ++i) {
         if (rows[i].sequenceId == refSequence->id) {
@@ -415,21 +415,21 @@ void SmithWatermanReportCallbackMAImpl::alignSequences(QByteArray &refSequence, 
 
     for (qint32 i = 0; i < pairwiseAlignment.length(); ++i) {
         switch (pairwiseAlignment[i]) {
-        case SmithWatermanResult::DIAG:
-            --refSeqCurrentPosition;
-            --ptrnSeqCurrentPosition;
-            continue;
-            break;
-        case SmithWatermanResult::UP:
-            ptrnSequence.insert(ptrnSeqCurrentPosition, U2Msa::GAP_CHAR);
-            --refSeqCurrentPosition;
-            break;
-        case SmithWatermanResult::LEFT:
-            refSequence.insert(refSeqCurrentPosition, U2Msa::GAP_CHAR);
-            --ptrnSeqCurrentPosition;
-            break;
-        default:
-            FAIL("Unexpected pairwise alignment direction!", );
+            case SmithWatermanResult::DIAG:
+                --refSeqCurrentPosition;
+                --ptrnSeqCurrentPosition;
+                continue;
+                break;
+            case SmithWatermanResult::UP:
+                ptrnSequence.insert(ptrnSeqCurrentPosition, U2Msa::GAP_CHAR);
+                --refSeqCurrentPosition;
+                break;
+            case SmithWatermanResult::LEFT:
+                refSequence.insert(refSeqCurrentPosition, U2Msa::GAP_CHAR);
+                --ptrnSeqCurrentPosition;
+                break;
+            default:
+                FAIL("Unexpected pairwise alignment direction!", );
         }
     }
 }
@@ -441,53 +441,53 @@ void SmithWatermanReportCallbackMAImpl::alignSequences(QList<U2MsaGap> &refSeque
     quint32 intervalEnd = 0;
     for (quint32 i = 0; i < static_cast<quint32>(pairwiseAlignment.length()); ++i) {
         switch (pairwiseAlignment[i]) {
-        case SmithWatermanResult::DIAG:
-            if (lastSymbolIsGapRef) {
-                intervalStart = i;
-                refSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
-                lastSymbolIsGapRef = false;
-            }
-            if (lastSymbolIsGapPtrn) {
-                intervalStart = i;
-                ptrnSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
-                lastSymbolIsGapPtrn = false;
-            }
-            break;
-        case SmithWatermanResult::UP:
-            if (lastSymbolIsGapRef) {
-                refSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
-                lastSymbolIsGapRef = false;
-            }
-            if (!lastSymbolIsGapPtrn) {
-                intervalEnd = i;
-            }
-            lastSymbolIsGapPtrn = true;
-            break;
-        case SmithWatermanResult::LEFT:
-            if (lastSymbolIsGapPtrn) {
-                ptrnSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
-                lastSymbolIsGapPtrn = false;
-            }
-            if (!lastSymbolIsGapRef) {
-                intervalEnd = i;
-            }
-            lastSymbolIsGapRef = true;
-            break;
-        default:
-            FAIL("Unexpected pairwise alignment direction!", );
+            case SmithWatermanResult::DIAG:
+                if (lastSymbolIsGapRef) {
+                    intervalStart = i;
+                    refSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
+                    lastSymbolIsGapRef = false;
+                }
+                if (lastSymbolIsGapPtrn) {
+                    intervalStart = i;
+                    ptrnSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
+                    lastSymbolIsGapPtrn = false;
+                }
+                break;
+            case SmithWatermanResult::UP:
+                if (lastSymbolIsGapRef) {
+                    refSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
+                    lastSymbolIsGapRef = false;
+                }
+                if (!lastSymbolIsGapPtrn) {
+                    intervalEnd = i;
+                }
+                lastSymbolIsGapPtrn = true;
+                break;
+            case SmithWatermanResult::LEFT:
+                if (lastSymbolIsGapPtrn) {
+                    ptrnSequenceGapModel.prepend(U2MsaGap(intervalStart, intervalEnd));
+                    lastSymbolIsGapPtrn = false;
+                }
+                if (!lastSymbolIsGapRef) {
+                    intervalEnd = i;
+                }
+                lastSymbolIsGapRef = true;
+                break;
+            default:
+                FAIL("Unexpected pairwise alignment direction!", );
         }
     }
 }
 
 void SmithWatermanReportCallbackMAImpl::changeGivenUrlIfDocumentExists(QString &givenUrl, const Project *curProject) {
-    if (NULL != curProject->findDocumentByURL(GUrl(givenUrl))) {
+    if (nullptr != curProject->findDocumentByURL(GUrl(givenUrl))) {
         for (size_t i = 1;; i++) {
             QString tmpUrl = givenUrl;
             QRegExp dotWithExtensionRegExp("\\.{1,1}[^\\.]*$|^[^\\.]*$");
             dotWithExtensionRegExp.lastIndexIn(tmpUrl);
             tmpUrl.replace(dotWithExtensionRegExp.capturedTexts().last(),
                            "(" + QString::number(i) + ")" + dotWithExtensionRegExp.capturedTexts().last());
-            if (NULL == curProject->findDocumentByURL(GUrl(tmpUrl))) {
+            if (nullptr == curProject->findDocumentByURL(GUrl(tmpUrl))) {
                 givenUrl = tmpUrl;
                 break;
             }

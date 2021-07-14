@@ -144,7 +144,7 @@ protected:
 class SQLiteReadTableMigrationData {
 public:
     SQLiteReadTableMigrationData()
-        : readId(-1), oldTable(NULL), newProw(-1) {
+        : readId(-1), oldTable(nullptr), newProw(-1) {
     }
     SQLiteReadTableMigrationData(qint64 oldId, MTASingleTableAdapter *oldT, int newP)
         : readId(oldId), oldTable(oldT), newProw(newP) {

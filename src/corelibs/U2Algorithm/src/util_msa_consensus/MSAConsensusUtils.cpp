@@ -21,10 +21,10 @@
 
 #include "MSAConsensusUtils.h"
 
-#include <U2Core/U2SafePoints.h>
-
 #include <QPair>
 #include <QVector>
+
+#include <U2Core/U2SafePoints.h>
 
 #include "MSAConsensusAlgorithm.h"
 
@@ -80,7 +80,7 @@ QString MSAConsensusUtils::getConsensusPercentTip(const MultipleAlignment &ma, i
             if (ignoreLeadingTrailingGaps && ma->isLeadingOrTrailingGap(seq, pos)) {
                 nSeq--;
                 continue;
-            } 
+            }
             ++gaps;
         }
     }
@@ -177,10 +177,10 @@ quint32 MSAConsensusUtils::packConsensusCharsToInt(const MultipleAlignment &ma, 
     double percentK = 100.0 / (gapsAffectPercents ? nSeq : numNoGaps);
     for (int i = 0; i < 4; i++) {
         int p = int(freqs[freqs.size() - i - 1].first * percentK);
-        quint32 rangeBits = (p >= mask4[0]) ? 0 :
-                                              (p >= mask4[1]) ? 1 :
-                                                                (p >= mask4[2]) ? 2 :
-                                                                                  (p >= mask4[3]) ? 3 : 4;
+        quint32 rangeBits = (p >= mask4[0]) ? 0 : (p >= mask4[1]) ? 1
+                                              : (p >= mask4[2])   ? 2
+                                              : (p >= mask4[3])   ? 3
+                                                                  : 4;
         quint32 charVal = rangeBits == 4 ? 'A' : quint32(freqs[freqs.size() - i - 1].second);
         quint32 maskedVal = (rangeBits << 5) | (charVal - 'A');    //3 bits for range, 5 for symbol
         assert(maskedVal <= 255);

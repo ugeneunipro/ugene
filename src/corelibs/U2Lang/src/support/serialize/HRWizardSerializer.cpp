@@ -93,7 +93,7 @@ Wizard *HRWizardParser::parseWizard(U2OpStatus &os) {
         if (PAGE == tok) {
             tokenizer.assertToken(Constants::BLOCK_START);
             parsePage(os);
-            CHECK_OP(os, NULL);
+            CHECK_OP(os, nullptr);
             tokenizer.assertToken(Constants::BLOCK_END);
         } else if (NAME == tok) {
             tokenizer.assertToken(Constants::EQUALS_SIGN);
@@ -113,7 +113,7 @@ Wizard *HRWizardParser::parseWizard(U2OpStatus &os) {
         } else if (RESULT == tok) {
             tokenizer.assertToken(Constants::BLOCK_START);
             parseResult(os);
-            CHECK_OP(os, NULL);
+            CHECK_OP(os, nullptr);
             tokenizer.assertToken(Constants::BLOCK_END);
         } else if (FINISH_LABEL == tok) {
             tokenizer.assertToken(Constants::EQUALS_SIGN);
@@ -122,10 +122,10 @@ Wizard *HRWizardParser::parseWizard(U2OpStatus &os) {
     }
 
     finilizePagesOrder(os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     Wizard *result = takeResult();
-    CHECK(NULL != result, NULL);
+    CHECK(nullptr != result, nullptr);
     result->setAutoRun(autoRun);
     result->setHasRunButton(hasRunButton);
     result->setHasDefaultsButton(hasDefaultsButton);

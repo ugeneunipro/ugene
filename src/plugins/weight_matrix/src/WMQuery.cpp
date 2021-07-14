@@ -135,7 +135,7 @@ QString QDWMActor::getText() const {
 }
 
 Task *QDWMActor::getAlgorithmTask(const QVector<U2Region> &location) {
-    Task *t = NULL;
+    Task *t = nullptr;
     const DNASequence &dnaSeq = scheme->getSequence();
     QMap<QString, Attribute *> params = cfg->getParameters();
 
@@ -147,7 +147,7 @@ Task *QDWMActor::getAlgorithmTask(const QVector<U2Region> &location) {
         config.complOnly = strand == QDStrand_ComplementOnly;
         if (strand == QDStrand_Both || strand == QDStrand_ComplementOnly) {
             DNATranslation *compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(dnaSeq.alphabet);
-            if (compTT != NULL) {
+            if (compTT != nullptr) {
                 config.complTT = compTT;
             }
         }

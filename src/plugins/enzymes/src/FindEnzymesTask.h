@@ -138,7 +138,7 @@ private:
 class FindSingleEnzymeTask : public Task, public FindEnzymesAlgListener, public SequenceDbiWalkerCallback {
     Q_OBJECT
 public:
-    FindSingleEnzymeTask(const U2EntityRef &sequenceObjectRef, const U2Region &region, const SEnzymeData &enzyme, FindEnzymesAlgListener *l = NULL, bool isCircular = false, int maxResults = 0x7FFFFFFF);
+    FindSingleEnzymeTask(const U2EntityRef &sequenceObjectRef, const U2Region &region, const SEnzymeData &enzyme, FindEnzymesAlgListener *l = nullptr, bool isCircular = false, int maxResults = 0x7FFFFFFF);
 
     QList<FindEnzymesAlgResult> getResults() const {
         return resultList;

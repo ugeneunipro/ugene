@@ -45,7 +45,7 @@ class Header : public QFrame {
     Q_OBJECT
 
 public:
-    Header(QWidget *w = NULL);
+    Header(QWidget *w = nullptr);
     bool isFixed() const;
 
 protected:

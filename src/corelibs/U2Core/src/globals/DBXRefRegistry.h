@@ -54,7 +54,7 @@ private:
 class U2CORE_EXPORT DBXRefRegistry : public QObject {
     Q_OBJECT
 public:
-    DBXRefRegistry(QObject *p = NULL);
+    DBXRefRegistry(QObject *p = nullptr);
 
     Q_INVOKABLE DBXRefInfo getRefByKey(const QString &dbxrefKey) const {
         return refsByKey.value(dbxrefKey);

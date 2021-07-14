@@ -81,7 +81,7 @@ U2SQLiteTripleStore::~U2SQLiteTripleStore() {
 }
 
 void U2SQLiteTripleStore::init(const QString &url, U2OpStatus &os) {
-    if (db->handle != NULL) {
+    if (db->handle != nullptr) {
         os.setError(TripleStoreL10N::tr("Database is already opened!"));
         return;
     }
@@ -99,9 +99,9 @@ void U2SQLiteTripleStore::init(const QString &url, U2OpStatus &os) {
         int flags = SQLITE_OPEN_READWRITE;
         flags |= SQLITE_OPEN_CREATE;
         QByteArray file = url.toUtf8();
-        int rc = sqlite3_open_v2(file.constData(), &db->handle, flags, NULL);
+        int rc = sqlite3_open_v2(file.constData(), &db->handle, flags, nullptr);
         if (rc != SQLITE_OK) {
-            QString err = db->handle == NULL ? QString(" error-code: %1").arg(rc) : QString(sqlite3_errmsg(db->handle));
+            QString err = db->handle == nullptr ? QString(" error-code: %1").arg(rc) : QString(sqlite3_errmsg(db->handle));
             os.setError(TripleStoreL10N::tr("Error opening SQLite database: %1!").arg(err));
             break;
         }
@@ -128,7 +128,7 @@ void U2SQLiteTripleStore::init(const QString &url, U2OpStatus &os) {
 
     if (os.hasError()) {
         sqlite3_close(db->handle);
-        db->handle = NULL;
+        db->handle = nullptr;
         state = U2DbiState_Void;
         return;
     }
@@ -165,7 +165,7 @@ void U2SQLiteTripleStore::createTables(U2OpStatus &os) {
 }
 
 void U2SQLiteTripleStore::shutdown(U2OpStatus &os) {
-    if (db == NULL) {
+    if (db == nullptr) {
         os.setError(TripleStoreL10N::tr("Database is already closed!"));
         return;
     }
@@ -179,10 +179,10 @@ void U2SQLiteTripleStore::shutdown(U2OpStatus &os) {
         int rc = sqlite3_close(db->handle);
 
         if (rc != SQLITE_OK) {
-            QString err = db->handle == NULL ? QString(" error-code: %1").arg(rc) : QString(sqlite3_errmsg(db->handle));
+            QString err = db->handle == nullptr ? QString(" error-code: %1").arg(rc) : QString(sqlite3_errmsg(db->handle));
             ioLog.error(TripleStoreL10N::tr("Failed to close triple store database: %1").arg(err));
         }
-        db->handle = NULL;
+        db->handle = nullptr;
     }
     state = U2DbiState_Void;
     return;

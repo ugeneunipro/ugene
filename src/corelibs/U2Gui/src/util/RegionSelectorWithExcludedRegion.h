@@ -35,12 +35,12 @@ class U2GUI_EXPORT RegionSelectorWithExludedRegion : public QWidget {
 public:
     RegionSelectorWithExludedRegion(QWidget *parent,
                                     qint64 maxLen,
-                                    DNASequenceSelection *selection = NULL,
+                                    DNASequenceSelection *selection = nullptr,
                                     bool isCircularAvailable = false);
     ~RegionSelectorWithExludedRegion();
 
-    U2Region getIncludeRegion(bool *ok = NULL) const;
-    U2Region getExcludeRegion(bool *ok = NULL) const;
+    U2Region getIncludeRegion(bool *ok = nullptr) const;
+    U2Region getExcludeRegion(bool *ok = nullptr) const;
 
     void setIncludeRegion(const U2Region &r);
     void setExcludeRegion(const U2Region &r);

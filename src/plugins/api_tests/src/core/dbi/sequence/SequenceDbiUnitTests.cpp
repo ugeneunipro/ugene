@@ -38,8 +38,8 @@ const QString &GET_SEQUENCE_DATA_REGION = "get_seq_data_region";
 const QString &GET_SEQUENCE_DATA_OUT = "get_seq_data_out";
 
 const QString &SequenceTestData::SEQ_DB_URL("sequence-dbi.ugenedb");
-QList<U2DataId> *SequenceTestData::sequences = NULL;
-U2SequenceDbi *SequenceTestData::sequenceDbi = NULL;
+QList<U2DataId> *SequenceTestData::sequences = nullptr;
+U2SequenceDbi *SequenceTestData::sequenceDbi = nullptr;
 TestDbiProvider SequenceTestData::dbiProvider = TestDbiProvider();
 
 static bool registerTests() {
@@ -67,24 +67,24 @@ void SequenceTestData::init() {
     U2OpStatusImpl opStatus;
 
     sequenceDbi = dbi->getSequenceDbi();
-    SAFE_POINT(NULL != sequenceDbi, "sequence database not loaded", );
+    SAFE_POINT(nullptr != sequenceDbi, "sequence database not loaded", );
 
     sequences = new QList<U2DataId>(objDbi->getObjects(U2Type::Sequence, 0, U2DbiOptions::U2_DBI_NO_LIMIT, opStatus));
     SAFE_POINT_OP(opStatus, );
 }
 
 U2SequenceDbi *SequenceTestData::getSequenceDbi() {
-    if (sequenceDbi == NULL) {
+    if (sequenceDbi == nullptr) {
         SequenceTestData::init();
     }
     return sequenceDbi;
 }
 
 void SequenceTestData::shutdown() {
-    if (sequenceDbi != NULL) {
+    if (sequenceDbi != nullptr) {
         U2OpStatusImpl opStatus;
         dbiProvider.close();
-        sequenceDbi = NULL;
+        sequenceDbi = nullptr;
         SAFE_POINT_OP(opStatus, );
     }
 }

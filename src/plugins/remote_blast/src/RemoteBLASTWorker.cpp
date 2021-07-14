@@ -214,12 +214,12 @@ Task *RemoteBLASTWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
         //cfg.minrl = 0;
         //cfg.maxrl = 3000;
         cfg.dbChoosen = getValue<QString>(ALG_ATTR).split("-").last();
-        cfg.aminoT = NULL;
+        cfg.aminoT = nullptr;
 
         int evalue = getValue<int>(EVALUE_ATTR);
         int maxHits = getValue<int>(HITS_ATTR);
@@ -268,7 +268,7 @@ Task *RemoteBLASTWorker::tick() {
         SharedDbiDataHandler seqId = inputMessage.getData().toMap().value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
         if (seqObj.isNull()) {
-            return NULL;
+            return nullptr;
         }
         U2OpStatusImpl os;
         DNASequence seq = seqObj->getWholeSequence(os);
@@ -283,12 +283,12 @@ Task *RemoteBLASTWorker::tick() {
         if (alp == AppContext::getDNAAlphabetRegistry()->findById(BaseDNAAlphabetIds::AMINO_DEFAULT())) {
             if (cfg.dbChoosen == "blastn") {
                 algoLog.details(tr("Selected nucleotide database"));
-                return NULL;
+                return nullptr;
             }
         } else {
             if (cfg.dbChoosen != "blastn") {
                 algoLog.details(tr("Selected amino acid database"));
-                return NULL;
+                return nullptr;
             }
         }
         cfg.query = seq.seq;
@@ -310,7 +310,7 @@ Task *RemoteBLASTWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void RemoteBLASTWorker::sl_taskFinished() {

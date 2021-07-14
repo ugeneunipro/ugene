@@ -39,7 +39,7 @@ MsaOpSavableTab::~MsaOpSavableTab() {
 QSet<QWidget *> MsaOpSavableTab::getCompoundChildren() const {
     QSet<QWidget *> result;
     foreach (QWidget *child, wrappedWidget->findChildren<QWidget *>()) {
-        if (NULL != qobject_cast<SequenceSelectorWidgetController *>(child)) {
+        if (nullptr != qobject_cast<SequenceSelectorWidgetController *>(child)) {
             result.insert(child);
         }
     }

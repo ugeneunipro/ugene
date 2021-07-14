@@ -23,7 +23,7 @@
 
 namespace U2 {
 
-QScopedPointer<QVector<Vector3D>> GeodesicSphere::elementarySphere(NULL);
+QScopedPointer<QVector<Vector3D>> GeodesicSphere::elementarySphere(nullptr);
 int GeodesicSphere::currentDetailLevel = 1;
 
 GeodesicSphere::GeodesicSphere(const Vector3D &center, float radius, int detaillevel) {

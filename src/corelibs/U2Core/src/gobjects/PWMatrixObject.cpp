@@ -59,7 +59,7 @@ PWMatrixObject *PWMatrixObject::createInstance(const PWMatrix &matrix, const QSt
                                                                                           dstFolder,
                                                                                           object,
                                                                                           os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     return new PWMatrixObject(matrix, objectName, entRef, hintsMap);
 }
 
@@ -85,7 +85,7 @@ const PWMatrix &PWMatrixObject::getMatrix() const {
 GObject *PWMatrixObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
     Q_UNUSED(opBlock);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     GHintsDefaultImpl gHints(getGHintsMap());
     gHints.setAll(hints);
@@ -93,7 +93,7 @@ GObject *PWMatrixObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const 
 
     U2PWMatrix dstObject;
     RawDataUdrSchema::cloneObject(entityRef, dstDbiRef, dstFolder, dstObject, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     const U2EntityRef dstEntRef(dstDbiRef, dstObject.id);
     PWMatrixObject *dst = new PWMatrixObject(getGObjectName(), dstEntRef, gHints.getMap());

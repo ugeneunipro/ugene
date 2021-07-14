@@ -259,7 +259,7 @@ void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment &ma
         }
     } catch (const std::bad_alloc &) {
         errorMessage = QString("Not enough memory to calculate distance matrix for alignment \"%1\"").arg(ma->getName());
-        if (NULL != gnode) {
+        if (nullptr != gnode) {
             for (int i = 0; i < spp; i++) {
                 free(gnode[i]);
             }
@@ -269,22 +269,22 @@ void DistanceMatrix::calculateOutOfAlignment(const MultipleSequenceAlignment &ma
 }
 
 DistanceMatrix::DistanceMatrix()
-    : rawdata(NULL),
+    : rawdata(nullptr),
       size(),
-      malignment(NULL),
-      treedata(NULL) {
+      malignment(nullptr),
+      treedata(nullptr) {
 }
 
 DistanceMatrix::~DistanceMatrix() {
-    if (NULL != y) {
+    if (nullptr != y) {
         for (int i = 0; i < spp; i++) {
             free(y[i]);
         }
         free(y);
-        y = NULL;
+        y = nullptr;
     }
 
-    if (NULL != nodep) {
+    if (nullptr != nodep) {
         for (int i = 0; i < spp; i++) {
             for (int j = 0; j < endsite; j++) {
                 free(nodep[i]->x[j]);
@@ -293,35 +293,35 @@ DistanceMatrix::~DistanceMatrix() {
             free(nodep[i]);
         }
         free(nodep);
-        nodep = NULL;
+        nodep = nullptr;
     }
     free(category);
-    category = NULL;
+    category = nullptr;
 
     free(oldweight);
-    oldweight = NULL;
+    oldweight = nullptr;
 
     free(weight);
-    weight = NULL;
+    weight = nullptr;
 
     free(alias);
-    alias = NULL;
+    alias = nullptr;
 
     free(ally);
-    ally = NULL;
+    ally = nullptr;
 
     free(location);
-    location = NULL;
+    location = nullptr;
 
     free(weightrat);
-    weightrat = NULL;
+    weightrat = nullptr;
 
-    if (NULL != d) {
+    if (nullptr != d) {
         for (int i = 0; i < spp; i++) {
             free(d[i]);
         }
         free(d);
-        d = NULL;
+        d = nullptr;
     }
 }
 

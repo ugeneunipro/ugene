@@ -149,8 +149,8 @@ QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *q
 
     size_t directionMatrixSize = 0;
     size_t backtraceBeginsSize = 0;
-    int *globalMatrix = NULL;
-    int *backtraceBegins = NULL;
+    int *globalMatrix = nullptr;
+    int *backtraceBegins = nullptr;
     if (U2::SmithWatermanSettings::MULTIPLE_ALIGNMENT == resultView) {
         directionMatrixSize = seqLibLength * queryLength * sizeof(int);
         backtraceBeginsSize = 2 * sizeRow * sizeof(int);
@@ -180,8 +180,8 @@ QList<resType> calculateOnGPU(const char *seqLib, int seqLibLength, ScoreType *q
     ScoreType *g_directionsUp;
     ScoreType *g_directionsMax;
     ScoreType *g_directionsRec;
-    int *g_directionsMatrix = NULL;
-    int *g_backtraceBegins = NULL;
+    int *g_directionsMatrix = nullptr;
+    int *g_backtraceBegins = nullptr;
 
     //************************** allocate global memory on device
 

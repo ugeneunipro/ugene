@@ -49,10 +49,10 @@ class DockData {
 public:
     DockData() {
         area = MWDockArea_Left;
-        label = NULL;
-        dock = NULL;
-        wrapWidget = NULL;
-        action = NULL;
+        label = nullptr;
+        dock = nullptr;
+        wrapWidget = nullptr;
+        action = nullptr;
     }
     MWDockArea area;
     QLabel *label;

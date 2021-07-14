@@ -61,7 +61,7 @@ private:
     void initGraphTypeSubmenu();
     void initOrientationSubmenu();
 
-    QAction *createCheckableAction(const QString &text, QActionGroup *group = NULL);
+    QAction *createCheckableAction(const QString &text, QActionGroup *group = nullptr);
 
     MaSimpleOverview *simpleOverview;
     MaGraphOverview *graphOverview;

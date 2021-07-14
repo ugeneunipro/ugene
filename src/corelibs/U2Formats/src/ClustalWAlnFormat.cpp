@@ -130,7 +130,7 @@ void ClustalWAlnFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QL
             valEndPos++;
         }
         if (valEndPos != len) {    //there were numbers trimmed -> trim spaces now
-            while (valEndPos > valStartPos && buf[valEndPos] == ' ') {
+            while (valEndPos > valStartPos && (buf[valEndPos] == ' ' || buf[valEndPos] == '\t')) {
                 valEndPos--;
             }
             valEndPos++;    //leave non-inclusive
@@ -197,7 +197,7 @@ void ClustalWAlnFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QL
 Document *ClustalWAlnFormat::loadTextDocument(IOAdapterReader &reader, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
     QList<GObject *> objects;
     load(reader, dbiRef, objects, hints, os);
-    CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
+    CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
     assert(objects.size() == 1);
     return new Document(this, reader.getFactory(), reader.getURL(), dbiRef, objects, hints);
 }

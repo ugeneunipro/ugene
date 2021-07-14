@@ -36,7 +36,7 @@ namespace U2 {
 class SequencePrototype : public DbiClassPrototype {
     Q_OBJECT
 public:
-    SequencePrototype(QObject *parent = NULL);
+    SequencePrototype(QObject *parent = nullptr);
 
 public slots:
     /** No arguments. Returns sequence length */

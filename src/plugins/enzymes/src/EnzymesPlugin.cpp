@@ -63,7 +63,7 @@ extern "C" Q_DECL_EXPORT Plugin *U2_PLUGIN_INIT_FUNC() {
 }
 
 EnzymesPlugin::EnzymesPlugin()
-    : Plugin(tr("Restriction analysis"), tr("Finds and annotates restriction sites on a DNA sequence.")), ctxADV(NULL) {
+    : Plugin(tr("Restriction analysis"), tr("Finds and annotates restriction sites on a DNA sequence.")), ctxADV(nullptr) {
     if (AppContext::getMainWindow()) {
         createToolsMenu();
 
@@ -82,7 +82,7 @@ EnzymesPlugin::EnzymesPlugin()
 
     GTestFormatRegistry *tfr = AppContext::getTestFramework()->getTestFormatRegistry();
     XMLTestFormat *xmlTestFormat = qobject_cast<XMLTestFormat *>(tfr->findFormat("XML"));
-    assert(xmlTestFormat != NULL);
+    assert(xmlTestFormat != nullptr);
 
     QDActorPrototypeRegistry *qdpr = AppContext::getQDActorProtoRegistry();
     qdpr->registerProto(new QDEnzymesActorPrototype());
@@ -116,13 +116,13 @@ void EnzymesPlugin::createToolsMenu() {
 void EnzymesPlugin::sl_onOpenDigestSequenceDialog() {
     GObjectViewWindow *w = GObjectViewUtils::getActiveObjectViewWindow();
 
-    if (w == NULL) {
+    if (w == nullptr) {
         QMessageBox::information(QApplication::activeWindow(), openDigestSequenceDialog->text(), tr("There is no active sequence object.\nTo start partition open sequence document."));
         return;
     }
 
     AnnotatedDNAView *view = qobject_cast<AnnotatedDNAView *>(w->getObjectView());
-    if (view == NULL) {
+    if (view == nullptr) {
         QMessageBox::information(QApplication::activeWindow(), openDigestSequenceDialog->text(), tr("There is no active sequence object.\nTo start partition open sequence document."));
         return;
     }
@@ -139,19 +139,19 @@ void EnzymesPlugin::sl_onOpenDigestSequenceDialog() {
 void EnzymesPlugin::sl_onOpenCreateFragmentDialog() {
     GObjectViewWindow *w = GObjectViewUtils::getActiveObjectViewWindow();
 
-    if (w == NULL) {
+    if (w == nullptr) {
         QMessageBox::information(QApplication::activeWindow(), openCreateFragmentDialog->text(), tr("There is no active sequence object.\nTo create fragment open sequence document."));
         return;
     }
 
     AnnotatedDNAView *view = qobject_cast<AnnotatedDNAView *>(w->getObjectView());
-    if (view == NULL) {
+    if (view == nullptr) {
         QMessageBox::information(QApplication::activeWindow(), openCreateFragmentDialog->text(), tr("There is no active sequence object.\nTo create fragment open sequence document."));
         return;
     }
 
     U2SequenceObject *dnaObj = view->getActiveSequenceContext()->getSequenceObject();
-    assert(dnaObj != NULL);
+    assert(dnaObj != nullptr);
     if (!dnaObj->getAlphabet()->isNucleic()) {
         QMessageBox::information(QApplication::activeWindow(), openCreateFragmentDialog->text(), tr("The sequence doesn't have nucleic alphabet, it can not be used in cloning."));
         return;
@@ -163,7 +163,7 @@ void EnzymesPlugin::sl_onOpenCreateFragmentDialog() {
 
 void EnzymesPlugin::sl_onOpenConstructMoleculeDialog() {
     Project *p = AppContext::getProject();
-    if (p == NULL) {
+    if (p == nullptr) {
         QMessageBox::information(QApplication::activeWindow(), openConstructMoleculeDialog->text(), tr("There is no active project.\nTo start ligation create a project or open an existing."));
         return;
     }
@@ -195,9 +195,9 @@ void EnzymesADVContext::initViewContext(GObjectView *view) {
 
 void EnzymesADVContext::sl_search() {
     GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender());
-    assert(action != NULL);
+    assert(action != nullptr);
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
-    assert(av != NULL);
+    assert(av != nullptr);
 
     ADVSequenceObjectContext *seqCtx = av->getActiveSequenceContext();
     assert(seqCtx->getAlphabet()->isNucleic());
@@ -210,7 +210,7 @@ void EnzymesADVContext::sl_search() {
 
 void EnzymesADVContext::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(v);
-    SAFE_POINT(NULL != av, "Invalid sequence view", );
+    SAFE_POINT(nullptr != av, "Invalid sequence view", );
     CHECK(av->getActiveSequenceContext()->getAlphabet()->isNucleic(), );
 
     QMenu *cloningMenu = new QMenu(tr("Cloning"), m);
@@ -236,9 +236,9 @@ void EnzymesADVContext::buildStaticOrContextMenu(GObjectView *v, QMenu *m) {
 
 void EnzymesADVContext::sl_createPCRProduct() {
     GObjectViewAction *action = qobject_cast<GObjectViewAction *>(sender());
-    SAFE_POINT(action != NULL, "Invalid action object!", );
+    SAFE_POINT(action != nullptr, "Invalid action object!", );
     AnnotatedDNAView *av = qobject_cast<AnnotatedDNAView *>(action->getObjectView());
-    SAFE_POINT(av != NULL, "Invalid DNA view!", );
+    SAFE_POINT(av != nullptr, "Invalid DNA view!", );
 
     const QList<Annotation *> &annotations = av->getAnnotationsSelection()->getAnnotations();
     CHECK(!annotations.isEmpty(), )

@@ -84,7 +84,7 @@ public:
 class Peak2GenePrompter : public PrompterBase<Peak2GenePrompter> {
     Q_OBJECT
 public:
-    Peak2GenePrompter(Actor *p = NULL)
+    Peak2GenePrompter(Actor *p = nullptr)
         : PrompterBase<Peak2GenePrompter>(p) {
     }
 

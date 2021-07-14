@@ -91,7 +91,7 @@ FindORFsToAnnotationsTask::FindORFsToAnnotationsTask(AnnotationTableObject *aobj
       groupName(gName),
       annDescription(annDescription),
       entityRef(_entityRef) {
-    SAFE_POINT_EXT(aobj != NULL, setError(tr("Annotation table object is NULL!")), );
+    SAFE_POINT_EXT(aobj != nullptr, setError(tr("Annotation table object is NULL!")), );
     if (groupName.isEmpty()) {
         groupName = ORFAlgorithmSettings::ANNOTATION_GROUP_NAME;
     }
@@ -145,7 +145,7 @@ Task *ORFAutoAnnotationsUpdater::createAutoAnnotationsUpdateTask(const AutoAnnot
 }
 
 bool ORFAutoAnnotationsUpdater::checkConstraints(const AutoAnnotationConstraints &constraints) {
-    if (constraints.alphabet == NULL) {
+    if (constraints.alphabet == nullptr) {
         return false;
     }
     return constraints.alphabet->isNucleic();

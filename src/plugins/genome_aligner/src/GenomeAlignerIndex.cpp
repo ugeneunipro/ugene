@@ -48,7 +48,7 @@ const QString COMMENT3("#offsets of sequences in the reference\n");
 const QString COMMENT4("#seqStart, seqLength, saStart, saLength\n");
 
 GenomeAlignerIndex::GenomeAlignerIndex()
-    : memIdx(NULL), memBM(NULL), objLens(NULL) {
+    : memIdx(nullptr), memBM(nullptr), objLens(nullptr) {
     bitTable = bt.getBitMaskCharBits(DNAAlphabet_NUCL);
     bitCharLen = bt.getBitMaskCharBitsNum(DNAAlphabet_NUCL);
     seqLength = 0;
@@ -235,8 +235,8 @@ bool GenomeAlignerIndex::loadPart(int part) {
         algoLog.trace(QString("loadPart::build write time %1 ms").arg((t2 - t1) / double(1000), 0, 'f', 3));
 
         v2.stop();
-        sArray = NULL;
-        bitMask = NULL;
+        sArray = nullptr;
+        bitMask = nullptr;
 
         if (part == indexPart.partCount - 1) {
             build = false;
@@ -356,7 +356,7 @@ void GenomeAlignerIndex::alignShortRead(SearchQuery *qu, BMType bitValue, int st
     SAType fisrtSymbol = 0;
     const char *querySeq = qu->constData();
     const int queryLen = qu->length();
-    char *refBuff = NULL;
+    char *refBuff = nullptr;
 
     int CMAX = settings->nMismatches;
     if (!settings->absMismatches) {
@@ -370,7 +370,7 @@ void GenomeAlignerIndex::alignShortRead(SearchQuery *qu, BMType bitValue, int st
         if (qu->haveResult()) {
             bestC = qu->firstMCount();
         }
-        if (NULL != qu->getRevCompl() && qu->getRevCompl()->haveResult()) {
+        if (nullptr != qu->getRevCompl() && qu->getRevCompl()->haveResult()) {
             int cRev = qu->getRevCompl()->firstMCount();
             if (cRev < bestC) {
                 bestC = cRev;

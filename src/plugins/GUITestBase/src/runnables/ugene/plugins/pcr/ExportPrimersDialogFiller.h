@@ -32,7 +32,7 @@ public:
     enum ExportTarget { LocalFile,
                         SharedDb };
 
-    ExportPrimersDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario = NULL);
+    ExportPrimersDialogFiller(HI::GUITestOpStatus &os, CustomScenario *scenario = nullptr);
 
     void commonScenario();
 

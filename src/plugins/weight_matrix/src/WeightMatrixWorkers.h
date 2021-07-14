@@ -72,7 +72,7 @@ public:
     static void registerProto();
 
     PWMatrixBuildWorker(Actor *a)
-        : BaseWorker(a), input(NULL), output(NULL) {
+        : BaseWorker(a), input(nullptr), output(nullptr) {
     }
     virtual void init();
     virtual Task *tick();
@@ -94,7 +94,7 @@ public:
     static void registerProto();
 
     PFMatrixBuildWorker(Actor *a)
-        : BaseWorker(a), input(NULL), output(NULL) {
+        : BaseWorker(a), input(nullptr), output(nullptr) {
     }
     virtual void init();
     virtual Task *tick();
@@ -127,7 +127,7 @@ public:
     static void registerProto();
 
     PFMatrixConvertWorker(Actor *a)
-        : BaseWorker(a), input(NULL), output(NULL) {
+        : BaseWorker(a), input(nullptr), output(nullptr) {
     }
     virtual void init();
     virtual Task *tick();
@@ -150,7 +150,7 @@ public:
 
     PWMatrixSearchWorker(Actor *a)
         : BaseWorker(a, false),
-          modelPort(NULL), dataPort(NULL), output(NULL), strand(0) {
+          modelPort(nullptr), dataPort(nullptr), output(nullptr), strand(0) {
     }
     virtual void init();
     virtual bool isReady() const;

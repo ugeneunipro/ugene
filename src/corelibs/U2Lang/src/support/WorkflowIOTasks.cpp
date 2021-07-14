@@ -38,10 +38,10 @@ using namespace Workflow;
 /************************************
  * LoadWorkflowTask
  ************************************/
-LoadWorkflowTask::LoadWorkflowTask(Schema *s, Workflow::Metadata *m, const QString &u)
+LoadWorkflowTask::LoadWorkflowTask(const QSharedPointer<Schema> &s, Workflow::Metadata *m, const QString &u)
     : Task(tr("Loading workflow"), TaskFlag_None),
       url(u), schema(s), meta(m) {
-    assert(schema != NULL);
+    assert(schema != nullptr);
 }
 
 void LoadWorkflowTask::run() {
@@ -69,7 +69,7 @@ Task::ReportResult LoadWorkflowTask::report() {
 
     QString err;
     if (format == HR) {
-        err = HRSchemaSerializer::string2Schema(rawData, schema, meta, &remap);
+        err = HRSchemaSerializer::string2Schema(rawData, schema.get(), meta, &remap);
     } else if (format == XML) {
         setError(tr("Sorry! XML workflow format is obsolete and not supported. You can create new workflow in GUI mode"
                     " or write it by yourself. Check our documentation for details!"));
@@ -108,7 +108,7 @@ LoadWorkflowTask::FileFormat LoadWorkflowTask::detectFormat(const QString &rawDa
  ************************************/
 SaveWorkflowTask::SaveWorkflowTask(Schema *schema, const Metadata &meta, bool copyMode)
     : Task(tr("Save workflow task"), TaskFlag_None), url(meta.url) {
-    assert(schema != NULL);
+    assert(schema != nullptr);
     rawData = HRSchemaSerializer::schema2String(*schema, &meta, copyMode);
 }
 

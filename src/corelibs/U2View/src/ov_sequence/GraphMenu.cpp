@@ -43,9 +43,9 @@ namespace U2 {
  * @param _factory The factory that should be used to draw the graph
  */
 GraphAction::GraphAction(GSequenceGraphFactory *_factory)
-    : QAction(_factory->getGraphName(), NULL),
+    : QAction(_factory->getGraphName(), nullptr),
       factory(_factory),
-      view(NULL),
+      view(nullptr),
       isBookmarkUpdate(false) {
     setObjectName(factory->getGraphName());
     connect(this, SIGNAL(triggered()), SLOT(sl_handleGraphAction()));
@@ -61,10 +61,10 @@ GraphAction::GraphAction(GSequenceGraphFactory *_factory)
  */
 void GraphAction::sl_handleGraphAction() {
     if (isChecked()) {
-        SAFE_POINT(view == NULL, "Graph view is checked, but not available!", );
+        SAFE_POINT(view == nullptr, "Graph view is checked, but not available!", );
         // Getting the menu action
         GraphMenuAction *menuAction = qobject_cast<GraphMenuAction *>(parent());
-        SAFE_POINT(menuAction != NULL, "GraphMenuAction is not available (while handling an action)!", );
+        SAFE_POINT(menuAction != nullptr, "GraphMenuAction is not available (while handling an action)!", );
 
         // Creating graphs
         ADVSingleSequenceWidget *sequenceWidget = qobject_cast<ADVSingleSequenceWidget *>(menuAction->seqWidget);
@@ -87,28 +87,28 @@ void GraphAction::sl_handleGraphAction() {
             isBookmarkUpdate = false;
         }
     } else {
-        SAFE_POINT(view != NULL, "Graph view is not checked, but is present!", );
+        SAFE_POINT(view != nullptr, "Graph view is not checked, but is present!", );
         delete view;
-        view = NULL;
+        view = nullptr;
     }
 }
 
 void GraphAction::sl_renderError() {
     delete view;
-    view = NULL;
+    view = nullptr;
     setChecked(false);
 }
 
 void GraphAction::sl_updateGraphView(const QStringList &graphName, const QVariantMap &map) {
     foreach (const QString &name, graphName) {
         if (name == text()) {
-            CHECK(view != NULL, );
+            CHECK(view != nullptr, );
             isBookmarkUpdate = true;
             positions = map[name].toList();
             activate(QAction::Trigger);
         }
     }
-    if (view != NULL) {
+    if (view != nullptr) {
         activate(QAction::Trigger);
     }
 }
@@ -145,14 +145,14 @@ GraphMenuAction *GraphMenuAction::findGraphMenuAction(ADVSequenceObjectContext *
     foreach (ADVSequenceWidget *sequenceWidget, ctx->getSequenceWidgets()) {
         ADVSequenceWidgetAction *advAction = sequenceWidget->getADVSequenceWidgetAction(
             GraphMenuAction::ACTION_NAME);
-        if (advAction == NULL) {
+        if (advAction == nullptr) {
             continue;
         } else {
             return qobject_cast<GraphMenuAction *>(advAction);
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 /**
@@ -174,7 +174,7 @@ void GraphMenuAction::sl_closeAllGraphs() {
     QList<QAction *> allActions = menu->actions();
     foreach (QAction *a, allActions) {
         GraphAction *graphAction = qobject_cast<GraphAction *>(a);
-        if (graphAction != NULL && graphAction->isChecked()) {
+        if (graphAction != nullptr && graphAction->isChecked()) {
             graphAction->trigger();
         }
     }

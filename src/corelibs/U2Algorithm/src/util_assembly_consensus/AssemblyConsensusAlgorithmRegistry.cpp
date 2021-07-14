@@ -42,9 +42,9 @@ AssemblyConsensusAlgorithmFactory *AssemblyConsensusAlgorithmRegistry::getAlgori
 void AssemblyConsensusAlgorithmRegistry::addAlgorithmFactory(AssemblyConsensusAlgorithmFactory *algo) {
     const QString &id = algo->getId();
     AssemblyConsensusAlgorithmFactory *oldVersion = algorithms.value(id);
-    if (oldVersion != NULL) {
+    if (oldVersion != nullptr) {
         delete oldVersion;
-        oldVersion = NULL;
+        oldVersion = nullptr;
     }
     algorithms[id] = algo;
 }

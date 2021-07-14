@@ -44,7 +44,7 @@ Task *BaseThroughWorker::processNextInputMessage() {
 }
 
 Task *BaseThroughWorker::onInputEnded() {
-    return NULL;
+    return nullptr;
 }
 
 Message BaseThroughWorker::composeMessage(const QVariantMap &data) {

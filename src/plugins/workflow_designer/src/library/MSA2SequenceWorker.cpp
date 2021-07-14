@@ -59,13 +59,13 @@ Task *Alignment2SequenceWorker::tick() {
         Message inputMessage = getMessageAndSetupScriptValues(input);
         if (inputMessage.isEmpty()) {
             output->transit();
-            return NULL;
+            return nullptr;
         }
 
         QVariantMap qm = inputMessage.getData().toMap();
         SharedDbiDataHandler msaId = qm.value(BaseSlots::MULTIPLE_ALIGNMENT_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<MultipleSequenceAlignmentObject> msaObj(StorageUtils::getMsaObject(context->getDataStorage(), msaId));
-        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", NULL);
+        SAFE_POINT(!msaObj.isNull(), "NULL MSA Object!", nullptr);
         const MultipleSequenceAlignment msa = msaObj->getMultipleAlignment();
 
         if (msa->isEmpty()) {
@@ -85,7 +85,7 @@ Task *Alignment2SequenceWorker::tick() {
         setDone();
         output->setEnded();
     }
-    return NULL;
+    return nullptr;
 }
 
 void Alignment2SequenceWorker::cleanup() {

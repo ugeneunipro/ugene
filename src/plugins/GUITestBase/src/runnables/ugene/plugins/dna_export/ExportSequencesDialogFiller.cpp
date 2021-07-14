@@ -60,24 +60,24 @@ ExportSelectedRegionFiller::ExportSelectedRegionFiller(HI::GUITestOpStatus &os, 
 #define GT_METHOD_NAME "commonScenario"
 void ExportSelectedRegionFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     QLineEdit *lineEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "fileNameEdit", dialog));
-    GT_CHECK(lineEdit != NULL, "File name line edit not found");
+    GT_CHECK(lineEdit != nullptr, "File name line edit not found");
     defaultExportPath = GTLineEdit::copyText(os, lineEdit);
     GTLineEdit::setText(os, lineEdit, path + name);
 
     if (!seqName.isEmpty()) {
         QCheckBox *customSeqCheckBox = dialog->findChild<QCheckBox *>("customSeqNameBox");
-        GT_CHECK(customSeqCheckBox != NULL, "Sequence name checkbox not found");
+        GT_CHECK(customSeqCheckBox != nullptr, "Sequence name checkbox not found");
         GTCheckBox::setChecked(os, customSeqCheckBox, true);
         QLineEdit *sequenceNameEdit = qobject_cast<QLineEdit *>(GTWidget::findWidget(os, "sequenceNameEdit", dialog));
-        GT_CHECK(sequenceNameEdit != NULL, "Sequence name line edit not found");
+        GT_CHECK(sequenceNameEdit != nullptr, "Sequence name line edit not found");
         GTLineEdit::setText(os, sequenceNameEdit, seqName);
     }
 
     QCheckBox *translateButton = qobject_cast<QCheckBox *>(GTWidget::findWidget(os, "translateButton"));
-    CHECK_SET_ERR(translateButton != NULL, "translateButton not found!");
+    CHECK_SET_ERR(translateButton != nullptr, "translateButton not found!");
     GTCheckBox::setChecked(os, translateButton, translate);
 
     if (translate) {
@@ -118,16 +118,16 @@ ExportSequenceOfSelectedAnnotationsFiller::ExportSequenceOfSelectedAnnotationsFi
 #define GT_METHOD_NAME "commonScenario"
 void ExportSequenceOfSelectedAnnotationsFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     QLineEdit *fileNameEdit = dialog->findChild<QLineEdit *>("fileNameEdit");
-    GT_CHECK(fileNameEdit != NULL, "fileNameEdit not found");
+    GT_CHECK(fileNameEdit != nullptr, "fileNameEdit not found");
     GTLineEdit::setText(os, fileNameEdit, path);
 
     GTGlobals::sleep(200);
 
     QComboBox *comboBox = dialog->findChild<QComboBox *>();
-    GT_CHECK(comboBox != NULL, "ComboBox not found");
+    GT_CHECK(comboBox != nullptr, "ComboBox not found");
     int index = comboBox->findText(comboBoxItems[format]);
 
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
@@ -136,13 +136,13 @@ void ExportSequenceOfSelectedAnnotationsFiller::commonScenario() {
     GTGlobals::sleep(200);
 
     QCheckBox *projectCheckBox = dialog->findChild<QCheckBox *>(QString::fromUtf8("addToProjectBox"));
-    GT_CHECK(projectCheckBox != NULL, "addToProjectBox not found");
+    GT_CHECK(projectCheckBox != nullptr, "addToProjectBox not found");
     GTCheckBox::setChecked(os, projectCheckBox, addToProject);
 
     GTGlobals::sleep(200);
 
     QCheckBox *annotationsCheckBox = dialog->findChild<QCheckBox *>(QString::fromUtf8("withAnnotationsBox"));
-    GT_CHECK(annotationsCheckBox != NULL, "Check box not found");
+    GT_CHECK(annotationsCheckBox != nullptr, "Check box not found");
     if (annotationsCheckBox->isEnabled()) {
         GTCheckBox::setChecked(os, annotationsCheckBox, exportWithAnnotations);
     }
@@ -151,7 +151,7 @@ void ExportSequenceOfSelectedAnnotationsFiller::commonScenario() {
 
     QRadioButton *mergeButton = dialog->findChild<QRadioButton *>(mergeRadioButtons[options]);
 
-    GT_CHECK(mergeButton != NULL, "Radio button " + mergeRadioButtons[options] + " not found");
+    GT_CHECK(mergeButton != nullptr, "Radio button " + mergeRadioButtons[options] + " not found");
     if (mergeButton->isEnabled()) {
         GTRadioButton::click(os, mergeButton);
     }
@@ -160,7 +160,7 @@ void ExportSequenceOfSelectedAnnotationsFiller::commonScenario() {
 
     if (gapLength) {
         QSpinBox *mergeSpinBox = dialog->findChild<QSpinBox *>("mergeSpinBox");
-        GT_CHECK(mergeSpinBox != NULL, "SpinBox not found");
+        GT_CHECK(mergeSpinBox != nullptr, "SpinBox not found");
         GTSpinBox::setValue(os, mergeSpinBox, gapLength, useMethod);
     }
 

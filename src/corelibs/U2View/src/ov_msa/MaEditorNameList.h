@@ -56,6 +56,9 @@ public:
     QAction *getEditSequenceNameAction() const;
     QAction *getRemoveSequenceAction() const;
 
+    /** Returns text to be rendered in the given row cell. */
+    virtual QString getTextForRow(int maRowIndex);
+
 public slots:
     void sl_removeSelectedRows();
 
@@ -90,7 +93,6 @@ protected:
     void wheelEvent(QWheelEvent *we) override;
     //todo context menu?
     int getSelectedMaRow() const;
-    virtual QString getTextForRow(int maRowIndex);
     void moveSelection(int offset);
     void scrollSelectionToView(bool fromStart);
 

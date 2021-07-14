@@ -36,7 +36,7 @@ public:
     MultipleChromatogramAlignment(const MultipleAlignment &ma);
     MultipleChromatogramAlignment(MultipleChromatogramAlignmentData *mcaData);
     MultipleChromatogramAlignment(const QString &name,
-                                  const DNAAlphabet *alphabet = NULL,
+                                  const DNAAlphabet *alphabet = nullptr,
                                   const QList<MultipleChromatogramAlignmentRow> &rows = QList<MultipleChromatogramAlignmentRow>());
 
     MultipleChromatogramAlignmentData *data() const;
@@ -68,7 +68,7 @@ protected:
      * The name must be provided if this is not default alignment.
      */
     MultipleChromatogramAlignmentData(const QString &name = QString(),
-                                      const DNAAlphabet *alphabet = NULL,
+                                      const DNAAlphabet *alphabet = nullptr,
                                       const QList<MultipleChromatogramAlignmentRow> &rows = QList<MultipleChromatogramAlignmentRow>());
     MultipleChromatogramAlignmentData(const MultipleChromatogramAlignmentData &mcaData);
 

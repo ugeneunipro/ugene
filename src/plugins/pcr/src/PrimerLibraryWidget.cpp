@@ -50,7 +50,7 @@
 namespace U2 {
 
 PrimerLibraryWidget::PrimerLibraryWidget(QWidget *parent)
-    : QWidget(parent), editPrimerButton(NULL), removePrimersButton(NULL) {
+    : QWidget(parent), editPrimerButton(nullptr), removePrimersButton(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930783");
 

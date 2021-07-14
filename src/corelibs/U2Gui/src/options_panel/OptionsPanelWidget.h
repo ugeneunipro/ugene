@@ -38,7 +38,7 @@ class GroupOptionsWidget;
  */
 class OptionsScrollArea : public QScrollArea {
 public:
-    OptionsScrollArea(QWidget *parent = NULL);
+    OptionsScrollArea(QWidget *parent = nullptr);
 
     /** Ensures that the scroll area would have an appropriate width */
     virtual QSize sizeHint() const;

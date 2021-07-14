@@ -92,7 +92,7 @@ public:
     void cancel() {
         if (task) {
             task->cancel();
-            task = NULL;
+            task = nullptr;
         }
     }
 
@@ -131,7 +131,7 @@ private:
         result = task->getResult();
         success = !task->getStateInfo().isCoR();
         lastError = task->getError();
-        task = NULL;
+        task = nullptr;
         emitFinished();
     }
 

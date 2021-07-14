@@ -33,7 +33,7 @@ class Document;
 class U2CORE_EXPORT DocumentSelection : public GSelection {
     Q_OBJECT
 public:
-    DocumentSelection(QObject *p = NULL);
+    DocumentSelection(QObject *p = nullptr);
 
     const QList<Document *> &getSelectedDocuments() const {
         return selectedDocs;

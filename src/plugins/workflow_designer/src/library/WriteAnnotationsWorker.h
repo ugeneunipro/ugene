@@ -36,7 +36,7 @@ namespace LocalWorkflow {
 class WriteAnnotationsPrompter : public PrompterBase<WriteAnnotationsPrompter> {
     Q_OBJECT
 public:
-    WriteAnnotationsPrompter(Actor *p = NULL)
+    WriteAnnotationsPrompter(Actor *p = nullptr)
         : PrompterBase<WriteAnnotationsPrompter>(p) {
     }
 
@@ -54,7 +54,7 @@ public:
     };
 
     WriteAnnotationsWorker(Actor *p)
-        : BaseWorker(p), annotationsPort(NULL) {
+        : BaseWorker(p), annotationsPort(nullptr) {
     }
     ~WriteAnnotationsWorker();
 

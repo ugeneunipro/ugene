@@ -39,7 +39,7 @@
 namespace U2 {
 
 GenomeAlignerIndexTask::GenomeAlignerIndexTask(const GenomeAlignerIndexSettings &settings)
-    : Task("Building genome aligner's index", TaskFlag_None), objLens(NULL), objCount(0), unknownChar('N') {
+    : Task("Building genome aligner's index", TaskFlag_None), objLens(nullptr), objCount(0), unknownChar('N') {
     GUrl i = settings.indexFileName;
     baseFileName = i.dirPath() + "/" + i.baseFileName();
     w = MAX_BIT_MASK_LENGTH;
@@ -194,11 +194,11 @@ void GenomeAlignerIndexTask::reformatSequence() {
     while (seqReader.hasNext()) {
         objCount++;
         const DNASequence *seq = seqReader.getNextSequenceObject();
-        if (NULL == seq) {
+        if (nullptr == seq) {
             setError("Reference object type must be a sequence, but not a multiple alignment");
             return;
         }
-        if (NULL == seq->alphabet) {
+        if (nullptr == seq->alphabet) {
             setError("Cannot define an alphabet for the reference sequence");
             return;
         }

@@ -134,6 +134,7 @@
 #include <U2View/MSAHighlightingTabFactory.h>
 #include <U2View/MaExportConsensusTabFactory.h>
 #include <U2View/McaGeneralTabFactory.h>
+#include <U2View/McaReadsTabFactory.h>
 #include <U2View/PairAlignFactory.h>
 #include <U2View/RefSeqCommonWidget.h>
 #include <U2View/SeqStatisticsWidgetFactory.h>
@@ -185,7 +186,7 @@ BOOL IsWow64() {
     fnIsWow64Process = (LPFN_ISWOW64PROCESS)GetProcAddress(
         GetModuleHandle(TEXT("kernel32")), "IsWow64Process");
 
-    if (NULL != fnIsWow64Process) {
+    if (nullptr != fnIsWow64Process) {
         if (!fnIsWow64Process(GetCurrentProcess(), &bIsWow64)) {
             //handle error
         }
@@ -335,6 +336,7 @@ static void initOptionsPanels() {
     //MCA groups
     opWidgetFactoryRegistry->registerFactory(new McaGeneralTabFactory());
     opWidgetFactoryRegistry->registerFactory(new McaExportConsensusTabFactory());
+    opWidgetFactoryRegistry->registerFactory(new McaReadsTabFactory());
 }
 
 static void initProjectFilterTaskRegistry() {
@@ -892,188 +894,188 @@ int main(int argc, char **argv) {
     appContext->setDashboardInfoRegistry(nullptr);
     delete dashboardInfoRegistry;
 
-    appContext->setPasteFactory(NULL);
+    appContext->setPasteFactory(nullptr);
     delete pasteFactory;
 
-    appContext->setProjectFilterTaskRegistry(NULL);
+    appContext->setProjectFilterTaskRegistry(nullptr);
     delete projectFilterTaskRegistry;
 
-    appContext->setRecentlyDownloadedCache(NULL);
+    appContext->setRecentlyDownloadedCache(nullptr);
     delete rdc;
 
-    appContext->setProjectLoader(NULL);
+    appContext->setProjectLoader(nullptr);
     delete pli;
 
-    appContext->setPluginSupport(NULL);
+    appContext->setPluginSupport(nullptr);
     delete psp;
 
-    appContext->setServiceRegistry(NULL);
+    appContext->setServiceRegistry(nullptr);
     delete sreg;
 
     Workflow::WorkflowEnv::shutdown();
 
-    appContext->setCredentialsAsker(NULL);
+    appContext->setCredentialsAsker(nullptr);
     delete credentialsAsker;
 
-    appContext->setPasswordStorage(NULL);
+    appContext->setPasswordStorage(nullptr);
     delete passwordStorage;
 
-    appContext->setDataPathRegistry(NULL);
+    appContext->setDataPathRegistry(nullptr);
     delete dpr;
 
-    appContext->setAlignmentAlgorithmsRegistry(NULL);
+    appContext->setAlignmentAlgorithmsRegistry(nullptr);
     delete alignmentAlgorithmsRegistry;
 
-    appContext->setWorkflowScriptRegistry(NULL);
+    appContext->setWorkflowScriptRegistry(nullptr);
     delete workflowScriptRegistry;
 
-    appContext->setOPCommonWidgetFactoryRegistry(NULL);
+    appContext->setOPCommonWidgetFactoryRegistry(nullptr);
     delete opCommonWidgetFactoryRegistry;
 
-    appContext->setOPWidgetFactoryRegistry(NULL);
+    appContext->setOPWidgetFactoryRegistry(nullptr);
     delete opWidgetFactoryRegistry;
 
-    appContext->setSplicedAlignmentTaskRegistry(NULL);
+    appContext->setSplicedAlignmentTaskRegistry(nullptr);
     delete splicedAlignmentTaskRegistiry;
 
-    appContext->setDataBaseRegistry(NULL);
+    appContext->setDataBaseRegistry(nullptr);
     delete dbr;
 
-    appContext->setDnaAssemblyAlgRegistry(NULL);
+    appContext->setDnaAssemblyAlgRegistry(nullptr);
     delete assemblyReg;
 
-    appContext->setVirtualFileSystemRegistry(NULL);
+    appContext->setVirtualFileSystemRegistry(nullptr);
     delete vfsReg;
 
 #ifdef OPENCL_SUPPORT
-    appContext->setOpenCLGpuRegistry(NULL);
+    appContext->setOpenCLGpuRegistry(nullptr);
     delete oclgr;
 #endif
 
-    appContext->setCudaGpuRegistry(NULL);
+    appContext->setCudaGpuRegistry(nullptr);
     delete cgr;
 
-    appContext->setSecStructPedictAlgRegistry(NULL);
+    appContext->setSecStructPedictAlgRegistry(nullptr);
     delete sspar;
 
-    appContext->setWelcomePageActionRegistry(NULL);
+    appContext->setWelcomePageActionRegistry(nullptr);
     delete welcomePageActions;
 
-    appContext->setConvertFactoryRegistry(NULL);
+    appContext->setConvertFactoryRegistry(nullptr);
     delete convertFactoryRegistry;
 
-    appContext->setSWResultFilterRegistry(NULL);
+    appContext->setSWResultFilterRegistry(nullptr);
     delete swrfr;
 
-    appContext->setMolecularSurfaceFactoryRegistry(NULL);
+    appContext->setMolecularSurfaceFactoryRegistry(nullptr);
     delete msfr;
 
-    appContext->setPhyTreeGeneratorRegistry(NULL);
+    appContext->setPhyTreeGeneratorRegistry(nullptr);
     delete genRegistry;
 
-    appContext->setStructuralAlignmentAlgorithmRegistry(NULL);
+    appContext->setStructuralAlignmentAlgorithmRegistry(nullptr);
     delete saar;
 
-    appContext->setCDSearchFactoryRegistry(NULL);
+    appContext->setCDSearchFactoryRegistry(nullptr);
     delete cdsfr;
 
-    appContext->setQDActorFactoryRegistry(NULL);
+    appContext->setQDActorFactoryRegistry(nullptr);
     delete qpr;
 
-    appContext->setExternalToolRegistry(NULL);
+    appContext->setExternalToolRegistry(nullptr);
     delete etr;
 
-    appContext->setScriptingToolRegistry(NULL);
+    appContext->setScriptingToolRegistry(nullptr);
     delete str;
 
-    appContext->setRepeatFinderTaskFactoryRegistry(NULL);
+    appContext->setRepeatFinderTaskFactoryRegistry(nullptr);
     delete rfr;
 
-    appContext->setSWMulAlignResultNamesTagsRegistry(NULL);
+    appContext->setSWMulAlignResultNamesTagsRegistry(nullptr);
     delete swmarntr;
 
-    appContext->setSmithWatermanTaskFactoryRegistry(NULL);
+    appContext->setSmithWatermanTaskFactoryRegistry(nullptr);
     delete swar;
 
-    appContext->setSubstMatrixRegistry(NULL);
+    appContext->setSubstMatrixRegistry(nullptr);
     delete smr;
 
-    appContext->setPWMConversionAlgorithmRegistry(NULL);
+    appContext->setPWMConversionAlgorithmRegistry(nullptr);
     delete pwmConvReg;
 
-    appContext->setMSADistanceAlgorithmRegistry(NULL);
+    appContext->setMSADistanceAlgorithmRegistry(nullptr);
     delete msaDistReg;
 
-    appContext->setAssemblyConsensusAlgorithmRegistry(NULL);
+    appContext->setAssemblyConsensusAlgorithmRegistry(nullptr);
     delete assemblyConsReg;
 
-    appContext->setMSAConsensusAlgorithmRegistry(NULL);
+    appContext->setMSAConsensusAlgorithmRegistry(nullptr);
     delete msaConsReg;
 
-    appContext->setMsaHighlightingSchemeRegistry(NULL);
+    appContext->setMsaHighlightingSchemeRegistry(nullptr);
     delete mhsr;
 
-    appContext->setMsaColorSchemeRegistry(NULL);
+    appContext->setMsaColorSchemeRegistry(nullptr);
     delete mcsr;
 
-    appContext->setDBXRefRegistry(NULL);
+    appContext->setDBXRefRegistry(nullptr);
     delete dbxr;
 
-    appContext->setDNAAlphabetRegistry(NULL);
+    appContext->setDNAAlphabetRegistry(nullptr);
     delete dal;
 
-    appContext->setDNATranslationRegistry(NULL);
+    appContext->setDNATranslationRegistry(nullptr);
     delete dtr;
 
-    appContext->setIOAdapterRegistry(NULL);
+    appContext->setIOAdapterRegistry(nullptr);
     delete io;
 
-    appContext->setDocumentFormatRegistry(NULL);
+    appContext->setDocumentFormatRegistry(nullptr);
     delete dfr;
 
     delete dbiRegistry;
-    appContext->setDbiRegistry(NULL);
+    appContext->setDbiRegistry(nullptr);
 
-    appContext->setUdrSchemaRegistry(NULL);
+    appContext->setUdrSchemaRegistry(nullptr);
     delete schemaRegistry;
 
-    appContext->setObjectViewFactoryRegistry(NULL);
+    appContext->setObjectViewFactoryRegistry(nullptr);
     delete ovfr;
 
-    appContext->setAnnotationSettingsRegistry(NULL);
+    appContext->setAnnotationSettingsRegistry(nullptr);
     delete asr;
 
-    appContext->setCMDLineRegistry(NULL);
+    appContext->setCMDLineRegistry(nullptr);
     delete cmdLineRegistry;
 
-    appContext->setMainWindow(NULL);
+    appContext->setMainWindow(nullptr);
     delete mw;
 
-    appContext->setTestFramework(NULL);
+    appContext->setTestFramework(nullptr);
     delete tf;
 
-    appContext->setTaskScheduler(NULL);
+    appContext->setTaskScheduler(nullptr);
     delete ts;
 
-    appContext->setResourceTracker(NULL);
+    appContext->setResourceTracker(nullptr);
     delete resTrack;
 
-    appContext->setAutoAnnotationsSupport(NULL);
+    appContext->setAutoAnnotationsSupport(nullptr);
     delete aaSupport;
 
     bool deleteSettingsFile = userAppSettings->resetSettings();
     QString iniFile = AppContext::getSettings()->fileName();
 
-    appContext->setAppSettingsGUI(NULL);
+    appContext->setAppSettingsGUI(nullptr);
     delete appSettingsGUI;
 
-    appContext->setAppSettings(NULL);
+    appContext->setAppSettings(nullptr);
     delete appSettings;
 
-    appContext->setSettings(NULL);
+    appContext->setSettings(nullptr);
     delete settings;
 
-    appContext->setGlobalSettings(NULL);
+    appContext->setGlobalSettings(nullptr);
     delete globalSettings;
 
     if (deleteSettingsFile) {

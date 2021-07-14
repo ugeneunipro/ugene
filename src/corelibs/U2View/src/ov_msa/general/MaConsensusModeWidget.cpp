@@ -39,14 +39,14 @@ namespace U2 {
 
 MaConsensusModeWidget::MaConsensusModeWidget(QWidget *parent)
     : QWidget(parent),
-      consArea(NULL),
-      maObject(NULL) {
+      consArea(nullptr),
+      maObject(nullptr) {
     setupUi(this);
 }
 
 void MaConsensusModeWidget::init(MultipleAlignmentObject *_maObject, MaEditorConsensusArea *_consArea) {
-    SAFE_POINT(_maObject != NULL, "MaConsensusModeWidget can not be initialized: MultipleAlignmentObject is NULL", );
-    SAFE_POINT(_consArea != NULL, "MaConsensusModeWidget can not be initialized: MaEditorConsensusArea is NULL", );
+    SAFE_POINT(_maObject != nullptr, "MaConsensusModeWidget can not be initialized: MultipleAlignmentObject is NULL", );
+    SAFE_POINT(_consArea != nullptr, "MaConsensusModeWidget can not be initialized: MaEditorConsensusArea is NULL", );
 
     consArea = _consArea;
     maObject = _maObject;
@@ -70,7 +70,7 @@ void MaConsensusModeWidget::init(MultipleAlignmentObject *_maObject, MaEditorCon
 }
 
 void MaConsensusModeWidget::updateState() {
-    SAFE_POINT(consArea != NULL, "MaConsensusModeWidget is not initialized", );
+    SAFE_POINT(consArea != nullptr, "MaConsensusModeWidget is not initialized", );
 
     const MSAConsensusAlgorithm *algo = consArea->getConsensusAlgorithm();
     updateThresholdState(algo->supportsThreshold(),
@@ -102,7 +102,7 @@ void MaConsensusModeWidget::updateThresholdState(bool enable, int minVal, int ma
 void MaConsensusModeWidget::sl_algorithmChanged(const QString &algoId) {
     GCounter::increment("Consensus type changed", consArea->getEditorWgt()->getEditor()->getFactoryId());
     // Update state for the current algorithm
-    SAFE_POINT(maObject != NULL, "MaConsensusModeWidget is not initialized", );
+    SAFE_POINT(maObject != nullptr, "MaConsensusModeWidget is not initialized", );
 
     const DNAAlphabet *alphabet = maObject->getAlphabet();
     if (curAlphabetId != alphabet->getId()) {
@@ -142,7 +142,7 @@ void MaConsensusModeWidget::sl_thresholdResetClicked(bool newState) {
     Q_UNUSED(newState);
     MSAConsensusAlgorithmRegistry *reg = AppContext::getMSAConsensusAlgorithmRegistry();
     MSAConsensusAlgorithmFactory *factory = reg->getAlgorithmFactory(consensusType->itemData(consensusType->currentIndex()).toString());
-    SAFE_POINT(NULL != factory, "Consensus alorithm factory is NULL", );
+    SAFE_POINT(nullptr != factory, "Consensus alorithm factory is NULL", );
     sl_thresholdChanged(factory->getDefaultThreshold());
 }
 
@@ -152,12 +152,12 @@ void MaConsensusModeWidget::sl_thresholdChanged(int value) {
 
 void MaConsensusModeWidget::initConsensusTypeCombo() {
     MSAConsensusAlgorithmRegistry *reg = AppContext::getMSAConsensusAlgorithmRegistry();
-    SAFE_POINT(NULL != reg, "Consensus algorithm registry is NULL.", );
+    SAFE_POINT(nullptr != reg, "Consensus algorithm registry is NULL.", );
 
     const DNAAlphabet *alphabet = maObject->getAlphabet();
     curAlphabetId = alphabet->getId();
     ConsensusAlgorithmFlags flags = MSAConsensusAlgorithmFactory::getAphabetFlags(alphabet);
-    if (qobject_cast<MultipleChromatogramAlignmentObject *>(maObject) != NULL) {
+    if (qobject_cast<MultipleChromatogramAlignmentObject *>(maObject) != nullptr) {
         flags |= ConsensusAlgorithmFlag_AvailableForChromatogram;
     }
     QList<MSAConsensusAlgorithmFactory *> algos = reg->getAlgorithmFactories(flags);

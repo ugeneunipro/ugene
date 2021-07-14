@@ -611,7 +611,7 @@ bool MysqlDbiFactory::isDbiExists(const U2DbiId &id) const {
 
 MysqlChildDbiCommon::MysqlChildDbiCommon(MysqlDbi *dbi)
     : dbi(dbi),
-      db(NULL == dbi ? NULL : dbi->getDbRef()) {
+      db(nullptr == dbi ? nullptr : dbi->getDbRef()) {
 }
 
 }    // namespace U2

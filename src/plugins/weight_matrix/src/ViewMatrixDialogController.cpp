@@ -36,7 +36,7 @@
 namespace U2 {
 
 MatrixAndLogoController::MatrixAndLogoController(PFMatrix matrix, QWidget *p)
-    : QWidget(p), logoArea(NULL) {
+    : QWidget(p), logoArea(nullptr) {
     setupUi(this);
     if (matrix.getType() == PFM_MONONUCLEOTIDE) {
         tableWidget->setRowCount(4);
@@ -110,7 +110,7 @@ MatrixAndLogoController::MatrixAndLogoController(PFMatrix matrix, QWidget *p)
     AlignmentLogoSettings logoSettings(ma);
     logoWidget->resize(logowidth, logoheight);
     scrollArea->resize(logowidth, logoheight + 10);
-    if (logoArea != NULL) {
+    if (logoArea != nullptr) {
         logoArea->replaceSettings(logoSettings);
     } else {
         logoArea = new AlignmentLogoRenderArea(logoSettings, logoWidget);

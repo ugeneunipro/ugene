@@ -49,7 +49,7 @@ class PWMBuildDialogController : public QDialog, public Ui_PWMBuildDialog {
     Q_OBJECT
 
 public:
-    PWMBuildDialogController(QWidget *w = NULL);
+    PWMBuildDialogController(QWidget *w = nullptr);
     QString lastURL;
 
 public slots:

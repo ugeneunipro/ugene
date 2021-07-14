@@ -89,7 +89,14 @@ public:
     bool isPosInRange(int position) const;
     bool isSeqInRange(int rowNumber) const;
     bool isInRange(const QPoint &point) const;
+
+    /** Returns true if the given rectangle within visible [rows x columns] grid range. */
+    bool isInRange(const QRect &rect) const;
+
     QPoint boundWithVisibleRange(const QPoint &point) const;
+
+    /** Returns rectangle bounded with the visible width/height range. */
+    QRect boundWithVisibleRange(const QRect &rect) const;
 
     bool isVisible(const QPoint &p, bool countClipped) const;
     bool isPositionVisible(int pos, bool countClipped) const;
@@ -98,6 +105,13 @@ public:
     const MaEditorSelection &getSelection() const;
 
     virtual void setSelection(const MaEditorSelection &newSelection);
+
+    /**
+     * Sets new selection from the given rect.
+     * Bounds the rect with the visible area to ensure rect is within view bounds.
+     * This method does not update selection directly but calls 'setSelection()' with a new selection instance.
+     */
+    void setSelectionRect(const QRect &newSelectionRect);
 
     virtual void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
@@ -146,7 +160,7 @@ public:
 public slots:
     void sl_changeColorSchemeOutside(const QString &id);
     void sl_delCurrentSelection();
-    void sl_cancelSelection();
+    virtual void sl_cancelSelection();
     void sl_changeCopyFormat(const QString &formatId);
 
 protected slots:

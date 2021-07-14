@@ -30,7 +30,7 @@
 namespace U2 {
 
 PhylipTask::PhylipTask(const U2EntityRef &msaRef, const U2DbiRef &outDbiRef, const CreatePhyTreeSettings &settings)
-: CmdlineTask(tr("PHYLIP task"), TaskFlags_NR_FOSE_COSC), msaRef(msaRef), outDbiRef(outDbiRef), settings(settings), treeTask(NULL)
+: CmdlineTask(tr("PHYLIP task"), TaskFlags_NR_FOSE_COSC), msaRef(msaRef), outDbiRef(outDbiRef), settings(settings), treeTask(nullptr)
 {
 }
 

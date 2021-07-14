@@ -75,7 +75,7 @@ Task *QDCDDActor::getAlgorithmTask(const QVector<U2Region> &location) {
 
     const DNAAlphabet *alph = dnaSeq.alphabet;
     settings.complT = GObjectUtils::findComplementTT(dnaSeq.alphabet);
-    settings.aminoT = NULL;
+    settings.aminoT = nullptr;
     if (!alph->isAmino()) {
         DNATranslationType tt;
         if (alph->getType() == DNAAlphabet_NUCL) {

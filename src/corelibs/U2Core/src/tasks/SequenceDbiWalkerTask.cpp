@@ -31,8 +31,8 @@ namespace U2 {
 SequenceDbiWalkerTask::SequenceDbiWalkerTask(const SequenceDbiWalkerConfig &c, SequenceDbiWalkerCallback *cb, const QString &name, TaskFlags tf)
     : Task(name, tf), config(c), callback(cb) {
     assert(config.chunkSize > static_cast<uint>(config.overlapSize));    // if chunk == overlap -> infinite loop occurs
-    assert(cb != NULL);
-    assert(config.strandToWalk == StrandOption_DirectOnly || config.complTrans != NULL);
+    assert(cb != nullptr);
+    assert(config.strandToWalk == StrandOption_DirectOnly || config.complTrans != nullptr);
 
     maxParallelSubtasks = config.nThreads;
     QList<SequenceDbiWalkerSubtask *> subs = prepareSubtasks();
@@ -56,10 +56,10 @@ QList<SequenceDbiWalkerSubtask *> SequenceDbiWalkerTask::prepareSubtasks() {
     }
 
     if (config.walkCircular && config.range.length == sequenceObject.getSequenceLength()) {
-        config.range.length += config.walkCircularDistance * (config.aminoTrans == NULL ? 1 : 3);
+        config.range.length += config.walkCircularDistance * (config.aminoTrans == nullptr ? 1 : 3);
     }
 
-    if (config.aminoTrans == NULL) {
+    if (config.aminoTrans == nullptr) {
         //try walk direct and complement strands
         QVector<U2Region> chunks = splitRange(config.range, config.chunkSize, config.overlapSize, config.lastChunkExtraLen, false);
 
@@ -68,7 +68,7 @@ QList<SequenceDbiWalkerSubtask *> SequenceDbiWalkerTask::prepareSubtasks() {
             res += directTasks;
         }
         if (config.strandToWalk == StrandOption_Both || config.strandToWalk == StrandOption_ComplementOnly) {
-            assert(config.complTrans != NULL);
+            assert(config.complTrans != nullptr);
             QList<SequenceDbiWalkerSubtask *> complTasks = createSubs(chunks, true, false);
             res += complTasks;
         }
@@ -84,7 +84,7 @@ QList<SequenceDbiWalkerSubtask *> SequenceDbiWalkerTask::prepareSubtasks() {
             }
         }
         if (config.strandToWalk == StrandOption_Both || config.strandToWalk == StrandOption_ComplementOnly) {
-            assert(config.complTrans != NULL);
+            assert(config.complTrans != nullptr);
             for (int i = 0; i < nFrames; i++) {
                 U2Region strandRange(config.range.startPos, config.range.length - i);
                 QVector<U2Region> chunks = splitRange(strandRange, config.chunkSize, config.overlapSize, config.lastChunkExtraLen, true);

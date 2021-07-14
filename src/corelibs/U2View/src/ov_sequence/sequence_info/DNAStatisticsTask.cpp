@@ -341,7 +341,7 @@ DNAStatisticsTask::DNAStatisticsTask(const DNAAlphabet *alphabet,
       rcCharactersCount(MAP_SIZE, 0),
       dinucleotidesCount(MAP_SIZE, QVector<qint64>(MAP_SIZE, 0)),
       rcDinucleotidesCount(MAP_SIZE, QVector<qint64>(MAP_SIZE, 0)) {
-    SAFE_POINT_EXT(alphabet != NULL, setError(tr("Alphabet is NULL")), );
+    SAFE_POINT_EXT(alphabet != nullptr, setError(tr("Alphabet is NULL")), );
 }
 
 void DNAStatisticsTask::run() {
@@ -356,8 +356,8 @@ void DNAStatisticsTask::computeStats() {
     CHECK_OP(os, );
 
     U2SequenceDbi *sequenceDbi = dbiConnection.dbi->getSequenceDbi();
-    CHECK(sequenceDbi != NULL, );
-    SAFE_POINT_EXT(alphabet != NULL, setError(tr("Alphabet is NULL")), );
+    CHECK(sequenceDbi != nullptr, );
+    SAFE_POINT_EXT(alphabet != nullptr, setError(tr("Alphabet is NULL")), );
     qint64 totalLength = U2Region::sumLength(regions);
     qint64 processedLength = 0;
 

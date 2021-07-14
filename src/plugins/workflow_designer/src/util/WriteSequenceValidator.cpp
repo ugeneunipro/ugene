@@ -38,13 +38,13 @@ WriteSequenceValidator::WriteSequenceValidator(const QString &attr, const QStrin
 
 bool WriteSequenceValidator::validate(const Configuration *cfg, NotificationsList &notificationList) const {
     const Actor *actor = dynamic_cast<const Actor *>(cfg);
-    SAFE_POINT(NULL != actor, "NULL actor", false);
+    SAFE_POINT(nullptr != actor, "NULL actor", false);
     if (!isAnnotationsBinded(actor)) {
         return true;
     }
 
     DocumentFormat *format = getFormatSafe(actor);
-    CHECK(NULL != format, true);
+    CHECK(nullptr != format, true);
     if (!isAnnotationsSupported(format)) {
         QString warning = QObject::tr("The format %1 does not support annotations").arg(format->getFormatId().toUpper());
         notificationList << WorkflowNotification(warning, "", WorkflowNotification::U2_WARNING);
@@ -56,17 +56,17 @@ bool WriteSequenceValidator::validate(const Configuration *cfg, NotificationsLis
 
 DocumentFormat *WriteSequenceValidator::getFormatSafe(const Actor *actor) {
     Attribute *attr = actor->getParameter(BaseAttributes::DOCUMENT_FORMAT_ATTRIBUTE().getId());
-    SAFE_POINT(NULL != attr, "NULL format attribute", NULL);
-    CHECK(actor->isAttributeVisible(attr), NULL);
+    SAFE_POINT(nullptr != attr, "NULL format attribute", nullptr);
+    CHECK(actor->isAttributeVisible(attr), nullptr);
     QString formatId = attr->getAttributePureValue().toString();
     return AppContext::getDocumentFormatRegistry()->getFormatById(formatId);
 }
 
 bool WriteSequenceValidator::isAnnotationsBinded(const Actor *actor) const {
     Port *p = actor->getPort(port);
-    SAFE_POINT(NULL != p, "NULL port", false);
+    SAFE_POINT(nullptr != p, "NULL port", false);
     Attribute *attr = p->getParameter(IntegralBusPort::BUS_MAP_ATTR_ID);
-    SAFE_POINT(NULL != attr, "NULL busmap attribute", false);
+    SAFE_POINT(nullptr != attr, "NULL busmap attribute", false);
     StrStrMap busMap = attr->getAttributeValueWithoutScript<StrStrMap>();
     QString bindData = busMap.value(BaseSlots::ANNOTATION_TABLE_SLOT().getId(), "");
     return !bindData.isEmpty();
@@ -84,7 +84,7 @@ bool WriteSequencePortValidator::validate(const IntegralBusPort *port, Notificat
 
     if (!isBinded(port, BaseSlots::ANNOTATION_TABLE_SLOT().getId())) {
         DocumentFormat *format = WriteSequenceValidator::getFormatSafe(actor);
-        CHECK(NULL != format, result);
+        CHECK(nullptr != format, result);
         if (!WriteSequenceValidator::isAnnotationsSupported(format)) {
             screenedSlots << BaseSlots::ANNOTATION_TABLE_SLOT().getId();
         }

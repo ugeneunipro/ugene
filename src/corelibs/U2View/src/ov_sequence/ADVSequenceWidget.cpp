@@ -32,7 +32,7 @@ ADVSequenceWidget::ADVSequenceWidget(AnnotatedDNAView *_ctx)
 
 void ADVSequenceWidget::addADVSequenceWidgetAction(ADVSequenceWidgetAction *action) {
     assert(!action->objectName().isEmpty());
-    assert(getADVSequenceWidgetAction(action->objectName()) == NULL);
+    assert(getADVSequenceWidgetAction(action->objectName()) == nullptr);
     action->setParent(this);
     action->seqWidget = this;
     wActions.append(action);
@@ -44,7 +44,7 @@ ADVSequenceWidgetAction *ADVSequenceWidget::getADVSequenceWidgetAction(const QSt
             return action;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 QList<U2SequenceObject *> ADVSequenceWidget::getSequenceObjects() const {

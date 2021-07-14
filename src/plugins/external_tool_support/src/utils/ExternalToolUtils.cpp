@@ -62,14 +62,14 @@ void ExternalToolUtils::checkExtToolsPath(const QStringList &ids) {
         CHECK(!msgBox.isNull(), );
 
         switch (ret) {
-        case QMessageBox::Yes:
-            AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
-            break;
-        case QMessageBox::No:
-            return;
-        default:
-            assert(false);
-            break;
+            case QMessageBox::Yes:
+                AppContext::getAppSettingsGUI()->showSettingsDialog(ExternalToolSupportSettingsPageId);
+                break;
+            case QMessageBox::No:
+                return;
+            default:
+                assert(false);
+                break;
         }
     }
 }
@@ -99,7 +99,7 @@ void ExternalToolUtils::addDefaultCistromeDirToSettings() {
 
 void ExternalToolUtils::addCistromeDataPath(const QString &dataName, const QString &dirName, bool entriesAreFolders) {
     U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
-    CHECK(NULL != dpr, );
+    CHECK(nullptr != dpr, );
 
     const QString dataPath = AppContext::getSettings()->getValue(CISTROME_DATA_DIR).toString() + QDir::separator() + dirName;
     U2DataPath *dp = new U2DataPath(dataName, dataPath, "", U2DataPath::CutFileExtension | (entriesAreFolders ? U2DataPath::AddOnlyFolders : U2DataPath::None));

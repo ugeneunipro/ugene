@@ -32,7 +32,7 @@ namespace U2 {
 PrimerLibraryTableController::PrimerLibraryTableController(QObject *parent, PrimerLibraryTable *table)
     : QObject(parent),
       table(table) {
-    SAFE_POINT(NULL != table, "Primer library table is NULL", );
+    SAFE_POINT(nullptr != table, "Primer library table is NULL", );
 
     U2OpStatus2Log os;
     library = PrimerLibrary::getInstance(os);

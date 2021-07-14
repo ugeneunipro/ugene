@@ -70,6 +70,13 @@ public:
     void deleteColumnsWithGaps(U2OpStatus &os);
 
     void trimRow(const int rowIndex, int currentPos, U2OpStatus &os, TrimEdge edge);
+
+    /**
+      * Updates the corresponding alternative mutations.
+      * Set the second strongest character, if it's peak height persantage is more then @threshold and @showAlternativeMutations is true.
+      */
+    void updateAlternativeMutations(bool showAlternativeMutations, int threshold, U2OpStatus& os);
+
     void saveState();
     void releaseState();
     int getReferenceLengthWithGaps() const;

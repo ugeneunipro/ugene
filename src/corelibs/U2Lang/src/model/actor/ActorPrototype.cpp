@@ -38,17 +38,17 @@ QList<Attribute *> ActorPrototype::getAttributes() const {
 }
 
 void ActorPrototype::addAttribute(Attribute *a) {
-    assert(a != NULL);
+    assert(a != nullptr);
     attrs << a;
 }
 
 int ActorPrototype::removeAttribute(Attribute *attr) {
-    assert(attr != NULL);
+    assert(attr != nullptr);
     return attrs.removeAll(attr);
 }
 
 void ActorPrototype::setEditor(ConfigurationEditor *e) {
-    assert(e != NULL);
+    assert(e != nullptr);
     ed = e;
 }
 
@@ -57,17 +57,17 @@ ConfigurationEditor *ActorPrototype::getEditor() const {
 }
 
 void ActorPrototype::setValidator(ConfigurationValidator *v) {
-    assert(v != NULL);
+    assert(v != nullptr);
     val = v;
 }
 
 void ActorPrototype::setPrompter(Prompter *p) {
-    assert(p != NULL);
+    assert(p != nullptr);
     prompter = p;
 }
 
 void ActorPrototype::setPortValidator(const QString &id, ConfigurationValidator *v) {
-    assert(v != NULL);
+    assert(v != nullptr);
     portValidators[id] = v;
 }
 
@@ -110,7 +110,7 @@ Actor *ActorPrototype::createInstance(const ActorId &actorId, AttributeScript *s
     }
     if (ed) {
         ActorConfigurationEditor *actorEd = dynamic_cast<ActorConfigurationEditor *>(ed);
-        if (NULL != actorEd) {
+        if (nullptr != actorEd) {
             ActorConfigurationEditor *editor = dynamic_cast<ActorConfigurationEditor *>(ed->clone());
             editor->setConfiguration(proc);
             proc->setEditor(editor);
@@ -137,7 +137,7 @@ void ActorPrototype::setDocumentation(const QString &d) {
 }
 
 Attribute *ActorPrototype::getAttribute(const QString &id) const {
-    Attribute *res = NULL;
+    Attribute *res = nullptr;
     foreach (Attribute *a, attrs) {
         if (a->getId() == id) {
             res = a;
@@ -177,7 +177,7 @@ void ActorPrototype::clearExternalTools() {
 ActorPrototype::ActorPrototype(const Descriptor &d,
                                const QList<PortDescriptor *> &ports,
                                const QList<Attribute *> &attrs)
-    : QObject(nullptr), VisualDescriptor(d), attrs(attrs), ports(ports), ed(NULL), val(NULL), prompter(NULL),
+    : QObject(nullptr), VisualDescriptor(d), attrs(attrs), ports(ports), ed(nullptr), val(nullptr), prompter(nullptr),
       isScript(false), isStandard(true), isSchema(false), allowsEmptyPorts(false), influenceOnPathFlag(false), usageCounter(0) {
 }
 

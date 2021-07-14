@@ -43,7 +43,8 @@ public:
     DNAStatMSAProfileDialog(QWidget *p, MSAEditor *ctx);
 
     void accept();
-
+    /*Notify user about problems with big report, and disable opening report in UGENE*/
+    void showAlignmentIsTooBigWarning();
 private slots:
     void sl_formatSelected();
     void sl_formatChanged(const QString &newFormat);

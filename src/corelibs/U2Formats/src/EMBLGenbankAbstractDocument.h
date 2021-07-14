@@ -116,7 +116,7 @@ public:
 class ParserState {
 public:
     ParserState(int off, IOAdapter *io, EMBLGenbankDataEntry *e, U2OpStatus &si)
-        : valOffset(off), entry(e), io(io), buff(NULL), len(0), si(si) {
+        : valOffset(off), entry(e), io(io), buff(nullptr), len(0), si(si) {
     }
 
     const int valOffset;

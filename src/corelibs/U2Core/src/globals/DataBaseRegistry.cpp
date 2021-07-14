@@ -54,7 +54,7 @@ DataBaseFactory *DataBaseRegistry::getFactoryById(const QString &id) {
     if (isRegistered(id)) {
         return factories[id];
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 

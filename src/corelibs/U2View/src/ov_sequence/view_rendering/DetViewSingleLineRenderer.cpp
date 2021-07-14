@@ -206,7 +206,7 @@ void DetViewSingleLineRenderer::drawSelection(QPainter &p, const QSize &canvasSi
 void DetViewSingleLineRenderer::drawCursor(QPainter &p, const QSize &canvasSize, const U2Region &visibleRange) {
     CHECK(detView->isEditMode(), );
     DetViewSequenceEditor *editor = detView->getEditor();
-    CHECK(editor != NULL, );
+    CHECK(editor != nullptr, );
     int pos = editor->getCursorPosition();
     CHECK(visibleRange.contains(pos) || pos == visibleRange.endPos(), );
 
@@ -256,7 +256,7 @@ void DetViewSingleLineRenderer::drawComplement(QPainter &p, int availableHeight,
         const char *seq = visibleSequence.constData();
 
         DNATranslation *complTrans = ctx->getComplementTT();
-        CHECK(complTrans != NULL, );
+        CHECK(complTrans != nullptr, );
         QByteArray map = complTrans->getOne2OneMapper();
         int y = getTextY(complementLine, availableHeight);
         for (int i = 0; i < visibleRange.length; i++) {
@@ -492,7 +492,7 @@ void DetViewSingleLineRenderer::drawComplementTranslations(QPainter &p,
     }
 
     DNATranslation *complTable = ctx->getComplementTT();
-    SAFE_POINT(complTable != NULL, "Complement translation table is NULL", );
+    SAFE_POINT(complTable != nullptr, "Complement translation table is NULL", );
     QByteArray revComplDna(trMetrics.seqBlockRegion.length, 0);
     complTable->translate(seqBlock, trMetrics.seqBlockRegion.length, revComplDna.data(), trMetrics.seqBlockRegion.length);
     TextUtils::reverse(revComplDna.data(), revComplDna.size());
@@ -508,7 +508,7 @@ void DetViewSingleLineRenderer::drawComplementTranslations(QPainter &p,
 
         if (trMetrics.visibleFrames[complLine + 3] == true) {
             DNATranslation *translation = detView->getAminoTT();
-            CHECK(translation != NULL, );
+            CHECK(translation != nullptr, );
 
             const char *revComplData = revComplDna.constData();
             const char *seq = revComplData + revComplDnaOffset;
@@ -718,7 +718,7 @@ bool DetViewSingleLineRenderer::deriveTranslationCharColor(qint64 pos,
 
     int nAnnotations = 0;
     const U2Region tripletRange = strand.isCompementary() ? U2Region(pos - 2, 2) : U2Region(pos, 2);
-    AnnotationSettings *as = NULL;
+    AnnotationSettings *as = nullptr;
     AnnotationSettingsRegistry *registry = AppContext::getAnnotationsSettingsRegistry();
     const int sequenceLen = detView->getSequenceLength();
     foreach (const SharedAnnotationData &aData, annotationsInRange) {
@@ -726,7 +726,7 @@ bool DetViewSingleLineRenderer::deriveTranslationCharColor(qint64 pos,
             continue;
         }
         bool annotationOk = false;
-        AnnotationSettings *tas = NULL;
+        AnnotationSettings *tas = nullptr;
         const bool order = aData->isOrder();
         const QVector<U2Region> &location = aData->getRegions();
         for (int i = 0, n = location.size(); i < n; i++) {
@@ -775,7 +775,7 @@ void DetViewSingleLineRenderer::setFontAndPenForTranslation(const char *seq,
                                                             QPainter &p,
                                                             const TranslationMetrics &trMetrics) {
     DNATranslation3to1Impl *aminoTable = (DNATranslation3to1Impl *)ctx->getAminoTT();
-    SAFE_POINT(aminoTable != NULL, "Amino translation table is NULL", );
+    SAFE_POINT(aminoTable != nullptr, "Amino translation table is NULL", );
     if (aminoTable->isStartCodon(seq)) {
         p.setPen(inAnnotation ? charColor : trMetrics.startC);
         p.setFont(inAnnotation ? trMetrics.fontB : trMetrics.fontBS);

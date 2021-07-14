@@ -178,7 +178,7 @@ bool MaCollapseModel::isGroupWithMaRowIndexCollapsed(int maRowIndex) const {
     int viewRowIndex = getViewRowIndexByMaRowIndex(maRowIndex);
     int groupIndex = getCollapsibleGroupIndexByViewRowIndex(viewRowIndex);
     const MaCollapsibleGroup *group = getCollapsibleGroup(groupIndex);
-    return group != NULL && group->isCollapsed;
+    return group != nullptr && group->isCollapsed;
 }
 
 int MaCollapseModel::getCollapsibleGroupIndexByViewRowIndex(int viewRowIndex) const {
@@ -188,7 +188,7 @@ int MaCollapseModel::getCollapsibleGroupIndexByViewRowIndex(int viewRowIndex) co
 
 const MaCollapsibleGroup *MaCollapseModel::getCollapsibleGroup(int collapsibleGroupIndex) const {
     if (collapsibleGroupIndex < 0 || collapsibleGroupIndex >= groups.length()) {
-        return NULL;
+        return nullptr;
     }
     return &groups.constData()[collapsibleGroupIndex];
 }

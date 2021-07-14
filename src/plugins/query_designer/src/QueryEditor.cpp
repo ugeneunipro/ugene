@@ -35,7 +35,7 @@
 namespace U2 {
 
 QueryEditor::QueryEditor(QWidget *parent /* =0 */)
-    : QWidget(parent), current(NULL) {
+    : QWidget(parent), current(nullptr) {
     setupUi(this);
     caption->setMinimumHeight(nameEdit->sizeHint().height());
 
@@ -209,8 +209,8 @@ void QueryEditor::reset() {
     keyEdit->setText("");
     keyEdit->hide();
     directionCombo->hide();
-    setDescriptor(NULL);
-    cfgModel->setConfiguration(NULL);
+    setDescriptor(nullptr);
+    cfgModel->setConfiguration(nullptr);
     tableSplitter->hide();
     propDoc->setText("");
 }

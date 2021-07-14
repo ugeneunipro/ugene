@@ -35,12 +35,12 @@ class GSelection;
 
 struct RegionSelectorGui {
     RegionSelectorGui()
-        : startLineEdit(NULL),
-          endLineEdit(NULL),
-          presetsComboBox(NULL) {
+        : startLineEdit(nullptr),
+          endLineEdit(nullptr),
+          presetsComboBox(nullptr) {
     }
 
-    RegionSelectorGui(QLineEdit *start, QLineEdit *end, QComboBox *presets = NULL)
+    RegionSelectorGui(QLineEdit *start, QLineEdit *end, QComboBox *presets = nullptr)
         : startLineEdit(start),
           endLineEdit(end),
           presetsComboBox(presets) {
@@ -73,7 +73,7 @@ struct RegionSelectorSettings {
 
     RegionSelectorSettings(qint64 maxLen,
                            bool circular = false,
-                           DNASequenceSelection *selection = NULL,
+                           DNASequenceSelection *selection = nullptr,
                            QList<RegionPreset> presetRegions = QList<RegionPreset>(),
                            QString defaultPreset = SELECTED_REGION);
 
@@ -95,7 +95,7 @@ public:
                              RegionSelectorSettings settings,
                              QObject *parent);
 
-    U2Region getRegion(bool *ok = NULL) const;
+    U2Region getRegion(bool *ok = nullptr) const;
     void setRegion(const U2Region &region);
 
     QString getPresetName() const;

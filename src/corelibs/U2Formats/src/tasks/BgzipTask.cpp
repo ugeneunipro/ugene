@@ -54,10 +54,10 @@ BgzipTask::BgzipTask(const GUrl &fileUrl, const GUrl &bgzfUrl)
 void BgzipTask::run() {
     taskLog.details(tr("Start bgzip compression '%1'").arg(fileUrl.getURLString()));
 
-    SAFE_POINT_EXT(AppContext::getIOAdapterRegistry() != NULL, setError(tr("IOAdapterRegistry is NULL!")), );
+    SAFE_POINT_EXT(AppContext::getIOAdapterRegistry() != nullptr, setError(tr("IOAdapterRegistry is NULL!")), );
     IOAdapterFactory *ioFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
 
-    SAFE_POINT_EXT(ioFactory != NULL, setError(tr("IOAdapterFactory is NULL!")), );
+    SAFE_POINT_EXT(ioFactory != nullptr, setError(tr("IOAdapterFactory is NULL!")), );
     QScopedPointer<IOAdapter> in(ioFactory->createIOAdapter());
     SAFE_POINT_EXT(!in.isNull(), setError(tr("Can not create IOAdapter!")), );
 
@@ -72,7 +72,7 @@ void BgzipTask::run() {
 
     BGZF *out = bgzf_open(bgzfUrl.getURLString().toLatin1().data(), "w");
     BGZF_wrapper out_wr(out);
-    if (out == NULL) {
+    if (out == nullptr) {
         Task::setError(tr("Can not open output file '%2'").arg(bgzfUrl.getURLString()));
         return;
     }
@@ -133,12 +133,12 @@ GzipDecompressTask::GzipDecompressTask(const GUrl &zipUrl, const GUrl &fileUrl)
 void GzipDecompressTask::run() {
     taskLog.details(tr("Start decompression '%1'").arg(zippedUrl.getURLString()));
 
-    SAFE_POINT_EXT(AppContext::getIOAdapterRegistry() != NULL, setError(tr("IOAdapterRegistry is NULL!")), );
+    SAFE_POINT_EXT(AppContext::getIOAdapterRegistry() != nullptr, setError(tr("IOAdapterRegistry is NULL!")), );
 
     IOAdapterFactory *inFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::GZIPPED_LOCAL_FILE);
-    SAFE_POINT_EXT(inFactory != NULL, setError(tr("IOAdapterFactory is NULL!")), );
+    SAFE_POINT_EXT(inFactory != nullptr, setError(tr("IOAdapterFactory is NULL!")), );
     IOAdapterFactory *outFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::LOCAL_FILE);
-    SAFE_POINT_EXT(outFactory != NULL, setError(tr("IOAdapterFactory is NULL!")), );
+    SAFE_POINT_EXT(outFactory != nullptr, setError(tr("IOAdapterFactory is NULL!")), );
 
     QScopedPointer<IOAdapter> in(inFactory->createIOAdapter());
     SAFE_POINT_EXT(!in.isNull(), setError(tr("Can not create IOAdapter!")), );

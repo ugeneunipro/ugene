@@ -26,7 +26,7 @@
 namespace U2 {
 
 CrashHandlerPrivate::CrashHandlerPrivate()
-    : breakpadHandler(NULL) {
+    : breakpadHandler(nullptr) {
 }
 
 CrashHandlerPrivate::~CrashHandlerPrivate() {

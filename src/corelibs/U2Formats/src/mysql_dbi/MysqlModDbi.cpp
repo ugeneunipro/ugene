@@ -39,7 +39,7 @@ MysqlUseCommonMultiModStep::MysqlUseCommonMultiModStep(MysqlDbi *_mysqlDbi, cons
       valid(false),
       masterObjId(_masterObjId) {
     CHECK_OP(os, );
-    SAFE_POINT(NULL != mysqlDbi, "Dbi is NULL", );
+    SAFE_POINT(nullptr != mysqlDbi, "Dbi is NULL", );
 
     mysqlDbi->getMysqlModDbi()->startCommonMultiModStep(masterObjId, os);
     if (!os.hasError()) {
@@ -48,7 +48,7 @@ MysqlUseCommonMultiModStep::MysqlUseCommonMultiModStep(MysqlDbi *_mysqlDbi, cons
 }
 
 MysqlUseCommonMultiModStep::~MysqlUseCommonMultiModStep() {
-    SAFE_POINT(NULL != mysqlDbi, "Dbi is NULL", );
+    SAFE_POINT(nullptr != mysqlDbi, "Dbi is NULL", );
     if (valid) {
         U2OpStatus2Log os;
         mysqlDbi->getMysqlModDbi()->endCommonMultiModStep(masterObjId, os);

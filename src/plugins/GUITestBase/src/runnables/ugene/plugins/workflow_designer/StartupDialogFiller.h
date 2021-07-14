@@ -23,7 +23,6 @@
 #define _U2_STARTUP_DIALOG_FILLER_H_
 
 #include <core/GUITestOpStatus.h>
-
 #include <harness/UGUITestBase.h>
 
 #include "utils/GTUtilsDialog.h"

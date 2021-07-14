@@ -30,7 +30,7 @@ class U2ALGORITHM_EXPORT CDSearchFactoryRegistry : public QObject {
     Q_OBJECT
 public:
     CDSearchFactoryRegistry()
-        : localSearchFactory(NULL), remoteSearchFactory(NULL) {
+        : localSearchFactory(nullptr), remoteSearchFactory(nullptr) {
     }
     ~CDSearchFactoryRegistry() {
         delete localSearchFactory;
@@ -42,10 +42,10 @@ public:
 
     void registerFactory(CDSearchFactory *factory, SearchType type) {
         if (type == LocalSearch) {
-            assert(localSearchFactory == NULL);
+            assert(localSearchFactory == nullptr);
             localSearchFactory = factory;
         } else if (type == RemoteSearch) {
-            assert(remoteSearchFactory == NULL);
+            assert(remoteSearchFactory == nullptr);
             remoteSearchFactory = factory;
         } else {
             assert(0);
@@ -59,7 +59,7 @@ public:
             return remoteSearchFactory;
         } else {
             assert(0);
-            return NULL;
+            return nullptr;
         }
     }
 

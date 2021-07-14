@@ -37,7 +37,7 @@ namespace U2 {
 class U2ALGORITHM_EXPORT MSADistanceAlgorithmFactorySimilarity : public MSADistanceAlgorithmFactory {
     Q_OBJECT
 public:
-    MSADistanceAlgorithmFactorySimilarity(QObject *p = NULL);
+    MSADistanceAlgorithmFactorySimilarity(QObject *p = nullptr);
 
     virtual MSADistanceAlgorithm *createAlgorithm(const MultipleSequenceAlignment &ma, QObject *parent);
 

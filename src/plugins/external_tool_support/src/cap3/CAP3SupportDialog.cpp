@@ -38,7 +38,7 @@ namespace U2 {
 CAP3SupportDialog::CAP3SupportDialog(CAP3SupportTaskSettings &s, QWidget *parent)
     : QDialog(parent),
       settings(s),
-      saveController(NULL) {
+      saveController(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930898");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Run"));

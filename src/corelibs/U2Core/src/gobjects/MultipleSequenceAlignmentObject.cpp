@@ -53,7 +53,7 @@ const MultipleSequenceAlignment MultipleSequenceAlignmentObject::getMsaCopy() co
 MultipleSequenceAlignmentObject *MultipleSequenceAlignmentObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVariantMap &hints) const {
     DbiOperationsBlock opBlock(dstDbiRef, os);
     Q_UNUSED(opBlock);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     QScopedPointer<GHintsDefaultImpl> gHints(new GHintsDefaultImpl(getGHintsMap()));
     gHints->setAll(hints);
@@ -61,7 +61,7 @@ MultipleSequenceAlignmentObject *MultipleSequenceAlignmentObject::clone(const U2
 
     MultipleSequenceAlignment msa = getMsa()->getExplicitCopy();
     MultipleSequenceAlignmentObject *clonedObj = MultipleSequenceAlignmentImporter::createAlignment(dstDbiRef, dstFolder, msa, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     clonedObj->setGHints(gHints.take());
     clonedObj->setIndexInfo(getIndexInfo());
@@ -206,7 +206,7 @@ void MultipleSequenceAlignmentObject::replaceCharacter(int startPos, int rowInde
     if (newChar != ' ' && !msa->getAlphabet()->contains(newChar)) {
         const DNAAlphabet *alp = U2AlphabetUtils::findBestAlphabet(QByteArray(1, newChar));
         const DNAAlphabet *newAlphabet = U2AlphabetUtils::deriveCommonAlphabet(alp, msa->getAlphabet());
-        SAFE_POINT(NULL != newAlphabet, "Common alphabet is NULL", );
+        SAFE_POINT(nullptr != newAlphabet, "Common alphabet is NULL", );
 
         if (newAlphabet->getId() != msa->getAlphabet()->getId()) {
             MaDbiUtils::updateMaAlphabet(entityRef, newAlphabet->getId(), os);

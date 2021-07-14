@@ -34,7 +34,7 @@ class U2GUI_EXPORT OPWidgetFactoryRegistry : public QObject {
     Q_OBJECT
 
 public:
-    OPWidgetFactoryRegistry(QObject *parent = NULL);
+    OPWidgetFactoryRegistry(QObject *parent = nullptr);
     ~OPWidgetFactoryRegistry();
 
     bool registerFactory(OPWidgetFactory *factory);
@@ -50,7 +50,7 @@ class U2GUI_EXPORT OPCommonWidgetFactoryRegistry : public QObject {
     Q_OBJECT
 
 public:
-    OPCommonWidgetFactoryRegistry(QObject *parent = NULL);
+    OPCommonWidgetFactoryRegistry(QObject *parent = nullptr);
     ~OPCommonWidgetFactoryRegistry();
 
     bool registerFactory(OPCommonWidgetFactory *factory);

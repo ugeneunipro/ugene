@@ -115,17 +115,17 @@ void UserActionsWriter::generateMouseMessage(QMouseEvent *m) {
 QString UserActionsWriter::getMouseButtonInfo(QMouseEvent *m) {
     CHECK_EXT(m, userActLog.error(QString("MouseEvent is NULL %1:%2").arg(__FILE__).arg(__LINE__)), "");
     switch (m->button()) {
-    case Qt::RightButton: {
-        return QString("Right_button ");
-        break;
-    }
-    case Qt::LeftButton: {
-        return QString("Left_button ");
-        break;
-    }
-    default: {
-        return QString("Other_button ");
-    }
+        case Qt::RightButton: {
+            return QString("Right_button ");
+            break;
+        }
+        case Qt::LeftButton: {
+            return QString("Left_button ");
+            break;
+        }
+        default: {
+            return QString("Other_button ");
+        }
     }
 }
 
@@ -217,7 +217,7 @@ QString UserActionsWriter::getWidgetText(QMouseEvent *m, QWidget *w) {
 }
 
 void UserActionsWriter::generateKeyMessage(QKeyEvent *k) {
-    CHECK_EXT(NULL != k, userActLog.error(QString("key event is NULL %1:%2").arg(__FILE__).arg(__LINE__)), );
+    CHECK_EXT(nullptr != k, userActLog.error(QString("key event is NULL %1:%2").arg(__FILE__).arg(__LINE__)), );
 
     QString text = k->text();
     QString s = keys.value(Qt::Key(k->key()));
@@ -266,11 +266,11 @@ void UserActionsWriter::filterMouseMessages(QString message) {
 }
 
 void UserActionsWriter::filterKeyboardMessages(QKeyEvent *k, QString message) {
-    CHECK_EXT(NULL != k, userActLog.error(QString("key event is NULL %1:%2").arg(__FILE__).arg(__LINE__)), );
+    CHECK_EXT(nullptr != k, userActLog.error(QString("key event is NULL %1:%2").arg(__FILE__).arg(__LINE__)), );
 
     message.prepend(typeMap.value(k->type()) + QString(" "));
 
-    if (message != prevMessage && typeMap.value(k->type()) != NULL) {
+    if (message != prevMessage && typeMap.value(k->type()) != nullptr) {
         /*Do not duplicate event information when logging key release event*/
         if (prevMessage.right(prevMessage.length() - typeMap.value(QEvent::KeyPress).length()) ==
             message.right(message.length() - typeMap.value(QEvent::KeyRelease).length())) {
@@ -311,10 +311,10 @@ void UserActionsWriter::filterKeyboardMessages(QKeyEvent *k, QString message) {
 QString UserActionsWriter::getDialogInfo() {
     QString message("");
     QDialog *dialog = qobject_cast<QDialog *>(QApplication::activeModalWidget());
-    if (NULL != dialog) {
+    if (nullptr != dialog) {
         message.append(QString("DIALOG: \"%1\" ").arg(dialog->windowTitle()));
         QMessageBox *messageBox = qobject_cast<QMessageBox *>(dialog);
-        if (NULL != messageBox) {
+        if (nullptr != messageBox) {
             message.append("MESSAGEBOX_TEXT: ").append(messageBox->text()).append(" ");
         }
     }
@@ -322,7 +322,7 @@ QString UserActionsWriter::getDialogInfo() {
 }
 
 QString UserActionsWriter::getKeyModifiersInfo(QKeyEvent *k) {
-    CHECK_EXT(NULL != k, userActLog.error(QString("key event is NULL %1:%2").arg(__FILE__).arg(__LINE__)), "");
+    CHECK_EXT(nullptr != k, userActLog.error(QString("key event is NULL %1:%2").arg(__FILE__).arg(__LINE__)), "");
 
     Qt::KeyboardModifiers m = k->modifiers();
     if (m.testFlag(Qt::ShiftModifier) && k->key() != Qt::Key_Shift) {

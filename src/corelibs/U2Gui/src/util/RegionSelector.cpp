@@ -54,8 +54,8 @@ const QString RegionSelector::CUSTOM_REGION = QApplication::translate("RegionSel
 RegionSelector::RegionSelector(QWidget *p, qint64 len, bool isVertical, DNASequenceSelection *selection, bool isCircularSelectionAvailable, QList<RegionPreset> presetRegions)
     : QWidget(p),
       maxLen(len),
-      startEdit(NULL),
-      endEdit(NULL),
+      startEdit(nullptr),
+      endEdit(nullptr),
       isVertical(isVertical) {
     initLayout();
 

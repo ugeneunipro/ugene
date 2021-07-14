@@ -29,7 +29,7 @@
 
 namespace U2 {
 
-LogCache *LogCache::appGlobalCache = NULL;
+LogCache *LogCache::appGlobalCache = nullptr;
 
 LogFilterItem::LogFilterItem(const QString &_category, LogLevel _minLevel) {
     category = _category;
@@ -87,7 +87,7 @@ void LogCache::updateSize() {
 }
 
 void LogCache::setAppGlobalInstance(LogCache *cache) {
-    assert(appGlobalCache == NULL);
+    assert(appGlobalCache == nullptr);
     appGlobalCache = cache;
 }
 

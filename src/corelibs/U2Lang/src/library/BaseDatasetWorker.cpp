@@ -46,14 +46,14 @@ Task *BaseDatasetWorker::processNextInputMessage() {
         return onDatasetChanged();
     }
     takeMessage();
-    return NULL;
+    return nullptr;
 }
 
 Task *BaseDatasetWorker::onInputEnded() {
     if (!datasetMessages.isEmpty()) {
         return onDatasetChanged();
     }
-    return NULL;
+    return nullptr;
 }
 
 QList<Message> BaseDatasetWorker::fetchResult(Task *task, U2OpStatus &os) {

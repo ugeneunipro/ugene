@@ -82,7 +82,7 @@ Task *PrimersGrouperWorker::tick() {
         SharedDbiDataHandler seqId = qm.value(BaseSlots::DNA_SEQUENCE_SLOT().getId()).value<SharedDbiDataHandler>();
         QScopedPointer<U2SequenceObject> seqObj(StorageUtils::getSequenceObject(context->getDataStorage(), seqId));
         if (seqObj.isNull()) {
-            return NULL;
+            return nullptr;
         }
         U2OpStatusImpl os;
         DNASequence seq = seqObj->getWholeSequence(os);
@@ -95,7 +95,7 @@ Task *PrimersGrouperWorker::tick() {
         connect(new TaskSignalMapper(t), SIGNAL(si_taskFinished(Task *)), SLOT(sl_onTaskFinished(Task *)));
         return t;
     }
-    return NULL;
+    return nullptr;
 }
 
 void PrimersGrouperWorker::sl_onTaskFinished(Task *t) {
@@ -283,7 +283,7 @@ void PrimerGrouperTask::fillReportTable(const QList<QList<int>> &correctPrimersG
 void PrimerGrouperTask::writeReportToFile() {
     IOAdapterId ioAdapterId = IOAdapterUtils::url2io(outputUrl);
     IOAdapterFactory *ioAdapterFactory = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioAdapterId);
-    CHECK_EXT(ioAdapterFactory != NULL, setError(tr("No IO adapter found for URL: %1").arg(outputUrl)), );
+    CHECK_EXT(ioAdapterFactory != nullptr, setError(tr("No IO adapter found for URL: %1").arg(outputUrl)), );
 
     QScopedPointer<IOAdapter> ioAdapter(ioAdapterFactory->createIOAdapter());
 

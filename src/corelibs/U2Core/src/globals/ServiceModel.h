@@ -92,12 +92,12 @@ public:
 protected:
     /// returns NULL if no actions are required to enable service
     virtual Task *createServiceEnablingTask() {
-        return NULL;
+        return nullptr;
     }
 
     /// returns NULL if no actions are required to disable service
     virtual Task *createServiceDisablingTask() {
-        return NULL;
+        return nullptr;
     }
 
     virtual void serviceStateChangedCallback(ServiceState oldState, bool enabledStateChanged) {

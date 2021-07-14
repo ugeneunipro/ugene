@@ -61,7 +61,7 @@ bool MysqlUtils::isTableExists(const QString &tableName, MysqlDbRef *db, U2OpSta
 U2SqlQuery::U2SqlQuery(const QString &sql, MysqlDbRef *db, U2OpStatus &_os)
     : db(db),
       os(&_os),
-      query(NULL == db ? QSqlDatabase() : db->handle) {
+      query(nullptr == db ? QSqlDatabase() : db->handle) {
     QMutexLocker locker(&db->mutex);
 
     query.setForwardOnly(true);
@@ -71,7 +71,7 @@ U2SqlQuery::U2SqlQuery(const QString &sql, MysqlDbRef *db, U2OpStatus &_os)
 U2SqlQuery::U2SqlQuery(const QString &sql, qint64 offset, qint64 count, MysqlDbRef *db, U2OpStatus &_os)
     : db(db),
       os(&_os),
-      query(NULL == db ? QSqlDatabase() : db->handle) {
+      query(nullptr == db ? QSqlDatabase() : db->handle) {
     QMutexLocker locker(&db->mutex);
     QString sqlString = sql;
     U2DbiUtils::addLimit(sqlString, offset, count);
@@ -387,7 +387,7 @@ QString U2SqlQuery::getQueryText() const {
 }
 
 bool U2SqlQuery::hasError() const {
-    return (os != NULL) ? os->hasError() : true;
+    return (os != nullptr) ? os->hasError() : true;
 }
 
 void U2SqlQuery::setOpStatus(U2OpStatus &os) {

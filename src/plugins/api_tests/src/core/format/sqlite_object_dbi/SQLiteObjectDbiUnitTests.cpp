@@ -38,14 +38,14 @@ namespace U2 {
 
 TestDbiProvider SQLiteObjectDbiTestData::dbiProvider = TestDbiProvider();
 const QString &SQLiteObjectDbiTestData::SQLITE_OBJ_DB_URL("sqlite-obj-dbi.ugenedb");
-U2AttributeDbi *SQLiteObjectDbiTestData::attributeDbi = NULL;
-U2MsaDbi *SQLiteObjectDbiTestData::msaDbi = NULL;
-U2SequenceDbi *SQLiteObjectDbiTestData::sequenceDbi = NULL;
-SQLiteDbi *SQLiteObjectDbiTestData::sqliteDbi = NULL;
-SQLiteObjectDbi *SQLiteObjectDbiTestData::sqliteObjectDbi = NULL;
+U2AttributeDbi *SQLiteObjectDbiTestData::attributeDbi = nullptr;
+U2MsaDbi *SQLiteObjectDbiTestData::msaDbi = nullptr;
+U2SequenceDbi *SQLiteObjectDbiTestData::sequenceDbi = nullptr;
+SQLiteDbi *SQLiteObjectDbiTestData::sqliteDbi = nullptr;
+SQLiteObjectDbi *SQLiteObjectDbiTestData::sqliteObjectDbi = nullptr;
 
 void SQLiteObjectDbiTestData::init() {
-    SAFE_POINT(NULL == sqliteDbi, "sqliteDbi has already been initialized!", );
+    SAFE_POINT(nullptr == sqliteDbi, "sqliteDbi has already been initialized!", );
 
     // Get URL
     bool ok = dbiProvider.init(SQLITE_OBJ_DB_URL, false);
@@ -64,60 +64,60 @@ void SQLiteObjectDbiTestData::init() {
     SAFE_POINT_OP(os, );
 
     sqliteObjectDbi = sqliteDbi->getSQLiteObjectDbi();
-    SAFE_POINT(NULL != sqliteObjectDbi, "Failed to get sqliteObjectDbi!", );
+    SAFE_POINT(nullptr != sqliteObjectDbi, "Failed to get sqliteObjectDbi!", );
 
     attributeDbi = sqliteDbi->getAttributeDbi();
-    SAFE_POINT(NULL != attributeDbi, "Failed to get attributeDbi!", );
+    SAFE_POINT(nullptr != attributeDbi, "Failed to get attributeDbi!", );
 
     msaDbi = sqliteDbi->getMsaDbi();
-    SAFE_POINT(NULL != msaDbi, "Failed to get msaDbi!", );
+    SAFE_POINT(nullptr != msaDbi, "Failed to get msaDbi!", );
 
     sequenceDbi = sqliteDbi->getSequenceDbi();
-    SAFE_POINT(NULL != sequenceDbi, "Failed to get sequenceDbi!", );
+    SAFE_POINT(nullptr != sequenceDbi, "Failed to get sequenceDbi!", );
 }
 
 void SQLiteObjectDbiTestData::shutdown() {
-    if (NULL != sqliteDbi) {
+    if (nullptr != sqliteDbi) {
         delete sqliteDbi;
 
-        sqliteDbi = NULL;
-        sqliteObjectDbi = NULL;
-        attributeDbi = NULL;
-        msaDbi = NULL;
-        sequenceDbi = NULL;
+        sqliteDbi = nullptr;
+        sqliteObjectDbi = nullptr;
+        attributeDbi = nullptr;
+        msaDbi = nullptr;
+        sequenceDbi = nullptr;
     }
 }
 
 SQLiteDbi *SQLiteObjectDbiTestData::getSQLiteDbi() {
-    if (NULL == sqliteDbi) {
+    if (nullptr == sqliteDbi) {
         init();
     }
     return sqliteDbi;
 }
 
 SQLiteObjectDbi *SQLiteObjectDbiTestData::getSQLiteObjectDbi() {
-    if (NULL == sqliteObjectDbi) {
+    if (nullptr == sqliteObjectDbi) {
         init();
     }
     return sqliteObjectDbi;
 }
 
 U2AttributeDbi *SQLiteObjectDbiTestData::getAttributeDbi() {
-    if (NULL == attributeDbi) {
+    if (nullptr == attributeDbi) {
         init();
     }
     return attributeDbi;
 }
 
 U2MsaDbi *SQLiteObjectDbiTestData::getMsaDbi() {
-    if (NULL == msaDbi) {
+    if (nullptr == msaDbi) {
         init();
     }
     return msaDbi;
 }
 
 U2SequenceDbi *SQLiteObjectDbiTestData::getSequenceDbi() {
-    if (NULL == sequenceDbi) {
+    if (nullptr == sequenceDbi) {
         init();
     }
     return sequenceDbi;

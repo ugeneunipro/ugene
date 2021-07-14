@@ -67,7 +67,7 @@ public:
 class MACSPrompter : public PrompterBase<MACSPrompter> {
     Q_OBJECT
 public:
-    MACSPrompter(Actor *p = NULL)
+    MACSPrompter(Actor *p = nullptr)
         : PrompterBase<MACSPrompter>(p) {
     }
 

@@ -147,12 +147,12 @@ void RoleFiller::commonScenario() {
     }
 
     delete parameter;
-    parameter = NULL;
+    parameter = nullptr;
 
     QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != NULL, "buttonBox is NULL");
+    GT_CHECK(box != nullptr, "buttonBox is NULL");
     QPushButton *button = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(button != NULL, "ok button is NULL");
+    GT_CHECK(button != nullptr, "ok button is NULL");
     GTWidget::click(os, button);
 }
 #undef GT_METHOD_NAME
@@ -160,10 +160,10 @@ void RoleFiller::commonScenario() {
 class GTTableWidget {
 public:
     static QPoint headerItemCenter(HI::GUITestOpStatus &os, QTableWidget *w, int pos) {
-        CHECK_SET_ERR_RESULT(w != NULL, "QTableWidget is NULL", QPoint());
+        CHECK_SET_ERR_RESULT(w != nullptr, "QTableWidget is NULL", QPoint());
 
         QTableWidgetItem *widgetItem = w->item(0, pos);
-        CHECK_SET_ERR_RESULT(widgetItem != NULL, "QTableWidgetItem is NULL", QPoint());
+        CHECK_SET_ERR_RESULT(widgetItem != nullptr, "QTableWidgetItem is NULL", QPoint());
 
         QPoint itemPoint = w->visualItemRect(widgetItem).center();
         return w->mapToGlobal(itemPoint);
@@ -173,24 +173,24 @@ public:
 #define GT_METHOD_NAME "run"
 void ImportAnnotationsToCsvFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "dialog not found");
+    GT_CHECK(dialog != nullptr, "dialog not found");
 
     QLineEdit *readFileLineEdit = dialog->findChild<QLineEdit *>(QString::fromUtf8("readFileName"));
-    GT_CHECK(readFileLineEdit != NULL, "line edit not found");
+    GT_CHECK(readFileLineEdit != nullptr, "line edit not found");
     GTLineEdit::setText(os, readFileLineEdit, fileToRead);
 
     QLineEdit *resultFileLineEdit = dialog->findChild<QLineEdit *>(QString::fromUtf8("saveFileName"));
-    GT_CHECK(resultFileLineEdit != NULL, "line edit not found");
+    GT_CHECK(resultFileLineEdit != nullptr, "line edit not found");
     GTLineEdit::setText(os, dialog->findChild<QLineEdit *>(QString::fromUtf8("saveFileName")), resultFile);
 
     QComboBox *comboBox = dialog->findChild<QComboBox *>();
-    GT_CHECK(comboBox != NULL, "ComboBox not found");
+    GT_CHECK(comboBox != nullptr, "ComboBox not found");
     int index = comboBox->findText(comboBoxItems[format]);
     GT_CHECK(index != -1, QString("item \"%1\" in combobox not found").arg(comboBoxItems[format]));
     GTComboBox::selectItemByIndex(os, comboBox, index, useMethod);
 
     QSpinBox *spinBox = dialog->findChild<QSpinBox *>();
-    GT_CHECK(spinBox != NULL, "SpinBox not found");
+    GT_CHECK(spinBox != nullptr, "SpinBox not found");
     GTSpinBox::setValue(os, spinBox, numberOfLines, useMethod);
 
     QCheckBox *checkBox = dialog->findChild<QCheckBox *>(QString::fromUtf8("addToProjectCheck"));
@@ -212,7 +212,7 @@ void ImportAnnotationsToCsvFiller::commonScenario() {
     }
 
     QLineEdit *firstLinesLineEdit = dialog->findChild<QLineEdit *>(QString::fromUtf8("prefixToSkipEdit"));
-    GT_CHECK(firstLinesLineEdit != NULL, "line edit not found");
+    GT_CHECK(firstLinesLineEdit != nullptr, "line edit not found");
     GTLineEdit::setText(os, firstLinesLineEdit, skipAllLinesStartsWith);
 
     QCheckBox *separatorsModeCheckBox = dialog->findChild<QCheckBox *>(QString::fromUtf8("separatorsModeCheck"));
@@ -222,18 +222,18 @@ void ImportAnnotationsToCsvFiller::commonScenario() {
     GTCheckBox::setChecked(os, removeQuotesCheckBox, removeQuotesButton);
 
     QLineEdit *defaultAnnotationNameLineEdit = dialog->findChild<QLineEdit *>(QString::fromUtf8("defaultNameEdit"));
-    GT_CHECK(defaultAnnotationNameLineEdit != NULL, "line edit not found");
+    GT_CHECK(defaultAnnotationNameLineEdit != nullptr, "line edit not found");
     GTLineEdit::setText(os, defaultAnnotationNameLineEdit, defaultAnnotationName);
 
     QPushButton *previewButton = dialog->findChild<QPushButton *>("previewButton");
-    GT_CHECK(previewButton != NULL, "DA button not found");
+    GT_CHECK(previewButton != nullptr, "DA button not found");
     GTWidget::click(os, previewButton);
     GTGlobals::sleep();
 
     QTableWidget *previewTable = dialog->findChild<QTableWidget *>("previewTable");
     foreach (RoleColumnParameter r, roleParameters) {
         GTUtilsDialog::waitForDialog(os, new RoleFiller(os, r.parameter));
-        GT_CHECK(previewTable->item(0, r.column) != NULL, "Table item not found");
+        GT_CHECK(previewTable->item(0, r.column) != nullptr, "Table item not found");
         previewTable->scrollToItem(previewTable->item(0, r.column));
         GTGlobals::sleep(200);
         GTMouseDriver::moveTo(GTTableWidget::headerItemCenter(os, previewTable, r.column));

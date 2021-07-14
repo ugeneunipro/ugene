@@ -198,7 +198,7 @@ public:
      * Updates currently active row order mode.
      * This is a trivial method with no other actions/callbacks.
      */
-    void setRowOrderMode(MaEditorRowOrderMode mode);
+    virtual void setRowOrderMode(MaEditorRowOrderMode mode);
 
 signals:
     void si_fontChanged(const QFont &f);
@@ -208,7 +208,6 @@ signals:
     void si_completeUpdate();
     void si_updateActions();
     void si_cursorPositionChanged(const QPoint &cursorPosition);
-    void si_clearSelection();
 
 protected slots:
     virtual void sl_onContextMenuRequested(const QPoint &pos) = 0;

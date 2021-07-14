@@ -303,7 +303,7 @@ U2ErrorType SchemeWrapper::saveToFile(QString &path) {
 }
 
 #define CHECK_DEL_OBJECT(statement, object) \
-    CHECK_EXT(U2_OK == statement, delete object; object = NULL, statement)
+    CHECK_EXT(U2_OK == statement, delete object; object = nullptr, statement)
 
 U2ErrorType SchemeWrapper::createSas(const QString &elementType, const QString &inputFilePath, const QString &outputFilePath, SchemeWrapper **sas) {
     bool suits = false;
@@ -311,7 +311,7 @@ U2ErrorType SchemeWrapper::createSas(const QString &elementType, const QString &
     CHECK(U2_OK == result, result);
     CHECK(suits, U2_ELEMENT_NOT_SUIT_SAS);
 
-    SchemeWrapper *newSas = NULL;
+    SchemeWrapper *newSas = nullptr;
     try {
         newSas = new SchemeWrapper(QString(), &result);
         CHECK(U2_OK == result, result);
@@ -397,7 +397,7 @@ U2ErrorType SchemeWrapper::createSas(const QString &elementType, const QString &
         }
     } catch (const std::bad_alloc &) {
         delete newSas;
-        newSas = NULL;
+        newSas = nullptr;
         return U2_NOT_ENOUGH_MEMORY;
     }
     *sas = newSas;
@@ -663,7 +663,7 @@ U2ErrorType SchemeWrapper::getElementType(const QString &elementName, QString &t
 bool SchemeWrapper::validateSchemeContent() const {
     Workflow::Schema *scheme = new Workflow::Schema();
     const QString conversionResult = HRSchemaSerializer::string2Schema(schemeContent, scheme);
-    CHECK(Constants::NO_ERROR == conversionResult && NULL != scheme, false);
+    CHECK(Constants::NO_ERROR == conversionResult && nullptr != scheme, false);
     QStringList validationErrors;
     bool result = WorkflowUtils::validate(*scheme, validationErrors);
     delete scheme;
@@ -936,8 +936,8 @@ U2ErrorType SchemeWrapper::getAttributeValuePositionFromRange(const QString &att
         valueStartPosition = quotesExist ? firstOpenQuotePos : firstValueSymbolPos;
         int valueEndPosition = quotesExist ? schemeContent.indexOf(Constants::QUOTE,
                                                                    firstOpenQuotePos + 1) +
-                                                 1 :
-                                             schemeContent.indexOf(Constants::SEMICOLON,
+                                                 1
+                                           : schemeContent.indexOf(Constants::SEMICOLON,
                                                                    valueStartPosition);
         CHECK(SUBSTRING_NOT_FOUND != valueEndPosition, U2_INVALID_SCHEME);
         *start = valueStartPosition;

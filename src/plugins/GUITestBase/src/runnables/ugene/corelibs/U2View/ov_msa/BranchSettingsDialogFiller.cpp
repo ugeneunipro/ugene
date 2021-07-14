@@ -36,7 +36,7 @@ namespace U2 {
 #define GT_METHOD_NAME "commonScenario"
 void BranchSettingsDialogFiller::commonScenario() {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(dialog != NULL, "Active modal widget not found");
+    GT_CHECK(dialog != nullptr, "Active modal widget not found");
 
     GTGlobals::sleep(500);
     GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, 0, 0, 255));

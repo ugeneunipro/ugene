@@ -120,7 +120,7 @@ IMPLEMENT_TEST(PhyTreeObjectUnitTests, createInstance) {
     QScopedPointer<PhyTreeObject> object(PhyTreeObject::createInstance(createTree(), "object", PhyTreeObjectTestData::getDbiRef(), os));
     CHECK_NO_ERROR(os);
 
-    CHECK_TRUE(NULL != object->getTree().data(), "tree");
+    CHECK_TRUE(nullptr != object->getTree().data(), "tree");
 }
 
 IMPLEMENT_TEST(PhyTreeObjectUnitTests, createInstance_WrongDbi) {
@@ -131,7 +131,7 @@ IMPLEMENT_TEST(PhyTreeObjectUnitTests, createInstance_WrongDbi) {
 
 IMPLEMENT_TEST(PhyTreeObjectUnitTests, getTree) {
     PhyTreeObject object("object", PhyTreeObjectTestData::getObjRef());
-    CHECK_TRUE(NULL != object.getTree().data(), "tree");
+    CHECK_TRUE(nullptr != object.getTree().data(), "tree");
 }
 
 IMPLEMENT_TEST(PhyTreeObjectUnitTests, getTree_Null) {
@@ -139,7 +139,7 @@ IMPLEMENT_TEST(PhyTreeObjectUnitTests, getTree_Null) {
     objRef.entityId = "some id";
 
     PhyTreeObject object("object", objRef);
-    CHECK_TRUE(NULL == object.getTree().data(), "tree");
+    CHECK_TRUE(nullptr == object.getTree().data(), "tree");
 }
 
 IMPLEMENT_TEST(PhyTreeObjectUnitTests, setTree) {

@@ -53,7 +53,7 @@ PairwiseAligner *PairwiseAlignerFactory::createAligner(const QString &alignerId,
     if (NEEDLEMAN_WUNSCH == alignerId) {
         return new NWAligner(seq1, seq2);
     }
-    return NULL;
+    return nullptr;
 }
 
 }    // namespace U2

@@ -60,15 +60,15 @@ public:
 
     // editing widget
     virtual QWidget *getWidget() {
-        return NULL;
+        return nullptr;
     }
 
     // this controller is a container of delegates
     virtual PropertyDelegate *getDelegate(const QString &) {
-        return NULL;
+        return nullptr;
     }
     virtual PropertyDelegate *removeDelegate(const QString &) {
-        return NULL;
+        return nullptr;
     }
     virtual void updateDelegates() {
     }
@@ -101,7 +101,7 @@ signals:
 class U2LANG_EXPORT PropertyWidget : public QWidget {
     Q_OBJECT
 public:
-    PropertyWidget(QWidget *parent = NULL, DelegateTags *tags = NULL);
+    PropertyWidget(QWidget *parent = nullptr, DelegateTags *tags = nullptr);
     virtual ~PropertyWidget();
 
     virtual QVariant value() = 0;
@@ -170,7 +170,7 @@ protected:
 
 class U2LANG_EXPORT DelegateTags : public QObject {
 public:
-    DelegateTags(QObject *parent = NULL);
+    DelegateTags(QObject *parent = nullptr);
     DelegateTags(const DelegateTags &other);
 
     QStringList names() const;

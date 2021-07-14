@@ -35,7 +35,7 @@ namespace U2 {
 class UserApplicationsSettingsPageController : public AppSettingsGUIPageController {
     Q_OBJECT
 public:
-    UserApplicationsSettingsPageController(QObject *p = NULL);
+    UserApplicationsSettingsPageController(QObject *p = nullptr);
 
     virtual AppSettingsGUIPageState *getSavedState();
 

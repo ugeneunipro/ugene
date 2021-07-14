@@ -53,7 +53,7 @@ QBitArray CSVParsingConfig::QUOTES = TextUtils::createBitMap("\'\"");
 
 ImportAnnotationsFromCSVTask::ImportAnnotationsFromCSVTask(ImportAnnotationsFromCSVTaskConfig &_config)
     : Task(tr("Import annotations from CSV"), TaskFlags_NR_FOSCOE),
-      config(_config), readTask(NULL), writeTask(NULL), addTask(NULL) {
+      config(_config), readTask(nullptr), writeTask(nullptr), addTask(nullptr) {
     GCOUNTER(cvar, "ImportAnnotationsFromCSVTask");
     readTask = new ReadCSVAsAnnotationsTask(config.csvFile, config.parsingOptions);
     addSubTask(readTask);
@@ -66,11 +66,11 @@ static void adjustRelations(AnnotationTableObject *ao) {
 
     // try automatically associate annotations doc with active sequence view
     GObjectViewWindow *activeViewWindow = GObjectViewUtils::getActiveObjectViewWindow();
-    if (activeViewWindow == NULL) {
+    if (activeViewWindow == nullptr) {
         return;
     }
     AnnotatedDNAView *seqView = qobject_cast<AnnotatedDNAView *>(activeViewWindow->getObjectView());
-    if (seqView == NULL) {
+    if (seqView == nullptr) {
         return;
     }
 
@@ -102,9 +102,9 @@ QList<Task *> ImportAnnotationsFromCSVTask::onSubTaskFinished(Task *subTask) {
 
     GUrl docUrl(config.dstFile);
     Document *projDoc = AppContext::getProject()->findDocumentByURL(docUrl);
-    bool inProject = projDoc != NULL;
+    bool inProject = projDoc != nullptr;
 
-    if (doc.isNull() && projDoc != NULL) {
+    if (doc.isNull() && projDoc != nullptr) {
         doc = projDoc;
     }
     if (doc.isNull()) {    //document is null -> save it and add to the project
@@ -112,7 +112,7 @@ QList<Task *> ImportAnnotationsFromCSVTask::onSubTaskFinished(Task *subTask) {
         doc = prepareNewDocument(prepareAnnotations());
         writeTask = new SaveDocumentTask(doc);
         result.append(writeTask);
-    } else if (writeTask != NULL && !inProject) {    // document was saved -> add to the project
+    } else if (writeTask != nullptr && !inProject) {    // document was saved -> add to the project
         addTask = new AddDocumentTask(doc);
         result.append(addTask);
     } else {    //document already in the project -> check loaded state and add annotations to it
@@ -132,12 +132,12 @@ QList<Task *> ImportAnnotationsFromCSVTask::onSubTaskFinished(Task *subTask) {
                 return result;
             }
             QList<GObject *> objs = doc->findGObjectByType(GObjectTypes::ANNOTATION_TABLE);
-            AnnotationTableObject *ao = objs.isEmpty() ? NULL : qobject_cast<AnnotationTableObject *>(objs.first());
-            if (ao == NULL) {
+            AnnotationTableObject *ao = objs.isEmpty() ? nullptr : qobject_cast<AnnotationTableObject *>(objs.first());
+            if (ao == nullptr) {
                 ao = new AnnotationTableObject("Annotations", doc->getDbiRef());
                 adjustRelations(ao);
             }
-            SAFE_POINT(ao != NULL, "Invalid annotation table", result);
+            SAFE_POINT(ao != nullptr, "Invalid annotation table", result);
             QMap<QString, QList<SharedAnnotationData>> groups = prepareAnnotations();
             foreach (const QString &groupName, groups.keys()) {
                 ao->addAnnotations(groups[groupName], groupName);
@@ -150,7 +150,7 @@ QList<Task *> ImportAnnotationsFromCSVTask::onSubTaskFinished(Task *subTask) {
 QMap<QString, QList<SharedAnnotationData>> ImportAnnotationsFromCSVTask::prepareAnnotations() const {
     QMap<QString, QList<SharedAnnotationData>> result;
 
-    SAFE_POINT(readTask != NULL && readTask->isFinished(), "Invalid read annotations task!", result);
+    SAFE_POINT(readTask != nullptr && readTask->isFinished(), "Invalid read annotations task!", result);
     QMap<QString, QList<SharedAnnotationData>> datas = readTask->getResult();
     foreach (const QString &groupName, datas.keys()) {
         foreach (const SharedAnnotationData &d, datas[groupName]) {
@@ -162,14 +162,14 @@ QMap<QString, QList<SharedAnnotationData>> ImportAnnotationsFromCSVTask::prepare
 
 Document *ImportAnnotationsFromCSVTask::prepareNewDocument(const QMap<QString, QList<SharedAnnotationData>> &groups) {
     DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(config.formatId);
-    CHECK(NULL != format, NULL);
+    CHECK(nullptr != format, nullptr);
 
     IOAdapterId ioId = IOAdapterUtils::url2io(config.dstFile);
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(ioId);
 
     U2OpStatus2Log os;
     Document *result = format->createNewLoadedDocument(iof, config.dstFile, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     AnnotationTableObject *ao = new AnnotationTableObject("Annotations", result->getDbiRef());
     foreach (const QString &groupName, groups.keys()) {

@@ -43,7 +43,7 @@ namespace BAM {
 class BAMFormatUtils : public QObject {
     Q_OBJECT
 public:
-    BAMFormatUtils(QObject *parent = NULL);
+    BAMFormatUtils(QObject *parent = nullptr);
 
     FormatCheckResult checkRawData(const QByteArray &rawData, const GUrl &url = GUrl()) const;
 

@@ -52,8 +52,8 @@ namespace LocalWorkflow{
 CallVariantsTask::CallVariantsTask( const CallVariantsTaskSettings& _settings, DbiDataStorage* _store )
 :ExternalToolSupportTask(tr("Call variants for %1").arg(_settings.refSeqUrl), TaskFlag_NoRun)
 ,settings(_settings)
-,loadTask(NULL)
-,mpileupTask(NULL)
+,loadTask(nullptr)
+,mpileupTask(nullptr)
 ,storage(_store)
 {
     GCOUNTER(cvar, "NGS:CallVariantsTask");
@@ -90,7 +90,7 @@ void CallVariantsTask::prepare(){
         return;
     }
 
-    if (storage == NULL){
+    if (storage == nullptr){
         stateInfo.setError(tr("No dbi storage"));
         return;
     }
@@ -118,7 +118,7 @@ QList<Task*> CallVariantsTask::onSubTaskFinished( Task* subTask ){
     if (subTask == mpileupTask) {
         const GUrl url(settings.variationsUrl);
         IOAdapterFactory * iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById( IOAdapterUtils::url2io( url ) );
-        if ( iof == NULL ) {
+        if ( iof == nullptr ) {
             return res;
         }
         QList<FormatDetectionResult> dfs = DocumentUtils::detectFormat(url);
@@ -133,11 +133,11 @@ QList<Task*> CallVariantsTask::onSubTaskFinished( Task* subTask ){
 
     } else if(subTask == loadTask){
         QScopedPointer<Document> doc (loadTask->takeDocument(false));
-        SAFE_POINT(doc!=NULL, tr("No document loaded"), res);
+        SAFE_POINT(doc!=nullptr, tr("No document loaded"), res);
         doc->setDocumentOwnsDbiResources(false);
         foreach(GObject* go, doc->findGObjectByType(GObjectTypes::VARIANT_TRACK)) {
             VariantTrackObject *varObj = dynamic_cast<VariantTrackObject*>(go);
-            CHECK_EXT(NULL != varObj, taskLog.error(tr("Incorrect variant track object in %1").arg(doc->getURLString())), res);
+            CHECK_EXT(nullptr != varObj, taskLog.error(tr("Incorrect variant track object in %1").arg(doc->getURLString())), res);
 
             QVariantMap m;
             SharedDbiDataHandler handler = storage->getDataHandler(varObj->getEntityRef());

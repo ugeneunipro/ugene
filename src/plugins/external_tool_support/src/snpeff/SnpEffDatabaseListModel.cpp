@@ -80,12 +80,12 @@ QVariant SnpEffDatabaseListModel::data(const QModelIndex &index, int role) const
     if (role == Qt::DisplayRole) {
         const SnpEffDatabaseInfo &info = databaseList.value(index.row());
         switch (index.column()) {
-        case 0:
-            return QVariant(info.getGenome());
-        case 1:
-            return QVariant(info.getOrganism());
-        default:
-            SAFE_POINT(true, "Invalid state", QVariant());
+            case 0:
+                return QVariant(info.getGenome());
+            case 1:
+                return QVariant(info.getOrganism());
+            default:
+                SAFE_POINT(true, "Invalid state", QVariant());
         }
     }
     return QVariant();

@@ -82,20 +82,13 @@
       <bool>false</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
+      <item row="3" column="0">
+       <widget class="QRadioButton" name="csvRB">
         <property name="text">
-         <string>File</string>
+         <string>Comma separated ( .CSV)</string>
         </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="fileEdit"/>
-      </item>
-      <item row="0" column="2">
-       <widget class="QToolButton" name="fileButton">
-        <property name="text">
-         <string>...</string>
+        <property name="checked">
+         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -109,18 +102,48 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QRadioButton" name="csvRB">
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="fileEdit"/>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
         <property name="text">
-         <string>Comma separated ( .CSV)</string>
+         <string>File</string>
         </property>
-        <property name="checked">
-         <bool>false</bool>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QToolButton" name="fileButton">
+        <property name="text">
+         <string>...</string>
         </property>
        </widget>
       </item>
      </layout>
     </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="warningLabel">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>17</height>
+      </size>
+     </property>
+    </spacer>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">

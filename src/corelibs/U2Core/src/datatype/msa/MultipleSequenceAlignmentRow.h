@@ -75,7 +75,7 @@ class U2CORE_EXPORT MultipleSequenceAlignmentRowData : public MultipleAlignmentR
 
 protected:
     /** Do NOT create a row without an alignment! */
-    MultipleSequenceAlignmentRowData(MultipleSequenceAlignmentData *msaData = NULL);
+    MultipleSequenceAlignmentRowData(MultipleSequenceAlignmentData *msaData = nullptr);
 
     /** Creates a row in memory. */
     MultipleSequenceAlignmentRowData(const U2MsaRow &rowInDb, const DNASequence &sequence, const QList<U2MsaGap> &gaps, MultipleSequenceAlignmentData *msaData);

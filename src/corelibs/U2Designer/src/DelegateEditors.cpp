@@ -21,6 +21,8 @@
 
 #include "DelegateEditors.h"
 
+#include <QApplication>
+
 #include <U2Core/AppContext.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GUrlUtils.h>
@@ -38,8 +40,6 @@
 #include <U2Lang/WorkflowUtils.h>
 
 #include "PropertyWidget.h"
-
-#include <QApplication>
 
 namespace U2 {
 
@@ -115,7 +115,7 @@ void SpinBoxDelegate::getItems(QVariantMap &items) const {
 QVariantMap SpinBoxDelegate::getProperties() const {
     QVariantMap result = spinProperties;
     DelegateTags *t = tags();
-    CHECK(t != NULL, result);
+    CHECK(t != nullptr, result);
     foreach (const QString &tagName, t->names()) {
         result[tagName] = t->get(tagName);
     }
@@ -124,7 +124,7 @@ QVariantMap SpinBoxDelegate::getProperties() const {
 
 void SpinBoxDelegate::sl_commit() {
     SpinBoxWidget *editor = static_cast<SpinBoxWidget *>(sender());
-    CHECK(editor != NULL, );
+    CHECK(editor != nullptr, );
     emit commitData(editor);
 }
 
@@ -178,7 +178,7 @@ void DoubleSpinBoxDelegate::getItems(QVariantMap &items) const {
 
 void DoubleSpinBoxDelegate::sl_commit() {
     DoubleSpinBoxWidget *editor = static_cast<DoubleSpinBoxWidget *>(sender());
-    CHECK(editor != NULL, );
+    CHECK(editor != nullptr, );
     emit commitData(editor);
 }
 
@@ -250,7 +250,7 @@ void ComboBoxDelegate::getItems(QVariantMap &items) const {
 
 QVariantMap ComboBoxDelegate::getAvailableItems() const {
     DelegateTags *t = tags();
-    if (t != NULL) {
+    if (t != nullptr) {
         if (t->get("AvailableValues") != QVariant()) {
             return t->get("AvailableValues").toMap();
         }
@@ -285,7 +285,7 @@ QWidget *ComboBoxWithUrlsDelegate::createEditor(QWidget *parent,
 void ComboBoxWithUrlsDelegate::sl_valueChanged(const QString &newVal) {
     emit si_valueChanged(newVal);
     QWidget *editor = qobject_cast<QWidget *>(sender());
-    SAFE_POINT(NULL != editor, "Invalid editor", );
+    SAFE_POINT(nullptr != editor, "Invalid editor", );
     emit commitData(editor);
 }
 
@@ -325,7 +325,7 @@ QWidget *ComboBoxEditableDelegate::createEditor(QWidget *parent,
 void ComboBoxEditableDelegate::sl_valueChanged(const QString &newVal) {
     emit si_valueChanged(newVal);
     QWidget *editor = qobject_cast<QWidget *>(sender());
-    SAFE_POINT(NULL != editor, "Invalid editor", );
+    SAFE_POINT(nullptr != editor, "Invalid editor", );
     emit commitData(editor);
 }
 
@@ -363,7 +363,7 @@ QWidget *ComboBoxWithDbUrlsDelegate::createEditor(QWidget *parent, const QStyleO
 void ComboBoxWithDbUrlsDelegate::sl_valueChanged(const QString &newVal) {
     emit si_valueChanged(newVal);
     QWidget *editor = qobject_cast<QWidget *>(sender());
-    SAFE_POINT(NULL != editor, "Invalid editor", );
+    SAFE_POINT(nullptr != editor, "Invalid editor", );
     emit commitData(editor);
 }
 
@@ -648,30 +648,30 @@ QVariant ScriptSelectionWidget::value() {
 
 void ScriptSelectionWidget::sl_comboCurrentIndexChanged(int itemId) {
     switch (itemId) {
-    case NO_SCRIPT_ITEM_ID: {
-        combobox->setItemData(USER_SCRIPT_ITEM_ID, "", ConfigurationEditor::ItemValueRole);
-        return;
-    }
-    case USER_SCRIPT_ITEM_ID: {
-        AttributeScript attrScript = combobox->property(SCRIPT_PROPERTY.toLatin1().constData()).value<AttributeScript>();
-        QObjectScopedPointer<ScriptEditorDialog> dlg = new ScriptEditorDialog(QApplication::activeWindow(), AttributeScriptDelegate::createScriptHeader(attrScript));
-        dlg->setScriptText(attrScript.getScriptText());
-
-        int rc = dlg->exec();
-        CHECK(!dlg.isNull(), );
-        if (rc != QDialog::Accepted) {
-            combobox->setItemData(USER_SCRIPT_ITEM_ID, qVariantFromValue<AttributeScript>(attrScript), ConfigurationEditor::ItemValueRole);
-        } else {
-            attrScript.setScriptText(dlg->getScriptText());
-            combobox->setItemData(USER_SCRIPT_ITEM_ID, qVariantFromValue<AttributeScript>(attrScript), ConfigurationEditor::ItemValueRole);
+        case NO_SCRIPT_ITEM_ID: {
+            combobox->setItemData(USER_SCRIPT_ITEM_ID, "", ConfigurationEditor::ItemValueRole);
+            return;
         }
+        case USER_SCRIPT_ITEM_ID: {
+            AttributeScript attrScript = combobox->property(SCRIPT_PROPERTY.toLatin1().constData()).value<AttributeScript>();
+            QObjectScopedPointer<ScriptEditorDialog> dlg = new ScriptEditorDialog(QApplication::activeWindow(), AttributeScriptDelegate::createScriptHeader(attrScript));
+            dlg->setScriptText(attrScript.getScriptText());
 
-        emit si_finished();
-        return;
-    }
-    default: {
-        FAIL("Unexpected item", );
-    }
+            int rc = dlg->exec();
+            CHECK(!dlg.isNull(), );
+            if (rc != QDialog::Accepted) {
+                combobox->setItemData(USER_SCRIPT_ITEM_ID, qVariantFromValue<AttributeScript>(attrScript), ConfigurationEditor::ItemValueRole);
+            } else {
+                attrScript.setScriptText(dlg->getScriptText());
+                combobox->setItemData(USER_SCRIPT_ITEM_ID, qVariantFromValue<AttributeScript>(attrScript), ConfigurationEditor::ItemValueRole);
+            }
+
+            emit si_finished();
+            return;
+        }
+        default: {
+            FAIL("Unexpected item", );
+        }
     }
 }
 
@@ -698,13 +698,13 @@ QWidget *AttributeScriptDelegate::createEditor(QWidget *parent, const QStyleOpti
 
 void AttributeScriptDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const {
     ScriptSelectionWidget *combo = qobject_cast<ScriptSelectionWidget *>(editor);
-    assert(combo != NULL);
+    assert(combo != nullptr);
     combo->setValue(index.model()->data(index, ConfigurationEditor::ItemValueRole));
 }
 
 void AttributeScriptDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const {
     ScriptSelectionWidget *combo = qobject_cast<ScriptSelectionWidget *>(editor);
-    assert(combo != NULL);
+    assert(combo != nullptr);
     model->setData(index, combo->value(), ConfigurationEditor::ItemValueRole);
 }
 
@@ -949,7 +949,7 @@ LineEditWithValidatorDelegate *LineEditWithValidatorDelegate::clone() {
 
 void LineEditWithValidatorDelegate::sl_valueChanged() {
     IgnoreUpDownPropertyWidget *editor = qobject_cast<IgnoreUpDownPropertyWidget *>(sender());
-    CHECK(editor != NULL, );
+    CHECK(editor != nullptr, );
 
     QLineEdit *lineEdit = editor->findChild<QLineEdit *>("mainWidget");
     SAFE_POINT(nullptr != lineEdit, "Line edit is nullptr", );

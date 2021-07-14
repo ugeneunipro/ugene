@@ -42,7 +42,7 @@ namespace Workflow {
  *******************************/
 static Actor *getLinkedActor(ActorId id, Port *output, QList<Actor *> visitedActors) {
     if (visitedActors.contains(output->owner())) {
-        return NULL;
+        return nullptr;
     }
     visitedActors << output->owner();
     if (output->owner()->getId() == id) {
@@ -55,7 +55,7 @@ static Actor *getLinkedActor(ActorId id, Port *output, QList<Actor *> visitedAct
                 return a;
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 static QMap<QString, QStringList> getListSlotsMappings(const StrStrMap &bm, const Port *p) {
@@ -113,14 +113,14 @@ Actor *IntegralBusPort::getProducer(const QString &slot) {
     if (l.size() == 1) {
         return l.first();
     } else {
-        return NULL;
+        return nullptr;
     }
 }
 
 QList<Actor *> IntegralBusPort::getProducers(const QString &slot) {
     QList<Actor *> res;
     Attribute *at = getParameter(BUS_MAP_ATTR_ID);
-    if (at == NULL) {
+    if (at == nullptr) {
         return res;
     }
     StrStrMap busMap = at->getAttributeValueWithoutScript<StrStrMap>();
@@ -129,7 +129,7 @@ QList<Actor *> IntegralBusPort::getProducers(const QString &slot) {
     foreach (QString val, vals) {
         ActorId id = IntegralBusType::parseSlotDesc(val);
         Actor *a = getLinkedActorById(id);
-        if (a != NULL) {
+        if (a != nullptr) {
             res << a;
         }
     }
@@ -140,14 +140,14 @@ Actor *IntegralBusPort::getLinkedActorById(ActorId id) const {
     QList<Actor *> res;
     foreach (Port *peer, getLinks().uniqueKeys()) {
         Actor *ac = getLinkedActor(id, peer, QList<Actor *>());
-        if (ac != NULL) {
+        if (ac != nullptr) {
             res << ac;
         }
     }
 
-    Actor *ret = NULL;
+    Actor *ret = nullptr;
     if (res.size() == 0) {
-        ret = NULL;
+        ret = nullptr;
     } else if (res.size() > 1) {
         ret = res.first();
         //assert(false);
@@ -318,13 +318,13 @@ void IntegralBusPort::copyInput(IntegralBusPort *port, const PortMapping &mappin
 
 StrStrMap IntegralBusPort::getBusMap() const {
     Attribute *busAttr = getParameter(BUS_MAP_ATTR_ID);
-    CHECK(NULL != busAttr, StrStrMap());
+    CHECK(nullptr != busAttr, StrStrMap());
     return busAttr->getAttributeValueWithoutScript<StrStrMap>();
 }
 
 SlotPathMap IntegralBusPort::getPathsMap() const {
     Attribute *pathsAttr = getParameter(PATHS_ATTR_ID);
-    CHECK(NULL != pathsAttr, SlotPathMap());
+    CHECK(nullptr != pathsAttr, SlotPathMap());
     return pathsAttr->getAttributeValueWithoutScript<SlotPathMap>();
 }
 
@@ -651,7 +651,7 @@ bool IntegralBusSlot::operator==(const IntegralBusSlot &ibs) const {
 /************************************************************************/
 bool PortValidator::validate(const Configuration *cfg, NotificationsList &notificationList) const {
     const IntegralBusPort *port = static_cast<const IntegralBusPort *>(cfg);
-    SAFE_POINT(NULL != port, "NULL port", false);
+    SAFE_POINT(nullptr != port, "NULL port", false);
     return validate(port, notificationList);
 }
 

@@ -39,7 +39,7 @@ namespace U2 {
 
 GenomeAssemblyMultiTask::GenomeAssemblyMultiTask(const GenomeAssemblyTaskSettings &s)
     : Task("GenomeAssemblyMultiTask", TaskFlags_NR_FOSE_COSC | TaskFlag_ReportingIsSupported | TaskFlag_ReportingIsEnabled), settings(s),
-      assemblyTask(NULL) {
+      assemblyTask(nullptr) {
 }
 
 void GenomeAssemblyMultiTask::prepare() {
@@ -47,7 +47,7 @@ void GenomeAssemblyMultiTask::prepare() {
     QString algName = settings.algName;
     GenomeAssemblyAlgorithmEnv *env = AppContext::getGenomeAssemblyAlgRegistry()->getAlgorithm(algName);
     assert(env);
-    if (env == NULL) {
+    if (env == nullptr) {
         setError(QString("Algorithm %1 is not found").arg(algName));
         return;
     }
@@ -73,13 +73,13 @@ QList<Task *> GenomeAssemblyMultiTask::onSubTaskFinished(Task *subTask) {
     if (subTask == assemblyTask && settings.openView) {
         if (assemblyTask->hasResult()) {
             Task *openTask = AppContext::getProjectLoader()->openWithProjectTask(assemblyTask->getResultUrl());
-            if (openTask != NULL) {
+            if (openTask != nullptr) {
                 subTasks << openTask;
             }
         } else {
             QString message = tr("Assembly cannot be performed.");
             coreLog.info(message);
-            if (NULL != AppContext::getMainWindow()) {
+            if (nullptr != AppContext::getMainWindow()) {
                 QMessageBox::information(AppContext::getMainWindow()->getQMainWindow(), L10N::warningTitle(), message);
             }
         }
@@ -97,7 +97,7 @@ QString GenomeAssemblyMultiTask::generateReport() const {
     if (hasError()) {
         return tr("Assembly task finished with error: %1").arg(getError());
     }
-    CHECK(assemblyTask != NULL, tr("Assembly task wasn't set"));
+    CHECK(assemblyTask != nullptr, tr("Assembly task wasn't set"));
 
     if (assemblyTask->hasResult()) {
         res = tr("Assembly was finished successfully");

@@ -58,7 +58,7 @@ void ImportSchemaDialog::accept() {
         return;
     }
 
-    if (NULL != Workflow::WorkflowEnv::getProtoRegistry()->getProto(name)) {
+    if (nullptr != Workflow::WorkflowEnv::getProtoRegistry()->getProto(name)) {
         QMessageBox::critical(this, tr("Error"), tr("An element with this name already exists"));
         return;
     }

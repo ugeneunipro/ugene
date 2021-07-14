@@ -121,9 +121,9 @@ QString BaseLoadRemoteDocumentTask::getDefaultDownloadDirectory() {
 bool BaseLoadRemoteDocumentTask::initLoadDocumentTask() {
     // Check if the document has been loaded
     Project *proj = AppContext::getProject();
-    if (proj != NULL) {
+    if (proj != nullptr) {
         resultDocument = proj->findDocumentByURL(fullPath);
-        if (resultDocument != NULL) {
+        if (resultDocument != nullptr) {
             docOwner = false;
             return false;
         }
@@ -144,7 +144,7 @@ bool BaseLoadRemoteDocumentTask::initLoadDocumentTask() {
 bool BaseLoadRemoteDocumentTask::isCached() {
     // Check if the file has already been downloaded
     RecentlyDownloadedCache *cache = AppContext::getRecentlyDownloadedCache();
-    if (cache != NULL && cache->contains(fileName)) {
+    if (cache != nullptr && cache->contains(fileName)) {
         QString cachedUrl = cache->getFullPath(fileName);
         if (fullPath == cachedUrl) {
             if (initLoadDocumentTask()) {
@@ -173,14 +173,14 @@ void BaseLoadRemoteDocumentTask::createLoadedDocument() {
 //LoadRemoteDocumentTask
 LoadRemoteDocumentTask::LoadRemoteDocumentTask(const GUrl &url)
     : BaseLoadRemoteDocumentTask(),
-      loadDataFromEntrezTask(NULL) {
+      loadDataFromEntrezTask(nullptr) {
     fileUrl = url;
     GCOUNTER(cvar, "LoadRemoteDocumentTask");
 }
 
 LoadRemoteDocumentTask::LoadRemoteDocumentTask(const QString &accId, const QString &dbName, const QString &fullPathDir, const QString &fileFormat, const QVariantMap &hints)
     : BaseLoadRemoteDocumentTask(fullPathDir, hints),
-      loadDataFromEntrezTask(NULL),
+      loadDataFromEntrezTask(nullptr),
       accNumber(accId),
       dbName(dbName) {
     GCOUNTER(cvar, "LoadRemoteDocumentTask");
@@ -259,7 +259,7 @@ QList<Task *> LoadRemoteDocumentTask::onSubTaskFinished(Task *subTask) {
             subTasks.append(loadDocumentTask);
             if (!subTask->isCanceled()) {
                 RecentlyDownloadedCache *cache = AppContext::getRecentlyDownloadedCache();
-                if (cache != NULL) {
+                if (cache != nullptr) {
                     cache->append(fullPath);
                 }
             } else if (subTask == copyDataTask) {
@@ -327,14 +327,14 @@ RecentlyDownloadedCache::~RecentlyDownloadedCache() {
 
 BaseEntrezRequestTask::BaseEntrezRequestTask(const QString &taskName)
     : Task(taskName, TaskFlags_FOSCOE | TaskFlag_MinimizeSubtaskErrorText),
-      loop(NULL), networkManager(NULL) {
+      loop(nullptr), networkManager(nullptr) {
 }
 
 BaseEntrezRequestTask::~BaseEntrezRequestTask() {
     delete loop;
-    loop = NULL;
+    loop = nullptr;
     delete networkManager;
-    networkManager = NULL;
+    networkManager = nullptr;
 }
 
 void BaseEntrezRequestTask::sl_onError() {
@@ -355,7 +355,7 @@ void BaseEntrezRequestTask::onProxyAuthenticationRequired(const QNetworkProxy &p
 }
 
 void BaseEntrezRequestTask::createLoopAndNetworkManager(const QString &queryString) {
-    SAFE_POINT(NULL == networkManager, "Attempting to initialize network manager twice", );
+    SAFE_POINT(nullptr == networkManager, "Attempting to initialize network manager twice", );
     networkManager = new QNetworkAccessManager;
     connect(networkManager, SIGNAL(finished(QNetworkReply *)), this, SLOT(sl_replyFinished(QNetworkReply *)));
 
@@ -364,7 +364,7 @@ void BaseEntrezRequestTask::createLoopAndNetworkManager(const QString &queryStri
     networkManager->setProxy(proxy);
     connect(networkManager, SIGNAL(proxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *)), this, SLOT(onProxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *)));
 
-    SAFE_POINT(NULL == loop, "Attempting to initialize loop twice", );
+    SAFE_POINT(nullptr == loop, "Attempting to initialize loop twice", );
     loop = new QEventLoop;
 }
 
@@ -375,8 +375,8 @@ LoadDataFromEntrezTask::LoadDataFromEntrezTask(const QString &dbId,
                                                const QString &retType,
                                                const QString &path)
     : BaseEntrezRequestTask("LoadDataFromEntrez"),
-      searchReply(NULL),
-      downloadReply(NULL),
+      searchReply(nullptr),
+      downloadReply(nullptr),
       db(dbId),
       accNumber(accNum),
       fullPath(path),
@@ -465,10 +465,10 @@ void LoadDataFromEntrezTask::sl_replyFinished(QNetworkReply *reply) {
 
 EntrezQueryTask::EntrezQueryTask(QXmlDefaultHandler *rHandler, const QString &searchQuery)
     : BaseEntrezRequestTask("EntrezQueryTask"),
-      queryReply(NULL),
+      queryReply(nullptr),
       resultHandler(rHandler),
       query(searchQuery) {
-    SAFE_POINT(NULL != rHandler, "Invalid pointer encountered", );
+    SAFE_POINT(nullptr != rHandler, "Invalid pointer encountered", );
 }
 
 void EntrezQueryTask::run() {

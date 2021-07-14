@@ -86,7 +86,7 @@ class SaveProjectTask : public Task {
     Q_OBJECT
 
 public:
-    SaveProjectTask(SaveProjectTaskKind k, Project *p = NULL, const QString &url = QString(), bool silentSave_ = false);
+    SaveProjectTask(SaveProjectTaskKind k, Project *p = nullptr, const QString &url = QString(), bool silentSave_ = false);
     ~SaveProjectTask();
 
     virtual void prepare();
@@ -101,7 +101,7 @@ private:
 class SaveOnlyProjectTask : public Task {
     Q_OBJECT
 public:
-    SaveOnlyProjectTask(Project *p = NULL, const QString &url = QString());
+    SaveOnlyProjectTask(Project *p = nullptr, const QString &url = QString());
     ~SaveOnlyProjectTask();
 
     virtual void prepare();
@@ -134,7 +134,7 @@ public:
     }
     Project *detachProject() {
         Project *tmp = proj;
-        proj = NULL;
+        proj = nullptr;
         return tmp;
     }
 

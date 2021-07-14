@@ -87,7 +87,7 @@ void Overview::sl_annotationObjectAdded(AnnotationTableObject *obj) {
 }
 
 void Overview::sl_annotationObjectRemoved(AnnotationTableObject *obj) {
-    disconnect(obj, NULL, this, NULL);
+    disconnect(obj, nullptr, this, nullptr);
     addUpdateFlags(GSLV_UF_AnnotationsChanged);
     update();
 }
@@ -308,7 +308,7 @@ void Overview::wheelEvent(QWheelEvent *we) {
     setFocus();
     bool toMin = we->delta() > 0;
     QAction *zoomAction = toMin ? panView->getZoomInAction() : panView->getZoomOutAction();
-    if (zoomAction != NULL) {
+    if (zoomAction != nullptr) {
         zoomAction->activate(QAction::Trigger);
     }
 }
@@ -357,7 +357,7 @@ DetView *Overview::getDet() const {
 }
 
 void Overview::connectAnnotationTableObject(AnnotationTableObject *object) {
-    CHECK(NULL != object, );
+    CHECK(nullptr != object, );
     connect(object, SIGNAL(si_onAnnotationsAdded(const QList<Annotation *> &)), SLOT(sl_annotationsAdded(const QList<Annotation *> &)));
     connect(object, SIGNAL(si_onAnnotationsRemoved(const QList<Annotation *> &)), SLOT(sl_annotationsRemoved(const QList<Annotation *> &)));
     connect(object, SIGNAL(si_onAnnotationsInGroupRemoved(const QList<Annotation *> &, AnnotationGroup *)), SLOT(sl_onAnnotationsInGroupRemoved(const QList<Annotation *> &, AnnotationGroup *)));
@@ -483,9 +483,9 @@ void OverviewRenderArea::drawAll(QPaintDevice *pd) {
 
     //don't show arrow when det view collapsed
     Overview *overview = qobject_cast<Overview *>(view);
-    SAFE_POINT(overview != NULL, tr("Overview is NULL"), );
+    SAFE_POINT(overview != nullptr, tr("Overview is NULL"), );
     ADVSingleSequenceWidget *ssw = overview->seqWidget;
-    SAFE_POINT(ssw != NULL, tr("ADVSingleSequenceWidget is NULL"), );
+    SAFE_POINT(ssw != nullptr, tr("ADVSingleSequenceWidget is NULL"), );
     if (!ssw->isPanViewCollapsed()) {
         drawSlider(p, panSlider, QColor(230, 230, 230));
     }

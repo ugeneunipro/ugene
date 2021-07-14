@@ -32,6 +32,8 @@
 #include "MultipleChromatogramAlignment.h"
 #include "MultipleChromatogramAlignmentRow.h"
 
+#include <QList>
+
 namespace U2 {
 
 MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow()
@@ -40,7 +42,7 @@ MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow()
 
 MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(const MultipleAlignmentRow &maRow)
     : MultipleAlignmentRow(maRow) {
-    SAFE_POINT(NULL != maRowData.dynamicCast<MultipleChromatogramAlignmentRowData>(), "Can't cast MultipleAlignmentRow to MultipleChromatogramAlignmentRow", );
+    SAFE_POINT(nullptr != maRowData.dynamicCast<MultipleChromatogramAlignmentRowData>(), "Can't cast MultipleAlignmentRow to MultipleChromatogramAlignmentRow", );
 }
 
 MultipleChromatogramAlignmentRow::MultipleChromatogramAlignmentRow(MultipleChromatogramAlignmentData *mcaData)
@@ -114,7 +116,7 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
       alignment(mcaData),
       chromatogram(chromatogram),
       initialRowInDb(rowInDb) {
-    SAFE_POINT(alignment != NULL, "Parent MultipleChromatogramAlignmentData are NULL", );
+    SAFE_POINT(alignment != nullptr, "Parent MultipleChromatogramAlignmentData are NULL", );
     removeTrailingGaps();
 }
 
@@ -140,7 +142,7 @@ MultipleChromatogramAlignmentRowData::MultipleChromatogramAlignmentRowData(const
       chromatogram(row->chromatogram),
       initialRowInDb(row->initialRowInDb),
       additionalInfo(row->additionalInfo) {
-    SAFE_POINT(alignment != NULL, "Parent MultipleChromatogramAlignmentData are NULL", );
+    SAFE_POINT(alignment != nullptr, "Parent MultipleChromatogramAlignmentData are NULL", );
 }
 
 QString MultipleChromatogramAlignmentRowData::getName() const {
@@ -162,6 +164,10 @@ const DNAChromatogram &MultipleChromatogramAlignmentRowData::getChromatogram() c
 
 DNAChromatogram MultipleChromatogramAlignmentRowData::getGappedChromatogram() const {
     return ChromatogramUtils::getGappedChromatogram(chromatogram, gaps);
+}
+
+qint64 MultipleChromatogramAlignmentRowData::getGappedPosition(int pos) const {
+    return MsaRowUtils::getGappedRegion(gaps, U2Region(pos, 1)).startPos;
 }
 
 qint64 MultipleChromatogramAlignmentRowData::getRowId() const {
@@ -220,7 +226,7 @@ QByteArray MultipleChromatogramAlignmentRowData::toByteArray(U2OpStatus &os, qin
 }
 
 int MultipleChromatogramAlignmentRowData::getRowLength() const {
-    SAFE_POINT(alignment != NULL, "Parent MultipleAlignment is NULL", getRowLengthWithoutTrailing());
+    SAFE_POINT(alignment != nullptr, "Parent MultipleAlignment is NULL", getRowLengthWithoutTrailing());
     return alignment->getLength();
 }
 
@@ -344,6 +350,53 @@ qint64 MultipleChromatogramAlignmentRowData::getBaseCount(qint64 before) const {
     const int rowLength = MsaRowUtils::getRowLength(sequence.seq, gaps);
     const int trimmedRowPos = before < rowLength ? before : rowLength;
     return MsaRowUtils::getUngappedPosition(gaps, sequence.length(), trimmedRowPos, true);
+}
+
+const QMap<DNAChromatogram::Trace, QVector<ushort> DNAChromatogram::*> PEAKS =
+                    { {DNAChromatogram::Trace::Trace_A, &DNAChromatogram::A},
+                      {DNAChromatogram::Trace::Trace_C, &DNAChromatogram::C},
+                      {DNAChromatogram::Trace::Trace_G, &DNAChromatogram::G},
+                      {DNAChromatogram::Trace::Trace_T, &DNAChromatogram::T} };
+
+QPair<DNAChromatogram::ChromatogramTraceAndValue, DNAChromatogram::ChromatogramTraceAndValue>
+                MultipleChromatogramAlignmentRowData::getTwoHighestPeaks(qint64 position, bool& hasTwoPeaks) const {
+    hasTwoPeaks = true;
+    int previousBaseCall = chromatogram.baseCalls[position != 0 ? position - 1 : position];
+    int baseCall = chromatogram.baseCalls[position];
+    int nextBaseCall = chromatogram.baseCalls[position != (chromatogram.baseCalls.size() - 1) ? position + 1 : position];
+    QList<DNAChromatogram::ChromatogramTraceAndValue> peaks;
+
+    auto peaksKeys = PEAKS.keys();
+    for (auto peak : qAsConst(peaksKeys)) {
+        const QVector<ushort>& chromatogramBaseCallVector = chromatogram.*PEAKS.value(peak);
+        auto peakValue = chromatogramBaseCallVector[baseCall];
+        int startOfCharacterBaseCall = baseCall - ((baseCall - previousBaseCall) / 2);
+        int startValue = chromatogramBaseCallVector[startOfCharacterBaseCall];
+        if (previousBaseCall == baseCall) {
+            startValue = chromatogramBaseCallVector[0];
+        }
+        int endOfCharacterBaseCall = baseCall + ((nextBaseCall - baseCall) / 2);
+        int endValue = chromatogramBaseCallVector[endOfCharacterBaseCall];
+        if (nextBaseCall == baseCall) {
+            endValue = chromatogramBaseCallVector[chromatogramBaseCallVector.size() - 1];
+        }
+
+        if (startValue <= peakValue && endValue <= peakValue) {
+            peaks.append({ peak, peakValue });
+        }
+    }
+
+    if (peaks.size() < 2) {
+        hasTwoPeaks = false;
+        return { {DNAChromatogram::Trace::Trace_A, 0 }, {DNAChromatogram::Trace::Trace_C, 0 } };
+    }
+
+    std::sort(peaks.begin(),
+              peaks.end(),
+        [](const auto& first, const auto& second) {
+        return first.value > second.value;
+    });
+    return { peaks[0], peaks[1] };
 }
 
 bool MultipleChromatogramAlignmentRowData::isRowContentEqual(const MultipleChromatogramAlignmentRow &row) const {
@@ -602,7 +655,7 @@ QByteArray MultipleChromatogramAlignmentRowData::joinCharsAndGaps(bool keepOffse
         gapsBytes.fill(U2Msa::GAP_CHAR, gaps[i].gap);
         bytes.insert(gaps[i].offset - beginningOffset, gapsBytes);
     }
-    SAFE_POINT(alignment != NULL, "Parent MAlignment is NULL", QByteArray());
+    SAFE_POINT(alignment != nullptr, "Parent MAlignment is NULL", QByteArray());
     if (keepTrailingGaps && bytes.size() < alignment->getLength()) {
         QByteArray gapsBytes;
         gapsBytes.fill(U2Msa::GAP_CHAR, alignment->getLength() - bytes.size());

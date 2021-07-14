@@ -34,7 +34,7 @@ class SaveDocumentController;
 class ExportCoverageDialog : public QDialog, public Ui_ExportCoverageDialog {
     Q_OBJECT
 public:
-    ExportCoverageDialog(const QString &assemblyName, QWidget *parent = NULL);
+    ExportCoverageDialog(const QString &assemblyName, QWidget *parent = nullptr);
 
     ExportCoverageSettings::Format getFormat() const;
     ExportCoverageSettings getSettings() const;

@@ -87,7 +87,7 @@ public:
     }
 
     StrandContext()
-        : pattern(NULL) {
+        : pattern(nullptr) {
     }
 
     static quint64 estimateRamUsageForOneContext(int width, int height) {
@@ -174,7 +174,7 @@ static void findInAmino(FindAlgorithmResultsListener *rl,
     percentsCompleted = 0;
     int conStart = isDirect(strand) ? 0 : 1;
     int conEnd = isComplement(strand) ? 2 : 1;
-    QByteArray complMap = complTT == NULL ? QByteArray() : complTT->getOne2OneMapper();
+    QByteArray complMap = complTT == nullptr ? QByteArray() : complTT->getOne2OneMapper();
     int patternLenInNucl = 3 * patternLen;
 
     int end = getSearchEndPos(seq, range, patternLenInNucl - 1, searchIsCircular);
@@ -189,10 +189,10 @@ static void findInAmino(FindAlgorithmResultsListener *rl,
 
             for (int j = 0; j < patternLen && !stopFlag; j++) {    //TODO: optimize -> specialize loops
                 int k = cycleIndex(seqLen, i);
-                char amino = ci == 0 ?
-                                 aminoTT->translate3to1(seq[k],
-                                                        seq[cycleIndex(seqLen, k + 1)],
-                                                        seq[cycleIndex(seqLen, k + 2)]) :    //direct amino
+                char amino = ci == 0 ? aminoTT->translate3to1(seq[k],
+                                                              seq[cycleIndex(seqLen, k + 1)],
+                                                              seq[cycleIndex(seqLen, k + 2)])
+                                     :    //direct amino
                                  aminoTT->translate3to1(complMap.at((quint8)seq[cycleIndex(seqLen, k + 2)]),
                                                         complMap.at((quint8)seq[cycleIndex(seqLen, k + 1)]),
                                                         complMap.at((quint8)seq[k]));    //compl amino
@@ -253,7 +253,7 @@ static void findInAmino_subst(FindAlgorithmResultsListener *rl,
                               int maxErr,
                               int &stopFlag,
                               int &percentsCompleted) {
-    SAFE_POINT(NULL != complTT && NULL != aminoTT && aminoTT->getSrcAlphabet()->isNucleic() && aminoTT->getDstAlphabet()->isAmino(), "Invalid alphabet supplied!", );
+    SAFE_POINT(nullptr != complTT && nullptr != aminoTT && aminoTT->getSrcAlphabet()->isNucleic() && aminoTT->getDstAlphabet()->isAmino(), "Invalid alphabet supplied!", );
 
     int seqLen = QByteArray(seq).size();
     int patternLenInNucl = 3 * patternLen;
@@ -530,7 +530,7 @@ static void findInAmino_regExp(FindAlgorithmResultsListener *rl,
     int seqLen = QByteArray(seq).size();
 
     int bufferSize = 0;
-    const char *sequence = NULL;
+    const char *sequence = nullptr;
     QByteArray temp;
     if (searchIsCircular) {
         bufferSize = getCircularOverlap(seq, range, (seqLen > maxRegExpResult) ? maxRegExpResult - 1 : seqLen - 1);
@@ -592,7 +592,7 @@ static void findRegExp(FindAlgorithmResultsListener *rl,
     QRegExp regExp(pattern, Qt::CaseInsensitive);
     CHECK(regExp.isValid(), );
 
-    if (aminoTT != NULL) {
+    if (aminoTT != nullptr) {
         findInAmino_regExp(rl, aminoTT, complTT, strand, seq, range, searchIsCircular, pattern, maxRegExpResult, stopFlag, percentsCompleted);
         return;
     }
@@ -658,19 +658,19 @@ static void find_subst(FindAlgorithmResultsListener *rl,
                        int maxErr,
                        int &stopFlag,
                        int &percentsCompleted) {
-    SAFE_POINT(NULL == complTT || complTT->isOne2One(), "Invalid translation supplied!", );
+    SAFE_POINT(nullptr == complTT || complTT->isOne2One(), "Invalid translation supplied!", );
 
-    if (aminoTT != NULL) {
+    if (aminoTT != nullptr) {
         findInAmino_subst(rl, aminoTT, complTT, strand, seq, range, searchIsCircular, pattern, patternLen, maxErr, stopFlag, percentsCompleted);
         return;
     }
     if (range.length - patternLen < 0) {
         return;
     }
-    char *complPattern = NULL;
+    char *complPattern = nullptr;
     QByteArray tmp;
     if (isComplement(strand)) {
-        SAFE_POINT(NULL != complTT, "Invalid translation supplied!", );
+        SAFE_POINT(nullptr != complTT, "Invalid translation supplied!", );
         tmp.resize(patternLen);
         complPattern = tmp.data();
         TextUtils::translate(complTT->getOne2OneMapper(), pattern, patternLen, complPattern);
@@ -689,7 +689,7 @@ static void find_subst(FindAlgorithmResultsListener *rl,
     int conEnd = isComplement(strand) ? 2 : 1;
     SAFE_POINT(conStart < conEnd, "Internal algorithm error: incorrect strand order!", );
 
-    const char *sequence = NULL;
+    const char *sequence = nullptr;
     QByteArray temp;
     int end = range.endPos();
     if (searchIsCircular) {
@@ -755,7 +755,7 @@ void FindAlgorithm::find(
     int &stopFlag,
     int &percentsCompleted) {
     Q_UNUSED(seqLen);
-    SAFE_POINT(NULL == complTT || complTT->isOne2One(), "Invalid translation supplied!", );
+    SAFE_POINT(nullptr == complTT || complTT->isOne2One(), "Invalid translation supplied!", );
     SAFE_POINT(patternLen > maxErr, "Invalid maximum error count supplied!", );
 
     if (range.endPos() > seqLen) {
@@ -788,21 +788,21 @@ void FindAlgorithm::find(
 
     bool insDel = (patternSettings == FindAlgorithmPatternSettings_InsDel);
 
-    if (patternSettings == FindAlgorithmPatternSettings_Exact && sequenceAlphabet != NULL && aminoTT == NULL) {
+    if (patternSettings == FindAlgorithmPatternSettings_Exact && sequenceAlphabet != nullptr && aminoTT == nullptr) {
         // exact search -> do not run any search if pattern has illegal symbols
         if (!U2AlphabetUtils::matches(sequenceAlphabet, pattern, patternLen)) {
             return;
         }
     }
 
-    if (aminoTT != NULL) {
+    if (aminoTT != nullptr) {
         findInAmino(rl, aminoTT, newComplTT, strand, insDel, seq, range, searchIsCircular, pattern, patternLen, maxErr, stopFlag, percentsCompleted);
         return;
     }
-    char *complPattern = NULL;
+    char *complPattern = nullptr;
     QByteArray tmp;
     if (isComplement(strand)) {
-        SAFE_POINT(NULL != newComplTT, "Invalid translation supplied!", );
+        SAFE_POINT(nullptr != newComplTT, "Invalid translation supplied!", );
         tmp.resize(patternLen);
         complPattern = tmp.data();
         TextUtils::translate(newComplTT->getOne2OneMapper(), pattern, patternLen, complPattern);
@@ -866,7 +866,7 @@ void FindAlgorithm::find(
                             res.region.length = newLen;
                             res.err = err;
                             res.strand = (ci == 1) ? U2Strand::Complementary : U2Strand::Direct;
-                            res.translation = aminoTT != NULL;
+                            res.translation = aminoTT != nullptr;
                         }
                     }
                 }

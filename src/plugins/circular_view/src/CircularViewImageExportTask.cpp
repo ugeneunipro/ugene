@@ -107,7 +107,7 @@ void CircularViewImageExportToBitmapTask::run() {
 CircularViewImageExportController::CircularViewImageExportController(CircularView *cv)
     : ImageExportController(ExportImageFormatPolicy_SupportAll),
       cvWidget(cv) {
-    SAFE_POINT(cv != NULL, "Circular View is NULL!", );
+    SAFE_POINT(cv != nullptr, "Circular View is NULL!", );
     shortDescription = QObject::tr("Circular view");
     initSettingsWidget();
 }
@@ -118,7 +118,7 @@ CircularViewImageExportController::CircularViewImageExportController(const QList
       cvWidget(defaultCV),
       cvList(list) {
     SAFE_POINT(!list.isEmpty(), tr("List of Circular Views is empty!"), );
-    if (defaultCV == NULL) {
+    if (defaultCV == nullptr) {
         cvWidget = list.first();
     }
 
@@ -143,8 +143,8 @@ void CircularViewImageExportController::initSettingsWidget() {
         QLabel *label = new QLabel(tr("Sequence"));
         sequenceComboBox = new QComboBox();
         foreach (CircularView *cv, cvList) {
-            SAFE_POINT(cv->getSequenceContext() != NULL, tr("Sequence context is NULL!"), );
-            SAFE_POINT(cv->getSequenceContext()->getSequenceGObject() != NULL, tr("Sequence Gobject is NULL"), );
+            SAFE_POINT(cv->getSequenceContext() != nullptr, tr("Sequence context is NULL!"), );
+            SAFE_POINT(cv->getSequenceContext()->getSequenceGObject() != nullptr, tr("Sequence Gobject is NULL"), );
             QString seqName = cv->getSequenceContext()->getSequenceGObject()->getGObjectName();
             sequenceComboBox->addItem(seqName);
             if (cv == cvWidget) {
@@ -194,7 +194,7 @@ Task *CircularViewImageExportController::getExportToBitmapTask(const ImageExport
 
 void CircularViewImageExportController::updateCvWidget() const {
     if (cvList.size() > 1) {
-        SAFE_POINT(sequenceComboBox != NULL, "Sequence combo box is NULL", );
+        SAFE_POINT(sequenceComboBox != nullptr, "Sequence combo box is NULL", );
         cvWidget = cvList[sequenceComboBox->currentIndex()];
     }
 }

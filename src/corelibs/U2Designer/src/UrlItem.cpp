@@ -40,7 +40,7 @@ UrlItem::UrlItem(const QString &url, QListWidget *parent)
 }
 
 QWidget *UrlItem::getOptionsWidget() {
-    return NULL;
+    return nullptr;
 }
 
 }    // namespace U2

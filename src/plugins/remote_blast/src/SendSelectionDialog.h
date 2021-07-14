@@ -41,7 +41,7 @@ class CreateAnnotationWidgetController;
 class SendSelectionDialog : public QDialog, Ui_RemoteBLASTDialog {
     Q_OBJECT
 public:
-    SendSelectionDialog(ADVSequenceObjectContext *seqCtx, bool _isAminoSeq, QWidget *p = NULL);
+    SendSelectionDialog(ADVSequenceObjectContext *seqCtx, bool _isAminoSeq, QWidget *p = nullptr);
     QString getGroupName() const;
     const QString &getAnnotationDescription() const;
     AnnotationTableObject *getAnnotationObject() const;

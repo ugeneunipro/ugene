@@ -55,7 +55,7 @@ ExportProjectDialogController::ExportProjectDialogController(QWidget *p, const Q
     projectFilePath = fixProjectFile(defaultProjectFilePath);
     projectFilePathEdit->setText(projectFilePath);
     Project *proj = AppContext::getProject();
-    if (proj == NULL || !proj->isItemModified() || proj->getProjectURL().isEmpty()) {
+    if (proj == nullptr || !proj->isItemModified() || proj->getProjectURL().isEmpty()) {
         warningLabel->setVisible(false);
     }
     connect(fileSelectButton, SIGNAL(clicked()), this, SLOT(sl_onFileSelectButton()));
@@ -91,8 +91,7 @@ const QString ExportProjectDialogController::getProjectFile() const {
 
 void ExportProjectDialogController::sl_onFileSelectButton() {
     LastUsedDirHelper h;
-    QString path = U2FileDialog::getSaveFileName(this, tr("Save file"), h.dir, 
-        tr("Project files") + DIALOG_FILTER_PROJECT_EXT);
+    QString path = U2FileDialog::getSaveFileName(this, tr("Save file"), h.dir, tr("Project files") + DIALOG_FILTER_PROJECT_EXT);
     if (path.isEmpty()) {
         return;
     }

@@ -34,7 +34,7 @@
 namespace U2 {
 
 PositionSelector::PositionSelector(QWidget *p, qint64 s, qint64 e, bool fixedSize)
-    : QWidget(p), rangeStart(s), rangeEnd(e), posEdit(NULL), autoclose(false), dialog(NULL) {
+    : QWidget(p), rangeStart(s), rangeEnd(e), posEdit(nullptr), autoclose(false), dialog(nullptr) {
     init(fixedSize);
 
     QToolButton *goButton = new QToolButton(this);
@@ -69,7 +69,7 @@ void PositionSelector::init(bool fixedSize) {
 
     setLayout(l);
 
-    if (dialog != NULL) {
+    if (dialog != nullptr) {
         QLabel *posLabel = new QLabel(tr("Position"), this);
         posLabel->setSizePolicy(QSizePolicy::Maximum, QSizePolicy::Preferred);
         l->addWidget(posLabel);
@@ -79,7 +79,7 @@ void PositionSelector::init(bool fixedSize) {
 }
 
 PositionSelector::PositionSelector(QDialog *dialog, qint64 rangeStart, qint64 rangeEnd, bool _a)
-    : QWidget(dialog), rangeStart(rangeStart), rangeEnd(rangeEnd), posEdit(NULL), autoclose(_a), dialog(dialog) {
+    : QWidget(dialog), rangeStart(rangeStart), rangeEnd(rangeEnd), posEdit(nullptr), autoclose(_a), dialog(dialog) {
     init(false);
 
     QPushButton *okButton = new QPushButton(this);
@@ -153,7 +153,7 @@ void PositionSelector::exec() {
 
     emit si_positionChanged(v);
 
-    if (dialog != NULL && autoclose) {
+    if (dialog != nullptr && autoclose) {
         dialog->accept();
     }
 }

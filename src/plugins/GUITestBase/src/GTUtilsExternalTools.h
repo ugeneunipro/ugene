@@ -22,8 +22,9 @@
 #ifndef _GTUTILS_EXTERNAL_TOOLS_H_
 #define _GTUTILS_EXTERNAL_TOOLS_H_
 
-#include <U2Core/U2OpStatus.h>
 #include <core/GUITestOpStatus.h>
+
+#include <U2Core/U2OpStatus.h>
 
 namespace U2 {
 

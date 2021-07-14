@@ -66,7 +66,7 @@ bool AnnotatedDNAViewFactory::canCreateView(const MultiGSelection &multiSelectio
 
     //3.
     const DocumentSelection *ds = qobject_cast<const DocumentSelection *>(multiSelection.findSelectionByType(GSelectionTypes::DOCUMENTS));
-    if (ds == NULL) {
+    if (ds == nullptr) {
         return false;
     }
     foreach (Document *doc, ds->getSelectedDocuments()) {
@@ -105,7 +105,7 @@ Task *AnnotatedDNAViewFactory::createViewTask(const MultiGSelection &multiSelect
     }
 
     const DocumentSelection *ds = qobject_cast<const DocumentSelection *>(multiSelection.findSelectionByType(GSelectionTypes::DOCUMENTS));
-    if (ds != NULL) {
+    if (ds != nullptr) {
         foreach (Document *doc, ds->getSelectedDocuments()) {
             foreach (GObject *obj, doc->findGObjectByType(GObjectTypes::SEQUENCE, UOF_LoadedAndUnloaded)) {
                 if (!objectsToOpen.contains(obj)) {
@@ -133,7 +133,7 @@ bool AnnotatedDNAViewFactory::isStateInSelection(const MultiGSelection &multiSel
     assert(!refs.isEmpty());
     foreach (const GObjectReference &ref, refs) {
         Document *doc = AppContext::getProject()->findDocumentByURL(ref.docUrl);
-        if (doc == NULL) {    //todo: accept to use invalid state removal routines of ObjectViewTask ???
+        if (doc == nullptr) {    //todo: accept to use invalid state removal routines of ObjectViewTask ???
             return false;
         }
         //check that document is in selection
@@ -143,7 +143,7 @@ bool AnnotatedDNAViewFactory::isStateInSelection(const MultiGSelection &multiSel
         //check that object is in selection
         QList<GObject *> selectedObjects = SelectionUtils::getSelectedObjects(multiSelection);
         GObject *obj = doc->findGObjectByName(ref.objName);
-        bool objIsSelected = obj != NULL && selectedObjects.contains(obj);
+        bool objIsSelected = obj != nullptr && selectedObjects.contains(obj);
 
         //check that object associated with sequence object is in selection
         bool refIsSelected = false;

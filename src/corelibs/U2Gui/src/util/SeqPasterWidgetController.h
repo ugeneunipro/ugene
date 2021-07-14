@@ -33,7 +33,7 @@ namespace U2 {
 class U2GUI_EXPORT SeqPasterWidgetController : public QWidget {
     Q_OBJECT
 public:
-    SeqPasterWidgetController(QWidget *p = NULL, const QByteArray &initText = QByteArray(), bool needWarning = false);
+    SeqPasterWidgetController(QWidget *p = nullptr, const QByteArray &initText = QByteArray(), bool needWarning = false);
     ~SeqPasterWidgetController();
 
     QString validate();

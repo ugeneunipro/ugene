@@ -109,7 +109,7 @@ Document *PDBFormat::loadTextDocument(IOAdapter *io, const U2DbiRef &dbiRef, con
     clock_t t2 = clock();
     perfLog.trace("PDB file parsing time: " + QString::number((float)(t2 - t1) / CLOCKS_PER_SEC));
 
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     io->close();
     os.setProgress(80);
 
@@ -796,7 +796,7 @@ QHash<QByteArray, int> PDBFormat::createAtomNumMap() {
 
 Document *PDBFormat::createDocumentFromBioStruct3D(const U2DbiRef &dbiRef, BioStruct3D &bioStruct, DocumentFormat *format, IOAdapterFactory *iof, const GUrl &url, U2OpStatus &os, const QVariantMap &fs) {
     DbiOperationsBlock opBlock(dbiRef, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     Q_UNUSED(opBlock);
 
     QList<GObject *> objects;
@@ -808,7 +808,7 @@ Document *PDBFormat::createDocumentFromBioStruct3D(const U2DbiRef &dbiRef, BioSt
     QVariantMap hints;
     hints.insert(DBI_FOLDER_HINT, folder);
     BioStruct3DObject *biostrucObj = BioStruct3DObject::createInstance(bioStruct, objectName, dbiRef, os, hints);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
     QMap<int, QList<SharedAnnotationData>> anns = bioStruct.generateAnnotations();
     TmpDbiObjects dbiObjects(dbiRef, os);
     foreach (int key, bioStruct.moleculeMap.keys()) {
@@ -834,7 +834,7 @@ Document *PDBFormat::createDocumentFromBioStruct3D(const U2DbiRef &dbiRef, BioSt
         dnaSeq.info.insert(DNAInfo::CHAIN_ID, key);
         U2EntityRef ref = U2SequenceUtils::import(os, dbiRef, folder, dnaSeq, dnaSeq.alphabet->getId());
         U2SequenceObject *seqObj = new U2SequenceObject(dnaSeq.getName(), ref);
-        SAFE_POINT(seqObj, QString("Got NULL object from DocumentFormatUtils addSequenceObjectDeprecated, os.error = %1").arg(os.getError()), NULL);
+        SAFE_POINT(seqObj, QString("Got NULL object from DocumentFormatUtils addSequenceObjectDeprecated, os.error = %1").arg(os.getError()), nullptr);
         objects.append(seqObj);
         dbiObjects.objects << seqObj->getSequenceRef().entityId;
         if (os.isCoR()) {
@@ -854,7 +854,7 @@ Document *PDBFormat::createDocumentFromBioStruct3D(const U2DbiRef &dbiRef, BioSt
         objects.append(aObj);
         relationsMap.insert(aObj, seqObj);
     }
-    CHECK_OP_EXT(os, qDeleteAll(objects), NULL);
+    CHECK_OP_EXT(os, qDeleteAll(objects), nullptr);
 
     objects.append(biostrucObj);
     Document *doc = new Document(format, iof, url, dbiRef, objects, fs);

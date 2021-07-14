@@ -26,14 +26,14 @@
 namespace U2 {
 
 ScriptContext::ScriptContext()
-    : scheduler(NULL) {
+    : scheduler(nullptr) {
 }
 
 ScriptContext::~ScriptContext() {
 }
 
 void ScriptContext::setWorkflowScheduler(ScriptableScheduler *newScheduler) {
-    Q_ASSERT(NULL == newScheduler || NULL == scheduler);
+    Q_ASSERT(nullptr == newScheduler || nullptr == scheduler);
     scheduler = newScheduler;
 }
 

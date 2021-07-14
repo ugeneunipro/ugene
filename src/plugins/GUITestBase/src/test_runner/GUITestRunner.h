@@ -22,9 +22,9 @@
 #ifndef GUITESTRUNNER_H
 #define GUITESTRUNNER_H
 
-#include <QWidget>
-
 #include <harness/UGUITestBase.h>
+
+#include <QWidget>
 
 #include "ui_GUITestRunner.h"
 

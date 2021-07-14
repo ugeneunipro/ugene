@@ -40,7 +40,7 @@ class SaveDocumentController;
 class U2GUI_EXPORT CreateDocumentFromTextDialogController : public QDialog {
     Q_OBJECT
 public:
-    CreateDocumentFromTextDialogController(QWidget *p = NULL);
+    CreateDocumentFromTextDialogController(QWidget *p = nullptr);
     ~CreateDocumentFromTextDialogController();
 
     void accept();

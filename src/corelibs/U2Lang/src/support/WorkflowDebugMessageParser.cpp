@@ -37,7 +37,7 @@ using namespace Workflow;
 QStringList WorkflowDebugMessageParser::possibleMessageTypes = QStringList();
 
 WorkflowDebugMessageParser::WorkflowDebugMessageParser()
-    : context(NULL) {
+    : context(nullptr) {
 }
 
 WorkflowDebugMessageParser::~WorkflowDebugMessageParser() {
@@ -69,7 +69,7 @@ void WorkflowDebugMessageParser::setSourceData(const QQueue<Message> &initSource
 }
 
 void WorkflowDebugMessageParser::setContext(Workflow::WorkflowContext *initContext) {
-    SAFE_POINT(NULL != initContext, "Invalid workflow context!", );
+    SAFE_POINT(nullptr != initContext, "Invalid workflow context!", );
     context = initContext;
 }
 

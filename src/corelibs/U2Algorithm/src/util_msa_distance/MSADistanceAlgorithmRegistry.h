@@ -34,7 +34,7 @@ class U2ALGORITHM_EXPORT MSADistanceAlgorithmRegistry : public QObject {
     Q_OBJECT
 
 public:
-    MSADistanceAlgorithmRegistry(QObject *p = NULL);
+    MSADistanceAlgorithmRegistry(QObject *p = nullptr);
 
     ~MSADistanceAlgorithmRegistry();
 

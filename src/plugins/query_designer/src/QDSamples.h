@@ -71,7 +71,7 @@ public:
     virtual void paint(QPainter *painter);
     virtual bool eventFilter(QObject *, QEvent *e) {
         this->event(e);
-        return current != NULL;
+        return current != nullptr;
     }
     void setItem(QListWidgetItem *item) {
         current = item;
@@ -90,7 +90,7 @@ private:
 class QDSamplesWidget : public QListWidget {
     Q_OBJECT
 public:
-    QDSamplesWidget(QueryScene *scene, QWidget *parent = NULL);
+    QDSamplesWidget(QueryScene *scene, QWidget *parent = nullptr);
 signals:
     void itemActivated(QDDocument *);
     void setupGlass(GlassPane *glass);

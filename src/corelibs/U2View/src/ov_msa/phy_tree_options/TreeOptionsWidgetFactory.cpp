@@ -54,7 +54,7 @@ QWidget *MSATreeOptionsWidgetFactory::createWidget(GObjectView *objView, const Q
                QString("Internal error: unable to cast object view to MSAEditor for group '%1'.").arg(GROUP_ID),
                nullptr);
 
-    SAFE_POINT(viewSettings != nullptr, "Invalid tree view settings", NULL);
+    SAFE_POINT(viewSettings != nullptr, "Invalid tree view settings", nullptr);
     TreeOptionsWidget *treeOpWidget = new TreeOptionsWidget(msa, *viewSettings);
     connect(treeOpWidget, SIGNAL(saveViewSettings(const TreeOpWidgetViewSettings &)), SLOT(sl_onWidgetViewSaved(const TreeOpWidgetViewSettings &)));
     return treeOpWidget;
@@ -92,7 +92,7 @@ QWidget *TreeOptionsWidgetFactory::createWidget(GObjectView *objView, const QVar
                QString("Internal error: unable to cast object view to TreeViewer for group '%1'.").arg(GROUP_ID),
                nullptr);
 
-    SAFE_POINT(viewSettings != nullptr, "Invalid tree view settings", NULL);
+    SAFE_POINT(viewSettings != nullptr, "Invalid tree view settings", nullptr);
     TreeOptionsWidget *treeOpWidget = new TreeOptionsWidget(treeView, *viewSettings);
     connect(treeOpWidget, SIGNAL(saveViewSettings(const TreeOpWidgetViewSettings &)), SLOT(sl_onWidgetViewSaved(const TreeOpWidgetViewSettings &)));
 

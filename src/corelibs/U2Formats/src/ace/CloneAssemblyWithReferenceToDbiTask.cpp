@@ -46,8 +46,8 @@ CloneAssemblyWithReferenceToDbiTask::CloneAssemblyWithReferenceToDbiTask(const U
       srcDbiRef(srcDbiRef),
       dstDbiRef(dstDbiRef),
       dstFolder(hints.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString()),
-      cloneAssemblyTask(NULL),
-      cloneReferenceTask(NULL) {
+      cloneAssemblyTask(nullptr),
+      cloneReferenceTask(nullptr) {
     SAFE_POINT_EXT(assembly.hasValidId(), setError(tr("Invalid assembly ID")), );
     SAFE_POINT_EXT(reference.hasValidId(), setError(tr("Invalid assembly ID")), );
     SAFE_POINT_EXT(srcDbiRef.isValid(), setError(tr("Invalid source database reference")), );
@@ -69,15 +69,15 @@ void CloneAssemblyWithReferenceToDbiTask::run() {
     delete cloneReferenceTask->getSourceObject();
 
     QScopedPointer<GObject> clonedObject(cloneAssemblyTask->takeResult());
-    SAFE_POINT_EXT(NULL != clonedObject, setError(tr("Can't get the cloned object")), );
+    SAFE_POINT_EXT(nullptr != clonedObject, setError(tr("Can't get the cloned object")), );
     QScopedPointer<AssemblyObject> clonedAssemblyObject(qobject_cast<AssemblyObject *>(clonedObject.data()));
-    SAFE_POINT_EXT(NULL != clonedAssemblyObject, setError(tr("Unexpected result object: expect AssemblyObject, got %1 object").arg(clonedObject->getGObjectType())), );
+    SAFE_POINT_EXT(nullptr != clonedAssemblyObject, setError(tr("Unexpected result object: expect AssemblyObject, got %1 object").arg(clonedObject->getGObjectType())), );
     clonedObject.take();
 
     clonedObject.reset(cloneReferenceTask->takeResult());
-    SAFE_POINT_EXT(NULL != clonedObject, setError(tr("Can't get the cloned object")), );
+    SAFE_POINT_EXT(nullptr != clonedObject, setError(tr("Can't get the cloned object")), );
     QScopedPointer<U2SequenceObject> clonedSequenceObject(qobject_cast<U2SequenceObject *>(clonedObject.data()));
-    SAFE_POINT_EXT(NULL != clonedSequenceObject, setError(tr("Unexpected result object: expect U2SequenceObject, got %1 object").arg(clonedObject->getGObjectType())), );
+    SAFE_POINT_EXT(nullptr != clonedSequenceObject, setError(tr("Unexpected result object: expect U2SequenceObject, got %1 object").arg(clonedObject->getGObjectType())), );
     clonedObject.take();
 
     DbiConnection con(dstDbiRef, stateInfo);

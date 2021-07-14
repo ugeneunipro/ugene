@@ -61,11 +61,11 @@ cl_program OpenCLUtils::createProgramByResource(
         return 0;
     }
 
-    err = openCLHelper.clBuildProgram_p(clProgram, 0, NULL, NULL, NULL, NULL);
+    err = openCLHelper.clBuildProgram_p(clProgram, 0, nullptr, nullptr, nullptr, nullptr);
 
     if (err != CL_SUCCESS) {
         size_t logSize = 1;
-        openCLHelper.clGetProgramBuildInfo_p(clProgram, deviceId, CL_PROGRAM_BUILD_LOG, 0, NULL, &logSize);
+        openCLHelper.clGetProgramBuildInfo_p(clProgram, deviceId, CL_PROGRAM_BUILD_LOG, 0, nullptr, &logSize);
         gauto_array<char> logStr(new char[logSize]);
         openCLHelper.clGetProgramBuildInfo_p(clProgram, deviceId, CL_PROGRAM_BUILD_LOG, logSize, logStr.get(), &logSize);
 
@@ -84,7 +84,7 @@ size_t OpenCLUtils::getPreferredWorkGroupSize(
     cl_int & /*err*/) {
     cl_int err2 = 0;
     size_t preferredWorkGroupSize = 0;
-    err2 |= openCLHelper.clGetKernelWorkGroupInfo_p(kernel, deviceId, CL_KERNEL_PREFERRED_WORK_GROUP_SIZE_MULTIPLE, sizeof(size_t), &preferredWorkGroupSize, NULL);
+    err2 |= openCLHelper.clGetKernelWorkGroupInfo_p(kernel, deviceId, CL_KERNEL_PREFERRED_WORK_GROUP_SIZE_MULTIPLE, sizeof(size_t), &preferredWorkGroupSize, nullptr);
 
     if (err2 != CL_SUCCESS) {
         preferredWorkGroupSize = 32;    // set default value to prevent calculation error because of this "performance hint" error

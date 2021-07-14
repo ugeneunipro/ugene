@@ -29,7 +29,7 @@ add_definitions(
         -DQT_DISABLE_DEPRECATED_BEFORE=0x050700
 )
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 14)
 
 # Set a default build type for single-configuration
 # CMake generators if no build type is set.

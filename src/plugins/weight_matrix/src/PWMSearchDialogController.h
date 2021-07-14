@@ -50,7 +50,7 @@ class WeightMatrixQueueItem;
 class PWMSearchDialogController : public QDialog, public Ui_PWMSearchDialog {
     Q_OBJECT
 public:
-    PWMSearchDialogController(ADVSequenceObjectContext *ctx, QWidget *p = NULL);
+    PWMSearchDialogController(ADVSequenceObjectContext *ctx, QWidget *p = nullptr);
 
 public slots:
     virtual void reject();

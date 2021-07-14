@@ -66,7 +66,7 @@ static const QString P_VAL("p_val");
 /* Worker */
 /************************************************************************/
 SeqPosWorker::SeqPosWorker(Actor *p)
-    : BaseWorker(p), inChannel(NULL) {
+    : BaseWorker(p), inChannel(nullptr) {
 }
 
 void SeqPosWorker::init() {
@@ -99,7 +99,7 @@ Task *SeqPosWorker::tick() {
     } else if (inChannel->isEnded()) {
         setDone();
     }
-    return NULL;
+    return nullptr;
 }
 
 void SeqPosWorker::cleanup() {
@@ -149,7 +149,7 @@ PropertyWidget *SeqPosComboBoxWithChecksDelegate::createWizardWidget(U2OpStatus 
 /************************************************************************/
 SeqPosComboBoxWithChecksWidget::SeqPosComboBoxWithChecksWidget(const QVariantMap &items, QWidget *parent)
     : ComboBoxWithChecksWidget(items, parent),
-      hintLabel(NULL) {
+      hintLabel(nullptr) {
     QLayout *l = layout();
     if (l) {
         delete l;
@@ -211,7 +211,7 @@ QString SeqPosComboBoxWithUrlsDelegate::getAttributeName() {
 
 void SeqPosWorkerFactory::init() {
     //init data path
-    U2DataPath *dataPath = NULL;
+    U2DataPath *dataPath = nullptr;
     U2DataPathRegistry *dpr = AppContext::getDataPathRegistry();
     if (dpr) {
         U2DataPath *dp = dpr->getDataPathByName(SeqPosSupport::ASSEMBLY_DIR);
@@ -262,7 +262,7 @@ void SeqPosWorkerFactory::init() {
                         SeqPosWorker::tr("Pvalue cutoff for the motif significance (-p)."));
 
         attrs << new Attribute(outDir, BaseTypes::STRING_TYPE(), true, QVariant(""));
-        Attribute *assemblyVerAttr = NULL;
+        Attribute *assemblyVerAttr = nullptr;
         if (dataPath) {
             const QList<QString> &dataNames = dataPath->getDataNames();
             if (!dataNames.isEmpty()) {

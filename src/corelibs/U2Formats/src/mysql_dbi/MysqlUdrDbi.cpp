@@ -204,23 +204,23 @@ void MysqlUdrDbi::removeRecord(const UdrRecordId &recordId, U2OpStatus &os) {
 
 InputStream *MysqlUdrDbi::createInputStream(const UdrRecordId &recordId, int fieldNum, U2OpStatus &os) {
     const UdrSchema *schema = udrSchema(recordId.getSchemaId(), os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     UdrSchema::FieldDesc field = UdrSchema::getBlobField(schema, fieldNum, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     return new MysqlBlobInputStream(db, tableName(recordId.getSchemaId()).toLatin1(), field.getName(), recordId.getRecordId(), os);
 }
 
 OutputStream *MysqlUdrDbi::createOutputStream(const UdrRecordId &recordId, int fieldNum, qint64 size, U2OpStatus &os) {
-    CHECK_EXT(size >= 0, os.setError("Negative stream size"), NULL);
-    CHECK_EXT(size <= INT_MAX, os.setError("Too big stream size"), NULL);
+    CHECK_EXT(size >= 0, os.setError("Negative stream size"), nullptr);
+    CHECK_EXT(size <= INT_MAX, os.setError("Too big stream size"), nullptr);
 
     const UdrSchema *schema = udrSchema(recordId.getSchemaId(), os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     UdrSchema::FieldDesc field = UdrSchema::getBlobField(schema, fieldNum, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     return new MysqlBlobOutputStream(db, tableName(recordId.getSchemaId()).toLatin1(), field.getName(), recordId.getRecordId(), (int)size, os);
 }
@@ -234,7 +234,7 @@ ModificationAction *MysqlUdrDbi::getModificationAction(const U2DataId &id) {
 /************************************************************************/
 void MysqlUdrDbi::initSqlSchema(U2OpStatus &os) {
     UdrSchemaRegistry *udrRegistry = AppContext::getUdrSchemaRegistry();
-    SAFE_POINT_EXT(NULL != udrRegistry, os.setError("NULL UDR registry"), );
+    SAFE_POINT_EXT(nullptr != udrRegistry, os.setError("NULL UDR registry"), );
 
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
@@ -251,7 +251,7 @@ void MysqlUdrDbi::initSchema(const UdrSchema *schema, U2OpStatus &os) {
     MysqlTransaction t(db, os);
     Q_UNUSED(t);
 
-    CHECK_EXT(NULL != schema, os.setError("NULL schema"), );
+    CHECK_EXT(nullptr != schema, os.setError("NULL schema"), );
     createTable(schema, os);
     CHECK_OP(os, );
 
@@ -296,10 +296,10 @@ void MysqlUdrDbi::createIndex(const UdrSchemaId &schemaId, const QStringList &fi
 /************************************************************************/
 const UdrSchema *MysqlUdrDbi::udrSchema(const UdrSchemaId &schemaId, U2OpStatus &os) {
     UdrSchemaRegistry *udrRegistry = AppContext::getUdrSchemaRegistry();
-    SAFE_POINT_EXT(NULL != udrRegistry, os.setError("NULL UDR registry"), NULL);
+    SAFE_POINT_EXT(nullptr != udrRegistry, os.setError("NULL UDR registry"), nullptr);
 
     const UdrSchema *schema = udrRegistry->getSchemaById(schemaId);
-    SAFE_POINT_EXT(NULL != schema, os.setError("NULL UDR schema"), NULL);
+    SAFE_POINT_EXT(nullptr != schema, os.setError("NULL UDR schema"), nullptr);
     return schema;
 }
 
@@ -347,23 +347,23 @@ QString MysqlUdrDbi::tableStartDef(const UdrSchemaId &schemaId) {
 QString MysqlUdrDbi::fieldDef(const UdrSchema::FieldDesc &field) {
     QString def = field.getName() + " ";
     switch (field.getDataType()) {
-    case UdrSchema::INTEGER:
-        def += "BIGINT";
-        break;
-    case UdrSchema::DOUBLE:
-        def += "DOUBLE";
-        break;
-    case UdrSchema::STRING:
-        def += "LONGTEXT";
-        break;
-    case UdrSchema::BLOB:
-        def += "LONGBLOB";
-        break;
-    case UdrSchema::ID:
-        def += "BIGINT NOT NULL";
-        break;
-    default:
-        FAIL("Unknown UDR data type detected!", QString());
+        case UdrSchema::INTEGER:
+            def += "BIGINT";
+            break;
+        case UdrSchema::DOUBLE:
+            def += "DOUBLE";
+            break;
+        case UdrSchema::STRING:
+            def += "LONGTEXT";
+            break;
+        case UdrSchema::BLOB:
+            def += "LONGBLOB";
+            break;
+        case UdrSchema::ID:
+            def += "BIGINT NOT NULL";
+            break;
+        default:
+            FAIL("Unknown UDR data type detected!", QString());
     }
     return def;
 }
@@ -413,23 +413,23 @@ void MysqlUdrDbi::bindData(const QList<UdrValue> &data, const UdrSchema *schema,
         CHECK_OP(os, );
 
         switch (field.getDataType()) {
-        case UdrSchema::INTEGER:
-            q.bindInt64(PLACEHOLDER_MARK + field.getName(), value.getInt(os));
-            break;
-        case UdrSchema::DOUBLE:
-            q.bindDouble(PLACEHOLDER_MARK + field.getName(), value.getDouble(os));
-            break;
-        case UdrSchema::STRING:
-            q.bindString(PLACEHOLDER_MARK + field.getName(), value.getString(os));
-            break;
-        case UdrSchema::BLOB:
-            q.bindBlob(PLACEHOLDER_MARK + field.getName(), "");
-            break;
-        case UdrSchema::ID:
-            q.bindDataId(PLACEHOLDER_MARK + field.getName(), value.getDataId(os));
-            break;
-        default:
-            FAIL("Unknown UDR data type detected!", );
+            case UdrSchema::INTEGER:
+                q.bindInt64(PLACEHOLDER_MARK + field.getName(), value.getInt(os));
+                break;
+            case UdrSchema::DOUBLE:
+                q.bindDouble(PLACEHOLDER_MARK + field.getName(), value.getDouble(os));
+                break;
+            case UdrSchema::STRING:
+                q.bindString(PLACEHOLDER_MARK + field.getName(), value.getString(os));
+                break;
+            case UdrSchema::BLOB:
+                q.bindBlob(PLACEHOLDER_MARK + field.getName(), "");
+                break;
+            case UdrSchema::ID:
+                q.bindDataId(PLACEHOLDER_MARK + field.getName(), value.getDataId(os));
+                break;
+            default:
+                FAIL("Unknown UDR data type detected!", );
         }
         CHECK_OP(os, );
     }
@@ -447,22 +447,22 @@ void MysqlUdrDbi::retreiveData(QList<UdrValue> &data, const UdrSchema *schema, U
             colNum = fields.lastIndexOf(i) + 1;
         }
         switch (field.getDataType()) {
-        case UdrSchema::INTEGER:
-            data << UdrValue(q.getInt64(colNum));
-            break;
-        case UdrSchema::DOUBLE:
-            data << UdrValue(q.getDouble(colNum));
-            break;
-        case UdrSchema::STRING:
-            data << UdrValue(q.getString(colNum));
-            break;
-        case UdrSchema::BLOB:
-            data << UdrValue();
-            break;
-        case UdrSchema::ID:
-            const U2DataType objectType = q.getInt32(schema->size());
-            data << UdrValue(q.getDataId(colNum, objectType));
-            break;
+            case UdrSchema::INTEGER:
+                data << UdrValue(q.getInt64(colNum));
+                break;
+            case UdrSchema::DOUBLE:
+                data << UdrValue(q.getDouble(colNum));
+                break;
+            case UdrSchema::STRING:
+                data << UdrValue(q.getString(colNum));
+                break;
+            case UdrSchema::BLOB:
+                data << UdrValue();
+                break;
+            case UdrSchema::ID:
+                const U2DataType objectType = q.getInt32(schema->size());
+                data << UdrValue(q.getDataId(colNum, objectType));
+                break;
         }
         CHECK_OP(os, );
     }

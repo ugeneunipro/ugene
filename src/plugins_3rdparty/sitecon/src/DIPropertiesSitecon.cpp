@@ -20,39 +20,38 @@
  */
 
 #include "DIPropertiesSitecon.h"
-
-#include <QStringList>
 #include <algorithm>
 #include <math.h>
+
+#include <QStringList>
 
 namespace U2 {
 
 static QStringList getStrProperties();
 DinucleotitePropertyRegistry::DinucleotitePropertyRegistry() {
     //init all 38+ properties
-    foreach(QString prop, getStrProperties()) {
+    foreach (QString prop, getStrProperties()) {
         registerProperty(prop);
     }
 }
 
 DinucleotitePropertyRegistry::~DinucleotitePropertyRegistry() {
-    foreach(DiPropertySitecon* d, props) {
+    foreach (DiPropertySitecon *d, props) {
         delete d;
     }
 }
 
+static void normalize(DiPropertySitecon *p);
 
-static void normalize(DiPropertySitecon* p);
-
-void DinucleotitePropertyRegistry::registerProperty(const QString& str) {
+void DinucleotitePropertyRegistry::registerProperty(const QString &str) {
     QMap<QString, QString> keys;
     float data[16];
     float defVal = -100000;
-    std::fill((float*)data, data + 16, defVal);
+    std::fill((float *)data, data + 16, defVal);
 
     QStringList lines = str.split('\n', QString::SkipEmptyParts);
     bool dimode = false;
-    foreach(QString line, lines) {
+    foreach (QString line, lines) {
         //printf("line=%s\n",line.toLatin1().constData());
         if (dimode) {
             line = line.trimmed();
@@ -69,7 +68,7 @@ void DinucleotitePropertyRegistry::registerProperty(const QString& str) {
             if (line.length() < 3) {
                 continue;
             }
-            char c =  line[2].toLatin1();
+            char c = line[2].toLatin1();
             if (c == ' ') {
                 keys[line.left(2)] = line.mid(3);
                 continue;
@@ -79,41 +78,40 @@ void DinucleotitePropertyRegistry::registerProperty(const QString& str) {
         }
     }
 
-    assert(std::count((float*)data, data + 16, defVal) == 0);
-    
-    DiPropertySitecon* p = new DiPropertySitecon();
+    assert(std::count((float *)data, data + 16, defVal) == 0);
+
+    DiPropertySitecon *p = new DiPropertySitecon();
     p->keys = keys;
-    std::copy((float*)data, data + 16, (float*)p->original);
+    std::copy((float *)data, data + 16, (float *)p->original);
     normalize(p);
     props.append(p);
 }
 
-
-static void normalize(DiPropertySitecon* p) {
+static void normalize(DiPropertySitecon *p) {
     float average = 0;
-    for(int i=0; i < 16; i++) {
+    for (int i = 0; i < 16; i++) {
         average += p->original[i];
     }
-    average/=16;
+    average /= 16;
     p->average = average;
-    
+
     float dispersion = 0;
-    for (int i=0;i<16;i++) { 
+    for (int i = 0; i < 16; i++) {
         float v = p->original[i];
-        dispersion+=(average - v)*(average - v);    
+        dispersion += (average - v) * (average - v);
     }
-    dispersion/=16;
+    dispersion /= 16;
     float sdeviation = sqrt(dispersion);
     p->sdeviation = sdeviation;
 
-    for(int i=0; i< 16; i++) {
+    for (int i = 0; i < 16; i++) {
         p->normalized[i] = (p->original[i] - average) / sdeviation;
     }
 }
 
 static QStringList getStrProperties() {
-//todo: move props to file
-static const QString _properties= QString("") + "\
+    //todo: move props to file
+    static const QString _properties = QString("") + "\
 MI P0000001\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -150,7 +148,7 @@ DINUCLEOTIDE\n\
    CT 32.15\n\
    CG 32.91\n\
    CC 34.96\n\
-//"+"\n\
+//" + "\n\
 MI P0000002\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -187,7 +185,7 @@ DINUCLEOTIDE\n\
    CT 3.63\n\
    CG 3.60\n\
    CC 4.08\n\
-//"+"\n\
+//" + "\n\
 MI P0000003\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -210,10 +208,9 @@ DINUCLEOTIDE\n\
    AT 2.60\n\
    AG 2.31\n\
    AC 2.97\n\
-"
-+
-// 6.74 -> 3.07 for TA dinucleotide by Dmitri Oschepkov
-"\
+" +
+                                       // 6.74 -> 3.07 for TA dinucleotide by Dmitri Oschepkov
+                                       "\
    TA 3.07\n\
    TT 3.07\n\
    TG 3.58\n\
@@ -226,7 +223,7 @@ DINUCLEOTIDE\n\
    CT 2.31\n\
    CG 2.81\n\
    CC 2.16\n\
-//"+"\n\
+//" + "\n\
 MI P0000004\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -263,7 +260,7 @@ DINUCLEOTIDE\n\
    CT 0.90\n\
    CG 0.22\n\
    CC 0.71\n\
-//"+"\n\
+//" + "\n\
 MI P0000005\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -300,7 +297,7 @@ DINUCLEOTIDE\n\
    CT 0.92\n\
    CG 0.00\n\
    CC -1.11\n\
-//"+"\n\
+//" + "\n\
 MI P0000006\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -335,7 +332,7 @@ DINUCLEOTIDE\n\
    CT 13.51\n\
    CG 14.42\n\
    CC 15.49\n\
-//"+"\n\
+//" + "\n\
 MI P0000007\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -370,7 +367,7 @@ DINUCLEOTIDE\n\
    CT 8.96\n\
    CG 8.81\n\
    CC 8.45\n\
-//"+"\n\
+//" + "\n\
 MI P0000008\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -405,7 +402,7 @@ DINUCLEOTIDE\n\
    CT 5.19\n\
    CG 5.16\n\
    CC 4.62\n\
-//"+"\n\
+//" + "\n\
 MI P0000009\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -440,7 +437,7 @@ DINUCLEOTIDE\n\
    CT 8.98\n\
    CG 9.06\n\
    CC 8.99\n\
-//"+"\n\
+//" + "\n\
 MI P0000010\n\
 MN Conformational\n\
 MD Free DNA\n\
@@ -476,7 +473,7 @@ DINUCLEOTIDE\n\
    CT 4.5\n\
    CG -6.2\n\
    CC 6.0\n\
-//"+"\n\
+//" + "\n\
 MI P0000011\n\
 MN Conformational\n\
 MD Free DNA\n\
@@ -512,7 +509,7 @@ DINUCLEOTIDE\n\
    CT 31.2\n\
    CG 36.6\n\
    CC 33.3\n\
-//"+"\n\
+//" + "\n\
 MI P0000012\n\
 MN Conformational\n\
 MD Free DNA\n\
@@ -548,7 +545,7 @@ DINUCLEOTIDE\n\
    CT 2.8\n\
    CG 0.0\n\
    CC 2.7\n\
-//"+"\n\
+//" + "\n\
 MI P0000013\n\
 MN Conformational\n\
 MD Free DNA\n\
@@ -584,7 +581,7 @@ DINUCLEOTIDE\n\
    CT 0.4\n\
    CG 0.7\n\
    CC 0.8\n\
-//"+"\n\
+//" + "\n\
 MI P0000014\n\
 MN Conformational\n\
 MD DNA/protein-complex\n\
@@ -620,7 +617,7 @@ DINUCLEOTIDE\n\
    CT 5.6\n\
    CG 6.5\n\
    CC 3.3\n\
-//"+"\n\
+//" + "\n\
 MI P0000015\n\
 MN Conformational\n\
 MD DNA/protein-complex\n\
@@ -656,7 +653,7 @@ DINUCLEOTIDE\n\
    CT 31.9\n\
    CG 34.9\n\
    CC 33.3\n\
-//"+"\n\
+//" + "\n\
 MI P0000016\n\
 MN Conformational\n\
 MD DNA/protein-complex\n\
@@ -692,7 +689,7 @@ DINUCLEOTIDE\n\
    CT 1.3\n\
    CG 0.0\n\
    CC 1.0\n\
-//"+"\n\
+//" + "\n\
 MI P0000017\n\
 MN Conformational\n\
 MD DNA/protein-complex\n\
@@ -728,7 +725,7 @@ DINUCLEOTIDE\n\
    CT -0.3\n\
    CG 0.7\n\
    CC -0.1\n\
-//"+"\n\
+//" + "\n\
 MI P0000018\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -764,7 +761,7 @@ DINUCLEOTIDE\n\
    CT 27.70\n\
    CG 29.80\n\
    CC 33.67\n\
-//"+"\n\
+//" + "\n\
 MI P0000019\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -800,7 +797,7 @@ DINUCLEOTIDE\n\
    CT 8.4\n\
    CG 6.7\n\
    CC 2.1\n\
-//"+"\n\
+//" + "\n\
 MI P0000020\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -836,7 +833,7 @@ DINUCLEOTIDE\n\
    CT -2.0\n\
    CG 0.0\n\
    CC -57.0\n\
-//"+"\n\
+//" + "\n\
 MI P0000021\n\
 MN Physico-chemical\n\
 MD B-DNA\n\
@@ -870,7 +867,7 @@ DINUCLEOTIDE\n\
    CT 60.0\n\
    CG 85.0\n\
    CC 130.0\n\
-//"+"\n\
+//" + "\n\
 MI P0000022\n\
 MN Physico-chemical\n\
 MD B-DNA\n\
@@ -904,7 +901,7 @@ DINUCLEOTIDE\n\
    CT 58.42\n\
    CG 72.55\n\
    CC 85.97\n\
-//"+"\n\
+//" + "\n\
 MI P0000023\n\
 MN Physico-chemical\n\
 MD B-DNA\n\
@@ -938,7 +935,7 @@ DINUCLEOTIDE\n\
    CT 14.5\n\
    CG 1.1\n\
    CC 10.2\n\
-//"+"\n\
+//" + "\n\
 MI P0000024\n\
 MN Physico-chemical\n\
 MD B-DNA\n\
@@ -972,7 +969,7 @@ DINUCLEOTIDE\n\
    CT 1.04\n\
    CG 1.02\n\
    CC 0.99\n\
-//"+"\n\
+//" + "\n\
 MI P0000025\n\
 MN Physico-chemical\n\
 MD B-DNA\n\
@@ -1006,7 +1003,7 @@ DINUCLEOTIDE\n\
    CT 1.16\n\
    CG 1.25\n\
    CC 1.27\n\
-//"+"\n\
+//" + "\n\
 MI P0000026\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -1042,7 +1039,7 @@ DINUCLEOTIDE\n\
    CT 30.5\n\
    CG 31.1\n\
    CC 34.3\n\
-//"+"\n\
+//" + "\n\
 MI P0000027\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -1078,7 +1075,7 @@ DINUCLEOTIDE\n\
    CT -2.6\n\
    CG 0.0\n\
    CC -1.1\n\
-//"+"\n\
+//" + "\n\
 MI P0000028\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -1114,7 +1111,7 @@ DINUCLEOTIDE\n\
    CT 2.9\n\
    CG 6.6\n\
    CC 6.5\n\
-//"+"\n\
+//" + "\n\
 MI P0000029\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -1150,7 +1147,7 @@ DINUCLEOTIDE\n\
    CT 0.47\n\
    CG 0.63\n\
    CC 0.60\n\
-//"+"\n\
+//" + "\n\
 MI P0000030\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -1186,7 +1183,7 @@ DINUCLEOTIDE\n\
    CT -14.3\n\
    CG -11.2\n\
    CC -12.8\n\
-//"+"\n\
+//" + "\n\
 MI P0000031\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -1220,7 +1217,7 @@ DINUCLEOTIDE\n\
    CT 3.98\n\
    CG 4.70\n\
    CC 3.98\n\
-//"+"\n\
+//" + "\n\
 MI P0000032\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -1254,7 +1251,7 @@ DINUCLEOTIDE\n\
    CT 2.79\n\
    CG 3.21\n\
    CC 2.80\n\
-//"+"\n\
+//" + "\n\
 MI P0000033\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -1288,7 +1285,7 @@ DINUCLEOTIDE\n\
    CT 4.70\n\
    CG 4.70\n\
    CC 3.98\n\
-//"+"\n\
+//" + "\n\
 MI P0000034\n\
 MN Conformational\n\
 MD B-DNA\n\
@@ -1322,7 +1319,7 @@ DINUCLEOTIDE\n\
    CT 3.36\n\
    CG 3.77\n\
    CC 3.38\n\
-//"+"\n\
+//" + "\n\
 MI P0000035\n\
 MN Physoco-chemical\n\
 MD B-DNA\n\
@@ -1356,7 +1353,7 @@ DINUCLEOTIDE\n\
    CT 2.53\n\
    CG 2.42\n\
    CC 1.78\n\
-//"+"\n\
+//" + "\n\
 MI P0000036\n\
 MN Physoco-chemical\n\
 MD B-DNA\n\
@@ -1390,7 +1387,7 @@ DINUCLEOTIDE\n\
    CT -6.6\n\
    CG -11.8\n\
    CC -10.9\n\
-//"+"\n\
+//" + "\n\
 MI P0000037\n\
 MN Physoco-chemical\n\
 MD B-DNA\n\
@@ -1424,7 +1421,7 @@ DINUCLEOTIDE\n\
    CT -16.4\n\
    CG -29.0\n\
    CC -28.4\n\
-//"+"\n\
+//" + "\n\
 MI P0000038\n\
 MN Physoco-chemical\n\
 MD B-DNA\n\
@@ -1465,4 +1462,4 @@ DINUCLEOTIDE\n\
     return l;
 }
 
-}//namespace
+}    // namespace U2

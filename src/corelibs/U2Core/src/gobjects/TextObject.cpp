@@ -53,11 +53,11 @@ TextObject *TextObject::createInstance(const QString &text, const QString &objec
 
     const QString folder = hintsMap.value(DocumentFormat::DBI_FOLDER_HINT, U2ObjectDbi::ROOT_FOLDER).toString();
     RawDataUdrSchema::createObject(dbiRef, folder, object, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     U2EntityRef entRef(dbiRef, object.id);
     RawDataUdrSchema::writeContent(text.toUtf8(), entRef, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     return new TextObject(objectName, entRef, hintsMap);
 }
@@ -86,7 +86,7 @@ GObject *TextObject::clone(const U2DbiRef &dstDbiRef, U2OpStatus &os, const QVar
 
     U2Text dstObject;
     RawDataUdrSchema::cloneObject(entityRef, dstDbiRef, dstFolder, dstObject, os);
-    CHECK_OP(os, NULL);
+    CHECK_OP(os, nullptr);
 
     U2EntityRef dstEntRef(dstDbiRef, dstObject.id);
     TextObject *dst = new TextObject(getGObjectName(), dstEntRef, gHints.getMap());

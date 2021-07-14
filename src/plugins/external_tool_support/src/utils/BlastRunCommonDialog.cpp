@@ -48,7 +48,7 @@ using namespace LocalWorkflow;
 ////////////////////////////////////////
 //BlastAllSupportRunCommonDialog
 BlastRunCommonDialog::BlastRunCommonDialog(QWidget *parent, BlastType blastType, bool useCompValues, QStringList compValues)
-    : QDialog(parent), ca_c(NULL), useCompValues(useCompValues), compValues(compValues) {
+    : QDialog(parent), ca_c(nullptr), useCompValues(useCompValues), compValues(compValues) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930723");
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Restore to default"));
@@ -57,12 +57,12 @@ BlastRunCommonDialog::BlastRunCommonDialog(QWidget *parent, BlastType blastType,
 
     QString hitsToolTip;
     switch (blastType) {
-    case BlastPlus:
-        hitsLabel->setText(BlastPlusWorkerFactory::getHitsName() + ":");
-        hitsToolTip = BlastPlusWorkerFactory::getHitsDescription();
-        break;
-    default:
-        FAIL("Unknown BLAST type", );
+        case BlastPlus:
+            hitsLabel->setText(BlastPlusWorkerFactory::getHitsName() + ":");
+            hitsToolTip = BlastPlusWorkerFactory::getHitsDescription();
+            break;
+        default:
+            FAIL("Unknown BLAST type", );
     }
     dbSelector = new BlastDBSelectorWidgetController(this);
     dbSelectorWidget->layout()->addWidget(dbSelector);

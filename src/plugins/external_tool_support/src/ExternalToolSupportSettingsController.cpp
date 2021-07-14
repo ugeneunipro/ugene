@@ -628,7 +628,7 @@ void ExternalToolSupportSettingsPageWidget::sl_toolPathChanged() {
 
 void ExternalToolSupportSettingsPageWidget::sl_validationComplete() {
     ExternalToolValidationListener *listener = qobject_cast<ExternalToolValidationListener *>(sender());
-    SAFE_POINT(NULL != listener, "Unexpected message sender", );
+    SAFE_POINT(nullptr != listener, "Unexpected message sender", );
 
     listener->deleteLater();
 
@@ -637,7 +637,7 @@ void ExternalToolSupportSettingsPageWidget::sl_validationComplete() {
 
     foreach (const QString &toolId, listener->getToolIds()) {
         ExternalTool *tool = etRegistry->getById(toolId);
-        SAFE_POINT(NULL != tool, QString("External tool %1 not found in the registry.").arg(toolId), );
+        SAFE_POINT(nullptr != tool, QString("External tool %1 not found in the registry.").arg(toolId), );
         setToolState(tool);
     }
     emit si_setLockState(false);
@@ -647,7 +647,7 @@ void ExternalToolSupportSettingsPageWidget::sl_toolValidationStatusChanged(bool 
     Q_UNUSED(isValid);
 
     ExternalTool *s = qobject_cast<ExternalTool *>(sender());
-    SAFE_POINT(NULL != s, "Unexpected message sender", );
+    SAFE_POINT(nullptr != s, "Unexpected message sender", );
 
     setToolState(s);
 }
@@ -827,9 +827,9 @@ void PathLineEdit::sl_onBrowse() {
 
     QString name;
     if (text().isEmpty()) {
-        lod.url = name = U2FileDialog::getOpenFileName(NULL, tr("Select a file"), lod.dir, FileFilter, 0, QFileDialog::DontConfirmOverwrite);
+        lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), lod.dir, FileFilter, 0, QFileDialog::DontConfirmOverwrite);
     } else {
-        lod.url = name = U2FileDialog::getOpenFileName(NULL, tr("Select a file"), text(), FileFilter, 0, QFileDialog::DontConfirmOverwrite);
+        lod.url = name = U2FileDialog::getOpenFileName(nullptr, tr("Select a file"), text(), FileFilter, 0, QFileDialog::DontConfirmOverwrite);
     }
     if (!name.isEmpty()) {
         setText(QDir::toNativeSeparators(name));

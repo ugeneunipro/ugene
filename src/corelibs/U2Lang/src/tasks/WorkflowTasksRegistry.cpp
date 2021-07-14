@@ -38,7 +38,7 @@ WorkflowTasksRegistry::~WorkflowTasksRegistry() {
 }
 
 bool WorkflowTasksRegistry::registerReadDocumentTaskFactory(ReadDocumentTaskFactory *factory) {
-    SAFE_POINT(NULL != factory, "NULL ReadDocumentTaskFactory", false);
+    SAFE_POINT(nullptr != factory, "NULL ReadDocumentTaskFactory", false);
     SAFE_POINT(!readTasks.contains(factory->getId()),
                QString("Double ReadDocumentTaskFactory registering: %1").arg(factory->getId()),
                false);
@@ -48,7 +48,7 @@ bool WorkflowTasksRegistry::registerReadDocumentTaskFactory(ReadDocumentTaskFact
 }
 
 ReadDocumentTaskFactory *WorkflowTasksRegistry::getReadDocumentTaskFactory(const QString &id) {
-    return readTasks.value(id, NULL);
+    return readTasks.value(id, nullptr);
 }
 
 }    // namespace Workflow

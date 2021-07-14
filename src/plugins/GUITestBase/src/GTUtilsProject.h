@@ -63,7 +63,7 @@ public:
     /* Initiates file open dialog for a single file and waits until all tasks finished before the return. Asserts that the project does not exists. */
     static void openFileExpectNoProject(HI::GUITestOpStatus &os, const GUrl &path, const OpenFileSettings &s = OpenFileSettings());
 
-     static void checkProject(HI::GUITestOpStatus &os, ProjectCheckType checkType = Exists);
+    static void checkProject(HI::GUITestOpStatus &os, ProjectCheckType checkType = Exists);
 
     /**
      * Opens file @path\@fileName.

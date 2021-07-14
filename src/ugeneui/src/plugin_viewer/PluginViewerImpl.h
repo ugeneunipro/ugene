@@ -40,7 +40,7 @@ class PluginViewerImpl : public PluginViewer {
 public:
     PluginViewerImpl()
         : PluginViewer(tr("PluginViewer"), tr("Basic plugins and services visualization and manipulation tool")) {
-        viewer = NULL;
+        viewer = nullptr;
     }
 
 protected:

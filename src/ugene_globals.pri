@@ -2,7 +2,6 @@ include (ugene_version.pri)
 
 UGENE_GLOBALS_DEFINED=1
 
-DEFINES+=U2_DISTRIBUTION_INFO=$${U2_DISTRIBUTION_INFO}
 DEFINES+=UGENE_VERSION=$${UGENE_VERSION}
 DEFINES+=UGENE_VER_MAJOR=$${UGENE_VER_MAJOR}
 DEFINES+=UGENE_VER_MINOR=$${UGENE_VER_MINOR}
@@ -12,7 +11,7 @@ DEFINES+=UGENE_VER_MINOR=$${UGENE_VER_MINOR}
 # and do not use any deprecated API.
 DEFINES+=QT_DISABLE_DEPRECATED_BEFORE=0x050700
 
-CONFIG += c++11
+CONFIG += c++14
 
 # Do not use library suffix names for files and ELF-dependency sections on Linux.
 # Reason: we do not support multiple versions of UGENE in the same folder and
@@ -48,7 +47,7 @@ win32 : QMAKE_LFLAGS_RELEASE = /INCREMENTAL:NO /MAP /MAPINFO:EXPORTS /DEBUG
 win32 : LIBS += psapi.lib
 win32 : DEFINES += "PSAPI_VERSION=1"
 
-macx {
+clang {
     CONFIG -= warn_on
     #Ignore "'weak_import' attribute ignored" warning coming from OpenCL headers
     QMAKE_CXXFLAGS += -Wall
@@ -57,6 +56,9 @@ macx {
     QMAKE_CXXFLAGS += -Wno-unknown-warning-option
     QMAKE_CXXFLAGS += -Wno-deprecated-declarations
     QMAKE_CXXFLAGS += -Wno-char-subscripts
+}
+
+macx {
     LIBS += -framework CoreFoundation
 }
 
@@ -70,7 +72,7 @@ linux-g++ {
     QMAKE_CXXFLAGS += -Wno-deprecated-copy
     QMAKE_CXXFLAGS += -Wno-deprecated-declarations
 
-    # These warnings must be errors:
+    # These warnings must be errors (all entries must be added to disable-warnings.h):
     QMAKE_CXXFLAGS += -Werror=maybe-uninitialized
     QMAKE_CXXFLAGS += -Werror=parentheses
     QMAKE_CXXFLAGS += -Werror=return-type

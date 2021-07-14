@@ -174,7 +174,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
 
     GTUtilsProject::checkProject(os, GTUtilsProject::NotExists);
-    CHECK_SET_ERR(result == NULL, "Export menu item present in menu without any project created");
+    CHECK_SET_ERR(result == nullptr, "Export menu item present in menu without any project created");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007) {
@@ -394,7 +394,7 @@ GUI_TEST_CLASS_DEFINITION(test_0023) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     QWidget *w = GTUtilsMdi::findWindow(os, "Multiple alignment [1m.fa]");
-    CHECK_SET_ERR(w != NULL, "Sequence view window title is not 1m [m] Multiple alignment");
+    CHECK_SET_ERR(w != nullptr, "Sequence view window title is not 1m [m] Multiple alignment");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0025) {
@@ -582,7 +582,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
     CHECK_SET_ERR(title2 == "Contig2 [BL060C3.ace]", "unexpected title for doc2: " + title2);
 
     //reopening windows z
-    while (GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != NULL) {
+    while (GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != nullptr) {
         GTUtilsMdi::closeActiveWindow(os);
     }
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View"
@@ -619,7 +619,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038_1) {
     CHECK_SET_ERR(title2 == "Contig2 [test_3637_1.ugenedb]", "unexpected title for doc2: " + title2);
 
     //reopening windows
-    while (GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != NULL) {
+    while (GTUtilsMdi::activeWindow(os, GTGlobals::FindOptions(false)) != nullptr) {
         GTUtilsMdi::closeActiveWindow(os);
     }
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Open View"
@@ -947,7 +947,7 @@ GUI_TEST_CLASS_DEFINITION(test_0057) {
         virtual void run(HI::GUITestOpStatus &os) {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             QTreeWidget *treeWidget = qobject_cast<QTreeWidget *>(GTWidget::findWidget(os, "shortReadsTable", dialog));
-            CHECK_SET_ERR(treeWidget != NULL, "Tree widget is NULL");
+            CHECK_SET_ERR(treeWidget != nullptr, "Tree widget is NULL");
             QList<QTreeWidgetItem *> treeItems = GTTreeWidget::getItems(treeWidget->invisibleRootItem());
             QTreeWidgetItem *firstItem = treeItems.first();
             QString path = firstItem->text(0);
@@ -1107,7 +1107,7 @@ GUI_TEST_CLASS_DEFINITION(test_0068) {
     GTClipboard::setUrls(os, QList<QString>() << dataDir + "samples/FASTA/human_T1.fa");
 
     QAction *editMode = GTAction::findActionByText(os, "Switch on the editing mode");
-    CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
+    CHECK_SET_ERR(editMode != nullptr, "Cannot find Edit mode action");
     GTWidget::click(os, GTAction::button(os, editMode));
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
@@ -1124,7 +1124,7 @@ GUI_TEST_CLASS_DEFINITION(test_0069) {
     GTClipboard::setText(os, ">human_T1\r\nACGTACGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\r\n");
 
     QAction *editMode = GTAction::findActionByText(os, "Switch on the editing mode");
-    CHECK_SET_ERR(editMode != NULL, "Cannot find Edit mode action");
+    CHECK_SET_ERR(editMode != nullptr, "Cannot find Edit mode action");
     GTWidget::click(os, GTAction::button(os, editMode));
 
     GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
@@ -1160,7 +1160,7 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
 
 //ann
 GUI_TEST_CLASS_DEFINITION(test_0072) {
-    Q_UNUSED(os); // TODO: fix the test.
+    Q_UNUSED(os);    // TODO: fix the test.
     //Ctrl+Shift+V в GUI-test?
     //UGENE-4907
     /*
@@ -1176,7 +1176,7 @@ GUI_TEST_CLASS_DEFINITION(test_0072) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0073) {
-    Q_UNUSED(os); // TODO: fix the test!
+    Q_UNUSED(os);    // TODO: fix the test!
     //Ctrl+Shift+V в GUI-test?
     /*
     GTUtilsProject::openFiles(os, dataDir + "samples/Genbank/murine.gb");

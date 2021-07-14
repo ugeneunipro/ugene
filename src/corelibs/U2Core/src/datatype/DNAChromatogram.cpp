@@ -27,6 +27,11 @@ namespace U2 {
 
 const ushort DNAChromatogram::INVALID_VALUE = 0;
 const char DNAChromatogram::DEFAULT_PROBABILITY = 0;    // SANGER_TODO: 100?
+const QMap<DNAChromatogram::Trace, char> DNAChromatogram::TRACE_CHARACTER =
+                    { { DNAChromatogram::Trace::Trace_A, 'A' },
+                      { DNAChromatogram::Trace::Trace_C, 'C' },
+                      { DNAChromatogram::Trace::Trace_G, 'G' },
+                      { DNAChromatogram::Trace::Trace_T, 'T' } };
 
 DNAChromatogram::DNAChromatogram()
     : name("chromatogram"),
@@ -38,20 +43,20 @@ DNAChromatogram::DNAChromatogram()
 ushort DNAChromatogram::getValue(Trace trace, qint64 position) const {
     SAFE_POINT(0 <= position && position <= traceLength, "The position is out of trace boundaries", 0);
     switch (trace) {
-    case Trace_A:
-        SAFE_POINT(0 <= position && position <= A.length(), "The position is out of trace A boundaries", 0);
-        return A[position];
-    case Trace_C:
-        SAFE_POINT(0 <= position && position <= C.length(), "The position is out of trace C boundaries", 0);
-        return C[position];
-    case Trace_G:
-        SAFE_POINT(0 <= position && position <= G.length(), "The position is out of trace G boundaries", 0);
-        return G[position];
-    case Trace_T:
-        SAFE_POINT(0 <= position && position <= T.length(), "The position is out of trace T boundaries", 0);
-        return T[position];
-    default:
-        FAIL("An unknown trace", 0);
+        case Trace::Trace_A:
+            SAFE_POINT(0 <= position && position <= A.length(), "The position is out of trace A boundaries", 0);
+            return A[position];
+        case Trace::Trace_C:
+            SAFE_POINT(0 <= position && position <= C.length(), "The position is out of trace C boundaries", 0);
+            return C[position];
+        case Trace::Trace_G:
+            SAFE_POINT(0 <= position && position <= G.length(), "The position is out of trace G boundaries", 0);
+            return G[position];
+        case Trace::Trace_T:
+            SAFE_POINT(0 <= position && position <= T.length(), "The position is out of trace T boundaries", 0);
+            return T[position];
+        default:
+            FAIL("An unknown trace", 0);
     }
 }
 

@@ -660,7 +660,7 @@ void CallVariantsWorkerFactory::init() {
         delegates[REF_SOURCE] = new ComboBoxDelegate(vm);
     }
 
-    delegates[OUT_URL] = new URLDelegate("", "", false, false, true, NULL, "vcf");
+    delegates[OUT_URL] = new URLDelegate("", "", false, false, true, nullptr, "vcf");
     delegates[REF_URL] = new URLDelegate("", "", false, false, false);
     delegates[BCF_BED] = new URLDelegate("", "", false, false, false);
     delegates[SAMPLES] = new URLDelegate("", "", false, false, false);
@@ -710,9 +710,9 @@ QString CallVariantsPrompter::composeRichDoc() {
 
 CallVariantsWorker::CallVariantsWorker(Actor* a)
     : BaseWorker(a, false),
-      refSeqPort(NULL),
-      assemblyPort(NULL),
-      output(NULL),
+      refSeqPort(nullptr),
+      assemblyPort(nullptr),
+      output(nullptr),
       useDatasets(false)
 {
     referenceSource = FromPort;
@@ -720,10 +720,10 @@ CallVariantsWorker::CallVariantsWorker(Actor* a)
 
 void CallVariantsWorker::initDatasetMode() {
     Port *port = actor->getPort(BasePorts::IN_ASSEMBLY_PORT_ID());
-    SAFE_POINT(NULL != port,"Internal error during CallVariantsWorker initializing: assembly port is NULL!", );
+    SAFE_POINT(nullptr != port,"Internal error during CallVariantsWorker initializing: assembly port is NULL!", );
 
     IntegralBusPort *bus = dynamic_cast<IntegralBusPort*>(port);
-    SAFE_POINT(NULL != bus, "Internal error during CallVariantsWorker initializing: assembly bus is NULL!", );
+    SAFE_POINT(nullptr != bus, "Internal error during CallVariantsWorker initializing: assembly bus is NULL!", );
 
     QList<Actor*> producers = bus->getProducers(BaseSlots::DATASET_SLOT().getId());
     useDatasets = !producers.isEmpty();
@@ -780,12 +780,12 @@ Task* CallVariantsWorker::tick() {
     }
 
     checkState(os);
-    CHECK_OP_EXT(os, setDone(), NULL);
+    CHECK_OP_EXT(os, setDone(), nullptr);
 
     //take assemblies from one dataset
     if (assemblyPort->hasMessage() && settings.assemblyUrls.isEmpty()) {
         takeAssembly(os);
-        CHECK_OP_EXT(os, processError(os), NULL);
+        CHECK_OP_EXT(os, processError(os), nullptr);
     } else if (settings.assemblyUrls.isEmpty() && !assemblyUrls.isEmpty()) {
         settings.assemblyUrls = assemblyUrls;
         assemblyUrls.clear();
@@ -795,7 +795,7 @@ Task* CallVariantsWorker::tick() {
     if (referenceSource == FromPort) {
         if (refSeqPort->hasMessage() && settings.refSeqUrl.isEmpty()) {
             takeReference(os);
-            CHECK_OP_EXT(os, processError(os), NULL);
+            CHECK_OP_EXT(os, processError(os), nullptr);
         }
     } else if (settings.refSeqUrl.isEmpty()) {
         settings.refSeqUrl = getValue<QString>(REF_URL);
@@ -813,7 +813,7 @@ Task* CallVariantsWorker::tick() {
 
         return t;
     }
-    return NULL;
+    return nullptr;
 }
 
 void CallVariantsWorker::sl_taskFinished() {

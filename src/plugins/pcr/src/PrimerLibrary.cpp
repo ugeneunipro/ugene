@@ -39,7 +39,7 @@
 
 namespace U2 {
 
-QScopedPointer<PrimerLibrary> PrimerLibrary::instance(NULL);
+QScopedPointer<PrimerLibrary> PrimerLibrary::instance(nullptr);
 QMutex PrimerLibrary::mutex;
 
 namespace {
@@ -60,7 +60,7 @@ PrimerLibrary *PrimerLibrary::getInstance(U2OpStatus &os) {
     CHECK_OP(os, nullptr);
 
     UserAppsSettings *settings = AppContext::getAppSettings()->getUserAppsSettings();
-    SAFE_POINT_EXT(settings != nullptr, os.setError(L10N::nullPointerError("UserAppsSettings")), NULL);
+    SAFE_POINT_EXT(settings != nullptr, os.setError(L10N::nullPointerError("UserAppsSettings")), nullptr);
 
     // open DBI connection
     QString primerLibraryPath = qgetenv("UGENE_PRIMER_LIBRARY_PATH");
@@ -95,7 +95,7 @@ void PrimerLibrary::release() {
 }
 
 PrimerLibrary::PrimerLibrary(DbiConnection *connection)
-    : connection(connection), udrDbi(NULL) {
+    : connection(connection), udrDbi(nullptr) {
     udrDbi = connection->dbi->getUdrDbi();
 }
 
@@ -104,7 +104,7 @@ PrimerLibrary::~PrimerLibrary() {
 }
 
 void PrimerLibrary::initPrimerUdr(U2OpStatus &os) {
-    CHECK(NULL == AppContext::getUdrSchemaRegistry()->getSchemaById(PRIMER_UDR_ID), );
+    CHECK(nullptr == AppContext::getUdrSchemaRegistry()->getSchemaById(PRIMER_UDR_ID), );
 
     UdrSchema::FieldDesc name("name", UdrSchema::STRING);
     UdrSchema::FieldDesc sequence("sequence", UdrSchema::STRING);

@@ -216,7 +216,7 @@ void AppSettingsDialogFiller::clearToolPath(HI::GUITestOpStatus &os, const QStri
         if (item->text(0) == toolName) {
             QWidget *itemWid = treeWidget->itemWidget(item, 1);
             QToolButton *clearPathButton = itemWid->findChild<QToolButton *>("ClearToolPathButton");
-            CHECK_SET_ERR(clearPathButton != NULL, "Clear path button not found");
+            CHECK_SET_ERR(clearPathButton != nullptr, "Clear path button not found");
             treeWidget->scrollToItem(item);
             GTThread::waitForMainThread();
             if (clearPathButton->isEnabled()) {
@@ -245,7 +245,7 @@ bool AppSettingsDialogFiller::isToolDescriptionContainsString(HI::GUITestOpStatu
 #define GT_METHOD_NAME "setTemporaryDirPath"
 void AppSettingsDialogFiller::setTemporaryDirPath(GUITestOpStatus &os, const QString &path) {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(NULL != dialog, "activeModalWidget is NULL");
+    GT_CHECK(nullptr != dialog, "activeModalWidget is NULL");
 
     openTab(os, Directories);
 
@@ -256,7 +256,7 @@ void AppSettingsDialogFiller::setTemporaryDirPath(GUITestOpStatus &os, const QSt
 #define GT_METHOD_NAME "setDocumentsDirPath"
 void AppSettingsDialogFiller::setDocumentsDirPath(GUITestOpStatus &os, const QString &path) {
     QWidget *dialog = QApplication::activeModalWidget();
-    GT_CHECK(NULL != dialog, "activeModalWidget is NULL");
+    GT_CHECK(nullptr != dialog, "activeModalWidget is NULL");
 
     openTab(os, Directories);
 
@@ -361,7 +361,7 @@ void NewColorSchemeCreator::commonScenario() {
     switch (act) {
         case Delete: {
             QListWidget *colorSchemas = qobject_cast<QListWidget *>(GTWidget::findWidget(os, "colorSchemas", dialog));
-            GT_CHECK(colorSchemas != NULL, "colorSchemas list widget not found");
+            GT_CHECK(colorSchemas != nullptr, "colorSchemas list widget not found");
             GTListWidget::click(os, colorSchemas, schemeName);
             GTGlobals::sleep(500);
 
@@ -389,7 +389,7 @@ void NewColorSchemeCreator::commonScenario() {
             public:
                 void run(HI::GUITestOpStatus &os) {
                     QWidget *dialog = QApplication::activeModalWidget();
-                    GT_CHECK(NULL != dialog, "Active modal widget is NULL");
+                    GT_CHECK(nullptr != dialog, "Active modal widget is NULL");
                     GTUtilsDialog::waitForDialog(os, new ColorDialogFiller(os, 255, 0, 0));
                     GTWidget::click(os, GTWidget::findWidget(os, "alphabetColorsFrame", dialog), Qt::LeftButton, QPoint(5, 5));
 
@@ -427,9 +427,9 @@ void CreateAlignmentColorSchemeDialogFiller::commonScenario() {
     GTUtilsDialog::waitForDialog(os, new ColorSchemeDialogFiller(os));
 
     QDialogButtonBox *box = qobject_cast<QDialogButtonBox *>(GTWidget::findWidget(os, "buttonBox", dialog));
-    GT_CHECK(box != NULL, "buttonBox is NULL");
+    GT_CHECK(box != nullptr, "buttonBox is NULL");
     QPushButton *button = box->button(QDialogButtonBox::Ok);
-    GT_CHECK(button != NULL, "ok button is NULL");
+    GT_CHECK(button != nullptr, "ok button is NULL");
     GTWidget::click(os, button);
 }
 #undef GT_METHOD_NAME

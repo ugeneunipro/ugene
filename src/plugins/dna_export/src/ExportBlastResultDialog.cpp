@@ -37,7 +37,7 @@ namespace U2 {
 
 ExportBlastResultDialog::ExportBlastResultDialog(QWidget *p, const QString &defaultUrl)
     : QDialog(p),
-      saveController(NULL) {
+      saveController(nullptr) {
     setupUi(this);
     new HelpButton(this, buttonBox, "65930715");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Export"));

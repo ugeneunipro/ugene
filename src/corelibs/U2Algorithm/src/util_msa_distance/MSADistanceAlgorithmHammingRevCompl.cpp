@@ -52,7 +52,7 @@ MSADistanceAlgorithm *MSADistanceAlgorithmFactoryHammingRevCompl::createAlgorith
 void MSADistanceAlgorithmHammingRevCompl::run() {
     DNATranslation *compTT = AppContext::getDNATranslationRegistry()->lookupComplementTranslation(ma->getAlphabet());
 
-    assert(compTT != NULL);
+    assert(compTT != nullptr);
 
     DNATranslation *trans = compTT;
     int nSeq = ma->getNumRows();

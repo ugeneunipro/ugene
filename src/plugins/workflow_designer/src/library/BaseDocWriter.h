@@ -58,7 +58,7 @@ public:
 protected:
     virtual void data2doc(Document *, const QVariantMap &) = 0;
     virtual bool hasDataToWrite(const QVariantMap &data) const = 0;
-    virtual QSet<GObject *> getObjectsToWrite(const QVariantMap &data) const;
+    virtual QSet<GObject *> getObjectsToWrite(const QVariantMap &data) const = 0;
     virtual bool isStreamingSupport() const;
     virtual bool isSupportedSeveralMessages() const;
     virtual void storeEntry(IOAdapter *, const QVariantMap &, int) {
@@ -67,6 +67,8 @@ protected:
     virtual void takeParameters(U2OpStatus &os);
     virtual QStringList takeUrlList(const QVariantMap &data, int metadataId, U2OpStatus &os);
 
+    /** Default implementation of the 'getObjectsToWrite'. */
+    QSet<GObject *> getObjectsToWriteBaseImpl(const QVariantMap &data) const;
 protected:
     DocumentFormat *format;
 

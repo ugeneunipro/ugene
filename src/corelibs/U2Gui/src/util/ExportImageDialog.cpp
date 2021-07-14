@@ -68,7 +68,7 @@ ExportImageDialog::ExportImageDialog(ImageExportController *factory,
       filename(file),
       origFilename(file),
       source(invoSource) {
-    SAFE_POINT(exportController != NULL, tr("Image export task factory is NULL"), );
+    SAFE_POINT(exportController != nullptr, tr("Image export task factory is NULL"), );
     init();
 }
 
@@ -148,33 +148,33 @@ void ExportImageDialog::init() {
     ui->buttonBox->button(QDialogButtonBox::Cancel)->setText(tr("Cancel"));
 
     switch (source) {
-    case WD:
-        new HelpButton(this, ui->buttonBox, "65929939");
-        break;
-    case CircularView:
-        new HelpButton(this, ui->buttonBox, "65929513");
-        break;
-    case MSA:
-        new HelpButton(this, ui->buttonBox, "65929694");
-        break;
-    case SequenceView:
-        new HelpButton(this, ui->buttonBox, "65929444");
-        break;
-    case AssemblyView:
-        new HelpButton(this, ui->buttonBox, "65929850");
-        break;
-    case PHYTreeView:
-        new HelpButton(this, ui->buttonBox, "65929754");
-        break;
-    case DotPlot:
-        new HelpButton(this, ui->buttonBox, "65929605");
-        break;
-    case MolView:
-        new HelpButton(this, ui->buttonBox, "65929549");
-        break;
-    default:
-        FAIL("Can't find help Id", );
-        break;
+        case WD:
+            new HelpButton(this, ui->buttonBox, "65929939");
+            break;
+        case CircularView:
+            new HelpButton(this, ui->buttonBox, "65929513");
+            break;
+        case MSA:
+            new HelpButton(this, ui->buttonBox, "65929694");
+            break;
+        case SequenceView:
+            new HelpButton(this, ui->buttonBox, "65929444");
+            break;
+        case AssemblyView:
+            new HelpButton(this, ui->buttonBox, "65929850");
+            break;
+        case PHYTreeView:
+            new HelpButton(this, ui->buttonBox, "65929754");
+            break;
+        case DotPlot:
+            new HelpButton(this, ui->buttonBox, "65929605");
+            break;
+        case MolView:
+            new HelpButton(this, ui->buttonBox, "65929549");
+            break;
+        default:
+            FAIL("Can't find help Id", );
+            break;
     }
 
     ui->dpiWidget->setVisible(source == DotPlot);
@@ -208,7 +208,7 @@ void ExportImageDialog::init() {
     }
 
     QWidget *settingsWidget = exportController->getSettingsWidget();
-    if (settingsWidget == NULL) {
+    if (settingsWidget == nullptr) {
         ui->settingsGroupBox->hide();
     } else {
         ui->settingsLayout->addWidget(settingsWidget);

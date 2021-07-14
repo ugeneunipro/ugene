@@ -19,9 +19,10 @@
  * MA 02110-1301, USA.
  */
 
+#include "GTTestsWorkflowSamples.h"
+
 #include <QDir>
 
-#include "GTTestsWorkflowSamples.h"
 #include "GTUtilsDashboard.h"
 #include "GTUtilsLog.h"
 #include "GTUtilsProjectTreeView.h"
