@@ -23,6 +23,8 @@
 
 #include <utils/UnwantedConnectionsUtils.h>
 
+#include <U2Core/U2SafePoints.h>
+
 namespace U2 {
 
 FindPresenceOfUnwantedParametersTask::FindPresenceOfUnwantedParametersTask(const QByteArray& _sequence,
@@ -32,15 +34,13 @@ FindPresenceOfUnwantedParametersTask::FindPresenceOfUnwantedParametersTask(const
       settings(_settings) {}
 
 void FindPresenceOfUnwantedParametersTask::run() {
-    if (settings.bachbone5Length < 0 || settings.bachbone3Length < 0) {
-        setError("Backbone length must be greater than 0");
-        return;
-    }
+    SAFE_POINT(settings.bachbone5Length >= 0 && settings.bachbone3Length >= 0,
+        "Backbone length must be greater than 0", )
     if (sequence.length() < settings.bachbone5Length) {
-        stateInfo.addWarning("Sequence length is less than backbone5Length, the entire sequence is used");
+        stateInfo.addWarning("Sequence length is less than 5' backbone length, the entire sequence is used");
     }
     if (sequence.length() < settings.bachbone3Length) {
-        stateInfo.addWarning("Sequence length is less than backbone3Length, the entire sequence is used");
+        stateInfo.addWarning("Sequence length is less than 3' backbone length, the entire sequence is used");
     }
     QByteArray forward = sequence.left(settings.bachbone5Length);
     QByteArray reverse = sequence.right(settings.bachbone3Length);

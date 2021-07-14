@@ -112,12 +112,11 @@ bool FindUnwantedIslandsTask::hasUnwantedConnections(const U2Region& region) con
      * It's reverse complement representation.
      */
     QByteArray revComRegionSequence = DNASequenceUtils::reverseComplement(regionSequence);
-    QString unused;
     bool isUnwantedSelfDimer = UnwantedConnectionsUtils::isUnwantedSelfDimer(regionSequence,
                                                                              UNWANTED_DELTA_G,
                                                                              UNWANTED_MELTING_TEMPERATURE,
-                                                                             UNWANTED_MAX_LENGTH,
-                                                                             unused);
+                                                                             UNWANTED_MAX_LENGTH);
+
 
     return isUnwantedSelfDimer;
 
