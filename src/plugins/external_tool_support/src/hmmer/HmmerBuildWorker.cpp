@@ -54,8 +54,6 @@ static const QString OUT_HMM_URL_PORT_ID("out-hmm3");
 
 static const QString SEED_ATTR("seed");
 
-static const QString HMM3_PROFILE_DEFAULT_NAME("hmm3_profile");
-
 void HmmerBuildWorkerFactory::init() {
     QList<PortDescriptor *> p;
     QList<Attribute *> a;

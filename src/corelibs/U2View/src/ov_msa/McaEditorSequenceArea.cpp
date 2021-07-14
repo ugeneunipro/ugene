@@ -190,32 +190,8 @@ QAction *McaEditorSequenceArea::getTrimRightEndAction() const {
     return trimRightEndAction;
 }
 
-void McaEditorSequenceArea::setSelection(const MaEditorSelection &newSelection) {
-    // Its only possible to select 1 character (width = 1) or multiple rows with no character (width = alignment length).
-    QRect selectionRect = newSelection.toRect();
-    if (selectionRect.isEmpty()) {
-        MaEditorSequenceArea::setSelection(MaEditorSelection());
-        getEditor()->getUI()->getReferenceArea()->clearSelection();
-        return;
-    }
-    if (selectionRect.width() == 1 && getEditor()->getMaObject()->getMca()->isTrailingOrLeadingGap(selectionRect.y(), selectionRect.x())) {
-        // Clear selection if gap is clicked.
-        MaEditorSequenceArea::setSelection(MaEditorSelection());
-        getEditor()->getUI()->getReferenceArea()->clearSelection();
-        return;
-    }
-    MaEditorSequenceArea::setSelection(newSelection);
-}
-
-
-void McaEditorSequenceArea::sl_cancelSelection() {
-    MaEditorSequenceArea::sl_cancelSelection();
-    getEditor()->getUI()->getReferenceArea()->clearSelection();
-}
-
-
 void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
-    QRect selectionRect = selection.toRect();
+    QRect selectionRect = editor->getSelection().toRect();
     CHECK(selectionRect.width() == 1 && selectionRect.height() == 1, );
 
     const MultipleChromatogramAlignment mca = getEditor()->getMaObject()->getMca();
@@ -346,6 +322,7 @@ void McaEditorSequenceArea::sl_trimRightEnd() {
 void McaEditorSequenceArea::sl_updateActions() {
     MultipleAlignmentObject *maObj = editor->getMaObject();
     SAFE_POINT(maObj != nullptr, "MaObj is NULL", );
+    const MaEditorSelection& selection = editor->getSelection();
     QRect selectionRect = selection.toRect();
 
     const bool readOnly = maObj->isStateLocked();
@@ -376,8 +353,9 @@ void McaEditorSequenceArea::trimRowEnd(MultipleChromatogramAlignmentObject::Trim
     Q_UNUSED(userModStep);
     SAFE_POINT_OP(os, );
 
-    SAFE_POINT(!getSelection().isEmpty(), "selection is empty", );
-    int currentPos = getSelection().toRect().x();
+    const MaEditorSelection& selection = editor->getSelection();
+    SAFE_POINT(!selection.isEmpty(), "selection is empty", );
+    int currentPos = selection.toRect().x();
 
     mcaObj->trimRow(maRowIndex, currentPos, os, edge);
     CHECK_OP(os, );
@@ -394,7 +372,7 @@ void McaEditorSequenceArea::updateTrimActions(bool isEnabled) {
     MultipleAlignmentRow row = editor->getMaObject()->getRow(maRowIndex);
     int start = row->getCoreStart();
     int end = row->getCoreEnd();
-    int currentSelection = getSelection().toRect().x();
+    int currentSelection = editor->getSelection().toRect().x();
     if (start == currentSelection) {
         trimLeftEndAction->setEnabled(false);
     }
@@ -432,6 +410,7 @@ QAction *McaEditorSequenceArea::createToggleTraceAction(const QString &actionNam
 void McaEditorSequenceArea::insertChar(char newCharacter) {
     CHECK(maMode == InsertCharMode, );
     CHECK(getEditor() != nullptr, );
+    const MaEditorSelection& selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
 
     SAFE_POINT(isInRange(selection.toRect()), "Selection rect is not in range!", );

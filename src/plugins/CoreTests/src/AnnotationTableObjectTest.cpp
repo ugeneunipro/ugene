@@ -933,12 +933,12 @@ void GTest_FindAnnotationByLocation::init(XMLTestFormat *tf, const QDomElement &
         return;
     }
     bool ok = false;
-    location.startPos = regNums[0].toInt(&ok) - 1;
+    location.startPos = regNums[0].toLongLong(&ok) - 1;
     if (!ok) {
         failMissingValue(LOCATION_ATTR);
         return;
     }
-    location.length = regNums[1].toInt(&ok) - location.startPos;
+    location.length = regNums[1].toLongLong(&ok) - location.startPos;
     if (!ok) {
         failMissingValue(LOCATION_ATTR);
         return;

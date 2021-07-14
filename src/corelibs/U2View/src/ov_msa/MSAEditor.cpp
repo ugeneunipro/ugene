@@ -54,6 +54,7 @@
 #include "overview/MaEditorOverviewArea.h"
 #include "realign_to_alignment/RealignSequencesInAlignmentTask.h"
 #include "view_rendering/MaEditorConsensusArea.h"
+#include "view_rendering/MaEditorSelection.h"
 #include "view_rendering/MaEditorSequenceArea.h"
 
 namespace U2 {
@@ -64,6 +65,8 @@ const QString MsaEditorMenuType::ALIGN_SEQUENCES_TO_ALIGNMENT("msa-editor-menu-a
 MSAEditor::MSAEditor(const QString &viewName, MultipleSequenceAlignmentObject *obj)
     : MaEditor(MsaEditorFactory::ID, viewName, obj),
       treeManager(this) {
+    selectionController = new MaEditorSelectionController(this);
+
     gotoAction = nullptr;
     searchInSequencesAction = nullptr;
     searchInSequenceNamesAction = nullptr;
@@ -494,7 +497,9 @@ QWidget *MSAEditor::createWidget() {
 
     connect(realignSomeSequenceAction, SIGNAL(triggered()), this, SLOT(sl_realignSomeSequences()));
     connect(maObject, SIGNAL(si_alphabetChanged(const MaModificationInfo &, const DNAAlphabet *)), SLOT(sl_updateRealignAction()));
-    connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)), SLOT(sl_updateRealignAction()));
+    connect(getSelectionController(),
+            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
+            SLOT(sl_updateRealignAction()));
 
     qDeleteAll(filters);
 
@@ -907,4 +912,9 @@ void MSAEditor::addFreeModeMasterMarker(QObject *marker) {
 void MSAEditor::removeFreeModeMasterMarker(QObject *marker) {
     freeModeMasterMarkersSet.remove(marker);
 }
+
+MaEditorSelectionController *MSAEditor::getSelectionController() const {
+    return selectionController;
+}
+
 }    // namespace U2

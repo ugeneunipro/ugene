@@ -62,8 +62,6 @@ public:
         return showQVAction->isChecked();
     }
 
-    void setSelection(const MaEditorSelection &sel);
-
     void moveSelection(int dx, int dy, bool allowSelectionResize = false);
 
     virtual void adjustReferenceLength(U2OpStatus &os);
@@ -82,7 +80,6 @@ public:
 
 public slots:
     void sl_backgroundSelectionChanged();
-    void sl_cancelSelection() override;
 
 private slots:
     void sl_showHideTrace();

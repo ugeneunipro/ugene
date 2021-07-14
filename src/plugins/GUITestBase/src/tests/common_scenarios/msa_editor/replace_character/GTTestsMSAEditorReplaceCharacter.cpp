@@ -504,8 +504,8 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     //2. Select a character in sequence.
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 9), QPoint(0, 9));
 
-    //3. Press 'Escape'
-    //Expected result : edit character mode is ended.
+    //3. Enable edit character mode and press 'Escape'.
+    //Expected result : edit character mode is ended, but the selection remains.
     GTKeyboardDriver::keyClick('r', Qt::ShiftModifier);
 
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
@@ -513,8 +513,8 @@ GUI_TEST_CLASS_DEFINITION(test_0018) {
     GTKeyboardDriver::keyClick('c');
 
     GTKeyboardDriver::keyClick('c', Qt::ControlModifier);
-    const QString selectionContent = GTClipboard::text(os);
-    CHECK_SET_ERR(selectionContent == "T", QString("Incorrect selection content: expected - %1, received - %2").arg("T").arg(selectionContent));
+    QString selectionContent = GTClipboard::text(os);
+    CHECK_SET_ERR(selectionContent == "T", QString("Incorrect selection content: expected - 'T', got - '%1'").arg(selectionContent));
 }
 
 }    // namespace GUITest_common_scenarios_msa_editor_replace_character

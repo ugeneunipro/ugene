@@ -70,7 +70,9 @@ McaEditorReferenceArea::McaEditorReferenceArea(McaEditorWgt *ui, SequenceObjectC
     connect(ui->getConsensusArea(), SIGNAL(si_mismatchRedrawRequired()), SLOT(completeUpdate()));
     connect(scrollBar, SIGNAL(valueChanged(int)), ui->getScrollController()->getHorizontalScrollBar(), SLOT(setValue(int)));
     connect(ui->getScrollController()->getHorizontalScrollBar(), SIGNAL(valueChanged(int)), scrollBar, SLOT(setValue(int)));
-    connect(ui->getSequenceArea(), SIGNAL(si_selectionChanged(MaEditorSelection, MaEditorSelection)), SLOT(sl_selectionChanged(MaEditorSelection, MaEditorSelection)));
+    connect(editor->getSelectionController(),
+            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
+            SLOT(sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)));
 
     setMouseTracking(false);
 
@@ -82,7 +84,7 @@ void McaEditorReferenceArea::sl_selectMismatch(int pos) {
     if (seqArea->getFirstVisibleBase() > pos || seqArea->getLastVisibleBase(false) < pos) {
         seqArea->centerPos(pos);
     }
-    seqArea->sl_cancelSelection();
+    editor->getSelectionController()->clearSelection();
     setSelection(U2Region(pos, 1));
 }
 
@@ -112,7 +114,7 @@ void McaEditorReferenceArea::mousePressEvent(QMouseEvent *e) {
         const bool isShiftPressed = km.testFlag(Qt::ShiftModifier);
         if (!isShiftPressed) {
             firstPressedSelectionPosition = -1;
-            editor->getUI()->getSequenceArea()->sl_cancelSelection();
+            editor->getSelectionController()->clearSelection();
         }
     } else {
         PanView::mousePressEvent(e);

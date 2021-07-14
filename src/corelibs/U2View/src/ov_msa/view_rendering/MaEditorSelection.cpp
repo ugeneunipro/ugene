@@ -23,6 +23,10 @@
 
 #include <U2Core/U2SafePoints.h>
 
+#include "ov_msa/MaEditor.h"
+#include "ov_msa/McaEditor.h"
+#include "ov_msa/McaEditorReferenceArea.h"
+
 namespace U2 {
 
 /************************************************************************/
@@ -73,6 +77,65 @@ const QList<QRect> &MaEditorSelection::getRectList() const {
 
 bool MaEditorSelection::operator==(const MaEditorSelection &other) const {
     return other.getRectList() == rectList;
+}
+
+bool MaEditorSelection::operator!=(const MaEditorSelection &other) const {
+    return !(other == *this);
+}
+
+/************************************************************************/
+/* MaEditorSelectionController */
+/************************************************************************/
+
+MaEditorSelectionController::MaEditorSelectionController(MaEditor *_editor)
+    : QObject(_editor), editor(_editor) {
+    SAFE_POINT(editor != nullptr, "MAEditor is null!", );
+}
+
+const MaEditorSelection &MaEditorSelectionController::getSelection() const {
+    return selection;
+}
+
+void MaEditorSelectionController::clearSelection() {
+    setSelection(MaEditorSelection());
+}
+
+void MaEditorSelectionController::setSelection(const MaEditorSelection &newSelection) {
+    CHECK(!editor->isAlignmentEmpty() || newSelection.isEmpty(), );
+    CHECK(newSelection != selection, );
+    MaEditorSelection oldSelection = selection;
+    selection = newSelection;
+    emit si_selectionChanged(selection, oldSelection);
+}
+
+/**********************************
+ * **************************************/
+/* McaEditorSelectionController */
+/************************************************************************/
+
+McaEditorSelectionController::McaEditorSelectionController(McaEditor *_editor)
+    : MaEditorSelectionController(_editor), mcaEditor(_editor) {
+}
+
+void McaEditorSelectionController::clearSelection() {
+    MaEditorSelectionController::clearSelection();
+    mcaEditor->getUI()->getReferenceArea()->clearSelection();
+}
+
+void McaEditorSelectionController::setSelection(const MaEditorSelection &newSelection) {
+    QRect selectionRect = newSelection.toRect();
+    if (selectionRect.isEmpty()) {
+        MaEditorSelectionController::setSelection(MaEditorSelection());
+        mcaEditor->getUI()->getReferenceArea()->clearSelection();
+        return;
+    }
+    if (selectionRect.width() == 1 && mcaEditor->getMaObject()->getMca()->isTrailingOrLeadingGap(selectionRect.y(), selectionRect.x())) {
+        // Clear selection if gap is clicked.
+        MaEditorSelectionController::setSelection(MaEditorSelection());
+        mcaEditor->getUI()->getReferenceArea()->clearSelection();
+        return;
+    }
+    MaEditorSelectionController::setSelection(newSelection);
 }
 
 }    // namespace U2
