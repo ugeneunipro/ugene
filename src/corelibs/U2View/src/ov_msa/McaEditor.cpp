@@ -44,6 +44,7 @@
 #include "helpers/MaAmbiguousCharactersController.h"
 #include "ov_sequence/SequenceObjectContext.h"
 #include "overview/MaEditorOverviewArea.h"
+#include "view_rendering/MaEditorSelection.h"
 #include "view_rendering/SequenceWithChromatogramAreaRenderer.h"
 
 namespace U2 {
@@ -52,6 +53,7 @@ McaEditor::McaEditor(const QString &viewName,
                      MultipleChromatogramAlignmentObject *obj)
     : MaEditor(McaEditorFactory::ID, viewName, obj),
       showChromatogramsAction(nullptr), showGeneralTabAction(nullptr), showConsensusTabAction(nullptr), referenceCtx(nullptr) {
+    selectionController = new McaEditorSelectionController(this);
     initZoom();
     initFont();
 
@@ -355,4 +357,7 @@ void McaEditor::sl_gotoSelectedRead() {
     ui->getSequenceArea()->centerPos(rowStartPos);
 }
 
+MaEditorSelectionController *McaEditor::getSelectionController() const {
+    return selectionController;
+}
 }    // namespace U2

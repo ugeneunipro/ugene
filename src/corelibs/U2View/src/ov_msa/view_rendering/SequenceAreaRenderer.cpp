@@ -32,6 +32,7 @@
 #include "ov_msa/helpers/DrawHelper.h"
 #include "ov_msa/helpers/RowHeightController.h"
 #include "ov_msa/helpers/ScrollController.h"
+#include "ov_msa/view_rendering/MaEditorSelection.h"
 
 namespace U2 {
 
@@ -77,7 +78,7 @@ bool SequenceAreaRenderer::drawContent(QPainter &painter, const U2Region &column
 #define SELECTION_STROKE_WIDTH 2
 
 void SequenceAreaRenderer::drawSelection(QPainter &painter) const {
-    QRect selectionRect = ui->getDrawHelper()->getSelectionScreenRect(seqAreaWgt->getSelection());
+    QRect selectionRect = ui->getDrawHelper()->getSelectionScreenRect(seqAreaWgt->getEditor()->getSelection());
     int viewWidth = ui->getSequenceArea()->width();
     if (selectionRect.right() < 0 || selectionRect.left() > viewWidth) {
         return;    // Selection is out of the screen.
@@ -136,7 +137,7 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
     const int rowHeight = ui->getRowHeightController()->getSingleRowHeight();
     const int baseWidth = ui->getBaseWidthController()->getBaseWidth();
 
-    QRect selectionRect = seqAreaWgt->getSelection().toRect();
+    QRect selectionRect = seqAreaWgt->getEditor()->getSelection().toRect();
     U2Region selectionXRegion = U2Region::fromXRange(selectionRect);
     U2Region selectionYRegion = U2Region::fromYRange(selectionRect);
     int viewRow = ui->getCollapseModel()->getViewRowIndexByMaRowIndex(maRow);

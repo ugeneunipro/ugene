@@ -30,6 +30,7 @@
 #include "ov_msa/MSASelectSubalignmentDialog.h"
 #include "ov_msa/helpers/BaseWidthController.h"
 #include "ov_msa/helpers/RowHeightController.h"
+#include "ov_msa/view_rendering/MaEditorSelection.h"
 #include "ui_MSAExportSettings.h"
 
 namespace U2 {
@@ -306,7 +307,7 @@ void MSAImageExportController::initSettingsWidget() {
     connect(settingsUi->selectRegionButton, SIGNAL(clicked()), SLOT(sl_showSelectRegionDialog()));
     connect(settingsUi->comboBox, SIGNAL(currentIndexChanged(int)), SLOT(sl_regionChanged()));
 
-    QRect selectionRect = ui->getSequenceArea()->getSelection().toRect();
+    QRect selectionRect = ui->getEditor()->getSelection().toRect();
     CHECK(!selectionRect.isEmpty(), );
     msaSettings.region = U2Region(selectionRect.x(), selectionRect.width());
     msaSettings.seqIdx.clear();

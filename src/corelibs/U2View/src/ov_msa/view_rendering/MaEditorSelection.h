@@ -28,6 +28,9 @@
 
 namespace U2 {
 
+class MaEditor;
+class McaEditor;
+
 /** Data model for selection in MSA editor: list of visual non-overlapping rectangles. */
 class U2VIEW_EXPORT MaEditorSelection {
 public:
@@ -58,6 +61,9 @@ public:
     /** Compares 2 selection. Two selections are equal if they have equal list of rects with the same order. */
     bool operator==(const MaEditorSelection &other) const;
 
+    /** Compares 2 selection. Two selections are equal if they have equal list of rects with the same order. */
+    bool operator!=(const MaEditorSelection &other) const;
+
 private:
     /**
      * Unsorted list of visual non-overlapping on-screen rectangles.
@@ -65,6 +71,56 @@ private:
      * Width equal to 0 is allowed by historical reasons (see MCA editor) and is processed as a 'whole row' selection.
      */
     QList<QRect> rectList;
+};
+
+/** MSA/MCA editor selection controller. */
+class U2VIEW_EXPORT MaEditorSelectionController : public QObject {
+    Q_OBJECT
+public:
+    explicit MaEditorSelectionController(MaEditor *editor);
+
+    /** Returns current selection state. */
+    const MaEditorSelection &getSelection() const;
+
+    /** Sets new selection instance. Emits si_selectionChanged signal. */
+    virtual void setSelection(const MaEditorSelection &selection);
+
+signals:
+
+    /** Signal emitted every time selection is changed. */
+    void si_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &prev);
+
+public slots:
+    /** Sets selection to empty selection. Emits signal that selection is changed. */
+    virtual void clearSelection();
+
+protected:
+    /** Current selection with view rows/column coordinates. */
+    MaEditorSelection selection;
+
+private:
+    /** MSA/MCA editor instance. Never null. */
+    MaEditor *const editor;
+};
+
+/**
+ * Selection controller for MCA editor.
+ * TODO: move out of ov_msa to ov_mca together with other mca specific classes.
+ */
+class U2VIEW_EXPORT McaEditorSelectionController : public MaEditorSelectionController {
+    Q_OBJECT
+public:
+    explicit McaEditorSelectionController(McaEditor *editor);
+
+    /** Sets new selection instance. Emits si_selectionChanged signal. */
+    void setSelection(const MaEditorSelection &selection) override;
+
+public slots:
+    /** Clears both MA & reference sequence selections. */
+    void clearSelection() override;
+
+private:
+    McaEditor *const mcaEditor;
 };
 
 }    // namespace U2

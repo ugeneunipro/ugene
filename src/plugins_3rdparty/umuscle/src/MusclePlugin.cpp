@@ -40,6 +40,7 @@
 
 #include <U2View/MSAEditor.h>
 #include <U2View/MaEditorFactory.h>
+#include <U2View/MaEditorSelection.h>
 
 #include "MuscleAlignDialogController.h"
 #include "MuscleTask.h"
@@ -174,12 +175,12 @@ void MuscleMSAEditorContext::buildStaticOrContextMenu(GObjectView *v, QMenu *m) 
 }
 
 void MuscleMSAEditorContext::sl_align() {
-    MuscleAction *action = qobject_cast<MuscleAction *>(sender());
+    auto action = qobject_cast<MuscleAction *>(sender());
     assert(action != nullptr);
     MSAEditor *ed = action->getMSAEditor();
     MultipleSequenceAlignmentObject *obj = ed->getMaObject();
 
-    const QRect selection = action->getMSAEditor()->getSelectionRect();
+    const QRect selection = action->getMSAEditor()->getSelection().toRect();
     MuscleTaskSettings s;
     if (!selection.isNull()) {
         int width = selection.width();

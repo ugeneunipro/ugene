@@ -57,7 +57,6 @@ McaEditorNameList::McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar)
 void McaEditorNameList::sl_selectionChanged(const MaEditorSelection & /*current*/, const MaEditorSelection & /*oldSelection*/) {
     sl_updateActions();
     sl_completeRedraw();
-    emit si_selectionChanged();
 }
 
 void McaEditorNameList::sl_updateActions() {

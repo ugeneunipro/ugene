@@ -62,7 +62,10 @@ McaEditorStatusBar::McaEditorStatusBar(MultipleAlignmentObject *mobj,
                                tr("Read position %1 of %2"));
     selectionLabel->hide();
 
-    connect(nameList, SIGNAL(si_selectionChanged()), SLOT(sl_update()));
+    connect(seqArea->getEditor()->getSelectionController(),
+            SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
+            SLOT(sl_update()));
+
     connect(refCharController, SIGNAL(si_cacheUpdated()), SLOT(sl_update()));
 
     updateLabels();
@@ -109,7 +112,8 @@ void McaEditorStatusBar::updateLineLabel() {
 
 void McaEditorStatusBar::updatePositionLabel() {
     QPair<QString, QString> positions = QPair<QString, QString>(NONE_MARK, NONE_MARK);
-    if (seqArea->getSelection().toRect().width() == 1) {
+    int selectionWidth = seqArea->getEditor()->getSelection().toRect().width();
+    if (selectionWidth == 1) {
         positions = getGappedPositionInfo();
     } else {
         U2Region rowsSelection = nameList->getSelection();
