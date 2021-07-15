@@ -48,23 +48,45 @@ bool UnwantedConnectionsUtils::isUnwantedSelfDimer(const QByteArray& forwardSequ
                                                    double unwantedDeltaG,
                                                    double unwantedMeltingTemperature,
                                                    int unwantedDimerLength) {
+    QString unused;
+    return isUnwantedSelfDimer(forwardSequence, unwantedDeltaG, unwantedMeltingTemperature, unwantedDimerLength,
+        unused);
+}
+
+bool UnwantedConnectionsUtils::isUnwantedSelfDimer(const QByteArray& forwardSequence,
+                                                   double unwantedDeltaG,
+                                                   double unwantedMeltingTemperature,
+                                                   int unwantedDimerLength,
+                                                   QString &report) {
     PrimerStatisticsCalculator calc(forwardSequence, PrimerStatisticsCalculator::Direction::DoesntMatter);
-    return areUnwantedParametersPresentedInDimersInfo(calc.getDimersInfo(), unwantedDeltaG, unwantedMeltingTemperature, unwantedDimerLength);
+    return areUnwantedParametersPresentedInDimersInfo(calc.getDimersInfo(), unwantedDeltaG, unwantedMeltingTemperature, unwantedDimerLength, report);
+}
+
+bool UnwantedConnectionsUtils::isUnwantedHeteroDimer(const QByteArray &forwardSequence,
+                                                     const QByteArray &reverseSequence,
+                                                     double unwantedDeltaG,
+                                                     double unwantedMeltingTemperature,
+                                                     int unwantedDimerLength) {
+    QString unused;
+    return isUnwantedHeteroDimer(forwardSequence, reverseSequence, unwantedDeltaG, unwantedMeltingTemperature,
+        unwantedDimerLength, unused);
 }
 
 bool UnwantedConnectionsUtils::isUnwantedHeteroDimer(const QByteArray& forwardSequence,
                                                      const QByteArray& reverseSequence,
                                                      double unwantedDeltaG,
                                                      double unwantedMeltingTemperature,
-                                                     int unwantedDimerLength) {
+                                                     int unwantedDimerLength,
+                                                     QString &report) {
     PrimersPairStatistics calc(forwardSequence, reverseSequence);
-    return areUnwantedParametersPresentedInDimersInfo(calc.getDimersInfo(), unwantedDeltaG, unwantedMeltingTemperature, unwantedDimerLength);
+    return areUnwantedParametersPresentedInDimersInfo(calc.getDimersInfo(), unwantedDeltaG, unwantedMeltingTemperature, unwantedDimerLength, report);
 }
 
 bool UnwantedConnectionsUtils::areUnwantedParametersPresentedInDimersInfo(const DimerFinderResult& dimersInfo,
                                                                           double unwantedDeltaG,
                                                                           double unwantedMeltingTemperature,
-                                                                          int unwantedDimerLength) {
+                                                                          int unwantedDimerLength,
+                                                                          QString &report) {
     if (dimersInfo.dimersOverlap.isEmpty()) {
         return false;
     }
@@ -74,8 +96,9 @@ bool UnwantedConnectionsUtils::areUnwantedParametersPresentedInDimersInfo(const 
     bool isMeltingTemperatureUnwanted = unwantedMeltingTemperature < dimerMeltingTemp;
     bool isLengthUnwanted = unwantedDimerLength < dimerLength;
     bool isUnwantedParameter = isDeltaGUnwanted && isMeltingTemperatureUnwanted && isLengthUnwanted;
+    report = QObject::tr(dimersInfo.getFullReport().toLocal8Bit());
     if (isUnwantedParameter) {
-        algoLog.details(QObject::tr(dimersInfo.getFullReport().toLocal8Bit()));
+        algoLog.details(report);
     }
 
     return isUnwantedParameter;
