@@ -1,4 +1,4 @@
-#!/bin/bash
+!/bin/bash
 # Creates a final UGENE DMG package for MacOS  from the pre-built bundle.
 # - Takes a pre-built version of UGENE (See build.sh + bundle.sh)
 # - Adds external tools.
@@ -19,9 +19,8 @@ APP_EXE_DIR="${APP_DIR}/Contents/MacOS"
 SYMBOLS_DIR_NAME=symbols
 SYMBOLS_DIR="${TEAMCITY_WORK_DIR}/$SYMBOLS_DIR_NAME"
 SYMBOLS_LOG="${TEAMCITY_WORK_DIR}/symbols.log"
-export ARCHITECTURE=x86_64
 ARCHITECTURE_FILE_SUFFIX=x86-64
-set SIGN_IDENTITY="Developer ID Application: Alteametasoft"
+SIGN_IDENTITY="Developer ID Application: Alteametasoft"
 
 rm -rf "${SYMBOLS_DIR}"
 rm -rf "${SYMBOLS_LOG}"
@@ -54,9 +53,10 @@ rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
 }
 
 # These tools can't be signed today, so remove them from the bundle until fixed.
-rm -rf "${APP_EXE_DIR}/tools/cistrome"
 rm -rf "${APP_EXE_DIR}/tools/java8"
 rm -rf "${APP_EXE_DIR}/tools/python2"
+rm -rf "${APP_EXE_DIR}/tools/cistrome"
+rm -rf "${APP_EXE_DIR}/plugins/"*cistrome*
 
 echo "##teamcity[blockClosed name='Copy files']"
 
