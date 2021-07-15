@@ -19,36 +19,21 @@
  * MA 02110-1301, USA.
  */
 
-#ifndef _U2_FIND_PRESENCE_OF_UNWANTED_PARAMETERS_TASK_H_
-#define _U2_FIND_PRESENCE_OF_UNWANTED_PARAMETERS_TASK_H_
+#ifndef _U2_UNWANTED_STRUCTURES_IN_BACKBONE_DIALOG_H_
+#define _U2_UNWANTED_STRUCTURES_IN_BACKBONE_DIALOG_H_
 
-#include <U2Core/Task.h>
+#include <QDialog>
 
-#include "PCRPrimerDesignForDNAAssemblyTaskSettings.h"
+#include "ui_UnwantedStructuresInBackboneDialog.h"
 
 namespace U2 {
 
-class FindPresenceOfUnwantedParametersTask : public Task {
+class UnwantedStructuresInBackboneDialog : public QDialog, private Ui_UnwantedStructuresInBackboneDialog {
 public:
-    FindPresenceOfUnwantedParametersTask(const QByteArray& sequence, const PCRPrimerDesignForDNAAssemblyTaskSettings& settings);
-
-    void run() override;
-
-    bool hasUnwantedParameters() const;
-
-    const QByteArray& getSequence() const;
-    /**
-     * Return homodimers, heterodimers for 5' and 3' ends of given lengths.
-     */
-    const QString &getUnwantedStructures() const;
-
-private:
-    QByteArray sequence;
-    PCRPrimerDesignForDNAAssemblyTaskSettings settings;
-    QString unwantedStructures;    // Homodimers, heterodimers.
+    UnwantedStructuresInBackboneDialog(const QByteArray &sequence, const QString &unwantedStructures,
+        int sequencesCandidatesNumber, QWidget *parent = nullptr);
 };
 
+}    // namespace U2
 
-}
-
-#endif
+#endif    // _U2_UNWANTED_STRUCTURES_IN_BACKBONE_DIALOG_H_
