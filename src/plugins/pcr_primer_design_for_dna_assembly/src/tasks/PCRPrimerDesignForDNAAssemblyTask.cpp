@@ -37,6 +37,7 @@
 #include "utils/UnwantedConnectionsUtils.h"
 #include "FindPresenceOfUnwantedParametersTask.h"
 #include "FindUnwantedIslandsTask.h"
+#include "UnwantedStructuresInBackboneDialog.h"
 
 #include <U2Core/PrimerStatistics.h>
 
@@ -144,19 +145,34 @@ QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask)
             backboneSequencesCandidates = extractLoadedSequences(loadBackboneSequence);
             CHECK_OP(stateInfo, {});
         } else if (subTask == checkBackboneSequence) {
+            const QByteArray &consideredBackboneSequence = checkBackboneSequence->getSequence();
+            // No unwanted structures -> Set as backbone, finish search for backbone.
             if (!checkBackboneSequence->hasUnwantedParameters()) {
-                backboneSequence = checkBackboneSequence->getSequence();
-                taskLog.details(tr("The backbone sequence without unwanted hairpins, self- and hetero-dimers has ben found: %1").arg(QString(backboneSequence)));
+                backboneSequence = consideredBackboneSequence;
+                taskLog.details(tr("The backbone sequence without unwanted hairpins, self- and hetero-dimers has been found: %1").arg(QString(backboneSequence)));
                 return {};
-            } else {
-                taskLog.details(tr("The following backbone sequence candidate contains parameters: %1").arg(QString(backboneSequence)));
             }
+            // There are unwanted structures -> Asking the user if this sequence with unwanted structures should be used
+            // as backbone?
+            taskLog.details(tr("The following backbone sequence candidate contains parameters: %1")
+                                .arg(QString(consideredBackboneSequence)));
+            int userResponse = UnwantedStructuresInBackboneDialog(consideredBackboneSequence,
+                                                                  checkBackboneSequence->getUnwantedStructures(),
+                                                                  backboneSequencesCandidates.length())
+                                   .exec();
+            // User accepted -> Set as backbone, finish search for backbone.
+            if (userResponse == QDialog::Accepted) {
+                backboneSequence = consideredBackboneSequence;
+                return {};
+            }
+            // User rejected -> Proceed to next candidate sequence (next if).
         }
 
         if (!backboneSequencesCandidates.isEmpty()) {
             checkBackboneSequence = new FindPresenceOfUnwantedParametersTask(backboneSequencesCandidates.takeFirst(), settings);
             return { checkBackboneSequence };
         } else {
+            backboneSequence = QByteArray();
             taskLog.error(tr("The file \"%1\" doesn't contain the backbone sequence, which matchs the parameters. "
                 "Skip the backbone sequence parameter.").arg(settings.backboneSequenceUrl));
         }
