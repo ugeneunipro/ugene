@@ -42,17 +42,31 @@ public:
                                     double unwantedMeltingTemperatur,
                                     int unwantedDimerLength);
 
+    static bool isUnwantedSelfDimer(const QByteArray &forwardSequence,
+                                    double unwantedDeltaG,
+                                    double unwantedMeltingTemperature,
+                                    int unwantedDimerLength,
+                                    QString &report);
+
+    static bool isUnwantedHeteroDimer(const QByteArray &forwardSequence,
+                                      const QByteArray &reverseSequence,
+                                      double unwantedDeltaG,
+                                      double unwantedMeltingTemperature,
+                                      int unwantedDimerLength);
+
     static bool isUnwantedHeteroDimer(const QByteArray& forwardSequence,
                                       const QByteArray& reverseSequence,
                                       double unwantedDeltaG,
                                       double unwantedMeltingTemperature,
-                                      int unwantedDimerLength);
+                                      int unwantedDimerLength,
+                                      QString &report);
 
 private:
     static bool areUnwantedParametersPresentedInDimersInfo(const DimerFinderResult& dimersInfo,
                                                            double unwantedDeltaG,
                                                            double unwantedMeltingTemperature,
-                                                           int unwantedDimerLength);
+                                                           int unwantedDimerLength,
+                                                           QString &report);
 
 
 
