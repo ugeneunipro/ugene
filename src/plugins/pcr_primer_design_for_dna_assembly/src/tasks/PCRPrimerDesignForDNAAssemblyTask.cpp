@@ -244,7 +244,7 @@ bool PCRPrimerDesignForDNAAssemblyTask::hasUnwantedConnections(const QByteArray&
             otherSeqInPcr, settings.gibbsFreeEnergyExclude, settings.meltingPointExclude, settings.complementLengthExclude);
     }
 
-    //TODO: hairpins and heterodimers
+    //TODO: hairpins
     return isUnwantedSelfDimer || hasUnwantedHeteroDimer;
 }
 

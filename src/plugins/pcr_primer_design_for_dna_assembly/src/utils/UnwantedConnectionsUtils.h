@@ -32,11 +32,6 @@ class UnwantedConnectionsUtils {
 public:
     UnwantedConnectionsUtils() = delete;
 
-    static bool hasUnwantedConnections(const QByteArray& forwardSequence,
-                                       double unwantedDeltaG,
-                                       double unwantedMeltingTemperatur,
-                                       int unwantedDimerLength);
-
     static bool isUnwantedSelfDimer(const QByteArray& forwardSequence,
                                     double unwantedDeltaG,
                                     double unwantedMeltingTemperatur,
