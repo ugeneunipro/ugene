@@ -50,7 +50,7 @@ private:
     static constexpr int ISLAND_LENGTH = 8;
     static constexpr int NUCLEOTIDE_PAIR_LENGTH = 2;
 
-    static constexpr double UNWANTED_MELTING_TEMPERATURE = 20;
+    static constexpr double UNWANTED_MELTING_TEMPERATURE = 16;
     static constexpr double UNWANTED_DELTA_G = -7;
     static constexpr int UNWANTED_MAX_LENGTH = 4;
 };

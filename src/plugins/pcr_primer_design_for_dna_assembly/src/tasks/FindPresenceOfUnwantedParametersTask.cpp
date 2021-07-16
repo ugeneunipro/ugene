@@ -46,28 +46,30 @@ void FindPresenceOfUnwantedParametersTask::run() {
     QByteArray reverse = sequence.right(settings.bachbone3Length);
     QString report;
 
-    UnwantedConnectionsUtils::isUnwantedSelfDimer(forward, settings.gibbsFreeEnergyExclude,
+    //TODO: hairpins
+
+    bool res = UnwantedConnectionsUtils::isUnwantedSelfDimer(forward, settings.gibbsFreeEnergyExclude,
         settings.meltingPointExclude, settings.complementLengthExclude, report);
-    if (!report.isEmpty()) {
-        unwantedStructures = "<strong>5' homodimers:</strong><br><br>";
+    if (res) {
+        unwantedStructures = tr("<u>5' backbone</u><br><br>");
         unwantedStructures += report;
         unwantedStructures += "<br>";
         report.clear();
     }
 
-    UnwantedConnectionsUtils::isUnwantedSelfDimer(reverse, settings.gibbsFreeEnergyExclude,
+    res = UnwantedConnectionsUtils::isUnwantedSelfDimer(reverse, settings.gibbsFreeEnergyExclude,
         settings.meltingPointExclude, settings.complementLengthExclude, report);
-    if (!report.isEmpty()) {
-        unwantedStructures += "<strong>3' homodimers:</strong><br><br>";
+    if (res) {
+        unwantedStructures += tr("<u>3' backbone</u><br><br>");
         unwantedStructures += report;
         unwantedStructures += "<br>";
         report.clear();
     }
 
-    UnwantedConnectionsUtils::isUnwantedHeteroDimer(forward, reverse, settings.gibbsFreeEnergyExclude,
+    res = UnwantedConnectionsUtils::isUnwantedHeteroDimer(forward, reverse, settings.gibbsFreeEnergyExclude,
         settings.meltingPointExclude, settings.complementLengthExclude, report);
-    if (!report.isEmpty()) {
-        unwantedStructures += "<strong>Heterodimers:</strong><br><br>";
+    if (res) {
+        unwantedStructures += tr("<u>Connections between 5' and 3' backbones</u><br><br>");
         unwantedStructures += report;
     }
 }
