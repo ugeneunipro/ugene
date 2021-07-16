@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 # Creates a final UGENE DMG package for MacOS  from the pre-built bundle.
 # - Takes a pre-built version of UGENE (See build.sh + bundle.sh)
 # - Adds external tools.
