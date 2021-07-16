@@ -49,7 +49,11 @@ protected:
 
     void drawCollapsibleSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool isSelected, bool isCollapsed, bool isReference) override;
 
-    void setSelection(int startSeq, int count) override;
+    /**
+     * Sets selection to the given rects list as result of the Name List triggered selection change.
+     * Clears reference selection if the list whole sequence selection.
+     */
+    void setSelection(const QList<QRect> &rectList) override;
 
 private:
     McaEditor *getEditor() const;

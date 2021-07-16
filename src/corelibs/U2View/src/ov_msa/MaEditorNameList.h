@@ -105,9 +105,6 @@ public:
     qint64 sequenceIdAtPos(const QPoint &p);
     void clearGroupsColors();
 
-    /* Returns region of the selected view rows. */
-    U2Region getSelection() const;
-
     QFont getFont(bool selected) const;
 
 signals:
@@ -116,7 +113,11 @@ signals:
     void si_stopMaChanging(bool modified);
 
 protected:
-    virtual void setSelection(int startSeq, int count);
+    /**
+     * Sets selection MA editor selection to the given state.
+     * The method is called for all selection change events triggered in the name-list component.
+     * May be overriden to adjust behavior. */
+    virtual void setSelection(const QList<QRect> &rectList);
 
     void moveSelectedRegion(int shift);
 
@@ -137,8 +138,6 @@ protected:
     virtual void drawSelection(QPainter &p);
 
     virtual void drawSequenceItem(QPainter &painter, const QString &text, const U2Region &yRange, bool isSelected, bool isReference);
-
-    virtual void drawSequenceItem(QPainter &painter, int rowIndex, const U2Region &yRange, const QString &text, bool isSelected);
 
     virtual void drawCollapsibleSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool isSelected, bool isCollapsed, bool isReference);
 

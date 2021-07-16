@@ -62,10 +62,8 @@ void McaEditorNameList::sl_selectionChanged(const MaEditorSelection & /*current*
 void McaEditorNameList::sl_updateActions() {
     MaEditorNameList::sl_updateActions();
 
-    U2Region selection = getSelection();
-    const bool hasSequenceSelection = !selection.isEmpty();
-    const bool hasRowSelection = !selection.isEmpty();
-    const bool isWholeReadSelected = hasRowSelection && !hasSequenceSelection;
+    const MaEditorSelection &selection = editor->getSelection();
+    bool isWholeReadSelected = !selection.isEmpty() && selection.getRectList().first().width() == editor->getAlignmentLen();
 
     removeSequenceAction->setShortcut(isWholeReadSelected ? QKeySequence::Delete : QKeySequence());
 }
@@ -77,10 +75,12 @@ void McaEditorNameList::drawCollapsibleSequenceItem(QPainter &painter, int rowIn
     drawArrow(painter, isReversed, arrowRect);
 }
 
-void McaEditorNameList::setSelection(int startSeq, int count) {
-    ui->getSequenceArea()->setSelectionRect(QRect(0, startSeq, editor->getAlignmentLen(), count));
-    // Whole sequence selection in the name list should not trigger reference selection.
-    getEditor()->getUI()->getReferenceArea()->clearSelection();
+void McaEditorNameList::setSelection(const QList<QRect> &rectList) {
+    MaEditorNameList::setSelection(rectList);
+    if (!rectList.isEmpty() && rectList.first().width() < editor->getAlignmentLen()) {
+        // Whole sequence selection in the name list should not trigger reference selection.
+        getEditor()->getUI()->getReferenceArea()->clearSelection();
+    }
 }
 
 McaEditor *McaEditorNameList::getEditor() const {

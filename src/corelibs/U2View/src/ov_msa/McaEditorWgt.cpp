@@ -139,7 +139,7 @@ void McaEditorWgt::initConsensusArea() {
 }
 
 void McaEditorWgt::initStatusBar() {
-    statusBar = new McaEditorStatusBar(editor->getMaObject(), sequenceArea, getEditorNameList(), refCharController);
+    statusBar = new McaEditorStatusBar(editor->getMaObject(), sequenceArea, refCharController);
 }
 
 McaEditorReferenceArea *McaEditorWgt::getReferenceArea() const {
