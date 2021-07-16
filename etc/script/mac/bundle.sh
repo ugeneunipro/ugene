@@ -175,3 +175,6 @@ cp "${QT_DIR}"/extra_libs/* "${TARGET_APP_DIR}/Contents/Frameworks"
 
 echo Copying readme.txt file
 cp "${SOURCE_DIR}/etc/script/mac/dmg/readme.txt" "${BUNDLE_DIR}/readme.txt"
+
+echo "Compressing app into a tar.gz"
+tar cfz "bundle-mac-b${TEAMCITY_BUILD_COUNTER}.tar.gz" -C "${BUNDLE_DIR}" .
