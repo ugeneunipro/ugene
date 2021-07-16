@@ -1,4 +1,0 @@
-<suite name="Find algorithm tests" test-timeout="30">
-
-    <test-dir path="FindAlgorithm" test-format="XML" test-ext="*.xml"/>
-</suite>

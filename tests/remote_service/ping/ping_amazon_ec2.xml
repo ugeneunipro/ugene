@@ -1,5 +1,0 @@
-<multi-test>
-    <ping-remote-service
-            cfg-path="remote_service/ping_amazon_ec2.cfg"
-    />
-</multi-test>

@@ -1,4 +1,0 @@
-<suite name="HMM3 plugin common tests">
-
-    <test-dir test-ext="*.xml" path="hmm3/common" test-format="XML"/>
-</suite>

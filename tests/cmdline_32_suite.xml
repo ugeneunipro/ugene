@@ -1,7 +1,0 @@
-<suite name="CMDLine ugene 32 tests">
-
-    <env-var name="PROTOTYPE" value="cmdline/_proto"/>
-    <test-dir path="cmdline/32" test-format="XML" test-ext="*.xml"
-    />
-
-</suite>
