@@ -27,23 +27,6 @@
 
 namespace U2 {
 
-bool UnwantedConnectionsUtils::hasUnwantedConnections(const QByteArray& forwardSequence,
-                                                      double unwantedDeltaG,
-                                                      double unwantedMeltingTemperatur,
-                                                      int unwantedDimerLength) {
-    /**
-     * It's reverse complement representation.
-     */
-    QByteArray revComSequence = DNASequenceUtils::reverseComplement(forwardSequence);
-
-    //Self-dimer
-    bool isSelfDimer = isUnwantedSelfDimer(forwardSequence, unwantedDeltaG, unwantedMeltingTemperatur, unwantedDimerLength);
-
-    //TODO:
-
-    return isSelfDimer;
-}
-
 bool UnwantedConnectionsUtils::isUnwantedSelfDimer(const QByteArray& forwardSequence,
                                                    double unwantedDeltaG,
                                                    double unwantedMeltingTemperature,
@@ -59,6 +42,7 @@ bool UnwantedConnectionsUtils::isUnwantedSelfDimer(const QByteArray& forwardSequ
                                                    int unwantedDimerLength,
                                                    QString &report) {
     PrimerStatisticsCalculator calc(forwardSequence, PrimerStatisticsCalculator::Direction::DoesntMatter);
+    report = QObject::tr("<b>Self-dimer:</b><br>");
     return areUnwantedParametersPresentedInDimersInfo(calc.getDimersInfo(), unwantedDeltaG, unwantedMeltingTemperature, unwantedDimerLength, report);
 }
 
@@ -79,6 +63,7 @@ bool UnwantedConnectionsUtils::isUnwantedHeteroDimer(const QByteArray& forwardSe
                                                      int unwantedDimerLength,
                                                      QString &report) {
     PrimersPairStatistics calc(forwardSequence, reverseSequence);
+    report = QObject::tr("<b>Hetero-dimer:</b><br>");
     return areUnwantedParametersPresentedInDimersInfo(calc.getDimersInfo(), unwantedDeltaG, unwantedMeltingTemperature, unwantedDimerLength, report);
 }
 
@@ -92,11 +77,11 @@ bool UnwantedConnectionsUtils::areUnwantedParametersPresentedInDimersInfo(const 
     }
     double dimerMeltingTemp = PrimerStatistics::getMeltingTemperature(dimersInfo.dimer.toLocal8Bit());
     int dimerLength = dimersInfo.dimer.length();
-    bool isDeltaGUnwanted = dimersInfo.deltaG < unwantedDeltaG;
-    bool isMeltingTemperatureUnwanted = unwantedMeltingTemperature < dimerMeltingTemp;
-    bool isLengthUnwanted = unwantedDimerLength < dimerLength;
+    bool isDeltaGUnwanted = dimersInfo.deltaG <= unwantedDeltaG;
+    bool isMeltingTemperatureUnwanted = unwantedMeltingTemperature <= dimerMeltingTemp;
+    bool isLengthUnwanted = unwantedDimerLength <= dimerLength;
     bool isUnwantedParameter = isDeltaGUnwanted && isMeltingTemperatureUnwanted && isLengthUnwanted;
-    report = QObject::tr(dimersInfo.getFullReport().toLocal8Bit());
+    report += QObject::tr(dimersInfo.getFullReport().toLocal8Bit());
     if (isUnwantedParameter) {
         algoLog.details(report);
     }
