@@ -79,8 +79,6 @@ void BaseDocWriter::init() {
     ch = ports.values().first();
 }
 
-#define GZIP_SUFFIX ".gz"
-
 void BaseDocWriter::takeParameters(U2OpStatus &os) {
     Attribute *dataStorageAttr = actor->getParameter(BaseAttributes::DATA_STORAGE_ATTRIBUTE().getId());
 
