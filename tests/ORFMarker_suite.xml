@@ -1,4 +1,0 @@
-<suite name="ORFMarker plugin tests" test-timeout="30">
-
-    <test-dir path="ORFMarker" test-format="XML" test-ext="*.xml"/>
-</suite>

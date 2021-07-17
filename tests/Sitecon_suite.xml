@@ -1,5 +1,0 @@
-<suite name="Sitecon tests">
-    <test-dir path="Sitecon" test-format="XML" test-ext="*.xml"
-              exclude_64="Algorithm/errors/second_type/test_0001.xml"
-    />
-</suite>
