@@ -1,6 +1,0 @@
-<suite name="Ping remote service">
-
-    <test-dir test-ext="*.xml" path="remote_service/ping" test-format="XML"
-              exclude="ping_local_machine.xml"
-    />
-</suite>

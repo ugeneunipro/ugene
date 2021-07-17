@@ -72,7 +72,6 @@ private slots:
     void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &);
     void sl_vScrollBarActionPerformed();
     void sl_completeUpdate();
-    void sl_onGroupColorsChanged(const GroupColorSchema &);
 
 protected slots:
     virtual void sl_selectionChanged(const MaEditorSelection &current, const MaEditorSelection &prev);
@@ -110,7 +109,6 @@ protected:
 
 public:
     qint64 sequenceIdAtPos(const QPoint &p);
-    void clearGroupsColors();
 
     QFont getFont(bool selected) const;
 
@@ -173,8 +171,6 @@ protected:
     QScrollBar *nhBar;
     QPoint mousePressPoint;
     bool dragging;
-    GroupColorSchema groupColors;
-
     QRubberBand *rubberBand;
 
 public:

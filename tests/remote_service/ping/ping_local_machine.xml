@@ -1,5 +1,0 @@
-<multi-test>
-    <ping-remote-service
-            cfg-path="remote_service/ping_local_machine.cfg"
-    />
-</multi-test>

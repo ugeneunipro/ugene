@@ -269,12 +269,12 @@ signals:
     void si_updateBranch();
 
 protected:
-    virtual void wheelEvent(QWheelEvent *e);
-    virtual void resizeEvent(QResizeEvent *e);
-    virtual void mousePressEvent(QMouseEvent *e);
-    virtual void mouseReleaseEvent(QMouseEvent *e);
+     void wheelEvent(QWheelEvent *e) override;
+     void resizeEvent(QResizeEvent *e) override;
+     void mousePressEvent(QMouseEvent *e) override;
+     void mouseReleaseEvent(QMouseEvent *e) override;
 
-    virtual void setTreeLayout(TreeLayout newLayout);
+    virtual void setTreeLayout(const TreeLayout& newLayout);
 
     /** Returns root item for the tree. */
     GraphicsBranchItem *getRoot() const;
