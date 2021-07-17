@@ -177,4 +177,5 @@ echo Copying readme.txt file
 cp "${SOURCE_DIR}/etc/script/mac/dmg/readme.txt" "${BUNDLE_DIR}/readme.txt"
 
 echo "Compressing app into a tar.gz"
+rm "${TEAMCITY_WORK_DIR}/"*.gz
 tar cfz "bundle-mac-b${TEAMCITY_BUILD_COUNTER}.tar.gz" -C "${BUNDLE_DIR}" .

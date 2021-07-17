@@ -107,7 +107,7 @@ echo "##teamcity[blockClosed name='Sign']"
 
 echo "##teamcity[blockOpened name='Build archive']"
 
-RELEASE_BASE_FILE_NAME="ugene-${VERSION}-r${TEAMCITY_BUILD_COUNTER}-win-x86-64-portable"
+RELEASE_BASE_FILE_NAME="ugene-${VERSION}-p${TEAMCITY_BUILD_COUNTER}-win-x86-64-portable"
 RELEASE_UNPACKED_DIR_NAME="ugene-${VERSION}"
 
 rm -rf "ugene-"*
