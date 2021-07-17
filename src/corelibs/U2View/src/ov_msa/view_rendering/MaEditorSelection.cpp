@@ -41,8 +41,8 @@ QList<QRect> MaEditorSelection::buildSafeSelectionRects(const QList<QRect> &rect
     if (rectList.size() <= 1) {    // 0 or 1 result: no need to merge, validate only.
         return rectList.isEmpty() || rectList.first().isEmpty() ? QList<QRect>() : rectList;
     }
-    int unifiedLeft = 0;
-    int unifiedRight = 0;
+    int unifiedLeft = INT_MAX;
+    int unifiedRight = INT_MIN;
     for (auto rect : qAsConst(rectList)) {
         unifiedLeft = qMin(unifiedLeft, rect.left());
         unifiedRight = qMax(unifiedRight, rect.right());

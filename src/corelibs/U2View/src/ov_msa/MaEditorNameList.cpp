@@ -281,7 +281,7 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
                 }
                 scrollSelectionToView(grow);
             } else {
-                moveSelection(-1);
+                moveSelection(-1, true);
             }
             break;
         }
@@ -303,7 +303,7 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
                 }
                 scrollSelectionToView(!grow);
             } else {
-                moveSelection(1);
+                moveSelection(1, true);
             }
             break;
         }
@@ -423,7 +423,7 @@ void MaEditorNameList::mouseMoveEvent(QMouseEvent *e) {
     } else if (isDragSelection) {
         rubberBand->setGeometry(QRect(mousePressPoint, e->pos()).normalized());
     } else if (isMoveSelection && mouseRow != -1) {    // getViewRowIndexByScreenYPosition returns -1 for out of range 'y' values.
-        moveSelection(mouseRow - editor->getCursorPosition().y());
+        moveSelection(mouseRow - editor->getCursorPosition().y(), false);
     }
     QWidget::mouseMoveEvent(e);
 }
@@ -474,9 +474,8 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
         // Click or drag (but not move) within name list.
         int alignmentLen = editor->getAlignmentLen();
         if (hasShiftModifier) {
-            // Shift works in single selection mode only.
             // Drag (non-click) is processed as a part of mouse move event.
-            if (oldSelectedRects.size() <= 1 && isClick) {
+            if (isClick) {
                 QRect oldSelectionRect = oldSelectedRects.isEmpty() ? QRect() : oldSelectedRects.first();
                 // Default is a 1 full row where mouse relese event happend. Drag or key-modifiers will change this region.
                 QRect newSelectionRect(0, cursorPos.y(), alignmentLen, 1);
@@ -485,14 +484,12 @@ void MaEditorNameList::mouseReleaseEvent(QMouseEvent *e) {
                     newSelectionRect.setLeft(oldSelectionRect.left());
                     newSelectionRect.setRight(oldSelectionRect.right());
                 }
-                if (isClick) {
-                    if (mouseReleaseRow < cursorPos.y()) {
-                        newSelectionRect.setTop(mouseReleaseRow);
-                        newSelectionRect.setHeight(cursorPos.y() - mousePressRow + 1);
-                    } else if (mouseReleaseRow > cursorPos.y()) {
-                        newSelectionRect.setTop(cursorPos.y());
-                        newSelectionRect.setHeight(mousePressRow - cursorPos.y() + 1);
-                    }
+                if (mouseReleaseRow < cursorPos.y()) {
+                    newSelectionRect.setTop(mouseReleaseRow);
+                    newSelectionRect.setHeight(cursorPos.y() - mousePressRow + 1);
+                } else if (mouseReleaseRow > cursorPos.y()) {
+                    newSelectionRect.setTop(cursorPos.y());
+                    newSelectionRect.setHeight(mousePressRow - cursorPos.y() + 1);
                 }
                 setSelection({{newSelectionRect}});
             }
@@ -864,7 +861,7 @@ void MaEditorNameList::clearGroupsColors() {
     groupColors.clear();
 }
 
-void MaEditorNameList::moveSelection(int offset) {
+void MaEditorNameList::moveSelection(int offset, bool resetXRange) {
     CHECK(offset != 0, );
     const MaEditorSelection &selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
@@ -883,9 +880,15 @@ void MaEditorNameList::moveSelection(int offset) {
     }
     CHECK(safeOffset != 0, );
     editor->setCursorPosition(editor->getCursorPosition() + QPoint(0, safeOffset));
+    int alignmentLength = editor->getAlignmentLen();
     QList<QRect> newSelectedRects;
     for (const QRect &oldRect : qAsConst(oldSelectedRects)) {
-        newSelectedRects << oldRect.translated(0, safeOffset);
+        QRect newRect = oldRect.translated(0, safeOffset);
+        if (resetXRange) {
+            newRect.setX(0);
+            newRect.setWidth(alignmentLength);
+        }
+        newSelectedRects << newRect;
     }
     setSelection(newSelectedRects);
     scrollSelectionToView(safeOffset >= 0);

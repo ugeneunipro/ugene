@@ -93,7 +93,14 @@ protected:
     void wheelEvent(QWheelEvent *we) override;
     //todo context menu?
     int getSelectedMaRow() const;
-    void moveSelection(int offset);
+
+    /**
+     * Moves selection up to 'offset' rows up or down if possible: never changes selection height.
+     * If 'resetXRange' is set to 'false' keeps X-range of the selection unchanged,
+     *  otherwise resets X-range to the 'whole-row' selection.
+     */
+    void moveSelection(int offset, bool resetXRange);
+
     void scrollSelectionToView(bool fromStart);
 
     bool completeRedraw;
