@@ -57,15 +57,6 @@ void McaEditorNameList::sl_selectionChanged(const MaEditorSelection & /*current*
     sl_completeRedraw();
 }
 
-void McaEditorNameList::sl_updateActions() {
-    MaEditorNameList::sl_updateActions();
-
-    const MaEditorSelection &selection = editor->getSelection();
-    bool isWholeReadSelected = !selection.isEmpty() && selection.getRectList().first().width() == editor->getAlignmentLen();
-
-    removeSequenceAction->setShortcut(isWholeReadSelected ? QKeySequence::Delete : QKeySequence());
-}
-
 void McaEditorNameList::drawCollapsibleSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool isSelected, bool isCollapsed, bool isReference) {
     const bool isReversed = isRowReversed(rowIndex);
     const QRectF arrowRect = calculateArrowRect(U2Region(rect.y(), rect.height()));

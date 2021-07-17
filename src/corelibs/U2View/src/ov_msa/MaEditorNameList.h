@@ -117,7 +117,7 @@ protected:
      * Sets selection MA editor selection to the given state.
      * The method is called for all selection change events triggered in the name-list component.
      * May be overriden to adjust behavior. */
-    virtual void setSelection(const MaEditorSelection& selection);
+    virtual void setSelection(const MaEditorSelection &selection);
 
     void moveSelectedRegion(int shift);
 
@@ -173,6 +173,7 @@ protected:
 public:
     QAction *editSequenceNameAction;
     QAction *copyCurrentSequenceAction;
+    // TODO: remove this action. It triggers the same code with ui->delSelectionAction and exists only to show a different text in the context menu.
     QAction *removeSequenceAction;
 
 protected:
