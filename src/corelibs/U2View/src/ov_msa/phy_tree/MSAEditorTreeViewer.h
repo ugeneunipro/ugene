@@ -31,32 +31,8 @@
 
 namespace U2 {
 
-typedef QMap<QString, QColor> GroupColorSchema;
-
 class MSAEditorTreeViewerUI;
 class MSAEditor;
-
-class ColorGenerator {
-public:
-    ColorGenerator(int countOfColors, qreal lightness);
-
-    void setCountOfColors(int counts);
-
-    QColor getColor(int index) const;
-
-    int getCountOfColors() const {
-        return countOfColors;
-    }
-
-private:
-    void generateColors();
-    int countOfColors;
-    QList<QColor> colors;
-    QList<qreal> satValues;
-    qreal delta;
-    qreal hue;
-    qreal lightness;
-};
 
 class MSAEditorTreeViewer : public TreeViewer {
     Q_OBJECT
@@ -104,7 +80,7 @@ public:
     void orderAlignmentByTree();
 
 protected:
-    virtual QWidget *createWidget();
+    QWidget *createWidget() override;
 
 private slots:
 
@@ -168,10 +144,6 @@ class U2VIEW_EXPORT MSAEditorTreeViewerUI : public TreeViewerUI {
 
 public:
     MSAEditorTreeViewerUI(MSAEditorTreeViewer *treeViewer);
-    virtual ~MSAEditorTreeViewerUI() {
-        //Clear groups highlighting in the MSAEditor
-        emit si_groupColorsChanged(GroupColorSchema());
-    }
 
     /** Update tree sub-widgets state to match the current enableSyncMode mode. */
     void updateSyncModeState(bool isSyncModeOn);
@@ -187,47 +159,37 @@ public:
     QList<QStringList> getGroupingStateForMsa() const;
 
 protected:
-    virtual void mousePressEvent(QMouseEvent *e);
-    virtual void wheelEvent(QWheelEvent *e);
-    virtual void mouseMoveEvent(QMouseEvent *me);
-    virtual void mouseReleaseEvent(QMouseEvent *e);
-    virtual void resizeEvent(QResizeEvent *e);
+    void wheelEvent(QWheelEvent *e) override;
+    void resizeEvent(QResizeEvent *e) override;
 
-    virtual void onLayoutChanged(const TreeLayout &layout);
-    void onSettingsChanged(TreeViewOption option, const QVariant &newValue);
+    void onLayoutChanged(const TreeLayout &layout) override;
+    void onSettingsChanged(TreeViewOption option, const QVariant &newValue) override;
 
     /** Overrides the original method to trigger MSA related updates as the result of tree update. */
     void updateScene(bool fitSceneToView) override;
 
-    virtual void setTreeLayout(TreeLayout newLayout);
+    void setTreeLayout(const TreeLayout &newLayout) override;
 
 signals:
-    void si_groupColorsChanged(const GroupColorSchema &schema);
     void si_zoomIn();
     void si_zoomOut();
     void si_resetZooming();
 
 protected slots:
-    void sl_zoomToAll();
-    void sl_zoomToSel();
-    void sl_zoomOut();
+    void sl_zoomToAll() override;
+    void sl_zoomToSel() override;
+    void sl_zoomOut() override;
 
 private slots:
     void sl_selectionChanged(const QStringList &selectedSequenceNameList);
     void sl_sequenceNameChanged(QString prevName, QString newName);
     void sl_onReferenceSeqChanged(qint64);
-    void sl_onSceneRectChanged(const QRectF &);
-    virtual void sl_rectLayoutRecomputed();
-    void sl_onVisibleRangeChanged(QStringList visibleSeqs, int height);
-    virtual void sl_onBranchCollapsed(GraphicsRectangularBranchItem *branch);
+    void sl_rectLayoutRecomputed() override;
+    void sl_onVisibleRangeChanged(const QStringList &visibleSeqs, int height);
+    void sl_onBranchCollapsed(GraphicsRectangularBranchItem *branch) override;
 
 private:
     QList<GraphicsBranchItem *> getBranchItemsWithNames() const;
-
-    QGraphicsLineItem *subgroupSelector;
-    qreal subgroupSelectorPos;
-    bool subgroupSelectionMode;
-    ColorGenerator groupColors;
 
     bool isRectangularLayout;
 
@@ -237,9 +199,6 @@ private:
 };
 
 class MSAEditorTreeViewerUtils {
-private:
-    MSAEditorTreeViewerUtils();
-
 public:
     static QStringList getSeqsNamesInBranch(const GraphicsBranchItem *branch);
 };

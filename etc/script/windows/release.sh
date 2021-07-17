@@ -107,7 +107,7 @@ echo "##teamcity[blockClosed name='Sign']"
 
 echo "##teamcity[blockOpened name='Build archive']"
 
-RELEASE_BASE_FILE_NAME="ugene-${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-win-x86-64-portable"
+RELEASE_BASE_FILE_NAME="ugene-${VERSION}-p${TEAMCITY_BUILD_COUNTER}-win-x86-64-portable"
 RELEASE_UNPACKED_DIR_NAME="ugene-${VERSION}"
 
 rm -rf "ugene-"*
@@ -115,7 +115,7 @@ mv "${APP_BUNDLE_DIR}" "${RELEASE_UNPACKED_DIR_NAME}"
 7z a -r "${RELEASE_BASE_FILE_NAME}.zip" "${RELEASE_UNPACKED_DIR_NAME}/"*
 
 echo Compressing symbols...
-tar cfz "${SYMBOLS_DIR_NAME}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-win-x86-64.tar.gz" "${SYMBOLS_DIR_NAME}"
+tar cfz "${SYMBOLS_DIR_NAME}-p${TEAMCITY_BUILD_COUNTER}-win-x86-64.tar.gz" "${SYMBOLS_DIR_NAME}"
 
 echo "${VERSION}" >"${TEAMCITY_WORK_DIR}/version.txt"
 

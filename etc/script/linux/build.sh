@@ -114,6 +114,7 @@ cp "${UGENE_DIR}/LICENSE.txt" "${BUILD_DIR}/"
 cp "${UGENE_DIR}/LICENSE.3rd_party.txt" "${BUILD_DIR}/"
 
 echo "Compressing app into a tar.gz"
+rm "${TEAMCITY_WORK_DIR}/"*.gz
 tar cfz "${TEAMCITY_WORK_DIR}/bundle-linux-b${TEAMCITY_BUILD_COUNTER}.tar.gz" -C "${BUILD_DIR}" .
 
 echo "##teamcity[blockClosed name='Bundle']"
