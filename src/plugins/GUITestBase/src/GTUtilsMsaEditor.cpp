@@ -332,7 +332,7 @@ void GTUtilsMsaEditor::clearSelection(GUITestOpStatus &os) {
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "checkSelection"
-void GTUtilsMsaEditor::checkSelection(HI::GUITestOpStatus &os, const QList<QRect> expectedRects) {
+void GTUtilsMsaEditor::checkSelection(HI::GUITestOpStatus &os, const QList<QRect> &expectedRects) {
     MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
     QList<QRect> selectedRects = msaEditor->getSelection().getRectList();
     CHECK_SET_ERR(selectedRects.size() == expectedRects.size(), QString("Expected selection size: %1, actual: %2").arg(expectedRects.size()).arg(selectedRects.size()));
