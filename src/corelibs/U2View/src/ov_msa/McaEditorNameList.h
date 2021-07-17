@@ -53,7 +53,7 @@ protected:
      * Sets selection to the given rects list as result of the Name List triggered selection change.
      * Clears reference selection if the list whole sequence selection.
      */
-    void setSelection(const QList<QRect> &rectList) override;
+    void setSelection(const MaEditorSelection& selection) override;
 
 private:
     McaEditor *getEditor() const;

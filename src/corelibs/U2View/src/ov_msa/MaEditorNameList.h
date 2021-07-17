@@ -117,7 +117,7 @@ protected:
      * Sets selection MA editor selection to the given state.
      * The method is called for all selection change events triggered in the name-list component.
      * May be overriden to adjust behavior. */
-    virtual void setSelection(const QList<QRect> &rectList);
+    virtual void setSelection(const MaEditorSelection& selection);
 
     void moveSelectedRegion(int shift);
 
