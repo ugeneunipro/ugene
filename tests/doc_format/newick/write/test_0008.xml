@@ -1,0 +1,12 @@
+<multi-test>
+
+    <!-- Check that a document with a unicode content can be read and written correctly.  -->
+    <load-document index="doc" url="newick/sample_utf16be.newick" io="local_file" format="newick"/>
+    <check-num-objects doc="doc" value="1"/>
+    <check-document-object-types doc="doc" value="OT_PTREE"/>
+
+    <save-document doc="doc" url="_temp0008.newick" io="local_file" format="newick"/>
+    <load-document index="doc2" url="_temp0008.newick" io="local_file" format="newick" dir="temp"/>
+    <compare-trees-in-two-objects doc="doc" value="doc2"/>
+
+</multi-test>
