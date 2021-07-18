@@ -25,6 +25,7 @@
 #include <QStack>
 #include <QtEndian>
 
+#include <U2Core/AppContext.h>
 #include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/StringAdapter.h>
 #include <U2Core/TextUtils.h>
@@ -421,14 +422,13 @@ QString NewickPhyTreeSerializer::serialize(const PhyTree &tree) {
 }
 
 PhyTree NewickPhyTreeSerializer::deserialize(const QString &text, U2OpStatus &os) {
-    StringAdapter io(text.toUtf8());
+    auto ioFactory = qobject_cast<StringAdapterFactory *>(AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::STRING));
+    SAFE_POINT(ioFactory, "Failed to get StringAdapterFactory", {})
+    StringAdapter io(text.toUtf8(), ioFactory);
     IOAdapterReader reader(&io);
     QList<PhyTree> trees = parseTrees(reader, os);
-    CHECK_OP(os, PhyTree());
-    if (trees.size() != 1) {
-        os.setError(DatatypeSerializers::tr("Unexpected count of trees objects in input: %1").arg(trees.size()));
-        return PhyTree();
-    }
+    CHECK_OP(os, {});
+    CHECK_EXT(trees.size() == 1, os.setError(DatatypeSerializers::tr("Unexpected count of trees objects in input: %1").arg(trees.size())), {});
     return trees.first();
 }
 
