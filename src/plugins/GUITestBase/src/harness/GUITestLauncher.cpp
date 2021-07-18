@@ -284,7 +284,7 @@ static bool restoreTestDirWithExternalScript(const QString &pathToShellScript, c
     QProcessEnvironment processEnv = QProcessEnvironment::systemEnvironment();
     processEnv.insert("UGENE_TESTS_DIR_NAME", testsDir.dirName());
     processEnv.insert("UGENE_DATA_DIR_NAME", dataDir.dirName());
-    processEnv.insert("UGENE_USER_INI", iniFilePath);
+    processEnv.insert(U2_USER_INI, iniFilePath);
     qint64 startTimeMicros = GTimer::currentTimeMicros();
     QProcess process;
     process.setProcessEnvironment(processEnv);
