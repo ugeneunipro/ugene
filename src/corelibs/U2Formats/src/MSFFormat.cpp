@@ -99,11 +99,13 @@ struct MsfRow {
 void MSFFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObject *> &objects, const QVariantMap &hints, U2OpStatus &os) {
     QString objName = reader.getURL().baseFileName();
     MultipleSequenceAlignment al(objName);
+    int lineNumber = 0;    // Current line number from the object start. Used for error reporing.
 
     // Skip comments.
     int checkSum = -1;
     while (!os.isCoR() && checkSum < 0 && !reader.atEnd()) {
         QString line = reader.readLine(os, DocumentFormat::READ_BUFF_SIZE).simplified();
+        lineNumber++;
         CHECK_OP(os, );
         if (line.endsWith(END_OF_HEADER_LINE)) {
             bool ok;
@@ -115,14 +117,13 @@ void MSFFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObj
         os.setProgress(reader.getProgress());
     }
 
-    //read info
+    // Read MSF structure.
     int sum = 0;
     QList<MsfRow> msfRows;
 
-    QMap<QString, int> duplicatedNamesCount;    // a workaround for incorrectly saved files
-
     while (!os.isCoR() && !reader.atEnd()) {
         QString line = reader.readLine(os, DocumentFormat::READ_BUFF_SIZE).simplified();
+        lineNumber++;
         CHECK_OP(os, );
         if (line.startsWith(SECTION_SEPARATOR)) {
             break;
@@ -138,16 +139,9 @@ void MSFFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObj
             sum = check = CHECK_SUM_MOD;
         }
 
-        foreach (const MsfRow &msfRow, msfRows) {
-            if (name == msfRow.name) {
-                duplicatedNamesCount[name] = duplicatedNamesCount.value(name, 1) + 1;
-            }
-        }
-
         MsfRow row;
         row.name = name;
         row.checksum = check;
-
         msfRows << row;
         al->addRow(name, QByteArray());
         if (sum < CHECK_SUM_MOD) {
@@ -160,64 +154,38 @@ void MSFFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObj
         coreLog.info(tr("File check sum is incorrect: expected value: %1, current value %2").arg(checkSum).arg(sum));
     }
 
-    // read data
-    QRegExp coordsRegexp("^\\s+\\d+(\\s+\\d+)?\\s*$");
-    QRegExp onlySpacesRegexp("^\\s+$");
-
-    QMap<QString, int> processedDuplicatedNames;
-
+    // Read sequences.
+    QRegExp coordsRegexp("^\\d+(\\s+\\d+)?$");
+    int maRowIndex = 0;
+    bool prevLineIsEmpty = false;
     while (!os.isCoR() && !reader.atEnd()) {
-        QString line = reader.readLine(os, DocumentFormat::READ_BUFF_SIZE);
+        QString line = reader.readLine(os, DocumentFormat::READ_BUFF_SIZE).trimmed();
         CHECK_OP(os, )
+        lineNumber++;
 
-        if (line.isEmpty() || onlySpacesRegexp.indexIn(line) != -1 || coordsRegexp.indexIn(line) != -1) {
-            // Skip empty lines, lines with spaces only and lines with alignment coordinates
-            continue;
-        }
-
-        line = line.simplified();
-        int spaceIndex = line.indexOf(" ");
-        if (spaceIndex == -1) {
-            // Skip the line without spaces
-            continue;
-        }
-
-        QString name = line.mid(0, spaceIndex);
-        int msfRowNumber = -1;
-        int duplicatesSkipped = 0;
-        for (int i = 0; i < msfRows.length(); i++) {
-            if (msfRows[i].name == name) {
-                if (duplicatesSkipped == processedDuplicatedNames.value(name, 0)) {
-                    // This row is not processed yet
-                    msfRowNumber = i;
-                    if (duplicatedNamesCount.contains(name)) {
-                        // Mark the row as processed
-                        processedDuplicatedNames[name] = duplicatesSkipped + 1;
-                        if (processedDuplicatedNames.value(name, 0) == duplicatedNamesCount.value(name, 0)) {
-                            // All rows in this block are already processed, prepare for the next block
-                            processedDuplicatedNames[name] = 0;
-                        }
-                    }
-                    break;
-                } else {
-                    // This row is already processed, skip it
-                    duplicatesSkipped++;
-                }
+        // Skip empty lines and lines with coordinates.
+        // 2 empty lines in a row or an coords line is a new block indicator: this way we support both
+        // MSFs with block coordinates and without.
+        int nameAndValueSeparatorIndex = line.indexOf(" ");
+        bool isNewBlockStart = coordsRegexp.indexIn(line) != -1;
+        if (nameAndValueSeparatorIndex < 0 || isNewBlockStart) {
+            if (isNewBlockStart || prevLineIsEmpty) {
+                maRowIndex = 0;
             }
-        }
-
-        if (msfRowNumber == -1) {
-            // Skip the line with unknown row name
+            prevLineIsEmpty = nameAndValueSeparatorIndex < 0;
             continue;
         }
-
-        for (int q, p = line.indexOf(' ') + 1; p > 0; p = q + 1) {
-            q = line.indexOf(' ', p);
-            QString subSeq = (q < 0) ? line.mid(p) : line.mid(p, q - p);
-            al->appendChars(msfRowNumber, msfRows[msfRowNumber].length, subSeq.toLatin1().constData(), subSeq.length());
-            msfRows[msfRowNumber].length += subSeq.length();
-        }
-
+        QString name = line.mid(0, nameAndValueSeparatorIndex);
+        CHECK_EXT(maRowIndex < msfRows.length(),
+                  os.setError(tr("Failed to parse MSF file, too many rows in block. Current name: %1, line: %2")
+                                  .arg(name, QString::number(lineNumber))), );
+        CHECK_EXT(msfRows[maRowIndex].name == name,
+                  os.setError(tr("Failed to parse MSF file: row names do not match: %1 vs %2, line: %3")
+                                  .arg(msfRows[maRowIndex].name, name, QString::number(lineNumber))), );
+        QByteArray value = line.mid(nameAndValueSeparatorIndex + 1).simplified().replace(" ", "").replace('.', '-').toLatin1();
+        al->appendChars(maRowIndex, msfRows[maRowIndex].length, value.constData(), value.length());
+        msfRows[maRowIndex].length += value.length();
+        maRowIndex++;
         os.setProgress(reader.getProgress());
     }
 
