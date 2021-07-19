@@ -183,7 +183,7 @@ void MSFFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObj
         CHECK_EXT(name == msfRows[maRowIndex].name,
                   os.setError(tr("MSF: row names do not match: %1 vs %2, line: %3").arg(msfRows[maRowIndex].name, name, QString::number(lineNumber))), );
 
-        QByteArray value = line.mid(nameAndValueSeparatorIndex + 1).simplified().replace(" ", "").replace('.', '-').toLatin1();
+        QByteArray value = line.mid(nameAndValueSeparatorIndex + 1).simplified().replace(" ", "").toLatin1();
         al->appendChars(maRowIndex, msfRows[maRowIndex].length, value.constData(), value.length());
         msfRows[maRowIndex].length += value.length();
         maRowIndex++;
