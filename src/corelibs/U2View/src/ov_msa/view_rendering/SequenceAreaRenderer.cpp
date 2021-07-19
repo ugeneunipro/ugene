@@ -90,8 +90,8 @@ void SequenceAreaRenderer::drawSelection(QPainter &painter) const {
     painter.setPen(pen);
 
     const QList<QRect> selectionRects = selection.getRectList();
-    for (const QRect &columnsAndRowsRect : qAsConst(selectionRects)) {
-        QRect screenRect = ui->getDrawHelper()->getScreenRect(columnsAndRowsRect);
+    for (const QRect &selectionRect : qAsConst(selectionRects)) {
+        QRect screenRect = ui->getDrawHelper()->getScreenRect(selectionRect);
         int viewWidth = ui->getSequenceArea()->width();
         if (screenRect.right() < 0 || screenRect.left() > viewWidth) {
             continue;    // Selection is out of the screen.
@@ -141,7 +141,7 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
     bool hasReference = referenceMaRowIndex >= 0;
     QString refSeqName = editor->getReferenceRowName();
 
-    qint64 regionEnd = columns.endPos() - (columns.endPos() == editor->getAlignmentLen() ? 1 : 0);
+    qint64 regionEnd = qMin(columns.endPos(), (qint64)editor->getAlignmentLen() - 1);
     const MultipleAlignmentRow &maRow = ma->getRow(maRowIndex);
     int rowHeight = ui->getRowHeightController()->getSingleRowHeight();
     int baseWidth = ui->getBaseWidthController()->getBaseWidth();
