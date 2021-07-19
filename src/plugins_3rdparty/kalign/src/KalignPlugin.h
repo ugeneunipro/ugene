@@ -79,6 +79,7 @@ private slots:
 class KalignPairwiseAligmnentAlgorithm : public AlignmentAlgorithm {
 public:
     KalignPairwiseAligmnentAlgorithm();
+    bool checkAlphabet(const DNAAlphabet *alphabet) const;
 };
 
 }    // namespace U2

@@ -218,4 +218,8 @@ KalignPairwiseAligmnentAlgorithm::KalignPairwiseAligmnentAlgorithm()
                          "KAlign") {
 }
 
+bool KalignPairwiseAligmnentAlgorithm::checkAlphabet(const DNAAlphabet *al) const {
+    return KalignTask::isAlphabetSupported(al->getId());
+}
+
 }    // namespace U2
