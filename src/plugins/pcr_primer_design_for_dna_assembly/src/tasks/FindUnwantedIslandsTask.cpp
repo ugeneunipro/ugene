@@ -111,27 +111,16 @@ bool FindUnwantedIslandsTask::hasUnwantedConnections(const U2Region& region) con
     /**
      * It's reverse complement representation.
      */
-    QByteArray revComRegionSequence = DNASequenceUtils::reverseComplement(regionSequence);
+    //QByteArray revComRegionSequence = DNASequenceUtils::reverseComplement(regionSequence);
     bool isUnwantedSelfDimer = UnwantedConnectionsUtils::isUnwantedSelfDimer(regionSequence,
                                                                              UNWANTED_DELTA_G,
                                                                              UNWANTED_MELTING_TEMPERATURE,
                                                                              UNWANTED_MAX_LENGTH);
 
+    //TODO: hairpins
+    //TODO: find out if hetero-dimers are required
 
     return isUnwantedSelfDimer;
-
-    /*for (int i = 0; i < region.length - NUCLEOTIDE_PAIR_LENGTH; i++) {
-        const auto& possibleConnection = regionSequence.mid(i, NUCLEOTIDE_PAIR_LENGTH);
-        for (int j = 0; j < region.length - NUCLEOTIDE_PAIR_LENGTH; j++) {
-            CHECK_CONTINUE(i != region.length - (j + NUCLEOTIDE_PAIR_LENGTH));
-
-            const auto& revComppossibleConnection = revComRegionSequence.mid(j, NUCLEOTIDE_PAIR_LENGTH);
-            if (possibleConnection == revComppossibleConnection) {
-                return true;
-            }
-        }
-    */
-    //return false;
 }
 
 QString FindUnwantedIslandsTask::regionToString(const U2Region& region) const {

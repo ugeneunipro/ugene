@@ -104,7 +104,7 @@ private:
         return foundPrimerRegion;
     }
 
-    QString PCRPrimerDesignForDNAAssemblyTask::regionToString(const U2Region& region, bool isComplement) const;
+    QString regionToString(const U2Region& region, bool isComplement) const;
 
 
     PCRPrimerDesignForDNAAssemblyTaskSettings settings;
