@@ -6042,19 +6042,13 @@ GUI_TEST_CLASS_DEFINITION(test_1622) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_1626) {
+    //TEST UPDATED: for now it is impossible to run KALIGN on raw alphabet alignment
     //1. Open file _common_data/regression/1626/1626.fa
     GTFileDialog::openFile(os, testDir + "_common_data/regression/1626", "1626.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Align with KAlign
-    //Expected state: UGENE not crasesh, KAlign can return error message, its okay
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign", GTGlobals::UseKey));
-    GTUtilsDialog::waitForDialog(os, new KalignDialogFiller(os));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
-    GTUtilsTaskTreeView::waitTaskFinished(os);
-
-    //3. Change color scheme
+    //2. Change color scheme
     //Expected state: color scheme changed successfully
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_APPEARANCE << "Colors"
                                                                         << "Tailor"));
