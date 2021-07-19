@@ -164,24 +164,25 @@ void MSFFormat::load(IOAdapterReader &reader, const U2DbiRef &dbiRef, QList<GObj
         lineNumber++;
 
         // Skip empty lines and lines with coordinates.
-        // 2 empty lines in a row or an coords line is a new block indicator: this way we support both
-        // MSFs with block coordinates and without.
-        int nameAndValueSeparatorIndex = line.indexOf(" ");
-        bool isNewBlockStart = coordsRegexp.indexIn(line) != -1;
-        if (nameAndValueSeparatorIndex < 0 || isNewBlockStart) {
-            if (isNewBlockStart || prevLineIsEmpty) {
+        // 2 empty lines in a row or a line with coordinates make a new block: this way we support both
+        // MSFs with block coordinates and without (blocks separated by 2-empty lines only).
+        bool isCoordsRegexMatched = coordsRegexp.indexIn(line) != -1;
+        if (line.isEmpty() || isCoordsRegexMatched) {
+            if (isCoordsRegexMatched || prevLineIsEmpty) {
                 maRowIndex = 0;
             }
-            prevLineIsEmpty = nameAndValueSeparatorIndex < 0;
+            prevLineIsEmpty = line.isEmpty();
             continue;
         }
+        CHECK_EXT(maRowIndex < msfRows.length(), os.setError(tr("MSF: too many rows in the block, line: %1").arg(QString::number(lineNumber))), );
+
+        int nameAndValueSeparatorIndex = line.indexOf(" ");
+        CHECK_EXT(nameAndValueSeparatorIndex >= 0, os.setError(tr("MSF: can't find name and value separator spacing, line: %1").arg(QString::number(lineNumber))), );
+
         QString name = line.mid(0, nameAndValueSeparatorIndex);
-        CHECK_EXT(maRowIndex < msfRows.length(),
-                  os.setError(tr("Failed to parse MSF file, too many rows in block. Current name: %1, line: %2")
-                                  .arg(name, QString::number(lineNumber))), );
-        CHECK_EXT(msfRows[maRowIndex].name == name,
-                  os.setError(tr("Failed to parse MSF file: row names do not match: %1 vs %2, line: %3")
-                                  .arg(msfRows[maRowIndex].name, name, QString::number(lineNumber))), );
+        CHECK_EXT(name == msfRows[maRowIndex].name,
+                  os.setError(tr("MSF: row names do not match: %1 vs %2, line: %3").arg(msfRows[maRowIndex].name, name, QString::number(lineNumber))), );
+
         QByteArray value = line.mid(nameAndValueSeparatorIndex + 1).simplified().replace(" ", "").replace('.', '-').toLatin1();
         al->appendChars(maRowIndex, msfRows[maRowIndex].length, value.constData(), value.length());
         msfRows[maRowIndex].length += value.length();
