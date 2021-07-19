@@ -42,7 +42,7 @@ public:
 
 protected:
     // returns the height of the drawn row
-    virtual int drawRow(QPainter &painter, const MultipleAlignment &ma, int maRow, const U2Region &columns, int xStart, int yStart) const;
+    virtual int drawRow(QPainter &painter, const MultipleAlignment &ma, int maRowIndex, const U2Region &columns, int xStart, int yStart) const;
 
     MaEditorWgt *ui;
     MaEditorSequenceArea *seqAreaWgt;

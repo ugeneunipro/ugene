@@ -49,6 +49,9 @@ public:
     /** Returns true if selection contains multiple rectangles. */
     bool isMultiSelection() const;
 
+    /** Returns true if selection contains exactly 1 rect. The rect can be of any size. */
+    bool isSingleSelection() const;
+
     /**
      * Returns selection state as a rect.
      * The returned rect is a bounding rect for all rects in the 'rectList'.
@@ -63,8 +66,14 @@ public:
     /** Returns list of selected rects. */
     const QList<QRect> &getRectList() const;
 
+    /** Returns true if the given point addressed by column/row is in the selection. */
+    bool contains(int columnIndex, int rowIndex) const;
+
+    /** Returns true if the given point addressed by column/row is in the selection. */
+    bool contains(const QPoint &columnAndRowPoint) const;
+
     /** Returns true if the given row (any its part) is in the selection. */
-    bool containsRow(int viewRowIndex) const;
+    bool containsRow(int rowIndex) const;
 
     /** Compares 2 selection. Two selections are equal if they have equal list of rects with the same order. */
     bool operator==(const MaEditorSelection &other) const;

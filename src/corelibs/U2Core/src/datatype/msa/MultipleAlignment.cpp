@@ -284,7 +284,7 @@ int MultipleAlignmentData::getRowIndexByRowId(qint64 rowId, U2OpStatus &os) cons
         }
     }
     os.setError("Invalid row id");
-    return U2MsaRow::INVALID_ROW_ID;
+    return -1;
 }
 
 void MultipleAlignmentData::renameRow(int rowIndex, const QString &name) {

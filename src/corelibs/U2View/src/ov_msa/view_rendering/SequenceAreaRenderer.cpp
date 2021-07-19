@@ -78,36 +78,43 @@ bool SequenceAreaRenderer::drawContent(QPainter &painter, const U2Region &column
 #define SELECTION_STROKE_WIDTH 2
 
 void SequenceAreaRenderer::drawSelection(QPainter &painter) const {
-    QRect selectionRect = ui->getDrawHelper()->getSelectionScreenRect(seqAreaWgt->getEditor()->getSelection());
-    int viewWidth = ui->getSequenceArea()->width();
-    if (selectionRect.right() < 0 || selectionRect.left() > viewWidth) {
-        return;    // Selection is out of the screen.
-    }
+    const MaEditorSelection &selection = seqAreaWgt->getEditor()->getSelection();
+    CHECK(!selection.isEmpty(), );
 
-    // Check that frame has enough space to be drawn on both sides.
-    if (selectionRect.left() >= 0 && selectionRect.left() < SELECTION_STROKE_WIDTH) {
-        selectionRect.setLeft(SELECTION_STROKE_WIDTH);
-    }
-    if (selectionRect.right() <= viewWidth && selectionRect.right() + SELECTION_STROKE_WIDTH > viewWidth) {
-        selectionRect.setRight(viewWidth - SELECTION_STROKE_WIDTH);
-    }
-
+    painter.save();
     QPen pen(seqAreaWgt->selectionColor);
+    pen.setWidth(SELECTION_STROKE_WIDTH);
     if (seqAreaWgt->maMode == MaEditorSequenceArea::ViewMode) {
         pen.setStyle(Qt::DashLine);
     }
-    pen.setWidth(SELECTION_STROKE_WIDTH);
     painter.setPen(pen);
 
-    switch (seqAreaWgt->maMode) {
-        case MaEditorSequenceArea::ViewMode:
-        case MaEditorSequenceArea::ReplaceCharMode:
-            painter.drawRect(selectionRect);
-            break;
-        case MaEditorSequenceArea::InsertCharMode:
-            painter.drawLine(selectionRect.left(), selectionRect.top(), selectionRect.left(), selectionRect.bottom());
-            break;
+    const QList<QRect> selectionRects = selection.getRectList();
+    for (const QRect &columnsAndRowsRect : qAsConst(selectionRects)) {
+        QRect screenRect = ui->getDrawHelper()->getScreenRect(columnsAndRowsRect);
+        int viewWidth = ui->getSequenceArea()->width();
+        if (screenRect.right() < 0 || screenRect.left() > viewWidth) {
+            continue;    // Selection is out of the screen.
+        }
+
+        // Check that frame has enough space to be drawn on both sides.
+        if (screenRect.left() >= 0 && screenRect.left() < SELECTION_STROKE_WIDTH) {
+            screenRect.setLeft(SELECTION_STROKE_WIDTH);
+        }
+        if (screenRect.right() <= viewWidth && screenRect.right() + SELECTION_STROKE_WIDTH > viewWidth) {
+            screenRect.setRight(viewWidth - SELECTION_STROKE_WIDTH);
+        }
+        switch (seqAreaWgt->maMode) {
+            case MaEditorSequenceArea::ViewMode:
+            case MaEditorSequenceArea::ReplaceCharMode:
+                painter.drawRect(screenRect);
+                break;
+            case MaEditorSequenceArea::InsertCharMode:
+                painter.drawLine(screenRect.left(), screenRect.top(), screenRect.left(), screenRect.bottom());
+                break;
+        }
     }
+    painter.restore();
 }
 
 void SequenceAreaRenderer::drawFocus(QPainter &painter) const {
@@ -117,7 +124,7 @@ void SequenceAreaRenderer::drawFocus(QPainter &painter) const {
     }
 }
 
-int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma, int maRow, const U2Region &columns, int xStart, int yStart) const {
+int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma, int maRowIndex, const U2Region &columns, int xStart, int yStart) const {
     // SANGER_TODO: deal with frequent handling of editor or h/color schemes through the editor etc.
     // move to class parameter
     MsaHighlightingScheme *highlightingScheme = seqAreaWgt->getCurrentHighlightingScheme();
@@ -129,61 +136,59 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
     bool isResizeMode = editor->getResizeMode() == MSAEditor::ResizeMode_FontAndContent;
 
     U2OpStatusImpl os;
-    const int refSeq = ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
+    int referenceMaRowIndex = ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
+    bool isReferenceRow = referenceMaRowIndex == maRowIndex;
+    bool hasReference = referenceMaRowIndex >= 0;
     QString refSeqName = editor->getReferenceRowName();
 
-    qint64 regionEnd = columns.endPos() - (int)(columns.endPos() == editor->getAlignmentLen());
-    const MultipleAlignmentRow &row = ma->getRow(maRow);
-    const int rowHeight = ui->getRowHeightController()->getSingleRowHeight();
-    const int baseWidth = ui->getBaseWidthController()->getBaseWidth();
+    qint64 regionEnd = columns.endPos() - (columns.endPos() == editor->getAlignmentLen() ? 1 : 0);
+    const MultipleAlignmentRow &maRow = ma->getRow(maRowIndex);
+    int rowHeight = ui->getRowHeightController()->getSingleRowHeight();
+    int baseWidth = ui->getBaseWidthController()->getBaseWidth();
 
-    QRect selectionRect = seqAreaWgt->getEditor()->getSelection().toRect();
-    U2Region selectionXRegion = U2Region::fromXRange(selectionRect);
-    U2Region selectionYRegion = U2Region::fromYRange(selectionRect);
-    int viewRow = ui->getCollapseModel()->getViewRowIndexByMaRowIndex(maRow);
+    const MaEditorSelection &selection = seqAreaWgt->getEditor()->getSelection();
+    int viewRowIndex = ui->getCollapseModel()->getViewRowIndexByMaRowIndex(maRowIndex);
 
-    const QPen backupPen = painter.pen();
+    painter.save();
     for (int column = columns.startPos; column <= regionEnd; column++) {
-        if (!drawLeadingAndTrailingGaps && (column < row->getCoreStart() || column > row->getCoreStart() + row->getCoreLength() - 1)) {
+        if (!drawLeadingAndTrailingGaps && (column < maRow->getCoreStart() || column > maRow->getCoreStart() + maRow->getCoreLength() - 1)) {
             xStart += baseWidth;
             continue;
         }
 
-        const QRect charRect(xStart, yStart, baseWidth, rowHeight);
-        char c = ma->charAt(maRow, column);
+        QRect charRect(xStart, yStart, baseWidth, rowHeight);
+        char c = ma->charAt(maRowIndex, column);
 
-        bool highlight = false;
-
-        QColor backgroundColor = seqAreaWgt->getCurrentColorScheme()->getBackgroundColor(maRow, column, c);    //! SANGER_TODO: add NULL checks or do smt with the infrastructure
-        bool isSelected = selectionYRegion.contains(viewRow) && selectionXRegion.contains(column);
-        if (backgroundColor.isValid() && isSelected) {
+        QColor backgroundColor = seqAreaWgt->getCurrentColorScheme()->getBackgroundColor(maRowIndex, column, c);    //! SANGER_TODO: add NULL checks or do smt with the infrastructure
+        if (backgroundColor.isValid() && selection.contains(column, viewRowIndex)) {
             backgroundColor = backgroundColor.convertTo(QColor::Hsv);
             int modifiedSaturation = qMin(backgroundColor.saturation() + SELECTION_SATURATION_INCREASE, 255);
             backgroundColor.setHsv(backgroundColor.hue(), modifiedSaturation, backgroundColor.value());
         }
 
-        QColor fontColor = seqAreaWgt->getCurrentColorScheme()->getFontColor(maRow, column, c);    //! SANGER_TODO: add NULL checks or do smt with the infrastructure
+        bool highlight = false;
         if (isGapsScheme || highlightingScheme->getFactory()->isRefFree()) {    //schemes which applied without reference
-            const char refChar = '\n';
-            highlightingScheme->process(refChar, c, backgroundColor, highlight, column, maRow);
-        } else if (maRow == refSeq || refSeqName.isEmpty()) {
+            char refChar = '\n';
+            highlightingScheme->process(refChar, c, backgroundColor, highlight, column, maRowIndex);
+        } else if (isReferenceRow || !hasReference) {
             highlight = true;
         } else {
-            const char refChar = editor->getReferenceCharAt(column);
-            highlightingScheme->process(refChar, c, backgroundColor, highlight, column, maRow);
+            char refChar = editor->getReferenceCharAt(column);
+            highlightingScheme->process(refChar, c, backgroundColor, highlight, column, maRowIndex);
         }
 
         if (backgroundColor.isValid() && highlight) {
             painter.fillRect(charRect, backgroundColor);
         }
         if (isResizeMode) {
+            QColor fontColor = seqAreaWgt->getCurrentColorScheme()->getFontColor(maRowIndex, column, c);    //! SANGER_TODO: add NULL checks or do smt with the infrastructure
             painter.setPen(fontColor);
             painter.drawText(charRect, Qt::AlignCenter, QString(c));
         }
 
         xStart += baseWidth;
     }
-    painter.setPen(backupPen);
+    painter.restore();
     return rowHeight;
 }
 

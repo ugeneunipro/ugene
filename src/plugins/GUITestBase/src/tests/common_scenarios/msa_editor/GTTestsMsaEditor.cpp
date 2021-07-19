@@ -2211,6 +2211,29 @@ GUI_TEST_CLASS_DEFINITION(test_0027_1) {
     CHECK_SET_ERR(clipboardText == "------\n------", "Expected: ------\n------ Found: " + clipboardText);
 }
 
+GUI_TEST_CLASS_DEFINITION(test_0027_2) {
+    // Drag & drop of selection should be disabled in multi-selection mode.
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Select region 1.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, {3, 3}, {10, 5});
+
+    // Select region 2.
+    GTKeyboardDriver::keyPress(Qt::Key_Control);
+    GTUtilsMsaEditor::clickSequence(os, 7);
+    GTKeyboardDriver::keyRelease(Qt::Key_Control);
+
+    // Expected state: 2 rows are selected.
+    GTUtilsMsaEditor::checkSelection(os, {{3, 3, 8, 3}, {3, 7, 8, 1}});
+
+    // Check that selection can't be moved:
+    // try moving the selected region && check that instead of moving
+    // a new selection was created from the drag range.
+    GTUtilsMSAEditorSequenceArea::dragAndDropSelection(os, {4, 4}, {10, 8});
+    GTUtilsMsaEditor::checkSelection(os, {{4, 4, 7, 5}});
+}
+
 GUI_TEST_CLASS_DEFINITION(test_0028_linux) {
     //    1. Open document "samples/CLUSTALW/COI.aln"
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
