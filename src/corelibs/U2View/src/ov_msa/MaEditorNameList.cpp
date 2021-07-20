@@ -215,7 +215,7 @@ void MaEditorNameList::sl_copyWholeRow() {
             SAFE_POINT(maRowIndex >= 0, "Can't get MA index by View index", );
             MultipleAlignmentRow row = maObject->getRow(maRowIndex);
             if (!resultText.isEmpty()) {
-                resultText += TextUtils::PLATFORM_EOL;
+                resultText += "\n";
             }
             U2OpStatus2Log os;
             QByteArray sequence = row->toByteArray(os, maObject->getLength());

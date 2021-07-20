@@ -3515,14 +3515,11 @@ GUI_TEST_CLASS_DEFINITION(test_0053_6) {
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     QString clipboardText = GTClipboard::text(os);
-    QString expectedText = QString("RTAGRLRPSSSPWAAPAFLIKKENGKFRFLCDFRGLNSVT\n"
-                                   "REAGRLRPSSSPWAAPAFLVKKENGKFRFIC---------\n"
-                                   "LRSGRWKMSNARNTSPMLL-----SGIRDIPPRLRCVFDL")
-                               .replace("\n", TextUtils::PLATFORM_EOL);
+    QString expectedText = "RTAGRLRPSSSPWAAPAFLIKKENGKFRFLCDFRGLNSVT\n"
+                           "REAGRLRPSSSPWAAPAFLVKKENGKFRFIC---------\n"
+                           "LRSGRWKMSNARNTSPMLL-----SGIRDIPPRLRCVFDL";
     CHECK_SET_ERR(clipboardText == expectedText, "Unexpected text: " + clipboardText);
 }
-
-/** These tests are created according to test plan: https://doc.ugene.net/wiki/display/PD/MSA**/
 
 GUI_TEST_CLASS_DEFINITION(test_0054) {
     //    Open COI.aln

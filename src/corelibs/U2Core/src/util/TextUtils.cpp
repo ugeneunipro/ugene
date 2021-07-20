@@ -49,7 +49,6 @@ const QByteArray TextUtils::SPACE_LINE = getSpaceLine();
 const QBitArray TextUtils::LESS_THAN = getLessThan();
 const QBitArray TextUtils::GREATER_THAN = getGreaterThan();
 const QBitArray TextUtils::QUALIFIER_NAME_CHARS = getAlphas() | getNums() | getQualNameAllowedSymbols();
-const QString TextUtils::PLATFORM_EOL = isOsWindows() ? "\r\n" : "\n";
 
 //TODO: optimize shared data structs access! -> replace it with arrays with bounds checking in debug
 
