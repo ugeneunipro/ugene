@@ -43,7 +43,6 @@ struct ExtractPrimerTaskSettings {
     QString originalSequenceFileName;
     QString outputFileUrl;
     QByteArray backboneSequence;
-    int backboneLength = 0;
     BackboneInsertDirection direction = FiveToFive;
 };
 

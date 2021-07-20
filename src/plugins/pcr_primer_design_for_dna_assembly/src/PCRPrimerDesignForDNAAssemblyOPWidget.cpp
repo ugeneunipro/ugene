@@ -371,11 +371,9 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_extractProduct() {
     }
     if (lastRunSettings.insertTo == PCRPrimerDesignForDNAAssemblyTaskSettings::BackboneBearings::Backbone5) {
         settings.direction = ExtractPrimerTaskSettings::FiveToFive;
-        settings.backboneLength = lastRunSettings.bachbone5Length;
     } else {
         CHECK(lastRunSettings.insertTo == PCRPrimerDesignForDNAAssemblyTaskSettings::BackboneBearings::Backbone3, )
         settings.direction = ExtractPrimerTaskSettings::FiveToThree;
-        settings.backboneLength = lastRunSettings.bachbone3Length;
     }
     settings.backboneSequence = backboneSequence;
     Annotation *selectedAnnotation = productsTable->getSelectedAnnotation();

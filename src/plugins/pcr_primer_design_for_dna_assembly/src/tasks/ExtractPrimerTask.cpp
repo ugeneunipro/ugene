@@ -80,18 +80,17 @@ void ExtractPrimerTask::run() {
     bool isForvard = resultIndex % 2 == 0;
 
     U2Region fragmentRegion = U2Region(0, productSequence.length());
-    if (!settings.backboneSequence.isEmpty() && settings.backboneLength != 0) {
+    if (!settings.backboneSequence.isEmpty()) {
         SharedAnnotationData backboneAnnotationData(new AnnotationData());
-        QByteArray partToAdd = settings.backboneSequence.left(settings.backboneLength);
         backboneAnnotationData->setStrand(U2Strand(U2Strand::Direct));
         backboneAnnotationData->name = BACKBONE_ANNOTATION_NAME;
         if (isForvard) {
-            productSequence.seq.prepend(partToAdd);
-            fragmentRegion.startPos =+ settings.backboneLength;
-            backboneAnnotationData->location->regions.append(U2Region(0, settings.backboneLength));
+            productSequence.seq.prepend(settings.backboneSequence);
+            fragmentRegion.startPos =+ settings.backboneSequence.length();
+            backboneAnnotationData->location->regions.append(U2Region(0, settings.backboneSequence.length()));
         } else {
-            backboneAnnotationData->location->regions.append(U2Region(productSequence.length(), settings.backboneLength));
-            productSequence.seq.append(partToAdd);
+            backboneAnnotationData->location->regions.append(U2Region(productSequence.length(), settings.backboneSequence.length()));
+            productSequence.seq.append(settings.backboneSequence);
         }
         annotations.append(backboneAnnotationData);
     }
