@@ -82,6 +82,9 @@ public:
     static void selectRows(HI::GUITestOpStatus &os, int firstRowNumber, int lastRowNumber, HI::GTGlobals::UseMethod method = HI::GTGlobals::UseKey);
     static void selectColumns(HI::GUITestOpStatus &os, int firstColumnNumber, int lastColumnNumber, HI::GTGlobals::UseMethod method = HI::GTGlobals::UseKey);
 
+    /** Checks that MSA editor selection is equal to the given rect. Fails if not. */
+    static void checkSelection(HI::GUITestOpStatus &os, const QList<QRect>& expectedRects);
+
     static void clearSelection(HI::GUITestOpStatus &os);
 
     static QString getReferenceSequenceName(HI::GUITestOpStatus &os);

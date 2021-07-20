@@ -21,11 +21,7 @@
 
 #include "HmmerParseSearchResultsTask.h"
 
-#include <U2Core/AnnotationTableObject.h>
 #include <U2Core/AppContext.h>
-#include <U2Core/AppResources.h>
-#include <U2Core/AppSettings.h>
-#include <U2Core/Counter.h>
 #include <U2Core/IOAdapterUtils.h>
 #include <U2Core/U1AnnotationUtils.h>
 #include <U2Core/U2FeatureUtils.h>
@@ -77,7 +73,7 @@ bool HmmerParseSearchResultsTask::isComment(const QString &line) {
 }
 
 void HmmerParseSearchResultsTask::processHit(const QStringList &tokens, qint64 lineNumber) {
-    CHECK_EXT(23 <= tokens.size(), stateInfo.addWarning(tr("Can't parse line %1").arg(lineNumber)), );
+    CHECK_EXT(tokens.size() >= 23, stateInfo.addWarning(tr("Can't parse line %1").arg(lineNumber)), );
     SharedAnnotationData annotation(new AnnotationData);
     annotation->qualifiers << U2Qualifier("Accuracy_per_residue", tokens[ACC]);
     annotation->qualifiers << U2Qualifier("Bias", tokens[BIAS]);
@@ -89,8 +85,8 @@ void HmmerParseSearchResultsTask::processHit(const QStringList &tokens, qint64 l
     annotation->qualifiers << U2Qualifier("Score", tokens[SCORE]);
     U1AnnotationUtils::addDescriptionQualifier(annotation, pattern.description);
 
-    qint64 start = tokens[ALI_FROM].toLongLong();
-    qint64 end = tokens[ALI_TO].toLongLong();
+    qint64 start = tokens[ALI_FROM].toLongLong() - 1;
+    qint64 end = tokens[ALI_TO].toLongLong() - 1;
     annotation->location->regions << U2Region(start, end - start + 1);
     annotation->name = pattern.annotationName;
     annotation->type = pattern.type;

@@ -18,9 +18,9 @@
     !define MUI_ABORTWARNING
     !define MUI_LANGDLL_ALLLANGUAGES        
     !define MUI_HEADERIMAGE
-    !define MUI_HEADERIMAGE_BITMAP "ugene\etc\script\windows\nsis\images\header.bmp"
+    !define MUI_HEADERIMAGE_BITMAP "${UGENE_GIT_DIR}\etc\script\windows\nsis\images\header.bmp"
     !define MUI_SPECIALIMAGE
-    !define MUI_WELCOMEFINISHPAGE_BITMAP "ugene\etc\script\windows\nsis\images\welcome.bmp"
+    !define MUI_WELCOMEFINISHPAGE_BITMAP "${UGENE_GIT_DIR}\etc\script\windows\nsis\images\welcome.bmp"
     !define MUI_FINISHPAGE_RUN "$INSTDIR\ugeneui.exe"
 
 ;--------------------------------
@@ -33,7 +33,7 @@
 
 # Pages
     !insertmacro MUI_PAGE_WELCOME
-    !insertmacro MUI_PAGE_LICENSE ugene\LICENSE.txt
+    !insertmacro MUI_PAGE_LICENSE ${UGENE_BUNDLE_DIR}\LICENSE.txt
     !define MUI_PAGE_CUSTOMFUNCTION_LEAVE checkInstDir
     !insertmacro MUI_PAGE_DIRECTORY
     !insertmacro MUI_PAGE_INSTFILES
@@ -91,8 +91,8 @@ FunctionEnd
     DirText "Please select the folder below"
     BrandingText "${FullProductName}"
     UninstallText "This will uninstall ${FullProductName} from your system"
-    Icon "ugene\etc\script\windows\nsis\images\install.ico"
-    UninstallIcon "ugene\etc\script\windows\nsis\images\uninstall.ico"
+    Icon "${UGENE_GIT_DIR}\etc\script\windows\nsis\images\install.ico"
+    UninstallIcon "${UGENE_GIT_DIR}\etc\script\windows\nsis\images\uninstall.ico"
     ;BGGradient 000000 400040 FFFFFF
     SetFont "Tahoma" 9
     CRCCheck On

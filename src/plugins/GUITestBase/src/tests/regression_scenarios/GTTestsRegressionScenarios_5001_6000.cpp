@@ -63,6 +63,7 @@
 #include <U2View/MSAEditorTreeViewer.h>
 #include <U2View/MaEditorConsensusArea.h>
 #include <U2View/MaEditorNameList.h>
+#include <U2View/MaEditorSelection.h>
 #include <U2View/MaGraphOverview.h>
 
 #include "GTTestsRegressionScenarios_5001_6000.h"
@@ -4637,7 +4638,7 @@ GUI_TEST_CLASS_DEFINITION(test_5854) {
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "Mecopoda_elongata__Ishigaki__J");
 
     MSAEditorSequenceArea *seqArea = GTUtilsMSAEditorSequenceArea::getSequenceArea(os);
-    QRect sel = seqArea->getSelection().toRect();
+    QRect sel = seqArea->getEditor()->getSelection().toRect();
     int index = seqArea->getRowIndex(sel.y()) + 1;
 
     //Expected:: current index 14
@@ -4647,7 +4648,7 @@ GUI_TEST_CLASS_DEFINITION(test_5854) {
     GTUtilsMSAEditorSequenceArea::selectSequence(os, "Mecopoda_sp.__Malaysia_");
 
     //Expected:: current index 16
-    sel = seqArea->getSelection().toRect();
+    sel = seqArea->getEditor()->getSelection().toRect();
     index = seqArea->getRowIndex(sel.y()) + 1;
     CHECK_SET_ERR(index == 16, QString("Unexpected index, expected: 16, current: %1").arg(index));
 }
@@ -4746,7 +4747,7 @@ GUI_TEST_CLASS_DEFINITION(test_5898) {
 GUI_TEST_CLASS_DEFINITION(test_5899) {
     GTUtilsDialog::waitForDialog(os, new RemoteDBDialogFillerDeprecated(os, "NM_001135099", 0));
 
-    GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."} ,GTGlobals::UseKey);
+    GTMenu::clickMainMenuItem(os, {"File", "Access remote database..."}, GTGlobals::UseKey);
 
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ADV_MENU_ANALYSE"
                                                                         << "primer3_action"));
@@ -4762,7 +4763,6 @@ GUI_TEST_CLASS_DEFINITION(test_5899) {
     GTUtilsAnnotationsTreeView::findItem(os, "pair 3  (0, 2)");
     GTUtilsAnnotationsTreeView::findItem(os, "pair 4  (0, 2)");
     GTUtilsAnnotationsTreeView::findItem(os, "pair 5  (0, 2)");
-
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5903) {

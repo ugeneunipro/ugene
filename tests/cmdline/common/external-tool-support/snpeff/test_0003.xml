@@ -5,7 +5,7 @@
             task="!common_data_dir!cmdline/external-tool-support/snpeff/snpeff.uwl"
             in="!common_data_dir!cmdline/external-tool-support/snpeff/vcf_homhet.vcf"
             out_dir="!tmp_data_dir!/snpeff3"
-            genome="testCase"
+            genome="ebola_zaire"
             canon="true"
             hgvs="true"
             lof="true"

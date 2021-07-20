@@ -279,11 +279,11 @@ void GTUtilsMcaEditorSequenceArea::dragAndDrop(HI::GUITestOpStatus & /*os*/, con
 
 #define GT_METHOD_NAME "getSelectedRowsNum"
 U2Region GTUtilsMcaEditorSequenceArea::getSelectedRowsNum(GUITestOpStatus &os) {
-    McaEditorNameList *mcaNameList = GTUtilsMcaEditor::getNameListArea(os);
-    CHECK_SET_ERR_RESULT(mcaNameList != nullptr, "McaEditorNameList not found", U2Region());
+    McaEditor *mcaEditor = GTUtilsMcaEditor::getEditor(os);
+    CHECK_SET_ERR_RESULT(mcaEditor != nullptr, "McaEditor not found", U2Region());
 
-    U2Region selection = mcaNameList->getSelection();
-    return selection;
+    const MaEditorSelection &selection = mcaEditor->getSelection();
+    return U2Region::fromYRange(selection.toRect());
 }
 #undef GT_METHOD_NAME
 
@@ -306,7 +306,7 @@ QRect GTUtilsMcaEditorSequenceArea::getSelectedRect(GUITestOpStatus &os) {
     McaEditorSequenceArea *mcaEditArea = qobject_cast<McaEditorSequenceArea *>(GTWidget::findWidget(os, "mca_editor_sequence_area"));
     GT_CHECK_RESULT(mcaEditArea != nullptr, "McaEditorSequenceArea not found", QRect());
 
-    return mcaEditArea->getSelection().toRect();
+    return mcaEditArea->getEditor()->getSelection().toRect();
 }
 #undef GT_METHOD_NAME
 
@@ -359,10 +359,7 @@ void GTUtilsMcaEditorSequenceArea::moveCursorToReferencePositionCenter(GUITestOp
 #define GT_METHOD_NAME "getCharacterModificationMode"
 short GTUtilsMcaEditorSequenceArea::getCharacterModificationMode(GUITestOpStatus &os) {
     McaEditorSequenceArea *mcaSeqArea = GTUtilsMcaEditorSequenceArea::getSequenceArea(os);
-    GT_CHECK_RESULT(mcaSeqArea != nullptr, "MCA Editor sequence area is not found", 3);
-
-    short mod = mcaSeqArea->getModInfo();
-    return mod;
+    return (short)mcaSeqArea->getMode();
 }
 #undef GT_METHOD_NAME
 

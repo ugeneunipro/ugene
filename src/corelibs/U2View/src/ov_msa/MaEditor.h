@@ -58,6 +58,7 @@ namespace U2 {
 class MaEditorWgt;
 class MultipleAlignmentObject;
 class MaEditorSelection;
+class MaEditorSelectionController;
 class MultipleAlignment;
 class MaModificationInfo;
 
@@ -143,14 +144,11 @@ public:
 
     bool isAlignmentEmpty() const;
 
+    /* Returns current selection controller. */
+    virtual MaEditorSelectionController *getSelectionController() const = 0;
+
     /* Returns current selection. */
     const MaEditorSelection &getSelection() const;
-
-    /*
-     * Shortcut for getSelection().toRect().
-     * Note: this method is useful because we have no "MaEditorSelection" type available outside of the U2View today.
-     */
-    QRect getSelectionRect() const;
 
     virtual int getRowContentIndent(int rowId) const;
     int getSequenceRowHeight() const;    // SANGER_TODO: order the methods
@@ -224,6 +222,7 @@ protected slots:
     void sl_lockedStateChanged();
 
     void sl_exportHighlighted();
+    void sl_onClearActionTriggered();
 
     /** The slot is called each time alignment is changed. By default calls 'updateActions'. */
     virtual void sl_onAlignmentChanged(const MultipleAlignment &ma, const MaModificationInfo &modInfo);
@@ -295,7 +294,10 @@ public:
     QAction *resetZoomAction;
     QAction *saveScreenshotAction;
     QAction *exportHighlightedAction;
+
+    /** Clears selection in normal mode or exits from editing mode in the edit mode. */
     QAction *clearSelectionAction;
+
     QAction *copyConsensusAction;
     QAction *copyConsensusWithGapsAction;
 };

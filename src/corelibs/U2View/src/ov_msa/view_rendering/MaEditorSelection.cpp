@@ -23,34 +23,74 @@
 
 #include <U2Core/U2SafePoints.h>
 
+#include "ov_msa/MaEditor.h"
+#include "ov_msa/McaEditor.h"
+#include "ov_msa/McaEditorReferenceArea.h"
+
 namespace U2 {
 
 /************************************************************************/
 /* MaEditorSelection */
 /************************************************************************/
 
-MaEditorSelection::MaEditorSelection(const QList<QRect> &rects) {
-    for (const QRect &rect : qAsConst(rects)) {
-        addRect(rect);
-    }
+MaEditorSelection::MaEditorSelection(const QList<QRect> &rects)
+    : rectList(buildSafeSelectionRects(rects)) {
 }
 
-bool MaEditorSelection::addRect(const QRect &rect) {
-    SAFE_POINT(rect.x() >= 0 && rect.width() >= 0 && rect.y() >= 0 && rect.height() >= 0,
-               QString("Invalid MSA selection rect: x:%1 y:%2 w:%3 h:%4").arg(rect.x()).arg(rect.y()).arg(rect.width()).arg(rect.height()),
-               false);
-    for (const QRect &oldRect : qAsConst(rectList)) {
-        if (oldRect.contains(rect)) {
-            return false;
-        }
-        SAFE_POINT(!oldRect.intersects(rect), "Unsupported mode: selection rects must not intersect!", false);
+QList<QRect> MaEditorSelection::buildSafeSelectionRects(const QList<QRect> &rectList) {
+    if (rectList.size() <= 1) {    // 0 or 1 result: no need to merge, validate only.
+        return rectList.isEmpty() || rectList.first().isEmpty() ? QList<QRect>() : rectList;
     }
-    rectList << rect;
-    return true;
+    int unifiedLeft = INT_MAX;
+    int unifiedRight = INT_MIN;
+    for (auto rect : qAsConst(rectList)) {
+        unifiedLeft = qMin(unifiedLeft, rect.left());
+        unifiedRight = qMax(unifiedRight, rect.right());
+    }
+    if (unifiedRight <= unifiedLeft) {    // All rects are empty.
+        return {};
+    }
+    // Sort & merge rects if needed. Assign unified left & right.
+    QList<QRect> sortedRectList = rectList;
+    std::sort(sortedRectList.begin(), sortedRectList.end(), [](const QRect &r1, const QRect &r2) {
+        return r1.top() < r2.top();
+    });
+    QList<QRect> mergedAndSortedRectList;
+    for (QRect rect : sortedRectList) {
+        if (rect.height() == 0) {
+            continue;
+        }
+        // Set unified left & right.
+        rect.setLeft(unifiedLeft);
+        rect.setRight(unifiedRight);
+
+        // Add to the list of the first.
+        if (mergedAndSortedRectList.isEmpty()) {
+            mergedAndSortedRectList << rect;
+        } else {
+            // Or merge with a previous one if overlaps/touches.
+            QRect prevRect = mergedAndSortedRectList.last();
+            if (prevRect.intersects(rect) || prevRect.bottom() + 1 == rect.top()) {
+                mergedAndSortedRectList.removeLast();
+                mergedAndSortedRectList << prevRect.united(rect);
+            } else {
+                mergedAndSortedRectList << rect;
+            }
+        }
+    }
+    return mergedAndSortedRectList;
 }
 
 bool MaEditorSelection::isEmpty() const {
     return rectList.isEmpty();
+}
+
+bool MaEditorSelection::isMultiSelection() const {
+    return rectList.size() > 1;
+}
+
+int MaEditorSelection::getWidth() const {
+    return isEmpty() ? 0 : rectList.first().width();
 }
 
 QRect MaEditorSelection::toRect() const {
@@ -73,6 +113,71 @@ const QList<QRect> &MaEditorSelection::getRectList() const {
 
 bool MaEditorSelection::operator==(const MaEditorSelection &other) const {
     return other.getRectList() == rectList;
+}
+
+bool MaEditorSelection::operator!=(const MaEditorSelection &other) const {
+    return !(other == *this);
+}
+bool MaEditorSelection::containsRow(int viewRowIndex) const {
+    for (const QRect &rect : qAsConst(rectList)) {
+        if (rect.top() <= viewRowIndex && rect.bottom() >= viewRowIndex) {
+            return true;
+        }
+    }
+    return false;
+}
+/************************************************************************/
+/* MaEditorSelectionController */
+/************************************************************************/
+
+MaEditorSelectionController::MaEditorSelectionController(MaEditor *_editor)
+    : QObject(_editor), editor(_editor) {
+    SAFE_POINT(editor != nullptr, "MAEditor is null!", );
+}
+
+const MaEditorSelection &MaEditorSelectionController::getSelection() const {
+    return selection;
+}
+
+void MaEditorSelectionController::clearSelection() {
+    setSelection({});
+}
+
+void MaEditorSelectionController::setSelection(const MaEditorSelection &newSelection) {
+    CHECK(!editor->isAlignmentEmpty() || newSelection.isEmpty(), );
+    CHECK(newSelection != selection, );
+    MaEditorSelection oldSelection = selection;
+    selection = newSelection;
+    emit si_selectionChanged(selection, oldSelection);
+}
+
+/************************************************************************/
+/* McaEditorSelectionController */
+/************************************************************************/
+
+McaEditorSelectionController::McaEditorSelectionController(McaEditor *_editor)
+    : MaEditorSelectionController(_editor), mcaEditor(_editor) {
+}
+
+void McaEditorSelectionController::clearSelection() {
+    MaEditorSelectionController::clearSelection();
+    mcaEditor->getUI()->getReferenceArea()->clearSelection();
+}
+
+void McaEditorSelectionController::setSelection(const MaEditorSelection &newSelection) {
+    QRect selectionRect = newSelection.toRect();
+    if (selectionRect.isEmpty()) {
+        MaEditorSelectionController::setSelection({});
+        mcaEditor->getUI()->getReferenceArea()->clearSelection();
+        return;
+    }
+    if (selectionRect.width() == 1 && mcaEditor->getMaObject()->getMca()->isTrailingOrLeadingGap(selectionRect.y(), selectionRect.x())) {
+        // Clear selection if gap is clicked.
+        MaEditorSelectionController::setSelection({});
+        mcaEditor->getUI()->getReferenceArea()->clearSelection();
+        return;
+    }
+    MaEditorSelectionController::setSelection(newSelection);
 }
 
 }    // namespace U2

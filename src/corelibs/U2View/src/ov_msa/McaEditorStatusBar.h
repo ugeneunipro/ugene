@@ -34,7 +34,6 @@ class McaEditorStatusBar : public MaEditorStatusBar {
 public:
     McaEditorStatusBar(MultipleAlignmentObject *mobj,
                        MaEditorSequenceArea *seqArea,
-                       McaEditorNameList *nameList,
                        McaReferenceCharController *refCharController);
 
     void setMutationStatus(bool isAlternativeMutationsEnabled);
@@ -49,7 +48,6 @@ private:
     void updateMutationsLabel();
 
     McaReferenceCharController *refCharController;
-    McaEditorNameList *nameList;
     QLabel* mutationsStatus = nullptr;
 
     static const QMap<bool, const char*> MUTATION_MODE_ON_OFF_STATE_MAP;
