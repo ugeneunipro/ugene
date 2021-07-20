@@ -81,7 +81,7 @@ bool UnwantedConnectionsUtils::areUnwantedParametersPresentedInDimersInfo(const 
     bool isMeltingTemperatureUnwanted = unwantedMeltingTemperature <= dimerMeltingTemp;
     bool isLengthUnwanted = unwantedDimerLength <= dimerLength;
     bool isUnwantedParameter = isDeltaGUnwanted && isMeltingTemperatureUnwanted && isLengthUnwanted;
-    report += QObject::tr(dimersInfo.getFullReport().toLocal8Bit());
+    report += QObject::tr(dimersInfo.getReportWithMeltingTemp().toLocal8Bit());
     if (isUnwantedParameter) {
         algoLog.details(report);
     }
