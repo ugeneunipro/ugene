@@ -38,7 +38,7 @@ public:
      */
     static const QString UGENE_MIME_TYPE;
 
-    /** Maximum safe text data size UGENE can put into clipboard. */
+    /** Maximum text data size UGENE can put into clipboard safely: 100mb. */
     static constexpr qint64 MAX_SAFE_COPY_TO_CLIPBOARD_SIZE = 100 * 1000 * 1000;
 };
 
