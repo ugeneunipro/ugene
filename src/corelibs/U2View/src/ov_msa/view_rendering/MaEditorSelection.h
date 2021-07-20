@@ -22,6 +22,7 @@
 #ifndef _U2_MA_EDITOR_SELECTION_
 #define _U2_MA_EDITOR_SELECTION_
 
+#include <QList>
 #include <QRect>
 
 #include <U2Core/U2Region.h>
@@ -34,29 +35,36 @@ class McaEditor;
 /** Data model for selection in MSA editor: list of visual non-overlapping rectangles. */
 class U2VIEW_EXPORT MaEditorSelection {
 public:
-    /** Creates a new empty MSA editor selection first and calls addRect() for every rect in the list. */
-    explicit MaEditorSelection(const QList<QRect> &rectList = QList<QRect>());
+    /** Creates a new empty MSA editor selection first and calls buildSafeSelectionRects() on the given rect list. */
+    MaEditorSelection(const QList<QRect> &rectList = QList<QRect>());
 
     /**
-     * Adds rect to the selection. Does not change the selection if the new rect area is already in the selection.
-     * Returns 'true' if selection was changed.
-     *
-     * Only rect with width and height > 0 can be added to the selection.
-     */
-    bool addRect(const QRect &rect);
+     * Builds 'safe' selection rects list.
+     * The result contains non-empty non-intersecting/non-touching each other rects with a unified left/right coordinates (bounding) sorted by top position. */
+    static QList<QRect> buildSafeSelectionRects(const QList<QRect> &rectList);
 
-    /* Returns true if the selection contains no rects. */
+    /** Returns true if the selection contains no rects. */
     bool isEmpty() const;
+
+    /** Returns true if selection contains multiple rectangles. */
+    bool isMultiSelection() const;
 
     /**
      * Returns selection state as a rect.
      * The returned rect is a bounding rect for all rects in the 'rectList'.
      * If 'rectList' is empty the method returns an empty (0, 0, 0, 0) rect.
+     * Warning: this method is unsafe and will be removed. Use getRectList() to deal with each individual selection rect correctly.
      */
     QRect toRect() const;
 
+    /** Returns width of the selection. Note: all rects in the selection have unified width (left & right coordinates). */
+    int getWidth() const;
+
     /** Returns list of selected rects. */
     const QList<QRect> &getRectList() const;
+
+    /** Returns true if the given row (any its part) is in the selection. */
+    bool containsRow(int viewRowIndex) const;
 
     /** Compares 2 selection. Two selections are equal if they have equal list of rects with the same order. */
     bool operator==(const MaEditorSelection &other) const;

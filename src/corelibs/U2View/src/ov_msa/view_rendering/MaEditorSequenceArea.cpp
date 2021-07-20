@@ -221,7 +221,7 @@ QFont MaEditorSequenceArea::getFont() const {
 void MaEditorSequenceArea::setSelectionRect(const QRect &newSelectionRect) {
     QRect safeRect = boundWithVisibleRange(newSelectionRect);
     if (!safeRect.isValid()) {    // 'newSelectionRect' is out of bounds - reset selection to empty.
-        editor->getSelectionController()->setSelection(MaEditorSelection());
+        editor->getSelectionController()->clearSelection();
         return;
     }
     editor->getSelectionController()->setSelection(MaEditorSelection({safeRect}));
