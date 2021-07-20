@@ -57,6 +57,9 @@ public:
 
     static const QBitArray QUALIFIER_NAME_CHARS;
 
+    /** Platform dependent end of line characters sequence. "\r\n" on Windows or "\n" otherwise (Mac & Linux). */
+    static const QString PLATFORM_EOL;
+
     inline static const char *getLineOfSpaces(int nspaces);
 
     inline static bool fits(const QBitArray &map, const char *str, int len);

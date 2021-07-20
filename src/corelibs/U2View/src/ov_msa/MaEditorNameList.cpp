@@ -27,8 +27,10 @@
 #include <QMouseEvent>
 #include <QPainter>
 
+#include <U2Core/ClipboardController.h>
 #include <U2Core/Counter.h>
 #include <U2Core/GObjectTypes.h>
+#include <U2Core/TextUtils.h>
 #include <U2Core/Theme.h>
 #include <U2Core/U2Mod.h>
 #include <U2Core/U2OpStatusUtils.h>
@@ -71,9 +73,9 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt *_ui, QScrollBar *_nhBar)
     connect(editSequenceNameAction, SIGNAL(triggered()), SLOT(sl_editSequenceName()));
     addAction(editSequenceNameAction);
 
-    copyCurrentSequenceAction = new QAction(tr("Copy current sequence"), this);
-    copyCurrentSequenceAction->setObjectName("Copy current sequence");
-    connect(copyCurrentSequenceAction, SIGNAL(triggered()), SLOT(sl_copyCurrentSequence()));
+    copyWholeRowAction = new QAction(tr("Copy whole selected row(s)"), this);
+    copyWholeRowAction->setObjectName("copy_whole_row");
+    connect(copyWholeRowAction, SIGNAL(triggered()), SLOT(sl_copyWholeRow()));
 
     removeSequenceAction = new QAction(tr("Remove sequence(s)"), this);
     removeSequenceAction->setObjectName("Remove sequence");
@@ -191,13 +193,37 @@ int MaEditorNameList::getSelectedMaRow() const {
     return ui->getCollapseModel()->getMaRowIndexByViewRowIndex(selectionRect.top());
 }
 
-void MaEditorNameList::sl_copyCurrentSequence() {
-    int maRow = getSelectedMaRow();
-    MultipleAlignmentObject *maObj = editor->getMaObject();
-    const MultipleAlignmentRow row = maObj->getRow(maRow);
-    //TODO: trim large sequence?
-    U2OpStatus2Log os;
-    QApplication::clipboard()->setText(row->toByteArray(os, maObj->getLength()));
+void MaEditorNameList::sl_copyWholeRow() {
+    const MaEditorSelection &selection = editor->getSelection();
+    CHECK(!selection.isEmpty(), );
+    const QList<QRect> &selectedRects = selection.getRectList();
+    const MaCollapseModel *collapseModel = ui->getCollapseModel();
+    const MultipleAlignmentObject *maObject = editor->getMaObject();
+    qint64 maLength = maObject->getLength();
+    qint64 estimatedResultLength = 0;
+    for (const QRect &selectedRect : qAsConst(selectedRects)) {
+        estimatedResultLength += selectedRect.height() * maLength;
+    }
+    if (estimatedResultLength > U2Clipboard::MAX_SAFE_COPY_TO_CLIPBOARD_SIZE) {
+        uiLog.error(tr("Block size is too big and can't be copied into the clipboard"));
+        return;
+    }
+    QString resultText;
+    for (const QRect &selectedRect : qAsConst(selectedRects)) {
+        for (int viewRowIndex = selectedRect.top(); viewRowIndex <= selectedRect.bottom(); viewRowIndex++) {
+            int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
+            SAFE_POINT(maRowIndex >= 0, "Can't get MA index by View index", );
+            MultipleAlignmentRow row = maObject->getRow(maRowIndex);
+            if (!resultText.isEmpty()) {
+                resultText += TextUtils::PLATFORM_EOL;
+            }
+            U2OpStatus2Log os;
+            QByteArray sequence = row->toByteArray(os, maObject->getLength());
+            CHECK_OP_EXT(os, uiLog.error(os.getError()), );
+            resultText.append(QString::fromLatin1(sequence));
+        }
+    }
+    QApplication::clipboard()->setText(resultText);
 }
 
 void MaEditorNameList::sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &mi) {
@@ -577,7 +603,7 @@ void MaEditorNameList::sl_selectionChanged(const MaEditorSelection &, const MaEd
 }
 
 void MaEditorNameList::sl_updateActions() {
-    copyCurrentSequenceAction->setEnabled(!editor->isAlignmentEmpty());
+    copyWholeRowAction->setEnabled(!editor->getSelection().isEmpty());
     MultipleAlignmentObject *maObj = editor->getMaObject();
     removeSequenceAction->setEnabled(!maObj->isStateLocked() && getSelectedMaRow() != -1);
     editSequenceNameAction->setEnabled(!maObj->isStateLocked() && getSelectedMaRow() != -1);

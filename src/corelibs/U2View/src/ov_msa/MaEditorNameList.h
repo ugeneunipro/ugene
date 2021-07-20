@@ -67,7 +67,8 @@ protected slots:
     void sl_editSequenceName();
 
 private slots:
-    void sl_copyCurrentSequence();
+    /** Copies whole selected row content into clipboard without any formatting. */
+    void sl_copyWholeRow();
     void sl_lockedStateChanged();
     void sl_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &);
     void sl_vScrollBarActionPerformed();
@@ -175,7 +176,10 @@ protected:
 
 public:
     QAction *editSequenceNameAction;
-    QAction *copyCurrentSequenceAction;
+
+    /** Copies whole selected rows. Ignores actual selected column range. */
+    QAction *copyWholeRowAction;
+
     // TODO: remove this action. It triggers the same code with ui->delSelectionAction and exists only to show a different text in the context menu.
     QAction *removeSequenceAction;
 
