@@ -881,8 +881,8 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
             if (selection.isSingleSelection()) {
                 const QRect &selectionRect = selection.getRectList().first();
                 movableBorder = SelectionModificationHelper::getMovableSide(shape, globalMousePosition, selectionRect, QSize(baseWidth, baseHeight));
+                moveBorder(pos);
             }
-            moveBorder(pos);
         }
     }
 
@@ -999,8 +999,9 @@ void MaEditorSequenceArea::setBorderCursor(const QPoint &p) {
     int viewWidth = ui->getBaseWidthController()->getBaseWidth();
     int viewHeight = ui->getRowHeightController()->getSingleRowHeight();
     // Only single selection support resizing.
-    QRect resizableRect = selection.isSingleSelection() ? selection.getRectList().first() : QRect();
-    Qt::CursorShape shape = SelectionModificationHelper::getCursorShape(globalMousePos, resizableRect, viewWidth, viewHeight);
+    CHECK(selection.isSingleSelection(), );
+    QRect selectionRect = selection.getRectList().first();
+    Qt::CursorShape shape = SelectionModificationHelper::getCursorShape(globalMousePos, selectionRect, viewWidth, viewHeight);
     setCursor(shape);
 }
 
