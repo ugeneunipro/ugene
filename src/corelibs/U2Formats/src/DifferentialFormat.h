@@ -63,7 +63,7 @@ private:
 
 private:
     /** Maximum line length supported by the format. */
-    static const int MAX_LINE_LENGTH = 100000;
+    static constexpr int MAX_LINE_LENGTH = 100000;
 };
 
 }    // namespace U2
