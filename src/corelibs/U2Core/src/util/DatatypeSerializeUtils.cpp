@@ -205,12 +205,14 @@ enum ReadState { RS_NAME,
                  RS_QUOTED_NAME,
                  RS_NAME_OR_WEIGHT };
 
-void packTreeNode(QString &resultText, const PhyNode *node) {
+void packTreeNode(QString &resultText, const PhyNode *node, U2OpStatus &os) {
     int branchCount = node->branchCount();
     const QString &nodeName = node->getName();
     if (branchCount == 1 && (nodeName.isEmpty() || nodeName == "ROOT")) {
-        SAFE_POINT(node != node->getSecondNodeOfBranch(0), "Invalid tree topology", );
-        packTreeNode(resultText, node->getSecondNodeOfBranch(0));
+        const PhyNode *sibling = node->getSecondNodeOfBranch(0);
+        CHECK_EXT(node != sibling, os.setError(DatatypeSerializers::tr("Invalid tree topology")), );
+        packTreeNode(resultText, node->getSecondNodeOfBranch(0), os);
+        CHECK_OP(os, );
         return;
     }
     if (branchCount > 1) {
@@ -223,7 +225,8 @@ void packTreeNode(QString &resultText, const PhyNode *node) {
                 } else {
                     resultText.append(",");
                 }
-                packTreeNode(resultText, node->getSecondNodeOfBranch(i));
+                packTreeNode(resultText, node->getSecondNodeOfBranch(i), os);
+                CHECK_OP(os, );
                 if (node->getBranchesNodeValue(i) >= 0) {
                     resultText.append(QString::number(node->getBranchesNodeValue(i)));
                 }
@@ -414,9 +417,10 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader &reader, U2Op
     return result;
 }
 
-QString NewickPhyTreeSerializer::serialize(const PhyTree &tree) {
+QString NewickPhyTreeSerializer::serialize(const PhyTree &tree, U2OpStatus &os) {
     QString result;
-    packTreeNode(result, tree->getRootNode());
+    packTreeNode(result, tree->getRootNode(), os);
+    CHECK_OP(os, "")
     result.append(";\n");
     return result;
 }

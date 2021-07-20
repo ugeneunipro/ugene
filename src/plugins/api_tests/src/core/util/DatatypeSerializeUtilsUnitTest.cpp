@@ -105,7 +105,8 @@ IMPLEMENT_TEST(DatatypeSerializeUtilsUnitTest, NewickPhyTreeSerializer) {
     PhyTree tree = NewickPhyTreeSerializer::deserialize(treeData, os);
     CHECK_NO_ERROR(os);
 
-    QString treeData2 = NewickPhyTreeSerializer::serialize(tree);
+    QString treeData2 = NewickPhyTreeSerializer::serialize(tree, os);
+    CHECK_NO_ERROR(os);
     CHECK_TRUE(treeData == treeData2, "data");
 }
 

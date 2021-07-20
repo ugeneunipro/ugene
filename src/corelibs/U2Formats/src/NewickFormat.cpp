@@ -52,7 +52,8 @@ void NewickFormat::storeTextDocument(IOAdapterWriter &writer, Document *document
     const QList<GObject *> &objects = document->getObjects();
     for (GObject *obj : qAsConst(objects)) {
         if (auto phyObj = qobject_cast<PhyTreeObject *>(obj)) {
-            QString text = NewickPhyTreeSerializer::serialize(phyObj->getTree());
+            QString text = NewickPhyTreeSerializer::serialize(phyObj->getTree(), os);
+            CHECK_OP(os, );
             writer.write(os, text);
             CHECK_OP(os, );
         }
@@ -69,8 +70,11 @@ FormatCheckResult NewickFormat::checkRawTextData(const QString &dataPrefix, cons
     for (int i = 0; i < dataPrefix.size(); ++i) {
         char ch = dataPrefix[i].toLatin1();
         if (ch == '\'') {
-            char prevCh = dataPrefix[i - 1].toLatin1();
-            quotedLabelStarted = !quotedLabelStarted && i > 0 && (prevCh == '(' || prevCh == ',');
+            if (!quotedLabelStarted && i > 0 && (dataPrefix[i - 1] == '(' || dataPrefix[i - 1] == ',')) {
+                quotedLabelStarted = true;
+            } else if (quotedLabelStarted) {
+                quotedLabelStarted = false;
+            }
             continue;
         }
         if (quotedLabelStarted) {

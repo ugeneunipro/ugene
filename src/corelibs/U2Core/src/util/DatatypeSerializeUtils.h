@@ -66,7 +66,7 @@ public:
     static const QString ID;
 
     /** Returns serialized (textual) representation of the tree. */
-    static QString serialize(const PhyTree &tree);
+    static QString serialize(const PhyTree &tree, U2OpStatus &os);
 
     /** Returns PhyTree extracted from form serial representation. */
     static PhyTree deserialize(const QString &text, U2OpStatus &os);
