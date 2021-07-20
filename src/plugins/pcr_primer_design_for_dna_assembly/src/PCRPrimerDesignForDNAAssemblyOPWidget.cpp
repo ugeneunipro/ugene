@@ -358,9 +358,9 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_onFindTaskFinished() {
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_extractProduct() {
     ADVSequenceObjectContext *sequenceContext = annDnaView->getActiveSequenceContext();
-    SAFE_POINT(NULL != sequenceContext, L10N::nullPointerError("Sequence Context"), );
+    SAFE_POINT(nullptr != sequenceContext, L10N::nullPointerError("Sequence Context"), );
     U2SequenceObject *sequenceObject = sequenceContext->getSequenceObject();
-    SAFE_POINT(NULL != sequenceObject, L10N::nullPointerError("Sequence Object"), );
+    SAFE_POINT(nullptr != sequenceObject, L10N::nullPointerError("Sequence Object"), );
     ExtractPrimerTaskSettings settings;
     settings.sequenceRef = sequenceContext->getSequenceRef();
     GUrl sequenceURL = sequenceContext->getSequenceObject()->getDocument()->getURL();

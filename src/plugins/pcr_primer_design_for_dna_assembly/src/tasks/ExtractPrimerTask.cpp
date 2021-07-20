@@ -77,14 +77,15 @@ void ExtractPrimerTask::run() {
 
     QList<SharedAnnotationData> annotations;
     int resultIndex = PCRPrimerDesignForDNAAssemblyTask::FRAGMENT_INDEX_TO_NAME.indexOf(settings.fragmentName);
-    
+    bool isForvard = resultIndex % 2 == 0;
+
     U2Region fragmentRegion = U2Region(0, productSequence.length());
     if (!settings.backboneSequence.isEmpty() && settings.backboneLength != 0) {
         SharedAnnotationData backboneAnnotationData(new AnnotationData());
         QByteArray partToAdd = settings.backboneSequence.left(settings.backboneLength);
         backboneAnnotationData->setStrand(U2Strand(U2Strand::Direct));
         backboneAnnotationData->name = BACKBONE_ANNOTATION_NAME;
-        if (resultIndex % 2 == 0) {
+        if (isForvard) {
             productSequence.seq.prepend(partToAdd);
             fragmentRegion.startPos =+ settings.backboneLength;
             backboneAnnotationData->location->regions.append(U2Region(0, settings.backboneLength));
@@ -95,7 +96,7 @@ void ExtractPrimerTask::run() {
         annotations.append(backboneAnnotationData);
     }
     SharedAnnotationData fragmentAnnotationData(new AnnotationData());
-    fragmentAnnotationData->setStrand(resultIndex % 2 == 0 ? U2Strand(U2Strand::Direct) : U2Strand(U2Strand::Complementary));
+    fragmentAnnotationData->setStrand(isForvard ? U2Strand(U2Strand::Direct) : U2Strand(U2Strand::Complementary));
     fragmentAnnotationData->name = settings.fragmentName;
     fragmentAnnotationData->location->regions.append(fragmentRegion);
     annotations.append(fragmentAnnotationData);
