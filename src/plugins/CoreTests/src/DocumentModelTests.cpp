@@ -795,11 +795,6 @@ void GTest_CompareFiles::init(XMLTestFormat *tf, const QDomElement &el) {
 static const qint64 READ_LINE_MAX_SZ = 2048;
 
 Task::ReportResult GTest_CompareFiles::report() {
-    if (mixed_lines) {
-        compareMixed();
-        return ReportResult_Finished;
-    }
-
     QFile f1(doc1Path);
     if (!f1.open(QIODevice::ReadOnly)) {
         setError(QString("Cannot open file '%1'!").arg(doc1Path));
@@ -809,6 +804,11 @@ Task::ReportResult GTest_CompareFiles::report() {
     QFile f2(doc2Path);
     if (!f2.open(QIODevice::ReadOnly)) {
         setError(QString("Cannot open file '%1'!").arg(doc2Path));
+        return ReportResult_Finished;
+    }
+
+    if (mixed_lines) {
+        compareMixed();
         return ReportResult_Finished;
     }
 

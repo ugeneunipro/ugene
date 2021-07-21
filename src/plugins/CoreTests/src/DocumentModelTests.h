@@ -199,7 +199,7 @@ class GTest_CompareFiles : public XmlTest {
     Q_OBJECT
     SIMPLE_XML_TEST_BODY_WITH_FACTORY(GTest_CompareFiles, "compare-docs");
 
-    ReportResult report();
+    ReportResult report() override;
 
 private:
     void compareMixed();

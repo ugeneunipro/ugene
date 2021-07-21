@@ -2964,8 +2964,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../src/ExternalToolSupportSettingsController.cpp" line="91"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Download &lt;a href=&quot;http://ugene.net/download-all_html#en_data_analysis_tools&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#1866af;&quot;&gt;tools executables&lt;/span&gt;&lt;/a&gt; and configure the tools paths. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Скачать &lt;a href=&quot;http://ugene.net/ru/download-all_html#ru_data_analysis_tools&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#1866af;&quot;&gt;инструменты&lt;/span&gt;&lt;/a&gt; и сконфигурировать пути до файлов. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Download &lt;a href=&quot;http://ugene.net/download-all.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#1866af;&quot;&gt;tools executables&lt;/span&gt;&lt;/a&gt; and configure the tools paths. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Скачать &lt;a href=&quot;http://ugene.net/ru/download-all.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#1866af;&quot;&gt;инструменты&lt;/span&gt;&lt;/a&gt; и сконфигурировать пути до файлов. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/RnaSeqCommon.cpp" line="54"/>

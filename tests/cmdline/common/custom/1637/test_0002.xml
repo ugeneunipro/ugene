@@ -4,7 +4,7 @@
             in="!common_data_dir!cmdline/vcf/vcf1.vcf"
             out="!tmp_data_dir!vcf_0002.vcf"
             split="1"
-            by_lines="true"/>
+    />
 
     <compare-docs doc1="cmdline/vcf/out_split.vcf" doc2="vcf_0002.vcf" temp="2" by_lines="true"/>
 
