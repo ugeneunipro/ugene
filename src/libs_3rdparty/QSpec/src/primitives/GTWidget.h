@@ -30,6 +30,7 @@
 #include <QMenu>
 #include <QPushButton>
 #include <QSpinBox>
+#include <QToolButton>
 #include <QWidget>
 
 #include "GTGlobals.h"
@@ -119,6 +120,9 @@ public:
 
     /** Calls findExactWidget with QSpinBox type. Shortcut method. */
     static QSpinBox *findSpinBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+
+    /** Calls findExactWidget with QToolButton type. Shortcut method. */
+    static QToolButton *findToolButton(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 
 #define GT_METHOD_NAME "findWidgetByType"
     /** Finds a child widget with the given type. Fails is widget can't be found. */

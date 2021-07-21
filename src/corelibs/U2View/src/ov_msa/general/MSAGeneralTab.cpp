@@ -92,9 +92,11 @@ void MSAGeneralTab::connectSignals() {
     connect(convertNucleicAlphabetButton, SIGNAL(clicked()), SLOT(sl_convertNucleicAlphabetButtonClicked()));
 
     // External signals
-    connect(msaEditor->getMaObject(),
-            SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)),
+    MultipleSequenceAlignmentObject *maObject = msaEditor->getMaObject();
+    connect(maObject,
+            SIGNAL(si_alignmentChanged(const MultipleAlignment &, const MaModificationInfo &)),
             SLOT(sl_alignmentChanged()));
+    connect(maObject, SIGNAL(si_lockedStateChanged()), SLOT(sl_alignmentChanged()));
     connect(sequenceArea, SIGNAL(si_copyFormattedChanging(bool)), copyButton, SLOT(setEnabled(bool)));
 }
 
