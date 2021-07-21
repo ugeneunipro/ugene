@@ -211,7 +211,7 @@ void packTreeNode(QString &resultText, const PhyNode *node, U2OpStatus &os) {
     if (branchCount == 1 && (nodeName.isEmpty() || nodeName == "ROOT")) {
         const PhyNode *sibling = node->getSecondNodeOfBranch(0);
         CHECK_EXT(node != sibling, os.setError(DatatypeSerializers::tr("Invalid tree topology")), );
-        packTreeNode(resultText, node->getSecondNodeOfBranch(0), os);
+        packTreeNode(resultText, sibling, os);
         CHECK_OP(os, );
         return;
     }
@@ -336,7 +336,7 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader &reader, U2Op
                 nodeStack.push(pn);
                 branchStack.push(bd);
                 state = RS_NAME;
-            } else if (latin1CharCode == ':') {    // Weight start.
+            } else if (ch == ':') {    // Weight start.
                 if (state == RS_WEIGHT && !lastStr.isEmpty()) {
                     if (!branchStack.isEmpty()) {    // Ignore root node weight if present.
                         bool ok = false;
