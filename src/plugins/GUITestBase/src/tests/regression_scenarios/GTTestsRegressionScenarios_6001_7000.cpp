@@ -1376,82 +1376,53 @@ GUI_TEST_CLASS_DEFINITION(test_6232_4) {
 
 GUI_TEST_CLASS_DEFINITION(test_6233) {
     // 1. Find the link to the ET downloadp page in the application settings
-    class Custom : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
+    class FindUrlScenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) override {
             QWidget *dialog = GTWidget::getActiveModalWidget(os);
             AppSettingsDialogFiller::openTab(os, AppSettingsDialogFiller::ExternalTools);
             QLabel *selectToolPackLabel = GTWidget::findExactWidget<QLabel *>(os, "selectToolPackLabel");
             CHECK_SET_ERR(selectToolPackLabel != nullptr, "selectToolPackLabel unexpectedly not found");
 
-            QPoint pos(selectToolPackLabel->pos().x(), selectToolPackLabel->pos().y());
-            QPoint globalPos = selectToolPackLabel->mapToGlobal(pos);
-#ifdef Q_OS_LINUX
-            globalPos.setY(globalPos.y() - 20);
-#endif
-            GTMouseDriver::moveTo(globalPos);
-            const int xpos = globalPos.x();
+            QPoint labelGlobalPos = selectToolPackLabel->mapToGlobal(selectToolPackLabel->pos());
+            GTMouseDriver::moveTo(labelGlobalPos);
             GTClipboard::clear(os);
-            for (int i = 0; i < 7; i++) {
-                for (int j = 0; j < 20; j++) {
+            for (int row = 0; row < 70 && url.isEmpty(); row += 10) {
+                for (int column = 0; column < 200 && url.isEmpty(); column += 10) {
                     GTGlobals::sleep(100);
-                    QPoint mousePos(GTMouseDriver::getMousePosition());
-#ifdef Q_OS_WIN
-                    globalPos = QPoint(mousePos.x() + 11, mousePos.y() + 1);
-#else
-                    globalPos = QPoint(mousePos.x() + 10, mousePos.y());
-#endif
-                    GTMouseDriver::moveTo(globalPos);
+                    QPoint newMousePos = labelGlobalPos + QPoint(column, row);
+                    GTMouseDriver::moveTo(newMousePos);
                     Qt::CursorShape shape = selectToolPackLabel->cursor().shape();
                     if (shape != Qt::ArrowCursor) {
                         GTMouseDriver::click(Qt::RightButton);
-                        GTGlobals::sleep(200);
                         GTKeyboardDriver::keyClick(Qt::Key_Down);
-                        GTGlobals::sleep(200);
                         GTKeyboardDriver::keyClick(Qt::Key_Enter);
-                        clip = GTClipboard::text(os);
-                        if (!clip.isEmpty()) {
-                            break;
-                        }
+                        url = GTClipboard::text(os);
                     }
                 }
-                if (!clip.isEmpty()) {
-                    break;
-                }
-                GTGlobals::sleep(25);
-                globalPos = QPoint(xpos, globalPos.y() + 5);
-                GTMouseDriver::moveTo(globalPos);
             }
             GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
         }
 
     public:
-        QString clip;
+        QString url;
     };
 
-    Custom *c = new Custom();
-    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, c));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Settings"
-                                                << "Preferences...",
-                              GTGlobals::UseMouse);
+    auto findUrlScenario = new FindUrlScenario();
+    GTUtilsDialog::waitForDialog(os, new AppSettingsDialogFiller(os, findUrlScenario));
+    GTMenu::clickMainMenuItem(os, {"Settings", "Preferences..."}, GTGlobals::UseMouse);
 
-    // 2. Pull html by the link
-    HttpFileAdapterFactory *factory = new HttpFileAdapterFactory;
-    IOAdapter *adapter = factory->createIOAdapter();
-    bool isOpened = adapter->open(GUrl(c->clip), IOAdapterMode_Read);
-    CHECK_SET_ERR(isOpened, "HttpFileAdapter unexpectedly wasn't opened");
+    CHECK_SET_ERR(!findUrlScenario->url.isEmpty(), "URL was not found");
 
-    char *data = new char[128];
-    bool isNotFound = false;
-    bool eof = false;
+    // 2. Fetch html by the link.
+    auto factory = new HttpFileAdapterFactory();
+    QScopedPointer<IOAdapter> io(factory->createIOAdapter());
+    bool isOpened = io->open(findUrlScenario->url, IOAdapterMode_Read);
+    CHECK_SET_ERR(isOpened, "HttpFileAdapter unexpectedly wasn't opened, url: " + findUrlScenario->url);
 
-    while (!isNotFound && !eof) {
-        int read = adapter->readLine(data, 128);
-        QString d(data);
-        isNotFound = d.contains("Page not found");
-        eof = read == 0;
-    }
-
-    CHECK_SET_ERR(!isNotFound, "The External Tools page is not found");
+    QByteArray data(10000, 0);
+    int bytesRead = io->readBlock(data.data(), data.size());
+    CHECK_SET_ERR(bytesRead > 100, "Expected at least some data to be read from url: " + findUrlScenario->url + ", error: " + io->errorString());
+    CHECK_SET_ERR(!data.contains("Page not found"), "External Tools page is not found");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6235_1) {
@@ -3374,11 +3345,11 @@ GUI_TEST_CLASS_DEFINITION(test_6564) {
     GTUtilsMsaEditor::toggleCollapsingMode(os);
 
     // 3. Select a region in the first sequence (click on any base of the sequence).
-    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(3, 0)); // Y = 0.
+    GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(0, 0), QPoint(3, 0));    // Y = 0.
 
     // 4. Press_ Shift_ and click to the sequence number 3 in the name list (on the left).
     GTKeyboardDriver::keyPress(Qt::Key_Shift);
-    GTUtilsMsaEditor::clickSequenceName(os, "Bicolorana_bicolor_EF540830"); // Y = 2.
+    GTUtilsMsaEditor::clickSequenceName(os, "Bicolorana_bicolor_EF540830");    // Y = 2.
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     // 5. Sequences 0, 1, 2 selected (because _Shift_ was used), X-range was not changed.
