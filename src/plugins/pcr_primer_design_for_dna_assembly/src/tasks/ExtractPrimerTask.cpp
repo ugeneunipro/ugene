@@ -82,16 +82,23 @@ void ExtractPrimerTask::run() {
     U2Region fragmentRegion = U2Region(0, productSequence.length());
     if (!settings.backboneSequence.isEmpty()) {
         SharedAnnotationData backboneAnnotationData(new AnnotationData());
-        backboneAnnotationData->setStrand(U2Strand(U2Strand::Direct));
         backboneAnnotationData->name = BACKBONE_ANNOTATION_NAME;
+        U2Strand backboneStrand = U2Strand(U2Strand::Direct);
         if (isForvard) {
+            if (settings.direction == PCRPrimerDesignForDNAAssemblyTaskSettings::BackboneBearings::Backbone5) {
+                backboneStrand = U2Strand(U2Strand::Complementary);
+            }
             productSequence.seq.prepend(settings.backboneSequence);
             fragmentRegion.startPos =+ settings.backboneSequence.length();
             backboneAnnotationData->location->regions.append(U2Region(0, settings.backboneSequence.length()));
         } else {
+            if (settings.direction == PCRPrimerDesignForDNAAssemblyTaskSettings::BackboneBearings::Backbone3) {
+                backboneStrand = U2Strand(U2Strand::Complementary);
+            }
             backboneAnnotationData->location->regions.append(U2Region(productSequence.length(), settings.backboneSequence.length()));
             productSequence.seq.append(settings.backboneSequence);
         }
+        backboneAnnotationData->setStrand(backboneStrand);
         annotations.append(backboneAnnotationData);
     }
     SharedAnnotationData fragmentAnnotationData(new AnnotationData());

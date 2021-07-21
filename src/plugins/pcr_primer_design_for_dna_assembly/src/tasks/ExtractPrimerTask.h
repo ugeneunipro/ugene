@@ -27,23 +27,21 @@
 #include <U2Core/U2Region.h>
 #include <U2Core/U2Type.h>
 
+#include <src/PCRPrimerDesignForDNAAssemblyTaskSettings.h>
+
 namespace U2 {
 
 class Document;
 class LoadDocumentTask;
 
 struct ExtractPrimerTaskSettings {
-    enum BackboneInsertDirection {
-        FiveToFive,
-        FiveToThree
-    };
     U2EntityRef sequenceRef;
     U2Region fragmentLocation;
     QString fragmentName;
     QString originalSequenceFileName;
     QString outputFileUrl;
     QByteArray backboneSequence;
-    BackboneInsertDirection direction = FiveToFive;
+    PCRPrimerDesignForDNAAssemblyTaskSettings::BackboneBearings direction = PCRPrimerDesignForDNAAssemblyTaskSettings::BackboneBearings::Backbone5;
 };
 
 class ExtractPrimerTask : public Task {
