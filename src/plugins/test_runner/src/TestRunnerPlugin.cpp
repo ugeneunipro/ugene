@@ -172,7 +172,7 @@ void TestRunnerService::serviceStateChangedCallback(ServiceState oldState, bool 
         readSavedSuites();
         readBuiltInVars();
 
-        windowAction = new QAction(tr("Test runner"), this);
+        windowAction = new QAction(tr("XML Test runner"), this);
 #ifdef _DEBUG
         windowAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_H));
 #endif

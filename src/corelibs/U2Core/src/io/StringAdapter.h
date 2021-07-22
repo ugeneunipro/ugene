@@ -76,7 +76,7 @@ public:
     }
 
     /** Creates opened adapter */
-    StringAdapter(const QByteArray &data, StringAdapterFactory *f = nullptr);
+    StringAdapter(const QByteArray &data, StringAdapterFactory *f);
 
     virtual bool open(const GUrl &url, IOAdapterMode m);
 

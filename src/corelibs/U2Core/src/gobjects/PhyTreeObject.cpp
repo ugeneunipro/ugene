@@ -67,9 +67,10 @@ PhyTreeObject *PhyTreeObject::createInstance(const PhyTree &tree, const QString 
 }
 
 void PhyTreeObject::commit(const PhyTree &tree, const U2EntityRef &treeRef, U2OpStatus &os) {
-    CHECK_EXT(nullptr != tree.data(), os.setError("NULL tree data"), );
-    QByteArray data = NewickPhyTreeSerializer::serialize(tree);
-    RawDataUdrSchema::writeContent(data, treeRef, os);
+    CHECK_EXT(tree.data() != nullptr, os.setError("NULL tree data"), );
+    QString data = NewickPhyTreeSerializer::serialize(tree, os);
+    CHECK_OP(os, );
+    RawDataUdrSchema::writeContent(data.toLocal8Bit(), treeRef, os);
 }
 
 void PhyTreeObject::commit(const PhyTree &tree, const U2EntityRef &treeRef) {
