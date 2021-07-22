@@ -85,12 +85,16 @@ bool MaEditorSelection::isEmpty() const {
     return rectList.isEmpty();
 }
 
-bool MaEditorSelection::isMultiSelection() const {
+bool MaEditorSelection::isMultiRegionSelection() const {
     return rectList.size() > 1;
 }
 
-bool MaEditorSelection::isSingleSelection() const {
+bool MaEditorSelection::isSingleRegionSelection() const {
     return rectList.size() == 1;
+}
+
+bool MaEditorSelection::isSingleBaseSelection() const {
+    return isSingleRegionSelection() && rectList.first().width() == 1 && rectList.first().height() == 1;
 }
 
 int MaEditorSelection::getWidth() const {

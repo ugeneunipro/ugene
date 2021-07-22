@@ -66,6 +66,7 @@ void CreateSubalignmentTask::prepare() {
     DocumentFormat *dfd = dfr->getFormatById(cfg.formatIdToSave);
 
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(cfg.url));
+    QList<qint64> resultRowIds;
     if (createCopy) {
         QVariantMap hints = origDoc->getGHintsMap();
         if (hints.value(DocumentReadingMode_SequenceAsAlignmentHint, false).toBool()) {
@@ -74,6 +75,7 @@ void CreateSubalignmentTask::prepare() {
         resultDocument = dfd->createNewLoadedDocument(iof, cfg.url, stateInfo, hints);
         CHECK_OP(stateInfo, );
 
+        // TODO: do not copy whole object. Copy only cfg.rowIds.
         MultipleSequenceAlignment msa = origMAObj->getMsaCopy();
         resultMAObj = MultipleSequenceAlignmentImporter::createAlignment(resultDocument->getDbiRef(), msa, stateInfo);
         CHECK_OP(stateInfo, );
@@ -82,18 +84,31 @@ void CreateSubalignmentTask::prepare() {
         resultDocument->addObject(resultMAObj);
         GObjectUtils::updateRelationsURL(resultMAObj, origDoc->getURL(), cfg.url);
         QList<GObjectRelation> phyTreeRelations = resultMAObj->findRelatedObjectsByRole(ObjectRole_PhylogeneticTree);
-        foreach (GObjectRelation phyTreeRel, phyTreeRelations) {
+        for (const GObjectRelation& phyTreeRel : qAsConst(phyTreeRelations)) {
             resultMAObj->removeObjectRelation(phyTreeRel);
+        }
+        // Remap row ids.
+        QMap<qint64, qint64> rowIdRemap;
+        for (int i = 0; i < origMAObj->getNumRows() && i < resultMAObj->getNumRows(); i++) {
+            qint64 oldRowId = origMAObj->getRow(i)->getRowId();
+            qint64 resultRowId = resultMAObj->getRow(i)->getRowId();
+            rowIdRemap[oldRowId] = resultRowId;
+        }
+        for (const qint64 oldRowId : qAsConst(cfg.rowIds)) {
+            if (rowIdRemap.contains(oldRowId)) {
+                resultRowIds << rowIdRemap[oldRowId];
+            }
         }
     } else {
         CHECK_EXT(origDoc->isStateLocked(), setError(tr("Document is locked: %1").arg(origDoc->getURLString())), );
         resultDocument = origDoc;
         resultMAObj = origMAObj;
+        resultRowIds = cfg.rowIds;
         docOwner = false;
     }
 
     //TODO: add "remove empty rows and columns" flag to crop function
-    resultMAObj->crop(cfg.rowIds, cfg.columnRange);
+    resultMAObj->crop(resultRowIds, cfg.columnRange);
 
     if (cfg.saveImmediately) {
         addSubTask(new SaveDocumentTask(resultDocument, iof));

@@ -3713,7 +3713,7 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
 
     // Check that sequence area cell contains a text character up until the cell size is > 7px.
     // 7px is a hardcoded constant in the MA editor.
-    const int minWidthToShowText = 7;
+    int minWidthToShowText = 7;
     QRect prevRect(0, 0, 10000, 10000);
     while (true) {
         QRect rect = GTUtilsMcaEditorSequenceArea::getPositionRect(os, 1, 2053);    // Symbol 'T'.
@@ -3721,7 +3721,7 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
         // Reduce captured cell image rect by 1 px to avoid border aliasing effects with the next char.
         QRect cellImageRect(rect.topLeft(), rect.bottomRight() + QPoint(-1, -1));
         QImage cellImage = GTWidget::createSubImage(os, sequenceAreaImage, cellImageRect);
-        bool hasOnlyBgColor = GTWidget::hasSingleFillColor(cellImage, "#EAEDF7");
+        bool hasOnlyBgColor = GTWidget::hasSingleFillColor(cellImage, "#FE7276");    // Default color for non-highlighted 'T' in UgeneSangerNucleotide scheme.
         bool hasTextInTheCell = !hasOnlyBgColor;
         if (rect.width() >= minWidthToShowText) {
             CHECK_SET_ERR(hasTextInTheCell, "Expected to have text with the given zoom range");
@@ -3738,7 +3738,6 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
         GTUtilsMcaEditor::zoomOut(os);
     }
 }
-
 
 GUI_TEST_CLASS_DEFINITION(test_0045_1) {
     // Description: check "Alternative mutations" using slider to set threshold

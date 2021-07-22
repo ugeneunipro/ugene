@@ -127,7 +127,7 @@ void MultipleSequenceAlignmentObject::insertGapByRowIndexList(const QList<int> &
 void MultipleSequenceAlignmentObject::crop(const QList<qint64> &rowIds, const U2Region &columnRange) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
     U2OpStatus2Log os;
-    MsaDbiUtils::crop(entityRef, rowIds, columnRange.startPos, columnRange.length, os);
+    MsaDbiUtils::crop(entityRef, rowIds, columnRange, os);
     SAFE_POINT_OP(os, );
 
     updateCachedMultipleAlignment();

@@ -220,7 +220,7 @@ GUI_TEST_CLASS_DEFINITION(test_7044) {
     GTKeyboardDriver::keyRelease(Qt::Key_Shift);
 
     // Export -> Save subalignment.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_EXPORT << "Save subalignment", GTGlobals::UseMouse));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "Save subalignment"}, GTGlobals::UseMouse));
     auto saveSubalignmentDialogFiller = new ExtractSelectedAsMSADialogFiller(os, sandBoxDir + "test_7044.aln");
     saveSubalignmentDialogFiller->setUseDefaultSequenceSelection(true);
     GTUtilsDialog::waitForDialog(os, saveSubalignmentDialogFiller);
@@ -229,9 +229,7 @@ GUI_TEST_CLASS_DEFINITION(test_7044) {
 
     // Expected state: the saved sub-alignment is opened. Check the content.
     QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
-    QStringList expectedNameList = QStringList() << "seqB"
-                                                 << "seqA_1"
-                                                 << "seqA";
+    QStringList expectedNameList = {"seqB", "seqA_1", "seqA"};
     CHECK_SET_ERR(nameList == expectedNameList, "Unexpected name list in the exported alignment: " + nameList.join(","));
 }
 
@@ -548,8 +546,7 @@ GUI_TEST_CLASS_DEFINITION(test_7247) {
     GTUtilsDialog::waitForDialog(os, new WizardFiller(os, "Remote BLASTing Wizard", new RemoteBlastWizardScenario()));
     GTUtilsWorkflowDesigner::addSample(os, "Remote BLASTing");
     GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Save"));
-    GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os,
-        testDir + "_common_data/scenarios/sandbox/7247.uwl", "7247"));
+    GTUtilsDialog::waitForDialog(os, new WorkflowMetaDialogFiller(os, testDir + "_common_data/scenarios/sandbox/7247.uwl", "7247"));
     GTUtilsMdi::click(os, GTGlobals::Close);
 }
 

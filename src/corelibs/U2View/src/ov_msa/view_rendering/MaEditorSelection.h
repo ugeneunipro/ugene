@@ -47,10 +47,13 @@ public:
     bool isEmpty() const;
 
     /** Returns true if selection contains multiple rectangles. */
-    bool isMultiSelection() const;
+    bool isMultiRegionSelection() const;
 
     /** Returns true if selection contains exactly 1 rect. The rect can be of any size. */
-    bool isSingleSelection() const;
+    bool isSingleRegionSelection() const;
+
+    /** Returns true if selection contains 1 rect with 1x1 dimension. */
+    bool isSingleBaseSelection() const;
 
     /**
      * Returns selection state as a rect.

@@ -269,8 +269,14 @@ void MaEditorSequenceArea::moveSelection(int dx, int dy, bool allowSelectionResi
 }
 
 QList<int> MaEditorSequenceArea::getSelectedMaRowIndexes() const {
-    U2Region selectedYRegion = U2Region::fromYRange(editor->getSelection().toRect());
-    return ui->getCollapseModel()->getMaRowIndexesByViewRowIndexes(selectedYRegion, true);
+    QList<int> maRowIndexes;
+    QList<QRect> selectedRectList = editor->getSelection().getRectList();
+    for (const QRect &rect : selectedRectList) {
+        U2Region rowRange = U2Region::fromYRange(rect);
+        QList<int> maRowIndexesPerRect = ui->getCollapseModel()->getMaRowIndexesByViewRowIndexes(rowRange, true);
+        maRowIndexes << maRowIndexesPerRect;
+    }
+    return maRowIndexes;
 }
 
 int MaEditorSequenceArea::getTopSelectedMaRow() const {
@@ -878,7 +884,7 @@ void MaEditorSequenceArea::mousePressEvent(QMouseEvent *e) {
             const MaEditorSelection &selection = editor->getSelection();
             movableBorder = SelectionModificationHelper::NoMovableBorder;
             // Selection resizing is supported only in single selection mode.
-            if (selection.isSingleSelection()) {
+            if (selection.isSingleRegionSelection()) {
                 const QRect &selectionRect = selection.getRectList().first();
                 movableBorder = SelectionModificationHelper::getMovableSide(shape, globalMousePosition, selectionRect, QSize(baseWidth, baseHeight));
                 moveBorder(pos);
@@ -947,7 +953,7 @@ void MaEditorSequenceArea::mouseMoveEvent(QMouseEvent *event) {
 
     bool isDefaultCursorMode = cursor().shape() == Qt::ArrowCursor;
     const MaEditorSelection &selection = editor->getSelection();
-    if (!shifting && selection.isSingleSelection() && selection.contains(mousePressViewPos) && !isAlignmentLocked() && editingEnabled && isDefaultCursorMode) {
+    if (!shifting && selection.isSingleRegionSelection() && selection.contains(mousePressViewPos) && !isAlignmentLocked() && editingEnabled && isDefaultCursorMode) {
         shifting = true;
         maVersionBeforeShifting = editor->getMaObject()->getModificationVersion();
         U2OpStatus2Log os;
@@ -999,7 +1005,7 @@ void MaEditorSequenceArea::setBorderCursor(const QPoint &p) {
     int viewWidth = ui->getBaseWidthController()->getBaseWidth();
     int viewHeight = ui->getRowHeightController()->getSingleRowHeight();
     // Only single selection support resizing.
-    CHECK(selection.isSingleSelection(), );
+    CHECK(selection.isSingleRegionSelection(), );
     QRect selectionRect = selection.getRectList().first();
     Qt::CursorShape shape = SelectionModificationHelper::getCursorShape(globalMousePos, selectionRect, viewWidth, viewHeight);
     setCursor(shape);
@@ -1011,7 +1017,7 @@ void MaEditorSequenceArea::moveBorder(const QPoint &screenMousePos) {
     QPoint globalMousePos = ui->getScrollController()->getGlobalMousePosition(screenMousePos);
     globalMousePos = QPoint(qMax(0, globalMousePos.x()), qMax(0, globalMousePos.y()));
     const MaEditorSelection &selection = editor->getSelection();
-    SAFE_POINT(selection.isSingleSelection(), "Only single selection can be resized!", );
+    SAFE_POINT(selection.isSingleRegionSelection(), "Only single selection can be resized!", );
     const QRect &selectionRect = selection.getRectList().first();
     QSizeF viewSize(ui->getBaseWidthController()->getBaseWidth(), ui->getRowHeightController()->getSingleRowHeight());
     QRect newSelectionRect = SelectionModificationHelper::getNewSelection(movableBorder, globalMousePos, viewSize, selectionRect);
@@ -1275,7 +1281,7 @@ void MaEditorSequenceArea::drawAll() {
     drawBackground(painter);
 
     painter.drawPixmap(0, 0, *cachedView);
-    renderer->drawSelection(painter);
+    renderer->drawSelectionFrame(painter);
     renderer->drawFocus(painter);
 }
 

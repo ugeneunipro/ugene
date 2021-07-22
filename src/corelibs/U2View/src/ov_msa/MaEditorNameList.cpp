@@ -292,7 +292,7 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
     switch (key) {
         case Qt::Key_Up: {
             const MaEditorSelection &selection = editor->getSelection();
-            if (selection.isEmpty() || selection.isMultiSelection()) {
+            if (selection.isEmpty() || selection.isMultiRegionSelection()) {
                 break;
             }
             if (isShiftPressed) {    // Extend or shrink the selection.
@@ -313,7 +313,7 @@ void MaEditorNameList::keyPressEvent(QKeyEvent *e) {
         }
         case Qt::Key_Down: {
             const MaEditorSelection &selection = editor->getSelection();
-            if (selection.isEmpty() || selection.isMultiSelection()) {
+            if (selection.isEmpty() || selection.isMultiRegionSelection()) {
                 break;
             }
             if (isShiftPressed) {    // Extend or shrink the selection.

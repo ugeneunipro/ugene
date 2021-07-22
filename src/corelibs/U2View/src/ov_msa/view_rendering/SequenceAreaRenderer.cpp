@@ -77,7 +77,7 @@ bool SequenceAreaRenderer::drawContent(QPainter &painter, const U2Region &column
 
 #define SELECTION_STROKE_WIDTH 2
 
-void SequenceAreaRenderer::drawSelection(QPainter &painter) const {
+void SequenceAreaRenderer::drawSelectionFrame(QPainter &painter) const {
     const MaEditorSelection &selection = seqAreaWgt->getEditor()->getSelection();
     CHECK(!selection.isEmpty(), );
 
@@ -139,14 +139,12 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
     int referenceMaRowIndex = ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
     bool isReferenceRow = referenceMaRowIndex == maRowIndex;
     bool hasReference = referenceMaRowIndex >= 0;
-    QString refSeqName = editor->getReferenceRowName();
 
     qint64 regionEnd = qMin(columns.endPos(), (qint64)editor->getAlignmentLen() - 1);
     const MultipleAlignmentRow &maRow = ma->getRow(maRowIndex);
     int rowHeight = ui->getRowHeightController()->getSingleRowHeight();
     int baseWidth = ui->getBaseWidthController()->getBaseWidth();
 
-    const MaEditorSelection &selection = seqAreaWgt->getEditor()->getSelection();
     int viewRowIndex = ui->getCollapseModel()->getViewRowIndexByMaRowIndex(maRowIndex);
 
     painter.save();
@@ -160,7 +158,7 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
         char c = ma->charAt(maRowIndex, column);
 
         QColor backgroundColor = seqAreaWgt->getCurrentColorScheme()->getBackgroundColor(maRowIndex, column, c);    //! SANGER_TODO: add NULL checks or do smt with the infrastructure
-        if (backgroundColor.isValid() && selection.contains(column, viewRowIndex)) {
+        if (backgroundColor.isValid() && hasHighlightedBackground(column, viewRowIndex)) {
             backgroundColor = backgroundColor.convertTo(QColor::Hsv);
             int modifiedSaturation = qMin(backgroundColor.saturation() + SELECTION_SATURATION_INCREASE, 255);
             backgroundColor.setHsv(backgroundColor.hue(), modifiedSaturation, backgroundColor.value());
@@ -190,6 +188,10 @@ int SequenceAreaRenderer::drawRow(QPainter &painter, const MultipleAlignment &ma
     }
     painter.restore();
     return rowHeight;
+}
+
+bool SequenceAreaRenderer::hasHighlightedBackground(int columnIndex, int viewRowIndex) const {
+    return ui->getEditor()->getSelection().contains(columnIndex, viewRowIndex);
 }
 
 }    // namespace U2

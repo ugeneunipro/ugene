@@ -210,8 +210,8 @@ MultipleAlignmentRow MultipleAlignmentData::getRow(int rowIndex) {
 const MultipleAlignmentRow &MultipleAlignmentData::getRow(int rowIndex) const {
     static MultipleAlignmentRow emptyRow = getEmptyRow();
     int rowsCount = rows.count();
-    SAFE_POINT(0 != rowsCount, "No rows", emptyRow);
-    SAFE_POINT(rowIndex >= 0 && (rowIndex < rowsCount), "Internal error: unexpected row index was passed to MAlignment::getRow", emptyRow);
+    SAFE_POINT(rowsCount != 0, "No rows", emptyRow);
+    SAFE_POINT(rowIndex >= 0 && rowIndex < rowsCount, "Internal error: unexpected row index was passed to MAlignment::getRow", emptyRow);
     return rows[rowIndex];
 }
 
