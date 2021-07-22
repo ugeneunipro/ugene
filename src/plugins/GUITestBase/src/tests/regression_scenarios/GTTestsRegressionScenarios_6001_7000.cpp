@@ -6184,9 +6184,9 @@ GUI_TEST_CLASS_DEFINITION(test_6903) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    GTWidget::click(os, GTWidget::findWidget(os, "OP_MSA_GENERAL"));
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
 
-    QToolButton *toDnaButton = qobject_cast<QToolButton *>(GTWidget::findWidget(os, "convertNucleicAlphabetButton"));
+    QToolButton *toDnaButton = GTWidget::findToolButton(os, "convertNucleicAlphabetButton");
     GTWidget::click(os, toDnaButton);
 
     QComboBox *copyType = GTWidget::findExactWidget<QComboBox *>(os, "copyType");
@@ -6194,14 +6194,62 @@ GUI_TEST_CLASS_DEFINITION(test_6903) {
 
     GTUtilsMSAEditorSequenceArea::selectArea(os, QPoint(5, 5), QPoint(16, 9));
 
-    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, QStringList() << "Copy/Paste"
-                                                                              << "Copy (custom format)"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooserByText(os, {"Copy/Paste", "Copy (custom format)"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     QString expectedClipboard = "CUACUAAUUCGA\nUUAUUAAUUCGA\nUUGCUAAUUCGA\nUUAUUAAUCCGG\nCUAUUAAUUCGA";
     QString clipboardText = GTClipboard::text(os);
     CHECK_SET_ERR(clipboardText == expectedClipboard, QString("Unexpected clipboard text, expected: %1, current: %2").arg(expectedClipboard).arg(clipboardText));
 }
+
+GUI_TEST_CLASS_DEFINITION(test_6903_1) {
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+
+    // Check that button is present.
+    QToolButton *button = GTWidget::findToolButton(os, "convertNucleicAlphabetButton");
+    CHECK_SET_ERR(button->isVisible(), QString("Check 1. Conversion button must be present"));
+
+    // Lock the document and check that the button is not present.
+    GTUtilsDocument::lockDocument(os, "COI.aln");
+    CHECK_SET_ERR(!button->isVisible(), QString("Check 2. Conversion button must not be present"));
+
+    // Lock the document and check that the button is back.
+    GTUtilsDocument::unlockDocument(os, "COI.aln");
+    CHECK_SET_ERR(button->isVisible(), QString("Check 3. Conversion button must be present"));
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6903_2) {
+    GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::General);
+    QToolButton *nucleicButton = GTWidget::findToolButton(os, "convertNucleicAlphabetButton");
+    QToolButton *aminoButton = GTWidget::findToolButton(os, "convertAminoAlphabetButton");
+    CHECK_SET_ERR(nucleicButton->isVisible(), QString("Convert to nucleic button must be visible"));
+    CHECK_SET_ERR(nucleicButton->text() == "RNA", QString("Wrong button text in DNA mode, expected 'RNA', got '" + nucleicButton->text() + "'"));
+    CHECK_SET_ERR(!aminoButton->isVisible(), QString("Convert to amino button must not be visible"));
+
+    // Insert a character that will change alignment alphabet to Extended DNA.
+    GTUtilsMSAEditorSequenceArea::replaceSymbol(os, {1, 1}, 'R');
+    CHECK_SET_ERR(!nucleicButton->isVisible(), QString("Convert to nucleic button must not be visible in Extended DNA mode"));
+    CHECK_SET_ERR(!aminoButton->isVisible(), QString("Convert to amino button must not be visible in Extended DNA mode"));
+
+    // Undo, original state must be restored.
+    GTUtilsMsaEditor::undo(os);
+    CHECK_SET_ERR(nucleicButton->isVisible(), QString("Convert to nucleic button must be visible /2"));
+    CHECK_SET_ERR(nucleicButton->text() == "RNA", QString("Wrong button text in DNA mode, expected 'RNA', got '" + nucleicButton->text() + "' /2"));
+    CHECK_SET_ERR(!aminoButton->isVisible(), QString("Convert to amino button must not be visible /2"));
+
+    // Insert a character that will change alignment alphabet to RAW.
+    GTUtilsMSAEditorSequenceArea::replaceSymbol(os, {1, 1}, 'Q');
+    CHECK_SET_ERR(nucleicButton->isVisible(), QString("Convert to nucleic button must be visible in RAW mode"));
+    CHECK_SET_ERR(nucleicButton->text() == "DNA", QString("Wrong button text in RAW, expected 'DNA', got '" + nucleicButton->text() + "'"));
+    CHECK_SET_ERR(aminoButton->isVisible(), QString("Convert to amino button must be visible in RAW mode"));
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6916) {
     // Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");

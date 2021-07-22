@@ -131,6 +131,10 @@ QSpinBox *GTWidget::findSpinBox(GUITestOpStatus &os, const QString &widgetName, 
     return findExactWidget<QSpinBox *>(os, widgetName, parentWidget, options);
 }
 
+QToolButton *GTWidget::findToolButton(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QToolButton *>(os, widgetName, parentWidget, options);
+}
+
 QPoint GTWidget::getWidgetCenter(QWidget *widget) {
     return widget->mapToGlobal(widget->rect().center());
 }

@@ -31,6 +31,8 @@
 
 namespace U2 {
 
+class IOAdapterReader;
+
 /**
  * The class of utilities for serializing/deserializing chromatograms
  * into/from the binary representation.
@@ -56,28 +58,21 @@ public:
 /**
  * The class of utilities for serializing/deserializing phylogenetic
  * trees into/from the binary representation of Newick format.
+ * TODO: move parsing related stuff to U2Format library as a part of the NewickFormat source code.
  */
 class U2CORE_EXPORT NewickPhyTreeSerializer {
 public:
-    /**
-     * The serializer identifier.
-     */
+    /** The serializer identifier.*/
     static const QString ID;
 
-    /**
-     * Returns the binary representation of @tree.
-     */
-    static QByteArray serialize(const PhyTree &tree);
+    /** Returns serialized (textual) representation of the tree. */
+    static QString serialize(const PhyTree &tree, U2OpStatus &os);
 
-    /**
-     * Returns PhyTree extracted from @binary.
-     */
-    static PhyTree deserialize(const QByteArray &binary, U2OpStatus &os);
+    /** Returns PhyTree extracted from form serial representation. */
+    static PhyTree deserialize(const QString &text, U2OpStatus &os);
 
-    /**
-     * Returns the list of trees parsed from @io
-     */
-    static QList<PhyTree> parseTrees(IOAdapter *io, U2OpStatus &os);
+    /** Returns the list of trees parsed from reader stream. */
+    static QList<PhyTree> parseTrees(IOAdapterReader &reader, U2OpStatus &os);
 };
 
 /**

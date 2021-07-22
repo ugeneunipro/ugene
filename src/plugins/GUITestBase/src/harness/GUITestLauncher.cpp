@@ -139,7 +139,7 @@ void GUITestLauncher::firstTestRunCheck(const QString &testName) {
 QList<GUITest *> getIdealNightlyTestsSplit(int suiteIndex, int suiteCount, const QList<GUITest *> &allTests) {
     QList<int> testsPerSuite;
     if (suiteCount == 3) {
-        testsPerSuite << 970 << 800 << -1;
+        testsPerSuite << 980 << 800 << -1;
     } else if (suiteCount == 4) {
         testsPerSuite << 640 << 680 << 640 << -1;
     } else if (suiteCount == 5) {
