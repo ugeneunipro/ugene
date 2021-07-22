@@ -4212,6 +4212,25 @@ GUI_TEST_CLASS_DEFINITION(test_6655) {
                   "Required sequence is collapsed");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_6656) {
+    // Check that UGENE does not crash when invalid custom region is used in the Search panel of Sequence view.
+    GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    GTUtilsOptionPanelSequenceView::openTab(os, GTUtilsOptionPanelSequenceView::Search);
+    GTUtilsOptionPanelSequenceView::enterPattern(os, "TTT");
+
+    QWidget *optionsPanel = GTUtilsOptionsPanel::getActiveOptionsWidget(os);
+    GTUtilsOptionPanelSequenceView::setRegionType(os, "Custom region");
+    GTLineEdit::setText(os, "editStart", "3", optionsPanel);
+    GTLineEdit::setText(os, "editEnd", "2", optionsPanel);
+
+    GTWidget::findLabelByText(os, "Warning: Invalid search region.");
+
+    GTLineEdit::setText(os, "editEnd", "4", optionsPanel);
+    GTWidget::findLabelByText(os, "Warning: Search region is too small.");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_6659) {
     // 1. Open an alignment (e.g. "_common_data/scenarios/msa/ma2_gapped.aln").
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
