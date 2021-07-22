@@ -672,11 +672,8 @@ IMPLEMENT_TEST(MsaUnitTests, crop_validParams) {
     almnt->addRow("Third", thirdSequence);
 
     U2Region region(1, 4);
-    QSet<QString> rowNames;
-    rowNames << "First"
-             << "Second";
-
-    almnt->crop(region, rowNames, os);
+    QList<qint64> rowIds = {almnt->getRow(0)->getRowId(), almnt->getRow(1)->getRowId()};
+    almnt->crop(rowIds, region, os);
     CHECK_NO_ERROR(os);
 
     CHECK_EQUAL(2, almnt->getNumRows(), "number of rows");

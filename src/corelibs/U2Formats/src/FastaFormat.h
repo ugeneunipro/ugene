@@ -42,6 +42,9 @@ public:
     /** A comment marker: the line started with this symbol is a comment. */
     static constexpr char FASTA_COMMENT_START_SYMBOL = ';';
 
+    /** Recommended length of the FASTA sequence line. Using 80 symbols to make FASTA files readable in text editors. */
+    static constexpr int FASTA_SEQUENCE_LINE_LENGTH = 80;
+
     /** Saves sequence to the ioAdapter in FASTA format. */
     static void storeSequence(const DNASequence &sequence, IOAdapter *ioAdapter, U2OpStatus &os);
 

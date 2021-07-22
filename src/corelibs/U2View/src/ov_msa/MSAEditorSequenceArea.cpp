@@ -425,7 +425,7 @@ void MSAEditorSequenceArea::sl_createSubalignment() {
         bool addToProject = dialog->getAddToProjFlag();
         QString path = dialog->getSavePath();
         selectedRowIdList = dialog->getSelectedRowIds();
-        CreateSubalignmentSettings createSubalignmentSettings(selectedColumnsRegion, selectedRowIdList, path, true, addToProject, dialog->getFormatId());
+        CreateSubalignmentSettings createSubalignmentSettings(selectedRowIdList, selectedColumnsRegion, path, true, addToProject, dialog->getFormatId());
         auto createSubAlignmentTask = new CreateSubalignmentAndOpenViewTask(msaObject, createSubalignmentSettings);
         AppContext::getTaskScheduler()->registerTopLevelTask(createSubAlignmentTask);
     }
@@ -470,27 +470,27 @@ void MSAEditorSequenceArea::sl_copySelection() {
     const MaEditorSelection &selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
 
-    QRect selectionRect = selection.toRect();
-    SAFE_POINT(isInRange(selectionRect), "Selection rect is not in range!", );
-
     MultipleSequenceAlignmentObject *maObj = getEditor()->getMaObject();
     MaCollapseModel *collapseModel = ui->getCollapseModel();
     QString textMimeContent;
     QString ugeneMimeContent;
     U2OpStatus2Log os;
-    for (int viewRowIndex = selectionRect.y(); viewRowIndex <= selectionRect.bottom() && !os.hasError(); ++viewRowIndex) {    // bottom is inclusive
-        int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
-        const MultipleSequenceAlignmentRow &row = maObj->getMsaRow(maRowIndex);
-        QByteArray sequence = row->mid(selectionRect.x(), selectionRect.width(), os)->toByteArray(os, selectionRect.width());
-        ugeneMimeContent.append(FastaFormat::FASTA_HEADER_START_SYMBOL)
-            .append(row.data()->getName())
-            .append('\n')
-            .append(TextUtils::split(sequence, 80).join("\n"))
-            .append('\n');
-
-        bool isLastLine = viewRowIndex == selectionRect.bottom();
-        textMimeContent.append(sequence)
-            .append(isLastLine ? "" : "\n");
+    QList<QRect> selectionRects = selection.getRectList();
+    for (const QRect &selectionRect : qAsConst(selectionRects)) {
+        for (int viewRowIndex = selectionRect.top(); viewRowIndex <= selectionRect.bottom() && !os.hasError(); viewRowIndex++) {
+            if (!textMimeContent.isEmpty()) {
+                textMimeContent.append("\n");
+            }
+            int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
+            const MultipleSequenceAlignmentRow &row = maObj->getMsaRow(maRowIndex);
+            QByteArray sequence = row->mid(selectionRect.x(), selectionRect.width(), os)->toByteArray(os, selectionRect.width());
+            ugeneMimeContent.append(FastaFormat::FASTA_HEADER_START_SYMBOL)
+                .append(row.data()->getName())
+                .append('\n')
+                .append(TextUtils::split(sequence, FastaFormat::FASTA_SEQUENCE_LINE_LENGTH).join("\n"))
+                .append('\n');
+            textMimeContent.append(sequence);
+        }
     }
     auto mimeData = new QMimeData();
     mimeData->setText(textMimeContent);
@@ -501,9 +501,24 @@ void MSAEditorSequenceArea::sl_copySelection() {
 void MSAEditorSequenceArea::sl_copySelectionFormatted() {
     const DocumentFormatId &formatId = getCopyFormattedAlgorithmId();
     const MaEditorSelection &selection = editor->getSelection();
-    QRect rectToCopy = selection.isEmpty() ? QRect(0, 0, editor->getAlignmentLen(), getViewRowCount()) : selection.toRect();
-    auto coptTask = new SubalignmentToClipboardTask(getEditor(), rectToCopy, formatId);
-    AppContext::getTaskScheduler()->registerTopLevelTask(coptTask);
+    QList<QRect> viewRects = selection.getRectList();
+    if (viewRects.isEmpty()) {
+        // Whole sequence.
+        viewRects << QRect(0, 0, editor->getAlignmentLen(), getViewRowCount());
+    }
+    const MaCollapseModel *collapseModel = ui->getCollapseModel();
+    U2Region columnRange = U2Region::fromXRange(viewRects.first());
+    QList<qint64> allRowIds = editor->getMaObject()->getRowIds();
+    QList<qint64> selectedRowIds;
+    for (const QRect &viewRect : qAsConst(viewRects)) {
+        for (int viewRowIndex = viewRect.top(); viewRowIndex <= viewRect.bottom(); viewRowIndex++) {
+            int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
+            SAFE_POINT(maRowIndex >= 0, "Can't map View row to MA row: " + QString::number(viewRowIndex), );
+            selectedRowIds << allRowIds[maRowIndex];
+        }
+    }
+    auto copyTask = new SubalignmentToClipboardTask(getEditor(), selectedRowIds, columnRange, formatId);
+    AppContext::getTaskScheduler()->registerTopLevelTask(copyTask);
 }
 
 void MSAEditorSequenceArea::sl_paste() {

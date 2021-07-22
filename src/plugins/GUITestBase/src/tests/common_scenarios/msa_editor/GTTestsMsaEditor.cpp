@@ -3521,7 +3521,7 @@ GUI_TEST_CLASS_DEFINITION(test_0053_5) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0053_6) {
-    // Test copying of spatial selection, whole rows mode.
+    // Test copying of spatial selection, whole rows mode & column range mode.
 
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/region.full-gap.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -3534,14 +3534,35 @@ GUI_TEST_CLASS_DEFINITION(test_0053_6) {
     GTKeyboardDriver::keyPress(Qt::Key_Control);
 
     GTUtilsMsaEditor::checkSelection(os, {{5, 0, 6, 2}, {5, 10, 6, 1}});
+
+    // Test standard copy: only column range must be copied
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_COPY, "copy_selection"}));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    QString clipboardText = GTClipboard::text(os);
+    QString expectedText = "LRPSSS\n"
+                           "LRPSSS\n"
+                           "WKMSNA";
+    CHECK_SET_ERR(clipboardText == expectedText, "Unexpected text: " + QString(clipboardText).replace("\n", "$"));
+
+    // Test copy formatted: only column range must be copied
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_COPY, "copy_formatted"}));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    clipboardText = GTClipboard::text(os);
+    expectedText = "CLUSTAL W 2.0 multiple sequence alignment\n\n"
+                   "Tcn2           LRPSSS 6\n"
+                   "Tcn5           LRPSSS 6\n"
+                   "Pc_Metavir9    WKMSNA 6\n"
+                   "                : *.:\n\n";
+    CHECK_SET_ERR(clipboardText == expectedText, "Unexpected formatted text: " + QString(clipboardText).replace("\n", "$"));
+
+    // Test copying of whole row.
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_COPY, "copy_whole_row"}));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
-
-    QString clipboardText = GTClipboard::text(os);
-    QString expectedText = "RTAGRLRPSSSPWAAPAFLIKKENGKFRFLCDFRGLNSVT\n"
-                           "REAGRLRPSSSPWAAPAFLVKKENGKFRFIC---------\n"
-                           "LRSGRWKMSNARNTSPMLL-----SGIRDIPPRLRCVFDL";
-    CHECK_SET_ERR(clipboardText == expectedText, "Unexpected text: " + clipboardText);
+    clipboardText = GTClipboard::text(os);
+    expectedText = "RTAGRLRPSSSPWAAPAFLIKKENGKFRFLCDFRGLNSVT\n"
+                   "REAGRLRPSSSPWAAPAFLVKKENGKFRFIC---------\n"
+                   "LRSGRWKMSNARNTSPMLL-----SGIRDIPPRLRCVFDL";
+    CHECK_SET_ERR(clipboardText == expectedText, "Unexpected full row text: " + QString(clipboardText).replace("\n", "$"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0054) {

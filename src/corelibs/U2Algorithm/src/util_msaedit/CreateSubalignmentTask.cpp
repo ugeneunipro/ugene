@@ -45,6 +45,15 @@
 
 namespace U2 {
 
+CreateSubalignmentSettings::CreateSubalignmentSettings(const QList<qint64> &_rowIds,
+                                                       const U2Region &_columnRange,
+                                                       const GUrl &_url,
+                                                       bool _saveImmediately,
+                                                       bool _addToProject,
+                                                       const DocumentFormatId &_formatIdToSave)
+    : rowIds(_rowIds), columnRange(_columnRange), url(_url), saveImmediately(_saveImmediately), addToProject(_addToProject), formatIdToSave(_formatIdToSave) {
+}
+
 CreateSubalignmentTask::CreateSubalignmentTask(MultipleSequenceAlignmentObject *maObj, const CreateSubalignmentSettings &settings)
     : DocumentProviderTask(tr("Create sub-alignment: %1").arg(maObj->getDocument()->getName()), TaskFlags_NR_FOSCOE),
       origMAObj(maObj), resultMAObj(nullptr), cfg(settings) {
@@ -84,23 +93,7 @@ void CreateSubalignmentTask::prepare() {
     }
 
     //TODO: add "remove empty rows and columns" flag to crop function
-    if (cfg.rowIds.isEmpty()) {
-        resultMAObj->crop(cfg.window, cfg.sequenceNames.toSet());
-    } else {
-        QList<qint64> resultRowIdList;    // Maps original row ids to the result row ids by index.
-        if (createCopy) {
-            // Remap old object row ids into new object row ids before calling 'crop'.
-            for (qint64 origRowId : qAsConst(cfg.rowIds)) {
-                int rowIndex = origMAObj->getRowPosById(origRowId);
-                SAFE_POINT(rowIndex >= 0, "Failed to find row by id: " + QString::number(origRowId), );
-                MultipleAlignmentRow row = resultMAObj->getRow(rowIndex);
-                resultRowIdList << row->getRowId();
-            }
-        } else {
-            resultRowIdList = cfg.rowIds;
-        }
-        resultMAObj->crop(cfg.window, resultRowIdList);
-    }
+    resultMAObj->crop(cfg.rowIds, cfg.columnRange);
 
     if (cfg.saveImmediately) {
         addSubTask(new SaveDocumentTask(resultDocument, iof));
