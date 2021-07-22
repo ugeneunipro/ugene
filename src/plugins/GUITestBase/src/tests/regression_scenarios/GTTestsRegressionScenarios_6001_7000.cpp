@@ -6235,7 +6235,7 @@ GUI_TEST_CLASS_DEFINITION(test_6903_2) {
     // Insert a character that will change alignment alphabet to Extended DNA.
     GTUtilsMSAEditorSequenceArea::replaceSymbol(os, {1, 1}, 'R');
     CHECK_SET_ERR(!nucleicButton->isVisible(), QString("Convert to nucleic button must not be visible in Extended DNA mode"));
-    CHECK_SET_ERR(!aminoButton->isVisible(), QString("Convert to amino button must be visible in Extended DNA mode"));
+    CHECK_SET_ERR(!aminoButton->isVisible(), QString("Convert to amino button must not be visible in Extended DNA mode"));
 
     // Undo, original state must be restored.
     GTUtilsMsaEditor::undo(os);
