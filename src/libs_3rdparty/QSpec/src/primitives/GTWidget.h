@@ -30,6 +30,7 @@
 #include <QMenu>
 #include <QPushButton>
 #include <QSpinBox>
+#include <QTextEdit>
 #include <QToolButton>
 #include <QWidget>
 
@@ -114,6 +115,9 @@ public:
 
     /** Calls findExactWidget with QLineEdit type. Shortcut method. */
     static QLineEdit *findLineEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
+
+    /** Calls findExactWidget with QTextEdit type. Shortcut method. */
+    static QTextEdit *findTextEdit(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());
 
     /** Calls findExactWidget with QCheckBox type. Shortcut method. */
     static QCheckBox *findCheckBox(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget = nullptr, const GTGlobals::FindOptions &options = GTGlobals::FindOptions());

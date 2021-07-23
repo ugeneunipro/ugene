@@ -50,40 +50,41 @@ enum RegionSelectionIndex {
     RegionSelectionIndex_CurrentSelectedRegion
 };
 
-enum MessageFlag {
-    PatternIsTooLong,
-    PatternAlphabetDoNotMatch,
-    PatternsWithBadAlphabetInFile,
-    PatternsWithBadRegionInFile,
-    PleaseInputAtLeastOneSearchPatternTip,
-    AnnotationNotValidName,
-    AnnotationNotValidFastaParsedName,
-    NoPatternToSearch,
-    SearchRegionIncorrect,
-    PatternWrongRegExp,
-    SequenceIsTooBig
-};
-
 /**
- * A workaround to listen to enter in the pattern field and
- * make a correct (almost) tab order.
+ * Adds extra behavior to the installed QTextEdit:
+ *  - emits si_enterPressed and Enter is pressed.
+ *  - translates Shift+Enter into 'new-line'.
+ *  - auto-focuses the line on QEvent::Show.
  */
 class FindPatternEventFilter : public QObject {
     Q_OBJECT
 public:
-    FindPatternEventFilter(QObject *parent);
+    FindPatternEventFilter(QTextEdit *textEdit);
 
 signals:
     void si_enterPressed();
     void si_shiftEnterPressed();
 
 protected:
-    bool eventFilter(QObject *obj, QEvent *event);
+    bool eventFilter(QObject *obj, QEvent *event) override;
 };
 
 class FindPatternWidget : public QWidget, private Ui_FindPatternForm {
     Q_OBJECT
 public:
+    enum MessageFlag {
+        PatternAlphabetDoNotMatch,
+        PatternsWithBadAlphabetInFile,
+        PatternsWithBadRegionInFile,
+        PleaseInputAtLeastOneSearchPatternTip,
+        AnnotationNotValidName,
+        AnnotationNotValidFastaParsedName,
+        NoPatternToSearch,
+        SearchRegionIncorrect,
+        PatternWrongRegExp,
+        SequenceIsTooBig
+    };
+
     FindPatternWidget(AnnotatedDNAView *);
     int getTargetSequenceLength() const;
 

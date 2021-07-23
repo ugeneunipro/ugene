@@ -193,8 +193,9 @@ protected:
     }
 };
 
-FindPatternEventFilter::FindPatternEventFilter(QObject *parent)
-    : QObject(parent) {
+FindPatternEventFilter::FindPatternEventFilter(QTextEdit *textEdit)
+    : QObject(textEdit) {
+    textEdit->installEventFilter(this);
 }
 
 bool FindPatternEventFilter::eventFilter(QObject *obj, QEvent *event) {
@@ -280,13 +281,10 @@ FindPatternWidget::FindPatternWidget(AnnotatedDNAView *annotatedDnaView)
 
         checkState();
 
-        FindPatternEventFilter *findPatternEventFilter = new FindPatternEventFilter(this);
-        textPattern->installEventFilter(findPatternEventFilter);
-
         setFocusProxy(textPattern);
-
         trackedSelection = nullptr;
 
+        auto findPatternEventFilter = new FindPatternEventFilter(textPattern);
         connect(findPatternEventFilter, SIGNAL(si_enterPressed()), SLOT(sl_onEnterPressed()));
         connect(findPatternEventFilter, SIGNAL(si_shiftEnterPressed()), SLOT(sl_onShiftEnterPressed()));
         connect(createAnnotationController, SIGNAL(si_usePatternNamesStateChanged()), SLOT(sl_usePatternNamesCbClicked()));
@@ -694,10 +692,11 @@ QString FindPatternWidget::buildErrorLabelHtml() const {
     QList<MessageFlag> errorFlags = messageFlagMap.keys();
     for (const MessageFlag &flag : qAsConst(errorFlags)) {
         QString customErrorMessage = messageFlagMap[flag];
+        text += text.isEmpty() ? "" : "<br>";
         switch (flag) {
             case SearchRegionIncorrect: {
                 SAFE_POINT(!customErrorMessage.isEmpty(), "InvalidSearchRegion must provide a valid error message.", "");
-                text = tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(customErrorMessage);
+                text += tr("<b><font color=%1>%2</font><br></br></b>").arg(Theme::errorColorLabelHtmlStr()).arg(customErrorMessage);
                 break;
             }
             case PatternAlphabetDoNotMatch: {

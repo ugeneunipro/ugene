@@ -408,25 +408,24 @@ QString GTUtilsOptionPanelMsa::getExportConsensusOutputFormat(GUITestOpStatus &o
 
 #define GT_METHOD_NAME "enterPattern"
 void GTUtilsOptionPanelMsa::enterPattern(HI::GUITestOpStatus &os, QString pattern, bool useCopyPaste /*= false*/) {
-    QTextEdit *patternEdit = qobject_cast<QTextEdit *>(GTWidget::findWidget(os, "textPattern"));
+    QTextEdit *patternEdit = GTWidget::findTextEdit(os, "textPattern");
     GTWidget::click(os, patternEdit);
 
-    GTTextEdit::clear(os, patternEdit);
+    if (!patternEdit->toPlainText().isEmpty()) {
+        GTTextEdit::clear(os, patternEdit);
+    }
     if (useCopyPaste) {
         GTClipboard::setText(os, pattern);
         GTKeyboardDriver::keyClick('v', Qt::ControlModifier);
     } else {
         GTTextEdit::setText(os, patternEdit, pattern);
     }
-
-    GTGlobals::sleep(3000);
 }
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "getPattern"
 QString GTUtilsOptionPanelMsa::getPattern(GUITestOpStatus &os) {
     QTextEdit *patternEdit = GTWidget::findExactWidget<QTextEdit *>(os, "textPattern");
-    GT_CHECK_RESULT(nullptr != patternEdit, "textPattern widget is nullptr", "");
     return patternEdit->toPlainText();
 }
 #undef GT_METHOD_NAME
