@@ -425,7 +425,7 @@ void GTUtilsOptionPanelMsa::enterPattern(HI::GUITestOpStatus &os, QString patter
 
 #define GT_METHOD_NAME "getPattern"
 QString GTUtilsOptionPanelMsa::getPattern(GUITestOpStatus &os) {
-    QTextEdit *patternEdit = GTWidget::findExactWidget<QTextEdit *>(os, "textPattern");
+    QTextEdit *patternEdit = GTWidget::findTextEdit(os, "textPattern");
     return patternEdit->toPlainText();
 }
 #undef GT_METHOD_NAME
