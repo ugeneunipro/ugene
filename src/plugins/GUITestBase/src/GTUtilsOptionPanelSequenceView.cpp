@@ -80,7 +80,9 @@ void GTUtilsOptionPanelSequenceView::enterPattern(HI::GUITestOpStatus &os, QStri
     QTextEdit *patternEdit = qobject_cast<QTextEdit *>(GTWidget::findWidget(os, "textPattern"));
     GTWidget::click(os, patternEdit);
 
-    GTTextEdit::clear(os, patternEdit);
+    if (!patternEdit->toPlainText().isEmpty()) {
+        GTTextEdit::clear(os, patternEdit);
+    }
     if (useCopyPaste) {
         GTClipboard::setText(os, pattern);
         GTKeyboardDriver::keyClick('v', Qt::ControlModifier);

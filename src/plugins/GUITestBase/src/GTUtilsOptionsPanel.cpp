@@ -37,6 +37,7 @@
 #include <U2Core/global.h>
 
 #include <U2Gui/MainWindow.h>
+#include <U2Gui/OptionsPanelWidget.h>
 
 #include "GTUtilsOptionsPanel.h"
 #include "GTUtilsTaskTreeView.h"
@@ -71,6 +72,14 @@ void GTUtilsOptionsPanel::resizeToMaximum(GUITestOpStatus &os) {
     const QPoint handleCenter = optionsPanelSplitter->mapToGlobal(handle->geometry().center());
     const int delta = 500;
     GTMouseDriver::dragAndDrop(handleCenter, handleCenter - QPoint(delta, 0));
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "getActiveOptionsWidget"
+QWidget *GTUtilsOptionsPanel::getActiveOptionsWidget(GUITestOpStatus &os) {
+    QWidget *contentWidget = GTWidget::findWidget(os, "object_view_window_content_widget");
+    auto optionsPanelWidget = GTWidget::findWidgetByType<OptionsPanelWidget *>(os, contentWidget, "OptionsPanelWidget is not found!");
+    return optionsPanelWidget->getOptionsWidget();
 }
 #undef GT_METHOD_NAME
 
