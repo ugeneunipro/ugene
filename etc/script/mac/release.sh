@@ -54,14 +54,10 @@ rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
 }
 
 # These tools can't be signed as is today and require some pre-processing.
-rm -rf "${APP_EXE_DIR}/MacOS/tools/python2/include"
 mv "${APP_EXE_DIR}/tools/python2/lib/python2.7" "${APP_CONTENTS_DIR}/Resources/"
 cd "${APP_EXE_DIR}/tools/python2/lib"
 ln -s "../../../../Resources/python2.7" .
 cd "${TEAMCITY_WORK_DIR}"
-
-rm -rf "${APP_EXE_DIR}/tools/cistrome/CEAS/CEAS_Package-1.0.2-py2.7.egg-info"
-rm -rf ""${APP_EXE_DIR}/MacOS/tools/cistrome/MACS/MACS-1.4.2-py2.7.egg-info"
 
 echo " ##teamcity[blockClosed name='Copy files']"
 
@@ -69,7 +65,7 @@ echo "##teamcity[blockOpened name='Validate bundle content']"
 # Validate bundle content.
 REFERENCE_BUNDLE_FILE="${SCRIPTS_DIR}/release-bundle.txt"
 CURRENT_BUNDLE_FILE="${TEAMCITY_WORK_DIR}/release-bundle.txt"
-find "${APP_BUNDLE_DIR}"/* | sed -e "s/.*${APP_BUNDLE_DIR_NAME}\///" | sed 's/^.*\/tools\/.*\/.*$//g' | grep "\S" | sort >"${CURRENT_BUNDLE_FILE}"
+find "${APP_BUNDLE_DIR}"/* | sed -e "s/.*${APP_BUNDLE_DIR_NAME}\///" | sed 's/^.*\/tools\/.*\/.*$//g' | sed 's/^.*\/python2\.7.*$//g' | grep "\S" | sort >"${CURRENT_BUNDLE_FILE}"
 if cmp -s "${CURRENT_BUNDLE_FILE}" "${REFERENCE_BUNDLE_FILE}"; then
   echo 'Bundle content validated successfully.'
 else
