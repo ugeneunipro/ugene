@@ -1,3 +1,4 @@
+Samples
 Unipro UGENE.app
 Unipro UGENE.app/Contents
 Unipro UGENE.app/Contents/Frameworks
