@@ -56,7 +56,9 @@ rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
 # These tools can't be signed as is today and require some pre-processing.
 rm -rf "${APP_EXE_DIR}/MacOS/tools/python2/include"
 mv "${APP_EXE_DIR}/tools/python2/lib/python2.7" "${APP_CONTENTS_DIR}/Resources/"
-ln -rs "${APP_CONTENTS_DIR}/Resources/python2.7" "${APP_EXE_DIR}/tools/python2/lib/"
+cd "${APP_EXE_DIR}/tools/python2/lib"
+ln -s "../../../../Resources/python2.7" .
+cd "${TEAMCITY_WORK_DIR}"
 
 rm -rf "${APP_EXE_DIR}/tools/cistrome/CEAS/CEAS_Package-1.0.2-py2.7.egg-info"
 rm -rf ""${APP_EXE_DIR}/MacOS/tools/cistrome/MACS/MACS-1.4.2-py2.7.egg-info"
