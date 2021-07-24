@@ -62,7 +62,6 @@ cd "${TEAMCITY_WORK_DIR}"
 echo " ##teamcity[blockClosed name='Copy files']"
 
 echo "##teamcity[blockOpened name='Validate bundle content']"
-# Validate bundle content.
 REFERENCE_BUNDLE_FILE="${SCRIPTS_DIR}/release-bundle.txt"
 CURRENT_BUNDLE_FILE="${TEAMCITY_WORK_DIR}/release-bundle.txt"
 find "${APP_BUNDLE_DIR}"/* | sed -e "s/.*${APP_BUNDLE_DIR_NAME}\///" | sed 's/^.*\/tools\/.*\/.*$//g' | sed 's/^.*\/python2\.7.*$//g' | grep "\S" | sort >"${CURRENT_BUNDLE_FILE}"
@@ -103,25 +102,19 @@ tar cfz "${SYMBOLS_DIR_NAME}.tar.gz" "${SYMBOLS_DIR_NAME}"
 
 echo "##teamcity[blockClosed name='Dump symbols']"
 
-echo "##teamcity[blockOpened name='Sign bundle content']"
+echo "##teamcity[blockOpened name='Sign app bundle']"
 codesign --deep --verbose=4 --sign "${SIGN_IDENTITY}" --timestamp --options runtime --strict \
   --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
   "${APP_EXE_DIR}/ugeneui" || exit 1
-echo "##teamcity[blockClosed name='Sign bundle content']"
+echo "##teamcity[blockClosed name='Sign app bundle']"
 
-echo "##teamcity[blockOpened name='Pack DMG']"
+echo "##teamcity[blockOpened name='Create DMG']"
 echo pkg-dmg running...
 RELEASE_FILE_NAME=ugene-"${VERSION}-r${TEAMCITY_RELEASE_BUILD_COUNTER}-b${TEAMCITY_UGENE_BUILD_COUNTER}-mac-${ARCHITECTURE_FILE_SUFFIX}.dmg"
 "${SOURCE_DIR}/etc/script/mac/pkg-dmg" --source "${APP_BUNDLE_DIR_NAME}" \
   --target "${RELEASE_FILE_NAME}" \
   --volname "Unipro UGENE ${VERSION}" --symlink /Applications || exit 1
-
-echo "##teamcity[blockClosed name='Pack DMG']"
-
-echo "##teamcity[blockOpened name='Sign DMG']"
-"${SOURCE_DIR}/etc/script/mac/codesign.sh" "${RELEASE_FILE_NAME}" || exit 1
-codesign --sign "${SIGN_IDENTITY}" --timestamp --force "${RELEASE_FILE_NAME}" || exit 1
-echo "##teamcity[blockClosed name='Sign DMG']"
+echo "##teamcity[blockClosed name='Create DMG']"
 
 echo "##teamcity[blockOpened name='Notarize DMG']"
 bash "${SOURCE_DIR}/etc/script/mac/notarize.sh" -n "${RELEASE_FILE_NAME}" || exit 1
