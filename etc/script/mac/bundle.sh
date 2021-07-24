@@ -176,7 +176,7 @@ cp "${QT_DIR}/extra_libs/"* "${TARGET_APP_DIR}/Contents/Frameworks"
 echo Copying readme.txt file
 cp "${SOURCE_DIR}/etc/script/mac/dmg/readme.txt" "${BUNDLE_DIR}/readme.txt"
 echo Linking Samples
-cd "${TARGET_APP_DIR}"
+cd "${TARGET_APP_DIR}/.."
 ln -s "./${APP_NAME}/Contents/MacOS/data/samples" ./Samples
 cd "${TEAMCITY_WORK_DIR}"
 
