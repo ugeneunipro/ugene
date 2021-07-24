@@ -37,6 +37,7 @@
 #include <U2View/MSAEditorOverviewArea.h>
 #include <U2View/MaEditorFactory.h>
 #include <U2View/MaEditorNameList.h>
+#include <U2View/MaEditorSelection.h>
 #include <U2View/MaGraphOverview.h>
 #include <U2View/MaSimpleOverview.h>
 #include <U2View/RowHeightController.h>
@@ -327,6 +328,29 @@ void GTUtilsMsaEditor::selectColumns(GUITestOpStatus &os, int firstColumnNumber,
 void GTUtilsMsaEditor::clearSelection(GUITestOpStatus &os) {
     Q_UNUSED(os);
     GTKeyboardDriver::keyClick(Qt::Key_Escape);
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkSelection"
+void GTUtilsMsaEditor::checkSelection(HI::GUITestOpStatus &os, const QList<QRect> &expectedRects) {
+    MSAEditor *msaEditor = GTUtilsMsaEditor::getEditor(os);
+    QList<QRect> selectedRects = msaEditor->getSelection().getRectList();
+    CHECK_SET_ERR(selectedRects.size() == expectedRects.size(), QString("Expected selection size: %1, actual: %2").arg(expectedRects.size()).arg(selectedRects.size()));
+    for (int i = 0; i < selectedRects.size(); i++) {
+        QRect expectedRect = expectedRects[i];
+        QRect selectedRect = selectedRects[i];
+        CHECK_SET_ERR(selectedRect == expectedRect,
+                      QString("Selection rect is not equal to the expected one, idx: %1, rect: (x:%2, y:%3, w: %4, h: %5), expected: (x: %6, y: %7, w: %8, h: %9)")
+                          .arg(i)
+                          .arg(selectedRect.x())
+                          .arg(selectedRect.y())
+                          .arg(selectedRect.width())
+                          .arg(selectedRect.height())
+                          .arg(expectedRect.x())
+                          .arg(expectedRect.y())
+                          .arg(expectedRect.width())
+                          .arg(expectedRect.height()));
+    }
 }
 #undef GT_METHOD_NAME
 

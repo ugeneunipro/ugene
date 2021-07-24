@@ -38,10 +38,10 @@
 #include <U2View/DrawHelper.h>
 #include <U2View/MSAEditor.h>
 #include <U2View/MSAEditorConsensusArea.h>
+#include <U2View/MaEditorSelection.h>
 #include <U2View/MsaEditorSimilarityColumn.h>
 #include <U2View/RowHeightController.h>
 #include <U2View/ScrollController.h>
-#include <U2View/MaEditorSelection.h>
 
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
@@ -439,8 +439,8 @@ QRect GTUtilsMSAEditorSequenceArea::getSelectedRect(GUITestOpStatus &os) {
 
 #define GT_METHOD_NAME "dragAndDropSelection"
 void GTUtilsMSAEditorSequenceArea::dragAndDropSelection(GUITestOpStatus &os, const QPoint &fromMaPosition, const QPoint &toMaPosition) {
-    const QRect selectionRect = getSelectedRect(os);
-    GT_CHECK(selectionRect.contains(fromMaPosition), QString("Position (%1, %2) is out of selected rect boundaries").arg(fromMaPosition.x()).arg(fromMaPosition.y()));
+    const MaEditorSelection &selection = getSequenceArea(os)->getEditor()->getSelection();
+    GT_CHECK(selection.contains(fromMaPosition), QString("Position (%1, %2) is out of selection").arg(fromMaPosition.x()).arg(fromMaPosition.y()));
 
     scrollToPosition(os, fromMaPosition);
 

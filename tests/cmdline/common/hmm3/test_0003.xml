@@ -1,4 +1,3 @@
-<!--https://ugene.dev/tracker/browse/UGENE-2779-->
 <multi-test>
     <run-cmdline task="!common_data_dir!cmdline/hmm3/hmm3-build.uwl"
                  in-al="!common_data_dir!cmdline/hmm3/COI.aln"

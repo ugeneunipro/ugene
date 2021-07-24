@@ -83,7 +83,7 @@ static void setSeedOption(HmmerBuildSettings &settings, TaskStateInfo &stateInfo
 
     bool ok = false;
     int num = str.toInt(&ok);
-    if (!ok || !(0 <= num)) {
+    if (!ok || num < 0) {
         stateInfo.setError("cannot_parse_option_seed");
         return;
     }
@@ -362,11 +362,8 @@ static bool compareStr(const QString &s1, const QString &s2) {
     for (int i = 0; i < sz; ++i) {
         bool ok1 = false;
         bool ok2 = false;
-        float num1 = 0;
-        float num2 = 0;
-
-        num1 = words1.at(i).toFloat(&ok1);
-        num2 = words2.at(i).toFloat(&ok2);
+        float num1 = words1.at(i).toFloat(&ok1);
+        float num2 = words2.at(i).toFloat(&ok2);
 
         if (ok1 != ok2) {
             return false;
@@ -400,29 +397,29 @@ Task::ReportResult GTest_CompareHmmFiles::report() {
     IOAdapterFactory *iof1 = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filename1));
     QScopedPointer<IOAdapter> io1(iof1->createIOAdapter());
     if (io1.isNull()) {
-        stateInfo.setError(tr("Error creating ioadapter for first file"));
+        stateInfo.setError(QString("Error creating io-adapter for the first file: %1").arg(filename1));
         return ReportResult_Finished;
     }
     if (!io1->open(filename1, IOAdapterMode_Read)) {
-        stateInfo.setError(tr("Error opening 1 file"));
+        stateInfo.setError(QString("Error opening first file: %1").arg(filename1));
         return ReportResult_Finished;
     }
 
     IOAdapterFactory *iof2 = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(filename2));
     QScopedPointer<IOAdapter> io2(iof2->createIOAdapter());
     if (io2.isNull()) {
-        stateInfo.setError(tr("Error creating ioadapter for second file"));
+        stateInfo.setError(QString("Error creating io-adapter for the second file: %1").arg(filename2));
         return ReportResult_Finished;
     }
     if (!io2->open(filename2, IOAdapterMode_Read)) {
-        stateInfo.setError(tr("Error opening second file"));
+        stateInfo.setError(QString("Error opening second file: %1").arg(filename2));
         return ReportResult_Finished;
     }
 
     QByteArray buf1(BUF_SZ, TERM_SYM);
     QByteArray buf2(BUF_SZ, TERM_SYM);
-    int bytes1 = 0;
-    int bytes2 = 0;
+    int bytes1;
+    int bytes2;
 
     do {
         bytes1 = io1->readUntil(buf1.data(), BUF_SZ, TextUtils::LINE_BREAKS, IOAdapter::Term_Include);
@@ -440,7 +437,7 @@ Task::ReportResult GTest_CompareHmmFiles::report() {
             if (name1.startsWith(name2) || name2.startsWith(name1)) {
                 continue;
             }
-            stateInfo.setError(tr("Names of aligments not matched"));
+            stateInfo.setError(tr("Names of alignments not matched"));
             return ReportResult_Finished;
         }
         if (bytes1 != bytes2) {
@@ -454,7 +451,7 @@ Task::ReportResult GTest_CompareHmmFiles::report() {
             stateInfo.setError(tr("Files parts not equal:'%1' and '%2'").arg(s1).arg(s2));
             return ReportResult_Finished;
         }
-    } while (0 < bytes1 && 0 < bytes2);
+    } while (bytes1 > 0 && bytes2 > 0);
 
     return ReportResult_Finished;
 }

@@ -32,8 +32,8 @@
 
 #include <U2View/SequenceObjectContext.h>
 
+#include "MaCollapseModel.h"
 #include "McaEditor.h"
-#include "McaEditorNameList.h"
 #include "McaEditorReferenceArea.h"
 #include "McaReferenceCharController.h"
 #include "mca_reads/McaAlternativeMutationsWidget.h"
@@ -46,11 +46,9 @@ const QMap<bool, const char *> McaEditorStatusBar::MUTATION_MODE_ON_OFF_STATE_MA
 
 McaEditorStatusBar::McaEditorStatusBar(MultipleAlignmentObject *mobj,
                                        MaEditorSequenceArea *seqArea,
-                                       McaEditorNameList *nameList,
                                        McaReferenceCharController *refCharController)
     : MaEditorStatusBar(mobj, seqArea),
-      refCharController(refCharController),
-      nameList(nameList) {
+      refCharController(refCharController) {
     setObjectName("mca_editor_status_bar");
     setStatusBarStyle();
 
@@ -105,23 +103,22 @@ void McaEditorStatusBar::updateLabels() {
 }
 
 void McaEditorStatusBar::updateLineLabel() {
-    const U2Region selection = nameList->getSelection();
-    lineLabel->update(selection.isEmpty() ? MaEditorStatusBar::NONE_MARK : QString::number(selection.startPos + 1),
+    const MaEditorSelection &selection = seqArea->getEditor()->getSelection();
+    lineLabel->update(selection.isEmpty() ? MaEditorStatusBar::NONE_MARK : QString::number(selection.getRectList().first().top() + 1),
                       QString::number(aliObj->getNumRows()));
 }
 
 void McaEditorStatusBar::updatePositionLabel() {
     QPair<QString, QString> positions = QPair<QString, QString>(NONE_MARK, NONE_MARK);
-    int selectionWidth = seqArea->getEditor()->getSelection().toRect().width();
-    if (selectionWidth == 1) {
+    MaEditor *editor = seqArea->getEditor();
+    const MaEditorSelection &selection = editor->getSelection();
+    if (selection.getWidth() == 1) {
         positions = getGappedPositionInfo();
-    } else {
-        U2Region rowsSelection = nameList->getSelection();
-        if (!rowsSelection.isEmpty()) {
-            const MultipleAlignmentRow row = seqArea->getEditor()->getMaObject()->getRow(rowsSelection.startPos);
-            const QString rowLength = QString::number(row->getUngappedLength());
-            positions = QPair<QString, QString>(NONE_MARK, rowLength);
-        }
+    } else if (!selection.isEmpty()) {
+        int firstSelectedViewRowIndex = selection.getRectList().first().top();
+        int maRowIndex = editor->getUI()->getCollapseModel()->getMaRowIndexByViewRowIndex(firstSelectedViewRowIndex);
+        int ungappedLength = editor->getMaObject()->getRow(maRowIndex)->getUngappedLength();
+        positions = QPair<QString, QString>(NONE_MARK, QString::number(ungappedLength));
     }
     positionLabel->update(positions.first, positions.second);
     positionLabel->updateMinWidth(QString::number(aliObj->getLength()));

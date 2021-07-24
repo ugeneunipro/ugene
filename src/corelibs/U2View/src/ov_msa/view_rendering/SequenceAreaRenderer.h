@@ -37,12 +37,18 @@ public:
 
     bool drawContent(QPainter &painter, const U2Region &columns, const QList<int> &maRows, int xStart, int yStart) const;
 
-    virtual void drawSelection(QPainter &painter) const;
+    virtual void drawSelectionFrame(QPainter &painter) const;
     void drawFocus(QPainter &painter) const;
+
+    /**
+     * Checks if the character at the given position should be rendered with a highlighted background.
+     * By default MSA editor highlights background under selected bases.
+     */
+    virtual bool hasHighlightedBackground(int columnIndex, int viewRowIndex) const;
 
 protected:
     // returns the height of the drawn row
-    virtual int drawRow(QPainter &painter, const MultipleAlignment &ma, int maRow, const U2Region &columns, int xStart, int yStart) const;
+    virtual int drawRow(QPainter &painter, const MultipleAlignment &ma, int maRowIndex, const U2Region &columns, int xStart, int yStart) const;
 
     MaEditorWgt *ui;
     MaEditorSequenceArea *seqAreaWgt;

@@ -53,9 +53,11 @@ public:
     void updateGapModel(U2OpStatus &os, const U2MsaMapGapModel &rowsGapModel);
     void updateGapModel(const QList<MultipleSequenceAlignmentRow> &sourceRows);
 
-    void crop(const U2Region &window, const QSet<QString> &rowNames);
-    void crop(const U2Region &window, const QList<qint64> &rowIds);
-    void crop(const U2Region &window);
+    /** Keeps only given row ids and given column range in the alignment. */
+    void crop(const QList<qint64> &rowIds, const U2Region &columnRange);
+
+    /** Keeps only given column range in the alignment. */
+    void crop(const U2Region &columnRange);
 
     /** Methods to work with rows */
     void updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const U2MsaRowGapModel &gapModel);

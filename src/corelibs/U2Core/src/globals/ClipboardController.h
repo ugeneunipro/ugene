@@ -37,6 +37,9 @@ public:
      * that can be auto-detected by UGENE. Example: FASTA, CLUSTALW, Genbank...
      */
     static const QString UGENE_MIME_TYPE;
+
+    /** Maximum text data size UGENE can put into clipboard safely: 100mb. */
+    static constexpr qint64 MAX_SAFE_COPY_TO_CLIPBOARD_SIZE = 100 * 1000 * 1000;
 };
 
 class U2CORE_EXPORT PasteTask : public Task {

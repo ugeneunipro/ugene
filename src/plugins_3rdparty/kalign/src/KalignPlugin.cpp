@@ -23,6 +23,7 @@
 
 #include <QDialog>
 #include <QMainWindow>
+#include <QMessageBox>
 
 #include <U2Algorithm/AlignmentAlgorithmsRegistry.h>
 
@@ -176,7 +177,13 @@ void KalignMSAEditorContext::sl_align() {
     assert(action != NULL);
     MSAEditor *ed = action->getMSAEditor();
     MultipleSequenceAlignmentObject *obj = ed->getMaObject();
-
+    if (!KalignTask::isAlphabetSupported(obj->getAlphabet()->getId())) {
+        QMessageBox::information(ed->getWidget(), 
+            tr("Unable to align with Kalign"), 
+            tr("Unable to align this Multiple alignment with Kalign.\r\nPlease, convert alignment from %1 alphabet to supported one and try again.")
+            .arg(obj->getAlphabet()->getName()));
+        return;
+    }
     KalignTaskSettings s;
     QObjectScopedPointer<KalignDialogController> dlg = new KalignDialogController(ed->getWidget(), obj->getMultipleAlignment(), s);
     const int rc = dlg->exec();
@@ -212,7 +219,7 @@ KalignPairwiseAligmnentAlgorithm::KalignPairwiseAligmnentAlgorithm()
 }
 
 bool KalignPairwiseAligmnentAlgorithm::checkAlphabet(const DNAAlphabet *al) const {
-    return !(al->isRaw() || (al->isAmino() && al->isExtended()));
+    return KalignTask::isAlphabetSupported(al->getId());
 }
 
 }    // namespace U2

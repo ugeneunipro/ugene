@@ -47,8 +47,6 @@ McaEditorNameList::McaEditorNameList(McaEditorWgt *ui, QScrollBar *nhBar)
     setObjectName("mca_editor_name_list");
 
     editSequenceNameAction->setText(tr("Rename read"));
-    editSequenceNameAction->setShortcut(Qt::Key_F2);
-
     removeSequenceAction->setText(tr("Remove read"));
 
     setMinimumWidth(getMinimumWidgetWidth());
@@ -59,17 +57,6 @@ void McaEditorNameList::sl_selectionChanged(const MaEditorSelection & /*current*
     sl_completeRedraw();
 }
 
-void McaEditorNameList::sl_updateActions() {
-    MaEditorNameList::sl_updateActions();
-
-    U2Region selection = getSelection();
-    const bool hasSequenceSelection = !selection.isEmpty();
-    const bool hasRowSelection = !selection.isEmpty();
-    const bool isWholeReadSelected = hasRowSelection && !hasSequenceSelection;
-
-    removeSequenceAction->setShortcut(isWholeReadSelected ? QKeySequence::Delete : QKeySequence());
-}
-
 void McaEditorNameList::drawCollapsibleSequenceItem(QPainter &painter, int rowIndex, const QString &name, const QRect &rect, bool isSelected, bool isCollapsed, bool isReference) {
     const bool isReversed = isRowReversed(rowIndex);
     const QRectF arrowRect = calculateArrowRect(U2Region(rect.y(), rect.height()));
@@ -77,10 +64,12 @@ void McaEditorNameList::drawCollapsibleSequenceItem(QPainter &painter, int rowIn
     drawArrow(painter, isReversed, arrowRect);
 }
 
-void McaEditorNameList::setSelection(int startSeq, int count) {
-    ui->getSequenceArea()->setSelectionRect(QRect(0, startSeq, editor->getAlignmentLen(), count));
-    // Whole sequence selection in the name list should not trigger reference selection.
-    getEditor()->getUI()->getReferenceArea()->clearSelection();
+void McaEditorNameList::setSelection(const MaEditorSelection &selection) {
+    MaEditorNameList::setSelection(selection);
+    bool isWholeReadSelected = selection.getWidth() == editor->getAlignmentLen();
+    if (isWholeReadSelected) {    // Whole sequence selection in the name list should not trigger reference selection.
+        getEditor()->getUI()->getReferenceArea()->clearSelection();
+    }
 }
 
 McaEditor *McaEditorNameList::getEditor() const {

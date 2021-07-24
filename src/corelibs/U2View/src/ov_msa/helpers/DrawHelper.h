@@ -41,7 +41,8 @@ public:
 
     int getVisibleBasesCount(int widgetWidth, bool countFirstClippedBase = true, bool countLastClippedBase = true) const;
 
-    QRect getSelectionScreenRect(const MaEditorSelection &selection) const;
+    /** Returns screen coordinates for the given rect of columns and rows. */
+    QRect getScreenRect(const QRect &columnsAndRowsRect) const;
 
 private:
     MaEditorWgt *ui;

@@ -65,8 +65,10 @@ SequenceWithChromatogramAreaRenderer::SequenceWithChromatogramAreaRenderer(MaEdi
     maxTraceHeight = s->getValue(ui->getEditor()->getSettingsRoot() + MCAE_SETTINGS_PEAK_HEIGHT, heightPD - heightBC).toInt();
 }
 
-void SequenceWithChromatogramAreaRenderer::drawSelection(QPainter &) const {
-    // Selection in MCA is drawn as a part of background.
+void SequenceWithChromatogramAreaRenderer::drawSelectionFrame(QPainter &painter) const {
+    if (ui->getEditor()->getSelection().isSingleBaseSelection()) {
+        SequenceAreaRenderer::drawSelectionFrame(painter);
+    }
 }
 
 void SequenceWithChromatogramAreaRenderer::drawReferenceSelection(QPainter &painter) const {
@@ -471,6 +473,14 @@ const ChromatogramViewSettings &SequenceWithChromatogramAreaRenderer::getSetting
 
 int SequenceWithChromatogramAreaRenderer::getChromatogramHeight() {
     return CHROMATOGRAM_MAX_HEIGHT * MaEditor::zoomMult;
+}
+
+bool SequenceWithChromatogramAreaRenderer::hasHighlightedBackground(int columnIndex, int viewRowIndex) const {
+    McaEditor *editor = getSeqArea()->getEditor();
+    const MaEditorSelection &selection = editor->getSelection();
+    CHECK(selection.getRectList().size() == 1, false);
+    const QRect &rect = selection.getRectList().first();
+    return rect.width() == 1 && rect.height() == 1 && rect.contains(columnIndex, viewRowIndex);
 }
 
 }    // namespace U2

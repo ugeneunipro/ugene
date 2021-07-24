@@ -25,6 +25,8 @@
 #include <QStack>
 #include <QtEndian>
 
+#include <U2Core/AppContext.h>
+#include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/StringAdapter.h>
 #include <U2Core/TextUtils.h>
 #include <U2Core/U2SafePoints.h>
@@ -38,7 +40,7 @@ const QString WMatrixSerializer::ID = "wm_1.14";
 const QString FMatrixSerializer::ID = "fm_1.14";
 
 #define CHECK_SIZE(size, result) \
-    if (offset + size > length) { \
+    if (offset + (size) > length) { \
         os.setError("The data are too short"); \
         return result; \
     }
@@ -123,7 +125,7 @@ inline QVector<char> unpackCharVector(const uchar *data, int length, int &offset
     CHECK_OP(os, result);
     for (int i = 0; i < size; i++) {
         CHECK_SIZE(1, result);
-        result << data[offset];
+        result << (char)data[offset];
         offset++;
     }
     return result;
@@ -138,7 +140,7 @@ inline bool unpackBool(const uchar *data, int length, int &offset, U2OpStatus &o
     CHECK_SIZE(1, false);
     uchar c = data[offset];
     offset++;
-    return (0 == c) ? false : true;
+    return c != 0;
 }
 }    // namespace
 
@@ -203,36 +205,40 @@ enum ReadState { RS_NAME,
                  RS_QUOTED_NAME,
                  RS_NAME_OR_WEIGHT };
 
-void packTreeNode(QByteArray &binary, const PhyNode *node) {
-    int branches = node->branchCount();
-    if (branches == 1 && (node->getName() == "" || node->getName() == "ROOT")) {
-        assert(node != node->getSecondNodeOfBranch(0));
-        packTreeNode(binary, node->getSecondNodeOfBranch(0));
+void packTreeNode(QString &resultText, const PhyNode *node, U2OpStatus &os) {
+    int branchCount = node->branchCount();
+    const QString &nodeName = node->getName();
+    if (branchCount == 1 && (nodeName.isEmpty() || nodeName == "ROOT")) {
+        const PhyNode *sibling = node->getSecondNodeOfBranch(0);
+        CHECK_EXT(node != sibling, os.setError(DatatypeSerializers::tr("Invalid tree topology")), );
+        packTreeNode(resultText, sibling, os);
+        CHECK_OP(os, );
         return;
     }
-    if (branches > 1) {
-        binary.append("(");
+    if (branchCount > 1) {
+        resultText.append("(");
         bool first = true;
-        for (int i = 0; i < branches; ++i) {
+        for (int i = 0; i < branchCount; ++i) {
             if (node->getSecondNodeOfBranch(i) != node) {
                 if (first) {
                     first = false;
                 } else {
-                    binary.append(",");
+                    resultText.append(",");
                 }
-                packTreeNode(binary, node->getSecondNodeOfBranch(i));
+                packTreeNode(resultText, node->getSecondNodeOfBranch(i), os);
+                CHECK_OP(os, );
                 if (node->getBranchesNodeValue(i) >= 0) {
-                    binary.append(QByteArray::number(node->getBranchesNodeValue(i)));
+                    resultText.append(QString::number(node->getBranchesNodeValue(i)));
                 }
-                binary.append(":");
-                binary.append(QByteArray::number(node->getBranchesDistance(i)));
+                resultText.append(":");
+                resultText.append(QString::number(node->getBranchesDistance(i)));
             }
         }
-        binary.append(")");
-    } else if (node->getName().contains(QRegExp("\\s|[(]|[)]|[:]|[;]|[,]"))) {
-        binary.append(QString("\'%1\'").arg(node->getName()).toLocal8Bit());
+        resultText.append(")");
+    } else if (nodeName.contains(QRegExp("\\s|[(]|[)]|[:]|[;]|[,]"))) {
+        resultText.append(QString("\'%1\'").arg(nodeName));
     } else {
-        binary.append(QString(node->getName()).toLatin1());
+        resultText.append(QString(nodeName));
     }
 }
 }    // namespace
@@ -245,9 +251,9 @@ void packTreeNode(QByteArray &binary, const PhyNode *node) {
  Newlines may appear anywhere except within labels or branch_lengths.
  Comments are enclosed in square brackets and may appear anywhere newlines are permitted.
  */
-QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapter *io, U2OpStatus &si) {
+QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapterReader &reader, U2OpStatus &si) {
     QList<PhyTree> result;
-    QByteArray block(BUFF_SIZE, '\0');
+    QString block;
     int blockLen;
     bool done = true;
     bool haveNodeLabels = false;
@@ -262,46 +268,47 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapter *io, U2OpStatus &si
 
     ReadState state = RS_NAME;
     QString lastStr;
-    PhyNode *rd = new PhyNode();
+    auto rootNode = new PhyNode();
 
     QStack<PhyNode *> nodeStack;
     QStack<PhyBranch *> branchStack;
-    nodeStack.push(rd);
-    while ((blockLen = io->readBlock(block.data(), BUFF_SIZE)) > 0) {
-        for (int i = 0; i < blockLen; ++i) {
-            unsigned char c = block[i];
-            if (TextUtils::WHITES[(uchar)c]) {
+    nodeStack.push(rootNode);
+    while ((blockLen = reader.read(si, block, BUFF_SIZE)) > 0) {
+        for (int i = 0; i < blockLen; i++) {
+            QChar ch = block[i];
+            uchar latin1CharCode = (uchar)ch.toLatin1();
+            if (TextUtils::WHITES[latin1CharCode]) {
                 if (state == RS_QUOTED_NAME) {
-                    lastStr.append(c);
+                    lastStr.append(ch);
                 }
                 continue;
             }
             done = false;
-            if (!ops[(uchar)c]) {    //not ops -> cache
-                lastStr.append(c);
+            if (!ops[latin1CharCode]) {    // Not ops -> cache.
+                lastStr.append(ch);
                 continue;
             }
             // use cached value
 
             if (state == RS_NAME_OR_WEIGHT) {
-                state = (c == ':') ? RS_WEIGHT : RS_NAME;
+                state = ch == ':' ? RS_WEIGHT : RS_NAME;
             }
 
-            if (c == '\'') {
+            if (ch == '\'') {
                 if (state == RS_NAME) {
                     state = RS_QUOTED_NAME;
                 } else if (state == RS_QUOTED_NAME) {
-                    unsigned char nextChar = block[i + 1];
-                    if (nextChar == '\'') {
-                        lastStr.append(c);
-                        ++i;
+                    QChar nextCh = block[i + 1];
+                    if (nextCh == '\'') {
+                        lastStr.append(ch);
+                        i++;
                     } else {
                         state = RS_NAME;
                     }
                 }
                 continue;
             } else if (state == RS_QUOTED_NAME) {
-                lastStr.append(c);
+                lastStr.append(ch);
                 continue;
             }
 
@@ -310,7 +317,7 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapter *io, U2OpStatus &si
                     nodeStack.top()->setName(lastStr);
                 } else {
                     CHECK_EXT_BREAK(state == RS_WEIGHT, si.setError(DatatypeSerializers::tr("Incorrect tree parsing state")));
-                    if (!branchStack.isEmpty()) {    //ignore root node weight if present
+                    if (!branchStack.isEmpty()) {    // Ignore root node weight if present.
                         if (nodeStack.size() < 2) {
                             si.setError(DatatypeSerializers::tr("Unexpected weight: %1").arg(lastStr));
                         }
@@ -321,17 +328,17 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapter *io, U2OpStatus &si
                 }
             }
 
-            // advance in state
-            if (c == '(') {    //new child
+            // Advance in state.
+            if (ch == '(') {    // A new child.
                 CHECK_EXT_BREAK(!nodeStack.isEmpty(), si.setError(DatatypeSerializers::tr("Tree node stack is empty")));
                 PhyNode *pn = new PhyNode();
                 PhyBranch *bd = PhyTreeData::addBranch(nodeStack.top(), pn, 0);
                 nodeStack.push(pn);
                 branchStack.push(bd);
                 state = RS_NAME;
-            } else if (c == ':') {    //weight start
+            } else if (ch == ':') {    // Weight start.
                 if (state == RS_WEIGHT && !lastStr.isEmpty()) {
-                    if (!branchStack.isEmpty()) {    //ignore root node weight if present
+                    if (!branchStack.isEmpty()) {    // Ignore root node weight if present.
                         bool ok = false;
                         branchStack.top()->nodeValue = lastStr.toDouble(&ok);
                         if (!ok) {
@@ -343,7 +350,7 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapter *io, U2OpStatus &si
                     }
                 }
                 state = RS_WEIGHT;
-            } else if (c == ',') {    //new sibling
+            } else if (ch == ',') {    // New sibling.
                 CHECK_EXT_BREAK(!nodeStack.isEmpty(), si.setError(DatatypeSerializers::tr("Tree node stack is empty")));
                 CHECK_EXT_BREAK(!branchStack.isEmpty(), si.setError(DatatypeSerializers::tr("Branch node stack is empty")));
                 if (nodeStack.isEmpty() || branchStack.isEmpty()) {
@@ -352,12 +359,12 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapter *io, U2OpStatus &si
                 }
                 nodeStack.pop();
                 branchStack.pop();
-                PhyNode *pn = new PhyNode();
-                PhyBranch *bd = PhyTreeData::addBranch(nodeStack.top(), pn, 0);
-                nodeStack.push(pn);
-                branchStack.push(bd);
+                auto node = new PhyNode();
+                PhyBranch *branch = PhyTreeData::addBranch(nodeStack.top(), node, 0);
+                nodeStack.push(node);
+                branchStack.push(branch);
                 state = RS_NAME;
-            } else if (c == ')') {    //end of the branch, go up
+            } else if (ch == ')') {    // End of the branch, go up.
                 nodeStack.pop();
                 if (nodeStack.isEmpty()) {
                     si.setError(DatatypeSerializers::tr("Unexpected closing bracket :%1").arg(lastStr));
@@ -366,7 +373,7 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapter *io, U2OpStatus &si
                 CHECK_EXT_BREAK(!branchStack.isEmpty(), si.setError(DatatypeSerializers::tr("Branch node stack is empty")));
                 branchStack.pop();
                 state = RS_NAME_OR_WEIGHT;
-            } else if (c == ';') {
+            } else if (ch == ';') {
                 if (!branchStack.isEmpty() || nodeStack.size() != 1) {
                     si.setError(DatatypeSerializers::tr("Unexpected end of file"));
                     break;
@@ -375,25 +382,22 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapter *io, U2OpStatus &si
                 tree->setRootNode(nodeStack.pop());
                 tree->setUsingNodeLabels(haveNodeLabels);
                 result << tree;
-                nodeStack.push(rd = new PhyNode());
+                rootNode = new PhyNode();
+                nodeStack.push(rootNode);
                 done = true;
             }
             lastStr.clear();
         }
         if (si.isCoR()) {
-            delete rd;
-            rd = nullptr;
+            delete rootNode;
+            rootNode = nullptr;
             break;
         }
-        si.setProgress(io->getProgress());
+        si.setProgress(reader.getProgress());
     }
-    if (io->hasError()) {
-        si.setError(io->errorString());
-    }
-
     if (!si.isCoR()) {
         if (!branchStack.isEmpty() || nodeStack.size() != 1) {
-            delete rd;
+            delete rootNode;
             si.setError(DatatypeSerializers::tr("Unexpected end of file"));
             return result;
         }
@@ -404,7 +408,7 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapter *io, U2OpStatus &si
             tree->setUsingNodeLabels(haveNodeLabels);
             result << tree;
         } else {
-            delete rd;
+            delete rootNode;
             if (result.empty()) {
                 si.setError(DatatypeSerializers::tr("Empty file"));
             }
@@ -413,21 +417,22 @@ QList<PhyTree> NewickPhyTreeSerializer::parseTrees(IOAdapter *io, U2OpStatus &si
     return result;
 }
 
-QByteArray NewickPhyTreeSerializer::serialize(const PhyTree &tree) {
-    QByteArray result;
-    packTreeNode(result, tree->getRootNode());
+QString NewickPhyTreeSerializer::serialize(const PhyTree &tree, U2OpStatus &os) {
+    QString result;
+    packTreeNode(result, tree->getRootNode(), os);
+    CHECK_OP(os, "")
     result.append(";\n");
     return result;
 }
 
-PhyTree NewickPhyTreeSerializer::deserialize(const QByteArray &binary, U2OpStatus &os) {
-    StringAdapter io(binary);
-    QList<PhyTree> trees = parseTrees(&io, os);
-    CHECK_OP(os, PhyTree());
-    if (1 != trees.size()) {
-        os.setError("Unexpected count of trees");
-        return PhyTree();
-    }
+PhyTree NewickPhyTreeSerializer::deserialize(const QString &text, U2OpStatus &os) {
+    auto ioFactory = qobject_cast<StringAdapterFactory *>(AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(BaseIOAdapters::STRING));
+    SAFE_POINT(ioFactory, "Failed to get StringAdapterFactory", {})
+    StringAdapter io(text.toUtf8(), ioFactory);
+    IOAdapterReader reader(&io);
+    QList<PhyTree> trees = parseTrees(reader, os);
+    CHECK_OP(os, {});
+    CHECK_EXT(trees.size() == 1, os.setError(DatatypeSerializers::tr("Unexpected count of trees objects in input: %1").arg(trees.size())), {});
     return trees.first();
 }
 
@@ -450,7 +455,7 @@ T unpack(const uchar *data, int length, int &offset, U2OpStatus &os, PackContext
 template<>
 inline char unpack(const uchar *data, int length, int &offset, U2OpStatus &os) {
     CHECK_SIZE(1, 0);
-    char result = data[offset];
+    char result = (char)data[offset];
     offset++;
     return result;
 }

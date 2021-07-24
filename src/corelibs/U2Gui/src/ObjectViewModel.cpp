@@ -333,7 +333,8 @@ GObjectViewWindow::GObjectViewWindow(GObjectView *v, const QString &_viewName, b
     windowScrollArea->setFrameStyle(QFrame::NoFrame);
     windowScrollArea->setWidgetResizable(true);
 
-    QWidget *windowContentWidget = new QWidget();
+    auto windowContentWidget = new QWidget();
+    windowContentWidget->setObjectName("object_view_window_content_widget");
     windowContentWidget->setLayout(windowLayout);
     windowScrollArea->setWidget(windowContentWidget);
 

@@ -293,14 +293,9 @@ void MSAEditor::addCopyPasteMenu(QMenu *m) {
     copyMenu->addSeparator();
     copyMenu->addAction(ui->cutSelectionAction);
 
-    auto nameList = qobject_cast<MaEditorNameList *>(ui->getEditorNameList());
-    SAFE_POINT(nameList != nullptr, "nameList is null", );
     copyMenu->addSeparator();
-
-    copyMenu->addAction(nameList->copyCurrentSequenceAction);
-
-    //TODO: trigger action update on selection change, not in the menu activation code!
-    nameList->copyCurrentSequenceAction->setEnabled(!selection.isEmpty());
+    MaEditorNameList *nameList = ui->getEditorNameList();
+    copyMenu->addAction(nameList->copyWholeRowAction);
 }
 
 void MSAEditor::addEditMenu(QMenu *m) {

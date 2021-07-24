@@ -121,7 +121,22 @@ void GTest_CreateSubalignimentTask::prepare() {
     expectedMaobj = (MultipleSequenceAlignmentObject *)expList.first();
 
     maobj = (MultipleSequenceAlignmentObject *)list.first();
-    t = new CreateSubalignmentTask(maobj, CreateSubalignmentSettings(window, seqNames, doc->getURL(), false, false, DocumentFormatId()));
+
+    QMap<QString, qint64> rowIdByRowName;
+    for (int i = 0; i < maobj->getNumRows(); i++) {
+        const MultipleAlignmentRow &row = maobj->getRow(i);
+        rowIdByRowName.insert(row->getName(), row->getRowId());
+    }
+
+    QList<qint64> rowIds;
+    for (const QString &seqName : seqNames) {
+        if (!rowIdByRowName.contains(seqName)) {
+            stateInfo.setError("Row not found: " + seqName);
+            return;
+        }
+        rowIds << rowIdByRowName[seqName];
+    }
+    t = new CreateSubalignmentTask(maobj, CreateSubalignmentSettings(rowIds, window, doc->getURL(), false, false, DocumentFormatId()));
     addSubTask(t);
 }
 

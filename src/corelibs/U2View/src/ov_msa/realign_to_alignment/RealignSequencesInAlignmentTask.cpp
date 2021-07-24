@@ -56,18 +56,12 @@ RealignSequencesInAlignmentTask::RealignSequencesInAlignmentTask(MultipleSequenc
         originalRowOrder.append(name);
     }
 
-    CreateSubalignmentSettings settings;
-    settings.window = U2Region(0, msaObject->getLength());
-
-    QList<qint64> rowsToKeepIds = msaObject->getMultipleAlignment()->getRowsIds();
     QSet<qint64> clonedObjectRowsToAlignIds;
-    foreach (const qint64 idToRemove, rowsToAlignIds) {
+    for (qint64 idToRemove : qAsConst(rowsToAlignIds)) {
         int rowPos = msaObjectToClone->getRowPosById(idToRemove);
         qint64 id = msaObject->getRow(rowPos)->getRowId();
-        rowsToKeepIds.removeAll(id);
         clonedObjectRowsToAlignIds.insert(id);
     }
-    settings.rowIds = rowsToKeepIds;
 
     QString url;
     QString path = AppContext::getAppSettings()->getUserAppsSettings()->getCurrentProcessTemporaryDirPath();

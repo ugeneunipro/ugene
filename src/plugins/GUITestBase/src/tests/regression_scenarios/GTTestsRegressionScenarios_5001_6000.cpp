@@ -2648,6 +2648,17 @@ GUI_TEST_CLASS_DEFINITION(test_5638) {
     CHECK_SET_ERR(finishGapModel == startGapModel, "Unexpected changes of alignment");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5657) {
+    //1. Open _common_data/clustal/COI_sub_asterisks.aln
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/COI_sub_asterisks.aln");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    //2. Try to align it with Kalign
+    //Expected state: there is messagebox about incompatible alphabet
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_ALIGN << "align_with_kalign"));
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, "Unable to align this Multiple alignment with Kalign.\r\nPlease, convert alignment from Raw alphabet to supported one and try again."));
+    GTWidget::click(os, GTUtilsMdi::activeWindow(os), Qt::RightButton);
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5659) {
     // 1. Open murine.gb
     // 2. Context menu on annotations object

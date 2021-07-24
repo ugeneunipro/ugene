@@ -255,45 +255,42 @@ bool MultipleSequenceAlignmentData::operator!=(const MultipleSequenceAlignmentDa
     return !operator==(other);
 }
 
-bool MultipleSequenceAlignmentData::crop(const U2Region &region, const QSet<QString> &rowNames, U2OpStatus &os) {
-    if (!(region.startPos >= 0 && region.length > 0 && region.length < length && region.startPos < length)) {
+bool MultipleSequenceAlignmentData::crop(const QList<qint64> &rowIds, const U2Region &columnRange, U2OpStatus &os) {
+    if (!(columnRange.startPos >= 0 && columnRange.length > 0 && columnRange.length < length && columnRange.startPos < length)) {
         os.setError(QString("Incorrect region was passed to MultipleSequenceAlignmentData::crop, "
                             "startPos '%1', length '%2'")
-                        .arg(region.startPos)
-                        .arg(region.length));
+                        .arg(columnRange.startPos)
+                        .arg(columnRange.length));
         return false;
     }
 
-    int cropLen = region.length;
-    if (region.endPos() > length) {
-        cropLen -= (region.endPos() - length);
+    qint64 safeLength = columnRange.length;
+    if (columnRange.endPos() > length) {
+        safeLength -= columnRange.endPos() - length;
     }
 
     MaStateCheck check(this);
     Q_UNUSED(check);
 
-    QList<MultipleSequenceAlignmentRow> newList;
+    QSet<qint64> rowIdSet = rowIds.toSet();
+    QList<MultipleSequenceAlignmentRow> newRowList;
     for (int i = 0; i < rows.size(); i++) {
         MultipleSequenceAlignmentRow row = getMsaRow(i).clone();
-        const QString rowName = row->getName();
-        if (rowNames.contains(rowName)) {
-            row->crop(os, region.startPos, cropLen);
+        qint64 rowId = row->getRowId();
+        if (rowIdSet.contains(rowId)) {
+            row->crop(os, columnRange.startPos, safeLength);
             CHECK_OP(os, false);
-            newList << row;
+            newRowList << row;
         }
     }
-    setRows(newList);
+    setRows(newRowList);
 
-    length = cropLen;
+    length = safeLength;
     return true;
 }
 
 bool MultipleSequenceAlignmentData::crop(const U2Region &region, U2OpStatus &os) {
-    return crop(region, getRowNames().toSet(), os);
-}
-
-bool MultipleSequenceAlignmentData::crop(int start, int count, U2OpStatus &os) {
-    return crop(U2Region(start, count), os);
+    return crop(getRowsIds(), region, os);
 }
 
 MultipleSequenceAlignmentRow MultipleSequenceAlignmentData::createRow(const QString &name, const QByteArray &bytes) {

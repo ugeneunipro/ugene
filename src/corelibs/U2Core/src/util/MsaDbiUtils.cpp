@@ -32,27 +32,7 @@
 
 namespace U2 {
 
-/////////////////////////////////////////////////////////////////
-// Helper-methods to validate parameters
-
 /** Validates 'pos' in an alignment: it must be non-negative and less than or equal to the alignment length */
-bool validatePos(const MultipleSequenceAlignment &al, qint64 pos) {
-    if (pos < 0 || pos > al->getLength()) {
-        coreLog.trace(QString("Invalid position '%1' in '%2' alignment!").arg(pos).arg(al->getName()));
-        return false;
-    }
-    return true;
-}
-
-/** Validates 'count' of characters - it must be positive */
-bool validateCharactersCount(qint64 count) {
-    if (count <= 0) {
-        coreLog.trace(QString("Invalid value of characters count '%1'!").arg(count));
-        return false;
-    }
-    return true;
-}
-
 void MaDbiUtils::splitBytesToCharsAndGaps(const QByteArray &input, QByteArray &seqBytes, QList<U2MsaGap> &gapModel) {
     bool previousCharIsGap = false;
     int gapsCount = 0;
@@ -344,7 +324,7 @@ DbiConnection *MaDbiUtils::getCheckedConnection(const U2DbiRef &dbiRef, U2OpStat
         return nullptr;
     }
 
-    if (nullptr == con->dbi->getSequenceDbi()) {
+    if (con->dbi->getSequenceDbi() == nullptr) {
         os.setError("NULL sequence dbi");
         return nullptr;
     }
@@ -353,8 +333,8 @@ DbiConnection *MaDbiUtils::getCheckedConnection(const U2DbiRef &dbiRef, U2OpStat
 
 /** Validates that all 'rowIds' contains in the alignment rows */
 bool MaDbiUtils::validateRowIds(const MultipleSequenceAlignment &al, const QList<qint64> &rowIds) {
-    QList<qint64> alRowIds = al->getRowsIds();
-    foreach (qint64 rowId, rowIds) {
+    QSet<qint64> alRowIds = al->getRowsIds().toSet();
+    for (qint64 rowId : qAsConst(rowIds)) {
         if (!alRowIds.contains(rowId)) {
             coreLog.trace(QString("No row ID '%1' in '%2' alignment!").arg(rowId).arg(al->getName()));
             return false;
@@ -1139,46 +1119,61 @@ QList<qint64> MsaDbiUtils::removeEmptyRows(const U2EntityRef &msaRef, const QLis
     return emptyRowIds;
 }
 
-void MsaDbiUtils::crop(const U2EntityRef &msaRef, const QList<qint64> &rowIds, qint64 pos, qint64 count, U2OpStatus &os) {
-    // Get the alignment
+void MsaDbiUtils::crop(const U2EntityRef &msaRef, const QList<qint64> &rowIds, const U2Region &columnRange, U2OpStatus &os) {
+    // Get the alignment.
     MultipleSequenceAlignmentExporter alExporter;
     MultipleSequenceAlignment al = alExporter.getAlignment(msaRef.dbiRef, msaRef.entityId, os);
 
-    // Validate the parameters
-    if (!validatePos(al, pos) ||
-        !validateCharactersCount(count) ||
-        !MaDbiUtils::validateRowIds(al, rowIds)) {
-        os.setError(tr("Failed to crop an alignment!"));
+    // Validate the parameters.
+    if (columnRange.startPos < 0 || columnRange.endPos() > al->getLength()) {
+        os.setError(tr("Invalid crop column range: %1..%2").arg(columnRange.startPos + 1).arg(columnRange.endPos()));
+        uiLog.error(os.getError());
         return;
     }
-
+    if (rowIds.isEmpty()) {
+        os.setError(tr("List of ids to crop is empty"));
+        uiLog.error(os.getError());
+        return;
+    }
+    if (!MaDbiUtils::validateRowIds(al, rowIds)) {
+        os.setError(tr("Invalid crop row ids"));
+        uiLog.error(os.getError());
+        return;
+    }
     // Prepare the connection
     DbiConnection con(msaRef.dbiRef, os);
     CHECK_OP(os, );
 
     U2MsaDbi *msaDbi = con.dbi->getMsaDbi();
-    SAFE_POINT(nullptr != msaDbi, "NULL Msa Dbi!", );
+    SAFE_POINT(msaDbi != nullptr, "NULL Msa Dbi!", );
 
-    // Crop or remove each row
-    for (int i = 0, n = al->getNumRows(); i < n; ++i) {
+    bool isRowLengthChanged = columnRange.length < al->getLength();
+
+    // Crop or remove each row.
+    for (int i = 0, n = al->getNumRows(); i < n; i++) {
         MultipleSequenceAlignmentRow row = al->getMsaRow(i)->getExplicitCopy();
         qint64 rowId = row->getRowId();
-        if (rowIds.contains(rowId)) {
-            U2DataId sequenceId = row->getRowDbInfo().sequenceId;
-            SAFE_POINT(!sequenceId.isEmpty(), "Empty sequence ID!", );
-
-            // Calculate the modified row
-            cropCharsFromRow(row, pos, count);
-
-            // Put the new sequence and gap model into the database
-            msaDbi->updateRowContent(msaRef.entityId, rowId, row->getSequence().constSequence(), row->getGapModel(), os);
-            CHECK_OP(os, );
-        } else {
+        if (!rowIds.contains(rowId)) {
             MsaDbiUtils::removeRow(msaRef, row->getRowId(), os);
             CHECK_OP(os, );
+            continue;
         }
+        if (!isRowLengthChanged) {
+            continue;    // do not touch this column at all.
+        }
+        U2DataId sequenceId = row->getRowDbInfo().sequenceId;
+        SAFE_POINT(!sequenceId.isEmpty(), "Empty sequence ID!", );
+
+        // Calculate the modified row.
+        cropCharsFromRow(row, columnRange.startPos, columnRange.length);
+
+        // Put the new sequence and gap model into the database.
+        msaDbi->updateRowContent(msaRef.entityId, rowId, row->getSequence().constSequence(), row->getGapModel(), os);
+        CHECK_OP(os, );
     }
-    msaDbi->updateMsaLength(msaRef.entityId, count, os);
+    if (isRowLengthChanged) {
+        msaDbi->updateMsaLength(msaRef.entityId, columnRange.length, os);
+    }
     CHECK_OP(os, );
 }
 

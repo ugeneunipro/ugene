@@ -36,7 +36,7 @@ class SequenceWithChromatogramAreaRenderer : public SequenceAreaRenderer {
 public:
     SequenceWithChromatogramAreaRenderer(MaEditorWgt *ui, McaEditorSequenceArea *seqAreaWgt);
 
-    void drawSelection(QPainter &painter) const override;
+    void drawSelectionFrame(QPainter &painter) const override;
     void drawReferenceSelection(QPainter &painter) const;
     void drawNameListSelection(QPainter &painter) const;
 
@@ -44,6 +44,9 @@ public:
     int getAreaHeight() const;
 
     int getScaleBarValue() const;
+
+    /** Mca editor highligths only 1 focused base at a time. */
+    bool hasHighlightedBackground(int columnIndex, int viewRowIndex) const override;
 
     static const int INDENT_BETWEEN_ROWS;
     static const int CHROMATOGRAM_MAX_HEIGHT;

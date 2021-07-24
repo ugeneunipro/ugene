@@ -132,7 +132,6 @@ private:
     void initMaxResultLenContainer();
     void updateLayout();
     void connectSlots();
-    int getMaxError(const QString &pattern) const;
     void showCurrentResult() const;
     bool isSearchPatternsDifferent(const QList<NamePattern> &newPatterns) const;
     void stopCurrentSearchTask();
@@ -154,7 +153,12 @@ private:
      * and on the validity of the region.
      */
     void checkState();
-    bool checkPatternRegion(const QString &pattern);
+
+    /**
+     * Checks if currently selected region is valid for the given pattern.
+     * Returns error message to display if the region is not correct or an empty string if the region is correct.
+     */
+    QString checkSearchRegion() const;
 
     /**
      * The "Match" spin is disabled if this is an amino acid sequence or
@@ -162,17 +166,23 @@ private:
      */
     void enableDisableMatchSpin();
 
-    /** Allows showing of several error messages. */
-    void showHideMessage(bool show, MessageFlag messageFlag, const QString &additionalMsg = QString());
+    /** Toggles error message flag and updates additional error message. Does not trigger re-rendering of the error label. */
+    void setMessageFlag(const MessageFlag &messageFlag, bool show, const QString &additionalMsg = QString());
+
+    /** Updates visual error label state based on the curent error flags state. */
+    void updateErrorLabelState();
+
+    /** Returns HTML to be rendered by the error label. */
+    QString buildErrorLabelHtml() const;
 
     /** Checks pattern alphabet and sets error message if needed. Returns false on error or true if no error found */
     bool verifyPatternAlphabet();
     bool checkAlphabet(const QString &pattern);
-    void showTooLongSequenceError();
 
     void setRegionToWholeSequence();
 
-    U2Region getCompleteSearchRegion(bool &isRegionCorrect, qint64 maxLen) const;
+    /** Returns search region parsed from the start/end edits. Returns empty region in case of error. */
+    U2Region getSearchRegion() const;
 
     void initFindPatternTask(const QList<QPair<QString, QString>> &patterns);
 
@@ -214,7 +224,8 @@ private:
     QString patternString;
     QString patternRegExp;
 
-    QList<MessageFlag> messageFlags;
+    /** Keeps flags of visible messages and optional (may be empty) custom messages as values. */
+    QMap<MessageFlag, QString> messageFlagMap;
 
     /** Widgets in the Algorithm group */
     QHBoxLayout *layoutMismatch;

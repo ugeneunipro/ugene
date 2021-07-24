@@ -159,10 +159,9 @@ public:
      * If a row length is less than 'pos', the sequence and gap model becomes empty.
      * Updates the alignment length.
      * Parameter 'rowIds' must contain valid IDs of the alignment rows in the database!
-     * Parameter 'pos' must be >= 0 and < the alignment length.
-     * Parameter 'count' must be > 0.
+     * Parameter 'columnRange' must be a valid non-empty column range.
      */
-    static void crop(const U2EntityRef &msaRef, const QList<qint64> &rowIds, qint64 pos, qint64 count, U2OpStatus &os);
+    static void crop(const U2EntityRef &msaRef, const QList<qint64> &rowIds, const U2Region& columnRange, U2OpStatus &os);
 
     /**
      * Removes leading and trailing gaps, if required.

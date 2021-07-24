@@ -6225,9 +6225,9 @@ Directory Path: %1</source>
         <translation>Изменить имя последовательности</translation>
     </message>
     <message>
-        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="73"/>
-        <source>Copy current sequence</source>
-        <translation>Копировать текущую последовательность</translation>
+        <location filename="../src/ov_msa/MaEditorNameList.cpp" line="76"/>
+        <source>Copy whole selected row(s)</source>
+        <translation>Копировать выделенные строки полностью</translation>
     </message>
     <message>
         <location filename="../src/ov_msa/MaEditorNameList.cpp" line="77"/>

@@ -124,37 +124,17 @@ void MultipleSequenceAlignmentObject::insertGapByRowIndexList(const QList<int> &
     MultipleAlignmentObject::insertGapByRowIndexList(rowIndexes, pos, nGaps, false);
 }
 
-void MultipleSequenceAlignmentObject::crop(const U2Region &window, const QSet<QString> &rowNames) {
+void MultipleSequenceAlignmentObject::crop(const QList<qint64> &rowIds, const U2Region &columnRange) {
     SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
-    const MultipleSequenceAlignment &ma = getMultipleAlignment();
-
-    QList<qint64> rowIds;
-    for (int i = 0; i < ma->getNumRows(); ++i) {
-        QString rowName = ma->getRow(i)->getName();
-        if (rowNames.isEmpty() || rowNames.contains(rowName)) {
-            qint64 rowId = ma->getRow(i)->getRowId();
-            rowIds.append(rowId);
-        }
-    }
-
     U2OpStatus2Log os;
-    MsaDbiUtils::crop(entityRef, rowIds, window.startPos, window.length, os);
+    MsaDbiUtils::crop(entityRef, rowIds, columnRange, os);
     SAFE_POINT_OP(os, );
 
     updateCachedMultipleAlignment();
 }
 
-void MultipleSequenceAlignmentObject::crop(const U2Region &window, const QList<qint64> &rowIds) {
-    SAFE_POINT(!isStateLocked(), "Alignment state is locked", );
-    U2OpStatus2Log os;
-    MsaDbiUtils::crop(entityRef, rowIds, window.startPos, window.length, os);
-    SAFE_POINT_OP(os, );
-
-    updateCachedMultipleAlignment();
-}
-
-void MultipleSequenceAlignmentObject::crop(const U2Region &window) {
-    crop(window, QSet<QString>());
+void MultipleSequenceAlignmentObject::crop(const U2Region &columnRange) {
+    crop(getRowIds(), columnRange);
 }
 
 void MultipleSequenceAlignmentObject::updateRow(U2OpStatus &os, int rowIdx, const QString &name, const QByteArray &seqBytes, const U2MsaRowGapModel &gapModel) {

@@ -139,11 +139,11 @@ void GUITestLauncher::firstTestRunCheck(const QString &testName) {
 QList<GUITest *> getIdealNightlyTestsSplit(int suiteIndex, int suiteCount, const QList<GUITest *> &allTests) {
     QList<int> testsPerSuite;
     if (suiteCount == 3) {
-        testsPerSuite << 910 << 750 << -1;
+        testsPerSuite << 980 << 800 << -1;
     } else if (suiteCount == 4) {
         testsPerSuite << 640 << 680 << 640 << -1;
     } else if (suiteCount == 5) {
-        testsPerSuite << 545 << 575 << 470 << 540 << -1;
+        testsPerSuite << 550 << 575 << 480 << 550 << -1;
     }
     QList<GUITest *> tests;
     if (testsPerSuite.size() == suiteCount) {
@@ -284,7 +284,7 @@ static bool restoreTestDirWithExternalScript(const QString &pathToShellScript, c
     QProcessEnvironment processEnv = QProcessEnvironment::systemEnvironment();
     processEnv.insert("UGENE_TESTS_DIR_NAME", testsDir.dirName());
     processEnv.insert("UGENE_DATA_DIR_NAME", dataDir.dirName());
-    processEnv.insert("UGENE_USER_INI", iniFilePath);
+    processEnv.insert(U2_USER_INI, iniFilePath);
     qint64 startTimeMicros = GTimer::currentTimeMicros();
     QProcess process;
     process.setProcessEnvironment(processEnv);
