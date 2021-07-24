@@ -15,7 +15,8 @@ APP_BUNDLE_DIR_NAME="ugene_app"
 APP_BUNDLE_DIR="${TEAMCITY_WORK_DIR}/${APP_BUNDLE_DIR_NAME}"
 APP_NAME="Unipro UGENE.app"
 APP_DIR="${APP_BUNDLE_DIR}/${APP_NAME}"
-APP_EXE_DIR="${APP_DIR}/Contents/MacOS"
+APP_CONTENTS_DIR="${APP_DIR}/Contents"
+APP_EXE_DIR="${APP_CONTENTS_DIR}/MacOS"
 SYMBOLS_DIR_NAME=symbols
 SYMBOLS_DIR="${TEAMCITY_WORK_DIR}/$SYMBOLS_DIR_NAME"
 SYMBOLS_LOG="${TEAMCITY_WORK_DIR}/symbols.log"
@@ -52,13 +53,15 @@ rsync -a --exclude=.svn* "${TEAMCITY_WORK_DIR}/tools" "${APP_EXE_DIR}" || {
   echo "##teamcity[buildStatus status='FAILURE' text='{build.status.text}. Failed to copy tools dir']"
 }
 
-# These tools can't be signed today, so remove them from the bundle until fixed.
-rm -rf "${APP_EXE_DIR}/tools/java8"
-rm -rf "${APP_EXE_DIR}/tools/python2"
-rm -rf "${APP_EXE_DIR}/tools/cistrome"
-rm -rf "${APP_EXE_DIR}/plugins/"*cistrome*
+# These tools can't be signed as is today and require some pre-processing.
+rm -rf "${APP_EXE_DIR}/MacOS/tools/python2/include"
+mv "${APP_EXE_DIR}/tools/python2/lib/python2.7" "${APP_CONTENTS_DIR}/Resources/"
+ln -rs "${APP_CONTENTS_DIR}/Resources/python2.7" "${APP_EXE_DIR}/tools/python2/lib/"
 
-echo "##teamcity[blockClosed name='Copy files']"
+rm -rf "${APP_EXE_DIR}/tools/cistrome/CEAS/CEAS_Package-1.0.2-py2.7.egg-info"
+rm -rf ""${APP_EXE_DIR}/MacOS/tools/cistrome/MACS/MACS-1.4.2-py2.7.egg-info"
+
+echo " ##teamcity[blockClosed name='Copy files']"
 
 echo "##teamcity[blockOpened name='Validate bundle content']"
 # Validate bundle content.
@@ -103,7 +106,7 @@ tar cfz "${SYMBOLS_DIR_NAME}.tar.gz" "${SYMBOLS_DIR_NAME}"
 echo "##teamcity[blockClosed name='Dump symbols']"
 
 echo "##teamcity[blockOpened name='Sign bundle content']"
-codesign --deep --sign "${SIGN_IDENTITY}" --timestamp --options runtime --strict \
+codesign --deep --verbose --sign "${SIGN_IDENTITY}" --timestamp --options runtime --strict \
   --entitlements "${SCRIPTS_DIR}/dmg/Entitlements-tools.plist" \
   "${APP_EXE_DIR}/ugeneui" || exit 1
 echo "##teamcity[blockClosed name='Sign bundle content']"
