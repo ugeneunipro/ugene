@@ -108,7 +108,7 @@ tar cfz "${SYMBOLS_DIR_NAME}.tar.gz" "${SYMBOLS_DIR_NAME}"
 echo "##teamcity[blockClosed name='Dump symbols']"
 
 echo "##teamcity[blockOpened name='Sign bundle content']"
-codesign --deep --verbose --sign "${SIGN_IDENTITY}" --timestamp --options runtime --strict \
+codesign --deep --verbose=4 --sign "${SIGN_IDENTITY}" --timestamp --options runtime --strict \
   --entitlements "${SCRIPTS_DIR}/dmg/Entitlements.plist" \
   "${APP_EXE_DIR}/ugeneui" || exit 1
 echo "##teamcity[blockClosed name='Sign bundle content']"
