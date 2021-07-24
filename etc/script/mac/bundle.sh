@@ -165,16 +165,20 @@ done
 
 echo Running macdeployqt
 "${QT_DIR}/bin/macdeployqt" "${TARGET_APP_DIR}" -no-strip \
-  -executable="${TARGET_EXE_DIR}"/ugeneui \
-  -executable="${TARGET_EXE_DIR}"/ugenecl \
-  -executable="${TARGET_EXE_DIR}"/ugenem \
-  -executable="${TARGET_EXE_DIR}"/plugins_checker
+  -executable="${TARGET_EXE_DIR}/ugeneui" \
+  -executable="${TARGET_EXE_DIR}/ugenecl" \
+  -executable="${TARGET_EXE_DIR}/ugenem" \
+  -executable="${TARGET_EXE_DIR}/plugins_checker"
 
 echo Copying extra libraries with mysql driver
-cp "${QT_DIR}"/extra_libs/* "${TARGET_APP_DIR}/Contents/Frameworks"
+cp "${QT_DIR}/extra_libs/"* "${TARGET_APP_DIR}/Contents/Frameworks"
 
 echo Copying readme.txt file
 cp "${SOURCE_DIR}/etc/script/mac/dmg/readme.txt" "${BUNDLE_DIR}/readme.txt"
+echo Linking Samples
+cd "${TARGET_APP_DIR}"
+ln -s "./${APP_NAME}/Contents/MacOS/data/samples" ./Samples
+cd "${TEAMCITY_WORK_DIR}"
 
 echo "Compressing app into a tar.gz"
 rm "${TEAMCITY_WORK_DIR}/"*.gz
