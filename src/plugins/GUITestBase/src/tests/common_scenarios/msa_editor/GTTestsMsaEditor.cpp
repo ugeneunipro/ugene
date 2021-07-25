@@ -823,168 +823,141 @@ GUI_TEST_CLASS_DEFINITION(test_0008) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008_1) {    //CHANGES: default names used
-    //     1. Open document samples\CLUSTALW\COI.aln
-
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //     2. Create bookmark. Do not rename the new bookmark.
+    // Create a bookmark. Do not rename the new bookmark.
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]");
 
-    const int startRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
-    const int startLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    int startBookmarkFirstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    int startBookmarkLastBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
 
-    //     3. Scroll msa to the middle.
+    // Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 300));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    GTMenu::showContextMenu(os, mdiWindow);
-    GTGlobals::sleep(500);
-
-    //     4. Create bookmark. Do not rename the new bookmark.
+    // Create a bookmark. Do not rename the new bookmark.
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]");
 
-    const int midLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    int middleBookmarkFirstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
-    //     5. Scroll msa to the end.
+    // Scroll msa to the end.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 550));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    GTMenu::showContextMenu(os, mdiWindow);
-    GTGlobals::sleep(500);
-
-    //     6. Create bookmark. Do not rename the new bookmark.
+    // Create bookmark. Do not rename the new bookmark..
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]");
+    int endBookmarkFirstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
-    const int endLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-
-    //     Expected state: clicking on each bookmark will recall corresponding MSA position
+    // Expected state: click on each bookmark sets corresponding MSA position.
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "New bookmark");
-
-    int RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
-    int LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-    CHECK_SET_ERR(startRO == RO && startLO == LO, "start bookmark offsets aren't equal to the expected");
+    int firstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    int lastBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    CHECK_SET_ERR(firstBase == startBookmarkFirstBase, QString("Start bookmark first base offset does not match: %1 vs %2").arg(firstBase).arg(startBookmarkFirstBase));
+    CHECK_SET_ERR(lastBase == startBookmarkLastBase, "start bookmark offsets aren't equal to the expected");
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "New bookmark 2");
-    GTGlobals::sleep(500);
-
-    RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
-    LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-    CHECK_SET_ERR(midLO == LO, QString("middle bookmark offsets aren't equal to the expected: midLO=%1 LO=%2").arg(midLO).arg(LO));
+    firstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(firstBase == middleBookmarkFirstBase, QString("Middle bookmark first base offset does not match: %1 vs %2").arg(firstBase).arg(middleBookmarkFirstBase));
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "New bookmark 3");
+    firstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(firstBase == endBookmarkFirstBase, QString("End bookmark first base offset does not match: %1 vs %2").arg(firstBase).arg(endBookmarkFirstBase));
 
-    RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
-    LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-    CHECK_SET_ERR(endLO == LO, QString("end bookmark offsets aren't equal to the expected: endLO=%1 LO=%2").arg(endLO).arg(LO));
-
-    //     7. Delete Start bookmark
+    // Delete Start bookmark & check it was deleted.
     GTUtilsBookmarksTreeView::deleteBookmark(os, "New bookmark");
-
-    //     Expected state: start bookmark doesn't present
-    QTreeWidgetItem *startBookmark = GTUtilsBookmarksTreeView::findItem(os, "New bookmark", GTGlobals::FindOptions(false));
-    CHECK_SET_ERR(startBookmark == nullptr, "bookmark wasn't deleted");
+    QTreeWidgetItem *startBookmark = GTUtilsBookmarksTreeView::findItem(os, "New bookmark", {false});
+    CHECK_SET_ERR(startBookmark == nullptr, "Start bookmark wasn't deleted");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008_2) {
-    // CHANGES: mid and end coordinates changed
-    //     1. Open document samples\CLUSTALW\COI.aln
+    // CHANGES: mid and end coordinates changed.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //     2. Create bookmark. Rename "New bookmark" to "start bookmark"
+    // Create a bookmark. Rename "New bookmark" to "start bookmark".
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "start bookmark");
+    int startBookmarkFirstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    int startBookmarkLastBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
 
-    const int startRO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
-    const int startLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-
-    //     3. Scroll msa to the middle.
+    //  Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 200));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    GTMenu::showContextMenu(os, mdiWindow);
-    GTGlobals::sleep(500);
-
-    //     4. Create bookmark. Rename "New bookmark" to "middle bookmark"
+    // Create a bookmark. Rename "New bookmark" to "middle bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "middle bookmark");
+    int middleBookmarkFirstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
-    const int midLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-
-    //     5. Scroll msa to the end.
+    // Scroll msa to the end.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 510));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    GTMenu::showContextMenu(os, mdiWindow);
-    GTGlobals::sleep(500);
-
-    //     6. Create bookmark. Rename "New bookmark" to "end bookmark"
+    // Create bookmark. Rename "New bookmark" to "end bookmark".
     GTUtilsBookmarksTreeView::addBookmark(os, "COI [COI.aln]", "end bookmark");
+    int endBookmarkFirstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
-    const int endLO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-
-    //     Expected state: clicking on each bookmark will recall corresponding MSA position
+    // Expected state: click on each bookmark sets corresponding MSA position.
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "start bookmark");
-    GTGlobals::sleep(500);
-
-    int RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
-    int LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-    CHECK_SET_ERR(startRO == RO && startLO == LO, "start bookmark offsets aren't equal to the expected");
+    int firstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    int lastBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    CHECK_SET_ERR(firstBase == startBookmarkFirstBase, QString("Start bookmark first base offset does not match: %1 vs %2").arg(firstBase).arg(startBookmarkFirstBase));
+    CHECK_SET_ERR(lastBase == startBookmarkLastBase, "start bookmark offsets aren't equal to the expected");
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "middle bookmark");
-
-    RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
-    LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-    CHECK_SET_ERR(midLO == LO, QString("middle bookmark offsets aren't equal to the expected: midLO=%1 LO=%2").arg(midLO).arg(LO));
+    firstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(firstBase == middleBookmarkFirstBase, QString("Middle bookmark first base offset does not match: %1 vs %2").arg(firstBase).arg(middleBookmarkFirstBase));
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "end bookmark");
-
-    RO = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
-    LO = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-    CHECK_SET_ERR(endLO == LO, QString("end bookmark offsets aren't equal to the expected: endLO=%1 LO=%2").arg(endLO).arg(LO));
+    firstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(firstBase == endBookmarkFirstBase, QString("End bookmark first base offset does not match: %1 vs %2").arg(firstBase).arg(endBookmarkFirstBase));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0008_3) {
-    // CHANGES: mid and end coordinates changed, another file is used
-    // Open document samples\CLUSTALW\HIV-1.aln
+    // CHANGES: mid and end coordinates changed.
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/HIV-1.aln");
-    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Create bookmark. Rename "New bookmark" to "start bookmark"
+    // Create a bookmark. Rename "New bookmark" to "start bookmark".
     GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [HIV-1.aln]", "start bookmark");
-    int startPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    int startBookmarkFirstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    int startBookmarkLastBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
 
-    // Scroll msa to the middle.
+    //  Scroll msa to the middle.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 600));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    // Create bookmark. Rename "New bookmark" to "middle bookmark"
+    // Create a bookmark. Rename "New bookmark" to "middle bookmark"
     GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [HIV-1.aln]", "middle bookmark");
-    int midPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    int middleBookmarkFirstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
     // Scroll msa to the end.
     GTUtilsDialog::waitForDialog(os, new GoToDialogFiller(os, 1000));
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << MSAE_MENU_NAVIGATION << "action_go_to_position"));
-    GTMenu::showContextMenu(os, GTUtilsMdi::activeWindow(os));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_NAVIGATION, "action_go_to_position"}));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    // Create bookmark. Rename "New bookmark" to "end bookmark"
+    // Create bookmark. Rename "New bookmark" to "end bookmark".
     GTUtilsBookmarksTreeView::addBookmark(os, "HIV-1 [HIV-1.aln]", "end bookmark");
-    int endPos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    int endBookmarkFirstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
 
-    // Expected state: clicking on each bookmark will recall corresponding MSA position
+    // Expected state: click on each bookmark sets corresponding MSA position.
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "start bookmark");
-    int pos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-    CHECK_SET_ERR(pos == startPos, "Wrong start offset! Expected: " + QString::number(startPos) + ", got: " + QString::number(pos));
+    int firstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    int lastBase = GTUtilsMSAEditorSequenceArea::getLastVisibleBase(os);
+    CHECK_SET_ERR(firstBase == startBookmarkFirstBase, QString("Start bookmark first base offset does not match: %1 vs %2").arg(firstBase).arg(startBookmarkFirstBase));
+    CHECK_SET_ERR(lastBase == startBookmarkLastBase, "start bookmark offsets aren't equal to the expected");
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "middle bookmark");
-    pos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-    CHECK_SET_ERR(pos == midPos, "Wrong middle offset! Expected: " + QString::number(midPos) + ", got: " + QString::number(pos));
+    firstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(firstBase == middleBookmarkFirstBase, QString("Middle bookmark first base offset does not match: %1 vs %2").arg(firstBase).arg(middleBookmarkFirstBase));
 
     GTUtilsBookmarksTreeView::doubleClickBookmark(os, "end bookmark");
-    pos = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
-    CHECK_SET_ERR(pos == endPos, "Wrong end offset! Expected: " + QString::number(endPos) + ", got: " + QString::number(pos));
+    firstBase = GTUtilsMSAEditorSequenceArea::getFirstVisibleBase(os);
+    CHECK_SET_ERR(firstBase == endBookmarkFirstBase, QString("End bookmark first base offset does not match: %1 vs %2").arg(firstBase).arg(endBookmarkFirstBase));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0009) {

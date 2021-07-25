@@ -139,6 +139,8 @@ void GTUtilsBookmarksTreeView::clickBookmark(GUITestOpStatus &os, const QString 
 void GTUtilsBookmarksTreeView::doubleClickBookmark(GUITestOpStatus &os, const QString &bookmarkName) {
     GTMouseDriver::moveTo(getItemCenter(os, bookmarkName));
     GTMouseDriver::doubleClick();
+    // Bookmark activation creates async task, wait until it is finished.
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 }
 #undef GT_METHOD_NAME
 
