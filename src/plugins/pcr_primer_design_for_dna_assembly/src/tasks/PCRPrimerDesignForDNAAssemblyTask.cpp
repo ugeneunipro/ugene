@@ -189,8 +189,55 @@ QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask)
 }
 
 QString PCRPrimerDesignForDNAAssemblyTask::generateReport() const {
-    //TODO - report
-    return QString();
+    QString report("<style type=\"text/css\">"
+                   "p{font-size: 7pt;}"
+                   ".seq{font-size: 8pt;}"
+                   "</style>"
+                   "<br>"
+                   "<br>"
+                   "<h3>%1</h3>");
+    SAFE_POINT(!sequence.isEmpty(), tr("Empty sequence"), report.arg(tr("Error, see log.")))
+    if (aForward.isEmpty() && aReverse.isEmpty() && b1Forward.isEmpty() && b1Reverse.isEmpty() && b2Forward.isEmpty() &&
+        b2Reverse.isEmpty() && b3Forward.isEmpty() && b3Reverse.isEmpty()) {
+        return report.arg(tr("There are no primers that meet the specified parameters."));
+    }
+
+    auto getPairReport = [&](U2Region forward, U2Region reverse, const QString &primerName) -> QString {
+        QString report;
+        if (!forward.isEmpty()) {
+            report += tr("<h2>%1 Forward:</h2>").arg(primerName);
+
+            QString error = tr("Invalid region %1 for %2 forward sequence of length %3").
+                arg(forward.toString(), primerName).arg(sequence.length());
+            SAFE_POINT(forward.startPos > 0 && forward.startPos < sequence.length() && forward.length > 0, error,
+                report += tr("<h3>Error, see log.</h3>"))
+
+            report += QString("<div class=\"seq\"><u>%1</u><b>%2</b></div>").arg(QString(backboneSequence)).
+                arg(QString(sequence.mid(forward.startPos, forward.length)));
+        }
+        if (!reverse.isEmpty()) {
+            report += tr("<h2>%1 Reverse:</h2>").arg(primerName);
+
+            QString error = tr("Invalid region %1 for %2 reverse sequence of length %3").
+                arg(reverse.toString(), primerName).arg(sequence.length());
+            SAFE_POINT(reverse.startPos > 0 && reverse.startPos < sequence.length() && reverse.length > 0, error,
+                report += tr("<h3>Error, see log.</h3>"))
+
+            report += QString("<div class=\"seq\"><b>%1</b><u>%2</u></div>").
+                arg(QString(sequence.mid(reverse.startPos, reverse.length))).arg(QString(backboneSequence));
+        }
+        return report;
+    };
+
+    report = report.arg(tr("Details:"));
+    report += tr("<div>"
+                 "<p><u>Underlined</u>&#8211;backbone sequence<br><b>Bold</b>&#8211;primer sequence</p>"
+                 "</div>");
+    report += getPairReport(aForward, aReverse, "A");
+    report += getPairReport(b1Forward, b1Reverse, "B1");
+    report += getPairReport(b2Forward, b2Reverse, "B2");
+    report += getPairReport(b3Forward, b3Reverse, "B3");
+    return report;
 }
 
 QList<U2Region> PCRPrimerDesignForDNAAssemblyTask::getResults() const {
