@@ -3158,65 +3158,60 @@ GUI_TEST_CLASS_DEFINITION(test_5728) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_5739) {
-    class Scenario : public CustomScenario {
-        void run(HI::GUITestOpStatus &os) {
-            //Expected state : "Min read identity" option by default = 80 %
+    class AddReadsWithReferenceScenario : public CustomScenario {
+        void run(HI::GUITestOpStatus &os) override {
+            // Expected state: "Min read identity" option by default = 80 %
             int minReadIdentity = GTSpinBox::getValue(os, "minIdentitySpinBox");
-            CHECK_SET_ERR(minReadIdentity == 80, QString("incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
+            CHECK_SET_ERR(minReadIdentity == 80, QString("Incorrect Read Identity value: expected 80%, got %1").arg(minReadIdentity));
 
-            //Expected state : "Quality threshold" option by default = 30
+            // Expected state: "Quality threshold" option by default = 30
             int quality = GTSpinBox::getValue(os, "qualitySpinBox");
-            CHECK_SET_ERR(quality == 30, QString("incorrect quality value: expected 30, got %1").arg(quality));
+            CHECK_SET_ERR(quality == 30, QString("Incorrect quality value: expected 30, got %1").arg(quality));
 
-            //Expected state : "Add to project" option is checked by default
+            // Expected state: "Add to project" option is checked by default
             bool isAddToProject = GTCheckBox::getState(os, "addToProjectCheckbox");
-            CHECK_SET_ERR(isAddToProject, QString("incorrect addToProject state: expected true, got false"));
+            CHECK_SET_ERR(isAddToProject, QString("Incorrect addToProject state: expected true, got false"));
 
-            //Expected state : "Result aligment" field is filled by default
+            // Expected state: "Result aligment" field is filled by default
             QString output = GTLineEdit::getText(os, "outputLineEdit");
             CHECK_SET_ERR(!output.isEmpty(), "Incorrect output line: is empty");
 
-            //2. Select reference  .../test/general/_common_data/sanger/reference.gb
-            GTLineEdit::setText(os, GTWidget::findExactWidget<QLineEdit *>(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference_short.gb");
+            // Select reference  _common_data/sanger/reference.gb.
+            GTLineEdit::setText(os, GTWidget::findLineEdit(os, "referenceLineEdit"), testDir + "_common_data/sanger/reference_short.gb");
 
-            //3. Select Reads: .../test/general/_common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
+            // Select Reads:  _common_data/sanger/sanger_01.ab1-/sanger_20.ab1(20 files)]
             QStringList reads;
             for (int i = 1; i < 21; i++) {
                 QString num = QString::number(i);
                 if (num.size() == 1) {
                     num = "0" + QString::number(i);
                 }
-                reads << ("sanger_" + num + ".ab1");
+                reads << "sanger_" + num + ".ab1";
             }
-            QString readDir = testDir + "_common_data/sanger/";
             GTUtilsTaskTreeView::waitTaskFinished(os);
-            GTFileDialogUtils_list *ob = new GTFileDialogUtils_list(os, readDir, reads);
-            GTUtilsDialog::waitForDialog(os, ob);
+            GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils_list(os, testDir + "_common_data/sanger", reads));
 
             GTWidget::click(os, GTWidget::findExactWidget<QPushButton *>(os, "addReadButton"));
 
-            //4. Push "Align" button
+            // Push "Align" button.
             GTUtilsDialog::clickButtonBox(os, QDialogButtonBox::Ok);
         }
     };
 
-    //1. Select "Tools>Sanger data analysis>Reads quality control and alignment"
-    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new Scenario));
-    GTMenu::clickMainMenuItem(os, QStringList() << "Tools"
-                                                << "Sanger data analysis"
-                                                << "Map reads to reference...");
+    // Select "Tools > Sanger data analysis > Reads quality control and alignment"
+    GTUtilsDialog::waitForDialog(os, new AlignToReferenceBlastDialogFiller(os, new AddReadsWithReferenceScenario()));
+    GTMenu::clickMainMenuItem(os, {"Tools", "Sanger data analysis", "Map reads to reference..."});
     GTUtilsMcaEditor::checkMcaEditorWindowIsActive(os);
 
-    //5. Move mouse cursor to the position 6372 at the reference sequence (first half of the char).
+    // Move mouse cursor to the position 6372 at the reference sequence (first half of the char).
     GTUtilsMcaEditorSequenceArea::moveCursorToReferencePositionCenter(os, 6372, QPoint(-4, 0));
 
-    //6. Select all chars in the reference from here to the end
+    // Select all chars in the reference from here to the end.
     QPoint currentPos = GTMouseDriver::getMousePosition();
     int newXPos = GTUtilsMdi::activeWindow(os)->mapToGlobal(GTUtilsMdi::activeWindow(os)->rect().topRight()).x();
     GTMouseDriver::dragAndDrop(currentPos, QPoint(newXPos, currentPos.y()));
-    GTThread::waitForMainThread();
 
-    //Expected: selected length = 4
+    // Expected: selected length = 4.
     U2Region reg = GTUtilsMcaEditorSequenceArea::getReferenceSelection(os);
     CHECK_SET_ERR(reg.length == 4, QString("Unexpected selection length, expected: 4, got: %1").arg(reg.length));
 }
