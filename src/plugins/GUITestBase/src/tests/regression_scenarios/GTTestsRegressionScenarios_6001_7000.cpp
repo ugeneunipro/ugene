@@ -2642,12 +2642,13 @@ GUI_TEST_CLASS_DEFINITION(test_6481_4) {
 GUI_TEST_CLASS_DEFINITION(test_6474_1) {
     // 1. Open "_common_data/scenarios/_regression/6474/6474.aln"
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/6474/6474.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
     // 2. Open the highlighting tab
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
 
     // 3. Select the "Percentage identity (colored)" color scheme
-    QString cs = GTUtilsOptionPanelMsa::getColorScheme(os);
+    QString colorSchemeName = GTUtilsOptionPanelMsa::getColorScheme(os);
     GTUtilsOptionPanelMsa::setColorScheme(os, "Percentage identity (colored)    ", GTGlobals::UseMouse);
 
     // Zoom to max
@@ -2663,43 +2664,46 @@ GUI_TEST_CLASS_DEFINITION(test_6474_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6474_2) {
-    // 1. Open "_common_data/scenarios/_regression/6474/6474.aln"
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/_regression/6474/6474.aln");
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
 
-    // 2. Open the highlighting tab
+    // Open the highlighting tab.
     GTUtilsOptionPanelMsa::openTab(os, GTUtilsOptionPanelMsa::Highlighting);
 
-    // 3. Select the "Percentage identity (colored)" color scheme
-    QString cs = GTUtilsOptionPanelMsa::getColorScheme(os);
+    // Select the "Percentage identity (colored)" color scheme.
+    QString colorSchemeName = GTUtilsOptionPanelMsa::getColorScheme(os);
     GTUtilsOptionPanelMsa::setColorScheme(os, "Percentage identity (colored)    ", GTGlobals::UseMouse);
 
     // Zoom to max.
     GTUtilsMSAEditorSequenceArea::zoomToMax(os);
+
     // Expected colors:
     QStringList backgroundColors = {"#00ffff", "#ffffff"};
     QStringList fontColors = {"#0000ff", "#000000"};
     QList<int> columns = {1, 2, 5, 6};
-    foreach (int i, columns) {
+    for (int i : qAsConst(columns)) {
         int colorIndex = (i == 1 || i == 2) ? 0 : 1;
         GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(i, 0), fontColors[colorIndex], backgroundColors[colorIndex]);
     }
 
-    // 4. Set Threshold to 900
-    QSlider *colorThresholdSlider = qobject_cast<QSlider *>(GTWidget::findWidget(os, "colorThresholdSlider"));
-    CHECK_SET_ERR(nullptr != colorThresholdSlider, "Can't find colorThresholdSlider");
+    // Set Threshold to 900.
+    QSlider *colorThresholdSlider = GTWidget::findSlider(os, "colorThresholdSlider");
+    CHECK_SET_ERR(colorThresholdSlider != nullptr, "Can't find colorThresholdSlider");
 
     GTSlider::setValue(os, colorThresholdSlider, 900);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    // Expected colors: background - all columns #ffffff, font - all columns ##000000
-    foreach (int i, columns) {
+
+    // Expected colors: background - all columns #ffffff, font - all columns ##000000.
+    for (int i : qAsConst(columns)) {
         GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(i, 0), fontColors[1], backgroundColors[1]);
     }
 
-    // 5. Set Threshold to 100
+    // Set Threshold to 100.
     GTSlider::setValue(os, colorThresholdSlider, 100);
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    // Expected colors: background - all columns #00ffff, font - all columns ##0000ff
-    foreach (int i, columns) {
+
+    // Expected colors: background - all columns #00ffff, font - all columns ##0000ff.
+    for (int i : qAsConst(columns)) {
         GTUtilsMSAEditorSequenceArea::checkMsaCellColors(os, QPoint(i, 0), fontColors[0], backgroundColors[0]);
     }
 }

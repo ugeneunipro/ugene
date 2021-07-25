@@ -135,6 +135,10 @@ QToolButton *GTWidget::findToolButton(GUITestOpStatus &os, const QString &widget
     return findExactWidget<QToolButton *>(os, widgetName, parentWidget, options);
 }
 
+QSlider *GTWidget::findSlider(GUITestOpStatus &os, const QString &widgetName, const QWidget *parentWidget, const GTGlobals::FindOptions &options) {
+    return findExactWidget<QSlider *>(os, widgetName, parentWidget, options);
+}
+
 QPoint GTWidget::getWidgetCenter(QWidget *widget) {
     return widget->mapToGlobal(widget->rect().center());
 }
