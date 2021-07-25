@@ -48,9 +48,11 @@ bool GTMouseDriver::click(const QPoint &p, Qt::MouseButton button) {
 
 namespace {
 
+#ifdef Q_OS_WIN
 bool isFarEnoughToStartDnd(const QPoint &start, const QPoint &end) {
     return (end - start).manhattanLength() > 2 * QApplication::startDragDistance();
 }
+#endif
 
 }    // namespace
 
