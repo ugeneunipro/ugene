@@ -55,12 +55,12 @@ bool isFarEnoughToStartDnd(const QPoint &start, const QPoint &end) {
 }    // namespace
 
 bool GTMouseDriver::dragAndDrop(const QPoint &start, const QPoint &end) {
-    DRIVER_CHECK(moveTo(start), QString("Mouse could not be moved to point (%1, %2)").arg(start.x()).arg(start.y()));
+    DRIVER_CHECK(moveTo(start), QString("Mouse was not moved to the start point (%1, %2)").arg(start.x()).arg(start.y()));
 
     // Wait to avoid next press to be merged with a possible click in user code into a double click.
     GTGlobals::sleep(500);
 
-    DRIVER_CHECK(press(), "Left button could not be pressed");
+    DRIVER_CHECK(press(), "Mouse button was not be pressed");
 
 // After Linux version was improved the Windows has a lot of regressions. Keeping Windows version with no changes below during investigation.
 #ifdef Q_OS_WIN
@@ -69,11 +69,11 @@ bool GTMouseDriver::dragAndDrop(const QPoint &start, const QPoint &end) {
     DRIVER_CHECK(moveTo(end), QString("Mouse could not be moved to point (%1, %2)").arg(end.x()).arg(end.y()));
 #else
     GTThread::waitForMainThread();
-    DRIVER_CHECK(moveTo(end), QString("Mouse can't be moved to the point: (%1, %2)").arg(end.x()).arg(end.y()));
+    DRIVER_CHECK(moveTo(end), QString("Mouse was not moved to the end point (%1, %2)").arg(end.x()).arg(end.y()));
     GTThread::waitForMainThread();
     GTGlobals::sleep(500);    // Do extra wait before the release. Otherwise the method is not stable on Linux.
 #endif
-    DRIVER_CHECK(release(), "Button can't be released");
+    DRIVER_CHECK(release(), "Mouse button was not released");
     GTThread::waitForMainThread();
     return true;
 }
