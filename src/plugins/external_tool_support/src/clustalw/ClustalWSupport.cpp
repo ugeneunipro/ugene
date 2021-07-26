@@ -191,8 +191,8 @@ void ClustalWSupportContext::sl_align() {
     connect(obj, SIGNAL(destroyed()), clustalWSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalWSupportTask);
 
-    // Turn off rows collapsing
-    msaEditor->resetCollapsibleModel();
+    // Turn off rows collapsing mode.
+    msaEditor->resetCollapseModel();
 }
 
 }    // namespace U2

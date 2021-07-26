@@ -116,7 +116,7 @@ void McaEditorStatusBar::updatePositionLabel() {
         positions = getGappedPositionInfo();
     } else if (!selection.isEmpty()) {
         int firstSelectedViewRowIndex = selection.getRectList().first().top();
-        int maRowIndex = editor->getUI()->getCollapseModel()->getMaRowIndexByViewRowIndex(firstSelectedViewRowIndex);
+        int maRowIndex = editor->getCollapseModel()->getMaRowIndexByViewRowIndex(firstSelectedViewRowIndex);
         int ungappedLength = editor->getMaObject()->getRow(maRowIndex)->getUngappedLength();
         positions = QPair<QString, QString>(NONE_MARK, QString::number(ungappedLength));
     }

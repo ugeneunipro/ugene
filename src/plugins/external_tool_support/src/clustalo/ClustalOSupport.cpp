@@ -170,8 +170,8 @@ void ClustalOSupportContext::sl_align() {
     connect(obj, SIGNAL(destroyed()), clustalOSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalOSupportTask);
 
-    // Turn off rows collapsing
-    msaEditor->resetCollapsibleModel();
+    // Turn off rows collapsing mode.
+    msaEditor->resetCollapseModel();
 }
 
 void ClustalOSupportContext::sl_addAlignmentToAlignment() {
@@ -199,8 +199,8 @@ void ClustalOSupportContext::sl_addAlignmentToAlignment() {
     connect(msaObject, SIGNAL(destroyed()), clustalOSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(clustalOSupportTask);
 
-    // Turn off rows collapsing
-    msaEditor->resetCollapsibleModel();
+    // Turn off rows collapsing mode.
+    msaEditor->resetCollapseModel();
 }
 
 void ClustalOSupportContext::checkClustalOSetup(U2OpStatus &os) {

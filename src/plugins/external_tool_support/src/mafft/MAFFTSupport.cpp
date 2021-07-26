@@ -189,8 +189,8 @@ void MAFFTSupportContext::sl_align_with_MAFFT() {
     connect(alignmentObject, SIGNAL(destroyed()), mAFFTSupportTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(mAFFTSupportTask);
 
-    // Turn off rows collapsing
-    msaEditor->resetCollapsibleModel();
+    // Turn off rows collapsing mode.
+    msaEditor->resetCollapseModel();
 }
 
 }    // namespace U2

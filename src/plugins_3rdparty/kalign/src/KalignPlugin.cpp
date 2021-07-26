@@ -178,10 +178,10 @@ void KalignMSAEditorContext::sl_align() {
     MSAEditor *ed = action->getMSAEditor();
     MultipleSequenceAlignmentObject *obj = ed->getMaObject();
     if (!KalignTask::isAlphabetSupported(obj->getAlphabet()->getId())) {
-        QMessageBox::information(ed->getWidget(), 
-            tr("Unable to align with Kalign"), 
-            tr("Unable to align this Multiple alignment with Kalign.\r\nPlease, convert alignment from %1 alphabet to supported one and try again.")
-            .arg(obj->getAlphabet()->getName()));
+        QMessageBox::information(ed->getWidget(),
+                                 tr("Unable to align with Kalign"),
+                                 tr("Unable to align this Multiple alignment with Kalign.\r\nPlease, convert alignment from %1 alphabet to supported one and try again.")
+                                     .arg(obj->getAlphabet()->getName()));
         return;
     }
     KalignTaskSettings s;
@@ -205,8 +205,8 @@ void KalignMSAEditorContext::sl_align() {
     connect(obj, SIGNAL(destroyed()), alignTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(alignTask);
 
-    // Turn off rows collapsing
-    ed->resetCollapsibleModel();
+    // Turn off rows collapsing mode.
+    ed->resetCollapseModel();
 }
 
 KalignPairwiseAligmnentAlgorithm::KalignPairwiseAligmnentAlgorithm()

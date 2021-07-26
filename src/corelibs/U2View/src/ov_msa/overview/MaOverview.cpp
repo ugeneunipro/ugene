@@ -47,7 +47,7 @@ MaOverview::MaOverview(MaEditorWgt *ui)
             SLOT(sl_selectionChanged()));
     connect(editor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_redraw()));
     connect(ui->getScrollController(), SIGNAL(si_visibleAreaChanged()), SLOT(sl_redraw()));
-    connect(ui->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_redraw()));
+    connect(editor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_redraw()));
 }
 
 MaEditor *MaOverview::getEditor() const {

@@ -76,12 +76,12 @@ McaEditorWgt::McaEditorWgt(McaEditor *editor)
     nameAreaLayout->setContentsMargins(0, TOP_INDENT, 0, 0);
 
     enableCollapsingOfSingleRowGroups = true;
-    collapseModel->reset(editor->getMaRowIds());
+    editor->getCollapseModel()->reset(editor->getMaRowIds());
 
     Settings *s = AppContext::getSettings();
     SAFE_POINT(s != nullptr, "AppContext::settings is NULL", );
     bool showChromatograms = s->getValue(editor->getSettingsRoot() + MCAE_SETTINGS_SHOW_CHROMATOGRAMS, true).toBool();
-    collapseModel->collapseAll(!showChromatograms);
+    editor->getCollapseModel()->collapseAll(!showChromatograms);
     GCounter::increment(QString("'Show chromatograms' is %1 on MCA open").arg(showChromatograms ? "ON" : "OFF"));
 
     McaEditorConsensusArea *mcaConsArea = qobject_cast<McaEditorConsensusArea *>(consensusArea);

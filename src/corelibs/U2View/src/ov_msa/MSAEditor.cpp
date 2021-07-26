@@ -209,7 +209,7 @@ bool MSAEditor::onCloseEvent() {
 }
 
 MultipleSequenceAlignmentRow MSAEditor::getRowByViewRowIndex(int viewRowIndex) const {
-    int maRowIndex = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
+    int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
     return getMaObject()->getMsaRow(maRowIndex);
 }
 
@@ -652,12 +652,11 @@ void MSAEditor::sl_searchInSequenceNames() {
 
 void MSAEditor::sl_realignSomeSequences() {
     const MaEditorSelection &selection = getSelection();
-    MaCollapseModel *model = ui->getCollapseModel();
     const MultipleAlignment &ma = ui->getEditor()->getMaObject()->getMultipleAlignment();
     QSet<qint64> rowIds;
     QRect selectionRect = selection.toRect();
     for (int i = selectionRect.y(); i <= selectionRect.bottom(); i++) {
-        rowIds.insert(ma->getRow(model->getMaRowIndexByViewRowIndex(i))->getRowId());
+        rowIds.insert(ma->getRow(collapseModel->getMaRowIndexByViewRowIndex(i))->getRowId());
     }
     Task *realignTask = new RealignSequencesInAlignmentTask(getMaObject(), rowIds);
     TaskWatchdog::trackResourceExistence(ui->getEditor()->getMaObject(), realignTask, tr("A problem occurred during realigning sequences. The multiple alignment is no more available."));
@@ -698,7 +697,7 @@ void MSAEditor::sl_updateRealignAction() {
     const MaEditorSelection &selection = getSelection();
     QRect selectionRect = selection.toRect();
     bool isWholeSequenceSelection = selectionRect.width() == maObject->getLength() && selectionRect.height() >= 1;
-    bool isAllRowsSelection = selectionRect.height() == ui->getCollapseModel()->getViewRowCount();
+    bool isAllRowsSelection = selectionRect.height() == collapseModel->getViewRowCount();
     realignSomeSequenceAction->setEnabled(isWholeSequenceSelection && !isAllRowsSelection);
 }
 
@@ -840,7 +839,6 @@ static QList<QList<int>> groupRowsBySimilarity(const QList<MultipleAlignmentRow>
 }
 
 void MSAEditor::updateCollapseModel() {
-    MaCollapseModel *collapseModel = ui->getCollapseModel();
     if (rowOrderMode == MaEditorRowOrderMode::Original) {
         // Synchronize collapsible model with a current alignment.
         collapseModel->reset(getMaRowIds());
