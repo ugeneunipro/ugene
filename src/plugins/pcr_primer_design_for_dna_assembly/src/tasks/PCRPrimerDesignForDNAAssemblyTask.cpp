@@ -189,11 +189,7 @@ QList<Task*> PCRPrimerDesignForDNAAssemblyTask::onSubTaskFinished(Task* subTask)
 }
 
 QString PCRPrimerDesignForDNAAssemblyTask::generateReport() const {
-    QString report("<style type=\"text/css\">"
-                   "p{font-size: 7pt;}"
-                   ".seq{font-size: 8pt;}"
-                   "</style>"
-                   "<br>"
+    QString report("<br>"
                    "<br>"
                    "<h3>%1</h3>");
     SAFE_POINT(!sequence.isEmpty(), tr("Empty sequence"), report.arg(tr("Error, see log.")))
