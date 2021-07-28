@@ -68,17 +68,21 @@ GObject *GObjectUtils::selectOne(const QList<GObject *> &objects, GObjectType ty
     return res.isEmpty() ? nullptr : res.first();
 }
 
-QList<GObject *> GObjectUtils::findAllObjects(UnloadedObjectFilter f, GObjectType t) {
+QList<GObject *> GObjectUtils::findAllObjects(const UnloadedObjectFilter &unloadedObjectFilter, const GObjectType &objectType, bool writableOnly) {
     QList<GObject *> res;
     SAFE_POINT(AppContext::getProject() != nullptr, "No active project found", res);
 
-    foreach (Document *doc, AppContext::getProject()->getDocuments()) {
-        if (t.isEmpty()) {
-            if (doc->isLoaded() || f == UOF_LoadedAndUnloaded) {
+    const QList<Document *> &documents = AppContext::getProject()->getDocuments();
+    for (const Document *doc : qAsConst(documents)) {
+        if (writableOnly && doc->isStateLocked()) {
+            continue;
+        }
+        if (objectType.isEmpty()) {
+            if (doc->isLoaded() || unloadedObjectFilter == UOF_LoadedAndUnloaded) {
                 res += doc->getObjects();
             }
         } else {
-            res += doc->findGObjectByType(t, f);
+            res += doc->findGObjectByType(objectType, unloadedObjectFilter);
         }
     }
     return res;
@@ -91,9 +95,9 @@ QList<GObject *> GObjectUtils::selectRelations(GObject *obj, GObjectType type, G
         if (r.role != relationRole || (!type.isEmpty() && r.ref.objType != type)) {
             continue;
         }
-        GObject *obj = selectObjectByReference(r.ref, fromObjects, f);
-        if (obj != nullptr) {
-            res.append(obj);
+        GObject *referencedObject = selectObjectByReference(r.ref, fromObjects, f);
+        if (referencedObject != nullptr) {
+            res.append(referencedObject);
         }
     }
     return res;

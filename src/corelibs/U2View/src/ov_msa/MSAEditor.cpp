@@ -51,6 +51,7 @@
 #include "MaEditorNameList.h"
 #include "MaEditorTasks.h"
 #include "highlighting/MsaSchemesMenuBuilder.h"
+#include "move_to_object/MoveToObjectMaController.h"
 #include "overview/MaEditorOverviewArea.h"
 #include "realign_to_alignment/RealignSequencesInAlignmentTask.h"
 #include "view_rendering/MaEditorConsensusArea.h"
@@ -277,7 +278,7 @@ void MSAEditor::addCopyPasteMenu(QMenu *m) {
     const MaEditorSelection &selection = getSelection();
     ui->copySelectionAction->setDisabled(selection.isEmpty());
 
-    //TODO:? move the signal emit point to a correct location.
+    // TODO:? move the signal emit point to a correct location.
     auto sequenceArea = qobject_cast<MSAEditorSequenceArea *>(ui->getSequenceArea());
     SAFE_POINT(sequenceArea != nullptr, "sequenceArea is null", );
     emit sequenceArea->si_copyFormattedChanging(!selection.isEmpty());
@@ -405,7 +406,7 @@ void MSAEditor::addNavigationMenu(QMenu *m) {
 
 void MSAEditor::addTreeMenu(QMenu *m) {
     QMenu *em = m->addMenu(tr("Tree"));
-    //em->setIcon(QIcon(":core/images/tree.png"));
+    // em->setIcon(QIcon(":core/images/tree.png"));
     em->menuAction()->setObjectName(MSAE_MENU_TREES);
     em->addAction(buildTreeAction);
 }
@@ -503,6 +504,8 @@ QWidget *MSAEditor::createWidget() {
     sl_hideTreeOP();
 
     treeManager.loadRelatedTrees();
+
+    new MoveToObjectMaController(this);
 
     initDragAndDropSupport();
     updateActions();

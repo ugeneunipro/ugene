@@ -261,9 +261,17 @@ void GTUtilsMsaEditor::clickSequence(GUITestOpStatus &os, int rowNumber, Qt::Mou
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickSequenceName"
-void GTUtilsMsaEditor::clickSequenceName(GUITestOpStatus &os, const QString &sequenceName, Qt::MouseButton mouseButton) {
+void GTUtilsMsaEditor::clickSequenceName(GUITestOpStatus &os, const QString &sequenceName, const Qt::MouseButton &mouseButton, const Qt::KeyboardModifiers &modifiers) {
     moveToSequenceName(os, sequenceName);
+
+    QList<Qt::Key> modifierKeys = GTKeyboardDriver::modifiersToKeys(modifiers);
+    for (auto key : qAsConst(modifierKeys)) {
+        GTKeyboardDriver::keyPress(key);
+    }
     GTMouseDriver::click(mouseButton);
+    for (auto key : qAsConst(modifierKeys)) {
+        GTKeyboardDriver::keyRelease(key);
+    }
 }
 #undef GT_METHOD_NAME
 
@@ -299,6 +307,14 @@ void GTUtilsMsaEditor::selectRows(GUITestOpStatus &os, int firstRowNumber, int l
             GT_CHECK(false, "Not implemented");
         default:
             GT_CHECK(false, "An unknown method");
+    }
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "selectRowsByName"
+void GTUtilsMsaEditor::selectRowsByName(HI::GUITestOpStatus &os, const QStringList &rowNames) {
+    for (const QString &rowName : qAsConst(rowNames)) {
+        clickSequenceName(os, rowName, Qt::LeftButton, Qt::ControlModifier);
     }
 }
 #undef GT_METHOD_NAME

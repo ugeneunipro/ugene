@@ -144,7 +144,7 @@ void PopupChecker::commonScenario() {
         GT_CHECK(!act->isChecked(), "action '" + act->objectName() + "' is checked");
         qDebug("GT_DEBUG_MESSAGE options.testFlag(IsUnchecked)");
     }
-    for (int i = 0; i < namePath.size() + 1; i++) {
+    for (int i = 0; i < namePath.size(); i++) {
         PopupChooser::clickEsc(os);
         GTGlobals::sleep(250);
     }

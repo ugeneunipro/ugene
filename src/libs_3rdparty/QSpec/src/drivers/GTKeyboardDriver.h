@@ -72,7 +72,7 @@ public:
 
     static keys key;
 
-private:
+    /** Maps Shift, Alt, Control and Meta modifiers to the corresponding key codes. */
     static QList<Qt::Key> modifiersToKeys(Qt::KeyboardModifiers m);
 };
 
