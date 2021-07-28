@@ -209,14 +209,14 @@ GUI_TEST_CLASS_DEFINITION(test_4008) {
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW/", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets", PopupChecker::IsEnabled | PopupChecker::IsChecable));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets", PopupChecker::IsEnabled | PopupChecker::IsCheckable));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/", "big.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets", PopupChecker::IsEnabled | PopupChecker::IsChecable));
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << MSAE_MENU_APPEARANCE << "show_offsets", PopupChecker::IsEnabled | PopupChecker::IsCheckable));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 }
 
