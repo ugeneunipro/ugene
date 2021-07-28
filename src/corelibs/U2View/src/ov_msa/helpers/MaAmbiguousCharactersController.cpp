@@ -64,7 +64,7 @@ MaAmbiguousCharactersController::MaAmbiguousCharactersController(MaEditorWgt *ma
     connect(previousAction, SIGNAL(triggered(bool)), SLOT(sl_previous()));
 
     connect(maEditor->getMaObject(), SIGNAL(si_alignmentChanged(MultipleAlignment, MaModificationInfo)), SLOT(sl_resetCachedIterator()));
-    connect(maEditorWgt->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_resetCachedIterator()));
+    connect(maEditor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_resetCachedIterator()));
 }
 
 QAction *MaAmbiguousCharactersController::getPreviousAction() const {
@@ -144,7 +144,7 @@ void MaAmbiguousCharactersController::prepareIterator(NavigationDirection direct
     if (nullptr == cachedIterator) {
         cachedIterator.reset(new MaIterator(maEditor->getMaObject()->getMultipleAlignment(),
                                             direction,
-                                            maEditorWgt->getCollapseModel()->getMaRowsIndexesWithViewRowIndexes()));
+                                            maEditor->getCollapseModel()->getMaRowsIndexesWithViewRowIndexes()));
         cachedIterator->setCircular(true);
         cachedIterator->setIterateInCoreRegionsOnly(true);
     }

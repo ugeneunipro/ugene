@@ -64,12 +64,11 @@ MaEditorWgt::MaEditorWgt(MaEditor *_editor)
       seqAreaHeaderLayout(nullptr),
       seqAreaLayout(nullptr),
       nameAreaLayout(nullptr),
-      collapseModel(new MaCollapseModel(this, editor->getMaRowIds())),
       enableCollapsingOfSingleRowGroups(false),
-      scrollController(new ScrollController(editor, this, collapseModel)),
+      scrollController(new ScrollController(editor, this)),
       baseWidthController(new BaseWidthController(this)),
       rowHeightController(nullptr),
-      drawHelper(new DrawHelper(this)),
+      drawHelper(new DrawHelper(editor)),
       delSelectionAction(nullptr),
       copySelectionAction(nullptr),
       copyFormattedSelectionAction(nullptr),
@@ -230,8 +229,8 @@ void MaEditorWgt::initWidgets() {
     mainLayout->addWidget(mainSplitter);
     setLayout(mainLayout);
 
-    connect(collapseModel, SIGNAL(si_toggled()), offsetsViewController, SLOT(sl_updateOffsets()));
-    connect(collapseModel, SIGNAL(si_toggled()), sequenceArea, SLOT(sl_modelChanged()));
+    connect(editor->getCollapseModel(), SIGNAL(si_toggled()), offsetsViewController, SLOT(sl_updateOffsets()));
+    connect(editor->getCollapseModel(), SIGNAL(si_toggled()), sequenceArea, SLOT(sl_modelChanged()));
     connect(editor, SIGNAL(si_zoomOperationPerformed(bool)), scrollController, SLOT(sl_zoomScrollBars()));
 
     connect(delSelectionAction, SIGNAL(triggered()), sequenceArea, SLOT(sl_delCurrentSelection()));

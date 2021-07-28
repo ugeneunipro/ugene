@@ -212,8 +212,8 @@ void MuscleMSAEditorContext::sl_align() {
     connect(obj, SIGNAL(destroyed()), alignTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(alignTask);
 
-    // Turn off rows collapsing
-    ed->resetCollapsibleModel();
+    // Turn off rows collapsing mode.
+    ed->resetCollapseModel();
 }
 
 void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
@@ -235,8 +235,8 @@ void MuscleMSAEditorContext::sl_alignSequencesToProfile() {
     connect(msaObject, SIGNAL(destroyed()), alignTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(alignTask);
 
-    // Turn off rows collapsing
-    msaEditor->resetCollapsibleModel();
+    // Turn off rows collapsing mode.
+    msaEditor->resetCollapseModel();
 }
 
 void MuscleMSAEditorContext::sl_alignProfileToProfile() {
@@ -264,8 +264,8 @@ void MuscleMSAEditorContext::sl_alignProfileToProfile() {
     connect(obj, SIGNAL(destroyed()), alignTask, SLOT(cancel()));
     AppContext::getTaskScheduler()->registerTopLevelTask(alignTask);
 
-    // Turn off rows collapsing
-    ed->resetCollapsibleModel();
+    // Turn off rows collapsing mode.
+    ed->resetCollapseModel();
 }
 
 }    // namespace U2

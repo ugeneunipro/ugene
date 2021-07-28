@@ -31,13 +31,14 @@ McaRowHeightController::McaRowHeightController(McaEditorWgt *mcaEditorWgt)
 }
 
 int McaRowHeightController::getRowHeightByMaIndex(int maRowIndex) const {
-    const int fontHeight = QFontMetrics(ui->getEditor()->getFont(), ui).height();
+    MaEditor *editor = ui->getEditor();
+    const int fontHeight = QFontMetrics(editor->getFont(), ui).height();
 
     int rowHeigth = fontHeight;
-    if (!ui->getCollapseModel()->isGroupWithMaRowIndexCollapsed(maRowIndex)) {
+    if (!editor->getCollapseModel()->isGroupWithMaRowIndexCollapsed(maRowIndex)) {
         rowHeigth += SequenceWithChromatogramAreaRenderer::CHROMATOGRAM_MAX_HEIGHT;
     }
-    rowHeigth = qRound(rowHeigth * ui->getEditor()->zoomMult);
+    rowHeigth = qRound(rowHeigth * editor->zoomMult);
     return rowHeigth;
 }
 

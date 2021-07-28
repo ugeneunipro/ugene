@@ -202,8 +202,8 @@ void McaEditorSequenceArea::moveSelection(int dx, int dy, bool) {
     int nextRowToSelect = selectionRect.y() + dy;
     if (dy != 0) {
         bool noRowAvailable = true;
-        for (; nextRowToSelect >= 0 && nextRowToSelect < ui->getCollapseModel()->getViewRowCount(); nextRowToSelect += dy) {
-            if (!mca->isTrailingOrLeadingGap(ui->getCollapseModel()->getMaRowIndexByViewRowIndex(nextRowToSelect), selectionRect.x() + dx)) {
+        for (; nextRowToSelect >= 0 && nextRowToSelect < editor->getCollapseModel()->getViewRowCount(); nextRowToSelect += dy) {
+            if (!mca->isTrailingOrLeadingGap(editor->getCollapseModel()->getMaRowIndexByViewRowIndex(nextRowToSelect), selectionRect.x() + dx)) {
                 noRowAvailable = false;
                 break;
             }
@@ -463,8 +463,8 @@ void McaEditorSequenceArea::updateCollapseModel(const MaModificationInfo &modInf
     if (!modInfo.rowListChanged) {
         return;
     }
-    MultipleAlignmentObject *maObject = getEditor()->getMaObject();
-    MaCollapseModel *collapseModel = ui->getCollapseModel();
+    MultipleAlignmentObject *maObject = editor->getMaObject();
+    MaCollapseModel *collapseModel = editor->getCollapseModel();
     QSet<int> expandedGroupIndexes;
     for (int i = 0, n = collapseModel->getGroupCount(); i < n; i++) {
         const MaCollapsibleGroup *group = collapseModel->getCollapsibleGroup(i);

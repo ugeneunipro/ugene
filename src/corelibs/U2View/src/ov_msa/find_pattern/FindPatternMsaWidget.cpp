@@ -313,7 +313,7 @@ void FindPatternMsaWidget::initMaxResultLenContainer() {
     layoutRegExpLen->addWidget(boxMaxResultLen);
     layoutAlgorithmSettings->addWidget(useMaxResultLenContainer);
 
-    connect(msaEditor->getUI()->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_collapseModelChanged()));
+    connect(msaEditor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_collapseModelChanged()));
 }
 
 void FindPatternMsaWidget::connectSlots() {
@@ -988,7 +988,7 @@ struct SearchResultsComparator {
 };
 
 void FindPatternMsaWidget::resortResultsByViewState() {
-    MaCollapseModel *collapseModel = msaEditor->getUI()->getCollapseModel();
+    MaCollapseModel *collapseModel = msaEditor->getCollapseModel();
     visibleSearchResults.clear();
     for (int i = 0; i < allSearchResults.size(); i++) {
         FindPatternWidgetResult &result = allSearchResults[i];

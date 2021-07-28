@@ -96,7 +96,7 @@ MaEditorNameList::MaEditorNameList(MaEditorWgt *_ui, QScrollBar *_nhBar)
             SIGNAL(si_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)),
             SLOT(sl_selectionChanged(const MaEditorSelection &, const MaEditorSelection &)));
     connect(editor, SIGNAL(si_fontChanged(const QFont &)), SLOT(sl_completeUpdate()));
-    connect(ui->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_completeUpdate()));
+    connect(editor->getCollapseModel(), SIGNAL(si_toggled()), SLOT(sl_completeUpdate()));
     connect(editor, SIGNAL(si_referenceSeqChanged(qint64)), SLOT(sl_completeRedraw()));
     connect(editor, SIGNAL(si_cursorPositionChanged(const QPoint &)), SLOT(sl_completeRedraw()));
     connect(editor, SIGNAL(si_completeUpdate()), SLOT(sl_completeUpdate()));
@@ -127,7 +127,7 @@ void MaEditorNameList::drawNames(QPainter &painter, const QList<int> &maRows, bo
     painter.fillRect(painter.viewport(), Qt::white);
 
     const MaEditorSelection &selection = editor->getSelection();
-    const MaCollapseModel *collapseModel = ui->getCollapseModel();
+    const MaCollapseModel *collapseModel = editor->getCollapseModel();
     int referenceViewRowIndex = collapseModel->getViewRowIndexByMaRowId(editor->getReferenceRowId());
     for (int maRowIndex : qAsConst(maRows)) {
         QString rowText = getTextForRow(maRowIndex);
@@ -165,7 +165,7 @@ void MaEditorNameList::updateScrollBar() {
     }
 
     // Adjustment for branch primitive in collapsing mode
-    bool hasChildLabels = ui->getCollapseModel()->hasGroupsWithMultipleRows();
+    bool hasChildLabels = editor->getCollapseModel()->hasGroupsWithMultipleRows();
     maxNameWidth += getGroupExpanderWidth() + (hasChildLabels ? CHILDREN_OFFSET : 0);
 
     int availableWidth = getAvailableWidth();
@@ -184,20 +184,20 @@ void MaEditorNameList::updateScrollBar() {
 }
 
 int MaEditorNameList::getGroupExpanderWidth() const {
-    return ui->isCollapsingOfSingleRowGroupsEnabled() || ui->getCollapseModel()->hasGroupsWithMultipleRows() ? 2 * CROSS_SIZE : 0;
+    return ui->isCollapsingOfSingleRowGroupsEnabled() || editor->getCollapseModel()->hasGroupsWithMultipleRows() ? 2 * CROSS_SIZE : 0;
 }
 
 int MaEditorNameList::getSelectedMaRow() const {
     QRect selectionRect = editor->getSelection().toRect();
     CHECK(!selectionRect.isEmpty(), -1);
-    return ui->getCollapseModel()->getMaRowIndexByViewRowIndex(selectionRect.top());
+    return editor->getCollapseModel()->getMaRowIndexByViewRowIndex(selectionRect.top());
 }
 
 void MaEditorNameList::sl_copyWholeRow() {
     const MaEditorSelection &selection = editor->getSelection();
     CHECK(!selection.isEmpty(), );
     const QList<QRect> &selectedRects = selection.getRectList();
-    const MaCollapseModel *collapseModel = ui->getCollapseModel();
+    const MaCollapseModel *collapseModel = editor->getCollapseModel();
     const MultipleAlignmentObject *maObject = editor->getMaObject();
     qint64 maLength = maObject->getLength();
     qint64 estimatedResultLength = 0;
@@ -247,7 +247,7 @@ void MaEditorNameList::sl_removeSelectedRows() {
     QList<int> selectedMaRowIndexes;
     for (auto selectedRect : qAsConst(selectedRects)) {
         U2Region yRegion = U2Region::fromYRange(selectedRect);
-        selectedMaRowIndexes << ui->getCollapseModel()->getMaRowIndexesByViewRowIndexes(yRegion, true);
+        selectedMaRowIndexes << editor->getCollapseModel()->getMaRowIndexesByViewRowIndexes(yRegion, true);
     }
     CHECK(maObj->getNumRows() > selectedMaRowIndexes.size(), );    // Do allow to remove all rows.
 
@@ -259,7 +259,7 @@ void MaEditorNameList::sl_removeSelectedRows() {
     setSelection({});    // Clear selection.
     maObj->removeRows(selectedMaRowIndexes);
 
-    int numRows = editor->getUI()->getCollapseModel()->getViewRowCount();
+    int numRows = editor->getCollapseModel()->getViewRowCount();
     const QRect &firstSelectedRect = selectedRects.first();
     if (firstSelectedRect.top() < numRows) {
         QRect newSelectedRect(firstSelectedRect.left(), firstSelectedRect.top(), firstSelectedRect.width(), 1);
@@ -388,7 +388,7 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
     emit si_startMaChanging();
 
     mousePressPoint = e->pos();
-    MaCollapseModel *collapseModel = ui->getCollapseModel();
+    MaCollapseModel *collapseModel = editor->getCollapseModel();
     RowHeightController *heightController = ui->getRowHeightController();
     int viewRow = qMin(heightController->getViewRowIndexByScreenYPosition(e->y()), collapseModel->getViewRowCount() - 1);
 
@@ -410,7 +410,7 @@ void MaEditorNameList::mousePressEvent(QMouseEvent *e) {
     if (editor->getSelection().containsRow(viewRow) && !hasCtrlModifier && !hasShiftModifier) {
         // We support dragging only for 'flat' mode, when there are no groups with multiple sequences.
         // TODO: support dragging in the Free mode (v39). Today Free mode is enabled only when Sync is ON with tree: MSA order is enforced by Tree.
-        dragging = !ui->getCollapseModel()->hasGroupsWithMultipleRows() && editor->getRowOrderMode() != MaEditorRowOrderMode::Free;
+        dragging = !editor->getCollapseModel()->hasGroupsWithMultipleRows() && editor->getRowOrderMode() != MaEditorRowOrderMode::Free;
     } else if (!hasShiftModifier) {
         rubberBand->setGeometry(QRect(mousePressPoint, QSize()));
         rubberBand->show();
@@ -579,7 +579,7 @@ void MaEditorNameList::wheelEvent(QWheelEvent *we) {
 }
 
 const MaCollapsibleGroup *MaEditorNameList::getCollapsibleGroupByExpandCollapsePoint(const QPoint &point) const {
-    const MaCollapseModel *collapseModel = ui->getCollapseModel();
+    const MaCollapseModel *collapseModel = editor->getCollapseModel();
     RowHeightController *heightController = ui->getRowHeightController();
     int viewRow = heightController->getViewRowIndexByScreenYPosition(point.y());
     if (viewRow < 0 || viewRow >= collapseModel->getViewRowCount()) {
@@ -713,7 +713,7 @@ void MaEditorNameList::drawContent(QPainter &painter) {
     const int referenceIndex = editor->getReferenceRowId() == U2MsaRow::INVALID_ROW_ID ? U2MsaRow::INVALID_ROW_ID : ma->getRowIndexByRowId(editor->getReferenceRowId(), os);
     SAFE_POINT_OP(os, );
 
-    const MaCollapseModel *collapsibleModel = ui->getCollapseModel();
+    const MaCollapseModel *collapsibleModel = editor->getCollapseModel();
     int crossSpacing = getGroupExpanderWidth();
     const ScrollController *scrollController = ui->getScrollController();
     int firstVisibleViewRow = scrollController->getFirstVisibleViewRowIndex(true);
@@ -792,7 +792,7 @@ void MaEditorNameList::drawCollapsePrimitive(QPainter &p, bool collapsed, const 
 QString MaEditorNameList::getTextForRow(int maRowIndex) {
     QString rowName = editor->getMaObject()->getRow(maRowIndex)->getName();
     QString rowNamePrefix = "";
-    MaCollapseModel *collapseModel = editor->getUI()->getCollapseModel();
+    MaCollapseModel *collapseModel = editor->getCollapseModel();
     const MaCollapsibleGroup *group = collapseModel->getCollapsibleGroupByMaRow(maRowIndex);
     if (group != nullptr && group->maRows.size() > 1 && group->maRows.first() == maRowIndex) {
         rowNamePrefix = "[" + QString::number(group->maRows.size()) + "] ";
@@ -869,7 +869,7 @@ qint64 MaEditorNameList::sequenceIdAtPos(const QPoint &p) {
     CHECK(ui->getSequenceArea()->isSeqInRange(rowIndex), U2MsaRow::INVALID_ROW_ID);
     CHECK(rowIndex >= 0, U2MsaRow::INVALID_ROW_ID);
     MultipleAlignmentObject *maObj = editor->getMaObject();
-    return maObj->getMultipleAlignment()->getRow(ui->getCollapseModel()->getMaRowIndexByViewRowIndex(rowIndex))->getRowId();
+    return maObj->getMultipleAlignment()->getRow(editor->getCollapseModel()->getMaRowIndexByViewRowIndex(rowIndex))->getRowId();
 }
 
 void MaEditorNameList::moveSelection(int offset, bool resetXRange) {
@@ -884,7 +884,7 @@ void MaEditorNameList::moveSelection(int offset, bool resetXRange) {
             safeOffset = -oldSelectedRects.first().top();
         }
     } else {
-        int viewRowCount = ui->getCollapseModel()->getViewRowCount();
+        int viewRowCount = editor->getCollapseModel()->getViewRowCount();
         if (oldSelectedRects.last().bottom() + safeOffset >= viewRowCount) {
             safeOffset = viewRowCount - oldSelectedRects.last().bottom() - 1;
         }
@@ -915,7 +915,7 @@ void MaEditorNameList::scrollSelectionToView(bool fromStart) {
 
 bool MaEditorNameList::triggerExpandCollapseOnSelectedRow(bool collapse) {
     const QList<QRect> &selectionRects = editor->getSelection().getRectList();
-    MaCollapseModel *collapseModel = ui->getCollapseModel();
+    MaCollapseModel *collapseModel = editor->getCollapseModel();
     int minRowsInGroupToShowExpandCollapse = ui->isCollapsingOfSingleRowGroupsEnabled() ? 1 : 2;
     QList<int> groupsToToggle;
     for (const QRect &selectedRect : qAsConst(selectionRects)) {

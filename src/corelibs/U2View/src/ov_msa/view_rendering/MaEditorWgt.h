@@ -37,7 +37,6 @@ namespace U2 {
 class BaseWidthController;
 class DrawHelper;
 class GScrollBar;
-class MaCollapseModel;
 class MaEditorConsensusArea;
 class MSAEditorOffsetsViewController;
 class MaEditorStatusBar;
@@ -108,10 +107,6 @@ public:
 
     QAction *getRedoAction() const;
 
-    MaCollapseModel *getCollapseModel() const {
-        return collapseModel;
-    }
-
     /* If 'true' and collapse group has only 1 row it will have expand/collapse control. */
     bool isCollapsingOfSingleRowGroupsEnabled() const {
         return enableCollapsingOfSingleRowGroups;
@@ -165,8 +160,6 @@ protected:
     MaSplitterController maSplitter;
 
     MsaUndoRedoFramework *undoFWK;
-
-    MaCollapseModel *const collapseModel;
 
     bool enableCollapsingOfSingleRowGroups;
     ScrollController *scrollController;

@@ -60,6 +60,7 @@ class MultipleAlignmentObject;
 class MaEditorSelection;
 class MaEditorSelectionController;
 class MultipleAlignment;
+class MaCollapseModel;
 class MaModificationInfo;
 
 class SNPSettings {
@@ -108,7 +109,7 @@ public:
     static const float zoomMult;    // SANGER_TODO: should be dependable on the view
 
 public:
-    MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, GObject *obj);
+    MaEditor(GObjectViewFactoryId factoryId, const QString &viewName, MultipleAlignmentObject *obj);
 
     virtual QVariantMap saveState();
 
@@ -171,7 +172,8 @@ public:
 
     void updateReference();
 
-    void resetCollapsibleModel();    // SANGER_TODO: collapsible shouldn't be here
+    /** Sets row ordering mode to 'Original' and resets collapse model to the original row order. */
+    void resetCollapseModel();
 
     void exportHighlighted() {
         sl_exportHighlighted();
@@ -197,6 +199,9 @@ public:
      * This is a trivial method with no other actions/callbacks.
      */
     virtual void setRowOrderMode(MaEditorRowOrderMode mode);
+
+    /** Returns collapse model instance. The returned value is never null. */
+    MaCollapseModel *getCollapseModel() const;
 
 signals:
     void si_fontChanged(const QFont &f);
@@ -282,6 +287,9 @@ protected:
 
     /** Active row ordering mode in the view. */
     MaEditorRowOrderMode rowOrderMode;
+
+    /** Collapse model instance. Created in the constructor and is never changed. */
+    MaCollapseModel *const collapseModel;
 
 public:
     QAction *saveAlignmentAction;
