@@ -47,7 +47,7 @@ QList<QRect> MaEditorSelection::buildSafeSelectionRects(const QList<QRect> &rect
         unifiedLeft = qMin(unifiedLeft, rect.left());
         unifiedRight = qMax(unifiedRight, rect.right());
     }
-    if (unifiedRight <= unifiedLeft) {    // All rects are empty.
+    if (unifiedRight < unifiedLeft) {    // All rects are empty.
         return {};
     }
     // Sort & merge rects if needed. Assign unified left & right.
