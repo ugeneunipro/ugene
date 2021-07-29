@@ -2466,34 +2466,32 @@ GUI_TEST_CLASS_DEFINITION(test_0882) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0886) {
-    // 1. Open file "_common_data/fasta/Gene.fa" in UGENE as separate sequence or as multiple alignment
-    // Expected result: UGENE doesn't crash, there is a warning report about unimported sequences
+    // 1. Open file "_common_data/fasta/Gene.fa" in UGENE as a separate sequence or as a multiple alignment.
+    // Expected result: UGENE doesn't crash, there is a warning report about non-imported sequences.
 
+    // Check 'as a sequence' mode.
     GTLogTracer l1;
-
     GTUtilsNotifications::waitForNotification(os, false);
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os));
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
     QStringList errors = GTUtilsLog::getErrors(os, l1);
-    CHECK_SET_ERR(errors.size() == 1, "Wrong errors count 1");
+    CHECK_SET_ERR(errors.size() == 1, "Wrong errors count 1 != " + QString::number(errors.size()) + ", errors: " + errors.join(","));
 
+    // Cleanup.
     GTUtilsProjectTreeView::click(os, "Gene.fa");
-    GTGlobals::sleep();
     GTKeyboardDriver::keyClick(Qt::Key_Delete);
-    GTGlobals::sleep(1000);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
+    // Check 'as an alignment' mode.
     GTLogTracer l2;
     GTUtilsNotifications::waitForNotification(os, false);
     GTUtilsDialog::waitForDialog(os, new SequenceReadingModeSelectorDialogFiller(os, SequenceReadingModeSelectorDialogFiller::Join));
     GTUtilsProject::openFile(os, testDir + "_common_data/fasta/Gene.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
     errors = GTUtilsLog::getErrors(os, l2);
-    CHECK_SET_ERR(errors.size() == 2, "Wrong errors count 2");
-    GTGlobals::sleep();
+    CHECK_SET_ERR(errors.size() == 2, "Wrong errors count 2 != " + QString::number(errors.size()) + ", errors: " + errors.join(","));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0888) {
