@@ -56,12 +56,12 @@ public:
     static U2Region getVisibleRange(HI::GUITestOpStatus &os, int widgetNumber = 0);
     static void checkSequence(HI::GUITestOpStatus &os, const QString &expectedSequence);
     static void selectSequenceRegion(HI::GUITestOpStatus &os, int from, int to);
-    static void selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString multipleRangeString);
+    static void selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString& multipleRangeString);
 
     static void openSequenceView(HI::GUITestOpStatus &os, const QString &sequenceName);
     static void addSequenceView(HI::GUITestOpStatus &os, const QString &sequenceName);
 
-    static void goToPosition(HI::GUITestOpStatus &os, int position);
+    static void goToPosition(HI::GUITestOpStatus &os, qint64 position);
 
     /** Moves mouse to the safe sequence view area (Pan or Det view, not a scrollbar) and clicks (brings focus) into it. */
     static void clickMouseOnTheSafeSequenceViewArea(HI::GUITestOpStatus &os);

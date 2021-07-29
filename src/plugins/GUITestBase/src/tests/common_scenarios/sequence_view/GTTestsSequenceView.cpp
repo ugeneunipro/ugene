@@ -261,7 +261,7 @@ GUI_TEST_CLASS_DEFINITION(test_0004) {
     GTMouseDriver::click(Qt::RightButton);
 }
 
-GUI_TEST_CLASS_DEFINITION(test_0004_1) {    //CHANGES: keyboard used instead mouse
+GUI_TEST_CLASS_DEFINITION(test_0004_1) {    // CHANGES: keyboard used instead mouse
 
     GTFileDialog::openFile(os, testDir + "_common_data/fasta/", "fa1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -325,9 +325,9 @@ GUI_TEST_CLASS_DEFINITION(test_0005) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006) {
-    //1. Enable Auto-annotations
-    //     GTGlobals::sleep();
-    //     GTGlobals::sleep();
+    // 1. Enable Auto-annotations
+    //      GTGlobals::sleep();
+    //      GTGlobals::sleep();
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -349,8 +349,8 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
     }
     GTWidget::click(os, toggleAutoAnnotationsButton);
 
-    //2. Open any PBD file from samples
-    //Expected state: there is no auto-annotations for opened sequences
+    // 2. Open any PBD file from samples
+    // Expected state: there is no auto-annotations for opened sequences
 
     GTFileDialog::openFile(os, dataDir + "samples/PDB", "1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
@@ -362,7 +362,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006_1) {
-    //1. Enable Auto-annotations
+    // 1. Enable Auto-annotations
     GTFileDialog::openFile(os, dataDir + "samples/FASTA", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -384,7 +384,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     }
     GTWidget::click(os, toggleAutoAnnotationsButton);
 
-    //1. Disable Auto-annotations
+    // 1. Disable Auto-annotations
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Restriction Sites"));
     if (extensionButton->isVisible()) {
         GTWidget::click(os, extensionButton);
@@ -397,7 +397,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     }
     GTWidget::click(os, toggleAutoAnnotationsButton);
 
-    //3. Enable Auto-annotations
+    // 3. Enable Auto-annotations
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Restriction Sites"));
     if (extensionButton->isVisible()) {
         GTWidget::click(os, extensionButton);
@@ -410,12 +410,12 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
     }
     GTWidget::click(os, toggleAutoAnnotationsButton);
 
-    //2. Open any PBD file from samples
-    //Expected state: there is no auto-annotations for opened sequences
+    // 2. Open any PBD file from samples
+    // Expected state: there is no auto-annotations for opened sequences
     GTFileDialog::openFile(os, dataDir + "samples/PDB", "1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //Expected state: there is no auto-annotations for opened sequences
+    // Expected state: there is no auto-annotations for opened sequences
     QTreeWidgetItem *enz = GTUtilsAnnotationsTreeView::findItem(os, "enzymes", GTGlobals::FindOptions(false));
     QTreeWidgetItem *orf = GTUtilsAnnotationsTreeView::findItem(os, "orfs", GTGlobals::FindOptions(false));
     CHECK_SET_ERR(enz == nullptr, "enzymes unexpectedly present");
@@ -423,11 +423,11 @@ GUI_TEST_CLASS_DEFINITION(test_0006_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0006_2) {
-    //2. Open any PBD file from samples
+    // 2. Open any PBD file from samples
     GTFileDialog::openFile(os, dataDir + "samples/PDB", "1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //1. Enable Auto-annotations
+    // 1. Enable Auto-annotations
     QWidget *toggleAutoAnnotationsButton = GTWidget::findWidget(os, "toggleAutoAnnotationsButton");
     //  !!! dirty fastfix of test, very temporary
     QToolBar *tb = qobject_cast<QToolBar *>(toggleAutoAnnotationsButton->parent());
@@ -446,7 +446,7 @@ GUI_TEST_CLASS_DEFINITION(test_0006_2) {
     }
     GTWidget::click(os, toggleAutoAnnotationsButton);
 
-    //Expected state: there is no auto-annotations for opened sequences
+    // Expected state: there is no auto-annotations for opened sequences
     QTreeWidgetItem *enz = GTUtilsAnnotationsTreeView::findItem(os, "enzymes", GTGlobals::FindOptions(false));
     QTreeWidgetItem *orf = GTUtilsAnnotationsTreeView::findItem(os, "orfs", GTGlobals::FindOptions(false));
     CHECK_SET_ERR(enz == nullptr, "enzymes unexpectedly present");
@@ -1206,8 +1206,8 @@ GUI_TEST_CLASS_DEFINITION(test_0037) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0037_1) {
-    //Check defails "zoom to selection" dialog values
-    //    Open human_T1.fa
+    // Check defails "zoom to selection" dialog values
+    //     Open human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1247,7 +1247,7 @@ GUI_TEST_CLASS_DEFINITION(test_0038) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0040) {
-    //scrollbar on seq view
+    // scrollbar on seq view
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1265,7 +1265,7 @@ GUI_TEST_CLASS_DEFINITION(test_0040) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0041) {
-    //test key events
+    // test key events
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1275,7 +1275,7 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 
     DetView *det = GTWidget::findExactWidget<DetView *>(os, "det_view_human_T1 (UCSC April 2002 chr7:115977709-117855134)");
     GTWidget::click(os, det);
-    int initLength = det->getVisibleRange().length;
+    qint64 initLength = det->getVisibleRange().length;
 
     GTKeyboardDriver::keyClick(Qt::Key_Down);
     int start = GTUtilsSequenceView::getVisiableStart(os);
@@ -1311,21 +1311,22 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0042) {
-    //    Open murine.gb
     GTFileDialog::openFile(os, dataDir + "samples/Genbank/", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //    Select annotation
+    // Select an annotation.
     GTUtilsAnnotationsTreeView::clickItem(os, "misc_feature", 1, true);
-    //    Expected: annotation selected
+
+    // Expected: the annotation is selected.
     QString selected = GTUtilsAnnotationsTreeView::getSelectedItem(os);
-    CHECK_SET_ERR(selected == "misc_feature", "Unexpected selected anntoation: " + selected);
-    //    Click on annotation on seq view with right button
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_EDIT << "edit_annotation_tree_item", PopupChecker::IsEnabled));
-    GTMouseDriver::click(Qt::RightButton);
-    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, QStringList() << ADV_MENU_REMOVE << "Selected annotations and qualifiers", PopupChecker::IsEnabled));
-    GTMouseDriver::click(Qt::RightButton);
-    //    Check context menu action
+    CHECK_SET_ERR(selected == "misc_feature", "Unexpected selected annotation: " + selected);
+
+    // Click on the annotation in seq view with the right button.
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {ADV_MENU_EDIT, "edit_annotation_tree_item"}, PopupChecker::IsEnabled));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
+
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {ADV_MENU_REMOVE, "Selected annotations and qualifiers"}, PopupChecker::IsEnabled));
+    GTUtilsSequenceView::openPopupMenuOnSequenceViewArea(os);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0043) {
@@ -1344,7 +1345,7 @@ GUI_TEST_CLASS_DEFINITION(test_0043) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0044) {
-    //Overview weel event
+    // Overview weel event
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1359,7 +1360,7 @@ GUI_TEST_CLASS_DEFINITION(test_0044) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0044_1) {
-    //selection on overview
+    // selection on overview
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1379,7 +1380,7 @@ GUI_TEST_CLASS_DEFINITION(test_0044_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0044_2) {
-    //move slider
+    // move slider
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
@@ -1408,7 +1409,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
 
     QWidget *pan = GTUtilsSequenceView::getPanViewByNumber(os);
     QImage init = GTWidget::getImage(os, pan);
-    //show restriction sites
+    // show restriction sites
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Restriction Sites"));
     QWidget *qt_toolbar_ext_button = GTWidget::findWidget(os, "qt_toolbar_ext_button", GTWidget::findWidget(os, "mwtoolbar_activemdi"), GTGlobals::FindOptions(false));
     if (qt_toolbar_ext_button != nullptr && qt_toolbar_ext_button->isVisible()) {
@@ -1417,7 +1418,7 @@ GUI_TEST_CLASS_DEFINITION(test_0045) {
     GTWidget::click(os, GTWidget::findWidget(os, "toggleAutoAnnotationsButton"));
 
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //show orfs
+    // show orfs
     GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "ORFs"));
     if (qt_toolbar_ext_button != nullptr && qt_toolbar_ext_button->isVisible()) {
         GTWidget::click(os, qt_toolbar_ext_button);
@@ -1446,7 +1447,7 @@ GUI_TEST_CLASS_DEFINITION(test_0046) {
     for (int i = 0; i < 5; i++) {
         GTWidget::click(os, GTAction::button(os, "action_zoom_in_NC_001363"));
     }
-    int vis = GTUtilsSequenceView::getPanViewByNumber(os)->getVisibleRange().startPos;
+    qint64 vis = GTUtilsSequenceView::getPanViewByNumber(os)->getVisibleRange().startPos;
     CHECK_SET_ERR(vis > 2300, QString("1 wrong visiable range start: %1").arg(vis));
 
     for (int i = 0; i < 5; i++) {
@@ -1684,7 +1685,7 @@ GUI_TEST_CLASS_DEFINITION(test_0055) {
     GTWidget::click(os, GTWidget::findWidget(os, "GraphMenuAction"));
     QWidget *graphView = GTUtilsSequenceView::getGraphView(os);
     GTWidget::click(os, graphView);
-    //GTWidget::getAllWidgetsInfo(os, GTUtilsSequenceView::getGraphView(os));
+    // GTWidget::getAllWidgetsInfo(os, GTUtilsSequenceView::getGraphView(os));
     QWidget *pointer = nullptr;
     const QList<QWidget *> childList = GTUtilsSequenceView::getGraphView(os)->findChildren<QWidget *>();
     for (QWidget *w : qAsConst(childList)) {
@@ -1725,8 +1726,8 @@ GUI_TEST_CLASS_DEFINITION(test_0055) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0056) {
-    //wrong cutoff values
-    //    Open human_T1.fa
+    // wrong cutoff values
+    //     Open human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Open any graph
@@ -1753,8 +1754,8 @@ GUI_TEST_CLASS_DEFINITION(test_0056) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0057) {
-    //Uses processor core!!!
-    //    Open human_T1.fa
+    // Uses processor core!!!
+    //     Open human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/", "human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     //    Open any graph
@@ -1855,23 +1856,23 @@ GUI_TEST_CLASS_DEFINITION(test_0060) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0061_1) {
-    //1. Open "data/Samples/PDB/1CF7.PDB".
+    // 1. Open "data/Samples/PDB/1CF7.PDB".
     GTFileDialog::openFile(os, dataDir + "samples/PDB", "1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    //2. Check that first sequence name is '1CF7 chain A sequence'
+    // 2. Check that first sequence name is '1CF7 chain A sequence'
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7 chain A sequence"));
-    //3. Check that first annotation table name is '1CF7 chain A annotation'
+    // 3. Check that first annotation table name is '1CF7 chain A annotation'
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CF7 chain A annotation"));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "1CF7 chain A annotation [1CF7.PDB]"));
 
-    //4. Check that there is 'molecule_name' qualifier with value 'PROTEIN (TRANSCRIPTION FACTOR E2F-4)'  in 'chain_info' annotation for chain A
+    // 4. Check that there is 'molecule_name' qualifier with value 'PROTEIN (TRANSCRIPTION FACTOR E2F-4)'  in 'chain_info' annotation for chain A
     CHECK_SET_ERR(GTUtilsSequenceView::getSelection(os).isEmpty(), "Selection is not empty");
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "chain_info");
     QString moleculeName = GTUtilsAnnotationsTreeView::getQualifierValue(os, "molecule_name", GTUtilsAnnotationsTreeView::findItem(os, "chain_info"));
     CHECK_SET_ERR(moleculeName == "PROTEIN (TRANSCRIPTION FACTOR E2F-4)", QString("Incorrect molecule name is detected for chain A: %1").arg(moleculeName));
     QTreeWidgetItem *annotationsChainB = GTUtilsAnnotationsTreeView::findItem(os, "1CF7 chain B annotation [1CF7.PDB]");
 
-    //5. Check that there is 'molecule_name' qualifier with value 'PROTEIN (TRANSCRIPTION FACTOR DP-2)'  in 'chain_info' annotation for chain B
+    // 5. Check that there is 'molecule_name' qualifier with value 'PROTEIN (TRANSCRIPTION FACTOR DP-2)'  in 'chain_info' annotation for chain B
     CHECK_SET_ERR(nullptr != annotationsChainB, QString("Can't find '1CF7 chain B annotation [1CF7.PDB]' annotations document"));
     QTreeWidgetItem *chainInfoGroup = GTUtilsAnnotationsTreeView::findItem(os, "chain_info  (0, 1)", annotationsChainB);
     CHECK_SET_ERR(nullptr != chainInfoGroup, QString("Can't find 'chain_info' annotation group for chain B"));
@@ -1885,32 +1886,32 @@ GUI_TEST_CLASS_DEFINITION(test_0061_1) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0061_2) {
-    //1. Open "_common_data/pdb/1CRN_without_compnd_tag.PDB"
+    // 1. Open "_common_data/pdb/1CRN_without_compnd_tag.PDB"
     GTFileDialog::openFile(os, testDir + "_common_data/pdb", "1CRN_without_compnd_tag.PDB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Check that first annotation table name is '1CRN chain A sequence'
+    // 2. Check that first annotation table name is '1CRN chain A sequence'
     GTMouseDriver::moveTo(GTUtilsProjectTreeView::getItemCenter(os, "1CRN chain A annotation"));
     GTMouseDriver::moveTo(GTUtilsAnnotationsTreeView::getItemCenter(os, "1CRN chain A annotation [1CRN_without_compnd_tag.PDB]"));
 
-    //3. Check that there is 'chain_id' qualifier with value 'A'  in 'chain_info' annotation for chain A
+    // 3. Check that there is 'chain_id' qualifier with value 'A'  in 'chain_info' annotation for chain A
     GTUtilsAnnotationsTreeView::selectItems(os, QStringList() << "chain_info");
     QString chainId = GTUtilsAnnotationsTreeView::getQualifierValue(os, "chain_id", "chain_info");
     CHECK_SET_ERR("A" == chainId, QString("Incorrect 'chain_info' qualifier value: %1").arg(chainId));
 
-    //4. Check that there is not 'molecule_name' qualifier
+    // 4. Check that there is not 'molecule_name' qualifier
     QTreeWidgetItem *moleculeName = GTUtilsAnnotationsTreeView::findItem(os, "molecule_name", GTGlobals::FindOptions(false));
     CHECK_SET_ERR(nullptr == moleculeName, QString("There is 'moleculeName' qualifier"));
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0061_3) {
-    //1. Open "data/samples/PDB/1CF7.PDB".
+    // 1. Open "data/samples/PDB/1CF7.PDB".
     GTFileDialog::openFile(os, dataDir + "samples/PDB", "1CF7.PDB");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Call context menu on the 3dview, select {Structural Alignment -> Align With...} menu item.
-    //3. Check that chain combobox contains identifiers: A, B, C, D.
-    //4. Accept the dialog.
+    // 2. Call context menu on the 3dview, select {Structural Alignment -> Align With...} menu item.
+    // 3. Check that chain combobox contains identifiers: A, B, C, D.
+    // 4. Accept the dialog.
     QStringList chainIndexes;
     chainIndexes << "A"
                  << "B"
@@ -1965,7 +1966,7 @@ GUI_TEST_CLASS_DEFINITION(test_0063) {
     GTFileDialog::openFile(os, dataDir + "samples/Genbank", "murine.gb");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    int pos = 789;
+    qint64 pos = 789;
     GTUtilsSequenceView::goToPosition(os, pos);
     U2Region visibleRange = GTUtilsSequenceView::getVisibleRange(os);
     CHECK_SET_ERR(visibleRange.contains(pos), "Visible range does not contain 789 position");
@@ -2080,7 +2081,7 @@ GUI_TEST_CLASS_DEFINITION(test_0066) {
     U2Region visibleRange = GTUtilsSequenceView::getVisibleRange(os);
     QSplitter *splitter = qobject_cast<QSplitter *>(GTWidget::findWidget(os, "annotated_DNA_splitter"));
     CHECK_SET_ERR(splitter != nullptr, "Cannot find annotated_DNA_splitter");
-    QWidget *bottomSplitterHandle = splitter->handle(splitter->count() - 1);    //GTWidget::findWidget(os, "qt_splithandle_", GTWidget::findWidget(os, "annotated_DNA_splitter"));
+    QWidget *bottomSplitterHandle = splitter->handle(splitter->count() - 1);    // GTWidget::findWidget(os, "qt_splithandle_", GTWidget::findWidget(os, "annotated_DNA_splitter"));
     CHECK_SET_ERR(bottomSplitterHandle != nullptr, "Cannot find bottom splitter handle");
     GTWidget::click(os, bottomSplitterHandle);
     QPoint p1 = GTMouseDriver::getMousePosition();
@@ -2260,33 +2261,33 @@ GUI_TEST_CLASS_DEFINITION(test_0071) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0075) {
-    //1. Open "data/samples/FASTA/human_T1.fa".
+    // 1. Open "data/samples/FASTA/human_T1.fa".
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    //2. Click the translations toolbar button.
+    // 2. Click the translations toolbar button.
     GTWidget::click(os, GTWidget::findWidget(os, "translationsMenuToolbarButton"));
 
-    //Expected: the menu appears.
+    // Expected: the menu appears.
     QMenu *menu = qobject_cast<QMenu *>(QApplication::activePopupWidget());
     CHECK_SET_ERR(nullptr != menu, "No menu");
 
-    //3. Click "Show/hide translations".
+    // 3. Click "Show/hide translations".
     GTMenu::clickMenuItem(os, menu, "do_not_translate_radiobutton");
 
-    //Expected: the menu doesn't disappear.
+    // Expected: the menu doesn't disappear.
     CHECK_SET_ERR(nullptr != QApplication::activePopupWidget(), "Menu disappeared 1");
 
-    //4. Click "Show all".
+    // 4. Click "Show all".
     GTMenu::clickMenuItemByText(os, menu, QStringList() << "Show all frames");
 
-    //Expected: the menu doesn't disappear.
+    // Expected: the menu doesn't disappear.
     CHECK_SET_ERR(nullptr != QApplication::activePopupWidget(), "Menu disappeared 2");
 
-    //5. Click somewhere else.
+    // 5. Click somewhere else.
     GTWidget::click(os, GTUtilsMdi::activeWindow(os));
 
-    //Expected: the menu disappears.
+    // Expected: the menu disappears.
     CHECK_SET_ERR(nullptr == QApplication::activePopupWidget(), "Menu is shown");
 }
 

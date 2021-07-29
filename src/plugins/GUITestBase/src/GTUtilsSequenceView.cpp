@@ -246,7 +246,7 @@ void GTUtilsSequenceView::selectSequenceRegion(HI::GUITestOpStatus &os, int from
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "selectSeveralRegionsByDialog"
-void GTUtilsSequenceView::selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString multipleRangeString) {
+void GTUtilsSequenceView::selectSeveralRegionsByDialog(HI::GUITestOpStatus &os, const QString& multipleRangeString) {
     GTUtilsDialog::waitForDialog(os, new SelectSequenceRegionDialogFiller(os, multipleRangeString));
     clickMouseOnTheSafeSequenceViewArea(os);
     GTKeyboardUtils::selectAll();
@@ -278,7 +278,7 @@ void GTUtilsSequenceView::addSequenceView(HI::GUITestOpStatus &os, const QString
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "goToPosition"
-void GTUtilsSequenceView::goToPosition(HI::GUITestOpStatus &os, int position) {
+void GTUtilsSequenceView::goToPosition(HI::GUITestOpStatus &os, qint64 position) {
     QToolBar *toolbar = GTToolbar::getToolbar(os, MWTOOLBAR_ACTIVEMDI);
     GT_CHECK(nullptr != toolbar, "Can't find the toolbar");
 
