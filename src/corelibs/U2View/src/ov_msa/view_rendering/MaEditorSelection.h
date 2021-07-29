@@ -55,6 +55,9 @@ public:
     /** Returns true if selection contains 1 rect with 1x1 dimension. */
     bool isSingleBaseSelection() const;
 
+    /** Returns sum of height of all selected rects. */
+    int getCountOfSelectedRows() const;
+
     /**
      * Returns selection state as a rect.
      * The returned rect is a bounding rect for all rects in the 'rectList'.

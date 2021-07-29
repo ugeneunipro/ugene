@@ -107,4 +107,33 @@ bool MultipleAlignmentRowData::isEqualsIgnoreGaps(const MultipleAlignmentRowData
     return row1->getUngappedSequence().seq == row2->getUngappedSequence().seq;
 }
 
+QByteArray MultipleAlignmentRowData::getSequenceWithGaps(bool keepLeadingGaps, bool keepTrailingGaps) const {
+    QByteArray bytes = sequence.constSequence();
+    int beginningOffset = 0;
+
+    if (gaps.isEmpty()) {
+        return bytes;
+    }
+
+    for (int i = 0; i < gaps.size(); ++i) {
+        QByteArray gapsBytes;
+        if (!keepLeadingGaps && (0 == gaps[i].offset)) {
+            beginningOffset = gaps[i].gap;
+            continue;
+        }
+
+        gapsBytes.fill(U2Msa::GAP_CHAR, gaps[i].gap);
+        bytes.insert(gaps[i].offset - beginningOffset, gapsBytes);
+    }
+    MultipleAlignmentData* alignment = getMultipleAlignmentData();
+    SAFE_POINT(alignment != nullptr, "Parent MAlignment is NULL", QByteArray());
+    if (keepTrailingGaps && bytes.size() < alignment->getLength()) {
+        QByteArray gapsBytes;
+        gapsBytes.fill(U2Msa::GAP_CHAR, alignment->getLength() - bytes.size());
+        bytes.append(gapsBytes);
+    }
+
+    return bytes;
+}
+
 }    // namespace U2

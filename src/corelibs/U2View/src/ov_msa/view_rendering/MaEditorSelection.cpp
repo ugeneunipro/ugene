@@ -170,6 +170,14 @@ void MaEditorSelectionController::setSelection(const MaEditorSelection &newSelec
     emit si_selectionChanged(selection, oldSelection);
 }
 
+int MaEditorSelection::getCountOfSelectedRows() const {
+    int count = 0;
+    for (const QRect &rect : qAsConst(rectList)) {
+        count += rect.height();
+    }
+    return count;
+}
+
 /************************************************************************/
 /* McaEditorSelectionController */
 /************************************************************************/

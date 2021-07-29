@@ -139,6 +139,12 @@ public:
     /* Compares sequences of 2 rows ignoring gaps. */
     static bool isEqualsIgnoreGaps(const MultipleAlignmentRowData *row1, const MultipleAlignmentRowData *row2);
 
+    /** Joins sequence chars and gaps into one byte array. */
+    QByteArray getSequenceWithGaps(bool keepLeadingGaps, bool keepTrailingGaps) const;
+
+    /** Returns whole alignment data. */
+    virtual MultipleAlignmentData *getMultipleAlignmentData() const = 0;
+
 protected:
     /** The sequence of the row without gaps (cached) */
     DNASequence sequence;
