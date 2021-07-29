@@ -4325,26 +4325,27 @@ GUI_TEST_CLASS_DEFINITION(test_0074) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0075) {
-    //    Open COI.aln
     GTFileDialog::openFile(os, dataDir + "samples/CLUSTALW", "COI.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QWidget *overview = GTWidget::findWidget(os, "msa_overview_area_graph");
-    QImage init = GTWidget::getImage(os, overview);
-    //    Use context menu on overview: {Calculation method->Clustal}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Calculation method"
-                                                                        << "Clustal"));
+
+    QImage initialImage = GTWidget::getImage(os, overview);
+
+    //  Use context menu on overview: {Calculation method->Clustal}
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Calculation method", "Clustal"}));
     GTMenu::showContextMenu(os, overview);
-    //    Check state
-    QImage clustal = GTWidget::getImage(os, overview);
-    CHECK_SET_ERR(init != clustal, "overview was not changed(clustal)");
-    //    Use context menu on overview: {Display settings...->Graph type->Histogram}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, QStringList() << "Display settings"
-                                                                        << "Graph type"
-                                                                        << "Histogram"));
+
+    //  Check that image was changed.
+    QImage clustalModeImage = GTWidget::getImage(os, overview);
+    CHECK_SET_ERR(initialImage != clustalModeImage, "overview was not changed (clustal)");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Switch to 'histogram' mode.
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Display settings", "Graph type", "Histogram"}));
     GTMenu::showContextMenu(os, overview);
-    //    Check state
-    QImage histogram = GTWidget::getImage(os, overview);
-    CHECK_SET_ERR(histogram != clustal, "overview was not changed(histogram)");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    QImage histogramModeImage = GTWidget::getImage(os, overview);
+    CHECK_SET_ERR(histogramModeImage != clustalModeImage, "overview was not changed (histogram)");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0076) {
