@@ -7,6 +7,9 @@ AlignConsecutiveDeclarations: false
 AlignEscapedNewlines: DontAlign
 AlignOperands: true
 AlignTrailingComments: false
+# New Clang format appends space before all comments. The next line disables this behavior to avoid messy patches.
+# We need to re-enable in a separate dedicated commit with reformatting only.
+CommentPragmas: '^[^ ]'
 AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortBlocksOnASingleLine: Never
 AllowShortCaseLabelsOnASingleLine: false
