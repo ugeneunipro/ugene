@@ -34,7 +34,7 @@ MaEditorContext::MaEditorContext(MaEditor *maEditor)
       maObject(maEditor->getMaObject()),
       ui(maEditor->getUI()),
       selectionController(maEditor->getSelectionController()),
-      collapseModel(editor->getUI()->getCollapseModel()) {
+      collapseModel(editor->getCollapseModel()) {
     SAFE_POINT(maObject != nullptr, "maObject is null", );
     SAFE_POINT(ui != nullptr, "ui is null", );
     SAFE_POINT(selectionController != nullptr, "selectionController is null", );

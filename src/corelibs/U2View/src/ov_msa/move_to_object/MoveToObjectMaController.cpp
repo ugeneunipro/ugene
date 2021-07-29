@@ -79,7 +79,7 @@ QMenu *MoveToObjectMaController::buildMoveSelectionToAnotherObjectMenu() const {
             U2OpStatusImpl os;
             for (const QRect &rect : qAsConst(selectedRects)) {
                 for (int viewRowIndex = rect.top(); viewRowIndex <= rect.bottom(); viewRowIndex++) {
-                    int maRowIndex = ui->getCollapseModel()->getMaRowIndexByViewRowIndex(viewRowIndex);
+                    int maRowIndex = collapseModel->getMaRowIndexByViewRowIndex(viewRowIndex);
                     SAFE_POINT(maRowIndex >= 0, "MA row not found. View row: " + QString::number(viewRowIndex), );
                     maRowIndexesToRemove << maRowIndex;
                     MultipleAlignmentRow row = maObject->getRow(maRowIndex);
