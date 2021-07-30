@@ -66,11 +66,19 @@ MoveToObjectMaController::MoveToObjectMaController(MaEditor *maEditor)
 
 QMenu *MoveToObjectMaController::buildMoveSelectionToAnotherObjectMenu() const {
     QMenu *menu = new QMenu(moveSelectionToAnotherObjectAction->text());
+    menu->setEnabled(moveSelectionToAnotherObjectAction->isEnabled());
+    CHECK(menu->isEnabled(), menu);
+
+    menu->addAction(moveSelectionToNewFileAction);
+
     QList<GObject *> writableMsaObjects = GObjectUtils::findAllObjects(UOF_LoadedOnly, GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT, true);
     writableMsaObjects.removeOne(maObject);
     std::stable_sort(writableMsaObjects.begin(), writableMsaObjects.end(), [&](const GObject *o1, const GObject *o2) {
         return o1->getGObjectName().compare(o2->getGObjectName(), Qt::CaseInsensitive);
     });
+    if (!writableMsaObjects.isEmpty()) {
+        menu->addSeparator();
+    }
     for (const GObject *object : qAsConst(writableMsaObjects)) {
         GObjectReference reference(object);
         QString fileName = object->getDocument()->getURL().fileName();
@@ -101,12 +109,6 @@ QMenu *MoveToObjectMaController::buildMoveSelectionToAnotherObjectMenu() const {
         });
         action->setObjectName(fileName);    // For UI testing.
     }
-    if (menu->isEmpty()) {
-        QAction *noObjectsAction = menu->addAction(tr("No other alignment objects in the project"), []() {});
-        noObjectsAction->setObjectName("no_other_objects_item");
-        noObjectsAction->setEnabled(false);
-    }
-    menu->setEnabled(moveSelectionToAnotherObjectAction->isEnabled());
     return menu;
 }
 
@@ -135,7 +137,8 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     DocumentFormatConstraints formatConstraints;
     formatConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
     QString filter = DialogUtils::prepareDocumentsFileFilter(formatConstraints, false);
-    lod.url = U2FileDialog::getSaveFileName(ui, tr("Select a new file to move selected rows"), lod, filter);
+    QString selectedFilter = DialogUtils::prepareDocumentsFileFilter(BaseDocumentFormats::CLUSTAL_ALN, false);
+    lod.url = U2FileDialog::getSaveFileName(ui, tr("Select a new file to move selected rows"), lod, filter, &selectedFilter);
     CHECK(!lod.url.isEmpty(), );
 
     QList<int> selectedViewRowIndexes = getSelection().getSelectedRowIndexes();
@@ -143,16 +146,27 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     QList<qint64> rowIdsToRemove = maObject->getRowIdsByRowIndexes(selectedMaRowIndexes);
     SAFE_POINT(!rowIdsToRemove.isEmpty(), "rowIdsToRemove are empty", );
 
+    QString url = lod.url;
+    QFileInfo urlInfo(url);
+    QString fileExtension = urlInfo.suffix();
+    DocumentFormatRegistry *formatRegistry = AppContext::getDocumentFormatRegistry();
+    DocumentFormat *format = formatRegistry->selectFormatByFileExtension(fileExtension);
+    if (format == nullptr) {
+        format = formatRegistry->getFormatById(BaseDocumentFormats::CLUSTAL_ALN);
+    }
+    QStringList extensions = format->getSupportedDocumentFileExtensions();
+    if (!extensions.isEmpty() && !extensions.contains(fileExtension)) {
+        url += "." + extensions.first();
+    }
+
     MultipleSequenceAlignment msaToExport;
+    msaToExport->setName(urlInfo.baseName());
+    msaToExport->setAlphabet(maObject->getAlphabet());
     for (int maRowIndex : qAsConst(selectedMaRowIndexes)) {
         const MultipleAlignmentRow &row = maObject->getRow(maRowIndex);
         msaToExport->addRow(row->getName(), row->getSequenceWithGaps(true, true));
     }
-    QString fileExtension = QFileInfo(lod.url).suffix();
-    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->selectFormatByFileExtension(fileExtension);
-    DocumentFormatId documentFormatId = format != nullptr ? format->getFormatId() : BaseDocumentFormats::CLUSTAL_ALN;
-
-    auto createNewMsaTask = new AddDocumentAndOpenViewTask(new ExportAlignmentTask(msaToExport, lod.url, documentFormatId));
+    auto createNewMsaTask = new AddDocumentAndOpenViewTask(new ExportAlignmentTask(msaToExport, url, format->getFormatId()));
     auto removeRowsTask = new RemoveRowsFromMaObject(editor, rowIdsToRemove);
     auto task = new MultiTask(tr("Export alignment rows to a new file"), {createNewMsaTask, removeRowsTask});
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
