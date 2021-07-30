@@ -2,8 +2,8 @@
 Language: Cpp
 AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
-AlignConsecutiveAssignments: false
-AlignConsecutiveDeclarations: false
+AlignConsecutiveAssignments: None
+AlignConsecutiveDeclarations: None
 AlignEscapedNewlines: DontAlign
 AlignOperands: true
 AlignTrailingComments: false
@@ -19,7 +19,7 @@ AllowShortLambdasOnASingleLine: Empty
 AllowShortLoopsOnASingleLine: false
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: false
-AlwaysBreakTemplateDeclarations: 'Yes'
+AlwaysBreakTemplateDeclarations: Yes
 BinPackArguments: false
 BinPackParameters: false
 BreakBeforeBinaryOperators: None
@@ -27,7 +27,7 @@ BreakBeforeBraces: Attach
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: BeforeColon
 BreakInheritanceList: BeforeColon
-ColumnLimit: 0
+ColumnLimit: 160
 CompactNamespaces: false
 Cpp11BracedListStyle: true
 DerivePointerAlignment: false
@@ -42,7 +42,7 @@ MaxEmptyLinesToKeep: 1
 NamespaceIndentation: None
 PointerAlignment: Right
 ReflowComments: true
-SortIncludes: true
+SortIncludes: CaseSensitive
 SortUsingDeclarations: true
 SpaceAfterCStyleCast: false
 SpaceAfterTemplateKeyword: false
@@ -59,7 +59,7 @@ SpacesInCStyleCastParentheses: false
 SpacesInContainerLiterals: false
 SpacesInParentheses: false
 SpacesInSquareBrackets: false
-Standard: c++11
+Standard: Latest
 TabWidth: 4
 IncludeCategories:
   - Regex: '^(<|")(breakpad|qscore|samtools|QSpec|zlib|sqlite3)/'
