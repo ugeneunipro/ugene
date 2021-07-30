@@ -94,12 +94,10 @@ QMenu *MoveToObjectMaController::buildMoveSelectionToAnotherObjectMenu() const {
             QList<int> selectedMaRowIndexes = collapseModel->getMaRowIndexesByViewRowIndexes(selectedViewRowIndexes, true);
             QList<qint64> rowIdsToRemove = maObject->getRowIdsByRowIndexes(selectedMaRowIndexes);
             CHECK_EXT(!rowIdsToRemove.isEmpty(), QMessageBox::critical(ui, L10N::errorTitle(), L10N::internalError()), );
-            U2OpStatusImpl os;
             QList<DNASequence> sequencesWithGapsToMove;
             for (int maRowIndex : qAsConst(selectedMaRowIndexes)) {
                 MultipleAlignmentRow row = maObject->getRow(maRowIndex);
                 QByteArray sequenceWithGaps = row->getSequenceWithGaps(true, false);
-                CHECK_OP_EXT(os, QMessageBox::critical(ui, L10N::errorTitle(), os.getError()), );
                 sequencesWithGapsToMove << DNASequence(row->getName(), sequenceWithGaps, maObject->getAlphabet());
             }
             auto addRowsTask = new AddSequenceObjectsToAlignmentTask(targetMsaObject, sequencesWithGapsToMove, -1, true);
