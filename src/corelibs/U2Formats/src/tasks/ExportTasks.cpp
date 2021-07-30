@@ -79,8 +79,8 @@ ExportMSA2SequencesTask::ExportMSA2SequencesTask(const MultipleSequenceAlignment
                                                  const QString &_url,
                                                  bool _trimLeadingAndTrailingGaps,
                                                  const DocumentFormatId &_documentFormatId)
-    : DocumentProviderTask(tr("Export alignment to sequence: %1").arg(_url), TaskFlag_None),
-      ma(_ma->getCopy()), url(_url), trimLeadingAndTrailingGaps(_trimLeadingAndTrailingGaps), documentFormatId(_documentFormatId) {
+    : DocumentProviderTask(tr("Export alignment to sequence: %1").arg(_url), TaskFlag_None), ma(_ma->getCopy()), url(_url),
+      trimLeadingAndTrailingGaps(_trimLeadingAndTrailingGaps), documentFormatId(_documentFormatId) {
     GCOUNTER(cvar, "ExportMSA2SequencesTask");
     setVerboseLogMode(true);
 }
@@ -120,20 +120,12 @@ ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment &_ma,
                                      bool _convertUnknownToGap,
                                      bool _reverseComplement,
                                      int _translationFrame)
-    : DocumentProviderTask(tr("Export alignment to alignment: %1").arg(_url), TaskFlag_None),
-      ma(_ma->getCopy()),
-      offset(_offset),
-      len(_len),
-      url(_url),
-      documentFormatId(_documentFormatId),
-      aminoTranslations(_aminoTranslations),
-      trimLeadingAndTrailingGaps(_trimGaps),
-      convertUnknownToGap(_convertUnknownToGap),
-      reverseComplement(_reverseComplement),
-      translationFrame(_translationFrame) {
+    : DocumentProviderTask(tr("Export alignment to alignment: %1").arg(_url), TaskFlag_None), ma(_ma->getCopy()), offset(_offset), len(_len), url(_url),
+      documentFormatId(_documentFormatId), aminoTranslations(_aminoTranslations), trimLeadingAndTrailingGaps(_trimGaps),
+      convertUnknownToGap(_convertUnknownToGap), reverseComplement(_reverseComplement), translationFrame(_translationFrame) {
     GCOUNTER(cvar, "ExportMSA2MSATask");
     CHECK_EXT(!ma->isEmpty(), setError(tr("Nothing to export: multiple alignment is empty")), );
-    SAFE_POINT_EXT(translationFrame >= 0 && translationFrame <= 2, stateInfo.setError(tr("Illegal translation frame offset: %1").arg(translationFrame)), );
+    SAFE_POINT_EXT(translationFrame >= 0 && translationFrame <= 2, setError(tr("Illegal translation frame offset: %1").arg(translationFrame)), );
     setVerboseLogMode(true);
 }
 
@@ -158,7 +150,7 @@ void ExportMSA2MSATask::run() {
             int aminoSequenceLength = seq.length() / 3;
             QByteArray resseq(aminoSequenceLength, '\0');
             if (resseq.isNull() && aminoSequenceLength != 0) {
-                stateInfo.setError(tr("Out of memory"));
+                setError(tr("Out of memory"));
                 return;
             }
             assert(aminoTT->isThree2One());
@@ -188,24 +180,23 @@ void ExportMSA2MSATask::run() {
 // export chromatogram to SCF
 
 ExportDNAChromatogramTask::ExportDNAChromatogramTask(DNAChromatogramObject *_obj, const ExportChromatogramTaskSettings &_settings)
-    : DocumentProviderTask(tr("Export chromatogram to SCF"), TaskFlags_NR_FOSCOE),
-      chromaObject(_obj), settings(_settings), loadTask(nullptr) {
+    : DocumentProviderTask(tr("Export chromatogram to SCF"), TaskFlags_NR_FOSCOE), chromaObject(_obj), settings(_settings), loadTask(nullptr) {
     GCOUNTER(cvar, "ExportDNAChromatogramTask");
     setVerboseLogMode(true);
 }
 
 void ExportDNAChromatogramTask::prepare() {
     Document *d = chromaObject->getDocument();
-    SAFE_POINT_EXT(d != nullptr, stateInfo.setError("Chromatogram object document is not found!"), );
+    SAFE_POINT_EXT(d != nullptr, setError(L10N::internalError("Chromatogram object has no associated document")), );
 
     QList<GObjectRelation> relatedObjs = chromaObject->findRelatedObjectsByRole(ObjectRole_Sequence);
-    SAFE_POINT_EXT(relatedObjs.count() == 1, stateInfo.setError("Sequence related to chromatogram is not found!"), );
+    SAFE_POINT_EXT(relatedObjs.count() == 1, setError("Sequence related to chromatogram is not found!"), );
 
     QString seqObjName = relatedObjs.first().ref.objName;
 
     GObject *resObj = d->findGObjectByName(seqObjName);
-    U2SequenceObject *sObj = qobject_cast<U2SequenceObject *>(resObj);
-    SAFE_POINT_EXT(sObj != nullptr, stateInfo.setError(L10N::internalError()), );
+    auto sObj = qobject_cast<U2SequenceObject *>(resObj);
+    SAFE_POINT_EXT(sObj != nullptr, setError(L10N::nullPointerError("sequence object is null")), );
 
     DNAChromatogram cd = chromaObject->getChromatogram();
     QByteArray seq = sObj->getWholeSequenceData(stateInfo);
