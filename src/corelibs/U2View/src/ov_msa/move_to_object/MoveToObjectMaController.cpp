@@ -50,8 +50,7 @@
 
 namespace U2 {
 
-MoveToObjectMaController::MoveToObjectMaController(MaEditor *maEditor)
-    : QObject(maEditor), MaEditorContext(maEditor) {
+MoveToObjectMaController::MoveToObjectMaController(MaEditor *maEditor) : QObject(maEditor), MaEditorContext(maEditor) {
     moveSelectionToAnotherObjectAction = new QAction(tr("Move selected rows to another alignment"));
     moveSelectionToAnotherObjectAction->setObjectName("move_selection_to_another_object");
     connect(moveSelectionToAnotherObjectAction, &QAction::triggered, this, &MoveToObjectMaController::showMoveSelectedRowsToAnotherObjectMenu);
@@ -141,11 +140,6 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     lod.url = U2FileDialog::getSaveFileName(ui, tr("Select a new file to move selected rows"), lod, filter, &selectedFilter);
     CHECK(!lod.url.isEmpty(), );
 
-    QList<int> selectedViewRowIndexes = getSelection().getSelectedRowIndexes();
-    QList<int> selectedMaRowIndexes = collapseModel->getMaRowIndexesByViewRowIndexes(selectedViewRowIndexes, true);
-    QList<qint64> rowIdsToRemove = maObject->getRowIdsByRowIndexes(selectedMaRowIndexes);
-    SAFE_POINT(!rowIdsToRemove.isEmpty(), "rowIdsToRemove are empty", );
-
     QString url = lod.url;
     QFileInfo urlInfo(url);
     QString fileExtension = urlInfo.suffix();
@@ -158,6 +152,11 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
     if (!extensions.isEmpty() && !extensions.contains(fileExtension)) {
         url += "." + extensions.first();
     }
+
+    QList<int> selectedViewRowIndexes = getSelection().getSelectedRowIndexes();
+    QList<int> selectedMaRowIndexes = collapseModel->getMaRowIndexesByViewRowIndexes(selectedViewRowIndexes, true);
+    QList<qint64> rowIdsToRemove = maObject->getRowIdsByRowIndexes(selectedMaRowIndexes);
+    SAFE_POINT(!rowIdsToRemove.isEmpty(), "rowIdsToRemove is empty", );
 
     MultipleSequenceAlignment msaToExport;
     msaToExport->setName(urlInfo.baseName());
