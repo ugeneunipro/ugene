@@ -65,10 +65,10 @@ private:
 };
 
 /** Removes set of rows from the MSA object. */
-class RemoveRowsFromMaObject : public Task {
+class RemoveRowsFromMaObjectTask : public Task {
     Q_OBJECT
 public:
-    RemoveRowsFromMaObject(MaEditor *maEditor, const QList<qint64> &rowIds);
+    RemoveRowsFromMaObjectTask(MaEditor *maEditor, const QList<qint64> &rowIds);
 
     void run() override;
 

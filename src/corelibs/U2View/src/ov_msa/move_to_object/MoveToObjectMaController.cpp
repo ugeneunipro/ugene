@@ -104,7 +104,7 @@ QMenu *MoveToObjectMaController::buildMoveSelectionToAnotherObjectMenu() const {
                 sequencesWithGapsToMove << DNASequence(row->getName(), sequenceWithGaps, maObject->getAlphabet());
             }
             auto addRowsTask = new AddSequenceObjectsToAlignmentTask(targetMsaObject, sequencesWithGapsToMove, -1, true);
-            auto removeRowsTask = new RemoveRowsFromMaObject(editor, rowIdsToRemove);
+            auto removeRowsTask = new RemoveRowsFromMaObjectTask(editor, rowIdsToRemove);
             AppContext::getTaskScheduler()->registerTopLevelTask(new MultiTask(tr("Move rows to another alignment"), {addRowsTask, removeRowsTask}));
         });
         action->setObjectName(fileName);    // For UI testing.
@@ -167,7 +167,7 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
         msaToExport->addRow(row->getName(), row->getSequenceWithGaps(true, true));
     }
     auto createNewMsaTask = new AddDocumentAndOpenViewTask(new ExportAlignmentTask(msaToExport, url, format->getFormatId()));
-    auto removeRowsTask = new RemoveRowsFromMaObject(editor, rowIdsToRemove);
+    auto removeRowsTask = new RemoveRowsFromMaObjectTask(editor, rowIdsToRemove);
     auto task = new MultiTask(tr("Export alignment rows to a new file"), {createNewMsaTask, removeRowsTask});
     AppContext::getTaskScheduler()->registerTopLevelTask(task);
 }
@@ -175,11 +175,11 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
 /************************************************************************/
 /* RemoveRowsFromMsaObject */
 /************************************************************************/
-RemoveRowsFromMaObject::RemoveRowsFromMaObject(MaEditor *_maEditor, const QList<qint64> &_rowIds)
+RemoveRowsFromMaObjectTask::RemoveRowsFromMaObjectTask(MaEditor *_maEditor, const QList<qint64> &_rowIds)
     : Task(tr("Remove rows from alignment"), TaskFlag_RunInMainThread), maEditor(_maEditor), rowIds(_rowIds) {
 }
 
-void RemoveRowsFromMaObject::run() {
+void RemoveRowsFromMaObjectTask::run() {
     CHECK(!maEditor.isNull(), );    // The editor may be closed while the task in the queue.
 
     MultipleAlignmentObject *maObject = maEditor->getMaObject();

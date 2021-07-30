@@ -1,1 +1,1 @@
-#include "../../corelibs/U2Core/src/tasks/ExportTasks.h"
+#include "../../corelibs/U2Formats/src/tasks/ExportTasks.h"
