@@ -189,8 +189,8 @@ ExportSequenceTaskSettings::ExportSequenceTaskSettings()
 //ExportSequenceTask
 
 ExportSequenceTask::ExportSequenceTask(const ExportSequenceTaskSettings &s)
-    : DocumentProviderTask("", TaskFlag_None), config(s) {
-    setTaskName(tr("Export sequence to '%1'").arg(QFileInfo(s.fileName).fileName()));
+    : DocumentProviderTask(tr("Export sequence to %1").arg(s.fileName), TaskFlag_None), config(s) {
+    documentDescription = QFileInfo(s.fileName).fileName();
     setVerboseLogMode(true);
 }
 
@@ -445,15 +445,14 @@ QList<ExportSequenceItem> getTranslatedItems(QList<ExportSequenceItem> &items, b
 }    // namespace
 
 void ExportSequenceTask::run() {
-    DocumentFormatRegistry *r = AppContext::getDocumentFormatRegistry();
-    DocumentFormat *f = r->getFormatById(config.formatId);
-    SAFE_POINT(nullptr != f, L10N::nullPointerError("sequence document format"), );
+    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(config.formatId);
+    SAFE_POINT(format != nullptr, L10N::nullPointerError("sequence document format"), );
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(config.fileName));
-    SAFE_POINT(nullptr != iof, L10N::nullPointerError("I/O adapter factory"), );
-    resultDocument = f->createNewLoadedDocument(iof, config.fileName, stateInfo);
+    SAFE_POINT(iof != nullptr, L10N::nullPointerError("I/O adapter factory"), );
+    QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, config.fileName, stateInfo));
     CHECK_OP(stateInfo, );
 
-    const U2DbiRef dbiRef = resultDocument->getDbiRef();
+    const U2DbiRef dbiRef = exportedDocument->getDbiRef();
 
     DbiOperationsBlock dbiBlock(dbiRef, stateInfo);
     Q_UNUSED(dbiBlock);
@@ -489,10 +488,15 @@ void ExportSequenceTask::run() {
         resultItems = notMergedItems;
     }
 
-    saveExportItems2Doc(resultItems, config.sequenceName, resultDocument, stateInfo);
+    saveExportItems2Doc(resultItems, config.sequenceName, exportedDocument.get(), stateInfo);
     CHECK_OP(stateInfo, );
-    //store the document
-    f->storeDocument(resultDocument, stateInfo);
+    // Store the document.
+    format->storeDocument(exportedDocument.get(), stateInfo);
+    exportedDocument.reset(); // Release resources.
+
+    // Now reload the document.
+    // Reason: document format may have some limits and change the original data: trim sequence names or replace spaces with underscores.
+    resultDocument = format->loadDocument(iof, config.fileName, {}, stateInfo);
 }
 
 ExportSequenceItem ExportSequenceTask::mergedCircularItem(const ExportSequenceItem &first, const ExportSequenceItem &second, U2OpStatus &os) {

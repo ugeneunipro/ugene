@@ -25,6 +25,7 @@
 
 #include <U2Core/AddSequencesToAlignmentTask.h>
 #include <U2Core/AppContext.h>
+#include <U2Core/Counter.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/GObject.h>
 #include <U2Core/GObjectTypes.h>
@@ -75,14 +76,19 @@ QMenu *MoveToObjectMaController::buildMoveSelectionToAnotherObjectMenu() const {
     std::stable_sort(writableMsaObjects.begin(), writableMsaObjects.end(), [&](const GObject *o1, const GObject *o2) {
         return o1->getGObjectName().compare(o2->getGObjectName(), Qt::CaseInsensitive);
     });
-    if (!writableMsaObjects.isEmpty()) {
-        menu->addSeparator();
+    menu->addSeparator();
+    if (writableMsaObjects.isEmpty()) {
+        QAction *noObjectsAction = menu->addAction(tr("No other alignment objects in the project"), []() {});
+        noObjectsAction->setObjectName("no_other_objects_item");
+        noObjectsAction->setEnabled(false);
     }
+    QIcon objectMenuIcon(":core/images/msa.png");
     for (const GObject *object : qAsConst(writableMsaObjects)) {
         GObjectReference reference(object);
         QString fileName = object->getDocument()->getURL().fileName();
         QString menuItemText = object->getGObjectName() + " [" + fileName + "] ";
-        QAction *action = menu->addAction(menuItemText, [this, reference]() {
+        QAction *action = menu->addAction(objectMenuIcon, menuItemText, [this, reference]() {
+            GCounter::increment("MoveSelectedMsaRowsToNewObject");
             GObject *object = GObjectUtils::selectObjectByReference(reference, UOF_LoadedOnly);
             CHECK_EXT(object != nullptr, QMessageBox::critical(ui, L10N::errorTitle(), L10N::errorObjectNotFound(reference.objName)), );
             CHECK_EXT(!object->isStateLocked(), QMessageBox::critical(ui, L10N::errorTitle(), L10N::errorObjectIsReadOnly(reference.objName)), );
@@ -130,6 +136,8 @@ void MoveToObjectMaController::buildMenu(GObjectView *, QMenu *menu, const QStri
 }
 
 void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
+    GCounter::increment("MoveSelectedMsaRowsToNewFile");
+
     // Get the file name to move rows to first.
     LastUsedDirHelper lod;
     DocumentFormatConstraints formatConstraints;

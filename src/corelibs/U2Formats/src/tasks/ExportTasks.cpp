@@ -51,25 +51,32 @@ namespace U2 {
 //////////////////////////////////////////////////////////////////////////
 // DNAExportAlignmentTask
 ExportAlignmentTask::ExportAlignmentTask(const MultipleSequenceAlignment &_ma, const QString &_url, const DocumentFormatId &_documentFormatId)
-    : DocumentProviderTask("", TaskFlag_None), ma(_ma->getCopy()), url(_url), documentFormatId(_documentFormatId) {
+    : DocumentProviderTask(tr("Export alignment to %1").arg(_url), TaskFlag_None), ma(_ma->getCopy()), url(_url), documentFormatId(_documentFormatId) {
     GCOUNTER(cvar, "ExportAlignmentTask");
-    setTaskName(tr("Export alignment to '%1'").arg(QFileInfo(url).fileName()));
+    documentDescription = QFileInfo(url).fileName();
     setVerboseLogMode(true);
     CHECK_EXT(!ma->isEmpty(), setError(tr("Nothing to export: multiple alignment is empty")), );
 }
 
 void ExportAlignmentTask::run() {
-    DocumentFormatRegistry *r = AppContext::getDocumentFormatRegistry();
-    DocumentFormat *f = r->getFormatById(documentFormatId);
+    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
+    SAFE_POINT(format != nullptr, L10N::nullPointerError("sequence document format"), );
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    resultDocument = f->createNewLoadedDocument(iof, url, stateInfo);
+    SAFE_POINT(iof != nullptr, L10N::nullPointerError("I/O adapter factory"), );
+    QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, url, stateInfo));
     CHECK_OP(stateInfo, );
 
-    MultipleSequenceAlignmentObject *obj = MultipleSequenceAlignmentImporter::createAlignment(resultDocument->getDbiRef(), ma, stateInfo);
+    MultipleSequenceAlignmentObject *obj = MultipleSequenceAlignmentImporter::createAlignment(exportedDocument->getDbiRef(), ma, stateInfo);
     CHECK_OP(stateInfo, );
 
-    resultDocument->addObject(obj);
-    f->storeDocument(resultDocument, stateInfo);
+    exportedDocument->addObject(obj);
+    format->storeDocument(exportedDocument.get(), stateInfo);
+    CHECK_OP(stateInfo, );
+    exportedDocument.reset();    // Release resources.
+
+    // Now reload the document.
+    // Reason: document format may have some limits and change the original data: trim sequence names or replace spaces with underscores.
+    resultDocument = format->loadDocument(iof, url, {}, stateInfo);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -79,17 +86,19 @@ ExportMSA2SequencesTask::ExportMSA2SequencesTask(const MultipleSequenceAlignment
                                                  const QString &_url,
                                                  bool _trimLeadingAndTrailingGaps,
                                                  const DocumentFormatId &_documentFormatId)
-    : DocumentProviderTask(tr("Export alignment to sequence: %1").arg(_url), TaskFlag_None), ma(_ma->getCopy()), url(_url),
+    : DocumentProviderTask(tr("Export alignment as sequence to %1").arg(_url), TaskFlag_None), ma(_ma->getCopy()), url(_url),
       trimLeadingAndTrailingGaps(_trimLeadingAndTrailingGaps), documentFormatId(_documentFormatId) {
+    documentDescription= QFileInfo(url).fileName();
     GCOUNTER(cvar, "ExportMSA2SequencesTask");
     setVerboseLogMode(true);
 }
 
 void ExportMSA2SequencesTask::run() {
-    DocumentFormatRegistry *r = AppContext::getDocumentFormatRegistry();
-    DocumentFormat *f = r->getFormatById(documentFormatId);
+    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
+    SAFE_POINT(format != nullptr, L10N::nullPointerError("sequence document format"), );
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    resultDocument = f->createNewLoadedDocument(iof, url, stateInfo);
+    SAFE_POINT(iof != nullptr, L10N::nullPointerError("I/O adapter factory"), );
+    QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, url, stateInfo));
     CHECK_OP(stateInfo, );
     QList<DNASequence> lst = MSAUtils::ma2seq(ma, trimLeadingAndTrailingGaps);
     QSet<QString> usedNames;
@@ -99,12 +108,18 @@ void ExportMSA2SequencesTask::run() {
             name = TextUtils::variate(name, " ", usedNames, false, 1);
             s.setName(name);
         }
-        U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, resultDocument->getDbiRef(), s);
+        U2EntityRef seqRef = U2SequenceUtils::import(stateInfo, exportedDocument->getDbiRef(), s);
         CHECK_OP(stateInfo, );
-        resultDocument->addObject(new U2SequenceObject(name, seqRef));
+        exportedDocument->addObject(new U2SequenceObject(name, seqRef));
         usedNames.insert(name);
     }
-    f->storeDocument(resultDocument, stateInfo);
+    format->storeDocument(exportedDocument.get(), stateInfo);
+    CHECK_OP(stateInfo, );
+    exportedDocument.reset();    // Release resources.
+
+    // Now reload the document.
+    // Reason: document format may have some limits and change the original data: trim sequence names or replace spaces with underscores.
+    resultDocument = format->loadDocument(iof, url, {}, stateInfo);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -120,20 +135,23 @@ ExportMSA2MSATask::ExportMSA2MSATask(const MultipleSequenceAlignment &_ma,
                                      bool _convertUnknownToGap,
                                      bool _reverseComplement,
                                      int _translationFrame)
-    : DocumentProviderTask(tr("Export alignment to alignment: %1").arg(_url), TaskFlag_None), ma(_ma->getCopy()), offset(_offset), len(_len), url(_url),
+    : DocumentProviderTask(tr("Export alignment as alignment to %1").arg(_url), TaskFlag_None), ma(_ma->getCopy()), offset(_offset), len(_len), url(_url),
       documentFormatId(_documentFormatId), aminoTranslations(_aminoTranslations), trimLeadingAndTrailingGaps(_trimGaps),
       convertUnknownToGap(_convertUnknownToGap), reverseComplement(_reverseComplement), translationFrame(_translationFrame) {
     GCOUNTER(cvar, "ExportMSA2MSATask");
+    documentDescription = QFileInfo(url).fileName();
+
     CHECK_EXT(!ma->isEmpty(), setError(tr("Nothing to export: multiple alignment is empty")), );
     SAFE_POINT_EXT(translationFrame >= 0 && translationFrame <= 2, setError(tr("Illegal translation frame offset: %1").arg(translationFrame)), );
     setVerboseLogMode(true);
 }
 
 void ExportMSA2MSATask::run() {
-    DocumentFormatRegistry *r = AppContext::getDocumentFormatRegistry();
-    DocumentFormat *f = r->getFormatById(documentFormatId);
+    DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(documentFormatId);
+    SAFE_POINT(format != nullptr, L10N::nullPointerError("sequence document format"), );
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(url));
-    resultDocument = f->createNewLoadedDocument(iof, url, stateInfo);
+    SAFE_POINT(iof != nullptr, L10N::nullPointerError("I/O adapter factory"), );
+    QScopedPointer<Document> exportedDocument(format->createNewLoadedDocument(iof, url, stateInfo));
     CHECK_OP(stateInfo, );
 
     QList<DNASequence> lst = MSAUtils::ma2seq(ma, trimLeadingAndTrailingGaps);
@@ -169,11 +187,16 @@ void ExportMSA2MSATask::run() {
     MultipleSequenceAlignment aminoMa = MSAUtils::seq2ma(seqList, stateInfo);
     CHECK_OP(stateInfo, );
 
-    MultipleSequenceAlignmentObject *obj = MultipleSequenceAlignmentImporter::createAlignment(resultDocument->getDbiRef(), aminoMa, stateInfo);
+    MultipleSequenceAlignmentObject *obj = MultipleSequenceAlignmentImporter::createAlignment(exportedDocument->getDbiRef(), aminoMa, stateInfo);
     CHECK_OP(stateInfo, );
 
-    resultDocument->addObject(obj);
-    f->storeDocument(resultDocument, stateInfo);
+    exportedDocument->addObject(obj);
+    format->storeDocument(exportedDocument.get(), stateInfo);
+    CHECK_OP(stateInfo, );
+
+    // Now reload the document.
+    // Reason: document format may have some limits and change the original data: trim sequence names or replace spaces with underscores.
+    resultDocument = format->loadDocument(iof, url, {}, stateInfo);
 }
 
 //////////////////////////////////////////////////////////////////////////

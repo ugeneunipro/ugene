@@ -2557,11 +2557,7 @@ GUI_TEST_CLASS_DEFINITION(test_3402) {
         if (topLevelTasks.isEmpty()) {
             continue;
         }
-        QList<Task *> subTasks;
         for (const Task *task : qAsConst(topLevelTasks)) {
-            subTasks.append(task->getPureSubtasks());
-        }
-        for (const Task *task : qAsConst(subTasks)) {
             if (task != nullptr && task->getTaskName().contains("Opening view")) {
                 isTaskFound = true;
                 break;
@@ -4139,9 +4135,10 @@ GUI_TEST_CLASS_DEFINITION(test_3656) {
     GTUtilsDialog::waitForDialog(os, new ExportSelectedRegionFiller(os, testDir + "_common_data/scenarios/sandbox/", "test_3656.fa"));
     GTMouseDriver::click(Qt::RightButton);
 
-    CHECK_SET_ERR(GTUtilsTaskTreeView::checkTask(os, "Export sequence to document"), "Task is not running!");
+    QString exportTaskName = "Opening view for document: test_3656.fa";
+    CHECK_SET_ERR(GTUtilsTaskTreeView::checkTask(os, exportTaskName), "Task is not running: " + exportTaskName);
 
-    GTUtilsTaskTreeView::cancelTask(os, "Export sequence to document");
+    GTUtilsTaskTreeView::cancelTask(os, exportTaskName);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_3658) {

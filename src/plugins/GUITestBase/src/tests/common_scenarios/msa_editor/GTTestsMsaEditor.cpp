@@ -44,6 +44,7 @@
 
 #include <QApplication>
 
+#include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DocumentModel.h>
 #include <U2Core/TextUtils.h>
 
@@ -4739,6 +4740,8 @@ GUI_TEST_CLASS_DEFINITION(test_0095) {
     GTUtilsMsaEditor::selectRowsByName(os, {"IXI_234", "IXI_235"});
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {MSAE_MENU_EXPORT, "move_selection_to_another_object", "no_other_objects_item"}, PopupChecker::IsDisabled));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {MSAE_MENU_EXPORT, "move_selection_to_another_object", "move_selection_to_new_file"}, PopupChecker::IsEnabled));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
     // Open another file. Check that sequences can be moved now. Move them.
     GTFileDialog::openFile(os, testDir + "_common_data/clustal/" + targetFile);
@@ -4749,10 +4752,10 @@ GUI_TEST_CLASS_DEFINITION(test_0095) {
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    Document *doc1 = GTUtilsDocument::getDocument(os, sourceFile);
-    Document *doc2 = GTUtilsDocument::getDocument(os, targetFile);
-    CHECK_SET_ERR(doc1->isModified(), "Document 1 must be marked as modified");
-    CHECK_SET_ERR(doc2->isModified(), "Document 2 must be marked as modified");
+    Document *sourceDoc = GTUtilsDocument::getDocument(os, sourceFile);
+    Document *targetDoc = GTUtilsDocument::getDocument(os, targetFile);
+    CHECK_SET_ERR(sourceDoc->isModified(), "sourceDoc must be marked as modified");
+    CHECK_SET_ERR(targetDoc->isModified(), "targetDoc must be marked as modified");
 
     QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
     CHECK_SET_ERR(nameList == QStringList({"IXI_236", "IXI_237"}), "Unexpected source msa name list: " + nameList.join(","));
@@ -4769,19 +4772,68 @@ GUI_TEST_CLASS_DEFINITION(test_0095) {
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {MSAE_MENU_EXPORT, "move_selection_to_another_object"}, PopupChecker::IsDisabled));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 
-    // Make the target file read-only and the source not. Check that menu is enabled but is empty.
+    // Make the target file read-only and the source not. Check that menu is enabled but has no object items.
     GTUtilsDocument::lockDocument(os, targetFile);
     GTUtilsDocument::unlockDocument(os, sourceFile);
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {MSAE_MENU_EXPORT, "move_selection_to_another_object", "no_other_objects_item"}, PopupChecker::IsDisabled));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {MSAE_MENU_EXPORT, "move_selection_to_another_object", targetFile}, PopupChecker::NotExists));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {MSAE_MENU_EXPORT, "move_selection_to_another_object", "move_selection_to_new_file"}, PopupChecker::IsEnabled));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+
 
     // Make the target file not read-only. Check that menu is back again.
     GTUtilsDocument::unlockDocument(os, targetFile);
     GTUtilsDialog::waitForDialog(os, new PopupChecker(os, {MSAE_MENU_EXPORT, "move_selection_to_another_object", targetFile}, PopupChecker::IsEnabled));
     GTUtilsMSAEditorSequenceArea::callContextMenu(os);
 }
+
+GUI_TEST_CLASS_DEFINITION(test_0096) {
+    // Check that sequences can be moved to a new MSA document.
+    QString sourceFile = "align.aln";    // {"IXI_234", "IXI_236", "IXI_237", "IXI_235"}
+    QString targetAlnFile = "test_0096.aln";
+    QString targetStoFile = "test_0096.sto";
+
+    GTFileDialog::openFile(os, testDir + "_common_data/clustal/" + sourceFile);
+    GTUtilsMsaEditor::checkMsaEditorWindowIsActive(os);
+
+    // Select a couple of sequences and check that 'Move' menu is enabled now and have a disabled "No other objects" item.
+    GTUtilsMsaEditor::selectRowsByName(os, {"IXI_234", "IXI_237"});
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "move_selection_to_another_object", "move_selection_to_new_file"}));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir, targetAlnFile, GTFileDialogUtils::Save));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    GTUtilsMdi::activateWindow(os, sourceFile);
+    QStringList nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({"IXI_236", "IXI_235"}), "Unexpected source msa name list: " + nameList.join(","));
+
+    GTUtilsMdi::activateWindow(os, targetAlnFile);
+    nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({"IXI_234", "IXI_237"}), "Unexpected targetAln msa name list: " + nameList.join(","));
+
+    // Now export using Stockholm format.
+    GTUtilsMsaEditor::selectRowsByName(os, {"IXI_237"});
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {MSAE_MENU_EXPORT, "move_selection_to_another_object", "move_selection_to_new_file"}));
+    GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, sandBoxDir, targetStoFile, GTFileDialogUtils::Save));
+    GTUtilsMSAEditorSequenceArea::callContextMenu(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    nameList = GTUtilsMSAEditorSequenceArea::getNameList(os);
+    CHECK_SET_ERR(nameList == QStringList({ "IXI_237"}), "Unexpected targetSto msa name list: " + nameList.join(","));
+
+    // Check modification flags & formats.
+    Document *sourceDoc = GTUtilsDocument::getDocument(os, sourceFile);
+    Document *targetAlnDoc = GTUtilsDocument::getDocument(os, targetAlnFile);
+    Document *targetStoDoc = GTUtilsDocument::getDocument(os, targetStoFile);
+    CHECK_SET_ERR(sourceDoc->isModified(), "sourceDoc must be marked as modified");
+    CHECK_SET_ERR(targetAlnDoc->isModified(), "targetAlnDoc must be marked as modified");
+    CHECK_SET_ERR(!targetStoDoc->isModified(), "targetStoDoc must not be marked as modified");
+
+    CHECK_SET_ERR(targetAlnDoc->getDocumentFormatId() == BaseDocumentFormats::CLUSTAL_ALN, "targetAlnDoc's format must be CLUSTALW");
+    CHECK_SET_ERR(targetStoDoc->getDocumentFormatId() == BaseDocumentFormats::STOCKHOLM, "targetStoDoc's format must be Stockholm");
+}
+
 
 }    // namespace GUITest_common_scenarios_msa_editor
 }    // namespace U2
