@@ -174,7 +174,7 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
 }
 
 /************************************************************************/
-/* RemoveRowsFromMsaObject */
+/* RemoveRowsFromMsaObjectTask */
 /************************************************************************/
 RemoveRowsFromMaObjectTask::RemoveRowsFromMaObjectTask(MaEditor *_maEditor, const QList<qint64> &_rowIds)
     : Task(tr("Remove rows from alignment"), TaskFlag_RunInMainThread), maEditor(_maEditor), rowIds(_rowIds) {
