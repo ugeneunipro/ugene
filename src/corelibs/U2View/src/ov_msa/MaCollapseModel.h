@@ -107,20 +107,23 @@ public:
      */
     QList<int> getMaRowIndexesByViewRowIndexes(const U2Region &viewRowIndexesRegion, bool includeChildRowsForCollapsedGroups = false);
 
+    /** Returns list of MA row indexes for the given view row indexes. */
+    QList<int> getMaRowIndexesByViewRowIndexes(const QList<int> &viewRowIndexes, bool includeChildRowsForCollapsedGroups = false);
+
     /* Returns list of all MA row indexes that have valid view row index (not hidden by collapsing). */
     QList<int> getMaRowsIndexesWithViewRowIndexes() const;
 
     /*
-    * Converts MA row index to the view row index.
-    * If MA row has no viewRowIndex (is inside of collapsed group) returns -1 if failIfNotVisible
+     * Converts MA row index to the view row index.
+     * If MA row has no viewRowIndex (is inside of collapsed group) returns -1 if failIfNotVisible
      * is true , otherwise returns groups view row index.
-    */
+     */
     int getViewRowIndexByMaRowIndex(int maRowIndex, bool failIfNotVisible = false) const;
 
     /*
-    * Converts MA row id to the view row index.
-    * If MA row has no viewRowIndex (is inside of collapsed group) returns -1.
-    */
+     * Converts MA row id to the view row index.
+     * If MA row has no viewRowIndex (is inside of collapsed group) returns -1.
+     */
     int getViewRowIndexByMaRowId(qint64 maRowId) const;
 
     /* Returns 'true' if the MA row is inside of some collapsible group and the group is collapsed. */

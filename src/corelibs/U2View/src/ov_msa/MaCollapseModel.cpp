@@ -142,6 +142,14 @@ QList<int> MaCollapseModel::getMaRowIndexesByViewRowIndexes(const U2Region &view
     return maRows;
 }
 
+QList<int> MaCollapseModel::getMaRowIndexesByViewRowIndexes(const QList<int> &viewRowIndexes, bool includeChildRowsForCollapsedGroups) {
+    QList<int> maRowIndexes;
+    for (int viewRowIndex : qAsConst(viewRowIndexes)) {
+        maRowIndexes << getMaRowIndexesByViewRowIndexes(U2Region(viewRowIndex, 1), includeChildRowsForCollapsedGroups);
+    }
+    return maRowIndexes;
+}
+
 QList<int> MaCollapseModel::getMaRowsIndexesWithViewRowIndexes() const {
     QList<int> maRows;
     for (int viewRow = 0, n = getViewRowCount(); viewRow < n; viewRow++) {

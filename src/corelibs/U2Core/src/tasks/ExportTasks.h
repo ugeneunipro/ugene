@@ -34,49 +34,37 @@ class DNATranslation;
 class LoadDocumentTask;
 class MultipleSequenceAlignmentObject;
 
-/** A task to adds exported document to project and open view*/
-//TODO: make this task a general purpose routine
-class AddExportedDocumentAndOpenViewTask : public Task {
+/** Saves a copy of the alignment using the given document format. */
+class U2CORE_EXPORT ExportAlignmentTask : public DocumentProviderTask {
     Q_OBJECT
 public:
-    AddExportedDocumentAndOpenViewTask(DocumentProviderTask *t);
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    ExportAlignmentTask(const MultipleSequenceAlignment &ma, const QString &url, const DocumentFormatId &documentFormatId);
 
-private:
-    DocumentProviderTask *exportTask;
-    LoadDocumentTask *loadTask;
-};
-
-/** A task to save alignment to CLUSTAL */
-class ExportAlignmentTask : public DocumentProviderTask {
-    Q_OBJECT
-public:
-    ExportAlignmentTask(const MultipleSequenceAlignment &ma, const QString &fileName, DocumentFormatId f);
-
-    void run();
-
-private:
-    MultipleSequenceAlignment ma;
-    QString fileName;
-    DocumentFormatId format;
-};
-
-/** A task to export alignment to FASTA */
-class ExportMSA2SequencesTask : public DocumentProviderTask {
-    Q_OBJECT
-public:
-    ExportMSA2SequencesTask(const MultipleSequenceAlignment &ma, const QString &url, bool trimAli, DocumentFormatId format);
-
-    void run();
+    void run() override;
 
 private:
     MultipleSequenceAlignment ma;
     QString url;
-    bool trimAli;
-    QString format;
+    DocumentFormatId documentFormatId;
 };
 
-class ExportMSA2MSATask : public DocumentProviderTask {
+/** Saves a copy of the alignment using the given sequence document format. */
+class U2CORE_EXPORT ExportMSA2SequencesTask : public DocumentProviderTask {
+    Q_OBJECT
+public:
+    ExportMSA2SequencesTask(const MultipleSequenceAlignment &ma, const QString &url, bool trimLeadingAndTrailingGaps, const DocumentFormatId &documentFormatId);
+
+    void run() override;
+
+private:
+    MultipleSequenceAlignment ma;
+    QString url;
+    bool trimLeadingAndTrailingGaps;
+    QString documentFormatId;
+};
+
+/** Saves a copy of the alignment. */
+class U2CORE_EXPORT ExportMSA2MSATask : public DocumentProviderTask {
     Q_OBJECT
 public:
     ExportMSA2MSATask(const MultipleSequenceAlignment &ma,
@@ -84,50 +72,44 @@ public:
                       int len,
                       const QString &url,
                       const QList<DNATranslation *> &aminoTranslations,
-                      DocumentFormatId format,
-                      const bool trimGaps,
-                      const bool convertUnknownToGap,
-                      const bool reverseComplement,
-                      const int baseOffset);
+                      const DocumentFormatId &documentFormatId,
+                      bool trimLeadingAndTrailingGaps,
+                      bool convertUnknownToGap,
+                      bool reverseComplement,
+                      int translationFrame);
 
-    void run();
+    void run() override;
 
 private:
     MultipleSequenceAlignment ma;
     int offset;
     int len;
     QString url;
-    QString format;
-    /*!
-     * Amino translation for a sequences in alignment. If not NULL -> sequence is translated
-     */
+    QString documentFormatId;
+
+    /** Amino translation for a sequences in alignment. If not NULL -> sequence is translated. */
     QList<DNATranslation *> aminoTranslations;
-    /*!
-     * Trim gaps before translation of not
-     */
-    const bool trimGaps;
-    /*!
-     * If there are unknown amino bases, they are translated as "X" by default, if this value is true tey will be tranlated as "-"
-     */
+
+    /** Trim gaps before translation of not. */
+    const bool trimLeadingAndTrailingGaps;
+
+    /* If there are unknown amino bases, they are translated as "X" by default, if this value is true tey will be tranlated as "-". */
     const bool convertUnknownToGap;
-    /*!
-     * There is required to translate a reverse-complement strand
-     */
+
+    /* There is required to translate a reverse-complement strand. */
     const bool reverseComplement;
-    /*!
-     * The number of characters to skip based on a translation frame.
-     * If the frame is "1" or "-1", than baseOffset is 0.
-     * If the frame is "2" or "-2", than baseOffset is 1.
-     * If the frame is "3" or "-3", than baseOffset is 2.
+
+    /**
+     * Indicates which frame to translate: 0, 1, 2.
+     * If 'reverseComplement' is true the frame is applied after the sequence is reversed and & complemented.
      */
-    const int baseOffset;
+    const int translationFrame;
 };
 
 class DNAChromatogramObject;
 
-/** A task to export chromatogram to SCF */
-
-struct ExportChromatogramTaskSettings {
+/** A task settings to export chromatograms. */
+struct U2CORE_EXPORT ExportChromatogramTaskSettings {
     ExportChromatogramTaskSettings()
         : reverse(false), complement(false), loadDocument(false) {
     }
@@ -137,15 +119,16 @@ struct ExportChromatogramTaskSettings {
     bool loadDocument;
 };
 
-class ExportDNAChromatogramTask : public DocumentProviderTask {
+/** Export chromatograms to SCF format. */
+class U2CORE_EXPORT ExportDNAChromatogramTask : public DocumentProviderTask {
     Q_OBJECT
 public:
     ExportDNAChromatogramTask(DNAChromatogramObject *chromaObj, const ExportChromatogramTaskSettings &url);
-    void prepare();
-    QList<Task *> onSubTaskFinished(Task *subTask);
+    void prepare() override;
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
 
 private:
-    DNAChromatogramObject *cObj;
+    DNAChromatogramObject *chromaObject;
     ExportChromatogramTaskSettings settings;
     LoadDocumentTask *loadTask;
 };

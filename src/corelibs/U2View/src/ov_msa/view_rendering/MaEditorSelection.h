@@ -81,6 +81,9 @@ public:
     /** Returns true if the given row (any its part) is in the selection. */
     bool containsRow(int rowIndex) const;
 
+    /** Returns view row indexes of all rows present in the selection. */
+    QList<int> getSelectedRowIndexes() const;
+
     /** Compares 2 selection. Two selections are equal if they have equal list of rects with the same order. */
     bool operator==(const MaEditorSelection &other) const;
 
