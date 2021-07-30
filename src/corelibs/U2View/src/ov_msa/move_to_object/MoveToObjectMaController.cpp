@@ -130,6 +130,7 @@ void MoveToObjectMaController::buildMenu(GObjectView *, QMenu *menu, const QStri
 }
 
 void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
+    // Get the file name to move rows to first.
     LastUsedDirHelper lod;
     DocumentFormatConstraints formatConstraints;
     formatConstraints.supportedObjectTypes << GObjectTypes::MULTIPLE_SEQUENCE_ALIGNMENT;
@@ -151,6 +152,7 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
         url += "." + extensions.first();
     }
 
+    // Create a sub-alignment from moved rows.
     QList<int> selectedViewRowIndexes = getSelection().getSelectedRowIndexes();
     QList<int> selectedMaRowIndexes = collapseModel->getMaRowIndexesByViewRowIndexes(selectedViewRowIndexes, true);
     QList<qint64> rowIdsToRemove = maObject->getRowIdsByRowIndexes(selectedMaRowIndexes);
@@ -163,6 +165,8 @@ void MoveToObjectMaController::runMoveSelectedRowsToNewFileDialog() {
         const MultipleAlignmentRow &row = maObject->getRow(maRowIndex);
         msaToExport->addRow(row->getName(), row->getSequenceWithGaps(true, true));
     }
+
+    // Run 2 tasks: first create a new document, next remove moved rows from the original document.
     auto createNewMsaTask = new AddDocumentAndOpenViewTask(new ExportAlignmentTask(msaToExport, url, format->getFormatId()));
     auto removeRowsTask = new RemoveRowsFromMaObjectTask(editor, rowIdsToRemove);
     auto task = new MultiTask(tr("Export alignment rows to a new file"), {createNewMsaTask, removeRowsTask});
