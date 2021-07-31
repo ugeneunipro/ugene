@@ -37,7 +37,7 @@ public:
                  const QStringList &namePath,
                  GTGlobals::UseMethod useMethod = GTGlobals::UseMouse);
 
-    virtual void commonScenario();
+    void commonScenario() override;
 
 protected:
     QStringList namePath;

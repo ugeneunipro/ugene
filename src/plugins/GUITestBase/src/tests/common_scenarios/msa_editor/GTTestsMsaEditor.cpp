@@ -4332,7 +4332,7 @@ GUI_TEST_CLASS_DEFINITION(test_0075) {
     QImage initialImage = GTWidget::getImage(os, overview);
 
     //  Use context menu on overview: {Calculation method->Clustal}
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Calculation method", "Clustal"}, GTGlobals::UseKeyBoard));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Calculation method", "Clustal"}, GTGlobals::UseKey));
     GTMenu::showContextMenu(os, overview);
 
     //  Check that image was changed.
@@ -4341,7 +4341,7 @@ GUI_TEST_CLASS_DEFINITION(test_0075) {
     GTUtilsTaskTreeView::waitTaskFinished(os);
 
     // Switch to 'histogram' mode.
-    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Display settings", "Graph type", "Histogram"}, GTGlobals::UseKeyBoard));
+    GTUtilsDialog::waitForDialog(os, new PopupChooser(os, {"Display settings", "Graph type", "Histogram"}, GTGlobals::UseKey));
     GTMenu::showContextMenu(os, overview);
     GTUtilsTaskTreeView::waitTaskFinished(os);
     QImage histogramModeImage = GTWidget::getImage(os, overview);
