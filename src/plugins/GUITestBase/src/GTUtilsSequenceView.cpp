@@ -216,7 +216,7 @@ int GTUtilsSequenceView::getLengthOfSequence(HI::GUITestOpStatus &os) {
 }
 #undef GT_METHOD_NAME
 
-int GTUtilsSequenceView::getVisiableStart(HI::GUITestOpStatus &os, int widgetNumber) {
+int GTUtilsSequenceView::getVisibleStart(HI::GUITestOpStatus &os, int widgetNumber) {
     return getSeqWidgetByNumber(os, widgetNumber)->getDetView()->getVisibleRange().startPos;
 }
 
@@ -489,7 +489,7 @@ void GTUtilsSequenceView::clickAnnotationDet(HI::GUITestOpStatus &os, const QStr
 #undef GT_METHOD_NAME
 
 #define GT_METHOD_NAME "clickAnnotationPan"
-void GTUtilsSequenceView::clickAnnotationPan(HI::GUITestOpStatus &os, QString name, int startpos, int number, const bool isDoubleClick, Qt::MouseButton button) {
+void GTUtilsSequenceView::clickAnnotationPan(HI::GUITestOpStatus &os, QString name, int startPos, int number, const bool isDoubleClick, Qt::MouseButton button) {
     ADVSingleSequenceWidget *seq = getSeqWidgetByNumber(os, number);
     GSequenceLineViewRenderArea *area = seq->getPanView()->getRenderArea();
     PanViewRenderArea *pan = dynamic_cast<PanViewRenderArea *>(area);
@@ -503,13 +503,13 @@ void GTUtilsSequenceView::clickAnnotationPan(HI::GUITestOpStatus &os, QString na
         foreach (Annotation *a, ao->getAnnotations()) {
             const int sp = a->getLocation().data()->regions.first().startPos;
             const QString annName = a->getName();
-            if (sp == startpos - 1 && annName == name) {
+            if (sp == startPos - 1 && annName == name) {
                 anns << a;
             }
         }
     }
-    GT_CHECK(anns.size() != 0, QString("Annotation with name %1 and startPos %2").arg(name).arg(startpos));
-    GT_CHECK(anns.size() == 1, QString("Several annotation with name %1 and startPos %2. Number is: %3").arg(name).arg(startpos).arg(anns.size()));
+    GT_CHECK(anns.size() != 0, QString("Annotation with name %1 and startPos %2").arg(name).arg(startPos));
+    GT_CHECK(anns.size() == 1, QString("Several annotation with name %1 and startPos %2. Number is: %3").arg(name).arg(startPos).arg(anns.size()));
 
     Annotation *a = anns.first();
 
@@ -598,6 +598,16 @@ void GTUtilsSequenceView::enableEditingMode(GUITestOpStatus &os, bool enable, in
             GTGlobals::sleep(200);
         }
     }
+}
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "insertSubsequence"
+void GTUtilsSequenceView::insertSubsequence(HI::GUITestOpStatus &os, qint64 offset, const QString &subsequence, bool isDirectStrand) {
+    makeDetViewVisible(os);
+    enableEditingMode(os, true);
+    setCursor(os, offset, isDirectStrand);
+    GTKeyboardDriver::keySequence(subsequence);
+    enableEditingMode(os, false);
 }
 #undef GT_METHOD_NAME
 
@@ -709,7 +719,16 @@ void GTUtilsSequenceView::clickOnDetView(HI::GUITestOpStatus &os) {
 
     GTGlobals::sleep(500);
 }
-#undef MIN_ANNOTATION_WIDTH
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "makeDetViewVisible"
+void GTUtilsSequenceView::makeDetViewVisible(HI::GUITestOpStatus &os) {
+    QToolButton *toggleDetViewButton = GTWidget::findToolButton(os, "show_hide_details_view");
+    if (!toggleDetViewButton->isChecked()) {
+        GTWidget::click(os, toggleDetViewButton);
+    }
+}
+#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

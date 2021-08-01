@@ -4825,6 +4825,21 @@ GUI_TEST_CLASS_DEFINITION(test_5905) {
     CHECK_SET_ERR(GTUtilsAnnotationsTreeView::getQualifierValue(os, "gc%", items[1]) == "35", "wrong gc percentage");
 }
 
+GUI_TEST_CLASS_DEFINITION(test_5941) {
+    GTFileDialog::openFile(os, testDir + "_common_data/regression/5941/5941.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    FindEnzymesDialogFiller::selectEnzymes(os, {"DraI"});
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsAnnotationsTreeView::checkNoAnnotations(os);
+
+    GTUtilsSequenceView::insertSubsequence(os, 3, "A");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    // Check that DraI annotation is present.
+    GTUtilsAnnotationsTreeView::findItem(os, "DraI");
+}
+
 GUI_TEST_CLASS_DEFINITION(test_5947) {
     //    1. Open "data/samples/PDB/1CF7.PDB".
     GTFileDialog::openFile(os, dataDir + "samples/PDB/1CF7.PDB");

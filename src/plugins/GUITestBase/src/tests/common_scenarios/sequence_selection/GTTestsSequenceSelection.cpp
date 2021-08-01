@@ -165,7 +165,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0003) {
     GTWidget::click(os, GTAction::button(os, zoom));
 
     //Expected state : the Zoom View has been zoomed to the region of the annotation location.
-    int start = GTUtilsSequenceView::getVisiableStart(os);
+    int start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start > 3000, "Location moved incorrect, first check");
 
     //4. Double - click on the "misc_feature" annotation with location(2..590) in the Annotations Editor.
@@ -174,7 +174,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0003) {
     //    Expected state:
     //    The Details View has been scrolled to the "misc_feature" location.The annotation has wide border.There is dashed selection of the region.
     //    The Zoom View has been scrolled to the "misc_feature" location.The annotation has wide border.There is blue selection for the region.
-    start = GTUtilsSequenceView::getVisiableStart(os);
+    start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start < 1000, "Location moved incorrect, second check");
 
     //5. In the Details View scroll to coordinate 5050. Double - click on the annotation located there.
@@ -186,7 +186,7 @@ GUI_TEST_CLASS_DEFINITION(double_click_test_0003) {
     //    Expected state :
     //    The Zoom View has been scrolled to the fourth CDS annotation.The annotation has wide border.There is blue selection for the region.
     //    The fourth CDS annotation is selected in the Annotations Editor.
-    start = GTUtilsSequenceView::getVisiableStart(os);
+    start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start > 4500, "Location moved incorrect, third check");
 }
 
@@ -674,7 +674,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0004) {
     GTWidget::click(os, GTAction::button(os, zoom));
 
     //    Expected state : the Zoom View has been zoomed to the region of the annotation location.
-    int start = GTUtilsSequenceView::getVisiableStart(os);
+    int start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start > 3000, "Location moved incorrect, first check");
 
     //4. Click on the "misc_feature" annotation with location(2..590) in the Annotations Editor.
@@ -683,7 +683,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0004) {
     //    Expected state :
     //    The Details View has been scrolled to the "misc_feature" location.The annotation has wide border.
     //    The Zoom View has been scrolled to the "misc_feature" location.The annotation has wide border.
-    start = GTUtilsSequenceView::getVisiableStart(os);
+    start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start < 1000, "Location moved incorrect, second check");
 
     //5. In the Details View scroll to coordinate 5050. Click on the annotation located there.
@@ -695,7 +695,7 @@ GUI_TEST_CLASS_DEFINITION(one_click_test_0004) {
     //    Expected state :
     //    The Zoom View has been scrolled to the fourth CDS annotation.The annotation has wide border.
     //    The fourth CDS annotation is selected in the Annotations Editor.
-    start = GTUtilsSequenceView::getVisiableStart(os);
+    start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start > 4500, "Location moved incorrect, third check");
 }
 
