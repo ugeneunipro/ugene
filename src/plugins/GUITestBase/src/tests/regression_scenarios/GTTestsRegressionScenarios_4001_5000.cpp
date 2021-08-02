@@ -6003,12 +6003,12 @@ GUI_TEST_CLASS_DEFINITION(test_4983) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_4985) {
-    // Create file _common_data/scenarios/sandbox/A.fa with text "A"
-    // Open this file
-    // Delete this file from hard disk
-    // "File Modification Detected" dialog appears. Click "No"
-    // On Start Page open recent file A.fa
-    //      Expected: error message box with text "File doesn't exist: _common_data\scenarios\sandbox\a.fa" appears
+    // Create a file _common_data/scenarios/sandbox/A.fa with text "A".
+    // Open this file.
+    // Delete this file from hard disk.
+    // "File Modification Detected" dialog appears. Click "No".
+    // On Start Page open recent file A.fa.
+    // Expected: error message box with text "File doesn't exist: _common_data\scenarios\sandbox\a.fa" appears
 
     QString filePath = testDir + "_common_data/scenarios/sandbox/A.fa";
     IOAdapterUtils::writeTextFile(filePath, "A");
@@ -6021,8 +6021,8 @@ GUI_TEST_CLASS_DEFINITION(test_4985) {
     GTUtilsDialog::waitForDialog(os, new MessageBoxNoToAllOrNo(os));
     GTUtilsStartPage::openStartPage(os);
 
-    QString expected = "File doesn't exist: " + QFileInfo(filePath).absoluteFilePath();
-    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, QMessageBox::Ok, expected));
+    QString expected = "does not exist";
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "OK", expected));
     GTWidget::click(os, GTWidget::findLabelByText(os, "- A.fa").first());
 }
 
