@@ -806,7 +806,7 @@ QAction *ProjectLoaderImpl::getAddExistingDocumentAction() {
 }
 
 void ProjectLoaderImpl::runOpenRecentFileOrProjectTask(const GUrl &url) {
-    QString urlString = url.getURLString();
+    const QString& urlString = url.getURLString();
     if (url.isLocalFile()) {
         QFileInfo fileInfo(urlString);
         QString question = !fileInfo.exists() ? tr("The path %1 does not exist.").arg(fileInfo.absoluteFilePath())
@@ -819,7 +819,7 @@ void ProjectLoaderImpl::runOpenRecentFileOrProjectTask(const GUrl &url) {
             return;
         }
     }
-    auto task = createProjectLoadingTask({url});
+    auto task = openWithProjectTask({url});
     if (task != nullptr) {
         AppContext::getTaskScheduler()->registerTopLevelTask(task);
     }
