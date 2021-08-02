@@ -105,6 +105,7 @@ private:
     }
 
     QString regionToString(const U2Region& region, bool isComplement) const;
+    QString getPairReport(U2Region forward, U2Region reverse, const QString &primerName) const;
 
 
     PCRPrimerDesignForDNAAssemblyTaskSettings settings;
