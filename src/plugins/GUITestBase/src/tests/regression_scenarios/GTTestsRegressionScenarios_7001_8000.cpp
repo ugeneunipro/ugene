@@ -26,6 +26,7 @@
 #include <primitives/GTComboBox.h>
 #include <primitives/GTMenu.h>
 #include <primitives/GTRadioButton.h>
+#include <primitives/GTTextEdit.h>
 #include <primitives/GTToolbar.h>
 #include <primitives/GTWidget.h>
 #include <primitives/PopupChooser.h>
@@ -40,6 +41,7 @@
 
 #include "GTTestsRegressionScenarios_7001_8000.h"
 #include "GTUtilsDocument.h"
+#include "GTUtilsLog.h"
 #include "GTUtilsMcaEditor.h"
 #include "GTUtilsMdi.h"
 #include "GTUtilsMsaEditor.h"
@@ -52,6 +54,7 @@
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
 #include "api/GTMSAEditorStatusWidget.h"
+#include "api/GTRegionSelector.h"
 #include "base_dialogs/MessageBoxFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/AppSettingsDialogFiller.h"
 #include "runnables/ugene/corelibs/U2Gui/ImportACEFileDialogFiller.h"
@@ -583,6 +586,61 @@ GUI_TEST_CLASS_DEFINITION(test_7293) {
     GTUtilsDialog::waitForDialog(os, new DocumentFormatSelectorDialogFiller(os, new CheckDocumentFormatSelectorTextScenario()));
     GTUtilsDialog::waitForDialog(os, new GTFileDialogUtils(os, testDir + "_common_data/fasta/utf16be.fa"));
     GTMenu::clickMainMenuItem(os, {"File", "Open as..."});
+}
+
+GUI_TEST_CLASS_DEFINITION(test_7360) {
+    // Open _common_data/fasta/fa1.fa.
+    // Call Smith-Waterman dialog:
+    //     Pattern: A,
+    //     Search in: Translation,
+    //     Region: 1-1,
+    //     Algorithm version: CUDA.
+    // Search.
+    //     Expected: no crash.
+
+    // Call Smith-Waterman dialog:
+    //     Pattern: AA,
+    //     Search in: Translation,
+    //     Region: Whole sequence,
+    //     Algorithm version: CUDA.
+    // Search.
+    //     Expected: no crash.
+#ifdef SW2_BUILD_WITH_CUDA
+    class SwCudaScenario : public CustomScenario {
+    public:
+        SwCudaScenario(const QString &pattern, bool isWholeSequence)
+            : pattern(pattern), region() {
+            if (!isWholeSequence) {
+                region = GTRegionSelector::RegionSelectorSettings(1, 1);
+            }
+        }
+
+        void run(GUITestOpStatus &os) override {
+            QWidget *dialog = GTWidget::getActiveModalWidget(os);
+            GTTextEdit::setText(os, GTWidget::findExactWidget<QTextEdit *>(os, "teditPattern", dialog), pattern);
+            GTRadioButton::click(os, "radioTranslation", dialog);
+            GTRegionSelector::setRegion(os, GTWidget::findExactWidget<RegionSelector *>(os, "range_selector", dialog), region);
+            GTComboBox::selectItemByText(os, GTWidget::findExactWidget<QComboBox *>(os, "comboRealization", dialog), "CUDA");
+            GTUtilsDialog::clickButtonBox(os, dialog, QDialogButtonBox::Ok);
+        }
+
+    private:
+        QString pattern;
+        GTRegionSelector::RegionSelectorSettings region;
+    };
+    GTFileDialog::openFile(os, testDir + "_common_data/fasta/fa1.fa");
+    GTUtilsSequenceView::checkSequenceViewWindowIsActive(os);
+
+    const GTLogTracer logA;
+    GTUtilsDialog::waitForDialog(os, new Filler(os, "SmithWatermanDialogBase", new SwCudaScenario("A", false)));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
+    GTUtilsLog::checkContainsError(os, logA, "Pattern length (1) is longer than search sequence length (0).");
+
+    const GTLogTracer logAa;
+    GTUtilsDialog::waitForDialog(os, new Filler(os, "SmithWatermanDialogBase", new SwCudaScenario("AA", true)));
+    GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
+    GTUtilsLog::checkContainsError(os, logAa, "Pattern length (2) is longer than search sequence length (1).");
+#endif    //SW2_BUILD_WITH_CUDA
 }
 
 }    // namespace GUITest_regression_scenarios

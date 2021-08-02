@@ -25,5 +25,8 @@ macx {
     LIBS += -framework AppKit
 }
 
+use_cuda() {
+    DEFINES += SW2_BUILD_WITH_CUDA
+}
 
 

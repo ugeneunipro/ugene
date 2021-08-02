@@ -309,6 +309,10 @@ void GUITestBasePlugin::registerTests(UGUITestBase *guiTestBase) {
         REGISTER_TEST(GUITest_regression_scenarios::test_5138_2);
     }
 
+#ifdef SW2_BUILD_WITH_CUDA
+    REGISTER_TEST(GUITest_regression_scenarios::test_7360);    // Smith--Waterman CUDA
+#endif    //SW2_BUILD_WITH_CUDA
+
     //////////////////////////////////////////////////////////////////////////
     // Regression scenarios/
     //////////////////////////////////////////////////////////////////////////
