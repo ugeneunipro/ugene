@@ -45,6 +45,8 @@ public:
     QString generateReport() const override;
 
     QList<U2Region> getResults() const;
+    QByteArray getBackboneSequence() const;
+    const PCRPrimerDesignForDNAAssemblyTaskSettings& getSettings() const;
 
     static const QStringList FRAGMENT_INDEX_TO_NAME;
 

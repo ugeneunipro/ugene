@@ -67,6 +67,27 @@ void PCRPrimerProductTable::setAnnotationGroup(AnnotationGroup *_associatedGroup
     associatedGroup = _associatedGroup;
 }
 
+Annotation* PCRPrimerProductTable::getSelectedAnnotation() const {
+    Annotation *selectedAnnotation = nullptr;
+    QModelIndexList selectedIndexesList = selectedIndexes();
+    if (selectedIndexesList.isEmpty()) {
+        return selectedAnnotation;
+    }
+    //one row = 2 items
+    CHECK(selectedIndexesList.size() == 2, selectedAnnotation);
+    QTableWidgetItem *selectedItem = item(selectedIndexesList.first().row(), 0);
+    QString selectedFragmentName = selectedItem->text();
+
+    auto annotations = associatedGroup->getAnnotations();
+    for (auto a : qAsConst(annotations)) {
+        if (a->getName() == selectedFragmentName) {
+            selectedAnnotation = a;
+            break;
+        }
+    }
+    return selectedAnnotation;
+}
+
 PCRPrimerProductTableData PCRPrimerProductTable::getPCRPrimerProductTableData() const {
     PCRPrimerProductTableData data;
     data.associatedGroup = associatedGroup;
@@ -76,29 +97,14 @@ PCRPrimerProductTableData PCRPrimerProductTable::getPCRPrimerProductTableData() 
 }
 
 void PCRPrimerProductTable::sl_selectionChanged() {
-    QModelIndexList selectedIndexesList = selectedIndexes();
-    if (selectedIndexesList.isEmpty()) {
-        return;
-    }
-    //one row = 2 items
-    CHECK(selectedIndexesList.size() == 2, );
-    QTableWidgetItem *selectedItem = item(selectedIndexesList.first().row(), 0);
-    QString selectedFragmentName = selectedItem->text();
-    
-    Annotation *selectedAnnotation = nullptr;
-    auto annotations = associatedGroup->getAnnotations();
-    for (auto a : qAsConst(annotations)) {
-        if (a->getName() == selectedFragmentName) {
-            selectedAnnotation = a;
-            break;
+    Annotation *selectedAnnotation = getSelectedAnnotation();
+    if (selectedAnnotation != nullptr) {
+        for (ADVSequenceObjectContext *context : associatedView->getSequenceContexts()) {
+            context->getAnnotationsSelection()->clear();
+            context->getSequenceSelection()->clear();
+            context->emitClearSelectedAnnotationRegions();
+            context->emitAnnotationActivated(selectedAnnotation, 0);
         }
-    }
-    CHECK(selectedAnnotation != nullptr, );
-    for (ADVSequenceObjectContext *context : associatedView->getSequenceContexts()) {
-        context->getAnnotationsSelection()->clear();
-        context->getSequenceSelection()->clear();
-        context->emitClearSelectedAnnotationRegions();
-        context->emitAnnotationActivated(selectedAnnotation, 0);
     }
 }
 

@@ -25,6 +25,7 @@
 #include <QWidget>
 
 #include "PCRPrimerDesignForDNAAssemblyOPSavableTab.h"
+#include "PCRPrimerDesignForDNAAssemblyTaskSettings.h"
 #include "ui_PCRPrimerDesignForDNAAssemblyOPWidget.h"
 
 namespace U2 {
@@ -86,6 +87,10 @@ private slots:
      */
     void sl_loadOtherSequenceInPcr();
     void sl_onFindTaskFinished();
+    /*
+    * Extract result product to file.
+    */
+    void sl_extractProduct();
 
 private:
     void createResultAnnotations();
@@ -114,6 +119,8 @@ private:
     //"Parameters of priming sequences" and "Parameters to exclude in whole primers" has set of parameters.
     //This map contains spinboxes with minimum values as keys and spinboxes with maximum values as values.
     QMap<QSpinBox*, QSpinBox*> parametersMinMaxSpinBoxes;
+    PCRPrimerDesignForDNAAssemblyTaskSettings lastRunSettings;
+    QByteArray backboneSequence;
 
     static const QString USER_PRIMERS_SHOW_HIDE_ID;
     static const QString PARAMETERS_OF_PRIMING_SEQUENCES_SHOW_HIDE_ID;
