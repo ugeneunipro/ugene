@@ -30,6 +30,7 @@ namespace U2 {
 
 class AnnotatedDNAView;
 class AnnotationGroup;
+class Annotation;
 
 struct PCRPrimerProductTableData {
     AnnotatedDNAView *associatedView = nullptr;
@@ -44,6 +45,7 @@ public:
 
     void setCurrentProducts(const QList<U2Region> &currentProducts, AnnotatedDNAView *associatedView);
     void setAnnotationGroup(AnnotationGroup *associatedGroup);
+    Annotation* getSelectedAnnotation() const;
     PCRPrimerProductTableData getPCRPrimerProductTableData() const;
     
     static constexpr int MAXIMUM_ROW_COUNT = 8;

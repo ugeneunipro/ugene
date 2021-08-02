@@ -20,12 +20,14 @@
  */
 
 #include "PCRPrimerDesignForDNAAssemblyOPWidget.h"
+#include "tasks/ExtractPrimerTask.h"
 #include "tasks/PCRPrimerDesignForDNAAssemblyTask.h"
 
 #include <U2Core/BaseDocumentFormats.h>
 #include <U2Core/DNAAlphabet.h>
 #include <U2Core/DNASequenceObject.h>
 #include <U2Core/DNASequenceSelection.h>
+#include <U2Core/DocumentModel.h>
 #include <U2Core/GObjectTypes.h>
 #include <U2Core/L10n.h>
 #include <U2Core/U2DbiRegistry.h>
@@ -138,6 +140,7 @@ PCRPrimerDesignForDNAAssemblyOPWidget::PCRPrimerDesignForDNAAssemblyOPWidget(Ann
         &PCRPrimerDesignForDNAAssemblyOPWidget::sl_sequenceModified);
     connect(annDnaView->getActiveSequenceContext()->getSequenceObject(), &U2SequenceObject::si_sequenceChanged, this,
         &PCRPrimerDesignForDNAAssemblyOPWidget::sl_sequenceModified);
+    connect(productsTable, SIGNAL(doubleClicked(const QModelIndex &)), SLOT(sl_extractProduct()));
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::sl_activeSequenceChanged() {
@@ -348,7 +351,33 @@ void PCRPrimerDesignForDNAAssemblyOPWidget::sl_onFindTaskFinished() {
     CHECK(pcrTask->isFinished(), );
     productsTable->setCurrentProducts(pcrTask->getResults(), annDnaView);
     createResultAnnotations();
+    backboneSequence = pcrTask->getBackboneSequence();
+    lastRunSettings = pcrTask->getSettings();
     pcrTask = nullptr;
+}
+
+void PCRPrimerDesignForDNAAssemblyOPWidget::sl_extractProduct() {
+    ADVSequenceObjectContext *sequenceContext = annDnaView->getActiveSequenceContext();
+    SAFE_POINT(nullptr != sequenceContext, L10N::nullPointerError("Sequence Context"), );
+    U2SequenceObject *sequenceObject = sequenceContext->getSequenceObject();
+    SAFE_POINT(nullptr != sequenceObject, L10N::nullPointerError("Sequence Object"), );
+    ExtractPrimerTaskSettings settings;
+    settings.sequenceRef = sequenceContext->getSequenceRef();
+    GUrl sequenceURL = sequenceContext->getSequenceObject()->getDocument()->getURL();
+    if (sequenceURL.getType() == GUrl_File) {
+        settings.originalSequenceFileName = QFileInfo(sequenceURL.getURLString()).baseName();
+    } else {
+        settings.originalSequenceFileName = sequenceContext->getSequenceObject()->getSequenceName();
+    }
+    settings.direction = lastRunSettings.insertTo;
+    settings.backboneSequence = backboneSequence;
+    Annotation *selectedAnnotation = productsTable->getSelectedAnnotation();
+    if (selectedAnnotation != nullptr) {
+        CHECK(selectedAnnotation->getRegions().size() == 1, );
+        settings.fragmentLocation = selectedAnnotation->getRegions().first();
+        settings.fragmentName = selectedAnnotation->getName();
+        AppContext::getTaskScheduler()->registerTopLevelTask(new ExtractPrimerAndOpenDocumentTask(settings));
+    }
 }
 
 void PCRPrimerDesignForDNAAssemblyOPWidget::createResultAnnotations() {
