@@ -67,6 +67,12 @@ class U2OpStatus;
 class U2CORE_EXPORT ProjectLoader : public QObject {
 public:
     /**
+     * Runs openWithProjectTask for the recent files/projects list item.
+     * If the the with the given URL does not exist asks if to remove if from the recent files list.
+     */
+    virtual void runOpenRecentFileOrProjectTask(const GUrl &url) = 0;
+
+    /**
         Opens files and adds them to the current project. If project does not exists - creates anonymous one
         If the file is project file - loads it.
     */
@@ -75,7 +81,10 @@ public:
     /** Creates new project. If URL is empty the project created is anonymous */
     virtual Task *createNewProjectTask(const GUrl &url = GUrl()) = 0;
 
-    /** Loads project from the specified location */
+    /**
+     * Returns a task to load a project or a document.
+     * The method may return nullptr if something went wrong: for example the project/document is already loaded.
+     */
     virtual Task *createProjectLoadingTask(const GUrl &url, const QVariantMap &hints = QVariantMap()) = 0;
 
     /** Creates new project instance */

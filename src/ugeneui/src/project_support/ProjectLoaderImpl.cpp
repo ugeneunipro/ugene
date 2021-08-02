@@ -45,7 +45,6 @@
 #include <U2Core/QObjectScopedPointer.h>
 #include <U2Core/ServiceTypes.h>
 #include <U2Core/Settings.h>
-#include <U2Core/TaskSignalMapper.h>
 #include <U2Core/U2OpStatusUtils.h>
 #include <U2Core/U2SafePoints.h>
 
@@ -58,7 +57,6 @@
 #include <U2Gui/OpenViewTask.h>
 #include <U2Gui/PasteController.h>
 #include <U2Gui/ProjectUtils.h>
-#include <U2Gui/ProjectView.h>
 #include <U2Gui/SearchGenbankSequenceDialogController.h>
 #include <U2Gui/SharedConnectionsDialog.h>
 #include <U2Gui/U2FileDialog.h>
@@ -112,10 +110,10 @@ ProjectLoaderImpl::ProjectLoaderImpl() {
     addExistingDocumentAction->setShortcutContext(Qt::ApplicationShortcut);
     connect(addExistingDocumentAction, SIGNAL(triggered()), SLOT(sl_onAddExistingDocument()));
 
-    newDocumentFromtext = new QAction(QIcon(), tr("New document from text..."), this);
-    newDocumentFromtext->setObjectName("NewDocumentFromText");
-    newDocumentFromtext->setShortcutContext(Qt::WindowShortcut);
-    connect(newDocumentFromtext, SIGNAL(triggered()), SLOT(sl_newDocumentFromText()));
+    newDocumentFromTextAction = new QAction(QIcon(), tr("New document from text..."), this);
+    newDocumentFromTextAction->setObjectName("NewDocumentFromText");
+    newDocumentFromTextAction->setShortcutContext(Qt::WindowShortcut);
+    connect(newDocumentFromTextAction, SIGNAL(triggered()), SLOT(sl_newDocumentFromText()));
 
     pasteAction = new QAction(QIcon(":ugene/images/paste.png"), tr("Open from clipboard..."), this);
     pasteAction->setObjectName(ACTION_PROJECTSUPPORT__PASTE);
@@ -125,7 +123,7 @@ ProjectLoaderImpl::ProjectLoaderImpl() {
 
     openProjectAction = new QAction(QIcon(":ugene/images/project_open.png"), tr("Open..."), this);
     openProjectAction->setObjectName(ACTION_PROJECTSUPPORT__OPEN_PROJECT);
-    openProjectAction->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_O));
+    openProjectAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_O));
     openProjectAction->setShortcutContext(Qt::WindowShortcut);
     connect(openProjectAction, SIGNAL(triggered()), SLOT(sl_openProject()));
 
@@ -171,7 +169,7 @@ ProjectLoaderImpl::ProjectLoaderImpl() {
 
     QList<QAction *> actions;
     actions << newProjectAction
-            << newDocumentFromtext
+            << newDocumentFromTextAction
             << newSectionSeparator
             << openProjectAction
             << addExistingDocumentAction
@@ -261,22 +259,16 @@ void ProjectLoaderImpl::sl_openProject() {
 
 void ProjectLoaderImpl::sl_openRecentProject() {
     QAction *action = qobject_cast<QAction *>(sender());
-    assert(action);
+    SAFE_POINT(action != nullptr, "sl_openRecentProject action is null!", );
     QString url = action->data().toString();
-    AppContext::getTaskScheduler()->registerTopLevelTask(new OpenProjectTask(url));
+    runOpenRecentFileOrProjectTask(url);
 }
 
 void ProjectLoaderImpl::sl_openRecentFile() {
     QAction *action = qobject_cast<QAction *>(sender());
-    assert(action);
+    SAFE_POINT(action != nullptr, "sl_openRecentFile action is null!", );
     GUrl url = action->data().toString();
-    Task *task = ProjectLoader::openWithProjectTask(url);
-    if (task == nullptr) {
-        return;
-    }
-    AppContext::getTaskScheduler()->registerTopLevelTask(task);
-    prependToRecentItems(url.getURLString());
-    updateRecentItemsMenu();
+    runOpenRecentFileOrProjectTask(url);
 }
 
 void ProjectLoaderImpl::prependToRecentProjects(const QString &url) {
@@ -293,16 +285,46 @@ void ProjectLoaderImpl::prependToRecentProjects(const QString &url) {
     emit si_recentListChanged();
 }
 
+void ProjectLoaderImpl::removeUrlFromRecentItems(const GUrl &url) {
+    SAFE_POINT(!url.isEmpty(), "URL is empty", );
+    bool isRecentProjectsChanged = false;
+    Settings *appSettings = AppContext::getSettings();
+    QStringList recentProjects = appSettings->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME).toStringList();
+    for (int i = recentProjects.size(); --i >= 0;) {
+        if (GUrl(recentProjects[i]) == url) {
+            recentProjects.removeAt(i);
+            isRecentProjectsChanged = true;
+        }
+    }
+    if (isRecentProjectsChanged) {
+        appSettings->setValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME, recentProjects);
+    }
+    bool isRecentFilesChanged = false;
+    QStringList recentFiles = appSettings->getValue(SETTINGS_DIR + RECENT_ITEMS_SETTINGS_NAME).toStringList();
+    for (int i = recentFiles.size(); --i >= 0;) {
+        if (GUrl(recentFiles[i]) == url) {
+            recentFiles.removeAt(i);
+            isRecentFilesChanged = true;
+        }
+    }
+    if (isRecentFilesChanged) {
+        appSettings->setValue(SETTINGS_DIR + RECENT_ITEMS_SETTINGS_NAME, recentFiles);
+    }
+    if (isRecentProjectsChanged || isRecentFilesChanged) {
+        updateRecentItemsMenu();
+        emit si_recentListChanged();
+    }
+}
+
 void ProjectLoaderImpl::updateRecentProjectsMenu() {
-    assert(recentProjectsMenu != nullptr);
+    SAFE_POINT(recentProjectsMenu != nullptr, "recentProjectsMenu is null", );
     recentProjectsMenu->clear();
     QStringList recentFiles = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_PROJECTS_SETTINGS_NAME).toStringList();
     Project *p = AppContext::getProject();
-    foreach (QString f, recentFiles) {
-        if ((p == nullptr || f != p->getProjectURL()) && !f.isEmpty()) {
-            QAction *a = recentProjectsMenu->addAction(f, this, SLOT(sl_openRecentProject()));
-            a->setData(f);
-            a->setDisabled(!QFile::exists(f));
+    for (const QString &url : recentFiles) {
+        if ((p == nullptr || url != p->getProjectURL()) && !url.isEmpty()) {
+            QAction *a = recentProjectsMenu->addAction(url, this, SLOT(sl_openRecentProject()));
+            a->setData(url);
         }
     }
 }
@@ -432,7 +454,7 @@ Task *ProjectLoaderImpl::openWithProjectTask(const QList<GUrl> &_urls, const QVa
     // detect if we open real UGENE project file
     bool projectsOnly = true;
     foreach (const GUrl &url, urls) {
-        projectsOnly = projectsOnly && url.lastFileSuffix() == PROJECT_FILE_PURE_EXT;
+        projectsOnly = projectsOnly && isProjectFileUrl(url);
         if (!projectsOnly) {
             break;
         }
@@ -483,7 +505,7 @@ Task *ProjectLoaderImpl::openWithProjectTask(const QList<GUrl> &_urls, const QVa
     QList<AD2P_ProviderInfo> docProviders;
     int nViews = 0;
     foreach (const GUrl &url, urls) {
-        if (url.lastFileSuffix() == PROJECT_FILE_PURE_EXT) {
+        if (isProjectFileUrl(url.lastFileSuffix())) {
             // skip extra project files
             coreLog.info(tr("Project file '%1' ignored").arg(url.getURLString()));
             continue;
@@ -669,6 +691,10 @@ void ProjectLoaderImpl::rememberProjectURL() {
     updateRecentProjectsMenu();
 }
 
+bool ProjectLoaderImpl::isProjectFileUrl(const GUrl &url) {
+    return url.lastFileSuffix() == PROJECT_FILE_PURE_EXT;
+}
+
 void ProjectLoaderImpl::sl_serviceStateChanged(Service *s, ServiceState prevState) {
     Q_UNUSED(prevState);
 
@@ -705,22 +731,16 @@ void ProjectLoaderImpl::prependToRecentItems(const QString &url) {
     emit si_recentListChanged();
 }
 
-// QT 4.5.0 bug workaround
-void ProjectLoaderImpl::sl_updateRecentItemsMenu() {
-    updateRecentItemsMenu();
-}
-
 void ProjectLoaderImpl::updateRecentItemsMenu() {
-    assert(recentItemsMenu != nullptr);
+    SAFE_POINT(recentItemsMenu != nullptr, "updateRecentItemsMenu is nullptr", );
     recentItemsMenu->clear();
     QStringList recentFiles = AppContext::getSettings()->getValue(SETTINGS_DIR + RECENT_ITEMS_SETTINGS_NAME).toStringList();
     recentItemsMenu->menuAction()->setEnabled(!recentFiles.isEmpty());
     Project *p = AppContext::getProject();
-    foreach (QString f, recentFiles) {
-        if ((p == nullptr || f != p->getProjectURL()) && !f.isEmpty()) {
-            QAction *a = recentItemsMenu->addAction(f, this, SLOT(sl_openRecentFile()));
-            a->setData(f);
-            a->setDisabled(!QFile::exists(f));
+    for (const QString &url : qAsConst(recentFiles)) {
+        if ((p == nullptr || url != p->getProjectURL()) && !url.isEmpty()) {
+            QAction *a = recentItemsMenu->addAction(url, this, SLOT(sl_openRecentFile()));
+            a->setData(url);
         }
     }
 }
@@ -781,6 +801,36 @@ void ProjectLoaderImpl::sl_searchGenbankEntry() {
     dlg->exec();
 }
 
+QAction *ProjectLoaderImpl::getAddExistingDocumentAction() {
+    return addExistingDocumentAction;
+}
+
+void ProjectLoaderImpl::runOpenRecentFileOrProjectTask(const GUrl &url) {
+    QString urlString = url.getURLString();
+    if (url.isLocalFile()) {
+        QFileInfo fileInfo(urlString);
+        QString question = !fileInfo.exists() ? tr("The path %1 does not exist.").arg(fileInfo.absoluteFilePath())
+                                              : (!fileInfo.isReadable() ? tr("The path %1 is not readable.").arg(fileInfo.absoluteFilePath()) : "");
+        if (!question.isEmpty()) {
+            int rc = QMessageBox::question(nullptr, L10N::errorTitle(), question, tr("OK"), tr("Remove From List"));
+            if (rc == 1) {    // The second button (Remove From List).
+                removeUrlFromRecentItems(url);
+            }
+            return;
+        }
+    }
+    auto task = createProjectLoadingTask({url});
+    if (task != nullptr) {
+        AppContext::getTaskScheduler()->registerTopLevelTask(task);
+    }
+    if (isProjectFileUrl(url)) {
+        prependToRecentProjects(urlString);
+    } else {
+        prependToRecentItems(urlString);
+    }
+    updateRecentItemsMenu();
+}
+
 //////////////////////////////////////////////////////////////////////////
 //WelcomePageActions
 //////////////////////////////////////////////////////////////////////////
@@ -807,7 +857,7 @@ void CreateSequenceWelcomePageAction::perform() {
 //////////////////////////////////////////////////////////////////////////
 
 SaveProjectDialogController::SaveProjectDialogController(QWidget *w)
-    : QDialog(w) {
+    : QDialog(w), Ui_SaveProjectDialog() {
     setupUi(this);
     setModal(true);
     buttonBox->button(QDialogButtonBox::Yes)->setText(tr("Yes"));
@@ -825,7 +875,7 @@ void SaveProjectDialogController::sl_clicked(QAbstractButton *button) {
 //ProjectDialogController
 //////////////////////////////////////////////////////////////////////////
 ProjectDialogController::ProjectDialogController(ProjectDialogController::Mode m, QWidget *p)
-    : QDialog(p) {
+    : QDialog(p), Ui_CreateNewProjectDialog() {
     setupUi(this);
     new HelpButton(this, buttonBox, "65929273");
     buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Create"));
@@ -1010,10 +1060,6 @@ QString AddDocumentsToProjectTask::generateReport() const {
     QString warnings = stateInfo.getWarnings().join("<br>");
     warnings.replace("\n", "<br>");
     return warnings;
-}
-
-const QList<AD2P_DocumentInfo> &AddDocumentsToProjectTask::getDocsInfoList() const {
-    return docsInfo;
 }
 
 QList<Task *> AddDocumentsToProjectTask::prepareLoadTasks() {

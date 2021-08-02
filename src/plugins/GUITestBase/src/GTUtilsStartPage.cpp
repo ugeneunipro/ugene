@@ -21,14 +21,24 @@
 
 #include "GTUtilsStartPage.h"
 
+#include <U2Gui/HoverQLabel.h>
+
 #include "GTUtilsMdi.h"
 
 namespace U2 {
 #define GT_CLASS_NAME "GTUtilsStartPage"
 
+#define GT_METHOD_NAME "openStartPage"
 void GTUtilsStartPage::openStartPage(HI::GUITestOpStatus &os) {
     GTUtilsMdi::activateWindow(os, "Start Page");
 }
+#undef GT_METHOD_NAME
+
+#define GT_METHOD_NAME "checkRecentListUrl"
+void GTUtilsStartPage::checkRecentListUrl(HI::GUITestOpStatus &os, const QString &urlPart, bool isPresent) {
+    GTWidget::findLabelByText(os, urlPart, nullptr, {isPresent});
+}
+#undef GT_METHOD_NAME
 
 #undef GT_CLASS_NAME
 

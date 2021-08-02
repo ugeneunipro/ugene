@@ -46,17 +46,17 @@ class ProjectLoaderImpl : public ProjectLoader {
 public:
     ProjectLoaderImpl();
 
-    virtual Task *openWithProjectTask(const QList<GUrl> &urls, const QVariantMap &hints = QVariantMap());
+    void runOpenRecentFileOrProjectTask(const GUrl &url) override;
 
-    virtual Task *createNewProjectTask(const GUrl &url = GUrl());
+    Task *openWithProjectTask(const QList<GUrl> &urls, const QVariantMap &hints = QVariantMap()) override;
 
-    virtual Task *createProjectLoadingTask(const GUrl &url, const QVariantMap &hints = QVariantMap());
+    Task *createNewProjectTask(const GUrl &url = GUrl()) override;
 
-    virtual Project *createProject(const QString &name, const QString &url, QList<Document *> &documents, QList<GObjectViewState *> &states);
+    Task *createProjectLoadingTask(const GUrl &url, const QVariantMap &hints = QVariantMap()) override;
 
-    virtual QAction *getAddExistingDocumentAction() {
-        return addExistingDocumentAction;
-    }
+    Project *createProject(const QString &name, const QString &url, QList<Document *> &documents, QList<GObjectViewState *> &states) override;
+
+    QAction *getAddExistingDocumentAction() override;
 
     static QString getLastProjectURL();
     static int getMaxObjectsInSingleDocument();
@@ -75,9 +75,16 @@ private:
     void updateState();
     void updateRecentProjectsMenu();
     void prependToRecentProjects(const QString &pFile);
+
+    /** Remove URL from both recent projects & documents list. */
+    void removeUrlFromRecentItems(const GUrl &url);
+
     void updateRecentItemsMenu();
     void prependToRecentItems(const QString &url);
     void rememberProjectURL();
+
+    /** Returns true if the url looks like a UGENE project file url. */
+    static bool isProjectFileUrl(const GUrl &url);
 
 private slots:
     void sl_newProject();
@@ -94,9 +101,6 @@ private slots:
     void sl_accessSharedDatabase();
     void sl_searchGenbankEntry();
 
-    // QT 4.5.0 bug workaround
-    void sl_updateRecentItemsMenu();
-
 private:
     QAction *addExistingDocumentAction;
     QAction *newProjectAction;
@@ -105,7 +109,7 @@ private:
     QAction *downloadRemoteFileAction;
     QAction *accessSharedDatabaseAction;
     QAction *searchGenbankEntryAction;
-    QAction *newDocumentFromtext;
+    QAction *newDocumentFromTextAction;
 
     QMenu *recentProjectsMenu;
     QMenu *recentItemsMenu;
@@ -126,7 +130,7 @@ private:
 class CreateSequenceWelcomePageAction : public WelcomePageAction {
 public:
     CreateSequenceWelcomePageAction(ProjectLoaderImpl *loader);
-    void perform();
+    void perform() override;
 
 private:
     QPointer<ProjectLoaderImpl> loader;
@@ -148,15 +152,17 @@ public slots:
 class ProjectDialogController : public QDialog, public Ui_CreateNewProjectDialog {
     Q_OBJECT
 public:
-    enum Mode { New_Project,
-                Save_Project };
+    enum Mode {
+        New_Project,
+        Save_Project,
+    };
     ProjectDialogController(Mode m, QWidget *p);
 
-    void accept();
+    void accept() override;
     void updateState();
 
 protected:
-    void keyPressEvent(QKeyEvent *event);
+    void keyPressEvent(QKeyEvent *event) override;
 
 private slots:
     void sl_fileSelectClicked();
@@ -198,9 +204,8 @@ public:
     AddDocumentsToProjectTask(const QList<AD2P_DocumentInfo> &docsInfo, const QList<AD2P_ProviderInfo> &providersInfo);
     ~AddDocumentsToProjectTask();
 
-    virtual QList<Task *> onSubTaskFinished(Task *subTask);
-    virtual QString generateReport() const;
-    const QList<AD2P_DocumentInfo> &getDocsInfoList() const;
+    QList<Task *> onSubTaskFinished(Task *subTask) override;
+    QString generateReport() const override;
 
 private:
     QList<Task *> prepareLoadTasks();
@@ -215,7 +220,7 @@ class OpenWithProjectTask : public Task {
     Q_OBJECT
 public:
     OpenWithProjectTask(const QStringList &urls);
-    void prepare();
+    void prepare() override;
 
 private:
     QList<GUrl> urls;
