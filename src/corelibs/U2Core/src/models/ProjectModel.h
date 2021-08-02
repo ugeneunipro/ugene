@@ -68,7 +68,7 @@ class U2CORE_EXPORT ProjectLoader : public QObject {
 public:
     /**
      * Runs openWithProjectTask for the recent files/projects list item.
-     * If the the with the given URL does not exist asks if to remove if from the recent files list.
+     * If a project or a document with the given URL does not exist asks about removing it from the recent files list.
      */
     virtual void runOpenRecentFileOrProjectTask(const GUrl &url) = 0;
 
