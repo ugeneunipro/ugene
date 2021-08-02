@@ -199,6 +199,14 @@ QList<U2Region> PCRPrimerDesignForDNAAssemblyTask::getResults() const {
     return results;
 }
 
+QByteArray PCRPrimerDesignForDNAAssemblyTask::getBackboneSequence() const {
+    return backboneSequence;
+}
+
+const PCRPrimerDesignForDNAAssemblyTaskSettings& PCRPrimerDesignForDNAAssemblyTask::getSettings() const {
+    return settings;
+}
+
 QList<QByteArray> PCRPrimerDesignForDNAAssemblyTask::extractLoadedSequences(LoadDocumentTask* task) {
     auto doc = task->getDocument();
     CHECK_EXT(doc != nullptr, setError(tr("The file \"%1\" wasn't loaded").arg(task->getURL().getURLString())), { {} });
