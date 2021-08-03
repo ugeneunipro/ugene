@@ -24,6 +24,7 @@
 #include <U2Core/IOAdapter.h>
 #include <U2Core/IOAdapterTextStream.h>
 #include <U2Core/TextUtils.h>
+#include <U2Core/Timer.h>
 #include <U2Core/U2OpStatus.h>
 
 namespace U2 {
@@ -71,6 +72,7 @@ TextDocumentFormat::TextDocumentFormat(QObject *p, const DocumentFormatId &id, D
 }
 
 FormatCheckResult TextDocumentFormat::checkRawData(const QByteArray &rawBinaryData, const GUrl &url) const {
+    GTIMER(c1, t1, "TextDocumentFormat::checkRawData");
     QTextStream stream(rawBinaryData, QIODevice::ReadOnly);    // Use QTextStream to auto-detect multi-byte encoding.
     QString text = stream.readAll();
     // QTextStream does not provide any info if the codec was successfully detected or not and
@@ -92,6 +94,7 @@ FormatCheckResult TextDocumentFormat::checkRawData(const QByteArray &rawBinaryDa
 }
 
 Document *TextDocumentFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef, const QVariantMap &hints, U2OpStatus &os) {
+    GTIMER(c1, t1, "TextDocumentFormat::loadDocument");
     CHECK_OP(os, nullptr);
     IOAdapterReader reader(io);    // TODO: store codec in the result document hints.
     Document *document = loadTextDocument(reader, dbiRef, hints, os);
@@ -100,6 +103,7 @@ Document *TextDocumentFormat::loadDocument(IOAdapter *io, const U2DbiRef &dbiRef
 }
 
 DNASequence *TextDocumentFormat::loadSequence(IOAdapter *io, U2OpStatus &os) {
+    GTIMER(c1, t1, "TextDocumentFormat::loadSequence");
     CHECK_OP(os, nullptr);
     if (io->isEof()) {
         return nullptr;
@@ -114,6 +118,7 @@ DNASequence *TextDocumentFormat::loadTextSequence(IOAdapterReader &, U2OpStatus 
 }
 
 void TextDocumentFormat::storeDocument(Document *document, IOAdapter *io, U2OpStatus &os) {
+    GTIMER(c1, t1, "TextDocumentFormat::storeDocument");
     IOAdapterWriter writer(io);    // TODO: re-use original codec if possible (store it in the document hints while loading).
     storeTextDocument(writer, document, os);
 }

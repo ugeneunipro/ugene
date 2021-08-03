@@ -321,15 +321,20 @@ static void saveSequenceObject(IOAdapterWriter &writer, const U2SequenceObject *
     writeHeaderToFile(writer, sequence->getSequenceName(), os);
     CHECK_OP(os, );
     qint64 sequenceLength = sequence->getSequenceLength();
-    for (int i = 0; i < sequenceLength; i += FastaFormat::FASTA_SEQUENCE_LINE_LENGTH) {
-        qint64 chunkSize = qMin((qint64)FastaFormat::FASTA_SEQUENCE_LINE_LENGTH, sequenceLength - i);
+    // Reading DBI line-by-line is very expensive. Read by bigger chunks and split them into lines in memory.
+    qint64 maxChunkSize = 1000 * FastaFormat::FASTA_SEQUENCE_LINE_LENGTH;
+    for (int i = 0; i < sequenceLength; i += maxChunkSize) {
+        qint64 chunkSize = qMin(maxChunkSize, sequenceLength - i);
         U2Region region(i, chunkSize);
         QByteArray chunkContent = sequence->getSequenceData(region, os);
-        CHECK_OP(os, );
-        writer.write(os, QString::fromLatin1(chunkContent));
-        CHECK_OP(os, );
-        writer.write(os, "\n");
-        CHECK_OP(os, );
+        QList<QByteArray> lines = TextUtils::split(chunkContent, FastaFormat::FASTA_SEQUENCE_LINE_LENGTH);
+        for (const QByteArray &line : qAsConst(lines)) {
+            CHECK_OP(os, );
+            writer.write(os, QString::fromLatin1(line));
+            CHECK_OP(os, );
+            writer.write(os, "\n");
+            CHECK_OP(os, );
+        }
     }
 }
 

@@ -136,6 +136,9 @@ public:
     /** Splits text into chunks of the given length. */
     static QStringList split(const QString &text, int chunkSize);
 
+    /** Splits latin1 text into chunks of the given length. */
+    static QList<QByteArray> split(const QByteArray &text, int chunkSize);
+
     /** Returns first line found in the text with no line separtors. If there are no line separators returns the text itself. */
     static QString readFirstLine(const QString &text);
 

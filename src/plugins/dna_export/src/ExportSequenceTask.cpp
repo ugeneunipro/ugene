@@ -445,6 +445,8 @@ QList<ExportSequenceItem> getTranslatedItems(QList<ExportSequenceItem> &items, b
 }    // namespace
 
 void ExportSequenceTask::run() {
+    GTIMER(cvar, tvar, "ExportSequenceTask");
+
     DocumentFormat *format = AppContext::getDocumentFormatRegistry()->getFormatById(config.formatId);
     SAFE_POINT(format != nullptr, L10N::nullPointerError("sequence document format"), );
     IOAdapterFactory *iof = AppContext::getIOAdapterRegistry()->getIOAdapterFactoryById(IOAdapterUtils::url2io(config.fileName));
