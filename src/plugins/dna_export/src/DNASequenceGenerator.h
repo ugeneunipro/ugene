@@ -143,8 +143,8 @@ class GenerateDNASequenceTask : public Task {
 public:
     GenerateDNASequenceTask(const QMap<char, qreal> &baseContent_, int length_, int window_, int count_, int seed_);
 
-    void prepare();
-    void run();
+    void prepare() override;
+    void run() override;
 
     QList<U2Sequence> getResults() const {
         return results;
