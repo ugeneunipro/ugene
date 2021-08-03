@@ -1278,35 +1278,35 @@ GUI_TEST_CLASS_DEFINITION(test_0041) {
     qint64 initLength = det->getVisibleRange().length;
 
     GTKeyboardDriver::keyClick(Qt::Key_Down);
-    int start = GTUtilsSequenceView::getVisiableStart(os);
+    int start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start == 1, QString("1 Unexpected sequence start: %1").arg(start));
 
     GTKeyboardDriver::keyClick(Qt::Key_Right);
-    start = GTUtilsSequenceView::getVisiableStart(os);
+    start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start == 2, QString("2 Unexpected sequence start: %1").arg(start));
 
     GTKeyboardDriver::keyClick(Qt::Key_Left);
-    start = GTUtilsSequenceView::getVisiableStart(os);
+    start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start == 1, QString("3 Unexpected sequence start: %1").arg(start));
 
     GTKeyboardDriver::keyClick(Qt::Key_Up);
-    start = GTUtilsSequenceView::getVisiableStart(os);
+    start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start == 0, QString("4 Unexpected sequence start: %1").arg(start));
 
     GTKeyboardDriver::keyClick(Qt::Key_PageDown);
-    start = GTUtilsSequenceView::getVisiableStart(os);
+    start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start == initLength, QString("5 Unexpected sequence start: %1").arg(start));
 
     GTKeyboardDriver::keyClick(Qt::Key_PageUp);
-    start = GTUtilsSequenceView::getVisiableStart(os);
+    start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start == 0, QString("6 Unexpected sequence start: %1").arg(start));
 
     GTKeyboardDriver::keyClick(Qt::Key_End);
-    start = GTUtilsSequenceView::getVisiableStart(os);
+    start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start == 199950 - initLength, QString("7 Unexpected sequence start: %1").arg(start));
 
     GTKeyboardDriver::keyClick(Qt::Key_Home);
-    start = GTUtilsSequenceView::getVisiableStart(os);
+    start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start == 0, QString("8 Unexpected sequence start: %1").arg(start));
 }
 
@@ -1392,7 +1392,7 @@ GUI_TEST_CLASS_DEFINITION(test_0044_2) {
     GTMouseDriver::moveTo(GTMouseDriver::getMousePosition() + QPoint(over->geometry().width() / 3, 0));
     GTMouseDriver::release();
 
-    int start = GTUtilsSequenceView::getVisiableStart(os);
+    int start = GTUtilsSequenceView::getVisibleStart(os);
     CHECK_SET_ERR(start > 150000, QString("Unexpected selection start: %1").arg(start));
 
     //    GTWidget::click(os, GTUtilsMdi::activeWindow(os));
@@ -2089,13 +2089,13 @@ GUI_TEST_CLASS_DEFINITION(test_0066) {
     GTMouseDriver::press();
     GTMouseDriver::moveTo(p2);
     GTMouseDriver::release();
-    CHECK_SET_ERR(visibleRange.startPos == GTUtilsSequenceView::getVisiableStart(os), "Start position of visible range was changed on enlarge at the bottom");
+    CHECK_SET_ERR(visibleRange.startPos == GTUtilsSequenceView::getVisibleStart(os), "Start position of visible range was changed on enlarge at the bottom");
 
     GTMouseDriver::press();
     GTMouseDriver::moveTo(p1);
     GTMouseDriver::release();
     GTThread::waitForMainThread();
-    CHECK_SET_ERR(visibleRange.startPos == GTUtilsSequenceView::getVisiableStart(os), "Start position of visible range was changed on reduce at the bottom");
+    CHECK_SET_ERR(visibleRange.startPos == GTUtilsSequenceView::getVisibleStart(os), "Start position of visible range was changed on reduce at the bottom");
 
     QWidget *topSplitterHandle = GTWidget::findWidget(os, "qt_splithandle_det_view_NC_004718");
     CHECK_SET_ERR(topSplitterHandle != nullptr, "Cannot find qt_splithandle_det_view_NC_004718");
@@ -2105,13 +2105,13 @@ GUI_TEST_CLASS_DEFINITION(test_0066) {
     GTMouseDriver::press();
     GTMouseDriver::moveTo(p2);
     GTMouseDriver::release();
-    CHECK_SET_ERR(visibleRange.startPos == GTUtilsSequenceView::getVisiableStart(os), "Start position of visible range was changed on enlarge at the top");
+    CHECK_SET_ERR(visibleRange.startPos == GTUtilsSequenceView::getVisibleStart(os), "Start position of visible range was changed on enlarge at the top");
 
     GTMouseDriver::press();
     GTMouseDriver::moveTo(p1);
     GTMouseDriver::release();
     GTThread::waitForMainThread();
-    CHECK_SET_ERR(visibleRange.startPos == GTUtilsSequenceView::getVisiableStart(os), "Start position of visible range was changed on reduce at the top");
+    CHECK_SET_ERR(visibleRange.startPos == GTUtilsSequenceView::getVisibleStart(os), "Start position of visible range was changed on reduce at the top");
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0067) {

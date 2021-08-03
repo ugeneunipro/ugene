@@ -38,9 +38,6 @@
 #include <U2Core/Settings.h>
 #include <U2Core/Timer.h>
 
-#include <U2Formats/GenbankLocationParser.h>
-
-#include <U2Gui/CreateAnnotationWidgetController.h>
 #include <U2Gui/DialogUtils.h>
 #include <U2Gui/GUIUtils.h>
 #include <U2Gui/HelpButton.h>
@@ -508,10 +505,10 @@ FindEnzymesDialog::FindEnzymesDialog(ADVSequenceObjectContext *advSequenceContex
     maxHitSB->setMinimum(ANY_VALUE);
     minHitSB->setMinimum(ANY_VALUE);
 
-    regionSelector = new RegionSelectorWithExludedRegion(this,
-                                                         advSequenceContext->getSequenceLength(),
-                                                         advSequenceContext->getSequenceSelection(),
-                                                         advSequenceContext->getSequenceObject()->isCircular());
+    regionSelector = new RegionSelectorWithExcludedRegion(this,
+                                                          advSequenceContext->getSequenceLength(),
+                                                          advSequenceContext->getSequenceSelection(),
+                                                          advSequenceContext->getSequenceObject()->isCircular());
     searchRegionLayout->addWidget(regionSelector);
 
     initSettings();
@@ -623,7 +620,9 @@ void FindEnzymesDialog::saveSettings() {
     }
 
     U2SequenceObject *sequenceObject = advSequenceContext->getSequenceObject();
-    FindEnzymesAutoAnnotationUpdater::setLastSearchRegionForObject(sequenceObject, regionSelector->getIncludeRegion());
+    // Empty search region is processed as 'Whole sequence' by auto-annotation task.
+    U2Region searchRegion = regionSelector->isWholeSequenceSelected() ? U2Region() : regionSelector->getIncludeRegion();
+    FindEnzymesAutoAnnotationUpdater::setLastSearchRegionForObject(sequenceObject, searchRegion);
     FindEnzymesAutoAnnotationUpdater::setLastExcludeRegionForObject(sequenceObject, regionSelector->getExcludeRegion());
     enzSel->saveSettings();
 }
