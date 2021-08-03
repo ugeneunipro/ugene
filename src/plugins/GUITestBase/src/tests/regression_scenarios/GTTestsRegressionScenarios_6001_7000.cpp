@@ -88,6 +88,7 @@
 #include "GTUtilsProjectTreeView.h"
 #include "GTUtilsSequenceView.h"
 #include "GTUtilsSharedDatabaseDocument.h"
+#include "GTUtilsStartPage.h"
 #include "GTUtilsTaskTreeView.h"
 #include "GTUtilsWizard.h"
 #include "GTUtilsWorkflowDesigner.h"
@@ -5591,6 +5592,7 @@ GUI_TEST_CLASS_DEFINITION(test_6754) {
     GTUtilsMSAEditorSequenceArea::checkSelectedRect(os, QRect(0, 0, 1, 1));
     CHECK_SET_ERR(!l.hasErrors(), "Errors in log: " + l.getJoinedErrorString());
 }
+
 GUI_TEST_CLASS_DEFINITION(test_6760) {
     // 1. Open /data/samples/fasta/human_T1.fa
     GTFileDialog::openFile(os, dataDir + "samples/FASTA/human_T1.fa");
@@ -5618,6 +5620,52 @@ GUI_TEST_CLASS_DEFINITION(test_6760) {
 
     // Expected result: the annotation is present in another sequence view too.
     GTUtilsAnnotationsTreeView::findItem(os, "5_prime_UTR_intron");
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6797_1) {
+    // Checks recent list behavior when document file is missed.
+    QString filePath = QFileInfo(sandBoxDir + "test_6797.aln").absoluteFilePath();
+    GTFile::copy(os, testDir + "_common_data/clustal/align.aln", filePath);
+
+    GTFileDialog::openFile(os, filePath);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProject::closeProject(os, true);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QFile(filePath).remove();
+
+    GTUtilsStartPage::openStartPage(os);
+    GTUtilsStartPage::checkRecentListUrl(os, "test_6797.aln", true);
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Remove From List"));
+    GTMenu::clickMainMenuItem(os, {"File", "Recent files", filePath});
+
+    // Check that recent files list link does not exit.
+    GTMenu::checkMainMenuItemState(os, {"File", "Recent files"}, PopupChecker::IsDisabled);
+    GTUtilsStartPage::checkRecentListUrl(os, "test_6797.aln", false);
+}
+
+GUI_TEST_CLASS_DEFINITION(test_6797_2) {
+    // Checks recent list behavior when project file is missed.
+    QString filePath = QFileInfo(sandBoxDir + "test_6797.uprj").absoluteFilePath();
+
+    GTFileDialog::openFile(os, dataDir + "/samples/FASTA/human_T1.fa");
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+    GTUtilsProject::saveProjectAs(os, filePath);
+    GTUtilsProject::closeProject(os, false);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
+
+    QFile(filePath).remove();
+
+    GTUtilsStartPage::openStartPage(os);
+    GTUtilsStartPage::checkRecentListUrl(os, "test_6797.uprj", true);
+
+    GTUtilsDialog::waitForDialog(os, new MessageBoxDialogFiller(os, "Remove From List"));
+    GTMenu::clickMainMenuItem(os, {"File", "Recent projects", filePath});
+
+    // Check that recent projects list link does not exit.
+    GTMenu::checkMainMenuItemState(os, {"File", "Recent projects"}, PopupChecker::IsDisabled);
+    GTUtilsStartPage::checkRecentListUrl(os, "test_6797.uprj", false);
 }
 
 GUI_TEST_CLASS_DEFINITION(test_6807) {

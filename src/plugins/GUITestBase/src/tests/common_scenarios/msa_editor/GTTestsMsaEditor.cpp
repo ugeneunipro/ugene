@@ -686,40 +686,30 @@ GUI_TEST_CLASS_DEFINITION(test_0007_2) {
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007_3) {
-    // 1. Open document _common_data\scenarios\msa\ma2_gapped.aln
     GTFileDialog::openFile(os, testDir + "_common_data/scenarios/msa/", "ma2_gapped.aln");
     GTUtilsTaskTreeView::waitTaskFinished(os);
-    GTGlobals::sleep(1000);
 
-    QWidget *mdiWindow = GTUtilsMdi::activeWindow(os);
-    CHECK_SET_ERR(mdiWindow != nullptr, "MDI window == NULL");
-
-    // Expected state: Aligniment length 14, left offset 1, right offset 14
-
-    // 2. Do double click on Tettigonia_viridissima sequence name. CHANGES: another sequence renamed
-    // Expected state: Rename dialog appears
-    // 3. Put "Sequence_a" into text field. Click OK.
+    // Double-click on Tettigonia_viridissima sequence name. CHANGES: another sequence renamed.
+    // Expected state: Rename dialog appears.
+    // Put "Sequence_a" into text field. Click OK.
 
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Sequence_a", "Phaneroptera_falcata"));
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 0));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
-    // Expected state: Tettigonia_viridissima renamed to Sequence_a
+    // Expected state: Tettigonia_viridissima renamed to Sequence_a.
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Sequence_a", "Sequence_a"));
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 0));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 
-    // 4. Rlick Undo button.
-    GTKeyboardDriver::keyClick('z', Qt::ControlModifier);
-    GTGlobals::sleep();
+    // Click Undo button.
+    GTUtilsMsaEditor::undo(os);
+    GTUtilsTaskTreeView::waitTaskFinished(os);
 
-    // Expected state: Tettigonia_viridissima renamed back
+    // Expected state: Tettigonia_viridissima is renamed back.
     GTUtilsDialog::waitForDialog(os, new RenameSequenceFiller(os, "Phaneroptera_falcata", "Phaneroptera_falcata"));
     GTUtilsMSAEditorSequenceArea::moveTo(os, QPoint(-10, 0));
     GTMouseDriver::doubleClick();
-    GTGlobals::sleep();
 }
 
 GUI_TEST_CLASS_DEFINITION(test_0007_4) {
