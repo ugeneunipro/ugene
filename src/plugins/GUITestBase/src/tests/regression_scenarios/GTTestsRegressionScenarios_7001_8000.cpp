@@ -588,6 +588,7 @@ GUI_TEST_CLASS_DEFINITION(test_7293) {
     GTMenu::clickMainMenuItem(os, {"File", "Open as..."});
 }
 
+#ifdef SW2_BUILD_WITH_CUDA
 GUI_TEST_CLASS_DEFINITION(test_7360) {
     // Open _common_data/fasta/fa1.fa.
     // Call Smith-Waterman dialog:
@@ -605,7 +606,6 @@ GUI_TEST_CLASS_DEFINITION(test_7360) {
     //     Algorithm version: CUDA.
     // Search.
     //     Expected: no crash.
-#ifdef SW2_BUILD_WITH_CUDA
     class SwCudaScenario : public CustomScenario {
     public:
         SwCudaScenario(const QString &pattern, bool isWholeSequence)
@@ -640,8 +640,8 @@ GUI_TEST_CLASS_DEFINITION(test_7360) {
     GTUtilsDialog::waitForDialog(os, new Filler(os, "SmithWatermanDialogBase", new SwCudaScenario("AA", true)));
     GTToolbar::clickButtonByTooltipOnToolbar(os, MWTOOLBAR_ACTIVEMDI, "Find pattern [Smith-Waterman]");
     GTUtilsLog::checkContainsError(os, logAa, "Pattern length (2) is longer than search sequence length (1).");
-#endif    //SW2_BUILD_WITH_CUDA
 }
+#endif    //SW2_BUILD_WITH_CUDA
 
 }    // namespace GUITest_regression_scenarios
 
